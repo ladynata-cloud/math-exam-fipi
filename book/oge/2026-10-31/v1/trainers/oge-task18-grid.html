@@ -1,0 +1,1562 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/edition-assets/edition.css">
+<script src="/book/oge/2026-10-31/v1/edition-assets/bootstrap.js"></script>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam</title>
+<meta name="description" content="Тренажёр задания 18 ОГЭ: длины, средние линии, площади и отношения на клетчатой бумаге. Разбор решений, самостоятельная тренировка и зачёт.">
+<link rel="canonical" href="https://mathexam.space/trainers/oge-task18-grid.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam">
+<meta property="og:description" content="Тренажёр задания 18 ОГЭ: длины, средние линии, площади и отношения на клетчатой бумаге. Разбор решений, самостоятельная тренировка и зачёт.">
+<meta property="og:url" content="https://mathexam.space/book/oge/2026-10-31/v1/trainers/oge-task18-grid.html">
+<meta property="og:site_name" content="MathExam">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ОГЭ, задание 18: фигуры на клетчатой бумаге | MathExam">
+<meta name="twitter:description" content="Тренажёр задания 18 ОГЭ: длины, средние линии, площади и отношения на клетчатой бумаге. Разбор решений, самостоятельная тренировка и зачёт.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;color:#1a1a2e;font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+.app{max-width:980px;margin:14px auto 30px;background:#fffdf7;border-radius:18px;box-shadow:0 10px 30px rgba(26,26,46,.15);overflow:hidden}
+.head{background:#1a1a2e;color:#fffdf7;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.head h1{font-size:19px;margin:0;letter-spacing:-.02em}
+.head .sub{font-size:12.5px;color:#b8b6c9;margin-top:2px}
+.head .crumbs{display:inline-block;color:#f2b134;font-size:13px;font-weight:700;text-decoration:none;margin-bottom:3px}
+.head .crumbs:hover{text-decoration:underline}
+.head .badge{margin-left:auto;background:#2d70b3;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:800}
+.tabs{display:flex;gap:6px;padding:10px 16px;background:#f4f1e7;border-bottom:1px solid #e2ddc9;flex-wrap:wrap}
+.tabs button{border:1px solid #d8d2bc;background:#fffdf7;color:#1a1a2e;border-radius:999px;padding:8px 16px;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.tabs button.on{background:#1a1a2e;color:#fffdf7;border-color:#1a1a2e}
+.tabs .spacer{flex:1}
+.tabs .stat{align-self:center;font-size:12.5px;color:#57534e;font-weight:700}
+.main{padding:16px 18px 22px}
+.card{background:#fff;border:1px solid #e7e1d2;border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.card h3{margin:0 0 6px;font-size:15.5px}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.msg{border-radius:12px;padding:11px 14px;margin-top:10px;font-weight:700;font-size:14.5px;line-height:1.45;display:none}
+.msg.on{display:block}
+.msg.ok{background:#dcfce7;color:#166534}
+.msg.err{background:#fee2e2;color:#b91c1c}
+.msg.info{background:#e0ecfa;color:#1d4ed8}
+.msg.warn{background:#ffedd5;color:#c2410c}
+button.act{border:1px solid #1a1a2e;background:#1a1a2e;color:#fffdf7;border-radius:12px;padding:10px 16px;font:inherit;font-weight:800;font-size:14.5px;cursor:pointer}
+button.sec{border:1px solid #c9c3ad;background:#fffdf7;color:#1a1a2e;border-radius:12px;padding:10px 16px;font:inherit;font-weight:800;font-size:14.5px;cursor:pointer}
+button.link{border:0;background:none;color:#2d70b3;font:inherit;font-weight:800;cursor:pointer;padding:4px 2px;font-size:13.5px;text-decoration:underline}
+button:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input.ans{border:1.5px solid #c9c3ad;border-radius:12px;background:#fffdf7;padding:9px 12px;font:inherit;font-size:20px;font-weight:900;width:140px;text-align:center}
+.task{font-size:16.5px;line-height:1.5;font-weight:700;margin:8px 0 10px}
+.figwrap{text-align:center;margin:8px 0}
+.figwrap svg{max-width:100%;height:auto}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.chip{border:1px solid #d8d2bc;background:#fffdf7;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:800;cursor:pointer;color:#44403c}
+.chip.on{background:#2d70b3;border-color:#2d70b3;color:#fff}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+.tcard{border:1px solid #e7e1d2;border-radius:14px;padding:12px 14px;background:#fff;cursor:pointer;position:relative}
+.tcard:hover{border-color:#2d70b3}
+.tcard h4{margin:0 0 4px;font-size:14.5px}
+.tcard .cnt{font-size:12px;color:#78716c;font-weight:700}
+.tcard .done{color:#16a34a;font-weight:900;font-size:12.5px}
+.tcard .weak{display:inline-block;background:#fee2e2;color:#b91c1c;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:900;margin-left:6px}
+.topic-h{font-size:13px;font-weight:900;color:#78716c;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px}
+.law{background:#dcfce7;border:1.5px solid #16a34a;border-radius:14px;padding:12px 15px;margin-top:10px;font-weight:700;line-height:1.5}
+.law b{color:#166534}
+.why{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:14px;padding:11px 14px;margin-top:10px;line-height:1.5;font-size:14px}
+.why b{color:#b45309}
+.step{background:#f8f7f2;border-left:4px solid #2d70b3;border-radius:0 10px 10px 0;padding:10px 13px;margin-top:8px;font-size:14.5px;line-height:1.6}
+.frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.frac .up{display:block;border-bottom:1.6px solid currentColor;padding:0 5px}
+.frac .dn{display:block;padding:0 5px}
+.refblk{border:1.5px solid #e7e1d2;border-radius:14px;padding:12px 15px;background:#fff;margin-bottom:10px}
+.refblk.hl{border-color:#d97706;box-shadow:0 0 0 3px #fde68a}
+.refblk h4{margin:0 0 6px;font-size:15px}
+.refblk .fm{font-size:17px;font-weight:800;margin:6px 0;text-align:center}
+.fin{text-align:center;padding:16px 8px}
+.fin .score{font-size:42px;font-weight:900}
+.dots{display:flex;gap:7px;justify-content:center;margin:12px 0}
+.dot{width:16px;height:16px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#eab308}.dot.r{background:#dc2626}
+.pbar{height:8px;background:#eceadf;border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.pbar>div{height:100%;background:#2d70b3;border-radius:99px;transition:width .3s}
+.note{font-size:12.5px;color:#78716c;margin-top:6px}
+.selftest{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;white-space:pre-wrap;background:#1a1a2e;color:#a7f3d0;border-radius:12px;padding:14px;margin-top:12px}
+
+/* карта листа ОГЭ */
+.mapcard{background:#fffdf7;border:1px solid #d9d2bd;border-radius:12px;padding:14px;margin-bottom:16px}
+.mapcard h3{margin:0 0 6px;color:#1a1a2e}
+.offmap{background:#f3efe4;border:1px dashed #b9b19a;border-radius:8px;padding:10px 12px;margin:12px auto 0;max-width:900px;font-size:14px;color:#4a4a5a}
+.method{background:#f0f4fb;border-left:4px solid #2d70b3;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:14px;color:#2a3a52;line-height:1.5}
+.method b{color:#1a2e4a}
+/* доступность (канон): цели касания не ниже 44 px; пояснение «О прогрессе» */
+button,select,input:not([type=checkbox]):not([type=radio]):not([type=range]){min-height:44px}
+a.crumbs{display:inline-flex;align-items:center;min-height:44px}
+.pnote{margin:8px 0 10px;font-size:13.5px;line-height:1.5;color:#4a5560}
+.pnote summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+.pnote div{padding:2px 0 8px}
+.chips .chip{display:inline-flex;align-items:center;min-height:44px}
+</style>
+<style>
+/* Course presentation: original mathematics, progress and exam contracts stay below. */
+:root{--cream:#f6f7f5;--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--blue:#216342;--accent:#216342;--green:#216342;--line:#dbe1da}
+body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
+@media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
+@media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-reference.css">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v1/trainers/oge-course-geometry.css">
+</head>
+<body data-oge-geometry="18">
+<div class="app">
+  <div class="head">
+    <div>
+      <a class="crumbs" href="https://mathexam.space/book/oge/2026-10-31/v1/oge/">← Курс ОГЭ</a>
+      <h1>ОГЭ, задание 18 · Фигуры на клетчатой бумаге</h1>
+      <div class="sub">Длины · Средние линии · Площади · Отношения — банк из 123 задач + генераторы</div>
+    </div>
+    <div class="badge" id="modeBadge">Разбор</div>
+  </div>
+  <div class="tabs">
+    <button id="tabRazbor" class="on">Разбор</button>
+    <button id="tabTrain">Тренировка</button>
+    <button id="tabQuiz">Зачёт</button>
+    <button id="tabRef">Справочник</button>
+    <span class="spacer"></span>
+    <span class="stat" id="hdrStat"></span>
+  </div>
+  <div class="main" id="main"></div>
+</div>
+<script>
+'use strict';
+/* ================= ОГЭ №18 · Фигуры на клетчатой бумаге =================
+   Каркас серии: SUBS (реестр подтипов) + ARCHIVE (готовые задачи с эталонами)
+   + build() + режимы Разбор/Тренировка/Зачёт/Справочник + селфтест ?selftest=1.
+   Хранилище: mathExamCourseProgress.v1, TID='oge18-kletki'.               */
+
+const TID='oge18-kletki';
+
+/* ================= Контракт прогресса курса ОГЭ =================
+   docs/OGE_PROGRESS_CONTRACT.md, разделы 3–5: ядро записи, журнал ошибок,
+   режим повтора. Тела функций — как в контракте; обёрнуты в CP, чтобы не
+   столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
+   свои записи журнала, после свежего чтения ключа — две вкладки не
+   затирают друг друга. В ?selftest=1 ничего не пишется. */
+const TYPE_IDS=["dist","midBC","leg","rhombDiag","midTri","midTrap","areaTri","areaPar","areaRhomb","areaTrap","areaFig","tanA","segAB","segCmp","circRatio"];
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"") || window.OgeGeometryBoardMode === true;
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    if (window.OgeGeometryBoardMode === true) return {};
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* запись старой версии (без updatedAt: её писал код до контракта) могла
+     нести passed при любом результате зачёта — один раз пересчитываем
+     passed по сохранённому best; дальше запись несёт updatedAt и больше
+     не трогается */
+  function migrate(bestNorm){
+    if (RO) return;
+    var r = readAll()[TID];
+    if (!isObj(r) || typeof r.updatedAt === "number") return;
+    var b = bestNorm(r);
+    saveRec(function(rec){
+      rec.best = b;
+      rec.passed = b >= PASS_AT;
+      if (b > 0 || num(rec.runs) > 0) rec.total = QUIZ_TOTAL;
+    });
+  }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes, migrate:migrate };
+})();
+
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function parseAns(s){
+  s=String(s==null?'':s).trim().replace(/\s+/g,'');
+  if(!s)return NaN;
+  s=s.replace(',','.');
+  const m=s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if(m){const d=parseFloat(m[2]);return d?parseFloat(m[1])/d:NaN;}
+  return /^-?\d+(?:\.\d+)?$/.test(s)?parseFloat(s):NaN;
+}
+const near=(a,b,e)=>Math.abs(a-b)<=(e==null?1e-6:e);
+const fmt=n=>{const r=Math.round(n*1000)/1000;return String(r).replace('.',',');};
+const frac=(u,d)=>'<span class="frac"><span class="up">'+u+'</span><span class="dn">'+d+'</span></span>';
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ---------- SVG-слой клетчатой бумаги ----------
+   Координаты — в клетках, y вверх. Каждый построитель копит chk-ассерты:
+   геоаудит рождается вместе с фигурой, а не прикручен потом.            */
+const INK='#1a1a2e', GRID='#d9d2bd', AUX='#d97706', BLUE='#2d70b3', OKC='#16a34a';
+function CF(W,H){
+  const G=30,P=19, o={W,H,parts:[],chk:[]};
+  const X=x=>+(P+x*G).toFixed(2), Y=y=>+(P+(H-y)*G).toFixed(2);
+  o.X=X; o.Y=Y;
+  let lines='';
+  for(let x=0;x<=W;x++)lines+='<line x1="'+X(x)+'" y1="'+Y(0)+'" x2="'+X(x)+'" y2="'+Y(H)+'" stroke="'+GRID+'" stroke-width="1"/>';
+  for(let y=0;y<=H;y++)lines+='<line x1="'+X(0)+'" y1="'+Y(y)+'" x2="'+X(W)+'" y2="'+Y(y)+'" stroke="'+GRID+'" stroke-width="1"/>';
+  o.parts.push(lines);
+  o.seg=(x1,y1,x2,y2,st)=>{st=st||{};o.parts.push('<line x1="'+X(x1)+'" y1="'+Y(y1)+'" x2="'+X(x2)+'" y2="'+Y(y2)+'" stroke="'+(st.c||INK)+'" stroke-width="'+(st.w||2.6)+'"'+(st.d?' stroke-dasharray="'+st.d+'"':'')+' stroke-linecap="round"/>');};
+  o.poly=(pts,st)=>{st=st||{};o.parts.push('<polygon points="'+pts.map(p=>X(p[0])+','+Y(p[1])).join(' ')+'" fill="'+(st.f||'rgba(45,112,179,.10)')+'" stroke="'+(st.c||INK)+'" stroke-width="'+(st.w||2.6)+'" stroke-linejoin="round"/>');};
+  o.circle=(cx,cy,r,st)=>{st=st||{};o.parts.push('<circle cx="'+X(cx)+'" cy="'+Y(cy)+'" r="'+(r*G).toFixed(2)+'" fill="'+(st.f||'rgba(45,112,179,.08)')+'" stroke="'+(st.c||INK)+'" stroke-width="'+(st.w||2.4)+'"/>');};
+  o.dot=(x,y,st)=>{st=st||{};o.parts.push('<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="'+(st.r||4)+'" fill="'+(st.c||INK)+'"/>');};
+  /* подпись не выходит за рамку чертежа: у нижнего и боковых краёв её поджимает внутрь */
+  o.lab=(x,y,t,dx,dy,st)=>{st=st||{};const w=P*2+W*G,h=P*2+H*G;
+    const px=Math.min(w-12,Math.max(2,X(x)+(dx==null?8:dx))),py=Math.min(h-4,Math.max(14,Y(y)+(dy==null?-8:dy)));
+    o.parts.push('<text x="'+px+'" y="'+py+'" font-size="15" font-weight="900" fill="'+(st.c||INK)+'" stroke="rgba(255,253,247,.95)" stroke-width="4" paint-order="stroke" font-style="italic" font-family="Georgia,serif">'+esc(t)+'</text>');};
+  o.rightSq=(x,y,ux,uy,vx,vy)=>{const s=.38, p1=[x+ux*s,y+uy*s], p2=[x+ux*s+vx*s,y+uy*s+vy*s], p3=[x+vx*s,y+vy*s];
+    o.parts.push('<polyline points="'+[p1,p2,p3].map(p=>X(p[0])+','+Y(p[1])).join(' ')+'" fill="none" stroke="'+OKC+'" stroke-width="2.2"/>');
+    o.chk.push({t:'perp',v:ux*vx+uy*vy});};
+  // дуга угла полилинией (без SVG-arc)
+  o.arc=(cx,cy,r,a1,a2,st)=>{st=st||{};let pts=[];for(let i=0;i<=24;i++){const a=a1+(a2-a1)*i/24;pts.push(X(cx+r*Math.cos(a))+','+Y(cy+r*Math.sin(a)));}
+    o.parts.push('<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+(st.c||AUX)+'" stroke-width="3" stroke-linecap="round"/>');};
+  o.svg=()=>{const w=P*2+W*G,h=P*2+H*G;
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+Math.min(560,w)+'" role="img"><rect x="0" y="0" width="'+w+'" height="'+h+'" fill="#fffdf7" rx="10"/>'+o.parts.join('')+'</svg>';};
+  // базовые ассерты честности клеток
+  o.node=(x,y,name)=>{o.chk.push({t:'node',v:(Number.isInteger(x)&&Number.isInteger(y))?0:1,n:name});o.chk.push({t:'frame',v:(x>=0&&x<=W&&y>=0&&y<=H)?0:1,n:name});};
+  o.eqSides=pts=>{const L=[];for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];L.push(Math.hypot(b[0]-a[0],b[1]-a[1]));}
+    const mx=Math.max(...L),mn=Math.min(...L);o.chk.push({t:'eqSides',v:(mx-mn)/mx});};
+  o.parallel=(a,b,c,d,want)=>{const cr=(b[0]-a[0])*(d[1]-c[1])-(b[1]-a[1])*(d[0]-c[0]);o.chk.push({t:'par',v:want?Math.abs(cr):(Math.abs(cr)<1e-9?1:0)});};
+  return o;
+}
+/* ---------- Справочник формул (REF) ---------- */
+const REF={
+  pyth:{h:'Теорема Пифагора на клетках',f:'c² = a² + b²',t:'Расстояние между узлами: считаем катеты по клеткам (вправо и вверх), гипотенуза — по теореме Пифагора. Держать в голове тройки: 3-4-5, 6-8-10, 5-12-13.'},
+  midtri:{h:'Средняя линия треугольника',f:'m = '+frac('a','2'),t:'Отрезок, соединяющий середины двух сторон, параллелен третьей стороне и равен её половине.'},
+  midtrap:{h:'Средняя линия трапеции',f:'m = '+frac('a + b','2'),t:'Отрезок, соединяющий середины боковых сторон, равен полусумме оснований.'},
+  stri:{h:'Площадь треугольника',f:'S = '+frac('a · h','2'),t:'Половина произведения основания на высоту. На клетках основание берём по линии сетки — тогда высота тоже считается по клеткам.'},
+  spar:{h:'Площадь параллелограмма',f:'S = a · h',t:'Основание умножить на высоту. Осторожно: наклонная боковая сторона — НЕ высота.'},
+  srhomb:{h:'Площадь ромба',f:'S = '+frac('d₁ · d₂','2'),t:'Половина произведения диагоналей. На клетках диагонали ромба обычно идут по линиям сетки — просто считаем клетки.'},
+  strap:{h:'Площадь трапеции',f:'S = '+frac('a + b','2')+' · h',t:'Полусумма оснований, умноженная на высоту.'},
+  tan:{h:'Тангенс острого угла',f:'tg α = '+frac('противолежащий катет','прилежащий катет'),t:'Достраиваем прямоугольный треугольник по клеткам: тангенс — отношение вертикального катета к горизонтальному.'},
+  sim:{h:'Подобие и теорема Фалеса',f:frac('AB','CD')+' = '+frac('h₁','h₂'),t:'Прямая, параллельная стороне треугольника, отсекает подобный треугольник: все длины умножаются на один коэффициент.'},
+  circ:{h:'Площади кругов',f:frac('S₁','S₂')+' = '+'('+frac('R₁','R₂')+')²',t:'S = πR², поэтому отношение площадей равно КВАДРАТУ отношения радиусов. Радиус по диагонали клеток находим через Пифагора: R² = a² + b².'},
+  cells:{h:'Площадь фигуры по клеткам',f:'S = целые клетки + половинки',t:'Режем фигуру линиями сетки на прямоугольники и половинки прямоугольников — или дополняем до прямоугольника и вычитаем лишнее.'}
+};
+
+/* ---------- Реестр подтипов ---------- */
+const TOPICS={len:'Длины',mid:'Средние линии',area:'Площади',rel:'Отношения'};
+const SUBS={};
+
+/* ===== ДЛИНЫ ===== */
+SUBS.dist={topic:'len',name:'Расстояние между точками',ref:'pyth',
+  refWhy:'Две точки в узлах сетки — это гипотенуза прямоугольного треугольника с катетами по клеткам. Пифагор превращает счёт клеток в длину.',
+  law:'Расстояние между узлами = √(Δx² + Δy²). Ищи пифагоровы тройки: 3-4-5, 6-8-10, 5-12-13.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 отмечены две точки. Найдите расстояние между ними.',
+  calc:p=>Math.hypot(p[0],p[1]),
+  proto:[4,3,0],
+  gen(){const t=pick([[3,4],[4,3],[6,8],[8,6],[5,12],[12,5],[9,12],[12,9]]);return [t[0],t[1],rnd(0,1)];},
+  fig(p,aux){const [dx,dy,o]=p,W=dx+2,H=dy+2,f=CF(W,H);
+    const A=[1,o?dy+1:1],B=[1+dx,o?1:dy+1];
+    if(aux){f.seg(A[0],A[1],B[0],A[1],{c:AUX,w:2,d:'6 5'});f.seg(B[0],A[1],B[0],B[1],{c:AUX,w:2,d:'6 5'});
+      f.rightSq(B[0],A[1],(A[0]-B[0])/Math.abs(A[0]-B[0]),0,0,(B[1]-A[1])/Math.abs(B[1]-A[1]));
+      f.seg(A[0],A[1],B[0],B[1],{c:BLUE,w:2.6});}
+    f.dot(A[0],A[1]);f.dot(B[0],B[1]);
+    f.lab(A[0],A[1],'A',-16,o?-8:16);f.lab(B[0],B[1],'B',8,o?16:-8);
+    f.node(A[0],A[1],'A');f.node(B[0],B[1],'B');
+    f.chk.push({t:'ans',v:Math.hypot(B[0]-A[0],B[1]-A[1])});
+    return f;},
+  sol(p){const[dx,dy]=p,c=Math.hypot(dx,dy);return[
+    'Достроим прямоугольный треугольник: от A до B идём по клеткам '+dx+' вправо и '+dy+(p[2]?' вниз':' вверх')+'. Катеты: '+dx+' и '+dy+'.',
+    'По теореме Пифагора: AB² = '+dx+'² + '+dy+'² = '+(dx*dx)+' + '+(dy*dy)+' = '+(dx*dx+dy*dy)+'.',
+    'AB = √'+(dx*dx+dy*dy)+' = '+fmt(c)+'. Это пифагорова тройка '+Math.min(dx,dy)+'-'+Math.max(dx,dy)+'-'+fmt(c)+'.'];},
+  diag(p){const[dx,dy]=p;return[
+    {v:dx+dy,m:'Вы сложили катеты — так считают путь по клеткам, а не расстояние по прямой. Нужна теорема Пифагора: √(Δx² + Δy²).'},
+    {v:Math.max(dx,dy),m:'Это только больший катет. Расстояние между точками — гипотенуза, она длиннее любого катета.'},
+    {v:dx*dx+dy*dy,m:'Это квадрат расстояния. Вы нашли AB², остался последний шаг — извлечь корень.'}];}
+};
+
+SUBS.midBC={topic:'len',name:'Расстояние до середины отрезка',ref:'pyth',
+  refWhy:'Середина BC находится по клеткам (полусумма координат), а расстояние от A до неё — снова Пифагор по катетам-клеткам.',
+  law:'Сначала отметь середину отрезка по клеткам, затем считай расстояние по Пифагору.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 отмечены три точки: A, B и C. Найдите расстояние от точки A до середины отрезка BC.',
+  calc(p){const[bx,by,cx,cy,ax,ay]=p;return Math.hypot(ax-(bx+cx)/2,ay-(by+cy)/2);},
+  proto:[1,8,1,0,7,4],
+  gen(){
+    for(let i=0;i<200;i++){
+      const mx=rnd(2,5),my=rnd(2,5),u=rnd(0,2),v=u===0?rnd(1,3):rnd(0,3);
+      const B=[mx+u,my+v],C=[mx-u,my-v];
+      const t=pick([[3,4],[4,3],[6,8],[5,12],[4,0],[0,4],[5,0],[6,0],[0,5]]);
+      const A=[mx+t[0],my+(Math.random()<.5?t[1]:-t[1])];
+      const xs=[B[0],C[0],A[0]],ys=[B[1],C[1],A[1]];
+      const minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+      if(maxx-minx>12||maxy-miny>9)continue;
+      const p=[B[0]-minx,B[1]-miny,C[0]-minx,C[1]-miny,A[0]-minx,A[1]-miny];
+      if(Math.hypot(B[0]-C[0],B[1]-C[1])<2)continue;
+      if(Math.hypot(p[4]-(p[0]+p[2])/2,p[5]-(p[1]+p[3])/2)<2)continue;
+      return p;}
+    return this.proto.slice();},
+  fig(p,aux){const[bx,by,cx,cy,ax,ay]=p;
+    const W=Math.max(bx,cx,ax)+1,H=Math.max(by,cy,ay)+1,f=CF(Math.max(W,4),Math.max(H,4));
+    const mx=(bx+cx)/2,my=(by+cy)/2;
+    if(aux){f.seg(bx,by,cx,cy,{c:'#78716c',w:1.8,d:'5 5'});f.dot(mx,my,{c:AUX,r:4});f.lab(mx,my,'M',8,18,{c:AUX});
+      f.seg(ax,ay,mx,my,{c:BLUE,w:2.6});}
+    f.dot(bx,by);f.dot(cx,cy);f.dot(ax,ay);
+    f.lab(bx,by,'B',-6,-10);f.lab(cx,cy,'C',-6,20);f.lab(ax,ay,'A',10,-8);
+    f.node(bx,by,'B');f.node(cx,cy,'C');f.node(ax,ay,'A');
+    f.chk.push({t:'ans',v:Math.hypot(ax-mx,ay-my)});
+    return f;},
+  sol(p){const[bx,by,cx,cy,ax,ay]=p,mx=(bx+cx)/2,my=(by+cy)/2;
+    const dx=Math.abs(ax-mx),dy=Math.abs(ay-my),c=Math.hypot(dx,dy);
+    return[
+    'Отметим середину M отрезка BC: она посередине между B и C по клеткам.',
+    'От A до M: '+fmt(dx)+' по горизонтали и '+fmt(dy)+' по вертикали.',
+    dy===0||dx===0?'Точки A и M на одной линии сетки: расстояние просто считаем по клеткам — AM = '+fmt(c)+'.':'По Пифагору: AM = √('+fmt(dx)+'² + '+fmt(dy)+'²) = √'+fmt(dx*dx+dy*dy)+' = '+fmt(c)+'.'];},
+  diag(p){const[bx,by,cx,cy,ax,ay]=p;
+    return[{v:Math.hypot(ax-bx,ay-by),m:'Это расстояние до точки B, а спрашивают — до СЕРЕДИНЫ отрезка BC. Сначала отметьте середину.'},
+      {v:Math.hypot(ax-cx,ay-cy),m:'Это расстояние до точки C, а спрашивают — до СЕРЕДИНЫ отрезка BC.'},
+      {v:Math.hypot(bx-cx,by-cy)/2,m:'Это половина отрезка BC. А нужен путь от точки A до середины BC.'}];}
+};
+
+SUBS.leg={topic:'len',name:'Больший катет прямоугольного треугольника',ref:'pyth',
+  refWhy:'Катеты идут по линиям сетки — их длина считается клетками напрямую, Пифагор здесь нужен только чтобы не перепутать катет с гипотенузой.',
+  law:'Катеты — стороны при прямом угле, они идут по линиям сетки. Больший катет — просто больше клеток.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён прямоугольный треугольник. Найдите длину его большего катета.',
+  calc:p=>Math.max(p[0],p[1]),
+  proto:[4,6,0],
+  gen(){const a=rnd(4,10);let m=rnd(2,a-1);return [m,a,rnd(0,3)];},
+  fig(p,aux){const[m,a,o]=p;
+    const legH=(o<2)?a:m, legV=(o<2)?m:a, mirror=o%2;
+    const W=legH+2,H=legV+2,f=CF(W,H);
+    const R=[mirror?W-1:1,1],P1=[R[0]+(mirror?-legH:legH),1],P2=[R[0],1+legV];
+    f.poly([R,P1,P2]);
+    f.rightSq(R[0],R[1],mirror?-1:1,0,0,1);
+    if(aux){const big=(legH>=legV)?[R,P1]:[R,P2];f.seg(big[0][0],big[0][1],big[1][0],big[1][1],{c:BLUE,w:3.6});}
+    f.node(R[0],R[1],'R');f.node(P1[0],P1[1],'P1');f.node(P2[0],P2[1],'P2');
+    f.chk.push({t:'ans',v:Math.max(legH,legV)});
+    return f;},
+  sol(p){const[m,a]=p;return[
+    'Катеты — стороны при прямом угле (зелёный квадратик). Оба идут по линиям сетки.',
+    'Считаем клетки: один катет '+m+', другой '+a+'.',
+    'Больший катет: '+a+'.'];},
+  diag(p){const[m,a]=p;const hyp=Math.hypot(m,a),hv=near(hyp,Math.round(hyp),1e-9)?Math.round(hyp):NaN;return[
+    {v:m,m:'Это МЕНЬШИЙ катет. Сравните длины: '+m+' < '+a+'.'},
+    {v:hv,m:'Это гипотенуза — сторона напротив прямого угла. Катеты — те, что образуют прямой угол.'},
+    {v:m+a,m:'Вы сложили оба катета. Нужен один — тот, что длиннее.'}];}
+};
+
+function rhombFig(p,aux,mode){const[hp,hq]=p,W=2*hp+2,H=2*hq+2,f=CF(W,H);
+  const c=[hp+1,hq+1],V=[[c[0]-hp,c[1]],[c[0],c[1]+hq],[c[0]+hp,c[1]],[c[0],c[1]-hq]];
+  f.poly(V);
+  if(aux){f.seg(V[0][0],V[0][1],V[2][0],V[2][1],{c:BLUE,w:2.6,d:'7 5'});f.seg(V[1][0],V[1][1],V[3][0],V[3][1],{c:AUX,w:2,d:'5 5'});}
+  V.forEach((v,i)=>f.node(v[0],v[1],'V'+i));
+  f.eqSides(V);
+  f.chk.push({t:'ans',v:mode==='diag'?2*Math.max(hp,hq):2*hp*hq});
+  return f;}
+SUBS.rhombDiag={topic:'len',name:'Большая диагональ ромба',ref:'srhomb',
+  refWhy:'Диагонали ромба на клетках идут по линиям сетки — их длины считаются клетками. Здесь спрашивают саму диагональ, площадь не нужна.',
+  law:'Диагонали ромба перпендикулярны и точкой пересечения делятся пополам; на клетках их считаем напрямую.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён ромб. Найдите длину его большей диагонали.',
+  calc:p=>2*Math.max(p[0],p[1]),
+  proto:[5,2],
+  gen(){let p=rnd(2,6),q=rnd(1,p-1);return [p,q];},
+  fig(p,aux){return rhombFig(p,aux,'diag');},
+  sol(p){const[hp,hq]=p,d1=2*Math.max(hp,hq),d2=2*Math.min(hp,hq);return[
+    'Диагонали ромба идут по линиям сетки. Считаем клетки: горизонтальная '+2*hp+', вертикальная '+2*hq+'.',
+    'Большая из них: '+d1+' (меньшая — '+d2+').'];},
+  diag(p){const[hp,hq]=p;return[
+    {v:2*Math.min(hp,hq),m:'Это МЕНЬШАЯ диагональ. Сравните: '+2*Math.min(hp,hq)+' < '+2*Math.max(hp,hq)+'.'},
+    {v:Math.max(hp,hq),m:'Это половина большей диагонали — вы посчитали клетки только от центра до вершины.'},
+    {v:2*hp*hq,m:'Это площадь ромба (d₁·d₂/2). А спрашивают длину большей диагонали.'}];}
+};
+
+/* ===== СРЕДНИЕ ЛИНИИ ===== */
+SUBS.midTri={topic:'mid',name:'Средняя линия треугольника',ref:'midtri',
+  refWhy:'Сторона AC считается по клеткам, а средняя линия, параллельная ей, — ровно её половина. Формула превращает задачу в одно деление.',
+  law:'Средняя линия треугольника параллельна стороне и равна её половине.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён треугольник ABC. Найдите длину его средней линии, параллельной стороне AC.',
+  calc:p=>p[0]/2,
+  proto:[6,2,5],
+  gen(){const a=pick([4,6,8,10]);return [a,rnd(1,a-1),rnd(4,7)];},
+  fig(p,aux){const[a,bx,h]=p,W=a+2,H=h+2,f=CF(W,H);
+    const A=[1,1],C=[1+a,1],B=[1+bx,1+h];
+    f.poly([A,B,C]);
+    f.lab(A[0],A[1],'A',-14,18);f.lab(C[0],C[1],'C',6,18);f.lab(B[0],B[1],'B',-4,-9);
+    if(aux){const M1=[(A[0]+B[0])/2,(A[1]+B[1])/2],M2=[(C[0]+B[0])/2,(C[1]+B[1])/2];
+      f.seg(M1[0],M1[1],M2[0],M2[1],{c:BLUE,w:2.8});f.dot(M1[0],M1[1],{c:BLUE,r:3.4});f.dot(M2[0],M2[1],{c:BLUE,r:3.4});
+      f.parallel(M1,M2,A,C,true);}
+    f.node(A[0],A[1],'A');f.node(C[0],C[1],'C');f.node(B[0],B[1],'B');
+    f.chk.push({t:'ans',v:(C[0]-A[0])/2});
+    return f;},
+  sol(p){const[a]=p;return[
+    'Сторона AC лежит на линии сетки — считаем клетки: AC = '+a+'.',
+    'Средняя линия соединяет середины сторон AB и BC и равна половине AC.',
+    'm = '+frac('AC','2')+' = '+frac(String(a),'2')+' = '+fmt(a/2)+'.'];},
+  diag(p){const[a]=p;return[
+    {v:a,m:'Это сама сторона AC. Средняя линия — её ПОЛОВИНА.'},
+    {v:2*a,m:'Вы умножили на 2 вместо деления. Средняя линия МЕНЬШЕ стороны: m = AC/2.'}];}
+};
+
+SUBS.midTrap={topic:'mid',name:'Средняя линия трапеции',ref:'midtrap',
+  refWhy:'Оба основания трапеции идут по линиям сетки и считаются клетками — средняя линия равна их полусумме.',
+  law:'Средняя линия трапеции равна полусумме оснований.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображена трапеция. Найдите длину её средней линии.',
+  calc:p=>(p[0]+p[1])/2,
+  proto:[5,3,3,1],
+  gen(){const a=rnd(5,10),b=rnd(2,a-2),s=rnd(0,a-b);if(s===0&&s+b===a)return this.gen();return [a,b,rnd(3,6),s];},
+  fig(p,aux){const[a,b,h,s]=p,W=a+2,H=h+2,f=CF(W,H);
+    const A=[1,1],D=[1+a,1],B=[1+s,1+h],C=[1+s+b,1+h];
+    f.poly([A,B,C,D]);
+    if(aux){const M1=[(A[0]+B[0])/2,(A[1]+B[1])/2],M2=[(D[0]+C[0])/2,(D[1]+C[1])/2];
+      f.seg(M1[0],M1[1],M2[0],M2[1],{c:BLUE,w:2.8});f.dot(M1[0],M1[1],{c:BLUE,r:3.4});f.dot(M2[0],M2[1],{c:BLUE,r:3.4});}
+    [A,B,C,D].forEach((v,i)=>f.node(v[0],v[1],'ABCD'[i]));
+    f.parallel(B,C,A,D,true);
+    f.parallel(A,B,D,C,false);
+    f.chk.push({t:'ans',v:((D[0]-A[0])+(C[0]-B[0]))/2});
+    return f;},
+  sol(p){const[a,b]=p;return[
+    'Основания трапеции — параллельные стороны, обе по линиям сетки: нижнее a = '+a+', верхнее b = '+b+'.',
+    'Средняя линия равна полусумме оснований: m = '+frac('a + b','2')+'.',
+    'm = '+frac(a+' + '+b,'2')+' = '+frac(String(a+b),'2')+' = '+fmt((a+b)/2)+'.'];},
+  diag(p){const[a,b]=p;return[
+    {v:a+b,m:'Это СУММА оснований. Средняя линия — их полуcумма: разделите на 2.'},
+    {v:(a-b)/2,m:'Это полуразность оснований. В формуле средней линии основания складываются: (a + b)/2.'},
+    {v:a,m:'Это нижнее основание. Средняя линия лежит между основаниями и равна их полусумме.'}];}
+};
+
+/* ===== ПЛОЩАДИ ===== */
+SUBS.areaTri={topic:'area',name:'Площадь треугольника',ref:'stri',
+  refWhy:'Основание кладём на линию сетки — тогда и основание, и высота считаются клетками, а площадь даёт формула S = a·h/2.',
+  law:'Площадь треугольника — половина произведения основания на высоту.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён треугольник. Найдите его площадь.',
+  calc:p=>p[0]*p[1]/2,
+  proto:[6,3,2],
+  gen(){const b=rnd(4,10),h=rnd(3,8);return [b,h,rnd(0,b)];},
+  fig(p,aux){const[b,h,bx]=p,W=b+2,H=h+2,f=CF(W,H);
+    const A=[1,1],C=[1+b,1],B=[1+bx,1+h];
+    f.poly([A,B,C]);
+    if(aux){f.seg(B[0],B[1],B[0],1,{c:AUX,w:2,d:'6 5'});
+      if(bx>0&&bx<b)f.rightSq(B[0],1,1,0,0,1);
+      f.lab(B[0],(1+B[1])/2+.5,'h',8,4,{c:AUX});}
+    f.node(A[0],A[1],'A');f.node(C[0],C[1],'C');f.node(B[0],B[1],'B');
+    f.chk.push({t:'ans',v:Math.abs((C[0]-A[0])*(B[1]-A[1])-(C[1]-A[1])*(B[0]-A[0]))/2});
+    return f;},
+  sol(p){const[b,h]=p;return[
+    'Основание лежит на линии сетки: a = '+b+' клеток. Высота к нему — вертикаль от верхней вершины: h = '+h+'.',
+    'S = '+frac('a · h','2')+' = '+frac(b+' · '+h,'2')+' = '+frac(String(b*h),'2')+' = '+fmt(b*h/2)+'.'];},
+  diag(p){const[b,h]=p;return[
+    {v:b*h,m:'Вы забыли разделить на 2: это площадь ПРЯМОУГОЛЬНИКА со сторонами '+b+' и '+h+'. Треугольник — его половина.'},
+    {v:b+h,m:'Вы сложили основание и высоту. Площадь — половина их ПРОИЗВЕДЕНИЯ.'}];}
+};
+
+SUBS.areaPar={topic:'area',name:'Площадь параллелограмма',ref:'spar',
+  refWhy:'Основание — по линии сетки, высота — вертикаль между основаниями, обе считаются клетками. Наклонная сторона в формуле не участвует.',
+  law:'Площадь параллелограмма = основание × высота. Наклонная сторона — не высота!',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён параллелограмм. Найдите его площадь.',
+  calc:p=>p[0]*p[1],
+  proto:[7,4,3],
+  gen(){const a=rnd(4,9),h=rnd(2,6),s=rnd(1,Math.min(4,11-a));return [a,h,s];},
+  fig(p,aux){const[a,h,s]=p,W=a+s+2,H=h+2,f=CF(W,H);
+    const A=[1,1],B=[1+a,1],C=[1+a+s,1+h],D=[1+s,1+h];
+    f.poly([A,B,C,D]);
+    if(aux){f.seg(D[0],D[1],D[0],1,{c:AUX,w:2,d:'6 5'});f.rightSq(D[0],1,1,0,0,1);
+      f.lab(D[0],(1+D[1])/2+.5,'h',8,4,{c:AUX});}
+    [A,B,C,D].forEach((v,i)=>f.node(v[0],v[1],'ABCD'[i]));
+    f.parallel(A,B,D,C,true);f.parallel(A,D,B,C,true);
+    f.chk.push({t:'ans',v:Math.abs((B[0]-A[0])*(D[1]-A[1])-(B[1]-A[1])*(D[0]-A[0]))});
+    return f;},
+  sol(p){const[a,h,s]=p;return[
+    'Основание по линии сетки: a = '+a+'. Высота — вертикальное расстояние между основаниями: h = '+h+'.',
+    'S = a · h = '+a+' · '+h+' = '+(a*h)+'.'];},
+  diag(p){const[a,h,s]=p,side=Math.hypot(s,h);const out=[
+    {v:a*h/2,m:'Вы разделили на 2, как для треугольника. Параллелограмм — целый: S = a·h.'}];
+    if(Number.isInteger(side))out.push({v:a*side,m:'Вы умножили на наклонную боковую сторону ('+fmt(side)+'). Высота — это ПЕРПЕНДИКУЛЯР между основаниями: h = '+h+'.'});
+    out.push({v:2*(a+h),m:'Похоже на периметр прямоугольника. Площадь параллелограмма — произведение основания на высоту.'});
+    return out;}
+};
+
+SUBS.areaRhomb={topic:'area',name:'Площадь ромба',ref:'srhomb',
+  refWhy:'Диагонали ромба идут по линиям сетки и считаются клетками — площадь даёт формула S = d₁·d₂/2, без высот и углов.',
+  law:'Площадь ромба — половина произведения диагоналей.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён ромб. Найдите его площадь.',
+  calc:p=>2*p[0]*p[1],
+  proto:[3,2],
+  gen(){let p=rnd(2,6),q=rnd(1,4);if(p===q)q=p-1||2;return [p,q];},
+  fig(p,aux){return rhombFig(p,aux,'area');},
+  sol(p){const[hp,hq]=p,d1=2*hp,d2=2*hq;return[
+    'Диагонали ромба идут по линиям сетки: d₁ = '+d1+', d₂ = '+d2+'.',
+    'S = '+frac('d₁ · d₂','2')+' = '+frac(d1+' · '+d2,'2')+' = '+frac(String(d1*d2),'2')+' = '+(2*hp*hq)+'.'];},
+  diag(p){const[hp,hq]=p,d1=2*hp,d2=2*hq;return[
+    {v:d1*d2,m:'Вы забыли разделить на 2: это площадь прямоугольника, описанного около ромба. Ромб — его половина.'},
+    {v:(d1+d2)/2,m:'Это полусумма диагоналей — так считают среднюю линию трапеции. Для площади ромба диагонали ПЕРЕМНОЖАЮТ и делят на 2.'},
+    {v:hp*hq,m:'Вы взяли ПОЛОВИНЫ диагоналей. В формулу идут целые диагонали: d₁ = '+d1+', d₂ = '+d2+'.'}];}
+};
+
+SUBS.areaTrap={topic:'area',name:'Площадь трапеции',ref:'strap',
+  refWhy:'Оба основания и высота считаются клетками — формула S = (a+b)/2·h собирает их в одну строчку.',
+  law:'Площадь трапеции — полусумма оснований, умноженная на высоту.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображена трапеция. Найдите её площадь.',
+  calc:p=>(p[0]+p[1])*p[2]/2,
+  proto:[6,4,4,1],
+  gen(){const a=rnd(5,10),b=rnd(2,a-2),s=rnd(0,a-b);if(s===0&&s+b===a)return this.gen();return [a,b,rnd(3,6),s];},
+  fig(p,aux){const[a,b,h,s]=p,W=a+2,H=h+2,f=CF(W,H);
+    const A=[1,1],D=[1+a,1],B=[1+s,1+h],C=[1+s+b,1+h];
+    f.poly([A,B,C,D]);
+    if(aux){const hx=Math.max(B[0],A[0]+1);f.seg(hx,1+h,hx,1,{c:AUX,w:2,d:'6 5'});f.rightSq(hx,1,1,0,0,1);
+      f.lab(hx,(2+h)/2+.4,'h',7,4,{c:AUX});}
+    [A,B,C,D].forEach((v,i)=>f.node(v[0],v[1],'ABCD'[i]));
+    f.parallel(B,C,A,D,true);
+    f.parallel(A,B,D,C,false);
+    f.chk.push({t:'ans',v:((D[0]-A[0])+(C[0]-B[0]))*h/2});
+    return f;},
+  sol(p){const[a,b,h]=p;return[
+    'Основания по линиям сетки: a = '+a+', b = '+b+'. Высота между ними: h = '+h+'.',
+    'S = '+frac('a + b','2')+' · h = '+frac(a+' + '+b,'2')+' · '+h+' = '+fmt((a+b)/2)+' · '+h+' = '+fmt((a+b)*h/2)+'.'];},
+  diag(p){const[a,b,h]=p;return[
+    {v:(a+b)*h,m:'Вы забыли разделить на 2. Формула: ПОЛУсумма оснований на высоту.'},
+    {v:a*h,m:'Вы взяли только нижнее основание, как у параллелограмма. У трапеции основания разные — берём их полусумму.'},
+    {v:(a+b)/2,m:'Это средняя линия трапеции. Для площади её ещё нужно умножить на высоту h = '+h+'.'}];}
+};
+
+SUBS.areaFig={topic:'area',name:'Площадь фигуры по клеткам',ref:'cells',
+  refWhy:'Фигура идёт по линиям сетки — её площадь собирается из целых клеток, без всяких формул. Главное — аккуратно разрезать.',
+  law:'Фигуру по линиям сетки режем на прямоугольники — площадь равна числу клеток внутри.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображена фигура. Найдите её площадь.',
+  calc(p){let s=0;const v=p.pts;for(let i=0;i<v.length;i++){const a=v[i],b=v[(i+1)%v.length];s+=a[0]*b[1]-b[0]*a[1];}return Math.abs(s)/2;},
+  proto:{pts:[[1,1],[1,4],[3,4],[3,5],[5,5],[5,2],[4,2],[4,1]]},
+  gen(){
+    for(let i=0;i<200;i++){
+      const w=rnd(4,7),h=rnd(3,6);
+      const c1w=rnd(1,w-2),c1h=rnd(1,h-2),c2w=rnd(1,w-c1w-1),c2h=rnd(1,h-2);
+      // прямоугольник с вырезанными углами (левый верхний и правый нижний)
+      const pts=[[1,1+c2h],[1,1+h],[1+w-c1w,1+h],[1+w-c1w,1+h-c1h],[1+w,1+h-c1h],[1+w,1],[1+c2w,1],[1+c2w,1+c2h]];
+      const area=w*h-c1w*c1h-c2w*c2h;
+      if(area<6||area>40)continue;
+      return {pts};}
+    return this.proto;},
+  fig(p,aux){const v=p.pts;const W=Math.max(...v.map(q=>q[0]))+1,H=Math.max(...v.map(q=>q[1]))+1,f=CF(W,H);
+    f.poly(v,{f:'rgba(45,112,179,.14)'});
+    v.forEach((q,i)=>{f.node(q[0],q[1],'p'+i);});
+    let s=0;for(let i=0;i<v.length;i++){const a=v[i],b=v[(i+1)%v.length];s+=a[0]*b[1]-b[0]*a[1];
+      f.chk.push({t:'recti',v:(a[0]===b[0]||a[1]===b[1])?0:1});}
+    f.chk.push({t:'ans',v:Math.abs(s)/2});
+    return f;},
+  sol(p){const S=this.calc(p);return[
+    'Все стороны фигуры идут по линиям сетки — площадь можно собрать из целых клеток.',
+    'Удобно дополнить фигуру до большого прямоугольника и вычесть вырезанные прямоугольные куски.',
+    'Пересчитав клетки: S = '+fmt(S)+'.'];},
+  diag(p){const S=this.calc(p);const v=p.pts;let per=0;for(let i=0;i<v.length;i++){const a=v[i],b=v[(i+1)%v.length];per+=Math.abs(a[0]-b[0])+Math.abs(a[1]-b[1]);}
+    return[{v:per,m:'Похоже, вы посчитали ПЕРИМЕТР — длину границы. Площадь — это число клеток ВНУТРИ фигуры.'},
+      {v:S+1,m:'Почти! Проверьте края: какая-то клетка посчитана дважды или пропущена. Пересчитайте по рядам.'},
+      {v:S-1,m:'Почти! Одна клетка потерялась. Пересчитайте фигуру по рядам, ряд за рядом.'}];}
+};
+
+/* ===== ОТНОШЕНИЯ ===== */
+SUBS.tanA={topic:'rel',name:'Тангенс угла',ref:'tan',
+  refWhy:'Угол AOB опирается на сетку: достроив прямоугольный треугольник по клеткам, получаем тангенс как отношение катетов — измерять транспортиром не нужно.',
+  law:'Тангенс угла на клетках = вертикальный катет / горизонтальный катет достроенного прямоугольного треугольника.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён угол AOB. Найдите тангенс этого угла.',
+  calc:p=>p[0]/p[1],
+  proto:[4,2],
+  /* ответ ОГЭ — конечная десятичная дробь: при горизонтальном катете 3 вертикальный кратен 3 */
+  gen(){for(;;){const q=rnd(2,6),pp=rnd(1,4);if(pp!==3||q%3===0)return [q,pp];}},
+  fig(p,aux){const[q,pp]=p,W=Math.max(pp+2,6),H=q+2,f=CF(W,H);
+    const O=[1,1],A=[W-1,1],B=[1+pp,1+q];
+    f.seg(O[0],O[1],A[0],A[1],{w:2.6});
+    f.seg(O[0],O[1],B[0],B[1],{w:2.6});
+    f.dot(O[0],O[1]);f.dot(B[0],B[1]);
+    f.lab(O[0],O[1],'O',-14,18);f.lab(A[0],A[1],'A',4,18);f.lab(B[0],B[1],'B',6,-6);
+    f.arc(O[0],O[1],1.1,0,Math.atan2(q,pp));
+    if(aux){f.seg(B[0],B[1],B[0],1,{c:AUX,w:2,d:'6 5'});f.rightSq(B[0],1,-1,0,0,1);
+      f.lab(B[0],(1+B[1])/2+.4,String(q),8,4,{c:AUX});f.lab((O[0]+B[0])/2,1,String(pp),-4,20,{c:AUX});}
+    f.node(O[0],O[1],'O');f.node(B[0],B[1],'B');
+    f.chk.push({t:'ans',v:(B[1]-O[1])/(B[0]-O[0])});
+    f.chk.push({t:'acute',v:(B[0]-O[0])>0?0:1});
+    return f;},
+  sol(p){const[q,pp]=p;return[
+    'Достроим прямоугольный треугольник: из точки B проведём перпендикуляр к лучу OA — по линии сетки.',
+    'Катеты по клеткам: противолежащий углу O — вертикальный, '+q+'; прилежащий — горизонтальный, '+pp+'.',
+    'tg∠AOB = '+frac('противолежащий','прилежащий')+' = '+frac(String(q),String(pp))+' = '+fmt(q/pp)+'.'];},
+  diag(p){const[q,pp]=p;return[
+    {v:pp/q,m:'Дробь перевёрнута: тангенс = ПРОТИВОЛЕЖАЩИЙ катет ('+q+') делить на ПРИЛЕЖАЩИЙ ('+pp+').'},
+    {v:q,m:'Это только вертикальный катет. Тангенс — ОТНОШЕНИЕ катетов: '+q+'/'+pp+'.'}];}
+};
+
+SUBS.segAB={topic:'rel',name:'Отрезок по данным чертежа (подобие)',ref:'sim',
+  refWhy:'Линия сетки параллельна основанию, и по расширенной теореме Фалеса она отсекает подобный треугольник: AB равен основанию, умноженному на коэффициент подобия (H−h)/H, который считывается по клеткам.',
+  law:'Расширенная (обобщённая) теорема Фалеса — о пропорциональных отрезках: параллельные прямые, пересекающие стороны угла, отсекают на них пропорциональные отрезки. Прямая, параллельная стороне треугольника, делит две другие стороны пропорционально и отсекает подобный треугольник. Здесь линия сетки ∥ CD, поэтому AB = CD · (H − h)/H.',
+  note:'Способ рассуждения здесь — <b>расширенная (обобщённая) теорема Фалеса</b> (теорема о пропорциональных отрезках). В явном виде она отсутствует в курсе Атанасяна — там тот же результат получают через подобие треугольников, — но присутствует в учебнике Мерзляка. На справочном листе ОГЭ её тоже нет, поэтому тип вынесен в блок «чего на листе нет».',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён треугольник с отмеченным отрезком AB. Найдите длину AB.',
+  calc:p=>p[0]*(p[1]-p[2])/p[1],
+  proto:[4,4,3,2],
+  gen(){
+    for(let i=0;i<200;i++){
+      const H=pick([4,4,4,6,8]),h=rnd(1,H-1),d=rnd(3,10),px=rnd(1,d-1);
+      const ab=d*(H-h)/H;
+      if(!(ab*2===Math.round(ab*2)))continue; // ответ до половинок
+      if(ab<1||ab===d)continue;
+      if(d>12)continue;
+      return [d,H,h,px];}
+    return this.proto.slice();},
+  fig(p,aux){const[d,H0,h,px]=p,W=d+2,H=H0+2,f=CF(W,H);
+    const C=[1,1],D=[1+d,1],P=[1+px,1+H0];
+    const A=[C[0]+(P[0]-C[0])*h/H0,1+h],B=[D[0]+(P[0]-D[0])*h/H0,1+h];
+    f.poly([C,P,D]);
+    f.seg(A[0],A[1],B[0],B[1],{c:BLUE,w:3.2});
+    f.dot(A[0],A[1],{c:BLUE,r:3.6});f.dot(B[0],B[1],{c:BLUE,r:3.6});
+    f.lab(A[0],A[1],'A',-16,-6,{c:BLUE});f.lab(B[0],B[1],'B',7,-6,{c:BLUE});
+    f.lab(C[0],C[1],'C',-14,18);f.lab(D[0],D[1],'D',6,18);
+    if(aux){f.seg(P[0],P[1],P[0],1,{c:AUX,w:1.8,d:'5 5'});}
+    f.node(C[0],C[1],'C');f.node(D[0],D[1],'D');f.node(P[0],P[1],'P');
+    f.parallel(A,B,C,D,true);
+    f.chk.push({t:'onside',v:Math.abs((A[1]-C[1])*(P[0]-C[0])-(A[0]-C[0])*(P[1]-C[1]))});
+    f.chk.push({t:'ans',v:B[0]-A[0]});
+    return f;},
+  sol(p){const[d,H0,h]=p,k=(H0-h)/H0;return[
+    'Основание CD считаем по клеткам: CD = '+d+'. Высота треугольника H = '+H0+', отрезок AB проходит на высоте '+h+' — значит, до вершины остаётся '+(H0-h)+'.',
+    'AB ∥ CD, поэтому по расширенной теореме Фалеса маленький треугольник над AB подобен всему треугольнику с коэффициентом k = '+frac(String(H0-h),String(H0))+' = '+fmt(k)+'.',
+    'AB = CD · k = '+d+' · '+fmt(k)+' = '+fmt(d*k)+'.'];},
+  diag(p){const[d,H0,h]=p;return[
+    {v:d*h/H0,m:'Вы взяли коэффициент h/H — это доля высоты СНИЗУ. Маленький треугольник над AB отсекается СВЕРХУ: k = (H − h)/H = '+(H0-h)+'/'+H0+'.'},
+    {v:d,m:'Это основание CD целиком. Отрезок AB короче: он получается из CD умножением на коэффициент подобия.'},
+    {v:d-h,m:'Из длины вычли высоту — так подобие не работает: длины УМНОЖАЮТСЯ на коэффициент, а не уменьшаются на клетки.'}];}
+};
+
+SUBS.segCmp={topic:'rel',name:'Во сколько раз длиннее',ref:'pyth',
+  refWhy:'Оба отрезка лежат на одной линии сетки — их длины считаются клетками, а «во сколько раз» — это простое деление длин.',
+  law:'«Во сколько раз длиннее» = отношение длин. Оба отрезка считаем клетками по одной линии.',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображён треугольник ABC, точка M лежит на стороне AC. Во сколько раз отрезок MC длиннее отрезка AM?',
+  calc:p=>p[1]/p[0],
+  proto:[1,3],
+  gen(){const am=rnd(1,4);const k=pick([1.5,2,2,3,3,4]);const mc=am*k;
+    if(!Number.isInteger(mc)||am+mc>11)return this.gen();return [am,mc];},
+  fig(p,aux){const[am,mc]=p,ac=am+mc,h=Math.min(5,Math.max(3,Math.round(ac/2)));
+    const W=ac+2,H=h+2,f=CF(W,H);
+    const A=[1,1],C=[1+ac,1],B=[1+Math.round(ac*.4),1+h],M=[1+am,1];
+    f.poly([A,B,C]);
+    f.dot(M[0],M[1],{c:AUX,r:4});
+    f.lab(A[0],A[1],'A',-14,18);f.lab(C[0],C[1],'C',6,18);f.lab(B[0],B[1],'B',-4,-9);f.lab(M[0],M[1],'M',-5,20,{c:AUX});
+    if(aux){f.seg(A[0],A[1],M[0],M[1],{c:BLUE,w:4});f.seg(M[0],M[1],C[0],C[1],{c:AUX,w:4});}
+    f.node(A[0],A[1],'A');f.node(C[0],C[1],'C');f.node(M[0],M[1],'M');
+    f.chk.push({t:'ans',v:(C[0]-M[0])/(M[0]-A[0])});
+    return f;},
+  sol(p){const[am,mc]=p;return[
+    'Оба отрезка лежат на стороне AC вдоль линии сетки. Считаем клетки: AM = '+am+', MC = '+mc+'.',
+    '«Во сколько раз длиннее» — это отношение: '+frac('MC','AM')+' = '+frac(String(mc),String(am))+' = '+fmt(mc/am)+'.'];},
+  diag(p){const[am,mc]=p;return[
+    {v:mc-am,m:'Вы нашли, НА СКОЛЬКО клеток MC длиннее. А спрашивают, ВО СКОЛЬКО РАЗ — нужно деление, а не вычитание.'},
+    {v:mc/(am+mc),m:'Вы разделили на всю сторону AC. Сравнивают два отрезка между собой: MC/AM.'},
+    {v:am/mc,m:'Дробь перевёрнута: MC длиннее, значит отношение MC/AM больше 1.'}];}
+};
+
+SUBS.circRatio={topic:'rel',name:'Отношение площадей кругов',ref:'circ',
+  refWhy:'Радиусы считываются по клеткам (иногда через Пифагора — по диагонали клеток), а отношение площадей — это КВАДРАТ отношения радиусов: π сокращается.',
+  law:'Отношение площадей кругов равно квадрату отношения радиусов: S₁/S₂ = (R₁/R₂)².',
+  text:()=>'На клетчатой бумаге с размером клетки 1×1 изображены два круга. Во сколько раз площадь большего круга больше площади меньшего?',
+  calc:p=>p[1]/p[0],
+  proto:[1,9],
+  gen(){const pairs=[[1,4],[1,9],[1,16],[4,9],[1,2],[2,4],[1,5],[2,5],[4,5],[2,9],[1,8],[5,9],[1,10],[5,16],[4,16]];
+    return pick(pairs).slice();},
+  fig(p,aux){const[rsq,Rsq]=p;
+    const dec=n=>{for(let a=Math.floor(Math.sqrt(n));a>=0;a--){const b2=n-a*a,b=Math.round(Math.sqrt(b2));if(b*b===b2)return [a,b];}return null;};
+    const r=Math.sqrt(rsq),R=Math.sqrt(Rsq);
+    const rv=dec(rsq),Rv=dec(Rsq);
+    const cw=Math.ceil(r),CW=Math.ceil(R);
+    const W=cw*2+CW*2+3,H=CW*2+2,f=CF(W,H);
+    const c1=[1+cw,1+CW],c2=[cw*2+2+CW,1+CW];
+    f.circle(c1[0],c1[1],r);f.circle(c2[0],c2[1],R,{f:'rgba(217,151,6,.08)'});
+    f.seg(c1[0],c1[1],c1[0]+rv[1],c1[1]+rv[0],{c:BLUE,w:2.4});
+    f.seg(c2[0],c2[1],c2[0]+Rv[1],c2[1]+Rv[0],{c:AUX,w:2.4});
+    f.dot(c1[0],c1[1],{r:3});f.dot(c2[0],c2[1],{r:3});
+    f.lab(c1[0]+rv[1]/2,c1[1]+rv[0]/2,'r',2,-6,{c:BLUE});
+    f.lab(c2[0]+Rv[1]/2,c2[1]+Rv[0]/2,'R',2,-6,{c:AUX});
+    f.node(c1[0],c1[1],'c1');f.node(c2[0],c2[1],'c2');
+    f.node(c1[0]+rv[1],c1[1]+rv[0],'re');f.node(c2[0]+Rv[1],c2[1]+Rv[0],'Re');
+    f.chk.push({t:'onCircle',v:Math.abs(Math.hypot(rv[0],rv[1])-r)});
+    f.chk.push({t:'onCircle',v:Math.abs(Math.hypot(Rv[0],Rv[1])-R)});
+    f.chk.push({t:'ans',v:(R*R)/(r*r)});
+    return f;},
+  sol(p){const[rsq,Rsq]=p,r=Math.sqrt(rsq),R=Math.sqrt(Rsq);
+    const rt=Number.isInteger(r)?'r = '+fmt(r)+' (считаем клетки по радиусу)':'r² = '+rsq+' (радиус идёт по диагонали клеток: r² считаем по Пифагору)';
+    const Rt=Number.isInteger(R)?'R = '+fmt(R)+' (считаем клетки)':'R² = '+Rsq+' (по Пифагору через клетки)';
+    return[
+    'Считываем радиусы: у меньшего круга '+rt+'; у большего '+Rt+'.',
+    'Отношение площадей — квадрат отношения радиусов: '+frac('S₁','S₂')+' = '+frac('πR²','πr²')+' = '+frac('R²','r²')+'.',
+    frac('R²','r²')+' = '+frac(String(Rsq),String(rsq))+' = '+fmt(Rsq/rsq)+'.'];},
+  diag(p){const[rsq,Rsq]=p,r=Math.sqrt(rsq),R=Math.sqrt(Rsq);const out=[];
+    const ratio=R/r;
+    if(near(ratio*4,Math.round(ratio*4),1e-9)&&Math.abs(ratio-Rsq/rsq)>1e-9)out.push({v:ratio,m:'Это отношение РАДИУСОВ. Площади растут как квадрат: (R/r)² = '+fmt(Rsq/rsq)+'.'});
+    out.push({v:Rsq-rsq,m:'Вы вычли квадраты радиусов — так считают площадь кольца (в долях π). А спрашивают, во сколько РАЗ больше: нужно деление R²/r².'});
+    return out;}
+};
+
+const SUBKEYS=Object.keys(SUBS);
+/* Банк готовых задач с проверенными эталонами; id — внутренний технический индекс, не связан с какими-либо источниками */
+const ARCHIVE=[
+{id:1,sub:"areaRhomb",p:[3,2],exp:12},
+{id:2,sub:"areaRhomb",p:[5,1],exp:10},
+{id:3,sub:"areaRhomb",p:[4,3],exp:24},
+{id:4,sub:"areaRhomb",p:[5,3],exp:30},
+{id:5,sub:"areaRhomb",p:[4,2],exp:16},
+{id:6,sub:"areaRhomb",p:[6,3],exp:36},
+{id:7,sub:"areaRhomb",p:[5,2],exp:20},
+{id:8,sub:"areaRhomb",p:[6,2],exp:24},
+{id:9,sub:"areaRhomb",p:[6,1],exp:12},
+{id:10,sub:"areaRhomb",p:[4,1],exp:8},
+{id:11,sub:"midTri",p:[6,2,5],exp:3},
+{id:12,sub:"midTri",p:[10,3,6],exp:5},
+{id:13,sub:"midTri",p:[4,1,4],exp:2},
+{id:14,sub:"midTri",p:[8,3,5],exp:4},
+{id:15,sub:"midTri",p:[8,2,6],exp:4},
+{id:16,sub:"midTri",p:[4,3,5],exp:2},
+{id:17,sub:"midTri",p:[6,4,6],exp:3},
+{id:18,sub:"midTri",p:[10,4,5],exp:5},
+{id:19,sub:"midTri",p:[6,1,6],exp:3},
+{id:20,sub:"midTri",p:[8,5,5],exp:4},
+{id:21,sub:"leg",p:[4,6,0],exp:6},
+{id:22,sub:"leg",p:[5,8,1],exp:8},
+{id:23,sub:"leg",p:[3,7,2],exp:7},
+{id:24,sub:"leg",p:[6,8,3],exp:8},
+{id:25,sub:"leg",p:[3,4,0],exp:4},
+{id:26,sub:"leg",p:[5,9,1],exp:9},
+{id:27,sub:"leg",p:[2,5,2],exp:5},
+{id:28,sub:"leg",p:[4,7,3],exp:7},
+{id:29,sub:"leg",p:[6,9,0],exp:9},
+{id:30,sub:"leg",p:[7,10,1],exp:10},
+{id:31,sub:"midTrap",p:[5,3,3,1],exp:4},
+{id:32,sub:"midTrap",p:[10,6,4,2],exp:8},
+{id:33,sub:"midTrap",p:[8,4,3,1],exp:6},
+{id:34,sub:"midTrap",p:[7,5,4,1],exp:6},
+{id:35,sub:"midTrap",p:[6,4,3,1],exp:5},
+{id:36,sub:"midTrap",p:[7,3,4,2],exp:5},
+{id:37,sub:"midTrap",p:[4,2,3,1],exp:3},
+{id:38,sub:"midTrap",p:[6,2,4,2],exp:4},
+{id:39,sub:"midTrap",p:[8,2,3,3],exp:5},
+{id:40,sub:"midTrap",p:[9,3,4,2],exp:6},
+{id:41,sub:"rhombDiag",p:[5,2],exp:10},
+{id:42,sub:"rhombDiag",p:[3,2],exp:6},
+{id:43,sub:"rhombDiag",p:[4,2],exp:8},
+{id:44,sub:"rhombDiag",p:[6,2],exp:12},
+{id:45,sub:"rhombDiag",p:[4,3],exp:8},
+{id:46,sub:"rhombDiag",p:[6,3],exp:12},
+{id:47,sub:"rhombDiag",p:[4,1],exp:8},
+{id:48,sub:"rhombDiag",p:[5,3],exp:10},
+{id:49,sub:"rhombDiag",p:[5,4],exp:10},
+{id:50,sub:"rhombDiag",p:[6,4],exp:12},
+{id:51,sub:"areaTri",p:[6,3,2],exp:9},
+{id:52,sub:"areaTri",p:[8,5,3],exp:20},
+{id:53,sub:"areaTri",p:[6,4,1],exp:12},
+{id:54,sub:"areaTri",p:[6,5,4],exp:15},
+{id:55,sub:"areaTri",p:[10,5,3],exp:25},
+{id:56,sub:"areaTri",p:[9,8,4],exp:36},
+{id:57,sub:"areaTri",p:[5,4,2],exp:10},
+{id:58,sub:"areaTri",p:[7,6,3],exp:21},
+{id:59,sub:"areaTri",p:[4,3,1],exp:6},
+{id:60,sub:"areaTri",p:[8,7,5],exp:28},
+{id:61,sub:"areaTrap",p:[6,4,4,1],exp:20},
+{id:62,sub:"areaTrap",p:[8,6,6,1],exp:42},
+{id:63,sub:"areaTrap",p:[7,2,4,2],exp:18},
+{id:64,sub:"areaTrap",p:[4,3,4,0],exp:14},
+{id:65,sub:"areaTrap",p:[8,6,4,1],exp:28},
+{id:66,sub:"areaTrap",p:[6,4,5,1],exp:25},
+{id:67,sub:"areaTrap",p:[8,6,5,1],exp:35},
+{id:68,sub:"areaTrap",p:[9,5,4,2],exp:28},
+{id:69,sub:"areaTrap",p:[7,5,6,1],exp:36},
+{id:70,sub:"areaTrap",p:[5,3,3,1],exp:12},
+{id:71,sub:"areaPar",p:[7,4,3],exp:28},
+{id:72,sub:"areaPar",p:[5,2,2],exp:10},
+{id:73,sub:"areaPar",p:[5,4,3],exp:20},
+{id:74,sub:"areaPar",p:[6,3,4],exp:18},
+{id:75,sub:"areaPar",p:[9,4,3],exp:36},
+{id:76,sub:"areaPar",p:[7,3,4],exp:21},
+{id:77,sub:"areaPar",p:[7,5,2],exp:35},
+{id:78,sub:"areaPar",p:[7,2,3],exp:14},
+{id:79,sub:"areaPar",p:[6,5,2],exp:30},
+{id:80,sub:"areaPar",p:[7,6,2],exp:42},
+{id:81,sub:"segAB",p:[4,4,3,2],exp:1},
+{id:82,sub:"segAB",p:[3,4,2,1],exp:1.5},
+{id:83,sub:"segAB",p:[5,4,2,2],exp:2.5},
+{id:84,sub:"segAB",p:[4,4,1,2],exp:3},
+{id:85,sub:"segAB",p:[6,4,3,3],exp:1.5},
+{id:86,sub:"segAB",p:[10,4,2,4],exp:5},
+{id:87,sub:"segAB",p:[10,4,3,5],exp:2.5},
+{id:88,sub:"segAB",p:[6,4,1,3],exp:4.5},
+{id:89,sub:"segAB",p:[4,8,5,2],exp:1.5},
+{id:90,sub:"segAB",p:[6,6,2,3],exp:4},
+{id:91,sub:"segCmp",p:[1,3],exp:3},
+{id:92,sub:"segCmp",p:[1,4],exp:4},
+{id:93,sub:"segCmp",p:[2,6],exp:3},
+{id:94,sub:"segCmp",p:[2,4],exp:2},
+{id:95,sub:"segCmp",p:[2,8],exp:4},
+{id:96,sub:"segCmp",p:[3,6],exp:2},
+{id:97,sub:"segCmp",p:[2,3],exp:1.5},
+{id:98,sub:"segCmp",p:[4,6],exp:1.5},
+{id:99,sub:"circRatio",p:[1,9],exp:9},
+{id:100,sub:"circRatio",p:[4,5],exp:1.25},
+{id:101,sub:"circRatio",p:[1,4],exp:4},
+{id:102,sub:"circRatio",p:[2,8],exp:4},
+{id:103,sub:"circRatio",p:[1,16],exp:16},
+{id:104,sub:"circRatio",p:[4,5],exp:1.25},
+{id:105,sub:"circRatio",p:[1,2],exp:2},
+{id:106,sub:"circRatio",p:[2,9],exp:4.5},
+{id:107,sub:"circRatio",p:[5,16],exp:3.2},
+{id:108,sub:"circRatio",p:[1,10],exp:10},
+{id:109,sub:"circRatio",p:[1,8],exp:8},
+{id:110,sub:"circRatio",p:[2,4],exp:2},
+{id:111,sub:"circRatio",p:[1,5],exp:5},
+{id:112,sub:"circRatio",p:[2,5],exp:2.5},
+{id:113,sub:"circRatio",p:[5,9],exp:1.8},
+{id:114,sub:"dist",p:[12,5,0],exp:13},
+{id:115,sub:"dist",p:[8,6,0],exp:10},
+{id:116,sub:"dist",p:[6,8,0],exp:10},
+{id:117,sub:"dist",p:[8,6,1],exp:10},
+{id:118,sub:"dist",p:[5,12,1],exp:13},
+{id:119,sub:"dist",p:[4,3,0],exp:5},
+{id:120,sub:"dist",p:[3,4,1],exp:5},
+{id:121,sub:"dist",p:[6,8,1],exp:10},
+{id:122,sub:"dist",p:[4,3,1],exp:5},
+{id:123,sub:"dist",p:[12,5,1],exp:13}
+];
+/*__SHEET_MAP_START__*/
+/* Лист справочных материалов ОГЭ по математике, раздел «Геометрия», — текстом,
+   без сканов (решение F5 делегата владельца). Блок побайтно одинаков в
+   тренажёрах 16, 17, 18, 23, 24, 25; копии сверяет гейт
+   tools/oge-geometry-contract.test.mjs. Состав листа меняется по годам:
+   перед новым учебным годом сверить с демоверсией ФИПИ этого года. */
+const SHEET_MAP={
+  caption:'Лист справочных материалов ОГЭ, раздел «Геометрия», — по демоверсии ФИПИ 2026 (стр. 5–6). Состав листа меняется по годам: сверяйте с демоверсией своего года.',
+  items:[
+    {id:'polyAngles',t:'Сумма углов выпуклого n-угольника',f:'180°·(n − 2)'},
+    {id:'midline',t:'Средняя линия треугольника и трапеции',f:'треугольник: MN ∥ AC, MN = AC/2<br>трапеция (BC ∥ AD): MN ∥ AD, MN = (BC + AD)/2'},
+    {id:'eqTri',t:'Правильный треугольник: описанная и вписанная окружности',f:'R = a√3/3, &nbsp;r = a√3/6<br>h = a√3/2, &nbsp;S = a<sup>2</sup>√3/4'},
+    {id:'sinLaw',t:'Теорема синусов',f:'a/sin A = b/sin B = c/sin C = 2R,<br>R — радиус описанной окружности'},
+    {id:'cosLaw',t:'Теорема косинусов',f:'c<sup>2</sup> = a<sup>2</sup> + b<sup>2</sup> − 2ab·cos C'},
+    {id:'circle',t:'Длина окружности и площадь круга',f:'C = 2πr, &nbsp;S = πr<sup>2</sup>'},
+    {id:'sPar',t:'Площадь параллелограмма',f:'S = a·h<sub>a</sub>, &nbsp;S = ab·sin γ'},
+    {id:'sTri',t:'Площадь треугольника',f:'S = ½·a·h<sub>a</sub>, &nbsp;S = ½·ab·sin γ'},
+    {id:'sTrap',t:'Площадь трапеции',f:'S = (a + b)/2 · h'},
+    {id:'sRhomb',t:'Площадь ромба',f:'S = ½·d<sub>1</sub>·d<sub>2</sub>, d<sub>1</sub>, d<sub>2</sub> — диагонали'},
+    {id:'rightTri',t:'Прямоугольный треугольник',f:'sin α = a/c, &nbsp;cos α = b/c, &nbsp;tg α = a/b<br>(c — гипотенуза, a — катет против угла α)'},
+    {id:'pyth',t:'Теорема Пифагора',f:'a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup>'},
+    {id:'trigId',t:'Основное тригонометрическое тождество',f:'sin<sup>2</sup>α + cos<sup>2</sup>α = 1'},
+    {id:'trigTable',t:'Некоторые значения sin, cos, tg',f:'<div class="sm-tabwrap"><table class="sm-tab"><tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th><th>270°</th><th>360°</th></tr>'
+      +'<tr><th>sin α</th><td>0</td><td>1/2</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td><td>−1</td><td>0</td></tr>'
+      +'<tr><th>cos α</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1</td><td>0</td><td>1</td></tr>'
+      +'<tr><th>tg α</th><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>—</td><td>0</td><td>—</td><td>0</td></tr></table></div>'}
+  ]
+};
+const SHEET_MAP_CSS='.sm{margin:10px 0 14px}.sm-cap{font-size:13px;color:#555;margin:0 0 10px;line-height:1.45}'
+  +'.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}'
+  +'.sm-item{border:1px solid #d9d4c7;border-radius:10px;padding:10px 12px;background:#fff;font-size:14px;line-height:1.45;color:#1f2430;min-width:0}'
+  +'.sm-item.sm-used{border-color:#8fb3d9;background:#f5f9ff}.sm-item.sm-open{outline:3px solid #2d70b3;outline-offset:1px}'
+  +'.sm-t{font-weight:700;margin-bottom:4px}.sm-b{display:inline-block;min-width:22px;padding:0 6px;border-radius:11px;background:#2d70b3;color:#fff;font-size:12px;text-align:center}'
+  +'.sm-f{font-family:Georgia,"Times New Roman",serif;font-size:15px}.sm-na{font-size:12.5px;color:#6b6b6b;margin-top:6px}'
+  +'.sm-go{margin-top:8px;min-height:44px;padding:8px 12px;border-radius:9px;border:1px solid #2d70b3;background:#fff;color:#1d4f86;font:inherit;font-weight:600;cursor:pointer}'
+  +'.sm-go:focus-visible{outline:3px solid #f2b134;outline-offset:2px}.sm-tabwrap{overflow-x:auto;margin-top:4px}'
+  +'.sm-tab{border-collapse:collapse;font-size:13px;font-family:inherit}.sm-tab th,.sm-tab td{border:1px solid #cfc8b8;padding:3px 6px;text-align:center;white-space:nowrap;font-weight:400}'
+  +'.sm-tab th{background:#f3f0e8}@media (max-width:420px){.sm-grid{grid-template-columns:1fr}}@media print{.sm-go{display:none}}';
+/* Карта листа HTML-строкой. o.go(id) — атрибуты кнопки «задачи блока» или null
+   (блок в этом задании не нужен); o.label(id) — надпись кнопки; o.badge(id) —
+   число на значке; o.extra(id) — HTML под формулой (заметка, ссылки на типы);
+   o.open — id выделенного блока; o.unused — подпись блока, который не нужен
+   (пустая строка — без подписи). */
+function sheetMapHTML(o){
+  o=o||{};
+  try{
+    if(!document.getElementById('sm-css')){const st=document.createElement('style');st.id='sm-css';st.textContent=SHEET_MAP_CSS;document.head.appendChild(st);}
+  }catch(e){}
+  let h='<div class="sm"><p class="sm-cap">'+SHEET_MAP.caption+'</p><div class="sm-grid">';
+  SHEET_MAP.items.forEach(function(it){
+    const go=o.go?o.go(it.id):null, b=o.badge?o.badge(it.id):null, ex=o.extra?o.extra(it.id):'';
+    h+='<div class="sm-item'+(go||ex?' sm-used':'')+(o.open===it.id?' sm-open':'')+'" id="sm-'+it.id+'">'
+      +'<div class="sm-t">'+it.t+(b!=null&&b!==''?' <span class="sm-b">'+b+'</span>':'')+'</div>'
+      +'<div class="sm-f">'+it.f+'</div>'+(ex||'')
+      +(go?'<button type="button" class="sm-go" '+go+'>'+(o.label?o.label(it.id):'Задачи этого блока')+'</button>'
+        :(ex||o.unused===''?'':'<div class="sm-na">'+(o.unused||'в этом задании не встречается')+'</div>'))
+      +'</div>';
+  });
+  return h+'</div></div>';
+}
+/*__SHEET_MAP_END__*/
+/* ---------- Сборка задачи ---------- */
+/* ловушки одной задачи: те, что одно и то же число задевает одновременно,
+   сводятся в одну (решения F1 и Q2 делегата владельца): две разные ошибки —
+   одно объединённое сообщение «найдите свою», три и больше — честный общий текст */
+function trapPair(m1,m2){return 'Такой ответ получается при одной из двух ошибок — найдите свою:<br>• '+m1+'<br>• '+m2;}
+const TRAP_MANY='Не сходится. Это число получается при нескольких разных ошибках — загляните в «Подсказку» и сверьте решение по шагам.';
+function mergeTraps(list){
+  const up=list.map((_,i)=>i), top=i=>up[i]===i?i:(up[i]=top(up[i]));
+  for(let i=0;i<list.length;i++)for(let j=i+1;j<list.length;j++)
+    if(Math.abs(list[i].v-list[j].v)<=list[i].e+list[j].e)up[top(j)]=top(i);
+  const groups=new Map();
+  list.forEach((t,i)=>{const r=top(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(t);});
+  const out=[];let clash=false;
+  for(const g of groups.values()){
+    const ms=[...new Set(g.map(t=>t.m))];
+    if(ms.length===1){g.forEach(t=>out.push(t));continue;}
+    clash=true;
+    const m=ms.length===2?trapPair(ms[0],ms[1]):TRAP_MANY;
+    g.forEach(t=>out.push({v:t.v,e:t.e,m}));
+  }
+  out.clash=clash;
+  return out;
+}
+function build(k,p,meta){
+  const S=SUBS[k];
+  const ans=S.calc(p);
+  const f=S.fig(p,false),fa=S.fig(p,true);
+  const diag=mergeTraps((S.diag(p)||[]).filter(d=>d&&d.m&&isFinite(d.v)&&!near(d.v,ans,1e-6)).map(d=>({v:d.v,m:d.m,e:1e-6})));
+  const o={sub:k,p,ans,text:S.text(p),fig:f.svg(),figAux:fa.svg(),chk:f.chk.concat(fa.chk),sol:S.sol(p),diag,ref:S.ref,refWhy:S.refWhy};
+  if(meta)for(const key of Object.keys(meta))if(meta[key]!==undefined)o[key]=meta[key];
+  return o;
+}
+function archTask(rec){return build(rec.sub,rec.p,{id:rec.id,exp:rec.exp});}
+function genTask(k){return build(k,SUBS[k].gen(),{});}
+
+/* ---------- Хранилище и журнал ---------- */
+/* ключ mathExamCourseProgress.v1; старые поля записи (журнал событий, разборы,
+   показанные задачи банка) пишутся через CP.saveRec — со свежим чтением ключа;
+   ST — их копия для экрана */
+function loadST(){
+  const r=CP.readAll()[TID], o=CP.isObj(r)?r:{};
+  return {runs:CP.num(o.runs), best:CP.num(o.best), events:Array.isArray(o.events)?o.events.filter(CP.isObj):[],
+    razbor:CP.isObj(o.razbor)?o.razbor:{}, seenArch:CP.isObj(o.seenArch)?o.seenArch:{}};
+}
+CP.migrate(r=>CP.num(r.best));
+let ST=loadST();
+function upd(fn){CP.saveRec(fn);ST=loadST();}
+function logE(e){const ev=Object.assign({t:Date.now()},e);
+  upd(rec=>{rec.events=(Array.isArray(rec.events)?rec.events:[]).concat([ev]).slice(-300);});}
+function weakStats(){
+  const w={};
+  for(const e of ST.events){
+    if(e.e==='opt_wrong'||e.e==='quiz_wrong'||e.e==='hint'){const k=e.sub;if(k)w[k]=(w[k]||0)+1;}
+  }
+  return w;
+}
+
+/* ---------- Общий UI ---------- */
+const $=id=>document.getElementById(id);
+const main=$('main');
+let MODE='razbor';
+const TABS={razbor:$('tabRazbor'),train:$('tabTrain'),quiz:$('tabQuiz'),ref:$('tabRef')};
+function setMode(m,arg){
+  MODE=m;
+  for(const k of Object.keys(TABS))TABS[k].classList.toggle('on',k===m);
+  $('modeBadge').textContent={razbor:'Разбор',train:'Тренировка',quiz:'Зачёт',ref:'Справочник'}[m];
+  if(m==='razbor')renderRazbor(arg);
+  if(m==='train')renderTrain(arg);
+  if(m==='quiz')renderQuizStart();
+  if(m==='ref')renderRef(arg);
+  updHdr();
+}
+TABS.razbor.onclick=()=>setMode('razbor');
+TABS.train.onclick=()=>setMode('train');
+TABS.quiz.onclick=()=>setMode('quiz');
+TABS.ref.onclick=()=>setMode('ref');
+function updHdr(){
+  const done=Object.keys(ST.razbor).length;
+  $('hdrStat').textContent='Разобрано типов: '+done+' из '+SUBKEYS.length+(ST.best?' · зачёт: '+ST.best+'/10':'');
+}
+function solHtml(task){
+  return task.sol.map(s=>'<div class="step">'+s+'</div>').join('')+
+    '<div class="figwrap">'+task.figAux+'</div>';
+}
+function refJump(task){
+  return '<button class="link" data-act="ref" data-ref="'+task.ref+'">Почему формула «'+REF[task.ref].h+'»? →</button>';
+}
+
+/* ---------- РАЗБОР ---------- */
+let RZ=null;
+function renderRazbor(openKey){
+  if(openKey){renderRazborCard(openKey);return;}
+  const w=weakStats();
+  let html='<p class="small">Каждый тип — короткий разбор одной задачи по шагам: чертёж строится честно под числа задачи. В конце — правило и кнопка «Тренировать».</p>';
+  for(const t of Object.keys(TOPICS)){
+    html+='<div class="topic-h">'+TOPICS[t]+'</div><div class="grid2">';
+    for(const k of SUBKEYS.filter(k=>SUBS[k].topic===t)){
+      const cnt=ARCHIVE.filter(r=>r.sub===k).length;
+      html+='<div class="tcard" data-k="'+k+'"><h4>'+SUBS[k].name+(w[k]>=2?'<span class="weak">⚠ ошибок: '+w[k]+'</span>':'')+'</h4>'+
+        '<span class="cnt">'+(cnt?cnt+' готовых задач + генератор':'генератор')+'</span> '+
+        (ST.razbor[k]?'<span class="done">✓ разобрано</span>':'')+'</div>';
+    }
+    html+='</div>';
+  }
+  main.innerHTML=html;
+  main.querySelectorAll('.tcard').forEach(c=>c.onclick=()=>renderRazborCard(c.dataset.k));
+}
+function renderRazborCard(k){
+  const S=SUBS[k];
+  const rec=ARCHIVE.find(r=>r.sub===k);
+  const task=rec?archTask(rec):build(k,Array.isArray(S.proto)?S.proto.slice():S.proto,{});
+  RZ={k,task,step:0};
+  logE({e:'task_start',kind:'razbor',sub:k});
+  drawRazbor();
+}
+function drawRazbor(){
+  const {k,task,step}=RZ,S=SUBS[k];
+  let html='<button class="link" data-act="back">← Все типы</button>'+
+    '<div class="card"><h3>'+S.name+'</h3>'+
+    '<div class="task">'+task.text+'</div>'+
+    '<div class="figwrap">'+(step>=task.sol.length?task.figAux:task.fig)+'</div>';
+  for(let i=0;i<step&&i<task.sol.length;i++)html+='<div class="step">'+task.sol[i]+'</div>';
+  if(step<task.sol.length){
+    html+='<div class="row" style="margin-top:10px"><button class="act" data-act="next">'+(step===0?'Начать разбор':'Дальше')+' →</button></div>';
+  }else{
+    html+='<div class="msg ok on">Ответ: <b>'+fmt(task.ans)+'</b>.</div>'+
+      '<div class="law"><b>Правило.</b> '+S.law+'</div>'+
+      (S.note?'<div class="method"><b>Методическая пометка.</b> '+S.note+'</div>':'')+
+      '<div class="why"><b>Почему эта формула работает здесь.</b> '+task.refWhy+' '+refJump(task)+'</div>'+
+      '<div class="row" style="margin-top:12px"><button class="act" data-act="train">Тренировать этот тип →</button></div>';
+  }
+  html+='</div>';
+  main.innerHTML=html;
+  main.querySelector('[data-act="back"]').onclick=()=>renderRazbor();
+  const nx=main.querySelector('[data-act="next"]');
+  if(nx)nx.onclick=()=>{RZ.step++;if(RZ.step>=task.sol.length){upd(rec=>{rec.razbor=CP.isObj(rec.razbor)?rec.razbor:{};rec.razbor[k]=true;});logE({e:'solved',via:'razbor',sub:k});updHdr();}drawRazbor();};
+  const tr=main.querySelector('[data-act="train"]');
+  if(tr)tr.onclick=()=>setMode('train',{sub:k});
+  const rj=main.querySelector('[data-act="ref"]');
+  if(rj)rj.onclick=()=>setMode('ref',{blk:task.ref,from:'razbor',sub:k});
+}
+
+/* ---------- ТРЕНИРОВКА ---------- */
+let TR={topic:'all',sub:'all',task:null,hintUsed:false,exhausted:false,
+  done:false,missed:false,shown:false};   // done — задача закрыта; missed — промах записан; shown — показан результат шага или решение
+const REVIEW={on:CP.REVIEW, empty:false};  // ?mode=review: задачи только из открытых типов журнала
+function poolArch(){
+  return ARCHIVE.filter(r=>{
+    if(TR.sub!=='all')return r.sub===TR.sub;
+    if(TR.topic!=='all')return SUBS[r.sub].topic===TR.topic;
+    return true;});
+}
+function nextTrainTask(){
+  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false;
+  if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
+    const open=CP.openTypes().filter(k=>SUBS[k]);
+    if(open.length){TR.task=genTask(pick(open));TR.exhausted=false;logE({e:'task_start',kind:'review',sub:TR.task.sub});return;}
+    REVIEW.on=false; REVIEW.empty=true;
+  }
+  const pool=poolArch().filter(r=>!ST.seenArch[r.id]);
+  if(pool.length){const rec=pick(pool);upd(r0=>{r0.seenArch=CP.isObj(r0.seenArch)?r0.seenArch:{};r0.seenArch[rec.id]=true;});TR.task=archTask(rec);TR.exhausted=false;}
+  else{
+    const keys=TR.sub!=='all'?[TR.sub]:SUBKEYS.filter(k=>TR.topic==='all'||SUBS[k].topic===TR.topic);
+    const wasPool=poolArch().length>0;
+    TR.task=genTask(pick(keys));
+    TR.exhausted=wasPool&&!TR.exhaustedShown;
+    if(TR.exhausted)TR.exhaustedShown=true;
+  }
+  logE({e:'task_start',kind:'train',sub:TR.task.sub,id:TR.task.id});
+}
+function renderTrain(arg){
+  if(arg&&arg.sub){TR.sub=arg.sub;TR.topic='all';TR.exhaustedShown=false;}
+  if(!TR.task)nextTrainTask();
+  drawTrain();
+}
+function chipRow(){
+  let h='<div class="chips"><span class="chip'+(TR.topic==='all'&&TR.sub==='all'?' on':'')+'" data-t="all">Все темы</span>';
+  for(const t of Object.keys(TOPICS))h+='<span class="chip'+(TR.topic===t&&TR.sub==='all'?' on':'')+'" data-t="'+t+'">'+TOPICS[t]+'</span>';
+  h+='</div><div class="chips">';
+  const keys=TR.topic==='all'?SUBKEYS:SUBKEYS.filter(k=>SUBS[k].topic===TR.topic);
+  for(const k of keys)h+='<span class="chip'+(TR.sub===k?' on':'')+'" data-s="'+k+'">'+SUBS[k].name+'</span>';
+  h+='</div>';
+  return h;
+}
+const PNOTE18='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без показа решения; ошибка, исправленная самостоятельно, этому не мешает. Если решение или подсказка с готовым числом показаны («Подсказка», «Сдаюсь — решение»), задача отмечается «решение показано» — к такому типу стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
+function drawTrain(state){
+  const t=TR.task;
+  let html=chipRow();
+  if(REVIEW.on)html+='<div class="msg info on" role="status"><b>Работа над ошибками:</b> задачи только из открытых типов журнала ('+CP.openTypes().filter(k=>SUBS[k]).length+'). Тип закрывается тремя задачами подряд, решёнными без промаха.</div>';
+  else if(REVIEW.empty)html+='<div class="note" role="status">Открытых типов в журнале ошибок нет — обычная тренировка.</div>';
+  if(TR.exhausted)html+='<div class="msg info on">Готовые задачи по этому фильтру закончились — дальше работает генератор.</div>';
+  html+=PNOTE18;
+  html+='<div class="card">'+
+    '<h3>'+SUBS[t.sub].name+(t.id?'':' · генератор')+'</h3>'+
+    '<div class="task">'+t.text+'</div>'+
+    '<div class="figwrap">'+t.fig+'</div>'+
+    '<div class="row"><input class="ans" id="ansIn" inputmode="decimal" placeholder="ответ" autocomplete="off">'+
+    '<button class="act" id="chkBtn">Проверить</button>'+
+    '<button class="sec" id="hintBtn">Подсказка</button>'+
+    '<button class="sec" id="giveBtn">Сдаюсь — решение</button>'+
+    '<button class="sec" id="nextBtn">Другая задача →</button></div>'+
+    '<div class="msg" id="fb" role="status" aria-live="polite"></div>'+
+    '<div id="solBox"></div>'+
+    '<div class="note">Ответ — число; десятичная дробь через запятую (1,5), можно обыкновенной (3/2). '+refJump(t)+'</div>'+
+    '</div>';
+  main.innerHTML=html;
+  main.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    if(c.dataset.t){TR.topic=c.dataset.t;TR.sub='all';}
+    else{TR.sub=c.dataset.s;}
+    REVIEW.on=false;REVIEW.empty=false;
+    TR.exhaustedShown=false;TR.exhausted=false;nextTrainTask();drawTrain();
+  });
+  const fb=$('fb'),inp=$('ansIn');
+  /* после верного ответа или «Сдаюсь» задача закрыта: «Проверить» не работает до следующей */
+  const close=()=>{TR.done=true;$('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;};
+  if(TR.done)close();
+  $('chkBtn').onclick=()=>{
+    if(TR.done)return;
+    const v=parseAns(inp.value);
+    fb.className='msg on';
+    if(isNaN(v)){fb.classList.add('warn');fb.innerHTML='Не понимаю запись. Введите число: целое, с запятой (1,5) или дробью (3/2).';return;}
+    if(near(v,t.ans,1e-6)){
+      fb.classList.add('ok');fb.innerHTML='Верно! Ответ '+fmt(t.ans)+'.';
+      logE({e:'quiz_ok',sub:t.sub,id:t.id});
+      /* решено без показа результата — в счёт; журнал: один вердикт на задачу */
+      if(window.OgeGeometryHelpUsed)fb.textContent += " Решено с подсказкой.";
+      if(!TR.shown&&!window.OgeGeometryHelpUsed){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
+      close();
+    }else{
+      if(!TR.missed){TR.missed=true;CP.mlog(t.sub,false);}
+      const d=t.diag.find(d=>near(v,d.v,d.e));
+      fb.classList.add('err');
+      fb.innerHTML=d?d.m:'Неверно. Проверьте, какие клетки вы считали, — и загляните в подсказку.';
+      logE({e:'opt_wrong',sub:t.sub,id:t.id,pick:v});
+    }
+  };
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('chkBtn').click();});
+  $('hintBtn').onclick=()=>{
+    if(!TR.hintUsed){TR.hintUsed=true;logE({e:'hint',sub:t.sub});}
+    /* первый шаг с готовым вычислением («… = 5») — показ результата, а не подсказка */
+    if(!TR.done&&/=\s*(<[^>]+>\s*)*[−-]?\d/.test(t.sol[0]))TR.shown=true;
+    fb.className='msg info on';fb.innerHTML=t.sol[0];
+  };
+  $('giveBtn').onclick=()=>{
+    if(TR.done)return;
+    TR.shown=true;
+    $('solBox').innerHTML=solHtml(t)+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
+    logE({e:'give_up',sub:t.sub,id:t.id});
+    close();
+  };
+  $('nextBtn').onclick=()=>{nextTrainTask();drawTrain();};
+  const rj=main.querySelector('[data-act="ref"]');
+  if(rj)rj.onclick=()=>setMode('ref',{blk:t.ref,from:'train'});
+  inp.focus();
+}
+
+/* ---------- ЗАЧЁТ ---------- */
+const QUIZ_QUOTA=[['len',3],['mid',2],['area',3],['rel',2]];
+let QZ=null;
+function renderQuizStart(){
+  const w=weakStats();
+  const weakest=Object.entries(w).filter(([k,v])=>v>=2).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  let html='<div class="card"><h3>Зачёт: 10 задач</h3>'+
+    '<p class="small">Состав фиксированный: <b>Длины — 3</b>, <b>Средние линии — 2</b>, <b>Площади — 3</b>, <b>Отношения — 2</b>. Задачи берутся из банка и генератора, подсказок нет. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'. Результат сохраняется.</p>';
+  if(weakest.length){
+    html+='<div class="why"><b>Ваши слабые места по журналу:</b> '+weakest.map(([k])=>SUBS[k].name).join(', ')+'. Можно сначала подтянуть:</div><div class="row" style="margin-top:8px">'+
+      weakest.map(([k])=>'<button class="sec" data-w="'+k+'">'+SUBS[k].name+' →</button>').join('')+'</div>';
+  }
+  html+='<div class="row" style="margin-top:12px"><button class="act" id="qStart">Начать зачёт</button></div>';
+  if(ST.best)html+='<div class="note">Лучший результат: '+ST.best+'/10 · попыток: '+(ST.runs||0)+'</div>';
+  html+='</div>';
+  main.innerHTML=html;
+  main.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>setMode('train',{sub:b.dataset.w}));
+  $('qStart').onclick=startQuiz;
+}
+function startQuiz(){
+  const tasks=[];
+  for(const [topic,q] of QUIZ_QUOTA){
+    const keys=shuffle(SUBKEYS.filter(k=>SUBS[k].topic===topic));
+    for(let i=0;i<q;i++){
+      const k=keys[i%keys.length];
+      const recs=ARCHIVE.filter(r=>r.sub===k);
+      tasks.push(recs.length&&Math.random()<.6?archTask(pick(recs)):genTask(k));
+    }
+  }
+  QZ={tasks:shuffle(tasks),i:0,res:[]};
+  logE({e:'start',kind:'quiz'});
+  drawQuiz();
+}
+function drawQuiz(){
+  const t=QZ.tasks[QZ.i];
+  let html='<div class="pbar"><div style="width:'+(QZ.i/QZ.tasks.length*100)+'%"></div></div>'+
+    '<div class="note">Задача '+(QZ.i+1)+' из '+QZ.tasks.length+' · '+TOPICS[SUBS[t.sub].topic]+'</div>'+
+    '<div class="card"><div class="task">'+t.text+'</div>'+
+    '<div class="figwrap">'+t.fig+'</div>'+
+    '<div class="row"><input class="ans" id="qIn" inputmode="decimal" placeholder="ответ" autocomplete="off">'+
+    '<button class="act" id="qOk">Ответить</button></div>'+
+    '<div class="msg" id="qFb" role="status" aria-live="polite"></div></div>';
+  main.innerHTML=html;
+  const inp=$('qIn'),fb=$('qFb');
+  let answered=false;
+  $('qOk').onclick=()=>{
+    if(answered)return;
+    const v=parseAns(inp.value);
+    if(isNaN(v)){fb.className='msg warn on';fb.innerHTML='Введите число (можно с запятой или дробью 3/2).';return;}
+    answered=true;
+    const ok=near(v,t.ans,1e-6);
+    QZ.res.push({ok,sub:t.sub});
+    CP.mlog(t.sub,ok);   // зачёт тоже пишет журнал: одна попытка — один вердикт
+    logE({e:ok?'quiz_ok':'quiz_wrong',sub:t.sub,id:t.id});
+    fb.className='msg on '+(ok?'ok':'err');
+    fb.innerHTML=(ok?'Верно!':'Неверно. Правильный ответ: <b>'+fmt(t.ans)+'</b>.')+' <button class="act" id="qNext" style="margin-left:10px">'+(QZ.i+1<QZ.tasks.length?'Дальше →':'Итог')+'</button>';
+    $('qNext').onclick=()=>{QZ.i++;if(QZ.i<QZ.tasks.length)drawQuiz();else finishQuiz();};
+  };
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('qOk').click();});
+  inp.focus();
+}
+function finishQuiz(){
+  const score=QZ.res.filter(r=>r.ok).length, total=QZ.tasks.length;
+  CP.finishQuiz(score,total);   // passed — только при PASS_AT из total и не снимается
+  logE({e:'finish',score});
+  updHdr();
+  const wrongs=QZ.res.filter(r=>!r.ok).map(r=>r.sub);
+  const uniq=[...new Set(wrongs)];
+  let html='<div class="card fin"><div class="score">'+score+' / '+total+'</div>'+
+    (score>=PASS_AT?'<div class="msg ok on" role="status">Зачёт сдан: '+score+' из '+total+' (нужно '+PASS_AT+').</div>'
+      :'<div class="msg info on" role="status">Для зачёта нужно '+PASS_AT+' верных из '+total+'.</div>')+
+    '<div class="dots">'+QZ.res.map(r=>'<span class="dot '+(r.ok?'g':'r')+'"></span>').join('')+'</div>'+
+    '<div class="law"><b>'+(score===10?'Идеально!':score>=7?'Хороший результат.':'Есть над чем поработать.')+'</b> Задание 18 — это счёт клеток + пять формул: Пифагор, средние линии, площади, тангенс, квадрат отношения радиусов.</div>';
+  if(uniq.length)html+='<div class="why" style="text-align:left"><b>Разобрать ошибки:</b></div><div class="row" style="justify-content:center;margin-top:8px">'+
+    uniq.map(k=>'<button class="sec" data-w="'+k+'">'+SUBS[k].name+' →</button>').join('')+'</div>';
+  html+='<div class="row" style="justify-content:center;margin-top:14px"><button class="act" id="qAgain">Пройти ещё раз</button></div></div>';
+  main.innerHTML=html;
+  main.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>setMode('razbor',b.dataset.w));
+  $('qAgain').onclick=startQuiz;
+}
+
+/* ---------- Карта листа: зоны в % от 1353×802 ---------- */
+const ZONES=[
+ {id:'mid', sheet:'midline', refs:['midtri','midtrap'],name:'Средняя линия'},
+ {id:'circ', sheet:'circle', refs:['circ'],name:'Окружность и круг'},
+ {id:'spar', sheet:'sPar', refs:['spar'],name:'Параллелограмм'},
+ {id:'stri', sheet:'sTri', refs:['stri'],name:'Треугольник'},
+ {id:'strap', sheet:'sTrap', refs:['strap'],name:'Трапеция'},
+ {id:'srhomb', sheet:'sRhomb', refs:['srhomb'],name:'Ромб'},
+ {id:'tan', sheet:'rightTri', refs:['tan'],name:'Прямоугольный треугольник'},
+ {id:'pyth', sheet:'pyth', refs:['pyth'],name:'Теорема Пифагора'}
+];
+const OFFMAP=['sim','cells'];
+function zoneOfRef(ref){return ZONES.find(z=>z.refs.indexOf(ref)>=0)||null;}
+function zoneStats(z){
+  const subs=SUBKEYS.filter(k=>z.refs.indexOf(SUBS[k].ref)>=0);
+  const n=ARCHIVE.filter(r=>subs.indexOf(r.sub)>=0).length;
+  const done=subs.every(k=>ST.razbor[k]);
+  return {subs,n,done};
+}
+/* ---------- СПРАВОЧНИК ---------- */
+function renderRef(arg){
+  const hlz=arg&&arg.blk?zoneOfRef(arg.blk):null;
+  let html='<div class="mapcard"><h3>Лист справочных материалов: что пригодится в задании 18</h3>'+
+    sheetMapHTML({go:id=>{const z=ZONES.find(x=>x.sheet===id);return z?'data-zone="'+z.id+'"':null;},
+      label:id=>'Формула и задачи блока ('+zoneStats(ZONES.find(x=>x.sheet===id)).subs.length+')',
+      open:hlz?hlz.sheet:null})+
+    '<div class="offmap"><b>Чего на листе нет</b> (эти приёмы держим в голове): '+
+    '<b>расширенная (обобщённая) теорема Фалеса</b> — тип «'+SUBKEYS.filter(k=>SUBS[k].ref==='sim').map(k=>SUBS[k].name).join('», «')+'»: параллельная прямая отсекает пропорциональные отрезки. В явном виде её нет у Атанасяна (выводится через подобие), но она есть у Мерзляка. '+
+    'Плюс счёт клеток с разрезанием — «'+SUBKEYS.filter(k=>SUBS[k].ref==='cells').map(k=>SUBS[k].name).join('», «')+'». Их формульные карточки — ниже, вместе с остальными.</div></div>';
+  html+='<p class="small">Из каждой формулы можно прыгнуть в разбор или тренировку типа, где она работает.</p>';
+  for(const id of Object.keys(REF)){
+    const b=REF[id];
+    const users=SUBKEYS.filter(k=>SUBS[k].ref===id);
+    html+='<div class="refblk'+(arg&&arg.blk===id?' hl':'')+'" id="ref-'+id+'"><h4>'+b.h+'</h4>'+
+      '<div class="fm">'+b.f+'</div><div class="small">'+b.t+'</div>';
+    if(arg&&arg.blk===id&&arg.sub){html+='<div class="why"><b>Зачем здесь:</b> '+SUBS[arg.sub].refWhy+'</div>';if(SUBS[arg.sub].note)html+='<div class="method"><b>Методическая пометка.</b> '+SUBS[arg.sub].note+'</div>';}
+    if(users.length)html+='<div class="row" style="margin-top:8px">'+users.map(k=>
+      '<button class="sec" data-rz="'+k+'">'+SUBS[k].name+': разбор</button><button class="sec" data-tr="'+k+'">тренировать</button>').join('')+'</div>';
+    html+='</div>';
+  }
+  main.innerHTML=html;
+  main.querySelectorAll('[data-zone]').forEach(zel=>zel.onclick=()=>{
+    const z=ZONES.find(z=>z.id===zel.dataset.zone);
+    if(z)setMode('ref',{blk:z.refs[0]});
+  });
+  main.querySelectorAll('[data-rz]').forEach(x=>x.onclick=()=>setMode('razbor',x.dataset.rz));
+  main.querySelectorAll('[data-tr]').forEach(x=>x.onclick=()=>setMode('train',{sub:x.dataset.tr}));
+  if(arg&&arg.blk){const el=document.getElementById('ref-'+arg.blk);if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+
+/*__SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 (канон CLAUDE.md, решение F4 делегата
+   владельца). Блок побайтно одинаков в тренажёрах 16, 17, 18, 23, 24, 25;
+   копии сверяет гейт tools/oge-geometry-contract.test.mjs. Каждая проверка
+   дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const STK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи и решения: нет null, undefined, NaN, Infinity и «1√» */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|(^|[^\d,.])1√/.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* последний шаг разбора содержит проверяемый ответ хотя бы в одной записи */
+  last:function(step,forms,tag,errs){
+    const t=String(step==null?'':step).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');
+    const norm=function(f){return String(f).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};
+    if(!forms.some(function(f){return f!=null&&norm(f)!==''&&t.indexOf(norm(f))>=0;}))
+      errs.push(tag+': последний шаг не содержит ответ ('+forms.filter(function(f){return f!=null;}).join(' / ')+')');
+  },
+  /* ловушки {v, e, m}: ни одна не принимается как ответ, разные сообщения не ловят одно число */
+  traps:function(list,tag,errs,isAns){
+    (list||[]).forEach(function(t,i){
+      if(!isFinite(t.v)){errs.push(tag+': ловушка — не число');return;}
+      if(isAns(t.v))errs.push(tag+': ловушка '+t.v+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&Math.abs(t.v-u.v)<=(t.e||0)+(u.e||0))errs.push(tag+': ловушки '+t.v+' и '+u.v+' ловят одно число');}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__SELFTEST_KIT_END__*/
+/* общие проверки одной задачи: оба чертежа в рамке, текст без null/NaN, последний шаг с ответом, ловушки */
+function stkTask(t,tag,errs){
+  STK.svg(t.fig,tag,errs);STK.svg(t.figAux,tag+' (с построениями)',errs);
+  STK.text([t.text].concat(t.sol).join(' '),tag,errs);
+  STK.last(t.sol[t.sol.length-1],[fmt(t.ans)],tag,errs);
+  STK.traps(t.diag,tag,errs,v=>near(v,t.ans,1e-6));
+}
+/* ---------- СЕЛФТЕСТ (?selftest=1) ---------- */
+function runSelftest(){
+  const out=[];let fails=0;
+  const say=s=>out.push(s);
+  const bad=s=>{out.push('✗ '+s);fails++;};
+  // 1. Архив: уникальность номеров, calc===exp
+  const seen=new Set();
+  for(const r of ARCHIVE){
+    if(seen.has(r.id))bad('дубль id '+r.id);
+    seen.add(r.id);
+    const got=SUBS[r.sub].calc(r.p);
+    if(!near(got,r.exp,1e-9))bad('архив '+r.id+': calc='+got+' ≠ exp='+r.exp);
+    if(!isFinite(r.exp))bad('архив '+r.id+': неконечный эталон');
+  }
+  say('✓ архив: '+ARCHIVE.length+' задач, номера уникальны, эталоны сходятся');
+  // 2. Геоаудит архива: chk каждой фигуры
+  let chkN=0;
+  for(const r of ARCHIVE){
+    const t=archTask(r);
+    for(const c of t.chk){
+      chkN++;
+      if(c.t==='ans'){if(!near(c.v,t.ans,1e-9))bad(r.id+': фигура даёт '+c.v+', ответ '+t.ans);}
+      else if(c.v>1e-9)bad(r.id+': chk '+c.t+(c.n?'('+c.n+')':'')+' = '+c.v);
+    }
+    if(t.fig.indexOf('<svg')!==0)bad(r.id+': svg не собрался');
+  }
+  say('✓ геоаудит архива: '+chkN+' ассертов');
+  // 3. Генераторы: 150 прогонов на подтип
+  for(const k of SUBKEYS){
+    for(let i=0;i<150;i++){
+      const t=genTask(k);
+      if(!isFinite(t.ans)){bad('gen '+k+': неконечный ответ');break;}
+      for(const c of t.chk){
+        if(c.t==='ans'){if(!near(c.v,t.ans,1e-9)){bad('gen '+k+': фигура '+c.v+' ≠ ответ '+t.ans);i=999;}}
+        else if(c.v>1e-9){bad('gen '+k+': chk '+c.t+' = '+c.v);i=999;}
+      }
+      for(const d of t.diag)if(near(d.v,t.ans))bad('gen '+k+': ловушка совпала с ответом');
+    }
+  }
+  say('✓ генераторы: '+SUBKEYS.length+' подтипов × 150');
+  // 4. Реестр: обязательные поля
+  for(const k of SUBKEYS){
+    const S=SUBS[k];
+    for(const f of ['topic','name','law','ref','refWhy','calc','gen','text','fig','sol','diag'])
+      if(!S[f])bad(k+': нет поля '+f);
+    if(!REF[S.ref])bad(k+': ссылка на несуществующий блок справочника '+S.ref);
+    if(!TOPICS[S.topic])bad(k+': неизвестная тема '+S.topic);
+  }
+  if(!SUBS.segAB.note||!/Фалес/i.test(SUBS.segAB.note)||!/Мерзляк/i.test(SUBS.segAB.note)||!/Атанасян/i.test(SUBS.segAB.note))bad('segAB: потеряна методическая пометка о расширенной теореме Фалеса (Атанасян/Мерзляк)');
+  say('✓ реестр SUBS: поля и ссылки; методическая пометка о теореме Фалеса на месте');
+  // 4б. Карта листа: зоны ссылаются на реальные блоки, каждый ref либо на карте, либо в OFFMAP
+  const zids=new Set();
+  for(const z of ZONES){
+    if(zids.has(z.id))bad('дубль зоны '+z.id);
+    zids.add(z.id);
+    for(const rf of z.refs)if(!REF[rf])bad('зона '+z.id+' ссылается на несуществующий блок '+rf);
+    if(!SHEET_MAP.items.some(x=>x.id===z.sheet))bad('зона '+z.id+': нет блока листа '+z.sheet);
+  }
+  const mapped=new Set();ZONES.forEach(z=>z.refs.forEach(r=>mapped.add(r)));
+  for(const k of SUBKEYS){
+    const rf=SUBS[k].ref;
+    if(!mapped.has(rf)&&OFFMAP.indexOf(rf)<0)bad('подтип '+k+': формула '+rf+' не привязана ни к карте, ни к плашке «нет на листе»');
+  }
+  say('✓ карта листа: '+ZONES.length+' зон, покрытие формул полное');
+  // 5. Квоты зачёта
+  const qsum=QUIZ_QUOTA.reduce((s,q)=>s+q[1],0);
+  if(qsum!==10)bad('сумма квот зачёта '+qsum+' ≠ 10');
+  for(const [t] of QUIZ_QUOTA)if(!SUBKEYS.some(k=>SUBS[k].topic===t))bad('квота на пустую тему '+t);
+  say('✓ квоты зачёта: '+QUIZ_QUOTA.map(q=>TOPICS[q[0]]+' '+q[1]).join(', '));
+  // 6. Парсер ответов
+  const P=[['1,5',1.5],['3/2',1.5],['12',12],['0,25',0.25],['1/4',0.25]];
+  for(const [s,v] of P)if(!near(parseAns(s),v))bad('парсер: '+s);
+  if(!isNaN(parseAns('abc'))||!isNaN(parseAns('')))bad('парсер пропускает мусор');
+  say('✓ парсер ответов');
+  // 7. Общие проверки канона: чертёж в рамке, текст без null/NaN, последний шаг с ответом, ловушки
+  const E=[];
+  for(const r of ARCHIVE)stkTask(archTask(r),'№'+r.id,E);
+  for(const k of SUBKEYS)for(let i=0;i<60;i++)stkTask(genTask(k),k,E);
+  E.slice(0,40).forEach(bad);if(E.length>40)bad('… и ещё '+(E.length-40));
+  say('✓ общие проверки: чертежи, тексты, последний шаг, ловушки');
+  say(fails?('ПРОВАЛОВ: '+fails):'ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ');
+  STK.done('OGE18',out.filter(x=>x.indexOf('✗ ')===0));
+  const div=document.createElement('div');
+  div.className='selftest';
+  div.textContent='СЕЛФТЕСТ oge18-kletki\n'+out.join('\n');
+  main.parentNode.insertBefore(div,main);
+  return fails;
+}
+
+/* ---------- Запуск ---------- */
+setMode(CP.REVIEW?'train':'razbor');   // ?mode=review — сразу работа над ошибками
+if(typeof location!=='undefined'&&/[?&]selftest=1/.test(location.search)){
+  try{window.__selftestFails=runSelftest();}catch(e){const d=document.createElement('div');d.className='selftest';d.textContent='СЕЛФТЕСТ УПАЛ: '+e.message;main.parentNode.insertBefore(d,main);window.__selftestFails=1;}
+}
+
+/* Minimal course shell. Moves live controls, retaining their original handlers. */
+const MinimalGeometry=(()=>{
+  const q=s=>document.querySelector(s);
+  function shell(mainSelector,title){
+    document.body.classList.add('minimal-course');
+    const main=q(mainSelector);if(!main)return null;
+    if(q('.head h1'))q('.head h1').textContent=title;
+    let settings=q('#courseSettings');
+    if(!settings){
+      settings=document.createElement('details');settings.id='courseSettings';settings.className='minimal-settings';
+      const summary=document.createElement('summary');summary.textContent='Выбрать тему · мои результаты';settings.appendChild(summary);
+      let target=main.closest('.wrap')||main;if(target.querySelector('.head'))target=main;target.insertAdjacentElement('afterend',settings);
+      const content=document.createElement('div');content.className='minimal-navigation';settings.appendChild(content);
+      document.querySelectorAll('.head .sub,.head .stats,.head .badge,.head #badge,.tabs').forEach(node=>content.appendChild(node));
+      const footer=q('body>.wrap>.note');if(footer)content.appendChild(footer);
+    }
+    return settings;
+  }
+  function secondary(main,selectors){
+    const settings=q('#courseSettings');if(!settings||!main)return;
+    let box=settings.querySelector('.minimal-task-settings');
+    if(!box){box=document.createElement('div');box.className='minimal-task-settings';settings.appendChild(box);}
+    box.replaceChildren();
+    selectors.forEach(selector=>main.querySelectorAll(selector).forEach(node=>box.appendChild(node)));
+  }
+  function hint(anchor,content,open=false){
+    const button=document.createElement('button');button.type='button';button.className='minimal-hint-toggle';button.id='courseHintToggle';button.textContent='Хочешь подсказку?';button.setAttribute('aria-expanded',String(open));button.setAttribute('aria-controls','courseHintPanel');
+    const panel=document.createElement('section');panel.id='courseHintPanel';panel.className='minimal-hint';panel.setAttribute('aria-label','Подсказка');panel.hidden=!open;
+    if(typeof content==='string')panel.innerHTML=content;else if(content)panel.appendChild(content);
+    anchor.insertAdjacentElement('afterend',button);button.insertAdjacentElement('afterend',panel);
+    button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));};
+    return {button,panel};
+  }
+  function disclosure(panel,nodes){
+    const details=document.createElement('details');details.className='minimal-help-actions';const summary=document.createElement('summary');summary.textContent='Разобрать решение';details.appendChild(summary);
+    nodes.filter(Boolean).forEach(node=>details.appendChild(node));if(details.children.length>1)panel.appendChild(details);return details;
+  }
+  function part2(anchor){const note=document.createElement('p');note.className='minimal-part2-note';note.textContent='На ОГЭ нужно записать полное решение с обоснованием.';anchor.appendChild(note);}
+  return {shell,secondary,hint,disclosure,part2};
+})();
+if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.nodeType===1){
+  MinimalGeometry.shell('#main','ОГЭ №18 · Фигуры на клетках');
+  const originalDrawTrain=drawTrain;
+  drawTrain=function(state){originalDrawTrain(state);const main=document.getElementById('main');
+    MinimalGeometry.secondary(main,[':scope > .chips',':scope > .pnote',':scope > .card > h3',':scope > .card > .note']);
+    const card=main.querySelector('.card'),oldHint=document.getElementById('hintBtn');if(!card||!oldHint)return;
+    const originalHint=oldHint.onclick,help=MinimalGeometry.hint(card.querySelector('.figwrap'),'<p>Посмотри на рисунок: что известно и какую величину нужно найти?</p>');
+    oldHint.textContent='Открыть первый шаг';help.panel.appendChild(oldHint);
+    const shown=document.createElement('div');shown.className='minimal-first-step';help.panel.appendChild(shown);
+    oldHint.onclick=()=>{originalHint();const fb=document.getElementById('fb');shown.replaceChildren(...Array.from(fb.childNodes));fb.className='msg';};
+    MinimalGeometry.disclosure(help.panel,[document.getElementById('giveBtn')]);help.panel.appendChild(document.getElementById('solBox'));
+    document.getElementById('courseSettings').querySelectorAll('.chip').forEach(node=>{node.tabIndex=0;node.setAttribute('role','button');node.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();node.click();}};});
+  };
+  setMode('train');
+}
+</script><script src="/book/oge/2026-10-31/v1/trainers/task19-textbook-data.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/task19-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-reference.js"></script>
+<script src="/book/oge/2026-10-31/v1/trainers/oge-course-geometry.js?v=20261025-oge-geometry"></script>
+
+
+</body></html>

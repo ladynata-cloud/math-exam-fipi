@@ -7,6 +7,16 @@
       "group": "ЕГЭ база"
     },
     {
+      "title": "ЕГЭ база №11 · Все типы на общей доске",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza-11.html#map"
+    },
+    {
+      "title": "ЕГЭ база №13 · Все типы на общей доске",
+      "group": "ЕГЭ база",
+      "href": "/trainers/ege-baza-13.html#map"
+    },
+    {
       "title": "Виленкин · 5 класс · весь курс",
       "group": "Виленкин · 5 класс",
       "href": "/school/index.html?course=vilenkin5#course/vilenkin5"
@@ -3657,8 +3667,8 @@
       "href": "/trainers/negative-numbers-alternative.html"
     },
     {
-      "title": "ОГЭ №7 / числовая прямая",
-      "group": "Отрицательные числа",
+      "title": "ОГЭ №7 · Числовая прямая",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task7-number-line.html"
     },
     {
@@ -3687,8 +3697,8 @@
       "href": "/trainers/percent-part-whole-trainer.html"
     },
     {
-      "title": "ОГЭ №1–5: проценты без паники",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Таблица и проценты",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/percent-table-trainer.html"
     },
     {
@@ -3712,18 +3722,18 @@
       "href": "/trainers/oge-1-5-trainers/practice-1-5-map.html"
     },
     {
-      "title": "ОГЭ-2027 №1–5: входная диагностика",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Входная диагностика",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html"
     },
     {
-      "title": "ОГЭ №1–5: как читать план и условие",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Чтение плана и условия",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-plan-reading.html"
     },
     {
-      "title": "ОГЭ-2027 №1–5: проверочная по планам и маршрутам",
-      "group": "ОГЭ / задачи 1–5",
+      "title": "ОГЭ №1–5 · Проверочная по планам и маршрутам",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html"
     },
     {
@@ -4557,33 +4567,33 @@
       "href": "/trainers/multiplication-table/elevator-sprint.html"
     },
     {
-      "title": "Квартира · план · задания 1–5 ОГЭ · тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Квартиры",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-apartments.html"
     },
     {
-      "title": "Участок · тренажёр 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Земельные участки",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"
     },
     {
-      "title": "Форматы бумаги А0–А6 · задания 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Листы бумаги",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"
     },
     {
-      "title": "Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Схемы дорог",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"
     },
     {
-      "title": "Печки · тренажёр 1–5",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Печи",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-stoves.html"
     },
     {
-      "title": "Тарифы · тренажёр 1–5 · ОГЭ",
-      "group": "ОГЭ",
+      "title": "ОГЭ №1–5 · Тарифы",
+      "group": "ОГЭ / практические задачи 1–5",
       "href": "/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"
     },
     {
@@ -4737,93 +4747,88 @@
       "href": "/trainers/oge-informatics-1-10-tutor.html"
     },
     {
-      "title": "ОГЭ. Задание 10: вероятность — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №10 · Вероятность",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task10-probability.html"
     },
     {
-      "title": "ОГЭ, задание 11 — Графики функций. Интерактивный тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №11 · Графики",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task11-graphs-trainer.html"
     },
     {
-      "title": "ОГЭ, задание 12 — расчёты по формулам. Тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №12 · Формулы",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task12-formulas-trainer.html"
     },
     {
-      "title": "ОГЭ №13: неравенства",
-      "group": "ОГЭ",
-      "href": "/trainers/oge-task13-inequalities.html"
-    },
-    {
-      "title": "ОГЭ №14. Прогрессии: формулы и здравый смысл",
-      "group": "ОГЭ",
+      "title": "ОГЭ №14 · Прогрессии",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task14-progressions.html"
     },
     {
-      "title": "ОГЭ · Задание 16 — окружность",
-      "group": "ОГЭ",
+      "title": "ОГЭ №16 · Окружность и связанные фигуры",
+      "group": "ОГЭ / геометрия 15–19",
       "href": "/trainers/oge-task16-circle.html"
     },
     {
-      "title": "ОГЭ №17 — Четырёхугольники · тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №17 · Четырёхугольники",
+      "group": "ОГЭ / геометрия 15–19",
       "href": "/trainers/oge-task17-quadrilaterals.html"
     },
     {
-      "title": "ОГЭ №18 — Фигуры на клетчатой бумаге",
-      "group": "ОГЭ",
+      "title": "ОГЭ №18 · Геометрия на клетках",
+      "group": "ОГЭ / геометрия 15–19",
       "href": "/trainers/oge-task18-grid.html"
     },
     {
-      "title": "Задание 20 ОГЭ — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №20 · Уравнения второй части",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task20-equations.html"
     },
     {
-      "title": "ОГЭ · Задание 21 · Текстовые задачи — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №21 · Текстовые задачи",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task21-word-problems.html"
     },
     {
-      "title": "ОГЭ · Задание 22 — Графики функций",
-      "group": "ОГЭ",
+      "title": "ОГЭ №22 · Функции и графики",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task22-functions-graphs.html"
     },
     {
-      "title": "ОГЭ · Задание 23 — Геометрические задачи на вычисление",
-      "group": "ОГЭ",
+      "title": "ОГЭ №23 · Геометрические вычисления",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task23-geometry-calculations.html"
     },
     {
-      "title": "ОГЭ · Задание 24 — задачи на доказательство",
-      "group": "ОГЭ",
+      "title": "ОГЭ №24 · Доказательства",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task24-proofs.html"
     },
     {
-      "title": "ОГЭ · Задание 25 — геометрия повышенной сложности",
-      "group": "ОГЭ",
+      "title": "ОГЭ №25 · Сложная геометрия",
+      "group": "ОГЭ / развёрнутое решение 20–25",
       "href": "/trainers/oge-task25-geometry.html"
     },
     {
-      "title": "Тренажёр · ОГЭ математика · Задание 6",
-      "group": "ОГЭ",
+      "title": "ОГЭ №6 · Дроби",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task6-fractions.html"
     },
     {
-      "title": "Задание 8 ОГЭ — степени и корни",
-      "group": "ОГЭ",
+      "title": "ОГЭ №8 · Степени и корни",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task8-powers-roots.html"
     },
     {
-      "title": "Задание 9 ОГЭ · Уравнения — тренажёр",
-      "group": "ОГЭ",
+      "title": "ОГЭ №9 · Уравнения",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge-task9-equations.html"
     },
     {
-      "title": "ОГЭ №13 — серия тренажёров по неравенствам",
-      "group": "ОГЭ",
+      "title": "ОГЭ №13 · Неравенства",
+      "group": "ОГЭ / числа и алгебра 6–14",
       "href": "/trainers/oge13-inequalities-series.html"
     },
     {
@@ -4912,8 +4917,8 @@
       "href": "/trainers/task14-progressions-trainer_old_steps.html"
     },
     {
-      "title": "ОГЭ №19 — тренажёр «умной зубрёжки»",
-      "group": "Школьная математика",
+      "title": "ОГЭ №19 · Геометрические утверждения",
+      "group": "ОГЭ / геометрия 15–19",
       "href": "/trainers/task19-trainer.html"
     },
     {
@@ -6172,6 +6177,26 @@
       "group": "ЕГЭ база · тренажёры"
     },
     {
+      "title": "ЕГЭ база 19 · Вычеркнуть цифры: все подходящие ответы",
+      "href": "/ege-baza/path/index.html#lesson=practice-digits-delete",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Три разных участка: путь и время",
+      "href": "/ege-baza/path/index.html#lesson=practice-average-three",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Восстановить кольцо по кратчайшим расстояниям",
+      "href": "/ege-baza/path/index.html#lesson=practice-ring-route",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 20 · Движение по кольцу: встреча и обгон",
+      "href": "/ege-baza/path/index.html#lesson=practice-ring-meeting",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
       "title": "ЕГЭ база 21 · Два множества и пересечение",
       "href": "/ege-baza/path/index.html#lesson=practice-sets",
       "group": "ЕГЭ база · тренажёры"
@@ -6922,6 +6947,41 @@
       "href": "/school/m9-exercises/index.html#53/0"
     },
     {
+      "title": "ЕГЭ профиль №1 · планиметрия: углы, прямоугольные треугольники, подобие, площади, четырёхугольники и окружность",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-planimetry.html#exam/1"
+    },
+    {
+      "title": "ЕГЭ профиль №2 · векторы: координаты, длина, действия и скалярное произведение",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-vectors.html#exam/2"
+    },
+    {
+      "title": "ЕГЭ профиль №4 · простая вероятность: подсчёт исходов, противоположное событие и диапазон",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-probability.html#exam/4"
+    },
+    {
+      "title": "ЕГЭ профиль №6 · случайные величины: распределение, дисперсия и непрерывные величины",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-random-variables.html#exam/6"
+    },
+    {
+      "title": "ЕГЭ профиль №7 · уравнения: линейные, рациональные, квадратные, иррациональные, показательные и логарифмические уравнения",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-equations.html#exam/7"
+    },
+    {
+      "title": "ЕГЭ профиль №3 · стереометрия: параллелепипед, куб, призма, пирамида, цилиндр, конус, шар и составные тела",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-stereometry.html#exam/3"
+    },
+    {
+      "title": "ЕГЭ профиль №8 · выражения: степени, корни, дроби, логарифмы и тригонометрия",
+      "group": "ЕГЭ профиль · понятный старт 2027",
+      "href": "/trainers/ege-profile-expressions.html#exam/8"
+    },
+    {
       "title": "ЕГЭ профиль 2027 · понятный старт",
       "group": "ЕГЭ профиль · понятный старт 2027",
       "href": "/ege-profil/start/index.html#home"
@@ -7200,6 +7260,401 @@
       "title": "Логарифм внутри логарифма — подробный разбор",
       "group": "ЕГЭ профиль · алгебра",
       "href": "/trainers/ege-profile/log-inequalities/nested.html"
+    },
+    {
+      "title": "Атанасян 7–9 · №92а: стороны и углы треугольника",
+      "group": "7 класс · геометрия",
+      "href": "/trainers/atanasyan-7-9.html#atanasyan-7-9-main-92-part-1"
+    },
+    {
+      "title": "Петерсон · 6 класс · часть 1 — логика, обычные и десятичные дроби, проценты, движение и тренировка вычислений",
+      "group": "Школа · математика · 6 класс",
+      "href": "/trainers/peterson6.html#home"
+    },
+    {
+      "title": "Мерзляк · геометрия 10 класс · базовый уровень · весь курс, задачи, теория, стереометрия",
+      "group": "Мерзляк · геометрия 10 класс",
+      "href": "/trainers/merzlyak-10-base.html"
+    },
+    {
+      "title": "НОК — наименьшее общее кратное · 6 класс · простые множители и пошаговая тренировка",
+      "group": "Школа · математика · 6 класс",
+      "href": "/trainers/grade6-nok.html"
+    },
+    {
+      "title": "НОД — наибольший общий делитель · 6 класс · простые множители и пошаговая тренировка",
+      "group": "Школа · математика · 6 класс",
+      "href": "/trainers/grade6-nod.html"
+    },
+    {
+      "group": "ОГЭ / геометрия 15–19",
+      "title": "ОГЭ №15 · Треугольники",
+      "href": "/trainers/oge-task15-triangles.html"
+    },
+    {
+      "title": "Колледж · Графики функций · 40 задач по шагам",
+      "group": "Колледж / математика",
+      "href": "/trainers/college-functions/index.html"
+    },
+    {
+      "title": "Атанасян · 7 класс · главы I–IV и задачи повышенной трудности",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/atanasyan-grade7.html"
+    },
+    {
+      "title": "Перегибание и отпечаток · лаборатория приёма",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p3-t2-fold-imprint"
+    },
+    {
+      "title": "Смежные и вертикальные углы · лаборатория и доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t1-adjacent-vertical"
+    },
+    {
+      "title": "Задачи на смежные и вертикальные углы · генератор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t2-angle-problems"
+    },
+    {
+      "title": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch1-p6-t3-two-perpendiculars"
+    },
+    {
+      "title": "Биссектриса угла — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-angle-bisector"
+    },
+    {
+      "title": "Угол, равный данному — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-copy-angle"
+    },
+    {
+      "title": "Серединный перпендикуляр — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-perp-bisector"
+    },
+    {
+      "title": "Перпендикуляр к прямой через точку — циркуль и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-constr-perpendicular-point"
+    },
+    {
+      "title": "Что значит — равные фигуры? · Наложение",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t1-overlay-equality"
+    },
+    {
+      "title": "Наложи треугольник · путь к первому признаку",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t2-overlay-sas"
+    },
+    {
+      "title": "Почему хватает трёх элементов · доказательство первого признака",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t3-proof-sas"
+    },
+    {
+      "title": "Первый признак равенства треугольников: задачи по чертежу · MathExam",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t4-find-equal"
+    },
+    {
+      "title": "Зачёт по параграфу · первый признак равенства треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p1-t5-quiz"
+    },
+    {
+      "title": "Медиана, биссектриса, высота · три разные линии",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t0-three-cevians"
+    },
+    {
+      "title": "Перпендикуляр складыванием · из точки к прямой",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t1-perp-fold"
+    },
+    {
+      "title": "Равнобедренный треугольник · устройство фигуры",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t2-isosceles-intro"
+    },
+    {
+      "title": "Углы при основании равны · доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t3-proof-base-angles"
+    },
+    {
+      "title": "Биссектриса = медиана = высота · равнобедренный",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t4-three-in-one"
+    },
+    {
+      "title": "Равнобедренный в задачах · найди равные",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t5-find-equal-iso"
+    },
+    {
+      "title": "Мини-зачёт · медианы, биссектрисы, высоты",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p2-t6-quiz"
+    },
+    {
+      "title": "Прилежащие и противолежащие · опорный словарь",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t0-adjacent-opposite"
+    },
+    {
+      "title": "Наложи по стороне и двум углам · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t1-overlay-asa"
+    },
+    {
+      "title": "Почему точка C не может быть другой · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t2-proof-asa"
+    },
+    {
+      "title": "Первый или второй? · различение признаков",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t3-which-sign"
+    },
+    {
+      "title": "Второй признак равенства треугольников: задачи по чертежу · MathExam",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t4-find-equal-asa"
+    },
+    {
+      "title": "Мини-зачёт · второй признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p3-t5-quiz"
+    },
+    {
+      "title": "Почему хватает трёх сторон · жёсткость треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t0-rigidity"
+    },
+    {
+      "title": "Наложи по трём сторонам · третий признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t1-overlay-sss"
+    },
+    {
+      "title": "Доказательство третьего признака · конструктор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t2-proof-sss"
+    },
+    {
+      "title": "Какой признак? · различение трёх признаков",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t3-which-sign"
+    },
+    {
+      "title": "Найди равные по трём сторонам · задачи по чертежу",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t4-find-equal-sss"
+    },
+    {
+      "title": "Мини-зачёт · третий признак",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch2-p4-t5-quiz"
+    },
+    {
+      "title": "Пересекающиеся и параллельные прямые",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t1-crossing-parallel"
+    },
+    {
+      "title": "Восемь углов при секущей",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t2-eight-angles"
+    },
+    {
+      "title": "Когда прямые параллельны",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t3-sign-lab"
+    },
+    {
+      "title": "Почему признак работает",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t4-proof-sign"
+    },
+    {
+      "title": "Ещё два признака",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t5-two-more-signs"
+    },
+    {
+      "title": "Угольник и линейка",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t6-practical"
+    },
+    {
+      "title": "Докажи, что a ∥ b",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p1-t7-find-equal"
+    },
+    {
+      "title": "Через точку — одна параллель",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t1-parallel-axiom"
+    },
+    {
+      "title": "Свойство 1: накрест лежащие углы",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t4-property-alt-angles"
+    },
+    {
+      "title": "Свойства 2 и 3: соответственные и односторонние",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t5-properties-2-3"
+    },
+    {
+      "title": "Прямая и обратная теорема",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch3-p2-t6-direct-converse"
+    },
+    {
+      "title": "Сумма углов треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t1-angle-sum-lab"
+    },
+    {
+      "title": "Почему сумма углов равна 180°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t2-proof-angle-sum"
+    },
+    {
+      "title": "Внешний угол треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t3-exterior-angle"
+    },
+    {
+      "title": "Виды треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t4-triangle-types"
+    },
+    {
+      "title": "Найди углы",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t5-find-angles"
+    },
+    {
+      "title": "Зачёт §1",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p1-t6-quiz"
+    },
+    {
+      "title": "Сторона ↔ угол",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t1-side-angle-lab"
+    },
+    {
+      "title": "Против большей стороны — больший угол",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t2-proof-side-angle"
+    },
+    {
+      "title": "Против большего угла — большая сторона",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t3-converse-iso"
+    },
+    {
+      "title": "Гипотенуза больше катета",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t4-hypotenuse-leg"
+    },
+    {
+      "title": "Неравенство треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t5-triangle-inequality"
+    },
+    {
+      "title": "Неравенство треугольника — доказательство",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t6-prove-inequality"
+    },
+    {
+      "title": "Неравенство треугольника — генератор",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t7-triangle-generator"
+    },
+    {
+      "title": "Зачёт §2",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p2-t8-quiz"
+    },
+    {
+      "title": "Два острых угла прямоугольного треугольника",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t1-two-acute-angles"
+    },
+    {
+      "title": "Катет против угла в 30°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t2-leg-against-30"
+    },
+    {
+      "title": "Половина гипотенузы — значит 30°",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t3-half-means-30"
+    },
+    {
+      "title": "Медиана к гипотенузе",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t4-median-to-hypotenuse"
+    },
+    {
+      "title": "Медиана-половина — значит прямоугольный",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t5-median-converse"
+    },
+    {
+      "title": "Признаки равенства прямоугольных треугольников",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t6-which-sign"
+    },
+    {
+      "title": "Признак по гипотенузе и катету (HL)",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t7-hyp-leg-congruence"
+    },
+    {
+      "title": "Расчёты в прямоугольном треугольнике — генератор §3",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t8-generator"
+    },
+    {
+      "title": "Зачёт по §3 — прямоугольный треугольник",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p3-t9-quiz"
+    },
+    {
+      "title": "Расстояние от точки до прямой",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t1-distance-point-line"
+    },
+    {
+      "title": "Расстояние между параллельными",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t2-distance-parallels"
+    },
+    {
+      "title": "Построение треугольника по трём сторонам",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t3-construct-sss"
+    },
+    {
+      "title": "Треугольник по двум сторонам и углу",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-practice.html?activity=ch4-p4-t4-construct-two-sides-angle"
+    },
+    {
+      "title": "Геометрия · 7 класс · от первых понятий к доказательствам",
+      "group": "Геометрия / 7 класс",
+      "href": "/trainers/geometry7-rebuild.html"
     }
   ]
 }

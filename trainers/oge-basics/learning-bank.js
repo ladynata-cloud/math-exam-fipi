@@ -1107,7 +1107,7 @@ const SPEC = {"title": "Отрицательные числа на прямой"
   const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
 
 function line(a,b){return `<div class="visual-box"><div class="number-line">${Array.from({length:11},(_,i)=>i-5).map(x=>`<span class="tick ${x===0?'zero':''}">${x}</span>`).join('')}</div></div>`}
-function makePracticeTask(){const type=Math.floor(Math.random()*4),a=-9+Math.floor(Math.random()*19),b=-9+Math.floor(Math.random()*19);
+function makePracticeTask(){const type=Math.floor(Math.random()*4),a=-9+Math.floor(Math.random()*19);let b=-9+Math.floor(Math.random()*19);while(type===0&&b===a)b=-9+Math.floor(Math.random()*19);
  if(type===0)return {kind:'choice',skill:'compare',label:'Сравнение на прямой',prompt:`Какое число больше: <strong>${a}</strong> или <strong>${b}</strong>?`,options:[{id:'a',html:String(a)},{id:'b',html:String(b)}],answer:a>b?'a':'b',hint1:'На прямой больше то число, которое правее.',hint2:`Сравните положение ${a} и ${b} относительно нуля.`,solution:`Больше число <strong>${Math.max(a,b)}</strong>.`};
  if(type===1)return {kind:'input',skill:'opposite',label:'Противоположное число',prompt:`Назовите число, противоположное <strong>${a}</strong>.`,answer:-a,hint1:'Поменяйте знак.',hint2:'Расстояние до нуля остаётся тем же.',solution:`Противоположное число: <strong>${-a}</strong>.`};
  if(type===2)return {kind:'input',skill:'abs',label:'Модуль',prompt:`Найдите: <strong>|${a}|</strong>`,answer:Math.abs(a),hint1:'Модуль — расстояние до нуля.',hint2:'Расстояние не бывает отрицательным.',solution:`|${a}| = <strong>${Math.abs(a)}</strong>.`};
@@ -1291,7 +1291,7 @@ function taskMeaning(){
           {v:100,msg:'Сто процентов — это старое значение целиком, а не величина изменения.'}],
    hint1:'Старое значение — это ровно 100%.',
    hint2:'Сравните '+p+'% со ста: разница и есть изменение.',
-   solution:'Старое значение — 100%. Новое — '+p+'%. Разница '+p+' − 100 = <b>'+diff+'%</b>'
+   solution:'Старое значение — 100%. Новое — '+p+'%. Разница '+(up?p+' − 100':'100 − '+p)+' = <b>'+diff+'%</b>'
     +(up?' — на столько выросло.':' — на столько уменьшилось (знак минус в ответе не пишем, направление уже сказано словом).')};
  }
  return {type:'input',prompt:'Величина '+(up?'выросла':'уменьшилась')+' на <b>'+diff+'%</b>. Сколько процентов от старого значения составляет новое?',

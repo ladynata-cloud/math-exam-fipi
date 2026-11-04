@@ -1,0 +1,203 @@
+{
+  "reviewer": "independent_math_prisms",
+  "reviewedAt": "2026-10-26T11:42:15.435Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "9cf995d30c400a6e581a3168bb8ef8f5c76ed945",
+  "authorReviewerSeparation": {
+    "reviewerAuthoredLessons": false,
+    "lessonAuthors": [
+      "prism_294_296",
+      "prism_295",
+      "prism_297_298"
+    ]
+  },
+  "scope": "All ten source statements, final prompts,56 step explanations and justifications, all help items, theory references and60 model states for exercises294–298. Visually inspected supplied2024 edition printed86–87/PDF88–89. All four subparts of295 and all three of297 retained;294,296,298 unsplit.",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "canonicalization": "Remove top-level status and review; recursively sort object keys; JSON.stringify UTF-8; SHA256. Same algorithm as repository content-review.",
+  "cards": [
+    {
+      "id": "ex-main-0294",
+      "sha256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc",
+      "steps": 7,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "All six pairs of four space diagonals classified: two vertical rectangles give Sбок=2√2·S₀; four oblique rectangles give Sбок=4√(S₀²−a⁴), with S₀>a². The source does not name a pair, so both cases remain in one unsplit source card. Plane-normal claim explicitly justified by two intersecting lines.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0295-a",
+      "sha256": "52a0800a715ff86563478c7a8489cb75fa972a376589005a4bd41447fb10ec04",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "Equal common-vertex angles C₁CD and C₁CB plus equal rhombus sides give SAS and C₁B=C₁D. Rhombus centre O gives CO and C₁O perpendicular to BD; the plane criterion and a parallel OO₁ construct the 90-degree angle of the skew lines.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0295-b",
+      "sha256": "333a422427758f8f535f835cca5c84c18ebe58a62fbbfb96696673bf7ebdc300",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "Independent complete SAS/rhombus/plane proof gives BD⊥BB₁. The section BB₁D₁D is first shown to be a parallelogram by equal parallel opposite edges, then a rectangle by its right angle.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0295-c",
+      "sha256": "37d6bce99a6f0e33f7ee606b114762862e6326532fbda0bb004e40021ab69758",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The two intersecting perpendiculars CO and C₁O lie in the same diagonal plane AA₁C₁; equivalence of the plane descriptions is justified before using the line-plane criterion.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0295-d",
+      "sha256": "6b618b445e73040d0570b2a2f13df6f9114eab4cf419572ba20c02ad62f97a89",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "The self-contained source-angle argument proves BD⊥AA₁C₁. The second diagonal plane BB₁D₁ contains BD, so the plane-perpendicularity criterion applies without circular use of the requested result.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0296",
+      "sha256": "77827ea93643f60b217161750438088c27d0bec93f451678d53c9cc2bd6a65d3",
+      "steps": 8,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The source specifies a lower MIDLINE and a parallel upper side. The actual section is trapezoid MNC₁B₁. Its inclination gives PD=h/tgφ, PD₁=h/sinφ, a=4h/(√3·tgφ), and S=√3·h²/(sinφ·tgφ), with h>0 and 0°<φ<90°. PD₁ is revealed only when constructed in step3.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0297-a",
+      "sha256": "f971b246fc37d08fa6f304034fbfe646275a6d74b83fcd31456294d7a8f0ca74",
+      "steps": 4,
+      "modelStates": 5,
+      "findings": [],
+      "verification": "O lies on altitude BD. A₁D projects to OD; three perpendiculars give AC⊥A₁D. Together with AC⊥BD this gives AC⊥A₁BD, and the lateral plane AA₁C₁ contains AC.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0297-b",
+      "sha256": "5e4fbfb92b1c22af7455dc5e5c46a019ee56bb057a4793b3b75f429d446790da",
+      "steps": 5,
+      "modelStates": 5,
+      "findings": [],
+      "verification": "The midpoint M of BC lies on the line AO. A₁M is constructed in AA₁O, projects to OM and is perpendicular to BC. The two intersecting lines MA,MA₁ establish BC⊥AA₁O; the other plane contains BC.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0297-c",
+      "sha256": "73d50824f58730822b1563caa29769f53fe36677debe765481b8dbbed8627583",
+      "steps": 5,
+      "modelStates": 6,
+      "findings": [],
+      "verification": "The same projection construction gives BC⊥AA₁O and therefore BC⊥AA₁. Parallel lateral edges transfer this to BB₁; the already known parallelogram BB₁C₁C has a right angle and is a rectangle.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    },
+    {
+      "id": "ex-main-0298",
+      "sha256": "aa1cb5ef09a3034b6a5155b091adb100c0bd3adca1255bc2bc8964e60e796f51",
+      "steps": 6,
+      "modelStates": 7,
+      "findings": [],
+      "verification": "Equal distances put the chosen upper vertex above the square centre. Distinguishes side edge b, vertical height √(b²−a²/2), and side-face altitude √(b²−a²/4). The four side faces have equal area; Sполн=2a²+4a√(b²−a²/4), with a>0 and b>a/√2. Source uses no invented numerical data.",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "writtenPedagogy": "PASS"
+    }
+  ],
+  "numericalChecks": {
+    "independentParametricSeed": 294298,
+    "diagonalPairSections294": 960,
+    "nonSpecialConfigurationsEach295Through298": 160,
+    "authoredPlanarConvexPolygons": 64,
+    "authoredNonzeroSegments": 232,
+    "theoryReferences": 60,
+    "sourceAndTheoryMetadata": "PASS",
+    "actualCoordinatesAndTranslations": "PASS",
+    "allSourceDomains": "PASS"
+  },
+  "aggregateSHA256": "3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5",
+  "openFindings": [],
+  "resolvedFindings": [
+    {
+      "card": "ex-main-0294",
+      "field": "steps[3]",
+      "finding": "The perpendicular side-face claim needed its two-line justification.",
+      "resolution": "Author explicitly supplied AB⊥AD and AB⊥AA₁, their intersection A, then the line-plane criterion. Re-read and verified."
+    },
+    {
+      "card": "ex-main-0296",
+      "field": "visualization.model.views.profile.segments",
+      "finding": "PD₁ appeared in step2 before its construction in step3.",
+      "resolution": "Author removed the segment from the earlier view. It remains in the step3 angle view."
+    },
+    {
+      "cards": [
+        "ex-main-0295-a",
+        "ex-main-0295-b",
+        "ex-main-0295-c",
+        "ex-main-0295-d"
+      ],
+      "field": "steps[1].prompt",
+      "finding": "The pronoun could suggest a line perpendicular to a midpoint.",
+      "resolution": "Prompt names BD explicitly. Re-read in all four cards."
+    },
+    {
+      "card": "ex-main-0297-c",
+      "field": "steps[1].explanation",
+      "finding": "M lies on the line AO, beyond segment AO.",
+      "resolution": "Author explicitly names the line AO. Re-read and verified."
+    }
+  ],
+  "pedagogicalAssessment": "Constructions name the containing plane before use, each source subpart is self-contained, derived helpers appear progressively, formulas and proofs remain manually assessed. The 294 ambiguity is explained through two concrete sections rather than an unsupported unique answer. This is a written-design review, not evidence of pupil learning gains.",
+  "notRun": [
+    "Actual rendered browser pixel inspection; required separately.",
+    "Real-pupil efficacy trial.",
+    "Physical-device or screen-reader trial.",
+    "Paid external Claude review; the existing course deferral is not provider approval."
+  ],
+  "reviewHistory": [
+    {
+      "reviewedAt": "2026-10-26T11:02:55.461Z",
+      "aggregateSHA256": "f696540c2d9453a619b7267b778b798dba248cd3868db9852a01ee7a7a3bf78f",
+      "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+      "changedCardPreviousHash": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5"
+    }
+  ],
+  "revisionReview": {
+    "changedCard": "ex-main-0294",
+    "changedFields": [
+      "visualization.model.points.A1[2]",
+      "visualization.model.points.B1[2]",
+      "visualization.model.points.C1[2]",
+      "visualization.model.points.D1[2]"
+    ],
+    "change": "Illustrative upper-base height changes from3 to6; a remains4. No source, proof, help, answer, model connectivity, step or view changes. Nine other canonical cards match the original reviewed hashes.",
+    "reason": "Actual old cloud pixels showed the oblique section nearly edge-on. Author changed illustration aspect ratio; reviewer did not author lesson.",
+    "verification": "PASS independent source/mathematics/written pedagogy: the new model is a right square prism with positive height6. All six space-diagonal pair sections remain planar rectangles. Its lateral area is96; vertical section area24√2 and oblique section area8√13 give96 through the unchanged respective formulas. Re-ran all actual coordinate/theory checks, independent960 section-pair +160-per-family oracle, and committed400-family mathematical test.",
+    "oldCanonicalSHA256": "9b9e88746bbf5a5a74509238d3e19de26a9c0c44f6c905fd76598b8c44034bb5",
+    "newCanonicalSHA256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc",
+    "actualPixels": "Old defect directly inspected. Fresh corrected-head browser/pixel verification remains required and is not claimed here."
+  }
+}

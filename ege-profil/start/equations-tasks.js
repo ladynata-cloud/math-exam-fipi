@@ -14,6 +14,10 @@
     const stage=earned ? task.diagram.stages[earned-1] : [task.diagram.left,task.diagram.right];
     return {left:stage[0],right:stage[1],earned,domain:(task.diagram.domains||[]).filter(d=>earned>=d.after).at(-1)||null,parts:task.diagram.parts};
   }
+  function validBoardState(value) {
+    const property=value&&typeof value==='object'&&!Array.isArray(value)?Object.getOwnPropertyDescriptor(value,'partsOpen'):null;
+    return Boolean(property&&property.enumerable&&Object.hasOwn(property,'value')&&Reflect.ownKeys(value).length===1&&typeof property.value==='boolean');
+  }
   function render(container,task,context={}) {
     const doc=container.ownerDocument;
     const scene=sceneFor(task,context);
@@ -56,17 +60,26 @@
     const parts=doc.createElement('div');parts.hidden=true;parts.style.marginTop='12px';parts.style.lineHeight='1.6';parts.setAttribute('data-expression-parts','');
     task.diagram.parts.forEach(text=>{const p=doc.createElement('p');p.style.margin='4px 0';p.textContent=text;parts.append(p);});
     root.ProfileSolutions?.formatFractions(parts);
+    let disposed=false;
+    function showParts(on){button.setAttribute('aria-pressed',String(on));button.textContent=on?'Скрыть подсказку':closedLabel;parts.hidden=!on;}
     button.onclick=()=>{
       const on=button.getAttribute('aria-pressed')!=='true';
       if(on&&independent&&typeof context.onHelp==='function')context.onHelp();
-      button.setAttribute('aria-pressed',String(on));button.textContent=on?'Скрыть подсказку':closedLabel;parts.hidden=!on;
+      showParts(on);
     };
     box.append(button,parts);container.replaceChildren(box);
-    return()=>{button.onclick=null;};
+    const cleanup=()=>{disposed=true;button.onclick=null;};
+    cleanup.getBoardState=()=>({partsOpen:!parts.hidden});
+    cleanup.applyBoardState=value=>{
+      if(disposed||!validBoardState(value))throw new TypeError('Invalid expression model board state');
+      showParts(value.partsOpen);
+    };
+    return cleanup;
   }
+  render.validateBoardState=validBoardState;
   const taskModels=root.ProfileTaskModels=root.ProfileTaskModels||{};
   ids.forEach(id=>{taskModels[id]=render;});
   const lessonModels=root.ProfileModels=root.ProfileModels||{};
-  lessonIds.forEach(id=>{lessonModels[id]=container=>{const lesson=(root.ProfileLessons||[]).find(l=>l.id===id);return lesson?render(container,lesson.tasks[0],{mode:'independent',solved:false}):()=>{};};});
+  lessonIds.forEach(id=>{lessonModels[id]=container=>{const lesson=(root.ProfileLessons||[]).find(l=>l.id===id);return lesson?render(container,lesson.tasks[0],{mode:'independent',solved:false}):()=>{};};lessonModels[id].validateBoardState=validBoardState;});
   if(typeof module!=='undefined'&&module.exports)module.exports={lessonIds,ids,sceneFor,render};
 })(typeof globalThis!=='undefined'?globalThis:window);

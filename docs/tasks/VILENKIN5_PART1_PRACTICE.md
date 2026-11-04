@@ -84,3 +84,10 @@ views; formula additionally checked all66speed/time combinations. These are
 technical checks and independent agent reviews, not a real-pupil pilot,
 browser viewport QA or external Claude approval. Actual exact-head CI and
 release evidence will be recorded in the single task PR.
+
+
+## Continuation, 5 November 2026
+
+Owner requested completion of all listed work except Peterson, then deferred all assistant work. This existing course is in scope. Standing OWNER_RELEASE_AUTHORIZATION.md authorizes release after checks without another external-review request. Preserve current catalog entries and sitemap routes; finish actual mobile and desktop browser validation before publication.
+
+Final local Chromium: 232 course views (29 modules × 4 modes × 2 widths), six retained-work journeys, zero page errors. All model selections and visible range extremes were exercised. Drafts, completed steps and assistance survive arithmetic detours and reload; source-page notes and offline edition verified. Fixed long adjacent lesson names wrapping at 320px. Review screenshots inspected for home, models and arithmetic return. Prior mathematical/DOM gates rerun successfully; final cloud checks and live verification remain mandatory.

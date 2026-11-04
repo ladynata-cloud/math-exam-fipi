@@ -58,7 +58,27 @@ const server = http.createServer((request, response) => {
     await page.waitForFunction(key => document.querySelector('#model svg').dataset.view === key, step.modelView);
     assert.equal(await page.locator('.am-focus').textContent(), view.label);
     assert.equal(await page.locator('[data-highlight="plane"]').count(), view.polygon.length ? 1 : 0);
-    assert.deepEqual(await page.locator('[data-highlight="segment"]').evaluateAll(nodes => nodes.map(node => node.dataset.segment)), view.segments.map(segment => segment.join('-')));
+    // One authored segment may cross an occluding face and produce several
+    // paths. Check its identity, complete partition and actual computed style.
+    const pieces = await page.locator('[data-highlight="segment"]').evaluateAll(nodes => nodes.map(node => ({
+      id: node.dataset.segment, start: Number(node.dataset.partStart), end: Number(node.dataset.partEnd),
+      hidden: node.dataset.hidden, dash: getComputedStyle(node).strokeDasharray
+    })));
+    const groups = new Map();
+    for (const part of pieces) {
+      assert(Number.isFinite(part.start) && Number.isFinite(part.end) && part.end > part.start);
+      assert(['true', 'false'].includes(part.hidden));
+      assert.equal(part.dash !== 'none', part.hidden === 'true', 'highlight keeps computed hidden-line style');
+      if (!groups.has(part.id)) groups.set(part.id, []);
+      groups.get(part.id).push(part);
+    }
+    assert.deepEqual([...groups.keys()].sort(), view.segments.map(segment => segment.join('-')).sort());
+    for (const parts of groups.values()) {
+      parts.sort((a, b) => a.start - b.start);
+      assert.equal(parts[0].start, 0);
+      assert.equal(parts.at(-1).end, 1);
+      for (let i = 1; i < parts.length; i++) assert.equal(parts[i].start, parts[i - 1].end, 'no omitted or overlapping highlight interval');
+    }
     const visible = await page.locator('[data-point]').evaluateAll(nodes => nodes.map(node => node.dataset.point));
     for (const name of [...view.segments.flat(), ...view.polygon, ...(view.points || [])]) assert.ok(visible.includes(name), lesson.id + ': highlighted point ' + name);
   }
@@ -71,6 +91,33 @@ const server = http.createServer((request, response) => {
     }
   }
 
+  async function catalogLineStyles() {
+    return page.locator('.hero-diagram svg').evaluate(svg => {
+      const vertices = { S: [190, 22], A: [64, 232], B: [210, 295], C: [335, 203], D: [188, 150] };
+      // Inspect every painted path, so a dashed rear edge cannot pass while
+      // another polygon outline silently paints the same edge solid.
+      const strokes = [...svg.querySelectorAll('path')].filter(node => {
+        const style = getComputedStyle(node);
+        return style.stroke !== 'none' && Number.parseFloat(style.strokeWidth) > 0;
+      }).map(node => {
+        const length = node.getTotalLength(), count = Math.ceil(length / .25);
+        return { dash: getComputedStyle(node).strokeDasharray,
+          points: Array.from({ length: count + 1 }, (_, i) => {
+            const point = node.getPointAtLength(length * i / count);
+            return [point.x, point.y];
+          }) };
+      });
+      return ['AD', 'DC', 'SD', 'SA', 'AB', 'BC', 'CS', 'SB'].map(edge => {
+        const [a, b] = [...edge].map(name => vertices[name]);
+        const covering = strokes.filter(stroke => [.2, .5, .8].every(t => {
+          const x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t;
+          return stroke.points.some(point => Math.hypot(point[0] - x, point[1] - y) < .25);
+        }));
+        return { edge, styles: covering.map(stroke => stroke.dash) };
+      });
+    });
+  }
+
   try {
     await page.goto(origin + prefix + 'index.html');
     await page.waitForSelector('#modules .module');
@@ -78,6 +125,12 @@ const server = http.createServer((request, response) => {
     assert.equal(await page.locator('#examples a').count(), 12);
     assert.deepEqual(await page.locator('#examples a').evaluateAll(nodes => nodes.map(node => new URL(node.href).searchParams.get('lesson'))), lessons.map(lesson => lesson.id));
     await layout('catalog');
+    const catalogEdges = await catalogLineStyles();
+    for (const { edge, styles } of catalogEdges) {
+      assert(styles.length > 0, 'catalog hero includes edge ' + edge);
+      if (['AD', 'DC', 'SD'].includes(edge)) assert(styles.every(style => style !== 'none'), 'catalog rear edge ' + edge + ' has no solid overpaint');
+      else assert(styles.some(style => style === 'none'), 'catalog visible edge ' + edge + ' remains solid');
+    }
     if (process.env.ATANASYAN_PREVIEW_DIR) await page.screenshot({ path: path.join(process.env.ATANASYAN_PREVIEW_DIR, 'atanasyan-course-preview-catalog.png'), fullPage: true });
 
     for (const lesson of lessons) {

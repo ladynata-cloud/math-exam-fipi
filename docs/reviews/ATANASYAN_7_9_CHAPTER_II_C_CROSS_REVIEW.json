@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent agent chapter2_models_b; author of tasks 125–157, not author of the reviewed 158–190 block",
+  "at": "2026-10-22T23:46:55.286072+00:00",
+  "status": "passed-with-explicit-scope",
+  "reviewType": "Independent source, mathematics, pedagogy and final real-browser model screenshot review",
+  "base": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+  "scope": {
+    "bookId": "atanasyan-2023-7-9",
+    "chapter": 2,
+    "collection": "main",
+    "numberRange": [
+      158,
+      190
+    ],
+    "numberedExercises": 33,
+    "cards": 40,
+    "solutionSteps": 142,
+    "individualModels": 40,
+    "modelViews": 216,
+    "coordinateAssertions": 133
+  },
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "pdfPages": [
+      49,
+      50,
+      51,
+      52,
+      53
+    ],
+    "verification": "All source pages and relevant figures were visually read. OCR was only a navigation aid. Each condition paraphrase, lettered part and printed/PDF page was checked against the owner-supplied 2023 edition and independently mapped source inventory."
+  },
+  "reviewedFilesSha256": {
+    "geometry-course/textbook/preparation/chapter-02-c.json": "d421e4390fe583dede8770895dde9c484575068de240f2cd35e84c537d6c3c47",
+    "geometry-course/textbook/models/chapter-02-c.json": "05fa573d941e612e263f3dc97fb376850fa78a99b67bd81133060f16986a707d",
+    "tools/geometry-textbook/models_ch2_c.py": "6744c53862a052f503d51e69d5d9cd7f9b903acee27c3f7e6886ad24e315f691",
+    "tools/geometry-textbook/chapter-02-source-map.json": "9b2c9e5f335e626edd009c3a56fac5bedff571ff2998f5d8124b0f5193cea62d",
+    "geometry-course/textbook/assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "geometry-course/textbook/assets/style.css": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b",
+    "geometry-course/textbook/assets/engine.js": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28",
+    "geometry-course/textbook/assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "geometry-course/textbook/index.html": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b"
+  },
+  "checks": [
+    {
+      "name": "Complete source-to-card correspondence",
+      "result": "passed",
+      "details": "Exactly all 33 exercise numbers158–190 and 40 subparts; no missing/extra letters; printed/PDF pages equal the independently verified source map."
+    },
+    {
+      "name": "Mathematics and pedagogical sequence",
+      "result": "passed",
+      "details": "Read every condition, answer, proof and didactic checkpoint. Proofs use theory available through chapter II. Special attention to external angles 178, AAS 179, doubled medians 181 and existence/nondegeneracy 185–189. Step counts match model didactics, and every required step-N view exists."
+    },
+    {
+      "name": "Concrete coordinate models",
+      "result": "passed",
+      "details": "Independently invoked check_models.validate for all 40 final models, including 133 coordinate assertions, named references and full-circle authored-bounds checks. Read neutral/step/case visibility and progressive construction views 159/190; auxiliary proof cases 179 unlock at the corresponding step."
+    },
+    {
+      "name": "Final real-browser visual inspection",
+      "result": "passed",
+      "details": "Actually viewed all 43 final contact sheets covering 432 original PNGs at 320/1280, deduplicated only within this final capture by exact RGB identity (335 unique groups). Labels, lines, angle marks, circles and case separation are readable; no clipping or excessive interior clutter remains. Original-size 178 step 3, 181 case 2 and 186 case 2 desktop PNGs were additionally opened to confirm the formerly clipped geometry."
+    },
+    {
+      "name": "Final evidence identity",
+      "result": "passed",
+      "details": "Final authored preparation/model hashes match the frozen-v3 snapshot. The 432 expected card/view/width PNG names exactly equal the captured C set. Every group RGB digest and every original PNG SHA256 was recomputed when this review was written."
+    },
+    {
+      "name": "Independent v3-to-v4 screenshot reuse verification",
+      "result": "passed",
+      "details": "Direct byte comparison: C preparation and model JSON plus all five rendering files (engine.js, planar-viewer.js, math-text.js, style.css, index.html) are identical. All 40 complete compiled C lesson objects are equal, including review/status/revision fields; no fields excluded. Therefore the actually inspected v3 C screenshots apply unchanged to the v4 C content and renderer."
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "tasks": [
+        170
+      ],
+      "finding": "The endpoint K=A makes the generic triangle proof degenerate.",
+      "resolution": "Both parts explicitly resolve K=A first, then prove the nondegenerate case."
+    },
+    {
+      "tasks": [
+        179
+      ],
+      "finding": "The second contradiction case B–A–X lacked its own visible X configuration.",
+      "resolution": "Separate labelled counterfactual views now show both orders, gated at steps 2 and 3."
+    },
+    {
+      "tasks": [
+        160,
+        165
+      ],
+      "finding": "Two didactic theory links targeted a neighbouring concept.",
+      "resolution": "Degree/minute conversion points to 9 and perpendicular angles point to 12."
+    },
+    {
+      "tasks": [
+        185,
+        189
+      ],
+      "finding": "Existence wording needed precision.",
+      "resolution": "185 states 0/1/2 solutions without a vague qualifier;189 checks whether the perpendicular bisector intersects the segment before naming M, and states nonexistence when it does not."
+    },
+    {
+      "tasks": [
+        159,
+        190
+      ],
+      "finding": "Construction operations needed explicit compass scenes.",
+      "resolution": "All new complete-circle construction stages were independently read and visually checked; auxiliary constructions have separate clean views and final diagrams return to the original figure."
+    },
+    {
+      "tasks": [
+        178,
+        181,
+        186
+      ],
+      "finding": "Earlier desktop captures clipped F/G, K/K1 or the lower circle at the CSS viewport boundary.",
+      "resolution": "Author bounds/aspect were corrected with uniform scaling. Every final view was inspected; the full affected geometry is visibly contained."
+    },
+    {
+      "tasks": [
+        187,
+        188
+      ],
+      "finding": "Earlier example coordinates made a valid candidate triangle visually almost collinear.",
+      "resolution": "Free point B was repositioned without changing givens; both final candidate triangles are visibly nondegenerate at both widths."
+    }
+  ],
+  "openFindings": [],
+  "visualEvidence": {
+    "snapshot": "chapter2-browser-v3-source",
+    "renderSet": "chapter2-all-views-v3",
+    "renderManifestSha256": "1d3fa7c75697f4f5fa01f8beec2f191d0d7e0eacfef7d3455e540953f479eb7a",
+    "authoredContentSha256": "74b331251e2173cbee1bbd1cd70818eaa275725ab279cdb8ea58c36e2a7a7bce",
+    "bundleSha256": "5a6b331e07ff7b3f1bc7aee859c1da9c700eac5fa7ee5fc04aa5995ec2994b9e",
+    "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+    "reviewCoverageManifest": "chapter2-c-final-visual-manifest.json",
+    "reviewCoverageManifestSha256": "e96e6abfe2adb08d7ad1593db090fa1ccbf189bad16de152d98fb6d2e20f7627",
+    "pngSetSha256": "d0ec09a5ce5df4d870e78116dfd0afc5dc386dd1b01b1d16a6b60360ea3b20db",
+    "pngCount": 432,
+    "uniqueRGBGroups": 335,
+    "contactSheets": 43,
+    "viewportWidths": [
+      320,
+      1280
+    ],
+    "priorReviewReuse": false,
+    "fullBrowserEvidenceSha256": "4e8e6cc8a8dc9f256496f79fee8fce68b2839bf63c43dbc88ca6f94b9b403855",
+    "fullBrowserResult": "Independent integration capture completed with errors=[]; read for consistency, not represented as a run performed by this reviewer.",
+    "v3ToV4Identity": {
+      "status": "passed",
+      "from": "chapter2-browser-v3-source",
+      "to": "chapter2-browser-v4-source",
+      "files": {
+        "preparation/chapter-02-c.json": {
+          "identical": true,
+          "sha256": "d421e4390fe583dede8770895dde9c484575068de240f2cd35e84c537d6c3c47"
+        },
+        "models/chapter-02-c.json": {
+          "identical": true,
+          "sha256": "05fa573d941e612e263f3dc97fb376850fa78a99b67bd81133060f16986a707d"
+        },
+        "assets/engine.js": {
+          "identical": true,
+          "sha256": "a774e1204d0b26b2969589cfcff28b70cc8c8841f33230c1d511e3d7c4ee2c28"
+        },
+        "assets/planar-viewer.js": {
+          "identical": true,
+          "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+        },
+        "assets/math-text.js": {
+          "identical": true,
+          "sha256": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b"
+        },
+        "assets/style.css": {
+          "identical": true,
+          "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+        },
+        "index.html": {
+          "identical": true,
+          "sha256": "4ad96a76e0b5e3f791aca172a884a2e66c93fcd75cb2efd83cbfb393a7a8fe5b"
+        }
+      },
+      "compiledLessonObjects": {
+        "count": 40,
+        "identical": true,
+        "sha256": "c8ec63b470844d96fc829d598679d6ca452106692fc0c4261be0709d7d4a1be1",
+        "normalization": "JSON parsed; selected 40 complete lesson objects sorted by id; no object fields removed; JSON encoded ensure_ascii=False, sort_keys=True, separators=(comma,colon)."
+      }
+    },
+    "appliesToSnapshot": "chapter2-browser-v4-source"
+  },
+  "limitations": [
+    "This report is bound to the listed file hashes and final render evidence; changed artifacts require corresponding re-review.",
+    "The coordinate assertions support model accuracy; they do not replace the manually reviewed mathematical proofs.",
+    "Review scope is tasks 158–190 only. No approval of the reviewer’s own 125–157 block, other chapters, exact PR head, merge or deployment is implied."
+  ],
+  "recommendation": "Reviewed 158–190 content and diagrams pass within this scope; keep the separate full-course integration, CI and release checks."
+}

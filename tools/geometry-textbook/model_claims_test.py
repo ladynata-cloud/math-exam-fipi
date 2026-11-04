@@ -36,6 +36,13 @@ class GeometricClaims(unittest.TestCase):
                                 dict(type='distanceRatio', segments=[['O', 'M'], ['O', 'A']], ratio=2)]
         self.assertEqual(sum('claim is false' in e for e in validate(self.model)), 2)
 
+    def test_complete_circle_must_fit_its_authored_viewport(self):
+        self.model['bounds'] = [0, 0, 60, 60]
+        self.model['views']['neutral']['circles'] = [dict(center='O', through='A')]
+        self.assertEqual(validate(self.model), [])
+        self.model['bounds'] = [15, 15, 45, 45]
+        self.assertTrue(any('Circle is clipped' in e for e in validate(self.model)))
+
 
 if __name__ == '__main__':
     unittest.main()

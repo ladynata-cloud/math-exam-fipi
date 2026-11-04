@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Independent technical review by /root/viii_c",
+  "scope": "VIII integration boundaries only; excludes approval of author-owned C content",
+  "sourceBase": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+  "realRuntimeApprovalGranted": false,
+  "realContentApprovalGranted": false,
+  "publicationApprovalGranted": false,
+  "ciStatus": "not-run-in-this-review",
+  "results": [
+    {
+      "probe": "oracle_against_actual_git_blobs",
+      "result": "passed",
+      "details": {
+        "base": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+        "checkedFiles": 209
+      }
+    },
+    {
+      "probe": "synthetic_control_full_union",
+      "result": "passed",
+      "details": {
+        "cards": 1247,
+        "oldCards": 1083,
+        "newCards": 164,
+        "realApproval": false
+      }
+    },
+    {
+      "probe": "full_union_invented paragraph",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII source metadata"
+      }
+    },
+    {
+      "probe": "historical_gate_invented paragraph",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII source metadata"
+      }
+    },
+    {
+      "probe": "full_union_coherent new title",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII lesson source title"
+      }
+    },
+    {
+      "probe": "historical_gate_coherent new title",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII lesson source title"
+      }
+    },
+    {
+      "probe": "full_union_coherent new identity",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII identity or source ordering"
+      }
+    },
+    {
+      "probe": "historical_gate_coherent new identity",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII identity or source ordering"
+      }
+    },
+    {
+      "probe": "full_union_coherent VIII reorder",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII identity or source ordering"
+      }
+    },
+    {
+      "probe": "historical_gate_coherent VIII reorder",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Wrong VIII identity or source ordering"
+      }
+    },
+    {
+      "probe": "full_union_coherent new text",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Stale VIII content/runtime review"
+      }
+    },
+    {
+      "probe": "historical_gate_coherent new text",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Stale VIII content/runtime review"
+      }
+    },
+    {
+      "probe": "full_union_foreign IX slot",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Unexpected old-card scope"
+      }
+    },
+    {
+      "probe": "historical_gate_foreign IX slot",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Unexpected old-card scope"
+      }
+    },
+    {
+      "probe": "full_union_new catalog extra field",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "VIII catalog mismatch"
+      }
+    },
+    {
+      "probe": "historical_gate_new catalog extra field",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "VIII catalog mismatch"
+      }
+    },
+    {
+      "probe": "historical_receipt_unknown_field",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Previous review evidence/provenance changed"
+      }
+    },
+    {
+      "probe": "coherently_rehashed_nonmetadata_runtime",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "AssertionError",
+        "reason": "Only VIII paragraph metadata may change"
+      }
+    },
+    {
+      "probe": "candidate_registry_card count",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "ValueError",
+        "reason": "Chapter VIII candidate must use its exact source scope and paragraphs"
+      }
+    },
+    {
+      "probe": "candidate_registry_chapter-only pollution",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "ValueError",
+        "reason": "Chapter VIII candidate must use its exact source scope and paragraphs"
+      }
+    },
+    {
+      "probe": "candidate_registry_extra field",
+      "result": "passed",
+      "details": {
+        "rejectedBy": "ValueError",
+        "reason": "Chapter VIII candidate must use its exact source scope and paragraphs"
+      }
+    },
+    {
+      "probe": "public_files_unchanged_after_probes",
+      "result": "passed",
+      "details": {
+        "checkedFiles": 209
+      }
+    },
+    {
+      "probe": "actual_stager_synthetic_positive",
+      "result": "passed",
+      "details": {
+        "inputCards": 1083,
+        "outputCards": 1247,
+        "unchangedInputFiles": 209,
+        "outputOutsideInputRoot": true,
+        "receipts": "synthetic temp-only fixtures; not actual approval"
+      }
+    }
+  ],
+  "summary": {
+    "probes": 23,
+    "passed": 23,
+    "failed": 0
+  },
+  "at": "2026-10-29T23:04:45.825757+00:00",
+  "reviewedGitHead": "884d1b646cb67a115f4bf70c2c0ce2ed7b987e52",
+  "reviewedState": "Working-tree technical snapshot; file hashes, not final-head publication approval",
+  "technicalFileHashes": {
+    ".github/workflows/atanasyan-planimetry.yml": "6125d4e4b4873c67cbe29d0830be06e3c9dc74a971fbe91b232786df86140dbe",
+    "geometry-course/textbook/candidate-chapters.json": "0e8a3921588c9d3b166087facd252d35508f635a2d141b65d679b5990b7d53f8",
+    "tools/geometry-textbook/build_candidate.py": "2baeaca12e176e3ce87504095fb96b63e96b84f4c1a946de9a8a164429cb3580",
+    "tools/geometry-textbook/build_course.py": "8c7105f2d674eed96990e8a16bd539a52494b3df6c55539f8f8b4906ba3c0cf7",
+    "tools/geometry-textbook/captions.test.cjs": "9559690f10efed0e75f0b1cdb7106724c00cd4a05012798ff2b48acc083bf1c6",
+    "tools/geometry-textbook/chapter05-preservation.test.py": "c13d963eb491e2e8ce4d4e6ca1cf0d4e7497a37980b46e1a3c53431f9bdc253d",
+    "tools/geometry-textbook/chapter06-candidate.test.py": "ffc90933a240169804dd8e565523b957690286dac021b3eb27a0c0f0482bf60d",
+    "tools/geometry-textbook/chapter06-release.test.py": "b0b92e79fbd25276d8b87cc6d4463ec8ec35472497326f3cc5683f0be200675e",
+    "tools/geometry-textbook/chapter06_extension.py": "97fdd8da8548d24d6b4ce4bb86be31d7bba27ed651d62f20974a3312da3395b1",
+    "tools/geometry-textbook/chapter07-candidate.test.py": "ece00a7a7be98774927b4d93f7ce1138c9f5474f4974cd3ad253e2dc8d6cb26c",
+    "tools/geometry-textbook/chapter07-captions.test.cjs": "71c1f7839baed9ebb7a888593a78c66b3918661fb4e1325c0039c66037d56806",
+    "tools/geometry-textbook/chapter07_extension.py": "f64fd6862d3bdb54917df01d723861a58556b4cae53033feb5c7845171d101e2",
+    "tools/geometry-textbook/chapter07_preservation.py": "a3d8032cd0993e7d032d54d40ea57caafb312024ccfb0d5e1fd8afb0dba658b7",
+    "tools/geometry-textbook/chapter07_release.py": "1317251f1f624812318ac01999ea785af39dd31e76c5747e3337c4b6b6b535b6",
+    "tools/geometry-textbook/chapter07_release_test_support.py": "5559ab794455101b27d2291ac84b3eb2af105db606056ff5ed3164b3d26bd89e",
+    "tools/geometry-textbook/published_preservation.py": "3d43fed4b2062853a8a7977bc459436e123230d915e05daf824a378c4fa61979",
+    "tools/geometry-textbook/chapter08_common.py": "520e4d83ea3360aee4da44d2ae45613073b7ec293722d2e16fda6aac9c7c5591",
+    "tools/geometry-textbook/chapter08-candidate.test.py": "d4f5808c40d9ba1b8739ae823cf034d912dd70ce593bf64e810559f21ce8503b",
+    "tools/geometry-textbook/chapter08-captions.test.cjs": "657faccf5d62a3af6842fca9364672a91fb70aa18c26592a87efc67a32eb850f",
+    "tools/geometry-textbook/chapter08-release.test.py": "2dc8fae08a24a6a1c3ee9f5dfdafb95182eafe6b4603b2e16fd7ce3577ded71d",
+    "tools/geometry-textbook/chapter08_extension.py": "02888750b42a5089374dabbe129b1cb1931fd4dc755cfcde5bee88fa185a4b63",
+    "tools/geometry-textbook/chapter08_preservation.py": "2aaaa978c2041079ad9294cb15b4b21c9f59d5cde9f95698ba6d92e554453eed",
+    "tools/geometry-textbook/chapter08_release.py": "efa2d0e3e29ddf5857130dc633140585dfb9b801e810a30acbd92e1dd078e031",
+    "tools/geometry-textbook/chapter08_release_test_support.py": "5b50445379d14ee6a2799c23b6c535e35d4464ab6bcae2d50105b16b0b1abc92",
+    "tools/geometry-textbook/stage_chapter08_release.py": "d1ec2880a73b811b70c71a78dfd12fd6a2e7e0413dd6e8d1ec1e052bb7d3d143",
+    "tools/geometry-textbook/published-through-639.json": "64c4d8dcedc2d98acf4474eb649ba5c7bbba398516491b3e9d2ca6205501f6b3"
+  },
+  "commandsRunByReviewer": [
+    {
+      "command": "python tools/geometry-textbook/chapter08-candidate.test.py",
+      "result": "passed",
+      "tests": 8,
+      "seconds": 10.571
+    },
+    {
+      "command": "python tools/geometry-textbook/chapter08-release.test.py",
+      "result": "passed",
+      "tests": 13,
+      "seconds": 65.729
+    },
+    {
+      "command": "python tools/geometry-textbook/build_course.py --check",
+      "result": "passed",
+      "publishedCards": 1083
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "workflowStaticChecks": {
+    "result": "passed",
+    "priorGateCommandsRetained": 24,
+    "unchangedPinnedActions": [
+      "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+      "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+    ],
+    "exactHeadCheckoutJobs": 5,
+    "numericOracleCommands": [
+      "a",
+      "b",
+      "c",
+      "theory"
+    ],
+    "continueOnError": false,
+    "testsOrAssertionsDisabled": false
+  },
+  "frozenOracleSha256": "64c4d8dcedc2d98acf4474eb649ba5c7bbba398516491b3e9d2ca6205501f6b3",
+  "publicBundleSha256": "9730c6446a1503b460f40e6951458714730a7a731298fa22ff09fd49d03ec01c",
+  "sourceMapReadSha256": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0",
+  "reviewerOwnedContentExcluded": [
+    "tools/geometry-textbook/models_ch8_c.py",
+    "geometry-course/textbook/preparation/chapter-08-c.json",
+    "geometry-course/textbook/models/chapter-08-c.json"
+  ],
+  "independentProbeExecution": {
+    "primaryProbeScriptSha256": "110c96a21e3ceec5cc218ca8bd0ca14ca775c07b0aba34cdb4c03628cf6453d4",
+    "positiveStageProbeScriptSha256": "4bdce3313a7080f50e3e0421c648fc0537836f07fcb9d19bff816b5caa9ed445",
+    "storage": "Temporary reviewer scripts; mutation names, rejection reasons and positive controls are recorded in results",
+    "syntheticReceipts": "Created only in disposable temporary roots, explicitly marked TEST FIXTURE ONLY, then deleted"
+  },
+  "limits": [
+    "No independent approval of reviewer-owned block C content.",
+    "No full chapter drawing/browser verdict in this technical report.",
+    "No real runtime/content receipt was manufactured by this review.",
+    "Final committed head, hosted CI, merge and publication remain separate."
+  ]
+}

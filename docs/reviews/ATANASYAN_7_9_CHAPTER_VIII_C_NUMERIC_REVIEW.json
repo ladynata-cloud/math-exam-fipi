@@ -1,0 +1,6959 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "reviewer": "root",
+  "author": "viii_c",
+  "at": "2026-10-30",
+  "scope": {
+    "numbers": [
+      710,
+      736
+    ],
+    "numberedExercises": 27,
+    "parts": 29,
+    "sourcePrintedPages": [
+      186,
+      187,
+      188
+    ]
+  },
+  "method": "Independent source/proof reading and fresh coordinate/area/angle/construction oracle; no author imports.",
+  "assertions": 989,
+  "failures": 0,
+  "allProseProofsRead": true,
+  "sourceVisuallyRead": true,
+  "externalConsultationPerformed": false,
+  "visualApprovalGranted": false,
+  "files": {
+    "tools/geometry-textbook/chapter08-c-independent.test.py": "87464e5da6969e624d757bab1343f01072c9b4471e18d1a8bb82ebdf05bdd002",
+    "tools/geometry-textbook/models_ch8_c.py": "c9ac1c321be0262317da4f2231529727515d178c7d87ecdc67df0c97b27d325d",
+    "geometry-course/textbook/preparation/chapter-08-c.json": "af2d652b4ddb16ed1110b6b557d021a2c0aa1fe10e50813106b9bc20aadf4285",
+    "geometry-course/textbook/models/chapter-08-c.json": "9cc150634f3effb64179df3e3914800436245de38da70bd86a3b168819d9db1d",
+    "tools/geometry-textbook/chapter-08-source-map.json": "c8a03bfd554007d3a0b6f2ad0f8ecea08e28b4a647e943ddd7abccc599bfa3b0"
+  },
+  "checks": [
+    {
+      "card": "710:single",
+      "claim": "source side AB",
+      "got": 6.000000000084396,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "source side BC",
+      "got": 9.000000000179387,
+      "expected": 9,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "largest second side",
+      "got": 7.500000000000001,
+      "expected": 7.5,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "other side4.5",
+      "got": 4.5000000001902665,
+      "expected": 4.5,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "other side6.75",
+      "got": 6.749999999911379,
+      "expected": 6.75,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7500000000211616,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7500000000000001,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7499999999752044,
+      "expected": 0.75,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6000000000084396,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "710:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.9000000000179387,
+      "expected": 0.9,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "diagonal geometric mean",
+      "got": 1971.3599999977644,
+      "expected": 1971.36,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "strict trapezoid unequal bases",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.5000000000008504,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4999999999991493,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.5000000000006075,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate angle",
+      "got": 59.99999999998124,
+      "expected": 60.00000000000001,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "coordinate angle",
+      "got": 59.99999999998124,
+      "expected": 60.00000000000001,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "equal angle marker step-1",
+      "got": 59.99999999998124,
+      "expected": 59.99999999998124,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "equal angle marker step-2",
+      "got": 59.99999999998124,
+      "expected": 59.99999999998124,
+      "passed": true
+    },
+    {
+      "card": "711:single",
+      "claim": "equal angle marker step-3",
+      "got": 59.99999999998124,
+      "expected": 59.99999999998124,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "MN5",
+      "got": 4.9999999999984,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "NP3",
+      "got": 3.0000000000108473,
+      "expected": 3,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "requested OK/ON",
+      "got": 0.8749999999547556,
+      "expected": 0.875,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.666666666660107,
+      "expected": 1.6666666666666667,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.3333333333248967,
+      "expected": 2.3333333333333335,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.6666666666666667,
+      "expected": 1.6666666666666667,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.8749999999547556,
+      "expected": 0.875,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 6.887387717003989e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 2.927406573802492e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "coordinate collinearity",
+      "got": 1.3140142859528373e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker neutral",
+      "got": 10.893394648775754,
+      "expected": 10.893394649619,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker neutral",
+      "got": 59.99999999969607,
+      "expected": 60.000000000086644,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-1",
+      "got": 10.893394648775754,
+      "expected": 10.893394649619,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-1",
+      "got": 59.99999999969607,
+      "expected": 60.000000000086644,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-2",
+      "got": 10.893394648775754,
+      "expected": 10.893394649619,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-2",
+      "got": 59.99999999969607,
+      "expected": 60.000000000086644,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-3",
+      "got": 10.893394648775754,
+      "expected": 10.893394649619,
+      "passed": true
+    },
+    {
+      "card": "712:single",
+      "claim": "equal angle marker step-3",
+      "got": 59.99999999969607,
+      "expected": 60.000000000086644,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "base/side4/3",
+      "got": 1.3333333333287871,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "upper altitude segment",
+      "got": 17.999999999709914,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "lower altitude segment",
+      "got": 12.000000000290086,
+      "expected": 12,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "bisected base angle",
+      "got": 24.09484255163822,
+      "expected": 24.09484255275795,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate equal length",
+      "got": 55.50000000018924,
+      "expected": 55.50000000018924,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.3333333333287871,
+      "expected": 1.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4999999999395652,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal segment marker neutral",
+      "got": 55.50000000018924,
+      "expected": 55.50000000018924,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal angle marker neutral",
+      "got": 24.09484255275795,
+      "expected": 24.09484255163822,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal segment marker step-1",
+      "got": 55.50000000018924,
+      "expected": 55.50000000018924,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal angle marker step-1",
+      "got": 24.09484255275795,
+      "expected": 24.09484255163822,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal segment marker step-2",
+      "got": 55.50000000018924,
+      "expected": 55.50000000018924,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal angle marker step-2",
+      "got": 24.09484255275795,
+      "expected": 24.09484255163822,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal segment marker step-3",
+      "got": 55.50000000018924,
+      "expected": 55.50000000018924,
+      "passed": true
+    },
+    {
+      "card": "713:single",
+      "claim": "equal angle marker step-3",
+      "got": 24.09484255275795,
+      "expected": 24.09484255163822,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal lateral sides",
+      "got": 36.111111110799996,
+      "expected": 36.1111111114,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "B inside OC",
+      "got": 65.0,
+      "expected": 65.0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "bisector ratio",
+      "got": 0.5555555555415757,
+      "expected": 0.5555555555507692,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "strict requested inequality",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate equal length",
+      "got": 36.1111111114,
+      "expected": 36.111111110799996,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 3.6000248935466194e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate collinearity",
+      "got": 6.140938515636224e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5555555555415757,
+      "expected": 0.5555555555555556,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5555555555507692,
+      "expected": 0.5555555555555556,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal segment marker neutral",
+      "got": 36.1111111114,
+      "expected": 36.111111110799996,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal angle marker neutral",
+      "got": 36.86989764616136,
+      "expected": 36.86989764489203,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal segment marker step-1",
+      "got": 36.1111111114,
+      "expected": 36.111111110799996,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal angle marker step-1",
+      "got": 36.86989764616136,
+      "expected": 36.86989764489203,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal segment marker step-2",
+      "got": 36.1111111114,
+      "expected": 36.111111110799996,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal angle marker step-2",
+      "got": 36.86989764616136,
+      "expected": 36.86989764489203,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal segment marker step-3",
+      "got": 36.1111111114,
+      "expected": 36.111111110799996,
+      "passed": true
+    },
+    {
+      "card": "714:single",
+      "claim": "equal angle marker step-3",
+      "got": 36.86989764616136,
+      "expected": 36.86989764489203,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "given proportion",
+      "got": 0.7370341836415955,
+      "expected": 0.7370341836593276,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "converse bisector conclusion",
+      "got": 46.58991506002903,
+      "expected": 46.58991506148621,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6933752452652439,
+      "expected": 0.6933752452815365,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6933752452819256,
+      "expected": 0.6933752452815365,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate angle",
+      "got": 46.58991506002903,
+      "expected": 46.58991505993211,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "coordinate angle",
+      "got": 46.58991506148621,
+      "expected": 46.589915059932125,
+      "passed": true
+    },
+    {
+      "card": "715:single",
+      "claim": "equal angle marker step-3",
+      "got": 46.58991506148621,
+      "expected": 46.58991506002903,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "source/result BC",
+      "got": 18.000000000333614,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "source/result CA",
+      "got": 21.60000000030042,
+      "expected": 21.6,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "source/result DE",
+      "got": 7.777777777701394,
+      "expected": 7.777777777777778,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "source/result CE",
+      "got": 14.000000000107782,
+      "expected": 14,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "source/result CD",
+      "got": 16.800000000064358,
+      "expected": 16.8,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "division from A",
+      "got": 0.2857142857272424,
+      "expected": 0.2857142857142857,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 2.954884507124665e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate collinearity",
+      "got": 2.364412352319731e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.2857142857272424,
+      "expected": 0.2857142857142857,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7777777777699398,
+      "expected": 0.7777777777777778,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7777777777693502,
+      "expected": 0.7777777777777778,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.7777777777701396,
+      "expected": 0.7777777777777778,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5555555555452587,
+      "expected": 0.5555555555555556,
+      "passed": true
+    },
+    {
+      "card": "716:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.1999999999944488,
+      "expected": 1.2,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "median intersection cuts equally",
+      "got": 22.2,
+      "expected": 22.199999999999996,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate equal length",
+      "got": 22.199999999999996,
+      "expected": 22.2,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 4.2164069992085243e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 9.400273750096235e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 8.717960518354006e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5999999999999999,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal segment marker neutral",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal segment marker step-1",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal angle marker step-1",
+      "got": 41.054813770430535,
+      "expected": 41.05481377090059,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal segment marker step-2",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal angle marker step-2",
+      "got": 41.054813770430535,
+      "expected": 41.05481377090059,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal segment marker step-3",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal segment marker step-3",
+      "got": 22.199999999999996,
+      "expected": 22.2,
+      "passed": true
+    },
+    {
+      "card": "717:single",
+      "claim": "equal angle marker step-3",
+      "got": 41.054813770430535,
+      "expected": 41.05481377090059,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "height harmonic product ",
+      "got": 18.909090909,
+      "expected": 18.909090908975205,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "sum of reciprocal ratios ",
+      "got": 1.0000000000013112,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "m/d=x/b ",
+      "got": 0.36363636363636365,
+      "expected": 0.3636363636346154,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "n/d=x/a ",
+      "got": 0.6363636363636364,
+      "expected": 0.6363636363666958,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "source upright poles ",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "height harmonic product 1",
+      "got": 12.557575758000002,
+      "expected": 12.557575757933884,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "sum of reciprocal ratios 1",
+      "got": 1.0000000000052651,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "m/d=x/b 1",
+      "got": 0.36363636363513513,
+      "expected": 0.36363636364162866,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "n/d=x/a 1",
+      "got": 0.6363636363648648,
+      "expected": 0.6363636363636366,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "source upright poles 1",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (3, 8, 1)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (3, 8, 7)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (3, 8, 100)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (8, 3, 1)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (8, 3, 7)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (8, 3, 100)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (1, 100, 1)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (1, 100, 7)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "independent line intersection (1, 100, 100)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 1.9733817253782582e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 2.284572971695258e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636363636365,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.3636363636346154,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363636364,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363666958,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 5.588173983762957e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 6.440889523493543e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636363513513,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636364162866,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363648648,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363636366,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:а",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "height harmonic product ",
+      "got": 18.909090909,
+      "expected": 18.909090908975205,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "sum of reciprocal ratios ",
+      "got": 1.0000000000013112,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "m/d=x/b ",
+      "got": 0.36363636363636365,
+      "expected": 0.3636363636346154,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "n/d=x/a ",
+      "got": 0.6363636363636364,
+      "expected": 0.6363636363666958,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "source upright poles ",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "height harmonic product 1",
+      "got": 12.557575758000002,
+      "expected": 12.557575757933884,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "sum of reciprocal ratios 1",
+      "got": 1.0000000000052651,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "m/d=x/b 1",
+      "got": 0.36363636363513513,
+      "expected": 0.36363636364162866,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "n/d=x/a 1",
+      "got": 0.6363636363648648,
+      "expected": 0.6363636363636366,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "source upright poles 1",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (3, 8, 1)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (3, 8, 7)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (3, 8, 100)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (8, 3, 1)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (8, 3, 7)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (8, 3, 100)",
+      "got": 2.1818181818181817,
+      "expected": 2.1818181818181817,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (1, 100, 1)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (1, 100, 7)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "independent line intersection (1, 100, 100)",
+      "got": 0.9900990099009901,
+      "expected": 0.9900990099009901,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 1.9733817253782582e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 2.284572971695258e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636363636365,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.3636363636346154,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363636364,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363666958,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 5.588173983762957e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 6.440889523493543e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636363513513,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.36363636364162866,
+      "expected": 0.36363636363636365,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363648648,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "coordinate distance ratio",
+      "got": 0.6363636363636366,
+      "expected": 0.6363636363636364,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "718:б",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "SSS consequence ('A', 'C')",
+      "got": 1.5384615384647768,
+      "expected": 1.5384615384383113,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "SSS consequence ('B', 'C')",
+      "got": 1.5384615384632372,
+      "expected": 1.5384615384383113,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "given median ratio",
+      "got": 1.5384615384383107,
+      "expected": 1.5384615384383113,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384383113,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384647768,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384632372,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384383107,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate distance ratio",
+      "got": 1.538461538422676,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate equal length",
+      "got": 18.271604939000003,
+      "expected": 18.271604938,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate equal length",
+      "got": 11.876543209999994,
+      "expected": 11.876543210000008,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker neutral",
+      "got": 18.271604939000003,
+      "expected": 18.271604938,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker neutral",
+      "got": 11.876543209999994,
+      "expected": 11.876543210000008,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-1",
+      "got": 18.271604939000003,
+      "expected": 18.271604938,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-1",
+      "got": 11.876543209999994,
+      "expected": 11.876543210000008,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-2",
+      "got": 18.271604939000003,
+      "expected": 18.271604938,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-2",
+      "got": 11.876543209999994,
+      "expected": 11.876543210000008,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-3",
+      "got": 18.271604939000003,
+      "expected": 18.271604938,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal segment marker step-3",
+      "got": 11.876543209999994,
+      "expected": 11.876543210000008,
+      "passed": true
+    },
+    {
+      "card": "719:а",
+      "claim": "equal angle marker step-3",
+      "got": 68.19859051298278,
+      "expected": 68.19859051321566,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence ('A', 'C')",
+      "got": 1.538461538428794,
+      "expected": 1.538461538503692,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence ('B', 'C')",
+      "got": 1.5384615384710816,
+      "expected": 1.538461538503692,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "height ratio incl right case ",
+      "got": 1.5384615385197506,
+      "expected": 1.538461538503692,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence 1('A', 'C')",
+      "got": 1.5384615384869662,
+      "expected": 1.538461538448575,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence 1('B', 'C')",
+      "got": 1.5384615384534108,
+      "expected": 1.538461538448575,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "height ratio incl right case 1",
+      "got": 1.5384615384886606,
+      "expected": 1.538461538448575,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence 2('A', 'C')",
+      "got": 1.5384615384718532,
+      "expected": 1.538461538450536,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "SSS consequence 2('B', 'C')",
+      "got": 1.5384615384658653,
+      "expected": 1.538461538450536,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "height ratio incl right case 2",
+      "got": 1.5384615384505362,
+      "expected": 1.538461538450536,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate distance ratio",
+      "got": 1.538461538503692,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate distance ratio",
+      "got": 1.538461538428794,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384710816,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615385197506,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate distance ratio",
+      "got": 1.5384615384886606,
+      "expected": 1.5384615384615383,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "equal angle marker neutral",
+      "got": 68.19859051215305,
+      "expected": 68.19859051364818,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "equal angle marker step-1",
+      "got": 68.19859051215305,
+      "expected": 68.19859051364818,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "equal angle marker step-2",
+      "got": 68.19859051215305,
+      "expected": 68.19859051364818,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "equal angle marker step-3",
+      "got": 68.19859051215305,
+      "expected": 68.19859051364818,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "equal angle marker case-1",
+      "got": 120.96375653504445,
+      "expected": 120.9637565325563,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle case-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "719:б",
+      "claim": "right angle case-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "base6",
+      "got": 5.999999999918918,
+      "expected": 6,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "requested DC",
+      "got": 2.6666666666396397,
+      "expected": 2.6666666666666665,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "requested DB",
+      "got": 7.211102550860514,
+      "expected": 7.211102550927978,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "requested CB",
+      "got": 5.206833117236498,
+      "expected": 5.206833117271103,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate perpendicular",
+      "got": 1.0914760470229409e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4999999999797295,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.5000000000152027,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.8027756377151285,
+      "expected": 1.8027756377319946,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.3017082793091246,
+      "expected": 1.3017082793177757,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate equal length",
+      "got": 32.888888889,
+      "expected": 32.888888889,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "coordinate equal length",
+      "got": 49.333333334,
+      "expected": 49.333333334,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle neutral",
+      "got": 89.99999999961288,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-1",
+      "got": 89.99999999961288,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "equal angle marker step-1",
+      "got": 33.690067525711775,
+      "expected": 33.69006752633714,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-2",
+      "got": 89.99999999961288,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "equal angle marker step-2",
+      "got": 33.690067525711775,
+      "expected": 33.69006752633714,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-3",
+      "got": 89.99999999961288,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "equal angle marker step-3",
+      "got": 33.690067525711775,
+      "expected": 33.69006752633714,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-4",
+      "got": 89.99999999961288,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "720:single",
+      "claim": "equal angle marker step-4",
+      "got": 33.690067525711775,
+      "expected": 33.69006752633714,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "cross section harmonic mean",
+      "got": 45.53846153799999,
+      "expected": 45.53846153856805,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "O bisects cross section",
+      "got": 22.769230769,
+      "expected": 22.769230768999996,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 5.2637994421859e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 4.649881824376947e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 1.0110109066134284e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 1.714880768035718e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.250000000032399,
+      "expected": 2.25,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.24999999993056,
+      "expected": 2.25,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6923076922983368,
+      "expected": 0.6923076923076923,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6923076922983367,
+      "expected": 0.6923076923076923,
+      "passed": true
+    },
+    {
+      "card": "721:single",
+      "claim": "coordinate equal length",
+      "got": 22.769230768999996,
+      "expected": 22.769230769,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "distance to whole midline A",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "distance to whole midline B",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "distance to whole midline C",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate equal length",
+      "got": 24.90638723299708,
+      "expected": 24.90638723299708,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate equal length",
+      "got": 36.122404751068274,
+      "expected": 36.122404751068274,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate equal length",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate equal length",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "coordinate equal length",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker neutral",
+      "got": 24.90638723299708,
+      "expected": 24.90638723299708,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker neutral",
+      "got": 36.122404751068274,
+      "expected": 36.122404751068274,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-1",
+      "got": 24.90638723299708,
+      "expected": 24.90638723299708,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-1",
+      "got": 36.122404751068274,
+      "expected": 36.122404751068274,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-2",
+      "got": 24.90638723299708,
+      "expected": 24.90638723299708,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-2",
+      "got": 36.122404751068274,
+      "expected": 36.122404751068274,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-3",
+      "got": 24.90638723299708,
+      "expected": 24.90638723299708,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-3",
+      "got": 36.122404751068274,
+      "expected": 36.122404751068274,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-3",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "722:single",
+      "claim": "equal segment marker step-3",
+      "got": 23.125,
+      "expected": 23.125,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "rectangle angle EFFG",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "rectangle angle FGGH",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "rectangle angle GHHE",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "rectangle angle HEEF",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.574522010927613,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.574522010927613,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.574522010927613,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.574522010927613,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.57452201092761,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.57452201092761,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate equal length",
+      "got": 21.574522010927613,
+      "expected": 21.574522010927613,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 2.634747543051777e-15,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate collinearity",
+      "got": 2.6347475430517776e-15,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate parallel",
+      "got": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate parallel",
+      "got": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker neutral",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker neutral",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker neutral",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-1",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-1",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-1",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-2",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-2",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-2",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-3",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-3",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "723:single",
+      "claim": "equal segment marker step-3",
+      "got": 43.149044021855225,
+      "expected": 43.149044021855225,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "third diagonal BP",
+      "got": 0.33333333333679827,
+      "expected": 0.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "third diagonal PQ",
+      "got": 0.3333333333264033,
+      "expected": 0.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "third diagonal QD",
+      "got": 0.33333333333679843,
+      "expected": 0.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate parallel",
+      "got": 1.0380463634187003e-16,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 33.09380606699688,
+      "expected": 33.09380606699688,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 59.2,
+      "expected": 59.2,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 16.54690303349844,
+      "expected": 16.546903033498445,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 29.6,
+      "expected": 29.599999999999998,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 8.320459690650901e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 8.320459690650901e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 4.1602458239657897e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate collinearity",
+      "got": 4.880928674803371e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5000000000077961,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5000000000077964,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 17.787386291919212,
+      "expected": 17.78738629247391,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "coordinate equal length",
+      "got": 17.78738629247392,
+      "expected": 17.78738629247391,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker neutral",
+      "got": 16.54690303349844,
+      "expected": 16.546903033498445,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker neutral",
+      "got": 29.6,
+      "expected": 29.599999999999998,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-1",
+      "got": 16.54690303349844,
+      "expected": 16.546903033498445,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-1",
+      "got": 29.6,
+      "expected": 29.599999999999998,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-2",
+      "got": 16.54690303349844,
+      "expected": 16.546903033498445,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-2",
+      "got": 29.6,
+      "expected": 29.599999999999998,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-3",
+      "got": 16.54690303349844,
+      "expected": 16.546903033498445,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-3",
+      "got": 29.6,
+      "expected": 29.599999999999998,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-3",
+      "got": 17.787386291919212,
+      "expected": 17.78738629247391,
+      "passed": true
+    },
+    {
+      "card": "724:single",
+      "claim": "equal segment marker step-3",
+      "got": 17.78738629247392,
+      "expected": 17.78738629247391,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "external division ",
+      "got": 1.66666666667178,
+      "expected": 1.6666666666794128,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "D external ",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "external division 1",
+      "got": 0.6000000000000001,
+      "expected": 0.6000000000029232,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "D external 1",
+      "got": 1.0,
+      "expected": 1,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 2.9802184110900373e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 1.7320059831345723e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate perpendicular",
+      "got": -3.1885224605259662e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate equal length",
+      "got": 52.00000000018116,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.66666666667178,
+      "expected": 1.6666666666666667,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.6666666666794128,
+      "expected": 1.6666666666666667,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate angle",
+      "got": 59.99999999988476,
+      "expected": 60.00000000000001,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate angle",
+      "got": 59.99999999981732,
+      "expected": 60.00000000000001,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate collinearity",
+      "got": 2.714817820935253e-15,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6000000000000001,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate equal length",
+      "got": 31.199999999935496,
+      "expected": 31.200000000000003,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "coordinate perpendicular",
+      "got": 6.393566470321908e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal angle marker neutral",
+      "got": 59.99999999981732,
+      "expected": 59.99999999988476,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-1",
+      "got": 89.99999999976951,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal angle marker step-1",
+      "got": 59.99999999981732,
+      "expected": 59.99999999988476,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-2",
+      "got": 89.99999999976951,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal segment marker step-2",
+      "got": 52.00000000018116,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal angle marker step-2",
+      "got": 59.99999999981732,
+      "expected": 59.99999999988476,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-3",
+      "got": 89.99999999976951,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal segment marker step-3",
+      "got": 52.00000000018116,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal angle marker step-3",
+      "got": 59.99999999981732,
+      "expected": 59.99999999988476,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle step-4",
+      "got": 89.99999999976951,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal segment marker step-4",
+      "got": 52.00000000018116,
+      "expected": 52.0,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal angle marker step-4",
+      "got": 59.99999999981732,
+      "expected": 59.99999999988476,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "right angle case-1",
+      "got": 90.000000001055,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "725:single",
+      "claim": "equal segment marker case-1",
+      "got": 31.199999999935496,
+      "expected": 31.200000000000003,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "BD half-sum ",
+      "got": 33.56879422229074,
+      "expected": 33.56879422272375,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "CE half-sum ",
+      "got": 33.56879422315677,
+      "expected": 33.56879422272375,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "BD half-sum 1",
+      "got": 33.568794223156765,
+      "expected": 33.56879422272375,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "CE half-sum 1",
+      "got": 33.56879422229074,
+      "expected": 33.56879422272375,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate parallel",
+      "got": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate parallel",
+      "got": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate parallel",
+      "got": -0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 1.9965168879716044e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 5.000029859993753e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 4.620226151788474e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 1.4240384796432813e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 24.413668525423276,
+      "expected": 24.413668525423276,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 42.72391992002423,
+      "expected": 42.72391992002423,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 33.56879422315677,
+      "expected": 33.56879422229074,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 33.56879422315677,
+      "expected": 33.56879422229074,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 33.56879422229074,
+      "expected": 33.56879422229074,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate angle",
+      "got": 29.999999999981238,
+      "expected": 29.99999999999998,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate angle",
+      "got": 29.999999998071495,
+      "expected": 29.999999999999993,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 3.360164473957937e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 4.999995993042804e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 1.5686918405217596e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate collinearity",
+      "got": 8.137442569654605e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate equal length",
+      "got": 33.56879422229074,
+      "expected": 33.568794223156765,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker neutral",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal angle marker neutral",
+      "got": 29.999999998071495,
+      "expected": 29.999999999981238,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker step-1",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal angle marker step-1",
+      "got": 29.999999998071495,
+      "expected": 29.999999999981238,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker step-2",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal angle marker step-2",
+      "got": 29.999999998071495,
+      "expected": 29.999999999981238,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker step-3",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal angle marker step-3",
+      "got": 29.999999998071495,
+      "expected": 29.999999999981238,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker step-4",
+      "got": 18.562818516287958,
+      "expected": 18.56281851671508,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal angle marker step-4",
+      "got": 29.999999998071495,
+      "expected": 29.999999999981238,
+      "passed": true
+    },
+    {
+      "card": "726:single",
+      "claim": "equal segment marker case-1",
+      "got": 33.56879422229074,
+      "expected": 33.568794223156765,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "all-angle area formula ",
+      "got": 1849.5184933368,
+      "expected": 1849.5184933368,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "all-angle area formula 1",
+      "got": 722.4681614897504,
+      "expected": 722.46816148975,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "all-angle area formula 2",
+      "got": 1263.6923076979997,
+      "expected": 1263.6923076979997,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate angle",
+      "got": 59.99999999998124,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.866025403784275,
+      "expected": 0.8660254037844386,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate angle",
+      "got": 119.99999999898641,
+      "expected": 120,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.866025403793284,
+      "expected": 0.8660254037844386,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "coordinate angle",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "right angle case-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "727:single",
+      "claim": "right angle case-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "area60 from unit triangle",
+      "got": 59.999999998702705,
+      "expected": 60,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate equal length",
+      "got": 39.0014244753046,
+      "expected": 39.0014244753046,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate equal length",
+      "got": 61.666666667,
+      "expected": 61.666666667,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 2.6832944197370715e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.24999999998986483,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.1999999999974054,
+      "expected": 0.2,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.16666666666486485,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "728:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.1666666666756757,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "long base16",
+      "got": 16.0,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "C angle150",
+      "got": 150.00000000001876,
+      "expected": 150,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "D angle30",
+      "got": 29.999999999981238,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate perpendicular",
+      "got": 6.549329043857759e-13,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate equal length",
+      "got": 18.5,
+      "expected": 18.5,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.25,
+      "expected": 0.25,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.49999999999971634,
+      "expected": 0.5,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate angle",
+      "got": 29.999999999981238,
+      "expected": 30,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "coordinate angle",
+      "got": 150.00000000001876,
+      "expected": 150,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle neutral",
+      "got": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-1",
+      "got": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-2",
+      "got": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-3",
+      "got": 90.00000000003753,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "729:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas BOM",
+      "got": 0.166666666670045,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas COM",
+      "got": 0.16666666667004498,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas AOP",
+      "got": 0.1666666666659159,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas BOP",
+      "got": 0.16666666666591587,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas AON",
+      "got": 0.16666666666403906,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "six equal areas CON",
+      "got": 0.16666666666403906,
+      "expected": 0.16666666666666666,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate equal length",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate equal length",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 1.9230601310838441e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 4.3895123671794674e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate collinearity",
+      "got": 4.681634137908665e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.9999999999481848,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.0000000000278875,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.0000000000149947,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker neutral",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker neutral",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker neutral",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-1",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-1",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-1",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-2",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-2",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-2",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-3",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-3",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "730:single",
+      "claim": "equal segment marker step-3",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "bases ratio5",
+      "got": 5.000000000000001,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "area18 from four",
+      "got": 17.99999999977196,
+      "expected": 18,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate equal length",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate distance ratio",
+      "got": 5.000000000000001,
+      "expected": 5,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.0000000000000004,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.0000000000760134,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 3.737041520201554e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "right angle neutral",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "equal segment marker neutral",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "right angle step-1",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "equal segment marker step-1",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "equal segment marker step-2",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "equal segment marker step-3",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "731:single",
+      "claim": "equal segment marker step-4",
+      "got": 49.333333332799995,
+      "expected": 49.333333332799995,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "independent similar side AB",
+      "got": 1.4285714285243567,
+      "expected": 1.4285714285243567,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "independent similar side AC",
+      "got": 1.4285714286010949,
+      "expected": 1.4285714285243567,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "independent similar side AD",
+      "got": 1.428571428452761,
+      "expected": 1.4285714285243567,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "independent similar side EC",
+      "got": 1.4285714285689566,
+      "expected": 1.4285714285243567,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "bisector auxiliary length",
+      "got": 36.91739322223167,
+      "expected": 36.91739322091388,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4285714285243567,
+      "expected": 1.4285714285714286,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4285714286010949,
+      "expected": 1.4285714285714286,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4285714285454707,
+      "expected": 1.4285714285714286,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.428571428452761,
+      "expected": 1.4285714285714286,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4285714285689566,
+      "expected": 1.4285714285714286,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate equal length",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate equal length",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 1.0285743338996462e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 7.999925100312684e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 7.071049535245488e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate collinearity",
+      "got": 1.6970553064721323e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate parallel",
+      "got": 1.2113920856010542e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate parallel",
+      "got": 2.4227308530022327e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate angle",
+      "got": 26.565051179410094,
+      "expected": 26.565051177078022,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "coordinate angle",
+      "got": 26.565051177077994,
+      "expected": 26.565051177077994,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker neutral",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker neutral",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-1",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-1",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-1",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-1",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-2",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-2",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-2",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-2",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-3",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-3",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-3",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-3",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-4",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-4",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-4",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-4",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-5",
+      "got": 20.637450199,
+      "expected": 20.6374501992,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal segment marker step-5",
+      "got": 14.446215139000003,
+      "expected": 14.446215139999996,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-5",
+      "got": 26.565051177077994,
+      "expected": 26.565051179410094,
+      "passed": true
+    },
+    {
+      "card": "732:single",
+      "claim": "equal angle marker step-5",
+      "got": 26.565051179457647,
+      "expected": 26.565051179140383,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "constructed scale sqrt2",
+      "got": 1.414213562361575,
+      "expected": 1.4142135623730951,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "constructed area twice",
+      "got": 1.9999999999925153,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "compass transfer BE",
+      "got": 26.0,
+      "expected": 26.000000000211795,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate perpendicular",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate equal length",
+      "got": 18.384776311,
+      "expected": 18.384776310999996,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate equal length",
+      "got": 26.000000000211795,
+      "expected": 26.0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate collinearity",
+      "got": 7.445459852919725e-15,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate parallel",
+      "got": -9.291095208282104e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.414213562361575,
+      "expected": 1.4142135623730951,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.414213562379326,
+      "expected": 1.4142135623730951,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4142135623656806,
+      "expected": 1.4142135623730951,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "right angle step-2",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "equal segment marker step-2",
+      "got": 18.384776311,
+      "expected": 18.384776310999996,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "right angle step-3",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "equal segment marker step-3",
+      "got": 18.384776311,
+      "expected": 18.384776310999996,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "right angle step-4",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "equal segment marker step-4",
+      "got": 18.384776311,
+      "expected": 18.384776310999996,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "right angle step-5",
+      "got": 90.0,
+      "expected": 90,
+      "passed": true
+    },
+    {
+      "card": "733:single",
+      "claim": "equal segment marker step-5",
+      "got": 18.384776311,
+      "expected": 18.384776310999996,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "fourth proportional ",
+      "got": 19.028571428,
+      "expected": 19.028571429120003,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "fourth proportional 1",
+      "got": 52.0,
+      "expected": 52.000000000125,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "independent ratio shrink/equal/enlarge (1, 8, 3)",
+      "got": 0.3333333333333333,
+      "expected": 0.3333333333333333,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "independent ratio shrink/equal/enlarge (8, 1, 3)",
+      "got": 2.6666666666666665,
+      "expected": 2.6666666666666665,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "independent ratio shrink/equal/enlarge (3, 7, 3)",
+      "got": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "independent ratio shrink/equal/enlarge (0.2, 9, 100)",
+      "got": 0.002,
+      "expected": 0.002,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate equal length",
+      "got": 15.857142858000003,
+      "expected": 15.857142857,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate equal length",
+      "got": 31.714285714,
+      "expected": 31.714285714,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate equal length",
+      "got": 26.428571429,
+      "expected": 26.428571429,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate parallel",
+      "got": -2.8947051648279125e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.5999999999873874,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6000000000227028,
+      "expected": 0.6,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate parallel",
+      "got": -1.1538944947236094e-12,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4999999999855769,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "734:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.4999999999891827,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction M0",
+      "got": 50.0,
+      "expected": 50.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction M1",
+      "got": 15.333333333,
+      "expected": 15.333333333,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction N0",
+      "got": 58.222222222,
+      "expected": 58.222222222,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction N1",
+      "got": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction P0",
+      "got": 21.222222222,
+      "expected": 21.222222222,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "midpoint reconstruction P1",
+      "got": 40.0,
+      "expected": 40.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "recovered triangle area factor4",
+      "got": 3.9999999999999996,
+      "expected": 4,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate parallel",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "coordinate equal length",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-3",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-3",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-3",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-4",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-4",
+      "got": 37.902571658145305,
+      "expected": 37.902571658145305,
+      "passed": true
+    },
+    {
+      "card": "735:single",
+      "claim": "equal segment marker step-4",
+      "got": 26.000949650519296,
+      "expected": 26.000949650519296,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "given first median",
+      "got": 24.848869903263214,
+      "expected": 24.848869903999997,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "given second median",
+      "got": 28.643829462704893,
+      "expected": 28.643829462999996,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "centroid average 0",
+      "got": 47.364008743,
+      "expected": 47.364008743,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "centroid average 1",
+      "got": 39.950909994,
+      "expected": 39.95090999466667,
+      "passed": true
+    },
+    {
+      "card": "736:input (6, 4, 5)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (6, 4, 5)",
+      "claim": "independent restored first median",
+      "got": 6.0,
+      "expected": 6.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (6, 4, 5)",
+      "claim": "independent restored second median",
+      "got": 7.5,
+      "expected": 7.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (6, 4, 5)",
+      "claim": "independent restored first median",
+      "got": 6.0,
+      "expected": 6.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (6, 4, 5)",
+      "claim": "independent restored second median",
+      "got": 7.5,
+      "expected": 7.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 3, 3)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 3, 3)",
+      "claim": "independent restored first median",
+      "got": 4.5,
+      "expected": 4.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 3, 3)",
+      "claim": "independent restored second median",
+      "got": 4.5,
+      "expected": 4.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 3, 3)",
+      "claim": "independent restored first median",
+      "got": 4.5,
+      "expected": 4.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 3, 3)",
+      "claim": "independent restored second median",
+      "got": 4.5,
+      "expected": 4.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (3, 4, 6)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (3, 4, 6)",
+      "claim": "independent restored first median",
+      "got": 6.0,
+      "expected": 6.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (3, 4, 6)",
+      "claim": "independent restored second median",
+      "got": 9.0,
+      "expected": 9.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (3, 4, 6)",
+      "claim": "independent restored first median",
+      "got": 6.0,
+      "expected": 6.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (3, 4, 6)",
+      "claim": "independent restored second median",
+      "got": 9.0,
+      "expected": 9.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (9, 1, 9.5)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 1.0,
+      "expected": 1.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (9, 1, 9.5)",
+      "claim": "independent restored first median",
+      "got": 1.5,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (9, 1, 9.5)",
+      "claim": "independent restored second median",
+      "got": 14.25,
+      "expected": 14.25,
+      "passed": true
+    },
+    {
+      "card": "736:input (9, 1, 9.5)",
+      "claim": "independent restored first median",
+      "got": 1.5,
+      "expected": 1.5,
+      "passed": true
+    },
+    {
+      "card": "736:input (9, 1, 9.5)",
+      "claim": "independent restored second median",
+      "got": 14.25,
+      "expected": 14.25,
+      "passed": true
+    },
+    {
+      "card": "736:input (4, 2, 2)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 0.0,
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (1, 4, 3)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 0.0,
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (10, 2, 3)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 0.0,
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "card": "736:input (1, 2, 4)",
+      "claim": "strict inequality equivalent to noncollinearity",
+      "got": 0.0,
+      "expected": 0.0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 16.565913269,
+      "expected": 16.565913269007666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 19.095886309,
+      "expected": 19.095886308661385,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666532522,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.666666666678304,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 16.452056845999998,
+      "expected": 16.452056845999998,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 3.922322434258559e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 2.0000000002805356,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 11.991394004778536,
+      "expected": 11.991394005121535,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 14.541701199987898,
+      "expected": 14.541701199987898,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 6.620838076486082e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 6.46161647298265e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666733279,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666733507,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 24.848869903999997,
+      "expected": 24.848869903263214,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 28.643829462999996,
+      "expected": 28.643829462704893,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 16.565913269,
+      "expected": 16.565913269007666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 19.095886307999997,
+      "expected": 19.095886308661385,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 17.441967270210984,
+      "expected": 17.441967268796766,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 17.441967268796766,
+      "expected": 17.441967268796766,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate parallel",
+      "got": -2.0270367318086553e-11,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666621621,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 1.1767006366943568e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.9999999999501037,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.666666666674565,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666636947,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 12.333333332999999,
+      "expected": 12.333333334000002,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 24.666666667,
+      "expected": 24.666666665999998,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666751548,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666740304,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 17.878819423000003,
+      "expected": 17.878819422776168,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 20.609301612000003,
+      "expected": 20.60930161160279,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 1.1767006366943568e-09,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 1.9999999999501037,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 26.968152513659515,
+      "expected": 26.968152513659515,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate equal length",
+      "got": 32.703688629877824,
+      "expected": 32.703688629877824,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 2.482821923979506e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 0.0,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate collinearity",
+      "got": 6.461660981841163e-10,
+      "expected": 0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.666666666674565,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "coordinate distance ratio",
+      "got": 0.6666666666636947,
+      "expected": 0.6666666666666666,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-1",
+      "got": 13.089966472,
+      "expected": 13.089966470999997,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-1",
+      "got": 13.089966471000004,
+      "expected": 13.089966470999997,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-1",
+      "got": 15.089087301,
+      "expected": 15.089087300000003,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-1",
+      "got": 15.089087299999996,
+      "expected": 15.089087300000003,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-5",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker step-6",
+      "got": 37.0,
+      "expected": 37.0,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker case-1",
+      "got": 17.441967270210984,
+      "expected": 17.441967268796766,
+      "passed": true
+    },
+    {
+      "card": "736:single",
+      "claim": "equal segment marker case-1",
+      "got": 17.441967268796766,
+      "expected": 17.441967268796766,
+      "passed": true
+    }
+  ]
+}

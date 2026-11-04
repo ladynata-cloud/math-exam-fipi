@@ -5457,7 +5457,10 @@
           77
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0240",
@@ -5475,7 +5478,10 @@
           77
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0241",
@@ -5493,7 +5499,10 @@
           77
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0242",
@@ -5514,6 +5523,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -5532,7 +5545,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0244",
@@ -5550,7 +5566,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0245",
@@ -5568,7 +5587,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0246",
@@ -5587,6 +5609,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -5611,6 +5637,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -5629,7 +5660,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0249",
@@ -5650,6 +5684,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -5668,7 +5706,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0251",
@@ -5686,7 +5727,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0252",
@@ -5704,7 +5748,10 @@
           78
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0253",
@@ -5722,7 +5769,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0254",
@@ -5746,6 +5796,13 @@
         "в",
         "г",
         "д"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
       ]
     },
     {
@@ -5764,7 +5821,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0256",
@@ -5787,6 +5847,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -5805,7 +5871,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0258",
@@ -5823,7 +5892,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0259",
@@ -5841,7 +5913,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0260",
@@ -5862,6 +5937,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -5880,7 +5959,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0262",
@@ -5898,7 +5980,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0263",
@@ -5919,6 +6004,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -5937,7 +6026,10 @@
           79
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0265",
@@ -5955,7 +6047,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0266",
@@ -5973,7 +6068,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0267",
@@ -5991,7 +6089,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0268",
@@ -6009,7 +6110,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0269",
@@ -6027,7 +6131,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0270",
@@ -6045,7 +6152,10 @@
           80
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0271",
@@ -6063,7 +6173,10 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0272",
@@ -6081,7 +6194,10 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0273",
@@ -6099,7 +6215,10 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0274",
@@ -6117,7 +6236,10 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0275",
@@ -6135,7 +6257,10 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0276",
@@ -6158,7 +6283,14 @@
         "б",
         "в",
         "г"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all four source subparts; dihedral definition in point22 excludes coplanar halfplanes. Answer to276в is0. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0277",
@@ -6180,7 +6312,13 @@
         "а",
         "б",
         "в"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all three source subparts; axial symmetry is180-degree half-turn. See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0278",
@@ -6202,7 +6340,14 @@
         "а",
         "б",
         "в"
-      ]
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в · боковое ребро не равно стороне основания",
+        "в · все рёбра равны"
+      ],
+      "coverageReview": "Codex independent symmetry_review; visual_pedagogy_review; 2026-10-23T21:04:00.795Z; COMPLETE: all three source subparts;278в requires two cases (3 planes or6 for regular tetrahedron). See docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md."
     },
     {
       "id": "source-main-0279",
@@ -6220,7 +6365,11 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ],
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0280",
@@ -6238,7 +6387,12 @@
           86
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        "пересекающиеся диагонали",
+        "параллельные диагонали"
+      ],
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-main-0281",
@@ -6256,7 +6410,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0282",
@@ -6274,7 +6431,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0283",
@@ -6295,6 +6455,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -6313,7 +6477,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0285",
@@ -6331,7 +6498,10 @@
           87
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0286",
@@ -6350,6 +6520,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -6374,6 +6548,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -6392,7 +6571,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0289",
@@ -6410,7 +6592,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0290",
@@ -6428,7 +6613,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0291",
@@ -6446,7 +6634,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0292",
@@ -6464,7 +6655,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0293",
@@ -6482,7 +6676,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0294",
@@ -6500,7 +6697,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0295",
@@ -6523,6 +6723,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -6541,7 +6747,10 @@
           88
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0297",
@@ -6563,6 +6772,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -6581,7 +6795,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0299",
@@ -6599,7 +6816,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0300",
@@ -6617,7 +6837,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0301",
@@ -6635,7 +6858,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0302",
@@ -6653,7 +6879,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0303",
@@ -6671,7 +6900,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0304",
@@ -6689,7 +6921,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0305",
@@ -6707,7 +6942,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0306",
@@ -6725,7 +6963,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0307",
@@ -6746,6 +6987,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -6764,7 +7009,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0309",
@@ -6782,7 +7030,10 @@
           89
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0310",
@@ -6800,7 +7051,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0311",
@@ -6821,6 +7075,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -6839,7 +7097,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0313",
@@ -6857,7 +7118,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0314",
@@ -6875,7 +7139,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0315",
@@ -6893,7 +7160,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0316",
@@ -6911,7 +7181,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0317",
@@ -6929,7 +7202,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0318",
@@ -6947,7 +7223,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0319",
@@ -6965,7 +7244,10 @@
           90
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0320",
@@ -6983,7 +7265,10 @@
           94
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0321",
@@ -7002,6 +7287,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -7026,6 +7316,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7044,7 +7338,10 @@
           94
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0324",
@@ -7062,7 +7359,10 @@
           94
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0325",
@@ -7081,6 +7381,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -7104,6 +7408,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7122,7 +7430,10 @@
           94
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0328",
@@ -7140,7 +7451,10 @@
           94
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0329",
@@ -7158,7 +7472,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0330",
@@ -7176,7 +7493,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0331",
@@ -7194,7 +7514,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0332",
@@ -7212,7 +7535,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0333",
@@ -7230,7 +7556,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0334",
@@ -7248,7 +7577,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0335",
@@ -7266,7 +7598,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0336",
@@ -7284,7 +7619,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0337",
@@ -7302,7 +7640,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0338",
@@ -7320,7 +7661,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0339",
@@ -7338,7 +7682,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0340",
@@ -7356,7 +7703,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0341",
@@ -7374,7 +7724,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0342",
@@ -7392,7 +7745,10 @@
           95
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0343",
@@ -7410,7 +7766,10 @@
           96
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0344",
@@ -7429,6 +7788,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -7453,6 +7817,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7471,7 +7839,10 @@
           100
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0347",
@@ -7490,6 +7861,11 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в"
@@ -7514,6 +7890,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7532,7 +7912,10 @@
           100
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0350",
@@ -7554,6 +7937,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -7572,7 +7960,10 @@
           100
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0352",
@@ -7590,7 +7981,10 @@
           100
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0353",
@@ -7609,6 +8003,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -7633,6 +8031,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -7653,7 +8056,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0356",
@@ -7671,7 +8077,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0357",
@@ -7689,7 +8098,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0358",
@@ -7707,7 +8119,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0359",
@@ -7729,6 +8144,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -7747,7 +8167,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0361",
@@ -7765,7 +8188,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0362",
@@ -7783,7 +8209,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0363",
@@ -7801,7 +8230,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0364",
@@ -7819,7 +8251,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0365",
@@ -7837,7 +8272,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0366",
@@ -7855,7 +8293,10 @@
           101
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0367",
@@ -7876,6 +8317,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -7894,7 +8339,10 @@
           102
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0369",
@@ -7912,7 +8360,10 @@
           102
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0370",
@@ -7930,7 +8381,10 @@
           102
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0371",
@@ -7948,7 +8402,10 @@
           102
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0372",
@@ -7967,6 +8424,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -7992,6 +8453,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -8010,7 +8477,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0375",
@@ -8028,7 +8498,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0376",
@@ -8046,7 +8519,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0377",
@@ -8064,7 +8540,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0378",
@@ -8082,7 +8561,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0379",
@@ -8100,7 +8582,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0380",
@@ -8118,7 +8603,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0381",
@@ -8137,6 +8625,12 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "requiredParts": [
         "а",
         "б",
         "в",
@@ -8160,7 +8654,12 @@
         ]
       },
       "sourceSubparts": [
-        "а"
+        "а",
+        "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -8180,6 +8679,10 @@
         ]
       },
       "sourceSubparts": [
+        "а",
+        "б"
+      ],
+      "requiredParts": [
         "а",
         "б"
       ]
@@ -8203,6 +8706,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -8221,7 +8728,10 @@
           112
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0386",
@@ -8239,7 +8749,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0387",
@@ -8257,7 +8770,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0388",
@@ -8280,6 +8796,12 @@
         "б",
         "в",
         "г"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в",
+        "г"
       ]
     },
     {
@@ -8298,7 +8820,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0390",
@@ -8316,7 +8841,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0391",
@@ -8334,7 +8862,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0392",
@@ -8352,7 +8883,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0393",
@@ -8370,7 +8904,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0394",
@@ -8388,7 +8925,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0395",
@@ -8406,7 +8946,10 @@
           113
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0396",
@@ -8424,7 +8967,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0397",
@@ -8442,7 +8988,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0398",
@@ -8460,7 +9009,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0399",
@@ -8478,7 +9030,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0400",
@@ -8499,6 +9054,10 @@
       "sourceSubparts": [
         "а",
         "б"
+      ],
+      "requiredParts": [
+        "а",
+        "б"
       ]
     },
     {
@@ -8517,7 +9076,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0402",
@@ -8535,7 +9097,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0403",
@@ -8553,7 +9118,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0404",
@@ -8571,7 +9139,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0405",
@@ -8589,7 +9160,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0406",
@@ -8607,7 +9181,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0407",
@@ -8625,7 +9202,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0408",
@@ -8643,7 +9223,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0409",
@@ -8661,7 +9244,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0410",
@@ -8679,7 +9265,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0411",
@@ -8697,7 +9286,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0412",
@@ -8719,6 +9311,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -8737,7 +9334,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0414",
@@ -21898,7 +22498,10 @@
           74,
           75
         ]
-      }
+      },
+      "requiredParts": [
+        "definitions"
+      ]
     },
     {
       "id": "source-theory-033",
@@ -21917,7 +22520,11 @@
           75,
           76
         ]
-      }
+      },
+      "requiredParts": [
+        "properties",
+        "area"
+      ]
     },
     {
       "id": "source-theory-034",
@@ -21936,7 +22543,12 @@
           76,
           77
         ]
-      }
+      },
+      "requiredParts": [
+        "definitions",
+        "regular",
+        "area"
+      ]
     },
     {
       "id": "source-theory-035",
@@ -21957,7 +22569,18 @@
           81,
           82
         ]
-      }
+      },
+      "requiredParts": [
+        "center",
+        "axis",
+        "plane",
+        "figure",
+        "parallelepiped-examples",
+        "unbounded-examples",
+        "general-solids-examples",
+        "applications-elements"
+      ],
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-036",
@@ -21980,7 +22603,20 @@
           84,
           85
         ]
-      }
+      },
+      "requiredParts": [
+        "definition",
+        "vertex-angles",
+        "tetrahedron",
+        "octahedron",
+        "icosahedron",
+        "cube",
+        "dodecahedron",
+        "euler-count",
+        "icosahedron-existence",
+        "dodecahedron-existence"
+      ],
+      "coverageReview": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit; 2026-10-24T05:23:05.522Z; source/mathematics/written pedagogy PASS after display corrections; all required components covered. See docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md."
     },
     {
       "id": "source-theory-037",
@@ -21997,7 +22633,19 @@
         "pdfPages": [
           85
         ]
-      }
+      },
+      "requiredParts": [
+        "tetrahedron-center",
+        "tetrahedron-axes",
+        "tetrahedron-planes",
+        "cube-center",
+        "cube-axes",
+        "cube-planes",
+        "cube-plane-correction",
+        "octahedron",
+        "icosahedron",
+        "dodecahedron"
+      ]
     },
     {
       "id": "source-theory-038",
@@ -22018,7 +22666,10 @@
           92,
           93
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-039",
@@ -22037,7 +22688,10 @@
           93,
           94
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-040",
@@ -22056,7 +22710,10 @@
           96,
           97
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-041",
@@ -22075,7 +22732,10 @@
           97,
           98
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-042",
@@ -22094,7 +22754,10 @@
           98,
           99
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-043",
@@ -22111,7 +22774,10 @@
         "pdfPages": [
           102
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-044",
@@ -22130,7 +22796,10 @@
           103,
           104
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-045",
@@ -22149,7 +22818,10 @@
           104,
           105
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-046",
@@ -22166,7 +22838,10 @@
         "pdfPages": [
           105
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-047",
@@ -22185,7 +22860,10 @@
           106,
           107
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-048",
@@ -22202,7 +22880,10 @@
         "pdfPages": [
           107
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-049",
@@ -22219,7 +22900,10 @@
         "pdfPages": [
           108
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-050",
@@ -22238,7 +22922,10 @@
           109,
           110
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-051",
@@ -22257,7 +22944,10 @@
           110,
           111
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-theory-052",
@@ -23754,7 +24444,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-02",
@@ -23773,7 +24466,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-03",
@@ -23792,7 +24488,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-04",
@@ -23811,7 +24510,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-05",
@@ -23830,7 +24532,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-06",
@@ -23849,7 +24554,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-07",
@@ -23868,7 +24576,11 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-3-08",
@@ -23887,7 +24599,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-09",
@@ -23906,7 +24621,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-10",
@@ -23925,7 +24643,13 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        "внутренняя точка",
+        "точка на стороне",
+        "точка в вершине",
+        "невыпуклое основание"
+      ]
     },
     {
       "id": "source-selfcheck-3-11",
@@ -23944,7 +24668,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-12",
@@ -23963,7 +24690,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-13",
@@ -23982,7 +24712,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-3-14",
@@ -24001,7 +24734,10 @@
           87,
           88
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-01",
@@ -24020,7 +24756,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-02",
@@ -24039,7 +24778,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-03",
@@ -24058,7 +24800,12 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
+      ]
     },
     {
       "id": "source-selfcheck-4-04",
@@ -24077,7 +24824,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-05",
@@ -24096,7 +24846,11 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        "а",
+        "б"
+      ]
     },
     {
       "id": "source-selfcheck-4-06",
@@ -24115,7 +24869,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-07",
@@ -24134,7 +24891,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-08",
@@ -24153,7 +24913,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-09",
@@ -24172,7 +24935,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-4-10",
@@ -24191,7 +24957,10 @@
           113,
           114
         ]
-      }
+      },
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-selfcheck-5-01",

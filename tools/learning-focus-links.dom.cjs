@@ -113,3 +113,48 @@ test('actual teacher preview shares links, with escaped fallback for a cached ol
  }finally{dom.window.close();}
  }
 });
+
+
+test('OGE11 focus and saved-plan references expose the exact trainer without starting personal work',()=>{
+ const dom=fixture(),{window}=dom,host=window.document.querySelector('main');
+ const url='https://mathexam.space/trainers/oge-task11-graphs-trainer.html';
+ try{
+  host.innerHTML=window.LearningPreparationUI.focusMarkup(url);
+  const link=host.querySelector('[data-focus-practice]');
+  assert.equal(link.href,url);assert.match(link.textContent,/№11/);
+  assert.equal(host.querySelectorAll('[data-prep-start]').length,0);
+  for(const teacher of [false,true]){
+   host.innerHTML=window.LearningPreparationUI.planCoursesMarkup(url,{teacher});
+   assert.equal(host.querySelector('[data-plan-course-open]').href,url);
+   assert.equal(host.querySelectorAll('[data-plan-course-board]').length,teacher?1:0);
+   assert.match(host.textContent,/не входят в прогресс кабинета/);
+  }
+  for(const unsafe of [url+'?next=evil',url.replace('mathexam.space','mathexam.space.evil.test')]){
+   host.innerHTML=window.LearningPreparationUI.focusMarkup(unsafe);
+   assert.equal(host.querySelectorAll('a').length,0);
+   assert.equal(window.LearningPreparationUI.planCoursesMarkup(unsafe),'');
+  }
+ }finally{dom.window.close();}
+});
+
+test('complete OGE geometry and graphs plan has nine distinct cards and exact teacher board links',()=>{
+ const dom=fixture(),{window}=dom,host=window.document.querySelector('main');
+ const ids=['oge-task11-graphs-trainer','oge-task15-triangles','oge-task16-circle','oge-task17-quadrilaterals','oge-task18-grid','task19-trainer','oge-task23-geometry-calculations','oge-task24-proofs','oge-task25-geometry'];
+ const urls=ids.map(id=>'https://mathexam.space/trainers/'+id+'.html');
+ try{
+  for(const teacher of [false,true]){
+   host.innerHTML=window.LearningPreparationUI.planCoursesMarkup(urls.join('\n')+'\n'+urls[0],{teacher});
+   assert.deepEqual([...host.querySelectorAll('[data-plan-course]')].map(x=>x.dataset.planCourse),ids);
+   assert.deepEqual([...host.querySelectorAll('[data-plan-course-open]')].map(a=>a.href),urls);
+   assert.equal(host.querySelectorAll('[data-plan-course-board]').length,teacher?9:0);
+   for(const a of host.querySelectorAll('[data-plan-course-board]')){
+    const u=new URL(a.href);assert.equal(u.origin,'https://mathexam.space');
+    assert.equal(u.pathname,'/trainers/trainer-board.html');
+    assert(urls.includes('https://mathexam.space'+u.searchParams.get('trainer')));
+   }
+   assert.equal(host.querySelectorAll('[data-prep-start]').length,0);
+  }
+  for(const url of urls.slice(-3))for(const bad of [url+'?next=evil',url+'#payload',url.replace('mathexam.space','mathexam.space.evil.test')])
+   assert.equal(window.LearningPreparationUI.planCoursesMarkup(bad),'');
+ }finally{dom.window.close();}
+});

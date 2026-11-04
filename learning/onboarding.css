@@ -1,0 +1,301 @@
+/* The onboarding dialog shares the existing cabinet's colors and controls. */
+dialog:has(.learning-onboarding) {
+  width: min(840px, calc(100% - 24px));
+}
+
+.learning-onboarding,
+.learning-onboarding * {
+  min-width: 0;
+}
+
+.learning-onboarding .onboarding-lead {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.onboarding-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px;
+}
+
+.onboarding-steps li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.onboarding-steps li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f0f3ed;
+}
+
+.onboarding-steps li[aria-current="step"] {
+  border-color: var(--green);
+  color: var(--green-dark);
+  background: var(--green-light);
+}
+
+.onboarding-steps li[aria-current="step"] > span,
+.onboarding-steps li[data-complete="true"] > span {
+  color: #fff;
+  background: var(--green);
+}
+
+.onboarding-stage {
+  display: grid;
+  gap: 20px;
+}
+
+.onboarding-stage h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.learning-onboarding .onboarding-stage p,
+.learning-onboarding label,
+.learning-onboarding input,
+.learning-onboarding select {
+  font-size: 1rem;
+}
+
+.onboarding-fields {
+  display: grid;
+  grid-template-columns: minmax(130px, .65fr) minmax(0, 1.35fr);
+  gap: 18px;
+}
+
+.onboarding-access {
+  display: grid;
+  gap: 16px;
+  margin: 4px 0 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.onboarding-access legend {
+  padding: 0 7px;
+  font-weight: 700;
+}
+
+.learning-onboarding .onboarding-selection-count {
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.onboarding-course-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.onboarding-course-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-height: min(52dvh, 520px);
+  overflow-y: auto;
+  padding: 3px;
+}
+
+.onboarding-course {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.onboarding-course[data-selected="true"] {
+  border-color: var(--green);
+  background: #f0f7f1;
+}
+
+.onboarding-course input[type="checkbox"] {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin: 2px 0 0;
+}
+
+.onboarding-course-copy {
+  display: grid;
+  gap: 9px;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.onboarding-course-copy strong {
+  line-height: 1.35;
+}
+
+.onboarding-course-copy > span {
+  color: var(--muted);
+  font-size: .94rem;
+}
+
+.onboarding-course-copy small {
+  font-size: .85rem;
+}
+
+.onboarding-summary {
+  padding: 20px;
+  border: 1px solid #c8decf;
+  border-radius: 12px;
+  background: #f2f8f2;
+}
+
+.onboarding-summary dl,
+.onboarding-conflict dl {
+  display: grid;
+  gap: 13px;
+  margin: 0 0 22px;
+}
+
+.onboarding-summary dl > div,
+.onboarding-conflict dl > div {
+  display: grid;
+  grid-template-columns: minmax(100px, .6fr) minmax(0, 1.4fr);
+  gap: 14px;
+}
+
+.onboarding-summary dt,
+.onboarding-conflict dt {
+  color: var(--muted);
+}
+
+.onboarding-summary dd,
+.onboarding-conflict dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.onboarding-summary h4,
+.onboarding-conflict h4 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.onboarding-summary ul,
+.onboarding-conflict ul {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.onboarding-summary li,
+.onboarding-conflict li {
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+}
+
+.onboarding-conflict {
+  display: grid;
+  gap: 18px;
+  border: 1px solid #dfbc70;
+  border-radius: 12px;
+  padding: 18px;
+  background: #fff8e9;
+}
+
+.onboarding-conflict p {
+  margin-top: 16px;
+}
+
+.onboarding-actions {
+  position: sticky;
+  bottom: -1px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  padding-bottom: 4px;
+  background: var(--paper);
+}
+
+.learning-onboarding .onboarding-actions .primary {
+  width: auto;
+  flex: 1 1 220px;
+}
+
+.onboarding-actions button,
+.learning-onboarding [data-onboarding-generate],
+.learning-onboarding [data-onboarding-reload] {
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+.onboarding-status:empty,
+.learning-onboarding .form-error:empty {
+  display: none;
+}
+
+.learning-onboarding .onboarding-status {
+  color: var(--green-dark);
+}
+
+@media (max-width: 600px) {
+  .onboarding-course-list,
+  .onboarding-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .onboarding-steps { gap: 6px; }
+  .onboarding-steps li {
+    flex-direction: column;
+    gap: 6px;
+    padding: 9px 4px;
+    text-align: center;
+    font-size: .84rem;
+  }
+
+  .onboarding-summary dl > div,
+  .onboarding-conflict dl > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+
+  .onboarding-access,
+  .onboarding-summary,
+  .onboarding-conflict { padding: 15px; }
+  .onboarding-course { padding: 15px; }
+  .onboarding-actions > button:not(.primary) { flex: 1; }
+}
+
+@media (max-width: 480px) {
+  .learning-onboarding .onboarding-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learning-onboarding .onboarding-actions > button {
+    width: 100%;
+    padding-inline: 12px;
+    white-space: normal;
+  }
+
+  .learning-onboarding .onboarding-actions > .primary {
+    grid-column: 1 / -1;
+  }
+}

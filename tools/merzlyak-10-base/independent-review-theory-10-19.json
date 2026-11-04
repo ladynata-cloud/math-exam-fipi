@@ -1,0 +1,2043 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/ocr_source",
+  "authors": {
+    "details": "/root/textbook_inventory",
+    "overviews": "/root/theory_course"
+  },
+  "reviewedAt": "2026-10-22T22:42:15.989350+00:00",
+  "scope": {
+    "paragraphs": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "lessonCards": 37,
+    "newDetailCards": 27,
+    "existingOverviewCards": 10,
+    "sourcePdfPages": [
+      99,
+      100,
+      101,
+      102,
+      103,
+      108,
+      109,
+      113,
+      114,
+      115,
+      119,
+      120,
+      121,
+      122,
+      123,
+      128,
+      129,
+      130,
+      131,
+      132,
+      136,
+      137,
+      138,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      158,
+      159,
+      160,
+      161,
+      163,
+      164,
+      165,
+      166,
+      167,
+      172,
+      173,
+      174
+    ],
+    "sourcePageCount": 41,
+    "allAuthoredDetailedProofsAndExamplesRead": true,
+    "allOverviewStatementsPromptsHintsAndProofStepsRead": true,
+    "overviewDimensionsRechecked": [
+      "source",
+      "mathematics",
+      "pedagogy"
+    ],
+    "inventoryEntriesReviewed": 95,
+    "printedSourceUnits": 94,
+    "explicitAuthorEnrichments": 1,
+    "excludedPendingSeparateInventory": [
+      {
+        "title": "Стереометрическое расположение двух прямых",
+        "pdfPages": [
+          140,
+          141,
+          142,
+          143
+        ]
+      },
+      {
+        "title": "Платоновы тела",
+        "pdfPages": [
+          176,
+          177,
+          178,
+          179,
+          180
+        ]
+      },
+      {
+        "title": "Геометрическое тело",
+        "pdfPages": [
+          180,
+          181,
+          182,
+          183
+        ]
+      }
+    ]
+  },
+  "verdicts": {
+    "source": "PASS",
+    "mathematics": "PASS",
+    "pedagogy": "PASS"
+  },
+  "method": [
+    "Visually read every listed source PNG (PDF page index printed-page+1); read every printed theorem proof, key task, worked example and associated figure in §§10–19. OCR was a locator, not mathematical authority.",
+    "Independently read all27 detail cards and10 overviews in full, including prompts containing hypotheses, optional hints, model points, edges, faces and step-to-view mappings. Checked all95 inventory entries against the source and mapped content.",
+    "Checked general proof logic separately from numerical illustrations: arbitrary n-gons, existence/uniqueness arguments, inside/outside projection, nondegeneracy, equality cases and endpoint angles. A numerical model alone was never treated as a proof.",
+    "Wrote a separate reviewer program using standard-library vector operations without importing any author module. Verified all37 actual models plus deterministic general families of projection, common perpendiculars, affine parallelepipeds, regular pyramids and frustums.",
+    "Overviews were reviewed as the compact introduction in combination with their explicit detail cards; no claim that every detail proof is duplicated in an overview. Source, mathematics and pedagogy were independently rechecked for every one of these10 overview cards."
+  ],
+  "tests": [
+    {
+      "command": "python tools/merzlyak-10-base/reviewer-theory-10-19-checks.py",
+      "result": "PASS",
+      "independentAssertions": 6292,
+      "actualCards": 37,
+      "generalFamilies": {
+        "randomProjectionTriangles": 80,
+        "randomCommonPerpendiculars": 80,
+        "affineParallelepipeds": 80,
+        "regularPyramids": 21,
+        "regularFrustums": 63
+      }
+    },
+    {
+      "command": "python tools/merzlyak-10-base/theory-details-10-19-models.test.py",
+      "result": "PASS",
+      "testGroups": 5,
+      "role": "author regression only; not a substitute for independent review"
+    },
+    {
+      "command": "AJV2020 lesson schema and engine.validateLesson over all37 current lesson files",
+      "result": "PASS",
+      "cards": 37
+    }
+  ],
+  "findings": [
+    {
+      "id": "RTH1019-001",
+      "dimensions": [
+        "source",
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-03.json",
+      "finding": "Printed task1 asks for the selected dihedral angle120°. Initial card changed the question to the angle between planes60°.",
+      "resolution": "Author restored original DB17/BC10 givens and original dihedral question and answer120°;60° is explicitly an additional remark answering a different question. Rechecked against PDF122 and both independent angle calculations.",
+      "status": "resolved"
+    },
+    {
+      "id": "RTH1019-002",
+      "dimensions": [
+        "source"
+      ],
+      "path": "tools/merzlyak-10-base/coverage-theory-10-19.json",
+      "finding": "Comparison of inclines was mapped as a printed proof prompt on PDF100; that page only supports theorem10.1 context.",
+      "resolution": "Author explicitly classified it author_enrichment with isPrintedSourceUnit=false and provenance note. Inventory now reports94 printed units plus1 enrichment,95 reviewed entries in total.",
+      "status": "resolved"
+    },
+    {
+      "id": "RTH1019-003",
+      "dimensions": [
+        "pedagogy"
+      ],
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+      "finding": "Overview base view combined8 fixed labels with2 new top-vertex labels.",
+      "resolution": "Author moved the8 initial labels to neutral.points, leaving focused endpoints/polygons to label later views. Rechecked neutral8, bases4, height2 and apothem6. Mathematical content unchanged; current hashes below include this change.",
+      "status": "resolved"
+    }
+  ],
+  "unresolvedFindings": [],
+  "paragraphReviewNotes": [
+    {
+      "paragraph": 10,
+      "note": "Read definitions of orthogonal projection and distances, theorem10.1, all four key tasks and both embedded solid examples. Circumcentre proof covers outside-centre cases; common-perpendicular proof justifies incidence as well as orthogonality. Comparison of inclines is explicitly author enrichment."
+    },
+    {
+      "paragraph": 11,
+      "note": "Both directions of theorem11.1 and iff statement are complete in overview including the premise in its prompt. Incentre proof distinguishes lines from segments and proves positive radius, strict interior position and tangencies on actual polygon sides."
+    },
+    {
+      "paragraph": 12,
+      "note": "Line/segment-plane angle definitions include 0° and90° cases. Cube45° example and equal-inclination common-height argument both verified."
+    },
+    {
+      "paragraph": 13,
+      "note": "Checked convex dihedral convention, same-half-plane direction in equal-linear-angle proof, classification, plane-versus-selected-dihedral distinction and both printed numerical tasks. Original task1 asks120°, while60° remains only its separate remark."
+    },
+    {
+      "paragraph": 14,
+      "note": "Checked theorem14.1, theorem14.2, the two normal-line consequences, rectangular-solid example and task3. Recomputed20/13/12 lengths,120° base angle and common-perpendicular distance40√3/19."
+    },
+    {
+      "paragraph": 15,
+      "note": "Special and arbitrary triangle arguments, nonoverlapping projection additivity, convex polygon triangulation, endpoint angles and the explicitly out-of-course nonconvex triangulation remark checked. General-triangle model is a genuine tilted plane and valid split."
+    },
+    {
+      "paragraph": 16,
+      "note": "All polyhedron elements, convexity and its nonconverse, prism classification, regular triangular/hexagonal examples, diagonal-section argument and both lateral-area proofs checked. Counterexample has10 actual convex faces and a segment leaving the body; no interior waist face is falsely counted."
+    },
+    {
+      "paragraph": 17,
+      "note": "Overview definitions and theorem17.2 read against source. Detail establishes opposite-face equality/parallelism, each auxiliary parallelogram, all four diagonal midpoints and symmetry of the whole body, not just vertices."
+    },
+    {
+      "paragraph": 18,
+      "note": "Definitions, outside-foot example, diagonal section, regular triangle/square pyramid, tetrahedron, equal edges/faces/apothems, theorem18.1 and both parts of key task checked. Equal-base-dihedral proof explicitly establishes α acute and projection inside before invoking an incircle and area addition."
+    },
+    {
+      "paragraph": 19,
+      "note": "Parallel-cut definition, similar bases, height/apothem distinction, regular-frustum properties, equal-apothem proof and theorem19.1 checked. Updated overview views label only focused geometry after the neutral view; complete and smaller pyramids justify equal apothems."
+    }
+  ],
+  "inventoryAudit": [
+    {
+      "paragraph": 10,
+      "unitId": "definition-orthogonal-projection",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        99
+      ],
+      "coveredBy": [
+        "merz-theory-10",
+        "merz-theory-10-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "example-projection-parallelepiped-base",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        99
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-perpendicular-incline-projection",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        100
+      ],
+      "coveredBy": [
+        "merz-theory-10"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "theorem-10.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        100
+      ],
+      "coveredBy": [
+        "merz-theory-10"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "proof-comparison-inclines",
+      "isPrintedSourceUnit": false,
+      "sourcePdfPages": [
+        100
+      ],
+      "coveredBy": [
+        "merz-theory-10"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        100
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-point-plane-distance",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        101
+      ],
+      "coveredBy": [
+        "merz-theory-10"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        101
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-line-plane-distance",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        101
+      ],
+      "coveredBy": [
+        "merz-theory-10",
+        "merz-theory-10-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-3",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        101,
+        102
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-parallel-plane-distance",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        102
+      ],
+      "coveredBy": [
+        "merz-theory-10",
+        "merz-theory-10-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "definition-skew-distance",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        102
+      ],
+      "coveredBy": [
+        "merz-theory-10",
+        "merz-theory-10-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "example-cube-skew-distance",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        102
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "key-task-10-4",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        102,
+        103
+      ],
+      "coveredBy": [
+        "merz-theory-10-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 10,
+      "unitId": "common-perpendicular-distance-property",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        103
+      ],
+      "coveredBy": [
+        "merz-theory-10",
+        "merz-theory-10-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 11,
+      "unitId": "theorem-11.1-direct",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        108,
+        109
+      ],
+      "coveredBy": [
+        "merz-theory-11"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 11,
+      "unitId": "theorem-11.1-reverse",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        109
+      ],
+      "coveredBy": [
+        "merz-theory-11"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 11,
+      "unitId": "three-perpendiculars-iff",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        109
+      ],
+      "coveredBy": [
+        "merz-theory-11"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 11,
+      "unitId": "key-task-11",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        109
+      ],
+      "coveredBy": [
+        "merz-theory-11-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 12,
+      "unitId": "definition-line-plane-angle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        113,
+        114
+      ],
+      "coveredBy": [
+        "merz-theory-12"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 12,
+      "unitId": "embedded-example-12.3",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        114
+      ],
+      "coveredBy": [
+        "merz-theory-12-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 12,
+      "unitId": "definition-segment-plane-angle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        114
+      ],
+      "coveredBy": [
+        "merz-theory-12-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 12,
+      "unitId": "key-task-12",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        114,
+        115
+      ],
+      "coveredBy": [
+        "merz-theory-12",
+        "merz-theory-12-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-dihedral-region-faces-edge",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        119,
+        120
+      ],
+      "coveredBy": [
+        "merz-theory-13"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-linear-angle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        120
+      ],
+      "coveredBy": [
+        "merz-theory-13"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "proof-equal-linear-angles",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        120
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-dihedral-measure",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        121
+      ],
+      "coveredBy": [
+        "merz-theory-13",
+        "merz-theory-13-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "embedded-example-13.6",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        121
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "classification-dihedral-angles",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        121
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "four-dihedral-angles",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        121
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-plane-plane-angle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        121,
+        122
+      ],
+      "coveredBy": [
+        "merz-theory-13"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "definition-polygon-plane-angle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        122
+      ],
+      "coveredBy": [
+        "merz-theory-13"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "worked-task-13-1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        122
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 13,
+      "unitId": "worked-task-13-2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        122,
+        123
+      ],
+      "coveredBy": [
+        "merz-theory-13-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "definition-perpendicular-planes",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        128,
+        129
+      ],
+      "coveredBy": [
+        "merz-theory-14"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "theorem-14.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        129
+      ],
+      "coveredBy": [
+        "merz-theory-14"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "embedded-example-14.4",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        129
+      ],
+      "coveredBy": [
+        "merz-theory-14-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "theorem-14.2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        130
+      ],
+      "coveredBy": [
+        "merz-theory-14-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        130
+      ],
+      "coveredBy": [
+        "merz-theory-14-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        130,
+        131
+      ],
+      "coveredBy": [
+        "merz-theory-14-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 14,
+      "unitId": "key-task-14-3",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        131,
+        132
+      ],
+      "coveredBy": [
+        "merz-theory-14-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 15,
+      "unitId": "theorem-15.1-special-triangle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        136,
+        137
+      ],
+      "coveredBy": [
+        "merz-theory-15"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 15,
+      "unitId": "proof-15.1-general-triangle",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        137
+      ],
+      "coveredBy": [
+        "merz-theory-15",
+        "merz-theory-15-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 15,
+      "unitId": "proof-15.1-polygon",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        137
+      ],
+      "coveredBy": [
+        "merz-theory-15",
+        "merz-theory-15-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 15,
+      "unitId": "remark-nonconvex-projection",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        137,
+        138
+      ],
+      "coveredBy": [
+        "merz-theory-15-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-body-context",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        148,
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-polyhedron-elements",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16",
+        "merz-theory-16-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-plane-angle-polyhedron",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-dihedral-polyhedron",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-diagonal-polyhedron",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-convex-polyhedron",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        149
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-convex-polyhedron-faces",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        150
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "counterexample-convex-faces",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        150
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-polyhedron-surface-area",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        150
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-elements",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        150
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-prism-lateral-edges",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        150,
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-height-kinds",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151,
+        153
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-regular-triangular-prism",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-05"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-regular-hexagonal-prism",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-06"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "embedded-example-cube-as-prism",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-17",
+        "merz-theory-13-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-diagonal-section",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-16",
+        "merz-theory-16-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "proof-prism-diagonal-section",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        151
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "definition-prism-surface-areas",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        152
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "theorem-16.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        152
+      ],
+      "coveredBy": [
+        "merz-theory-16"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 16,
+      "unitId": "key-task-16-oblique-prism-area",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        152,
+        153
+      ],
+      "coveredBy": [
+        "merz-theory-16-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "definition-parallelepiped",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        158
+      ],
+      "coveredBy": [
+        "merz-theory-17"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-opposite-faces-parallelepiped",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        158,
+        159
+      ],
+      "coveredBy": [
+        "merz-theory-17-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "definition-parallelepiped-kinds-dimensions",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        159
+      ],
+      "coveredBy": [
+        "merz-theory-17"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "theorem-17.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        159,
+        160
+      ],
+      "coveredBy": [
+        "merz-theory-17-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-auxiliary-parallelogram-17",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        160
+      ],
+      "coveredBy": [
+        "merz-theory-17-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "proof-central-symmetry-parallelepiped",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        160
+      ],
+      "coveredBy": [
+        "merz-theory-17-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 17,
+      "unitId": "theorem-17.2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        160,
+        161
+      ],
+      "coveredBy": [
+        "merz-theory-17"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-elements",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        163,
+        164
+      ],
+      "coveredBy": [
+        "merz-theory-18"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-height-outside",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        164
+      ],
+      "coveredBy": [
+        "merz-theory-18",
+        "merz-theory-18-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-diagonal-section",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        164
+      ],
+      "coveredBy": [
+        "merz-theory-18-detail-03"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-regular-pyramid",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        164
+      ],
+      "coveredBy": [
+        "merz-theory-18"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "embedded-example-regular-triangular-pyramid",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        164,
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "embedded-example-regular-square-pyramid",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-regular-tetrahedron",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18",
+        "merz-theory-18-detail-04"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "proof-regular-pyramid-edges-faces-apothems",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-apothem-pyramid",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18",
+        "merz-theory-18-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "definition-pyramid-surface-areas",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165
+      ],
+      "coveredBy": [
+        "merz-theory-18"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "theorem-18.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        165,
+        166
+      ],
+      "coveredBy": [
+        "merz-theory-18"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "equal-edges-or-angles-circumcenter",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        166
+      ],
+      "coveredBy": [
+        "merz-theory-18",
+        "merz-theory-10-detail-02",
+        "merz-theory-12-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "key-task-18-part-1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        166,
+        167
+      ],
+      "coveredBy": [
+        "merz-theory-18-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 18,
+      "unitId": "key-task-18-part-2",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        167
+      ],
+      "coveredBy": [
+        "merz-theory-18-detail-02"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-elements",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        172,
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "remark-frustum-similar-bases",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-height",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-regular-frustum",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-apothem",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19",
+        "merz-theory-19-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "proof-equal-frustum-apothems",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173
+      ],
+      "coveredBy": [
+        "merz-theory-19-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "embedded-example-square-frustum",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        173,
+        174
+      ],
+      "coveredBy": [
+        "merz-theory-19",
+        "merz-theory-19-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "definition-frustum-surface-areas",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        174
+      ],
+      "coveredBy": [
+        "merz-theory-19"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "paragraph": 19,
+      "unitId": "theorem-19.1",
+      "isPrintedSourceUnit": true,
+      "sourcePdfPages": [
+        174
+      ],
+      "coveredBy": [
+        "merz-theory-19",
+        "merz-theory-19-detail-01"
+      ],
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "cards": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-01.json",
+      "lessonId": "merz-theory-10-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "93e0bf7f114c3adfa2270e7952bc546e4bb4477dc3a45ee215a58249f4457b39",
+      "contentSha256": "8af5d9c154546272d20e5451a90f41e913ce2f66aef5e602cbf9d015afb942d9",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-02.json",
+      "lessonId": "merz-theory-10-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "1ca416915830e26a9b7de09b39767857bdfa16357129525fa70bc01bb8fe6ab5",
+      "contentSha256": "dc9967d836d48dd13400273188ba4d81aefdc4b0ad4ea127b8f1afba9a6d5e5e",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-03.json",
+      "lessonId": "merz-theory-10-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "f95a13472b4f868cd09590bbe0f1d424bb3b723f35b896504adb5abbb421134d",
+      "contentSha256": "cbe30196bb3922f964f79472017bd402caef3b42ca1b2908d3f2497ac26d57fd",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-10-detail-04.json",
+      "lessonId": "merz-theory-10-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "ba208b204f9015104e97b7334518e3bd2f4248067096b46f3c86fcdc36011288",
+      "contentSha256": "e6675d30339b0cb375a89764c0d930b5d69a8101e2d1008666d6ff47d06d6736",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-10.json",
+      "lessonId": "merz-theory-10",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "ca2f974f9d15d207e549ac8cc32355b50a8bcc447e4cb9264d24c901716e2cd2",
+      "contentSha256": "e1a9b92ab207c43932044f2bb98a98cfc5bb11508c2788ec4ff6d2eba2536c04",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-11-detail-01.json",
+      "lessonId": "merz-theory-11-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "dcb2de861a508e713c4f74f9da9032e4d344bb6ba8e34b78fd3335e8438ed47d",
+      "contentSha256": "e84dc5e67775dac685a6618c9065adef4fe7322568b867be627488d4009860fd",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-11.json",
+      "lessonId": "merz-theory-11",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "8100bbc908c846df8ebfa3d33c06d66f09e5fcc4f0a3855441f9ba2318379160",
+      "contentSha256": "605b6018b5dfa96c4744a81fac62e3cc65b7814bb5bce73fecd4d436c91a11e7",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-01.json",
+      "lessonId": "merz-theory-12-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "07e9a45e226c092e76ecd7047c97f3f8163903f7cd0263fd88b79b61be5e6f6a",
+      "contentSha256": "a099b17ac15769e26e1d73e063d25a4ae2878285ea2361711f66fb44ad0a8b05",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-12-detail-02.json",
+      "lessonId": "merz-theory-12-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "ce44e70e484ddbd103480994d11f2e57c5229b9f6c9ad2f9ae81b3450b515ce1",
+      "contentSha256": "6108d02d5b8d5fbfcdfdb363af11be50d20688125e769df05af13a02ebef44bd",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-12.json",
+      "lessonId": "merz-theory-12",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "904e119c8ffc11e2e62c9447bfaca44988cdd9f5982f1f8a7f897824af5c478c",
+      "contentSha256": "49dd0bd5d4b0f7e06f4a25b79c54a5104cdf877df993fc2924eff3b2cc6796c6",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-01.json",
+      "lessonId": "merz-theory-13-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "2465e2ba2eab0e562f8f55634bebe750b287fd7169872b8e53d859838b5d133f",
+      "contentSha256": "f81048af327557c9f204adf9a4f6b9cd46382477bc6219ce0487ea17511f51f5",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-02.json",
+      "lessonId": "merz-theory-13-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "dd4c8f5e640f0c6d7545bc2ed64076d17aeff7fe7221f1f14beec8652d060b0c",
+      "contentSha256": "7bd9f47db96ac6518fa8101dcfa60fe1433eb8cdf3d5031ac13502131ac52773",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-03.json",
+      "lessonId": "merz-theory-13-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "94e5073aee83ec53afa611d2ed9607bc3204a154b65895465973eeea4e48d056",
+      "contentSha256": "26dd230e9360bbaabad76f9c0fe976810a53457bb72814726a0acd2d1b3f707b",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13-detail-04.json",
+      "lessonId": "merz-theory-13-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "0c91e34b7d955075b95f1b212044b431423f4f17fef54662c34b8752e1421033",
+      "contentSha256": "a108220085ba328c645cfd97ed6e58ddd291034e948f9aa40f7ba7366ea54742",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-13.json",
+      "lessonId": "merz-theory-13",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "39d012d8f447543ca9a0b56c8b143eca389c6e1b08743974dfa87b648796022d",
+      "contentSha256": "6be478b2b2d4975e6b71d785f88d94361de1c12f0998acc61929f8722866dda5",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-01.json",
+      "lessonId": "merz-theory-14-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "170fa7f511e2d9024152d69c1044468d699252e5a863e7eb4f531e964e993ede",
+      "contentSha256": "23a00c05ef7d2947d65c042a77921864e2427ee51f2fa6e2b3289d291f9f669d",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-02.json",
+      "lessonId": "merz-theory-14-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "2deb66156f02a69e9fbe86701c8c3bfb1631879f5446f00d1ff530142eebe5e2",
+      "contentSha256": "2b86215a0f192683d34b5418311a4ab36c9b08211944a0e0ba8a3f3e77c362ee",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-14-detail-03.json",
+      "lessonId": "merz-theory-14-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "d2f6589c0fa012d8888dde20b3cf811f76367f225f2938407697b7905a006144",
+      "contentSha256": "156ecbd0cb3a559cc63e2a5f7a65e8bbf62e04d89145898fbaa2fcaf1db7e2f4",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-14.json",
+      "lessonId": "merz-theory-14",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "726620f94efa599d6541d2ca8c5a66d0ae337f1391ef39bf0666a8ee158db0ed",
+      "contentSha256": "9c1866b3567ec5839e6877b376767f3b7ced591a8da169e324833430d254dc6e",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15-detail-01.json",
+      "lessonId": "merz-theory-15-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "30c81b6f3c0f372ad295655ce6346e8ab8c0a1f8bda648be0b606c0ae3a8c4aa",
+      "contentSha256": "f1bf679e05ca58534b391f95b7a1c9af02f24c0c4bdfba5ac89eba96cd52f6fd",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-15.json",
+      "lessonId": "merz-theory-15",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "da73f1779057114bc3003c23e66dc9e86bc45d1a216fcd570886ce10ff068dc9",
+      "contentSha256": "46e97bc1117e5b11de3541f51b8d5aad6ea3f7368e5d5ab719fd1fb1e18f8da6",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-01.json",
+      "lessonId": "merz-theory-16-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "f9cbbf27c8333da4c415515bfb86ebbdfdfabe3dc56c773136b5f8b37062db5b",
+      "contentSha256": "00be7704ace4f7cdbda213b2c3c4931e2652128454190e57d6d0179bcc0c770a",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-02.json",
+      "lessonId": "merz-theory-16-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "c63ecd26c286017e61de6f50d64b614b4ffa4ab16b718e579b55c75558d3dd07",
+      "contentSha256": "f05f65b4805fad66973cd4b1079c2738a8a7440ea7f46bfc7d5e8a72ecca201e",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-03.json",
+      "lessonId": "merz-theory-16-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "a6df1ffd8469d4d23fc62c1b54c324432989c188483621207ee064cb0a01c3e8",
+      "contentSha256": "2b9e8e0a84f90b24fd30f64834e28a2832a30d457be706ed897173cdb617f557",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-04.json",
+      "lessonId": "merz-theory-16-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "50abd20e1f721ee6cdd8279f466fad36a7b7196ed1e06285ea41266fa4844590",
+      "contentSha256": "8695084ba414eec601da3d437a3c7a405afdb1fe661f4f08127289b965a1dac3",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-05.json",
+      "lessonId": "merz-theory-16-detail-05",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "8e0db4b3b2ad2a171d60ed83173fed917ae5b1888fcffc43a5346a4c1bddda70",
+      "contentSha256": "fdc6b0ba8e624fc35e3625fee3310a7ae84e902e229d7d7c8b2e7cd0a8a43191",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16-detail-06.json",
+      "lessonId": "merz-theory-16-detail-06",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "7f2e8e9fec3c905da50fbddaf4b9817b63763524fb0b2e36b6a58dcede52f888",
+      "contentSha256": "f237338377270ed34da22f6226502a2c6d43cf4fcf43be72e4327078e6b603a2",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-16.json",
+      "lessonId": "merz-theory-16",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "ede2b008428d1ff4bed58908feda20c0bb5deb02873a0e7775ab638f43a7e37e",
+      "contentSha256": "9ecdc6d43090b8522f039f5be0b7ed4c46a511b18d423375e823a4310862ca2e",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-17-detail-01.json",
+      "lessonId": "merz-theory-17-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "b0834873248229d502a4a83f838cf3408af25ba2d917b81aab300b4db1586a7f",
+      "contentSha256": "7ac2ce4c6a40a40e69c880a0e9fd6da2be135158610fb470a60cae318d134a2c",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-17.json",
+      "lessonId": "merz-theory-17",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "b3ea07e441cf29aa7e72bd10910d83812374caf1d88f7f64e9084792d6decbaf",
+      "contentSha256": "54b9ee92ded610fdbfeacdd4643f98f88a4034043c2a5b9354fbe69cf0fca9ca",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-01.json",
+      "lessonId": "merz-theory-18-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "503716df61080029216d24d09fabc091496782775f095f2a28c7f228a4d8e4c1",
+      "contentSha256": "5e96e3b15b547390c4da4a34ab861c585d598f676e39c01fd60771dd114f645e",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-02.json",
+      "lessonId": "merz-theory-18-detail-02",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "974e14127b83607613d69a9a5aaaa395b44a935e19d9d93941661f370229ca92",
+      "contentSha256": "9f256959737d97e311002d6fadce00cc10856f93433ef6b1efd65be243de451b",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-03.json",
+      "lessonId": "merz-theory-18-detail-03",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "7f434ccc48a35ce4bb87c16a4cfe6892b272cea34504f9eb050f5d96abb8d556",
+      "contentSha256": "11145e01a49c4e189737532f15350385399aba83d7ae794510ab4e4451ca70a7",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-18-detail-04.json",
+      "lessonId": "merz-theory-18-detail-04",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "d716d6464840e89164560c0d8dc3c5f1edca81629461e74d6fd6962e8eba2dc9",
+      "contentSha256": "41a8832397515e0a002da5df67956a1a7d4925d8caab99c34e97aa35dbcf3de2",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-18.json",
+      "lessonId": "merz-theory-18",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "1b8ecc1451e50d768ad1b4ba7ac2d890a311e7cde3bd1e27e0216a5130cfb543",
+      "contentSha256": "9eb10dcceb4ebe444ed8fa2e906b5ab9a6c92aca31e947e99b922d6130785e51",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19-detail-01.json",
+      "lessonId": "merz-theory-19-detail-01",
+      "role": "detail",
+      "author": "/root/textbook_inventory",
+      "sha256": "c65c2eadaa2458b0bd7b81659796ab51cf34ed829db1035474ba3a8f9fde0ae3",
+      "contentSha256": "3c8a94198c448ad71b51d9ec980106c1fbb4fc7879ffe76a977e70f67b63233c",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/theory-19.json",
+      "lessonId": "merz-theory-19",
+      "role": "overview",
+      "author": "/root/theory_course",
+      "sha256": "1d7e6680663b0946b7d5ae36fed9a180cc9ee11725388cbf934326a284af431a",
+      "contentSha256": "4e3026a528ead45e953f3447030374f9a720f1bfd98c7e26f3b7aef234d4df95",
+      "source": "PASS",
+      "mathematics": "PASS",
+      "pedagogy": "PASS"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "tools/merzlyak-10-base/coverage-theory-10-19.json",
+      "sha256": "f2b093796af6b725a45ceead75f6ab22439f3d6e43f71b32993f8e2d480eebbb"
+    },
+    {
+      "path": "tools/merzlyak-10-base/author-theory-details-10-19.py",
+      "sha256": "75092485de0fbc04838564d775ee40720c3b3c8fa1f70f9a0be60d0333543e85"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-theory-10-19-checks.py",
+      "sha256": "3d6434331432708e4378c6b143a1e70bb647f0b42f669725236930c12abf39a6"
+    }
+  ],
+  "canonicalContentKeys": [
+    "id",
+    "kind",
+    "title",
+    "source",
+    "statement",
+    "visualization",
+    "help",
+    "steps",
+    "answer"
+  ],
+  "canonicalContentEncoding": "UTF-8 JSON ensure_ascii=False, sort_keys=True, separators=(comma,colon); no trailing newline",
+  "releaseApproval": false,
+  "limitations": [
+    "This is an independent source/mathematics/pedagogy content review tied to exact file hashes. It does not change review flags or approve merging or publication.",
+    "Actual browser rendering, text metrics, mobile layouts and external release checks remain separate cloud verification; this reviewer checked model data and content-to-view mapping, not a live browser session.",
+    "This report covers the27 authored theory detail cards,10 existing overviews and their95 mapped entries only. It does not certify global theory inventory completeness; the three additional unnumbered articles listed in scope are pending separate inventory and addendum review."
+  ]
+}

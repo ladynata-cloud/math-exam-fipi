@@ -34,7 +34,7 @@
 
 ## External review
 
-- Required: yes / no
+- Required: no under standing owner policy, unless specifically requested
 - Provider:
 - PR:
 - Reviewed base SHA:
@@ -66,9 +66,9 @@ Remove unused provenance fields when external review is not required.
 - [ ] Failures and not-run checks are reported explicitly.
 - [ ] No force, reset, rebase, admin override, or disabled TLS was used without
       separate explicit owner authorization.
-- [ ] This PR is Draft unless the owner explicitly requested otherwise.
-- [ ] Merge, auto-merge, and deployment remain unperformed pending separate
-      owner authorization.
+- [ ] Initially opened as Draft; ready/merge follows the release workflow.
+- [ ] Authorization source: standing owner policy or later task-specific instruction.
+- [ ] Applicable checks, current main/head, deployment and live verification are recorded.
 
 ## Executive status
 

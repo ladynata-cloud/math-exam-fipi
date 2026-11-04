@@ -3,6 +3,18 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=r
 const root=path.resolve(__dirname,'../..'),C=require(root+'/stereo-course/data/course.json'),T=require(root+'/stereo-course/assets/tasks.js'),A=require(root+'/stereo-course/assets/answer.js'),out=process.env.STEREO_ARTIFACTS||path.join(require('os').tmpdir(),'mathexam-stereo-task-first');
 fs.mkdirSync(out,{recursive:true});
 const labelEvidence=[];
+const hash=bytes=>require('node:crypto').createHash('sha256').update(bytes).digest('hex');
+const heroSources=()=>Object.fromEntries(['stereo-course/assets/app.js','stereo-course/index.html'].map(file=>[file,hash(fs.readFileSync(path.join(root,file)))]));
+async function checkHomeHero(page){
+ const data=await page.locator('.hero-art svg').evaluate(svg=>({
+  paths:[...svg.querySelectorAll('[data-hero-lines]')].map(p=>{const s=getComputedStyle(p);return{group:p.dataset.heroLines,dash:s.strokeDasharray,stroke:s.stroke,width:parseFloat(s.strokeWidth),length:p.getTotalLength()};}),
+  fillStrokes:[...svg.querySelectorAll('path:not([data-hero-lines])')].map(p=>getComputedStyle(p).stroke)
+ }));
+ assert.equal(data.paths.length,4);
+ for(const p of data.paths){assert(p.length>0&&p.width>0&&p.stroke!=='none','cover edges are painted');assert.equal(p.dash!=='none',p.group.endsWith('hidden'),'computed rear dash style');}
+ assert(data.fillStrokes.every(s=>s==='none'),'section fill cannot repaint hidden edges');
+ return data;
+}
 async function checkFigureLabels(page,id,width,stage){
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const measured=await page.locator('#task-model svg').evaluate(svg=>{const view=svg.viewBox.baseVal,m=svg.getScreenCTM(),scale=Math.hypot(m.a,m.b);return {width:view.width,height:view.height,labels:[...svg.querySelectorAll('.am-label')].map(el=>{const b=el.getBBox();return {key:el.dataset.label,text:el.textContent,x:b.x,y:b.y,width:b.width,height:b.height,pixels:parseFloat(getComputedStyle(el).fontSize)*scale};})};});
@@ -15,6 +27,17 @@ async function checkFigureLabels(page,id,width,stage){
  const browser=await chromium.launch({headless:true,executablePath:process.env.STEREO_CHROMIUM||undefined,args:['--no-sandbox']}),context=await browser.newContext({viewport:{width:1280,height:960},reducedMotion:'reduce'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   const base='file://'+root+'/stereo-course/index.html';await page.goto(base);
+  const heroEvidence={sourceHashes:heroSources(),views:[]};
+  for(const width of [320,1280]){
+   await page.setViewportSize({width,height:960});const paint=await checkHomeHero(page);
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'course cover fits '+width);
+   const filename='home-hero-'+width+'.png',bytes=await page.locator('.hero-art').screenshot({path:path.join(out,filename)});
+   heroEvidence.views.push({width,filename,sha256:hash(bytes),paint});
+  }
+  const rear=page.locator('[data-hero-lines="body-hidden"]');await rear.evaluate(p=>p.style.strokeDasharray='none');
+  try{await assert.rejects(()=>checkHomeHero(page),/computed rear dash style/);}finally{await rear.evaluate(p=>p.style.removeProperty('stroke-dasharray'));}
+  await checkHomeHero(page);heroEvidence.negativeControl='solid rear stroke rejected';assert.deepEqual(heroSources(),heroEvidence.sourceHashes);
+  fs.writeFileSync(path.join(out,'home-hero-visibility-evidence.json'),JSON.stringify(heroEvidence,null,2)+'\n');
   for(const u of C.units){
    await page.locator('[data-unit="'+u.id+'"]').first().click();await page.locator('#task-model svg').waitFor({state:'visible'});assert(await page.locator('#answer').isVisible(),u.id+' answer visible before help');assert.equal(await page.locator('#task-help').evaluate(e=>e.open),false);
    const condition=await page.locator('.task-question').innerText();assert.ok(condition.length>15);

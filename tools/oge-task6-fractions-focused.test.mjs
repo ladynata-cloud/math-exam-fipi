@@ -1,18 +1,20 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import bookCorrections from './oge-book-exam-corrections.cjs';
+import taskScope from './task6-scope.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
-// This task preserves the bank and contracts from its reviewed current-main
-// base. The earlier six-path scope described the historical focused fix and
-// cannot classify unrelated releases already included in current main.
+// Keep the independent mathematical bank comparison against the reviewed fix.
 const baselineSha = '4b56350c35a67e41add8f2b25cf2bf7d73d1f71f';
-const scopeBaseSha = 'df63bacb2f82acf5f8543297c372b414925d6113';
+// The board integration leaves the complete reviewed native engine unchanged.
+const nativeScriptSha256 = 'fc2803edad40c7548979c656b37a2709a853f96467beb53ceb6144a779af0ce9';
 const git = (...args) => execFileSync('git',
   ['-c', 'safe.directory=' + root, ...args], { cwd: root, encoding: 'utf8' });
 const html = fs.readFileSync(path.join(root, trainerPath), 'utf8');
@@ -23,9 +25,24 @@ const tasksBlock = source => {
   return { bytes: Buffer.from(matches[0][0], 'utf8'), tasks: JSON.parse(matches[0][1]) };
 };
 const tasks = tasksBlock(html).tasks;
-const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)];
-assert.equal(scripts.length, 1, 'One self-contained inline script');
-const script = scripts[0][1];
+const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const localScripts = [
+  'oge-course-shared-mode.js?v=20261025',
+  'board-bridge.js',
+  'oge-foundation-board.js?v=20261025',
+];
+const inlineScripts = scripts.filter(([, attributes]) => !/\bsrc\s*=/i.test(attributes));
+assert.equal(inlineScripts.length, 1, 'Exactly one native inline script');
+assert.deepEqual(scripts.map(([, attributes]) => attributes.trim()), [
+  'src="' + localScripts[0] + '"',
+  '',
+  'src="' + localScripts[1] + '"',
+  'src="' + localScripts[2] + '"',
+], 'Only the reviewed local scripts, without extra attributes, may surround the native engine in this order');
+for (const [, attributes, body] of scripts) {
+  if (attributes.trim()) assert.equal(body.trim(), '', 'External script tags cannot carry inline payloads');
+}
+const script = inlineScripts[0][2];
 // Validate the actual inline script before evaluating any trainer functions.
 const syntaxResult = spawnSync(process.execPath, ['--check', '--input-type=commonjs'], {
   input: script, encoding: 'utf8', timeout: 10000,
@@ -488,8 +505,11 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
     { first: 0, retry: 0, revealed: 0, skipped: 0, unseen: 0, independent: 0, total: 0 });
 });
 
-test('trainer remains offline, dependency-free and without storage APIs or dynamic code evaluation', () => {
-  sourceRejects(/<script\b[^>]*\bsrc\s*=/i);
+test('native trainer remains offline with only the reviewed local board integration', () => {
+  for (const source of localScripts) {
+    assert.match(source, /^[a-z0-9-]+\.js(?:\?v=20261025)?$/, 'Script paths stay local with only the reviewed version query');
+    assert.ok(fs.statSync(path.join(root, 'trainers', source.split('?')[0])).isFile(), source);
+  }
   // Current main already carries canonical SEO metadata. It does not load a
   // resource; every other remote link (stylesheet, preload, etc.) stays banned.
   for (const [tag] of html.matchAll(/<link\b[^>]*>/gi)) {
@@ -500,7 +520,9 @@ test('trainer remains offline, dependency-free and without storage APIs or dynam
     assert.ok(baseline.includes(tag), 'Canonical metadata must already exist in the reviewed base');
   }
   sourceRejects(/@import\b|url\(\s*["']?(?:https?:)?\/\//i);
-  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|localStorage|sessionStorage|indexedDB)\b/);
+  scriptRejects(/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon|sessionStorage|indexedDB)\b/);
+  const historical=bookCorrections.restoreHistoricalBytes(trainerPath,html.replace('  if(window.OgeCourseSharedMode)return;\n','').replace('  if(window.OgeCourseSharedMode)return false;\n',''));
+  assert.doesNotMatch(historical,/\blocalStorage\b/,'Only the exact reviewed adapter may use localStorage');
   scriptRejects(/\beval\s*\(|\bnew\s+Function\b|\bimport\s*(?:\(|["'{*])/);
   scriptRejects(/document\.cookie|navigator\.serviceWorker/);
 });
@@ -514,7 +536,7 @@ test('format contract, accessible navigation and disclosure exist in source', ()
   sourceMatches(/focus-visible/);
   sourceMatches(/<select\b[^>]*id=["'][^"']+["']/);
   sourceMatches(/Перейти к задаче/);
-  sourceMatches(/Прогресс хранится только до обновления страницы/);
+  sourceMatches(/Прогресс сохраняется в этом браузере после обновления страницы/);
   sourceMatches(/Смена раздела или режима/);
   sourceMatches(/Раздел завершён/);
   sourceRejects(/Раздел пройден|с подсказкой/i);
@@ -537,21 +559,12 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('only the interactive-help task paths differ from the approved current base', () => {
-  const allowed = new Set([
-    trainerPath,
-    'tools/oge-task6-fractions-focused.test.mjs',
-    'tools/task6-minimal.test.cjs',
-    'tools/task6-interactive.test.cjs',
-    'tools/task6-minimal.browser.cjs',
-    '.github/workflows/task6-minimal.yml',
-    'docs/tasks/TASK6_MINIMAL_HINTS.md',
-    'docs/tasks/TASK6_INTERACTIVE_HELP.md',
-    'docs/PROJECT_STATUS.md',
-  ]);
-  const changed = [
-    ...git('diff', '--name-only', scopeBaseSha).trim().split(/\r?\n/),
-    ...git('ls-files', '--others', '--exclude-standard').trim().split(/\r?\n/),
-  ].filter(Boolean);
-  for (const file of changed) assert.ok(allowed.has(file), 'Out-of-scope change: ' + file);
+test('the reviewed native engine and isolated progress adapter remain byte-identical', () => {
+  // A whole-repository diff against the historical interactive-help release
+  // misclassified later published courses and integrations as task-6 changes.
+  // Pin the actual native engine instead; retain the frozen TASKS comparison,
+  // independent arithmetic, local-script allowlist and offline/API checks.
+  assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
+  assert.equal(createHash('sha256').update(script, 'utf8').digest('hex'), nativeScriptSha256,
+    'The board integration must not alter the reviewed native task-6 engine');
 });

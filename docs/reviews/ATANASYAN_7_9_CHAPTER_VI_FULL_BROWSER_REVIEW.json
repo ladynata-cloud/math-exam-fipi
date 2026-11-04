@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "scope": "full-course",
+  "head": null,
+  "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+  "implementationSha256": "04e5a58da99bf68421e8f7aa9baccd8c3b2054766dab4141f912a46eba7690ec",
+  "authoredContentSha256": "eac1eb2b73cf13a6bd31c4524d4327be75d044f4a174bb7b7d9ff910d5c744e1",
+  "bundleSha256": "e893fef3f7dd2b6e69c5c7bd96651458485ab20fdb85152ef180d38ac3f34786",
+  "widths": [
+    320,
+    1280
+  ],
+  "lessons": 893,
+  "completed": true,
+  "errors": [],
+  "evidenceSha256": "6941ec11e110024bcc5453cfa9c7c82062e5679a88920fa060a61dbd2b2822df",
+  "viewWidthChecks": 9380,
+  "stepFlows": 1786,
+  "initialFinalCaptures": 3572,
+  "chapterVIViewCaptures": 1178,
+  "interactions": [
+    "expansion-lesson-320-button-and-Escape",
+    "expansion-lesson-1280-button-and-Escape",
+    "notes-and-steps-reload",
+    "expansion-theory-1280-button-and-Escape",
+    "theory-return-retains-answer",
+    "manual-answer-honesty",
+    "two-tab-conflict-preserves-work",
+    "chapter-selfcheck-draft-isolation-and-reload",
+    "chapter-II-theory-return-and-saved-step",
+    "chapter-II-first-and-last-direct-entry",
+    "chapter-III-theory-return-and-saved-step",
+    "chapter-III-first-and-last-direct-entry",
+    "chapter-IV-theory-return-and-saved-step",
+    "chapter-IV-first-and-last-direct-entry",
+    "chapter-V-theory-return-and-saved-step",
+    "chapter-V-first-and-last-direct-entry",
+    "chapter-VI-theory-return-and-saved-step",
+    "chapter-VI-first-and-last-direct-entry"
+  ],
+  "artifact": "chapter06-final-browser",
+  "binding": "Full pre-manifest working-tree run; final committed CI and public-approved smoke are separate gates."
+}

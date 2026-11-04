@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent /root/lessons_para2",
+  "adaptationAuthors": [
+    "agent /root/course_architecture",
+    "root for final theory selection and article-state call"
+  ],
+  "reviewedAt": "2026-10-22T23:01:08.332533+00:00",
+  "observedHead": "22c0b967af4ee62fdd50d51e027ea710a63569ce",
+  "verdict": "PASS for the exact state-adaptation and manifest-selection scope below",
+  "releaseApproval": false,
+  "mergeApproval": false,
+  "scope": [
+    "Mechanical replacement of draft/pending-only assertions with assert_review_state in17 regression suites, plus the newly added articles suite (18 total).",
+    "Authorship-hash continuity through matches_reviewed_hash in theory-details-01-09-models.test.py.",
+    "Root fix limiting the original §§10–19 theory suite to27 unique manifest-selected original detail cards, with the13 supplemental article cards checked separately."
+  ],
+  "method": [
+    "Read every tracked working-tree diff against the named HEAD (14 files). Removed checks concern only the old status restriction and raw authored-file hash; existing geometric and source assertions remain intact.",
+    "Read current helper call placement for4 untracked suites; no committed historical baseline is available for them.",
+    "Read review_state.py contract: draft requires exactly the three pending review fields; reviewed requires all three passed fields, an exact current-file digest, equality between loaded object and canonical file bytes, valid draft before state, matching reconstructed before digest, matching educational-content digest and a safe status/review-only ledger contract.",
+    "Verified manifest selection equals exactly all27 original matching detail files in the inspected HEAD, with no omissions or substitutions. New articles are outside this original suite and covered by their own13-card suite.",
+    "Excluded mathematical-content re-review, authored content verdicts, ledger authorship and status promotion. This review covers the transition code written by other agents."
+  ],
+  "trackedDiffNotes": [
+    {
+      "path": "tools/merzlyak-10-base/theory-details-01-09-models.test.py",
+      "note": "Also adds six focused label assertions for one UIQA correction; this strengthens checks and removes no geometry assertions."
+    },
+    {
+      "path": "tools/merzlyak-10-base/theory-details-10-19-models.test.py",
+      "note": "New FILES selection exactly matches the original27 committed detail cards; uniqueness and original cardinality remain asserted."
+    }
+  ],
+  "findings": [
+    {
+      "id": "R-STATE-ADAPT-001",
+      "severity": "medium",
+      "status": "resolved",
+      "file": "tools/merzlyak-10-base/theory-details-10-19-models.test.py",
+      "finding": "Original broad glob now included13 supplemental article cards and failed at40 versus expected27.",
+      "resolution": "Root selects exact27 unique files from COVER.newCards. Independently verified equality with the27 original committed file paths; rerun passes all5 test groups."
+    }
+  ],
+  "validation": [
+    {
+      "name": "Original17 adapted suites",
+      "result": "PASS after targeted fix",
+      "details": "Initial run:16 passed,1 failed due to the unrelated expanded glob. After the fix the affected suite alone reran and passed5 groups; the other16 had no further requested change."
+    },
+    {
+      "name": "articles-models.test.py",
+      "result": "PASS",
+      "testGroups": 4,
+      "cards": 13
+    },
+    {
+      "name": "review-state-review.test.py",
+      "result": "PASS",
+      "tests": 15,
+      "role": "Existing negative-fixture suite rerun by this reviewer; fixture authorship remains course_architecture."
+    },
+    {
+      "name": "Original theory detail manifest selection versus HEAD",
+      "result": "PASS",
+      "exactPaths": 27
+    }
+  ],
+  "counterAccounting": "Displayed custom assertion counts in affected suites decrease by one per card because assert_review_state is not wrapped in their local counters (84,76,91 respectively). The status validation moved to the shared helper; geometric assertions were not removed from the inspected tracked diffs.",
+  "limitations": [
+    "The pass is bound to listed exact file SHA-256 values, not all future repository states.",
+    "All18 suite executions used the current course state before the final review-ledger promotion; actual post-promotion execution and ledger evidence audit remain root responsibilities.",
+    "Four suites lack a committed baseline at this HEAD. Their current integration is checked, not an unprovable claim that every historical geometry line is unchanged.",
+    "matches_reviewed_hash first accepts exact original authored bytes; for changed bytes it requires a verified reviewed transition and equality to the ledger before hash. Overview call sites previously checked hashes only; separate content-evidence auditing remains required.",
+    "No original mathematical-content verdict, cloud browser run, publication, merge or release approval is supplied by this technical report."
+  ],
+  "files": [
+    {
+      "path": "tools/merzlyak-10-base/articles-models.test.py",
+      "sha256": "8be44c6451e8bd340232415377e86c78b118a111038fe3b9088aa4446e0efad7",
+      "committedBaselineAvailable": false,
+      "validation": "PASS",
+      "baselineLimitation": "No committed baseline at the inspected HEAD; current helper call placement inspected, but absence of arbitrary historical geometry edits is not claimed."
+    },
+    {
+      "path": "tools/merzlyak-10-base/exercises-10-11-models.test.py",
+      "sha256": "23451234666489303e9adc83b470d1bc49afaa4962d120977af1b1a1e2196f7f",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "d529aa3f1cdeea3420646526be183f16884eae2f1f8a4224bac3f8897cf760b6"
+    },
+    {
+      "path": "tools/merzlyak-10-base/exercises-20-models.test.py",
+      "sha256": "ed2a8dd6bec57ce5cba3254f6124a38b078aa4450878846539f5e380b807940a",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "7107b2214233aae8a07c9df019ed976a86b15ed0814bca8100fd2dd6d6d60e1f"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para03-models.test.py",
+      "sha256": "88e6ead48160c0e82df2cff0ca5d804bdc0eefa92df99bbd2a75d5249565fef5",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "18f525588790be10152d8e889b36b369cda5575c7f1f68347dfb7df95dba0d45"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para04-05-models.test.py",
+      "sha256": "1322639ffd1e8dd73a09bfb88270d1a972ef0d19b3edb4921fc7cee3bc025a94",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "62cf046bdad92feb8ef1095cc8a7db42ac4871c2af63bac6fcf7dc2f497ffc53"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para06-07-models.test.py",
+      "sha256": "12f507d39f0b208e7eb18ac44ed615b48325e8be2a167e5e6b06aa1deb316f3b",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "1ae23e289de8e53220a9a5bbe83bfcdd6efe5dd6bb008c64d7fd75227529d1dd"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para08-09-models.test.py",
+      "sha256": "045bf546676702dab1f9714fa692e1afbf3f432d5e3d4240829ed562785758ee",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "9ea9c03f415fd9d0ecd32680b6eaa22d8edf7afb189054681614e5789859f911"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para12-13-models.test.py",
+      "sha256": "0e3bf84e6618e37aab0db3fcc52cc2bc67713aedd661dd7f7deb1b2f46fdb2f8",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "12b955cdbd6c9fbb4f67a1e9cfe4b18461dfa1c052f302e8904339d1bf134a1d"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para14-15-models.test.py",
+      "sha256": "2a85f2aba52c3b8edfd49242252d5eea10ad0968039493b77cb949ca25ce25da",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "0ddc0a3c1cec7fa9a9f4548d685dc5294dd2ea0f837e6dd5005de4fb0ee3dbab"
+    },
+    {
+      "path": "tools/merzlyak-10-base/para16-17-models.test.py",
+      "sha256": "84334498813e773103a6695a6e196cfac6941bd41c8b366fff77d4a249f0df4e",
+      "committedBaselineAvailable": false,
+      "validation": "PASS",
+      "baselineLimitation": "No committed baseline at the inspected HEAD; current helper call placement inspected, but absence of arbitrary historical geometry edits is not claimed."
+    },
+    {
+      "path": "tools/merzlyak-10-base/para18-19-models.test.py",
+      "sha256": "e8f4c8d1032a859e4ba292520163c7752e5573dd2293508833061c691f971342",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "497020e0a26313445a8ab68ac12c23f6686af56c8a3fe1cd8ef2bf28d0c7fb4b"
+    },
+    {
+      "path": "tools/merzlyak-10-base/practical-projects-models-review.test.py",
+      "sha256": "023ed6fc8b68a8d7efddfa5125eb59e2d1f69d8c46dda2bb12cf514271c1744a",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "febff7513dfec47b15a42a5428fef0d9f802941fbb1c0e29dadfd8b2ed2e76b7"
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-16-17-checks.py",
+      "sha256": "8e45ea0a9b3fb3384ac46e3628212817de7ec06787d0a49ec36a7cb6f88e0322",
+      "committedBaselineAvailable": false,
+      "validation": "PASS",
+      "baselineLimitation": "No committed baseline at the inspected HEAD; current helper call placement inspected, but absence of arbitrary historical geometry edits is not claimed."
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-20-checks.py",
+      "sha256": "19fc27aa12d5464de03db6bb9c5a5746f216e84220890a8e7e6efe3f0e9a0b74",
+      "committedBaselineAvailable": false,
+      "validation": "PASS",
+      "baselineLimitation": "No committed baseline at the inspected HEAD; current helper call placement inspected, but absence of arbitrary historical geometry edits is not claimed."
+    },
+    {
+      "path": "tools/merzlyak-10-base/reviewer-supplementary-checks.py",
+      "sha256": "3af117e79ce0a54dc5857058f020b50ef64e4e3a1e94dc89521fbee4156c2221",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "e2512a054bd04f5b3ac784238b6b9aeb68bd15f42ece52cc715a0210b86fd6cd"
+    },
+    {
+      "path": "tools/merzlyak-10-base/supplementary-models.test.py",
+      "sha256": "b329efa852bf03a3f3617c1454921b98c5d424c7b2089b03da579911c6760334",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "be149e9a30638b81d4d4120e83ac14030b5e61dc8525ba315ec53b460c9534b9"
+    },
+    {
+      "path": "tools/merzlyak-10-base/theory-details-01-09-models.test.py",
+      "sha256": "297f7c495ceff7559eea6093da875249ff07b2ef750d8a6fb79cba4ed0903227",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "26ed96305c5bf7fe2f13a216f4bac8e287a29a2eb68bcbf46045af931cb76f76"
+    },
+    {
+      "path": "tools/merzlyak-10-base/theory-details-10-19-models.test.py",
+      "sha256": "9aaf6d8f9ee9019d36d46b436f84b4cf1b1489392b8b800aaafea08814eb8247",
+      "committedBaselineAvailable": true,
+      "validation": "PASS",
+      "baselineSha256": "c5affabb3a735a3b42a5bb4019cb5c18ea4e516aac5bf7df2bdf8de8cdeca527"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "tools/merzlyak-10-base/review_state.py",
+      "sha256": "71d1fb3e92abbb26e11fb4c6597a916cbcf076f122f8fc4a03738ce2d9e23d48"
+    },
+    {
+      "path": "tools/merzlyak-10-base/review-state-review.test.py",
+      "sha256": "2ea1a2f859d5ecd417145d95a161e34246bcc2a80bd1755cacb94e65c0e29a3e"
+    },
+    {
+      "path": "tools/merzlyak-10-base/coverage-theory-10-19.json",
+      "sha256": "f2b093796af6b725a45ceead75f6ab22439f3d6e43f71b32993f8e2d480eebbb"
+    }
+  ]
+}

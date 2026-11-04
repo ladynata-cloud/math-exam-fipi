@@ -1,0 +1,182 @@
+{
+  "task": "TEXTBOOK_ATANASYAN_POLYHEDRA_PRACTICAL",
+  "reviewer": "Codex independent practical_source_math",
+  "role": "Independent source, mathematics and written-pedagogy review; no lesson authorship",
+  "authorReviewerSeparation": {
+    "lessonAuthors": [
+      "practical_cards_271_273",
+      "practical_cards_274_275"
+    ],
+    "reviewerAuthoredLessons": false,
+    "reviewerAuthoredIndependentMathOracle": true
+  },
+  "reviewedAt": "2026-10-24T16:56:08.889Z",
+  "verdict": "PASS_INDEPENDENT_SOURCE_MATHEMATICS_AND_WRITTEN_PEDAGOGY",
+  "authorBase": "631d2d644d87162d60585c3efb8365af8311a3f5",
+  "binding": "Exact lesson content hashes. This is an internal independent review, not an external-provider PR/head approval.",
+  "scope": {
+    "sourcePositions": 5,
+    "cards": 5,
+    "steps": 37,
+    "modelStates": 75,
+    "seamPairs": 45
+  },
+  "source": {
+    "bookId": "atanasyan-2024-10-11",
+    "pdfSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+    "printedPages": [
+      84
+    ],
+    "pdfPages": [
+      86
+    ],
+    "exercises": [
+      "271",
+      "272",
+      "273",
+      "274",
+      "275"
+    ],
+    "figures": [
+      95,
+      96,
+      97,
+      98,
+      99
+    ],
+    "inspection": "Rendered source page inspected directly; actual authored net layouts and all five source references checked against it.",
+    "findings": [
+      "Exactly five practical construction exercises, one card for each; no omitted subparts.",
+      "The source sets no numerical edge length or enlargement factor. All cards preserve a chosen common scale.",
+      "Each task requires an enlarged stiff-paper net, cutting and gluing into the named regular solid. Allowances are explicit in 271 and are explained consistently in the remaining cards.",
+      "Source net layouts are preserved: four-triangle tetrahedron; four-square cube strip with two leaves at its second square; eight-triangle octahedron; two joined pentagonal flowers; ten-triangle icosahedral strip with two five-triangle fans."
+    ],
+    "privateSourceIncludedInRepository": false
+  },
+  "canonicalization": "Omit only top-level status and review; recursively sort object keys, preserve array order; Node JSON.stringify UTF-8 SHA256. Aggregate is canonical array in exercise order 271 through 275.",
+  "aggregateSHA256": "63927ae8c646fed2390002f2efea7a2bb6f05878648e8e61877707f17c927f90",
+  "cards": [
+    {
+      "id": "ex-main-0271",
+      "canonicalSHA256": "e12c5a2738bd246211af1eea8e10f9b39da4bfd0f9da0eb3cdc72aed50e2ff87",
+      "steps": 7,
+      "modelStates": 9
+    },
+    {
+      "id": "ex-main-0272",
+      "canonicalSHA256": "60ac03a59fc2ff169233eb0f58c02f96cb393f0e0c08b9a754bd56944ccb2b50",
+      "steps": 7,
+      "modelStates": 13
+    },
+    {
+      "id": "ex-main-0273",
+      "canonicalSHA256": "2cc7621bf4a6be1aadf887f20fe9b8c276184e138333c43e46b0fc7baab0bce9",
+      "steps": 7,
+      "modelStates": 11
+    },
+    {
+      "id": "ex-main-0274",
+      "canonicalSHA256": "eeff1c2d86d2816a94dd2b15d1dcb0a70f3018c21bf81a9fac780509aff5d194",
+      "steps": 8,
+      "modelStates": 25
+    },
+    {
+      "id": "ex-main-0275",
+      "canonicalSHA256": "2da1db8775e4458905d0b469207758f897fd699297b030eb6d4baafab51c88a4",
+      "steps": 8,
+      "modelStates": 17
+    }
+  ],
+  "oracle": {
+    "path": "tools/stereo-textbook/polyhedra-practical-math.test.py",
+    "sha256": "f5df5931b3f8f87e43f3f3949b9857ebf55c56b91cac803ce5eebc9311f16343",
+    "command": "python3 tools/stereo-textbook/polyhedra-practical-math.test.py",
+    "result": "POLYHEDRA_PRACTICAL_MATH_OK",
+    "results": [
+      {
+        "exercise": 271,
+        "net_faces": 4,
+        "hinges": 3,
+        "seams": 3,
+        "folded_vertices": 4,
+        "folded_edges": 6,
+        "result": "PASS"
+      },
+      {
+        "exercise": 272,
+        "net_faces": 6,
+        "hinges": 5,
+        "seams": 7,
+        "folded_vertices": 8,
+        "folded_edges": 12,
+        "result": "PASS"
+      },
+      {
+        "exercise": 273,
+        "net_faces": 8,
+        "hinges": 7,
+        "seams": 5,
+        "folded_vertices": 6,
+        "folded_edges": 12,
+        "result": "PASS"
+      },
+      {
+        "exercise": 274,
+        "net_faces": 12,
+        "hinges": 11,
+        "seams": 19,
+        "folded_vertices": 20,
+        "folded_edges": 30,
+        "result": "PASS"
+      },
+      {
+        "exercise": 275,
+        "net_faces": 20,
+        "hinges": 19,
+        "seams": 11,
+        "folded_vertices": 12,
+        "folded_edges": 30,
+        "result": "PASS"
+      }
+    ],
+    "method": [
+      "Derive all face, hinge, boundary and vertex incidence from actual card coordinates; no author fold metadata imported.",
+      "Verify regular unit faces, coplanar CCW orientation, no positive-area overlap, a connected hinge tree, disk Euler count and source-figure hinge-tree topology.",
+      "Independently fold the face tree by rigid Rodrigues rotations at the regular-solid normal angles.",
+      "Verify closed V/E/F, two faces at every edge, vertex edge/face counts, unit edge lengths, outward supporting planes, convexity and a common circumsphere.",
+      "Check all 45 displayed seam pairs against independently folded edge coincidence; every one of 90 boundary edges is used once, with matching midpoint number labels.",
+      "Check each illustrative tab lies outside all net faces, attaches to one boundary edge, is nondegenerate and is not counted as a polyhedron face."
+    ]
+  },
+  "writtenPedagogy": {
+    "allFiveStatementsRead": true,
+    "allFiveManualAnswerInstructionsRead": true,
+    "all37StepExplanationsAndJustificationsRead": true,
+    "allFiveHelpTreesRead": true,
+    "findings": [
+      "Each card teaches net construction, a common scale, uncut folds, allowances, dry fitting, gluing and final inspection.",
+      "Each seam is individually reachable, and pair numbers are distinguished from a required gluing order.",
+      "The dodecahedron construction uses five equal central angles of 72 degrees; the triangle constructions use two equal-radius arcs. The source imposes no compass-and-straightedge-only restriction.",
+      "All five completion prompts preserve manual assessment of a physical model or its photographs. Opening steps does not certify completion.",
+      "Closed regular-solid examples are linked through existing theory; the main scene is correctly presented as a flat paper net.",
+      "Correct face, edge, vertex and per-vertex incidence counts support the final model checks; tabs are not additional faces."
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "id": "SEAM_COUNT_GRAMMAR_272_273",
+      "resolution": "Author corrected the Russian plural agreement for seven and five seam pairs before final binding."
+    },
+    {
+      "id": "ICOSAHEDRON_SIDE_COUNT_GRAMMAR",
+      "resolution": "Author corrected the 275 step-8 edge-count explanation to «20 граней по 3 стороны» before final binding."
+    }
+  ],
+  "openFindings": [],
+  "limitations": [
+    "This record does not claim browser screenshot or responsive-layout inspection; that review is separate.",
+    "Ideal rigid-face closure is verified; no physical paper model, continuous collision-free folding path, glue performance or real-pupil learning pilot was tested.",
+    "No paid external-provider review is claimed.",
+    "Later material lesson or oracle changes require renewed review; status/review-only changes do not alter the canonical lesson binding."
+  ]
+}

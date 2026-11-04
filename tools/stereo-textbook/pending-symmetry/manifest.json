@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "status": "reviewed-partial",
+  "cards": [
+    "theory-035-center",
+    "theory-035-axis",
+    "theory-035-plane",
+    "theory-035-figure",
+    "ex-main-0276-a",
+    "ex-main-0276-b",
+    "ex-main-0276-c",
+    "ex-main-0276-d",
+    "ex-main-0277-a",
+    "ex-main-0277-b",
+    "ex-main-0277-c",
+    "ex-main-0278-a",
+    "ex-main-0278-b",
+    "ex-main-0278-c",
+    "ex-main-0278-c-regular"
+  ],
+  "reviewedSourceContracts": {
+    "35": [
+      "center",
+      "axis",
+      "plane",
+      "figure",
+      "parallelepiped-examples",
+      "unbounded-examples",
+      "general-solids-examples",
+      "applications-elements"
+    ],
+    "276": [
+      "а",
+      "б",
+      "в",
+      "г"
+    ],
+    "277": [
+      "а",
+      "б",
+      "в"
+    ],
+    "278": [
+      "а",
+      "б",
+      "в · боковое ребро не равно стороне основания",
+      "в · все рёбра равны"
+    ]
+  }
+}

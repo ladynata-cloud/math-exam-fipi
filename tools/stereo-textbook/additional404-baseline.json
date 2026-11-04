@@ -1,0 +1,285 @@
+{
+  "base": "eb1eeef772a247bf00bac81a660cd2fb5a8b1878",
+  "ids": [
+    "ex-main-0404",
+    "ex-main-0405",
+    "ex-main-0406",
+    "ex-main-0407",
+    "ex-main-0408",
+    "ex-main-0409",
+    "ex-main-0410",
+    "ex-main-0411",
+    "ex-main-0412-a",
+    "ex-main-0412-b",
+    "ex-main-0412-c",
+    "ex-main-0413"
+  ],
+  "parts": {
+    "404": [
+      null
+    ],
+    "405": [
+      null
+    ],
+    "406": [
+      null
+    ],
+    "407": [
+      null
+    ],
+    "408": [
+      null
+    ],
+    "409": [
+      null
+    ],
+    "410": [
+      null
+    ],
+    "411": [
+      null
+    ],
+    "412": [
+      "а",
+      "б",
+      "в"
+    ],
+    "413": [
+      null
+    ]
+  },
+  "originalSources": [
+    {
+      "id": "source-main-0404",
+      "kind": "exercise",
+      "title": "Задача № 404",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "404",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          112
+        ],
+        "pdfPages": [
+          114
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0405",
+      "kind": "exercise",
+      "title": "Задача № 405",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "405",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          112
+        ],
+        "pdfPages": [
+          114
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0406",
+      "kind": "exercise",
+      "title": "Задача № 406",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "406",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          112
+        ],
+        "pdfPages": [
+          114
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0407",
+      "kind": "exercise",
+      "title": "Задача № 407",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "407",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          112
+        ],
+        "pdfPages": [
+          114
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0408",
+      "kind": "exercise",
+      "title": "Задача № 408",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "408",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0409",
+      "kind": "exercise",
+      "title": "Задача № 409",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "409",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0410",
+      "kind": "exercise",
+      "title": "Задача № 410",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "410",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0411",
+      "kind": "exercise",
+      "title": "Задача № 411",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "411",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": []
+    },
+    {
+      "id": "source-main-0412",
+      "kind": "exercise",
+      "title": "Задача № 412",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "412",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": [
+        "а",
+        "б",
+        "в"
+      ]
+    },
+    {
+      "id": "source-main-0413",
+      "kind": "exercise",
+      "title": "Задача № 413",
+      "source": {
+        "bookId": "atanasyan-2024-10-11",
+        "collection": "main",
+        "exercise": "413",
+        "chapter": "IV. Цилиндр, конус и шар",
+        "printedPages": [
+          113
+        ],
+        "pdfPages": [
+          115
+        ]
+      },
+      "sourceSubparts": []
+    }
+  ],
+  "canonicalBundleSHA256": "0fb41a3ed892314ad86f1cd3bee718750661234deadd13730f6d294db4fae9d6",
+  "sourceIndexSHA256": "cea15a464a133f50a893c988e7a8ad6bc05c963ba3c5d8a119cd1330aff87950",
+  "catalogEntries": 1411,
+  "registrySHA256": "38e6e3a680845967ad703eaeb11a5b2a3e223587f39d84534f71daa66d236ae3",
+  "registryMetadata": {
+    "reviewer": "Independent Codex content and coordinate reviews; see batches",
+    "reviewedAt": "2026-11-01T21:33:52Z",
+    "registeredAt": "2026-11-02T19:40:24.335Z",
+    "scope": "Introduction and chapters I–III plus chapter IV paragraphs 1–3, all ten chapter IV self-check questions and additional cylinder exercises 396–403: 662 reviewed cards; main exercises 1–403 complete; theory points 1–51 complete; 50 complete self-check questions. Exercises 404 onward and later chapters remain pending. Not the complete book."
+  },
+  "reviewBatches": 32,
+  "screenshotCases": 2064,
+  "screenshotCasesSHA256": "1412d510cee5f7b7027c8135c65392dc2cb91ca691b4ad4b538ed87c016419c1",
+  "rawLessonManifestSHA256": "2a780500327efc71bfa777f497ae1008e0b550def12dc63872eff5c9023592ad",
+  "unchangedFiles": {
+    "stereo-course/textbook/assets/engine.js": "facaa6b8cb1a10eda51ece5e8ab4cdd988fd574b",
+    "stereo-course/assets/math-text.js": "96783d658e1a781be705fd6985dc404dff8843cd",
+    "stereo-course/assets/task-scene-viewer.js": "28db736e217369cfd2db06ebd3cb35b2c2824ce0",
+    "stereo-course/textbook/schema/lesson.schema.json": "dfb7c76f6c2a8c384dfb1d583925d9057b2a82be"
+  },
+  "integratedHashes": {
+    "ex-main-0404": "e8d6b2626f76dc20ad84bc94172379826caff3565432437c17bb86a2a66a41c6",
+    "ex-main-0405": "9abf903ed8967d3e5a5dad12314d7420b3b2245252129d6e443e51e2d09611b0",
+    "ex-main-0406": "cee806232d037e66b39ae928e7d004369967d344b434bf8b0e59509e80a04ea9",
+    "ex-main-0407": "83f04ee1ba24458b5f3b995efc319852995dfa7187131eeb7e276f5d239c1fee",
+    "ex-main-0408": "f5df9cf3c9a6c88a10b7049ab88feca42cba62253ead50bd58dabd0a2f2912fe",
+    "ex-main-0409": "83e8fe8236101eb65e1c41b85c829df70f0ad2f79f7f396a64d7399dd289d94e",
+    "ex-main-0410": "390cff3a6ac54497597b47ce7699c64ef7b3ae2181e7b8fc4133b1f7190a0da2",
+    "ex-main-0411": "92ba10f9aee9362c0c7a2112de7665fa39a7c596675cd08115fcb3283270e5d5",
+    "ex-main-0412-a": "d074673d054cbb6f082c7bd2a530affa7e36d86e3a14bf7c0337aa68eea46ff1",
+    "ex-main-0412-b": "df20723bcd207ced1f53c19b9a61c1e2dba1aa38532e75beff0fca530919d584",
+    "ex-main-0412-c": "3efa91e95d0665629e3fc921a2741233dbbe308bcc9a28506725a9e1e72d5536",
+    "ex-main-0413": "4c891bf455e840ee1ff91d38522f092e4ca36779cc7e1c6cc70d54d68151d4d5"
+  },
+  "contentHashes": {
+    "ex-main-0404": "b9f138441baa246f0efbb5a58f06e1d6a7d285b11f5ccb6361affedec0e75835",
+    "ex-main-0405": "af0623389746997f382175445d967f409c7833adf66e9b652e95ae53cb56b3c9",
+    "ex-main-0406": "72f2616b612a4fa9daf15f36f2f7eb02a7f37d14d19c415ccd86d0a3920e8de0",
+    "ex-main-0407": "90acb7cf9b7d546e42f461f180b7bea52d054d32d1c7af226a47017acabc0de9",
+    "ex-main-0408": "a916754f67b81a06ff20f15078c463b85fee3fa05a6a1eb86cc967bf0f8821d4",
+    "ex-main-0409": "305f48d2ebd5ce071e40bac23fa9d1c08ed551aa848bb6d3a81f85f5a68f5c38",
+    "ex-main-0410": "3efd7dd6eedba5ca408b3d8756c40842401ee7748f2ddd1b1b6d01ef91209b7b",
+    "ex-main-0411": "d22acd7a5bbb34087a946456317d053812cec79aed89d5b03a5c48fe442bdf0b",
+    "ex-main-0412-a": "c8be3705891cb1fe92a4cb247f699bd6b27454e4323ed7da97df734c82cd75f8",
+    "ex-main-0412-b": "6bb073ab8c62455785a4bd95a50206327289f74d31188534480d6260cfda9742",
+    "ex-main-0412-c": "30b37777e7b31a944061df711504165be3471978e26f228b1f42f71432b0a5cc",
+    "ex-main-0413": "c966752593c2af790a68211ec1672899db63b8a959498660ccb582cd5a973fff"
+  }
+}

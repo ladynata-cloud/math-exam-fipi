@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "status": "in-review",
+  "base": "1577c058309f4cc78c21315bf64b0b393751ec2d",
+  "sourceSHA256": "bead97a383e438b32b9caaff72d61d27e8fa6cd20c6b86a5f234bc4cdb629770",
+  "cards": [
+    "ex-selfcheck-iv-01",
+    "ex-selfcheck-iv-02",
+    "ex-selfcheck-iv-03-a",
+    "ex-selfcheck-iv-03-b",
+    "ex-selfcheck-iv-03-c",
+    "ex-selfcheck-iv-04",
+    "ex-selfcheck-iv-05-a",
+    "ex-selfcheck-iv-05-b",
+    "ex-selfcheck-iv-06",
+    "ex-selfcheck-iv-07",
+    "ex-selfcheck-iv-08",
+    "ex-selfcheck-iv-09",
+    "ex-selfcheck-iv-10"
+  ],
+  "proposedSourceContracts": {
+    "1": [
+      null
+    ],
+    "2": [
+      null
+    ],
+    "3": [
+      "а",
+      "б",
+      "в"
+    ],
+    "4": [
+      null
+    ],
+    "5": [
+      "а",
+      "б"
+    ],
+    "6": [
+      null
+    ],
+    "7": [
+      null
+    ],
+    "8": [
+      null
+    ],
+    "9": [
+      null
+    ],
+    "10": [
+      null
+    ]
+  },
+  "expected": {
+    "questions": 10,
+    "cards": 13,
+    "steps": 31,
+    "views": 45,
+    "publishedCards": 640,
+    "afterReviewedIntegration": 653
+  }
+}

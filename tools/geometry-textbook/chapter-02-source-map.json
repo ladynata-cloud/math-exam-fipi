@@ -1,0 +1,1177 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "chapter": 2,
+  "title": "Треугольники",
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      29,
+      52
+    ],
+    "pdfPages": [
+      30,
+      53
+    ],
+    "pdfPageOffset": 1,
+    "inspection": "Independent visual reading of all 24 chapter pages from the owner-supplied edition; OCR used only as a navigation aid."
+  },
+  "exercises": [
+    {
+      "number": 92,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        31
+      ]
+    },
+    {
+      "number": 93,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        31
+      ]
+    },
+    {
+      "number": 94,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 95,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 96,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 97,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 98,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 99,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 100,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 101,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 102,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 103,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 104,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        32
+      ]
+    },
+    {
+      "number": 105,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 106,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 107,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 108,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 109,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 110,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 111,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 112,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 113,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 114,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 115,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 116,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        37
+      ]
+    },
+    {
+      "number": 117,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 118,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 119,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 120,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 121,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 122,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 123,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 124,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 125,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        38
+      ]
+    },
+    {
+      "number": 126,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 127,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 128,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 129,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 130,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 131,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 132,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 133,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        41
+      ]
+    },
+    {
+      "number": 134,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 135,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 136,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 137,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 138,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 139,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 140,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 141,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 142,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 143,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 144,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 145,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        42
+      ]
+    },
+    {
+      "number": 146,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        43
+      ]
+    },
+    {
+      "number": 147,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        43
+      ]
+    },
+    {
+      "number": 148,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 149,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 150,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 151,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 152,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 153,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 154,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 155,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 156,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 157,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48
+      ]
+    },
+    {
+      "number": 158,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        48,
+        49
+      ]
+    },
+    {
+      "number": 159,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 160,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 161,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 162,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 163,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 164,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 165,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 166,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 167,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 168,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 169,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 170,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 171,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 172,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 173,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 174,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 175,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 176,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 177,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        51
+      ]
+    },
+    {
+      "number": 178,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 179,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 180,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 181,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 182,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 183,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 184,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 185,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 186,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 187,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 188,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 189,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    },
+    {
+      "number": 190,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        52
+      ]
+    }
+  ],
+  "theory": [
+    {
+      "number": 14,
+      "title": "Треугольник",
+      "printedPages": [
+        29,
+        30
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Первый признак равенства треугольников",
+      "printedPages": [
+        30,
+        31
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Перпендикуляр к прямой",
+      "printedPages": [
+        33,
+        34
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Медианы, биссектрисы и высоты треугольника",
+      "printedPages": [
+        34,
+        35
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Свойства равнобедренного треугольника",
+      "printedPages": [
+        35,
+        36
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Второй признак равенства треугольников",
+      "printedPages": [
+        38,
+        39
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Третий признак равенства треугольников",
+      "printedPages": [
+        39,
+        40,
+        41
+      ]
+    },
+    {
+      "number": 21,
+      "title": "Окружность",
+      "printedPages": [
+        43,
+        44
+      ]
+    },
+    {
+      "number": 22,
+      "title": "Построения циркулем и линейкой",
+      "printedPages": [
+        44,
+        45
+      ]
+    },
+    {
+      "number": 23,
+      "title": "Примеры задач на построение",
+      "printedPages": [
+        45,
+        46,
+        47
+      ]
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 2,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 3,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 4,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 5,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 6,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 7,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 8,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 9,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 10,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 11,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 12,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 13,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 14,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 15,
+      "printedPages": [
+        49
+      ]
+    },
+    {
+      "number": 16,
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 17,
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 18,
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 19,
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 20,
+      "printedPages": [
+        50
+      ]
+    },
+    {
+      "number": 21,
+      "printedPages": [
+        50
+      ]
+    }
+  ],
+  "counts": {
+    "mainNumbers": 99,
+    "mainParts": 132,
+    "theory": 10,
+    "selfchecks": 21,
+    "cards": 163
+  },
+  "caseRequirements": {
+    "108": "Two triangle figures required within one unlettered task.",
+    "141": "Two ray-location cases, angle25 or155.",
+    "142": "Different point locations explicitly required.",
+    "155": "Concentric equal-circle case has infinitely many intersections.",
+    "163": "Both side6 and10 satisfy.",
+    "165": "Handle point at midpoint separately.",
+    "188": "Allow identical auxiliary/source circles; discard degenerate triangles.",
+    "189": "May lack solution; endpointB allowed."
+  },
+  "reviewScope": "Source structure only; no authored content, implementation, browser or release approval is implied."
+}

@@ -1,0 +1,1224 @@
+{
+  "source": {
+    "authors": [
+      "С. М. Никольский",
+      "М. К. Потапов",
+      "Н. Н. Решетников",
+      "А. В. Шевкин"
+    ],
+    "title": "Алгебра и начала математического анализа. 10 класс",
+    "series": "МГУ — школе",
+    "publisher": "Просвещение",
+    "year": 2022,
+    "edition": "10-е изд., стереотипное",
+    "isbnElectronic": "978-5-09-101573-7",
+    "isbnPrint": "978-5-09-087768-8",
+    "level": "Базовый и углублённый уровни",
+    "pdfPageCount": 438,
+    "printedToPdfOffset": 2,
+    "tocPrintedPages": [
+      429,
+      430,
+      431
+    ],
+    "tocPdfPages": [
+      431,
+      432,
+      433
+    ],
+    "provenance": "Text extracted from uploaded PDF and visually verified on all three table-of-contents pages; first main page visually verifies the page offset. Source author and edition metadata read from PDF page 4.",
+    "scopeNote": "90 numbered subsections in 14 paragraphs across 3 chapters. Main body is algebra and beginning of mathematical analysis (10th grade); no geometry course despite umbrella subject title."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "roman": "I",
+      "title": "Корни, степени, логарифмы",
+      "sectionNumbers": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "printedPage": 3,
+      "pdfPage": 5
+    },
+    {
+      "number": 2,
+      "roman": "II",
+      "title": "Тригонометрические формулы. Тригонометрические функции",
+      "sectionNumbers": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "printedPage": 193,
+      "pdfPage": 195
+    },
+    {
+      "number": 3,
+      "roman": "III",
+      "title": "Элементы теории вероятностей",
+      "sectionNumbers": [
+        12,
+        13,
+        14
+      ],
+      "printedPage": 333,
+      "pdfPage": 335
+    }
+  ],
+  "sections": [
+    {
+      "number": 1,
+      "title": "Действительные числа",
+      "printedPage": 3,
+      "pdfPage": 5,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 2,
+      "title": "Рациональные уравнения и неравенства",
+      "printedPage": 44,
+      "pdfPage": 46,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 3,
+      "title": "Корень степени n",
+      "printedPage": 93,
+      "pdfPage": 95,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 4,
+      "title": "Степень положительного числа",
+      "printedPage": 122,
+      "pdfPage": 124,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 5,
+      "title": "Логарифмы",
+      "printedPage": 148,
+      "pdfPage": 150,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 6,
+      "title": "Показательные и логарифмические уравнения и неравенства",
+      "printedPage": 164,
+      "pdfPage": 166,
+      "advanced": false,
+      "chapter": 1
+    },
+    {
+      "number": 7,
+      "title": "Синус и косинус угла",
+      "printedPage": 193,
+      "pdfPage": 195,
+      "advanced": false,
+      "chapter": 2
+    },
+    {
+      "number": 8,
+      "title": "Тангенс и котангенс угла",
+      "printedPage": 233,
+      "pdfPage": 235,
+      "advanced": false,
+      "chapter": 2
+    },
+    {
+      "number": 9,
+      "title": "Формулы сложения",
+      "printedPage": 258,
+      "pdfPage": 260,
+      "advanced": false,
+      "chapter": 2
+    },
+    {
+      "number": 10,
+      "title": "Тригонометрические функции числового аргумента",
+      "printedPage": 280,
+      "pdfPage": 282,
+      "advanced": false,
+      "chapter": 2
+    },
+    {
+      "number": 11,
+      "title": "Тригонометрические уравнения и неравенства",
+      "printedPage": 295,
+      "pdfPage": 297,
+      "advanced": false,
+      "chapter": 2
+    },
+    {
+      "number": 12,
+      "title": "Вероятность события",
+      "printedPage": 333,
+      "pdfPage": 335,
+      "advanced": false,
+      "chapter": 3
+    },
+    {
+      "number": 13,
+      "title": "Частота. Условная вероятность",
+      "printedPage": 342,
+      "pdfPage": 344,
+      "advanced": true,
+      "chapter": 3
+    },
+    {
+      "number": 14,
+      "title": "Математическое ожидание. Закон больших чисел",
+      "printedPage": 348,
+      "pdfPage": 350,
+      "advanced": true,
+      "chapter": 3
+    }
+  ],
+  "topics": [
+    {
+      "id": "1.1",
+      "label": "1.1",
+      "number": "1.1",
+      "title": "Понятие действительного числа",
+      "section": 1,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 3,
+      "pdfPage": 5
+    },
+    {
+      "id": "1.2",
+      "label": "1.2",
+      "number": "1.2",
+      "title": "Множества чисел. Свойства действительных чисел",
+      "section": 1,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 10,
+      "pdfPage": 12
+    },
+    {
+      "id": "1.3",
+      "label": "1.3*",
+      "number": "1.3",
+      "title": "Метод математической индукции",
+      "section": 1,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 16,
+      "pdfPage": 18
+    },
+    {
+      "id": "1.4",
+      "label": "1.4",
+      "number": "1.4",
+      "title": "Перестановки",
+      "section": 1,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 22,
+      "pdfPage": 24
+    },
+    {
+      "id": "1.5",
+      "label": "1.5",
+      "number": "1.5",
+      "title": "Размещения",
+      "section": 1,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 25,
+      "pdfPage": 27
+    },
+    {
+      "id": "1.6",
+      "label": "1.6",
+      "number": "1.6",
+      "title": "Сочетания",
+      "section": 1,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 27,
+      "pdfPage": 29
+    },
+    {
+      "id": "1.7",
+      "label": "1.7*",
+      "number": "1.7",
+      "title": "Доказательство числовых неравенств",
+      "section": 1,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 30,
+      "pdfPage": 32
+    },
+    {
+      "id": "1.8",
+      "label": "1.8*",
+      "number": "1.8",
+      "title": "Делимость целых чисел",
+      "section": 1,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 35,
+      "pdfPage": 37
+    },
+    {
+      "id": "1.9",
+      "label": "1.9*",
+      "number": "1.9",
+      "title": "Сравнения по модулю m",
+      "section": 1,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 38,
+      "pdfPage": 40
+    },
+    {
+      "id": "1.10",
+      "label": "1.10*",
+      "number": "1.10",
+      "title": "Задачи с целочисленными неизвестными",
+      "section": 1,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 40,
+      "pdfPage": 42
+    },
+    {
+      "id": "2.1",
+      "label": "2.1",
+      "number": "2.1",
+      "title": "Рациональные выражения",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 44,
+      "pdfPage": 46
+    },
+    {
+      "id": "2.2",
+      "label": "2.2",
+      "number": "2.2",
+      "title": "Формулы бинома Ньютона, суммы и разности степеней",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 48,
+      "pdfPage": 50
+    },
+    {
+      "id": "2.3",
+      "label": "2.3*",
+      "number": "2.3",
+      "title": "Деление многочленов с остатком. Алгоритм Евклида",
+      "section": 2,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 53,
+      "pdfPage": 55
+    },
+    {
+      "id": "2.4",
+      "label": "2.4*",
+      "number": "2.4",
+      "title": "Теорема Безу",
+      "section": 2,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 57,
+      "pdfPage": 59
+    },
+    {
+      "id": "2.5",
+      "label": "2.5*",
+      "number": "2.5",
+      "title": "Корень многочлена",
+      "section": 2,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 60,
+      "pdfPage": 62
+    },
+    {
+      "id": "2.6",
+      "label": "2.6",
+      "number": "2.6",
+      "title": "Рациональные уравнения",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 65,
+      "pdfPage": 67
+    },
+    {
+      "id": "2.7",
+      "label": "2.7",
+      "number": "2.7",
+      "title": "Системы рациональных уравнений",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 70,
+      "pdfPage": 72
+    },
+    {
+      "id": "2.8",
+      "label": "2.8",
+      "number": "2.8",
+      "title": "Метод интервалов решения неравенств",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 75,
+      "pdfPage": 77
+    },
+    {
+      "id": "2.9",
+      "label": "2.9",
+      "number": "2.9",
+      "title": "Рациональные неравенства",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 79,
+      "pdfPage": 81
+    },
+    {
+      "id": "2.10",
+      "label": "2.10",
+      "number": "2.10",
+      "title": "Нестрогие неравенства",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 84,
+      "pdfPage": 86
+    },
+    {
+      "id": "2.11",
+      "label": "2.11",
+      "number": "2.11",
+      "title": "Системы рациональных неравенств",
+      "section": 2,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 88,
+      "pdfPage": 90
+    },
+    {
+      "id": "3.1",
+      "label": "3.1",
+      "number": "3.1",
+      "title": "Понятие функции и её графика",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 93,
+      "pdfPage": 95
+    },
+    {
+      "id": "3.2",
+      "label": "3.2",
+      "number": "3.2",
+      "title": "Функция y = xⁿ",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 96,
+      "pdfPage": 98
+    },
+    {
+      "id": "3.3",
+      "label": "3.3",
+      "number": "3.3",
+      "title": "Понятие корня степени n",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 100,
+      "pdfPage": 102
+    },
+    {
+      "id": "3.4",
+      "label": "3.4",
+      "number": "3.4",
+      "title": "Корни чётной и нечётной степеней",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 102,
+      "pdfPage": 104
+    },
+    {
+      "id": "3.5",
+      "label": "3.5",
+      "number": "3.5",
+      "title": "Арифметический корень",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 106,
+      "pdfPage": 108
+    },
+    {
+      "id": "3.6",
+      "label": "3.6",
+      "number": "3.6",
+      "title": "Свойства корней степени n",
+      "section": 3,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 111,
+      "pdfPage": 113
+    },
+    {
+      "id": "3.7",
+      "label": "3.7*",
+      "number": "3.7",
+      "title": "Функция y = ⁿ√x (x ≥ 0)",
+      "section": 3,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 114,
+      "pdfPage": 116
+    },
+    {
+      "id": "3.8",
+      "label": "3.8*",
+      "number": "3.8",
+      "title": "Функция y = ⁿ√x",
+      "section": 3,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 117,
+      "pdfPage": 119
+    },
+    {
+      "id": "3.9",
+      "label": "3.9*",
+      "number": "3.9",
+      "title": "Корень степени n из натурального числа",
+      "section": 3,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 119,
+      "pdfPage": 121
+    },
+    {
+      "id": "4.1",
+      "label": "4.1",
+      "number": "4.1",
+      "title": "Степень с рациональным показателем",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 122,
+      "pdfPage": 124
+    },
+    {
+      "id": "4.2",
+      "label": "4.2",
+      "number": "4.2",
+      "title": "Свойства степени с рациональным показателем",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 125,
+      "pdfPage": 127
+    },
+    {
+      "id": "4.3",
+      "label": "4.3",
+      "number": "4.3",
+      "title": "Понятие предела последовательности",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 131,
+      "pdfPage": 133
+    },
+    {
+      "id": "4.4",
+      "label": "4.4*",
+      "number": "4.4",
+      "title": "Свойства пределов",
+      "section": 4,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 134,
+      "pdfPage": 136
+    },
+    {
+      "id": "4.5",
+      "label": "4.5",
+      "number": "4.5",
+      "title": "Бесконечно убывающая геометрическая прогрессия",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 137,
+      "pdfPage": 139
+    },
+    {
+      "id": "4.6",
+      "label": "4.6",
+      "number": "4.6",
+      "title": "Число e",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 140,
+      "pdfPage": 142
+    },
+    {
+      "id": "4.7",
+      "label": "4.7",
+      "number": "4.7",
+      "title": "Понятие степени с иррациональным показателем",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 142,
+      "pdfPage": 144
+    },
+    {
+      "id": "4.8",
+      "label": "4.8",
+      "number": "4.8",
+      "title": "Показательная функция",
+      "section": 4,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 144,
+      "pdfPage": 146
+    },
+    {
+      "id": "5.1",
+      "label": "5.1",
+      "number": "5.1",
+      "title": "Понятие логарифма",
+      "section": 5,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 148,
+      "pdfPage": 150
+    },
+    {
+      "id": "5.2",
+      "label": "5.2",
+      "number": "5.2",
+      "title": "Свойства логарифмов",
+      "section": 5,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 151,
+      "pdfPage": 153
+    },
+    {
+      "id": "5.3",
+      "label": "5.3",
+      "number": "5.3",
+      "title": "Логарифмическая функция",
+      "section": 5,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 155,
+      "pdfPage": 157
+    },
+    {
+      "id": "5.4",
+      "label": "5.4*",
+      "number": "5.4",
+      "title": "Десятичные логарифмы",
+      "section": 5,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 157,
+      "pdfPage": 159
+    },
+    {
+      "id": "5.5",
+      "label": "5.5*",
+      "number": "5.5",
+      "title": "Степенные функции",
+      "section": 5,
+      "chapter": 1,
+      "advanced": true,
+      "printedPage": 159,
+      "pdfPage": 161
+    },
+    {
+      "id": "6.1",
+      "label": "6.1",
+      "number": "6.1",
+      "title": "Простейшие показательные уравнения",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 164,
+      "pdfPage": 166
+    },
+    {
+      "id": "6.2",
+      "label": "6.2",
+      "number": "6.2",
+      "title": "Простейшие логарифмические уравнения",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 166,
+      "pdfPage": 168
+    },
+    {
+      "id": "6.3",
+      "label": "6.3",
+      "number": "6.3",
+      "title": "Уравнения, сводящиеся к простейшим заменой неизвестного",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 169,
+      "pdfPage": 171
+    },
+    {
+      "id": "6.4",
+      "label": "6.4",
+      "number": "6.4",
+      "title": "Простейшие показательные неравенства",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 173,
+      "pdfPage": 175
+    },
+    {
+      "id": "6.5",
+      "label": "6.5",
+      "number": "6.5",
+      "title": "Простейшие логарифмические неравенства",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 178,
+      "pdfPage": 180
+    },
+    {
+      "id": "6.6",
+      "label": "6.6",
+      "number": "6.6",
+      "title": "Неравенства, сводящиеся к простейшим заменой неизвестного",
+      "section": 6,
+      "chapter": 1,
+      "advanced": false,
+      "printedPage": 182,
+      "pdfPage": 184
+    },
+    {
+      "id": "7.1",
+      "label": "7.1",
+      "number": "7.1",
+      "title": "Понятие угла",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 193,
+      "pdfPage": 195
+    },
+    {
+      "id": "7.2",
+      "label": "7.2",
+      "number": "7.2",
+      "title": "Радианная мера угла",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 200,
+      "pdfPage": 202
+    },
+    {
+      "id": "7.3",
+      "label": "7.3",
+      "number": "7.3",
+      "title": "Определение синуса и косинуса угла",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 203,
+      "pdfPage": 205
+    },
+    {
+      "id": "7.4",
+      "label": "7.4",
+      "number": "7.4",
+      "title": "Основные формулы для sin α и cos α",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 211,
+      "pdfPage": 213
+    },
+    {
+      "id": "7.5",
+      "label": "7.5",
+      "number": "7.5",
+      "title": "Арксинус",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 216,
+      "pdfPage": 218
+    },
+    {
+      "id": "7.6",
+      "label": "7.6",
+      "number": "7.6",
+      "title": "Арккосинус",
+      "section": 7,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 221,
+      "pdfPage": 223
+    },
+    {
+      "id": "7.7",
+      "label": "7.7*",
+      "number": "7.7",
+      "title": "Примеры использования арксинуса и арккосинуса",
+      "section": 7,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 225,
+      "pdfPage": 227
+    },
+    {
+      "id": "7.8",
+      "label": "7.8*",
+      "number": "7.8",
+      "title": "Формулы для арксинуса и арккосинуса",
+      "section": 7,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 231,
+      "pdfPage": 233
+    },
+    {
+      "id": "8.1",
+      "label": "8.1",
+      "number": "8.1",
+      "title": "Определение тангенса и котангенса угла",
+      "section": 8,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 233,
+      "pdfPage": 235
+    },
+    {
+      "id": "8.2",
+      "label": "8.2",
+      "number": "8.2",
+      "title": "Основные формулы для tg α и ctg α",
+      "section": 8,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 239,
+      "pdfPage": 241
+    },
+    {
+      "id": "8.3",
+      "label": "8.3",
+      "number": "8.3",
+      "title": "Арктангенс",
+      "section": 8,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 243,
+      "pdfPage": 245
+    },
+    {
+      "id": "8.4",
+      "label": "8.4*",
+      "number": "8.4",
+      "title": "Арккотангенс",
+      "section": 8,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 246,
+      "pdfPage": 248
+    },
+    {
+      "id": "8.5",
+      "label": "8.5*",
+      "number": "8.5",
+      "title": "Примеры использования арктангенса и арккотангенса",
+      "section": 8,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 249,
+      "pdfPage": 251
+    },
+    {
+      "id": "8.6",
+      "label": "8.6*",
+      "number": "8.6",
+      "title": "Формулы для арктангенса и арккотангенса",
+      "section": 8,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 255,
+      "pdfPage": 257
+    },
+    {
+      "id": "9.1",
+      "label": "9.1",
+      "number": "9.1",
+      "title": "Косинус разности и косинус суммы двух углов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 258,
+      "pdfPage": 260
+    },
+    {
+      "id": "9.2",
+      "label": "9.2",
+      "number": "9.2",
+      "title": "Формулы для дополнительных углов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 262,
+      "pdfPage": 264
+    },
+    {
+      "id": "9.3",
+      "label": "9.3",
+      "number": "9.3",
+      "title": "Синус суммы и синус разности двух углов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 264,
+      "pdfPage": 266
+    },
+    {
+      "id": "9.4",
+      "label": "9.4",
+      "number": "9.4",
+      "title": "Сумма и разность синусов и косинусов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 266,
+      "pdfPage": 268
+    },
+    {
+      "id": "9.5",
+      "label": "9.5",
+      "number": "9.5",
+      "title": "Формулы для двойных и половинных углов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 268,
+      "pdfPage": 270
+    },
+    {
+      "id": "9.6",
+      "label": "9.6*",
+      "number": "9.6",
+      "title": "Произведение синусов и косинусов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 273,
+      "pdfPage": 275
+    },
+    {
+      "id": "9.7",
+      "label": "9.7*",
+      "number": "9.7",
+      "title": "Формулы для тангенсов",
+      "section": 9,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 275,
+      "pdfPage": 277
+    },
+    {
+      "id": "10.1",
+      "label": "10.1",
+      "number": "10.1",
+      "title": "Функция y = sin x",
+      "section": 10,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 281,
+      "pdfPage": 283
+    },
+    {
+      "id": "10.2",
+      "label": "10.2",
+      "number": "10.2",
+      "title": "Функция y = cos x",
+      "section": 10,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 285,
+      "pdfPage": 287
+    },
+    {
+      "id": "10.3",
+      "label": "10.3",
+      "number": "10.3",
+      "title": "Функция y = tg x",
+      "section": 10,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 288,
+      "pdfPage": 290
+    },
+    {
+      "id": "10.4",
+      "label": "10.4",
+      "number": "10.4",
+      "title": "Функция y = ctg x",
+      "section": 10,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 292,
+      "pdfPage": 294
+    },
+    {
+      "id": "11.1",
+      "label": "11.1",
+      "number": "11.1",
+      "title": "Простейшие тригонометрические уравнения",
+      "section": 11,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 295,
+      "pdfPage": 297
+    },
+    {
+      "id": "11.2",
+      "label": "11.2",
+      "number": "11.2",
+      "title": "Уравнения, сводящиеся к простейшим заменой неизвестного",
+      "section": 11,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 299,
+      "pdfPage": 301
+    },
+    {
+      "id": "11.3",
+      "label": "11.3",
+      "number": "11.3",
+      "title": "Применение основных тригонометрических формул для решения уравнений",
+      "section": 11,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 303,
+      "pdfPage": 305
+    },
+    {
+      "id": "11.4",
+      "label": "11.4",
+      "number": "11.4",
+      "title": "Однородные уравнения",
+      "section": 11,
+      "chapter": 2,
+      "advanced": false,
+      "printedPage": 307,
+      "pdfPage": 309
+    },
+    {
+      "id": "11.5",
+      "label": "11.5*",
+      "number": "11.5",
+      "title": "Простейшие неравенства для синуса и косинуса",
+      "section": 11,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 310,
+      "pdfPage": 312
+    },
+    {
+      "id": "11.6",
+      "label": "11.6*",
+      "number": "11.6",
+      "title": "Простейшие неравенства для тангенса и котангенса",
+      "section": 11,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 315,
+      "pdfPage": 317
+    },
+    {
+      "id": "11.7",
+      "label": "11.7*",
+      "number": "11.7",
+      "title": "Неравенства, сводящиеся к простейшим заменой неизвестного",
+      "section": 11,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 319,
+      "pdfPage": 321
+    },
+    {
+      "id": "11.8",
+      "label": "11.8*",
+      "number": "11.8",
+      "title": "Введение вспомогательного угла",
+      "section": 11,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 322,
+      "pdfPage": 324
+    },
+    {
+      "id": "11.9",
+      "label": "11.9*",
+      "number": "11.9",
+      "title": "Замена неизвестного t = sin x + cos x",
+      "section": 11,
+      "chapter": 2,
+      "advanced": true,
+      "printedPage": 327,
+      "pdfPage": 329
+    },
+    {
+      "id": "12.1",
+      "label": "12.1",
+      "number": "12.1",
+      "title": "Понятие вероятности события",
+      "section": 12,
+      "chapter": 3,
+      "advanced": false,
+      "printedPage": 333,
+      "pdfPage": 335
+    },
+    {
+      "id": "12.2",
+      "label": "12.2",
+      "number": "12.2",
+      "title": "Свойства вероятностей событий",
+      "section": 12,
+      "chapter": 3,
+      "advanced": false,
+      "printedPage": 338,
+      "pdfPage": 340
+    },
+    {
+      "id": "13.1",
+      "label": "13.1*",
+      "number": "13.1",
+      "title": "Относительная частота события",
+      "section": 13,
+      "chapter": 3,
+      "advanced": true,
+      "printedPage": 342,
+      "pdfPage": 344
+    },
+    {
+      "id": "13.2",
+      "label": "13.2*",
+      "number": "13.2",
+      "title": "Условная вероятность. Независимые события",
+      "section": 13,
+      "chapter": 3,
+      "advanced": true,
+      "printedPage": 344,
+      "pdfPage": 346
+    },
+    {
+      "id": "14.1",
+      "label": "14.1*",
+      "number": "14.1",
+      "title": "Математическое ожидание",
+      "section": 14,
+      "chapter": 3,
+      "advanced": true,
+      "printedPage": 348,
+      "pdfPage": 350
+    },
+    {
+      "id": "14.2",
+      "label": "14.2*",
+      "number": "14.2",
+      "title": "Сложный опыт",
+      "section": 14,
+      "chapter": 3,
+      "advanced": true,
+      "printedPage": 353,
+      "pdfPage": 355
+    },
+    {
+      "id": "14.3",
+      "label": "14.3*",
+      "number": "14.3",
+      "title": "Формула Бернулли. Закон больших чисел",
+      "section": 14,
+      "chapter": 3,
+      "advanced": true,
+      "printedPage": 355,
+      "pdfPage": 357
+    }
+  ],
+  "backMatter": [
+    {
+      "title": "Исторические сведения к главе I",
+      "printedPage": 187,
+      "pdfPage": 189
+    },
+    {
+      "title": "Исторические сведения к главе II",
+      "printedPage": 330,
+      "pdfPage": 332
+    },
+    {
+      "title": "Исторические сведения к главе III",
+      "printedPage": 359,
+      "pdfPage": 361
+    },
+    {
+      "title": "Задания для повторения",
+      "printedPage": 362,
+      "pdfPage": 364
+    },
+    {
+      "title": "Предметный указатель",
+      "printedPage": 406,
+      "pdfPage": 408
+    },
+    {
+      "title": "Ответы",
+      "printedPage": 409,
+      "pdfPage": 411
+    },
+    {
+      "title": "Список литературы",
+      "printedPage": 428,
+      "pdfPage": 430
+    },
+    {
+      "title": "Интернет-библиотеки",
+      "printedPage": 428,
+      "pdfPage": 430
+    }
+  ],
+  "selectedExercises": []
+}

@@ -1,0 +1,2456 @@
+{
+  "bookId": "atanasyan-2023-7-9",
+  "chapter": 7,
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "printedPageRange": [
+    139,
+    162
+  ],
+  "exercises": [
+    {
+      "number": 541,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 542,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 543,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 544,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 545,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 546,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 547,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 548,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 549,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 550,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 551,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 552,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 553,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 554,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        145
+      ],
+      "pdfPages": [
+        146
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 555,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 556,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 557,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 558,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 559,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 560,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        151
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 561,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 562,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 563,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 564,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 565,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 566,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 567,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 568,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 569,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 570,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 571,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 572,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 573,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        152
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 574,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 575,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 576,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 577,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 578,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 579,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 580,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        152
+      ],
+      "pdfPages": [
+        153
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 581,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 582,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 583,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 584,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 585,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 586,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        157
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 587,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 588,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 589,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 590,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 591,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 592,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 593,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 594,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 595,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 596,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 597,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 598,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 599,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        157
+      ],
+      "pdfPages": [
+        158
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 600,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 601,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 602,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 603,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 604,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 605,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 606,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 607,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 608,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 609,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 610,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 611,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 612,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "starred": true
+    },
+    {
+      "number": 613,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "starred": true
+    },
+    {
+      "number": 614,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 615,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "starred": true
+    },
+    {
+      "number": 616,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        159
+      ],
+      "pdfPages": [
+        160
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 617,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "starred": true
+    },
+    {
+      "number": 618,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 619,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 620,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 621,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 622,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 623,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 624,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 625,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 626,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 627,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 628,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 629,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 630,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        160
+      ],
+      "pdfPages": [
+        161
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 631,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 632,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 633,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 634,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 635,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 636,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 637,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report"
+    },
+    {
+      "number": 638,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        161
+      ],
+      "pdfPages": [
+        162
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "sourceFigure": 218
+    },
+    {
+      "number": 639,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        162
+      ],
+      "pdfPages": [
+        163
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-passed; authored-source-fidelity-reviewed-in-separate-report",
+      "sourceFigure": 219
+    }
+  ],
+  "theory": [
+    {
+      "number": 54,
+      "title": "Понятие площади многоугольника",
+      "printedPages": [
+        139,
+        140,
+        141,
+        142
+      ],
+      "pdfPages": [
+        140,
+        141,
+        142,
+        143
+      ],
+      "paragraph": 1,
+      "starred": false
+    },
+    {
+      "number": 55,
+      "title": "Площадь квадрата",
+      "printedPages": [
+        142,
+        143,
+        144
+      ],
+      "pdfPages": [
+        143,
+        144,
+        145
+      ],
+      "paragraph": 1,
+      "starred": true
+    },
+    {
+      "number": 56,
+      "title": "Площадь прямоугольника",
+      "printedPages": [
+        144
+      ],
+      "pdfPages": [
+        145
+      ],
+      "paragraph": 1,
+      "starred": false
+    },
+    {
+      "number": 57,
+      "title": "Площадь параллелограмма",
+      "printedPages": [
+        146,
+        147
+      ],
+      "pdfPages": [
+        147,
+        148
+      ],
+      "paragraph": 2,
+      "starred": false
+    },
+    {
+      "number": 58,
+      "title": "Площадь треугольника",
+      "printedPages": [
+        147,
+        148,
+        149
+      ],
+      "pdfPages": [
+        148,
+        149,
+        150
+      ],
+      "paragraph": 2,
+      "starred": false
+    },
+    {
+      "number": 59,
+      "title": "Площадь трапеции",
+      "printedPages": [
+        149,
+        150
+      ],
+      "pdfPages": [
+        150,
+        151
+      ],
+      "paragraph": 2,
+      "starred": false
+    },
+    {
+      "number": 60,
+      "title": "Теорема Пифагора",
+      "printedPages": [
+        152,
+        153
+      ],
+      "pdfPages": [
+        153,
+        154
+      ],
+      "paragraph": 3,
+      "starred": false
+    },
+    {
+      "number": 61,
+      "title": "Теорема, обратная теореме Пифагора",
+      "printedPages": [
+        154,
+        155
+      ],
+      "pdfPages": [
+        155,
+        156
+      ],
+      "paragraph": 3,
+      "starred": false
+    },
+    {
+      "number": 62,
+      "title": "Формула Герона",
+      "printedPages": [
+        155,
+        156
+      ],
+      "pdfPages": [
+        156,
+        157
+      ],
+      "paragraph": 3,
+      "starred": false
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "topic": "Измерение площадей многоугольников",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 2,
+      "topic": "Основные свойства площадей",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 3,
+      "topic": "Равновеликие и равносоставленные многоугольники",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 4,
+      "topic": "Площадь прямоугольника: формулировка и доказательство",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 5,
+      "topic": "Площадь параллелограмма: формулировка и доказательство",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 6,
+      "topic": "Площадь треугольника и прямоугольного треугольника",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 7,
+      "topic": "Отношение площадей треугольников с равным углом",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 8,
+      "topic": "Площадь трапеции: формулировка и доказательство",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 9,
+      "topic": "Теорема Пифагора: формулировка и доказательство",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 10,
+      "topic": "Обратная теорема Пифагора: формулировка и доказательство",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 11,
+      "topic": "Пифагоровы треугольники и примеры",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 12,
+      "topic": "Формула Герона и её вывод",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        159
+      ],
+      "paragraph": null
+    }
+  ],
+  "paragraphs": [
+    {
+      "chapter": 7,
+      "number": 1,
+      "title": "Площадь многоугольника",
+      "pointNumbers": [
+        54,
+        56
+      ],
+      "exerciseNumbers": [
+        541,
+        554
+      ],
+      "printedPages": [
+        139,
+        145
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 2,
+      "title": "Площади параллелограмма, треугольника и трапеции",
+      "pointNumbers": [
+        57,
+        59
+      ],
+      "exerciseNumbers": [
+        555,
+        580
+      ],
+      "printedPages": [
+        146,
+        152
+      ]
+    },
+    {
+      "chapter": 7,
+      "number": 3,
+      "title": "Теорема Пифагора",
+      "pointNumbers": [
+        60,
+        62
+      ],
+      "exerciseNumbers": [
+        581,
+        604
+      ],
+      "printedPages": [
+        152,
+        158
+      ]
+    }
+  ],
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPageRange": [
+      139,
+      162
+    ],
+    "pdfPageRange": [
+      140,
+      163
+    ],
+    "pageOffset": 1
+  },
+  "counts": {
+    "mainNumbers": 99,
+    "mainParts": 169,
+    "theoryPoints": 9,
+    "selfcheckQuestions": 12,
+    "cards": 190
+  },
+  "audit": {
+    "reviewer": "Independent non-author OpenAI source reviewer /root/vii_source",
+    "date": "2026-10-30",
+    "scope": "Exact source inventory, all pages, every numbered exercise and explicit subpart, theory titles/ranges, paragraphs, selfchecks and two grid figures. This is not an approval of any authored lesson or future bundle.",
+    "sourceActuallyViewed": true,
+    "ocrUsed": false,
+    "pageImages": [
+      {
+        "printedPage": 139,
+        "pdfPage": 140,
+        "sha256": "1d328a8b7d15dae970ec88103046acbb173043e9f2b8bf49273e3dc8d8632446",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 140,
+        "pdfPage": 141,
+        "sha256": "a27eb4f9336fedfbaa65bdb5ca7da03639f7b29bd5cf5b0cd8bb770f3b4553c6",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 141,
+        "pdfPage": 142,
+        "sha256": "d86f3992a8586411e45462bc24b927b7f8a1cb9d4fb3953b9cb19b4e6c0ff576",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 142,
+        "pdfPage": 143,
+        "sha256": "10264e408b94c27f32f5b35f37792626c2a6ae8e731aeee63735563515407319",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 143,
+        "pdfPage": 144,
+        "sha256": "3758f612fb28ab375a6c40343cb992ebbcf641d4f1608c739472c0c89cdd47b4",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 144,
+        "pdfPage": 145,
+        "sha256": "202976aca7514c92ce9bd950be673f0d66ef9b0ff48d940f34654012b6ca0f15",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 145,
+        "pdfPage": 146,
+        "sha256": "d4e8abe44a23987fc3fe13715029fbc18b822e8c7242df61f296d2bc865800fe",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 146,
+        "pdfPage": 147,
+        "sha256": "2331e1169b5cc289ef4d0466d40c861f0599d684a5cbd89c25c3556e03531686",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 147,
+        "pdfPage": 148,
+        "sha256": "349b4cbed902bc46c0f153637b1152c54e759bce21f759aa08764ad9d521d2d0",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 148,
+        "pdfPage": 149,
+        "sha256": "350de4a622220c9d942ae73cbcf2e52602c0ddc53876ba31616ca75ac8262975",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 149,
+        "pdfPage": 150,
+        "sha256": "78e1e388df66e1353a2bfbb5afa8e03ccd0c362d44bc7818a3f52e9ef32fc35c",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 150,
+        "pdfPage": 151,
+        "sha256": "28e45e75a8b739513a63919bb24db74546d7857a49a7bd4c0cf469aa704245db",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 151,
+        "pdfPage": 152,
+        "sha256": "cf3c9808636cae388ecef54327416512f38b427ca96ea664c7aeba9c3d8d4b28",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 152,
+        "pdfPage": 153,
+        "sha256": "fe89ff678d750605917d0a4fb9cb988d8b89df80d45697e5b5a7da3f9ef51c70",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 153,
+        "pdfPage": 154,
+        "sha256": "b890c94c2f4ab34a0ba4b1e8e5a31afbd555a4684564ae216307da4daac33f5f",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 154,
+        "pdfPage": 155,
+        "sha256": "d8c7168ff86e8f5ab0ae86843b2c8464c985b19b2adab4bc25beb3d41c6f984a",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 155,
+        "pdfPage": 156,
+        "sha256": "23a4dc15f830d323ce3cd48431b8f17943ad5fdd8a8ee93f61b2a653f6d80452",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 156,
+        "pdfPage": 157,
+        "sha256": "c2424df68175ddef00372e58e05cbea88b4f489d8a90bf3b19080d433086ec5b",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 157,
+        "pdfPage": 158,
+        "sha256": "7c815b20e6284a87b70a12082006da947316a6b32bfa44c3a864ab97e340cced",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 158,
+        "pdfPage": 159,
+        "sha256": "7cdda1075011ef02e312e260cb8718db7ad3cca47ff586cf4578ad3ee5f076ef",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 159,
+        "pdfPage": 160,
+        "sha256": "ea9c9ecf68a1d00add3f751410447eaa18ea8d53b9641c8a410c0e1bcc77cef6",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 160,
+        "pdfPage": 161,
+        "sha256": "0ee8185c1ca9292dd499cc1fd666461ed528b68cf8afdf4eb24a37ee98d96b0c",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 161,
+        "pdfPage": 162,
+        "sha256": "3e63cf10c623e86bb3841100a9ee281b71b9a20b3b9830e23413cebbd1ebb841",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 162,
+        "pdfPage": 163,
+        "sha256": "49209f4047aad8a14d5fab2c0855b9427a432988875f0e297c269dcba6a8679d",
+        "actuallyViewed": true
+      }
+    ],
+    "authoredSourceFidelityReview": "docs/reviews/ATANASYAN_7_9_CHAPTER_VII_SOURCE_REVIEW.json"
+  },
+  "sourceIssues": [
+    {
+      "exercise": 560,
+      "part": "в",
+      "printedPages": [
+        150
+      ],
+      "kind": "inconsistent-data",
+      "finding": "Напечатаны S=54 см², a=4,5 см, b=6 см. Для параллелограмма S≤ab=27 см², поэтому такая фигура не существует.",
+      "requiredHandling": "Сохранить исходные числа и явно объяснить противоречие; формальные 12 см и 9 см не называть высотами существующего параллелограмма. Модель не должна притворяться удовлетворяющей всем числам."
+    },
+    {
+      "exercise": 570,
+      "part": "single",
+      "printedPages": [
+        151
+      ],
+      "kind": "inconsistent-data",
+      "finding": "Напечатаны радиус вписанной окружности 3 см и касательные AP=5 см, BQ=5 см, CR=6 см. Равные касательные задают стороны 10,11,11 и полупериметр16. Их площадь20√6, радиус5√6/4≠3.",
+      "requiredHandling": "Сохранить данные, отличать формальный результат S=pr=48 см² от несовместимости условий. Допустима точная модель сторон10,11,11 с честно указанным действительным радиусом либо качественная иллюстрация, без ложного численного соответствия."
+    }
+  ],
+  "sourceSpecificNotes": [
+    {
+      "exercise": 560,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "note": "Высоты h₁,h₂ в условии не привязаны к сторонам a,b. В а/б порядок определяется h₂>h₁: а) h₂=10; б) h₁=4. В в) такого порядка нет, а сама фигура невозможна."
+    },
+    {
+      "exercise": 603,
+      "note": "Габариты щита 800×2000 мм и окна 600×600 мм. Прохождение возможно при пространственном повороте и подаче ребром при пренебрежимо малой толщине: ребро 800 мм помещается вдоль диагонали окна, а направление 2000 мм перпендикулярно плоскости проёма. Не подменять это плоским вложением прямоугольника. Значение 2000 повторно сверено по изображению PDF159, включая последний ноль."
+    },
+    {
+      "exercise": 604,
+      "note": "31,5 дюйма,16:9,подставка25см,квадратная ниша74см глубиной35см. Расчёт относится к заданной модели габаритов; толщина рамки/дополнительная высота подставки не указаны."
+    },
+    {
+      "exercise": 628,
+      "note": "Два конечных квадрата стороныa с общей вершиной, сторона второго лежит на диагонали первого. Не заменять общий многоугольник неограниченным полуквадратом; ограничение длины стороны существенно."
+    },
+    {
+      "exercise": 637,
+      "note": "В а) острый уголA не означает, что H лежит между A и C: необходимо учесть основание высоты за C. В б) H лежит на продолжении AC за A."
+    },
+    {
+      "exercise": 613,
+      "note": "Расстояния понимаются как длины перпендикуляров к прямым, содержащим боковые стороны. При тупом угле при вершине основание одного перпендикуляра может выйти за конец боковой стороны; расстояния до конечных отрезков не дают заявленной постоянной суммы."
+    }
+  ],
+  "sourceGridFigures": [
+    {
+      "exercise": 638,
+      "figure": 218,
+      "printedPages": [
+        161
+      ],
+      "unitCm": 1,
+      "coordinateConvention": "Integer grid columns and rows, y downward, arbitrary origin at top-left grid intersection; exact vertex order follows figure boundary.",
+      "parts": [
+        {
+          "part": "а",
+          "vertices": [
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              7
+            ],
+            [
+              10,
+              7
+            ]
+          ],
+          "areaSquareCm": 24.0
+        },
+        {
+          "part": "б",
+          "vertices": [
+            [
+              2,
+              7
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              10,
+              7
+            ]
+          ],
+          "areaSquareCm": 24.0
+        },
+        {
+          "part": "в",
+          "vertices": [
+            [
+              1,
+              7
+            ],
+            [
+              4,
+              7
+            ],
+            [
+              7,
+              1
+            ]
+          ],
+          "areaSquareCm": 9.0
+        },
+        {
+          "part": "г",
+          "vertices": [
+            [
+              1,
+              7
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              7,
+              1
+            ]
+          ],
+          "areaSquareCm": 12.0
+        },
+        {
+          "part": "д",
+          "vertices": [
+            [
+              1,
+              7
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              9,
+              6
+            ]
+          ],
+          "areaSquareCm": 21.0
+        }
+      ]
+    },
+    {
+      "exercise": 639,
+      "figure": 219,
+      "printedPages": [
+        162
+      ],
+      "unitCm": 1,
+      "coordinateConvention": "Integer grid columns and rows, y downward, arbitrary origin at top-left grid intersection; exact vertex order follows figure boundary.",
+      "parts": [
+        {
+          "part": "а",
+          "vertices": [
+            [
+              2,
+              4
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              8,
+              4
+            ],
+            [
+              5,
+              7
+            ]
+          ],
+          "areaSquareCm": 18.0
+        },
+        {
+          "part": "б",
+          "vertices": [
+            [
+              3,
+              1
+            ],
+            [
+              9,
+              2
+            ],
+            [
+              7,
+              7
+            ],
+            [
+              1,
+              6
+            ]
+          ],
+          "areaSquareCm": 32.0
+        },
+        {
+          "part": "в",
+          "vertices": [
+            [
+              2,
+              1
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              7,
+              7
+            ]
+          ],
+          "areaSquareCm": 27.0
+        },
+        {
+          "part": "г",
+          "vertices": [
+            [
+              2,
+              3
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              10,
+              2
+            ],
+            [
+              4,
+              6
+            ]
+          ],
+          "areaSquareCm": 19.5
+        },
+        {
+          "part": "д",
+          "vertices": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              2
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              10,
+              7
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              2,
+              6
+            ]
+          ],
+          "areaSquareCm": 23.5
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "№541–639 — 99 сквозных номеров,169 явно выделенных частей;12 вопросов повторения не имеют буквенных подчастей.",
+    "Дополнительные задачи605–639 и вопросы повторения относятся к главе без выдуманного параграфа.",
+    "Пункты55,612,613,615,617 отмечены звёздочкой в источнике.",
+    "Изображения исходных страниц, PDF и OCR не включаются в репозиторий. Два первоначальных PNG оказались повреждены; соответствующие страницы заново отрисованы и фактически просмотрены."
+  ]
+}

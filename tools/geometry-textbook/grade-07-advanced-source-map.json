@@ -1,0 +1,784 @@
+{
+  "schemaVersion": 1,
+  "bookId": "atanasyan-2023-7-9",
+  "edition": "2023, 14-е издание, переработанное",
+  "supplement": "7-advanced",
+  "grade": 7,
+  "title": "Задачи повышенной трудности",
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      115,
+      120
+    ],
+    "pdfPages": [
+      116,
+      121
+    ],
+    "pdfPageOffset": 1,
+    "inspection": "Independent source-inventory reviewer visually read all six source pages, printed 115–120, including figure 182 and the complete worked construction 442 with figures 183–184. No authored advanced solutions or models were read before this inventory."
+  },
+  "groups": [
+    {
+      "key": "7-advanced-1-2",
+      "title": "Задачи к главам I и II",
+      "relatedChapters": [
+        1,
+        2
+      ],
+      "exerciseNumbers": [
+        413,
+        423
+      ],
+      "printedPages": [
+        115,
+        116
+      ]
+    },
+    {
+      "key": "7-advanced-3-4",
+      "title": "Задачи к главам III и IV",
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "exerciseNumbers": [
+        424,
+        446
+      ],
+      "printedPages": [
+        116,
+        119
+      ]
+    },
+    {
+      "key": "7-advanced-5",
+      "title": "Задачи к главе V",
+      "relatedChapters": [
+        5
+      ],
+      "exerciseNumbers": [
+        447,
+        461
+      ],
+      "printedPages": [
+        119,
+        120
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "number": 413,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 414,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        115
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 415,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 416,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ],
+      "figures": [
+        182
+      ]
+    },
+    {
+      "number": 417,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 418,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 419,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 420,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 421,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 422,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 423,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        1,
+        2
+      ]
+    },
+    {
+      "number": 424,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 425,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 426,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        116
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 427,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 428,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 429,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 430,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 431,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 432,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 433,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 434,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 435,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 436,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 437,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 438,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 439,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 440,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 441,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        117
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ]
+    },
+    {
+      "number": 442,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        118,
+        119
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "figures": [
+        183,
+        184
+      ],
+      "subsection": "construction"
+    },
+    {
+      "number": 443,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        119
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "subsection": "construction"
+    },
+    {
+      "number": 444,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        119
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "subsection": "construction"
+    },
+    {
+      "number": 445,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        119
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "subsection": "construction"
+    },
+    {
+      "number": 446,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        119
+      ],
+      "relatedChapters": [
+        3,
+        4
+      ],
+      "subsection": "construction"
+    },
+    {
+      "number": 447,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        119
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 448,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 449,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 450,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 451,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 452,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 453,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 454,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 455,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 456,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 457,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 458,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 459,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 460,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    },
+    {
+      "number": 461,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        120
+      ],
+      "relatedChapters": [
+        5
+      ]
+    }
+  ],
+  "theory": [],
+  "selfchecks": [],
+  "counts": {
+    "mainNumbers": 49,
+    "mainParts": 50,
+    "theory": 0,
+    "selfchecks": 0,
+    "cards": 50
+  },
+  "caseRequirements": {
+    "413": "Both measurement units are nonzero segments; a and b are positive reciprocal ratios, so ab=1.",
+    "414": "Keep the two unit segments distinct by subscripts. The length of E1F1 in units E2F2 is n/m, not m/n.",
+    "415": "The chosen angle hk is the smaller of the adjacent pair. Both displayed identities belong to this single unlettered exercise.",
+    "416": "Use the actual alternating five highlighted sectors of figure 182, rather than an arbitrary five angles from ten sectors.",
+    "417": "Six distinct pairwise intersecting lines; every pair intersection belongs to at least a third given line. The universal concurrency proof cannot be replaced by one picture.",
+    "418": "Six distinct given points; the line through every pair contains at least a third of these points. Prove collinearity, not just draw an admissible example.",
+    "419": "C1 and C2 lie in opposite open half-planes of AB. Preserve AC1=BC2 and angle BAC1=angle ABC2; the conclusion concerns line C1C2 through the midpoint.",
+    "420": "The known side is adjacent to the known angle. The other datum is the sum of the other two sides, not two individually known sides.",
+    "421": "The source does not require the equal sides to occupy corresponding positions relative to the equal angles. Give a genuine unequal-triangle example.",
+    "422": "The source does not require the given angle to lie between the two given sides. A valid counterexample must retain both equal side lengths and the equal angle.",
+    "423": "O is the intersection of the segments AB and CD. Preserve all four equalities AC=AO=BO=BD, and show OC=OD.",
+    "424": "The source uses the supporting lines of exterior-angle bisectors at B and C. The required smaller angle BOC is 90 degrees minus alpha/2.",
+    "425": "Each auxiliary line passes through a triangle vertex and is perpendicular to that vertex internal bisector. Identify the three triangles formed with the original sides before matching their angles.",
+    "426": "Exactly two printed lettered parts, а and б. Each is a condition quantified over every relevant pair or angle; both imply an acute triangle.",
+    "427": "All three comparisons of the median with half the opposite side are requested in one unlettered card: greater/acute, equal/right, smaller/obtuse.",
+    "428": "Preserve isosceles ABC with base BC, interior M, angle MBC=30 degrees, angle MCB=10 degrees and angle BAC=80 degrees.",
+    "429": "The segment endpoints may be on any two different triangle sides. The inequality is non-strict; endpoint/vertex equality cases must not be excluded.",
+    "430": "BB1 is an internal bisector ending on AC. Both strict conclusions BA>B1A and BC>B1C are requested.",
+    "431": "D lies strictly inside ABC and AD=AB. This location is essential to the strict conclusion AC>AB.",
+    "432": "AB>AC and AD is the internal bisector. Prove both angle ADB>angle ADC and BD>CD without assuming the desired length inequality.",
+    "433": "Prove the converse: one triangle bisector also being a median forces equality of its adjacent sides.",
+    "434": "Two unequal sides share the vertex of the median. The larger of the two split angles is adjacent to the smaller side.",
+    "435": "The source names M as an arbitrary point of side BC. Nondegenerate triangle comparison uses M in the open segment; endpoint choices yield degenerate triples and must be identified instead of silently used as triangles.",
+    "436": "The auxiliary line passes through A perpendicular to the internal angle bisector, and BH is perpendicular to that line. Compare whole perimeters BCH and ABC strictly.",
+    "437": "AB<AC, AD is the bisector and AH the altitude. H lies on ray DB, including configurations where H is B or outside segment BC.",
+    "438": "For the scalene source triangle, the foot of the bisector is strictly between the median midpoint and altitude foot from the same vertex. External altitude positions are admissible.",
+    "439": "The triangle is right with unequal legs. Its right-angle bisector bisects the angle between the altitude and median from the same vertex; equal-leg coincidence is excluded by the source.",
+    "440": "The median and altitude from one vertex trisect that vertex angle. Do not assume their order without considering both possibilities.",
+    "441": "The two altitude comparisons are non-strict: AA1>=BC and BB1>=AC. The proof must force equality and a right isosceles triangle, rather than use strict inequalities.",
+    "442": "The complete worked construction spans printed 118–119 and figures 183–184. Include analysis, construction, proof and existence/count research. For positive sides a,b and height h: none if min(a,b)<h or a=b=h; one congruence class if exactly one side equals h or a=b>h; two if a,b>h and a!=b.",
+    "443": "The supplied angle B is acute and BD is its bisector in a right triangle. Do not replace the given bisector by an altitude or a side.",
+    "444": "A is outside the given circle. The order of intersections must be A,B,C with AB=BC. For radius r and center distance d>r, there are two secants if d<3r, one if d=3r, none if d>3r.",
+    "445": "Given perimeter, one angle and an altitude from another vertex. Preserve which vertex supplies the angle and which supplies the altitude; include construction feasibility.",
+    "446": "Given a perimeter and two angles. A nondegenerate triangle requires positive angles with sum below 180 degrees and positive perimeter.",
+    "447": "A and B are off the given line. Intersect that line with the perpendicular bisector of AB; allow one, none or infinitely many points according to their relative position.",
+    "448": "Intersect the circle with the perpendicular bisector of the nonzero given segment. Include zero, one and two solutions.",
+    "449": "Three distinct points determine one circle exactly when noncollinear. Collinear distinct points give no circle.",
+    "450": "Distances are to two intersecting full lines; both angle-bisector lines are required. Circle intersections can give 0–4 distinct points; count a common intersection only once.",
+    "451": "The three lines meet pairwise but are not concurrent. All four equal-distance points are needed: the triangle incenter and its three excenters.",
+    "452": "Given one side, the difference of its adjacent angles and the sum of the other two sides. Retain the angle-difference condition, its orientation/equal-angle case, and the strict triangle-inequality feasibility.",
+    "453": "The two equal circles have exactly one common point. The common tangent has contact points A and B respectively; the intended nonzero segment uses a common external tangent. The tangent at their mutual contact gives A=B and is a source boundary needing an explicit qualification.",
+    "454": "No common circle points does not imply external separation. Distinguish separated circles (four common tangents) and strict containment including concentric circles (none).",
+    "455": "The two parallel lines are distinct. Centers lie on the middle parallel with radius half their separation. For the prescribed point, include two/one/zero circles for inside strip/on boundary/outside strip.",
+    "456": "A lies on m and B does not. The center is the intersection of the perpendicular to m at A and the perpendicular bisector of AB; prove uniqueness and positive radius.",
+    "457": "A lies on m; no relation of m or A to the given circle is specified. Tangency may be external or internal, degenerate radius zero is invalid, coincident circles are not tangent, and a given circle tangent at A produces an infinite family on the appropriate normal. Do not claim uniformly one or two solutions.",
+    "458": "The angle is nonstraight, and the specified point lies on one side. A nonzero incircle touching at that point requires the point to differ from the vertex; vertex contact is a boundary with no such circle.",
+    "459": "The angle is acute and A strictly interior. Reflection in both sides gives the lower perimeter bound; verify the minimizing intersections lie on the actual rays, not only their supporting lines.",
+    "460": "The center lies on one of the actual legs of a right triangle; the circle goes through the right vertex and is tangent to the hypotenuse. Treat each leg and exclude zero-radius candidates.",
+    "461": "A is strictly inside the circle and PQ is a positive segment. Chord endpoints straddle A and satisfy the signed difference AK-AM=PQ. If A is the center no positive difference is possible; otherwise existence requires PQ<=2*OA, with two oriented chords below the bound and one at equality."
+  },
+  "sourceCaveats": [
+    {
+      "id": "7ADV-SOURCE-453-CONTACT",
+      "kind": "missing-boundary-qualification",
+      "source": {
+        "collection": "main",
+        "number": 453,
+        "printedPages": [
+          120
+        ]
+      },
+      "observation": "The common tangent at the mutual contact of the two equal circles has coincident contact points A=B, for which AB=0 but O1O2>0.",
+      "requiredTreatment": "State that the conclusion concerns a common external tangent with distinct contact points. Explain why the tangent at the common contact must be excluded rather than silently altering the source."
+    }
+  ],
+  "reviewScope": "Exact-source structure and mathematical case obligations only. This does not approve authored solutions, coordinate models, browser rendering, CI, or release."
+}

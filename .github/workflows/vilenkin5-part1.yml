@@ -10,8 +10,8 @@ permissions:
   contents: read
 jobs:
   course-regression:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -35,3 +35,16 @@ jobs:
           python3 tools/vilenkin5-course/build-offline.py
           git diff --exit-code -- courses/vilenkin-5-part-1/offline.html
           git diff --check
+      - name: Install browser for real mobile and desktop journeys
+        run: |
+          npm install --prefix "$RUNNER_TEMP/vilenkin5-dom" --no-save --no-package-lock --ignore-scripts linkedom@0.18.14 playwright@1.62.1
+          "$RUNNER_TEMP/vilenkin5-dom/node_modules/.bin/playwright" install --with-deps chromium
+      - name: All course views and retained work in a real browser
+        run: node tools/vilenkin5-course/browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vilenkin5-part1-browser
+          path: artifacts/vilenkin5-part1/
+          retention-days: 14
+          if-no-files-found: error

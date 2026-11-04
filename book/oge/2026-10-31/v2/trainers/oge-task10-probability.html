@@ -1,0 +1,1723 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v2/edition-assets/edition.css">
+<script src="/book/oge/2026-10-31/v2/edition-assets/bootstrap.js"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ. Задание 10: вероятность — тренажёр</title>
+<link rel="canonical" href="https://mathexam.space/trainers/oge-task10-probability.html">
+<style>
+:root{
+  --ink:#20324b;        /* чернила */
+  --pen:#1b4fa0;        /* синяя ручка */
+  --green:#1e7a34;      /* зелёная ручка — верно */
+  --red:#c22f2f;        /* красная ручка — показанное */
+  --paper:#fdfcf7;      /* бумага */
+  --cell:#dfe9f2;       /* клетка */
+  --margin:#e88;        /* поля */
+  --hl:#ffe9a8;         /* подсветка листьев B */
+  --cA:rgba(80,140,220,.18);
+  --cB:rgba(230,170,60,.20);
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:17px; line-height:1.5;
+  background:
+    linear-gradient(to right, transparent 0 44px, var(--margin) 44px 45.5px, transparent 45.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);
+}
+.wrap{max-width:880px;margin:0 auto;padding:10px 14px 60px 56px}
+h1{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1.35em;color:var(--pen);margin:8px 0 2px;
+}
+.sub{font-size:.92em;color:#5a6b83;margin-bottom:8px}
+
+nav.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:5;background:var(--paper);padding:6px 0;border-bottom:2px solid var(--cell);flex-wrap:wrap}
+nav.tabs button{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1em;padding:7px 16px;border:2px solid var(--pen);border-radius:14px 14px 4px 4px;
+  background:#eef4fc;color:var(--pen);cursor:pointer;
+}
+nav.tabs button.on{background:var(--pen);color:#fff}
+section.tab{display:none;padding-top:14px}
+section.tab.on{display:block}
+
+.card{background:var(--card);border:1.5px solid #cdd9e6;border-radius:10px;padding:14px 16px;margin:12px 0;box-shadow:2px 3px 0 rgba(90,110,140,.12)}
+.tnum{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-weight:bold}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{
+  font-family:Georgia,serif;font-size:.92em;padding:6px 12px;border:1.5px solid var(--pen);
+  border-radius:16px;background:#fff;color:var(--pen);cursor:pointer;
+}
+.chip.on{background:var(--pen);color:#fff}
+.chip.q{border-color:#7d8aa0;color:#3d4a60}
+.chip.q.good{background:#e3f3e6;border-color:var(--green);color:var(--green)}
+
+button.act{
+  font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;
+  padding:7px 14px;border-radius:8px;cursor:pointer;margin:4px 6px 4px 0;
+  border:2px solid var(--pen);background:var(--pen);color:#fff;
+}
+button.act.ghost{background:#fff;color:var(--pen)}
+button.act.show{border-color:var(--red);background:#fff;color:var(--red)}
+button.act:disabled{opacity:.45;cursor:default}
+
+input.aw-dec,input.aw-one{
+  font-family:Georgia,serif;font-size:1.05em;width:120px;padding:6px 8px;
+  border:none;border-bottom:2px solid var(--pen);background:transparent;color:var(--pen);
+  outline:none;text-align:center;
+}
+.aw{display:inline-flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.aw-decwrap,.aw-frwrap{display:inline-flex;align-items:baseline;gap:8px}
+.aw-frwrap[hidden],.aw-decwrap[hidden]{display:none}
+.aw-tog{
+  background:none;border:none;padding:2px 2px;cursor:pointer;
+  font-family:Georgia,serif;font-size:.82em;color:#6a7a90;
+  text-decoration:underline dotted;text-underline-offset:3px;
+}
+.aw-tog:hover{color:var(--pen);text-decoration:underline solid}
+.aw-fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:3px}
+.aw-cell{
+  font-family:Georgia,serif;font-size:1.05em;width:74px;height:32px;text-align:center;padding:0;
+  border:1.6px dashed #9fb6d1;border-radius:5px;background:#eef4fb;color:var(--pen);outline:none;
+}
+.aw-cell:focus{border-style:solid;border-color:var(--pen);background:#fff}
+.aw-bar{width:82px;height:3px;background:var(--ink);border-radius:2px}
+.fb{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;display:block;margin-top:6px;min-height:1.3em}
+.fb.ok{color:var(--green)}
+.fb.no{color:#8a5a20}
+.fb.warn{color:#7a6a3a}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac .tt{border-bottom:1.6px solid currentColor;padding:0 5px}
+.frac .bb{padding:0 5px}
+.mnum{padding:0 2px}
+
+.hintbox{background:#fdf7e3;border:1.5px dashed #d8b74a;border-radius:8px;padding:8px 12px;margin:8px 0;font-size:.95em}
+.razbor{background:#fff5f5;border:1.5px solid #eec3c3;border-radius:8px;padding:10px 14px;margin:10px 0}
+.razbor .rz-t{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--red);margin-bottom:4px}
+.okline{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--green)}
+.redink{color:var(--red)}
+.greenink{color:var(--green)}
+
+.step{border-left:3px solid var(--cell);padding:6px 0 6px 14px;margin:10px 0}
+.step.done-ok{border-left-color:var(--green)}
+.step.done-show{border-left-color:var(--red)}
+.step .q{margin-bottom:6px}
+
+.figure{display:block;max-width:420px;width:100%;height:auto;margin:10px auto;background:#fff;border:1px solid #dde5ee;border-radius:8px}
+/* интерактивное дерево: маркерные ленты вдоль рёбер */
+.mk-band{stroke:#ffd24d;stroke-width:11;stroke-linecap:round;opacity:0;transition:opacity .25s ease}
+.mk-band.mk-on-ok{opacity:.85;stroke:#7bd493}     /* решил верно — обведено зелёным маркером */
+.mk-band.mk-on-shown{opacity:.7;stroke:#cfd6e0}   /* посмотрел шаг — серый маркер */
+.mk-band.mk-wink{animation:mkwink 1.05s ease-in-out infinite}
+@keyframes mkwink{0%,100%{opacity:0}50%{opacity:.55}}
+.svgt{font-family:Georgia,serif;font-size:17px;fill:var(--ink);text-anchor:middle}
+.svgb{font-weight:bold;font-style:italic}
+
+table.dice{border-collapse:collapse;margin:8px auto;font-size:.85em}
+table.dice td,table.dice th{border:1px solid #b9c8d8;width:2em;height:2em;text-align:center}
+table.dice th{background:#eef4fc;color:var(--pen)}
+table.dice td.hl{background:var(--hl)}
+
+.statbar{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.9em;background:#eef4fc;border:1.5px solid #c6d6ec;border-radius:8px;padding:8px 12px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.statbar b{color:var(--pen)}
+details.bytype{font-size:.9em;margin-top:6px}
+details.bytype table{border-collapse:collapse}
+details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;font-size:.92em}
+
+.theory-p{margin:14px 0}
+.theory-p .pn{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-size:1.05em}
+.mini{background:#f6f9fd;border:1.5px solid #d5e2f0;border-radius:8px;padding:10px 12px;margin-top:8px}
+.mini .mq{font-size:.96em}
+.note{font-size:.9em;color:#5a6b83}
+.formula{background:#eef4fc;border-radius:8px;padding:8px 14px;display:inline-block;margin:6px 0;font-size:1.05em}
+
+@media (max-width:560px){
+  body{font-size:16px;background:
+    linear-gradient(to right, transparent 0 20px, var(--margin) 20px 21.5px, transparent 21.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);}
+  .wrap{padding:8px 10px 60px 30px}
+  nav.tabs button{font-size:.9em;padding:6px 10px}
+  input.aw-dec,input.aw-one{width:96px}
+  .aw-cell{width:64px;height:30px}
+  .aw-bar{width:72px}
+  button.act{font-size:.9em;padding:7px 10px}
+  .card{padding:12px 12px}
+}
+/* доступность (курс ОГЭ, задача 03D): кнопки и поля не ниже 44 px, контрастный фокус */
+nav.tabs button,button.act,.chip,.aw-tog,input.aw-dec,input.aw-one{min-height:44px}
+.aw-cell{height:44px}
+details.bytype summary{padding:12px 0;line-height:20px;cursor:pointer}
+/* на телефоне вкладки в две строки — не прилипают к верху, чтобы не закрывать задачу */
+@media (max-width:560px){ nav.tabs{position:static} }
+.crumbs{display:inline-flex;align-items:center;min-height:44px;font-size:.9em;color:var(--pen);text-decoration:none}
+.crumbs:hover{text-decoration:underline}
+button:focus-visible,input:focus-visible,.chip:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--pen);outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}
+  .mk-band.mk-wink{opacity:.55}}
+@media print{
+  body{background:#fff}
+  .crumbs,nav.tabs,.chips,button,.fb,.statbar,.aw-tog{display:none !important}
+  section.tab{display:none !important}
+  section.tab.on{display:block !important}
+  .card{box-shadow:none}
+}
+
+/* Minimal task-first course presentation. Math and progress stay in their existing engines. */
+:root{--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--accent:#216342;--green:#216342;--blue:#216342;--line:#dbe1da;--ui:system-ui,-apple-system,"Segoe UI",sans-serif;--hand:var(--ui)}
+body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:18px;line-height:1.75}.margin-line{display:none}.wrap,body>main,body>header{max-width:860px;margin-left:auto;margin-right:auto;padding-left:20px;padding-right:20px}body>header{background:transparent;border:0;box-shadow:none;padding-top:24px}header,h1,h2,h3,.hand{font-family:var(--ui)!important}header{margin-bottom:24px}h1{font-size:25px!important;line-height:1.4;margin:10px 0 22px!important}.crumbs{font:15px/1.6 var(--ui);color:#216342}.card,.task-card,.mtask,.panel{background:#fff!important;border:1px solid #dbe1da!important;border-radius:14px;box-shadow:none!important;padding:28px!important;margin-bottom:22px}.card:before,.card:after{display:none!important}.card p,.task-card p,.mtask p{line-height:1.8}.taskline,.task-text,.task-q,.story{font-size:19px!important;line-height:1.8!important}.taskline{margin:16px 0}.svgbox,svg{max-width:100%}.expr,.formula-box{margin:24px 0;font-size:27px;overflow-x:auto}.btn,.act,.btn-check,button.primary{background:#216342!important;color:white!important;border-color:#216342!important;font-family:var(--ui)!important;font-size:16px;min-height:46px}.ghost,.btn.ghost,.btn-ghost,.act.sec,.act.ghost,.btn.show,.btn-hint{background:#fff!important;color:#216342!important;border-color:#b9cbbb!important}button,input,select,summary{font-family:var(--ui);min-height:44px}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #78a98c;outline-offset:3px}input.ans,.ansfield input,.field input{font-size:21px!important;max-width:100%;border-radius:7px}.btnrow,.btn-row,.mrow,.steprow,.answer-row{gap:12px;margin-top:18px!important}.tabs{display:flex;flex-wrap:wrap;gap:9px;border:0}.tabs button,.chip,.pill,.fchip,#modes button,#types button{background:white;color:#216342;border:1px solid #dbe1da;min-height:44px;padding:9px 13px;font-size:15px}.tabs .active,.tabs .on,.chip.active,.chip.on,.pill.on,.fchip.on,#modes .active,#types .active{background:#216342!important;color:#fff!important}.minimal-settings,.minimal-options{margin:24px 0;border-top:1px solid #dbe1da;padding:18px 2px}.minimal-settings>summary,.minimal-options>summary{color:#216342;cursor:pointer;font-size:16px;padding:5px 0}.minimal-settings>summary+*,.minimal-options>summary+*{margin-top:18px}.minimal-settings .card{padding:18px!important}.minimal-settings .sub,.minimal-settings .subtitle{font-size:15px;line-height:1.75}.minimal-hint{margin:24px 0!important}.minimal-hint-panel{margin:20px 0;padding:20px;background:#f0f5ee;border-radius:12px}.minimal-task-nav{margin:20px 0}.minimal-task-nav label{display:block;font-size:15px}.minimal-task-nav select{max-width:100%;padding:8px;border:1px solid #b9cbbb;border-radius:8px;background:white;font-size:17px}.minimal-task-nav .minimal-next{display:block;margin-top:18px}.mgrid{display:block!important}.score{position:static!important;background:transparent!important;box-shadow:none!important;padding:12px!important}.minimal-meta{font-size:14px;color:#626b63}.minimal-task-title{font-size:20px;margin:0 0 24px}.minimal-task-nav [hidden],[hidden]{display:none!important}@media(max-width:560px){.wrap,body>main,body>header{padding-left:12px;padding-right:12px}.card,.task-card,.mtask,.panel{padding:22px 16px!important}h1{font-size:22px!important}.taskline,.task-text,.task-q,.story{font-size:18px!important}.minimal-hint-panel{padding:16px 12px}.expr,.formula-box{font-size:24px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+<link rel="stylesheet" href="/book/oge/2026-10-31/v2/trainers/oge-course-reference.css">
+<link rel="stylesheet" href="/book/oge/2026-10-31/v2/trainers/oge-course-algebra.css">
+</head>
+<body>
+<div class="wrap">
+<a class="crumbs" href="https://mathexam.space/book/oge/2026-10-31/v2/oge/">← Курс ОГЭ</a>
+<h1>ОГЭ по математике. Задание 10: вероятность</h1>
+<div class="sub">Четыре режима: сначала <b>учимся</b>, потом решаем <b>по шагам</b>, затем — <b>марафон</b> и <b>зачёт</b> из 10 задач. Не сходится — пробуй снова: тренажёр подскажет, где ошибка. Подсказки ничего не отнимают. Ответ вводим десятичной дробью (0,25) или, нажав «ввести дробью», обыкновенной.</div>
+
+<nav class="tabs" role="tablist">
+<button id="tabb-uch" class="on" role="tab" aria-selected="true" onclick="showTab('uch')">Учимся</button>
+<button id="tabb-step" role="tab" aria-selected="false" onclick="userActed=true;showTab('step')">Пошагово</button>
+<button id="tabb-mar" role="tab" aria-selected="false" onclick="userActed=true;showTab('mar')">Марафон</button>
+<button id="tabb-quiz" role="tab" aria-selected="false" onclick="userActed=true;showTab('quiz')">Зачёт</button>
+</nav>
+
+<section class="tab on" id="tab-uch"><div id="uch-root"></div></section>
+<section class="tab" id="tab-step">
+  <div class="hintbox" id="review-box" aria-live="polite" hidden></div>
+  <div class="card">
+    <div><b>Выбери тип задачи:</b></div>
+    <div class="chips" id="step-chips"></div>
+  </div>
+  <div id="step-root"></div>
+</section>
+<section class="tab" id="tab-mar">
+  <div class="statbar" id="mar-stats"></div>
+  <div class="card">
+    <div><b>Какие задачи решаем:</b></div>
+    <div class="chips" id="mar-chips"></div>
+  </div>
+  <div id="mar-root"></div>
+</section>
+<section class="tab" id="tab-quiz"><div id="quiz-root"></div></section>
+</div>
+<script>
+
+/* Presentation helpers only: nodes are moved, never cloned, so their handlers and progress survive. */
+const OGEMinimal={
+  group(root,nodes,label,cls){
+    if(!root||typeof root.appendChild!=="function")return null;
+    nodes=nodes.filter(Boolean);if(!nodes.length)return null;
+    const details=document.createElement('details');details.className=cls||'minimal-options';
+    const summary=document.createElement('summary');summary.textContent=label;details.appendChild(summary);
+    nodes.forEach(node=>details.appendChild(node));root.appendChild(details);return details;
+  },
+  shell(root,selectors,title){
+    if(!root||!document.body||!document.body.querySelector)return;
+    const heading=document.querySelector('h1');if(heading)heading.textContent=title;
+    const nodes=selectors.map(s=>document.querySelector(s)).filter(Boolean);
+    this.group(root,nodes,'Темы, режимы и результаты','minimal-settings');
+  },
+  paginate(grid,selector){
+    if(!grid||!grid.querySelectorAll)return;
+    const cards=Array.from(grid.querySelectorAll(selector));if(!cards.length)return;
+    const old=grid.nextElementSibling;if(old&&old.classList.contains('minimal-task-nav'))old.remove();
+    const nav=document.createElement('div');nav.className='minimal-task-nav';
+    const next=document.createElement('button');next.type='button';next.className='btn minimal-next';next.textContent='Другое задание →';nav.appendChild(next);
+    const options=document.createElement('details');options.className='minimal-options';
+    const summary=document.createElement('summary');summary.textContent='Выбрать задание';options.appendChild(summary);
+    const label=document.createElement('label');label.textContent='Задание ';const select=document.createElement('select');select.setAttribute('aria-label','Выбрать задание');label.appendChild(select);options.appendChild(label);nav.appendChild(options);
+    cards.forEach((card,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=String(i+1)+' из '+cards.length;select.appendChild(option);});
+    let current=0;const activate=i=>{current=i;cards.forEach((card,j)=>{card.hidden=j!==i;});select.value=String(i);};
+    select.onchange=()=>activate(Number(select.value));next.onclick=()=>activate((current+1)%cards.length);activate(0);grid.after(nav);
+  }
+};
+
+/* ===== ЯДРО: точная арифметика и парсер ответов ===== */
+function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+function F(n,d){ // дробь n/d, BigInt, нормализованная
+  n=BigInt(n); d=BigInt(d===undefined?1:d);
+  if(d===0n) throw new Error('den=0');
+  if(d<0n){n=-n;d=-d;}
+  const g=gcdB(n,d)||1n;
+  return {n:n/(g||1n), d:d/(g||1n)};
+}
+function fAdd(a,b){return F(a.n*b.d+b.n*a.d, a.d*b.d);}
+function fMul(a,b){return F(a.n*b.n, a.d*b.d);}
+function fSub(a,b){return F(a.n*b.d-b.n*a.d, a.d*b.d);}
+function fEq(a,b){return a.n===b.n && a.d===b.d;}
+function fCmp(a,b){const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0);}
+// десятичная запись, если знаменатель вида 2^a*5^b; иначе null
+function fToDec(f){
+  let d=f.d, t2=0n, t5=0n;
+  while(d%2n===0n){d/=2n;t2++;}
+  while(d%5n===0n){d/=5n;t5++;}
+  if(d!==1n) return null;
+  const k=t2>t5?t2:t5;
+  const scale=10n**k;
+  let v=f.n*scale/f.d;
+  const neg=v<0n; if(neg)v=-v;
+  let s=v.toString().padStart(Number(k)+1,'0');
+  const kk=Number(k);
+  let out = kk===0 ? s : s.slice(0,s.length-kk)+','+s.slice(s.length-kk);
+  if(kk>0) out=out.replace(/,?0+$/,'').replace(/,$/,'');
+  return (neg?'\u2212':'')+out;
+}
+// округление до 10^-p, возвращает дробь
+function fRound(f,p){
+  const scale=10n**BigInt(p);
+  const num=f.n*scale*2n, den=f.d*2n; // округление half-up для положительных
+  let q=num/den, r=num%den;
+  if(r*2n>=den) q+=1n;
+  // q = round(f*scale) при f>=0 (у нас вероятности >=0)
+  const exact=f.n*scale, fl=exact/f.d, rem=exact%f.d;
+  q=fl; if(rem*2n>=f.d) q+=1n;
+  return F(q,scale);
+}
+function fIsTerm(f){return fToDec(f)!==null;}
+// строка вида "0,25" | "0.25" | "3/8" | "5" -> дробь или null
+function parseAns(s){
+  if(s==null) return null;
+  s=String(s).trim().replace(/\u2212/g,'-').replace(/\s+/g,'');
+  if(!s) return null;
+  let m=s.match(/^(-?\d+)\/(\d+)$/);
+  if(m){ if(BigInt(m[2])===0n) return null; return F(m[1],m[2]); }
+  m=s.match(/^(-?)(\d+)(?:[.,](\d+))?$/);
+  if(m){
+    const sign=m[1]==='-'?-1n:1n;
+    const ip=BigInt(m[2]), fp=m[3]||'';
+    const den=10n**BigInt(fp.length);
+    return F(sign*(ip*den+BigInt(fp||'0')), den);
+  }
+  return null;
+}
+// две части этажного ввода -> дробь
+function parsePair(numS,denS){
+  numS=String(numS||'').trim(); denS=String(denS||'').trim();
+  if(!/^\d+$/.test(numS)||!/^\d+$/.test(denS)) return null;
+  if(BigInt(denS)===0n) return null;
+  return F(numS,denS);
+}
+/* ГСЧ с сидом (mulberry32) — для фазз-тестов воспроизводимо */
+function RNG(seed){
+  let a=seed>>>0;
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    let t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function makePick(rnd){
+  return {
+    ri:(a,b)=>a+Math.floor(rnd()*(b-a+1)),
+    of:(arr)=>arr[Math.floor(rnd()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+  };
+}
+/* HTML этажной дроби */
+function fracHTML(f){
+  if(f.d===1n) return '<span class="mnum">'+f.n.toString()+'</span>';
+  return '<span class="frac"><span class="tt">'+f.n.toString()+'</span><span class="bb">'+f.d.toString()+'</span></span>';
+}
+function fracHTMLraw(n,d){
+  return '<span class="frac"><span class="tt">'+n+'</span><span class="bb">'+d+'</span></span>';
+}
+/* красивое представление ответа: десятичная (если есть) и дробь */
+function ansHTML(f){
+  const dec=fToDec(f);
+  if(dec!==null && f.d!==1n) return dec+' (или '+fracHTMLcopy(f)+')';
+  if(dec!==null) return dec;
+  return fracHTMLcopy(f);
+}
+function fracHTMLcopy(f){return fracHTML(f);}
+/* ===== КОНТРАКТ ПРОГРЕССА КУРСА ОГЭ ===== */
+const TID="oge-t10-veroyatnost";
+const TYPE_IDS=["10_1","10_2","10_3","10_4","10_5","10_6","10_7"];
+const OLD_KEY="oge10_progress_v1";   // прежний ключ тренажёра: переносится один раз (§6 контракта), не удаляется
+const QUIZ_TOTAL=10;   // размер зачёта
+const PASS_AT=8;       // зачёт сдан при 8 из 10
+/* контракт прогресса курса ОГЭ (docs/OGE_PROGRESS_CONTRACT.md): ядро, журнал, повтор;
+   миграция своего старого ключа (§6), сброс только своей ветки, поле ext для панели тренажёра */
+const CP=(function(){
+  var KEY="mathExamCourseProgress.v1";
+  var RO=/[?&]selftest=1/.test(location.search||"");
+  function isObj(o){ return !!o && typeof o === "object" && !Array.isArray(o); }
+  function num(v){ return (typeof v === "number" && isFinite(v) && v > 0) ? Math.floor(v) : 0; }
+  function readAll(){
+    try { var o = JSON.parse(localStorage.getItem(KEY) || "{}"); return isObj(o) ? o : {}; }
+    catch (e) { return {}; }
+  }
+  /* меняет только свою ветку: читает ключ заново прямо перед записью */
+  function saveRec(fn){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var rec = isObj(all[TID]) ? all[TID] : {};
+      if (!isObj(rec.solvedByType)) rec.solvedByType = {};
+      rec.v = 1;
+      fn(rec);
+      rec.updatedAt = Date.now();
+      all[TID] = rec;
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  function solvedOne(type){ saveRec(function(rec){ rec.solvedByType[type] = num(rec.solvedByType[type]) + 1; }); }
+  function finishQuiz(score, total){
+    saveRec(function(rec){
+      rec.runs = num(rec.runs) + 1;
+      rec.total = total;
+      if (score > num(rec.best)) rec.best = score;
+      if (score >= PASS_AT) rec.passed = true;
+    });
+  }
+  /* журнал: промах открывает тип, три верных подряд закрывают;
+     верный ответ по типу без промахов записи не заводит */
+  function mlog(type, ok){
+    if (RO) return;
+    try {
+      var all = readAll();
+      var key = TID + "|" + type;
+      if (ok && !(isObj(all.mistakes) && isObj(all.mistakes[key]))) return;
+      if (!isObj(all.mistakes)) all.mistakes = {};
+      var e = isObj(all.mistakes[key]) ? all.mistakes[key] : (all.mistakes[key] = { w:0, r:0 });
+      if (ok) { if (num(e.w)) e.r = num(e.r) + 1; }
+      else { e.w = num(e.w) + 1; e.r = 0; e.lastWrong = Date.now(); }
+      e.last = Date.now();
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (err) {}
+  }
+  /* режим повтора: только открытые типы этого тренажёра */
+  function openTypes(){
+    var mk = readAll().mistakes, pre = TID + "|", res = [];
+    if (!isObj(mk)) return res;
+    for (var k in mk) if (Object.prototype.hasOwnProperty.call(mk, k) && k.indexOf(pre) === 0){
+      var t = k.slice(pre.length), e = mk[k];
+      if (isObj(e) && num(e.w) > 0 && num(e.r) < 3 && TYPE_IDS.indexOf(t) >= 0) res.push(t);
+    }
+    return res;
+  }
+  /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
+     migratedFrom; старый ключ не удаляется и не переписывается */
+  function migrate(fn){
+    if (RO) return;
+    try {
+      var raw = localStorage.getItem(OLD_KEY);
+      if (raw === null) return;
+      var cur = readAll()[TID];
+      if (isObj(cur) && typeof cur.migratedFrom === "string") return;
+      var old = null;
+      try { old = JSON.parse(raw); } catch (e) {}
+      saveRec(function(rec){
+        if (isObj(old)) { try { fn(old, rec); } catch (e) {} }
+        rec.migratedFrom = OLD_KEY;
+      });
+    } catch (e) {}
+  }
+  /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
+     отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
+  function resetOwn(){
+    if (RO) return;
+    try {
+      var all = readAll(), rec = all[TID];
+      if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
+      else delete all[TID];
+      if (isObj(all.mistakes)) for (var k in all.mistakes)
+        if (Object.prototype.hasOwnProperty.call(all.mistakes, k) && k.indexOf(TID + "|") === 0) delete all.mistakes[k];
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  /* своя статистика панели тренажёра — поле ext ветки (адаптер курса его не читает) */
+  function ext(){ var r = readAll()[TID]; return isObj(r) && isObj(r.ext) ? r.ext : {}; }
+  function saveExt(fn){ saveRec(function(rec){ if (!isObj(rec.ext)) rec.ext = {}; fn(rec.ext); }); }
+  var REVIEW = /[?&]mode=review(&|$)/.test(location.search || "");
+  return { RO:RO, REVIEW:REVIEW, KEY:KEY, isObj:isObj, num:num, readAll:readAll, saveRec:saveRec,
+    solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes,
+    migrate:migrate, resetOwn:resetOwn, ext:ext, saveExt:saveExt };
+})();
+
+/* ===== ГЕНЕРАТОРЫ ЗАДАНИЯ 10 (вероятность) =====
+   Каждый генератор: (pick) -> task
+   task = {code, name, text, svg?, answer(Frac), needRound?, meta, hints[2], steps[], razbor}
+   step = {q, ans(Frac), show}  — вопросы про приём, ответы точные      */
+
+const NICE_DEN=[10,20,25,40,50]; // знаменатели с конечной десятичной записью
+const ONE=F(1), ZERO=F(0);
+
+function pStep(q,ans,show,chk,traps){return {q,ans,show,chk:chk||'',traps:traps||[]};}
+/* «очко / очка / очков» по последнему числу */
+function pointsW(n){const t=n%100,u=n%10;if(t>=11&&t<=14)return 'очков';if(u===1)return 'очко';if(u>=2&&u<=4)return 'очка';return 'очков';}
+function probStepText(){return 'Раздели число благоприятных исходов на число всех исходов.';}
+
+/* --- 10.1 равновозможные исходы --- */
+function gen101(pk){
+  const N=pk.of([10,20,25,40,50,80]);
+  let k; do{ k=pk.ri(1,N-1); }while(2*k===N);   // при k = N/2 «противоположное событие» даёт тот же ответ
+  const ans=F(k,N);
+  const text=`В случайном опыте ровно <b>${N}</b> равновозможных элементарных событий. Событию <i>A</i> благоприятствуют <b>${k}</b> из них. Найдите вероятность события <i>A</i>.`;
+  return {
+    code:'10.1', name:'Равновозможные исходы', text, answer:ans,
+    meta:{N,k},
+    hints:[
+      'Вероятность — это доля благоприятных исходов среди всех. Что здесь «все исходы», а что «благоприятные»?',
+      'P(A) = N(A) : N — благоприятные делим на все. Оба числа есть в условии.'
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных исходов в опыте?',F(N),`Всего исходов N = ${N} — это число прямо названо в условии.`,'число всех исходов в условии'),
+      pStep('Сколько исходов благоприятствуют событию A?',F(k),`Благоприятных исходов N(A) = ${k}.`,'число благоприятных исходов'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P(A) = ${k} : ${N}.`,'деление благоприятных исходов на все')
+    ],
+    razbor:`Все ${N} исходов равновозможны, благоприятных — ${k}. Значит P(A)&nbsp;=&nbsp;${fracHTMLraw(k,N)}&nbsp;=&nbsp;${fracHTML(ans)}${fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):''}.`
+  };
+}
+
+/* --- 10.2 один выбор предмета --- */
+const OBJ102=[
+  {what:'значков', one:'значок', verb:'Покупатель наугад берёт один значок'},
+  {what:'магнитов', one:'магнит', verb:'Продавец наугад достаёт один магнит'},
+  {what:'брелоков', one:'брелок', verb:'Ученик наугад вытягивает один брелок'},
+  {what:'леденцов', one:'леденец', verb:'Ребёнок не глядя берёт один леденец'},
+  {what:'воздушных шариков', one:'шарик', verb:'Аниматор наугад берёт один шарик'}
+];
+const COLORS=[['красных','красным'],['синих','синим'],['зелёных','зелёным'],['жёлтых','жёлтым'],['оранжевых','оранжевым'],['фиолетовых','фиолетовым']];
+function gen102(pk){
+  const obj=pk.of(OBJ102);
+  const [c1,c2]=pk.shuf(COLORS).slice(0,2);
+  const total=pk.of(NICE_DEN);
+  let a; do{ a=pk.ri(2,total-2); }while(2*a===total);   // при a = b «не тот цвет» даёт тот же ответ
+  const b=total-a;
+  const askFirst=pk.ri(0,1)===0;
+  const fav=askFirst?a:b, cAsk=askFirst?c1:c2;
+  const ans=F(fav,total);
+  const text=`В коробке лежат <b>${a}</b> ${c1[0]} и <b>${b}</b> ${c2[0]} ${obj.what}. ${obj.verb}. Найдите вероятность того, что он окажется ${cAsk[1]}.`;
+  return {
+    code:'10.2', name:'Один выбор предмета', text, answer:ans,
+    meta:{a,b,total,fav},
+    hints:[
+      `Сначала посчитай, сколько всего ${obj.what} в коробке — и лишь потом дели.`,
+      `Сначала все предметы: ${a}&nbsp;+&nbsp;${b}. Потом те, про которые спрашивают, — и дели.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj.what} в коробке?`,F(total),`Всего: ${a} + ${b} = ${total}.`,'сумму всех предметов'),
+      pStep(`Сколько из них ${cAsk[0]} (благоприятные исходы)?`,F(fav),`Благоприятных: ${fav}.`,'сколько предметов того цвета, про который спрашивают'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${fav} : ${total}.`,'деление нужных на все')
+    ],
+    razbor:`Всего предметов: ${a}&nbsp;+&nbsp;${b}&nbsp;=&nbsp;${total}. Благоприятных (${cAsk[0]}): ${fav}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(ans)}.`
+  };
+}
+
+/* --- 10.3 два выбора без возвращения, первый известен --- */
+function gen103(pk){
+  const obj=pk.of([['фишек','фишка','фишки'],['пуговиц','пуговица','пуговицы'],['бусин','бусина','бусины']]);
+  const cc=pk.shuf([['оранжевых','оранжевой','оранжевая'],['фиолетовых','фиолетовой','фиолетовая'],['голубых','голубой','голубая'],['розовых','розовой','розовая']]).slice(0,2);
+  const totalAfter=pk.of([10,20,25,50]); // всего минус один — красивый знаменатель
+  const total=totalAfter+1;
+  let g; do{ g=pk.ri(2,total-2); }while(2*g===total+1);   // нужного цвета, ≥ 2; при g = (T+1)/2 «другой цвет» даёт тот же ответ
+  const y=total-g;
+  const ans=F(g-1,totalAfter);
+  const [cG,cY]=cc;
+  const text=`В мешочке лежат <b>${g}</b> ${cG[0]} и <b>${y}</b> ${cY[0]} ${obj[0]}. Наугад, не глядя, по очереди достают две ${obj[2]}. Известно, что первая ${obj[1]} оказалась ${cG[1]}. Найдите вероятность того, что вторая ${obj[1]} тоже окажется ${cG[1]}.`;
+  return {
+    code:'10.3', name:'Выбор без возвращения', text, answer:ans,
+    meta:{g,y,total,acc:obj[1].replace('а','у')},
+    hints:[
+      `Одну ${cG[2].replace('ая','ую')} ${obj[1].replace('а','у')} уже достали. Пересчитай, что осталось в мешочке.`,
+      `Осталось всего ${total}&nbsp;−&nbsp;1, а нужного цвета — на одну меньше, чем было. Дели одно на другое.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj[0]} осталось в мешочке после первого извлечения?`,F(totalAfter),`Было ${total}, одну достали: ${total} − 1 = ${totalAfter}.`,'сколько предметов осталось в мешочке',[{v:F(total),m:'Первую уже достали и не вернули: всего стало на один меньше.'}]),
+      pStep(`Сколько среди оставшихся ${cG[0]} ${obj[0]}?`,F(g-1),`Было ${g}, одну ${cG[2].replace('ая','ую')} уже достали: ${g} − 1 = ${g-1}.`,'сколько осталось предметов нужного цвета',[{v:F(g),m:'Одну нужного цвета уже достали — их тоже стало на одну меньше.'}]),
+      pStep('Найди вероятность для второго извлечения: '+probStepText(),ans,`P = ${g-1} : ${totalAfter}.`,'деление оставшихся нужных на всех оставшихся')
+    ],
+    razbor:`Первая ${obj[1]} уже вынута, назад её не возвращают. Осталось ${total}&nbsp;−&nbsp;1&nbsp;=&nbsp;${totalAfter} ${obj[0]}, из них нужного цвета ${g}&nbsp;−&nbsp;1&nbsp;=&nbsp;${g-1}. P&nbsp;=&nbsp;${fracHTMLraw(g-1,totalAfter)}&nbsp;=&nbsp;${fToDec(ans)}. Главное — уменьшить <b>оба</b> числа: и нужные, и общее.`
+  };
+}
+
+/* --- 10.4 монета: известны частоты --- */
+function gen104(pk){
+  const N=pk.of([10,20,25,50]);
+  let h; do{ h=pk.ri(3,N-3); }while(2*h===N);   // при h = N/2 ответ ½ — «монета не помнит» стал бы верным
+  const t=N-h;
+  const k=pk.ri(2,N-1);
+  const ans=F(t,N);
+  const ord=k===2?'втором':k===3?'третьем':k+'-м';
+  const text=`Монету бросили <b>${N}</b> раз. Известно, что орёл выпал ровно <b>${h}</b> раз. Найдите вероятность того, что при <b>${ord}</b> броске выпала решка.`;
+  return {
+    code:'10.4', name:'Монета и частоты', text, answer:ans,
+    meta:{N,h,t},
+    hints:[
+      'Ответ «одна вторая» здесь не подходит: количество орлов уже известно. Сколько тогда было решек?',
+      `Решек столько, сколько бросков без орлов: ${N}&nbsp;−&nbsp;${h}. Все ${N} позиций равновозможны.`
+    ],
+    steps:[
+      pStep('Сколько раз выпала решка?',F(t),`Решек: ${N} − ${h} = ${t}.`,'число решек',[{v:F(h),m:'Это орлы. Спрашивают про решку.'}]),
+      pStep('Сколько всего было бросков (позиций)?',F(N),`Всего бросков: ${N}. Номер броска на ответ не влияет — все позиции равноправны.`,'число всех бросков'),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${t} : ${N}.`,'деление решек на все броски')
+    ],
+    razbor:`Раз орлов ${h}, то решек ${N}&nbsp;−&nbsp;${h}&nbsp;=&nbsp;${t}. При известном числе решек каждая из ${N} позиций одинаково «претендует» на решку, поэтому P&nbsp;=&nbsp;${fracHTMLraw(t,N)}&nbsp;=&nbsp;${fToDec(ans)}. Типичная ловушка — автоматически ответить 0,5.`
+  };
+}
+
+/* --- 10.5 две игральные кости --- */
+function countPairs(pred){let c=0;for(let a=1;a<=6;a++)for(let b=1;b<=6;b++)if(pred(a,b))c++;return c;}
+function gen105(pk){
+  const kind=pk.of(['eq','set','range','even']);
+  let condText, pred, condShort, sums;
+  if(kind==='eq'){
+    const s=pk.ri(4,10);
+    condText=`в сумме выпадет <b>${s}</b> ${pointsW(s)}`; condShort=`сумма = ${s}`;
+    pred=(a,b)=>a+b===s; sums=[s];
+  }else if(kind==='set'){
+    const s=pk.ri(3,8);
+    condText=`в сумме выпадет <b>${s}</b>, <b>${s+1}</b> или <b>${s+2}</b> ${pointsW(s+2)}`; condShort=`сумма ${s}, ${s+1} или ${s+2}`;
+    pred=(a,b)=>a+b>=s&&a+b<=s+2; sums=[s,s+1,s+2];
+  }else if(kind==='range'){
+    const lo=pk.ri(4,6), hi=lo+pk.ri(2,3);
+    condText=`сумма очков будет не меньше <b>${lo}</b> и не больше <b>${hi}</b>`; condShort=`${lo} ≤ сумма ≤ ${hi}`;
+    pred=(a,b)=>a+b>=lo&&a+b<=hi; sums=[]; for(let x=lo;x<=hi;x++)sums.push(x);
+  }else{
+    const even=pk.ri(0,1)===0;
+    condText=`сумма очков окажется ${even?'чётной':'нечётной'}`; condShort=`сумма ${even?'чётная':'нечётная'}`;
+    pred=(a,b)=>((a+b)%2===0)===even; sums=[]; for(let x=2;x<=12;x++)if((x%2===0)===even)sums.push(x);
+  }
+  const cnt=countPairs(pred);
+  const ans=F(cnt,36);
+  const needRound=!fIsTerm(ans);
+  const text=`Игральный кубик бросают дважды. Найдите вероятность того, что ${condText}.`+(needRound?' Результат округлите до сотых.':'');
+  const rounded=needRound?fRound(ans,2):null;
+  return {
+    code:'10.5', name:'Две игральные кости', text, answer:ans, needRound, rounded,
+    meta:{kind,cnt,condShort,pred,sums},
+    hints:[
+      'Исход опыта — упорядоченная пара (первый бросок; второй бросок). Сколько всего таких пар?',
+      `Всего пар 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36. Пересчитай по таблице пары, где ${condShort}, и дели на 36.`
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных пар (первый бросок; второй бросок)?',F(36),'Каждый бросок даёт 6 вариантов: 6 · 6 = 36 пар. Считать 11 «сумм» нельзя — они не равновозможны!','число упорядоченных пар',
+        [{v:F(11),m:'Считать 11 возможных сумм нельзя — они не равновозможны. Равновозможны пары (первый бросок; второй бросок), их 6 · 6.'},
+         {v:F(21),m:'Пары (2; 5) и (5; 2) — разные исходы. Упорядоченных пар 36, а не 21.'},
+         {v:F(12),m:'Не 6 + 6, а 6 · 6: каждому результату первого броска отвечают шесть результатов второго.'}]),
+      pStep(`Сколько пар благоприятных (${condShort})? Переберите по таблице 6×6.`,F(cnt),`Благоприятных пар: ${cnt}.`,'число подходящих пар в таблице'),
+      pStep('Найди вероятность'+(needRound?' и округли до сотых':'')+': '+probStepText(),ans,`P = ${cnt} : 36`+(needRound?` ≈ ${fToDec(rounded)}`:'')+'.','деление'+(needRound?' и округление до сотых':''))
+    ],
+    razbor:`Всего исходов 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36 пар. Благоприятных (${condShort}): ${cnt}. P&nbsp;=&nbsp;${fracHTMLraw(cnt,36)}&nbsp;=&nbsp;${fracHTML(ans)}${needRound?'&nbsp;≈&nbsp;'+fToDec(rounded):(fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):'')}. Помни: пары (2;&nbsp;5) и (5;&nbsp;2) — разные исходы.`
+  };
+}
+
+/* --- 10.6 дерево случайного опыта --- */
+function decF(t){return F(t,10);} // десятые
+function gen106(pk){
+  /* по одному листу B из каждой ветви первого уровня — иначе ответ читается с ребра без дерева (D29);
+     ответ ½ не берём: «1 − ответ» совпал бы с ним (D28) */
+  let p1,q1,q2,P1,P2,Q1,Q1c,Q2,Q2c,leafP,idx,ans;
+  do{
+    p1=pk.ri(1,9);                 // левая ветвь 1 уровня, в десятых
+    q1=pk.ri(1,9); q2=pk.ri(1,9);  // «верхние» ветви 2 уровня
+    P1=decF(p1); P2=decF(10-p1); Q1=decF(q1); Q1c=decF(10-q1); Q2=decF(q2); Q2c=decF(10-q2);
+    leafP=[fMul(P1,Q1),fMul(P1,Q1c),fMul(P2,Q2),fMul(P2,Q2c)];
+    idx=[pk.ri(0,1),pk.ri(2,3)];   // событие B: лист верхней ветви и лист нижней
+    ans=fAdd(leafP[idx[0]],leafP[idx[1]]);
+  }while(fEq(ans,F(1,2)));
+  const leafLbl=[0,1,2,3].map(i=>idx.includes(i)?'B':pk.of(['C','D','K','M']));
+  // подстрахуемся от совпадений подписей не-B листьев — не критично, но сделаем разными
+  const others=['C','D','K','M'];let oi=0;
+  for(let i=0;i<4;i++) if(!idx.includes(i)) leafLbl[i]=others[oi++];
+  const edges=[fToDec(P1),fToDec(P2),fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)];
+  const svg=treeInteractiveSVG(edges,leafLbl);
+  const pathSum=i=>fAdd(i<2?P1:P2,[Q1,Q1c,Q2,Q2c][i]);
+  const pathTxt=i=>{
+    const first=i<2?fToDec(P1):fToDec(P2);
+    const second=[fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)][i];
+    return `${first} · ${second}`;
+  };
+  const text=`На рисунке показано дерево некоторого случайного опыта. Событию <i>B</i> благоприятствуют исходы, листья которых отмечены буквой <i>B</i>. Найдите вероятность события <i>B</i>.`;
+  const leafPdec=leafP.map(f=>fToDec(f));
+  const pA=fToDec(leafP[idx[0]]), pB=fToDec(leafP[idx[1]]);
+  return {
+    code:'10.6', name:'Дерево вероятностей', text, svg, answer:ans,
+    meta:{edges,idx,leafP:leafPdec,lbl:leafLbl,paths:[pathSum(idx[0]),pathSum(idx[1])],lf:[leafP[idx[0]],leafP[idx[1]]]},
+    razborSVG:treeSolveSVG(edges,leafLbl,idx,leafPdec,fToDec(ans)),
+    hints:[
+      'Вдоль пути от корня к листу вероятности перемножают, а вероятности разных благоприятных листьев складывают.',
+      `Листья B: P&nbsp;=&nbsp;${pathTxt(idx[0])}&nbsp;+&nbsp;${pathTxt(idx[1])}.`
+    ],
+    steps:[
+      pStep(`Найди вероятность первого листа B: перемножь вероятности на рёбрах пути (${pathTxt(idx[0])}).`,leafP[idx[0]],`${pathTxt(idx[0])} = ${fToDec(leafP[idx[0]])}. По пути — умножаем, а не складываем!`,'произведение вероятностей вдоль первого пути',[{v:pathSum(idx[0]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
+      pStep(`Найди вероятность второго листа B (${pathTxt(idx[1])}).`,leafP[idx[1]],`${pathTxt(idx[1])} = ${fToDec(leafP[idx[1]])}.`,'произведение вероятностей вдоль второго пути',[{v:pathSum(idx[1]),m:'Вдоль пути вероятности перемножают, а не складывают.'}]),
+      pStep('Сложи вероятности всех листьев B.',ans,`${fToDec(leafP[idx[0]])} + ${fToDec(leafP[idx[1]])} = ${fToDec(ans)}.`,'сумму двух листьев B')
+    ],
+    razbor:`Смотри на выделенные зелёным пути к листьям B. <b>Шаг 1 — умножаем вдоль каждого пути:</b> верхний лист B — ${pathTxt(idx[0])}&nbsp;=&nbsp;${pA}; второй лист B — ${pathTxt(idx[1])}&nbsp;=&nbsp;${pB}. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;${pA}&nbsp;+&nbsp;${pB}&nbsp;=&nbsp;<b>${fToDec(ans)}</b>.`
+  };
+}
+function treeSVG(edges,lbl){
+  // корень (40,110) -> узлы (170,50)/(170,170) -> листья (320, 15/85/135/205)
+  const B='var(--ink)';
+  const leafY=[16,88,136,208];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${B}" stroke-width="1.6"/>`;
+  const node=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--paper)" stroke="${B}" stroke-width="1.6"/>`;
+  const txt=(x,y,t,cls)=>`<text x="${x}" y="${y}" class="${cls||'svgt'}">${t}</text>`;
+  s+=line(46,110,164,52)+line(46,110,164,168);
+  s+=line(176,50,312,leafY[0])+line(176,50,312,leafY[1]);
+  s+=line(176,170,312,leafY[2])+line(176,170,312,leafY[3]);
+  s+=node(40,110,7)+node(170,50,7)+node(170,170,7);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${B}" stroke-width="1.6"/>`;
+    s+=txt(320,leafY[i]+5,lbl[i],'svgt svgb');
+  }
+  s+=txt(96,66,edges[0])+txt(96,158,edges[1]);
+  s+=txt(240,18,edges[2])+txt(240,86,edges[3]);
+  s+=txt(240,140,edges[4])+txt(240,212,edges[5]);
+  return s+'</svg>';
+}
+/* дерево-решение: пути к листьям B подсвечены, у каждого — произведение, снизу — сумма */
+function treeSolveSVG(edges,lbl,bIdx,leafPdec,sumDec){
+  const INK='var(--ink)', HL='var(--green)', DIM='#c3cee0';
+  const leafY=[16,88,136,208];
+  const secondEdge=[2,3,4,5];
+  const isB=i=>bIdx.indexOf(i)>=0;
+  const L=(x1,y1,x2,y2,hl)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${hl?HL:DIM}" stroke-width="${hl?4:1.6}" stroke-linecap="round"/>`;
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  let s=`<svg viewBox="0 0 470 272" class="figure" role="img" aria-label="Дерево: выделены пути к листьям B, показаны произведения и сумма">`;
+  // тусклые базовые рёбра
+  s+=L(46,110,164,52,false)+L(46,110,164,168,false);
+  s+=L(176,50,312,leafY[0],false)+L(176,50,312,leafY[1],false);
+  s+=L(176,170,312,leafY[2],false)+L(176,170,312,leafY[3],false);
+  // подсвеченные пути к листьям B (умножаем вдоль них)
+  for(const i of bIdx){
+    if(i<2){s+=L(46,110,164,52,true)+L(176,50,312,leafY[i],true);}
+    else{s+=L(46,110,164,168,true)+L(176,170,312,leafY[i],true);}
+  }
+  const topHL=isB(0)||isB(1), botHL=isB(2)||isB(3);
+  const N=(x,y,hl)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+  s+=N(40,110,bIdx.length>0)+N(170,50,topHL)+N(170,170,botHL);
+  for(let i=0;i<4;i++){
+    const hl=isB(i);
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${hl?'var(--hl)':'var(--paper)'}" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  // произведения вдоль путей — рядом с листьями B
+  for(const i of bIdx){
+    const first=i<2?edges[0]:edges[1];
+    const second=edges[secondEdge[i]];
+    s+=`<text x="341" y="${leafY[i]+5}" class="svgt" style="text-anchor:start;font-size:13px;fill:${HL}">${first}\u00b7${second}=${leafPdec[i]}</text>`;
+  }
+  // сумма благоприятных листьев — внизу
+  const parts=bIdx.map(i=>leafPdec[i]).join(' + ');
+  s+=`<text x="235" y="258" class="svgt svgb" style="fill:${HL}">P(B) = ${parts} = ${sumDec}</text>`;
+  return s+'</svg>';
+}
+/* интерактивное дерево (вопрос): под каждым ребром — скрытая маркерная лента mk-<key> */
+function treeInteractiveSVG(edges,lbl){
+  const INK='var(--ink)';
+  const leafY=[16,88,136,208];
+  const bands=[
+    ['r0',46,110,164,52],['r1',46,110,164,168],
+    ['0',176,50,312,leafY[0]],['1',176,50,312,leafY[1]],
+    ['2',176,170,312,leafY[2]],['3',176,170,312,leafY[3]]
+  ];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  for(const [k,x1,y1,x2,y2] of bands) s+=`<line class="mk-band mk-${k}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${INK}" stroke-width="1.6"/>`;
+  for(const [,x1,y1,x2,y2] of bands) s+=line(x1,y1,x2,y2);
+  const node=(x,y)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${INK}" stroke-width="1.6"/>`;
+  s+=node(40,110)+node(170,50)+node(170,170);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${INK}" stroke-width="1.6"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  return s+'</svg>';
+}
+function treeEdgeKeysForLeaf(i){ return [(i<2?'r0':'r1'), String(i)]; }
+const TREE_KEYS=['r0','r1','0','1','2','3'];
+function gen107(pk){
+  const mode=pk.of(['counts','probs']);
+  let onlyA,inter,onlyB,outside,total,answer,evKey,evText,fav,areaHTML,metaExtra;
+  const EVENTS=[
+    ['A','произойдёт событие <i>A</i>', r=>r.onlyA+r.inter],
+    ['B','произойдёт событие <i>B</i>', r=>r.onlyB+r.inter],
+    ['AiB','события <i>A</i> и <i>B</i> произойдут одновременно', r=>r.inter],
+    ['AuB','произойдёт хотя бы одно из событий <i>A</i>, <i>B</i>', r=>r.onlyA+r.inter+r.onlyB],
+    ['AnotB','произойдёт событие <i>A</i>, но не произойдёт <i>B</i>', r=>r.onlyA]
+  ];
+  const ev=pk.of(EVENTS);
+  if(mode==='counts'){
+    total=pk.of([20,25,50]);
+    // разбиение total на 4 положительные части
+    do{
+      onlyA=pk.ri(2,total-6); inter=pk.ri(1,total-onlyA-4);
+      onlyB=pk.ri(2,total-onlyA-inter-1); outside=total-onlyA-inter-onlyB;
+    }while(outside<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,total);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total,fav,evKey};
+  }else{
+    // вероятности в сотых, сумма 1
+    total=100;
+    do{
+      onlyA=pk.ri(5,55); inter=pk.ri(5,Math.min(40,95-onlyA));
+      onlyB=pk.ri(5,Math.max(5,99-onlyA-inter)); outside=100-onlyA-inter-onlyB;
+    }while(outside<1||onlyB<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,100);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total:100,fav,evKey};
+  }
+  const show=v=>mode==='counts'?String(v):fToDec(F(v,100));
+  const svg=eulerSVG(show(onlyA),show(inter),show(onlyB),show(outside));
+  const text= mode==='counts'
+    ? `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указано число равновозможных элементарных исходов, которые в неё входят. Найдите вероятность того, что ${evText}.`
+    : `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указана её вероятность. Найдите вероятность того, что ${evText}.`;
+  const zoneNames={A:'обе части круга A (включая пересечение)',B:'обе части круга B (включая пересечение)',AiB:'только пересечение кругов',AuB:'все три области внутри кругов',AnotB:'часть круга A без пересечения'};
+  const regCount={A:2,B:2,AiB:1,AuB:3,AnotB:1}[evKey]; // из скольких областей состоит событие
+  const oneReg=regCount===1;
+  const steps= mode==='counts' ? [
+    pStep(`Сколько исходов входит в нужное событие? Нужные области: ${zoneNames[evKey]}.`,F(fav),`Благоприятных исходов: ${fav}.`,'сумму нужных областей'),
+    pStep('Сколько всего элементарных исходов (сложи ВСЕ четыре области, включая внешнюю)?',F(total),`Всего: ${onlyA} + ${inter} + ${onlyB} + ${outside} = ${total}.`,'сумму всех четырёх областей',[{v:F(total-outside),m:'Внешнюю область тоже считаем: она входит в общее число исходов.'}]),
+    pStep('Найди вероятность: '+probStepText(),answer,`P = ${fav} : ${total} = ${fToDec(answer)}.`,'деление благоприятных исходов на все')
+  ] : [
+    oneReg
+      ? pStep(`Сколько областей входит в событие? Всего одна — ${zoneNames[evKey]}. Её вероятность указана на диаграмме; запиши её.`,answer,`Область одна (${zoneNames[evKey]}), складывать нечего — просто списываем её вероятность: ${fToDec(answer)}.`,'вероятность нужной области')
+      : pStep(`Какие области входят в событие? (${zoneNames[evKey]}.) Сложи их вероятности.`,answer,`Сумма вероятностей нужных областей: ${fToDec(answer)}.`,'сумму вероятностей нужных областей')
+  ];
+  return {
+    code:'10.7', name:'Диаграмма Эйлера', text, svg, answer,
+    meta:metaExtra,
+    hints:[
+      evKey==='AiB'?'Пересечение — это «и то, и другое»: центральная линза диаграммы.':
+      evKey==='AuB'?'«Хотя бы одно» — это объединение: закрась мысленно оба круга целиком.':
+      'Круг A — это ВСЁ внутри левой окружности, включая пересечение с B. Не забудь про линзу в середине.',
+      mode==='counts'
+        ? `Нужные области: ${zoneNames[evKey]}. Их сумма — благоприятные исходы; дели на общее число исходов ${total} (внешнюю область тоже считаем в общее!).`
+        : (oneReg
+            ? `Событию отвечает ровно одна область — ${zoneNames[evKey]}. Её вероятность прямо написана на диаграмме: её и надо записать. Складывать и делить ничего не нужно.`
+            : `Нужные области: ${zoneNames[evKey]}. Здесь указаны сразу вероятности — просто сложи их, делить ни на что не нужно.`)
+    ],
+    steps,
+    razbor: mode==='counts'
+      ? `Событие («${evKey==='AiB'?'A и B':evKey==='AuB'?'A или B':evKey==='AnotB'?'A без B':evKey}») занимает области: ${zoneNames[evKey]} — всего ${fav} исходов. Общее число исходов: ${onlyA}&nbsp;+&nbsp;${inter}&nbsp;+&nbsp;${onlyB}&nbsp;+&nbsp;${outside}&nbsp;=&nbsp;${total}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(answer)}.`
+      : (oneReg
+          ? `На диаграмме сразу даны вероятности областей. Событие занимает ровно одну область — ${zoneNames[evKey]}, поэтому P&nbsp;=&nbsp;${fToDec(answer)} — это просто её вероятность. Складывать нечего, делить не нужно: сумма всех четырёх областей и так равна 1.`
+          : `На диаграмме уже даны вероятности областей. Нужные области: ${zoneNames[evKey]}. Складываем их: P&nbsp;=&nbsp;${fToDec(answer)}. Делить на что-либо не нужно — сумма всех четырёх областей и так равна 1.`)
+  };
+}
+function eulerSVG(a,i,b,out){
+  return `<svg viewBox="0 0 400 210" class="figure" role="img" aria-label="Диаграмма Эйлера">
+<rect x="8" y="8" width="384" height="194" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+<circle cx="160" cy="105" r="72" fill="var(--cA)" stroke="var(--ink)" stroke-width="1.6"/>
+<circle cx="240" cy="105" r="72" fill="var(--cB)" stroke="var(--ink)" stroke-width="1.6"/>
+<text x="98" y="40" class="svgt svgb"><tspan font-style="italic">A</tspan></text>
+<text x="302" y="40" class="svgt svgb"><tspan font-style="italic">B</tspan></text>
+<text x="122" y="112" class="svgt">${a}</text>
+<text x="200" y="112" class="svgt">${i}</text>
+<text x="278" y="112" class="svgt">${b}</text>
+<text x="360" y="192" class="svgt">${out}</text>
+</svg>`;
+}
+
+const GENS={'10.1':gen101,'10.2':gen102,'10.3':gen103,'10.4':gen104,'10.5':gen105,'10.6':gen106,'10.7':gen107};
+const TYPE_LIST=[
+  ['10.1','Равновозможные исходы'],
+  ['10.2','Один выбор предмета'],
+  ['10.3','Без возвращения'],
+  ['10.4','Монета и частоты'],
+  ['10.5','Две кости'],
+  ['10.6','Дерево вероятностей'],
+  ['10.7','Диаграмма Эйлера']
+];
+/* тип задачи в контракте прогресса: «10.3» → «10_3» (как в oge/registry.js) */
+function typeOf(code){return String(code).replace('.','_');}
+
+/* ===== ЛОВУШКИ ИТОГОВОГО ОТВЕТА (решения D27, D28) =====
+   Каждая ловушка — типичный неверный ход и адресное сообщение. Сравнение точное;
+   только в 10.5, где просят округлить, ученик вводит округлённое значение ловушки. */
+function unorderedCount(pred){let c=0;for(let a=1;a<=6;a++)for(let b=a;b<=6;b++)if(pred(a,b))c++;return c;}
+function fTrunc(f,p){const sc=10n**BigInt(p);return F(f.n*sc/f.d,sc);}   // вероятности неотрицательны
+function trapsRaw10(t){
+  const m=t.meta, c=t.code, T=[];
+  const add=(v,msg)=>{ if(v&&v.d>0n) T.push({v,m:msg}); };
+  if(c==='10.1'){
+    add(F(m.N,m.k),'Дробь перевёрнута: все исходы разделены на благоприятные. Вероятность — благоприятные, делённые на все.');
+    add(F(m.N-m.k,m.N),'Это вероятность того, что A не произойдёт. Спрашивают про само событие A.');
+    add(F(m.k,m.N-m.k),'Благоприятные разделены на неблагоприятные. Делить нужно на все исходы — их '+m.N+'.');
+  }else if(c==='10.2'){
+    add(F(m.total,m.fav),'Дробь перевёрнута: все предметы разделены на нужные.');
+    add(F(m.total-m.fav,m.total),'Это вероятность другого цвета. Перечитай вопрос: про какой цвет спрашивают?');
+    add(F(m.fav,m.total-m.fav),'Нужные разделены на ненужные. В знаменателе — все предметы: сложи оба числа.');
+  }else if(c==='10.3'){
+    const T3=m.total, g=m.g, y=m.y;
+    add(F(g,T3),'Так было бы, если бы первую '+m.acc+' вернули в мешочек. Её не вернули — пересчитай, что осталось.');
+    add(F(g-1,T3),'Нужных стало на одну меньше — верно, но и всего предметов тоже стало на один меньше.');
+    add(F(g,T3-1),'Всего стало на один меньше — верно, но одну нужного цвета уже достали: нужных тоже на одну меньше.');
+    add(F(y,T3-1),'Это доля другого цвета среди оставшихся. Спрашивают про тот же цвет, что у первой.');
+    add(F(T3-1,g-1),'Дробь перевёрнута: оставшиеся всего разделены на оставшиеся нужные.');
+  }else if(c==='10.4'){
+    add(F(1,2),'Ответ «одна вторая» здесь не подходит: сколько выпало орлов, уже известно — значит, известно и сколько решек.');
+    add(F(m.h,m.N),'Это доля орлов. Спрашивают про решку: сколько раз выпала она?');
+    add(F(m.N,m.t),'Дробь перевёрнута: все броски разделены на число решек.');
+    add(F(m.t,m.h),'Решки разделены на орлов. Делить нужно на все броски — их '+m.N+'.');
+  }else if(c==='10.5'){
+    add(F(m.sums.length,11),'Считать 11 возможных сумм нельзя — они не равновозможны. Равновозможны пары (первый бросок; второй бросок), их 6 · 6.');
+    add(F(unorderedCount(m.pred),21),'Пары (2; 5) и (5; 2) — разные исходы. Упорядоченных пар 36, а не 21.');
+    add(F(m.cnt,12),'В знаменателе не 6 + 6, а 6 · 6: каждому результату первого броска отвечают шесть результатов второго.');
+    if(t.needRound){ const tr=fTrunc(t.answer,2); if(!fEq(tr,t.rounded)) add(tr,'Пары посчитаны верно, но округлять до сотых нужно по правилу, а не отбрасывать лишние знаки.'); }
+  }else if(c==='10.6'){
+    add(fAdd(m.paths[0],m.paths[1]),'Вдоль пути вероятности перемножают, а не складывают.');
+    add(fMul(m.lf[0],m.lf[1]),'Разные листья B складывают, а не перемножают. Умножают только вдоль одного пути.');
+    add(m.lf[0],'Это вероятность только одного листа B. Листьев B два — сложи оба.');
+    add(m.lf[1],'Это вероятность только одного листа B. Листьев B два — сложи оба.');
+    add(fSub(ONE,t.answer),'Это вероятность того, что B не произойдёт. Спрашивают про B.');
+  }else if(c==='10.7'){
+    const counts=m.mode==='counts', P=v=>counts?F(v,m.total):F(v,100);
+    const other={A:m.onlyB+m.inter,B:m.onlyA+m.inter,AnotB:m.onlyB}[m.evKey];
+    if(other!==undefined) add(P(other),'Это вероятность другого события. Перечитай, какое событие спрашивают и какие области ему отвечают.');
+    if(counts) add(F(m.fav,m.total-m.outside),'В общее число исходов входит и внешняя область — исходы, не попавшие ни в A, ни в B.');
+    if(m.evKey==='AuB'){
+      add(P(m.onlyA+2*m.inter+m.onlyB),'Пересечение посчитано два раза: оно входит и в круг A, и в круг B, но это одна область.');
+      add(P(m.inter),'«Хотя бы одно» — это оба круга целиком, а не только пересечение.');
+    }
+    if(m.evKey==='AiB') add(P(m.onlyA+m.inter+m.onlyB),'«A и B одновременно» — только пересечение, средняя линза, а не оба круга целиком.');
+    add(fSub(ONE,t.answer),'Это вероятность того, что событие не произойдёт.');
+  }
+  return T;
+}
+/* ключ сравнения: в 10.5 ученик вводит округлённое значение бесконечной дроби */
+function tkey(t,v){ return (t.code==='10.5'&&!fIsTerm(v))?fRound(v,2):v; }
+function ansKey(t){ return t.needRound?t.rounded:t.answer; }
+/* ловушки без совпадений: разные сообщения не ловят одно значение, ни одна не равна ответу */
+function trapsClean(t){
+  const T=trapsRaw10(t), ak=ansKey(t);
+  for(let i=0;i<T.length;i++){
+    const ki=tkey(t,T[i].v);
+    if(fEq(ki,ak)) return false;
+    for(let j=i+1;j<T.length;j++) if(T[j].m!==T[i].m&&fEq(ki,tkey(t,T[j].v))) return false;
+  }
+  return true;
+}
+/* ловушки задачи: равная ответу снимается всегда, повтор значения — одно сообщение */
+function finalTraps10(t){
+  const ak=ansKey(t), out=[];
+  for(const x of trapsRaw10(t)){
+    const k=tkey(t,x.v);
+    if(fEq(k,ak)||out.some(o=>fEq(tkey(t,o.v),k))) continue;
+    out.push(x);
+  }
+  return out;
+}
+function matchTrap(t,v){
+  return finalTraps10(t).find(x=>fEq(v,x.v)||(t.code==='10.5'&&!fIsTerm(x.v)&&fEq(v,fRound(x.v,2))))||null;
+}
+let TASK_UID=0;
+/* задача с перевыбором параметров, пока ловушки совпадают (D28); не больше 40 попыток */
+function genTask(code,pk){
+  let t;
+  for(let i=0;i<40;i++){ t=GENS[code](pk); if(trapsClean(t)) break; }
+  t.uid=++TASK_UID;
+  return t;
+}
+function genRandom(pk){return genTask(pk.of(TYPE_LIST.map(t=>t[0])),pk);}
+
+/* проверка пользовательского ответа против задачи (честные варианты) */
+function checkAnswer(task,userF){
+  if(!userF) return false;
+  if(fEq(userF,task.answer)) return true;
+  if(task.needRound && task.rounded && fEq(userF,task.rounded)) return true;
+  return false;
+}
+
+/* ===== ФАЗЗ-ПРОВЕРКА (часть ?selftest=1) ===== */
+function fuzz10(itersPerType){
+  let checks=0;
+  const fail=(m)=>{throw new Error('selfTest: '+m);};
+  for(const [code] of TYPE_LIST){
+    for(let it=0;it<itersPerType;it++){
+      const pk=makePick(RNG(code.charCodeAt(3)*100000+it*7+1));
+      const t=genTask(code,pk);
+      const A=t.answer;
+      if(!(A.n>0n||code==='10.5')) fail(code+' P<=0');
+      if(fCmp(A,ONE)>0) fail(code+' P>1');
+      if(fCmp(A,ZERO)<0) fail(code+' P<0');
+      checks+=3;
+      // последний шаг = ответ
+      if(!fEq(t.steps[t.steps.length-1].ans,A)) fail(code+' last step != answer'); checks++;
+      // независимая перепроверка по meta
+      const m=t.meta;
+      if(code==='10.1'){ if(!fEq(A,F(m.k,m.N))) fail('10.1 key'); }
+      if(code==='10.2'){ if(m.a+m.b!==m.total) fail('10.2 sum'); if(!fEq(A,F(m.fav,m.total))) fail('10.2 key'); }
+      if(code==='10.3'){ if(!fEq(A,F(m.g-1,m.total-1))) fail('10.3 key'); if(m.g<2) fail('10.3 g<2'); }
+      if(code==='10.4'){ if(!fEq(A,F(m.t,m.N))) fail('10.4 key'); if(m.h+m.t!==m.N) fail('10.4 sum'); }
+      if(code==='10.5'){
+        let c=0;for(let x=1;x<=6;x++)for(let y=1;y<=6;y++)if(m.pred(x,y))c++;
+        if(c!==m.cnt) fail('10.5 recount'); if(!fEq(A,F(c,36))) fail('10.5 key');
+        if(t.needRound){ const r=fRound(A,2); if(!fEq(r,t.rounded)) fail('10.5 round'); }
+      }
+      if(code==='10.6'){
+        const s=t.meta.leafP.map(x=>parseAns(x)).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(s,ONE)) fail('10.6 leaves sum != 1');
+        const bsum=t.meta.idx.map(i=>parseAns(t.meta.leafP[i])).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(bsum,A)) fail('10.6 key');
+      }
+      if(code==='10.7'){
+        const r=m; const map={A:r.onlyA+r.inter,B:r.onlyB+r.inter,AiB:r.inter,AuB:r.onlyA+r.inter+r.onlyB,AnotB:r.onlyA};
+        if(r.onlyA+r.inter+r.onlyB+r.outside!==r.total) fail('10.7 partition');
+        if(!fEq(A,F(r.fav,r.total))) fail('10.7 key');
+      }
+      checks+=2;
+      // округлость десятичной записи там, где нет округления
+      if(!t.needRound && fToDec(A)===null) fail(code+' non-terminating without rounding'); checks++;
+      // парсер: десятичная запись и дробь принимаются
+      const dec=t.needRound?fToDec(t.rounded):fToDec(A);
+      if(dec!==null && !checkAnswer(t,parseAns(dec))) fail(code+' dec not accepted'); checks++;
+      if(!checkAnswer(t,F(A.n,A.d))) fail(code+' frac not accepted'); checks++;
+      // хвостовой ноль
+      if(dec!==null && dec.includes(',') && !checkAnswer(t,parseAns(dec+'0'))) fail(code+' trailing zero'); checks++;
+      // шаги: ответы шагов конечны в десятичной записи или дробь (для ввода)
+      for(const st of t.steps){ if(fCmp(st.ans,ZERO)<0) fail(code+' step<0'); checks++; }
+    }
+  }
+  return checks;
+}
+/* ===== ДВИЖОК ИНТЕРФЕЙСА ===== */
+function el(id){return document.getElementById(id);}
+const RT=(function(){ // рабочий ГСЧ
+  const r=Math.random;
+  return {ri:(a,b)=>a+Math.floor(r()*(b-a+1)),of:(arr)=>arr[Math.floor(r()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}};
+})();
+let UID=0;
+let userActed=false;   // фокус в поле — только после действия ученика, не при загрузке
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+/* --- виджет ответа: ОДНО поле за раз, переключатель десятичная ⇄ дробь --- */
+function awHTML(id,intOnly){
+  if(intOnly) return `<input id="${id}-dec" class="aw-one" inputmode="numeric" autocomplete="off" aria-label="ответ — целое число">`;
+  return `<span class="aw" id="${id}-aw">
+    <span class="aw-decwrap">
+      <input id="${id}-dec" class="aw-dec" inputmode="decimal" placeholder="0,25" autocomplete="off" aria-label="ответ десятичной дробью">
+      <button type="button" class="aw-tog" id="${id}-tofrac">ввести дробью</button>
+    </span>
+    <span class="aw-frwrap" hidden>
+      <span class="aw-fr" title="обыкновенная дробь">
+        <input id="${id}-n" inputmode="numeric" class="aw-cell aw-n" autocomplete="off" aria-label="числитель">
+        <span class="aw-bar" aria-hidden="true"></span>
+        <input id="${id}-d" inputmode="numeric" class="aw-cell aw-d" autocomplete="off" aria-label="знаменатель">
+      </span>
+      <button type="button" class="aw-tog" id="${id}-todec">ввести десятичной</button>
+    </span>
+  </span>`;
+}
+function awMode(id){const aw=el(id+'-aw');return aw&&aw.classList.contains('fr-mode')?'fr':'dec';}
+function awRead(id){
+  if(awMode(id)==='fr'){const n=el(id+'-n'),d=el(id+'-d');return parsePair(n&&n.value,d&&d.value);}
+  const dec=el(id+'-dec');
+  if(dec&&dec.value.trim()!=='') return parseAns(dec.value);
+  return null;
+}
+function awLock(id){['-dec','-n','-d','-tofrac','-todec','-ck','-sh'].forEach(s=>{const e=el(id+s);if(e)e.disabled=true;});}
+function awFocus(id){if(!userActed)return;const f=el(id+'-dec');if(f&&!f.disabled)try{f.focus({preventScroll:true});}catch(e){}}
+function setFB(id,cls,html){const f=el(id+'-fb');if(!f)return;f.className='fb'+(cls?' '+cls:'');f.innerHTML=html;}
+function bindEnter(id,fn){['-dec','-n','-d'].forEach(s=>{const e=el(id+s);if(e)e.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();fn();}});});}
+const MSG_EMPTY='Введи ответ: десятичной дробью (например 0,25) или этажной дробью справа.';
+const MSG_WRONG='Пока неверно — попробуй ещё раз.';
+const OVER1=' И проверь себя: вероятность не бывает больше 1.';
+/* строка над лестницей до первого нажатия (решения D3, D21) */
+const LADDER_NOTE='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
+
+/* сообщение на неверный итоговый ответ: адресное по ловушке, иначе общее (D27) */
+function wrongMsg(t,v){
+  const tr=matchTrap(t,v);
+  let m=tr?tr.m:(MSG_WRONG+(t.needRound?' Не забудь про округление до сотых (точную дробь тоже приму).':''));
+  if(fCmp(v,ONE)>0) m+=OVER1;
+  return m;
+}
+
+/* --- проверка шага (последний шаг уважает округление задачи) --- */
+function stepOK(task,s,isLast,v){
+  if(!v) return false;
+  if(fEq(v,s.ans)) return true;
+  if(isLast&&task.needRound&&task.rounded&&fEq(v,task.rounded)) return true;
+  return false;
+}
+
+/* --- учёт задачи в прогрессе курса (решения D1, D26): промах — сразу и один раз;
+   решено — без показанных шагов; повторное открытие той же задачи второй раз не считается --- */
+const RECS=new Map();
+function recOf(t){let r=RECS.get(t.uid);if(!r){r={missed:false,shown:false,done:false};RECS.set(t.uid,r);}return r;}
+function taskMiss(t){const r=recOf(t);if(r.missed||r.shown||r.done)return;r.missed=true;CP.mlog(typeOf(t.code),false);}
+function taskShown(t){recOf(t).shown=true;}
+function taskDone(t){
+  const r=recOf(t);if(r.done)return null;
+  r.done=true;const ok=!r.shown;
+  if(ok){CP.solvedOne(typeOf(t.code));if(!r.missed)CP.mlog(typeOf(t.code),true);}
+  CP.saveExt(e=>{
+    if(!CP.isObj(e.byType))e.byType={};
+    const b=CP.isObj(e.byType[t.code])?e.byType[t.code]:{};
+    e.byType[t.code]={correct:CP.num(b.correct)+(ok?1:0),shown:CP.num(b.shown)+(ok?0:1)};
+    e.streak=ok?CP.num(e.streak)+1:0;
+    e.bestStreak=Math.max(CP.num(e.bestStreak),e.streak);
+  });
+  renderStats();
+  return ok;
+}
+
+/* --- пошаговый раннер (общий для «Пошагово» и марафона) --- */
+function mountSteps(root,task,onDone,hooks){
+  const st={shown:false,i:0};
+  const note=document.createElement('p');note.className='note';note.textContent=LADDER_NOTE;root.appendChild(note);
+  function renderStep(){
+    if(st.i>=task.steps.length){onDone(st);return;}
+    hooks&&hooks.onActive&&hooks.onActive(st.i);
+    const s=task.steps[st.i], isLast=st.i===task.steps.length-1;
+    const id='w'+(++UID);
+    const div=document.createElement('div');
+    div.className='step';
+    div.innerHTML=`<div class="q"><span class="tnum">Шаг ${st.i+1}.</span> ${s.q}</div>`
+      +awHTML(id, s.ans.d===1n)
+      +` <button class="act" id="${id}-ck">Проверить</button>`
+      +`<button class="act show" id="${id}-sh">Показать шаг</button>`
+      +`<span class="fb" aria-live="polite" id="${id}-fb"></span>`;
+    root.appendChild(div);
+    let resolved=false;
+    const check=()=>{
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
+      const v=awRead(id);
+      if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+      if(stepOK(task,s,isLast,v)){
+        resolved=true;
+        setFB(id,'ok','Верно!');awLock(id);div.classList.add('done-ok');
+        hooks&&hooks.onResolved&&hooks.onResolved(st.i,true);st.i++;renderStep();
+      } else {
+        task.onMiss&&task.onMiss();
+        const tr=(s.traps||[]).find(x=>fEq(x.v,v));
+        const m=tr?tr.m:(isLast?wrongMsg(task,v):'Пока не сходится: проверь '+(s.chk||'этот шаг')+'.');
+        setFB(id,'no',m);
+      }
+    };
+    el(id+'-ck').onclick=check;
+    bindEnter(id,check);
+    el(id+'-sh').onclick=()=>{
+      if(resolved||(hooks&&hooks.isClosed&&hooks.isClosed()))return;
+      resolved=true;
+      st.shown=true;task.onShow&&task.onShow();
+      setFB(id,'', '<span class="redink">'+s.show+' Ответ: '+ansHTML(s.ans)+'</span>');
+      awLock(id);div.classList.add('done-show');
+      hooks&&hooks.onResolved&&hooks.onResolved(st.i,false);st.i++;renderStep();
+    };
+    awFocus(id);
+  }
+  renderStep();
+  return st;
+}
+/* подмигивание и обводка маркером рёбер дерева */
+function treeWink(svgEl,keys,on){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    if(on){ if(!b.classList.contains('mk-on-ok')&&!b.classList.contains('mk-on-shown')) b.classList.add('mk-wink'); }
+    else b.classList.remove('mk-wink');
+  }));
+}
+function treeMark(svgEl,keys,kind){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    b.classList.remove('mk-wink','mk-on-ok','mk-on-shown');b.classList.add('mk-on-'+kind);
+  }));
+}
+function treeStepHooks(svgEl,idxArr){
+  const paths=[treeEdgeKeysForLeaf(idxArr[0]),treeEdgeKeysForLeaf(idxArr[1]),[]];
+  return {
+    onActive:(i)=>{treeWink(svgEl,TREE_KEYS,false);const p=paths[i];if(p&&p.length)treeWink(svgEl,p,true);},
+    onResolved:(i,ok)=>{const p=paths[i];if(p&&p.length){treeWink(svgEl,p,false);treeMark(svgEl,p,ok?'ok':'shown');}}
+  };
+}
+
+function taskHead(t){
+  return `<div class="tnum">${t.code} · ${t.name}</div><div style="margin:6px 0">${t.text}</div>${t.svg||''}`;
+}
+function razborHTML(t){
+  return `<div class="razbor"><div class="rz-t">Разбор</div>${t.razborSVG||''}${t.razbor}<div style="margin-top:6px"><b>Ответ:</b> ${t.needRound?fToDec(t.rounded)+' (точно: '+fracHTMLraw(t.answer.n,t.answer.d)+')':ansHTML(t.answer)}</div></div>`;
+}
+/* учёт задачи: промахи и показ пишутся в прогресс курса */
+function attach(t){t.onMiss=()=>taskMiss(t);t.onShow=()=>taskShown(t);return t;}
+
+/* ===== ВКЛАДКА «ПОШАГОВО» ===== */
+let stepType='10.1';
+let reviewOn=false;   // ?mode=review: задачи только открытых в журнале типов (решение D22)
+function stepChips(){
+  const box=el('step-chips');box.innerHTML='';
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===stepType&&!reviewOn?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{userActed=true;if(reviewOn){reviewOn=false;reviewBanner('');}stepType=code;stepChips();stepNew();};
+    box.appendChild(b);
+  });
+  const r=document.createElement('button');
+  r.className='chip'+(stepType==='rnd'&&!reviewOn?' on':'');r.textContent='Случайный тип';
+  r.onclick=()=>{userActed=true;if(reviewOn){reviewOn=false;reviewBanner('');}stepType='rnd';stepChips();stepNew();};
+  box.appendChild(r);
+}
+function reviewBanner(html){const b=el('review-box');if(!b)return;b.hidden=!html;b.innerHTML=html;}
+/* задача повтора: тип — из открытых в журнале */
+function reviewTask(){
+  const open=CP.openTypes();
+  const codes=TYPE_LIST.map(t=>t[0]).filter(c=>open.indexOf(typeOf(c))>=0);
+  return codes.length?genTask(RT.of(codes),RT):null;
+}
+function stepNew(presetTask){
+  const root=el('step-root');root.innerHTML='';
+  let t=presetTask||null;
+  if(!t&&reviewOn){
+    t=reviewTask();
+    if(!t){reviewOn=false;reviewBanner('<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип ниже.');stepChips();}
+  }
+  if(!t) t=stepType==='rnd'?genRandom(RT):genTask(stepType,RT);
+  attach(t);
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML=taskHead(t);
+  root.appendChild(card);
+  const treeSvgEl = t.code==='10.6' ? card.querySelector('svg') : null;
+  const hooks = t.code==='10.6' ? treeStepHooks(treeSvgEl, t.meta.idx) : null;
+  const stepsBox=document.createElement('div');card.appendChild(stepsBox);
+  mountSteps(stepsBox,t,(st)=>{
+    if(treeSvgEl) treeWink(treeSvgEl,TREE_KEYS,false);
+    taskDone(t);   // повторно открытая та же задача второй раз не считается
+    const fin=document.createElement('div');
+    fin.innerHTML= st.shown
+      ? '<p><span class="redink">Были показанные шаги — эта задача в счёт решённых не идёт (промахом это не считается).</span> Посмотри разбор и возьми новую задачу этого типа.</p>'
+      : '<p class="okline">Задача разобрана полностью самостоятельно — отлично!</p>';
+    fin.innerHTML+=razborHTML(t)+'<button class="act" id="step-next">Новая задача</button>';
+    card.appendChild(fin);
+    el('step-next').onclick=()=>{userActed=true;stepNew();};
+  }, hooks);
+}
+
+/* ===== ВКЛАДКА «МАРАФОН» ===== */
+/* своя статистика — поле ext ветки курса (решение D17); мусор отбрасывается */
+function marStats(){
+  const e=CP.ext(), bt=CP.isObj(e.byType)?e.byType:{}, s={correct:0,shown:0,streak:CP.num(e.streak),best:CP.num(e.bestStreak),byType:{}};
+  TYPE_LIST.forEach(([c])=>{const b=bt[c];if(!CP.isObj(b))return;const x={correct:CP.num(b.correct),shown:CP.num(b.shown)};if(x.correct||x.shown){s.byType[c]=x;s.correct+=x.correct;s.shown+=x.shown;}});
+  return s;
+}
+function renderStats(){
+  const box=el('mar-stats');if(!box)return;
+  const s=marStats();
+  let rows='';TYPE_LIST.forEach(([c,n])=>{const b=s.byType[c];if(b)rows+=`<tr><td>${c} ${n}</td><td>${b.correct}</td><td>${b.shown}</td></tr>`;});
+  box.innerHTML=
+    `<span>Решено верно: <b>${s.correct}</b></span><span>С показанными шагами: <b>${s.shown}</b></span>`+
+    `<span>Серия: <b>${s.streak}</b> (лучшая ${s.best})</span>`+
+    `<button class="act ghost" id="mar-reset" style="margin:0">Сбросить прогресс</button>`+
+    (rows?`<details class="bytype" style="flex-basis:100%"><summary>по типам</summary><table><tr><th>тип</th><th>верно</th><th>с показом</th></tr>${rows}</table></details>`:'')+
+    `<div id="mar-confirm" style="flex-basis:100%" aria-live="polite"></div>`;
+  el('mar-reset').onclick=()=>{   // подтверждение на странице, сброс только своей ветки (решение D18)
+    el('mar-confirm').innerHTML='<div class="hintbox">Сбросить прогресс по заданию 10? Записи других тренажёров курса не тронутся. '+
+      '<button class="act" id="mar-yes">Да, сбросить</button><button class="act ghost" id="mar-no">Отмена</button></div>';
+    el('mar-yes').onclick=()=>{CP.resetOwn();renderStats();};
+    el('mar-no').onclick=()=>{el('mar-confirm').innerHTML='';};
+  };
+}
+let marFilter='all';
+function marChips(){
+  const box=el('mar-chips');box.innerHTML='';
+  const all=document.createElement('button');
+  all.className='chip'+(marFilter==='all'?' on':'');all.textContent='Все типы вперемешку';
+  all.onclick=()=>{userActed=true;marFilter='all';marChips();marNew();};
+  box.appendChild(all);
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===marFilter?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{userActed=true;marFilter=code;marChips();marNew();};
+    box.appendChild(b);
+  });
+}
+function marNew(){
+  const root=el('mar-root');root.innerHTML='';
+  const t=attach(marFilter==='all'?genRandom(RT):genTask(marFilter,RT));
+  let hintN=0, finished=false, stepsMounted=false;
+  const card=document.createElement('div');card.className='card';
+  const id='w'+(++UID);
+  card.innerHTML=taskHead(t)
+    +`<div style="margin:10px 0"><b>Ответ:</b> `+awHTML(id,false)+`</div>`
+    +`<div><button class="act" id="${id}-ck">Проверить</button>`
+    +`<button class="act ghost" id="${id}-hint">Ещё ориентир</button>`
+    +`<button class="act ghost minimal-hint" id="${id}-steps" aria-expanded="false">Хочешь подсказку?</button></div>`
+    +`<div id="${id}-hintbox"></div><span class="fb" aria-live="polite" id="${id}-fb"></span><div id="${id}-after"></div>`;
+  root.appendChild(card);
+  const helpButton=el(id+'-steps');card.insertBefore(helpButton,card.querySelector('.aw').parentElement);
+  const hintPanel=document.createElement('div');hintPanel.id=id+'-help';hintPanel.className='minimal-hint-panel';hintPanel.hidden=true;card.appendChild(hintPanel);
+  helpButton.setAttribute('aria-controls',hintPanel.id);
+  const setHelpOpen=open=>{hintPanel.hidden=!open;helpButton.setAttribute('aria-expanded',String(open));};
+  OGEMinimal.group(card,[card.querySelector('.tnum')],'Об этом задании');
+  hintPanel.appendChild(el(id+'-hint'));hintPanel.appendChild(el(id+'-hintbox'));hintPanel.appendChild(el(id+'-after'));
+  const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
+  const after=()=>{
+    finished=true;awLock(id);
+    if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+    el(id+'-hint').disabled=true;
+    hintPanel.querySelectorAll('.step input,.step button').forEach(e=>{e.disabled=true;});
+    const b=document.createElement('button');b.className='act';b.id=id+'-next';b.textContent='Следующая задача';
+    b.onclick=()=>{userActed=true;marNew();};
+    card.appendChild(b);
+    if(userActed)try{b.focus({preventScroll:true});}catch(e){}
+  };
+  const check=()=>{
+    if(finished)return;
+    const v=awRead(id);
+    if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+    if(checkAnswer(t,v)){
+      const credited=taskDone(t);
+      setFB(id,'ok',credited===false?'Верно! Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).':'Верно!');awLock(id);
+      setHelpOpen(true);el(id+'-after').insertAdjacentHTML('beforeend',razborHTML(t));after();
+    } else {
+      taskMiss(t);
+      setFB(id,'no',wrongMsg(t,v));
+    }
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-hint').onclick=()=>{   // подсказка ничего не отнимает и итога не называет (D20)
+    if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
+    if(hintN>=2)el(id+'-hint').disabled=true;
+  };
+  helpButton.onclick=()=>{
+    const opening=hintPanel.hidden;
+    setHelpOpen(opening);
+    if(!opening||stepsMounted||finished)return;
+    stepsMounted=true;
+    const box=document.createElement('div');el(id+'-after').appendChild(box);
+    const hooks=Object.assign({},marTreeSvg?treeStepHooks(marTreeSvg,t.meta.idx):null,{isClosed:()=>finished});
+    mountSteps(box,t,()=>{
+      if(finished)return;
+      const ok=taskDone(t);
+      if(!ok) el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача в счёт решённых не идёт (промахом это не считается).</span></p>'+razborHTML(t));
+      else el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));
+      after();
+    },hooks);
+  };
+  awFocus(id);
+}
+
+/* ===== ВКЛАДКА «ЗАЧЁТ» (решения D15, D25): 10 задач, одна попытка, без подсказок ===== */
+function buildQuiz10(){
+  const codes=['10.1','10.2','10.2','10.3','10.3','10.4','10.5','10.5','10.6','10.7'];
+  return RT.shuf(codes).map(c=>genTask(c,RT));
+}
+function buildQuizTab(){
+  const root=el('quiz-root');root.innerHTML='';
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML='<div class="tnum">Зачёт · '+QUIZ_TOTAL+' задач</div>'+
+    '<p>Все семь типов задания 10 вперемешку: по две задачи на выбор предмета, выбор без возвращения и две кости, по одной — остальные. Одна попытка на задачу, подсказок и разбора нет — как на экзамене. Где просят, округли до сотых (точная дробь тоже принимается). Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.</p>'+
+    '<button class="act" id="quiz-start">Начать зачёт</button>';
+  root.appendChild(card);
+  el('quiz-start').onclick=()=>{userActed=true;runQuiz();};
+}
+function runQuiz(){
+  const root=el('quiz-root');root.innerHTML='';
+  const quiz=buildQuiz10(),res=[];
+  let idx=0;
+  const card=document.createElement('div');card.className='card';root.appendChild(card);
+  function show(){
+    if(idx>=quiz.length)return finishQuiz10(quiz,res);
+    const t=quiz[idx],id='q'+(++UID);
+    card.innerHTML='<div class="note">Задача '+(idx+1)+' из '+quiz.length+'</div><div style="margin:6px 0">'+t.text+'</div>'+(t.svg||'')+
+      '<div style="margin:10px 0"><b>Ответ:</b> '+awHTML(id,false)+'</div>'+
+      '<button class="act" id="'+id+'-ck">Ответить</button><button class="act ghost" id="'+id+'-next" hidden>'+(idx+1<quiz.length?'Дальше →':'Итоги →')+'</button>'+
+      '<span class="fb" aria-live="polite" id="'+id+'-fb"></span>';
+    let answered=false,moved=false;
+    const answer=()=>{
+      if(answered)return;   // двойное касание — один ответ
+      const v=awRead(id);
+      if(!v){setFB(id,'warn','Введи ответ — попытка не потрачена.');return;}
+      answered=true;
+      const ok=checkAnswer(t,v),tr=ok?null:matchTrap(t,v);
+      res.push({t,v,ok,diag:ok?'':((tr?tr.m:'')+(fCmp(v,ONE)>0?OVER1:'')).trim()});
+      CP.mlog(typeOf(t.code),ok);
+      awLock(id);
+      setFB(id,ok?'ok':'no',ok?'Верно.':'Неверно.');
+      const nb=el(id+'-next');nb.hidden=false;try{nb.focus({preventScroll:true});}catch(e){}
+    };
+    el(id+'-ck').onclick=answer;
+    bindEnter(id,()=>{if(answered)el(id+'-next').click();else answer();});
+    el(id+'-next').onclick=()=>{if(!answered||moved)return;moved=true;idx++;show();};
+    awFocus(id);
+  }
+  show();
+}
+function finishQuiz10(quiz,res){
+  const score=res.filter(r=>r.ok).length;
+  CP.finishQuiz(score,QUIZ_TOTAL);   // passed — только при PASS_AT из QUIZ_TOTAL и не снимается
+  const root=el('quiz-root');root.innerHTML='';
+  const head=document.createElement('div');head.className='card';head.setAttribute('aria-live','polite');
+  head.innerHTML='<div class="tnum" style="font-size:1.3em">'+score+' / '+QUIZ_TOTAL+'</div><p>'+(score>=PASS_AT
+    ?'Зачёт сдан: '+score+' из '+QUIZ_TOTAL+' (нужно '+PASS_AT+').'
+    :'Для зачёта нужно '+PASS_AT+' из '+QUIZ_TOTAL+'. Разбери ошибки ниже — и попробуй ещё раз.')+'</p>';
+  root.appendChild(head);
+  const list=document.createElement('div');list.className='card';
+  list.innerHTML='<div class="tnum">Разбор зачёта</div>'+res.map((r,i)=>
+    '<div class="step'+(r.ok?' done-ok':' done-show')+'"><div>'+(i+1)+'. '+r.t.code+' · '+r.t.name+'</div>'+
+    '<div>'+(r.ok?'✓ верно: ':'✗ твой ответ '+ansHTML(r.v)+'; верный: ')+(r.t.needRound?fToDec(r.t.rounded):ansHTML(r.t.answer))+'</div>'+
+    (r.ok?'':'<div class="note">'+(r.diag||'Разбери такую задачу во вкладке «Пошагово» — тип «'+r.t.code+' '+r.t.name+'».')+'</div>')+'</div>').join('');
+  root.appendChild(list);
+  const again=document.createElement('button');again.className='act';again.textContent='Пройти ещё раз';
+  again.onclick=()=>{userActed=true;runQuiz();};
+  root.appendChild(again);
+}
+
+/* ===== ВКЛАДКА «УЧИМСЯ» ===== */
+function revealAns(spec){
+  return spec.needRound&&spec.rounded ? fToDec(spec.rounded)+' (точно '+fracHTML(spec.ansF)+')' : ansHTML(spec.ansF);
+}
+function mkGenSpec(code){
+  const t=genTask(code,RT);
+  return {html:t.text+(t.svg||''), ansF:t.answer, intOnly:t.answer.d===1n,
+          showHTML:(t.razborSVG||'')+t.razbor, needRound:t.needRound, rounded:t.rounded, typeCode:code};
+}
+function buildMini(box, spec, fixedId){
+  const id=fixedId||('mini'+(++UID));
+  box.innerHTML=`<div class="mq">${spec.html}</div>
+  <div style="margin-top:8px">${awHTML(id,!!spec.intOnly)} <button class="act" id="${id}-ck">Проверить</button><button class="act show" id="${id}-sh">Показать</button>
+  <span class="fb" aria-live="polite" id="${id}-fb"></span></div><div id="${id}-more"></div>`;
+  const accept=(v)=>!!v&&(fEq(v,spec.ansF)||(spec.needRound&&spec.rounded&&fEq(v,spec.rounded)));
+  const more=(pre)=>{
+    el(id+'-more').innerHTML=(pre||'')+`<button class="act ghost" id="${id}-again">Ещё пример этой темы →</button>`;
+    el(id+'-again').onclick=()=>buildMini(box, mkGenSpec(spec.typeCode)); // свежая задача той же темы
+  };
+  const check=()=>{
+    const v=awRead(id);
+    if(v===null){setFB(id,'warn',MSG_EMPTY);return;}
+    if(accept(v)){setFB(id,'ok','Верно!');awLock(id);more();}
+    else setFB(id,'no',MSG_WRONG); // не блокируем — можно сразу пробовать снова
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-sh').onclick=()=>{
+    awLock(id);
+    setFB(id,'', '<span class="redink">'+spec.showHTML+' Ответ: '+revealAns(spec)+'</span>');
+    more('<div class="note" style="margin:6px 0 8px">Ответ уже виден — поэтому вот новая похожая задача. Это и есть вторая попытка.</div>');
+  };
+}
+const FIXED_MINIS=[
+ {box:'m1-box', typeCode:'10.1', ansF:F(3,12),
+  html:'Из 12 равновозможных исходов событию благоприятствуют 3. Чему равна вероятность?',
+  showHTML:'P = 3 : 12 = 0,25.'},
+ {box:'m2-box', typeCode:'10.2', ansF:F(16,20),
+  html:'В коробке 4 красных и 16 синих значков. Наугад берут один. Какова вероятность, что он синий?',
+  showHTML:'Всего 4 + 16 = 20, синих 16. P = 16 : 20 = 0,8.'},
+ {box:'m3-box', typeCode:'10.3', ansF:F(4,10),
+  html:'В мешке 5 белых и 6 тёмных пуговиц. Первая вынутая пуговица — белая. Вероятность, что вторая тоже белая?',
+  showHTML:'Осталось 10 пуговиц, белых 4. P = 4 : 10 = 0,4.'},
+ {box:'m4-box', typeCode:'10.4', ansF:F(7,20),
+  html:'Монету бросили 20 раз, орёл выпал 13 раз. Вероятность, что при 5-м броске выпала решка?',
+  showHTML:'Решек 20 − 13 = 7, всего бросков 20. P = 7 : 20 = 0,35.'},
+ {box:'m5-box', typeCode:'10.5', intOnly:true, ansF:F(3),
+  html:'Кубик бросают дважды. Сколько пар дают сумму 10? (Смотри таблицу.)',
+  showHTML:'Пары (4;6), (5;5), (6;4) — всего 3.'},
+ {box:'m6-box', typeCode:'10.6', ansF:F(29,100),
+  html:'Найди P(B) для дерева на рисунке.',
+  showHTML:treeSolveSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D'],[0,2],['0,15','0,15','0,14','0,56'],'0,29')
+    +'<b>Шаг 1 — умножаем вдоль путей к B:</b> верхний лист B — 0,3·0,5&nbsp;=&nbsp;0,15; нижний лист B — 0,7·0,2&nbsp;=&nbsp;0,14. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;0,15&nbsp;+&nbsp;0,14&nbsp;=&nbsp;0,29.'},
+ {box:'m7-box', typeCode:'10.7', ansF:F(10,20),
+  html:'На диаграмме указаны количества исходов. Найди вероятность события A.',
+  showHTML:'Круг A: 7 + 3 = 10 исходов. Всего 7 + 3 + 6 + 4 = 20. P(A) = 10 : 20 = 0,5.'}
+];
+function diceTable(hlSum){
+  let h='<table class="dice"><tr><th>+</th>';
+  for(let b=1;b<=6;b++)h+='<th>'+b+'</th>';h+='</tr>';
+  for(let a=1;a<=6;a++){h+='<tr><th>'+a+'</th>';
+    for(let b=1;b<=6;b++)h+='<td'+((a+b)===hlSum?' class="hl"':'')+'>'+(a+b)+'</td>';h+='</tr>';}
+  return h+'</table>';
+}
+function buildUch(){
+  const r=el('uch-root');
+  const treeEx=treeSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D']);
+  const eulerEx=eulerSVG('7','3','6','4');
+  r.innerHTML=`
+<div class="card theory-p"><span class="pn">П.1. Что такое вероятность</span>
+<p>Опыт случайный, но все его элементарные исходы <b>равновозможны</b>. Тогда вероятность события — это доля благоприятных исходов:</p>
+<div class="formula">P(A) = ${fracHTMLraw('число благоприятных исходов','число всех исходов')}</div>
+<p>Вероятность — число от 0 до 1. В ответ пишем десятичную дробь (0,25) или обыкновенную; проценты в ответ не пишут.</p>
+<div class="mini" id="m1-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.2. Один выбор предмета (типы 10.1–10.2)</span>
+<p>Классика: предметы двух видов, наугад берут один. Порядок действий: <b>1)</b> сложи ВСЕ предметы; <b>2)</b> найди, сколько «нужных»; <b>3)</b> раздели нужные на все.</p>
+<p class="note">Ловушки: делят нужные на ненужные; забывают сложить все предметы; отвечают не про тот цвет, который спросили.</p>
+<div class="mini" id="m2-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.3. Выбор без возвращения (тип 10.3)</span>
+<p>Достали предмет — назад не вернули. Если известно, что первый оказался «нужным», то перед вторым выбором <b>пересчитай остаток</b>: и нужных стало на 1 меньше, и всего стало на 1 меньше.</p>
+<div class="formula">P(второй нужный) = ${fracHTMLraw('нужных − 1','всего − 1')}</div>
+<div class="mini" id="m3-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.4. Монета: частоты уже известны (тип 10.4)</span>
+<p>«Монету бросили 20 раз, орёл выпал 13 раз. Какова вероятность, что при 5-м броске — решка?» Рефлекс «0,5» здесь <b>не работает</b>: состав серии уже известен! Решек было 20 − 13 = 7, и каждая из 20 позиций равноправна:</p>
+<div class="formula">P = ${fracHTMLraw('число решек','число всех бросков')}</div>
+<div class="mini" id="m4-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.5. Две игральные кости (тип 10.5)</span>
+<p>Исход опыта — <b>упорядоченная пара</b> (первый бросок; второй бросок). Всего пар 6 · 6 = 36, и именно они равновозможны. Суммы (их 11 штук) равновозможными НЕ являются — это ловушка №1.</p>
+<p><b>Школьный способ:</b> таблица 6×6 — выписать, отметить нужные клетки, посчитать. Надёжно всегда.</p>
+<p><b>Способ «отчаянного девятиклассника»:</b> считать пары в уме перебором по первому кубику. Быстрее, но цена — легко потерять пару или посчитать (2; 5) и (5; 2) как одну. На экзамене при сомнении рисуй таблицу.</p>
+${diceTable(10)}
+<p class="note">Подсвечены клетки с суммой 10 — их ровно 3: (4;6), (5;5), (6;4).</p>
+<p>Если дробь вида ${fracHTMLraw('5','36')} не переводится в конечную десятичную — в условии попросят <b>округлить до сотых</b>.</p>
+<div class="mini" id="m5-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.6. Дерево случайного опыта (тип 10.6)</span>
+<p>Два правила: <b>вдоль пути — умножаем</b>, <b>разные благоприятные листья — складываем</b>. Проверка себя: вероятности на ветвях каждой развилки в сумме дают 1, а вероятности всех листьев в сумме дают 1.</p>
+${treeEx}
+<p class="note">На рисунке событию B отвечают два подсвеченных листа: верхний путь 0,3 · 0,5 и нижний путь 0,7 · 0,2.</p>
+<div class="mini" id="m6-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.7. Диаграмма Эйлера (тип 10.7)</span>
+<p>Четыре области: только A, пересечение (и A, и B), только B, снаружи (ни A, ни B). Запомни соответствие слов и областей:</p>
+<p>«произойдёт A» — весь круг A, <b>включая пересечение</b>; «A и B одновременно» — только линза-пересечение; «хотя бы одно из A, B» — всё внутри обоих кругов; «A, но не B» — круг A без линзы.</p>
+<p>Если в областях <b>количества исходов</b> — дели сумму нужных областей на сумму всех четырёх (внешнюю не забудь!). Если в областях уже <b>вероятности</b> — просто складывай нужные, делить не надо.</p>
+${eulerEx}
+<div class="mini" id="m7-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.8. Квиз: определи тип — и реши</span>
+<p>Читай условие, назови тип задачи, а затем реши её по шагам. Так ты учишься первому и главному экзаменационному навыку — узнавать задачу «в лицо».</p>
+<div id="quiz-area"></div>
+<button class="act" id="quiz-new">Новый пример</button>
+</div>`;
+  FIXED_MINIS.forEach(sp=>buildMini(el(sp.box), sp, sp.box.replace('-box','')));
+  el('quiz-new').onclick=quizNew;
+  quizNew();
+}
+let quizTask=null;
+function quizNew(){
+  quizTask=genRandom(RT);
+  const a=el('quiz-area');
+  let chips='';
+  TYPE_LIST.forEach(([code,name])=>{chips+=`<button class="chip q" data-code="${code}">${code} ${name}</button>`;});
+  a.innerHTML=`<div class="card"><div style="margin:6px 0">${quizTask.text}</div>${quizTask.svg||''}
+  <div><b>Какой это тип?</b></div><div class="chips">${chips}</div>
+  <span class="fb" aria-live="polite" id="quiz-fb"></span><div id="quiz-after"></div></div>`;
+  a.querySelectorAll('.chip.q').forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.code===quizTask.code){
+        b.classList.add('good');
+        const f=el('quiz-fb');f.className='fb ok';f.textContent='Верно, это «'+quizTask.name+'»!';
+        if(!el('quiz-solve')){
+          el('quiz-after').innerHTML='<button class="act" id="quiz-solve">Решить эту задачу по шагам</button>';
+          el('quiz-solve').onclick=()=>{userActed=true;showTab('step');stepNew(quizTask);};
+        }
+      } else {
+        const f=el('quiz-fb');f.className='fb no';f.textContent='Не совсем. Перечитай: что за опыт описан и что дано на рисунке?';
+      }
+    };
+  });
+}
+
+/* ===== ВКЛАДКИ И СТАРТ ===== */
+function showTab(name){
+  ['uch','step','mar','quiz'].forEach(k=>{
+    el('tab-'+k).classList.toggle('on',k===name);
+    const b=el('tabb-'+k);b.classList.toggle('on',k===name);b.setAttribute('aria-selected',k===name?'true':'false');
+  });
+  window.scrollTo({top:0});
+}
+/* §6 контракта, решение D16: верные по типам → solvedByType; лучшая серия — только в ext */
+function migrate10(){
+  CP.migrate(function(old,rec){
+    const bt=CP.isObj(old.byType)?old.byType:{}, e={byType:{}};
+    TYPE_LIST.forEach(([c])=>{
+      const s=bt[c];if(!CP.isObj(s))return;
+      const ok=CP.num(s.correct), sh=CP.num(s.shown);
+      if(ok)rec.solvedByType[typeOf(c)]=CP.num(rec.solvedByType[typeOf(c)])+ok;
+      if(ok||sh)e.byType[c]={correct:ok,shown:sh};
+    });
+    const b=CP.num(old.best);if(b)e.bestStreak=b;
+    rec.ext=e;
+  });
+}
+function boot(){
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('.aw-tog');
+    if(!b)return;
+    const aw=b.closest('.aw');if(!aw)return;
+    const toFrac=b.id.endsWith('-tofrac');
+    aw.querySelector('.aw-decwrap').hidden=toFrac;
+    aw.querySelector('.aw-frwrap').hidden=!toFrac;
+    aw.classList.toggle('fr-mode',toFrac);
+    const f=toFrac?aw.querySelector('.aw-n'):aw.querySelector('.aw-dec');
+    if(f&&!f.disabled)f.focus();
+  });
+  migrate10();
+  buildUch();
+  if(CP.REVIEW){ // ?mode=review — сразу работа над ошибками во вкладке «Пошагово» (решение D22)
+    const open=TYPE_LIST.filter(([c])=>CP.openTypes().indexOf(typeOf(c))>=0);
+    if(open.length){
+      reviewOn=true;
+      reviewBanner('<b>Работа над ошибками.</b> Задачи только тех типов, где были ошибки: '+open.map(([c,n])=>esc(c+' '+n)).join('; ')+'. Тип закрывается после трёх верных решений подряд. Выбор типа ниже — выход из повтора.');
+    } else reviewBanner('<b>Работа над ошибками.</b> Открытых ошибок нет — выбери любой тип ниже.');
+  }
+  stepChips();stepNew();
+  renderStats();marChips();marNew();
+  buildQuizTab();
+  showTab(CP.REVIEW?'step':'mar');
+  const mar=el('tab-mar');OGEMinimal.group(mar,[el('mar-stats'),mar.querySelector(':scope>.card')],'Выбрать тему · мои результаты');
+  OGEMinimal.shell(document.querySelector('.wrap'),['nav.tabs','.wrap>.sub'],'ОГЭ №10 · Вероятность');
+  if(CP.RO) selftest10();   // ?selftest=1 — маркер OGE10_SELFTEST_OK в консоли
+}
+document.addEventListener('DOMContentLoaded',boot);
+
+/*__ALG_SELFTEST_KIT_START__*/
+/* Общие проверки режима ?selftest=1 тренажёров алгебры курса ОГЭ (задача
+   OGE_COURSE_03D_ALGEBRA). Блок побайтно одинаков во всех тренажёрах
+   алгебры, где он есть; копии сверяет гейт tools/oge-algebra-contract.test.mjs.
+   Каждая проверка дописывает ошибки в массив errs; прогресс ученика не трогается. */
+const ASTK={
+  /* чертёж: нет NaN/undefined/Infinity, все точки внутри viewBox (допуск tol) */
+  svg:function(svg,tag,errs,tol){
+    if(tol==null)tol=0.5;
+    if(typeof svg!=='string'||svg.indexOf('<svg')<0){errs.push(tag+': нет чертежа');return;}
+    if(/NaN|undefined|Infinity/.test(svg))errs.push(tag+': в чертеже NaN/undefined/Infinity');
+    const vb=/viewBox="\s*(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)[\s,]+(-?[\d.]+)\s*"/.exec(svg);
+    if(!vb){errs.push(tag+': у чертежа нет viewBox');return;}
+    const X0=+vb[1]-tol,Y0=+vb[2]-tol,X1=+vb[1]+(+vb[3])+tol,Y1=+vb[2]+(+vb[4])+tol;
+    let out=0,first='';
+    const at=function(x,y,what){if(!(x>=X0&&x<=X1&&y>=Y0&&y<=Y1)){out++;if(!first)first=what+' ('+Math.round(x)+'; '+Math.round(y)+')';}};
+    const num=function(a,n){const m=new RegExp('\\s'+n+'="(-?[\\d.]+(?:e-?\\d+)?)"').exec(a);return m?+m[1]:null;};
+    const re=/<(\w+)(\s[^>]*)?>/g;let m;
+    while((m=re.exec(svg))){
+      const el=m[1],a=m[2]||'';
+      if(el==='svg')continue;
+      [['x','y'],['x1','y1'],['x2','y2'],['cx','cy']].forEach(function(p){const x=num(a,p[0]),y=num(a,p[1]);if(x!=null&&y!=null)at(x,y,el);});
+      if(el==='rect'){const x=num(a,'x')||0,y=num(a,'y')||0,w=num(a,'width'),h=num(a,'height');if(w!=null&&h!=null)at(x+w,y+h,'rect');}
+      if(el==='circle'){const x=num(a,'cx'),y=num(a,'cy'),r=num(a,'r');if(x!=null&&y!=null&&r!=null){at(x-r,y,'circle');at(x+r,y,'circle');at(x,y-r,'circle');at(x,y+r,'circle');}}
+      const pts=/\spoints="([^"]*)"/.exec(a);
+      if(pts){const v=pts[1].trim().split(/[\s,]+/).map(Number);for(let i=0;i+1<v.length;i+=2)at(v[i],v[i+1],el);}
+      const d=/\sd="([^"]*)"/.exec(a);
+      if(d){/* конечные точки команд пути; относительные — от текущей точки */
+        const tok=d[1].match(/[MLHVCSQTAZmlhvcsqtaz]|-?(?:\d+\.?\d*|\.\d+)(?:e-?\d+)?/g)||[];
+        const need={M:2,L:2,H:1,V:1,C:6,S:4,Q:4,T:2,A:7,Z:0};
+        let cx=0,cy=0,cmd='',i=0;
+        while(i<tok.length){
+          if(/[a-z]/i.test(tok[i])){cmd=tok[i++];if(/z/i.test(cmd))continue;}
+          const n=need[cmd.toUpperCase()],rel=cmd!==cmd.toUpperCase();
+          if(!n||i+n>tok.length)break;
+          const v=tok.slice(i,i+n).map(Number);i+=n;
+          const U=cmd.toUpperCase();
+          if(U==='H'){cx=rel?cx+v[0]:v[0];}
+          else if(U==='V'){cy=rel?cy+v[0]:v[0];}
+          else{const ex=v[n-2],ey=v[n-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;}
+          at(cx,cy,'path');
+          if(U==='M')cmd=rel?'l':'L';
+        }
+      }
+    }
+    if(out)errs.push(tag+': за рамкой viewBox '+out+' точек, первая — '+first);
+  },
+  /* текст задачи, вариантов и сообщений: нет null, undefined, NaN, Infinity */
+  text:function(html,tag,errs){
+    const t=String(html).replace(/<[^>]*>/g,' ');
+    const m=/\bnull\b|\bundefined\b|\bNaN\b|Infinity|\[object /.exec(t);
+    if(m)errs.push(tag+': в тексте «'+m[0].trim()+'»');
+  },
+  /* ловушки {v, m}: ни одна не принимается как ответ, разные сообщения не ловят
+     одно значение; same — равенство значений, show — запись значения в отчёте */
+  traps:function(list,tag,errs,isAns,same,show){
+    same=same||function(a,b){return a===b;};
+    show=show||function(v){return String(v);};
+    (list||[]).forEach(function(t,i){
+      if(!t||!t.m)errs.push(tag+': ловушка без сообщения');
+      if(isAns(t.v))errs.push(tag+': ловушка '+show(t.v)+' совпадает с ответом');
+      for(let j=i+1;j<list.length;j++){const u=list[j];
+        if(u.m!==t.m&&same(t.v,u.v))errs.push(tag+': две ловушки ловят одно значение '+show(t.v));}
+    });
+  },
+  /* итог в консоль: маркер <ИМЯ>_SELFTEST_OK или _FAIL с числом ошибок */
+  done:function(name,errs){
+    if(typeof console==='undefined')return;
+    if(!errs.length){console.log(name+'_SELFTEST_OK');return;}
+    console.log(name+'_SELFTEST_FAIL '+errs.length);
+    errs.slice(0,30).forEach(function(e){console.log('  '+e);});
+  }
+};
+/*__ALG_SELFTEST_KIT_END__*/
+
+/* ответ задачи стоит в тексте отдельным числом (десятичная запись или дробь a/b) */
+function hasAns(text,t){
+  const s=String(text).replace(/<span class="frac"><span class="tt">(\d+)<\/span><span class="bb">(\d+)<\/span><\/span>/g,'$1/$2').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ');
+  const k=ansKey(t), dec=fToDec(k);
+  const re=x=>new RegExp('(^|[^\\d,/])'+x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?![\\d]|,\\d|\\s?/\\s?\\d)');
+  return (dec!==null&&re(dec).test(s))||(k.d!==1n&&re(k.n+'/'+k.d).test(s.replace(/\s*\/\s*/g,'/')));
+}
+/* ?selftest=1: генераторы, ловушки, ступени, чертежи, зачёт; ничего не пишет (CP.RO) */
+function selftest10(){
+  const errs=[];
+  try{ fuzz10(60); }catch(e){ errs.push(String(e&&e.message||e)); }
+  for(const [code] of TYPE_LIST){
+    let full=0;
+    for(let it=0;it<300;it++){
+      const t=genTask(code,makePick(RNG(code.charCodeAt(3)*7919+it*31+5)));
+      const tag=code+' #'+it;
+      if(TYPE_IDS.indexOf(typeOf(code))<0)errs.push(tag+': тип не из TYPE_IDS');
+      ASTK.text(t.text,tag+' условие',errs);ASTK.text(t.razbor,tag+' разбор',errs);
+      t.hints.forEach(h=>ASTK.text(h,tag+' подсказка',errs));
+      t.steps.forEach(s=>{ASTK.text(s.q,tag+' ступень',errs);ASTK.text(s.show,tag+' ступень',errs);});
+      if(t.svg)ASTK.svg(t.svg,tag+' чертёж',errs);
+      if(t.razborSVG)ASTK.svg(t.razborSVG,tag+' чертёж разбора',errs);
+      /* ловушки: не ответ, разные сообщения не ловят одно значение (в 10.5 — и после округления) */
+      const tr=finalTraps10(t);
+      tr.forEach(o=>ASTK.text(o.m,tag+' ловушка',errs));
+      ASTK.traps(tr,tag,errs,v=>fEq(tkey(t,v),ansKey(t)),(a,b)=>fEq(tkey(t,a),tkey(t,b)),v=>v.n+'/'+v.d);
+      if(trapsClean(t))full++;
+      /* подсказки и сообщения ловушек не называют ответ (D20), если это не данное число условия или чертежа */
+      if(!hasAns(t.text+' '+(t.svg||''),t)){
+        t.hints.forEach(h=>{if(hasAns(h,t))errs.push(tag+': подсказка называет ответ');});
+        tr.forEach(o=>{if(hasAns(o.m,t))errs.push(tag+': ловушка называет ответ');});
+      }
+      /* ступени: есть «что проверяет», ловушка ступени не равна её ответу */
+      t.steps.forEach((s,i)=>{
+        if(!s.chk)errs.push(tag+': у ступени '+(i+1)+' нет «что проверяет»');
+        else if(/^[а-яё]+а(\s|$)/i.test(s.chk))errs.push(tag+': «проверь '+s.chk+'» — не винительный падеж');
+        (s.traps||[]).forEach(x=>{if(fEq(x.v,s.ans))errs.push(tag+': ловушка ступени '+(i+1)+' = её ответу');});
+      });
+      if(code==='10.6'&&!(t.meta.idx[0]<2&&t.meta.idx[1]>=2))errs.push(tag+': листья B не из разных ветвей');
+      if(code==='10.4'&&2*t.meta.h===t.meta.N)errs.push(tag+': орлов ровно половина — «0,5 не подходит» ложно');
+    }
+    if(full<300*0.95)errs.push(code+': задач без совпавших ловушек только '+full+' из 300');
+  }
+  const q=buildQuiz10().map(t=>t.code).sort().join(',');
+  if(q!=='10.1,10.2,10.2,10.3,10.3,10.4,10.5,10.5,10.6,10.7')errs.push('зачёт: состав '+q);
+  ASTK.done('OGE10',errs);
+  return errs;
+}
+</script>
+<script src="/book/oge/2026-10-31/v2/trainers/oge-course-reference.js"></script>
+<script src="/book/oge/2026-10-31/v2/trainers/oge-course-algebra.js" data-oge-task="10"></script>
+</body>
+</html>

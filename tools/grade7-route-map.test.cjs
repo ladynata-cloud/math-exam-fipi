@@ -3,7 +3,7 @@
 // and only the same pupil's saved work can appear on a cabinet card.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const catalog=require('../learning/catalog'),guides=require('../learning/topic-guides'),map=require('../learning/grade7-route-map'),route=require('../learning/route');
-const school=catalog.items.filter(item=>item.grade7&&!item.geometryRebuild),ids=map.stages.flatMap(stage=>stage.items);
+const school=catalog.items.filter(item=>item.trainerId==='ege-path'&&item.grade7&&!item.geometryRebuild),ids=map.stages.flatMap(stage=>stage.items);
 assert.equal(school.length,62);assert.equal(ids.length,62);assert.equal(new Set(ids).size,62);
 assert.deepEqual([...ids].sort(),school.map(item=>item.id).sort(),'The established route covers every original managed school activity once; the new geometry course has its own hub');
 assert.equal(map.courses.find(c=>c.id==='algebra').stages.length,9);

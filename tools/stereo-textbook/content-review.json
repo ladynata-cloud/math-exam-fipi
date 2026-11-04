@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
-  "reviewedAt": "2026-10-22T21:52:19.740Z",
-  "registeredAt": "2026-10-22T21:52:35.107Z",
-  "scope": "Introduction, chaptersI–II and chapterIII §1: main1–238, theory1–31, chapterI self-check1–16 and chapterII self-check1–10. Not the complete book.",
+  "reviewedAt": "2026-11-01T21:33:52Z",
+  "registeredAt": "2026-11-04T09:36:38.090Z",
+  "scope": "Introduction and chapters I–IV through additional cone exercises 404–413: 674 reviewed cards; main exercises 1–413 complete; theory points 1–51; 50 self-check questions. Exercise 414 onward and later chapters remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -512,6 +512,540 @@
         "theory-031-projection-a",
         "theory-031-projection-general"
       ]
+    },
+    {
+      "reviewer": "Codex independent prisms_218_228; prisms_review; prisms_browser",
+      "reviewedAt": "2026-10-22T22:17:58.690Z",
+      "registeredAt": "2026-10-22T22:20:02.614Z",
+      "canonicalCardsSHA256": "aa6a1319086c62fa55fb860b2c74bb88fadc043b7a84b3fa6b339b456ac53182",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "All source questions in chapterIII §2: theory32–34 and exercises239–270. Source/math/pedagogy review includes source limitations246/247/248 and all unlettered requested results. Fresh cloud visual review remains a separate release gate.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0239",
+        "ex-main-0240",
+        "ex-main-0241",
+        "ex-main-0242-a",
+        "ex-main-0242-b",
+        "ex-main-0243",
+        "ex-main-0244",
+        "ex-main-0245",
+        "ex-main-0246-a",
+        "ex-main-0246-b",
+        "ex-main-0247-a",
+        "ex-main-0247-b",
+        "ex-main-0247-c",
+        "ex-main-0248",
+        "ex-main-0249-a",
+        "ex-main-0249-b",
+        "ex-main-0250",
+        "ex-main-0251",
+        "ex-main-0252",
+        "ex-main-0253",
+        "ex-main-0254-a",
+        "ex-main-0254-b",
+        "ex-main-0254-c",
+        "ex-main-0254-d",
+        "ex-main-0254-e",
+        "ex-main-0255",
+        "ex-main-0256-a",
+        "ex-main-0256-b",
+        "ex-main-0256-c",
+        "ex-main-0256-d",
+        "ex-main-0257",
+        "ex-main-0258",
+        "ex-main-0259",
+        "ex-main-0260-a",
+        "ex-main-0260-b",
+        "ex-main-0261",
+        "ex-main-0262",
+        "ex-main-0263-a",
+        "ex-main-0263-b",
+        "ex-main-0264",
+        "ex-main-0265",
+        "ex-main-0266",
+        "ex-main-0267",
+        "ex-main-0268",
+        "ex-main-0269",
+        "ex-main-0270",
+        "theory-032",
+        "theory-033",
+        "theory-033-area",
+        "theory-034",
+        "theory-034-area",
+        "theory-034-regular"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_218_228",
+      "reviewedAt": "2026-10-22T22:26:36.223Z",
+      "registeredAt": "2026-10-22T22:27:49.775Z",
+      "canonicalCardsSHA256": "9a126db3e7f2ff429c3c6c67dd6dec4ad59b8da32bf242dad1b4f63433cc9fa2",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Six rigid rotations in242a/b,247a/b/c,251 after actual native model precheck. All other content unchanged;45 points,165 pair distances,1170 angles and43 polygon areas/normals independently verified. Fresh full-page cloud visual review remains mandatory.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0242-a",
+        "ex-main-0242-b",
+        "ex-main-0247-a",
+        "ex-main-0247-b",
+        "ex-main-0247-c",
+        "ex-main-0251"
+      ]
+    },
+    {
+      "reviewer": "Codex independent prisms_218_228",
+      "reviewedAt": "2026-10-22T23:14:23.497Z",
+      "registeredAt": "2026-10-22T23:36:49.420Z",
+      "canonicalCardsSHA256": "fadcb11927fb51286c99b46c48998c68513d96b75f6bf312e601ed0ba00881d4",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Two scoped text fixes in241 and256b after actual cloud review. All other content preserved; fresh exact-head cloud visual review remains mandatory.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0241",
+        "ex-main-0256-b"
+      ]
+    },
+    {
+      "reviewer": "Codex independent pyramid_model_fixes_review",
+      "reviewedAt": "2026-10-22T23:36:33.577894+00:00",
+      "registeredAt": "2026-10-22T23:36:49.420Z",
+      "canonicalCardsSHA256": "06df7a26caa8a3b9ca250c7195bcb0097ccfd8f41c73ca1d0691788a0624a6ad",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded",
+      "scope": "Five proper rigid rotations in242a/b,243,244,266 after actual cloud review. All non-coordinate lesson content preserved; default and after-left projections checked. Fresh exact-head cloud visual review remains mandatory.",
+      "report": "docs/reviews/ATANASYAN_PYRAMIDS_CONTENT.md",
+      "cardIds": [
+        "ex-main-0242-a",
+        "ex-main-0242-b",
+        "ex-main-0243",
+        "ex-main-0244",
+        "ex-main-0266"
+      ]
+    },
+    {
+      "reviewer": "Codex independent symmetry_review; visual_pedagogy_review",
+      "reviewedAt": "2026-10-23T21:04:00.795Z",
+      "registeredAt": "2026-10-23T21:04:33.982Z",
+      "canonicalCardsSHA256": "cace816635b55de1cb2bf45ea66ac98d228fa8834bbc2a6a5715c844d4df8ba7",
+      "hashMethod": "SHA256 of recursively key-sorted canonical JSON array in cardIds order; top-level status/review excluded; JSON.stringify UTF-8",
+      "scope": "15 approved symmetry cards: theory35 center/axis/plane/figure (partial point); all source subparts of276–278, including the regular-tetrahedron exception. Fresh integrated UI visual gate remains required.",
+      "report": "docs/reviews/ATANASYAN_SYMMETRY_CONTENT.md",
+      "cardIds": [
+        "theory-035-center",
+        "theory-035-axis",
+        "theory-035-plane",
+        "theory-035-figure",
+        "ex-main-0276-a",
+        "ex-main-0276-b",
+        "ex-main-0276-c",
+        "ex-main-0276-d",
+        "ex-main-0277-a",
+        "ex-main-0277-b",
+        "ex-main-0277-c",
+        "ex-main-0278-a",
+        "ex-main-0278-b",
+        "ex-main-0278-c",
+        "ex-main-0278-c-regular"
+      ]
+    },
+    {
+      "reviewer": "next_block_review; independent coordinate and formatter audit by polyhedra_math_audit",
+      "provider": "OpenAI Codex independent agent review",
+      "reviewedAt": "2026-10-24T05:23:05.522Z",
+      "registeredAt": "2026-10-24T05:23:58.446Z",
+      "sourceBundleSHA256": "657e8c110a2508bb9d6c0810651c71c420a2d072fa5e10e96e32424475e3ea87",
+      "scope": "Four remaining point35 parts; all of point36 in ten cards; exercises279–280 in three cards. Point37 and practical271–275 remain pending.",
+      "report": "docs/reviews/ATANASYAN_REGULAR_POLYHEDRA_CONTENT.md",
+      "cardIds": [
+        "theory-035-parallelepiped-examples",
+        "theory-035-unbounded-examples",
+        "theory-035-general-solids-examples",
+        "theory-035-applications-elements",
+        "theory-036-cube",
+        "theory-036-definition",
+        "theory-036-dodecahedron-existence",
+        "theory-036-dodecahedron",
+        "theory-036-euler-count",
+        "theory-036-icosahedron-existence",
+        "theory-036-icosahedron",
+        "theory-036-octahedron",
+        "theory-036-tetrahedron",
+        "theory-036-vertex-angles",
+        "ex-main-0279",
+        "ex-main-0280-intersecting",
+        "ex-main-0280-parallel"
+      ],
+      "revisionNote": "Six cards received independently checked display-only fraction/spacing corrections after actual visual review; geometry unchanged; fresh browser verification required."
+    },
+    {
+      "reviewer": "symmetries_source_review (theory and source contracts); next_block_review (exercises), with independent exercise audit by polyhedra_math_audit",
+      "reviewedAt": "2026-10-24T06:50:24.196Z",
+      "registeredAt": "2026-10-24T06:51:26.406Z",
+      "sourceBundleSHA256": "0dbfc3f582015dfc63e58ffd61805cc6400439891f136c78ae89791554c75d83",
+      "scope": "All of point 37 in ten cards and exercises 281–287 in eleven cards. The full book remains incomplete; practical 271–275, chapter III self-check questions and additional tasks 288 onward remain outside this increment.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_SYMMETRY_CONTENT.md",
+      "cardIds": [
+        "theory-037-tetrahedron-center",
+        "theory-037-tetrahedron-axes",
+        "theory-037-tetrahedron-planes",
+        "theory-037-cube-center",
+        "theory-037-cube-axes",
+        "theory-037-cube-planes",
+        "theory-037-cube-plane-correction",
+        "theory-037-octahedron",
+        "theory-037-icosahedron",
+        "theory-037-dodecahedron",
+        "ex-main-0281",
+        "ex-main-0282",
+        "ex-main-0283-a",
+        "ex-main-0283-b",
+        "ex-main-0284",
+        "ex-main-0285",
+        "ex-main-0286-a",
+        "ex-main-0286-b",
+        "ex-main-0287-a",
+        "ex-main-0287-b",
+        "ex-main-0287-c"
+      ]
+    },
+    {
+      "reviewer": "Codex independent next_source_scope; prism_proof_audit",
+      "reviewedAt": "2026-10-24T11:06:17.229Z",
+      "registeredAt": "2026-10-24T11:06:51.264Z",
+      "sourceBundleSHA256": "127ba160c5ce38902a3292113e932b9e7ae643e479dcf1841b151e669a802b69",
+      "scope": "All 14 chapter III self-check questions in 18 cards: question 7 has the original two subparts; question 10 has three explicit convex cases plus a complete general nonconvex construction. Practical tasks 271–275 and additional exercises 288 onward remain outside this increment; the full textbook is incomplete.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_CONTENT.md",
+      "mathematicalReport": "docs/reviews/ATANASYAN_POLYHEDRA_SELFCHECK_MATH.json",
+      "cardIds": [
+        "ex-selfcheck-iii-01",
+        "ex-selfcheck-iii-02",
+        "ex-selfcheck-iii-03",
+        "ex-selfcheck-iii-04",
+        "ex-selfcheck-iii-05",
+        "ex-selfcheck-iii-06",
+        "ex-selfcheck-iii-07-a",
+        "ex-selfcheck-iii-07-b",
+        "ex-selfcheck-iii-08",
+        "ex-selfcheck-iii-09",
+        "ex-selfcheck-iii-10-zero",
+        "ex-selfcheck-iii-10-one",
+        "ex-selfcheck-iii-10-two",
+        "ex-selfcheck-iii-10-nonconvex",
+        "ex-selfcheck-iii-11",
+        "ex-selfcheck-iii-12",
+        "ex-selfcheck-iii-13",
+        "ex-selfcheck-iii-14"
+      ],
+      "originalReviewedAt": "2026-10-24T10:51:46.357Z",
+      "revisionNote": "Four source-case captions localized; all mathematical content and models unchanged and independently rebound."
+    },
+    {
+      "reviewer": "Codex independent practical_source_math",
+      "reviewedAt": "2026-10-24T16:56:08.889Z",
+      "registeredAt": "2026-10-24T16:56:42.031Z",
+      "sourceBundleSHA256": "63927ae8c646fed2390002f2efea7a2bb6f05878648e8e61877707f17c927f90",
+      "scope": "Exactly five source-specific practical paper nets, exercises 271–275 on printed page 84 / PDF page 86, figures 95–99. Source, mathematical geometry and complete written pedagogy independently reviewed; responsive browser pixels are a separate gate.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_PRACTICAL_CONTENT.md",
+      "mathematicalReport": "docs/reviews/ATANASYAN_POLYHEDRA_PRACTICAL_MATH.json",
+      "cardIds": [
+        "ex-main-0271",
+        "ex-main-0272",
+        "ex-main-0273",
+        "ex-main-0274",
+        "ex-main-0275"
+      ]
+    },
+    {
+      "reviewer": "Codex independent_math",
+      "reviewedAt": "2026-10-26T08:04:47.191Z",
+      "registeredAt": "2026-10-26T08:05:30.172Z",
+      "sourceBundleSHA256": "95c2c517cb60a4d79377f6ede4bdbe7f83ae60aae6b66710cc82a2449df174f0",
+      "scope": "Six additional exercises 288–293; source, complete mathematics and written pedagogy independently reviewed. Actual browser pixels are a separate gate.",
+      "report": "docs/reviews/ATANASYAN_POLYHEDRA_288_293_CONTENT.json",
+      "cardIds": [
+        "ex-main-0288",
+        "ex-main-0289",
+        "ex-main-0290",
+        "ex-main-0291",
+        "ex-main-0292",
+        "ex-main-0293"
+      ]
+    },
+    {
+      "reviewer": "Codex independent_math_prisms",
+      "reviewedAt": "2026-10-26T11:42:15.435Z",
+      "registeredAt": "2026-10-26T11:43:25.075Z",
+      "sourceBundleSHA256": "3da8106a2541fcc2893b2babfe03497770b4c2027f66e0708a033c6eb7a07be5",
+      "scope": "Ten cards for five additional prism exercises 294–298, including actual subparts. Source, complete mathematics and written pedagogy independently reviewed; actual browser pixels are a separate gate.",
+      "report": "docs/reviews/ATANASYAN_PRISMS_294_298_CONTENT.json",
+      "cardIds": [
+        "ex-main-0294",
+        "ex-main-0295-a",
+        "ex-main-0295-b",
+        "ex-main-0295-c",
+        "ex-main-0295-d",
+        "ex-main-0296",
+        "ex-main-0297-a",
+        "ex-main-0297-b",
+        "ex-main-0297-c",
+        "ex-main-0298"
+      ]
+    },
+    {
+      "reviewer": "Codex independent_review (no lesson authorship)",
+      "reviewedAt": "2026-10-26T13:29:38.661Z",
+      "sourceBundleSHA256": "ab551f451284e2fbbe2112af0ebde107f6fd3abcde332ba85d619b5feffb0da5",
+      "scope": "All twelve source-specific cards for eleven main exercises299–309,including both actual subparts307а/б. Independently inspected the supplied2024 edition printed page87/PDF page89,all conditions,77 explanations and their justifications,all help/final prompts,68 theory references,and89 coordinate-model states. This is source,mathematics and written-pedagogy review; actual rendered pixels require separate evidence.",
+      "cardIds": [
+        "ex-main-0299",
+        "ex-main-0300",
+        "ex-main-0301",
+        "ex-main-0302",
+        "ex-main-0303",
+        "ex-main-0304",
+        "ex-main-0305",
+        "ex-main-0306",
+        "ex-main-0307-a",
+        "ex-main-0307-b",
+        "ex-main-0308",
+        "ex-main-0309"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_PYRAMIDS_299_309_CONTENT.json"
+    },
+    {
+      "reviewer": "Codex independent_review (no lesson authorship)",
+      "reviewedAt": "2026-10-26T15:53:31.463Z",
+      "sourceBundleSHA256": "053ed1c1b166b306e7d21592e09bcf75ab4ea15632ee56f2bff586824e7a534c",
+      "scope": "All eleven source-specific cards for main exercises 310–319, including both printed parts of 311. Source, mathematics, written pedagogy, 73 steps and 84 coordinate-model states independently reviewed. Final browser pixels require separate evidence.",
+      "cardIds": [
+        "ex-main-0310",
+        "ex-main-0311-a",
+        "ex-main-0311-b",
+        "ex-main-0312",
+        "ex-main-0313",
+        "ex-main-0314",
+        "ex-main-0315",
+        "ex-main-0316",
+        "ex-main-0317",
+        "ex-main-0318",
+        "ex-main-0319"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json",
+      "mathematicalReport": "docs/reviews/ATANASYAN_CHAPTER_III_FINAL_310_319_CONTENT.json"
+    },
+    {
+      "reviewer": "Codex independent source/math reviewer /root/review_source; no lesson authorship",
+      "reviewedAt": "2026-10-28T18:45:47.625Z",
+      "sourceBundleSHA256": "7d4d92ff0bab059dca75cafdf190026f762b2aa32dacf560bd691ce13e391f12",
+      "scope": "All36 source-specific cylinder cards: complete theory38/39 and every part of exercises320–345.165 steps and178 coordinate model states independently reviewed. Final responsive browser images are separate evidence.",
+      "cardIds": [
+        "ex-main-0320",
+        "ex-main-0321-a",
+        "ex-main-0321-b",
+        "ex-main-0321-c",
+        "ex-main-0322-a",
+        "ex-main-0322-b",
+        "ex-main-0323",
+        "ex-main-0324",
+        "ex-main-0325-a",
+        "ex-main-0325-b",
+        "ex-main-0326-a",
+        "ex-main-0326-b",
+        "ex-main-0327",
+        "ex-main-0328",
+        "ex-main-0329",
+        "ex-main-0330",
+        "ex-main-0331",
+        "ex-main-0332",
+        "ex-main-0333",
+        "ex-main-0334",
+        "ex-main-0335",
+        "ex-main-0336",
+        "ex-main-0337",
+        "ex-main-0338",
+        "ex-main-0339",
+        "ex-main-0340",
+        "ex-main-0341",
+        "ex-main-0342",
+        "ex-main-0343",
+        "ex-main-0344-a",
+        "ex-main-0344-b",
+        "ex-main-0344-c",
+        "ex-main-0345-a",
+        "ex-main-0345-b",
+        "theory-038",
+        "theory-039"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_CYLINDER_CONTENT.json",
+      "mathematicalReport": "docs/reviews/ATANASYAN_CYLINDER_CONTENT.json"
+    },
+    {
+      "reviewer": "Codex independent reviews: /root/cone_source (original full review); /root/source_review (371 help-question amendment only); no lesson authorship",
+      "reviewedAt": "2026-10-30T22:10:04Z",
+      "sourceBundleSHA256": "4685bdf519b9a2e7cdc612d15dc7b1658ad0a417b488ba09fa747d69df166e2f",
+      "scope": "All 40 source-specific cone cards: complete theory 40–42 and every part of exercises 346–371. 166 justified steps and 171 coordinate model states independently reviewed. Final responsive browser images are separate evidence.",
+      "cardIds": [
+        "ex-main-0346",
+        "ex-main-0347-a",
+        "ex-main-0347-b",
+        "ex-main-0347-c",
+        "ex-main-0348-a",
+        "ex-main-0348-b",
+        "ex-main-0349",
+        "ex-main-0350-a",
+        "ex-main-0350-b",
+        "ex-main-0350-c",
+        "ex-main-0351",
+        "ex-main-0352",
+        "ex-main-0353-a",
+        "ex-main-0353-b",
+        "ex-main-0354-a",
+        "ex-main-0354-b",
+        "ex-main-0354-c",
+        "ex-main-0355",
+        "ex-main-0356",
+        "ex-main-0357",
+        "ex-main-0358",
+        "ex-main-0359-a",
+        "ex-main-0359-b",
+        "ex-main-0359-c",
+        "ex-main-0360",
+        "ex-main-0361",
+        "ex-main-0362",
+        "ex-main-0363",
+        "ex-main-0364",
+        "ex-main-0365",
+        "ex-main-0366",
+        "ex-main-0367-a",
+        "ex-main-0367-b",
+        "ex-main-0368",
+        "ex-main-0369",
+        "ex-main-0370",
+        "ex-main-0371",
+        "theory-040",
+        "theory-041",
+        "theory-042"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_CONE_CONTENT.json",
+      "mathematicalReport": "docs/reviews/ATANASYAN_CONE_CONTENT.json"
+    },
+    {
+      "reviewer": "Codex independent source, mathematics and written-pedagogy panel: visual_middle, visual_late, release_audit; no reviewed-candidate lesson authorship",
+      "reviewedAt": "2026-10-31T01:04:51.530Z",
+      "sourceBundleSHA256": "c7a7223f22a96656fdc80354dc68194378b3d73a2a3a8aa89fb50ad3dd73ac5d",
+      "scope": "All 46 sphere cards: complete theory 43–51 and every printed part of exercises 372–395. The independent panel reviewed 192 justified steps and 197 model states, including the corrected second-Dandelin-sphere proof in point 51. Responsive images and exact-head CI are separate evidence.",
+      "cardIds": [
+        "ex-main-0372-a",
+        "ex-main-0372-b",
+        "ex-main-0373-a",
+        "ex-main-0373-b",
+        "ex-main-0373-c",
+        "ex-main-0373-d",
+        "ex-main-0374",
+        "ex-main-0375",
+        "ex-main-0376",
+        "ex-main-0377",
+        "ex-main-0378",
+        "ex-main-0379",
+        "ex-main-0380",
+        "ex-main-0381-a",
+        "ex-main-0381-b",
+        "ex-main-0381-c",
+        "ex-main-0381-d",
+        "ex-main-0382-a",
+        "ex-main-0382-b",
+        "ex-main-0383-a",
+        "ex-main-0383-b",
+        "ex-main-0384-a",
+        "ex-main-0384-b",
+        "ex-main-0385",
+        "ex-main-0386",
+        "ex-main-0387",
+        "ex-main-0388-a",
+        "ex-main-0388-b",
+        "ex-main-0388-c",
+        "ex-main-0388-d",
+        "ex-main-0389",
+        "ex-main-0390",
+        "ex-main-0391",
+        "ex-main-0392",
+        "ex-main-0393",
+        "ex-main-0394",
+        "ex-main-0395",
+        "theory-043",
+        "theory-044",
+        "theory-045",
+        "theory-046",
+        "theory-047",
+        "theory-048",
+        "theory-049",
+        "theory-050",
+        "theory-051"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_SPHERE_CONTENT.json",
+      "mathematicalReport": "docs/reviews/ATANASYAN_SPHERE_CONTENT.json"
+    },
+    {
+      "reviewer": "Independent Codex reviewer review_atanasyan_iv; exact preserved candidate, PR402",
+      "reviewedAt": "2026-11-01T21:33:52Z",
+      "sourceBundleSHA256": "36feacc73e82fb6ff551acedd1097d04a438f161b7a0fbbd06eb58f48c43448a",
+      "scope": "Exact preserved thirteen-card candidate for all ten chapter IV self-check questions, including Cyrillic 3а/б/в and 5а/б; 31 proof steps and 45 model states. Production integration and browser verification are separate gates.",
+      "cardIds": [
+        "ex-selfcheck-iv-01",
+        "ex-selfcheck-iv-02",
+        "ex-selfcheck-iv-03-a",
+        "ex-selfcheck-iv-03-b",
+        "ex-selfcheck-iv-03-c",
+        "ex-selfcheck-iv-04",
+        "ex-selfcheck-iv-05-a",
+        "ex-selfcheck-iv-05-b",
+        "ex-selfcheck-iv-06",
+        "ex-selfcheck-iv-07",
+        "ex-selfcheck-iv-08",
+        "ex-selfcheck-iv-09",
+        "ex-selfcheck-iv-10"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md",
+      "mathematicalReport": "docs/reviews/ATANASYAN_CHAPTER_IV_SELFCHECK_INDEPENDENT.md"
+    },
+    {
+      "reviewer": "Codex author source, mathematics and learning-design review; no external or independent provider verdict claimed",
+      "reviewedAt": "2026-11-02T19:40:24.335Z",
+      "scope": "Additional cylinder exercises 396–403; nine cards including 400а/б; 38 justified steps and 40 model states. Both orientations in 400б, both roots in 401, five surfaces in 403.",
+      "cardIds": [
+        "ex-main-0396",
+        "ex-main-0397",
+        "ex-main-0398",
+        "ex-main-0399",
+        "ex-main-0400-a",
+        "ex-main-0400-b",
+        "ex-main-0401",
+        "ex-main-0402",
+        "ex-main-0403"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_396_403.md",
+      "mathematicalReport": "tools/stereo-textbook/additional396-math.test.cjs"
+    },
+    {
+      "reviewer": "Codex author source, mathematics and learning-design review; no external or independent-provider verdict claimed",
+      "reviewedAt": "2026-11-04T09:36:36.870055Z",
+      "scope": "Additional cone exercises 404–413; twelve cards including 412а/б/в; 53 justified steps and 49 model states.",
+      "cardIds": [
+        "ex-main-0404",
+        "ex-main-0405",
+        "ex-main-0406",
+        "ex-main-0407",
+        "ex-main-0408",
+        "ex-main-0409",
+        "ex-main-0410",
+        "ex-main-0411",
+        "ex-main-0412-a",
+        "ex-main-0412-b",
+        "ex-main-0412-c",
+        "ex-main-0413"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_404_413.md",
+      "mathematicalReport": "tools/stereo-textbook/additional404-math.test.cjs"
     }
   ],
   "cards": [
@@ -1918,6 +2452,1298 @@
     {
       "id": "theory-031-projection-general",
       "sha256": "5e39cd9e217162ed27c029dda4bd777aa632024090653e59e50d39257f492962"
+    },
+    {
+      "id": "ex-main-0239",
+      "sha256": "e2a6d3a8a4bd3f264b98b395466c33eaa2730b58ed0ceef8db57d7a5d8a1dd3d"
+    },
+    {
+      "id": "ex-main-0240",
+      "sha256": "e6b2bc17547bdc2f2c4222080ee6e5b8f42f0748e9dbd4bd16ede5b586a97fce"
+    },
+    {
+      "id": "ex-main-0241",
+      "sha256": "30273312414d4185c558ce36978d0f115ac39778d10eb5d9078dae21520e0e66"
+    },
+    {
+      "id": "ex-main-0242-a",
+      "sha256": "5002bf5fdaf556c5f73d4e520435ef9f52102133b80ccae0a96a024acd8fb5b5"
+    },
+    {
+      "id": "ex-main-0242-b",
+      "sha256": "ac5c679ed6bfe607751451875932e5a8a0371b6de6a24b081587eb886c643bd6"
+    },
+    {
+      "id": "ex-main-0243",
+      "sha256": "0a73eef3a979ca385ee41d4ae4f24e2d3ea01aa3d820f15304432ef0fec063e2"
+    },
+    {
+      "id": "ex-main-0244",
+      "sha256": "4a4da553d0f0af6cce43e37a2a41be4214a732c6eebfc7d8d73ac42f61fefa68"
+    },
+    {
+      "id": "ex-main-0245",
+      "sha256": "36ff80d2f18fdbe239018b4276bdc898c372758bd222872de02a966104afcc2f"
+    },
+    {
+      "id": "ex-main-0246-a",
+      "sha256": "962cd8cafb179170afaa1634b1ad38a62e612a5383b11b5adce27170bc81b5c6"
+    },
+    {
+      "id": "ex-main-0246-b",
+      "sha256": "2d5a5082da0d99685f2b5b6d0763dff87a7a3426c3681a18ef6a6ebdccc4cdf2"
+    },
+    {
+      "id": "ex-main-0247-a",
+      "sha256": "26bccc35f4a5152a87128aae825b0e878f5c94d8de9b18f8ded91969c539f78b"
+    },
+    {
+      "id": "ex-main-0247-b",
+      "sha256": "0cdbc0b3c29729c974ecf21c3d89c8b899846a7b49c82a1b5fe76eee6e578907"
+    },
+    {
+      "id": "ex-main-0247-c",
+      "sha256": "cddc35ef45f095c59203b6b212077a4d39087769662af684b131c759f02a9c05"
+    },
+    {
+      "id": "ex-main-0248",
+      "sha256": "a966f36562b1a9fc1ea5f7f4dedf5cbc2add7848deaf84f0c5e8f7653c76216e"
+    },
+    {
+      "id": "ex-main-0249-a",
+      "sha256": "f6818b423059662c756c145a69f8fc4877e77d82fabcd3af778597b10c42ef28"
+    },
+    {
+      "id": "ex-main-0249-b",
+      "sha256": "d896cb28f307b8a687427900b2227b3986c0a0f25bbacbc83bae55802ca50361"
+    },
+    {
+      "id": "ex-main-0250",
+      "sha256": "86267623bd0bfbefa469121a2e8777d4195b31b654ab686246effd6c30233eb3"
+    },
+    {
+      "id": "ex-main-0251",
+      "sha256": "a7928993dc85a294ba2c8fe19aa8c257066466c5132f311854be1a4c54ca8098"
+    },
+    {
+      "id": "ex-main-0252",
+      "sha256": "c070797386b14c211f358ec4418cebe2595fb63eda9b27c0be6002df6080fcaa"
+    },
+    {
+      "id": "ex-main-0253",
+      "sha256": "31fbb0adec6bed0f3eaabb0ac0625957ed3bd09b8ee1d202e2e80228ee78431a"
+    },
+    {
+      "id": "ex-main-0254-a",
+      "sha256": "a97afbfa054b024e780b24d0dbcdde391244ae29c9beba2319a68f2e14fc860d"
+    },
+    {
+      "id": "ex-main-0254-b",
+      "sha256": "2c796bc7dd0fbf9edfe2267e5c3a38130645eb306c14737bfa370d7b857ae681"
+    },
+    {
+      "id": "ex-main-0254-c",
+      "sha256": "4e5ec1cdecd6461c7db70b2b69f20dd50c851ac9ce0a94e376f7c771ae599fbb"
+    },
+    {
+      "id": "ex-main-0254-d",
+      "sha256": "7ea4615e6725185a6de5429c3c3e7f3a39a1ef7865fab05eaa4a9d889bea797c"
+    },
+    {
+      "id": "ex-main-0254-e",
+      "sha256": "330cea319162ae71d2d7c7b67ba2832a9dbeff73b8b356dfddfdb03c0192c7eb"
+    },
+    {
+      "id": "ex-main-0255",
+      "sha256": "b847b5de6ec18a8708b27d3a536b522355b2f880f49fabc1c4a7000d8535ffed"
+    },
+    {
+      "id": "ex-main-0256-a",
+      "sha256": "9f3193077df349da8d9c4e27a670aa5b16952e392cd94c3fd796c67332c9373d"
+    },
+    {
+      "id": "ex-main-0256-b",
+      "sha256": "9ef1d53d311a57959620c1e7080ae0323bbf0a22a8c5aa080ffeda3433e12952"
+    },
+    {
+      "id": "ex-main-0256-c",
+      "sha256": "1367734f433a881e39fe5577dd549f3e9e0bf7eb6f2d3512bbc9dc9e00527f38"
+    },
+    {
+      "id": "ex-main-0256-d",
+      "sha256": "72135a808f20f112dd70211810ed1b6d181e419200b21751bc0e4f16282a0a0c"
+    },
+    {
+      "id": "ex-main-0257",
+      "sha256": "3a5e986c350c7eb0067eaf3fd0c9275409bb249bf6ae4e322c583523c9cd78c0"
+    },
+    {
+      "id": "ex-main-0258",
+      "sha256": "6fee3dae9e4b9de6940edbdf45a69ea882fdfe054c5287108946cb86e724d0f1"
+    },
+    {
+      "id": "ex-main-0259",
+      "sha256": "ff90ca2757aee2de1e9f3dc357e99fa5b00ab023c6bd2a4b82f311877dd403d6"
+    },
+    {
+      "id": "ex-main-0260-a",
+      "sha256": "4271f76822d6e3e6c871470787e479430dc3f7432257a841dfcb0eaf2c1576bb"
+    },
+    {
+      "id": "ex-main-0260-b",
+      "sha256": "c204b4c7a1f4e57248eb0a0e5539ae42fbf015e40bbcc5e104b27cf173780ed2"
+    },
+    {
+      "id": "ex-main-0261",
+      "sha256": "f645924af6748d8d591834e7ea721a5a8b37dac69acbcddafd95f17f67c84ab8"
+    },
+    {
+      "id": "ex-main-0262",
+      "sha256": "32c25b31e75a7e9c07d647687c237b149fde728a7de67772df5c8fd848285d3c"
+    },
+    {
+      "id": "ex-main-0263-a",
+      "sha256": "aae78500f3efe43586fc405f096b1cd036df40f4294ee217bafb3b7792150819"
+    },
+    {
+      "id": "ex-main-0263-b",
+      "sha256": "6255fbd8ed511ff55465fe7c8cf01e0ecbcd9989ceefc745e36beb8d772b2d21"
+    },
+    {
+      "id": "ex-main-0264",
+      "sha256": "d36ca4ed4eb45f59d5626e3f8d332c668b83ba33953fdad6a5acfc57f0223685"
+    },
+    {
+      "id": "ex-main-0265",
+      "sha256": "3b702cdc4d7e98e3bf068a864826bfa4e04d92681e4853290978f6b9526e5693"
+    },
+    {
+      "id": "ex-main-0266",
+      "sha256": "1d4280da44d33fc56365311d9b5cfeae98f1b8bdb9840360eb476069bc0b83f0"
+    },
+    {
+      "id": "ex-main-0267",
+      "sha256": "64b78e79a7f86c0d3d26d0e9ab45eda18440707144df19fb0ea022f483be1538"
+    },
+    {
+      "id": "ex-main-0268",
+      "sha256": "3478f7cda37ae600eea6bd6aceeaea857521d182998f74bb75cb6389d517ef02"
+    },
+    {
+      "id": "ex-main-0269",
+      "sha256": "b164d0d68a07f1564bb01c7e052800b3b71edbb0c93ad6a3220d28cadffdfe80"
+    },
+    {
+      "id": "ex-main-0270",
+      "sha256": "2a15d12b4112f3a2b1602e2329e366a49092c79bcca5bf885cb4ecd4c64b5e6c"
+    },
+    {
+      "id": "theory-032",
+      "sha256": "457ef119255d282a752be889cda2b4c9f6acc1e3cd2d35bf160c075988d4fe2f"
+    },
+    {
+      "id": "theory-033",
+      "sha256": "bfb3735898bc64087a2d9c35865ca037c7e37090a546a5bffd209536700d9b0e"
+    },
+    {
+      "id": "theory-033-area",
+      "sha256": "39148087d58e6c4b4c09304ab5bf780c2a0dce5081c6b0dfe0b0ee2189809030"
+    },
+    {
+      "id": "theory-034",
+      "sha256": "55555b6dc8ae265e2cabbc6959850d4fe4264ebdfa02c04dcc0772beb3bd5fc4"
+    },
+    {
+      "id": "theory-034-area",
+      "sha256": "511d580f5a486a2c7c1de2ca7c0cbe9d62174abfbe0309f8202e86e0d7a87ce7"
+    },
+    {
+      "id": "theory-034-regular",
+      "sha256": "5361f8e5877b889d25f0aa049b87c466c8324d1ffe72f3ae973d2f585a3ede66"
+    },
+    {
+      "id": "theory-035-center",
+      "sha256": "80f34668d791bb95a13065c5a8cfc7df2b415821bc8142771f31f538100ea2cb"
+    },
+    {
+      "id": "theory-035-axis",
+      "sha256": "79086997c740b08e3e7ae218192f87e3c94260aedebbb8656d364bf0bbff7880"
+    },
+    {
+      "id": "theory-035-plane",
+      "sha256": "ff1218341588dcd19d9f8b27d46ed1d5bc5d669b64372eed386710f61793ceeb"
+    },
+    {
+      "id": "theory-035-figure",
+      "sha256": "1523d810939e82dbdea5bd82948f8800edd41be325cb6eff916d387d868b5126"
+    },
+    {
+      "id": "ex-main-0276-a",
+      "sha256": "9b20c9b73c073b1a0b78ea8ff59d1aadab526194f5be101bb9eaa5fe2af1ed20"
+    },
+    {
+      "id": "ex-main-0276-b",
+      "sha256": "1cfab8b204522abccebf75fa7f8e19604112dc3fca8ba22ef82b45494a426856"
+    },
+    {
+      "id": "ex-main-0276-c",
+      "sha256": "45d179e6cbb90755c266663c45a975e99b0ddafbd5008f90e394cb7b53e3cb4d"
+    },
+    {
+      "id": "ex-main-0276-d",
+      "sha256": "675c9e85f756fbdc4091fcc079c4894cc76ab830dd882a65b5a8c4822423483c"
+    },
+    {
+      "id": "ex-main-0277-a",
+      "sha256": "f215d4164a4ed1b6daee08a507dc4f10f40d02fd33bd69b6383f0465959d1dc2"
+    },
+    {
+      "id": "ex-main-0277-b",
+      "sha256": "03580d023d48753ce7248ac1ca05e7784c9b0897443b9902309b526ba41882ad"
+    },
+    {
+      "id": "ex-main-0277-c",
+      "sha256": "bf32b5b5a29ddf26f630d8b490d6c67d881c10160730b4bc643fbbf42acbf45d"
+    },
+    {
+      "id": "ex-main-0278-a",
+      "sha256": "608349c0e339abb9d7d934cc5aa777681855300646e7921d891ec9c7a5dee05d"
+    },
+    {
+      "id": "ex-main-0278-b",
+      "sha256": "3fa72c6e8c5d2bdeaccee5fd1a40072926c09e0e7682ca466b3b7997382475e3"
+    },
+    {
+      "id": "ex-main-0278-c",
+      "sha256": "622559458862de552fd63ec265dcc2a7eb2aa4e5d0e9569310efd74f421ddda1"
+    },
+    {
+      "id": "ex-main-0278-c-regular",
+      "sha256": "f77829a0a99c2d46cf759af08bcac8cd000759ad83cc9a2a22d49ad51f894156"
+    },
+    {
+      "id": "theory-035-parallelepiped-examples",
+      "sha256": "b6409d37d5c3d2c21218e857837c33638821b230b03275be198e48ac532a8c36"
+    },
+    {
+      "id": "theory-035-unbounded-examples",
+      "sha256": "6adfed5bdb019fb2f25237f8e889189e86b74808e87450c4daaca10a92345aeb"
+    },
+    {
+      "id": "theory-035-general-solids-examples",
+      "sha256": "61c6ddf3dd3eec56c34b4c34d5db40a287e37573b8cb1766b3ac6fb0395584a5"
+    },
+    {
+      "id": "theory-035-applications-elements",
+      "sha256": "6b79954a6795ff631fb99849b65d86ccd05885b4d1d1be7fe345c4b810871504"
+    },
+    {
+      "id": "theory-036-cube",
+      "sha256": "a57ce51a1342e991bbf042821d29aebd922379fdb69d1b892217f3f6a18768ad"
+    },
+    {
+      "id": "theory-036-definition",
+      "sha256": "4d8b9d9448528e0c285503764c4f8c0748b308907d20b57235a3160e4e9cf674"
+    },
+    {
+      "id": "theory-036-dodecahedron-existence",
+      "sha256": "bd9e2e83ea13c338308dea70b7f0ad9c58b20d54cb4482ac57dc7c1920c21f43"
+    },
+    {
+      "id": "theory-036-dodecahedron",
+      "sha256": "45626e117713e3ee4a45e12b5f1ffd8ac7ad4865316c20772552415ded311885"
+    },
+    {
+      "id": "theory-036-euler-count",
+      "sha256": "d65be7163150a7ac6b609883f9625f21f177ea74e918ed39681a5bb234cda2b6"
+    },
+    {
+      "id": "theory-036-icosahedron-existence",
+      "sha256": "44f461481028aef60628efa3f7da91dae2bbac404f0b8965417016873ebe7db7"
+    },
+    {
+      "id": "theory-036-icosahedron",
+      "sha256": "3df8da6cd5237c9207bdca728d827982144c11b0c2f0b88dfcc39272946196a7"
+    },
+    {
+      "id": "theory-036-octahedron",
+      "sha256": "21b1a321bbc8209dab757390ba5a6ac84c21c0fdff523873744129bf1ec673d5"
+    },
+    {
+      "id": "theory-036-tetrahedron",
+      "sha256": "0d8d03b7b6c0c73dda3ab051eb1c9534216c01529fddd0dfaf769166b7818148"
+    },
+    {
+      "id": "theory-036-vertex-angles",
+      "sha256": "80b67873a9561d945f42dbbb7849f2893e8732dce2fa42dafce95333f92a484a"
+    },
+    {
+      "id": "ex-main-0279",
+      "sha256": "e6672e632d4032242de443f3f5549cc408def7b42701d3d2f329eb82f9717ba2"
+    },
+    {
+      "id": "ex-main-0280-intersecting",
+      "sha256": "5561f6ea0a701f5086dbb773f14a3210ca6d33a5fffae421cf710dd658b932e7"
+    },
+    {
+      "id": "ex-main-0280-parallel",
+      "sha256": "cda7fea17259c7e64534b3825a97ab6afce4ab24881fae5916942de0659e5ff8"
+    },
+    {
+      "id": "theory-037-tetrahedron-center",
+      "sha256": "c03fdaf6c6ece4abf0217e1628073c2f9ea70d1cb245088883d0da0861d44919"
+    },
+    {
+      "id": "theory-037-tetrahedron-axes",
+      "sha256": "d2c06c37ecc723cc8a8a09472c0de79857dfeaea48a4ee99d36d0dcfb2056a58"
+    },
+    {
+      "id": "theory-037-tetrahedron-planes",
+      "sha256": "e06cd84b0b5b3f96eb3cd5ee4842d3005468cf703ad599f16cc1a401050554b5"
+    },
+    {
+      "id": "theory-037-cube-center",
+      "sha256": "e5a3e9624394d4809156b3363da6f044cc6304fe9a7ae965783cc6a0c012dc44"
+    },
+    {
+      "id": "theory-037-cube-axes",
+      "sha256": "33afaff8022530e0bbec9f485a638be6a6f57ee0abe70d935c60cf672cd1eafe"
+    },
+    {
+      "id": "theory-037-cube-planes",
+      "sha256": "56ba92479bbe335e4b47717c7848fe19472bec990d42b2afd8b0b64ab3bdd065"
+    },
+    {
+      "id": "theory-037-cube-plane-correction",
+      "sha256": "efa43725cba2bd38404a1a58b0204d89fe5daa8666fac52c27e0b5594db0dd57"
+    },
+    {
+      "id": "theory-037-octahedron",
+      "sha256": "2b5a0b3249802d40402e213f1f47f20375bfdd520875ad26a71833bde68a90c0"
+    },
+    {
+      "id": "theory-037-icosahedron",
+      "sha256": "158e1076c5cc2ac7a8ffdf40ae2c3b1a35d51793eb8b5fffb2a7bb85eefe94eb"
+    },
+    {
+      "id": "theory-037-dodecahedron",
+      "sha256": "76b81f70403b02fd66596c150d0a000a704503e16cf16c75f49e97e15ba28a1e"
+    },
+    {
+      "id": "ex-main-0281",
+      "sha256": "ed568a5db64711cb79a677f4d5f877df00f893306b6824e63b3da8f9ab0e58a5"
+    },
+    {
+      "id": "ex-main-0282",
+      "sha256": "7d0b6a7f5ffb11ac3d72ad65ad69c914c8a21fa34acdcc637114ef41680222e2"
+    },
+    {
+      "id": "ex-main-0283-a",
+      "sha256": "b86f3f12d8c5d13fe18e7b5d48161c1e4228a12e9c65273829d1ba612485f94a"
+    },
+    {
+      "id": "ex-main-0283-b",
+      "sha256": "5c59a6b9bf84f0d32f6af30d15140cb1b6c9abe47d8e067fcc03554ef16a4f24"
+    },
+    {
+      "id": "ex-main-0284",
+      "sha256": "4f4f2dc70fbc90f0b323eb347bd7ea13232a98affac3561625752d25bd41e293"
+    },
+    {
+      "id": "ex-main-0285",
+      "sha256": "94e575fc21cf478508b7d8eb9211bcfd3d541221668221e7cfd90926e461ab26"
+    },
+    {
+      "id": "ex-main-0286-a",
+      "sha256": "94e59c3fcc0b7688925bd2a465061b52e0c4352a7d5e6e27752bac97a9dbdaed"
+    },
+    {
+      "id": "ex-main-0286-b",
+      "sha256": "c02e2a1282e2484244d9180ceed95a7610cc8aea345934bfeeaff5f30afb20b7"
+    },
+    {
+      "id": "ex-main-0287-a",
+      "sha256": "4b0fd6816fb909cf0036f01b4599564149896178fd292c46e71b0e4f8117635c"
+    },
+    {
+      "id": "ex-main-0287-b",
+      "sha256": "017882fb24542dba6075dbba014761e9f8efb8c4cb5997c3ab8110645943be40"
+    },
+    {
+      "id": "ex-main-0287-c",
+      "sha256": "da766a0d37ebdb5c9bf95403e983c1de355856083024e1b7a087ca8b315cd35f"
+    },
+    {
+      "id": "ex-selfcheck-iii-01",
+      "sha256": "b7661caaf25c796f51c73411b3264380e9b367c930bd437d4ed027ddba1f1a5f"
+    },
+    {
+      "id": "ex-selfcheck-iii-02",
+      "sha256": "c61f5d8fec3bffdc8186913fd27b36cee736d538e250dda9c8de3087a7eddbde"
+    },
+    {
+      "id": "ex-selfcheck-iii-03",
+      "sha256": "77def022a7687bf90c5514b2aa1003395b9d0695c6518b9ff95cee19b88344fa"
+    },
+    {
+      "id": "ex-selfcheck-iii-04",
+      "sha256": "3114b63734a94df720a6b86637ac9b296e76fe546ed5049a7ebab4a65d3fe177"
+    },
+    {
+      "id": "ex-selfcheck-iii-05",
+      "sha256": "be7c30e4950b66438cf9f4c9997bf712e8a1a42eddcfb3f46e97a3c2d96d3e10"
+    },
+    {
+      "id": "ex-selfcheck-iii-06",
+      "sha256": "d71611e16254c9f5cdcb548b0d53c5e3df63c5b29618b11291b9b027e1f57bc6"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-a",
+      "sha256": "2bd9a1c18db41013580f97f22ac9b26c7500580c0eaf800938e40a6af282ce7f"
+    },
+    {
+      "id": "ex-selfcheck-iii-07-b",
+      "sha256": "31a4c703a72c644936e15e0b74c46d74a07af7474c433da18d03b80231ddb18a"
+    },
+    {
+      "id": "ex-selfcheck-iii-08",
+      "sha256": "78fd0123e13204f4bfcb23f7c6cd4ecf25d7f32553d9eb963dca19e1912d2d86"
+    },
+    {
+      "id": "ex-selfcheck-iii-09",
+      "sha256": "266f8c6c6fdcc75a5990ca1b266f391039c0560fd3d6f7df4f25339159cfeb5b"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-zero",
+      "sha256": "1b9f1e412ba2e77614f0941ed09f694b8ed60eb086af32f397b5daaaa7395a33"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-one",
+      "sha256": "6dd0662d63421ff81d77a1a4459e203df50645bac13ef2fe1f51af480688e729"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-two",
+      "sha256": "1592ab2ce4ab73c9b3823c7e17d9514f3b3ed851fa0e034296e06349c67a959a"
+    },
+    {
+      "id": "ex-selfcheck-iii-10-nonconvex",
+      "sha256": "4c3b8c69f02b020678030241cafb426a28ff7696e348783ab91b7ad99f11d019"
+    },
+    {
+      "id": "ex-selfcheck-iii-11",
+      "sha256": "36dbc40d23c4519cfb784f53ddb827aaeddc81e7cfb43421805e469f0b9c79a5"
+    },
+    {
+      "id": "ex-selfcheck-iii-12",
+      "sha256": "cf7d457bfac78bf6ba8be5260cd6dede77b358201b6009eb2727c18aa78400ba"
+    },
+    {
+      "id": "ex-selfcheck-iii-13",
+      "sha256": "feef278713c9d3d4514163e4e1427653d60adb58e2c8a365cc9197e37c404c4a"
+    },
+    {
+      "id": "ex-selfcheck-iii-14",
+      "sha256": "3f6a1c0c2a523935cbe50bfcf8245ac5ac397dc83487ef1398467e65af18c91c"
+    },
+    {
+      "id": "ex-main-0271",
+      "sha256": "e12c5a2738bd246211af1eea8e10f9b39da4bfd0f9da0eb3cdc72aed50e2ff87"
+    },
+    {
+      "id": "ex-main-0272",
+      "sha256": "60ac03a59fc2ff169233eb0f58c02f96cb393f0e0c08b9a754bd56944ccb2b50"
+    },
+    {
+      "id": "ex-main-0273",
+      "sha256": "2cc7621bf4a6be1aadf887f20fe9b8c276184e138333c43e46b0fc7baab0bce9"
+    },
+    {
+      "id": "ex-main-0274",
+      "sha256": "eeff1c2d86d2816a94dd2b15d1dcb0a70f3018c21bf81a9fac780509aff5d194"
+    },
+    {
+      "id": "ex-main-0275",
+      "sha256": "2da1db8775e4458905d0b469207758f897fd699297b030eb6d4baafab51c88a4"
+    },
+    {
+      "id": "ex-main-0288",
+      "sha256": "f593d4db4acd6f1595671b76b9e50b16b368fc7c14dff38b1179afbf88b6471d"
+    },
+    {
+      "id": "ex-main-0289",
+      "sha256": "ed42136b45837fcdc75f1492f45f22468261eadc23a300631ae8acae4c01962a"
+    },
+    {
+      "id": "ex-main-0290",
+      "sha256": "8a23a5cdac88511c2e036728b19ac4012243c17d5474d6db533218cbd2675eeb"
+    },
+    {
+      "id": "ex-main-0291",
+      "sha256": "839626df73d477f4912428ac955e8082696a4766eed584af81f918dce1222e2a"
+    },
+    {
+      "id": "ex-main-0292",
+      "sha256": "e3897f3264028a92daf173f99ecabd3d4a5090d313bdcea6e41f5a969205964f"
+    },
+    {
+      "id": "ex-main-0293",
+      "sha256": "10261d9b2a5f59c2aa8f2075d7c0c2117d068cac80940ebfecc1f05e92e085b0"
+    },
+    {
+      "id": "ex-main-0294",
+      "sha256": "7167d38dc0831fae67f8fd5ba63a05b12e39dd3adc673675c25f3890d8de93dc"
+    },
+    {
+      "id": "ex-main-0295-a",
+      "sha256": "52a0800a715ff86563478c7a8489cb75fa972a376589005a4bd41447fb10ec04"
+    },
+    {
+      "id": "ex-main-0295-b",
+      "sha256": "333a422427758f8f535f835cca5c84c18ebe58a62fbbfb96696673bf7ebdc300"
+    },
+    {
+      "id": "ex-main-0295-c",
+      "sha256": "37d6bce99a6f0e33f7ee606b114762862e6326532fbda0bb004e40021ab69758"
+    },
+    {
+      "id": "ex-main-0295-d",
+      "sha256": "6b618b445e73040d0570b2a2f13df6f9114eab4cf419572ba20c02ad62f97a89"
+    },
+    {
+      "id": "ex-main-0296",
+      "sha256": "77827ea93643f60b217161750438088c27d0bec93f451678d53c9cc2bd6a65d3"
+    },
+    {
+      "id": "ex-main-0297-a",
+      "sha256": "f971b246fc37d08fa6f304034fbfe646275a6d74b83fcd31456294d7a8f0ca74"
+    },
+    {
+      "id": "ex-main-0297-b",
+      "sha256": "5e4fbfb92b1c22af7455dc5e5c46a019ee56bb057a4793b3b75f429d446790da"
+    },
+    {
+      "id": "ex-main-0297-c",
+      "sha256": "73d50824f58730822b1563caa29769f53fe36677debe765481b8dbbed8627583"
+    },
+    {
+      "id": "ex-main-0298",
+      "sha256": "aa1cb5ef09a3034b6a5155b091adb100c0bd3adca1255bc2bc8964e60e796f51"
+    },
+    {
+      "id": "ex-main-0299",
+      "sha256": "b21bb41b7d0ed276b6c50d58fb5f622be789a4ccc01e587948d7f7d40cc19cb7"
+    },
+    {
+      "id": "ex-main-0300",
+      "sha256": "23a6b2f7ca9022ffb9402069d963d02c3c16d4371e87d9c3bdca71864b1b2881"
+    },
+    {
+      "id": "ex-main-0301",
+      "sha256": "2af6e779a33894cdb207efabc5f161b6051af6183bddbaaa9f6624797a800454"
+    },
+    {
+      "id": "ex-main-0302",
+      "sha256": "3a71e79307e0432351fa6c520ddfe9843d1927fbd484b4a72cedf3f8b650d498"
+    },
+    {
+      "id": "ex-main-0303",
+      "sha256": "d36cf49bea631faac004074ce0c14cb58ba1f926064b8270e45382d450777d5f"
+    },
+    {
+      "id": "ex-main-0304",
+      "sha256": "9629aa41126d45e4c5217f6d440cfe9541816b1f3542ed9452513625968a64bf"
+    },
+    {
+      "id": "ex-main-0305",
+      "sha256": "2f539360f10bb81c9156a1b238ef91423f6aa643942f32c1751739d8d7fc8a2a"
+    },
+    {
+      "id": "ex-main-0306",
+      "sha256": "9727399b903fd6ac5869ba20ea843a6645da5eff13159f859507859930cac31e"
+    },
+    {
+      "id": "ex-main-0307-a",
+      "sha256": "cc83cfd1282febb96c7881f0749d448419ff440ac3b36d4058a04466a1d60a3c"
+    },
+    {
+      "id": "ex-main-0307-b",
+      "sha256": "ff026090bacdb4b78656fa3d5634c0ad83b8326a04233deba61a1ff7265bfd5b"
+    },
+    {
+      "id": "ex-main-0308",
+      "sha256": "189912d850f7fd7b0f94ec7095a15211ede97ab458e3a19b900a749ba3f18290"
+    },
+    {
+      "id": "ex-main-0309",
+      "sha256": "c7eb431dd3feffb6f4c6171310c329855c9e907ea4b13a602cdd7e817e5cc638"
+    },
+    {
+      "id": "ex-main-0310",
+      "sha256": "f69b70024294087bed31ec844311457b8d19a87d6c87475fde808aa5c1e65310"
+    },
+    {
+      "id": "ex-main-0311-a",
+      "sha256": "a556504701ab9aa81da5f7193bf9082df596e21fb984734e5b05aa9ae61c788d"
+    },
+    {
+      "id": "ex-main-0311-b",
+      "sha256": "d7961e31f90f19a177c691699c98851f6cd5a7db261b71f169fc0214a81ade66"
+    },
+    {
+      "id": "ex-main-0312",
+      "sha256": "74a9927fe86186621f8758f9060cd689b2fd00041e4caba182edf35009343f4f"
+    },
+    {
+      "id": "ex-main-0313",
+      "sha256": "749ca4ae6227782d14abb7ec71c9b375803e7db1629e0c1a81ff13279591a729"
+    },
+    {
+      "id": "ex-main-0314",
+      "sha256": "4c5b8a074d172235a338893f406f5eeec3be0f65632fd4ba45b7ece97183be3b"
+    },
+    {
+      "id": "ex-main-0315",
+      "sha256": "998c893ac8d4528c1e225b0c84cfb0a07b9f10077ea54116bcfa6f0a458e027f"
+    },
+    {
+      "id": "ex-main-0316",
+      "sha256": "c9e41d086c7ee0227e0eecef4a86a322ba2fb54a8995ff75822f987f8182459a"
+    },
+    {
+      "id": "ex-main-0317",
+      "sha256": "e5baeeb69deac7a30ceb1bee3d3fac617a275c9dab4383a2edd311792515f581"
+    },
+    {
+      "id": "ex-main-0318",
+      "sha256": "9b44ade9b851040070b57686c735d5894b91f39662ab980e7c63e06e7c90874b"
+    },
+    {
+      "id": "ex-main-0319",
+      "sha256": "4700d2c3c77f3208fda02f4fa4d220c880d9573e6caf4ccacd5faa52ecffff3d"
+    },
+    {
+      "id": "ex-main-0320",
+      "sha256": "7847a30fd4222299ad3c3fcb79fd907379885c5be26d0c4b1ef9585a12242c8d"
+    },
+    {
+      "id": "ex-main-0321-a",
+      "sha256": "44b30e07169443c616678f7ddcf54d1712ad7f4e458222dc1f7b8875e079d873"
+    },
+    {
+      "id": "ex-main-0321-b",
+      "sha256": "07c2b69d41e3476ed083a88be86c199ee169999ca8560f2bff33f358dce8c019"
+    },
+    {
+      "id": "ex-main-0321-c",
+      "sha256": "f3ed2dfa5051a1c0161c2dc79371fafee07a61502c0e23c1be59327331987b14"
+    },
+    {
+      "id": "ex-main-0322-a",
+      "sha256": "fd3ea81236e6a1e74ba30ec678eaaff3bba21507bfbb15198d8620f8b1b71619"
+    },
+    {
+      "id": "ex-main-0322-b",
+      "sha256": "42e830ef8675917a134680ce091212b6d2b380ef2e63ca89b9198840492c0e7a"
+    },
+    {
+      "id": "ex-main-0323",
+      "sha256": "9eb2232db0946f023312d87dbde5365f75856269b95fe912bc3feed9ed66dd51"
+    },
+    {
+      "id": "ex-main-0324",
+      "sha256": "49ed318ffbad41e25bae97a5cbb00e9cefe84663c3ab69ee413f426d1660b307"
+    },
+    {
+      "id": "ex-main-0325-a",
+      "sha256": "d23d96a9feff9c0ae916000c4c76717b76f84dfab4477d684e66d54a188b0206"
+    },
+    {
+      "id": "ex-main-0325-b",
+      "sha256": "4f2da52d473e01e645c62fb37d15f4baea97b3ea4f2fafcfc842b973417a2829"
+    },
+    {
+      "id": "ex-main-0326-a",
+      "sha256": "92234ad1715e5fb5d0e31955cbf16d41589b0e54fbb4a59e61d672ff211eb6c6"
+    },
+    {
+      "id": "ex-main-0326-b",
+      "sha256": "3e72eff9e24c57b36b5105807599cb97ed9026d420b294355afcdaf694ab9ba0"
+    },
+    {
+      "id": "ex-main-0327",
+      "sha256": "b2d7c082d8022adfa8ab1713444390a1c7103074e36cea1f507e4002aefec069"
+    },
+    {
+      "id": "ex-main-0328",
+      "sha256": "de82873358e7b8fb1e719ca0532782191553fa68918072f210280009b9398cfd"
+    },
+    {
+      "id": "ex-main-0329",
+      "sha256": "3463f8db509ab9ee5814b6093d2f61d79f661c0cf2d022b6664f931ee3ac359e"
+    },
+    {
+      "id": "ex-main-0330",
+      "sha256": "f13f22dc104dcc43e8d07d4bc8e05bb19c3e15ce507aacd72fb1fad8587fed27"
+    },
+    {
+      "id": "ex-main-0331",
+      "sha256": "2181e671702385b601d9f50437118f49a4217f5a55b0d2090c5fa618e5d0cbae"
+    },
+    {
+      "id": "ex-main-0332",
+      "sha256": "ed4d875cfb15bdf56e8f7a0adfce45b0223125abe353ff193f57cf5f787b716d"
+    },
+    {
+      "id": "ex-main-0333",
+      "sha256": "6917d27b7e13afde4e04e7ca0be94bf0e3814c0a85db06af4e2d21fd6a5ccd37"
+    },
+    {
+      "id": "ex-main-0334",
+      "sha256": "d9959e4aebeb050637c743774a79e878d9de1e29361986041cb009c4bad8d0c3"
+    },
+    {
+      "id": "ex-main-0335",
+      "sha256": "61015f4804012309d81bac57af39c778f2a88c47549797dbaa44e461e883eaf8"
+    },
+    {
+      "id": "ex-main-0336",
+      "sha256": "4d433d648461d9eca8a7e2e5d76f2e5d4a13602dfeca9c4b06717283815dd76a"
+    },
+    {
+      "id": "ex-main-0337",
+      "sha256": "c7dd414691ff975e09978292e2680a20629158fe6bca762fffa7cb557faeb8f0"
+    },
+    {
+      "id": "ex-main-0338",
+      "sha256": "8d0a9f7b554426eb347183778f56e236f68e75f33046aa4e5f4476b323e13fba"
+    },
+    {
+      "id": "ex-main-0339",
+      "sha256": "49665dea8529c1950dae3dc7ae1731bf3f2426ecb93931f2dfda2d4886272f6a"
+    },
+    {
+      "id": "ex-main-0340",
+      "sha256": "60383cb0898cd09402115d078bd396b867682d1e116ecd39e69a83b96bf3ad7e"
+    },
+    {
+      "id": "ex-main-0341",
+      "sha256": "b73c66749e7a5a36b63ada53c77011f5c9df08e40a0f1246542476c28e1832a2"
+    },
+    {
+      "id": "ex-main-0342",
+      "sha256": "46b9d7159e4970919e0c4bd9adfaadb01b9447efd1b9258a3a9d074cdb218768"
+    },
+    {
+      "id": "ex-main-0343",
+      "sha256": "c4a79f527f78c2bc3fbcbfc554b578143219ed4dbf2e36dffaf450f5fabd42ca"
+    },
+    {
+      "id": "ex-main-0344-a",
+      "sha256": "728e759e9a62be94c434158ba77a4f59a683e11c97480d4527bde0a6f91546a4"
+    },
+    {
+      "id": "ex-main-0344-b",
+      "sha256": "e205a7bf69e559a6cd5ab3d0cf5c514296110550dbc009caaf31b60e3111c17f"
+    },
+    {
+      "id": "ex-main-0344-c",
+      "sha256": "0b888c88a5811efa51c9d6856c75dc4c2e57bf0d611b5392586db9728772d763"
+    },
+    {
+      "id": "ex-main-0345-a",
+      "sha256": "c10ea19230e862beca9d24eab8b337c739bb592d9f7a5f32ad5c762b7024a391"
+    },
+    {
+      "id": "ex-main-0345-b",
+      "sha256": "22daa0faced9bda90510b87d74b9e68f06385c362022dc16d26ccb68f2e336cb"
+    },
+    {
+      "id": "theory-038",
+      "sha256": "6a9562cc3e67e45d13b63ce31b785f74124322049afc520ac515a472a2598436"
+    },
+    {
+      "id": "theory-039",
+      "sha256": "616089e77ecf6f43bd2b11f21283ac540ca0c2b17dc8ce2ba0d0dcde1917a304"
+    },
+    {
+      "id": "ex-main-0346",
+      "sha256": "f3d704184fb4818c5bd82cc3aa3a48363465ead86ffe324459bc55bfbb219645"
+    },
+    {
+      "id": "ex-main-0347-a",
+      "sha256": "816b771c6f74935a41cc5cccc48d8971c076a9b3df09bd988a8fb44efd5201a6"
+    },
+    {
+      "id": "ex-main-0347-b",
+      "sha256": "f0509dfcc2a90e072723e20c2b0a724bb97238d7476e407253bc40a5403cc033"
+    },
+    {
+      "id": "ex-main-0347-c",
+      "sha256": "086d0dab159ed010b55c5ac16f78b92463f09bd8c8ece831f90c70e8fb5142b1"
+    },
+    {
+      "id": "ex-main-0348-a",
+      "sha256": "77ec8d1a0e96cffd9069c6a98ec41931e58eb6dd2f6014589150e5150f954984"
+    },
+    {
+      "id": "ex-main-0348-b",
+      "sha256": "776277fe2524c8ded8521473deadba61e054ac0467c03027c8db8a9756ee7883"
+    },
+    {
+      "id": "ex-main-0349",
+      "sha256": "98b2d1db2a2d0fe866326b036f74423a443351999e5b28008e837329b33a8e88"
+    },
+    {
+      "id": "ex-main-0350-a",
+      "sha256": "e0f4cd5813b8b99c8b38a04cdb6dd56aae4dad58d430fb2fae12fff000d5c32a"
+    },
+    {
+      "id": "ex-main-0350-b",
+      "sha256": "131c5148be0d13c169def26013f07a308a8c84668ef5d9d0e572828aa7fcf8fe"
+    },
+    {
+      "id": "ex-main-0350-c",
+      "sha256": "e2c7f17b5dbd2e46767e007c0b97068a45bc9cdfa9ca8772fa6ad75c39762109"
+    },
+    {
+      "id": "ex-main-0351",
+      "sha256": "d87cf5db7da162c291a17d11ef0b33b3b71390528c81a5b0c730a01f83f65c54"
+    },
+    {
+      "id": "ex-main-0352",
+      "sha256": "8b8e76e1511c51d382331377f71014b3e4da0cd352c2fb0a4e4d28c6eb159609"
+    },
+    {
+      "id": "ex-main-0353-a",
+      "sha256": "76d9dd360a8b8df93839e154e026f4fcc64cd13ec7f41f612fb58b758b4ffa5a"
+    },
+    {
+      "id": "ex-main-0353-b",
+      "sha256": "c572938832d7751ffe634fdbab0d7320f3965843de3389247d02a1cf11d33f0f"
+    },
+    {
+      "id": "ex-main-0354-a",
+      "sha256": "b02c86423a336b03016d22c9728ac6435b4ce73e2ad6c7d61689e55f3171243f"
+    },
+    {
+      "id": "ex-main-0354-b",
+      "sha256": "a9d8102cf3db42d5d314f69fab352917e58171b8fac9d8dbb658f36f7c3ed606"
+    },
+    {
+      "id": "ex-main-0354-c",
+      "sha256": "5aa920b607fcbd85821d562a280cea416099122fae9262f77004e36877a057f2"
+    },
+    {
+      "id": "ex-main-0355",
+      "sha256": "d6323d4a9aaa8b0b2e1d6681b3648d34b44a1b04e7c606802108025c19b73c66"
+    },
+    {
+      "id": "ex-main-0356",
+      "sha256": "2831aaf111496d44743c80ed4e6ca11cb3d41eea9ff05b30e319b6913a352880"
+    },
+    {
+      "id": "ex-main-0357",
+      "sha256": "33b61c1baec5902e23eef8a39922ed09e546dbfc37516fbecf686861db528540"
+    },
+    {
+      "id": "ex-main-0358",
+      "sha256": "8c262af03400517a8642240bdfc020f1632bb50c39e09efb70731a4e61ccee7f"
+    },
+    {
+      "id": "ex-main-0359-a",
+      "sha256": "5fec59d64b5c3c4d6d411ae85c8c138d49ceeade49adf30f0158ca9adc5ed817"
+    },
+    {
+      "id": "ex-main-0359-b",
+      "sha256": "c93c7eac5125de3496356efeae3c36ab6a4456c9992f195b383a38b4b0334c66"
+    },
+    {
+      "id": "ex-main-0359-c",
+      "sha256": "352e778dee1913844117b8ce9192ebf8794d317d4f97f1f41929d832dc28b3ac"
+    },
+    {
+      "id": "ex-main-0360",
+      "sha256": "fb6b0e5895c7dcfd9a42e19e4a55d5274284d5daf64f13b96476c0384c87cbba"
+    },
+    {
+      "id": "ex-main-0361",
+      "sha256": "64d99b4c43958eea02e66896ecdf3045ec28e99fc8b304c7283c032f1338f2f7"
+    },
+    {
+      "id": "ex-main-0362",
+      "sha256": "23857f5995376063acb1ecc8aa9be1f2c018d614b3515b301beb3f2e25a3dc99"
+    },
+    {
+      "id": "ex-main-0363",
+      "sha256": "4abd1ccf7eaefd57be8efc745d58120832f481e5f2bfe998fd3c3c9a90056bed"
+    },
+    {
+      "id": "ex-main-0364",
+      "sha256": "45aa46ed4d4d1a2fc18c5798cb8383e402d002d69e69ee99a1c5de4b5e8c0bdd"
+    },
+    {
+      "id": "ex-main-0365",
+      "sha256": "cae33fdf78c14ed3e6349e6f2ee9a4db833c112d12e4b9a45ae9f7390b4013a0"
+    },
+    {
+      "id": "ex-main-0366",
+      "sha256": "6ba4670db343c56aaf0180fdad28e4e4a5b06d5cc3cf710d7e0be2107e9d114e"
+    },
+    {
+      "id": "ex-main-0367-a",
+      "sha256": "20929d56f8092bc242bcc56577064bf3a5df25bb28e17f5185bc0f8d3b7ff030"
+    },
+    {
+      "id": "ex-main-0367-b",
+      "sha256": "59540f1c4c0433af244e16eb63f44dabe3d0e43ca99fe4d0927c639599ad2eae"
+    },
+    {
+      "id": "ex-main-0368",
+      "sha256": "414af85aca97d8778557babdefec93bcffd435d7d2cbd4ea4b0c6d34339369cd"
+    },
+    {
+      "id": "ex-main-0369",
+      "sha256": "118efcd40dd95437325142f4ad36c54ec3c89042e2688169ea73c5bb51eb8839"
+    },
+    {
+      "id": "ex-main-0370",
+      "sha256": "9f3b5b0528ad89e2699d3871f378b8e53705fe89d7f228f158a2ccf9ca95eae7"
+    },
+    {
+      "id": "ex-main-0371",
+      "sha256": "d550ca76986ba8b4183a80535752d9368ea2bdfc19317169dfdbb7ebbe4d30b9"
+    },
+    {
+      "id": "theory-040",
+      "sha256": "feb6d8f5e9b79811a5cc8b2b3920c1507ad1e5a149c0b01abededf19e72cfe1b"
+    },
+    {
+      "id": "theory-041",
+      "sha256": "287779f608f94cf273371e68e4be9f220477bbf0936e7011cac9664b59e68989"
+    },
+    {
+      "id": "theory-042",
+      "sha256": "9bc1315bac8fdcd8bc4ef7bd1bf6e1c4e624b99aaf782a4a69fd26b3c27c0590"
+    },
+    {
+      "id": "ex-main-0372-a",
+      "sha256": "1ad09a81a1fd65e013e326acf2b017d0bc1dac39b7fd7020d93971932c87a8ce"
+    },
+    {
+      "id": "ex-main-0372-b",
+      "sha256": "85f44158f197cd7f29633e9ec23a4235469473a39750392fda9e512d7be462ad"
+    },
+    {
+      "id": "ex-main-0373-a",
+      "sha256": "2440cbab6d2b829a4c15c1c991c5c47390d18ff3e7f5417e0b62aba04da56853"
+    },
+    {
+      "id": "ex-main-0373-b",
+      "sha256": "2032d2ccaea5d49d5f149de08bf8f4976687cf753bc11e5f8544314ef5bbb253"
+    },
+    {
+      "id": "ex-main-0373-c",
+      "sha256": "b64e276b7d4c3d4f3ac1776bb415fcdd6fe0ee93b2460c126e4e8906b004ad13"
+    },
+    {
+      "id": "ex-main-0373-d",
+      "sha256": "332a645918163697eed47da04bc4118457ff500ef3604b80c305b96d48d30f6e"
+    },
+    {
+      "id": "ex-main-0374",
+      "sha256": "625419d434fbbec451f9bd8cea70a6083a7fd9f693a175db791526cae459f365"
+    },
+    {
+      "id": "ex-main-0375",
+      "sha256": "de4d15277b02d479f21851ff822e91f6264dc3ddbd50eac81fcccd58fbba81d3"
+    },
+    {
+      "id": "ex-main-0376",
+      "sha256": "75a5838fe916de30ad592d5d1c8c23f9fd5373f27656bab06fbc4b9e10957eff"
+    },
+    {
+      "id": "ex-main-0377",
+      "sha256": "03c09aa22dc57dba2ea2bd87e16bbb4f0c15d8a0cef66b3af49fb6dc5b244689"
+    },
+    {
+      "id": "ex-main-0378",
+      "sha256": "89e49c8a03e1c98fbcc6da5f9b7fb0f03e4062e77c777941b837546e762aaa7b"
+    },
+    {
+      "id": "ex-main-0379",
+      "sha256": "17ad04b8e411dc60413f99a7676dfe21a1bc508370cb76e6822b332f19b5fe4a"
+    },
+    {
+      "id": "ex-main-0380",
+      "sha256": "43fbb861680ec109a318efccb133a394629e313988a40f1ab4aa0a20fae20a7a"
+    },
+    {
+      "id": "ex-main-0381-a",
+      "sha256": "f1452fa3932d16c795d44d2520c6b498176f78e7978479e362da073af5ed43cf"
+    },
+    {
+      "id": "ex-main-0381-b",
+      "sha256": "125c355d91bbf6feb2746df57bb267ec83b0103012075f253f726efe9b6a5025"
+    },
+    {
+      "id": "ex-main-0381-c",
+      "sha256": "c4f045317836fa07fbf820e7deecf793c94af5cfb340286d27cc6dcd553ca477"
+    },
+    {
+      "id": "ex-main-0381-d",
+      "sha256": "5870f4d454eaab30c9660ddf054f40a9776cf3c4d527899cdfaf34070854c6e7"
+    },
+    {
+      "id": "ex-main-0382-a",
+      "sha256": "877cf17ab8368cc032c54d82d291ceb94ce22bff16d0117a5a4cce751952be63"
+    },
+    {
+      "id": "ex-main-0382-b",
+      "sha256": "fe5e3e21f4dede18c10f46e37a0a7f8c31e188ecb0dedafae5c6bd33af70bdaf"
+    },
+    {
+      "id": "ex-main-0383-a",
+      "sha256": "3554effccebb9ddfc15b52ab2cc249c77b3d5ee5010d3dd4e81f1d64759d3c5f"
+    },
+    {
+      "id": "ex-main-0383-b",
+      "sha256": "558423244127741bdbcfbb924192994f24f1f9156aff4da51f59ea6316f5abbf"
+    },
+    {
+      "id": "ex-main-0384-a",
+      "sha256": "92a6349ad28736856e929be1d960e793d5309c125cdadf0064f822fe16234e5e"
+    },
+    {
+      "id": "ex-main-0384-b",
+      "sha256": "d05783f1aa19348e4e4dbd0185a14ef58914cae310ebe535d36671ca0ad8c279"
+    },
+    {
+      "id": "ex-main-0385",
+      "sha256": "31a4d43f4f593e9426a2208232d45aace1e458cacf3750d80df66be5c320d5aa"
+    },
+    {
+      "id": "ex-main-0386",
+      "sha256": "78dcb806987d5c2fb0b60b866bd4cab691ab8ad329da37771cd89a438b31c0db"
+    },
+    {
+      "id": "ex-main-0387",
+      "sha256": "ab274648efdb732f6b0b7e4722c10d6dbd6b8ba05883e88e2a3655ffcff634a3"
+    },
+    {
+      "id": "ex-main-0388-a",
+      "sha256": "afd2256dc32e89715422c153988df8e5d481976c3431bdf34c546ec534dfe357"
+    },
+    {
+      "id": "ex-main-0388-b",
+      "sha256": "3963e430b2f9c8c203d8d6a1715e12e3bfe9b2d94f5da5c61d9f99818a644891"
+    },
+    {
+      "id": "ex-main-0388-c",
+      "sha256": "1c8e4eb07a17620761b2bb8e07df72a526fd6003b5c841349bd2373575950ec1"
+    },
+    {
+      "id": "ex-main-0388-d",
+      "sha256": "70523f7cbe80d38ae157a154c6fb52f44ad9d2ed86584b89636b2ee62fca9c26"
+    },
+    {
+      "id": "ex-main-0389",
+      "sha256": "eed78bd1cd8fe15cb22da234af24c4f1715d7a6681654985871b56c1606728cf"
+    },
+    {
+      "id": "ex-main-0390",
+      "sha256": "bc995a6033b682eaa8e8d71f3b9a435a4d8f7dd4fe6e7e18d7a18a690bdc2979"
+    },
+    {
+      "id": "ex-main-0391",
+      "sha256": "deb8a63719596fa0aa27072e7fd4489cb6185f2f2d7ec9891385cba06ec2bb47"
+    },
+    {
+      "id": "ex-main-0392",
+      "sha256": "4043a52777b8ab5b54d00bab076164db12398de6df4281555a2bf4609a518079"
+    },
+    {
+      "id": "ex-main-0393",
+      "sha256": "466e26a93dffbae51991fb0e8e15dd0f7e547baf9f609c32844ec6443245ce3d"
+    },
+    {
+      "id": "ex-main-0394",
+      "sha256": "9d81167bd37b0b793028fea5b0c1a332e7d5d9151aab9100e38ee4d76090fd6a"
+    },
+    {
+      "id": "ex-main-0395",
+      "sha256": "bc6b0a53ae0e0956b1410aa187cab54cae13e19a05ff995e5ba772faf09c2128"
+    },
+    {
+      "id": "theory-043",
+      "sha256": "fe4555e09936b030c8253cc10908371d8a5ca2a00963eae3e8db28a07ede9222"
+    },
+    {
+      "id": "theory-044",
+      "sha256": "64c5868d72bda87cd45ee7d3d87afb6be9c9e8e4827f43145baf7208d06d990b"
+    },
+    {
+      "id": "theory-045",
+      "sha256": "d98769728ce2b4877441f3276f584a5c587f1fa078d5555f6629dfbe453431db"
+    },
+    {
+      "id": "theory-046",
+      "sha256": "add3ad0c44969b653eabb62aef67bbb03372716e4721ec9e76ec0dc44950524e"
+    },
+    {
+      "id": "theory-047",
+      "sha256": "ad19789df92d1c5af16c89893ea27673e08a72504c42908b894a5fc869bb3957"
+    },
+    {
+      "id": "theory-048",
+      "sha256": "023d11cd813205941d2d3fb9e4289fec084735feeb16b96f57243e43ca0c31d4"
+    },
+    {
+      "id": "theory-049",
+      "sha256": "9ec735716f16899833be02b07980d7228fd736390ce2f1534fa95e5cd9a3cdcb"
+    },
+    {
+      "id": "theory-050",
+      "sha256": "fa9492544daac88093f84efc52748ed5568dea4a2a39a47d23db523fc26ccc2e"
+    },
+    {
+      "id": "theory-051",
+      "sha256": "a7e5f4a85bd60135b5c2a1843ac8b0815010aa287f717ee94b68182b7f8bf6bc"
+    },
+    {
+      "id": "ex-selfcheck-iv-01",
+      "sha256": "6cfc2305c2662c041c3042010a40146f4a461ab3a4b17490b0ff3ff4fa16773c"
+    },
+    {
+      "id": "ex-selfcheck-iv-02",
+      "sha256": "e401d501e1703df22b394740ee21a1b4903d98b1a89a9a51ef672beed789ef7d"
+    },
+    {
+      "id": "ex-selfcheck-iv-03-a",
+      "sha256": "1acd4ab67a48147762c9b533ecb56c1e07e1206d5389ae096f6699b9d5e555e7"
+    },
+    {
+      "id": "ex-selfcheck-iv-03-b",
+      "sha256": "5fbed209d7e9ed88b42e4d8ebcf1717236b9a7fe19c3948a6c22fc63805ea41f"
+    },
+    {
+      "id": "ex-selfcheck-iv-03-c",
+      "sha256": "9e0849e4b577843a4d283a09647a58ff3c8e840cd3d650eb73b8f49cc604d7b5"
+    },
+    {
+      "id": "ex-selfcheck-iv-04",
+      "sha256": "a01d6b8e228a2464d4f535880975daf4ccbd6351686d91abb9a25f1b2aaf6256"
+    },
+    {
+      "id": "ex-selfcheck-iv-05-a",
+      "sha256": "76b37d314fa4714fd2e472460f5da91eaed4d12f75fe12832d809aed313c9445"
+    },
+    {
+      "id": "ex-selfcheck-iv-05-b",
+      "sha256": "806a78a42c167f51c3e2ee8e94a2ac3c1a8270fbe168f50d04f2d57057eed6ee"
+    },
+    {
+      "id": "ex-selfcheck-iv-06",
+      "sha256": "d8033527eb79b7eee7cfd762df8f068c82d26c30aff56fb812e189f65e2a1758"
+    },
+    {
+      "id": "ex-selfcheck-iv-07",
+      "sha256": "455d100dd5ae48e093639da4bfd7ca3bd3e6d57cba8b93c0e3b5f126e4d99d77"
+    },
+    {
+      "id": "ex-selfcheck-iv-08",
+      "sha256": "7cf11e7c1ec88e5a7dfdc0ddb21207747e3e7554bfd4b0fdd80d28f5e2dae4d1"
+    },
+    {
+      "id": "ex-selfcheck-iv-09",
+      "sha256": "057caf70573b7bc7bbba3e17ef8d60c5640bd76ea9d532727cff8a0ea8eea77c"
+    },
+    {
+      "id": "ex-selfcheck-iv-10",
+      "sha256": "8543f2ab87e9624d087dd20c57b27214fbf7ce01f72c2a27806b3a2f9b4734c9"
+    },
+    {
+      "id": "ex-main-0396",
+      "sha256": "b3024c75604c51b917f15d89619d29c459e1ed85b253399130ac185fcb76242d"
+    },
+    {
+      "id": "ex-main-0397",
+      "sha256": "a007cfa9c50eaa3196a17bdee3e103d718edddba8925c4061cab63236716a4a9"
+    },
+    {
+      "id": "ex-main-0398",
+      "sha256": "ed57e76945991fc1461d6b8a67415f5e3bbfc618181ba34a84dad8ee91b792b8"
+    },
+    {
+      "id": "ex-main-0399",
+      "sha256": "82b559952bf2bad91f7033a24564470449862df52f7ffb6181c36d0d1d1d2172"
+    },
+    {
+      "id": "ex-main-0400-a",
+      "sha256": "5b153387691c4ef3b7dfd1fe352e53889141f18addd52a1b50f6dcc56b50604b"
+    },
+    {
+      "id": "ex-main-0400-b",
+      "sha256": "61826d70e73c1e2af7869e9d4fb4cb6ab8dfff20a0d9ae4dfbce2089c3bf7393"
+    },
+    {
+      "id": "ex-main-0401",
+      "sha256": "8808b2e1503226d32a82ac7390b8b9f991ac22355dd47d9244bf62335da74c0c"
+    },
+    {
+      "id": "ex-main-0402",
+      "sha256": "737d437b36ff5e8548ac43f353c46755b68748689eb385dd81408728e597a3eb"
+    },
+    {
+      "id": "ex-main-0403",
+      "sha256": "5c846c915ff37cbd5028709a3d8ca457499de139b9c2721e41cf880f46d227e8"
+    },
+    {
+      "id": "ex-main-0404",
+      "sha256": "b9f138441baa246f0efbb5a58f06e1d6a7d285b11f5ccb6361affedec0e75835"
+    },
+    {
+      "id": "ex-main-0405",
+      "sha256": "af0623389746997f382175445d967f409c7833adf66e9b652e95ae53cb56b3c9"
+    },
+    {
+      "id": "ex-main-0406",
+      "sha256": "72f2616b612a4fa9daf15f36f2f7eb02a7f37d14d19c415ccd86d0a3920e8de0"
+    },
+    {
+      "id": "ex-main-0407",
+      "sha256": "90acb7cf9b7d546e42f461f180b7bea52d054d32d1c7af226a47017acabc0de9"
+    },
+    {
+      "id": "ex-main-0408",
+      "sha256": "a916754f67b81a06ff20f15078c463b85fee3fa05a6a1eb86cc967bf0f8821d4"
+    },
+    {
+      "id": "ex-main-0409",
+      "sha256": "305f48d2ebd5ce071e40bac23fa9d1c08ed551aa848bb6d3a81f85f5a68f5c38"
+    },
+    {
+      "id": "ex-main-0410",
+      "sha256": "3efd7dd6eedba5ca408b3d8756c40842401ee7748f2ddd1b1b6d01ef91209b7b"
+    },
+    {
+      "id": "ex-main-0411",
+      "sha256": "d22acd7a5bbb34087a946456317d053812cec79aed89d5b03a5c48fe442bdf0b"
+    },
+    {
+      "id": "ex-main-0412-a",
+      "sha256": "c8be3705891cb1fe92a4cb247f699bd6b27454e4323ed7da97df734c82cd75f8"
+    },
+    {
+      "id": "ex-main-0412-b",
+      "sha256": "6bb073ab8c62455785a4bd95a50206327289f74d31188534480d6260cfda9742"
+    },
+    {
+      "id": "ex-main-0412-c",
+      "sha256": "30b37777e7b31a944061df711504165be3471978e26f228b1f42f71432b0a5cc"
+    },
+    {
+      "id": "ex-main-0413",
+      "sha256": "c966752593c2af790a68211ec1672899db63b8a959498660ccb582cd5a973fff"
     }
   ]
 }

@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "baselineRemoteHead": "f220eb4e84748455e9054f44d694085385af3b78",
+  "baselineBundleSHA256": "05c14516f3d8bc6d57730712298d7160774fd0df6979ff99262387e60988ecc2",
+  "at": "2026-10-22T23:35:07.657216+00:00",
+  "reason": "Manual inspection of final cloud PNGs found three near-edge-on sections and one coincident projected vertex pair. Preserve source geometry and improve initial model orientation.",
+  "author": "/root integration",
+  "independentApproval": false,
+  "rows": [
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-16-010.json",
+      "lessonId": "ex-16-010",
+      "baselineReviewedSha256": "eb9d7e34092d57fb3631de8e383460146b00362d2f3727edd89d4022b5838718",
+      "draftSha256": "9cd13239f7ef18289ee368add1740ee56ba09f83683ff47b576db7c97bcf5985",
+      "rotationDegrees": 165,
+      "rotationAxis": "Z",
+      "baselinePoints": {
+        "A": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "B": [
+          12.0,
+          0.0,
+          0.0
+        ],
+        "C": [
+          6.0,
+          10.392304845413264,
+          0.0
+        ],
+        "A1": [
+          0.0,
+          0.0,
+          7.0
+        ],
+        "B1": [
+          12.0,
+          0.0,
+          7.0
+        ],
+        "C1": [
+          6.0,
+          10.392304845413264,
+          7.0
+        ],
+        "D": [
+          3.0,
+          5.196152422706632,
+          0.0
+        ],
+        "E": [
+          9.0,
+          5.196152422706632,
+          0.0
+        ],
+        "F": [
+          6.0,
+          10.392304845413264,
+          3.0
+        ],
+        "H": [
+          6.0,
+          5.196152422706632,
+          0.0
+        ]
+      },
+      "unchangedFields": "All fields except visualization.model.points, status and review; all lengths, angles, incidence, topology and z coordinates are preserved by the rigid rotation."
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-16-021.json",
+      "lessonId": "ex-16-021",
+      "baselineReviewedSha256": "789d0788af54b1cfe798894eada11ad1e71d7b301c866e5f785cf861d7457f49",
+      "draftSha256": "b2c9e0f7a902df3e9f6558e914fa5148fe7e63ac26c37eda392b737c5e5e84ab",
+      "rotationDegrees": 330,
+      "rotationAxis": "Z",
+      "baselinePoints": {
+        "A": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "B": [
+          3.0,
+          0.0,
+          0.0
+        ],
+        "C": [
+          4.5,
+          2.598076211353316,
+          0.0
+        ],
+        "D": [
+          1.5000000000000004,
+          2.598076211353316,
+          0.0
+        ],
+        "A1": [
+          0.0,
+          0.0,
+          3.0
+        ],
+        "B1": [
+          3.0,
+          0.0,
+          3.0
+        ],
+        "C1": [
+          4.5,
+          2.598076211353316,
+          3.0
+        ],
+        "D1": [
+          1.5000000000000004,
+          2.598076211353316,
+          3.0
+        ]
+      },
+      "unchangedFields": "All fields except visualization.model.points, status and review; all lengths, angles, incidence, topology and z coordinates are preserved by the rigid rotation."
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-16-027.json",
+      "lessonId": "ex-16-027",
+      "baselineReviewedSha256": "fe4cedb873e92000bd88e0c9d52a125abaa0ce8306032ccf3dd96c5ddd292d09",
+      "draftSha256": "6d107669cbec2b91c5f05040ec2b13f168e507070dd96476b3179f46b3760170",
+      "rotationDegrees": 90,
+      "rotationAxis": "Z",
+      "baselinePoints": {
+        "A": [
+          -3.0,
+          0.0,
+          0.0
+        ],
+        "B": [
+          0.0,
+          1.7320508075688772,
+          0.0
+        ],
+        "C": [
+          3.0,
+          0.0,
+          0.0
+        ],
+        "D": [
+          0.0,
+          -1.7320508075688772,
+          0.0
+        ],
+        "A1": [
+          -3.0,
+          0.0,
+          3.0
+        ],
+        "B1": [
+          0.0,
+          1.7320508075688772,
+          3.0
+        ],
+        "C1": [
+          3.0,
+          0.0,
+          3.0
+        ],
+        "D1": [
+          0.0,
+          -1.7320508075688772,
+          3.0
+        ],
+        "O": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "unchangedFields": "All fields except visualization.model.points, status and review; all lengths, angles, incidence, topology and z coordinates are preserved by the rigid rotation."
+    },
+    {
+      "path": "stereo-course/merzlyak-10-base/lessons/ex-17-027.json",
+      "lessonId": "ex-17-027",
+      "baselineReviewedSha256": "e93e6e13e63760ff52bda3dbae03d3341cc625007e91c71b1a25b7cb4c11030b",
+      "draftSha256": "e990940328730e037886e4286fcaf9b74db6f92db2ba2cf1eefe1345b6c02c3c",
+      "rotationDegrees": 180,
+      "rotationAxis": "Z",
+      "baselinePoints": {
+        "A": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "B": [
+          0.0,
+          8.0,
+          0.0
+        ],
+        "C": [
+          8.0,
+          8.0,
+          0.0
+        ],
+        "D": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "A1": [
+          0.0,
+          4.0,
+          6.928203230275509
+        ],
+        "B1": [
+          0.0,
+          12.0,
+          6.928203230275509
+        ],
+        "C1": [
+          8.0,
+          12.0,
+          6.928203230275509
+        ],
+        "D1": [
+          8.0,
+          4.0,
+          6.928203230275509
+        ]
+      },
+      "unchangedFields": "All fields except visualization.model.points, status and review; all lengths, angles, incidence, topology and z coordinates are preserved by the rigid rotation."
+    }
+  ]
+}

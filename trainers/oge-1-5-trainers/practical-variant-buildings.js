@@ -161,8 +161,8 @@
         page: 'apartments', helpType: VIEWS[key].code,
         helpNative: () => appendSolution(help, solution),
         status: cache.status,
-        onDraft: values => { cache.value = values.answer; },
-        check: async values => {
+        onDraft: values => { cache.value = values.answer; cache.status = null; },
+        check: values => {
           cache.value = values.answer;
           if (!String(values.answer || '').trim()) return { ok: false, message: 'Сначала запиши ответ в поле.' };
           restore(key, snapshot);
@@ -220,6 +220,10 @@
       api.mount({ title: 'Квартира · задания 1–5', condition: apartmentCondition(), visual: apartmentFigure(), controls, questions, nativeRoots: [nativeRoot] });
     }
     mountApartment();
+    global.PracticalBoard?.register({id:'practice-1-5-apartments',get:()=>({plan:planIndex,selected:{...selected},snapshots:[1,2,3,4,5].map(g=>({...snapshots.get(g),objects:snapshots.get(g).objects.slice()}))}),
+      valid:d=>global.PracticalBoard.exact(d,['plan','selected','snapshots'])&&Number.isInteger(d.plan)&&d.plan>=0&&d.plan<PLANS.length&&global.PracticalBoard.exact(d.selected,['1','2','3','4','5'])&&[1,2,3,4,5].every(g=>typeof d.selected[g]==='string'&&VIEWS[d.selected[g]]?.g===g)&&Array.isArray(d.snapshots)&&d.snapshots.length===5&&d.snapshots.every(x=>global.PracticalBoard.exact(x,['plan','objects','room','A','B'])&&x.plan===d.plan&&Array.isArray(x.objects)&&x.objects.length===4&&new Set(x.objects).size===4&&x.objects.every(v=>Object.values(PLANS[d.plan].rooms).some(r=>r.role===v))&&[x.room,x.A,x.B].every(v=>Number.isInteger(v)&&v>=1&&v<=8))&&(d.selected[4]!=='4.x'||(()=>{const x=d.snapshots[3],cells=n=>PLANS[d.plan].rooms[n].r.reduce((sum,r)=>sum+r[2]*r[3],0),a=cells(x.A),b=cells(x.B);return a>b&&Number.isInteger((a-b)*100/b);})()),
+      describe:d=>[1,2,3,4,5].map(g=>global.PracticalBoard.description(({1:'map',2:'packs',3:'area',4:'percent',5:d.selected[g]==='5.2'?'cost':'compare'})[g],{answer:null},4)),
+      set:d=>{planIndex=d.plan;switchPlan(d.plan);drafts.clear();snapshots.clear();for(const g of [1,2,3,4,5]){selected[g]=d.selected[g];snapshots.set(g,{...d.snapshots[g-1],objects:d.snapshots[g-1].objects.slice()});}state.solved=new Set();state.streak=0;mountApartment();}});
   });
 
   api.register('land-plots', function plotVariant() {
@@ -330,7 +334,7 @@
           return box;
         } : undefined,
         onDraft: values => { record.draft = values.answer; },
-        check: async values => {
+        check: values => {
           record.draft = values.answer;
           if (!String(values.answer || '').trim()) return { ok: false, message: 'Сначала запиши ответ в поле.' };
           if (record.closed && record.status) return record.status;
@@ -357,5 +361,6 @@
       api.mount({ title: 'Дачный участок · задания 1–5', condition: condition(), visual: plotFigure(), controls, questions: records.map(card), nativeRoots: [nativeRoot] });
     }
     mountPlot();
+    global.PracticalBoard?.register({id:'practice-1-5-land-plots',...global.PracticalNativeVariant,set:d=>{global.PracticalNativeVariant.set(d);mountPlot();}});
   });
 })(window);

@@ -1,0 +1,88 @@
+{
+  "widths": [
+    320,
+    390,
+    768,
+    1280
+  ],
+  "homepageWidths": [
+    390,
+    1280
+  ],
+  "cases": [
+    {
+      "page": "homepage",
+      "width": 390,
+      "result": "PASS",
+      "destinations": [
+        "/lessons/",
+        "/lessons/#examples",
+        "/lessons/#contact"
+      ],
+      "checks": [
+        "grades and exams in hero",
+        "no horizontal overflow",
+        "three actual CTA navigations",
+        "rendered destination targets"
+      ],
+      "fonts": "inherited Google Fonts intercepted; system fallback rendered"
+    },
+    {
+      "page": "homepage",
+      "width": 1280,
+      "result": "PASS",
+      "destinations": [
+        "/lessons/",
+        "/lessons/#examples",
+        "/lessons/#contact"
+      ],
+      "checks": [
+        "grades and exams in hero",
+        "no horizontal overflow",
+        "three actual CTA navigations",
+        "rendered destination targets"
+      ],
+      "fonts": "inherited Google Fonts intercepted; system fallback rendered"
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "unexpectedExternal": [],
+  "inheritedFontsIntercepted": [
+    {
+      "width": 390,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 390,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 390,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 390,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 1280,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 1280,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 1280,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    },
+    {
+      "width": 1280,
+      "url": "https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap"
+    }
+  ],
+  "browser": "140.0.7339.16",
+  "source": "local worktree",
+  "suite": "homepage entry only"
+}

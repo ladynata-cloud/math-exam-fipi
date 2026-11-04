@@ -59,7 +59,7 @@ b.rose { color:var(--rose); }
 
 .answer-row { display:flex; gap:8px; margin-bottom:10px; }
 .answer-row input {
-  flex:1; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
+  flex:1; min-width:0; padding:10px 12px; border-radius:9px; border:1.5px solid var(--line);
   font-size:15px; font-family:inherit; outline:none; background:#fff;
 }
 .feedback { padding:10px 14px; border-radius:9px; margin-bottom:10px; font-size:14px; }
@@ -89,6 +89,16 @@ b.rose { color:var(--rose); }
 }
 .legend .sw { display:inline-block; width:16px; height:3px; border-radius:2px; vertical-align:middle; margin-right:5px; }
 .legend-help { margin-left:auto; }
+@media (max-width: 400px) {
+  .panel { min-width:0; padding:16px 14px 24px; }
+}
+/* Узкий экран: легенда под холстом, чтобы не закрывать рёбра и подписи. */
+@media (max-width: 520px) {
+  .stage { display:flex; flex-direction:column; }
+  #viewport { position:relative; inset:auto; flex:none; height:52vh; min-height:280px; }
+  .legend { position:static; padding:8px 12px 12px; gap:6px 14px; }
+  .legend-help { margin-left:0; }
+}
 .pending {
   position:absolute; top:12px; left:12px; background:rgba(255,255,255,0.94);
   border:1px solid var(--line); border-radius:9px; padding:7px 12px; font-size:13px;

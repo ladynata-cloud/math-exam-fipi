@@ -1,0 +1,76 @@
+name: Atanasyan 92a — cabinet and shared board
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/textbook/**'
+      - 'trainers/atanasyan-7-9.html'
+      - 'trainers/board-*.js'
+      - 'trainers/board-*.json'
+      - 'trainers/learning-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'Dockerfile'
+      - 'tools/atanasyan-board*'
+      - '.github/workflows/atanasyan-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'geometry-course/textbook/**'
+      - 'trainers/atanasyan-7-9.html'
+      - 'trainers/board-*.js'
+      - 'trainers/board-*.json'
+      - 'trainers/learning-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'Dockerfile'
+      - 'tools/atanasyan-board*'
+      - '.github/workflows/atanasyan-board.yml'
+permissions:
+  contents: read
+concurrency:
+  group: atanasyan-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  cabinet-and-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/atanasyan-board-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/atanasyan-board-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/atanasyan-board-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Preserve the reviewed textbook and runtime
+        run: |
+          python3 tools/geometry-textbook/build_course.py --check
+          python3 tools/geometry-textbook/review_scope_test.py
+          node tools/geometry-textbook/check_course.cjs --require-reviewed
+          node tools/geometry-textbook/runtime_check.cjs
+      - name: Adapter, manual learning and registry contracts
+        run: |
+          node --test tools/atanasyan-board-adapter.test.cjs tools/atanasyan-board-picker.test.cjs board-server/test/learning-atanasyan.test.js board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node --test tools/profile-expressions-picker.test.cjs tools/profile-stereo-picker.test.cjs
+          node tools/learning-catalog-reference-test.cjs
+      - name: Real board roles, restoration and managed learning
+        env:
+          ATANASYAN_BOARD_SHOTS: ${{ runner.temp }}/atanasyan-board-evidence
+        run: node tools/atanasyan-board.browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-board-evidence
+          path: ${{ runner.temp }}/atanasyan-board-evidence/
+          if-no-files-found: warn
+          retention-days: 7

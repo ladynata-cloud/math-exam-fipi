@@ -1,0 +1,34 @@
+name: Nikolsky 10 course quality
+on:
+  pull_request:
+    paths:
+      - 'school/nikolsky10/**'
+      - 'school/peterson6/math.js'
+      - '.github/workflows/nikolsky10-quality.yml'
+  push:
+    paths:
+      - 'school/nikolsky10/**'
+      - 'school/peterson6/math.js'
+      - '.github/workflows/nikolsky10-quality.yml'
+jobs:
+  course:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --prefix "$RUNNER_TEMP/nikolsky-test" --no-audit --no-fund jsdom@26.1.0
+      - name: Build and check reproducibility
+        run: |
+          node school/nikolsky10/build.cjs
+          git diff --exit-code -- school/nikolsky10/data.js
+      - name: Content, models, retained work and every task journey
+        run: |
+          export NODE_PATH="$RUNNER_TEMP/nikolsky-test/node_modules"
+          node school/nikolsky10/test-course.cjs
+          node school/nikolsky10/test-models.cjs
+          node school/nikolsky10/test-state.cjs
+          node school/nikolsky10/test-import.cjs
+          node school/nikolsky10/test-ui.cjs
+          git diff --check

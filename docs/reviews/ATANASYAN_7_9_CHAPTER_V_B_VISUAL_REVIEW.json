@@ -1,0 +1,3981 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent rendered-image and semantic-delta review",
+  "reviewedAt": "2026-10-28T07:25:46.321480+00:00",
+  "reviewer": "visual_a; author of disjoint chapter-V fragment A, independent of fragment B visual fixes",
+  "authorReviewed": "visual_b",
+  "scope": {
+    "chapter": 5,
+    "exercises": [
+      358,
+      384
+    ],
+    "cards": 36,
+    "steps": 121,
+    "views": 202,
+    "widths": [
+      320,
+      1280
+    ],
+    "viewWidthPairs": 404
+  },
+  "verdict": "PASS",
+  "findings": [],
+  "reviewedTree": {
+    "baseHead": "814e13caba3a3fc50277bd73e35d2ec013f2f177",
+    "binding": "Working-tree content at the exact SHA-256 values below; not a later commit or publication approval.",
+    "files": [
+      {
+        "path": "tools/geometry-textbook/models_ch5_b.py",
+        "sha256": "d7f9832612469045e086eb02004337ae628e4e0cdd4b284bfe8c76f14c94a48b"
+      },
+      {
+        "path": "geometry-course/textbook/preparation/chapter-05-b.json",
+        "sha256": "fc4b0476a16bf2f433f17c514bd45165945fc0c3bbb4e783e0b0d9b4d1d892bc"
+      },
+      {
+        "path": "geometry-course/textbook/models/chapter-05-b.json",
+        "sha256": "a9870ce8916e19d5d63b183c444906a0d2eafabb3a7f5d1b6947251f0759dc36"
+      },
+      {
+        "path": "geometry-course/textbook/assets/style.css",
+        "sha256": "2cd55ecb80028ae9160028c59bf5120047801e9d05a1f86a885d2abb0d0b577b"
+      },
+      {
+        "path": "geometry-course/textbook/assets/planar-viewer.js",
+        "sha256": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061"
+      },
+      {
+        "path": "tools/geometry-textbook/browser_check.js",
+        "sha256": "07b49df556ebb6ee97ddcabbd3a4e3d12d570c7d4816446555356e214fd12577"
+      },
+      {
+        "path": "tools/geometry-textbook/check_models.py",
+        "sha256": "43b473df652fcfb66cf9a90030725bdfdfd5f50063bb50f62467b8c12f0709ad"
+      }
+    ]
+  },
+  "sourceReviewContinuity": {
+    "review": "docs/reviews/ATANASYAN_7_9_CHAPTER_V_B_REVIEW.md",
+    "sha256": "fb37f6d012641e5866230fd35d10744e186a77e65d00edd8f0b1a4dce1913a12",
+    "preparationByteIdenticalToBaseHead": true,
+    "didacticStepsAndCoordinateAssertionsUnchanged": true,
+    "statement": "The previous independent exact-source/mathematics review remains applicable to unchanged text and source mapping. This review inspected the current visual and geometry delta; it does not claim a second reading of source page scans."
+  },
+  "semanticDeltaReview": [
+    {
+      "cards": [
+        "364",
+        "365"
+      ],
+      "verdict": "PASS",
+      "detail": "Separate alternative triangles are uniformly fitted from visible points and full circle extents. Every point in each configuration, including construction supports, receives the same similarity. The changed arbitrary obtuse example has base 4 and height 1.7: apex about 99.270927 degrees remains obtuse. Right and acute alternatives remain unchanged in shape. Circumcentres and incentres retain their asserted incidence and distances."
+    },
+    {
+      "cards": [
+        "373"
+      ],
+      "verdict": "PASS",
+      "detail": "Independent acute and obtuse examples have base 4 and heights 8 and 1.4: apex angles about 28.072487 and 110.015960 degrees preserve their classes. The equilateral example remains equilateral. Both centres stay on the symmetry axis; both circles remain. In the coincident-centre case the shared point is labelled O and an explicit visible note states that O and E coincide. Taller bounds and offsets preserve the construction."
+    },
+    {
+      "cards": [
+        "384а",
+        "384б"
+      ],
+      "verdict": "PASS",
+      "detail": "All relative source-grid positions are preserved by a single uniform similarity for each card; only viewport size/fitting and H label offset change. Reflections A to M and B to C, equal halves and perpendicularity remain exact."
+    }
+  ],
+  "reproducedChecks": {
+    "generatorLoadedWithoutWriting": true,
+    "inMemoryModelsEqualSerializedModels": true,
+    "inMemoryExercisesEqualSerializedPreparation": true,
+    "changedCards": [
+      "364",
+      "365",
+      "373",
+      "384а",
+      "384б"
+    ],
+    "modelValidator": {
+      "cards": 36,
+      "views": 202,
+      "coordinateAssertions": 191,
+      "failures": []
+    },
+    "focusedBrowserEvidence": {
+      "renderer": "Repository planar-viewer.js and style.css, headless Chromium; inspect() copied unchanged from repository browser_check.js.",
+      "viewWidthPairs": 404,
+      "failures": [],
+      "resultsFile": "results.json",
+      "resultsSha256": "e6b4de1a381b56589b8328610305ba7e1deacb1b96c41de47ee746895d97bbdc",
+      "note": "Focused model fixture. This is not the full course navigation/interaction gate."
+    },
+    "imageRosterEqualsEveryModelViewAtBothWidths": true,
+    "everySourceImageHashReverifiedAfterInspection": true,
+    "frozenAuthorModelHashesReverified": true
+  },
+  "renderedImageReview": {
+    "method": "All 404 full model-region PNGs were visually inspected in 34 contact sheets through the image viewer. No source image was cropped; mobile images retain their original width and desktop images are proportionally reduced in the sheets. The sheet and source-image roster was checked against all model views and the hashes reverified after inspection.",
+    "coverage": 404,
+    "reviewedCriteria": [
+      "readable labels at both widths",
+      "no visible label/line/circle collisions",
+      "no clipped geometry or labels",
+      "correct scene and case states",
+      "clear auxiliary constructions",
+      "visible coincident-centre note",
+      "intentional initial empty scenes for open drawing tasks accompanied by instructions"
+    ],
+    "contactSheets": [
+      {
+        "file": "B-320-01.png",
+        "sha256": "32647ae786cbeddc8a5744f824dcd4620363316a7fb8e65f9f1369b8aa71f31f",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-02.png",
+        "sha256": "4496dc3109b3fd8f421519374e7e7f3fa37d5da284062d9ecfc72cd7e343223f",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-03.png",
+        "sha256": "357e781d5080c83b12ab655d9b8cd6ae5fd21cf8ca9803756352d7c429788043",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-04.png",
+        "sha256": "275ac6d48e6db0f22f5b1239955776118d958d035f4a40c6d81afae57a5da91a",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-05.png",
+        "sha256": "4dc7e003d123a9ad4e44ac6d18925501a0a7666ca36279bff1fa5163251402f7",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-06.png",
+        "sha256": "42df470bf019cd92fb9ebb32db921b3228ef7d8e5164af1dae8918d18a18aad0",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-07.png",
+        "sha256": "c0fce5db35176f6f552024bb512c515504a90c8eb0b0a5a69565d6d42f990c77",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-08.png",
+        "sha256": "854b95d5cf9e49dafce327847822ce949d6ed39038982b678c7cb6fcfdabef78",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-09.png",
+        "sha256": "82fa98bbc66ee345fc18e9b9f8d5784a73fd63e145087e2d64ba228a5cc13382",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-10.png",
+        "sha256": "63fc39a223f0f12cd028c5671b11470d214f10aedff3840c50bec9eb92123831",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-11.png",
+        "sha256": "430b029eed9a0281dc15b0f633aa564e76c345633fa22e019d66236eb5ed14ee",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-12.png",
+        "sha256": "2dc45a09b1f3c015ae56397592c5a1b11fc6eb33bd090f59b131837ba14e0820",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-13.png",
+        "sha256": "cd6c5683fad3dd0d54050f034f859bc57b765e8107191d1975d7cc88ddbf2eca",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-14.png",
+        "sha256": "00b85550bf086d6fad47926ae960ccd8bc5a12830f852acf85ed8864e44c941e",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-15.png",
+        "sha256": "27bf0873ff145d5975017712bafa3ee51cc1c2359342cf9c4a4880339d39961c",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-16.png",
+        "sha256": "7a68f9a1ac33109a608d8a8fc915484f40260677b14d737f0a8b4ebd588b1113",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-320-17.png",
+        "sha256": "72f13f1337b5a3b4072ba7f3f827641e5189f809b9f529480e74539b71437663",
+        "sourceImageCount": 10,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-01.png",
+        "sha256": "bd09cb3c7c46e9e1ef4f3517d463b1cff1b317066eabbeccb04c3cc3d7c5beec",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-02.png",
+        "sha256": "84fc41ebc3c819b70a3fb0ccded9d2954d49214d608fdf9bdef3d3ef5bfa9596",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-03.png",
+        "sha256": "b4f7954c15f4db0b097088aa64f99ecda44941971d1b599f75ffa8ae514c9fc7",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-04.png",
+        "sha256": "ce89ca274ecb3e4e110ca9abe7a9eb463121a17e34f85ea5d6950542769adb2d",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-05.png",
+        "sha256": "943e9550479ae087c49ffcae5aebb0d2ef8a17910df46df6c4ddfe9641039fec",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-06.png",
+        "sha256": "c815ab9e785b9e411130e61dbe55202f7c782d6cb885ca8a182f15d270e031a2",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-07.png",
+        "sha256": "d65254639232ee3ced365baf2a45f1c2274eb2607efacbbfbfcab0f077aedb8e",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-08.png",
+        "sha256": "b8e393d40e53112f17ecf9abac027217acb2a48085d1e49c769a26f50e549769",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-09.png",
+        "sha256": "6f99d0e1793aa9bb766b31c0d629fe9f12f0836e907a4da1992e584fe9dedd6a",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-10.png",
+        "sha256": "31606e18520bae308d411fdcffd50d848237c4e2a5180fd4d3551ddf32061127",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-11.png",
+        "sha256": "21ade69042547273556d08657f8dc7607d0e7617df67224bc2806898d637b0c4",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-12.png",
+        "sha256": "1a93ea332bed114551101a7361893e8f51a94c6ff116c283cf6e1bb14741dd45",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-13.png",
+        "sha256": "a6e5d6e29015de696e10ae8faac3224f51a8c0e2ed666e009b177ee047a6b04a",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-14.png",
+        "sha256": "d32c482be1bd3f64f6fce30b31e8f52de7f596411bba19975fdcf2347d51938c",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-15.png",
+        "sha256": "aa4383652ed8bfdfd524e8731236642184922af6384582fee760beb74a3cf705",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-16.png",
+        "sha256": "3d0c82e99e296c2ee78a094bf08265acae24cef54dbc39b498be5cfcd1dfa516",
+        "sourceImageCount": 12,
+        "viewed": true
+      },
+      {
+        "file": "B-1280-17.png",
+        "sha256": "f6a143ac6d4706af2290df8dc1b3dc84e1f42933151be0851d6639469b9543c5",
+        "sourceImageCount": 10,
+        "viewed": true
+      }
+    ],
+    "images": [
+      {
+        "cardId": "main-358-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-358-single-neutral-320.png",
+        "sha256": "6f78f337a2fcf11e7b78667e9ebbe562893d520e054806cfcc5c8efd6f40b3da",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-358-single-step-1-320.png",
+        "sha256": "61e8767aae0ca7ba4cdf0daffb5fc09fc465d95293eb41a5598a12c4f0c4be74",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-358-single-step-2-320.png",
+        "sha256": "08e257a42f524ced0e98256853a64530613b5f940b9c6f36023bedeb2541aa08",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-358-single-step-3-320.png",
+        "sha256": "08e257a42f524ced0e98256853a64530613b5f940b9c6f36023bedeb2541aa08",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-358-single-step-4-320.png",
+        "sha256": "f68abbcc39e92f6bee64a1c89759dfec7d4ac2cbdf130ac3d4961100a3931647",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-358-single-case-1-320.png",
+        "sha256": "fce551e74622ce3fcab7d94b4a27eee71589cccd5f304c59446779fbe78bb7fa",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-358-single-case-2-320.png",
+        "sha256": "5c96a1fc09185e820c787a6f172888c23523a38db3981461d6faa32e4d6f948a",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-359-single-neutral-320.png",
+        "sha256": "ee6630a625eb9772df319c49723a7a3c919b781db94212959f88650b5f5941da",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-359-single-step-1-320.png",
+        "sha256": "9fadc3155a8659e76caa4d029cc2dd765d9843c37dcd40752b41c934ba6740a1",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-359-single-step-2-320.png",
+        "sha256": "0a3e85b5c7b5351026a7f56056ddb3ebc21021a905240bb36c5cde5c5543038c",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-359-single-step-3-320.png",
+        "sha256": "0a3e85b5c7b5351026a7f56056ddb3ebc21021a905240bb36c5cde5c5543038c",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-359-single-step-4-320.png",
+        "sha256": "60142e48718c17f054ea5e65ea05bc54a4dbb80c3f308621018b74b65db5c9d3",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-359-single-case-1-320.png",
+        "sha256": "26366ca2b812f5fd522bb7c30e73d38e847b8fc8e917c7208b26d878ebbefa07",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-359-single-case-2-320.png",
+        "sha256": "155a96d1bc4cf4fb0f759f123e8c90969feed9c400a474cea554b709e695336a",
+        "inspectedInSheet": "B-320-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-360-single-neutral-320.png",
+        "sha256": "04762632ddad7d5056b7b6a811821b8874b847ec34203d64354402f9df164deb",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-360-single-step-1-320.png",
+        "sha256": "b58eb647cea13b25b4e15e122601e1d852bd0e80b03805d0b457bbe7a5ef4a03",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-360-single-step-2-320.png",
+        "sha256": "b8a825919a362c8c3fd6ad5d707c3377d336d0be3715b2f99552a12a87995324",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-360-single-step-3-320.png",
+        "sha256": "27d229d585b244357b34f8ff2573bba56f553f904cfd7443e8cf962e82e84cc2",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-360-single-step-4-320.png",
+        "sha256": "27d229d585b244357b34f8ff2573bba56f553f904cfd7443e8cf962e82e84cc2",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-5",
+        "width": 320,
+        "file": "main-360-single-step-5-320.png",
+        "sha256": "27d229d585b244357b34f8ff2573bba56f553f904cfd7443e8cf962e82e84cc2",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-360-single-case-1-320.png",
+        "sha256": "de429905a1449fa6c609ae46f1ddf273b638bb8530ef4059d2f91249aa7c8e75",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-360-single-case-2-320.png",
+        "sha256": "63802915a358c5965fd8fe66a27e3bb83067fc79b8156e9fb85ca3f2a0d0f842",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-360-single-case-3-320.png",
+        "sha256": "7c444bbff7300336b53096c4f0e734ab5c034d7deb0af59a39fda568063abf1f",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-4",
+        "width": 320,
+        "file": "main-360-single-case-4-320.png",
+        "sha256": "ac6605622913bd3105e4dedef50dd72c0e2e0f1580e5aede4e5f5a295e170f9e",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-5",
+        "width": 320,
+        "file": "main-360-single-case-5-320.png",
+        "sha256": "e774b131db61c6f652a8b63af138e2affe6c557d8a142d9a0a6f031992f2bdff",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-6",
+        "width": 320,
+        "file": "main-360-single-case-6-320.png",
+        "sha256": "828302bb7ea8270e21063aba469318666ebf8f83c58620bbc244dae4645d4049",
+        "inspectedInSheet": "B-320-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-361-single-neutral-320.png",
+        "sha256": "332a5f69a3ed224d73efefd4f3783bd8cd36d6f61ebb41411958d2680829bc5b",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-361-single-step-1-320.png",
+        "sha256": "5f1d2a184720a8fcf6f4476d570ab5000d154f8668254c55e25b32ed5240aa22",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-361-single-step-2-320.png",
+        "sha256": "db117cba762a406055e04c1a25e4b280c00693c63e757d56792ae05e44f9686a",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-361-single-step-3-320.png",
+        "sha256": "f37c90af5c839f3b9983ada97a30f956592727fd914df18f0d13c50d78e0ca82",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-361-single-step-4-320.png",
+        "sha256": "f37c90af5c839f3b9983ada97a30f956592727fd914df18f0d13c50d78e0ca82",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-5",
+        "width": 320,
+        "file": "main-361-single-step-5-320.png",
+        "sha256": "f37c90af5c839f3b9983ada97a30f956592727fd914df18f0d13c50d78e0ca82",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-361-single-case-1-320.png",
+        "sha256": "3ca249b37eb9fd0b912c2113d34b5b87866b5b5daef328dec529accdb91dafe4",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-361-single-case-2-320.png",
+        "sha256": "e9e836878149ce9da49c855eb860a5d16cab667417e0ffec48f882108ea794bf",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-361-single-case-3-320.png",
+        "sha256": "848f1e95c329d489a17df07ce1dfa894dc5bf3277dcc7dd4446025b48657791a",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-4",
+        "width": 320,
+        "file": "main-361-single-case-4-320.png",
+        "sha256": "29524299635439e300ff845beac2552952f4910431fe297bb5808911819c42e8",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-5",
+        "width": 320,
+        "file": "main-361-single-case-5-320.png",
+        "sha256": "a25c815c0165513c71dcc4c287509626d6803f83052031c8797680c0753e77b2",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-6",
+        "width": 320,
+        "file": "main-361-single-case-6-320.png",
+        "sha256": "529d1a0223f4ee8f9916a3058c06243296ed2f6fe22a723556b574ae38e44217",
+        "inspectedInSheet": "B-320-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-362-single-neutral-320.png",
+        "sha256": "a23e4df35e5d576a212ab69ea4d00a0940e36d77d8709846094018d3ca5c8112",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-362-single-step-1-320.png",
+        "sha256": "9ead25576f24e50b0f2ce6df93ebe0751d880e7695431ce00c2d9690b43144c6",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-362-single-step-2-320.png",
+        "sha256": "6f705c994f6f799bc1e5de440758a5f61af8e4684496a91917f2ab6749d7edcb",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-362-single-step-3-320.png",
+        "sha256": "78703432a3676a8d073cfa22328360783c83143d3a2c09f958c2836dd179dfcd",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-363-single-neutral-320.png",
+        "sha256": "7ae8aa3d6da15565ec167f665df3344537fbd11be3067e2ebb993a731567249b",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-363-single-step-1-320.png",
+        "sha256": "b574d2dd905f795a53970859f18aab870d1296be6b278426e15da6241c163567",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-363-single-step-2-320.png",
+        "sha256": "eac9f856233887f7d72ea1edb0392b050e0202154a844ca3507ee45e5423d4b1",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-363-single-step-3-320.png",
+        "sha256": "c6b5923828db992937c30e404c9531ecc89e7e87b591ee4735a2bf09edc34e2d",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-364-single-neutral-320.png",
+        "sha256": "e5818710fe515f3ea25112ffa8298d6d3c3d6a48165babe8cb59601393ae4a00",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-364-single-step-1-320.png",
+        "sha256": "71fa9e5feec7bfc247bf3daceab37938c2fe048c37afc968d78b6ee3f8daaa8b",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-364-single-step-2-320.png",
+        "sha256": "0263a95e8fbea5f4678aba3d8d495d1bb975394ffea08189a4b4831aa46e744b",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-364-single-step-3-320.png",
+        "sha256": "8174227e27323cbfbc1fb09a9182f8de997def2f564e5a69d961b1891f66a8a3",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-364-single-step-4-320.png",
+        "sha256": "c934d3e5bbf6d2dafee7d5eead1d67302acc50fa1c23c835c43042f36845290b",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-364-single-case-1-320.png",
+        "sha256": "b6b866a7ea8aa9ed4b605b1747ae22a680bc74db6765dacbf72845d1bf1c449f",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-364-single-case-2-320.png",
+        "sha256": "616f3c67a93f3aa4c7e28845865e0fbb2c8e0b93dd256c5d64662b99ed6b081b",
+        "inspectedInSheet": "B-320-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-364-single-case-3-320.png",
+        "sha256": "9fc437f1b11a0a06c9375ce6d90c20854db0efa05169fee75e47ffbce95a441a",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-365-single-neutral-320.png",
+        "sha256": "03d51440235e52eae9fc6d716d4c34dc402c495c6085d6ff3b6d1419e509ee1d",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-365-single-step-1-320.png",
+        "sha256": "a3bda33d8e78c8d79fe7631e360a7f5839f8f3065d57e1441c4f7dc5e98e5783",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-365-single-step-2-320.png",
+        "sha256": "5ed29f383122886286d828b213d418ac8c0cfd0a2c2daa05720753082380b6b1",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-365-single-step-3-320.png",
+        "sha256": "b1558c1e10ebd2b188bdf63d58e49128dc0b39417fac2be2d845d4c59b057a1f",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-365-single-step-4-320.png",
+        "sha256": "f989ca279c77464f1bb3d1ce640f64806f3d8c6294ed62f5d80998a0e39ccf15",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-365-single-case-1-320.png",
+        "sha256": "36f001fa823ea2842701c638d0d5785fe91c90c4d27e70befb7b5c4314c7ad3c",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-365-single-case-2-320.png",
+        "sha256": "be9dd1cb1c831bc566de9e138a5dcb236f2aba99632326a3259adb95f5628e2e",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-365-single-case-3-320.png",
+        "sha256": "fffd439c636f2849dedf24c8981b422c825fe15900d073ef931ecb824ff8a9ec",
+        "inspectedInSheet": "B-320-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-366-single-neutral-320.png",
+        "sha256": "457554d6086677da0cfda86a6afda8a0f10854cc77dfe21e8a7051b568fee4a4",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-366-single-step-1-320.png",
+        "sha256": "ca0a45383605acf82bd999bac2111421819dff2801f63d66d8c6bf4046dc1faf",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-366-single-step-2-320.png",
+        "sha256": "06b154585c4582ef5c133be0818c66b174511d3030226b99c6b22d7d27b639c1",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-366-single-step-3-320.png",
+        "sha256": "b4c45f52ce9f1e156118fce2cbe0351b027bb127afef51cd51a0959a9439432b",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-367-single-neutral-320.png",
+        "sha256": "e8ab6dcf286d00f88b02f734ce0af58dfe304cc1b7c463414b0d2ecb09356fe7",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-367-single-step-1-320.png",
+        "sha256": "e8ab6dcf286d00f88b02f734ce0af58dfe304cc1b7c463414b0d2ecb09356fe7",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-367-single-step-2-320.png",
+        "sha256": "8acc71f6e8d3b729adaf26249c4d2ba42096732c28939b24651275c271a5653e",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-367-single-step-3-320.png",
+        "sha256": "8c03df6b1127e1d2b41136574cc1adf6e82cef4e727975fe9bfe6ddf70683d9d",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-367-single-case-1-320.png",
+        "sha256": "402eb75f377e39cd68553d6a2470ed5ee8a2be969d804dca1c3525bc375f8863",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-367-single-case-2-320.png",
+        "sha256": "080ff80e56aabc5ef4f93631bb16fa0626f197773af960784da726046c7eb716",
+        "inspectedInSheet": "B-320-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-368-single-neutral-320.png",
+        "sha256": "cb8e4ffb9ad5d014f14cbd568a8ee6a436b4a501779ce59342d6e2aeced225d0",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-368-single-step-1-320.png",
+        "sha256": "cb8e4ffb9ad5d014f14cbd568a8ee6a436b4a501779ce59342d6e2aeced225d0",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-368-single-step-2-320.png",
+        "sha256": "be36cea6c3b1b539f7b6275e4ece74cf6f8a6d174e9621bc7968137f35dab875",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-368-single-step-3-320.png",
+        "sha256": "3d237ab57d7bcb8e30269c44c212a8982b1a7798fad2acccd943d116a6b81c3b",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-368-single-step-4-320.png",
+        "sha256": "b06aba84d4d0e51a816499eb82d220d99d293802904106cd63182238f3d5415d",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-368-single-case-1-320.png",
+        "sha256": "ca4bb195e2b64e80e96c035556a64c2ad878d0577775e0f5d08483e5a7095479",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-368-single-case-2-320.png",
+        "sha256": "9e2e9a5ea4d75e54a03b33363103056e1774a1101a30a13f92e8a57cf05b1be4",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-368-single-case-3-320.png",
+        "sha256": "e2241f9a2d212ae85ab34703f1eeae64312ec2189cd6fe0526e453a3e5464795",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-369-single-neutral-320.png",
+        "sha256": "2a1fca83925b26f7455b4ca21922f69dfb2379e6da8675a1a4ed92ec91c05592",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-369-single-step-1-320.png",
+        "sha256": "da6e2ea48add2cbf108ba4243ae6a1ebf55bb45a17d545087511af9ad8d3f6e9",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-369-single-step-2-320.png",
+        "sha256": "859876a16cb099830a5138fce040693a4868030528d7e3a55130a496cf6f25aa",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-369-single-step-3-320.png",
+        "sha256": "859876a16cb099830a5138fce040693a4868030528d7e3a55130a496cf6f25aa",
+        "inspectedInSheet": "B-320-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-370-single-neutral-320.png",
+        "sha256": "a897ba7ca23a7a829f0aa5e1636128fd0ccf818e71628bb1c8f718a6b596a97d",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-370-single-step-1-320.png",
+        "sha256": "a390fe14cf501e0299e77fce7fd659e5e23df2678a75abe488b88dbe6109cd1a",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-370-single-step-2-320.png",
+        "sha256": "f6a77544f50141b98206b93f043a56cac0c1237e13e5c54a9d651bcac5e8584e",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-370-single-step-3-320.png",
+        "sha256": "f6a77544f50141b98206b93f043a56cac0c1237e13e5c54a9d651bcac5e8584e",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-371-single-neutral-320.png",
+        "sha256": "56e99de767594098cb079248b8bc727507603a5cce5bdd1b97a4d76ec5d84358",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-371-single-step-1-320.png",
+        "sha256": "6b52efc8600d60cbe292c37ebecac10e7e732363f551514913d243c0d6d2a9ab",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-371-single-step-2-320.png",
+        "sha256": "623e9cf68300cd79a797fcbe7723a7b2b7cd7e611c5b4f69e3ffdcad92f8cc7d",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-371-single-step-3-320.png",
+        "sha256": "dfefe76fc2259be6c7fce0792961c73444fcf9ab62366aa81e5da14f65354f84",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-371-single-step-4-320.png",
+        "sha256": "dfefe76fc2259be6c7fce0792961c73444fcf9ab62366aa81e5da14f65354f84",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-372-single-neutral-320.png",
+        "sha256": "29dd450940ec29f56a3e9ff1e946128119f83933129a890c6e5b697045bc99b1",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-372-single-step-1-320.png",
+        "sha256": "9f93065ed6a55aee32834938428398d24053d4b5cded96d2bc5f39fc13a6f032",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-372-single-step-2-320.png",
+        "sha256": "64c8e6ce65e4923fdafc58a236e72a860881de85642c1d0bf3ec07b2b09da427",
+        "inspectedInSheet": "B-320-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-372-single-step-3-320.png",
+        "sha256": "e316636850136e2431ea120d2a624211762b1ed42fa63922669c81f810fe523b",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-372-single-step-4-320.png",
+        "sha256": "e316636850136e2431ea120d2a624211762b1ed42fa63922669c81f810fe523b",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-373-single-neutral-320.png",
+        "sha256": "1b5caafb58a566a54287cbea96fa79d1ec3bba4d4f3e5fdca3adc3722935c5e4",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-373-single-step-1-320.png",
+        "sha256": "be9e465907a296923ab714251ec056c33f5c1ec22ef165ecdd3c97b8bfde0348",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-373-single-step-2-320.png",
+        "sha256": "008e3b7d9f41f1c7e33ef0971633590affc2b4891fedc7c1e7f7de38c2e08edd",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-373-single-step-3-320.png",
+        "sha256": "008e3b7d9f41f1c7e33ef0971633590affc2b4891fedc7c1e7f7de38c2e08edd",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-373-single-case-1-320.png",
+        "sha256": "9a1e60b578f65e463e5519ea45930a7c5d82c7f0927b9b69f76fa7912011a008",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-373-single-case-2-320.png",
+        "sha256": "38ba64c95ab72915eba889112218375035e9f90a8715a3ecf2e8568cf953a02a",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-374-single-neutral-320.png",
+        "sha256": "1776477c24fb6c8efae33329f24b721a28c92616f66ef6579cda22ad6cd4c546",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-374-single-step-1-320.png",
+        "sha256": "671807409631721cd549da8c4b3e509cad9411bb67790231cadeb769fbcd5c8f",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-374-single-step-2-320.png",
+        "sha256": "9373983b5bc4edbcd6433fbffdaa2c7e9c6698c033b175a70c595b5a3cd96821",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-374-single-step-3-320.png",
+        "sha256": "5357e6f5c9e6eb8e9d38a7403aa8131570fe2247579273d472a0aea30b4731a8",
+        "inspectedInSheet": "B-320-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-374-single-step-4-320.png",
+        "sha256": "5357e6f5c9e6eb8e9d38a7403aa8131570fe2247579273d472a0aea30b4731a8",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-375-single-neutral-320.png",
+        "sha256": "5511efc4975f501d6569ebd9a7820a14fe746c4aeaa89af1e9486f8fa507ad74",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-375-single-step-1-320.png",
+        "sha256": "4c091bd33d2e7f9ed30d1c4d26a506e5495f96afbebbf9c003901abddfb5db01",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-375-single-step-2-320.png",
+        "sha256": "1450284c9fd2c8145f29e87c524d13ac9819cc2324f5b18d017321dfb7973c4d",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-375-single-step-3-320.png",
+        "sha256": "366dda8f104a5b17ca803973af5894b2253cd7cbaef8e9bfaa25e91cf7d71840",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-375-single-step-4-320.png",
+        "sha256": "366dda8f104a5b17ca803973af5894b2253cd7cbaef8e9bfaa25e91cf7d71840",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-376-single-neutral-320.png",
+        "sha256": "9f27725bee2907e91e967d65f2b89cb367db2a071c4252bdd024e82ce7ad6990",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-376-single-step-1-320.png",
+        "sha256": "465bfcd6233a475341bbc3cfc52d4464f035442add190557651e576161393e2d",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-376-single-step-2-320.png",
+        "sha256": "56e5e41df7bc7421d685fe728e85d047782d45aa1840e2e346474e84c740e151",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-376-single-step-3-320.png",
+        "sha256": "56e5e41df7bc7421d685fe728e85d047782d45aa1840e2e346474e84c740e151",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-377-single-neutral-320.png",
+        "sha256": "a417eca2c5389fa037900a2584ed8e15f7e0e25677eb305097f7549ab76f46c0",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-377-single-step-1-320.png",
+        "sha256": "5aa6f1ba1a5644153b8a53a2993c50c2b5334be8d7341e5f9c2d9fd3889f44d0",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-377-single-step-2-320.png",
+        "sha256": "4cfe16b262a134f42cd045766c80d527bbae18a5cad49ef730b54e0a87f2cae3",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-377-single-step-3-320.png",
+        "sha256": "a1641b5bd5ceb972ff7456fe9458614851ba72bd74cc47e300ea66b0721ba57c",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-377-single-step-4-320.png",
+        "sha256": "4786b3e094fdea51af000b52aa1ad96e54a686b652149fd77fe0c2b345c1916d",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-377-single-case-1-320.png",
+        "sha256": "e0d28f1c4433635f88b9381b1235ef11099ddfe5186ab84fae3ae988f7e23f68",
+        "inspectedInSheet": "B-320-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-378-single-neutral-320.png",
+        "sha256": "6aad86ee663f85c5c619b44bbe3647fc402448542fe430d60575d73a91467bb4",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-378-single-step-1-320.png",
+        "sha256": "48f14a83cdb0d8b248c4f4e15f0def3c607a5a65a8536a4f6af26ad93e72c6bf",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-378-single-step-2-320.png",
+        "sha256": "c64286742c036cc95fd5202c3fc5f03deebd1d9309ad27433915f36e7b6a3547",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-378-single-step-3-320.png",
+        "sha256": "d544d88f6f69a4a1befb3e4aa45e685bb08d72ec03a540d9d087d918c5cc1c8f",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-378-single-step-4-320.png",
+        "sha256": "d544d88f6f69a4a1befb3e4aa45e685bb08d72ec03a540d9d087d918c5cc1c8f",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-378-single-case-1-320.png",
+        "sha256": "3d94ed5b94d0a81a1533aa8c4d4108cb00464d603fe9dd45f8c3a351080fb4f3",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-378-single-case-2-320.png",
+        "sha256": "a99ec0c94045afb3b49b96f15cb6424b8f1bccabe38f480063f490965c073fd3",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-379-а-neutral-320.png",
+        "sha256": "560497a01523436e7afff59c452b2275d49d71e71611c66faf00098f523a5d95",
+        "inspectedInSheet": "B-320-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-379-а-step-1-320.png",
+        "sha256": "1615188fb94589faf1a57a6b18be71a09ad9b3626735814176c650e1d31ca912",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-379-а-step-2-320.png",
+        "sha256": "3033900c26ddf188a465075edd5d69850cabdbc05dccd73ab53cc446fc1e7d55",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-379-а-step-3-320.png",
+        "sha256": "3033900c26ddf188a465075edd5d69850cabdbc05dccd73ab53cc446fc1e7d55",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-379-б-neutral-320.png",
+        "sha256": "d7a6a9f5c626072e0a09ef995fb9e231102938a6cf37567a066891a9c6e629bb",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-379-б-step-1-320.png",
+        "sha256": "fc0d7832ce3bb052bae97efcde58199889a9da2ba5964d81a5dd5c365f836ba8",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-379-б-step-2-320.png",
+        "sha256": "8d26c1b8b3b92310b2481427cd3ddc008e318fc9f57157befe37b9944ed670ac",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-379-б-step-3-320.png",
+        "sha256": "8d26c1b8b3b92310b2481427cd3ddc008e318fc9f57157befe37b9944ed670ac",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-379-б-case-1-320.png",
+        "sha256": "0f5cc4fce576a4435adae0507612d4790b504f98cb84b93db823fbd49fa7ed5b",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-379-в-neutral-320.png",
+        "sha256": "51d5eaea1f8d12622bf4b8ad9dca8631286189c2a7477b674423d0ba1e6c11fb",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-379-в-step-1-320.png",
+        "sha256": "1566a107774505278a0400d562827a97fa57b6c4bef12b8d98b74dc65b5fa83d",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-379-в-step-2-320.png",
+        "sha256": "e2eefe4d762bae440ee92f3cc9eba85228983a14012ab8e3a44388856e1977e4",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-379-в-step-3-320.png",
+        "sha256": "e2eefe4d762bae440ee92f3cc9eba85228983a14012ab8e3a44388856e1977e4",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-379-в-case-1-320.png",
+        "sha256": "588b966be3a4370775617bd4516f65e7fd08e4a21e58645577bc4d18bb95f62e",
+        "inspectedInSheet": "B-320-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-379-г-neutral-320.png",
+        "sha256": "d76270e3c7208946b84fa326edb2888dda74ff58bf4e40bf73691b27c8cabc99",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-379-г-step-1-320.png",
+        "sha256": "d76270e3c7208946b84fa326edb2888dda74ff58bf4e40bf73691b27c8cabc99",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-379-г-step-2-320.png",
+        "sha256": "2f21e0911583ccfad1eb9e23766b1085a5ed7dabdc5db3b6ce59155fd2ffae9f",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-379-д-neutral-320.png",
+        "sha256": "c09002553b4229a7ebb1f510f2b3a16721abb0e1ebb5cfab76a0ae2764be1a7d",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-379-д-step-1-320.png",
+        "sha256": "385401aaf966a0e7d5bc878f3b94fe3bb35254e64e3d0fc4eff296656799694a",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-379-д-step-2-320.png",
+        "sha256": "d7dedd908897af5e00ec1941bc1960369364821dd35feebdfb1954f07942818f",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-379-д-step-3-320.png",
+        "sha256": "d7dedd908897af5e00ec1941bc1960369364821dd35feebdfb1954f07942818f",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-380-а-neutral-320.png",
+        "sha256": "6929f1312fc9b491f17b673c71f7962ca2e6735f2f0711e6884a16fbee302b5f",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-380-а-step-1-320.png",
+        "sha256": "3d3d213a7c79ac37a32420cb85a2c086a7057b12696fead885a0b22fdd9b6cd8",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-380-а-step-2-320.png",
+        "sha256": "53a5f6462995d1003729c2fbd22a7f0bb4e073775d88b3ec75943f27c3d67729",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-380-б-neutral-320.png",
+        "sha256": "c0601f4c5704f3c1f767abe1f25f54c94716c6327aa3d7d315c02a4e2b193332",
+        "inspectedInSheet": "B-320-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-380-б-step-1-320.png",
+        "sha256": "f43353a3f33cbe9d51bd3d7e4838f133a81deb459e3dbf2af733c58db24f8b8f",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-380-б-step-2-320.png",
+        "sha256": "20dbeb3928fb3ef79a77b4b3a915b84a848f71bd70fca969cbd861630fb58381",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-381-а-neutral-320.png",
+        "sha256": "027167b0ce4fd51ecfe604911462789bec3c71756cd201465f17ebd2fd464931",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-381-а-step-1-320.png",
+        "sha256": "63562761162ade09b1a1aa4518f7673acc8fe99faf503632087c213b25ea5a51",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-381-а-step-2-320.png",
+        "sha256": "63562761162ade09b1a1aa4518f7673acc8fe99faf503632087c213b25ea5a51",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-381-б-neutral-320.png",
+        "sha256": "c59a211539079f6b4aea84e283f58899b78621a995b686341e4a2d5a5e95a771",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-381-б-step-1-320.png",
+        "sha256": "20f8a92e8d7ae664ffa02b3f8a4fa38c4f903757e4eaf2073cfc16d623ff7e8a",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-381-б-step-2-320.png",
+        "sha256": "20f8a92e8d7ae664ffa02b3f8a4fa38c4f903757e4eaf2073cfc16d623ff7e8a",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-381-в-neutral-320.png",
+        "sha256": "5cdcfeebc8cb92cbcc0237a1373be459b6de9e763302d6ec55dee2a89e28af52",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-381-в-step-1-320.png",
+        "sha256": "bea750bb1caeb22b0d790801987ddc747006cb48eced78d678817335e52a61f1",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-381-в-step-2-320.png",
+        "sha256": "45346e4933b50b43f4ad8742245d255b7dc671330a5aa48dd160c9e93b02988a",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-381-г-neutral-320.png",
+        "sha256": "8433238df000c098871d42fbc68821421eaac3b77da03bc4b3364e7c2f619758",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-381-г-step-1-320.png",
+        "sha256": "b47b60fa41156a8e165ce4e21430e6e64c3205dd7ebde9175aef22a8d5253f94",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-381-г-step-2-320.png",
+        "sha256": "e044dbec59e687b42837e39224c2df368658bd6b3b1cb4974cc8cd9986b00a2d",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-381-г-case-1-320.png",
+        "sha256": "a8f3f3a3535638e76bc57aff0fe06c08876c9a80b31ec0fb8d38023673780721",
+        "inspectedInSheet": "B-320-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-382-single-neutral-320.png",
+        "sha256": "dc8464cd791d19443c6eb306748e6e977542b0c1e52399d95b831bda6b9571ac",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-382-single-step-1-320.png",
+        "sha256": "7991c2975adc25f75cfa509e97b8b513623a1f4ed9c6959e9253cf333536b0d3",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-382-single-step-2-320.png",
+        "sha256": "a60349a2c3139a6c1ec728e1d862429e2b6ed06d8de88aeb44d9cff1976f8879",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-382-single-step-3-320.png",
+        "sha256": "8bc6359db274491d042ff0ddd7e32fe5852b1c31535e7dc36b745cf3b8b0ed67",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-382-single-step-4-320.png",
+        "sha256": "a2c89023e5befd1df24ecfc6c41894368f7a75c6af58e7609f6965633628361e",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-5",
+        "width": 320,
+        "file": "main-382-single-step-5-320.png",
+        "sha256": "be70bb622a440b75b26585b35ee216d2d3ccd8cd4ecfaaf70f68e074c8addf1b",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-382-single-case-1-320.png",
+        "sha256": "48365cdefe2060e32e389e1bdeed413f1d09053aab3962de79891d73fdc723a5",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-382-single-case-2-320.png",
+        "sha256": "86ed5c1fe28f3974ffb8ef0845940d3cdc869aecb504d0fb01c3ff7cda6c1b46",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-382-single-case-3-320.png",
+        "sha256": "889878122e47822e16ca818addea050ad5e3fe2a757c9655eb3251755d5363ad",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-4",
+        "width": 320,
+        "file": "main-382-single-case-4-320.png",
+        "sha256": "d6dce27abe3d6e7bc34482a669d558b9185cc4ac11fc6aae767cdf1f968dc0c8",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-5",
+        "width": 320,
+        "file": "main-382-single-case-5-320.png",
+        "sha256": "bc9c6840777a0e1473e3dc6f23eedd00667f6b429d778970b5c5fd7e7929b235",
+        "inspectedInSheet": "B-320-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-383-single-neutral-320.png",
+        "sha256": "f257f6dd8a11f2952dbb1c53920e02ba019b9fbea8df6860251169eadd19102e",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-383-single-step-1-320.png",
+        "sha256": "96a8c265f20a1cde11920c7157364f6773bc9765b7e4a192186e304de9c04bc1",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-383-single-step-2-320.png",
+        "sha256": "0cba82a1db80f143c6067ec61ec69793c4f9b29895a2e2e09fd94349d4a484c5",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-383-single-step-3-320.png",
+        "sha256": "6838dc26f791c75f548171131f2d5e34bdd68723dbf8a2b53dbcd2dae5a8c09f",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-4",
+        "width": 320,
+        "file": "main-383-single-step-4-320.png",
+        "sha256": "d677e0505831fbd8b4edd73ebc1baa86ad97d5d91af965eb3f8433c3386684ca",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-5",
+        "width": 320,
+        "file": "main-383-single-step-5-320.png",
+        "sha256": "6cf62ec0a9984e98d79612ff9e3294e95493a90c734b5ed7c8d9209087fbcb90",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-6",
+        "width": 320,
+        "file": "main-383-single-step-6-320.png",
+        "sha256": "c098cb908c54fc03ceede63c1b301ee2c9e826d03d8f68f257dfed52f445e476",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-1",
+        "width": 320,
+        "file": "main-383-single-case-1-320.png",
+        "sha256": "1098263fc95a78fe39c52bc58fed9d1765330f7cebd1b154e5683e6450902381",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-2",
+        "width": 320,
+        "file": "main-383-single-case-2-320.png",
+        "sha256": "fb37ded79835fe909fca307aac7ba685b09c6984e540a245a1dfdcd11aa744ed",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-3",
+        "width": 320,
+        "file": "main-383-single-case-3-320.png",
+        "sha256": "24fe7c26a5146ea31ce5b8a12d2d0df73d4306705080bcb5fce02404f4821604",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-4",
+        "width": 320,
+        "file": "main-383-single-case-4-320.png",
+        "sha256": "0ea3fbe389adf371161ae971f93f73223d3b95b97a2f0485c8347f0805fe746f",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-5",
+        "width": 320,
+        "file": "main-383-single-case-5-320.png",
+        "sha256": "7969c8051ad5dbc9ce844e1951f29c7ddc7b84eadc388ed47137103029abdefd",
+        "inspectedInSheet": "B-320-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-384-а-neutral-320.png",
+        "sha256": "74e7cc6f34013ebece125bca3e15910e0aca9972e976badc10f864f9adb14d4b",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-384-а-step-1-320.png",
+        "sha256": "1c961e15f1ebd0ea42fc2ac1964f8ddf8fbb79ce993990bd6f2f944a6e46ac87",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-384-а-step-2-320.png",
+        "sha256": "31732416969071f60566bebc50ed2baa3eecc1cae01a1e07f97a3dfa4a2f9a27",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-384-а-step-3-320.png",
+        "sha256": "31732416969071f60566bebc50ed2baa3eecc1cae01a1e07f97a3dfa4a2f9a27",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "neutral",
+        "width": 320,
+        "file": "main-384-б-neutral-320.png",
+        "sha256": "7b8a148ea95beecab2779dd7271158a38dc21cf0c9b2e71dad03da0116eee51c",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-1",
+        "width": 320,
+        "file": "main-384-б-step-1-320.png",
+        "sha256": "25350d439649a9afc1458c47e0f62f42eb6d5efaf2cede3830ba5f80bc93d4db",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-2",
+        "width": 320,
+        "file": "main-384-б-step-2-320.png",
+        "sha256": "d56f3258c7bfc5b25edf129307d8ed3e12d52c1cc9001b55948a4b8f7b5b5316",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-3",
+        "width": 320,
+        "file": "main-384-б-step-3-320.png",
+        "sha256": "d56f3258c7bfc5b25edf129307d8ed3e12d52c1cc9001b55948a4b8f7b5b5316",
+        "inspectedInSheet": "B-320-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-358-single-neutral-1280.png",
+        "sha256": "d46cfdb482dd7af04bd5ab286081173fbb60a6927ef21ee135b9e0593d38e0fc",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-358-single-step-1-1280.png",
+        "sha256": "3ae73cb95a6a08d7b11ef42b39772f5680358c17582cc1791fad38e3dd125681",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-358-single-step-2-1280.png",
+        "sha256": "4b878a7eb53878bcd08395226baa2aecb4276630b2a6cdf68454b277faa507dd",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-358-single-step-3-1280.png",
+        "sha256": "4b878a7eb53878bcd08395226baa2aecb4276630b2a6cdf68454b277faa507dd",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-358-single-step-4-1280.png",
+        "sha256": "0308b308da9d9a78f929f30cc0be2c0a1147bfcd664f94b29368a2faace824f3",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-358-single-case-1-1280.png",
+        "sha256": "3409b8a05e7372458f1c8643ab8d1b1b617be4b10d42296815017eddc96f7e99",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-358-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-358-single-case-2-1280.png",
+        "sha256": "051358e79f42e8527e7ae7bdb4b052fe7998f4a7e8788fbca65dccd84c6b53ab",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-359-single-neutral-1280.png",
+        "sha256": "14c25cebe8c5421e414743dc8911054f16528fa16299dd3484d46f2dc13c1ca4",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-359-single-step-1-1280.png",
+        "sha256": "866970a05099e330b8d079cb160a9708192ecc4466925db22429a7a0f52df3b2",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-359-single-step-2-1280.png",
+        "sha256": "7116c05e38f531165653dd5b2cac3f6bb324713ae5f380c1b3268c8c25a4c5ff",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-359-single-step-3-1280.png",
+        "sha256": "7116c05e38f531165653dd5b2cac3f6bb324713ae5f380c1b3268c8c25a4c5ff",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-359-single-step-4-1280.png",
+        "sha256": "ed37b7f60c2c6878a80ef24e45181db995c9cecca8d5a6a08b5a9e9536456922",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-359-single-case-1-1280.png",
+        "sha256": "2aef8c4a9fff41775e432aa2a691b917a230d37246ff7c91689375aa61638479",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-359-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-359-single-case-2-1280.png",
+        "sha256": "59cafbf973c2eb7876a38dcc857cd9ae5b5b335aed2ea76bb3a75b2867fb04cf",
+        "inspectedInSheet": "B-1280-01.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-360-single-neutral-1280.png",
+        "sha256": "c90ede81e5e52e090c2b9dad46b87443a5a5e733bda3771ecb87c2505211f103",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-360-single-step-1-1280.png",
+        "sha256": "9e23105b7d305ffe6f6cff938f320fedd9817c6c4bd2b9871b24bbc061e6fd56",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-360-single-step-2-1280.png",
+        "sha256": "c13368c919bec0b5472c1127fe8f73a02cdc803b9db14cc0b537dd89507d5866",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-360-single-step-3-1280.png",
+        "sha256": "1f8cf2531f155117606d4a7cd790dd22d3cc06d5cec9cbf6e3b52f37d7c34bd0",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-360-single-step-4-1280.png",
+        "sha256": "1f8cf2531f155117606d4a7cd790dd22d3cc06d5cec9cbf6e3b52f37d7c34bd0",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "step-5",
+        "width": 1280,
+        "file": "main-360-single-step-5-1280.png",
+        "sha256": "1f8cf2531f155117606d4a7cd790dd22d3cc06d5cec9cbf6e3b52f37d7c34bd0",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-360-single-case-1-1280.png",
+        "sha256": "8c979ba3b34852fc407d5977fcea58cfa0fed207b519300e958618e0d5650e2a",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-360-single-case-2-1280.png",
+        "sha256": "068189260694ce2a0cd925140f96bf12b1669035a4fe5a74a3f782a529b0320b",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-360-single-case-3-1280.png",
+        "sha256": "ab7a72fb44b4c4cc3058a736222ca043bc1e48eedeb3afa09f469f4e794ee641",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-4",
+        "width": 1280,
+        "file": "main-360-single-case-4-1280.png",
+        "sha256": "3b1dbacd1dba5887f9083b020e803c9c1886229a39653ba5f91ba6f8ec9b4262",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-5",
+        "width": 1280,
+        "file": "main-360-single-case-5-1280.png",
+        "sha256": "4175343d21cf41ddb8d6860c26985c18d47efbda4b96ebd2311046afc590e38d",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-360-single",
+        "view": "case-6",
+        "width": 1280,
+        "file": "main-360-single-case-6-1280.png",
+        "sha256": "6454d2aa520ae3877d8b0fbb0703dc6d8fc17934c081d7466ab92a362b5ced6e",
+        "inspectedInSheet": "B-1280-02.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-361-single-neutral-1280.png",
+        "sha256": "448bed4fc08b8533ae934d17d29cfccf466e13193d76fa773648769a4d8b0e37",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-361-single-step-1-1280.png",
+        "sha256": "45e789399241e35ab448232a6a787fcb302ff5438f0e522e1f904599633776cb",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-361-single-step-2-1280.png",
+        "sha256": "3454cb7d7b76207365361f7b5f828ac8dbb949cc77aded239d5ff1ae3629cd81",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-361-single-step-3-1280.png",
+        "sha256": "e67ff11c48c9783d9009a30dbf62ae88e41b34bc79b1b78e99f5b1df7302541d",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-361-single-step-4-1280.png",
+        "sha256": "e67ff11c48c9783d9009a30dbf62ae88e41b34bc79b1b78e99f5b1df7302541d",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "step-5",
+        "width": 1280,
+        "file": "main-361-single-step-5-1280.png",
+        "sha256": "e67ff11c48c9783d9009a30dbf62ae88e41b34bc79b1b78e99f5b1df7302541d",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-361-single-case-1-1280.png",
+        "sha256": "b37c04cb3e4f0ed974a36de4f2446828c8282c68f27fd3d0e2f7db7f4dbd52c7",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-361-single-case-2-1280.png",
+        "sha256": "f24c625756690256a73d51fb777f2eb1e98e966426794bf4a85aa8d0c595de9c",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-361-single-case-3-1280.png",
+        "sha256": "efd0611ee1ea95ca17d9fc700de17d412913fc74d6d50e923faa3b9f2c87e306",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-4",
+        "width": 1280,
+        "file": "main-361-single-case-4-1280.png",
+        "sha256": "7b86184f6f714d19fe82a55f74ee1bd30b15b52e0b5358d38ab04ed699022a30",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-5",
+        "width": 1280,
+        "file": "main-361-single-case-5-1280.png",
+        "sha256": "370e0a3ba261c96c6713eef936a6e7617eb0ad724ad56acca9008e91efa93aa9",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-361-single",
+        "view": "case-6",
+        "width": 1280,
+        "file": "main-361-single-case-6-1280.png",
+        "sha256": "31d1c773e861fad82ba8044f0fee5053e2cb934021752402d9b9840c0d0d4acd",
+        "inspectedInSheet": "B-1280-03.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-362-single-neutral-1280.png",
+        "sha256": "cbf02cb59e013d48736864bd46ca5ace92c639d61823c167c763df6b404bd41f",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-362-single-step-1-1280.png",
+        "sha256": "1d65876faa23948c2e0770e53ddf55014a0927f3f68b464de3e61115ac77c694",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-362-single-step-2-1280.png",
+        "sha256": "3047945f5db1622e7542db8383cc3ae65c7b9da8b1be5353438eee8e5f6ac104",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-362-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-362-single-step-3-1280.png",
+        "sha256": "210b35d9ae5fbbae2ba5763b89521485ccc8fd9add4db7ea986f9e2d306c6195",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-363-single-neutral-1280.png",
+        "sha256": "f642240115e96a0ff9a489b064a582959222c155a523372623a271835250dd77",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-363-single-step-1-1280.png",
+        "sha256": "c652a90fe97d7beb7e67ec5727c57ae3ff07b7035de45d17230d60f144ffffbc",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-363-single-step-2-1280.png",
+        "sha256": "4551944391dcf9a4d800c27eb7d5da7c6a3050dba1f370e9cae4f28071fc8a28",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-363-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-363-single-step-3-1280.png",
+        "sha256": "74dceb6a9bf634e29a203a1a28357b2b627b8dc350431fd7808beefa77fc0ec9",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-364-single-neutral-1280.png",
+        "sha256": "19a2ba39ed885a7f59b2e11db5a4a0ba0f273057490a374c495cf0ee4242696e",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-364-single-step-1-1280.png",
+        "sha256": "0c8e68daa66541d67e7aa3f0fe4ba5902c3826e7ada97c032b80fd080f56bc68",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-364-single-step-2-1280.png",
+        "sha256": "11ef7b16054d2aea69785f24cccdb4bd9c1aafcb31724f0348304dbbc0714b17",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-364-single-step-3-1280.png",
+        "sha256": "a7d624ce4c613e6db2bee5cc9473f2348e7ef842bb2aff949179e0cb74c90857",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-364-single-step-4-1280.png",
+        "sha256": "ef20fc175ed4b7255515b8bd423443f39b8da6f6652f14f6168f267a0d1ca3cf",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-364-single-case-1-1280.png",
+        "sha256": "e3506cc0516053e2a7b32322c298b54f563eba5fc7125d5a9ae7ecee394d2fd0",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-364-single-case-2-1280.png",
+        "sha256": "d080dcbc29e3ed7ae9c53c14b263ae15de0c46a4761986d632fe7549e289f958",
+        "inspectedInSheet": "B-1280-04.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-364-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-364-single-case-3-1280.png",
+        "sha256": "6c6f4e205b0470079f837d8102bb4b7ebf69273a0d1d6355e4924cc63f906f1d",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-365-single-neutral-1280.png",
+        "sha256": "af440f0e2e9ffbff619286f073de89d6b33523356bcb66639b75bd2a21f601f5",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-365-single-step-1-1280.png",
+        "sha256": "ec2f4b6c2c78f105fb8ee135a24cc238cca55d8dd6706cbffa82ee081392eb68",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-365-single-step-2-1280.png",
+        "sha256": "1474b85fb45c2ea098fddbdc6975d7cae08b9de6ff4aa9f8131b36125c6f443e",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-365-single-step-3-1280.png",
+        "sha256": "6c3f316986de1d414aef7c9e6c658ab3e20a6486bb67e7bac186504d1c393ad4",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-365-single-step-4-1280.png",
+        "sha256": "c26e5dc33b5bf2d8f8b39fa378504385f9fca9f61e376acad0412563a78901ca",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-365-single-case-1-1280.png",
+        "sha256": "9e53beac5948c6c45765f49920f002255316db80e21b1fd09356206bafcae90b",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-365-single-case-2-1280.png",
+        "sha256": "2b7288e027f20c3d0a5decb33734d0eb83040453e0ed8caf8ef61de987741c03",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-365-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-365-single-case-3-1280.png",
+        "sha256": "0cb7ea7d60c7c3b17117a5601e2c83b2e217bbafab98c4b28b7f6910cb0b7cb5",
+        "inspectedInSheet": "B-1280-05.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-366-single-neutral-1280.png",
+        "sha256": "50babc1cca37cd7446e8cc3acc896013107b3e67b84626d814d386e58cb14aa6",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-366-single-step-1-1280.png",
+        "sha256": "550fa0f678739b11932ee969e6811d871f5e2655ca09f42b1db017486943a327",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-366-single-step-2-1280.png",
+        "sha256": "0dbc841320c1f71f550011d5fcc5bf28149ba32ec69e6a4286aae2007bfcda5a",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-366-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-366-single-step-3-1280.png",
+        "sha256": "6be252537d93edd9ef8c7f1d4039c6bb4fb31190ecda076f2c53cb7a45a22195",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-367-single-neutral-1280.png",
+        "sha256": "6d73e72de3e2fad726b443a512e1c1876798b0b93d1aa2c4b13e63767276e0b9",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-367-single-step-1-1280.png",
+        "sha256": "6d73e72de3e2fad726b443a512e1c1876798b0b93d1aa2c4b13e63767276e0b9",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-367-single-step-2-1280.png",
+        "sha256": "62c268926e98cab0f4c6bb2495ddf8f38f3587c065a51783a2d23e2da967514d",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-367-single-step-3-1280.png",
+        "sha256": "88ba12a7688a1401c4fcdcc2da4a8d916fbf5b969583a78c224badee99a5039b",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-367-single-case-1-1280.png",
+        "sha256": "40479aa4819affa0dd0172e61d70cdc4cc56de49c6756943a7d07959d961faac",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-367-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-367-single-case-2-1280.png",
+        "sha256": "9f099c164bbaad42a7ab871f74863cced6524441abe31761c0e817fbc4c46094",
+        "inspectedInSheet": "B-1280-06.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-368-single-neutral-1280.png",
+        "sha256": "389b5e0833b1ca42d35dabcf556baa6735efbb3fcd5a8e9b6a093fe04a0bb784",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-368-single-step-1-1280.png",
+        "sha256": "389b5e0833b1ca42d35dabcf556baa6735efbb3fcd5a8e9b6a093fe04a0bb784",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-368-single-step-2-1280.png",
+        "sha256": "c729c1f969a440677d40ae8347529983a22fc0197f777f572f1c89756660fcce",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-368-single-step-3-1280.png",
+        "sha256": "75def1d1d5f5b65c60f1a284adee8092b8277b74b03a72949de91d936fa760b4",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-368-single-step-4-1280.png",
+        "sha256": "f6d5e483417fa3a262661df42df74e1ff1ed6d3048bd9738a527e14d1c342192",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-368-single-case-1-1280.png",
+        "sha256": "071ab70a3d7fbb608f0679e0fe7fe6140c0c905a6ff8ccc228e4c11ae7694317",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-368-single-case-2-1280.png",
+        "sha256": "9d4bf7fd102f85c53cafb322a7ed18cac360c7a4225336ed021c39cd1a873155",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-368-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-368-single-case-3-1280.png",
+        "sha256": "89971b04071bac5b9e8fb42d864f898e93a006eb9ed48ca765d87da2e5500dac",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-369-single-neutral-1280.png",
+        "sha256": "b09e44827a095e8f1c9fb9bcc02a29089dd95084cedee6df5d9cb2603255837b",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-369-single-step-1-1280.png",
+        "sha256": "b4f844f75c5bf6bdd6a6ace8dcc2ac513b2cdfd0f7c328259186f038c5b4c9ec",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-369-single-step-2-1280.png",
+        "sha256": "f77b14b55e62edf0b6227957fc102bc521c87af87a8c3b92e9310600bcbf26fe",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-369-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-369-single-step-3-1280.png",
+        "sha256": "f77b14b55e62edf0b6227957fc102bc521c87af87a8c3b92e9310600bcbf26fe",
+        "inspectedInSheet": "B-1280-07.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-370-single-neutral-1280.png",
+        "sha256": "03d89d1e40f2165d9724d0d028c29b45306e5f0dd29fe0c30907a6e97293be7e",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-370-single-step-1-1280.png",
+        "sha256": "1d395a1946377e7237c2bfe83f723eba8942ad09d6d8588426ba268985740483",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-370-single-step-2-1280.png",
+        "sha256": "bff889b3edb81321283906293355c82485d85eccae36c7ae227982e3e09006b2",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-370-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-370-single-step-3-1280.png",
+        "sha256": "bff889b3edb81321283906293355c82485d85eccae36c7ae227982e3e09006b2",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-371-single-neutral-1280.png",
+        "sha256": "2acc14d3dbeb96b01827fe45c51bbf3464c03f3c38382a9792b5f3c854e8702c",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-371-single-step-1-1280.png",
+        "sha256": "bc2785e3aee06eead8eec9b6dc8777cdb7ad4d8e46d84a9a331296787f6caa31",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-371-single-step-2-1280.png",
+        "sha256": "bd6f2fe4d164459fbb5bd67c4fb9494b772d2d7ead4f7f4f4f56667c8409534c",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-371-single-step-3-1280.png",
+        "sha256": "712a2f9aac930adbb0ecc3de80af98c83839a1c03fbc37d122a2336b9cab873a",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-371-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-371-single-step-4-1280.png",
+        "sha256": "712a2f9aac930adbb0ecc3de80af98c83839a1c03fbc37d122a2336b9cab873a",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-372-single-neutral-1280.png",
+        "sha256": "cd5035945de9ca67d0ed1560768c547e52914e39c6352fc9c95d6b31831cf76a",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-372-single-step-1-1280.png",
+        "sha256": "ea507dc45320398e77c17e30f9cccc98e985767311186e7983eeb2c7cdd90656",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-372-single-step-2-1280.png",
+        "sha256": "8719e0b97be757fe2220dee5b51be8a056d46b933b3c2736191b84c342b75a0a",
+        "inspectedInSheet": "B-1280-08.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-372-single-step-3-1280.png",
+        "sha256": "ea8dd1fd976dae9d011446ac5386e5fe823ae5149bf310d27826802a2a200ab6",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-372-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-372-single-step-4-1280.png",
+        "sha256": "ea8dd1fd976dae9d011446ac5386e5fe823ae5149bf310d27826802a2a200ab6",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-373-single-neutral-1280.png",
+        "sha256": "457fb8b1ab53881c2fd334b9874264296d52695bdb7783a2f765916b58e174c1",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-373-single-step-1-1280.png",
+        "sha256": "cc0168b52645e3ad70adcfb7b320a8e36701f223d0404ccd500d87570f6c7357",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-373-single-step-2-1280.png",
+        "sha256": "bb6e8e7b186a5b70f07b3b88e8dc0ea871d6e85c4ddcd9b0c9c3ab00d2245306",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-373-single-step-3-1280.png",
+        "sha256": "bb6e8e7b186a5b70f07b3b88e8dc0ea871d6e85c4ddcd9b0c9c3ab00d2245306",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-373-single-case-1-1280.png",
+        "sha256": "89d8efa2c932c66917efb2c67f805a2872b226845eead673f144259f7ee17a48",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-373-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-373-single-case-2-1280.png",
+        "sha256": "2232c6a22cce14bf97ccde76a2ae7924b6e4110defec85ed7fa77c57998745d1",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-374-single-neutral-1280.png",
+        "sha256": "14fb3520f16e4a11ecc0e5265470a96c409980bb5830d891fc54dba482862bb6",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-374-single-step-1-1280.png",
+        "sha256": "8920b7104a0deeea7448a4bb792567eb4efa9e5fb2dd534650c2b304ed9a886b",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-374-single-step-2-1280.png",
+        "sha256": "9873e97c6667370c73a0182511dbd3a368d83ff013c421f3e8f2a01d666664e0",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-374-single-step-3-1280.png",
+        "sha256": "3d0a87f6b02a4ff25b97c194ce56b2f6978fa6ec79b563e339f9fc1a2acde8e7",
+        "inspectedInSheet": "B-1280-09.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-374-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-374-single-step-4-1280.png",
+        "sha256": "3d0a87f6b02a4ff25b97c194ce56b2f6978fa6ec79b563e339f9fc1a2acde8e7",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-375-single-neutral-1280.png",
+        "sha256": "d27924541433466993d8620e3503e442107a9671e12d515cbe9c6d9f40a19059",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-375-single-step-1-1280.png",
+        "sha256": "5c20b5e9994abee0df942fe1eda56e2b9f2ba0871cbeefaae5072c3235fa3456",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-375-single-step-2-1280.png",
+        "sha256": "9794255f911492cc38ca1c621bc1ba714497df79114a08a90e78d16a6d1c65f3",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-375-single-step-3-1280.png",
+        "sha256": "cc2bb6e586472183441deb1878a0c56cdeac0f750d873b2456a8365fd27af284",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-375-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-375-single-step-4-1280.png",
+        "sha256": "cc2bb6e586472183441deb1878a0c56cdeac0f750d873b2456a8365fd27af284",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-376-single-neutral-1280.png",
+        "sha256": "bc708ceaf60bab064421506f832705738861a7d94cbbec0f8a979a3353bffa16",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-376-single-step-1-1280.png",
+        "sha256": "0123956653734b5cb0a1a22b6bd797321452cd2ba746a9592fde125742134b13",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-376-single-step-2-1280.png",
+        "sha256": "36a39f29418296bf02bd8bb374ff9b4776df10d163031c87efde90b9149e18ce",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-376-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-376-single-step-3-1280.png",
+        "sha256": "36a39f29418296bf02bd8bb374ff9b4776df10d163031c87efde90b9149e18ce",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-377-single-neutral-1280.png",
+        "sha256": "3987988d5b0b108ab87d5d35ae409fccb7d967ce601e02713eb42bd36f41cf6e",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-377-single-step-1-1280.png",
+        "sha256": "814f7cb97b3f85cf3c97451b88f7c6a1f22a0fd9d1f691958140c8cdf8183c41",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-377-single-step-2-1280.png",
+        "sha256": "a4d4b6e04fa48fb7e3e11399c1bbb42bf76af12d00f899bfe057dbc7fff8011a",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-377-single-step-3-1280.png",
+        "sha256": "67042ddc7c58b917fa187cb579dc4f42c6bbaf2287938222e70ec47afca246e6",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-377-single-step-4-1280.png",
+        "sha256": "13def1a4d535315cc6c419cdd7456602a70fb9408e1ecb551adbcc2fcee08baf",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-377-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-377-single-case-1-1280.png",
+        "sha256": "cd949581e57d3e5b26a1277d904a26b2d90b88146d29ab79d4ef7925c179821e",
+        "inspectedInSheet": "B-1280-10.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-378-single-neutral-1280.png",
+        "sha256": "a7b85c6191c3f71b4d03dd598eb2908e743b43d25509283050b0f2492b23accb",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-378-single-step-1-1280.png",
+        "sha256": "dcd8a0ee8c6041478342cefda3b1c938444b35a056c8bab63735ba92d1c33c02",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-378-single-step-2-1280.png",
+        "sha256": "2dcb100c55a93d5108539bbe2d5bd4f7bfa3a007a594eaf060e9bcaf4e69f458",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-378-single-step-3-1280.png",
+        "sha256": "41afe0fb8c074c1b71ccb0013bee6ed1f5c50c333d4dacb16a4328be1f3b6bf3",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-378-single-step-4-1280.png",
+        "sha256": "41afe0fb8c074c1b71ccb0013bee6ed1f5c50c333d4dacb16a4328be1f3b6bf3",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-378-single-case-1-1280.png",
+        "sha256": "619e98d1b40cf13007a9190687e66221c75ade4478d2f05077a8ccc4a77d6c8a",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-378-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-378-single-case-2-1280.png",
+        "sha256": "eea8ab5e80c79c2c7ff71fee79397037a687b0e86890e96338c06a632d173986",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-379-а-neutral-1280.png",
+        "sha256": "2bd627b525ab43993e1ec98c84b77548412216d34a14a0ea29af1e99d20ea174",
+        "inspectedInSheet": "B-1280-11.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-379-а-step-1-1280.png",
+        "sha256": "949d1832a1e64ced570e55df553a7d56932e723c8669a85709e05768c8919a08",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-379-а-step-2-1280.png",
+        "sha256": "92bf416b771e04da46c41c2705603380948ae3439c2f28adec4bddda811b5eb8",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-а",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-379-а-step-3-1280.png",
+        "sha256": "92bf416b771e04da46c41c2705603380948ae3439c2f28adec4bddda811b5eb8",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-379-б-neutral-1280.png",
+        "sha256": "d73a05939ef19924a8856a756cb20140b8d46230aab11ba81d8e0dda32b7fb2c",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-379-б-step-1-1280.png",
+        "sha256": "6d5fd940addbdd35e5444373051f5ea60f2f86d5dcaf83b9f08c26e214608d18",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-379-б-step-2-1280.png",
+        "sha256": "afedff11df79240cd2beb0ed2f8e0d3e76629156b7adf85b489c36e8785abad9",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-379-б-step-3-1280.png",
+        "sha256": "afedff11df79240cd2beb0ed2f8e0d3e76629156b7adf85b489c36e8785abad9",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-б",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-379-б-case-1-1280.png",
+        "sha256": "8461e536174d3e6b7784e5a312ffa52771e3647ee40960cbc4941906dae11b16",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-379-в-neutral-1280.png",
+        "sha256": "9bf4182ae1b3221b8425662070a8f63f7cb7d1dd102ed9e06cb8dc9f29570451",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-379-в-step-1-1280.png",
+        "sha256": "4731c5dc1aa350656923600c2a685855928cbe5c5adb00c42ce0c07453571747",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-379-в-step-2-1280.png",
+        "sha256": "5acb64f7e9c01f143ed95c972231c6a0b323059339bf2d6dd3a5ed23bf5379ec",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-379-в-step-3-1280.png",
+        "sha256": "5acb64f7e9c01f143ed95c972231c6a0b323059339bf2d6dd3a5ed23bf5379ec",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-в",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-379-в-case-1-1280.png",
+        "sha256": "4896e00cf174fc140d282263b35942177e9d6530d8bf256f302196f972edc095",
+        "inspectedInSheet": "B-1280-12.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-379-г-neutral-1280.png",
+        "sha256": "f9295ff4ea7a0b47e63ebc303ed2182682bcf5f3d6296463d5844abe71c73c51",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-379-г-step-1-1280.png",
+        "sha256": "f9295ff4ea7a0b47e63ebc303ed2182682bcf5f3d6296463d5844abe71c73c51",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-г",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-379-г-step-2-1280.png",
+        "sha256": "fbf18afb2428b26bf3a13b835e5933db39281ff9e954a9132c8f87c16d7f641f",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-379-д-neutral-1280.png",
+        "sha256": "31b1227ef1fe944ed0b52bb26f5d41dca534fd99f631119aede97eecda8ac156",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-379-д-step-1-1280.png",
+        "sha256": "5b5befdde83c781aaa6d83d0fd7cd5f25ee8a1638428e8e1f72a882d734b9586",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-379-д-step-2-1280.png",
+        "sha256": "01d226ae9c90e6ab38ef2526c66bc68951cf95c5c44eb72ed7cd899f8b2e7b41",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-379-д",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-379-д-step-3-1280.png",
+        "sha256": "01d226ae9c90e6ab38ef2526c66bc68951cf95c5c44eb72ed7cd899f8b2e7b41",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-380-а-neutral-1280.png",
+        "sha256": "d8b631ca6e0fc233ba937806b6f150d198d7c0c76b02c7e6be49f20b66908b81",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-380-а-step-1-1280.png",
+        "sha256": "3f6cda70549788f3ebb8f2e44d913a7b22c6d85e824ed4666172531bb7d81abc",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-а",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-380-а-step-2-1280.png",
+        "sha256": "3b8cb1a90dac847b170610554d0018bef39ea50ecc4a91209b75d72dc6e58f1b",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-380-б-neutral-1280.png",
+        "sha256": "0d813c3cd856e74841884e6f1b121482ff38bf1a492837ec114af1b58b8105f6",
+        "inspectedInSheet": "B-1280-13.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-380-б-step-1-1280.png",
+        "sha256": "4ede6c8a5c102694b03b10295021e7fa21f486eecb932abbc35bd75cec79cc2a",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-380-б",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-380-б-step-2-1280.png",
+        "sha256": "96a6f9429dbbeff95893fb1410a425d0a6db4eee224d34004500b82b2e010509",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-381-а-neutral-1280.png",
+        "sha256": "446f901db12cce7031a3b6cafa70c8508ae20df8fcbc72e5d0a9a996b80bb2f8",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-381-а-step-1-1280.png",
+        "sha256": "695f1fc2ca8c095e07bee03d982cd93a8a3ec6c6f05fd38a48e4b72899fb287d",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-а",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-381-а-step-2-1280.png",
+        "sha256": "695f1fc2ca8c095e07bee03d982cd93a8a3ec6c6f05fd38a48e4b72899fb287d",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-381-б-neutral-1280.png",
+        "sha256": "4061d41251c6e7b7bb2fe10dd5020693aaccf0103c13477762d882cb84b58c5c",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-381-б-step-1-1280.png",
+        "sha256": "91bd88654357555dfca396ed2aa623b2f0ec6ab6068c07642f6bce1ff53ee6ab",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-б",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-381-б-step-2-1280.png",
+        "sha256": "91bd88654357555dfca396ed2aa623b2f0ec6ab6068c07642f6bce1ff53ee6ab",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-381-в-neutral-1280.png",
+        "sha256": "19e801330c0ee67d1fd4b25a5e90909eee8cb0b40ff841b6ddfa9759fb7142a7",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-381-в-step-1-1280.png",
+        "sha256": "0bbe21d2dc77ce8644cfe0fe5f8a9baa015f35af9c009d0ecd926e60b3efb71f",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-в",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-381-в-step-2-1280.png",
+        "sha256": "854ebb6249ac59f2daa315c98649702037c7dd96288692d0ade89d82c089e93d",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-381-г-neutral-1280.png",
+        "sha256": "ac754d8279e40f0bc4afb0f62971aad764c6ac43e61dbb6b2a10ac1c07e12320",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-381-г-step-1-1280.png",
+        "sha256": "caebac859189f87aee47c7221c476f52b611deedb9e0339109bf220dafca1673",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-381-г-step-2-1280.png",
+        "sha256": "c8fbd163ebd4f94dfdbbc8b36138a8a739cbb0f2b76bd2a63825ceb7acb5f77b",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-381-г",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-381-г-case-1-1280.png",
+        "sha256": "c1226652ebc92f14eb687422aa926a9ab06849ba0b254c88a60aa5e901da78f3",
+        "inspectedInSheet": "B-1280-14.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-382-single-neutral-1280.png",
+        "sha256": "8139046a4b968bc03d82d74ec4df703041883485974789ab1f9ad5b7b9def001",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-382-single-step-1-1280.png",
+        "sha256": "5f89041687391b30d6ab59a417a91458ef8c795657e5d47dd76d38dc5cdfcd07",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-382-single-step-2-1280.png",
+        "sha256": "af10a11912fb828e835ea81a75db04d8be984c1d8888a46840358e4f555eb648",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-382-single-step-3-1280.png",
+        "sha256": "fdfef9998ba0305b0025800392ddf9e8d2577bfd2bd7e65f9ffd36acd347c59f",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-382-single-step-4-1280.png",
+        "sha256": "b0c91815665af7292f1551cd80d603195a1ed595262d9131f2c21bfc308c6d51",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "step-5",
+        "width": 1280,
+        "file": "main-382-single-step-5-1280.png",
+        "sha256": "dd687f7e337dce4743230a877cf2fb10b93deb0017d8de001a9cc73ffe360ab5",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-382-single-case-1-1280.png",
+        "sha256": "d96e63b371efc0fb476cd2e76109f7af048e7f7c268e0635a41d38e0e4d2f9ff",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-382-single-case-2-1280.png",
+        "sha256": "aeb2fe775e63124119afa19a4bf28f335f4f76e63464156c0c2c9a5ddfe055f9",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-382-single-case-3-1280.png",
+        "sha256": "c7f687f898341e8f512cb15da6511cf1edd57a68f6810b15b4676b8cbba83c96",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-4",
+        "width": 1280,
+        "file": "main-382-single-case-4-1280.png",
+        "sha256": "1dc7aadcb79f63adc855200a47a9a609c7010e861cd43b7fbd9e7cf47f49a7f0",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-382-single",
+        "view": "case-5",
+        "width": 1280,
+        "file": "main-382-single-case-5-1280.png",
+        "sha256": "529297ae157ce3361173ec880482a0ab5deae25eecad78154ab1d814e969f159",
+        "inspectedInSheet": "B-1280-15.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-383-single-neutral-1280.png",
+        "sha256": "e42a1a9ab9d637934508c6557f6fb90936e0bd7168ea00d0c8ca77a265889371",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-383-single-step-1-1280.png",
+        "sha256": "91162c4b7eba8ea280530ff093a0a58a82a17fbb14fac922ddd245a543268270",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-383-single-step-2-1280.png",
+        "sha256": "788ae37022894146704d8ece0e709b7e6609bed649ee98a200e7ab45f78a3612",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-383-single-step-3-1280.png",
+        "sha256": "826009e29714a006dc9fb9db3a74f03698ec7994000b886eeb76e5224b42ba96",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-4",
+        "width": 1280,
+        "file": "main-383-single-step-4-1280.png",
+        "sha256": "37a17e3cbda6925dd0a1874adafd49a406221ea714ba5d54558b2ebdcf7a379e",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-5",
+        "width": 1280,
+        "file": "main-383-single-step-5-1280.png",
+        "sha256": "84243d5cf8015415d346eaa59ff6788c819f8f6b674923c2c157b1d3b409b7de",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "step-6",
+        "width": 1280,
+        "file": "main-383-single-step-6-1280.png",
+        "sha256": "204475efbfbae2946b702d9682b59af71221ef5e64e483f350b4f58f76ed2418",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-1",
+        "width": 1280,
+        "file": "main-383-single-case-1-1280.png",
+        "sha256": "168e72ff5b7f30f4545a1483ce5687eb5e36eb730106efee968735528395dfd0",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-2",
+        "width": 1280,
+        "file": "main-383-single-case-2-1280.png",
+        "sha256": "152acea9f4eea7aa63b97a231963a904fb001f6adfb069b48b46c07212ab943f",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-3",
+        "width": 1280,
+        "file": "main-383-single-case-3-1280.png",
+        "sha256": "78580d9b7d554bb83d15a8e3ada1b86f69fab27e596a10cf633c5f823c004f08",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-4",
+        "width": 1280,
+        "file": "main-383-single-case-4-1280.png",
+        "sha256": "50e60286731b77414efcdc48ce64ac228f109fd67ad15fcb26147fb8972a2124",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-383-single",
+        "view": "case-5",
+        "width": 1280,
+        "file": "main-383-single-case-5-1280.png",
+        "sha256": "83caf9a07fba265aeee113eb71788112bc7cfbb94662e981650c7dc6f63b986e",
+        "inspectedInSheet": "B-1280-16.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-384-а-neutral-1280.png",
+        "sha256": "ea48feb75a98c66e53f417389ec7c6f1425bc7e57c720c21fc3548bba3bcaa2a",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-384-а-step-1-1280.png",
+        "sha256": "24457ab68809c8a12dce51dacb0dd200277588c8a523e669ec2eafb572dadd7d",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-384-а-step-2-1280.png",
+        "sha256": "0a05e3c560f5aa41bb084b7b3d2744a77e525b3158f5374bf9eece72cdd49e61",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-а",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-384-а-step-3-1280.png",
+        "sha256": "0a05e3c560f5aa41bb084b7b3d2744a77e525b3158f5374bf9eece72cdd49e61",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "neutral",
+        "width": 1280,
+        "file": "main-384-б-neutral-1280.png",
+        "sha256": "6bab182bb626d426db922511dff7786ea9e6df1c785b09bb9e4e6dc27cd06b2a",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-1",
+        "width": 1280,
+        "file": "main-384-б-step-1-1280.png",
+        "sha256": "0d6c9c710ac14f460a4cf881de934550f3424b4dc6186d2f99b2807bc944bef9",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-2",
+        "width": 1280,
+        "file": "main-384-б-step-2-1280.png",
+        "sha256": "39d6605f586416c6eab1514f5c51bac4b69ad2a571fbf889dd5f622a9be98948",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      },
+      {
+        "cardId": "main-384-б",
+        "view": "step-3",
+        "width": 1280,
+        "file": "main-384-б-step-3-1280.png",
+        "sha256": "39d6605f586416c6eab1514f5c51bac4b69ad2a571fbf889dd5f622a9be98948",
+        "inspectedInSheet": "B-1280-17.png",
+        "verdict": "PASS"
+      }
+    ]
+  },
+  "limits": [
+    "No external-provider review is claimed.",
+    "The full course browser interaction gate, reviewed-screenshot transfer to that gate by exact image hashes or fresh inspection, integration checks, merge and publication remain separate root-agent work.",
+    "Any change to a bound model, generator, renderer or screenshot requires a delta review or exact evidence rebinding."
+  ]
+}

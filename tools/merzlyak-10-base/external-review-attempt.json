@@ -1,0 +1,23 @@
+{
+  "provider": "Anthropic",
+  "model": "claude-opus-4-7",
+  "purpose": "Focused design and representative authored-content consultation; not an exhaustive textbook review",
+  "base": "6a1f0488e33f9836663382a2e220e69092910337",
+  "head": "ee27e76029249d43eb3fa3a11f54f614126cf07a",
+  "pr": "https://github.com/ladynata-cloud/math-exam-fipi/pull/304",
+  "at": "2026-10-22T21:31:29.912266+00:00",
+  "status": "failed",
+  "supplied": [
+    "stereo-course/merzlyak-10-base/lessons/ex-01-016.json",
+    "stereo-course/merzlyak-10-base/lessons/ex-01-024.json",
+    "stereo-course/merzlyak-10-base/lessons/ex-01-025.json",
+    "stereo-course/merzlyak-10-base/lessons/ex-02-006.json",
+    "stereo-course/merzlyak-10-base/lessons/ex-02-016.json",
+    "stereo-course/merzlyak-10-base/lessons/theory-14.json"
+  ],
+  "inputBytes": 79142,
+  "inputSHA256": "7167b9012ca7b9057dbaa92ff79c82bfce75e764217e24a51cec6554e1bb1213",
+  "reason": "Provider HTTP status 400; no automatic retry.",
+  "evidenceUrl": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/39857930153/artifacts/12460371955",
+  "releaseApproval": false
+}

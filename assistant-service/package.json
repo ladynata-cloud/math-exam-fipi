@@ -1,0 +1,17 @@
+{
+  "name": "mathexam-assistant-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated private mathematics assistant; offline by default, no runtime dependencies.",
+  "engines": { "node": ">=24.15.0 <25" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test --test-isolation=none --test-concurrency=1 test/*.test.js",
+    "operator": "node src/operator.js",
+    "evaluation:plan": "node evaluation/cli.js plan",
+    "evaluation:dry-run": "node evaluation/cli.js dry-run",
+    "evaluation:live": "node evaluation/cli.js live",
+    "evaluation:review": "node evaluation/cli.js review"
+  }
+}

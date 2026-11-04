@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "Implementation author /root/ix_infrastructure; bounded recovery self-review",
+  "at": "2026-11-03T08:47:34.336Z",
+  "verdict": "FIX_PREPARED_OFFLINE_CONTRACT_PASSED_CLOUD_EXECUTION_PENDING",
+  "status": "two-line-document-navigation-fix-prepared",
+  "reviewIndependence": "This agent authored the original smoke and this correction. This report is not a replacement for an independent root review or actual browser execution.",
+  "browserApprovalGranted": false,
+  "releaseApprovalGranted": false,
+  "contentApprovalGranted": false,
+  "baseHeadAtReview": "4a97f329f0965c47eb1b0c21c9708458675de579",
+  "reviewedCommittedHead": null,
+  "reviewBinding": "The corrected working-tree script is bound by the SHA256 below. It is not claimed to be contained in baseHeadAtReview.",
+  "files": [
+    {
+      "path": "tools/geometry-textbook/chapter09-live.browser.cjs",
+      "beforeSha256": "ddc058a2a46bc6418f7d1bd1eaf62f74fd5665bc588de7dfba0dbf3d7915bd14",
+      "sha256": "c990575f9b0e813c2b2fc38daeb18965b68cb99956361fc7461a2e76e709ab5a",
+      "changedLines": 2
+    }
+  ],
+  "previousReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_QA_EXTENSION_REVIEW.json",
+    "sha256": "238389c916895457a7424b49f8063d836973bd1f0a6ef733aabb3fa18b1d911d",
+    "meaning": "Original independent technical review is preserved. It explicitly left cloud execution pending and binds the previous smoke script bytes."
+  },
+  "observedFailure": {
+    "workflow": ".github/workflows/atanasyan-chapter09-live.yml",
+    "runId": 41563278503,
+    "jobId": 125678661371,
+    "url": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41563278503/job/125678661371",
+    "head": "4a97f329f0965c47eb1b0c21c9708458675de579",
+    "event": "pull_request",
+    "mode": "local",
+    "conclusion": "failure",
+    "exitCode": 1,
+    "at": "2026-11-03T02:00:17.3033633Z",
+    "error": "TypeError: Cannot read properties of null (reading 'status')",
+    "stack": [
+      "visit (chapter09-live.browser.cjs:42:92)",
+      "retainedWork (chapter09-live.browser.cjs:61:2)"
+    ],
+    "retrievedJobLogSha256": "196171e7f6336fa8adaf90c6f9ef3cd76613df343a8321209bdab4f62f5ce599",
+    "artifact": {
+      "id": 13198137357,
+      "name": "atanasyan-chapter09-live",
+      "bytes": 81845,
+      "zipSha256": "8f0d159ff07a954439b8bfb23e383e2441c949be3d1d3f88a4d8100fb180865c",
+      "url": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41563278503/artifacts/13198137357",
+      "inspection": "Artifact identity and upload digest read from the actual failed job log; archive contents not inspected in this recovery review."
+    }
+  },
+  "diagnosis": {
+    "basis": "Observed null response plus independent comparison of the source visit URLs.",
+    "cause": "The previous visit URL changed only the fragment when opening another lesson on the same page. That can be a same-document navigation with no HTTP response. retainedWork called visit after the first direct-entry journey and response.status() dereferenced null.",
+    "correction": "A monotonic visitSequence is appended to the query for each visit. This changes the document URL even when the requested lesson repeats. The source commit query, lesson fragment and strict response.status() === 200 assertion are retained.",
+    "notChanged": "No null-response allowance, in-review preview, count relaxation, TLS bypass, hash relaxation, fixture state injection or application/runtime/content change."
+  },
+  "checks": [
+    {
+      "name": "JavaScript syntax",
+      "result": "PASS",
+      "command": "node --check tools/geometry-textbook/chapter09-live.browser.cjs"
+    },
+    {
+      "name": "Whitespace",
+      "result": "PASS",
+      "command": "git diff --check"
+    },
+    {
+      "name": "Exact bounded delta",
+      "result": "PASS",
+      "evidence": "Reversing the two specific substitutions reproduces git show HEAD:tools/geometry-textbook/chapter09-live.browser.cjs byte for byte; git diff --numstat reports 2 additions and 2 deletions."
+    },
+    {
+      "name": "Actual visit function URL contract",
+      "result": "PASS_OFFLINE_ONLY",
+      "evidence": "Executed the extracted actual visit function with a navigation stub that stops before DOM checks. For each local HTTP and production HTTPS origin: 100 successive visits, including repeated lesson IDs, yield 100 distinct document URLs. Every URL retains origin, pathname, release SHA and requested lesson fragment. The previous URL expression reproduces a same-document collision.",
+      "probeSha256": "60aff749d98622556f6bf086d6d63b0e83a12614cad6f0c561f6a3dbfece2be4"
+    },
+    {
+      "name": "HTTP failure remains blocking",
+      "result": "PASS_OFFLINE_ONLY",
+      "evidence": "For both origins the extracted visit function still rejects a stubbed HTTP503 with ERR_ASSERTION. No browser or real HTTP request is represented by this probe."
+    }
+  ],
+  "cloudExecution": {
+    "status": "pending",
+    "runId": null,
+    "jobId": null,
+    "correctedScriptBrowserExecuted": false,
+    "localBrowserLaunchAttempted": false,
+    "httpsReleaseVerified": false
+  },
+  "limits": [
+    "The offline probe checks URL construction and preservation of the HTTP failure assertion; it does not simulate or certify actual Chromium behavior.",
+    "The failed local PR smoke is not a failed production release and not a content failure.",
+    "The corrected exact committed head must pass the real cloud smoke. Production HTTPS verification remains a separate post-publication check.",
+    "Root independent review is still required for this correction; no passed release or browser approval receipt is created."
+  ],
+  "independentRootReview": {
+    "reviewer": "root; not author of this restored two-line patch",
+    "at": "2026-11-03T08:50:55.514060+00:00",
+    "status": "passed-static-correction-review-cloud-execution-pending",
+    "scriptSha256": "c990575f9b0e813c2b2fc38daeb18965b68cb99956361fc7461a2e76e709ab5a",
+    "findings": [],
+    "rationale": [
+      "A monotonically increasing query value makes every successive lesson visit a document navigation, avoiding Playwright null response for hash-only navigation.",
+      "The origin and localStorage namespace remain unchanged; lesson hash and expected committed asset hashes remain exact.",
+      "Strict HTTP200 and all retained-work assertions remain in force. No browser or runtime gate was weakened."
+    ],
+    "cloudPassClaimed": false
+  }
+}

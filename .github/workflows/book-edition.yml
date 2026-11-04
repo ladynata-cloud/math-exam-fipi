@@ -1,0 +1,206 @@
+name: Fixed book editions — integrity and isolation
+on:
+  pull_request:
+    paths:
+      - 'book/**'
+      - 'b/**'
+      - 'scripts/build-oge-book-edition.py'
+      - 'scripts/oge-book-edition/**'
+      - 'tools/book-edition/**'
+      - 'tools/task6-scope*'
+      - 'tools/division-lab.test.cjs'
+      - 'tools/oge-book-*'
+      - 'tools/fixtures/oge-book-*'
+      - 'docs/reports/oge-book-20261031/**'
+      - 'docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.md'
+      - 'docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.scope.json'
+      - 'docs/reports/oge-book-v2-20261031/**'
+      - 'docs/tasks/OGE_BOOK_EDITION_V2_DALI_20261031.md'
+      - 'docs/tasks/OGE_BOOK_EDITION_V2_DALI_20261031.scope.json'
+      - 'trainers/oge-basics/**'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge-1-5-trainers/**'
+      - '.github/workflows/book-edition.yml'
+  workflow_dispatch:
+    inputs:
+      external_review:
+        description: 'Request one paid external review only after a new owner instruction'
+        type: boolean
+        required: false
+        default: false
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  fixed-edition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify protected bytes using the base verifier when available
+        env:
+          BOOK_BASE: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: |
+          if git cat-file -e "$BOOK_BASE:tools/book-edition/verify.py" 2>/dev/null; then
+            git show "$BOOK_BASE:tools/book-edition/verify.py" > "$RUNNER_TEMP/book-base-verifier.py"
+            python3 "$RUNNER_TEMP/book-base-verifier.py" --root "$GITHUB_WORKSPACE" --base "$BOOK_BASE"
+          fi
+          python3 tools/book-edition/verify.py --base "$BOOK_BASE"
+          python3 tools/book-edition/test_package.py
+          python3 tools/book-edition/test_generator.py
+          python3 tools/book-edition/test_deployed.py
+          python3 tools/oge-book-collect-results.test.py
+          git diff --check
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Check the exact editorial correction without private book files
+        run: |
+          python3 -m pip install --disable-pip-version-check PyMuPDF==1.26.6 Pillow==12.3.0 lxml==6.1.1 zxing-cpp==3.1.1
+          python3 tools/oge-book-document-check.test.py --synthetic-only
+      - name: Verify the separately approved continuation scope
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 387
+        env:
+          TASK_BASE: ${{ github.event.pull_request.base.sha }}
+          TASK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          node tools/task6-scope.cjs --manifest docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.scope.json --base "$TASK_BASE" --head "$TASK_HEAD" --pr 387
+          node --test tools/task6-scope.test.cjs
+      - name: Verify the explicit v2 task scope
+        if: github.event_name == 'pull_request' && github.head_ref == 'fix/oge-book-dali-v2-20261031'
+        env:
+          TASK_BASE: ${{ github.event.pull_request.base.sha }}
+          TASK_HEAD: ${{ github.event.pull_request.head.sha }}
+          TASK_BRANCH: ${{ github.head_ref }}
+        run: |
+          node <<'NODE'
+          const assert = require('node:assert/strict');
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          const { createHash } = require('node:crypto');
+          const { assertAllowedPaths, changedPaths } = require('./tools/task6-scope.cjs');
+          const scope = JSON.parse(fs.readFileSync('docs/tasks/OGE_BOOK_EDITION_V2_DALI_20261031.scope.json'));
+          assert.equal(scope.schemaVersion, 1);
+          assert.equal(scope.task, 'OGE_BOOK_EDITION_V2_DALI_20261031');
+          assert.equal(process.env.TASK_BASE, scope.baseSha, 'Actual PR base must be the approved task base');
+          assert.equal(process.env.TASK_BRANCH, scope.branch);
+          assert.match(process.env.TASK_HEAD, /^[0-9a-f]{40}$/);
+          assert.equal(new Set(scope.allowedPaths).size, scope.allowedPaths.length);
+          assert(scope.allowedPaths.every(p => typeof p === 'string' && p && !/[\x00-\x1f\\*?\[\]]/.test(p) && !p.startsWith('/') && !p.split('/').includes('..') && !p.endsWith('/')));
+          const changed = changedPaths(process.cwd(), process.env.TASK_BASE, process.env.TASK_HEAD);
+          assert(changed.length > 0);
+          assertAllowedPaths(changed, scope.allowedPaths, 'Approved v2 task scope');
+          assert.deepEqual(scope.protectedPrefixes, ['book/oge/2026-10-31/v1/', 'b/oge26-1/']);
+          assert(!changed.some(p => scope.protectedPrefixes.some(prefix => p.startsWith(prefix))));
+          const oldManifest = execFileSync('git', ['show', process.env.TASK_BASE + ':book/oge/2026-10-31/v1/manifest.json']);
+          assert.equal(createHash('sha256').update(oldManifest).digest('hex'), scope.baselineManifestSha256);
+          console.log(JSON.stringify({ status:'PASS', task:scope.task, base:process.env.TASK_BASE, head:process.env.TASK_HEAD, changedPaths:changed.length, allowedPaths:scope.allowedPaths.length }));
+          NODE
+          python3 scripts/build-oge-book-edition.py --version v2 --base "$TASK_BASE" --check
+      - name: Install the browser test dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/book-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/book-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/book-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Fixed aliases, dependency requests, and separate retained results
+        run: |
+          status=0
+          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/book-edition/runtime.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v2 node tools/book-edition/runtime.browser.cjs || status=1
+          exit "$status"
+      - name: Tire figures under chunked HTML and delayed scripts
+        run: |
+          node tools/oge-book-tire-images.browser.cjs
+          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-tire-images.browser.cjs
+          BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_TIRE_IMAGE_OUTPUT=artifacts/book-audit-exam/tire-images-frozen-v2 node tools/oge-book-tire-images.browser.cjs
+      - name: Independent mathematical corrections and preserved historical engines
+        run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-lab.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
+      - name: Complete recorded learner scenarios on source and fixed copies
+        run: |
+          status=0
+          node tools/oge-book-basics.browser.cjs || status=1
+          node tools/oge-book-exam.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-basics.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-exam.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_BASICS_OUTPUT=artifacts/book-audit-basics/frozen-v2 node tools/oge-book-basics.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_EXAM_OUTPUT=artifacts/book-audit-exam/frozen-v2 node tools/oge-book-exam.browser.cjs || status=1
+          exit "$status"
+      - name: Independently recompute the recorded mathematics
+        run: python3 tools/oge-book-exam-math.py --variants source frozen frozen-v2
+      - name: Preserve the actual browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-book-edition-browser
+          path: |
+            artifacts/book-edition/
+            artifacts/book-audit-basics/
+            artifacts/book-audit-exam/
+          retention-days: 14
+          if-no-files-found: error
+  dali-image-regression:
+    # Chromium 140 deterministically exposes the immutable v1 preload defect.
+    # Keep the current Chromium lane above unchanged; this is an extra control.
+    # Playwright 1.55 supports Ubuntu 24.04; ubuntu-latest now uses 26.04.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install the browser version that reproduces the historical defect
+        run: |
+          npm install --prefix "$RUNNER_TEMP/dali-browser" --no-save --no-package-lock --ignore-scripts playwright@1.55.0
+          "$RUNNER_TEMP/dali-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/dali-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Reject exact historical bytes and validate source plus v2 portrait
+        run: |
+          status=0
+          node tools/oge-book-dali-images.browser.cjs || status=1
+          BOOK_PREFIX=/book/oge/2026-10-31/v2 node tools/oge-book-dali-images.browser.cjs || status=1
+          exit "$status"
+      - name: Preserve exact negative and positive image evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-book-dali-regression
+          path: |
+            artifacts/book-audit-exam/dali-images-source/
+            artifacts/book-audit-exam/dali-images-frozen-v2/
+          retention-days: 14
+          if-no-files-found: error
+  external-review:
+    needs: fixed-edition
+    # The owner explicitly excluded external review from PR 387 continuation.
+    # An omitted provider verdict is never represented as an approval. Keep the
+    # bounded reviewer available only through a deliberate future manual run.
+    if: github.event_name == 'workflow_dispatch' && inputs.external_review && github.ref == 'refs/heads/audit/oge-book-edition-20261031'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bounded read-only review of the exact public source patch
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_BASE: 139b944a70f2e8ba4d340d152d08807fad03e5da
+          REVIEW_HEAD: ${{ github.sha }}
+          REVIEW_PR: 387
+        run: python3 tools/oge-book-external-review.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: fixed-book-external-review
+          path: artifacts/book-external-review.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent agent chapter2_models_a (content author of tasks92–124; not author of integration changes)",
+  "at": "2026-10-22T23:41:20.976924+00:00",
+  "status": "passed-with-explicit-scope",
+  "reviewType": "independent integration code and regression review",
+  "base": "c62e5047fa2e774d43899e4ee20d5e1127c53e64",
+  "reviewedFilesSha256": {
+    "tools/geometry-textbook/build_course.py": "012cfa1ee509ff4f5256077c648df3053fe9e0a1b929b793f53f8ee266112d27",
+    "tools/geometry-textbook/review_scope_test.py": "85d5b07624167d92b998b64d526e139fb889d893a8a200ee7180fa51cedc6972",
+    "tools/geometry-textbook/check_course.cjs": "bcf12078f2b258321b3a6a6c4f19c3941c05b7965209e2d83aaa4f66384a6dfb",
+    "tools/geometry-textbook/check_models.py": "43b473df652fcfb66cf9a90030725bdfdfd5f50063bb50f62467b8c12f0709ad",
+    "tools/geometry-textbook/runtime_check.cjs": "3d045c921972e14393938e2c72e9b29a7376dad7250b57acb88834c60d92f991",
+    "tools/geometry-textbook/browser_check.js": "20b78be634195f6da9f4d612d9a3e73eb890e0270f87bb0cf4f9f04b7d99f62d",
+    ".github/workflows/atanasyan-planimetry.yml": "b747619f10e2cfa2d8d9f7229e29c2e3f360415be88fde42015d4ddae8d2c86b",
+    "tools/geometry-textbook/release-scope.json": "46bcde6b05cac48614249a43a4250a3df0424c02a8bd001815080952c1dfc210",
+    "tools/geometry-textbook/published-chapter-01.json": "653f84c50a9cb0b098df630dd98a06598ebcc98664ecf1c5fe021d74d60f2b10",
+    "tools/geometry-textbook/chapter-02-source-map.json": "9b2c9e5f335e626edd009c3a56fac5bedff571ff2998f5d8124b0f5193cea62d"
+  },
+  "implementationSha256": "17ba8baa79b5de85864ea888a6ebcf6bd2682ee5c69867a61996e6a7454f7b07",
+  "testedAuthoredContentSha256": "2e4f4ed651d8bbe94345c3e72d3fc0fd9819eefa621a5c9936a9ac49e3c51cd6",
+  "checks": [
+    {
+      "name": "independent read of integration diff",
+      "result": "passed",
+      "details": "Chapter-qualified model identities; independent per-chapter manifests; chapter-I IDs retained; no changes to public runtime; explicit release scope and source-map checks; browser assertions inspect actual DOM/SVG and saved work."
+    },
+    {
+      "name": "published chapter-I exact normalized equality",
+      "result": "passed",
+      "details": "Read baseline directly with git show c62e5047fa2e774d43899e4ee20d5e1127c53e64:geometry-course/textbook/data/course.json, compared all173 lesson objects and all173 catalog entry objects including review, status, revision, models, steps and IDs; exact equality. Not merely comparison against the newly introduced fixture.",
+      "lessonsSha256": "6a6d0cd2bbb9e08423839e7b783b351ef65b6b3644a5503d551e8199442dd2eb"
+    },
+    {
+      "name": "python tools/geometry-textbook/review_scope_test.py",
+      "result": "passed",
+      "tests": 6
+    },
+    {
+      "name": "independent isolated manifest scope negative tests",
+      "result": "passed",
+      "details": "Only in a temporary copied course: a synthetic manifest with correct chapter-II content/runtime hashes but scope I is rejected; changing only scope to II accepts the fixture; changing browser from passed to pending rejects it again. No synthetic review was written to the working repository."
+    },
+    {
+      "name": "python tools/geometry-textbook/build_course.py --check",
+      "result": "passed",
+      "cards": 336,
+      "chapterIReviewed": 173,
+      "chapterIIInReview": 163
+    },
+    {
+      "name": "node tools/geometry-textbook/check_course.cjs",
+      "result": "passed",
+      "numberedExercises": 190,
+      "mainParts": 266,
+      "theory": 23,
+      "selfchecks": 47
+    },
+    {
+      "name": "node tools/geometry-textbook/runtime_check.cjs",
+      "result": "passed",
+      "checks": 13,
+      "details": "Includes actual jsdom chapter-I/II question1 draft isolation, public reviewed/pending availability boundaries, and chapter-II theory return with retained draft."
+    },
+    {
+      "name": "node tools/geometry-textbook/reviewer_runtime_check.cjs",
+      "result": "passed",
+      "cards": 336,
+      "stepCheckpoints": 1050,
+      "details": "Every initial/step/case DOM checkpoint; nested theory return; unchanged restored help does not write stale drafts. Layout not verified by jsdom."
+    },
+    {
+      "name": "node --check tools/geometry-textbook/browser_check.js",
+      "result": "passed",
+      "details": "Syntax check and code inspection only; no browser execution claimed in this report."
+    },
+    {
+      "name": "independent follow-up review of browser CSS-viewport clipping gate",
+      "result": "passed",
+      "details": "Read exact delta from the previously reviewed script: records gateScriptSha256; checks CSS clipping of labels/points/edges/markers/polygons against the actual planar viewport at initial zoom, separately from SVG viewBox checks. node --check passed. This is code/syntax review only; full-browser execution remains independently recorded elsewhere."
+    },
+    {
+      "name": "independent follow-up review of painted-stroke viewport bounds",
+      "result": "passed",
+      "details": "Read the new stroke-padding delta: computed stroke width, visibility checks, CTM row norms, non-scaling-stroke branch, and0.05px tolerance. The geometry uses round caps/joins as required by the conservative axis padding. node --check passed. No runtime changed and no negative-browser-run result is claimed as independently executed here."
+    }
+  ],
+  "findings": [],
+  "notApprovedByThisReport": [
+    "Independent source/mathematics/pedagogy approval of chapter-II authored cards",
+    "Actual browser layout or screenshot review",
+    "CI on an exact PR head",
+    "Merge or production publication"
+  ],
+  "limitations": [
+    "This is a hash-bound review of the listed integration files, not an exact-head release verdict.",
+    "The content model and source checks have separate reviewers; this report does not approve its author's own92–124 solutions.",
+    "Full real-browser runs and visual screenshot inspections are delegated separately and remain outside this report."
+  ],
+  "recommendation": "Integration implementation is ready for the separately required full browser/content/CI gates; preserve these exact file hashes or re-review changes."
+}

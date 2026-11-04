@@ -1,0 +1,699 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": {
+      "enum": [
+        "exercise",
+        "theory"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "in-review",
+        "reviewed"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "statement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "givens": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "text",
+        "goal"
+      ]
+    },
+    "visualization": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "scene3d"
+        },
+        "caption": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "$ref": "#/$defs/model"
+        }
+      },
+      "required": [
+        "type",
+        "caption",
+        "model"
+      ]
+    },
+    "help": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/help"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "answer": {
+      "$ref": "#/$defs/answer"
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    },
+    "testOnly": {
+      "const": true
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "revision",
+    "kind",
+    "title",
+    "status",
+    "source",
+    "statement",
+    "visualization",
+    "help",
+    "steps",
+    "review"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathexam.space/schemas/atanasyan-lesson-v1.json",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bookId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "collection": {
+          "enum": [
+            "main",
+            "ege",
+            "practical",
+            "research",
+            "selfcheck",
+            "theory",
+            "example"
+          ]
+        },
+        "printedPages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "pdfPages": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "point": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exercise": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subpart": {
+          "type": "string",
+          "minLength": 1
+        },
+        "chapter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "examTask": {
+          "enum": [
+            3,
+            6,
+            8,
+            14,
+            16
+          ]
+        }
+      },
+      "required": [
+        "bookId",
+        "collection",
+        "printedPages",
+        "pdfPages"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "collection": {
+                "const": "ege"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "examTask"
+            ],
+            "type": "object",
+            "properties": {
+              "examTask": {}
+            }
+          }
+        }
+      ]
+    },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "polygon": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "label"
+      ]
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "points": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "propertyNames": {
+            "not": {
+              "enum": [
+                "__proto__",
+                "constructor",
+                "prototype"
+              ]
+            }
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "faces": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 3
+          }
+        },
+        "arrows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "views": {
+          "type": "object",
+          "required": [
+            "neutral"
+          ],
+          "additionalProperties": {
+            "$ref": "#/$defs/view"
+          },
+          "propertyNames": {
+            "not": {
+              "enum": [
+                "__proto__",
+                "constructor",
+                "prototype"
+              ]
+            }
+          },
+          "properties": {
+            "neutral": {
+              "$ref": "#/$defs/view"
+            }
+          }
+        },
+        "planar": {
+          "type": "boolean"
+        },
+        "labels": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          },
+          "propertyNames": {
+            "not": {
+              "enum": [
+                "__proto__",
+                "constructor",
+                "prototype"
+              ]
+            }
+          }
+        },
+        "labelNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "neutralPoints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "smooth": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "points",
+        "edges",
+        "views"
+      ]
+    },
+    "justification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "given",
+            "definition",
+            "theorem"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "theoryId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "required": [
+        "kind",
+        "text"
+      ]
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accepted": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "feedback": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "prompt",
+        "accepted",
+        "feedback"
+      ]
+    },
+    "help": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "theoryIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          }
+        },
+        "view": {
+          "type": "string",
+          "minLength": 1
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/help"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "question",
+        "text"
+      ]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "justifications": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/justification"
+          }
+        },
+        "view": {
+          "type": "string",
+          "minLength": 1
+        },
+        "input": {
+          "$ref": "#/$defs/input"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "prompt",
+        "explanation",
+        "justifications"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": [
+            "pending",
+            "passed"
+          ]
+        },
+        "mathematics": {
+          "enum": [
+            "pending",
+            "passed"
+          ]
+        },
+        "pedagogy": {
+          "enum": [
+            "pending",
+            "passed"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "source",
+        "mathematics",
+        "pedagogy"
+      ]
+    },
+    "answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "manual",
+            "exact"
+          ]
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accepted": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "feedback": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "mode",
+        "prompt"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "exact"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "accepted"
+            ],
+            "type": "object",
+            "properties": {
+              "accepted": {}
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "exercise"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "answer"
+        ],
+        "properties": {
+          "source": {
+            "required": [
+              "exercise"
+            ],
+            "type": "object",
+            "properties": {
+              "exercise": {}
+            }
+          },
+          "answer": {}
+        },
+        "type": "object"
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "reviewed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "review": {
+            "required": [
+              "reviewer",
+              "at"
+            ],
+            "properties": {
+              "source": {
+                "const": "passed"
+              },
+              "mathematics": {
+                "const": "passed"
+              },
+              "pedagogy": {
+                "const": "passed"
+              },
+              "reviewer": {},
+              "at": {}
+            },
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "theory"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "required": [
+              "point"
+            ],
+            "type": "object",
+            "properties": {
+              "point": {}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

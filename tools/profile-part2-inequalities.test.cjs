@@ -71,8 +71,20 @@ for(const t of lessons){
 }
 // All authored local links and shared runtime dependencies must resolve.
 const root=path.resolve(__dirname,'..');
+function assertLocalLink(full,reference){
+ const origin='https://mathexam.space';
+ const documentUrl=origin+'/'+path.relative(root,full).split(path.sep).join('/');
+ const url=new URL(reference,documentUrl);
+ assert.equal(url.origin,origin,'only local HTTPS links are allowed: '+reference);
+ let target=path.resolve(root,decodeURIComponent(url.pathname).slice(1));
+ assert(target.startsWith(root+path.sep),'link must remain inside repository: '+reference);
+ if(fs.existsSync(target)&&fs.statSync(target).isDirectory())target=path.join(target,'index.html');
+ assert(fs.existsSync(target)&&fs.statSync(target).isFile(),'broken link '+reference);
+}
 for(const file of ['index.html','lesson.html']){
  const full=path.join(root,'trainers/ege-profile/inequalities',file),html=fs.readFileSync(full,'utf8');
- for(const [,url]of html.matchAll(/(?:href|src)="([^"]+)"/g))if(!url.startsWith('#'))assert(fs.existsSync(path.resolve(path.dirname(full),url.split(/[?#]/)[0])),file+': broken link '+url);
+ for(const [,url]of html.matchAll(/(?:href|src)="([^"]+)"/g))if(!url.startsWith('#'))assertLocalLink(full,url);
+ assert.throws(()=>assertLocalLink(full,'https://mathexam.space/__missing_inequality_resource__.js'),/broken link/);
+ assert.throws(()=>assertLocalLink(full,'https://example.com/index.html'),/only local HTTPS/);
 }
 console.log('PROFILE_PART2_INEQUALITIES_MATH_OK',JSON.stringify({lessons:lessons.length,families:families.length,steps:lessons.reduce((s,l)=>s+l.steps.length,0),denseComparisons:dense,axes:axisChecks}));

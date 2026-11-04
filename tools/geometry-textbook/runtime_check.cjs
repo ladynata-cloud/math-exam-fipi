@@ -1,6 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
+const {expectedTitle}=require('./caption_expectations.cjs');
 const root=path.resolve(__dirname,'../..'),dir=path.join(root,'geometry-course/textbook');
 const bundle=JSON.parse(fs.readFileSync(path.join(dir,'data/course.json'),'utf8'));
 function setup(){
@@ -43,7 +44,9 @@ let checks=0;
 {
  const {dom,w,d,app}=setup();app.destroy();
  const publicApp=w.GeometryTextbook.createApp(d.getElementById('app'),bundle);
- if(!bundle.build.publicationReviewMatches){assert.equal(publicApp.coverage.available,0);assert.equal(publicApp.open(sample.id),false);}
+ const approved=bundle.lessons.filter(l=>l.status==='reviewed');
+ assert.equal(publicApp.coverage.available,approved.length);
+ for(const lesson of bundle.lessons)assert.equal(publicApp.open(lesson.id),lesson.status==='reviewed','Public chapter boundary '+lesson.id);
  assert.equal(d.querySelector('[data-preview-notice]'),null);
  checks++;publicApp.destroy();dom.window.close();
 }
@@ -58,6 +61,25 @@ let checks=0;
 {
  const {dom,w,d,app}=setup();app.open(sample.id);const input=d.getElementById('final-answer');input.value='Не переписывать неизменённую работу';input.dispatchEvent(new w.Event('input',{bubbles:true}));
  let writes=0;const original=w.Storage.prototype.setItem;w.Storage.prototype.setItem=function(...args){writes++;return original.apply(this,args);};d.querySelector('[data-final-form]').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(writes,0,'An unchanged save must not rewrite a stale renderer cache');assert.match(d.querySelector('[data-final-feedback]').textContent,/Рассуждение сохранено/);w.Storage.prototype.setItem=original;
+ checks++;app.destroy();dom.window.close();
+}
+{
+ const {dom,w,d,app}=setup();
+ const chapters=bundle.build.chapters.map(chapter=>chapter.chapterLabel);
+ const questions=chapters.map(chapter=>bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='selfcheck'&&l.source.exercise==='1'));
+ assert(questions.every(Boolean),'Every chapter review question must exist');assert.equal(new Set(questions.map(question=>question.id)).size,chapters.length);
+ for(let i=0;i<questions.length;i++){app.open(questions[i].id);const input=d.getElementById('final-answer');input.value='Отдельный черновик главы '+i;input.dispatchEvent(new w.Event('input',{bubbles:true}));}
+ for(let i=0;i<questions.length;i++){app.open(questions[i].id);assert.equal(d.getElementById('final-answer').value,'Отдельный черновик главы '+i,'Restarted question numbers must not overwrite learner work');}
+ for(const chapter of chapters.slice(1)){
+  const exercise=bundle.lessons.find(l=>l.source.chapter===chapter&&l.source.collection==='main'&&l.help.some(h=>h.theoryIds?.some(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter)));
+  assert(exercise,'Chapter '+chapter+' exercises link to its theory');app.open(exercise.id);
+  const draft='Рассуждение по главе '+chapter,input=d.getElementById('final-answer');input.value=draft;input.dispatchEvent(new w.Event('input',{bubbles:true}));
+  const theoryId=exercise.help.flatMap(h=>h.theoryIds||[]).find(id=>bundle.lessons.find(t=>t.id===id)?.source.chapter===chapter),theory=bundle.lessons.find(l=>l.id===theoryId);
+  const button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Почему? '+expectedTitle(theory));assert(button);button.click();
+  assert.equal(d.querySelector('dialog').dataset.theory,theoryId);d.querySelector('dialog>button').click();
+  assert.equal(d.querySelector('dialog'),null);assert.equal(d.getElementById('final-answer').value,draft);
+  checks+=2;
+ }
  checks++;app.destroy();dom.window.close();
 }
 console.log('ATANASYAN_7_9_RETAINED_WORK_OK '+JSON.stringify({checks}));

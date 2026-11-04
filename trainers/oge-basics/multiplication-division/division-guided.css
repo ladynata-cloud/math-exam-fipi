@@ -41,6 +41,8 @@ h1 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 38px); line-height: 1.2; lette
 .number-row { display: grid; grid-template-columns: var(--columns); min-height: var(--row-height); align-items: center; }
 .number-row > span, .number-row > button { grid-row: 1; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: var(--row-height); padding: 0; text-align: center; }
 .number-row > button { width: var(--cell); border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--ink); font: inherit; }
+/* Navigation styles size ordinary buttons; notebook digits keep their own font. */
+.notebook .number-row > button.prefix-digit { font: inherit; }
 .number-row > button:hover:not(:disabled) { border-color: #84ad9f; background: #edf5f1; }
 .number-row > button:focus-visible { position: relative; z-index: 2; outline-offset: 1px; }
 .number-row > button[aria-pressed="true"], .prefix-digit[aria-pressed="true"] { border-color: #7fafa0; background: #dbeee6; color: #114e45; }

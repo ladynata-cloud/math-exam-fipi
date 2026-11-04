@@ -23,6 +23,7 @@ const conformanceFixturePath = path.resolve(
   __dirname,
   '../../tools/fixtures/trainer-path-conformance.json'
 );
+const addedOgeEntries = require('../../tools/fixtures/oge-course-board-entries.json');
 const expectedCatalogFiles = [
   'trainers/negative-numbers-line.html',
   'trainers/negative-numbers.html',
@@ -56,9 +57,52 @@ const expectedCatalogFiles = [
   'trainers/algebra-7/control-work.html',
   'trainers/dvi/math-18-20.html',
   'trainers/dvi/math-18-20-video-studio.html',
+  'trainers/ege-profile-expressions.html',
+  'trainers/ege-profile-stereometry.html',
+  'trainers/ege-profile-planimetry.html',
+  'trainers/ege-profile-vectors.html',
+  'trainers/ege-profile-probability.html',
+  'trainers/ege-profile-random-variables.html',
+  'trainers/ege-profile-equations.html',
   'trainers/ege-profile/log-inequalities/index.html',
   'trainers/ege-profile/log-inequalities/lesson.html',
-  'trainers/ege-profile/log-inequalities/nested.html'
+  'trainers/ege-profile/log-inequalities/nested.html',
+  'trainers/atanasyan-7-9.html',
+  'trainers/peterson6.html',
+  'trainers/merzlyak-10-base.html',
+  'trainers/grade6-nok.html',
+  'trainers/grade6-nod.html',
+  'trainers/ege-baza-11.html',
+  'trainers/ege-baza-13.html',
+  'trainers/oge-task15-triangles.html',
+  'trainers/oge-task16-circle.html',
+  'trainers/oge-task17-quadrilaterals.html',
+  'trainers/oge-task18-grid.html',
+  'trainers/task19-trainer.html',
+  'trainers/college-functions/index.html',
+  'trainers/oge-task6-fractions.html',
+  'trainers/oge-task8-powers-roots.html',
+  'trainers/oge-task9-equations.html',
+  'trainers/oge-task10-probability.html',
+  'trainers/oge-task11-graphs-trainer.html',
+  'trainers/oge-task12-formulas-trainer.html',
+  'trainers/oge13-inequalities-series.html',
+  'trainers/oge-task14-progressions.html',
+  'trainers/oge-task20-equations.html',
+  'trainers/oge-task21-word-problems.html',
+  'trainers/oge-task22-functions-graphs.html',
+  'trainers/oge-task23-geometry-calculations.html',
+  'trainers/oge-task24-proofs.html',
+  'trainers/oge-task25-geometry.html',
+  'trainers/oge-1-5-trainers/practice-1-5-roads-schema.html',
+  'trainers/oge-1-5-trainers/practice-1-5-stoves.html',
+  'trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html',
+  'trainers/oge-1-5-trainers/practice-1-5-tariffs.html',
+  'trainers/oge-1-5-trainers/practice-1-5-apartments.html',
+  'trainers/oge-1-5-trainers/practice-1-5-land-plots.html',
+  'trainers/atanasyan-grade7.html',
+  'trainers/geometry7-practice.html',
+  'trainers/geometry7-rebuild.html'
 ];
 
 function currentManifest() {
@@ -191,15 +235,15 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with thirty-five catalog entries and six mirrors', () => {
+test('current manifest validates with seventy-eight catalog entries and fifty-four mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 35);
-  assert.equal(result.trainers.length, 6);
+  assert.equal(manifest.trainers.length, 78);
+  assert.equal(result.trainers.length, 54);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
     file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
@@ -215,9 +259,114 @@ test('current manifest validates with thirty-five catalog entries and six mirror
   }]);
 });
 
-test('runtime registry has exact parity with all six mirror authorizations', () => {
+test('runtime registry has exact parity with all fifty-four mirror authorizations', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.entries, [
+    ...['atanasyan-grade7','geometry7-practice','geometry7-rebuild'].map(trainerId=>({trainerId,file:'trainers/'+trainerId+'.html',version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false})),
+    {
+      trainerId: 'atanasyan-7-9',
+      file: 'trainers/atanasyan-7-9.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'college-functions',
+      file: 'trainers/college-functions/index.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-baza-11',
+      file: 'trainers/ege-baza-11.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-baza-13',
+      file: 'trainers/ege-baza-13.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-equations',
+      file: 'trainers/ege-profile-equations.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-expressions',
+      file: 'trainers/ege-profile-expressions.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-planimetry',
+      file: 'trainers/ege-profile-planimetry.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-probability',
+      file: 'trainers/ege-profile-probability.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-random-variables',
+      file: 'trainers/ege-profile-random-variables.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-stereometry',
+      file: 'trainers/ege-profile-stereometry.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'ege-profile-vectors',
+      file: 'trainers/ege-profile-vectors.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'grade6-nod',
+      file: 'trainers/grade6-nod.html',
+      version: '1.1.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'grade6-nok',
+      file: 'trainers/grade6-nok.html',
+      version: '1.1.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
     {
       trainerId: 'linear-inequalities-stepwise',
       file: 'trainers/linear-inequalities-stepwise.html',
@@ -227,12 +376,68 @@ test('runtime registry has exact parity with all six mirror authorizations', () 
       allowLegacyHtml: true
     },
     {
+      trainerId: 'merzlyak-10-base',
+      file: 'trainers/merzlyak-10-base.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
       trainerId: 'negative-numbers-line',
       file: 'trainers/negative-numbers-line.html',
       version: '1.0.0',
       stateSchemaVersion: 1,
       bridgeProtocolVersion: 1,
       allowLegacyHtml: true
+    },
+    {
+      trainerId: 'oge-task15-triangles',
+      file: 'trainers/oge-task15-triangles.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'oge-task16-circle',
+      file: 'trainers/oge-task16-circle.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'oge-task17-quadrilaterals',
+      file: 'trainers/oge-task17-quadrilaterals.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'oge-task18-grid',
+      file: 'trainers/oge-task18-grid.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'oge-task19',
+      file: 'trainers/task19-trainer.html',
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    },
+    {
+      trainerId: 'peterson6',
+      file: 'trainers/peterson6.html',
+      version: '1.1.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
     },
     {
       trainerId: 'practice-1-5-roads-grid',
@@ -266,14 +471,14 @@ test('runtime registry has exact parity with all six mirror authorizations', () 
       bridgeProtocolVersion: 1,
       allowLegacyHtml: false
     }
-  ]);
+  ].concat(addedOgeEntries.map(({trainerId,file}) => ({trainerId,file,version:'1.0.0',stateSchemaVersion:1,bridgeProtocolVersion:1,allowLegacyHtml:false}))).sort((a,b) => a.trainerId.localeCompare(b.trainerId)));
 });
 
 test('bundled default loads relative to the server module', () => {
   const registry = loadTrainerRegistry({ env: {} });
   assert.equal(registry.loaded, true);
   assert.equal(registry.source, 'bundled-default');
-  assert.equal(registry.entries.length, 6);
+  assert.equal(registry.entries.length, 54);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
 });
 
@@ -465,7 +670,7 @@ test('an additional synthetic mirror entry needs no registry core change', () =>
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 7);
+    assert.equal(registry.entries.length, 55);
     assert.equal(registry.getById(synthetic.trainerId).file, synthetic.file);
   });
 });
@@ -476,7 +681,7 @@ test('removing a mirror entry removes its runtime authorization', () => {
   withTempManifest(JSON.stringify(manifest), file => {
     const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
     assert.equal(registry.loaded, true);
-    assert.equal(registry.entries.length, 5);
+    assert.equal(registry.entries.length, 53);
     assert.equal(registry.getById('linear-inequalities-stepwise'), null);
   });
 });
