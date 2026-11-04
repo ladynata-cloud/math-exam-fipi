@@ -178,8 +178,10 @@ class MathematicalOracles(unittest.TestCase):
             M=intersect((0,0),d,(s,s),(s-math.sin(math.pi/12),s-math.cos(math.pi/12)))
             self.assertAlmostEqual(angle(sub(M,(0,s)),(1,0)),30,places=8)
     def test_839_generic_triangle_acute_obtuse_and_rotated(self):
-        for _ in range(600):
-            a=R.uniform(.1,20);A=(R.uniform(-30,30),R.uniform(.1,20));B=(0,0);C=(a,0)
+        cases=[(6,(-2,2)),(6,(8,2))]  # O,E,P or O,C,A collinear: use segment sums/differences.
+        cases += [(R.uniform(.1,20),(R.uniform(-30,30),R.uniform(.1,20))) for _ in range(600)]
+        for a,A in cases:
+            B=(0,0);C=(a,0)
             # Construct each square geometrically on the outward side, not by authored coordinate formulas.
             D=plus(C,mul(-1,turn(sub(C,B))));E=plus(B,mul(-1,turn(sub(C,B))))
             T=plus(C,turn(sub(C,A)));K=plus(B,turn(sub(A,B)))
