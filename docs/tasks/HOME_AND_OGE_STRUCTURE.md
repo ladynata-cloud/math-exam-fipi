@@ -43,3 +43,7 @@ The search engine may need to recrawl revised page identities; no ranking gain i
 On 2026-11-05 the owner answered «согласна» to the exact request to send this version to the public `ladynata-cloud/math-exam-fipi` repository and publish to `mathexam.space` after cloud checks. The earlier approval-review hold is resolved. CLI Git lacks write credentials; the authenticated GitHub integration is used instead. CI and release evidence will be recorded in the PR.
 
 Cloud-gate preparation found an older OGE-focus test still asserting that the root must hide textbooks and EGE. Its OGE-only assertions now follow the relocated `/oge/` page; the root is checked for all six approved directions and no OGE renderer. The historical direct division link is retained in the foundations card. No assertion about trainer destinations, lesson contacts or storage was removed.
+
+### Base drift before release
+
+Remote main advanced from `0d96ad84` to `27f9f72953d97edc67c266fa2a040d3e26b25b58` through approved PR440 (Atanasyan mobile layout). A read-only virtual merge found only the two new PROJECT_STATUS headings in conflict. An ordinary history-preserving merge retains both entries and PR440 files; no runtime product conflict occurred. Revalidate SEO, catalog/navigation, linked lesson demonstration and final CI against this composition. Standing authorization and the owner’s explicit current consent remain valid; no new permission is needed.

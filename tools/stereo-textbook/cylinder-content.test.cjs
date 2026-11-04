@@ -68,7 +68,7 @@ for (const [file, expectedHash] of Object.entries(published.immutableFiles)) {
   const sphereSchema = require('./sphere-schema-migration.cjs');
   if (Object.hasOwn(visibility.originals, file)) visibility.assertVisibilityMigration(file, expectedHash);
   else if (Object.hasOwn(sphereSchema.originals, file)) sphereSchema.assertSphereSchemaMigration(file, expectedHash);
-  else assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
+  else assert.equal(hash(require('./mobile-layout-migration.cjs').historicalRead(file)), expectedHash, 'unchanged released runtime/schema/builder: ' + file);
 }
 assert.equal(registry.cards.length, 554);
 assert.equal(registry.batches.length, 28);

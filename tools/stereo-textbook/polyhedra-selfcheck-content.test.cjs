@@ -117,6 +117,6 @@ for(const [selector,value]of [['#catalog-collection','selfcheck'],['#catalog-cha
 }
 assert.equal(appRoot.querySelectorAll('[data-catalog-ready] article').length,4);
 for(const card of caseCards){const row=appRoot.querySelector('[data-lesson="'+card.id+'"]').closest('article');assert(row.textContent.includes(card.source.subpart),card.id+': localized catalog source');assert(!/\b(?:zero|one|two|nonconvex)\b/.test(row.textContent));}
-for(const card of caseCards){assert(app.open(card.id));const summary=[...appRoot.querySelectorAll('summary')].find(node=>node.textContent==='Где это в учебнике?');assert(summary,card.id+': actual source disclosure');const text=summary.parentElement.querySelector('p').textContent;assert(text.includes(card.source.subpart),card.id+': localized source disclosure');assert(!/\b(?:zero|one|two|nonconvex)\b/.test(text));}
+for(const card of caseCards){assert(app.open(card.id));const summary=[...appRoot.querySelectorAll('summary')].find(node=>node.parentElement.classList.contains('companion-details'));assert(summary,card.id+': actual source disclosure');const text=summary.parentElement.querySelector('p').textContent;assert(text.includes(card.source.subpart),card.id+': localized source disclosure');assert(!/\b(?:zero|one|two|nonconvex)\b/.test(text));}
 app.destroy();
 dom.window.close();console.log('ATANASYAN_POLYHEDRA_SELFCHECK_CONTENT_OK',cards.length,'cards',steps,'steps',views,'states; prior456 exact; chapterIII questions1–14 complete');
