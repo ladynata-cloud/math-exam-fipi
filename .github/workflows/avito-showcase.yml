@@ -8,6 +8,8 @@ on:
       - 'assets/lesson-showcase.css'
       - 'assets/oge-home.*'
       - 'assets/oge-home-topics.js'
+      - 'assets/oge-illustrations/**'
+      - 'trainers/oge-course/index.html'
       - 'tools/oge-home.browser.cjs'
       - 'tools/oge-home-orbits.test.cjs'
       - 'assets/lesson-funnel.js'

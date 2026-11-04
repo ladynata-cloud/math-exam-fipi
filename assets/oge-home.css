@@ -89,3 +89,53 @@
 @media(max-width:1100px) and (min-width:761px){.orbit-numbers{grid-template-columns:repeat(9,minmax(0,1fr))}.orbit-picker{padding-inline:12px}}
 @media(max-width:600px){.orbit-numbers{grid-template-columns:repeat(9,minmax(0,1fr))}.orbit-picker{padding-inline:12px}}
 @media(max-width:380px){.orbit-numbers{grid-template-columns:repeat(7,minmax(0,1fr))}}
+
+/* The landing introduces the subject; the full orbit map is a deliberate view. */
+.oge-home{--home-green:#216342;--home-ink:#202f28;--home-muted:#56665c;--home-line:#d8e0d6;background:#f6f7f2}
+.oge-home .hero-grid{grid-template-columns:.85fr 1.15fr;gap:40px}
+.oge-hero h1{font-weight:550;letter-spacing:-.04em}
+.model-exhibit{background:#fffefa;border-color:#d2ddd4;box-shadow:0 18px 45px #173e2d09;overflow:visible}
+.exhibit-top{color:#d0e3d9;background:#163c32;border-radius:21px 21px 0 0;padding:16px 20px 8px}
+.exhibit-top i{background:#8ed5ad}
+#model-pause{color:#f2f8ed;background:#ffffff0d;border-color:#73998a;min-height:38px}
+.model-stage{height:450px;background:radial-gradient(ellipse at 46% 40%,#315b48 0,#163c32 70%);border-radius:0 0 16px 16px}
+.orbit-label{color:#243e2f;font-size:.78rem}
+.orbit-picker{padding:16px 18px 0}
+.exhibit-views{display:flex;justify-content:center;gap:6px;margin-bottom:12px}
+.exhibit-views button{border:1px solid #cad7cc;border-radius:7px;padding:9px 15px;min-height:42px;background:#f1f5ed;color:#31563e;font:inherit;font-size:.81rem;cursor:pointer}
+.orbit-numbers{padding-bottom:14px}
+.orbit-numbers[hidden],.feature-picker[hidden]{display:none}
+.orbit-numbers button{border-radius:7px;min-height:40px;background:#fffefa;font-size:.8rem}
+.feature-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:0 14px 15px}
+.feature-picker button{font:inherit;font-size:.79rem;color:#355c43;border:1px solid #d3ddd0;background:#fffefa;border-radius:20px;min-height:38px;padding:6px 12px;cursor:pointer}
+.feature-picker button:hover{background:#e8f2e5;border-color:#7eaa8d}
+.model-caption{padding:16px 20px;min-height:100px;border-color:#d9e1d5;gap:14px}
+#model-number{font-size:.88rem}
+#model-description{font-size:.82rem;line-height:1.55;color:#506354;max-width:360px}
+#model-link{border-radius:6px;background:#216342;color:#fff;padding:10px 13px;text-decoration:none;min-height:42px;display:inline-flex;align-items:center}
+.model-hint{position:static;padding:0 14px 12px;width:auto;color:#667569;font-size:.71rem}
+.topic-strip{gap:16px;border:0;border-radius:0;background:none;overflow:visible}
+.topic-tile{border:1px solid var(--home-line);border-radius:14px;background:#fffefa;padding:18px 20px 24px}
+.topic-tile:last-child{border-right:1px solid var(--home-line)}
+.topic-tile:hover{background:#fff;border-color:#8fac94}
+.topic-art{width:100%;height:140px;object-fit:contain;margin-bottom:13px}
+.topic-arrow{top:auto;bottom:22px;right:16px}
+.topic-tile p{padding-right:8px}
+.oge-home .start-routes{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.oge-home .start-routes .entry{border:1px solid var(--home-line);padding:24px;display:flex;flex-direction:column;gap:12px}
+.route-index{color:#62866b;font-size:.8rem;font-weight:600;letter-spacing:.06em}
+.oge-home .start-routes h3{font-size:1.2rem;margin:0}
+.oge-home .start-routes p{font-size:.94rem;margin:0 0 10px;line-height:1.65}
+.oge-home .start-routes .go{margin-top:auto}
+.oge-home .start-routes .route-more{font-size:.79rem;line-height:1.6}
+.course-chapters{border-top:1px solid var(--home-line)}
+.course-chapters a{display:grid;grid-template-columns:90px 1fr 20px;gap:22px;align-items:center;padding:22px 0;border-bottom:1px solid var(--home-line);text-decoration:none}
+.course-chapters a:hover{background:#e5eddf}
+.course-chapters a>span:first-child{font-variant-numeric:tabular-nums;font-size:.9rem;color:#5d7764}
+.course-chapters strong{font-size:1.1rem;font-weight:550}
+.course-map-note{font-size:.85rem;color:var(--home-muted);margin:22px 0 0}
+@media(min-width:1500px){.model-stage{height:470px}}
+@media(max-width:1100px){.oge-home .hero-grid{grid-template-columns:.88fr 1.12fr;gap:22px}.model-stage{height:410px}.topic-art{height:115px}.oge-home .start-routes .entry{padding:20px}}
+@media(max-width:850px){.oge-home .hero-grid{grid-template-columns:1fr;gap:28px}.oge-home .hero-inner{max-width:650px}.oge-hero h1{font-size:clamp(2.2rem,6vw,3.2rem)}.oge-home .hero p.lead{max-width:570px}.oge-home .hero-author{display:none}.model-exhibit{max-width:700px;width:100%;margin:auto}.model-stage{height:450px}.oge-home .start-routes{grid-template-columns:1fr}.oge-home .start-routes .entry{gap:8px}.topic-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.topic-tile:nth-child(2){border-right:1px solid var(--home-line)}}
+@media(max-width:600px){.model-stage{height:390px}.model-caption{flex-wrap:wrap}.model-caption>div{flex:1 1 220px}#model-description{max-width:none}.topic-strip{gap:10px}.topic-tile{padding:14px 13px 22px}.topic-art{height:105px}.course-chapters a{grid-template-columns:58px 1fr 16px;gap:12px;padding:18px 0}.course-chapters strong{font-size:.95rem}}
+@media(max-width:380px){.model-stage{height:350px}.exhibit-top{padding:13px 12px 8px}.exhibit-views button{padding:9px 10px;font-size:.77rem}.feature-picker{padding-inline:8px}.feature-picker button{font-size:.72rem;padding:6px 9px}.topic-art{height:90px}.topic-tile h3{font-size:1.1rem}.model-caption{padding:14px}}
