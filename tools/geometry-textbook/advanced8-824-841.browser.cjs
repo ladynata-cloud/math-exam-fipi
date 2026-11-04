@@ -30,7 +30,9 @@ async function serve(){return new Promise(resolve=>{
   assert(await page.evaluate(id=>window.textbookApp.open(id),oldId));await page.locator('#final-answer').fill('Сохранённый черновик задачи 823');
   const oldRaw=await page.evaluate(id=>localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'),oldId);
   for(const l of lessons){
-   await page.goto(base+'review.html#'+l.id);await page.waitForFunction(()=>window.textbookApp);
+   // A hash-only goto reuses the preceding document and its scroll position.
+   // Use a distinct harmless query to measure a real cold document entry.
+   await page.goto(base+'review.html?exercise='+l.source.exercise+'#'+l.id);await page.waitForFunction(()=>window.textbookApp);
    assert.equal(await page.locator('[data-preview-notice]').count(),1);
    assert.equal(await page.locator('main h1').innerText(),'К задаче №'+l.source.exercise);
    assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),'neutral');
@@ -41,7 +43,7 @@ async function serve(){return new Promise(resolve=>{
     const box=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height};};
     return {scrollY,height:innerHeight,condition:box('.textbook-condition'),svg:box('[data-main-model] svg')};
    });
-   assert.equal(first.scrollY,0,'Measure before any locator can scroll');
+   assert.equal(first.scrollY,0,'Cold entry must start at top: '+l.source.exercise+' '+width);
    assert(first.condition.top>=0&&first.condition.bottom<=first.height,'Complete condition in first viewport: '+l.source.exercise+' '+width);
    assert(first.svg.top>=first.condition.bottom&&first.svg.bottom<=first.height,'Complete drawing in first viewport: '+l.source.exercise+' '+width+' '+JSON.stringify(first));
    await page.screenshot({path:path.join(out,l.source.exercise+'-initial-'+width+'.png'),fullPage:true});
