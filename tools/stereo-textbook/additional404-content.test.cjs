@@ -53,4 +53,3 @@ assert.equal(win.localStorage.getItem(key(prior)),before,'old saved work not rew
 app.destroy();dom.window.close();
 require('./additional404-math.test.cjs');
 console.log('ATANASYAN_ADDITIONAL404_CONTENT_OK: 674 cards; all prior 662 bytes and records preserved; 53 steps; 49 states; '+rejected+' rejected integration corruptions');
-

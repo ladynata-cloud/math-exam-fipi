@@ -114,4 +114,3 @@ for(const mutate of [
  x=>x.find(c=>c.id==='ex-main-0413').visualization.model.points.C[0]*=2
 ]){const bad=structuredClone(cards);mutate(bad);assert.throws(()=>check(bad));negatives++;}
 console.log('ATANASYAN_ADDITIONAL404_MATH_OK: 12 source models, '+families+' parameter families, '+negatives+' rejected corruptions');
-
