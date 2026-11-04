@@ -41,19 +41,16 @@ class GeneratorTests(unittest.TestCase):
         first, manifest = builder.build(edition)
         second, _ = builder.build(edition)
         self.assertEqual(first, second)
-        # The current source has gained eight landing-model resources and two
-        # public-navigation assets. Frozen editions retain their original 225
-        # files; this assertion concerns a new candidate built from live sources.
-        self.assertEqual(len(first), 235)
+        # The current general homepage uses math-home.css; its former eight
+        # model resources now belong to /oge/, outside the frozen source map.
+        # Frozen editions retain 225 files; a new build adds exactly these three.
+        self.assertEqual(len(first), 228)
         previous = json.loads((ROOT / "book/oge/2026-10-31/v2/manifest.json").read_text())
         old_sources = {row["path"] for row in previous["sourceFiles"]}
         current_sources = {row["path"] for row in manifest["sourceFiles"]}
         self.assertTrue(old_sources <= current_sources)
         self.assertEqual(current_sources - old_sources, {
-            "assets/oge-home-topics.js", "assets/oge-home.css", "assets/oge-home.js",
-            "assets/oge-illustrations/apartment.svg", "assets/oge-illustrations/geometry.svg",
-            "assets/oge-illustrations/graphs.svg", "assets/oge-illustrations/tires.svg",
-            "trainers/ege-profile-stereometry-3d/js/three.min.js",
+            "assets/math-home.css",
             "assets/oge-wayfinding.css", "assets/oge-wayfinding.js",
         })
         self.assertTrue(all(name.startswith((edition.prefix, edition.alias)) for name in first))

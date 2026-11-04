@@ -27,8 +27,12 @@ const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','
     }
     assert.equal(await bar.getByRole('link',{name:'← Все темы ОГЭ',exact:true}).getAttribute('href'),'/trainers/oge-course/');
     assert.equal(await bar.getByRole('link',{name:'Главная',exact:true}).getAttribute('href'),'/');
-    // Actual keyboard focus is reachable, with no modal intercepting it.
+    // Some existing trainers autofocus their answer after 50–60 ms. Let that
+    // startup complete, then verify actual keyboard travel through both links.
+    await page.waitForTimeout(120);
     await bar.locator('a').first().focus();assert(await bar.locator('a').first().evaluate(e=>e===document.activeElement),file+' keyboard focus');
+    await page.keyboard.press('Tab');
+    assert(await bar.locator('a').nth(1).evaluate(e=>e===document.activeElement),file+' keyboard next return');
    }else{
     assert((await page.locator('a[href]').evaluateAll(els=>els.filter(e=>/\/trainers\/oge-course\/(?:index\.html)?$/.test(new URL(e.href).pathname)&&e.getBoundingClientRect().height>0).length))>0,file+' existing course return');
    }
