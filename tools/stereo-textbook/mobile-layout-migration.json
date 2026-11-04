@@ -4,12 +4,12 @@
   "files": {
     "stereo-course/textbook/assets/engine.js": {
       "beforeSHA256": "9da6fb10924d50793521740ea779d81ef78fe3dfee5dbd71ab138b7d345dba74",
-      "afterSHA256": "a1dfa7ecf004c1fce1df89c3fd191a071f95331b0ef90f76281bc71f90c0bb76",
+      "afterSHA256": "14cb7f4c44b7e6aa78da563503592cd97a8f62ae7d6e57dc23942565a7d3a413",
       "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/engine.js"
     },
     "stereo-course/textbook/assets/style.css": {
       "beforeSHA256": "56b3ec43f680dde578320a9ea1c5969a9a15d2d0344bfa1eda903f5bd3e09f51",
-      "afterSHA256": "255537decc17b9d289fbf59a66d020bf832e0b2a35195940ff0179234e96b569",
+      "afterSHA256": "642efefb9877e13e1c65ac7be73864854aa72cd4c4156b4da3cbc997fb0b6038",
       "beforeFixture": "tools/stereo-textbook/fixtures/mobile-layout-before/style.css"
     },
     "stereo-course/textbook/index.html": {

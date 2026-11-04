@@ -31,9 +31,11 @@ let server,browser;
    m.id=card.id;m.newCard=newIds.has(card.id);m.fits=m.prompt.top>=0&&m.svg.top>=0&&Math.max(m.prompt.bottom,m.svg.bottom)<=height;m.requiredHeight=Math.ceil(Math.max(m.prompt.bottom,m.svg.bottom));evidence.measurements.push(m);
    if(height>=800){const file=width+'-'+card.id+'.png';await page.screenshot({path:path.join(out,file)});evidence.screenshots.push(file);}
    if(height<800)continue;
+   if(newIds.has(card.id))assert(m.fits,card.id+' complete condition and model fit the primary viewport');
    const disclosure=page.locator('.textbook-lesson-header .companion-details');await disclosure.locator('summary').click();assert(await disclosure.locator('.companion-book').first().isVisible());assert((await disclosure.innerText()).includes('2024'));assert((await disclosure.innerText()).includes('PDF '+card.source.pdfPages.join(', ')));await disclosure.locator('summary').click();
+   const guide=page.locator('.textbook-model-guide');await guide.locator('summary').click();assert(await guide.locator('.am-help').isVisible());assert(await guide.locator('.am-note').isVisible());await guide.locator('summary').click();
    const svg=page.locator('[data-main-model] svg'),camera=await svg.getAttribute('data-yaw');
-   await page.getByRole('button',{name:'Повернуть вправо',exact:true}).click();assert.notEqual(await svg.getAttribute('data-yaw'),camera);
+   if(card.visualization.model.planar){assert.equal(await page.getByRole('button',{name:'Повернуть вправо',exact:true}).count(),0,'authored planar diagram is not rotated');}else{await page.getByRole('button',{name:'Повернуть вправо',exact:true}).click();assert.notEqual(await svg.getAttribute('data-yaw'),camera);}
    await page.getByRole('button',{name:'Развернуть рисунок',exact:true}).click();await page.getByRole('button',{name:'Закрыть рисунок',exact:true}).press('Escape');assert.equal(await page.locator('.am-expanded').count(),0);
    if(card.answer)await page.locator('#final-answer').fill('Проверка сохранения '+card.id);
    await page.locator('[data-main-help]>summary').click();for(const step of card.steps)await page.locator('[data-steps]+button').click();assert.equal(await page.locator('[data-step]').count(),card.steps.length);

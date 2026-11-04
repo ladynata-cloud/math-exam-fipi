@@ -35,7 +35,7 @@ button{max-width:100%;white-space:normal}
 .textbook-reading .textbook-figure{grid-column:2;grid-row:1 / span 4;min-width:0}
 .textbook-reading .textbook-help,.textbook-reading .textbook-model-guide,.textbook-reading [data-final-form]{grid-column:1;min-width:0}
 .textbook-reading .textbook-condition{margin:0 0 .55rem;line-height:1.45}
-.textbook-reading .textbook-goal{margin:.55rem 0 .7rem;line-height:1.45}
+.textbook-reading .textbook-goal{border-left:0;padding-left:0;color:#185737;margin:.55rem 0 .7rem;line-height:1.45}
 .textbook-reading .textbook-prompt ul{padding-left:1.3rem;margin:.5rem 0}
 .textbook-reading .textbook-figure .textbook-model{margin:0}
 /* Keep controls immediately next to the drawing, ahead of its instructions. */
@@ -58,7 +58,7 @@ button{max-width:100%;white-space:normal}
 .textbook-navigation .course-nav{padding:.25rem 0;gap:0 1rem;line-height:1.35}
 .textbook-navigation a{display:flex;align-items:center;min-height:44px}
 @media(max-width:850px){
- .textbook-reading{padding:0 .4rem 2rem!important}
+ #textbook-app.textbook-reading{padding:0 .4rem 2rem}
  .textbook-reading .textbook-main{padding:.4rem}
  .textbook-reading .textbook-lesson-header{gap:.2rem .45rem}
  .textbook-reading .textbook-lesson-header>button{font-size:.95rem;padding:.35rem .5rem}
