@@ -10,7 +10,7 @@ button,summary,small{overflow-wrap:anywhere;hyphens:auto}
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 button{max-width:100%;white-space:normal}
 
-/* Always-visible source captions accompany cards without affecting learner state. */
+/* Source identity remains visible; full bibliography can be disclosed on cards. */
 .companion-reference{margin:1rem 0;min-width:0}
 .companion-reference p{margin:.35rem 0;line-height:1.5}
 .companion-identity{font-size:1.05rem;font-weight:700;color:#185737}
@@ -19,3 +19,39 @@ button{max-width:100%;white-space:normal}
 .catalog-results .companion-reference{margin:0 0 .65rem}
 .catalog-location-heading{margin:1.2rem 0 .6rem}
 .catalog-filters>[hidden]{display:none}
+
+/* Reading layout is scoped to this engine; other courses import the base CSS. */
+.textbook-reading .textbook-lesson-header{margin:.25rem 0 .65rem;display:flex;flex-wrap:wrap;align-items:center;gap:.35rem 1rem}
+.textbook-reading .textbook-lesson-header>button{padding:.4rem .65rem}
+.textbook-reading .textbook-lesson-header>h1{flex-basis:100%;font-size:1.4rem;margin:.1rem 0;line-height:1.25}
+.textbook-reading .textbook-lesson-header .companion-reference{display:flex;flex-wrap:wrap;align-items:center;gap:0 1rem;margin:0;flex:1}
+.textbook-reading .companion-details{margin:0;padding:0;border:0;background:transparent}
+.textbook-reading .companion-details>summary{font-size:.9rem;padding:.35rem 0;min-height:44px;color:#175b37}
+.textbook-reading .companion-details[open]{flex-basis:100%}
+.textbook-reading .companion-details[open]>summary{margin:0}
+.textbook-reading .textbook-layout{display:block}
+.textbook-reading .textbook-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:0 1.2rem;padding:1rem;align-items:start}
+.textbook-reading .textbook-prompt{grid-column:1;min-width:0}
+.textbook-reading .textbook-figure{grid-column:2;grid-row:1 / span 3;min-width:0}
+.textbook-reading .textbook-help,.textbook-reading [data-final-form]{grid-column:1;min-width:0}
+.textbook-reading .textbook-condition{margin:0 0 .55rem;line-height:1.45}
+.textbook-reading .textbook-goal{margin:.55rem 0 .7rem;line-height:1.45}
+.textbook-reading .textbook-prompt ul{padding-left:1.3rem;margin:.5rem 0}
+.textbook-reading .textbook-figure .textbook-model{margin:0}
+/* Keep controls immediately next to the drawing, ahead of its instructions. */
+.textbook-reading .atanasyan-model{display:flex;flex-direction:column}
+.textbook-reading .atanasyan-model>.am-svg{order:0}
+.textbook-reading .atanasyan-model>.am-controls{order:1;margin-top:.4rem}
+.textbook-reading .atanasyan-model>p{order:2}
+.textbook-reading .textbook-help{order:initial}
+@media(max-width:850px){
+ .textbook-reading .textbook-main{display:flex;flex-direction:column;padding:.6rem;gap:0}
+ .textbook-reading .textbook-main>*{width:100%}
+ .textbook-reading .textbook-lesson-header>h1{font-size:1.3rem}
+ .textbook-reading .textbook-lesson-header .companion-reference{flex-basis:100%;justify-content:space-between;gap:0 .5rem}
+ .textbook-reading .companion-identity{font-size:1rem;margin:0}
+ .textbook-reading .companion-details>summary{font-size:.85rem}
+ .textbook-reading .textbook-help{margin-top:.5rem}
+}
+.textbook-navigation{padding:.4rem .65rem;gap:0 1rem;line-height:1.35}
+.textbook-navigation a{display:flex;align-items:center;min-height:44px}

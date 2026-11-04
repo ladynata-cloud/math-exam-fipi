@@ -149,6 +149,7 @@ function createApp(root,options){
  const {catalog,lessons}=options,{available,coverage,issues}=inspectBundle(catalog,lessons,options),doc=root.ownerDocument,win=doc.defaultView,math=options.math||win.StereoMath,sceneViewer=options.sceneViewer||win.TaskSceneViewer;
  let storage;try{storage=options.storage??win.localStorage;}catch{storage=null;}
  let current=null,state=null,key='',expected=null,viewer=null,dialogViewer=null,dialog=null,dialogView='neutral',locked=false,destroyed=false;
+ root.classList.add('textbook-reading');
  const theoryTrail=[];
  const cache=new Map();
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
@@ -174,7 +175,16 @@ function createApp(root,options){
  }
  function assisted(){state.assisted=true;return save();}
  function sourceText(source){return [companionIdentity(source),companionLocation(source),catalog.book.title,catalog.book.edition,'стр. '+source.printedPages.join(', '),'PDF '+source.pdfPages.join(', ')].filter(Boolean).join(' · ');}
- function companionNode(lesson){const box=el('div',undefined,{class:'companion-reference','data-companion-source':lesson.id});box.append(el('p',companionIdentity(lesson.source),{class:'companion-identity'}));const location=companionLocation(lesson.source);if(location)box.append(el('p',location,{class:'companion-location'}));box.append(el('p','К учебнику «'+catalog.book.title+'» · '+catalog.book.edition+' · стр. '+lesson.source.printedPages.join(', '),{class:'companion-book'}));return box;}
+ function companionNode(lesson,compact=false){
+  const box=el('div',undefined,{class:'companion-reference','data-companion-source':lesson.id});
+  box.append(el('p',companionIdentity(lesson.source),{class:'companion-identity'}));
+  const content=compact?el('details',undefined,{class:'companion-details'}):box;
+  if(compact)content.append(el('summary','Учебник и источник'));
+  const location=companionLocation(lesson.source);if(location)content.append(el('p',location,{class:'companion-location'}));
+  content.append(el('p','К учебнику «'+catalog.book.title+'» · '+catalog.book.edition+' · стр. '+lesson.source.printedPages.join(', '),{class:'companion-book'}));
+  if(compact){content.append(el('p','Страницы PDF: '+lesson.source.pdfPages.join(', '),{class:'companion-book'}));box.append(content);}
+  return box;
+ }
  function sourceNode(lesson){const details=el('details');details.append(el('summary','Где это в учебнике?'),el('p',sourceText(lesson.source)));return details;}
  function closeTheory(){if(!dialog)return;theoryTrail.length=0;dialogViewer?.destroy();dialogViewer=null;const old=dialog;dialog=null;if(old.close)old.close();old.remove();old._returnFocus?.focus();}
  function destroyScene(){closeTheory();viewer?.destroy();viewer=null;}
@@ -201,7 +211,7 @@ function createApp(root,options){
    const style=win.getComputedStyle?.(node);return style?.display!=='none'&&style?.visibility!=='hidden';
   }
   dialog.addEventListener('keydown',event=>{if(event.defaultPrevented)return;if(event.key==='Escape'){event.preventDefault();closeTheory();}if(event.key==='Tab'){const nodes=[...dialog.querySelectorAll('button,input,textarea,summary,a[href],[tabindex="0"]')].filter(focusable);if(event.shiftKey&&doc.activeElement===nodes[0]){event.preventDefault();nodes.at(-1).focus();}else if(!event.shiftKey&&doc.activeElement===nodes.at(-1)){event.preventDefault();nodes[0].focus();}}});
-  dialog.append(close,companionNode(lesson),title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
+  dialog.append(close,companionNode(lesson,true),title,el('p',lesson.statement.text),model,el('p',lesson.statement.goal),el('p',lesson.visualization.caption),sourceNode(lesson));
   const nestedHelp=el('div');mountHelp(lesson.help,nestedHelp,()=>({setView:selectTheoryView}));dialog.append(nestedHelp);
   const steps=el('div');for(const step of lesson.steps){const d=el('details');d.append(el('summary',step.title),el('p',step.prompt),el('p',step.explanation));justifications(step,d);d.addEventListener('toggle',()=>{if(d.isConnected&&d.open)selectTheoryView(step.view||'neutral');});steps.append(d);}dialog.append(steps);root.append(dialog);
   dialogViewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:backState?.camera});
@@ -227,9 +237,12 @@ function createApp(root,options){
   destroyScene();current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
-  const header=el('header');header.append(back,companionNode(lesson),el('h1',lesson.title));view.append(header);
+  const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,companionNode(lesson,true),el('h1',lesson.title));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
-  main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
+  const prompt=el('div',undefined,{class:'textbook-prompt'});
+  prompt.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));prompt.append(list);}prompt.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
+  const figure=el('div',undefined,{class:'textbook-figure'});figure.append(model,el('p',lesson.visualization.caption));
+  main.append(prompt,figure,side);
   if(lesson.answer){
    const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
    input.addEventListener('input',()=>{state.draft=input.value;save();});
@@ -251,7 +264,7 @@ function createApp(root,options){
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
-  side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   return true;
  }
  function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
