@@ -81,3 +81,15 @@ Before merge requery authoritative main and PR head; revalidate any drift.
 Use controlled squash with expected head, verify merge parent/tree, Pages
 commit and all published artifacts. No further owner authorization needed
 when the scoped checks pass. Do not record release before evidence exists.
+
+## Base drift record
+
+Первый candidate 6674069 прошёл все 6 CI, включая 98 браузерных сценариев
+и общий virtual classroom. База сначала продвинулась до d014916 (PR443,
+маршруты от вариантов ОГЭ), затем до f4f3dad (PR442, общая главная и перенос
+моделей в ОГЭ). Оба изменения опубликованы в main, происхождение установлено.
+Виртуальная сборка с d014916 чистая; математические и SEO gates повторены.
+На f4f3dad возник только конфликт добавлений в PROJECT_STATUS: сохранены
+обе записи. Новая главная сохранена, ссылка «Педагогам» остаётся в подвале.
+Обычное объединение истории, без force/reset/rebase. Повторный CI нового
+head и итоговая публикация записываются в PR444.

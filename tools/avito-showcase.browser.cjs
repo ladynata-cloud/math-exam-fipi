@@ -25,7 +25,7 @@ const directions = {school:'demo-division', oge:'demo-graphs', ege:'demo-ege'};
 const mime = {'.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'application/javascript',
   '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg',
   '.jpeg':'image/jpeg', '.woff2':'font/woff2'};
-const report = {widths, homepageWidths:[390,1280], cases:[], errors:[], failedRequests:[], unexpectedExternal:[], inheritedFontsIntercepted:[]};
+const report = {widths, homepageWidths:[320,390,1280], cases:[], errors:[], failedRequests:[], unexpectedExternal:[], inheritedFontsIntercepted:[]};
 let base;
 let server;
 
@@ -238,8 +238,13 @@ async function homepageEntry(browser, width) {
   try {
     await page.goto(base + '/', {waitUntil:'load'});
     await fits(page, 'homepage ' + width);
-    assert.match(await page.locator('.hero-inner .kicker').innerText(), /Бесплатный курс.*9 класс/i);
-    await inViewport(page, '.hero-inner .kicker', 'homepage OGE offer');
+    assert.match(await page.locator('.hero-inner .kicker').innerText(), /5–11 классы.*Бесплатно/i);
+    assert.equal(await page.locator('.home-directions article').count(),6);
+    for(const href of ['/trainers/','/foundations/','/courses/','/oge/','/ege-baza/','/ege-profil/','/geometry-course/']) {
+      assert(await page.locator('a[href="'+href+'"]').first().isVisible(), 'home direction '+href);
+    }
+    assert.equal(await page.locator('script[src*="oge-home"],script[src*="three.min.js"]').count(),0);
+    await inViewport(page, '.hero-inner .kicker', 'homepage mathematics offer');
     await inViewport(page, '.hero-inner h1', 'homepage heading');
     assert.deepEqual(await page.locator('.lesson-entry .actions a').evaluateAll(links => links.map(a => a.getAttribute('href'))), entries.map(entry => entry.route));
     await screenshot(page, `homepage-${width}-initial`);
@@ -254,8 +259,8 @@ async function homepageEntry(browser, width) {
       await screenshot(page, `homepage-${width}-to-${entry.name}`);
     }
     report.cases.push({page:'homepage', width, result:'PASS', destinations:entries.map(entry => entry.route),
-      checks:['OGE hero and retained school/EGE lesson entrances', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
-    console.log(`PASS homepage at ${width}px: OGE landing and three retained real showcase entry paths`);
+      checks:['general mathematics hero and retained lesson entrances', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
+    console.log(`PASS homepage at ${width}px: mathematics home and three retained real showcase entry paths`);
   } catch (error) {
     await screenshot(page, `homepage-${width}-failure`, true);
     report.cases.push({page:'homepage', width, result:'FAIL', error:error.message});
