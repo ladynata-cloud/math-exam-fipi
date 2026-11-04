@@ -16,7 +16,7 @@ async function layout(page,id){
 }
 (async()=>{
  let base=process.env.ADDITIONAL404_LIVE_URL;
- if(!base){server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}if(req.url.split('?')[0].endsWith('/'))file=path.join(file,'index.html');fs.readFile(file,(error,bytes)=>{if(error){res.writeHead(404).end();return;}res.setHeader('Content-Type',({'.html':'text/html','.js':'application/javascript','.json':'application/json','.css':'text/css'})[path.extname(file)]||'application/octet-stream');res.end(bytes);});});await new Promise(resolve=>server.listen(0,'136.0.0.1',resolve));base='http://136.0.0.1:'+server.address().port+'/stereo-course/textbook/';}
+ if(!base){server=http.createServer((req,res)=>{let file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}if(req.url.split('?')[0].endsWith('/'))file=path.join(file,'index.html');fs.readFile(file,(error,bytes)=>{if(error){res.writeHead(404).end();return;}res.setHeader('Content-Type',({'.html':'text/html','.js':'application/javascript','.json':'application/json','.css':'text/css'})[path.extname(file)]||'application/octet-stream');res.end(bytes);});});await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));base='http://127.0.0.1:'+server.address().port+'/stereo-course/textbook/';}
  browser=await chromium.launch({headless:true});
  for(const width of evidence.widths){
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.on('pageerror',e=>evidence.errors.push(e.message));
