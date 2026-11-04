@@ -10,9 +10,9 @@ const root=path.resolve(__dirname,'..');
 const routes={inequalities:'trainers/oge13-inequalities-series.html',lesson:'oge/geometry/task-15-external-angle.html',variant:'trainers/oge-2027-analogue-1.html'};
 const source=key=>fs.readFileSync(path.join(root,routes[key]),'utf8');
 const externalScripts={
- inequalities:['trainers/oge-course-shared-mode.js','trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js','trainers/board-bridge.js','trainers/oge-native-10-14-board.js'],
- lesson:['trainers/task19-textbook-data.js','trainers/task19-reference.js','trainers/oge-course-reference.js','trainers/oge-course-geometry.js'],
- variant:[]
+ inequalities:['assets/oge-wayfinding.js','trainers/oge-course-shared-mode.js','trainers/oge-course-reference.js','trainers/oge-course-algebra-reference.js','trainers/oge-course-reference-entry.js','trainers/board-bridge.js','trainers/oge-native-10-14-board.js'],
+ lesson:['assets/oge-wayfinding.js','trainers/task19-textbook-data.js','trainers/task19-reference.js','trainers/oge-course-reference.js','trainers/oge-course-geometry.js'],
+ variant:['assets/oge-wayfinding.js']
 };
 function scriptFiles(key){return [...source(key).matchAll(/<script\b([^>]*)>[\s\S]*?<\/script>/gi)].flatMap(([,attrs])=>{const match=attrs.match(/\bsrc\s*=\s*["']([^"']+)["']/i);if(!match)return[];const url=new URL(match[1],'https://mathexam.space/'+routes[key]);assert.equal(url.origin,'https://mathexam.space','Only local script resources are allowed');assert.equal(url.search,'');assert.equal(url.hash,'');return[url.pathname.slice(1)];});}
 class Local extends ResourceLoader{constructor(key,loaded){super();this.allowed=new Set(externalScripts[key]);this.loaded=loaded;}fetch(url){const u=new URL(url);if(u.origin!=='https://mathexam.space')throw new Error('Unexpected remote runtime resource '+u.origin);const relative=u.pathname.slice(1),file=path.resolve(root,relative);assert.ok(file.startsWith(root+path.sep));assert.ok(fs.existsSync(file),'Missing runtime asset '+relative);if(relative.endsWith('.js')){assert.ok(this.allowed.has(relative),'Unexpected script '+relative);this.loaded.push(relative);}return Promise.resolve(fs.readFileSync(file));}}
