@@ -59,8 +59,8 @@ button{max-width:100%;white-space:normal}
 .textbook-navigation a{display:flex;align-items:center;min-height:44px}
 @media(max-width:850px){
  #textbook-app.textbook-reading{padding:0 .4rem 2rem}
- .textbook-reading .textbook-main{padding:.4rem}
- .textbook-reading .textbook-lesson-header{gap:.2rem .45rem}
+ .textbook-reading .textbook-main{padding:.3rem}
+ .textbook-reading .textbook-lesson-header{gap:.2rem .45rem;margin-bottom:.25rem}
  .textbook-reading .textbook-lesson-header>button{font-size:.95rem;padding:.35rem .5rem}
  .textbook-reading .textbook-lesson-header .companion-reference{display:contents}
  .textbook-reading .textbook-lesson-header .companion-identity{order:1;flex-basis:100%;font-size:.95rem;line-height:1.35}
