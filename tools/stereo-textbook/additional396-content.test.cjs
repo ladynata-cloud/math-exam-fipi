@@ -1,7 +1,9 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),baseline=require('./additional396-baseline.cjs'),{ids,published,hash,sha,exact}=baseline;
-const course=require('../../stereo-course/textbook/data/course.json'),index=require('../../stereo-course/textbook/source-index.json'),registry=require('./content-review.json'),cases=require('./browser-cases.cjs');
+const later=require('./additional404-baseline.cjs');
+const full=require('../../stereo-course/textbook/data/course.json'),fullIndex=require('../../stereo-course/textbook/source-index.json');
+const course=later.previousCourse(full,fullIndex),index=later.previousIndex(fullIndex),registry=later.previousRegistry(require('./content-review.json')),cases=later.previousCases(require('./browser-cases.cjs'));
 const old=baseline.previousCourse(course,index);baseline.previousIndex(index);baseline.previousRegistry(registry);baseline.previousCases(cases);
 assert.equal(baseline.previousLessonFiles(root+'/stereo-course/textbook/lessons').length,653);
 for(const[file,gitBlob]of Object.entries(published.unchangedFiles)){const bytes=fs.readFileSync(root+'/'+file);assert.equal(crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'),gitBlob,'unchanged renderer/storage/schema: '+file);}

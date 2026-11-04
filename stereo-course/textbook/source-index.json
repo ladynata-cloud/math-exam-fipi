@@ -9139,7 +9139,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0405",
@@ -9157,7 +9160,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0406",
@@ -9175,7 +9181,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0407",
@@ -9193,7 +9202,10 @@
           114
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0408",
@@ -9211,7 +9223,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0409",
@@ -9229,7 +9244,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0410",
@@ -9247,7 +9265,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0411",
@@ -9265,7 +9286,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0412",
@@ -9287,6 +9311,11 @@
         "а",
         "б",
         "в"
+      ],
+      "requiredParts": [
+        "а",
+        "б",
+        "в"
       ]
     },
     {
@@ -9305,7 +9334,10 @@
           115
         ]
       },
-      "sourceSubparts": []
+      "sourceSubparts": [],
+      "requiredParts": [
+        null
+      ]
     },
     {
       "id": "source-main-0414",
