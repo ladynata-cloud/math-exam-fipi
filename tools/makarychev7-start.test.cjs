@@ -27,6 +27,11 @@ const html = fs.readFileSync(path.join(root, 'school/index.html'), 'utf8');
 for (const match of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>/g)) {
   const filename = match[1].split('?')[0];
   if (filename === 'app.js') continue;
+  if (filename === '/assets/oge-wayfinding.js') {
+    assert.equal(match[0], '<script defer src="/assets/oge-wayfinding.js">');
+    assert.ok(fs.statSync(path.join(root, filename.slice(1))).isFile());
+    continue; // Presentation-only shell is exercised by the OGE browser gate.
+  }
   assert.ok(!filename.includes('..') && !filename.includes('://'), 'Only fixed local school scripts are loaded');
   vm.runInContext(fs.readFileSync(path.join(root, 'school', filename), 'utf8'), world, { filename });
 }

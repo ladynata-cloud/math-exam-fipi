@@ -12,7 +12,16 @@ const fallbackStart = '<!-- seo-catalog-fallback:map:start -->';
 const fallbackEnd = '<!-- seo-catalog-fallback:map:end -->';
 const clearContext = 'let doneTotal=0,allTotal=0,firstOpen=-1;\nbox.replaceChildren();\nTOPICS.forEach((t,i)=>{';
 
+function withoutReturnShell(html) {
+  const head = '<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
+  const bar = '\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
+  assert.equal(html.split(head).length, 2, 'One exact navigation asset pair');
+  assert.equal(html.split(bar).length, 2, 'One exact navigation bar');
+  return html.replace(head, '').replace(bar, '');
+}
+
 function assertPreservedMap(html) {
+  html = withoutReturnShell(html);
   const file = fixture.files.find(x => x.path.endsWith('/index.html'));
   assert.equal(html.split(fallbackStart).length, 2, 'one source fallback start');
   assert.equal(html.split(fallbackEnd).length, 2, 'one source fallback end');
@@ -32,6 +41,7 @@ function assertPreservedMap(html) {
 }
 
 function assertPreservedTrainer(html, file) {
+  html = withoutReturnShell(html);
   const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
   assert.equal(html.split(addition).length, 2, file.path + ': one exact HTTPS self-canonical');
   assert(html.indexOf(addition) < html.indexOf('</head>'), file.path + ': canonical remains in head');
@@ -59,6 +69,8 @@ test('trainer metadata normalization rejects wrong, missing and duplicate canoni
     const html = fs.readFileSync(path.join(root, file.path), 'utf8');
     const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
     const mutations = [
+      ['wrong course return', html.replace('/trainers/oge-course/', '/unexpected/')],
+      ['navigation inline handler', html.replace('aria-label="Навигация ОГЭ"', 'onclick="unapproved()" aria-label="Навигация ОГЭ"')],
       ['missing canonical', html.replace(addition, '')],
       ['wrong canonical', html.replace(addition, addition.replace(file.path, 'lessons/'))],
       ['duplicate canonical', html.replace(addition, addition + addition)],

@@ -37,3 +37,12 @@ Self-review the exact diff, learning instructions and static engine-preservation
 ## Execution
 
 CI, exact candidate head, premerge main comparison, deployment and production results are recorded in the PR. Production status is not inferred from this document. No new owner decision is needed for an in-scope, verified release.
+
+
+## Integration corrections, 5 November 2026
+
+The owner requested completion of all remaining work except Peterson. Existing publication authorization applies.
+
+The first cloud run identified exact compatibility issues rather than mathematical changes: legacy course-return selectors, root-URL resolution in two test harnesses, whole-page percentage hashes, and a meta-refresh race. Tests now check the new literal return target and its exact asset attributes. Percentage historical hashes and all negative mutations remain enforced, with added rejection of altered navigation. All 174 native fraction expressions and controls remain unchanged. The frozen book packages remain untouched; the candidate-builder inventory explicitly accounts for eight already-published landing resources and the two navigation assets. The old browser workflow uses supported Ubuntu 24.04.
+
+Local results: 32 mathematical and UI tests, 8 book-generator tests, 147-page static route check and diff whitespace check passed. Cloud browser checks must pass on the final head. A post-merge job waits for exact live asset hashes before repeating the public-page journeys against mathexam.space.

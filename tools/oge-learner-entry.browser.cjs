@@ -14,6 +14,9 @@ const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','
   const page=await context.newPage();
   for(const file of routes.pages){
    await page.goto(base+'/'+file,{waitUntil:'load'});
+   // Legacy alias pages replace their URL after load; inspect the destination.
+   if(file==='trainers/oge-task13-inequalities.html'){await page.waitForURL(base+'/trainers/oge13-inequalities-series.html');await page.waitForLoadState('load');}
+   if(file==='trainers/oge-1-5-trainers/index.html'){await page.waitForURL(base+'/trainers/oge-1-5-trainers/practice-1-5-map.html');await page.waitForLoadState('load');}
    const bar=page.locator('nav.oge-wayfinding');
    if(routes.wayfinding.includes(file)){
     assert(await bar.isVisible(),file+' visible return bar');

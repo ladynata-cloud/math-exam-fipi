@@ -10,6 +10,13 @@ on:
       - 'soviet-math/index.html'
       - 'tools/oge-learner-*'
       - '.github/workflows/oge-learner-entry.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'assets/oge-wayfinding.*'
+      - 'tools/oge-learner-*'
+      - 'trainers/oge-course/index.html'
+      - '.github/workflows/oge-learner-entry.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,7 +25,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   public-routes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -39,9 +46,23 @@ jobs:
           node tools/oge-learner-entry.test.cjs
           node tools/oge-focus-navigation.test.cjs
           git diff --check
+      - name: Wait for the exact public release assets
+        if: github.event_name == 'push'
+        run: |
+          node - <<'JS'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const paths=['assets/oge-wayfinding.js','assets/oge-wayfinding.css','trainers/oge-course/index.html'];
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+          (async()=>{for(let attempt=0;attempt<40;attempt++){
+            const matches=await Promise.all(paths.map(async p=>{try{const r=await fetch('https://mathexam.space/'+p+'?release='+process.env.GITHUB_SHA,{signal:AbortSignal.timeout(15000)});return r.ok&&hash(Buffer.from(await r.arrayBuffer()))===hash(fs.readFileSync(p));}catch{return false;}}));
+            if(matches.every(Boolean)){console.log('Exact published assets verified');return;}
+            await new Promise(r=>setTimeout(r,15000));
+          }throw Error('Publication did not match this release');})().catch(e=>{console.error(e);process.exitCode=1;});
+          JS
       - name: Every recorded page, mobile and desktop, no JavaScript, actual returns
         env:
           OGE_ENTRY_ARTIFACTS: artifacts/oge-learner-entry
+          OGE_ENTRY_BASE_URL: ${{ github.event_name == 'push' && 'https://mathexam.space' || '' }}
         run: node tools/oge-learner-entry.browser.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
