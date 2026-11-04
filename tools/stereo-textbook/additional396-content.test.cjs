@@ -6,7 +6,7 @@ const full=require('../../stereo-course/textbook/data/course.json'),fullIndex=re
 const course=later.previousCourse(full,fullIndex),index=later.previousIndex(fullIndex),registry=later.previousRegistry(require('./content-review.json')),cases=later.previousCases(require('./browser-cases.cjs'));
 const old=baseline.previousCourse(course,index);baseline.previousIndex(index);baseline.previousRegistry(registry);baseline.previousCases(cases);
 assert.equal(baseline.previousLessonFiles(root+'/stereo-course/textbook/lessons').length,653);
-for(const[file,gitBlob]of Object.entries(published.unchangedFiles)){const bytes=fs.readFileSync(root+'/'+file);assert.equal(crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'),gitBlob,'unchanged renderer/storage/schema: '+file);}
+for(const[file,gitBlob]of Object.entries(published.unchangedFiles)){const bytes=require('./mobile-layout-migration.cjs').historicalRead(file);assert.equal(crypto.createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex'),gitBlob,'unchanged renderer/storage/schema: '+file);}
 const API=require('../../stereo-course/textbook/assets/engine.js'),checked=API.inspectBundle(course.catalog,course.lessons);
 assert.deepEqual(checked.issues,[]);assert.equal(checked.available.size,662);assert.equal(checked.coverage.availableExercises,403);assert.equal(checked.coverage.availableSelfchecks,50);assert.equal(checked.coverage.availableTheoryPoints,51);assert.equal(checked.coverage.partiallyAvailable,0);
 const cards=course.lessons.filter(c=>ids.has(c.id));exact(cards.map(c=>c.id),ids,'nine complete additions');

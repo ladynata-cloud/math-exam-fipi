@@ -31,6 +31,7 @@ jobs:
           python3 tools/stereo-textbook/catalog.test.py
           node tools/stereo-textbook/schema.test.cjs
           node tools/stereo-textbook/companion-migration.test.cjs
+          node tools/stereo-textbook/mobile-layout-migration.test.cjs
           node tools/stereo-textbook/visibility-migration.test.cjs
           node tools/stereo-textbook/companion-labels.test.cjs
           node tools/stereo-textbook/content.test.cjs

@@ -299,7 +299,7 @@ const app = API.createApp(appRoot, production);
 for (const [index, card] of cards.entries()) {
   assert(app.open(card.id), card.id + ': open reviewed practical task');
   assert(appRoot.querySelector('[data-main-model] svg'), card.id + ': actual primary net');
-  const disclosure = [...appRoot.querySelectorAll('summary')].find(node => node.textContent === 'Где это в учебнике?');
+  const disclosure = [...appRoot.querySelectorAll('summary')].find(node => node.parentElement.classList.contains('companion-details'));
   assert(disclosure, card.id + ': source disclosure');
   const sourceText = disclosure.parentElement.querySelector('p').textContent;
   for (const text of ['стр. 84', 'PDF 86', '№ ' + card.source.exercise]) assert(sourceText.includes(text), card.id + ': visible source ' + text);
