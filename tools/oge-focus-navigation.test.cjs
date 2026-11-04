@@ -26,9 +26,9 @@ for (const href of ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000']) 
 
 assert.match(home.title, /ОГЭ/);
 assert.equal(home.querySelectorAll('h1').length, 1);
-// The published lesson showcase covers grades 5–11, including EGE. Keep that
-// invitation and check the OGE route itself for unrelated exam/course content.
-const invitation = home.querySelector('.hero-inner');
+// The OGE landing keeps the grade 5–11 lesson invitation in its own section.
+// Check that section and the independent OGE starting route, not obsolete placement.
+const invitation = home.querySelector('.lesson-entry');
 assert(invitation, 'Published lesson invitation remains on home');
 assert.match(invitation.textContent, /5–11 классы · ОГЭ · ЕГЭ базовый и профильный/);
 for (const href of ['/lessons/', '/lessons/#examples', '/lessons/#contact']) {
@@ -37,13 +37,15 @@ for (const href of ['/lessons/', '/lessons/#examples', '/lessons/#contact']) {
 assert.doesNotMatch(home.querySelector('main').textContent, /Атанасян|Макарычев|ДВИ|7 класс/);
 const ogeEntry = home.querySelector('.start-routes a[href="/trainers/oge-course/"]')?.closest('article');
 assert(ogeEntry, 'OGE retains its own starting route');
-assert.equal(ogeEntry.querySelector('h3').textContent.trim(), 'ОГЭ');
+assert.equal(ogeEntry.querySelector('h3').textContent.trim(), 'Разобраться в одной теме');
 assert.doesNotMatch(ogeEntry.textContent, /ЕГЭ|Атанасян|Макарычев|ДВИ|7 класс/);
 // The independent foundations course became the home entry before this UI release.
 // Keep its canonical entry and the older quick-skill map separately reachable.
-for (const href of ['/trainers/oge-course/', '/foundations/']) {
-  assert(home.querySelector('.hero a[href="' + href + '"]'), 'Primary route: ' + href);
+assert(home.querySelector('.hero a[href="/trainers/oge-course/"]'), 'The primary invitation opens the OGE course');
+for (const href of ['/trainers/oge-course/', '/trainers/oge-basics/', '/foundations/', '/oge/variants/2027/']) {
+  assert(home.querySelector('.start-routes a[href="' + href + '"]'), 'Starting route: ' + href);
 }
+assert.equal(home.querySelectorAll('.start-routes article').length, 3, 'Three clear starting purposes');
 assert(home.querySelector('footer a[href="/trainers/oge-basics/"]'), 'Quick-skill map remains directly reachable');
 assert.equal(doc('foundations/index.html').querySelector('link[rel="canonical"]').href, 'https://mathexam.space/foundations/');
 // PR #365 published the short entry across home and lab; both URLs keep the same engine.

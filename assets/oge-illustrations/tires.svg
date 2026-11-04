@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="140" viewBox="0 0 240 140" fill="none">
+<defs><linearGradient id="rubber" x1="65" y1="12" x2="164" y2="127" gradientUnits="userSpaceOnUse"><stop stop-color="#597265"/><stop offset=".5" stop-color="#203b30"/><stop offset="1" stop-color="#102d24"/></linearGradient><linearGradient id="rim"><stop stop-color="#eaf0e9"/><stop offset="1" stop-color="#8ea99d"/></linearGradient></defs>
+<ellipse cx="123" cy="127" rx="58" ry="7" fill="#dfe6d9"/>
+<g transform="translate(116 67) rotate(-17)"><ellipse cx="11" rx="44" ry="58" fill="#173c2e"/><ellipse rx="44" ry="58" fill="url(#rubber)" stroke="#597565" stroke-width="2"/><ellipse rx="32" ry="44" fill="#8da697" stroke="#93ac9c" stroke-width="2"/><ellipse rx="25" ry="36" fill="#2c4b3a"/>
+<g stroke="url(#rim)" stroke-width="6"><path d="M0-34V34M-24 0H24M-17-25 17 25M-17 25 17-25"/></g><ellipse rx="8" ry="10" fill="#dde7dd"/>
+<g stroke="#799080" stroke-width="2" opacity=".6"><path d="M-24-46-29-39M-36-26-40-18M-41 0-41 10M-37 27-32 37M-22 48-14 53M7 56 17 52M30 42 35 32M40 15 42 5M38-15 34-25M28-41 21-48"/></g></g>
+<path d="M173 25V113M169 25H177M169 113H177" stroke="#a8b9a9" stroke-width="1.5"/><path d="M183 68H202" stroke="#b57a3c" stroke-width="2"/>
+</svg>

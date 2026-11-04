@@ -14,7 +14,7 @@
     const matrix=new T.Matrix4(), normalMatrix=new T.Matrix3();
     const light=new T.Vector3(-.4,.7,1).normalize();
     return {
-      setPixelRatio(value){ratio=Math.min(value,1.25);},
+      setPixelRatio(value){ratio=Math.min(value,2);},
       setSize(w,h){width=w;height=h;canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);},
       render(world,view){
         world.updateMatrixWorld(true);view.updateMatrixWorld(true);
@@ -62,24 +62,24 @@
   try { renderer = new T.WebGLRenderer({canvas, alpha:true, antialias:true, powerPreference:'low-power'}); }
   catch (_) { renderer=softwareRenderer();software=true; }
   if(!renderer)return; // The inline SVG and real course links remain usable.
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputEncoding = T.sRGBEncoding;
   renderer.toneMapping = T.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
+  renderer.toneMappingExposure = 1.05;
   const scene = new T.Scene();
   const camera = new T.PerspectiveCamera(35, 1, .1, 70);
   camera.position.set(0, 0, 11.8);
   camera.lookAt(0, 0, 0);
-  scene.add(new T.HemisphereLight(0xfffef2, 0x859a79, .8));
-  const key = new T.DirectionalLight(0xfff8e1, 1.3); key.position.set(-4, 6, 7); scene.add(key);
-  const rim = new T.DirectionalLight(0xd2eee1, .5); rim.position.set(5, 1, -3); scene.add(rim);
+  scene.add(new T.HemisphereLight(0xffffff, 0x536b60, 1));
+  const key = new T.DirectionalLight(0xfff8e8, 1.5); key.position.set(-4, 6, 7); scene.add(key);
+  const rim = new T.DirectionalLight(0xdcf5ff, .8); rim.position.set(5, 1, -3); scene.add(rim);
   const material = (color, options={}) => {
-    const mat=new T.MeshStandardMaterial({color, roughness:.65, metalness:.05, ...options});
+    const mat=new T.MeshStandardMaterial({color, roughness:.42, metalness:.08, ...options});
     mat.color.convertSRGBToLinear();
     return mat;
   };
-  const rubber=material(0x243d34), tread=material(0x334e41), silver=material(0xc3cdbd,{metalness:.55,roughness:.27});
-  const cream=material(0xf5e5c9), green=material(0x82a777), terra=material(0xc78657), ink=material(0x294a3a);
+  const rubber=material(0x20392f), tread=material(0x446457), silver=material(0xd7e1d9,{metalness:.55,roughness:.27});
+  const cream=material(0xf5e5c9), green=material(0x39a879), terra=material(0xe79a58), ink=material(0x294a3a);
   const v = (x,y,z=0) => new T.Vector3(x,y,z);
   function mesh(group, geometry, mat, x=0,y=0,z=0) { const m=new T.Mesh(geometry,mat);m.position.set(x,y,z);group.add(m);return m; }
   function box(g,w,h,d,mat,x=0,y=0,z=0){return mesh(g,new T.BoxGeometry(w,h,d),mat,x,y,z);}
@@ -178,7 +178,7 @@
     }
   }
   // Small, reusable course models. These are illustrations, not problem conditions.
-  const blue=material(0x729da3), pale=material(0xd6e2c3);
+  const blue=material(0x5badd4), pale=material(0xd6e2c3);
   const dot=(g,x,y,z=0,mat=terra,r=.075)=>mesh(g,new T.SphereGeometry(r,10,6),mat,x,y,z);
   const group=id=>(models[id]=new T.Group());
   function polygon(g,points,mat=green){points.forEach((p,i)=>rod(g,p,points[(i+1)%points.length],.045,mat));}
@@ -238,7 +238,7 @@
   const system=new T.Group(),sun=new T.Group();scene.add(system);system.add(sun);sun.name='oge-center';
   mesh(sun,new T.SphereGeometry(.55,20,12),material(0xc5a168,{roughness:.5}));
   const halo=mesh(sun,new T.TorusGeometry(.7,.014,6,36),cream);halo.rotation.x=.65;
-  const orbitColors=[0x638c70,0xa88961,0x5f8f99,0x879d58,0xb28170];
+  const orbitColors=[0x74b694,0xd9ae79,0x70b7ce,0xa9bc73,0xdc9c86];
   const orbits=topics.map((topic,index)=>{
     const g=new T.Group();g.name='orbit-'+topic.number;system.add(g);
     const tilt=new T.Euler(.35+(index*7%17)/17*.95,Math.sin(index*1.7)*.6,index*.68);
@@ -254,29 +254,36 @@
     return {topic,g,path,tilt,satellites,radius:1.7+index*.205,speed:.18-index*.0038,phase:index*2.399};
   });
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
-  let paused=reduced.matches,visible=true,lost=false,frame=0,last=0,painted=0,time=0,selected=0,selectedType=-1,drag=null,dragAngle=0;
+  let paused=reduced.matches,visible=true,lost=false,frame=0,last=0,painted=0,time=0,selected=0,selectedType=-1,drag=null,dragAngle=0,intro=true;
+  // A readable first encounter; the complete 25-orbit map remains one click away.
+  const featured=[{number:2,type:0},{number:1,type:0},{number:11,type:1},{number:16,type:0},{number:10,type:0}];
+  const featurePicker=document.querySelector('.feature-picker'),numbers=document.querySelector('.orbit-numbers');
   const pause=document.getElementById('model-pause'),picker=document.querySelector('.orbit-picker'),tabs=document.querySelector('.model-tabs'),label=document.querySelector('.orbit-label');
   function pose(){
-    const overview=!selected,solo=selectedType>=0;
-    sun.visible=!solo;sun.scale.setScalar(overview?1:.8);
+    const overview=!selected,solo=selectedType>=0,showcase=intro&&!selected;
+    sun.visible=!solo;sun.scale.setScalar(showcase?1.2:overview?1:.8);
     system.rotation.set(0,solo?0:dragAngle*.6,solo?0:dragAngle*.15);
     for(const orbit of orbits){
-      orbit.g.visible=overview||orbit.topic.number===selected;if(!orbit.g.visible)continue;
-      orbit.g.rotation.copy(solo?new T.Euler():orbit.tilt);
-      orbit.path.visible=!solo;orbit.path.scale.setScalar(overview?orbit.radius:2.8);orbit.path.material.opacity=overview?.28:.65;
+      const featureIndex=featured.findIndex(f=>f.number===orbit.topic.number),feature=featured[featureIndex];
+      orbit.g.visible=showcase?!!feature:overview||orbit.topic.number===selected;if(!orbit.g.visible)continue;
+      orbit.g.rotation.copy(solo?new T.Euler():showcase?new T.Euler(.22+featureIndex*.035,-.12+featureIndex*.05,0):orbit.tilt);
+      orbit.path.visible=!solo;orbit.path.scale.setScalar(showcase?2.7:overview?orbit.radius:2.8);orbit.path.material.opacity=showcase?.12:overview?.13:.48;
       orbit.satellites.forEach((sat,j)=>{
-        sat.node.visible=!solo||j===selectedType;if(!sat.node.visible)return;
-        const angle=orbit.phase+time*orbit.speed+j*Math.PI*2/orbit.satellites.length;
-        const radius=solo?0:overview?orbit.radius:2.8;
+        sat.node.visible=showcase?j===feature.type:!solo||j===selectedType;if(!sat.node.visible)return;
+        const angle=showcase?-.35+featureIndex*Math.PI*2/featured.length+time*.055:orbit.phase+time*orbit.speed+j*Math.PI*2/orbit.satellites.length;
+        const radius=solo?0:showcase?2.7:overview?orbit.radius:2.8;
         sat.node.position.set(radius*Math.cos(angle),radius*Math.sin(angle),0);
         // Keep model orientation independent of its orbit plane.
         sat.node.quaternion.copy(orbit.g.quaternion).invert();
-        const size=solo?1.8:overview?.36:.84;
+        const size=solo?1.8:showcase?.91:overview?.44:.92;
         sat.body.scale.setScalar(size/sat.radius);
         const baseTilt=['apartment','plot','paper','roads','fraction','work','mixture'].includes(sat.type.model)?.55:.12;
-        sat.body.rotation.set(baseTilt,time*.23+j*.6+(solo?dragAngle:0),-.08);
-        sat.body.visible=!overview||!sat.light;
-        if(sat.light){sat.light.visible=overview;sat.light.scale.copy(sat.body.scale);sat.light.rotation.copy(sat.body.rotation);}
+        // Educational outlines stay readable: a gentle turn never makes a graph edge-on.
+        const solid=['tires','dice','powers','car','stove'].includes(sat.type.model);
+        const turn=solid?time*.18:Math.sin(time*.24+j*.6)*.38;
+        sat.body.rotation.set(baseTilt,turn+(solid?.3:0)+(solo?dragAngle:0),-.08);
+        sat.body.visible=!overview||showcase||!sat.light;
+        if(sat.light){sat.light.visible=overview&&!showcase;sat.light.scale.copy(sat.body.scale);sat.light.rotation.copy(sat.body.rotation);}
       });
     }
   }
@@ -287,22 +294,23 @@
   function resize(){
     const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;
     const vertical=Math.PI*35/360,narrow=Math.min(vertical,Math.atan(Math.tan(vertical)*camera.aspect));
-    const radius=selectedType>=0?1.95:selected?3.8:7.1;
+    const radius=selectedType>=0?1.95:selected?3.85:intro?3.8:7.1;
     camera.position.z=radius/Math.sin(narrow)*1.04;camera.updateProjectionMatrix();render();
   }
   function caption(){
     const orbit=selected?orbits[selected-1]:null,type=selectedType>=0?orbit.topic.types[selectedType]:null;
-    const title=orbit?'№'+selected+' · '+orbit.topic.title:'25 заданий — 25 орбит';
-    const description=type?type.label+(type.description?' · '+type.description:'')+(selected<=5?' · Пример сюжета общего блока №1–5.':''):orbit?(selected<=5?'Сюжеты блока №1–5 меняются в вариантах. Выберите модель.':orbit.topic.types.map(t=>t.label).join(' · ')):'На каждой орбите — свои типы задач. Выберите номер и рассмотрите их ближе.';
+    const title=orbit?'№'+selected+' · '+orbit.topic.title:intro?'Математика, которую можно рассмотреть':'25 заданий — 25 орбит';
+    const description=type?type.label+(type.description?' · '+type.description:'')+(selected<=5?' · Пример сюжета общего блока №1–5.':''):orbit?(selected<=5?'Сюжеты блока №1–5 меняются в вариантах. Выберите модель.':orbit.topic.types.map(t=>t.label).join(' · ')):intro?'Выберите модель. Рассмотрите её и откройте задание по этой теме.':'Это карта курса: выберите номер, чтобы увидеть его модели крупно.';
     document.getElementById('model-number').textContent=title;document.getElementById('model-description').textContent=description;
     document.getElementById('model-link').href=type?type.href:orbit?orbit.topic.href:'/trainers/oge-course/';
     canvas.setAttribute('aria-label',title+'. '+description);label.textContent=selected?'№'+selected:'ОГЭ';label.hidden=selectedType>=0;
-    host.dataset.selection=selected?String(selected):'all';host.dataset.detail=selectedType>=0?'model':selected?'orbit':'all';
+    host.dataset.selection=selected?String(selected):'all';host.dataset.detail=selectedType>=0?'model':selected?'orbit':intro?'intro':'all';
+    featurePicker.hidden=!intro||!!selected;numbers.hidden=intro&&!selected;
   }
   function chooseType(index){selectedType=index;dragAngle=0;tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.type)===index)));caption();resize();}
   function chooseOrbit(number){
-    selected=number;selectedType=-1;dragAngle=0;
-    picker.querySelectorAll('[data-orbit]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.orbit===(number?String(number):'all'))));
+    intro=number==='intro';selected=intro?0:number;selectedType=-1;dragAngle=0;number=selected;
+    picker.querySelectorAll('[data-orbit]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.orbit===(number?String(number):intro?'intro':'all'))));
     tabs.replaceChildren();tabs.hidden=!number;
     if(number){
       const items=[{label:'Вся орбита'},...orbits[number-1].topic.types];
@@ -310,7 +318,8 @@
     }
     caption();resize();
   }
-  picker.querySelectorAll('[data-orbit]').forEach(b=>b.addEventListener('click',()=>chooseOrbit(b.dataset.orbit==='all'?0:Number(b.dataset.orbit))));
+  picker.querySelectorAll('[data-orbit]').forEach(b=>b.addEventListener('click',()=>chooseOrbit(b.dataset.orbit==='intro'?'intro':b.dataset.orbit==='all'?0:Number(b.dataset.orbit))));
+  featurePicker.querySelectorAll('[data-feature]').forEach((b,i)=>b.addEventListener('click',()=>{chooseOrbit(featured[i].number);chooseType(featured[i].type);}));
   pause.addEventListener('click',()=>{paused=!paused;pauseLabel();schedule();});
   const motionChange=()=>{paused=reduced.matches;pauseLabel();schedule();};if(reduced.addEventListener)reduced.addEventListener('change',motionChange);
   document.addEventListener('visibilitychange',schedule);
@@ -323,14 +332,14 @@
     if(drag&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<6){
       const rect=canvas.getBoundingClientRect();raycaster.setFromCamera(new T.Vector2((e.clientX-rect.left)/rect.width*2-1,1-(e.clientY-rect.top)/rect.height*2),camera);
       const hits=raycaster.intersectObject(system,true);
-      for(const hit of hits){if(!hit.object.isMesh)continue;let node=hit.object,shown=true;for(let p=node;p;p=p.parent)if(!p.visible)shown=false;if(!shown)continue;while(node&&!node.userData.orbit)node=node.parent;if(node){if(!selected)chooseOrbit(node.userData.orbit);else chooseType(node.userData.type);break;}}
+      for(const hit of hits){if(!hit.object.isMesh)continue;let node=hit.object,shown=true;for(let p=node;p;p=p.parent)if(!p.visible)shown=false;if(!shown)continue;while(node&&!node.userData.orbit)node=node.parent;if(node){if(!selected){const openModel=intro;chooseOrbit(node.userData.orbit);if(openModel)chooseType(node.userData.type);}else chooseType(node.userData.type);break;}}
     }drag=null;
   });
   ['pointercancel','lostpointercapture'].forEach(event=>stage.addEventListener(event,()=>{drag=null;}));
   const fallback=document.querySelector('.model-fallback');
-  function availability(ready){canvas.hidden=!ready;fallback.toggleAttribute('hidden',ready);pause.hidden=!ready;picker.hidden=!ready;tabs.hidden=!ready||!selected;document.getElementById('model-hint').hidden=!ready;label.hidden=!ready||selectedType>=0;host.dataset.renderer=ready?(software?'canvas':'webgl'):'fallback';}
+  function availability(ready){canvas.hidden=!ready;fallback.toggleAttribute('hidden',ready);pause.hidden=!ready;picker.hidden=!ready;featurePicker.hidden=!ready||!intro||!!selected;tabs.hidden=!ready||!selected;document.getElementById('model-hint').hidden=!ready;label.hidden=!ready||selectedType>=0;host.dataset.renderer=ready?(software?'canvas':'webgl'):'fallback';}
   canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;cancelAnimationFrame(frame);availability(false);});
   canvas.addEventListener('webglcontextrestored',()=>{lost=false;availability(true);resize();schedule();});
   window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame);frame=0;});window.addEventListener('pageshow',()=>{resize();schedule();});
-  availability(true);chooseOrbit(0);pauseLabel();resize();schedule();
+  availability(true);chooseOrbit('intro');pauseLabel();resize();schedule();
 })();
