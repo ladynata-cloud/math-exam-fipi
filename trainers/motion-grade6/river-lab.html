@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Пошаговый тренажёр для 6 класса: почему разность скоростей по течению и против течения равна удвоенной скорости течения. Модели и 10 задач.">
+<title>Почему течение считается дважды? — Мастерская движения</title>
+<style>
+:root{--ink:#20342f;--muted:#52685e;--green:#26755e;--lime:#d6ee9b;--paper:#f6f7ef;--line:#dce3d5;--water:#eaf4f3;--teal:#087f80;--gold:#b77421;--orange:#fff2da}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}button,a,input,summary{-webkit-tap-highlight-color:transparent}button{cursor:pointer;border:1px solid #bfcec1;background:white;border-radius:12px;padding:10px 17px;color:var(--ink);min-height:46px}button:hover{border-color:var(--green);background:#f4f8ee}button:disabled{cursor:default;opacity:.55}button.primary{background:var(--green);border-color:var(--green);color:white}button.primary:hover{background:#1c624d}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #dc9235;outline-offset:4px}a{color:#205e4a;text-underline-offset:4px}p{margin:8px 0 16px}h1{font-size:clamp(30px,4.5vw,49px);line-height:1.13;letter-spacing:-1.2px;margin:16px 0}h2{font-size:clamp(23px,3vw,29px);line-height:1.3;margin:5px 0 16px}h3{font-size:21px;line-height:1.4;margin:10px 0}header{max-width:1080px;margin:auto;padding:22px 24px;display:flex;gap:12px;align-items:center;justify-content:space-between}.brand{font-weight:750}.badge{font-size:14px;background:#e3ecda;padding:4px 10px;border-radius:20px;white-space:nowrap}.wrap{max-width:980px;margin:auto;padding:8px 24px 52px}.eyebrow{font-size:14px;letter-spacing:1.5px;font-weight:750;color:var(--green);text-transform:uppercase}.lead{font-size:21px;color:var(--muted);max-width:800px}.jump{display:flex;gap:20px;flex-wrap:wrap;margin:22px 0 28px}.jump a{font-weight:650}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;margin:20px 0}.setup{background:#edf2e5}.small{font-size:16px;color:var(--muted)}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.between{justify-content:space-between}.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.slider-label{display:block;font-weight:650;margin-bottom:7px}.slider-label output{font-variant-numeric:tabular-nums;color:var(--green)}input[type=range]{accent-color:var(--green);width:100%;height:26px;margin:5px 0 0;cursor:pointer}.tag{display:inline-block;font-size:14px;font-weight:650;border-radius:8px;background:#eaf2df;padding:4px 9px;margin-bottom:10px}.step-number{width:37px;height:37px;display:inline-grid;place-items:center;border-radius:50%;background:var(--green);color:white;font-weight:700;margin-right:7px;flex-shrink:0}.step-heading{display:flex;align-items:baseline;gap:6px}.step-heading h2{margin-bottom:12px}.formula{padding:17px 20px;background:#edf4df;border-radius:13px;font-size:clamp(23px,3.3vw,31px);font-weight:750;line-height:1.45;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.formula .unit{font-size:18px;font-weight:500}.meaning{padding:13px 17px;background:var(--orange);border-left:4px solid #d39942;border-radius:3px 12px 12px 3px;margin:17px 0}.speed-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:16px 0}.speed-cell{background:#f3f6ef;border-radius:13px;padding:14px;text-align:center}.speed-cell b{display:block;font-size:28px;font-variant-numeric:tabular-nums;line-height:1.25;margin:8px 0 3px}.speed-cell small{font-size:15px}.current-color{color:var(--teal)}.model{background:var(--water);border-radius:15px;padding:18px;margin-top:22px}.model h3{margin-top:0}.trip{margin-top:18px}.trip-label{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;font-size:16px}.trip-label b{font-size:18px}.trip svg{display:block;width:100%;height:100px;overflow:visible}.water-line{stroke:#9bcac8;stroke-width:2;stroke-dasharray:12 12}.trip-controls{padding-top:14px;border-top:1px solid #b8d5d1;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.time-control{flex:1;min-width:150px}.time-control label{display:block;font-size:16px}.clock{font-size:17px;white-space:nowrap}.track-caption{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}.line-box{margin:23px 0;padding:22px 20px;background:#f1f7f4;border-radius:14px}.line-values{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;gap:8px}.line-values>div:first-child{text-align:left}.line-values>div:last-child{text-align:right}.line-values b{display:block;font-size:27px;font-variant-numeric:tabular-nums}.line-values span{font-size:15px;display:block;line-height:1.4}.number-line{display:grid;grid-template-columns:1fr 1fr;margin:26px 2px 10px;border-bottom:4px solid var(--teal);position:relative}.number-line:before,.number-line:after{content:"";position:absolute;width:3px;height:19px;bottom:-10px;background:var(--teal)}.number-line:before{left:0}.number-line:after{right:0}.segment{position:relative;text-align:center;padding:0 0 12px;font-weight:750;color:var(--teal);font-size:23px}.segment:first-child{border-right:3px solid var(--teal)}.segment:after{content:"›";font-weight:500;position:absolute;right:5px;bottom:-21px;font-size:35px;line-height:1}.brace{text-align:center;border:2px solid #8dafa2;border-top:0;border-radius:0 0 10px 10px;margin:19px 0 9px;padding:5px 8px;font-size:17px}.step-nav{display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap;padding:6px 0 20px}.step-nav p{margin:0}.progress-track{display:flex;gap:7px;margin:18px 0}.progress-track span{height:6px;border-radius:10px;flex:1;background:#dbe5d2}.progress-track span.open{background:var(--green)}.math-note{padding:14px 18px;background:#f5f7f0;border-radius:12px}.math-line{font-size:22px;margin:10px 0;overflow-wrap:anywhere}.cancel{color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px}.hint-toggle{margin:17px 0}summary{cursor:pointer;font-weight:650;padding:8px 0}.practice{margin-top:34px;scroll-margin-top:22px}.task-nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.task-nav button{min-width:43px;padding:8px 10px;font-size:16px;position:relative}.task-nav .current{outline:2px solid var(--green);outline-offset:2px}.task-nav .solved{background:#e0efc8;border-color:#bdd19e}.task-nav .solved:after{content:"✓";font-size:12px;margin-left:3px}.question{font-size:21px;line-height:1.6}.answer-row{padding:18px 0;border-top:1px solid var(--line)}.answer-row label{display:block;font-weight:650;margin-bottom:9px}.answer-row input{width:130px;max-width:100%;border:2px solid #b9c9bd;border-radius:11px;padding:10px 13px;background:white;color:var(--ink)}.answer-row input[aria-invalid=true]{border-color:#ad6120}.answer-row .unit{color:var(--muted);font-size:17px}.feedback{min-height:27px;margin:10px 0 0;font-size:17px}.error{color:#8a4612}.success{color:#226549}.answer-row.correct{border-top-color:#bfd3ad}.answer-row.correct input{border-color:var(--green)}.solution{padding:14px 18px;background:#eef5e2;border-radius:12px}.practice-footer{padding-top:20px;display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap}.remember{border:2px solid #acc9a3;background:#f3f8e9}.remember strong{color:#21543d}.footer{font-size:15px;color:var(--muted);padding-top:15px}.storage-warning{background:#fff1d7;color:#704a13;padding:12px 18px;border-radius:12px}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}[hidden]{display:none!important}section,h2{scroll-margin-top:20px}@media(max-width:620px){body{font-size:17px}header{padding:17px 16px;align-items:flex-start}.brand{font-size:16px}.wrap{padding:5px 15px 35px}.card{padding:20px 17px;border-radius:17px}.lead{font-size:19px}.control-grid{grid-template-columns:1fr;gap:16px}.speed-trio{gap:6px}.speed-cell{padding:12px 5px}.speed-cell b{font-size:24px}.speed-cell small{font-size:13px}.speed-cell>span{font-size:15px}.model{padding:16px 12px}.line-box{padding:20px 12px}.line-values b{font-size:24px}.line-values span{font-size:14px}.line-values{gap:5px}.segment{font-size:21px}.step-heading{gap:1px}.step-number{width:31px;height:31px;font-size:18px}.formula{padding:15px;font-size:25px}.formula .unit{font-size:16px}.math-line{font-size:20px}.step-nav button{width:100%}.answer-row .row{gap:9px}.answer-row button{padding:10px 14px}.question{font-size:20px}.trip svg{height:80px}.practice-footer button{flex:1}.jump{gap:15px;font-size:16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}@media print{header,.jump,.setup,.step-nav,.trip-controls,.task-nav,button,.answer-row input,.footer{display:none!important}[data-step][hidden]{display:block!important}body{font-size:13px;background:white}.wrap{max-width:none;padding:0}.card{break-inside:avoid;margin:10px 0;padding:12px}.formula{font-size:21px}h1{font-size:30px}h2{font-size:21px}.practice{display:none}}
+</style>
+</head>
+<body>
+<header><a class="brand" href="index.html#lesson=downstream">Мастерская движения</a><span class="badge">6 класс · река</span></header>
+<main class="wrap">
+<div class="eyebrow">Поймём, откуда берётся двойка</div>
+<h1>Почему течение<br>считается дважды?</h1>
+<p class="lead">По течению лодка плывёт быстрее, против течения — медленнее. Между этими скоростями помещаются <strong>две скорости течения</strong>. Сейчас увидим каждую из них.</p>
+<nav class="jump" aria-label="Разделы тренажёра"><a href="#explanation">Разобраться по шагам</a><a href="#practice">Потренироваться · 10 задач</a></nav>
+<p id="storage-warning" class="storage-warning" role="status" hidden>Браузер не разрешает сохранение. Пока страница открыта, всё работает, но после закрытия ответы могут исчезнуть.</p>
+
+<section class="card setup" aria-labelledby="setup-title">
+<div class="row between"><h2 id="setup-title">Наша лодка и наша река</h2><button id="reset-model" type="button">Вернуть 12 и 3</button></div>
+<p>Сначала разбери пример: собственная скорость лодки — <strong>12 км/ч</strong>, скорость течения — <strong>3 км/ч</strong>. Затем меняй числа и проверяй, сохраняется ли закономерность.</p>
+<div class="control-grid">
+<div><label class="slider-label" for="own-speed">Собственная скорость: <output id="own-output" for="own-speed">12</output> км/ч</label><input id="own-speed" type="range" min="6" max="18" step="0.5" value="12"><p class="small">Так лодка плывёт в стоячей воде.</p></div>
+<div><label class="slider-label" for="current-speed">Скорость течения: <output id="current-output" for="current-speed">3</output> км/ч</label><input id="current-speed" type="range" min="0.5" max="5" step="0.5" value="3"><p class="small">Течение направлено вправо: →</p></div>
+</div>
+<p class="small">Во всех моделях это <strong>одна и та же лодка</strong>: её собственная скорость в обе стороны одинакова, течение постоянно. Лодка быстрее течения, поэтому может плыть против него.</p>
+</section>
+
+<section id="explanation" aria-labelledby="explanation-title">
+<h2 id="explanation-title">Одна мысль за шаг</h2>
+<p class="small">Открытые шаги остаются на странице — к ним можно вернуться.</p>
+<div class="progress-track" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<article class="card" data-step="1">
+<div class="step-heading"><span class="step-number" aria-hidden="true">1</span><h2 tabindex="-1">Без течения — середина</h2></div>
+<p>Представь озеро. Вода стоит, поэтому лодка движется только благодаря мотору или вёслам.</p>
+<div class="formula"><span data-value="own">12</span> <span class="unit">км/ч — собственная скорость</span></div>
+<p>За один час лодка проходит <strong><span data-value="own">12</span> км</strong>. Скорость относительно воды и скорость относительно берега здесь одинаковы.</p>
+<div class="meaning">Запомни эту середину: <strong><span data-value="own">12</span> км/ч</strong>. С неё будем сравнивать движение по реке.</div>
+</article>
+
+<article class="card" data-step="2" hidden>
+<div class="step-heading"><span class="step-number" aria-hidden="true">2</span><h2 tabindex="-1">По течению — на одну прибавку выше</h2></div>
+<p>Лодка плывёт вправо. Вода тоже движется вправо и помогает лодке. К собственной скорости добавляется <strong>одна скорость течения</strong>.</p>
+<div class="formula"><span data-value="own">12</span> + <span class="current-color" data-value="flow">3</span> = <span data-value="down">15</span> <span class="unit">км/ч</span></div>
+<p>Человек на берегу видит скорость <strong><span data-value="down">15</span> км/ч</strong>. Это скорость лодки <strong>по течению</strong>.</p>
+</article>
+
+<article class="card" data-step="3" hidden>
+<div class="step-heading"><span class="step-number" aria-hidden="true">3</span><h2 tabindex="-1">Против течения — на одну убавку ниже</h2></div>
+<p>Теперь лодка плывёт влево, а вода по-прежнему вправо. Течение мешает. Из собственной скорости вычитается <strong>одна скорость течения</strong>.</p>
+<div class="formula"><span data-value="own">12</span> − <span class="current-color" data-value="flow">3</span> = <span data-value="up">9</span> <span class="unit">км/ч</span></div>
+<p>Человек на берегу видит скорость <strong><span data-value="up">9</span> км/ч</strong>. Это скорость лодки <strong>против течения</strong>.</p>
+<div class="model" aria-labelledby="model-title">
+<h3 id="model-title">Две отдельные поездки по одному часу</h3>
+<p class="small">Сравни одну и ту же лодку в двух поездках. Берег неподвижен. Масштаб расстояний в обеих строках одинаковый.</p>
+<div class="trip">
+<div class="trip-label"><b>По течению → · <span data-value="down">15</span> км/ч</b><span>Пройдено: <strong id="down-distance">0</strong> км</span></div>
+<svg viewBox="0 0 680 95" role="img" aria-label="Лодка движется по течению вправо; путь подписан над рисунком">
+<path d="M20 70H660" stroke="#a7bdb0" stroke-width="4"/><path class="water-line" d="M20 27H660M20 54H660"/>
+<path d="M20 68V85M660 68V85" stroke="#819d89" stroke-width="2"/>
+<g id="down-boat" transform="translate(20 48)"><path d="M-17 0H22L13 14H-8Z" fill="#26755e"/><path d="M-7-13H9V0H-7Z" fill="#d6ee9b" stroke="#26755e" stroke-width="2"/><path d="M-4-9H5" stroke="#26755e" stroke-width="3"/></g>
+</svg>
+<div class="track-caption"><span>Старт · 0 км</span><span id="down-scale">23 км</span></div>
+</div>
+<div class="trip">
+<div class="trip-label"><b>← Против течения · <span data-value="up">9</span> км/ч</b><span>Пройдено: <strong id="up-distance">0</strong> км</span></div>
+<svg viewBox="0 0 680 95" role="img" aria-label="Лодка движется против течения влево; путь подписан над рисунком">
+<path d="M20 70H660" stroke="#a7bdb0" stroke-width="4"/><path class="water-line" d="M20 27H660M20 54H660"/>
+<path d="M20 68V85M660 68V85" stroke="#819d89" stroke-width="2"/>
+<g id="up-boat" transform="translate(660 48) scale(-1 1)"><path d="M-17 0H22L13 14H-8Z" fill="#26755e"/><path d="M-7-13H9V0H-7Z" fill="#d6ee9b" stroke="#26755e" stroke-width="2"/><path d="M-4-9H5" stroke="#26755e" stroke-width="3"/></g>
+</svg>
+<div class="track-caption"><span id="up-scale">23 км</span><span>0 км · Старт</span></div>
+</div>
+<p class="small">Вода в обеих поездках течёт вправо → со скоростью <span data-value="flow">3</span> км/ч.</p>
+<div class="trip-controls"><button id="play-model" type="button" aria-label="Запустить анимацию двух поездок">Запустить</button><button id="rewind-model" type="button">Сначала</button><div class="time-control"><label for="trip-time">Прошло: <output id="time-output" for="trip-time">0 минут</output></label><input id="trip-time" type="range" min="0" max="60" step="1" value="0"></div></div>
+<p class="small">На экране один час сокращён до 8 секунд. Можно поставить на паузу или передвинуть время вручную. Поездки показаны отдельно: расстояние между лодками здесь не сравниваем.</p>
+</div>
+</article>
+
+<article class="card" data-step="4" hidden>
+<div class="step-heading"><span class="step-number" aria-hidden="true">4</span><h2 tabindex="-1">Теперь найдём обе прибавки</h2></div>
+<p>Расположим <strong>скорости</strong> по порядку: против течения, собственная, по течению. Это шкала скоростей в км/ч.</p>
+<div class="line-box" role="img" id="speed-line" aria-label="От 9 до 12 — прибавка 3. От 12 до 15 — ещё прибавка 3. Вся разность равна 6 километрам в час.">
+<div class="line-values"><div><b data-value="up">9</b><span>Против<br>течения</span></div><div><b data-value="own">12</b><span>Собственная<br>скорость</span></div><div><b data-value="down">15</b><span>По<br>течению</span></div></div>
+<div class="number-line"><div class="segment">+<span data-value="flow">3</span></div><div class="segment">+<span data-value="flow">3</span></div></div>
+<div class="brace">Вся разность: <span data-value="flow">3</span> + <span data-value="flow">3</span> = <strong><span data-value="gap">6</span> км/ч</strong></div>
+</div>
+<p><strong>Первая прибавка:</strong> от <span data-value="up">9</span> до <span data-value="own">12</span>. Возвращаем то, что течение отняло при движении против него.</p>
+<p><strong>Вторая прибавка:</strong> от <span data-value="own">12</span> до <span data-value="down">15</span>. Добавляем то, что течение даёт при движении по нему.</p>
+<div class="formula"><span data-value="down">15</span> − <span data-value="up">9</span> = <span data-value="flow">3</span> + <span data-value="flow">3</span> = <span data-value="gap">6</span> <span class="unit">км/ч</span></div>
+<div class="meaning">Течение одно, но мы сравниваем <strong>два изменения</strong>: «минус <span data-value="flow">3</span>» и «плюс <span data-value="flow">3</span>». Поэтому разность содержит две одинаковые части.</div>
+</article>
+
+<article class="card" data-step="5" hidden>
+<div class="step-heading"><span class="step-number" aria-hidden="true">5</span><h2 tabindex="-1">Нужна одна часть — делим на два</h2></div>
+<p>Разность <strong><span data-value="gap">6</span> км/ч</strong> — это две скорости течения. Одна скорость течения в два раза меньше.</p>
+<div class="formula">(<span data-value="down">15</span> − <span data-value="up">9</span>) : 2 = <span data-value="gap">6</span> : 2 = <span data-value="flow">3</span> <span class="unit">км/ч</span></div>
+<div class="meaning"><strong>Сначала найди всю разность. Потом возьми половину.</strong><br>Без деления на два получится удвоенная скорость течения.</div>
+<p>Проверь: <span data-value="up">9</span> + <span data-value="flow">3</span> = <span data-value="own">12</span> и <span data-value="down">15</span> − <span data-value="flow">3</span> = <span data-value="own">12</span>. В обеих поездках получилась та же собственная скорость лодки.</p>
+<p class="small">Складывать скорости и делить на два — другой расчёт: (<span data-value="down">15</span> + <span data-value="up">9</span>) : 2 = <span data-value="own">12</span> км/ч. Так находят <strong>собственную скорость</strong>, середину шкалы.</p>
+</article>
+
+<article class="card" data-step="6" hidden>
+<div class="step-heading"><span class="step-number" aria-hidden="true">6</span><h2 tabindex="-1">Теперь понятна и формула</h2></div>
+<p>Обозначим собственную скорость буквой <strong>v</strong>, скорость течения — буквой <strong>u</strong>.</p>
+<div class="math-note"><div class="math-line">По течению: <strong>v + u</strong></div><div class="math-line">Против течения: <strong>v − u</strong></div><div class="math-line">Разность: <strong>(v + u) − (v − u)</strong></div></div>
+<details class="hint-toggle"><summary>Как раскрыть скобки с минусом?</summary><p>Вычитаем всё выражение в скобках: знак перед каждым его слагаемым меняется.</p><div class="math-line">(v + u) − (v − u) = v + u − v + u</div><p>Вычитание «минус u» даёт «плюс u». На числах: <span data-value="down">15</span> − (<span data-value="own">12</span> − <span data-value="flow">3</span>) = <span data-value="down">15</span> − <span data-value="own">12</span> + <span data-value="flow">3</span> = <span data-value="gap">6</span>.</p></details>
+<div class="formula"><span class="cancel">v</span> + u − <span class="cancel">v</span> + u = u + u = 2u</div>
+<p>Собственная скорость сокращается, остаются <strong>две скорости течения</strong>. Числовая прямая показывает то же самое без букв.</p>
+<div class="meaning">Мы вычитаем <strong>скорости лодки относительно берега</strong>. Результат — разность скоростей в км/ч, а не расстояние между лодками и не сама скорость течения.</div>
+<a href="#practice">Перейти к задачам ↓</a>
+</article>
+<div class="step-nav"><p id="step-status" class="small" aria-live="polite">Открыт шаг 1 из 6</p><button id="next-step" class="primary" type="button">Дальше: по течению</button></div>
+</section>
+
+<section id="practice" class="practice" aria-labelledby="practice-title">
+<div class="eyebrow">Теперь попробуй сам</div><h2 id="practice-title">Найди течение в двух действиях</h2>
+<p>В каждой задаче одна и та же лодка движется по одной реке. Собственная скорость лодки и скорость течения не меняются.</p>
+<p class="small">Можно отвечать с запятой или точкой: например, 2,5. Для половины можно написать и дробь: 1/2. Единицы уже стоят рядом с полем.</p>
+<nav id="task-nav" class="task-nav" aria-label="Выбор задачи"></nav>
+<article class="card" id="task-card" aria-labelledby="task-heading">
+<div class="row between"><span class="tag" id="task-heading">Задача 1 из 10</span><span class="small" id="task-state"></span></div>
+<p id="task-question" class="question"></p>
+<form id="answers" novalidate>
+<div class="answer-row" id="gap-row"><label for="gap-answer">1. На сколько скорость по течению больше скорости против течения?</label><div class="row"><input id="gap-answer" name="gap" type="text" inputmode="decimal" autocomplete="off" aria-describedby="gap-feedback" maxlength="20"><span class="unit">км/ч</span><button type="submit" name="check" value="gap">Проверить разность</button></div><p class="feedback" id="gap-feedback" role="status" aria-live="polite"></p></div>
+<div class="answer-row" id="flow-row"><label for="flow-answer">2. Какова скорость течения?</label><div class="row"><input id="flow-answer" name="flow" type="text" inputmode="decimal" autocomplete="off" aria-describedby="flow-feedback" maxlength="20"><span class="unit">км/ч</span><button type="submit" name="check" value="flow">Проверить течение</button></div><p class="feedback" id="flow-feedback" role="status" aria-live="polite"></p></div>
+</form>
+<details id="task-hint" class="hint-toggle"><summary>Нужна подсказка</summary><p>Представь две одинаковые части на шкале скоростей: от движения против течения до собственной скорости и от собственной до движения по течению.</p><p>Сначала вычти меньшую скорость из большей. Получится <strong>две скорости течения</strong>. Раздели эту разность на 2.</p></details>
+<details id="task-solution" class="hint-toggle"><summary>Разобрать решение по шагам</summary><div class="solution" id="solution-text"></div></details>
+<div class="practice-footer"><span id="practice-progress" class="small" aria-live="polite">Проверено: 0 из 10 задач</span><button id="next-task" type="button" class="primary">Следующая задача →</button></div>
+</article>
+<article class="card remember" id="practice-summary" hidden aria-labelledby="summary-title">
+<h3 id="summary-title" tabindex="-1">Итог тренировки</h3>
+<p id="summary-text"></p>
+<p>Ты тренировал два действия: найти разность скоростей и разделить её на два. Задача отмечается проверенной, только когда оба действия верны.</p>
+<div class="row"><button id="review-tasks" type="button">Вернуться к задачам</button><a href="index.html#lesson=downstream">Продолжить курс по реке →</a></div>
+</article>
+</section>
+
+<aside class="card remember" aria-label="Главная мысль"><h2>Две равные части</h2><p><strong>Скорость по течению − скорость против течения = две скорости течения.</strong></p><p>Чтобы найти одну скорость течения: <strong>вычти и раздели на два</strong>.</p><a href="index.html#lesson=downstream">Продолжить курс: «По течению» →</a></aside>
+<footer class="footer"><p>Это дополнительный тренажёр к курсу движения. Открытые шаги и ответы сохраняются только в этом браузере на этом устройстве. В журнал кабинета результаты этого разбора не отправляются.</p><p id="storage-status" role="status"></p></footer>
+</main>
+
+<script id="river-lab-math">
+(function(root){
+  'use strict';
+  const TASKS = Object.freeze([
+    {down:15,up:9,boat:'Лодка'},
+    {down:18,up:10,boat:'Катер'},
+    {down:14,up:10,boat:'Лодка'},
+    {down:24,up:16,boat:'Катер'},
+    {down:13.5,up:8.5,boat:'Лодка'},
+    {down:16,up:13,boat:'Катер'},
+    {down:8,up:5,boat:'Лодка'},
+    {down:10.5,up:7.5,boat:'Лодка'},
+    {down:19.5,up:14.5,boat:'Катер'},
+    {down:12,up:11,boat:'Лодка'}
+  ].map(Object.freeze));
+  function speeds(own, flow) {
+    if (!Number.isFinite(own) || !Number.isFinite(flow) || flow <= 0 || own <= flow) throw new RangeError('Нужны положительные скорости; лодка должна быть быстрее течения.');
+    return {own:own,flow:flow,down:own+flow,up:own-flow,gap:2*flow};
+  }
+  function parse(value) {
+    const s=String(value).trim().replace(/,/g,'.');
+    if (/^[+-]?\d+(?:\.\d+)?\s*\/\s*[+-]?\d+(?:\.\d+)?$/.test(s)) {
+      const pair=s.split('/').map(Number); return pair[1]===0 ? NaN : pair[0]/pair[1];
+    }
+    return /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s) ? Number(s) : NaN;
+  }
+  function close(a,b) { return Math.abs(a-b)<1e-8; }
+  function check(task,field,raw) {
+    const value=parse(raw), gap=task.down-task.up, flow=gap/2, own=(task.down+task.up)/2;
+    if (!Number.isFinite(value)) return {ok:false,kind:'format'};
+    if (close(value,field==='gap'?gap:flow)) return {ok:true,kind:'correct'};
+    if (value<0) return {ok:false,kind:'negative'};
+    if (field==='flow' && close(value,gap)) return {ok:false,kind:'double'};
+    if (close(value,own)) return {ok:false,kind:'own'};
+    if (close(value,task.down+task.up)) return {ok:false,kind:'sum'};
+    if (field==='gap' && close(value,flow)) return {ok:false,kind:'half'};
+    return {ok:false,kind:'calculation'};
+  }
+  root.RiverLabMath=Object.freeze({speeds:speeds,parse:parse,check:check,tasks:TASKS});
+})(typeof window!=='undefined'?window:globalThis);
+</script>
+<script>
+(function(){
+  'use strict';
+  const M=window.RiverLabMath, KEY='maxim-river-two-currents-v1';
+  const $=id=>document.getElementById(id), fmt=n=>Number(n.toFixed(2)).toLocaleString('ru-RU');
+  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let saved={}, storageOK=true;
+  try { saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; } catch(e) { storageOK=false; }
+  if(typeof saved!=='object'||Array.isArray(saved)) saved={};
+  const validHalf=(n,min,max)=>Number.isFinite(n)&&n>=min&&n<=max&&Number.isInteger(n*2);
+  let own=validHalf(saved.own,6,18)?saved.own:12, flow=validHalf(saved.flow,.5,5)?saved.flow:3;
+  let opened=Number.isInteger(saved.opened)&&saved.opened>=1&&saved.opened<=6?saved.opened:1;
+  let current=Number.isInteger(saved.current)&&saved.current>=0&&saved.current<M.tasks.length?saved.current:0;
+  let answers=M.tasks.map((task,i)=>{
+    const a=Array.isArray(saved.answers)&&saved.answers[i]&&typeof saved.answers[i]==='object'?saved.answers[i]:{};
+    const gap=typeof a.gap==='string'?a.gap.slice(0,20):'',f=typeof a.flow==='string'?a.flow.slice(0,20):'';
+    return {gap:gap,flow:f,gapChecked:a.gapChecked===true&&M.check(task,'gap',gap).ok,flowChecked:a.flowChecked===true&&M.check(task,'flow',f).ok,help:a.help===true};
+  });
+  let minute=0, playing=false, lastFrame=0, frame=0;
+  const nextLabels=['','Дальше: по течению','Дальше: против течения','Дальше: найдём обе прибавки','Дальше: почему делим на два','Дальше: посмотрим на формулу'];
+  function save(){
+    try{localStorage.setItem(KEY,JSON.stringify({own:own,flow:flow,opened:opened,current:current,answers:answers}));storageOK=true;}
+    catch(e){storageOK=false;}
+    $('storage-warning').hidden=storageOK;
+    $('storage-status').textContent=storageOK?'':'Сохранение в браузере недоступно.';
+  }
+  function renderSteps(){
+    document.querySelectorAll('[data-step]').forEach(el=>{el.hidden=Number(el.dataset.step)>opened;});
+    document.querySelectorAll('.progress-track span').forEach((el,i)=>el.classList.toggle('open',i<opened));
+    $('step-status').textContent=opened===6?'Все 6 шагов открыты. Можно вернуться к любому.':'Открыто шагов: '+opened+' из 6';
+    $('next-step').hidden=opened===6;
+    $('next-step').textContent=nextLabels[opened]||'Все шаги открыты';
+  }
+  function drawTime(){
+    const s=M.speeds(own,flow), t=minute/60, scale=23;
+    $('down-boat').setAttribute('transform','translate('+(20+640*s.down*t/scale)+' 48)');
+    $('up-boat').setAttribute('transform','translate('+(660-640*s.up*t/scale)+' 48) scale(-1 1)');
+    $('down-distance').textContent=fmt(s.down*t); $('up-distance').textContent=fmt(s.up*t);
+    $('trip-time').value=String(Math.round(minute));
+    const rounded=Math.round(minute);
+    $('time-output').textContent=rounded===60?'60 минут = 1 час':rounded+' мин';
+    $('trip-time').setAttribute('aria-valuetext',rounded+' минут из 60');
+  }
+  function renderModel(){
+    const s=M.speeds(own,flow);
+    document.querySelectorAll('[data-value]').forEach(el=>{el.textContent=fmt(s[el.dataset.value]);});
+    $('own-speed').value=String(own);$('current-speed').value=String(flow);
+    $('own-output').textContent=fmt(own);$('current-output').textContent=fmt(flow);
+    $('own-speed').setAttribute('aria-valuetext',fmt(own)+' километров в час');
+    $('current-speed').setAttribute('aria-valuetext',fmt(flow)+' километров в час');
+    $('speed-line').setAttribute('aria-label','От '+fmt(s.up)+' до '+fmt(own)+' — прибавка '+fmt(flow)+'. От '+fmt(own)+' до '+fmt(s.down)+' — ещё прибавка '+fmt(flow)+'. Вся разность равна '+fmt(s.gap)+' километрам в час.');
+    drawTime();
+  }
+  function stop(){playing=false;cancelAnimationFrame(frame);$('play-model').textContent='Запустить';$('play-model').setAttribute('aria-label','Запустить анимацию двух поездок');}
+  function tick(now){
+    if(!playing)return;
+    if(lastFrame)minute=Math.min(60,minute+(now-lastFrame)/8000*60);
+    lastFrame=now;drawTime();
+    if(minute>=60){stop();return;}
+    frame=requestAnimationFrame(tick);
+  }
+  $('play-model').addEventListener('click',()=>{if(playing){stop();return;}if(minute>=60)minute=0;playing=true;lastFrame=0;$('play-model').textContent='Пауза';$('play-model').setAttribute('aria-label','Приостановить анимацию двух поездок');frame=requestAnimationFrame(tick);});
+  $('rewind-model').addEventListener('click',()=>{stop();minute=0;drawTime();});
+  $('trip-time').addEventListener('input',e=>{stop();minute=Number(e.target.value);drawTime();});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+  $('own-speed').addEventListener('input',e=>{stop();own=Number(e.target.value);renderModel();save();});
+  $('current-speed').addEventListener('input',e=>{stop();flow=Number(e.target.value);renderModel();save();});
+  $('reset-model').addEventListener('click',()=>{stop();own=12;flow=3;minute=0;renderModel();save();});
+  $('next-step').addEventListener('click',()=>{if(opened>=6)return;opened++;renderSteps();save();const heading=document.querySelector('[data-step="'+opened+'"] h2');heading.focus({preventScroll:true});heading.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});});
+  function taskDone(a){return a.gapChecked&&a.flowChecked;}
+  function renderNav(){
+    const nav=$('task-nav');nav.replaceChildren();
+    answers.forEach((a,i)=>{const b=document.createElement('button');b.type='button';b.textContent=String(i+1);b.className=(i===current?'current ':'')+(taskDone(a)?'solved':'');b.setAttribute('aria-label','Задача '+(i+1)+(taskDone(a)?', оба действия проверены':''));if(i===current)b.setAttribute('aria-current','step');b.addEventListener('click',()=>{current=i;renderTask();save();$('gap-answer').focus({preventScroll:true});});nav.appendChild(b);});
+    const done=answers.filter(taskDone).length;
+    $('practice-progress').textContent=done===M.tasks.length?'Все 10 задач проверены. Можно повторить любую.':'Проверено: '+done+' из '+M.tasks.length+' задач';
+    const a=answers[current];$('task-state').textContent=taskDone(a)?(a.help?'Решено с помощью':'Оба действия верны'):'';
+    const helped=answers.filter(a=>taskDone(a)&&a.help).length;
+    $('summary-text').textContent=(done===M.tasks.length?'Все 10 задач проверены.':'Пока проверено '+done+' из '+M.tasks.length+' задач.')+(helped?' В '+helped+' из проверенных задач открывалась подсказка или разбор.':'')+(done<M.tasks.length?' Можно вернуться к оставшимся задачам.':' Можно вернуться к любой задаче и повторить решение.');
+  }
+  function message(field,result){
+    const t=M.tasks[current],d=t.down-t.up,f=d/2;
+    if(result.ok)return field==='gap'?'Верно: '+fmt(t.down)+' − '+fmt(t.up)+' = '+fmt(d)+' км/ч. Это две скорости течения.':'Верно: '+fmt(d)+' : 2 = '+fmt(f)+' км/ч. Это одна скорость течения.';
+    if(result.kind==='format')return 'Введи число, например 3 или 1,5. Можно написать дробь 1/2. Единицы вводить не нужно.';
+    if(result.kind==='negative')return 'Скорость по течению больше. Вычитай меньшую скорость из большей: разность будет положительной.';
+    if(result.kind==='double')return 'Разность найдена, но в ней две одинаковые части! Раздели '+fmt(d)+' на 2, чтобы получить одну скорость течения.';
+    if(result.kind==='own')return 'Это собственная скорость лодки — середина между двумя скоростями. '+(field==='flow'?'Течение — половина разности, а не половина суммы.':'Сейчас нужна вся разность: вычти меньшую скорость из большей.');
+    if(result.kind==='sum')return 'Ты получил сумму скоростей. Сейчас сравниваем скорости: из '+fmt(t.down)+' вычти '+fmt(t.up)+'.'+(field==='flow'?' Затем раздели результат на 2.':'');
+    if(result.kind==='half')return 'Это уже одна скорость течения. В первом действии нужна вся разность, то есть две такие части: '+fmt(t.down)+' − '+fmt(t.up)+'.';
+    return field==='gap'?'Проверь вычитание: '+fmt(t.down)+' − '+fmt(t.up)+'. Нужна вся разность, пока без деления на 2.':'Найди две равные части: ('+fmt(t.down)+' − '+fmt(t.up)+') : 2. Проверь сначала вычитание, затем деление.';
+  }
+  function showFeedback(field,result){const el=$(field+'-feedback');el.textContent=message(field,result);el.className='feedback '+(result.ok?'success':'error');$(field+'-answer').setAttribute('aria-invalid',result.ok?'false':'true');$(field+'-row').classList.toggle('correct',result.ok);}
+  function renderTask(){
+    const t=M.tasks[current],a=answers[current],d=t.down-t.up,f=d/2,o=(t.down+t.up)/2;
+    $('task-heading').textContent='Задача '+(current+1)+' из '+M.tasks.length;
+    $('task-question').textContent=t.boat+' движется по течению со скоростью '+fmt(t.down)+' км/ч, а против течения — '+fmt(t.up)+' км/ч. Найди скорость течения.';
+    ['gap','flow'].forEach(field=>{$(field+'-answer').value=a[field];$(field+'-feedback').textContent='';$(field+'-feedback').className='feedback';$(field+'-answer').setAttribute('aria-invalid','false');$(field+'-row').classList.remove('correct');if(a[field+'Checked'])showFeedback(field,{ok:true});});
+    $('task-hint').open=false;$('task-solution').open=false;
+    $('solution-text').replaceChildren();
+    const lines=[['1. Вся разность',fmt(t.down)+' − '+fmt(t.up)+' = '+fmt(d)+' км/ч — две скорости течения.'],['2. Одна скорость течения',fmt(d)+' : 2 = '+fmt(f)+' км/ч.'],['3. Проверка',fmt(t.up)+' + '+fmt(f)+' = '+fmt(o)+' и '+fmt(t.down)+' − '+fmt(f)+' = '+fmt(o)+' км/ч. В обе стороны собственная скорость одинакова.']];
+    lines.forEach(pair=>{const p=document.createElement('p'),b=document.createElement('strong');b.textContent=pair[0]+'. ';p.append(b,document.createTextNode(pair[1]));$('solution-text').appendChild(p);});
+    $('next-task').textContent=current===M.tasks.length-1?'Итог тренировки':'Следующая задача →';renderNav();
+  }
+  ['gap','flow'].forEach(field=>{$(field+'-answer').addEventListener('input',e=>{answers[current][field]=e.target.value;answers[current][field+'Checked']=false;$(field+'-row').classList.remove('correct');$(field+'-feedback').textContent='';$(field+'-answer').setAttribute('aria-invalid','false');renderNav();save();});});
+  $('answers').addEventListener('submit',e=>{e.preventDefault();const field=e.submitter&&e.submitter.value==='flow'?'flow':document.activeElement===$('flow-answer')?'flow':'gap';const result=M.check(M.tasks[current],field,$(field+'-answer').value);answers[current][field+'Checked']=result.ok;showFeedback(field,result);renderNav();save();});
+  ['task-solution','task-hint'].forEach(id=>$(id).addEventListener('toggle',()=>{if($(id).open){answers[current].help=true;renderNav();save();}}));
+  $('next-task').addEventListener('click',()=>{if(current===M.tasks.length-1){$('practice-summary').hidden=false;renderNav();$('summary-title').focus({preventScroll:true});$('practice-summary').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});return;}current++;renderTask();save();$('task-card').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});$('gap-answer').focus({preventScroll:true});});
+  $('review-tasks').addEventListener('click',()=>{const next=answers.findIndex(a=>!taskDone(a));current=next===-1?0:next;$('practice-summary').hidden=true;renderTask();save();$('gap-answer').focus({preventScroll:true});$('task-card').scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'});});
+  renderSteps();renderModel();renderTask();save();
+})();
+</script>
+</body>
+</html>
