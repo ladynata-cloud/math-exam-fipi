@@ -36,8 +36,13 @@ jobs:
         # The runner image's preinstalled helper was mode 777. Reinstall its
         # signed distribution package; retain the strict owner/mode gate below.
         run: |
+          curl --fail --silent --show-error --location https://dl.google.com/linux/linux_signing_key.pub -o "$RUNNER_TEMP/google-linux.asc"
+          gpg --show-keys --with-colons "$RUNNER_TEMP/google-linux.asc" | grep -F 'EB4C1BFD4F042F6DDDCCEC917721F63BD38B4796'
+          sudo install -m 0644 "$RUNNER_TEMP/google-linux.asc" /usr/share/keyrings/mathexam-google-linux.asc
+          echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/mathexam-google-linux.asc] https://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/mathexam-google-chrome.list
           sudo apt-get update
           sudo apt-get install --reinstall --no-install-recommends -y google-chrome-stable
+          test "$(stat -c '%u:%g:%a' /opt/google/chrome/chrome-sandbox)" = '0:0:4755'
       - name: Exact arithmetic and unchanged division core
         run: |
           node tools/soviet-math-content.test.cjs
