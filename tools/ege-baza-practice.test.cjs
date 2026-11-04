@@ -67,6 +67,9 @@ const numeric=(r,p)=>{
  case 'river':return p.d1/(p.v+p.u)+p.d2/(p.v-p.u);
  case 'work':return p.a*p.b/(p.a+p.b);
  case 'mixture-water':return (p.m*p.p-p.m*p.q)/p.q;
+ case 'average-three':return sum(p.dist)/sum(p.dist.map((d,i)=>d/p.speed[i]));
+ case 'ring-meeting':return p.L/(p.same?p.fast-p.slow:p.fast+p.slow);
+ case 'ring-route':return p.half-p.ac;
  case 'average-speed':return (2*p.d)/(p.d/p.slow+p.d/p.fast);
  case 'sets':return p.A+p.B-p.total;
  case 'integer-budget':return roots(x=>p.reward*x-p.penalty*(p.n-x)-p.score,0,p.n)[0];
@@ -101,7 +104,7 @@ for(const m of D.practice.catalog){
   const t=D.task(m.id,seed);assert(t.q&&t.steps.length&&t.steps.length<=20);assert.equal(t.pos,m.pos);
   if(t.answerKind==='solutions'){
    const expected=[];
-   for(let n=1000;n<10000;n++){const digits=[...String(n)].map(Number);if(t.reference==='digits-product'?n%12===0&&digits.reduce((a,b)=>a*b,1)===t.params.target:n%t.params.divisor===0&&new Set(digits).size===4&&digits.every(x=>x%2===0))expected.push(String(n));}
+   for(let n=t.reference==='digits-delete'?10000:1000;n<(t.reference==='digits-delete'?100000:10000);n++){const digits=[...String(n)].map(Number);if(t.reference==='digits-delete'?n%22===0&&new RegExp([...String(n)].join('.*')).test(t.params.digits) : t.reference==='digits-product'?n%12===0&&digits.reduce((a,b)=>a*b,1)===t.params.target:n%t.params.divisor===0&&new Set(digits).size===4&&digits.every(x=>x%2===0))expected.push(String(n));}
    assert(expected.length>0);assert.deepEqual(t.solutions,expected);for(const answer of expected)assert(D.correct(t,answer));assert(!D.correct(t,'0'+expected[0]));assert(!D.correct(t,'123'));
   }else{let value=semantic(t);if(value===null)value=numeric(t.reference,t.params);assert(Number.isFinite(value)||typeof value==='string',m.id);assert(D.correct(t,String(value)),m.id+' seed '+seed+': '+value+' vs '+t.answer);if(typeof value==='number')assert(!D.correct(t,String(value+.01)),m.id+' loose answer');}
   for(const step of t.steps){assert(step.q&&step.why);assert(D.correct(step,String(step.a)),m.id+' invalid step');}
