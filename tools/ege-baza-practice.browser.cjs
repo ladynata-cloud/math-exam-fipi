@@ -25,6 +25,6 @@ const server=http.createServer((req,res)=>{let file;try{file=path.resolve(ROOT,'
  const catalog=await (await page.request.get(origin+'/trainers/board-picker-data.json')).json();for(const id of ids)assert(catalog.entries.some(x=>x.href==='/ege-baza/path/index.html#lesson='+id));const board=page.locator('a[href*="trainer-board.html"]');assert((await board.getAttribute('href')).includes('trainer='));
  // Exam representations, completion and export affordance in a real browser.
  await page.goto(base+'#exam');await page.locator('#start').click();for(let i=0;i<21;i++){const t=await page.evaluate(()=>{const r=PathCourse.state().active;return PathData.task(r.ids[r.i],r.seed+r.i);});assert.equal(t.pos,i+1);await page.locator('#answer').fill(String(t.answer));await page.locator('#answer').press('Enter');}await page.waitForSelector('#export');assert((await page.locator('#main').innerText()).includes('21/21'));assert.deepEqual(errors,[]);
- console.log('EGE_BAZA_PRACTICE_BROWSER_OK: Chromium; 75 lesson models; 360/768/1280px; keyboard; exact remediation return; reload; matching; full 21-task exam; board catalog; no page errors.');
+ console.log('EGE_BAZA_PRACTICE_BROWSER_OK: Chromium; 79 lesson models; 360/768/1280px; keyboard; exact remediation return; reload; matching; full 21-task exam; board catalog; no page errors.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());

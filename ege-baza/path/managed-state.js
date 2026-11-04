@@ -20,7 +20,7 @@
       derivative: ['x', 'h'], solid: ['angle', 'tilt', 'cut'],
       iso: ['constructed', 'choicesOpen', 'wrong'], triangle: ['constructed', 'choicesOpen', 'wrong'],
       trapezoid: ['constructed', 'choicesOpen', 'wrong'], chord: ['constructed', 'choicesOpen', 'wrong'], rectangle: ['constructed', 'choicesOpen', 'wrong'],
-      digits: ['kept'], journey: ['part'], ring: ['mode'], line: ['x'], bars: [],
+      digits: ['kept'], journey: ['part'], ring: ['mode'], 'ring-motion': ['time'], line: ['x'], bars: [],
       'fraction-bars': ['selected', 'checked', 'checkedCount'], 'percent-base': ['base', 'experiment', 'percent'],
       'ratio-parts': ['chosen', 'checked', 'checkedCount'], 'polygon-build': ['constructed', 'choice'],
       'interval-signs': ['x'], 'digit-work': ['digits', 'checkedDigits'], 'data-read': ['item'], statements: ['open']
@@ -40,6 +40,7 @@
     else if (v.kind === 'digits') { requireValue(Array.isArray(v.kept) && v.kept.length === m.digits.length && v.kept.every(x => typeof x === 'boolean')); }
     else if (v.kind === 'journey') requireValue(integer(v.part, 1, 3));
     else if (v.kind === 'ring') requireValue(integer(v.mode, 0, 2));
+    else if (v.kind === 'ring-motion') requireValue(number(v.time, 0, 1.5*m.L/(m.same?m.fast-m.slow:m.fast+m.slow)));
     else if (v.kind === 'line') requireValue(number(v.x, m.a - 2, m.b + 2));
     else if (v.kind === 'fraction-bars') { indices(v.selected, m.fractions[0][1]); if (v.checked) requireValue(integer(v.checkedCount, 0, m.fractions[0][1])); }
     else if (v.kind === 'ratio-parts') { indices(v.chosen, m.a + m.b); if (v.checked) requireValue(integer(v.checkedCount, 0, m.a + m.b)); }

@@ -42,7 +42,7 @@ class SourceAndBoundary(unittest.TestCase):
         self.assertEqual(data['source']['sha256'],'3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72')
         self.assertEqual([c['number'] for c in data['cards']],list(range(824,842)))
         self.assertEqual(sum(len(c['steps']) for c in data['cards']),72)
-        self.assertEqual(sum(len(c['model']['views']) for c in data['cards']),92)
+        self.assertEqual(sum(len(c['model']['views']) for c in data['cards']),94)
         for c in data['cards']:
             with self.subTest(number=c['number']):
                 self.assertEqual(c['printedPages'],[214 if c['number']<=834 else 215])
@@ -121,6 +121,12 @@ class MathematicalOracles(unittest.TestCase):
             self.assertAlmostEqual((D[0]-b)/E[0],.25,places=8)
             seen.add(E[0]>C[0])
         self.assertEqual(seen,{True,False})
+        # Exact boundary omitted by a random sample: the intersection E is C.
+        A=(0,0);B=(1,math.sqrt(3));C=(2,0)
+        D=intersect(A,plus(mul(.5,B),(1,0)),B,C)
+        E=intersect(D,plus(D,turn(D)),A,C)
+        self.assertLess(length(sub(E,C)),1e-12)
+        self.assertAlmostEqual(D[0]-1,.5)
     def test_830_strict_median_bounds(self):
         for _ in range(600):
             p=[(0,0),(R.uniform(.1,20),0),(R.uniform(-20,20),R.uniform(.01,20))]
@@ -180,6 +186,15 @@ class MathematicalOracles(unittest.TestCase):
             Q=plus(T,sub(D,C));P=plus(E,sub(K,B));AP=sub(P,A);AQ=sub(Q,A)
             self.assertAlmostEqual(length(AP),length(AQ),places=8);self.assertAlmostEqual(dot(AP,AQ),0,places=7)
             self.assertGreater(length(AP),0)
+            # Independently construct the two successive images of the new
+            # synthetic proof, including both obtuse configurations.
+            O=mid(B,D)
+            clockwise=lambda X: plus(O,mul(-1,turn(sub(X,O))))
+            self.assertLess(length(sub(clockwise(E),B)),1e-10)
+            self.assertLess(length(sub(clockwise(C),D)),1e-10)
+            self.assertLess(length(sub(clockwise(P),A)),1e-10)
+            self.assertLess(length(sub(clockwise(A),Q)),1e-10)
+            self.assertLess(length(sub(mid(P,Q),O)),1e-10)
     def test_840_construction_threshold(self):
         for _ in range(600):
             b=R.uniform(.1,10);a=b+R.uniform(.01,10);x=(a+b)/2;h=R.uniform(.01,10);d=math.hypot(x,h)

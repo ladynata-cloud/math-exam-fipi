@@ -31,13 +31,14 @@ jobs:
           git diff --check
       - name: Build isolated preview, no approval receipt
         run: python3 tools/geometry-textbook/build_advanced8_candidate.py --output "$RUNNER_TEMP/advanced8"
-      - name: All 92 drawings at two widths, strict existing geometry and label gate
+      - name: All 94 drawings at two widths, strict existing geometry and label gate
         env:
           GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/advanced8
           GEOMETRY_TEXTBOOK_FOCUS_SECTION: 8-advanced-824-841
           GEOMETRY_TEXTBOOK_VIEWS_ONLY: '1'
           GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS: 8 класс · повышенная трудность
           GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/advanced8/views
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: node tools/geometry-textbook/browser_check.js
       - name: All new cold links, step journeys, reload, theory return and old saved work
         if: ${{ !cancelled() }}

@@ -54,3 +54,13 @@ must remain unchanged; preview generation writes only to a new external folder.
 Rollback is an ordinary scoped revert, with no pupil-data deletion or migration.
 Implementation, commits, push and Draft PR are authorized by the continuation.
 Publication follows existing policy after applicable review and gates.
+
+## Продолжение 5 ноября 2026
+
+Владелец поручила продолжить тот же PR438, сверить все 18 условий,
+доказательства и случаи, исправить замечания, проверить доску и сохранение.
+Публикация разрешена только после действительного независимого допуска.
+[Предметная сверка](../reviews/ATANASYAN_8_824_841_RECHECK.md) фиксирует полный
+разбор и новые редакции. Статус in-review сохраняется: отдельного проверяющего
+исправленного результата в текущей сессии нет. Это не ожидание разрешения
+на публикацию и не требование внешнего Claude.
