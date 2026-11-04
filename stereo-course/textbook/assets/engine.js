@@ -174,15 +174,13 @@ function createApp(root,options){
   return true;
  }
  function assisted(){state.assisted=true;return save();}
- function sourceText(source){return [companionIdentity(source),companionLocation(source),catalog.book.title,catalog.book.edition,'стр. '+source.printedPages.join(', '),'PDF '+source.pdfPages.join(', ')].filter(Boolean).join(' · ');}
+ function sourceText(source){return [companionIdentity(source),companionLocation(source),'К учебнику «'+catalog.book.title+'»',catalog.book.edition,'стр. '+source.printedPages.join(', '),'PDF '+source.pdfPages.join(', ')].filter(Boolean).join(' · ');}
  function companionNode(lesson,compact=false){
   const box=el('div',undefined,{class:'companion-reference','data-companion-source':lesson.id});
   box.append(el('p',companionIdentity(lesson.source),{class:'companion-identity'}));
-  const content=compact?el('details',undefined,{class:'companion-details'}):box;
-  if(compact)content.append(el('summary','Учебник и источник'));
-  const location=companionLocation(lesson.source);if(location)content.append(el('p',location,{class:'companion-location'}));
-  content.append(el('p','К учебнику «'+catalog.book.title+'» · '+catalog.book.edition+' · стр. '+lesson.source.printedPages.join(', '),{class:'companion-book'}));
-  if(compact){content.append(el('p','Страницы PDF: '+lesson.source.pdfPages.join(', '),{class:'companion-book'}));box.append(content);}
+  if(compact){const details=sourceNode(lesson);details.className='companion-details';details.querySelector('summary').textContent='Источник';details.querySelector('p').className='companion-book';box.append(details);return box;}
+  const location=companionLocation(lesson.source);if(location)box.append(el('p',location,{class:'companion-location'}));
+  box.append(el('p','К учебнику «'+catalog.book.title+'» · '+catalog.book.edition+' · стр. '+lesson.source.printedPages.join(', '),{class:'companion-book'}));
   return box;
  }
  function sourceNode(lesson){const details=el('details');details.append(el('summary','Где это в учебнике?'),el('p',sourceText(lesson.source)));return details;}
@@ -236,12 +234,12 @@ function createApp(root,options){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
   destroyScene();current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
-  const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
+  const back=el('button','← Все материалы',{type:'button','aria-label':'← Все материалы курса'});back.addEventListener('click',home);
   const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,companionNode(lesson,true),el('h1',lesson.title));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
   const prompt=el('div',undefined,{class:'textbook-prompt'});
   prompt.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));prompt.append(list);}prompt.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
-  const figure=el('div',undefined,{class:'textbook-figure'});figure.append(model,el('p',lesson.visualization.caption));
+  const figure=el('div',undefined,{class:'textbook-figure'});figure.append(model);
   main.append(prompt,figure,side);
   if(lesson.answer){
    const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
@@ -264,7 +262,9 @@ function createApp(root,options){
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
-  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});
+  const guide=el('details',undefined,{class:'textbook-model-guide'});guide.append(el('summary','Как работать с рисунком'));for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);guide.append(el('p',lesson.visualization.caption));main.insertBefore(guide,main.querySelector('[data-final-form]'));
+  if(cached&&cached.base!==expected)freeze();
   return true;
  }
  function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
