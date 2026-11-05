@@ -67,8 +67,6 @@ test('OGE12: saturated task stays inert on late join and next task restores edit
 test('OGE13: cancelling a graph drag restores the exact fraction point on both views',async()=>{const a=await load(13),b=await load(13);try{input(a.w,a.d.getElementById('oge-board-type'),'quad:4','change');a.d.getElementById('hintToggle').click();stage(a.d,13).querySelector('[data-lab-action="root"]').click();const svg=stage(a.d,13).querySelector('svg[data-lab-plot]');svg.getBoundingClientRect=()=>({left:0,width:320});svg.dispatchEvent(new a.w.MouseEvent('pointerdown',{clientX:200,button:0,bubbles:true}));svg.dispatchEvent(new a.w.MouseEvent('pointercancel',{bubbles:true}));await tick();assert.match(stage(a.d,13).querySelector('[data-probe-readout]').textContent,/6.*7/);await mirror(a,b,13);}finally{a.w.close();b.w.close();}});
 test('OGE10/12/14: optional model choices, modes, outcomes and hidden state restore',async()=>{for(const n of [10,12,14]){const a=await load(n),b=await load(n);try{stage(a.d,n).querySelector('.minimal-hint').click();const model=stage(a.d,n).querySelector('.oca-exploration');model.querySelector('summary').click();const select=model.querySelector('select');if(select)input(a.w,select,select.options[select.options.length-1].value,'change');for(const range of model.querySelectorAll('input[type=range]'))input(a.w,range,range.max);for(const button of [...model.querySelectorAll('.oca-outcomes button')].filter((_,i)=>i%3===0))button.click();model.querySelector('.oca-choices button')?.click();await tick();await mirror(a,b,n);stage(a.d,n).querySelector('.minimal-hint').click();await tick();await mirror(a,b,n);}finally{a.w.close();b.w.close();}}});
 test('OGE11: multiple retained function models and family changes survive controller handoff',async()=>{const a=await load(11),b=await load(11);try{input(a.w,a.d.getElementById('oge-board-type'),'t42','change');a.d.getElementById('m4-hint').click();for(const family of [...stage(a.d,11).querySelectorAll('[data-family]')]){family.click();for(const range of stage(a.d,11).querySelectorAll('#m4-hintbox input[type=range]'))input(a.w,range,range.max);}for(let i=0;i<3;i++){stage(a.d,11).querySelectorAll('.function-help')[i].click();for(const range of a.d.querySelectorAll('#t11-help-panel input[type=range]'))input(a.w,range,i===1?range.min:range.max);a.d.getElementById('t11-help-start').click();a.d.getElementById('t11-help-close').click();}await tick();await mirror(a,b,11);stage(b.d,11).querySelector('.function-help').click();await tick();await mirror(b,a,11);}finally{a.w.close();b.w.close();}});
-
-
 test('OGE11: reversing a root-shift drag retains the clamped point through handoff and reload',async()=>{
  const a=await load(11),b=await load(11);let reload;
  try{
@@ -120,4 +118,42 @@ test('OGE11: reversing a root-shift drag retains the clamped point through hando
    assert.deepEqual(peer.errors,[]);
   }
  }finally{a.w.close();b.w.close();reload?.w.close();}
+});
+
+test('OGE11: retained shift inputs respect the operation limit and next-task reset',async()=>{
+ const a=await load(11),b=await load(11);
+ try{
+  const originalRandom=a.w.Math.random;
+  try{
+   a.w.Math.random=()=>4162829775/4294967296;
+   input(a.w,a.d.getElementById('oge-board-type'),'t45','change');
+  }finally{a.w.Math.random=originalRandom;}
+  const rootIndex=a.w.eval('M4.task.items.findIndex(item=>item.family==="root")');
+  assert.notEqual(rootIndex,-1);
+  a.d.querySelector('#m4-desc .function-help[data-i="'+rootIndex+'"]').click();
+  const shift=a.d.getElementById('t11-help-param-c');
+  const remaining=320-a.w.getBoardTrainerState().actions.length;
+  for(let i=0;i<remaining;i++)input(a.w,shift,i%2?'-4':'4');
+  await tick();
+  assert.equal(a.w.getBoardTrainerState().actions.length,320);
+  assert.equal(stage(a.d,11).inert,true);
+  assert.equal(a.d.getElementById('oge-board-limit').hidden,false);
+  let echoes=0;b.w.__boardSpec.subscribe(()=>echoes++);
+  await mirror(a,b,11);
+  assert.equal(echoes,0);
+  assert.equal(stage(b.d,11).inert,true);
+  assert.equal(b.d.getElementById('oge-board-limit').hidden,false);
+  assert.equal(b.d.getElementById('t11-help-x').value,'4');
+  assert.equal(b.d.getElementById('t11-help-graph').innerHTML,a.d.getElementById('t11-help-graph').innerHTML);
+  a.d.querySelector('#oge-board-toolbar>button').click();await tick();
+  await mirror(a,b,11);
+  assert.equal(echoes,0);
+  for(const peer of [a,b]){
+   assert.equal(peer.w.getBoardTrainerState().actions.length,0);
+   assert.equal(stage(peer.d,11).inert,false);
+   assert.equal(peer.d.getElementById('oge-board-limit').hidden,true);
+   assert.deepEqual(peer.storage,[]);
+   assert.deepEqual(peer.errors,[]);
+  }
+ }finally{a.w.close();b.w.close();}
 });
