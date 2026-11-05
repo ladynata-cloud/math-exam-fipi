@@ -121,13 +121,33 @@ jobs:
         run: node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-basics-inventory.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-percentages-contextual.test.cjs tools/division-lab.test.cjs tools/division-guided.test.cjs tools/arithmetic-url-contract.test.cjs
       - name: Complete recorded learner scenarios on source and fixed copies
         run: |
+          # Independent editions use distinct output directories and local ports.
+          # Run all six commands; wait for every group and preserve any failure.
+          (
+            group_status=0
+            node tools/oge-book-basics.browser.cjs || group_status=1
+            node tools/oge-book-exam.browser.cjs || group_status=1
+            exit "$group_status"
+          ) &
+          source_pid=$!
+          (
+            group_status=0
+            BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-basics.browser.cjs || group_status=1
+            BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-exam.browser.cjs || group_status=1
+            exit "$group_status"
+          ) &
+          v1_pid=$!
+          (
+            group_status=0
+            BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_BASICS_OUTPUT=artifacts/book-audit-basics/frozen-v2 node tools/oge-book-basics.browser.cjs || group_status=1
+            BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_EXAM_OUTPUT=artifacts/book-audit-exam/frozen-v2 node tools/oge-book-exam.browser.cjs || group_status=1
+            exit "$group_status"
+          ) &
+          v2_pid=$!
           status=0
-          node tools/oge-book-basics.browser.cjs || status=1
-          node tools/oge-book-exam.browser.cjs || status=1
-          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-basics.browser.cjs || status=1
-          BOOK_PREFIX=/book/oge/2026-10-31/v1 node tools/oge-book-exam.browser.cjs || status=1
-          BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_BASICS_OUTPUT=artifacts/book-audit-basics/frozen-v2 node tools/oge-book-basics.browser.cjs || status=1
-          BOOK_PREFIX=/book/oge/2026-10-31/v2 BOOK_EXAM_OUTPUT=artifacts/book-audit-exam/frozen-v2 node tools/oge-book-exam.browser.cjs || status=1
+          wait "$source_pid" || status=1
+          wait "$v1_pid" || status=1
+          wait "$v2_pid" || status=1
           exit "$status"
       - name: Independently recompute the recorded mathematics
         run: python3 tools/oge-book-exam-math.py --variants source frozen frozen-v2
