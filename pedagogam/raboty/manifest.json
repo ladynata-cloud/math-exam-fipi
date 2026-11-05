@@ -1,0 +1,3247 @@
+[
+  {
+    "id": "arith-add-subtract",
+    "title": "Сложение и вычитание натуральных чисел",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-add-subtract/samostoyatelnaya.pdf",
+        "sha256": "11ffcdbbc549a001e4ba5ea02a1005b60db4a5b70f9dc1cdf14eaaba18276ed9"
+      },
+      {
+        "path": "arith-add-subtract/samostoyatelnaya-otvety.pdf",
+        "sha256": "04d98f37ab8f05ec4eafcf6e801b2d713de43aa1a72ad49cb7bd2f37171f0a45"
+      },
+      {
+        "path": "arith-add-subtract/kontrolnaya.pdf",
+        "sha256": "f98c3195f73d01c86822d46eb6e14714c2b41c310aa7533fa867ddd7d3dc2878"
+      },
+      {
+        "path": "arith-add-subtract/kontrolnaya-otvety.pdf",
+        "sha256": "410e09428b7352e8f41b3b2c7399124c55a73f20fa493bf8e3a12a8ec2fbce81"
+      }
+    ]
+  },
+  {
+    "id": "arith-decimal-rounding",
+    "title": "Сравнение и округление десятичных дробей",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-decimal-rounding/samostoyatelnaya.pdf",
+        "sha256": "15fc119157b0cfd4711b948854116c4f9f13bfe4c083b3a566421411aee8cc0e"
+      },
+      {
+        "path": "arith-decimal-rounding/samostoyatelnaya-otvety.pdf",
+        "sha256": "b5670bf15ab2eed29cb8c233762e2c029f9d8f3235a44b331279aa3e5da0c3ef"
+      },
+      {
+        "path": "arith-decimal-rounding/kontrolnaya.pdf",
+        "sha256": "62089d462c1cd20280e97d724ce685336361aa0d0665af2aa645c1d2ec7cda03"
+      },
+      {
+        "path": "arith-decimal-rounding/kontrolnaya-otvety.pdf",
+        "sha256": "4ad124b7de19cb7f53703ec669520c7277e2074f740114e4dc71af8b352c521f"
+      }
+    ]
+  },
+  {
+    "id": "arith-decimals",
+    "title": "Действия с десятичными дробями",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-decimals/samostoyatelnaya.pdf",
+        "sha256": "7d8e020d316121f6bb16859e030f5736f9240b332bb03f867251b15c7ecc48e1"
+      },
+      {
+        "path": "arith-decimals/samostoyatelnaya-otvety.pdf",
+        "sha256": "1a7ec6dd63e6068e5653ca115c7000c97aefc8506f26b998231e9c6d0c86daca"
+      },
+      {
+        "path": "arith-decimals/kontrolnaya.pdf",
+        "sha256": "bf193a285908b0e766331f1821f279a1cb056301d9e05bd1d5507889d4287b55"
+      },
+      {
+        "path": "arith-decimals/kontrolnaya-otvety.pdf",
+        "sha256": "ddfbaf448a6edb357172622053b68e36af2d0a5f5b5481dc27e0b738bf6f9edf"
+      }
+    ]
+  },
+  {
+    "id": "arith-divisibility",
+    "title": "Делители, кратные и признаки делимости",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-divisibility/samostoyatelnaya.pdf",
+        "sha256": "d8ec3dd1820ab2b99a941bb62f1a80ae317433e682061bf54ae385fa45122da2"
+      },
+      {
+        "path": "arith-divisibility/samostoyatelnaya-otvety.pdf",
+        "sha256": "9593eb809da30215de784a460daa91550c105d2ace39ecc4ce96412fa727186c"
+      },
+      {
+        "path": "arith-divisibility/kontrolnaya.pdf",
+        "sha256": "539f1dc2a4938c0fd96b1d758103bc64023d61214390179808723cd43a03563b"
+      },
+      {
+        "path": "arith-divisibility/kontrolnaya-otvety.pdf",
+        "sha256": "4a0f206771263c6cea19a5d5199ace37457fcb7409639bff7853bb589659347d"
+      }
+    ]
+  },
+  {
+    "id": "arith-expressions-equations",
+    "title": "Буквенные выражения и простые уравнения",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-expressions-equations/samostoyatelnaya.pdf",
+        "sha256": "0fc193bd4f9c64befabfa371ce97d73a37fe4bb47012b43dca1a78d89a388d6c"
+      },
+      {
+        "path": "arith-expressions-equations/samostoyatelnaya-otvety.pdf",
+        "sha256": "fb755bd06eb676f0f9ce948eb1bbd8cadc25c3d62a6042e5321c54eaa222272d"
+      },
+      {
+        "path": "arith-expressions-equations/kontrolnaya.pdf",
+        "sha256": "56a90de453b31519e95c235efc1c9c037b41ce6e370794338eb05f916397681d"
+      },
+      {
+        "path": "arith-expressions-equations/kontrolnaya-otvety.pdf",
+        "sha256": "63cee8a0035749473097b04a4f29f4fd04e6e1a15a2b2de9d9d748ba6782ac53"
+      }
+    ]
+  },
+  {
+    "id": "arith-fraction-add-subtract",
+    "title": "Сложение и вычитание обыкновенных дробей",
+    "grade": "5–6 классы",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-fraction-add-subtract/samostoyatelnaya.pdf",
+        "sha256": "004a72ed4c0ca6f0c8c69f71b3ce42d1d22d165fb1a87d260dc596b2f6764071"
+      },
+      {
+        "path": "arith-fraction-add-subtract/samostoyatelnaya-otvety.pdf",
+        "sha256": "a0c63041a3ddd79685a6350ac5a816b9927202cf48ce35fe634a3f4acfc87f02"
+      },
+      {
+        "path": "arith-fraction-add-subtract/kontrolnaya.pdf",
+        "sha256": "fffefaae5794b68cf9ccbdfddb55d6d70279b33ae3a1a9189cdb3018b72f661a"
+      },
+      {
+        "path": "arith-fraction-add-subtract/kontrolnaya-otvety.pdf",
+        "sha256": "a352355a2910a28923e064e247f4805b85d8d79147482fb83af7d34682935304"
+      }
+    ]
+  },
+  {
+    "id": "arith-fraction-meaning",
+    "title": "Доли, равные дроби и сравнение",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-fraction-meaning/samostoyatelnaya.pdf",
+        "sha256": "5bfa100c9f05a1f1d40077fb7f7a41edb35fa36903861b0eb34303cb5d708a45"
+      },
+      {
+        "path": "arith-fraction-meaning/samostoyatelnaya-otvety.pdf",
+        "sha256": "3d19d0d9ede3c3c13947b5acb648d597c59d6361fe733f21abe0d1b625f90e5f"
+      },
+      {
+        "path": "arith-fraction-meaning/kontrolnaya.pdf",
+        "sha256": "6e046d1206c95e128847f2a3bf1a044359b58b69c13640518c9708b6935b82ee"
+      },
+      {
+        "path": "arith-fraction-meaning/kontrolnaya-otvety.pdf",
+        "sha256": "3a992b38ec35bcee8a659aec7b5dcafb76f50b29b734202e857bb3b5174d4397"
+      }
+    ]
+  },
+  {
+    "id": "arith-fraction-multiply-divide",
+    "title": "Умножение и деление обыкновенных дробей",
+    "grade": "5–6 классы",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-fraction-multiply-divide/samostoyatelnaya.pdf",
+        "sha256": "1f427fba07a64761adbdd7c734effb73054b0517f84f48dd93a6452abe289024"
+      },
+      {
+        "path": "arith-fraction-multiply-divide/samostoyatelnaya-otvety.pdf",
+        "sha256": "9ad28923985e53a59c6c933b0b5933780f92a8ad6b4453c1d7622dc35aa46d8d"
+      },
+      {
+        "path": "arith-fraction-multiply-divide/kontrolnaya.pdf",
+        "sha256": "2cc6539ddc0fb702c4605dcf76cbe734821b2fcca054fc1f30cd3b36450b07c5"
+      },
+      {
+        "path": "arith-fraction-multiply-divide/kontrolnaya-otvety.pdf",
+        "sha256": "382b65ba3ac81869e6b084ead877ef7b6fb81ced500574e7fb180bbc0dfe0a2a"
+      }
+    ]
+  },
+  {
+    "id": "arith-fraction-part-whole",
+    "title": "Нахождение дроби от числа и числа по его дроби",
+    "grade": "5–6 классы",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-fraction-part-whole/samostoyatelnaya.pdf",
+        "sha256": "fe2217e6cd42dc593c14212dfb11efd583b3e397742d004ed6db91b5b6b66611"
+      },
+      {
+        "path": "arith-fraction-part-whole/samostoyatelnaya-otvety.pdf",
+        "sha256": "f4686f0f897f56a849413500333d6236f20c77f0a82453e3a13b9f56662dd0d0"
+      },
+      {
+        "path": "arith-fraction-part-whole/kontrolnaya.pdf",
+        "sha256": "112daae00ead127a8c50525ca075533e106f922afb68c4fbd2cc8e6a9c32eecb"
+      },
+      {
+        "path": "arith-fraction-part-whole/kontrolnaya-otvety.pdf",
+        "sha256": "24bd3369057e393bf213b0d992f009bb2310158aaeb05611f9716bb7236dbbd8"
+      }
+    ]
+  },
+  {
+    "id": "arith-gcd-lcm",
+    "title": "Наибольший общий делитель и наименьшее общее кратное",
+    "grade": "5–6 классы",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-gcd-lcm/samostoyatelnaya.pdf",
+        "sha256": "289992a3850376f79f466e3d101f8f6f2c13c6de639098088ac7f54e12ebd621"
+      },
+      {
+        "path": "arith-gcd-lcm/samostoyatelnaya-otvety.pdf",
+        "sha256": "d98c48c54d2eb0437f7274648b0ccdb90434c6b2b6cf61236d6c4fea4676b1c9"
+      },
+      {
+        "path": "arith-gcd-lcm/kontrolnaya.pdf",
+        "sha256": "88f4237485372be4aaecf15d232b60347286449545209487b7119960cd9e490e"
+      },
+      {
+        "path": "arith-gcd-lcm/kontrolnaya-otvety.pdf",
+        "sha256": "3e229ddc6fcdcdb00ff5823f47018b2794fa54abec28ad5d6df746c07c23da79"
+      }
+    ]
+  },
+  {
+    "id": "arith-multiply-divide",
+    "title": "Умножение, деление и деление с остатком",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-multiply-divide/samostoyatelnaya.pdf",
+        "sha256": "6eb9cd32921eaa4374e5354ac832e094208af3f57d02ac92cae9c64d5cb798a0"
+      },
+      {
+        "path": "arith-multiply-divide/samostoyatelnaya-otvety.pdf",
+        "sha256": "a7ebad74b80204975e95f6a39e4b162ac9c9231ece03c576903d13e6d8845acf"
+      },
+      {
+        "path": "arith-multiply-divide/kontrolnaya.pdf",
+        "sha256": "01faa4f97c516951d34a57b56a37bda221edcc73d039598ce35c20c2eaa9d159"
+      },
+      {
+        "path": "arith-multiply-divide/kontrolnaya-otvety.pdf",
+        "sha256": "cdcf9e0a39083cdb48e4963d4816f6bf6b96a554fe5183dc0ad95bce3c72a460"
+      }
+    ]
+  },
+  {
+    "id": "arith-numbers",
+    "title": "Натуральные числа, разряды и сравнение",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-numbers/samostoyatelnaya.pdf",
+        "sha256": "776a818b32fd45cbacb2f58c3d619c0adb0391dd8c61103a1ac65f83ac882c8b"
+      },
+      {
+        "path": "arith-numbers/samostoyatelnaya-otvety.pdf",
+        "sha256": "2bf45e87c31d61cae02726308538be7db6a05dcbf255aeca65b832924b3fc057"
+      },
+      {
+        "path": "arith-numbers/kontrolnaya.pdf",
+        "sha256": "22ea908fbda5d7888d54d2c7cfbe4058b50da3746e1319c97116e055b6967765"
+      },
+      {
+        "path": "arith-numbers/kontrolnaya-otvety.pdf",
+        "sha256": "a0a078b138bf6ed3d22e0be41c9f3a6f3f4531005f0999dae33143a9a0c9c33a"
+      }
+    ]
+  },
+  {
+    "id": "arith-order-powers",
+    "title": "Порядок действий и степень числа",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023",
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-order-powers/samostoyatelnaya.pdf",
+        "sha256": "d06f47750b822b2d7008b3580ae49dae161649847d11e4b6435d8081fffed072"
+      },
+      {
+        "path": "arith-order-powers/samostoyatelnaya-otvety.pdf",
+        "sha256": "a4307b7e5442b804a1048478069e8c12ac2922dcaf838e83e8082ca514e64d91"
+      },
+      {
+        "path": "arith-order-powers/kontrolnaya.pdf",
+        "sha256": "0933854a702e4a3037e8e9d725f412d26655e47010b45ca1f0c0bc9fcec63cb6"
+      },
+      {
+        "path": "arith-order-powers/kontrolnaya-otvety.pdf",
+        "sha256": "25acc6d84865a38d8372de76203e0ea5f2b4d0982f93f26ac3e7bcdb09d1949f"
+      }
+    ]
+  },
+  {
+    "id": "arith-rectangle-area",
+    "title": "Периметр и площадь прямоугольника. Единицы площади",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-rectangle-area/samostoyatelnaya.pdf",
+        "sha256": "d8e9c756db3de076d5d9bf8a019d69d1f0839f31bb285dea41a37ee589b91da8"
+      },
+      {
+        "path": "arith-rectangle-area/samostoyatelnaya-otvety.pdf",
+        "sha256": "0d846c78d280b531d280777b922d8a358bb94d99c808a2f46562cb946ec38d19"
+      },
+      {
+        "path": "arith-rectangle-area/kontrolnaya.pdf",
+        "sha256": "8e8b2d0d946b05abb1fa8dcc14a4476591d6598daa45e376c1ea7057fe14cbfd"
+      },
+      {
+        "path": "arith-rectangle-area/kontrolnaya-otvety.pdf",
+        "sha256": "a96da5e7e6afcbb5884daf4e1739342d508c3f2e2c0796b91a3a21d422226349"
+      }
+    ]
+  },
+  {
+    "id": "arith-statements-negation",
+    "title": "Высказывания, отрицания и контрпримеры",
+    "grade": "5–6 классы",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019",
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-statements-negation/samostoyatelnaya.pdf",
+        "sha256": "65adb76f43295cebecb087557018fc25f0c349cddaecacbef05195bdbf5fb436"
+      },
+      {
+        "path": "arith-statements-negation/samostoyatelnaya-otvety.pdf",
+        "sha256": "edd180168e53ba58eeea9a843f293d8fd9b3112c18e32a662a1010946b84db06"
+      },
+      {
+        "path": "arith-statements-negation/kontrolnaya.pdf",
+        "sha256": "2cd747544828cfc042f6163feb61ca92555666b44b41c5cd2741266c420a0257"
+      },
+      {
+        "path": "arith-statements-negation/kontrolnaya-otvety.pdf",
+        "sha256": "714d8cd9988097c0edea8aae6b711449053701a78f992c24ca9ed1c84e48138c"
+      }
+    ]
+  },
+  {
+    "id": "arith-tables-diagrams",
+    "title": "Числовые данные и построение диаграммы",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-tables-diagrams/samostoyatelnaya.pdf",
+        "sha256": "6818116440cfe2744cf14979cf66cb98758e00ed7dbdc83415c90034c57ba334"
+      },
+      {
+        "path": "arith-tables-diagrams/samostoyatelnaya-otvety.pdf",
+        "sha256": "47181cdbfef3e684d0afa52ebbeefdac20a4e678d780689e664c1e7ce9a491c0"
+      },
+      {
+        "path": "arith-tables-diagrams/kontrolnaya.pdf",
+        "sha256": "cde14e6f3dc1c0c6b35de6e3b9b9a70c10d57c1ec2469488e6add4588c8c274f"
+      },
+      {
+        "path": "arith-tables-diagrams/kontrolnaya-otvety.pdf",
+        "sha256": "efd5880e9093a014861f7c983719b512311eee791d1fddb2a7060e48eb58be25"
+      }
+    ]
+  },
+  {
+    "id": "arith-volume",
+    "title": "Прямоугольный параллелепипед и объём",
+    "grade": "5 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 5 класс. 2023"
+    ],
+    "files": [
+      {
+        "path": "arith-volume/samostoyatelnaya.pdf",
+        "sha256": "682cdd0155666eff035efd06e90756c65bace3178d4c7a13533043f37bfc0f64"
+      },
+      {
+        "path": "arith-volume/samostoyatelnaya-otvety.pdf",
+        "sha256": "84c79bdf0597fc8b9afeed515c5b528aa6b63b1f204cc03c509b5381be1de04e"
+      },
+      {
+        "path": "arith-volume/kontrolnaya.pdf",
+        "sha256": "494ce6c0680425aabd22a9de0f750276707d5b1b64f329ee7c452cbaf3eda179"
+      },
+      {
+        "path": "arith-volume/kontrolnaya-otvety.pdf",
+        "sha256": "7098d6c8a9caa5e69073022b96651becc2043c91d5fa38118fd736aa54285018"
+      }
+    ]
+  },
+  {
+    "id": "arith-brackets-like-terms",
+    "title": "Раскрытие скобок и приведение подобных слагаемых",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-brackets-like-terms/samostoyatelnaya.pdf",
+        "sha256": "349328bf64d66a8a02a9db776232eeac3e5e32e85718cffb539a1ca6a8721764"
+      },
+      {
+        "path": "arith-brackets-like-terms/samostoyatelnaya-otvety.pdf",
+        "sha256": "f50a5b0bdf402634cc9b989a7b621a5c2c9cf3654a22e012bdce1c1050f099ec"
+      },
+      {
+        "path": "arith-brackets-like-terms/kontrolnaya.pdf",
+        "sha256": "3ff008b8fb1b36960942290563bbf0926dc515ac194d4c50b7a5ee49aa8b7411"
+      },
+      {
+        "path": "arith-brackets-like-terms/kontrolnaya-otvety.pdf",
+        "sha256": "53f1473dc94f2a278adcaf201ca0666d7aefff604deb1bfc43637e5b81c60277"
+      }
+    ]
+  },
+  {
+    "id": "arith-circle",
+    "title": "Длина окружности и площадь круга",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-circle/samostoyatelnaya.pdf",
+        "sha256": "dc4e6be8da9354e8ede07c07c5c389403661a24111b92309432f94a4182e96eb"
+      },
+      {
+        "path": "arith-circle/samostoyatelnaya-otvety.pdf",
+        "sha256": "dd9bac5124ea648627382b93005b57e2a579e476c05c880c9530b3e68042bf6a"
+      },
+      {
+        "path": "arith-circle/kontrolnaya.pdf",
+        "sha256": "ece2a1baa5fbff703b29b0e053ab25210c47cb0c7b9842fd0139dac141b97b05"
+      },
+      {
+        "path": "arith-circle/kontrolnaya-otvety.pdf",
+        "sha256": "47b123fa35162e8af94490c011cb27f3f4b4693c995113d9eaaec7389cf9eaf6"
+      }
+    ]
+  },
+  {
+    "id": "arith-coordinates-plane",
+    "title": "Координаты на плоскости",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-coordinates-plane/samostoyatelnaya.pdf",
+        "sha256": "8552894817f4cb50eec23ccc89b3e49b7d2d94c1489ace9769e075892bb4b62f"
+      },
+      {
+        "path": "arith-coordinates-plane/samostoyatelnaya-otvety.pdf",
+        "sha256": "6811b562bf6bdedb09aea7306003835bb47a1890858bcace609ea4ad2297753a"
+      },
+      {
+        "path": "arith-coordinates-plane/kontrolnaya.pdf",
+        "sha256": "91bf802eadcfe817b9165b1862f966e3173b94625a00a3da0a9a63aa430868c1"
+      },
+      {
+        "path": "arith-coordinates-plane/kontrolnaya-otvety.pdf",
+        "sha256": "8fdcf9b328fc9b82e22c97cc84da2f41f429585f37c075135884dc8f38a9c0e2"
+      }
+    ]
+  },
+  {
+    "id": "arith-equations6",
+    "title": "Линейные уравнения и простая задача через неизвестную",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-equations6/samostoyatelnaya.pdf",
+        "sha256": "0028a813b9348657df474d449259d00281a2d12660496021b2c6d70a3893d7c1"
+      },
+      {
+        "path": "arith-equations6/samostoyatelnaya-otvety.pdf",
+        "sha256": "0b5da320cc6c90a05cf932998663856fb3a7b0a85e5b75a08f091928d85073ae"
+      },
+      {
+        "path": "arith-equations6/kontrolnaya.pdf",
+        "sha256": "abe44732f3c202a12d406b375cf8bf0bb233009abe17fac0df625752515f1812"
+      },
+      {
+        "path": "arith-equations6/kontrolnaya-otvety.pdf",
+        "sha256": "cb067d015248ad2abfbd9b3cb67a8e8e517a553ec1a2e2b68befae1c4da78e2f"
+      }
+    ]
+  },
+  {
+    "id": "arith-mean",
+    "title": "Среднее арифметическое",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-mean/samostoyatelnaya.pdf",
+        "sha256": "69937ab8fecc0fc71cd5e558d244b6fa00e1cfe64b3f68d9fe073983b9b6b338"
+      },
+      {
+        "path": "arith-mean/samostoyatelnaya-otvety.pdf",
+        "sha256": "38adb6a6f636e32e1f350f429b69160c466df04b6504df7fdc92cbb35960e224"
+      },
+      {
+        "path": "arith-mean/kontrolnaya.pdf",
+        "sha256": "4b08ee2c7d7b18064e7f9fdbefcf107c0a3503c4acbe6e9821ba90b5897c7b6e"
+      },
+      {
+        "path": "arith-mean/kontrolnaya-otvety.pdf",
+        "sha256": "9375ae2d771e36bb49bb7c54f532c0011fce1c03b435c883a99d35176a49fbfe"
+      }
+    ]
+  },
+  {
+    "id": "arith-mixed-fractions",
+    "title": "Совместные действия с обыкновенными и десятичными дробями",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-mixed-fractions/samostoyatelnaya.pdf",
+        "sha256": "9d8e14aa2936b039423a2ac45fb826eee7402508c92fb0deb792236062f4440b"
+      },
+      {
+        "path": "arith-mixed-fractions/samostoyatelnaya-otvety.pdf",
+        "sha256": "18820aeb8e11ed9ddcca868ae53866ec02e12aa4941c9fb45b6c919841b56aa3"
+      },
+      {
+        "path": "arith-mixed-fractions/kontrolnaya.pdf",
+        "sha256": "6b52c9d8eb067a1fcad89a37a702bb1f281437a94fde7a41d6b8845c198dbd8c"
+      },
+      {
+        "path": "arith-mixed-fractions/kontrolnaya-otvety.pdf",
+        "sha256": "96bf10e7f5ff32832bcc4d2cd3eced611ff7f1d57135e93446ce94d17137eab9"
+      }
+    ]
+  },
+  {
+    "id": "arith-percent",
+    "title": "Простые задачи на проценты",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024",
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-percent/samostoyatelnaya.pdf",
+        "sha256": "dccdef15230356d20131b1f8038c0756622f3092ae6019197ef73d7a4a64dc6d"
+      },
+      {
+        "path": "arith-percent/samostoyatelnaya-otvety.pdf",
+        "sha256": "63d0ac9c4ab3ea96f4149ed4c609fb4db25813362afa9514d23525a622414aeb"
+      },
+      {
+        "path": "arith-percent/kontrolnaya.pdf",
+        "sha256": "3d64e1f73432ef8604b0cd11d37cff283662679f7dd72a35738d571eaf2eaa42"
+      },
+      {
+        "path": "arith-percent/kontrolnaya-otvety.pdf",
+        "sha256": "4cb501a15395d0fd06892ab5dc2b1c0e4089c33106a004a9480906c9c689fd72"
+      }
+    ]
+  },
+  {
+    "id": "arith-percent-growth",
+    "title": "Простой и сложный процентный рост: первые задачи",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-percent-growth/samostoyatelnaya.pdf",
+        "sha256": "5b7b2d3a17df2e75cb52f0ce99126c62252d4e87985ebc5e3ba0659d4fe9423d"
+      },
+      {
+        "path": "arith-percent-growth/samostoyatelnaya-otvety.pdf",
+        "sha256": "0dc526c6c81d4d8e4d8a0984cc813e72aa344e8a0f8117af028427a70e4eebda"
+      },
+      {
+        "path": "arith-percent-growth/kontrolnaya.pdf",
+        "sha256": "cf3f8e3026f34173ecab35c375c468530812c0053cdb4d5ed32e24141ec32339"
+      },
+      {
+        "path": "arith-percent-growth/kontrolnaya-otvety.pdf",
+        "sha256": "6f28a6718b2a6d0c204dd5dfc7859fa346618d16366ab26c23f8aaf7cac83a83"
+      }
+    ]
+  },
+  {
+    "id": "arith-ratio-proportion",
+    "title": "Отношения, пропорции и пропорциональные зависимости",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-ratio-proportion/samostoyatelnaya.pdf",
+        "sha256": "66c3f741a6c97a2d3fdb8ba195a74c2feb1aed85e8088bcae043304cbba3bbdd"
+      },
+      {
+        "path": "arith-ratio-proportion/samostoyatelnaya-otvety.pdf",
+        "sha256": "7018e06a250b92ae08616b3753d65e5e57f6f3afbada01036062f56a19bf3d43"
+      },
+      {
+        "path": "arith-ratio-proportion/kontrolnaya.pdf",
+        "sha256": "41a25d64be4b47fb1a60107a926f1d10f97e9c3738ed2f1060a84b1890e5be50"
+      },
+      {
+        "path": "arith-ratio-proportion/kontrolnaya-otvety.pdf",
+        "sha256": "ab46c2e718e5ddd13d477320166f71927380804754fcf94e7c6c8e0aeaa5c59e"
+      }
+    ]
+  },
+  {
+    "id": "arith-river",
+    "title": "Движение по реке",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-river/samostoyatelnaya.pdf",
+        "sha256": "03e2c94e812cd21edee5469192aeffa816be0864f7548357be9b9325cfdd0677"
+      },
+      {
+        "path": "arith-river/samostoyatelnaya-otvety.pdf",
+        "sha256": "49d41507a430818f47fbd0f606f54426feff1cdd475172faeff1f43442245d33"
+      },
+      {
+        "path": "arith-river/kontrolnaya.pdf",
+        "sha256": "dd7d725d946799169009e7d69d85385832d1d7ee61a2e593dcf22411aac735f7"
+      },
+      {
+        "path": "arith-river/kontrolnaya-otvety.pdf",
+        "sha256": "c56ec0a3c3bcbcbb4e40178193b60fb697c1c387e30de087c2ec8c08bafcfec4"
+      }
+    ]
+  },
+  {
+    "id": "arith-scale",
+    "title": "Масштаб и простые измерения по плану",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-scale/samostoyatelnaya.pdf",
+        "sha256": "89ebb08a4bf5162db6dc5e21256a58a46f14ca839540c0ff89cf284204220a2d"
+      },
+      {
+        "path": "arith-scale/samostoyatelnaya-otvety.pdf",
+        "sha256": "4ce01a3963a9be5289c297345db06d608d70a291757ec9d8b8da9bacdd535900"
+      },
+      {
+        "path": "arith-scale/kontrolnaya.pdf",
+        "sha256": "c288295c67992475d7e51d9b3719a6bfbdacc432fdd937c4af850d2f609315f9"
+      },
+      {
+        "path": "arith-scale/kontrolnaya-otvety.pdf",
+        "sha256": "ac7b1743ce60f37c9e954baf6e5b2d4a3fb91905dd87f02d3ee439a8277e1469"
+      }
+    ]
+  },
+  {
+    "id": "arith-sets",
+    "title": "Множества и их элементы",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-sets/samostoyatelnaya.pdf",
+        "sha256": "5ab95312ffb18b907731a332453e5cad577f3b95f1dc198d8587e8d043c34dcf"
+      },
+      {
+        "path": "arith-sets/samostoyatelnaya-otvety.pdf",
+        "sha256": "87231df002bcfd90059a938e5cdeaa4a30a7fe5282ba3a777ca4eb8b3d3aa998"
+      },
+      {
+        "path": "arith-sets/kontrolnaya.pdf",
+        "sha256": "1ee4970f3f9d9f624734eb935818d2930296d6d9dda1a2cef4ec5471f939f2da"
+      },
+      {
+        "path": "arith-sets/kontrolnaya-otvety.pdf",
+        "sha256": "62a390ebce81b0046dbca2ae5084ec41dd054634dfbe58c674e93aaf484f9109"
+      }
+    ]
+  },
+  {
+    "id": "arith-signed-add-subtract",
+    "title": "Сложение и вычитание положительных и отрицательных чисел",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-signed-add-subtract/samostoyatelnaya.pdf",
+        "sha256": "78b6cbf011d1bfb6e5936227d3f6895fbd9ea5ea09b0d5734711954c7f4d492b"
+      },
+      {
+        "path": "arith-signed-add-subtract/samostoyatelnaya-otvety.pdf",
+        "sha256": "dfaecb6db45f21ac8af9338af81a53ec429815480cf7605f5852f151cf3b2a83"
+      },
+      {
+        "path": "arith-signed-add-subtract/kontrolnaya.pdf",
+        "sha256": "5349cd8af9be480b265c44c3ca860114c56e22d3c9da19719db0ce2f29e69dfb"
+      },
+      {
+        "path": "arith-signed-add-subtract/kontrolnaya-otvety.pdf",
+        "sha256": "0b6ed940115d67b4afce670ee300d1f0f00110697eea64d92a3ec78308fb491a"
+      }
+    ]
+  },
+  {
+    "id": "arith-signed-multiply-divide",
+    "title": "Умножение и деление положительных и отрицательных чисел",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-signed-multiply-divide/samostoyatelnaya.pdf",
+        "sha256": "c1dc5d65791bcf43095c60fceeceb85aff7d774955334f9f5fad85c8766142ff"
+      },
+      {
+        "path": "arith-signed-multiply-divide/samostoyatelnaya-otvety.pdf",
+        "sha256": "c47d36213b19731534b7ee22c75698cf285086cf5fb3a599570e6806514d3ec4"
+      },
+      {
+        "path": "arith-signed-multiply-divide/kontrolnaya.pdf",
+        "sha256": "6abc53ea978c34f22aca7425b0b57beb43654133dde43449fec259db9a887280"
+      },
+      {
+        "path": "arith-signed-multiply-divide/kontrolnaya-otvety.pdf",
+        "sha256": "9957dd5f51476c909a8000a1d01ea42ad445c135e150c8c43515ca2a91ed4945"
+      }
+    ]
+  },
+  {
+    "id": "arith-signed-numbers",
+    "title": "Положительные и отрицательные числа. Модуль",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Виленкин и др. Математика. 6 класс. 2024"
+    ],
+    "files": [
+      {
+        "path": "arith-signed-numbers/samostoyatelnaya.pdf",
+        "sha256": "f697d7fe3ff32917da7bf01be05f042a213796db640f3ff718e4bce3fa6360a4"
+      },
+      {
+        "path": "arith-signed-numbers/samostoyatelnaya-otvety.pdf",
+        "sha256": "7e242df92ecc0587827e6fb9f04b62c492c5b417e13415344eec666a235fdda9"
+      },
+      {
+        "path": "arith-signed-numbers/kontrolnaya.pdf",
+        "sha256": "c71fc1d86e753c481be522cb95c9770542059b379f14b3f828c19b3f60d0313c"
+      },
+      {
+        "path": "arith-signed-numbers/kontrolnaya-otvety.pdf",
+        "sha256": "a5a8888b8878c0dfca7f8af28e777e65ea563ad99044385870862d618b048d7e"
+      }
+    ]
+  },
+  {
+    "id": "arith-variables-quantifiers",
+    "title": "Предложения с переменными и кванторы",
+    "grade": "6 класс",
+    "subject": "Математика",
+    "books": [
+      "Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019"
+    ],
+    "files": [
+      {
+        "path": "arith-variables-quantifiers/samostoyatelnaya.pdf",
+        "sha256": "001645f78325499b81fbf1f25d3e94f9e151f79bbcbb350eb1255811442c94cf"
+      },
+      {
+        "path": "arith-variables-quantifiers/samostoyatelnaya-otvety.pdf",
+        "sha256": "2e2757816cef633121c51daf538daf805fa09581cd85627b728ee931517acd4d"
+      },
+      {
+        "path": "arith-variables-quantifiers/kontrolnaya.pdf",
+        "sha256": "d1193b2d8d29f5e828b859b067c28ccd9c41f355cb9b945a2a13b763d6d05aea"
+      },
+      {
+        "path": "arith-variables-quantifiers/kontrolnaya-otvety.pdf",
+        "sha256": "7b6e8b47944f16fa0c383a6359d717ca56d2d1eb1d9f9f6dd6987a00f365e510"
+      }
+    ]
+  },
+  {
+    "id": "alg-factoring",
+    "title": "Разложение на множители",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-factoring/samostoyatelnaya.pdf",
+        "sha256": "4cb8f84ee15b19af4a4c223b74c31f5a228fb0b5e4b1be546186d487e6704840"
+      },
+      {
+        "path": "alg-factoring/samostoyatelnaya-otvety.pdf",
+        "sha256": "3a3f5b281dcba0832be7ddff20440d0dd07904f365f46c2c63e3a05bb69dc4f8"
+      },
+      {
+        "path": "alg-factoring/kontrolnaya.pdf",
+        "sha256": "26ba451b0ab815303a147727e29e747bbf6aa429fcc0c59076c51c23e79886cc"
+      },
+      {
+        "path": "alg-factoring/kontrolnaya-otvety.pdf",
+        "sha256": "4fa47dc2c077dfae9d69ada82d2a24838d4aea8c9d122615d4a4bc5897762d08"
+      }
+    ]
+  },
+  {
+    "id": "alg-fraction-operations",
+    "title": "Действия с рациональными дробями",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс. Часть 3 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-fraction-operations/samostoyatelnaya.pdf",
+        "sha256": "ea83d2e8bc8f464e9318b66ba1c05ed841267682760e92d0c4000c22a1d0339b"
+      },
+      {
+        "path": "alg-fraction-operations/samostoyatelnaya-otvety.pdf",
+        "sha256": "fb4bf80d9450434d025bede40e0d5b7c9337fe5f2278582fdafd6877b43d13ac"
+      },
+      {
+        "path": "alg-fraction-operations/kontrolnaya.pdf",
+        "sha256": "198ad6a985cc80e8c986c31731ac4949fcf8487a63da72c7000f83eefa70012f"
+      },
+      {
+        "path": "alg-fraction-operations/kontrolnaya-otvety.pdf",
+        "sha256": "16b6f5860248354c028fa84428ada40795b795d1adca45abd3799d565421f0df"
+      }
+    ]
+  },
+  {
+    "id": "alg-identities",
+    "title": "Формулы сокращённого умножения",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 2 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-identities/samostoyatelnaya.pdf",
+        "sha256": "d0d15fb1827834b3c60ae836515dc4519dad7064fbc0652565f6f530029f89e5"
+      },
+      {
+        "path": "alg-identities/samostoyatelnaya-otvety.pdf",
+        "sha256": "782324b8342242616361f3d48f03435a1891fc8287cfeca7c63e5573d3ce0e9e"
+      },
+      {
+        "path": "alg-identities/kontrolnaya.pdf",
+        "sha256": "214b9a4d9b81f2b301d87a69a075c6828ed63948113296771c357b38e4e58adc"
+      },
+      {
+        "path": "alg-identities/kontrolnaya-otvety.pdf",
+        "sha256": "cf7a185e14de7d9727169aafc9e45b5e45f081872987990a24b104101c312a22"
+      }
+    ]
+  },
+  {
+    "id": "alg-inequalities",
+    "title": "Линейные неравенства",
+    "grade": "7–9 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+      "Математика. Алгебра. 7 класс. Часть 3 - Петерсон Л.Г. и др. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-inequalities/samostoyatelnaya.pdf",
+        "sha256": "ba9fce45fa7ee7acf0c679c6c81237395a3b8edab75cab369030a3991ac19ddb"
+      },
+      {
+        "path": "alg-inequalities/samostoyatelnaya-otvety.pdf",
+        "sha256": "f376185e5f8434189e79aa099bbec3e85e097dfaec9a2885ef553bac5e72b48d"
+      },
+      {
+        "path": "alg-inequalities/kontrolnaya.pdf",
+        "sha256": "1b14639b6ebf9534b93459ddaf86134ba17bc6f5a7fa4ef954ddebb5489baa8b"
+      },
+      {
+        "path": "alg-inequalities/kontrolnaya-otvety.pdf",
+        "sha256": "0df44f304bde8d6b51c9fd14cfca58941bf67a1733100173a5181352fced3072"
+      }
+    ]
+  },
+  {
+    "id": "alg-line",
+    "title": "Линейная функция и её график",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 7 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 3 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-line/samostoyatelnaya.pdf",
+        "sha256": "d58e82b69d303df8b935e008116d373b2a5eb4c955b45a97bd7e174a2dbe99de"
+      },
+      {
+        "path": "alg-line/samostoyatelnaya-otvety.pdf",
+        "sha256": "823170ab82b27936d561c120b489b3dadeda2d945bfe43206b28c84c6ad8eac7"
+      },
+      {
+        "path": "alg-line/kontrolnaya.pdf",
+        "sha256": "36e98dc19d2d6b87abc030053e82d79ac364057f17ec2a40b6761b8ded96751f"
+      },
+      {
+        "path": "alg-line/kontrolnaya-otvety.pdf",
+        "sha256": "8de160414d56c5a32a2ce54163f5df91c903b3c79effde129edf1afaae0a6398"
+      }
+    ]
+  },
+  {
+    "id": "alg-linear",
+    "title": "Линейные уравнения",
+    "grade": "7 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 3 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-linear/samostoyatelnaya.pdf",
+        "sha256": "365b489dcfa8767e2794097f33c60dc77f7cd91a9ff325884b7686b0be23636e"
+      },
+      {
+        "path": "alg-linear/samostoyatelnaya-otvety.pdf",
+        "sha256": "9f21fb085d1ee66beb545eaa0ec2caa701570f77f9bc96aa08c7eea8e94755ab"
+      },
+      {
+        "path": "alg-linear/kontrolnaya.pdf",
+        "sha256": "9d256400b200e5973b3e68836393276d59616844c1a93cea7bffdcc388c3760e"
+      },
+      {
+        "path": "alg-linear/kontrolnaya-otvety.pdf",
+        "sha256": "f5e4f41288407928eedc5c86992b6f4da980073ef18d8294d6aaa2fe2513a612"
+      }
+    ]
+  },
+  {
+    "id": "alg-monomial",
+    "title": "Одночлены",
+    "grade": "7 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 2 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-monomial/samostoyatelnaya.pdf",
+        "sha256": "e742e2f899abdb06c75a3c3d484648e8a34651a00225db3903ad0529c79aea71"
+      },
+      {
+        "path": "alg-monomial/samostoyatelnaya-otvety.pdf",
+        "sha256": "e475e8d62e8cdb6a392239e730f87545f05db0562f1ea8d842e9355cfb5d9599"
+      },
+      {
+        "path": "alg-monomial/kontrolnaya.pdf",
+        "sha256": "a1d0f6ce572a1a2795efb7451360c05251943d530b3108160aeb780c5d737c74"
+      },
+      {
+        "path": "alg-monomial/kontrolnaya-otvety.pdf",
+        "sha256": "b03a52e214f3708ecb01b49c624fa2364786d8cd493b8119135f2727dbfa2a12"
+      }
+    ]
+  },
+  {
+    "id": "alg-negative-powers",
+    "title": "Степень с целым показателем",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)"
+    ],
+    "files": [
+      {
+        "path": "alg-negative-powers/samostoyatelnaya.pdf",
+        "sha256": "ec8a7dc5f0f50a7e20968c530f2bad613c8e5c0e81a13b39bb3b8df226e2e7d8"
+      },
+      {
+        "path": "alg-negative-powers/samostoyatelnaya-otvety.pdf",
+        "sha256": "e4726a236fb6b9508a0c931aafb3752798fa7e72c6878bf033462c474cda295c"
+      },
+      {
+        "path": "alg-negative-powers/kontrolnaya.pdf",
+        "sha256": "ca07ff686430305605c4de26c15576c0a6809f89f9f95f300d3792ae1eb93128"
+      },
+      {
+        "path": "alg-negative-powers/kontrolnaya-otvety.pdf",
+        "sha256": "379ad323882c0d7fb428e33bb769a30cb53d281657ef153075eed30cae596785"
+      }
+    ]
+  },
+  {
+    "id": "alg-polynomial",
+    "title": "Действия с многочленами",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 2 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-polynomial/samostoyatelnaya.pdf",
+        "sha256": "d24eb9cc5956f6e014ac18633c50f13a7f02ebf84d9fd8bb7cf2ac2309530708"
+      },
+      {
+        "path": "alg-polynomial/samostoyatelnaya-otvety.pdf",
+        "sha256": "9f85bd74e0cf06c131a3aa47d0c44571b55296d84f343ca116efa44371d43682"
+      },
+      {
+        "path": "alg-polynomial/kontrolnaya.pdf",
+        "sha256": "ccca3fa31d551319f51044023b62308dafeac970a87fd06c649a960de9d402ed"
+      },
+      {
+        "path": "alg-polynomial/kontrolnaya-otvety.pdf",
+        "sha256": "19025a2fa3a56d6a6a0f2312578b836f119a1b2cbafec790e1532b616f3bd39b"
+      }
+    ]
+  },
+  {
+    "id": "alg-powers",
+    "title": "Степень с натуральным показателем",
+    "grade": "7 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 2 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-powers/samostoyatelnaya.pdf",
+        "sha256": "a88c42db6d0a6529e8d2d661ca604d84da44b9bdcbe27ce845e9431d1cb1292e"
+      },
+      {
+        "path": "alg-powers/samostoyatelnaya-otvety.pdf",
+        "sha256": "88971e2ae97817e272cc1ea4a3551f8a30306831f161cc980d40ceed5eb2e8a6"
+      },
+      {
+        "path": "alg-powers/kontrolnaya.pdf",
+        "sha256": "911f8a8de7c9a2ae6eaeea03ef401dea7356010cbc020938ac48c51e4fecd429"
+      },
+      {
+        "path": "alg-powers/kontrolnaya-otvety.pdf",
+        "sha256": "8d5070f53dcae9a4c7aaa182e0af1d79d913d1bfbb61515b60e11fd55b1c8739"
+      }
+    ]
+  },
+  {
+    "id": "alg-rational",
+    "title": "Сокращение рациональных дробей",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс. Часть 3 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-rational/samostoyatelnaya.pdf",
+        "sha256": "c07812eedc951a382efecb9849d3d63424d0ae31a4cde6c342ef65d211490116"
+      },
+      {
+        "path": "alg-rational/samostoyatelnaya-otvety.pdf",
+        "sha256": "a4f2c01352bc6b28bef0bf06fc00ad17c828e790e7be27bd82e1005fbf02e25a"
+      },
+      {
+        "path": "alg-rational/kontrolnaya.pdf",
+        "sha256": "0fbcab25b0bbc91f0714c0f35d222dc39b954575cf2c18868cedfd79eb1ac640"
+      },
+      {
+        "path": "alg-rational/kontrolnaya-otvety.pdf",
+        "sha256": "be3dc71053bffdc01953db58d5d26630a00ba721456deb2437adda7317aa5b70"
+      }
+    ]
+  },
+  {
+    "id": "alg-systems",
+    "title": "Системы линейных уравнений",
+    "grade": "7–8 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 7 класс. Углубленный уровень - Мерзляк, Поляков (2019)",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Математика. Алгебра и геометрия. 7 класс - Козлов В.В., Никитин А.А., Белоносов В.С. и др. (2017)",
+      "Алгебра 7 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2015)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-systems/samostoyatelnaya.pdf",
+        "sha256": "637418f1db44eee2a943c632ecd28f94220818810d6dae7dcd5d9e7c4864ed1f"
+      },
+      {
+        "path": "alg-systems/samostoyatelnaya-otvety.pdf",
+        "sha256": "588c46168cd69d817c50f5ff584c95cd7ff09ae7b419d0e3554ec0e056d037a5"
+      },
+      {
+        "path": "alg-systems/kontrolnaya.pdf",
+        "sha256": "32a8a5fc2186b1985da57a0c6d865ad858fac23c2b26c9c23746ce525901ee6c"
+      },
+      {
+        "path": "alg-systems/kontrolnaya-otvety.pdf",
+        "sha256": "2dc8f8b9b3c392285f5711d9a38428fda2856416e129da90337a7be07f1c900a"
+      }
+    ]
+  },
+  {
+    "id": "alg-values",
+    "title": "Выражения и подстановка значений",
+    "grade": "7 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 7 класс. Базовый уровень, 2024",
+      "Алгебра 7 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 7 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 7 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2014)",
+      "Алгебра 7 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2014)",
+      "Алгебра 7 класс. Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра 7 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 7 класс - Никольский С.М., Потапов М.К. и др. (2013)",
+      "Алгебра 7 класс - Колягин Ю.М., Ткачева М.В. и др. (2012)",
+      "Математика. Алгебра. 7 класс. Часть 1 - Петерсон Л.Г. и др. (2011)",
+      "Алгебра 7 класс - Алимов Ш.А. (2011)"
+    ],
+    "files": [
+      {
+        "path": "alg-values/samostoyatelnaya.pdf",
+        "sha256": "0ba85af8b9071f9f56c8d26283412fd25443d40873b85e5c619eb4e75b5ad1f3"
+      },
+      {
+        "path": "alg-values/samostoyatelnaya-otvety.pdf",
+        "sha256": "b2b061a5e049179d4fee409767762ce500475c72323e0399b457d0be8db18453"
+      },
+      {
+        "path": "alg-values/kontrolnaya.pdf",
+        "sha256": "e70301a4b627b2c727243f6c1b4b7af18242da361c0c07aa388378fed7198f39"
+      },
+      {
+        "path": "alg-values/kontrolnaya-otvety.pdf",
+        "sha256": "b09c29c91ee1f9fd0d9b0dc35866c816b326839d18c158b620ffb670c1da39a8"
+      }
+    ]
+  },
+  {
+    "id": "prob-statistics",
+    "title": "Данные, среднее, медиана и размах",
+    "grade": "7 класс",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011"
+    ],
+    "files": [
+      {
+        "path": "prob-statistics/samostoyatelnaya.pdf",
+        "sha256": "35107ba6d6b44967c709c556ef5681ad18f4b80a12159c8f347322017844bc46"
+      },
+      {
+        "path": "prob-statistics/samostoyatelnaya-otvety.pdf",
+        "sha256": "ec3eb5c399685cb360c0ad7f404d8128e26f2e9dda118359d7302b469bc04842"
+      },
+      {
+        "path": "prob-statistics/kontrolnaya.pdf",
+        "sha256": "fc0bfb3264b761b40cb514025e5154a8a923b946d629e9028fc9be34e106eb6b"
+      },
+      {
+        "path": "prob-statistics/kontrolnaya-otvety.pdf",
+        "sha256": "520626c08f5fbade7c09ebbef5eed91f54c501348a7b8b63d0ac4c6a2f8cbafc"
+      }
+    ]
+  },
+  {
+    "id": "geo-otrezki",
+    "title": "Отрезки и их длины",
+    "grade": "7 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-otrezki/samostoyatelnaya.pdf",
+        "sha256": "4f7008200cb33e8b0cf2ac3ee10d6d396a154ab6c5c04b148169d181af51f3d4"
+      },
+      {
+        "path": "geo-otrezki/samostoyatelnaya-otvety.pdf",
+        "sha256": "ef93ee08674635cb7ee1de3fb7f95117b05bf00c0f22ee87b18f9c58000e86ab"
+      },
+      {
+        "path": "geo-otrezki/kontrolnaya.pdf",
+        "sha256": "af8fa21fc068df801aff7faa3def63da195175e9e29ca67e9dd89bef3263c818"
+      },
+      {
+        "path": "geo-otrezki/kontrolnaya-otvety.pdf",
+        "sha256": "03fa10c945b47177c91fa9e1c2f5cf23e69e5ba2cbd113260b86fda25a77f424"
+      }
+    ]
+  },
+  {
+    "id": "geo-parallelnye-pryamye",
+    "title": "Параллельные прямые",
+    "grade": "7 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-parallelnye-pryamye/samostoyatelnaya.pdf",
+        "sha256": "ae814a04a51968abb5be681c3de55b341d0da83d98b82d75eee9b375f42ddf12"
+      },
+      {
+        "path": "geo-parallelnye-pryamye/samostoyatelnaya-otvety.pdf",
+        "sha256": "6241dee25da0f632f845cacc5acc8a6666abd2172ae945afe1eb5a1ed0a651a2"
+      },
+      {
+        "path": "geo-parallelnye-pryamye/kontrolnaya.pdf",
+        "sha256": "c5de84770dbf1c1a842004bfb6b4a86c0992f00ccd5ed9ba1ac24c07d3ea8443"
+      },
+      {
+        "path": "geo-parallelnye-pryamye/kontrolnaya-otvety.pdf",
+        "sha256": "7b27dd628db7d1185f9faa9e49ec4ee09559c7a44b13dc34cd0d9459538da13f"
+      }
+    ]
+  },
+  {
+    "id": "geo-ravenstvo-treugolnikov",
+    "title": "Равенство треугольников",
+    "grade": "7 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-ravenstvo-treugolnikov/samostoyatelnaya.pdf",
+        "sha256": "eaf74cebef09481aacd849f5225f9558ae4e27e8637e1d66f6917b16344a7df1"
+      },
+      {
+        "path": "geo-ravenstvo-treugolnikov/samostoyatelnaya-otvety.pdf",
+        "sha256": "a014a01d2be4942570ae2d260cc626489c096be924c49d29ebc56ed06678fc30"
+      },
+      {
+        "path": "geo-ravenstvo-treugolnikov/kontrolnaya.pdf",
+        "sha256": "3961f73c9cc2a5625647ef26c2829d3594fbf849dc1035790bd0a4f8ae3b1e0e"
+      },
+      {
+        "path": "geo-ravenstvo-treugolnikov/kontrolnaya-otvety.pdf",
+        "sha256": "473d9a945efc805ce0e17b2afddf88ddc6a40d75c5fec9da32825423c565ff97"
+      }
+    ]
+  },
+  {
+    "id": "geo-simmetriya-postroeniya",
+    "title": "Симметрия и простые построения",
+    "grade": "7–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-simmetriya-postroeniya/samostoyatelnaya.pdf",
+        "sha256": "80b6e4bc474fd26e791890f3a0aac636aa37f87b8565aab429605cc1327e997b"
+      },
+      {
+        "path": "geo-simmetriya-postroeniya/samostoyatelnaya-otvety.pdf",
+        "sha256": "8f6bb93c94c6eec90e1808b4bb2d61404bcb82e8d144aada91cc7470ffe649fe"
+      },
+      {
+        "path": "geo-simmetriya-postroeniya/kontrolnaya.pdf",
+        "sha256": "ef2f793f50c657d10e5cae71207b65d5f2d34857fb3619875625b3fbc7934e4e"
+      },
+      {
+        "path": "geo-simmetriya-postroeniya/kontrolnaya-otvety.pdf",
+        "sha256": "e7f0a358de378cd8e28489bb13a9c3157557ddc84bb86c7a5b336aaa7f3637b1"
+      }
+    ]
+  },
+  {
+    "id": "geo-ugly",
+    "title": "Смежные, вертикальные углы и биссектриса",
+    "grade": "7 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-ugly/samostoyatelnaya.pdf",
+        "sha256": "e78432d8a090fc33cef81a1d32cd1257ea90b13e1c0eae2734674a3be08db59f"
+      },
+      {
+        "path": "geo-ugly/samostoyatelnaya-otvety.pdf",
+        "sha256": "4460219773bc1ac2ec4570f8c6d46554ce5317cc9ad219757b5c749b3e07903a"
+      },
+      {
+        "path": "geo-ugly/kontrolnaya.pdf",
+        "sha256": "75e37ca71e9c714fac6d452808893b1f923cd3fcf36e7f7228960f9f435c2e9b"
+      },
+      {
+        "path": "geo-ugly/kontrolnaya-otvety.pdf",
+        "sha256": "693c8bb9a2f5fb2a35c7a9797604d907f39b07cf414e73d81b88ec2d675dd7b2"
+      }
+    ]
+  },
+  {
+    "id": "geo-ugly-treugolnika",
+    "title": "Углы треугольника",
+    "grade": "7 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-ugly-treugolnika/samostoyatelnaya.pdf",
+        "sha256": "9eb7597dac33f68d1a0f641255f71e36474595a012df4b958b0e5999faaacfce"
+      },
+      {
+        "path": "geo-ugly-treugolnika/samostoyatelnaya-otvety.pdf",
+        "sha256": "5d64a4e97aee00107dbbe9b1ac430eae0fc874ca4f1c2265998ddffc0bad0b30"
+      },
+      {
+        "path": "geo-ugly-treugolnika/kontrolnaya.pdf",
+        "sha256": "026baaba3c810e6c14e1c9ee4e1da2f5d6514f753bbe76a83d5f0fac6e5b1359"
+      },
+      {
+        "path": "geo-ugly-treugolnika/kontrolnaya-otvety.pdf",
+        "sha256": "37ae86be2f24b3f3ac9b908898199d45cc21417df9420a739f67134d456a2b84"
+      }
+    ]
+  },
+  {
+    "id": "alg-domains",
+    "title": "Область определения функции",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024"
+    ],
+    "files": [
+      {
+        "path": "alg-domains/samostoyatelnaya.pdf",
+        "sha256": "4715b4ecc2ceab523053d589e08b53a7786783e44a09109301e94e13695c7ae8"
+      },
+      {
+        "path": "alg-domains/samostoyatelnaya-otvety.pdf",
+        "sha256": "90939b83ef49324917b58ef8b376b697d0fe9a482a50793e620448b1cbad0e53"
+      },
+      {
+        "path": "alg-domains/kontrolnaya.pdf",
+        "sha256": "5051e3e34f9099ef585991568329a66341284bfc3a6714df701808f277a70eb6"
+      },
+      {
+        "path": "alg-domains/kontrolnaya-otvety.pdf",
+        "sha256": "0a129f36922026c511cdc00bb688cf5a0dbd42998fe64f94f3224a585dd6847f"
+      }
+    ]
+  },
+  {
+    "id": "alg-incomplete-quadratics",
+    "title": "Неполные квадратные уравнения",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-incomplete-quadratics/samostoyatelnaya.pdf",
+        "sha256": "b69a9a4d47c1f9864bc5a55da6bc9f35b6602b2e1daac36808d278a486813afb"
+      },
+      {
+        "path": "alg-incomplete-quadratics/samostoyatelnaya-otvety.pdf",
+        "sha256": "6d9fb22d470c437bd7abb5c1f9fe937d1011e598ebabb20431bc6bc168287722"
+      },
+      {
+        "path": "alg-incomplete-quadratics/kontrolnaya.pdf",
+        "sha256": "2cfca84837ec1565c1ce6227fa54bff426aa16ffe788b13b9138fb8a7d0845bc"
+      },
+      {
+        "path": "alg-incomplete-quadratics/kontrolnaya-otvety.pdf",
+        "sha256": "219cf7f67c44e5790e0a682fa90495db52ad655bb0adc0735041192d633756a4"
+      }
+    ]
+  },
+  {
+    "id": "alg-inequality-systems",
+    "title": "Системы линейных неравенств",
+    "grade": "8–9 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)"
+    ],
+    "files": [
+      {
+        "path": "alg-inequality-systems/samostoyatelnaya.pdf",
+        "sha256": "de1dff9bd0d02436d2ebe34f3e5ac27e64a2423d5a25e5976ebcfea91b4493f9"
+      },
+      {
+        "path": "alg-inequality-systems/samostoyatelnaya-otvety.pdf",
+        "sha256": "4fecefc4802f0a36dec800ddebf8653e9286cd2c13a88614d70f08293a2ff798"
+      },
+      {
+        "path": "alg-inequality-systems/kontrolnaya.pdf",
+        "sha256": "28560d07d27ad5a4de1bc7571bb76bcb7015f61704ee659b0526a097ba62fe22"
+      },
+      {
+        "path": "alg-inequality-systems/kontrolnaya-otvety.pdf",
+        "sha256": "3a7a73dbd08ef1a0601eb261d96c07fd84d308b2c12e5472dcd3ecdd8f26b5d8"
+      }
+    ]
+  },
+  {
+    "id": "alg-nonlinear-systems",
+    "title": "Системы с квадратными уравнениями",
+    "grade": "8–9 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 9 класс. Базовый уровень, 2023",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 9 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Алимов Ш.А. (2012)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-nonlinear-systems/samostoyatelnaya.pdf",
+        "sha256": "819c9523677975ea3d44875d86f6f76e8bb1cbe2436fd67fb244a61eab2bbac7"
+      },
+      {
+        "path": "alg-nonlinear-systems/samostoyatelnaya-otvety.pdf",
+        "sha256": "d287e217631a2a3c6876e4aec97def461cddb3952a5730b6b0ec9b17fa9d8e12"
+      },
+      {
+        "path": "alg-nonlinear-systems/kontrolnaya.pdf",
+        "sha256": "00d281f005cb9a93eaeb8c80dda0a1315977783d5e255895bea2324af4476867"
+      },
+      {
+        "path": "alg-nonlinear-systems/kontrolnaya-otvety.pdf",
+        "sha256": "5011bdd0c56051a366514f74dfef854039e160db384e63507fc1e63c9052c58b"
+      }
+    ]
+  },
+  {
+    "id": "alg-quadratic-function",
+    "title": "Квадратичная функция",
+    "grade": "8–9 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 9 класс. Базовый уровень, 2023",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 9 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2017)",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-quadratic-function/samostoyatelnaya.pdf",
+        "sha256": "323b234a6ac45a195aab2e909ab47348f4973240b655454ea136565c3a0650c9"
+      },
+      {
+        "path": "alg-quadratic-function/samostoyatelnaya-otvety.pdf",
+        "sha256": "9515a9834bc9ff5a1ffff7ae65270614d1d9a7bd5411744a974cb0949aec186e"
+      },
+      {
+        "path": "alg-quadratic-function/kontrolnaya.pdf",
+        "sha256": "eb77e660e70aa1f469e1d84c81a8cfa883a5c0b292c6443756988d5402825031"
+      },
+      {
+        "path": "alg-quadratic-function/kontrolnaya-otvety.pdf",
+        "sha256": "5cfad8b8a55c98e78001bce6fb4423823e041587f4a49e8be7fab452903d5346"
+      }
+    ]
+  },
+  {
+    "id": "alg-quadratic-inequalities",
+    "title": "Квадратные неравенства",
+    "grade": "8–9 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 9 класс. Базовый уровень, 2023",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-quadratic-inequalities/samostoyatelnaya.pdf",
+        "sha256": "a5ec80d8733690533b512af66c5a2dd48f75b4be72934952db2a2d4ddc609ee6"
+      },
+      {
+        "path": "alg-quadratic-inequalities/samostoyatelnaya-otvety.pdf",
+        "sha256": "3c544e15b9773b1b51f40241464473972b7391368832237cb42ba7b1c891991e"
+      },
+      {
+        "path": "alg-quadratic-inequalities/kontrolnaya.pdf",
+        "sha256": "cfffe56b79f226db781d4bfe76f73303f3ba1293f751768c0c62ada2eded23ea"
+      },
+      {
+        "path": "alg-quadratic-inequalities/kontrolnaya-otvety.pdf",
+        "sha256": "f32a2b20fea08f51e8284a2ace707b72d5bfc6a3b2e82a8d74a46b58a7280797"
+      }
+    ]
+  },
+  {
+    "id": "alg-quadratics",
+    "title": "Квадратные уравнения",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)"
+    ],
+    "files": [
+      {
+        "path": "alg-quadratics/samostoyatelnaya.pdf",
+        "sha256": "9818b2cede3ac8ee28a26e2f3a2b82a1280dc58a15ac19798b76ef936c486a81"
+      },
+      {
+        "path": "alg-quadratics/samostoyatelnaya-otvety.pdf",
+        "sha256": "69b630387d171f22509fe5c201f86e5eae907e36d7d92c1f3b8c176c00d59488"
+      },
+      {
+        "path": "alg-quadratics/kontrolnaya.pdf",
+        "sha256": "03a7a1bf6b19d06405a530230f3016b7ce9052c560b4627684bb4e11752b9a3b"
+      },
+      {
+        "path": "alg-quadratics/kontrolnaya-otvety.pdf",
+        "sha256": "77ceeb4e3283b2f0f8f2327ae9b353372761bb98d0ae24d1595408520fd1035a"
+      }
+    ]
+  },
+  {
+    "id": "alg-radicals",
+    "title": "Преобразования квадратных корней",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)"
+    ],
+    "files": [
+      {
+        "path": "alg-radicals/samostoyatelnaya.pdf",
+        "sha256": "28d65df04980d3b1075c457582b3b6864d695fd5164ffbdf8ecf6493d1046145"
+      },
+      {
+        "path": "alg-radicals/samostoyatelnaya-otvety.pdf",
+        "sha256": "17802769f7050b7e3848ab1af1bcbd0b380d966a1a85a7e3f3f8fd8850738f9b"
+      },
+      {
+        "path": "alg-radicals/kontrolnaya.pdf",
+        "sha256": "9d3912aeef9ca209aaba58718ccc56338b2f01e5eaaed141a83f03f15d89068f"
+      },
+      {
+        "path": "alg-radicals/kontrolnaya-otvety.pdf",
+        "sha256": "71ad3c34a0b667235573fda092b8ea113ff1b1809a3552e340a5535b2c118248"
+      }
+    ]
+  },
+  {
+    "id": "alg-roots",
+    "title": "Арифметический квадратный корень",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс. Часть 1 - Мордкович А.Г, Николаев Н.П. (2013)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)"
+    ],
+    "files": [
+      {
+        "path": "alg-roots/samostoyatelnaya.pdf",
+        "sha256": "fc5e4414a66b35c7d27a0c1f18b441aae311af94deda536b604a0e037456e510"
+      },
+      {
+        "path": "alg-roots/samostoyatelnaya-otvety.pdf",
+        "sha256": "0247099b7a2360327b3139ed378d30d5d505fc1d20461a360b3b4d0b3b2f4e8b"
+      },
+      {
+        "path": "alg-roots/kontrolnaya.pdf",
+        "sha256": "5df0531dda4909bcdc461225d8597b0e1dac71ea1125f4d59d00655c2ba30b6b"
+      },
+      {
+        "path": "alg-roots/kontrolnaya-otvety.pdf",
+        "sha256": "2fe89b83b8ab06efd8b301d1b170d7b6a9552a984794a8b1839037744a0bcc70"
+      }
+    ]
+  },
+  {
+    "id": "alg-vieta",
+    "title": "Теорема Виета и квадратный трёхчлен",
+    "grade": "8 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 8 класс. Базовый уровень, 2024",
+      "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)",
+      "Алгебра 8 класс. Углубленный уровень - А. Г. Мерзляк, В. М. Поляков (2019)",
+      "Алгебра 8 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П. (2019)",
+      "Алгебра 8 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 8 класс - Дорофеев Г.В., Суворова С.Б., Бунимович Е.А. и др. (2016)",
+      "Алгебра 8 класс - Рубин А.Г., Чулков П.В. (2015)",
+      "Алгебра 8 класс - Никольский С.М., Потапов М.К. (2014)",
+      "Алгебра 8 класс - Макарычев Ю.Н. и др. (2013)",
+      "Алгебра 8 класс - Колягин Ю.М., Ткачёва М.В. и др. (2013)",
+      "Алгебра 8 класс - Муравин Г.К., Муравин К.С., Муравина О.В. (2013)",
+      "Алгебра 8 класс - Алимов Ш.А. и др. (2012)",
+      "Алгебра 8 класс. Углубленный уровень - Виленкин Н.Я., Сурвилло Г.С. и др. (2010)"
+    ],
+    "files": [
+      {
+        "path": "alg-vieta/samostoyatelnaya.pdf",
+        "sha256": "257b6f93c54107b1017659bbd0d96c3ae5190de2e1752cc7570ca65e9617a4b7"
+      },
+      {
+        "path": "alg-vieta/samostoyatelnaya-otvety.pdf",
+        "sha256": "89bdd85608f3a58194fe43d5ca6640a65f3ce8a217d643a076e5146cac53afcd"
+      },
+      {
+        "path": "alg-vieta/kontrolnaya.pdf",
+        "sha256": "201e225efd303e5d7eba45e0fe1e89835237f7cdad790a1c8edd96139850fc48"
+      },
+      {
+        "path": "alg-vieta/kontrolnaya-otvety.pdf",
+        "sha256": "ba1c26b7fb833962387424909d5bc341b1ba6f9bc5b90d423f0ed845ce306590"
+      }
+    ]
+  },
+  {
+    "id": "prob-elementary",
+    "title": "Равновозможные исходы и простая вероятность",
+    "grade": "8, 10–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-elementary/samostoyatelnaya.pdf",
+        "sha256": "86c945a945824cc2b9ba80bf196eb8fcd4ce023455a627170f45b316d495b1dc"
+      },
+      {
+        "path": "prob-elementary/samostoyatelnaya-otvety.pdf",
+        "sha256": "81a0ab0bb6a19fffecf51333c5ceab2ef39953a109aab16544c7c2b7a86a10e9"
+      },
+      {
+        "path": "prob-elementary/kontrolnaya.pdf",
+        "sha256": "e274f3b1d9f9dff9e795674cb4f579b3cc35382eb89db8b2a2503e59acfbd557"
+      },
+      {
+        "path": "prob-elementary/kontrolnaya-otvety.pdf",
+        "sha256": "74cad6dd0077a7041766bf5f6e9a6bd286e419de8c73fbc1e8b3deba13d92581"
+      }
+    ]
+  },
+  {
+    "id": "prob-events",
+    "title": "Объединение и пересечение событий",
+    "grade": "8, 10–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-events/samostoyatelnaya.pdf",
+        "sha256": "561f0761cda00b04fef90afc9f496b620cbfb2eadbbc92178265f0af7c77910e"
+      },
+      {
+        "path": "prob-events/samostoyatelnaya-otvety.pdf",
+        "sha256": "8ab65c983c36c0f9c11a3167f9be9dcdd32b0eb980d7b23b0859fbf48c9e9069"
+      },
+      {
+        "path": "prob-events/kontrolnaya.pdf",
+        "sha256": "a2e619221ea9a050b79a227dc9b754a6ad17b836defd3e40f38dffa646c04d02"
+      },
+      {
+        "path": "prob-events/kontrolnaya-otvety.pdf",
+        "sha256": "aa5e6a13f92e122b3ccd630c405aa8f8d6d284eb059e3ea9545d13e525551922"
+      }
+    ]
+  },
+  {
+    "id": "prob-independence",
+    "title": "Независимые события",
+    "grade": "8, 10–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-independence/samostoyatelnaya.pdf",
+        "sha256": "f9c5284d1fa100d87010253feeacde49d2a93fc7e43b1b52321866cda0461ef0"
+      },
+      {
+        "path": "prob-independence/samostoyatelnaya-otvety.pdf",
+        "sha256": "f59fc1ec9c6b7d5dd0a9db5be6e71867bb84770b84c86860077300adc5130c25"
+      },
+      {
+        "path": "prob-independence/kontrolnaya.pdf",
+        "sha256": "0b703e6953621e4fc6b3fa0801c0bef5bd776b63927a355225f81a6074c70276"
+      },
+      {
+        "path": "prob-independence/kontrolnaya-otvety.pdf",
+        "sha256": "09e6f0c94a9ac1c2d55e9f468b432f20568876c9bbb16c8f461c0839cf629714"
+      }
+    ]
+  },
+  {
+    "id": "geo-chetyrehugolniki",
+    "title": "Параллелограмм, прямоугольник, ромб и трапеция",
+    "grade": "8 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-chetyrehugolniki/samostoyatelnaya.pdf",
+        "sha256": "3c27cfb77987a3afea95419050c1fd5ffd6017ef40c18fff042c1a7eb8dd7ec8"
+      },
+      {
+        "path": "geo-chetyrehugolniki/samostoyatelnaya-otvety.pdf",
+        "sha256": "81ff6ed9f91a72a4aa3ab2f88fa425d4d92141bd6ef98b64c5e9b78fe711a272"
+      },
+      {
+        "path": "geo-chetyrehugolniki/kontrolnaya.pdf",
+        "sha256": "9b16f981c6333f990508751ddbd0b69e9472a8d78f54a2f840f801c61317a412"
+      },
+      {
+        "path": "geo-chetyrehugolniki/kontrolnaya-otvety.pdf",
+        "sha256": "6c7ac773d9ff976fc0900f03f9152891866e8bbb855a4304a9ef0420fe7c91f5"
+      }
+    ]
+  },
+  {
+    "id": "geo-kasatelnaya",
+    "title": "Окружность и касательная",
+    "grade": "8 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-kasatelnaya/samostoyatelnaya.pdf",
+        "sha256": "fa8a97087aa36c91b0e8beda578ed0ae876111e1f6f7ee82bdd85ea914339a34"
+      },
+      {
+        "path": "geo-kasatelnaya/samostoyatelnaya-otvety.pdf",
+        "sha256": "fb7a15dcfb764c8aa77dc9900acf08cb64016da3578e668bef5fb3b299ab5ab0"
+      },
+      {
+        "path": "geo-kasatelnaya/kontrolnaya.pdf",
+        "sha256": "3e90f8dbcc06d1716b9148909052fcb5564a5aa77eb32f2479d982fbda475951"
+      },
+      {
+        "path": "geo-kasatelnaya/kontrolnaya-otvety.pdf",
+        "sha256": "8c37d436b6558df3c862f153b99e4aa7eba8e451a9d10e865913908efa285828"
+      }
+    ]
+  },
+  {
+    "id": "geo-koordinaty",
+    "title": "Координаты: расстояние, середина, окружность",
+    "grade": "8–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-koordinaty/samostoyatelnaya.pdf",
+        "sha256": "514ea6c237af86d58a840e0668cc431a3a8ea7cec355ee7f0396f1304131a8d9"
+      },
+      {
+        "path": "geo-koordinaty/samostoyatelnaya-otvety.pdf",
+        "sha256": "bd5f7144625a8161dd1219eef8fe7d4d449aa7ab12052d93e826ce63d5bc1189"
+      },
+      {
+        "path": "geo-koordinaty/kontrolnaya.pdf",
+        "sha256": "64c2e162a3ea93b7c3e9aa2e9b5a9a245af5929baf46297b1e0ccb99ba46dcaa"
+      },
+      {
+        "path": "geo-koordinaty/kontrolnaya-otvety.pdf",
+        "sha256": "ac3f7fb3a2a942478655508c48ec97e1cc40f932c89336444568590d0cd8ee95"
+      }
+    ]
+  },
+  {
+    "id": "geo-pifagor",
+    "title": "Теорема Пифагора",
+    "grade": "8 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-pifagor/samostoyatelnaya.pdf",
+        "sha256": "3c1c877a6c7b80c501686ae492ff834c105755db63caa49223ebfe756e7bf7dc"
+      },
+      {
+        "path": "geo-pifagor/samostoyatelnaya-otvety.pdf",
+        "sha256": "ede6cb0fb9495f810735eb5bac920286c2c6818f06d84b23d2fe449574d64430"
+      },
+      {
+        "path": "geo-pifagor/kontrolnaya.pdf",
+        "sha256": "c5f04ea8fa51579968595c70b8916ed51d184fbce611ad3cfbf5e37302a17f0b"
+      },
+      {
+        "path": "geo-pifagor/kontrolnaya-otvety.pdf",
+        "sha256": "de468318fd740f8898e4a8cffcf165863b446a3a2f91c5d80e4f6cceec22457a"
+      }
+    ]
+  },
+  {
+    "id": "geo-ploshchadi",
+    "title": "Площади многоугольников",
+    "grade": "8–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-ploshchadi/samostoyatelnaya.pdf",
+        "sha256": "31bfbaab1bd2dcbbe36fb23ac4dec72e6faa77566f4711876557b3aad4a672c0"
+      },
+      {
+        "path": "geo-ploshchadi/samostoyatelnaya-otvety.pdf",
+        "sha256": "c3f6674120933d66ec56eef14f708b7f24117869cfa92e4daa312f4d573c2964"
+      },
+      {
+        "path": "geo-ploshchadi/kontrolnaya.pdf",
+        "sha256": "88c78d5d52e8d65265d37f165da4049dbb816ecad0d2fe6b66254194f174ee27"
+      },
+      {
+        "path": "geo-ploshchadi/kontrolnaya-otvety.pdf",
+        "sha256": "82f2f3b2d7aeb24d09038324f4d1936fb7f928a14dc68cd07ab5a3221ef92b4b"
+      }
+    ]
+  },
+  {
+    "id": "geo-podobie",
+    "title": "Подобные треугольники и средняя линия",
+    "grade": "8–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-podobie/samostoyatelnaya.pdf",
+        "sha256": "4e45070104089e9105a8e1367aa5ccf1475d62fc0f510ed99a53b0495d56db2d"
+      },
+      {
+        "path": "geo-podobie/samostoyatelnaya-otvety.pdf",
+        "sha256": "a88a22ec8719cfc5c89222c3dbb8aa13bae5f681efb97454d469834d8a88253c"
+      },
+      {
+        "path": "geo-podobie/kontrolnaya.pdf",
+        "sha256": "1399495a0af6f2069646d586fbe7c0dcad3a044ea7720882e2a1e8307e21624c"
+      },
+      {
+        "path": "geo-podobie/kontrolnaya-otvety.pdf",
+        "sha256": "331f25acc34b60a9d2dcf4782abe5c1ea624d75b09fb75ca8bf9b63847cf7241"
+      }
+    ]
+  },
+  {
+    "id": "geo-trigonometria",
+    "title": "Прямоугольный треугольник: синус, косинус, тангенс",
+    "grade": "8 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-trigonometria/samostoyatelnaya.pdf",
+        "sha256": "3b656f8deea89ff60ec24d1c823d5c14808acebab9a7c9c4a0dd28b2712e7e5c"
+      },
+      {
+        "path": "geo-trigonometria/samostoyatelnaya-otvety.pdf",
+        "sha256": "c7614e2f35e5c7c554cbe38e1ee3cfd788a2b2115a1a8c6ddf6e42912e0abae6"
+      },
+      {
+        "path": "geo-trigonometria/kontrolnaya.pdf",
+        "sha256": "6db31aa281baefef4ddb1447e3b2ba0a6d379823989f3e262048f03fbc2dab67"
+      },
+      {
+        "path": "geo-trigonometria/kontrolnaya-otvety.pdf",
+        "sha256": "44bb4a4a358e0c912891c6c7d76544be4ca2ab8ad2b08b9e796757ac3b5a401e"
+      }
+    ]
+  },
+  {
+    "id": "geo-vektory",
+    "title": "Векторы на плоскости",
+    "grade": "8–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-vektory/samostoyatelnaya.pdf",
+        "sha256": "e4e66d1b3e3ff7d3b708f6fa63cbfd9fa73a24320fceaea7183d3b9c4a0ee683"
+      },
+      {
+        "path": "geo-vektory/samostoyatelnaya-otvety.pdf",
+        "sha256": "8d49e7206763d01f3a51f2e35fe302af24a31d4d9ba0c28ef92d9c7514b888ca"
+      },
+      {
+        "path": "geo-vektory/kontrolnaya.pdf",
+        "sha256": "4518849f6c44d9d805287a2f752ceebb0d12161093a46a7c21c60219d77a02df"
+      },
+      {
+        "path": "geo-vektory/kontrolnaya-otvety.pdf",
+        "sha256": "96db8ab8e5cc9545fa46a76e89258c3759c4bf7a674ba13de19b5b466a4147a5"
+      }
+    ]
+  },
+  {
+    "id": "geo-vpisannye-ugly",
+    "title": "Центральные и вписанные углы",
+    "grade": "8–9 классы",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 7–9, 2023",
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-vpisannye-ugly/samostoyatelnaya.pdf",
+        "sha256": "8f1c9a7c470b5679de5b5c34822d63da7db1bc47f857885db3c5dbd845b9c9b5"
+      },
+      {
+        "path": "geo-vpisannye-ugly/samostoyatelnaya-otvety.pdf",
+        "sha256": "05e84c5da87013bc09c5ca2a4f413a2bde494c3e9e3d1e37088e11832a726a19"
+      },
+      {
+        "path": "geo-vpisannye-ugly/kontrolnaya.pdf",
+        "sha256": "598d0d4336ceddada71f2a27ef590951e7a47c9aa04478efcfe0151b656e5811"
+      },
+      {
+        "path": "geo-vpisannye-ugly/kontrolnaya-otvety.pdf",
+        "sha256": "1d95d7563b70949f37781eb4b6a4e5242b70c3ca0baf4d430eb0d6f35ac0170c"
+      }
+    ]
+  },
+  {
+    "id": "alg-arithmetic-progression",
+    "title": "Арифметическая прогрессия",
+    "grade": "9 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 9 класс. Базовый уровень, 2023",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 9 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2017)",
+      "Алгебра 9 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Колягин Ю.М., Ткачёва М.В. и др. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 9 класс - Алимов Ш.А. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-arithmetic-progression/samostoyatelnaya.pdf",
+        "sha256": "7f7730357761ae046d3de095104b817865ac56de1f00a3dd3856a980252e9e66"
+      },
+      {
+        "path": "alg-arithmetic-progression/samostoyatelnaya-otvety.pdf",
+        "sha256": "45a49741058c022530e63343d4b51f5aa6e3bcf1785f56e86f940d952a06d226"
+      },
+      {
+        "path": "alg-arithmetic-progression/kontrolnaya.pdf",
+        "sha256": "196631dfe0b46d761eb9432811ac177155a23651eb6bc6c7f26112b23288cad4"
+      },
+      {
+        "path": "alg-arithmetic-progression/kontrolnaya-otvety.pdf",
+        "sha256": "c10788f990d69a8f6349b6cdda2bb9cde1852f46ef7edd5f3551e7e7d313b842"
+      }
+    ]
+  },
+  {
+    "id": "alg-geometric-progression",
+    "title": "Геометрическая прогрессия",
+    "grade": "9 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Макарычев и соавторы. Алгебра. 9 класс. Базовый уровень, 2023",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 1 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень. Часть 2 - Мордкович А.Г., Николаев Н.П., Семенов П.В. (2019)",
+      "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 9 класс - Макарычев Ю.Н., Миндюк Н.Г. и др. (2017)",
+      "Алгебра 9 класс. Часть 1 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 9 класс - Дорофеев Г.В. и др. (2016)",
+      "Алгебра 9 класс - Рубин А.Г. Чулков П.В. (2015)",
+      "Алгебра 9 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2014)",
+      "Алгебра 9 класс - Колягин Ю.М., Ткачёва М.В. и др. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 9 класс - Алимов Ш.А. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-geometric-progression/samostoyatelnaya.pdf",
+        "sha256": "262d5d4a65f1e97a553064787efac3ad1ad0a2239212e7cd4e08630180d23532"
+      },
+      {
+        "path": "alg-geometric-progression/samostoyatelnaya-otvety.pdf",
+        "sha256": "e4689a5ee9e243bf3ac143c3920f65cf83f78266d0c3199f0199f428a3749b37"
+      },
+      {
+        "path": "alg-geometric-progression/kontrolnaya.pdf",
+        "sha256": "b218dca2613f43629598970a102c45f9edfff3df197f1849896d3df889f15b49"
+      },
+      {
+        "path": "alg-geometric-progression/kontrolnaya-otvety.pdf",
+        "sha256": "de8f98050a4b251ac8227f3dcc15de0aa6739b4e820fc0a096d2f548e7d0170b"
+      }
+    ]
+  },
+  {
+    "id": "alg-rational-powers",
+    "title": "Корни и рациональные степени",
+    "grade": "9–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Никольский, Потапов, Решетников, Шевкин. Алгебра и начала анализа. 10 класс, 2022",
+      "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+      "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)",
+      "Алгебра 9 класс. Углубленный уровень - Мерзляк А.Г., Поляков В.М. (2022)",
+      "Алгебра 9 класс. Углубленный уровень - Макарычев Ю.Н., Миндюк Н.Г., Нешков К.И. и др. (2018)",
+      "Алгебра 9 класс. Часть 2 - Петерсон Л.Г. и др. (2017)",
+      "Алгебра 9 класс - Колягин Ю.М., Ткачёва М.В. и др. (2014)",
+      "Алгебра 9 класс - Никольский С.М., Потапов М.К. и др. (2014)",
+      "Алгебра 9 класс - Алимов Ш.А. (2012)"
+    ],
+    "files": [
+      {
+        "path": "alg-rational-powers/samostoyatelnaya.pdf",
+        "sha256": "5b1c4ccebe680cff4b46f8eca2fdb852c4a72aa28a132f22667983c5e8680f38"
+      },
+      {
+        "path": "alg-rational-powers/samostoyatelnaya-otvety.pdf",
+        "sha256": "f7e358a12d4bbba002c50cd35946cec61714d92014e4bc3a5e960fc3f3ca06b1"
+      },
+      {
+        "path": "alg-rational-powers/kontrolnaya.pdf",
+        "sha256": "b11a8d7d66e69d5a9bd45bf534dceece8ac1b6c79f138f2dedd440a25019a4aa"
+      },
+      {
+        "path": "alg-rational-powers/kontrolnaya-otvety.pdf",
+        "sha256": "03a6a9eab3277dc7337fe0cc6a7ac8e3c69f07e6a32868cf3ca3697f4155e3e2"
+      }
+    ]
+  },
+  {
+    "id": "prob-binomial",
+    "title": "Испытания Бернулли: два и три испытания",
+    "grade": "9–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-binomial/samostoyatelnaya.pdf",
+        "sha256": "6abc1f1436db058f44ce9566c02eeee5f2960fa186e31297a15dd39ff035b3ae"
+      },
+      {
+        "path": "prob-binomial/samostoyatelnaya-otvety.pdf",
+        "sha256": "f8eb1fc8b9cebdf1864ff6ecf9d92a64db476280e9c4d724ed2e3b20a91e141e"
+      },
+      {
+        "path": "prob-binomial/kontrolnaya.pdf",
+        "sha256": "5a0b742a5c114db5e53ef94bd9fc6aed8d4adf4ec5ad6be1216d657d5912b37b"
+      },
+      {
+        "path": "prob-binomial/kontrolnaya-otvety.pdf",
+        "sha256": "904b1db69e03e96aad8855ed8b5527719c3358faf6fd795ede3d8638916848d5"
+      }
+    ]
+  },
+  {
+    "id": "prob-random-variable",
+    "title": "Случайная величина: ожидание и дисперсия",
+    "grade": "9–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-random-variable/samostoyatelnaya.pdf",
+        "sha256": "b8b72e78cb962b4fc945b693f83258b95a2a47537f723c31dcf79e02b0533deb"
+      },
+      {
+        "path": "prob-random-variable/samostoyatelnaya-otvety.pdf",
+        "sha256": "ad05253c504728575840d314bc118d9d0e5734f608828b51abb4ec42d5fa384b"
+      },
+      {
+        "path": "prob-random-variable/kontrolnaya.pdf",
+        "sha256": "faecc500c43f76cca2cbf1997ebdc668fc75b6bc9d96f57c16f082eda97fea68"
+      },
+      {
+        "path": "prob-random-variable/kontrolnaya-otvety.pdf",
+        "sha256": "73a11c0fc2cea4b8d8200b7e010081546426921707f6d2214ae6e65a0addd7c3"
+      }
+    ]
+  },
+  {
+    "id": "prob-success-moments",
+    "title": "Число успехов: ожидание и дисперсия",
+    "grade": "9–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011",
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-success-moments/samostoyatelnaya.pdf",
+        "sha256": "9a6ffd9aa6888010c5d0874996e57520afd6576c98232321ee71658fee44c790"
+      },
+      {
+        "path": "prob-success-moments/samostoyatelnaya-otvety.pdf",
+        "sha256": "a72409225d69f1ece6612cb116bb847700019e597c9f3260b67cd8926e9d36af"
+      },
+      {
+        "path": "prob-success-moments/kontrolnaya.pdf",
+        "sha256": "02e4450a402a06afca031f06569b184f381b028837c0dff10f6f51886118d4cb"
+      },
+      {
+        "path": "prob-success-moments/kontrolnaya-otvety.pdf",
+        "sha256": "294574bc02f00a9f013e5b7e980e66622a314c526cf95f97a345c9c39c670d6c"
+      }
+    ]
+  },
+  {
+    "id": "geo-krug",
+    "title": "Длина окружности и площадь круга",
+    "grade": "9 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Мерзляк, Полонский, Якир. Геометрия 7–9 (издания 2015/2013/2022)",
+      "Погорелов. Геометрия 7–9, 2022"
+    ],
+    "files": [
+      {
+        "path": "geo-krug/samostoyatelnaya.pdf",
+        "sha256": "91dd3bb3bedc5238d694c9d359e3a273072d1cc7b54cbc59da511640c1ecccb9"
+      },
+      {
+        "path": "geo-krug/samostoyatelnaya-otvety.pdf",
+        "sha256": "933df856e973d2eae3c5dbea9e1d402c61f8da724d564f81f7a2b0f1e80e2a68"
+      },
+      {
+        "path": "geo-krug/kontrolnaya.pdf",
+        "sha256": "459dbf5345dc32b9b8ce4569608c3168dd8d77b0547efd8eb4656752249e68dd"
+      },
+      {
+        "path": "geo-krug/kontrolnaya-otvety.pdf",
+        "sha256": "6c2353f487bc2e2f9124383ba21679725f382788f07a78eab2d6fce552d5d33c"
+      }
+    ]
+  },
+  {
+    "id": "alg-derivative-applications",
+    "title": "Производная: касательная и экстремумы",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)"
+    ],
+    "files": [
+      {
+        "path": "alg-derivative-applications/samostoyatelnaya.pdf",
+        "sha256": "c00b05a7b49b2611baa13d6ae1aea292e971b4e1e440f2d2bfd6bf6b4626004e"
+      },
+      {
+        "path": "alg-derivative-applications/samostoyatelnaya-otvety.pdf",
+        "sha256": "4205069e96834fe2eca10f0e4d1c6a583f24ad8ae9901e77ec99293746321ebe"
+      },
+      {
+        "path": "alg-derivative-applications/kontrolnaya.pdf",
+        "sha256": "31751b0dd2c4652a3cdea79b69b8c2f9457db7e0ef7d018fbb17ac7b749d2c1e"
+      },
+      {
+        "path": "alg-derivative-applications/kontrolnaya-otvety.pdf",
+        "sha256": "5aeef612e7086a7ab40985ad89b0ded4901d4e34217f2490a8490856107b7b34"
+      }
+    ]
+  },
+  {
+    "id": "alg-derivatives",
+    "title": "Вычисление производных",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)"
+    ],
+    "files": [
+      {
+        "path": "alg-derivatives/samostoyatelnaya.pdf",
+        "sha256": "c65f92aeafe68aa4ba034b37c25f88c818866ec4657f88ca40d23111ea8a6eb0"
+      },
+      {
+        "path": "alg-derivatives/samostoyatelnaya-otvety.pdf",
+        "sha256": "84b31067a5a97889471b59c3e5844d05f683a3e795fa0796c256ddfe7909c343"
+      },
+      {
+        "path": "alg-derivatives/kontrolnaya.pdf",
+        "sha256": "83993f8f58ec95836853fea1f6585f2af483b146b5e2be087bc7d27d3f5bcb3b"
+      },
+      {
+        "path": "alg-derivatives/kontrolnaya-otvety.pdf",
+        "sha256": "87319d3b8c2fd3f895eb5a35b30bb21364c3d9f93c15320bdde991693cfa56a2"
+      }
+    ]
+  },
+  {
+    "id": "alg-exponentials",
+    "title": "Простые показательные уравнения",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Никольский, Потапов, Решетников, Шевкин. Алгебра и начала анализа. 10 класс, 2022",
+      "Алгебра и начала математического анализа 11 класс. Углублённый уровень - Мерзляк, Поляков, Номировский (2019)",
+      "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-exponentials/samostoyatelnaya.pdf",
+        "sha256": "dc9ba2ddb41a0d788f94c97209ada56d48b9c6870b74753abb6400ab5b598ae3"
+      },
+      {
+        "path": "alg-exponentials/samostoyatelnaya-otvety.pdf",
+        "sha256": "3ce16070e77486d4c596cf4f18ae7b1556526fb0df16b9e2af5d542225c8c06a"
+      },
+      {
+        "path": "alg-exponentials/kontrolnaya.pdf",
+        "sha256": "f0dfcf94a3c257e613aebce9fddea3b000ee1dd5c2325eb9ffff8fc5a2276299"
+      },
+      {
+        "path": "alg-exponentials/kontrolnaya-otvety.pdf",
+        "sha256": "c88e4a223ce92e94e7a38d5d3a4dcb69a00d1c08920f3c41a930d5a476693cb5"
+      }
+    ]
+  },
+  {
+    "id": "alg-log-equations",
+    "title": "Простые логарифмические уравнения",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Никольский, Потапов, Решетников, Шевкин. Алгебра и начала анализа. 10 класс, 2022",
+      "Алгебра и начала математического анализа 11 класс. Углублённый уровень - Мерзляк, Поляков, Номировский (2019)",
+      "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-log-equations/samostoyatelnaya.pdf",
+        "sha256": "889c01f49fb13780409360d2a7b7fde8e310caef8bd2c47c0f534f5cd8ac41ef"
+      },
+      {
+        "path": "alg-log-equations/samostoyatelnaya-otvety.pdf",
+        "sha256": "895d10acd8938f1eaa2e35794b6b80815d7e9224e46a8a5ad16ab129854a9acc"
+      },
+      {
+        "path": "alg-log-equations/kontrolnaya.pdf",
+        "sha256": "a741fae646be45fe2ce6949dc330f2b864375ac1d886c335863c48a858cec37a"
+      },
+      {
+        "path": "alg-log-equations/kontrolnaya-otvety.pdf",
+        "sha256": "15b6c181891d469a2f4aded58896a0702ce9a65b24daa416d612ae287a298256"
+      }
+    ]
+  },
+  {
+    "id": "alg-logarithms",
+    "title": "Вычисление логарифмов",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Никольский, Потапов, Решетников, Шевкин. Алгебра и начала анализа. 10 класс, 2022",
+      "Алгебра и начала математического анализа 11 класс. Углублённый уровень - Мерзляк, Поляков, Номировский (2019)",
+      "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2012)",
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+      "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-logarithms/samostoyatelnaya.pdf",
+        "sha256": "7d479976e0197ebcbf14a5e68336c70df21ddfa4da26728d6d1334dc1b13ebe0"
+      },
+      {
+        "path": "alg-logarithms/samostoyatelnaya-otvety.pdf",
+        "sha256": "cfc21d58e3e4b0693eba7f0d22da056cba2a3d05ed109659180c01fbeb9b4355"
+      },
+      {
+        "path": "alg-logarithms/kontrolnaya.pdf",
+        "sha256": "539958d3f6dcea4236fdf0540820db52854840db768b3620bc83c0653c0e9282"
+      },
+      {
+        "path": "alg-logarithms/kontrolnaya-otvety.pdf",
+        "sha256": "60ed16c79acd22207eaa9ea9793d3e55863d66344db1a179eac2bc8b2bd5c5da"
+      }
+    ]
+  },
+  {
+    "id": "alg-trig-equations",
+    "title": "Простейшие тригонометрические уравнения",
+    "grade": "10 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-trig-equations/samostoyatelnaya.pdf",
+        "sha256": "4d6d34be2cf117dfe842a3795aa9893e34e0d667e067d44001d33ad2b162adf3"
+      },
+      {
+        "path": "alg-trig-equations/samostoyatelnaya-otvety.pdf",
+        "sha256": "aa65f77dc16bf76ff030e1685ebdada90f20f953e8baabbbfe0c6ac5c01e5b7e"
+      },
+      {
+        "path": "alg-trig-equations/kontrolnaya.pdf",
+        "sha256": "891354fb90da6231768775502b6221a7df3f4457f8be7ab74712bb7c08dceb24"
+      },
+      {
+        "path": "alg-trig-equations/kontrolnaya-otvety.pdf",
+        "sha256": "e609dc24844e81db3f51e5cdb3d37c74125477f909a4afecd74cd3f5dbd91413"
+      }
+    ]
+  },
+  {
+    "id": "alg-trig-identities",
+    "title": "Основные тригонометрические тождества",
+    "grade": "10 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-trig-identities/samostoyatelnaya.pdf",
+        "sha256": "0448d944743ca85a4f35052c658f3d6d2c46ea5b4ef1afa350ed522773771146"
+      },
+      {
+        "path": "alg-trig-identities/samostoyatelnaya-otvety.pdf",
+        "sha256": "29600b5e07219b950824f3de1a802957c31741006ff3b4feee4c9271547ce0bf"
+      },
+      {
+        "path": "alg-trig-identities/kontrolnaya.pdf",
+        "sha256": "5c972419e7805da2b6c00d135ac4fadd14c79040895e53e9c14abb8d1b597c6b"
+      },
+      {
+        "path": "alg-trig-identities/kontrolnaya-otvety.pdf",
+        "sha256": "9020c662b341b86aeb689c640dc7bc2a505a1e5438313bf9d85150ae45ab9134"
+      }
+    ]
+  },
+  {
+    "id": "alg-trig-values",
+    "title": "Табличные значения и периодичность",
+    "grade": "10–11 классы",
+    "subject": "Алгебра",
+    "books": [
+      "Никольский, Потапов, Решетников, Шевкин. Алгебра и начала анализа. 10 класс, 2022",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2010)",
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленное изучение - Мерзляк, Поляков, Номировский (2021)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 1 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс (базовый и углублённый уровни). Часть 2 - Мордкович А.Г., Семенов П.В. (2020)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Мерзляк А.Г., Номировский Д.А. и др. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Базовый уровень - Муравин Г.К., Муравина О.В. (2019)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 10 класс - Муравин Г.К. (2013)",
+      "Алгебра и начала математического анализа 10 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Нелин Е.П., Лазарев В.А. (2011)",
+      "Алгебра и начала математического анализа 10 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2011)",
+      "Алгебра и начала математического анализа 10 класс (профильный уровень) - Колягин Ю.М. и др. (2009)"
+    ],
+    "files": [
+      {
+        "path": "alg-trig-values/samostoyatelnaya.pdf",
+        "sha256": "30c12ee8c14ee08d3b1673715cf4d4b1e00f2d3440fc51ab90caf3dd61a379f3"
+      },
+      {
+        "path": "alg-trig-values/samostoyatelnaya-otvety.pdf",
+        "sha256": "05c3a0f3531021326c808672184ab58be73ce32c28a4f51818a80cfd71e370ae"
+      },
+      {
+        "path": "alg-trig-values/kontrolnaya.pdf",
+        "sha256": "4d8f69a64f87993b6e052262194df27e5606d86bcc4ac63798a11e1b48de48cd"
+      },
+      {
+        "path": "alg-trig-values/kontrolnaya-otvety.pdf",
+        "sha256": "4d078cc05c461789d3322ea7fd07b8542a9e24185b98f153b6a11a22897adc83"
+      }
+    ]
+  },
+  {
+    "id": "prob-conditional",
+    "title": "Условная вероятность: простой выбор",
+    "grade": "10–11 классы",
+    "subject": "Вероятность и статистика",
+    "books": [
+      "Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014"
+    ],
+    "files": [
+      {
+        "path": "prob-conditional/samostoyatelnaya.pdf",
+        "sha256": "dc2bfc340a5755b0de620043f5ddd5daa957390bd8845f14139034efe08be365"
+      },
+      {
+        "path": "prob-conditional/samostoyatelnaya-otvety.pdf",
+        "sha256": "e34096b1f7ea541bd316054cd3309a12ac5424de6c625baa737e34b9172f7550"
+      },
+      {
+        "path": "prob-conditional/kontrolnaya.pdf",
+        "sha256": "6176d9a1eabfa4c258eb8964f201d71703d7336596698c5abbf65710f302c3b2"
+      },
+      {
+        "path": "prob-conditional/kontrolnaya-otvety.pdf",
+        "sha256": "89b5dea7199815a965f7192f64c847c4ce5b9fb7d3933f8cc446bc8b038c868b"
+      }
+    ]
+  },
+  {
+    "id": "geo-piramida",
+    "title": "Правильная пирамида: площадь поверхности",
+    "grade": "10 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Мерзляк и др. Геометрия 10. Базовый уровень, 2022",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-piramida/samostoyatelnaya.pdf",
+        "sha256": "6f35c80683fa0598090e12822831e24e6ad3ec20aa0ac99c78855c2cb1dd2083"
+      },
+      {
+        "path": "geo-piramida/samostoyatelnaya-otvety.pdf",
+        "sha256": "4f389a9a9a549ca819f6bede9e376c4ce72280a0518a3632f1de98a5b91f48d3"
+      },
+      {
+        "path": "geo-piramida/kontrolnaya.pdf",
+        "sha256": "1bf6b4533b97ed9f32440518a08545c124c150f17d1c246438ac44c9fa1dda63"
+      },
+      {
+        "path": "geo-piramida/kontrolnaya-otvety.pdf",
+        "sha256": "439d9746f3c22bd18359475021d6b1337ca9d6d5d64ff1951a0b3f49ee713dc6"
+      }
+    ]
+  },
+  {
+    "id": "geo-prizma",
+    "title": "Прямая призма: элементы и площадь поверхности",
+    "grade": "10 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Мерзляк и др. Геометрия 10. Базовый уровень, 2022",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-prizma/samostoyatelnaya.pdf",
+        "sha256": "97e123fdc16c10236eeb5460246aaf9b2c00dcdeb442af904e07b12f396e36bd"
+      },
+      {
+        "path": "geo-prizma/samostoyatelnaya-otvety.pdf",
+        "sha256": "b6c4a7d57963a67c41adf2de156319fc399e1130d3eb2f548d34df49aaca9ac2"
+      },
+      {
+        "path": "geo-prizma/kontrolnaya.pdf",
+        "sha256": "941c8ea1ea4e747416c3686b0b8b5b68bd21594516bade55c15ead245559c9ad"
+      },
+      {
+        "path": "geo-prizma/kontrolnaya-otvety.pdf",
+        "sha256": "0c71e8203eba1a675b491560f82aa149f8caf5c146ecb6fab867ed50b1551045"
+      }
+    ]
+  },
+  {
+    "id": "geo-prostranstvo-parallelnost",
+    "title": "Параллельность в пространстве",
+    "grade": "10 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Мерзляк и др. Геометрия 10. Базовый уровень, 2022",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-prostranstvo-parallelnost/samostoyatelnaya.pdf",
+        "sha256": "ad5b1f1a85da6d9e7b6cad5901fbfac3a50018b292d8c25e96fbc164cbecd582"
+      },
+      {
+        "path": "geo-prostranstvo-parallelnost/samostoyatelnaya-otvety.pdf",
+        "sha256": "9f4cdb84998ea3908c7a23f7c6dcc389b4b79fc39a07907b0ecb8876f7a117ae"
+      },
+      {
+        "path": "geo-prostranstvo-parallelnost/kontrolnaya.pdf",
+        "sha256": "28b0931853aa94da003c3c5dc9646238e7de1e6491431795e5c9e98696262a8d"
+      },
+      {
+        "path": "geo-prostranstvo-parallelnost/kontrolnaya-otvety.pdf",
+        "sha256": "6307d5ef09e6eb2a6e8d0bb1710e6b156cb62059bb0e8d19e5974a9fb12af0b5"
+      }
+    ]
+  },
+  {
+    "id": "geo-prostranstvo-perpendikulyarnost",
+    "title": "Перпендикулярность и расстояние до плоскости",
+    "grade": "10 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Мерзляк и др. Геометрия 10. Базовый уровень, 2022",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-prostranstvo-perpendikulyarnost/samostoyatelnaya.pdf",
+        "sha256": "b6d78f79a000872f7b56981a5c2c627a899a8055af17fbe7768220d7b263c9b0"
+      },
+      {
+        "path": "geo-prostranstvo-perpendikulyarnost/samostoyatelnaya-otvety.pdf",
+        "sha256": "32636bb7d12e5cc538bd73cbee277652049f853b0012887cadc1091d1cd7054d"
+      },
+      {
+        "path": "geo-prostranstvo-perpendikulyarnost/kontrolnaya.pdf",
+        "sha256": "18941ada4208eba5ddb96ae31c5daccb6c3d15a6f1c35d414c983f222c9bc994"
+      },
+      {
+        "path": "geo-prostranstvo-perpendikulyarnost/kontrolnaya-otvety.pdf",
+        "sha256": "378984e7ae94abd7894f5036fbd5b5e592af56268befa8b2ea5e2495669ed16b"
+      }
+    ]
+  },
+  {
+    "id": "alg-antiderivatives",
+    "title": "Первообразная и простой интеграл",
+    "grade": "11 класс",
+    "subject": "Алгебра",
+    "books": [
+      "Алимов и соавторы. Алгебра и начала математического анализа. 10–11 классы",
+      "Алгебра и начала математического анализа 11 класс. Углублённый уровень - Мерзляк, Поляков, Номировский (2019)",
+      "Алгебра и начала математического анализа 11 класс - Рубин А.Г., Чулков П.В. (2016)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Виленкин Н.Я., Ивашев-Мусатов О.С., Шварцбурд С.И. (2014)",
+      "Алгебра и начала математического анализа 11 класс. Углубленный уровень - Муравин Г.К., Муравина О.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс (базовый и углубленный уровень). Часть 1 - Мордкович А.Г., Семенов П.В. (2014)",
+      "Алгебра и начала математического анализа 11 класс - Муравин Г.К., Муравина О.В. (2013)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 1 - Мордкович, Семенов (2012)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень). Часть 2 - Мордкович А.Г., Семенов П.В. (2012)",
+      "Алгебра и начала математического анализа 11 класс (базовый и профильный уровни) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 11 класс (профильный уровень) - Колягин Ю.М. и др. (2010)",
+      "Алгебра и начала математического анализа 10-11 классы - Колмогоров А.Н. и др. (2018)",
+      "Алгебра и начала анализа 10-11 классы - Алимов А.Ш, Колягин Ю.М. (2012)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 1 - Мордкович А.Г. (2013)",
+      "Алгебра и начала математического анализа 10-11 классы (базовый уровень). Часть 2 - Мордкович А.Г. (2013)"
+    ],
+    "files": [
+      {
+        "path": "alg-antiderivatives/samostoyatelnaya.pdf",
+        "sha256": "8ca9c573cadb1a5e2c9517567f3e4e5304163ecf023436d0f84a95a8313c6924"
+      },
+      {
+        "path": "alg-antiderivatives/samostoyatelnaya-otvety.pdf",
+        "sha256": "346f4d8e5ca8c28f6b5fa13afaf34b3b2f593ca7a1d11710d2222a9a5169b83f"
+      },
+      {
+        "path": "alg-antiderivatives/kontrolnaya.pdf",
+        "sha256": "ad52b91e5baab326b2976f44cbfbc5f147d7b854d3c5fb3ac85f033b1e2b3846"
+      },
+      {
+        "path": "alg-antiderivatives/kontrolnaya-otvety.pdf",
+        "sha256": "d7e4f3bdde93e54351caec4d0e1ca79be73a55283c6b696bf10a30d2773cd425"
+      }
+    ]
+  },
+  {
+    "id": "geo-cilindr",
+    "title": "Цилиндр: поверхность и осевое сечение",
+    "grade": "11 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-cilindr/samostoyatelnaya.pdf",
+        "sha256": "d8a56b66774c4b505e72f6aac7cdcd3696cec77f9f40b24dde25f6671b74d3ba"
+      },
+      {
+        "path": "geo-cilindr/samostoyatelnaya-otvety.pdf",
+        "sha256": "8919d2e4e519fa9444d59c959655168a93f3ebc3d173745b7d7e2f7f4e0fe2a6"
+      },
+      {
+        "path": "geo-cilindr/kontrolnaya.pdf",
+        "sha256": "10bea40415eee7e1cb23858a1c5529323cb2b3a2b42ce1981306c10076342325"
+      },
+      {
+        "path": "geo-cilindr/kontrolnaya-otvety.pdf",
+        "sha256": "5787e7087d7073fe3cec738359a81f5c8ffbe18144697908d88168122bae4604"
+      }
+    ]
+  },
+  {
+    "id": "geo-konus",
+    "title": "Конус: поверхность и осевое сечение",
+    "grade": "11 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-konus/samostoyatelnaya.pdf",
+        "sha256": "03057b246f1dbda87910e6cbb1a13c2b5bb65a2cc7b71b8986ebc2085a674be5"
+      },
+      {
+        "path": "geo-konus/samostoyatelnaya-otvety.pdf",
+        "sha256": "fe5325350481b800a0955b6ba15d9e8a0a40b7dbdec24fa142b8d20a185d522b"
+      },
+      {
+        "path": "geo-konus/kontrolnaya.pdf",
+        "sha256": "36fd6289833425cab7f784df02c1046f5106c752a080b2aeb52387bbe1f9a9b3"
+      },
+      {
+        "path": "geo-konus/kontrolnaya-otvety.pdf",
+        "sha256": "ae25c6b359b2ab5e8cd921c3a677bebd8aa1600763ad044ce2be461850f86d4f"
+      }
+    ]
+  },
+  {
+    "id": "geo-obemy-piramida-konus-shar",
+    "title": "Объемы пирамиды, конуса и шара",
+    "grade": "11 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-obemy-piramida-konus-shar/samostoyatelnaya.pdf",
+        "sha256": "150025da8825569d7c6f30a8c313b75f183a17260a8ba1fc861ea8f76771b406"
+      },
+      {
+        "path": "geo-obemy-piramida-konus-shar/samostoyatelnaya-otvety.pdf",
+        "sha256": "b925b5b309b9580d67eea380b7ccfe87ac2aef2966e2cb87f2cf239f479c5139"
+      },
+      {
+        "path": "geo-obemy-piramida-konus-shar/kontrolnaya.pdf",
+        "sha256": "3c2e0fed59aae4439e788f22b30fccb0890013a718f404c713c4ae97d8dbb82f"
+      },
+      {
+        "path": "geo-obemy-piramida-konus-shar/kontrolnaya-otvety.pdf",
+        "sha256": "5ba06489962144f856ffe194b034ca97cb622bf0a006e4828aaa69e8573b27ea"
+      }
+    ]
+  },
+  {
+    "id": "geo-obemy-prizma-cilindr",
+    "title": "Объемы куба, призмы и цилиндра",
+    "grade": "11 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-obemy-prizma-cilindr/samostoyatelnaya.pdf",
+        "sha256": "c310aa6e741f40cfc586e11bfb561852e53b7d2b2b309e1e60047ab53bded703"
+      },
+      {
+        "path": "geo-obemy-prizma-cilindr/samostoyatelnaya-otvety.pdf",
+        "sha256": "f2a43f817d3c56124cf2d41769e855efc5cf3aafb0dc880b253cc1d93428c9dd"
+      },
+      {
+        "path": "geo-obemy-prizma-cilindr/kontrolnaya.pdf",
+        "sha256": "8c9019229fc3428eb478082fe9b632eb61e3dc1eceda62c1ebe290274fcd3fdb"
+      },
+      {
+        "path": "geo-obemy-prizma-cilindr/kontrolnaya-otvety.pdf",
+        "sha256": "c228f744acd9244aab4d0e6fecad1f10832d835857915407c6db62803cd0e765"
+      }
+    ]
+  },
+  {
+    "id": "geo-sfera",
+    "title": "Сфера: площадь, сечение и касательная плоскость",
+    "grade": "11 класс",
+    "subject": "Геометрия",
+    "books": [
+      "Атанасян и др. Геометрия 10–11, 2024",
+      "Шестаков, Ященко. Геометрия. Сборник задач 10–11, 2021"
+    ],
+    "files": [
+      {
+        "path": "geo-sfera/samostoyatelnaya.pdf",
+        "sha256": "6157c7640ef1e91ccd476e22bea912a6bd0abbaaccb1a499c15a803f48467459"
+      },
+      {
+        "path": "geo-sfera/samostoyatelnaya-otvety.pdf",
+        "sha256": "c3f40e4ab8c7066b9aa5233303224cc82eec128ebd4dbcbbfd374d42cc611b63"
+      },
+      {
+        "path": "geo-sfera/kontrolnaya.pdf",
+        "sha256": "1d2099d5680a04691e7248863fb148dba23109c206057d542974000c847028e7"
+      },
+      {
+        "path": "geo-sfera/kontrolnaya-otvety.pdf",
+        "sha256": "2135fc668eb5369908eb22bc9477ac5953116d5e65618fbbb1fab164e4833361"
+      }
+    ]
+  }
+]
