@@ -28,6 +28,7 @@ jobs:
         run: |
           python -m pip install sympy==1.14.0
           python school/makarychev8/test-exercises-1-24.py
+          python school/makarychev8/test-exercises-25-54.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -35,6 +36,8 @@ jobs:
           node --check school/makarychev8/app.js
           node --check school/makarychev8/check.js
           node --check school/makarychev8/models.js
+          node --check school/makarychev8/task-graphs.js
+          node school/makarychev8/test-task-graphs.cjs
           node school/makarychev8/test-course.cjs
           node school/makarychev8/test-models.cjs
           node school/makarychev8/test-state.cjs
@@ -49,6 +52,8 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
+      - name: Chromium exercises25–54 and graph construction
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-25-54.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

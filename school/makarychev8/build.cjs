@@ -5,6 +5,7 @@ const sourceMap=read('source-map.json');
 const lessons=['ch1.json','ch2.json','ch3.json','ch4-6.json'].flatMap(read).sort((a,b)=>a.order-b.order);
 // Append only: old task indices are public deep links and saved-work locations.
 lessons.find(l=>l.id==='p01').tasks.push(...read('exercises-1-24.json'));
+lessons.find(l=>l.id==='p02').tasks.push(...read('exercises-25-54.json'));
 for(const l of lessons){const ref=sourceMap.sections.find(s=>s.kind==='topic'&&s.id===l.order);if(!ref)throw Error('Unknown topic '+l.order);l.advanced=ref.advanced;l.page=ref.printedPage;l.sourceRange=ref.exerciseRange.join('–');l.chapter=sourceMap.chapters.find(c=>c.id===ref.chapter).title;}
 if(lessons.length!==51||new Set(lessons.map(l=>l.order)).size!==51)throw Error('Expected exactly 51 topics');
 const data={edition:'makarychev8-2024',chapters:sourceMap.chapters,sourceMap,lessons};
