@@ -20,6 +20,41 @@ function record(r,action,status,detail={}){r.actions.push({action,status:typeof 
 function oracle(r,prompt,expected,method,extra={}){r.oracles.push({prompt:clean(prompt),expected,method,...extra});}
 async function source(p,expression){return p.evaluate(x=>JSON.parse(JSON.stringify(eval(x),(_k,v)=>typeof v==='bigint'?String(v):v)),expression);}
 async function text(l){return clean(await l.innerText());}
+
+const assert=require('node:assert/strict');
+const WAYFINDING_HEAD='<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
+const WAYFINDING_BAR='\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
+function originalWayfindingHtml(html){
+ assert.equal(html.split(WAYFINDING_HEAD).length,2,'one exact wayfinding asset pair');
+ assert.equal(html.split(WAYFINDING_BAR).length,2,'one exact wayfinding bar');
+ const original=html.replace(WAYFINDING_HEAD,'').replace(WAYFINDING_BAR,'');
+ assert(!original.includes('oge-wayfinding'),'no unknown extra wayfinding markup');
+ return original;
+}
+{
+ const original='<html><head></head><body><p>Exact condition</p></body></html>';
+ const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
+ assert.equal(originalWayfindingHtml(fixture),original);
+ for(const mutated of [fixture.replace(WAYFINDING_BAR,''),fixture.replace(WAYFINDING_BAR,WAYFINDING_BAR+WAYFINDING_BAR),fixture.replace('aria-label="Навигация ОГЭ"','onclick="changed()" aria-label="Навигация ОГЭ"'),fixture.replace(' defer ',' async '),fixture.replace('/trainers/oge-course/','/changed/')])assert.throws(()=>originalWayfindingHtml(mutated));
+}
+async function captureInitialVisibleText(page,report){
+ const full=await text(page.locator('body'));
+ const bars=page.locator('body > nav.oge-wayfinding');
+ if(await bars.count()===0){report.initialVisibleText=full;return;}
+ assert.equal(report.prefix,'','Fixed editions cannot acquire live return navigation');
+ assert.equal(await bars.count(),1);
+ assert.equal(await bars.evaluate(node=>node.outerHTML),WAYFINDING_BAR.trim(),'exact displayed return bar');
+ const label=await text(bars);
+ assert.equal(label,'← Все темы ОГЭ Главная');
+ assert(full.startsWith(label+' '),'return bar is a separate leading navigation block');
+ const file=path.resolve(ROOT,'.'+report.finalPath+(report.finalPath.endsWith('/')?'index.html':''));
+ assert(file.startsWith(ROOT+path.sep));
+ const raw=fs.readFileSync(file,'utf8'),original=originalWayfindingHtml(raw);
+ report.unfilteredInitialVisibleText=full;
+ report.initialVisibleText=full.slice(label.length+1);
+ report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
+}
+
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
 async function dimensions(p,r,stage){const d=await p.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+2?[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect();return (b.width>innerWidth||b.right>innerWidth+2)&&e.getClientRects().length&&!e.closest('svg');}).slice(0,15).map(e=>({tag:e.tagName,id:e.id,cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent.trim().slice(0,120)})):[]}));record(r,'layout',d.html<=d.viewport+2&&d.body<=d.viewport+2,{stage,...d});}
 async function storage(p){return p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).sort(([a],[b])=>a.localeCompare(b))));}
@@ -268,7 +303,7 @@ async function corruptedStorageRegression(p,r){
    });
    try{
     await p.goto(origin+PREFIX+route,{waitUntil:'load'});await tick(p);
-    r.finalPath=new URL(p.url()).pathname;r.title=await p.title();r.initialVisibleText=await text(p.locator('body'));
+    r.finalPath=new URL(p.url()).pathname;r.title=await p.title();await captureInitialVisibleText(p,r);
     await diagrams(p,r);
     if(width===390||width===1280){r.initialScreenshot=`${id}-${width}-initial.png`;await p.screenshot({path:path.join(OUT,r.initialScreenshot),fullPage:true});}
     await dimensions(p,r,'initial');

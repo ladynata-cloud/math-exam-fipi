@@ -95,6 +95,16 @@ def exact_reviewed_context(record, oracle, fixtures):
     if fixture is None:return False
     if not record['prefix']:
         fixture = fixture.get('sourceVariant', fixture)
+    navigation = record.get('publicWayfinding')
+    if navigation:
+        # The recorder retains raw visible text and exact payload hashes; only
+        # the separately checked two-link return bar is outside the exercise.
+        if record['prefix'] or navigation.get('kind') != 'oge-return-v1':return False
+        if navigation.get('visibleText') != '← Все темы ОГЭ Главная':return False
+        if record.get('unfilteredInitialVisibleText') != navigation['visibleText']+' '+record['initialVisibleText']:return False
+        loaded = record.get('resources',{}).get(record.get('finalPath',''),{})
+        if navigation.get('servedHtmlSha256') != loaded.get('sha256'):return False
+        if not re.fullmatch(r'[a-f0-9]{64}',navigation.get('originalHtmlSha256','')):return False
     text = record['initialVisibleText']
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
@@ -111,7 +121,8 @@ def exact_reviewed_context(record, oracle, fixtures):
             route=record['prefix']+record['route']
             approved=fixture.get('firstVisualReviewPayloads',{}).get(route,{})
             actual=record.get('resources',{}).get(route,{})
-            if not approved.get('sha256') or actual.get('sha256')!=approved['sha256']:return False
+            actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
+            if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
     return (text in [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])] and
             geom(record.get('visibleSvgLabels', [])) == fixture['geometrySha256'] and
             item in fixture['oracles'])
