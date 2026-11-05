@@ -1,14 +1,14 @@
 'use strict';
 // In-memory DOM contracts; visual browser review is recorded separately.
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),assert=require('node:assert/strict');
-function boot(saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://makarychev.test/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};const errors=[];w.console.error=(...args)=>errors.push(args.join(' '));if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',saved);for(const file of ['../peterson6/math.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));return {w,d:w.document,errors};}
+function boot(saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://makarychev.test/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};const errors=[];w.console.error=(...args)=>errors.push(args.join(' '));if(saved)w.localStorage.setItem('mathexam.makarychev8.2024.v1',saved);for(const file of ['../peterson6/math.js','task-graphs.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));return {w,d:w.document,errors};}
 const {w,d,errors}=boot(),api=w.MakarychevApp;
 const nav=hash=>{w.history.replaceState(null,'',hash);api.route();};
 const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();};
 const input=(s,v)=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}));};
 const submit=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));};
 const state=()=>api.getState();
-assert(d.querySelector('h1').textContent.includes('Разобраться'));let renders=0,walkedSteps=0;
+assert(d.querySelector('h1').textContent.includes('Разобраться'));assert(api.format('{{frac:3^(n+2):3^n}}').includes('<sup>n+2</sup>'));assert(api.format('{{frac:3^(n+2):3^n}}').includes('<sup>n</sup>'));assert(!api.format('<img src=x onerror=alert(1)>').includes('<img')); let renders=0,walkedSteps=0;
 for(const l of w.MakarychevCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  const t=l.tasks[i];nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
  click('[data-action="guided"]');
