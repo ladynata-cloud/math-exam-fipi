@@ -595,6 +595,114 @@ async function sharedWriting(browser, siteOrigin, boardOrigin) {
   await lateSession.context.close(); await studentSession.context.close(); await teacherSession.context.close();
   console.log('PASS shared writing: owner-only input; real handoff; own undo/redo across sheets; mid-gesture revoke; screenshot bytes/pixels; reload/late join');
 }
+
+async function terminalRoomErrors(browser, siteOrigin, boardOrigin) {
+  phase = 'terminal room errors and a new room without losing the current trainer';
+  const teacherSession = await newSession(browser, siteOrigin, boardOrigin, 'room-error-teacher'), teacher = teacherSession.page;
+  await openBoard(teacherSession, siteOrigin, boardOrigin);
+  await teacher.locator('#openShare').click(); await teacher.locator('#createRoom').click(); await connected(teacher);
+  const invite = await teacher.locator('#studentLink').inputValue();
+  await teacher.locator('#sharePanel [data-close-panel]').click();
+  const studentSession = await newSession(browser, siteOrigin, boardOrigin, 'room-error-student'), student = studentSession.page;
+  await student.goto(invite, { waitUntil: 'domcontentloaded' }); await connected(student);
+  await drawStroke(teacher, 'pen', { x: 100, y: 120 }, { x: 220, y: 160 });
+  await sameBoard(teacher, student, 'the rejected room has existing written work');
+  const teacherFrame = await trainerFrame(teacher), studentFrame = await trainerFrame(student);
+  await teacherFrame.evaluate(() => {
+    const current = window.getBoardTrainerState();
+    clickPoint(current.task.a); clickPoint(current.task.res);
+  });
+  await teacherFrame.locator('#ans').fill('31');
+  await studentFrame.waitForFunction(() => document.querySelector('#ans').value === '31');
+  await handoff(teacher, student, true);
+
+  // A denied action is not a lost room: the current student's next answer
+  // must still reach the teacher after the server's real permission error.
+  await student.evaluate(() => shared.socket.emit('control:grant', roomPayload()));
+  await student.waitForFunction(() => document.querySelector('#shareStatus').textContent === 'Нет прав на передачу хода');
+  assert.equal(await student.evaluate(() => shared.connected && canWrite()), true);
+  assert.equal(await student.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'connected');
+  await studentFrame.locator('#ans').fill('37');
+  await teacherFrame.waitForFunction(() => document.querySelector('#ans').value === '37');
+
+  const studentPages = await rawPages(student), studentTrainer = await frameState(student);
+  const studentNavigations = studentSession.iframeNavigations;
+  const oldReady = await student.evaluate(() => {
+    const { protocolVersion, trainerId, trainerVersion, stateSchemaVersion, bridgeInstanceId } = bridgeSession;
+    window.__rejectedRoomSocket = shared.socket;
+    window.__rejectedRoomState = { state: { ...publicSnapshot(), latestTrainerState, participants: shared.participants, control: shared.control, controlVersion: shared.controlVersion }, you: shared.me };
+    shared.socket.emit('room:join', { ...roomPayload(), role: 'student', roomId: 'missing-synthetic-board-room', proto: 2 });
+    return { protocolVersion, trainerId, trainerVersion, stateSchemaVersion, bridgeInstanceId };
+  });
+  await student.waitForFunction(() => document.querySelector('#shareStatus').textContent === 'Комната не найдена');
+  assert.deepEqual(await student.evaluate(() => ({
+    connected: shared.connected, received: roomStateReceived, writable: canWrite(), socket: shared.socket,
+    control: shared.control, me: shared.me, participants: shared.participants.length,
+    activeBridge: bridgeSession, ready: readyCandidate, latest: latestTrainerState, pending: pendingTrainerState,
+    inert: document.querySelector('#trainerFrame').inert, oldConnected: window.__rejectedRoomSocket.connected,
+    oldStateListeners: window.__rejectedRoomSocket.listeners('room:state').length
+  })), { connected: false, received: false, writable: false, socket: null, control: '', me: null, participants: 0,
+    activeBridge: null, ready: null, latest: null, pending: null, inert: true, oldConnected: false, oldStateListeners: 0 });
+  assert.equal(await student.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'room-unavailable');
+  assert.equal(await student.locator('#boardControlStatus').textContent(), 'Нет подключения к комнате');
+  assert.equal(await student.locator('#releaseControl').isEnabled(), false);
+  assert.equal(await rawPages(student), studentPages, 'terminal rejection preserves the last visible written work');
+  assert.equal(await frameState(student), studentTrainer, 'terminal rejection does not reload or clear the visible trainer');
+
+  // Deliver delayed events through the retired socket and the genuine iframe
+  // boundary; a later registry response also must not resurrect this session.
+  await student.evaluate(async () => {
+    const old = window.__rejectedRoomSocket, payload = window.__rejectedRoomState;
+    old.emitEvent(['room:state', payload]);
+    old.emitEvent(['control:changed', { control: payload.you.participantId, controlVersion: 999 }]);
+    await loadTrainerRegistry({ force: true });
+  });
+  await studentFrame.evaluate(metadata => parent.postMessage({ type: 'mathexam:trainer-ready', ...metadata }, location.origin), oldReady);
+  await framesSettled(student);
+  assert.equal(await student.evaluate(() => shared.connected || canWrite() || roomStateReceived || !!bridgeSession), false);
+  assert.equal(await student.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'room-unavailable');
+  assert.equal(studentSession.iframeNavigations, studentNavigations, 'late callbacks do not reload the rejected student view');
+
+  await teacher.waitForFunction(() => canWrite());
+  const teacherPages = semantic(await snapshot(teacher)), teacherTrainer = await frameState(teacher);
+  const teacherNavigations = teacherSession.iframeNavigations;
+  await teacher.evaluate(() => shared.socket.emit('room:join', { ...roomPayload(), role: 'teacher', token: 'invalid-synthetic-token', proto: 2 }));
+  await teacher.waitForFunction(() => document.querySelector('#shareStatus').textContent === 'Нет доступа к комнате');
+  assert.equal(await teacher.evaluate(() => shared.connected), false);
+  assert.equal(await teacher.evaluate(() => canWrite()), true, 'teacher retains a usable local copy');
+  assert.equal(await teacher.locator('#boardControlStatus').textContent(), 'Локальная доска');
+  assert.equal(await teacher.locator('#boardControlToggle').isEnabled(), false);
+  assert.equal(await teacher.locator('#mirrorStatus').getAttribute('data-mirror-status'), 'room-unavailable');
+  assert.equal(await teacher.evaluate(() => sessionStorage.getItem(TEACHER_SESSION_KEY)), null);
+  assert.equal(new URL(teacher.url()).searchParams.has('room'), false, 'fresh teacher session cannot auto-rejoin the rejected room');
+  assert.deepEqual(semantic(await snapshot(teacher)), teacherPages);
+  assert.equal(await frameState(teacher), teacherTrainer);
+
+  // Change the actual retained iframe while offline. The new room must obtain
+  // this current answer, never the last snapshot from the rejected room.
+  await teacherFrame.locator('#ans').fill('59');
+  await teacher.evaluate(() => {
+    window.__newRoomTrainerPackets = [];
+    const original = window.io;
+    window.io = (...args) => {
+      const socket = original(...args);
+      socket.onAnyOutgoing((event, payload) => {
+        if (event === 'board:trainer-state-change') window.__newRoomTrainerPackets.push({ roomId: payload.roomId, answer: payload.state.answer });
+      });
+      return socket;
+    };
+  });
+  await teacher.locator('#openShare').click(); await teacher.locator('#createRoom').click(); await connected(teacher);
+  await teacher.waitForFunction(() => window.__newRoomTrainerPackets.length > 0);
+  assert.equal(await teacher.evaluate(() => window.__newRoomTrainerPackets.every(packet => packet.roomId === shared.roomId && packet.answer === '59')), true);
+  assert.equal(await teacherFrame.locator('#ans').inputValue(), '59');
+  assert.equal(teacherSession.iframeNavigations, teacherNavigations, 'new room reuses the same hydrated iframe and its offline work');
+  assert.deepEqual(semantic(await snapshot(teacher)), teacherPages, 'creating the replacement room preserves the written board');
+  assert.equal(await teacher.evaluate(() => shared.roomError), '');
+  await studentSession.context.close(); await teacherSession.context.close();
+  console.log('PASS room errors: recoverable denial; terminal student lock; stale callbacks; fresh teacher reset; current offline trainer in a new room');
+}
+
 async function diagnostics() {
   for (const { page, tag } of sessions) {
     if (page.isClosed()) continue;
@@ -638,8 +746,9 @@ async function diagnostics() {
         await waitForHealth(boardOrigin, child, () => serverErrors);
         browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH || process.env.BROWSER_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'], timeout: 15000 });
         await localWriting(browser, siteOrigin, boardOrigin); await sharedWriting(browser, siteOrigin, boardOrigin);
+        await terminalRoomErrors(browser, siteOrigin, boardOrigin);
         assert.deepEqual(failures, [], 'no browser errors, failed local assets or external requests');
-        console.log('BOARD_WRITING_BROWSER_OK: opaque eraser and PNG; screenshot import/layers/synchronization; compatible shapes; split/zoom/pan/fit; trusted pen and secondary touch; real local teacher/student; acknowledged own undo/redo across sheets; mid-gesture revoke; byte-identical reload and late join; notRun=' + JSON.stringify(notRun));
+        console.log('BOARD_WRITING_BROWSER_OK: opaque eraser and PNG; screenshot import/layers/synchronization; compatible shapes; split/zoom/pan/fit; trusted pen and secondary touch; real local teacher/student; acknowledged own undo/redo across sheets; mid-gesture revoke; byte-identical reload and late join; terminal room errors and retained trainer recovery; notRun=' + JSON.stringify(notRun));
       })(),
       new Promise((_, reject) => { watchdog = setTimeout(() => reject(new Error('Writing gate exceeded 180 seconds at ' + phase)), 180000); })
     ]);
