@@ -463,6 +463,8 @@ test('the downloadable trainer includes the current lessons and works without ne
     assert.equal(doc.querySelector('#answerPanel').hidden,false);
     doc.querySelector('#nextCard').click();
     assert.equal(doc.querySelector('#answerPanel').hidden,true);
+    assert.equal(doc.querySelector('script[src*="learning-bridge.js"], script[src*="oge-learning.js"]'), null,
+      'Managed cabinet integrations do not belong in a standalone download');
     assert.deepEqual(requests,[],'A downloaded lesson must not need assets from the website');
     assert.deepEqual(errors,[]);
   } finally { dom.window.close(); }

@@ -49,6 +49,15 @@ function contentGate() {
     const item = C.get(source.id);
     for (const key of ['trainerId', 'contentId', 'title', 'position', 'url']) assert.equal(item[key], source[key]);
   }
+  const nativeOge = C.items.filter(item => item.trainerId === 'oge-public');
+  assert.deepEqual(nativeOge.map(item => item.id), [11, 15, 16, 17, 18, 19].map(number => 'oge-public:' + number));
+  for (const item of nativeOge) {
+    assert.equal(item.topicId, item.contentId === '11' ? 'data' : 'plane');
+    assert.equal(C.byTopic(item.topicId).find(value => value.id === item.id), item);
+    assert.equal(item.position, null, 'OGE homework must not enter EGE exam positions');
+    assert.equal(item.ogePosition, Number(item.contentId));
+    assert.equal(item.contentVersion, 1);
+  }
   assert.equal(new Set(C.items.map(item => item.id)).size, C.items.length);
   assert.equal(C.positions.length, 21);
   assert.equal(C.topics.flatMap(topic => C.byTopic(topic.id)).length, C.items.length);
