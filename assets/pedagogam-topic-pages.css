@@ -5,3 +5,4 @@
 @media print{header,footer,.skip-link,.jump-links,#me-navigator-root{display:none!important}body{background:white;color:black;font-size:12pt}main{max-width:none;padding:0}.download-grid{display:block}.download-card{break-inside:avoid;margin:12px 0}.section{break-inside:avoid}}
 
 h1,h2,h3{overflow-wrap:anywhere;hyphens:auto}.download-card details{width:100%;margin-top:12px;border-top:1px solid var(--line);padding-top:12px;font-size:16px}.download-card summary{font-size:15px}.download-card .button{margin-top:2px}
+@media(max-width:360px){h1{font-size:27px}.download-card h2{font-size:22px}}
