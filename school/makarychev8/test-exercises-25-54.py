@@ -86,6 +86,7 @@ for p,expected in [('а','1;4'),('б','2;3')]:ok(task(39,p)['answer']==expected,
 t=task(41);source(t,'(1-x)^2','x-1');ok(t['answer']=='4','source figure2 option4');ok([s['answer'] for s in t['steps']]==['1','x-1','0'],'41 steps')
 t=task(47);source(t,'a^2-4','12+a^2-a^4');domain(t,'12+a^2-a^4');ok(t['answer']=='Да','47 conclusion');eq(t['steps'][0]['answer'],'-1/3','47 example');eq(t['steps'][1]['answer'],'12+a^2-a^4','47 factoring');eq(t['steps'][2]['answer'],'(a^2-4)/(12+a^2-a^4)','47 reduction');ok(t['steps'][3]['answer']=='3','47 positive denominator bound')
 n=S.Symbol('n',positive=True,integer=True);a=task(48,'а');b=task(48,'б')
+source(a,'3^(n+2)-3^n','3^(n+2)+3^(n+1)+3^n');source(b,'16^(n+1)-2^(n+4)','4*2^n*(2^(3n)-1)')
 ok(S.simplify((3**(n+2)-3**n)/(3**(n+2)+3**(n+1)+3**n))==S.Rational(a['answer']),'48a proof')
 ok(S.simplify((16**(n+1)-2**(n+4))/(4*2**n*(2**(3*n)-1)))==S.Rational(b['answer']),'48b proof')
 ok([x['answer'] for x in a['steps']]==['8','13','нет'],'48a proof steps');ok([x['answer'] for x in b['steps']]==['4n+4','2^(3n)-1','2','2'],'48b proof steps')

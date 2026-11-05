@@ -17,7 +17,7 @@ function setEqual(user,expected){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
- if(target.kind==='graph'){const a=G?.parse(user),b=G?.parse(String(target.answer));return !!a&&!!b&&a.k===b.k&&a.b===b.b&&a.holes.length===b.holes.length&&a.holes.every(x=>b.holes.includes(x));}
+ if(target.kind==='graph'){const a=G?.parse(user),b=G?.parse(String(target.answer));if(!a||!b||a.holes.length!==b.holes.length)return false;const u=user.split(';'),v=String(target.answer).split(';');return M.equal(u[0],v[0])&&M.equal(u[1],v[1])&&(a.holes.length===0||u.slice(2).every(x=>v.slice(2).some(y=>M.equal(x,y))));}
  if(target.kind==='choice')return user===String(target.answer);
  if(target.kind==='set')return answers.some(a=>setEqual(user,a));
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));

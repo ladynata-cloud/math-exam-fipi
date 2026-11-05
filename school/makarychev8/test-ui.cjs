@@ -8,7 +8,7 @@ const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();}
 const input=(s,v)=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.value=v;el.dispatchEvent(new w.Event('input',{bubbles:true}));};
 const submit=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));};
 const state=()=>api.getState();
-assert(d.querySelector('h1').textContent.includes('Разобраться'));let renders=0,walkedSteps=0;
+assert(d.querySelector('h1').textContent.includes('Разобраться'));assert(api.format('{{frac:3^(n+2):3^n}}').includes('<sup>n+2</sup>'));assert(api.format('{{frac:3^(n+2):3^n}}').includes('<sup>n</sup>'));assert(!api.format('<img src=x onerror=alert(1)>').includes('<img')); let renders=0,walkedSteps=0;
 for(const l of w.MakarychevCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  const t=l.tasks[i];nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
  click('[data-action="guided"]');

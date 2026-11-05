@@ -35,7 +35,7 @@ const errors=[];let browser,views=0,walked=0;
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),t.id+' horizontal page overflow at '+width);
    assert.equal(await page.locator('.task-menu').evaluate(el=>el.open),width>900,'menu default at '+width);
    assert.equal(await page.locator('.source-note').innerText(),'Из учебника: '+t.source.reference+', с. '+t.source.page);
-   if(t.graph){const fig=await page.locator('#task-graph').boundingBox();assert(fig&&fig.y<900,t.id+' graph below first screen');}
+   if(t.graph){const fig=await page.locator('#task-graph').boundingBox();if(!fig||fig.y+fig.height>900)await page.screenshot({path:path.join(shots,'layout-failure-'+t.id+'-'+width+'.png'),fullPage:true});assert(fig&&fig.y+fig.height<=900,t.id+' complete graph below first screen: '+JSON.stringify(fig));}
    if(['p02-ex029-а','p02-ex038-а','p02-ex038-б','p02-ex041-','p02-ex047-','p02-ex048-б','p02-ex051-д'].includes(t.id))await page.screenshot({path:path.join(shots,t.id+'-'+width+'.png'),fullPage:true});
    views++;
   }
