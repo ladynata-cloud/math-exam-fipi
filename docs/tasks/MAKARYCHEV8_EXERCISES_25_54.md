@@ -24,3 +24,5 @@ Standing owner authorization permits merge/publication after applicable gates, w
 - Initial Chromium run41956264676 passed the prior slice and all mathematics/state/DOM gates, then found №41's graph below the first mobile screen. The lesson header was compacted and optional theory moved below the task; the graph assertion was strengthened to require the complete figure within900px.
 - Graph checking uses exact rational comparison, so rounded near-matches do not pass. Source figure2, all399 prior cards at the same indices, variable exponents and escaped formatting were reviewed. Reversed order of equivalent №51 restrictions is accepted.
 - Final mathematical oracle:13458 checks. Next sequential topic is №55–74 (addition/subtraction with equal denominators), confirmed against source-map; it is outside this slice.
+
+- Run41956903959 passed mobile320/390 and all new step journeys; the complete-figure gate then exposed the tablet768 header height. Tablet/desktop spacing was compacted and source alternatives use one row from701px. Each source graph can be enlarged on request without showing an answer or marking assistance.

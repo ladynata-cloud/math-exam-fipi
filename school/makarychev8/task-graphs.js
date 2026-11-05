@@ -39,7 +39,12 @@ function render(host,config,value){
  if(!host||!config)return;host.replaceChildren();
  if(config.type==='choices'){
   host.className='task-graphs alternatives';
-  alternatives.forEach((g,i)=>{const fig=document.createElement('figure'),caption=document.createElement('figcaption');caption.textContent='График '+(i+1);fig.append(caption,graph(g.k,g.b,g.holes,3,'График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек')));host.append(fig);});
+  alternatives.forEach((g,i)=>{
+   const fig=document.createElement('figure'),caption=document.createElement('figcaption'),zoom=document.createElement('button');zoom.type='button';zoom.className='graph-zoom';zoom.textContent='График '+(i+1)+' ↗';zoom.setAttribute('aria-label','Увеличить график '+(i+1));caption.append(zoom);
+   const label='График '+(i+1)+': y='+g.k+'x'+(g.b<0?'':'+')+g.b+(g.holes.length?', выколотая точка при x='+g.holes[0]:', без выколотых точек');
+   fig.append(caption,graph(g.k,g.b,g.holes,3,label));host.append(fig);
+   zoom.onclick=()=>{const dialog=document.createElement('dialog'),title=document.createElement('p'),close=document.createElement('button');dialog.className='graph-dialog';dialog.setAttribute('aria-label','Увеличенный график '+(i+1));title.textContent='График '+(i+1);close.type='button';close.textContent='Вернуться к выбору';dialog.append(title,graph(g.k,g.b,g.holes,3,label),close);host.append(dialog);close.onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();zoom.focus();},{once:true});dialog.showModal();};
+  });
  }else{
   host.className='task-graphs construction';const g=parse(value),caption=document.createElement('p');caption.className='small';caption.textContent=g?'Твой график по введённой записи. Проверь его кнопкой ниже.':'Твой чертёж появится после ввода k; b; исключённых x в поле ответа.';
   host.append(graph(g?g.k:null,g?g.b:0,g?g.holes:[],config.range||7,'Твой график'+(g?': y='+g.k+'x'+(g.b<0?'':'+')+g.b+'; исключённые x: '+(g.holes.join(', ')||'нет'):': координатные оси')),caption);
