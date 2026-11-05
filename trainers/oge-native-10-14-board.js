@@ -37,7 +37,13 @@ function value(el){return el.matches('details')?el.open:el.type==='checkbox'?el.
 function clean(s){return String(s).replace(/[<>\u0000-\u001f]/g,'').slice(0,80);}
 function atCapacity(){return history.length>=320||new Blob([JSON.stringify(history)]).size>=28000;}
 function reflectCapacity(){const full=atCapacity();stage().inert=full;const limit=byId('oge-board-limit');if(limit)limit.hidden=!full;}
-function add(op){const prev=history[history.length-1];if(['input','change','probe','details'].includes(op[0])&&prev&&prev[0]===op[0]&&prev[1]===op[1]&&prev[2]===op[2])history[history.length-1]=op;else history.push(op);reflectCapacity();}
+function canCoalesce(op,prev){
+ if(!['input','change','probe','details'].includes(op[0])||!prev||prev[0]!==op[0]||prev[1]!==op[1]||prev[2]!==op[2])return false;
+ // The root-function shift can clamp its separately movable x point. A later
+ // shift back retains that point, so replay must keep the earlier shift too.
+ return !(page===11&&controls()[op[1]]?.id==='t11-help-param-c');
+}
+function add(op){const prev=history[history.length-1];if(canCoalesce(op,prev))history[history.length-1]=op;else history.push(op);reflectCapacity();}
 function enqueue(){
  if(applying||queued)return;queued=true;
  // Native events may checkpoint microtasks between capture and target handlers.

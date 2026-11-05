@@ -47,6 +47,17 @@ const sourcePath=(script,file)=>{
  assert(fs.statSync(path.join(root,url.pathname)).isFile(),file+': missing runtime '+url.pathname);
  return url.pathname;
 };
+// PR441 adds one exact public return script; it is not part of either math
+// engine. Keep every historical dependency and reject any changed/extra tag.
+function exerciseScripts(html,file){
+ const nodes=scripts(html),navigation=nodes.filter(node=>node.attrs.includes('oge-wayfinding'));
+ assert.equal(navigation.length,1,file+': exactly one reviewed public navigation script');
+ const node=navigation[0];
+ assert.equal(node.attrs,' defer src="/assets/oge-wayfinding.js"',file+': exact navigation attributes');
+ assert.equal(node.body,'',file+': navigation must have no inline payload');
+ assert.equal(sourcePath(node,file),'/assets/oge-wayfinding.js');
+ return nodes.filter(item=>item!==node);
+}
 const legacy=new Map(linked.map(file=>[file,historical(legacyCommit,file)]));
 const originals=new Map([...legacy].map(([file,html])=>{
  const nodes=scripts(html);assert.equal(nodes.length,1,file+': historical extraction boundary');
@@ -77,7 +88,7 @@ function restoredDecimal(body){
  return body;
 }
 function checkManaged(file,html){
- const nodes=scripts(html);
+ const nodes=exerciseScripts(html,file);
  assert.equal(nodes.length,2,file+': exactly the loader and guarded legacy engine');
  assert.equal(sourcePath(nodes[0],file),'/trainers/oge-basics/learning-loader.js',file+': managed loader');
  assert.equal(nodes[0].body.trim(),'');
@@ -95,7 +106,7 @@ const guidedSources={
  [searchEntry]:[base+'division-lab-core.js',base+'division-guided-core.js','/trainers/oge-basics/arithmetic-route.js','/trainers/long-division-entry.js',base+'decimal-shift.js',base+'multiplication-refresh.js','/trainers/oge-basics/basics-help.js',base+'division-guided.js','/trainers/oge-basics/navigation-minimal.js']
 };
 function checkGuided(file,html){
- const nodes=scripts(html),expected=guidedSources[file],hasBank=file===course;
+ const nodes=exerciseScripts(html,file),expected=guidedSources[file],hasBank=file===course;
  assert.equal(nodes.length,expected.length+Number(hasBank),file+': unexpected active or missing script');
  assert.deepEqual(nodes.slice(0,expected.length).map(node=>sourcePath(node,file)),expected,file+': ordered guided runtime dependencies');
  for(const [i,node] of nodes.slice(0,expected.length).entries()){
@@ -140,5 +151,12 @@ rejects(course,'type="text/plain"','type="text/javascript"','reject reactivated 
 rejects(course,'division-guided-core.js','division-lab-core.js','reject missing guided core or duplicate dependency');
 rejects(searchEntry,'/trainers/long-division-entry.js','/trainers/oge-basics/arithmetic-route.js','reject removed public entry adapter');
 rejects(searchEntry,'defer></script>','async></script>','reject unordered runtime loading');
+
+for(const file of [oneDigit,course,searchEntry]){
+ rejects(file,'<script defer src="/assets/oge-wayfinding.js"></script>','', 'reject missing public return script');
+ rejects(file,'<script defer src="/assets/oge-wayfinding.js"></script>','<script async src="/assets/oge-wayfinding.js"></script>', 'reject changed public navigation attributes');
+ rejects(file,'<script defer src="/assets/oge-wayfinding.js"></script>','<script defer src="/assets/oge-wayfinding.js">window.unexpected=true;</script>', 'reject executable navigation payload');
+ rejects(file,'<script defer src="/assets/oge-wayfinding.js"></script>','<script defer src="/assets/oge-wayfinding.js"></script><script defer src="/assets/oge-wayfinding.js"></script>', 'reject duplicate public navigation');
+}
 for(const file of [course,searchEntry]){assert.throws(()=>checkGuided(file,legacy.get(file)),file+': reject restoration of obsolete UI');mutations++;}
 console.log(count+' generated plans, edge cases, exact input, state validation, evidence flags; 8 guarded legacy engines, 2 guided entries, retained historical teaching/math and '+mutations+' negative controls: PASS');

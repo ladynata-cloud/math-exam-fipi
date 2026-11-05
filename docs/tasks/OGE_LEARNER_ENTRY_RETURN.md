@@ -50,3 +50,11 @@ Local results: 32 mathematical and UI tests, 8 book-generator tests, 147-page st
 ## Resumed release, 5 November 2026
 
 Reconciled with main f4f3dada (PR440, PR443, PR442). The only overlapping UI edit is the moved model link /oge/#oge-models; both the new learner starts and that destination are retained. Both status entries are retained. Peterson and all assistant work are paused by the owner; this release changes neither.
+
+## Completion, 6 November 2026
+
+The owner requested completion of the current unfinished work, authorized publication and waived external provider review. This continuation preserves the existing PR and incorporates main `8448ccecff1334cfa4e404c6040f855f2bb258e5` with an ordinary two-parent commit. Published source-audit changes to OGE12, current division titles, navigator assets, cabinet changes and all unrelated files are retained.
+
+The failed division historical-contract check is repaired by admitting exactly one empty, deferred `/assets/oge-wayfinding.js` tag; mathematical engines and ordered dependencies remain pinned. Missing, altered, duplicate or executable navigation tags are tested as negative controls. The learner-entry preservation baseline is the current published main, so already released OGE12 changes are checked rather than reverted. Prospective book builds account for the two navigation assets while frozen edition bytes remain unchanged.
+
+Validation uses existing GitHub Actions because the local execution environment is unavailable. No local-test pass is claimed. Final exact-head results and live acceptance remain recorded in the PR.

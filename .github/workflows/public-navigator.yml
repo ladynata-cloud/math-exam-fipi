@@ -1,0 +1,44 @@
+name: Public navigator visibility
+on:
+  pull_request:
+    paths:
+      - 'assets/assistant/**'
+      - 'tools/public-navigator*'
+      - '.github/workflows/public-navigator.yml'
+      - 'index.html'
+      - 'trainers/index.html'
+      - 'courses/index.html'
+      - 'oge/index.html'
+      - 'foundations/index.html'
+      - 'lessons/index.html'
+      - 'pedagogam/index.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-navigator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Navigation regression and syntax
+        run: |
+          node --check assets/assistant/navigator-data.js
+          node --check assets/assistant/navigator-widget.js
+          node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
+          git diff --check
+      - name: Actual pages on desktop, mobile and landscape
+        run: |
+          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/navigator-server.log" 2>&1 &
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" node tools/public-navigator.browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-navigator-qa
+          path: ${{ runner.temp }}/public-navigator-qa
+          if-no-files-found: error

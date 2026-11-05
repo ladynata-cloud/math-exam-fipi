@@ -32,7 +32,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Fetch preservation baseline
-        run: git fetch --no-tags --depth=1 origin 0d96ad84f0dd9dcadf123b3845db75c5476be93a
+        run: git fetch --no-tags --depth=1 origin 8448ccecff1334cfa4e404c6040f855f2bb258e5
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

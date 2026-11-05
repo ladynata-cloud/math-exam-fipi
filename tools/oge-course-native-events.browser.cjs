@@ -102,6 +102,60 @@ async function run(context, origin, entry) {
         await click('probability model', stage.locator('.oca-exploration > details > summary'));
         await click('one native outcome after help already used', stage.locator('.oca-outcomes button'));
       }
+      if (n === 11) {
+        // The fixture selects a native root function with c=0 and point x=0.
+        // The regression itself uses trusted pointer events and reverses the
+        // slider before mouseup, while the native change event is still pending.
+        await act('deterministic root function', () => teacher.evaluate(() => {
+          const originalRandom = Math.random;
+          try {
+            Math.random = () => 4162829775 / 4294967296;
+            const picker = document.getElementById('oge-board-type');
+            picker.value = 't45';
+            picker.dispatchEvent(new Event('change', {bubbles:true}));
+          } finally { Math.random = originalRandom; }
+        }));
+        const rootIndex = await teacher.evaluate(() => M4.task.items.findIndex(item => item.family === 'root'));
+        assert.notEqual(rootIndex, -1);
+        await click('root function help', teacher.locator('#m4-desc .function-help[data-i="' + rootIndex + '"]'));
+        const shift = teacher.locator('#t11-help-param-c');
+        assert.equal(await shift.inputValue(), '0');
+        assert.equal(await teacher.locator('#t11-help-x').inputValue(), '0');
+        await shift.evaluate(element => {
+          window.__rootDragEvents = [];
+          for (const type of ['input','change']) element.addEventListener(type, event => {
+            window.__rootDragEvents.push({type, value:element.value, trusted:event.isTrusted});
+          });
+        });
+        await shift.scrollIntoViewIfNeeded();
+        const box = await shift.boundingBox();
+        assert(box && box.width > 30 && box.height > 0);
+        const mouse = hosts.get(teacher).mouse, y = box.y + box.height / 2;
+        const model = frame => frame.evaluate(() => ({
+          shift:document.getElementById('t11-help-param-c').value,
+          point:document.getElementById('t11-help-x').value,
+          graph:document.getElementById('t11-help-graph').innerHTML,
+          readout:document.getElementById('t11-help-readout').textContent
+        }));
+        await mouse.move(box.x + box.width / 2, y);
+        await mouse.down();
+        try {
+          await act('root shift drag to 4 before release', () => mouse.move(box.x + box.width - 1, y, {steps:6}));
+          assert.equal(await shift.inputValue(), '4');
+          assert.equal(await pupil.locator('#t11-help-x').inputValue(), '4');
+          assert.deepEqual(await model(pupil), await model(teacher));
+          await act('root shift reverses to -4 before release', () => mouse.move(box.x + 1, y, {steps:12}));
+          assert.equal(await shift.inputValue(), '-4');
+          assert.equal(await teacher.locator('#t11-help-x').inputValue(), '4');
+          assert.deepEqual(await model(pupil), await model(teacher));
+          const events = await teacher.evaluate(() => window.__rootDragEvents);
+          assert(events.length >= 2 && events.every(event => event.trusted));
+          assert.equal(events.filter(event => event.type === 'change').length, 0, 'Both peers must agree before the drag is released');
+        } finally { await mouse.up(); }
+        await teacher.waitForFunction(() => window.__rootDragEvents.some(event => event.type === 'change'));
+        await mirror();
+        assert.deepEqual(await model(pupil), await model(teacher));
+      }
     } else if (n === 15) {
       await fill('answer draft', teacher.locator('#board-answer'));
       await click('check answer', teacher.locator('#board-check'));

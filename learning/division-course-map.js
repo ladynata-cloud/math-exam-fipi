@@ -317,7 +317,7 @@ const supplementGroups=Object.freeze([
 ].map(group=>Object.freeze({...group,items:Object.freeze(group.items.map(item=>Object.freeze({...item,aliases:Object.freeze(item.aliases.map(Object.freeze))})))})));
 const tracks=Object.freeze([
  Object.freeze({id:'multiplication',title:'Умножение',lead:'Таблица, устный счёт и все виды умножения столбиком.',stages:multiplication,supplementGroups}),
- Object.freeze({id:'division',title:'Деление уголком',lead:'От подбора одной цифры к целому решению.',stages:division})
+ Object.freeze({id:'division',title:'Деление столбиком (уголком)',lead:'От подбора одной цифры к целому решению.',stages:division})
 ]);
 const byTrackContent=new Map(tracks.flatMap(track=>track.stages.map(stage=>[stage.id,track])));
 function trackFor(id){return byTrackContent.get(String(id||'').replace(/^oge-basics:/,''))||null;}

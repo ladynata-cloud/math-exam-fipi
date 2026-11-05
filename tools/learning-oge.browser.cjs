@@ -1,4 +1,5 @@
 'use strict';
+const publicDestination=require('./learning-public-return.assert.cjs');
 
 // Real local HTTP, durable SQLite and independent browser sessions. All names,
 // credentials, homework and solutions below are synthetic fixtures.
@@ -277,7 +278,8 @@ async function verifyPreparation({ clients, pupils, teacher, open, origin, train
     const publicCards = page.locator('.prep-task').filter({ hasText: 'Эта страница не передаёт результат в кабинет' });
     assert(await publicCards.count() > 0, 'Public-only exercises identify their progress limitation');
     for (const link of await publicCards.locator('a').all()) {
-      assert.equal(await link.getAttribute('target'), '_blank');
+      assert.equal(await link.getAttribute('target'), null);
+      assert(publicDestination(await link.getAttribute('href')).startsWith('https://mathexam.space/'));
       assert.match(await link.getAttribute('rel'), /noopener/);
     }
     assert.equal(await publicCards.locator('[data-prep-start]').count(), 0,
