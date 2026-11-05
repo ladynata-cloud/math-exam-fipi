@@ -1,4 +1,68 @@
-# Continuation — 6 November 2026 (Asia/Novosibirsk)
+# Independent technical review and protected setup — 6 November 2026
+
+The owner authorized an independent agent to review the program without access
+to the key. A separate Codex review agent completed that review in this task
+session. Verdict: **APPROVE_FOR_BOUNDED_TRIAL, technical scope only**. This is an
+independent agent review, not an external provider audit or account approval.
+
+Reviewed remote implementation: `0cb3685c0890e55c5f1b5b25e179ed2bac92517c`;
+equivalent local commit: `45289a15e3d7acb4fc4d8616024ff7d82042979e`;
+tree: `52b8c617f0e9c00f4e5c9d192f32835148b21237`;
+plan digest: `c381c3c57f64be18ea0a1d1f2731516f191f2814295ace3e45ec0d176171c840`.
+The reviewer verified the local identity; the executing agent checked remote
+tree equivalence. This documentation update does not modify executable files
+or the plan digest.
+
+- Reviewer: 13 Node groups and 24 reference checks passed; 32 planned requests,
+  zero live calls. Eight additional transport checks passed. Concurrent reserve
+  attempts from two processes admitted only one; restart remained blocked and
+  the reservation persisted. Symlink/hardlink ledgers were rejected.
+- Fixed endpoint, rejected redirects, no retries, reservation-before-request,
+  safe error handling and key isolation were verified. No critical/high defect
+  defeating those protections was found. Maximum reserved cost remains $0.456
+  under the $0.50 campaign ceiling; this is not a provider invoice.
+- **MEDIUM, nonblocking for the bounded trial:** a schema-valid cabinet answer
+  can exceed the next-turn history envelope. For example, a 999-byte answer
+  containing `text: '㍍'.repeat(300)` passes answer validation but fails dialogue
+  construction after NFKC normalization. A 3452-byte ordinary Cyrillic answer
+  also reproduces it. The existing audit's one rejected oversized example does
+  not establish general compatibility. Check `answerFitsDialogue` before
+  accepting a cabinet answer and add both boundary cases in a subsequent code
+  correction. The current runner stops safely; it may produce fewer than 32
+  results. This limitation is not a measured model failure.
+
+The executing agent separately verified the selected private Codespace:
+13 groups, 24 references and 32 mock calls passed on Node 24.22.2 / Python 3.14.2.
+The canonical private state directory and setup marker survived stop/start;
+directory permissions are 700. The owner's repository-scoped Codespaces secret
+was injected after restart and checked only as booleans. No key value was read
+into the conversation or provided to the reviewer. Live enablement is off and
+no live ledger exists. Paid Codespaces usage is blocked by the owner's $0 budget.
+
+The account UI confirmed the dedicated project, restricted expiring key, allowed
+pinned model and $500 remaining credits through 1 December. Account IDs and
+screenshots are excluded from this public report. **Permitted account/access
+arrangements remain unconfirmed:** a foreign execution region alone does not
+establish them. No ready admission was issued and no API call was made.
+
+```text
+EXECUTIVE STATUS
+Task: OPENAI_QUALITY_20261103 independent review and protected setup
+PR: #420 Draft
+Base: b9ba38b27f5b306f0d81d01c67e0a636e5a06b84
+Reviewed implementation: 0cb3685c0890e55c5f1b5b25e179ed2bac92517c
+Gate: TECHNICAL_REVIEW_PASSED; ACCESS_UNCONFIRMED; LIVE_BLOCKED
+Tests: 13 Node groups; 24 references; 32 mocks; extra transport/concurrency checks
+Failures: no failing final tests; one nonblocking history-size finding
+Not run: live API; model-quality assessment; pupil pilot; deployment
+Scope deviations: none; code and campaign digest unchanged
+Recommendation: resolve factual access eligibility before enabling the trial
+Next user decision: factual access clarification, no repeated spending approval
+```
+
+---
+
+# Earlier continuation — 6 November 2026 (Asia/Novosibirsk)
 
 The isolated evaluator now uses corrected PR429 context and mathematical checks,
 with the original PR399 transport. No live model calls or model training occurred.
@@ -7,8 +71,9 @@ The original 16 dialogs / 32 turns and eight coverage probes are unchanged.
 - 13/13 Node test groups passed; 24/24 exact reference checks passed.
 - Audit and all 32 simulated calls passed; mocked output is labelled NOT_MEASURED.
 - Wrong `x = 6` is rejected during mathematical scoring. Correct `−3x = 19 − 4 = 15`
-  and `x = −5` is accepted. The earlier UTF-8/history mismatch is rejected before
-  accepting oversized output. Favourable human marks cannot override detected
+  and `x = −5` is accepted. The earlier oversized-answer example is rejected before
+  accepting output; the independent review above records remaining history-size
+  incompatibility. Favourable human marks cannot override detected
   errors, invalid answer shape or a detected final answer in the first hint.
 - The comparison includes real deterministic cabinet and standalone responses.
   Free follow-up understanding is NOT_TESTED, not scored as a model capability.

@@ -17,7 +17,8 @@ Acceptance: preserve source SHA-256; verify references; exercise schema failures
 context and budget persistence; never label mocks as GPT quality; report unsupported
 routes and every live blocker. Required: Node tests, Python reference checks,
 cloud preflight, diff check, sanitized handoff. Live HIGH independent technical
-review remains not performed; self-review and CI are not relabelled as that review.
+review was completed on 6 November as recorded below; self-review and CI are not
+relabeled as that review.
 
 Rollback: stop the isolated runner and retain ledger; remove this additive evaluation
 folder/workflow without changing the assistant or cabinet databases. No rollout
@@ -57,3 +58,18 @@ documents. Preserve the 16 dialogs and eight coverage probes byte-for-byte.
 Full tests and synthetic workflow are required. Retain Draft while protected
 execution/account access and independent live technical review are unresolved.
 No model-weight training, live pupil traffic or production files are included.
+
+## Independent review and protected setup — 2026-11-06
+
+Owner explicitly authorized an independent review without key access. A separate
+agent approved the technical part of the bounded trial at implementation head
+`0cb3685c0890e55c5f1b5b25e179ed2bac92517c`; see the current report for the exact
+tree/digest, additional checks and nonblocking history-size finding. No code or
+corpus was changed by that review.
+
+The owner saved the restricted secret in repository-scoped Codespaces settings.
+The executing agent confirmed injection without printing the key, verified
+private state survives stop/start, and checked project/model and credit balance
+in the account UI. Factual permitted-access eligibility is still unresolved;
+do not substitute the execution region or the presence of credits for it.
+Keep live disabled and this PR Draft. API calls and API expenditure remain zero.
