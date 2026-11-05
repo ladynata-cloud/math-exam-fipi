@@ -1,9 +1,9 @@
 /* Safe answer checking: exact rational numbers, unordered root sets, explicit symbolic forms. */
-(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../peterson6/math.js'):root.PetersonMath);if(typeof module==='object'&&module.exports)module.exports=api;else root.MakarychevCheck=api;})(typeof globalThis!=='undefined'?globalThis:this,function(M){
+(function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../peterson6/math.js'):root.PetersonMath,typeof module==='object'&&module.exports?require('./task-graphs.js'):root.MakarychevTaskGraphs);if(typeof module==='object'&&module.exports)module.exports=api;else root.MakarychevCheck=api;})(typeof globalThis!=='undefined'?globalThis:this,function(M,G){
 'use strict';
 function normalize(value){return String(value??'').trim().toLowerCase()
  .replace(/[−–—]/g,'-').replace(/[×·⋅]/g,'*').replace(/\s+/g,'')
- .replace(/²/g,'^2').replace(/³/g,'^3').replace(/⁴/g,'^4')
+ .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,s=>'^'+Array.from(s,c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''))
  .replace(/≤/g,'<=').replace(/≥/g,'>=').replace(/≠/g,'!=')
  .replace(/([0-9a-zа-я)])\*(?=[a-zа-я(])/g,'$1').replace(/∈/g,'in').replace(/\bpi\b/g,'π')
  .replace(/([0-9]),(?=[0-9])/g,'$1.').replace(/[х]/g,'x');}
@@ -17,6 +17,7 @@ function setEqual(user,expected){
 function check(user,target){
  if(typeof user!=='string'||user.length>1000||!user.trim()||!target)return false;
  const answers=[target.answer,...(target.accepts||[])].map(String);
+ if(target.kind==='graph'){const a=G?.parse(user),b=G?.parse(String(target.answer));return !!a&&!!b&&a.k===b.k&&a.b===b.b&&a.holes.length===b.holes.length&&a.holes.every(x=>b.holes.includes(x));}
  if(target.kind==='choice')return user===String(target.answer);
  if(target.kind==='set')return answers.some(a=>setEqual(user,a));
  if(target.kind==='text')return answers.some(a=>normalize(user)===normalize(a));
