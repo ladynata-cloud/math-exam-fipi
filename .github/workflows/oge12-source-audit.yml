@@ -1,0 +1,49 @@
+name: OGE12 source and mathematics audit
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task12-*'
+      - 'tools/oge12-source-*'
+      - '.github/workflows/oge12-source-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/oge-task12-*'
+      - 'tools/oge12-source-*'
+      - '.github/workflows/oge12-source-audit.yml'
+permissions:
+  contents: read
+jobs:
+  provenance-mathematics-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch immutable original corpus baseline
+        run: git fetch --no-tags --depth=1 origin 63a2676d896d62bd07f87d77f811eb8dea3d0438
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge12-audit" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.55.0
+          "$RUNNER_TEMP/oge12-audit/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge12-audit/node_modules" >> "$GITHUB_ENV"
+      - name: Sources, independent rational mathematics and all new parameter combinations
+        run: |
+          node tools/oge12-source-audit.mjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Existing progress, step and shared-board contracts
+        run: node --test tools/oge-algebra-minimal.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-native-10-14-event-order.test.cjs
+      - name: Real browser, all 40 generators, every learning mode and retained progress
+        run: node tools/oge12-source-audit.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge12-source-audit-evidence
+          path: artifacts/oge12-source-audit
+          if-no-files-found: error
+          retention-days: 30
