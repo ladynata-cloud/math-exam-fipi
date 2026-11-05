@@ -17,7 +17,7 @@ jobs:
           ref: codex/teacher-pdfs-resume-20261105
       - name: Reproduce locally reviewed PDF bytes
         run: |
-          python3 -m pip install reportlab==4.4.9
+          python3 -m pip install reportlab==4.4.9 sympy==1.14.0
           cp pedagogam/raboty/manifest.json "$RUNNER_TEMP/expected-teacher-manifest.json"
           python3 tools/build-pedagogam-textbook-pdfs.py
           cmp "$RUNNER_TEMP/expected-teacher-manifest.json" pedagogam/raboty/manifest.json
