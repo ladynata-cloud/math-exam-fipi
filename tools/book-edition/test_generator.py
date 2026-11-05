@@ -79,6 +79,39 @@ class GeneratorTests(unittest.TestCase):
                 self.assertNotIn(b"oge-course-shared-mode.js", data)
                 self.assertNotIn(b"oge-native-10-14-board.js", data)
 
+    def test_public_navigator_tags_are_removed_without_changing_learning_links(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        retained = ('<script src="/assets/retained.js"></script></head>'
+                    '<a href="/trainers/oge-task9-equations.html">Practice</a>')
+        source = ('<head>'
+                  '<script src="/assets/assistant/navigator-data.js?v=test"></script>'
+                  '<script defer src="assets/assistant/navigator-widget.js?v=test"></script>'
+                  '<link rel="stylesheet" href="https://mathexam.space/assets/assistant/widget.css?v=test">'
+                  + retained)
+        self.assertEqual(builder.sanitize("index.html", source, edition),
+                         "<head>" + retained)
+
+    def test_public_navigator_assets_cannot_enter_the_candidate_closure(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        navigator_assets = {
+            "assets/assistant/navigator-data.js",
+            "assets/assistant/navigator-widget.js",
+            "assets/assistant/widget.css",
+        }
+        output, manifest = builder.build(edition)
+        sources = {record["path"] for record in manifest["sourceFiles"]}
+        dependencies = {path for record in manifest["sourceFiles"]
+                        for path in record["dependencies"]}
+        self.assertFalse(sources & navigator_assets)
+        self.assertFalse(dependencies & navigator_assets)
+        for asset in navigator_assets:
+            self.assertNotIn(edition.prefix + asset, output)
+        for name, data in output.items():
+            if name.endswith(".html"):
+                for asset in navigator_assets:
+                    with self.subTest(page=name, asset=asset):
+                        self.assertNotIn(asset.encode(), data)
+
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):
             builder.ensure_writable(builder.Edition("v2", builder.PUBLISHED_V1), None)

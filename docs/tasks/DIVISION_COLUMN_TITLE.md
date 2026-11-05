@@ -6,7 +6,7 @@
 - Branch: codex/division-column-title-20261105.
 - Review level: SMALL; bounded presentation-only wording.
 - Goal: use «Деление столбиком (уголком)» consistently in the main division entrances while retaining distinctions between stepwise, notebook and independent practice.
-- Scope: page titles/headings, catalogue labels and search text, homepage/topic/course/OGE/lesson links, navigator display strings and division course label.
+- Scope: page titles/headings, catalogue labels and search text, homepage/topic/course/OGE/lesson links, navigator display strings and division course label; refresh the generated inventory source hash.
 - Excluded: addresses, canonical URLs, IDs, query/fragment contracts, search-recognition tags, mathematics, exercise generation, storage, layout, immutable book editions and archive/prototype pages.
 - No architecture change or ADR is applicable.
 
@@ -28,3 +28,8 @@ The current owner request approves this bounded change; branch, commits, push an
 Longer headings may wrap on small screens; existing cloud mobile/browser checks apply.
 A normal revert of this release restores wording. No data migration, URL change, or mathematical behavior change.
 Release record and final authoritative base/head/deployment evidence are kept in the PR.
+
+## CI findings and necessary repair
+Initial CI passed the SEO, navigator and guided division checks. The arithmetic inventory correctly detected the changed course-map source hash; only sourceSHA256 is refreshed, with all entries and counts unchanged.
+
+The fixed-book generator check exposed an existing integration problem on base cdbb: the newly installed public navigator added three optional live-site assets to future book candidates (229 instead of the required 226). The current patch had not changed the generator/test. Exclude exactly navigator-data.js, navigator-widget.js and widget.css through the existing REMOVED mechanism, and add sanitizer plus dependency-closure regressions. The 226-file assertion and immutable book integrity remain strict; published book/** files are unchanged. The sanitizer regression fails against the original generator and passes against the repair; four targeted tests and syntax checks passed locally. Full build and browser verification run in cloud CI.
