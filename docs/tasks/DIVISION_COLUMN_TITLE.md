@@ -4,7 +4,7 @@
 - Owner request: «может быть вообще заменить название тренажеров по делению? Деление столбиком (уголком)?»
 - Base: main, cdbb3aecd1e1b2087f6ee6c858ffcaa031c55bc8.
 - Branch: codex/division-column-title-20261105.
-- Review level: SMALL; bounded presentation-only wording.
+- Review level: MEDIUM after the necessary, bounded fixed-book generator repair found by CI. Focused code review, targeted regression checks and rollback notes apply.
 - Goal: use «Деление столбиком (уголком)» consistently in the main division entrances while retaining distinctions between stepwise, notebook and independent practice.
 - Scope: page titles/headings, catalogue labels and search text, homepage/topic/course/OGE/lesson links, navigator display strings and division course label; refresh the generated inventory source hash.
 - Excluded: addresses, canonical URLs, IDs, query/fragment contracts, search-recognition tags, mathematics, exercise generation, storage, layout, immutable book editions and archive/prototype pages.
