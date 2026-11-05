@@ -242,5 +242,6 @@
   root.OgeGeometryBoard=Object.freeze({getState,applyState,validateState:value=>{try{prepare(value);return true;}catch(_){return false;}}});
   root.getBoardTrainerState=getState;root.applyBoardTrainerState=applyState;
   previous=JSON.stringify(getState());
+  root.OgeLearningNative={number:page,checkSelector:'#'+actionButtons.check,answerSelector:'#'+inputId,answer:()=>byId(inputId)?.value||'',start:d=>{applying=true;try{const task=makeTask(d);resetNative(task,{topic:'all',source:page===16?'mix':'all',sub:'all'});taskSeen=task;actions=[];taskHelp=false;root.OgeGeometryHelpUsed=false;previous=JSON.stringify(getState());}finally{applying=false;}}};
   root.MathExamBoard.register({id:'oge-task'+page+'-'+({16:'circle',17:'quadrilaterals',18:'grid'}[page]),version:'1.0.0',stateSchemaVersion:1,parentOrigin:root.location.origin,getState,applyState,subscribe:callback=>{notify=callback;return()=>{notify=function(){};};}});
 })(window,document);

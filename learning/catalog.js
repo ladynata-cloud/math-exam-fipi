@@ -9437,6 +9437,15 @@
   }
 ].map(row => Object.freeze(row)));
   // VILENKIN_TEXTBOOK_CATALOG_END
+  // The existing public native trainers now also support authenticated attempts.
+  items.push(...[
+    ['11','Графики функций','oge-task11-graphs-trainer.html'],
+    ['15','Треугольники','oge-task15-triangles.html'],
+    ['16','Окружность','oge-task16-circle.html'],
+    ['17','Четырёхугольники','oge-task17-quadrilaterals.html'],
+    ['18','Фигуры на клетчатой бумаге','oge-task18-grid.html'],
+    ['19','Геометрические утверждения','task19-trainer.html']
+  ].map(([contentId,title,file])=>Object.freeze({id:'oge-public:'+contentId,trainerId:'oge-public',contentId,contentVersion:1,title:'ОГЭ №'+contentId+' · '+title,position:null,ogePosition:Number(contentId),topicId:'geometry',family:'oge-public',url:'/trainers/'+file})));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);

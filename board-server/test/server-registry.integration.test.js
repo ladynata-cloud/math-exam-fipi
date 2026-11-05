@@ -301,6 +301,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
+  const ogeAssets=['oge-task11-graphs-trainer.html','oge-task15-triangles.html','oge-task16-circle.html','oge-task17-quadrilaterals.html','oge-task18-grid.html','task19-visual-data.js','task19-board-session.js','task19-visual-models.js','task19-reference.js','task19-models-triangles.js','task19-models-circles.js','task19-models-lines-polygons.js'];
+  for(const file of ogeAssets){assert(dockerfile.includes('trainers/'+file));fs.copyFileSync(path.join(rootDir,'trainers',file),path.join(runtimeTrainerDir,file));}
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
   for (const file of practiceAssets) { fs.mkdirSync(path.dirname(path.join(directory, 'app', file)), {recursive:true}); fs.copyFileSync(path.join(rootDir,file),path.join(directory,'app',file)); }
   const packagedPractice = await import(require('node:url').pathToFileURL(path.join(directory,'app/assistant-service/public/practice-core.js')));
@@ -405,8 +407,9 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
       ['atanasyan-7-9-main-92-part-1']);
     const revisedTextbook = require('../../learning/vilenkin6-textbook-catalog');
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-textbook').map(item => item.contentId).sort(), revisedTextbook.map(item => item.contentId).sort());
-    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 382);
-    assert.equal(learningStatus.trainers.length, 382 + revisedTextbook.length);
+    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.trainerId !== 'oge-public').length, 382);
+    assert.deepEqual(learningStatus.trainers.filter(item=>item.trainerId==='oge-public').map(item=>item.contentId),['11','15','16','17','18','19']);
+    assert.equal(learningStatus.trainers.length, 388 + revisedTextbook.length);
     for(const id of ['course-column-one-digit','course-column-two-digit','course-column-three-by-one','course-column-four-by-one','course-column-three-by-two','course-column-two-by-three','course-column-three-by-three','course-column-zeros','course-column-mixed']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6 && item.trainerId !== 'vilenkin6-textbook').length, 39); // 12 motion lessons + all 27 legacy Vilenkin modules.

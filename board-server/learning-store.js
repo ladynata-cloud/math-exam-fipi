@@ -566,7 +566,7 @@ class LearningStore {
     const runFilter = this.runGuard ? `AND id NOT IN (SELECT a.attempt_id FROM learning_run_attempts a
       JOIN learning_runs r ON r.id=a.run_id WHERE r.finished_at IS NULL)` : '';
     const rows = this.db.prepare(`SELECT id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome,updated_at,created_at
-      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','motion-grade6','vilenkin6-part1','vilenkin6-textbook','atanasyan-7-9')
+      FROM attempts WHERE learner_id=? AND archived_at IS NULL AND trainer_id IN ('ege-path','oge-basics','oge-public','motion-grade6','vilenkin6-part1','vilenkin6-textbook','atanasyan-7-9')
         AND id NOT IN (SELECT attempt_id FROM assignments WHERE status!='published')
         ${runFilter}
       ORDER BY updated_at DESC,id DESC`).iterate(auth.id);
@@ -602,7 +602,7 @@ class LearningStore {
   }
   grade7Exposure(learnerId, trainerId, taskSpec, excludeAttemptId = '') {
     // Pinned finite banks retain exposure; leave other legacy assessment alone.
-    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1','vilenkin6-textbook'].includes(trainerId)) return null;
+    if (!(trainerId === 'ege-path' && taskSpec?.task?.grade7 === true) && !['motion-grade6','vilenkin6-part1','vilenkin6-textbook','oge-public'].includes(trainerId)) return null;
     // Reset clears current progress, not knowledge of an already shown question.
     // Archived homework has lost its former publication status, so conservatively
     // retain it; an unpublished current draft is not learner exposure.
@@ -660,31 +660,46 @@ class LearningStore {
       attempt: this.attemptSummary(this.attemptRow(auth, row.attempt_id)) }));
   }
   createAssignments(auth, body) {
-    this.teacher(auth); exactKeys(body, ['opId','learnerIds','title','trainerId','contentId','dueAt'], ['opId','learnerIds','title','trainerId','contentId']);
+    this.teacher(auth); exactKeys(body, ['opId','learnerIds','title','trainerId','contentId','dueAt','count'], ['opId','learnerIds','title','trainerId','contentId']);
     const title = safeName(body.title, 160);
+    const count=body.count ?? 1;
+    requireValue(Number.isSafeInteger(count)&&count>=1&&count<=10&&(count===1||body.trainerId==='oge-public'),'LEARNING_INVALID');
     requireValue(Array.isArray(body.learnerIds) && body.learnerIds.length >= 1 && body.learnerIds.length <= 100 && new Set(body.learnerIds).size === body.learnerIds.length);
     requireValue(body.dueAt == null || (typeof body.dueAt === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(body.dueAt) && Number.isFinite(Date.parse(body.dueAt))), 'LEARNING_DATE_INVALID');
     return this.operation(auth, { operation: 'create-assignments', ...body }, () => {
       body.learnerIds.forEach(id => this.ownsStudent(auth, id));
-      const generated = this.contracts.create(body.trainerId, body.contentId);
+      const generatedTasks=[], seen=new Set();
+      for(let index=0;index<count;index++){
+        let generated,identity;
+        for(let tries=0;tries<100;tries++){
+          generated=this.contracts.create(body.trainerId,body.contentId);identity=this.taskFingerprint(generated.taskSpec);
+          if(!seen.has(identity))break;
+        }
+        requireValue(!seen.has(identity),'LEARNING_TASK_INVALID');seen.add(identity);generatedTasks.push(generated);
+      }
       const batchId = token(18);
-      const assignments = body.learnerIds.map(id => {
+      const assignments = generatedTasks.flatMap((generated,index)=>body.learnerIds.map(id => {
+        const taskTitle=count===1?title:title.slice(0,140)+' · '+(index+1)+'/'+count;
         this.limit('assignments', 20000);
         const attempt = this.newAttempt(id, auth.id, body.trainerId, generated), assignmentId = token(18), createdAt = this.clock();
-        this.run('INSERT INTO assignments(id,title,learner_id,teacher_id,attempt_id,due_at,batch_id,created_at) VALUES(?,?,?,?,?,?,?,?)', assignmentId, title, id, auth.id, attempt.id, body.dueAt || null, batchId, createdAt);
-        return { id: assignmentId, title, learnerId: id, attemptId: attempt.id, dueAt: body.dueAt || null, status: 'draft', batchId, createdAt, attempt };
-      });
+        this.run('INSERT INTO assignments(id,title,learner_id,teacher_id,attempt_id,due_at,batch_id,created_at) VALUES(?,?,?,?,?,?,?,?)', assignmentId, taskTitle, id, auth.id, attempt.id, body.dueAt || null, batchId, createdAt);
+        return { id: assignmentId, title:taskTitle, learnerId: id, attemptId: attempt.id, dueAt: body.dueAt || null, status: 'draft', batchId, createdAt, attempt };
+      }));
       return { assignments };
     });
   }
   action(auth, id, body) {
-    exactKeys(body, ['opId','expectedVersion','expectedTrainerVersion','type','payload'], ['opId','expectedVersion','type','payload']);
+    exactKeys(body, ['opId','expectedVersion','expectedTrainerVersion','type','payload','lessonId'], ['opId','expectedVersion','type','payload']);
     requireValue(ID.test(body.opId || '') && Number.isSafeInteger(body.expectedVersion) && body.expectedVersion >= 0);
     requireValue(body.expectedTrainerVersion === undefined || (Number.isSafeInteger(body.expectedTrainerVersion) && body.expectedTrainerVersion >= 0));
     requireValue(Buffer.byteLength(json(body)) <= 96 * 1024, 'LEARNING_STATE_TOO_LARGE');
     const fingerprint = tokenHash(canonical({ attemptId: id, ...body }));
     return this.transaction(() => {
       const row = this.attemptRow(auth, id), attempt = this.attemptDTO(row);
+      if (body.lessonId !== undefined) {
+        const lesson = this.lessonRow(auth, body.lessonId);
+        requireValue(lesson.common_attempt_id === id || parse(lesson.seats_json).some(seat => seat.attemptId === id && (auth.role === 'teacher' || seat.learnerId === auth.id)), 'LEARNING_SEAT_INVALID', 403);
+      }
       requireValue(!this.runGuard?.(id), 'LEARNING_RUN_ACTIVE', 409);
       requireValue(row.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
       let textbookHelp;
@@ -755,7 +770,7 @@ class LearningStore {
         requireValue(stroke, 'LEARNING_STROKE_NOT_FOUND', 409); requireValue(stroke.author === auth.id, 'LEARNING_FORBIDDEN', 403);
         attempt.strokes = attempt.strokes.filter(item => item.id !== stroke.id);
       }
-      if (auth.role === 'teacher' && ['state','check','hint','stroke'].includes(type)) attempt.assistance.teacher = true;
+      if ((auth.role === 'teacher' || (attempt.trainerId === 'oge-public' && body.lessonId !== undefined)) && ['state','check','hint','stroke'].includes(type)) attempt.assistance.teacher = true;
       requireValue(Buffer.byteLength(json(attempt.strokes)) <= 1024 * 1024, 'LEARNING_DRAWING_LIMIT_EXCEEDED', 507);
       if (row.outcome === 'started' && attempt.outcome !== 'started') {
         attempt.outcome = attempt.assistance.teacher ? 'together' : attempt.assistance.hints ? 'hinted' : 'independent';

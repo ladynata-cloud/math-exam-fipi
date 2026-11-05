@@ -134,6 +134,8 @@ jobs:
           node tools/learning-multiplication-support.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
+      - name: OGE independent homework across six native frames
+        run: node tools/learning-oge-homework.browser.cjs
       - name: Source helper boundaries and complete geometry object naming audit
         run: |
           node --test tools/learning-assistant-local.test.cjs tools/learning-assistant-dialogue.test.cjs tools/learning-assistant-context-label.test.cjs
