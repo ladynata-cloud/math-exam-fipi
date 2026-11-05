@@ -255,7 +255,7 @@ async function corruptedStorageRegression(p,r){
       // payload sent by this server and label that narrower evidence explicitly.
       if(/^[a-f0-9]{64}$/.test(servedHash||'')){
        r.resourceReadWarnings.push({path:u.pathname,reason,identityMethod:'server-served-payload'});
-       remember(servedHash,Number(headers['content-length']),'server-served-payload; browser body unavailable after navigation');
+       remember(servedHash,Number(headers['content-length']),'server-served-payload; browser body unavailable after navigation or completed browser context');
       }else r.resourceHashErrors.push({path:u.pathname,reason});
      }));
     }
@@ -279,6 +279,12 @@ async function corruptedStorageRegression(p,r){
     await dimensions(p,r,'final');
     if(!r.actions.some(a=>a.action==='topic'))record(r,'topic',true,{title:r.title,reason:'Route/title and exported visible problem match the referenced OGE family; mathematical correctness is separately scoped.'});
    }catch(e){r.error=String(e.stack||e).replaceAll(ROOT,'<repo>');await p.screenshot({path:path.join(OUT,`${id}-${width}-issue.png`),fullPage:true}).catch(()=>{});}
+   // All learner actions, screenshots and visible assertions are complete.
+   // Closing the context cancels discarded response-body handles; waiting for
+   // those handles before closing can deadlock after a redirect, reload or
+   // removal of a reference image. The existing labelled server-payload
+   // fallback handles unavailable bodies; available-body hash checks remain.
+   await context.close();
    await Promise.allSettled(resourceReads);
    r.finalHtmlSha256=r.resources[r.finalPath]?.sha256||null;
    r.resourceHashes=Object.fromEntries(Object.entries(r.resources).map(([key,value])=>[key,value.sha256]));
@@ -291,7 +297,6 @@ async function corruptedStorageRegression(p,r){
    fs.writeFileSync(path.join(OUT,`${id}-${width}.json`),JSON.stringify(r,null,2));
    fs.writeFileSync(path.join(OUT,'results.json'),JSON.stringify(metadata(),null,2));
    console.log(width,route,r.status,r.error?.split('\n')[0]||'');
-   await context.close();
   }
  }finally{await browser.close();await new Promise(r=>server.close(r));}
  if(reports.some(r=>r.status!=='PASS_SELECTED_CASE'))process.exitCode=1;

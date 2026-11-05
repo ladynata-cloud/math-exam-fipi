@@ -18,7 +18,7 @@ from urllib.parse import unquote, urljoin, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = "https://mathexam.space"
 ENTRANCES = [
-    "index.html", "trainers/index.html", "trainers/oge-course/index.html",
+    "index.html", "oge/index.html", "trainers/index.html", "trainers/oge-course/index.html",
     "trainers/oge-basics/index.html", "foundations/index.html",
     "soviet-math/index.html", "grade7/index.html", "courses/index.html",
     "articles/index.html", "pedagogam/index.html", "ege-profil/index.html",
@@ -266,7 +266,13 @@ def run(base=None):
             if relative != "courses/index.html":
                 require(old_body == new_body, label + "learner body changed outside scoped addition")
     home = Page((ROOT / "index.html").read_text(encoding="utf-8"))
-    require(home.h1 == 1 and "ОГЭ" in home.title[0], "homepage must retain OGE focus")
+    require(home.h1 == 1 and "Тренажёры по математике" in home.title[0], "homepage identifies the whole mathematics site")
+    for destination in ("/trainers/", "/courses/", "/foundations/", "/oge/", "/ege-baza/", "/ege-profil/", "/geometry-course/"):
+        require(destination in home.links, "homepage missing learning direction " + destination)
+    require(not any("oge-home" in attrs.get("src", "") or "three.min.js" in attrs.get("src", "") for attrs, _ in home.scripts), "OGE renderer belongs on /oge/ only")
+    oge = Page((ROOT / "oge/index.html").read_text(encoding="utf-8"))
+    require(oge.h1 == 1 and "ОГЭ" in oge.title[0] and "oge-models" in oge.ids, "OGE landing retains its identity and models")
+    require("/trainers/oge-course/" in oge.links, "OGE landing links to the existing course")
     for topic in TOPICS:
         require(urlsplit(public_url(topic)).path in home.links, "homepage missing topic link " + topic)
     require("ПредОГЭ" in Page((ROOT / "trainers/oge-basics/index.html").read_text()).title[0], "preserve PreOGE title")

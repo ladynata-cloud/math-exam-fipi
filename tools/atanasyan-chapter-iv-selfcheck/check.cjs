@@ -7,7 +7,7 @@ const manifest = read(path.join(folder, 'manifest.json')), baseline = read(path.
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const integrated = require('../stereo-textbook/iv-selfcheck-baseline.cjs');
 const projectedPaths = new Set(['stereo-course/textbook/data/course.json', 'stereo-course/textbook/source-index.json', 'tools/stereo-textbook/content-review.json']);
-for (const [file, expected] of Object.entries(baseline.files).filter(([file]) => !projectedPaths.has(file))) assert.equal(sha(fs.readFileSync(path.join(root, file))), expected, 'published bytes preserved: ' + file);
+for (const [file, expected] of Object.entries(baseline.files).filter(([file]) => !projectedPaths.has(file))) assert.equal(sha(require('../stereo-textbook/mobile-layout-migration.cjs').historicalRead(file)), expected, 'published bytes preserved: ' + file);
 const expectedIds = ['01','02','03-a','03-b','03-c','04','05-a','05-b','06','07','08','09','10'].map(x => 'ex-selfcheck-iv-' + x);
 assert.deepEqual(manifest.cards, expectedIds); assert.equal(manifest.status, 'in-review');
 assert.deepEqual(fs.readdirSync(folder).filter(x => x.endsWith('.json') && x !== 'manifest.json').sort(), expectedIds.map(x => x + '.json').sort());

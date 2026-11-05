@@ -1,4 +1,5 @@
 'use strict';
+const publicDestination=require('./learning-public-return.assert.cjs');
 // Real local HTTP, password hashing, isolated SQLite, trainer frames and photo codec.
 // Every identity and password below is a synthetic fixture, never a live account.
 const assert = require('node:assert/strict');
@@ -412,7 +413,7 @@ async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
     const beforeAngles = count(), requestsBeforeAngles = creations.length;
     await preflight('adjacent-angles');
     assert.equal(await page.locator('[data-lesson-start]').count(), 0, 'Unmanaged angles never creates a different managed geometry attempt');
-    assert.equal(await page.locator('[data-lesson-practice]').getAttribute('href'),
+    assert.equal(publicDestination(await page.locator('[data-lesson-practice]').getAttribute('href')),
       'https://mathexam.space/geometry-course/trainers/ch1-p6-t2-angle-problems.html');
     assert.match(await page.locator('#main').innerText(), /не (?:добавляют|попадает|сохраняется)/,
       'Unmanaged geometry clearly explains its progress limit');
@@ -434,7 +435,7 @@ async function verifyTopicGuideEntry({ teacher, open, store, origin }) {
       const before = count(), requests = creations.length;
       await preflight(topic);
       assert.equal(await page.locator('[data-lesson-start]').count(), 0, 'Public-only course guides never create an unrelated managed attempt');
-      const href = await page.locator('[data-lesson-practice]').getAttribute('href');
+      const href = publicDestination(await page.locator('[data-lesson-practice]').getAttribute('href'));
       assert.ok(href.startsWith('https://mathexam.space/school/'), topic + ': fixed public school workshop');
       assert.ok(href.includes('m7f-' + unit), topic + ': exact matching authored exercise');
       assert.match(await page.locator('#main').innerText(), /браузер/i, 'The public course progress limitation is visible');

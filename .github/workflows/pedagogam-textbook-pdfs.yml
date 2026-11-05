@@ -1,0 +1,44 @@
+name: Textbook teacher PDF works
+on:
+  pull_request:
+    paths:
+      - 'pedagogam/**'
+      - 'tools/teacher-banks/**'
+      - 'tools/teacher-banks-coverage*'
+      - 'tools/teacher-source-research.json'
+      - 'tools/teacher-textbook-coverage.json'
+      - 'tools/teacher-uploaded-source-review.json'
+      - 'tools/teacher-next-independent-check.py'
+      - 'tools/*pedagogam-textbook*'
+      - '.github/workflows/pedagogam-textbook-pdfs.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  teacher-pdf-bank:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: PDF math, layout coordinates, four variants and exact archives
+        run: |
+          python3 -m pip install sympy==1.14.0 PyMuPDF==1.26.6 reportlab==4.4.9
+          python3 tools/pedagogam-textbook-pdfs-check.py
+          python3 tools/teacher-next-independent-check.py
+          python3 tools/build-sitemap.py --check
+          git diff --check
+      - name: Browser search, classes, textbooks and PDF downloads
+        run: |
+          npm install --prefix "$RUNNER_TEMP/teacher-textbook-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/teacher-textbook-qa/node_modules/.bin/playwright" install --with-deps chromium
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/teacher-textbook-server.log" 2>&1 &
+          NODE_PATH="$RUNNER_TEMP/teacher-textbook-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/teacher-textbook-qa-artifacts" node tools/pedagogam-textbook-pdfs.browser.cjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-textbook-pdf-qa
+          path: ${{ runner.temp }}/teacher-textbook-qa-artifacts
+          if-no-files-found: error

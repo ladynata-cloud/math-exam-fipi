@@ -1,0 +1,12 @@
+'use strict';
+const assert=require('node:assert/strict'),G=require('./task-graphs.js'),C=require('./check.js');
+const a={kind:'graph',answer:'1/2;-5/2;-5'},b={kind:'graph',answer:'1;0;-3;3'};
+for(const s of ['1/2;-5/2;-5','0,5; -2,5; -5','2/4; -10/4; -5'])assert(C.check(s,a),s);
+for(const s of ['1;0;3;-3','1.0;0;-3;3'])assert(C.check(s,b),s);
+for(const s of ['1/2;-5/2;нет','1/2;-5/2;5','-1/2;-5/2;-5','1/2;-5/2;-5;-5','1/2;-5/2;-5;0','1/0;0;нет','NaN;0;нет','Infinity;0;нет','0x10;0;нет','1e309;0;нет','1;0;','1;0;<img src=x>'])assert(!C.check(s,a),s);
+assert(!C.check('0.50000000000000000001;-5/2;-5',a),'no rounded coefficient');assert(!C.check('1;0;-3;3.00000000000000000001',b),'no rounded hole');
+assert(!C.check('1;0;3',b));assert(!C.check('1;0;-3;-3',b));assert(!C.check('1;0;-3;3;7',b));
+assert.deepEqual(G.parse('1;0;нет'),{k:1,b:0,holes:[]});assert.equal(G.parse('1;0;;'),null);
+assert.deepEqual(G.alternatives,[{k:-1,b:1,holes:[0]},{k:1,b:-1,holes:[]},{k:-1,b:1,holes:[1]},{k:1,b:-1,holes:[1]}]);
+assert(C.check('b¹⁰',{kind:'text',answer:'b^10'}));assert(C.check('x⁶',{kind:'text',answer:'x^6'}));assert(!C.check('b¹⁰',{kind:'text',answer:'b^1*0'}));
+console.log('PASS: graph coefficients, unordered holes, duplicate/omitted/extra holes, malformed input, source figure2 and powers10');
