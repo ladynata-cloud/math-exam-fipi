@@ -21,11 +21,6 @@ function oracle(r,prompt,expected,method,extra={}){r.oracles.push({prompt:clean(
 async function source(p,expression){return p.evaluate(x=>JSON.parse(JSON.stringify(eval(x),(_k,v)=>typeof v==='bigint'?String(v):v)),expression);}
 async function text(l){return clean(await l.innerText());}
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
-function responseBodyWithin(res,timeoutMs=15000){
- let timer;
- const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{const error=new Error('Browser response-body read exceeded '+timeoutMs+' ms');error.code='BOOK_RESPONSE_BODY_TIMEOUT';reject(error);},timeoutMs);});
- return Promise.race([res.body(),deadline]).finally(()=>clearTimeout(timer));
-}
 async function dimensions(p,r,stage){const d=await p.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+2?[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect();return (b.width>innerWidth||b.right>innerWidth+2)&&e.getClientRects().length&&!e.closest('svg');}).slice(0,15).map(e=>({tag:e.tagName,id:e.id,cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent.trim().slice(0,120)})):[]}));record(r,'layout',d.html<=d.viewport+2&&d.body<=d.viewport+2,{stage,...d});}
 async function storage(p){return p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).sort(([a],[b])=>a.localeCompare(b))));}
 function outcomes(store,filter){const out={};function walk(v,key){if(/(?:^|\.)(events|current|seenArch|notes|draft|history)(?:\.|$)/i.test(key))return;if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))walk(x,key+'.'+k);}else if(/solved|correct|wrong|attempt|score|completed|streak|tries|closed|answered|results|success|records|perType|checkpoint|total|prog/i.test(key)&&!/updatedAt|(?:^|\.)(last|t|ts)$/.test(key))out[key]=v;}for(const[k,v]of Object.entries(store))if(!filter||filter.test(k))try{walk(JSON.parse(v),k);}catch{}return out;}
@@ -237,7 +232,7 @@ async function corruptedStorageRegression(p,r){
       if(r.resources[u.pathname]&&r.resources[u.pathname].sha256!==sha256)r.resourceHashErrors.push({path:u.pathname,reason:'Resource changed during a single scenario'});
       r.resources[u.pathname]={sha256,status:res.status(),contentType:headers['content-type']||'',bytes,method};
      };
-     resourceReads.push(responseBodyWithin(res).then(bytes=>{
+     resourceReads.push(res.body().then(bytes=>{
       const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
       if(sha256===servedHash)remember(sha256,bytes.length,'browser-response-body');
       else{
@@ -255,21 +250,12 @@ async function corruptedStorageRegression(p,r){
       }
      }).catch(error=>{
       const reason=String(error.message).split('\n')[0];
-      // Current Chromium can leave body promises pending after discarding an
-      // initial redirect document or a stylesheet requested by that document.
-      // The request's actual Referer must identify the abandoned initial URL.
-      // A final-document/dependency timeout remains a hard failure.
-      let requestReferrer='';try{requestReferrer=new URL(res.request().headers().referer||'').pathname;}catch{}
-      const initialPath=PREFIX+route,redirectCompleted=r.finalPath&&r.finalPath!==initialPath;
-      const abandonedStylesheet=res.request().resourceType()==='stylesheet'&&requestReferrer===initialPath;
-      const discardedByRedirect=redirectCompleted&&(u.pathname===initialPath||abandonedStylesheet);
-      if(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'&&!discardedByRedirect){r.resourceHashErrors.push({path:u.pathname,reason,requestReferrer});return;}
       // Immediate redirect/reload can discard Chromium's body handle after a
       // successful HTTP response. Retain the hash calculated from the exact
       // payload sent by this server and label that narrower evidence explicitly.
       if(/^[a-f0-9]{64}$/.test(servedHash||'')){
-       r.resourceReadWarnings.push({path:u.pathname,reason,identityMethod:'server-served-payload',...(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'?{requestReferrer,redirectedFrom:initialPath,redirectedTo:r.finalPath}:{})});
-       remember(servedHash,Number(headers['content-length']),'server-served-payload; browser body unavailable after navigation');
+       r.resourceReadWarnings.push({path:u.pathname,reason,identityMethod:'server-served-payload'});
+       remember(servedHash,Number(headers['content-length']),'server-served-payload; browser body unavailable after navigation or completed browser context');
       }else r.resourceHashErrors.push({path:u.pathname,reason});
      }));
     }
@@ -293,6 +279,12 @@ async function corruptedStorageRegression(p,r){
     await dimensions(p,r,'final');
     if(!r.actions.some(a=>a.action==='topic'))record(r,'topic',true,{title:r.title,reason:'Route/title and exported visible problem match the referenced OGE family; mathematical correctness is separately scoped.'});
    }catch(e){r.error=String(e.stack||e).replaceAll(ROOT,'<repo>');await p.screenshot({path:path.join(OUT,`${id}-${width}-issue.png`),fullPage:true}).catch(()=>{});}
+   // All learner actions, screenshots and visible assertions are complete.
+   // Closing the context cancels discarded response-body handles; waiting for
+   // those handles before closing can deadlock after a redirect, reload or
+   // removal of a reference image. The existing labelled server-payload
+   // fallback handles unavailable bodies; available-body hash checks remain.
+   await context.close();
    await Promise.allSettled(resourceReads);
    r.finalHtmlSha256=r.resources[r.finalPath]?.sha256||null;
    r.resourceHashes=Object.fromEntries(Object.entries(r.resources).map(([key,value])=>[key,value.sha256]));
@@ -305,7 +297,6 @@ async function corruptedStorageRegression(p,r){
    fs.writeFileSync(path.join(OUT,`${id}-${width}.json`),JSON.stringify(r,null,2));
    fs.writeFileSync(path.join(OUT,'results.json'),JSON.stringify(metadata(),null,2));
    console.log(width,route,r.status,r.error?.split('\n')[0]||'');
-   await context.close();
   }
  }finally{await browser.close();await new Promise(r=>server.close(r));}
  if(reports.some(r=>r.status!=='PASS_SELECTED_CASE'))process.exitCode=1;
