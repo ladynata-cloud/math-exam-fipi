@@ -27,6 +27,7 @@ def render(c, p, all_content):
     short_heading = c['heading'].split(':')[0]
     if str(c['grade']) not in short_heading:
         short_heading += ', ' + str(c['grade']) + ' класс'
+    display_heading = esc(short_heading).replace('тригонометрические', 'тригоно&shy;метрические')
     schema = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'LearningResource', '@id': ORIGIN + base + '#material',
          'name': c['heading'], 'description': c['description'], 'url': ORIGIN + base,
@@ -75,7 +76,7 @@ def render(c, p, all_content):
 <main id="main" class="topic-content">
 <nav class="breadcrumbs" aria-label="Путь к странице"><a href="/pedagogam/">Педагогам</a><span aria-hidden="true"> / </span><a href="/pedagogam/raboty/">Все работы</a></nav>
 <section class="intro"><p class="eyebrow">{c['grade']} класс · {esc(p['subject'])} · Бесплатно, без регистрации</p>
-<h1>{esc(short_heading)}</h1><p class="lead">Самостоятельная и контрольная: 4 базовых варианта, отдельные ответы и решения.</p>
+<h1>{display_heading}</h1><p class="lead">Самостоятельная и контрольная: 4 базовых варианта, отдельные ответы и решения.</p>
 <nav class="jump-links" aria-label="На этой странице"><a href="#sr">Самостоятельная</a><a href="#kr">Контрольная</a><a href="#practice">Тренажёры</a></nav></section>
 <div class="download-grid">{''.join(cards)}</div>
 <p class="archive"><a href="{base}komplekt.zip" download>Скачать весь комплект ZIP</a> · 4 PDF: два вида работ и два файла с решениями.</p>
