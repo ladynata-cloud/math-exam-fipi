@@ -7,6 +7,7 @@ import shutil
 from copy import deepcopy
 from pathlib import Path
 from build_course import ROOT, COURSE, read, digest
+from advanced8_release import historical_ix_projection, previous_scope, serialized, BASE_BUNDLE_SHA
 
 LABEL='8 класс · повышенная трудность'
 KEY='8-advanced-824-841'
@@ -16,7 +17,10 @@ def candidate():
     authored=read(AUTHOR)
     assert authored['review']['status']=='in-review'
     assert all(authored['review'][k]=='pending' for k in ['independentSource','independentMathematics','independentPedagogy'])
-    old=read(COURSE/'data/course.json');bundle=deepcopy(old)
+    published=read(COURSE/'data/course.json')
+    old,_=historical_ix_projection(published,read(ROOT/'tools/geometry-textbook/release-scope.json'))
+    assert hashlib.sha256(serialized(old)).hexdigest()==BASE_BUNDLE_SHA
+    bundle=deepcopy(old)
     ids={int(l['source']['point']):l['id'] for l in old['lessons'] if l['source']['collection']=='theory'}
     for c in authored['cards']:
         n=c['number'];ident=f'atanasyan-7-9-main-{n}-part-1'
@@ -62,7 +66,7 @@ def build(output):
     target=output/'geometry-course/textbook';shutil.copytree(COURSE,target)
     bundle=candidate()
     (target/'data/course.json').write_text(json.dumps(bundle,ensure_ascii=False,separators=(',',':'))+'\n')
-    scope=read(ROOT/'tools/geometry-textbook/release-scope.json')
+    scope=previous_scope(read(ROOT/'tools/geometry-textbook/release-scope.json'))
     scope['supplements'].append(dict(key=KEY,label=LABEL,exerciseNumbers=[824,841],mainParts=18,cards=18))
     scope['totalCards']+=18
     dest=output/'tools/geometry-textbook';dest.mkdir(parents=True)

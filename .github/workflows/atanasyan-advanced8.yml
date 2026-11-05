@@ -3,6 +3,11 @@ on:
   pull_request:
     paths:
       - 'content-drafts/atanasyan-grade8-advanced/**'
+      - 'geometry-course/textbook/preparation/grade-08-advanced-824-841.json'
+      - 'geometry-course/textbook/release-review-advanced-08-824-841.json'
+      - 'geometry-course/textbook/data/course.json'
+      - 'tools/geometry-textbook/release-scope.json'
+      - 'docs/reviews/ATANASYAN_8_824_841*'
       - 'tools/geometry-textbook/*advanced8*'
       - 'docs/tasks/ATANASYAN_7_9_ADVANCED8*'
       - '.github/workflows/atanasyan-advanced8.yml'
@@ -26,6 +31,8 @@ jobs:
         run: |
           python3 tools/geometry-textbook/models_advanced8_824_841.py --check
           python3 tools/geometry-textbook/advanced8-824-841.test.py
+          python3 tools/geometry-textbook/advanced8-release.test.py
+          node tools/geometry-textbook/advanced8-independent-model-audit.cjs
           python3 tools/geometry-textbook/build_course.py --check
           git diff --exit-code -- geometry-course/textbook
           git diff --check

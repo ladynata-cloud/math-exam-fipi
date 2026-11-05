@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'geometry-course/textbook/**'
+      - 'docs/reviews/ATANASYAN_8_824_841*'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VI*'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_VIII*'
       - 'docs/reviews/ATANASYAN_7_9_CHAPTER_IX*'
@@ -30,6 +31,8 @@ jobs:
         run: |
           python3 tools/geometry/check_textbook_preparation.py
           python3 tools/geometry-textbook/build_course.py --check
+          python3 tools/geometry-textbook/advanced8-release.test.py
+          node tools/geometry-textbook/advanced8-independent-model-audit.cjs
           python3 tools/geometry-textbook/review_scope_test.py
           python3 tools/geometry-textbook/layout-amendment.test.py
           python3 tools/geometry-textbook/chapter05-preservation.test.py
@@ -84,7 +87,7 @@ jobs:
           GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           # IX is isolated until promotion; every published requested section is captured.
-          export GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS="$(node -e "const b=require('./geometry-course/textbook/data/course.json');const labels=new Set(b.lessons.map(l=>l.source.chapter));process.stdout.write(['IX','VIII','VII','VI','7 класс · повышенная трудность'].filter(x=>labels.has(x)).join(','))")"
+          export GEOMETRY_TEXTBOOK_CAPTURE_CHAPTERS="$(node -e "const b=require('./geometry-course/textbook/data/course.json');const labels=new Set(b.lessons.map(l=>l.source.chapter));process.stdout.write(['IX','VIII','VII','VI','7 класс · повышенная трудность','8 класс · повышенная трудность'].filter(x=>labels.has(x)).join(','))")"
           node tools/geometry-textbook/browser_check.js
       - name: Preserve actual browser evidence even on failure
         if: always()

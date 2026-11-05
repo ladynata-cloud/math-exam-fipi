@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 from build_course import COURSE, ROOT, compose, digest, read
+from advanced8_release import KEY as ADVANCED8_KEY, SOURCE_FILE as ADVANCED8_SOURCE
 from published_preservation import assert_runtime_preserved, assert_file_preserved, assert_all_705_preserved
 
 
@@ -130,6 +131,9 @@ class ChapterReviewBoundary(unittest.TestCase):
         # working course. It exercises invalidation after an otherwise matching
         # manifest, even before an independent new-chapter review exists.
         chapter = self.chapter(self.original, number)
+        if number == ADVANCED8_KEY:
+            shutil.copy2(COURSE/self.review_name(number), self.course/self.review_name(number))
+            return
         amended_vi = (number == '7-advanced' or (isinstance(number, int) and number <= 5)) and any(c['chapter'] == 6 for c in self.chapters)
         amended_vii = (number == '7-advanced' or (isinstance(number, int) and number <= 6)) and any(c['chapter'] == 7 for c in self.chapters)
         amended_viii = (number == '7-advanced' or (isinstance(number, int) and number <= 7)) and any(c['chapter'] == 8 for c in self.chapters)
@@ -198,30 +202,40 @@ class ChapterReviewBoundary(unittest.TestCase):
         for supplement in self.supplements:
             self.approve_fixture_chapters()
             self.assertTrue(compose(self.course)['build']['publicationReviewMatches'])
-            name = 'models/grade-07-advanced-a.json'
+            advanced8 = supplement['key'] == ADVANCED8_KEY
+            name = ADVANCED8_SOURCE if advanced8 else 'models/grade-07-advanced-a.json'
             models = read(self.course/name)
-            models['models'][0]['model']['description'] += ' Changed after review.'
+            rows = models['cards'] if advanced8 else models['models']
+            rows[0]['model']['description'] += ' Changed after review.'
             self.write(name, models)
             bundle = compose(self.course)
             self.assertTrue(all(c['publicationReviewMatches'] for c in bundle['build']['chapters']))
             self.assertFalse(self.chapter(bundle, supplement['key'])['publicationReviewMatches'])
+            for other in self.supplements:
+                if other['key'] != supplement['key']:
+                    self.assertTrue(self.chapter(bundle, other['key'])['publicationReviewMatches'])
             shutil.copy2(COURSE/name, self.course/name)
 
     def test_advanced_number_and_model_omissions_fail_build(self):
         for supplement in self.supplements:
-            name = 'preparation/grade-07-advanced-a.json'
+            advanced8 = supplement['key'] == ADVANCED8_KEY
+            name = ADVANCED8_SOURCE if advanced8 else 'preparation/grade-07-advanced-a.json'
             prepared = read(self.course/name)
-            prepared['exercises'].pop()
+            (prepared['cards'] if advanced8 else prepared['exercises']).pop()
             self.write(name, prepared)
             with self.assertRaisesRegex(ValueError, 'every exercise'):
                 compose(self.course)
             shutil.copy2(COURSE/name, self.course/name)
-            name = 'models/grade-07-advanced-a.json'
+            name = ADVANCED8_SOURCE if advanced8 else 'models/grade-07-advanced-a.json'
             models = read(self.course/name)
-            models['models'].pop()
+            if advanced8:
+                models['cards'][0]['model']['views'].pop('step-1')
+            else:
+                models['models'].pop()
             self.write(name, models)
-            with self.assertRaisesRegex(ValueError, 'Missing authored model'):
+            with self.assertRaisesRegex(ValueError, 'Missing authored model|prepared step/view/claim'):
                 compose(self.course)
+            shutil.copy2(COURSE/name, self.course/name)
 
     def test_source_number_and_model_omissions_fail_build(self):
         for target in self.chapters[1:]:

@@ -10,6 +10,7 @@ from pathlib import Path
 from copy import deepcopy
 from build_advanced8_candidate import candidate, build, AUTHOR, COURSE, LABEL
 from check_models import validate
+from advanced8_release import historical_ix_projection, serialized
 
 BASELINE='84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911'
 R=random.Random(824841)
@@ -59,8 +60,11 @@ class SourceAndBoundary(unittest.TestCase):
         self.assertLess(fig['A__v0'][1],fig['B__v0'][1],'Figure274: A is below B in math-up renderer coordinates')
         self.assertEqual(fig['A__v0'][1],fig['E__v0'][1])
     def test_1407_cards_and_release_receipts_preserved(self):
-        raw=(COURSE/'data/course.json').read_bytes();self.assertEqual(hashlib.sha256(raw).hexdigest(),BASELINE)
-        old=json.loads(raw);b=candidate()
+        published=json.loads((COURSE/'data/course.json').read_bytes())
+        scope=json.loads((COURSE.parents[1]/'tools/geometry-textbook/release-scope.json').read_bytes())
+        old,_=historical_ix_projection(published,scope)
+        self.assertEqual(hashlib.sha256(serialized(old)).hexdigest(),BASELINE)
+        b=candidate()
         self.assertEqual(b['lessons'][:1407],old['lessons'])
         self.assertEqual(b['catalog']['entries'][:1407],old['catalog']['entries'])
         self.assertEqual(len(b['lessons']),1425)
