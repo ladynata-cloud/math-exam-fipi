@@ -252,6 +252,15 @@ def page_html(packs):
     grades = [f'{n} класс' for n in range(5,12)]
     books = sorted(set(b for p in packs for b in p['books']))
     options = lambda values: ''.join(f'<option value="{esc(v, quote=True)}">{esc(v)}</option>' for v in values)
+    # Only the ten editorially reviewed topics get standalone HTML guides.
+    topic_pages = {}
+    for part in ('lower', 'upper'):
+        source = ROOT / ('tools/teacher-topic-content-' + part + '.json')
+        if source.exists():
+            topic_pages.update({item['id']: item['heading'] for item in json.loads(source.read_text())})
+    topic_nav = '<details class="note"><summary>10 тем с рекомендациями и тренажёрами</summary><ul>' + ''.join(
+        '<li><a href="/pedagogam/raboty/' + pid + '/">' + esc(heading) + '</a></li>'
+        for pid, heading in topic_pages.items()) + '</ul></details>' if topic_pages else ''
     cards = []
     for p in packs:
         base = '/pedagogam/raboty/' + p['id'] + '/'
@@ -261,6 +270,7 @@ def page_html(packs):
                         f'<a class="button" href="{base}{FILES[kind][0]}" download>Задания PDF</a> '
                         f'<a href="{base}{FILES[kind][1]}" download>Ответы и решения PDF</a></div>'
                         for kind, name in [('sr','Самостоятельная'), ('kr','Контрольная')])
+        topic_link = ('<p><a href="' + base + '">Описание работы, рекомендации и тренажёры</a></p>') if p['id'] in topic_pages else ''
         numbers = [int(n) for n in re.findall(r'\d+', p['grade'])]
         applies = sorted({g for gs in p.get('book_grades', {}).values() for g in gs}) or list(range(min(numbers),max(numbers)+1))
         book_grades = p.get('book_grades', {book: applies for book in p['books']})
@@ -269,7 +279,7 @@ def page_html(packs):
                      f'data-book-grades="{esc(json.dumps(book_grades, ensure_ascii=False), quote=True)}" '
                      f'data-search="{search}" id="{esc(p["id"])}">'
                      f'<p class="kicker">{esc(p["grade"])} · {esc(p["subject"])}</p>'
-                     f'<h2>{esc(p["title"])}</h2>'
+                     f'<h2>{esc(p["title"])}</h2>{topic_link}'
                      f'<details class="books"><summary>Учебники: {len(p["books"])}</summary><ul>'+''.join(f'<li>{esc(b)}</li>' for b in p['books'])+'</ul></details>'
                      f'{links}<details><summary>Темы учебника и оценивание</summary>'
                      f'<p>{esc(p["scope_note"])}</p><p>{esc(refs)}</p><p>Самостоятельная: 4 задания, 6 баллов, около {p["sr_minutes"]} минут. '
@@ -305,6 +315,7 @@ details{{font-size:14px}}summary{{cursor:pointer;font-weight:bold}}.note{{paddin
 <p class="intro">Выберите тему и распечатайте нужный вариант. В каждой работе — четыре равноценных варианта с базовыми заданиями. Ответы, решения и критерии скачиваются отдельно.</p>
 <p class="downloads"><a class="button" href="mathexam-raboty-pdf.zip" download>Скачать все PDF</a> <a href="#catalog">Выбрать тему</a></p>
 <details class="note"><summary>Что входит в подборку</summary><p>Подборка охватывает указанные темы учебников, а не все упражнения и дополнительные разделы каждого издания. Порядок тем у разных авторов отличается: выбирайте работу после изучения нужного материала. Задания составлены для MathExam; исходные сборники издательств в архив не входят.</p></details>
+{topic_nav}
 <form class="filters" role="search" onsubmit="return false"><label>Класс<select id="grade"><option value="">Все классы</option>{options(grades)}</select></label>
 <label>Учебник<select id="book"><option value="">Все учебники</option>{options(books)}</select></label>
 <label>Тема<input id="search" type="search" placeholder="Например, дроби или Пифагор"></label><button type="reset">Сбросить фильтры</button></form>
