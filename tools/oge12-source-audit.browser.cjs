@@ -22,7 +22,7 @@ const initial={'oge-t12-formuly':{solvedByType:{'1':7,'6':3},best:9,total:10,run
    await page.locator('#ansIn').fill('17,5');
    const help=page.locator('#taskArea .minimal-hint');await help.click();await help.click();assert.equal(await page.locator('#ansIn').inputValue(),'17,5');
    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true,`overflow ${width}/${i}`);
-   await page.locator('#source12 summary').click();assert.equal(await page.locator('#source12Link').getAttribute('href'),'oge-task12-sources.html#'+task.generatorId);assert.match(await page.locator('#source12Text').innerText(),task.sourceId?/не дословное/:/учебное упражнение/);await page.locator('#source12 summary').click();
+   await page.locator('#source12 summary').click();assert.equal(await page.locator('#source12Link').getAttribute('href'),'/trainers/oge-task12-sources.html#'+task.generatorId);assert.match(await page.locator('#source12Text').innerText(),task.sourceId?/не дословное/:/учебное упражнение/);await page.locator('#source12 summary').click();
    if(i===4){await page.locator('#ansIn').fill('');await page.screenshot({path:path.join(output,`taxi-${width}.png`),fullPage:true});}
    await page.locator('#ansIn').fill(String(task.answer+123456));await page.locator('#checkBtn').click();assert.equal(await page.evaluate(()=>A.done),false);
    await page.locator('#ansIn').fill(String(task.answer).replace('.',','));await page.locator('#ansIn').press('Enter');assert.equal(await page.evaluate(()=>A.done),true);

@@ -248,7 +248,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 <div class="focus" id="focus"></div>
 
 <div id="taskArea"></div>
-  <details id="source12" class="minimal-options"><summary>Об этой задаче</summary><p id="source12Text"></p><a id="source12Link" href="oge-task12-sources.html">Происхождение и проверка</a></details>
+  <details id="source12" class="minimal-options"><summary>Об этой задаче</summary><p id="source12Text"></p><a id="source12Link" href="/trainers/oge-task12-sources.html">Происхождение и проверка</a></details>
 
 <div class="panel" id="progressPanel">
   <h2>Мой прогресс</h2>
@@ -1240,7 +1240,7 @@ function renderSource12(task){
   var text=document.getElementById('source12Text'),link=document.getElementById('source12Link');
   if(!text||!link)return;
   text.textContent=task.sourceId?'Авторский аналог проверенного образца. Числа и объяснения подготовлены для тренажёра; это не дословное задание ФИПИ.':'Авторское учебное упражнение для освоения формул. Точный экзаменационный образец в проверенных материалах не найден; в зачёт оно не входит.';
-  link.href='oge-task12-sources.html#'+task.generatorId;
+  link.href='/trainers/oge-task12-sources.html'+'#'+task.generatorId;
 }
 function renderTask(){
   renderSource12(cur);
