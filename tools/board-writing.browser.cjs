@@ -665,6 +665,7 @@ async function terminalRoomErrors(browser, siteOrigin, boardOrigin) {
 
   await teacher.waitForFunction(() => canWrite());
   const teacherPages = semantic(await snapshot(teacher)), teacherTrainer = await frameState(teacher);
+  const previousTeacherId = await teacher.evaluate(() => shared.me.participantId);
   const teacherNavigations = teacherSession.iframeNavigations;
   await teacher.evaluate(() => shared.socket.emit('room:join', { ...roomPayload(), role: 'teacher', token: 'invalid-synthetic-token', proto: 2 }));
   await teacher.waitForFunction(() => document.querySelector('#shareStatus').textContent === 'Нет доступа к комнате');
@@ -697,7 +698,24 @@ async function terminalRoomErrors(browser, siteOrigin, boardOrigin) {
   assert.equal(await teacher.evaluate(() => window.__newRoomTrainerPackets.every(packet => packet.roomId === shared.roomId && packet.answer === '59')), true);
   assert.equal(await teacherFrame.locator('#ans').inputValue(), '59');
   assert.equal(teacherSession.iframeNavigations, teacherNavigations, 'new room reuses the same hydrated iframe and its offline work');
-  assert.deepEqual(semantic(await snapshot(teacher)), teacherPages, 'creating the replacement room preserves the written board');
+  const replacementTeacherId = await teacher.evaluate(() => shared.me.participantId);
+  assert.notEqual(replacementTeacherId, previousTeacherId, 'a new room has a new teacher participant');
+  const replacementPages = structuredClone(teacherPages);
+  // normalizeSnapshot rebinds an absent old-room author to the new room owner.
+  // Check that exact mapping; every other board/object field remains unchanged.
+  for (const page of replacementPages.pages) for (const stroke of page.strokes) {
+    assert.equal(stroke.authorId, previousTeacherId);
+    assert.equal(stroke.authorRole, 'teacher');
+    assert.equal(stroke.layerId, 'participant:' + previousTeacherId);
+    stroke.authorId = replacementTeacherId;
+    stroke.layerId = 'participant:' + replacementTeacherId;
+  }
+  await teacher.waitForFunction(expected => {
+    const current = JSON.parse(JSON.stringify(publicSnapshot()));
+    for (const page of current.pages) for (const stroke of page.strokes) delete stroke.createdAt;
+    return JSON.stringify(current) === JSON.stringify(expected);
+  }, replacementPages);
+  assert.deepEqual(semantic(await snapshot(teacher)), replacementPages, 'replacement room preserves all written work with its new owner and layer');
   assert.equal(await teacher.evaluate(() => shared.roomError), '');
   await studentSession.context.close(); await teacherSession.context.close();
   console.log('PASS room errors: recoverable denial; terminal student lock; stale callbacks; fresh teacher reset; current offline trainer in a new room');
