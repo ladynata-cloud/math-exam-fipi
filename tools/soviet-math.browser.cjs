@@ -102,6 +102,7 @@ async function loadSession(page, id, index, records = []) {
       assert.equal(await page.locator('#lesson-title').innerText(), topic.title);
       await page.locator('#mode-practice').click();
       assert.equal(await page.locator('#motion').isChecked(), false, 'reduced-motion preference is respected');
+      if (topic.id === 'motion-time') await picture(page, 'motion-time-before-answer-desktop');
       checkedSteps += await finish(page);
       const state = await snapshot(page), record = state.records.at(-1);
       assert.equal(state.records.length, position + 1, topic.id + ': one record per completed exercise');
@@ -111,7 +112,7 @@ async function loadSession(page, id, index, records = []) {
       assert.equal(record.repeated, false);
       assert.equal(record.revision, 2, 'new results record their lesson revision');
       assert.equal(await page.locator('#finish').isVisible(), true);
-      if (['column-subtract', 'divide-decimal', 'fraction-add'].includes(topic.id)) await picture(page, topic.id + '-desktop');
+      if (['column-subtract', 'divide-decimal', 'fraction-add', 'motion-time'].includes(topic.id)) await picture(page, topic.id + '-desktop');
       await page.reload();
       assert.equal((await snapshot(page)).records.length, position + 1, 'reload never duplicates a completed record');
       assert.equal(await page.locator('#finish').isVisible(), true, 'completed attempt resumes');
@@ -276,7 +277,7 @@ async function loadSession(page, id, index, records = []) {
       await ready(p);
       assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, width + ': catalog fits');
       for (const id of ['column-subtract', 'divide-decimal', 'fraction-add', 'percent-whole',
-        'fraction-to-mixed', 'mixed-subtract-borrow', 'decimal-subtract', 'measure-length']) {
+        'fraction-to-mixed', 'mixed-subtract-borrow', 'decimal-subtract', 'measure-length', 'motion-time']) {
         await ready(p, '#' + id);
         await p.locator('#mode-practice').click();
         assert.equal(await p.locator('#mobile-main').isVisible(), true);
@@ -286,7 +287,7 @@ async function loadSession(page, id, index, records = []) {
         assert.equal(await p.locator('#detail').getAttribute('aria-pressed'), 'true');
         checkedSteps += await finish(p);
         assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, width + ': ' + id + ' fits');
-        if (id === 'divide-decimal' || id === 'fraction-add') await picture(p, id + '-mobile-' + width);
+        if (id === 'divide-decimal' || id === 'fraction-add' || id === 'motion-time') await picture(p, id + '-mobile-' + width);
       }
       await mobile.close();
     }

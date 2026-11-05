@@ -2681,6 +2681,17 @@ This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
 and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
+## In progress: Soviet arithmetic topic 61 and video-factory verification
+
+- [Scope](tasks/SOVIET_MOTION_TIME_FACTORY_CHECK.md); base
+  `e01b2780f16f9771defee5d862eec6de581a554f`; HIGH review for a bounded worker task.
+- Add finding time from distance and speed, twelve original conditions and a
+  studio that uses the shared course model/board. Preserve the previous sixty
+  topics, videos and progress.
+- The existing Soviet-course renderer is local. A new local MP4 is not a
+  successful Amvera production job. Production render/download remains pending.
+- Next three actions: complete content and adapter checks; independent review
+  and Draft PR; obtain release approval and run the real production render.
 ## Current task: search discovery for division
 
 - PR261 is merged at `5c61b0bc12ad9aaebfdb8484cc9987bccb59474a`.

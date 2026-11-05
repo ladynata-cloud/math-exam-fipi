@@ -3,7 +3,9 @@ const SCHOOL_TASKS = new Set(['homework-help', 'linear-equation', 'adjacent-angl
   'numeric-expressions', 'variable-expressions', 'compare-expressions', 'arithmetic-properties',
   'identities', 'equation-roots', 'linear-cases', 'equation-word-problems',
   'grade7-a-opposite-expression', 'grade7-a-two-variable-collect', 'grade7-a-equation-two-brackets', 'grade7-a-equation-denominators', 'grade7-a-equation-decimals', 'grade7-g-segment-order', 'grade7-g-midpoint-chain', 'grade7-g-angle-addition', 'grade7-g-angle-bisector', 'grade7-g-adjacent-equation', 'grade7-b-mixed-borrow', 'grade7-b-fraction-product-cancel', 'grade7-b-decimal-divisor-scale', 'grade7-b-signed-fraction-sum', 'grade7-b-percent-proportion', 'pre7-place-value', 'pre7-natural-compare', 'pre7-add-carry', 'pre7-subtract-borrow', 'pre7-smart-calculation', 'pre7-inverse-components', 'pre7-divisibility', 'pre7-scale-reading', 'pre7-comparison-stories', 'pre7-fraction-line', 'pre7-equivalent-fractions', 'pre7-fraction-compare', 'pre7-fraction-part-whole', 'pre7-decimal-compare', 'pre7-mass-capacity', 'pre7-ruler-length', 'pre7-perimeter', 'pre7-grid-area', 'grade7-g-core-point-line-ray', 'grade7-g-core-perpendicular', 'grade7-g-core-angle-measure', 'grade7-g-core-triangle-elements', 'grade7-g-core-triangle-perimeter', 'grade7-g-core-sas', 'grade7-g-core-median', 'grade7-g-core-bisector', 'grade7-g-core-altitude', 'grade7-g-core-isosceles-elements', 'grade7-g-core-isosceles-base-angles', 'grade7-g-core-isosceles-vertex-line', 'grade7-g-practice-segment-equation', 'grade7-g-practice-angle-parts', 'grade7-g-practice-vertical-proof', 'grade7-g-practice-sas-common-side', 'grade7-g-practice-sas-vertical', 'grade7-g-practice-cevian-reason', 'grade7-g-practice-isosceles-perimeter', 'grade7-g-practice-isosceles-proof']);
-const TASKS = new Set(['18', '19', '20', ...SCHOOL_TASKS]);
+// Only named, reviewed lessons may use the shared Soviet-course board.
+const SOVIET_TASKS = new Set(['soviet-motion-time']);
+const TASKS = new Set(['18', '19', '20', ...SCHOOL_TASKS, ...SOVIET_TASKS]);
 const FORMATS = new Set(['16:9', '9:16']);
 const VIDEO_TYPES = new Set(['ideal-solution', 'student-path']);
 const AUDIO_MODES = new Set(['silent', 'clicks', 'voice']);
@@ -24,6 +26,9 @@ export function validateJobRequest(input, options = {}) {
     throw new Error('Доступны варианты 1, 2 и 3');
   }
   if (!FORMATS.has(format)) throw new Error('Формат должен быть 16:9 или 9:16');
+  if (SOVIET_TASKS.has(task) && format !== '16:9') {
+    throw new Error('Для этой доски доступен горизонтальный формат 16:9');
+  }
   if (input.captions !== undefined && typeof input.captions !== 'boolean') {
     throw new Error('Параметр субтитров должен быть логическим');
   }
@@ -56,14 +61,19 @@ export function resolveAudioMode(request, provider) {
 }
 
 export function isSchoolTask(task) {
-  return SCHOOL_TASKS.has(task);
+  return SCHOOL_TASKS.has(task) || SOVIET_TASKS.has(task);
 }
 
 export function studioUrlFor(task, studioUrl) {
+  if (SOVIET_TASKS.has(task)) return new URL('/soviet-math/studio.html', studioUrl).toString();
   return isSchoolTask(task) ? new URL('/video-lessons/studio.html', studioUrl).toString() : studioUrl;
 }
 
 export function viewportFor(format, task) {
+  if (SOVIET_TASKS.has(task)) {
+    if (format !== '16:9') throw new Error('Для этой доски доступен горизонтальный формат 16:9');
+    return { width: 1600, height: 900 };
+  }
   if (isSchoolTask(task)) {
     return format === '9:16' ? { width: 720, height: 1280 } : { width: 1280, height: 720 };
   }

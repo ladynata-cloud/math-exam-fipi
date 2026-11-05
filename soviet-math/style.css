@@ -7,3 +7,8 @@
 
 #step-explanation{font-size:21px;line-height:1.55;background:#eef4ed;border-left:4px solid var(--green);padding:16px 20px;margin:16px 0;max-width:800px}
 #lesson-idea{font-size:21px;line-height:1.5;max-width:980px;margin:12px 0 20px}
+
+.soviet-brand{display:flex;align-items:center;gap:24px;margin-bottom:24px}
+.soviet-brand-logo{display:block;width:128px;height:auto;aspect-ratio:1;object-fit:contain;flex-shrink:0}
+.soviet-brand h1{margin:0;min-width:0}
+@media(max-width:600px){.soviet-brand{gap:14px}.soviet-brand-logo{width:76px}.soviet-brand h1{font-size:clamp(27px,7vw,34px)}}

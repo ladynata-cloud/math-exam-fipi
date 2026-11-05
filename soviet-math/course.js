@@ -6,7 +6,8 @@ const A=typeof module!=='undefined'&&module.exports?require('./advanced.js'):roo
 const EP=typeof module!=='undefined'&&module.exports?require('./extension-primary.js'):root.SovietExtensionPrimary;
 const EF=typeof module!=='undefined'&&module.exports?require('./extension-fractions.js'):root.SovietExtensionFractions;
 const EA=typeof module!=='undefined'&&module.exports?require('./extension-applications.js'):root.SovietExtensionApplications;
-const modules=[P,A,EP,EF,EA];
+const EM=typeof module!=='undefined'&&module.exports?require('./extension-motion.js'):root.SovietExtensionMotion;
+const modules=[P,A,EP,EF,EA,EM];
 const RP=typeof module!=='undefined'&&module.exports?require('./revised-primary.js'):root.SovietRevisedPrimary;
 const RA=typeof module!=='undefined'&&module.exports?require('./revised-advanced.js'):root.SovietRevisedAdvanced;
 const RD=typeof module!=='undefined'&&module.exports?require('./revised-division.js'):root.SovietRevisedDivision;
