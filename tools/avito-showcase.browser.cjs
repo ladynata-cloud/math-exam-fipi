@@ -127,7 +127,17 @@ async function metadataAndLinks(page) {
   assert.equal(await page.locator('.demo-link').count(), demos.length);
   assert.match(await page.locator('#examples-note').innerText(), /новой вкладке/);
   assert.match(await page.locator('.examples-after').innerText(), /сохранённую работу/);
-  assert.equal(await page.locator('form').count(), 0, 'booking does not collect data into an unimplemented form');
+  // Playwright also finds the navigator's Shadow DOM. Booking still has no
+  // form; admit only that exact local search form with no submission endpoint.
+  assert.deepEqual(await page.locator('form').evaluateAll(forms => forms.map(form => ({
+    host: form.getRootNode().host?.id || null,
+    action: form.getAttribute('action'),
+    method: form.getAttribute('method'),
+    fields: [...form.querySelectorAll('input,textarea,select')].map(field => field.name),
+    submitters: [...form.querySelectorAll('button')].map(button => button.type)
+  }))), [{host:'maxexam-public-assistant', action:null, method:null,
+    fields:['navigation-question'], submitters:['button']}],
+  'no booking form: only the isolated, endpoint-free navigator search is present');
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto', 'reduced motion is respected');
 }
 async function nativeDetails(page) {
