@@ -3,7 +3,7 @@ const KEY='mathexam.profileStart2027.v1';
 function create(lessons,storage){
  const known=new Map(lessons.map(l=>[l.id,l])),tasks=new Set(lessons.flatMap(l=>l.tasks.map(t=>t.id)));let warning='',raw='',blocked=false;
  const data={version:1,records:{},seen:{},sessions:{}};
- const syncedSessions=Object.create(null);let latestSessions=Object.create(null);
+ const syncedSessions=Object.create(null);let latestSessions=Object.create(null),preserved={};
  const copy=s=>({...s,answers:[...s.answers]});
  const sameAttempt=(a,b)=>!!a&&!!b&&a.taskId===b.taskId&&a.started===b.started;
  function sessionFor(key,s){const [id,mode,extra]=key.split(':');const l=known.get(id);const t=l?.tasks.find(t=>t.id===s?.taskId);if(extra!==undefined||!t||!['guided','plan','independent'].includes(mode)||!Number.isInteger(s.step)||s.step<0||s.step>t.steps.length)return null;
@@ -31,19 +31,35 @@ function create(lessons,storage){
  }return merged;}
  function refreshSession(key){const own=data.sessions[key],latest=latestSessions[key];if(sameAttempt(own,latest)){Object.assign(own,copy(latest));syncedSessions[key]=copy(own);}return data.sessions[key];}
  function startedAt(){let latest=Date.now()-1;for(const s of Object.values(data.sessions))latest=Math.max(latest,Date.parse(s.started)||0);return new Date(Math.max(Date.now(),latest+1)).toISOString();}
- try{raw=storage.getItem(KEY)||'';if(raw){const v=JSON.parse(raw);if(v.version!==1||!v.records||!v.seen||!v.sessions)throw Error();
-  for(const l of lessons){const r=v.records[l.id];if(r&&typeof r==='object')data.records[l.id]={guided:[...new Set(Array.isArray(r.guided)?r.guided:[])].filter(id=>l.tasks.some(t=>t.id===id)).slice(0,20),independent:[...new Set(Array.isArray(r.independent)?r.independent:[])].filter(id=>l.tasks.slice(-3).some(t=>t.id===id)).slice(0,20),attempts:Math.max(0,Math.min(100000,Number(r.attempts)||0))};}
+ try{raw=storage.getItem(KEY)||'';if(raw){const v=JSON.parse(raw);if(v.version!==1||!v.records||!v.seen||!v.sessions)throw Error();preserved=v;
+  for(const l of lessons){const r=v.records[l.id];if(r&&typeof r==='object')data.records[l.id]={guided:[...new Set(Array.isArray(r.guided)?r.guided:[])].filter(id=>l.tasks.some(t=>t.id===id)).slice(0,20),independent:[...new Set(Array.isArray(r.independent)?r.independent:[])].filter(id=>l.tasks.slice(-3).some(t=>t.id===id)).slice(0,20),attempts:Math.max(0,Math.min(100000,Number(r.attempts)||0)),...Object.fromEntries(['recovered','checkpointIndependent','mistakes'].filter(kind=>Array.isArray(r[kind])).map(kind=>[kind,[...new Set(r[kind])].filter(id=>(kind==='mistakes'?l.tasks:l.tasks.slice(-3)).some(t=>t.id===id))]))};}
   for(const [id,n]of Object.entries(v.seen))if(tasks.has(id))data.seen[id]=Math.max(0,Math.min(100000,Math.floor(Number(n)||0)));
   for(const [key,s]of Object.entries(v.sessions)){const clean=sessionFor(key,s);if(clean){data.sessions[key]=clean;syncedSessions[key]=copy(clean);}}
  }}catch(_){warning='Сохранение недоступно или повреждено. Старые данные оставлены без изменений; сейчас результаты хранятся только до закрытия страницы. Можно скачать резервную копию.';blocked=true;}
+ // Keep opaque fields and work from lessons outside this loaded catalog. They
+ // must survive a narrower view without being admitted as local mastery.
+ function snapshot(sessions){
+  const records={...(preserved.records||{})},savedSessions={...(preserved.sessions||{})};
+  for(const [id,r]of Object.entries(data.records)){
+   const previous=preserved.records?.[id]||{},l=known.get(id);records[id]={...previous,...r};
+   for(const kind of ['guided','independent','recovered','checkpointIndependent','mistakes'])if(Array.isArray(r[kind])&&Array.isArray(previous[kind])){
+    const pool=['guided','mistakes'].includes(kind)?l.tasks:l.tasks.slice(-3);
+    records[id][kind]=[...previous[kind].filter(value=>!pool.some(t=>t.id===value)),...r[kind]];
+   }
+  }
+  for(const [key,s]of Object.entries(sessions))savedSessions[key]={...(preserved.sessions?.[key]||{}),...s};
+  return {...preserved,...data,records,seen:{...(preserved.seen||{}),...data.seen},sessions:savedSessions};
+ }
  function persist(){if(blocked)return false;try{let merged=mergeSessions({});
   const current=storage.getItem(KEY);if(current){let other;try{other=JSON.parse(current);if(other.version!==1||!other.records||!other.seen||!other.sessions)throw Error();}catch(_){blocked=true;raw=current;warning='Сохранение изменилось или повреждено. Оно оставлено без изменений; скачайте отчёт с текущими результатами.';return false;}
+   preserved=other;
    // Preserve successes from another open tab instead of overwriting them.
-   for(const l of lessons){const r=other.records[l.id];if(!r)continue;const own=record(l.id);for(const kind of ['guided','independent']){const pool=kind==='independent'?l.tasks.slice(-3):l.tasks;for(const id of Array.isArray(r[kind])?r[kind]:[])if(pool.some(t=>t.id===id)&&!own[kind].includes(id))own[kind].push(id);}own.attempts=Math.max(own.attempts,Math.min(100000,Number(r.attempts)||0));}
+   for(const l of lessons){const r=other.records[l.id];if(!r)continue;const own=record(l.id);for(const kind of ['guided','independent','recovered','checkpointIndependent','mistakes']){const pool=['guided','mistakes'].includes(kind)?l.tasks:l.tasks.slice(-3);for(const id of Array.isArray(r[kind])?r[kind]:[])if(pool.some(t=>t.id===id)){own[kind]||=[];if(!own[kind].includes(id))own[kind].push(id);}}own.attempts=Math.max(own.attempts,Math.min(100000,Number(r.attempts)||0));}
    for(const id of tasks)if(other.seen[id])data.seen[id]=Math.max(data.seen[id]||0,Math.min(100000,Number(other.seen[id])||0));
    merged=mergeSessions(other.sessions);
   }
-  storage.setItem(KEY,JSON.stringify({...data,sessions:merged}));latestSessions=merged;for(const [key,s]of Object.entries(data.sessions))syncedSessions[key]=copy(s);return true;
+  for(const [key,session]of Object.entries(merged))if(session.wrong){const r=record(key.split(':')[0]);r.mistakes||=[];if(!r.mistakes.includes(session.taskId))r.mistakes.push(session.taskId);}
+  storage.setItem(KEY,JSON.stringify(snapshot(merged)));latestSessions=merged;for(const [key,s]of Object.entries(data.sessions))syncedSessions[key]=copy(s);return true;
  }catch(_){blocked=true;warning='Браузер не разрешил сохранить результаты. Скачайте отчёт перед закрытием страницы.';return false;}}
  function record(id){return data.records[id]||(data.records[id]={guided:[],independent:[],attempts:0});}
  function start(id,mode,fresh=false){const l=known.get(id);if(!l||!['guided','plan','independent'].includes(mode))throw Error('Unknown lesson or mode');const key=id+':'+mode,hadSession=!!data.sessions[key];const saved=persist();const old=saved?refreshSession(key):data.sessions[key];if(old&&!fresh&&(hadSession||!old.done))return old;
@@ -54,11 +70,22 @@ function create(lessons,storage){
   // Read saved help/mistakes before awarding any credit, not after it.
   persist();const current=data.sessions[id+':'+mode];if(!sameAttempt(s,current)||current.registered)return false;
   if(current!==s){for(const flag of ['wrong','assisted','familiar'])current[flag]=current[flag]||s[flag];s=current;}
-  const r=record(id);r.attempts++;if(mode!=='independent'&&!r.guided.includes(s.taskId))r.guided.push(s.taskId);if(mode==='independent'&&!s.wrong&&!s.assisted&&!s.familiar&&!r.independent.includes(s.taskId))r.independent.push(s.taskId);s.done=true;s.registered=true;persist();return true;}
+  const r=record(id);r.attempts++;if(mode!=='independent'&&!r.guided.includes(s.taskId))r.guided.push(s.taskId);if(mode==='independent'&&!s.wrong&&!s.assisted){const kind=s.familiar?'recovered':'independent';r[kind]||=[];if(!r[kind].includes(s.taskId))r[kind].push(s.taskId);}s.done=true;s.registered=true;persist();return true;}
+ // A clean repeat is useful evidence of practice, never a new condition.
+ function canAdvance(id){const r=record(id);return new Set([...r.independent,...(r.recovered||[])]).size>=2;}
+ // Checkpoint reserves only unseen conditions and locks the first submitted
+ // answer. Keep its fresh, unassisted successes with the corresponding lesson.
+ function creditCheckpoint(item){
+  const l=known.get(item?.lessonId);if(!l||!l.tasks.slice(-3).some(t=>t.id===item.taskId)||!item.submitted||!item.correct||item.assisted||item.unavailable)return false;
+  if(data.records[l.id]?.checkpointIndependent?.includes(item.taskId)&&data.seen[item.taskId])return false;
+  persist();const r=record(l.id);if(!data.seen[item.taskId]){data.seen[item.taskId]=1;persist();}if(r.checkpointIndependent?.includes(item.taskId))return false;
+  if(!r.independent.includes(item.taskId)){r.independent.push(item.taskId);r.attempts++;}
+  (r.checkpointIndependent||=[]).push(item.taskId);persist();return true;
+ }
  function remediate(id,taskId){const l=known.get(id),t=l?.tasks.find(t=>t.id===taskId);if(!t)throw Error('Unknown remediation task');const saved=persist();const source=saved?refreshSession(id+':independent'):data.sessions[id+':independent'];if(source?.taskId===taskId&&!source.answers.length&&!source.done&&!source.registered){source.assisted=true;}
  const key=id+':guided',old=saved?refreshSession(key):data.sessions[key];if(old?.taskId===taskId&&!old.done){persist();return old;}
  const s={taskId,step:0,wrong:false,assisted:true,familiar:!!data.seen[taskId],done:false,draft:'',answers:[],started:startedAt(),registered:false};data.seen[taskId]=Math.max(1,data.seen[taskId]||0);data.sessions[key]=s;persist();return s;}
- return {KEY,data,record,start,finish,remediate,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...data,sessions:mergeSessions(latestSessions)};}};
+ return {KEY,data,record,start,finish,remediate,canAdvance,creditCheckpoint,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot(mergeSessions(latestSessions))};}};
 }
 const api={KEY,create};root.ProfileState=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

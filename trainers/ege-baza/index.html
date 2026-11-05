@@ -249,6 +249,10 @@ svg .cellgrid{stroke:#dbe2ee;stroke-width:1}
 @media print{header.top,.blank,.foot,.acts,.note{display:none!important}
  .wrap{display:block;padding:0}.card{border:0}.body{display:block}.right{border:0}}
 </style>
+<link rel="stylesheet" href="../../ege-baza/reference/style.css?v=20261101">
+<script src="../../ege-baza/reference/data.js?v=20261101"></script>
+<script src="../../ege-baza/reference/legacy-map.js?v=20261101"></script>
+<script src="../../ege-baza/reference/ui.js?v=20261101"></script>
 </head>
 <body>
 <a class="skip" href="#main">Перейти к заданию</a>
@@ -954,7 +958,7 @@ const TASKS = [
         3:'Похоже, расстояние до озера просто разделено пополам. Скорости у пешеходов разные.'}},
 
 {pos:20,id:'p20b',answerType:'number',answer:9,unit:'%',
- lab:{kind:'solutionLab',solute:1,water0:3,waterMax:11},
+ lab:{kind:'solutionLab',solute:0.9,water0:5.1,waterMax:13.1,added:4},
  text:'В сосуд, содержащий 6 кг 15-процентного водного раствора вещества, добавили 4 кг воды. Сколько процентов составляет концентрация получившегося раствора?',
  hints:['При добавлении воды масса вещества не меняется, меняется только масса раствора.','15 % от 6 кг — это 0,9 кг вещества.'],
  steps:[{q:'Масса вещества',a:'6 · 0,15 = 0,9 кг'},{q:'Масса нового раствора',a:'6 + 4 = 10 кг'},{q:'Концентрация',a:'0,9 : 10 = 0,09, то есть 9 %'}],
@@ -963,7 +967,7 @@ const TASKS = [
         6:'Похоже, использована только начальная масса раствора. Новая масса равна 10 кг.'}},
 
 {pos:20,id:'p20c',answerType:'number',answer:75,unit:'км/ч',
- lab:{kind:'avgSpeedLab',seg:60,v1:60},
+ lab:{kind:'avgSpeedLab',dist:[120,180,150],speed:[60,90,75]},
  text:'Первые 120 км автомобиль ехал со скоростью 60 км/ч, следующие 180 км — со скоростью 90 км/ч, а затем 150 км — со скоростью 75 км/ч. Найдите среднюю скорость автомобиля на протяжении всего пути. Ответ дайте в км/ч.',
  hints:['Средняя скорость — это весь путь, делённый на всё время, а не среднее арифметическое скоростей.','Посчитайте время на каждом участке отдельно.'],
  steps:[{q:'Время на участках',a:'120 : 60 = 2 ч, 180 : 90 = 2 ч, 150 : 75 = 2 ч'},{q:'Весь путь и всё время',a:'450 км за 6 ч'},{q:'Средняя скорость',a:'450 : 6 = 75 км/ч'}],
@@ -971,7 +975,7 @@ const TASKS = [
         450:'450 — весь путь в километрах. Его нужно разделить на время.'}},
 
 {pos:20,id:'p20d',answerType:'number',answer:60,unit:'км/ч',
- lab:{kind:'roadLab',mode:'towards',L:200,t:2},
+ lab:{kind:'roadLab',mode:'towards',L:300,t:2,meeting:120},
  text:'Из городов A и B, расстояние между которыми равно 300 км, навстречу друг другу одновременно выехали два автомобиля. Они встретились через 2 часа на расстоянии 180 км от города B. Найдите скорость автомобиля, выехавшего из города A. Ответ дайте в км/ч.',
  hints:['Сначала найдите, сколько километров проехал автомобиль из города A.','300 − 180 = 120 км.'],
  steps:[{q:'Путь автомобиля из A',a:'300 − 180 = 120 км'},{q:'Скорость',a:'120 : 2 = 60 км/ч'}],
@@ -1353,9 +1357,9 @@ function labInit(l){
  if(l.kind==='scoreTiles') return {marks:Array(l.total).fill(0)}; // 0 пропуск, 1 верно, 2 неверно
  if(l.kind==='digitStrike') return {struck:[]};
  if(l.kind==='digitBuild') return {digits:Array(l.slots).fill(null),active:0};
- if(l.kind==='roadLab') return l.mode==='lake'?{posA:0.9}:{m:Math.round(l.L*0.3/5)*5};
+ if(l.kind==='roadLab') return l.mode==='lake'?{posA:0.9}:{m:l.meeting??Math.round(l.L*0.3/5)*5};
  if(l.kind==='solutionLab') return {water:l.water0};
- if(l.kind==='avgSpeedLab') return {t2:1};
+ if(l.kind==='avgSpeedLab') return l.dist?{part:0}:{t2:1};
  if(l.kind==='ringLab') return {sel:[]};
  if(l.kind==='crossLab') return {cells:['','','',''],x:2}; // x — индекс неизвестной клетки, по умолчанию левая нижняя
  return {};
@@ -1464,7 +1468,7 @@ LAB.roadLab=function(t,st){
   s+=`<circle class="grab" data-lab="walkerA" cx="${X(r.posA)}" cy="${g.y+4}" r="18" fill="transparent" style="cursor:grab;touch-action:none"/>`;
   s+=`<circle cx="${X(r.posA)}" cy="${g.y+4}" r="11" fill="#b45309" pointer-events="none"/><text class="lbl-b" x="${X(r.posA)}" y="${g.y+54}" text-anchor="middle" fill="#b45309">${l.vA} км/ч — тяните</text>`;
   if(meet) s+=`<text class="lbl-b" x="${X(r.posA)}" y="${g.y-72}" text-anchor="middle" fill="#312a92">встретились</text>`;
-  read=`Прошло <b>${num(Math.round(r.t*100)/100)} ч</b>. Первый прошёл <b>${num(Math.round(r.posA*100)/100)} км</b>, второй ${r.back?'уже возвращается и находится в':'находится в'} <b>${num(Math.round(r.posB*100)/100)} км</b> от дома.${meet?' <b>Встреча.</b>':''}<br><span class="muted">Здесь озеро в ${l.L} км, скорости ${l.vA} и ${l.vB} км/ч — числа не из условия. Заметьте: к моменту встречи двое вместе проходят путь до озера и обратно.</span>`;
+  read=`Прошло <b>${num(Math.round(r.t*100)/100)} ч</b>. Первый прошёл <b>${num(Math.round(r.posA*100)/100)} км</b>, второй ${r.back?'уже возвращается и находится в':'находится в'} <b>${num(Math.round(r.posB*100)/100)} км</b> от дома.${meet?' <b>Встреча.</b>':''}<br><span class="muted">Здесь озеро в ${l.L} км, скорости ${l.vA} и ${l.vB} км/ч — числа из условия. Заметьте: к моменту встречи двое вместе проходят путь до озера и обратно.</span>`;
  }else{
   const mA=st.m, mB=l.L-st.m;
   s+=`<text class="lbl-b" x="${g.x0}" y="${g.y-30}" text-anchor="middle">A</text><text class="lbl-b" x="${g.x1}" y="${g.y-30}" text-anchor="middle">B</text>`;
@@ -1472,14 +1476,14 @@ LAB.roadLab=function(t,st){
   s+=`<circle cx="${X(st.m)}" cy="${g.y}" r="10" fill="#b45309" pointer-events="none"/><text class="lbl-b" x="${X(st.m)}" y="${g.y-16}" text-anchor="middle" fill="#b45309">встреча — тяните</text>`;
   s+=`<path class="aux" d="M ${g.x0} ${g.y+46} H ${X(st.m)}" stroke="#4338ca"/><text class="lbl" x="${R2((g.x0+ +X(st.m))/2)}" y="${g.y+62}" text-anchor="middle">${mA} км</text>`;
   s+=`<path class="aux" d="M ${X(st.m)} ${g.y+46} H ${g.x1}" stroke="#146c43"/><text class="lbl" x="${R2((+X(st.m)+g.x1)/2)}" y="${g.y+62}" text-anchor="middle">${mB} км</text>`;
-  read=`Дорога <b>${l.L} км</b>, встреча через <b>${l.t} ч</b>. Из A проехали <b>${mA} км</b> → скорость <b>${num(mA/l.t)} км/ч</b>; из B проехали <b>${mB} км</b> → <b>${num(mB/l.t)} км/ч</b>.<br><span class="muted">Числа не из условия. Двигайте точку встречи: чем она ближе к B, тем быстрее ехал автомобиль из A.</span>`;
+  read=`Дорога <b>${l.L} км</b>, встреча через <b>${l.t} ч</b>. Из A проехали <b>${mA} км</b> → скорость <b>${num(mA/l.t)} км/ч</b>; из B проехали <b>${mB} км</b> → <b>${num(mB/l.t)} км/ч</b>.<br><span class="muted">В начале показаны числа из условия. Двигайте точку встречи: чем она ближе к B, тем быстрее ехал автомобиль из A.</span>`;
  }
  return `<div class="lab"><div class="lab-head">Эксперимент: ${l.mode==='lake'?'тяните первого пешехода по дороге':'тяните точку встречи'}</div>${SVG('0 0 540 195',s,'Модель движения')}<div class="lab-read">${read}</div></div>`;
 };
 LAB.solutionLab=function(t,st){
  const l=t.lab, g=GEO.beaker, total=l.solute+st.water, H=g.bottom-g.top, kg=H/(l.solute+l.waterMax);
  const hS=l.solute*kg, hW=st.water*kg, yW=g.bottom-hS-hW, yS=g.bottom-hS;
- const conc=Math.round(l.solute/total*1000)/10;
+ const conc=Math.round(l.solute/total*1000)/10, added=Math.round((st.water-l.water0)*10)/10;
  let s=`<path d="M ${g.x} ${g.top-8} V ${g.bottom} H ${g.x+g.w} V ${g.top-8}" fill="none" stroke="#5b6b85" stroke-width="2.4"/>`;
  s+=`<rect x="${g.x}" y="${R2(yW)}" width="${g.w}" height="${R2(hW)}" fill="#cfe4f7"/>`;
  s+=`<rect x="${g.x}" y="${R2(yS)}" width="${g.w}" height="${R2(hS)}" fill="#7e6cd8"/>`;
@@ -1488,10 +1492,18 @@ LAB.solutionLab=function(t,st){
  s+=`<text class="lbl-b" x="${g.x+g.w+22}" y="${R2(yW+4)}" fill="#b45309">уровень — тяните</text>`;
  s+=`<text class="lbl-b" x="${g.x+g.w/2}" y="${R2(yS+hS/2+5)}" text-anchor="middle" fill="#fff">вещество ${l.solute} кг</text>`;
  s+=`<text class="lbl-b" x="${g.x+g.w/2}" y="${R2(yW+hW/2+5)}" text-anchor="middle" fill="#2b6ca3">вода ${st.water} кг</text>`;
- const read=`Раствор <b>${total} кг</b>, вещества <b>${l.solute} кг</b> → концентрация <b>${num(conc)} %</b>.<br><span class="muted">Числа не из условия. Доливайте воду: столбик вещества не двигается — меняется только знаменатель.</span>`;
- return `<div class="lab"><div class="lab-head">Эксперимент: тяните уровень воды вверх и вниз</div>${SVG('0 0 540 260',s,'Модель раствора')}<div class="lab-read">${read}</div></div>`;
+ const read=`Раствор <b>${num(Math.round(total*10)/10)} кг</b>, вещества <b>${l.solute} кг</b> → концентрация <b>${num(conc)} %</b>.<br><span class="muted">Исходный раствор — 6 кг, вещества — 0,9 кг. Добавлено воды: ${num(added)} кг. Масса вещества не меняется.</span>`;
+ return `<div class="lab"><div class="lab-head">Эксперимент: тяните уровень воды вверх и вниз</div><button data-lab="water-start">Исходный раствор</button><button data-lab="water-add">Добавить 4 кг воды</button>${SVG('0 0 540 260',s,'Модель раствора')}<div class="lab-read">${read}</div></div>`;
 };
 LAB.avgSpeedLab=function(t,st){
+ if(t.lab.dist){
+  const l=t.lab,part=Number.isInteger(st.part)?st.part:0,total=l.dist.reduce((a,b)=>a+b,0),times=l.dist.map((d,i)=>d/l.speed[i]);let x=30;
+  const diagram=l.dist.map((d,i)=>{const w=480*d/total;const out=`<rect x="${x}" y="25" width="${w}" height="45" fill="${i===part?'#4338ca':'#c3ccdb'}"/><text class="lbl" x="${x+w/2}" y="95" text-anchor="middle">${d} км</text><text class="lbl" x="${x+w/2}" y="120" text-anchor="middle">${l.speed[i]} км/ч</text>`;x+=w;return out;}).join('');
+  const controls=l.dist.map((_,i)=>`<button data-lab="avg-part" data-i="${i}" aria-pressed="${part===i}">Участок ${i+1}</button>`).join('')+'<button data-lab="avg-part" data-i="3">Весь путь</button>';
+  const read=part<3?`Участок ${part+1}: ${l.dist[part]} : ${l.speed[part]} = ${num(times[part])} ч.`:`Весь путь ${total} км, всё время ${times.join(' + ')} = ${times.reduce((a,b)=>a+b,0)} ч. Средняя скорость ${num(total/times.reduce((a,b)=>a+b,0))} км/ч. Здесь времена равны, поэтому совпало и среднее арифметическое скоростей. При разных временах оно обычно неверно.`;
+  return `<div class="lab"><div class="lab-head">Три участка из условия</div>${controls}${SVG('0 0 540 145',diagram,'Три участка пути')}<div class="lab-read" role="status">${read}</div></div>`;
+ }
+
  const l=t.lab, g=GEO.tbar, t1=l.seg/l.v1, v2=Math.round(l.seg/st.t2), avg=Math.round(2*l.seg/(t1+st.t2)*10)/10, mean=Math.round((l.v1+v2)/2*10)/10;
  const bar=(y,tt,color,label)=>`<rect x="${g.x0}" y="${y-16}" width="${R2(tt*g.unit)}" height="32" fill="${color}" rx="6"/><text class="lbl-b" x="${g.x0-10}" y="${y+5}" text-anchor="end">${label}</text><text class="lbl" x="${R2(g.x0+tt*g.unit+8)}" y="${y+5}">${num(Math.round(tt*100)/100)} ч</text>`;
  let s=bar(70,t1,'#c9c5f3',`${l.seg} км при ${l.v1} км/ч`)+bar(g.y2,st.t2,'#a8d5be',`${l.seg} км при ${v2} км/ч`);
@@ -1749,10 +1761,46 @@ function answerBlock(t,r){
   <p class="fmt" id="fmt">${fmt}</p>`;
 }
 
+let referenceTaskBlocked=false;
+function openReferenceTask(){
+ const match=location.hash.match(/^#task=(p\d+[a-z])$/),t=match&&TASKS.find(item=>item.id===match[1]);
+ referenceTaskBlocked=false;
+ if(!t)return false;
+ // An exact learning link must never replace an unfinished assembled variant.
+ if(state.mode==='variant'&&state.built?.some(id=>!state.recs[id]?.done)){
+  referenceTaskBlocked=true;return false;
+ }
+ if(urlLesson&&!LESSONS.find(item=>item.n===urlLesson).positions.includes(t.pos))return false;
+ if(!urlLesson)state.lesson=null;
+ state.mode='pos';state.pos=t.pos;state.cur['p'+t.pos]=byPos(t.pos).indexOf(t);
+ return true;
+}
+function attachTaskReference(t,r){
+ if(state.mode!=='pos'||!window.EgeReferenceUI)return;
+ const sheetIds=window.EgeReferenceLegacy?.taskSheets[t.id];if(!sheetIds?.length)return;
+ const host=document.createElement('div');host.className='legacy-reference';
+ document.querySelector('#host .right')?.append(host);
+ window.EgeReferenceUI.attach(host,{sheetIds,referenceBase:'../../ege-baza/reference/',returnHref:location.pathname+location.search+'#task='+t.id,showPins:false,onReveal:()=>{
+  if(r.done||state.mode!=='pos'||current().task?.id!==t.id)return;
+  r.hints=Math.max(1,r.hints||0);
+  save();
+ }});
+}
 function render(){
  renderBlank();
+ if(referenceTaskBlocked){
+  $('host').innerHTML='<section class="card"><div class="head"><h3>Сначала заверши текущий вариант</h3><p>Задание из справочника откроется после проверки. Все записанные ответы и состав варианта сохранены.</p><button class="primary" id="reference-resume">Вернуться к варианту</button></div></section>';
+  $('reference-resume').onclick=()=>{history.replaceState(null,'',location.pathname+location.search);referenceTaskBlocked=false;render();$('main').focus();};
+  return;
+ }
  const {list,idx,task:t}=current();
  if(!t){$('host').innerHTML='';return;}
+ // Keep an existing exact-task link aligned with ordinary Next/Back/catalogue
+ // navigation. A newly assembled variant must not reload the old pinned task.
+ if(location.hash.startsWith('#task=')){
+  const hash=state.mode==='pos'?'#task='+t.id:'';
+  if(hash!==location.hash)history.replaceState(history.state,'',location.pathname+location.search+hash);
+ }
  const r=rec(t.id), P=POSITIONS[t.pos-1];
  const fig=figureHTML(t), lab=labHTML(t);
  const left=(fig||lab)?fig+lab:`<p class="nofig">В этом задании чертёж не нужен: всё, что требуется, есть в условии.</p>`;
@@ -1820,6 +1868,7 @@ function render(){
   </div>
  </article>`;
  const ai=$('ans'); if(ai&&r.msgType==='no') ai.setAttribute('aria-invalid','true');
+ attachTaskReference(t,r);
 }
 
 function shownAnswer(t,r){
@@ -1942,6 +1991,9 @@ document.addEventListener('click',e=>{
    const next=st.digits.findIndex((x,i)=>x===null&&i>st.active); if(next>-1) st.active=next; }
   else if(k==='slot'){ st.active=+b.dataset.i; }
   else if(k==='clear'){ st.digits[st.active]=null; }
+  else if(k==='avg-part'){ st.part=+b.dataset.i; }
+  else if(k==='water-start'){ st.water=t.lab.water0; }
+  else if(k==='water-add'){ st.water=t.lab.water0+t.lab.added; }
   else if(k==='setx'){ const i=+b.dataset.i; st.cells[i]=''; st.x=i; }
   rerenderLab(t); return;
  }
@@ -2010,7 +2062,7 @@ const DRAG={
  'cut-h':(st,l,p)=>{ st.hy=clamp(Math.round((p.y-26)/(224/l.h)),1,l.h-1); },
  walkerA:(st,l,p)=>{ const g=GEO.road; st.posA=clamp(Math.round((p.x-g.x0)/((g.x1-g.x0)/l.L)*20)/20,0,l.L); },
  meet:(st,l,p)=>{ const g=GEO.road; st.m=clamp(Math.round((p.x-g.x0)/((g.x1-g.x0)/l.L)/5)*5,5,l.L-5); },
- water:(st,l,p)=>{ const g=GEO.beaker, kg=(g.bottom-g.top)/(l.solute+l.waterMax); st.water=clamp(Math.round((g.bottom-l.solute*kg-p.y)/kg),1,l.waterMax); },
+ water:(st,l,p)=>{ const g=GEO.beaker, kg=(g.bottom-g.top)/(l.solute+l.waterMax); st.water=clamp(Math.round((g.bottom-l.solute*kg-p.y)/kg*10)/10,l.water0,l.waterMax); },
  tbar:(st,l,p)=>{ const g=GEO.tbar; st.t2=clamp(Math.round((p.x-g.x0)/g.unit*4)/4,0.5,3); }
 };
 document.addEventListener('pointerdown',e=>{
@@ -2129,7 +2181,13 @@ const REFERENCE=`
 <p class="muted" style="margin-top:10px">На экзамене справочные материалы выдаются вместе с бланком. Здесь приведён их краткий пересказ.</p>
 </div>`;
 
+openReferenceTask();
 render();
+window.addEventListener('hashchange',()=>{
+ if(!location.hash.startsWith('#task='))return;
+ if(openReferenceTask())save();
+ render();$('main').focus();
+});
 if(!canSave) $('warn').hidden=false;
 
 /* Отладочный доступ для смоук-тестов (Node/jsdom, консоль браузера). */

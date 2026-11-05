@@ -90,10 +90,51 @@ const corrections=Object.freeze({
     ]
   }
 });
+// Exact shared-room isolation guards are reviewed separately by native DOM,
+// browser and real transport tests. Remove only these known additions before
+// comparing the independently frozen historical mathematics/persistence bytes.
+const sharedStorageGuards={
+  "trainers/oge-task6-fractions.html": [
+    [
+      "function saveProgress(){\n  if(window.OgeCourseSharedMode)return;\n",
+      "function saveProgress(){\n"
+    ],
+    [
+      "function restoreProgress(){\n  if(window.OgeCourseSharedMode)return false;\n",
+      "function restoreProgress(){\n"
+    ]
+  ],
+  "trainers/oge-task20-equations.html": [
+    [
+      "  if(!window.OgeCourseSharedMode)try{\n    var saved=",
+      "  try{\n    var saved="
+    ],
+    [
+      "  function savePractice(){\n    if(window.OgeCourseSharedMode)return;\n",
+      "  function savePractice(){\n"
+    ]
+  ],
+  "trainers/oge-task22-functions-graphs.html": [
+    [
+      "  if(!window.OgeCourseSharedMode)try{const saved=",
+      "  try{const saved="
+    ],
+    [
+      "    scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;\n    if(window.OgeCourseSharedMode)return;\n",
+      "    scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;\n"
+    ]
+  ]
+};
 function restoreHistoricalBytes(file,source){
  const rule=corrections[file];
  if(!rule)return source;
  let restored=String(source);
+ for(const [guarded,original] of sharedStorageGuards[file]||[]){
+  if(restored.includes(guarded)){
+   assert.equal(restored.split(guarded).length,2,file+': one exact shared storage guard');
+   restored=restored.replace(guarded,original);
+  }
+ }
  for(const [index,{before,after}]of rule.fragments.entries()){
   assert.equal(restored.split(after).length,2,file+': exactly one approved persistence fragment '+index);
   restored=restored.replace(after,before);

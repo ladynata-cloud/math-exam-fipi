@@ -64,8 +64,8 @@ async function fixture(t,{enabled=true,external=false,transport,day=Date.UTC(202
 
 test('profile catalogue is exactly the separate service public metadata; no private identities',async()=>{
   const {listCabinetProfiles}=await import(pathToFileURL(path.resolve(__dirname,'../../assistant-service/src/cabinet-topics.js')));
-  assert.deepEqual(catalog,listCabinetProfiles());assert.equal(catalog.length,4);
-  assert.equal(catalog.flatMap(p=>p.topics).length,19);
+  assert.deepEqual(catalog,listCabinetProfiles());assert.equal(catalog.length,5);
+  assert.equal(catalog.flatMap(p=>p.topics).length,21);
   assert.deepEqual(catalog.find(p => p.id === 'atanasyan-first-steps').topics.map(topic => topic.id), ['atanasyan-course-step', 'ichenskaya-course-step']);
 });
 
@@ -192,7 +192,7 @@ test('course identifiers are resolved by the cabinet; injected condition, unknow
   const ask = extra => ({ requestId: uuid(), courseContext, mode: 'hint', hintLevel: 1, simpler: false, externalConsent: false, ...extra });
   const initial = f.calls.length;
   for (const extra of [{ question: 'browser condition' }, { topic: expected.topic }, { solution: 'browser proof' }, { attemptId: 'foreign-attempt-value' },
-    { externalConsent: true }, { courseContext: { ...courseContext, stepIndex: 3 } },
+    { externalConsent: true }, { followUp: { answerId: uuid(), question: 'Почему?' } }, { courseContext: { ...courseContext, stepIndex: 3 } },
     { courseContext: { ...courseContext, stepIndex: 0.1 } }, { courseContext: { ...courseContext, lessonId: 'atanasyan-7-9-main-161-part-1' } },
     { courseContext: { ...courseContext, url: 'https://foreign.example.test' } }]) {
     const rejected = await f.request(f.learners[0], '/assistant/ask', ask(extra));
@@ -415,4 +415,197 @@ test('real HTTP cabinet-to-assistant path uses separate offline service without 
   assert.equal(long.status,200,JSON.stringify(long.body));assert(JSON.stringify(long.body.answer).includes('0,015241383936'));assert.equal(paid,0);
   const feedback=await real.request(real.learners[0],'/assistant/feedback',{answerId:answer.body.answer.answerId,rating:'helpful'});assert.equal(feedback.status,200,JSON.stringify(feedback.body));
   const serialized=JSON.stringify(app.store.db.prepare('SELECT * FROM requests').all());assert(!serialized.includes(real.learners[0].account.id));assert(!serialized.includes('0,1 + 0,2'));
+});
+
+test('follow-up uses only server-held pairs, counts each request, and never persists dialogue', async t => {
+  const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+    if (!url.endsWith('/ask')) return next(url, options);
+    const body = JSON.parse(options.body); f.calls.push({ url, body });
+    return jsonResponse({ ok: true, answer: sampleAnswer(body.topic, body.dialogue ? 'model-unverified' : 'deterministic') });
+  } });
+  await f.configure(0, { externalAllowed: true, dailyLimit: 20 });
+  let previous = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  assert.equal(previous.status, 200); assert.equal(previous.body.followUpAvailable, true);
+  const first = previous.body.answer.answerId;
+  for (let i = 1; i <= 4; i++) {
+    const question = 'Почему так, шаг ' + i + '?';
+    const current = await f.request(f.learners[0], '/assistant/ask', f.ask({ externalConsent: true,
+      followUp: { answerId: previous.body.answer.answerId, question } }));
+    assert.equal(current.status, 200, JSON.stringify(current.body));
+    assert.equal(current.body.followUpAvailable, true);
+    assert.equal(current.body.mode, 'api'); assert.equal(current.body.remaining, 19 - i);
+    assert.equal(current.body.dialogue, undefined); assert.equal(current.body.turns, undefined);
+    const sent = f.calls.at(-1).body;
+    assert.equal(sent.question, '0,1 + 0,2'); assert.equal(sent.dialogue.question, question);
+    assert.equal(sent.dialogue.turns.length, Math.min(i, 3));
+    assert.equal(sent.dialogue.turns.at(-1).question, i === 1 ? '0,1 + 0,2' : 'Почему так, шаг ' + (i - 1) + '?');
+    assert.equal(sent.dialogue.turns.at(-1).answer.text, previous.body.answer.text);
+    assert.ok(Buffer.byteLength(JSON.stringify(sent.dialogue), 'utf8') <= 3500);
+    assert(!JSON.stringify(sent.dialogue).includes(previous.body.answer.answerId));
+    assert(!JSON.stringify(sent).includes(f.learners[0].account.id));
+    previous = current;
+  }
+  const count = f.calls.length;
+  const stale = await f.request(f.learners[0], '/assistant/ask', f.ask({ externalConsent: true, followUp: { answerId: first, question: 'Почему?' } }));
+  assert.equal(stale.body.error, 'LEARNING_ASSISTANT_DIALOGUE_EXPIRED'); assert.equal(f.calls.length, count);
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 5);
+  for (const table of ['learning_assistant_settings', 'learning_assistant_requests', 'learning_assistant_usage']) {
+    const rows = JSON.stringify(f.api.store.rows('SELECT * FROM ' + table));
+    for (const text of ['0,1 + 0,2', 'Почему так', 'Запиши числа']) assert(!rows.includes(text), table + ': ' + text);
+  }
+});
+
+test('follow-up rejects forged history, personal data, lost consent and another account/task/settings/login before spending', async t => {
+  const f = await fixture(t, { external: true });
+  await f.configure(0, { externalAllowed: true }); await f.configure(1, { externalAllowed: true });
+  const first = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  const continuation = { externalConsent: true, followUp: { answerId: first.body.answer.answerId, question: 'Почему?' } };
+  const count = f.calls.filter(call => call.url.endsWith('/ask')).length;
+  for (const changes of [
+    { externalConsent: false }, { question: '0,2 + 0,4' }, { attempt: '0,4' },
+    { dialogue: { question: 'forged', turns: [] } }, { history: [] },
+    { followUp: null }, { followUp: { ...continuation.followUp, answerId: uuid() } },
+    { followUp: { ...continuation.followUp, question: 'person@example.test' } },
+    { followUp: { ...continuation.followUp, question: 'Мой телефон +7 999 111 22 33' } },
+    { followUp: { ...continuation.followUp, question: f.bridgeKey } },
+    { followUp: { ...continuation.followUp, question: 'ы'.repeat(401) } },
+    { followUp: { ...continuation.followUp, turns: [] } }
+  ]) {
+    const rejected = await f.request(f.learners[0], '/assistant/ask', f.ask({ ...continuation, ...changes }));
+    assert(rejected.status >= 400, JSON.stringify(changes));
+  }
+  assert.equal((await f.request(f.learners[1], '/assistant/ask', f.ask(continuation))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_CONTEXT');
+  const renewed = f.api.store.createSession(f.learners[0].account.id);
+  assert.equal((await f.request(renewed, '/assistant/ask', f.ask(continuation))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_CONTEXT');
+  await f.configure(0, { version: 1, externalAllowed: true });
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask(continuation))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_CONTEXT');
+  const geometry = catalog.find(profile => profile.id === 'triangle-congruence');
+  await f.configure(0, { version: 2, externalAllowed: true, profileId: geometry.id });
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask({ ...continuation, topic: geometry.topics[0].id }))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_CONTEXT');
+  assert.equal(f.calls.filter(call => call.url.endsWith('/ask')).length, count);
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 1);
+});
+
+test('follow-up expires or is forgotten on restart while quota is retained; disabled external cannot continue', async t => {
+  const f = await fixture(t, { external: true });
+  await f.configure(0, { externalAllowed: true });
+  let initial = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  const askNext = () => f.request(f.learners[0], '/assistant/ask', f.ask({ externalConsent: true,
+    followUp: { answerId: initial.body.answer.answerId, question: 'Почему?' } }));
+  f.setNow(f.now() + 15 * 60 * 1000);
+  assert.equal((await askNext()).body.error, 'LEARNING_ASSISTANT_DIALOGUE_EXPIRED');
+  initial = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  await f.restart();
+  assert.equal((await askNext()).body.error, 'LEARNING_ASSISTANT_DIALOGUE_EXPIRED');
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 2);
+  initial = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  f.config.external = false;
+  assert.equal((await askNext()).body.error, 'LEARNING_ASSISTANT_EXTERNAL_UNAVAILABLE');
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 3);
+});
+
+test('a follow-up failure keeps its quota and cannot be replayed; fallback is not added as a conversational answer', async t => {
+  let mode = 'fallback', followUps = 0;
+  const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+    if (!url.endsWith('/ask')) return next(url, options);
+    const body = JSON.parse(options.body); f.calls.push({ url, body });
+    if (body.dialogue) {
+      followUps++;
+      if (mode === 'error') throw Error('private upstream detail');
+    }
+    return jsonResponse({ ok: true, answer: sampleAnswer(body.topic), ...(body.dialogue ? { notice: 'Уточнение не получило ответа.' } : {}) });
+  } });
+  await f.configure(0, { externalAllowed: true });
+  const initial = await f.request(f.learners[0], '/assistant/ask', f.ask());
+  const continuation = { externalConsent: true, followUp: { answerId: initial.body.answer.answerId, question: 'Почему?' } };
+  const fallback = await f.request(f.learners[0], '/assistant/ask', f.ask(continuation));
+  assert.equal(fallback.status, 200); assert.equal(fallback.body.followUpAvailable, false);
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask({ ...continuation,
+    followUp: { answerId: fallback.body.answer.answerId, question: 'Почему?' } }))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_EXPIRED');
+  mode = 'error'; const failedBody = f.ask(continuation);
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', failedBody)).status, 503);
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', failedBody)).body.error, 'LEARNING_ASSISTANT_REQUEST_REPLAY');
+  assert.equal(followUps, 2); assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 3);
+});
+
+test('structured task follow-up is bound to the same attempt and active assessments still block it', async t => {
+  const f = await fixture(t, { external: true });
+  const profile = catalog.find(p => p.id === 'triangle-congruence');
+  await f.configure(0, { profileId: profile.id, externalAllowed: true });
+  const generated = contracts.create('atanasyan-7-9', 'atanasyan-7-9-main-92-part-1', 123);
+  const attempt = f.api.store.newAttempt(f.learners[0].account.id, f.teacher.account.id, 'atanasyan-7-9', generated);
+  const another = f.api.store.newAttempt(f.learners[0].account.id, f.teacher.account.id, 'atanasyan-7-9', generated);
+  const original = { topic: profile.topics[0].id, attemptId: attempt.id };
+  const initial = await f.request(f.learners[0], '/assistant/ask', f.ask(original));
+  assert.equal(initial.status, 200);
+  const continuation = { ...original, externalConsent: true, followUp: { answerId: initial.body.answer.answerId, question: 'Почему?' } };
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask({ ...continuation, attemptId: another.id }))).body.error, 'LEARNING_ASSISTANT_DIALOGUE_CONTEXT');
+  f.api.store.run('UPDATE attempts SET archived_at=? WHERE id=?', f.now(), attempt.id);
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask(continuation))).body.error, 'LEARNING_ATTEMPT_ARCHIVED');
+  const { initializeRuns } = require('../learning-runs'); initializeRuns(f.api.store);
+  f.api.store.run("INSERT INTO learning_runs(id,learner_id,teacher_id,kind,questions_json,answers_json,started_at) VALUES(?,?,?,'exam','[]','[]',?)",
+    crypto.randomBytes(18).toString('base64url'), f.learners[0].account.id, f.teacher.account.id, f.now());
+  assert.equal((await f.request(f.learners[0], '/assistant/ask', f.ask(continuation))).body.error, 'LEARNING_RUN_ACTIVE');
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 1);
+});
+
+test('oversized or transfer-filtered deterministic answers stay displayable but cannot anchor a follow-up', async t => {
+  let shape = 'large';
+  const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+    if (!url.endsWith('/ask')) return next(url, options);
+    const body = JSON.parse(options.body); f.calls.push({ url, body });
+    return jsonResponse({ ok: true, answer: { ...sampleAnswer(body.topic, 'deterministic'),
+      ...(shape === 'large' ? { text: 'я'.repeat(2000) } : { steps: ['Ответ: 0,015241383936.'] }) } });
+  } });
+  await f.configure(0, { externalAllowed: true });
+  for (shape of ['large', 'digits']) {
+    const answer = await f.request(f.learners[0], '/assistant/ask', f.ask());
+    assert.equal(answer.status, 200); assert.equal(answer.body.followUpAvailable, false);
+    const denied = await f.request(f.learners[0], '/assistant/ask', f.ask({ externalConsent: true,
+      followUp: { answerId: answer.body.answer.answerId, question: 'Почему?' } }));
+    assert.equal(denied.body.error, 'LEARNING_ASSISTANT_DIALOGUE_EXPIRED');
+  }
+  assert.equal((await f.request(f.learners[0], '/assistant')).body.used, 2);
+  assert.equal(f.calls.filter(call => call.url.endsWith('/ask')).length, 2);
+});
+
+test('teacher control blocks pending initial and follow-up answers without refunding or retrying', async t => {
+  for (const followUp of [false, true]) {
+    let release, started, delay = false, asks = 0;
+    const entered = new Promise(resolve => { started = resolve; });
+    const f = await fixture(t, { external: true, transport: async (url, options, next) => {
+      if (!url.endsWith('/ask')) return next(url, options);
+      asks++;
+      if (!delay) return next(url, options);
+      started(); await new Promise(resolve => { release = resolve; });
+      return jsonResponse({ ok: true, answer: sampleAnswer(JSON.parse(options.body).topic, 'model-unverified') });
+    } });
+    const profile = catalog.find(p => p.id === 'triangle-congruence');
+    await f.configure(0, { profileId: profile.id, externalAllowed: true });
+    const generated = contracts.create('atanasyan-7-9', 'atanasyan-7-9-main-92-part-1', 123);
+    const attempt = f.api.store.newAttempt(f.learners[0].account.id, f.teacher.account.id, 'atanasyan-7-9', generated);
+    const original = { topic: profile.topics[0].id, attemptId: attempt.id, externalConsent: true };
+    let parent;
+    if (followUp) {
+      const initial = await f.request(f.learners[0], '/assistant/ask', f.ask(original));
+      assert.equal(initial.status, 200); assert.equal(initial.body.followUpAvailable, true);
+      parent = initial.body.answer.answerId;
+    }
+    delay = true;
+    const pending = f.request(f.learners[0], '/assistant/ask', f.ask({ ...original,
+      ...(followUp ? { followUp: { answerId: parent, question: 'Почему?' } } : {}) }));
+    await entered;
+    f.api.store.action(f.teacher.account, attempt.id, { opId: uuid(),
+      expectedVersion: f.api.store.getAttempt(f.teacher.account, attempt.id).version,
+      type: 'control', payload: { controller: 'teacher' } });
+    release();
+    const denied = await pending;
+    assert.equal(denied.status, 409); assert.equal(denied.body.error, 'LEARNING_CONTROL_REQUIRED');
+    assert.equal(denied.body.answer, undefined); assert.equal(denied.body.followUpAvailable, undefined);
+    assert.equal((await f.request(f.learners[0], '/assistant')).body.used, followUp ? 2 : 1);
+    const again = await f.request(f.learners[0], '/assistant/ask', f.ask(original));
+    assert.equal(again.body.error, 'LEARNING_CONTROL_REQUIRED');
+    assert.equal(asks, followUp ? 2 : 1, 'Read-only requests cannot cross the bridge');
+    assert.equal(f.api.store.rows("SELECT * FROM learning_assistant_requests WHERE status='failed'").length, 1);
+  }
 });

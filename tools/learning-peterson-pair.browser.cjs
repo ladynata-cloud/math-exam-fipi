@@ -1,4 +1,5 @@
 'use strict';
+const publicDestination=require('./learning-public-return.assert.cjs');
 // Real isolated browser with two local origins. Synthetic cabinet API only;
 // no login, pupil data, public requests, provider calls or production writes.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http');
@@ -70,7 +71,7 @@ function staticResponse(req,res){try{const pathname=decodeURIComponent(new URL(r
     }
    }finally{await context.close();}
   }
-  const preview=await open({role:'teacher',route:'preview=synthetic-pupil'});await preview.page.locator('[data-peterson-preview]').waitFor();assert.equal(await preview.page.locator('iframe').count(),0);assert.deepEqual(await preview.page.locator('[data-attached-course-open]').evaluateAll(els=>els.map(e=>e.href)),[course,line]);await preview.context.close();
+  const preview=await open({role:'teacher',route:'preview=synthetic-pupil'});await preview.page.locator('[data-peterson-preview]').waitFor();assert.equal(await preview.page.locator('iframe').count(),0);assert.deepEqual((await preview.page.locator('[data-attached-course-open]').evaluateAll(els=>els.map(e=>e.href))).map(publicDestination),[course,line]);await preview.context.close();
   const denied=await open({selected:false,route:'peterson-course'});await denied.page.getByRole('heading',{name:'Этот материал пока не выбран для кабинета'}).waitFor();assert.equal(await denied.page.locator('iframe').count(),0);await denied.context.close();
   assert.deepEqual(errors,[]);assert.deepEqual(mutations,[]);assert(publicRequests.every(u=>!u.includes('synthetic')&&!u.includes('csrf')&&!u.includes('parentOrigin')));
   console.log(JSON.stringify({status:'PASS',checks:10,viewports:['1440x1000','390x844'],publicRequestsAllowed:0,mutations:0,errors,artifactRoot,screenshots:shots},null,2));

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "status": "passed",
   "authoredContentSha256": "4867af61bb95cd42b259afde9d507c7183d4c2942bceedf25580ecbbae23aab3",
-  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
   "source": "passed",
   "mathematics": "passed",
   "models": "passed",
@@ -102,5 +102,9 @@
   "runtimeChapterVIIIReview": {
     "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_RUNTIME_EXTENSION_REVIEW.json",
     "sha256": "fb8cafb8b3b839b763d3041d51e54b24c93f57291119333fdcd0da847daa106a"
+  },
+  "runtimeChapterIXReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9f88f10355fd899ce4ed7b1fe8bdf6d0fadd165552d8911618aceddae81df9e4"
   }
 }

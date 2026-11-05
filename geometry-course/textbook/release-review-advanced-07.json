@@ -9,7 +9,7 @@
   "reviewer": "Independent reviewers: labels (A), source_audit (B), regression (C and integration); independent visual reviewers for A/B/C; coordinator records evidence",
   "at": "2026-10-28T16:29:28.995076+00:00",
   "authoredContentSha256": "3c73fd47306c858e31c92201d92760a8477a3197295b4d8812c887c43db4078a",
-  "implementationSha256": "b831d68dbdaaf2e696a99699e228cb646ba03d76c7333f799a9c10e4bb904ad7",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
   "scope": {
     "key": "7-advanced",
     "grade": 7,
@@ -128,5 +128,9 @@
   "runtimeChapterVIIIReview": {
     "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_VIII_RUNTIME_EXTENSION_REVIEW.json",
     "sha256": "fb8cafb8b3b839b763d3041d51e54b24c93f57291119333fdcd0da847daa106a"
+  },
+  "runtimeChapterIXReview": {
+    "path": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_RUNTIME_EXTENSION_REVIEW.json",
+    "sha256": "9f88f10355fd899ce4ed7b1fe8bdf6d0fadd165552d8911618aceddae81df9e4"
   }
 }

@@ -50,5 +50,5 @@ async function go(w,s){w.location.hash=s;await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert(d.querySelector('#main').textContent.includes('21/21'));
  assert.equal(w.localStorage.getItem('legacy-course-sentinel'),'keep');assert(w.PathCourse.valid(w.PathCourse.state()));
  const corrupt='{broken';const c2=create(corrupt);c2.w.dispatchEvent(new c2.w.Event('pagehide'));assert.equal(c2.w.localStorage.getItem(c2.w.PathCourse.KEY),corrupt);assert(!c2.d.querySelector('#storage').hidden);c2.w.close();
- assert.deepEqual(errors,[]);w.close();console.log('EGE_BAZA_PRACTICE_DOM_OK: 75 guided and independent flows; 21-position exam; figures; remediation return; partial answer restore; incorrect-to-correct credit; corrupt/legacy data preservation. DOM simulation, not a real-browser check.');
+ assert.deepEqual(errors,[]);w.close();console.log('EGE_BAZA_PRACTICE_DOM_OK: 79 guided and independent flows; 21-position exam; figures; remediation return; partial answer restore; incorrect-to-correct credit; corrupt/legacy data preservation. DOM simulation, not a real-browser check.');
 })().catch(e=>{console.error(e);process.exit(1);});

@@ -176,10 +176,10 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   const registry = await endpoint.json();
   assert.equal(registry.schemaVersion, 1);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
-  assert.equal(registry.trainers.length, 26);
+  assert.equal(registry.trainers.length, 54);
   assert.deepEqual(
     registry.trainers.map(entry => entry.trainerId),
-    ['atanasyan-7-9', 'college-functions', 'ege-baza-11', 'ege-baza-13', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example']
+    ['atanasyan-grade7', 'geometry7-practice', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'ege-baza-11', 'ege-baza-13', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('../../tools/fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort()
   );
 
   const localhostCors = await fetch(`${server.baseUrl}/api/trainer-registry`, {
@@ -202,7 +202,7 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   assert.equal(health.registrySchemaVersion, 1);
   assert.equal(health.registryDigest, registry.digest);
   assert.equal(health.registrySource, 'bundled-default');
-  assert.equal(health.registryEntryCount, 26);
+  assert.equal(health.registryEntryCount, 54);
   assert.equal(health.registryError, null);
 
   const roomResponse = await fetch(`${server.baseUrl}/api/rooms`, { method: 'POST' });
@@ -274,6 +274,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/textbook-data\/ \/app\/courses\/vilenkin-6-part-1\/textbook-data\//);
   const vilenkinSupportAssets = ['textbook-source-labels.js', 'textbook-support.js', 'textbook-support.css'];
   assert.ok(dockerfile.includes(`COPY ${vilenkinSupportAssets.map(file => 'courses/vilenkin-6-part-1/' + file).join(' ')} /app/courses/vilenkin-6-part-1/`));
+  const practiceAssets = ['assistant-service/package.json', 'assistant-service/public/practice-core.js'];
+  for (const file of practiceAssets) assert.ok(dockerfile.includes(`COPY ${file} /app/${file}`));
   const textbookContract = 'geometry-course/textbook/learning-contracts.js';
   assert.ok(dockerfile.includes(`COPY ${textbookContract} /app/${textbookContract}`));
   const textbookAssets = ['math-text.js', 'planar-viewer.js'].map(file => 'geometry-course/textbook/assets/' + file);
@@ -300,6 +302,10 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
+  for (const file of practiceAssets) { fs.mkdirSync(path.dirname(path.join(directory, 'app', file)), {recursive:true}); fs.copyFileSync(path.join(rootDir,file),path.join(directory,'app',file)); }
+  const packagedPractice = await import(require('node:url').pathToFileURL(path.join(directory,'app/assistant-service/public/practice-core.js')));
+  const descriptor = {skill:'fractions',level:2,seed:7};
+  assert.equal(packagedPractice.gradePractice(descriptor,packagedPractice.generatePractice(descriptor).expected).status,'correct');
   const coursePath = 'courses/vilenkin-6-part-1';
   fs.mkdirSync(path.join(directory, 'app', coursePath), { recursive: true });
   for (const file of ['math.js', 'learning-contracts.js', 'textbook-math.js', 'textbook-learning-contracts.js', ...vilenkinSupportAssets]) fs.copyFileSync(path.join(rootDir, coursePath, file), path.join(directory, 'app', coursePath, file));
@@ -314,7 +320,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const health = await (await fetch(`${server.baseUrl}/health`, { cache: 'no-store' })).json();
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
-    assert.equal(health.registryEntryCount, 26);
+    assert.equal(health.registryEntryCount, 54);
     const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
@@ -392,15 +398,15 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     }
     const learningStatus = await (await fetch(`${server.baseUrl}/api/learning/status`)).json();
     const originalTrainers = new Set(['ege-path', 'oge-basics', 'motion-grade6']);
-    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 244); // Preserve the previous non-geometry bank.
+    assert.equal(learningStatus.trainers.filter(item => originalTrainers.has(item.trainerId) && !item.geometryRebuild).length, 248); // The previous bank plus four EGE reasoning families.
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-part1').map(item => item.contentId).sort(),
       Array.from({ length: 27 }, (_, id) => 'lesson-' + id).sort());
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'atanasyan-7-9').map(item => item.contentId),
       ['atanasyan-7-9-main-92-part-1']);
     const revisedTextbook = require('../../learning/vilenkin6-textbook-catalog');
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-textbook').map(item => item.contentId).sort(), revisedTextbook.map(item => item.contentId).sort());
-    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 378);
-    assert.equal(learningStatus.trainers.length, 378 + revisedTextbook.length);
+    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook').length, 382);
+    assert.equal(learningStatus.trainers.length, 382 + revisedTextbook.length);
     for(const id of ['course-column-one-digit','course-column-two-digit','course-column-three-by-one','course-column-four-by-one','course-column-three-by-two','course-column-two-by-three','course-column-three-by-three','course-column-zeros','course-column-mixed']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6 && item.trainerId !== 'vilenkin6-textbook').length, 39); // 12 motion lessons + all 27 legacy Vilenkin modules.

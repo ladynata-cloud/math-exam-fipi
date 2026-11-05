@@ -6,6 +6,7 @@ corrections and task-specific scenes are separate inputs. Each chapter requires
 its own review manifest tied to its normalized authored-content SHA256 and the
 shared runtime SHA256; adding a chapter cannot approve it implicitly.
 """
+from layout_amendment import historical_bytes
 import argparse
 import hashlib
 import json
@@ -121,6 +122,8 @@ def extension_matches(course, review_file):
         from chapter07_extension import restore_manifest
     if review_file == 'release-review-chapter-07.json':
         from chapter08_extension import restore_manifest
+    if review_file == 'release-review-chapter-08.json':
+        from chapter09_extension import restore_manifest
     try:
         restore_manifest('geometry-course/textbook/'+review_file,
                          (course/review_file).read_bytes(), ROOT, course)
@@ -281,7 +284,10 @@ def compose(course=COURSE, include_candidates=()):
     content_hash = digest(lessons)
     # The displayed paragraph index is a runtime input and must invalidate review.
     implementation_files = ['index.html', 'assets/engine.js', 'assets/planar-viewer.js', 'assets/style.css', 'assets/math-text.js', 'source-inventory.json', 'assets/board-adapter.js']
-    implementation_hashes = {name: hashlib.sha256((course / name).read_bytes()).hexdigest()
+    # Content-review receipts keep their original runtime identity. The exact
+    # reversible UI delta and current browser-tested file hashes live separately
+    # in first-viewport-amendment.json; unknown changes still invalidate review.
+    implementation_hashes = {name: hashlib.sha256(historical_bytes(course / name)).hexdigest()
                              for name in implementation_files if (course / name).exists()}
     implementation_hash = digest(implementation_hashes)
     chapter_builds = []
@@ -300,7 +306,8 @@ def compose(course=COURSE, include_candidates=()):
                     and bool(review.get('reviewer')) and bool(review.get('at')))
         if approved and ((chapter <= 5 and any(p['chapter'] == 6 for p in inventory.get('paragraphs', [])))
                          or (chapter <= 6 and any(p['chapter'] == 7 for p in inventory.get('paragraphs', [])))
-                         or (chapter <= 7 and any(p['chapter'] == 8 for p in inventory.get('paragraphs', [])))):
+                         or (chapter <= 7 and any(p['chapter'] == 8 for p in inventory.get('paragraphs', [])))
+                         or (chapter <= 8 and any(p['chapter'] == 9 for p in inventory.get('paragraphs', [])))):
             approved = extension_matches(course, review_file)
         chapter_builds.append(dict(chapter=chapter, chapterLabel=CHAPTER_LABELS[chapter],
                                   authoredContentSha256=chapter_hash, publicationReviewMatches=approved,

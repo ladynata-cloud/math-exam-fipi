@@ -5,6 +5,7 @@ Historical fixtures remain intact. Permitted caption changes cover the three
 presentation surfaces and fixed board adapter; every changed byte needs a
 current review binding.
 """
+from layout_amendment import historical_bytes
 from chapter06_extension import validate_extension, previous_inventory, restore_manifest, RECEIPT as EXTENSION
 from copy import deepcopy
 import hashlib
@@ -62,7 +63,7 @@ def runtime_review(implementation_hash=None):
     require(set(files) == set(base['implementationFiles']) | {'source-inventory.json', 'assets/board-adapter.js'},
             'Caption review changed the runtime-file boundary')
     for name, old in base['implementationFiles'].items():
-        require(files[name] == sha((COURSE / name).read_bytes()),
+        require(files[name] == sha(historical_bytes(COURSE / name)),
                 'Stale caption runtime review: ' + name)
         require(name in ALLOWED_RUNTIME or files[name] == old,
                 'Caption amendment changed geometry/math rendering: ' + name)
@@ -84,6 +85,9 @@ def runtime_review(implementation_hash=None):
         from chapter08_extension import has_viii, validate_extension as validate_viii
         if has_viii((COURSE/'source-inventory.json').read_bytes()):
             expected_hash = validate_viii(ROOT)[0]['implementationSha256']
+        from chapter09_extension import has_ix, validate_extension as validate_ix
+        if has_ix((COURSE/'source-inventory.json').read_bytes()):
+            expected_hash = validate_ix(ROOT)[0]['implementationSha256']
         require(implementation_hash == expected_hash,
                 'Bundle runtime does not match caption review')
     return review, {'path': REVIEW_PATH, 'sha256': sha(raw)}
@@ -91,7 +95,7 @@ def runtime_review(implementation_hash=None):
 
 def assert_runtime_preserved(implementation_hash, old_hash):
     names = set(frozen()['implementationFiles']) | {'source-inventory.json', 'assets/board-adapter.js'}
-    actual = {name: sha((COURSE/name).read_bytes()) for name in names}
+    actual = {name: sha(historical_bytes(COURSE/name)) for name in names}
     require(implementation_hash == digest(actual), 'Bundle implementation hash is stale')
     if implementation_hash == old_hash:
         return
@@ -114,6 +118,7 @@ def assert_source_inventory_preserved(inventory, old_digest):
 
 def assert_file_preserved(name, raw, expected):
     """Exact bytes, except the owner's explicitly scoped and reviewed label delta."""
+    raw = historical_bytes(ROOT / name, raw)
     if sha(raw) == expected:
         return
     base = frozen()
@@ -164,4 +169,4 @@ def assert_all_705_preserved(bundle):
     for name, expected in {**base['immutableFiles'], **base['releaseReviewSha256']}.items():
         assert_file_preserved(name, (ROOT / name).read_bytes(), expected)
     for name, expected in base['implementationFiles'].items():
-        assert_file_preserved('geometry-course/textbook/' + name, (COURSE / name).read_bytes(), expected)
+        assert_file_preserved('geometry-course/textbook/' + name, historical_bytes(COURSE / name), expected)

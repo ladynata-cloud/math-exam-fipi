@@ -184,6 +184,26 @@ function createLearningApi(options = {}) {
   router.post('/teacher/students', authMiddleware, mutationMiddleware, handler(async (req, res) => {
     // Check the role and request shape before scheduling expensive password work.
     store.teacher(req.learningAuth);
+    if (Object.hasOwn(req.body, 'profile') || Object.hasOwn(req.body, 'opId')) {
+      exactKeys(req.query, []);
+      exactKeys(req.body, ['opId', 'name', 'login', 'password', 'profile'], ['opId', 'name', 'login', 'password', 'profile']);
+      const { password, ...values } = req.body, input = store.studentOnboardingInput(values);
+      let receipt = store.studentOnboardingReceipt(req.learningAuth, input);
+      if (!receipt) {
+        requireValue(!store.accountByLogin(input.login), 'LEARNING_LOGIN_EXISTS', 409);
+        const passwordHash = await hashPassword(password, 'student');
+        // Registration, profile, program and nonsecret receipt commit together.
+        // This rechecks the session after the asynchronous password hash.
+        const created = store.createStudentOnboarding(req.learningSessionToken, input, passwordHash);
+        if (created) return res.status(201).json(created);
+        receipt = store.studentOnboardingReceipt(store.session(req.learningSessionToken), input);
+      }
+      // A lost acknowledgement or simultaneous duplicate never changes a code.
+      // Verify against its salted account hash, rather than persisting a PIN
+      // fingerprint that could be brute-forced from an operation receipt.
+      requireValue(await verifyPassword(password, receipt.passwordHash), 'LEARNING_OP_CONFLICT', 409);
+      return res.json(store.replayStudentOnboarding(req.learningSessionToken, input, receipt.passwordHash, receipt.authEpoch));
+    }
     exactKeys(req.body, ['name', 'login', 'password'], ['name', 'login']);
     const student = { name: safeName(req.body.name), login: normalizeLogin(req.body.login) };
     requireValue(!store.accountByLogin(student.login), 'LEARNING_LOGIN_EXISTS', 409);

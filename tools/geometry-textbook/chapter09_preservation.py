@@ -1,0 +1,38 @@
+"""Immutable published-through-736 oracle; candidate work cannot rewrite approval."""
+from layout_amendment import historical_bytes
+from copy import deepcopy
+import hashlib,json
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[2]
+COURSE=ROOT/'geometry-course/textbook'
+FIXTURE=ROOT/'tools/geometry-textbook/published-through-736.json'
+FIXTURE_SHA='b68fe9b0e0e0f0281683f11d319beecce281c71d745748039df255609c390e65'
+BASE='3411acd7df5ebfbd4179cce85c2300c59677ddf7'
+def sha(raw):return hashlib.sha256(raw).hexdigest()
+def digest(value):return sha(json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode())
+def require(condition,message):
+ if not condition:raise AssertionError(message)
+def frozen():
+ raw=FIXTURE.read_bytes();require(sha(raw)==FIXTURE_SHA,'Published1247 oracle changed')
+ data=json.loads(raw);require(data['sourceCommit']==BASE and data['cards']==1247,'Wrong publication base')
+ return data
+def assert_public1247(bundle,root=ROOT,check_files=True):
+ base=frozen();require(sha((json.dumps(bundle,ensure_ascii=False,separators=(',',':'))+'\n').encode())==base['courseSha256'],'Published bundle metadata or content changed')
+ require(len(bundle['lessons'])==len(bundle['catalog']['entries'])==1247,'Wrong public card count')
+ require(digest(bundle['lessons'])==base['lessonsSha256'],'Published lesson content/order/status/review/revision changed')
+ require(digest(bundle['catalog']['entries'])==base['catalogEntriesSha256'],'Published catalog identity/order/status changed')
+ require(bundle['build']['publicationReviewMatches'] is True,'Published review lost')
+ require(bundle['build']['implementationSha256']==base['implementationSha256'],'Published runtime changed')
+ require(bundle['build']['authoredCards']==1247 and bundle['build']['numberedExercises']==736,'Published endpoint changed')
+ require(bundle['build']['fullTextbookComplete'] is False,'Whole book is not complete')
+ if check_files:
+  for name,expected in base['immutableFiles'].items():require(sha(historical_bytes(root/name))==expected,'Published file changed: '+name)
+ return True
+def assert_candidate_old_teaching(bundle):
+ # Isolated paragraph metadata invalidates runtime approval, so the preview is
+ # deliberately in-review. It cannot alter any original teaching/work identity.
+ rows=[l for l in bundle['lessons'] if l['source']['chapter']!='IX']
+ teaching=[{k:v for k,v in row.items() if k not in ('status','review')} for row in rows]
+ require(len(rows)==1247 and digest(teaching)==frozen()['authoredLessonsSha256'],'Candidate changed old teaching/order/storage identity')
+ return True

@@ -206,7 +206,10 @@ details.sq summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--acc
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
-<script src="practical-discovery.js?v=20261021-exam-variants"></script>
+<script src="../oge-course-shared-mode.js"></script>
+<script src="../board-bridge.js"></script>
+<script src="practical-board.js"></script>
+<script src="practical-discovery.js?v=20261025-oge-course-mirror"></script>
 <script src="practical-minimal.js?v=20261021-exam-variants"></script>
 <link rel="stylesheet" href="practical-variant.css">
 </head>
@@ -701,8 +704,7 @@ function numOk(x, spec){
     const exp=Math.round(spec.value*p)/p;
     return Math.abs(x-exp) < 1e-9;
   }
-  const tol = spec.tol!=null?spec.tol:0.5;
-  return Math.abs(x-spec.value) < tol;
+  return Number.isFinite(x) && Math.abs(x-spec.value) < 1e-9;
 }
 function checkNumber(raw, inst){
   const x=parseNum(raw);
@@ -746,7 +748,7 @@ let state={ typeIdx:0, mode:'practice', inst:null, instSolved:false, attempts:0,
 function initState(){ TYPES.forEach(function(t){ state.perType[t.id]={solvedCount:0,freshStreak:0,mastered:false}; }); }
 function loadProgress(){
   try{
-    const all=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');
+    const all=JSON.parse((window.PracticalPageStorage || localStorage).getItem(PROGRESS_KEY)||'{}');
     const t=all.topics&&all.topics[TOPIC];
     if(t){
       state.attempts=t.attempts||0;
@@ -756,12 +758,12 @@ function loadProgress(){
 }
 function saveProgress(){
   try{
-    const all=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}');
+    const all=JSON.parse((window.PracticalPageStorage || localStorage).getItem(PROGRESS_KEY)||'{}');
     if(!all.topics) all.topics={};
     const mastered=Object.values(state.perType).filter(function(p){ return p.mastered; }).length;
     all.topics[TOPIC]={ perType:state.perType, solved:mastered, total:TYPES.length, attempts:state.attempts, lastTouch:Date.now() };
     all[TOPIC]={ solved:mastered, total:TYPES.length };
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
+    (window.PracticalPageStorage || localStorage).setItem(PROGRESS_KEY, JSON.stringify(all));
   }catch(e){}
 }
 function updateMasteryUI(){
@@ -905,7 +907,7 @@ loadProgress();
 selectType(0);
 
 </script>
-<script src="practical-variant.js"></script>
-<script src="practical-variant-everyday.js"></script>
+<script src="practical-variant.js?v=20261025-oge-course-mirror"></script>
+<script src="practical-variant-everyday.js?v=20261025-oge-course-mirror"></script>
 </body>
 </html>

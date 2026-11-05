@@ -18,7 +18,7 @@ const course = JSON.parse(courseBytes);
 
 assert.equal(course.schemaVersion, 1);
 assert.equal(course.id, 'atanasyan-first-steps');
-assert.equal(hash(sourceBytes), 'af1e3a373745d3a66e3e6f71b14d02de4cd81f0c688a8929c0475277cc22b574');
+assert.equal(hash(sourceBytes), '84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911');
 assert.equal(course.source.sha256, hash(sourceBytes));
 // Chapters V–VIII extend only the surrounding source bundle. Retain the original
 // selected-content fingerprint and independently restore the old provenance

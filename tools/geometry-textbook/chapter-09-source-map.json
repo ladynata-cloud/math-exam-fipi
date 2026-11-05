@@ -1,0 +1,2301 @@
+{
+  "bookId": "atanasyan-2023-7-9",
+  "chapter": 9,
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "printedPageRange": [
+    189,
+    213
+  ],
+  "exercises": [
+    {
+      "number": 737,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Даны прямая a и точка O вне неё. Построить окружность с центром O: а) без общих точек с a; б) с двумя общими точками; в) касающуюся a.",
+      "sourceSection": "Практические задания"
+    },
+    {
+      "number": 738,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Даны прямая a и точка M на ней. Построить окружность, касающуюся a в M.",
+      "sourceSection": "Практические задания"
+    },
+    {
+      "number": 739,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Даны разные точки A и B на прямой. Построить окружности с центрами A,B: а) одна внутри другой, без общих точек; б) одна вне другой, без общих точек; в) пересекающиеся в двух точках; г) касающиеся внешне; д) касающиеся внутренне.",
+      "sourceSection": "Практические задания"
+    },
+    {
+      "number": 740,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Определить взаимное положение прямой p и окружности радиуса r при расстоянии d от центра: а) r=16см,d=12см; б) r=5см,d=4,2см; в) r=7,2дм,d=3,7дм; г) r=8см,d=1,2дм; д) r=5см,d=50мм."
+    },
+    {
+      "number": 741,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Точка A расположена внутри окружности. Доказать, что любая проходящая через A прямая является секущей."
+    },
+    {
+      "number": 742,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Квадрат OABC имеет сторону6см; окружность с центром O имеет радиус5см. Какие из прямых OA,AB,BC,AC являются секущими?"
+    },
+    {
+      "number": 743,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Радиус OM окружности с центром O делит хорду AB пополам. Требуется доказать параллельность касательной в M и хорды AB; в источнике не исключён случай диаметра AB."
+    },
+    {
+      "number": 744,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "AB касается окружности с центром O в B; OA=2см,r=1,5см. Найти AB."
+    },
+    {
+      "number": 745,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "AB касается окружности с центром O в B; ∠AOB=60°,r=12см. Найти AB."
+    },
+    {
+      "number": 746,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "MA и MB — касательные к окружности с центром O в A,B. Точка C симметрична O относительно B. Источник требует ∠AMC=3∠BMC без ограничения величины углов."
+    },
+    {
+      "number": 747,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        197
+      ],
+      "pdfPages": [
+        198
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Из концов диаметра AB опущены перпендикуляры AA₁,BB₁ на касательную, не перпендикулярную AB. Доказать, что точка касания — середина A₁B₁."
+    },
+    {
+      "number": 748,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        197,
+        198
+      ],
+      "pdfPages": [
+        198,
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Прямоугольная трапеция ABCD, ∠A=∠D=90°. Доказать: а) AD касается окружности (B,AB); б) CD касается окружности (A,AD); в) CD не касается окружности (B,BC).",
+      "conditionPrintedPages": [
+        197,
+        198
+      ]
+    },
+    {
+      "number": 749,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "AH — перпендикуляр из A к прямой через центр O окружности радиуса3см. Является ли AH касательной, если: а) OA=5см,AH=4см; б) ∠HAO=45°,OA=4см; в) ∠HAO=30°,OA=6см?"
+    },
+    {
+      "number": 750,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Радиусы двух пересекающихся окружностей5см и3см. Какие целые значения может принимать расстояние между центрами?"
+    },
+    {
+      "number": 751,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности радиусов7см и3см касаются внутренне. Найти расстояние между центрами."
+    },
+    {
+      "number": 752,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности радиусов10см и6см касаются внешне. Найти расстояние между центрами."
+    },
+    {
+      "number": 753,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружность радиуса8см расположена вне окружности радиуса r; расстояние между центрами14см. Найти все целые значения r."
+    },
+    {
+      "number": 754,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Определить взаимное положение окружностей радиусов5 и9 при расстоянии между центрами: а)16; б)14; в)7; г)4."
+    },
+    {
+      "number": 755,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Найти число общих касательных окружностей с расстоянием d между центрами и радиусами R,r: а) d=12см,R=8см,r=6см; б)12,8,4; в)12,6,4; г)2,8,6; д)3,5,4."
+    },
+    {
+      "number": 756,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Три равные окружности радиуса r попарно касаются внешне. Найти стороны и углы треугольника с вершинами: а) в центрах окружностей; б) в точках их касания."
+    },
+    {
+      "number": 757,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "В угол60° вписаны две окружности, касающиеся внешне. Меньший радиус r; найти больший."
+    },
+    {
+      "number": 758,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать утверждение2 теоремы п.77: d=R+r влечёт внешнее касание двух окружностей."
+    },
+    {
+      "number": 759,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        198
+      ],
+      "pdfPages": [
+        199
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать утверждение4 теоремы п.77: d>R+r влечёт отсутствие общих точек и внешнее расположение одной окружности относительно другой."
+    },
+    {
+      "number": 760,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        199
+      ],
+      "pdfPages": [
+        200
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать утверждение5 теоремы п.77: при неравных радиусах d<|R−r| одна окружность лежит внутри другой."
+    },
+    {
+      "number": 761,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        199
+      ],
+      "pdfPages": [
+        200
+      ],
+      "paragraph": 1,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Построить касательную к данной окружности через заданную внешнюю точку; в исходном решении получены обе касательные через окружность с диаметром OM.",
+      "sourceFigure": 254
+    },
+    {
+      "number": 762,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        204
+      ],
+      "pdfPages": [
+        205
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "На окружности с центром O дана A. Построить хорду AB при ∠AOB: а)60°; б)90°; в)120°; г)180°."
+    },
+    {
+      "number": 763,
+      "parts": [
+        "а",
+        "б",
+        "в"
+      ],
+      "printedPages": [
+        204
+      ],
+      "pdfPages": [
+        205
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Радиус окружности16. Найти AB при ∠AOB: а)60°; б)90°; в)180°."
+    },
+    {
+      "number": 764,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        204
+      ],
+      "pdfPages": [
+        205
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Равные хорды AB,CD окружности с центром O: а) доказать попарное равенство двух дуг AB двум дугам CD; б) найти обе дуги CD при ∠AOB=112°."
+    },
+    {
+      "number": 765,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "На полуокружности AB взяты C,D с дугами AC=37°,BD=23°. Радиус15см; найти хорду CD."
+    },
+    {
+      "number": 766,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Найти вписанный ∠ABC по дуге AC, на которую он опирается: а)48°; б)57°; в)90°; г)124°; д)180°."
+    },
+    {
+      "number": 767,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "По четырём рисункам266 найти x: а) вписанный угол при двух остальных дугах152° и80°; б) неизвестная дуга при другой дуге125° и вписанном угле30°; в) вписанный угол при диаметре и дуге112°; г) неизвестная дуга при большой дуге215° и вписанном угле20°.",
+      "sourceFigure": 266
+    },
+    {
+      "number": 768,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Центральный ∠AOB на30° больше вписанного угла, опирающегося на ту же дугу AB. Найти оба угла."
+    },
+    {
+      "number": 769,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Хорда AB стягивает дугу115°, хорда AC — дугу43°. Найти ∠BAC; взаимное расположение B,C относительно A не задано."
+    },
+    {
+      "number": 770,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Точки A,B делят окружность на дуги, меньшая140°. Большая дуга разделена M в отношении6:5 от A. Найти ∠BAM."
+    },
+    {
+      "number": 771,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "ABC вписан в окружность, AB — диаметр. Найти углы ABC: а) дугаBC134°; б) дугаAC70°."
+    },
+    {
+      "number": 772,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Равнобедренный ABC вписан в окружность, основание BC; дугаBC102°. Найти углы; источник не фиксирует положение A на одной из двух дуг BC."
+    },
+    {
+      "number": 773,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Из внешней A проведены касательная AB и секущая AD через центр O; D на окружности, O между A,D. ДугаBD110°20′. Найти ∠BAD и ∠ADB."
+    },
+    {
+      "number": 774,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать равенство градусных мер дуг окружности, заключённых между параллельными хордами."
+    },
+    {
+      "number": 775,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Две секущие из внешней точки образуют32°. Большая заключённая дуга100°. Найти меньшую дугу."
+    },
+    {
+      "number": 776,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Найти острый угол двух секущих из внешней точки, если заключённые между ними дуги140° и52°."
+    },
+    {
+      "number": 777,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Хорды AB,CD пересекаются в E. Найти ∠BEC при дугахAD54°,BC70°."
+    },
+    {
+      "number": 778,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        205
+      ],
+      "pdfPages": [
+        206
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "AC — диаметр,AB — хорда,MA — касательная,∠MAB острый. Доказать ∠MAB=∠ACB."
+    },
+    {
+      "number": 779,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        206
+      ],
+      "pdfPages": [
+        207
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "ABC вписан в окружность, AB — диаметр. Доказать ∠C>∠A и ∠C>∠B."
+    },
+    {
+      "number": 780,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        206
+      ],
+      "pdfPages": [
+        207
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: перпендикуляр из точки окружности к диаметру — среднее пропорциональное отрезков, на которые его основание делит диаметр."
+    },
+    {
+      "number": 781,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        206
+      ],
+      "pdfPages": [
+        207
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Используя задачу780, построить среднее пропорциональное двух данных отрезков."
+    },
+    {
+      "number": 782,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        206
+      ],
+      "pdfPages": [
+        207
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Стороны угла O касаются двух окружностей, имеющих общую касательную в точке A. Доказать, что центры окружностей лежат на OA."
+    },
+    {
+      "number": 783,
+      "parts": [
+        "а",
+        "б",
+        "в",
+        "г",
+        "д",
+        "е",
+        "ж"
+      ],
+      "printedPages": [
+        206
+      ],
+      "pdfPages": [
+        207
+      ],
+      "paragraph": 2,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "По семи рисункам267 на клетчатой бумаге найти ∠ABC: а),б),в),г) вписанные углы; д) касательная и хорда; е) пересекающиеся хорды; ж) две секущие из внешней точки.",
+      "sourceFigure": 267
+    },
+    {
+      "number": 784,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Сумма противоположных сторон описанного четырёхугольника15см. Найти периметр."
+    },
+    {
+      "number": 785,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: параллелограмм, в который можно вписать окружность, является ромбом."
+    },
+    {
+      "number": 786,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать формулу площади описанного многоугольника: половина произведения его периметра и радиуса вписанной окружности."
+    },
+    {
+      "number": 787,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Сумма противоположных сторон описанного четырёхугольника12см, радиус вписанной окружности5см. Источник предлагает найти площадь; данные несовместимы с существованием такого четырёхугольника."
+    },
+    {
+      "number": 788,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Сумма противоположных сторон описанного четырёхугольника10см, площадь12см². Найти радиус вписанной окружности."
+    },
+    {
+      "number": 789,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        208
+      ],
+      "pdfPages": [
+        209
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать, что в любой ромб можно вписать окружность."
+    },
+    {
+      "number": 790,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать возможность описать окружность: а) около любого прямоугольника; б) около любой равнобедренной трапеции."
+    },
+    {
+      "number": 791,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: параллелограмм, около которого можно описать окружность, является прямоугольником."
+    },
+    {
+      "number": 792,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: трапеция, около которой можно описать окружность, равнобедренная."
+    },
+    {
+      "number": 793,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "В остроугольном ABC высоты AK,BM,CN пересекаются в H. Доказать, что каждый из CMHK,AMHN,BNHK можно вписать в окружность."
+    },
+    {
+      "number": 794,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: центр вписанной в четырёхугольник окружности является точкой пересечения биссектрис его углов."
+    },
+    {
+      "number": 795,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": 3,
+      "additional": false,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: центр описанной около четырёхугольника окружности является точкой пересечения серединных перпендикуляров к его сторонам."
+    },
+    {
+      "number": 796,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружность касается двух параллельных прямых и их секущей. Доказать, что отрезок секущей между параллельными прямыми виден из центра под прямым углом; в источнике ссылка на п.41."
+    },
+    {
+      "number": 797,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности радиусов r,R касаются внешне в A; MK — общая внешняя касательная. а) Доказать ∠KAM=90°; б) найти длину MK."
+    },
+    {
+      "number": 798,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности радиусов r,R с расстоянием d>R+r между центрами. Найти отрезок общей: а) внешней касательной; б) внутренней касательной."
+    },
+    {
+      "number": 799,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Диаметр AA₁ перпендикулярен хорде BB₁. Доказать равенство меньших полуокружности дуг AB и AB₁."
+    },
+    {
+      "number": 800,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "A,B,C,D лежат на окружности; равны дугиAB иCD. Доказать AB=CD."
+    },
+    {
+      "number": 801,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности пересекаются в A,B; прямая m через A пересекает их вторично в C,D. Доказать независимость ∠CBD от выбора m; рассматриваются невырожденные C,D."
+    },
+    {
+      "number": 802,
+      "parts": [
+        "а",
+        "б"
+      ],
+      "printedPages": [
+        210,
+        211
+      ],
+      "pdfPages": [
+        211,
+        212
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Окружности пересекаются в A,B; прямая m через A пересекает их вторично в C,D. Касательные в C,D пересекаются в K. а) Источник требует независимость ∠CKD от m без ограничения конфигурации; б) вписать четырёхугольник BCKD в окружность.",
+      "conditionPrintedPages": [
+        210,
+        211
+      ]
+    },
+    {
+      "number": 803,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        211
+      ],
+      "pdfPages": [
+        212
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "C — произвольная точка хорды AB окружности с центром O. Окружность через A,O,C повторно пересекает данную окружность в D. Доказать равнобедренность BCD; предполагается существование обеих невырожденных окружностей и треугольника."
+    },
+    {
+      "number": 804,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        211
+      ],
+      "pdfPages": [
+        212
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: прямоугольник с вписанной окружностью — квадрат."
+    },
+    {
+      "number": 805,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        211
+      ],
+      "pdfPages": [
+        212
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "ABCD описан около окружности радиуса r; AB:CD=2:3,AD:BC=2:1,площадьS. Найти все стороны."
+    },
+    {
+      "number": 806,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        211
+      ],
+      "pdfPages": [
+        212
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Прямые, содержащие основания трапеции, касаются окружности. Доказать: прямая через середины боковых сторон проходит через центр окружности."
+    },
+    {
+      "number": 807,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        211,
+        212
+      ],
+      "pdfPages": [
+        212,
+        213
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: в выпуклый четырёхугольник с равными суммами противоположных сторон можно вписать окружность. Исходное решение211–212 рассматривает касательную, параллельную четвёртой стороне, и неравенство для четырёхугольника.",
+      "sourceFigure": 272,
+      "conditionPrintedPages": [
+        211
+      ]
+    },
+    {
+      "number": 808,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        212
+      ],
+      "pdfPages": [
+        213
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Найти радиус окружности, вписанной в прямоугольную трапецию с основаниями a,b."
+    },
+    {
+      "number": 809,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        212
+      ],
+      "pdfPages": [
+        213
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: ромб с описанной окружностью является квадратом."
+    },
+    {
+      "number": 810,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        212
+      ],
+      "pdfPages": [
+        213
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать обратную теорему о вписанном четырёхугольнике: сумма противоположных углов180° позволяет описать окружность. Исходное решение рассматривает положение четвёртой вершины внутри/вне окружности через остальные три.",
+      "starred": true,
+      "sourceFigure": 273
+    },
+    {
+      "number": 811,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        212
+      ],
+      "pdfPages": [
+        213
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Через A и B проведены прямые, перпендикулярные сторонам угла AOB и пересекающиеся в C внутри угла. Доказать возможность описать окружность около ACBO."
+    },
+    {
+      "number": 812,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: выпуклый четырёхугольник, образованный пересечением биссектрис углов трапеции, является вписанным."
+    },
+    {
+      "number": 813,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "В прямоугольном ABC из M на AC опущен MH к гипотенузеAB. Доказать ∠MHC=∠MBC."
+    },
+    {
+      "number": 814,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Найти радиус вписанной в равносторонний треугольник окружности, если радиус описанной10см."
+    },
+    {
+      "number": 815,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Доказать: параллелограмм, в который можно вписать и около которого можно описать окружность, является квадратом."
+    },
+    {
+      "number": 816,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Трапеция с основаниями a,b допускает вписанную и описанную окружности. Найти радиус вписанной."
+    },
+    {
+      "number": 817,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Даны прямая a,точка A на ней и точка B вне неё. Построить окружность через B,касающуюся a в A."
+    },
+    {
+      "number": 818,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Даны две параллельные прямые и точка вне обеих. Построить окружность через эту точку,касающуюся обеих прямых; положение точки относительно полосы не ограничено."
+    },
+    {
+      "number": 819,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "ABCD описан около окружности с центром O. Доказать ∠AOD+∠BOC=∠AOB+∠COD."
+    },
+    {
+      "number": 820,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Четырёхугольник вписан в одну окружность и описан около другой. Доказать перпендикулярность прямых,соединяющих точки касания с противоположными сторонами."
+    },
+    {
+      "number": 821,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "ABCD вписан в окружность; A₁,B₁,C₁,D₁ — середины дугAB,BC,CD,DA. Доказать A₁C₁⊥B₁D₁."
+    },
+    {
+      "number": 822,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Биссектрисы угловABC повторно пересекают описанную окружность в A₁,B₁,C₁. Доказать: AA₁,BB₁,CC₁ содержат высоты A₁B₁C₁."
+    },
+    {
+      "number": 823,
+      "parts": [
+        "single"
+      ],
+      "printedPages": [
+        213
+      ],
+      "pdfPages": [
+        214
+      ],
+      "paragraph": null,
+      "additional": true,
+      "sourceCheck": "independent-visually-checked",
+      "independentReview": "source-inventory-only; authored-condition-review-pending",
+      "canonicalCondition": "Прямые AA₁,BB₁,CC₁ содержат высоты остроугольногоABC и повторно пересекают его описанную окружность в A₁,B₁,C₁. Доказать: эти прямые содержат биссектрисы A₁B₁C₁."
+    }
+  ],
+  "theory": [
+    {
+      "number": 76,
+      "title": "Взаимное расположение прямой и окружности",
+      "printedPages": [
+        189,
+        190,
+        191
+      ],
+      "pdfPages": [
+        190,
+        191,
+        192
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Три случая d<r,d=r,d>r; число общих точек и доказательства, отдельный случай прямой через центр."
+    },
+    {
+      "number": 77,
+      "title": "Взаимное расположение двух окружностей",
+      "printedPages": [
+        191,
+        192,
+        193,
+        194,
+        195
+      ],
+      "pdfPages": [
+        192,
+        193,
+        194,
+        195,
+        196
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Концентрические окружности; не более двух общих точек для разных центров; лемма о существовании треугольника по сторонам; пять случаев по d,R,r, доказательства пересечения/внутреннего касания; положение точек касания и пересечения относительно линии центров."
+    },
+    {
+      "number": 78,
+      "title": "Общие касательные двух окружностей",
+      "printedPages": [
+        195,
+        196
+      ],
+      "pdfPages": [
+        196,
+        197
+      ],
+      "paragraph": 1,
+      "starred": false,
+      "canonicalScope": "Определение общей касательной, внешней/внутренней общей касательной; число0,1,2,3,4 для пяти взаимных положений различных окружностей."
+    },
+    {
+      "number": 79,
+      "title": "Градусная мера дуги окружности",
+      "printedPages": [
+        199,
+        200
+      ],
+      "pdfPages": [
+        200,
+        201
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Обозначения дуг,полуокружность,центральный угол; меньшая/большая дуга,мерыα и360°−α; сумма двух дуг360°."
+    },
+    {
+      "number": 80,
+      "title": "Теорема о вписанном угле",
+      "printedPages": [
+        201,
+        202
+      ],
+      "pdfPages": [
+        202,
+        203
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Определение вписанного угла; половина опирающейся дуги с доказательством для трёх положений центра; следствия о равных углах и угле на полуокружности."
+    },
+    {
+      "number": 81,
+      "title": "Углы, образованные хордами, касательными и секущими",
+      "printedPages": [
+        202,
+        203,
+        204
+      ],
+      "pdfPages": [
+        203,
+        204,
+        205
+      ],
+      "paragraph": 2,
+      "starred": false,
+      "canonicalScope": "Все четыре теоремы с доказательствами: угол хорд равен полусумме дуг; угол внешних секущих — полуразности; касательная/хорда — половине дуги; внешние касательная/секущая — полуразности дуг."
+    },
+    {
+      "number": 82,
+      "title": "Вписанная окружность",
+      "printedPages": [
+        206,
+        207
+      ],
+      "pdfPages": [
+        207,
+        208
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Определения вписанной окружности и описанного многоугольника; не в каждый четырёхугольник можно вписать окружность; равенство сумм противоположных сторон и обратное утверждение для выпуклого четырёхугольника."
+    },
+    {
+      "number": 83,
+      "title": "Описанная окружность",
+      "printedPages": [
+        207,
+        208
+      ],
+      "pdfPages": [
+        208,
+        209
+      ],
+      "paragraph": 3,
+      "starred": false,
+      "canonicalScope": "Определения описанной окружности и вписанного многоугольника; не около каждого четырёхугольника можно описать окружность; сумма противоположных углов180° с доказательством и обратное утверждение."
+    }
+  ],
+  "selfchecks": [
+    {
+      "number": 1,
+      "topic": "Взаимное расположение прямой и окружности в зависимости от расстояния до центра и радиуса; исследование и выводы",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 2,
+      "topic": "Построение касательной через данную точку окружности",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 3,
+      "topic": "Почему две различные окружности не имеют трёх общих точек",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 4,
+      "topic": "Взаимное расположение двух окружностей по радиусам и расстоянию между центрами; исследование и выводы",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 5,
+      "topic": "Число общих касательных в зависимости от взаимного положения окружностей",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 6,
+      "topic": "Определение центрального угла",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 7,
+      "topic": "Полуокружность,дуга меньше полуокружности и дуга больше полуокружности",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 8,
+      "topic": "Определение и обозначение градусной меры дуги",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 9,
+      "topic": "Определение вписанного угла; формулировка и доказательство теоремы",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 10,
+      "topic": "Доказательство равенства вписанных углов,опирающихся на одну дугу",
+      "printedPages": [
+        209
+      ],
+      "pdfPages": [
+        210
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 11,
+      "topic": "Доказательство прямого угла,опирающегося на полуокружность",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 12,
+      "topic": "Измерение угла между хордами",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 13,
+      "topic": "Измерение угла между секущими с внешней вершиной",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 14,
+      "topic": "Измерение угла между касательной и хордой из точки касания",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 15,
+      "topic": "Измерение угла между касательной и секущей,не проходящей через точку касания",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 16,
+      "topic": "Определения вписанной окружности и описанного многоугольника",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 17,
+      "topic": "Свойство сторон описанного четырёхугольника",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 18,
+      "topic": "Определения описанной окружности и вписанного многоугольника",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    },
+    {
+      "number": 19,
+      "topic": "Свойство углов вписанного четырёхугольника",
+      "printedPages": [
+        210
+      ],
+      "pdfPages": [
+        211
+      ],
+      "paragraph": null
+    }
+  ],
+  "paragraphs": [
+    {
+      "chapter": 9,
+      "number": 1,
+      "title": "Окружность и прямые",
+      "pointNumbers": [
+        76,
+        78
+      ],
+      "exerciseNumbers": [
+        737,
+        761
+      ],
+      "printedPages": [
+        189,
+        199
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 2,
+      "title": "Центральные и вписанные углы",
+      "pointNumbers": [
+        79,
+        81
+      ],
+      "exerciseNumbers": [
+        762,
+        783
+      ],
+      "printedPages": [
+        199,
+        206
+      ]
+    },
+    {
+      "chapter": 9,
+      "number": 3,
+      "title": "Вписанная и описанная окружности четырёхугольников",
+      "pointNumbers": [
+        82,
+        83
+      ],
+      "exerciseNumbers": [
+        784,
+        795
+      ],
+      "printedPages": [
+        206,
+        209
+      ]
+    }
+  ],
+  "source": {
+    "sha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPageRange": [
+      189,
+      213
+    ],
+    "pdfPageRange": [
+      190,
+      214
+    ],
+    "pageOffset": 1
+  },
+  "counts": {
+    "mainNumbers": 87,
+    "mainParts": 133,
+    "theoryPoints": 8,
+    "selfcheckQuestions": 19,
+    "cards": 160
+  },
+  "audit": {
+    "reviewer": "Independent non-author OpenAI source reviewer /root/ix_source",
+    "date": "2026-10-30",
+    "scope": "Exact inventory of all25chapterpages and2TOCimages,all87numbers/133explicitparts,8theorypoints,19selfchecks,3actualparagraphs. This does not approve authored conditions,models,solutions or a future bundle.",
+    "sourceActuallyViewed": true,
+    "ocrUsed": false,
+    "pageImages": [
+      {
+        "printedPage": 189,
+        "pdfPage": 190,
+        "sha256": "72b9c5e1dad0b2f22d2aa0ed53341e83d0cbc97890122c63a64918abfd087a07",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 190,
+        "pdfPage": 191,
+        "sha256": "bb28851b334298aace18b526eab8849a14fbea9ad128f853e5c719ab247a125d",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 191,
+        "pdfPage": 192,
+        "sha256": "6bee3c3261cf09f30275acd30f4b73741e5931f6cb728a550b12ff130892d3a4",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 192,
+        "pdfPage": 193,
+        "sha256": "7eacb68ff1ca4fd0c9fe2d0fd3ef075387d452d46a09c2ae09f57f94dd4e3a7d",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 193,
+        "pdfPage": 194,
+        "sha256": "08a33a53f3bf98411423b7a47d1e84266694169211a23a20b33a149ba00d6f0f",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 194,
+        "pdfPage": 195,
+        "sha256": "163b54e8173c949ab4e10d91954538e11d256e195503ffe0de97cbf118beb22b",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 195,
+        "pdfPage": 196,
+        "sha256": "b4dffb267527b162b5eac69cc243bba1b8550fbcc21d687f161736467f236b6b",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 196,
+        "pdfPage": 197,
+        "sha256": "82be555080faa486d066fbcb9500ed9648f7c0f29f48b0394130f066694f81e9",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 197,
+        "pdfPage": 198,
+        "sha256": "1272a7874358df179d626f90faf649e5b2366da354e1a84ec4b2f9f25867f131",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 198,
+        "pdfPage": 199,
+        "sha256": "9db5181bd3ee3486093dd8bd9f4630e45e60abf40d05fa1ff3b05725f6dc6b54",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 199,
+        "pdfPage": 200,
+        "sha256": "331fe1ef9f4f7aab54dbe6a0dfdad5d33bf9005ac4c730c4a9c90828817b2417",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 200,
+        "pdfPage": 201,
+        "sha256": "2c536ca5d6aafca7a2a6deaf147c87e6d9fea501c0ee904f781df1f9ec478c62",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 201,
+        "pdfPage": 202,
+        "sha256": "8e496ce13116063bd582d13a3c955ce727e16612e847a7712c5eace9b8c8c839",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 202,
+        "pdfPage": 203,
+        "sha256": "650c344d288f27be404fd61d0d20413840cb7bb08b7ff3ca009770839fa46dbe",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 203,
+        "pdfPage": 204,
+        "sha256": "7649dc8ee40b19768c4775fa4c735a31c58297c8fd40ca3ccf1101fbd8ef965c",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 204,
+        "pdfPage": 205,
+        "sha256": "3ad419631a29f319ee2ea2dff4f24728377ba1ca4c464a568bf51abbd46628ed",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 205,
+        "pdfPage": 206,
+        "sha256": "097ddb6a26fffda7857f16b8b4d41151c01972a56cdd997a751461d24a5fd4cc",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 206,
+        "pdfPage": 207,
+        "sha256": "653d59b77c2d299ea577c0bbd9674b171fbed69a8a5b22164bd70f36a102efbc",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 207,
+        "pdfPage": 208,
+        "sha256": "2c5d7beed22f1f8812636785b0b265262c27b401ad89cfe9f99d911ef65e9a90",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 208,
+        "pdfPage": 209,
+        "sha256": "c2dea9f18d15f0308acde40381e219cae81a0129c4b710d046eafe6e43678852",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 209,
+        "pdfPage": 210,
+        "sha256": "720d842577e334d5f451cb62add34694259e92be01020438fa3bca4fea90cebc",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 210,
+        "pdfPage": 211,
+        "sha256": "5b932f023c76451ce676da728a07087c042f73551217eba3219f2740ee71ba51",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 211,
+        "pdfPage": 212,
+        "sha256": "dcd83d0a3226864f2146b38e594ea1cda78eac754aa79cd3defbb04e31675010",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 212,
+        "pdfPage": 213,
+        "sha256": "b43c9b2e207a38a4fc7605d4ccc54d12368d18dcd50d5904e9d79c388486f344",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 213,
+        "pdfPage": 214,
+        "sha256": "1cf9f47d1ea5ca2347f10ea01eb89361c1015eb676ce0a90ac3e8b80b0292c0b",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 413,
+        "pdfPage": 414,
+        "sha256": "42ad4c5b72a5e9ffa90d34450bce3ee4130e0441bddaa2395be01d0d77d34adf",
+        "actuallyViewed": true
+      },
+      {
+        "printedPage": 414,
+        "pdfPage": 415,
+        "sha256": "6613037b79ab915c428a7468597ebbf9c3cff19e27aea9ed9c37613b025f78d2",
+        "actuallyViewed": true
+      }
+    ],
+    "authoredConditionReview": {
+      "status": "pending",
+      "cards": 0,
+      "report": "docs/reviews/ATANASYAN_7_9_CHAPTER_IX_SOURCE_REVIEW.json"
+    }
+  },
+  "sourceIssues": [
+    {
+      "exercise": 743,
+      "printedPages": [
+        197
+      ],
+      "kind": "missing-nondegeneracy-condition",
+      "finding": "Источник не исключает диаметр AB. Если AB — диаметр, радиус OM пересекает его в середине O при любом направлении, но касательная в M параллельна AB лишь при OM⊥AB.",
+      "requiredHandling": "Доказать утверждение для хорды,не проходящей через центр; явно объяснить исключение диаметра,не выдавая уточнение за исходное ограничение."
+    },
+    {
+      "exercise": 746,
+      "printedPages": [
+        197
+      ],
+      "kind": "missing-angle-case",
+      "finding": "Обычный невыпуклый угол не принят школьным обозначением∠. Для O(0,1),B(0,0),C(0,−1),M(2−√3,0),A(1/2,1−√3/2) оба касания выполнены,но∠AMC135°,3∠BMC225°.",
+      "requiredHandling": "Сохранить исходное требование и объяснить: равенство обычных углов верно приβ=∠BMC≤60°; приβ>60° обычный∠AMC=360°−3β,а3β — угол,содержащий лучMB."
+    },
+    {
+      "exercise": 787,
+      "printedPages": [
+        208
+      ],
+      "kind": "inconsistent-numerical-data",
+      "finding": "Сумма противоположных сторон12см даёт P24см,p12см. Формальная площадьpr60см² приr5см превышает верхнюю границу площади любого четырёхугольника P²/16=36см². Такого описанного четырёхугольника нет.",
+      "requiredHandling": "Не изображать несуществующую фигуру как точно удовлетворяющую данным. Отличить формальную подстановку60см² от вывода о несовместимости данных."
+    },
+    {
+      "exercise": 802,
+      "part": "а",
+      "printedPages": [
+        210,
+        211
+      ],
+      "kind": "missing-angle-configuration-restriction",
+      "finding": "Для центров(−2,0),(2,0),r√13,A(0,3),B(0,−3) секущие черезA под0° и60° дают обычный∠CKD112,619864948° и67,380135052°. Касания и невырожденность проверены независимо.",
+      "requiredHandling": "Не утверждать неизменность обычного угла для всех m. Объяснить два взаимно дополнительных значения/постоянство угла между прямыми; частьб формулировать как концикличность четырёх точек с корректным порядком."
+    },
+    {
+      "printedPages": [
+        414
+      ],
+      "kind": "editorial-table-of-contents",
+      "finding": "В оглавлении414 ошибочно напечатано«Вопросы для повторения к главеXII» у страницы209; фактический заголовок209 относится к главеIX.",
+      "requiredHandling": "В навигации и подписях использовать главуIX,соответствующую реальным страницам."
+    }
+  ],
+  "sourceSpecificNotes": [
+    {
+      "exercise": 740,
+      "note": "Единицы в частяхг/д различаются:1,2дм=12см;50мм=5см."
+    },
+    {
+      "exercise": 747,
+      "note": "Касательная явно не перпендикулярна диаметруAB; это условие не опускать."
+    },
+    {
+      "exercise": 761,
+      "note": "Две касательные. Исходное решение использует вписанный прямой угол из следующего параграфа; можно дать самостоятельное обоснование через середину гипотенузы."
+    },
+    {
+      "exercise": 767,
+      "note": "Рис.266 имеет4буквенныечасти. В г угол20° находится в верхней вершине,дуга215° — большая правая дуга,так что неизвестная дуга105°."
+    },
+    {
+      "exercise": 769,
+      "note": "Возможны оба взаимных положения хорд: обычный∠BAC36° или101°. Во втором случае дугаBC,не содержащаяA,равна202°,а не158°."
+    },
+    {
+      "exercise": 772,
+      "note": "ВершинаA может лежать на большой или меньшей дугеBC; углы51°,64°30′,64°30′ либо129°,25°30′,25°30′."
+    },
+    {
+      "exercise": 773,
+      "note": "Сохранить минуты:дугаBD110°20′.∠ADB55°10′,∠BAD34°50′."
+    },
+    {
+      "exercise": 783,
+      "note": "Рис.267 имеет7буквенныхчастейа–ж; направленияклеточнойсетки и положениецентра обязательны. В в расстояниеотцентрадохорды равно половинерадиуса. Рисованныеокружности не следует интерпретироватькакпиксельноточные измерения."
+    },
+    {
+      "exercise": 793,
+      "note": "Одно условие требует все3четырёхугольникаCMHK,AMHN,BNHK; не сокращатьдоказательство доодного."
+    },
+    {
+      "exercise": 803,
+      "note": "Существование окружностиAOC исключает коллинеарностьA,O,C(включая диаметральнуюAB),а невырожденностьBCD исключаетсовпадения; упомянутьточно,не объявляяпроизвольную вырожденнуюконфигурациювалидной."
+    },
+    {
+      "exercise": 807,
+      "note": "Выпуклость дана явно. Условие на211,источниковоерешение продолжается212."
+    },
+    {
+      "exercise": 810,
+      "note": "Единственнаязвёздочка в87номерах находитсяу810. Доказать оба случаяположениячетвёртойвершины,а не только рисунок."
+    },
+    {
+      "exercise": 818,
+      "note": "Точка можетнаходитьсямежду прямыми илиснаружиполосы; длявнутреннейточкидвеокружности,длявнешнейнет. Случайточкинапрямой исключёнисходнымусловием."
+    },
+    {
+      "exercise": 822,
+      "note": "Прямые содержатвысоты нового треугольника; нельзя автоматическисчитатьотрезокA₁A всейвысотойбезпроверкиоснования."
+    },
+    {
+      "exercise": 823,
+      "note": "ИсходныйABC именноостроугольный; прямые содержатбиссектрисы новогоA₁B₁C₁."
+    }
+  ],
+  "sourceFigures": [
+    {
+      "figure": 266,
+      "exercise": 767,
+      "printedPages": [
+        205
+      ],
+      "definition": "Four independently viewed diagrams; all4parts required",
+      "expectedValues": {
+        "а": 64,
+        "б": 175,
+        "в": 34,
+        "г": 105
+      }
+    },
+    {
+      "figure": 267,
+      "exercise": 783,
+      "printedPages": [
+        206
+      ],
+      "definition": "Seven independently viewed gridded diagrams; preserve grid directions/center and all7parts",
+      "expectedAngleDegrees": {
+        "а": 45,
+        "б": 45,
+        "в": 60,
+        "г": 135,
+        "д": 45,
+        "е": 45,
+        "ж": 45
+      }
+    }
+  ],
+  "notes": [
+    "737–823:87 сквозныхномеров и133явновыделенныечасти;8теоретическихпунктов76–83 и19вопросов дают160карточек.",
+    "Практическиезадания737–739 входятвосновнойсквознойнабор. Дополнительныезадачи796–823 ивопросыповторенияотносятсякглавебезвыдуманногопараграфа.",
+    "Все25изображенийглавы и2страницыоглавления фактическипрочитанынезависимымрецензентом. PDF,сканы,OCR ичастныеабсолютныепути невключаютсяврепозиторий."
+  ]
+}

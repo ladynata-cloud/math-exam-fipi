@@ -3,6 +3,7 @@
 The receipt cannot approve geometric content. Every prior approval is restored
 byte-for-byte against the actual preceding production Git snapshot.
 """
+from layout_amendment import historical_bytes
 from copy import deepcopy
 import hashlib,json
 from pathlib import Path
@@ -58,7 +59,7 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('previousSourceCommit')==base['sourceCommit'],'Wrong previous publication')
  require(review.get('preservedCards')==893 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve VII content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
- files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ files={name:sha(historical_bytes(course/name)) for name in RUNTIME}
  from chapter08_extension import has_viii,previous_inventory as before_viii,validate_extension as validate_viii
  inventory_raw=(course/'source-inventory.json').read_bytes()
  if has_viii(inventory_raw):
@@ -91,21 +92,23 @@ def restore_manifest(name,raw,root=ROOT,course=None):
 
 def assert_893_preserved(bundle,root=ROOT,course=None,scope=None):
  course=course or root/PREFIX;base=frozen(root)
- rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII')]
- entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII')]
+ rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII','IX')]
+ entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII','IX')]
  require(len(rows)==len(entries)==893,'Unexpected old-card scope')
  require(digest(rows)==base['lessonsSha256'],'Previous893 lesson/order/status/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous893 catalog changed')
  review,_=validate_extension(root,course)
  from chapter08_extension import has_viii,validate_extension as validate_viii
  if has_viii((course/'source-inventory.json').read_bytes()):review,_=validate_viii(root,course)
+ from chapter09_extension import has_ix,validate_extension as validate_ix
+ if has_ix((course/'source-inventory.json').read_bytes()):review,_=validate_ix(root,course)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle VII runtime')
  require(bundle['sourceInventory']==json.loads((course/'source-inventory.json').read_bytes()),'Stale bundle source index')
  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
  previous_scope(scope,root)
  for name,expected in base['immutableFiles'].items():
   path=course/name.removeprefix(PREFIX) if name.startswith(PREFIX) else root/name
-  raw=path.read_bytes()
+  raw=historical_bytes(path)
   if name==PREFIX+'data/course.json':continue # The full1083 union is checked separately.
   if name=='tools/geometry-textbook/release-scope.json':continue # Exact suffix restoration above.
   if name==PREFIX+'source-inventory.json':previous_inventory(raw,root)

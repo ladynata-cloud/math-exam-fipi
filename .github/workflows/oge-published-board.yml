@@ -1,0 +1,51 @@
+name: OGE published board acceptance
+on:
+  push:
+    branches: [test/oge-published-board-20261103]
+    paths:
+      - tools/oge-published-board.browser.cjs
+      - .github/workflows/oge-published-board.yml
+      - docs/tasks/OGE_PUBLISHED_BOARD_ACCEPTANCE.md
+  workflow_dispatch:
+    inputs:
+      confirm_synthetic_rooms:
+        description: Create one new anonymous production room; never use pupil accounts
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    if: github.event_name == 'push' || inputs.confirm_synthetic_rooms
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Syntax and patch checks
+        run: |
+          node --check tools/oge-published-board.browser.cjs
+          git diff --check HEAD^ HEAD
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-published" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          node "$RUNNER_TEMP/oge-published/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-published/node_modules" >> "$GITHUB_ENV"
+      - name: Published task 25, drawings and transport reconnection
+        env:
+          MATHEXAM_PUBLISHED_SMOKE: '1'
+        run: timeout 480s node tools/oge-published-board.browser.cjs
+      - name: Preserve sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge-published-board-acceptance
+          path: oge-published-board-result.json
+          if-no-files-found: warn
+          retention-days: 14

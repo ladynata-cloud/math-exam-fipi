@@ -1,0 +1,25 @@
+/* General MathExam entrance; OGE illustrations live at /oge/. */
+.math-home { --pen:#236746; --pen-dark:#184d34; background:#f7f8f3; }
+.math-home .container { max-width:1160px; }
+.math-home .hero { padding:42px 0 20px; }
+.math-home .hero-inner { border-color:#6e9879; }
+.math-home h1 { font-size:clamp(2rem,4.6vw,3.5rem); line-height:1.12; }
+.math-home .kicker { color:#42664d; letter-spacing:.035em; }
+.math-home .home-directions { padding:12px 0 32px; }
+.math-home #where-to-start { margin-top:0; }
+.math-home .home-directions .entry-grid { grid-template-columns:repeat(3,minmax(0,1fr)); margin-top:18px; }
+.math-home .home-directions .entry { padding:22px; gap:10px; box-shadow:none; border-color:#d8e1d6; }
+.math-home .home-directions .entry:hover { border-color:#6e9879; }
+.math-home .entry .go { padding-top:8px; min-height:44px; display:flex; align-items:center; }
+.math-home .route-more { min-height:36px; display:flex; align-items:center; }
+.math-home .home-catalog-link { margin-top:22px; font-weight:700; }
+.math-home .home-directions h3 { font-size:1.2rem; }
+.math-home #oge-models { scroll-margin-top:100px; }
+@media(max-width:860px) { .math-home .home-directions .entry-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:520px) {
+  .math-home .hero { padding-top:24px; }
+  .math-home .home-directions .entry-grid { grid-template-columns:1fr; }
+  .math-home .site-nav { margin-left:0; gap:4px 14px; }
+  .math-home .site-nav a { font-size:.9rem; }
+  .math-home .home-directions .entry { padding:18px; }
+}

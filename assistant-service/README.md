@@ -42,22 +42,89 @@ Keep actual credentials and database files out of Git.
 
 ### Try the learner flow
 
+The standalone page has collapsed topic examples and links to existing practice
+materials. Narrowly recognized incomplete questions ask for the missing part
+(e.g. `15% от`, `2x+3=` or `1/2 +`) rather than pretending to check an answer.
+Complete unsupported problems keep an honest coverage warning and an actionable
+example/resource route; arbitrary word problems are not newly supported.
+
+“Показать наглядно” optionally displays the original fractions (bars, or a signed
+number line) or a percentage of the original whole. It does not reveal the
+computed answer. Fraction drawings require two written fraction/mixed operands,
+denominators <=12 and magnitudes <=3; percentage bars require 0–100% with at most
+two decimal places. Unsupported pictures are omitted, not approximated.
+After a deterministic complete explanation, “Попробовать похожий пример” opens
+one curated exercise of the same family. Checking uses the existing authenticated
+API and quota, always with externalConsent=false, and leaves the main dialogue
+untouched. Opening examples/pictures/exercises makes no inference request. These
+teaching aids introduce no persistent browser storage or cabinet contract change.
+
 Choose a topic, use its example, and request the first step. Further hints appear
 one at a time while earlier steps remain visible. “Показать весь разбор” explicitly
 opens the complete explanation. A numeric attempt can be compared with the exact
 answer for supported calculations; this is not a general proof checker.
+Standalone and cabinet numeric feedback share the same bounded answer grammar:
+integers, decimals (comma or dot), fractions such as `3/2`, and mixed numbers
+such as `1 1/2`. A minus before a mixed number applies to the whole value:
+`-1 1/2 = -3/2`. Spaces may surround a slash or sign; ordinary/nonbreaking spaces
+separate the whole and proper fractional parts. Digit groups are never joined:
+`1 2`, `1 000`, `1, 5`, and an ambiguous `1 3/2` are not checked as numbers.
+Use `1000` for a whole integer and `5/2` for an improper fraction. Optional
+`Ответ:` and `x =`/`х =` prefixes are accepted. Each integer component has at
+most 12 digits and a decimal at most 6 fractional digits; existing request and
+privacy limits still apply. Repeating decimals such as `0,(3)`, `0.1(6)` and
+`-0,58(3)` are checked exactly too; `0,(9)` equals 1. The parser permits up to
+64 digits across the nonrepeating prefix and period combined. The unchanged
+public privacy filter can reject long digit runs (including long periods);
+use the equivalent ordinary fraction in that case. Do not split a period with
+spaces or enter an approximation as if it were the exact value.
+
+In the standalone Fractions topic, questions may now add/subtract two ordinary
+fractions, whole numbers or proper mixed numbers: `1 1/2 + 1/2`, `2 - -1 1/2`.
+A leading minus applies to the entire mixed number. Each written component is
+at most 10000; numerator of a mixed fractional part must be smaller than its
+nonzero denominator. Only two operands and one addition/subtraction are parsed;
+decimals, parentheses and arbitrary expressions in this question format remain
+unsupported. Full explanation includes the conversion; hints reveal one step.
+Cabinet question formats are unchanged. In linear equations, `1 2x` is ambiguous
+and receives a correction request; `12 x`, `12 * x` and `12x` retain their meaning.
 “Объясни проще” or an incorrect-answer report adjusts subsequent explanations in
 the current session. “Удалить мой сеанс” clears the session and visible work.
 
 | Topic | Example | Current offline scope |
 | --- | --- | --- |
-| Linear equations | `3x + 5 = 20` | Bounded integer-coefficient equations of the supported linear form, including zero-coefficient cases |
-| Fractions | `1/2 + 1/3` | Addition or subtraction of two supported ordinary fractions |
-| Percentages | `15% от 240` | Finding a percentage of a number; arbitrary increase/decrease word problems are outside the exact solver |
-| GCD / LCM | `НОК 12 и 18` | Two bounded positive integers |
+| Linear equations | `3x + 5 = 20`, `2(x+3)=x+9` | Bounded affine equations: x on both sides, parentheses, finite decimals and constant-denominator fractions; zero/identity/no-solution cases |
+| Fractions | `1 1/2 + 1/2` | Addition/subtraction of two bounded ordinary fractions, proper mixed numbers or integers |
+| Percentages | `15% от 240`, `Уменьши 240 на 15%` | Percentage of a number; whole from part/percentage; ratio; single increase/decrease in explicit supported forms |
+| GCD / LCM | `НОК 12, 18 и 30` | Two to five positive integers, each at most 999999; result at most 999999999999 |
 | Rounding | `Округли 9,96 до десятых` | Supported decimal numbers and named place values, including negative values and carries |
 | Pythagorean theorem | `Как отличить гипотенузу от катетов?` | General concept guidance; arbitrary numerical geometry is not verified |
 | Plane sections | `Как начать строить сечение по трём точкам?` | General construction principles; no generated diagram or verified arbitrary construction |
+
+Recognizable wrong numeric attempts receive tentative feedback for fractions,
+linear equations, decimal arithmetic and confusion between GCD/LCM. Correct
+and equivalent answers take precedence; unknown mistakes keep generic guidance.
+No final answer is added to hint mode and the deterministic path uses no model.
+
+More supported standalone examples: `0,5x+2=0,25x+5`, `(1/2)x+1=3`,
+`x/2+1=3`, `15% числа равны 36`, `Найди число, 15% которого равны 36`,
+`Сколько процентов составляет 30 от 120?`, `30 от 120 в процентах`,
+`Увеличь 240 на 15%`. A percentage-ratio attempt may include `%`; a changed
+amount must be a number, not just the percentage part. Arbitrary word problems
+and successive percentage changes are not inferred from prose.
+
+In an equation's attempt field, a single intermediate equality such as `3x=15`
+can be compared with original `3x+5=20`. Feedback checks whether their exact
+solution sets agree; it does not claim to validate an unseen chain of work.
+Numeric `x=5` keeps the existing final-answer feedback. Unsupported step syntax
+is explicitly unverified. No raw solution steps are newly stored.
+
+Extended equation limits: 240 characters, 80 tokens, nesting depth eight, six
+digits per decimal part, each side's x coefficient magnitude <=10000, reduced
+result numerator/denominator <=12 digits, bounded intermediate rationals.
+No powers, functions, nonlinear products, variable denominators or zero division.
+Write `(1/2)x` or `1/2*x`; ambiguous `1/2x` is rejected. Formatting does not join
+separate digits. Previous simple-equation wording and bounds are retained.
 
 The exact supported grammar is in [tutor.js](src/tutor.js), with positive,
 negative and ambiguous cases in the [evaluation corpus](evaluation/cases.json).

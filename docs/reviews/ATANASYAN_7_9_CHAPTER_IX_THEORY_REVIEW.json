@@ -1,0 +1,267 @@
+{
+  "reviewId": "ATANASYAN_7_9_CHAPTER_IX_THEORY_REVIEW",
+  "reviewer": "/root/review_ab",
+  "date": "2026-11-03",
+  "scope": "Theory76–83 and selfchecks1–19; all27 cards",
+  "independentOfAuthor": true,
+  "verdict": "PASS",
+  "sourceFidelity": "PASS",
+  "mathematicsAndPedagogy": "PASS",
+  "coordinateModels": "PASS",
+  "sourceEdition": "2023 fourteenth revised edition",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "sourcePagesActuallyViewed": [
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    206,
+    207,
+    208,
+    209,
+    210
+  ],
+  "sourcePageImageSha256": {
+    "189": "72b9c5e1dad0b2f22d2aa0ed53341e83d0cbc97890122c63a64918abfd087a07",
+    "190": "bb28851b334298aace18b526eab8849a14fbea9ad128f853e5c719ab247a125d",
+    "191": "6bee3c3261cf09f30275acd30f4b73741e5931f6cb728a550b12ff130892d3a4",
+    "192": "7eacb68ff1ca4fd0c9fe2d0fd3ef075387d452d46a09c2ae09f57f94dd4e3a7d",
+    "193": "08a33a53f3bf98411423b7a47d1e84266694169211a23a20b33a149ba00d6f0f",
+    "194": "163b54e8173c949ab4e10d91954538e11d256e195503ffe0de97cbf118beb22b",
+    "195": "b4dffb267527b162b5eac69cc243bba1b8550fbcc21d687f161736467f236b6b",
+    "196": "82be555080faa486d066fbcb9500ed9648f7c0f29f48b0394130f066694f81e9",
+    "199": "331fe1ef9f4f7aab54dbe6a0dfdad5d33bf9005ac4c730c4a9c90828817b2417",
+    "200": "2c536ca5d6aafca7a2a6deaf147c87e6d9fea501c0ee904f781df1f9ec478c62",
+    "201": "8e496ce13116063bd582d13a3c955ce727e16612e847a7712c5eace9b8c8c839",
+    "202": "650c344d288f27be404fd61d0d20413840cb7bb08b7ff3ca009770839fa46dbe",
+    "203": "7649dc8ee40b19768c4775fa4c735a31c58297c8fd40ca3ccf1101fbd8ef965c",
+    "204": "3ad419631a29f319ee2ea2dff4f24728377ba1ca4c464a568bf51abbd46628ed",
+    "206": "653d59b77c2d299ea577c0bbd9674b171fbed69a8a5b22164bd70f36a102efbc",
+    "207": "2c5d7beed22f1f8812636785b0b265262c27b401ad89cfe9f99d911ef65e9a90",
+    "208": "c2dea9f18d15f0308acde40381e219cae81a0129c4b710d046eafe6e43678852",
+    "209": "720d842577e334d5f451cb62add34694259e92be01020438fa3bca4fea90cebc",
+    "210": "5b932f023c76451ce676da728a07087c042f73551217eba3219f2740ee71ba51"
+  },
+  "method": "Read every actual source page for the theory and review questions, all27 authored conditions/answers/full proofs and all model definitions. Source-conditioned independent coordinates test exact distance/radius classifications, tangent half-planes, arc identities, angle ordering, tangency at side interiors, circle incidence, converse wording and point links. Generic model validator supplements these independent oracles.",
+  "cards": 27,
+  "steps": 111,
+  "views": 186,
+  "claims": 329,
+  "independentAssertions": 631,
+  "command": "python3 tools/geometry-textbook/chapter09-theory-independent.test.py",
+  "result": "PASS",
+  "files": {
+    "tools/geometry-textbook/models_ch9_theory.py": "7ca10cc9b8a28fca7f8f93e34c3d7031a80516d123423c205fdc22b0e1b910c2",
+    "geometry-course/textbook/preparation/chapter-09-theory.json": "5113f1cfc35e6aa96ec23896ed214801cfd89ea700feb025989fedb648a04413",
+    "geometry-course/textbook/models/chapter-09-theory.json": "40eb230a8b6b9745fd8bb109064440c369b56e3fce1c4188fe66ad079834684a",
+    "tools/geometry-textbook/chapter09-theory-independent.test.py": "69365d1896372a1f1dcadb34a782010a0ccaad977de53b28caf60c8d238414ef"
+  },
+  "cardsReviewed": [
+    {
+      "collection": "selfcheck",
+      "number": 1,
+      "result": "PASS",
+      "reason": "All d/r cases, exactly-two-point argument, tangent uniqueness and d=0 diameter exception verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 2,
+      "result": "PASS",
+      "reason": "Perpendicular at specified point has distance exactly radius; unique line."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 3,
+      "result": "PASS",
+      "reason": "Distinct-circles qualification and unique perpendicular-bisector intersection checked."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 4,
+      "result": "PASS",
+      "reason": "Five distinct-centre positions, concentric/coincident exceptions, triangle-existence lemma and three-common-points contradiction verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 5,
+      "result": "PASS",
+      "reason": "Tangent counts0–4 and each actual tangent checked by distances to both centres; signed half-planes check external/internal definitions."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 6,
+      "result": "PASS",
+      "reason": "Central angle, diameter, unambiguous arc notation and sourcefigure257 numeric arcs145/245/215/180 verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 7,
+      "result": "PASS",
+      "reason": "Semicircle and distinct smaller/larger arcs checked on separate models."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 8,
+      "result": "PASS",
+      "reason": "Central angle, diameter, unambiguous arc notation and sourcefigure257 numeric arcs145/245/215/180 verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 9,
+      "result": "PASS",
+      "reason": "All three positions of BO, sum and difference proofs, same-arc and diameter corollaries verified without omitting the external-ray case."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 10,
+      "result": "PASS",
+      "reason": "Both vertices lie on the complementary arc; same endpoint chords alone are not used as the criterion."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 11,
+      "result": "PASS",
+      "reason": "Diameter and90-degree theorem checked; initial scene does not reveal the right-angle conclusion."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 12,
+      "result": "PASS",
+      "reason": "Individual angle theorem checked against source, its proof and independent coordinate/arc identities."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 13,
+      "result": "PASS",
+      "reason": "Individual angle theorem checked against source, its proof and independent coordinate/arc identities."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 14,
+      "result": "PASS",
+      "reason": "Individual angle theorem checked against source, its proof and independent coordinate/arc identities."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 15,
+      "result": "PASS",
+      "reason": "Individual angle theorem checked against source, its proof and independent coordinate/arc identities."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 16,
+      "result": "PASS",
+      "reason": "All four side contacts, tangent-segment equality and Pitot direct proof independently verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 17,
+      "result": "PASS",
+      "reason": "All four side contacts, tangent-segment equality and Pitot direct proof independently verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 18,
+      "result": "PASS",
+      "reason": "Cyclic definitions, complementary intercepted arcs and both opposite-angle sums verified."
+    },
+    {
+      "collection": "selfcheck",
+      "number": 19,
+      "result": "PASS",
+      "reason": "Cyclic definitions, complementary intercepted arcs and both opposite-angle sums verified."
+    },
+    {
+      "collection": "theory",
+      "number": 76,
+      "result": "PASS",
+      "reason": "All d/r cases, exactly-two-point argument, tangent uniqueness and d=0 diameter exception verified."
+    },
+    {
+      "collection": "theory",
+      "number": 77,
+      "result": "PASS",
+      "reason": "Five distinct-centre positions, concentric/coincident exceptions, triangle-existence lemma and three-common-points contradiction verified."
+    },
+    {
+      "collection": "theory",
+      "number": 78,
+      "result": "PASS",
+      "reason": "Tangent counts0–4 and each actual tangent checked by distances to both centres; signed half-planes check external/internal definitions."
+    },
+    {
+      "collection": "theory",
+      "number": 79,
+      "result": "PASS",
+      "reason": "Central angle, diameter, unambiguous arc notation and sourcefigure257 numeric arcs145/245/215/180 verified."
+    },
+    {
+      "collection": "theory",
+      "number": 80,
+      "result": "PASS",
+      "reason": "All three positions of BO, sum and difference proofs, same-arc and diameter corollaries verified without omitting the external-ray case."
+    },
+    {
+      "collection": "theory",
+      "number": 81,
+      "result": "PASS",
+      "reason": "Four complete external-angle proofs, exact source-side orders, diameter and supplementary-angle cases verified."
+    },
+    {
+      "collection": "theory",
+      "number": 82,
+      "result": "PASS",
+      "reason": "All four side contacts, tangent-segment equality and Pitot direct proof independently verified."
+    },
+    {
+      "collection": "theory",
+      "number": 83,
+      "result": "PASS",
+      "reason": "Cyclic definitions, complementary intercepted arcs and both opposite-angle sums verified."
+    }
+  ],
+  "findingsResolvedByAuthor": [
+    "Wrong theory-point numbers found in new and inherited records; author systematically corrected refs across111 steps against actual2023 catalog. Pythagoras60, circle21, tangency42, perpendicular bisector40, triangle inequality34, adjacent angles11, isosceles18 and right-triangle congruence36 now correctly linked.",
+    "Theory77/q4 step2 previously retained unrelated two-circle diagram while proving unique circle throughABC. Author added correct ABC/O/perpendicular-bisector scene at step2.",
+    "Theory78/q5 definition step now displays one external and one internal common tangent and distinguishes the centres half-planes."
+  ],
+  "originalSixPreservation": {
+    "result": "PASS",
+    "cards": [
+      "theory76",
+      "theory77",
+      "selfcheck1",
+      "selfcheck2",
+      "selfcheck3",
+      "selfcheck4"
+    ],
+    "unchanged": "All original text, answers, proofs, source pages and numbers exactly match recovered checkpoint, excluding didactics references. Six canonical text hashes are frozen in the independent test.",
+    "intentionalCorrections": "Didactic point references corrected; theory77/q4 receive additional accurate proof diagram. Thus full byte identity of original six models is not claimed."
+  },
+  "specialCases": [
+    "76 includes d=0 diameter separately and proves exact intersection counts.",
+    "77 triangle-existence lemma includes omitted BC=a algebra and nonnegative-square-root existence, tested across scalene/equal-side families. Coincident circles exception explicit.",
+    "78 distinct concentric and coincident circles distinguished; general count0–4 correct for positive radii.",
+    "79 exact sourcefigure257 values and arcs145°,245°,215°,180° confirmed.",
+    "80 complete three-case proof including external BO difference and order reversal, plus same-arc and semicircle corollaries.",
+    "81 all four angle formulas have distinct justified diagrams and complete proofs; tangent/chord supplementary and diameter cases explicit.",
+    "82 direct Pitot proof complete; converse explicitly limited to convex quadrilaterals and deferred to task807 as in source.",
+    "83 direct opposite-angle proof complete; converse deferred to task810 as in source."
+  ],
+  "openContentFindings": [],
+  "limits": [
+    "No rendered browser panels or screenshots were inspected by this reviewer; separate full320/1280 visual review remains required.",
+    "Proofs807/810 themselves belong to the separately reviewed C block; this report verifies the faithful and explicit deferral in theory82/83, not those separate cards.",
+    "No external-provider verdict, chapter-wide release receipt, live-site check or exact-head CI is claimed."
+  ]
+}

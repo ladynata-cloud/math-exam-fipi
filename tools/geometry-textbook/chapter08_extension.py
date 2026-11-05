@@ -3,6 +3,7 @@
 The receipt cannot approve geometric content. Every prior approval is restored
 byte-for-byte against the actual preceding production Git snapshot.
 """
+from layout_amendment import historical_bytes
 from copy import deepcopy
 import hashlib,json
 from pathlib import Path
@@ -32,12 +33,16 @@ def frozen(root=ROOT):
  return obj
 def has_viii(raw):return any(p.get('chapter')==8 for p in json.loads(raw).get('paragraphs',[]))
 def previous_inventory(raw,root=ROOT):
+ from chapter09_extension import has_ix,previous_inventory as before_ix
+ if has_ix(raw):raw=before_ix(raw,root)
  current=json.loads(raw);require(raw==encoded(current),'Unrelated source-index formatting changes')
  require(current.get('paragraphs',[])[-4:]==PARAGRAPHS,'VIII paragraphs must be the exact reviewed suffix')
  old=deepcopy(current);old['paragraphs']=old['paragraphs'][:-4]
  require(sha(encoded(old))==frozen(root)['immutableFiles'][PREFIX+'source-inventory.json'],'Previous source index/order/metadata changed')
  return encoded(old)
 def previous_scope(scope,root=ROOT):
+ from chapter09_extension import previous_scope as before_ix
+ if any(c['chapter']==9 for c in scope['chapters']):scope=before_ix(scope,root)
  old=deepcopy(scope)
  require(old.get('chapters',[])[-1:]==[SCOPE] and old.get('totalCards')==1247,'Wrong VIII release union')
  old['chapters']=old['chapters'][:-1];old['totalCards']-=164
@@ -55,7 +60,12 @@ def validate_extension(root=ROOT,course=None):
  require(review.get('previousSourceCommit')==base['sourceCommit'],'Wrong previous publication')
  require(review.get('preservedCards')==1083 and review.get('contentApprovalGranted') is False,'Runtime review cannot approve VIII content')
  oldfiles={name:base['immutableFiles'][PREFIX+name] for name in RUNTIME}
- files={name:sha((course/name).read_bytes()) for name in RUNTIME}
+ files={name:sha(historical_bytes(course/name)) for name in RUNTIME}
+ from chapter09_extension import has_ix,previous_inventory as before_ix,validate_extension as validate_ix
+ inventory_raw=(course/'source-inventory.json').read_bytes()
+ if has_ix(inventory_raw):
+  validate_ix(root,course)
+  files['source-inventory.json']=sha(before_ix(inventory_raw,root))
  require(review.get('oldImplementationSha256')==digest(oldfiles)==base['implementationSha256'],'Wrong prior runtime chain')
  require(review.get('implementationFiles')==files and review.get('implementationSha256')==digest(files),'Stale VIII runtime files')
  require([name for name in RUNTIME if oldfiles[name]!=files[name]]==['source-inventory.json'],'Only VIII paragraph metadata may change')
@@ -70,6 +80,8 @@ def validate_extension(root=ROOT,course=None):
  check_evidence(review.get('evidence'),root,'independent VIII runtime')
  return review,{'path':RECEIPT,'sha256':sha(raw)}
 def restore_manifest(name,raw,root=ROOT,course=None):
+ from chapter09_extension import BINDING as IX_BINDING,restore_manifest as before_ix_manifest
+ if IX_BINDING in json.loads(raw):raw=before_ix_manifest(name,raw,root,course)
  base=frozen(root);review,binding=validate_extension(root,course);obj=json.loads(raw)
  require(name in base['immutableFiles'] and name.startswith(PREFIX+'release-review'),'Not a prior published manifest')
  require(raw==encoded(obj),'Unrelated review formatting change')
@@ -81,12 +93,14 @@ def restore_manifest(name,raw,root=ROOT,course=None):
 
 def assert_1083_preserved(bundle,root=ROOT,course=None,scope=None):
  course=course or root/PREFIX;base=frozen(root)
- rows=[x for x in bundle['lessons'] if x['source']['chapter']!='VIII']
- entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter']!='VIII']
+ rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VIII','IX')]
+ entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VIII','IX')]
  require(len(rows)==len(entries)==1083,'Unexpected old-card scope')
  require(digest(rows)==base['lessonsSha256'],'Previous1083 lesson/order/status/review/storage identity changed')
  require(digest(entries)==base['catalogEntriesSha256'],'Previous1083 catalog changed')
  review,_=validate_extension(root,course)
+ from chapter09_extension import has_ix,validate_extension as validate_ix
+ if has_ix((course/'source-inventory.json').read_bytes()):review,_=validate_ix(root,course)
  require(bundle['build']['implementationSha256']==review['implementationSha256'],'Stale bundle VIII runtime')
  require(bundle['build']['implementationFiles']==review['implementationFiles'],'Stale bundle VIII runtime file map')
  require(bundle['sourceInventory']==json.loads((course/'source-inventory.json').read_bytes()),'Stale bundle source index')
@@ -94,7 +108,7 @@ def assert_1083_preserved(bundle,root=ROOT,course=None,scope=None):
  previous_scope(scope,root)
  for name,expected in base['immutableFiles'].items():
   path=course/name.removeprefix(PREFIX) if name.startswith(PREFIX) else root/name
-  raw=path.read_bytes()
+  raw=historical_bytes(path)
   if name==PREFIX+'data/course.json':continue # The full1247 union is checked separately.
   if name=='tools/geometry-textbook/release-scope.json':continue # Exact suffix restoration above.
   if name==PREFIX+'source-inventory.json':previous_inventory(raw,root)

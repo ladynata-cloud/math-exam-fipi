@@ -317,7 +317,10 @@ const server = http.createServer((req, res) => {
     await go('#progress');
     const downloading=page.waitForEvent('download');await page.locator('#export').click();
     const download=await downloading;
-    const report=JSON.parse(fs.readFileSync(await download.path(),'utf8'));
+    const envelope=JSON.parse(fs.readFileSync(await download.path(),'utf8'));
+    assert.equal(envelope.kind,'mathexam-profile-full-report');
+    assert.equal(envelope.version,1);
+    const report=envelope.course;
     assert.equal(report.storage,'local-browser');
     for(const l of addedLessons)assert(report.records[l.id].guided.length>0&&report.records[l.id].independent.length>0,'Report includes new work: '+l.id);
     assert(report.records['geo-right'].guided.length>0,'Report keeps previous first-three work');

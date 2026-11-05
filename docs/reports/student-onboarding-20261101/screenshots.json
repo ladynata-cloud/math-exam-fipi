@@ -1,0 +1,77 @@
+[
+  {
+    "file": "screenshots/setup-details-320.png",
+    "bytes": 60439,
+    "sha256": "9fc4e41c6297ce7797e6ad551f7e21264d0733875c1a870653f35f4763f2e064"
+  },
+  {
+    "file": "screenshots/setup-details-390.png",
+    "bytes": 60663,
+    "sha256": "3d44327df4eb45ff4f184e2e4e6029f7a550247b9a58fa2478752b6ae28673d8"
+  },
+  {
+    "file": "screenshots/setup-details-1280.png",
+    "bytes": 117395,
+    "sha256": "bbd4332341cd08b0a2188dd2390ed817fbdd68c2bc4e3a8e1d891a9ca433db17"
+  },
+  {
+    "file": "screenshots/setup-courses-320.png",
+    "bytes": 68931,
+    "sha256": "895508965a6c1f6d6bf73d6be891b2d88f264b583f496e8a848853831d9528cc"
+  },
+  {
+    "file": "screenshots/setup-courses-390.png",
+    "bytes": 76889,
+    "sha256": "19bc3a8c7d02a319034a3274e2fd32f3bb12c361da01bd9889af998576ffa82c"
+  },
+  {
+    "file": "screenshots/setup-courses-1280.png",
+    "bytes": 175374,
+    "sha256": "8ec7b4dd3ab3dc875fa16ffb5e3a7e8b9c42e8159e750afd2063ca00e455b8c4"
+  },
+  {
+    "file": "screenshots/setup-confirmation-320.png",
+    "bytes": 59947,
+    "sha256": "8602040ac96498ca2ad8a14fab3d489f5f45c56e3ffcfcb389c16022c3560613"
+  },
+  {
+    "file": "screenshots/setup-confirmation-390.png",
+    "bytes": 64627,
+    "sha256": "32b086ee03be1adc0f45fcce16f375eb666cab2f2ea7daf0a3e017e8fa2a3b2e"
+  },
+  {
+    "file": "screenshots/setup-confirmation-1280.png",
+    "bytes": 122083,
+    "sha256": "5767a3c2f556bebbeab54a3a72555895d627eca407d6095c97f9129e5d4fb0d4"
+  },
+  {
+    "file": "screenshots/teacher-preview-320.png",
+    "bytes": 163638,
+    "sha256": "72635f5680e18d08a2fcd0f30c89cd6c58c93df2da6a71262388746d72eaeb49"
+  },
+  {
+    "file": "screenshots/teacher-preview-390.png",
+    "bytes": 157065,
+    "sha256": "9195f4fd54362d5e56459267078d7c18c02b6fd8ce261e702573dc2ed06ad9e8"
+  },
+  {
+    "file": "screenshots/teacher-preview-1280.png",
+    "bytes": 186633,
+    "sha256": "80db8fcf2533cd1034185e2a587b586414afed6f39c118f54d20c4cbe2d110cc"
+  },
+  {
+    "file": "screenshots/pupil-courses-320.png",
+    "bytes": 114257,
+    "sha256": "4283ad17870b642fc5604db2da7c182c2dad795695a1a597d9f9dd99a2e37cf8"
+  },
+  {
+    "file": "screenshots/pupil-courses-390.png",
+    "bytes": 113938,
+    "sha256": "96e034e4309cbf46597ec9aa4b3a4899205cab17274b8b38b725f27a35e9dbc0"
+  },
+  {
+    "file": "screenshots/pupil-courses-1280.png",
+    "bytes": 138612,
+    "sha256": "4931b33b87c70d3fae7b2e1cd5a045c42a3fdfa2f4caa5e5335ec842060689ce"
+  }
+]

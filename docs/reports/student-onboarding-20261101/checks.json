@@ -1,0 +1,71 @@
+{
+  "base": "37718f1c0138ba031314b8f4716b73c9d963bc81",
+  "backend": {
+    "passed": 375,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "onboarding": "PASS",
+    "simple-pupil-access": "PASS",
+    "auth": "PASS",
+    "role-navigation": "PASS",
+    "parent": "PASS",
+    "quick-access": "PASS",
+    "cabinet": "PASS",
+    "free-route": "PASS"
+  },
+  "rollback": "PASS",
+  "independentInternalReview": "PASS",
+  "externalReview": "NOT_RUN",
+  "runtimeFiles": [
+    {
+      "path": "board-server/learning-api.js",
+      "sha256": "4091b67f0325056418ebc4240447cba163e5febe2651741f8de59583501d8efb"
+    },
+    {
+      "path": "board-server/learning-store.js",
+      "sha256": "3c176d99301e71f3c8985998b78bd895192becb5c68d8497d50fc5a44127200a"
+    },
+    {
+      "path": "learning/app.js",
+      "sha256": "937ef09984d694002beae85644c31053fe00eb55450de654d431340442f54610"
+    },
+    {
+      "path": "learning/course-program.js",
+      "sha256": "46d4adf3f0e63f756d6108dd6f38cf02927fc6bfd467a9ccf78eadcf15a182ea"
+    },
+    {
+      "path": "learning/index.html",
+      "sha256": "e179ed01d7ad0a93f4b9734f0a16628bfbbe51e6210228da89ef6c0791839c67"
+    },
+    {
+      "path": "learning/onboarding.css",
+      "sha256": "77fd2b100efe93db581e098538f35fdfbfa671d3e0f88fa746db587684118b01"
+    },
+    {
+      "path": "learning/onboarding.js",
+      "sha256": "9b609e37b4dc7bda3cedbb31ca6f721fd9ad0b380bc9342726f25423fd7772c8"
+    },
+    {
+      "path": "learning/style.css",
+      "sha256": "66ba56a58c8627f54d8001f7e568e11b61270fba114b4c7d0b97ce569791c166"
+    },
+    {
+      "path": "learning/teaching.js",
+      "sha256": "9a75742ca647dad9486438449fd148ca7f56eac0e0eccb236e2501dfef902e1d"
+    },
+    {
+      "path": "learning/welcome.js",
+      "sha256": "108f6e5c22c5f5e2515dda46129a7e697590ca80f791016fe2f357da0ae90bcb"
+    }
+  ],
+  "browserRuntime": "Chromium 140.0.7339.16",
+  "nodeRuntime": "24.22.1",
+  "limitations": [
+    "Actual BFCache navigation not tested",
+    "All 22 public course endpoints reachable; actual managed learning flow tested for two courses, not every public course",
+    "Production cabinet read-only GET returned HTTP 503; no production accounts accessed"
+  ]
+}

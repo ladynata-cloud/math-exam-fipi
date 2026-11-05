@@ -26,9 +26,11 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
       for(let number=1;number<=13;number++){
         await page.goto(origin+course.entry+'#calm/'+number);
         await page.locator('main h1').waitFor();
-        assert.deepEqual(await page.locator('[data-course-resource]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),course.banks.filter(b=>b.numbers.includes(number)).map(b=>b.path));
+        assert.equal(await page.locator('.course-resources[open]').count(),0,'additional practice stays closed until requested');
+        assert.deepEqual(await page.locator('[data-course-resource]').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),course.banks.filter(b=>b.numbers.includes(number)).map(b=>course.resourceHref(b,number)));
       }
       await page.goto(origin+course.entry+'#exam/16');
+      await page.locator('.course-resources summary').click();
       await page.locator('[data-course-resource]').first().waitFor();
       assert.equal(await page.locator('[data-course-resource]').count(),6);
       // Every registered entry and nested exercise page has course navigation and

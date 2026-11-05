@@ -145,7 +145,9 @@ async function validateCross(row) {
         else await accept(page, item.task.answer);
         await page.locator('.result-panel').waitFor();
         assert.equal((await saved(page)).records[item.lesson.id].independent.length, 0, label + ': helped answer is never independent credit');
-        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 1, label + ': result also unfolds one step at a time');
+        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 0, label + ': result explanation stays closed until requested');
+        await page.locator('#result-solution [data-solution-open]').click();
+        assert.equal(await page.locator('#result-solution [data-solution-step]').count(), 1, label + ': requested result unfolds one step at a time');
         journeys++;
       }
 

@@ -103,6 +103,10 @@ header.top{
 }
 .modes button:hover{color:var(--ink)}
 .modes button.active{background:var(--ink);color:var(--paper-soft)}
+@media(max-width:520px){
+  .modes{flex-wrap:wrap;justify-content:center;border-radius:24px}
+  body.profile-course-page #app .modes button{flex:0 0 auto;white-space:nowrap;overflow-wrap:normal}
+}
 
 /* ── PROGRESS STRIP ─────────────────────────────────── */
 .lesson-strip{
@@ -397,6 +401,8 @@ header.top{
 
 /* ── UTIL ──────────────────────────────────────────── */
 .hidden{display:none !important}
+details.support{margin:14px 0}
+details.support summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
 .flex-between{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .muted{color:var(--ink-faint)}
 .kbd{font-family:var(--mono);font-size:12px;padding:1px 6px;background:var(--paper-deep);border-radius:4px;border:1px solid var(--line)}
@@ -415,7 +421,7 @@ header.top{
   .lesson-pill{font-size:12px;padding:7px 10px}
 }
 </style>
-<link rel="stylesheet" href="../start/course-links.css?v=20261010-readable-help"><script defer src="../start/course-links.js?v=20261010-unified"></script>
+<link rel="stylesheet" href="../start/course-links.css?v=20261101-trainer-repair"><script defer src="../start/course-links.js?v=20261101-trainer-repair"></script>
 </head>
 <body>
 <div class="app" id="app">
@@ -846,6 +852,7 @@ const TRAPS = [
    ═══════════════════════════════════════════════════════════════════ */
 
 function buildFinalTest(){
+  if (typeof state !== 'undefined' && state) state.testHelped = false;
   const pool = [];
   // 2 assembly tasks (any 2 of the 4 formulas)
   const aIds = shuffle(Object.keys(ASSEMBLIES)).slice(0,2);
@@ -883,6 +890,7 @@ const DEFAULT_STATE = {
   trapIx:0,
   testIx:0,
   testAnswers:[],
+  testHelped:false,
   test:null,
   progress:{                   // tracks completion per lesson per section
     pqIntroDone:false,
@@ -927,23 +935,51 @@ function resetProgress(){
    ═══════════════════════════════════════════════════════════════════ */
 
 const $app = document.getElementById('app');
+function markReferenceHelp(){
+  if(state.view === 'finalTest' && state.test && state.testIx < state.test.length){
+    state.testHelped = true;
+    saveState();
+  }
+}
+document.addEventListener('profile-course-help-requested', markReferenceHelp);
 
 /** innerHTML doesn't execute injected <script> tags — we re-create them here. */
 function runScripts(root){
   root.querySelectorAll('script').forEach(old=>{
     const s = document.createElement('script');
     if(old.src) s.src = old.src;
-    s.textContent = old.textContent;
+    s.textContent = old.src ? old.textContent : '(function(){\n' + old.textContent + '\n})();';
     old.parentNode.replaceChild(s, old);
   });
 }
 
+// Each rendered screen owns its pending transitions; navigation cancels them.
+let renderVersion = 0;
+const viewTimers = new Set();
+function scheduleView(fn, delay){
+  const version = renderVersion;
+  const timer = window.setTimeout(()=>{
+    viewTimers.delete(timer);
+    if(version === renderVersion) fn();
+  }, delay);
+  viewTimers.add(timer);
+  return timer;
+}
+function lockChoices(selector){
+  document.querySelectorAll(selector).forEach(b=>{ b.disabled=true; b.classList.add('locked'); });
+}
+function unlockChoices(selector){
+  document.querySelectorAll(selector).forEach(b=>{ b.disabled=false; b.classList.remove('locked','wrong'); });
+}
 function render(){
-  saveState();
+  viewTimers.forEach(timer=>window.clearTimeout(timer));
+  viewTimers.clear();
+  renderVersion++;
 
   // teacher mode always overrides view
   if(state.mode==='teacher'){
     renderShell(renderTeacher());
+    saveState();
     return;
   }
 
@@ -958,6 +994,7 @@ function render(){
   };
   const fn = views[state.view] || renderOnboarding;
   renderShell(fn());
+  saveState();
 }
 
 function renderShell(content){
@@ -967,22 +1004,22 @@ function renderShell(content){
         <div class="eyebrow">10 КЛАСС · ТРИГОНОМЕТРИЯ</div>
         <h1>Сумма и разность <em>sin</em> / <em>cos</em> → произведение</h1>
 <details class="kim-ref" style="margin:16px 0;border:1.5px dashed #C22F2A;border-radius:10px;background:rgba(255,255,255,.85);padding:0 16px;max-width:660px;">
-  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справочные материалы КИМ — то, из чего выводятся формулы этого тренажёра</summary>
+  <summary style="cursor:pointer;padding:11px 0;font-weight:800;color:#16307F;">Справка: формулы для вывода</summary>
   <div style="padding:2px 0 13px;font-size:16.5px;line-height:1.85;color:#2A2F38;">
     <div>sin 2α = 2 sin α · cos α</div>
     <div>cos 2α = cos²α − sin²α</div>
     <div>sin (α + β) = sin α · cos β + cos α · sin β</div>
     <div>cos (α + β) = cos α · cos β − sin α · sin β</div>
-    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Формул этого тренажёра — суммы и разности в произведение — на листке НЕТ, и в этом вся соль: они выводятся ровно из этих четырёх. Замените β на −β, сложите синус суммы с синусом разности — справа останется 2 sin α · cos β. Дальше подстановка α = (p + q)/2, β = (p − q)/2 превращает левую часть в sin p + sin q, и формула готова. То есть на экзамене вам выдают не ответ, а исходники: полусумма и полуразность — единственное, что нужно помнить сверх листка.</p>
+    <p style="margin:10px 0 0;font-size:13.5px;line-height:1.6;color:#67707E;">Формулы суммы и разности в произведение можно вывести из формул сложения. Замените β на −β, сложите синус суммы с синусом разности — справа останется 2 sin α · cos β. Затем подставьте α = (p + q)/2, β = (p − q)/2: слева получится sin p + sin q. Это учебная справка по преобразованиям.</p>
   </div>
 </details>
 
-        <div class="colorkey">
+        <details class="support"><summary>Справка: обозначения и цвета</summary><div class="colorkey">
           <span><i style="background:var(--gold-bg);border-color:var(--gold-line)"></i>полусумма ${frac('α+β','2')}</span>
           <span><i style="background:var(--blue-bg);border-color:var(--blue-line)"></i>полуразность ${frac('α−β','2')}</span>
           <span><i style="background:var(--rust-bg);border-color:var(--rust-line)"></i>минус-ловушка</span>
           <span><i style="background:var(--leaf-bg);border-color:var(--leaf-line)"></i>сокращается</span>
-        </div>
+        </div></details>
       </div>
       <div class="modes" role="tablist">
         <button class="${state.mode==='learn'?'active':''}"    data-mode="learn">Обучение</button>
@@ -1005,7 +1042,9 @@ function renderShell(content){
   // wire mode buttons
   $app.querySelectorAll('.modes button').forEach(b=>{
     b.addEventListener('click',()=>{
+            if(b.disabled)return;
       const m = b.dataset.mode;
+      if(m==='teacher') markReferenceHelp();
       state.mode = m;
       if(m==='practice'){ state.view='traps'; state.trapIx=0; }
       else if(m==='teacher'){ /* teacher view rendered separately */ }
@@ -1015,6 +1054,11 @@ function renderShell(content){
   });
 
   // execute injected scripts
+  $app.querySelectorAll('details').forEach(details=>{
+    const summary = details.querySelector('summary');
+    if(summary) summary.addEventListener('click',()=>{ if(!details.open) markReferenceHelp(); });
+    details.addEventListener('toggle',()=>{ if(details.open) markReferenceHelp(); });
+  });
   runScripts($app);
 }
 
@@ -1091,6 +1135,7 @@ function renderOnboarding(){
   <script>
     document.querySelectorAll('[data-onb]').forEach(b=>{
       b.addEventListener('click',()=>{
+            if(b.disabled)return;
         const a = b.dataset.onb;
         if(a==='pq'){
           if(!state.progress.pqIntroDone){ state.view='pqIntro'; state.pqIx=0; }
@@ -1171,20 +1216,21 @@ function renderPQIntro(){
     const choices = ${JSON.stringify(step.choices)};
     document.querySelectorAll('#pq-choices .choice').forEach(b=>{
       b.addEventListener('click',()=>{
+            if(b.disabled)return;
         const i = +b.dataset.i;
         const ch = choices[i];
-        document.querySelectorAll('#pq-choices .choice').forEach(x=>x.classList.add('locked'));
+        lockChoices('#pq-choices .choice');
         b.classList.add(ch.correct?'correct':'wrong');
         const fb = document.getElementById('pq-fb');
         if(ch.correct){
           fb.innerHTML = '<div class="note leaf">'+ch.feedback+'</div>';
-          setTimeout(()=>{ state.pqIx++; render(); }, 1200);
+          scheduleView(()=>{ state.pqIx++; render(); }, 1200);
         } else {
           state.errors++;
           fb.innerHTML = '<div class="note rust">'+ch.feedback+' Попробуй ещё.</div>';
-          setTimeout(()=>{
+          scheduleView(()=>{
             b.classList.remove('locked','wrong');
-            document.querySelectorAll('#pq-choices .choice').forEach(x=>x.classList.remove('locked'));
+            unlockChoices('#pq-choices .choice');
           }, 1400);
         }
       });
@@ -1226,6 +1272,7 @@ function renderLesson(){
   <script>
     document.querySelectorAll('[data-sec]').forEach(b=>{
       b.addEventListener('click',()=>{
+            if(b.disabled)return;
         state.section = b.dataset.sec;
         state.stepIx = 0; state.assemblyIx = 0; state.productIx = 0;
         render();
@@ -1343,19 +1390,20 @@ function renderCurrentStep(step, ix, lesson, meta){
         const ch = ${JSON.stringify(step.choices)};
         document.querySelectorAll('#lc-${ix} .choice').forEach(b=>{
           b.addEventListener('click',()=>{
+            if(b.disabled)return;
             const i=+b.dataset.i;
             const c=ch[i];
-            document.querySelectorAll('#lc-${ix} .choice').forEach(x=>x.classList.add('locked'));
+            lockChoices('#lc-${ix} .choice');
             b.classList.add(c.correct?'correct':'wrong');
             const fb=document.getElementById('lc-fb-${ix}');
             if(c.correct){
               fb.innerHTML='<div class="note leaf">'+c.feedback+'</div>';
-              setTimeout(()=>{state.stepIx++;render();}, 1300);
+              scheduleView(()=>{state.stepIx++;render();}, 1300);
             } else {
               state.errors++;
               fb.innerHTML='<div class="note rust">'+c.feedback+' Попробуй ещё.</div>';
-              setTimeout(()=>{
-                document.querySelectorAll('#lc-${ix} .choice').forEach(x=>{x.classList.remove('locked','wrong');});
+              scheduleView(()=>{
+                unlockChoices('#lc-${ix} .choice');
               }, 1500);
             }
           });
@@ -1404,6 +1452,7 @@ function renderConstructor(step, ix){
         const slots  = document.getElementById('slots-${ix}');
         const bank   = document.getElementById('bank-${ix}');
         const status = document.getElementById('status-${ix}');
+        let submitted = false;
 
         function repaintSlots(){
           if(placed.length===0){
@@ -1415,6 +1464,7 @@ function renderConstructor(step, ix){
           ).join('');
           slots.querySelectorAll('button').forEach(b=>{
             b.addEventListener('click',()=>{
+            if(b.disabled)return;
               const idx=+b.dataset.idx;
               const rem=placed.splice(idx,1)[0];
               bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
@@ -1427,6 +1477,7 @@ function renderConstructor(step, ix){
 
         bank.querySelectorAll('.tile').forEach(b=>{
           b.addEventListener('click',()=>{
+            if(b.disabled)return;
             if(b.classList.contains('placed')) return;
             b.classList.add('placed');
             placed.push({pi:+b.dataset.pi, text:b.dataset.t});
@@ -1435,11 +1486,13 @@ function renderConstructor(step, ix){
         });
 
         document.getElementById('check-${ix}').onclick = ()=>{
+          if(submitted)return;
           const got = placed.map(p=>p.text);
           if(got.length===answer.length && got.every((x,i)=>x===answer[i])){
             status.className='constructor-status ok';
             status.innerHTML = '<strong>Верно.</strong> Идём дальше.';
-            setTimeout(()=>{ state.stepIx++; render(); }, 1200);
+            submitted=true; document.getElementById('check-${ix}').disabled=true;
+            scheduleView(()=>{ state.stepIx++; render(); }, 1200);
           } else if(got.length===0){
             status.className='constructor-status bad';
             status.textContent='Поле пустое — сначала собери выражение из блоков.';
@@ -1479,7 +1532,7 @@ function handleAssemblyDone(lessonId, mode){
     render();
   } else {
     // hub mode — advance to next quick-assembly
-    setTimeout(()=>{ state.assemblyIx++; render(); }, 1100);
+    scheduleView(()=>{ state.assemblyIx++; render(); }, 1100);
   }
 }
 
@@ -1524,11 +1577,13 @@ function renderAssemblyWidget(lessonId, mode){
         const slots  = document.getElementById('asm-slots');
         const bank   = document.getElementById('asm-bank');
         const status = document.getElementById('asm-status');
+        let submitted = false;
         function repaint(){
           if(!placed.length){ slots.innerHTML='<span class="placeholder">собирай по порядку...</span>'; return; }
           slots.innerHTML = placed.map((p,idx)=>'<button class="tile" data-idx="'+idx+'">'+p.text+'</button>').join('');
           slots.querySelectorAll('button').forEach(b=>{
             b.addEventListener('click',()=>{
+            if(b.disabled)return;
               const idx=+b.dataset.idx;
               const rem=placed.splice(idx,1)[0];
               bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
@@ -1538,6 +1593,7 @@ function renderAssemblyWidget(lessonId, mode){
         }
         bank.querySelectorAll('.tile').forEach(b=>{
           b.addEventListener('click',()=>{
+            if(b.disabled)return;
             if(b.classList.contains('placed'))return;
             b.classList.add('placed');
             placed.push({pi:+b.dataset.pi, text:b.dataset.t});
@@ -1545,10 +1601,12 @@ function renderAssemblyWidget(lessonId, mode){
           });
         });
         document.getElementById('asm-check').onclick=()=>{
+          if(submitted)return;
           const got = placed.map(p=>p.text);
           if(got.length===answer.length && got.every((x,i)=>x===answer[i])){
             status.className='constructor-status ok';
             status.innerHTML = '<strong>Точно.</strong> Формула собрана.';
+            submitted=true; document.getElementById('asm-check').disabled=true;
             window.handleAssemblyDone(lessonId, mode);
           } else {
             state.errors++;
@@ -1701,7 +1759,8 @@ function renderTraps(){
             <span class="body" style="font-family:var(--body);font-weight:500;font-size:15px">${o}</span>
           </button>`).join('')}
       </div>
-      <div id="trap-fb" style="margin-top:14px"></div>
+      <div id="trap-fb" style="margin-top:14px" role="status"></div>
+      <details class="support"><summary>Показать разбор этой ловушки</summary><div class="note leaf">${t.explain}</div></details>
       <div class="btn-row">
         ${ix>0?'<button class="btn ghost" onclick="state.trapIx--;render()">← Назад</button>':''}
         <button class="btn ghost" onclick="state.mode='learn';state.view='onboarding';render()">На главную</button>
@@ -1713,19 +1772,18 @@ function renderTraps(){
       const explain = ${JSON.stringify(t.explain)};
       document.querySelectorAll('#trap-c .choice').forEach(b=>{
         b.addEventListener('click',()=>{
+            if(b.disabled)return;
           const i=+b.dataset.i;
-          document.querySelectorAll('#trap-c .choice').forEach(x=>x.classList.add('locked'));
+          lockChoices('#trap-c .choice');
           if(i===correct){
             b.classList.add('correct');
             document.getElementById('trap-fb').innerHTML='<div class="note leaf">'+explain+'</div>';
-            setTimeout(()=>{ state.trapIx++; render(); }, 1700);
+            scheduleView(()=>{ state.trapIx++; render(); }, 1700);
           } else {
             state.errors++;
             b.classList.add('wrong');
-            // mark the correct one too
-            document.querySelectorAll('#trap-c .choice')[correct].classList.add('correct');
-            document.getElementById('trap-fb').innerHTML='<div class="note rust">Не та ошибка. '+explain+'</div>';
-            setTimeout(()=>{ state.trapIx++; render(); }, 2400);
+            document.getElementById('trap-fb').innerHTML='<div class="note rust">Пока неверно. Проверь знак, функцию и аргументы. Можно попробовать ещё раз или открыть разбор.</div>';
+            scheduleView(()=>unlockChoices('#trap-c .choice'), 1200);
           }
         });
       });
@@ -1745,11 +1803,13 @@ function renderFinalTest(){
   if(ix >= total){
     const correct = state.testAnswers.filter(Boolean).length;
     const pct = Math.round(correct/total*100);
-    state.progress.testBest = Math.max(state.progress.testBest, correct);
+    if(state.testHelped) state.progress.testAssistedBest = Math.max(state.progress.testAssistedBest || 0, correct);
+    else state.progress.testBest = Math.max(state.progress.testBest, correct);
     return `
       <section class="card" style="text-align:center;padding:34px 24px">
         <div class="onb-eyebrow" style="color:var(--leaf)">Готово</div>
         <h2 style="font-family:var(--display);font-size:30px;margin:8px 0 18px">Финальный тест: ${correct} / ${total}</h2>
+        ${state.testHelped ? '<p class="sub">Решено с помощью. Самостоятельный рекорд сохранён; для новой попытки начни тест заново.</p>' : ''}
         <div class="score-ring" style="--p:${pct}"><span>${pct}%</span></div>
         <p class="sub" style="margin-top:18px">${correct===total
           ? 'Готово: можно переходить к применению формул в задачах.'
@@ -1788,13 +1848,13 @@ function renderFinalTest(){
         const ci = ${correctIx};
         document.querySelectorAll('#ft-c .choice').forEach(b=>{
           b.addEventListener('click',()=>{
+            if(b.disabled)return;
             const i=+b.dataset.i;
-            document.querySelectorAll('#ft-c .choice').forEach(x=>x.classList.add('locked'));
+            lockChoices('#ft-c .choice');
             const ok = i===ci;
             b.classList.add(ok?'correct':'wrong');
-            if(!ok) document.querySelectorAll('#ft-c .choice')[ci].classList.add('correct');
-            state.testAnswers.push(ok);
-            setTimeout(()=>{ state.testIx++; render(); }, 1300);
+            state.testAnswers.push(ok); state.testIx++; saveState();
+            scheduleView(render, 1300);
           });
         });
       <\/script>
@@ -1827,10 +1887,12 @@ function renderFinalTest(){
           const slots=document.getElementById('ft-slots');
           const bank=document.getElementById('ft-bank');
           const status=document.getElementById('ft-status');
+          let submitted=false;
           function repaint(){
             if(!placed.length){slots.innerHTML='<span class="placeholder">собирай по порядку...</span>';return;}
             slots.innerHTML = placed.map((p,idx)=>'<button class="tile" data-idx="'+idx+'">'+p.text+'</button>').join('');
             slots.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+            if(b.disabled)return;
               const idx=+b.dataset.idx;
               const rem=placed.splice(idx,1)[0];
               bank.querySelector('[data-pi="'+rem.pi+'"]').classList.remove('placed');
@@ -1838,17 +1900,20 @@ function renderFinalTest(){
             }));
           }
           bank.querySelectorAll('.tile').forEach(b=>b.addEventListener('click',()=>{
+            if(b.disabled)return;
             if(b.classList.contains('placed'))return;
             b.classList.add('placed');
             placed.push({pi:+b.dataset.pi,text:b.dataset.t});repaint();
           }));
           document.getElementById('ft-check').onclick=()=>{
+            if(submitted)return;
+            submitted=true; document.getElementById('ft-check').disabled=true;
             const got=placed.map(p=>p.text);
             const ok = got.length===answer.length && got.every((x,i)=>x===answer[i]);
             status.className='constructor-status '+(ok?'ok':'bad');
-            status.innerHTML = ok ? '<strong>Верно.</strong>' : '<strong>Не верно.</strong> Правильный ответ покажется на экране результатов.';
-            state.testAnswers.push(ok);
-            setTimeout(()=>{state.testIx++;render();}, 1300);
+            status.innerHTML = ok ? '<strong>Верно.</strong>' : '<strong>Ответ принят.</strong> После теста можно вернуться к сборке формулы.';
+            state.testAnswers.push(ok); state.testIx++; saveState();
+            scheduleView(render, 1300);
           };
           document.getElementById('ft-clear').onclick=()=>{
             placed.length=0;
@@ -1877,13 +1942,13 @@ function renderFinalTest(){
         const ci = ${t.correct};
         document.querySelectorAll('#ft-tc .choice').forEach(b=>{
           b.addEventListener('click',()=>{
+            if(b.disabled)return;
             const i=+b.dataset.i;
-            document.querySelectorAll('#ft-tc .choice').forEach(x=>x.classList.add('locked'));
+            lockChoices('#ft-tc .choice');
             const ok=i===ci;
             b.classList.add(ok?'correct':'wrong');
-            if(!ok) document.querySelectorAll('#ft-tc .choice')[ci].classList.add('correct');
-            state.testAnswers.push(ok);
-            setTimeout(()=>{state.testIx++;render();}, 1400);
+            state.testAnswers.push(ok); state.testIx++; saveState();
+            scheduleView(render, 1400);
           });
         });
       <\/script>

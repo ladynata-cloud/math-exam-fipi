@@ -4,18 +4,44 @@ const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
+// These frozen inverses describe only the already reviewed PR340 board hooks.
+// The book check still seals the original pre-mirror bytes. Separate native
+// engine pins, transport and event-order gates test the current board engines.
+const boardInverse=require('./fixtures/oge-book-reviewed-board-inverse.json');
+function beforeMirror(file,source){
+ const rule=boardInverse[file];if(!rule)return source;
+ let result=source;
+ for(const fragment of rule.fragments){
+  if(result.includes(fragment.after)){
+   assert.equal(result.split(fragment.after).length,2,'one exact reviewed board fragment');
+   result=result.replace(fragment.after,fragment.before);
+  }else assert.equal(result.split(fragment.before).length,2,'missing reviewed board fragment');
+ }
+ assert.equal(sha(result),rule.baseSha256,'unreviewed changes outside board fragments');
+ return result;
+}
 for(const [file,rule]of Object.entries(corrections)){
  test(file+': exact inverse preserves the reviewed historical bytes',()=>{
   const current=fs.readFileSync(path.join(root,file),'utf8');
-  assert.equal(sha(restoreHistoricalBytes(file,current)),rule.historicalSha256);
+  assert.equal(sha(current),boardInverse[file].candidateSha256,'reviewed board candidate identity');
+  assert.equal(sha(restoreHistoricalBytes(file,beforeMirror(file,current))),rule.historicalSha256);
  });
  test(file+': negative controls reject changed adapter fragments and extra engine code',()=>{
-  const current=fs.readFileSync(path.join(root,file),'utf8');
+  const current=beforeMirror(file,fs.readFileSync(path.join(root,file),'utf8'));
   for(const fragment of rule.fragments){
    const changed=fragment.after.slice(0,1)+'/* unreviewed */'+fragment.after.slice(1);
    assert.throws(()=>restoreHistoricalBytes(file,current.replace(fragment.after,changed)),/approved persistence fragment/);
   }
   assert.notEqual(sha(restoreHistoricalBytes(file,current.replace('</script>','\nvoid "unreviewed engine change";\n</script>'))),rule.historicalSha256);
+ });
+ test(file+': every board inverse rejects mutation, omission and extra engine code',()=>{
+  const current=fs.readFileSync(path.join(root,file),'utf8');
+  for(const fragment of boardInverse[file].fragments){
+   assert(current.includes(fragment.after),'negative probe must modify an existing fragment');
+   for(const changed of [fragment.after+'/* unreviewed */',fragment.after.slice(1)])
+    assert.throws(()=>beforeMirror(file,current.replace(fragment.after,changed)));
+  }
+  assert.throws(()=>beforeMirror(file,current.replace('</script>','\nvoid "unreviewed";\n</script>')));
  });
 }
 const files={6:'oge-task6-fractions.html',20:'oge-task20-equations.html',22:'oge-task22-functions-graphs.html'};

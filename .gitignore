@@ -1,4 +1,5 @@
 *.pdf
+!/pedagogam/raboty/**/*.pdf
 !book/oge/2026-10-31/v1/trainers/task19-reference/source-demo-2027.pdf
 !book/oge/2026-10-31/v2/trainers/task19-reference/source-demo-2027.pdf
 node_modules/
@@ -15,3 +16,7 @@ artifacts/book-audit-exam/
 artifacts/book-audit-live/
 artifacts/book-edition/
 artifacts/book-external-review.json
+
+# Printable OGE-2027 practice catalogue.
+!/oge/variants/2027/files/*.pdf
+!/oge/variants/2027/collections/*.pdf

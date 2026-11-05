@@ -80,6 +80,8 @@ let selected = [];      // [{key,label,user}]
 let pending = null;
 let constructOn = false;
 let autoRot = false;
+let courseHelpUsed = false;
+document.addEventListener('profile-course-help-requested',()=>{courseHelpUsed=true;});
 
 const prob = () => LIST[idx];
 const revealed = () => !!status[prob().id]?.revealed;
@@ -741,6 +743,7 @@ function renderNav() {
 }
 
 function showProblem() {
+  courseHelpUsed = false;
   const p = prob();
   try { localStorage.setItem(lastKey, idx); } catch (e) {}
   selected = []; setPending(null); constructOn = false; autoRot = false;
@@ -776,7 +779,8 @@ function check() {
   const ok = Math.abs(parseAns(val) - parseAns(p.ans)) < 1e-9;
   saveRec(p.id, prev => ({
     ...prev,
-    st: ok ? "ok" : (prev.st === "ok" ? "ok" : "fail"),
+    st: ok&&!courseHelpUsed ? "ok" : (prev.st === "ok" ? "ok" : "fail"),
+    assisted: courseHelpUsed,
     revealed: ok || prev.revealed,
     attempts: cnt(prev.attempts) + 1,
     wrong: cnt(prev.wrong) + (ok ? 0 : 1),
@@ -786,7 +790,9 @@ function check() {
   const fb = $("feedback");
   fb.style.display = "block";
   fb.className = "feedback " + (ok ? "ok" : "bad");
-  fb.textContent = ok
+  fb.textContent = ok&&courseHelpUsed
+    ? "Верно с помощью. Школьная тема была открыта; самостоятельное решение этой попыткой не подтверждено."
+    : ok
     ? "Верно! Ответ: " + p.ans + ". Длины на чертеже открыты — проверьте себя."
     : "Пока неверно. Попробуйте ещё раз или откройте подсказку.";
   renderNav();

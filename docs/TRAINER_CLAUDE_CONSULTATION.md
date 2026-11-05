@@ -1,13 +1,15 @@
 # Claude consultation for MathExam trainers
 
-Owner decision: 2026-10-20 (Asia/Novosibirsk). Discuss the learning design with
-Claude before development and review the ready result with Claude afterwards.
-This is an active workflow under [AGENTS.md](../AGENTS.md) and
-[REVIEW_POLICY.md](REVIEW_POLICY.md), not a replacement for their gates.
+Current owner decision: 2026-11-02 (Asia/Novosibirsk), recorded in
+[standing publication authorization](OWNER_RELEASE_AUTHORIZATION.md).
+External Claude consultation and audit are optional, not release prerequisites.
+The former 2026-10-20 mandatory provider requirement is superseded. Keep the
+teaching constraints and internal design/result checks below. Use the external
+provider procedure only when the owner requests that consultation for the task.
 
 ## When to consult
 
-Use this workflow for a new trainer, a new interaction pattern, or substantial
+When external consultation is requested, use this workflow for a new trainer, a new interaction pattern, or substantial
 changes to the sequence of learning steps, hints, diagnosis, or feedback.
 Typographical corrections and mechanical styling changes do not require a paid
 consultation. Group related design questions into one focused discussion; do
@@ -123,7 +125,9 @@ unavailable/not completed, report the concrete reason, and stop automatic
 retries for that condition. An unavailable consultation is not advice or
 approval. Continue useful preparation and technical checks within the approved
 scope; follow the existing review policy for any required release exception.
-An exception for one earlier release does not become a standing waiver.
+An exception for one earlier release does not become a standing waiver; the
+separate 2026-11-02 owner policy is the current standing waiver. Provider
+unavailability alone does not create or revoke that policy.
 
 ## Current integration boundary
 

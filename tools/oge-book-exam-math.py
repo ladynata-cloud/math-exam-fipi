@@ -93,6 +93,8 @@ def exact_reviewed_context(record, oracle, fixtures):
     """
     fixture = fixtures.get(record['id'])
     if fixture is None:return False
+    if not record['prefix']:
+        fixture = fixture.get('sourceVariant', fixture)
     text = record['initialVisibleText']
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
@@ -258,6 +260,17 @@ PRACTICAL = {
 
 def reviewed(record, oracle, index):
     ident=record['id'];p=plain(oracle['prompt']);q=oracle.get('question',index+1)
+    if ident=='08' and not record['prefix']:
+        # Exact source-only context is checked above. Frozen editions retain
+        # their original independently reviewed questions and answers below.
+        cases=[
+          ('2143','По видимой таблице А0=1189×841 — №2, А2=594×420 — №1, А5=210×148 — №4, А6=148×105 — №3. Порядок А0,А2,А5,А6 даёт2143.'),
+          (2**(3-1),'Два последовательных деления пополам: изА1 получается2²=4 листаА3.'),
+          (10000/2**3,'Идеальная площадьА0=1м²=10000см². А3 имеет1/8 этой площади:1250см².'),
+          (round(297/420,1),'Меньшая сторонаА3=297мм, большая420мм. 297/420=0,707142…; до десятых0,7.'),
+          (300*120/2/1000,'А1=1/2м². Масса300 листов при120г/м²:300×120/2=18000г=18кг.')]
+        value,calculation=cases[q-1]
+        return value,calculation,'PASS',None
     if ident=='03':
         percent_cases={
           'Найдите 30% от числа 200.':(200*30/100,'30%=30/100; 200×30/100=60.'),
@@ -279,6 +292,10 @@ def reviewed(record, oracle, index):
         return result,'Независимое распознавание фактически отрисованных кривых: '+stable(details)+'. y=x — прямая через начало с положительным наклоном; y=x² — одна парабола с вершиной вначале; y=1/x — две отдельные ветви вI иIII четвертях.','PASS',None
     if ident=='55' and '15 коробок' in p and 'по 12 кг' in p:
         return 15*12,'Искомая масса M=m·n=12кг×15=180кг; цена90руб/кг не входит вформулу массы.','PASS',None
+    if ident=='55' and not record['prefix'] and 'F = 1,8 · C + 32' in p and 'C = -90 °C' in p:
+        # OGE12_SOURCE_AUDIT changed the public seeded example; the exact source
+        # fixture is separate from the unchanged v1/v2 apple-box condition.
+        return float(Fraction(9,5)*(-90)+32),'По видимому условию C=−90 °C. F=(9/5)×(−90)+32=−162+32=−130 °F. Знак минус сохраняется; это температура по другой шкале, не модуль температуры.','PASS',None
     if ident=='57' and '10 минут' in p and '3 минуты' in p and '5-й день' in p:
         return 10+(5-1)*3,'Арифметическая последовательность: первый день10мин, до5-го дня4 прибавления по3мин. a5=10+4×3=22мин.','PASS',None
     if ident=='58' and 'BP = 15, CP = 6, DP = 10' in p:

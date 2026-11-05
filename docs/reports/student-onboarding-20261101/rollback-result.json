@@ -1,0 +1,1 @@
+{"gate":"ONBOARDING_OLD_RUNTIME_ROLLBACK_OK","base":"37718f1c0138ba031314b8f4716b73c9d963bc81","checks":["exact old runtime reopens upgraded database","old account, session and saved attempt unchanged","old runtime edits profile and creates pupil","additive program retained through rollback and reapply","schema version remains 1"]}

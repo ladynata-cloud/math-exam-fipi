@@ -128,7 +128,7 @@ test('one searchable course entry has an exact mirror declaration without a pers
   assert.equal(canonicalTrainerFile(sourcePath.slice(1)), null);
   const registry = loadTrainerRegistry({ env: {} });
   assert.deepEqual(registry.getByTrainerUrl(wrapperPath + '#skills'), {
-    trainerId: 'peterson6', file: wrapperPath.slice(1), version: '1.0.0',
+    trainerId: 'peterson6', file: wrapperPath.slice(1), version: '1.1.0',
     stateSchemaVersion: 1, bridgeProtocolVersion: 1, allowLegacyHtml: false
   });
   assert.equal(registry.getByTrainerUrl(sourcePath + '#skills'), null);

@@ -4,6 +4,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const {execFileSync}=require('node:child_process');
+const vm=require('node:vm');
 const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..');
 const base=process.env.OGE_BASE_ROOT||root;
@@ -17,7 +18,13 @@ test('OGE-13 direct route retains the legacy redirect and both task/download des
  const d=legacy.window.document;
  assert.equal(d.querySelector('link[rel="canonical"]').href,currentInequalities);
  assert.equal(d.querySelector('meta[http-equiv="refresh"]').content,'0; url=/trainers/oge13-inequalities-series.html');
- assert.equal(d.querySelector('script').textContent,"window.location.replace('/trainers/oge13-inequalities-series.html');");
+ // Retain the reviewed destination while carrying a shared-room query/hash.
+ const redirect=d.querySelector('script').textContent;
+ for(const [search,hash] of [['',''],['?board=1','#synthetic-room'],['?board=1&seed=42','#task']]){
+  let destination;const location={search,hash,replace(value){destination=value;}};
+  vm.runInNewContext(redirect,{window:{location}});
+  assert.equal(destination,'/trainers/oge13-inequalities-series.html'+search+hash);
+ }
  assert(d.querySelector('main a[href="/trainers/oge13-inequalities-series.html"]'));
  const course=load(files[0]);
  assert(course.window.document.querySelector('h3 a[href="/trainers/oge13-inequalities-series.html"]'));
@@ -67,7 +74,7 @@ test('both hubs retain all previous navigation destinations and resolve local li
  }
 });
 test('secondary OGE hub keeps informatics reachable and leads to mathematics course',()=>{
- const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.primary-link').href).pathname,'/trainers/oge-course/');
+ const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.hero .btn').href).pathname,'/trainers/oge-course/');
  const informatics=d.querySelector('a[href="../trainers/oge-informatics-1-10-tutor.html"]');assert(informatics);assert(informatics.closest('details'));
  assert.doesNotMatch(d.querySelector('main').textContent,/зубрёжка/);
  for(const a of d.querySelectorAll('.topic-links a'))assert(!/^(Открыть|Открыть модуль|Пройти)$/.test(a.textContent.trim()),'Topic link has a meaningful label');

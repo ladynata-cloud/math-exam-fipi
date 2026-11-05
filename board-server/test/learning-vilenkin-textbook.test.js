@@ -25,7 +25,9 @@ function fixture(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'v6-textbook-
     action(a,type,payload,who=student){return store.action(who,a.id,{opId:op(),expectedVersion:a.version,type,payload});},finish(a){return this.action(a,'check',final(a.taskSpec,a.state)).attempt;}};
 }
 test('all 378 prior catalog rows preserve their exact base content and order',()=>{
-  const prior=catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook');
+  const additions=new Set(['practice-digits-delete','practice-average-three','practice-ring-route','practice-ring-meeting']);
+  assert.equal(catalog.items.filter(item=>item.trainerId==='ege-path'&&additions.has(item.contentId)).length,4);
+  const prior=catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook'&&!(item.trainerId==='ege-path'&&additions.has(item.contentId)));
   assert.equal(prior.length,378);
   // Independently compared with main 6fb959fc before adding this source course.
   assert.equal(crypto.createHash('sha256').update(JSON.stringify(prior)).digest('hex'),'86c3504c2d170b3afb208b96c4dc0a0fa689290fe646935683ab8c29691bf439');

@@ -67,7 +67,7 @@ assert.equal(previous.catalog.entries.length, 1368);
 assert.equal(previousRegistry.cards.length, 474);
 assert.equal(previousRegistry.batches.length, 22);
 assert.equal(previousCases.size, 917);
-const authoredFiles = fs.readdirSync(lessonsDir).filter(name => name.endsWith('.json') && !require('./cone-baseline.cjs').ids.has(name.slice(0,-5))&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0, -5)) && !additional.ids.has(name.slice(0, -5)) && !require('./additional294-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional299-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional310-baseline.cjs').ids.has(name.slice(0, -5))).sort();
+const authoredFiles = require('./sphere-baseline.cjs').previousLessonFiles(lessonsDir).filter(name => name.endsWith('.json') && !require('./cone-baseline.cjs').ids.has(name.slice(0,-5))&&!require('./cylinder-baseline.cjs').ids.has(name.slice(0, -5)) && !additional.ids.has(name.slice(0, -5)) && !require('./additional294-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional299-baseline.cjs').ids.has(name.slice(0, -5)) && !require('./additional310-baseline.cjs').ids.has(name.slice(0, -5))).sort();
 const rawOld = authoredFiles.filter(name => !ids.has(name.slice(0, -5)))
   .map(name => [name, rawSha(fs.readFileSync(path.join(lessonsDir, name)))]);
 assert.equal(rawOld.length, 474);
@@ -299,7 +299,7 @@ const app = API.createApp(appRoot, production);
 for (const [index, card] of cards.entries()) {
   assert(app.open(card.id), card.id + ': open reviewed practical task');
   assert(appRoot.querySelector('[data-main-model] svg'), card.id + ': actual primary net');
-  const disclosure = [...appRoot.querySelectorAll('summary')].find(node => node.textContent === 'Где это в учебнике?');
+  const disclosure = [...appRoot.querySelectorAll('summary')].find(node => node.parentElement.classList.contains('companion-details'));
   assert(disclosure, card.id + ': source disclosure');
   const sourceText = disclosure.parentElement.querySelector('p').textContent;
   for (const text of ['стр. 84', 'PDF 86', '№ ' + card.source.exercise]) assert(sourceText.includes(text), card.id + ': visible source ' + text);
