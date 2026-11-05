@@ -55,9 +55,10 @@ test('format mutations rejected by unchanged adapter, including refusals and tru
   await assert.rejects(adapter.callProvider({config:CONFIG,...b,fetchImpl:async()=>Response.json(data)}));
  }
 });
-test('adversarial fixtures reproduce semantic answer leakage and dialogue-size mismatch',async()=>{
+test('schema limitations remain visible, but mathematical review and UTF-8 limits are integrated',async()=>{
  const a=await audit();assert(a.findings.fabricatedWrongFinalAnswerPassesSchema);
- assert(a.findings.validAnswerCanExceedDialogueLimit);assert(a.findings.standalonePreviousTurnsAbsent);
+ assert(a.findings.fabricatedWrongFinalAnswerBlockedByAssessment);assert(a.findings.correctChainedEquationAccepted);
+ assert.equal(a.findings.validAnswerCanExceedDialogueLimit,false);assert(a.findings.standalonePreviousTurnsAbsent);
  assert(a.coverage.every(x=>x.apiRoute==='BLOCKED'));
  assert.equal(a.coverage.filter(x=>x.localVerification==='deterministic').length,4);
 });
@@ -120,5 +121,41 @@ test('scoring cannot average away a mathematical error or accept an incomplete r
   review.rows[0].math=0;assert.equal(score(report,review).verdict,'REVISE');assert.equal(score(report,review).critical,1);
   review.rows[0].math=2;review.rows[0].hint=0;assert.equal(score(report,review).critical,1);
   review.rows[0].hint=null;assert.throws(()=>score(report,review),/REVIEW_REQUIRED/);
+ }finally{f.close();}
+});
+
+test('standalone follow-up is separate from numeric attempt and baseline remains comparable',async()=>{
+ for(const row of CORPUS.dialogs.filter(x=>!x.profile)){
+  const r=build(row,1,fakeAnswer),payload=JSON.parse(r.prepared.body.messages[1].content);
+  assert.equal(r.input.attempt,row.turns[1].attempt||'');
+  assert.equal(payload.attempt,row.turns[1].attempt||'');
+  assert.equal(payload.followUpQuestion,row.turns[1].followUp);
+ }
+ const f=fixture();try{
+  const report=await run({mode:'dry-run',ledger:f.ledger,now:()=>NOW});
+  assert.equal(report.results.length,32);
+  const d04=report.results.find(x=>x.id==='d04-t2');
+  assert.equal(d04.baseline.attemptStatus,'incorrect');
+  assert.equal(d04.baseline.apiCostUsd,0);
+  assert(report.results.every(x=>x.automaticAssessment===null));
+ }finally{f.close();}
+});
+
+test('favourable human scores cannot override wrong mathematics or a leaked hint',async()=>{
+ const f=fixture();try{
+  const dry=await run({mode:'dry-run',ledger:f.ledger,now:()=>NOW});
+  for(const [id,answer] of [
+   ['d04-t2',{title:'Уравнение',text:'Значение x равно 6.',steps:['x = 6'],check:'Проверь подстановкой.'}],
+   ['d04-t1',{title:'Подсказка',text:'Значение x равно −5.',steps:['x = −5'],check:'Проверь подстановкой.'}],
+   ['d04-t2',{title:'Ошибка формата',text:'Пример',steps:[],check:'Проверь.'}]
+  ]){
+   const {digest,...base}=structuredClone(dry);base.kind='LIVE_SYNTHETIC';base.liveCalls=32;
+   base.results.find(x=>x.id===id).answer=answer;
+   const report={...base,digest:hash(base)},review=reviewTemplate(report);
+   review.reviewer='UNIT_TEST_ONLY';review.reviewedAt=new Date(NOW).toISOString();
+   for(const r of review.rows){for(const k of ['math','clarity','feedback','honesty','hint','context'])if(r[k]!=='NA')r[k]=2;
+    r.requiredPointsMet=true;r.criticalError=false;}
+   const result=score(report,review);assert.equal(result.verdict,'REVISE');assert(result.critical>=1);
+  }
  }finally{f.close();}
 });

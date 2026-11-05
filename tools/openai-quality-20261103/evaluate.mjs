@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {pathToFileURL} from 'node:url';
-import {ROOT,hash,manifest,verifySources,current,privacy,cabinets,dialogue,adapter,validateModelAnswer} from './source.mjs';
+import {ROOT,hash,manifest,verifySources,current,privacy,cabinets,dialogue,adapter,validateModelAnswer,assessAnswer} from './source.mjs';
 import {CampaignLedger} from './ledger.mjs';
 export const CORPUS=JSON.parse(fs.readFileSync(path.join(ROOT,'cases.json'),'utf8'));
 export const MODEL='gpt-5.4-mini-2026-03-17';
@@ -23,7 +23,7 @@ export function envelope(answer=fakeAnswer){
 export const mockFetch=async()=>Response.json(envelope());
 export function build(row,index,previous=null,config=CONFIG,now=PRICE_DATE){
  const turn=row.turns[index];let input,cards,builder;
- const attempt=[turn.attempt,index>0&&!row.profile?turn.followUp:null].filter(Boolean).join('. ');
+ const attempt=turn.attempt||'';
  if(row.profile){
   ({input,cards}=cabinets.prepareCabinetQuestion({profileId:row.profile,topic:row.topic,question:row.question,
    attempt,mode:turn.mode==='explain'?'full':'hint',hintLevel:turn.hintLevel,simpler:turn.simpler}));
@@ -33,7 +33,13 @@ export function build(row,index,previous=null,config=CONFIG,now=PRICE_DATE){
   input={...privacy.parseQuestion({topic:row.topic,question:row.question,attempt,mode:turn.mode,
    hintLevel:turn.hintLevel,externalConsent:true,requestId:'00000000-0000-4000-8000-000000000001'},
    current.listProviderTopics().map(t=>t.id)),simpler:turn.simpler};
-  cards=current.getBuiltinKnowledge().filter(c=>c.topic===input.topic).slice(0,3);builder=current.buildMessages;
+  cards=current.getBuiltinKnowledge().filter(c=>c.topic===input.topic).slice(0,3);
+  builder=(safe,knowledge)=>{
+   const messages=current.buildMessages(safe,knowledge);
+   if(index>0){const payload=JSON.parse(messages[1].content);
+    messages[1].content=JSON.stringify({...payload,followUpQuestion:turn.followUp});}
+   return messages;
+  };
  }
  return {input,cards,prepared:adapter.prepareRequest(config,input,cards,now,builder),
   contextMode:row.profile?'cabinet-previous-turn':'original-task-and-latest-attempt-only'};
@@ -98,7 +104,11 @@ export function score(report,review){
   for(const key of ['math','clarity','feedback','honesty','hint','context'])
    requireTrue(dims.includes(key)?Number.isInteger(r[key])&&r[key]>=0&&r[key]<=2:r[key]==='NA','EVAL_REVIEW_REQUIRED');
   requireTrue(typeof r.requiredPointsMet==='boolean'&&typeof r.criticalError==='boolean','EVAL_REVIEW_REQUIRED');
-  const bad=r.criticalError||r.math===0||r.honesty===0||(result.turn===1&&r.hint===0);
+  const row=CORPUS.dialogs.find(x=>x.id===result.dialog);
+  requireTrue(row&&[1,2].includes(result.turn)&&result.id===row.id+'-t'+result.turn,'EVAL_REPORT_CASE_INVALID');
+  const input={topic:row.topic,question:row.question,mode:row.turns[result.turn-1].mode};
+  const automatic=assessAnswer(input,result.answer);
+  const bad=automatic.blocksPositiveReview||(result.turn===1&&automatic.mathematics.finalAnswer==='matched')||r.criticalError||r.math===0||r.honesty===0||(result.turn===1&&r.hint===0);
   if(bad)critical++;
   if(!bad&&r.math===2&&r.requiredPointsMet&&dims.every(d=>r[d]>=1)&&dims.reduce((s,k)=>s+r[k],0)>=.8*2*dims.length)passed++;
  }
@@ -140,13 +150,19 @@ export async function run({mode,ledger,account=null,fetchImpl,now=Date.now,save=
     ledger.reserve({caseId:id,requestDigest:hash(r.prepared.body),reservedMicros:r.prepared.reservedMicros,now:now()});
     const started=now();
     const v=await adapter.callProvider({config,...r,fetchImpl});
-    ledger.complete({caseId:id,...v,latencyMs:Math.max(0,now()-started),now:now()});
     previous=validateModelAnswer({title:v.answer.title,text:v.answer.text,steps:v.answer.steps,check:v.answer.check});
+    ledger.complete({caseId:id,...v,latencyMs:Math.max(0,now()-started),now:now()});
+    const automatic=assessAnswer(r.input,previous);
+    const local=row.profile?cabinets.answerCabinetOffline(r.input,r.cards):current.answerOffline(r.input);
+    const baseline={answer:{title:local.title,text:local.text,steps:local.steps,check:local.check},
+     verification:local.verification,attemptStatus:local.attemptStatus,apiCostUsd:0,
+     followUpUnderstanding:'NOT_TESTED'};
     results.push({id,dialog:row.id,turn:index+1,grade:row.grade,label:row.label,input:r.input,
      contextMode:r.contextMode,payload:r.prepared.body,requestHash:hash(r.prepared.body),
-     reference:row.reference,answer:previous,usage:v.usage,
+     reference:row.reference,answer:previous,usage:v.usage,baseline,
+     automaticAssessment:mode==='live'?automatic:null,
      usageEstimateMicros:mode==='live'?Math.ceil(.75*v.usage.prompt_tokens+4.5*v.usage.completion_tokens):0,
-     mathematicalVerdict:mode==='live'?'HUMAN_REVIEW_REQUIRED':'NOT_MEASURED'});
+     mathematicalVerdict:mode==='live'?(automatic.blocksPositiveReview?'AUTOMATIC_REJECTION':'HUMAN_REVIEW_REQUIRED'):'NOT_MEASURED'});
     save(report());
    }
   }
@@ -169,7 +185,10 @@ export async function audit(){
  catch(e){historyCode=codeOf(e);}
  return {plan:plan(),calls:rows.length,liveCalls:0,modelQuality:'NOT_MEASURED',
   planningReservationWithPlaceholderMicros:rows.reduce((n,r)=>n+r.reservationMicros,0),
-  findings:{fabricatedWrongFinalAnswerPassesSchema:accepted,validAnswerCanExceedDialogueLimit:longAnswerValid&&historyCode==='CABINET_DIALOGUE_LIMIT',
+  findings:{fabricatedWrongFinalAnswerPassesSchema:accepted,
+   fabricatedWrongFinalAnswerBlockedByAssessment:assessAnswer(r.input,fabricated).blocksPositiveReview,
+   correctChainedEquationAccepted:!assessAnswer({...r.input,mode:'explain'},
+    {title:'Уравнение',text:'Вычтем 4 из обеих частей.',steps:['−3x = 19 − 4 = 15','x = −5'],check:'−3 · (−5) + 4 = 19'}).blocksPositiveReview,validAnswerCanExceedDialogueLimit:longAnswerValid&&historyCode==='CABINET_DIALOGUE_LIMIT',
    dialogueLimitCode:historyCode,standalonePreviousTurnsAbsent:rows.filter(r=>r.contextMode==='original-task-and-latest-attempt-only').every(r=>!r.payload.messages.some(m=>m.content.includes('previousTurns')))},
   requests:rows,coverage:coverage()};
 }

@@ -1,3 +1,56 @@
+# Continuation — 6 November 2026 (Asia/Novosibirsk)
+
+The isolated evaluator now uses corrected PR429 context and mathematical checks,
+with the original PR399 transport. No live model calls or model training occurred.
+The original 16 dialogs / 32 turns and eight coverage probes are unchanged.
+
+- 13/13 Node test groups passed; 24/24 exact reference checks passed.
+- Audit and all 32 simulated calls passed; mocked output is labelled NOT_MEASURED.
+- Wrong `x = 6` is rejected during mathematical scoring. Correct `−3x = 19 − 4 = 15`
+  and `x = −5` is accepted. The earlier UTF-8/history mismatch is rejected before
+  accepting oversized output. Favourable human marks cannot override detected
+  errors, invalid answer shape or a detected final answer in the first hint.
+- The comparison includes real deterministic cabinet and standalone responses.
+  Free follow-up understanding is NOT_TESTED, not scored as a model capability.
+- 53 source files are SHA-256 pinned. The new plan digest invalidates old admission.
+- Monetary limits and no-retry / persistent-ledger rules are unchanged. No keys,
+  credentials, account identifiers or pupil data are added to the repository.
+- First local run exposed the comparison calling the standalone handler with a
+  cabinet topic; corrected to use the actual cabinet handler and all tests passed.
+- Self-review completed; independent live review and account facts remain pending.
+- CI status for the new exact head is recorded in PR420 after the workflow ends.
+
+Runtime credentials and a permanent campaign state directory are absent here.
+Grant balance/expiry and access eligibility were not newly confirmed. No admission
+check was set to true without evidence. The test is PREPARED_ONLY, LIVE_BLOCKED.
+
+Official model/pricing page checked 6 November:
+https://developers.openai.com/api/docs/models/gpt-5.4-mini
+Optimization guidance (evaluation/prompting before considering weight training):
+https://developers.openai.com/api/docs/guides/model-optimization
+
+Rollback: revert only this evaluator continuation; preserve any future spending
+ledger. Nothing was deployed to MathExam or enabled for pupils.
+
+```text
+EXECUTIVE STATUS
+Task: OPENAI_QUALITY_20261103 continuation 2026-11-06
+PR: #420, existing Draft
+Base: c819927e484ce3afeae187d269974cb1cf2ead68 (previous PR head)
+Head: recorded by PR metadata
+Gate: PREPARED_ONLY; LIVE_BLOCKED; MODEL_QUALITY_NOT_MEASURED
+Tests: 13 Node groups; 24 references; 32 mock calls; audit; diff check
+Failures: none in final local verification
+Not run: live API; independent live technical review; pupil pilot; deployment
+Scope deviations: none
+Recommendation: use protected execution/account setup before bounded live trial
+Next user decision: execution/account access; no repeated $0.50 approval
+```
+
+---
+
+## Historical report before the continuation
+
 # OpenAI quality evaluation — 3 November 2026 (Novosibirsk)
 
 Real API calls: **0**. Cost incurred by this work: **$0**. GPT mathematical and

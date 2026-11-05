@@ -26,3 +26,5 @@ const errors=await read('pr399','errors.js');
 export const {AssistantError,requireValue,exactKeys}=errors;
 export const {containsSensitiveText}=privacy;
 export const {validateModelAnswer}=current;
+
+export const {assessAnswer}=await import(pathToFileURL(path.join(sourceRoots.current,'assistant-service/evaluation/answer-assessment.js')).href);
