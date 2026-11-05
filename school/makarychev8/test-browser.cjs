@@ -50,14 +50,14 @@ const errors=[];let browser,views=0,walked=0;
     }
    }
    // Old deep-link/answer and notebook survive the content expansion.
-   await nav('#lesson/p01/0');await page.locator('#notebook').fill('Старая задача: запись сохранена');
+   await nav('#lesson/p01/0');await page.getByText('Мои записи к задаче',{exact:true}).click();await page.locator('#notebook').fill('Старая задача: запись сохранена');
    await page.locator('#final-answer').fill('0,5');await page.locator('#answer-form button[type=submit]').click();
    assert(await page.evaluate(()=>window.MakarychevApp.getState().tasks['p01-t01'].independent));
    // New content: rejected denominator root, then reload the unfinished work.
    const rejected=newTasks.findIndex(t=>t.id==='p01-ex015-г');await nav('#lesson/p01/'+(rejected+6));
    await page.locator('#final-answer').fill('0;-3');await page.locator('#answer-form button[type=submit]').click();
    assert(!await page.evaluate(()=>window.MakarychevApp.getState().tasks['p01-ex015-г'].correct));
-   await page.locator('#notebook').fill('−3 исключаю: знаменатель равен нулю');await page.reload();await page.waitForSelector('#notebook');
+   await page.getByText('Мои записи к задаче',{exact:true}).click();await page.locator('#notebook').fill('−3 исключаю: знаменатель равен нулю');await page.reload();await page.waitForSelector('#notebook');
    assert.equal(await page.locator('#notebook').inputValue(),'−3 исключаю: знаменатель равен нулю');
    assert.equal(await page.locator('#final-answer').inputValue(),'0;-3');
    // Work through every authored new step using actual browser input events.
