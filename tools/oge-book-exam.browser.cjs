@@ -255,17 +255,20 @@ async function corruptedStorageRegression(p,r){
       }
      }).catch(error=>{
       const reason=String(error.message).split('\n')[0];
-      // Current Chromium can leave the initial redirect document's body
-      // promise pending forever. Only an observed completed redirect may use
-      // the existing exact-server-payload evidence after this deadline.
-      // A timeout on any final document or dependency remains a hard failure.
-      const redirectedInitial=u.pathname===PREFIX+route&&r.finalPath&&r.finalPath!==u.pathname;
-      if(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'&&!redirectedInitial){r.resourceHashErrors.push({path:u.pathname,reason});return;}
+      // Current Chromium can leave body promises pending after discarding an
+      // initial redirect document or a stylesheet requested by that document.
+      // The request's actual Referer must identify the abandoned initial URL.
+      // A final-document/dependency timeout remains a hard failure.
+      let requestReferrer='';try{requestReferrer=new URL(res.request().headers().referer||'').pathname;}catch{}
+      const initialPath=PREFIX+route,redirectCompleted=r.finalPath&&r.finalPath!==initialPath;
+      const abandonedStylesheet=res.request().resourceType()==='stylesheet'&&requestReferrer===initialPath;
+      const discardedByRedirect=redirectCompleted&&(u.pathname===initialPath||abandonedStylesheet);
+      if(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'&&!discardedByRedirect){r.resourceHashErrors.push({path:u.pathname,reason,requestReferrer});return;}
       // Immediate redirect/reload can discard Chromium's body handle after a
       // successful HTTP response. Retain the hash calculated from the exact
       // payload sent by this server and label that narrower evidence explicitly.
       if(/^[a-f0-9]{64}$/.test(servedHash||'')){
-       r.resourceReadWarnings.push({path:u.pathname,reason,identityMethod:'server-served-payload'});
+       r.resourceReadWarnings.push({path:u.pathname,reason,identityMethod:'server-served-payload',...(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'?{requestReferrer,redirectedFrom:initialPath,redirectedTo:r.finalPath}:{})});
        remember(servedHash,Number(headers['content-length']),'server-served-payload; browser body unavailable after navigation');
       }else r.resourceHashErrors.push({path:u.pathname,reason});
      }));
