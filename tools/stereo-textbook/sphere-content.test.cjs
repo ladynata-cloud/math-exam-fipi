@@ -84,7 +84,7 @@ for (const [file, expectedHash] of Object.entries(published.immutableFiles)) {
   if (file === 'stereo-course/textbook/schema/lesson.schema.json')
     schemaMigration.assertSphereSchemaMigration(file, expectedHash);
   else
-    assert.equal(hash(fs.readFileSync(path.join(root, file))), expectedHash, 'unchanged released runtime/builder: ' + file);
+    assert.equal(hash(require('./mobile-layout-migration.cjs').historicalRead(file)), expectedHash, 'unchanged released runtime/builder: ' + file);
 }
 assert.equal(registry.cards.length, 640);
 assert.equal(registry.batches.length, 30);

@@ -41,7 +41,7 @@ const server = http.createServer((req,res)=>{try{
   const choiceFocusEvent=await change('a',f=>f.locator('[data-answer-choice]').first().press('Space'));
   await hydrate('b',choiceFocusSpec,choiceFocusEvent.state,true);
   assert.equal(await frame('b').locator('#answer').inputValue(),choiceFocusEvent.state.work.draft,'choice draft restores after input type transition');
-  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.filter(id=>!id.startsWith('grade7-r-')).length,169);assert.equal(ids.length,169+await frame('a').evaluate(()=>PathData.geometryRebuild.families.length));
+  const ids=await frame('a').evaluate(()=>PathData.meta.map(m=>m.id)), kinds=new Set();assert.equal(ids.filter(id=>!id.startsWith('grade7-r-')).length,173);assert.equal(ids.length,173+await frame('a').evaluate(()=>PathData.geometryRebuild.families.length));
   for(const id of ids){
     const taskSpec=await spec(id);await hydrate('a',taskSpec);
     if(id.startsWith('grade7-r-photo-proof-')){

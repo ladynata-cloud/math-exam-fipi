@@ -980,6 +980,48 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместная тренировка: текущее задание, ответы, проверка, шаги, помощь и модели. Личный зачёт не изменяется."
+    },
+    {
+      "trainerId": "atanasyan-grade7",
+      "file": "trainers/atanasyan-grade7.html",
+      "title": "Атанасян · 7 класс · главы I–IV",
+      "group": "Геометрия / 7 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общий разбор, ответы, подсказки, шаги и модели. Личные результаты не изменяются."
+    },
+    {
+      "trainerId": "geometry7-practice",
+      "file": "trainers/geometry7-practice.html",
+      "title": "Геометрия · 7 класс · 70 интерактивных тренажёров",
+      "group": "Геометрия / 7 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общий разбор, ответы, подсказки, шаги и модели. Личные результаты не изменяются."
+    },
+    {
+      "trainerId": "geometry7-rebuild",
+      "file": "trainers/geometry7-rebuild.html",
+      "title": "Геометрия · 7 класс · от первых понятий к доказательствам",
+      "group": "Геометрия / 7 класс",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Общий разбор, ответы, подсказки, шаги и модели. Личные результаты не изменяются."
     }
   ]
 }

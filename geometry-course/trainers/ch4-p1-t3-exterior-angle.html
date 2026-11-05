@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Внешний угол треугольника</title>
@@ -500,5 +502,6 @@ function stepAnim(){ if(anim.on){ anim.t+=0.03; if(anim.t>=1){anim.t=1;anim.on=f
 showStep();
 (function loop(){ stepAnim(); draw(); requestAnimationFrame(loop); })();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>

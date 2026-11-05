@@ -101,7 +101,7 @@ jobs:
           node tools/grade7-route-map.test.cjs
           node --test tools/grade7-geometry-journey.test.cjs
           node tools/learning-preparation.test.cjs
-          node --test tools/motion-grade6-ui-test.cjs
+          node --test tools/motion-grade6-ui-test.cjs tools/motion-grade6-river-test.cjs
       - name: Install pinned browser test tools
         id: browser_tools
         run: |

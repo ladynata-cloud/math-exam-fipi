@@ -2,6 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const course=require('../trainers/motion-grade6/course-core');
 const contract=require('../trainers/motion-grade6/learning-contracts');
+const navigation=require('../trainers/motion-grade6/navigation');
 const server=require('../board-server/learning-contracts');
 function setup(){
  const elements=new Map();let bodyMarkup='',registration,events=[];
@@ -13,7 +14,7 @@ function setup(){
  }
  const main=new Element('main');elements.set('main',main);
  const document={body:new Element(),activeElement:null,getElementById:id=>elements.get(id)||null};
- const window={MotionCourse:course,MotionContracts:contract,MathExamLearning:{register(adapter){registration=adapter;adapter.subscribe(e=>events.push(JSON.parse(JSON.stringify(e))));}}};
+ const window={MotionCourse:course,MotionContracts:contract,MotionNavigation:navigation,MathExamLearning:{register(adapter){registration=adapter;adapter.subscribe(e=>events.push(JSON.parse(JSON.stringify(e))));}}};
  vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../trainers/motion-grade6/managed.js'),'utf8'),{window,document,location:{search:'?learning=1'},URLSearchParams,requestAnimationFrame:()=>1,cancelAnimationFrame(){}},{filename:'managed.js'});
  return {elements,main,document,get adapter(){return registration},events,markup:()=>bodyMarkup};
 }
@@ -49,4 +50,15 @@ test('bridge accepts the two exact cabinet origins and rejects lookalikes',()=>{
 
 test('last unfinished exercise can be reopened after summary',()=>{
  const ui=setup(),created=contract.create('distance',1);created.state.taskIndex=11;apply(ui,created);ui.elements.get('finish').onclick();assert.match(ui.elements.get('work').innerHTML,/Продолжи тренировку/);ui.main.querySelectorAll('[data-task]').find(b=>b.dataset.task==='11').onclick();assert.match(ui.elements.get('work').innerHTML,/answerForm/);
+});
+
+
+test('river supplemental explanation records assistance, while read-only stays silent',()=>{
+ const created=contract.create('river-speeds',1),ui=setup();apply(ui,created);
+ assert.match(ui.markup(),/Занятие 3 \/ 12/);
+ assert.match(ui.markup(),/id="riverHelp"[^>]*target="_blank"[^>]*rel="noopener"/);
+ ui.elements.get('riverHelp').onclick();assert.equal(ui.events.at(-1).kind,'hint');
+ assert.equal(ui.adapter.getState().records[0].assisted,true);
+ const viewer=setup();apply(viewer,created,true);viewer.elements.get('riverHelp').onclick();
+ assert.equal(viewer.events.length,0);assert.equal(viewer.adapter.getState().records[0].assisted,false);
 });

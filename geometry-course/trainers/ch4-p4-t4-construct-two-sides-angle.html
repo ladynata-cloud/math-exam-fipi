@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
+<script src="/geometry-course/board/native-session.js"></script>
+<link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Треугольник по двум сторонам и углу</title>
@@ -178,7 +180,7 @@ function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)
 function pushUndo(){ undoStack.push(takeSnap()); }
 
 /* ───────── ПРИВЯЗКА ───────── */
-function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=W/r.width; return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
 function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
   for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
 
@@ -403,5 +405,6 @@ setMsg('Сначала анализ: подумай, что сделать с д
 updateUI();
 (function loop(){draw();requestAnimationFrame(loop)})();
 </script>
+<script src="/geometry-course/board/learning-support.js"></script>
 </body>
 </html>

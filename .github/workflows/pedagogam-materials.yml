@@ -1,0 +1,42 @@
+name: Teacher materials
+on:
+  pull_request:
+    paths:
+      - 'pedagogam/**'
+      - 'tools/*pedagogam*'
+      - 'tools/teacher-topic-content-*.json'
+      - 'assets/pedagogam-topic-pages.css'
+      - '.github/workflows/pedagogam-materials.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  teacher-materials:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Recompute answers and validate linked artifacts
+        run: |
+          python3 -m pip install reportlab==4.4.9
+          python3 tools/pedagogam-materials.test.py
+          python3 tools/build-pedagogam-topic-pages.py --check
+          python3 tools/pedagogam-topic-pages-check.py
+          python3 tools/build-sitemap.py --check
+          git diff --check
+      - name: Browser, printing, downloads and offline HTML
+        run: |
+          npm install --prefix "$RUNNER_TEMP/teacher-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/teacher-qa/node_modules/.bin/playwright" install --with-deps chromium
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/teacher-server.log" 2>&1 &
+          NODE_PATH="$RUNNER_TEMP/teacher-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/pedagogam-qa" node tools/pedagogam-materials.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/teacher-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/pedagogam-qa/topics" node tools/pedagogam-topic-pages.browser.cjs
+      - name: Preserve browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pedagogam-qa
+          path: ${{ runner.temp }}/pedagogam-qa
+          if-no-files-found: error

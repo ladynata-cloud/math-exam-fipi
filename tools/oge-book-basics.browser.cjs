@@ -17,7 +17,7 @@ const MATCH = process.env.BOOK_BASICS_MATCH || '';
 const SEED_OVERRIDE = process.env.BOOK_BASICS_SEED;
 const MAP = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/oge-book-edition/urls.json'), 'utf8'));
 const ROUTES = MAP.map(row => ({id:row.id,route:new URL(row.sourceUrl).pathname})).filter(row =>
-  (row.route.includes('/trainers/oge-basics/') || row.route === '/' || row.route === '/trainers/oge-course/') && (!MATCH || row.route.includes(MATCH)));
+  (row.route.includes('/trainers/oge-basics/') || row.route === '/' || row.route === '/trainers/oge-course/') && (!MATCH || (MATCH.startsWith('=') ? row.route === MATCH.slice(1) : row.route.includes(MATCH))));
 const MIME = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8',
   '.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.woff2':'font/woff2'};
 const REQUIRED = ['start','wrong-answer','hints','correct-answer','next-example','finish','saved-result','topic','layout'];
@@ -327,6 +327,13 @@ async function hub(page,rec){
     '/trainers/oge-course/':'/trainers/oge-task6-fractions.html'}[rec.route];
   check(rec,'start',(await observed(page.locator('body'))).length>100,{title:await page.title()});
   for(const action of ['wrong-answer','hints','correct-answer','next-example','finish','saved-result'])note(rec,action,'NOT_APPLICABLE',{reason:'Navigation page: no exercise answer or completion contract.'});
+  // PR442 moved the public OGE landing to /oge/. Frozen book home pages keep
+  // their original direct entry; exercise both actual navigation contracts.
+  if(rec.route==='/'&&!PREFIX){
+    await page.locator('a[href="/oge/"]').filter({visible:true}).first().click();
+    await page.waitForURL(url=>url.pathname==='/oge/');
+    check(rec,'navigation-entry',true,{destination:'/oge/',title:await page.title()});
+  }
   const links=await page.locator('a[href]').evaluateAll(es=>es.map(e=>({text:e.innerText,href:e.href})));const target=links.find(x=>new URL(x.href).pathname===PREFIX+child);
   if(!target){check(rec,'navigation',false,{expectedPath:PREFIX+child,reason:'Expected topic link missing'});return;}
   const match=page.locator('a[href]').filter({visible:true});

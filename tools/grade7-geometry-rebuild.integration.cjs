@@ -8,7 +8,7 @@ const addedFiles=['base','foundations','triangles','relations','workbook'].map(n
 const context=vm.createContext({}),load=name=>vm.runInContext(read('ege-baza/path/'+name+'.js'),context,{filename:name+'.js',timeout:1000});
 legacyFiles.forEach(load);
 const D=context.PathData,legacy=D.meta.map(meta=>({id:meta.id,tasks:[0,1,23,71].map(seed=>JSON.stringify(D.task(meta.id,seed)))}));
-assert.equal(legacy.length,169);
+assert.equal(legacy.length,173);
 addedFiles.forEach(load);
 const families=D.geometryRebuild.families;
 assert.equal(families.length,106,'103 workbook families and 3 source photo proofs');
@@ -29,7 +29,7 @@ assert.equal(catalog.items.filter(item=>addedMultiplicationIds.has(item.id)).len
 const addedVilenkin6Ids=new Set(Array.from({length:27},(_,index)=>'vilenkin6-part1:lesson-'+index));
 assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-part1').map(item=>item.id).sort(),[...addedVilenkin6Ids].sort(),'Every Vilenkin 6 lesson is available exactly once');
 const originalTrainers=new Set(['ege-path','oge-basics','motion-grade6']);
-assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,217,'Existing identities remain available');
+assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)).length,221,'Existing identities remain available');
 const manualItems=catalog.items.filter(item=>item.trainerId==='atanasyan-7-9');
 assert.deepEqual(manualItems.map(item=>item.id),['atanasyan-7-9:atanasyan-7-9-main-92-part-1'],'The fixed manual exercise is separate from the original trainer identities');
 const textbookIds=new Set(['A','B','C','D'].flatMap(block=>JSON.parse(read('courses/vilenkin-6-part-1/textbook-data/units-'+block+'.json')).flatMap(unit=>unit.tasks.map(task=>'vilenkin6-textbook:'+task.id))));
@@ -42,7 +42,7 @@ assert.equal(authorTextbookIds.size,44);assert([...authorTextbookIds].every(id=>
 const authorTextbookItems=catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook'&&item.source?.kind==='author');
 assert.deepEqual(authorTextbookItems.map(item=>item.id).sort(),[...authorTextbookIds].sort(),'Every authored LCM card belongs to its separate group exactly once');
 assert(authorTextbookItems.every(item=>item.unitKind==='author-supplement'&&item.unitId===1008&&item.relatedPoint===8&&item.page===null&&item.pointId===null),'Author cards do not claim a textbook page or point identity');
-assert.equal(catalog.items.length,217+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size,'Every catalog entry belongs to an explicitly checked group');
+assert.equal(catalog.items.length,221+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

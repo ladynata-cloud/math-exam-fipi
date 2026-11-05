@@ -4,10 +4,16 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'oge/index.html'
+      - 'assets/math-home.css'
       - 'lessons/**'
       - 'assets/lesson-showcase.css'
       - 'assets/oge-home.*'
+      - 'assets/oge-home-topics.js'
+      - 'assets/oge-illustrations/**'
+      - 'trainers/oge-course/index.html'
       - 'tools/oge-home.browser.cjs'
+      - 'tools/oge-home-orbits.test.cjs'
       - 'assets/lesson-funnel.js'
       - 'assets/site.css'
       - 'assets/lesson-contacts.css'
@@ -50,6 +56,7 @@ jobs:
           python3 tools/build-sitemap.py --check
           python3 tools/seo-check.py
           node tools/lesson-funnel.test.cjs
+          node tools/oge-home-orbits.test.cjs
           git diff --check
       - name: Install isolated browser test runtime
         run: |

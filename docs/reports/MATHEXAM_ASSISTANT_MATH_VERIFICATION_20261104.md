@@ -9,7 +9,16 @@ Rechecked PR399 `7f4c054b9b8fb5b519dcab60e6fa4e461ed7c21f`, PR420
 `c819927e484ce3afeae187d269974cb1cf2ead68` and PR429
 `f04d39fe036bb54949136093caac54a4ac6070d4`; all remained open drafts.
 The inspected main was `6a117de590a61e4a716db43b93f17db54b5c665e`.
-This is a scoped continuation of PR429, not an integration into that newer main.
+The correction was published as `d798b05036141e997d617bd2ad8be8cdbbe4440f`.
+GitHub reported a merge conflict, preventing the pull-request CI from starting.
+Complete, non-truncated tree comparison found only `docs/PROJECT_STATUS.md`
+changed on both branches. All prepended/appended entries from both sides were
+preserved. The subsequent merge imports that pinned main into the task branch,
+retaining every unrelated main file. All assistant runtime, source courses,
+linked test dependencies and applicable existing policy files were unchanged
+on main, so the tested runtime remains byte-identical. Candidate merge/CI
+identities are recorded in the PR handoff. This is branch integration, not a
+site release.
 
 The checker incorrectly treated every link of `-3x=19-4=15` as a linear
 equation requiring a unique root, rejecting the true numeric identity `19-4=15`.
@@ -143,7 +152,7 @@ responses keep the existing conservative reservation and cannot trigger retries.
 EXECUTIVE STATUS
 Task: MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104
 PR: recorded in GitHub handoff
-Base: 846040b338fd21a69f52132a75e29e4a9e2669b6
+Base: 6a117de590a61e4a716db43b93f17db54b5c665e
 Head: recorded in GitHub handoff
 Gate: MATHEXAM_ASSISTANT_MATH_PREPARED_OK; not a release gate
 Tests: 233 current; 247 with PR399 plus 2 dedicated; 21 independent references; source/syntax/whitespace

@@ -21,11 +21,15 @@ const demos = [
   {id:'demo-cone', route:'/stereo-course/textbook/#ex-main-0346', ready:'[data-main-model] svg'}
 ];
 const contacts = ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000'];
+const reviewProfiles = new Map([
+  ['https://profi.ru/profile/AlyabevaNM/', /профи\.ру/i],
+  ['https://www.avito.ru/brands/b497d42ca3b63662decb1cf108440ec7', /авито/i]
+]);
 const directions = {school:'demo-division', oge:'demo-graphs', ege:'demo-ege'};
 const mime = {'.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'application/javascript',
   '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg',
-  '.jpeg':'image/jpeg', '.woff2':'font/woff2'};
-const report = {widths, homepageWidths:[390,1280], cases:[], errors:[], failedRequests:[], unexpectedExternal:[], inheritedFontsIntercepted:[]};
+  '.jpeg':'image/jpeg', '.webp':'image/webp', '.woff2':'font/woff2'};
+const report = {widths, homepageWidths:[320,390,1280], cases:[], errors:[], failedRequests:[], unexpectedExternal:[], inheritedFontsIntercepted:[]};
 let base;
 let server;
 
@@ -101,12 +105,12 @@ async function metadataAndLinks(page) {
   assert.match(await page.locator('meta[name="viewport"]').getAttribute('content'), /width=device-width/);
   assert.match(await page.locator('meta[name="description"]').getAttribute('content'), /5–11.*ОГЭ.*ЕГЭ/);
   const links = await page.locator('a[href]').evaluateAll(nodes => nodes.map(a => ({href:a.getAttribute('href'), target:a.target, rel:a.rel})));
-  const allowed = new Set([...demos.map(d => d.route), ...contacts, 'mailto:nata4os@bk.ru']);
+  const allowed = new Set([...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
   for (const link of links) {
     if (link.href.startsWith('#')) {
       assert(link.href.length > 1 && await page.locator(link.href).count() === 1, 'native anchor has one real target: ' + link.href);
     } else {
-      assert(allowed.has(link.href), 'showcase exposes only checked examples and direct contacts: ' + link.href);
+      assert(allowed.has(link.href), 'showcase exposes only checked examples, direct contacts and approved review profiles: ' + link.href);
       if (!link.href.startsWith('mailto:')) {
         assert.equal(link.target, '_blank');
         assert(link.rel.split(/\s+/).includes('noopener'));
@@ -114,10 +118,26 @@ async function metadataAndLinks(page) {
       }
     }
   }
+  for (const [href, platform] of reviewProfiles) {
+    const review = page.locator('a[href="' + href + '"]');
+    assert.equal(await review.count(), 1, 'one review link to the approved teacher profile: ' + href);
+    assert(await review.isVisible(), 'review link is visible: ' + href);
+    assert.match(await review.innerText(), platform, 'review link names its platform');
+  }
   assert.equal(await page.locator('.demo-link').count(), demos.length);
   assert.match(await page.locator('#examples-note').innerText(), /новой вкладке/);
   assert.match(await page.locator('.examples-after').innerText(), /сохранённую работу/);
-  assert.equal(await page.locator('form').count(), 0, 'booking does not collect data into an unimplemented form');
+  // Playwright also finds the navigator's Shadow DOM. Booking still has no
+  // form; admit only that exact local search form with no submission endpoint.
+  assert.deepEqual(await page.locator('form').evaluateAll(forms => forms.map(form => ({
+    host: form.getRootNode().host?.id || null,
+    action: form.getAttribute('action'),
+    method: form.getAttribute('method'),
+    fields: [...form.querySelectorAll('input,textarea,select')].map(field => field.name),
+    submitters: [...form.querySelectorAll('button')].map(button => button.type)
+  }))), [{host:'maxexam-public-assistant', action:null, method:null,
+    fields:['navigation-question'], submitters:['button']}],
+  'no booking form: only the isolated, endpoint-free navigator search is present');
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto', 'reduced motion is respected');
 }
 async function nativeDetails(page) {
@@ -238,8 +258,13 @@ async function homepageEntry(browser, width) {
   try {
     await page.goto(base + '/', {waitUntil:'load'});
     await fits(page, 'homepage ' + width);
-    assert.match(await page.locator('.hero-inner .kicker').innerText(), /Бесплатный курс.*9 класс/i);
-    await inViewport(page, '.hero-inner .kicker', 'homepage OGE offer');
+    assert.match(await page.locator('.hero-inner .kicker').innerText(), /5–11 классы.*Бесплатно/i);
+    assert.equal(await page.locator('.home-directions article').count(),6);
+    for(const href of ['/trainers/','/foundations/','/courses/','/oge/','/ege-baza/','/ege-profil/','/geometry-course/']) {
+      assert(await page.locator('a[href="'+href+'"]').first().isVisible(), 'home direction '+href);
+    }
+    assert.equal(await page.locator('script[src*="oge-home"],script[src*="three.min.js"]').count(),0);
+    await inViewport(page, '.hero-inner .kicker', 'homepage mathematics offer');
     await inViewport(page, '.hero-inner h1', 'homepage heading');
     assert.deepEqual(await page.locator('.lesson-entry .actions a').evaluateAll(links => links.map(a => a.getAttribute('href'))), entries.map(entry => entry.route));
     await screenshot(page, `homepage-${width}-initial`);
@@ -254,8 +279,8 @@ async function homepageEntry(browser, width) {
       await screenshot(page, `homepage-${width}-to-${entry.name}`);
     }
     report.cases.push({page:'homepage', width, result:'PASS', destinations:entries.map(entry => entry.route),
-      checks:['OGE hero and retained school/EGE lesson entrances', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
-    console.log(`PASS homepage at ${width}px: OGE landing and three retained real showcase entry paths`);
+      checks:['general mathematics hero and retained lesson entrances', 'no horizontal overflow', 'three actual CTA navigations', 'rendered destination targets'], fonts:'inherited Google Fonts intercepted; system fallback rendered'});
+    console.log(`PASS homepage at ${width}px: mathematics home and three retained real showcase entry paths`);
   } catch (error) {
     await screenshot(page, `homepage-${width}-failure`, true);
     report.cases.push({page:'homepage', width, result:'FAIL', error:error.message});
