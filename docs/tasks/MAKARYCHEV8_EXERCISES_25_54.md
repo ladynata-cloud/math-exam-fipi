@@ -26,3 +26,5 @@ Standing owner authorization permits merge/publication after applicable gates, w
 - Final mathematical oracle:13458 checks. Next sequential topic is №55–74 (addition/subtraction with equal denominators), confirmed against source-map; it is outside this slice.
 
 - Run41956903959 passed mobile320/390 and all new step journeys; the complete-figure gate then exposed the tablet768 header height. Tablet/desktop spacing was compacted and source alternatives use one row from701px. Each source graph can be enlarged on request without showing an answer or marking assistance.
+
+- Run41957509563 passed all496 new responsive views,294 step submissions, search25–54, graph creation and draft reload. The final zoom-close assertion ran before the native dialog `close` event removed its element; the test now waits for that event-driven removal before asserting. This correction changes the test only, not product behavior.
