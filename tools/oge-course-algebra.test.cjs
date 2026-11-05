@@ -44,11 +44,13 @@ test('task22 all nine prototype choices keep the exact graph problem and reasoni
 // deterministic step construction and accepted/revealed-field locks. Mathematics
 // and banks remain independently protected by the algebra/part2 contract gates.
 // The exact full-engine pins below continue to reject unreviewed native changes.
+// Task 12 is re-pinned by OGE12_SOURCE_AUDIT: 40 provenance records, independent
+// rational answers, exhaustive replacement domains and retained room contracts.
 const inlineHashes={
   "7": "1c8377171051d6cd9582537dcfca1d270f00300b0b1a8f15fb0cd0f40f7348dc",
   "8": "9475a664fbb854c30f0836423e74fc073c08901d37b06ea153a46c52517d6807",
   "10": "80b6b102ce808e95d41553550273ccfe8aa48b88af04c0d6c8c6d87dbe20e6a9",
-  "12": "cae13f718c529aa282cb587a1407994a13c0da0621cbdd4519c191f0db8cb7a8",
+  "12": "74b3c3c7054cb650f7b628560988aa94b679158e993084dbb23ce8b11353f176",
   "14": "32588d0974854ae60a7e91d931da8c64b9694bfa2b78867bd13a7e3887dc4c00",
   "20": "f549780df61f1d966e0eab26589d3f426acd29d17ab254b1d6aec35074b07263",
   "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",

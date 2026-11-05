@@ -1,0 +1,1757 @@
+{
+  "schemaVersion": 1,
+  "checkedOn": "2026-11-05",
+  "baseCommit": "63a2676d896d62bd07f87d77f811eb8dea3d0438",
+  "scope": "Все 40 генераторов исходного тренажёра; 9 сюжетов заменены, 11 текущих генераторов связаны с образцами, 29 сохранены как учебная подготовка. Ни один не объявлен дословным заданием ФИПИ.",
+  "limitations": "Полный интерактивный банк ФИПИ не выгружался. Отсутствие совпадения в проверенном корпусе не доказывает отсутствия сюжета во всём банке. Каталоги — сторонние тренировочные материалы, не сертификат ФИПИ. Эти 10 учебных типов не являются официальной классификацией и не исчерпывают №12.",
+  "catalogues": [
+    "https://vpr-ege.ru/oge/matematika/3093-trenirovochnye-varianty-oge-2026-po-matematike-s-otvetami",
+    "https://4ege.ru/trening-gia-matematika/73873-25-trenirovochnyh-variantov-oge-po-matematike.html"
+  ],
+  "sources": {
+    "lightning": {
+      "id": "lightning",
+      "title": "Расстояние до молнии",
+      "publisher": "math100, тренировочный вариант ОГЭ–2026; каталог vpr-ege",
+      "authority": "third_party_training",
+      "url": "https://vpr-ege.ru/z6/math100-oge-191.pdf",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "078f5b3f9267f8252f04db61ff2ce3a80b5a301bfd835fb762c37b2600623e16",
+      "relation": "S = 330t; в образце требуется перевод в километры и округление. Здесь оставлены метры: это упрощённый авторский аналог."
+    },
+    "taxi": {
+      "id": "taxi",
+      "title": "Такси с оплатой первых пяти минут",
+      "publisher": "Маракулин, тренировочная работа ОГЭ–2025; каталог 4ege",
+      "authority": "third_party_training",
+      "url": "https://drive.google.com/file/d/1vhdrKd4VHK5mvRY0rp9tpSmqQ9mE2PWb/view",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "59d2453e8398021ee5d36d52bb0978da1d05b66df39a6cca7431dfca112aaabf",
+      "relation": "В источнике C = 150 + 11(t − 5), t > 5. Сохранены структура и ограничение; тарифы и длительность варьируются, фирма не копируется."
+    },
+    "rhombus": {
+      "id": "rhombus",
+      "title": "Диагональ ромба по площади",
+      "publisher": "math100, тренировочный вариант ОГЭ–2026; каталог vpr-ege",
+      "authority": "third_party_training",
+      "url": "https://vpr-ege.ru/z6/math100-oge-197.pdf",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "cc349f980a1369c2e6954ad0521c48254b535a024bec8bf2ff203041b68cfd06",
+      "relation": "Сохранены S = d₁d₂/2 и поиск d₁; изменяются положительные данные."
+    },
+    "archimedes": {
+      "id": "archimedes",
+      "title": "Сила Архимеда",
+      "publisher": "math100, тренировочный вариант ОГЭ–2026; каталог vpr-ege",
+      "authority": "third_party_training",
+      "url": "https://vpr-ege.ru/z6/math100-oge-190.pdf",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "6a30aba5ec63f0b6806748b77739a2498c65fb093afdc54239fe31d181effd6b",
+      "relation": "Сохранены F = ρgV, вода и g = 9,8; явно указано полное погружение. Объём варьируется."
+    },
+    "fahrenheit": {
+      "id": "fahrenheit",
+      "title": "Перевод Цельсий → Фаренгейт",
+      "publisher": "Маракулин, тренировочная работа ОГЭ–2025; каталог 4ege",
+      "authority": "third_party_training",
+      "url": "https://drive.google.com/file/d/1cTFDXDNPYgb0FVCfZuwq-0uCb-TGdFSL/view",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "11fae9995830a3a7038ff595bd83513252eaf8cea29a785ded3d83f9273e1b60",
+      "relation": "Сохранены F = 1,8C + 32, отрицательная температура и направление перевода. Буквы упрощены, числа меняются."
+    },
+    "well": {
+      "id": "well",
+      "title": "Стоимость колодца",
+      "publisher": "Маракулин, тренировочная работа ОГЭ–2025; каталог 4ege",
+      "authority": "third_party_training",
+      "url": "https://drive.google.com/file/d/1gK93ssgjraWdsR92XUm70pQLdjamuTgf/view",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "a8b6c1745ba010ad4a343bbe07ae1620ba21b25071b7b80cd329a40d5f763970",
+      "relation": "В источнике C = 6000 + 4100n. Сохранена структура, числовые тарифы заменены заданными коэффициентами a и b."
+    },
+    "power": {
+      "id": "power",
+      "title": "Сопротивление по мощности тока",
+      "publisher": "math100, тренировочный вариант ОГЭ–2026; каталог vpr-ege",
+      "authority": "third_party_training",
+      "url": "https://vpr-ege.ru/z6/math100-oge-182.pdf",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "5e205e02dc0cf249a91c6c65ef136767df2f0d5612a67010feec41c372002e4d",
+      "relation": "Сохранены P = I²R и поиск R. Для десятичных данных дополнительно сверены math100-oge-198 и вариант 5 из 4ege."
+    },
+    "potential": {
+      "id": "potential",
+      "title": "Масса по потенциальной энергии",
+      "publisher": "math100, тренировочный вариант ОГЭ–2026; каталог vpr-ege",
+      "authority": "third_party_training",
+      "url": "https://vpr-ege.ru/z6/math100-oge-194.pdf",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "8800c3dbb3dd9dd30c091182caa5ff544e5e9549fb0346dcb1bafee5b80f8965",
+      "relation": "Сохранены E = mgh, g = 9,8 и поиск массы; энергия обозначена E вместо P, числа меняются."
+    },
+    "capacitor": {
+      "id": "capacitor",
+      "title": "Энергия конденсатора",
+      "publisher": "Маракулин, тренировочная работа ОГЭ–2025; каталог 4ege",
+      "authority": "third_party_training",
+      "url": "https://drive.google.com/file/d/15qwM-vs3Qw-uB3TnjZ453h0OwlUpZ1Lb/view",
+      "locator": "№12, PDF с. 3",
+      "fileSha256": "d436f86f41689f3dfffff104ad767964606857c069ea438c1b4e520b1579afa3",
+      "relation": "Сохранены W = CU²/2 и поиск энергии; вместо степени 10⁻⁴ дана конечная десятичная запись ёмкости, данные варьируются."
+    },
+    "fipi-kinetic": {
+      "id": "fipi-kinetic",
+      "title": "Демоверсия ФИПИ ОГЭ–2026: кинетическая энергия",
+      "publisher": "ФИПИ",
+      "authority": "official_demo",
+      "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2026/ma_9_2026.zip",
+      "locator": "МА-9 ОГЭ 2026_ДЕМО.pdf, №12; PDF с. 6, печатная с. 11",
+      "fileSha256": "25ef7b3b449f742f63a0b0478c46a6dbfcf9861c8824c7d3e988a05b06e1cda9",
+      "archiveSha256": "ebb8523e1d1a01192497e7dbe4bdda0e771d8c37c7ca567ba8b6ab49b07d8913",
+      "relation": "Формула E = mv²/2, в демоверсии нужно найти скорость автомобиля при m = 1200 кг, E = 240000 Дж. t12-g31 сохраняет искомую скорость с другими числами; t12-g10 — подготовительный прямой расчёт энергии по той же формуле. Дословное заимствование не заявляется."
+    }
+  },
+  "generators": [
+    {
+      "id": "t12-g01",
+      "index": 0,
+      "type": 1,
+      "originalTopic": "Путь велосипедиста",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "v = 9…16 км/ч; t = 3…6 ч; равномерное движение.",
+      "originalGeneratorSha256": "fb493de8e380d7cf662a284a1cf80a0e02b0400d2f22b41784c739e42ac8ab33",
+      "generatorSha256": "fb493de8e380d7cf662a284a1cf80a0e02b0400d2f22b41784c739e42ac8ab33",
+      "exampleBefore": {
+        "story": "Велосипедист едет с постоянной скоростью. Путь <b>S</b> (в километрах) за время <b>t</b> часов при скорости <b>v</b> км/ч находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь, который велосипедист проедет за 5 ч, если его скорость равна 11 км/ч.",
+        "formula": "S = v · t",
+        "answer": 55
+      },
+      "exampleAfter": {
+        "story": "Велосипедист едет с постоянной скоростью. Путь <b>S</b> (в километрах) за время <b>t</b> часов при скорости <b>v</b> км/ч находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь, который велосипедист проедет за 5 ч, если его скорость равна 11 км/ч.",
+        "formula": "S = v · t",
+        "answer": 55
+      }
+    },
+    {
+      "id": "t12-g02",
+      "index": 1,
+      "type": 1,
+      "originalTopic": "Цена тетрадей",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "lightning",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Расстояние до молнии». S = 330t; в образце требуется перевод в километры и округление. Здесь оставлены метры: это упрощённый авторский аналог.",
+      "constraintsAndUnits": "t = 2,0…30,0 с с шагом 0,1; S = 330t м; приближённая модель, без округления.",
+      "originalGeneratorSha256": "fe60953195933dda8c451accca855667285dbf555979b41544aa530013380ed4",
+      "generatorSha256": "a8d11020717984fd5c813466515624c184953ab44c41ea0fa21aef2b767cbeec",
+      "exampleBefore": {
+        "story": "Одна тетрадь стоит <b>p</b> рублей. Стоимость <b>C</b> покупки из <b>n</b> одинаковых тетрадей находят по формуле <span class=\"f-inline\">C = p · n</span>. Найдите стоимость покупки, если p = 50 руб., n = 12.",
+        "formula": "C = p · n",
+        "answer": 600
+      },
+      "exampleAfter": {
+        "story": "Между вспышкой молнии и звуком грома прошло t = 9,1 с. Приближённое расстояние до места удара молнии в метрах вычисляют по формуле <span class=\"f-inline\">S = 330 · t</span>, где t — время в секундах. Найдите S. Ответ дайте в метрах.",
+        "formula": "S = 330 · t",
+        "answer": 3003
+      }
+    },
+    {
+      "id": "t12-g03",
+      "index": 2,
+      "type": 2,
+      "originalTopic": "Время автомобиля",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана постоянная скорость.",
+      "constraintsAndUnits": "v = 40…90 км/ч с шагом 5; t = 3…7 ч; v > 0; S = vt.",
+      "originalGeneratorSha256": "dd0fa11dc979284d814aa82a8cf281bba3c7a356c739d247ad813730128554a8",
+      "generatorSha256": "4c91456dde66fd8507ea5530e0a082eb134895bf8cd1a044fa41411ae1bbbbc5",
+      "exampleBefore": {
+        "story": "Путь, скорость и время связаны формулой <span class=\"f-inline\">S = v · t</span>. Автомобиль проехал S = 150 км со скоростью v = 50 км/ч. Найдите время <b>t</b> (в часах).",
+        "formula": "S = v · t",
+        "answer": 3
+      },
+      "exampleAfter": {
+        "story": "Путь, скорость и время связаны формулой <span class=\"f-inline\">S = v · t</span>. Автомобиль двигался с постоянной скоростью и проехал S = 315 км со скоростью v = 45 км/ч. Найдите время <b>t</b> (в часах).",
+        "formula": "S = v · t",
+        "answer": 7
+      }
+    },
+    {
+      "id": "t12-g04",
+      "index": 3,
+      "type": 2,
+      "originalTopic": "Ток по мощности P = UI",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана цепь постоянного тока: формула UI не заявляется универсальной для любой переменной нагрузки.",
+      "constraintsAndUnits": "U ∈ {110,220} В; I = 2…9 А; P = UI; постоянный ток, U > 0.",
+      "originalGeneratorSha256": "6e409ef77178747888502b4f43385eed9b3a7ff077b66d85b02ce630180c5f69",
+      "generatorSha256": "a12f5fce8f6fe82b3d6e3d0570a27a84970ff037180488dbaf8bbc3b8f4f3c26",
+      "exampleBefore": {
+        "story": "Мощность электроприбора находят по формуле <span class=\"f-inline\">P = U · I</span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Мощность прибора P = 440 Вт, напряжение U = 220 В. Найдите силу тока <b>I</b> (в амперах).",
+        "formula": "P = U · I",
+        "answer": 2
+      },
+      "exampleAfter": {
+        "story": "Мощность электроприбора в цепи постоянного тока находят по формуле <span class=\"f-inline\">P = U · I</span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Мощность прибора P = 990 Вт, напряжение U = 110 В. Найдите силу тока <b>I</b> (в амперах).",
+        "formula": "P = U · I",
+        "answer": 9
+      }
+    },
+    {
+      "id": "t12-g05",
+      "index": 4,
+      "type": 3,
+      "originalTopic": "Такси по километрам",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "taxi",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Такси с оплатой первых пяти минут». В источнике C = 150 + 11(t − 5), t > 5. Сохранены структура и ограничение; тарифы и длительность варьируются, фирма не копируется. Старое такси по километрам — корректная авторская модель, но найденный образец использует минуты.",
+      "constraintsAndUnits": "a = 100…250 руб. с шагом 10; b = 8…25 руб./мин; t = 6…45 мин; строго t > 5.",
+      "originalGeneratorSha256": "187964bb05d73763dd9b6ded5b476ddea9cb94409588e85940497ce8cc6eac3a",
+      "generatorSha256": "aa84512dbed4cbcf5e3dc94b97a7e46b19ec1f58ba3ac45ab33be712782228cb",
+      "exampleBefore": {
+        "story": "Стоимость поездки на такси считают по формуле <span class=\"f-inline\">T = a + b · n</span>, где <b>a</b> — плата за посадку (руб.), <b>b</b> — цена одного километра (руб.), <b>n</b> — длина поездки (км). Найдите стоимость поездки, если a = 120, b = 14, n = 10.",
+        "formula": "T = a + b · n",
+        "answer": 260
+      },
+      "exampleAfter": {
+        "story": "Для поездки на такси длительностью более 5 минут стоимость C в рублях задаётся формулой <span class=\"f-inline\">C = a + b · (t − 5)</span>. Здесь t — длительность в минутах, a = 100 руб. — плата за первые 5 минут, b = 18 руб./мин — тариф за последующие минуты. Поездка длилась 18 мин. Найдите её стоимость в рублях.",
+        "formula": "C = a + b · (t − 5)",
+        "answer": 334
+      }
+    },
+    {
+      "id": "t12-g06",
+      "index": 5,
+      "type": 3,
+      "originalTopic": "Уровень воды в баке",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указаны постоянный подъём и высота бака 200 см; максимальный уровень 168 см.",
+      "constraintsAndUnits": "L₀ = 20…60 см; v = 3…9 см/мин; t = 5…12 мин; L ≤ 168 < 200 см, перелива нет.",
+      "originalGeneratorSha256": "d80d2a7b05a217310a2cb2a94cfba171f5e5120ae673ba2ae8dae9493eb322bb",
+      "generatorSha256": "5aa0321dbb4ed936d0af3a997f4ec6670ae7042bc611d5b3c50a5ab497ff5b2c",
+      "exampleBefore": {
+        "story": "В бак наливают воду. Уровень воды <b>L</b> (в сантиметрах) через <b>t</b> минут находят по формуле <span class=\"f-inline\">L = L₀ + v · t</span>, где <b>L₀</b> — уровень в начале, <b>v</b> — скорость подъёма уровня (см/мин). Найдите уровень воды через 11 минут, если L₀ = 24 см, v = 6 см/мин.",
+        "formula": "L = L₀ + v · t",
+        "answer": 90
+      },
+      "exampleAfter": {
+        "story": "В бак высотой 200 см наливают воду; её уровень поднимается с постоянной скоростью. Уровень воды <b>L</b> (в сантиметрах) через <b>t</b> минут находят по формуле <span class=\"f-inline\">L = L₀ + v · t</span>, где <b>L₀</b> — уровень в начале, <b>v</b> — скорость подъёма уровня (см/мин). Найдите уровень воды через 8 минут, если L₀ = 49 см, v = 3 см/мин.",
+        "formula": "L = L₀ + v · t",
+        "answer": 73
+      }
+    },
+    {
+      "id": "t12-g07",
+      "index": 6,
+      "type": 4,
+      "originalTopic": "Средняя скорость пешего туриста",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Пеший турист со скоростью 12–24 км/ч заменён велосипедистом при тех же данных.",
+      "constraintsAndUnits": "t = 3…6 ч; v = 12…24 км/ч; велосипед, а не ходьба; S = vt.",
+      "originalGeneratorSha256": "11c2bb6b0a44d56f2aef0ebca8f6cd206f5db517759b635cf83d7719627a5c56",
+      "generatorSha256": "3769f4bdb5993f873d96a9c0ff5b4e38a534b7a0ccb3231f70d02cfcbd802eb8",
+      "exampleBefore": {
+        "story": "Среднюю скорость находят по формуле <span class=\"f-inline\">v = <span class=\"fr\"><span>S</span><span>t</span></span></span>, где <b>S</b> — путь (км), <b>t</b> — время (ч). Турист прошёл S = 51 км за t = 3 ч. Найдите среднюю скорость <b>v</b> (в км/ч).",
+        "formula": "v = <span class=\"fr\"><span>S</span><span>t</span></span>",
+        "answer": 17
+      },
+      "exampleAfter": {
+        "story": "Среднюю скорость находят по формуле <span class=\"f-inline\">v = <span class=\"fr\"><span>S</span><span>t</span></span></span>, где <b>S</b> — путь (км), <b>t</b> — время (ч). Велосипедист проехал S = 78 км за t = 6 ч. Найдите среднюю скорость <b>v</b> (в км/ч).",
+        "formula": "v = <span class=\"fr\"><span>S</span><span>t</span></span>",
+        "answer": 13
+      }
+    },
+    {
+      "id": "t12-g08",
+      "index": 7,
+      "type": 4,
+      "originalTopic": "Среднее арифметическое",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "rhombus",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Диагональ ромба по площади». Сохранены S = d₁d₂/2 и поиск d₁; изменяются положительные данные.",
+      "constraintsAndUnits": "d₁ = 4…30 м; d₂ = 6…40 м с шагом 2; S = d₁d₂/2; обе диагонали положительны.",
+      "originalGeneratorSha256": "da0fc775dc2fbf2f0357394b5d8d3f0cb39ebb7d31f9942ef7cf4a0ed5eeefe9",
+      "generatorSha256": "7f5245c56b56c7ba07f0bf4f5f433862582ce19bc27522eec84fdd385d8152c9",
+      "exampleBefore": {
+        "story": "Среднее арифметическое двух чисел находят по формуле <span class=\"f-inline\">A = <span class=\"fr\"><span>x + y</span><span>2</span></span></span>. Найдите среднее арифметическое чисел x = 17 и y = 29.",
+        "formula": "A = <span class=\"fr\"><span>x + y</span><span>2</span></span>",
+        "answer": 23
+      },
+      "exampleAfter": {
+        "story": "Площадь ромба S = 165 м², одна из его диагоналей d₂ = 22 м. Площадь связана с диагоналями формулой <span class=\"f-inline\">S = <span class=\"fr\"><span>d₁ · d₂</span><span>2</span></span></span>, где обе диагонали измеряются в метрах. Найдите d₁. Ответ дайте в метрах.",
+        "formula": "S = <span class=\"fr\"><span>d₁ · d₂</span><span>2</span></span>",
+        "answer": 15
+      }
+    },
+    {
+      "id": "t12-g09",
+      "index": 8,
+      "type": 5,
+      "originalTopic": "Площадь квадрата",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 6…15 см; S = a² см².",
+      "originalGeneratorSha256": "47edfae86b1d6d27633cbccfc6aa555be9f13a098e3046ea1d4e026566022a47",
+      "generatorSha256": "47edfae86b1d6d27633cbccfc6aa555be9f13a098e3046ea1d4e026566022a47",
+      "exampleBefore": {
+        "story": "Площадь квадрата находят по формуле <span class=\"f-inline\">S = a²</span>, где <b>a</b> — сторона квадрата (см). Найдите площадь квадрата со стороной a = 12 см (в см²).",
+        "formula": "S = a²",
+        "answer": 144
+      },
+      "exampleAfter": {
+        "story": "Площадь квадрата находят по формуле <span class=\"f-inline\">S = a²</span>, где <b>a</b> — сторона квадрата (см). Найдите площадь квадрата со стороной a = 11 см (в см²).",
+        "formula": "S = a²",
+        "answer": 121
+      }
+    },
+    {
+      "id": "t12-g10",
+      "index": 9,
+      "type": 5,
+      "originalTopic": "Кинетическая энергия",
+      "originalAssessment": "подтверждено семейство, авторские числа/текст",
+      "sourceId": "fipi-kinetic",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "m ∈ {4,6,8} кг; v = 3…8 м/с; E = mv²/2 Дж.",
+      "originalGeneratorSha256": "958130158837048ae4bdf589dd29b06f9670adb11bb64713a70cf025fb79011e",
+      "generatorSha256": "958130158837048ae4bdf589dd29b06f9670adb11bb64713a70cf025fb79011e",
+      "exampleBefore": {
+        "story": "Кинетическую энергию тела находят по формуле <span class=\"f-inline\">E = <span class=\"fr\"><span>m · v²</span><span>2</span></span></span>, где <b>m</b> — масса (кг), <b>v</b> — скорость (м/с). Найдите энергию <b>E</b> (в джоулях), если m = 4 кг, v = 5 м/с.",
+        "formula": "E = <span class=\"fr\"><span>m · v²</span><span>2</span></span>",
+        "answer": 50
+      },
+      "exampleAfter": {
+        "story": "Кинетическую энергию тела находят по формуле <span class=\"f-inline\">E = <span class=\"fr\"><span>m · v²</span><span>2</span></span></span>, где <b>m</b> — масса (кг), <b>v</b> — скорость (м/с). Найдите энергию <b>E</b> (в джоулях), если m = 6 кг, v = 3 м/с.",
+        "formula": "E = <span class=\"fr\"><span>m · v²</span><span>2</span></span>",
+        "answer": 27
+      }
+    },
+    {
+      "id": "t12-g11",
+      "index": 10,
+      "type": 6,
+      "originalTopic": "Сторона квадратного участка",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 6…15 м; S = a² м²; положительный корень.",
+      "originalGeneratorSha256": "ea0242f568f8f304e06e92f623a3e27d9b56448b5719bbe14dadcb726a5f0df2",
+      "generatorSha256": "ea0242f568f8f304e06e92f623a3e27d9b56448b5719bbe14dadcb726a5f0df2",
+      "exampleBefore": {
+        "story": "Сторону квадрата по его площади находят по формуле <span class=\"f-inline\">a = √S</span>. Площадь квадратного участка равна S = 64 м². Найдите сторону участка <b>a</b> (в метрах).",
+        "formula": "a = √S",
+        "answer": 8
+      },
+      "exampleAfter": {
+        "story": "Сторону квадрата по его площади находят по формуле <span class=\"f-inline\">a = √S</span>. Площадь квадратного участка равна S = 81 м². Найдите сторону участка <b>a</b> (в метрах).",
+        "formula": "a = √S",
+        "answer": 9
+      }
+    },
+    {
+      "id": "t12-g12",
+      "index": 11,
+      "type": 6,
+      "originalTopic": "Время разгона тележки",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Определены k как половина ускорения, единицы м/с² и движение из состояния покоя.",
+      "constraintsAndUnits": "k ∈ {2,3,5} м/с², половина ускорения; t = 3…7 с; S = kt²; прямолинейный разгон из покоя; положительный корень.",
+      "originalGeneratorSha256": "d8725fb2dc9ef4d823e6e2bf4b97fcab7ab217adde14329a39ac1cac6290424f",
+      "generatorSha256": "67bfe43a42c9a42443dd9d439c1c64734b9e0260c06507efc61f819d6bff86a2",
+      "exampleBefore": {
+        "story": "При разгоне путь тележки считают по формуле <span class=\"f-inline\">S = k · t²</span>, где <b>t</b> — время (с). Известно, что k = 3 и S = 27 м. Найдите время <b>t</b> (в секундах).",
+        "formula": "S = k · t²",
+        "answer": 3
+      },
+      "exampleAfter": {
+        "story": "Тележка движется прямолинейно с постоянным ускорением из состояния покоя. Её путь в метрах задаётся формулой <span class=\"f-inline\">S = k · t²</span>, где <b>t</b> — время (с), <b>k</b> — половина ускорения (м/с²). Известно, что k = 2 м/с² и S = 32 м. Найдите время <b>t</b> (в секундах).",
+        "formula": "S = k · t²",
+        "answer": 4
+      }
+    },
+    {
+      "id": "t12-g13",
+      "index": 12,
+      "type": 7,
+      "originalTopic": "Масса партии деталей",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "(m₀,n) ∈ {(0,012;50),(0,012;500),(0,025;200),(0,025;400),(0,04;300),(0,008;500),(0,015;200),(0,04;50)}; масса в кг.",
+      "originalGeneratorSha256": "437d85e54322e61255c2290445c1890b9bd62c3f7d6f8b06fbe066650c4c5514",
+      "generatorSha256": "437d85e54322e61255c2290445c1890b9bd62c3f7d6f8b06fbe066650c4c5514",
+      "exampleBefore": {
+        "story": "Масса одной детали равна 0,025 кг. Массу партии из <b>n</b> деталей находят по формуле <span class=\"f-inline\">m = m₀ · n</span>. Найдите массу партии из 200 деталей (в килограммах).",
+        "formula": "m = m₀ · n",
+        "answer": 5
+      },
+      "exampleAfter": {
+        "story": "Масса одной детали равна 0,012 кг. Массу партии из <b>n</b> деталей находят по формуле <span class=\"f-inline\">m = m₀ · n</span>. Найдите массу партии из 50 деталей (в килограммах).",
+        "formula": "m = m₀ · n",
+        "answer": 0.6
+      }
+    },
+    {
+      "id": "t12-g14",
+      "index": 13,
+      "type": 7,
+      "originalTopic": "Стоимость бензина",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "archimedes",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Сила Архимеда». Сохранены F = ρgV, вода и g = 9,8; явно указано полное погружение. Объём варьируется.",
+      "constraintsAndUnits": "V = 0,001…0,900 м³ с шагом 0,001; ρ = 1000 кг/м³; g = 9,8 м/с²; полное погружение; F в Н.",
+      "originalGeneratorSha256": "ee7697bc1cbbde83b4137f9c3ac54095aa71ad6fff26fe1dc41a97e5c656a696",
+      "generatorSha256": "3ca2660edc78799ff95eb2cd47cbb2f2d0d9343f47796aab2ecf3eb7422c9088",
+      "exampleBefore": {
+        "story": "Литр бензина стоит 52,6 руб. Стоимость заправки находят по формуле <span class=\"f-inline\">C = p · V</span>, где <b>V</b> — объём топлива (л). Найдите стоимость заправки 24 литров (в рублях).",
+        "formula": "C = p · V",
+        "answer": 1262.4
+      },
+      "exampleAfter": {
+        "story": "Тело объёмом V = 0,332 м³ полностью погружено в воду. Сила Архимеда вычисляется по формуле <span class=\"f-inline\">F = ρ · g · V</span>, где ρ = 1000 кг/м³ — плотность воды, g = 9,8 м/с². Найдите F в ньютонах.",
+        "formula": "F = ρ · g · V",
+        "answer": 3253.6
+      }
+    },
+    {
+      "id": "t12-g15",
+      "index": 14,
+      "type": 8,
+      "originalTopic": "Температура с высотой",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": "fahrenheit",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Перевод Цельсий → Фаренгейт». Сохранены F = 1,8C + 32, отрицательная температура и направление перевода. Буквы упрощены, числа меняются. Старое снижение 6 °C/км не является универсальным законом погоды; не переносится в экзаменационный режим.",
+      "constraintsAndUnits": "C = −90…−20 °C целое; F = 1,8C + 32 °F; значения выше абсолютного нуля.",
+      "originalGeneratorSha256": "a23119f915041676041ebb7e8745bcce6f2a0313a9cc28cd623786e9519bc1f7",
+      "generatorSha256": "0e3a1ec219d59554123a521ff68abd62f15c034743f29b6c9609fc06bd8d750d",
+      "exampleBefore": {
+        "story": "При подъёме температура воздуха понижается. Температуру на высоте <b>h</b> км считают по формуле <span class=\"f-inline\">t = t₀ − 6 · h</span>, где <b>t₀</b> — температура у земли (°C). Найдите температуру на высоте 4 км, если у земли t₀ = 15 °C.",
+        "formula": "t = t₀ − 6 · h",
+        "answer": -9
+      },
+      "exampleAfter": {
+        "story": "Для перевода температуры из градусов Цельсия в градусы Фаренгейта дана формула <span class=\"f-inline\">F = 1,8 · C + 32</span>, где C — температура в °C, F — температура в °F. Найдите F, если C = −47 °C. Ответ дайте в градусах Фаренгейта.",
+        "formula": "F = 1,8 · C + 32",
+        "answer": -52.6
+      }
+    },
+    {
+      "id": "t12-g16",
+      "index": 15,
+      "type": 8,
+      "originalTopic": "Прибыль мастерской",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указано, что единственный учитываемый расход — аренда; прибыль и убыток выражены в рублях.",
+      "constraintsAndUnits": "d = 30…80 руб./заказ; n = 2…9; a = 100…400 руб. с шагом 10; единственный расход — аренда, убыток допустим.",
+      "originalGeneratorSha256": "9184c183bcd46f67b2a11413cd12af5147efcca383bd1bc7fd31a3650ccf1a11",
+      "generatorSha256": "751370b11f98ab828dd6a8702563dcb80917de337eedb53905b1402165baab00",
+      "exampleBefore": {
+        "story": "Прибыль маленькой мастерской за день считают по формуле <span class=\"f-inline\">P = d · n − a</span>, где <b>d</b> — доход с одного заказа (руб.), <b>n</b> — число заказов, <b>a</b> — дневная аренда (руб.). Найдите прибыль, если d = 34, n = 9, a = 140. Ответ может быть отрицательным (это убыток).",
+        "formula": "P = d · n − a",
+        "answer": 166
+      },
+      "exampleAfter": {
+        "story": "В учебной модели единственный расход мастерской — дневная аренда. Прибыль за день в рублях считают по формуле <span class=\"f-inline\">P = d · n − a</span>, где <b>d</b> — доход с одного заказа (руб.), <b>n</b> — число заказов, <b>a</b> — дневная аренда (руб.). Найдите прибыль, если d = 53, n = 6, a = 310. Ответ может быть отрицательным (это убыток).",
+        "formula": "P = d · n − a",
+        "answer": 8
+      }
+    },
+    {
+      "id": "t12-g17",
+      "index": 16,
+      "type": 9,
+      "originalTopic": "Заработок за смены",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "well",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Стоимость колодца». В источнике C = 6000 + 4100n. Сохранена структура, числовые тарифы заменены заданными коэффициентами a и b.",
+      "constraintsAndUnits": "a = 5000…8000 руб. с шагом 100; b = 3000…5000 руб. с шагом 100; n = 3…20 целое.",
+      "originalGeneratorSha256": "aca4016667092cbf41f916e07c1995149c972fa0ff2616f0cdedc199ba8053be",
+      "generatorSha256": "fd92fdcbd5775360d8449fe27afbfcc9bfd24348f6bdf48a8b92d57847c52ad6",
+      "exampleBefore": {
+        "story": "За одну смену работнику платят 3 000 руб. Заработок за <b>n</b> смен находят по формуле <span class=\"f-inline\">C = p · n</span>. Найдите заработок за 14 смен (в рублях). Ответ запишите без пробелов.",
+        "formula": "C = p · n",
+        "answer": 42000
+      },
+      "exampleAfter": {
+        "story": "Стоимость строительства колодца C (в рублях) задана формулой <span class=\"f-inline\">C = a + b · n</span>. Здесь a = 5 200 руб. — фиксированная плата, b = 5 000 руб. — плата за одно установленное кольцо, n — число колец. Рассчитайте стоимость колодца из 5 колец. Ответ дайте в рублях.",
+        "formula": "C = a + b · n",
+        "answer": 30200
+      }
+    },
+    {
+      "id": "t12-g18",
+      "index": 17,
+      "type": 9,
+      "originalTopic": "Путь самолёта",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана постоянная скорость.",
+      "constraintsAndUnits": "v ∈ {750,800,850,900} км/ч; t = 4…9 ч; скорость постоянна.",
+      "originalGeneratorSha256": "5caf88b5409432f4853bbf881e5e8c42f2f33e6457f040b35ff3d7cd1d5886df",
+      "generatorSha256": "a4aa61af52d2936745ffa48c6c6486e8f515579618013d6dcaf73f7107bb9cb2",
+      "exampleBefore": {
+        "story": "Самолёт летит со скоростью 800 км/ч. Путь находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь за 9 часов полёта (в километрах).",
+        "formula": "S = v · t",
+        "answer": 7200
+      },
+      "exampleAfter": {
+        "story": "Самолёт летит с постоянной скоростью 850 км/ч. Путь находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь за 5 часов полёта (в километрах).",
+        "formula": "S = v · t",
+        "answer": 4250
+      }
+    },
+    {
+      "id": "t12-g19",
+      "index": 18,
+      "type": 10,
+      "originalTopic": "Масса яблок с лишней ценой",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "power",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Сопротивление по мощности тока». Сохранены P = I²R и поиск R. Для десятичных данных дополнительно сверены math100-oge-198 и вариант 5 из 4ege.",
+      "constraintsAndUnits": "I = 1,5…7,5 А с шагом 0,5; R = 3…30 Ом; P = I²R Вт; I > 0, спрашивается R, не I².",
+      "originalGeneratorSha256": "3f95001928c981b77f376c8db645290b922ade88418c06bffc363b84112548e1",
+      "generatorSha256": "b11667148f813d94a96ecce999521585520c5d2e1e3993d9b23a8de072426d9f",
+      "exampleBefore": {
+        "story": "В магазин привезли 16 коробок с яблоками, в каждой по 12 кг. Цена килограмма яблок — 68 руб. Массу всех яблок находят по формуле <span class=\"f-inline\">M = m · n</span>. Найдите массу всех привезённых яблок (в килограммах).",
+        "formula": "M = m · n",
+        "answer": 192
+      },
+      "exampleAfter": {
+        "story": "Мощность постоянного тока на резисторе равна P = 432 Вт, сила тока I = 4 А. Для расчёта дана формула <span class=\"f-inline\">P = I² · R</span>, где R — сопротивление в омах. Найдите сопротивление R. Ответ дайте в омах.",
+        "formula": "P = I² · R",
+        "answer": 27
+      }
+    },
+    {
+      "id": "t12-g20",
+      "index": 19,
+      "type": 10,
+      "originalTopic": "Периметр участка",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 6…14 м; b первоначально 3…9 м, при совпадении увеличивается; исключены S = P; стороны положительны.",
+      "originalGeneratorSha256": "3d793694412f3c8a7c391007c57ec8529989ca172de465d5f76e7b320da9a594",
+      "generatorSha256": "3d793694412f3c8a7c391007c57ec8529989ca172de465d5f76e7b320da9a594",
+      "exampleBefore": {
+        "story": "Стороны прямоугольного участка равны a = 12 м и b = 9 м. Периметр находят по формуле <span class=\"f-inline\">P = 2 · (a + b)</span>, а площадь — по формуле <span class=\"f-inline\">S = a · b</span>. Найдите <b>периметр</b> участка (в метрах).",
+        "formula": "P = 2 · (a + b)",
+        "answer": 42
+      },
+      "exampleAfter": {
+        "story": "Стороны прямоугольного участка равны a = 12 м и b = 4 м. Периметр находят по формуле <span class=\"f-inline\">P = 2 · (a + b)</span>, а площадь — по формуле <span class=\"f-inline\">S = a · b</span>. Найдите <b>периметр</b> участка (в метрах).",
+        "formula": "P = 2 · (a + b)",
+        "answer": 32
+      }
+    },
+    {
+      "id": "t12-g21",
+      "index": 20,
+      "type": 1,
+      "originalTopic": "Вес тела",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указан покой на неподвижной горизонтальной опоре.",
+      "constraintsAndUnits": "m = 3…20 кг; g ≈ 10 Н/кг; тело покоится на неподвижной опоре.",
+      "originalGeneratorSha256": "a6bfca60d18832c901661829573c2e3dd3d27a7c227d27b73a0d5e9d2e3b3bac",
+      "generatorSha256": "26f315da27099f960ec51c6c9d8a9858d884e6f8baf495fe21813f843fd5ac37",
+      "exampleBefore": {
+        "story": "Вес тела находят по формуле <span class=\"f-inline\">P = m · g</span>, где <b>m</b> — масса (кг), <b>g</b> = 10 Н/кг. Найдите вес тела массой m = 17 кг (в ньютонах).",
+        "formula": "P = m · g",
+        "answer": 170
+      },
+      "exampleAfter": {
+        "story": "Вес тела, покоящегося на неподвижной горизонтальной опоре, находят по формуле <span class=\"f-inline\">P = m · g</span>, где <b>m</b> — масса (кг), <b>g</b> = 10 Н/кг. Найдите вес тела массой m = 19 кг (в ньютонах).",
+        "formula": "P = m · g",
+        "answer": 190
+      }
+    },
+    {
+      "id": "t12-g22",
+      "index": 21,
+      "type": 1,
+      "originalTopic": "Работа силы",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана сила вдоль перемещения; без этого A = Fs неверна в общем случае.",
+      "constraintsAndUnits": "F = 2…12 Н; s = 2…9 м; исключён F=s=2; сила постоянна и сонаправлена перемещению.",
+      "originalGeneratorSha256": "832cf4ed82e25698c340ea26973cb4d60c4f905529c4e41c61b58f311734b03a",
+      "generatorSha256": "1a9446d37e7e434cff74406176d1bacaf73b7222143d9c6acf6cb701facc02a4",
+      "exampleBefore": {
+        "story": "Работу постоянной силы на прямом пути находят по формуле <span class=\"f-inline\">A = F · s</span>, где <b>F</b> — сила (Н), <b>s</b> — путь (м). Найдите работу, если F = 7 Н, s = 2 м (в джоулях).",
+        "formula": "A = F · s",
+        "answer": 14
+      },
+      "exampleAfter": {
+        "story": "Если постоянная сила направлена вдоль прямолинейного перемещения тела, её работу находят по формуле <span class=\"f-inline\">A = F · s</span>, где <b>F</b> — сила (Н), <b>s</b> — путь (м). Найдите работу, если F = 9 Н, s = 3 м (в джоулях).",
+        "formula": "A = F · s",
+        "answer": 27
+      }
+    },
+    {
+      "id": "t12-g23",
+      "index": 22,
+      "type": 2,
+      "originalTopic": "Объём по плотности",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана однородность.",
+      "constraintsAndUnits": "ρ ∈ {2,4,5,8} г/см³; V = 3…12 см³; m = ρV; однородное тело; ρ > 0.",
+      "originalGeneratorSha256": "4d8654f7fcaca50e9d30fe9d68a41752384c0c0d63c27c7c50d4e283349392a9",
+      "generatorSha256": "fe63b64bbd0e8c6ad3acc2234e86dc659c89fce6609ed34a4c7a80e9c1de672c",
+      "exampleBefore": {
+        "story": "Массу тела находят по формуле <span class=\"f-inline\">m = ρ · V</span>, где <b>ρ</b> — плотность (г/см³), <b>V</b> — объём (см³). Масса тела m = 25 г, плотность ρ = 5 г/см³. Найдите объём <b>V</b> (в см³).",
+        "formula": "m = ρ · V",
+        "answer": 5
+      },
+      "exampleAfter": {
+        "story": "Массу однородного тела находят по формуле <span class=\"f-inline\">m = ρ · V</span>, где <b>ρ</b> — плотность (г/см³), <b>V</b> — объём (см³). Масса тела m = 60 г, плотность ρ = 5 г/см³. Найдите объём <b>V</b> (в см³).",
+        "formula": "m = ρ · V",
+        "answer": 12
+      }
+    },
+    {
+      "id": "t12-g24",
+      "index": 23,
+      "type": 2,
+      "originalTopic": "Число ручек",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "potential",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Масса по потенциальной энергии». Сохранены E = mgh, g = 9,8 и поиск массы; энергия обозначена E вместо P, числа меняются.",
+      "constraintsAndUnits": "m = 3…35 кг; h = 2…25 м; g = 9,8 м/с²; E = mgh; знаменатель gh > 0.",
+      "originalGeneratorSha256": "1324deed48ac368be8541f5bff9ded68a005c076c020503e0a54ab7c37650f64",
+      "generatorSha256": "b42eb7358e95dd1915e44db259e307735c344bb6a4b3fb7b1be68fbb8b4a7d2a",
+      "exampleBefore": {
+        "story": "Стоимость покупки одинаковых ручек находят по формуле <span class=\"f-inline\">C = k · n</span>, где <b>k</b> — цена ручки (руб.), <b>n</b> — их количество. Покупка обошлась в C = 180 руб., цена ручки k = 30 руб. Сколько ручек купили (<b>n</b>)?",
+        "formula": "C = k · n",
+        "answer": 6
+      },
+      "exampleAfter": {
+        "story": "Тело находится на высоте h = 15 м над выбранным нулевым уровнем. Его потенциальная энергия E = 4116 Дж. Для расчёта дана формула <span class=\"f-inline\">E = m · g · h</span>, где m — масса в килограммах, g = 9,8 м/с². Найдите массу тела. Ответ дайте в килограммах.",
+        "formula": "E = m · g · h",
+        "answer": 28
+      }
+    },
+    {
+      "id": "t12-g25",
+      "index": 24,
+      "type": 3,
+      "originalTopic": "Цена посещений бассейна",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Исправлено «абонемент стоит по формуле»; стоимость и тариф сформулированы явно.",
+      "constraintsAndUnits": "C₀ = 150…400 руб.; k = 20…60 руб./занятие; n = 3…9 целое; заданный учебный тариф.",
+      "originalGeneratorSha256": "249745539a4c93bd996d1b3f34c4e44d4d7785797ed45ad4589f77d5d2ed82df",
+      "generatorSha256": "cf1d7e2883eebf8319509596c335bd194867a479ec853af62b7fc0803a7fce70",
+      "exampleBefore": {
+        "story": "Абонемент в бассейн стоит по формуле <span class=\"f-inline\">C = C₀ + k · n</span>, где <b>C₀</b> — цена карты (руб.), <b>k</b> — цена одного занятия (руб.), <b>n</b> — число занятий. Найдите стоимость, если C₀ = 231, k = 49, n = 3.",
+        "formula": "C = C₀ + k · n",
+        "answer": 378
+      },
+      "exampleAfter": {
+        "story": "По учебному тарифу общую стоимость посещений бассейна в рублях рассчитывают по формуле <span class=\"f-inline\">C = C₀ + k · n</span>, где <b>C₀</b> — цена карты (руб.), <b>k</b> — цена одного занятия (руб.), <b>n</b> — число занятий. Найдите стоимость, если C₀ = 174, k = 45, n = 4.",
+        "formula": "C = C₀ + k · n",
+        "answer": 354
+      }
+    },
+    {
+      "id": "t12-g26",
+      "index": 25,
+      "type": 3,
+      "originalTopic": "Длина пружины",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Исправлены единицы k: см/кг вместо см; ограничение упругой деформацией.",
+      "constraintsAndUnits": "L₀ = 8…20 см; k = 2…6 см/кг; m = 3…9 кг; модель действует для этих грузов в пределах упругой деформации.",
+      "originalGeneratorSha256": "6a14de9122dc57a0a4c9a48eca603f02234728ab0601defb916fbc69c2d8ca3b",
+      "generatorSha256": "656cabaa44338f6ee3ae8bbf0e6cfa0eb49f63c9d3850d1b986ad1a415f68333",
+      "exampleBefore": {
+        "story": "Длину пружины под грузом находят по формуле <span class=\"f-inline\">L = L₀ + k · m</span>, где <b>L₀</b> — длина без груза (см), <b>k</b> — удлинение на 1 кг (см), <b>m</b> — масса груза (кг). Найдите длину пружины, если L₀ = 15, k = 6, m = 8.",
+        "formula": "L = L₀ + k · m",
+        "answer": 63
+      },
+      "exampleAfter": {
+        "story": "Для указанных грузов в пределах упругой деформации длину пружины в сантиметрах находят по формуле <span class=\"f-inline\">L = L₀ + k · m</span>, где <b>L₀</b> — длина без груза (см), <b>k</b> — удлинение на единицу массы (см/кг), <b>m</b> — масса груза (кг). Найдите длину пружины, если L₀ = 14, k = 3, m = 5.",
+        "formula": "L = L₀ + k · m",
+        "answer": 29
+      }
+    },
+    {
+      "id": "t12-g27",
+      "index": 26,
+      "type": 4,
+      "originalTopic": "Плотность вещества",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "ρ ∈ {2,4,5,8} г/см³; V = 3…12 см³ > 0; m = ρV; средняя плотность.",
+      "originalGeneratorSha256": "20c18607427d0c007cabc3c0a9653210ae0916272ce018c606823718f9cfb534",
+      "generatorSha256": "20c18607427d0c007cabc3c0a9653210ae0916272ce018c606823718f9cfb534",
+      "exampleBefore": {
+        "story": "Плотность вещества находят по формуле <span class=\"f-inline\">ρ = <span class=\"fr\"><span>m</span><span>V</span></span></span>, где <b>m</b> — масса (г), <b>V</b> — объём (см³). Тело массой m = 16 г занимает объём V = 8 см³. Найдите плотность <b>ρ</b> (в г/см³).",
+        "formula": "ρ = <span class=\"fr\"><span>m</span><span>V</span></span>",
+        "answer": 2
+      },
+      "exampleAfter": {
+        "story": "Плотность вещества находят по формуле <span class=\"f-inline\">ρ = <span class=\"fr\"><span>m</span><span>V</span></span></span>, где <b>m</b> — масса (г), <b>V</b> — объём (см³). Тело массой m = 20 г занимает объём V = 4 см³. Найдите плотность <b>ρ</b> (в г/см³).",
+        "formula": "ρ = <span class=\"fr\"><span>m</span><span>V</span></span>",
+        "answer": 5
+      }
+    },
+    {
+      "id": "t12-g28",
+      "index": 27,
+      "type": 4,
+      "originalTopic": "Сопротивление U/I",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указан резистор, подчиняющийся закону Ома.",
+      "constraintsAndUnits": "I = 2…8 А; R ∈ {10,15,20,25} Ом; U = IR; резистор подчиняется закону Ома.",
+      "originalGeneratorSha256": "1abeddabcb8ca2715e8717322cb18b568f9b3f78e5218d4e039e33762104370d",
+      "generatorSha256": "34986863f0a7fe482a2898afb6b58e01ba580b9acb059375a9eca7770ab1f9ee",
+      "exampleBefore": {
+        "story": "Сопротивление участка цепи находят по формуле <span class=\"f-inline\">R = <span class=\"fr\"><span>U</span><span>I</span></span></span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Найдите сопротивление, если U = 100 В, I = 4 А (в омах).",
+        "formula": "R = <span class=\"fr\"><span>U</span><span>I</span></span>",
+        "answer": 25
+      },
+      "exampleAfter": {
+        "story": "Для резистора, подчиняющегося закону Ома, сопротивление находят по формуле <span class=\"f-inline\">R = <span class=\"fr\"><span>U</span><span>I</span></span></span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Найдите сопротивление, если U = 150 В, I = 6 А (в омах).",
+        "formula": "R = <span class=\"fr\"><span>U</span><span>I</span></span>",
+        "answer": 25
+      }
+    },
+    {
+      "id": "t12-g29",
+      "index": 28,
+      "type": 5,
+      "originalTopic": "Путь при разгоне",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Определены физический смысл и единицы k.",
+      "constraintsAndUnits": "k ∈ {2,3,4,5} м/с², половина ускорения; t = 3…7 с; исключено t = 2k для различных ошибочных ответов; прямолинейный разгон из покоя.",
+      "originalGeneratorSha256": "d02c9aaf20ea6a4de10303ee4ca1caddc5d1d1aaaba524fad09430e16c004f12",
+      "generatorSha256": "94f36322ac8ffca1e047999be348b4555a5ba0c490f98fb9b9b28e2ea2f628a4",
+      "exampleBefore": {
+        "story": "Путь при равноускоренном движении из покоя находят по формуле <span class=\"f-inline\">S = k · t²</span>. Найдите путь <b>S</b> (в метрах), если k = 5 и t = 3 с.",
+        "formula": "S = k · t²",
+        "answer": 45
+      },
+      "exampleAfter": {
+        "story": "Путь при равноускоренном движении из покоя находят по формуле <span class=\"f-inline\">S = k · t²</span>. Найдите путь <b>S</b> (в метрах), если коэффициент k (половина ускорения) равен 5 м/с² и t = 3 с.",
+        "formula": "S = k · t²",
+        "answer": 45
+      }
+    },
+    {
+      "id": "t12-g30",
+      "index": 29,
+      "type": 5,
+      "originalTopic": "Площадь круга при π≈3",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": "capacitor",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Заменён на «Энергия конденсатора». Сохранены W = CU²/2 и поиск энергии; вместо степени 10⁻⁴ дана конечная десятичная запись ёмкости, данные варьируются. Прежняя формула S≈3r² была грубой математической аппроксимацией; без указания π≈3 нежелательна как экзаменационный шаблон.",
+      "constraintsAndUnits": "C = 0,0001…0,0009 Ф с шагом 0,0001; U = 3…30 В; W = CU²/2 Дж; точный ответ имеет не более пяти знаков после запятой.",
+      "originalGeneratorSha256": "bc4d8f1386f22cecf828ff31da37b0e0eda9fbfa0f03358311dd5f32cf355a74",
+      "generatorSha256": "c5cfee986791e595ccce4f4656254df813a4a1fb324aad95ce3d3e036e4ad78a",
+      "exampleBefore": {
+        "story": "Площадь круга приближённо считают по формуле <span class=\"f-inline\">S ≈ 3 · r²</span>, где <b>r</b> — радиус (см). Найдите приближённую площадь круга радиусом r = 3 см (в см²).",
+        "formula": "S ≈ 3 · r²",
+        "answer": 27
+      },
+      "exampleAfter": {
+        "story": "У конденсатора ёмкость C = 0,0006 Ф, напряжение между обкладками U = 14 В. Энергия в джоулях определяется формулой <span class=\"f-inline\">W = <span class=\"fr\"><span>C · U²</span><span>2</span></span></span>. Вычислите энергию W. Ответ дайте в джоулях.",
+        "formula": "W = <span class=\"fr\"><span>C · U²</span><span>2</span></span>",
+        "answer": 0.0588
+      }
+    },
+    {
+      "id": "t12-g31",
+      "index": 30,
+      "type": 6,
+      "originalTopic": "Скорость по кинетической энергии",
+      "originalAssessment": "подтверждено семейство, авторские числа/текст",
+      "sourceId": "fipi-kinetic",
+      "examEligible": true,
+      "currentClassification": "авторский аналог подтверждённого семейства",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "v = 3…9 м/с; m ∈ {2,4,6,8,10} кг; E = mv²/2 Дж; скорость — положительный корень.",
+      "originalGeneratorSha256": "472be540cc444121c0dd67a64fae4b11504704de0865e188cc8de12c5cce73c7",
+      "generatorSha256": "472be540cc444121c0dd67a64fae4b11504704de0865e188cc8de12c5cce73c7",
+      "exampleBefore": {
+        "story": "Скорость тела по его кинетической энергии находят из формулы <span class=\"f-inline\">E = <span class=\"fr\"><span>m · v²</span><span>2</span></span></span>. Тело массой m = 4 кг имеет энергию E = 98 Дж. Найдите скорость <b>v</b> (в м/с).",
+        "formula": "E = <span class=\"fr\"><span>m · v²</span><span>2</span></span>",
+        "answer": 7
+      },
+      "exampleAfter": {
+        "story": "Скорость тела по его кинетической энергии находят из формулы <span class=\"f-inline\">E = <span class=\"fr\"><span>m · v²</span><span>2</span></span></span>. Тело массой m = 10 кг имеет энергию E = 405 Дж. Найдите скорость <b>v</b> (в м/с).",
+        "formula": "E = <span class=\"fr\"><span>m · v²</span><span>2</span></span>",
+        "answer": 9
+      }
+    },
+    {
+      "id": "t12-g32",
+      "index": 31,
+      "type": 6,
+      "originalTopic": "Сторона квадратного ковра",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 5…14 дм; S = a² дм²; положительный корень.",
+      "originalGeneratorSha256": "10c361baddab3bcd5d6e2636c1e158e9febb9fe7ba5945c4107f806142608254",
+      "generatorSha256": "10c361baddab3bcd5d6e2636c1e158e9febb9fe7ba5945c4107f806142608254",
+      "exampleBefore": {
+        "story": "Ковёр имеет форму квадрата площадью S = 121 дм². Сторону квадрата находят по формуле <span class=\"f-inline\">a = √S</span>. Найдите сторону ковра <b>a</b> (в дециметрах).",
+        "formula": "a = √S",
+        "answer": 11
+      },
+      "exampleAfter": {
+        "story": "Ковёр имеет форму квадрата площадью S = 25 дм². Сторону квадрата находят по формуле <span class=\"f-inline\">a = √S</span>. Найдите сторону ковра <b>a</b> (в дециметрах).",
+        "formula": "a = √S",
+        "answer": 5
+      }
+    },
+    {
+      "id": "t12-g33",
+      "index": 32,
+      "type": 7,
+      "originalTopic": "Высота стопки картона",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указано отсутствие зазоров и сжатия.",
+      "constraintsAndUnits": "(d,n) ∈ {(0,08;20),(0,08;50),(0,06;50),(0,12;25),(0,05;40),(0,15;20),(0,04;60),(0,02;150)}; толщина в см; зазоры и сжатие не учитываются.",
+      "originalGeneratorSha256": "281350ee32c5295faa1783e95dca6ff3792ecddb3313647c82a7ff201a0c8eee",
+      "generatorSha256": "56a2ec678938f4f46c50ef9c22d5b0c3717256b41d4e896edbd44148e87b15f8",
+      "exampleBefore": {
+        "story": "Толщина одного листа картона равна 0,06 см. Высоту стопки из <b>n</b> листов находят по формуле <span class=\"f-inline\">h = d · n</span>. Найдите высоту стопки из 50 листов (в сантиметрах).",
+        "formula": "h = d · n",
+        "answer": 3
+      },
+      "exampleAfter": {
+        "story": "Толщина одного листа картона равна 0,08 см. Без учёта зазоров и сжатия высоту стопки из <b>n</b> листов находят по формуле <span class=\"f-inline\">h = d · n</span>. Найдите высоту стопки из 20 листов (в сантиметрах).",
+        "formula": "h = d · n",
+        "answer": 1.6
+      }
+    },
+    {
+      "id": "t12-g34",
+      "index": 33,
+      "type": 7,
+      "originalTopic": "Цена телефонного разговора",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указано отсутствие дополнительных платежей.",
+      "constraintsAndUnits": "t = 1,2…2,0 руб./мин с шагом 0,1; n = 6…30 минут; нет иных платежей.",
+      "originalGeneratorSha256": "cfe15242df7349ced1dc2beaeb6a2888a7e81aade133da9c8c9c4704fe46717b",
+      "generatorSha256": "f352a0214b6af032661912bc23d52243fe19b53b201eb5d692117bd753d4aa87",
+      "exampleBefore": {
+        "story": "Минута разговора по тарифу стоит 1,4 руб. Стоимость разговора находят по формуле <span class=\"f-inline\">C = t · n</span>, где <b>n</b> — число минут. Найдите стоимость разговора длиной 22 минут (в рублях).",
+        "formula": "C = t · n",
+        "answer": 30.8
+      },
+      "exampleAfter": {
+        "story": "По учебному тарифу без дополнительных платежей минута разговора стоит 1,7 руб. Стоимость разговора находят по формуле <span class=\"f-inline\">C = t · n</span>, где <b>n</b> — число минут. Найдите стоимость разговора длиной 12 минут (в рублях).",
+        "formula": "C = t · n",
+        "answer": 20.4
+      }
+    },
+    {
+      "id": "t12-g35",
+      "index": 34,
+      "type": 8,
+      "originalTopic": "Баланс карты",
+      "originalAssessment": "требует уточнения условия",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Отрицательный баланс теперь связан с явно разрешёнными заёмными средствами.",
+      "constraintsAndUnits": "B₀ = 300…1000 руб. с шагом 100; c = 120…320 руб.; n = 2…7 целое; заёмные средства разрешены, комиссии и проценты не учитываются.",
+      "originalGeneratorSha256": "42ec9c49528ba4cad5d10a69fec762e53ac06c57e9efab4de535438ae8533d7d",
+      "generatorSha256": "d173d54cc708cbb96ae31eb838c8211aab3b6d8c82e0a510de518fb1d2e198a0",
+      "exampleBefore": {
+        "story": "Остаток на карте после нескольких списаний считают по формуле <span class=\"f-inline\">B = B₀ − c · n</span>, где <b>B₀</b> — начальный остаток (руб.), <b>c</b> — сумма одного списания (руб.), <b>n</b> — число списаний. Найдите остаток, если B₀ = 500, c = 195, n = 3. Остаток может быть отрицательным (долг).",
+        "formula": "B = B₀ − c · n",
+        "answer": -85
+      },
+      "exampleAfter": {
+        "story": "На карте разрешено использовать заёмные средства; процентов и комиссий в этой задаче нет. Баланс в рублях после списаний считают по формуле <span class=\"f-inline\">B = B₀ − c · n</span>, где <b>B₀</b> — начальный остаток (руб.), <b>c</b> — сумма одного списания (руб.), <b>n</b> — число списаний. Найдите остаток, если B₀ = 700, c = 193, n = 3. Остаток может быть отрицательным (долг).",
+        "formula": "B = B₀ − c · n",
+        "answer": 121
+      }
+    },
+    {
+      "id": "t12-g36",
+      "index": 35,
+      "type": 8,
+      "originalTopic": "Изменение температуры",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "t₂ = 3…12 °C; t₁ первоначально 3…12 °C, при совпадении увеличивается на 2; Δ = t₂ − t₁, ненулевое значение.",
+      "originalGeneratorSha256": "321637f0432682c448214844d9c54a573acc9583c2fa451e62e2725723637e0b",
+      "generatorSha256": "321637f0432682c448214844d9c54a573acc9583c2fa451e62e2725723637e0b",
+      "exampleBefore": {
+        "story": "Изменение температуры за ночь находят по формуле <span class=\"f-inline\">Δ = t₂ − t₁</span>, где <b>t₁</b> — температура вечером, <b>t₂</b> — утром (°C). Вечером было t₁ = 12 °C, утром t₂ = 3 °C. Найдите изменение <b>Δ</b> (в градусах).",
+        "formula": "Δ = t₂ − t₁",
+        "answer": -9
+      },
+      "exampleAfter": {
+        "story": "Изменение температуры за ночь находят по формуле <span class=\"f-inline\">Δ = t₂ − t₁</span>, где <b>t₁</b> — температура вечером, <b>t₂</b> — утром (°C). Вечером было t₁ = 6 °C, утром t₂ = 9 °C. Найдите изменение <b>Δ</b> (в градусах).",
+        "formula": "Δ = t₂ − t₁",
+        "answer": 3
+      }
+    },
+    {
+      "id": "t12-g37",
+      "index": 36,
+      "type": 9,
+      "originalTopic": "Число мест на трибуне",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 120…220 рядов; b = 150…300 мест; целые положительные количества, N = ab.",
+      "originalGeneratorSha256": "de4a7b98089a66cd2c262c0c0644ff0f8c82869a77dd5c9f2a7ebdd7ad3e3b6d",
+      "generatorSha256": "de4a7b98089a66cd2c262c0c0644ff0f8c82869a77dd5c9f2a7ebdd7ad3e3b6d",
+      "exampleBefore": {
+        "story": "На трибуне <b>a</b> рядов, в каждом ряду <b>b</b> мест. Число мест находят по формуле <span class=\"f-inline\">N = a · b</span>. Найдите число мест, если a = 193, b = 186. Ответ запишите без пробелов.",
+        "formula": "N = a · b",
+        "answer": 35898
+      },
+      "exampleAfter": {
+        "story": "На трибуне <b>a</b> рядов, в каждом ряду <b>b</b> мест. Число мест находят по формуле <span class=\"f-inline\">N = a · b</span>. Найдите число мест, если a = 158, b = 188. Ответ запишите без пробелов.",
+        "formula": "N = a · b",
+        "answer": 29704
+      }
+    },
+    {
+      "id": "t12-g38",
+      "index": 37,
+      "type": 9,
+      "originalTopic": "Плата за аренду",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "p = 25000…60000 руб./месяц с шагом 1000; n = 6…12 целое; фиксированная плата.",
+      "originalGeneratorSha256": "73adc1e22b6b644213ae177efccad187b34c6908f5d34487e8ec5ff3bbe25ff7",
+      "generatorSha256": "73adc1e22b6b644213ae177efccad187b34c6908f5d34487e8ec5ff3bbe25ff7",
+      "exampleBefore": {
+        "story": "Аренда квартиры стоит 38 000 руб. в месяц. Плату за <b>n</b> месяцев находят по формуле <span class=\"f-inline\">C = p · n</span>. Найдите плату за 6 месяцев (в рублях). Ответ запишите без пробелов.",
+        "formula": "C = p · n",
+        "answer": 228000
+      },
+      "exampleAfter": {
+        "story": "Аренда квартиры стоит 26 000 руб. в месяц. Плату за <b>n</b> месяцев находят по формуле <span class=\"f-inline\">C = p · n</span>. Найдите плату за 12 месяцев (в рублях). Ответ запишите без пробелов.",
+        "formula": "C = p · n",
+        "answer": 312000
+      }
+    },
+    {
+      "id": "t12-g39",
+      "index": 38,
+      "type": 10,
+      "originalTopic": "Путь автомобиля с лишней массой",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Указана постоянная скорость.",
+      "constraintsAndUnits": "v = 40…80 км/ч; t = 2…6 ч; m = 800…1500 кг, для пути не используется; постоянная скорость.",
+      "originalGeneratorSha256": "89b985d626a92c183f925b9aa7d76a015aff577b847fa6f12b069986034f687c",
+      "generatorSha256": "2db88abda40d0aba27e90ce4bf885807769be0b56f615270312117b923754bca",
+      "exampleBefore": {
+        "story": "Автомобиль массой 840 кг едет со скоростью 74 км/ч в течение 3 ч. Путь находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь автомобиля (в километрах).",
+        "formula": "S = v · t",
+        "answer": 222
+      },
+      "exampleAfter": {
+        "story": "Автомобиль массой 1053 кг едет с постоянной скоростью 69 км/ч в течение 3 ч. Путь находят по формуле <span class=\"f-inline\">S = v · t</span>. Найдите путь автомобиля (в километрах).",
+        "formula": "S = v · t",
+        "answer": 207
+      }
+    },
+    {
+      "id": "t12-g40",
+      "index": 39,
+      "type": 10,
+      "originalTopic": "Площадь комнаты",
+      "originalAssessment": "корректное авторское учебное упражнение; точный образец не установлен",
+      "sourceId": null,
+      "examEligible": false,
+      "currentClassification": "авторское учебное упражнение",
+      "verbatimFipi": false,
+      "action": "Математическая модель сохранена; добавлена честная маркировка происхождения.",
+      "constraintsAndUnits": "a = 5…12 м; b первоначально 6…14 м, при совпадении увеличивается; исключены S = P; стороны положительны.",
+      "originalGeneratorSha256": "cfdd9c9e918191211225fbc4e2e432f1730ff06ea2b82e73dcf340e5c93ed993",
+      "generatorSha256": "cfdd9c9e918191211225fbc4e2e432f1730ff06ea2b82e73dcf340e5c93ed993",
+      "exampleBefore": {
+        "story": "Стороны прямоугольной комнаты равны a = 6 м и b = 11 м. Площадь находят по формуле <span class=\"f-inline\">S = a · b</span>, а периметр — по формуле <span class=\"f-inline\">P = 2 · (a + b)</span>. Найдите <b>площадь</b> комнаты (в м²).",
+        "formula": "S = a · b",
+        "answer": 66
+      },
+      "exampleAfter": {
+        "story": "Стороны прямоугольной комнаты равны a = 5 м и b = 13 м. Площадь находят по формуле <span class=\"f-inline\">S = a · b</span>, а периметр — по формуле <span class=\"f-inline\">P = 2 · (a + b)</span>. Найдите <b>площадь</b> комнаты (в м²).",
+        "formula": "S = a · b",
+        "answer": 65
+      }
+    }
+  ],
+  "checkedDocuments": [
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №1",
+      "url": "https://drive.google.com/file/d/1vhdrKd4VHK5mvRY0rp9tpSmqQ9mE2PWb/view",
+      "file": "4ege-1.pdf",
+      "sha256": "59d2453e8398021ee5d36d52bb0978da1d05b66df39a6cca7431dfca112aaabf",
+      "bytes": 213804,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №2",
+      "url": "https://drive.google.com/file/d/1gK93ssgjraWdsR92XUm70pQLdjamuTgf/view",
+      "file": "4ege-2.pdf",
+      "sha256": "a8b6c1745ba010ad4a343bbe07ae1620ba21b25071b7b80cd329a40d5f763970",
+      "bytes": 200048,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №3",
+      "url": "https://drive.google.com/file/d/1cTFDXDNPYgb0FVCfZuwq-0uCb-TGdFSL/view",
+      "file": "4ege-3.pdf",
+      "sha256": "11fae9995830a3a7038ff595bd83513252eaf8cea29a785ded3d83f9273e1b60",
+      "bytes": 212388,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №4",
+      "url": "https://drive.google.com/file/d/1MITm96CAAcKR2bovO4t6eCV6iCtXMtZe/view",
+      "file": "4ege-4.pdf",
+      "sha256": "6c1d2ff174a954d247d795503feb8058373941dbb5087c77b4c4d5ba41d87063",
+      "bytes": 195505,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №5",
+      "url": "https://drive.google.com/file/d/1Qt9feoYzT5SQT7BsSXJZVZUAl883RvQH/view",
+      "file": "4ege-5.pdf",
+      "sha256": "48e8558de421e71919be17f4a2ac64fd15b794b0314558dd8831ae876bb4c04e",
+      "bytes": 212520,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №6",
+      "url": "https://drive.google.com/file/d/1GPtuCQivy9VG_Hj8lFUoxztXU8mvSKbY/view",
+      "file": "4ege-6.pdf",
+      "sha256": "8aa57793d897d9b095c1c70a4dbf3e0a4304799a31f81977bd103bc6e6713372",
+      "bytes": 204888,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №7",
+      "url": "https://drive.google.com/file/d/1ItDlpkkAkFStKB8C30DYZ6VTHoTPMIC6/view",
+      "file": "4ege-7.pdf",
+      "sha256": "b549818bccfd70fcc52ad129a06be965703adaeafbd7da780698b4d5854ea39e",
+      "bytes": 227900,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №8",
+      "url": "https://drive.google.com/file/d/1evXZSO1j7zWoiLqZijZh7KYu68me8ZI8/view",
+      "file": "4ege-8.pdf",
+      "sha256": "c9536be75b7a4c8daf7d394fdef8b6d1c9861ce7175af9a7b94e1a0056ebe729",
+      "bytes": 221096,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №9",
+      "url": "https://drive.google.com/file/d/1xIchc6QURGLwq7txfVbZxLJZO1nfZowX/view",
+      "file": "4ege-9.pdf",
+      "sha256": "b7672456e5e055acf0e041bb31f96cdd5558ef0e9989a1bdc4c5717e34f5dc90",
+      "bytes": 219311,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №10",
+      "url": "https://drive.google.com/file/d/15qwM-vs3Qw-uB3TnjZ453h0OwlUpZ1Lb/view",
+      "file": "4ege-10.pdf",
+      "sha256": "d436f86f41689f3dfffff104ad767964606857c069ea438c1b4e520b1579afa3",
+      "bytes": 192698,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №11",
+      "url": "https://drive.google.com/file/d/18VD3rfyJ6vFCtdXbuW05ZhY3TecI2Czm/view",
+      "file": "4ege-11.pdf",
+      "sha256": "d4d096a1e6ff3ff28504351c36397c0da62a8c8612dca501c11d2dea4a4f9118",
+      "bytes": 185960,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №12",
+      "url": "https://drive.google.com/file/d/1iQqmfRmSpBjsCCjwYjGdZ3InIi8NM1e1/view",
+      "file": "4ege-12.pdf",
+      "sha256": "3ceeac16e9a1adc4319f9f05882c6565b44c11fc5c5e5c0e3d1af24d22030142",
+      "bytes": 185292,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №13",
+      "url": "https://drive.google.com/file/d/1LkYFf5HiLnKNMNmTiXR70o5sMDd-BV2T/view",
+      "file": "4ege-13.pdf",
+      "sha256": "f012f6324a85893ee9a1c97b84503c906ceea4fb324508fe382f03eef29d3f89",
+      "bytes": 230847,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №14",
+      "url": "https://drive.google.com/file/d/1Jdfme-QhAufd4SU7z0ebCaydY8_vBIma/view",
+      "file": "4ege-14.pdf",
+      "sha256": "5693ac328eb6d6a6052a8bd66af1c62d3405d79f598c1817615035c0daa10abf",
+      "bytes": 201524,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №15",
+      "url": "https://drive.google.com/file/d/1jaRWHd3HblUjDzOOBU5s1WqM-VoCQpoV/view",
+      "file": "4ege-15.pdf",
+      "sha256": "b2c6c0e70f49a5302d73fb0914f53c3221a53688f0858a97cad877129da158f7",
+      "bytes": 223295,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №16",
+      "url": "https://drive.google.com/file/d/1EGeIM6j1Lys70EMTs1P1Xy1th2vgEAcm/view",
+      "file": "4ege-16.pdf",
+      "sha256": "cc5127f35c85842886246d47b1d2d808dad481d1e1787cbde7770ee21ea2896d",
+      "bytes": 213563,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №17",
+      "url": "https://drive.google.com/file/d/1rm-wdKUoiU8Nb310JBntiBLYd0qvxJa-/view",
+      "file": "4ege-17.pdf",
+      "sha256": "e0926119eba840303427e1b91ad326bf2628f84d184a783f0b09cebeb64d72be",
+      "bytes": 221529,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №18",
+      "url": "https://drive.google.com/file/d/1EusYJiwkwTRd_4yqE8mjuwnMr5ToCBgt/view",
+      "file": "4ege-18.pdf",
+      "sha256": "1e8d722c3b46674a83c706ca5696da9b0d0dc625ca688d10a179bc3914a71580",
+      "bytes": 218562,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №19",
+      "url": "https://drive.google.com/file/d/1f99Ag2GXLNMXo7xx4U9ZmKfbBd6U2SSK/view",
+      "file": "4ege-19.pdf",
+      "sha256": "a4a92fed180d0a0b0f7cae5b4ed7d9c509a7411c68ee519b25f19b496a724037",
+      "bytes": 202285,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №20",
+      "url": "https://drive.google.com/file/d/1tX2TLGrSsRgS9bcHdF8w_gcbdcsFAXPE/view",
+      "file": "4ege-20.pdf",
+      "sha256": "043056670c0178db52878b0508bfa39f4028f57fcf57aecee234f2405538a21d",
+      "bytes": 201217,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №21",
+      "url": "https://drive.google.com/file/d/1NAyoc06onvFzJa0-CtUCr-ErHy4ugyRS/view",
+      "file": "4ege-21.pdf",
+      "sha256": "e787a66e8bf98afc7414d845e9466059566cd350e5298f2649be40dc40bf4b74",
+      "bytes": 207260,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №22",
+      "url": "https://drive.google.com/file/d/1y2tOGBBJjlubRheyxdrtGEFEMtoqimHD/view",
+      "file": "4ege-22.pdf",
+      "sha256": "694fdbd3bbe428c87a7ec5b69908e17230d916514e3677d31687978ab828003f",
+      "bytes": 206251,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №23",
+      "url": "https://drive.google.com/file/d/1yeLlTHGpXvuMiGfBSJmUH__toIPt6Kge/view",
+      "file": "4ege-23.pdf",
+      "sha256": "2390b8c40777c67285e5bf50ea63e0f0edf6bbf4078c4e03a74928de3449e461",
+      "bytes": 222037,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №24",
+      "url": "https://drive.google.com/file/d/1Tdd-qTLxba3hKuZg7ELX3fW6_k1GqEt2/view",
+      "file": "4ege-24.pdf",
+      "sha256": "a78045b52af023f00241ac629d57a1ab2f2a74296e54eb37cf9dbad84acfc54f",
+      "bytes": 208390,
+      "status": "readable"
+    },
+    {
+      "catalogue": "4ege",
+      "title": "Вариант №25",
+      "url": "https://drive.google.com/file/d/1D_ewuhggwrw8VpUM_1-He3eeC7gvSS96/view",
+      "file": "4ege-25.pdf",
+      "sha256": "647e88f905fd91c34666f008d727961e9257696394c7bf2e836fd15a5b836469",
+      "bytes": 200189,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 1",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v1.pdf",
+      "file": "o6-formulaoge-v1.pdf",
+      "sha256": "1247f2fd7ddb3fae1a5626d87d4c856a7ddf9f4eeec1c3044fe15255f2e707be",
+      "bytes": 75743,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 2",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v2.pdf",
+      "file": "o6-formulaoge-v2.pdf",
+      "sha256": "912cdfed138dc3a2d4bcd960852c6c91a6088afd81f57eee9f3e8de6ae66cf6d",
+      "bytes": 87369,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 3",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v3.pdf",
+      "file": "o6-formulaoge-v3.pdf",
+      "sha256": "2cfe8a74054944e0bfc75497858148f538ef340a96cbe8d2ae4584cfba195f63",
+      "bytes": 86975,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 4",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v4.pdf",
+      "file": "o6-formulaoge-v4.pdf",
+      "sha256": "7106b000f27f777bd73b59eece1c50dd9a660747004db72d56b8b1f9b27e5f6d",
+      "bytes": 106269,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 5",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v5.pdf",
+      "file": "o6-formulaoge-v5.pdf",
+      "sha256": "3d0d8dd8d93ebf3c263f4c4a5185d71877344a455906d1353d3773271cbc6d6e",
+      "bytes": 91437,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 9",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v9.pdf",
+      "file": "o6-formulaoge-v9.pdf",
+      "sha256": "a74222abdcd3155d25971bcef81028a1ef112e24ed7647e5e0444ec0005b388e",
+      "bytes": 192543,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 14",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v14.pdf",
+      "file": "o6-formulaoge-v14.pdf",
+      "sha256": "ab7e82f739a80914b66ce627bcf62cc0a439bfc953a47bee7aa2eb791e45c87c",
+      "bytes": 202678,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 15",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v15.pdf",
+      "file": "o6-formulaoge-v15.pdf",
+      "sha256": "70cd8924f3f44f587cdd00ba0f1f361d92cf94521219242d55e1a083dc619702",
+      "bytes": 181554,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 16",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v16.pdf",
+      "file": "o6-formulaoge-v16.pdf",
+      "sha256": "0860252ca220100a115d91d2966f05bce5f516f6fa0ba5222b34967b2087f923",
+      "bytes": 55327,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 21",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v21.pdf",
+      "file": "o6-formulaoge-v21.pdf",
+      "sha256": "76574889ea5b2fbc88c24f84adfd1fb2e3c805e38320980c7be3c39c2d682e07",
+      "bytes": 63078,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 22",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v22.pdf",
+      "file": "o6-formulaoge-v22.pdf",
+      "sha256": "58c8cb09bb6c9965f43fd4ee406686b5ec49fd1aa475ae84df0ce28c362d9e24",
+      "bytes": 60115,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 25",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v25.pdf",
+      "file": "o6-formulaoge-v25.pdf",
+      "sha256": "8b7b37653c6f6632fe93cf210f8d10855f3e02c805cdb6f78ceb7039cf1e0116",
+      "bytes": 72100,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 28",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v28.pdf",
+      "file": "o6-formulaoge-v28.pdf",
+      "sha256": "51a61cc9048bffdf5d4d9007cb104e29a7c2254203ebc0d5a8a240c1debda2f6",
+      "bytes": 58785,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 29",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v29.pdf",
+      "file": "o6-formulaoge-v29.pdf",
+      "sha256": "e6cedfc4ab0375a57ac5a236aa7592ee233bdc9c82a374792c0f2ea2f49a9b88",
+      "bytes": 58427,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 30",
+      "url": "https://vpr-ege.ru/z6/o6-formulaoge-v30.pdf",
+      "file": "o6-formulaoge-v30.pdf",
+      "sha256": "a9b154d415b23b640a490eb3fddbfdc3a5993f56fc5e412403ed98446b257007",
+      "bytes": 83313,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 174",
+      "url": "https://vpr-ege.ru/z6/math100-oge-174.pdf",
+      "file": "math100-oge-174.pdf",
+      "sha256": "44eab9dff3690bb5e84d2cb480a8f8ff8eb49f9bd8c5ae0bf9d819ca9cd017cc",
+      "bytes": 329202,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 175",
+      "url": "https://vpr-ege.ru/z6/math100-oge-175.pdf",
+      "file": "math100-oge-175.pdf",
+      "sha256": "c5ae4fed086f5a144ab30d96d39893a1944de28d71c212c953ddf2b633dd006d",
+      "bytes": 264439,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 176",
+      "url": "https://vpr-ege.ru/z6/math100-oge-176.pdf",
+      "file": "math100-oge-176.pdf",
+      "sha256": "13a8bd4e82e2e4c8bc4e3420bb89884b303b4ed1c28beed8aceb26115a8ae2df",
+      "bytes": 267533,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 177",
+      "url": "https://vpr-ege.ru/z6/math100-oge-177.pdf",
+      "file": "math100-oge-177.pdf",
+      "sha256": "0ad99e6c568967840330ef967673ac44724d45fe9e04641ee572d498392a1e74",
+      "bytes": 294930,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 178",
+      "url": "https://vpr-ege.ru/z6/math100-oge-178.pdf",
+      "file": "math100-oge-178.pdf",
+      "sha256": "b2631a8fb3a94bb949403f8136a036bfd15b7223f8c813a3be56b1380486a07e",
+      "bytes": 320814,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 179",
+      "url": "https://vpr-ege.ru/z6/math100-oge-179.pdf",
+      "file": "math100-oge-179.pdf",
+      "sha256": "dea50bdcca6cdbf2b51cfc55a8226c24260fd1c68518ea7a5b36179725a2276a",
+      "bytes": 243928,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 180",
+      "url": "https://vpr-ege.ru/z6/math100-oge-180.pdf",
+      "file": "math100-oge-180.pdf",
+      "sha256": "6e2b88d772e2d2974689b2e4f419bc070946641d3ed9e4f597f6d8b47f218bea",
+      "bytes": 296092,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 181",
+      "url": "https://vpr-ege.ru/z6/math100-oge-181.pdf",
+      "file": "math100-oge-181.pdf",
+      "sha256": "afcde7b587e525d87a13459dbd10ec31bfb74e80fe41d2d4f2b429f25d0a13e2",
+      "bytes": 264518,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 182",
+      "url": "https://vpr-ege.ru/z6/math100-oge-182.pdf",
+      "file": "math100-oge-182.pdf",
+      "sha256": "5e205e02dc0cf249a91c6c65ef136767df2f0d5612a67010feec41c372002e4d",
+      "bytes": 347634,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 183",
+      "url": "https://vpr-ege.ru/z6/math100-oge-183.pdf",
+      "file": "math100-oge-183.pdf",
+      "sha256": "3148dbae8252a3cb2ac5f7ff87f0a6d5d47d5108e6b82e639d84c9d3e3514c5e",
+      "bytes": 299826,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 184",
+      "url": "https://vpr-ege.ru/z6/math100-oge-184.pdf",
+      "file": "math100-oge-184.pdf",
+      "sha256": "84edb3f1f333eef650e5b13064c1981ed880b0065893a36894a83fe76c386861",
+      "bytes": 319011,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 185",
+      "url": "https://vpr-ege.ru/z6/math100-oge-185.pdf",
+      "file": "math100-oge-185.pdf",
+      "sha256": "ba0911bb00ef6692339de362e8a99a9a765a041bb39b22ed450c44091e5650f9",
+      "bytes": 255382,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 186",
+      "url": "https://vpr-ege.ru/z6/math100-oge-186.pdf",
+      "file": "math100-oge-186.pdf",
+      "sha256": "633f3bc962f6fcb14312d920074d80a72fc0192f0af971a97f02112e72980dd4",
+      "bytes": 291746,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 187",
+      "url": "https://vpr-ege.ru/z6/math100-oge-187.pdf",
+      "file": "math100-oge-187.pdf",
+      "sha256": "66ddc6aa8eb5bc1ea081881d4eb49590dceab6b1fb4899621cf465ac4d0435b0",
+      "bytes": 297778,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 188",
+      "url": "https://vpr-ege.ru/z6/math100-oge-188.pdf",
+      "file": "math100-oge-188.pdf",
+      "sha256": "ddb28813caa90a655a28385c131b6f9d3f743c44f33c11be79b2ac03fe31b2bd",
+      "bytes": 270954,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 189",
+      "url": "https://vpr-ege.ru/z6/math100-oge-189.pdf",
+      "file": "math100-oge-189.pdf",
+      "sha256": "232c86e1ff6077f7760bde649591fe45a928b376f9ecca1ac5dbc9dc65c33cef",
+      "bytes": 296323,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 190",
+      "url": "https://vpr-ege.ru/z6/math100-oge-190.pdf",
+      "file": "math100-oge-190.pdf",
+      "sha256": "6a30aba5ec63f0b6806748b77739a2498c65fb093afdc54239fe31d181effd6b",
+      "bytes": 297427,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 191",
+      "url": "https://vpr-ege.ru/z6/math100-oge-191.pdf",
+      "file": "math100-oge-191.pdf",
+      "sha256": "078f5b3f9267f8252f04db61ff2ce3a80b5a301bfd835fb762c37b2600623e16",
+      "bytes": 291845,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 192",
+      "url": "https://vpr-ege.ru/z6/math100-oge-192.pdf",
+      "file": "math100-oge-192.pdf",
+      "sha256": "af88629a14235423888a152488701cffb29b7fd14fe8deb4a3c1f5f17c9e2201",
+      "bytes": 339723,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 193",
+      "url": "https://vpr-ege.ru/z6/math100-oge-193.pdf",
+      "file": "math100-oge-193.pdf",
+      "sha256": "887a560d2b3e16584440e113259fc4c8ab778089e506df184ee6c6069d95a849",
+      "bytes": 280940,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 194",
+      "url": "https://vpr-ege.ru/z6/math100-oge-194.pdf",
+      "file": "math100-oge-194.pdf",
+      "sha256": "8800c3dbb3dd9dd30c091182caa5ff544e5e9549fb0346dcb1bafee5b80f8965",
+      "bytes": 326752,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 195",
+      "url": "https://vpr-ege.ru/z6/math100-oge-195.pdf",
+      "file": "math100-oge-195.pdf",
+      "sha256": "f9b553ae6d1f1b5a6e80872f69bc5b899c681cee547040d8664631737b4a628e",
+      "bytes": 304846,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 196",
+      "url": "https://vpr-ege.ru/z6/math100-oge-196.pdf",
+      "file": "math100-oge-196.pdf",
+      "sha256": "064419757bec86ec720c4f70811133abb1b01e78c2826da931920f58079e9692",
+      "bytes": 281919,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 197",
+      "url": "https://vpr-ege.ru/z6/math100-oge-197.pdf",
+      "file": "math100-oge-197.pdf",
+      "sha256": "cc349f980a1369c2e6954ad0521c48254b535a024bec8bf2ff203041b68cfd06",
+      "bytes": 293696,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 198",
+      "url": "https://vpr-ege.ru/z6/math100-oge-198.pdf",
+      "file": "math100-oge-198.pdf",
+      "sha256": "87d7a8b6727bb327dfc3eab6c5789c5731c069ff5729262458783d23d07fabc3",
+      "bytes": 333862,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 199",
+      "url": "https://vpr-ege.ru/z6/math100-oge-199.pdf",
+      "file": "math100-oge-199.pdf",
+      "sha256": "a3d1e4cd714b5cf2540b906664bd8f3ff1d97ec153bb711c5fe5c4c2ddfecadd",
+      "bytes": 326991,
+      "status": "readable"
+    },
+    {
+      "catalogue": "catalogue",
+      "title": "Вариант 200",
+      "url": "https://vpr-ege.ru/z6/math100-oge-200.pdf",
+      "file": "math100-oge-200.pdf",
+      "sha256": "9d3f0afd64cd6ab20b3f2c7b8fb218deae6c7b538a970b88f67e9d5605f36916",
+      "bytes": 276572,
+      "status": "readable"
+    },
+    {
+      "catalogue": "vpr",
+      "title": "Задание №12 Прототипы ФИПИ · Расчёты по формулам",
+      "url": "https://vpr-ege.ru/z7/Rabochiy_list_nomer_12_OGE.pdf",
+      "file": "Rabochiy_list_nomer_12_OGE.pdf",
+      "sha256": "120b629030b3a031b21aede384082d6237a8a0320c6b039f27df33abbd72062c",
+      "bytes": 121499,
+      "status": "readable"
+    },
+    {
+      "catalogue": "vpr",
+      "title": "ОГЭ. Задание №12 Письменный разбор всех видов + практика",
+      "url": "https://vpr-ege.ru/z6/12_pismenny_razbor.pdf",
+      "file": "12_pismenny_razbor.pdf",
+      "sha256": "085f94ba866810b4e46fee57d8097e95d30d1cbd4134906e3b76f5cbea700ff0",
+      "bytes": 112286,
+      "status": "readable"
+    },
+    {
+      "catalogue": "vpr",
+      "title": "рабочая тетрадь",
+      "url": "https://vpr-ege.ru/images/oge/oge25-math4skill-12.pdf",
+      "file": "oge25-math4skill-12.pdf",
+      "sha256": "5ba0538079594b5ad14aa32e9307a7bc0cc047d95a3de1c679d2ad558486fdf4",
+      "bytes": 147715,
+      "status": "readable"
+    },
+    {
+      "catalogue": "navigator",
+      "title": "Рекомендации по самостоятельной подготовке к ОГЭ по математике - 2026",
+      "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/MR_matematika_oge_2026.pdf",
+      "file": "MR_matematika_oge_2026.pdf",
+      "sha256": "e58cce0fa700f46c28b07c0d4ea4b65943eeb821b9c91428db2928016467c489",
+      "bytes": 571402,
+      "status": "readable"
+    }
+  ]
+}
