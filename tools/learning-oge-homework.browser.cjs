@@ -130,6 +130,13 @@ async function main() {
     for(const m of frameMessages){assert(!JSON.stringify(m).includes(pupil.id));assert(!JSON.stringify(m).includes(pupil.login));}
     // Teacher uses the actual assignment/quantity/publication UI; two distinct tasks.
     await tp.goto(origin+'/learning/#practice=oge-public%3A19');await tp.reload();await tp.locator('[data-practice-start]').click();
+    await tp.locator('#assignment-form [name=course]').selectOption('ege');
+    assert.equal(await tp.locator('#assignment-form [name=content] option[value^="oge-public:"]').count(),0,
+      'OGE homework must not enter the EGE assignment catalogue');
+    await tp.locator('#assignment-form [name=course]').selectOption('oge');
+    assert.deepEqual(await tp.locator('#assignment-form [name=content] option[value^="oge-public:"]').evaluateAll(options=>options.map(option=>option.value)),
+      [11,15,16,17,18,19].map(number=>'oge-public:'+number));
+    await tp.locator('#assignment-form [name=content]').selectOption('oge-public:19');
     await tp.locator('#assignment-form [name=count]').fill('2');await tp.locator('#assignment-form [name=student][value="'+peer.id+'"]').check();await tp.locator('#assignment-form [type=submit]').click();
     await tp.locator('[data-publish-batch]').click();
     const peerTasks=await until(()=>api(tp,'/assignments'),x=>x.assignments.filter(a=>a.learnerId===peer.id&&a.status==='published').length===2,'quantity publication');

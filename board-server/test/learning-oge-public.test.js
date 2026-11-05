@@ -121,3 +121,29 @@ test('lesson membership and teacher participation never become independent credi
  assert.equal(together.status,200);assert.equal(together.body.attempt.outcome,'together');assert(together.body.attempt.assistance.teacher);
 });
 
+
+test('all six native homework batches respect quantity bounds, distinct conditions and retained work',async t=>{
+ const f=await fixture(t),student=f.students[0],old=await f.attempt();
+ const body={learnerIds:f.students.map(s=>s.account.id),trainerId:'oge-public',contentId:'19',title:'Проверка количества'};
+ for(const count of [0,-1,1.5,11,'2']){
+  const rejected=await f.request(f.teacher,'/assignments',{...body,opId:op(),count});
+  assert.equal(rejected.status,400,'reject invalid quantity '+JSON.stringify(count));
+ }
+ assert.equal((await f.request(f.teacher,'/assignments',{...body,opId:op(),trainerId:'ege-path',contentId:'equations-linear',count:2})).status,400);
+ assert.equal((await f.request(f.teacher,'/assignments')).body.assignments.length,0,'invalid quantities do not create drafts');
+ for(const number of [11,15,16,17,18,19]){
+  const request={...body,opId:op(),contentId:String(number),count:10};
+  const created=await f.request(f.teacher,'/assignments',request);
+  assert.equal(created.status,201,'maximum quantity for OGE '+number);
+  assert.equal(created.body.assignments.length,20,'ten separate conditions for each of two pupils');
+  assert.equal(new Set(created.body.assignments.map(a=>a.batchId)).size,1);
+  for(const learner of f.students){
+   const rows=created.body.assignments.filter(a=>a.learnerId===learner.account.id);
+   assert.equal(rows.length,10);
+   assert.equal(new Set(rows.map(a=>contracts.questionIdentity(a.attempt.taskSpec))).size,10,'conditions are distinct for '+number);
+   assert(rows.every(a=>a.status==='draft'&&a.attempt.outcome==='started'&&a.attempt.taskSpec.contentId===String(number)));
+  }
+  assert.deepEqual((await f.request(f.teacher,'/assignments',request)).body.assignments,created.body.assignments,'retry keeps the exact same batch');
+ }
+ assert.deepEqual((await f.request(student,'/attempts/'+old.id)).body,old,'old attempt is unchanged after all batches');
+});
