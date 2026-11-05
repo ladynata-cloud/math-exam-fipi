@@ -1,4 +1,5 @@
 'use strict';
+const publicDestination=require('./learning-public-return.assert.cjs');
 
 // Actual teacher forms, local HTTP and an isolated SQLite database. All accounts
 // and saved work are synthetic; browser traffic cannot reach a public service.
@@ -235,7 +236,7 @@ async function screenshot(page, filename) {
     async function onlyPair(page, { student = true } = {}) {
       await page.locator('[data-number-theory-only]').waitFor();
       assert.deepEqual(await page.locator('#main [data-plan-course]').evaluateAll(nodes => nodes.map(node => node.dataset.planCourse).sort()), IDS.slice().sort());
-      assert.deepEqual(await page.locator('#main [data-plan-course-open]').evaluateAll(nodes => nodes.map(node => node.href).sort()), URLS.slice().sort());
+      assert.deepEqual((await page.locator('#main [data-plan-course-open]').evaluateAll(nodes => nodes.map(node => node.href))).map(publicDestination).sort(), URLS.slice().sort());
       assert.equal(await page.locator('#catalog-grid, #other-courses, [data-vilenkin6-course], [data-vilenkin6-preview]').count(), 0);
       assert.equal(await page.locator('#main .prep-focus').textContent(), COMMENT);
       assert.equal(await page.locator('#main .prep-focus b').count(), 0, 'Teacher comments remain plain text');
