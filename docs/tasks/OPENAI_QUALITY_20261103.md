@@ -73,3 +73,13 @@ private state survives stop/start, and checked project/model and credit balance
 in the account UI. Factual permitted-access eligibility is still unresolved;
 do not substitute the execution region or the presence of credits for it.
 Keep live disabled and this PR Draft. API calls and API expenditure remain zero.
+
+## Review finding correction — 2026-11-06
+
+Within the existing evaluator scope, apply the pinned PR429 history-fit guard
+before accepting cabinet answers. Exercise Unicode normalization and ordinary
+Cyrillic envelope overflow through the runner, including retained reservation
+and no retry. Preserve all sources, cases and spending/access guards. Independent
+re-review of this correction is covered by the owner's review authorization.
+The new digest invalidates earlier admission. Access prerequisites remain unmet;
+do not start the Codespace or live API for this offline correction.

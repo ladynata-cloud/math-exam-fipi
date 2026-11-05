@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {pathToFileURL} from 'node:url';
-import {ROOT,hash,manifest,verifySources,current,privacy,cabinets,dialogue,adapter,validateModelAnswer,assessAnswer} from './source.mjs';
+import {ROOT,hash,manifest,verifySources,current,privacy,cabinets,dialogue,adapter,validateModelAnswer,answerFitsDialogue,assessAnswer} from './source.mjs';
 import {CampaignLedger} from './ledger.mjs';
 export const CORPUS=JSON.parse(fs.readFileSync(path.join(ROOT,'cases.json'),'utf8'));
 export const MODEL='gpt-5.4-mini-2026-03-17';
@@ -151,6 +151,9 @@ export async function run({mode,ledger,account=null,fetchImpl,now=Date.now,save=
     const started=now();
     const v=await adapter.callProvider({config,...r,fetchImpl});
     previous=validateModelAnswer({title:v.answer.title,text:v.answer.text,steps:v.answer.steps,check:v.answer.check});
+    // Keep mathematics intact; reject an answer that cannot be carried into
+    // a bounded follow-up, including expansion during NFKC normalization.
+    requireTrue(!row.profile||answerFitsDialogue(previous,index?row.turns[index].followUp:row.question),'EVAL_DIALOGUE_ANSWER_LIMIT');
     ledger.complete({caseId:id,...v,latencyMs:Math.max(0,now()-started),now:now()});
     const automatic=assessAnswer(r.input,previous);
     const local=row.profile?cabinets.answerCabinetOffline(r.input,r.cards):current.answerOffline(r.input);
@@ -179,17 +182,23 @@ export async function audit(){
  const row=CORPUS.dialogs.find(r=>r.id==='d04'),r=build(row,0);
  const fabricated={title:'Подсказка',text:'Значение x равно 6.',steps:['Запиши x = 6.'],check:'Можно продолжить.'};
  let accepted=false;try{await adapter.callProvider({config:CONFIG,...r,fetchImpl:async()=>Response.json(envelope(fabricated))});accepted=true;}catch{}
- const validLong={title:'Объяснение',text:'П'.repeat(1790),steps:['Один шаг.'],check:'Проверь.'};
- let longAnswerValid=false,historyCode=null;
- try{validateModelAnswer(validLong);longAnswerValid=true;dialogue.prepareDialogue({question:'Объясни проще',turns:[{question:'3,6 : 0,12',answer:validLong}]});}
- catch(e){historyCode=codeOf(e);}
+ const cabinet=CORPUS.dialogs.find(r=>r.profile);
+ const historyBoundaryCases=[
+  {id:'nfkc-expansion',answer:{title:'Шаг',text:'㍍'.repeat(300),steps:['Проверь действие.'],check:'Подумай.'}},
+  {id:'cyrillic-envelope',answer:{title:'Шаг',text:'П'.repeat(1600),steps:['П'.repeat(90)],check:'Подумай.'}}
+ ].map(({id,answer})=>{
+  let answerValid=false,historyCode=null;
+  try{validateModelAnswer(answer);answerValid=true;build(cabinet,1,answer);}catch(e){historyCode=codeOf(e);}
+  return {id,answerValid,historyCode,rejectedByDialogueGuard:!answerFitsDialogue(answer,cabinet.question)};
+ });
  return {plan:plan(),calls:rows.length,liveCalls:0,modelQuality:'NOT_MEASURED',
   planningReservationWithPlaceholderMicros:rows.reduce((n,r)=>n+r.reservationMicros,0),
   findings:{fabricatedWrongFinalAnswerPassesSchema:accepted,
    fabricatedWrongFinalAnswerBlockedByAssessment:assessAnswer(r.input,fabricated).blocksPositiveReview,
    correctChainedEquationAccepted:!assessAnswer({...r.input,mode:'explain'},
-    {title:'Уравнение',text:'Вычтем 4 из обеих частей.',steps:['−3x = 19 − 4 = 15','x = −5'],check:'−3 · (−5) + 4 = 19'}).blocksPositiveReview,validAnswerCanExceedDialogueLimit:longAnswerValid&&historyCode==='CABINET_DIALOGUE_LIMIT',
-   dialogueLimitCode:historyCode,standalonePreviousTurnsAbsent:rows.filter(r=>r.contextMode==='original-task-and-latest-attempt-only').every(r=>!r.payload.messages.some(m=>m.content.includes('previousTurns')))},
+    {title:'Уравнение',text:'Вычтем 4 из обеих частей.',steps:['−3x = 19 − 4 = 15','x = −5'],check:'−3 · (−5) + 4 = 19'}).blocksPositiveReview,
+   schemaValidAnswerCanExceedDialogueLimit:historyBoundaryCases.some(r=>r.answerValid&&r.historyCode==='CABINET_DIALOGUE_LIMIT'),
+   historyBoundaryCases,standalonePreviousTurnsAbsent:rows.filter(r=>r.contextMode==='original-task-and-latest-attempt-only').every(r=>!r.payload.messages.some(m=>m.content.includes('previousTurns')))},
   requests:rows,coverage:coverage()};
 }
 async function main(){

@@ -1,4 +1,42 @@
-# Independent technical review and protected setup — 6 November 2026
+# Dialogue-boundary correction — 6 November 2026
+
+The evaluator now applies the pinned PR429 `answerFitsDialogue` check before
+accepting a cabinet answer into the ledger. It reserves room for the next
+question and accounts for NFKC expansion. Mathematical text is never truncated.
+An incompatible answer stops the campaign with `EVAL_DIALOGUE_ANSWER_LIMIT`,
+keeps the reservation and is not marked completed; there is no automatic retry.
+This closes the earlier review finding about accepting an unusable history item.
+It does not guarantee that every model answer will fit or that a live campaign
+will complete.
+
+The audit now explicitly reproduces both a schema-valid Unicode expansion and
+a schema-valid Cyrillic envelope overflow. It no longer presents one rejected
+oversized sample as proof of general dialogue compatibility. Pipeline tests
+verify the refusal occurs before acceptance, the next request is not sent,
+the reservation remains and the used ledger cannot be restarted.
+
+14/14 Node tests, 24/24 references and audit passed locally. The unchanged
+32-call mock campaign completes. The new plan digest is
+`f4fe7ab9eddb9f096ac2c74562a16f25ac0d614d7bad9118f58ab4d9f15dd109`;
+any earlier preflight is invalid for this code. Transport, source pins, corpus,
+budget, no-retry rule and live-access gates are unchanged.
+
+API access prerequisites are not met, so live remains disabled. No actual API
+requests or model-quality measurements occurred, and API expenditure is zero.
+The private Codespace remains stopped at its earlier prepared revision; before
+any later authorized trial it must receive the current reviewed code and a new
+factual preflight. Do not recreate or replace the canonical state directory.
+
+The same independent reviewer rechecked the three executable/test file changes
+without network, account or key access: **APPROVE_FOR_BOUNDED_TRIAL**; the earlier
+MEDIUM finding is resolved and no new finding was reported. Its independent
+14/14 test rerun, audit and diff check passed. Reviewed identity is local HEAD
+`a605b3706aa4fc811c772b8f38bd4e1f8deee9fc` plus the three-file correction, bound by
+the new plan digest above. Exact published head and CI are recorded in PR420.
+
+---
+
+# Previous independent technical review and protected setup — 6 November 2026
 
 The owner authorized an independent agent to review the program without access
 to the key. A separate Codex review agent completed that review in this task

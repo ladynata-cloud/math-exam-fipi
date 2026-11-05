@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {CampaignLedger} from './ledger.mjs';
-import {adapter,current,dialogue,hash,verifySources} from './source.mjs';
+import {adapter,current,dialogue,hash,verifySources,validateModelAnswer} from './source.mjs';
 import {CORPUS,CONFIG,CAP,PRICE_DATE,build,plan,pending,validateAccount,envelope,mockFetch,fakeAnswer,run,audit,score,reviewTemplate} from './evaluate.mjs';
 function fixture(){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'me-eval-test-'));const file=path.join(dir,'test.sqlite');const ledger=new CampaignLedger(file);
  return{dir,file,ledger,close(){ledger.close();fs.rmSync(dir,{recursive:true,force:true});}};}
@@ -58,9 +58,34 @@ test('format mutations rejected by unchanged adapter, including refusals and tru
 test('schema limitations remain visible, but mathematical review and UTF-8 limits are integrated',async()=>{
  const a=await audit();assert(a.findings.fabricatedWrongFinalAnswerPassesSchema);
  assert(a.findings.fabricatedWrongFinalAnswerBlockedByAssessment);assert(a.findings.correctChainedEquationAccepted);
- assert.equal(a.findings.validAnswerCanExceedDialogueLimit,false);assert(a.findings.standalonePreviousTurnsAbsent);
+ assert.equal(a.findings.schemaValidAnswerCanExceedDialogueLimit,true);
+ assert(a.findings.historyBoundaryCases.every(r=>r.answerValid&&r.historyCode==='CABINET_DIALOGUE_LIMIT'&&r.rejectedByDialogueGuard));
+ assert(a.findings.standalonePreviousTurnsAbsent);
  assert(a.coverage.every(x=>x.apiRoute==='BLOCKED'));
  assert.equal(a.coverage.filter(x=>x.localVerification==='deterministic').length,4);
+});
+test('cabinet history overflow is refused before accepting an answer, retains reserve and never retries',async()=>{
+ const index=CORPUS.dialogs.findIndex(r=>r.profile),row=CORPUS.dialogs[index];
+ for(const answer of [
+  {title:'Шаг',text:'㍍'.repeat(300),steps:['Проверь действие.'],check:'Подумай.'},
+  {title:'Шаг',text:'П'.repeat(1600),steps:['П'.repeat(90)],check:'Подумай.'}
+ ]){
+  validateModelAnswer(answer);
+  assert.throws(()=>build(row,1,answer),/CABINET_DIALOGUE_LIMIT/);
+  const f=fixture();let calls=0;
+  try{
+   const result=await run({mode:'dry-run',ledger:f.ledger,now:()=>NOW,fetchImpl:async()=>{
+    calls++;return Response.json(envelope(calls===index*2+1?answer:fakeAnswer));
+   }});
+   assert.equal(calls,index*2+1);assert.equal(result.status,'failed');
+   assert.equal(result.error,'EVAL_DIALOGUE_ANSWER_LIMIT');assert.equal(result.results.length,index*2);
+   const snapshot=f.ledger.snapshot(),last=snapshot.rows.at(-1);
+   assert.equal(last.caseId,row.id+'-t1');assert.equal(last.status,'failed');
+   assert.equal(snapshot.campaign.reservedMicros,snapshot.rows.reduce((sum,r)=>sum+r.reservedMicros,0));
+   assert(last.reservedMicros>0);
+   await assert.rejects(run({mode:'dry-run',ledger:f.ledger,now:()=>NOW}),/ALREADY_USED/);
+  }finally{f.close();}
+ }
 });
 test('history roles, personal data and extra fields are refused before transport',()=>{
  for(const d of [
