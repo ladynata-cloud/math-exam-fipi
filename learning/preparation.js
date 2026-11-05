@@ -21,7 +21,7 @@ function focusMarkup(value){
   offset=match.index+token.length;
  }
  html+=E(text.slice(offset));
- return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Тренажёры откроются в отдельной вкладке. Их результаты сохраняются в этом браузере и не входят в прогресс кабинета.</p>':''}`;
+ return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Вернуться к заданиям можно кнопкой «В кабинет». Результаты этой практики сохраняются в этом браузере и не входят в прогресс кабинета.</p>':''}`;
 }
 // Fixed course references are presentation only. A saved plan may link a public
 // course without creating a managed attempt or claiming its whole-course result.
@@ -57,7 +57,7 @@ function ogeGeometryCardsMarkup({teacher=false,ids=ogeGeometryCards.map(card=>ca
   const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent(pathname);
   cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · ОГЭ №${number}</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
  }
- if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Тренажёры открываются отдельно и не входят в прогресс кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
+ if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Вернуться к заданиям можно кнопкой «В кабинет». Результаты этой практики не входят в прогресс кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
  return cards.join('');
 }
 // The same fixed cards serve plan references and the explicit two-trainer route.
