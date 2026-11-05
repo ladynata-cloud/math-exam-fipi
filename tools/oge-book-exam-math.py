@@ -292,6 +292,10 @@ def reviewed(record, oracle, index):
         return result,'Независимое распознавание фактически отрисованных кривых: '+stable(details)+'. y=x — прямая через начало с положительным наклоном; y=x² — одна парабола с вершиной вначале; y=1/x — две отдельные ветви вI иIII четвертях.','PASS',None
     if ident=='55' and '15 коробок' in p and 'по 12 кг' in p:
         return 15*12,'Искомая масса M=m·n=12кг×15=180кг; цена90руб/кг не входит вформулу массы.','PASS',None
+    if ident=='55' and not record['prefix'] and 'F = 1,8 · C + 32' in p and 'C = -90 °C' in p:
+        # OGE12_SOURCE_AUDIT changed the public seeded example; the exact source
+        # fixture is separate from the unchanged v1/v2 apple-box condition.
+        return float(Fraction(9,5)*(-90)+32),'По видимому условию C=−90 °C. F=(9/5)×(−90)+32=−162+32=−130 °F. Знак минус сохраняется; это температура по другой шкале, не модуль температуры.','PASS',None
     if ident=='57' and '10 минут' in p and '3 минуты' in p and '5-й день' in p:
         return 10+(5-1)*3,'Арифметическая последовательность: первый день10мин, до5-го дня4 прибавления по3мин. a5=10+4×3=22мин.','PASS',None
     if ident=='58' and 'BP = 15, CP = 6, DP = 10' in p:
