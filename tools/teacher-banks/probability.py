@@ -5,6 +5,7 @@ All variants use the same task structure; only small numerical data vary.
 """
 from fractions import Fraction as F
 from statistics import median
+from math import factorial, comb
 
 PDF_79 = "https://ptlab.mccme.ru/sites/ptlab.mccme.ru/files/uchebnoe_posobie_teoriya_veroyatnostey_i_statistika_tyurin_2011.pdf"
 PDF_1011 = "https://ptlab.mccme.ru/sites/ptlab.mccme.ru/files/eksperimentalnoe_uchebnoe_posobie_dlya_10_i_11_klassov_2014.pdf"
@@ -17,6 +18,8 @@ GRADES_79 = {
     "statistics": [7],
     "elementary": [8], "events": [8], "independence": [8],
     "binomial": [9], "random-variable": [9], "success-moments": [9],
+    "frequency": [8], "data-variance": [7], "counting-product": [8],
+    "permutations": [8], "combinations": [8], "geometric": [9],
 }
 
 
@@ -264,6 +267,139 @@ def success_moments(v, control):
     return out
 
 
+def times(n):
+    return "раза" if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14 else "раз"
+
+
+def frequency(v, control):
+    total = 40 if control else 20
+    hits = 16 + 2*v if control else 8 + v
+    rate = [F(1, 5), F(1, 4), F(2, 5), F(1, 2)][v]
+    samples = 40 if control else 20
+    surveyed = 100 if control else 50
+    chosen = 36 + 4*v if control else 18 + 2*v
+    n1, n2 = (20, 30) if control else (10, 20)
+    h1, h2 = (v+7, v+11) if control else (v+3, v+7)
+    out = [
+        task(f"В серии из {total} бросков монеты орёл выпал {hits} {times(hits)}. Найдите относительную частоту выпадения орла.", F(hits, total),
+             f"Частота равна числу появлений события, делённому на число опытов: {hits}/{total} = {val(F(hits,total))}.", f"{hits}/{total}"),
+        task(f"Провели {samples} опытов. Относительная частота события A равна {val(rate)}. Сколько раз произошло событие A?", samples*rate,
+             f"Умножим число опытов на частоту: {samples} · {val(rate)} = {val(samples*rate)}.", f"{samples}*{expr(rate)}"),
+        task(f"Из {surveyed} опрошенных школьников {chosen} выбрали шахматы. Найдите долю выбравших шахматы в процентах.", F(chosen*100, surveyed),
+             f"Доля равна {chosen}/{surveyed}. В процентах: {chosen}/{surveyed} · 100% = {val(F(chosen*100,surveyed))}%.", f"{chosen}*100/{surveyed}"),
+        task(f"В первой серии из {n1} опытов событие A произошло {h1} {times(h1)}, во второй из {n2} опытов — {h2} {times(h2)}. Найдите его частоту по двум сериям вместе.", F(h1+h2, n1+n2),
+             f"Число опытов — {n1+n2}, число появлений события — {h1+h2}. Общая частота: ({h1} + {h2}) : ({n1} + {n2}) = {val(F(h1+h2,n1+n2))}.", f"({h1}+{h2})/({n1}+{n2})")]
+    out[2]['a'] += '%'
+    if control:
+        out.append(task(f"В серии из {total} бросков монеты орёл выпал {hits} {times(hits)}. Найдите относительную частоту выпадения решки.", F(total-hits,total),
+                        f"Решка выпала {total} − {hits} = {total-hits} раз. Частота: {total-hits}/{total} = {val(F(total-hits,total))}.", f"({total}-{hits})/{total}"))
+    return out
+
+
+def data_variance(v, control):
+    k = v + (7 if control else 3)
+    data = [k-1, k+1, k-1, k+1]
+    spread = [k-2, k+2, k-2, k+2]
+    out = [
+        task(f"Найдите среднее арифметическое набора: {number_list(data)}.", k,
+             f"Сумма равна {4*k}; чисел 4. Среднее: {4*k} : 4 = {k}.", f"({'+'.join(map(str,data))})/4"),
+        task(f"Среднее набора равно {k}. Найдите отклонение числа {k-2} от этого среднего.", -2,
+             f"Из значения вычитаем среднее: {k-2} − {k} = −2.", f"{k-2}-{k}"),
+        task(f"Найдите дисперсию набора: {number_list(data)}. Используйте среднее квадратов отклонений.", 1,
+             f"Среднее равно {k}. Отклонения: −1; 1; −1; 1. Дисперсия: (1 + 1 + 1 + 1) : 4 = 1.", f"({' + '.join(f'({x}-{k})**2' for x in data)})/4"),
+        task(f"Найдите дисперсию набора: {number_list(spread)}. Используйте среднее квадратов отклонений.", 4,
+             f"Среднее равно {k}. Отклонения: −2; 2; −2; 2. Дисперсия: (4 + 4 + 4 + 4) : 4 = 4.", f"({' + '.join(f'({x}-{k})**2' for x in spread)})/4")]
+    if control:
+        constant = k+2
+        out.append(task(f"Найдите дисперсию набора: {constant}; {constant}; {constant}; {constant}.", 0,
+                        f"Среднее равно {constant}. Все отклонения равны 0, поэтому среднее их квадратов равно 0.", f"(4*({constant}-{constant})**2)/4"))
+    return out
+
+
+def counting_product(v, control):
+    n = [4,5,6,3][v] if control else 3 + v
+    other = 3 if control else 2
+    digits = ', '.join(str(x) for x in range(1,n+1))
+    out = [
+        task(f"В наборе: футболок — {n}, кепок — {other}; все вещи различны. Сколькими способами можно выбрать одну футболку и одну кепку?", n*other,
+             f"К каждой из {n} футболок подходит любая из {other} кепок. Получаем {n} · {other} = {n*other} способов.", f"{n}*{other}"),
+        task(f"В меню: супов — {other}, вторых блюд — {n}, напитков — 2. Сколько обедов можно составить, выбрав по одному из каждого вида?", 2*n*other,
+             f"Выборы независимы: {other} · {n} · 2 = {2*n*other} обедов.", f"{other}*{n}*2"),
+        task(f"Код состоит из двух цифр из набора {digits}. Цифры могут повторяться. Сколько разных кодов можно составить?", n*n,
+             f"Число вариантов на каждом месте — {n}. По правилу умножения: {n} · {n} = {n*n}.", f"{n}**2"),
+        task(f"Код состоит из двух разных цифр из набора {digits}. Сколько таких кодов можно составить?", n*(n-1),
+             f"Первую цифру выбираем {n} способами, вторую — {n-1} способами. Получаем {n} · {n-1} = {n*(n-1)}.", f"{n}*({n}-1)")]
+    if control:
+        out.append(task(f"Из A в B можно проехать по одной из {n} дорог, из B в C — по одной из 2 дорог. Сколько маршрутов A–B–C можно выбрать, проходя по одной дороге на каждом участке?", 2*n,
+                        f"Каждую из {n} первых дорог можно соединить с любой из 2 вторых: {n} · 2 = {2*n}.", f"{n}*2"))
+    return out
+
+
+def permutations(v, control):
+    # Each variant uses the same multiset of small object counts, rotated.
+    ns = [(3,4,4,5), (4,3,5,4), (4,5,3,4), (5,4,4,3)]
+    a, b, c, d = ns[(v+1)%4] if control else ns[v]
+    objects = 'открыток' if control else 'книг'
+    name = ['Антон', 'Борис', 'Вадим', 'Глеб'][v]
+    out = [
+        task(f"Вычислите {a}!.", factorial(a),
+             f"{a}! = {' · '.join(map(str,range(1,a+1)))} = {factorial(a)}.", '*'.join(map(str,range(1,a+1)))),
+        task(f"Ряд составляют из {b} разных {objects}. Сколько разных порядков возможно?", factorial(b),
+             f"На первое место можно поставить любой из {b} предметов, затем выбирать из оставшихся. Число порядков: {b}! = {factorial(b)}.", '*'.join(map(str,range(1,b+1)))),
+        task(f"Группа из {c} школьников выстраивается в очередь. Среди них — {name}. Сколько порядков возможно, если {name} стоит первым?", factorial(c-1),
+             f"Первое место занято. Остальных {c-1} школьников можно переставить {c-1}! = {factorial(c-1)} способами.", '*'.join(map(str,range(1,c)))),
+        task(f"Карточки с числами от 1 до {d} случайным образом располагают в ряд; все порядки равновозможны. Найдите вероятность порядка по возрастанию.", F(1,factorial(d)),
+             f"Всего {d}! = {factorial(d)} порядков. По возрастанию карточки стоят только в одном порядке. Вероятность: 1/{factorial(d)}.", f"1/({'*'.join(map(str,range(1,d+1)))})")]
+    if control:
+        out.append(task(f"Случайно составляют ряд из {b} разных книг; все порядки равновозможны. Найдите вероятность того, что заранее выбранная книга окажется последней.", F(1,b),
+                        f"Любое из {b} мест равновероятно для выбранной книги. Последнее место одно: вероятность равна 1/{b}.", f"1/{b}"))
+    return out
+
+
+def combinations(v, control):
+    n = [5,6,7,4][v] if control else 4 + v
+    group_b = 3 if control else 2
+    pairs = comb(n,2)
+    out = [
+        task(f"Из {n} разных книг выбирают две. Сколькими способами можно это сделать? Порядок выбора не учитывается.", pairs,
+             f"Упорядоченных пар {n} · {n-1}. Каждая неупорядоченная пара посчитана дважды: {n} · {n-1} : 2 = {pairs}.", f"{n}*({n}-1)/2"),
+        task(f"Из {n} школьников выбирают команду из {n-1} человек. Сколько разных команд можно составить?", n,
+             f"Достаточно выбрать одного школьника, который не войдёт в команду. Таких выборов {n}.", str(n)),
+        task(f"Красных карандашей — {n}, синих — {group_b}; все карандаши различны. Сколько пар из одного красного и одного синего карандаша можно выбрать?", n*group_b,
+             f"Красный карандаш выбираем {n} способами, синий — {group_b} способами. Количество пар: {n} · {group_b} = {n*group_b}.", f"{n}*{group_b}"),
+        task(f"Из {n} разных предметов случайно выбирают два; все пары равновозможны. Два предмета заранее отмечены. Найдите вероятность выбрать именно эту пару.", F(1,pairs),
+             f"Всего пар: {n} · {n-1} : 2 = {pairs}. Отмеченная пара одна, поэтому вероятность равна 1/{pairs}.", f"1/({n}*({n}-1)/2)")]
+    if control:
+        triples = comb(n,3)
+        out.append(task(f"Из {n} разных открыток выбирают три. Сколькими способами можно это сделать? Порядок выбора не учитывается.", triples,
+                        f"Сначала считаем упорядоченные тройки и делим на 3! = 6: {n} · {n-1} · {n-2} : 6 = {triples}.", f"{n}*({n}-1)*({n}-2)/6"))
+    return out
+
+
+def geometric(v, control):
+    n = 16 + 4*v if control else 12 + 4*v
+    left = 5 if control else 4
+    right = left + 4
+    width = 5 + v if control else 4 + v
+    height = 4 if control else 3
+    duration = 24 + 4*v if control else 20 + 4*v
+    wait = 6 if control else 5
+    angle = [90,120,180,60][v] if control else [60,90,120,180][v]
+    out = [
+        task(f"Число x выбирают равномерно из отрезка [0; {n}]. Найдите вероятность того, что {left} ≤ x ≤ {right}.", F(right-left,n),
+             f"Длина всего отрезка {n}, подходящего — {right} − {left} = {right-left}. Вероятность: {right-left}/{n} = {val(F(right-left,n))}.", f"({right}-{left})/{n}"),
+        task(f"В прямоугольнике {width} см на {height} см закрашена полоса шириной 2 см на всю длину стороны {height} см. Точку выбирают равномерно из прямоугольника. Найдите вероятность попадания в полосу.", F(2,width),
+             f"Площадь полосы 2 · {height} = {2*height}, всего прямоугольника {width} · {height} = {width*height}. Отношение площадей: {val(F(2,width))}.", f"(2*{height})/({width}*{height})"),
+        task(f"Время ожидания равномерно распределено от 0 до {duration} минут. Найдите вероятность ожидания не более {wait} минут.", F(wait,duration),
+             f"Подходит промежуток длиной {wait} из всего промежутка длиной {duration}. Вероятность: {wait}/{duration} = {val(F(wait,duration))}.", f"{wait}/{duration}"),
+        task(f"Точку выбирают равномерно на окружности. Найдите вероятность попадания на заранее отмеченную дугу величиной {angle}°.", F(angle,360),
+             f"Доля длины дуги равна доле полного угла: {angle}/360 = {val(F(angle,360))}.", f"{angle}/360")]
+    if control:
+        out.append(task(f"Внутри прямоугольника {width} см на 4 см расположен квадрат со стороной 2 см. Точку выбирают равномерно из прямоугольника. Найдите вероятность попадания в квадрат.", F(1,width),
+                        f"Площадь квадрата 2² = 4, прямоугольника {width} · 4 = {4*width}. Вероятность: 4/{4*width} = {val(F(1,width))}.", f"2**2/({width}*4)"))
+    return out
+
+
 def build():
     return [
         pack("statistics", "Данные, среднее, медиана и размах", "пункты 1–3, 10–12; приложение, 7 класс", None, statistics),
@@ -274,6 +410,12 @@ def build():
         pack("binomial", "Испытания Бернулли: два и три испытания", "пункты 47–49, 52; приложение, 9 класс", "§ 17–18", binomial),
         pack("random-variable", "Случайная величина: ожидание и дисперсия", "пункты 50–53, 56; приложение, 9 класс", "§ 7–9", random_variable),
         pack("success-moments", "Число успехов: ожидание и дисперсия", "пункты 54, 58–59; приложение, 9 класс", "§ 19", success_moments),
+        pack("frequency", "Относительная частота события", "пункты 21, 23; теория вероятностей, 8 класс (от авторов, стр. 4)", "§ 3. Близость частоты и вероятности", frequency),
+        pack("data-variance", "Отклонения и дисперсия набора данных", "пункты 13–14; приложение, 7 класс: самостоятельная 4, стр. 229", None, data_variance),
+        pack("counting-product", "Комбинаторное правило умножения", "пункт 39; элементы комбинаторики, 8 класс (от авторов, стр. 4)", "§ 14. Основные сведения", counting_product),
+        pack("permutations", "Перестановки и факториал", "пункты 40–41; приложение, 8 класс: самостоятельная 4, стр. 232", "§ 15. Число перестановок. Факториал", permutations),
+        pack("combinations", "Сочетания: выбор пары или тройки", "пункты 42–43; приложение, 8 класс: самостоятельная 5, стр. 233", "§ 16. Число сочетаний", combinations),
+        pack("geometric", "Геометрическая вероятность: длины и площади", "пункты 44–46; приложение, 9 класс: самостоятельная 1, стр. 234", None, geometric),
     ]
 
 

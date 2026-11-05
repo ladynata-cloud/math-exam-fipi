@@ -8,6 +8,7 @@ on:
       - 'tools/teacher-source-research.json'
       - 'tools/teacher-textbook-coverage.json'
       - 'tools/teacher-uploaded-source-review.json'
+      - 'tools/teacher-next-independent-check.py'
       - 'tools/*pedagogam-textbook*'
       - '.github/workflows/pedagogam-textbook-pdfs.yml'
   workflow_dispatch:
@@ -25,6 +26,7 @@ jobs:
         run: |
           python3 -m pip install sympy==1.14.0 PyMuPDF==1.26.6 reportlab==4.4.9
           python3 tools/pedagogam-textbook-pdfs-check.py
+          python3 tools/teacher-next-independent-check.py
           python3 tools/build-sitemap.py --check
           git diff --check
       - name: Browser search, classes, textbooks and PDF downloads

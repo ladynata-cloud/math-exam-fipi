@@ -1,0 +1,43 @@
+name: Materialize reviewed teacher PDFs once
+on:
+  push:
+    branches: [codex/teacher-pdfs-next-20261105]
+    paths:
+      - '.github/workflows/materialize-teacher-pdfs-once.yml'
+permissions:
+  contents: write
+jobs:
+  materialize:
+    if: github.ref_name == 'codex/teacher-pdfs-next-20261105'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: codex/teacher-pdfs-next-20261105
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - name: Reproduce locally reviewed PDF bytes
+        run: |
+          python3 -m pip install reportlab==4.4.9 sympy==1.14.0
+          sha256sum /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
+          python3 -c "import sys,zlib; print(sys.version); print(zlib.ZLIB_VERSION,zlib.ZLIB_RUNTIME_VERSION)"
+          cp pedagogam/raboty/manifest.json "$RUNNER_TEMP/expected-teacher-manifest.json"
+          python3 tools/build-pedagogam-textbook-pdfs.py
+          cmp "$RUNNER_TEMP/expected-teacher-manifest.json" pedagogam/raboty/manifest.json
+      - name: Save generated artifacts to the task branch
+        run: |
+          git config user.name 'MathExam build'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pedagogam/raboty
+          git diff --cached --check
+          git commit -m "Materialize reviewed teacher PDF artifacts"
+          git push origin HEAD:codex/teacher-pdfs-next-20261105
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: teacher-materialization-diagnostic
+          path: |
+            pedagogam/raboty/manifest.json
+            pedagogam/raboty/arith-add-subtract/samostoyatelnaya.pdf
