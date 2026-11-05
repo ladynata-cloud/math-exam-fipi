@@ -73,7 +73,7 @@ const errors=[];let browser,views=0,walked=0;
     await page.locator('#answer-form button[type=submit]').click();
     const state=await page.evaluate(id=>window.MakarychevApp.getState().tasks[id],t.id);assert(state.correct&&!state.independent,t.id+' assisted completion');
    }
-   await page.reload();await page.waitForSelector('#notebook');
+   await page.reload();await page.waitForSelector('#answer-form');
    assert(await page.evaluate(()=>window.MakarychevApp.getState().tasks['p01-ex024-saving'].correct));
    await nav('#lesson/p01/0');assert.equal(await page.locator('#notebook').inputValue(),'Старая задача: запись сохранена');
   }
