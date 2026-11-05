@@ -30,5 +30,7 @@ try {
   fs.writeFileSync(path.join(temporary, testPath), git('show', `${adapter}:${testPath}`));
   const result = spawnSync('npm', ['--prefix', path.join(temporary, 'assistant-service'), 'test'], { stdio: 'inherit' });
   assert.equal(result.status, 0, 'PR399 composed service tests failed');
+  const math = spawnSync(process.execPath, ['--test', path.join(temporary, 'assistant-service/test/openai-math-composition.mjs')], { stdio: 'inherit' });
+  assert.equal(math.status, 0, 'PR399 composed mathematical boundary tests failed');
   console.log('PR399_MATH_VERIFICATION_COMPOSITION_OK (mock transport only; no adapter publication)');
 } finally { fs.rmSync(temporary, { recursive: true, force: true }); }

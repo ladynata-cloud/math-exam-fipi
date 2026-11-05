@@ -81,12 +81,42 @@ test('correct final does not hide wrong arithmetic, changed equations, identitie
   assert.equal(correct.status, 'partial'); assert.equal(correct.finalAnswer, 'matched');
 });
 
+test('mixed equality chains check numeric links without requiring a unique linear root', () => {
+  for (const chain of ['-3x=19-4=15', '15=19-4=-3x', '-3 · x = 19 − 4 = 15',
+    '-3x=15=15=-3x']) {
+    const result = verify(answer([chain, 'Ответ: -5']));
+    assert.equal(result.status, 'partial', chain);
+    assert.equal(result.finalAnswer, 'matched', chain);
+    assert.equal(result.mathematicallyVerified, false, chain);
+  }
+  // This is the exact form returned by the existing free helper.
+  const baseline = assessAnswer(linear, answer(['-3 · x = 19 − 4 = 15.', 'Ответ: x = -5.']));
+  assert.equal(baseline.blocksPositiveReview, false);
+  for (const chain of ['-3x=19-4=16', '16=19-4=-3x', '-3x=16=16', 'x=x=15']) {
+    assert.equal(verify(answer([chain, 'Ответ: -5'])).status, 'failed', chain);
+  }
+});
+
+test('known false links survive unsupported neighbours; unknown chains remain unverified', () => {
+  for (const chain of ['log(x)=15=16', '15=16=log(x)', '-3x=16=log(x)',
+    'log(x)=16=-3x', 'unknown=1=2', '1=2=unknown']) {
+    assert.equal(verify(answer([chain])).status, 'failed', chain);
+  }
+  for (const chain of ['log(x)=15=15', '15=15=log(x)', 'unknown=1=1']) {
+    const result = verify(answer([chain]));
+    assert.equal(result.status, 'unverified', chain);
+    assert.equal(result.mathematicallyVerified, false, chain);
+  }
+  assert.equal(verify(answer(['log(x)=15=16']), { topic: 'unknown', question: 'Нет уравнения' }).status, 'failed');
+});
+
 test('exact linear checks generalize beyond corpus and reject losing solution sets', () => {
   let count = 0;
   for (let a = -7; a <= 7; a++) if (a) for (let x = -8; x <= 8; x++) {
     const b = 11, c = a*x+b;
     const input = { topic: 'linear-equations', question: `${a}x+${b}=${c}` };
     assert.equal(verify(answer([`${a}x=${c-b}`, `Ответ: ${x}`]), input).finalAnswer, 'matched');
+    assert.equal(verify(answer([`${a}x=${c}-${b}=${c-b}`, `Ответ: ${x}`]), input).status, 'partial');
     assert.equal(verify(answer([`x=${x+1}`, `Ответ: ${x}`]), input).status, 'failed');
     assert.equal(verify(answer(['x=x', `Ответ: ${x}`]), input).status, 'failed'); count++;
   }
@@ -97,6 +127,9 @@ test('all adjacent equalities, decimal expressions and simple unit contradiction
   assert.equal(verify(answer(['1/2+1/3=5/6=6/7'])).status, 'failed');
   assert.equal(verify(answer(['0,1+0,2=0,3'])).status, 'partial');
   assert.equal(verify(answer(['0.1+0.2=0.4'])).status, 'failed');
+  assert.equal(verify(answer(['1 см=1=1 см²'])).status, 'failed');
+  assert.equal(verify(answer(['1=1 см=1=1 см²'])).status, 'failed');
+  assert.equal(verify(answer(['1 см=1=1 см'])).status, 'partial');
   const row = cases.find(r => r.id === 'd12');
   assert.equal(verify(answer(['Ответ: 24 см']), row).status, 'failed');
   assert.equal(verify(answer(['Ответ: 24 см²']), row).finalAnswer, 'matched');

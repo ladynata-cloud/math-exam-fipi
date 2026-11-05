@@ -3,6 +3,48 @@
 Date: 2026-11-04 Asia/Novosibirsk. Task:
 [MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104](../tasks/MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104.md).
 
+## Continuation: equality-chain correction, 2026-11-05
+
+Rechecked PR399 `7f4c054b9b8fb5b519dcab60e6fa4e461ed7c21f`, PR420
+`c819927e484ce3afeae187d269974cb1cf2ead68` and PR429
+`f04d39fe036bb54949136093caac54a4ac6070d4`; all remained open drafts.
+The inspected main was `6a117de590a61e4a716db43b93f17db54b5c665e`.
+This is a scoped continuation of PR429, not an integration into that newer main.
+
+The checker incorrectly treated every link of `-3x=19-4=15` as a linear
+equation requiring a unique root, rejecting the true numeric identity `19-4=15`.
+It now classifies each adjacent link separately. A known false link also survives
+unsupported neighbours; `log(x)=15=16` cannot hide `15=16`. Recognized incompatible
+units remain rejected across unitless links. Unsupported chains remain unverified;
+no explanation receives `mathematicallyVerified: true`.
+
+Two new regression groups and the expanded 238-equation corpus failed against
+the previous implementation (12 groups passed, 3 failed), then passed with the
+correction. Final results in this continuation:
+
+- **233/233 service tests**, zero failures/skips.
+- **247/247 tests with immutable PR399**, including its 14 unchanged tests,
+  plus **2/2 dedicated OpenAI mathematical-boundary tests**. Every transport
+  was injected; no external requests. The composition script now includes the
+  dedicated tests so CI repeats this evidence.
+- **21 independent Python reference checks**, 3 human-only cases unchanged;
+  both curriculum source reproduction gates passed.
+- Syntax and whitespace checks passed for changed code.
+
+Local verification used exact GitHub source snapshots and the same three-way
+file composition as the repository script. The original large course JSON was
+restored after an empty sparse-download result; its SHA256 matched the pinned
+`9c269243f2940f0f86d5ba5ee918759cd52c19152f006f093bb2412447ba2776`.
+Earlier incomplete-source runs failed and are not counted as final passes.
+Exact candidate GitHub CI evidence belongs in the PR handoff, not this pre-push
+report. Independent HIGH review is still outstanding.
+
+The owner clarified the project's international audience and deferred the API
+use-case choice. A support letter is not a prerequisite for these offline checks.
+This work does not establish permitted API access, supply protected credentials,
+or revise the frozen PR420 paid runner. No live model quality or cost was measured;
+**actual external API calls: 0; API spend: $0**. Pupil routes remain unchanged.
+
 ## Inspected sources and non-duplication
 
 - main `846040b338fd21a69f52132a75e29e4a9e2669b6`.
@@ -39,7 +81,7 @@ No external model call, pupil data access, adapter activation or deployment.
 PR399/420 are not merged or edited. Their historical evidence remains historical;
 the frozen PR420 runner does not silently acquire new source manifests/approval.
 
-## Completed checks in the cloud workspace
+## Initial checks completed on 2026-11-04
 
 - **231/231 current service tests**, 0 failures/skips in the final run.
 - **245/245 composed service tests**, including all 14 unchanged PR399 OpenAI
@@ -104,7 +146,7 @@ PR: recorded in GitHub handoff
 Base: 846040b338fd21a69f52132a75e29e4a9e2669b6
 Head: recorded in GitHub handoff
 Gate: MATHEXAM_ASSISTANT_MATH_PREPARED_OK; not a release gate
-Tests: 231 current; 245 with PR399; 21 independent references; source/syntax/whitespace
+Tests: 233 current; 247 with PR399 plus 2 dedicated; 21 independent references; source/syntax/whitespace
 Failures: none remaining in final workspace tests; initial failures explained above
 Not run: real models/pupils; independent technical review; local Docker/browser
 Scope deviations: none

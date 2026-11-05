@@ -28,6 +28,11 @@ metadata. No UI claims that a model explanation is mathematically verified.
   intermediate equalities must preserve the original solution set; substituting
   just one expected root is insufficient. Identities and contradictions fail
   when the original equation has one root.
+  Numeric-only links are checked as arithmetic, even when a neighbouring link
+  contains x: `-3x=19-4=15` is valid for `-3x+4=19`. A recognized false link
+  vetoes the chain even beside unsupported syntax (`log(x)=15=16`); consistent
+  unsupported links remain unverified. Missing units between recognized units
+  cannot hide a contradiction such as `1 см=1=1 см²`.
 - Missing/extra roots, excluded denominator boundaries, wrong open/closed
   endpoints and recognized incompatible units. Omitted units remain unverified.
 - Recognized final answers cannot be passed off as first-step hints without
@@ -85,6 +90,10 @@ node assistant-service/scripts/test-pr399-composition.mjs
 ```
 
 Composition uses a temporary copy, a three-way merge with immutable PR399
-sources, its unchanged OpenAI tests and all current service tests. It does not
+sources, its unchanged OpenAI tests and all current service tests. It also runs
+`test/openai-math-composition.mjs` explicitly in that temporary tree to check
+mixed equality chains at the OpenAI response boundary with synthetic responses.
+This file requires the adapter and is not part of the standalone service suite.
+The composition does not
 write the adapter into the task branch or contact any model endpoint. The
 standard CI also supplies browser, Docker and durable-restart checks.

@@ -29,6 +29,13 @@ reused with provenance. No claim of measured GPT quality.
 
 ## Acceptance and checks
 
+Continuation, 2026-11-05: the owner requested further preparation without a
+support letter while the future API use case remains undecided. MathExam has
+an international audience; no audience nationality or access-location assumption
+is an authorization check. This continuation fixes the false rejection of mixed
+linear/numeric equality chains and adds regression tests at the existing OpenAI
+composition boundary. It does not assert API eligibility or change release gates.
+
 - Wrong final results and supported wrong equations cannot pass by JSON shape.
 - Contradictions in recognized claims veto positive manual scoring too.
 - Unknown prose/notations have no automatic mathematical pass state.

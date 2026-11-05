@@ -48,19 +48,29 @@ function scalar(raw) {
 function equationVerdict(claim, original) {
   const parts = claim.split('=').map(s => s.trim());
   if (parts.length < 2 || parts.some(s => !s)) return null;
-  if (/[xх]/u.test(claim)) {
-    const root = parseLinearEquation(original);
-    if (!root) return null;
-    // Every adjacent equality must preserve the entire solution set, including
-    // identities/no-solutions. Merely substituting one expected root is unsafe.
-    const parsed = parts.slice(1).map((p, i) => parseLinearEquation(`${parts[i]}=${p}`));
-    if (parsed.some(p => !p)) return null;
-    return parsed.every(p => p.kind === root.kind && (p.kind !== 'one' || eq(p.expected, root.expected)));
-  }
-  const values = parts.map(scalar);
-  if (values.some(v => !v)) return null;
-  return values.every(v => eEqual(v.value, values[0].value)
-    && (!v.unit || !values[0].unit || v.unit === values[0].unit));
+  // Missing units in an intermediate scalar must not hide incompatible
+  // recognized units elsewhere in the same equality chain.
+  const units = parts.map(scalar).filter(v => v?.unit).map(v => v.unit);
+  if (new Set(units).size > 1) return false;
+  const root = /[xх]/u.test(claim) ? parseLinearEquation(original) : null;
+  const verdicts = parts.slice(1).map((right, i) => {
+    const left = parts[i], pair = `${left}=${right}`;
+    if (/[xх]/u.test(pair)) {
+      // Variable-bearing links must preserve the original solution set.
+      // A numeric link such as 19-4=15 is a true computation, not a new
+      // equation that is supposed to have the original unique root.
+      const parsed = parseLinearEquation(pair);
+      if (!root || !parsed) return null;
+      return parsed.kind === root.kind && (parsed.kind !== 'one' || eq(parsed.expected, root.expected));
+    }
+    const a = scalar(left), b = scalar(right);
+    if (!a || !b) return null;
+    return eEqual(a.value, b.value) && (!a.unit || !b.unit || a.unit === b.unit);
+  });
+  // An unsupported neighbour cannot erase a recognized false equality.
+  // Conversely, checking one numeric link cannot certify an unknown chain.
+  if (verdicts.includes(false)) return false;
+  return verdicts.includes(null) ? null : true;
 }
 
 function piMultiple(raw) {
