@@ -73,7 +73,7 @@
     ['arithmetic-route', 'Мой маршрут по арифметике', '/trainers/oge-basics/arithmetic-route.html', 'Основы', ['арифметика', 'считать', 'с самого начала']],
     ['arithmetic-count', 'Сложение и вычитание: от начала к столбику', '/trainers/oge-basics/arithmetic-route.html?skill=count', 'Основы', ['сложение', 'вычитание', 'столбик']],
     ['arithmetic-multiply', 'Умножение: рисунок, таблица и столбик', '/trainers/oge-basics/arithmetic-route.html?skill=multiply', 'Основы', ['умножение', 'таблица', 'столбик']],
-    ['arithmetic-division', 'Деление уголком: выбрать следующий шаг', '/trainers/oge-basics/arithmetic-route.html?skill=division', 'Письменные алгоритмы', ['деление', 'уголком', 'остаток']],
+    ['arithmetic-division', 'Деление столбиком (уголком): выбрать следующий шаг', '/trainers/oge-basics/arithmetic-route.html?skill=division', 'Письменные алгоритмы', ['деление', 'уголком', 'остаток']],
     ['arithmetic-decimals', 'Действия с десятичными дробями: маршрут', '/trainers/oge-basics/arithmetic-route.html?skill=decimals', 'Дроби', ['десятичные', 'действия', 'вычисления']],
     ['nod', 'НОД: общий делитель по шагам', '/trainers/grade6-nod.html', 'Основы', ['нод', 'наибольший общий делитель', 'разложение на множители']],
     ['nok', 'НОК: общее кратное по шагам', '/trainers/grade6-nok.html', 'Основы', ['нок', 'наименьшее общее кратное', 'разложение на множители']],
@@ -96,9 +96,9 @@
     ['decimal-place', 'Касса разрядов: десятичные дроби', '/trainers/decimal-cash-trainer.html', 'Основы', ['разряды', 'десятые', 'сотые']],
     ['simple-equations', 'Простые уравнения', '/trainers/simple-equations-stepwise.html', 'Алгебра', ['простые уравнения', 'обратное действие']],
     ['linear-systems', 'Системы линейных уравнений', '/trainers/linear-systems-trainer.html', 'Алгебра', ['системы', 'подстановка', 'сложение']],
-    ['division-stepwise', 'Деление уголком по шагам', '/trainers/long-division-stepwise.html', 'Письменные алгоритмы', ['деление уголком']],
+    ['division-stepwise', 'Деление столбиком (уголком) по шагам', '/trainers/long-division-stepwise.html', 'Письменные алгоритмы', ['деление уголком']],
     ['division-digit', 'Подобрать цифру частного', '/trainers/oge-basics/multiplication-division/course-digit-choice.html', 'Письменные алгоритмы', ['выбрать цифру частного при делении']],
-    ['division-notebook', 'Деление уголком: тетрадный тренажёр', '/trainers/trainers/long-division.html', 'Письменные алгоритмы', ['тетрадный формат', 'деление']],
+    ['division-notebook', 'Деление столбиком (уголком): тетрадный тренажёр', '/trainers/trainers/long-division.html', 'Письменные алгоритмы', ['тетрадный формат', 'деление']],
     ['multiplication-notebook', 'Умножение столбиком', '/trainers/trainers/long-multiplication.html', 'Письменные алгоритмы', ['умножение столбиком']],
     // The compatibility URLs now redirect to these published lessons. Use the
     // direct routes and retain the existing compatibility pages unchanged.
@@ -157,7 +157,7 @@
     ['makarychev9', 'Макарычев: алгебра 9 класса', '/school/index.html?course=makarychev9#course/makarychev9', 'Учебники', ['макарычев 9', 'алгебра']],
     ['alimov', 'Алимов: алгебра 10–11 классов', '/school/alimov10-11/', 'Учебники', ['алимов 10', 'алимов 11', 'алгебра']],
     ['nikolsky', 'Никольский: алгебра 10 класса', '/school/nikolsky10/', 'Учебники', ['никольский 10', 'алгебра']],
-    ['division-lab', 'Деление уголком: самостоятельные шаги', '/trainers/oge-basics/multiplication-division/division-lab.html', 'Письменные алгоритмы', ['деление уголком', 'цифра частного']],
+    ['division-lab', 'Деление столбиком (уголком): самостоятельные шаги', '/trainers/oge-basics/multiplication-division/division-lab.html', 'Письменные алгоритмы', ['деление уголком', 'цифра частного']],
     ['base-percent', 'Проценты, пропорции, части и целое', '/ege-baza/percent/', 'Основы', ['процент от числа', 'целое по части']],
     ['work-rate', 'Совместная работа', '/ege-baza/work-rate/', 'Текстовые задачи', ['землекопы', 'производительность', 'совместная работа']],
     ['ordinary-topic', 'Обыкновенные дроби: разбор темы', '/topics/obyknovennye-drobi/', 'Дроби', ['обыкновенные', 'обычные дроби']],
@@ -471,7 +471,7 @@
       if ((divide || /частн|уголком/.test(text)) && /цифр/.test(text) && /подб|подоб|выбр|выбир|какую|какая/.test(text))
         return one('division', 'division-digit', 'Здесь можно потренироваться подбирать одну цифру частного.');
       if (divide && /столбик|уголком/.test(text))
-        return one('division', 'division-stepwise', 'Открой тренажёр и попробуй первый шаг деления уголком.');
+        return one('division', 'division-stepwise', 'Открой тренажёр и попробуй первый шаг деления столбиком (уголком).');
       if (multiply && /столбик|одно.{0,15}под другим/.test(text) && /длинн|значн|два числ|тетрад/.test(text))
         return one('multiplication', 'multiplication-notebook', 'Здесь можно потренироваться умножать в столбик.');
     }
@@ -835,9 +835,9 @@
     if (/умнож.{0,15}на\s*(?:9(?:$|\D)|девять)|таблиц.{0,15}на\s*9(?:$|\D)/.test(text) && !advancedArithmetic) return done(result('multiplication', 'В занятии о приёмах таблицы умножения есть отдельный шаг про умножение на 9. Можно также потренироваться читать произведение в таблице Пифагора.', ['times-nine', 'pythagoras-table'], state));
     if (/таблиц.{0,15}умнож/.test(text) && /вперемешк|смешанн/.test(text) && !advancedArithmetic) return done(result('multiplication', 'В этом тренажёре можно повторить таблицу умножения вперемешку и найти неизвестный множитель.', ['multiplication-mixed', 'pythagoras-table'], state));
     if (/таблиц.{0,15}умнож/.test(text) && !advancedArithmetic) return done(result('multiplication', 'Выберите удобный вход: таблицу Пифагора, приёмы запоминания или общий маршрут умножения и деления.', ['pythagoras-table', 'times-nine', 'multiplication-table'], state));
-    if (/делени|делить|поделить|делим|уголком/.test(text) && !advancedArithmetic) return done(result('division', 'Начните с пошагового тренажёра деления уголком.', ['division-stepwise'], state));
+    if (/делени|делить|поделить|делим|уголком/.test(text) && !advancedArithmetic) return done(result('division', 'Начните с пошагового тренажёра деления столбиком (уголком).', ['division-stepwise'], state));
     if (/арифметик|научиться считать|считать с нуля|с самого начала/.test(text) && !advancedArithmetic) return done(result('arithmetic', 'В маршруте по арифметике выберите одно действие: сложение и вычитание, умножение, деление или десятичные дроби. Начать можно с маленьких чисел.', ['arithmetic-route', 'basics'], state,
-      [choice('Сложение и вычитание'), choice('Умножение'), choice('Деление уголком')]));
+      [choice('Сложение и вычитание'), choice('Умножение'), choice('Деление столбиком (уголком)')]));
     if (/сложени|складыв|прибав|вычит|вычесть|отним/.test(text) && !advancedArithmetic && !/уравнен|вероятност/.test(text)) return done(result('arithmetic', 'Для сложения и вычитания выберите нужную ступень: от маленьких чисел до вычислений столбиком.', ['arithmetic-count', 'arithmetic-route'], state));
     if (/умнож|произвед/.test(text) && !advancedArithmetic && !/формул|вероятност/.test(text)) return done(result('multiplication', 'В маршруте умножения можно начать с равных групп, повторить таблицу и перейти к столбику.', ['arithmetic-multiply', 'multiplication-notebook', 'multiplication-mixed'], state));
     var hits = search(text);
