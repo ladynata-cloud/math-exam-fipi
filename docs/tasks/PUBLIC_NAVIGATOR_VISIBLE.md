@@ -45,6 +45,12 @@ external inference, bounded transient history, scoped keyboard handling and
 unchanged host-page bytes outside the exact inclusion. No mathematical content
 changes. External review and physical-device testing are not performed.
 
+The first integrated browser run passed all 21 navigator journeys. The retained
+lesson showcase test counted the new Shadow DOM search as a booking form. Its
+replacement preserves the no-booking-form guarantee and admits only one form
+inside the exact navigator host, with no action/method, one navigation textarea
+and a non-submitting button. All other forms/endpoints still fail the check.
+
 ## Risk and rollback
 
 The launcher may cover a small bottom-right part of a page; responsive sizing
