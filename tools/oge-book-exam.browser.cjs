@@ -21,6 +21,11 @@ function oracle(r,prompt,expected,method,extra={}){r.oracles.push({prompt:clean(
 async function source(p,expression){return p.evaluate(x=>JSON.parse(JSON.stringify(eval(x),(_k,v)=>typeof v==='bigint'?String(v):v)),expression);}
 async function text(l){return clean(await l.innerText());}
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
+function responseBodyWithin(res,timeoutMs=15000){
+ let timer;
+ const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{const error=new Error('Browser response-body read exceeded '+timeoutMs+' ms');error.code='BOOK_RESPONSE_BODY_TIMEOUT';reject(error);},timeoutMs);});
+ return Promise.race([res.body(),deadline]).finally(()=>clearTimeout(timer));
+}
 async function dimensions(p,r,stage){const d=await p.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+2?[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect();return (b.width>innerWidth||b.right>innerWidth+2)&&e.getClientRects().length&&!e.closest('svg');}).slice(0,15).map(e=>({tag:e.tagName,id:e.id,cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent.trim().slice(0,120)})):[]}));record(r,'layout',d.html<=d.viewport+2&&d.body<=d.viewport+2,{stage,...d});}
 async function storage(p){return p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).sort(([a],[b])=>a.localeCompare(b))));}
 function outcomes(store,filter){const out={};function walk(v,key){if(/(?:^|\.)(events|current|seenArch|notes|draft|history)(?:\.|$)/i.test(key))return;if(v&&typeof v==='object'){for(const[k,x]of Object.entries(v))walk(x,key+'.'+k);}else if(/solved|correct|wrong|attempt|score|completed|streak|tries|closed|answered|results|success|records|perType|checkpoint|total|prog/i.test(key)&&!/updatedAt|(?:^|\.)(last|t|ts)$/.test(key))out[key]=v;}for(const[k,v]of Object.entries(store))if(!filter||filter.test(k))try{walk(JSON.parse(v),k);}catch{}return out;}
@@ -232,7 +237,7 @@ async function corruptedStorageRegression(p,r){
       if(r.resources[u.pathname]&&r.resources[u.pathname].sha256!==sha256)r.resourceHashErrors.push({path:u.pathname,reason:'Resource changed during a single scenario'});
       r.resources[u.pathname]={sha256,status:res.status(),contentType:headers['content-type']||'',bytes,method};
      };
-     resourceReads.push(res.body().then(bytes=>{
+     resourceReads.push(responseBodyWithin(res).then(bytes=>{
       const sha256=crypto.createHash('sha256').update(bytes).digest('hex');
       if(sha256===servedHash)remember(sha256,bytes.length,'browser-response-body');
       else{
@@ -250,6 +255,12 @@ async function corruptedStorageRegression(p,r){
       }
      }).catch(error=>{
       const reason=String(error.message).split('\n')[0];
+      // Current Chromium can leave the initial redirect document's body
+      // promise pending forever. Only an observed completed redirect may use
+      // the existing exact-server-payload evidence after this deadline.
+      // A timeout on any final document or dependency remains a hard failure.
+      const redirectedInitial=u.pathname===PREFIX+route&&r.finalPath&&r.finalPath!==u.pathname;
+      if(error.code==='BOOK_RESPONSE_BODY_TIMEOUT'&&!redirectedInitial){r.resourceHashErrors.push({path:u.pathname,reason});return;}
       // Immediate redirect/reload can discard Chromium's body handle after a
       // successful HTTP response. Retain the hash calculated from the exact
       // payload sent by this server and label that narrower evidence explicitly.

@@ -5,12 +5,12 @@ Static course at `/school/makarychev8/`, built around the existing Peterson cour
 ## Coverage
 
 - 51 topics in six chapters, including the six advanced topics.
-- 172 short theory blocks, 306 tasks and 958 worked steps.
-- 102 selected textbook tasks/subparts with number and printed page, plus 204 explicitly labelled authored exercises.
+- 172 short theory blocks, 399 tasks and 1181 worked steps.
+- 195 textbook tasks/subparts with number and printed page, plus 204 explicitly labelled authored exercises. Exercises 1–24 now have all subparts, substitutions and table cells (95 source cards, including the two original cards).
 - Exercise navigator for all 1340 numbers. It distinguishes existing solutions from topic links; it does not claim solutions to every numbered exercise, every subpart, or the advanced problem bank.
 - Six interactive model families and 20 computation practice skills, three difficulty levels, preserved return to the original task.
 
-The uploaded textbook PDF is not copied into this public directory. Source structure is recorded in `source-map.json`. Selected source conditions and all authored explanations are in the chapter JSON files. Regenerate `data.js` with `node school/makarychev8/build.cjs` after editing content.
+The uploaded textbook PDF is not copied into this public directory. Source structure is recorded in `source-map.json`. Selected source conditions and all authored explanations are in the chapter JSON files and `exercises-1-24.json`. The latter appends 93 cards to topic 1; the six original task indices and all previous task IDs remain unchanged. Regenerate `data.js` with `node school/makarychev8/build.cjs` after editing content.
 
 ## Behavior and dependencies
 
@@ -24,8 +24,12 @@ Run `test-course.cjs`, `test-models.cjs`, and `test-state.cjs` with Node. `test-
 
 On 2026-10-24, all 306 task journeys and 958 worked steps passed in-memory DOM verification. State/recovery, draft import, computation detours, source-search boundaries and model-domain contracts passed. Independent content review covered all chapter answers and selected PDF source conditions. Reproducible fixes included Vieta-specific steps, signed-difference wording, speed domain restrictions, decimal-unit wording, and import draft preservation.
 
-Browser visual QA is **not completed**: the cloud browser policy rejected the preview observation. No mobile screenshot, pixel-level layout, real-pupil validation, live board synchronization or cloud learner-storage claim is made. Claude consultation/release review was not run; no configured local Anthropic API credential or suitable connector was available. Independent agents are not an external Claude approval.
+Historical release limitation (2026-10-24): browser visual QA was **not completed**: the cloud browser policy rejected the preview observation. No mobile screenshot, pixel-level layout, real-pupil validation, live board synchronization or cloud learner-storage claim is made. Claude consultation/release review was not run; no configured local Anthropic API credential or suitable connector was available. Independent agents are not an external Claude approval.
 
 ## Release boundary
 
-This task adds the course, catalog entry, sitemap entry and scoped CI workflow. It does not create cabinets or register a shared-board adapter. Deployment awaits the separate repository-owner release decision required by the repository workflow.
+This task adds the course, catalog entry, sitemap entry and scoped CI workflow. It does not create cabinets or register a shared-board adapter. Requested course continuations follow the standing owner publication policy dated 2026-11-02; applicable verification remains required. See `docs/tasks/MAKARYCHEV8_EXERCISES_1_24.md` and its report for the current continuation.
+
+## Exercises 1–24 verification
+
+`python school/makarychev8/test-exercises-1-24.py` (SymPy 1.14.0) independently checks source formulas, all subpart counts, substitutions, real domains, zeros with exclusions, signs, extremal equality cases, polynomial identities and discounts. `node school/makarychev8/test-browser.cjs` (Playwright) tests every new card at 320/390/768/1280 px, all new worked steps, all 24 number searches, old links and saved notes. The browser suite serves only local static files and does not access pupil accounts.
