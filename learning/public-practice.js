@@ -16,14 +16,15 @@
   function returnRoute(value){
     const route=String(value||'').replace(/^#/,'');
     // Only navigation routes, never quick-entry codes, invitations or logins.
-    return /^(?:home|route|students|assignments|history|repeat|course(?:=[a-z0-9-]+)?|program-course=[a-z0-9-]+|(?:preview|student)=[a-zA-Z0-9_-]{1,100})$/.test(route)?route:'home';
+    return /^(?:home|route|students|assignments|history|repeat|course(?:=[a-z0-9-]+)?|(?:program-course|learn)=[a-z0-9-]+|(?:preview|student)=[a-zA-Z0-9_-]{1,100})$/.test(route)?route:'home';
   }
   function href(value,back=root.location.hash){
     const path=publicPath(value);
     return path?'#public-practice='+encodeURIComponent(path)+'&return='+encodeURIComponent(returnRoute(back)):'';
   }
+  const launches='a[data-plan-course-open],a[data-plan-course-practice],a[data-plan-course-board],a[data-focus-practice],a[data-attached-course-open],a[data-attached-course-board],a[data-lesson-practice],.prep-task .actions a[href]';
   function enhance(host){
-    for(const link of host.querySelectorAll('a[href]')){
+    for(const link of host.querySelectorAll(launches)){
       if(link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;
       const raw=link.getAttribute('href');
       if(!raw.startsWith(publicOrigin+'/'))continue;

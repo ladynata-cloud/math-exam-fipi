@@ -9,12 +9,12 @@ function fixture(hash='route'){
 test('late-rendered practice links retain the exact cabinet route and work as normal same-tab links',async()=>{
   const dom=fixture('preview=synthetic-pupil'),{window:w}=dom,host=w.document.querySelector('main');
   try{
-    host.innerHTML='<a target="_blank" href="https://mathexam.space/trainers/oge-task11-graphs-trainer.html">Графики ↗</a><a href="#attempt=saved">Моё решение</a>';
+    host.innerHTML='<a data-plan-course-open target="_blank" href="https://mathexam.space/trainers/oge-task11-graphs-trainer.html">Графики ↗</a><a href="#attempt=saved">Моё решение</a><a class="source" href="https://mathexam.space/geometry-course/textbook/">Источник</a>';
     await new Promise(resolve=>setImmediate(resolve));
     const link=host.querySelector('a'),params=new w.URLSearchParams(link.hash.slice(1));
     assert.equal(params.get('public-practice'),'/trainers/oge-task11-graphs-trainer.html');
     assert.equal(params.get('return'),'preview=synthetic-pupil');assert.equal(link.target,'');
-    assert.equal(link.textContent,'Графики →');assert.equal(host.querySelectorAll('a')[1].hash,'#attempt=saved');
+    assert.equal(link.textContent,'Графики →');assert.equal(host.querySelectorAll('a')[1].hash,'#attempt=saved');assert.equal(host.querySelector('.source').href,'https://mathexam.space/geometry-course/textbook/');
   }finally{w.close();}
 });
 test('untrusted origins and account-entry routes cannot become iframe or return destinations',()=>{

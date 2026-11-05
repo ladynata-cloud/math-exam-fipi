@@ -47,7 +47,7 @@ const close=server=>new Promise(resolve=>{server.closeAllConnections();server.cl
    });
    await page.goto(origin+'/learning/#route');
    await page.locator('[name=login]').fill(person.login);await page.locator('[name=password]').fill(password);
-   await page.locator('#auth-form [type=submit]').click();await page.locator('#navigation').waitFor();
+   await page.locator('#auth-form [type=submit]').click();await page.locator('#navigation').waitFor();await page.locator('#main h1').waitFor();
    return page;
   }
   const page=await login(pupil);
