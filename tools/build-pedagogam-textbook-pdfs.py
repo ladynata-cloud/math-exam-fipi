@@ -102,6 +102,35 @@ def footer(c, pack, teacher, page):
     c.drawRightString(RIGHT, 25, f'{pack["id"]} · {"Ответы" if teacher else "Задания"} · {page}')
 
 
+def triangle_sketch(c, pack_id, y):
+    """Label-only guide; every numerical datum remains in the task text."""
+    is_right = pack_id == 'geo-pryamougolnye-treugolniki'
+    is_isosceles = pack_id == 'geo-ravnobedrennyy-treugolnik'
+    ox, oy = RIGHT - 130, y - 77
+    points = {'A': (0, 60), 'B': (110, 0), 'C': (0, 0)} if is_right else {
+        'A': (55 if is_isosceles else 40, 60), 'B': (0, 0), 'C': (110, 0)}
+    c.setStrokeColor(INK)
+    c.setLineWidth(1)
+    for a, b in [('A', 'B'), ('B', 'C'), ('C', 'A')]:
+        c.line(ox + points[a][0], oy + points[a][1], ox + points[b][0], oy + points[b][1])
+    if is_right:
+        c.line(ox, oy + 8, ox + 8, oy + 8)
+        c.line(ox + 8, oy + 8, ox + 8, oy)
+    elif is_isosceles:
+        # Identical single ticks mark AB = AC, without supplying a length.
+        for bx in (0, 110):
+            mx, my = (55 + bx) / 2, 30
+            dy = -3.5 if bx == 0 else 3.5
+            c.line(ox + mx - 4, oy + my - dy, ox + mx + 4, oy + my + dy)
+    c.setFillColor(INK)
+    c.setFont('TeacherSans', 10)
+    for label, (x, z) in points.items():
+        c.drawString(ox + x - 4, oy + z + 6 if label == 'A' else oy + z - 14, label)
+    note = 'Схема обозначений, не в масштабе.\nДополнительные отрезки постройте\nпо условию конкретной задачи.'
+    para(c, note, y - 12, size=9, leading=13, width=CONTENT - 165)
+    return y - 103
+
+
 def heading(c, pack, kind, variant, teacher):
     c.setFillColor(GREEN)
     c.setFont('TeacherBold', 10)
@@ -138,6 +167,9 @@ def heading(c, pack, kind, variant, teacher):
             c.drawString(ox+x-7,oy+z-13 if label in ('A','B','C','D') else oy+z+5,label)
         para(c,'Схема куба для задач.\nВсе отношения заданы в условиях;\nдлины с рисунка не измеряйте.',y-10,size=9,leading=13,width=CONTENT-183)
         y -= 116
+    elif pack['id'] in ('geo-mediany-bissektrisy-vysoty', 'geo-ravnobedrennyy-treugolnik',
+                       'geo-pryamougolnye-treugolniki'):
+        y = triangle_sketch(c, pack['id'], y)
     return y
 
 
@@ -167,7 +199,9 @@ def make_pdf(pack, kind, teacher=False):
                      y - 6, size=9, leading=12)
         else:
             available = y - 68
-            weights = [2.5 if t.get('grid_rows', 0) > 12 else 1 for t in tasks]
+            weights = [t.get('workspace_weight', 2.5 if t.get('grid_rows', 0) > 12 else 1)
+                       for t in tasks]
+            assert all(1 <= w <= 3 for w in weights), pack['id']
             for i, task in enumerate(tasks, 1):
                 row = available * weights[i-1] / sum(weights)
                 start = y
@@ -185,7 +219,7 @@ def make_pdf(pack, kind, teacher=False):
                     for col in range(cols+1):
                         c.line(LEFT+col*cell, top, LEFT+col*cell, top-rows*cell)
                     c.setLineWidth(1)
-                else:
+                elif task.get('workspace') != 'blank':
                     line_y = y - 20
                     while line_y > start - row + 9:
                         c.setStrokeColor(colors.HexColor('#d8ded9'))

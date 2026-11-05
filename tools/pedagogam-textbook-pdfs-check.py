@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'pedagogam/raboty'
 symbols = {v: s.Symbol(v, real=True) for v in ('x', 'y', 'n', 'C', 'a', 'b', 't')}
 allowed = {**symbols, 'pi': s.pi, 'E': s.E, 'oo': s.oo,
-           **{n: getattr(s, n) for n in ('sqrt','sin','cos','tan','log','exp','diff','integrate',
+           **{n: getattr(s, n) for n in ('sqrt','sin','cos','tan','acos','log','exp','diff','integrate',
               'Rational','Abs','factorial','binomial','gcd','lcm','floor','ceiling')}}
 
 
