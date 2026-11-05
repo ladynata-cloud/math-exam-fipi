@@ -187,5 +187,9 @@ function renderChips(){chipsBox.innerHTML=chips.map(c=>`<button class="chip ${c=
 function apply(){const q=(search.value||'').trim().toLowerCase();let visible=0;document.querySelectorAll('[data-card]').forEach(card=>{const sec=card.closest('[data-section]').dataset.section;const ok=(filter==='Все'||sec===filter)&&(!q||card.dataset.title.includes(q));card.classList.toggle('hidden',!ok);if(ok)visible++});document.querySelectorAll('[data-section]').forEach(sec=>{const any=[...sec.querySelectorAll('[data-card]')].some(c=>!c.classList.contains('hidden'));sec.classList.toggle('hidden',!any)});empty.style.display=visible?'none':'block'}
 search.addEventListener('input',apply);renderChips();render();
 </script>
+
+<!-- MathExam public navigator -->
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 </body>
 </html>
