@@ -40,6 +40,8 @@ const inlineScripts = scripts.filter(([, attributes]) => !/\bsrc\s*=/i.test(attr
 assert.equal(inlineScripts.length, 1, 'Exactly one native inline script');
 assert.deepEqual(scripts.map(([, attributes]) => attributes.trim()), [
   'src="' + localScripts[0] + '"',
+  'defer src="/assets/assistant/navigator-data.js?v=20261105-site1"',
+  'defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"',
   '',
   'src="' + localScripts[1] + '"',
   'src="' + localScripts[2] + '"',

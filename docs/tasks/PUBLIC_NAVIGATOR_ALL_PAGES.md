@@ -204,3 +204,35 @@ the validation checks every tracked file outside those two paths against the
 local candidate `a2b416e5d2bd73a931b81dbb6add5a162605962c`. Its reproducible
 Git bundle blob is `491e66179bcb73b225e9de2a7ba7b02bd0e85d13`, SHA256
 `c1d1035dfb32e422ab3b3943540ff6eb7e425e962e3731a1aa7fef3ab3685e93`.
+
+## Course compatibility corrections after the first integrated CI
+
+The first remote integration (`d1b31915`) exposed loaders that treated a site
+URL as an OS path; offline builders that packaged online-only navigation; and
+checks that selected headings, controls or script inventories across unrelated
+interfaces. This follow-up does not change any hosted HTML, runtime, ZIP, PDF,
+worksheet, or answer. It corrects the generators and their validation boundaries.
+
+- Reproduce the Vilenkin 5 offline document byte for byte. Rebuild public
+  stereometry with its exact hosted includes. The downloads-only builder keeps
+  all 54 published trainer artifacts identical to a clean source rebuild: 17
+  ZIPs, 17 standalone HTML files, 179 archived HTML entries without the helper.
+  Teacher rebuilding likewise preserves five hosted pages and all 16 original
+  teacher ZIP payloads, including its five independent offline pages.
+- Load fixed local asset URLs relative to the site or current document, as a
+  browser would. Reject schemes, alternate origins, encoded/traversing paths
+  outside the repository and escaping symlinks. Check exact model order, empty
+  external bodies and pinned script attributes; verify the board wrappers omit
+  only the strictly byte-bound public addition. A browser hit test follows the
+  actual element into its open shadow root; covering siblings still fail.
+- Check learner-facing headings inside the actual report or task, and allow
+  only the named pair of exact deferred includes on static SEO and task-6 routes.
+  The seven profile board wrappers retain exactly the reviewed course model/bridge
+  sequence without installing a second navigator (35 picker tests). Original
+  assignment, arithmetic, draft persistence, and protected output checks remain.
+- Focused browser evidence: 24 grade-7 journeys/48 layouts with 2,208 independent
+  task checks and 7,022 answer/step checks; Vilenkin 5 232 views/6 journeys;
+  OGE practical 39 route/viewport cases; teacher materials 98 scenarios and
+  30 topic-page/viewport cases. The eight nested Azbuka pages also opened over
+  file:// offline without network requests or JavaScript errors. Protected historical
+  failures were not marked successful. Exact follow-up CI is required separately.
