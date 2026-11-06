@@ -1,0 +1,946 @@
+{
+  "schemaVersion": 1,
+  "created": "2026-11-06",
+  "bankPath": "pedagogam/raboty/bank.json",
+  "bankSha256": "c3b748c67b3a18f05e887d2a666a52ed0f35bdd8deabefec5ba682587e04aa7f",
+  "authorship": "Original MathExam worksheets. Reused or parameter-adapted reviewed bank patterns are identified per question. These are not official FIPI examination items.",
+  "errorReviewFile": "rabota-nad-oshibkami.docx",
+  "archive": "mathexam-raboty-word.zip",
+  "packs": [
+    {
+      "id": "minus-pered-skobkami",
+      "title": "Минус перед скобками",
+      "bankId": "arith-brackets-like-terms",
+      "grade": "6–7 классы",
+      "minutes": 15,
+      "studentFile": "arith-brackets-like-terms/minus-pered-skobkami-zadaniya.docx",
+      "teacherFile": "arith-brackets-like-terms/minus-pered-skobkami-otvety.docx",
+      "variants": [
+        {
+          "name": "1",
+          "tasks": [
+            {
+              "id": "minus-1-1",
+              "prompt": "Раскрой скобки: [[−(x + 3)]].",
+              "answer": "[[−x − 3]]",
+              "solution": [
+                "Меняем знак каждого слагаемого в скобках.",
+                "[[−(x + 3) = −x − 3]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-1-2",
+              "prompt": "Раскрой скобки: [[−(7 − x)]].",
+              "answer": "[[x − 7]]",
+              "solution": [
+                "Перед первым слагаемым ставим минус, перед вторым знак становится плюсом.",
+                "[[−(7 − x) = −7 + x = x − 7]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-1-3",
+              "prompt": "Упрости выражение: [[3x − (2x + 2)]].",
+              "answer": "[[x − 2]]",
+              "solution": [
+                "[[3x − (2x + 2) = 3x − 2x − 2 = x − 2]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-1-4",
+              "prompt": "Упрости выражение: [[(4x + 2) − (2x − 3)]].",
+              "answer": "[[2x + 5]]",
+              "solution": [
+                "[[(4x + 2) − (2x − 3) = 4x + 2 − 2x + 3]].",
+                "[[(4 − 2)x + 2 + 3 = 2x + 5]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2",
+          "tasks": [
+            {
+              "id": "minus-2-1",
+              "prompt": "Раскрой скобки: [[−(x + 4)]].",
+              "answer": "[[−x − 4]]",
+              "solution": [
+                "Меняем знак каждого слагаемого в скобках.",
+                "[[−(x + 4) = −x − 4]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-2-2",
+              "prompt": "Раскрой скобки: [[−(8 − x)]].",
+              "answer": "[[x − 8]]",
+              "solution": [
+                "Перед первым слагаемым ставим минус, перед вторым знак становится плюсом.",
+                "[[−(8 − x) = −8 + x = x − 8]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-2-3",
+              "prompt": "Упрости выражение: [[4x − (3x + 3)]].",
+              "answer": "[[x − 3]]",
+              "solution": [
+                "[[4x − (3x + 3) = 4x − 3x − 3 = x − 3]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-2-4",
+              "prompt": "Упрости выражение: [[(5x + 3) − (3x − 4)]].",
+              "answer": "[[2x + 7]]",
+              "solution": [
+                "[[(5x + 3) − (3x − 4) = 5x + 3 − 3x + 4]].",
+                "[[(5 − 3)x + 3 + 4 = 2x + 7]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3",
+          "tasks": [
+            {
+              "id": "minus-3-1",
+              "prompt": "Раскрой скобки: [[−(x + 5)]].",
+              "answer": "[[−x − 5]]",
+              "solution": [
+                "Меняем знак каждого слагаемого в скобках.",
+                "[[−(x + 5) = −x − 5]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-3-2",
+              "prompt": "Раскрой скобки: [[−(9 − x)]].",
+              "answer": "[[x − 9]]",
+              "solution": [
+                "Перед первым слагаемым ставим минус, перед вторым знак становится плюсом.",
+                "[[−(9 − x) = −9 + x = x − 9]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-3-3",
+              "prompt": "Упрости выражение: [[5x − (4x + 4)]].",
+              "answer": "[[x − 4]]",
+              "solution": [
+                "[[5x − (4x + 4) = 5x − 4x − 4 = x − 4]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-3-4",
+              "prompt": "Упрости выражение: [[(6x + 4) − (4x − 5)]].",
+              "answer": "[[2x + 9]]",
+              "solution": [
+                "[[(6x + 4) − (4x − 5) = 6x + 4 − 4x + 5]].",
+                "[[(6 − 4)x + 4 + 5 = 2x + 9]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4",
+          "tasks": [
+            {
+              "id": "minus-4-1",
+              "prompt": "Раскрой скобки: [[−(x + 6)]].",
+              "answer": "[[−x − 6]]",
+              "solution": [
+                "Меняем знак каждого слагаемого в скобках.",
+                "[[−(x + 6) = −x − 6]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-4-2",
+              "prompt": "Раскрой скобки: [[−(10 − x)]].",
+              "answer": "[[x − 10]]",
+              "solution": [
+                "Перед первым слагаемым ставим минус, перед вторым знак становится плюсом.",
+                "[[−(10 − x) = −10 + x = x − 10]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-4-3",
+              "prompt": "Упрости выражение: [[6x − (5x + 5)]].",
+              "answer": "[[x − 5]]",
+              "solution": [
+                "[[6x − (5x + 5) = 6x − 5x − 5 = x − 5]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            },
+            {
+              "id": "minus-4-4",
+              "prompt": "Упрости выражение: [[(7x + 5) − (5x − 6)]].",
+              "answer": "[[2x + 11]]",
+              "solution": [
+                "[[(7x + 5) − (5x − 6) = 7x + 5 − 5x + 6]].",
+                "[[(7 − 5)x + 5 + 6 = 2x + 11]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "arith-brackets-like-terms",
+                "mode": "original focused adaptation",
+                "reference": "sr question 4 and the common four-question 1/1/2/2 structure"
+              }
+            }
+          ]
+        }
+      ],
+      "instruction": "Раскрой скобки и приведи подобные слагаемые. Запиши промежуточные действия и ответ.",
+      "teacherNote": "Во всех вариантах проверяются смена знаков двух слагаемых и приведение подобных. За задания 1 и 2 даётся по 1 баллу. В заданиях 3 и 4: 1 балл за верно раскрытые скобки и 1 балл за итог. Всего 6 баллов."
+    },
+    {
+      "id": "summa-uglov-treugolnika",
+      "title": "Сумма углов треугольника",
+      "bankId": "geo-ugly-treugolnika",
+      "grade": "7 класс",
+      "minutes": 15,
+      "studentFile": "geo-ugly-treugolnika/summa-uglov-treugolnika-zadaniya.docx",
+      "teacherFile": "geo-ugly-treugolnika/summa-uglov-treugolnika-otvety.docx",
+      "variants": [
+        {
+          "name": "1",
+          "tasks": [
+            {
+              "id": "angles-1-1",
+              "prompt": "Два угла треугольника равны 40° и 55°. Найди третий.",
+              "answer": "[[85°]]",
+              "solution": [
+                "[[180° − 40° − 55° = 85°]].",
+                "Сумма трёх углов треугольника равна 180°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "1",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-1-2",
+              "prompt": "Острый угол прямоугольного треугольника равен 40°. Найди второй острый угол.",
+              "answer": "[[50°]]",
+              "solution": [
+                "[[90° − 40° = 50°]].",
+                "Острые углы прямоугольного треугольника в сумме дают 90°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "1",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-1-3",
+              "prompt": "Угол при вершине равнобедренного треугольника равен 50°. Найди каждый угол при основании.",
+              "answer": "[[65°]] и [[65°]]",
+              "solution": [
+                "Углы при основании равны.",
+                "[[(180° − 50°) : 2 = 65°]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "1",
+                "kind": "sr",
+                "question": 3,
+                "mode": "parameter adaptation to an even vertex angle"
+              }
+            },
+            {
+              "id": "angles-1-4",
+              "prompt": "Два внутренних угла треугольника, не смежных с данным внешним углом, равны 40° и 55°. Найди этот внешний угол.",
+              "answer": "[[95°]]",
+              "solution": [
+                "[[40° + 55° = 95°]].",
+                "Внешний угол равен сумме двух внутренних углов, не смежных с ним."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "1",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2",
+          "tasks": [
+            {
+              "id": "angles-2-1",
+              "prompt": "Два угла треугольника равны 45° и 60°. Найди третий.",
+              "answer": "[[75°]]",
+              "solution": [
+                "[[180° − 45° − 60° = 75°]].",
+                "Сумма трёх углов треугольника равна 180°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "2",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-2-2",
+              "prompt": "Острый угол прямоугольного треугольника равен 45°. Найди второй острый угол.",
+              "answer": "[[45°]]",
+              "solution": [
+                "[[90° − 45° = 45°]].",
+                "Острые углы прямоугольного треугольника в сумме дают 90°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "2",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-2-3",
+              "prompt": "Угол при вершине равнобедренного треугольника равен 60°. Найди каждый угол при основании.",
+              "answer": "[[60°]] и [[60°]]",
+              "solution": [
+                "Углы при основании равны.",
+                "[[(180° − 60°) : 2 = 60°]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "2",
+                "kind": "sr",
+                "question": 3,
+                "mode": "parameter adaptation to an even vertex angle"
+              }
+            },
+            {
+              "id": "angles-2-4",
+              "prompt": "Два внутренних угла треугольника, не смежных с данным внешним углом, равны 45° и 60°. Найди этот внешний угол.",
+              "answer": "[[105°]]",
+              "solution": [
+                "[[45° + 60° = 105°]].",
+                "Внешний угол равен сумме двух внутренних углов, не смежных с ним."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "2",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3",
+          "tasks": [
+            {
+              "id": "angles-3-1",
+              "prompt": "Два угла треугольника равны 50° и 65°. Найди третий.",
+              "answer": "[[65°]]",
+              "solution": [
+                "[[180° − 50° − 65° = 65°]].",
+                "Сумма трёх углов треугольника равна 180°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "3",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-3-2",
+              "prompt": "Острый угол прямоугольного треугольника равен 50°. Найди второй острый угол.",
+              "answer": "[[40°]]",
+              "solution": [
+                "[[90° − 50° = 40°]].",
+                "Острые углы прямоугольного треугольника в сумме дают 90°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "3",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-3-3",
+              "prompt": "Угол при вершине равнобедренного треугольника равен 70°. Найди каждый угол при основании.",
+              "answer": "[[55°]] и [[55°]]",
+              "solution": [
+                "Углы при основании равны.",
+                "[[(180° − 70°) : 2 = 55°]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "3",
+                "kind": "sr",
+                "question": 3,
+                "mode": "parameter adaptation to an even vertex angle"
+              }
+            },
+            {
+              "id": "angles-3-4",
+              "prompt": "Два внутренних угла треугольника, не смежных с данным внешним углом, равны 50° и 65°. Найди этот внешний угол.",
+              "answer": "[[115°]]",
+              "solution": [
+                "[[50° + 65° = 115°]].",
+                "Внешний угол равен сумме двух внутренних углов, не смежных с ним."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "3",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4",
+          "tasks": [
+            {
+              "id": "angles-4-1",
+              "prompt": "Два угла треугольника равны 55° и 70°. Найди третий.",
+              "answer": "[[55°]]",
+              "solution": [
+                "[[180° − 55° − 70° = 55°]].",
+                "Сумма трёх углов треугольника равна 180°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "4",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-4-2",
+              "prompt": "Острый угол прямоугольного треугольника равен 55°. Найди второй острый угол.",
+              "answer": "[[35°]]",
+              "solution": [
+                "[[90° − 55° = 35°]].",
+                "Острые углы прямоугольного треугольника в сумме дают 90°."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "4",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question"
+              }
+            },
+            {
+              "id": "angles-4-3",
+              "prompt": "Угол при вершине равнобедренного треугольника равен 80°. Найди каждый угол при основании.",
+              "answer": "[[50°]] и [[50°]]",
+              "solution": [
+                "Углы при основании равны.",
+                "[[(180° − 80°) : 2 = 50°]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "4",
+                "kind": "sr",
+                "question": 3,
+                "mode": "parameter adaptation to an even vertex angle"
+              }
+            },
+            {
+              "id": "angles-4-4",
+              "prompt": "Два внутренних угла треугольника, не смежных с данным внешним углом, равны 55° и 70°. Найди этот внешний угол.",
+              "answer": "[[125°]]",
+              "solution": [
+                "[[55° + 70° = 125°]].",
+                "Внешний угол равен сумме двух внутренних углов, не смежных с ним."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "geo-ugly-treugolnika",
+                "variant": "4",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question"
+              }
+            }
+          ]
+        }
+      ],
+      "instruction": "Для каждой задачи запиши вычисления и ответ в градусах. При необходимости сделай свой чертёж.",
+      "teacherNote": "Во всех вариантах одинаковые четыре применения свойств углов. Все исходные данные и ответы целые. За задания 1 и 2 даётся по 1 баллу. В заданиях 3 и 4: 1 балл за верное соотношение углов и 1 балл за ответ. Всего 6 баллов."
+    },
+    {
+      "id": "lineynye-grafiki-oge",
+      "title": "Линейные графики ОГЭ",
+      "bankId": "alg-line",
+      "grade": "7–9 классы",
+      "minutes": 20,
+      "studentFile": "alg-line/lineynye-grafiki-oge-zadaniya.docx",
+      "teacherFile": "alg-line/lineynye-grafiki-oge-otvety.docx",
+      "variants": [
+        {
+          "name": "1",
+          "tasks": [
+            {
+              "id": "line-1-1",
+              "prompt": "Функция задана формулой [[y = 2x + 3]]. Найди [[y]] при [[x = 2]].",
+              "answer": "[[7]]",
+              "solution": [
+                "[[y = 2 · 2 + 3 = 7]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "1",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-1-2",
+              "prompt": "Для [[y = 3x − 2]] найди [[x]], при котором [[y = 4]].",
+              "answer": "[[x = 2]]",
+              "solution": [
+                "[[3x − 2 = 4]], поэтому [[3x = 6]] и [[x = 2]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "1",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-1-3",
+              "prompt": "Построй график [[y = x + 2]]. Укажи две точки, по которым строил прямую.",
+              "answer": "[[(0; 2)]] и [[(1; 3)]]; прямая через них.",
+              "solution": [
+                "При [[x = 0]] получаем [[y = 2]]; при [[x = 1]] получаем [[y = 3]].",
+                "Отмечаем обе точки и проводим через них прямую."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "1",
+                "kind": "sr",
+                "question": 3,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              },
+              "graph": {
+                "range": 6,
+                "k": 1,
+                "b": 2,
+                "points": [
+                  [
+                    0,
+                    2
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "line-1-4",
+              "prompt": "Найди точки пересечения графика [[y = 2x − 4]] с осями координат.",
+              "answer": "С осью [[Ox]]: [[(2; 0)]]. С осью [[Oy]]: [[(0; −4)]].",
+              "solution": [
+                "На оси [[Ox]] имеем [[y = 0]]: [[2x − 4 = 0]], [[x = 2]].",
+                "На оси [[Oy]] имеем [[x = 0]]: [[y = −4]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "1",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2",
+          "tasks": [
+            {
+              "id": "line-2-1",
+              "prompt": "Функция задана формулой [[y = 2x + 4]]. Найди [[y]] при [[x = 3]].",
+              "answer": "[[10]]",
+              "solution": [
+                "[[y = 2 · 3 + 4 = 10]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "2",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-2-2",
+              "prompt": "Для [[y = 3x − 3]] найди [[x]], при котором [[y = 6]].",
+              "answer": "[[x = 3]]",
+              "solution": [
+                "[[3x − 3 = 6]], поэтому [[3x = 9]] и [[x = 3]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "2",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-2-3",
+              "prompt": "Построй график [[y = x + 3]]. Укажи две точки, по которым строил прямую.",
+              "answer": "[[(0; 3)]] и [[(1; 4)]]; прямая через них.",
+              "solution": [
+                "При [[x = 0]] получаем [[y = 3]]; при [[x = 1]] получаем [[y = 4]].",
+                "Отмечаем обе точки и проводим через них прямую."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "2",
+                "kind": "sr",
+                "question": 3,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              },
+              "graph": {
+                "range": 6,
+                "k": 1,
+                "b": 3,
+                "points": [
+                  [
+                    0,
+                    3
+                  ],
+                  [
+                    1,
+                    4
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "line-2-4",
+              "prompt": "Найди точки пересечения графика [[y = 2x − 6]] с осями координат.",
+              "answer": "С осью [[Ox]]: [[(3; 0)]]. С осью [[Oy]]: [[(0; −6)]].",
+              "solution": [
+                "На оси [[Ox]] имеем [[y = 0]]: [[2x − 6 = 0]], [[x = 3]].",
+                "На оси [[Oy]] имеем [[x = 0]]: [[y = −6]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "2",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3",
+          "tasks": [
+            {
+              "id": "line-3-1",
+              "prompt": "Функция задана формулой [[y = 2x + 5]]. Найди [[y]] при [[x = 4]].",
+              "answer": "[[13]]",
+              "solution": [
+                "[[y = 2 · 4 + 5 = 13]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "3",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-3-2",
+              "prompt": "Для [[y = 3x − 4]] найди [[x]], при котором [[y = 8]].",
+              "answer": "[[x = 4]]",
+              "solution": [
+                "[[3x − 4 = 8]], поэтому [[3x = 12]] и [[x = 4]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "3",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-3-3",
+              "prompt": "Построй график [[y = x + 4]]. Укажи две точки, по которым строил прямую.",
+              "answer": "[[(0; 4)]] и [[(1; 5)]]; прямая через них.",
+              "solution": [
+                "При [[x = 0]] получаем [[y = 4]]; при [[x = 1]] получаем [[y = 5]].",
+                "Отмечаем обе точки и проводим через них прямую."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "3",
+                "kind": "sr",
+                "question": 3,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              },
+              "graph": {
+                "range": 6,
+                "k": 1,
+                "b": 4,
+                "points": [
+                  [
+                    0,
+                    4
+                  ],
+                  [
+                    1,
+                    5
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "line-3-4",
+              "prompt": "Найди точки пересечения графика [[y = 2x − 8]] с осями координат.",
+              "answer": "С осью [[Ox]]: [[(4; 0)]]. С осью [[Oy]]: [[(0; −8)]].",
+              "solution": [
+                "На оси [[Ox]] имеем [[y = 0]]: [[2x − 8 = 0]], [[x = 4]].",
+                "На оси [[Oy]] имеем [[x = 0]]: [[y = −8]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "3",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4",
+          "tasks": [
+            {
+              "id": "line-4-1",
+              "prompt": "Функция задана формулой [[y = 2x + 6]]. Найди [[y]] при [[x = 5]].",
+              "answer": "[[16]]",
+              "solution": [
+                "[[y = 2 · 5 + 6 = 16]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "4",
+                "kind": "sr",
+                "question": 1,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-4-2",
+              "prompt": "Для [[y = 3x − 5]] найди [[x]], при котором [[y = 10]].",
+              "answer": "[[x = 5]]",
+              "solution": [
+                "[[3x − 5 = 10]], поэтому [[3x = 15]] и [[x = 5]]."
+              ],
+              "points": 1,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "4",
+                "kind": "sr",
+                "question": 2,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            },
+            {
+              "id": "line-4-3",
+              "prompt": "Построй график [[y = x + 5]]. Укажи две точки, по которым строил прямую.",
+              "answer": "[[(0; 5)]] и [[(1; 6)]]; прямая через них.",
+              "solution": [
+                "При [[x = 0]] получаем [[y = 5]]; при [[x = 1]] получаем [[y = 6]].",
+                "Отмечаем обе точки и проводим через них прямую."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "4",
+                "kind": "sr",
+                "question": 3,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              },
+              "graph": {
+                "range": 6,
+                "k": 1,
+                "b": 5,
+                "points": [
+                  [
+                    0,
+                    5
+                  ],
+                  [
+                    1,
+                    6
+                  ]
+                ]
+              }
+            },
+            {
+              "id": "line-4-4",
+              "prompt": "Найди точки пересечения графика [[y = 2x − 10]] с осями координат.",
+              "answer": "С осью [[Ox]]: [[(5; 0)]]. С осью [[Oy]]: [[(0; −10)]].",
+              "solution": [
+                "На оси [[Ox]] имеем [[y = 0]]: [[2x − 10 = 0]], [[x = 5]].",
+                "На оси [[Oy]] имеем [[x = 0]]: [[y = −10]]."
+              ],
+              "points": 2,
+              "origin": {
+                "bankId": "alg-line",
+                "variant": "4",
+                "kind": "sr",
+                "question": 4,
+                "mode": "reused bank question with informal singular wording and native Word math"
+              }
+            }
+          ]
+        }
+      ],
+      "instruction": "Запиши вычисления. В задании 3 построй прямую на сетке и отметь две выбранные точки. Одна клетка соответствует единице.",
+      "teacherNote": "Базовая подготовка по линейной функции. За задания 1 и 2 даётся по 1 баллу. В задании 3: 1 балл за две верные точки и 1 балл за прямую через них. В задании 4: по 1 баллу за каждую точку пересечения. Всего 6 баллов. Любая другая верная пара различных точек в задании 3 допустима."
+    }
+  ],
+  "preservedPdfCollection": {
+    "files": 726,
+    "sha256": "5637231050662286cc8ffac8217bf8878bb10f093e98b54529956422e97de31a"
+  }
+}
