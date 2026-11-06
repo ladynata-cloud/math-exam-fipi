@@ -107,6 +107,11 @@ async function chooseLegacyQuotientDigit(page) {
   assert(Number.isSafeInteger(partial) && Number.isSafeInteger(divisor) && divisor > 0);
   const digit = Math.floor(partial / divisor);
   assert(digit >= 0 && digit <= 9, 'The displayed partial dividend has a one-digit quotient');
+  // Every displayed digit must remain reachable beside the mobile navigator,
+  // independent of which random exercise happens to supply the correct digit.
+  const choices=page.locator('#multiples button:visible');
+  assert.equal(await choices.count(),10);
+  for (let i=0;i<10;i++) await hitTarget(choices.nth(i),'Visible quotient choice '+i);
   const choice = page.locator('#multiples button:visible').nth(digit);
   assert.match(await choice.innerText(), new RegExp('^' + digit + ' [·×] ' + divisor));
   await hitTarget(choice, 'Select the quotient digit from the visible multiples');

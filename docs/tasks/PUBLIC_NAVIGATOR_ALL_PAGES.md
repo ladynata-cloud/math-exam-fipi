@@ -293,3 +293,22 @@ new candidate adds exact rectangle/interceptor diagnostics and a viewport
 screenshot on that failure; hit-test conditions, scrolling and assertions are
 unchanged. No cancellation or retry alone counts as evidence of correctness.
 The final composed head requires its own complete CI and navigator matrix.
+
+### Confirmed mobile integration correction
+
+On composed head d73cda8d, contextual job127729397155 reproduced the failure
+at320×900. The digit3 button occupied x164–285/y835.1875–899.71875;
+its centre was intercepted by `maxexam-public-assistant`, not a scrolling race.
+The viewport screenshot and exact hit-target JSON are retained in artifact
+13480536598 of run42168093434. The earlier e3a1c9d failure is not dismissed
+as flaky; its retry was cancelled when the candidate changed.
+
+The mobile launcher now occupies48×48 px and preserves its accessible name,
+label text and tooltip; the full desktop label and panel remain unchanged.
+This is a confirmed integration fix to the shared widget stylesheet. It changes
+no HTML payload, navigation rule, mathematics or saved work. The navigator
+browser matrix additionally enforces the compact width and accessible name;
+the contextual gate verifies all ten quotient choices at every tested width,
+without changing scrolling, hit-test assertions or using forced clicks.
+
+The full final matrix and affected workflows must run again on this correction.

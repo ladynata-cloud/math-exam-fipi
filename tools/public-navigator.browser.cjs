@@ -75,6 +75,8 @@ for (const item of catalogue) {
         assert.ok(box.x > viewport.width / 2 && box.y > viewport.height / 2);
         assert.ok(box.x + box.width <= viewport.width && box.y + box.height <= viewport.height);
         assert.equal(await launcher.evaluate(e => getComputedStyle(e).position), 'fixed');
+        assert.equal(await launcher.getAttribute('aria-label'), 'Открыть навигатор по MathExam');
+        if (viewport.width <= 600) assert.ok(box.width <= 56, 'Mobile launcher must leave answer columns reachable');
         if (filename === 'index.html') await page.screenshot({ path: path.join(out, `home-${viewport.width}.png`) });
         await launcher.click();
         await panel.waitFor({state:'visible'});
