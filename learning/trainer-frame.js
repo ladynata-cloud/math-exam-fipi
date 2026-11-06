@@ -20,6 +20,7 @@
       if(url.protocol!=='https:'&&!(local&&url.protocol==='http:'))throw Error('Нужен защищённый адрес тренажёра.');
       if(url.origin===location.origin)throw Error('Тренажёр должен открываться отдельно от кабинета.');
       this.origin=url.origin;
+      if(this.item.trainerId==='oge-public')url.searchParams.set('v','oge-homework-20261106');
       url.searchParams.set('learning','1');url.searchParams.set('parentOrigin',location.origin);url.searchParams.set('channel',this.channel);
       this.element=document.createElement('div');this.element.className='learning-frame';
       // Textbook references open fixed trusted trainers in noopener popups.

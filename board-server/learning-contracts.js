@@ -6,6 +6,7 @@ const vm = require('node:vm');
 const crypto = require('node:crypto');
 const { LearningError, requireValue } = require('./learning-auth');
 const pathState = require('../ege-baza/path/managed-state');
+const ogePublic = require('./oge-public-contracts');
 const remediation = require('./learning-remediation-contracts');
 const motion = require('../trainers/motion-grade6/learning-contracts');
 const vilenkin6 = require('../courses/vilenkin-6-part-1/learning-contracts');
@@ -47,6 +48,7 @@ function list() {
 
 function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
   requireValue(Number.isSafeInteger(seed) && seed >= 0 && seed <= 1000000000, 'LEARNING_TASK_INVALID');
+  if (trainerId === 'oge-public') return ogePublic.create(contentId, seed);
   if (trainerId === 'vilenkin6-textbook') {
     requireValue(catalog.get('vilenkin6-textbook:' + contentId), 'LEARNING_TRAINER_UNKNOWN');
     return vilenkinTextbook.create(contentId, seed);
@@ -78,6 +80,7 @@ function normalize(trainerId, taskSpec, state, previousState) {
   try {
     if (trainerId === 'atanasyan-7-9') return atanasyan.normalize(taskSpec, state);
     bounded(state);
+    if (trainerId === 'oge-public') return ogePublic.normalize(taskSpec, state, previousState);
     if (trainerId === 'vilenkin6-textbook') return vilenkinTextbook.normalize(taskSpec, state, previousState);
     if (trainerId === 'vilenkin6-part1') return vilenkin6.normalize(taskSpec, state, previousState);
     if (trainerId === 'motion-grade6') return motion.normalize(taskSpec, state);
@@ -94,6 +97,7 @@ function evaluate(trainerId, taskSpec, details, normalizedState) {
   try {
     if (trainerId === 'atanasyan-7-9') return atanasyan.evaluate(taskSpec, details, normalizedState);
     bounded(details);
+    if (trainerId === 'oge-public') return ogePublic.evaluate(taskSpec, details, normalizedState);
     if (trainerId === 'vilenkin6-textbook') return vilenkinTextbook.evaluate(taskSpec, details, normalizedState);
     if (trainerId === 'vilenkin6-part1') return vilenkin6.evaluate(taskSpec, details, normalizedState);
     if (trainerId === 'motion-grade6') return motion.evaluate(taskSpec, details, normalizedState);
@@ -118,6 +122,7 @@ function evaluate(trainerId, taskSpec, details, normalizedState) {
 }
 
 function describe(taskSpec) {
+  if (taskSpec.trainerId === 'oge-public') return ogePublic.describe(taskSpec);
   if (taskSpec.trainerId === 'vilenkin6-textbook') return vilenkinTextbook.describe(taskSpec);
   if (taskSpec.trainerId === 'vilenkin6-part1') return vilenkin6.describe(taskSpec);
   if (taskSpec.trainerId === 'atanasyan-7-9') return atanasyan.describe(taskSpec);
@@ -130,6 +135,7 @@ function describe(taskSpec) {
 
 // Identity ignores seeds and answer keys. Repetition must use a different question.
 function questionIdentity(taskSpec) {
+  if (taskSpec.trainerId === 'oge-public') return crypto.createHash('sha256').update(JSON.stringify([taskSpec.contentId,taskSpec.task.q,taskSpec.task.parameters,taskSpec.task.answer])).digest('hex');
   if (taskSpec.trainerId === 'vilenkin6-textbook') return crypto.createHash('sha256').update(vilenkinTextbook.questionIdentity(taskSpec)).digest('hex');
   if (taskSpec.trainerId === 'vilenkin6-part1') return crypto.createHash('sha256').update(vilenkin6.questionIdentity(taskSpec)).digest('hex');
   if (taskSpec.trainerId === 'atanasyan-7-9') return crypto.createHash('sha256').update(atanasyan.questionIdentity(taskSpec)).digest('hex');
@@ -143,6 +149,7 @@ function questionIdentity(taskSpec) {
 }
 
 function assistance(trainerId, taskSpec, state) {
+  if (trainerId === 'oge-public') return state.helpUsed || ogePublic.hasHelp(Number(taskSpec.contentId), state.native);
   if (trainerId === 'vilenkin6-textbook') return vilenkinTextbook.assistance(taskSpec, state);
   if (trainerId === 'vilenkin6-part1') return vilenkin6.assistance(taskSpec, state);
   if (trainerId === 'atanasyan-7-9') return atanasyan.assistance(taskSpec, state);
