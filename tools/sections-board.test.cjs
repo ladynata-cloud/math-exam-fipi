@@ -190,6 +190,74 @@ test('invalid numeric syntax and wrong/correct answers restore without re-submis
   } finally { await a.close(); await b.close(); }
 });
 
+test('shared numeric feedback uses the real form parser and rejects forged correctness for all 41 answers', async () => {
+  const f = boot();
+  try {
+    const lessons = course.lessons.filter(lesson => lesson.result?.numeric);
+    assert.equal(lessons.length, 41);
+    for (const lesson of lessons) {
+      f.open(lesson.id); click(f, '[data-action="start-study"]'); construct(f, lesson.steps.length);
+      const { value, tolerance = 1e-6 } = lesson.result.numeric;
+      const correctForms = [String(value), String(value).replace('.', ','), ' +' + String(value) + ' / 1 ', String(value + tolerance / 2)];
+      for (const [answer, correct] of [...correctForms.map(answer => [answer, true]), [String(value + tolerance * 2), false]]) {
+        input(f, '#numeric-answer', answer);
+        const pending = f.snapshot();
+        assert(f.valid(pending), lesson.id + ': pending ' + answer);
+        assert.equal(pending.work.answerChecked, false);
+        f.doc.querySelector('.answer-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+        const checked = f.snapshot();
+        assert.equal(checked.work.answerChecked, true, lesson.id + ': form checks ' + answer);
+        assert.equal(checked.work.correctAnswer, correct, lesson.id + ': form judges ' + answer);
+        assert(f.valid(checked), lesson.id + ': valid actual feedback');
+        const forged = copy(checked); forged.work.correctAnswer = !correct;
+        assert.equal(f.valid(forged), false, lesson.id + ': reject forged correctness');
+        assert.throws(() => f.apply(forged), /Invalid sections board state/);
+        assert.deepEqual(f.snapshot(), checked, lesson.id + ': rejection preserves current work');
+      }
+      // Restart intentionally retains the last answer while hiding its form.
+      // Validation must not discard this valid, pre-existing learning behavior.
+      click(f, '[data-action="restart"]');
+      assert.equal(f.snapshot().work.revealed, 0);
+      assert(f.valid(f.snapshot()), lesson.id + ': retained answer after restart');
+    }
+    f.personal();
+  } finally { await f.close(); }
+});
+
+test('shared answer status rejects invalid syntax and feedback on a nonnumeric card without changing the visible work', async () => {
+  const f = boot({ hash: '#auth-method-04' });
+  try {
+    click(f, '[data-action="start-study"]'); construct(f, course.lessons.find(l => l.id === 'auth-method-04').steps.length);
+    for (const answer of ['', '1/0', '1e2', '0x10', 'sqrt(1)', '<b>1</b>', '1..0']) {
+      input(f, '#numeric-answer', answer);
+      assert(f.valid(f.snapshot()), 'unsubmitted syntax remains editable: ' + answer);
+      f.doc.querySelector('.answer-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+      const invalid = f.snapshot();
+      assert.equal(invalid.work.answerInvalid, true); assert(f.valid(invalid), 'valid syntax feedback: ' + answer);
+      const forged = copy(invalid); forged.work.answerInvalid = false; forged.work.answerChecked = true;
+      assert.equal(f.valid(forged), false, 'invalid syntax cannot claim a checked result: ' + answer);
+      assert.throws(() => f.apply(forged), /Invalid sections board state/);
+      assert.deepEqual(f.snapshot(), invalid);
+    }
+    for (const answer of ['1', '1,0', '2/2', '−1', '.5']) {
+      input(f, '#numeric-answer', answer);
+      const pending = f.snapshot(), forged = copy(pending); forged.work.answerInvalid = true;
+      assert.equal(f.valid(forged), false, 'finite parsed answer cannot claim invalid syntax: ' + answer);
+      assert.throws(() => f.apply(forged), /Invalid sections board state/);
+      assert.deepEqual(f.snapshot(), pending);
+    }
+    f.open('starter-01');
+    const original = f.snapshot(), originalView = visible(f);
+    for (const patch of [{ answer: '1' }, { answerChecked: true }, { answerChecked: true, correctAnswer: true }, { answerInvalid: true }]) {
+      const forged = copy(original); Object.assign(forged.work, patch);
+      assert.equal(f.valid(forged), false, 'nonnumeric card rejects answer state: ' + JSON.stringify(patch));
+      assert.throws(() => f.apply(forged), /Invalid sections board state/);
+      assert.deepEqual(f.snapshot(), original); assert.deepEqual(visible(f), originalView);
+    }
+    f.personal();
+  } finally { await f.close(); }
+});
+
 test('controller input immediately after remote apply is published when native toggles settle', async () => {
   const a = boot({ hash: '#starter-18' }), b = boot();
   try {

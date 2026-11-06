@@ -199,6 +199,25 @@ personal work while making the beginner route easy to find.
   cabinet behavior is not changed or represented as a successful room restore.
 - Actual head, PR and CI/visual evidence: recorded in the PR handoff. Live
   assignment follows a separately authorized, verified release.
+- Continuation opened Draft PR #474 from the preserved task branch. An
+  independent review found that numeric correctness flags were not tied to
+  the submitted shared answer. The adapter now reuses the course's own parser
+  and tolerance; all 41 numeric cards, accepted formats, invalid syntax,
+  retained restart feedback and forged flags are covered by the 10-test
+  adapter suite. No second parser or ordinary answer behavior was introduced.
+- The existing navigator gate exposed a missing registration for the new
+  public course. Its exact existing include pair and source-bound inventory
+  entry are added; the offline build removes only the verified pair and
+  rejects all remaining external script/stylesheet references. All previous
+  navigator bindings are preserved. The immutable initial task commit
+  `acfcf3961dbaaf79a54c7d8cce2d4e7b5f2607d2` supplies the new source binding.
+- Current main advanced to `6c64ac63e6bad70993ec50995d3a39976b1b0a36` through
+  published PR #473, an independent logarithm introduction. The first read-only
+  virtual merge reported a status-document conflict; no branch repair was
+  performed. Final composition and actual CI results are recorded in PR #474.
+  Task-branch push checks preserve real-browser verification while GitHub
+  cannot synthesize a conflicting pull-request merge ref. Additional focused
+  regressions do not claim that every workflow for a future reconciled PR ran.
 
 ## Required handoff
 

@@ -91,6 +91,17 @@
             (w.showResult && (w.revealed !== count || w.calculationRevealed !== calculations)) ||
             (w.correctAnswer && !w.answerChecked) || (w.answerInvalid && (w.answerChecked || w.correctAnswer)) ||
             !draft(w.draft, 2000) || !draft(w.answer, 120)) return false;
+        const numeric = lesson.result?.numeric, answer = decodeText(w.answer);
+        if (!numeric) {
+          if (answer !== '' || w.answerChecked || w.correctAnswer || w.answerInvalid) return false;
+        } else if (w.answerChecked || w.answerInvalid) {
+          // Reuse the course's own parser: shared feedback must describe this
+          // answer under exactly the same syntax and tolerance as the form.
+          if (typeof api?.numericValue !== 'function') return false;
+          const parsed = api.numericValue(answer), finite = Number.isFinite(parsed);
+          if (w.answerInvalid ? finite : !finite ||
+              w.correctAnswer !== (Math.abs(parsed - numeric.value) <= (numeric.tolerance || 1e-6))) return false;
+        }
         if (!fields(w.camera, ['yaw', 'pitch']) || !Number.isFinite(w.camera.yaw) || !Number.isFinite(w.camera.pitch) ||
             w.camera.yaw < -Math.PI || w.camera.yaw >= Math.PI || Math.abs(w.camera.pitch) > 1.45) return false;
         if (!Array.isArray(w.proofChecks) || w.proofChecks.length !== (lesson.proofChecklist || []).length ||

@@ -969,7 +969,7 @@
     });
     if (board) {
       document.documentElement.dataset.sectionsView = 'lessons';
-      board.attach({getState:getSharedState, applyState:applySharedState, isApplying:()=>boardApplying});
+      board.attach({getState:getSharedState, applyState:applySharedState, isApplying:()=>boardApplying, numericValue});
       board.start();
     }
   } catch (error) {

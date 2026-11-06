@@ -14,7 +14,10 @@ on:
       - 'tools/trainer-registry-client-cutover-smoke.cjs'
       - '.github/workflows/sections-from-zero.yml'
   push:
-    branches: [main]
+    # Keep the approved task branch testable while a newer main needs a
+    # separately authorized reconciliation. Pull-request checks do not start
+    # when GitHub cannot synthesize its merge ref.
+    branches: [main, task/sections-from-zero]
     paths:
       - 'stereo-course/sections/**'
       - 'trainers/sections-from-zero.html'
@@ -83,5 +86,219 @@ jobs:
           name: sections-from-zero-journeys
           path: artifacts/sections-from-zero
           if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  # These existing, in-scope regression commands run on the same branch SHA
+  # while the PR merge ref is unavailable. They do not replace all workflows
+  # selected by the eventual reconciled PR or its production-container checks.
+  learning-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned navigation tools
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/sections-navigation" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/sections-navigation/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-navigation/node_modules" >> "$GITHUB_ENV"
+      - name: Preserve catalog identities and public links
+        run: |
+          node --check learning/app.js
+          node tools/learning-catalog-reference-test.cjs
+          node --test tools/learning-focus-links.dom.cjs
+      - name: Existing cabinet navigation and exact return
+        env:
+          LEARNING_RETURN_ARTIFACTS: artifacts/sections-navigation/return
+          LEARNING_BROWSER_ARTIFACTS: artifacts/sections-navigation/courses
+        run: |
+          node tools/learning-public-return.browser.cjs
+          node tools/learning-course-navigation.browser.cjs
+          node tools/learning-grade7.browser.cjs
+      - name: Synthetic onboarding, program edits and credential privacy
+        env:
+          LEARNING_ONBOARDING_OUTPUT_DIR: artifacts/sections-navigation/onboarding
+        run: |
+          node tools/learning-free-route.browser.cjs
+          node tools/learning-onboarding.browser.cjs
+      - name: Preserve synthetic cabinet evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-cabinet-regressions
+          path: artifacts/sections-navigation
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  board-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch immutable legacy-host fixture for registry regression
+        run: git fetch --no-tags --depth=1 origin e9097137b6cd66d80962cadcef336255db28e9b1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned board tools
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/sections-board-regressions" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/sections-board-regressions/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-board-regressions/node_modules" >> "$GITHUB_ENV"
+      - name: Existing writing tools and real local collaboration
+        env:
+          BOARD_WRITING_ARTIFACTS: artifacts/sections-board-regressions/writing
+        run: node tools/board-writing.browser.cjs
+      - name: Existing picker, layout and retained drawings
+        env:
+          BOARD_DESKTOP_SCREENSHOT: artifacts/sections-board-regressions/picker/desktop.png
+          BOARD_PICKER_SCREENSHOT: artifacts/sections-board-regressions/picker/mobile.png
+          BOARD_SHARE_SCREENSHOT: artifacts/sections-board-regressions/picker/share.png
+        run: |
+          mkdir -p artifacts/sections-board-regressions/picker
+          node tools/board-picker-smoke.cjs
+      - name: Preserve registry arrival and reconnect boundaries
+        run: |
+          B2_SMOKE_SECTION=arrival node tools/trainer-registry-client-cutover-smoke.cjs
+          B2_SMOKE_SECTION=reconnect node tools/trainer-registry-client-cutover-smoke.cjs
+      - name: Preserve synthetic board evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-board-regressions
+          path: artifacts/sections-board-regressions
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  merzlyak-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned existing-course tools
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/sections-merzlyak" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+          "$RUNNER_TEMP/sections-merzlyak/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-merzlyak/node_modules" >> "$GITHUB_ENV"
+      - name: Preserve the existing reviewed runtime and entry wrapper
+        run: |
+          node tools/merzlyak-10-base/schema-runtime.test.cjs
+          node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
+      - name: Existing teacher and pupil board journey
+        env:
+          MERZLYAK_BOARD_SHOTS: artifacts/sections-merzlyak/room
+        run: node tools/merzlyak-board.browser.cjs
+      - name: Existing grade 10 cabinet views
+        env:
+          MERZLYAK_BOARD_ARTIFACTS: artifacts/sections-merzlyak/cabinet
+        run: node tools/merzlyak-cabinet.browser.cjs
+      - name: Preserve synthetic existing-course evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-merzlyak-regressions
+          path: artifacts/sections-merzlyak
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  public-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Fetch the exact recorded navigator source
+        run: |
+          navigator_source_sha="$(node -e 'const value=require("./assets/assistant/page-rollout.json").baseSha;if(!/^[a-f0-9]{40}$/.test(value))process.exit(1);process.stdout.write(value)')"
+          git fetch --no-tags --depth=1 origin "$navigator_source_sha"
+      - name: Install pinned public-page test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/sections-public-discovery" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/sections-public-discovery/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-public-discovery/node_modules" >> "$GITHUB_ENV"
+      - name: Existing SEO entrances, canonicals and catalog destinations
+        run: |
+          python3 tools/seo-check.py
+          node tools/seo-catalog.test.cjs
+          node tools/seo-entrypoints.browser.cjs
+      - name: Exact navigator coverage, source preservation and dialogue regression
+        run: |
+          node --check assets/assistant/navigator-data.js
+          node --check assets/assistant/navigator-widget.js
+          node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
+          mkdir -p artifacts/sections-public-discovery
+          node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js artifacts/sections-public-discovery/navigator-regressions.json
+      - name: Preserve public discovery evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-public-discovery
+          path: artifacts/sections-public-discovery
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  navigator-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install the pinned navigator browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/sections-navigator-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/sections-navigator-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-navigator-browser/node_modules" >> "$GITHUB_ENV"
+      - name: All inventoried pages on desktop, mobile and landscape
+        env:
+          ARTIFACT_DIR: artifacts/sections-navigator
+          NAV_LOCAL_SERVER: '1'
+          NAV_SHARD_COUNT: '4'
+          NAV_SHARD_INDEX: ${{ matrix.shard }}
+        run: node tools/public-navigator.browser.cjs
+      - name: Preserve navigator browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-navigator-${{ matrix.shard }}
+          path: artifacts/sections-navigator
+          if-no-files-found: error
           retention-days: 7
       - run: git diff --check
