@@ -1,0 +1,1912 @@
+{
+  "range": [
+    437,
+    509
+  ],
+  "counts": {
+    "437": 2,
+    "438": 2,
+    "439": 4,
+    "440": 2,
+    "441": 2,
+    "442": 3,
+    "443": 1,
+    "444": 2,
+    "445": 2,
+    "446": 2,
+    "447": 4,
+    "448": 4,
+    "449": 4,
+    "450": 3,
+    "451": 3,
+    "452": 3,
+    "453": 8,
+    "454": 2,
+    "455": 2,
+    "456": 6,
+    "457": 14,
+    "458": 6,
+    "459": 1,
+    "460": 2,
+    "461": 3,
+    "462": 6,
+    "463": 6,
+    "464": 3,
+    "465": 6,
+    "466": 1,
+    "467": 9,
+    "468": 6,
+    "469": 4,
+    "470": 4,
+    "471": 4,
+    "472": 2,
+    "473": 6,
+    "474": 8,
+    "475": 8,
+    "476": 1,
+    "477": 6,
+    "478": 4,
+    "479": 1,
+    "480": 8,
+    "481": 1,
+    "482": 2,
+    "483": 8,
+    "484": 4,
+    "485": 4,
+    "486": 8,
+    "487": 4,
+    "488": 2,
+    "489": 2,
+    "490": 4,
+    "491": 1,
+    "492": 2,
+    "493": 4,
+    "494": 1,
+    "495": 2,
+    "496": 2,
+    "497": 4,
+    "498": 2,
+    "499": 3,
+    "500": 3,
+    "501": 6,
+    "502": 6,
+    "503": 2,
+    "504": 1,
+    "505": 4,
+    "506": 2,
+    "507": 1,
+    "508": 5,
+    "509": 1
+  },
+  "checks": [
+    {
+      "taskId": "p19-t01",
+      "answer": "√5+1",
+      "sourcePage": 105,
+      "reason": "(√5+1)²=6+2√5; candidate is positive.",
+      "rejects": [
+        "√5-1"
+      ]
+    },
+    {
+      "taskId": "p19-t02",
+      "answer": "√7-2",
+      "sourcePage": 105,
+      "reason": "(√7−2)²=11−4√7 and √7>2.",
+      "rejects": [
+        "2-√7"
+      ]
+    },
+    {
+      "taskId": "roots-438-a",
+      "answer": "3",
+      "sourcePage": 105,
+      "reason": "11+6√2=(3+√2)², so subtracting √2 gives 3."
+    },
+    {
+      "taskId": "roots-438-b",
+      "answer": "5",
+      "sourcePage": 105,
+      "reason": "27−5√8=(5−√2)², and adding √2 gives 5.",
+      "rejects": [
+        "5+2√2",
+        "-5"
+      ]
+    },
+    {
+      "taskId": "roots-439-a",
+      "answer": "3√6+1",
+      "sourcePage": 106,
+      "reason": "55²−216=53², giving radicands 54 and 1."
+    },
+    {
+      "taskId": "roots-439-b",
+      "answer": "√65-√21",
+      "sourcePage": 106,
+      "reason": "86²−5460=44², giving 65 and 21; the difference is positive.",
+      "rejects": [
+        "√21-√65"
+      ]
+    },
+    {
+      "taskId": "roots-439-c",
+      "answer": "3+2√2",
+      "sourcePage": 106,
+      "reason": "17²−288=1, giving 9 and 8."
+    },
+    {
+      "taskId": "roots-439-d",
+      "answer": "3√2-√14",
+      "sourcePage": 106,
+      "reason": "32²−1008=16, giving 18 and 14; √18>√14."
+    },
+    {
+      "taskId": "roots-440-a",
+      "answer": "√10",
+      "sourcePage": 106,
+      "reason": "Difference is positive; its square is 22−2√36=10."
+    },
+    {
+      "taskId": "roots-440-b",
+      "answer": "√10",
+      "sourcePage": 106,
+      "reason": "Sum is positive; its square is 6+2√4=10."
+    },
+    {
+      "taskId": "roots-442-a",
+      "answer": "(4√5-√55)/5",
+      "sourcePage": 106,
+      "reason": "Multiply numerator and denominator by √(4−√11), then rationalize √5."
+    },
+    {
+      "taskId": "roots-442-b",
+      "answer": "(√10+√6)/2",
+      "sourcePage": 106,
+      "reason": "Quotient equals (√5+√3)/√2, then rationalize √2."
+    },
+    {
+      "taskId": "roots-442-c",
+      "answer": "√5-2",
+      "sourcePage": 106,
+      "reason": "Multiplying by √(√5−2) makes denominator √(5−4)=1."
+    },
+    {
+      "taskId": "roots-443-a",
+      "answer": "1",
+      "sourcePage": 106,
+      "reason": "The last two roots multiply to √(2−√3); the full product is √((2+√3)(2−√3))=1."
+    },
+    {
+      "taskId": "roots-445-a",
+      "answer": "-√2",
+      "sourcePage": 106,
+      "reason": "The two roots are (√b−1)/√2 and (√b+1)/√2 for b≥1."
+    },
+    {
+      "taskId": "roots-445-b",
+      "answer": "2",
+      "sourcePage": 106,
+      "reason": "The roots are (√c+2)/2 and (√c−2)/2 for c≥4."
+    },
+    {
+      "taskId": "roots-446-a",
+      "answer": "√(a-1)+1",
+      "sourcePage": 106,
+      "reason": "a+2√(a−1)=(√(a−1)+1)² and candidate nonnegative."
+    },
+    {
+      "taskId": "roots-446-b",
+      "answer": "2",
+      "sourcePage": 106,
+      "reason": "With s=a+b≥1, the roots are √s+1 and √s−1."
+    },
+    {
+      "taskId": "roots-447-a",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Naturals closed under addition."
+    },
+    {
+      "taskId": "roots-447-b",
+      "answer": "Не всегда",
+      "sourcePage": 107,
+      "reason": "1−2=−1 is a counterexample."
+    },
+    {
+      "taskId": "roots-447-c",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Naturals closed under multiplication."
+    },
+    {
+      "taskId": "roots-447-d",
+      "answer": "Не всегда",
+      "sourcePage": 107,
+      "reason": "1/2 is a counterexample."
+    },
+    {
+      "taskId": "roots-448-a",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Integers closed under addition."
+    },
+    {
+      "taskId": "roots-448-b",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Integers closed under subtraction."
+    },
+    {
+      "taskId": "roots-448-c",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Integers closed under multiplication."
+    },
+    {
+      "taskId": "roots-448-d",
+      "answer": "Не всегда",
+      "sourcePage": 107,
+      "reason": "1/2 is not an integer."
+    },
+    {
+      "taskId": "roots-449-a",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Rationals are closed under addition, subtraction, multiplication, and division by a nonzero rational."
+    },
+    {
+      "taskId": "roots-449-b",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Rationals are closed under addition, subtraction, multiplication, and division by a nonzero rational."
+    },
+    {
+      "taskId": "roots-449-c",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Rationals are closed under addition, subtraction, multiplication, and division by a nonzero rational."
+    },
+    {
+      "taskId": "roots-449-d",
+      "answer": "Всегда",
+      "sourcePage": 107,
+      "reason": "Rationals are closed under addition, subtraction, multiplication, and division by a nonzero rational."
+    },
+    {
+      "taskId": "roots-450-a",
+      "answer": "2(m-n)",
+      "sourcePage": 107,
+      "reason": "2m−2n=2(m−n)."
+    },
+    {
+      "taskId": "roots-450-b",
+      "answer": "4mn",
+      "sourcePage": 107,
+      "reason": "(2m)(2n)=4mn=2(2mn)."
+    },
+    {
+      "taskId": "roots-450-c",
+      "answer": "2(3m+n)",
+      "sourcePage": 107,
+      "reason": "3·2m+2n=2(3m+n)."
+    },
+    {
+      "taskId": "roots-451-a",
+      "answer": "Чётное",
+      "sourcePage": 107,
+      "reason": "Odd+odd=2(m+n+1)."
+    },
+    {
+      "taskId": "roots-451-b",
+      "answer": "Чётное",
+      "sourcePage": 107,
+      "reason": "Odd−odd=2(m−n)."
+    },
+    {
+      "taskId": "roots-451-c",
+      "answer": "Нечётное",
+      "sourcePage": 107,
+      "reason": "Odd·odd=2(2mn+m+n)+1."
+    },
+    {
+      "taskId": "roots-452-a",
+      "answer": "0.0001;0.0002;0.0003;0.0004;0.0005",
+      "sourcePage": 107,
+      "reason": "Directed construction k/10000 for k=1…5 gives five distinct numbers in (0,.002)."
+    },
+    {
+      "taskId": "roots-452-b",
+      "answer": "-0.01;-0.02;-0.03;-0.04;-0.05",
+      "sourcePage": 107,
+      "reason": "Directed construction −k/100 for k=1…5 gives five distinct numbers in (−1/11,0)."
+    },
+    {
+      "taskId": "roots-452-c",
+      "answer": "0.35;0.36;0.37;0.38;0.39",
+      "sourcePage": 107,
+      "reason": "Directed construction k/100 for k=35…39 gives five numbers in (1/3,1/2)."
+    },
+    {
+      "taskId": "roots-453-a",
+      "answer": "0.359375(0)",
+      "sourcePage": 107,
+      "reason": "23/64=0.359375, followed by repeating zeros."
+    },
+    {
+      "taskId": "roots-453-b",
+      "answer": "-0.28(0)",
+      "sourcePage": 107,
+      "reason": "−7/25=−.28, followed by repeating zeros."
+    },
+    {
+      "taskId": "roots-453-c",
+      "answer": "0.(846153)",
+      "sourcePage": 107,
+      "reason": "846153/999999=11/13."
+    },
+    {
+      "taskId": "roots-453-d",
+      "answer": "0.(037)",
+      "sourcePage": 107,
+      "reason": "37/999=1/27."
+    },
+    {
+      "taskId": "roots-453-e",
+      "answer": "0.0(571428)",
+      "sourcePage": 107,
+      "reason": "571428/9999990=2/35."
+    },
+    {
+      "taskId": "roots-453-f",
+      "answer": "-0.3(18)",
+      "sourcePage": 107,
+      "reason": "(318−3)/990=7/22."
+    },
+    {
+      "taskId": "roots-453-g",
+      "answer": "0.7(6)",
+      "sourcePage": 107,
+      "reason": "(76−7)/90=23/30."
+    },
+    {
+      "taskId": "roots-453-h",
+      "answer": "0.2(18)",
+      "sourcePage": 107,
+      "reason": "(218−2)/990=12/55."
+    },
+    {
+      "taskId": "roots-454-rational",
+      "answer": "10.01;10.05",
+      "sourcePage": 107,
+      "reason": "Directed values 10+k/100 for k=1,5 are rational and strictly between 10 and 10.1."
+    },
+    {
+      "taskId": "roots-454-irrational",
+      "answer": "√101;√102",
+      "sourcePage": 107,
+      "reason": "100<101<102<102.01=(10.1)²; neither integer radicand is a square."
+    },
+    {
+      "taskId": "roots-455-a",
+      "answer": "c-a",
+      "sourcePage": 107,
+      "reason": "If a+b=c rational, b=c−a would be rational, a contradiction."
+    },
+    {
+      "taskId": "roots-455-b",
+      "answer": "a-c",
+      "sourcePage": 107,
+      "reason": "If a−b=c rational, b=a−c would be rational, a contradiction."
+    },
+    {
+      "taskId": "roots-456-a",
+      "answer": "5.1",
+      "sourcePage": 108,
+      "reason": ".3·17=5.1."
+    },
+    {
+      "taskId": "roots-456-b",
+      "answer": "-3.6",
+      "sourcePage": 108,
+      "reason": "−4·.9=−3.6."
+    },
+    {
+      "taskId": "roots-456-c",
+      "answer": "-4/7",
+      "sourcePage": 108,
+      "reason": "3/7−1=−4/7."
+    },
+    {
+      "taskId": "roots-456-d",
+      "answer": "1/8",
+      "sourcePage": 108,
+      "reason": "4/16−1/8=1/8."
+    },
+    {
+      "taskId": "roots-456-e",
+      "answer": "10.22",
+      "sourcePage": 108,
+      "reason": "2·.11+10=10.22."
+    },
+    {
+      "taskId": "roots-456-f",
+      "answer": "3.7",
+      "sourcePage": 108,
+      "reason": "12/6+1.7=3.7."
+    },
+    {
+      "taskId": "roots-457-a1",
+      "answer": "0",
+      "sourcePage": 108,
+      "reason": "Radicands 5x−10 are 0,1,16,100 at x=2,2.2,5.2,22."
+    },
+    {
+      "taskId": "roots-457-a2",
+      "answer": "1",
+      "sourcePage": 108,
+      "reason": "Radicands 5x−10 are 0,1,16,100 at x=2,2.2,5.2,22."
+    },
+    {
+      "taskId": "roots-457-a3",
+      "answer": "4",
+      "sourcePage": 108,
+      "reason": "Radicands 5x−10 are 0,1,16,100 at x=2,2.2,5.2,22."
+    },
+    {
+      "taskId": "roots-457-a4",
+      "answer": "10",
+      "sourcePage": 108,
+      "reason": "Radicands 5x−10 are 0,1,16,100 at x=2,2.2,5.2,22."
+    },
+    {
+      "taskId": "roots-457-b1",
+      "answer": "2",
+      "sourcePage": 108,
+      "reason": "Radicands 6−2y are 4,9,36,81 at y=1,−1.5,−15,−37.5."
+    },
+    {
+      "taskId": "roots-457-b2",
+      "answer": "3",
+      "sourcePage": 108,
+      "reason": "Radicands 6−2y are 4,9,36,81 at y=1,−1.5,−15,−37.5."
+    },
+    {
+      "taskId": "roots-457-b3",
+      "answer": "6",
+      "sourcePage": 108,
+      "reason": "Radicands 6−2y are 4,9,36,81 at y=1,−1.5,−15,−37.5."
+    },
+    {
+      "taskId": "roots-457-b4",
+      "answer": "9",
+      "sourcePage": 108,
+      "reason": "Radicands 6−2y are 4,9,36,81 at y=1,−1.5,−15,−37.5."
+    },
+    {
+      "taskId": "roots-457-c1",
+      "answer": "1",
+      "sourcePage": 108,
+      "reason": "Insert √x=0,1,4,1/2 into (3+√x)/(3−√x)."
+    },
+    {
+      "taskId": "roots-457-c2",
+      "answer": "2",
+      "sourcePage": 108,
+      "reason": "Insert √x=0,1,4,1/2 into (3+√x)/(3−√x)."
+    },
+    {
+      "taskId": "roots-457-c3",
+      "answer": "-7",
+      "sourcePage": 108,
+      "reason": "Insert √x=0,1,4,1/2 into (3+√x)/(3−√x)."
+    },
+    {
+      "taskId": "roots-457-c4",
+      "answer": "7/5",
+      "sourcePage": 108,
+      "reason": "Insert √x=0,1,4,1/2 into (3+√x)/(3−√x)."
+    },
+    {
+      "taskId": "roots-457-d1",
+      "answer": "0",
+      "sourcePage": 108,
+      "reason": "2a−b equals 0 at (0,0) and 1 at (4,7)."
+    },
+    {
+      "taskId": "roots-457-d2",
+      "answer": "1",
+      "sourcePage": 108,
+      "reason": "2a−b equals 0 at (0,0) and 1 at (4,7)."
+    },
+    {
+      "taskId": "roots-458-a",
+      "answer": "9/25",
+      "sourcePage": 108,
+      "reason": "√x=3/5, so x=9/25."
+    },
+    {
+      "taskId": "roots-458-b",
+      "answer": "1/3",
+      "sourcePage": 108,
+      "reason": "√(3x)=1, so x=1/3."
+    },
+    {
+      "taskId": "roots-458-c",
+      "answer": "1/64",
+      "sourcePage": 108,
+      "reason": "4√x=1/2, so √x=1/8 and x=1/64.",
+      "rejects": [
+        "1/16",
+        "1/4"
+      ]
+    },
+    {
+      "taskId": "roots-458-d",
+      "answer": "21",
+      "sourcePage": 108,
+      "reason": "x−5=16, so x=21."
+    },
+    {
+      "taskId": "roots-458-e",
+      "answer": "81/2",
+      "sourcePage": 108,
+      "reason": "√(2x)=9, so x=81/2."
+    },
+    {
+      "taskId": "roots-458-f",
+      "answer": "9",
+      "sourcePage": 108,
+      "reason": "3√x=9, so √x=3 and x=9."
+    },
+    {
+      "taskId": "roots-459-a",
+      "answer": "49",
+      "sourcePage": 108,
+      "reason": "Successive squaring yields √(2+√x)=3, √x=7, x=49; original sides equal 2.",
+      "rejects": [
+        "7",
+        "9"
+      ]
+    },
+    {
+      "taskId": "roots-460-a",
+      "answer": "0",
+      "sourcePage": 108,
+      "reason": "√2+(−√2)=0 demonstrates rational sum."
+    },
+    {
+      "taskId": "roots-460-b",
+      "answer": "0",
+      "sourcePage": 108,
+      "reason": "0·√2=0 demonstrates rational product."
+    },
+    {
+      "taskId": "roots-461-a",
+      "answer": "4",
+      "sourcePage": 108,
+      "reason": "Choose a=4, a positive rational square, giving two rational roots ±2."
+    },
+    {
+      "taskId": "roots-461-b",
+      "answer": "2",
+      "sourcePage": 108,
+      "reason": "Choose a=2, a positive rational nonsquare, giving two irrational roots ±√2."
+    },
+    {
+      "taskId": "roots-461-c",
+      "answer": "-1",
+      "sourcePage": 108,
+      "reason": "Choose a=−1: no real square can equal a negative number."
+    },
+    {
+      "taskId": "roots-462-a",
+      "answer": "x ≥ 0",
+      "sourcePage": 108,
+      "reason": "x³≥0 iff x≥0."
+    },
+    {
+      "taskId": "roots-462-b",
+      "answer": "Все действительные x",
+      "sourcePage": 108,
+      "reason": "x⁴≥0 for every real x."
+    },
+    {
+      "taskId": "roots-462-c",
+      "answer": "Все действительные x",
+      "sourcePage": 108,
+      "reason": "x²+1>0 for every real x."
+    },
+    {
+      "taskId": "roots-462-d",
+      "answer": "Все действительные x",
+      "sourcePage": 108,
+      "reason": "(4−x)²≥0 for every real x."
+    },
+    {
+      "taskId": "roots-462-e",
+      "answer": "x = 0",
+      "sourcePage": 108,
+      "reason": "−x²≥0 iff x=0."
+    },
+    {
+      "taskId": "roots-462-f",
+      "answer": "x ≤ 0",
+      "sourcePage": 108,
+      "reason": "−x³≥0 iff x≤0."
+    },
+    {
+      "taskId": "roots-463-a",
+      "answer": "ab ≥ 0",
+      "sourcePage": 108,
+      "reason": "Radicand ab must be nonnegative."
+    },
+    {
+      "taskId": "roots-463-b",
+      "answer": "ab ≤ 0",
+      "sourcePage": 108,
+      "reason": "−ab≥0 iff ab≤0."
+    },
+    {
+      "taskId": "roots-463-c",
+      "answer": "a = 0 или b ≥ 0",
+      "sourcePage": 108,
+      "reason": "When a=0 radicand is zero for all b; otherwise a²>0 requires b≥0."
+    },
+    {
+      "taskId": "roots-463-d",
+      "answer": "Все действительные a и b",
+      "sourcePage": 108,
+      "reason": "Product of two squares is nonnegative."
+    },
+    {
+      "taskId": "roots-463-e",
+      "answer": "b = 0 или a ≤ 0",
+      "sourcePage": 108,
+      "reason": "When b=0 radicand is zero for all a; otherwise −a≥0."
+    },
+    {
+      "taskId": "roots-463-f",
+      "answer": "a = 0 или b = 0",
+      "sourcePage": 108,
+      "reason": "Negative of a square is nonnegative only when ab=0."
+    },
+    {
+      "taskId": "roots-464-a",
+      "answer": "x > 0",
+      "sourcePage": 109,
+      "reason": "√x must exist and be nonzero."
+    },
+    {
+      "taskId": "roots-464-b",
+      "answer": "x ≥ 0",
+      "sourcePage": 109,
+      "reason": "√x+2≥2 for all x≥0."
+    },
+    {
+      "taskId": "roots-464-c",
+      "answer": "x ≥ 0, x ≠ 1",
+      "sourcePage": 109,
+      "reason": "Require x≥0 and √x≠1."
+    },
+    {
+      "taskId": "roots-465-a",
+      "answer": "0.8",
+      "sourcePage": 109,
+      "reason": ".4+4·.1=.8."
+    },
+    {
+      "taskId": "roots-465-b",
+      "answer": "2.4",
+      "sourcePage": 109,
+      "reason": ".04·10+.5·4=2.4."
+    },
+    {
+      "taskId": "roots-465-c",
+      "answer": "6",
+      "sourcePage": 109,
+      "reason": "12−.5·12=6."
+    },
+    {
+      "taskId": "roots-465-d",
+      "answer": "54",
+      "sourcePage": 109,
+      "reason": "9·3+9·3=54."
+    },
+    {
+      "taskId": "roots-465-e",
+      "answer": "30",
+      "sourcePage": 109,
+      "reason": "25·2−4·5=30."
+    },
+    {
+      "taskId": "roots-465-f",
+      "answer": "36",
+      "sourcePage": 109,
+      "reason": "9·6−3·6=36."
+    },
+    {
+      "taskId": "roots-466-a",
+      "answer": "11.954",
+      "sourcePage": 109,
+      "reason": "Distance = √((−11.3)²+3.9²)=√142.9=11.9540788…, rounded to .001.",
+      "rejects": [
+        "142.9",
+        "11.95"
+      ]
+    },
+    {
+      "taskId": "roots-467-a",
+      "answer": "<",
+      "sourcePage": 109,
+      "reason": "7.5<7.6."
+    },
+    {
+      "taskId": "roots-467-b",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": ".1>.01."
+    },
+    {
+      "taskId": "roots-467-c",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": "1/3>.3."
+    },
+    {
+      "taskId": "roots-467-d",
+      "answer": "<",
+      "sourcePage": 109,
+      "reason": "2.16<13/6."
+    },
+    {
+      "taskId": "roots-467-e",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": "5·11=55>54=6·9."
+    },
+    {
+      "taskId": "roots-467-f",
+      "answer": "=",
+      "sourcePage": 109,
+      "reason": "0.(3)=1/3."
+    },
+    {
+      "taskId": "roots-467-g",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": "7>2.6²=6.76."
+    },
+    {
+      "taskId": "roots-467-h",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": "3.2²=10.24>9.8."
+    },
+    {
+      "taskId": "roots-467-i",
+      "answer": ">",
+      "sourcePage": 109,
+      "reason": "1.23>1.1²=1.21."
+    },
+    {
+      "taskId": "roots-468-a1",
+      "answer": "1",
+      "sourcePage": 109,
+      "reason": "For t=√x≥0, b=t−t². At b<0 only the root t>1 is nonnegative."
+    },
+    {
+      "taskId": "roots-468-a2",
+      "answer": "2",
+      "sourcePage": 109,
+      "reason": "For 0≤b<1/4, t−t²=b has two distinct nonnegative roots, including t=0 when b=0.",
+      "rejects": [
+        "1"
+      ]
+    },
+    {
+      "taskId": "roots-468-a3",
+      "answer": "1",
+      "sourcePage": 109,
+      "reason": "Maximum of t−t² is 1/4 at t=1/2: tangency.",
+      "rejects": [
+        "2"
+      ]
+    },
+    {
+      "taskId": "roots-468-a4",
+      "answer": "0",
+      "sourcePage": 109,
+      "reason": "The concave function t−t² never exceeds 1/4."
+    },
+    {
+      "taskId": "roots-468-b1",
+      "answer": "0",
+      "sourcePage": 109,
+      "reason": "b=t²+t≥0 for t≥0, impossible for b<0."
+    },
+    {
+      "taskId": "roots-468-b2",
+      "answer": "1",
+      "sourcePage": 109,
+      "reason": "t²+t strictly increases from 0 to infinity on t≥0.",
+      "rejects": [
+        "2"
+      ]
+    },
+    {
+      "taskId": "roots-469-a",
+      "answer": "7.56",
+      "sourcePage": 109,
+      "reason": "14·.9·.6=7.56."
+    },
+    {
+      "taskId": "roots-469-b",
+      "answer": "7/24",
+      "sourcePage": 109,
+      "reason": "(5/4)(7/3)(1/10)=7/24."
+    },
+    {
+      "taskId": "roots-469-c",
+      "answer": "9.1",
+      "sourcePage": 109,
+      "reason": "√(49·1.69)=7·1.3=9.1."
+    },
+    {
+      "taskId": "roots-469-d",
+      "answer": "1.08",
+      "sourcePage": 109,
+      "reason": "√(1.44·.81)=1.2·.9=1.08."
+    },
+    {
+      "taskId": "roots-470-a",
+      "answer": "17/2",
+      "sourcePage": 109,
+      "reason": "(165²−124²)/164=289/4."
+    },
+    {
+      "taskId": "roots-470-b",
+      "answer": "7/96",
+      "sourcePage": 109,
+      "reason": "98/((176−112)(176+112))=49/9216."
+    },
+    {
+      "taskId": "roots-470-c",
+      "answer": "15/29",
+      "sourcePage": 109,
+      "reason": "(73·225)/(73·841)=225/841."
+    },
+    {
+      "taskId": "roots-470-d",
+      "answer": "77/135",
+      "sourcePage": 109,
+      "reason": "(49·242)/(162·225)=5929/18225."
+    },
+    {
+      "taskId": "roots-471-a",
+      "answer": "45",
+      "sourcePage": 110,
+      "reason": "1.5√900=45."
+    },
+    {
+      "taskId": "roots-471-b",
+      "answer": "0.9",
+      "sourcePage": 110,
+      "reason": ".03√900=.9."
+    },
+    {
+      "taskId": "roots-471-c",
+      "answer": "100",
+      "sourcePage": 110,
+      "reason": "20√25=100."
+    },
+    {
+      "taskId": "roots-471-d",
+      "answer": "0.04",
+      "sourcePage": 110,
+      "reason": "√(.48/12)/5=.2/5=.04."
+    },
+    {
+      "taskId": "roots-472-a",
+      "answer": "√(-a)√(-b)",
+      "sourcePage": 110,
+      "reason": "Since a,b<0, use the positive factors −a and −b rather than undefined √a,√b."
+    },
+    {
+      "taskId": "roots-472-b",
+      "answer": "√(-a)/√(-b)",
+      "sourcePage": 110,
+      "reason": "Since a,b<0, use the positive factors −a and −b rather than undefined √a,√b."
+    },
+    {
+      "taskId": "roots-473-a",
+      "answer": "12",
+      "sourcePage": 110,
+      "reason": "√((-12)²)=12."
+    },
+    {
+      "taskId": "roots-473-b",
+      "answer": "-10",
+      "sourcePage": 110,
+      "reason": "Minus outside root remains: −√100=−10."
+    },
+    {
+      "taskId": "roots-473-c",
+      "answer": "Не определено в действительных числах",
+      "sourcePage": 110,
+      "reason": "−10²=−100 under the radical."
+    },
+    {
+      "taskId": "roots-473-d",
+      "answer": "-11",
+      "sourcePage": 110,
+      "reason": "−√121=−11."
+    },
+    {
+      "taskId": "roots-473-e",
+      "answer": "Не определено в действительных числах",
+      "sourcePage": 110,
+      "reason": "−(−15)²=−225 under the radical."
+    },
+    {
+      "taskId": "roots-473-f",
+      "answer": "-25",
+      "sourcePage": 110,
+      "reason": "−√625=−25."
+    },
+    {
+      "taskId": "roots-474-a",
+      "answer": "24",
+      "sourcePage": 110,
+      "reason": "3·8=24."
+    },
+    {
+      "taskId": "roots-474-b",
+      "answer": "-200",
+      "sourcePage": 110,
+      "reason": "−2·100=−200."
+    },
+    {
+      "taskId": "roots-474-c",
+      "answer": "-75",
+      "sourcePage": 110,
+      "reason": "−3·25=−75."
+    },
+    {
+      "taskId": "roots-474-d",
+      "answer": "3.2",
+      "sourcePage": 110,
+      "reason": ".1·32=3.2."
+    },
+    {
+      "taskId": "roots-474-e",
+      "answer": "8.1",
+      "sourcePage": 110,
+      "reason": ".1·81=8.1."
+    },
+    {
+      "taskId": "roots-474-f",
+      "answer": "0.001",
+      "sourcePage": 110,
+      "reason": "100·.00001=.001."
+    },
+    {
+      "taskId": "roots-474-g",
+      "answer": "-64",
+      "sourcePage": 110,
+      "reason": "−√4096=−64."
+    },
+    {
+      "taskId": "roots-474-h",
+      "answer": "0.025",
+      "sourcePage": 110,
+      "reason": "2.5·.01=.025."
+    },
+    {
+      "taskId": "roots-475-a",
+      "answer": "8",
+      "sourcePage": 110,
+      "reason": "√64=8."
+    },
+    {
+      "taskId": "roots-475-b",
+      "answer": "243",
+      "sourcePage": 110,
+      "reason": "√(3^10)=3^5=243."
+    },
+    {
+      "taskId": "roots-475-c",
+      "answer": "1024",
+      "sourcePage": 110,
+      "reason": "√(4^10)=4^5=1024."
+    },
+    {
+      "taskId": "roots-475-d",
+      "answer": "125",
+      "sourcePage": 110,
+      "reason": "√(5^6)=125."
+    },
+    {
+      "taskId": "roots-475-e",
+      "answer": "36",
+      "sourcePage": 110,
+      "reason": "8·162=1296."
+    },
+    {
+      "taskId": "roots-475-f",
+      "answer": "216",
+      "sourcePage": 110,
+      "reason": "96·486=46656."
+    },
+    {
+      "taskId": "roots-475-g",
+      "answer": "450",
+      "sourcePage": 110,
+      "reason": "750·270=202500."
+    },
+    {
+      "taskId": "roots-475-h",
+      "answer": "388",
+      "sourcePage": 110,
+      "reason": "776=4·194, hence √(4·194²)=388."
+    },
+    {
+      "taskId": "roots-476-a",
+      "answer": "x ≥ 0",
+      "sourcePage": 110,
+      "reason": "Right-hand √x is defined only at x≥0; there both sides equal x."
+    },
+    {
+      "taskId": "roots-477-a",
+      "answer": "Все действительные y",
+      "sourcePage": 110,
+      "reason": "√y⁴=|y²|=y² for all y."
+    },
+    {
+      "taskId": "roots-477-b",
+      "answer": "Все действительные x",
+      "sourcePage": 110,
+      "reason": "√x^12=|x⁶|=x⁶ for all x."
+    },
+    {
+      "taskId": "roots-477-c",
+      "answer": "x ≥ 0",
+      "sourcePage": 110,
+      "reason": "|x³|=x³ iff x≥0."
+    },
+    {
+      "taskId": "roots-477-d",
+      "answer": "c ≤ 0",
+      "sourcePage": 110,
+      "reason": "|c⁵|=−c⁵ iff c≤0."
+    },
+    {
+      "taskId": "roots-477-e",
+      "answer": "a ≥ 0",
+      "sourcePage": 110,
+      "reason": "|a⁷|=a⁷ iff a≥0."
+    },
+    {
+      "taskId": "roots-477-f",
+      "answer": "Все действительные b",
+      "sourcePage": 110,
+      "reason": "|b⁴|=b⁴ for all b."
+    },
+    {
+      "taskId": "roots-478-a",
+      "answer": "-1;-1;1;1",
+      "sourcePage": 110,
+      "reason": "|x|/x is −1 for negative x and +1 for positive x; x=0 excluded."
+    },
+    {
+      "taskId": "roots-478-b",
+      "answer": "2;2;-2;-2",
+      "sourcePage": 110,
+      "reason": "−2|x|/x equals +2 on x<0 and −2 on x>0; x=0 excluded."
+    },
+    {
+      "taskId": "roots-478-c",
+      "answer": "-4;-1;0;1;4",
+      "sourcePage": 110,
+      "reason": "x|x| at −2,−1,0,1,2 gives −4,−1,0,1,4."
+    },
+    {
+      "taskId": "roots-478-d",
+      "answer": "4;1;0;-1;-4",
+      "sourcePage": 110,
+      "reason": "−x|x| reverses those signs."
+    },
+    {
+      "taskId": "roots-479-a",
+      "answer": "3;2;1;0;1;2;3",
+      "sourcePage": 111,
+      "reason": "√|x| at −9,−4,−1,0,1,4,9 is symmetric about the y-axis."
+    },
+    {
+      "taskId": "roots-480-a",
+      "answer": "a²b²",
+      "sourcePage": 111,
+      "reason": "a²b² is nonnegative and squares to a⁴b⁴."
+    },
+    {
+      "taskId": "roots-480-b",
+      "answer": "b³c⁴",
+      "sourcePage": 111,
+      "reason": "b≥0 makes b³≥0; c⁴≥0."
+    },
+    {
+      "taskId": "roots-480-c",
+      "answer": "4x²y⁶",
+      "sourcePage": 111,
+      "reason": "4x²y⁶ is nonnegative and squares to 16x⁴y^12."
+    },
+    {
+      "taskId": "roots-480-d",
+      "answer": "-0.5py³",
+      "sourcePage": 111,
+      "reason": "p≥0,y≤0 give |p|=p, |y³|=−y³.",
+      "rejects": [
+        "0.5py³"
+      ]
+    },
+    {
+      "taskId": "roots-480-e",
+      "answer": "p²/a⁴",
+      "sourcePage": 111,
+      "reason": "p²/a⁴≥0 at a≠0."
+    },
+    {
+      "taskId": "roots-480-f",
+      "answer": "4a⁶/b⁵",
+      "sourcePage": 111,
+      "reason": "b>0 allows denominator b⁵ without absolute value."
+    },
+    {
+      "taskId": "roots-480-g",
+      "answer": "2x/y³",
+      "sourcePage": 111,
+      "reason": "For x,y<0, |x|=−x and |y³|=−y³.",
+      "rejects": [
+        "-2x/y³"
+      ]
+    },
+    {
+      "taskId": "roots-480-h",
+      "answer": "-c³/(3a)",
+      "sourcePage": 111,
+      "reason": "c<0,a>0 give |c³|=−c³ and |a|=a."
+    },
+    {
+      "taskId": "roots-481-a",
+      "answer": "n²+3n+1",
+      "sourcePage": 111,
+      "reason": "Let u=n(n+3); adjacent product (n+1)(n+2)=u+2, so radicand u(u+2)+1=(u+1)². For n≥1, u+1 natural."
+    },
+    {
+      "taskId": "roots-482-a",
+      "answer": "|a|",
+      "sourcePage": 111,
+      "reason": "√((-a)²)=|−a|=|a|."
+    },
+    {
+      "taskId": "roots-482-b",
+      "answer": "|a|b²",
+      "sourcePage": 111,
+      "reason": "√(a²b⁴)=|ab²|=|a|b²."
+    },
+    {
+      "taskId": "roots-483-a",
+      "answer": "|a|√15",
+      "sourcePage": 111,
+      "reason": ".5√(4·15·a²)=|a|√15."
+    },
+    {
+      "taskId": "roots-483-b",
+      "answer": "21x²√3",
+      "sourcePage": 111,
+      "reason": "2.1·10x²√3=21x²√3."
+    },
+    {
+      "taskId": "roots-483-c",
+      "answer": "0.5x√(6x)",
+      "sourcePage": 111,
+      "reason": ".1√(25x²·6x)=.5x√(6x), x≥0."
+    },
+    {
+      "taskId": "roots-483-d",
+      "answer": "3a²√a",
+      "sourcePage": 111,
+      "reason": ".2√(225a⁴·a)=3a²√a, a≥0."
+    },
+    {
+      "taskId": "roots-483-e",
+      "answer": "3a|a|√(2b)",
+      "sourcePage": 111,
+      "reason": "a·3|a|√(2b), valid at b≥0; zero-factor branch separate."
+    },
+    {
+      "taskId": "roots-483-f",
+      "answer": "-4m³√(3a)",
+      "sourcePage": 111,
+      "reason": "−m·4m²√(3a)=−4m³√(3a), valid at a≥0; zero branch separate."
+    },
+    {
+      "taskId": "roots-483-e-zero",
+      "answer": "0",
+      "sourcePage": 111,
+      "reason": "When a=0 and b<0, original radicand 18a²b=0, so original expression is 0, although √(2b) alone is undefined.",
+      "rejects": [
+        "Не определено"
+      ]
+    },
+    {
+      "taskId": "roots-483-f-zero",
+      "answer": "0",
+      "sourcePage": 111,
+      "reason": "When m=0 and a<0, original radicand 48am⁴=0 and whole expression 0.",
+      "rejects": [
+        "Не определено"
+      ]
+    },
+    {
+      "taskId": "roots-484-a",
+      "answer": "<",
+      "sourcePage": 111,
+      "reason": "2√2<20√2."
+    },
+    {
+      "taskId": "roots-484-b",
+      "answer": "=",
+      "sourcePage": 111,
+      "reason": "7√(32/49)=4√2=.8√50."
+    },
+    {
+      "taskId": "roots-484-c",
+      "answer": "<",
+      "sourcePage": 111,
+      "reason": "3√3<9√3."
+    },
+    {
+      "taskId": "roots-484-d",
+      "answer": "<",
+      "sourcePage": 111,
+      "reason": "(15/2)√7<9√7."
+    },
+    {
+      "taskId": "roots-485-a",
+      "answer": "√30;(2/3)√72;7√2",
+      "sourcePage": 111,
+      "reason": "Squares are 30<32<98."
+    },
+    {
+      "taskId": "roots-485-b",
+      "answer": "(1/2)√62;√17;5√(7/2)",
+      "sourcePage": 111,
+      "reason": "Squares are 15.5<17<87.5."
+    },
+    {
+      "taskId": "roots-485-c",
+      "answer": "8√0.2;(2/5)√250;√41",
+      "sourcePage": 111,
+      "reason": "Squares are 12.8<40<41."
+    },
+    {
+      "taskId": "roots-485-d",
+      "answer": "12√0.5;√89;(3/4)√160",
+      "sourcePage": 111,
+      "reason": "Squares are 72<89<90."
+    },
+    {
+      "taskId": "roots-441-a",
+      "answer": "Рациональное",
+      "sourcePage": 106,
+      "reason": "The difference is positive and its square is 26−2√121=4, so value 2 is rational."
+    },
+    {
+      "taskId": "roots-441-b",
+      "answer": "Иррациональное",
+      "sourcePage": 106,
+      "reason": "The sum has square 38+2√225=68, so value 2√17 is irrational."
+    },
+    {
+      "taskId": "roots-444-a",
+      "answer": "10;2;2;2;>0",
+      "sourcePage": 106,
+      "reason": "Squaring √2+√3+√5 gives 10+2√6+2√10+2√15; every term in the unsquared sum is positive."
+    },
+    {
+      "taskId": "roots-444-b",
+      "answer": "9;2;-2;-2;>0",
+      "sourcePage": 106,
+      "reason": "Squaring 1+√3−√5 gives 9+2√3−2√5−2√15; 1+√3>√5 since 4+2√3>5.",
+      "rejects": [
+        "9;2;-2;-2;<0",
+        "9;2;2;2;>0"
+      ]
+    },
+    {
+      "taskId": "roots-486-a",
+      "answer": "√(ax)-√(bx)",
+      "sourcePage": 112,
+      "reason": "Distribute √x and multiply nonnegative radicands."
+    },
+    {
+      "taskId": "roots-486-b",
+      "answer": "x+√(xy)",
+      "sourcePage": 112,
+      "reason": "x+√xy after multiplying each term by √x."
+    },
+    {
+      "taskId": "roots-486-c",
+      "answer": "a√b+b√a",
+      "sourcePage": 112,
+      "reason": "√ab·√a=a√b; √ab·√b=b√a."
+    },
+    {
+      "taskId": "roots-486-d",
+      "answer": "m√n-n√m",
+      "sourcePage": 112,
+      "reason": "√m·√mn=m√n and √n·√mn=n√m."
+    },
+    {
+      "taskId": "roots-486-e",
+      "answer": "2x+√(xy)-y",
+      "sourcePage": 112,
+      "reason": "2x−√xy+2√xy−y=2x+√xy−y."
+    },
+    {
+      "taskId": "roots-486-f",
+      "answer": "3a-√(ab)-2b",
+      "sourcePage": 112,
+      "reason": "3a+2√ab−3√ab−2b=3a−√ab−2b.",
+      "rejects": [
+        "3a-7√(ab)-6b"
+      ]
+    },
+    {
+      "taskId": "roots-486-g",
+      "answer": "6a-√(ab)-2b",
+      "sourcePage": 112,
+      "reason": "6a−4√ab+3√ab−2b=6a−√ab−2b."
+    },
+    {
+      "taskId": "roots-486-h",
+      "answer": "6x-5x√2",
+      "sourcePage": 112,
+      "reason": "4x−4x√2−x√2+2x=6x−5x√2."
+    },
+    {
+      "taskId": "roots-487-a",
+      "answer": "1-x√x",
+      "sourcePage": 112,
+      "reason": "Use (1−t)(1+t+t²)=1−t³ for t=√x."
+    },
+    {
+      "taskId": "roots-487-b",
+      "answer": "a√a+8",
+      "sourcePage": 112,
+      "reason": "Use (t+2)(t²−2t+4)=t³+8 for t=√a."
+    },
+    {
+      "taskId": "roots-487-c",
+      "answer": "m√m-n√n",
+      "sourcePage": 112,
+      "reason": "Use (u−v)(u²+uv+v²)=u³−v³ for u=√m,v=√n."
+    },
+    {
+      "taskId": "roots-487-d",
+      "answer": "x³+y√y",
+      "sourcePage": 112,
+      "reason": "Use (x+t)(x²−xt+t²)=x³+t³ for t=√y."
+    },
+    {
+      "taskId": "roots-488-a",
+      "answer": "(√(x-1)-2)²",
+      "sourcePage": 112,
+      "reason": "Put t=√(x−1); x+3=t²+4, giving (t−2)²."
+    },
+    {
+      "taskId": "roots-488-b",
+      "answer": "(√(y+2)+1)²",
+      "sourcePage": 112,
+      "reason": "Put t=√(y+2); y+3=t²+1, giving (t+1)²."
+    },
+    {
+      "taskId": "roots-489-a",
+      "answer": "6;4;>0",
+      "sourcePage": 112,
+      "reason": "(2+√2)²=6+4√2 and 2+√2>0."
+    },
+    {
+      "taskId": "roots-489-b",
+      "answer": "19;8;>0",
+      "sourcePage": 112,
+      "reason": "(√3+4)²=19+8√3 and √3+4>0."
+    },
+    {
+      "taskId": "roots-490-a",
+      "answer": "2√5",
+      "sourcePage": 112,
+      "reason": "(1+√5)²−6=2√5."
+    },
+    {
+      "taskId": "roots-490-b",
+      "answer": "-6",
+      "sourcePage": 112,
+      "reason": "x²−6x=(x−3)²−9=3−9=−6."
+    },
+    {
+      "taskId": "roots-490-c",
+      "answer": "2",
+      "sourcePage": 112,
+      "reason": "x²−4x+3=(x−2)²−1=3−1=2."
+    },
+    {
+      "taskId": "roots-490-d",
+      "answer": "13/4",
+      "sourcePage": 112,
+      "reason": "x²−3x+5=(x−3/2)²+11/4=1/2+11/4=13/4."
+    },
+    {
+      "taskId": "roots-491-a",
+      "answer": "4;1",
+      "sourcePage": 112,
+      "reason": "Radicands are (2±√3)², with both 2±√3 positive. Sum 4, product 4−3=1."
+    },
+    {
+      "taskId": "roots-492-a",
+      "answer": "-10/7",
+      "sourcePage": 112,
+      "reason": "Numerator 10, denominator (3√2)²−25=−7."
+    },
+    {
+      "taskId": "roots-492-b",
+      "answer": "14/25",
+      "sourcePage": 112,
+      "reason": "Numerator 14, denominator 49−(2√6)²=25."
+    },
+    {
+      "taskId": "roots-493-a",
+      "answer": "4√30",
+      "sourcePage": 112,
+      "reason": "Difference numerator 4√30, denominator 121−120=1."
+    },
+    {
+      "taskId": "roots-493-b",
+      "answer": "30",
+      "sourcePage": 112,
+      "reason": "The source has a plus: 5·6/(9−8)=30.",
+      "rejects": [
+        "-20√2"
+      ]
+    },
+    {
+      "taskId": "roots-493-c",
+      "answer": "8",
+      "sourcePage": 112,
+      "reason": "Numerator 2(5+3)=16, denominator 5−3=2."
+    },
+    {
+      "taskId": "roots-493-d",
+      "answer": "71/25",
+      "sourcePage": 112,
+      "reason": "Numerator 2(121+21)=284, denominator 121−21=100."
+    },
+    {
+      "taskId": "roots-494-a",
+      "answer": "2",
+      "sourcePage": 112,
+      "reason": "x+y=6,xy=4; numerator (x+y)²−5xy=16, denominator 8, quotient 2."
+    },
+    {
+      "taskId": "roots-495-a",
+      "answer": "x+√(xy)+y",
+      "sourcePage": 113,
+      "reason": "Difference of cubes with u=√x,v=√y; u≠v."
+    },
+    {
+      "taskId": "roots-495-b",
+      "answer": "√2-√x",
+      "sourcePage": 113,
+      "reason": "Numerator (√2)³−(√x)³ divided by 2+√(2x)+x."
+    },
+    {
+      "taskId": "roots-496-a",
+      "answer": "1/(a-√(ab)+b)",
+      "sourcePage": 113,
+      "reason": "Sum of cubes in denominator factors as (√a+√b)(a−√ab+b)."
+    },
+    {
+      "taskId": "roots-496-b",
+      "answer": "1/(√a+√3)",
+      "sourcePage": 113,
+      "reason": "Denominator (√a)³+(√3)³ factors with the quadratic numerator."
+    },
+    {
+      "taskId": "roots-497-a",
+      "answer": "√2",
+      "sourcePage": 113,
+      "reason": "Numerator is √2 times denominator."
+    },
+    {
+      "taskId": "roots-497-b",
+      "answer": "√10/2",
+      "sourcePage": 113,
+      "reason": "Cancel √3−√5, leaving √5/√2=√10/2."
+    },
+    {
+      "taskId": "roots-497-c",
+      "answer": "√6/2",
+      "sourcePage": 113,
+      "reason": "Cancel 3√3−2, leaving √3/√2=√6/2."
+    },
+    {
+      "taskId": "roots-497-d",
+      "answer": "√3",
+      "sourcePage": 113,
+      "reason": "Multiplying denominator by √3 reproduces numerator."
+    },
+    {
+      "taskId": "roots-498-a",
+      "answer": "√10/2",
+      "sourcePage": 113,
+      "reason": "(√10/2)(4−√10)=2√10−5."
+    },
+    {
+      "taskId": "roots-498-b",
+      "answer": "√10-√3-1",
+      "sourcePage": 113,
+      "reason": "Let u=√10−1; (u²−3)/(u+√3)=u−√3."
+    },
+    {
+      "taskId": "roots-499-a",
+      "answer": "(a+√a)/a",
+      "sourcePage": 113,
+      "reason": "Multiply by √a/√a at a>0."
+    },
+    {
+      "taskId": "roots-499-b",
+      "answer": "(√x-√a)/a",
+      "sourcePage": 113,
+      "reason": "Factor √x in numerator; cancel it at x>0, a>0."
+    },
+    {
+      "taskId": "roots-499-c",
+      "answer": "(2-√3)/5",
+      "sourcePage": 113,
+      "reason": "Multiplying by √3 gives (6−3√3)/15."
+    },
+    {
+      "taskId": "roots-500-a",
+      "answer": "(√y+b)/b",
+      "sourcePage": 113,
+      "reason": "Cancel √y from numerator and denominator at y>0,b≠0."
+    },
+    {
+      "taskId": "roots-500-b",
+      "answer": "√a+√b",
+      "sourcePage": 113,
+      "reason": "Each term cancels √ab: a√b/√ab=√a and b√a/√ab=√b."
+    },
+    {
+      "taskId": "roots-500-c",
+      "answer": "(√2-3)/4",
+      "sourcePage": 113,
+      "reason": "Multiply numerator and denominator by √2 and simplify by 2."
+    },
+    {
+      "taskId": "roots-501-a",
+      "answer": "(x√x+y√y)/(x-y)",
+      "sourcePage": 113,
+      "reason": "(u²−uv+v²)(u+v)=u³+v³; x≠y."
+    },
+    {
+      "taskId": "roots-501-b",
+      "answer": "(27-a√a)/(9-a)",
+      "sourcePage": 113,
+      "reason": "Multiply by 3−√a: numerator 27−a√a, denominator 9−a; a=9 separate."
+    },
+    {
+      "taskId": "roots-501-c",
+      "answer": "(1+8x√x)/(1-4x)",
+      "sourcePage": 113,
+      "reason": "Multiply by 1+2√x: numerator 1+(2√x)³, denominator 1−4x."
+    },
+    {
+      "taskId": "roots-501-d",
+      "answer": "(a³b√b-8)/(a²b-4)",
+      "sourcePage": 113,
+      "reason": "Put t=a√b. (t²+2t+4)(t−2)=t³−8; t=2 separate, t=−2 originally excluded."
+    },
+    {
+      "taskId": "roots-501-b-special",
+      "answer": "9/2",
+      "sourcePage": 113,
+      "reason": "At a=9 the original quotient is 27/6=9/2; the conjugate formula would produce 0/0.",
+      "rejects": [
+        "0",
+        "нет"
+      ]
+    },
+    {
+      "taskId": "roots-501-d-special",
+      "answer": "3",
+      "sourcePage": 113,
+      "reason": "At t=a√b=2 the original quotient is (4+4+4)/(2+2)=3.",
+      "rejects": [
+        "0",
+        "нет"
+      ]
+    },
+    {
+      "taskId": "roots-502-a",
+      "answer": "(x-y)/(x+√(xy))",
+      "sourcePage": 113,
+      "reason": "Multiply by √x+√y; numerator x−y, denominator x+√xy, positive for x>0."
+    },
+    {
+      "taskId": "roots-502-b",
+      "answer": "(a²-b)/(a²√b-ab)",
+      "sourcePage": 113,
+      "reason": "Multiply by a−√b; numerator a²−b, denominator a²√b−ab; a=√b separate."
+    },
+    {
+      "taskId": "roots-502-c",
+      "answer": "(49-a)/(343+a√a)",
+      "sourcePage": 113,
+      "reason": "Multiply by 7+√a; denominator is sum of cubes 343+a√a, positive at a≥0."
+    },
+    {
+      "taskId": "roots-502-d",
+      "answer": "(mn-1)/(mn√(mn)-1)",
+      "sourcePage": 113,
+      "reason": "Put t=√mn≥0. Multiply by t−1; denominator (t²+t+1)(t−1)=t³−1; t=1 separate."
+    },
+    {
+      "taskId": "roots-502-b-special",
+      "answer": "2/a",
+      "sourcePage": 113,
+      "reason": "At a=√b>0, the original quotient is 2a/a²=2/a."
+    },
+    {
+      "taskId": "roots-502-d-special",
+      "answer": "2/3",
+      "sourcePage": 113,
+      "reason": "At mn=1 the original numerator is 2 and denominator 3.",
+      "rejects": [
+        "0",
+        "нет"
+      ]
+    },
+    {
+      "taskId": "roots-503-a",
+      "answer": "(2+√2-√6)/4",
+      "sourcePage": 114,
+      "reason": "Source denominator is 1+√2+√3. Conjugate 1+√2−√3 makes denominator 2√2, then rationalize √2."
+    },
+    {
+      "taskId": "roots-503-b",
+      "answer": "(√5-3√3+2√15+4)/22",
+      "sourcePage": 114,
+      "reason": "Source denominator is 2+√5−√3. Multiply by 2+√5+√3, then by 3−2√5; final denominator −22 and numerator −4−√5+3√3−2√15."
+    },
+    {
+      "taskId": "roots-504-a",
+      "answer": "0",
+      "sourcePage": 114,
+      "reason": "On x≥0,x≠2, expression=1/(√x+√2), strictly decreasing; minimum denominator occurs at x=0. Maximum value √2/2.",
+      "rejects": [
+        "2"
+      ]
+    },
+    {
+      "taskId": "roots-505-a",
+      "answer": "-√10",
+      "sourcePage": 114,
+      "reason": "15√(2/5)=3√10 and √160=4√10."
+    },
+    {
+      "taskId": "roots-505-b",
+      "answer": "5√15",
+      "sourcePage": 114,
+      "reason": "√135=3√15,10√.6=2√15."
+    },
+    {
+      "taskId": "roots-505-c",
+      "answer": "√3",
+      "sourcePage": 114,
+      "reason": "6√(4/3)=4√3 and √27=3√3."
+    },
+    {
+      "taskId": "roots-505-d",
+      "answer": "7√6/2",
+      "sourcePage": 114,
+      "reason": ".5√24=√6 and 10√(3/8)=(5/2)√6."
+    },
+    {
+      "taskId": "roots-506-a",
+      "answer": "-1/x",
+      "sourcePage": 114,
+      "reason": "Sum of fractions 2/(x(1−y)); multiply by (y−1)/2."
+    },
+    {
+      "taskId": "roots-506-b",
+      "answer": "(a-b)√(ab)",
+      "sourcePage": 114,
+      "reason": "Difference of fractions 2√ab/(a−b); multiply by (a−b)²/2, with a≠b."
+    },
+    {
+      "taskId": "roots-507-a",
+      "answer": "7-t;t+7;14",
+      "sourcePage": 114,
+      "reason": "t=√b lies in [0,7], so |t−7|=7−t and |t+7|=t+7, summing to 14.",
+      "rejects": [
+        "t-7;t+7;2t"
+      ]
+    },
+    {
+      "taskId": "roots-508-a",
+      "answer": "0;1;2;3",
+      "sourcePage": 114,
+      "reason": "√x at 0,1,4,9."
+    },
+    {
+      "taskId": "roots-508-b",
+      "answer": "-3;-2;-1;0",
+      "sourcePage": 114,
+      "reason": "Subtract 3 from baseline ordinates."
+    },
+    {
+      "taskId": "roots-508-c",
+      "answer": "3;4;5;6",
+      "sourcePage": 114,
+      "reason": "Add 3 to baseline ordinates."
+    },
+    {
+      "taskId": "roots-508-d",
+      "answer": "0;1;2;3",
+      "sourcePage": 114,
+      "reason": "Shift x coordinates right by 3, unchanged y."
+    },
+    {
+      "taskId": "roots-508-e",
+      "answer": "0;1;2;3",
+      "sourcePage": 114,
+      "reason": "Shift x coordinates left by 3, unchanged y."
+    },
+    {
+      "taskId": "roots-509-a",
+      "answer": "-2;-1;0;1",
+      "sourcePage": 114,
+      "reason": "(x−4)/(√x+2)=√x−2 for every x≥0, including x=4; no hole there."
+    },
+    {
+      "taskId": "roots-452-a",
+      "answer": "1/1000;1/2000;1/3000;1/4000;1/5000",
+      "sourcePage": 107,
+      "reason": "Five different rational numbers strictly in (0,.002).",
+      "rejects": [
+        "0;1/2000;1/3000;1/4000;1/5000",
+        "0.002;1/2000;1/3000;1/4000;1/5000",
+        "1/1000;0.001;1/3000;1/4000;1/5000"
+      ]
+    },
+    {
+      "taskId": "roots-452-b",
+      "answer": "-1/100;-1/200;-1/300;-1/400;-1/500",
+      "sourcePage": 107,
+      "reason": "Five distinct negative rationals, all greater than −1/11.",
+      "rejects": [
+        "-1/11;-1/200;-1/300;-1/400;-1/500",
+        "0;-1/200;-1/300;-1/400;-1/500"
+      ]
+    },
+    {
+      "taskId": "roots-452-c",
+      "answer": "3/8;2/5;5/12;7/16;9/20",
+      "sourcePage": 107,
+      "reason": "Five distinct rationals strictly greater than 1/3 and below 1/2.",
+      "rejects": [
+        "1/3;2/5;5/12;7/16;9/20",
+        "3/8;2/5;5/12;7/16;1/2"
+      ]
+    },
+    {
+      "taskId": "roots-454-rational",
+      "answer": "1001/100;1009/100",
+      "sourcePage": 107,
+      "reason": "10.01 and 10.09 are strictly between 10 and 10.1.",
+      "rejects": [
+        "10;10.09",
+        "10.01;10.1",
+        "10.01;1001/100"
+      ]
+    },
+    {
+      "taskId": "roots-454-irrational",
+      "answer": "sqrt(102);sqrt(101)",
+      "sourcePage": 107,
+      "reason": "Order does not matter; both integer radicands strictly between 100 and 102.01 are nonsquares.",
+      "rejects": [
+        "√100;√102",
+        "√101;√103",
+        "√101;√101"
+      ]
+    },
+    {
+      "taskId": "roots-461-a",
+      "answer": "9/16",
+      "sourcePage": 108,
+      "reason": "Positive rational square (3/4)² gives two rational roots.",
+      "rejects": [
+        "0",
+        "-4",
+        "2"
+      ]
+    },
+    {
+      "taskId": "roots-461-b",
+      "answer": "3/8",
+      "sourcePage": 108,
+      "reason": "Reduced fraction 3/8 has nonsquare numerator and denominator, so its two square roots are irrational.",
+      "rejects": [
+        "0",
+        "-2",
+        "4/9"
+      ]
+    },
+    {
+      "taskId": "roots-461-c",
+      "answer": "-7/3",
+      "sourcePage": 108,
+      "reason": "Negative coefficient a gives no real square roots.",
+      "rejects": [
+        "0",
+        "1"
+      ]
+    }
+  ],
+  "reviewedFileSha256": "643a467f49ceb3f4ec0f287b101bec1c9c6028cf99c965a0170af08a5889d0a3",
+  "sourceSha256": "356695f0f11a489090ed72428320a6d6cc343747eec02968b716c2204caaced8",
+  "reviewedPages": [
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114
+  ],
+  "method": "Independent manual derivation from rendered source pp.105–114, followed by comparison of every final answer; additional high-resolution visual verification for ambiguous radicals/signs. Source counts explicitly enumerate compound answers and case splits. All 556 intermediate steps were read independently for mathematical correctness; eight additional open-example cases test varied valid inputs, strict bounds, duplicate values and wrong root types.",
+  "correctionsVerified": [
+    "441 requires explicit rational/irrational classification.",
+    "444 requires squared coefficients and sign instead of copying RHS.",
+    "461в grammatical duplication removed.",
+    "485 source enumeration order restored.",
+    "447/448 steps now test the intended number set.",
+    "450б accepts explicit factorization by 2.",
+    "452/454/461 accept self-chosen examples, not only a directed construction.",
+    "462 asks for the actual radicand inequality."
+  ],
+  "displayOnlyReview": {
+    "previousReviewedSha256": "70857aaddeafabd0465c555a635bec80eda5ae167ed74d265725d49386e15bcb",
+    "changedFields": 11,
+    "verification": "Reversing the eleven additions of radical parentheses in prompts/explanation reproduces the exact previous reviewed file SHA256. Answers, steps, kinds, source references and coverage are unchanged."
+  },
+  "graphDisplayReview": {
+    "previousReviewedSha256": "36a5f1d5f8e76b588dab8da1fbd018a7517130b2b536ef1f26ebc2e836389710",
+    "reviewedSourcePages": [
+      109,
+      114
+    ],
+    "changedFields": 8,
+    "changes": [
+      "roots-508-c graph.yRange: [2,7] to [-1,7], so the actual y=0 x-axis remains in view while constructing y=√x+3.",
+      "roots-508-d graph.xRange: [2,13] to [-1,13], so the actual x=0 y-axis remains in view while constructing y=√(x−3).",
+      "Six roots-468 line labels use x or −x without a redundant coefficient 1, a single sign, and exact fractional intercepts."
+    ],
+    "verification": "Independently compared the affected equations with rendered source pages 109 and 114. Reversing exactly these eight display fields reproduces the previous reviewed file bytes and SHA256. Prompts, answers, steps, IDs, coverage, curve coefficients and learner point coordinates are unchanged. Internal agent review; not an external-provider verdict."
+  }
+}
