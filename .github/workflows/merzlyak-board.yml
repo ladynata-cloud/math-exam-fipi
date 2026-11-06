@@ -38,6 +38,8 @@ jobs:
         env:
           MERZLYAK_BOARD_SHOTS: artifacts/merzlyak-board
         run: node tools/merzlyak-board.browser.cjs
+      - name: Assigned cabinet program opens a shared teacher and pupil room
+        run: node tools/merzlyak-program-room.browser.cjs
       - name: Preserve existing registry arrival and role boundaries
         run: |
           B2_SMOKE_SECTION=fail-closed node tools/trainer-registry-client-cutover-smoke.cjs
