@@ -1,0 +1,34 @@
+name: PR471 live release verification
+on:
+  push:
+    branches: ['qa/pr471-live-release-20261106']
+permissions:
+  contents: read
+jobs:
+  live-paired-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/pr471-live" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/pr471-live/node_modules" >> "$GITHUB_ENV"
+          "$RUNNER_TEMP/pr471-live/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Verify the deployed registry and two fresh anonymous participants
+        env:
+          PERCENT_SCREENSHOT_DIR: artifacts/pr471-production
+        run: |
+          node --check trainers/vilenkin6-percent/production-release.browser.cjs
+          node trainers/vilenkin6-percent/production-release.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pr471-production-evidence
+          path: artifacts/pr471-production
+          if-no-files-found: ignore
