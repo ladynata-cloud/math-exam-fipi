@@ -25,10 +25,14 @@ for (const href of ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000']) 
 }
 
 assert.match(home.title, /Тренажёры по математике.*5–11.*ОГЭ.*ЕГЭ/);
-assert.equal(home.querySelectorAll('.home-directions article').length, 6);
+assert.equal(home.querySelectorAll('.home-directions article').length, 7);
 for (const href of ['/foundations/', '/courses/', '/oge/', '/ege-baza/', '/ege-profil/', '/geometry-course/']) {
   assert(home.querySelector('.home-directions a[href="' + href + '"]'), 'General home direction: ' + href);
 }
+const vprEntries = [...home.querySelectorAll('.home-directions article')].filter(card => card.querySelector('h3 a[href="/vpr/"]'));
+assert.equal(vprEntries.length, 1, 'One VPR direction is added alongside all prior home directions');
+assert.equal(vprEntries[0].querySelector('h3').textContent.trim(), 'Подготовка к ВПР');
+assert.equal(vprEntries[0].querySelectorAll('a.go[href="/vpr/"]').length, 1);
 assert(home.querySelector('.hero a[href="/trainers/"]'), 'General home opens the catalog');
 assert.equal(home.querySelectorAll('script[src*="oge-home"], script[src*="three.min.js"]').length, 0);
 assert.equal(oge.querySelector('link[rel="canonical"]').href, 'https://mathexam.space/oge/');

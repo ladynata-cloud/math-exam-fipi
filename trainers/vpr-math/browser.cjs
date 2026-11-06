@@ -166,6 +166,13 @@ async function layout(page, label, illustration = false) {
     await a.locator('.step.current [data-answer]').fill('17/');
     await a.locator('.notes > summary').click();
     await a.locator('#task-notes').fill('Черновик до создания комнаты');
+    // Native details dispatches its toggle in a later task. Observe that event
+    // boundary before using the pre-room snapshot as the exact restore oracle.
+    await a.waitForFunction(() => {
+      const current = getBoardTrainerState();
+      return current.panels.notes === true && current.attempt.answers[0] === '17/' &&
+        current.attempt.notes === 'Черновик до создания комнаты';
+    });
     const prepared = await state(a);
     await privateAudit(a, teacherPersonal);
     await teacher.locator('#openShare').click();
@@ -243,8 +250,8 @@ async function layout(page, label, illustration = false) {
         assert.equal(await mobile.evaluate(() => VPRApp.getView().route), route.id, 'Every public course query selects the requested route');
         await layout(mobile, route.id + ' at ' + width, !!task.svg);
       }
-      await mobile.goto(origin + URL_PATH + '?route=g6&lesson=g6-geometry&task=g6-geometry-3&mode=learn');
-      await mobile.waitForFunction(() => VPRApp.getView().task === 'g6-geometry-3');
+      await mobile.goto(origin + URL_PATH + '?route=g6&lesson=g6-geometry&task=g6-geometry-2&mode=learn');
+      await mobile.waitForFunction(() => VPRApp.getView().task === 'g6-geometry-2');
       await layout(mobile, 'symmetry at ' + width, true);
       await shot(mobile, 'vpr-' + width + 'x' + height);
       await mobile.locator('[data-action=mode][data-mode=solo]').click();
