@@ -1,0 +1,4340 @@
+{
+  "base": "6c64ac63e6bad70993ec50995d3a39976b1b0a36",
+  "dataSha256": "b5ba5311d281f9508e7884aa8a4614f2bc47f3d3da0cb0cb98344ee27559af40",
+  "storageKey": "mathexam.makarychev8.2024.v1",
+  "count": 722,
+  "records": [
+    {
+      "lesson": "p01",
+      "index": 0,
+      "id": "p01-t01",
+      "sha256": "63de7a3889e7684dc37ae902a26fd05baa2cb49a0eebfcf51bba0935a28700c4"
+    },
+    {
+      "lesson": "p01",
+      "index": 1,
+      "id": "p01-t02",
+      "sha256": "f57633b05525e6c8aad0aa4b66a18811ba8207b54eec11c449d93fe81c8f6306"
+    },
+    {
+      "lesson": "p01",
+      "index": 2,
+      "id": "p01-t03",
+      "sha256": "9f3436da145b57e4423a4354b6609c9145d962c32e0a4acb65401ffd49f03946"
+    },
+    {
+      "lesson": "p01",
+      "index": 3,
+      "id": "p01-t04",
+      "sha256": "3722684dc8954ca8efbebd22c12242a4a9b5156d577cd14df1db1bc50d47df65"
+    },
+    {
+      "lesson": "p01",
+      "index": 4,
+      "id": "p01-t05",
+      "sha256": "31fe70f37122a9af47a7119550a58106df51d31017df24b05c4cfc4660a8efe5"
+    },
+    {
+      "lesson": "p01",
+      "index": 5,
+      "id": "p01-t06",
+      "sha256": "b95e6b1377c6667a1a6d95ee3fd952dc59f194ec3933144733957fb515ce8f67"
+    },
+    {
+      "lesson": "p01",
+      "index": 6,
+      "id": "p01-ex001-1",
+      "sha256": "dcf854c4e7640e7d01cc8d33511ea4ec3f5fe914e8ccbd622485190231b44c2c"
+    },
+    {
+      "lesson": "p01",
+      "index": 7,
+      "id": "p01-ex001-2",
+      "sha256": "49ba7441b3a1ec5ad1c25061893acbc8f9567d5cc195f447c298710e46556508"
+    },
+    {
+      "lesson": "p01",
+      "index": 8,
+      "id": "p01-ex001-3",
+      "sha256": "9509d83d887cd243d9797263e0e24b479d904a92c7df6570f8847103179661a1"
+    },
+    {
+      "lesson": "p01",
+      "index": 9,
+      "id": "p01-ex001-4",
+      "sha256": "1c95f259a5bfc7fee497784efd3083f6feb005f54a071a0c42fd77c5c2b32a8c"
+    },
+    {
+      "lesson": "p01",
+      "index": 10,
+      "id": "p01-ex001-5",
+      "sha256": "c3c0b1367b5b62e07a815f421cd10a8586d2b9e3d87962af8b558ef0ac711db7"
+    },
+    {
+      "lesson": "p01",
+      "index": 11,
+      "id": "p01-ex001-6",
+      "sha256": "47c191bf3e30096f545366d2a13e08ac4e7864c0f454a53f58499a6cdc6b5da5"
+    },
+    {
+      "lesson": "p01",
+      "index": 12,
+      "id": "p01-ex002-а",
+      "sha256": "8ad290a06f4a8209adaa9ef5926bc0276ae62f741c800c234594d40a54d36693"
+    },
+    {
+      "lesson": "p01",
+      "index": 13,
+      "id": "p01-ex002-б",
+      "sha256": "73102c8266424b0d51a18b9cf81276e61c825c4cfd961727f1388f780438cacd"
+    },
+    {
+      "lesson": "p01",
+      "index": 14,
+      "id": "p01-ex003-2",
+      "sha256": "7e805857734d1eeee617b317b812af34fbdae027548f8f85155231cf71c3b90e"
+    },
+    {
+      "lesson": "p01",
+      "index": 15,
+      "id": "p01-ex003-3",
+      "sha256": "55adac9930d415be710a8717e6d8f888c5ff443c18968aabe7822c1691c88ab6"
+    },
+    {
+      "lesson": "p01",
+      "index": 16,
+      "id": "p01-ex003-4",
+      "sha256": "6c7946beb6a46bd4fb35795e7588d305b1f0231c83b488c97126576ca7c96f80"
+    },
+    {
+      "lesson": "p01",
+      "index": 17,
+      "id": "p01-ex003-5",
+      "sha256": "711422c95b5cdf46f2becd59e26ff2a6bc809c180e850f4fd269d4b5292675fc"
+    },
+    {
+      "lesson": "p01",
+      "index": 18,
+      "id": "p01-ex003-6",
+      "sha256": "eaa09543ab4c2f788848e320d4bb5ddab20aa6cba39132e5dfa81bf5d853bffb"
+    },
+    {
+      "lesson": "p01",
+      "index": 19,
+      "id": "p01-ex004-б",
+      "sha256": "3ef7d22b85b2f142348c06541edaaad360ab5fc9bea9a23db68289c08e2f7c2e"
+    },
+    {
+      "lesson": "p01",
+      "index": 20,
+      "id": "p01-ex005-а",
+      "sha256": "52b0e8fa3eb5c222e1c5f3d530ca5965b78753996e3cfadd3bb5a50e2b704582"
+    },
+    {
+      "lesson": "p01",
+      "index": 21,
+      "id": "p01-ex005-б",
+      "sha256": "c022bb2e879feda2f1055fa1adebbdd8395fb872606667c9cc92bd312dd3be10"
+    },
+    {
+      "lesson": "p01",
+      "index": 22,
+      "id": "p01-ex006-1",
+      "sha256": "6d4968fe33febe3800c0dc28b4111a7378130fdcb9daf23e784370d6431ecfef"
+    },
+    {
+      "lesson": "p01",
+      "index": 23,
+      "id": "p01-ex006-2",
+      "sha256": "590e8d982188a636f844fa54abd436bbf7794b45800f0ad57410f91eb73c6b69"
+    },
+    {
+      "lesson": "p01",
+      "index": 24,
+      "id": "p01-ex006-3",
+      "sha256": "648e2d957cccd2e8c35a9d44aefe7662aa2c7fbed4cf190abb5af9164700d737"
+    },
+    {
+      "lesson": "p01",
+      "index": 25,
+      "id": "p01-ex006-4",
+      "sha256": "5de327bd39951ce2d0064dbfcef15e921e4b7bb226814f3cc02b538ea115760b"
+    },
+    {
+      "lesson": "p01",
+      "index": 26,
+      "id": "p01-ex006-5",
+      "sha256": "36a8a6e94ce5969536051c12dd766d757d9b356216bd3831adede80994325fa1"
+    },
+    {
+      "lesson": "p01",
+      "index": 27,
+      "id": "p01-ex006-6",
+      "sha256": "0a2872e301cf7e3ab6e9f37ae5e7f91d57fb85a402a796498893aefdb3fab1c8"
+    },
+    {
+      "lesson": "p01",
+      "index": 28,
+      "id": "p01-ex006-7",
+      "sha256": "fefbb5a66fe0d55ed3a311b514a262e9cf791c35304c37296fd31b23139603cb"
+    },
+    {
+      "lesson": "p01",
+      "index": 29,
+      "id": "p01-ex006-8",
+      "sha256": "07bf3e02a42350d061eb3c9e7fcaf605b379760df1609553877b2b7453ef68e9"
+    },
+    {
+      "lesson": "p01",
+      "index": 30,
+      "id": "p01-ex007-a-s",
+      "sha256": "085a16240debabb15455b6daa40777d2f642c21e34a45775c60883808e1e1acb"
+    },
+    {
+      "lesson": "p01",
+      "index": 31,
+      "id": "p01-ex007-a-t",
+      "sha256": "c0ac411dd722197124aaf9fea977c6118276fe0501a0deb3240c200ff83c00bf"
+    },
+    {
+      "lesson": "p01",
+      "index": 32,
+      "id": "p01-ex007-б",
+      "sha256": "7de8eccf1bb6be7e6086b1a5f0b33e763e01fc26b1f5a039b983687f469c6f7e"
+    },
+    {
+      "lesson": "p01",
+      "index": 33,
+      "id": "p01-ex008-formula",
+      "sha256": "efec5566ef309b34f7f7636bd863315b50cf78fb9f1dd8b25fc1e86eb3771ace"
+    },
+    {
+      "lesson": "p01",
+      "index": 34,
+      "id": "p01-ex008-а",
+      "sha256": "f3a4f14e15f907a3dc38bbbb38c2bcca4ee43978260e461756d24b33ba0248d2"
+    },
+    {
+      "lesson": "p01",
+      "index": 35,
+      "id": "p01-ex008-б",
+      "sha256": "4ed48473376faf1433eb4e9aa066293014929fc77fc8652f5c80b30ea67ab6bf"
+    },
+    {
+      "lesson": "p01",
+      "index": 36,
+      "id": "p01-ex009-а",
+      "sha256": "ee0f619fa79af28d7a7f5ce38689709d7c8e23c1171f19fcdad85c07765fc285"
+    },
+    {
+      "lesson": "p01",
+      "index": 37,
+      "id": "p01-ex009-б",
+      "sha256": "c6f986e3daf426e8c564b4c5c49e2afdf9698dc932c3f7b0584b3915bbb5de5f"
+    },
+    {
+      "lesson": "p01",
+      "index": 38,
+      "id": "p01-ex009-в",
+      "sha256": "a2b3353b24800b1b422b2392fc975c6bee15076c203c2f2f3c1393b82f7da94d"
+    },
+    {
+      "lesson": "p01",
+      "index": 39,
+      "id": "p01-ex010-а",
+      "sha256": "195bfe3df1ae9feb68c75d234a0a1a7f89f51749da20ecdd40b830116571e09c"
+    },
+    {
+      "lesson": "p01",
+      "index": 40,
+      "id": "p01-ex010-б",
+      "sha256": "b2b16631e0321621e26113633317241fd2295d53649a005e11aeca7b9b4d382d"
+    },
+    {
+      "lesson": "p01",
+      "index": 41,
+      "id": "p01-ex010-в",
+      "sha256": "c0f01c9e301f7fc6d40f1d53e0c5348fdfba9b1435d40f92b919a7b292807357"
+    },
+    {
+      "lesson": "p01",
+      "index": 42,
+      "id": "p01-ex010-г",
+      "sha256": "bfd1ccc6684f58bedda7bc7e8868ced01101bc1c6894d3dff45b15ad01ef8afb"
+    },
+    {
+      "lesson": "p01",
+      "index": 43,
+      "id": "p01-ex011-а",
+      "sha256": "3059b6c8b52248b2f0c957d131c7fe403dfe39d6664dee260af7681315cf3af9"
+    },
+    {
+      "lesson": "p01",
+      "index": 44,
+      "id": "p01-ex011-б",
+      "sha256": "4d432bc0f76baecbffd871500b28e2e0cb65b63b4a9395f6d50010735cdfefab"
+    },
+    {
+      "lesson": "p01",
+      "index": 45,
+      "id": "p01-ex011-в",
+      "sha256": "aba601a370bf722580ae2449a83035a7594cb16f002cfddf7cfa0cfcdfc7b0d2"
+    },
+    {
+      "lesson": "p01",
+      "index": 46,
+      "id": "p01-ex011-г",
+      "sha256": "bc6de7ee60787dd4c4e6601d5cff5f28f44390427f1a98c6f0dbfee28859733e"
+    },
+    {
+      "lesson": "p01",
+      "index": 47,
+      "id": "p01-ex011-д",
+      "sha256": "55b1eb0e0f37aa551e6e8cd12e2957578ebc591a0426dc529e20912cb27d78f9"
+    },
+    {
+      "lesson": "p01",
+      "index": 48,
+      "id": "p01-ex011-е",
+      "sha256": "91999fc21ccbb898fee7deba1aeec7ffeff607d70eb48606f83718c6792a8e76"
+    },
+    {
+      "lesson": "p01",
+      "index": 49,
+      "id": "p01-ex012-а",
+      "sha256": "a50567f22039e41fd3a76599cb337e79981fc9ca70f4022b931202cf89f101d0"
+    },
+    {
+      "lesson": "p01",
+      "index": 50,
+      "id": "p01-ex012-б",
+      "sha256": "9314aca6f03501e32c886972b8f83ac81d3e9356255ecb2cc282100bd4565ae6"
+    },
+    {
+      "lesson": "p01",
+      "index": 51,
+      "id": "p01-ex012-в",
+      "sha256": "fab8c39919fc4e949556cf3380190f9a82174430a422971e49fcfad1a8f554dc"
+    },
+    {
+      "lesson": "p01",
+      "index": 52,
+      "id": "p01-ex012-г",
+      "sha256": "29cccfef229bcc22ae2165b64cd6e07447512a7b92cfdca6c620e49bc9624e2c"
+    },
+    {
+      "lesson": "p01",
+      "index": 53,
+      "id": "p01-ex012-д",
+      "sha256": "e39c8b06ce46d74813d61f9143e27566155a34fadd2b772827028d57c2d62f83"
+    },
+    {
+      "lesson": "p01",
+      "index": 54,
+      "id": "p01-ex012-е",
+      "sha256": "dce9cad004a97640b1a2c6c9c42c1fea1f7aa64d89d9b21d88772b4e3b724892"
+    },
+    {
+      "lesson": "p01",
+      "index": 55,
+      "id": "p01-ex013-а",
+      "sha256": "932890d28fc0d9d9f4d240c99e41b8994fc74345d40bcb48103cac0ca5dd0fee"
+    },
+    {
+      "lesson": "p01",
+      "index": 56,
+      "id": "p01-ex013-б",
+      "sha256": "64729984426bf89f5ed3712d9a6355c650d59932a96c792ea31d4c6b60fd523d"
+    },
+    {
+      "lesson": "p01",
+      "index": 57,
+      "id": "p01-ex013-в",
+      "sha256": "b132d5b6c9cf9824a1d94a4374691f81d6ea498377bf5a35f88ddb2ab7c2997d"
+    },
+    {
+      "lesson": "p01",
+      "index": 58,
+      "id": "p01-ex014-а",
+      "sha256": "f2f4132265c8cce2993594ef8273b27a4b8c35781095fa0170279259f17f5267"
+    },
+    {
+      "lesson": "p01",
+      "index": 59,
+      "id": "p01-ex014-б",
+      "sha256": "4b7ec9890fc4d6ed42323036e30010479ba3cd3e8cfb351219466cb86a5753f5"
+    },
+    {
+      "lesson": "p01",
+      "index": 60,
+      "id": "p01-ex014-в",
+      "sha256": "da96890bb587f921b8b5a8435562f756a5c05eb7654225f609d4b108fe5dc28f"
+    },
+    {
+      "lesson": "p01",
+      "index": 61,
+      "id": "p01-ex014-г",
+      "sha256": "c4ef86fe225cf3352f848895604c206d76c6987840ab5481d5461f29472d4f9d"
+    },
+    {
+      "lesson": "p01",
+      "index": 62,
+      "id": "p01-ex015-а",
+      "sha256": "ec92007bc0d48663944e1df2c79265eb48a1a31752de456aab84193872d31642"
+    },
+    {
+      "lesson": "p01",
+      "index": 63,
+      "id": "p01-ex015-б",
+      "sha256": "ab448f5a6ebc16eb2daac3ca14950039a5c16e39d6cd577af34a9a9f1ce93230"
+    },
+    {
+      "lesson": "p01",
+      "index": 64,
+      "id": "p01-ex015-в",
+      "sha256": "d06e0cc772775f3cc870cc917a46579483d876d05dbbaa7eccd2627ae3d2d6f5"
+    },
+    {
+      "lesson": "p01",
+      "index": 65,
+      "id": "p01-ex015-г",
+      "sha256": "8357b7d923ab9009b9bcc5b2b7c2167ddc38a956cb02fcca9d3a6b9d67d444ae"
+    },
+    {
+      "lesson": "p01",
+      "index": 66,
+      "id": "p01-ex016-а",
+      "sha256": "9bfd198ba59ee3973f0218355e43db50f411bf324bd6a3c4ba27c27d06491cc5"
+    },
+    {
+      "lesson": "p01",
+      "index": 67,
+      "id": "p01-ex016-б",
+      "sha256": "9f119e6907fbb684352b9807cccb1debf8b691a2997e30a70344852e03670b30"
+    },
+    {
+      "lesson": "p01",
+      "index": 68,
+      "id": "p01-ex016-в",
+      "sha256": "abd950de3e7e0122c2649eaceb8b86e83119b1ce13ad3196fd6c52aedfb2d1c2"
+    },
+    {
+      "lesson": "p01",
+      "index": 69,
+      "id": "p01-ex016-г",
+      "sha256": "b79066e42e7e46397532b80ff5f614fc78e7558902aa4a644279265b686208f9"
+    },
+    {
+      "lesson": "p01",
+      "index": 70,
+      "id": "p01-ex017-а",
+      "sha256": "bd46099d19ce3ef45e7fb4ad857e081782ab8f538160052d4dbafe79cf266f3e"
+    },
+    {
+      "lesson": "p01",
+      "index": 71,
+      "id": "p01-ex017-б",
+      "sha256": "20f5c6fee1b1bb7b888acaecf5e2f1d75fedaaac6a9363a00b6c17fbca76901e"
+    },
+    {
+      "lesson": "p01",
+      "index": 72,
+      "id": "p01-ex017-в",
+      "sha256": "472e22b4d82faf559687fd66f4d64e89bdc4de1f7f834ac0e28504d03f7b50af"
+    },
+    {
+      "lesson": "p01",
+      "index": 73,
+      "id": "p01-ex017-г",
+      "sha256": "988121d9cd31c95b70d223118673aceb77c873bb37f5ed53b9dac7de520b1681"
+    },
+    {
+      "lesson": "p01",
+      "index": 74,
+      "id": "p01-ex018-а",
+      "sha256": "ad34f9231c280ba8cfd4a0b9003c5a23dbb6d09f9c3523adfae996ef6d1c4da0"
+    },
+    {
+      "lesson": "p01",
+      "index": 75,
+      "id": "p01-ex018-б",
+      "sha256": "c93fb6ac8344419e51e500d45c0738109eb29427e6416d8358c1a9b9416af186"
+    },
+    {
+      "lesson": "p01",
+      "index": 76,
+      "id": "p01-ex018-в",
+      "sha256": "b3b1866d2b2a28da871434df0ea933247a2f539dfc33fb3dd90bfcc740227be4"
+    },
+    {
+      "lesson": "p01",
+      "index": 77,
+      "id": "p01-ex018-г",
+      "sha256": "e6e660b0489a81a13cbb7bc793bca3bf2eaf72765839e6af96cc03c725f8c96f"
+    },
+    {
+      "lesson": "p01",
+      "index": 78,
+      "id": "p01-ex019-а",
+      "sha256": "714d6f8585de19883e12cb15f60e6364c1fb7c6cfb204c053b1f9841c3a425a3"
+    },
+    {
+      "lesson": "p01",
+      "index": 79,
+      "id": "p01-ex019-б",
+      "sha256": "3f4676dc870e28496ea1a9b5e7d74e12d12301270639d0c743ed8c0ae6217d5f"
+    },
+    {
+      "lesson": "p01",
+      "index": 80,
+      "id": "p01-ex020-а",
+      "sha256": "dbbad030c3b4343bbba0eacd6e9560a5684b4dcfaf475f26a5e11f81737f0df4"
+    },
+    {
+      "lesson": "p01",
+      "index": 81,
+      "id": "p01-ex020-б",
+      "sha256": "144066983917dd5a04fe3f1ae01d8e80522196d05edc43b64e5b2a31794bd0da"
+    },
+    {
+      "lesson": "p01",
+      "index": 82,
+      "id": "p01-ex021-а",
+      "sha256": "25f7553009d477bd85074fb4a6ae1a5e24be77edde473185132e645222b0a577"
+    },
+    {
+      "lesson": "p01",
+      "index": 83,
+      "id": "p01-ex021-б",
+      "sha256": "cd03d7c5924758307e50594f55724757f7d04ec4801c9114c0fbc8508954cffb"
+    },
+    {
+      "lesson": "p01",
+      "index": 84,
+      "id": "p01-ex021-в",
+      "sha256": "4cae38dcec3356292b36229686bd926cf2a82d059c754c9ebce35d7599dfdf14"
+    },
+    {
+      "lesson": "p01",
+      "index": 85,
+      "id": "p01-ex022-а",
+      "sha256": "81f1f2f72e493b4050362ed383da8358f0bffa8cfb80841307807f1f97beb0a7"
+    },
+    {
+      "lesson": "p01",
+      "index": 86,
+      "id": "p01-ex022-б",
+      "sha256": "396edc8b77edbebbb3180fcb6ced3e11a8c704b44e3ac3982be0d7c9edd03d4b"
+    },
+    {
+      "lesson": "p01",
+      "index": 87,
+      "id": "p01-ex022-в",
+      "sha256": "0ab83ddc36d281c1c4b78df0b193dd96ed3b75b318bb05febb1d2342a1ba1302"
+    },
+    {
+      "lesson": "p01",
+      "index": 88,
+      "id": "p01-ex022-г",
+      "sha256": "70495920741d69e979644bfa53cd71cb9a798e5b35dad3b4fed5de7e0531da11"
+    },
+    {
+      "lesson": "p01",
+      "index": 89,
+      "id": "p01-ex022-д",
+      "sha256": "f56fd723b958e5960f824ea1361cb32f6f611c0f1594e825b0ac7f98edfeadd2"
+    },
+    {
+      "lesson": "p01",
+      "index": 90,
+      "id": "p01-ex022-е",
+      "sha256": "559d9ab88114e6d7b9de66eb3a0099ffa58c37f16a02ecd00ff71eb4204b7d39"
+    },
+    {
+      "lesson": "p01",
+      "index": 91,
+      "id": "p01-ex023-а",
+      "sha256": "1f0ec1626ea7283a3f68b96c66f1573e5d576f5bf5f24b13e4f744f00ae129ef"
+    },
+    {
+      "lesson": "p01",
+      "index": 92,
+      "id": "p01-ex023-б",
+      "sha256": "81d778cba8d7d44163eae0526912e1a36b791800dd8fb885592ea3d0b480508b"
+    },
+    {
+      "lesson": "p01",
+      "index": 93,
+      "id": "p01-ex023-в",
+      "sha256": "486ff16b0952c220e8f433f46eafe2f8fe2a1d4c7ba94724bcc8f4fff0d8522b"
+    },
+    {
+      "lesson": "p01",
+      "index": 94,
+      "id": "p01-ex023-г",
+      "sha256": "500b1f174499023480fb8d71bf781d8e4119087acac583739c3425f3418ed1e4"
+    },
+    {
+      "lesson": "p01",
+      "index": 95,
+      "id": "p01-ex023-д",
+      "sha256": "0d752f780d183803fee4a6918c1154ae5c564b4e7b9e91ce63be8ac1af66f53b"
+    },
+    {
+      "lesson": "p01",
+      "index": 96,
+      "id": "p01-ex023-е",
+      "sha256": "3fa0991ad28d08db22a801564d08ddd2a9c3c0c6f7a98d750c1a489288bab3b7"
+    },
+    {
+      "lesson": "p01",
+      "index": 97,
+      "id": "p01-ex024-store",
+      "sha256": "f68da20ce01a5482af481050d805b9e61ee8b6f28500ea3fc6bd07d40755d575"
+    },
+    {
+      "lesson": "p01",
+      "index": 98,
+      "id": "p01-ex024-saving",
+      "sha256": "5ba85d3145114bc7c9e8f51179c7fd082f7c066a01bc9ef7fc33ef2fdf2a05e1"
+    },
+    {
+      "lesson": "p02",
+      "index": 0,
+      "id": "p02-t01",
+      "sha256": "91e23bd7bcdcd6dfcea9a84be95ae1b1f638f8249b7339436d67c1fc073953e1"
+    },
+    {
+      "lesson": "p02",
+      "index": 1,
+      "id": "p02-t02",
+      "sha256": "cc6d8b2f080ca702ad949cfd54da1ea4bb9303d945ba9c71b6aad29c908d2ecc"
+    },
+    {
+      "lesson": "p02",
+      "index": 2,
+      "id": "p02-t03",
+      "sha256": "eff9e668635f8bb46211413a84949f49816cf5ae5608491e25fcbddd643facea"
+    },
+    {
+      "lesson": "p02",
+      "index": 3,
+      "id": "p02-t04",
+      "sha256": "ad8b8138d252b94f91fdbd9eeb38fe7146ced365b9c70f1b1b41e976c1729d16"
+    },
+    {
+      "lesson": "p02",
+      "index": 4,
+      "id": "p02-t05",
+      "sha256": "fd2166fa710b57b2ccb87804ce99d6c842d7569fedfba4850c43772f6ede74ef"
+    },
+    {
+      "lesson": "p02",
+      "index": 5,
+      "id": "p02-t06",
+      "sha256": "170a3a947cb8b2ed4d55405fb8b3ecf8d0988ceb2dfb053654aebe29c6c2d7b2"
+    },
+    {
+      "lesson": "p02",
+      "index": 6,
+      "id": "p02-ex025-б",
+      "sha256": "5f261a8459f9a7dff2f223fae17c3eef3f913a985adc16428a618458b57a6660"
+    },
+    {
+      "lesson": "p02",
+      "index": 7,
+      "id": "p02-ex025-в",
+      "sha256": "e62f4b001d0298938eda90b1bfc83149d3476c930d3e271d49f3e98f181e3734"
+    },
+    {
+      "lesson": "p02",
+      "index": 8,
+      "id": "p02-ex025-г",
+      "sha256": "e38c933bd6e6b0b6af6534978d4c3dfacc17d54ad4c081426e5623cdd36bb41b"
+    },
+    {
+      "lesson": "p02",
+      "index": 9,
+      "id": "p02-ex025-д",
+      "sha256": "5c3693ea7b0d02ea935343274eb9a5c2699d651f815eb8505228c40c0cc974ef"
+    },
+    {
+      "lesson": "p02",
+      "index": 10,
+      "id": "p02-ex025-е",
+      "sha256": "74ec271015c6153029fd63d16453e534b93d53af74e7908cd5c157ae43a54a3e"
+    },
+    {
+      "lesson": "p02",
+      "index": 11,
+      "id": "p02-ex026-а",
+      "sha256": "30d5e7b41db49282a658c395313dc2723b8bf5ea4f5208d01fa2749b60dbda44"
+    },
+    {
+      "lesson": "p02",
+      "index": 12,
+      "id": "p02-ex026-б",
+      "sha256": "c81eaf968243a6886c28adf82455fb4669bc6935e53fb6cc82f4d3bf07bec564"
+    },
+    {
+      "lesson": "p02",
+      "index": 13,
+      "id": "p02-ex026-в",
+      "sha256": "75eeab372c9ad74cced9a84e5c10bed2e7ff146375c2bb55217928b905e18811"
+    },
+    {
+      "lesson": "p02",
+      "index": 14,
+      "id": "p02-ex026-г",
+      "sha256": "05ad960009281bdd7d9adb19a749a6e0c8bae1da9445f2790cfc21cab6c381f0"
+    },
+    {
+      "lesson": "p02",
+      "index": 15,
+      "id": "p02-ex026-д",
+      "sha256": "0784820515c12f4cce69281cdd70954993e633df668e8fccc87b6213f80aedf9"
+    },
+    {
+      "lesson": "p02",
+      "index": 16,
+      "id": "p02-ex026-е",
+      "sha256": "42794733d8999304c6ee46ae7aa3e40d8392636873cec3c7bf55cf8deb68ee9b"
+    },
+    {
+      "lesson": "p02",
+      "index": 17,
+      "id": "p02-ex027-а",
+      "sha256": "6a277f2e2209acc998ce8772c5706f57350ee01b764a5fcd9c0d26505f18ffff"
+    },
+    {
+      "lesson": "p02",
+      "index": 18,
+      "id": "p02-ex027-б",
+      "sha256": "e319b72b4258896198c225e6d856f73525a55864609589b9c948220ddf05565b"
+    },
+    {
+      "lesson": "p02",
+      "index": 19,
+      "id": "p02-ex027-в",
+      "sha256": "3573f20d766ffc1a8394abf057f999a8bd1ec5adc5ff443114b93b76c9e58e4e"
+    },
+    {
+      "lesson": "p02",
+      "index": 20,
+      "id": "p02-ex027-г",
+      "sha256": "afc340ec8a43b8002a33833d4119964fec40e72ea3fa54dd9a6c5455094cec1c"
+    },
+    {
+      "lesson": "p02",
+      "index": 21,
+      "id": "p02-ex027-д",
+      "sha256": "90c4b845247c44c43dea59621ab9661ee5d7cd41c9883cb2d133748720f05769"
+    },
+    {
+      "lesson": "p02",
+      "index": 22,
+      "id": "p02-ex027-е",
+      "sha256": "aaac434a42beca67d4c9e9e8ea30489e9443e44c1477ba008df50cbd19e71817"
+    },
+    {
+      "lesson": "p02",
+      "index": 23,
+      "id": "p02-ex028-а",
+      "sha256": "6b57675b3adb583cf86d265d9a37b522f6582e68dfd4b58ca412dc5edb0436d8"
+    },
+    {
+      "lesson": "p02",
+      "index": 24,
+      "id": "p02-ex028-б",
+      "sha256": "700ee39affbbdf0a7211d900101311886fde72755d0641afbba4bc1f9a2cb8ce"
+    },
+    {
+      "lesson": "p02",
+      "index": 25,
+      "id": "p02-ex028-в",
+      "sha256": "bef4b126bcb512f7fdf3e389d51aaede66840efc468b75b4a518f1f5c43ee48c"
+    },
+    {
+      "lesson": "p02",
+      "index": 26,
+      "id": "p02-ex028-г",
+      "sha256": "dfbe91feb5e7b25c35d9ee70adbd28abf70bf5039c8563add9eb5b68b48b4b19"
+    },
+    {
+      "lesson": "p02",
+      "index": 27,
+      "id": "p02-ex029-а",
+      "sha256": "58350a20c6a9cf61bab7ee71d9654a5dca80bf700e8f7836d4a585c001fe9b81"
+    },
+    {
+      "lesson": "p02",
+      "index": 28,
+      "id": "p02-ex029-б",
+      "sha256": "a4752f5e230e6a8513ee9b5426e2c61b63463dc3a6623d473a7bcdc8a66bf74f"
+    },
+    {
+      "lesson": "p02",
+      "index": 29,
+      "id": "p02-ex030-а",
+      "sha256": "3097b385f9a7dedbb6de5f45bc155ca13b9e4ba0b3bd99c2b3c25fb34ec1364a"
+    },
+    {
+      "lesson": "p02",
+      "index": 30,
+      "id": "p02-ex030-б",
+      "sha256": "d59c0f93d10ab570f4f1422e4c9ddfc3ce8cd1c32ded9a9444f27014b7824b82"
+    },
+    {
+      "lesson": "p02",
+      "index": 31,
+      "id": "p02-ex030-в",
+      "sha256": "07420a70e81a03706d1a53baec81c04b83b64ccc6cba72ddc44ab02239176a2b"
+    },
+    {
+      "lesson": "p02",
+      "index": 32,
+      "id": "p02-ex030-г",
+      "sha256": "a5770ea8f046f65c7ada33a224f5e8daeecb75d74d60f2ab9baf42b6ea7cf4e7"
+    },
+    {
+      "lesson": "p02",
+      "index": 33,
+      "id": "p02-ex031-а",
+      "sha256": "07b8e4cbc9f42a01cad4b88926055d9249ba01f051248ddae8dfeb39ffee7970"
+    },
+    {
+      "lesson": "p02",
+      "index": 34,
+      "id": "p02-ex031-б",
+      "sha256": "853fa28b0aac058019864dfc2371038826a5ffef7366d5b1654addcbd5d70e51"
+    },
+    {
+      "lesson": "p02",
+      "index": 35,
+      "id": "p02-ex031-г",
+      "sha256": "c87ecb6ebc9d16376a7aa8e8b3fd4e1f49d184db4f8b3be4a4d7ce3330e53ae8"
+    },
+    {
+      "lesson": "p02",
+      "index": 36,
+      "id": "p02-ex031-д",
+      "sha256": "33ecfeb057e0a9c3e31317ead7ada48f1241b2168dc1c4150de6f9757e51ff1b"
+    },
+    {
+      "lesson": "p02",
+      "index": 37,
+      "id": "p02-ex031-е",
+      "sha256": "55e8a3508eefb85f884f33fadd8aad9b6c55b3f30a570881a26cf152ef939dc9"
+    },
+    {
+      "lesson": "p02",
+      "index": 38,
+      "id": "p02-ex032-а",
+      "sha256": "71b004391978d063b12f78c517c8feb75fa88ea117fbd5378eddb9a3524873ca"
+    },
+    {
+      "lesson": "p02",
+      "index": 39,
+      "id": "p02-ex032-б",
+      "sha256": "0181161186ca1072dea07e0abd76e1ca29e5aed45e81d71a6ab99b22d7818a26"
+    },
+    {
+      "lesson": "p02",
+      "index": 40,
+      "id": "p02-ex032-в",
+      "sha256": "2b2fece1eec1c461138d61721df47a9dec69d78576723fcfde825b0542af59c5"
+    },
+    {
+      "lesson": "p02",
+      "index": 41,
+      "id": "p02-ex032-г",
+      "sha256": "fde63f8ed11a8bea13bf4597148be41cd58a41ec05a6b891bae7b5a1712dc01f"
+    },
+    {
+      "lesson": "p02",
+      "index": 42,
+      "id": "p02-ex032-д",
+      "sha256": "94e19dff35486054a0429d1c55e7fdc5660257f5684b831f3402a28922ff786b"
+    },
+    {
+      "lesson": "p02",
+      "index": 43,
+      "id": "p02-ex032-е",
+      "sha256": "78b530d978e4c41d654c6390cef5215dca38ea6b94d57b550b480d89832093b7"
+    },
+    {
+      "lesson": "p02",
+      "index": 44,
+      "id": "p02-ex033-а",
+      "sha256": "2ee804e57267febb780e9816d4befcad7c835e1f95502e1d4c22051aae65040f"
+    },
+    {
+      "lesson": "p02",
+      "index": 45,
+      "id": "p02-ex033-б",
+      "sha256": "083075ad21aa2c63107f39823d9dabd30c5bc3f3b6eb8611a179e69aecb9a77e"
+    },
+    {
+      "lesson": "p02",
+      "index": 46,
+      "id": "p02-ex033-в",
+      "sha256": "bc375a9a1a8d681f6237cdb2783447d18065cc55c0ebeb916eb47afd0586a49d"
+    },
+    {
+      "lesson": "p02",
+      "index": 47,
+      "id": "p02-ex033-г",
+      "sha256": "93767fc132e84fef262d1343fa4f68c21bf00e209ded99802f6850ae2e004930"
+    },
+    {
+      "lesson": "p02",
+      "index": 48,
+      "id": "p02-ex034-а",
+      "sha256": "c3b0ec913324bb1efe81b27cf6ebed32e4f0a30a810ee1a968ba25fc80efd826"
+    },
+    {
+      "lesson": "p02",
+      "index": 49,
+      "id": "p02-ex034-б",
+      "sha256": "d169b995e03b7f6c3d364ab6640cdaf699fd28cbfa18dd0647bd3a0296236c5a"
+    },
+    {
+      "lesson": "p02",
+      "index": 50,
+      "id": "p02-ex034-в",
+      "sha256": "36c9e3db47ac59ae45ad258d26851dcc4d751660f251de3c920608f05e82aee3"
+    },
+    {
+      "lesson": "p02",
+      "index": 51,
+      "id": "p02-ex034-г",
+      "sha256": "7930989bba281cae30bfbfa9193ed35fa7272239dacac7dc142c75eb2916ffaf"
+    },
+    {
+      "lesson": "p02",
+      "index": 52,
+      "id": "p02-ex035-а",
+      "sha256": "4bec0d4adccac3bb31d2e64e03a1b957e656b41844fb9ac554172c8276799e61"
+    },
+    {
+      "lesson": "p02",
+      "index": 53,
+      "id": "p02-ex035-б",
+      "sha256": "a181ab7034b6ef10d96efefa17ddbf3715ad2259c6ffad6e8549b8348d34b64a"
+    },
+    {
+      "lesson": "p02",
+      "index": 54,
+      "id": "p02-ex035-в",
+      "sha256": "846ae51e9b537ae1b94b520b30f48c9f4a4300c1584e5f753318c8f8e008478e"
+    },
+    {
+      "lesson": "p02",
+      "index": 55,
+      "id": "p02-ex035-г",
+      "sha256": "6e03959a4ada0b5fd54ed654a2efccfcd9c1a4909a0d3f05f62f5c43248fe282"
+    },
+    {
+      "lesson": "p02",
+      "index": 56,
+      "id": "p02-ex036-а",
+      "sha256": "28fbb11d9fcfafe57f1e7a82122519ec0e5b630aa291333817cb71bdbdfb3db9"
+    },
+    {
+      "lesson": "p02",
+      "index": 57,
+      "id": "p02-ex036-б",
+      "sha256": "73f5e4bb105dcf9a24c361e593ef2d6023c7258a6939504ef3940b44512751ad"
+    },
+    {
+      "lesson": "p02",
+      "index": 58,
+      "id": "p02-ex036-в",
+      "sha256": "742d238c1ab6229f93a14658c23525242545fa3d7f9a1ce6936023b3d4bc9202"
+    },
+    {
+      "lesson": "p02",
+      "index": 59,
+      "id": "p02-ex036-г",
+      "sha256": "887dc98732f38707aa0a66fa5031c5d4ea969d410790e822e2f7b00f443cb38b"
+    },
+    {
+      "lesson": "p02",
+      "index": 60,
+      "id": "p02-ex037-а",
+      "sha256": "2446bb18c5e3d4011142dcbe391a0d0b70e512393b09587d9392f99be66738c0"
+    },
+    {
+      "lesson": "p02",
+      "index": 61,
+      "id": "p02-ex037-б",
+      "sha256": "e7f52fbc6ab4f3564e19014c8b0ed4ac996248153654f6dba55b2fbe4865a6f9"
+    },
+    {
+      "lesson": "p02",
+      "index": 62,
+      "id": "p02-ex037-в",
+      "sha256": "5cb13dbd83390af1bf2ea86f4533405c06035e4d93ffd9ed39e28ed6e508cf7b"
+    },
+    {
+      "lesson": "p02",
+      "index": 63,
+      "id": "p02-ex037-г",
+      "sha256": "5a04647e36a684ea3aa01024348736227c755aa96f52c80664cadd6b5d74d7f1"
+    },
+    {
+      "lesson": "p02",
+      "index": 64,
+      "id": "p02-ex038-а",
+      "sha256": "221543356c77240fd7264ad6e9749013a5fef205ce308b555ce7fd95a7936ed0"
+    },
+    {
+      "lesson": "p02",
+      "index": 65,
+      "id": "p02-ex038-б",
+      "sha256": "330fbbe9aa52f1c660318f2e10851cb17a5750647776f84549a21ff11d90ba59"
+    },
+    {
+      "lesson": "p02",
+      "index": 66,
+      "id": "p02-ex039-а",
+      "sha256": "81e8a433ac86017a52a0b926483c43a753a04a183bbd29c7b7708994211eaaeb"
+    },
+    {
+      "lesson": "p02",
+      "index": 67,
+      "id": "p02-ex039-б",
+      "sha256": "5bdb233b12927565057f9c7d2fb18b5ee1be373df773352e76f30f2078e7860d"
+    },
+    {
+      "lesson": "p02",
+      "index": 68,
+      "id": "p02-ex040-а",
+      "sha256": "654bf6f0a49f293cd7588232fbb777b23db43c34e14a5123d2ce74dc4b95c5c9"
+    },
+    {
+      "lesson": "p02",
+      "index": 69,
+      "id": "p02-ex040-б",
+      "sha256": "400cc2e24bb5b0c2be3f1489ed3eb996859e0dc379f874d7aa4e21d0bbf5d01f"
+    },
+    {
+      "lesson": "p02",
+      "index": 70,
+      "id": "p02-ex040-в",
+      "sha256": "1c63bc96cd7beaa0ee802412c7272fe3939eeae8b17b448237eb21b4f8319fc2"
+    },
+    {
+      "lesson": "p02",
+      "index": 71,
+      "id": "p02-ex040-г",
+      "sha256": "10c60ce9f4c6895f70cd6749b24ed9c11789bda2da7c5d324bfc92737914d285"
+    },
+    {
+      "lesson": "p02",
+      "index": 72,
+      "id": "p02-ex040-д",
+      "sha256": "707030a6d66b9f023b6cd6cf950b07da1ff1e2128c5d0ea704e2c4f2613ae6c4"
+    },
+    {
+      "lesson": "p02",
+      "index": 73,
+      "id": "p02-ex040-е",
+      "sha256": "b06692abb0625bca5f289043832641689f36bbfc7386713a2535debdbaafaab5"
+    },
+    {
+      "lesson": "p02",
+      "index": 74,
+      "id": "p02-ex040-ж",
+      "sha256": "2bc811748fb7722c422bdb35e1cf4364b0e1c9b9ecc23ce4908e39fb355235d4"
+    },
+    {
+      "lesson": "p02",
+      "index": 75,
+      "id": "p02-ex040-з",
+      "sha256": "e5654fa8a5b30e40001d46f94217392f9ff659c1ab98a48a21065230df0f5f17"
+    },
+    {
+      "lesson": "p02",
+      "index": 76,
+      "id": "p02-ex041-",
+      "sha256": "5f631c3f57b4dd72250ec17af7fba3951dc74605e7a631bc7eaa48d3a18210b0"
+    },
+    {
+      "lesson": "p02",
+      "index": 77,
+      "id": "p02-ex042-а",
+      "sha256": "99b97b0b49058d16b7c4461b99dd0723b3eb6242a09e9506c5de9375e73ec7cf"
+    },
+    {
+      "lesson": "p02",
+      "index": 78,
+      "id": "p02-ex042-б",
+      "sha256": "c5c3cd9cfd7dcd7ac107a46feae17b0961d98b7948481d8ad4d79ba92bd84acb"
+    },
+    {
+      "lesson": "p02",
+      "index": 79,
+      "id": "p02-ex042-в",
+      "sha256": "46190bdc746084b0198cb5aada2d56ebc71d22bba57c5256c0784ee9243d6815"
+    },
+    {
+      "lesson": "p02",
+      "index": 80,
+      "id": "p02-ex042-г",
+      "sha256": "2e672da76ba51cca9cf7600f27cccaff3a4ea56aaa18b2379a3176b4c546313f"
+    },
+    {
+      "lesson": "p02",
+      "index": 81,
+      "id": "p02-ex042-д",
+      "sha256": "477361559d920680a11b4bbc1e79a09ca06bba5fa28d8097489f774fc9982e3b"
+    },
+    {
+      "lesson": "p02",
+      "index": 82,
+      "id": "p02-ex042-е",
+      "sha256": "c57832b627402426ef7f2e2c164db33fb4f16293eab6a9921dbefc9d21eebbcf"
+    },
+    {
+      "lesson": "p02",
+      "index": 83,
+      "id": "p02-ex042-ж",
+      "sha256": "9572d4e58663fa168de219ca2256e553c46a87c29b5159a205d3b636ad801f79"
+    },
+    {
+      "lesson": "p02",
+      "index": 84,
+      "id": "p02-ex042-з",
+      "sha256": "2ab1718c0b42cf5f7bcf865b0c5df35ba86af553bc1f2c635fd674729dbe60d1"
+    },
+    {
+      "lesson": "p02",
+      "index": 85,
+      "id": "p02-ex043-а",
+      "sha256": "4b3b734b5b39d02d10b9d77e8f60c838509f5184f5221d3b5a290c50f0eccbd7"
+    },
+    {
+      "lesson": "p02",
+      "index": 86,
+      "id": "p02-ex043-б",
+      "sha256": "3a13689a999fa022d6b694b3bc5bd7e578224baa70353682f761567e95dd3d45"
+    },
+    {
+      "lesson": "p02",
+      "index": 87,
+      "id": "p02-ex044-а",
+      "sha256": "741b4a9c42f899bf022b8bb29faee67a53cf665dff0cfc9718926b8515b5d772"
+    },
+    {
+      "lesson": "p02",
+      "index": 88,
+      "id": "p02-ex044-б",
+      "sha256": "1a38183837ec4e494edeaa5620be0d3891c5ddbfe3e380845e20895d6382842c"
+    },
+    {
+      "lesson": "p02",
+      "index": 89,
+      "id": "p02-ex044-в",
+      "sha256": "c491fd06346dfd12d4d1dd26540a93ea5b51381a3aafa88e919614e8778db575"
+    },
+    {
+      "lesson": "p02",
+      "index": 90,
+      "id": "p02-ex044-г",
+      "sha256": "90ddda05897cee53a97f2e889210a1d3a4d92f2bd66c99a0467be8f9f20be8fb"
+    },
+    {
+      "lesson": "p02",
+      "index": 91,
+      "id": "p02-ex045-а",
+      "sha256": "fe979557f4202106e9a070c01f00fdbcd0887e0b13e82c77098f0e72c206aaa5"
+    },
+    {
+      "lesson": "p02",
+      "index": 92,
+      "id": "p02-ex045-б",
+      "sha256": "e50381d5c5b066cc574e5249aa1e9e2dbb7fb856ae0f619415b6c72d3ff8b517"
+    },
+    {
+      "lesson": "p02",
+      "index": 93,
+      "id": "p02-ex046-а",
+      "sha256": "cd8bc0429c19cb794591287dfbb4f7712121f5dbaedafa94593e725052940fe1"
+    },
+    {
+      "lesson": "p02",
+      "index": 94,
+      "id": "p02-ex046-б",
+      "sha256": "8e33beed7c53d2e30035e7289c9197ede6e81db8ce30255d3bbf15f7bb6296a6"
+    },
+    {
+      "lesson": "p02",
+      "index": 95,
+      "id": "p02-ex046-в",
+      "sha256": "550d277faee3c8613fa49c85ec5f1f995a37f8d6bd090de33ee1b5caa6dab5c5"
+    },
+    {
+      "lesson": "p02",
+      "index": 96,
+      "id": "p02-ex046-г",
+      "sha256": "da3806b245894bcb20a77bdb3d42d51eb4b85190423e24917c0a2768cb958d41"
+    },
+    {
+      "lesson": "p02",
+      "index": 97,
+      "id": "p02-ex047-",
+      "sha256": "be2e502f6224b98fe143bddf01121900f73d06909e8714b3e30091ece81dd32f"
+    },
+    {
+      "lesson": "p02",
+      "index": 98,
+      "id": "p02-ex048-а",
+      "sha256": "8398614d39d2ad75e13d1b6fe6717f8bf58155faa85bec631ccaa9bc27b637e1"
+    },
+    {
+      "lesson": "p02",
+      "index": 99,
+      "id": "p02-ex048-б",
+      "sha256": "ad53c0f5f99822c6ac8fa4bed587e3602bbf4c8d89fd72e7a31a40387088cfea"
+    },
+    {
+      "lesson": "p02",
+      "index": 100,
+      "id": "p02-ex049-1",
+      "sha256": "d294b8c6142e46723eeb16f759f0d180667acabd5dbda06e9777c32ff5e7a4e0"
+    },
+    {
+      "lesson": "p02",
+      "index": 101,
+      "id": "p02-ex049-2",
+      "sha256": "26775771b34c779837cb99b337ac7bca60c0f9c67a04525e6d6d122a3189f206"
+    },
+    {
+      "lesson": "p02",
+      "index": 102,
+      "id": "p02-ex049-3",
+      "sha256": "59f448817f535943e88e4b2b39367fa61402069463b00bb217dadee1440d919c"
+    },
+    {
+      "lesson": "p02",
+      "index": 103,
+      "id": "p02-ex049-4",
+      "sha256": "5ed6d970c3e47b1f296fdce3da07a5f606dd519783368fed99e4ba01a8717f65"
+    },
+    {
+      "lesson": "p02",
+      "index": 104,
+      "id": "p02-ex050-а",
+      "sha256": "eb4fb4fbce36b0a54adf1dcd612bc73abac413d37e237f00bd642a4ecc3f8616"
+    },
+    {
+      "lesson": "p02",
+      "index": 105,
+      "id": "p02-ex050-б",
+      "sha256": "955f2625194cc2f6c63de322eb199f8c92a9c08e6a29e4a5a0478a8ffb6fa3bf"
+    },
+    {
+      "lesson": "p02",
+      "index": 106,
+      "id": "p02-ex050-в",
+      "sha256": "bd9aa1ac5dc1c88052932dade80f7b5940fffea313583892728a1d6faf4e95a3"
+    },
+    {
+      "lesson": "p02",
+      "index": 107,
+      "id": "p02-ex050-г",
+      "sha256": "9868d9e055781c2616890b06e0cd4bf10e87edd9b8195453eb70d255993e1b1a"
+    },
+    {
+      "lesson": "p02",
+      "index": 108,
+      "id": "p02-ex051-а",
+      "sha256": "3efe646f5f139be12278075afa9c00d2750f5df5d78fafd25dc1065d63ea83d9"
+    },
+    {
+      "lesson": "p02",
+      "index": 109,
+      "id": "p02-ex051-б",
+      "sha256": "cd2ffecb8e3ed95c07abc9151c1e7f8217c0c6f34c0c4bbffb31f13befa84310"
+    },
+    {
+      "lesson": "p02",
+      "index": 110,
+      "id": "p02-ex051-в",
+      "sha256": "f4c2691307c044bdda181bfa541d6cde8a990915ee45e7fe067a28505e795b81"
+    },
+    {
+      "lesson": "p02",
+      "index": 111,
+      "id": "p02-ex051-г",
+      "sha256": "2540d04ae34bddac68a40884408367a56b9580d78609ced038980df52e592b8b"
+    },
+    {
+      "lesson": "p02",
+      "index": 112,
+      "id": "p02-ex051-д",
+      "sha256": "fa8ae9432d6f350e9c082c3c0a95c7e21d0dc9e6166ff30fe17724ce90acd320"
+    },
+    {
+      "lesson": "p02",
+      "index": 113,
+      "id": "p02-ex052-а",
+      "sha256": "93c3bd5500858517f9b59ad1ae00dee56937fecd9f5d8196d7f3c0b54963f390"
+    },
+    {
+      "lesson": "p02",
+      "index": 114,
+      "id": "p02-ex052-б",
+      "sha256": "d386147136d96b8f2c32173b155768238c6f269fd9a9e37b1947350f87b45d26"
+    },
+    {
+      "lesson": "p02",
+      "index": 115,
+      "id": "p02-ex052-в",
+      "sha256": "b2d948d7ad70930eb997f178067084142367b0740b0c845c02687a68f036b38a"
+    },
+    {
+      "lesson": "p02",
+      "index": 116,
+      "id": "p02-ex052-г",
+      "sha256": "792e11de840708151755267a87751a0983a42df6d979baf74ea45c2d68f1f05a"
+    },
+    {
+      "lesson": "p02",
+      "index": 117,
+      "id": "p02-ex052-д",
+      "sha256": "3fe074f361ae500477b30dff112595608c5c7b276a0202db440e023342e19fe5"
+    },
+    {
+      "lesson": "p02",
+      "index": 118,
+      "id": "p02-ex052-е",
+      "sha256": "74ffae40204d60c11a9ba065a219943ab07f0a290fc77e8306e03fb474d2b19a"
+    },
+    {
+      "lesson": "p02",
+      "index": 119,
+      "id": "p02-ex053-а",
+      "sha256": "6de0155b2864636a3f53ed7ddf4a93503486600b836fb9e66893a89698ab5da2"
+    },
+    {
+      "lesson": "p02",
+      "index": 120,
+      "id": "p02-ex053-б",
+      "sha256": "c5c4efa3f51485e16b320f871e405a4e5b6b2dfce1dda87b6ba4b671ac8fde70"
+    },
+    {
+      "lesson": "p02",
+      "index": 121,
+      "id": "p02-ex053-в",
+      "sha256": "cedda66fc35e3eee6d9c237727d05c6fad9abb8f5e003bf9155c0b1a0be6c03a"
+    },
+    {
+      "lesson": "p02",
+      "index": 122,
+      "id": "p02-ex053-г",
+      "sha256": "cc422b98bd9419735bc1432f7f323892f3f8d7d88daabe485fdd27ee17330b8c"
+    },
+    {
+      "lesson": "p02",
+      "index": 123,
+      "id": "p02-ex053-д",
+      "sha256": "55dff9954af5d0af26234e10c13dca7662166a1ec66f95594c017629d1f6ebd4"
+    },
+    {
+      "lesson": "p02",
+      "index": 124,
+      "id": "p02-ex053-е",
+      "sha256": "24e022c04cb24dcdd8c20b31fc457ebe90de998b53684c3062945871a652e386"
+    },
+    {
+      "lesson": "p02",
+      "index": 125,
+      "id": "p02-ex053-ж",
+      "sha256": "495b8400bf1254aab54b5710ee15f3a678ee55fa20f84e18daab3074170d41f3"
+    },
+    {
+      "lesson": "p02",
+      "index": 126,
+      "id": "p02-ex053-з",
+      "sha256": "f66c13d41ba33617d5f5d32bd992b469d31c1fa7f8c7f5e18d067cd15018ee11"
+    },
+    {
+      "lesson": "p02",
+      "index": 127,
+      "id": "p02-ex053-и",
+      "sha256": "58e06d7a980f5b4b94f02cca50a7626f798822656462aca58dbb1e5651b043bc"
+    },
+    {
+      "lesson": "p02",
+      "index": 128,
+      "id": "p02-ex054-а",
+      "sha256": "ff8555094883ac19a31c46f77d71789775b92a7fe73a08ee2ed1b647898a0fb3"
+    },
+    {
+      "lesson": "p02",
+      "index": 129,
+      "id": "p02-ex054-б",
+      "sha256": "2b9419449d1bdfb024166436317428a163095c08dd020a058947387ef186ab04"
+    },
+    {
+      "lesson": "p03",
+      "index": 0,
+      "id": "p03-t01",
+      "sha256": "cf55877fd48d6d852b7fb9f7da283c7a5f4869b1aa5f47b2c246c7d27fc84e5e"
+    },
+    {
+      "lesson": "p03",
+      "index": 1,
+      "id": "p03-t02",
+      "sha256": "4e20ac50ddd01e06033c38b1a1748e2f818bca74de5340b67cbe8562fb9d6980"
+    },
+    {
+      "lesson": "p03",
+      "index": 2,
+      "id": "p03-t03",
+      "sha256": "8dff28564ab7607f317deab57e51261210ae26124914834eb37fde458a38aa6c"
+    },
+    {
+      "lesson": "p03",
+      "index": 3,
+      "id": "p03-t04",
+      "sha256": "d778d242d8607a657f9da2384d47a430062dfeb80e48997da17c0595ea2ad5ff"
+    },
+    {
+      "lesson": "p03",
+      "index": 4,
+      "id": "p03-t05",
+      "sha256": "872f92961767b8b707bc8d3a3288009a111ebe1154f350eb263c257cf84bb05e"
+    },
+    {
+      "lesson": "p03",
+      "index": 5,
+      "id": "p03-t06",
+      "sha256": "fbd1223571d3226e753214fee829e4dd99fea9418b4c0e700fe25ddcaef0dd27"
+    },
+    {
+      "lesson": "p03",
+      "index": 6,
+      "id": "p03-ex055-б",
+      "sha256": "a80344cbe8076a502ef6569fc2e3fbb903168953fa2f126329b3b545db057ce3"
+    },
+    {
+      "lesson": "p03",
+      "index": 7,
+      "id": "p03-ex055-в",
+      "sha256": "6db30e2c55da11f4ee3fe8e8b6856f28724768b50a99adac6b3abb63f8f4a473"
+    },
+    {
+      "lesson": "p03",
+      "index": 8,
+      "id": "p03-ex055-г",
+      "sha256": "9a4e9d0ffa3acf54630feee3083d77d5b28ea50578c81e311be1ac67718ee62f"
+    },
+    {
+      "lesson": "p03",
+      "index": 9,
+      "id": "p03-ex056-б",
+      "sha256": "36a8233b0460ae419cf357b29ccff7a67a01cf48cfa601ecb3d5ac157d0f6b6c"
+    },
+    {
+      "lesson": "p03",
+      "index": 10,
+      "id": "p03-ex056-в",
+      "sha256": "6b720621e57749dc8e8b68db72431a5aaaf431a9dcd7b19e772efc0ae0fb6bcd"
+    },
+    {
+      "lesson": "p03",
+      "index": 11,
+      "id": "p03-ex056-г",
+      "sha256": "67105e0a5add71af9d14e123220361f91a87b7620e9e2fc8fc70f06facc97ebf"
+    },
+    {
+      "lesson": "p03",
+      "index": 12,
+      "id": "p03-ex057-а",
+      "sha256": "a8c8bcc604dae593a81d0e8b44cdb15e0572593340854f900798175883de573d"
+    },
+    {
+      "lesson": "p03",
+      "index": 13,
+      "id": "p03-ex057-б",
+      "sha256": "fdc17b4c173e624a7d2fe1479aaf0b25249220707686ed4c07629065f9f1d539"
+    },
+    {
+      "lesson": "p03",
+      "index": 14,
+      "id": "p03-ex057-в",
+      "sha256": "1a94775f6937ef05aaf1a6f255d07bce5bfb03c9b7f62c55a5ee1d7bb6c00b54"
+    },
+    {
+      "lesson": "p03",
+      "index": 15,
+      "id": "p03-ex057-г",
+      "sha256": "cb00aab41891088ae4ceeaec32f17b16e83a5e3bf133e0e5ec24799267564668"
+    },
+    {
+      "lesson": "p03",
+      "index": 16,
+      "id": "p03-ex058-а",
+      "sha256": "c51ddea1f319c843ee91e8a688b2b7767b810b63db3f9404ef774e0d9100084c"
+    },
+    {
+      "lesson": "p03",
+      "index": 17,
+      "id": "p03-ex058-б",
+      "sha256": "e870eab0895d6d9c9b12c2f9f2fb5a970cbc8f5ec1dfa47eee8a36def1dd366b"
+    },
+    {
+      "lesson": "p03",
+      "index": 18,
+      "id": "p03-ex058-в",
+      "sha256": "2d0d63a2ac67cd8a72b5479241b95319f0f10057525eb6b5b46906d5e3c65bb7"
+    },
+    {
+      "lesson": "p03",
+      "index": 19,
+      "id": "p03-ex058-г",
+      "sha256": "5808b25eae0bb80ad8957eae2f9743ae4ddc193fe6ecaa96873370748ed39f34"
+    },
+    {
+      "lesson": "p03",
+      "index": 20,
+      "id": "p03-ex058-д",
+      "sha256": "d3936bdc74de88a245462f0e3a9b322ea05ed7889524b9941650993a5ab7c4fb"
+    },
+    {
+      "lesson": "p03",
+      "index": 21,
+      "id": "p03-ex058-е",
+      "sha256": "e897e98a506f98e4d78a96e62db1e20a89ebc8314db57de78494c3e798ea55fc"
+    },
+    {
+      "lesson": "p03",
+      "index": 22,
+      "id": "p03-ex059-а",
+      "sha256": "5bec956696c6bf9eece91943f4374a71aa7e56219aee6737d8c5834e6561a1bd"
+    },
+    {
+      "lesson": "p03",
+      "index": 23,
+      "id": "p03-ex059-б",
+      "sha256": "437fe4cf8f3ebe268bf6c71d318d592c754fb9562febf2581e015bfa0f5e7f22"
+    },
+    {
+      "lesson": "p03",
+      "index": 24,
+      "id": "p03-ex059-в",
+      "sha256": "adee7004c241318f212e84b9fad5115cb3f63f33583c61794f9b6387721c5a32"
+    },
+    {
+      "lesson": "p03",
+      "index": 25,
+      "id": "p03-ex059-г",
+      "sha256": "dbcf31408a563844472e84068e991e0b4aa64bf4ed9e0c7a3af8de63db34aad1"
+    },
+    {
+      "lesson": "p03",
+      "index": 26,
+      "id": "p03-ex059-д",
+      "sha256": "76ba26acf824d89321062447c6fbb5e2c0ad2ea657bb0c87d0b812921f524444"
+    },
+    {
+      "lesson": "p03",
+      "index": 27,
+      "id": "p03-ex059-е",
+      "sha256": "1ec15186f82b0bbcd4669a198440bb851862e3a99e105b67de1893f5b6168d42"
+    },
+    {
+      "lesson": "p03",
+      "index": 28,
+      "id": "p03-ex060-а",
+      "sha256": "8dcd080ed04dacb0516a4c02b7ccf84a4ba9e59f52c46db16cbc1a486ed3dbbc"
+    },
+    {
+      "lesson": "p03",
+      "index": 29,
+      "id": "p03-ex060-б",
+      "sha256": "d361f4e094a85144f21332c857ccac33e8f9c179ef6640f942b589c665842503"
+    },
+    {
+      "lesson": "p03",
+      "index": 30,
+      "id": "p03-ex061-а",
+      "sha256": "e3956b1ac3b6ba63af0595c64a62cff22cee1da18d7ae78e0e41227f62a0d345"
+    },
+    {
+      "lesson": "p03",
+      "index": 31,
+      "id": "p03-ex061-б",
+      "sha256": "ee615e20aab679dd8e7b9e5c296ab563c47f8b13cf7200f17c3d9b72dc17ab69"
+    },
+    {
+      "lesson": "p03",
+      "index": 32,
+      "id": "p03-ex062-значение",
+      "sha256": "1c14b10c06083d2db11b34478b058b6fa0cebfb99e00b9afcce416615373f84e"
+    },
+    {
+      "lesson": "p03",
+      "index": 33,
+      "id": "p03-ex062-данные",
+      "sha256": "38e06ebe056e28632a86f825a1f06eb91c21484629da90337ab9a79ca08a977e"
+    },
+    {
+      "lesson": "p03",
+      "index": 34,
+      "id": "p03-ex063-а",
+      "sha256": "3e02965735cd6884f258e07230165bca77803e35ef03ba75028375fd8827f308"
+    },
+    {
+      "lesson": "p03",
+      "index": 35,
+      "id": "p03-ex063-б",
+      "sha256": "4868d7d80cf2d2da56efdde4edc3ac2f2c63a51f3c329cc92805135fe937569b"
+    },
+    {
+      "lesson": "p03",
+      "index": 36,
+      "id": "p03-ex063-в",
+      "sha256": "a357d37976c13c1b37222c9591bab36d8872958680d2008d2e3ac6e2bad25276"
+    },
+    {
+      "lesson": "p03",
+      "index": 37,
+      "id": "p03-ex063-г",
+      "sha256": "a808c5f83d3a0919ddc5f8441e36763ca815d5265c397988d3301fb1f769d97d"
+    },
+    {
+      "lesson": "p03",
+      "index": 38,
+      "id": "p03-ex063-д",
+      "sha256": "4a148e298257c25f8e1eb03dbcde63327c99f73b16123d6546d28baf7d45405f"
+    },
+    {
+      "lesson": "p03",
+      "index": 39,
+      "id": "p03-ex063-е",
+      "sha256": "173d80007154ee5d6edf78a88a6b38ce8fdd70451cbc902deb249d5e10515d19"
+    },
+    {
+      "lesson": "p03",
+      "index": 40,
+      "id": "p03-ex064-а",
+      "sha256": "fc9936dad62421d90f4b6043f29485470ff10b872c1c340a3da6171df943f185"
+    },
+    {
+      "lesson": "p03",
+      "index": 41,
+      "id": "p03-ex064-б",
+      "sha256": "50dab05896031bacab2da225d48e6c0166505e3b18e03b53034d0ca466b91217"
+    },
+    {
+      "lesson": "p03",
+      "index": 42,
+      "id": "p03-ex064-в",
+      "sha256": "af9f8cc3a91fedf3afdd138f768fa1b2a0a59488c6fd0f00e9573c80a07e9d48"
+    },
+    {
+      "lesson": "p03",
+      "index": 43,
+      "id": "p03-ex064-г",
+      "sha256": "93e9046d8ee45bc49ee5f689331bbe2fbbaef67de499cd92f88d213cfc7ac6bb"
+    },
+    {
+      "lesson": "p03",
+      "index": 44,
+      "id": "p03-ex064-д",
+      "sha256": "03bcbc60731e4a7f5d0f7570e08a0e9ef7f35e5f8bdf3b70a06aa788f69f8cdc"
+    },
+    {
+      "lesson": "p03",
+      "index": 45,
+      "id": "p03-ex064-е",
+      "sha256": "5c63871cd514cb95e0a8043a71c6d3187761a83cddd50ab3ae04fa5c9885fe24"
+    },
+    {
+      "lesson": "p03",
+      "index": 46,
+      "id": "p03-ex065-а",
+      "sha256": "0327273ea781e1a5c944d803683c6ff46856c0472074ad31d7a3ba676b76b3b7"
+    },
+    {
+      "lesson": "p03",
+      "index": 47,
+      "id": "p03-ex065-б",
+      "sha256": "b744a1222805e391a49325683add8d07794b251f5c3b74c0d7dc6ef87e26665b"
+    },
+    {
+      "lesson": "p03",
+      "index": 48,
+      "id": "p03-ex066-а",
+      "sha256": "c79052bfc1872f0f8274c8e3d3e478dce4852cd85be30d84f03c2d61b5110ba0"
+    },
+    {
+      "lesson": "p03",
+      "index": 49,
+      "id": "p03-ex066-б",
+      "sha256": "f2c8b6cf34edbfa672b9e8d7eea3a67ef49db21b03cf38c8f31f7b0f5dcb0acf"
+    },
+    {
+      "lesson": "p03",
+      "index": 50,
+      "id": "p03-ex067-а",
+      "sha256": "ef295ec8d22b68cbff18446cdd4e3feecb0c1d602b715363dac5b3e4f4cb8384"
+    },
+    {
+      "lesson": "p03",
+      "index": 51,
+      "id": "p03-ex067-б",
+      "sha256": "812729e0a14a60c4f3af7a7dadf112e500b494ab21aa785dc4dda4d909f73f24"
+    },
+    {
+      "lesson": "p03",
+      "index": 52,
+      "id": "p03-ex068-а",
+      "sha256": "c9e2a1429aac696128a10f97af4bd012bbd9a00fc96cff8f6362ff1805a69128"
+    },
+    {
+      "lesson": "p03",
+      "index": 53,
+      "id": "p03-ex068-б",
+      "sha256": "59f93061c7111a6145da0a642c68086145bdf9f9815df6e4cbd1ab4b281689b8"
+    },
+    {
+      "lesson": "p03",
+      "index": 54,
+      "id": "p03-ex068-в",
+      "sha256": "716285baffd4035fe606a22a1c282845c8410b74f00068a4c9186debb5c315b8"
+    },
+    {
+      "lesson": "p03",
+      "index": 55,
+      "id": "p03-ex068-г",
+      "sha256": "76d3465e8568a626a1431f1fa35f974168ece50105bf9589bdb451c7438dd391"
+    },
+    {
+      "lesson": "p03",
+      "index": 56,
+      "id": "p03-ex069-а",
+      "sha256": "254f9a93b77185db7065389aa7c865535777d3c1d48cb3098e7ec7b9db5d632d"
+    },
+    {
+      "lesson": "p03",
+      "index": 57,
+      "id": "p03-ex069-б",
+      "sha256": "e762d5e372341600449e5dd3184413ce07530e15664a18c831c8763ef3cdc165"
+    },
+    {
+      "lesson": "p03",
+      "index": 58,
+      "id": "p03-ex069-в",
+      "sha256": "8f7851a1e720282fdd339d8782ebede166db5370e70badc23a9e7913e7cedd4b"
+    },
+    {
+      "lesson": "p03",
+      "index": 59,
+      "id": "p03-ex069-г",
+      "sha256": "f87c6e7d2193b40dd4f00842636b29fe1027308a70a2b1db0a58e324b85616ab"
+    },
+    {
+      "lesson": "p03",
+      "index": 60,
+      "id": "p03-ex070-преобразование",
+      "sha256": "e2a2e028428f8fcc128dce546a0aa6dc6e275e30fc97f3bfcaa5e215c3566ea0"
+    },
+    {
+      "lesson": "p03",
+      "index": 61,
+      "id": "p03-ex070-натуральные",
+      "sha256": "4efbb09a4e72ed35d639d5d611d10721ce6e5fc3287d4eceeee7bb4d8b1122f7"
+    },
+    {
+      "lesson": "p03",
+      "index": 62,
+      "id": "p03-ex071-",
+      "sha256": "2237e9fe5ed9aef3f22d4c1c73589b511a78cabcef246b6b411bcb4b0ac21cf7"
+    },
+    {
+      "lesson": "p03",
+      "index": 63,
+      "id": "p03-ex072-а",
+      "sha256": "cef3a3aeb5599a991288245a1ccdadaf48dc96b939b866610d183186641eef19"
+    },
+    {
+      "lesson": "p03",
+      "index": 64,
+      "id": "p03-ex072-б",
+      "sha256": "8d1deb2332d071793dd3f60f1ca6b9bf2775cf8defef6d57061bd3dbcc7827e1"
+    },
+    {
+      "lesson": "p03",
+      "index": 65,
+      "id": "p03-ex072-в",
+      "sha256": "308baff3eb21f14e6471242ea9f85f20bfd142ea9859d86bdc28b84b43db57d3"
+    },
+    {
+      "lesson": "p03",
+      "index": 66,
+      "id": "p03-ex072-г",
+      "sha256": "32989bdc8748436d037ca05a1ec239f8bc93ccd0c2e4efd4f85b7a4398378183"
+    },
+    {
+      "lesson": "p03",
+      "index": 67,
+      "id": "p03-ex073-а",
+      "sha256": "97bc5dce0f2da12a4d5dde2a11f93d1d47f587b9494259697b25de297b527752"
+    },
+    {
+      "lesson": "p03",
+      "index": 68,
+      "id": "p03-ex073-б",
+      "sha256": "e4e0f00e4e75429de30fe23a511af2b896598bc4fa2c74a138ca45d725a66bf5"
+    },
+    {
+      "lesson": "p03",
+      "index": 69,
+      "id": "p03-ex073-в",
+      "sha256": "95feecde6f7466d8418b944648c88ab1cfb069918ecfc905d4140cb4222464ff"
+    },
+    {
+      "lesson": "p03",
+      "index": 70,
+      "id": "p03-ex073-г",
+      "sha256": "f40f3028c869bdf210136fdc82e71dce9fccb84602227edc2dfb63fb3b78b03f"
+    },
+    {
+      "lesson": "p03",
+      "index": 71,
+      "id": "p03-ex073-д",
+      "sha256": "9aaab77ebc9a580209ee1b7703cb19b93b018dc4e41efdfc39fa1a30be42837e"
+    },
+    {
+      "lesson": "p03",
+      "index": 72,
+      "id": "p03-ex073-е",
+      "sha256": "ab272745690fe30d8fbe02abcf5b0b9402f9bbd582e29a522c36e46470c08a09"
+    },
+    {
+      "lesson": "p03",
+      "index": 73,
+      "id": "p03-ex073-ж",
+      "sha256": "a58e1e94e9e549c0280e3caca9de0ecf38a4d034eb0398bd79fe9ae559dbec51"
+    },
+    {
+      "lesson": "p03",
+      "index": 74,
+      "id": "p03-ex073-з",
+      "sha256": "26f784d584cfad6e8f4ffaca0299481030c65a3842e8f9aadf7626be1bd3bade"
+    },
+    {
+      "lesson": "p03",
+      "index": 75,
+      "id": "p03-ex074-а",
+      "sha256": "b7e3d7d3e5524bf9eae6ef77e7f0087d32962d2ad46f33f0201ced363bcfa30a"
+    },
+    {
+      "lesson": "p03",
+      "index": 76,
+      "id": "p03-ex074-б",
+      "sha256": "8938e7acace32b5ec935afd26d01702bea508f6df32f468096fbd3b5f993113b"
+    },
+    {
+      "lesson": "p03",
+      "index": 77,
+      "id": "p03-ex074-в",
+      "sha256": "36804eed4aab43e149b4182a8f37ab8ae77b38519f30b576c379acfd6b048404"
+    },
+    {
+      "lesson": "p03",
+      "index": 78,
+      "id": "p03-ex074-г",
+      "sha256": "b356651f1aa898375f4b40bc73601c9e560da69022de76e1fdd2b03d60ab2ef0"
+    },
+    {
+      "lesson": "p04",
+      "index": 0,
+      "id": "p04-t01",
+      "sha256": "c84c6307346834ec61097a69345e63ee9e7b200153c2f4f834b5b9a7056b36cd"
+    },
+    {
+      "lesson": "p04",
+      "index": 1,
+      "id": "p04-t02",
+      "sha256": "2a0a2de706d806f6299474a627caf91c4e71b77f6c1bcf1a2dfd3d878726e7fe"
+    },
+    {
+      "lesson": "p04",
+      "index": 2,
+      "id": "p04-t03",
+      "sha256": "dc5dfebf5ea64556fbb81f7fa7e7b33330e5d095b4b838b8de15df2030199f29"
+    },
+    {
+      "lesson": "p04",
+      "index": 3,
+      "id": "p04-t04",
+      "sha256": "a56c15972421ea2ce3f5dda26ea209b2ae16e1c2dcecab7d39b7e9d9feeccf59"
+    },
+    {
+      "lesson": "p04",
+      "index": 4,
+      "id": "p04-t05",
+      "sha256": "40b5b18195b04d93db1ccbfe37bac2bf65fd76bb23abb325308936176a4c66e4"
+    },
+    {
+      "lesson": "p04",
+      "index": 5,
+      "id": "p04-t06",
+      "sha256": "40a726c92fc5b8838e9b3b5d02ea551f25784c3a57006096b8a773a8457e2750"
+    },
+    {
+      "lesson": "p04",
+      "index": 6,
+      "id": "p04-ex075-б",
+      "sha256": "8746f38ab7382cce2baafc2d1fe3533c6528b06f28a804b2047ce4324a997e09"
+    },
+    {
+      "lesson": "p04",
+      "index": 7,
+      "id": "p04-ex075-в",
+      "sha256": "4ea5f46806356866021ca0fce677bd4d6cbac37d4e32f71c81af78fa491c4c6a"
+    },
+    {
+      "lesson": "p04",
+      "index": 8,
+      "id": "p04-ex075-д",
+      "sha256": "2b9818a26d39db426be0eae46f7996853e74da46f72dc29b6150102759a927d3"
+    },
+    {
+      "lesson": "p04",
+      "index": 9,
+      "id": "p04-ex075-е",
+      "sha256": "e262aabefa9a9eae13218a95f1312173dbc770b2e4f6c15d3a2dd18bbd889e8e"
+    },
+    {
+      "lesson": "p04",
+      "index": 10,
+      "id": "p04-ex075-ж",
+      "sha256": "c687e9111e93012f1ee2dfbc358e81cf89b390d7b9030b487e5990ea55ee7ab4"
+    },
+    {
+      "lesson": "p04",
+      "index": 11,
+      "id": "p04-ex075-з",
+      "sha256": "ffecbff3f555f9dfe9af2d23325e876888d739b5e91ab99ad2f03528891e289f"
+    },
+    {
+      "lesson": "p04",
+      "index": 12,
+      "id": "p04-ex076-а",
+      "sha256": "f34b9a9c80f40b0789906cd9d734f09477f38d904390f033ad2b4c0f6711729f"
+    },
+    {
+      "lesson": "p04",
+      "index": 13,
+      "id": "p04-ex076-б",
+      "sha256": "4b0bba69e9d07b884186ff8e36667f30136de14f6832982003a0ad549ed0b7d3"
+    },
+    {
+      "lesson": "p04",
+      "index": 14,
+      "id": "p04-ex076-в",
+      "sha256": "58173efc79c3c1e7d6c492ff81ee68cd9aeafbf5176ccd01c65b825ba1d5ac77"
+    },
+    {
+      "lesson": "p04",
+      "index": 15,
+      "id": "p04-ex076-г",
+      "sha256": "0444c1e519b899fc5769f13147410753ca0c3109fa59384c6f07ec78ec315ac9"
+    },
+    {
+      "lesson": "p04",
+      "index": 16,
+      "id": "p04-ex077-а",
+      "sha256": "72b523e3fd1466be7facf196f16aaccd91d772c086e8d085d80b9d2634fabab5"
+    },
+    {
+      "lesson": "p04",
+      "index": 17,
+      "id": "p04-ex077-б",
+      "sha256": "41dd501b4a897fc6d5b6e618d529c78a83913d4142236c019af63480c54afc43"
+    },
+    {
+      "lesson": "p04",
+      "index": 18,
+      "id": "p04-ex078-а",
+      "sha256": "db0fe9feeb30666dd0a5d47b4e1e875dd19cadae8e8464695e348baf71cee07a"
+    },
+    {
+      "lesson": "p04",
+      "index": 19,
+      "id": "p04-ex078-б",
+      "sha256": "82682fa74951d3a5c5951c334fd1e50083defefa407ea7bf5c7224f9f703746a"
+    },
+    {
+      "lesson": "p04",
+      "index": 20,
+      "id": "p04-ex078-в",
+      "sha256": "83b4ed9ec5bf4da16c5e686a8d53bbc9da6cd05b5d975988db0618fc40c06455"
+    },
+    {
+      "lesson": "p04",
+      "index": 21,
+      "id": "p04-ex078-г",
+      "sha256": "a7a1ff295872d4d9ee9e0283d7f544cb8fe15029edb911610e1e306232a84e22"
+    },
+    {
+      "lesson": "p04",
+      "index": 22,
+      "id": "p04-ex078-д",
+      "sha256": "742417d4828bb4ff140e1a2748118d118d0dbc2ee03e7abbc66d75499e2016bb"
+    },
+    {
+      "lesson": "p04",
+      "index": 23,
+      "id": "p04-ex078-е",
+      "sha256": "93640289edd480ee60d797917070d97c2fd7dc023fe305c60f8810b7fc9e37ec"
+    },
+    {
+      "lesson": "p04",
+      "index": 24,
+      "id": "p04-ex079-а",
+      "sha256": "7b4b83b77506cd20dd21c3a1768fa4181a71192aa9c6e0684567bdaf4e98d2fb"
+    },
+    {
+      "lesson": "p04",
+      "index": 25,
+      "id": "p04-ex079-б",
+      "sha256": "75cd58bf599344675899943a80875c6fc31c294ff776e708fb59611e4989670c"
+    },
+    {
+      "lesson": "p04",
+      "index": 26,
+      "id": "p04-ex079-в",
+      "sha256": "f23afa7ad3fa8918504ad9ce3b87f97649f5306dfbc2976a5b262decb7fb442c"
+    },
+    {
+      "lesson": "p04",
+      "index": 27,
+      "id": "p04-ex079-г",
+      "sha256": "8e44768fe815e632e077eda08f0fe99fabf80d7957751f57e0258852eabcb9e8"
+    },
+    {
+      "lesson": "p04",
+      "index": 28,
+      "id": "p04-ex080-а",
+      "sha256": "c5ab99ad3ae02430fc6fd0261eb78475f71f3a9c3f80f74b388b7a350e452eb0"
+    },
+    {
+      "lesson": "p04",
+      "index": 29,
+      "id": "p04-ex080-б",
+      "sha256": "3efef41f9aee06fabc07d9944de769a0541e19c94fea45150896fed21d63aa70"
+    },
+    {
+      "lesson": "p04",
+      "index": 30,
+      "id": "p04-ex080-в",
+      "sha256": "2e36c916d98ca1cb19d190ab9574c55744942d56250d1119637423f835c4f733"
+    },
+    {
+      "lesson": "p04",
+      "index": 31,
+      "id": "p04-ex080-г",
+      "sha256": "afa7d7c0035f43c7ce3b0b53e0cf4693e3a3a38d9b56ccae5a022f58edda2d2a"
+    },
+    {
+      "lesson": "p04",
+      "index": 32,
+      "id": "p04-ex081-а",
+      "sha256": "e2944bd88fd91484951dd70d57615a71a95e74f24b0b619e3e8812266ca3fca3"
+    },
+    {
+      "lesson": "p04",
+      "index": 33,
+      "id": "p04-ex081-б",
+      "sha256": "89ec9840c5264aa6a65bdde9c1ed3d5ccd0bbd9649f5232784bfeb364ecfe614"
+    },
+    {
+      "lesson": "p04",
+      "index": 34,
+      "id": "p04-ex081-в",
+      "sha256": "561f745f409355e966540250cc3183caa9d2e37cb103ffed599f45d913444815"
+    },
+    {
+      "lesson": "p04",
+      "index": 35,
+      "id": "p04-ex081-г",
+      "sha256": "526c25a5be2749ff9de37852987c73d290e8ec8b1cde9e1494f5657fcc2a17e4"
+    },
+    {
+      "lesson": "p04",
+      "index": 36,
+      "id": "p04-ex082-а",
+      "sha256": "722046bda125fa82599ff1b1a899da2253b99ef3f2714ef43c0272e306d27d54"
+    },
+    {
+      "lesson": "p04",
+      "index": 37,
+      "id": "p04-ex082-б",
+      "sha256": "6579c73a62b98ba0f829e47aa295cb8eeb9711c8eddb93e0678767924747f41c"
+    },
+    {
+      "lesson": "p04",
+      "index": 38,
+      "id": "p04-ex082-в",
+      "sha256": "1d6832349160f2089f38cc06685248d925fecf40911351d6f98595057080608f"
+    },
+    {
+      "lesson": "p04",
+      "index": 39,
+      "id": "p04-ex082-г",
+      "sha256": "8f9c69579e248d5fa17294603d57c0965ba9f20ec59cf8095bab818927b523de"
+    },
+    {
+      "lesson": "p04",
+      "index": 40,
+      "id": "p04-ex082-д",
+      "sha256": "b9560eebc9e57e401ccb9d74489436162aa3c7dda25552c27cdfa4f58a548ead"
+    },
+    {
+      "lesson": "p04",
+      "index": 41,
+      "id": "p04-ex082-е",
+      "sha256": "55f014129c0ce8477c0276f9bdeffd216ee09029145d3178bb2b8d55d5231b9e"
+    },
+    {
+      "lesson": "p04",
+      "index": 42,
+      "id": "p04-ex082-ж",
+      "sha256": "491e58f6aa86c144d6f75465534d2137073b06caffec156607ab765cc6fc9eae"
+    },
+    {
+      "lesson": "p04",
+      "index": 43,
+      "id": "p04-ex082-з",
+      "sha256": "4f961295c17a093ec2fd071b081893f1c08318cbbaeb928b95eb77d9a0299f30"
+    },
+    {
+      "lesson": "p04",
+      "index": 44,
+      "id": "p04-ex083-а",
+      "sha256": "8c65eb052308fd1f6333c172ec8ca508bb92bf63730071e3748801066519396b"
+    },
+    {
+      "lesson": "p04",
+      "index": 45,
+      "id": "p04-ex083-б",
+      "sha256": "bb9de60ef491e307347b51840d57e42867b416d1d3a299fe2b6d1b206a6b5f3c"
+    },
+    {
+      "lesson": "p04",
+      "index": 46,
+      "id": "p04-ex083-в",
+      "sha256": "8d8a1952c9bfb19187d486ab8cb2abada767be14c3b940e6f12eb79ec80a5700"
+    },
+    {
+      "lesson": "p04",
+      "index": 47,
+      "id": "p04-ex083-г",
+      "sha256": "5164047e75cf7e3ccf70008a3ee9843abf469b005d4c5d463522e571685c4510"
+    },
+    {
+      "lesson": "p04",
+      "index": 48,
+      "id": "p04-ex084-а",
+      "sha256": "9615c4a96350276428926d879247230015a550e331472abe88110c11e6c76226"
+    },
+    {
+      "lesson": "p04",
+      "index": 49,
+      "id": "p04-ex084-б",
+      "sha256": "3fdf1e5fd25ac47b6401a84e0057452dfe6567ed1df93302b922ce3d76def024"
+    },
+    {
+      "lesson": "p04",
+      "index": 50,
+      "id": "p04-ex084-в",
+      "sha256": "70938540cd32069e00832adbb70fcf3a37e9a0299b65bac2b566cc0f82f7f67c"
+    },
+    {
+      "lesson": "p04",
+      "index": 51,
+      "id": "p04-ex084-г",
+      "sha256": "1089276ffd5222ffa3789aeb73501b0a73f11a5d5797b00a8dc3ecf718139605"
+    },
+    {
+      "lesson": "p04",
+      "index": 52,
+      "id": "p04-ex084-д",
+      "sha256": "bb1e19b7cdc1320272aca39df4dd104d5aabb6828dd6ad42b6368df4a7e0b6b7"
+    },
+    {
+      "lesson": "p04",
+      "index": 53,
+      "id": "p04-ex084-е",
+      "sha256": "36c5aef417fe851476d680b9e8772773c653b1538643997078bf20cd3838e56b"
+    },
+    {
+      "lesson": "p04",
+      "index": 54,
+      "id": "p04-ex085-а",
+      "sha256": "737874a2aa75136def8cf214d7ed468a8584bb48d83c149bacbea9c86abf6d1a"
+    },
+    {
+      "lesson": "p04",
+      "index": 55,
+      "id": "p04-ex085-б",
+      "sha256": "1a41b2f88753bb438b13e76cee5f038666841a95aa8e7b96569ac555422bd31b"
+    },
+    {
+      "lesson": "p04",
+      "index": 56,
+      "id": "p04-ex085-в",
+      "sha256": "dd1f601db03bf4ba2292f1d7ff14a04794ae8d94de19ba996066ae7714bb7c0f"
+    },
+    {
+      "lesson": "p04",
+      "index": 57,
+      "id": "p04-ex085-г",
+      "sha256": "1935871655476049ccd98d130f84d864da025930441ac384d54bab57882a7bb0"
+    },
+    {
+      "lesson": "p04",
+      "index": 58,
+      "id": "p04-ex086-а",
+      "sha256": "34960f325b59f4337e0567d33c230e514616c40ad6e93cd1dd640bf1d989add9"
+    },
+    {
+      "lesson": "p04",
+      "index": 59,
+      "id": "p04-ex086-б",
+      "sha256": "7c7c367df289c2ced89b490ef2244c5836b286400aa30f675b095a268b1c79d3"
+    },
+    {
+      "lesson": "p04",
+      "index": 60,
+      "id": "p04-ex086-в",
+      "sha256": "d7def07a38c63b40bb19fd10277a632a668f59d42450a6feae514db96cb9f9ec"
+    },
+    {
+      "lesson": "p04",
+      "index": 61,
+      "id": "p04-ex086-г",
+      "sha256": "512dff614b2d0bc00c57032dd61667fdb2bd1691bfc12043a971135a1791891d"
+    },
+    {
+      "lesson": "p04",
+      "index": 62,
+      "id": "p04-ex086-д",
+      "sha256": "0fd9beae78d7a94ff42f470f3d50b0d32b315802f6e8431356981428db7f1e12"
+    },
+    {
+      "lesson": "p04",
+      "index": 63,
+      "id": "p04-ex086-е",
+      "sha256": "b5addc94d3c1f74029db171c9e090c10be0e2b5313533f293fd270d36c2b6d15"
+    },
+    {
+      "lesson": "p04",
+      "index": 64,
+      "id": "p04-ex087-а",
+      "sha256": "fb8eb10da0c1794112a44d65b426a44f3f46c2826003f3039d90f8036b45edb3"
+    },
+    {
+      "lesson": "p04",
+      "index": 65,
+      "id": "p04-ex087-б",
+      "sha256": "2667ff274a9003fca2d65b3b490dc245a2d1797c63d624081eca21894997ae1c"
+    },
+    {
+      "lesson": "p04",
+      "index": 66,
+      "id": "p04-ex087-в",
+      "sha256": "ea96dbda5dbd5c517228308050258cd17a37242634e501f1e9e9ebfa3c7ac02f"
+    },
+    {
+      "lesson": "p04",
+      "index": 67,
+      "id": "p04-ex087-г",
+      "sha256": "d438eedeb8d172f0d0795171af2098fb6887cf2c23c81270afd2d8afce05f488"
+    },
+    {
+      "lesson": "p04",
+      "index": 68,
+      "id": "p04-ex088-а",
+      "sha256": "2b41bcc9ad98c33a41970d0a2c2e91bf7abaa036d59d66d3c91e944d860ccd73"
+    },
+    {
+      "lesson": "p04",
+      "index": 69,
+      "id": "p04-ex088-б",
+      "sha256": "4ac65b01e73ee98d2035dc3b4b64a546955bb61fe968a69e8a86751f08fa3418"
+    },
+    {
+      "lesson": "p04",
+      "index": 70,
+      "id": "p04-ex088-в",
+      "sha256": "b7048e514815417a0673f9e634190ffb1ade77f285d720f6ec22d72af66765d3"
+    },
+    {
+      "lesson": "p04",
+      "index": 71,
+      "id": "p04-ex088-г",
+      "sha256": "290e1b892829775abb32978da13e548da9dab4f24dd275dd42e5d3bce114011d"
+    },
+    {
+      "lesson": "p04",
+      "index": 72,
+      "id": "p04-ex089-а",
+      "sha256": "07fadea1289b603c88b70eaaf031be2ecde6f6e5feb4cd6b8639847aa9977549"
+    },
+    {
+      "lesson": "p04",
+      "index": 73,
+      "id": "p04-ex089-б",
+      "sha256": "ed069d5873161219257347f99f33f46afde233babd27bbcb9d28bc0c91e8ee68"
+    },
+    {
+      "lesson": "p04",
+      "index": 74,
+      "id": "p04-ex090-а",
+      "sha256": "624bf14972abb321315c3478cf27a6ca1d981afa6a3c2d17f7a84ee4814b353f"
+    },
+    {
+      "lesson": "p04",
+      "index": 75,
+      "id": "p04-ex090-б",
+      "sha256": "f233245b8d89069cdfbb5143019e3d2b2391886fe492feb4650c7e0fde9a4003"
+    },
+    {
+      "lesson": "p04",
+      "index": 76,
+      "id": "p04-ex091-а",
+      "sha256": "116f8e9c2c8ad6791f5ffd0b7e29acf560b5da75dc443c5aee269b91bc88a5cb"
+    },
+    {
+      "lesson": "p04",
+      "index": 77,
+      "id": "p04-ex091-б",
+      "sha256": "bf0a817ad3b64e585cd5a0d446fbaf25e7e88a8402256abd0639efc97f218b5e"
+    },
+    {
+      "lesson": "p04",
+      "index": 78,
+      "id": "p04-ex092-а",
+      "sha256": "aec0e516dcc8e85ae6caeb13e2ca09b4003ef774b2308f1517d5715d19cc33a6"
+    },
+    {
+      "lesson": "p04",
+      "index": 79,
+      "id": "p04-ex092-б",
+      "sha256": "6c5b50784d27d2ca28cc430115066572d2b5b33e0e1faefce23cad674f7da67e"
+    },
+    {
+      "lesson": "p04",
+      "index": 80,
+      "id": "p04-ex092-в",
+      "sha256": "e6f76106c9512431841dbbfed81630d413f669d3fcd5ea470a2dd9fd570d0304"
+    },
+    {
+      "lesson": "p04",
+      "index": 81,
+      "id": "p04-ex092-г",
+      "sha256": "438384eb06d67309a9fac63b7fd7337503c8ed6ca417c32bb665f1c0c763635e"
+    },
+    {
+      "lesson": "p04",
+      "index": 82,
+      "id": "p04-ex092-д",
+      "sha256": "ee9482686ecca4b75e4002acf920baa9efd2e7e1fc948f4bf2b1529c9b2c0908"
+    },
+    {
+      "lesson": "p04",
+      "index": 83,
+      "id": "p04-ex092-е",
+      "sha256": "f927f081af8f19cd653fdefa514e074e70a0798eef77de610b438f0b1483238b"
+    },
+    {
+      "lesson": "p04",
+      "index": 84,
+      "id": "p04-ex093-а",
+      "sha256": "88b83389f8731e70893c7832007beb89144c91ea737771125f19a49ec26f7d00"
+    },
+    {
+      "lesson": "p04",
+      "index": 85,
+      "id": "p04-ex093-б",
+      "sha256": "0b7ddd1e3734fa82f0ec2ac290b884e5641926ff3158c9e9846bc783c7a6a9e8"
+    },
+    {
+      "lesson": "p04",
+      "index": 86,
+      "id": "p04-ex094-а",
+      "sha256": "96ff9574be027f3e6fffa967184e27b3a3bb43591784a4fe26bb0f4487720e89"
+    },
+    {
+      "lesson": "p04",
+      "index": 87,
+      "id": "p04-ex094-б",
+      "sha256": "45d4609c129b5ca0c457d461c4b340d4a99d9f90d9050ab3cb3267657d9051b9"
+    },
+    {
+      "lesson": "p04",
+      "index": 88,
+      "id": "p04-ex095-а",
+      "sha256": "e958341a48daf2f24b432a322c3a58c457e597b32d9aad65d6b035b7f882c414"
+    },
+    {
+      "lesson": "p04",
+      "index": 89,
+      "id": "p04-ex095-б",
+      "sha256": "accf7627c113806f378918a55425c705f75dcdcb1db79d0597566a8b29686d30"
+    },
+    {
+      "lesson": "p04",
+      "index": 90,
+      "id": "p04-ex095-в",
+      "sha256": "61f59198ed476c54d6069a0426fd0e439d0dd2f3006283fc6dbe86d249856262"
+    },
+    {
+      "lesson": "p04",
+      "index": 91,
+      "id": "p04-ex095-г",
+      "sha256": "78e28938a0985531633bc4d9d4a52966bedaedcd48bb7ff5fccbca288a210ed9"
+    },
+    {
+      "lesson": "p04",
+      "index": 92,
+      "id": "p04-ex096-а",
+      "sha256": "edbcbcc473319436f26487dbaaa3517b3b2124eb4fa74c2c38dc04f0bbbaaa7d"
+    },
+    {
+      "lesson": "p04",
+      "index": 93,
+      "id": "p04-ex096-б",
+      "sha256": "81bc88ba9ffab86ef879631106705169f632028b3b7d7e6ca6d3b8f8656c0282"
+    },
+    {
+      "lesson": "p04",
+      "index": 94,
+      "id": "p04-ex096-в",
+      "sha256": "9acbba7c6821912d8b1e989139fd14895b7c91296be6289fbe119649214120a3"
+    },
+    {
+      "lesson": "p04",
+      "index": 95,
+      "id": "p04-ex096-г",
+      "sha256": "be868328a5622842b1031bf8f9f97f36544dacdc04f53f78740d01dba1433a27"
+    },
+    {
+      "lesson": "p04",
+      "index": 96,
+      "id": "p04-ex097-а",
+      "sha256": "628e7e56d5b87ea6d272df70d1e8e5b5e50d072646bfa22630d7ab5dee233c3e"
+    },
+    {
+      "lesson": "p04",
+      "index": 97,
+      "id": "p04-ex097-б",
+      "sha256": "adbaf180ec94449444ae4c914eb1cd23e2ca0e87b88ee83f558a126f38fd4af7"
+    },
+    {
+      "lesson": "p04",
+      "index": 98,
+      "id": "p04-ex098-а",
+      "sha256": "063f82c040cfcbe50c722016e808baf2dc394214d697d8254aa7a8011635cabe"
+    },
+    {
+      "lesson": "p04",
+      "index": 99,
+      "id": "p04-ex098-б",
+      "sha256": "735bd9393ab8e7d4ff7be104687d15de98f12bfe2ed51be77b273a88bec6464e"
+    },
+    {
+      "lesson": "p04",
+      "index": 100,
+      "id": "p04-ex098-в",
+      "sha256": "681b2eec8a242999ed574e4b070227f9fc1358bc9072630f1c2cf9565650f225"
+    },
+    {
+      "lesson": "p04",
+      "index": 101,
+      "id": "p04-ex098-г",
+      "sha256": "e35dababf45f2f6964c6220ebc68d55b025b940308f9ff2d9efa210599e74dee"
+    },
+    {
+      "lesson": "p04",
+      "index": 102,
+      "id": "p04-ex099-а",
+      "sha256": "942fdfbb32003d1d225b5b71cb8669c8aba9f8598929b4cd2231ff52c3ed3360"
+    },
+    {
+      "lesson": "p04",
+      "index": 103,
+      "id": "p04-ex099-б",
+      "sha256": "deacbdb8fbef75b34c5dec02d16f8629e7256a02cc57a2b66034b08590698881"
+    },
+    {
+      "lesson": "p04",
+      "index": 104,
+      "id": "p04-ex099-в",
+      "sha256": "5d5d9971801653674bb8a012c451db7e4bd1f8cd38d95cc9a752d255fdc9becd"
+    },
+    {
+      "lesson": "p04",
+      "index": 105,
+      "id": "p04-ex099-г",
+      "sha256": "c53bee61992cab64f19a205ff686fd3b365a9747a2c9458929a014ab052bcb9c"
+    },
+    {
+      "lesson": "p04",
+      "index": 106,
+      "id": "p04-ex100-а",
+      "sha256": "d83f6812158b3aae08db5ec32a8ef91a73cee18f692c1659afcc7fba9ef60713"
+    },
+    {
+      "lesson": "p04",
+      "index": 107,
+      "id": "p04-ex100-б",
+      "sha256": "7288fba1d7f24a4f0e26a68a3cf1546f748a01ae8370697adabc65727cc7afd1"
+    },
+    {
+      "lesson": "p04",
+      "index": 108,
+      "id": "p04-ex101-а",
+      "sha256": "aa78ab956a48b7d71d09333cbd1d5506d267b21357b3ba9934a1872ab354fe74"
+    },
+    {
+      "lesson": "p04",
+      "index": 109,
+      "id": "p04-ex101-б",
+      "sha256": "87d1080199be6291ff95df77469968294427e4126787253dac21868f0d7000c7"
+    },
+    {
+      "lesson": "p04",
+      "index": 110,
+      "id": "p04-ex102-а",
+      "sha256": "1a2853019a51134e33791e961962b27e38e237ddefb6a365eb6888b7d2a1c46b"
+    },
+    {
+      "lesson": "p04",
+      "index": 111,
+      "id": "p04-ex102-ОДЗ-а",
+      "sha256": "8329a6a11e8a48e76a7488f248a8a1ea029878a9d5989f97f1405117ed8ea68c"
+    },
+    {
+      "lesson": "p04",
+      "index": 112,
+      "id": "p04-ex102-б",
+      "sha256": "6dd926dfd4e2d53fe9c62534c6d631ebdf8f08951a267a5cc4cf21d249c3f972"
+    },
+    {
+      "lesson": "p04",
+      "index": 113,
+      "id": "p04-ex102-ОДЗ-б",
+      "sha256": "1810ca52a359751c057b6a4de96f87bbc6132bd18824eec3a755940809dec7a2"
+    },
+    {
+      "lesson": "p04",
+      "index": 114,
+      "id": "p04-ex102-зачем-ОДЗ",
+      "sha256": "d320e095c38620b9ca09f437a06f0f90eb9752d665d469b04bbb336b48f7b4db"
+    },
+    {
+      "lesson": "p04",
+      "index": 115,
+      "id": "p04-ex103-",
+      "sha256": "47627bfc54ed81a125370bdbf01e6c1ad595a6b7fb9237cb8c23dbcff06e0ff8"
+    },
+    {
+      "lesson": "p04",
+      "index": 116,
+      "id": "p04-ex104-тождество",
+      "sha256": "4397f6cd3307f1cf3b817c1d69f15ddd80ecddbe00d3406e286258511806bee2"
+    },
+    {
+      "lesson": "p04",
+      "index": 117,
+      "id": "p04-ex104-сумма",
+      "sha256": "fe3be810bb9a137086f4aa02c34914dff9c180919a6d81bc9b461c4bbf060c53"
+    },
+    {
+      "lesson": "p04",
+      "index": 118,
+      "id": "p04-ex105-формула",
+      "sha256": "c15f004c63875ee562d53f0c21403276e88b11d3ffdfcd3fd0309a11f6a24bba"
+    },
+    {
+      "lesson": "p04",
+      "index": 119,
+      "id": "p04-ex105-а",
+      "sha256": "d966efcb0d862b789fe73d4471ac4c8298b58360bd8bb9becf8ea25451f1349a"
+    },
+    {
+      "lesson": "p04",
+      "index": 120,
+      "id": "p04-ex105-б",
+      "sha256": "5b18e535d566ce4365816828525b0459c3018b6cce02430eb9fed0903ff43754"
+    },
+    {
+      "lesson": "p04",
+      "index": 121,
+      "id": "p04-ex106-формула",
+      "sha256": "fa478881c1d2724b1ef1ba95ed6a52b2ec42c4c096cdfe1a32f2fb8be753bf74"
+    },
+    {
+      "lesson": "p04",
+      "index": 122,
+      "id": "p04-ex106-значение",
+      "sha256": "2265c2a5a68baef089f37624b74f2af077ca7f84b72ae39f5b553429315f7d58"
+    },
+    {
+      "lesson": "p04",
+      "index": 123,
+      "id": "p04-ex107-x=-2",
+      "sha256": "5e3743a8c475699b79dfda9836a4f5f77f15bb47af6eb89662a70220be35154f"
+    },
+    {
+      "lesson": "p04",
+      "index": 124,
+      "id": "p04-ex107-x=0",
+      "sha256": "42b96568678a15225d73b2dadb1f23d55ab4614a4c4a0b7aefda56ae4728c6d7"
+    },
+    {
+      "lesson": "p04",
+      "index": 125,
+      "id": "p04-ex107-x=16",
+      "sha256": "2d6567b95458135ae1a60f4e50f40880675967f46faca65fbdb18b3828b13bba"
+    },
+    {
+      "lesson": "p04",
+      "index": 126,
+      "id": "p04-ex107-y=3",
+      "sha256": "bd9e4989749d017b4b38f6c1b21396d608715a6079d254e0dfeaf68c7eb5856c"
+    },
+    {
+      "lesson": "p04",
+      "index": 127,
+      "id": "p04-ex107-y=0",
+      "sha256": "6a6c5a49410d42f7b035d2b86c8ca1966c694a179a0746815a9fea1e1d992a2f"
+    },
+    {
+      "lesson": "p04",
+      "index": 128,
+      "id": "p04-ex107-y=-9",
+      "sha256": "c5cbe1cfa66d99af683837c5f5e3b39d51d13b394dc8bc9e28ce7c3ad2a912c7"
+    },
+    {
+      "lesson": "p04",
+      "index": 129,
+      "id": "p04-ex108-графики",
+      "sha256": "8eef41670ecaf5e84e561b12519433fe785bd3db79fd3e2d5c488b1e7840c7e4"
+    },
+    {
+      "lesson": "p04",
+      "index": 130,
+      "id": "p04-ex108-пересечение",
+      "sha256": "2056205af9b3751d6e5805f656fc3891c5118660a562ab263093e82989356924"
+    },
+    {
+      "lesson": "p04",
+      "index": 131,
+      "id": "p04-ex109-",
+      "sha256": "2b43b4a4dfdaa418651aa7b6d492d6b80db37ab365a3c153ef09d50242c38274"
+    },
+    {
+      "lesson": "p05",
+      "index": 0,
+      "id": "p05-t01",
+      "sha256": "af97d76ea22b3a97aac22c801646b56ab12af23718c4e214dfdf54c17c0e584e"
+    },
+    {
+      "lesson": "p05",
+      "index": 1,
+      "id": "p05-t02",
+      "sha256": "a050c5cc747dc57c2f314131a955d8a736046b5399eb8a0134b6a8c35c0f4368"
+    },
+    {
+      "lesson": "p05",
+      "index": 2,
+      "id": "p05-t03",
+      "sha256": "f91b93f00b54dc1e98fc360e5bcf30f439a50faf9426b4b74275140158b774f0"
+    },
+    {
+      "lesson": "p05",
+      "index": 3,
+      "id": "p05-t04",
+      "sha256": "2269e2df0cdde6eda49ac7a9c3465bdf81676e37ebe91817e7444a2b760a05d6"
+    },
+    {
+      "lesson": "p05",
+      "index": 4,
+      "id": "p05-t05",
+      "sha256": "0d4e232b934455115157fa6ca5459189399eed73aa958e8bb934899f725e7c04"
+    },
+    {
+      "lesson": "p05",
+      "index": 5,
+      "id": "p05-t06",
+      "sha256": "90aba131b0d69a76f17b332cf691db13ff01298fdf5ee0a14b13e3e94fec1362"
+    },
+    {
+      "lesson": "p06",
+      "index": 0,
+      "id": "p06-t01",
+      "sha256": "81891cc4d06ecca4cc9b4b41fce7d817c84b7c076157ae28ad9c4504b38946b5"
+    },
+    {
+      "lesson": "p06",
+      "index": 1,
+      "id": "p06-t02",
+      "sha256": "9278abcbd2c91ff89eff5e30809f08e4b128067a848d326d05b155ceb23aef9e"
+    },
+    {
+      "lesson": "p06",
+      "index": 2,
+      "id": "p06-t03",
+      "sha256": "8117ad5d79913929e904424a79e055180e50016f98e205766b38c532a55e0110"
+    },
+    {
+      "lesson": "p06",
+      "index": 3,
+      "id": "p06-t04",
+      "sha256": "73509fec10771f9f1170607fdd37627f3146cd028787cd67165d18b0a6c2483a"
+    },
+    {
+      "lesson": "p06",
+      "index": 4,
+      "id": "p06-t05",
+      "sha256": "f342e101d646a5bdab60838ded24e94654614f715319ce49bc88615a3a2aa8dd"
+    },
+    {
+      "lesson": "p06",
+      "index": 5,
+      "id": "p06-t06",
+      "sha256": "8a31857c929c2a0dc37fcb19347141d62e6b0ec7f5dae45b3a33c7d2a8e75077"
+    },
+    {
+      "lesson": "p07",
+      "index": 0,
+      "id": "p07-t01",
+      "sha256": "8208c309f3e9452f5dbcc8aec1ceb1e581e7502a49b8a568ca0e575f92cfcb70"
+    },
+    {
+      "lesson": "p07",
+      "index": 1,
+      "id": "p07-t02",
+      "sha256": "96dc07651dca098d071aef70f29910eaa429aba6ca7c2313947ce0dfc8a15047"
+    },
+    {
+      "lesson": "p07",
+      "index": 2,
+      "id": "p07-t03",
+      "sha256": "80e38c618bb8c669132d92e50a69038eda4a345aec32dbd9bbb0dca15e97fdcb"
+    },
+    {
+      "lesson": "p07",
+      "index": 3,
+      "id": "p07-t04",
+      "sha256": "455f333f866d2dbbb91e34e4c94cbe687ce91c787b5aba56d022b1591b27289a"
+    },
+    {
+      "lesson": "p07",
+      "index": 4,
+      "id": "p07-t05",
+      "sha256": "24742017d2675db5332351acadeded2ef87f1a3ec8c38306a790569226077562"
+    },
+    {
+      "lesson": "p07",
+      "index": 5,
+      "id": "p07-t06",
+      "sha256": "f7e541d9ad71bf2ad7935fa5513089e0ddcb4f3716dba43ac8f3c5d6b9678f6e"
+    },
+    {
+      "lesson": "p08",
+      "index": 0,
+      "id": "p08-t01",
+      "sha256": "f519637d4345396e0663eb284d1275330a70d4248a065098e515640ed55d3f85"
+    },
+    {
+      "lesson": "p08",
+      "index": 1,
+      "id": "p08-t02",
+      "sha256": "a1b9bd00b8043fbc02788f6afcf5042d7de052018820f2b63a5f0831266d59b1"
+    },
+    {
+      "lesson": "p08",
+      "index": 2,
+      "id": "p08-t03",
+      "sha256": "a577b40c48de24b1bd2552df721c0b730ec1023db50b35fef2182285fd829771"
+    },
+    {
+      "lesson": "p08",
+      "index": 3,
+      "id": "p08-t04",
+      "sha256": "7fc693667c0a2619775d4fbc7436d27452f7909e21237f96b2555c1840888d20"
+    },
+    {
+      "lesson": "p08",
+      "index": 4,
+      "id": "p08-t05",
+      "sha256": "a81204a6488ad4b15ca74af3678b564fe6545a5250434a7d0f2a805a9ad7ac58"
+    },
+    {
+      "lesson": "p08",
+      "index": 5,
+      "id": "p08-t06",
+      "sha256": "504bed5dcd0a936d508c305fc5190a670ed46aea28ea9e4cd7d0a85f6828bb19"
+    },
+    {
+      "lesson": "p09",
+      "index": 0,
+      "id": "p09-t01",
+      "sha256": "a8174bed49959c900311bb9577ee960e802375bc11143c9f0c0d451a657a1033"
+    },
+    {
+      "lesson": "p09",
+      "index": 1,
+      "id": "p09-t02",
+      "sha256": "b34c47b537e137d4acd21b725602c57a0b746c6dcdcc8ced15f32ac38dbeafdc"
+    },
+    {
+      "lesson": "p09",
+      "index": 2,
+      "id": "p09-t03",
+      "sha256": "68e6dd43f662962b810b94397a694a3abc963174fcbc857a4beb5b003e91914f"
+    },
+    {
+      "lesson": "p09",
+      "index": 3,
+      "id": "p09-t04",
+      "sha256": "27af15d2347945e7f1013582fb3bab81284ba488dd45bf443eb580e5800344e1"
+    },
+    {
+      "lesson": "p09",
+      "index": 4,
+      "id": "p09-t05",
+      "sha256": "9338a66781a4f25acaa03ca0c010f78565c4efa68e3a962642ecffce300e0db1"
+    },
+    {
+      "lesson": "p09",
+      "index": 5,
+      "id": "p09-t06",
+      "sha256": "f67084fcafa54ca600ad508394a379423c412ba0e5cc56f762d4117a66421ccf"
+    },
+    {
+      "lesson": "p10",
+      "index": 0,
+      "id": "p10-t01",
+      "sha256": "cdf86fffaf49d3ebfca8197356960a2fe1e7a03fb070d263767275ba0f8eedb9"
+    },
+    {
+      "lesson": "p10",
+      "index": 1,
+      "id": "p10-t02",
+      "sha256": "a82af3c48def980ceaacc113d67af435cff026ed2f7c21322ff08cfcde1c3934"
+    },
+    {
+      "lesson": "p10",
+      "index": 2,
+      "id": "p10-t03",
+      "sha256": "9bb87d0e0874c13f6bb1ed343b61c33592bee966fd69f7590ad0e546f712ed1b"
+    },
+    {
+      "lesson": "p10",
+      "index": 3,
+      "id": "p10-t04",
+      "sha256": "2f58757f06ae500af9b537740f55d8bcf5c0a1ff73b0bf7206fd6afdaf59d2be"
+    },
+    {
+      "lesson": "p10",
+      "index": 4,
+      "id": "p10-t05",
+      "sha256": "62bb90296453666730ab060ccf2d095ee3d065413b6d4fbc2559f5eb4def2e9f"
+    },
+    {
+      "lesson": "p10",
+      "index": 5,
+      "id": "p10-t06",
+      "sha256": "ecac738711bccc6fc7dcb4895ab10d61c597b8cf67e0d81f286eb951eaacabda"
+    },
+    {
+      "lesson": "p11",
+      "index": 0,
+      "id": "p11-t01",
+      "sha256": "87c33def9f6fc5725d87ef12267e42a3cf1b3e306d4c12ea9216e6dee9272fae"
+    },
+    {
+      "lesson": "p11",
+      "index": 1,
+      "id": "p11-t02",
+      "sha256": "484a91644bb9d9d0661d130d1c7a7e76fa5f13a2b3669b2c14a0daaf3020251e"
+    },
+    {
+      "lesson": "p11",
+      "index": 2,
+      "id": "p11-t03",
+      "sha256": "38fdc444439a9f1b10ea1b96c7af376c677c62dc0c81ecc506038977c6385726"
+    },
+    {
+      "lesson": "p11",
+      "index": 3,
+      "id": "p11-t04",
+      "sha256": "d80719e209c34ec1d08d1a54633b2f869a492cd7c3e94da58a7043f44d84bd59"
+    },
+    {
+      "lesson": "p11",
+      "index": 4,
+      "id": "p11-t05",
+      "sha256": "eec9594323d9e0b15dfc9f50c06613a509e80442cb24ca38030ad737c36f3ea9"
+    },
+    {
+      "lesson": "p11",
+      "index": 5,
+      "id": "p11-t06",
+      "sha256": "ce0d4a740e0e267afdf0cb565a6670f6431ef51e78341fc0d35bc64a7e8867f5"
+    },
+    {
+      "lesson": "p12",
+      "index": 0,
+      "id": "p12-t01",
+      "sha256": "0da3d17f4f8b894533aae73c09ad81331ec63a30768a1e63d2151d29c9f62b71"
+    },
+    {
+      "lesson": "p12",
+      "index": 1,
+      "id": "p12-t02",
+      "sha256": "15253585a647739e9474eca09dd1c3a7f76c002280e059bde4f4c79d490a40e3"
+    },
+    {
+      "lesson": "p12",
+      "index": 2,
+      "id": "p12-t03",
+      "sha256": "566f27b5761605d14f8b49872363b94866916deb245c0205a4082eadaca3562e"
+    },
+    {
+      "lesson": "p12",
+      "index": 3,
+      "id": "p12-t04",
+      "sha256": "bf64b6afbcbcffc86c34ff012122c8685bc58c1e1bebc3d6e2d8a207584c5e0d"
+    },
+    {
+      "lesson": "p12",
+      "index": 4,
+      "id": "p12-t05",
+      "sha256": "bf7e4aaa4e61f30866bc93e44fa220eddc2ca9a6886fd1c8b33e004e4737fff4"
+    },
+    {
+      "lesson": "p12",
+      "index": 5,
+      "id": "p12-t06",
+      "sha256": "a937a4b573454d46828114786dfd18c07300ac0e7e206b776eeaf9586dae291a"
+    },
+    {
+      "lesson": "p13",
+      "index": 0,
+      "id": "p13-t01",
+      "sha256": "c1d5d91810a46f7df7552f6b3d96f431b0fd278d1c5d25a9fef888311a1573a2"
+    },
+    {
+      "lesson": "p13",
+      "index": 1,
+      "id": "p13-t02",
+      "sha256": "e452d3673427ccb46a6fdfe17cf2155d8b47193fa6c031aace297f41dce43895"
+    },
+    {
+      "lesson": "p13",
+      "index": 2,
+      "id": "p13-t03",
+      "sha256": "7e66ab8b32e0adac0a0c720beaccda7d31070cf44477d931e4caef3af6c04635"
+    },
+    {
+      "lesson": "p13",
+      "index": 3,
+      "id": "p13-t04",
+      "sha256": "1522a0f338d1edb762963706904ee2848aa731d39a04bfef3b69cc17758ab439"
+    },
+    {
+      "lesson": "p13",
+      "index": 4,
+      "id": "p13-t05",
+      "sha256": "4ff7fa1b4b2417816f7a0ab15dbc86d1088d1f8e7e2b07966e6a4a93bd542e1b"
+    },
+    {
+      "lesson": "p13",
+      "index": 5,
+      "id": "p13-t06",
+      "sha256": "d05e711c92a2fe03000743d58d5258eeb1c2009694c2dc94a6336d8522f27be1"
+    },
+    {
+      "lesson": "p14",
+      "index": 0,
+      "id": "p14-t01",
+      "sha256": "cd608089666ee0ef16ef5356af7e9e3047946504ab0ad34e01ae036a6af21697"
+    },
+    {
+      "lesson": "p14",
+      "index": 1,
+      "id": "p14-t02",
+      "sha256": "0f5f5098567f4d65f96ec09d2812a459293c503d5cac2952c3573be87673e6ca"
+    },
+    {
+      "lesson": "p14",
+      "index": 2,
+      "id": "p14-t03",
+      "sha256": "ac47127c409a4d935d906e3311aff53292ebf1b5423ae8647292445cbf5f8caa"
+    },
+    {
+      "lesson": "p14",
+      "index": 3,
+      "id": "p14-t04",
+      "sha256": "69105ea96c3074591a1f8cd7dd9b7c2b6781a7d68bbf6dc56bff05f2428a684b"
+    },
+    {
+      "lesson": "p14",
+      "index": 4,
+      "id": "p14-t05",
+      "sha256": "57872f7a7d74ba804eee37dabf714e96738e00c0604c99c0f3059cb7ec2a8b1f"
+    },
+    {
+      "lesson": "p14",
+      "index": 5,
+      "id": "p14-t06",
+      "sha256": "4752f92c7e32c8bf537440a296c737e0006b22190931ea6a145169be214f9e40"
+    },
+    {
+      "lesson": "p15",
+      "index": 0,
+      "id": "p15-t01",
+      "sha256": "1e993f8eaa9478d929600062f79605936b9ccc398a736ba82617467a29f54a60"
+    },
+    {
+      "lesson": "p15",
+      "index": 1,
+      "id": "p15-t02",
+      "sha256": "af70c30a3ca2dba3bbfe4b67cd9998f1b5b082c6165106d2fcd8ee956c291f0b"
+    },
+    {
+      "lesson": "p15",
+      "index": 2,
+      "id": "p15-t03",
+      "sha256": "7b396f8d719f1d8a1d19449943a24dac10647b8443720e9e9a4d97afd1e8200d"
+    },
+    {
+      "lesson": "p15",
+      "index": 3,
+      "id": "p15-t04",
+      "sha256": "b3aade54e915905a62f9919b3baa4e2503e16e0a6577271ba41256b1d1e0691b"
+    },
+    {
+      "lesson": "p15",
+      "index": 4,
+      "id": "p15-t05",
+      "sha256": "d092be95a9be37b61de6e5ca6f014b09909cc4f470fb13d3900b832a99d3dbab"
+    },
+    {
+      "lesson": "p15",
+      "index": 5,
+      "id": "p15-t06",
+      "sha256": "336e2364c57475c0d366e5ad81bd0ffa560a1c5e4f373565842ef63ed3d7feae"
+    },
+    {
+      "lesson": "p16",
+      "index": 0,
+      "id": "p16-t01",
+      "sha256": "adfa9da1358edab3420eed4ee450795444b056a448abf3a3f9503f1d71a2ca11"
+    },
+    {
+      "lesson": "p16",
+      "index": 1,
+      "id": "p16-t02",
+      "sha256": "0c26e9f05b4fb261d10b738f24f8beaef6c40a4ebb1cd90a1a61ceba62cfd57e"
+    },
+    {
+      "lesson": "p16",
+      "index": 2,
+      "id": "p16-t03",
+      "sha256": "8a292a9d3b8e1e78bdf3e084de3bee206df04ef3dc28c9d868731a37ef640089"
+    },
+    {
+      "lesson": "p16",
+      "index": 3,
+      "id": "p16-t04",
+      "sha256": "1df5a5887f796525690db6205f98d62537727b93f2f862d41e3b1adfecc44c7f"
+    },
+    {
+      "lesson": "p16",
+      "index": 4,
+      "id": "p16-t05",
+      "sha256": "6d329214aa6aa0646c2c6ab60a3bebd70349848962650ccd5be45725adc06c9c"
+    },
+    {
+      "lesson": "p16",
+      "index": 5,
+      "id": "p16-t06",
+      "sha256": "1e0afc5794cd31364305f4c965055525386295231adbabd77b0fb1ef19f2837a"
+    },
+    {
+      "lesson": "p17",
+      "index": 0,
+      "id": "p17-t01",
+      "sha256": "7a58e56c21cae017ba71cf857766bc65fafc0f7fcd675a6a247db92a521999c7"
+    },
+    {
+      "lesson": "p17",
+      "index": 1,
+      "id": "p17-t02",
+      "sha256": "4682a06f08140b877706d91382739181eecd844910e11e35820f698271ba4a43"
+    },
+    {
+      "lesson": "p17",
+      "index": 2,
+      "id": "p17-t03",
+      "sha256": "24b29e1e8cedd450ed8aa9e9c69761b9e91751d17b97c1301ce3e8017771b3a1"
+    },
+    {
+      "lesson": "p17",
+      "index": 3,
+      "id": "p17-t04",
+      "sha256": "a07538ce541aecd73b761518caa0277249548154ffe6e3759cc43c644582af5f"
+    },
+    {
+      "lesson": "p17",
+      "index": 4,
+      "id": "p17-t05",
+      "sha256": "d48c221636c87199a62b75256605fbc4fac6060edff6bf02df3627762eda4dfd"
+    },
+    {
+      "lesson": "p17",
+      "index": 5,
+      "id": "p17-t06",
+      "sha256": "0771b7812a144d081826738aa8335a62aa56aeee2c10ccc816a8ba75d0019a0d"
+    },
+    {
+      "lesson": "p18",
+      "index": 0,
+      "id": "p18-t01",
+      "sha256": "38d7afe8e62d3e2a05607ae837f76ffc6cd7b73ff2ad46566223eecbbc8820a7"
+    },
+    {
+      "lesson": "p18",
+      "index": 1,
+      "id": "p18-t02",
+      "sha256": "6e1c732a813d4e1c7adbebb925b11530a8baee4c1341055cdaea450b91cb3a5c"
+    },
+    {
+      "lesson": "p18",
+      "index": 2,
+      "id": "p18-t03",
+      "sha256": "12b2295ed119dbfe2d6e513797f411adfb54b0666448a6096dd101404e2a25ad"
+    },
+    {
+      "lesson": "p18",
+      "index": 3,
+      "id": "p18-t04",
+      "sha256": "45593abceb7a88435cee49db1ef5862fb322fc1524b1bbaa927893b646bba76a"
+    },
+    {
+      "lesson": "p18",
+      "index": 4,
+      "id": "p18-t05",
+      "sha256": "d5d814e724644bb70b82ae3eb2c838a20a61b00d3ccc95685addf1825d94fb8d"
+    },
+    {
+      "lesson": "p18",
+      "index": 5,
+      "id": "p18-t06",
+      "sha256": "9b22218e970559e9ca0bc40a632dc06167475ee977a0653c8aea539b78360213"
+    },
+    {
+      "lesson": "p19",
+      "index": 0,
+      "id": "p19-t01",
+      "sha256": "916dcd0aa172c8802f209f15fe8c0f89ead776f6ec48375e1fea711d1e28c44e"
+    },
+    {
+      "lesson": "p19",
+      "index": 1,
+      "id": "p19-t02",
+      "sha256": "9c9c8761e034892f1db79c235377ef02d4c901116b95bec246f930754d6df532"
+    },
+    {
+      "lesson": "p19",
+      "index": 2,
+      "id": "p19-t03",
+      "sha256": "532b7a3385838e077b675e4d75cc60608d1f6c990b64ca4af8fd584e3bb9f632"
+    },
+    {
+      "lesson": "p19",
+      "index": 3,
+      "id": "p19-t04",
+      "sha256": "6acac095db8429cbaa8ca688f9506568ffe9f7739c9cd7ccd080e4c5d3851ed8"
+    },
+    {
+      "lesson": "p19",
+      "index": 4,
+      "id": "p19-t05",
+      "sha256": "1916f2987f24bb194b4a8dd35f890f5ddbc56c0cad68ad730f5442fa15246887"
+    },
+    {
+      "lesson": "p19",
+      "index": 5,
+      "id": "p19-t06",
+      "sha256": "74f396d9f16227fc95a2db7553690eae71f5f6d96917d01ffc6d47490def8194"
+    },
+    {
+      "lesson": "p20",
+      "index": 0,
+      "id": "p20-t01",
+      "sha256": "234059e38e46a6c19be88489d139327061c8403dfb6e4b057d979118a7821b81"
+    },
+    {
+      "lesson": "p20",
+      "index": 1,
+      "id": "p20-t02",
+      "sha256": "95468f17fbcd5b5c9e75d5cb6c040a0f6fdef44f94894ec57ad99045bba3f007"
+    },
+    {
+      "lesson": "p20",
+      "index": 2,
+      "id": "p20-t03",
+      "sha256": "0710955e1d85d20ad6645e9f29303558561070e2eae1c5d19eeff87bd8c3a7d6"
+    },
+    {
+      "lesson": "p20",
+      "index": 3,
+      "id": "p20-t04",
+      "sha256": "f0a9ad09e437f96bac79dd38bf765b0e83d1b1324dd7a8fcbdc94922224beb73"
+    },
+    {
+      "lesson": "p20",
+      "index": 4,
+      "id": "p20-t05",
+      "sha256": "cba07f8bdbf81fc4045d5e0b0bf8ffa20e40af41b9f40f59fb3da898ad5cb98e"
+    },
+    {
+      "lesson": "p20",
+      "index": 5,
+      "id": "p20-t06",
+      "sha256": "10e5f984b33f221d86e861ec7372d8397d3e4ad97bc7cea66478368cc52d8ab2"
+    },
+    {
+      "lesson": "p21",
+      "index": 0,
+      "id": "p21-t01",
+      "sha256": "a887e1dd59c500577e94f2f7b2155d2a9685bd8b3a28547939c733c3265570b9"
+    },
+    {
+      "lesson": "p21",
+      "index": 1,
+      "id": "p21-t02",
+      "sha256": "bb7103c65e679fa34980057e7d29399b4c840bee1afd5dc251a287f530096c2e"
+    },
+    {
+      "lesson": "p21",
+      "index": 2,
+      "id": "p21-t03",
+      "sha256": "b9187accc0d5ad0246be3a42d5176e2a4ec17962abd4f2d315d27b2ffd15af8c"
+    },
+    {
+      "lesson": "p21",
+      "index": 3,
+      "id": "p21-t04",
+      "sha256": "1638c6e51a4f0476f94f34b9653e52c6711bdc33aea34d95eda1c0eb735eba5d"
+    },
+    {
+      "lesson": "p21",
+      "index": 4,
+      "id": "p21-t05",
+      "sha256": "0d24c72ccaf172da3b16a536ade80c0f858976fe170abe60c6a0b882812e7e93"
+    },
+    {
+      "lesson": "p21",
+      "index": 5,
+      "id": "p21-t06",
+      "sha256": "7f75286350a8bd050917b3e50c16f7fa3fab617128c7ab33ec0f25021a3e08dc"
+    },
+    {
+      "lesson": "p22",
+      "index": 0,
+      "id": "p22-t01",
+      "sha256": "0a32a93605148710c86b75cc96853ea2091f3fd0dad984cd096a2ec8574432e1"
+    },
+    {
+      "lesson": "p22",
+      "index": 1,
+      "id": "p22-t02",
+      "sha256": "f1b2f7d2a1aafa1c97f1b14c9def5464f1cadbc8fdbbd94e11a7f4d7bccdb340"
+    },
+    {
+      "lesson": "p22",
+      "index": 2,
+      "id": "p22-t03",
+      "sha256": "13630096f3365b69d3dc897075e6519af277eb7e49ad9b8cb323ce249089fab5"
+    },
+    {
+      "lesson": "p22",
+      "index": 3,
+      "id": "p22-t04",
+      "sha256": "13a64ec131568ac2a7bf0ea912a2f8dcda6d53512fcbaf3d2baecd6ea2516e7a"
+    },
+    {
+      "lesson": "p22",
+      "index": 4,
+      "id": "p22-t05",
+      "sha256": "d023e5001abaddeafc758494e1340f00109b4230bb860ef5e280fe33658f76a2"
+    },
+    {
+      "lesson": "p22",
+      "index": 5,
+      "id": "p22-t06",
+      "sha256": "71ff084c2dd5362548cf0fadc0c48e61e16a824bdc362ce05e9876f0bc82ac7d"
+    },
+    {
+      "lesson": "p23",
+      "index": 0,
+      "id": "p23-t01",
+      "sha256": "c737a084ecc32d4af293231a0772f6043f2fafa1ceadbe6494783f147691f293"
+    },
+    {
+      "lesson": "p23",
+      "index": 1,
+      "id": "p23-t02",
+      "sha256": "623862d9df8bd49b47da618a917d89d0ee866822359453b0be29d5e333069310"
+    },
+    {
+      "lesson": "p23",
+      "index": 2,
+      "id": "p23-t03",
+      "sha256": "fc2a61604923899b596b934f3d1cb286fef715497c1e169dd60bea7cbe718895"
+    },
+    {
+      "lesson": "p23",
+      "index": 3,
+      "id": "p23-t04",
+      "sha256": "d7ff2a5378b27ac450d15263f0f0620053c22e4d71a9a55ef78b50a42a523619"
+    },
+    {
+      "lesson": "p23",
+      "index": 4,
+      "id": "p23-t05",
+      "sha256": "2b18bfc550bc3e7c7298a8db4fad195850491ef48dc3340049890c59238210ff"
+    },
+    {
+      "lesson": "p23",
+      "index": 5,
+      "id": "p23-t06",
+      "sha256": "4ed51b795c056fcb93b586d1c9528bf1f6f22b0d090eccc48d48102eefa02b78"
+    },
+    {
+      "lesson": "p24",
+      "index": 0,
+      "id": "p24-t01",
+      "sha256": "aadc1fb9db52054b6b8e84d9dc451d41f33a2d76b722bd5eaa743f47b40cce99"
+    },
+    {
+      "lesson": "p24",
+      "index": 1,
+      "id": "p24-t02",
+      "sha256": "67f93497e32544ac180a1a077c38ff3dffc0ef9cd02cbd2db3de344059676757"
+    },
+    {
+      "lesson": "p24",
+      "index": 2,
+      "id": "p24-t03",
+      "sha256": "e5634dafa31aa9ae8dfcdf31a7946cf09aefb1fee80c462cef801f16acd5c203"
+    },
+    {
+      "lesson": "p24",
+      "index": 3,
+      "id": "p24-t04",
+      "sha256": "6263a22ce543e0d7fc42a217c64069762d553d6d2e1adfbb2983502bb07dfddd"
+    },
+    {
+      "lesson": "p24",
+      "index": 4,
+      "id": "p24-t05",
+      "sha256": "2fa4ef40ca55b6c3081a8aeb32d5bd4ee59fdd7ab9664f35856f3cff76313c1f"
+    },
+    {
+      "lesson": "p24",
+      "index": 5,
+      "id": "p24-t06",
+      "sha256": "ef41b8bbc8fe943bd183b4c7f327acdf9264a5ac740135aaa42833f28f1ae8e9"
+    },
+    {
+      "lesson": "p25",
+      "index": 0,
+      "id": "p25-t01",
+      "sha256": "993d46dfe8971319e2d7950c0f4836ff4e1469ad2568647b9751e6a279c80e32"
+    },
+    {
+      "lesson": "p25",
+      "index": 1,
+      "id": "p25-t02",
+      "sha256": "10f323dbfcfe08c1a56ecb37b6d6f37372c80620e4fce88cfc2960db6d318e28"
+    },
+    {
+      "lesson": "p25",
+      "index": 2,
+      "id": "p25-t03",
+      "sha256": "1398f4017680fbe1a13fc852753b946bfeade172136935ce0b91565d8cab2d02"
+    },
+    {
+      "lesson": "p25",
+      "index": 3,
+      "id": "p25-t04",
+      "sha256": "8b0871365d0948fc0ef990245ebc642dde672de7a1c5322f1d939d9726385d7f"
+    },
+    {
+      "lesson": "p25",
+      "index": 4,
+      "id": "p25-t05",
+      "sha256": "1094d098bc1d89eeb696dd5d0d826357d605eb8f40bd2eff167c7c6b3655d70b"
+    },
+    {
+      "lesson": "p25",
+      "index": 5,
+      "id": "p25-t06",
+      "sha256": "e7bc0927033696e1a0b36fcf09a5d85682787be0394897facbe9037240738577"
+    },
+    {
+      "lesson": "p26",
+      "index": 0,
+      "id": "p26-t01",
+      "sha256": "10fb6bd373c9708523471830f8e48992d4746c1b9f8844ebbbbc7bdf61b5b434"
+    },
+    {
+      "lesson": "p26",
+      "index": 1,
+      "id": "p26-t02",
+      "sha256": "da3d124cab828bd01c390b8139f189d8dc5ecf62d15a30c636b5299a3b4c2a3f"
+    },
+    {
+      "lesson": "p26",
+      "index": 2,
+      "id": "p26-t03",
+      "sha256": "d565b48668b97ae4be6ec789d14e53d5492ebea154b0c704530fefa525212a56"
+    },
+    {
+      "lesson": "p26",
+      "index": 3,
+      "id": "p26-t04",
+      "sha256": "8b54970cda7701f114680f671781a5384570b7e1e87328478ad7471d4f95ed5b"
+    },
+    {
+      "lesson": "p26",
+      "index": 4,
+      "id": "p26-t05",
+      "sha256": "ea7be572e35bea9c04ef0d74a8cb6bec20cddb15b3d1aa7a34c1ed2b451a9a8f"
+    },
+    {
+      "lesson": "p26",
+      "index": 5,
+      "id": "p26-t06",
+      "sha256": "d4ed1f2e3895285cfbbf25d3285df5e9fbe1e533e2ecc966e2415320137b4313"
+    },
+    {
+      "lesson": "p27",
+      "index": 0,
+      "id": "p27-t01",
+      "sha256": "315caeef52a5b46f84d7bd7ea798a3f9b3ee8eec5c67c84f853462050438ad51"
+    },
+    {
+      "lesson": "p27",
+      "index": 1,
+      "id": "p27-t02",
+      "sha256": "c85b605618d571470bbb9406d6c3a50ba474222d67ce1df00291218bb1ec02cb"
+    },
+    {
+      "lesson": "p27",
+      "index": 2,
+      "id": "p27-t03",
+      "sha256": "1686d2bef8218e3c0a336e40019ccf8bdb089bb052125db43bde5b0b985e0b46"
+    },
+    {
+      "lesson": "p27",
+      "index": 3,
+      "id": "p27-t04",
+      "sha256": "823290278325c081139762e03f673ffce1b060a7f4488aa992cbc18828a860b2"
+    },
+    {
+      "lesson": "p27",
+      "index": 4,
+      "id": "p27-t05",
+      "sha256": "c552aad1c73fe2ac65c58aaabfcecbf4d4dc1cc79ad5e8f2c669d0b9af016bbf"
+    },
+    {
+      "lesson": "p27",
+      "index": 5,
+      "id": "p27-t06",
+      "sha256": "99fe108d8e8fd618c789248c98cd6c40ca4ffe6f24e96cebc7f4de2cdf93fbd7"
+    },
+    {
+      "lesson": "p28",
+      "index": 0,
+      "id": "p28-t01",
+      "sha256": "374facac23c290a9154817bcf70f5239ac1d9091d0149554b0b36f55bb650fc7"
+    },
+    {
+      "lesson": "p28",
+      "index": 1,
+      "id": "p28-t02",
+      "sha256": "c1eed332271016dbe81a3dacaab9b72529a0fef19e837f9f272e742b493f0d78"
+    },
+    {
+      "lesson": "p28",
+      "index": 2,
+      "id": "p28-t03",
+      "sha256": "ad809524c2555cae7ea1c60d205c0c32db850a613a795ff7101feeda984ebcbe"
+    },
+    {
+      "lesson": "p28",
+      "index": 3,
+      "id": "p28-t04",
+      "sha256": "8d014d28090a870e9c71fa600c84c82a71cd382784f7b0a62baa63b7d4fa2880"
+    },
+    {
+      "lesson": "p28",
+      "index": 4,
+      "id": "p28-t05",
+      "sha256": "2b2478a7dc2c2274e9254ffb4c1ca3b7b84d29a803a369e4f13495a1664cd88b"
+    },
+    {
+      "lesson": "p28",
+      "index": 5,
+      "id": "p28-t06",
+      "sha256": "eddd00b3a51154bedf61ac971fc88d072e30a03c04b514a4c15b843ba2cace36"
+    },
+    {
+      "lesson": "p29",
+      "index": 0,
+      "id": "p29-t01",
+      "sha256": "92648165d735e09ecab2c8ba823b3196c8740f4e9e785e032719cb255da6c4eb"
+    },
+    {
+      "lesson": "p29",
+      "index": 1,
+      "id": "p29-t02",
+      "sha256": "df992637b7df6cb9a499c2a0fd4fb363a2227617c0c59b33fc0cfb16d4bed06f"
+    },
+    {
+      "lesson": "p29",
+      "index": 2,
+      "id": "p29-t03",
+      "sha256": "437cdf7aba75094298ce0c0341a4725f18901f2067c1c52467832e71c1a1f562"
+    },
+    {
+      "lesson": "p29",
+      "index": 3,
+      "id": "p29-t04",
+      "sha256": "3dc57cfb16a1d226c09853684804758322395428f67a1eb4604da95c9c37ca9a"
+    },
+    {
+      "lesson": "p29",
+      "index": 4,
+      "id": "p29-t05",
+      "sha256": "c846af806fdea0739b1b561d905d5db4d8274d3f38c04b9333e597054a163ce2"
+    },
+    {
+      "lesson": "p29",
+      "index": 5,
+      "id": "p29-t06",
+      "sha256": "de8e933e3e8c00189670578906522a0cdb10c4ad42a97143cce2b3e1dcc7a113"
+    },
+    {
+      "lesson": "p30",
+      "index": 0,
+      "id": "p30-t01",
+      "sha256": "bc7446a3bdc72a15a68400059dd85763589289120804bcc033ca97aba7e2033b"
+    },
+    {
+      "lesson": "p30",
+      "index": 1,
+      "id": "p30-t02",
+      "sha256": "323b1349efbdadc903febb417b40ca9766f91f4086c11b44e007a38ba2ef26a1"
+    },
+    {
+      "lesson": "p30",
+      "index": 2,
+      "id": "p30-t03",
+      "sha256": "46d5a842d4ef7086a7677ba7a467568ca1989504d5640b469d4d488819063459"
+    },
+    {
+      "lesson": "p30",
+      "index": 3,
+      "id": "p30-t04",
+      "sha256": "9cfc2137259f0c51bc236b128520153baa1ff3e9682f714049f34e299dd31f4b"
+    },
+    {
+      "lesson": "p30",
+      "index": 4,
+      "id": "p30-t05",
+      "sha256": "7c2e8371c1075d1f6337d039f096c83522279cb0ffa018f898fb27f082890981"
+    },
+    {
+      "lesson": "p30",
+      "index": 5,
+      "id": "p30-t06",
+      "sha256": "256224d93063015a1b3f63b52dcab20431c155181ba2adce4013e9ba61d8cd77"
+    },
+    {
+      "lesson": "p31",
+      "index": 0,
+      "id": "p31-t01",
+      "sha256": "afeeabc503794fbcdca3375ed5e7ad1799bc47c647238d8c3b97d9922c533ce2"
+    },
+    {
+      "lesson": "p31",
+      "index": 1,
+      "id": "p31-t02",
+      "sha256": "1c541b6ae90bb3414691a43d478d5249bcc074701ef7b2031a0e204f6e7c12ef"
+    },
+    {
+      "lesson": "p31",
+      "index": 2,
+      "id": "p31-t03",
+      "sha256": "a9735275778c9e2b8c7b0ea0a27ec615214766644200718d95d931a2b1fec7a4"
+    },
+    {
+      "lesson": "p31",
+      "index": 3,
+      "id": "p31-t04",
+      "sha256": "331fc178b4fd4fd803a7f7fac3adae039fb6f082f4077092ed7f2f4b9bc011a5"
+    },
+    {
+      "lesson": "p31",
+      "index": 4,
+      "id": "p31-t05",
+      "sha256": "35ace1026e8a6eb19fbba141cd0db9c9e936008e0d46d1968169cb4430917ed0"
+    },
+    {
+      "lesson": "p31",
+      "index": 5,
+      "id": "p31-t06",
+      "sha256": "589c972c867cdc90b06f6677b5fafe4087fb9ddecd4047312c942e7a514a11a5"
+    },
+    {
+      "lesson": "p32",
+      "index": 0,
+      "id": "p32-t01",
+      "sha256": "c30c3b7a46145abcdeac9b0663f34ad1701bfbca0726850cfa627e79eac6b7ca"
+    },
+    {
+      "lesson": "p32",
+      "index": 1,
+      "id": "p32-t02",
+      "sha256": "471c44c197644c128fd30ba6e1cdd0d313abce42654fea760112d6d08c71972b"
+    },
+    {
+      "lesson": "p32",
+      "index": 2,
+      "id": "p32-t03",
+      "sha256": "623961b343abb3fb83facceb1d54048b4eb00f660b86dad39e6ebae4e3277f13"
+    },
+    {
+      "lesson": "p32",
+      "index": 3,
+      "id": "p32-t04",
+      "sha256": "6019cc210d137f6a49bb40c7d37c0bf8475a942803c49552c9a2e334606defd6"
+    },
+    {
+      "lesson": "p32",
+      "index": 4,
+      "id": "p32-t05",
+      "sha256": "7a0e0e3bab3db6bdadb6b129f0b8d708bc525eb290d7f41e3d2e183c1a5b17d9"
+    },
+    {
+      "lesson": "p32",
+      "index": 5,
+      "id": "p32-t06",
+      "sha256": "5a869c9c7e35672461396e9c0beca99cd5b836c0fb7c3174845dbb85de8c145e"
+    },
+    {
+      "lesson": "p33",
+      "index": 0,
+      "id": "p33-t01",
+      "sha256": "f8356c2f06911810cff6f03ee97445ca2d8752b35fdc61867ea9202dc8b83c57"
+    },
+    {
+      "lesson": "p33",
+      "index": 1,
+      "id": "p33-t02",
+      "sha256": "52e50738ba8c094ff23972c5047bc287a90433541a7d02074e865a6c2ba47d3a"
+    },
+    {
+      "lesson": "p33",
+      "index": 2,
+      "id": "p33-t03",
+      "sha256": "746b140194cd5dc2624e6d2bb3819896979cc98917db6ecabf1b87ea197b7139"
+    },
+    {
+      "lesson": "p33",
+      "index": 3,
+      "id": "p33-t04",
+      "sha256": "ed2456e0cdad3299bf60c92a25fdd10c523295299d5b85e0d421a4fde6a190ab"
+    },
+    {
+      "lesson": "p33",
+      "index": 4,
+      "id": "p33-t05",
+      "sha256": "0508b755da479ded96e820b6c6563699d5893bef64f995d0025c701cc6b100d9"
+    },
+    {
+      "lesson": "p33",
+      "index": 5,
+      "id": "p33-t06",
+      "sha256": "dd5f2fae9be905d1a1ae73b02f7a07e29d8225ceb5b122fc8126a0084751503a"
+    },
+    {
+      "lesson": "p34",
+      "index": 0,
+      "id": "p34-t01",
+      "sha256": "d462c88992413e02aa6f97865fd29bf59dba9fc274df31f7afffe28b07be5077"
+    },
+    {
+      "lesson": "p34",
+      "index": 1,
+      "id": "p34-t02",
+      "sha256": "f0c33069e31becc6668499cebb357e7eb63246ec373c9e1439d66f23aa776b8d"
+    },
+    {
+      "lesson": "p34",
+      "index": 2,
+      "id": "p34-t03",
+      "sha256": "fd29eede505734128425c7588621abf0b413d6401cc7c0ff8cd3bcb3a53f44d3"
+    },
+    {
+      "lesson": "p34",
+      "index": 3,
+      "id": "p34-t04",
+      "sha256": "ae90ab4924adf6f7f0ad49a4d793e16cd8bc7dc23728c2daa3ffc1045b352eb1"
+    },
+    {
+      "lesson": "p34",
+      "index": 4,
+      "id": "p34-t05",
+      "sha256": "c52c13e94111bde426531dd36b67e5d49633730894df2b3ffb24b90528a574c5"
+    },
+    {
+      "lesson": "p34",
+      "index": 5,
+      "id": "p34-t06",
+      "sha256": "556dfee59bca3095681a1f212bebbcac5aac113b1b8150b925091f55b1b62ef3"
+    },
+    {
+      "lesson": "p35",
+      "index": 0,
+      "id": "p35-t01",
+      "sha256": "27162f3244ab095c3a30d894e1b5eef17afed0d26d8372021480c5c4c6ccb88a"
+    },
+    {
+      "lesson": "p35",
+      "index": 1,
+      "id": "p35-t02",
+      "sha256": "502cd31bc9a86213162e52a9245820f8b1209124c2a16ac43ed9fa6aac7900ff"
+    },
+    {
+      "lesson": "p35",
+      "index": 2,
+      "id": "p35-t03",
+      "sha256": "ade6bb4a95760879d313398c3c324d23e623dc855c983a6f46aff9710de3624d"
+    },
+    {
+      "lesson": "p35",
+      "index": 3,
+      "id": "p35-t04",
+      "sha256": "266f45b3bb2d0dd342d58bfe311ce633caa573fcacef6a2d94615c380465099f"
+    },
+    {
+      "lesson": "p35",
+      "index": 4,
+      "id": "p35-t05",
+      "sha256": "413f35c7554823a1cc308f7f2d78cc30570c57b0fb6db2f3e8688933ee8d8465"
+    },
+    {
+      "lesson": "p35",
+      "index": 5,
+      "id": "p35-t06",
+      "sha256": "ae029413eef8b6a7e4aa2f3174a6e86af23b386b7905de4bec7add9a83069d4b"
+    },
+    {
+      "lesson": "p36",
+      "index": 0,
+      "id": "p36-t01",
+      "sha256": "30b49052a1ea8b0c0abc17ac16a6d12d6da6075b1d260d5fbd5ccdf7aba8a3d3"
+    },
+    {
+      "lesson": "p36",
+      "index": 1,
+      "id": "p36-t02",
+      "sha256": "4f59eddd0e28fe1ad39f2e312139026a0141f90d57ac89a2f51d61ee8f5e59b8"
+    },
+    {
+      "lesson": "p36",
+      "index": 2,
+      "id": "p36-t03",
+      "sha256": "887c6bdc3372c7ff3e4c11ba223b35cdc08ec1e98bd46ec4980b50fb337c24a1"
+    },
+    {
+      "lesson": "p36",
+      "index": 3,
+      "id": "p36-t04",
+      "sha256": "24f2560e43ea35a99031dd11c3d3eac9051d5f38ee7e09c9e488a075aa15e603"
+    },
+    {
+      "lesson": "p36",
+      "index": 4,
+      "id": "p36-t05",
+      "sha256": "8a6c09d7221512e3d6f7b3ae912b735320eaff383ce4fb69dbb6fc5141b229e1"
+    },
+    {
+      "lesson": "p36",
+      "index": 5,
+      "id": "p36-t06",
+      "sha256": "e3619ac8bbf6c1dff636c0b09677b3fffbdaa8f3bc1786c8a2eba6c4f297a3e0"
+    },
+    {
+      "lesson": "p37",
+      "index": 0,
+      "id": "p37-t01",
+      "sha256": "03d2c0f9fae2ae537407f61f63eabbb991426a8585cccb83cbb8518d8d8bd78e"
+    },
+    {
+      "lesson": "p37",
+      "index": 1,
+      "id": "p37-t02",
+      "sha256": "4efca11b589673af7680480112bf407e5bd743a67bfe5ef38d599921097a2b6f"
+    },
+    {
+      "lesson": "p37",
+      "index": 2,
+      "id": "p37-t03",
+      "sha256": "b571145427e745a0f0df7484447d3e1961248966edcd9ad41178b192e10fa092"
+    },
+    {
+      "lesson": "p37",
+      "index": 3,
+      "id": "p37-t04",
+      "sha256": "2e52fe2ac51b8bab763d8d0f018e0c620fd876a5322e82a995d38831bcd3de4f"
+    },
+    {
+      "lesson": "p37",
+      "index": 4,
+      "id": "p37-t05",
+      "sha256": "ef7a8a5c3af2ea91bdcc80d8391a0653fdf894aed3256f463ba6d8aba3753414"
+    },
+    {
+      "lesson": "p37",
+      "index": 5,
+      "id": "p37-t06",
+      "sha256": "d5df6141678741088c179e5c25c7d68315cb08251cfbf293a0e99957dddcdbce"
+    },
+    {
+      "lesson": "p38",
+      "index": 0,
+      "id": "p38-t01",
+      "sha256": "faa7d524e035b47f144eba82c064fdf57763ab1062aebeb48d8149a012f82a1a"
+    },
+    {
+      "lesson": "p38",
+      "index": 1,
+      "id": "p38-t02",
+      "sha256": "5dc0ce5d8e010856f0b428df5ccb5e39c35bbe5c0f5c051f5d31534e0fef434e"
+    },
+    {
+      "lesson": "p38",
+      "index": 2,
+      "id": "p38-t03",
+      "sha256": "2e8cdda591baad0b34f2620ef87fd5a6ce9d5c6a10145fffd4a43cf150889c03"
+    },
+    {
+      "lesson": "p38",
+      "index": 3,
+      "id": "p38-t04",
+      "sha256": "8e9cbdcfb7f2f6dc16abc77767432eaf4b067be5008a563f3454819debb92ba1"
+    },
+    {
+      "lesson": "p38",
+      "index": 4,
+      "id": "p38-t05",
+      "sha256": "e023f387afb5e4633bd4b92f9a34e5a42280a491fbb842158944bc4a0743ef80"
+    },
+    {
+      "lesson": "p38",
+      "index": 5,
+      "id": "p38-t06",
+      "sha256": "eeb484ee06d864c195da69cd67680ce4bbb1142acce8eb2cf77a889d87275f35"
+    },
+    {
+      "lesson": "p39",
+      "index": 0,
+      "id": "p39-t01",
+      "sha256": "7cbc84478bdba9f605c2503681de094fb81b5ab9f4ab3788de7493315599782d"
+    },
+    {
+      "lesson": "p39",
+      "index": 1,
+      "id": "p39-t02",
+      "sha256": "2d66af2997f7fec1f433ac5cf8fd54d0e5b29d3f29382647de365be47be909a8"
+    },
+    {
+      "lesson": "p39",
+      "index": 2,
+      "id": "p39-t03",
+      "sha256": "0b4b05b031932d3ce250b1a432a57c61bd7dbcff9352422b4d5b64705c28ef0a"
+    },
+    {
+      "lesson": "p39",
+      "index": 3,
+      "id": "p39-t04",
+      "sha256": "b00d7421adcc77829f8ea94c728b005ed15e38fdc964d858e43d87d8ba3218ab"
+    },
+    {
+      "lesson": "p39",
+      "index": 4,
+      "id": "p39-t05",
+      "sha256": "fa59498e1e04eebf3af30969d7028161d9ff5bce2b2b4257b2cd83c4bdf2c909"
+    },
+    {
+      "lesson": "p39",
+      "index": 5,
+      "id": "p39-t06",
+      "sha256": "abd5009de4d0886d3a1b75df934d4528667c70dfa63b261b53e66a8b6fced08c"
+    },
+    {
+      "lesson": "p40",
+      "index": 0,
+      "id": "p40-t01",
+      "sha256": "13cf101d07693cddeb3d750381413e72e2f1851a6649993e7085fa7624415eb3"
+    },
+    {
+      "lesson": "p40",
+      "index": 1,
+      "id": "p40-t02",
+      "sha256": "196f409e591047af71e457da69a551decdbe1de2130ad8eb4f380fcc53278834"
+    },
+    {
+      "lesson": "p40",
+      "index": 2,
+      "id": "p40-t03",
+      "sha256": "9e4c32a192f85dd7ff7137b7d5f89e8c4a2f33bfdee0aafea03444a65fb1988c"
+    },
+    {
+      "lesson": "p40",
+      "index": 3,
+      "id": "p40-t04",
+      "sha256": "bde32c55485efc5456a1baf04007a83c11e20c985affbe7f30757c819da60887"
+    },
+    {
+      "lesson": "p40",
+      "index": 4,
+      "id": "p40-t05",
+      "sha256": "5e1ec4d0a6acf29694a19b7c89ec382b1ee051b188a8fed6af51db76637f793b"
+    },
+    {
+      "lesson": "p40",
+      "index": 5,
+      "id": "p40-t06",
+      "sha256": "4548f1a71959cf05dd9cddb59ea4aaf5751bcf575fa6a913a907b480510fa6c3"
+    },
+    {
+      "lesson": "p41",
+      "index": 0,
+      "id": "p41-t01",
+      "sha256": "ca862cef2ed63a4a0693dc78a5f45249dc0d4c780dca5a20449503e2b49fa8e9"
+    },
+    {
+      "lesson": "p41",
+      "index": 1,
+      "id": "p41-t02",
+      "sha256": "87b5c267c00db674dd6c7d7aa1c1d14dd6b2bc7b3c22166205330698b2bce14a"
+    },
+    {
+      "lesson": "p41",
+      "index": 2,
+      "id": "p41-t03",
+      "sha256": "7a78c44d8c16aa0600a7412d29788009c57334b21af36ed2a7c5e45def7240cc"
+    },
+    {
+      "lesson": "p41",
+      "index": 3,
+      "id": "p41-t04",
+      "sha256": "18210e0d2bf061cf1172cb94dc3010e12c85d517217ab6079af05330bb09543c"
+    },
+    {
+      "lesson": "p41",
+      "index": 4,
+      "id": "p41-t05",
+      "sha256": "528ebe8cd84afe9c8acbe53b93d106d69550beccc43076d9b656f7f06adb9b72"
+    },
+    {
+      "lesson": "p41",
+      "index": 5,
+      "id": "p41-t06",
+      "sha256": "26c0e6ef1e7107e559f8d9435b147f10b0160580b766b1c22b6b34ac5aaa4385"
+    },
+    {
+      "lesson": "p42",
+      "index": 0,
+      "id": "p42-t01",
+      "sha256": "1cca27bc74475fe9c5850249e490fdce618a61c078b454227f267aa1a79f5bff"
+    },
+    {
+      "lesson": "p42",
+      "index": 1,
+      "id": "p42-t02",
+      "sha256": "fb44337b90102bd6f0f4d7e3f908504719cde293eb61a122fe0615f2c9240a96"
+    },
+    {
+      "lesson": "p42",
+      "index": 2,
+      "id": "p42-t03",
+      "sha256": "981f1f595d03b0e659c36f522b3a44b9d4abed7156132e950a54f55848b20f31"
+    },
+    {
+      "lesson": "p42",
+      "index": 3,
+      "id": "p42-t04",
+      "sha256": "31b283ba1fc94907646c543bf1a8ae7cb79c80d04efa3ec26a2cf1680aa3959d"
+    },
+    {
+      "lesson": "p42",
+      "index": 4,
+      "id": "p42-t05",
+      "sha256": "e55a1fafd688584292038663a8a7cd41cf3ccb99c8b53481222529df1f5eac5f"
+    },
+    {
+      "lesson": "p42",
+      "index": 5,
+      "id": "p42-t06",
+      "sha256": "9d86c26393bb4cb64b4ea5a780dae963f40dbae58028e0db3358f5e8f9dfe5b5"
+    },
+    {
+      "lesson": "p43",
+      "index": 0,
+      "id": "p43-t01",
+      "sha256": "241a54075cf2b84777235552b85eaa25dc1aecde96abeee22616e594aa29632b"
+    },
+    {
+      "lesson": "p43",
+      "index": 1,
+      "id": "p43-t02",
+      "sha256": "cd9f60a4f53d0774dfb220a0e8e836f14f7280bc476abaaebf8d8a31e9e0fdab"
+    },
+    {
+      "lesson": "p43",
+      "index": 2,
+      "id": "p43-t03",
+      "sha256": "dfa8ad250e0c9d2e88c2e3d2ff8f6f7c4b996ba01e808530bc2e35c2966d4a6e"
+    },
+    {
+      "lesson": "p43",
+      "index": 3,
+      "id": "p43-t04",
+      "sha256": "c90ef9d5dc8585224083cb99ec9a0163578e69eb1cbfd05557de8e2a56b380cd"
+    },
+    {
+      "lesson": "p43",
+      "index": 4,
+      "id": "p43-t05",
+      "sha256": "5cd73fb6227c5ad40cd2b0000118bea54c593598bdd831b057e885a3b6993e42"
+    },
+    {
+      "lesson": "p43",
+      "index": 5,
+      "id": "p43-t06",
+      "sha256": "6bdcec4b2efac6c879a546870ca4416cee0627ab2c65d9f755a0617c6745103e"
+    },
+    {
+      "lesson": "p44",
+      "index": 0,
+      "id": "p44-t01",
+      "sha256": "815c51c9b1facb8bc30b3e1455eb5a93ec1912b51cdb68547e4da3db9fc81ae4"
+    },
+    {
+      "lesson": "p44",
+      "index": 1,
+      "id": "p44-t02",
+      "sha256": "a95ef9329b45c21010d7605cc18384ff0f804e20dd45511fb1171ca4e2e9fd8f"
+    },
+    {
+      "lesson": "p44",
+      "index": 2,
+      "id": "p44-t03",
+      "sha256": "90dd39231446a27310bcb7d1931be6a59c33b9392b458bb2cfafe64a1a0857aa"
+    },
+    {
+      "lesson": "p44",
+      "index": 3,
+      "id": "p44-t04",
+      "sha256": "b091834cb3d31e56de472febd5bf82cb0a2e18babbd53bfa4cdc7806cc2325a9"
+    },
+    {
+      "lesson": "p44",
+      "index": 4,
+      "id": "p44-t05",
+      "sha256": "0a8f81a04ddab3448e0f95b4681398310a9e157fd2db7cde70c26c5115cb5ed4"
+    },
+    {
+      "lesson": "p44",
+      "index": 5,
+      "id": "p44-t06",
+      "sha256": "2b4bcb77c66c32beb68b482c293337bdbfc725d020c4c48c76f0b7215ddc9236"
+    },
+    {
+      "lesson": "p45",
+      "index": 0,
+      "id": "p45-t01",
+      "sha256": "496fe1b4d0e0d95613924a4a0da4b7d9853baafa4df2b821d1852703f3dd3510"
+    },
+    {
+      "lesson": "p45",
+      "index": 1,
+      "id": "p45-t02",
+      "sha256": "7d62b0512bb48f0af9c4c12341feed5a88c5b643f6b3fd842016b6f6e95847f5"
+    },
+    {
+      "lesson": "p45",
+      "index": 2,
+      "id": "p45-t03",
+      "sha256": "eb2808e3d2c8caaec2fb94d58f3e5b916a6e2cf13a6150cd16f3f8ced041c37a"
+    },
+    {
+      "lesson": "p45",
+      "index": 3,
+      "id": "p45-t04",
+      "sha256": "fcaf31c2b3d2c27151df64176cb900cf971f4f41a2121934fd49cdfa12351ee5"
+    },
+    {
+      "lesson": "p45",
+      "index": 4,
+      "id": "p45-t05",
+      "sha256": "64a79b126ff5f815652be8693a08c378249f9f6cf8ac3cfe2b74fe373258b49b"
+    },
+    {
+      "lesson": "p45",
+      "index": 5,
+      "id": "p45-t06",
+      "sha256": "88666e619395850b1f1b714531aaadbf3e62e16a8acf457ca8ac40c7a2c57f9f"
+    },
+    {
+      "lesson": "p46",
+      "index": 0,
+      "id": "p46-t01",
+      "sha256": "ced4473a8ddef264dcec2b96e00d5be48b843e4967f5f2913c8d5c6110163b16"
+    },
+    {
+      "lesson": "p46",
+      "index": 1,
+      "id": "p46-t02",
+      "sha256": "b2e7767397a5bbad67a2abdcb619f67a79380857411d1040d5e377e24054ed63"
+    },
+    {
+      "lesson": "p46",
+      "index": 2,
+      "id": "p46-t03",
+      "sha256": "ac1001073086b298ddfac813dc2bcfa0cb9d5516f1faf0e0e1d13a1d70e9ab82"
+    },
+    {
+      "lesson": "p46",
+      "index": 3,
+      "id": "p46-t04",
+      "sha256": "be5945c665625de49e8359c9ee24f116659f35ccc9752eb10afdf831ebd47777"
+    },
+    {
+      "lesson": "p46",
+      "index": 4,
+      "id": "p46-t05",
+      "sha256": "69e96c06d48e15bbfd8482311e485043f93cedef4aa87d36420e049fe1847ee8"
+    },
+    {
+      "lesson": "p46",
+      "index": 5,
+      "id": "p46-t06",
+      "sha256": "297d50c75f020a0f44ba5d7f9b7b3a24747ff049ab4a99e4694c804e5b736c54"
+    },
+    {
+      "lesson": "p47",
+      "index": 0,
+      "id": "p47-t01",
+      "sha256": "729de243e3a5152e973c19ecd6513baecf0a7819954097d5dd8aff077ccced71"
+    },
+    {
+      "lesson": "p47",
+      "index": 1,
+      "id": "p47-t02",
+      "sha256": "17d871abb0678936c4b5da96745ea56a1ba4bd48009df797878499d8281dedbf"
+    },
+    {
+      "lesson": "p47",
+      "index": 2,
+      "id": "p47-t03",
+      "sha256": "148d4f836627275fd2edf345fb3cb262617acd39d32f014461a4ad07d963de85"
+    },
+    {
+      "lesson": "p47",
+      "index": 3,
+      "id": "p47-t04",
+      "sha256": "7758853f65f95200f642c750d13e7a5f490e7633e56ded0e716aec16ad77f9ae"
+    },
+    {
+      "lesson": "p47",
+      "index": 4,
+      "id": "p47-t05",
+      "sha256": "5e74a4263921edfc82f9fdf32b859511ceea1af83d5d5291bf12c9cefb549266"
+    },
+    {
+      "lesson": "p47",
+      "index": 5,
+      "id": "p47-t06",
+      "sha256": "d74b40b5c8dbe036aafab435f971a84d38d103386460831c821bd65e243d9d91"
+    },
+    {
+      "lesson": "p48",
+      "index": 0,
+      "id": "p48-t01",
+      "sha256": "7d7e41adf6095cdf5c9513062814dad8fbec11e274af7d082c112dfd1a148c56"
+    },
+    {
+      "lesson": "p48",
+      "index": 1,
+      "id": "p48-t02",
+      "sha256": "5bf5049e8bb9b38293ad9c914a94b51928e67628ddead92d782dd9d33e0313d6"
+    },
+    {
+      "lesson": "p48",
+      "index": 2,
+      "id": "p48-t03",
+      "sha256": "7967477814269e7ad5a0ec51e579c1dbee4fdf35d02f68faac8faa63abb3211d"
+    },
+    {
+      "lesson": "p48",
+      "index": 3,
+      "id": "p48-t04",
+      "sha256": "7085ed1578995291a19218bfb8ac2d1eb6132915bcc3021483b3925ffd95b543"
+    },
+    {
+      "lesson": "p48",
+      "index": 4,
+      "id": "p48-t05",
+      "sha256": "7a1544e9b0e602a60ece979df170adc013cdd1a659649cb7c19e60496dc15c5d"
+    },
+    {
+      "lesson": "p48",
+      "index": 5,
+      "id": "p48-t06",
+      "sha256": "fb0b8a485b4a575fd3edf6b6d0dbe4afaa2528b9718f3a59b9531877d3146897"
+    },
+    {
+      "lesson": "p49",
+      "index": 0,
+      "id": "p49-t01",
+      "sha256": "b61497a7087c4b610228ff690de7c441bba527a0b19ece52d56ecf03038dc374"
+    },
+    {
+      "lesson": "p49",
+      "index": 1,
+      "id": "p49-t02",
+      "sha256": "5e6cfbaf9fb6becf2e837023513e6b265c97055edb68aaf67bbbf1500cc0c5d2"
+    },
+    {
+      "lesson": "p49",
+      "index": 2,
+      "id": "p49-t03",
+      "sha256": "957a93110bc8aacbfa445b4c8ab9c8acbef7caa27e208f43ff6a1c8cb006502d"
+    },
+    {
+      "lesson": "p49",
+      "index": 3,
+      "id": "p49-t04",
+      "sha256": "6d8bbc68ea1a1968aa72acd7c5337eb7c4a2fbf555c7311ff16133cf046b520e"
+    },
+    {
+      "lesson": "p49",
+      "index": 4,
+      "id": "p49-t05",
+      "sha256": "d631b9eabf29e0f00eebd4b8a8343e59ee82abe0c2febc9d6cac50a2373edf7d"
+    },
+    {
+      "lesson": "p49",
+      "index": 5,
+      "id": "p49-t06",
+      "sha256": "2d633da12a03bf8bf403195d7e672c3fdd3325b1fd17f017596b0d869458d9f9"
+    },
+    {
+      "lesson": "p50",
+      "index": 0,
+      "id": "p50-t01",
+      "sha256": "35c1d025f3b908c2d8f00a478541963339671931356e99595bc133bb76db585e"
+    },
+    {
+      "lesson": "p50",
+      "index": 1,
+      "id": "p50-t02",
+      "sha256": "eef00c5c4c1f7952fdc079102596309afe35faf1049480b11941430e284f5f63"
+    },
+    {
+      "lesson": "p50",
+      "index": 2,
+      "id": "p50-t03",
+      "sha256": "4d60a1e146c0bdc123283574cabff81771191f414623d9e0a2dcd29693041047"
+    },
+    {
+      "lesson": "p50",
+      "index": 3,
+      "id": "p50-t04",
+      "sha256": "4f9de5ab8f6c8e959e66415f20209e4af5cc0ea10f61dd48337fd9682836b41e"
+    },
+    {
+      "lesson": "p50",
+      "index": 4,
+      "id": "p50-t05",
+      "sha256": "16094c9ae7a7632d821d5df2b40751eb2909d701f3806ca09d30c78a35724c98"
+    },
+    {
+      "lesson": "p50",
+      "index": 5,
+      "id": "p50-t06",
+      "sha256": "a5231be50ad6545b0defe90eeaa24d43d5d2849b872ec048c64dc96cc75ac25f"
+    },
+    {
+      "lesson": "p51",
+      "index": 0,
+      "id": "p51-t01",
+      "sha256": "5d6609e9cdb24efbc0134c0d8b181c3c3121d8ee9898493a06d36e3d79cb5311"
+    },
+    {
+      "lesson": "p51",
+      "index": 1,
+      "id": "p51-t02",
+      "sha256": "ebe90dd7a8b3fd01fc02f8c3a8e51d038a0086909ce192ae45faf39a69fb4d8d"
+    },
+    {
+      "lesson": "p51",
+      "index": 2,
+      "id": "p51-t03",
+      "sha256": "71399b784e327db753211fff335cdf28644f7faa6c47a1c30fa6fb52d35a2fc6"
+    },
+    {
+      "lesson": "p51",
+      "index": 3,
+      "id": "p51-t04",
+      "sha256": "0c8e9cd616e04b8ba61b670a60f078e45dcd9eb5b4ead4a7fc1942dc37d0fa48"
+    },
+    {
+      "lesson": "p51",
+      "index": 4,
+      "id": "p51-t05",
+      "sha256": "c7eb25847c159e4c28d2cf2d006ebd9df1f1429ead7b7284908cc99b3e6fc8ea"
+    },
+    {
+      "lesson": "p51",
+      "index": 5,
+      "id": "p51-t06",
+      "sha256": "68671109547ff701cd67aad457ca0367a6ac7093fea7f0d590511bdd4027c1fe"
+    }
+  ]
+}

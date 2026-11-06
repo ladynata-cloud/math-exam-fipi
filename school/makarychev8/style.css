@@ -34,3 +34,8 @@
 .task-graphs .graph-zoom{background:transparent;color:var(--ink);border:0;padding:0;min-height:44px;font-size:inherit;text-decoration:underline;text-underline-offset:3px}
 .graph-dialog{width:500px;max-width:94vw;max-height:94vh;border:1px solid var(--line);border-radius:16px;padding:16px;color:var(--ink)}
 .graph-dialog::backdrop{background:#203b3677}.task-graphs .graph-dialog svg{max-height:65vh;width:100%;height:auto}.graph-dialog p{margin:0;font-weight:650}.graph-dialog button{width:100%}
+
+/* Source root diagrams remain beside the condition at every width. */
+.task-graphs.root-graph{max-width:420px}.root-graph svg{max-height:270px}.root-graph p{font-size:.72rem;line-height:1.35;margin:5px 0}.math-keys{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.math-keys button{min-height:44px;padding:5px 12px;font-size:.9rem}
+
+.task-graphs.number-line{max-width:420px}.number-line svg{max-height:160px}.number-line p{font-size:.72rem;line-height:1.35;margin:5px 0}
