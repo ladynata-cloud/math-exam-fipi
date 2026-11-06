@@ -16,13 +16,13 @@ const tick=()=>new Promise(resolve=>setImmediate(resolve));
 
 function fixture(){
  const dom=new JSDOM('<main></main>',{url:'https://cabinet.example/learning/',runScripts:'outside-only'});
- dom.window.LearningPreparation=map;dom.window.eval(source);return dom;
+ dom.window.LearningCatalog=catalog;dom.window.LearningPreparation=map;dom.window.eval(source);return dom;
 }
 function checkLinks(host){
  const links=[...host.querySelectorAll('[data-focus-practice]')];
- assert.deepEqual(links.map(a=>a.href),urls);
- for(const a of links){assert.equal(a.target,'_blank');assert.equal(a.rel,'noopener noreferrer');assert(!a.hasAttribute('onclick'));assert(!a.hasAttribute('data-prep-start'));}
- assert.match(host.querySelector('[data-focus-practice-note]').textContent,/не входят в прогресс кабинета/);
+ assert.deepEqual(links.map(a=>a.getAttribute('href')),[urls[0],'#practice=oge-public%3A19']);
+ for(const a of links){assert.equal(a.target,a.hash.startsWith('#practice=')?'':'_blank');assert.equal(a.rel,a.hash.startsWith('#practice=')?'':'noopener noreferrer');assert(!a.hasAttribute('onclick'));assert(!a.hasAttribute('data-prep-start'));}
+ assert.match(host.querySelector('[data-focus-practice-note]').textContent,/сохраняют/);
  return links;
 }
 
@@ -121,13 +121,13 @@ test('OGE11 focus and saved-plan references expose the exact trainer without sta
  try{
   host.innerHTML=window.LearningPreparationUI.focusMarkup(url);
   const link=host.querySelector('[data-focus-practice]');
-  assert.equal(link.href,url);assert.match(link.textContent,/№11/);
+  assert.equal(link.getAttribute('href'),'#practice=oge-public%3A11');assert.match(link.textContent,/№11/);
   assert.equal(host.querySelectorAll('[data-prep-start]').length,0);
   for(const teacher of [false,true]){
    host.innerHTML=window.LearningPreparationUI.planCoursesMarkup(url,{teacher});
-   assert.equal(host.querySelector('[data-plan-course-open]').href,url);
+   assert.equal(host.querySelector('[data-plan-course-open]').getAttribute('href'),'#practice=oge-public%3A11');
    assert.equal(host.querySelectorAll('[data-plan-course-board]').length,teacher?1:0);
-   assert.match(host.textContent,/не входят в прогресс кабинета/);
+   assert.match(host.textContent,/сохраняют/);
   }
   for(const unsafe of [url+'?next=evil',url.replace('mathexam.space','mathexam.space.evil.test')]){
    host.innerHTML=window.LearningPreparationUI.focusMarkup(unsafe);
@@ -145,7 +145,7 @@ test('complete OGE geometry and graphs plan has nine distinct cards and exact te
   for(const teacher of [false,true]){
    host.innerHTML=window.LearningPreparationUI.planCoursesMarkup(urls.join('\n')+'\n'+urls[0],{teacher});
    assert.deepEqual([...host.querySelectorAll('[data-plan-course]')].map(x=>x.dataset.planCourse),ids);
-   assert.deepEqual([...host.querySelectorAll('[data-plan-course-open]')].map(a=>a.href),urls);
+   assert.deepEqual([...host.querySelectorAll('[data-plan-course-open]')].map(a=>a.getAttribute('href')),[...['11','15','16','17','18','19'].map(n=>'#practice=oge-public%3A'+n),...urls.slice(6)]);
    assert.equal(host.querySelectorAll('[data-plan-course-board]').length,teacher?9:0);
    for(const a of host.querySelectorAll('[data-plan-course-board]')){
     const u=new URL(a.href);assert.equal(u.origin,'https://mathexam.space');

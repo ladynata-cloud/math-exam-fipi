@@ -28,12 +28,12 @@ function checkCards(host, teacher = false, ids = IDS) {
   for (const card of cards) {
     const pathname = '/trainers/' + card.dataset.planCourse + '.html';
     assert.deepEqual([...card.querySelectorAll('a')].map(a => a.href), [
-      'https://mathexam.space' + pathname,
+      'https://cabinet.example/learning/#practice='+encodeURIComponent('oge-public:'+(card.dataset.planCourse==='task19-trainer'?'19':card.dataset.planCourse.match(/task(\d+)/)[1])),
       ...(teacher ? ['https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent(pathname)] : [])
     ]);
     for (const a of card.querySelectorAll('a')) {
-      assert.equal(a.target, '_blank');
-      assert.equal(a.rel, 'noopener noreferrer');
+      assert.equal(a.target, a.hasAttribute('data-plan-course-board')?'_blank':'');
+      assert.equal(a.rel, a.hasAttribute('data-plan-course-board')?'noopener noreferrer':'');
       assert(!a.hasAttribute('onclick'));
       assert(!a.hasAttribute('data-prep-start'));
       assert(!a.hasAttribute('data-route-item'));
@@ -42,7 +42,7 @@ function checkCards(host, teacher = false, ids = IDS) {
   }
   const note = host.querySelector('[data-oge-geometry-plan-note]');
   assert(note);
-  assert.match(note.textContent, /не входят в прогресс кабинета/);
+  assert.match(note.textContent, /сохраняют выполненные задачи, проверенные ответы и подсказки/);
   assert.match(note.textContent, /не считается самостоятельным решением/);
   assert.match(note.textContent, teacher ? /создайте комнату/ : /ссылку доски от преподавателя/);
   if (ids.includes('task19-trainer')) assert.equal(host.querySelector('[data-plan-course="task19-trainer"] h2').textContent, 'Геометрические утверждения');

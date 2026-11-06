@@ -171,6 +171,21 @@ test('human rubric stays incomplete until all cases are reviewed; optional score
   const missing = structuredClone(good); missing.caseReviews.pop(); assert.throws(() => scoreReview(report, missing));
   const changed = structuredClone(report); changed.results[0].answer.title = 'Altered'; assert.throws(() => scoreReview(changed, good), /EVAL_REPORT_CHANGED/);
 });
+test('wrong mathematical claims veto maximum manual scores even with valid structure', async t => {
+  const { report } = await mockedLive(t);
+  for (const steps of [['x=6'], ['19-4=23', 'Ответ: -5'], ['x=6', 'Ответ: -5']]) {
+    const changed = structuredClone(report);
+    changed.results[0].input = { ...changed.results[0].input, topic: 'linear-equations', question: '-3x + 4 = 19' };
+    changed.results[0].answer = { title: 'Разбор', text: 'Рассмотрим равенство.', steps, check: 'Проверь.' };
+    const { reportDigest: _, ...unsigned } = changed; changed.reportDigest = digest(unsigned);
+    const result = scoreReview(changed, allGoodReview(changed));
+    assert.equal(result.verdict, 'REVISE_BEFORE_FURTHER_PILOT');
+    const row = result.cases.find(r => r.caseId === changed.results[0].caseId);
+    assert.equal(row.passed, false); assert.equal(row.criticalError, true);
+    assert.equal(row.automatic.structure, 'valid'); assert.equal(row.automatic.mathematics.status, 'failed');
+  }
+});
+
 test('review displays synthetic control markers visibly and model Markdown as inert code', async t => {
   const { b, report } = await mockedLive(t);
   report.results[0].answer.text = '![Схема](//example.invalid/probe)';

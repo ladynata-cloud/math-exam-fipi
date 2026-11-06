@@ -81,6 +81,8 @@ class GeneratorTests(unittest.TestCase):
             if name.endswith(".html"):
                 self.assertNotIn(b"oge-course-shared-mode.js", data)
                 self.assertNotIn(b"oge-native-10-14-board.js", data)
+                self.assertNotIn(b"learning-bridge.js", data)
+                self.assertNotIn(b"oge-learning.js", data)
 
     def test_public_navigator_tags_are_removed_without_changing_learning_links(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)

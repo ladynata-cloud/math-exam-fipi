@@ -33,6 +33,22 @@
 
 ---
 
+# 5 ноября 2026 — исправление проверки цепочек равенств, PR429
+
+- В существующем черновике PR429 исправлено отклонение верных цепочек вида
+  `-3x=19-4=15`. Нераспознанная запись рядом с явной ошибкой больше её не скрывает.
+- Пройдены 233 теста сервиса, 247 тестов временной композиции с PR399 и две
+  дополнительные проверки математического ответа через имитацию OpenAI.
+  Независимо сверены 21 эталон; три ответа остаются на проверку преподавателю.
+- Продолжается подготовка для международной аудитории MathExam. Конкретный
+  способ использования API ещё не выбран; реальные обращения не выполнялись,
+  расход $0. API ученикам не включён. Преимущество GPT пока не измерено.
+- [Отчёт](reports/MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104.md) содержит
+  границы проверки. Новый CI и независимое техническое ревью фиксируются в PR;
+  эта запись не означает публикацию сервиса.
+
+---
+
 # 5 ноября 2026 — десять страниц тем для преподавателей
 
 - [Задача](tasks/TEACHER_TOPIC_PAGES.md): десять содержательных HTML-страниц на основе первых 101 комплекта; действующий каталог уже содержит 145 комплектов. Существующие PDF, ZIP и якоря сохраняются.
@@ -175,6 +191,22 @@
   именно новой надписи фиксируются в её PR; эта запись не заменяет их.
 - Разрешение на выпуск — действующий OWNER_RELEASE_AUTHORIZATION.md.
   Внешний аудит не проводился. Настройки помощника и кабинетов не меняются.
+
+---
+
+# 4 ноября 2026 — математическая проверка ответов помощника
+
+- Проверены актуальный main и отдельные черновики PR399/PR420. Они не
+  объединены; качество реальной внешней модели по-прежнему не измерено.
+- Подготовлены независимая сверка 21 эталонного результата, проверки явных
+  промежуточных равенств, запрет положительной оценки обнаруженной ошибки
+  только за правильный JSON и согласование ограничений UTF-8 с диалогом.
+- Три ответа, требующих разбора словами, и неподдерживаемые записи остаются
+  непроверенными. Даже совпавший итог не подтверждает всё объяснение модели.
+- API для учеников не включается. Проверки и состав изменений описаны в
+  [задаче](tasks/MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104.md) и
+  [отчёте](reports/MATHEXAM_ASSISTANT_MATH_VERIFICATION_20261104.md).
+  Подготовка не является выпуском; фактические PR/CI фиксируются в PR.
 
 ---
 
@@ -714,6 +746,34 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   [Pages41313521051](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/41313521051),
   are confirmed successful. This reconciliation does not claim a new finance
   browser audit or access to any pupil records.
+
+## Published: assistant follow-up foundation, PR375, 2026-11-02
+
+- This published record supersedes earlier PR375 preparation/Draft entries.
+- PR375 was merged as `059ee8c9f5baeb0b333c96d9b8516edb570666b2` and delivered
+  to Pages, the existing cabinet and the separate assistant application.
+- Bounded follow-up context and grade-six Vilenkin NOD/NOK help are published.
+  External inference remains off; this is not an active paid pupil dialogue.
+- The [immutable release record](https://github.com/ladynata-cloud/math-exam-fipi/blob/d060c99a7fcd19db2f68a494d2ca5350ef4b1e71/docs/reports/ASSISTANT_PR375_RELEASE_20261102.md)
+  records 540 local tests, 18 head and 9 postmerge workflows, served asset
+  identity and both deployment health checks. Its explicit review exception
+  applies only to PR375. Earlier preparation entries are historical.
+
+## Prepared: optional OpenAI helper adapter, PR399, 2026-11-02
+
+- [Task](tasks/MATHEXAM_ASSISTANT_OPENAI_20261102.md), HIGH; original base
+  `6b9c327f2ca438cb7e7620ef302876de467fac19`. Continues the same Draft PR399;
+  current main is the separately published PR375 release above.
+- Fixed GPT-5.4 mini snapshot, strict four-field answer schema, one step per
+  hint, conservative accounting including schema bytes and model/tier drift
+  protection. Offline remains the default.
+- Full assistant suite: 133/133, including 14 OpenAI groups; both source
+  knowledge checks pass. Composition with published dialogue is verified
+  separately in the [report](reports/MATHEXAM_ASSISTANT_OPENAI_20261102.md).
+- No model calls, keys, pupil settings, new production release, Qwen training
+  or spending. HIGH review and live provider eligibility/quality remain open;
+  [operator notes](../assistant-service/OPENAI.md) distinguish implementation
+  readiness from permission and feasibility of pupil deployment.
 
 ## Published: financial course extension, PR390
 

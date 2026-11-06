@@ -9,6 +9,7 @@ import { parseQuestion, containsSensitiveText } from '../src/privacy.js';
 import { listProviderTopics, getBuiltinKnowledge } from '../src/tutor.js';
 import { prepareRequest, callProvider } from '../src/provider.js';
 import { CampaignLedger } from './ledger.js';
+import { assessAnswer } from './answer-assessment.js';
 
 export const SERVICE_ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 export const LIVE_LEDGER_PATH = path.join(SERVICE_ROOT, 'data', 'evaluation', 'pilot.sqlite');
@@ -102,7 +103,9 @@ export function planningConfig(spec) {
 function sourceManifest() {
   const paths = ['src/config.js', 'src/errors.js', 'src/privacy.js', 'src/provider.js', 'src/tutor.js',
     'knowledge/core.json', 'evaluation/pilot-plan.json', 'evaluation/pilot-cases.json',
-    'evaluation/pilot.js', 'evaluation/ledger.js', 'evaluation/cli.js'];
+    'evaluation/pilot.js', 'evaluation/ledger.js', 'evaluation/cli.js', 'evaluation/answer-assessment.js',
+    'src/model-math.js', 'src/answer-limits.js', 'src/math-kernel.js', 'src/exact-roots.js',
+    'src/extended-math.js', 'src/intervals.js', 'knowledge/model-reference-cases.json'];
   return Object.fromEntries(paths.map(name => [name, digest(fs.readFileSync(path.join(SERVICE_ROOT, name), 'utf8'))]));
 }
 function sourceRevision() {
@@ -371,10 +374,12 @@ export function scoreReview(report, review) {
     const fraction = numbers.reduce((sum, score) => sum + score, 0) / (numbers.length * 2);
     // A manual zero for false mathematics or fabricated conditions is already
     // a critical finding; forgetting a second checkbox cannot average it away.
-    const criticalError = assessment.criticalError || scores.math === 0 || scores.honesty === 0;
+    const automatic = assessAnswer(actual.input, actual.answer);
+    const criticalError = automatic.blocksPositiveReview || assessment.criticalError || scores.math === 0 || scores.honesty === 0;
     const passed = scores.math === 2 && numbers.every(score => score >= 1) && fraction >= 0.8
       && assessment.requiredPointsMet && !criticalError;
-    cases.push({ caseId: actual.caseId, passed, fraction, criticalError });
+    cases.push({ caseId: actual.caseId, passed, fraction, criticalError, automatic,
+      reviewBasis: 'human-review-with-automatic-veto' });
   }
   const passed = cases.filter(row => row.passed).length, criticalErrors = cases.filter(row => row.criticalError).length;
   return { schemaVersion: 1, reportDigest, reviewerRole: review.reviewerRole, reviewedAt: review.reviewedAt,

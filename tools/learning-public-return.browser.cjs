@@ -53,8 +53,10 @@ const close=server=>new Promise(resolve=>{server.closeAllConnections();server.cl
   const page=await login(pupil);
   for(const [index,id] of ids.entries()){
    const link=page.locator('[data-plan-course="'+id+'"] [data-plan-course-open]');
-   await link.waitFor();await page.waitForFunction(id=>document.querySelector('[data-plan-course="'+id+'"] [data-plan-course-open]')?.hash.startsWith('#public-practice='),id);
-   await link.click();await page.locator('[data-public-workspace] iframe').waitFor();
+   await link.waitFor();await page.waitForFunction(id=>document.querySelector('[data-plan-course="'+id+'"] [data-plan-course-open]')?.hash.startsWith('#practice='),id);
+   await link.click();await page.locator('[data-practice-start]').waitFor();assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n,0);
+   // Previously copied public-practice routes remain usable and untracked.
+   await page.goto(origin+'/learning/#public-practice='+encodeURIComponent('/trainers/'+id+'.html')+'&return=route');await page.locator('[data-public-workspace] iframe').waitFor();
    const frame=page.frameLocator('[data-public-workspace] iframe');await frame.locator('h1').waitFor();
    const url=await page.locator('[data-public-workspace] iframe').getAttribute('src');assert.equal(url,publicOrigin+'/trainers/'+id+'.html');
    assert.equal(new URL(page.url()).hash.includes('return=route'),true);
@@ -69,7 +71,7 @@ const close=server=>new Promise(resolve=>{server.closeAllConnections();server.cl
   }
   // Narrow phone, native Back/Forward and repeated return keep the session.
   await page.setViewportSize({width:320,height:900});
-  await page.locator('[data-plan-course="task19-trainer"] [data-plan-course-open]').click();
+  await page.goto(origin+'/learning/#public-practice='+encodeURIComponent('/trainers/task19-trainer.html')+'&return=route');
   await page.frameLocator('[data-public-workspace] iframe').locator('h1').waitFor();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   const mobile=await page.locator('[data-cabinet-return]').boundingBox();assert(mobile.x>=0&&mobile.width>=120&&mobile.height>=44&&mobile.y+mobile.height<100);
@@ -79,7 +81,7 @@ const close=server=>new Promise(resolve=>{server.closeAllConnections();server.cl
   await page.goForward();await page.locator('[data-cabinet-return]').waitFor();await page.locator('[data-cabinet-return]').click();
   const teacherPage=await login(teacher);
   await teacherPage.goto(origin+'/learning/#preview='+pupil.id);await teacherPage.locator('.preview-banner').waitFor();
-  await teacherPage.locator('[data-plan-course="oge-task15-triangles"] [data-plan-course-open]').click();
+  await teacherPage.goto(origin+'/learning/#public-practice='+encodeURIComponent('/trainers/oge-task15-triangles.html')+'&return='+encodeURIComponent('preview='+pupil.id));
   await teacherPage.frameLocator('[data-public-workspace] iframe').locator('h1').waitFor();
   await teacherPage.locator('[data-cabinet-return]').click();await teacherPage.locator('.preview-banner').waitFor();
   assert.equal(new URL(teacherPage.url()).hash,'#preview='+pupil.id);assert.equal(await teacherPage.evaluate(()=>LearningApp.account().id),teacher.id);
