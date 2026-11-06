@@ -17,7 +17,8 @@
  .lesson-page>.eyebrow{margin:8px 0;font-size:.65rem}
  .lesson-page .lesson-title{font-size:1.2rem;line-height:1.3;margin:10px 0 14px}
  .lesson-page .side summary{font-size:.86rem;padding:6px 0}
- .lesson-page .problem .prompt{font-size:1.12rem;line-height:1.65;margin:14px 0 18px}
+ .lesson-page .source-note{margin-bottom:10px}
+ .lesson-page .problem .prompt{font-size:1.12rem;line-height:1.65;margin:10px 0 12px}
  .lesson-page .problem{padding:18px 16px}
 }
 @media(min-width:601px){.task-graphs.alternatives svg{max-height:200px}}
