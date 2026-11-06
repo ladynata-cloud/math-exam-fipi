@@ -370,12 +370,18 @@ async function checkLayout(page, label, width) {
     await sp.route(stateURL, route => { failedSaves++; return route.abort('failed'); });
     await sf.locator('#answer').fill('909');
     await until(async () => /нет связи|не подтверждено/i.test(await sp.locator('#save-state').innerText()), 'failed-save state is explicit');
+    const connectivityNotice = sp.locator('#notice[data-notice-kind="save-connectivity"]');
+    await connectivityNotice.waitFor({ state: 'visible' });
+    const staleExport = await connectivityNotice.getByRole('button', { name: 'Скачать неподтверждённую работу', exact: true }).elementHandle();
+    assert(staleExport, 'Failed saving offers an export of the unacknowledged work');
     assert(failedSaves > 0); assert.equal(work(aId).state.work.draft, '271', 'A failed save does not pretend to update the server');
     await sp.unroute(stateURL);
     await until(() => work(aId).state.work.draft === '909', 'queued input recovers after connection'); await saved(sp);
+    await connectivityNotice.waitFor({ state: 'hidden' });
+    assert(await staleExport.evaluate(node => !node.isConnected), 'Confirmed recovery removes the previous connectivity export, without hiding unrelated notices');
     const afterRecovery = semantic(work(aId));
     assert.deepEqual(afterRecovery.strokes, first.strokes); assert.equal(afterRecovery.state.work.step, 1);
-    pass('Failed saving is visible and queued work recovers without losing the earlier steps or ink');
+    pass('Failed saving is visible; recovery clears its stale notice and retains the earlier steps and ink');
 
     phase = 'responsive lesson controls';
     for (const width of [320, 1280]) {

@@ -168,7 +168,7 @@ cabinet, lesson, trainer and board boundaries.
 - Actual head SHA: recorded with the exact candidate in the Draft PR handoff
 - PR: [Draft PR 478](https://github.com/ladynata-cloud/math-exam-fipi/pull/478)
 - Commits: implementation and validation of this one task
-- Tests passed: all 410 backend tests; 26 DOM checks (9 actual cabinet,
+- Tests passed: all 410 backend tests; 28 DOM checks (11 actual cabinet,
   7 picker/queue, 10 rehearsal); targeted Vilenkin cabinet regressions;
   JavaScript syntax and `git diff --check`.
 - Tests failed: none in the current local test set. The first completed CI
@@ -185,7 +185,11 @@ cabinet, lesson, trainer and board boundaries.
   lock during asynchronous preparation. Each has a passing regression.
   The duplicate authored-LCM tools panel is also fixed and reviewed; standalone
   LCM behavior is retained. Monotonic lesson/attempt state has actual cabinet
-  regressions. The selected lesson material also remains visible when its
+  regressions. Visual recovery evidence also exposed a pre-existing stale
+  connectivity warning after an acknowledged save. The scoped fix clears only
+  a tagged connectivity notice after the queue drains; unrelated warnings and
+  quarantined-work export remain available. Actual-app and browser regressions
+  cover that recovery. The selected lesson material also remains visible when its
   horizontal queue is rebuilt.
 - Tests not run locally: real Chromium gates because the local browser cannot
   create required sockets. The dedicated CI runs the new two-role journey and

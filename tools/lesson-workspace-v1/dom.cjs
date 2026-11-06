@@ -19,7 +19,7 @@ function fixture(t){
  w.LearningCatalog=catalog;
  for(const file of ['lesson-workspace.js','teaching.js'])w.eval(fs.readFileSync(path.join(root,'learning',file),'utf8'));
  const startup=source.lastIndexOf("(async()=>{const revision=authRevision;try{try{const status=await api('/status')");assert(startup>0);
- w.eval(source.slice(0,startup)+`window.fixtureApp={set(person,people=[],savedLessons=[]){account=person;students=people;assignments=[];attempts=[];lessons=savedLessons;authReady=false;},render,mountWork(attempt,lesson){dispose();activeAttempt=attempt;activeLesson=lesson;mountWorkspace(attempt,{lesson:!!lesson,learnerId:attempt.learnerId});},lessonDialog,lessonAssignmentDialog,lessonAction,poll,remember,openContent,clearAccountView,getLessons:()=>lessons,setActiveLesson:value=>{activeLesson=value;},getActiveLesson:()=>activeLesson};})();`);
+ w.eval(source.slice(0,startup)+`window.fixtureApp={set(person,people=[],savedLessons=[]){account=person;students=people;assignments=[];attempts=[];lessons=savedLessons;authReady=false;},render,mountWork(attempt,lesson){dispose();activeAttempt=attempt;activeLesson=lesson;mountWorkspace(attempt,{lesson:!!lesson,learnerId:attempt.learnerId});},lessonDialog,lessonAssignmentDialog,lessonAction,poll,remember,openContent,clearAccountView,pump,notice,setQueue:(pending,quarantined=[])=>{outbox=pending;rejected=quarantined;},getLessons:()=>lessons,setActiveLesson:value=>{activeLesson=value;},getActiveLesson:()=>activeLesson};})();`);
  let response=async url=>url.endsWith('/report')?{report:{student:pupil,attempts:[],positions:[]}}:url.endsWith('/profile')?{profile:pupil.profile}:url.endsWith('/ai-drafts')?{drafts:[]}:url.endsWith('/parent-access')?{parentAccess:{exists:false}}:{plan:{items:[]}};
  w.fetch=async(url,options={})=>{calls.push({url,options});const data=await response(url,options);return{ok:true,status:200,json:async()=>data};};
  w.fixtureApp.set(teacher,[pupil,other]);t.after(()=>w.close());
@@ -139,4 +139,29 @@ test('authored LCM lesson has one secondary-tools panel and keeps control and ca
  f.w.fixtureApp.mountWork(attempt,null);
  assert.equal(f.main.querySelectorAll('.lcm-workspace-tools').length,1);
  assert(f.main.querySelector('#trainer-control').closest('.lcm-workspace-tools'),'Standalone course keeps its established controls');
+});
+
+
+test('save recovery clears the stale connectivity banner only after acknowledgement',async t=>{
+ const f=fixture(t),pending={attemptId:'recovery_work',body:{opId:'recovery_action',type:'stroke',expectedVersion:0,payload:{}}};
+ let offline=true;f.respond(async()=>{if(offline)throw new f.w.TypeError('Synthetic network failure');return{attempt:{id:pending.attemptId,version:1}};});
+ f.w.fixtureApp.setQueue([pending]);await f.w.fixtureApp.pump();
+ const notice=f.w.document.getElementById('notice'),button=notice.querySelector('button');
+ assert.equal(notice.hidden,false);assert.equal(notice.dataset.noticeKind,'save-connectivity');assert(button?.isConnected);
+ offline=false;await f.w.fixtureApp.pump();
+ assert.equal(notice.hidden,true);assert.equal(notice.dataset.noticeKind,undefined);assert.equal(button.isConnected,false);
+});
+
+test('recovery preserves unrelated notices and keeps quarantined work exportable',async t=>{
+ for(const quarantined of [false,true]){
+  const f=fixture(t),pending={attemptId:'recovery_work',body:{opId:'recovery_action',type:'stroke',expectedVersion:0,payload:{}}};
+  let offline=true;f.respond(async()=>{if(offline)throw new f.w.TypeError('Synthetic network failure');return{attempt:{id:pending.attemptId,version:1}};});
+  f.w.fixtureApp.setQueue([pending],quarantined?[{...pending,attemptId:'other_work',error:'NEWER_SERVER_WORK'}]:[]);
+  await f.w.fixtureApp.pump();
+  if(!quarantined)f.w.fixtureApp.notice('Отдельное сообщение о занятии.');
+  offline=false;await f.w.fixtureApp.pump();
+  const notice=f.w.document.getElementById('notice');assert.equal(notice.hidden,false);assert.equal(notice.dataset.noticeKind,undefined);
+  if(quarantined){assert.match(notice.textContent,/Связь восстановлена.*неподтверждённые действия/);assert(notice.querySelector('button'));}
+  else assert.equal(notice.textContent,'Отдельное сообщение о занятии.');
+ }
 });
