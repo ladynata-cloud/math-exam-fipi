@@ -1,0 +1,105 @@
+{
+  "snapshot": "2026-11-06",
+  "checkedCourseBase": "8d7fdd8c984a83213b1b4fddea371efc2a7f8c25",
+  "officialDocumentLabel": "проекты документов ЕГЭ 2027",
+  "labelSource": "https://fipi.ru/ege/demoversii-specifikacii-kodifikatory",
+  "archives": [
+    {
+      "url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
+      "retrievedAtUtc": "2026-11-06T01:46:48.190044+00:00",
+      "httpStatus": 200,
+      "contentType": "application/zip",
+      "effectiveURL": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
+      "bytes": 2594830,
+      "sha256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
+      "previousSHA256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
+      "unchanged": true,
+      "crcVerified": true,
+      "members": [
+        {
+          "name": "МА-11 ЕГЭ 2027_КОДИФ.pdf",
+          "bytes": 429041,
+          "sha256": "1f6a8217fc7c0aae5e7958e2f0e3fa40e0556df431f11651680adcc2622e96b3"
+        },
+        {
+          "name": "МА-11 ЕГЭ 2027 ДЕМО_базовый.pdf",
+          "bytes": 756099,
+          "sha256": "acee4ee13a64b70e0e505004a9a151a1380470a984b016ed275ff3901e776662"
+        },
+        {
+          "name": "МА-11 ЕГЭ 2027 ДЕМО_профильный.pdf",
+          "bytes": 745534,
+          "sha256": "2b12d43cd00b03dfc9755140d6c78276fab8a9c0a3dff2f7483d60dc68711c8c"
+        },
+        {
+          "name": "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf",
+          "bytes": 292240,
+          "sha256": "206a39e85983ef607f2494afd71b867a8effa8228a02a3d1406ff751168a0c68"
+        },
+        {
+          "name": "МА-11 ЕГЭ 2027 СПЕЦ_профильный.pdf",
+          "bytes": 524866,
+          "sha256": "2e7adcaa799c5c06ff79aa55451b049d87cc8c4f4570d5fb150a5ea50a1e4f38"
+        }
+      ]
+    },
+    {
+      "url": "https://doc.fipi.ru/ege/otkrytyy-bank-zadaniy-ege/otkrytyye-varianty-kim-ege/2026/Mat_1_ege2026.zip",
+      "retrievedAtUtc": "2026-11-06T01:46:48.192965+00:00",
+      "httpStatus": 200,
+      "contentType": "application/zip",
+      "effectiveURL": "https://doc.fipi.ru/ege/otkrytyy-bank-zadaniy-ege/otkrytyye-varianty-kim-ege/2026/Mat_1_ege2026.zip",
+      "bytes": 552996,
+      "sha256": "4c7a0742fcc079d41b5c0a65d41758c3977da66cc4c9e2f48a0a58bab44ea798",
+      "previousSHA256": "4c7a0742fcc079d41b5c0a65d41758c3977da66cc4c9e2f48a0a58bab44ea798",
+      "unchanged": true,
+      "crcVerified": true,
+      "members": [
+        {
+          "name": "МАпроф.pdf",
+          "bytes": 246117,
+          "sha256": "34945a3a1592492a39e5d36bb3eed0da413de98a3019660192821ff8067bcbca"
+        },
+        {
+          "name": "МАбаз.pdf",
+          "bytes": 329302,
+          "sha256": "1ffa6f2d9052cbd85b6bc630baba9d501f7faade78b07b3954a2a075fd960099"
+        }
+      ]
+    }
+  ],
+  "selectedBasicPDF": [
+    {
+      "file": "ege-baza/sources/demo-2027.pdf",
+      "sourceMember": "МА-11 ЕГЭ 2027 ДЕМО_базовый.pdf",
+      "sha256": "acee4ee13a64b70e0e505004a9a151a1380470a984b016ed275ff3901e776662",
+      "pages": 17,
+      "scope": "basic-level document, not official bank records"
+    },
+    {
+      "file": "ege-baza/sources/spec-2027.pdf",
+      "sourceMember": "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf",
+      "sha256": "206a39e85983ef607f2494afd71b867a8effa8228a02a3d1406ff751168a0c68",
+      "pages": 6,
+      "scope": "basic-level document, not official bank records"
+    },
+    {
+      "file": "ege-baza/sources/open-2026.pdf",
+      "sourceMember": "МАбаз.pdf",
+      "sha256": "1ffa6f2d9052cbd85b6bc630baba9d501f7faade78b07b3954a2a075fd960099",
+      "pages": 7,
+      "scope": "basic-level document, not official bank records"
+    }
+  ],
+  "bank": {
+    "url": "https://ege.fipi.ru/bank/",
+    "retrievedAtUtc": "2026-11-06T01:46:48.193816+00:00",
+    "error": "HTTPError: HTTP Error 503: Service Unavailable",
+    "httpStatus": 503,
+    "observedFilters": null,
+    "observedEntryCount": null,
+    "observedCursor": null,
+    "recordsCollected": 0,
+    "completeness": "unverified"
+  }
+}
