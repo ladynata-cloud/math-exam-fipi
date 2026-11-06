@@ -29,7 +29,7 @@ let phase = 'setup';
 async function run() {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'merzlyak-program-room-'));
   const store = new LearningStore({filePath:path.join(tmp,'learning.sqlite'),contracts});
-  let publicServer, cabinetServer, roomProcess, browser;
+  let publicServer, cabinetServer, roomProcess, browser, releaseSocketClient = () => {};
   try {
     assert(store.available, 'isolated SQLite database required');
     const password = 'Synthetic-program-room-'+randomUUID();
@@ -65,8 +65,10 @@ async function run() {
     browser = await chromium.launch({executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,headless:true,
       args:['--no-sandbox','--disable-dev-shm-usage']});
     const allowed = new Set([publicOrigin,cabinetOrigin,boardOrigin]);
-    const external=[], writes=[], leaks=[], errors=[];
-    async function participant() {
+    const external=[], writes=[], leaks=[], errors=[], teacherDocuments=[];
+    let heldSocketClients = 0;
+    const socketClientGate = new Promise(resolve => { releaseSocketClient = resolve; });
+    async function participant({holdSocketClient = false} = {}) {
       const context = await browser.newContext({viewport:{width:1280,height:900},locale:'ru-RU',serviceWorkers:'block'});
       // Unexpected WebSocket origins are rejected before connection; allowed
       // room traffic retains its native Socket.IO transport.
@@ -82,6 +84,12 @@ async function run() {
         if (u.origin===publicOrigin) {
           const headers=await req.allHeaders();
           if (req.url().includes(pupil.id)||req.url().includes(teacher.id)||headers.cookie||(headers.referer||'').startsWith(cabinetOrigin)) leaks.push(u.pathname);
+          if (holdSocketClient && u.pathname==='/trainers/merzlyak-10-base.html' && req.isNavigationRequest()) teacherDocuments.push(u.href);
+        }
+        // Keep the real network/room handshake pending until the seeded
+        // trainer's actual hydration deadline expires. No timer is shortened.
+        if (holdSocketClient && u.origin===boardOrigin && u.pathname==='/socket.io/socket.io.js') {
+          heldSocketClients++; await socketClientGate;
         }
         return route.continue();
       });
@@ -95,7 +103,7 @@ async function run() {
       page.on('pageerror',e=>errors.push(e.message));return page;
     }
     phase='assigned teacher card and nested board';
-    const t=await participant(),s=await participant();
+    const t=await participant({holdSocketClient:true}),s=await participant();
     const back='student='+pupil.id;
     await t.goto(cabinetOrigin+'/learning/?role=teacher#'+back);
     await t.locator('[name=login]').fill(teacher.login);await t.locator('[name=password]').fill(password);
@@ -129,19 +137,32 @@ async function run() {
     await board.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='bridge-timeout',null,{timeout:20000});
     assert.equal(await board.locator('#studentLink').inputValue(),'','The exercise is selected before any room exists');
     await board.locator('#openShare').click();await board.locator('#createRoom').click();
-    phase='room invite and joined mirrors';
-    await board.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено' &&
-      document.querySelector('#studentLink')?.value.includes('role=student'));
+    phase='seeded exercise expires while the real room connection is delayed';
+    await board.waitForFunction(()=>document.querySelector('#studentLink')?.value.includes('role=student'));
     const link=await board.locator('#studentLink').inputValue(), target=new URL(link);
     assert.equal(target.origin,publicOrigin);assert.equal(target.pathname,'/trainers/trainer-board.html');
     assert.equal(target.searchParams.get('role'),'student');assert.equal(target.searchParams.get('server'),boardOrigin);
     assert(target.searchParams.has('room')&&target.searchParams.has('token'));
     assert(!link.includes(pupil.id)&&!link.includes(teacher.id));
+    const seededCourse=await course(board);
+    await seededCourse.waitForFunction(room=>new URL(location.href).searchParams.get('seed')===room &&
+      location.hash==='#ex-02-019' && window.__merzlyakBoard?.getState().lessonId==='ex-02-019',target.searchParams.get('room'));
+    const expiredDocument=await seededCourse.evaluate(()=>performance.timeOrigin);
+    await board.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='bridge-timeout',null,{timeout:20000});
+    assert.equal(heldSocketClients,1,'The actual Socket.IO client request kept the seeded bridge waiting');
+    assert.equal(await board.locator('#shareStatus').textContent(),'подключение');
+    const documentsBeforeRecovery=teacherDocuments.length;
+    releaseSocketClient();
+    phase='room invite and joined mirrors after the expired seeded document';
+    await board.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено' &&
+      document.querySelector('#studentLink')?.value.includes('role=student'));
     await board.locator('#sharePanel [data-close-panel]').click();
     await s.goto(link);
     const ready=()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected';
     await Promise.all([board.waitForFunction(ready),s.waitForFunction(ready)]);
     const teacherCourse=await course(board),studentCourse=await course(s);
+    assert.equal(teacherDocuments.length,documentsBeforeRecovery+1,'Room acceptance reloads the expired document exactly once');
+    assert.notEqual(await teacherCourse.evaluate(()=>performance.timeOrigin),expiredDocument,'Recovery requires a new document, not a fragment navigation');
     const selectedTask=()=>window.__merzlyakBoard.getState().lessonId==='ex-02-019'&&location.hash==='#ex-02-019'&&!!document.querySelector('#final-answer');
     await Promise.all([teacherCourse.waitForFunction(selectedTask),studentCourse.waitForFunction(selectedTask)]);
     const seededSource=new URL(await board.locator('#trainerFrame').getAttribute('src'),publicOrigin);
@@ -160,6 +181,19 @@ async function run() {
     await board.locator('#sharePanel [data-close-panel]').click();
     await studentCourse.locator('#final-answer').fill('Черновик ученика после передачи управления');
     await teacherCourse.waitForFunction(visibleDraft,'Черновик ученика после передачи управления');
+    phase='manual reload preserves the shared exercise, pupil control and draft';
+    const documentsBeforeRetry=teacherDocuments.length;
+    const beforeRetry=await teacherCourse.evaluate(()=>performance.timeOrigin);
+    await board.locator('#trainerOptions').click();await board.locator('#retryOpenedTrainer').click();
+    await board.waitForFunction(ready);await board.locator('#trainerPanel [data-close-panel]').click();
+    const retriedCourse=await course(board);
+    await retriedCourse.waitForFunction(selectedTask);
+    await retriedCourse.waitForFunction(visibleDraft,'Черновик ученика после передачи управления');
+    assert.equal(teacherDocuments.length,documentsBeforeRetry+1,'The actual retry button loads one fresh document');
+    assert.notEqual(await retriedCourse.evaluate(()=>performance.timeOrigin),beforeRetry);
+    assert.equal(await s.evaluate(()=>document.body.classList.contains('control-owner')),true);
+    assert.equal(await board.evaluate(()=>document.body.classList.contains('control-owner')),false);
+    await board.waitForFunction(()=>document.querySelector('#frameStatus')?.dataset.state==='ready');
     assert.deepEqual(await Promise.all([teacherCourse.evaluate(workKeys),studentCourse.evaluate(workKeys)]),before);
     await t.locator('[data-cabinet-return]').click();await launch.waitFor();
     assert.equal(new URL(t.url()).hash,'#'+back);assert.equal(await t.evaluate(()=>LearningApp.account().id),teacher.id);
@@ -167,8 +201,9 @@ async function run() {
     assert.deepEqual(store.studentProfile(teacher,pupil.id),initialProfile);
     assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n,initialAttempts);
     assert.deepEqual(writes,[]);assert.deepEqual(leaks,[]);assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
-    console.log('MERZLYAK_PROGRAM_ROOM_OK: real assigned-program teacher card → select task 2.19 before room creation → expired pre-room bridge → local two-client room retains the task; bidirectional drafts, control handoff and exact cabinet return; no account/attempt/personal-work changes');
+    console.log('MERZLYAK_PROGRAM_ROOM_OK: real assigned-program teacher card → select task 2.19 before room creation → expired pre-room and seeded bridge → delayed local room connection refreshes the document once and retains the task; manual reload, bidirectional drafts, control handoff and exact cabinet return; no account/attempt/personal-work changes');
   } finally {
+    releaseSocketClient();
     await browser?.close(); if(roomProcess?.exitCode===null)roomProcess.kill('SIGTERM');
     await close(cabinetServer);await close(publicServer);store.close();fs.rmSync(tmp,{recursive:true,force:true});
   }
