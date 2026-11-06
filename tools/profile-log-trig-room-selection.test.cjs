@@ -37,7 +37,47 @@ function fixture(id) {
   ].join('\n'),p);
   return {p,child,selected,key,entry,route,file};
 }
+function roomCreationHarness(p, registry) {
+  const calls={rooms:0,connected:0,navigations:[]};
+  Object.assign(p,{serverUrl:{value:'https://room.example'},trainerUrl:{},studentLink:{},roomBadge:{},DEFAULT_SERVER:'https://room.example',SERVER_KEY:'server',
+    normalizeServer:value=>value,loadTrainerRegistry:()=>registry,setStatus(){},saveTeacherRoomSession(){},replaceTeacherRoomUrl(){},setControlState(){},setParticipants(){},
+    setTrainerFrameSrc:value=>calls.navigations.push(value),save(){},makeStudentLink:()=> 'synthetic-invitation',updateControlUi(){},localStorage:{setItem(){}},
+    fetch:async()=>{calls.rooms++;return {ok:true,json:async()=>({roomId:'fresh-room',teacherToken:'teacher-fixture',studentToken:'student-fixture'})};},
+    connectRoom:async()=>{calls.connected++;}
+  });
+  return calls;
+}
+const settle=async()=>{for(let i=0;i<8;i++)await Promise.resolve();};
+test('unrelated trainer room creation remains independent of a pending registry request', async () => {
+  const {p}=fixture('ege-profile-circle');
+  p.state.trainerUrl='negative-numbers-line.html?seed=fixture-seed#local-draft';
+  p.trainerRegistry.status='pending';
+  const calls=roomCreationHarness(p,new Promise(()=>{}));
+  const creating=p.createRoom();
+  await settle();
+  assert.equal(calls.rooms,1,'room creation must not wait for an unrelated registry refresh');
+  assert.equal(calls.connected,1,'room acceptance and registry arrival retain either ordering');
+  await creating;
+  assert.equal(p.shared.preparedProfileTrainer,null);
+  assert.equal(p.state.trainerUrl,'negative-numbers-line.html?seed=fixture-seed#local-draft');
+});
 for (const id of ['ege-profile-log-trig','ege-profile-circle']) {
+  test(id + ': room creation waits for the registry and then captures the latest selected work', async () => {
+    const {p,selected,route}=fixture(id);
+    p.trainerRegistry.status='pending';
+    let resolveRegistry;
+    const calls=roomCreationHarness(p,new Promise(resolve=>{resolveRegistry=resolve;}));
+    const creating=p.createRoom();
+    await settle();
+    assert.equal(calls.rooms,0,'selected profile state requires its authoritative registry entry');
+    assert.equal(calls.connected,0);
+    selected.progress.draft='work edited while registry loads';
+    p.trainerRegistry.status='ready';resolveRegistry();
+    await creating;
+    assert.equal(calls.rooms,1);assert.equal(calls.connected,1);
+    assert.equal(p.shared.preparedProfileTrainer.payload.state.progress.draft,'work edited while registry loads');
+    assert.equal(new URL(calls.navigations[0],origin).hash,route);
+  });
   test(id + ': actual room handler carries an immutable validated selection separately from URL and credentials', async () => {
     const {p,selected,route,file}=fixture(id), navigations=[],settings=[];
     Object.assign(p,{serverUrl:{value:'https://room.example'},trainerUrl:{},studentLink:{},roomBadge:{},DEFAULT_SERVER:'https://room.example',SERVER_KEY:'server',

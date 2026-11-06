@@ -211,17 +211,36 @@ async function handoff(room, studentControls) {
   assert.equal(await previous.page.locator('#trainerFrame').evaluate(element => element.inert && getComputedStyle(element).pointerEvents === 'none'), true, 'observer frame blocks pointer and keyboard input');
   await synchronized(nextFrame, previousFrame, 'settled control transfer'); await closeShare(room.teacher.page);
 }
+async function renderedRoute(frame, hash, config) {
+  // Updating location.hash precedes the queued hashchange render. The old
+  // page can still have an h1, so require the destination's actual lesson and
+  // mounted model, together with a complete valid snapshot, before using it.
+  await frame.waitForFunction(({ hash, api, circle }) => {
+    if (location.hash !== hash) return false;
+    const course = window[api], state = course?.getState();
+    if (!state || state.route !== hash || !course.validateState(state)) return false;
+    const [page, id] = hash.slice(1).split('/');
+    if (page === 'lesson') {
+      const lesson = (circle ? window.MordLessons : window.ProfileLessons)?.find(lesson => lesson.id === id);
+      return !!lesson && document.querySelector('#main h1')?.textContent.trim() === lesson.title &&
+        !!document.querySelector('#lab > *') && state.view.model !== null;
+    }
+    return !!document.querySelector('#main h1');
+  }, { hash, api: config.api, circle: config === CIRCLE }, { polling: 25 });
+}
 async function route(frame, hash, config) {
-  if (await frame.evaluate(() => location.hash) === hash) return;
-  let link = frame.locator('a[href="' + hash + '"]').first();
-  if (!await link.count()) {
-    await frame.locator('.brand').click();
-    await frame.waitForFunction(value => location.hash === value, config.home);
-    link = frame.locator('a[href="' + hash + '"]').first();
+  if (await frame.evaluate(() => location.hash) !== hash) {
+    let link = frame.locator('a[href="' + hash + '"]').first();
+    if (!await link.count()) {
+      await frame.locator('.brand').click();
+      await frame.waitForFunction(value => location.hash === value, config.home);
+      link = frame.locator('a[href="' + hash + '"]').first();
+    }
+    await link.waitFor({ state: 'attached' });
+    assert.equal(await link.count(), 1, 'authored navigation exposes ' + hash);
+    await link.click();
   }
-  await link.waitFor({ state: 'attached' });
-  assert.equal(await link.count(), 1, 'authored navigation exposes ' + hash);
-  await link.click(); await frame.waitForFunction(value => location.hash === value, hash); await frame.locator('#main h1').waitFor();
+  await renderedRoute(frame, hash, config);
 }
 async function modelAction(controller, observer, action, label) {
   const before = (await settled(controller)).view.model; assert(before, label + ': model exists');
@@ -230,6 +249,7 @@ async function modelAction(controller, observer, action, label) {
   return synchronized(controller, observer, label);
 }
 async function changeLab(controller, observer, config, label, deep = false) {
+  await renderedRoute(controller, await controller.evaluate(() => location.hash), config);
   const host = controller.locator('#lab');
   if (config === CIRCLE) {
     const input = host.locator('[data-angle-input]');

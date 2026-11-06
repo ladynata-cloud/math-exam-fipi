@@ -73,7 +73,8 @@ jobs:
           tools/profile-stereo-board-models.test.cjs tools/profile-stereo-picker.test.cjs
           tools/profile-expressions-board.test.cjs tools/profile-expressions-picker.test.cjs
           tools/merzlyak-cabinet.test.cjs tools/merzlyak-room-selection.test.cjs
-          tools/college-functions-cabinet.test.cjs board-server/test/trainer-registry.test.js
+          tools/college-functions-cabinet.test.cjs tools/board-room-error.test.cjs
+          board-server/test/trainer-registry.test.js
           board-server/test/server-registry.integration.test.js
       - name: Real teacher and pupil rooms, control transfer and reconnect
         env:
