@@ -53,7 +53,8 @@ jobs:
       - name: Render all six numbered Word files for page review
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libreoffice-writer fonts-dejavu-core poppler-utils
+          sudo apt-get install --no-install-recommends -y libreoffice-writer libreoffice-math fonts-dejavu-core poppler-utils
+          soffice --version
           python3 - <<'PY'
           import json, os, shutil, subprocess
           from pathlib import Path
@@ -107,6 +108,7 @@ jobs:
           (output / 'word-render-results.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
           print(json.dumps({'numberedWordDocuments': 6, 'renderedPages': total, 'visualReview': 'pending'}))
           PY
+          python3 tools/teacher-work-numbering-render-check.py --downloads-dir "$RUNNER_TEMP/teacher-numbering-catalog" --renders-dir "$RUNNER_TEMP/teacher-numbering-render"
       - name: Preserve numbering and export evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -300,7 +300,10 @@ async function main() {
       check();
     };
     const screenshot = async name => {
-      await page.locator('.filters').scrollIntoViewIfNeeded();
+      // Show the complete selected-series summary as well as the controls;
+      // scrolling only when necessary could leave it below the viewport.
+      await page.locator('.filters').evaluate(element =>
+        element.scrollIntoView({ block: 'start', behavior: 'instant' }));
       await page.screenshot({ path: path.join(OUT, name + '.png'), fullPage: false });
       report.screenshots.push(name + '.png');
     };

@@ -71,18 +71,18 @@ visible in the catalog, downloaded assignments, answers and archives.
   duplicates or gaps, with a validated work identity for each number.
 - [x] Regeneration and CI compare the saved/published registry and reject
   reassignment or removal of existing numbers within the same edition.
-- [ ] Numbers within each saved collection are not recomputed by search,
+- [x] Numbers within each saved collection are not recomputed by search,
   reset or page reload. Switching collections shows that collection's own
   permanently assigned number.
 - [x] General grade and exact textbook/grade collection labels are unambiguous;
   unsupported combinations never inherit another textbook's sequence.
 - [x] Textbook notes describe the verified thematic/section correspondence and
   do not claim unverified exercise numbers or publisher-assigned work numbers.
-- [ ] Downloaded assignments, answers and archives agree with the displayed
+- [x] Downloaded assignments, answers and archives agree with the displayed
   collection and number. Errors are visible; no silently unnumbered fallback.
 - [x] PDFs retain four readable pages and all tasks/answers. Word equations and
   editable drawings remain intact; numbered sample outputs are rendered.
-- [ ] Catalog fits 320, 390 and 1280 pixel widths and existing anchors work.
+- [x] Catalog fits 320, 390 and 1280 pixel widths and existing anchors work.
 
 ## Checks and gates
 
@@ -128,18 +128,18 @@ visible in the catalog, downloaded assignments, answers and archives.
 
 ## Execution record
 
-- Checkpoint: local implementation before the first Draft PR; subsequent exact
-  head and GitHub Actions evidence are recorded in the PR handoff.
+- Checkpoint: Draft PR with completed browser/download checks. Exact final
+  head, repeated CI and final visual review are recorded in the PR handoff.
 - Actual branch: task/teacher-work-numbering
 - Actual base SHA: 25548b86df75b8c90a5dc5c6f1f1925c2ad70636
-- Actual head SHA: pending
-- PR: pending
+- Actual head SHA: recorded in the PR handoff, after the final commit
+- PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/479
 - Tests passed: 113 collection/2227 assignment DOM check; 21 registry
   regressions; existing 580 PDF / 2320 page checks and 792 independent displayed
   answer checks; 1413 Word checks; deterministic catalog and JS/Python syntax.
-- Tests failed: no code failure remaining at this checkpoint. Local Chromium
-  launch is unavailable because the executor denies its singleton socket;
-  browser verification is pending GitHub Actions at this checkpoint.
+- Browser checkpoint: 383 scenarios, all 113 collections, 16 real downloads
+  and 888 independent delivered-byte checks passed in GitHub Actions. Local
+  Chromium cannot create its singleton socket; it is not claimed as executed.
 - Document review: all 28 rendered Word pages and 12 numbered PDF pages
   inspected; original task bodies, native equations and drawings preserved.
 - Continuation review: corrected the unpublished Merzlyak grade-seven sequence
@@ -153,6 +153,18 @@ visible in the catalog, downloaded assignments, answers and archives.
   source/export equation and drawing counts and retains full-body equivalence.
   Displayed source notes now use checked textbook titles/parts/pages instead of
   internal topic IDs; all 2227 numbers and evidence paths remain unchanged.
+- A subsequent browser helper was corrected to reopen saved selections in a
+  fresh document; the completed run verified URL restoration and navigation.
+- Fresh visual review caught 20 pages with absent formulas in the CI renderer:
+  its minimal Writer installation omitted the Math component. All 212 native
+  equation blocks and eight diagrams were byte-identical in actual downloads;
+  complete LibreOffice rendered the same files correctly. CI now explicitly
+  installs Math and checks 448 original paragraphs, including all 212 equations,
+  across all 24 pages. The old incomplete renders fail this new content gate.
+  This does not relabel the earlier visual failure as a pass.
+- Mobile collection summaries reserve space beside the existing Navigator;
+  final screenshots include the complete summary instead of a viewport crop
+  that could leave it below the visible controls.
 - Tests not run: external audit; real classroom trial
 - Scope deviations: none
 
