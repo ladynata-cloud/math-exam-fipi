@@ -226,7 +226,12 @@ async function main() {
     const ready = async () => page.waitForFunction(() =>
       document.documentElement.dataset.workNumberingReady === 'true');
     const open = async url => {
+      // A saved-selection check must execute initialization in a new document.
+      // Navigating to the current URL (or only its fragment) can otherwise
+      // return no HTTP response and leave the previous in-memory filter state.
+      await page.goto('about:blank');
       const response = await page.goto(url, { waitUntil: 'load' });
+      assert(response, 'Expected a fresh HTTP navigation: ' + url);
       assert.equal(response.status(), 200);
       await ready();
       const actions = await page.locator('[data-numbered-role],[data-numbered-archive],[data-numbered-pack]')
