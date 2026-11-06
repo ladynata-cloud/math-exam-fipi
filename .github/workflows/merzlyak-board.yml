@@ -30,7 +30,7 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/merzlyak-board-tools/node_modules" >> "$GITHUB_ENV"
       - name: Cabinet, board and registry contracts
         run: |
-          node --test tools/merzlyak-cabinet.test.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-board.test.cjs
+          node --test tools/merzlyak-cabinet.test.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-board.test.cjs tools/merzlyak-room-selection.test.cjs
           node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
           node tools/merzlyak-10-base/schema-runtime.test.cjs
           node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs

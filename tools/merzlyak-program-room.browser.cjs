@@ -111,6 +111,23 @@ async function run() {
     assert.equal(source.origin,publicOrigin);assert.equal(source.pathname,'/trainers/trainer-board.html');
     assert.deepEqual([...source.searchParams],[['trainer','/trainers/merzlyak-10-base.html']]);
     const board=await (await boardElement.elementHandle()).contentFrame();
+    async function course(host) {
+      const frame=await (await host.locator('#trainerFrame').elementHandle()).contentFrame();
+      await frame.waitForFunction(()=>typeof window.__merzlyakBoard?.getState==='function');
+      assert.equal(new URL(frame.url()).pathname,'/trainers/merzlyak-10-base.html');
+      return frame;
+    }
+    phase='select exercise before creating a room, including an expired pre-room bridge';
+    const localCourse=await course(board);
+    await localCourse.locator('#catalog-search').fill('2.19');
+    await localCourse.locator('[data-lesson="ex-02-019"]').click();
+    await localCourse.waitForFunction(()=>window.__merzlyakBoard.getState().lessonId==='ex-02-019');
+    const workKeys=()=>Object.fromEntries(Object.keys(localStorage).filter(k=>k.startsWith('mathExamTextbook.')).map(k=>[k,localStorage.getItem(k)]));
+    const teacherWorkBefore=await localCourse.evaluate(workKeys);
+    // Waiting for the real deadline also covers recovery reloading the frame;
+    // skipping seed creation alone would not preserve this selected exercise.
+    await board.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='bridge-timeout',null,{timeout:20000});
+    assert.equal(await board.locator('#studentLink').inputValue(),'','The exercise is selected before any room exists');
     await board.locator('#openShare').click();await board.locator('#createRoom').click();
     phase='room invite and joined mirrors';
     await board.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено' &&
@@ -124,19 +141,16 @@ async function run() {
     await s.goto(link);
     const ready=()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected';
     await Promise.all([board.waitForFunction(ready),s.waitForFunction(ready)]);
-    async function course(host) {
-      const frame=await (await host.locator('#trainerFrame').elementHandle()).contentFrame();
-      await frame.waitForFunction(()=>typeof window.__merzlyakBoard?.getState==='function');
-      assert.equal(new URL(frame.url()).pathname,'/trainers/merzlyak-10-base.html');
-      return frame;
-    }
     const teacherCourse=await course(board),studentCourse=await course(s);
-    const workKeys=()=>Object.fromEntries(Object.keys(localStorage).filter(k=>k.startsWith('mathExamTextbook.')).map(k=>[k,localStorage.getItem(k)]));
+    const selectedTask=()=>window.__merzlyakBoard.getState().lessonId==='ex-02-019'&&location.hash==='#ex-02-019'&&!!document.querySelector('#final-answer');
+    await Promise.all([teacherCourse.waitForFunction(selectedTask),studentCourse.waitForFunction(selectedTask)]);
+    const seededSource=new URL(await board.locator('#trainerFrame').getAttribute('src'),publicOrigin);
+    assert.equal(seededSource.hash,'#ex-02-019','Room creation retains the previously selected exercise');
+    assert.equal(seededSource.searchParams.get('seed'),target.searchParams.get('room'),'Normal room seeding is preserved');
+    assert.equal(seededSource.searchParams.size,1,'No cabinet identity or child-frame parameters enter the trainer URL');
+    assert.deepEqual(await teacherCourse.evaluate(workKeys),teacherWorkBefore,'Room creation does not alter personal work');
     const before=await Promise.all([teacherCourse.evaluate(workKeys),studentCourse.evaluate(workKeys)]);
     phase='first-semester task, bidirectional draft and return';
-    await teacherCourse.locator('#catalog-search').fill('2.19');
-    await teacherCourse.locator('[data-lesson="ex-02-019"]').click();
-    await studentCourse.waitForFunction(()=>window.__merzlyakBoard.getState().lessonId==='ex-02-019');
     await teacherCourse.locator('#final-answer').fill('Запись преподавателя');
     const visibleDraft=value=>document.querySelector('#final-answer')?.value===value && window.__merzlyakBoard.getState().work.draft===value;
     await studentCourse.waitForFunction(visibleDraft,'Запись преподавателя');
@@ -153,7 +167,7 @@ async function run() {
     assert.deepEqual(store.studentProfile(teacher,pupil.id),initialProfile);
     assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n,initialAttempts);
     assert.deepEqual(writes,[]);assert.deepEqual(leaks,[]);assert.deepEqual(external,[]);assert.deepEqual(errors,[]);
-    console.log('MERZLYAK_PROGRAM_ROOM_OK: real assigned-program teacher card → nested board → local two-client room; task 2.19, bidirectional drafts, control handoff and exact cabinet return; no account/attempt/personal-work changes');
+    console.log('MERZLYAK_PROGRAM_ROOM_OK: real assigned-program teacher card → select task 2.19 before room creation → expired pre-room bridge → local two-client room retains the task; bidirectional drafts, control handoff and exact cabinet return; no account/attempt/personal-work changes');
   } finally {
     await browser?.close(); if(roomProcess?.exitCode===null)roomProcess.kill('SIGTERM');
     await close(cabinetServer);await close(publicServer);store.close();fs.rmSync(tmp,{recursive:true,force:true});
