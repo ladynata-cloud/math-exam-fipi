@@ -37,6 +37,42 @@ function stable(value) {
 const snapshot = frame => frame.evaluate(() => window.__sectionsBoard.getState());
 const personal = frame => frame.evaluate(keys => Object.fromEntries(keys.map(key => [key, localStorage.getItem(key)])), PERSONAL_KEYS);
 
+function assertTeacherRoomUrl(host, roomId, server) {
+  const params = new URL(host.url()).searchParams;
+  assert.equal(params.has('trainer'), false, 'teacher room URL has no obsolete course-entry query');
+  assert.equal(params.has('token'), false, 'teacher room URL never exposes its token');
+  assert.equal(params.get('room') === roomId, true, 'teacher retains the same room marker');
+  assert.equal(params.get('server') === server, true, 'teacher retains the same room service');
+  assert.equal(params.get('role'), 'teacher');
+}
+
+async function waitMirror(host, expected, label) {
+  try {
+    await host.waitForFunction(value => document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === value,
+      expected, { timeout: 20000 });
+  } catch (error) {
+    // Diagnostics contain fixed status labels, booleans and paths only. Never
+    // print room URLs, session credentials, participant IDs or authored work.
+    const diagnostic = await host.evaluate(() => {
+      const frame = document.querySelector('#trainerFrame');
+      return {
+        hostPath: location.pathname,
+        trainerPath: frame ? new URL(frame.src, location.href).pathname : null,
+        mirror: document.querySelector('#mirrorStatus')?.dataset.mirrorStatus || null,
+        frameStatus: document.querySelector('#frameStatus')?.dataset.state || null,
+        shareConnected: document.querySelector('#shareStatus')?.textContent === 'подключено',
+        socketConnected: typeof shared !== 'undefined' && !!shared.connected,
+        roomReceived: typeof roomStateReceived !== 'undefined' && !!roomStateReceived,
+        bridgeReady: typeof readyCandidate !== 'undefined' && !!readyCandidate,
+        bridgeHydrated: typeof bridgeSession !== 'undefined' && !!bridgeSession?.hydrated,
+        controlOwner: document.body.classList.contains('control-owner')
+      };
+    }).catch(() => ({ unavailable: true }));
+    console.error('SECTIONS_MIRROR_WAIT_DIAGNOSTIC ' + JSON.stringify({ label, expected, ...diagnostic }));
+    throw error;
+  }
+}
+
 async function waitSnapshot(frame, expected, label) {
   try {
     await frame.waitForFunction(expected => {
@@ -286,24 +322,24 @@ async function run() {
     const originalPersonal = await personal(teacherFrame);
     assert.equal((await snapshot(teacherFrame)).work.draft, '', 'board does not import personal draft');
     await openCard(teacherFrame, 'starter-18');
-    await board.waitForFunction(() => document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'bridge-timeout', null, { timeout: 20000 });
+    await waitMirror(board, 'bridge-timeout', 'pre-room selection');
     assert.equal(await board.locator('#studentLink').inputValue(), '');
     await board.locator('#openShare').click(); await board.locator('#createRoom').click();
     await board.waitForFunction(() => document.querySelector('#studentLink')?.value.includes('role=student'));
     const link = await board.locator('#studentLink').inputValue(), target = new URL(link);
     assert.equal(target.origin, publicOrigin); assert.equal(target.searchParams.get('server'), boardOrigin);
+    assertTeacherRoomUrl(board, target.searchParams.get('room'), boardOrigin);
     assert(!link.includes(teacher.id) && !link.includes(pupil.id));
     teacherFrame = await courseFrame(board);
     await teacherFrame.waitForFunction(room => new URL(location.href).searchParams.get('seed') === room && location.hash === '#starter-18' && window.__sectionsBoard.getState().lessonId === 'starter-18', target.searchParams.get('room'));
     phase = 'real delayed handshake recovers an expired seeded document';
     const expiredDocument = await teacherFrame.evaluate(() => performance.timeOrigin);
-    await board.waitForFunction(() => document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'bridge-timeout', null, { timeout: 20000 });
+    await waitMirror(board, 'bridge-timeout', 'seeded document before delayed transport');
     assert.equal(heldClients, 1);
     const beforeRecovery = documents.length; releaseSocket();
     await board.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено');
     await board.locator('#sharePanel [data-close-panel]').click(); await s.goto(link);
-    const ready = () => document.querySelector('#mirrorStatus')?.dataset.mirrorStatus === 'connected';
-    await Promise.all([board.waitForFunction(ready), s.waitForFunction(ready)]);
+    await Promise.all([waitMirror(board, 'connected', 'initial teacher'), waitMirror(s, 'connected', 'initial pupil')]);
     teacherFrame = await courseFrame(board); let studentFrame = await courseFrame(s);
     assert.equal(documents.length, beforeRecovery + 1, 'expired seeded bridge refreshes once');
     assert.notEqual(await teacherFrame.evaluate(() => performance.timeOrigin), expiredDocument);
@@ -336,7 +372,7 @@ async function run() {
 
     phase = 'observer reload, control transfer and board-host document reload';
     const beforeReload = await snapshot(teacherFrame);
-    await s.reload(); await s.waitForFunction(ready); studentFrame = await courseFrame(s);
+    await s.reload(); await waitMirror(s, 'connected', 'pupil observer reload'); studentFrame = await courseFrame(s);
     await waitSnapshot(studentFrame, beforeReload, 'student reload');
     await synchronized(teacherFrame, studentFrame, 'reloaded observer');
     await board.locator('#openShare').click(); await board.locator('#controlToggle').click();
@@ -353,18 +389,56 @@ async function run() {
     assert.equal(new URL(board.url()).searchParams.get('room'), target.searchParams.get('room'));
     await Promise.all([board.waitForNavigation({ waitUntil: 'domcontentloaded' }), board.evaluate(() => location.reload())]);
     const reloadedBoard = board;
-    await reloadedBoard.waitForFunction(ready); teacherFrame = await courseFrame(reloadedBoard);
+    await waitMirror(reloadedBoard, 'connected', 'teacher board-host document reload');
+    assertTeacherRoomUrl(reloadedBoard, target.searchParams.get('room'), boardOrigin);
+    teacherFrame = await courseFrame(reloadedBoard);
     await waitSnapshot(teacherFrame, pupilState, 'teacher board-host document reload');
     assert.equal(await s.evaluate(() => document.body.classList.contains('control-owner')), true);
     const beforeRetry = await teacherFrame.evaluate(() => performance.timeOrigin);
     await reloadedBoard.locator('#trainerOptions').click(); await reloadedBoard.locator('#retryOpenedTrainer').click();
-    await reloadedBoard.waitForFunction(ready); await reloadedBoard.locator('#trainerPanel [data-close-panel]').click();
+    await waitMirror(reloadedBoard, 'connected', 'actual trainer retry'); await reloadedBoard.locator('#trainerPanel [data-close-panel]').click();
     teacherFrame = await courseFrame(reloadedBoard);
     await waitSnapshot(teacherFrame, pupilState, 'actual retry button restores current trainer');
     assert.notEqual(await teacherFrame.evaluate(() => performance.timeOrigin), beforeRetry);
-    await s.reload(); await s.waitForFunction(ready); studentFrame = await courseFrame(s);
+    phase = 'pupil controller reconnect retains work and requires explicit regrant';
+    // Observe the established server handback while the pupil is disconnected.
+    // Holding only the new client script prevents overlap between old/new sockets;
+    // fallback retains the existing request/privacy instrumentation and transport.
+    const pupilClientUrl = boardOrigin + '/socket.io/socket.io.js';
+    let releasePupilClient = () => {}, heldPupilClients = 0;
+    const pupilClientGate = new Promise(resolve => { releasePupilClient = resolve; });
+    const holdPupilClient = async route => { heldPupilClients++; await pupilClientGate; await route.fallback(); };
+    await s.route(pupilClientUrl, holdPupilClient);
+    try {
+      const clientRequest = s.waitForRequest(pupilClientUrl, { timeout: 20000 });
+      await Promise.all([s.reload({ waitUntil: 'domcontentloaded' }), clientRequest]);
+      await reloadedBoard.waitForFunction(() => shared.connected && roomStateReceived &&
+        shared.control === shared.me?.participantId &&
+        shared.participants.some(participant => participant.role === 'student' && participant.connected === false) &&
+        document.body.classList.contains('control-owner'));
+      assert.equal(heldPupilClients, 1, 'pupil client waits until the server returns control to the teacher');
+      releasePupilClient();
+      await waitMirror(s, 'connected', 'pupil controller reload');
+    } finally {
+      releasePupilClient();
+      await s.unroute(pupilClientUrl, holdPupilClient);
+    }
+    studentFrame = await courseFrame(s);
     await waitSnapshot(studentFrame, pupilState, 'student controller reload');
+    await waitSnapshot(teacherFrame, pupilState, 'teacher retains work during pupil reconnect');
+    assert.equal(await reloadedBoard.evaluate(() => shared.control === shared.me?.participantId && document.body.classList.contains('control-owner')), true);
+    assert.equal(await s.evaluate(() => controlHolder()?.role === 'teacher' && !document.body.classList.contains('control-owner')), true);
+    assert.equal(await s.locator('#trainerFrame').evaluate(node => node.inert && node.tabIndex === -1), true);
+    assert.equal(await s.locator('#trainerFrame').evaluate(node => getComputedStyle(node).pointerEvents), 'none');
+    await synchronized(teacherFrame, studentFrame, 'pupil reconnect restores visible work without taking control');
+    await reloadedBoard.locator('#openShare').click(); await reloadedBoard.locator('#controlToggle').click();
+    await s.waitForFunction(() => document.body.classList.contains('control-owner'));
+    await reloadedBoard.waitForFunction(() => !document.body.classList.contains('control-owner'));
+    await reloadedBoard.locator('#sharePanel [data-close-panel]').click();
     assert.equal(await s.evaluate(() => document.body.classList.contains('control-owner')), true);
+    assert.equal(await s.locator('#trainerFrame').evaluate(node => node.inert), false);
+    await studentFrame.locator('#proof-draft').fill('Запись ученика после повторной передачи управления');
+    await synchronized(studentFrame, teacherFrame, 'explicit regrant permits synchronized pupil work');
     await reloadedBoard.locator('#openShare').click(); await reloadedBoard.locator('#controlToggle').click();
     await reloadedBoard.waitForFunction(() => document.body.classList.contains('control-owner'));
     await s.waitForFunction(() => !document.body.classList.contains('control-owner'));
@@ -417,7 +491,7 @@ async function run() {
     assert.deepEqual(store.studentProfile(teacher, pupil.id), initialProfile);
     assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n, initialAttempts);
     assert.deepEqual(writes, []); assert.deepEqual(leaks, []); assert.deepEqual(external, []); assert.deepEqual(errors, []);
-    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated personal storage');
+    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload with server handback and explicit regrant; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated personal storage');
   } finally {
     releaseSocket(); await browser?.close(); if (roomProcess?.exitCode === null) roomProcess.kill('SIGTERM');
     await close(cabinetServer); await close(publicServer); store.close(); fs.rmSync(tmp, { recursive: true, force: true });

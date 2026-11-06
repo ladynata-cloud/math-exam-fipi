@@ -64,6 +64,10 @@ for (const item of catalogue) {
         errors.length=0;
         try {
         await page.goto(origin + route, { waitUntil: 'load' });
+        // This page schedules a delayed startup focus for its answer field;
+        // finish that initialization before typing into the navigator.
+        if (filename === 'rounding.html') await page.waitForFunction(() =>
+          document.activeElement === document.getElementById('userAnswer'), null, { timeout: 10000 });
         const host = page.locator('#maxexam-public-assistant');
         const launcher = host.locator('.launcher');
         const panel = host.locator('.panel');

@@ -218,6 +218,32 @@ personal work while making the beginner route easy to find.
   Task-branch push checks preserve real-browser verification while GitHub
   cannot synthesize a conflicting pull-request merge ref. Additional focused
   regressions do not claim that every workflow for a future reconciled PR ran.
+- The first CI browser attempt exposed a fixture actor mismatch: the teacher's
+  existing preview intentionally offers the shared board, while personal course
+  work belongs to the pupil. The fixture now authenticates the synthetic pupil
+  with a valid four-digit code and checks that pupil's exact course return.
+- The next real two-role journey passed selected-card recovery, mirrored work,
+  observer reload and control transfer, then exposed a host restoration defect.
+  A teacher room URL retained its original `trainer` query; replaying that query
+  during reload could invalidate the already-ready bridge through fragment-only
+  navigation. Created/restored room URLs now remove that obsolete entry query.
+  Initial direct course entry, room authority, other URL parameters and private
+  session credentials retain their existing behavior. Two complete-host
+  regressions failed on the original source and passed after the correction;
+  46 focused host/selection/picker tests passed. Real-browser confirmation of
+  the corrected flow is recorded in the PR, not assumed from these DOM tests.
+- Pupil-controller reload now tests the existing server contract explicitly:
+  the new client is held until the disconnected pupil's turn returns to the
+  teacher, then reconnect restores the exact work in an inert observer frame.
+  Real grant, pupil editing and revoke follow. The earlier assumption that a
+  pupil always retains control through a disconnected interval was incorrect;
+  neither the server contract nor the ownership assertions are weakened.
+- An unchanged rounding page schedules initial focus into its answer field.
+  One navigator browser journey observed the untouched welcome reply after
+  Enter, consistent with that focus stealing the key event. The harness now
+  awaits that page's observable initial focus before opening the navigator.
+  Enter search remains checked on every page and viewport; no page, assertion,
+  privacy check or failure boundary is skipped, and page/widget code is unchanged.
 
 ## Required handoff
 
