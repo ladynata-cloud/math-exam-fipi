@@ -99,7 +99,7 @@ for (const course of courses) {
 
   test('section ' + course.number + ': wrapper uses the canonical assets and existing bridge', () => {
     const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-    const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
+    const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
     const bridge = '/trainers/board-bridge.js';
     const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
     const wrapperScripts = scripts(wrapper);

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import navigatorPreservation from "../tools/public-navigator-preservation.cjs";
 
 const root = process.cwd();
 const manifestPath = path.join(root, "downloads", "trainers-manifest.json");
@@ -40,6 +41,17 @@ function copyFile(src, dest) {
   fs.copyFileSync(src, dest);
 }
 
+// Only exported copies lose the public shell. An unknown or changed pair must
+// stop the build rather than be removed from a lesson or shipped offline.
+function offlineHtml(file) {
+  const name = path.relative(root, file).split(path.sep).join("/");
+  const clean = navigatorPreservation.restorePublicNavigator(name, fs.readFileSync(file));
+  if (/navigator-(?:widget|data)\.js\b/i.test(clean.toString("utf8"))) {
+    throw new Error(`Unbound public navigator dependency in offline source: ${name}`);
+  }
+  return clean;
+}
+
 function copyDir(src, dest) {
   ensureDir(dest);
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
@@ -47,6 +59,7 @@ function copyDir(src, dest) {
     const from = path.join(src, entry.name);
     const to = path.join(dest, entry.name);
     if (entry.isDirectory()) copyDir(from, to);
+    else if (entry.isFile() && /\.html?$/i.test(entry.name)) fs.writeFileSync(to, offlineHtml(from));
     else if (entry.isFile()) copyFile(from, to);
   }
 }
@@ -319,7 +332,7 @@ function prepareTrainer(entry) {
     warnings.push(`Не найден HTML: ${entry.sourceHtml}`);
     return;
   }
-  const cleanHtml = inlineTrainerAssets(fixLocalAssetLinks(stripDownloadPanel(fs.readFileSync(sourceFile, "utf8"))), entry);
+  const cleanHtml = inlineTrainerAssets(fixLocalAssetLinks(stripDownloadPanel(offlineHtml(sourceFile).toString("utf8"))), entry);
 
   const destDir = path.join(downloadsRoot, entry.slug);
   const pkgDir = path.join(tmpRoot, entry.slug);

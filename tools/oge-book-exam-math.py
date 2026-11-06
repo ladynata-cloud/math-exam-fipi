@@ -88,13 +88,36 @@ def graph_atoms(expected):
 def exact_reviewed_context(record, oracle, fixtures):
     """Replay is limited to the manually reviewed condition and visible geometry.
 
-    Only the fixed edition banner may differ. The guard rejects arbitrary new
-    prompts even if a keyed arithmetic fixture happens to produce the same answer.
+    Only the fixed edition banner or the exact recorded return-navigation delta
+    may differ. New prompts cannot reuse a keyed arithmetic fixture by answer.
     """
     fixture = fixtures.get(record['id'])
     if fixture is None:return False
     if not record['prefix']:
         fixture = fixture.get('sourceVariant', fixture)
+    navigation = record.get('publicWayfinding')
+    fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
+    if navigation:
+        # The recorder retains raw visible text and exact payload hashes; only
+        # the separately checked two-link return bar is outside the exercise.
+        if record['prefix'] or navigation.get('kind') != 'oge-return-v1':return False
+        if navigation.get('visibleText') != '← Все темы ОГЭ Главная':return False
+        if record.get('unfilteredInitialVisibleText') != navigation['visibleText']+' '+record['initialVisibleText']:return False
+        loaded = record.get('resources',{}).get(record.get('finalPath',''),{})
+        if navigation.get('servedHtmlSha256') != loaded.get('sha256'):return False
+        if not re.fullmatch(r'[a-f0-9]{64}',navigation.get('originalHtmlSha256','')):return False
+        if 'removedLegacyReturn' in navigation:
+            # This one source page replaced its redundant old course link.
+            # The recorder reconstructs its exact historical HTML; every case
+            # is bound to the unchanged, previously reviewed payload receipt.
+            route = '/trainers/oge-task6-fractions.html'
+            if record['id']!='67' or record.get('finalPath')!=route or record.get('route')!=route:return False
+            if navigation['removedLegacyReturn']!='← К курсу ОГЭ':return False
+            approved = fixture.get('firstVisualReviewPayloads',{}).get(route,{})
+            if not approved.get('sha256') or navigation['originalHtmlSha256']!=approved['sha256']:return False
+            old = 'Перейти к заданию ← К курсу ОГЭ '
+            if not all(value.startswith(old) and value.count(old)==1 for value in fixture_texts):return False
+            fixture_texts = ['Перейти к заданию '+value[len(old):] for value in fixture_texts]
     text = record['initialVisibleText']
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
@@ -111,10 +134,43 @@ def exact_reviewed_context(record, oracle, fixtures):
             route=record['prefix']+record['route']
             approved=fixture.get('firstVisualReviewPayloads',{}).get(route,{})
             actual=record.get('resources',{}).get(route,{})
-            if not approved.get('sha256') or actual.get('sha256')!=approved['sha256']:return False
-    return (text in [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])] and
+            actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
+            if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
+    return (text in fixture_texts and
             geom(record.get('visibleSvgLabels', [])) == fixture['geometrySha256'] and
             item in fixture['oracles'])
+
+def wayfinding_context_selftest(fixtures):
+    """The one removed link cannot excuse changes to questions or payloads."""
+    import copy
+    fixture = fixtures['67'].get('sourceVariant',fixtures['67'])
+    route = '/trainers/oge-task6-fractions.html'
+    original_hash = fixture['firstVisualReviewPayloads'][route]['sha256']
+    text = fixture['visibleText'].replace('Перейти к заданию ← К курсу ОГЭ ','Перейти к заданию ',1)
+    label = '← Все темы ОГЭ Главная'
+    record = {'id':'67','prefix':'','route':route,'finalPath':route,
+              'initialVisibleText':text,'unfilteredInitialVisibleText':label+' '+text,
+              'visibleSvgLabels':[], 'resources':{route:{'sha256':'a'*64}},
+              'publicWayfinding':{'kind':'oge-return-v1','visibleText':label,
+                'servedHtmlSha256':'a'*64,'originalHtmlSha256':original_hash,
+                'removedLegacyReturn':'← К курсу ОГЭ'}}
+    oracle = fixture['oracles'][0]
+    assert exact_reviewed_context(record,oracle,fixtures)
+    probes = [
+        ('id','66'),('route','/other.html'),('finalPath','/other.html'),
+        ('prefix',VARIANT_PREFIXES['frozen']),('initialVisibleText',text+' changed condition'),
+        ('unfilteredInitialVisibleText',label+' '+text+' changed raw text')]
+    for key,value in probes:
+        changed=copy.deepcopy(record);changed[key]=value
+        assert not exact_reviewed_context(changed,oracle,fixtures),key
+    for key,value in [('removedLegacyReturn','different link'),('originalHtmlSha256','b'*64),
+                      ('servedHtmlSha256','b'*64),('kind','other'),('visibleText','different bar')]:
+        changed=copy.deepcopy(record);changed['publicWayfinding'][key]=value
+        assert not exact_reviewed_context(changed,oracle,fixtures),key
+    changed=copy.deepcopy(record);del changed['publicWayfinding']['removedLegacyReturn']
+    assert not exact_reviewed_context(changed,oracle,fixtures)
+    changed_oracle=copy.deepcopy(oracle);changed_oracle['expected']=['0']
+    assert not exact_reviewed_context(record,changed_oracle,fixtures)
 
 def rendered_fraction(html):
     """Evaluate only the recorded, rendered expression HTML with exact rationals.
@@ -372,6 +428,7 @@ def main():
     fixture_path=path(args.fixture);fixture_bytes=fixture_path.read_bytes()
     fixtures=json.loads(fixture_bytes)['fixtures']
     fraction_evaluator_selftest()
+    wayfinding_context_selftest(fixtures)
     records=[];inputs=[];coverage=[];unreviewed=[]
     for variant in args.variants:
         aggregate=path(args.reports_root)/variant/'results.json'

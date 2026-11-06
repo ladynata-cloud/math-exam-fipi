@@ -9,12 +9,16 @@ const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..');
+const { restorePublicNavigator } = require('./public-navigator-preservation.cjs');
 const html = fs.readFileSync(path.join(root, 'ege-profil/trainers/stereo-t14.html'), 'utf8');
 const shared = fs.readFileSync(path.join(root, 'stereo-course/assets/task-scene-viewer.js'), 'utf8');
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const geometry = html.match(/<script>\n(\/\* ================= ГЕОМЕТРИЯ.*?<\/script>)/s)[1];
 assert.equal(hash(geometry), '736c2060342fc55ff9039d4168cf560bd16afeeb68e4ba1b01c2cd5d6e7b4720', 'tasks, formulae and original geometry remain unchanged');
-const outsideScene = html.slice(0, html.indexOf('/* ================= ИНТЕРФЕЙС')) + html.slice(html.indexOf('  /* ---------- хранение ---------- */'));
+// Keep the historical receipt. Only the complete hash-bound rollout payload
+// can recover its exact pre-navigator bytes; any other edit remains visible.
+const original = restorePublicNavigator('ege-profil/trainers/stereo-t14.html', html).toString('utf8');
+const outsideScene = original.slice(0, original.indexOf('/* ================= ИНТЕРФЕЙС')) + original.slice(original.indexOf('  /* ---------- хранение ---------- */'));
 assert.equal(hash(outsideScene), '926d0da0482466d42385b07e9cc93d2f39bd5b71c8fae66b10dcd445a1f2056a', 'all other UI, lesson data and storage remain unchanged');
 const core = (source, begin, end) => source.split(begin + '\n')[1].split(end)[0];
 assert.equal(core(html, '  // BEGIN GENERATED PROFILE VISIBILITY FALLBACK', '  // END GENERATED PROFILE VISIBILITY FALLBACK'),
