@@ -146,7 +146,7 @@ test('board number search round-trips the existing state format and keeps exact 
       assert.equal(api.validateState(snapshot), true);
       assert.deepEqual(state.work, initial.work);
       assert.equal(state.route, '#home');
-      assert.deepEqual(state.view.number, { draft: String(expected.number), submitted: expected.number });
+      assert.deepEqual(state.view.number, { part: 1, draft: String(expected.number), submitted: expected.number });
       assert.deepEqual(Object.keys(state), Object.keys(initial));
       assert.deepEqual(Object.keys(state.view), Object.keys(initial.view));
       api.applyState(f.window.JSON.parse(JSON.stringify(state)));

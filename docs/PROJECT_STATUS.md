@@ -447,6 +447,17 @@ Updated: 2026-10-27 (Asia/Novosibirsk)
   [evidence](reports/ATANASYAN_FIRST_VIEWPORT_384.md). CI/release evidence will
   be recorded in the task PR. Standing publication permission applies.
 
+## Release candidate: Peterson 6, selected material for parts 2 and 3
+
+The [scoped continuation](tasks/PETERSON6_PARTS_2_3_CURRENT.md) ports the prepared
+second and third parts from #355 on top of the live 14-lesson, 224-card course.
+The [independent content comparison](reviews/PETERSON6_PARTS_2_3_CURRENT_INDEPENDENT.json)
+binds both new banks and preserves the existing methods, number index and legacy
+work. The 204 new cards cover selected exercises; the full first-volume textbook
+and its separate workshop in #367 remain independent. Runtime/board rollout must
+be coordinated with the schema-aware registry. This entry is preparation evidence,
+not a production claim.
+
 ## Release candidate: Peterson 6 exact exercise entry, PR404, 2026-11-02
 
 - [Task](tasks/PETERSON6_EXACT_EXERCISE_ENTRY.md), MEDIUM; bounded continuation

@@ -1,0 +1,37 @@
+{
+  "scope": "Independent internal review of content identity; not a fresh manual mathematical audit of every source-page exercise.",
+  "reviewer": "Independent MathExam navigation reviewer, 2026-11-06, local read-only comparison",
+  "main": "8d7fdd8c984a83213b1b4fddea371efc2a7f8c25",
+  "continuationSource": "18a945267537d3dd5142885ac09599d56eea8f0a",
+  "compiledSHA256": "dba55f5f528832a5ba3cb24a9d12cdbfd58c3eb81d67449ff862a8de872ea5bd",
+  "publishedSectionsSHA256": {
+    "lessons": "70abbe747a283034a954da4185985895753aaa5bf1d68a2fdc07eeaaf2f2f557",
+    "exerciseIndex": "8f5d9da56928d917d64d3901c806e1302b1c622ea3bc5b84af60a98810a0b8ef",
+    "legacyTasks": "49b140c089e8e00377dda68418e8f10bdf0252dd13ca97307860bdb793017624",
+    "legacyTheory": "c139b853a15aa274a33fae3ed3eb44b24f9fca1a360bbd81aecbe9cc7e889a08"
+  },
+  "publishedCounts": {
+    "lessons": 14,
+    "tasks": 224,
+    "exerciseIndex": 497,
+    "legacyTasks": 98,
+    "legacyTheory": 6
+  },
+  "newParts": {
+    "2": {
+      "lessons": 18,
+      "tasks": 99
+    },
+    "3": {
+      "lessons": 26,
+      "tasks": 105
+    }
+  },
+  "byteIdenticalToSource": {
+    "part2.json": "e77fcba4be5b73545e83d08cef6eac11137ac14cb66b9a20e1b9611b99ed9501",
+    "part3.json": "d4e6988579daea9f7dd9e83bff52003e96815151a49aa25f836de8cedcef8e1f",
+    "source-map-part2.json": "6e22f24114324711fd2c7b671df0e640399e909f494d8bd042eb17fd01ace687",
+    "source-map-part3.json": "46e40b9d6b65486c81091dd456d2fff639bd5f9581b6c04e077bcd021698fa14"
+  },
+  "verdict": "PASS for source identity and preservation"
+}
