@@ -47,7 +47,7 @@ jobs:
         env:
           PERCENT_SCREENSHOT_DIR: artifacts/vilenkin6-percent
         run: node trainers/vilenkin6-percent/browser.cjs
-      - uses: actions/upload-artifact@f4fb14a6c3bf1dfc21dc858cd31071b2df3a64b6
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: vilenkin6-percent-browser
