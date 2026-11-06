@@ -7660,6 +7660,11 @@
       "title": "Логарифмы с нуля · колледж и ЕГЭ · 60 задач",
       "group": "Колледж / математика",
       "href": "/trainers/college-logarithms/index.html"
+    },
+    {
+      "title": "Проценты · 8 задач из курса Виленкина · 6 класс",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-percent/index.html"
     }
   ]
 }
