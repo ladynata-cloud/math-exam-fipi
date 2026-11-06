@@ -174,10 +174,11 @@ async function run() {
   try {
     assert(store.available, 'isolated SQLite database required');
     const password = 'Synthetic-sections-' + randomUUID();
+    const pupilPassword = '0486'; // Synthetic four-digit pupil code, including its leading zero.
     const invitation = store.bootstrap({ login: 'fixture_sections_teacher', name: 'Преподаватель теста' });
     const teacher = store.activate(invitation.invitationToken, await hashPassword(password)).account;
     const pupilInvitation = store.createStudent(teacher, { login: 'fixture_sections_pupil', name: 'Ученик теста' });
-    const pupil = store.activate(pupilInvitation.invitationToken, await hashPassword(password, 'student')).account;
+    const pupil = store.activate(pupilInvitation.invitationToken, await hashPassword(pupilPassword, 'student')).account;
     store.saveStudentProfile(teacher, pupil.id, { opId: randomUUID(), expectedVersion: 0, course: 'school', goal: null, focus: '',
       program: { grade: 10, courseIds: ['sections-from-zero'] } });
     const initialProfile = store.studentProfile(teacher, pupil.id), initialAttempts = store.row('SELECT COUNT(*) AS n FROM attempts').n;
@@ -250,16 +251,31 @@ async function run() {
     await t.goto(cabinetOrigin + '/learning/#' + back);
     const card = t.locator('[data-program-course="sections-from-zero"]');
     const launch = card.locator('[data-program-board][data-cabinet-practice]');
-    await card.locator('[data-program-open]').click();
-    await t.locator('[data-cabinet-return]').waitFor();
-    const personalFrameElement = t.locator('[data-public-workspace] iframe');
+    await launch.waitFor();
+    assert.equal(await card.locator('[data-program-open]').count(), 0, 'teacher preview does not start pupil personal work');
+    assert.equal(await card.locator('[data-program-preview-only]').count(), 1);
+
+    phase = 'assigned pupil personal course and exact cabinet return';
+    const pupilBack = 'route';
+    await s.goto(cabinetOrigin + '/learning/?role=student#' + pupilBack);
+    await s.locator('[name=login]').fill(pupil.login); await s.locator('[name=password]').fill(pupilPassword);
+    await s.locator('#auth-form [type=submit]').click(); await s.locator('#navigation').waitFor();
+    await s.goto(cabinetOrigin + '/learning/#' + pupilBack);
+    const pupilCard = s.locator('[data-program-course="sections-from-zero"]');
+    const pupilOpen = pupilCard.locator('[data-program-open][data-cabinet-practice]');
+    await pupilOpen.click();
+    await s.locator('[data-cabinet-return]').waitFor();
+    const personalFrameElement = s.locator('[data-public-workspace] iframe');
     const personalSource = new URL(await personalFrameElement.getAttribute('src'));
     assert.equal(personalSource.origin, publicOrigin); assert.equal(personalSource.pathname, COURSE);
     const personalFrame = await (await personalFrameElement.elementHandle()).contentFrame();
     await personalFrame.waitForFunction(() => !!window.SECTIONS_APP);
     assert.equal(await personalFrame.evaluate(() => typeof window.__sectionsBoard), 'undefined');
-    await t.locator('[data-cabinet-return]').click(); await launch.waitFor();
-    assert.equal(new URL(t.url()).hash, '#' + back, 'personal course returns to the same cabinet context');
+    await s.locator('[data-cabinet-return]').click(); await pupilOpen.waitFor();
+    assert.equal(new URL(s.url()).hash, '#' + pupilBack, 'personal course returns to the same pupil route');
+    assert.equal(await s.evaluate(() => LearningApp.account().id), pupil.id, 'personal course retains the authenticated pupil');
+
+    phase = 'teacher assigned board and pre-room selected card';
     await launch.click(); await t.locator('[data-cabinet-return]').waitFor(); await t.reload();
     const boardElement = t.locator('[data-public-workspace] iframe');
     const src = new URL(await boardElement.getAttribute('src'));
