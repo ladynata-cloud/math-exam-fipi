@@ -71,7 +71,7 @@ function existingLocalTarget(url, origin) {
   const target = new URL(url);
   assert.equal(target.origin, origin, 'Public assets and default links stay on the local site: ' + url);
   const file = path.resolve(root, '.' + target.pathname);
-  assert(file.startsWith(root + path.sep), 'Target remains inside the repository');
+  assert(file === root || file.startsWith(root + path.sep), 'Target remains inside the repository');
   assert(fs.existsSync(file), 'Missing public-entry target: ' + target.pathname);
   if (fs.statSync(file).isDirectory()) assert(fs.existsSync(path.join(file, 'index.html')), 'Directory link needs an index: ' + target.pathname);
 }

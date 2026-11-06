@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Виленкин · 6 класс · Проценты на общей доске</title>
+  <meta name="description" content="Восемь задач на проценты из курса Виленкина: совместное решение по шагам на доске преподавателя и ученика.">
+  <link rel="canonical" href="https://mathexam.space/trainers/vilenkin6-percent/">
+  <link rel="stylesheet" href="../../courses/vilenkin-6-part-1/textbook-course.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="../board-bridge.js"></script>
+  <script defer src="../../courses/vilenkin-6-part-1/textbook-math.js"></script>
+  <script defer src="core.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="../../">MathExam</a><nav><a id="course-link" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#vilenkin-textbook">← В кабинет</a><a id="open-board" class="button-link" href="../trainer-board.html?trainer=%2Ftrainers%2Fvilenkin6-percent%2Findex.html">На общую доску</a></nav></header>
+  <main id="main">
+    <p class="eyebrow">ВИЛЕНКИН · 6 КЛАСС · ПУНКТ 2</p><h1>Проценты — решаем вместе</h1>
+    <p id="loading" role="status">Открываем задания курса…</p>
+    <section id="workspace" hidden>
+      <label for="task">Задание</label><select id="task"></select>
+      <article class="card"><p id="source" class="source"></p><h2 id="condition" class="prompt"></h2>
+        <div class="mode-buttons" aria-label="Способ решения"><button id="guided" type="button">По шагам</button><button id="independent" type="button">Сразу ответ</button></div>
+        <div id="history"></div><form id="answer-form" novalidate><label id="question" for="answer"></label><div class="answer-row"><input id="answer" maxlength="180" autocomplete="off" spellcheck="false"><button class="primary" id="check" type="submit">Проверить</button></div><p id="format" class="format-help"></p></form>
+        <p id="feedback" role="status" aria-live="polite"></p><button id="hint" type="button" hidden>Подсказка</button><p id="hint-text" class="hint" hidden></p>
+        <div class="actions"><button id="previous" type="button">← Предыдущее</button><button id="next" type="button">Следующее →</button><button id="repeat" type="button" hidden>Решить ещё раз</button></div>
+      </article>
+      <details id="rules" class="card"><summary>Вспомнить правило</summary><div id="rule-content"></div></details>
+      <label for="notes">Общие записи к задаче</label><textarea id="notes" rows="3" maxlength="1200" placeholder="Запишите вычисление или вопрос…"></textarea>
+      <p class="session-note">Это совместная тренировка. Самостоятельные работы и результаты в кабинете не изменяются. Для работы вдвоём создайте комнату на доске и передайте ученику её ссылку.</p>
+    </section>
+  </main>
+</body></html>

@@ -8,7 +8,10 @@ byte change is never normalized and must invalidate the historical checks.
 """
 import hashlib
 import json
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from public_navigator_preservation import restore_public_navigator
 
 PATCH = Path(__file__).with_name('first-viewport-amendment.json')
 BASE = {
@@ -21,6 +24,8 @@ def sha(raw):
 def historical_bytes(path, raw=None):
     path = Path(path)
     raw = path.read_bytes() if raw is None else raw
+    if path.name == 'index.html':
+        raw = restore_public_navigator('geometry-course/textbook/index.html', raw)
     name = 'assets/' + path.name if path.parent.name == 'assets' else ''
     if name not in BASE or sha(raw) == BASE[name]:
         return raw

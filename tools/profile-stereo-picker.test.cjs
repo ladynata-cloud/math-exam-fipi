@@ -124,7 +124,7 @@ test('foreign origins and nonliteral source paths never gain the stereometry ali
 
 test('the stereometry wrapper reuses canonical assets and the existing bridge without nested navigation', () => {
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-  const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
+  const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
   const canonicalScripts = scripts(canonical)
     .filter(src => !src.startsWith('../learning/'))

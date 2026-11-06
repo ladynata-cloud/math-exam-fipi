@@ -1,10 +1,11 @@
 'use strict';
+const {resolvePublicScript} = require('./public-page-script.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom');
 const {unit}=require('../ege-profil/start/task-first.js');
 const start=path.resolve(__dirname,'../ege-profil/start');
 const html=fs.readFileSync(path.join(start,'index.html'),'utf8');
-const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>fs.readFileSync(path.resolve(start,m[1].split(/[?#]/)[0]),'utf8'));
+const scripts=[...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(m=>fs.readFileSync(resolvePublicScript(path.resolve(__dirname,'..'),start,m[1]),'utf8'));
 const geometry=[...require('../ege-profil/start/geometry-data.js'),...require('../ege-profil/start/stereo-data.js')];
 const KEY='mathexam.profileStart2027.v1';
 function page(hash,initial){

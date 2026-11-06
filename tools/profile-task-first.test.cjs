@@ -1,4 +1,5 @@
 'use strict';
+const {resolvePublicScript} = require('./public-page-script.cjs');
 const assert=require('node:assert/strict');
 const test=require('node:test');
 const fs=require('node:fs');
@@ -35,7 +36,7 @@ test('All 68 lesson families keep the real task, answer, diagram and nested help
     const dom=new JSDOM(html,{url:'https://mathexam.space/ege-profil/start/#practice/'+lesson.id+'/independent',runScripts:'outside-only',pretendToBeVisual:true});
     const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
     try{
-      for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(path.resolve(start,script.getAttribute('src').split(/[?#]/)[0]),'utf8'));
+      for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(resolvePublicScript(path.resolve(__dirname, '..'), start, script.getAttribute('src')),'utf8'));
       const d=w.document,input=d.querySelector('#answer'),hint=d.querySelector('#hint'),box=d.querySelector('#hint-box'),model=d.querySelector('#task-model');
       assert(input&&hint&&box,lesson.id+': task is ready');assert.equal(box.hidden,true);
       const read=()=>JSON.parse(w.localStorage.getItem('mathexam.profileStart2027.v1')).sessions[lesson.id+':independent'];
