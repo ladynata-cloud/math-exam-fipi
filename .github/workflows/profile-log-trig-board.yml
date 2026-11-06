@@ -1,0 +1,95 @@
+name: Profile logarithms and trigonometry — shared lesson
+on:
+  pull_request:
+    paths:
+      - 'ege-profil/start/**'
+      - 'ege-profil/circle/**'
+      - 'learning/**'
+      - 'trainers/ege-profile-log-trig.html'
+      - 'trainers/ege-profile-circle.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/board-compat.json'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-workspace.js'
+      - 'board-server/**'
+      - 'tools/profile-log-trig-*'
+      - 'tools/profile-circle-board*'
+      - '.github/workflows/profile-log-trig-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'ege-profil/start/**'
+      - 'ege-profil/circle/**'
+      - 'learning/**'
+      - 'trainers/ege-profile-log-trig.html'
+      - 'trainers/ege-profile-circle.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-picker.js'
+      - 'trainers/board-picker-data.json'
+      - 'trainers/board-compat.json'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-workspace.js'
+      - 'board-server/**'
+      - 'tools/profile-log-trig-*'
+      - 'tools/profile-circle-board*'
+      - '.github/workflows/profile-log-trig-board.yml'
+permissions:
+  contents: read
+concurrency:
+  group: profile-log-trig-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  shared-lesson:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/profile-log-trig-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/profile-log-trig-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/profile-log-trig-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Selected lessons, mathematical answers, state and cabinet contracts
+        run: >-
+          node --test tools/profile-log-trig-*.test.cjs tools/profile-circle-board.test.cjs
+          tools/profile-algebra.test.cjs tools/profile-algebra-final-step.test.cjs
+          tools/profile-equations.test.cjs tools/profile-functions.test.cjs
+          tools/mord-ch4.test.cjs tools/mord-ch5.test.cjs tools/mord-ch6a.test.cjs
+          tools/mord-ch6b.test.cjs tools/mord-circle.test.cjs tools/mordkovich-models.test.cjs
+      - name: Existing wrappers, room entry and authoritative registry regressions
+        run: >-
+          node --test tools/profile-added-board.test.cjs tools/profile-added-board-models.test.cjs
+          tools/profile-added-picker.test.cjs tools/profile-stereo-board.test.cjs
+          tools/profile-stereo-board-models.test.cjs tools/profile-stereo-picker.test.cjs
+          tools/profile-expressions-board.test.cjs tools/profile-expressions-picker.test.cjs
+          tools/merzlyak-cabinet.test.cjs tools/merzlyak-room-selection.test.cjs
+          tools/college-functions-cabinet.test.cjs board-server/test/trainer-registry.test.js
+          board-server/test/server-registry.integration.test.js
+      - name: Real teacher and pupil rooms, control transfer and reconnect
+        env:
+          PROFILE_LOG_TRIG_BOARD_SHOTS: ${{ runner.temp }}/profile-log-trig-evidence/rooms
+        run: node tools/profile-log-trig-board.browser.cjs
+      - name: Teacher and pupil cabinet entry at desktop and narrow widths
+        env:
+          PROFILE_LOG_TRIG_CABINET_ARTIFACTS: ${{ runner.temp }}/profile-log-trig-evidence/cabinet
+        run: node tools/profile-log-trig-cabinet.browser.cjs
+      - name: Completed shared lesson gate
+        run: echo PROFILE_LOG_TRIG_BOARD_GATE=PASS
+      - name: Save synthetic acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-log-trig-board
+          path: ${{ runner.temp }}/profile-log-trig-evidence
+          if-no-files-found: ignore
+          retention-days: 7

@@ -39,11 +39,17 @@
     path: '/trainers/ege-profile-equations.html', debugKey: '__profileEquationsBoard',
     lessonIds: Object.freeze(['algebra-exponential', 'algebra-logarithmic', 'eq-linear', 'eq-rational', 'eq-quadratic', 'eq-root'])
   });
+  const LOG_TRIG = Object.freeze({
+    id: 'ege-profile-log-trig', marker: 'log-trig', defaultRoute: '#course',
+    path: '/trainers/ege-profile-log-trig.html', debugKey: '__profileLogTrigBoard',
+    lessonIds: Object.freeze(['expr-logarithms', 'algebra-logarithmic', 'fn-explog',
+      'trig-angle', 'trig-coordinates', 'trig-special', 'trig-tangent', 'algebra-cosine', 'algebra-double-angle'])
+  });
   const MODES = ['guided', 'plan', 'independent'];
   const PROGRESS_KEY = 'mathexam.profileStart2027.v1';
   const PREFERENCES_KEY = 'mathexam.profileCalmPreferences.v1';
   const DETAIL_SELECTORS = Object.freeze({
-    lab: '#explore-lab', materials: '.extra-help', foundation: '.task-foundation',
+    lab: '#explore-lab', materials: '#main > details.extra-help', foundation: '.task-foundation',
     simpler: '.task-foundation details', numberInput: '.number-help', extraSupport: '.support-details',
     calmBasics: '.calm-number-foundations', trigBasics: '.calm-trig-foundations'
   });
@@ -61,7 +67,8 @@
   const integer = (value, min, max) => Number.isInteger(value) && value >= min && value <= max;
   const text = value => typeof value === 'string' && value.length <= 200 && !/<\/?[a-z][^>]*>/i.test(value);
   function validRoute(hash, config) {
-    if (hash === '#exam/' + config.number || hash === '#calm/' + config.number) return true;
+    if (config.defaultRoute && hash === config.defaultRoute) return true;
+    if (config.number && (hash === '#exam/' + config.number || hash === '#calm/' + config.number)) return true;
     const match = /^#(lesson|example|practice|repair|pause)\/([a-z0-9-]+)(?:\/(guided|plan|independent))?$/.exec(hash || '');
     return !!match && config.lessonIds.includes(match[2]) &&
       (['lesson', 'example'].includes(match[1]) ? !match[3] : !!match[3]);
@@ -235,12 +242,13 @@
   function api(config) {
     return Object.freeze({
       LESSON_IDS: config.lessonIds, id: config.id, marker: config.marker,
-      path: config.path, debugKey: config.debugKey, defaultRoute: '#exam/' + config.number,
+      path: config.path, debugKey: config.debugKey, defaultRoute: config.defaultRoute || '#exam/' + config.number,
       validRoute: hash => validRoute(hash, config), create: lessons => create(lessons, config)
     });
   }
   const expressions = api(EXPRESSIONS), stereometry = api(STEREOMETRY), planimetry = api(PLANIMETRY),
-    vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS);
+    vectors = api(VECTORS), probability = api(PROBABILITY), randomVariables = api(RANDOM_VARIABLES), equations = api(EQUATIONS),
+    logTrig = api(LOG_TRIG);
   root.ProfileExpressionsBoard = expressions;
   root.ProfileStereoBoard = stereometry;
   root.ProfilePlanimetryBoard = planimetry;
@@ -248,7 +256,8 @@
   root.ProfileProbabilityBoard = probability;
   root.ProfileRandomVariablesBoard = randomVariables;
   root.ProfileEquationsBoard = equations;
+  root.ProfileLogTrigBoard = logTrig;
   // Preserve the published №8 default and №3 named CommonJS APIs.
   if (typeof module !== 'undefined' && module.exports) module.exports = Object.freeze({ ...expressions, stereometry,
-    planimetry, vectors, probability, randomVariables, equations });
+    planimetry, vectors, probability, randomVariables, equations, logTrig });
 })(globalThis);
