@@ -108,7 +108,9 @@
       "prompt": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-deepseek-prompt.md",
       "package": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-package.zip",
       "inlineAssets": [
-        "/ege-baza/return-to-course.js"
+        "/ege-baza/return-to-course.js",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js"
       ]
     },
     {
