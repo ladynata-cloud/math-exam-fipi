@@ -275,8 +275,18 @@
       pausedTrainerBridge=null;bridgeSession=session;bridgeReloadNeeded=false;return true
     }
     function updateMirrorStatusForCurrentTrainer(){if(trainerRegistry.status==='pending'||trainerRegistry.status==='idle'){setMirrorStatus('pending');return}if(trainerRegistry.status==='failed'){setMirrorStatus('registry-unavailable');return}const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry){setMirrorStatus('unsupported-trainer');return}if(bridgeSession?.hydrated){setMirrorStatus('connected');return}setMirrorStatus(readyCandidate?.timedOut?'bridge-timeout':'pending')}
-    function setTrainerFrameSrc(url,{force=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}if(!force&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;updateMirrorStatusForCurrentTrainer()}
-    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;setMirrorStatus('pending');return true}
+    function reloadTrainerDocument(next){
+      // Assigning a src with the same resource and a fragment can keep the
+      // expired document alive. Reload its real document, retaining the live
+      // selected lesson even when the original src has an older fragment.
+      try{
+        const target=new URL(next,location.href),live=new URL(frame.contentWindow.location.href);
+        if(target.origin===location.origin&&live.origin===location.origin&&!target.username&&!target.password&&!live.username&&!live.password&&target.pathname===live.pathname&&target.search===live.search){frame.contentWindow.location.reload();return}
+      }catch(_e){}
+      frame.src=next
+    }
+    function setTrainerFrameSrc(url,{force=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}if(!force&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;if(force)reloadTrainerDocument(next);else frame.src=next;updateMirrorStatusForCurrentTrainer()}
+    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;reloadTrainerDocument(next);setMirrorStatus('pending');return true}
     function bridgeDeadlineExpired(candidate=readyCandidate){return !!candidate&&(candidate.timedOut||Date.now()>=candidate.deadline)}
     function recoverExpiredBridgeOnce(){if(!roomStateReceived||trainerRegistry.status!=='ready'||!readyCandidate||!bridgeDeadlineExpired(readyCandidate)||automaticRecoveryGeneration===frameGeneration)return false;automaticRecoveryGeneration=frameGeneration;return reloadTrainerFrameForBridge()}
     function postTrainerMessage(message,origin=trustedTrainerOrigin()){if(!origin||!frame.contentWindow)return false;try{frame.contentWindow.postMessage(message,origin);return true}catch(_e){setMirrorStatus('registry-unavailable');return false}}
