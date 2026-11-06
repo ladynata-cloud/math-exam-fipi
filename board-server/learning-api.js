@@ -224,6 +224,7 @@ function createLearningApi(options = {}) {
     res.json(store.replaceStudentPassword(req.learningSessionToken, student.id, passwordHash, student.password_hash, student.auth_epoch));
   }));
   router.get('/attempts', authMiddleware, handler((req, res) => res.json({ attempts: store.listAttempts(req.learningAuth) })));
+  router.post('/teacher/rehearsal', authMiddleware, mutationMiddleware, handler((req, res) => res.json(store.teacherRehearsal(req.learningAuth, req.body))));
   router.post('/attempts', authMiddleware, mutationMiddleware, handler((req, res) => res.status(201).json(store.createAttempt(req.learningAuth, req.body))));
   router.get('/attempts/:id', authMiddleware, handler((req, res) => res.json(store.getAttempt(req.learningAuth, req.params.id))));
   router.get('/attempts/:id/textbook-help-context', authMiddleware, handler((req, res) => res.json(store.textbookHelpContext(req.learningAuth, req.params.id))));

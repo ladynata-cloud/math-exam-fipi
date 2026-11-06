@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
+  "baseSha": "ca992d646af6f24045ece29defe10136f58ffebe",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -223,8 +223,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "e8a227ecf7ae55a637270c96a8f8a8290bb338ea1fe1ea7335b0b9423acb7087",
-      "afterSha256": "f9054bedacb939b4d4153e7b66785197bfa4fba1e3bead5a0932db69f498932e",
+      "beforeSha256": "05f9788e4e89242a042b1326ada051a9ddf9e91de093791cea732a310e7bc1b3",
+      "afterSha256": "fa45af36e15c6a79e78ed953f37e8ba7369eefd5ad0ac4061ac8285d7dd1cae5",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2918,8 +2918,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
-      "beforeSha256": "4f7b221293acf843f4a0bae286fc361a4e1c9e9a9e1a5cff76b85f1932bb327e",
-      "afterSha256": "b3afff4fa08e752428b0955e584973be39d4fc600d0bcd4ef3dd2b5589415e85",
+      "beforeSha256": "daa5d1d52550eb8f3f874c7e4ae840afd56565396e9c057df0e96cee6bf2643b",
+      "afterSha256": "4838d7fc7fdd75e741e4c96e6ca20fbb2225f41a6edcbcca287473c1c0dd1ce3",
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
@@ -3824,6 +3824,24 @@
       "task": "docs/tasks/PROFILE_LOG_TRIG_BOARD.md",
       "changedPaths": [
         "ege-profil/circle/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
+      "sourceBaseSha": "9f53039f14b1fcdd2566f56a8cea5f25f6226757",
+      "task": "docs/tasks/LESSON_WORKSPACE_V1_20261107.md",
+      "changedPaths": [
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9f53039f14b1fcdd2566f56a8cea5f25f6226757",
+      "sourceBaseSha": "ca992d646af6f24045ece29defe10136f58ffebe",
+      "task": "docs/tasks/LESSON_WORKSPACE_V1_20261107.md",
+      "changedPaths": [
+        "trainers/oge-task18-grid.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
