@@ -53,6 +53,19 @@ jobs:
           GEOMETRY_TEXTBOOK_ROOT: ${{ runner.temp }}/advanced8
           ADVANCED8_ARTIFACTS: artifacts/advanced8/journeys
         run: node tools/geometry-textbook/advanced8-824-841.browser.cjs
+      - name: All reviewed public cold links and retained work after promotion
+        if: ${{ !cancelled() }}
+        env:
+          GEOMETRY_TEXTBOOK_ROOT: ${{ github.workspace }}
+          ADVANCED8_PUBLIC_RELEASE: '1'
+          ADVANCED8_ARTIFACTS: artifacts/advanced8/public-journeys
+          GEOMETRY_TEXTBOOK_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if python3 -c 'import json,sys; s=json.load(open("tools/geometry-textbook/release-scope.json")); sys.exit(not any(x.get("key")=="8-advanced-824-841" for x in s.get("supplements",[])))'; then
+            node tools/geometry-textbook/advanced8-824-841.browser.cjs
+          else
+            echo 'Public advanced8 scope is not promoted; candidate exclusion remains required.'
+          fi
       - name: Preserve actual evidence including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

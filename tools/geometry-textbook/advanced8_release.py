@@ -186,6 +186,8 @@ def matching_review(base, root=ROOT, course=None):
     root = Path(root)
     course = Path(course or root / PREFIX)
     try:
+        require(sha(serialized(base)) == BASE_BUNDLE_SHA,
+                'Advanced8 predecessor is not the exact independently reviewed1407 bundle')
         review = read(course / REVIEW_FILE)
         expected = binding_fields(base, root, course)
         require(all(review.get(k) == v for k, v in expected.items()), 'Stale advanced8 review binding')
@@ -272,8 +274,13 @@ def _project_previous(bundle, scope):
     old['build']['authoredCards'] -= 18
     old['build']['numberedExercises'] -= 18
     old['build']['authoredContentSha256'] = digest(draft_rows(old['lessons']))
+    previous_sections = old['build']['chapters'] + old['build']['supplements']
+    require(all(isinstance(row, dict)
+                and isinstance(row.get('publicationReviewMatches'), bool)
+                for row in previous_sections),
+            'Malformed previous chapter/supplement publication metadata')
     old['build']['publicationReviewMatches'] = all(
-        row['publicationReviewMatches'] for row in old['build']['chapters'] + old['build']['supplements'])
+        row['publicationReviewMatches'] for row in previous_sections)
     return old, previous_scope(scope)
 
 

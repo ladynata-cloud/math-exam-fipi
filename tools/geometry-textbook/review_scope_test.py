@@ -114,6 +114,9 @@ class ChapterReviewBoundary(unittest.TestCase):
                 self.assertFalse(bundle['build']['publicationReviewMatches'])
                 self.assertTrue(all(lesson['status'] == 'in-review' for lesson in bundle['lessons']
                                     if lesson['source']['chapter'] == target['chapterLabel']))
+                if any(s['key'] == ADVANCED8_KEY for s in self.supplements):
+                    self.assertFalse(self.chapter(bundle, ADVANCED8_KEY)['publicationReviewMatches'],
+                                     'The new supplement requires its exact reviewed predecessor')
 
     def test_review_cannot_be_reused_for_another_chapter(self):
         for target in self.chapters[1:]:
@@ -138,7 +141,8 @@ class ChapterReviewBoundary(unittest.TestCase):
         amended_vii = (number == '7-advanced' or (isinstance(number, int) and number <= 6)) and any(c['chapter'] == 7 for c in self.chapters)
         amended_viii = (number == '7-advanced' or (isinstance(number, int) and number <= 7)) and any(c['chapter'] == 8 for c in self.chapters)
         amended_ix = (number == '7-advanced' or (isinstance(number, int) and number <= 8)) and any(c['chapter'] == 9 for c in self.chapters)
-        if amended_vi or amended_vii or amended_viii or amended_ix:
+        amended_advanced8 = (number == '7-advanced' or (isinstance(number, int) and number <= 9)) and any(s['key'] == ADVANCED8_KEY for s in self.supplements)
+        if amended_vi or amended_vii or amended_viii or amended_ix or amended_advanced8:
             # The old approval is immutable; exercise the actual extension chain.
             shutil.copy2(COURSE/self.review_name(number), self.course/self.review_name(number))
             return
@@ -163,6 +167,9 @@ class ChapterReviewBoundary(unittest.TestCase):
                 for chapter in self.chapters:
                     self.assertEqual(self.chapter(bundle, chapter['chapter'])['publicationReviewMatches'],
                                      chapter['chapter'] != target['chapter'])
+                if any(s['key'] == ADVANCED8_KEY for s in self.supplements):
+                    self.assertFalse(self.chapter(bundle, ADVANCED8_KEY)['publicationReviewMatches'],
+                                     'Changed predecessor content invalidates the new supplement')
                 shutil.copy2(COURSE / name, self.course / name)
 
     def test_runtime_change_requires_every_chapter_to_be_reviewed_again(self):
@@ -198,7 +205,7 @@ class ChapterReviewBoundary(unittest.TestCase):
             self.write(name, read(self.course/'release-review-chapter-05.json'))
             self.assertFalse(self.chapter(compose(self.course), supplement['key'])['publicationReviewMatches'])
 
-    def test_advanced_model_edit_invalidates_only_its_own_review(self):
+    def test_advanced_model_edit_invalidates_own_review_and_exact_base_dependants(self):
         for supplement in self.supplements:
             self.approve_fixture_chapters()
             self.assertTrue(compose(self.course)['build']['publicationReviewMatches'])
@@ -213,7 +220,10 @@ class ChapterReviewBoundary(unittest.TestCase):
             self.assertFalse(self.chapter(bundle, supplement['key'])['publicationReviewMatches'])
             for other in self.supplements:
                 if other['key'] != supplement['key']:
-                    self.assertTrue(self.chapter(bundle, other['key'])['publicationReviewMatches'])
+                    # Earlier reviews remain independent. Advanced8 additionally
+                    # requires the exact full1407 predecessor, including grade7.
+                    self.assertEqual(self.chapter(bundle, other['key'])['publicationReviewMatches'],
+                                     other['key'] != ADVANCED8_KEY)
             shutil.copy2(COURSE/name, self.course/name)
 
     def test_advanced_number_and_model_omissions_fail_build(self):

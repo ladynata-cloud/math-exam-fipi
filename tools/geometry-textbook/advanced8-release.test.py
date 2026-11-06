@@ -12,6 +12,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from build_course import ROOT, COURSE, compose
 from build_advanced8_candidate import candidate
@@ -21,6 +22,7 @@ from advanced8_release import (KEY, LABEL, PREFIX, SOURCE_FILE, REVIEW_FILE, SCO
     has_supplement, previous_scope, historical_ix_projection, append_release,
     authored_rows, binding_fields, matching_review, validate_release)
 from stage_advanced8_release import stage
+import stage_advanced8_release as staging
 
 
 class Advanced8Release(unittest.TestCase):
@@ -105,6 +107,29 @@ class Advanced8Release(unittest.TestCase):
         self.assertTrue(all(r['status'] == 'in-review' for r in result['lessons'][-18:]))
         self.assertTrue(all(r['review']['reviewer'] == '' for r in result['lessons'][-18:]))
         self.assertIsNone(matching_review(self.base, root, course))
+
+    def test_changed_or_unreviewed_predecessor_cannot_approve_supplement(self):
+        root, course, _ = self.fixture()
+        for mutation in ('old review missing', 'old content changed'):
+            with self.subTest(mutation=mutation):
+                base = deepcopy(self.base)
+                if mutation == 'old review missing':
+                    base['build']['publicationReviewMatches'] = False
+                    base['lessons'][0]['status'] = 'in-review'
+                else:
+                    base['lessons'][0]['statement']['text'] += ' Changed predecessor.'
+                self.assertIsNone(matching_review(base, root, course))
+                result = append_release(base, root, course, self.scope)
+                self.assertEqual(result['lessons'][:1407], base['lessons'])
+                self.assertFalse(result['build']['publicationReviewMatches'])
+                self.assertTrue(all(r['status'] == 'in-review' for r in result['lessons'][-18:]))
+
+    def test_malformed_predecessor_metadata_is_an_explicit_gate_rejection(self):
+        root, course, _ = self.fixture()
+        result = append_release(self.base, root, course, self.scope)
+        result['build']['chapters'].append({'chapter': 8})
+        with self.assertRaisesRegex(AssertionError, 'Malformed previous'):
+            historical_ix_projection(result, self.scope)
 
     def test_each_review_dimension_provenance_and_scope_are_required(self):
         root, course, receipt = self.fixture()
@@ -233,6 +258,22 @@ class Advanced8Release(unittest.TestCase):
         with self.assertRaises(AssertionError): stage(ROOT / 'forbidden-release')
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaises(AssertionError): stage(Path(directory))
+
+    def test_hash_only_binding_refresh_does_not_approve_a_missing_receipt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            course = Path(directory) / 'course'
+            shutil.copytree(COURSE, course)
+            (course / REVIEW_FILE).unlink(missing_ok=True)
+            pending = append_release(self.base, ROOT, course, self.scope)
+            self.assertTrue(all(row['status'] == 'in-review' for row in pending['lessons'][-18:]))
+            with patch.object(staging, 'compose', return_value=pending), \
+                 patch.object(staging, 'read', return_value=self.scope), \
+                 patch.object(staging, 'COURSE', course):
+                with self.assertRaises(AssertionError): staging.base_course()
+                base, scope = staging.base_course(require_review=False)
+            self.assertEqual(sha(serialized(base)), BASE_BUNDLE_SHA)
+            self.assertEqual(scope, self.old_scope)
+            self.assertFalse((course / REVIEW_FILE).exists())
 
     def test_current_publication_requires_all_reviews_if_promoted(self):
         current = compose()

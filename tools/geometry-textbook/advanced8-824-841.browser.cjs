@@ -1,14 +1,19 @@
 'use strict';
-// Complete actual UI journeys for the isolated, explicitly unapproved candidate.
-const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict');
+// The default mode keeps the isolated candidate closed at the ordinary entry.
+// Explicit public mode checks the same journeys only after actual release review.
+const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const root=process.env.GEOMETRY_TEXTBOOK_ROOT;
-assert(root,'Set an isolated candidate root');
+const publicRelease=process.env.ADVANCED8_PUBLIC_RELEASE==='1';
+assert(root,'Set the course root to inspect');
 const out=path.resolve(process.env.ADVANCED8_ARTIFACTS||'artifacts/advanced8-journeys');fs.mkdirSync(out,{recursive:true});
 const bundle=JSON.parse(fs.readFileSync(path.join(root,'geometry-course/textbook/data/course.json')));
 const lessons=bundle.lessons.filter(l=>l.source.advancedGrade===8);
 assert.equal(lessons.length,18);assert.equal(bundle.lessons.length,1425);
-const evidence={completed:false,widths:[320,1280],journeys:[],preservation:[],errors:[],newCardsApproved:false};
+assert.equal(bundle.build.publicationReviewMatches,publicRelease,'Review state must match the explicitly selected mode');
+for(const lesson of lessons)assert.equal(lesson.status,publicRelease?'reviewed':'in-review');
+if(publicRelease)assert.notEqual(bundle.build.candidateOnly,true,'A candidate cannot stand in for a public release');
+const evidence={completed:false,scope:publicRelease?'reviewed-public-release':'isolated-unapproved-candidate',head:process.env.GEOMETRY_TEXTBOOK_HEAD||process.env.GITHUB_SHA||null,bundleSha256:crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'geometry-course/textbook/data/course.json'))).digest('hex'),widths:[320,1280],journeys:[],preservation:[],errors:[],newCardsApproved:publicRelease};
 let server,browser;
 async function serve(){return new Promise(resolve=>{
  server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost');const file=path.resolve(root,'.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
@@ -25,15 +30,15 @@ async function serve(){return new Promise(resolve=>{
   page.on('pageerror',e=>evidence.errors.push(e.message));
   await page.goto(base+'#'+lessons[0].id);await page.waitForFunction(()=>window.textbookApp);
   assert.equal(await page.locator('[data-preview-notice]').count(),0);
-  assert.equal(await page.evaluate(id=>window.textbookApp.open(id),lessons[0].id),false,'Ordinary entry must refuse new unapproved content');
+  assert.equal(await page.evaluate(id=>window.textbookApp.open(id),lessons[0].id),publicRelease,'Ordinary entry admits reviewed cards and refuses unapproved content');
   const oldId='atanasyan-7-9-main-823-part-1';
   assert(await page.evaluate(id=>window.textbookApp.open(id),oldId));await page.locator('#final-answer').fill('Сохранённый черновик задачи 823');
   const oldRaw=await page.evaluate(id=>localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'),oldId);
   for(const l of lessons){
    // A hash-only goto reuses the preceding document and its scroll position.
    // Use a distinct harmless query to measure a real cold document entry.
-   await page.goto(base+'review.html?exercise='+l.source.exercise+'#'+l.id);await page.waitForFunction(()=>window.textbookApp);
-   assert.equal(await page.locator('[data-preview-notice]').count(),1);
+   await page.goto(base+(publicRelease?'':'review.html')+'?exercise='+l.source.exercise+'#'+l.id);await page.waitForFunction(()=>window.textbookApp);
+   assert.equal(await page.locator('[data-preview-notice]').count(),publicRelease?0:1);
    assert.equal(await page.locator('main h1').innerText(),'К задаче №'+l.source.exercise);
    assert.equal(await page.locator('[data-main-model] svg').getAttribute('data-view'),'neutral');
    assert.equal(await page.locator('[data-step]').count(),0,'No solved step at cold entry');
@@ -76,10 +81,10 @@ async function serve(){return new Promise(resolve=>{
   await page.goto(base+'#'+oldId);await page.waitForFunction(()=>window.textbookApp);
   assert.equal(await page.locator('#final-answer').inputValue(),'Сохранённый черновик задачи 823');
   assert.equal(await page.evaluate(id=>localStorage.getItem('mathExamTextbook.v1:atanasyan-2023-7-9:'+id+':r1'),oldId),oldRaw);
-  evidence.preservation.push({width,oldCard:'823',draftExact:true,ordinaryEntryExcludesCandidate:true});await context.close();
+  evidence.preservation.push({width,oldCard:'823',draftExact:true,ordinaryEntryExcludesCandidate:!publicRelease,ordinaryEntryAdmitsReviewed:publicRelease});await context.close();
  }
  assert.equal(evidence.journeys.length,36);assert.deepEqual(evidence.errors,[]);evidence.completed=true;
- console.log('ADVANCED8_824_841_JOURNEYS_PASS '+JSON.stringify({journeys:evidence.journeys.length,preserved:evidence.preservation.length}));
+ console.log((publicRelease?'ADVANCED8_824_841_PUBLIC_JOURNEYS_PASS ':'ADVANCED8_824_841_JOURNEYS_PASS ')+JSON.stringify({journeys:evidence.journeys.length,preserved:evidence.preservation.length}));
 }catch(e){evidence.failure=e.stack;console.error(e);process.exitCode=1;}finally{
  fs.writeFileSync(path.join(out,'journeys.json'),JSON.stringify(evidence,null,2));await browser?.close();server?.close();
 }})();

@@ -16,11 +16,11 @@ from advanced8_release import (SCOPE, KEY, PREFIX, BASE_BUNDLE_SHA, serialized,
     binding_fields, append_release, validate_release)
 
 
-def base_course():
+def base_course(require_review=True):
     scope = read(ROOT / 'tools/geometry-textbook/release-scope.json')
     bundle = compose()
     if has_supplement(bundle, scope):
-        bundle, scope = historical_ix_projection(bundle, scope, ROOT, COURSE, True)
+        bundle, scope = historical_ix_projection(bundle, scope, ROOT, COURSE, require_review)
     require(sha(serialized(bundle)) == BASE_BUNDLE_SHA, 'Published1407 baseline changed')
     return bundle, scope
 
@@ -57,7 +57,9 @@ if __name__ == '__main__':
     options.add_argument('--output', type=Path)
     args = parser.parse_args()
     if args.bindings:
-        base, _ = base_course()
+        # A stale receipt must not prevent obtaining hashes for a new review.
+        # Validate the full candidate and frozen predecessor without approval.
+        base, _ = base_course(require_review=False)
         print(json.dumps(binding_fields(base, ROOT, COURSE), ensure_ascii=False, indent=2))
     else:
         stage(args.output)
