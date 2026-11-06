@@ -236,3 +236,40 @@ worksheet, or answer. It corrects the generators and their validation boundaries
   30 topic-page/viewport cases. The eight nested Azbuka pages also opened over
   file:// offline without network requests or JavaScript errors. Protected historical
   failures were not marked successful. Exact follow-up CI is required separately.
+
+## PR462 final CI compatibility follow-up, 6 November 2026
+
+The owner explicitly requested continuation of this PR, preservation of all 628
+pages, investigation of the four failed workflows, and release on validated
+current main under the standing authorization. Current main at preparation is
+`8d7fdd8c984a83213b1b4fddea371efc2a7f8c25`, already an ancestor of this PR.
+The existing composed OGE-return and GIF-preview sources are retained. Retarget
+this existing PR from its preparatory stacked base to main for final release.
+
+Confirmed from the completed logs on head 89772ff0:
+
+- OGE minimal workflow 42149418575: Playwright's `header` selector pierces the
+  navigator's open shadow root. Select the actual lesson's `main > header`;
+  retain all hint, answer, diagram and viewport assertions.
+- Profile workflow 42149418231: the file gate incorrectly interprets a root-relative
+  web URL as an absolute operating-system path. Resolve against the site root;
+  still require every asset and use the existing guarded JS resolver.
+- Stereometry workflow 42149418482: the unchanged-UI historical hash includes
+  the two approved navigator tags. Invert only the complete hash-bound public
+  rollout payload. Both old historical hashes and geometry oracles stay intact;
+  extend mutation rejection explicitly to stereo-t14.
+- EGE classroom workflow 42149418478: `footer button` also matches the hidden
+  navigator clear button. The pending download promise rejects during browser
+  cleanup and hides that selector collision. Select the named course export,
+  await click and download together, and additionally verify the full exported
+  JSON against the actual course state and the expected filename.
+- Soviet-math workflow 42149418566 was cancelled while installing ffmpeg from
+  the Ubuntu mirror, before any application check. Keep its tests and runner;
+  require a completed fresh run, not a cancellation waiver.
+
+No hosted HTML, navigator runtime, mathematics, saved-work keys or resources
+change in this correction. No test is disabled and no historical checksum is
+replaced. The exact final head, all CI outcomes and production acceptance are
+recorded in the PR release evidence. Local browser execution is unavailable in
+this execution sandbox (socket permission); the pinned-browser Actions runs
+remain required. External provider review and real-pupil trials are not claimed.

@@ -29,7 +29,7 @@ test('every inventoried public page has one exact existing navigator pair; all a
   }
 });
 test('normalization cannot hide altered tags, missing or duplicate scripts, extra code, math or source edits',()=>{
-  for(const name of ['trainers/oge-task6-fractions.html','geometry-course/textbook/index.html','stereo-course/textbook/index.html','courses/vilenkin-6-part-1/textbook.html','soviet-math/arithmetic-practice.html']){
+  for(const name of ['trainers/oge-task6-fractions.html','geometry-course/textbook/index.html','stereo-course/textbook/index.html','ege-profil/trainers/stereo-t14.html','courses/vilenkin-6-part-1/textbook.html','soviet-math/arithmetic-practice.html']){
     const raw=fs.readFileSync(path.join(root,name)),text=raw.toString('utf8'),row=rollout.addedPages[name];
     for(const changed of [text.replace('defer src="/assets/assistant/navigator-data','async src="/assets/assistant/navigator-data'),text.replace(snippet,''),text.replace(snippet,snippet+snippet),text.replace('navigator-widget.js?v=20261105-site1','navigator-widget.js?v=other'),text.replace(snippet,snippet.replace('</script>','void "changed";</script>')),text+'\n<!-- changed teaching or runtime -->',text.replace('<title>','<title>Changed source '),text.replace(snippet,snippet.replace(' defer ',' onclick="changed()" defer '))]){
       assert.notEqual(changed,text,name+' effective negative probe');

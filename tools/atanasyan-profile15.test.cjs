@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { resolvePublicScript } = require('./public-page-script.cjs');
 const root = path.resolve(__dirname, '..');
 const directory = path.join(root, 'ege-profil/atanasyan-10-11');
 const textbook = require('../stereo-course/data/textbook.json');
@@ -114,7 +115,10 @@ for (const name of ['index.html', 'lesson.html']) {
   assert.match(html, /<html lang="ru"/);
   for (const [, url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(?:https?:|#)/.test(url)) continue;
-    assert.ok(fs.existsSync(path.resolve(directory, url.split(/[?#]/)[0])), name + ': broken asset ' + url);
+    const pathname = url.split(/[?#]/)[0];
+    const file = pathname.startsWith('/') ? path.resolve(root, '.' + pathname) : path.resolve(directory, pathname);
+    assert.ok(file.startsWith(root + path.sep) && fs.existsSync(file), name + ': broken asset ' + url);
+    if (pathname.endsWith('.js')) assert.equal(resolvePublicScript(root, directory, url), fs.realpathSync(file));
     links++;
   }
   if (name === 'lesson.html') assert.equal((html.match(/guided-lesson\.js/g) || []).length, 1);
