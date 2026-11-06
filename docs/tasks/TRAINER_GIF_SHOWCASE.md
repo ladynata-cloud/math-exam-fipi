@@ -86,3 +86,13 @@ dependency provisioning. SEO likewise reached its five-minute deadline while
 installing browser dependencies, after both static gates passed. The two job
 deadlines are twenty minutes; all commands, assertions and artifact collection
 remain required. These cancelled runs are retained as historical results.
+
+### Composition with the published logarithms course
+
+Main `60deda9b2a5eddd7d91790a88500d907edb5e5f9` adds the separately
+published college-logarithms course from PR460. The ordinary merge retains
+its catalogue entry and all other incoming files. The catalogue browser
+expectation is therefore 59 entries, with an explicit assertion for the new
+logarithms link. All animation assets and player code remain unchanged.
+The status entry is retained next to the existing home/catalogue work instead
+of competing for the first line with unrelated release records.

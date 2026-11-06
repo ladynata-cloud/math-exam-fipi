@@ -26,7 +26,8 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
    assert.equal(await page.locator('h1').count(),1);
    assert(await page.locator('link[rel=canonical]').getAttribute('href'));
    if(file==='trainers/index.html') {
-    assert.equal(await page.locator('#catalog [data-card]').count(),58);
+    assert.equal(await page.locator('#catalog [data-card]').count(),59);
+    assert.equal(await page.locator('#catalog [data-card] a[href="./college-logarithms/"]').count(),1);
    }
    if(file==='oge/variants/2027/index.html') assert.equal(await page.locator('.card[data-number]').count(),104);
    assert.equal(await page.locator('[data-me-preview]').count(),expected.length);
