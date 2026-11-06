@@ -20,7 +20,9 @@ jobs:
           persist-credentials: false
       - name: Recompute answers and validate linked artifacts
         run: |
-          python3 -m pip install reportlab==4.4.9
+          python3 -m pip install reportlab==4.4.9 python-docx==1.2.0 sympy==1.14.0
+          python3 tools/build-pedagogam-docx.py --check
+          python3 tools/pedagogam-docx-check.py
           python3 tools/pedagogam-materials.test.py
           python3 tools/build-pedagogam-topic-pages.py --check
           python3 tools/pedagogam-topic-pages-check.py

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-11-06",
+  "reviewer": "ChatGPT root, independent of document author",
+  "verdict": "PASS_BOUNDED_INDEPENDENT_LAYOUT_REVIEW",
+  "bindings": {
+    "pedagogam/raboty/word-packs.json": "9f53d25d45a69e2d251334f83bd8680b469978e0eea7658cbe0256ea89656173",
+    "pedagogam/raboty/word-manifest.json": "9284edbd992da6bc23081880e20300d9310cfd582a02e0562104a294dde740aa",
+    "tools/build-pedagogam-docx.py": "c4bc7cec4bc222dcfca68a1a9df3fef82dc34667f35f9a3e5ad25f104318a46c"
+  },
+  "scope": {
+    "documents": 7,
+    "totalPages": 25,
+    "rootVisuallyInspectedPages": 9,
+    "independentMathTasks": 48
+  },
+  "visual": {
+    "verdict": "passed",
+    "actualScope": "Actually inspected all eight final student/teacher linear-graph pages plus the unchanged one-page error-review form. Axis labels, negative signs, arrows, line placement, editable-grid presentation and writing space are legible; no clipping or misplaced content was found. This record does not claim root inspection of the other sixteen pages.",
+    "inspectedPages": [
+      {
+        "page": "lineynye-grafiki-oge-zadaniya/page-1.png",
+        "sha256": "dceda5fa87072c0db1275306d9bd3926ee23d8a2c626655e6061b28a4dfcb6a5"
+      },
+      {
+        "page": "lineynye-grafiki-oge-zadaniya/page-2.png",
+        "sha256": "6d7f780e9c590460f33eced6952c012023d77609764d9e4ccb716dc4a7eed2d1"
+      },
+      {
+        "page": "lineynye-grafiki-oge-zadaniya/page-3.png",
+        "sha256": "47b92e1c7743a6880c22f63c21999680c0c3c0dc8fbe6d4acb205dca9078bfa2"
+      },
+      {
+        "page": "lineynye-grafiki-oge-zadaniya/page-4.png",
+        "sha256": "0f5f80ac54f82d31613ff2f26136581a37b65911ac4dbcbc8b69439202d74244"
+      },
+      {
+        "page": "lineynye-grafiki-oge-otvety/page-1.png",
+        "sha256": "bbe4962b79f8f6ccbf15abb0b76720632b81136e3278159b63561ec4f8e75a9e"
+      },
+      {
+        "page": "lineynye-grafiki-oge-otvety/page-2.png",
+        "sha256": "da30613936083ed593df598dd99fdbcb93a083753379892a726b7cced7856e3b"
+      },
+      {
+        "page": "lineynye-grafiki-oge-otvety/page-3.png",
+        "sha256": "3fc6b278dcc5e0816d9de345a6f3efe6c7485e0394f194830efea8a375fdca1d"
+      },
+      {
+        "page": "lineynye-grafiki-oge-otvety/page-4.png",
+        "sha256": "0dd054b101d2f58ebc700bf9186a57aca394cd0517a21bbc960eca7461a8cb47"
+      },
+      {
+        "page": "rabota-nad-oshibkami/page-1.png",
+        "sha256": "0d24de9880b6f8e6373ab94f5cc2888c26678b818ee39e122fb1557b005e0d18"
+      }
+    ],
+    "completeAuthorVisualRecord": "docs/reviews/TEACHER_DOCX_THREE_TOPICS_VISUAL.json"
+  },
+  "mathematics": {
+    "verdict": "passed",
+    "reviewer": "Independent navigation agent, not the DOCX author",
+    "sourceSHA256": "9f53d25d45a69e2d251334f83bd8680b469978e0eea7658cbe0256ea89656173",
+    "method": "Read and independently checked all 48 task conditions, answers, solutions and all twelve six-point marking totals.",
+    "coverage": {
+      "minusBeforeBrackets": 16,
+      "triangleAngleSum": 16,
+      "linearGraphs": 16
+    },
+    "graphChecks": "All four graph equations y=x+b for b=2,3,4,5 match the two plotted points and the ±6 coordinate grid.",
+    "triangleResults": [
+      [
+        85,
+        50,
+        [
+          65,
+          65
+        ],
+        95
+      ],
+      [
+        75,
+        45,
+        [
+          60,
+          60
+        ],
+        105
+      ],
+      [
+        65,
+        40,
+        [
+          55,
+          55
+        ],
+        115
+      ],
+      [
+        55,
+        35,
+        [
+          50,
+          50
+        ],
+        125
+      ]
+    ]
+  },
+  "documents": [
+    {
+      "path": "arith-brackets-like-terms/minus-pered-skobkami-zadaniya.docx",
+      "sha256": "af5f9eddcd1fa2da9bcecbad34c09c03c6adc33025e09d1d7c668bac0653cf93",
+      "pages": 4
+    },
+    {
+      "path": "arith-brackets-like-terms/minus-pered-skobkami-otvety.docx",
+      "sha256": "4b9d686e8fc314ca5ae6646a843f83648ff9055fe7ee9c0f69eb4bab410c7ac5",
+      "pages": 4
+    },
+    {
+      "path": "geo-ugly-treugolnika/summa-uglov-treugolnika-zadaniya.docx",
+      "sha256": "a22b8b492344d00aa8c5f16b37f6406f8768e93f93d549325aac7046b392a903",
+      "pages": 4
+    },
+    {
+      "path": "geo-ugly-treugolnika/summa-uglov-treugolnika-otvety.docx",
+      "sha256": "7fe679a17d93fa67697cf392dbb1bf7b013ed12887c4e621ff8566b4ab3dbe59",
+      "pages": 4
+    },
+    {
+      "path": "alg-line/lineynye-grafiki-oge-zadaniya.docx",
+      "sha256": "396cc9d4303c9439a7ca04afbccc95b0490f102b643d5281a65b986d78afecc0",
+      "pages": 4
+    },
+    {
+      "path": "alg-line/lineynye-grafiki-oge-otvety.docx",
+      "sha256": "91e66ab71afed24640fe4048de92bb9dcfeb775ba9cf5936854fbb44830afd6b",
+      "pages": 4
+    },
+    {
+      "path": "rabota-nad-oshibkami.docx",
+      "sha256": "5b37952463bdcf61646cf0f4278a18194247226387622277b33d428bd07340b0",
+      "pages": 1
+    }
+  ],
+  "externalReview": {
+    "performed": false,
+    "reason": "Owner waived external model review; reviews above were performed in the current session."
+  }
+}
