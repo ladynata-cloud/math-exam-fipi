@@ -38,6 +38,8 @@ server, a real account or skipping required browser checks.
   first condition in the initial viewport for preparation and both lesson roles.
 - Existing eight-seat classroom and course-navigation browser regression gates.
 
+Viewport threshold failures are recorded with immediate screenshots so the remaining journey can run; `result.json` retains `layoutFailures` even on a later functional error, and a mandatory zero-failure assertion runs before browser success.
+
 The final `LESSON_WORKSPACE_V1_OK` is printed only after all of those processes
 pass. `LESSON_WORKSPACE_V1_BROWSER_OK` covers only the new Chromium journey.
 A local environment unable to bind sockets or launch Chromium can run syntax

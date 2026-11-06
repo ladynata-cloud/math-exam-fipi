@@ -27,6 +27,7 @@ body.learning-managed>header,body.learning-managed>footer{display:none}body.lear
 
 /* Cabinet frames keep the condition below one accessible strip of stages. */
 @media(max-width:750px){
+ body.learning-managed #main>.eyebrow{display:none}
   body.learning-managed .stage-nav{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;min-width:0;max-width:100%;margin:10px 0;padding:6px 2px 8px;overscroll-behavior-x:contain}
   body.learning-managed .stage-nav button{flex:0 0 auto;white-space:nowrap;min-height:44px}
 }

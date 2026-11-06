@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
 const { ROOT, fixture, serve, learningSnapshot, copy } = require('./fixture.cjs');
 const artifactDir = path.resolve(process.env.LESSON_WORKSPACE_ARTIFACTS || fs.mkdtempSync(path.join(os.tmpdir(), 'lesson-workspace-evidence-')));
 fs.mkdirSync(artifactDir, { recursive: true });
-const checks = [], layout = [], screenshots = [], errors = [], blockedExternal = [];
+const checks = [], layout = [], layoutFailures = [], screenshots = [], errors = [], blockedExternal = [];
 const observedHydrates = [];
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 let phase = 'initialization';
@@ -78,6 +78,14 @@ async function photograph(page, name) {
   await page.screenshot({ path: path.join(artifactDir, file), fullPage: true });
   screenshots.push(file);
 }
+async function layoutThreshold(page, condition, message) {
+  if (condition) return;
+  const file = 'layout-failure-' + (layoutFailures.length + 1) + '.png';
+  layoutFailures.push({ phase, viewport: page.viewportSize(), message, screenshot: file });
+  console.error('LAYOUT FAIL ' + message);
+  await page.screenshot({ path: path.join(artifactDir, file), fullPage: false });
+  screenshots.push(file);
+}
 async function firstCondition(page, frame, label, width) {
   await page.setViewportSize({ width, height: width === 320 ? 900 : 960 });
   await page.evaluate(() => window.scrollTo(0, 0));
@@ -97,14 +105,16 @@ async function firstCondition(page, frame, label, width) {
       stageNav: bounds(nav), currentStage: bounds(nav?.querySelector('[aria-current="step"]')) };
   });
   layout.push({ label, width, viewportHeight: viewport.height, firstCondition: bounds, childLayout: inner });
-  assert(bounds && bounds.width > 20 && bounds.height > 10, label + ': real task condition exists');
-  assert(bounds.x >= -1 && bounds.x + bounds.width <= width + 1, label + ': condition is horizontally clipped');
-  assert(bounds.y >= -1 && bounds.y + bounds.height <= viewport.height + 1,
+  assert(bounds, label + ': real task condition exists');
+  await layoutThreshold(page, bounds.width > 20 && bounds.height > 10, label + ': real task condition has usable dimensions');
+  await layoutThreshold(page, bounds.x >= -1 && bounds.x + bounds.width <= width + 1, label + ': condition is horizontally clipped');
+  await layoutThreshold(page, bounds.y >= -1 && bounds.y + bounds.height <= viewport.height + 1,
     label + ': the complete first condition must be visible without scrolling, ' + JSON.stringify(bounds));
-  assert(inner.scrollWidth <= inner.width + 1, label + ': trainer has horizontal overflow');
+  await layoutThreshold(page, inner.scrollWidth <= inner.width + 1, label + ': trainer has horizontal overflow');
   const nav = inner.stageNav, current = inner.currentStage;
-  assert(nav && current && current.width > 0 && current.height >= 24, label + ': native current stage exists');
-  assert(current.left >= Math.max(0, nav.left) - 1 && current.right <= Math.min(inner.width, nav.right) + 1 &&
+  assert(nav && current, label + ': native current stage exists');
+  await layoutThreshold(page, current.width > 0 && current.height >= 24, label + ': native current stage has a usable target');
+  await layoutThreshold(page, current.left >= Math.max(0, nav.left) - 1 && current.right <= Math.min(inner.width, nav.right) + 1 &&
     current.top >= Math.max(0, nav.top) - 1 && current.bottom <= Math.min(inner.height, nav.bottom) + 1,
   label + ': current native stage is clipped after resize, ' + JSON.stringify({ nav, current }));
   const file = label + '-first-screen-' + width + '.png';
@@ -118,7 +128,8 @@ async function checkLayout(page, label, width) {
   for (const button of await page.locator('#lesson-material-queue [data-lesson-material]').all()) {
     await button.scrollIntoViewIfNeeded();
     const bounds = await button.boundingBox();
-    assert(bounds && bounds.x >= -1 && bounds.x + bounds.width <= width + 1, label + ': queue button is unreachable');
+    assert(bounds, label + ': queue button exists');
+    await layoutThreshold(page, bounds.x >= -1 && bounds.x + bounds.width <= width + 1, label + ': queue button is unreachable');
   }
   const result = await page.evaluate(() => {
     const visible = element => {
@@ -134,10 +145,10 @@ async function checkLayout(page, label, width) {
     return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, controls };
   });
   layout.push({ label, ...result });
-  assert(result.scrollWidth <= width + 1, label + ' has horizontal overflow: ' + JSON.stringify(result));
+  await layoutThreshold(page, result.scrollWidth <= width + 1, label + ' has horizontal overflow: ' + JSON.stringify(result));
   for (const button of result.controls) {
-    if (!button.inScrollableQueue) assert(button.left >= -1 && button.right <= width + 1, label + ': control clipped ' + button.text);
-    assert(button.width >= 24 && button.height >= 24, label + ': control target too small ' + button.text);
+    if (!button.inScrollableQueue) await layoutThreshold(page, button.left >= -1 && button.right <= width + 1, label + ': control clipped ' + button.text);
+    await layoutThreshold(page, button.width >= 24 && button.height >= 24, label + ': control target too small ' + button.text);
   }
   await photograph(page, label + '-' + width);
 }
@@ -374,7 +385,7 @@ async function checkLayout(page, label, width) {
     assert.deepEqual(semantic(work(bId)), second, 'Responsive reflow does not rewrite another material');
     assert.deepEqual(f.store.getAttempt(f.peer.account, f.peerWork.id), f.peerWork, 'Peer work is unchanged');
     assert.deepEqual(f.store.getAttempt(f.pupil.account, f.source.id), f.source, 'Original source attempt is unchanged');
-    pass('Pupil card, preparation, join and lesson controls fit 320 px and 1280 px');
+    if (!layoutFailures.length) pass('Pupil card, preparation, join and lesson controls fit 320 px and 1280 px');
 
     phase = 'late response after leaving the pupil';
     let heldSwitch;
@@ -415,8 +426,10 @@ async function checkLayout(page, label, width) {
     assert(observedHydrates.length >= 3, 'Real cross-origin hydration observed for teacher, pupil and late join');
     assert.deepEqual(errors, [], 'No browser runtime errors');
     pass('Trainer requests and semantic hydration contain no cabinet credentials or account identity');
+    phase = 'final layout acceptance';
+    assert.deepEqual(layoutFailures, [], 'Every recorded layout threshold must pass before browser success');
     fs.writeFileSync(path.join(artifactDir, 'result.json'), JSON.stringify({ status: 'passed', browser: 'Chromium',
-      realSQLite: true, roleContexts: clients.length, checks, layout, screenshots, sourceHashes: hashes,
+      realSQLite: true, roleContexts: clients.length, checks, layout, layoutFailures, screenshots, sourceHashes: hashes,
       blockedExternal: [...new Set(blockedExternal)], runtimeErrors: errors }, null, 2) + '\n');
     console.log('LESSON_WORKSPACE_V1_BROWSER_OK');
   } catch (error) {
@@ -424,7 +437,7 @@ async function checkLayout(page, label, width) {
       try { await photograph(clients[index].page, 'failure-' + index); } catch (_) {}
     }
     fs.writeFileSync(path.join(artifactDir, 'result.json'), JSON.stringify({ status: 'failed', phase, error: error.stack,
-      checks, layout, screenshots, sourceHashes: hashes, runtimeErrors: errors }, null, 2) + '\n');
+      checks, layout, layoutFailures, screenshots, sourceHashes: hashes, runtimeErrors: errors }, null, 2) + '\n');
     throw error;
   } finally {
     await browser?.close(); await service?.close(); f.close();

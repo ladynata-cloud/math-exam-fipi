@@ -172,11 +172,14 @@ cabinet, lesson, trainer and board boundaries.
   7 picker/queue, 10 rehearsal); targeted Vilenkin cabinet regressions;
   JavaScript syntax and `git diff --check`.
 - Tests failed: none in the current local test set. The first completed CI
-  browser run found the private condition below the 320 px viewport. The
-  candidate now compacts the outer work shell, uses the existing managed-stage
-  strip horizontally, and keeps its active stage visible without moving the
-  parent document. The full-condition assertion remains required; the final
-  exact-head browser result belongs in the PR handoff.
+  browser runs found private/teacher conditions below the 320 px viewport. The
+  candidate now compacts the outer work shell, removes a duplicate generic
+  embedded label on narrow screens, uses the existing managed-stage strip
+  horizontally, and keeps its active stage visible without moving the parent
+  document. Every full-condition threshold remains required for success; the
+  final exact-head browser result belongs in the PR handoff. The public
+  navigator inventory is refreshed through its canonical source-binding
+  procedure for the two approved cache-query changes; assertions are unchanged.
 - Independent technical review: confirmed and fixed private internal-navigation
   rejection, lost-acknowledgement lesson-form retry, and temporary identity-check
   lock during asynchronous preparation. Each has a passing regression.
