@@ -67,15 +67,19 @@ jobs:
       - name: Read public cabinet without accounts or writes
         run: |
           python - <<'PY'
-          import urllib.request, urllib.error, hashlib, json, pathlib, datetime
+          import urllib.request, urllib.error, hashlib, json, pathlib, datetime, time
           origin='https://mathexam-board-ladynata.msk1.amvera.tech'
           results=[]
           for path in ['/health','/api/learning/status','/learning/','/learning/app.js']:
               item={'url':origin+path,'method':'GET'}
+              started=time.monotonic()
+              phase='open'
               try:
                   request=urllib.request.Request(origin+path,headers={'User-Agent':'MathExam-readonly-release-check','Cache-Control':'no-cache'})
                   with urllib.request.urlopen(request,timeout=30) as response:
+                      phase='read'
                       body=response.read(12000000)
+                      phase='decode'
                       item.update(status=response.status,content_type=response.headers.get('Content-Type',''),bytes=len(body),sha256=hashlib.sha256(body).hexdigest())
                       if 'json' in item['content_type']:
                           data=json.loads(body)
@@ -83,7 +87,12 @@ jobs:
               except urllib.error.HTTPError as error:
                   item.update(status=error.code,error='HTTP error')
               except Exception as error:
-                  item.update(status=None,error=type(error).__name__)
+                  reason=getattr(error,'reason',error)
+                  item.update(status=None,error=type(error).__name__,failure_phase=phase,error_cause=type(reason).__name__,error_errno=getattr(reason,'errno',None))
+                  # OSError.strerror describes the transport failure without printing request headers, environment or credentials.
+                  if isinstance(reason,OSError) and reason.strerror:
+                      item['error_detail']=reason.strerror[:240]
+              item['elapsed_ms']=round((time.monotonic()-started)*1000)
               results.append(item)
           report={'gate':'CABINET_PUBLIC_READINESS','checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True,'results':results}
           report['status']='PASS' if all(x.get('status')==200 for x in results) else 'BLOCKED'
