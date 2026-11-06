@@ -7755,6 +7755,41 @@
       "title": "Простейшие уравнения: все точки и все обороты",
       "group": "ЕГЭ профиль · логарифмы и тригонометрия",
       "href": "/trainers/ege-profile-circle.html#lesson/m6-equations"
+    },
+    {
+      "title": "ВПР · 5 класс",
+      "href": "/trainers/vpr-math/index.html?route=g5",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 6 класс",
+      "href": "/trainers/vpr-math/index.html?route=g6",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 7 класс · базовый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g7",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 7 класс · углублённый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g7u",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 8 класс · базовый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g8",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 8 класс · углублённый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g8u",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 10 класс",
+      "href": "/trainers/vpr-math/index.html?route=g10",
+      "group": "ВПР / математика"
     }
   ]
 }

@@ -289,7 +289,9 @@
     "/trainers/turing-trainer-polish.html",
     "/trainers/turing-trainer-universal.html",
     "/trainers/turing-trainer-upgrade.html",
-    "/trainers/who-is-stronger.html"
+    "/trainers/vpr-math/",
+    "/trainers/who-is-stronger.html",
+    "/vpr/"
   ],
   "follow_prefixes": [
     "/articles/",

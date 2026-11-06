@@ -115,7 +115,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261106-log-trig"></script>
+  <script src="board-picker.js?v=20261107-vpr"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -136,6 +136,7 @@
     const trainerUrl=$('trainerUrl'),frame=$('trainerFrame'),trainerQuick=$('trainerQuick'),trainerQuickStatus=$('trainerQuickStatus'),mirrorStatus=$('mirrorStatus'),retryTrainerRegistry=$('retryTrainerRegistry'),color=$('color'),size=$('size'),sizeText=$('sizeText'),bg=$('bg'),sheetCount=$('sheetCount');
     const serverUrl=$('serverUrl'),shareStatus=$('shareStatus'),roleBadge=$('roleBadge'),roomBadge=$('roomBadge'),controlBadge=$('controlBadge'),controlToggle=$('controlToggle'),releaseControl=$('releaseControl'),studentLink=$('studentLink'),participantsList=$('participantsList');
     let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null,roomStateReceived=false,latestTrainerState=null,bridgeSession=null,pausedTrainerBridge=null,readyCandidate=null,bridgeHydrationTimer=null,legacyTrainerTimer=null,frameGeneration=0,lastFrameLoadAt=0,automaticRecoveryGeneration=-1,bridgeReloadNeeded=false;
+    let vprControlTransfer=null;
     const lessonTrainers=[
       {group:'Отрицательные числа',file:'trainers/negative-numbers-line.html',title:'Числовая прямая / отрицательные числа',boardCompatibility:'board-mirror'},
       {group:'Отрицательные числа',file:'trainers/negative-numbers.html',title:'Отрицательные числа',boardCompatibility:'opens-in-board'},
@@ -185,22 +186,37 @@
       }catch(_){return url}
     }
     function prepareProfileTrainerForRoom(url){
-      // Fixed profile courses choose tasks in memory, not from a random seed.
+      // Fixed courses choose tasks in memory, not from a random seed.
       // Carry only a validated public lesson snapshot across the room reload;
       // drafts never enter the URL or the teacher-room credential record.
       try{
         const raw=normalizeTrainer(url),file=canonicalTrainerFileFromUrl(raw);
-        const key=file==='trainers/ege-profile-log-trig.html'?'__profileLogTrigBoard':file==='trainers/ege-profile-circle.html'?'__profileCircleBoard':null;
+        const vpr=file==='trainers/vpr-math/index.html';
+        const key=vpr?'VPRBoard':file==='trainers/ege-profile-log-trig.html'?'__profileLogTrigBoard':file==='trainers/ege-profile-circle.html'?'__profileCircleBoard':null;
         if(!key)return null;
         const child=frame.contentWindow,current=new URL(child.location.href),entry=mirrorEntryFromUrl(raw);
         if(!entry||current.origin!==location.origin||current.username||current.password||canonicalTrainerFileFromUrl(current.href)!==file)return null;
         const course=child[key];
         if(typeof course?.getState!=='function'||typeof course?.validateState!=='function')return null;
         const selected=course.getState();
-        if(!course.validateState(selected)||selected.route!==current.hash)return null;
+        if(!course.validateState(selected))return null;
         const snapshot=JSON.parse(JSON.stringify(selected));
         if(!MathExamBoard.validateState(snapshot).ok)return null;
-        return {url:raw.split('#',1)[0]+snapshot.route,payload:{trainer:entry.trainerId,trainerId:entry.trainerId,state:snapshot,protocolVersion:entry.protocolVersion,trainerVersion:entry.trainerVersion,stateSchemaVersion:entry.stateSchemaVersion}};
+        let selectedUrl;
+        if(vpr){
+          // Only the public current selection enters the URL. Notes, answers,
+          // controller tokens and cabinet context remain outside that address.
+          const view=snapshot.view,hash=new URLSearchParams(current.hash.slice(1));
+          if((hash.get('view')||'home')!==view.view)return null;
+          for(const field of ['route','lesson','task','mode'])if((hash.get(field)||undefined)!==view[field])return null;
+          const query=new URLSearchParams();
+          for(const field of ['route','lesson','task','mode'])if(view[field])query.set(field,view[field]);
+          selectedUrl='/trainers/vpr-math/index.html'+(query.size?'?'+query.toString():'');
+        }else{
+          if(snapshot.route!==current.hash)return null;
+          selectedUrl=raw.split('#',1)[0]+snapshot.route;
+        }
+        return {url:selectedUrl,payload:{trainer:entry.trainerId,trainerId:entry.trainerId,state:snapshot,protocolVersion:entry.protocolVersion,trainerVersion:entry.trainerVersion,stateSchemaVersion:entry.stateSchemaVersion}};
       }catch(_){return null}
     }
     function takePreparedProfileTrainer(roomState){
@@ -322,6 +338,85 @@
     function normalizeLegacyTrainerState(value){if(!value||typeof value!=='object'||Array.isArray(value))return null;let next;try{next=JSON.parse(JSON.stringify(value))}catch(_e){return null}if(Object.prototype.hasOwnProperty.call(next,'instrHtml')){next.instructionText=plainTextFromHtml(next.instrHtml);next.instructionClass=next.instrClass;delete next.instrHtml;delete next.instrClass}if(Object.prototype.hasOwnProperty.call(next,'numberLineHtml')){const sign=String(next.answerSign||''),number=Number(String(next.answerValue??'').replace(',','.'));next.numberLine={visible:!!next.numberLineHtml&&['lt','lte','gt','gte'].includes(sign)&&Number.isFinite(number),sign:['lt','lte','gt','gte'].includes(sign)?sign:null,value:Number.isFinite(number)?number:null};delete next.numberLineHtml}return next}
     function bridgeStateFromPayload(payload,trainer){const config=trainerRegistry.byId.get(trainer);if(trainerRegistry.status!=='ready'||!config||!payload||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return null;const metadataKeys=['protocolVersion','trainerVersion','stateSchemaVersion'];const hasMetadata=metadataKeys.some(key=>Object.prototype.hasOwnProperty.call(payload,key));let trainerState=payload.state;if(hasMetadata){if(payload.protocolVersion!==config.protocolVersion||payload.trainerVersion!==config.trainerVersion||payload.stateSchemaVersion!==config.stateSchemaVersion){setMirrorStatus('version-mismatch');return null}}else{if(!config.allowLegacyHtml)return null;trainerState=normalizeLegacyTrainerState(trainerState)}const validation=MathExamBoard.validateState(trainerState);if(!validation.ok){setMirrorStatus('state-invalid');return null}return trainerState}
     function requestTrainerState(){if(!canWrite()||!roomStateReceived||trainerRegistry.status!=='ready')return;const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry)return;if(bridgeSession?.hydrated){postTrainerMessage(bridgeEnvelope('mathexam:request-trainer-state'),bridgeSession.origin);return}if(bridgeSession||readyCandidate){maybeHydrateTrainer();return}if(entry.allowLegacyHtml)postTrainerMessage({type:'mathexam:request-trainer-state'})}
+    function flushVprControlState(){
+      // The SDK debounces edits. Request its current snapshot before voluntarily
+      // handing over the turn, so state and control leave on the same socket in
+      // that order. No new message type or server authorization is introduced.
+      const session=bridgeSession,socket=shared.socket,room=shared.roomId,controller=shared.control,controlVersion=shared.controlVersion,generation=frameGeneration,frameDocument=frame.contentDocument;
+      const current=()=>{
+        const entry=trainerRegistry.byId.get('vpr-math');
+        return !shared.roomError&&shared.connected&&socket?.connected&&shared.socket===socket&&shared.roomId===room&&shared.control===controller&&shared.controlVersion===controlVersion&&canWrite()&&roomStateReceived&&frameLoaded&&bridgeSession===session&&session?.hydrated&&!session.timedOut&&session.generation===generation&&frameGeneration===generation&&session.source===frame.contentWindow&&frame.contentDocument===frameDocument&&session.origin===trustedTrainerOrigin()&&session.trainerId==='vpr-math'&&session.canonicalFile==='trainers/vpr-math/index.html'&&canonicalTrainerFileFromUrl(state.trainerUrl)===session.canonicalFile&&trainerRegistry.status==='ready'&&entry?.file===session.canonicalFile&&entry.protocolVersion===session.protocolVersion&&entry.trainerVersion===session.trainerVersion&&entry.stateSchemaVersion===session.stateSchemaVersion;
+      };
+      if(vprControlTransfer||!current())return Promise.resolve(false);
+      const prepared=prepareProfileTrainerForRoom(state.trainerUrl);
+      if(!prepared||prepared.payload.trainerId!=='vpr-math'||!bridgeStateFromPayload(prepared.payload,'vpr-math')||!current())return Promise.resolve(false);
+      const expected=JSON.stringify(prepared.payload.state);
+      return new Promise(resolve=>{
+        let timeout,finished=false,rejected=false;
+        const pending={finish,current,socket,room,flushed:false,sent:false,waitForControl(){pending.sent=true;timeout=setTimeout(refreshAuthority,2000);}};
+        function finish(ok,refresh=true){
+          if(finished)return;finished=true;
+          clearTimeout(timeout);removeEventListener('message',receive);
+          socket.off('control:changed',controlChanged);socket.off('room:state',roomState);socket.off('room:error',roomError);
+          if(vprControlTransfer===pending)vprControlTransfer=null;
+          if(refresh)updateControlUi();
+          if(!ok&&pending.flushed)boardMessage('Передать ход пока не удалось. Дождитесь синхронизации ВПР и повторите.');
+          resolve(ok);
+        }
+        function sameRoom(){return shared.connected&&socket.connected&&shared.socket===socket&&shared.roomId===room&&!shared.roomError;}
+        function controlChanged(){
+          if(!sameRoom()){finish(false);return;}
+          if(shared.control!==controller||shared.controlVersion!==controlVersion)finish(pending.sent);
+        }
+        function roomState(payload){
+          const received=payload?.state;
+          if(!sameRoom()){finish(false);return;}
+          if(!pending.sent||received?.roomId!==room||!Number.isSafeInteger(received.controlVersion)||received.controlVersion<controlVersion)return;
+          if(received.controlVersion>controlVersion||received.control!==controller)finish(true);
+          else if(rejected)finish(false);
+        }
+        function refreshAuthority(){
+          clearTimeout(timeout);
+          if(!sameRoom()){finish(false);return;}
+          // After a request has left the socket, a timeout is not proof that
+          // ownership stayed local. Keep input locked until the room replies.
+          socket.off('room:state',roomState);socket.on('room:state',roomState);
+          socket.emit('room:state');boardMessage('Подтверждаем передачу хода. Дождитесь ответа комнаты.');
+        }
+        function roomError(payload){
+          if(!sameRoom()){finish(false);return;}
+          if(pending.sent&&['Ученик не найден','Нет прав на передачу хода'].includes(payload?.message)){rejected=true;refreshAuthority();}
+        }
+        function receive(event){
+          const data=event.data;
+          if(!current()){finish(false);return;}
+          if(data?.type!=='mathexam:trainer-state'||!bridgeMessageMatches(event,data)||!MathExamBoard.validateState(data.state).ok)return;
+          // Ignore an older notification already queued before the request.
+          // The ordinary host listener validates and emits the matching snapshot
+          // first; this listener only releases the pending control action.
+          if(JSON.stringify(data.state)!==expected||JSON.stringify(latestTrainerState?.state)!==expected)return;
+          clearTimeout(timeout);removeEventListener('message',receive);
+          pending.flushed=true;resolve(true);
+        }
+        vprControlTransfer=pending;addEventListener('message',receive);
+        socket.on('control:changed',controlChanged);socket.on('room:error',roomError);
+        timeout=setTimeout(()=>finish(false),2000);updateControlUi();
+        if(!postTrainerMessage(bridgeEnvelope('mathexam:request-trainer-state'),session.origin))finish(false);
+      });
+    }
+    async function surrenderControl(eventName){
+      if(!shared.connected||vprControlTransfer||!['control:grant','control:release'].includes(eventName))return;
+      if(canonicalTrainerFileFromUrl(state.trainerUrl)==='trainers/vpr-math/index.html'){
+        const socket=shared.socket,room=shared.roomId,controller=shared.control,controlVersion=shared.controlVersion;
+        const flush=flushVprControlState(),pending=vprControlTransfer;
+        if(!await flush){
+          boardMessage('Передать ход пока не удалось. Дождитесь синхронизации ВПР и повторите.');return;
+        }
+        if(vprControlTransfer!==pending||!pending.current()||shared.socket!==socket||shared.roomId!==room||shared.control!==controller||shared.controlVersion!==controlVersion){pending.finish(false);return;}
+        pending.waitForControl();
+      }
+      shared.socket.emit(eventName,roomPayload());
+    }
     function scheduleLegacyTrainerRequest(){clearTimeout(legacyTrainerTimer);const entry=mirrorEntryFromUrl(state.trainerUrl);if(!canWrite()||!roomStateReceived||!frameLoaded||trainerRegistry.status!=='ready'||!entry?.allowLegacyHtml||bridgeSession||readyCandidate)return;legacyTrainerTimer=setTimeout(()=>{if(!bridgeSession&&!readyCandidate&&trainerRegistry.status==='ready')requestTrainerState()},250)}
     function markBridgeTimedOut(candidate){if(!candidate||readyCandidate!==candidate||bridgeSession?.hydrated)return;candidate.timedOut=true;if(bridgeSession?.bridgeInstanceId===candidate.bridgeInstanceId)bridgeSession.timedOut=true;setMirrorStatus('bridge-timeout')}
     function promoteReadyCandidate(){
@@ -378,7 +473,8 @@
     function controlLabel(){const holder=controlHolder();return holder?.role==='student'?'Ученик':'Учитель'}
     function closeTextEditor(){editor.classList.add('hidden');editor.value='';textPoint=null}
     function updateControlUi(){
-      const writable=canWrite(),studentHasControl=controlHolder()?.role==='student';
+      if(vprControlTransfer&&(shared.socket!==vprControlTransfer.socket||shared.roomId!==vprControlTransfer.room||!shared.connected||shared.roomError))vprControlTransfer.finish(false,false);
+      const writable=canWrite()&&!vprControlTransfer,studentHasControl=controlHolder()?.role==='student';
       frame.inert=!writable;
       frame.tabIndex=writable?0:-1;
       if(!writable&&document.activeElement===frame)frame.blur();
@@ -386,7 +482,7 @@
       document.body.classList.toggle('control-owner',writable);
       controlBadge.textContent=shared.roomError?'Нет подключения к комнате':`У доски: ${controlLabel()}`;
       controlToggle.textContent=studentHasControl?'Забрать ход':'Передать ход';
-      controlToggle.disabled=!shared.connected||shared.role!=='teacher';
+      controlToggle.disabled=!shared.connected||shared.role!=='teacher'||!!vprControlTransfer;
       $('boardControlStatus').textContent=shared.roomError?(shared.role==='teacher'?'Локальная доска':'Нет подключения к комнате'):`Пишет ${studentHasControl?'ученик':'учитель'}`;
       $('boardControlToggle').textContent=controlToggle.textContent;
       $('boardControlToggle').disabled=controlToggle.disabled;
@@ -440,7 +536,7 @@
     }
     function loadSocketClient(server){if(window.io)return Promise.resolve();if(shared.loadingClient&&shared.clientServer===server)return shared.loadingClient;shared.clientServer=server;shared.loadingClient=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=`${server}/socket.io/socket.io.js`;s.onload=resolve;s.onerror=()=>{shared.loadingClient=null;reject(new Error('Не удалось загрузить Socket.IO client'))};document.head.appendChild(s)});return shared.loadingClient}
     async function checkServer(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('проверка сервера','wait');try{const res=await fetch(`${shared.server}/health`,{cache:'no-store'});const data=await res.json();if(!res.ok||data?.ok!==true)throw new Error('health');localStorage.setItem(SERVER_KEY,shared.server);setStatus('Сервер доступен','ok')}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
-    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html','trainers/vpr-math/index.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}
@@ -524,7 +620,7 @@
       latestTrainerState={trainer,trainerId:trainer,state:data.state};
       emitWriter('board:trainer-state-change',latestTrainerState)
     });
-    $('openTrainer').onclick=()=>openTrainer();$('toggleTrainer').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));$('toggleTrainerBoard').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));retryTrainerRegistry.onclick=retryTrainerRegistryLoad;trainerUrl.onkeydown=e=>{if(e.key==='Enter')openTrainer()};document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>openTrainer(b.dataset.url));bg.onchange=()=>{if(shared.role!=='teacher'||!canWrite()||pendingHistory){bg.value=page().bg;return;}page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};$('undo').onclick=undo;$('redo').onclick=redo;$('clear').onclick=clearPage;$('export').onclick=exportPng;$('prevSheet').onclick=()=>switchSheet(-1);$('nextSheet').onclick=()=>switchSheet(1);$('addSheet').onclick=addSheet;$('deleteSheet').onclick=delSheet;$('checkServer').onclick=checkServer;$('createRoom').onclick=createRoom;$('connectRoom').onclick=connectRoom;$('copyStudentLink').onclick=copyLink;$('boardControlToggle').onclick=()=>controlToggle.click();controlToggle.onclick=()=>{if(!shared.connected)return;const studentHasControl=controlHolder()?.role==='student';shared.socket.emit(studentHasControl?'control:revoke':'control:grant',roomPayload())};releaseControl.onclick=()=>{if(shared.connected)shared.socket.emit('control:release',roomPayload())};bindBoardWriting();addEventListener('beforeunload',()=>{if(shared.role!=='student')persistLocalBoard()});
+    $('openTrainer').onclick=()=>openTrainer();$('toggleTrainer').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));$('toggleTrainerBoard').onclick=()=>setTrainerHidden(!lesson.classList.contains('hide-trainer'));retryTrainerRegistry.onclick=retryTrainerRegistryLoad;trainerUrl.onkeydown=e=>{if(e.key==='Enter')openTrainer()};document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>openTrainer(b.dataset.url));bg.onchange=()=>{if(shared.role!=='teacher'||!canWrite()||pendingHistory){bg.value=page().bg;return;}page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};$('undo').onclick=undo;$('redo').onclick=redo;$('clear').onclick=clearPage;$('export').onclick=exportPng;$('prevSheet').onclick=()=>switchSheet(-1);$('nextSheet').onclick=()=>switchSheet(1);$('addSheet').onclick=addSheet;$('deleteSheet').onclick=delSheet;$('checkServer').onclick=checkServer;$('createRoom').onclick=createRoom;$('connectRoom').onclick=connectRoom;$('copyStudentLink').onclick=copyLink;$('boardControlToggle').onclick=()=>controlToggle.click();controlToggle.onclick=()=>{if(!shared.connected||vprControlTransfer)return;const studentHasControl=controlHolder()?.role==='student';if(studentHasControl)shared.socket.emit('control:revoke',roomPayload());else return surrenderControl('control:grant')};releaseControl.onclick=()=>surrenderControl('control:release');bindBoardWriting();addEventListener('beforeunload',()=>{if(shared.role!=='student')persistLocalBoard()});
     if(hasTeacherRoomMarker){removeTeacherTokenFromUrl();if(restoredTeacherRoomSession){replaceTeacherRoomUrl();shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink}}
     try{state.trainerUrl=normalizeTrainer(state.trainerUrl)}catch(_){state.trainerUrl='negative-numbers-line.html'}
     trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');

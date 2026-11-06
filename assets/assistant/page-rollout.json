@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ca992d646af6f24045ece29defe10136f58ffebe",
+  "baseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 553,
-    "covered": 552,
+    "total": 555,
+    "covered": 554,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2088,8 +2088,8 @@
       "placement": "before-head-close"
     },
     "rounding.html": {
-      "beforeSha256": "61c41286c8012d58e1e44e7a447639cf3b9746112a0b5be180bb1bbb674402f6",
-      "afterSha256": "a4eff7f089f0017c3062936bf0082818bb6fa476088b149be2ac643507380a7c",
+      "beforeSha256": "d90970ab78622f77c8c30090217ddeec6af5dff2f8570f44415fba95971e410c",
+      "afterSha256": "bb09145eb77606919f1fdce57a27bb0210b546cf4c7f6f295742bdcefc20affd",
       "placement": "before-head-close"
     },
     "school/alimov10-11/index.html": {
@@ -3081,6 +3081,16 @@
       "beforeSha256": "feda13150e99a505cab042d1e6e4d4fd9d66736d9db88eaca2925c07ae3a3825",
       "afterSha256": "66b51f00cb91497aef304049251dc7cddc8fd81145952b9eb02cdd5f572500cb",
       "placement": "before-head-close"
+    },
+    "trainers/vpr-math/index.html": {
+      "beforeSha256": "a6a0f933a62f662c6123fa965d77707a9aec7788f6ff3bf991fdcb94748fd414",
+      "afterSha256": "36d13799bddb3faf25eafe02b09658dca32dea592e5a4df26018218b514cd797",
+      "placement": "before-head-close"
+    },
+    "vpr/index.html": {
+      "beforeSha256": "f82ba87a274389caec5dd1aa3675a5f7ceb6ce85f55b879fd5804e6dc915f695",
+      "afterSha256": "6413e920dcea07042764ffee5dac811f81f5f0093860aef7c21094476113f6aa",
+      "placement": "before-body-close"
     }
   },
   "provenance": {
@@ -3712,7 +3722,9 @@
     "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
     "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
     "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
-    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)"
+    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
+    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
+    "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -3829,6 +3841,13 @@
     },
     {
       "previousBaseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
+      "sourceBaseSha": "dec923e203cd7df2452703556400ef6c1978a313",
+      "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
       "sourceBaseSha": "9f53039f14b1fcdd2566f56a8cea5f25f6226757",
       "task": "docs/tasks/LESSON_WORKSPACE_V1_20261107.md",
       "changedPaths": [
@@ -3842,6 +3861,22 @@
       "task": "docs/tasks/LESSON_WORKSPACE_V1_20261107.md",
       "changedPaths": [
         "trainers/oge-task18-grid.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ca992d646af6f24045ece29defe10136f58ffebe",
+      "sourceBaseSha": "6d52ba11d11f8bd61da42538fd3ca067aed52f69",
+      "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6d52ba11d11f8bd61da42538fd3ca067aed52f69",
+      "sourceBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+      "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
+      "changedPaths": [
+        "rounding.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
@@ -3862,6 +3897,15 @@
         "trainers/college-logarithms/intro/index.html"
       ],
       "reason": "Original introductory lesson linked from the existing logarithm course and sitemap."
+    },
+    {
+      "sourceBaseSha": "dec923e203cd7df2452703556400ef6c1978a313",
+      "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
+      "addedPages": [
+        "trainers/vpr-math/index.html",
+        "vpr/index.html"
+      ],
+      "reason": "New original VPR course and seven-route catalogue in the approved task; exact existing navigator pair bound to the committed source."
     }
   ]
 }
