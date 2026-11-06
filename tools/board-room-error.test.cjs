@@ -86,10 +86,21 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
 
   const frame = w.document.getElementById('trainerFrame');
   const nativeGetAttribute = frame.getAttribute.bind(frame);
-  const child = { instanceId: 'fixture-instance-0', version: '1.0.0', hydrated: false, draft: { answer: 'initial' }, messages: [], navigations: [] };
+  const child = { instanceId: 'fixture-instance-0', version: '1.0.0', hydrated: false, draft: { answer: 'initial' }, messages: [], navigations: [], fragmentNavigations: [], reloads: [] };
   let frameUrl = 'about:blank';
+  function childLocation(value) {
+    const location = new URL(value, w.location.href);
+    location.reload = () => { child.reloads.push(location.href); loadChildDocument(location.href); };
+    return location;
+  }
+  function loadChildDocument(value) {
+    child.navigations.push(value);
+    child.instanceId = `fixture-instance-${child.navigations.length}`;
+    child.hydrated = false; child.draft = { answer: 'initial' };
+    frameWindow.location = childLocation(value);
+  }
   const frameWindow = {
-    location: new URL(`${ORIGIN}/trainers/negative-numbers-line.html`), addEventListener() {},
+    location: childLocation(`${ORIGIN}/trainers/negative-numbers-line.html`), addEventListener() {},
     postMessage(message, origin) {
       child.messages.push(copy(message));
       assert.equal(origin, ORIGIN);
@@ -101,15 +112,19 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
       else if (message.type === 'mathexam:request-trainer-state' && child.hydrated) Promise.resolve().then(() => sendFrame('mathexam:trainer-state', { state: child.draft }));
     }
   };
-  Object.defineProperty(frame, 'contentWindow', { get: () => frameWindow });
+  Object.defineProperty(frame, 'contentWindow', { configurable: true, get: () => frameWindow });
   frame.getAttribute = name => name === 'src' ? frameUrl : nativeGetAttribute(name);
   Object.defineProperty(frame, 'src', {
     get: () => new URL(frameUrl, w.location.href).href,
     set(value) {
-      frameUrl = String(value); child.navigations.push(frameUrl);
-      child.instanceId = `fixture-instance-${child.navigations.length}`;
-      child.hydrated = false; child.draft = { answer: 'initial' };
-      frameWindow.location = new URL(frameUrl, w.location.href);
+      frameUrl = String(value);
+      const target = new URL(frameUrl, w.location.href), current = frameWindow.location;
+      // HTML fragment navigation keeps the existing document and bridge,
+      // even when the src attribute is assigned the identical fragment URL.
+      if (target.href.includes('#') && target.origin === current.origin && target.username === current.username && target.password === current.password && target.pathname === current.pathname && target.search === current.search) {
+        child.fragmentNavigations.push(target.href);
+        frameWindow.location = childLocation(target.href);
+      } else loadChildDocument(frameUrl);
     }
   });
   function sendFrame(type, extra = {}) {
@@ -155,6 +170,90 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   };
   return fixture;
 }
+
+test('late room acceptance reloads an expired fragment document and hydrates a fresh bridge', async () => {
+  const f = await createBoardFixture({ role: 'teacher' });
+  try {
+    f.evaluate("openTrainer('negative-numbers-line.html?seed=fixture-seed#selected-task')");
+    const socket = await f.clickCreateRoom();
+    f.frame.onload(); f.sendFrame('mathexam:trainer-ready');
+    const before = f.child.instanceId, loads = f.child.navigations.length;
+    const deadline = f.timers.get(f.evaluate('bridgeHydrationTimer'));
+    assert.ok(deadline, 'The production bridge deadline is armed'); deadline.callback();
+    assert.equal(f.status(), 'bridge-timeout');
+    socket.deliver('connect'); f.accept(socket, { empty: true });
+    assert.notEqual(f.child.instanceId, before, 'Recovery must create a new document, not a same-document fragment navigation');
+    assert.equal(f.child.navigations.length, loads + 1);
+    assert.equal(f.frame.contentWindow.location.hash, '#selected-task');
+    assert.equal(f.frame.contentWindow.location.search, '?seed=fixture-seed');
+    assert.equal(f.evaluate('!!bridgeSession?.hydrated'), false, 'The new instance still requires the normal handshake');
+    f.frame.onload(); f.sendFrame('mathexam:trainer-ready'); await tick();
+    assert.equal(f.status(), 'connected');
+    assert.equal(f.child.hydrated, true);
+    assert.equal(f.child.navigations.length, loads + 1, 'Acceptance and ready do not loop the reload');
+  } finally { f.close(); }
+});
+
+for (const liveFragment of ['#selected-task', '#newer-live-task']) {
+  test('manual retry refreshes the fragment document and preserves its live selection ' + liveFragment, async () => {
+    const f = await createBoardFixture({ role: 'teacher' });
+    try {
+      await f.connect();
+      f.evaluate("openTrainer('negative-numbers-line.html?seed=fixture-seed#selected-task')");
+      f.frame.onload(); f.sendFrame('mathexam:trainer-ready'); await tick();
+      f.frame.contentWindow.location.hash = liveFragment;
+      const before = f.child.instanceId, loads = f.child.navigations.length;
+      const expected = f.frame.contentWindow.location.href;
+      f.w.document.getElementById('retryOpenedTrainer').click(); await tick();
+      assert.notEqual(f.child.instanceId, before, 'The real retry button creates a fresh document');
+      assert.equal(f.child.navigations.length, loads + 1);
+      assert.equal(f.frame.contentWindow.location.href, expected, 'Current origin, query, seed and selected fragment survive');
+      assert.equal(f.evaluate('!!bridgeSession?.hydrated'), false);
+      f.frame.onload(); f.sendFrame('mathexam:trainer-ready'); await tick();
+      assert.equal(f.status(), 'connected');
+      assert.equal(f.child.hydrated, true);
+    } finally { f.close(); }
+  });
+}
+
+test('forced navigation still opens a different resource, query or origin normally', async () => {
+  const f = await createBoardFixture({ role: 'teacher' });
+  try {
+    for (const target of [
+      'negative-numbers-line.html?seed=new-seed#selected-task',
+      'linear-inequalities-stepwise.html?seed=new-seed#selected-task',
+      'https://other-fixture.invalid/trainers/linear-inequalities-stepwise.html?seed=new-seed#selected-task'
+    ]) {
+      const loads = f.child.navigations.length;
+      f.evaluate(`setTrainerFrameSrc(${JSON.stringify(target)},{force:true})`);
+      assert.equal(f.frame.getAttribute('src'), target);
+      assert.equal(f.frame.contentWindow.location.href, new URL(target, f.w.location.href).href);
+      assert.equal(f.child.navigations.length, loads + 1, 'The destination changes instead of reloading the old document');
+    }
+  } finally { f.close(); }
+});
+
+test('manual reload cannot refresh an inaccessible, missing, blank, foreign or credential-bearing document', async () => {
+  const f = await createBoardFixture({ role: 'teacher' });
+  const target = 'negative-numbers-line.html?seed=fixture-seed#selected-task';
+  try {
+    const childWindow = f.frame.contentWindow;
+    for (const live of [null, 'inaccessible', 'about:blank',
+      'https://other-fixture.invalid/trainers/' + target,
+      'https://name:password@board-fixture.invalid/trainers/' + target]) {
+      if (live === null || live === 'inaccessible') Object.defineProperty(f.frame, 'contentWindow', {
+        configurable: true, get() { if (live === 'inaccessible') throw Error('Fixture cross-origin access denied'); return null; }
+      });
+      else childWindow.location = new URL(live);
+      const reloads = f.child.reloads.length;
+      f.evaluate(`setTrainerFrameSrc(${JSON.stringify(target)},{force:true})`);
+      Object.defineProperty(f.frame, 'contentWindow', { configurable: true, get: () => childWindow });
+      assert.equal(f.child.reloads.length, reloads, 'An untrusted current document is never reloaded');
+      assert.equal(f.frame.getAttribute('src'), target, 'Normal navigation uses the approved target instead');
+      assert.equal(childWindow.location.href, new URL(target, f.w.location.href).href);
+    }
+  } finally { f.close(); }
+});
 
 function assertDisconnected(f, role) {
   assert.equal(f.evaluate('shared.connected'), false, 'terminal error must clear connected');

@@ -166,7 +166,8 @@ test('preparation map preserves old IDs while new course and wrappers share the 
   assert.equal(dom.window.document.querySelector('#learning-remediation-root'),null,'Public root must not duplicate the managed loader root');
   for(const node of dom.window.document.querySelectorAll('script[src],link[rel="stylesheet"]')){
    const url=node.getAttribute('src')||node.getAttribute('href');
-   assert(fs.existsSync(path.resolve(repo,path.dirname(file),url.split('?')[0])),url);
+   const local=url.split('?')[0];
+   assert(fs.existsSync(local.startsWith('/')?path.join(repo,local):path.resolve(repo,path.dirname(file),local)),url);
   }
   dom.window.close();
  }

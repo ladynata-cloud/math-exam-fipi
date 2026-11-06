@@ -43,9 +43,12 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(first, second)
         # PR442 already added the general-home stylesheet to the source closure.
         # This pins that exact addition; published v1/v2 bytes remain immutable.
-        self.assertEqual(len(first), 226)
+        self.assertEqual(len(first), 228)
         self.assertEqual(first[edition.prefix + "assets/math-home.css"],
                          (ROOT / "assets/math-home.css").read_bytes())
+        # The navigation-only continuation adds exactly these two dependencies.
+        for asset in ("assets/oge-wayfinding.css", "assets/oge-wayfinding.js"):
+            self.assertEqual(first[edition.prefix + asset], (ROOT / asset).read_bytes())
         # Provenance is public navigation, not a missing file in a future copy.
         task12 = first[edition.prefix + "trainers/oge-task12-formulas-trainer.html"]
         self.assertTrue(b"link.href='https://mathexam.space/trainers/oge-task12-sources.html'+'#'+task.generatorId" in task12)

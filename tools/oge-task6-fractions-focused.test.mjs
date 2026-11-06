@@ -25,7 +25,12 @@ const tasksBlock = source => {
   return { bytes: Buffer.from(matches[0][0], 'utf8'), tasks: JSON.parse(matches[0][1]) };
 };
 const tasks = tasksBlock(html).tasks;
-const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const allScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
+const navigation = allScripts.filter(([, attrs]) => attrs.includes('/assets/oge-wayfinding.js'));
+assert.equal(navigation.length, 1, 'Exactly one reviewed navigation script');
+assert.equal(navigation[0][1], ' defer src="/assets/oge-wayfinding.js"');
+assert.equal(navigation[0][2], '');
+const scripts = allScripts.filter(item => item !== navigation[0]);
 const localScripts = [
   'oge-course-shared-mode.js?v=20261025',
   'board-bridge.js',
@@ -35,6 +40,8 @@ const inlineScripts = scripts.filter(([, attributes]) => !/\bsrc\s*=/i.test(attr
 assert.equal(inlineScripts.length, 1, 'Exactly one native inline script');
 assert.deepEqual(scripts.map(([, attributes]) => attributes.trim()), [
   'src="' + localScripts[0] + '"',
+  'defer src="/assets/assistant/navigator-data.js?v=20261105-site1"',
+  'defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"',
   '',
   'src="' + localScripts[1] + '"',
   'src="' + localScripts[2] + '"',

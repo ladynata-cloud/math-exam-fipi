@@ -1036,6 +1036,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Общий разбор, ответы, подсказки, шаги и модели. Личные результаты не изменяются."
+    },
+    {
+      "trainerId": "vilenkin6-percent",
+      "file": "trainers/vilenkin6-percent/index.html",
+      "title": "Виленкин · 6 класс · Проценты из курса",
+      "group": "Виленкин / задания учебника",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Восемь задач из кабинета: совместные ответы, шаги, подсказки, правила и записи. Личные результаты не изменяются."
     }
   ]
 }

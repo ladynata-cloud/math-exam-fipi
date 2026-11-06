@@ -115,7 +115,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261025-oge-course-college-mirror"></script>
+  <script src="board-picker.js?v=20261106-room-recovery"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -164,6 +164,26 @@
     function normalizeServer(v){const server=String(v||'').trim().replace(/\/+$/,'');return server==='https://mathexam-board-ladynata.amvera.io'?DEFAULT_SERVER:server}
     function readTeacherRoomSession(roomId){try{const data=JSON.parse(sessionStorage.getItem(TEACHER_SESSION_KEY));const server=normalizeServer(data?.server);if(!data||data.role!=='teacher'||data.roomId!==roomId||typeof data.teacherToken!=='string'||!data.teacherToken||data.teacherToken.length>1024||typeof data.studentToken!=='string'||!data.studentToken||data.studentToken.length>1024||!server)return null;const parsed=new URL(server);if(parsed.protocol!=='http:'&&parsed.protocol!=='https:')return null;return{roomId:data.roomId,teacherToken:data.teacherToken,studentToken:data.studentToken,server,role:'teacher',savedAt:data.savedAt||''}}catch(_e){return null}}
     function addBoardSeedToTrainerUrl(url,roomId){const raw=normalizeTrainer(url);if(!roomId)return raw;const isAbsolute=/^[a-z][a-z\d+.-]*:\/\//i.test(raw);try{const base=location.protocol==='file:'?'https://mathexam.space/trainers/trainer-board.html':location.href;const parsed=new URL(raw,base);const safeOrigin=parsed.origin===location.origin||parsed.origin==='https://mathexam.space'||(location.protocol==='file:'&&parsed.origin==='https://mathexam.space');if(isAbsolute&&!safeOrigin)return raw;if(!parsed.searchParams.has('seed'))parsed.searchParams.set('seed',roomId);if(!isAbsolute){const path=raw.startsWith('/')||raw.startsWith('trainers/')?parsed.pathname:parsed.pathname.replace(/^\/trainers\//,'');return `${path}${parsed.search}${parsed.hash}`}return parsed.href}catch(_e){return raw}}
+    function trainerUrlWithCurrentMerzlyakSelection(url){
+      // Creating a room reloads the seeded iframe. Keep only its current public
+      // lesson identity; cabinet identifiers, work and frame query stay outside.
+      try{
+        const raw=normalizeTrainer(url),file='trainers/merzlyak-10-base.html';
+        if(canonicalTrainerFileFromUrl(raw)!==file)return url;
+        const child=frame.contentWindow,current=new URL(child.location.href);
+        if(current.origin!==location.origin||current.username||current.password||canonicalTrainerFileFromUrl(current.href)!==file)return url;
+        const course=child.__merzlyakBoard;
+        if(typeof course?.getState!=='function'||typeof course?.validateState!=='function')return url;
+        const selected=course.getState();
+        if(!course.validateState(selected))return url;
+        const id=selected.lessonId;
+        if(id!==null&&(typeof id!=='string'||!/^[a-z0-9][a-z0-9-]{0,127}$/.test(id)))return url;
+        const hash=id===null?'':'#'+id;
+        if(current.hash!==hash)return url;
+        if(new URL(raw,location.href).origin!==current.origin)return url;
+        return raw.split('#',1)[0]+hash;
+      }catch(_){return url}
+    }
     function compatLabel(value){return value==='board-mirror'?'Полное зеркало действий':value==='seed-ready'?'Seed-ready':'Открывается в доске'}
     function trainerQuickUrl(entry){const file=String(entry?.file||''),relative=file.replace(/^trainers\//,'');return relative.includes('/')?`/${file}`:relative}
     async function loadTrainerQuickSelect(){if(!trainerQuick)return;let list=lessonTrainers;try{const res=await fetch('board-compat.json',{cache:'no-store'});const data=await res.json();if(res.ok&&Array.isArray(data?.trainers)&&data.trainers.length)list=data.trainers}catch(_e){}trainerQuick.replaceChildren(new Option('Быстрый выбор тренажёра',''));const groups=new Map();list.forEach(entry=>{const url=trainerQuickUrl(entry);if(!url)return;const option=new Option(entry.title||url,url);option.dataset.compat=entry.boardCompatibility||'opens-in-board';const group=String(entry.group||'Другое');if(!groups.has(group)){const optgroup=document.createElement('optgroup');optgroup.label=group;groups.set(group,optgroup);trainerQuick.add(optgroup)}groups.get(group).append(option)});trainerQuick.onchange=()=>{const option=trainerQuick.selectedOptions[0];if(!trainerQuick.value)return;trainerQuickStatus.textContent=compatLabel(option?.dataset.compat);openTrainer(trainerQuick.value)}}
@@ -255,8 +275,18 @@
       pausedTrainerBridge=null;bridgeSession=session;bridgeReloadNeeded=false;return true
     }
     function updateMirrorStatusForCurrentTrainer(){if(trainerRegistry.status==='pending'||trainerRegistry.status==='idle'){setMirrorStatus('pending');return}if(trainerRegistry.status==='failed'){setMirrorStatus('registry-unavailable');return}const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry){setMirrorStatus('unsupported-trainer');return}if(bridgeSession?.hydrated){setMirrorStatus('connected');return}setMirrorStatus(readyCandidate?.timedOut?'bridge-timeout':'pending')}
-    function setTrainerFrameSrc(url,{force=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}if(!force&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;updateMirrorStatusForCurrentTrainer()}
-    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;setMirrorStatus('pending');return true}
+    function reloadTrainerDocument(next){
+      // Assigning a src with the same resource and a fragment can keep the
+      // expired document alive. Reload its real document, retaining the live
+      // selected lesson even when the original src has an older fragment.
+      try{
+        const target=new URL(next,location.href),live=new URL(frame.contentWindow.location.href);
+        if(target.origin===location.origin&&live.origin===location.origin&&!target.username&&!target.password&&!live.username&&!live.password&&target.pathname===live.pathname&&target.search===live.search){frame.contentWindow.location.reload();return}
+      }catch(_e){}
+      frame.src=next
+    }
+    function setTrainerFrameSrc(url,{force=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}if(!force&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;if(force)reloadTrainerDocument(next);else frame.src=next;updateMirrorStatusForCurrentTrainer()}
+    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;reloadTrainerDocument(next);setMirrorStatus('pending');return true}
     function bridgeDeadlineExpired(candidate=readyCandidate){return !!candidate&&(candidate.timedOut||Date.now()>=candidate.deadline)}
     function recoverExpiredBridgeOnce(){if(!roomStateReceived||trainerRegistry.status!=='ready'||!readyCandidate||!bridgeDeadlineExpired(readyCandidate)||automaticRecoveryGeneration===frameGeneration)return false;automaticRecoveryGeneration=frameGeneration;return reloadTrainerFrameForBridge()}
     function postTrainerMessage(message,origin=trustedTrainerOrigin()){if(!origin||!frame.contentWindow)return false;try{frame.contentWindow.postMessage(message,origin);return true}catch(_e){setMirrorStatus('registry-unavailable');return false}}
@@ -383,7 +413,7 @@
     }
     function loadSocketClient(server){if(window.io)return Promise.resolve();if(shared.loadingClient&&shared.clientServer===server)return shared.loadingClient;shared.clientServer=server;shared.loadingClient=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=`${server}/socket.io/socket.io.js`;s.onload=resolve;s.onerror=()=>{shared.loadingClient=null;reject(new Error('Не удалось загрузить Socket.IO client'))};document.head.appendChild(s)});return shared.loadingClient}
     async function checkServer(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('проверка сервера','wait');try{const res=await fetch(`${shared.server}/health`,{cache:'no-store'});const data=await res.json();if(!res.ok||data?.ok!==true)throw new Error('health');localStorage.setItem(SERVER_KEY,shared.server);setStatus('Сервер доступен','ok')}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
-    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const seeded=addBoardSeedToTrainerUrl(state.trainerUrl,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const selected=trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}

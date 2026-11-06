@@ -77,7 +77,7 @@
       storage: 'browser', publicPath: '/school/nikolsky10/' },
     { id: 'merzlyak-10-base', title: 'Мерзляк · геометрия 10 класса', grades: [10], directions: ['school','ege'],
       description: 'Базовый курс стереометрии с задачами, самопроверкой и моделями.',
-      storage: 'browser', publicPath: '/stereo-course/merzlyak-10-base/' },
+      storage: 'browser', publicPath: '/stereo-course/merzlyak-10-base/', boardPath: '/trainers/merzlyak-10-base.html' },
     { id: 'ege-base-11-13', title: 'ЕГЭ база · пространственные тела', grades: [10,11], directions: ['ege'],
       description: 'Задания №11 и №13: объёмы, поверхности, сосуды и стереометрия.',
       storage: 'browser', route: 'program-course=ege-base-11-13', publicPath: '/ege-baza/path/index.html#lesson=box' },
@@ -87,7 +87,8 @@
   ];
   const courses = Object.freeze(definitions.map(item => Object.freeze({ ...item,
     grades: Object.freeze(item.grades), directions: Object.freeze(item.directions),
-    storageLabel: storageLabels[item.storage], publicURL: 'https://mathexam.space' + item.publicPath
+    storageLabel: storageLabels[item.storage], publicURL: 'https://mathexam.space' + item.publicPath,
+    ...(item.boardPath ? {boardURL: 'https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent(item.boardPath)} : {})
   })));
   const byId = new Map(courses.map(course => [course.id, course]));
   const get = id => typeof id === 'string' ? byId.get(id) || null : null;
