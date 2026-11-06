@@ -96,3 +96,12 @@ mathematical/state/source contracts, frozen integrity, 10 prospective-generator
 tests, 93 fresh source learner journeys and independent replay: 395 PASS, zero
 PENDING/FAIL/missing/unreviewed cases. The final exact-head CI still has to run
 on the composed commit before the coordinating agent's merge/release checks.
+
+The composed CI exposed a stale default in the static preservation lane: the
+local composition run had selected main955 explicitly, while the workflow
+still fetched and compared against main8448. The test default and workflow
+fetch now both name the same immutable published main955. This preserves the
+already released homework-mode engine changes and continues to compare every
+inline engine and control exactly; no comparison, fixture or route is removed.
+Both static commands are rerun with no baseline environment override before
+publishing this correction. Cloud browser and source replay remain required.
