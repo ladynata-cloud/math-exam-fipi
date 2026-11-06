@@ -7655,6 +7655,11 @@
       "title": "Геометрия · 7 класс · от первых понятий к доказательствам",
       "group": "Геометрия / 7 класс",
       "href": "/trainers/geometry7-rebuild.html"
+    },
+    {
+      "title": "Логарифмы с нуля · колледж и ЕГЭ · 60 задач",
+      "group": "Колледж / математика",
+      "href": "/trainers/college-logarithms/index.html"
     }
   ]
 }

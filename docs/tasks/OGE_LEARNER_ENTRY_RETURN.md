@@ -105,3 +105,11 @@ already released homework-mode engine changes and continues to compare every
 inline engine and control exactly; no comparison, fixture or route is removed.
 Both static commands are rerun with no baseline environment override before
 publishing this correction. Cloud browser and source replay remain required.
+
+Published main then advanced to `60deda9b2a5eddd7d91790a88500d907edb5e5f9`
+(the college logarithms release). The coordinator authorized a history-preserving
+merge. Its only conflict was the two independent leading status entries; both
+are retained verbatim. No OGE source changed, so the immutable engine-preservation
+baseline remains main955. The new course, registry, sitemap and board integration
+are preserved from main60. Static routes, affected mathematics and source
+identities are checked again before publishing the composed candidate.
