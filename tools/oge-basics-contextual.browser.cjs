@@ -47,10 +47,21 @@ async function hitTarget(locator, label) {
     const r = element.getBoundingClientRect();
     const x = r.left + r.width / 2, y = r.top + r.height / 2;
     const top = document.elementFromPoint(x, y);
-    return r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
-      y >= 0 && y <= innerHeight && (top === element || element.contains(top));
+    return {
+      ok: r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
+        y >= 0 && y <= innerHeight && (top === element || element.contains(top)),
+      rect: {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
+      viewport: {width:innerWidth,height:innerHeight}, scrollY,
+      target: element.outerHTML.slice(0,500),
+      interceptor: top ? top.outerHTML.slice(0,500) : null
+    };
   });
-  assert(hit, label + ': visible, usable hit target');
+  if (!hit.ok) {
+    const page=locator.page(), name='hit-target-failure-'+page.viewportSize().width;
+    fs.writeFileSync(path.join(output,name+'.json'),JSON.stringify({label,url:page.url(),...hit},null,2));
+    await page.screenshot({path:path.join(output,name+'.png'),fullPage:false});
+  }
+  assert(hit.ok, label + ': visible, usable hit target ' + JSON.stringify(hit));
 }
 async function shot(page, name) {
   await page.screenshot({path:path.join(output, name + '.png'), fullPage:true, animations:'disabled'});

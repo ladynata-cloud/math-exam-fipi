@@ -273,3 +273,23 @@ replaced. The exact final head, all CI outcomes and production acceptance are
 recorded in the PR release evidence. Local browser execution is unavailable in
 this execution sandbox (socket permission); the pinned-browser Actions runs
 remain required. External provider review and real-pupil trials are not claimed.
+
+### Base movement during final CI
+
+Main advanced through GIF release #461 (`2d7c2e1`) and Makarychev8 #463
+(`9ac2080ffaab3eadaa38776de588e9e2be5024aa`). Both are published, approved
+work with their own CI records. The GIF source was already composed here.
+The virtual merge identified one adjacent-head-tags conflict in
+`oge/variants/2027/index.html`; restoring its existing navigator payload gives
+exactly the newly published main bytes, so retaining the current document
+preserves both releases without a source-binding refresh. The ordinary merge
+retains all new Makarychev data/runtime/tests and both status histories.
+
+On e3a1c9d5, the OGE minimal and EGE classroom workflows passed, including the
+actual download with full JSON comparison. Another existing contextual-help
+browser test reported an unusable quotient-choice hit target once; a single
+unchanged retry was requested and the original failure remains recorded. The
+new candidate adds exact rectangle/interceptor diagnostics and a viewport
+screenshot on that failure; hit-test conditions, scrolling and assertions are
+unchanged. No cancellation or retry alone counts as evidence of correctness.
+The final composed head requires its own complete CI and navigator matrix.
