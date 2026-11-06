@@ -1078,6 +1078,20 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Совместный урок: 7 разделов, 56 задач, координаты, вычисления и простейшие уравнения. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "spacemath",
+      "file": "trainers/spacemath/index.html",
+      "title": "SpaceMath",
+      "group": "Геометрия / построения",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместные 2D-построения: точки, линии, окружности и зависимости. Свободная работа без оценок."
     }
   ]
 }

@@ -9446,6 +9446,9 @@
     ['18','Фигуры на клетчатой бумаге','oge-task18-grid.html'],
     ['19','Геометрические утверждения','task19-trainer.html']
   ].map(([contentId,title,file])=>Object.freeze({id:'oge-public:'+contentId,trainerId:'oge-public',contentId,contentVersion:1,title:'ОГЭ №'+contentId+' · '+title,position:null,ogePosition:Number(contentId),topicId:contentId==='11'?'data':'plane',family:'oge-public',url:'/trainers/'+file})));
+  items.push(Object.freeze({id:'spacemath:construction',trainerId:'spacemath',contentId:'construction',contentVersion:1,
+    title:'SpaceMath · Совместные построения',position:null,topicId:'plane',family:'spacemath',workspace:true,
+    url:'/trainers/spacemath/'}));
   const byId = Object.create(null);
   for (const item of items) {
     if (byId[item.id]) throw new Error('Duplicate learning item: ' + item.id);

@@ -1,0 +1,61 @@
+name: SpaceMath — geometry, persistence and shared control
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/spacemath/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/trainer-board.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/learning-bridge.js'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'tools/spacemath/**'
+      - 'tools/spacemath-public-*.test.cjs'
+      - 'tools/lesson-workspace-v1/**'
+      - 'tools/learning-cabinet.browser.cjs'
+      - 'tools/learning-course-navigation.browser.cjs'
+      - 'Dockerfile'
+      - '.github/workflows/spacemath.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spacemath-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  spacemath:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked backend dependencies
+        run: npm --prefix board-server ci --include=optional
+      - name: Install pinned browser and DOM tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/spacemath-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/spacemath-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/spacemath-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Geometry, account boundaries, pair browsers and classroom regressions
+        env:
+          SPACEMATH_ARTIFACTS: ${{ runner.temp }}/spacemath-evidence
+        run: node tools/spacemath/gate.cjs
+      - name: Synthetic browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: spacemath-evidence
+          path: ${{ runner.temp }}/spacemath-evidence/
+          if-no-files-found: warn
+          retention-days: 14

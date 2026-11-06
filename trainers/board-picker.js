@@ -45,7 +45,7 @@ function normalize(value){
  // Alias only the literal same-origin course entry. Keep the registry's
  // trainers/ boundary and its rejection of encoded or traversing paths intact.
  const rawPath=raw.replace(/^(?:https?:)?\/\/[^/?#]*/i,'').split(/[?#]/,1)[0];
- if(u.origin===location.origin&&rawPath===u.pathname&&u.pathname==='/trainers/college-logarithms/')return '/trainers/college-logarithms/index.html'+u.search+u.hash;
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/trainers/college-logarithms/','/trainers/spacemath/'].includes(u.pathname))return u.pathname+'index.html'+u.search+u.hash;
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-baza/path/','/ege-baza/path/index.html'].includes(u.pathname)){
   const id=u.hash.startsWith('#lesson=')?u.hash.slice(8):'';
   const position=['box','practice-displacement','practice-pour','practice-joined-surface','practice-faces'].includes(id)?11:['roundbody','pyramid','scale','practice-cone-area','practice-pyramid-lateral','practice-box-diagonal','practice-similar-volume'].includes(id)?13:null;
@@ -105,7 +105,7 @@ function mount(options){
  $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));loading();options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261106-log-trig').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261107-spacemath').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};

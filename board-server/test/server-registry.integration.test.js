@@ -176,10 +176,10 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   const registry = await endpoint.json();
   assert.equal(registry.schemaVersion, 1);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
-  assert.equal(registry.trainers.length, 58);
+  assert.equal(registry.trainers.length, 59);
   assert.deepEqual(
     registry.trainers.map(entry => entry.trainerId),
-    ['atanasyan-grade7', 'geometry7-practice', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'ege-baza-11', 'ege-baza-13', 'ege-profile-circle', 'ege-profile-log-trig', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('../../tools/fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort()
+    ['atanasyan-grade7', 'geometry7-practice', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'ege-baza-11', 'ege-baza-13', 'ege-profile-circle', 'ege-profile-log-trig', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example', 'spacemath'].concat(require('../../tools/fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort()
   );
 
   const localhostCors = await fetch(`${server.baseUrl}/api/trainer-registry`, {
@@ -202,7 +202,7 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   assert.equal(health.registrySchemaVersion, 1);
   assert.equal(health.registryDigest, registry.digest);
   assert.equal(health.registrySource, 'bundled-default');
-  assert.equal(health.registryEntryCount, 58);
+  assert.equal(health.registryEntryCount, 59);
   assert.equal(health.registryError, null);
 
   const roomResponse = await fetch(`${server.baseUrl}/api/rooms`, { method: 'POST' });
@@ -267,7 +267,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY trainers\/board-compat\.json \/app\/trainers\/board-compat\.json/);
   assert.match(dockerfile, /FROM node:24\.21\.0-alpine/);
   assert.match(dockerfile, /RUN npm ci --omit=dev --include=optional/);
-  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6', 'trainers/spacemath']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/math\.js courses\/vilenkin-6-part-1\/learning-contracts\.js \/app\/courses\/vilenkin-6-part-1\//);
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/data\/ \/app\/courses\/vilenkin-6-part-1\/data\//);
   assert.match(dockerfile, /COPY courses\/vilenkin-6-part-1\/textbook-math\.js courses\/vilenkin-6-part-1\/textbook-learning-contracts\.js \/app\/courses\/vilenkin-6-part-1\//);
@@ -303,7 +303,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));
   const ogeAssets=['oge-task11-graphs-trainer.html','oge-task15-triangles.html','oge-task16-circle.html','oge-task17-quadrilaterals.html','oge-task18-grid.html','task19-visual-data.js','task19-board-session.js','task19-visual-models.js','task19-reference.js','task19-models-triangles.js','task19-models-circles.js','task19-models-lines-polygons.js'];
   for(const file of ogeAssets){assert(dockerfile.includes('trainers/'+file));fs.copyFileSync(path.join(rootDir,'trainers',file),path.join(runtimeTrainerDir,file));}
-  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
+  for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6', 'trainers/spacemath']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });
   for (const file of practiceAssets) { fs.mkdirSync(path.dirname(path.join(directory, 'app', file)), {recursive:true}); fs.copyFileSync(path.join(rootDir,file),path.join(directory,'app',file)); }
   const packagedPractice = await import(require('node:url').pathToFileURL(path.join(directory,'app/assistant-service/public/practice-core.js')));
   const descriptor = {skill:'fractions',level:2,seed:7};
@@ -322,7 +322,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const health = await (await fetch(`${server.baseUrl}/health`, { cache: 'no-store' })).json();
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
-    assert.equal(health.registryEntryCount, 58);
+    assert.equal(health.registryEntryCount, 59);
     const cabinet = await fetch(`${server.baseUrl}/learning/`, { cache: 'no-store' });
     assert.equal(cabinet.status, 200);
     assert.match(cabinet.headers.get('content-security-policy'), /frame-ancestors 'none'/);
@@ -407,9 +407,9 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
       ['atanasyan-7-9-main-92-part-1']);
     const revisedTextbook = require('../../learning/vilenkin6-textbook-catalog');
     assert.deepEqual(learningStatus.trainers.filter(item => item.trainerId === 'vilenkin6-textbook').map(item => item.contentId).sort(), revisedTextbook.map(item => item.contentId).sort());
-    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.trainerId !== 'oge-public').length, 382);
+    assert.equal(learningStatus.trainers.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.trainerId !== 'oge-public').length, 383);
     assert.deepEqual(learningStatus.trainers.filter(item=>item.trainerId==='oge-public').map(item=>item.contentId),['11','15','16','17','18','19']);
-    assert.equal(learningStatus.trainers.length, 388 + revisedTextbook.length);
+    assert.equal(learningStatus.trainers.length, 389 + revisedTextbook.length);
     for(const id of ['course-column-one-digit','course-column-two-digit','course-column-three-by-one','course-column-four-by-one','course-column-three-by-two','course-column-two-by-three','course-column-three-by-three','course-column-zeros','course-column-mixed']) assert(learningStatus.trainers.some(item=>item.contentId==='multiplication-division/'+id));
     assert.equal(learningStatus.trainers.filter(item => item.geometryRebuild).length, require('../../learning/catalog').items.filter(item => item.geometryRebuild).length);
     assert.equal(learningStatus.trainers.filter(item => item.grade6 && item.trainerId !== 'vilenkin6-textbook').length, 39); // 12 motion lessons + all 27 legacy Vilenkin modules.
