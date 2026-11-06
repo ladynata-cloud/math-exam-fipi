@@ -79,3 +79,52 @@ whitespace checks passed. Local browser: Chromium 134.0.6998.35 with
 Playwright 1.62.1. The CI lane retains its pinned current Chromium and repeats
 all source/v1/v2 replay checks. Local evidence is not a substitute for that
 exact-head CI or production verification.
+
+### Composition with published homework release
+
+The coordinating agent authorized an ordinary merge of current main
+`955c83154eed49554b648c03b66e1eba16932222` into the reviewed continuation. The
+only conflict was task19's script version beside the new return assets. The
+resolution keeps the published `oge-homework-20261106` version and the exact
+two return assets. Removing only this PR's return head/bar reconstructs all
+six concurrently updated native HTML documents byte for byte from main955.
+Published assistant and cabinet changes are retained; frozen editions remain
+unchanged. No reset, rebase, force operation or weakened fixture was used.
+
+The composed tree passes 147-document preservation against main955, 62 current
+mathematical/state/source contracts, frozen integrity, 10 prospective-generator
+tests, 93 fresh source learner journeys and independent replay: 395 PASS, zero
+PENDING/FAIL/missing/unreviewed cases. The final exact-head CI still has to run
+on the composed commit before the coordinating agent's merge/release checks.
+
+The composed CI exposed a stale default in the static preservation lane: the
+local composition run had selected main955 explicitly, while the workflow
+still fetched and compared against main8448. The test default and workflow
+fetch now both name the same immutable published main955. This preserves the
+already released homework-mode engine changes and continues to compare every
+inline engine and control exactly; no comparison, fixture or route is removed.
+Both static commands are rerun with no baseline environment override before
+publishing this correction. Cloud browser and source replay remain required.
+
+Published main then advanced to `60deda9b2a5eddd7d91790a88500d907edb5e5f9`
+(the college logarithms release). The coordinator authorized a history-preserving
+merge. Its only conflict was the two independent leading status entries; both
+are retained verbatim. No OGE source changed, so the immutable engine-preservation
+baseline remains main955. The new course, registry, sitemap and board integration
+are preserved from main60. Static routes, affected mathematics and source
+identities are checked again before publishing the composed candidate.
+
+### CI provisioning budget
+
+Exact head37b completed all other 28 workflows, including fixed source/v1/v2
+browser replay and independent mathematics. Guided division run42139800220 is
+CANCELLED, not PASS: its job lasted 12m09s against a 12-minute budget. Pinned
+browser provisioning consumed 10m55s; all arithmetic commands, all six browser
+commands and upload of 104 screenshots reported SUCCESS, with browser completion
+three seconds after the job deadline. The log has no explicit cancellation line;
+the timeline supports budget exhaustion, while the cancelled conclusion remains
+recorded. The coordinator authorized changing only the job budget to 25 minutes.
+Every command, assertion, dependency version and artifact step is unchanged.
+A new exact-head CI run remains required. Concurrent main8d Word publication is
+left for the coordinator's read-only release composition; this fix does not
+merge main into the branch automatically.

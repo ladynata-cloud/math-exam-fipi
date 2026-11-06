@@ -155,6 +155,7 @@
   }
 
   function register(input) {
+    if (global.MathExamLearning?.managed && typeof global.OgeLearningRegister === 'function') return global.OgeLearningRegister(input);
     if (!global.parent || global.parent === global) {
       requireCoreConfig(input);
       return inertHandle();

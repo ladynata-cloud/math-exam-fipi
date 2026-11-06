@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "f9f3aae35e6f35efcf55b0fc5f70019c906d3245",
+  "baseSha": "862cec85546ffbb2288360da3a36b1a526b97d6f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 551,
-    "covered": 550,
+    "total": 552,
+    "covered": 551,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2043,8 +2043,8 @@
       "placement": "before-head-close"
     },
     "oge/variants/2027/index.html": {
-      "beforeSha256": "c1c083b83b2a8e4c53e75c97bad7f3cf5928b708a8a0e4f43e222a6b94f1c15a",
-      "afterSha256": "5e73ac29055a6be486de3900a0210d2647c65bd1ed498d8cad84d78ee5fd3507",
+      "beforeSha256": "9056ad871163b11caa63c206572b5e640baaa205146a84b660aa44a89d7fa74e",
+      "afterSha256": "9fe14a8bc049da5ff07e2f5c9bdead734bd8459fb63013986fb591fa3108f278",
       "placement": "before-head-close"
     },
     "okruglenie-trener.html": {
@@ -2203,8 +2203,13 @@
       "placement": "before-head-close"
     },
     "trainers/college-functions/index.html": {
-      "beforeSha256": "a9ae61fa5916e0ddcd09f316168e28e46f866a3eece5260e736b8770539bccc2",
-      "afterSha256": "8f6adceadbabb7f28267f8a8cd1306659cfc3593c678eec0aed1bfc081e92837",
+      "beforeSha256": "be0a282652e15b480fc803dacd6aef711e96796730f2e5a841cd46977f269490",
+      "afterSha256": "d29d3728d3bb878cc7d721e4dacc37e7275fffe5422285553a9b41a281920316",
+      "placement": "before-head-close"
+    },
+    "trainers/college-logarithms/index.html": {
+      "beforeSha256": "75125cbc3ed4a58c4823eabafd232dca7f194d598c93b06447b7d1aa3b1188ce",
+      "afterSha256": "72cf028da545fe59ceaaa695c2e4efb203284e2796a6180b775e3b6464fba429",
       "placement": "before-head-close"
     },
     "trainers/credit-differential-payment-trainer.html": {
@@ -2873,8 +2878,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "e5f2a63c2715f6972fa38314ffa490b052a27bb7cde935b54beca0dfe3961412",
-      "afterSha256": "a21ca436e762305a0e6a1f72d5336532d4efe2f3aa5d5140b0c6a373ba4ec14d",
+      "beforeSha256": "f09601765965e309541010001ebf316b3f1e6688f52a9fd7c5f8c782dadd67e4",
+      "afterSha256": "1fc5b5736e68acfb289a97b2409a7f646ffad3ed11edc39a30b58a823e265b37",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2893,23 +2898,23 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "ae2dc2a0533782bbf9421833aee575d418dc77e9ce64fea713ba861c658c667d",
-      "afterSha256": "5a4d344d0508fa2c11fd0debb251634f72995ee66a5c8bf77fa4296c1451ce38",
+      "beforeSha256": "498d01e3fd48fb71ae85d09a01ebf6dd8bec5b3cf668258933358d738bae397c",
+      "afterSha256": "178fc56c9e4d85748d15aaafa4b1014c93cbd1fb06886192a3b89675dbcd3f4b",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
-      "beforeSha256": "24b62beaf7f56b217e4ac1b730059796b6b3c6a7d80875b9f0e7f3826b649a20",
-      "afterSha256": "a29d06465474788062d0bc020581a7f3d4bd72888978ca8ac90b6755b4a687a4",
+      "beforeSha256": "9620446029a4b12e8864506e64ec0c2e21b205e0b3ec2f2a6c2806fea1d0b827",
+      "afterSha256": "49b6d157d6c761bf32b66d90f6ae72ed37f1c6c3013dc495a9d5825fbafdb4f3",
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "354d4c59d1f2685bbbae4a7f5ffce51988b82a4114128ca1c9e37dec7dee7bcc",
-      "afterSha256": "638e0c4f4ea964dbb89d0b569876ca0fa04c4e64a6508038cd57482301caa2f8",
+      "beforeSha256": "7bc857f3e7b08efddca4cdc48e3db6ebb29419aaee519b96d82c7efb745b1475",
+      "afterSha256": "3898882b0ce1d2d07726f76b3c06b99e30633ec43f3337f9991fc6e3fdace4da",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
-      "beforeSha256": "4886dfdfe5fff5738c7a0e1b85565c38b3b3a34de970eec59941eaf17796855e",
-      "afterSha256": "23bb9301711fc6dfd53f773f9a5f751bc41a6dcad3334e80ceddbd7e283ed8e2",
+      "beforeSha256": "4f7b221293acf843f4a0bae286fc361a4e1c9e9a9e1a5cff76b85f1932bb327e",
+      "afterSha256": "b3afff4fa08e752428b0955e584973be39d4fc600d0bcd4ef3dd2b5589415e85",
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
@@ -3013,8 +3018,8 @@
       "placement": "before-head-close"
     },
     "trainers/task19-trainer.html": {
-      "beforeSha256": "57373cd626498a7e70e49922bbf3cc41d5a6d201e1a35a5d68cd6ecc66756bcd",
-      "afterSha256": "b4387f217056078d76bdbf4d67a41ac5e4a66169d5efc9cf5cda1baf182dfe91",
+      "beforeSha256": "2e60d35d2501362a716767d7d5d014b0538611b2e8a1279bd39ddb148f5e6c50",
+      "afterSha256": "3905ffd479be02fe22cdf055cd369a45489ddef93670f22baefff28675ca1627",
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
@@ -3700,7 +3705,8 @@
     "trainers/motion-grade6/index.html": "learning/catalog.js",
     "school/m9-exercises/index.html": "school/app.js",
     "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
-    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html"
+    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
+    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -3739,5 +3745,64 @@
     "trainers/geometry7-practice.html": "Board shell; loaded source reference is the native-session boundary, not a public standalone exercise.",
     "book/": "Immutable published book editions.",
     "b/": "Immutable short book aliases."
-  }
+  },
+  "originBaseSha": "f9f3aae35e6f35efcf55b0fc5f70019c906d3245",
+  "sourceBindingUpdates": [
+    {
+      "previousBaseSha": "f9f3aae35e6f35efcf55b0fc5f70019c906d3245",
+      "sourceBaseSha": "a7a9355b72e2a65ec97105e4658063a9c65dd908",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "changedPaths": [
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task15-triangles.html",
+        "trainers/oge-task16-circle.html",
+        "trainers/oge-task17-quadrilaterals.html",
+        "trainers/oge-task18-grid.html",
+        "trainers/task19-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "a7a9355b72e2a65ec97105e4658063a9c65dd908",
+      "sourceBaseSha": "37b49404aafc868535ad1b9648a7d772d1f97bc6",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "changedPaths": [
+        "trainers/college-functions/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "37b49404aafc868535ad1b9648a7d772d1f97bc6",
+      "sourceBaseSha": "828622eac8a671ff9bcff0ea4620bb42b71a0537",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "changedPaths": [
+        "oge/variants/2027/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "828622eac8a671ff9bcff0ea4620bb42b71a0537",
+      "sourceBaseSha": "1a2d8078f0b2259e79a83ddac0cafe3a2a4aff34",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1a2d8078f0b2259e79a83ddac0cafe3a2a4aff34",
+      "sourceBaseSha": "862cec85546ffbb2288360da3a36b1a526b97d6f",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    }
+  ],
+  "coverageUpdates": [
+    {
+      "sourceBaseSha": "60deda9b2a5eddd7d91790a88500d907edb5e5f9",
+      "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
+      "addedPages": [
+        "trainers/college-logarithms/index.html"
+      ],
+      "reason": "New published public course linked from the sitemap and existing catalogue/function course; coordinator requested inclusion."
+    }
+  ]
 }

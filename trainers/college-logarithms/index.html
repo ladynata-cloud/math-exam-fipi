@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Логарифмы с нуля: интерактивный тренажёр для колледжа и ЕГЭ | MathExam</title>
+<meta name="description" content="60 задач по логарифмам: определение, свойства, графики, уравнения, неравенства и подготовка к ЕГЭ. 248 проверяемых шагов, подсказки и общая доска.">
+<link rel="canonical" href="https://mathexam.space/trainers/college-logarithms/">
+<script src="./board-mode.js?v=1"></script><link rel="stylesheet" href="./style.css?v=1">
+<script src="../board-bridge.js" defer></script><script src="../college-functions/engine.js?v=1" defer></script><script src="./data.js?v=1" defer></script><script src="./core.js?v=1" defer></script><script src="./plot.js?v=1" defer></script><script src="./board.js?v=1" defer></script><script src="./app.js?v=1" defer></script>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</head><body>
+<header><a class="brand" href="../../">MathExam</a><nav><a href="../">Все тренажёры</a><a id="open-board" class="button primary" href="../trainer-board.html?trainer=%2Ftrainers%2Fcollege-logarithms%2Findex.html">На общую доску</a></nav></header>
+<main>
+<div class="heading"><div><p class="eyebrow">КОЛЛЕДЖ → ЕГЭ · 60 ЗАДАЧ</p><h1>Логарифмы по шагам</h1><p class="intro">Понять степень. Построить график. Решить самостоятельно.</p></div><span id="progress" class="badge"></span></div>
+<div class="toolbar"><label>Раздел<select id="chapter" aria-label="Раздел"></select></label><label>Задание<select id="task" aria-label="Задание"></select></label><div class="modes"><button id="learn" aria-pressed="true">Учимся</button><button id="test" aria-pressed="false">Без подсказок</button></div></div>
+<div id="mode-note" class="muted"></div>
+<div class="workspace">
+<section class="work-card"><div class="task-head"><span id="position" class="eyebrow"></span><h2 id="task-title"></h2><p id="condition" class="formula"></p></div>
+<div id="exercise-graph" hidden><svg id="task-graph" viewBox="0 0 600 380" role="img" aria-label="График задания и проверенные точки"></svg><p id="graph-caption" class="muted"></p></div>
+<div class="step-line"><span id="step-count"></span><span id="error-count"></span></div><progress id="step-progress" max="1" value="0"></progress>
+<div id="history"></div><form id="answer-form" novalidate><div id="current-step"></div><div id="symbol-pad" class="symbols" hidden></div><div class="actions"><button id="check" class="primary" type="submit">Проверить шаг</button><button id="hint" type="button">Подсказка</button></div></form>
+<div id="feedback" role="status" aria-live="polite"></div><div id="hint-text" class="hint-box" hidden></div><div id="completion" hidden></div>
+<div class="task-navigation"><button id="previous" type="button">← Назад</button><button id="next" type="button">Следующая →</button></div>
+</section>
+<aside>
+<details id="theory"><summary>Короткое объяснение</summary><p id="theory-content"></p><p>Запись log<sub>a</sub>(b) читается: «логарифм b по основанию a».</p></details>
+<details id="lab"><summary>Лаборатория графика</summary><div class="lab-body"><p>Меняйте параметры и наблюдайте за графиком. Это отдельная модель, условие задачи не меняется.</p><p id="lab-formula" class="formula"></p><label>Основание a<select id="base" aria-label="Основание a"></select></label><label>Сдвиг по x: h = <output id="h-value">0</output><input id="shift-h" type="range" min="-3" max="3" step="1" value="0"></label><label>Сдвиг по y: k = <output id="k-value">0</output><input id="shift-k" type="range" min="-3" max="3" step="1" value="0"></label><svg id="lab-graph" viewBox="0 0 600 380" role="img" aria-label="Логарифмический график с изменяемыми параметрами"></svg><div id="lab-facts"></div></div></details>
+<details id="reference"><summary>Как вводить ответ</summary><p>Число: <b>0,5</b>, <b>0.5</b> или <b>1/2</b>. Точка: <b>1/2; −1</b> (сначала x, затем y).</p><p>Промежуток: <b>(2; +∞)</b> или <b>(2; inf)</b>. Включённая граница: квадратная скобка. Исключённая: круглая. Пустое множество: <b>нет</b>.</p><p>При записи степени используется знак ^: 2^3 означает 2³.</p></details>
+<section class="notes"><label for="notes">Мои записи к задаче</label><textarea id="notes" rows="4" maxlength="1500" placeholder="Запиши преобразование или вопрос преподавателю…"></textarea><p class="muted">На общей доске записи видны обоим участникам.</p></section>
+</aside></div>
+<footer><p id="storage-note"></p><p>Авторские учебные задания. Экзаменационные разделы готовят к краткому ответу; это не копии банка ФИПИ.</p><a href="../college-functions/">Продолжить: графики функций</a> · <a href="../../ege-profil/start/">Курс ЕГЭ профиль</a></footer>
+</main><noscript>Для интерактивного тренажёра включите JavaScript.</noscript>
+</body></html>

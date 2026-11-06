@@ -6,6 +6,7 @@ const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 test('every inventoried public page has one exact existing navigator pair; all added pages recover original bytes',()=>{
   assert.deepEqual(pages,[...new Set(pages)].sort());
   assert.deepEqual([...rollout.existingPages,...Object.keys(rollout.addedPages)].sort(),pages);
+  assert.deepEqual(Object.keys(rollout.provenance).sort(),pages,'Every public document has recorded discovery provenance');
   assert.deepEqual(pages.filter(name=>Object.hasOwn(rollout.excluded,name)),[],'Covered and excluded documents must be disjoint');
   const tag1=snippet.trim().split('\n')[0],tag2=snippet.trim().split('\n')[1];
   for(const name of pages){
@@ -20,7 +21,10 @@ test('every inventoried public page has one exact existing navigator pair; all a
     assert.equal(hash(raw),row.afterSha256,name+' current exact payload');
     assert.equal(hash(original),row.beforeSha256,name+' complete original payload');
     const committed=execFileSync('git',['show',rollout.baseSha+':'+name],{cwd:root,maxBuffer:16e6});
-    assert.deepEqual(original,committed,name+' unchanged teaching, math, controls, stores, inline scripts, styles and links');
+    // A later explicitly reviewed source commit may already include this same
+    // exact pair. Its complete payload must still match the current binding.
+    const source=restorePublicNavigator(name,committed);
+    assert.deepEqual(original,source,name+' unchanged teaching, math, controls, stores, inline scripts, styles and links relative to the explicit source commit');
     assert.deepEqual(restorePublicNavigator(name,original),original,name+' original identity');
   }
 });

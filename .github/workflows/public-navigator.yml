@@ -28,6 +28,7 @@ jobs:
           node --check assets/assistant/navigator-data.js
           node --check assets/assistant/navigator-widget.js
           node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
           node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
           git diff --check
       - name: Actual pages on desktop, mobile and landscape

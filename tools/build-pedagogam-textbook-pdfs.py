@@ -249,6 +249,9 @@ def zip_files(dest, paths):
 
 def page_html(packs):
     esc = html.escape
+    word_source = OUT / 'word-packs.json'
+    word_data = json.loads(word_source.read_text()) if word_source.exists() else None
+    word_packs = {p['bankId']: p for p in word_data['packs']} if word_data else {}
     grades = [f'{n} класс' for n in range(5,12)]
     books = sorted(set(b for p in packs for b in p['books']))
     options = lambda values: ''.join(f'<option value="{esc(v, quote=True)}">{esc(v)}</option>' for v in values)
@@ -265,15 +268,25 @@ def page_html(packs):
     for p in packs:
         base = '/pedagogam/raboty/' + p['id'] + '/'
         refs = '; '.join(r['sections'] for r in p['source_refs'])
-        search = esc(' '.join([p['title'], p['grade'], p['subject'], *p['books']]), quote=True)
+        word = word_packs.get(p['id'])
+        search = esc(' '.join([p['title'], p['grade'], p['subject'], *p['books'],
+                              *([word['title'], 'Word DOCX'] if word else [])]), quote=True)
         links = ''.join(f'<div class="work"><h3>{name} · 4 варианта</h3>'
                         f'<a class="button" href="{base}{FILES[kind][0]}" download>Задания PDF</a> '
                         f'<a href="{base}{FILES[kind][1]}" download>Ответы и решения PDF</a></div>'
                         for kind, name in [('sr','Самостоятельная'), ('kr','Контрольная')])
+        if word:
+            links += (f'<div class="work word-work"><h3>{esc(word["title"])} · Word · 4 варианта</h3>'
+                      f'<p>{esc(word["grade"])}. Редактируемая самостоятельная: четыре базовых задания в каждом варианте.</p>'
+                      f'<a class="button" href="/pedagogam/raboty/{esc(word["studentFile"])}" download>Задания Word</a> '
+                      f'<a href="/pedagogam/raboty/{esc(word["teacherFile"])}" download>Ответы и решения Word</a></div>')
         topic_link = ('<p><a href="' + base + '">Описание работы, рекомендации и тренажёры</a></p>') if p['id'] in topic_pages else ''
         numbers = [int(n) for n in re.findall(r'\d+', p['grade'])]
         applies = sorted({g for gs in p.get('book_grades', {}).values() for g in gs}) or list(range(min(numbers),max(numbers)+1))
         book_grades = p.get('book_grades', {book: applies for book in p['books']})
+        if word:
+            word_grades = [int(n) for n in re.findall(r'\d+', word['grade'])]
+            applies = sorted(set(applies) | set(range(min(word_grades), max(word_grades)+1)))
         cards.append(f'<article class="pack" data-grade="{esc(p["grade"], quote=True)}" data-grades="{esc(json.dumps(applies), quote=True)}" '
                      f'data-books="{esc(json.dumps(p["books"], ensure_ascii=False), quote=True)}" '
                      f'data-book-grades="{esc(json.dumps(book_grades, ensure_ascii=False), quote=True)}" '
@@ -287,13 +300,20 @@ def page_html(packs):
                      'Четыре варианта одинаковы по структуре и баллам. '
                      'Критерии приведены в файлах с ответами; преподаватель может изменить время и шкалу отметок.</p>'
                      f'</details><p><a href="{base}komplekt.zip" download>Скачать комплект ZIP</a></p></article>')
+    word_downloads = (f'<p class="downloads"><a class="button" href="{esc(word_data["archive"])}" download>Скачать три комплекта Word</a> '
+                      f'<a href="{esc(word_data["errorReviewFile"])}" download>Лист работы над ошибками Word</a></p>'
+                      '<p>Word доступен для трёх тем: '
+                      + ', '.join(f'<a href="#{esc(p["bankId"])}">{esc(p["title"])}</a>' for p in word_data['packs'])
+                      + '. В архиве отдельные задания и ответы, всего 12 вариантов и 48 заданий, а также пустой лист работы над ошибками.</p>') if word_data else ''
+    formats = 'PDF и Word' if word_data else 'PDF'
+    word_description = ' Редактируемые Word-комплекты по трём темам.' if word_data else ''
     return f'''<!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Самостоятельные и контрольные работы по математике · 4 варианта · PDF | MathExam</title>
-<meta name="description" content="Базовые самостоятельные и контрольные работы по математике 5–11 классов. Четыре варианта, отдельные ответы, решения и критерии. PDF для печати.">
+<title>Самостоятельные и контрольные работы по математике · 4 варианта · {formats} | MathExam</title>
+<meta name="description" content="Базовые самостоятельные и контрольные работы по математике 5–11 классов. Четыре варианта, отдельные ответы, решения и критерии. PDF для печати.{word_description}">
 <link rel="canonical" href="https://mathexam.space/pedagogam/raboty/">
-<meta property="og:title" content="Самостоятельные и контрольные · 4 варианта · PDF">
-<meta property="og:description" content="Математика 5–11 классов: задания для печати и отдельные решения для преподавателя.">
+<meta property="og:title" content="Самостоятельные и контрольные · 4 варианта · {formats}">
+<meta property="og:description" content="Математика 5–11 классов: задания для печати и отдельные решения для преподавателя.{word_description}">
 <meta property="og:type" content="website"><meta property="og:url" content="https://mathexam.space/pedagogam/raboty/">
 <meta property="og:site_name" content="MathExam"><meta property="og:locale" content="ru_RU">
 <link rel="stylesheet" href="/assets/site.css"><style>
@@ -314,6 +334,7 @@ details{{font-size:14px}}summary{{cursor:pointer;font-weight:bold}}.note{{paddin
 <h1>Самостоятельные и контрольные работы</h1>
 <p class="intro">Выберите тему и распечатайте нужный вариант. В каждой работе — четыре равноценных варианта с базовыми заданиями. Ответы, решения и критерии скачиваются отдельно.</p>
 <p class="downloads"><a class="button" href="mathexam-raboty-pdf.zip" download>Скачать все PDF</a> <a href="#catalog">Выбрать тему</a></p>
+{word_downloads}
 <details class="note"><summary>Что входит в подборку</summary><p>Подборка охватывает указанные темы учебников, а не все упражнения и дополнительные разделы каждого издания. Порядок тем у разных авторов отличается: выбирайте работу после изучения нужного материала. Задания составлены для MathExam; исходные сборники издательств в архив не входят.</p></details>
 {topic_nav}
 <form class="filters" role="search" onsubmit="return false"><label>Класс<select id="grade"><option value="">Все классы</option>{options(grades)}</select></label>

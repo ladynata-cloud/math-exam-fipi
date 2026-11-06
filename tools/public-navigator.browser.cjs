@@ -79,7 +79,7 @@ for (const item of catalogue) {
         await launcher.click();
         await panel.waitFor({state:'visible'});
         const panelBox = await panel.boundingBox();
-        assert.ok(panelBox.x >= 0 && panelBox.y >= 0 && panelBox.x + panelBox.width <= viewport.width);
+        assert.ok(panelBox.x >= 0 && panelBox.y >= 0 && panelBox.x + panelBox.width <= viewport.width && panelBox.y + panelBox.height <= viewport.height);
         const input = host.locator('textarea');
         await input.fill('Я в 6 классе, надо делить уголком');
         await input.press('Enter');
@@ -119,7 +119,7 @@ for (const item of catalogue) {
     await frameContext.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
     const framePage=await frameContext.newPage();
     await framePage.goto(origin+'/');
-    for(const filename of ['trainers/oge-task6-fractions.html','geometry-course/textbook/index.html']){
+    for(const filename of ['trainers/oge-task6-fractions.html','geometry-course/textbook/index.html','trainers/college-logarithms/index.html']){
       await framePage.evaluate(src=>{document.querySelectorAll('iframe[data-navigator-test]').forEach(node=>node.remove());const frame=document.createElement('iframe');frame.dataset.navigatorTest='true';frame.src=src;document.body.append(frame);},origin+'/'+filename);
       const frame=framePage.frameLocator('iframe[data-navigator-test]');
       await frame.locator('body').waitFor();

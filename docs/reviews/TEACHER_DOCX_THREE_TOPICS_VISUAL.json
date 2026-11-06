@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "task": "TEACHER_DOCX_THREE_TOPICS_20261106",
+  "reviewer": "ChatGPT executing agent /root/homework_finish",
+  "reviewType": "author visual render review; not an external review",
+  "date": "2026-11-06",
+  "verdict": "PASS",
+  "documents": 7,
+  "pages": 25,
+  "sourceSha256": "9f53d25d45a69e2d251334f83bd8680b469978e0eea7658cbe0256ea89656173",
+  "manifestSha256": "9284edbd992da6bc23081880e20300d9310cfd582a02e0562104a294dde740aa",
+  "builderSha256": "c4bc7cec4bc222dcfca68a1a9df3fef82dc34667f35f9a3e5ad25f104318a46c",
+  "renderer": "documents skill render_docx.py; LibreOffice conversion and page PNGs",
+  "pageSize": "US Letter 8.5 x 11 in",
+  "checks": [
+    "Every final page opened and visually read at full-page resolution",
+    "One variant per page, with four student and four answer pages per topic",
+    "Readable Cyrillic and native Word math; sufficient writing space",
+    "Both coordinate axes and positive-direction arrowheads visible",
+    "Signed tick labels stay on one line and remain readable over plotted lines",
+    "Answer graphs agree with y=x+2, y=x+3, y=x+4, y=x+5 and marked points",
+    "Blank error-review form contains no real pupil data",
+    "No clipped text, accidental empty pages, or cross-page task splits"
+  ],
+  "resolvedFindings": [
+    "Reversed vertical VML extent omitted the y-axis in LibreOffice; replaced with positive extent and start arrow",
+    "Narrow text boxes wrapped negative tick signs; widened and centered",
+    "Plotted line crossed signed tick labels; added white backgrounds above the line and rendered axes above backgrounds"
+  ],
+  "limits": [
+    "Microsoft Word desktop and Google Docs were not opened; native OOXML editability is checked structurally",
+    "No classroom trial or external paid/model review is claimed",
+    "PNG and intermediate PDF are QA evidence, not additional user deliverables"
+  ],
+  "files": [
+    {
+      "path": "pedagogam/raboty/arith-brackets-like-terms/minus-pered-skobkami-zadaniya.docx",
+      "sha256": "af5f9eddcd1fa2da9bcecbad34c09c03c6adc33025e09d1d7c668bac0653cf93",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "minus-pered-skobkami-zadaniya/page-1.png",
+          "sha256": "230956c9648518ea82e050be154625718a1dc1e820553fb7b3f293bd4fb273d5",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-zadaniya/page-2.png",
+          "sha256": "f200a2908532a6a3a261f5195dbb2f1fe2d1be86d6aa9bc4c8cb028e7c4d634c",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-zadaniya/page-3.png",
+          "sha256": "643fb9a3126e3cf42d096b17d6150aef49641c340c5bee34700454ab76960772",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-zadaniya/page-4.png",
+          "sha256": "9179e43854febca7682ac747ec24f97f1dae9028f872fefa0eb5bb8c35f66562",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/arith-brackets-like-terms/minus-pered-skobkami-otvety.docx",
+      "sha256": "4b9d686e8fc314ca5ae6646a843f83648ff9055fe7ee9c0f69eb4bab410c7ac5",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "minus-pered-skobkami-otvety/page-1.png",
+          "sha256": "b2a7c1951f5477c507acfe81b766ac7f6ef2b063e280871fb4e8b8182ec535b4",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-otvety/page-2.png",
+          "sha256": "fb688c067a97a084af06a991741dadaa36e2c858547761a16bf14d2c11f64947",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-otvety/page-3.png",
+          "sha256": "4cfa9f2ed223b4141f162c95939b690cde6c01db5c946969eee8a50b524ec867",
+          "visuallyInspected": true
+        },
+        {
+          "path": "minus-pered-skobkami-otvety/page-4.png",
+          "sha256": "929dce17b1ef6f8f8afd90eae5f58a1cb629353a8a35fc17c9c13230c59cf046",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/geo-ugly-treugolnika/summa-uglov-treugolnika-zadaniya.docx",
+      "sha256": "a22b8b492344d00aa8c5f16b37f6406f8768e93f93d549325aac7046b392a903",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "summa-uglov-treugolnika-zadaniya/page-1.png",
+          "sha256": "d1d25b3a46fad7a42fad07a2efcc1ed16764753668572513e39f44f124bb1cb1",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-zadaniya/page-2.png",
+          "sha256": "21790cd21c40cb9286e464a4e6a3bd0c3920681fbde04e405fe86d1c22c72b71",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-zadaniya/page-3.png",
+          "sha256": "a135d0a04d87d8ab134d9772a624fd73c1d967b9a8479f0d428b6a52bf449647",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-zadaniya/page-4.png",
+          "sha256": "6df9762bb5fa7c8545cf5043712061662a323362752935cccf81c8df15188ae1",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/geo-ugly-treugolnika/summa-uglov-treugolnika-otvety.docx",
+      "sha256": "7fe679a17d93fa67697cf392dbb1bf7b013ed12887c4e621ff8566b4ab3dbe59",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "summa-uglov-treugolnika-otvety/page-1.png",
+          "sha256": "35174e3bb3ee3fa2666b3e389d783c032141d6004f713199b23e3d161cd632e9",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-otvety/page-2.png",
+          "sha256": "da5caa26dd7c64e413c6596e8399ad70309477dcba1af8c880ea9cb4eee9df40",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-otvety/page-3.png",
+          "sha256": "0caa98d77f129a33078a87cb921db76904a583a00f82c29811d27dabaeea755d",
+          "visuallyInspected": true
+        },
+        {
+          "path": "summa-uglov-treugolnika-otvety/page-4.png",
+          "sha256": "23d746684daaa9c0b3339db9c87c00243c67123b4f1a19b631ce2dc21524e23b",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/alg-line/lineynye-grafiki-oge-zadaniya.docx",
+      "sha256": "396cc9d4303c9439a7ca04afbccc95b0490f102b643d5281a65b986d78afecc0",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "lineynye-grafiki-oge-zadaniya/page-1.png",
+          "sha256": "dceda5fa87072c0db1275306d9bd3926ee23d8a2c626655e6061b28a4dfcb6a5",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-zadaniya/page-2.png",
+          "sha256": "6d7f780e9c590460f33eced6952c012023d77609764d9e4ccb716dc4a7eed2d1",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-zadaniya/page-3.png",
+          "sha256": "47b92e1c7743a6880c22f63c21999680c0c3c0dc8fbe6d4acb205dca9078bfa2",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-zadaniya/page-4.png",
+          "sha256": "0f5f80ac54f82d31613ff2f26136581a37b65911ac4dbcbc8b69439202d74244",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/alg-line/lineynye-grafiki-oge-otvety.docx",
+      "sha256": "91e66ab71afed24640fe4048de92bb9dcfeb775ba9cf5936854fbb44830afd6b",
+      "pages": 4,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "lineynye-grafiki-oge-otvety/page-1.png",
+          "sha256": "bbe4962b79f8f6ccbf15abb0b76720632b81136e3278159b63561ec4f8e75a9e",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-otvety/page-2.png",
+          "sha256": "da30613936083ed593df598dd99fdbcb93a083753379892a726b7cced7856e3b",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-otvety/page-3.png",
+          "sha256": "3fc6b278dcc5e0816d9de345a6f3efe6c7485e0394f194830efea8a375fdca1d",
+          "visuallyInspected": true
+        },
+        {
+          "path": "lineynye-grafiki-oge-otvety/page-4.png",
+          "sha256": "0dd054b101d2f58ebc700bf9186a57aca394cd0517a21bbc960eca7461a8cb47",
+          "visuallyInspected": true
+        }
+      ]
+    },
+    {
+      "path": "pedagogam/raboty/rabota-nad-oshibkami.docx",
+      "sha256": "5b37952463bdcf61646cf0f4278a18194247226387622277b33d428bd07340b0",
+      "pages": 1,
+      "verdict": "PASS",
+      "renderedPages": [
+        {
+          "path": "rabota-nad-oshibkami/page-1.png",
+          "sha256": "0d24de9880b6f8e6373ab94f5cc2888c26678b818ee39e122fb1557b005e0d18",
+          "visuallyInspected": true
+        }
+      ]
+    }
+  ]
+}

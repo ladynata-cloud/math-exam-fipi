@@ -86,6 +86,7 @@
     return Object.freeze({ validate });
   }
   function isBoard(window) {
+    if(window.MathExamLearning?.managed)return true;
     if (window.parent === window) return false;
     if (new URLSearchParams(window.location.search).get('board') === '1') return true;
     try {
