@@ -1,0 +1,34 @@
+name: Cabinet — portable deployment and recovery
+
+on:
+  pull_request:
+    paths:
+      - 'deploy/cabinet/**'
+      - 'board-server/**'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - 'tools/cabinet-compose-smoke.sh'
+      - '.github/workflows/cabinet-deployment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cabinet-deployment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compose-and-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Check shell syntax
+        run: bash -n tools/cabinet-compose-smoke.sh
+      - name: Build and exercise the real container with isolated synthetic data
+        run: bash tools/cabinet-compose-smoke.sh
+      - name: Check patch whitespace
+        run: git diff --check
