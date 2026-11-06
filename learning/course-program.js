@@ -83,7 +83,11 @@
       storage: 'browser', route: 'program-course=ege-base-11-13', publicPath: '/ege-baza/path/index.html#lesson=box' },
     { id: 'college-functions', title: 'Графики функций · колледж', grades: [], directions: ['school','ege-profile'],
       description: 'Построение и исследование графиков: от парабол до функций по частям.',
-      storage: 'browser', publicPath: '/trainers/college-functions/' }
+      storage: 'browser', publicPath: '/trainers/college-functions/' },
+    { id: 'college-logarithms', title: 'Логарифмы · колледж', grades: [], directions: ['school','foundations','ege','ege-profile'],
+      description: 'Вводный урок и 60 задач: смысл логарифма, свойства, графики, уравнения, неравенства и тестовая часть ЕГЭ.',
+      storage: 'browser', publicPath: '/trainers/college-logarithms/',
+      boardPath: '/trainers/college-logarithms/index.html?task=meaning-1' }
   ];
   const courses = Object.freeze(definitions.map(item => Object.freeze({ ...item,
     grades: Object.freeze(item.grades), directions: Object.freeze(item.directions),
