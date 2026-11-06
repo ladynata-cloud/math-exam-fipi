@@ -15,4 +15,62 @@ const tabA=state.create(lessons,storage),tabB=state.create(lessons,storage);cons
 const bad='{broken';mem.set(state.KEY,bad);s.save();assert.equal(mem.get(state.KEY),bad);assert(s.warning);assert.equal(s.original,bad);const fresh=state.create(lessons,storage);fresh.start(id,'guided');assert.equal(mem.get(state.KEY),bad);assert(fresh.warning);
 const future=JSON.stringify({version:7,seen:{},records:{},sessions:{}});mem.set(state.KEY,future);const f=state.create(lessons,storage);f.start(id,'guided');assert.equal(mem.get(state.KEY),future);assert(f.warning);assert.equal(f.export().storage,'local-browser');
 for(const file of ['index.html','app.js','style.css','state.js','checks.js','models.js'])assert(fs.statSync(path.join(__dirname,'../ege-profil/circle',file)).size>100);
+// Each isolated realm uses the actual state module with a controlled clock.
+// This checks restart ordering without changing the process-wide Date object.
+{
+ const vm=require('node:vm');
+ const source=fs.readFileSync(path.join(__dirname,'../ege-profil/circle/state.js'),'utf8');
+ const failures=[],results=[];
+ for(const shared of [false,true])for(const timing of ['same-clock','backward-clock','newer-other-tab']){
+  const label=timing+'/'+(shared?'shared':'personal');
+  try{
+   const clock={now:1800000000000};
+   class ClockDate extends Date{constructor(...args){super(...(args.length?args:[clock.now]));}static now(){return clock.now;}}
+   const realm={module:{exports:{}},Date:ClockDate};
+   vm.runInNewContext(source,realm,{filename:'ege-profil/circle/state.js'});
+   const api=realm.module.exports,values=new Map([['legacy.student','keep']]);
+   const memory={getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};
+   const course=api.create(lessons,memory,{shared});
+   const taskId=tasks[0].id,otherId=tasks[1].id,key=taskId+':independent',otherKey=otherId+':guided';
+   const first=course.start(taskId,'independent');
+   first.step=1;first.draft={answer:'7/9'};first.solved=true;first.angle=1.25;
+   if(shared)first.answers=[{field:'answer',value:'7/9'}];
+   course.finish(first);
+   const other=course.start(otherId,'guided');other.step=1;other.draft={answer:'keep this draft'};course.save();
+   const records=JSON.parse(JSON.stringify(course.data.records));
+   const otherSession=JSON.parse(JSON.stringify(course.data.sessions[otherKey]));
+   let previousRevision=course.data.sessions[key].updatedAt;
+   if(timing==='backward-clock')clock.now-=1000;
+   if(timing==='newer-other-tab'){
+    clock.now+=5000;
+    const tab=api.create(lessons,memory,{shared});
+    tab.data.sessions[key].draft={answer:'newer completed attempt'};tab.save();
+    previousRevision=JSON.parse(values.get(api.KEY)).sessions[key].updatedAt;
+    clock.now-=5000;
+   }
+   const restarted=course.start(taskId,'independent',true);
+   assert.equal(restarted.familiar,true,label+': restarted attempt is familiar');
+   assert.equal(restarted.done,false,label+': restart remains editable');
+   assert.equal(restarted.registered,false,label+': restart is not already completed');
+   assert.equal(restarted.solved,false);assert.equal(restarted.wrong,false);assert.equal(restarted.assisted,false);
+   assert.equal(restarted.step,0);assert.equal(restarted.angle,0);assert.equal(Object.keys(restarted.draft).length,0);
+   if(shared)assert.equal(restarted.answers.length,0,label+': shared answers reset only for the restarted task');
+   assert(restarted.updatedAt>previousRevision,label+': restart follows the latest observed revision');
+   assert.equal(course.data.seen[taskId],2);
+   assert.deepEqual(JSON.parse(JSON.stringify(course.data.records)),records,label+': achievements are retained');
+   assert.deepEqual(JSON.parse(JSON.stringify(course.data.sessions[otherKey])),otherSession,label+': other work is retained');
+   const stored=JSON.parse(values.get(api.KEY));
+   assert.equal(stored.version,1);assert.equal(stored.sessions[key].familiar,true);assert.equal(stored.sessions[key].done,false);
+   assert.equal(stored.sessions[key].updatedAt,restarted.updatedAt);
+   assert.equal(values.get('legacy.student'),'keep');
+   const reloaded=api.create(lessons,memory,{shared}).data.sessions[key];
+   assert.equal(reloaded.familiar,true);assert.equal(reloaded.done,false);assert.equal(reloaded.step,0);
+   assert.equal(reloaded.updatedAt,restarted.updatedAt);
+   results.push({case:label,passed:true,previousRevision,updatedAt:restarted.updatedAt});
+  }catch(error){failures.push({case:label,error:error.message});results.push({case:label,passed:false});}
+ }
+ console.log(JSON.stringify({gate:'MORD_CIRCLE_RESTART_CLOCK',results,failures}));
+ assert.deepEqual(failures,[],'every fixed-clock, backward-clock and newer-tab restart must remain fresh');
+}
+
 console.log(JSON.stringify({gate:'MORD_CIRCLE_STRUCTURE_STATE_OK',lessons:lessons.length,bookNumbers:numbers.size,bookParts:tasks.length-6,preparation:6,tasks:tasks.length,guidedSteps:steps,fields,oldData:true,corruptionPreserved:true,otherTabSuccesses:true}));
