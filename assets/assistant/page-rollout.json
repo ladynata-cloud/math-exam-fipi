@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "862cec85546ffbb2288360da3a36b1a526b97d6f",
+  "baseSha": "76b7957fc919aa9e66f5b663eeaa436d23ef979d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3008,8 +3008,8 @@
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
-      "beforeSha256": "a7f9193aecc8d35d73d066c102a87d279971c839386d125499233632e8cceec2",
-      "afterSha256": "0ef6586d7263abcd941bd53d0b5471cc5a3d63cd1f4e591c45bdf88b90c14fd7",
+      "beforeSha256": "08eb1ec9be45e9801c79be8ca87b040adb4ee9dff636319ec237f56c0f00ae10",
+      "afterSha256": "bfc5847772ffa83bf101b0eb2b4de9d702aa1764a960111a38438c9a099bf873",
       "placement": "before-head-close"
     },
     "trainers/task14-progressions-trainer.html": {
@@ -3792,6 +3792,15 @@
       "sourceBaseSha": "862cec85546ffbb2288360da3a36b1a526b97d6f",
       "task": "docs/tasks/PUBLIC_NAVIGATOR_ALL_PAGES.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "862cec85546ffbb2288360da3a36b1a526b97d6f",
+      "sourceBaseSha": "76b7957fc919aa9e66f5b663eeaa436d23ef979d",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_CHECK_CURRENT.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
