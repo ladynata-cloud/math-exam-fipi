@@ -2,6 +2,8 @@ import { AssistantError, requireValue } from './errors.js';
 import { pricesFresh } from './config.js';
 import { buildMessages, validateModelAnswer } from './tutor.js';
 import { containsSensitiveText } from './privacy.js';
+import { verifyModelMathematics } from './model-math.js';
+import { answerFitsDialogue } from './answer-limits.js';
 
 export function prepareRequest(config, input, cards, now = Date.now(), messageBuilder = buildMessages) {
   requireValue(config.mode === 'api' && pricesFresh(config, now), 'PROVIDER_DISABLED', 503);
@@ -46,7 +48,7 @@ async function boundedJson(response, limit) {
   } finally { reader.releaseLock(); }
 }
 
-export async function callProvider({ config, prepared, input, cards, fetchImpl = fetch, signal }) {
+export async function callProvider({ config, prepared, input, cards, fetchImpl = fetch, signal, historyQuestion = input.question }) {
   const controller = new AbortController();
   const abort = () => controller.abort();
   if (signal?.aborted) abort(); else signal?.addEventListener('abort', abort, { once: true });
@@ -78,14 +80,20 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
       // Never expose or store hidden reasoning. Non-empty reasoning despite the
       // non-thinking contract is a stop condition requiring operator review.
       requireValue(!message.reasoning_content && !(usage.completion_tokens_details?.reasoning_tokens > 0), 'PROVIDER_USAGE_CONTRACT', 502);
-      requireValue(typeof message.content === 'string' && message.content.length <= 7000, 'PROVIDER_RESPONSE_INVALID', 502);
+      requireValue(typeof message.content === 'string' && Buffer.byteLength(message.content, 'utf8') <= 7000, 'PROVIDER_RESPONSE_INVALID', 502);
       let content;
       try { content = validateModelAnswer(JSON.parse(message.content)); }
       catch { throw new AssistantError('PROVIDER_RESPONSE_INVALID', 502); }
+      // One returned cabinet answer must leave room for the next bounded
+      // follow-up. Existing history is pruned by the board, never math text.
+      requireValue(!input.profileId || answerFitsDialogue(content, historyQuestion), 'PROVIDER_DIALOGUE_LIMIT', 502);
+      const mathematics = verifyModelMathematics(input, content);
+      requireValue(mathematics.status !== 'failed', 'PROVIDER_MATH_INVALID', 502);
       if (input.mode === 'hint') {
         // Bounded mitigation for obvious over-answering. Meaning cannot be
         // guaranteed by a pattern: live model pedagogy still needs evaluation.
-        requireValue(content.steps.length === 1 && !/(?:^|\s)(?:ответ\s*:|answer\s*:|итоговый\s+ответ|окончательный\s+ответ)/iu
+        requireValue(content.steps.length === 1 && !mathematics.claims.some(claim => claim.kind === 'final')
+          && !/(?:^|\s)(?:ответ\s*:|answer\s*:|итоговый\s+ответ|окончательный\s+ответ)/iu
           .test([content.title, content.text, ...content.steps, content.check].join('\n')), 'PROVIDER_HINT_CONTRACT', 502);
       }
       const answerText = [content.title, content.text, ...content.steps, content.check].join('\n');
@@ -95,6 +103,7 @@ export async function callProvider({ config, prepared, input, cards, fetchImpl =
         answer: { ...content,
           sources: cards.map(card => ({ id: card.id, title: card.title, url: card.source.url })),
           verification: 'model-unverified', topic: input.topic, complete: input.mode === 'explain' },
+        validation: { structure: 'valid', mathematics },
         usage: { prompt_tokens: usage.prompt_tokens, completion_tokens: usage.completion_tokens },
         // A bounded provider label is useful for synthetic evaluation provenance;
         // it is not a weight hash or a guarantee that an alias is immutable.

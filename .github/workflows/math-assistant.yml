@@ -42,7 +42,12 @@ jobs:
           npm --prefix assistant-service ci --ignore-scripts --offline
           node assistant-service/scripts/build-course-knowledge.cjs --check
           npm --prefix assistant-service test
+          python3 assistant-service/test/model-reference-oracles.py
           git diff --check
+      - name: Check mathematical validation with the unmerged PR399 adapter
+        run: |
+          git fetch --no-tags --depth=1 origin 846040b338fd21a69f52132a75e29e4a9e2669b6 7f4c054b9b8fb5b519dcab60e6fa4e461ed7c21f
+          node assistant-service/scripts/test-pr399-composition.mjs
       - name: Stamp isolated preview with its exact source version
         run: |
           node --input-type=module -e 'import fs from "node:fs"; import { releaseMetadata } from "./assistant-service/scripts/release-package.mjs"; fs.writeFileSync("assistant-service/release.json", JSON.stringify(releaseMetadata(process.cwd(), process.env.GITHUB_SHA)));'
