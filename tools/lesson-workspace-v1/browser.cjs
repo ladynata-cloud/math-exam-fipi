@@ -223,6 +223,19 @@ async function checkLayout(page, label, width) {
     assert.notDeepEqual(await rehearsalCanvas.screenshot(), privateInkBefore, 'A real pointer gesture draws in the local preparation copy');
     assert.equal(learningSnapshot(f.store), beforeRehearsal, 'Private answer, hint, step and handwriting do not change any learning/attribution record');
     for (const width of [320, 1280]) await checkLayout(tp, 'private-preparation', width);
+    // A fresh private solution must never promise durable work history.
+    await tp.locator('[data-rehearsal-reset]').click();
+    const freshRehearsal = await readyFrame(tp, '[data-rehearsal-frame]');
+    await readonly(freshRehearsal, false);
+    await freshRehearsal.locator('[data-stage="3"]').click();
+    const finalAnswer = f.source.taskSpec.task.a ?? f.source.taskSpec.task.answer;
+    assert(Number.isFinite(finalAnswer), 'The fixture supplies a numeric final answer');
+    await freshRehearsal.locator('#answer').fill(String(finalAnswer));
+    await freshRehearsal.locator('#answerForm button').click();
+    await until(async () => /Верно/.test(await freshRehearsal.locator('#feedback').innerText()), 'private final answer accepted');
+    const privateText = await freshRehearsal.locator('#feedback, .managed-note').allTextContents();
+    assert(!privateText.some(text => /сохранённая попытка|сохранён в истории|сохранен в истории/i.test(text)), 'Private copy must not promise durable history');
+    assert.equal(learningSnapshot(f.store), beforeRehearsal, 'A checked final answer in rehearsal creates no pupil record');
     pass('Private teacher rehearsal uses the selected task and real answer/hint/step controls without database attribution');
 
     phase = 'pupil-card lesson creation';
