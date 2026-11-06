@@ -27,7 +27,10 @@ for (const file of ['trainers/spacemath/model.js', 'trainers/spacemath/app.js', 
 run('npm', ['--prefix', 'board-server', 'test']);
 run(process.execPath, ['--test', 'trainers/spacemath/model.test.cjs', 'tools/spacemath/assets.test.cjs',
   'tools/spacemath/cabinet.dom.test.cjs', 'tools/spacemath-public-registry.test.cjs', 'tools/spacemath-public-room.test.cjs',
-  'tools/profile-log-trig-room-selection.test.cjs', 'tools/lesson-workspace-v1/dom.test.cjs']);
+  'tools/profile-log-trig-room-selection.test.cjs', 'tools/lesson-workspace-v1/dom.test.cjs',
+  'tools/learning-ege-base-cards.test.cjs', 'tools/learning-number-theory-plan.dom.cjs',
+  'tools/learning-number-theory-route.dom.cjs', 'tools/vilenkin6-course/lcm-multi.test.cjs']);
+run(process.execPath, ['tools/grade7-geometry-rebuild.integration.cjs']);
 run(process.execPath, ['tools/lesson-workspace-v1/dom.cjs']);
 run(process.execPath, ['tools/lesson-workspace-v1/rehearsal.dom.cjs']);
 for (const [file, folder] of [['editor.browser.cjs', 'editor'], ['public.browser.cjs', 'public'], ['browser.cjs', 'managed']]) {
@@ -36,6 +39,7 @@ for (const [file, folder] of [['editor.browser.cjs', 'editor'], ['public.browser
 run(process.execPath, ['tools/lesson-workspace-v1/browser.cjs'], { LESSON_WORKSPACE_ARTIFACTS: path.join(artifacts, 'lesson-regression') });
 run(process.execPath, ['tools/learning-cabinet.browser.cjs'], { LEARNING_BROWSER_ARTIFACTS: path.join(artifacts, 'cabinet-regression') });
 run(process.execPath, ['tools/learning-course-navigation.browser.cjs'], { LEARNING_BROWSER_ARTIFACTS: path.join(artifacts, 'navigation-regression') });
+run(process.execPath, ['tools/learning-number-theory-route.browser.cjs'], { NUMBER_THEORY_ROUTE_ARTIFACTS: path.join(artifacts, 'number-theory-regression') });
 run(process.execPath, ['tools/board-picker-smoke.cjs']);
 run('git', ['diff', '--check']);
 console.log('SPACEMATH_2D_V1_READY');

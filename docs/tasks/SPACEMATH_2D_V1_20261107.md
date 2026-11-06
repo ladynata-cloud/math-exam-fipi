@@ -17,7 +17,7 @@
 
 Create editable dynamic 2D constructions during a MathExam lesson. Teacher and
 pupil see the same geometry, explicitly transfer control, and reopen the saved
-construction from the lesson or cabinet. The owner chose the name **SpaceMath**;
+construction from the lesson or cabinet. This implementation uses the owner's proposed name **SpaceMath**;
 the explanatory label is **Совместные построения**.
 
 ## Context and evidence
@@ -109,7 +109,7 @@ the explanatory label is **Совместные построения**.
 
 - Main risks: invalid geometric dependencies, event feedback loops, stale saves,
   unintended grade accounting, missing local assets or cramped mobile controls.
-- Rollback: revert the feature commit through the normal review workflow. Keep
+- Rollback: revert the feature commits through the normal review workflow. Keep
   saved `spacemath` rows and events; never delete records to roll back the UI.
   Reopening them requires a compatible v1 model/contract. No schema migration is
   required when using existing attempts; ordinary backups still include models.

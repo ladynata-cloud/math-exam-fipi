@@ -411,6 +411,15 @@ async function checkLayout(page, label, width) {
     pass('A real delayed switch response cannot overwrite a newly selected pupil context');
 
     phase = 'credential and runtime audit';
+    // The delayed response case committed A → B while only the teacher left
+    // the lesson. Both pupil devices must finish their polling-driven frame
+    // replacement before we inspect every live trainer, without skipping one.
+    const auditMaterial = work(bId);
+    for (const page of [sp, late.page]) {
+      const frame = await readyMaterial(page, auditMaterial);
+      const hydrated = await frame.evaluate(() => window.__lessonGateHydrates.at(-1));
+      assert.deepEqual(hydrated.state, auditMaterial.state, 'Final audit inspects the exact current material on both pupil devices');
+    }
     assert(service.trainerRequests.length > 0, 'Real public-origin trainer resources were loaded');
     for (const request of service.trainerRequests) {
       const { referer, ...credentials } = request.headers;

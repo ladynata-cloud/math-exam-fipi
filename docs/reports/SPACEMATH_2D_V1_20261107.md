@@ -72,7 +72,8 @@ checks, including real browsers, succeed. The same gate is registered in
 | Required check | Latest result |
 | --- | --- |
 | Complete board-server Node suite | **419 / 419 PASS**, including seven new real HTTP/SQLite SpaceMath tests and the unchanged historical content hash. |
-| Geometry, asset integrity, cabinet DOM, public-room/registry and focused lesson tests | **38 / 38 PASS**, including 12 geometry kernel tests. |
+| Geometry, asset integrity, cabinet DOM, public-room/registry, lesson and retained academic catalog tests | **67 / 67 PASS**, including 12 geometry kernel tests and 29 added catalog/navigation regressions. |
+| Grade 7 geometry integration | **PASS**: 106 families, 692 retained legacy cases, 62 reshuffle identities and all 626 academic entries plus the exact SpaceMath workspace. |
 | Actual cabinet lesson DOM handlers | **11 / 11 PASS**. |
 | Private rehearsal DOM regressions | **10 / 10 PASS**. |
 | Standalone editor browser | **10 groups PASS**: native clicks, numerical/keyboard input, undo, dependency drag, deletion, JSON roundtrip, local reload, stale-callback protection, bounds, touch and sandboxed forms. |
@@ -81,11 +82,35 @@ checks, including real browsers, succeed. The same gate is registered in
 | Existing lesson workspace browser | **PASS**, including 320/1280 layouts, failed save recovery, stale response fences and two-device state restoration. |
 | Existing cabinet browser | **PASS**, including eight seats, presentation, history, concurrent authored ink, lost acknowledgements, live reset and archive history. |
 | Existing course navigation browser | **PASS**; every educational catalog ID is still checked exactly, with a separate SpaceMath tool entry. |
+| Existing specialized number-theory cabinet browser | **PASS**; the exact two academic cards, previous saved work, profile persistence, peer isolation and 320/390/1440 layouts remain checked with a separate SpaceMath navigation entry. |
 | Existing board picker browser | **PASS**, including URLs, search, recovery, mobile layout and preserved drawings. |
 | Syntax, workflow YAML, vendored checksums and whitespace | **PASS**. |
 
-This is **478 Node/DOM tests** plus the real browser scenarios listed above;
+This is **507 Node/DOM tests**, the grade 7 integration gate, and the real browser scenarios listed above;
 scenario groups are not presented as individual assertion counts.
+
+### CI findings and regression follow-up
+
+The first published head `0aa48ad7dceeb6029235565c547e53a342091f39`
+exposed two additional classes of test failures in GitHub Actions. Five workflow
+failures shared exact academic catalog or specialized navigation expectations
+that had not accounted for the new tool. The follow-up retains the original
+378/382 academic counts and immutable content hash, separately asserts exactly
+one SpaceMath workspace, and preserves every academic group in the 626 + 1
+catalog partition. The specialized menu still has an exact ordered assertion.
+
+The SpaceMath workflow also caught a timing race in the existing lesson browser
+audit: a committed A-to-B switch was still replacing pupil iframes while the
+test enumerated them. The standalone lesson workflow passed on the same merge
+tree `838cdfe02744e7ce21bf31a1a400fde63eb0a7a8`. A mandatory barrier now checks
+material B and its exact state on both pupil devices before the unchanged full
+credential/runtime audit. No detached frame is caught or skipped.
+
+All affected suites are now required by the expanded SpaceMath gate. Independent
+review found no weakened assertion or runtime/permission change in this
+follow-up. The complete expanded gate passed on the virtual composition below.
+The initial failed CI runs remain failed historical evidence; the final PR head
+and GitHub Actions status are reported separately in the PR handoff.
 
 ### Additional legacy probe: existing failure
 
@@ -151,9 +176,10 @@ own Playwright browser. No browser executable is committed or modified.
 
 Earlier system Chromium startup and browser-download attempts failed in the
 local runtime. Available headless Chromium completed the final checks.
-Concurrent diagnostic browser runs also crashed; the complete final gate runs
-browsers sequentially and passed. Failed setup attempts and intermediate
-assertions were not counted as passing checks.
+Concurrent diagnostic browser runs also crashed. Two separate specialized-route
+diagnostic attempts later reported `Target crashed`; the same script then
+completed in the full sequential gate. Failed setup attempts, crashed runs and
+intermediate assertions were not counted as passing checks.
 
 ## Independent review
 
@@ -193,16 +219,18 @@ current production cabinet availability.
 
 During implementation main advanced to
 `e145b7109e6254908120c2b2022cda799aabad5f`: PR #480 changes private-rehearsal
-feedback, its browser regression and task documentation. Its three paths do
-not overlap this task's changes. The task branch is preserved; a read-only
+feedback, its browser regression and task documentation. Its runtime change
+is separate from SpaceMath. The CI follow-up now also touches the shared lesson
+browser test, in a different hunk; main's private-feedback assertions are
+preserved by the clean composition. The task branch is preserved; a read-only
 virtual composition and its gate result are recorded in the final handoff.
 No merge, rebase, reset, force operation or deployment is authorized here.
 
-The read-only virtual composition was **clean**. Its tree
-`3d921df606a84ea6c139ac5a2a9bdc624f6b06bd` combines current main above with the
-validated SpaceMath tree `75796c6ffc0e489399813d9ddf8cf38add4da0af`. The complete
+The final read-only virtual composition was **clean**. Its tree
+`0ede2fef8798247f3025a2d37db0f41cf6f24708` combines current main above with the
+validated SpaceMath tree `7a6d138f99b63a8322a803138f9693f84d7ad44a`. The complete
 `tools/spacemath/gate.cjs` ran again in an isolated detached worktree and emitted
-**SPACEMATH_2D_V1_READY**: the same 478 Node/DOM tests and all browser suites
+**SPACEMATH_2D_V1_READY**: 507 Node/DOM tests, grade 7 integration and all browser suites
 passed, including PR #480's additional private-feedback assertions. Only the
 validation narrative was completed afterward; runtime, tests, assets and
 workflow blobs retain their checked identities. The original task branch has

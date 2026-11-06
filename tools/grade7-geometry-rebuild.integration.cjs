@@ -51,7 +51,13 @@ for(const item of ogeHomeworkItems){
  assert.equal(item.position,null,'OGE homework cannot claim an EGE exam position');
  assert.equal(item.geometryRebuild,undefined,'OGE homework cannot replace school geometry');
 }
-assert.equal(catalog.items.length,221+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size+ogeHomeworkIds.length,'Every catalog entry belongs to an explicitly checked group');
+const constructionWorkspaces=catalog.items.filter(item=>item.workspace||item.trainerId==='spacemath'||item.id==='spacemath:construction');
+assert.deepEqual(constructionWorkspaces,[{
+ id:'spacemath:construction',trainerId:'spacemath',contentId:'construction',contentVersion:1,
+ title:'SpaceMath · Совместные построения',position:null,topicId:'plane',family:'spacemath',workspace:true,
+ url:'/trainers/spacemath/'
+}],'Exactly the approved construction workspace forms its own group, with no academic identity');
+assert.equal(catalog.items.length,221+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size+ogeHomeworkIds.length+constructionWorkspaces.length,'Every catalog entry belongs to an explicitly checked academic or workspace group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

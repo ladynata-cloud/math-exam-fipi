@@ -136,7 +136,9 @@ test('learner home, route and course contain exactly the pair; navigation preser
     assert(f.main.textContent.includes(COMMENT));
     assert.equal(f.main.querySelectorAll('b,img,[onerror]').length, 0, 'comment is text');
     assert.equal(f.main.querySelector('[data-attached-prior-work]'), null);
-    assert.deepEqual([...f.window.document.querySelectorAll('#navigation a')].map(a => a.dataset.nav), ['home', 'assignments', 'history', 'lessons']);
+    // The dedicated construction utility is separate from the two academic cards.
+    assert.deepEqual([...f.window.document.querySelectorAll('#navigation a')].map(a => a.dataset.nav), ['home', 'assignments', 'history', 'spacemath', 'lessons']);
+    assert.equal(f.window.document.querySelector('#navigation [data-nav="spacemath"]').getAttribute('href'), '#spacemath');
     assert.equal(f.window.document.querySelector('.site-link').hidden, true);
     assert.equal(f.profile.course, 'vilenkin6');
     assert.equal(f.retained(), f.before);
@@ -276,7 +278,11 @@ test('ordinary Vilenkin profiles and a refreshed ordinary profile retain courses
   assert.equal(selected.window.document.querySelector('.site-link').hidden, false);
   assert(selected.window.document.querySelector('[data-nav=division-course]'));
   assert.equal(selected.retained(), selected.before);
-  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook' && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length, 382);
+  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook' && item.id !== 'spacemath:construction'
+    && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length, 382);
+  assert.deepEqual(catalog.items.filter(item => item.workspace || item.trainerId === 'spacemath')
+    .map(({ id, trainerId, contentId, contentVersion, workspace, url }) => ({ id, trainerId, contentId, contentVersion, workspace, url })),
+  [{ id: 'spacemath:construction', trainerId: 'spacemath', contentId: 'construction', contentVersion: 1, workspace: true, url: '/trainers/spacemath/' }]);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-textbook').length, textbookCount);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-part1').length, 27);
 });

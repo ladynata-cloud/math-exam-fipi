@@ -242,7 +242,9 @@ async function screenshot(page, filename) {
       assert.equal(await page.locator('#main .prep-focus b').count(), 0, 'Teacher comments remain plain text');
       assert.ok(!(await page.locator('#main').innerText()).includes(MARKER), 'The presentation marker is not a pupil instruction');
       if (student) {
-        assert.deepEqual(await page.locator('#navigation [data-nav]').evaluateAll(nodes => nodes.map(node => node.dataset.nav)), ['home', 'assignments', 'history', 'lessons']);
+        // SpaceMath is a cabinet utility; the exact two academic cards above remain unchanged.
+        assert.deepEqual(await page.locator('#navigation [data-nav]').evaluateAll(nodes => nodes.map(node => node.dataset.nav)), ['home', 'assignments', 'history', 'spacemath', 'lessons']);
+        assert.equal(await page.locator('#navigation [data-nav="spacemath"]').getAttribute('href'), '#spacemath');
         assert.equal(await page.locator('.site-link').isVisible(), false);
         assert.equal(await page.locator('[data-plan-course-board]').count(), 0, 'The pupil uses the existing teacher room link');
       }

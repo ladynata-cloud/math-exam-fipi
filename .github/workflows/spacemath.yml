@@ -16,6 +16,11 @@ on:
       - 'tools/lesson-workspace-v1/**'
       - 'tools/learning-cabinet.browser.cjs'
       - 'tools/learning-course-navigation.browser.cjs'
+      - 'tools/learning-ege-base-cards.test.cjs'
+      - 'tools/learning-number-theory-plan.dom.cjs'
+      - 'tools/learning-number-theory-route.*.cjs'
+      - 'tools/vilenkin6-course/lcm-multi.test.cjs'
+      - 'tools/grade7-geometry-rebuild.integration.cjs'
       - 'Dockerfile'
       - '.github/workflows/spacemath.yml'
   workflow_dispatch:
