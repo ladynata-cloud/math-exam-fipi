@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "6d52ba11d11f8bd61da42538fd3ca067aed52f69",
+  "baseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2088,8 +2088,8 @@
       "placement": "before-head-close"
     },
     "rounding.html": {
-      "beforeSha256": "61c41286c8012d58e1e44e7a447639cf3b9746112a0b5be180bb1bbb674402f6",
-      "afterSha256": "a4eff7f089f0017c3062936bf0082818bb6fa476088b149be2ac643507380a7c",
+      "beforeSha256": "d90970ab78622f77c8c30090217ddeec6af5dff2f8570f44415fba95971e410c",
+      "afterSha256": "bb09145eb77606919f1fdce57a27bb0210b546cf4c7f6f295742bdcefc20affd",
       "placement": "before-head-close"
     },
     "school/alimov10-11/index.html": {
@@ -3869,6 +3869,15 @@
       "sourceBaseSha": "6d52ba11d11f8bd61da42538fd3ca067aed52f69",
       "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6d52ba11d11f8bd61da42538fd3ca067aed52f69",
+      "sourceBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+      "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
+      "changedPaths": [
+        "rounding.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
