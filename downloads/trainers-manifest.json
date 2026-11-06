@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-11-05",
+  "updated": "2026-11-06",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -106,7 +106,10 @@
       "public": true,
       "downloadHtml": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise.html",
       "prompt": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-deepseek-prompt.md",
-      "package": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-package.zip"
+      "package": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-package.zip",
+      "inlineAssets": [
+        "/ege-baza/return-to-course.js"
+      ]
     },
     {
       "slug": "linear-systems-trainer",
