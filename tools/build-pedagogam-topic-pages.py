@@ -71,7 +71,6 @@ def render(c, p, all_content):
     trainers = ''.join(f'<li><a href="{esc(t["url"], quote=True)}">{esc(t["label"])}</a><p>{esc(t["reason"])}</p></li>' for t in c['trainers'])
     mistakes = ''.join(f'<li><strong>{esc(m["error"])}</strong><p>{esc(m["remedy"])}</p></li>' for m in c['mistakes'])
     books = [b for b in p['books'] if c['grade'] in p.get('book_grades', {}).get(b, [c['grade']])]
-    refs = [r['sections'] for r in p['source_refs'] if r['path'] != 'tools/teacher-textbook-coverage.json']
     related = c.get('related_material')
     related_html = (f'<aside class="note"><h3>Ещё один формат по этой теме</h3><p><a href="{esc(related["url"], quote=True)}">{esc(related["label"])}</a>. {esc(related["reason"])}</p></aside>' if related else '')
     near = sorted((x for x in all_content if x['id'] != c['id']), key=lambda x: abs(x['grade'] - c['grade']))[:3]
@@ -99,7 +98,8 @@ def render(c, p, all_content):
 <section class="section"><h2>Что проверяет работа</h2><p>{esc(c['intro'])}</p>{bullets(c['skills'])}
 <h3>Что нужно знать перед проверкой</h3>{bullets(c['prerequisites'])}</section>
 <section class="section"><h2>Место в школьной программе</h2><p>{esc(c['curriculum'])}</p>
-<details><summary>Учебники и границы соответствия</summary>{bullets(books)}{bullets(refs)}
+<details><summary>Учебники и границы соответствия</summary>{bullets(books)}
+<p><a data-numbering-return href="/pedagogam/raboty/?grade={c['grade']}#{p['id']}">Выберите учебник в каталоге</a>, чтобы увидеть подтверждённые темы и разделы именно этого издания.</p>
 <p>Темы сверены по указанным учебникам. Это авторские работы MathExam, а не копии упражнений издательства. Порядок изучения и объём темы у разных авторов различаются; комплект проверяет навыки, перечисленные выше.</p></details></section>
 <section class="section"><h2>Посмотрите задания перед скачиванием</h2><p>Первые два задания самостоятельной, вариант 1. Полная работа с местом для решения — в PDF.</p><ol class="examples">{previews}</ol></section>
 <section class="section"><h2>Как провести и проверить</h2><ol>{''.join('<li>' + esc(x) + '</li>' for x in c['lesson_plan'])}</ol>

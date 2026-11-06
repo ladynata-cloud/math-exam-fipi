@@ -323,7 +323,6 @@ def page_html(packs):
     cards = []
     for p in packs:
         base = '/pedagogam/raboty/' + p['id'] + '/'
-        refs = '; '.join(r['sections'] for r in p['source_refs'])
         word = word_packs.get(p['id'])
         search = esc(' '.join([p['title'], p['grade'], p['subject'], *p['books'],
                               *([word['title'], 'Word DOCX'] if word else [])]), quote=True)
@@ -358,7 +357,8 @@ def page_html(packs):
                      f'<h2>{esc(p["title"])}</h2>{topic_link}'
                      f'<details class="books"><summary>Учебники: {len(p["books"])}</summary><ul>'+''.join(f'<li>{esc(b)}</li>' for b in p['books'])+'</ul></details>'
                      f'<div class="numbering-reference" hidden></div>{links}<details><summary>Темы учебника и оценивание</summary>'
-                     f'<p>{esc(p["scope_note"])}</p><p>{esc(refs)}</p><p>Самостоятельная: 4 задания, 6 баллов, около {p["sr_minutes"]} минут. '
+                     f'<p>{esc(p["scope_note"])}</p><p>Выберите учебник в фильтре: над работами появятся подтверждённые темы и разделы именно этого издания.</p>'
+                     f'<p>Самостоятельная: 4 задания, 6 баллов, около {p["sr_minutes"]} минут. '
                      f'Контрольная: 5 заданий, 10 баллов, около {p["kr_minutes"]} минут. '
                      'Четыре варианта одинаковы по структуре и баллам. '
                      'Критерии приведены в файлах с ответами; преподаватель может изменить время и шкалу отметок.</p>'

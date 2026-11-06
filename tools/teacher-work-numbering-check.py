@@ -6,9 +6,11 @@ examples. They also mutate input order and corrupt the proposed numbering to
 verify that the build fails closed instead of assigning accidental new serials.
 """
 import copy
+from html.parser import HTMLParser
 import importlib.util
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -148,14 +150,68 @@ class NumberingChecks(unittest.TestCase):
         self.assertEqual(refs, ["school/vilenkin5-lessons.js"])
         ty7 = self.scope("Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 7–9 классы. 2011", 8)
         reference = ty7["references"]["prob-permutations:sr"]
-        self.assertIn("Источник 113:", reference)
-        self.assertNotIn("Источник 114:", reference)
+        self.assertIn("пункты 40–41", reference)
+        self.assertNotIn("§ 15", reference)
+        ty10 = self.scope("Тюрин, Макаров, Высоцкий, Ященко. Теория вероятностей и статистика. 10–11 классы. 2014", 10)
+        self.assertEqual(ty10["references"]["prob-permutations:sr"], "§ 15. Число перестановок. Факториал")
         title = "Алгебра 8 класс - Мерзляк А.Г., Полонский В.Б., Якир М.С. (2022)"
         scope = self.scope(title, 8)
         for reference in scope["references"].values():
             self.assertIn("Оглавление этого издания:", reference)
             self.assertNotIn("Макарычев", reference)
             self.assertNotIn("Мордкович", reference)
+
+    def test_peterson_references_use_verified_titles_and_printed_pages(self):
+        p5 = self.scope("Дорофеев — Петерсон. Математика. 5 класс. Части 1–2. 2019", 5)
+        self.assertEqual(p5["references"]["arith-fraction-add-subtract:sr"],
+                         "Часть 2: «Сложение и вычитание дробей» (с. 40); "
+                         "«Сложение и вычитание смешанных чисел» (с. 49)")
+        self.assertEqual(p5["referenceSources"]["arith-fraction-add-subtract:sr"],
+                         ["school/peterson5/source-part2.json"])
+        gcd = p5["references"]["arith-gcd-lcm:sr"]
+        self.assertIn("«Наибольший общий делитель. Взаимно простые числа» (с. 133)", gcd)
+        self.assertIn("«Наименьшее общее кратное» (с. 139)", gcd)
+        p6 = self.scope("Дорофеев — Петерсон. Математика. 6 класс. Часть 1. 2019", 6)
+        self.assertEqual(p6["references"]["arith-percent:sr"],
+                         "Часть 1: «Понятие о проценте» (с. 74–82); «Задачи на проценты» (с. 83–97)")
+
+    def test_public_references_and_page_text_have_no_authoring_codes(self):
+        forbidden = re.compile(
+            r"\b(?:p[12]-[a-z0-9-]+|(?:[a-z]{2,}[a-z0-9]*-)+[a-z][a-z0-9-]*|"
+            r"negation|variables|quantifiers|river|mean)\b|"
+            r"\b(?:geometry-course|school|tools)/|\bpoint\s+\d|\bИсточник\s+(?:113|114):"
+        )
+        for scope in self.data["collections"]:
+            for work_id, reference in scope["references"].items():
+                self.assertIsNone(forbidden.search(reference), (scope["id"], work_id, reference))
+
+        class VisibleText(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.skip = 0
+                self.parts = []
+            def handle_starttag(self, tag, attrs):
+                if tag in ("script", "style"):
+                    self.skip += 1
+            def handle_endtag(self, tag):
+                if tag in ("script", "style"):
+                    self.skip -= 1
+            def handle_data(self, text):
+                if not self.skip:
+                    self.parts.append(text)
+
+        pages = [ROOT / "pedagogam/raboty/index.html"]
+        for part in ("lower", "upper"):
+            pages.extend(ROOT / "pedagogam/raboty" / item["id"] / "index.html"
+                         for item in read(f"tools/teacher-topic-content-{part}.json"))
+        for page in pages:
+            parser = VisibleText()
+            parser.feed(page.read_text(encoding="utf-8"))
+            self.assertIsNone(forbidden.search(" ".join(parser.parts)), page.name)
+
+    def test_unknown_readable_source_topic_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "Unknown readable textbook reference"):
+            builder._public_reference_text({"path": "school/peterson5/source-part2.json", "sections": "p2-unknown"})
 
     def test_input_order_does_not_change_numbers(self):
         bank, word, coverage = copy.deepcopy((self.bank, self.word, self.coverage))

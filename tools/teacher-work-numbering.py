@@ -87,7 +87,61 @@ def _safe_download(path):
     return PREFIX + path
 
 
-def _source_reference(pack, book, coverage_by_title):
+def _public_reference_text(reference, *, root=ROOT):
+    """Render checked source labels without exposing internal topic identifiers."""
+    path, sections = reference["path"], reference["sections"]
+    peterson_sources = {
+        "school/peterson5/source-part1.json": (1, "page", None),
+        "school/peterson5/source-part2.json": (2, "page", None),
+        "school/peterson6/source-map.json": (1, "startPage", "endPage"),
+    }
+    if path in peterson_sources:
+        part, start_field, end_field = peterson_sources[path]
+        topics = {topic["id"]: topic for topic in read_json(Path(root) / path)["topics"]}
+        labels = []
+        for item in sections.split(";"):
+            # These verified bank notes contain IDs, optionally followed by a
+            # short quoted topic title. Do not infer publisher paragraph numbers
+            # from an ID, or silently discard any new prerequisite prose.
+            match = re.fullmatch(r'([a-z][a-z0-9-]*)(?:\s+«.*»)?', item.strip())
+            if not match or match.group(1) not in topics:
+                raise ValueError(f"Unknown readable textbook reference in {path}: {item!r}")
+            topic = topics[match.group(1)]
+            start = topic[start_field]
+            end = topic[end_field] if end_field else start
+            if type(start) is not int or type(end) is not int or not 0 < start <= end:
+                raise ValueError(f"Invalid verified textbook pages in {path}: {topic['id']}")
+            pages = str(start) if start == end else f"{start}–{end}"
+            title = topic["title"].strip("«»")
+            labels.append(f"«{title}» (с. {pages})")
+        return f"Часть {part}: " + "; ".join(dict.fromkeys(labels))
+
+    # These lesson files already name the checked textbook points. Expand only
+    # the learning-goal labels seen in those sources, retaining their numbers.
+    readable_lessons = {
+        ("school/vilenkin5-lessons.js", "point 3: segment-length; broken-length; length-units"):
+            "Пункт 3: измерение отрезков, длина ломаной и единицы длины",
+        ("school/vilenkin5-lessons.js", "point 20: formula-distance"):
+            "Пункт 20: путь, скорость и время",
+        ("school/vilenkin5-lessons.js", "Пункты 50–51: angle-kind; angle-build; angle-sum"):
+            "Пункты 50–51: виды углов, построение угла и сумма его частей",
+        ("school/vilenkin6-lessons.js", "point 3: pie-read; pie-angle; pie-build"):
+            "Пункт 3: чтение и построение круговых диаграмм, доли и углы секторов",
+        ("school/makarychev9-lessons.js", "Пункт 17, interval-rational: метод интервалов для дробного неравенства"):
+            "Пункт 17: метод интервалов для дробного неравенства",
+    }
+    if (path, sections) in readable_lessons:
+        return readable_lessons[path, sections]
+    if path == "geometry-course/textbook/source-inventory.json":
+        sections = re.sub(r"(?:;\s*|\.\s*)[Уу]точнено по geometry-course/data/course\.json\.?", "", sections)
+    if path == "school/textbooks.js":
+        # The prefix is an authoring inventory key, used for edition selection
+        # above. It is not a textbook paragraph or work number.
+        sections = re.sub(r"^Источник (?:113|114):\s*", "", sections)
+    return sections
+
+
+def _source_reference(pack, book, coverage_by_title, *, root=ROOT):
     """Pick only evidence belonging to the selected edition, never a neighbour."""
     direct = [r for r in pack["source_refs"]
               if r["path"] != "tools/teacher-textbook-coverage.json"
@@ -95,7 +149,7 @@ def _source_reference(pack, book, coverage_by_title):
               and (not book.get("referencePrefix")
                    or r["sections"].startswith(book["referencePrefix"]))]
     if direct:
-        text = "; ".join(dict.fromkeys(r["sections"] for r in direct))
+        text = "; ".join(dict.fromkeys(_public_reference_text(r, root=root) for r in direct))
         paths = list(dict.fromkeys(_safe_relative(r["path"]) for r in direct))
         return text, paths
 
@@ -248,7 +302,7 @@ def build_registry(*, bank=None, word=None, coverage=None, order=None, root=ROOT
                 work = works[wid]
                 source_pack = packs[work["bankId"]]
                 if book:
-                    text, paths = _source_reference(source_pack, book, coverage_by_title)
+                    text, paths = _source_reference(source_pack, book, coverage_by_title, root=root)
                     if work["format"] == "docx":
                         text = "Отдельная самостоятельная работа Word по этой теме. " + text
                 else:

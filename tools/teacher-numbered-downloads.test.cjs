@@ -98,6 +98,7 @@ async function equivalentDocx(page, sourcePath, numbered) {
     const source = await before.file('word/document.xml').async('string');
     const target = await after.file('word/document.xml').async('string');
     if (normalize(source) !== normalize(target)) return { error: 'body changed outside subtitle' };
+    const sourceParsed = new DOMParser().parseFromString(source, 'application/xml');
     const parsed = new DOMParser().parseFromString(target, 'application/xml');
     const subtitleTexts = [...parsed.getElementsByTagNameNS(W, 'p')].filter(p => {
       const style = p.getElementsByTagNameNS(W, 'pStyle')[0];
@@ -105,6 +106,8 @@ async function equivalentDocx(page, sourcePath, numbered) {
     }).map(p => p.textContent);
     const footer = new DOMParser().parseFromString(await after.file('word/footer1.xml').async('string'), 'application/xml');
     return { subtitleTexts, footer: footer.documentElement.textContent,
+      sourceEquations: sourceParsed.getElementsByTagNameNS('http://schemas.openxmlformats.org/officeDocument/2006/math', 'oMath').length,
+      sourceDiagrams: sourceParsed.getElementsByTagNameNS('urn:schemas-microsoft-com:vml', 'group').length,
       equations: parsed.getElementsByTagNameNS('http://schemas.openxmlformats.org/officeDocument/2006/math', 'oMath').length,
       diagrams: parsed.getElementsByTagNameNS('urn:schemas-microsoft-com:vml', 'group').length };
   }, { original: fs.readFileSync(sourcePath).toString('base64'), changed: numbered.toString('base64') });
@@ -202,9 +205,13 @@ async function main() {
         assert.equal(equal.subtitleTexts.length, 4);
         assert(equal.subtitleTexts.every(value => value.includes('№ 20')));
         assert(equal.footer.includes(contexts[0].grade + ' класс: № 20'));
-        if (role === 'teacher') assert(equal.subtitleTexts.every(value => value.includes('Ответы и решения')));
-        if (pack.id === 'lineynye-grafiki-oge') assert.equal(equal.diagrams, 4);
-        assert(equal.equations > 0, 'editable equations must remain present');
+        if (role === 'teacher') { assert(equal.subtitleTexts.every(value => value.includes('Ответы и решения'))); checks++; }
+        if (pack.id === 'lineynye-grafiki-oge') { assert.equal(equal.diagrams, 4); checks++; }
+        // The original triangle student sheet uses ordinary text, with no
+        // native equation objects. Every export must preserve its source's
+        // exact object counts, including zero, as well as the full body above.
+        assert.equal(equal.equations, equal.sourceEquations, `${pack.id}/${role}: native equation count changed`);
+        assert.equal(equal.diagrams, equal.sourceDiagrams, `${pack.id}/${role}: editable diagram count changed`);
         checks += 6;
       }
     }

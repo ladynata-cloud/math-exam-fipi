@@ -134,7 +134,7 @@ visible in the catalog, downloaded assignments, answers and archives.
 - Actual base SHA: 25548b86df75b8c90a5dc5c6f1f1925c2ad70636
 - Actual head SHA: pending
 - PR: pending
-- Tests passed: 113 collection/2227 assignment DOM check; 18 registry
+- Tests passed: 113 collection/2227 assignment DOM check; 21 registry
   regressions; existing 580 PDF / 2320 page checks and 792 independent displayed
   answer checks; 1413 Word checks; deterministic catalog and JS/Python syntax.
 - Tests failed: no code failure remaining at this checkpoint. Local Chromium
@@ -147,6 +147,12 @@ visible in the catalog, downloaded assignments, answers and archives.
   historical guard, checked against the exact PR base in CI. Numbered export
   controls remain disabled until successful initialization, so a missing script
   cannot silently download an unnumbered source file.
+- The first cloud browser run exposed an invalid test assumption that every
+  source DOCX contains native equation objects. The triangle student source and
+  actual browser export both contain zero; the corrected test compares exact
+  source/export equation and drawing counts and retains full-body equivalence.
+  Displayed source notes now use checked textbook titles/parts/pages instead of
+  internal topic IDs; all 2227 numbers and evidence paths remain unchanged.
 - Tests not run: external audit; real classroom trial
 - Scope deviations: none
 
