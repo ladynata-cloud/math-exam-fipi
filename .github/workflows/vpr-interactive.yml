@@ -1,0 +1,74 @@
+name: VPR 2027 — courses, cabinets and shared board
+on:
+  pull_request:
+    paths:
+      - 'trainers/vpr-math/**'
+      - 'vpr/**'
+      - 'learning/course-program.js'
+      - 'learning/index.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'tools/vpr-*'
+      - '.github/workflows/vpr-interactive.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/vpr-math/**'
+      - 'vpr/**'
+      - 'learning/course-program.js'
+      - 'learning/index.html'
+      - 'trainers/board-bridge.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'tools/vpr-*'
+      - '.github/workflows/vpr-interactive.yml'
+permissions:
+  contents: read
+jobs:
+  mathematics-and-shared-journeys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install locked server and pinned test dependencies
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/vpr-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/vpr-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Reviewed bank, coverage, parser and learner journeys
+        run: |
+          python3 trainers/vpr-math/build.py --check
+          python3 trainers/vpr-math/content-gate.py
+          node --check trainers/vpr-math/app.js
+          node --check trainers/vpr-math/board.js
+          node --check trainers/vpr-math/board-mode.js
+          node --test trainers/vpr-math/*.test.cjs
+      - name: Cabinet, registry and previous shared-course regressions
+        run: |
+          node --test tools/vpr-*.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js board-server/test/learning-onboarding.test.js
+          node --test tools/profile-log-trig-room-selection.test.cjs tools/profile-log-trig-picker.test.cjs tools/board-room-error.test.cjs
+          python3 tools/build-sitemap.py --check
+          git diff --check
+      - name: Install pinned real browser
+        run: '"$RUNNER_TEMP/vpr-qa/node_modules/.bin/playwright" install --with-deps chromium'
+      - name: Two real participants, shared drawings, reconnect and mobile screens
+        env:
+          VPR_SCREENSHOT_DIR: ${{ runner.temp }}/vpr-screenshots
+        run: node trainers/vpr-math/browser.cjs
+      - name: Preserve actual viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: vpr-course-and-board-screenshots
+          path: ${{ runner.temp }}/vpr-screenshots
+          if-no-files-found: ignore
+          retention-days: 14
