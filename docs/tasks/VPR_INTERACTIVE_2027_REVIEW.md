@@ -1,6 +1,103 @@
 # VPR interactive courses — independent review record
 
-## Identity and current verdict
+## Shared-work follow-up — 7 November 2026
+
+The owner requested safe completion of PR #477 after the first release check
+identified an untested return-to-task scenario. The original app/adapter blob
+approvals below are historical; they do not approve the changed shared-history
+or control-transfer implementation. The final candidate's exact head, independent
+follow-up review and CI are recorded in the PR handoff.
+
+Two defects were reproduced against the original runtime at
+`8d1a3269460b18bd1529b6caee52add92b0d6813`: previous task attempts disappeared
+when a new controller returned to them, and a same-turn edit followed by control
+transfer could lose the edit during the SDK debounce window.
+
+The follow-up keeps the complete bounded room history of meaningful attempts,
+with separate learn/solo keys and the same semantic validation as the current
+task. Home/route snapshots carry that history too. Reconnection replaces the
+room archive authoritatively; it never merges private progress or an old local
+attempt. Untouched blanks are omitted, while accepted work is never evicted.
+An oversized edit restores the previous accepted view, attempt archive, panels
+and feedback and displays an explicit local warning. The existing 64 KiB and
+depth limits remain unchanged.
+
+The host's VPR-specific voluntary handoff uses the existing SDK state request,
+validates the active origin, sender, bridge instance, frame generation, registry
+metadata and controller, and sends state before the control message on the same
+socket. The independent review and final browser evidence cover this path;
+forced remote revocation and unsent offline work are not represented as protected
+persistence. Room state remains ephemeral across server restart or selection of
+a different trainer in the host catalogue.
+
+### Follow-up verification recorded before final CI
+
+- The new roundtrip regression fails the exact original app/adapter and passes
+  the modified implementation. It checks answers, partial drafts, hints, shown
+  steps, notes, graph points, return from home, reconnect with storage blocked,
+  separate modes and control in both directions.
+- The current board suite has 11 passing tests, including strict archive
+  validation and atomic size-limit rejection. The mathematical core/plot suite
+  has 46 passes; all 15 personal learner journeys pass, including completion of
+  all 492 learning and independent tasks and all 1284 learning steps.
+- All 99 catalogue/registry/onboarding/prior-course integration tests pass.
+  The real HTTP API test creates each of the seven VPR programmes in temporary
+  SQLite, logs the synthetic pupil back in, checks grade/route and preserves
+  existing synthetic accounts, completed work, homework and learning plans.
+- The new native browser regression edits and voluntarily transfers control in
+  the same browser turn. It revisits earlier hinted, graph and tuple tasks after
+  both participant reloads and compares freehand ink exactly across switches.
+- Native Chromium execution is unavailable locally: the pinned binary is absent,
+  and the installed system browser is denied an OS socket. No bypass was used.
+  Successful JSDOM checks do not substitute for the required final CI browser run.
+- Canonical bank identity, deterministic build, all 1105 numerical comparisons,
+  118 category mappings and sitemap checks pass. No mathematical content changed.
+
+### Independent follow-up review and final local gate
+
+Internal reviewer `state_review`, separate from the app/adapter implementer,
+reviewed the shared history, semantic validation, privacy and atomic capacity
+guard with no blocking finding. Internal reviewer `release_audit`, separate from
+the host implementer, reviewed the voluntary handoff and its failure paths with
+no remaining blocker. Both reviews were completed on 7 November 2026
+(Asia/Novosibirsk). They are internal technical reviews, not provider verdicts.
+
+The host review reproduced and closed a controller-return race by binding the
+handoff to `controlVersion`. Editing remains locked between the state flush and
+actual control acknowledgement. A post-send timeout requests current room state
+without reopening input under stale ownership; tests cover rejected requests,
+stale responses, replacement rooms and disconnect cleanup.
+
+| Independently reviewed file | Git blob ID |
+| --- | --- |
+| `trainers/vpr-math/app.js` | `0224cd9891a566a336d602fbb306ff81d0f4a606` |
+| `trainers/vpr-math/board.js` | `2398b1a6df4f73271cf66a642873d6b2cf3a12d4` |
+| `trainers/trainer-board.html` | `ff7e0953a284b923bafcd40b7cfc812f68b61d1d` |
+| `tools/vpr-control-transfer.test.cjs` | `f0b2d18b2741fa428e4823868fc2c5ccfe3cfc84` |
+| `trainers/vpr-math/README.md` | `497e476738675d25814735c5a3d171f56b02a6a4` |
+
+The executing agent then reran the combined final local gate:
+
+```sh
+node --test trainers/vpr-math/*.test.cjs tools/vpr-*.test.cjs \
+  board-server/test/trainer-registry.test.js \
+  board-server/test/server-registry.integration.test.js \
+  board-server/test/learning-onboarding.test.js \
+  tools/profile-log-trig-room-selection.test.cjs \
+  tools/profile-log-trig-picker.test.cjs tools/board-room-error.test.cjs
+```
+
+Result: **182 passed, 0 failed, 0 skipped**. This comprises 72 course/state/plot
+and learner-journey tests, 11 new handoff tests, and 99 catalogue/server/previous
+course regressions. The independent host reviewer separately ran 51 applicable
+handoff and prior-course regressions, all passing. Source syntax and whitespace
+checks passed. Native browser and complete final-head CI remain separate gates;
+the PR handoff records their actual outcomes rather than inferring a pass here.
+
+External provider review was not performed and is not claimed. Publication and
+live synthetic VPR acceptance remain pending explicit owner release authorization.
+
+## Initial review — historical evidence
 
 - Task: `VPR_INTERACTIVE_COURSES_2027`.
 - Review level: `HIGH`.

@@ -2,7 +2,7 @@
   'use strict';
   const MAX_BYTES = 64 * 1024;
   const FORBIDDEN = new Set(['__proto__', 'prototype', 'constructor']);
-  const STATE_KEYS = ['version', 'view', 'attempt', 'feedback', 'panels'];
+  const STATE_KEYS = ['version', 'view', 'attempt', 'history', 'feedback', 'panels'];
   const ATTEMPT_KEYS = ['taskId', 'mode', 'answers', 'solved', 'mistakes', 'hints', 'shown', 'notes', 'updated', 'plotPoints'];
   const PANEL_KEYS = ['theory', 'notes', 'plot', 'mobileLessons'];
   const clone = value => JSON.parse(JSON.stringify(value));
@@ -51,11 +51,40 @@
     const routes = new Map(data.routes.map(route => [route.id, route]));
     const lessons = new Map(data.lessons.map(lesson => [lesson.id, lesson]));
     const tasks = new Map(data.lessons.flatMap(lesson => lesson.tasks.map(task => [task.id, { lesson, task }])));
+    function validAttempt(attempt) {
+      const task = tasks.get(attempt?.taskId)?.task, mode = attempt?.mode;
+      if (!task || !['learn', 'solo'].includes(mode) || !exact(attempt, ATTEMPT_KEYS) ||
+          !core.validate(attempt, task, mode) || !Number.isSafeInteger(attempt.updated)) return false;
+      const current = core.stage(attempt, task), done = core.done(attempt, task);
+      for (let i = 0; i < task.steps.length; i++) {
+        const answer = attempt.answers[i], step = task.steps[i];
+        if (step.answer.kind === 'choice') {
+          if (answer !== '' && (!Number.isInteger(answer) || answer < 0 || answer >= step.options.length)) return false;
+        } else if (typeof answer !== 'string') return false;
+        if (attempt.hints[i] && attempt.mistakes[i] < 2) return false;
+        if (attempt.shown[i] && (!attempt.solved[i] || !attempt.hints[i])) return false;
+        // Archived work has the same semantic and privacy boundaries as the
+        // selected task. A hidden future answer cannot hide in room history.
+        const hidden = mode === 'solo' && !task.assessAllSteps && i < task.steps.length - 1;
+        const future = !done && i > current;
+        if ((hidden || future) && (answer !== '' || attempt.solved[i] || attempt.mistakes[i] || attempt.hints[i] || attempt.shown[i])) return false;
+      }
+      return Array.isArray(attempt.plotPoints) &&
+        (task.plot ? plot.validPoints(attempt.plotPoints, task.plot) : attempt.plotPoints.length === 0);
+    }
     return function validateState(state) {
       try {
         if (!safeJSON(state) || !exact(state, STATE_KEYS) || state.version !== 1 || bytes(state) > MAX_BYTES) return false;
         const view = state.view, panels = state.panels;
         if (!exact(panels, PANEL_KEYS) || PANEL_KEYS.some(key => typeof panels[key] !== 'boolean')) return false;
+        if (!Array.isArray(state.history) || state.history.length > tasks.size * 2) return false;
+        const keys = new Set();
+        for (const attempt of state.history) {
+          if (!validAttempt(attempt)) return false;
+          const key = attempt.mode + ':' + attempt.taskId;
+          if (keys.has(key)) return false;
+          keys.add(key);
+        }
         if (view?.view === 'home') {
           return exact(view, ['view']) && state.attempt === null && state.feedback === null && !PANEL_KEYS.some(key => panels[key]);
         }
@@ -69,22 +98,9 @@
         if (!lesson || !entry || entry.lesson !== lesson || !lesson.routes.includes(view.route) ||
             (route.lessonIds && !route.lessonIds.includes(view.lesson))) return false;
         const task = entry.task, attempt = state.attempt;
-        if (!exact(attempt, ATTEMPT_KEYS) || !core.validate(attempt, task, view.mode) || !Number.isSafeInteger(attempt.updated)) return false;
+        if (!validAttempt(attempt) || attempt.taskId !== view.task || attempt.mode !== view.mode ||
+            keys.has(attempt.mode + ':' + attempt.taskId)) return false;
         const current = core.stage(attempt, task), done = core.done(attempt, task);
-        for (let i = 0; i < task.steps.length; i++) {
-          const answer = attempt.answers[i], step = task.steps[i];
-          if (step.answer.kind === 'choice') {
-            if (answer !== '' && (!Number.isInteger(answer) || answer < 0 || answer >= step.options.length)) return false;
-          } else if (typeof answer !== 'string') return false;
-          if (attempt.hints[i] && attempt.mistakes[i] < 2) return false;
-          if (attempt.shown[i] && (!attempt.solved[i] || !attempt.hints[i])) return false;
-          // Future steps and the hidden intermediate answers in final-answer
-          // practice cannot carry hidden work from another mode or task.
-          const hidden = view.mode === 'solo' && !task.assessAllSteps && i < task.steps.length - 1;
-          const future = !done && i > current;
-          if ((hidden || future) && (answer !== '' || attempt.solved[i] || attempt.mistakes[i] || attempt.hints[i] || attempt.shown[i])) return false;
-        }
-        if (!Array.isArray(attempt.plotPoints) || (task.plot ? !plot.validPoints(attempt.plotPoints, task.plot) : attempt.plotPoints.length !== 0)) return false;
         if (view.mode === 'solo' && (panels.theory || panels.plot)) return false;
         if (!task.plot && panels.plot) return false;
         if (state.feedback !== null) {

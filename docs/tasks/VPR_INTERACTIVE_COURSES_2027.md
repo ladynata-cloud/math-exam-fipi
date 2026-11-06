@@ -70,6 +70,8 @@
 - [ ] Кривые строятся по выбранным точкам; проверены неверные точки, совпадающие абсциссы, очистка и ввод с клавиатуры.
 - [ ] Ручная визуальная проверка 320×900, 390×844 и 1280×900: читаемость, отсутствие горизонтального скролла, удобные элементы, условие и нужный рисунок в первом экране.
 - [ ] Две синтетические роли преподаватель/ученик: выбор задачи, ответы в обе стороны после передачи управления, рисунок/подсказки, переподключение, восстановление выбранной задачи.
+- [ ] Работа по прежним задачам возвращается после смены задачи, режима, маршрута, управления и перезагрузки в действующей комнате; общие ответы и записи не смешиваются с личными.
+- [ ] Добровольная передача управления отправляет последний ввод до смены ведущего. Превышение прежнего лимита снимка отклоняет новое изменение целиком и сохраняет ранее принятую работу без вытеснения задач.
 - [ ] Применимые repository gates и CI успешны на фактическом head.
 - [ ] Draft PR содержит точные base/head, изменения, результаты, ограничения и откат.
 
@@ -106,6 +108,26 @@
 - Merge / auto-merge / deployment: **не разрешены присланными в текущем сообщении правилами без отдельного явного разрешения владельца**.
 - Присланная владельцем версия `AGENTS.md` имеет приоритет над отличающейся редакцией документов репозитория. Само чтение постоянного разрешения в репозитории не расширяет текущие более узкие границы.
 - Скопированные маркеры в этом документе не являются START, внешней рецензией или разрешением слияния.
+
+## Follow-up requested before release — 7 November 2026
+
+The owner asked to finish the prepared courses safely and then approved carrying
+out the necessary fixes. This continues PR #477 on its existing task branch;
+it does not create a separate task or change the explicit merge boundary.
+
+The original snapshot retained only the current attempt. A regression against
+head `8d1a3269460b18bd1529b6caee52add92b0d6813` reproduced loss of an earlier
+attempt after changing task and transferring control. A second reproduction
+lost an answer when control changed before the SDK's 40 ms notification.
+
+The follow-up adds a validated, bounded shared attempt history and a VPR-only
+flush before voluntary handoff using the existing SDK request/response messages.
+The server protocol, snapshot size limit, personal storage key, mathematical
+bank and real pupil records remain unchanged. Atomic overflow rejection retains
+the prior complete state. Other-trainer switching, server restart and unsent
+input during connection loss or forced remote revocation remain explicit boundaries, not new
+persistence guarantees. Final code review, exact source blobs, applicable gates
+and native browser results are recorded in the review record and PR handoff.
 
 ## Content provenance
 

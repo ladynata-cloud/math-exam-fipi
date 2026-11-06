@@ -29,7 +29,7 @@ let server;
 
 function blank(lesson = Data.lessons[0], task = lesson.tasks[0], mode = 'learn', route = lesson.routes[0]) {
   return { version: 1, view: { view: 'lesson', route, lesson: lesson.id, task: task.id, mode },
-    attempt: { ...Core.blank(task, mode), plotPoints: [] }, feedback: null, panels: panels() };
+    attempt: { ...Core.blank(task, mode), plotPoints: [] }, history: [], feedback: null, panels: panels() };
 }
 
 async function until(predicate, message, timeout = 4000) {
@@ -201,7 +201,8 @@ function visible(f) {
   return { condition: q('.task-prompt')?.textContent, current: q('.step.current h3')?.textContent,
     answers: [...f.w.document.querySelectorAll('[data-answer]')].map(el => el.value),
     checked: [...f.w.document.querySelectorAll('[role=radio][aria-checked=true]')].map(el => el.textContent),
-    notes: q('#task-notes')?.value, feedback: [...f.w.document.querySelectorAll('.feedback')].map(el => el.textContent),
+    // Capacity alerts describe a rejected local edit; mathematical feedback is shared.
+    notes: q('#task-notes')?.value, feedback: [...f.w.document.querySelectorAll('.feedback:not(#board-save-warning)')].map(el => el.textContent),
     graph: q('#interactive-plot')?.outerHTML, panels: f.state().panels };
 }
 
@@ -235,7 +236,7 @@ test('all published routes and task modes have a valid isolated initial snapshot
     const lesson = Data.lessons.find(item => item.id === lessonId);
     for (const task of lesson.tasks) for (const mode of ['learn', 'solo']) assert.equal(validator(blank(lesson, task, mode, route.id)), true, `${route.id}/${task.id}/${mode}`);
   }
-  assert.equal(validator({ version: 1, view: { view: 'home' }, attempt: null, feedback: null, panels: panels() }), true);
+  assert.equal(validator({ version: 1, view: { view: 'home' }, attempt: null, history: [], feedback: null, panels: panels() }), true);
 });
 
 test('semantic boundary rejects foreign selection, forged solved work, bad points, excess keys and non-JSON values', () => {
@@ -273,6 +274,41 @@ test('semantic boundary rejects foreign selection, forged solved work, bad point
   graph.attempt.plotPoints[0][0] = 1000; assert.equal(validator(graph), false);
   const large = clone(base); large.attempt.notes = '\u0001'.repeat(10000);
   assert.equal(validator(large), true, 'Bounded escaped notes fit transport');
+});
+
+test('shared history validates every task, mode and byte while excluding duplicate or private work', () => {
+  const state = blank(), other = blank(Data.lessons[1]).attempt;
+  other.notes = 'Разбор другой задачи в этой комнате.';
+  state.history = [other];
+  assert.equal(validator(state), true, 'An earlier task can be restored even when another lesson is active');
+  const home = { version: 1, view: { view: 'home' }, attempt: null, history: [state.attempt, other], feedback: null, panels: panels() };
+  assert.equal(validator(home), true, 'Home retains the room archive');
+  const route = clone(home); route.view = { view: 'route', route: Data.routes[0].id };
+  assert.equal(validator(route), true, 'Route navigation does not discard the room archive');
+  const otherMode = blank(Data.lessons[0], Data.lessons[0].tasks[0], 'solo').attempt;
+  const modes = clone(state); modes.history.push(otherMode);
+  assert.equal(validator(modes), true, 'Learning and solo attempts are distinct for the same task');
+  const mutations = [
+    s => { delete s.history; }, s => { s.history = {}; },
+    s => { s.history.push(clone(s.history[0])); },
+    s => { s.history.push(clone(s.attempt)); },
+    s => { s.history[0].taskId = 'another-task'; },
+    s => { s.history[0].mode = 'private'; },
+    s => { s.history[0].answers[1] = 'hidden future draft'; },
+    s => { s.history[0].solved[0] = true; s.history[0].answers[0] = '-987654'; },
+    s => { s.history[0].hints[0] = true; },
+    s => { s.history[0].updated = 0.5; },
+    s => { s.history[0].plotPoints = [[1, 2]]; },
+    s => { delete s.history[0].plotPoints; },
+    s => { s.history[0].privateProgress = {}; },
+    s => { s.history[0].notes = '<img src=x>'; },
+    s => { s.history[0].notes = '\u0001'.repeat(10000); s.attempt.notes = 'A'.repeat(10000); }
+  ];
+  for (const mutate of mutations) { const forged = clone(state); mutate(forged); assert.equal(validator(forged), false, String(mutate)); }
+  let getterRead = false;
+  const accessor = clone(state);
+  Object.defineProperty(accessor.history[0], 'notes', { enumerable: true, get() { getterRead = true; return ''; } });
+  assert.equal(validator(accessor), false); assert.equal(getterRead, false, 'Archived accessors are never evaluated');
 });
 
 test('a room apply cannot replace personal work on the independent practice page', () => {
@@ -348,6 +384,89 @@ test('two real room participants share drafts, invalid feedback, errors, hints, 
   await mirrored(b, a, () => answer(b, '39'));
   assert.equal(a.w.document.querySelectorAll('.step.done').length, 4);
   assert.deepEqual(await roomSnapshot(p), b.state());
+});
+
+test('previous tasks survive control transfer, a home-page reconnect and separate learning/practice attempts', async t => {
+  const p = await pair(t), { a, b } = p;
+  await mirrored(a, b, () => answer(a, '-1'));
+  await mirrored(a, b, () => a.click('.step.current [data-action=check]'));
+  await mirrored(a, b, () => a.click('[data-action=hint]'));
+  await mirrored(a, b, () => a.click('[data-action=solution]'));
+  await mirrored(a, b, () => a.fill('.step.current [data-answer]', '21/'));
+  await mirrored(a, b, () => a.fill('#task-notes', 'Первая задача: 936 = 720 + 216, черновик ещё не закончен.'));
+  const first = a.state().attempt;
+
+  await mirrored(a, b, () => selectTask(a, 'g10', 'g10-graphs-build', 'g10-graphs-build-1'));
+  for (const [x, y] of [[1, -3], [0, -2], [2, -2]]) await mirrored(a, b, () => {
+    a.fill('#plot-x', x); a.fill('#plot-y', y); a.click('[data-action=plot-add]');
+  });
+  await mirrored(a, b, () => a.fill('#task-notes', 'Вторая задача: три точки параболы; вернуться к первой.'));
+  const graph = a.state().attempt;
+
+  // The new controller must recover work received from the previous writer,
+  // not a private cache left in the original teacher's browser.
+  await grant(p, true);
+  await mirrored(b, a, () => selectTask(b, 'g5', 'g5-natural', 'g5-natural-3'));
+  assert.deepEqual(b.state().attempt, first, 'Returning as the pupil retains draft, notes, mistakes, hint and shown step');
+  assert.equal(b.q('.step.current [data-answer]').value, '21/');
+  assert.equal(b.q('#task-notes').value, first.notes);
+  await mirrored(b, a, () => b.fill('#task-notes', first.notes + ' Проверено вместе.'));
+  const revisedFirst = b.state().attempt;
+  await mirrored(b, a, () => b.click('[data-action=home]'));
+  assert.equal(a.state().view.view, 'home');
+  assert.equal(a.state().attempt, null);
+  const storedHome = await roomSnapshot(p);
+
+  b.close(); p.student.socket.disconnect();
+  p.student = await participant(p.room, 'student'); t.after(() => p.student.socket.disconnect());
+  const reloaded = surface(t, p.student, p.room, { storageBlocked: true });
+  reloaded.send('mathexam:hydrate', p.student.joined.state.latestTrainerState.state, { mode: 'state' });
+  assert.deepEqual(reloaded.state(), storedHome, 'An empty visible home page still restores earlier room work');
+  await grant(p, true);
+  await mirrored(reloaded, a, () => selectTask(reloaded, 'g5', 'g5-natural', 'g5-natural-3'));
+  assert.deepEqual(reloaded.state().attempt, revisedFirst, 'A fresh participant recovers the revised first attempt');
+  await mirrored(reloaded, a, () => selectTask(reloaded, 'g10', 'g10-graphs-build', 'g10-graphs-build-1'));
+  assert.deepEqual(reloaded.state().attempt, graph, 'The complete earlier graph and notes survive navigation and reconnect');
+  assert.equal(reloaded.w.document.querySelectorAll('[data-user-curve]').length, 1);
+
+  await mirrored(reloaded, a, () => reloaded.click('[data-action=mode][data-mode=solo]'));
+  await mirrored(reloaded, a, () => reloaded.click('[data-action=choice][data-choice="2"]'));
+  await mirrored(reloaded, a, () => reloaded.click('[data-action=check]'));
+  await mirrored(reloaded, a, () => reloaded.fill('#task-notes', 'Самостоятельный ответ, отдельный от разбора графика.'));
+  const solo = reloaded.state().attempt;
+  await mirrored(reloaded, a, () => reloaded.click('[data-action=mode][data-mode=learn]'));
+  assert.deepEqual(reloaded.state().attempt, graph, 'Learning and solo work retain separate answers, points and notes');
+  await mirrored(reloaded, a, () => reloaded.click('[data-action=mode][data-mode=solo]'));
+  assert.deepEqual(reloaded.state().attempt, solo);
+  await grant(p, false);
+  await mirrored(a, reloaded, () => selectTask(a, 'g5', 'g5-natural', 'g5-natural-3'));
+  assert.deepEqual(a.state().attempt, revisedFirst, 'Returning control to the teacher retains the pupil correction');
+  assert.deepEqual(await roomSnapshot(p), a.state());
+});
+
+test('an oversized shared edit keeps all accepted work and the current view instead of evicting an older task', async t => {
+  const p = await pair(t), { a, b } = p;
+  await mirrored(a, b, () => a.fill('#task-notes', 'A'.repeat(10000)));
+  const first = a.state().attempt;
+  await mirrored(a, b, () => selectTask(a, 'g6', 'g6-geometry', 'g6-geometry-3', 'solo'));
+  await mirrored(a, b, () => a.fill('.step.current [data-answer]', '-3;'));
+  await mirrored(a, b, () => a.fill('#task-notes', 'Вторая сохранённая запись.'));
+  const before = a.state(), sent = a.stats.sent;
+  // JSON escapes these 10,000 code points as 60,000 bytes. The single current
+  // attempt fits, but together with accepted first-task notes it exceeds 64 KiB.
+  a.fill('#task-notes', '\u0001'.repeat(10000));
+  await pause(100);
+  assert.deepEqual(a.state(), before, 'Overflow rolls back the edit atomically without changing accepted work');
+  assert.deepEqual(b.state(), before, 'The peer still sees the last accepted snapshot');
+  assert.equal(a.q('#task-notes').value, before.attempt.notes, 'The editor shows the retained notes');
+  const warning = a.q('#board-save-warning');
+  assert.equal(warning.getAttribute('role'), 'alert');
+  assert.ok(warning.textContent.trim() && !warning.hidden, 'Capacity failure is visible to the editor');
+  assert.equal(a.stats.sent, sent, 'An oversized state is not sent or silently truncated');
+  assert.deepEqual(await roomSnapshot(p), before);
+  await grant(p, true);
+  await mirrored(b, a, () => selectTask(b, 'g5', 'g5-natural', 'g5-natural-3'));
+  assert.deepEqual(b.state().attempt, first, 'Capacity handling never evicts the previously accepted task');
 });
 
 test('graph points, current mode and tuple answer survive late join and reconnect with storage blocked', async t => {

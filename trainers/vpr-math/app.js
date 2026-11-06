@@ -14,14 +14,33 @@ function sharedContext(){
 const KEY='mathexam.vpr2027.offline.v1',BOARD=sharedContext();
 if(BOARD){window.VPRBoardMode=true;document.documentElement.classList.add('board-mode');}
 let board=null,applyingBoard=false,rendering=false,changeQueued=false;
+let acceptedBoardState=null;
 const emptyPanels=()=>({theory:false,notes:false,plot:false,mobileLessons:false});
 let panels=emptyPanels();
 const panelSelectors={theory:'.theory',notes:'.notes',plot:'.plot-lab',mobileLessons:'.mobile-lessons'};
 const clone=value=>JSON.parse(JSON.stringify(value));
 function canEdit(){return !BOARD||!!board?.canWrite();}
+function boardWarning(message){
+ let el=$('board-save-warning');
+ if(!message){el?.remove();return;}
+ if(!el){el=document.createElement('div');el.id='board-save-warning';el.className='feedback';el.setAttribute('role','alert');$('app').before(el);}
+ el.textContent=message;
+}
 function changed(){
- if(!BOARD||applyingBoard||rendering||changeQueued)return;
+ if(!BOARD||applyingBoard||rendering||!board)return;
+ // Check every edit synchronously, before the SDK's debounced notification.
+ // Never evict an earlier task or silently leave an oversized local draft that
+ // the room cannot accept. Restore the last complete accepted snapshot instead.
+ const next=readBoardState();
+ if(!board.validateState(next)){
+  if(acceptedBoardState)writeBoardState(acceptedBoardState);
+  boardWarning('Объём общей работы заполнен. Последнее изменение не сохранено; прежние ответы и записи сохранены. Сократи записи перед продолжением.');
+  return false;
+ }
+ acceptedBoardState=clone(next);boardWarning('');
+ if(changeQueued)return true;
  changeQueued=true;queueMicrotask(()=>{changeQueued=false;if(!applyingBoard)board?.changed();});
+ return true;
 }
 function safeSharedInput(el){
  const unsafe=BOARD&&/<\/?[a-z][^>]*>/i.test(el.value);
@@ -58,7 +77,7 @@ function sanitize(raw){
  return clean;
 }
 if(!BOARD)try{store=sanitize(JSON.parse(localStorage.getItem(KEY)||'null'));}catch(_){storageOK=false;}
-function save(){if(BOARD){changed();return;}if(store.session){if(store.session.finished)delete store.pendingSessions[store.session.route];else store.pendingSessions[store.session.route]=store.session;}try{localStorage.setItem(KEY,JSON.stringify(store));storageOK=true;}catch(_){storageOK=false;}const el=$('save-warning');if(el){el.classList.toggle('visible',!storageOK);}}
+function save(){if(BOARD){return changed();}if(store.session){if(store.session.finished)delete store.pendingSessions[store.session.route];else store.pendingSessions[store.session.route]=store.session;}try{localStorage.setItem(KEY,JSON.stringify(store));storageOK=true;}catch(_){storageOK=false;}const el=$('save-warning');if(el){el.classList.toggle('visible',!storageOK);}}
 function routeLessons(id){const route=ROUTE.get(id);return route?.lessonIds?route.lessonIds.map(key=>LESSON.get(key)).filter(Boolean):D.lessons.filter(l=>l.routes.includes(id));}
 function allTasks(id){return routeLessons(id).flatMap(l=>l.tasks);}
 function completed(id){return !!(store.achievements['learn:'+id]||store.achievements['solo:'+id]);}
@@ -158,28 +177,37 @@ function render(){
 }
 function readBoardState(){
  const cur=current();
+ const currentKey=cur?cur.state.mode+':'+cur.task.id:null;
+ const pack=attempt=>({...clone(attempt),plotPoints:clone(attempt.plotPoints||[])});
+ const hasWork=attempt=>attempt.notes||attempt.answers.some(value=>value!=='')||
+  ['solved','mistakes','hints','shown'].some(key=>attempt[key].some(Boolean))||attempt.plotPoints?.length;
+ // Only in-memory room work is shared. Visiting an untouched task consumes no
+ // archive space, and learning/independent attempts remain separate by key.
+ const history=BOARD?Object.entries(store.attempts).filter(([key,attempt])=>key!==currentKey&&hasWork(attempt))
+  .sort(([a],[b])=>a.localeCompare(b)).map(([,attempt])=>pack(attempt)):[];
  return {version:1,view:{...routeView},attempt:cur?{...clone(cur.state),plotPoints:clone(cur.state.plotPoints||[])}:null,
-  feedback:cur&&feedback?.task===cur.task.id&&feedback.index===C.stage(cur.state,cur.task)?clone(feedback):null,panels:{...panels}};
+  history,feedback:cur&&feedback?.task===cur.task.id&&feedback.index===C.stage(cur.state,cur.task)?clone(feedback):null,panels:{...panels}};
 }
 function writeBoardState(value){
  if(!BOARD)throw new TypeError('Shared state is unavailable in personal mode');
  applyingBoard=true;
  try{
   feedback=value.feedback;panels={...value.panels};
-  // A room snapshot contains only the currently shared attempt. Never merge it
-  // into personal attempts, diagnostics, achievements or transfer files.
-  store.attempts={};
+  // The complete bounded room archive is authoritative, including intentional
+  // restarts. Never merge it with personal progress or stale local room work.
+  store.attempts=Object.fromEntries(value.history.map(attempt=>[attempt.mode+':'+attempt.taskId,clone(attempt)]));
   if(value.attempt)store.attempts[value.view.mode+':'+value.view.task]=clone(value.attempt);
   history.replaceState(null,'',location.pathname+location.search+href(value.view));render();
+  acceptedBoardState=clone(value);
  }finally{applyingBoard=false;}
 }
 
 function current(){if(routeView.view!=='lesson')return null;const t=TASK.get(routeView.task).task;return {task:t,state:getState(t,routeView.mode)};}
-function check(index){if(!canEdit())return;const cur=current();if(!cur)return;const {task:t,state:s}=cur;if(index!==C.stage(s,t)||C.done(s,t))return;const p=t.steps[index],result=C.judge(p.answer,s.answers[index]);if(!result.valid){feedback={task:t.id,index,text:result.message};render();changed();return;}if(result.correct){s.solved[index]=true;feedback=null;setAchievement(s,t);}else{s.mistakes[index]=Math.min(s.mistakes[index]+1,1e6);feedback={task:t.id,index,text:s.mode==='learn'?(s.mistakes[index]>=2?'Пока не совпало. Проверь действие; теперь можно открыть подсказку.':'Пока не совпало. Попробуй ещё раз: проверь знак, действие и единицы. Ничего не потеряно.'):'Пока не совпало. Проверь решение в тетради и попробуй ещё раз.'};}s.updated=Date.now();save();render();if(result.correct)requestAnimationFrame(()=>{const el=document.querySelector('.step.current');if(el){const rect=el.getBoundingClientRect();if(rect.bottom>innerHeight-15)el.scrollIntoView({block:'nearest',behavior:'smooth'});}});}
-function diagnosticNext(skip){const s=store.session;if(!s||s.finished)return;const t=TASK.get(s.ids[s.index]).task;if(skip)s.answers[s.index]=null;else{const result=C.judge(t.steps.at(-1).answer,s.answers[s.index]);if(!result.valid){feedback={diagnostic:true,text:result.message};render();return;}}s.index++;feedback=null;if(s.index>=s.ids.length){s.finished=true;s.finishedAt=Date.now();store.diagnostics[s.route]=JSON.parse(JSON.stringify(s));}save();render();window.scrollTo(0,0);}
+function check(index){if(!canEdit())return;const cur=current();if(!cur)return;const {task:t,state:s}=cur;if(index!==C.stage(s,t)||C.done(s,t))return;const p=t.steps[index],result=C.judge(p.answer,s.answers[index]);if(!result.valid){feedback={task:t.id,index,text:result.message};render();changed();return;}if(result.correct){s.solved[index]=true;feedback=null;setAchievement(s,t);}else{s.mistakes[index]=Math.min(s.mistakes[index]+1,1e6);feedback={task:t.id,index,text:s.mode==='learn'?(s.mistakes[index]>=2?'Пока не совпало. Проверь действие; теперь можно открыть подсказку.':'Пока не совпало. Попробуй ещё раз: проверь знак, действие и единицы. Ничего не потеряно.'):'Пока не совпало. Проверь решение в тетради и попробуй ещё раз.'};}s.updated=Date.now();if(save()===false)return;render();if(result.correct)requestAnimationFrame(()=>{const el=document.querySelector('.step.current');if(el){const rect=el.getBoundingClientRect();if(rect.bottom>innerHeight-15)el.scrollIntoView({block:'nearest',behavior:'smooth'});}});}
+function diagnosticNext(skip){const s=store.session;if(!s||s.finished)return;const t=TASK.get(s.ids[s.index]).task;if(skip)s.answers[s.index]=null;else{const result=C.judge(t.steps.at(-1).answer,s.answers[s.index]);if(!result.valid){feedback={diagnostic:true,text:result.message};render();return;}}s.index++;feedback=null;if(s.index>=s.ids.length){s.finished=true;s.finishedAt=Date.now();store.diagnostics[s.route]=JSON.parse(JSON.stringify(s));}if(save()===false)return;render();window.scrollTo(0,0);}
 function download(){const blob=new Blob([JSON.stringify({...store,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='MathExam_VPR_progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function processAction(el){if(!canEdit())return;const a=el.dataset.action,d=el.dataset;if(BOARD&&['about','progress','errors','diagnostic','diagnostic-new','diagnostic-next','diagnostic-skip','export','import','print'].includes(a))return;switch(a){case'home':go({});break;case'route':go({view:'route',route:d.route});break;case'task':go({view:'lesson',route:d.route,lesson:d.lesson,task:d.task,mode:d.mode||'learn'});break;case'mode':go({...routeView,mode:d.mode});break;case'about':go({view:'about'});break;case'progress':go({view:'progress'});break;case'errors':go({view:'errors'});break;case'check':check(Number(d.index));break;case'choice':{const idx=Number(d.index),val=Number(d.choice);if(d.context==='task'){const cur=current();if(!cur||idx!==C.stage(cur.state,cur.task))return;cur.state.answers[idx]=val;cur.state.updated=Date.now();}else{const s=store.session;if(!s||s.finished||idx!==s.index)return;s.answers[idx]=val;}save();feedback=null;render();break;}case'hint':{const cur=current(),i=Number(d.index);if(cur&&cur.state.mode==='learn'&&cur.state.mistakes[i]>=2&&C.stage(cur.state,cur.task)===i){cur.state.hints[i]=true;cur.state.updated=Date.now();save();render();}break;}case'solution':{const cur=current(),i=Number(d.index);if(cur&&cur.state.mode==='learn'&&cur.state.hints[i]&&C.stage(cur.state,cur.task)===i){cur.state.shown[i]=true;cur.state.solved[i]=true;cur.state.updated=Date.now();setAchievement(cur.state,cur.task);save();feedback=null;render();}break;}case'restart':{const cur=current();if(!cur)return;const mistakes=cur.state.mistakes.reduce((a,b)=>a+b,0);if(mistakes){const prev=store.errorHistory[cur.task.id];store.errorHistory[cur.task.id]={total:Math.min(1e9,(prev?.total||0)+mistakes),updated:Date.now()};}const next=C.blank(cur.task,cur.state.mode);next.notes=cur.state.notes;next.updated=Date.now();store.attempts[cur.state.mode+':'+cur.task.id]=next;save();feedback=null;render();break;}case'diagnostic':startDiagnostic(d.route);break;case'diagnostic-new':store.session=null;delete store.pendingSessions[d.route];startDiagnostic(d.route);break;case'diagnostic-next':diagnosticNext(false);break;case'diagnostic-skip':diagnosticNext(true);break;case'export':download();break;case'import':$('progress-file').click();break;case'print':window.print();break;case'plot-add':{const cur=current();if(!cur||!cur.task.plot)return;const x=Number($('plot-x').value),y=Number($('plot-y').value);if($('plot-x').value===''||$('plot-y').value==='')return;addPlotPoint([x,y]);break;}case'plot-clear':{const cur=current();if(cur){cur.state.plotPoints=[];cur.state.updated=Date.now();panels.plot=true;save();render();}break;}}}
-function addPlotPoint(point){if(!canEdit())return;const cur=current();if(!cur?.task.plot||!window.VPRPlot.validPoints([point],cur.task.plot))return;const points=window.VPRPlot.validPoints(cur.state.plotPoints,cur.task.plot)?cur.state.plotPoints:[];cur.state.plotPoints=points.length<window.VPRPlot.count(cur.task.plot)?[...points,point]:[point];cur.state.updated=Date.now();panels.plot=true;save();render();}
+function processAction(el){if(!canEdit())return;const a=el.dataset.action,d=el.dataset;if(BOARD&&['about','progress','errors','diagnostic','diagnostic-new','diagnostic-next','diagnostic-skip','export','import','print'].includes(a))return;switch(a){case'home':go({});break;case'route':go({view:'route',route:d.route});break;case'task':go({view:'lesson',route:d.route,lesson:d.lesson,task:d.task,mode:d.mode||'learn'});break;case'mode':go({...routeView,mode:d.mode});break;case'about':go({view:'about'});break;case'progress':go({view:'progress'});break;case'errors':go({view:'errors'});break;case'check':check(Number(d.index));break;case'choice':{const idx=Number(d.index),val=Number(d.choice);if(d.context==='task'){const cur=current();if(!cur||idx!==C.stage(cur.state,cur.task))return;cur.state.answers[idx]=val;cur.state.updated=Date.now();}else{const s=store.session;if(!s||s.finished||idx!==s.index)return;s.answers[idx]=val;}if(save()===false)return;feedback=null;render();break;}case'hint':{const cur=current(),i=Number(d.index);if(cur&&cur.state.mode==='learn'&&cur.state.mistakes[i]>=2&&C.stage(cur.state,cur.task)===i){cur.state.hints[i]=true;cur.state.updated=Date.now();if(save()===false)return;render();}break;}case'solution':{const cur=current(),i=Number(d.index);if(cur&&cur.state.mode==='learn'&&cur.state.hints[i]&&C.stage(cur.state,cur.task)===i){cur.state.shown[i]=true;cur.state.solved[i]=true;cur.state.updated=Date.now();setAchievement(cur.state,cur.task);if(save()===false)return;feedback=null;render();}break;}case'restart':{const cur=current();if(!cur)return;const mistakes=cur.state.mistakes.reduce((a,b)=>a+b,0);if(mistakes){const prev=store.errorHistory[cur.task.id];store.errorHistory[cur.task.id]={total:Math.min(1e9,(prev?.total||0)+mistakes),updated:Date.now()};}const next=C.blank(cur.task,cur.state.mode);next.notes=cur.state.notes;next.updated=Date.now();store.attempts[cur.state.mode+':'+cur.task.id]=next;if(save()===false)return;feedback=null;render();break;}case'diagnostic':startDiagnostic(d.route);break;case'diagnostic-new':store.session=null;delete store.pendingSessions[d.route];startDiagnostic(d.route);break;case'diagnostic-next':diagnosticNext(false);break;case'diagnostic-skip':diagnosticNext(true);break;case'export':download();break;case'import':$('progress-file').click();break;case'print':window.print();break;case'plot-add':{const cur=current();if(!cur||!cur.task.plot)return;const x=Number($('plot-x').value),y=Number($('plot-y').value);if($('plot-x').value===''||$('plot-y').value==='')return;addPlotPoint([x,y]);break;}case'plot-clear':{const cur=current();if(cur){cur.state.plotPoints=[];cur.state.updated=Date.now();panels.plot=true;if(save()===false)return;render();}break;}}}
+function addPlotPoint(point){if(!canEdit())return;const cur=current();if(!cur?.task.plot||!window.VPRPlot.validPoints([point],cur.task.plot))return;const points=window.VPRPlot.validPoints(cur.state.plotPoints,cur.task.plot)?cur.state.plotPoints:[];cur.state.plotPoints=points.length<window.VPRPlot.count(cur.task.plot)?[...points,point]:[point];cur.state.updated=Date.now();panels.plot=true;if(save()===false)return;render();}
 document.addEventListener('click',e=>{if(!canEdit()){e.preventDefault();return;}const svg=e.target.closest('#interactive-plot');if(svg){const cur=current();if(cur?.task.plot){const p=window.VPRPlot.point(e,svg,cur.task.plot);if(p)addPlotPoint(p);}return;}const el=e.target.closest('[data-action]');if(!el||el.disabled)return;e.preventDefault();processAction(el);});
 document.addEventListener('input',e=>{if(!canEdit())return;const el=e.target;if(el.matches('[data-answer]')){if(!safeSharedInput(el))return;feedback=null;}if(el.matches('[data-answer]')){const i=Number(el.dataset.index);if(el.dataset.answer==='task'){const c=current();if(c&&i===C.stage(c.state,c.task)){c.state.answers[i]=el.value.slice(0,160);c.state.updated=Date.now();save();}}else if(store.session&&!store.session.finished&&store.session.index===i){store.session.answers[i]=el.value.slice(0,160);save();}}else if(el.id==='task-notes'){if(!safeSharedInput(el))return;const c=current();if(c){c.state.notes=el.value.slice(0,10000);c.state.updated=Date.now();save();}}});
 document.addEventListener('submit',e=>{if(!canEdit()){e.preventDefault();return;}const f=e.target;if(f.dataset.submit){e.preventDefault();if(f.dataset.submit==='answer')check(Number(f.dataset.index));else diagnosticNext(false);}});
@@ -197,4 +225,5 @@ window.addEventListener('hashchange',()=>{
 window.VPRApp={snapshot:()=>JSON.parse(JSON.stringify(store)),sanitize,routeLessons,stats,getView:()=>({...routeView}),entryPath};
 render();
 board=window.VPRBoardAdapter?.create({read:readBoardState,write:writeBoardState})||null;
+if(BOARD&&board)acceptedBoardState=board.getState();
 })();

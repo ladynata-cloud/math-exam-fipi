@@ -1,8 +1,10 @@
 'use strict';
 
 // Real production board host + SDK, two isolated Chromium contexts and the
-// actual local room service. Course actions use native UI events. No production
-// rooms, pupils, credentials, or personal-service endpoints are used.
+// actual local room service. Course journeys use native UI events. The explicit
+// last-input/handoff regression dispatches both actions in one browser turn to
+// exercise the pending SDK debounce without a timing-dependent sleep. No
+// production rooms, pupils, credentials, or personal-service endpoints are used.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -64,7 +66,7 @@ const visible = frame => frame.evaluate(() => {
   return { condition: q('.task-prompt')?.textContent, current: q('.step.current h3')?.textContent,
     answers: [...document.querySelectorAll('[data-answer]')].map(el => el.value),
     choices: [...document.querySelectorAll('[role=radio][aria-checked=true]')].map(el => el.textContent),
-    feedback: [...document.querySelectorAll('.feedback')].map(el => el.textContent),
+    feedback: [...document.querySelectorAll('.feedback:not(#board-save-warning)')].map(el => el.textContent),
     solved: [...document.querySelectorAll('.step.done')].map(el => el.textContent),
     notes: q('#task-notes')?.value, graph: q('#interactive-plot')?.outerHTML,
     details: [...document.querySelectorAll('details')].map(el => ({ className: el.className, open: el.open })) };
@@ -197,6 +199,7 @@ async function layout(page, label, illustration = false) {
     const observerState = await state(b);
     await assert.rejects(() => b.locator('[data-action=restart]').click({ timeout: 400 }), /Timeout/);
     assert.deepEqual(await state(b), observerState, 'The actual host inert lock blocks observer clicks');
+    const hintedAttempt = (await state(a)).attempt;
 
     await action(a, b, () => selectTask(a, 'g10', 'g10-graphs-build', 'g10-graphs-build-1'));
     await action(a, b, () => a.locator('.plot-lab > summary').click());
@@ -208,13 +211,39 @@ async function layout(page, label, illustration = false) {
     for (const step of graphTask.steps) await action(a, b, () => answer(a, step));
     await shot(teacher, 'shared-teacher'); await shot(student, 'shared-pupil');
 
+    // No peer-convergence wait is allowed between the last keystroke and the
+    // control action: the current writer must flush before surrendering control.
+    const grantSnapshot = await a.evaluate(() => {
+      const notes = document.querySelector('#task-notes');
+      notes.value = 'Последняя запись преподавателя непосредственно перед передачей.';
+      notes.dispatchEvent(new Event('input', { bubbles: true }));
+      const expected = getBoardTrainerState();
+      parent.document.querySelector('#boardControlToggle').click();
+      return expected;
+    });
+    await student.waitForFunction(() => canWrite());
+    await same(a, b);
+    assert.deepEqual(await state(b), grantSnapshot, 'An immediate teacher handoff preserves the last unsent edit');
+    const releaseSnapshot = await b.evaluate(() => {
+      const notes = document.querySelector('#task-notes');
+      notes.value += ' Последняя запись ученика непосредственно перед возвратом.';
+      notes.dispatchEvent(new Event('input', { bubbles: true }));
+      const expected = getBoardTrainerState();
+      parent.document.querySelector('#releaseControl').click();
+      return expected;
+    });
+    await teacher.waitForFunction(() => canWrite());
+    await same(a, b);
+    assert.deepEqual(await state(a), releaseSnapshot, 'An immediate pupil release preserves the last unsent edit');
+    const graphAttempt = (await state(a)).attempt;
+
     await teacher.locator('#boardControlToggle').click();
     await student.waitForFunction(() => canWrite());
     await action(b, a, () => selectTask(b, 'g6', 'g6-geometry', 'g6-geometry-3', 'solo'));
     await action(b, a, () => b.locator('.step.current [data-answer]').fill('-3;'));
     await action(b, a, () => b.locator('.notes > summary').click());
     await action(b, a, () => b.locator('#task-notes').fill('Общая симметрия: x → −x, y → −y'));
-    const reconnectState = await state(b);
+    const tupleAttempt = (await state(b)).attempt;
     await privateAudit(a, teacherPersonal); await privateAudit(b, studentPersonal);
 
     // Shared board ink remains independent of the trainer's semantic snapshot.
@@ -224,12 +253,30 @@ async function layout(page, label, illustration = false) {
     await teacher.waitForFunction(() => publicSnapshot().pages[0].strokes.length > 0);
     const strokes = page => page.evaluate(() => publicSnapshot().pages[0].strokes.map(({ createdAt, ...value }) => value));
     assert.deepEqual(await strokes(teacher), await strokes(student));
+    const retainedInk = await strokes(student);
+    await action(b, a, () => selectTask(b, 'g5', 'g5-natural', 'g5-natural-4'));
+    assert.deepEqual((await state(b)).attempt, hintedAttempt, 'The pupil returns to the teacher\'s hinted task with its notes and shown step intact');
+    assert.deepEqual(await strokes(student), retainedInk, 'Changing the task preserves existing freehand ink');
+    await action(b, a, () => selectTask(b, 'g10', 'g10-graphs-build', 'g10-graphs-build-1'));
+    assert.deepEqual((await state(b)).attempt, graphAttempt, 'Earlier answers, graph points and both handoff notes are restored');
+    assert.equal(await b.locator('[data-user-curve]').count(), 1);
+    await action(b, a, () => selectTask(b, 'g6', 'g6-geometry', 'g6-geometry-3', 'solo'));
+    assert.deepEqual((await state(b)).attempt, tupleAttempt, 'The pupil\'s unfinished tuple draft also survives the return journey');
+    assert.deepEqual(await strokes(teacher), retainedInk);
+    const reconnectState = await state(b);
     await student.reload(); b = await trainerFrame(student);
     await same(a, b); assert.deepEqual(await state(b), reconnectState); assert.deepEqual(await strokes(teacher), await strokes(student));
     await privateAudit(b, studentPersonal);
     await teacher.reload(); a = await trainerFrame(teacher); await same(a, b);
     await privateAudit(a, teacherPersonal);
     await teacher.locator('#boardControlToggle').click(); await student.waitForFunction(() => canWrite());
+    await action(b, a, () => selectTask(b, 'g5', 'g5-natural', 'g5-natural-4'));
+    assert.deepEqual((await state(b)).attempt, hintedAttempt, 'Both participant reloads preserve an earlier task, not only the last visible one');
+    await action(b, a, () => selectTask(b, 'g10', 'g10-graphs-build', 'g10-graphs-build-1'));
+    assert.deepEqual((await state(b)).attempt, graphAttempt, 'The graph archive restores from the room after both reloads');
+    await action(b, a, () => selectTask(b, 'g6', 'g6-geometry', 'g6-geometry-3', 'solo'));
+    assert.deepEqual((await state(b)).attempt, tupleAttempt);
+    assert.deepEqual(await strokes(teacher), retainedInk); assert.deepEqual(await strokes(student), retainedInk);
     await action(b, a, async () => { await b.locator('.step.current [data-answer]').fill('-3; 2'); await b.locator('.step.current [data-action=check]').click(); });
     assert.equal((await state(a)).attempt.solved.at(-1), true);
     await shot(teacher, 'shared-reconnected-teacher'); await shot(student, 'shared-reconnected-pupil');
@@ -266,7 +313,7 @@ async function layout(page, label, illustration = false) {
       assert.equal(await mobile.locator('#task-notes').inputValue(), 'Самостоятельное решение ' + width);
     }
     assert.deepEqual(errors, [], 'No browser runtime exceptions');
-    console.log('VPR_BROWSER_OK: seven routes, public selected-task link, pre-room draft, full host/SDK/Socket.IO, roles, graph, tuple, notes, ink, both reloads, private isolation, and 320/390/1280 layout');
+    console.log('VPR_BROWSER_OK: seven routes, public selected-task link, pre-room draft, full host/SDK/Socket.IO, immediate grant/release, prior-task roundtrips, graph, tuple, notes, retained ink, both reloads, private isolation, and 320/390/1280 layout');
   } catch (error) {
     for (const { page, name } of pages) { try { await shot(page, 'failure-' + name); } catch (_) {} }
     throw error;
