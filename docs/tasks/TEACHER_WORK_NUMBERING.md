@@ -165,6 +165,21 @@ visible in the catalog, downloaded assignments, answers and archives.
 - Mobile collection summaries reserve space beside the existing Navigator;
   final screenshots include the complete summary instead of a viewport crop
   that could leave it below the visible controls.
+- The remote task branch then advanced through concurrent commits cd58fc02
+  and edeb3489, attributed by Git to the repository account. Their operator is
+  not established by those metadata; no external approval is inferred. A
+  detached review verified only two source-reference notes, their generated
+  representations and dependent hash fields changed, plus a review document.
+  All 5220 PDF-bank tasks, 48 Word tasks, 2227 number assignments and original
+  PDF/DOCX/ZIP files remained identical. The two prerequisites were separately
+  checked against the course maps and actual questions.
+- The public common-denominator note also states the comparison skill needed
+  by its independent work. The order explanation describes the primary topic
+  order and points to additional prerequisites; it does not promise that every
+  assessment prerequisite is implied by the numerical order. These are source
+  reference metadata clarifications within textbook alignment, with no change
+  to mathematical content, membership, order or permanent numbers. Final-head
+  validation is recorded in the PR instead of reusing the earlier head's CI.
 - Tests not run: external audit; real classroom trial
 - Scope deviations: none
 
