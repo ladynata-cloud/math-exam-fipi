@@ -94,7 +94,7 @@ async function main() {
       if(n===11){const pinned=await frame.evaluate(()=>getBoardTrainerState().task);await frame.evaluate(()=>document.getElementById('m4-next').click());assert.deepEqual(await frame.evaluate(()=>getBoardTrainerState().task),pinned,'native Next cannot replace pinned task');}
       // Cross-check server-pinned mathematics against the actual native exercise.
       const actual=await frame.evaluate(n=>window.eval(n===11?'M4.task.key.join("")':n===15?'String(window.__oge15.buildSeeded(window.getBoardTrainerState().variantId,window.getBoardTrainerState().seed).ans)':n===16?'String(trTask.ans)':n===17?'String(CUR.ans)':n===18?'String(TR.task.ans)':'String(window.Task19Data.cards.find(c=>c.id===window.getBoardTrainerState().current.id).truth)'),n);
-      assert.equal(actual,expected,'same native/server condition '+n);
+      assert.equal(actual,expected,'same native/server condition '+n+' '+JSON.stringify(a.attempt.taskSpec.descriptor));
       if(n!==19){const [field,check,hint]=selectors[n];
         if(n===17){let lost=false;await student.context.route('**/api/learning/attempts/'+a.attemptId+'/actions',async route=>{if(!lost&&route.request().postDataJSON()?.type==='check'){lost=true;await route.fetch();await route.abort('failed');}else await route.continue();});}
         await frame.locator(field).fill(n===11?(expected==='123'?'321':'123'):n===15?'5a':'98765');await frame.locator(check).click();

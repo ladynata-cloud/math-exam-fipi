@@ -14,10 +14,93 @@ const { createTeachingRouter } = require('../learning-teaching');
 const { createLearningRunsRouter } = require('../learning-runs');
 const { tokenHash } = require('../learning-auth');
 const contracts = require('../learning-contracts');
+const { loadTrainer } = require('../oge-native-math');
 const op = () => randomUUID();
 const HASH = 'scrypt1:' + '01'.repeat(16) + ':' + '02'.repeat(32);
 const ORIGIN = 'https://lesson.example.test';
 const material = (contentId = 'equations-linear', seed = 17) => ({ trainerId: 'ege-path', contentId, seed });
+
+// Run the actual native generator, geometry adapter and managed hydration path.
+// Only DOM/reference presentation is stubbed by the existing mathematics harness.
+function gridAdapter(managed) {
+  const engine = loadTrainer('trainers/oge-task18-grid.html', { search: managed ? '?learning=1' : '?board=1' });
+  const document = Object.create(engine.ctx.document), elements = new Map(), getElement = document.getElementById;
+  engine.ctx.document = document;
+  document.getElementById = id => {
+    if (!elements.has(id)) {
+      const element = getElement(id);
+      element.click = () => { if (!element.disabled) element.onclick(); };
+      elements.set(id, element);
+    }
+    return elements.get(id);
+  };
+  document.body.dataset.ogeGeometry = '18';
+  document.getElementById('courseHintPanel').hidden = true;
+  const details = [0, 1].map(() => ({ open: false, matches: () => false }));
+  Object.defineProperty(document, 'querySelectorAll', { value: selector => selector === '#courseHintPanel details' ? details : [] });
+  engine.ctx.OgeGeometryDiscovery = { captureState: () => null, config: () => ['grid', [], []],
+    validateState: model => model === null, applyState: model => assert.equal(model, null) };
+  engine.ctx.OgeCourseReference = { topicCards() {}, sheetCards() {} };
+  let learning;
+  engine.ctx.MathExamLearning = { managed, register: adapter => { learning = adapter; } };
+  engine.ctx.MathExamBoard = { register: config => managed ? engine.ctx.OgeLearningRegister(config) : undefined };
+  for (const file of ['oge-geometry-board-mode.js', 'oge-learning.js', 'oge-geometry-board.js']) {
+    engine.run(fs.readFileSync(path.join(__dirname, '../../trainers', file), 'utf8'));
+  }
+  const native = () => JSON.parse(engine.run('JSON.stringify({parameters:TR.task.p,answer:String(TR.task.ans),descriptor:getBoardTrainerState().task})'));
+  return { engine, learning, native, document };
+}
+
+test('managed OGE18 recursive generation preserves the canonical condition across start and saved-state restore', () => {
+  const adapter = gridAdapter(true), pinned = contracts.create('oge-public', '18', 223);
+  const original = structuredClone(pinned);
+  const expected = { parameters: [2, 8], answer: '4', descriptor: { key: 'segCmp', source: 'generator', value: 223 } };
+  assert.deepEqual(pinned.taskSpec.task.parameters, expected.parameters);
+  assert.equal(pinned.taskSpec.task.answer, expected.answer);
+  adapter.learning.applyState(pinned);
+  assert.deepEqual(adapter.native(), expected, 'initial managed hydration must use the server condition');
+  const saved = adapter.learning.getState();
+  saved.answer = saved.native.answer = '17';
+  for (let repeat = 0; repeat < 3; repeat++) {
+    adapter.learning.applyState(contracts.create('oge-public', '18', 133));
+    adapter.learning.applyState({ taskSpec: pinned.taskSpec, state: saved });
+    assert.deepEqual(adapter.native(), expected, 'native snapshot restoration must retain the same condition');
+    assert.deepEqual(adapter.learning.getState(), saved, 'the pupil draft survives repeated hydration');
+  }
+  const completed = structuredClone(saved.native);
+  completed.answer = '4'; completed.actions = [['check', '4', false]];
+  adapter.engine.ctx.applyBoardTrainerState(completed);
+  assert.deepEqual(adapter.native(), expected);
+  assert.equal(adapter.engine.run('TR.done'), true, 'saved check replays against the canonical answer');
+  assert.equal(adapter.document.getElementById('ansIn').disabled, true);
+  assert.deepEqual(pinned, original, 'hydration never rewrites the authoritative task or initial state');
+  for (let seed = 1; seed <= 600; seed++) {
+    const sample = contracts.create('oge-public', '18', seed);
+    adapter.learning.applyState(sample);
+    assert.deepEqual(adapter.native(), { parameters: sample.taskSpec.task.parameters,
+      answer: sample.taskSpec.task.answer, descriptor: sample.taskSpec.descriptor }, 'native/server seed ' + seed);
+  }
+});
+
+test('public OGE18 board descriptors retain their existing seeded reconstruction and saved-check replay', () => {
+  const adapter = gridAdapter(false);
+  const descriptor = { key: 'segCmp', source: 'generator', value: 223 };
+  const legacy = { parameters: [1, 2], answer: '2', descriptor };
+  adapter.engine.ctx.OgeLearningNative.start(descriptor);
+  assert.deepEqual(adapter.native(), legacy, 'existing public rooms must not acquire managed generator semantics');
+  const saved = JSON.parse(adapter.engine.run('JSON.stringify(getBoardTrainerState())'));
+  saved.answer = '2'; saved.actions = [['check', '2', false]];
+  for (let repeat = 0; repeat < 3; repeat++) {
+    adapter.engine.ctx.OgeLearningNative.start({ ...descriptor, value: 133 });
+    // The stub DOM retains nodes that a native render replaces; reset its disabled controls.
+    for (const id of ['chkBtn', 'ansIn', 'giveBtn']) adapter.document.getElementById(id).disabled = false;
+    adapter.engine.ctx.applyBoardTrainerState(saved);
+    assert.deepEqual(adapter.native(), legacy);
+    assert.equal(adapter.engine.run('TR.done'), true);
+    assert.equal(adapter.document.getElementById('ansIn').value, '2');
+  }
+  assert.equal(adapter.learning, undefined, 'public board does not register a managed learning adapter');
+});
 
 async function fixture(t) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-workspace-'));

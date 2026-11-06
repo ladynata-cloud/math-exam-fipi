@@ -53,6 +53,9 @@ cabinet, lesson, trainer and board boundaries.
 - Reuse existing account/session authorization, trainer allowlists, exact-origin
   message validation and explicit teacher/pupil control transfer.
 - Clear connection/save states and explicit handling of unsupported materials.
+- Exact managed OGE18 reconstruction when a generator retries its random draw: it
+  must follow the existing server task specification. Existing public-board seed
+  replay and mathematical content are preserved.
 - Responsive cabinet/lesson controls at 320 and 1280 px; short primary actions
   and details disclosed on demand. The existing managed EGE stage strip remains
   compact and shows its current stage inside narrow embedded workspaces; the
@@ -168,7 +171,7 @@ cabinet, lesson, trainer and board boundaries.
 - Actual head SHA: recorded with the exact candidate in the Draft PR handoff
 - PR: [Draft PR 478](https://github.com/ladynata-cloud/math-exam-fipi/pull/478)
 - Commits: implementation and validation of this one task
-- Tests passed: all 410 backend tests; 28 DOM checks (11 actual cabinet,
+- Tests passed: all 412 backend tests; 28 DOM checks (11 actual cabinet,
   7 picker/queue, 10 rehearsal); targeted Vilenkin cabinet regressions;
   JavaScript syntax and `git diff --check`.
 - Tests failed: none in the current local test set. The first completed CI
@@ -189,7 +192,13 @@ cabinet, lesson, trainer and board boundaries.
   connectivity warning after an acknowledged save. The scoped fix clears only
   a tagged connectivity notice after the queue drains; unrelated warnings and
   quarantined-work export remain available. Actual-app and browser regressions
-  cover that recovery. The selected lesson material also remains visible when its
+  cover that recovery. Unified CI also exposed a pre-existing OGE18 generator
+  retry that reconstructed a different condition from the same descriptor. A
+  managed-only native adapter correction is required by the approved exact-task
+  contract; deterministic native/server and public-compatibility regressions
+  accompany it. The actual-adapter regressions pass 600 managed seed comparisons
+  and repeated saved-state recovery; the existing 19 public geometry DOM checks
+  also pass. The selected lesson material also remains visible when its
   horizontal queue is rebuilt.
 - Tests not run locally: real Chromium gates because the local browser cannot
   create required sockets. The dedicated CI runs the new two-role journey and
