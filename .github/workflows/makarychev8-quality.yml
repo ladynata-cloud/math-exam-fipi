@@ -15,7 +15,8 @@ permissions:
 jobs:
   course:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Four full source-block browser suites plus all 722 DOM journeys.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,6 +31,7 @@ jobs:
           python school/makarychev8/test-exercises-1-24.py
           python school/makarychev8/test-exercises-25-54.py
           python school/makarychev8/test-exercises-55-74.py
+          python school/makarychev8/test-exercises-75-109.py
       - name: Build, syntax and mathematical contracts
         run: |
           node school/makarychev8/build.cjs
@@ -57,6 +59,8 @@ jobs:
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-25-54.cjs
       - name: Chromium exercises55–74, signs and integral values
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-55-74.cjs
+      - name: Chromium exercises75–109, proofs and two-line construction
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser-75-109.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
