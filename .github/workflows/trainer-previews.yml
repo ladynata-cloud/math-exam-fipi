@@ -17,11 +17,13 @@ permissions:
 jobs:
   previews:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Browser dependency provisioning took nine minutes in the first run.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Asset, mathematics and route checks
         run: |
           python3 -m pip install Pillow==13.0.0

@@ -72,3 +72,17 @@ is claimed. Mobile checks use browser viewport emulation.
 ### Final local reconciliation — 2026-11-06 UTC
 
 Current main changes were preserved, including the published division title and public navigator. The percent animation was corrected to shade 2/20 cells for10%,1/20 for5%,and3/20 for15%; the matching captions now change with each stage. A regression inspects delivered GIF pixels at the corresponding timestamps. The browser gate explicitly waits for lazy-loaded posters before decoding; the same visual/interaction assertions remain. Local results use the installed Chromium134, not the pinned CI browser.
+
+The first exact-head catalogue CI found that its local-link checker treated
+`/lessons/#contact` as a filesystem name. URL paths and fragments are now checked
+separately: the destination file and the actual HTML anchor must both exist.
+Missing files/anchors and paths outside the repository remain failures; a
+focused regression covers the real contact link and negative controls. PDF
+identity, pairing and collection checks remain unchanged.
+
+The first cloud GIF run passed both static and browser assertions but reached
+the ten-minute job deadline during finalization after nine minutes of browser
+dependency provisioning. SEO likewise reached its five-minute deadline while
+installing browser dependencies, after both static gates passed. The two job
+deadlines are twenty minutes; all commands, assertions and artifact collection
+remain required. These cancelled runs are retained as historical results.
