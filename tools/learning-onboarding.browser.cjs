@@ -448,6 +448,34 @@ async function selectedCourses(page, ids) {
     assert.equal(await teacherPage.locator('#access-password').count(), 0);
     checks.push('Synthetic persisted pagehide clears a pending PIN/form; late committed response cannot reopen credentials; pageshow revalidates the teacher and finds one account');
 
+    await teacherPage.locator('#add-student').click();
+    await teacherPage.locator('#student-form [name=name]').fill('Синтетический студент колледжа');
+    await teacherPage.locator('#student-form [name=login]').fill('fixture_college_logarithms');
+    await teacherPage.locator('#student-form [name=password]').fill('0732');
+    await teacherPage.locator('#student-form [name=grade]').selectOption('other');
+    await teacherPage.locator('#student-form [name=course]').selectOption('school');
+    await next(teacherPage, '#student-form', 2);
+    await teacherPage.locator('#student-form [name=courseIds][value="college-logarithms"]').check();
+    await next(teacherPage, '#student-form', 3);
+    await teacherPage.locator('#student-form [type=submit]').click();
+    await teacherPage.locator('#access-password').waitFor();
+    const collegeLink = await teacherPage.locator('#access-link').inputValue();
+    await teacherPage.locator('#preview-created-student').click();
+    await selectedCourses(teacherPage, ['college-logarithms']);
+    const collegeBoard = 'https://mathexam.space/trainers/trainer-board.html?trainer=' +
+      encodeURIComponent('/trainers/college-logarithms/index.html?task=meaning-1');
+    assert.equal(await teacherPage.locator('[data-program-course="college-logarithms"] [data-program-board]').getAttribute('href'), collegeBoard);
+    await layouts(teacherPage, 'college-teacher-preview');
+    const collegePage = await open();
+    await login(collegePage, 'fixture_college_logarithms', '0732', collegeLink);
+    await selectedCourses(collegePage, ['college-logarithms']);
+    assert.equal(await collegePage.locator('[data-program-course="college-logarithms"] [data-program-open]').getAttribute('href'),
+      'https://mathexam.space/trainers/college-logarithms/');
+    assert.equal(await collegePage.locator('[data-program-course="college-logarithms"] [data-program-board]').getAttribute('href'), collegeBoard);
+    await layouts(collegePage, 'college-pupil-courses');
+    await collegePage.reload(); await selectedCourses(collegePage, ['college-logarithms']);
+    checks.push('College pupil with no school grade receives logarithms; fresh login/reload restores the course; teacher and pupil board links preserve the opening task at all three viewport widths');
+
     assert.deepEqual(errors, [], 'No browser JavaScript errors');
     const result = { result: 'LEARNING_ONBOARDING_BROWSER_OK', checks, images, viewportWidths: WIDTHS, browserVersion: browser.version(),
       syntheticOnly: true, publicRequestsAllowed: 0, blockedExternalRequests: blockedExternal.length, errors };
