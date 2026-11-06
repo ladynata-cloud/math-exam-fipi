@@ -58,3 +58,24 @@ The owner requested completion of the current unfinished work, authorized public
 The failed division historical-contract check is repaired by admitting exactly one empty, deferred `/assets/oge-wayfinding.js` tag; mathematical engines and ordered dependencies remain pinned. Missing, altered, duplicate or executable navigation tags are tested as negative controls. The learner-entry preservation baseline is the current published main, so already released OGE12 changes are checked rather than reverted. Prospective book builds account for the two navigation assets while frozen edition bytes remain unchanged.
 
 Validation uses existing GitHub Actions because the local execution environment is unavailable. No local-test pass is claimed. Final exact-head results and live acceptance remain recorded in the PR.
+
+### Final replay correction, 6 November 2026
+
+The resumed local environment is available. The remaining CI failure was 243
+pending source cases: all 81 fraction questions at each of three widths. The
+new bar replaced the fractions page's redundant old course link, but the audit
+had inverted only the added bar. The recorder now restores that one exact
+removed fragment at its exact original position. Its resulting full-document
+SHA256 equals the existing reviewed payload; the fixture, engines and
+mathematical calculations are unchanged. The verifier accepts the absent
+legacy label only for that exact route and historical payload. Negative
+controls reject altered routes, payloads, raw visible text, labels and answers.
+
+Local verification: 93 fresh source browser journeys at 320/390/1280;
+independent replay 395 PASS, zero PENDING/FAIL/missing reports or unreviewed
+source-derived oracles; 34 existing mathematical/persistence regressions;
+147-document learner-entry preservation; JavaScript/Python syntax and diff
+whitespace checks passed. Local browser: Chromium 134.0.6998.35 with
+Playwright 1.62.1. The CI lane retains its pinned current Chromium and repeats
+all source/v1/v2 replay checks. Local evidence is not a substitute for that
+exact-head CI or production verification.

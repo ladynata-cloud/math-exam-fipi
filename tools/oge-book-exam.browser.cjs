@@ -24,11 +24,19 @@ async function text(l){return clean(await l.innerText());}
 const assert=require('node:assert/strict');
 const WAYFINDING_HEAD='<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
 const WAYFINDING_BAR='\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
-function originalWayfindingHtml(html){
+const FRACTIONS_ROUTE='/trainers/oge-task6-fractions.html';
+const REMOVED_RETURN_POSITION='<main class="wrap">\n\n<header>';
+const ORIGINAL_RETURN_POSITION='<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>';
+function originalWayfindingHtml(html,route=''){
  assert.equal(html.split(WAYFINDING_HEAD).length,2,'one exact wayfinding asset pair');
  assert.equal(html.split(WAYFINDING_BAR).length,2,'one exact wayfinding bar');
- const original=html.replace(WAYFINDING_HEAD,'').replace(WAYFINDING_BAR,'');
+ let original=html.replace(WAYFINDING_HEAD,'').replace(WAYFINDING_BAR,'');
  assert(!original.includes('oge-wayfinding'),'no unknown extra wayfinding markup');
+ if(route===FRACTIONS_ROUTE){
+  assert.equal(original.split(REMOVED_RETURN_POSITION).length,2,'one exact removed legacy return position');
+  assert(!original.includes('<nav class="course-return">'),'legacy return was removed, not relocated');
+  original=original.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION);
+ }
  return original;
 }
 {
@@ -36,6 +44,10 @@ function originalWayfindingHtml(html){
  const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
  assert.equal(originalWayfindingHtml(fixture),original);
  for(const mutated of [fixture.replace(WAYFINDING_BAR,''),fixture.replace(WAYFINDING_BAR,WAYFINDING_BAR+WAYFINDING_BAR),fixture.replace('aria-label="Навигация ОГЭ"','onclick="changed()" aria-label="Навигация ОГЭ"'),fixture.replace(' defer ',' async '),fixture.replace('/trainers/oge-course/','/changed/')])assert.throws(()=>originalWayfindingHtml(mutated));
+ const fractions=fixture.replace('<p>Exact condition</p>',REMOVED_RETURN_POSITION+'Exact condition</header></main>');
+ assert.equal(originalWayfindingHtml(fractions,FRACTIONS_ROUTE),original.replace('<p>Exact condition</p>',ORIGINAL_RETURN_POSITION+'Exact condition</header></main>'));
+ for(const mutated of [fractions.replace(REMOVED_RETURN_POSITION,'<main class="wrap">\n<header>'),fractions.replace(REMOVED_RETURN_POSITION,REMOVED_RETURN_POSITION+REMOVED_RETURN_POSITION),fractions.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION),fractions.replace('</main>','<nav class="course-return">relocated</nav></main>')])assert.throws(()=>originalWayfindingHtml(mutated,FRACTIONS_ROUTE));
+ assert(originalWayfindingHtml(fractions,'/other.html').includes(REMOVED_RETURN_POSITION),'legacy inverse is route-specific');
 }
 async function captureInitialVisibleText(page,report){
  const full=await text(page.locator('body'));
@@ -49,10 +61,11 @@ async function captureInitialVisibleText(page,report){
  assert(full.startsWith(label+' '),'return bar is a separate leading navigation block');
  const file=path.resolve(ROOT,'.'+report.finalPath+(report.finalPath.endsWith('/')?'index.html':''));
  assert(file.startsWith(ROOT+path.sep));
- const raw=fs.readFileSync(file,'utf8'),original=originalWayfindingHtml(raw);
+ const raw=fs.readFileSync(file,'utf8'),original=originalWayfindingHtml(raw,report.finalPath);
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
+ if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
 }
 
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
