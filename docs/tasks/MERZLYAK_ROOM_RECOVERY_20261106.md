@@ -36,6 +36,14 @@ The existing program-room gate covered an expired bridge before room creation,
 but did not delay the room connection after the seeded document loaded. Existing
 unit fixtures also treated every src assignment as a new document.
 
+The first follow-up candidate passed the strengthened real Merzlyak journey,
+including both expired bridges and manual reload, in
+[run 42218674678](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42218674678).
+The unchanged 404-to-available picker regression failed in three other workflows:
+the real document reload no longer mutated src, so the picker's old 404 inspection
+remained cached in its visible state. Explicitly start its existing loading
+transition when the Retry button clears the inspection cache, before navigation.
+
 ## Approved scope
 
 - Use a real document reload for an accessible same-origin frame when the
@@ -43,6 +51,9 @@ unit fixtures also treated every src assignment as a new document.
   including a newer selection made since the iframe src was originally assigned.
 - Keep ordinary navigation for a different resource/query, foreign origin,
   inaccessible/missing document or credential-bearing URL.
+- Reset the picker's loading/inspection state explicitly on the real Retry
+  action and bump only its script version in the host. The two runtime files are
+  `trainers/trainer-board.html` and `trainers/board-picker.js`; catalogue data stays unchanged.
 - Preserve existing invalidation, instance generation, hydration deadlines,
   registry authorization, exact-origin/source checks and room control semantics.
 - Strengthen the existing room-error fixture to model fragment navigation and
@@ -68,6 +79,8 @@ add cache-busting query parameters, weaken handshake checks or bypass an expired
 - The nested real-browser test covers both pre-room and post-seed expiration,
   teacher/pupil draft exchange, handoff, manual retry and exact cabinet return.
 - Existing Merzlyak, registry, room-boundary, ink/image and server contract gates pass.
+- The unchanged `tools/board-picker-smoke.cjs` 404-to-available retry gate passes;
+  no assertion or timeout is removed or relaxed.
 - Syntax and `git diff --check` pass.
 - Final marker: `MERZLYAK_PROGRAM_ROOM_OK`, with delayed-room and manual-reload evidence.
 - Local Chromium is unavailable because the runner rejects its process-singleton
@@ -114,7 +127,9 @@ reset, rebase, admin override or weakened checks are authorized.
   JavaScript syntax and whitespace checks passed. Registry tests are included in
   the server count and are not counted twice.
 - Candidate test results and exact head/tree belong in the release handoff and PR.
-- Browser status remains not run locally; CI must supply the real delayed-room proof.
+- Browser status remains not run locally. Initial follow-up CI supplied the real
+  delayed-room/manual-retry proof but failed the existing cached-404 retry gate;
+  the combined candidate requires fresh CI, including that unchanged regression.
 - No real account, assignment, personal result or active room is modified by automated tests.
 
 ## Required handoff
