@@ -462,16 +462,32 @@ async function selectedCourses(page, ids) {
     const collegeLink = await teacherPage.locator('#access-link').inputValue();
     await teacherPage.locator('#preview-created-student').click();
     await selectedCourses(teacherPage, ['college-logarithms']);
-    const collegeBoard = 'https://mathexam.space/trainers/trainer-board.html?trainer=' +
+    const collegeBoard = '/trainers/trainer-board.html?trainer=' +
       encodeURIComponent('/trainers/college-logarithms/index.html?task=meaning-1');
-    assert.equal(await teacherPage.locator('[data-program-course="college-logarithms"] [data-program-board]').getAttribute('href'), collegeBoard);
+    const collegePupil = store.accountByLogin('fixture_college_logarithms');
+    async function verifyCollegeBoardLink(page, back) {
+      const href = await page.locator('[data-program-course="college-logarithms"] [data-program-board]').getAttribute('href');
+      assert(href.startsWith('#public-practice='), 'The cabinet keeps its existing return wrapper');
+      const route = new URLSearchParams(href.slice(1));
+      assert.equal(route.get('public-practice'), collegeBoard);
+      assert.equal(route.get('return'), back);
+    }
+    await verifyCollegeBoardLink(teacherPage, 'preview=' + collegePupil.id);
     await layouts(teacherPage, 'college-teacher-preview');
+    await teacherPage.locator('[data-program-course="college-logarithms"] [data-program-board]').click();
+    await teacherPage.locator('[data-public-workspace] iframe').waitFor();
+    assert.equal(await teacherPage.locator('[data-public-workspace] iframe').getAttribute('src'), trainerOrigin + collegeBoard);
+    await teacherPage.frameLocator('[data-public-workspace] iframe').frameLocator('#trainerFrame')
+      .getByRole('heading', { name: 'Найти показатель', exact: true }).waitFor();
+    await teacherPage.locator('[data-cabinet-return]').click();
+    await selectedCourses(teacherPage, ['college-logarithms']);
+    assert.deepEqual(store.listAttempts(store.account(collegePupil.id)), [], 'Shared-board preview creates no personal attempt');
     const collegePage = await open();
     await login(collegePage, 'fixture_college_logarithms', '0732', collegeLink);
     await selectedCourses(collegePage, ['college-logarithms']);
     assert.equal(await collegePage.locator('[data-program-course="college-logarithms"] [data-program-open]').getAttribute('href'),
       'https://mathexam.space/trainers/college-logarithms/');
-    assert.equal(await collegePage.locator('[data-program-course="college-logarithms"] [data-program-board]').getAttribute('href'), collegeBoard);
+    await verifyCollegeBoardLink(collegePage, 'home');
     await layouts(collegePage, 'college-pupil-courses');
     await collegePage.reload(); await selectedCourses(collegePage, ['college-logarithms']);
     checks.push('College pupil with no school grade receives logarithms; fresh login/reload restores the course; teacher and pupil board links preserve the opening task at all three viewport widths');
