@@ -129,6 +129,37 @@ input during connection loss or forced remote revocation remain explicit boundar
 persistence guarantees. Final code review, exact source blobs, applicable gates
 and native browser results are recorded in the review record and PR handoff.
 
+### Release-blocker diagnosis and focused navigation correction
+
+The owner's request to carry out the necessary release preparation also covers
+diagnosing the failing availability check and correcting the concrete navigation
+interaction found by the applicable gate. This is a bounded follow-up in the
+same PR, not an expansion of the course bank or a redesign of another trainer.
+
+The cabinet readiness workflow retains its four original HTTPS requests, TLS
+verification, timeout and all-four-HTTP-200 requirement. It records sanitized
+exception function names and runtime versions; only after failure, one bounded
+DNS/curl diagnostic collects connection timings without retrying the gate or
+changing its verdict. On head `f554fa47f729f03ece74be646bc4ad6df5ddd670`
+the original readiness check passed at `2026-11-06T21:50:21Z`; the cause of the
+earlier intermittent reset, TLS EOF and timeout remains unproven.
+
+The unchanged public navigator gate failed on `/rounding.html` at 320 px on
+head `4dda38dcc9c85e2dcee1326446eb283feb60babe` and at 844 px on head
+`f554fa47f729f03ece74be646bc4ad6df5ddd670`. The page, widget and browser test
+were byte-identical in both runs and on the authorized main. A deterministic
+DOM reproduction using their actual scripts showed the page's delayed answer
+autofocus taking keyboard input from the navigator. The focused correction
+preserves a later user choice of control while retaining ordinary rounding
+autofocus. It does not change questions, answers, scoring, storage or routing.
+
+The regression must demonstrate the old failure and protect navigator typing,
+Enter submission and ordinary rounding controls. The existing native keyboard
+assertion and every page/viewport journey remain required, without additional
+retries, sleeps or exclusions. Navigator source bindings must name the reviewed
+real source commit and exactly `rounding.html`; the binding generator and
+preservation rules remain unchanged. Final receipts belong in the PR handoff.
+
 ## Content provenance
 
 The 82 lessons, 492 tasks and 1284 checked steps were authored for MathExam from
