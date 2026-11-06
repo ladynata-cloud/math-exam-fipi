@@ -1,8 +1,8 @@
 {
   "reviewer": "Independent Codex content and coordinate reviews; see batches",
   "reviewedAt": "2026-11-01T21:33:52Z",
-  "registeredAt": "2026-11-04T09:36:38.090Z",
-  "scope": "Introduction and chapters I–IV through additional cone exercises 404–413: 674 reviewed cards; main exercises 1–413 complete; theory points 1–51; 50 self-check questions. Exercise 414 onward and later chapters remain pending. Not the complete book.",
+  "registeredAt": "2026-11-06T01:18:17.769Z",
+  "scope": "Introduction and chapters I–IV through additional sphere exercises 414–421: 688 reviewed cards; main exercises 1–421 complete; theory points 1–51; 50 self-check questions. Exercise 422 onward and later chapters remain pending. Not the complete book.",
   "batches": [
     {
       "reviewer": "Codex independent content and coordinate review",
@@ -1046,6 +1046,30 @@
       ],
       "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_404_413.md",
       "mathematicalReport": "tools/stereo-textbook/additional404-math.test.cjs"
+    },
+    {
+      "reviewer": "ChatGPT root, independent of lesson author",
+      "reviewedAt": "2026-11-06T01:15:31.997Z",
+      "scope": "Additional sphere exercises 414–421; fourteen original parts, 58 justified steps and 60 model states. Independent source/mathematics/written-pedagogy review; actual visual review recorded separately before release.",
+      "cardIds": [
+        "ex-main-0414-a",
+        "ex-main-0414-b",
+        "ex-main-0414-c",
+        "ex-main-0415-a",
+        "ex-main-0415-b",
+        "ex-main-0416-a",
+        "ex-main-0416-b",
+        "ex-main-0417",
+        "ex-main-0418-a",
+        "ex-main-0418-b",
+        "ex-main-0419-a",
+        "ex-main-0419-b",
+        "ex-main-0420",
+        "ex-main-0421"
+      ],
+      "evidence": "docs/reviews/ATANASYAN_ADDITIONAL_414_421_INDEPENDENT.json",
+      "mathematicalReport": "tools/stereo-textbook/additional414-math.test.cjs",
+      "authoredSHA256": "1712465d90a82a8bf14b22dacedacb54a305b3834f2f39a8a64b5007aa376048"
     }
   ],
   "cards": [
@@ -3744,6 +3768,62 @@
     {
       "id": "ex-main-0413",
       "sha256": "c966752593c2af790a68211ec1672899db63b8a959498660ccb582cd5a973fff"
+    },
+    {
+      "id": "ex-main-0414-a",
+      "sha256": "a299150f022178e7349242dc9f07a63fdcd5aeeb6b8fefa69a14170e469e9662"
+    },
+    {
+      "id": "ex-main-0414-b",
+      "sha256": "a99efba557f1d59b5c51d9279fd0c3220bedf9cd2157f68f43a42b3c853df9ba"
+    },
+    {
+      "id": "ex-main-0414-c",
+      "sha256": "f1b5a45367b70a0f68af024dc3481ac37ebb82e77f6fe27e0aee357f0fc136a8"
+    },
+    {
+      "id": "ex-main-0415-a",
+      "sha256": "deaa3f782ad0185375210f0930fd0e8a4ea8f1d6ececf9c6b5e16b31de023e3c"
+    },
+    {
+      "id": "ex-main-0415-b",
+      "sha256": "c2fd7e1669e6b505e363dcd7c003941df0cc15ba7381f54901f9da03cb738c6d"
+    },
+    {
+      "id": "ex-main-0416-a",
+      "sha256": "0cd2e06b581a112d0227b6167a40b9ce7418112a6f3afca1b8f998be7638c4d2"
+    },
+    {
+      "id": "ex-main-0416-b",
+      "sha256": "957d0a6cb3aafcecd29b204e5307ce079cd8d3f268efdbabef69f04fad0366ed"
+    },
+    {
+      "id": "ex-main-0417",
+      "sha256": "753f428f7a8e2ba11681eb663576679a8122f735044f149052360b1647b89fd7"
+    },
+    {
+      "id": "ex-main-0418-a",
+      "sha256": "3932f4f8b60816022df5141d8efc53f52aeab98a0b1eadff0aa5c6b212ec5908"
+    },
+    {
+      "id": "ex-main-0418-b",
+      "sha256": "96ed2b5f40420781f430bf12c986590c071ef51e8c74a96da0733fe81434aa50"
+    },
+    {
+      "id": "ex-main-0419-a",
+      "sha256": "8134f32bda4f83f5f88c0bbeadec6115eebb0d8ea0c27d704415ce8bba1c1a4e"
+    },
+    {
+      "id": "ex-main-0419-b",
+      "sha256": "d35d90289aacaf31e961b04a6f844a559fb5df2f7cda281c31c5c78883e05d5e"
+    },
+    {
+      "id": "ex-main-0420",
+      "sha256": "9964c6006eba45db7569b17ac03fa15a459e704daefcb5bde690acf986b0ad0e"
+    },
+    {
+      "id": "ex-main-0421",
+      "sha256": "309d48f225de1db7a70a6c10948d2c7233b6650d31ca6a0e6f7ad717db865e4c"
     }
   ]
 }
