@@ -43,3 +43,24 @@ The owner authorizes local implementation, commits, push and a Draft PR. Root co
 - [Independent source/math and bounded runtime review](../reviews/MAKARYCHEV8_75_109_INDEPENDENT.json): PASS with no findings. The reviewer read all five source pages, reran the 3320-assertion oracle and inspected four actual №108 screenshots; the receipt binds exact file hashes. This is independent agent review, not external provider approval.
 - Exact-head CI, final synchronized base/head and PR link are recorded in the PR handoff. The original base above is retained for provenance; concurrent main changes are incorporated only after read-only composition verification.
 - No external provider review, real-pupil trial, publication or production learner write is claimed by this task.
+
+## Exact-head CI provisioning follow-up, 2026-11-06
+
+The original published PR463 head was `5958f40ac792106727384703de4a924d2c2cfff9`.
+Its Makarychev course, EGE classroom and unified-learning runs passed
+(`42138653923`, `42138653910`, `42138653930`). Self-study video run
+`42138653954`, job `127633093863`, was cancelled at the 30-minute job limit
+during `Prepare local media verification tools`. Browser dependencies had taken
+about ten minutes; Ubuntu FFmpeg dependencies were still downloading after the
+next twenty minutes. The 13.6 MB `libflite1` download took over five minutes,
+and cancellation occurred during `libmysofa1`. The job's actual test steps were
+all skipped, so this run is neither a failed mathematical test nor a passing
+video gate.
+
+The owner-delegated fix changes only the workflow's time allowance to 60 minutes
+and explicitly checks out `github.event.pull_request.head.sha || github.sha`,
+as the other exact-head workflows do. All dependency versions, install commands,
+test steps, assertions and runner settings remain unchanged. The comment states
+that the additional allowance covers dependency provisioning. This does not
+change any course/runtime/source file or merge main. A new candidate and its
+CI runs are required; the old cancellation is not relabelled as success.
