@@ -98,6 +98,11 @@ Continuation verification on 2026-11-07 corrected mixed-fraction drawings,
 clipped curve labels and cropped zero axes. The root engine now has 769 passing
 checks. Coupled runtime assets use one release cache version to prevent stale
 checker/new-data combinations. Source and complete DOM gates pass; isolated SVG
-review covers all 85 diagram states. Automatic approval review blocked the branch
-push pending explicit START/push authorization, so the Draft PR and native
-Chromium gates have not run. The complete release gate is still pending.
+review covers all 85 diagram states. After the owner's explicit START, Draft
+PR482 was created and native CI ran. The ordinary course job passed; the roots
+job found the figure of 353a ending 3.55px below the 320x900 first screen. The
+mobile source/prompt spacing correction preserves readable content and the
+unchanged browser assertions. The exact navigator source binding is refreshed
+for the reviewed cache-version update, with all other bindings retained.
+Corrected and composed-candidate CI/visual evidence is still required. The
+complete release gate is pending; the expanded chapter has not been published.

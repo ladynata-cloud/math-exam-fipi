@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+  "baseSha": "b0a7aee4f31b626d844ac3d833e5a1963208a771",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2113,8 +2113,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d2862188495afc6832225b565715e5b89158accb32ed85ee1ce66db0fcacff76",
-      "afterSha256": "89c354610d96bd28d956a43e60065f203a9098fe6dc94e5209c18da39c15d25b",
+      "beforeSha256": "499e14234bc1b6e75cb988b013a3c94d72697afb65db319c0d67ecafec8772bc",
+      "afterSha256": "4d5317bcdaae9550e97dd0d81a35b3f663ace39a581269bfe6add9dc403ccf9a",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -3815,6 +3815,15 @@
       "task": "docs/tasks/LOGARITHM_DISCOVERY_LESSON.md",
       "changedPaths": [
         "trainers/college-logarithms/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+      "sourceBaseSha": "b0a7aee4f31b626d844ac3d833e5a1963208a771",
+      "task": "docs/tasks/MAKARYCHEV8_SQUARE_ROOTS_COMPLETE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

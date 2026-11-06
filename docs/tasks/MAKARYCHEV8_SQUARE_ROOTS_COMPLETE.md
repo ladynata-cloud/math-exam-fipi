@@ -88,6 +88,15 @@ The current direct task authorizes implementation and verification of this exist
 - The attempted task-branch push was rejected by automatic approval review: it requires explicit START/push authorization. No alternate publication path was used. The repository was subsequently verified as the owner's public repository with push/admin permission, but this does not substitute for the missing action authorization. Draft PR, exact-head GitHub Chromium gates and publication remain pending.
 - Local Chromium still fails at the environment socket policy; no security-policy bypass was attempted. Final gate `MAKARYCHEV8_SQUARE_ROOTS_COMPLETE_OK` is withheld until the required native-browser checks and visual review pass.
 
+### PR #482 browser and source-binding follow-up, 2026-11-07
+
+- The owner's later explicit START was used to create Draft PR #482. Remote head `73119f0233e9902cbdbed7a78f60b9d475d3033e` has exactly the prepared source tree; the historical pre-START rejection above no longer blocks scoped submission or fixes. Merge and publication remain separately restricted.
+- All six initial workflows completed: four passed, while the course workflow's `square-roots` job and the public navigator workflow failed. The ordinary `course` job passed, including native browser coverage of the earlier exercise blocks. The roots source and engine gates passed; the first roots layout failure is not a mathematical error.
+- In CI run `42311019122`, the necessary figure for `roots-353-a` ended at y=903.55 on the 320x900 viewport. The artifact was visually inspected. A bounded mobile source/prompt spacing adjustment retains the full condition, font size, graph and all browser assertions. Native-browser confirmation of the correction remains required; isolated local Chromium still fails at the environment socket policy, with no bypass attempted.
+- The navigator failure is the expected exact-payload mismatch after the seven coupled course-cache URLs changed. The exact navigator include pair remains untouched. The canonical source-binding refresh function verified the committed layout checkpoint `b0a7aee4f31b626d844ac3d833e5a1963208a771`, changes only the Makarychev index binding, and preserves the other 609 bindings plus all provenance history. No assertion or gate was weakened.
+- Current main advanced to `ac0fdfa68f3e6a79f5b08ae2ef43c16dc138c1f8` through the independent VPR release. Its additional navigator entries and source bindings must be preserved during any later composition; the global source checkpoint cannot be selected by blindly preferring either manifest. No branch synchronization, merge or deployment is performed by these fixes.
+- The final marker remains withheld pending the corrected exact-head and composed-candidate browser gates. The later request for the whole textbook is a separate proposed task, not content silently added to this roots PR.
+
 ## Required handoff
 
 ```text
