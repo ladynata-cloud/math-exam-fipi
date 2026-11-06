@@ -19,7 +19,7 @@ function fixture(t){
  w.LearningCatalog=catalog;
  for(const file of ['lesson-workspace.js','teaching.js'])w.eval(fs.readFileSync(path.join(root,'learning',file),'utf8'));
  const startup=source.lastIndexOf("(async()=>{const revision=authRevision;try{try{const status=await api('/status')");assert(startup>0);
- w.eval(source.slice(0,startup)+`window.fixtureApp={set(person,people=[],savedLessons=[]){account=person;students=people;assignments=[];attempts=[];lessons=savedLessons;authReady=false;},render,lessonDialog,lessonAssignmentDialog,lessonAction,poll,remember,openContent,clearAccountView,getLessons:()=>lessons,setActiveLesson:value=>{activeLesson=value;},getActiveLesson:()=>activeLesson};})();`);
+ w.eval(source.slice(0,startup)+`window.fixtureApp={set(person,people=[],savedLessons=[]){account=person;students=people;assignments=[];attempts=[];lessons=savedLessons;authReady=false;},render,mountWork(attempt,lesson){dispose();activeAttempt=attempt;activeLesson=lesson;mountWorkspace(attempt,{lesson:!!lesson,learnerId:attempt.learnerId});},lessonDialog,lessonAssignmentDialog,lessonAction,poll,remember,openContent,clearAccountView,getLessons:()=>lessons,setActiveLesson:value=>{activeLesson=value;},getActiveLesson:()=>activeLesson};})();`);
  let response=async url=>url.endsWith('/report')?{report:{student:pupil,attempts:[],positions:[]}}:url.endsWith('/profile')?{profile:pupil.profile}:url.endsWith('/ai-drafts')?{drafts:[]}:url.endsWith('/parent-access')?{parentAccess:{exists:false}}:{plan:{items:[]}};
  w.fetch=async(url,options={})=>{calls.push({url,options});const data=await response(url,options);return{ok:true,status:200,json:async()=>data};};
  w.fixtureApp.set(teacher,[pupil,other]);t.after(()=>w.close());
@@ -123,4 +123,20 @@ test('a lost add-material acknowledgement keeps its form usable across polls and
  assert.deepEqual(requests[1].payload,requests[0].payload);
  assert.equal(f.w.document.getElementById('modal').open,false);assert.equal(form.isConnected,false);
  assert.equal(f.w.fixtureApp.getActiveLesson().seats[0].attemptId,b.id);
+});
+
+test('authored LCM lesson has one secondary-tools panel and keeps control and catalogue navigation visible',t=>{
+ const f=fixture(t),item=catalog.items.find(row=>row.unitKind==='author-supplement'&&row.unitId===1008);assert(item);
+ f.w.LearningTrainerFrame=class{update(){}destroy(){}fit(){}};
+ f.w.LearningDrawing=class{update(){}destroy(){}draw(){}};
+ const attempt={id:'lcm_fixture',trainerId:item.trainerId,contentId:item.contentId,learnerId:pupil.id,teacherId:teacher.id,taskSpec:{unitId:1008},state:{},strokes:[],version:0,controller:'student',outcome:'started'};
+ const lesson={id:'lcm_lesson',title:'LCM lesson',version:0,seats:[{learnerId:pupil.id,name:pupil.name,attemptId:attempt.id,attempt,materials:[{attemptId:attempt.id,title:item.title}]}],presentation:{target:null}};
+ f.w.fixtureApp.mountWork(attempt,lesson);
+ assert.equal(f.main.querySelectorAll('.lesson-session-tools,.lcm-workspace-tools').length,1);
+ assert(f.main.querySelector('#trainer-control').closest('.workspace-heading'));
+ assert(f.main.querySelector('#show-history').closest('.lesson-session-tools'));
+ assert.equal(f.main.querySelector('#workspace-vilenkin-catalog').closest('details'),null);
+ f.w.fixtureApp.mountWork(attempt,null);
+ assert.equal(f.main.querySelectorAll('.lcm-workspace-tools').length,1);
+ assert(f.main.querySelector('#trainer-control').closest('.lcm-workspace-tools'),'Standalone course keeps its established controls');
 });

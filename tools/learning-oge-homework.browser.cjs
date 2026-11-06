@@ -130,6 +130,7 @@ async function main() {
     for(const m of frameMessages){assert(!JSON.stringify(m).includes(pupil.id));assert(!JSON.stringify(m).includes(pupil.login));}
     // Teacher uses the actual assignment/quantity/publication UI; two distinct tasks.
     await tp.goto(origin+'/learning/#practice=oge-public%3A19');await tp.reload();await tp.locator('[data-practice-start]').click();
+    await tp.locator('[data-content-assign]').click();
     await tp.locator('#assignment-form [name=course]').selectOption('ege');
     assert.equal(await tp.locator('#assignment-form [name=content] option[value^="oge-public:"]').count(),0,
       'OGE homework must not enter the EGE assignment catalogue');

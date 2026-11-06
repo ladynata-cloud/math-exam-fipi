@@ -164,19 +164,23 @@ cabinet, lesson, trainer and board boundaries.
 - Actual branch: `feat/lesson-workspace-20261107`
 - Actual base SHA: `25548b86df75b8c90a5dc5c6f1f1925c2ad70636`
 - Actual head SHA: recorded with the exact candidate in the Draft PR handoff
-- PR: pending initial publication
+- PR: [Draft PR 478](https://github.com/ladynata-cloud/math-exam-fipi/pull/478)
 - Commits: implementation and validation of this one task
-- Tests passed: all 410 backend tests; 25 DOM checks (8 actual cabinet,
+- Tests passed: all 410 backend tests; 26 DOM checks (9 actual cabinet,
   7 picker/queue, 10 rehearsal); targeted Vilenkin cabinet regressions;
   JavaScript syntax and `git diff --check`.
 - Tests failed: none in the current local test set.
 - Independent technical review: confirmed and fixed private internal-navigation
   rejection, lost-acknowledgement lesson-form retry, and temporary identity-check
   lock during asynchronous preparation. Each has a passing regression.
-  Monotonic lesson/attempt state also has actual cabinet regressions.
+  The duplicate authored-LCM tools panel is also fixed and reviewed; standalone
+  LCM behavior is retained. Monotonic lesson/attempt state has actual cabinet
+  regressions.
 - Tests not run locally: real Chromium gates because the local browser cannot
   create required sockets. The dedicated CI runs the new two-role journey and
   existing classroom/course-navigation gates before printing the final marker.
+- Final CI result, exact candidate SHA, screenshots and gate marker are recorded
+  in the PR handoff so documentation does not require a recursive status commit.
 - Deployment: not performed; separate owner authorization is required.
 - Scope deviations: none
 
