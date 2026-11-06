@@ -56,7 +56,7 @@ function boot({ state = null, hash = ROUTE, board = false } = {}) {
   w.URL.revokeObjectURL = () => {};
   w.HTMLAnchorElement.prototype.click = () => {};
   if (state) w.localStorage.setItem(KEY, JSON.stringify(state));
-  for (const file of ['math.js', 'data.js', 'models.js'])
+  for (const file of ['math.js', 'data.js', 'continuation-models.js', 'models.js'])
     w.eval(read('school/peterson6/' + file));
   if (board) {
     w.eval(read('school/peterson6/board-session.js'));
@@ -396,8 +396,8 @@ async function test(name, action) {
     }],
     ['current board choices roundtrip without personal progress fields or storage writes', () => {
       const rt = boot({ board: true });
-      assert.equal(rt.registration().version, '1.1.0');
-      assert.equal(rt.registration().stateSchemaVersion, 1);
+      assert.equal(rt.registration().version, '2.0.0');
+      assert.equal(rt.registration().stateSchemaVersion, 2);
       assert.equal(rt.w.localStorage.getItem(KEY), null);
       rt.click('[data-action="guided"]'); chooseStep(rt, currentTasks[ID], 0);
       const snapshot = rt.w.__peterson6Board.getState();
