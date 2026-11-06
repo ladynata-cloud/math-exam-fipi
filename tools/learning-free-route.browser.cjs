@@ -39,9 +39,13 @@ function assertCredentialFreeReceipt(row, secret, identities) {
   assert.deepEqual(Object.keys(row).sort(), ['actor_id', 'fingerprint', 'op_id', 'result_json']);
   assert.match(row.actor_id, opaqueId); assert.match(row.op_id, opaqueId);
   assert.match(row.fingerprint, /^[a-f0-9]{64}$/);
+  const actor = identities.accounts?.get(row.actor_id);
+  assert.ok(actor && ['teacher', 'student'].includes(actor.role), 'Receipt actor must be a persisted account');
   const result = JSON.parse(row.result_json), trusted = new Map();
+  assert.ok(result && typeof result === 'object' && !Array.isArray(result), 'Receipt result must be an object');
   function identity(dto, at, table, fields) {
-    if (dto == null) return;
+    if (dto === undefined) return;
+    assert.ok(dto && typeof dto === 'object' && !Array.isArray(dto), 'Receipt identity must be an object');
     const persisted = identities[table]?.get(dto.id);
     assert.ok(persisted, 'Receipt identity must exist independently in ' + table);
     for (const [field, column] of Object.entries(fields)) if (Object.hasOwn(dto, field)) {
@@ -67,6 +71,10 @@ function assertCredentialFreeReceipt(row, secret, identities) {
   }
   const assignmentFields = { id: 'id', learnerId: 'learner_id', attemptId: 'attempt_id', batchId: 'batch_id' };
   if (result.operation === 'onboard-student') {
+    assert.deepEqual(Object.keys(result).sort(), ['authEpoch', 'learnerId', 'operation', 'profileVersion'],
+      'Onboarding stores only its minimal nonsecret retry metadata');
+    assert.equal(actor.role, 'teacher', 'Only a persisted teacher can issue pupil access');
+    assert.equal(result.authEpoch, 0); assert.equal(result.profileVersion, 1);
     const pupil = identities.accounts?.get(result.learnerId);
     assert.ok(pupil && pupil.role === 'student' && pupil.teacher_id === row.actor_id,
       'An onboarding receipt refers to a persisted student of its issuing teacher');
@@ -104,34 +112,121 @@ function assertCredentialFreeReceipt(row, secret, identities) {
   inspect(result);
 }
 function verifyReceiptPrivacyGuard() {
-  const collisionId = '0381' + 'B'.repeat(20), unknownId = '0381' + 'X'.repeat(20);
-  const identities = { attempts: new Map([[collisionId, { id: collisionId }]]), learning_photos: new Map([[collisionId, { id: collisionId }]]) };
-  const row = { actor_id: 'A'.repeat(24), op_id: '03810000-0000-4000-8000-000000000001',
-    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: collisionId }, notice: 'Safe fixture' }) };
+  const id = letter => PUPIL_PASSWORD + letter.repeat(20);
+  const teacherId = id('T'), learnerId = id('L'), attemptId = id('A'), sourceId = id('S');
+  const assignmentId = id('W'), batchId = id('B'), photoId = id('P'), feedbackId = id('F');
+  // Unknown IDs without the PIN prove rejection comes from provenance checks,
+  // not merely the later secret-substring scan.
+  const unknownIds = [id('X'), 'U'.repeat(24)], unknownId = unknownIds[1];
+  const teacherRow = { id: teacherId, role: 'teacher', teacher_id: teacherId };
+  const pupilRow = { id: learnerId, role: 'student', teacher_id: teacherId };
+  const identities = {
+    accounts: new Map([[teacherId, teacherRow], [learnerId, pupilRow]]),
+    attempts: new Map([
+      [attemptId, { id: attemptId, learner_id: learnerId, teacher_id: teacherId, source_attempt_id: sourceId }],
+      [sourceId, { id: sourceId, learner_id: learnerId, teacher_id: teacherId, source_attempt_id: null }]
+    ]),
+    assignments: new Map([[assignmentId, { id: assignmentId, learner_id: learnerId, attempt_id: attemptId, batch_id: batchId }]]),
+    learning_photos: new Map([[photoId, { id: photoId }]]),
+    learning_feedback: new Map([[feedbackId, { id: feedbackId }]])
+  };
+  const row = { actor_id: teacherId, op_id: '03810000-0000-4000-8000-000000000001',
+    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: attemptId }, notice: 'Safe fixture' }) };
   assert.equal(JSON.stringify(row).includes(PUPIL_PASSWORD), true, 'The old substring guard falsely rejects valid opaque metadata');
-  assertCredentialFreeReceipt(row, PUPIL_PASSWORD, identities);
-  const pupilRow = { id: collisionId, role: 'student', teacher_id: row.actor_id };
-  const onboarding = { ...row, result_json: JSON.stringify({ operation: 'onboard-student', learnerId: collisionId, authEpoch: 0, profileVersion: 1 }) };
-  const withPupil = data => ({ ...identities, accounts: new Map([[data.id, data]]) });
-  assertCredentialFreeReceipt(onboarding, PUPIL_PASSWORD, withPupil(pupilRow));
-  for (const invalid of [{ ...pupilRow, id: unknownId }, { ...pupilRow, role: 'teacher' }, { ...pupilRow, teacher_id: unknownId }]) {
-    assert.throws(() => assertCredentialFreeReceipt(onboarding, PUPIL_PASSWORD, withPupil(invalid)));
+  const counts = { accepted: 0, rejected: 0 };
+  function check(label, payload, expected, oracle = identities, metadata = {}) {
+    const run = () => assertCredentialFreeReceipt({ ...row, ...metadata, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD, oracle);
+    if (expected) { assert.doesNotThrow(run, label); counts.accepted++; }
+    else { assert.throws(run, { code: 'ERR_ASSERTION' }, label); counts.rejected++; }
   }
+  const attempt = { id: attemptId, learnerId, teacherId, sourceAttemptId: sourceId, submission: { photoIds: [photoId] } };
+  const assignment = { id: assignmentId, learnerId, attemptId, batchId };
+  const onboarding = { operation: 'onboard-student', learnerId, authEpoch: 0, profileVersion: 1 };
+  const photo = { id: photoId, url: '/api/learning/photos/' + photoId };
+  for (const [label, payload] of [
+    ['attempt identities', { attempt }],
+    ['nullable source and submission', { attempt: { ...attempt, id: sourceId, sourceAttemptId: null, submission: null } }],
+    ['assignment identities', { assignment }],
+    ['minimal assignment publication receipt', { assignment: { id: assignmentId, status: 'published' } }],
+    ['nested assignment attempt', { assignments: [{ ...assignment, attempt }] }],
+    ['photo and top-level submission', { photo, submission: { photoIds: [photoId] } }],
+    ['empty photo submission', { submission: { photoIds: [] } }],
+    ['teacher feedback identity', { feedback: { id: feedbackId, text: 'Safe synthetic feedback' } }],
+    ['onboarding', onboarding],
+    ['ordinary nonsecret result', { profile: { version: 1, focus: 'Safe fixture' } }]
+  ]) check(label, payload, true);
+  check('student operation actor', { attempt }, true, identities, { actor_id: learnerId });
 
-  assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify({ photo: { id: collisionId, url: '/api/learning/photos/' + collisionId }, submission: { photoIds: [collisionId] } }) }, PUPIL_PASSWORD, identities);
+  for (const [table, makePayload] of [
+    ['attempts', value => ({ attempt: { ...attempt, id: value } })],
+    ['assignments', value => ({ assignment: { ...assignment, id: value } })],
+    ['assignments[]', value => ({ assignments: [{ ...assignment, id: value, attempt }] })],
+    ['learning_photos', value => ({ photo: { id: value, url: '/api/learning/photos/' + value } })],
+    ['learning_feedback', value => ({ feedback: { id: value } })],
+    ['submission.photoIds', value => ({ submission: { photoIds: [value] } })],
+    ['attempt.submission.photoIds', value => ({ attempt: { ...attempt, submission: { photoIds: [value] } } })],
+    ['accounts', value => ({ ...onboarding, learnerId: value })]
+  ]) for (const value of unknownIds) check('unknown ' + table, makePayload(value), false);
+
+  for (const field of ['learnerId', 'teacherId', 'sourceAttemptId']) {
+    check('mismatched attempt ' + field, { attempt: { ...attempt, [field]: unknownId } }, false);
+    check('mismatched nested attempt ' + field, { assignments: [{ ...assignment, attempt: { ...attempt, [field]: unknownId } }] }, false);
+  }
+  for (const field of ['learnerId', 'attemptId', 'batchId']) {
+    check('mismatched assignment ' + field, { assignment: { ...assignment, [field]: unknownId } }, false);
+    check('mismatched assignment array ' + field, { assignments: [{ ...assignment, [field]: unknownId, attempt }] }, false);
+  }
+  for (const value of [null, [], 'safe', 7]) {
+    check('non-object receipt result', value, false);
+    for (const field of ['attempt', 'assignment', 'photo', 'feedback']) check('non-object ' + field, { [field]: value }, false);
+  }
+  for (const value of [null, 'safe', {}]) check('non-array assignments', { assignments: value }, false);
+  for (const value of [null, 'safe', {}, [17]]) check('invalid photo ID collection', { submission: { photoIds: value } }, false);
+
+  const withAccounts = accounts => ({ ...identities, accounts: new Map(accounts.map(account => [account.id, account])) });
+  check('missing persisted actor', { attempt }, false, withAccounts([pupilRow]));
+  check('forged actor', { attempt }, false, identities, { actor_id: unknownId });
+  check('unsupported persisted actor role', { attempt }, false, withAccounts([{ ...teacherRow, role: 'parent' }, pupilRow]));
+  const malformedId = 'not-an-opaque-id';
+  check('malformed persisted actor ID', { attempt }, false,
+    withAccounts([{ ...teacherRow, id: malformedId }, pupilRow]), { actor_id: malformedId });
+  for (const [field, column] of Object.entries({ id: 'id', learnerId: 'learner_id', teacherId: 'teacher_id', sourceAttemptId: 'source_attempt_id' })) {
+    const persisted = { ...identities.attempts.get(attemptId), [column]: malformedId };
+    check('malformed persisted attempt ' + field, { attempt: { ...attempt, [field]: malformedId } }, false,
+      { ...identities, attempts: new Map([[persisted.id, persisted]]) });
+  }
+  check('malformed persisted submitted photo ID', { submission: { photoIds: [malformedId] } }, false,
+    { ...identities, learning_photos: new Map([[malformedId, { id: malformedId }]]) });
+  check('non-student onboarding target', onboarding, false, withAccounts([teacherRow, { ...pupilRow, role: 'teacher' }]));
+  check('pupil belongs to another teacher', onboarding, false, withAccounts([teacherRow, { ...pupilRow, teacher_id: unknownId }]));
+  check('non-teacher onboarding actor', onboarding, false, withAccounts([{ ...teacherRow, role: 'student' }, pupilRow]));
+  for (const field of ['authEpoch', 'profileVersion', 'learnerId']) {
+    const missing = { ...onboarding }; delete missing[field];
+    check('missing onboarding ' + field, missing, false);
+  }
+  for (const change of [{ authEpoch: '0' }, { authEpoch: 1 }, { profileVersion: '1' }, { profileVersion: 0 }, { extra: 'safe' }]) {
+    check('noncanonical onboarding metadata', { ...onboarding, ...change }, false);
+  }
+  for (const url of ['/api/learning/photos/' + unknownId, photo.url + '?pin=' + PUPIL_PASSWORD,
+    photo.url + '?download=1', 'https://example.invalid' + photo.url]) {
+    check('noncanonical photo URL', { photo: { ...photo, url } }, false);
+  }
   for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
-    { id: PUPIL_PASSWORD }, { nested: { recoveryCode: 'different-credential-value' } },
-    { attempt: { id: collisionId, taskSpec: { extra: { id: collisionId } } } },
-    { attempt: { id: collisionId, state: { work: { learnerId: collisionId } } } },
-    { attempt: { id: unknownId } }, { attempt: { id: collisionId, password: 'another-value' } },
-    { photo: { id: collisionId, url: '/api/learning/photos/' + collisionId + '?pin=' + PUPIL_PASSWORD } },
-    { submission: { photoIds: [unknownId] } }]) {
-    assert.throws(() => assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD, identities));
+    { id: PUPIL_PASSWORD }, { id: attemptId }, { learnerId }, { nested: { recoveryCode: 'different-credential-value' } },
+    { attempt: { ...attempt, taskSpec: { extra: { id: attemptId } } } },
+    { attempt: { ...attempt, state: { work: { learnerId } } } },
+    { assignments: [{ ...assignment, extra: { id: assignmentId } }] },
+    { attempt: { ...attempt, password: 'another-value' } }]) {
+    check('secret or identity outside its trusted path', payload, false);
+  }
+  for (const field of ['password', 'passphrase', 'credential', 'token', 'csrf', 'recoveryCode', 'pin']) {
+    check('forbidden credential key ' + field, { nested: [{ [field]: 'different-value' }] }, false);
   }
   for (const field of ['actor_id', 'op_id', 'fingerprint']) {
-    assert.throws(() => assertCredentialFreeReceipt({ ...row, [field]: PUPIL_PASSWORD }, PUPIL_PASSWORD, identities));
+    check('invalid metadata ' + field, { attempt }, false, identities, { [field]: PUPIL_PASSWORD });
   }
-  assert.throws(() => assertCredentialFreeReceipt({ ...row, password: PUPIL_PASSWORD }, PUPIL_PASSWORD, identities));
+  check('extra receipt column', { attempt }, false, identities, { password: PUPIL_PASSWORD });
+  console.log('LEARNING_RECEIPT_PRIVACY_GUARD_OK: ' + JSON.stringify(counts));
 }
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const originOf = server => 'http://127.0.0.1:' + server.address().port;
@@ -722,4 +817,5 @@ async function verifyPaperHomework({ teacher, student, pupil, peer, store, origi
     await teacher.page.screenshot({ path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'paper-homework-teacher-desktop.png'), fullPage: true });
   }
 }
-main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
+if (process.argv.includes('--receipt-guard-only')) verifyReceiptPrivacyGuard();
+else main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
