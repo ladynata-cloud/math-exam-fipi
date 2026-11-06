@@ -702,6 +702,20 @@
       "notes": "Совместная работа: выбранная функция, шаги исследования, ответы, отмеченные точки, подсказки и диагностика. Личный прогресс не изменяется."
     },
     {
+      "trainerId": "college-logarithms",
+      "file": "trainers/college-logarithms/index.html",
+      "title": "Логарифмы с нуля · колледж и ЕГЭ",
+      "group": "Колледж / математика",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "60 задач; проверяемые шаги, графики, параметры, подсказки, ответы и записи. Личный прогресс изолирован."
+    },
+    {
       "trainerId": "oge-task6-fractions",
       "file": "trainers/oge-task6-fractions.html",
       "title": "ОГЭ №6 · Дроби",
