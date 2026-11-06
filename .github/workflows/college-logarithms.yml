@@ -1,0 +1,61 @@
+name: College logarithms trainer
+on:
+  pull_request:
+    paths:
+      - 'trainers/college-logarithms/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'tools/college-logarithms-browser.cjs'
+      - '.github/workflows/college-logarithms.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/college-logarithms/**'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-picker*'
+      - 'trainers/board-bridge.js'
+      - 'trainers/trainer-board.html'
+      - 'board-server/**'
+      - 'tools/college-logarithms-browser.cjs'
+      - '.github/workflows/college-logarithms.yml'
+permissions:
+  contents: read
+jobs:
+  mathematics-and-shared-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/logarithms-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.51.1
+          node "$RUNNER_TEMP/logarithms-qa/node_modules/playwright/cli.js" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/logarithms-qa/node_modules" >> "$GITHUB_ENV"
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+      - name: Mathematics, retained work, shared transport and registry
+        run: |
+          for file in trainers/college-logarithms/*.js tools/college-logarithms-browser.cjs; do node --check "$file"; done
+          node --test trainers/college-logarithms/*.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          python3 tools/build-sitemap.py --check
+          git diff --check
+      - name: Native browser, two participants, graph controls and mobile layout
+        env:
+          LOGARITHMS_ARTIFACT_DIR: logarithms-evidence
+        run: node tools/college-logarithms-browser.cjs
+      - name: Preserve sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: college-logarithms-evidence
+          path: logarithms-evidence
+          if-no-files-found: warn
+          retention-days: 14

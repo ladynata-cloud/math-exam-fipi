@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Логарифмы: от первых шагов к ЕГЭ — тренажёр | MathExam</title>
+  <meta name="description" content="102 задания по логарифмам: смысл, свойства, интерактивные графики, уравнения и неравенства. Пошаговый курс для колледжа, базового и профильного ЕГЭ. Работа на общей доске.">
+  <link rel="canonical" href="https://mathexam.space/trainers/college-logarithms/">
+  <meta property="og:title" content="Логарифмы — от первых шагов к ЕГЭ">
+  <meta property="og:description" content="Понятные шаги, живые графики и 102 задания. Можно решать вместе на общей доске.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mathexam.space/trainers/college-logarithms/">
+  <meta name="theme-color" content="#126c52">
+  <script src="./board-mode.js?v=1"></script>
+  <link rel="stylesheet" href="./style.css?v=1">
+  <script src="../board-bridge.js" defer></script>
+  <script src="./data.js?v=1" defer></script>
+  <script src="./engine.js?v=1" defer></script>
+  <script src="./plot.js?v=1" defer></script>
+  <script src="./board.js?v=1" defer></script>
+  <script src="./app.js?v=1" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../">Math<span>Exam</span></a>
+    <a class="catalog-link" href="../">Все тренажёры</a>
+    <a class="board-link" id="open-board" href="../trainer-board.html?trainer=%2Ftrainers%2Fcollege-logarithms%2Findex.html">Открыть на доске <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <div class="heading"><div><p class="eyebrow">КОЛЛЕДЖ · БАЗА · ПРОФИЛЬ</p><h1>Логарифмы <span>по шагам</span></h1></div><span class="course-count">102 задания</span></div>
+    <nav class="toolbar" aria-label="Навигация по курсу">
+      <button class="secondary" id="route-toggle" aria-expanded="false" aria-controls="route">☰ Все темы</button>
+      <label class="task-picker"><span id="module-name">Начинаем с простого</span><select id="task-select" aria-label="Выбрать задание"></select></label>
+      <button class="quiet diagnose" id="diagnose">С чего начать?</button>
+    </nav>
+    <section id="route" class="route" aria-label="Маршрут по логарифмам" hidden></section>
+    <p class="mode-note" id="mode-note"></p>
+    <section class="workspace" id="workspace" aria-label="Текущая задача">
+      <div class="problem-card">
+        <div class="problem-meta"><span class="badge" id="task-label"></span><span id="task-position"></span></div>
+        <h2 id="task-title">Что означает логарифм?</h2>
+        <div id="condition" class="condition"><p>Загружаем задание…</p></div>
+        <div id="visual" class="visual" hidden></div>
+        <p id="graph-caption" class="graph-caption" hidden></p>
+        <div id="lab" class="lab" hidden>
+          <p class="lab-label" id="lab-label">Измени график</p>
+          <div class="graph-controls">
+            <label>Основание a<select id="graph-base"><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="0.5">1/2</option><option value="0.3333333333333333">1/3</option><option value="0.25">1/4</option></select></label>
+            <label>Сдвиг вправо h <output id="graph-h-value">0</output><input id="graph-h" type="range" min="-4" max="4" step="1" value="0"></label>
+            <label>Сдвиг вверх k <output id="graph-k-value">0</output><input id="graph-k" type="range" min="-4" max="4" step="1" value="0"></label>
+            <label>Перед логарифмом<select id="graph-sign"><option value="1">Плюс</option><option value="-1">Минус</option></select></label>
+          </div>
+          <p id="graph-formula" class="graph-formula"></p>
+        </div>
+        <div class="problem-tools"><button class="quiet" id="theory-toggle" aria-expanded="false">Короткая памятка</button><button class="quiet" id="lab-toggle" aria-expanded="false" hidden>Исследовать график</button></div>
+        <section class="theory" id="theory" aria-label="Памятка к теме" hidden></section>
+      </div>
+      <div class="work-card">
+        <div class="step-heading"><span id="step-counter"></span><span id="assistance" class="assistance"></span></div>
+        <div class="progress-track" aria-hidden="true"><div id="step-progress"></div></div>
+        <form id="answer-form" novalidate>
+          <div id="current-step"></div>
+          <div id="feedback" role="status" aria-live="polite"></div>
+          <div class="answer-actions"><button class="primary" type="submit" id="check">Проверить</button><button class="secondary" type="button" id="hint-toggle" aria-expanded="false">Подсказка</button></div>
+        </form>
+        <section id="hint" class="hint" aria-label="Подсказка к текущему шагу" hidden></section>
+        <div id="completion" class="completion" hidden></div>
+        <div class="task-actions"><button class="primary" id="next-task">Следующее задание →</button><button class="quiet" id="restart">Начать заново</button></div>
+        <section id="history" class="history" aria-label="Выполненные шаги"></section>
+      </div>
+    </section>
+    <section id="module-result" class="module-result" aria-live="polite" hidden></section>
+    <section class="progress-section" id="personal-progress"><h2>Мой путь</h2><p id="progress-summary"></p><p class="muted">Результаты и незаконченные ответы сохраняются в этом браузере.</p></section>
+    <p id="storage-note" class="storage-note" role="status" hidden>Браузер не разрешил сохранить работу. Можно продолжать решать; после закрытия страницы ответы не сохранятся.</p>
+    <footer><a href="../">Все тренажёры</a><span>Авторские учебные задания · MathExam</span><a href="../../courses/">Курсы</a></footer>
+  </main>
+  <noscript><p class="noscript">Для интерактивных заданий включите JavaScript. Курс включает смысл и свойства логарифма, построение графиков, небольшие уравнения и неравенства, задания уровня базового и профильного ЕГЭ.</p></noscript>
+</body>
+</html>

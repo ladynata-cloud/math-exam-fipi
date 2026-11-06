@@ -1,0 +1,33 @@
+{
+  "gate": "COLLEGE_LOGARITHMS_BROWSER_OK",
+  "browser": "134.0.6998.35",
+  "checks": [
+    "task-first layout 1280x900",
+    "task-first layout 320x900",
+    "native placement of a point with exact fractional x",
+    "draft and assistance survive hint close and reload",
+    "profile graph assessment hides model controls and formula",
+    "real board host creates and joins a local mirrored room",
+    "first native choice synchronizes without an extra click",
+    "accepted step synchronizes",
+    "partial answer synchronizes",
+    "wrong answer feedback synchronizes",
+    "contextual hint synchronizes",
+    "open topic menu graph-moves",
+    "select module graph-moves",
+    "graph prediction accepted",
+    "native slider forward movement",
+    "native slider reverse movement",
+    "graph transformation accepted",
+    "constructed-point draft synchronizes",
+    "student continues after control handoff",
+    "student reload hydrates the retained task and drafts",
+    "teacher regains control",
+    "freehand board drawing remains synchronized alongside the course",
+    "late join receives the current graph and drafts",
+    "shared trainer never reads or writes personal course storage"
+  ],
+  "productionRooms": 0,
+  "learnerAccounts": 0,
+  "status": "PASS"
+}
