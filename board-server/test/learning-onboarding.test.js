@@ -102,6 +102,23 @@ test('one confirmed request creates a ready account and two-course program witho
   assert.deepEqual((await f.request('/teacher/students')).data.students.find(s => s.id === result.data.student.id).profile, result.data.profile);
 });
 
+test('college logarithms is assignable without a school grade and supplies course and shared-board destinations', async t => {
+  const course = courseProgram.get('college-logarithms');
+  assert.equal(course.publicURL, 'https://mathexam.space/trainers/college-logarithms/');
+  const board = new URL(course.boardURL);
+  assert.equal(board.origin + board.pathname, 'https://mathexam.space/trainers/trainer-board.html');
+  assert.equal(board.searchParams.get('trainer'), '/trainers/college-logarithms/index.html?task=meaning-1');
+  assert.equal(course.storage, 'browser');
+  const f = await fixture(t);
+  const profile = { course: 'school', goal: null, focus: '', program: { grade: null, courseIds: [course.id] } };
+  const created = await f.request('/teacher/students', input({ profile }));
+  assert.equal(created.status, 201);
+  assert.deepEqual(created.data.profile.program, profile.program);
+  const login = await f.request('/login', { login: 'synthetic_new', password: CODE, expectedRole: 'student' }, null);
+  assert.equal(login.status, 200);
+  assert.deepEqual((await f.request('/profile', undefined, login)).data.profile.program, profile.program);
+});
+
 test('lost-response replay uses the same account and code, and changed input cannot reuse its operation', async t => {
   const f = await fixture(t), body = input();
   const first = await f.request('/teacher/students', body), snapshot = rows(f.store, ['accounts', 'learning_profiles', 'learning_programs', 'operations']);
