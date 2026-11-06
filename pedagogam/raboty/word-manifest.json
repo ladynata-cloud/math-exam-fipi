@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "9f53d25d45a69e2d251334f83bd8680b469978e0eea7658cbe0256ea89656173",
+  "topics": 3,
+  "variants": 12,
+  "tasks": 48,
+  "files": [
+    {
+      "path": "arith-brackets-like-terms/minus-pered-skobkami-zadaniya.docx",
+      "role": "student",
+      "topic": "minus-pered-skobkami",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "af5f9eddcd1fa2da9bcecbad34c09c03c6adc33025e09d1d7c668bac0653cf93",
+      "bytes": 38339
+    },
+    {
+      "path": "arith-brackets-like-terms/minus-pered-skobkami-otvety.docx",
+      "role": "answers",
+      "topic": "minus-pered-skobkami",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "4b9d686e8fc314ca5ae6646a843f83648ff9055fe7ee9c0f69eb4bab410c7ac5",
+      "bytes": 38561
+    },
+    {
+      "path": "geo-ugly-treugolnika/summa-uglov-treugolnika-zadaniya.docx",
+      "role": "student",
+      "topic": "summa-uglov-treugolnika",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "a22b8b492344d00aa8c5f16b37f6406f8768e93f93d549325aac7046b392a903",
+      "bytes": 38452
+    },
+    {
+      "path": "geo-ugly-treugolnika/summa-uglov-treugolnika-otvety.docx",
+      "role": "answers",
+      "topic": "summa-uglov-treugolnika",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "7fe679a17d93fa67697cf392dbb1bf7b013ed12887c4e621ff8566b4ab3dbe59",
+      "bytes": 38531
+    },
+    {
+      "path": "alg-line/lineynye-grafiki-oge-zadaniya.docx",
+      "role": "student",
+      "topic": "lineynye-grafiki-oge",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "396cc9d4303c9439a7ca04afbccc95b0490f102b643d5281a65b986d78afecc0",
+      "bytes": 40173
+    },
+    {
+      "path": "alg-line/lineynye-grafiki-oge-otvety.docx",
+      "role": "answers",
+      "topic": "lineynye-grafiki-oge",
+      "variants": 4,
+      "expectedPages": 4,
+      "sha256": "91e66ab71afed24640fe4048de92bb9dcfeb775ba9cf5936854fbb44830afd6b",
+      "bytes": 40620
+    },
+    {
+      "path": "rabota-nad-oshibkami.docx",
+      "role": "error-review",
+      "expectedPages": 1,
+      "sha256": "5b37952463bdcf61646cf0f4278a18194247226387622277b33d428bd07340b0",
+      "bytes": 38147
+    }
+  ],
+  "archive": {
+    "path": "mathexam-raboty-word.zip",
+    "files": 7,
+    "sha256": "00f3c3c267f87ee30cf935075f02d1e786c7be11f15ac8483a2084b7a4bcfae1",
+    "bytes": 256404
+  }
+}

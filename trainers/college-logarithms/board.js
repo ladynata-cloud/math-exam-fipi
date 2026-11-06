@@ -1,0 +1,10 @@
+(function(root){'use strict';
+root.LogCourseBoardAdapter={create(hooks){const C=root.LogCourseCore;let notify=null,applying=false;
+ const getState=()=>{const s=hooks.read();if(!C.validate(s))throw new TypeError('Invalid logarithm state');return C.clone(s);};
+ const applyState=value=>{if(!C.validate(value))throw new TypeError('Invalid logarithm state');applying=true;try{hooks.write(C.clone(value));}finally{applying=false;}};
+ const api={getState,applyState,validateState:C.validate,changed(){if(!applying&&notify)notify();}};
+ root.getBoardTrainerState=getState;root.applyBoardTrainerState=applyState;root.LogCourseBoard=api;
+ if(root.LogCourseBoardMode&&root.MathExamBoard)root.MathExamBoard.register({id:'college-logarithms',version:'1.0.0',stateSchemaVersion:1,parentOrigin:root.location.origin,getState,applyState,subscribe(fn){notify=fn;return()=>{if(notify===fn)notify=null;};}});
+ return api;
+}};
+})(window);

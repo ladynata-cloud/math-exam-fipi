@@ -38,6 +38,7 @@ function normalize(value){
  // Alias only the literal same-origin course entry. Keep the registry's
  // trainers/ boundary and its rejection of encoded or traversing paths intact.
  const rawPath=raw.replace(/^(?:https?:)?\/\/[^/?#]*/i,'').split(/[?#]/,1)[0];
+ if(u.origin===location.origin&&rawPath===u.pathname&&u.pathname==='/trainers/college-logarithms/')return '/trainers/college-logarithms/index.html'+u.search+u.hash;
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-baza/path/','/ege-baza/path/index.html'].includes(u.pathname)){
   const id=u.hash.startsWith('#lesson=')?u.hash.slice(8):'';
   const position=['box','practice-displacement','practice-pour','practice-joined-surface','practice-faces'].includes(id)?11:['roundbody','pyramid','scale','practice-cone-area','practice-pyramid-lateral','practice-box-diagonal','practice-similar-volume'].includes(id)?13:null;
