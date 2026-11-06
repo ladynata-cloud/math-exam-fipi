@@ -54,6 +54,9 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/merzlyak-10-base/','/stereo-course/merzlyak-10-base/index.html'].includes(u.pathname)){
   return '/trainers/merzlyak-10-base.html'+u.search+u.hash;
  }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/sections/','/stereo-course/sections/index.html'].includes(u.pathname)){
+  return '/trainers/sections-from-zero.html'+u.search+u.hash;
+ }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/school/peterson6/','/school/peterson6/index.html'].includes(u.pathname)&&petersonRoute(u.hash)){
   return '/trainers/peterson6.html'+u.search+u.hash;
  }

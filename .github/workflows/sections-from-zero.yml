@@ -1,0 +1,87 @@
+name: Sections from zero course and shared board
+on:
+  pull_request:
+    paths:
+      - 'stereo-course/sections/**'
+      - 'trainers/sections-from-zero.html'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'tools/sections-*'
+      - 'tools/merzlyak-cabinet.test.cjs'
+      - 'tools/merzlyak-board-picker.test.cjs'
+      - 'tools/trainer-registry-client-cutover-smoke.cjs'
+      - '.github/workflows/sections-from-zero.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'stereo-course/sections/**'
+      - 'trainers/sections-from-zero.html'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'learning/**'
+      - 'board-server/**'
+      - 'tools/sections-*'
+      - 'tools/merzlyak-cabinet.test.cjs'
+      - 'tools/merzlyak-board-picker.test.cjs'
+      - 'tools/trainer-registry-client-cutover-smoke.cjs'
+      - '.github/workflows/sections-from-zero.yml'
+permissions:
+  contents: read
+concurrency:
+  group: sections-from-zero-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  course-and-shared-room:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch immutable legacy-host fixture for registry regression
+        run: git fetch --no-tags --depth=1 origin e9097137b6cd66d80962cadcef336255db28e9b1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/sections-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+          "$RUNNER_TEMP/sections-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/sections-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Independent mathematics, preserved source and deterministic build
+        run: |
+          python3 tools/sections-course-build.py --check
+          python3 tools/sections-course.test.py -v
+          node --check stereo-course/sections/assets/app.js
+          node --check stereo-course/sections/assets/board-session.js
+          node --check stereo-course/sections/assets/course-data.js
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-sitemap.test.py
+      - name: Course state, cabinet entry, selection and existing room boundaries
+        run: |
+          node --test tools/sections-*.test.cjs
+          node --test tools/merzlyak-cabinet.test.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-room-selection.test.cjs tools/merzlyak-board.test.cjs tools/board-room-error.test.cjs tools/learning-public-return.dom.cjs tools/board-ink.test.cjs tools/board-images.test.cjs
+          npm test --prefix board-server
+      - name: Real two-participant sections lesson and responsive cabinet return
+        env:
+          SECTIONS_SHOTS: artifacts/sections-from-zero
+        run: node tools/sections-course.browser.cjs
+      - name: Preserve existing Merzlyak shared lesson and registry boundaries
+        run: |
+          node tools/merzlyak-program-room.browser.cjs
+          B2_SMOKE_SECTION=fail-closed node tools/trainer-registry-client-cutover-smoke.cjs
+          B2_SMOKE_SECTION=live node tools/trainer-registry-client-cutover-smoke.cjs
+      - name: Preserve synthetic visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sections-from-zero-journeys
+          path: artifacts/sections-from-zero
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
