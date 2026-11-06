@@ -1,0 +1,205 @@
+{
+  "source": "PR420 c819927e484ce3afeae187d269974cb1cf2ead68; synthetic only",
+  "cases": [
+    {
+      "id": "d01",
+      "topic": "fractions",
+      "question": "3/4 + 2/3",
+      "expected": "17/12",
+      "unit": null,
+      "reference": "17/12 = 1 5/12"
+    },
+    {
+      "id": "d02",
+      "topic": "rounding",
+      "question": "Округли 9,96 до десятых",
+      "expected": "10",
+      "unit": null,
+      "reference": "10,0"
+    },
+    {
+      "id": "d03",
+      "topic": "gcd-lcm",
+      "question": "Найди НОК чисел 12, 18 и 30",
+      "expected": "180",
+      "unit": null,
+      "reference": "180"
+    },
+    {
+      "id": "d04",
+      "topic": "linear-equations",
+      "question": "-3x + 4 = 19",
+      "expected": "-5",
+      "unit": null,
+      "reference": "-5"
+    },
+    {
+      "id": "d05",
+      "topic": "linear-equations",
+      "question": "3(2x-1)-2(x+4)=9",
+      "expected": "5",
+      "unit": null,
+      "reference": "5"
+    },
+    {
+      "id": "d06",
+      "topic": "pythagoras",
+      "question": "В прямоугольном треугольнике гипотенуза 13 см, один катет 5 см. Найди другой катет.",
+      "expected": "12",
+      "unit": "cm",
+      "reference": "12 см"
+    },
+    {
+      "id": "d07",
+      "topic": "percentages",
+      "question": "В учебной задаче начальная сумма 12000 рублей увеличилась сначала на 10%, затем новая сумма на 20%. Найди результат.",
+      "expected": "15840",
+      "unit": "rub",
+      "reference": "15840 рублей"
+    },
+    {
+      "id": "d08",
+      "topic": "sections",
+      "question": "Куб с ребром 2. P, Q, R — середины рёбер AB, AD, AA1, выходящих из A. Построй сечение плоскостью PQR и найди его площадь.",
+      "expected": "sqrt(3)/2",
+      "unit": null,
+      "reference": "sqrt(3)/2"
+    },
+    {
+      "id": "d09",
+      "topic": "decimal-divide",
+      "question": "3,6 : 0,12",
+      "expected": "30",
+      "unit": null,
+      "reference": "30"
+    },
+    {
+      "id": "d10",
+      "topic": "congruence-sas",
+      "question": "AB=DE, AC=DF, угол BAC равен углу EDF. Докажи равенство треугольников ABC и DEF.",
+      "expected": null,
+      "unit": null,
+      "reference": "Первый признак: две стороны и угол между ними; ABC=DEF."
+    },
+    {
+      "id": "d11",
+      "topic": "oge-circle",
+      "question": "Центральный угол AOB равен 110 градусов. C лежит на большой дуге AB окружности с центром O. Найди угол ACB.",
+      "expected": "55",
+      "unit": "deg",
+      "reference": "55 градусов"
+    },
+    {
+      "id": "d12",
+      "topic": "oge-quadrilaterals",
+      "question": "Основание параллелограмма 8 см, боковая сторона 5 см, высота к основанию 3 см. Найди площадь.",
+      "expected": "24",
+      "unit": "cm2",
+      "reference": "24 см^2"
+    },
+    {
+      "id": "d13",
+      "topic": "oge-grid",
+      "question": "Основание треугольника 6 клеток, перпендикулярная высота 4 клетки. Сторона клетки 0,5 см. Найди площадь.",
+      "expected": "3",
+      "unit": "cm2",
+      "reference": "3 см^2"
+    },
+    {
+      "id": "d14",
+      "topic": "oge-statements",
+      "question": "Верно ли, что любой четырёхугольник с равными диагоналями — прямоугольник?",
+      "expected": null,
+      "unit": null,
+      "reference": "Неверно: равнобедренная трапеция, не являющаяся прямоугольником."
+    },
+    {
+      "id": "d15",
+      "topic": "decimal-fractions",
+      "question": "Переведи 0,125 в обыкновенную дробь",
+      "expected": "1/8",
+      "unit": null,
+      "reference": "1/8"
+    },
+    {
+      "id": "d16",
+      "topic": "oge-triangles",
+      "question": "В прямоугольном треугольнике катет напротив угла 30 градусов равен 6 см. Найди гипотенузу.",
+      "expected": "12",
+      "unit": "cm",
+      "reference": "12 см"
+    },
+    {
+      "id": "c01",
+      "topic": "quadratic-equations",
+      "question": "x^2-5x+6=0",
+      "expected": "2;3",
+      "kind": "set",
+      "unit": null,
+      "reference": "2;3"
+    },
+    {
+      "id": "c02",
+      "topic": "rational-inequalities",
+      "question": "(x-1)/(x+2)>=0",
+      "expected": "(-inf;-2) U [1;inf)",
+      "kind": "interval",
+      "unit": null,
+      "reference": "(-inf;-2) U [1;inf)"
+    },
+    {
+      "id": "c03",
+      "topic": "probability",
+      "question": "Из 3 красных и 2 синих шаров случайно извлекают два без возвращения. Вероятность двух красных?",
+      "expected": "3/10",
+      "kind": "scalar",
+      "unit": null,
+      "reference": "3/10"
+    },
+    {
+      "id": "c04",
+      "topic": "logarithmic-equations",
+      "question": "log_2(x-1)=3",
+      "expected": "9",
+      "kind": "scalar",
+      "unit": null,
+      "reference": "9"
+    },
+    {
+      "id": "c05",
+      "topic": "exponential-equations",
+      "question": "3^(x-1)=9",
+      "expected": "3",
+      "kind": "scalar",
+      "unit": null,
+      "reference": "3"
+    },
+    {
+      "id": "c06",
+      "topic": "trigonometric-equations",
+      "question": "2sin(x)=1; x в [0;2pi]",
+      "expected": "pi/6;5pi/6",
+      "kind": "pi-set",
+      "unit": null,
+      "reference": "pi/6;5pi/6"
+    },
+    {
+      "id": "c07",
+      "topic": "derivatives",
+      "question": "f(x)=x^3-3x. Найди точки экстремума.",
+      "expected": null,
+      "kind": "human",
+      "unit": null,
+      "reference": "Локальный максимум x=-1, минимум x=1."
+    },
+    {
+      "id": "c08",
+      "topic": "trigonometric-equations",
+      "question": "sin(2x)=sin(x); x в [0;2pi]",
+      "expected": "0;pi/3;pi;5pi/3;2pi",
+      "kind": "pi-set",
+      "unit": null,
+      "reference": "0;pi/3;pi;5pi/3;2pi"
+    }
+  ]
+}

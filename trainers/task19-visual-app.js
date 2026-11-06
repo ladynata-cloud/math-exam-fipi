@@ -277,6 +277,7 @@
     window.getBoardTrainerState = getRoomState;
     window.applyBoardTrainerState = applyRoomState;
     lastSent = JSON.stringify(getRoomState());
+    window.OgeLearningNative={number:19,checkSelector:'#btnTrue,#btnFalse',answer:()=>state.current?.answer===null?'':String(state.current?.answer),start:d=>applyRoomState({topic:'',review:false,current:{id:d.id,answer:null,hintOpen:false,helpUsed:false,modelState:null},answers:[],view:{settings:false,textbook:false,reference:[]}})};
     if (window.MathExamBoard) window.MathExamBoard.register({
       id: adapter.id, version: adapter.version, stateSchemaVersion: 1, parentOrigin: location.origin,
       getState: getRoomState, applyState: applyRoomState,

@@ -89,7 +89,7 @@
     const focused = keepFocus && root.contains(document.activeElement) ? document.activeElement : null;
     const focusId = focused?.id;
     const selection = focused && typeof focused.selectionStart === 'number' ? focused.selectionStart : null;
-    const task = taskFor(state), done = finalCorrect() || allStepsDone();
+    const task = taskFor(state), done = finalCorrect() || (!window.MathExamLearning?.managed && allStepsDone());
     const steps = state.guided ? state.steps.map((entry, index) => {
       const step = task.steps[index], accepted = resolved(entry, step);
       const message = entry.revealed ? step.show : entry.checked && stepCorrect(entry.draft, step.a) ? 'Верно. ' + step.show :
@@ -103,7 +103,7 @@
         ${entry.hint ? `<div class="hintbox">${step.hint}</div>` : ''}
         ${message ? `<div class="fb show${accepted && !entry.revealed ? ' ok' : ''}" role="status">${message}</div>` : ''}</section>`;
     }).join('') : '';
-    const finalMessage = allStepsDone() ? `Все шаги разобраны. Ответ: ${format(task.ans)}.${state.helpUsed ? ' Использовалась подсказка.' : ''}` : feedback(state.answer, task.ans, state.checked);
+    const finalMessage = allStepsDone() ? `Все шаги разобраны. Ответ: ${format(task.ans)}.${state.helpUsed ? ' Использовалась подсказка.' : ''}${window.MathExamLearning?.managed&&!finalCorrect()?' Введите итоговый ответ и нажмите «Проверить».':''}` : feedback(state.answer, task.ans, state.checked);
     const reference = bank.REFS.find(item => item.id === task.sub.ref);
     root.innerHTML = `<div class="grid"><div><div class="diagram" tabindex="0" role="region" aria-label="Чертёж задачи; при необходимости прокрутите горизонтально">${task.fig.svg}</div>${task.fig.cap ? `<p class="figcap">${task.fig.cap}</p>` : ''}</div><div>
       <div class="task" id="taskText">${task.text}</div>
@@ -197,6 +197,7 @@
   window.OGE15Board = Object.freeze({ getState, applyState, validateState });
   window.getBoardTrainerState = getState;
   window.applyBoardTrainerState = applyState;
+  window.OgeLearningNative={number:15,checkSelector:'#board-check',answerSelector:'#board-answer',answer:()=>state.answer,start:d=>applyState(fresh(d.variantId,d.seed))};
   if (window.MathExamBoard) window.MathExamBoard.register({
     id: 'oge-task15-triangles', version: '1.0.0', stateSchemaVersion: 1,
     parentOrigin: window.location.origin, getState, applyState,

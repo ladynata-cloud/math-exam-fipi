@@ -128,6 +128,10 @@ function createTeachingRouter(learning) {
       const checks = store.row("SELECT COUNT(*) AS n,SUM(CASE WHEN json_extract(payload_json,'$.evaluation.correct')=0 AND trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))!='' THEN 1 ELSE 0 END) AS wrong,SUM(CASE WHEN trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))='' THEN 1 ELSE 0 END) AS skipped FROM events WHERE attempt_id=? AND type='check'", row.id);
       return { id: row.id, catalogId: item?.id || null, title: item?.title || '', topicId: item?.topicId || '', position: item?.position || null,
         outcome: row.outcome, status: outcomes[row.outcome], assistance: parse(row.assistance_json), checks: checks.n, wrongChecks: checks.wrong || 0, skippedChecks: checks.skipped || 0,
+        ...(row.trainer_id==='oge-public'?{ogePosition:Number(taskSpec.contentId),prompt:taskSpec.task.q,
+          studentChecks:store.row("SELECT COUNT(*) AS n FROM events WHERE attempt_id=? AND type='check' AND actor_role='student'",row.id).n,
+          studentWrongChecks:store.row("SELECT COUNT(*) AS n FROM events WHERE attempt_id=? AND type='check' AND actor_role='student' AND json_extract(payload_json,'$.evaluation.correct')=0 AND trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))!=''",row.id).n,
+          checkedAnswers:store.rows("SELECT actor_role AS role,at,payload_json FROM events WHERE attempt_id=? AND type='check' ORDER BY revision DESC LIMIT 50",row.id).map(e=>{const p=parse(e.payload_json);return {role:e.role,at:e.at,answer:p.details?.answer||'',scope:p.details?.scope,step:p.details?.step,correct:!!p.evaluation?.correct,assisted:!!(p.after?.assistance?.teacher||p.after?.assistance?.hints)};})}:{}),
         submission: store.submissionForAttempt(row),
         archivedAt: row.archived_at, createdAt: row.created_at, updatedAt: row.updated_at };
     });
@@ -169,7 +173,7 @@ function createTeachingRouter(learning) {
       requireValue(attempt.version === req.body.expectedVersion, 'LEARNING_STATE_CONFLICT', 409);
       requireValue(attempt.controller === 'student', 'LEARNING_CONTROL_REQUIRED', 409);
       const context = submissionContext(attempt.id);
-      requireValue(!context.assignment || context.photoIds.length > 0, 'LEARNING_SOLUTION_PHOTO_REQUIRED', 409);
+      requireValue(attempt.trainer_id==='oge-public' || !context.assignment || context.photoIds.length > 0, 'LEARNING_SOLUTION_PHOTO_REQUIRED', 409);
       const at = store.clock();
       store.run(`INSERT INTO learning_submissions VALUES(?,?,?,?,?,?,?,1) ON CONFLICT(attempt_id) DO UPDATE SET
         attempt_version=excluded.attempt_version,submitted_at=excluded.submitted_at,assignment_id=excluded.assignment_id,
@@ -220,7 +224,7 @@ function createTeachingRouter(learning) {
     res.json(store.operation(auth, { ...req.body, operation: 'publish-homework', assignmentId: row.id }, () => {
       requireValue(row.status === 'draft', 'LEARNING_HOMEWORK_ALREADY_PUBLISHED', 409);
       const attempt = store.attemptRow(auth, row.attempt_id); requireValue(attempt.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
-      requireValue(hasPaper(store, row.id) || store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='task'", row.id).n > 0, 'LEARNING_HOMEWORK_NEEDS_PHOTO', 409);
+      requireValue(attempt.trainer_id==='oge-public' || hasPaper(store, row.id) || store.row("SELECT COUNT(*) AS n FROM learning_photos WHERE assignment_id=? AND kind='task'", row.id).n > 0, 'LEARNING_HOMEWORK_NEEDS_PHOTO', 409);
       store.run("UPDATE assignments SET status='published' WHERE id=?", row.id);
       return { assignment: { id: row.id, status: 'published' } };
     }));

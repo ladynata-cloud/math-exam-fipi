@@ -113,6 +113,9 @@ function inlineTrainerAssets(html, entry) {
   const siteRef = ref => path.posix.resolve(path.posix.dirname(entry.sourceHtml), ref.split(/[?#]/)[0]);
   html = html.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/gi, (tag, ref) => {
     const key = siteRef(ref);
+    // Standalone downloads have no authenticated parent or server-side attempt.
+    // Omit these managed-only integrations so file:// never requests website assets.
+    if (key === "/trainers/learning-bridge.js" || key === "/trainers/oge-learning.js") return "";
     if (!sources.has(key)) return tag;
     used.add(key);
     return "";
