@@ -113,3 +113,18 @@ are retained verbatim. No OGE source changed, so the immutable engine-preservati
 baseline remains main955. The new course, registry, sitemap and board integration
 are preserved from main60. Static routes, affected mathematics and source
 identities are checked again before publishing the composed candidate.
+
+### CI provisioning budget
+
+Exact head37b completed all other 28 workflows, including fixed source/v1/v2
+browser replay and independent mathematics. Guided division run42139800220 is
+CANCELLED, not PASS: its job lasted 12m09s against a 12-minute budget. Pinned
+browser provisioning consumed 10m55s; all arithmetic commands, all six browser
+commands and upload of 104 screenshots reported SUCCESS, with browser completion
+three seconds after the job deadline. The log has no explicit cancellation line;
+the timeline supports budget exhaustion, while the cancelled conclusion remains
+recorded. The coordinator authorized changing only the job budget to 25 minutes.
+Every command, assertion, dependency version and artifact step is unchanged.
+A new exact-head CI run remains required. Concurrent main8d Word publication is
+left for the coordinator's read-only release composition; this fix does not
+merge main into the branch automatically.
