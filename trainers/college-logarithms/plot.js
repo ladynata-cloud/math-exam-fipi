@@ -1,5 +1,6 @@
 (function(root){'use strict';const C=root.LogCourseCore,E=C.E,esc=E.escapeHTML;
-function bounds(p){return {xmin:p.h-2,xmax:p.h+Math.max(6,p.a+2,1/p.a+2),ymin:p.k-3.5,ymax:p.k+3.5};}
+// Fixed coordinate window makes horizontal and vertical translations visible.
+function bounds(){return {xmin:-5,xmax:10,ymin:-6,ymax:6};}
 function render(svg,p,points=[],curve=true){const b=bounds(p),X=x=>48+(x-b.xmin)/(b.xmax-b.xmin)*528,Y=y=>340-(y-b.ymin)/(b.ymax-b.ymin)*310;let s='<defs><clipPath id="'+svg.id+'-clip"><rect x="48" y="30" width="528" height="310"/></clipPath></defs>';
 for(let x=Math.ceil(b.xmin);x<=b.xmax;x++){s+=`<path d="M${X(x)} 30V340" stroke="#dce7df"/><text x="${X(x)}" y="360" font-size="16" text-anchor="middle" fill="#466158">${x}</text>`;}
 for(let y=Math.ceil(b.ymin);y<=b.ymax;y++){s+=`<path d="M48 ${Y(y)}H576" stroke="#dce7df"/><text x="35" y="${Y(y)+5}" font-size="16" text-anchor="end" fill="#466158">${y}</text>`;}
