@@ -1,0 +1,125 @@
+name: Teacher work numbering
+on:
+  pull_request:
+    paths:
+      - 'pedagogam/raboty/**'
+      - 'tools/teacher-work-*'
+      - 'tools/teacher-numbered-downloads.test.cjs'
+      - 'tools/teacher-textbook-coverage.json'
+      - 'tools/build-pedagogam-textbook-pdfs.py'
+      - 'tools/build-pedagogam-topic-pages.py'
+      - 'tools/teacher-topic-content-*.json'
+      - '.github/workflows/teacher-work-numbering.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  permanent-collection-numbers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Read the published numbering baseline
+        env:
+          NUMBERING_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: git fetch --no-tags --depth=1 origin "$NUMBERING_BASE_SHA"
+      - name: Fixed sequences, edition membership and reproducible catalog
+        env:
+          NUMBERING_BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
+        run: |
+          python3 -m pip install PyMuPDF==1.26.6 reportlab==4.4.9
+          python3 tools/teacher-work-numbering.py --check --baseline-ref "$NUMBERING_BASE_SHA"
+          python3 tools/teacher-work-numbering-check.py
+          python3 tools/build-pedagogam-topic-pages.py --check
+          node --check pedagogam/raboty/numbering-catalog.js
+          node --check pedagogam/raboty/numbered-downloads.js
+          git diff --check
+      - name: Browser numbering and actual PDF Word ZIP downloads
+        run: |
+          npm install --prefix "$RUNNER_TEMP/teacher-numbering-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/teacher-numbering-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/teacher-numbering-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/teacher-numbering-downloads" node tools/teacher-numbered-downloads.test.cjs
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/teacher-numbering-server.log" 2>&1 &
+          NUMBERING_SERVER_PID=$!
+          trap 'kill "$NUMBERING_SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --silent --fail http://127.0.0.1:8765/pedagogam/raboty/ > /dev/null; then break; fi
+            sleep 0.2
+          done
+          NODE_PATH="$RUNNER_TEMP/teacher-numbering-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/teacher-numbering-catalog" node tools/teacher-work-numbering.browser.cjs
+      - name: Render all six numbered Word files for page review
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libreoffice-writer fonts-dejavu-core poppler-utils
+          python3 - <<'PY'
+          import json, os, shutil, subprocess
+          from pathlib import Path
+          import fitz
+          scratch = Path(os.environ['RUNNER_TEMP'])
+          source = scratch / 'teacher-numbering-catalog'
+          output = scratch / 'teacher-numbering-render'
+          output.mkdir(parents=True, exist_ok=True)
+          records = json.loads((source / 'numbered-downloads.json').read_text())
+          word = [item for item in records if item['type'] == 'docx']
+          assert len(word) == 6, 'Six numbered Word exports are required'
+          documents = []
+          for item in word:
+              target = output / item['filename']
+              shutil.copyfile(source / item['filename'], target)
+              documents.append(target)
+          subprocess.run([
+              'soffice', '-env:UserInstallation=' + (scratch / 'teacher-numbering-lo-profile').as_uri(),
+              '--headless', '--convert-to', 'pdf:writer_pdf_Export', '--outdir', str(output),
+              *map(str, documents)
+          ], check=True, timeout=180)
+          summaries = []
+          total = 0
+          normalize = lambda text: ''.join(text.split())
+          for item, document in zip(word, documents):
+              pdf = document.with_suffix('.pdf')
+              assert pdf.is_file(), ('Missing LibreOffice render', document.name)
+              with fitz.open(pdf) as rendered:
+                  assert len(rendered) == 4, (document.name, 'Expected four pages', len(rendered))
+                  for index, page in enumerate(rendered, 1):
+                      text = normalize(page.get_text())
+                      assert normalize('Вариант ' + str(index)) in text, (document.name, index, 'Variant')
+                      for context in item['contexts']:
+                          assert normalize('№ ' + str(context['number'])) in text, (document.name, index, 'Number')
+                          assert normalize(str(context['grade']) + ' класс') in text, (document.name, index, 'Grade')
+                          if context['bookTitle']:
+                              assert normalize(context['bookTitle']) in text, (document.name, index, 'Textbook')
+                  total += len(rendered)
+              prefix = output / document.stem
+              subprocess.run(['pdftoppm', '-r', '110', '-png', str(pdf), str(prefix)],
+                             check=True, timeout=60, stdout=subprocess.DEVNULL)
+              pages = sorted(output.glob(document.stem + '-*.png'))
+              assert len(pages) == 4, (document.name, 'Missing or extra page PNGs')
+              summaries.append({'docx': document.name, 'pdf': pdf.name,
+                                'pages': [page.name for page in pages], 'pageCount': 4})
+          assert total == 24 and len(list(output.glob('*.pdf'))) == 6
+          assert len(list(output.glob('*.png'))) == 24
+          report = {'result': 'RENDERED_FOR_VISUAL_REVIEW', 'documents': 6,
+                    'pages': total, 'files': summaries,
+                    'visualReview': 'Pending human or agent inspection of every page'}
+          (output / 'word-render-results.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
+          print(json.dumps({'numberedWordDocuments': 6, 'renderedPages': total, 'visualReview': 'pending'}))
+          PY
+      - name: Preserve numbering and export evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-work-numbering-qa
+          path: |
+            ${{ runner.temp }}/teacher-numbering-downloads
+            ${{ runner.temp }}/teacher-numbering-catalog
+          if-no-files-found: error
+      - name: Preserve numbered Word page renders
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-work-numbering-word-pages
+          path: ${{ runner.temp }}/teacher-numbering-render
+          if-no-files-found: error

@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const DATA = path.join(ROOT, 'pedagogam', 'raboty');
@@ -17,6 +18,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(DATA, 'manifest.json'), 'u
 const wordSource = JSON.parse(fs.readFileSync(path.join(DATA, 'word-packs.json'), 'utf8'));
 const wordManifest = JSON.parse(fs.readFileSync(path.join(DATA, 'word-manifest.json'), 'utf8'));
 const wordByBank = new Map(wordSource.packs.map(pack => [pack.bankId, pack]));
+const numbering = JSON.parse(fs.readFileSync(path.join(DATA, 'numbering.json'), 'utf8'));
 const normal = value => value.toLocaleLowerCase('ru').replaceAll('ё', 'е');
 const gradesFor = pack => {
   const numbers = pack.grade.match(/\d+/g).map(Number);
@@ -30,9 +32,13 @@ const gradesFor = pack => {
 };
 const expectedIds = ({ grade = '', book = '', query = '' } = {}) => {
   const tokens = normal(query).split(/\s+/).filter(Boolean);
+  const selectedBook = book ? numbering.books.find(item => item.title === book)?.id : null;
+  const collections = numbering.collections.filter(item => (!grade || item.grade === Number.parseInt(grade, 10))
+    && (item.bookId || null) === selectedBook);
+  const eligible = new Set(collections.flatMap(item => [...item.sr, ...item.kr])
+    .map(id => numbering.works[id].bankId));
   return packs.filter(pack =>
-    (!grade || (book && pack.book_grades ? (pack.book_grades[book] || []) : gradesFor(pack)).includes(Number.parseInt(grade, 10))) &&
-    (!book || pack.books.includes(book)) &&
+    eligible.has(pack.id) &&
     tokens.every(token => normal([pack.title, pack.grade, pack.subject, ...pack.books,
       ...(wordByBank.has(pack.id) ? [wordByBank.get(pack.id).title, 'Word DOCX'] : [])].join(' ')).includes(token))
   ).map(pack => pack.id).sort();
@@ -120,8 +126,8 @@ async function main() {
         await checkState({ query: word.title }, `Word topic ${word.title} at ${width}`);
         const wordCard = page.locator(`#${word.bankId} .word-work`);
         assert(await wordCard.isVisible());
-        assert.equal(await wordCard.getByRole('link', { name: 'Задания Word', exact: true }).count(), 1);
-        assert.equal(await wordCard.getByRole('link', { name: 'Ответы и решения Word', exact: true }).count(), 1);
+        assert.equal(await wordCard.locator('button[data-numbered-role="student"]').count(), 1);
+        assert.equal(await wordCard.locator('button[data-numbered-role="teacher"]').count(), 1);
       }
       await page.locator('#grade').selectOption({ label: '9 класс' });
       await page.locator('#search').fill('Word');
@@ -183,30 +189,37 @@ async function main() {
       'kontrolnaya.pdf', 'kontrolnaya-otvety.pdf']) {
       const record = item.files.find(file => path.posix.basename(file.path) === filename);
       assert(record, `Representative pack is missing ${filename}`);
-      const href = await card.locator(`a[href$="/${filename}"]`).getAttribute('href');
-      assert(href, `Missing catalog PDF link ${filename}`);
+      const action = card.locator(`button[data-numbered-source$="/${filename}"]`);
+      const href = await action.getAttribute('data-numbered-source');
+      assert(href, `Missing catalog PDF source ${filename}`);
+      assert.equal(await action.getAttribute('href'), null, 'Numbered action cannot navigate to the unnumbered source');
+      assert.equal(await action.isEnabled(), true, 'Numbered action enabled after initialization');
       downloads.push({ href, local: path.join(DATA, record.path), type: 'pdf' });
     }
     downloads.push({
-      href: await card.getByRole('link', { name: 'Скачать комплект ZIP', exact: true }).getAttribute('href'),
+      href: await card.getByRole('button', { name: 'Скачать комплект ZIP', exact: true }).getAttribute('data-numbered-source'),
       local: path.join(DATA, item.id, 'komplekt.zip'), type: 'zip'
     });
     downloads.push({
-      href: await page.getByRole('link', { name: 'Скачать все PDF', exact: true }).getAttribute('href'),
+      href: await page.locator('button[data-numbered-archive="pdf"]').getAttribute('data-numbered-source'),
       local: path.join(DATA, 'mathexam-raboty-pdf.zip'), type: 'zip'
     });
     for (const word of wordSource.packs) {
       const wordCard = page.locator(`#${word.bankId} .word-work`);
-      for (const [name, file] of [['Задания Word', word.studentFile], ['Ответы и решения Word', word.teacherFile]]) {
-        const href = await wordCard.getByRole('link', { name, exact: true }).getAttribute('href');
+      for (const [role, file] of [['student', word.studentFile], ['teacher', word.teacherFile]]) {
+        const href = await wordCard.locator(`button[data-numbered-role="${role}"]`).getAttribute('data-numbered-source');
         assert.equal(href, '/pedagogam/raboty/' + file);
         downloads.push({ href, local: path.join(DATA, file), type: 'docx' });
       }
     }
-    for (const [name, file, type] of [
-      ['Лист работы над ошибками Word', wordSource.errorReviewFile, 'docx'],
-      ['Скачать три комплекта Word', wordSource.archive, 'zip']
-    ]) downloads.push({ href: await page.getByRole('link', { name, exact: true }).getAttribute('href'), local: path.join(DATA, file), type });
+    downloads.push({
+      href: await page.getByRole('link', { name: 'Лист работы над ошибками Word', exact: true }).getAttribute('href'),
+      local: path.join(DATA, wordSource.errorReviewFile), type: 'docx'
+    });
+    downloads.push({
+      href: await page.getByRole('button', { name: 'Скачать Word подборки', exact: true }).getAttribute('data-numbered-source'),
+      local: path.join(DATA, wordSource.archive), type: 'zip'
+    });
     assert.equal(wordManifest.files.length, 7);
     for (const download of downloads) {
       assert(download.href, 'Download href is absent');
@@ -223,10 +236,26 @@ async function main() {
     }
     const [wordDownload] = await Promise.all([
       page.waitForEvent('download'),
-      page.locator('#arith-brackets-like-terms .word-work').getByRole('link', { name: 'Задания Word', exact: true }).click()
+      page.locator('#arith-brackets-like-terms .word-work button[data-numbered-role="student"]').click()
     ]);
-    assert.equal(wordDownload.suggestedFilename(), 'minus-pered-skobkami-zadaniya.docx');
-    assert(fs.readFileSync(await wordDownload.path()).equals(fs.readFileSync(path.join(DATA, wordSource.packs[0].studentFile))));
+    assert.match(wordDownload.suggestedFilename(), /\.docx$/);
+    const wordFile = await wordDownload.path();
+    const sourceWord = wordSource.packs.find(item => item.bankId === 'arith-brackets-like-terms');
+    const contexts = numbering.collections.filter(item => !item.bookId && item.sr.includes('word:' + sourceWord.id))
+      .map(item => ({ grade: item.grade, number: item.sr.indexOf('word:' + sourceWord.id) + 1 }));
+    const verified = spawnSync(process.env.PYTHON || 'python3', ['-c', `
+import json,sys,zipfile,xml.etree.ElementTree as E
+source,dest,contexts=sys.argv[1],sys.argv[2],json.loads(sys.argv[3])
+ns={'w':'http://schemas.openxmlformats.org/wordprocessingml/2006/main','m':'http://schemas.openxmlformats.org/officeDocument/2006/math'}
+with zipfile.ZipFile(source) as a,zipfile.ZipFile(dest) as b:
+ old=E.fromstring(a.read('word/document.xml')); new=E.fromstring(b.read('word/document.xml'))
+ assert [E.tostring(x) for x in old.findall('.//m:oMath',ns)]==[E.tostring(x) for x in new.findall('.//m:oMath',ns)], 'editable equations changed'
+ text=' '.join(' '.join(E.fromstring(b.read(p)).itertext()) for p in b.namelist() if p.startswith('word/') and p.endswith('.xml'))
+ assert all(('№ '+str(c['number'])) in text for c in contexts), 'number missing'
+ assert all(('Вариант '+str(i)) in text for i in range(1,5)), 'variant missing'
+ assert a.read('word/document.xml') != b.read('word/document.xml'), 'numbering did not change document'
+`, path.join(DATA, sourceWord.studentFile), wordFile, JSON.stringify(contexts)], { encoding: 'utf8' });
+    assert.equal(verified.status, 0, verified.stderr || verified.stdout);
     assert.deepEqual(pageErrors, [], 'Uncaught page errors');
     assert.deepEqual(consoleErrors, [], 'Browser console errors');
     Object.assign(report, { result: 'PASS', scenarios, screenshots, downloads: downloads.length,

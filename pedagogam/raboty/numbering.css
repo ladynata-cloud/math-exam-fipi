@@ -1,0 +1,19 @@
+.work-number-label{font-size:14px;font-weight:600;color:#246246;margin:6px 0 12px;line-height:1.5}
+.numbering-reference{font-size:14px;line-height:1.5;margin:10px 0 15px;overflow-wrap:anywhere}
+.numbering-reference p{margin:6px 0 0}.numbering-small{font-size:14px;line-height:1.5}
+#numbering-note{font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+#numbering-contents{margin:15px 0 20px;padding:15px 20px;border:1px solid #bed0ba;border-radius:10px;background:#fff}
+#numbering-contents summary{font-size:16px}#numbering-contents h3{margin:18px 0 8px}
+.numbering-list{padding-left:30px;margin-top:8px;line-height:1.65}.numbering-list li{padding-left:4px;margin:4px 0}
+.numbering-list a{overflow-wrap:anywhere;color:#20573f}.word-title{font-weight:600;margin:5px 0 10px}
+#numbering-download-status{position:fixed;left:16px;right:16px;bottom:18px;max-width:720px;margin:auto;z-index:10000;background:#e7f2e8;color:#163f28;border:1px solid #719f76;border-radius:10px;padding:14px 18px;box-shadow:0 3px 18px #0002;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+#numbering-download-status[data-error=true]{background:#fff0e8;border-color:#b26939;color:#632e13}
+.numbering-policy{margin:15px 0;line-height:1.55}.numbering-policy summary{font-weight:600}
+button[data-numbered-role],button[data-numbered-archive],button[data-numbered-pack]{font-family:inherit;max-width:100%;white-space:normal;cursor:pointer}
+button.button[data-numbered-role],button.button[data-numbered-archive]{border:1px solid transparent}
+button.numbering-answer{font:inherit;border:0;background:transparent;color:#20573f;padding:0;text-align:left;text-decoration:underline;line-height:1.5}
+button.numbering-answer.answer-link{font-size:16px}
+button[data-numbered-role]:focus-visible,button[data-numbered-archive]:focus-visible,button[data-numbered-pack]:focus-visible{outline:3px solid #a76609;outline-offset:4px}
+button[data-numbered-role]:disabled,button[data-numbered-archive]:disabled,button[data-numbered-pack]:disabled{opacity:.65;cursor:wait}
+@media(max-width:650px){#numbering-contents{padding:14px}.numbering-list{padding-left:24px}#numbering-download-status{left:10px;right:10px;bottom:12px;font-size:14px}}
+@media print{#numbering-download-status,.numbering-policy,#numbering-selection-link{display:none}}
