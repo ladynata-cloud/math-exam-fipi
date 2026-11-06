@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "ChatGPT root independent reviewer",
+  "independentOfAuthor": true,
+  "at": "2026-11-06T00:31:00Z",
+  "scope": "Makarychev8 exercises75–109: exact source transcription and mathematics; bounded graph-pair runtime and DOM lifecycle changes; four selected rendered graph screenshots",
+  "verdict": "PASS",
+  "findings": [],
+  "source": {
+    "edition": "Макарычев и др., Алгебра8,2024,17-е стереотипное",
+    "isbn": "978-5-09-116445-9",
+    "pdfSha256": "356695f0f11a489090ed72428320a6d6cc343747eec02968b716c2204caaced8",
+    "printedPages": [
+      25,
+      26,
+      27,
+      28,
+      29
+    ],
+    "pdfPages": [
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "inspection": "All five rendered source pages read independently; all expressions in the separate oracle compared with print, including101–109 word/proof/graph questions"
+  },
+  "files": {
+    "exercises-75-109.json": "071787664dc53b52cd0c3c3e1e839084c015d4ffcac1a11659a19a45de392bd0",
+    "task-graphs.js": "b2794a3b5e4d40abcf2eafd0c5dacd1d42724a52ebcf2ab1bd2d9c70d862c344",
+    "check.js": "303dfcfe45b1ea3475e187505eb5c8404274d39d38e185c7b06b0cd22826c181",
+    "app.js": "ea80580a84360c5bcd4e76bf8c94f9af518de3e6fe6d06e0b0d45f114bbd893c",
+    "test-exercises-75-109.py": "fa777c42d29ab728509c0e017e17fbc892cdbc1a67458181d6bd934055c1990c",
+    "test-ui.cjs": "d08fc68d0e98617e94db9f8feab16ad2d25bc0c4b2145ee9dac4e57769cc8ac2"
+  },
+  "mathematics": {
+    "independentlyRerunOracle": {
+      "result": "PASS",
+      "checks": 3320,
+      "newCards": 126,
+      "sourceCards": 128
+    },
+    "manualRecomputations": {
+      "105a": "25/6 hours",
+      "105b": "16/3 hours",
+      "106": "20/3 hours",
+      "108": "(2/3; -5/3), unique intersection",
+      "109": "second withdrawal21t, first63t, remainders27t and54t"
+    },
+    "boundaries": "Original denominator restrictions retained after cancellation; positivity/negativity102 and both excluded-value sets; exact identities101/104; incorrect third transformation103; all596 previous task objects and indices preserved by immutable hash"
+  },
+  "technical": "Four coefficient parser rejects malformed/non-finite/extra values; checker compares exact rational pairs with optional line order reversal. Shared single-line renderer semantics retained. Test-only setImmediate yields preserve every assertion and one saved-state session; no weakened check or default heap increase.",
+  "inspectedScreenshots": [
+    {
+      "file": "p04-ex108-графики-320.png",
+      "sha256": "341b112ea4331caa0bb10f5858cafc45a9b8dff4deb04b6f5d47d17ef65b1715"
+    },
+    {
+      "file": "p04-ex108-пересечение-320.png",
+      "sha256": "4b222d87814e1935ed54565709eb736456d052166c753f6fd1d94ea6901d2b75"
+    },
+    {
+      "file": "p04-ex108-графики-1280.png",
+      "sha256": "db8e48ce1027f7646747f02def03973bf6b83e3f8231160a3cf09bfc70c918d2"
+    },
+    {
+      "file": "p04-ex108-пересечение-1280.png",
+      "sha256": "759d1bdf098fbc492489dc23b98f3610b6eb9bbfe010aa02d2a213583fd62700"
+    }
+  ],
+  "visual": "Both108 cold graph-building and intersection cards at320 and1280 inspected. Axes, two slopes/intercepts and crossing agree with source; readable no horizontal clipping. Full504-view gate is author-run browser evidence, not504 images independently read here.",
+  "limitations": [
+    "Exact committed-head CI and production verification are separate release steps.",
+    "Local screenshots use installed Chromium134, not the pinned CI browser.",
+    "No external paid-provider audit, physical-device or pupil pilot is claimed."
+  ]
+}
