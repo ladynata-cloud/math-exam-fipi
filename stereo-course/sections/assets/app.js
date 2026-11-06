@@ -844,7 +844,7 @@
         const row = el('div', { class: 'input-row' });
         const input = el('input', { id: 'numeric-answer', type: 'text', inputmode: 'decimal', autocomplete: 'off', 'aria-describedby': 'answer-format', maxlength: 120 }); input.value = s.answer;
         input.addEventListener('input', () => { s.answer = input.value.slice(0, 120); s.answerChecked = false; s.correctAnswer = false; s.answerInvalid = false; save(); drawFeedback(); });
-        const submit = el('button', { type: 'submit', class: 'primary' }, 'Проверить'); row.append(input, submit);
+        const submit = button('Проверить', checkAnswer, 'primary', { 'data-action': 'check-numeric-answer' }); row.append(input, submit);
         const feedback = el('p', { class: 'feedback', role: 'status', 'aria-live': 'polite' });
         const drawFeedback = () => {
           if (s.answerInvalid) { feedback.className = 'feedback retry'; feedback.textContent = 'Введи число (например, 1,33) или обычную дробь вида 4/3. Корень можно вычислить и ввести десятичное приближение.'; return; }
@@ -852,12 +852,14 @@
           feedback.className = 'feedback ' + (s.correctAnswer ? 'good' : 'retry');
           feedback.textContent = s.correctAnswer ? 'Численный результат совпал. Теперь объясни вычисления и построение.' : 'Пока результат не совпал. Проверь искомую величину, отношения отрезков и единицы.';
         };
-        form.addEventListener('submit', e => {
-          e.preventDefault();
+        function checkAnswer() {
           const value = numericValue(input.value);
           if (!Number.isFinite(value)) { s.answer = input.value.slice(0, 120); s.answerInvalid = true; s.answerChecked = false; s.correctAnswer = false; save(); drawFeedback(); return; }
           s.answer = input.value.slice(0, 120); s.answerInvalid = false; s.answerChecked = true; s.correctAnswer = Math.abs(value - num.value) <= (num.tolerance || 1e-6); save(); drawFeedback();
-        });
+        }
+        // Cabinet frames forbid native form submission; checking stays local.
+        input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); checkAnswer(); } });
+        form.addEventListener('submit', e => { e.preventDefault(); checkAnswer(); });
         const toleranceText = num.tolerance && num.tolerance >= .001 ? ' Достаточно приближения с указанной в условии точностью.' : '';
         form.append(label, row, para('Введи число' + (num.unit ? ' в единицах «' + num.unit + '»' : '') + '; запятая, точка и дробь вида 4/3 допустимы.' + toleranceText, 'answer-format'), feedback);
         form.querySelector('.answer-format').id = 'answer-format'; drawFeedback(); result.append(form);
@@ -1246,7 +1248,12 @@
     if(q.kind==='choice'){
       const choices=el('div',{class:'check-options'});q.options.forEach((value,index)=>{const b=btn('',()=>{s.answer=index;s.checked=true;s.correct=correct(q,index);if(!s.correct)s.hadError=true;save();show('practice',false);},s.answer!==''&&Number(s.answer)===index?'selected':'',{'data-drill-option':index,disabled:s.checked&&s.correct});b.append(math(value));choices.append(b);});card.append(choices);
     }else{
-      const form=el('form',{class:'drill-form'}),label=el('label',{for:'drill-answer'},'Ответ'+(q.unit?' ('+q.unit+')':'')),input=el('input',{id:'drill-answer',type:'text',inputmode:'decimal',autocomplete:'off',value:s.answer});input.addEventListener('input',()=>{s.answer=input.value;s.checked=false;s.correct=false;feedback.replaceChildren();feedback.className='feedback';save();});form.append(label,input,el('button',{type:'submit',class:'primary'},'Проверить'),p('Запятая, точка и дробь вида 4/3 допустимы. Если требуется приближение — до тысячных.','small muted'));form.addEventListener('submit',e=>{e.preventDefault();if(!Number.isFinite(parse(s.answer))){feedback.className='feedback retry';feedback.textContent='Введи число или простую дробь с ненулевым знаменателем.';return;}s.checked=true;s.correct=correct(q,s.answer);if(!s.correct)s.hadError=true;save();show('practice',false);});card.append(form);
+      const form=el('form',{class:'drill-form'}),label=el('label',{for:'drill-answer'},'Ответ'+(q.unit?' ('+q.unit+')':'')),input=el('input',{id:'drill-answer',type:'text',inputmode:'decimal',autocomplete:'off',value:s.answer});
+      input.addEventListener('input',()=>{s.answer=input.value;s.checked=false;s.correct=false;feedback.replaceChildren();feedback.className='feedback';save();});
+      const checkAnswer=()=>{if(!Number.isFinite(parse(s.answer))){feedback.className='feedback retry';feedback.textContent='Введи число или простую дробь с ненулевым знаменателем.';return;}s.checked=true;s.correct=correct(q,s.answer);if(!s.correct)s.hadError=true;save();show('practice',false);};
+      input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();checkAnswer();}});
+      form.append(label,input,btn('Проверить',checkAnswer,'primary',{'data-action':'check-drill-answer'}),p('Запятая, точка и дробь вида 4/3 допустимы. Если требуется приближение — до тысячных.','small muted'));
+      form.addEventListener('submit',e=>{e.preventDefault();checkAnswer();});card.append(form);
     }
     if(s.checked){feedback.className='feedback '+(s.correct?'good':'retry');feedback.append(p(s.correct?'Ответ совпал. Объясни, какое правило использовано.':'Пока не совпало. '+q.hint));if(s.correct)feedback.append(p(q.rule));}card.append(feedback);
     if(q.scene&&s.checked&&s.correct&&!s.drawn)card.append(btn('Показать действие в выбранной плоскости',()=>{s.drawn=true;save();show('practice',false);},'primary',{'data-action':'drill-draw'}));

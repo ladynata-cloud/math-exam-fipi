@@ -238,6 +238,15 @@ personal work while making the beginner route easy to find.
   Real grant, pupil editing and revoke follow. The earlier assumption that a
   pupil always retains control through a disconnected interval was incorrect;
   neither the server contract nor the ownership assertions are weakened.
+- The next CI journey passed host restoration, trainer retry and the complete
+  disconnected-pupil handback/regrant/revoke sequence, then exposed native form
+  submission being blocked in the cabinet's sandbox before the course's submit
+  listener could run. Both numerical forms in this course now use their existing
+  local checker through explicit buttons and composition-aware Enter handling;
+  the shared workspace's sandbox permissions are unchanged. The browser checks
+  now assert invalid/checked/correct feedback directly in personal and shared
+  work, rather than accepting equality between two unchecked answers. The
+  offline edition is rebuilt from the same source; mathematical data is intact.
 - An unchanged rounding page schedules initial focus into its answer field.
   One navigator browser journey observed the untouched welcome reply after
   Enter, consistent with that focus stealing the key event. The harness now

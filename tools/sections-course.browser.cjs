@@ -135,6 +135,49 @@ async function construct(frame, count) {
   }
 }
 
+async function checkNumericLesson(frame, observer = null) {
+  let result;
+  for (const [answer, action, invalid, checked, correct, feedback] of [
+    ['1/0', 'click', true, false, false, /Введи число/],
+    ['7/11', 'Enter', false, true, false, /Пока результат не совпал/],
+    ['2/2', 'click', false, true, true, /Численный результат совпал/],
+    ['1', 'Enter', false, true, true, /Численный результат совпал/]
+  ]) {
+    await frame.locator('#numeric-answer').fill(answer);
+    if (action === 'click') await frame.locator('[data-action="check-numeric-answer"]').click();
+    else await frame.locator('#numeric-answer').press('Enter');
+    result = observer ? await synchronized(frame, observer, 'numeric ' + action + ' feedback') :
+      { work: await frame.evaluate(() => { const state = window.SECTIONS_APP.getState(); return state.tasks[state.current]; }) };
+    assert.equal(result.work.answer, answer); assert.equal(result.work.answerInvalid, invalid);
+    assert.equal(result.work.answerChecked, checked); assert.equal(result.work.correctAnswer, correct);
+    assert.equal(result.work.workedSeen, true, 'checking never erases explanation use');
+    assert.match(await frame.locator('.answer-form .feedback').innerText(), feedback);
+  }
+  return result;
+}
+
+async function checkPersonalNumericPractice(frame) {
+  await frame.locator('[data-view="practice"]').click();
+  await frame.getByLabel('Тренируемое умение', { exact: true }).selectOption('ratio');
+  assert.equal(await frame.locator('.drill-prompt').innerText(), 'M∈AB, AM:MB=2:4, AB=12. Найди AM.');
+  for (const [answer, action, checked, correct, feedback] of [
+    ['1/0', 'click', false, false, /Введи число/],
+    ['7/11', 'Enter', true, false, /Пока не совпало/],
+    ['8/2', 'click', true, true, /Ответ совпал/],
+    ['4', 'Enter', true, true, /Ответ совпал/]
+  ]) {
+    await frame.locator('#drill-answer').fill(answer);
+    if (action === 'click') await frame.locator('[data-action="check-drill-answer"]').click();
+    else await frame.locator('#drill-answer').press('Enter');
+    const work = await frame.evaluate(() => window.SECTIONS_MASTER.getState().practice.topics.ratio);
+    assert.equal(work.answer, answer); assert.equal(work.checked, checked); assert.equal(work.correct, correct);
+    assert.match(await frame.locator('.drill-card .feedback').innerText(), feedback);
+  }
+  const saved = await frame.evaluate(() => JSON.parse(localStorage.getItem('mathexam.sections.master.activities.v1')).practice.topics.ratio);
+  assert.equal(saved.answer, '4'); assert.equal(saved.checked, true); assert.equal(saved.correct, true);
+  assert.equal(saved.hadError, true, 'later success retains the earlier error');
+}
+
 async function layout(page, frame, width, shot) {
   await page.setViewportSize({ width, height: 900 });
   await frame.locator('.lesson-header').evaluate(node => node.scrollIntoView({ block: 'start' }));
@@ -307,6 +350,14 @@ async function run() {
     const personalFrame = await (await personalFrameElement.elementHandle()).contentFrame();
     await personalFrame.waitForFunction(() => !!window.SECTIONS_APP);
     assert.equal(await personalFrame.evaluate(() => typeof window.__sectionsBoard), 'undefined');
+    assert.equal((await personalFrameElement.getAttribute('sandbox')).split(/\s+/).includes('allow-forms'), false);
+    phase = 'pupil personal numeric lesson and practice use button and Enter in the cabinet';
+    await personalFrame.locator('[data-view="lessons"]').click();
+    await openCard(personalFrame, 'auth-method-04');
+    await personalFrame.locator('[data-action="start-study"]').click();
+    await construct(personalFrame, course.lessons.find(lesson => lesson.id === 'auth-method-04').steps.length);
+    await checkNumericLesson(personalFrame);
+    await checkPersonalNumericPractice(personalFrame);
     await s.locator('[data-cabinet-return]').click(); await pupilOpen.waitFor();
     assert.equal(new URL(s.url()).hash, '#' + pupilBack, 'personal course returns to the same pupil route');
     assert.equal(await s.evaluate(() => LearningApp.account().id), pupil.id, 'personal course retains the authenticated pupil');
@@ -450,10 +501,7 @@ async function run() {
     await openCard(teacherFrame, 'auth-method-04');
     await teacherFrame.locator('[data-action="start-study"]').click();
     await construct(teacherFrame, course.lessons.find(l => l.id === 'auth-method-04').steps.length);
-    await teacherFrame.locator('#numeric-answer').fill('1/0'); await teacherFrame.locator('.answer-form button[type="submit"]').click();
-    await synchronized(teacherFrame, studentFrame, 'invalid numeric feedback');
-    await teacherFrame.locator('#numeric-answer').fill('2/2'); await teacherFrame.locator('.answer-form button[type="submit"]').click();
-    const answered = await synchronized(teacherFrame, studentFrame, 'correct fraction with help attribution');
+    const answered = await checkNumericLesson(teacherFrame, studentFrame);
     assert.equal(answered.work.correctAnswer, true); assert.equal(answered.work.workedSeen, true);
     const svg = teacherFrame.locator('.model-svg'); await svg.scrollIntoViewIfNeeded();
     const box = await svg.boundingBox(), beforeCamera = answered.work.camera;
@@ -491,7 +539,7 @@ async function run() {
     assert.deepEqual(store.studentProfile(teacher, pupil.id), initialProfile);
     assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n, initialAttempts);
     assert.deepEqual(writes, []); assert.deepEqual(leaks, []); assert.deepEqual(external, []); assert.deepEqual(errors, []);
-    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload with server handback and explicit regrant; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated personal storage');
+    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; personal lesson/practice and shared numeric checks by button/Enter under unchanged sandbox; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload with server handback and explicit regrant; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated personal storage');
   } finally {
     releaseSocket(); await browser?.close(); if (roomProcess?.exitCode === null) roomProcess.kill('SIGTERM');
     await close(cabinetServer); await close(publicServer); store.close(); fs.rmSync(tmp, { recursive: true, force: true });

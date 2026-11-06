@@ -179,12 +179,15 @@ test('invalid numeric syntax and wrong/correct answers restore without re-submis
   const a = boot({ hash: '#auth-method-04' }), b = boot();
   try {
     click(a, '[data-action="start-study"]'); construct(a, course.lessons.find(l => l.id === 'auth-method-04').steps.length);
-    for (const [answer, flag] of [['1/0', 'answerInvalid'], ['7/11', 'answerChecked'], ['2/2', 'correctAnswer']]) {
+    let submits = 0; a.doc.addEventListener('submit', () => submits++);
+    for (const [answer, flag, action] of [['1/0', 'answerInvalid', 'click'], ['7/11', 'answerChecked', 'Enter'], ['2/2', 'correctAnswer', 'Enter'], ['1', 'correctAnswer', 'click']]) {
       input(a, '#numeric-answer', answer);
-      a.doc.querySelector('.answer-form').dispatchEvent(new a.w.Event('submit', { bubbles: true, cancelable: true }));
+      if (action === 'click') click(a, '[data-action="check-numeric-answer"]');
+      else a.doc.querySelector('#numeric-answer').dispatchEvent(new a.w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
       const state = await restore(a, b, 'answer ' + answer);
       assert.equal(state.work[flag], true);
     }
+    assert.equal(submits, 0, 'shared checks do not depend on native form submission');
     assert.equal(b.snapshot().work.workedSeen, true);
     assert.match(b.doc.querySelector('.answer-form .feedback').textContent, /Численный результат совпал/);
   } finally { await a.close(); await b.close(); }

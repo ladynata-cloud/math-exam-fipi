@@ -172,6 +172,55 @@ test('numeric syntax, wrong answers and fractional success retain explicit feedb
   } finally { await reloaded?.close(); await f.close(); }
 });
 
+test('lesson checks run by button and Enter without native submit and ignore composing Enter', async () => {
+  const f = boot({ hash: '#auth-method-04' });
+  try {
+    click(f, '[data-action="start-study"]'); construct(f, course.lessons.find(l => l.id === 'auth-method-04').steps.length);
+    let submits = 0; f.doc.querySelector('.answer-form').addEventListener('submit', () => submits++);
+    assert.equal(f.doc.querySelector('[data-action="check-numeric-answer"]').type, 'button');
+    input(f, '#numeric-answer', '1/0'); click(f, '[data-action="check-numeric-answer"]');
+    assert.equal(f.current().answerInvalid, true); assert.equal(f.current().answerChecked, false);
+    input(f, '#numeric-answer', '2/2');
+    const composing = new f.w.KeyboardEvent('keydown', { key: 'Enter', isComposing: true, bubbles: true, cancelable: true });
+    f.doc.querySelector('#numeric-answer').dispatchEvent(composing);
+    assert.equal(composing.defaultPrevented, false); assert.equal(f.current().answerChecked, false);
+    const enter = new f.w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+    f.doc.querySelector('#numeric-answer').dispatchEvent(enter);
+    assert.equal(enter.defaultPrevented, true); assert.equal(f.current().correctAnswer, true);
+    assert.equal(f.current().answerChecked, true); assert.equal(f.current().answerInvalid, false);
+    assert.equal(f.current().workedSeen, true); assert.equal(f.current().independentSteps, 0);
+    assert.match(f.doc.querySelector('.answer-form .feedback').textContent, /Численный результат совпал/);
+    input(f, '#numeric-answer', '1'); click(f, '[data-action="check-numeric-answer"]');
+    assert.equal(f.current().correctAnswer, true); assert.equal(submits, 0);
+    assert.deepEqual(JSON.parse(f.saved()[course.storageKey]).tasks['auth-method-04'], f.current());
+  } finally { await f.close(); }
+});
+
+test('numeric practice checks keep feedback and saved work for button, Enter and composing Enter', async () => {
+  const f = boot();
+  try {
+    f.w.SECTIONS_MASTER.openPractice('ratio');
+    assert.equal(f.doc.querySelector('.drill-prompt').textContent, 'M∈AB, AM:MB=2:4, AB=12. Найди AM.');
+    const work = () => copy(f.w.SECTIONS_MASTER.getState().practice.topics.ratio);
+    let submits = 0; f.doc.addEventListener('submit', () => submits++);
+    assert.equal(f.doc.querySelector('[data-action="check-drill-answer"]').type, 'button');
+    input(f, '#drill-answer', '1/0'); click(f, '[data-action="check-drill-answer"]');
+    assert.equal(work().checked, false); assert.equal(work().correct, false);
+    assert.match(f.doc.querySelector('.drill-card .feedback').textContent, /Введи число/);
+    input(f, '#drill-answer', '8/2');
+    const composing = new f.w.KeyboardEvent('keydown', { key: 'Enter', isComposing: true, bubbles: true, cancelable: true });
+    f.doc.querySelector('#drill-answer').dispatchEvent(composing);
+    assert.equal(composing.defaultPrevented, false); assert.equal(work().checked, false);
+    const enter = new f.w.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+    f.doc.querySelector('#drill-answer').dispatchEvent(enter);
+    assert.equal(enter.defaultPrevented, true); assert.equal(work().checked, true); assert.equal(work().correct, true);
+    assert.match(f.doc.querySelector('.drill-card .feedback').textContent, /Ответ совпал/);
+    input(f, '#drill-answer', '4'); click(f, '[data-action="check-drill-answer"]');
+    assert.equal(work().correct, true); assert.equal(submits, 0);
+    assert.deepEqual(JSON.parse(f.saved()['mathexam.sections.master.activities.v1']).practice.topics.ratio, work());
+  } finally { await f.close(); }
+});
+
 test('completing a demonstrated card does not automatically certify independent readiness', async () => {
   const f = boot({ hash: '#starter-01' });
   try {
