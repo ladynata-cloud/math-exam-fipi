@@ -30,7 +30,9 @@ permissions:
 jobs:
   mathematics-and-journeys:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Include occasional slow Ubuntu font downloads in Playwright setup.
+    # All mathematical and browser assertions remain unchanged.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
