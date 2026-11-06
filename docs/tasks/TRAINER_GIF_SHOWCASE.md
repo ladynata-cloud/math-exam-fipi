@@ -96,3 +96,7 @@ expectation is therefore 59 entries, with an explicit assertion for the new
 logarithms link. All animation assets and player code remain unchanged.
 The status entry is retained next to the existing home/catalogue work instead
 of competing for the first line with unrelated release records.
+
+### Offline OGE page regression
+
+The OGE minimal-interface workflow on head `fbb56557` failed the horizontal-width assertion after opening Informatics through a local file URL (run 42140966625). The root-relative preview stylesheet, script, six posters, six animations and six direct GIF links resolve outside the checkout in that mode; the original files failed a separate actual poster-decode check locally. Use page-relative URLs for these 20 references on the OGE landing page. Their HTTP destinations under /oge/ are unchanged. Retain all existing width and interaction assertions. Verify local poster decoding, animation playback and mobile widths alongside the HTTP browser suite.
