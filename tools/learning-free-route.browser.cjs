@@ -25,39 +25,113 @@ const PUPIL_LOGIN = 'fixture_free_pupil';
 const PUPIL_PASSWORD = '0381';
 const uuid = () => crypto.randomUUID();
 // A four-digit PIN can occur inside a valid UUID or SHA256 by coincidence.
-// Audit payload data and credential keys while validating (not substring-
-// scanning) the explicitly typed opaque identity/hash metadata.
+// Audit every payload key/value except exact DTO identity paths independently
+// verified against persisted identity columns. Never exempt a field by name.
 const opaqueId = /^(?:[A-Za-z0-9_-]{24}|[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i;
-const identityFields = new Set(['id', 'learnerId', 'teacherId', 'attemptId', 'sourceAttemptId', 'assignmentId', 'batchId', 'commonAttemptId']);
-function assertCredentialFreeReceipt(row, secret) {
+function receiptIdentityOracle(store) {
+  return Object.fromEntries([
+    ['attempts', 'id,learner_id,teacher_id,source_attempt_id'],
+    ['assignments', 'id,learner_id,attempt_id,batch_id'],
+    ['learning_photos', 'id'], ['learning_feedback', 'id'], ['accounts', 'id,role,teacher_id']
+  ].map(([table, columns]) => [table, new Map(store.rows('SELECT ' + columns + ' FROM ' + table).map(row => [row.id, row]))]));
+}
+function assertCredentialFreeReceipt(row, secret, identities) {
   assert.deepEqual(Object.keys(row).sort(), ['actor_id', 'fingerprint', 'op_id', 'result_json']);
   assert.match(row.actor_id, opaqueId); assert.match(row.op_id, opaqueId);
   assert.match(row.fingerprint, /^[a-f0-9]{64}$/);
-  function inspect(value, key = '') {
+  const result = JSON.parse(row.result_json), trusted = new Map();
+  function identity(dto, at, table, fields) {
+    if (dto == null) return;
+    const persisted = identities[table]?.get(dto.id);
+    assert.ok(persisted, 'Receipt identity must exist independently in ' + table);
+    for (const [field, column] of Object.entries(fields)) if (Object.hasOwn(dto, field)) {
+      assert.equal(dto[field], persisted[column], 'Receipt identity matches its persisted row');
+      if (dto[field] !== null) {
+        assert.match(dto[field], opaqueId);
+        trusted.set(JSON.stringify([...at, field]), dto[field]);
+      }
+    }
+  }
+  function submission(dto, at) {
+    if (dto == null) return;
+    assert.ok(Array.isArray(dto.photoIds));
+    dto.photoIds.forEach((id, index) => {
+      assert.match(id, opaqueId);
+      assert.ok(identities.learning_photos?.has(id), 'Submitted photo identity must exist independently');
+      trusted.set(JSON.stringify([...at, 'photoIds', index]), id);
+    });
+  }
+  function attempt(dto, at) {
+    identity(dto, at, 'attempts', { id: 'id', learnerId: 'learner_id', teacherId: 'teacher_id', sourceAttemptId: 'source_attempt_id' });
+    submission(dto?.submission, [...at, 'submission']);
+  }
+  const assignmentFields = { id: 'id', learnerId: 'learner_id', attemptId: 'attempt_id', batchId: 'batch_id' };
+  if (result.operation === 'onboard-student') {
+    const pupil = identities.accounts?.get(result.learnerId);
+    assert.ok(pupil && pupil.role === 'student' && pupil.teacher_id === row.actor_id,
+      'An onboarding receipt refers to a persisted student of its issuing teacher');
+    assert.match(result.learnerId, opaqueId);
+    trusted.set(JSON.stringify(['learnerId']), result.learnerId);
+  }
+  attempt(result.attempt, ['attempt']);
+  identity(result.assignment, ['assignment'], 'assignments', assignmentFields);
+  if (result.assignments !== undefined) {
+    assert.ok(Array.isArray(result.assignments));
+    result.assignments.forEach((dto, index) => {
+      identity(dto, ['assignments', index], 'assignments', assignmentFields);
+      attempt(dto.attempt, ['assignments', index, 'attempt']);
+    });
+  }
+  identity(result.photo, ['photo'], 'learning_photos', { id: 'id' });
+  if (result.photo?.url !== undefined) {
+    assert.equal(result.photo.url, '/api/learning/photos/' + result.photo.id);
+    trusted.set(JSON.stringify(['photo', 'url']), result.photo.url);
+  }
+  identity(result.feedback, ['feedback'], 'learning_feedback', { id: 'id' });
+  submission(result.submission, ['submission']);
+  function inspect(value, at = [], key = '') {
     assert.equal(key.includes(secret), false, 'Plaintext credential is absent from operation payload keys');
     assert.doesNotMatch(key, /password|passphrase|credential|token|csrf|recovery.?code|^pin$/i,
       'Credential fields must never be stored in an operation receipt');
     if (value === null || value === undefined) return;
     if (typeof value === 'string') {
-      if (identityFields.has(key) && opaqueId.test(value)) return;
+      if (trusted.get(JSON.stringify(at)) === value) return;
       assert.equal(value.includes(secret), false, 'Plaintext credential is absent from operation payload data');
-    } else if (Array.isArray(value)) value.forEach(item => inspect(item));
-    else if (typeof value === 'object') for (const [name, child] of Object.entries(value)) inspect(child, name);
+    } else if (Array.isArray(value)) value.forEach((item, index) => inspect(item, [...at, index]));
+    else if (typeof value === 'object') for (const [name, child] of Object.entries(value)) inspect(child, [...at, name], name);
     else assert.equal(String(value).includes(secret), false, 'Plaintext credential is absent from primitive payload data');
   }
-  inspect(JSON.parse(row.result_json));
+  inspect(result);
 }
 function verifyReceiptPrivacyGuard() {
+  const collisionId = '0381' + 'B'.repeat(20), unknownId = '0381' + 'X'.repeat(20);
+  const identities = { attempts: new Map([[collisionId, { id: collisionId }]]), learning_photos: new Map([[collisionId, { id: collisionId }]]) };
   const row = { actor_id: 'A'.repeat(24), op_id: '03810000-0000-4000-8000-000000000001',
-    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: '0381' + 'B'.repeat(20) }, notice: 'Safe fixture' }) };
+    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: collisionId }, notice: 'Safe fixture' }) };
   assert.equal(JSON.stringify(row).includes(PUPIL_PASSWORD), true, 'The old substring guard falsely rejects valid opaque metadata');
-  assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
-  for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
-    { id: PUPIL_PASSWORD }, { nested: { recoveryCode: 'different-credential-value' } }]) {
-    assert.throws(() => assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD));
+  assertCredentialFreeReceipt(row, PUPIL_PASSWORD, identities);
+  const pupilRow = { id: collisionId, role: 'student', teacher_id: row.actor_id };
+  const onboarding = { ...row, result_json: JSON.stringify({ operation: 'onboard-student', learnerId: collisionId, authEpoch: 0, profileVersion: 1 }) };
+  const withPupil = data => ({ ...identities, accounts: new Map([[data.id, data]]) });
+  assertCredentialFreeReceipt(onboarding, PUPIL_PASSWORD, withPupil(pupilRow));
+  for (const invalid of [{ ...pupilRow, id: unknownId }, { ...pupilRow, role: 'teacher' }, { ...pupilRow, teacher_id: unknownId }]) {
+    assert.throws(() => assertCredentialFreeReceipt(onboarding, PUPIL_PASSWORD, withPupil(invalid)));
   }
-  assert.throws(() => assertCredentialFreeReceipt({ ...row, fingerprint: PUPIL_PASSWORD }, PUPIL_PASSWORD));
-  assert.throws(() => assertCredentialFreeReceipt({ ...row, op_id: PUPIL_PASSWORD }, PUPIL_PASSWORD));
+
+  assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify({ photo: { id: collisionId, url: '/api/learning/photos/' + collisionId }, submission: { photoIds: [collisionId] } }) }, PUPIL_PASSWORD, identities);
+  for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
+    { id: PUPIL_PASSWORD }, { nested: { recoveryCode: 'different-credential-value' } },
+    { attempt: { id: collisionId, taskSpec: { extra: { id: collisionId } } } },
+    { attempt: { id: collisionId, state: { work: { learnerId: collisionId } } } },
+    { attempt: { id: unknownId } }, { attempt: { id: collisionId, password: 'another-value' } },
+    { photo: { id: collisionId, url: '/api/learning/photos/' + collisionId + '?pin=' + PUPIL_PASSWORD } },
+    { submission: { photoIds: [unknownId] } }]) {
+    assert.throws(() => assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD, identities));
+  }
+  for (const field of ['actor_id', 'op_id', 'fingerprint']) {
+    assert.throws(() => assertCredentialFreeReceipt({ ...row, [field]: PUPIL_PASSWORD }, PUPIL_PASSWORD, identities));
+  }
+  assert.throws(() => assertCredentialFreeReceipt({ ...row, password: PUPIL_PASSWORD }, PUPIL_PASSWORD, identities));
 }
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const originOf = server => 'http://127.0.0.1:' + server.address().port;
@@ -192,7 +266,7 @@ async function main() {
       'Onboarding preserves every earlier operation receipt');
     const onboardingReceipt = receiptsAfterIssuance.at(-1);
     assert.equal(onboardingReceipt.actor_id, teacherSession.account.id);
-    assertCredentialFreeReceipt(onboardingReceipt, PUPIL_PASSWORD);
+    assertCredentialFreeReceipt(onboardingReceipt, PUPIL_PASSWORD, receiptIdentityOracle(store));
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
     assert.equal(await teacher.page.locator('#access-password').inputValue(), PUPIL_PASSWORD);
     const accessURL = new URL(await teacher.page.locator('#access-link').inputValue());
@@ -297,7 +371,8 @@ async function main() {
       teacherSession.csrfToken, (await api(student.page, '/session')).csrfToken];
     await assertPrivate(teacher.page, secrets); await assertPrivate(student.page, secrets);
     assert.equal(store.db.prepare('SELECT name FROM sqlite_master WHERE type=?').all('table').length > 0, true);
-    for (const row of store.rows('SELECT * FROM operations')) assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
+    const receiptIdentities = receiptIdentityOracle(store);
+    for (const row of store.rows('SELECT * FROM operations')) assertCredentialFreeReceipt(row, PUPIL_PASSWORD, receiptIdentities);
     if (process.env.LEARNING_ARTIFACT_DIR) {
       fs.mkdirSync(process.env.LEARNING_ARTIFACT_DIR, { recursive: true });
       await navigate(student.page, 'route'); await student.page.locator('.route-grid').waitFor();
