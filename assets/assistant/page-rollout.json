@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+  "baseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -263,8 +263,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
-      "beforeSha256": "d293b726a3debc574477a8c0802b9099a18237040299a306c25acb0d5dc77ea1",
-      "afterSha256": "ee05300e42b24624da9dc3a07b7bfe87ff9ffca8c469e0b3c9672d02ba994946",
+      "beforeSha256": "04976300d50e4a0a5052a0d19b9b1a260368a89747c32ffc15af06b86f367404",
+      "afterSha256": "bcb10841dba121c8d285a2031b8f13bd69bfc3878237a2b7a03caeacfd0d2bab",
       "placement": "before-head-close"
     },
     "ege-profil/exam/full-exam.html": {
@@ -3815,6 +3815,15 @@
       "task": "docs/tasks/LOGARITHM_DISCOVERY_LESSON.md",
       "changedPaths": [
         "trainers/college-logarithms/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+      "sourceBaseSha": "c22a423ab50758c5158648c2a87643ef7f7212fb",
+      "task": "docs/tasks/PROFILE_LOG_TRIG_BOARD.md",
+      "changedPaths": [
+        "ege-profil/circle/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

@@ -1050,6 +1050,34 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Восемь задач из кабинета: совместные ответы, шаги, подсказки, правила и записи. Личные результаты не изменяются."
+    },
+    {
+      "trainerId": "ege-profile-log-trig",
+      "file": "trainers/ege-profile-log-trig.html",
+      "title": "Логарифмы и тригонометрия · ЕГЭ профиль",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместный урок: 9 тем, 54 задачи, ответы, подсказки и модели. Личный прогресс курса не изменяется."
+    },
+    {
+      "trainerId": "ege-profile-circle",
+      "file": "trainers/ege-profile-circle.html",
+      "title": "Тригонометрия с нуля · окружность",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместный урок: 7 разделов, 56 задач, координаты, вычисления и простейшие уравнения. Личный прогресс курса не изменяется."
     }
   ]
 }

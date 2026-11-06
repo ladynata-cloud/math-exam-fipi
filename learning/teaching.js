@@ -155,7 +155,13 @@
       const profileForm = $('#teaching-profile');
       let profileOperation = null, profileBlocked = false;
       function updateGoal() {const enabled=profileForm.elements.course.value==='oge';$('[data-profile-goal]').hidden=!enabled;profileForm.elements.goal.disabled=!enabled;$('[data-profile-entry-note]').hidden=profileForm.elements.course.value!=='ege-profile';}
-      function updateAttachedCourse(){const attached=root.LearningAttachedCourse?.selected(profile);$('[data-plan-course-links]').innerHTML=root.LearningAttachedCourse?.numberTheoryOnly?.(profile)?'':window.LearningPreparationUI?.planCoursesMarkup?.(plan.note,{teacher:true})||'';$('[data-attached-course-preview]').innerHTML=root.LearningCourseProgram?.selected(profile).length&&context.programCardsMarkup?context.programCardsMarkup(profile,{previewStudentId:context.id}):root.LearningAttachedCourse?.markup(profile,{heading:'h2',teacher:true,previewStudentId:context.id})||'';for(const option of profileForm.elements.course.options)option.textContent=option.value===profile.course&&attached?'Другие материалы: '+courseLabels[option.value]:courseLabels[option.value];$('[data-ege-positions]').hidden=!!attached||['oge','foundations','ege-profile','vilenkin6'].includes(profile.course);}
+      function updateAttachedCourse(){
+        const attached=root.LearningAttachedCourse?.selected(profile),program=root.LearningCourseProgram?.selected(profile).length&&context.programCardsMarkup;
+        $('[data-plan-course-links]').innerHTML=root.LearningAttachedCourse?.numberTheoryOnly?.(profile)?'':window.LearningPreparationUI?.planCoursesMarkup?.(plan.note,{teacher:true})||'';
+        const course=program?context.programCardsMarkup(profile,{previewStudentId:context.id}):root.LearningAttachedCourse?.markup(profile,{heading:'h2',teacher:true,previewStudentId:context.id})||'';
+        const shared=!program&&!attached&&profile.course==='ege-profile'?root.LearningProfileSharedBoard?.markup({teacher:true})||'':'';
+        $('[data-attached-course-preview]').innerHTML=course+shared;
+        for(const option of profileForm.elements.course.options)option.textContent=option.value===profile.course&&attached?'Другие материалы: '+courseLabels[option.value]:courseLabels[option.value];$('[data-ege-positions]').hidden=!!attached||['oge','foundations','ege-profile','vilenkin6'].includes(profile.course);}
       updateGoal();updateAttachedCourse();profileForm.elements.course.addEventListener('change',updateGoal);
       profileForm.addEventListener('input',()=>{profileOperation=null;$('[data-profile-status]').textContent='';});
       on('#teaching-profile','submit',async event=>{

@@ -115,7 +115,7 @@
         </details>
 <p id="pickerInlineError" class="picker-error" role="alert" hidden></p>
   </dialog>
-  <script src="board-picker.js?v=20261106-room-recovery"></script>
+  <script src="board-picker.js?v=20261106-log-trig"></script>
   <script src="board-bridge.js"></script>
   <script src="board-ink.js?v=20261024-writing-1"></script>
   <script src="board-images.js?v=20261024-writing-1"></script>
@@ -183,6 +183,33 @@
         if(new URL(raw,location.href).origin!==current.origin)return url;
         return raw.split('#',1)[0]+hash;
       }catch(_){return url}
+    }
+    function prepareProfileTrainerForRoom(url){
+      // Fixed profile courses choose tasks in memory, not from a random seed.
+      // Carry only a validated public lesson snapshot across the room reload;
+      // drafts never enter the URL or the teacher-room credential record.
+      try{
+        const raw=normalizeTrainer(url),file=canonicalTrainerFileFromUrl(raw);
+        const key=file==='trainers/ege-profile-log-trig.html'?'__profileLogTrigBoard':file==='trainers/ege-profile-circle.html'?'__profileCircleBoard':null;
+        if(!key)return null;
+        const child=frame.contentWindow,current=new URL(child.location.href),entry=mirrorEntryFromUrl(raw);
+        if(!entry||current.origin!==location.origin||current.username||current.password||canonicalTrainerFileFromUrl(current.href)!==file)return null;
+        const course=child[key];
+        if(typeof course?.getState!=='function'||typeof course?.validateState!=='function')return null;
+        const selected=course.getState();
+        if(!course.validateState(selected)||selected.route!==current.hash)return null;
+        const snapshot=JSON.parse(JSON.stringify(selected));
+        if(!MathExamBoard.validateState(snapshot).ok)return null;
+        return {url:raw.split('#',1)[0]+snapshot.route,payload:{trainer:entry.trainerId,trainerId:entry.trainerId,state:snapshot,protocolVersion:entry.protocolVersion,trainerVersion:entry.trainerVersion,stateSchemaVersion:entry.stateSchemaVersion}};
+      }catch(_){return null}
+    }
+    function takePreparedProfileTrainer(roomState){
+      const prepared=shared.preparedProfileTrainer;shared.preparedProfileTrainer=null;
+      // Only the first authenticated join to this freshly created empty room
+      // may seed it. Reconnects and existing room state always win.
+      if(!prepared||roomState||prepared.roomId!==shared.roomId||shared.role!=='teacher'||!canWrite())return null;
+      const payload=prepared.payload;
+      return bridgeStateFromPayload(payload,payload.trainerId)?payload:null;
     }
     function compatLabel(value){return value==='board-mirror'?'Полное зеркало действий':value==='seed-ready'?'Seed-ready':'Открывается в доске'}
     function trainerQuickUrl(entry){const file=String(entry?.file||''),relative=file.replace(/^trainers\//,'');return relative.includes('/')?`/${file}`:relative}
@@ -413,7 +440,7 @@
     }
     function loadSocketClient(server){if(window.io)return Promise.resolve();if(shared.loadingClient&&shared.clientServer===server)return shared.loadingClient;shared.clientServer=server;shared.loadingClient=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=`${server}/socket.io/socket.io.js`;s.onload=resolve;s.onerror=()=>{shared.loadingClient=null;reject(new Error('Не удалось загрузить Socket.IO client'))};document.head.appendChild(s)});return shared.loadingClient}
     async function checkServer(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('проверка сервера','wait');try{const res=await fetch(`${shared.server}/health`,{cache:'no-store'});const data=await res.json();if(!res.ok||data?.ok!==true)throw new Error('health');localStorage.setItem(SERVER_KEY,shared.server);setStatus('Сервер доступен','ok')}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
-    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}loadTrainerRegistry({force:trainerRegistry.server!==shared.server});setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const selected=trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
+    async function createRoom(){shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);serverUrl.value=shared.server;if(!shared.server){setStatus('укажите адрес сервера','bad');return}const registryReady=loadTrainerRegistry({force:trainerRegistry.server!==shared.server});if(['trainers/ege-profile-log-trig.html','trainers/ege-profile-circle.html'].includes(canonicalTrainerFileFromUrl(state.trainerUrl)))await registryReady;setStatus('подключение','wait');try{const res=await fetch(`${shared.server}/api/rooms`,{method:'POST',headers:{'Content-Type':'application/json'}});if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();shared.role='teacher';shared.roomId=data.roomId;shared.token=data.teacherToken;shared.studentToken=data.studentToken;shared.restoredTeacherSession=false;saveTeacherRoomSession();replaceTeacherRoomUrl();setControlState(data.state||{});setParticipants(data.state?.participants);const prepared=prepareProfileTrainerForRoom(state.trainerUrl);shared.preparedProfileTrainer=prepared?{roomId:shared.roomId,...prepared}:null;const selected=prepared?.url||trainerUrlWithCurrentMerzlyakSelection(state.trainerUrl);const seeded=addBoardSeedToTrainerUrl(selected,shared.roomId);if(seeded!==state.trainerUrl){state.trainerUrl=seeded;trainerUrl.value=seeded;setTrainerFrameSrc(seeded);save()}shared.studentLink=makeStudentLink();studentLink.value=shared.studentLink;localStorage.setItem(SERVER_KEY,shared.server);roomBadge.textContent=`комната ${shared.roomId}`;updateControlUi();await connectRoom()}catch(_e){setStatus('Сервер недоступен, доска работает локально','bad')}}
     async function connectRoom(){
       shared.server=normalizeServer(serverUrl.value||shared.server||DEFAULT_SERVER);
       if(!shared.server||!shared.roomId||!shared.token){setStatus('локальный режим','');return}
@@ -434,12 +461,13 @@
           setControlState(payload?.state||payload||{});
           setSharedMe(payload?.you);
           roomStateReceived=true;
-          latestTrainerState=payload?.state?.latestTrainerState||null;
+          const prepared=takePreparedProfileTrainer(payload?.state);
+          latestTrainerState=payload?.state?.latestTrainerState||prepared||null;
           updateMirrorStatusForCurrentTrainer();
           if(payload?.state){
             applySnapshot(payload.state)
           }else if(shared.role==='teacher'){
-            emitSnapshot();shared.socket.emit('room:state')
+            emitSnapshot();if(prepared)emitWriter('board:trainer-state-change',prepared);shared.socket.emit('room:state')
           }
           if(pausedTrainerBridge||bridgeReloadNeeded)reconcileTrainerMirror();
           recoverExpiredBridgeOnce();maybeHydrateTrainer();if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState);scheduleLegacyTrainerRequest();
