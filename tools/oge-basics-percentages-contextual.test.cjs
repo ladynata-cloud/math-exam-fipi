@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const {restoreHistoricalBytes} = require('./oge-book-corrections.cjs');
+const {restorePublicNavigator} = require('./public-navigator-preservation.cjs');
 const root = path.resolve(__dirname, '..');
 const fixture = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures/oge-basics-percentages-contextual-shell.json')));
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -21,8 +22,8 @@ function withoutReturnShell(html) {
 }
 
 function assertPreservedMap(html) {
-  html = withoutReturnShell(html);
   const file = fixture.files.find(x => x.path.endsWith('/index.html'));
+  html = withoutReturnShell(restorePublicNavigator(file.path,html).toString('utf8'));
   assert.equal(html.split(fallbackStart).length, 2, 'one source fallback start');
   assert.equal(html.split(fallbackEnd).length, 2, 'one source fallback end');
   const fallback = html.match(/<div class="map" id="map">(<!-- seo-catalog-fallback:map:start -->[\s\S]*?<!-- seo-catalog-fallback:map:end -->)<\/div>/);
@@ -41,7 +42,7 @@ function assertPreservedMap(html) {
 }
 
 function assertPreservedTrainer(html, file) {
-  html = withoutReturnShell(html);
+  html = withoutReturnShell(restorePublicNavigator(file.path,html).toString('utf8'));
   const addition = `<link rel="canonical" href="https://mathexam.space/${file.path}">\n`;
   assert.equal(html.split(addition).length, 2, file.path + ': one exact HTTPS self-canonical');
   assert(html.indexOf(addition) < html.indexOf('</head>'), file.path + ': canonical remains in head');

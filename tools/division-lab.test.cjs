@@ -50,6 +50,7 @@ const sourcePath=(script,file)=>{
 // PR441 adds one exact public return script; it is not part of either math
 // engine. Keep every historical dependency and reject any changed/extra tag.
 function exerciseScripts(html,file){
+ html=require('./public-navigator-preservation.cjs').restorePublicNavigator(file,html).toString('utf8');
  const nodes=scripts(html),navigation=nodes.filter(node=>node.attrs.includes('oge-wayfinding'));
  assert.equal(navigation.length,1,file+': exactly one reviewed public navigation script');
  const node=navigation[0];

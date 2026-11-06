@@ -4,6 +4,7 @@
 // A source answer oracle is explicitly labelled and is NOT independent maths QA.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
+const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -61,7 +62,9 @@ async function captureInitialVisibleText(page,report){
  assert(full.startsWith(label+' '),'return bar is a separate leading navigation block');
  const file=path.resolve(ROOT,'.'+report.finalPath+(report.finalPath.endsWith('/')?'index.html':''));
  assert(file.startsWith(ROOT+path.sep));
- const raw=fs.readFileSync(file,'utf8'),original=originalWayfindingHtml(raw,report.finalPath);
+ const raw=fs.readFileSync(file,'utf8');
+ const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
+ const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
