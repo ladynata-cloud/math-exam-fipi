@@ -6,6 +6,7 @@ const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 test('every inventoried public page has one exact existing navigator pair; all added pages recover original bytes',()=>{
   assert.deepEqual(pages,[...new Set(pages)].sort());
   assert.deepEqual([...rollout.existingPages,...Object.keys(rollout.addedPages)].sort(),pages);
+  assert.deepEqual(pages.filter(name=>Object.hasOwn(rollout.excluded,name)),[],'Covered and excluded documents must be disjoint');
   const tag1=snippet.trim().split('\n')[0],tag2=snippet.trim().split('\n')[1];
   for(const name of pages){
     assert(!/^(?:book|b|learning|downloads|docs|tools)\//.test(name),name);
