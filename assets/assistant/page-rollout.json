@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "76b7957fc919aa9e66f5b663eeaa436d23ef979d",
+  "baseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 552,
-    "covered": 551,
+    "total": 553,
+    "covered": 552,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2208,8 +2208,13 @@
       "placement": "before-head-close"
     },
     "trainers/college-logarithms/index.html": {
-      "beforeSha256": "75125cbc3ed4a58c4823eabafd232dca7f194d598c93b06447b7d1aa3b1188ce",
-      "afterSha256": "72cf028da545fe59ceaaa695c2e4efb203284e2796a6180b775e3b6464fba429",
+      "beforeSha256": "f9090fd6053ce197e93cac83666dd19110bbef7d2781d8c8c3e956f920c176e2",
+      "afterSha256": "c69bd485293d9f30e40a03324b49d10141e9abf0b2c219131b6ef7843ab14647",
+      "placement": "before-head-close"
+    },
+    "trainers/college-logarithms/intro/index.html": {
+      "beforeSha256": "a0a058aaa8135692bf73c5174901943585327ee789139eb755ef7ecbe1643323",
+      "afterSha256": "9351681c8d208c2a68e08443e7b788fbe4223cc96b67f0d450d42933e182e929",
       "placement": "before-head-close"
     },
     "trainers/credit-differential-payment-trainer.html": {
@@ -3706,7 +3711,8 @@
     "school/m9-exercises/index.html": "school/app.js",
     "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
     "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
-    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)"
+    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
+    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -3802,6 +3808,15 @@
         "trainers/simple-equations-stepwise.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "76b7957fc919aa9e66f5b663eeaa436d23ef979d",
+      "sourceBaseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+      "task": "docs/tasks/LOGARITHM_DISCOVERY_LESSON.md",
+      "changedPaths": [
+        "trainers/college-logarithms/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -3812,6 +3827,14 @@
         "trainers/college-logarithms/index.html"
       ],
       "reason": "New published public course linked from the sitemap and existing catalogue/function course; coordinator requested inclusion."
+    },
+    {
+      "sourceBaseSha": "b99f6562a6b6e5eb9c83d66f7fd7c0545f6cae78",
+      "task": "docs/tasks/LOGARITHM_DISCOVERY_LESSON.md",
+      "addedPages": [
+        "trainers/college-logarithms/intro/index.html"
+      ],
+      "reason": "Original introductory lesson linked from the existing logarithm course and sitemap."
     }
   ]
 }
