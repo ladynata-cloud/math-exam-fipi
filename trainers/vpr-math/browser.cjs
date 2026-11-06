@@ -255,6 +255,9 @@ async function layout(page, label, illustration = false) {
       await layout(mobile, 'symmetry at ' + width, true);
       await shot(mobile, 'vpr-' + width + 'x' + height);
       await mobile.locator('[data-action=mode][data-mode=solo]').click();
+      // A native mode click schedules hashchange; count() itself does not wait
+      // for that navigation to render the independently checked task view.
+      await mobile.waitForFunction(() => VPRApp.getView().mode === 'solo');
       assert.equal(await mobile.locator('[data-action=hint]').count(), 0);
       assert.equal(await mobile.locator('.theory').count(), 0);
       await mobile.locator('.notes > summary').click();
