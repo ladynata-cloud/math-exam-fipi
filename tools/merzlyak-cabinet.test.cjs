@@ -28,10 +28,11 @@ test('only the exact canonical course token attaches; deceptive URLs never selec
   }
 });
 
-async function fixture({role='student', route='home', selected=true, helper=true, prior=true, saveProfile=false}={}) {
+async function fixture({role='student', route='home', selected=true, helper=true, prior=true, saveProfile=false, programCourses=null}={}) {
   const dom = new JSDOM(read('learning/index.html'), {url:`https://cabinet.example/learning/?role=${role}#${route}`, runScripts:'outside-only'});
   const {window} = dom, calls=[];
   const profile={course:'school',goal:null,focus:selected?focus:'Повтори школьные темы.',version:1};
+  if(programCourses)profile.program={grade:10,courseIds:programCourses};
   const student={id:'fixture-pupil',role:'student',name:'Проверочный ученик',login:'fixture-pupil',profile};
   const teacher={id:'fixture-teacher',role:'teacher',name:'Преподаватель',login:'fixture-teacher'};
   const old={id:'fixture-work',learnerId:student.id,trainerId:'ege-path',contentId:'triangle',title:'Сохранённая работа',outcome:'started',updatedAt:'2026-01-01T00:00:00Z'};
@@ -60,6 +61,8 @@ async function fixture({role='student', route='home', selected=true, helper=true
     return {ok:true,status:200,json:async()=>structuredClone(responses[route])};
   };
   if(helper)window.eval(read('learning/attached-course.js'));
+  window.eval(read('learning/course-program.js'));
+  if(programCourses)window.eval(read('learning/public-practice.js'));
   window.eval(read('learning/vilenkin6-course.js'));
   window.eval(read('learning/preparation.js'));
   window.eval(read('learning/teaching.js'));
@@ -114,6 +117,41 @@ test('the teacher roster, preview and student card use the attached course witho
       assert.equal(f.profile.course,'school');assert.equal(f.profile.version,1);
     }finally{f.dom.window.close();}
   }
+});
+
+test('assigned multi-course programs expose the registered shared board with an exact cabinet return',async()=>{
+  for(const [role,route]of [['student','home'],['student','course'],['student','route'],['teacher','preview=fixture-pupil'],['teacher','student=fixture-pupil']]){
+    const f=await fixture({role,route,programCourses:['merzlyak-10-base']});
+    try{
+      const card=f.main.querySelector('[data-program-course="merzlyak-10-base"]');assert(card,role+' '+route);
+      const link=card.querySelector('[data-program-board]');assert(link);
+      const params=new f.window.URLSearchParams(link.hash.slice(1));
+      const destination=new URL(params.get('public-practice'),'https://mathexam.space');
+      assert.equal(destination.pathname,'/trainers/trainer-board.html');
+      assert.deepEqual([...destination.searchParams],[['trainer','/trainers/merzlyak-10-base.html']]);
+      assert.equal(params.get('return'),route);assert.equal(link.target,'');
+      assert.match(card.querySelector('[data-program-board-help]').textContent,role==='teacher'?/Создать комнату/:/ссылку комнаты преподавателя/);
+      if(role==='teacher')assert.equal(card.querySelector('[data-program-open]'),null,'Preview does not start a pupil attempt');
+      else{
+        assert.match(link.textContent,/отдельную доску/i,'Uninvited pupil action does not promise entry to the teacher room');
+        assert(card.querySelector('[data-program-open]'),'Independent course entry is preserved');
+        assert(f.main.querySelector('a[href="#attempt=fixture-work"]'),'Saved work remains reachable');
+      }
+      assert(f.calls.every(call=>call.method==='GET'));assert.equal(f.profile.version,1);
+      assert.deepEqual(f.profile.program.courseIds,['merzlyak-10-base']);assert.equal(f.rows.length,2);
+    }finally{f.dom.window.close();}
+  }
+});
+
+test('a different assigned program receives no Merzlyak board entry from a stale focus note',async()=>{
+  const f=await fixture({programCourses:['makarychev8']});
+  try{
+    assert.equal(f.main.querySelector('[data-program-board]'),null);
+    assert.equal(f.main.querySelector('[data-attached-course-board]'),null);
+    const other=f.main.querySelector('[data-program-course="makarychev8"] [data-program-open]');assert(other);
+    assert.equal(other.hasAttribute('data-program-board'),false);
+    assert(f.calls.every(call=>call.method==='GET'));
+  }finally{f.dom.window.close();}
 });
 
 test('other pupils and a cached older helper keep their existing routes and work',async()=>{
