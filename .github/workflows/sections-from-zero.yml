@@ -4,6 +4,7 @@ on:
     paths:
       - 'stereo-course/sections/**'
       - 'trainers/sections-from-zero.html'
+      - 'trainers/sections-course-navigation.*'
       - 'trainers/board-*'
       - 'trainers/trainer-board.html'
       - 'learning/**'
@@ -21,6 +22,7 @@ on:
     paths:
       - 'stereo-course/sections/**'
       - 'trainers/sections-from-zero.html'
+      - 'trainers/sections-course-navigation.*'
       - 'trainers/board-*'
       - 'trainers/trainer-board.html'
       - 'learning/**'

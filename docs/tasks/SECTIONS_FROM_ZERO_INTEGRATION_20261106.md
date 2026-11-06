@@ -21,6 +21,17 @@ with vertices, edges and faces, progresses through valid construction steps and
 can return to the cabinet. Preserve the earlier course's complete material and
 personal work while making the beginner route easy to find.
 
+### Owner continuation, 2026-11-07
+
+The owner requested the separate course assignment and an easy round trip
+between a selected course card and the shared board. Continue in this task,
+branch and PR. Add a direct card-to-board action and a course panel on the
+existing board; closing that panel must leave the room and its trainer mounted.
+The teacher may choose another card using the existing authorized board action.
+A pupil may read the course and return, but this navigation does not grant a
+new ability to replace the shared task. Explicitly opening the personal course
+uses its normal personal storage; shared work is never copied into it.
+
 ## Context and evidence
 
 - The owner requested a cabinet and a course based on previously created
@@ -74,6 +85,11 @@ personal work while making the beginner route easy to find.
   checks, real two-role browser/Socket.IO tests and responsive screenshots.
 - Update the sitemap, strict registry expectations and project status in this
   task. Preserve other registered courses and their regression gates.
+- Allow the teacher to inspect the public sections course from the assigned
+  card, without loading or creating the pupil's private attempts.
+- Link the selected personal course card to the board and expose a visible
+  course/board return outside the observer's inert trainer iframe. Preserve
+  the existing room, current construction and ink during a same-card return.
 
 ### Out of scope
 
@@ -110,6 +126,10 @@ personal work while making the beginner route easy to find.
 - [ ] The task and model are reachable at 320px and 1280px without page-wide
   horizontal overflow; primary actions and cabinet return remain usable.
 - [ ] Registry, legacy mirror/room regressions and generated sitemap stay valid.
+- [ ] The teacher can open a precise course card on the board from the cabinet.
+  Returning through the course panel keeps the same room and trainer document.
+- [ ] The observer can reach the course/board controls, but cannot use them to
+  change the shared card. A teacher selection preserves room and drawing data.
 
 ## Checks and gates
 
@@ -174,6 +194,9 @@ personal work while making the beginner route easy to find.
   with the exact base in that authorization. Base drift invalidates it; prepare
   a read-only virtual composition and applicable gates, then request a new
   explicit authorization. No force, reset, rebase or automatic drift repair.
+- The 2026-11-07 continuation authorizes adding this separate course to the
+  intended existing pupil after its verified release, preserving other courses
+  and learning records. It does not supply a new exact-base merge authorization.
 
 ## Execution record
 
@@ -255,6 +278,32 @@ personal work while making the beginner route easy to find.
   privacy check or failure boundary is skipped, and page/widget code is unchanged.
 
 ## Required handoff
+
+### Continuation validation
+
+- The previous head `2ec719bd0de09d2bdb72d55bf214fa2e39356d6a` passed all nine
+  jobs of [CI 42259717017](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42259717017),
+  including the real two-participant browser journey. Its old pending wording
+  in the PR description is superseded by that actual run.
+- This continuation adds course/board navigation; it requires a fresh exact-head
+  browser run. Earlier evidence is not claimed for the modified interaction.
+- Local continuation checks passed: 11 navigation tests (including seeded rooms,
+  observer/control boundaries and stale-document rejection), existing complete
+  host/room-selection regressions, 18 course/cabinet tests, 27 shared-course and
+  return tests, eight independent mathematics tests and 402 server tests.
+  Deterministic build, syntax and whitespace checks passed. The real-browser
+  journey now starts its round trip with a completed step, a nonempty shared
+  draft and an actual canvas stroke synchronized to the pupil.
+- Current main observed at continuation start is
+  `66172e7398d63c1f809cb3befbd29dbb92651109`, including independent published
+  PRs #473 and #476. It subsequently advanced to
+  `25548b86df75b8c90a5dc5c6f1f1925c2ad70636` through PR #475 (profile
+  logarithms/trigonometry and shared-room ordering). Preserve all three changes
+  in the read-only composition before a separate reconciliation/release
+  decision; no branch repair is performed implicitly.
+- Chromium cannot launch in this executor: its process-singleton socket is
+  denied. Pinned-browser download also returned an invalid archive. Browser
+  validation runs in CI; local DOM tests do not replace it.
 
 ```text
 EXECUTIVE STATUS

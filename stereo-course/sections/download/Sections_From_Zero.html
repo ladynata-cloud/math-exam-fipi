@@ -104,6 +104,10 @@ html[data-sections-view="lessons"] .app-header .eyebrow,
 html[data-sections-view="lessons"] .app-header .subtitle{display:none}
 html[data-sections-view="lessons"] .principle-compact>summary{font-size:.82rem;min-height:40px;padding:.45rem 0}
 .sections-board-note{max-width:1570px;margin:.35rem auto 0;padding:0 1.5rem;font-size:.74rem;color:var(--muted)}
+.sections-board-open{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.45rem .8rem;border-radius:.65rem;background:#196d48;color:#fff;font-size:.85rem;font-weight:750;text-decoration:none;white-space:nowrap}
+.sections-board-open:hover{background:#125436;color:#fff}
+.sections-board-open:focus-visible{outline:3px solid #8fc7ff;outline-offset:3px}
+@media print{.sections-board-open{display:none!important}}
 body[data-sections-board="true"] .app-header .brand{font-size:.75rem}
 .model-panel>.lesson-goal{font-size:.87rem;line-height:1.5;margin:.7rem 0}
 
@@ -403,6 +407,24 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     if (lesson.id !== state.current) return;
     const badge = document.querySelector('.learning-status'); if (badge) badge.textContent = statusText(s, lesson);
     const note = document.querySelector('.mode-note'); if (note) note.textContent = modeNote(s, lesson);
+  }
+  function boardLink(lesson) {
+    const origin = /^https?:$/.test(location.protocol) ? location.origin : 'https://mathexam.space';
+    const target = new URL('/trainers/trainer-board.html', origin);
+    target.searchParams.set('trainer', '/trainers/sections-from-zero.html#' + encodeURIComponent(lesson.id));
+    const link = el('a', {
+      class: 'sections-board-open', href: target.href, 'data-sections-board-open': '',
+      title: 'Открыть это задание рядом с доской'
+    }, 'На доску →');
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      // A course opened over an existing board returns to that same room.
+      // Only the public card ID is offered; personal work and cabinet routes
+      // never become board state or URL parameters.
+      const request = new CustomEvent('sections:board-request', { cancelable: true, detail: { lessonId: lesson.id } });
+      if (!window.dispatchEvent(request)) event.preventDefault();
+    });
+    return link;
   }
   function switchLesson(id, moveFocus) {
     if (!lessonMap.has(id)) return;
@@ -718,6 +740,7 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     topbar.append(el('span', { class: 'breadcrumbs' }, lesson.starter ? 'Первые шаги · ступень ' + lesson.starter.stage + ' из 6' : lesson.scaffold ? 'К основным задачам' : moduleMap.get(lesson.module)?.title || lesson.module || 'Курс'), el('span', { class: 'lesson-position' }, (C.lessons.indexOf(lesson) + 1) + ' / ' + C.lessons.length));
     const header = el('section', { class: 'lesson-header' });
     header.append(el('h2', { id: 'lesson-title', tabindex: '-1' }, lesson.title), para(lesson.condition, 'lesson-condition'));
+    if (!board) header.append(boardLink(lesson));
     const labels=el('div',{class:'lesson-tags'});
     if(lesson.level)labels.append(el('span',{class:'level-tag'},'Уровень '+lesson.level));
     for(const skill of lessonSkills(lesson))labels.append(el('span',{class:'skill-tag'},skill));

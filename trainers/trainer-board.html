@@ -14,6 +14,7 @@
   </style>
   <link rel="stylesheet" href="board-picker.css?v=20261025-oge-course-college-mirror-2">
   <link rel="stylesheet" href="board-tools.css?v=20261024-writing-1">
+  <link rel="stylesheet" href="sections-course-navigation.css?v=20261107">
 </head>
 <body>
   <header class="workspace-bar">
@@ -503,6 +504,15 @@
     try{state.trainerUrl=normalizeTrainer(state.trainerUrl)}catch(_){state.trainerUrl='negative-numbers-line.html'}
     trainerUrl.value=state.trainerUrl;loadTrainerRegistry();setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else if(missingTeacherRoomSession)setStatus('Сессия учителя не восстановлена. Создайте новую комнату.','bad');else setStatus('локальный режим','');
     BoardPicker.mount({open:url=>{if(!openTrainer(url))return false;setTrainerHidden(false);return true},retry:()=>setTrainerFrameSrc(state.trainerUrl,{force:true}),role:()=>shared.role,mirrorCapability:url=>trainerRegistry.status==='ready'?(mirrorEntryFromUrl(BoardPicker.normalize(url))?'supported':'unsupported'):'unknown',fallback:lessonTrainers});
+  </script>
+  <script src="sections-course-navigation.js?v=20261107"></script>
+  <script>
+    MathExamSectionsCourseNavigation.mount({
+      frame,
+      currentUrl:()=>state.trainerUrl,
+      canSelect:()=>shared.role==='teacher'&&canWrite()&&!shared.roomError&&(!shared.roomId||(shared.connected&&roomStateReceived)),
+      open:url=>openTrainer(url)
+    });
   </script>
   <script src="board-workspace.js?v=20261025-oge-course-college-mirror"></script>
   <script src="board-layout.js?v=20261024-writing-1"></script>

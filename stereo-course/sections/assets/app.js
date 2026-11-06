@@ -261,6 +261,24 @@
     const badge = document.querySelector('.learning-status'); if (badge) badge.textContent = statusText(s, lesson);
     const note = document.querySelector('.mode-note'); if (note) note.textContent = modeNote(s, lesson);
   }
+  function boardLink(lesson) {
+    const origin = /^https?:$/.test(location.protocol) ? location.origin : 'https://mathexam.space';
+    const target = new URL('/trainers/trainer-board.html', origin);
+    target.searchParams.set('trainer', '/trainers/sections-from-zero.html#' + encodeURIComponent(lesson.id));
+    const link = el('a', {
+      class: 'sections-board-open', href: target.href, 'data-sections-board-open': '',
+      title: 'Открыть это задание рядом с доской'
+    }, 'На доску →');
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      // A course opened over an existing board returns to that same room.
+      // Only the public card ID is offered; personal work and cabinet routes
+      // never become board state or URL parameters.
+      const request = new CustomEvent('sections:board-request', { cancelable: true, detail: { lessonId: lesson.id } });
+      if (!window.dispatchEvent(request)) event.preventDefault();
+    });
+    return link;
+  }
   function switchLesson(id, moveFocus) {
     if (!lessonMap.has(id)) return;
     if (board && id !== state.current) state.tasks = {};
@@ -575,6 +593,7 @@
     topbar.append(el('span', { class: 'breadcrumbs' }, lesson.starter ? 'Первые шаги · ступень ' + lesson.starter.stage + ' из 6' : lesson.scaffold ? 'К основным задачам' : moduleMap.get(lesson.module)?.title || lesson.module || 'Курс'), el('span', { class: 'lesson-position' }, (C.lessons.indexOf(lesson) + 1) + ' / ' + C.lessons.length));
     const header = el('section', { class: 'lesson-header' });
     header.append(el('h2', { id: 'lesson-title', tabindex: '-1' }, lesson.title), para(lesson.condition, 'lesson-condition'));
+    if (!board) header.append(boardLink(lesson));
     const labels=el('div',{class:'lesson-tags'});
     if(lesson.level)labels.append(el('span',{class:'level-tag'},'Уровень '+lesson.level));
     for(const skill of lessonSkills(lesson))labels.append(el('span',{class:'skill-tag'},skill));

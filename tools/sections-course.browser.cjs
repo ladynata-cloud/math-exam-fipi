@@ -187,14 +187,15 @@ async function layout(page, frame, width, shot) {
       const r = document.querySelector(selector).getBoundingClientRect();
       return { x: r.x, y: r.y, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
     };
-    return { width: innerWidth, height: innerHeight, scroll: document.documentElement.scrollWidth, condition: rect('.lesson-condition'), model: rect('.model-svg') };
+    return { width: innerWidth, height: innerHeight, scroll: document.documentElement.scrollWidth, condition: rect('.lesson-condition'), model: rect('.model-svg'), boardAction: rect('[data-sections-board-open]') };
   });
   assert(boxes.scroll <= boxes.width + 1, width + ': no horizontal overflow');
-  for (const [name, b] of [['condition', boxes.condition], ['model', boxes.model]]) {
+  for (const [name, b] of [['condition', boxes.condition], ['model', boxes.model], ['board action', boxes.boardAction]]) {
     assert(b.width > 0 && b.height > 0, width + ': ' + name + ' has visible dimensions');
     assert(b.x >= -1 && b.right <= boxes.width + 1, width + ': ' + name + ' fits width');
-    assert(b.y >= -1 && b.bottom <= boxes.height + 1, width + ': condition and model fit together in one viewport');
+    assert(b.y >= -1 && b.bottom <= boxes.height + 1, width + ': condition, model and board action fit together in one viewport');
   }
+  assert(boxes.boardAction.height >= 44, width + ': board action has a usable touch target');
   if (process.env.SECTIONS_SHOTS) {
     fs.mkdirSync(process.env.SECTIONS_SHOTS, { recursive: true });
     await page.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, shot + '-' + width + '.png'), fullPage: false });
@@ -331,8 +332,9 @@ async function run() {
     const card = t.locator('[data-program-course="sections-from-zero"]');
     const launch = card.locator('[data-program-board][data-cabinet-practice]');
     await launch.waitFor();
-    assert.equal(await card.locator('[data-program-open]').count(), 0, 'teacher preview does not start pupil personal work');
-    assert.equal(await card.locator('[data-program-preview-only]').count(), 1);
+    const teacherOpen = card.locator('[data-program-open][data-cabinet-practice]');
+    assert.equal(await teacherOpen.count(), 1, 'teacher can choose a card in the public course before opening the board');
+    assert.match(await card.locator('[data-program-public-preview]').innerText(), /работы из кабинета ученика не загружаются/);
 
     phase = 'assigned pupil personal course and exact cabinet return';
     const pupilBack = 'route';
@@ -368,10 +370,26 @@ async function run() {
     const src = new URL(await boardElement.getAttribute('src'));
     assert.equal(src.origin, publicOrigin); assert.equal(src.pathname, '/trainers/trainer-board.html');
     assert.deepEqual([...src.searchParams], [['trainer', WRAPPER]]);
+    await courseFrame(await (await boardElement.elementHandle()).contentFrame());
+    await t.locator('[data-cabinet-return]').click(); await teacherOpen.waitFor();
+    assert.equal(new URL(t.url()).hash, '#' + back, 'direct board entry retains its cabinet return');
+
+    phase = 'teacher chooses an exact public course card and opens it on the board';
+    await teacherOpen.click();
+    const teacherPersonal = await (await boardElement.elementHandle()).contentFrame();
+    await teacherPersonal.waitForFunction(() => !!window.SECTIONS_APP);
+    await teacherPersonal.locator('[data-view="lessons"]').click();
+    await openCard(teacherPersonal, 'starter-18');
+    const exactEntry = new URL(await teacherPersonal.locator('[data-sections-board-open]').getAttribute('href'));
+    assert.equal(exactEntry.origin, publicOrigin);
+    assert.deepEqual([...exactEntry.searchParams], [['trainer', WRAPPER + '#starter-18']]);
+    await teacherPersonal.locator('[data-sections-board-open]').click();
     const board = await (await boardElement.elementHandle()).contentFrame();
+    await board.waitForURL(publicOrigin + '/trainers/trainer-board.html?trainer=*');
     let teacherFrame = await courseFrame(board);
     const originalPersonal = await personal(teacherFrame);
     assert.equal((await snapshot(teacherFrame)).work.draft, '', 'board does not import personal draft');
+    assert.equal((await snapshot(teacherFrame)).lessonId, 'starter-18', 'course-to-board entry retains the exact selected card');
     await openCard(teacherFrame, 'starter-18');
     await waitMirror(board, 'bridge-timeout', 'pre-room selection');
     assert.equal(await board.locator('#studentLink').inputValue(), '');
@@ -533,13 +551,103 @@ async function run() {
     await delay(600);
     assert.deepEqual(await Promise.all([reloadedBoard.evaluate(() => window.__sectionsGatePublished), s.evaluate(() => window.__sectionsGatePublished)]), counts, 'idle room produces no echo loop');
     assert.deepEqual(await personal(teacherFrame), originalPersonal); assert.deepEqual(await personal(studentFrame), studentPersonal);
+
+    phase = 'course and board round trip keeps the same live room and construction';
+    await teacherFrame.locator('[data-action="start-study"]').click();
+    await construct(teacherFrame, 1);
+    await teacherFrame.locator('.starter-draft > summary').click();
+    const sharedDraft = 'M лежит в грани ABCD. Сохраняем рассуждение при переходе к курсу.';
+    await teacherFrame.locator('#proof-draft').fill(sharedDraft);
+    const beforeCourseVisit = await synchronized(teacherFrame, studentFrame, 'nonempty work before course visit');
+    assert.equal(beforeCourseVisit.work.revealed, 1, 'the round trip starts with a completed construction step');
+    assert.equal(beforeCourseVisit.work.draft, sharedDraft);
+    await reloadedBoard.locator('[data-tool="pen"]').click();
+    const inkCanvas = reloadedBoard.locator('#canvas');
+    await inkCanvas.scrollIntoViewIfNeeded();
+    const inkBox = await inkCanvas.boundingBox();
+    assert(inkBox && inkBox.width > 100 && inkBox.height > 100);
+    await t.mouse.move(inkBox.x + inkBox.width * .2, inkBox.y + inkBox.height * .3);
+    await t.mouse.down();
+    await t.mouse.move(inkBox.x + inkBox.width * .5, inkBox.y + inkBox.height * .5, { steps: 5 });
+    await t.mouse.up();
+    await reloadedBoard.waitForFunction(() => state.pages[state.current].strokes.length > 0);
+    const sharedInk = await reloadedBoard.evaluate(() => JSON.stringify(state.pages[state.current].strokes));
+    await s.waitForFunction(expected => JSON.stringify(state.pages[state.current].strokes) === expected, sharedInk);
+    const hostDocument = await reloadedBoard.evaluate(() => performance.timeOrigin);
+    const trainerDocument = await teacherFrame.evaluate(() => performance.timeOrigin);
+    const roomBeforeCourse = reloadedBoard.url();
+    const inkBeforeCourse = await reloadedBoard.evaluate(() => JSON.stringify(state.pages));
+    const pupilInkBeforeCourse = await s.evaluate(() => JSON.stringify(state.pages));
+    await reloadedBoard.locator('#sectionsCourseToggle').click();
+    const coursePanel = reloadedBoard.locator('#sectionsCoursePanel');
+    const courseElement = reloadedBoard.locator('#sectionsCourseFrame');
+    const courseView = await (await courseElement.elementHandle()).contentFrame();
+    await courseView.waitForFunction(() => !!window.SECTIONS_MASTER);
+    await reloadedBoard.waitForFunction(() => !document.querySelector('#sectionsCourseFrame').inert);
+    const courseUrl = new URL(courseView.url());
+    assert.equal(courseUrl.origin, publicOrigin); assert.equal(courseUrl.pathname, COURSE);
+    assert.equal(courseUrl.search, '', 'course receives neither room credentials nor cabinet identifiers');
+    assert.equal(await courseView.evaluate(() => window.SECTIONS_APP.getState().current), beforeCourseVisit.lessonId);
+    assert.equal(await courseView.evaluate(() => typeof window.__sectionsBoard), 'undefined', 'explicit course view has its own personal workspace');
+    for (const width of [320, 1280]) {
+      await t.setViewportSize({ width, height: 900 });
+      assert.equal(await reloadedBoard.locator('[data-sections-course-close]').isVisible(), true);
+      const bounds = await reloadedBoard.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
+      assert(bounds.scroll <= bounds.width + 1, 'course return fits the board viewport at ' + width);
+      if (process.env.SECTIONS_SHOTS) await t.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-course-return-' + width + '.png') });
+    }
+    await courseView.locator('[data-sections-board-open]').click();
+    assert.equal(await coursePanel.evaluate(node => node.open), false);
+    assert.equal(reloadedBoard.url(), roomBeforeCourse);
+    assert.equal(await reloadedBoard.evaluate(() => performance.timeOrigin), hostDocument);
+    assert.equal(await teacherFrame.evaluate(() => performance.timeOrigin), trainerDocument, 'returning to the same card never remounts the shared trainer');
+    assert.deepEqual(await snapshot(teacherFrame), beforeCourseVisit);
+    assert.deepEqual(await snapshot(studentFrame), beforeCourseVisit);
+    assert.equal(await reloadedBoard.evaluate(() => JSON.stringify(state.pages)), inkBeforeCourse);
+    assert.equal(await s.evaluate(() => JSON.stringify(state.pages)), pupilInkBeforeCourse);
+    await waitMirror(reloadedBoard, 'connected', 'course return keeps teacher connected');
+
+    phase = 'a pupil may browse the course but cannot replace the shared task';
+    await s.locator('#sectionsCourseToggle').click();
+    const pupilCourse = await (await s.locator('#sectionsCourseFrame').elementHandle()).contentFrame();
+    await pupilCourse.waitForFunction(() => !!window.SECTIONS_MASTER);
+    await s.waitForFunction(() => !document.querySelector('#sectionsCourseFrame').inert);
+    await openCard(pupilCourse, 'starter-18');
+    await pupilCourse.locator('[data-sections-board-open]').click();
+    assert.equal(await s.locator('#sectionsCoursePanel').evaluate(node => node.open), true);
+    assert.match(await s.locator('[data-sections-course-status]').innerText(), /преподавател|ход/i);
+    assert.deepEqual(await snapshot(teacherFrame), beforeCourseVisit);
+    assert.deepEqual(await snapshot(studentFrame), beforeCourseVisit);
+    await s.locator('[data-sections-course-close]').click();
+    await waitMirror(s, 'connected', 'pupil course return keeps observer connected');
+
+    phase = 'teacher selects another course card for the existing room';
+    await reloadedBoard.locator('#sectionsCourseToggle').click();
+    await openCard(courseView, 'starter-18');
+    await courseView.locator('[data-sections-board-open]').click();
+    assert.equal(await coursePanel.evaluate(node => node.open), false);
+    await Promise.all([waitMirror(reloadedBoard, 'connected', 'teacher course selection'), waitMirror(s, 'connected', 'pupil receives course selection')]);
+    teacherFrame = await courseFrame(reloadedBoard); studentFrame = await courseFrame(s);
+    await teacherFrame.waitForFunction(() => window.__sectionsBoard.getState().lessonId === 'starter-18');
+    await synchronized(teacherFrame, studentFrame, 'course selection enters the existing shared lesson');
+    assert.equal(reloadedBoard.url(), roomBeforeCourse, 'choosing a course card never creates another room');
+    assert.equal(await reloadedBoard.evaluate(() => performance.timeOrigin), hostDocument);
+    assert.equal(await reloadedBoard.evaluate(() => JSON.stringify(state.pages)), inkBeforeCourse, 'course selection preserves board sheets and drawings');
+    assert.equal(await s.evaluate(() => JSON.stringify(state.pages)), pupilInkBeforeCourse, 'pupil retains the shared drawing');
+    // Opening a personal course is an explicit personal action. Its route may
+    // change normally, but the original private drafts remain untouched and
+    // neither participant imports the room's worked solution into that course.
+    const teacherAfterVisit = JSON.parse((await personal(teacherFrame))[course.storageKey]);
+    const pupilAfterVisit = JSON.parse((await personal(studentFrame))[course.storageKey]);
+    assert.equal(teacherAfterVisit.tasks['starter-03'].draft, JSON.parse(originalPersonal[course.storageKey]).tasks['starter-03'].draft);
+    assert.equal(pupilAfterVisit.tasks['starter-03'].draft, JSON.parse(studentPersonal[course.storageKey]).tasks['starter-03'].draft);
     await t.locator('[data-cabinet-return]').click(); await launch.waitFor();
     assert.equal(new URL(t.url()).hash, '#' + back); assert.equal(await t.evaluate(() => LearningApp.account().id), teacher.id);
     assert.equal(await t.locator('[data-public-workspace] iframe').count(), 0);
     assert.deepEqual(store.studentProfile(teacher, pupil.id), initialProfile);
     assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n, initialAttempts);
     assert.deepEqual(writes, []); assert.deepEqual(leaks, []); assert.deepEqual(external, []); assert.deepEqual(errors, []);
-    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; personal lesson/practice and shared numeric checks by button/Enter under unchanged sandbox; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload with server handback and explicit regrant; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated personal storage');
+    console.log('SECTIONS_COURSE_BROWSER_OK: beginner start; wrong action and two-error hint; retained steps/draft/camera/deep links; 320/1280 layout; assigned cabinet course and board with exact return; teacher course preview and exact-card board entry; personal lesson/practice and shared numeric checks by button/Enter under unchanged sandbox; pre-room selection and delayed Socket.IO document recovery; two participants; lossless text and numeric feedback; bidirectional camera; student observer/controller page reload with server handback and explicit regrant; teacher board-host document reload; actual trainer retry button; transfer/revoke; no echo; isolated shared storage; course and board round trip without remounting the live room; pupil cannot replace shared task; teacher course selection preserves the room and drawings; original personal drafts retained');
   } finally {
     releaseSocket(); await browser?.close(); if (roomProcess?.exitCode === null) roomProcess.kill('SIGTERM');
     await close(cabinetServer); await close(publicServer); store.close(); fs.rmSync(tmp, { recursive: true, force: true });

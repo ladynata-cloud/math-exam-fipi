@@ -134,6 +134,32 @@ test('a known direct link opens its actual card instead of a hidden learning por
   } finally { await f.close(); }
 });
 
+test('the selected card opens on the board without exporting personal work or leaving an existing room', async () => {
+  const f = boot({ hash: '#auth-method-04' });
+  try {
+    const requested = [];
+    f.w.addEventListener('sections:board-request', event => {
+      requested.push(copy(event.detail));
+      event.preventDefault(); // The actual board host handles its own course frame.
+    });
+    for (const id of ['starter-18', 'auth-method-04', ...course.lessons.filter(item => /[^a-z0-9-]/i.test(item.id)).map(item => item.id)]) {
+      f.open(id);
+      const link = f.doc.querySelector('[data-sections-board-open]'); assert(link);
+      const url = new URL(link.href);
+      assert.equal(url.origin, 'https://example.test');
+      assert.equal(url.pathname, '/trainers/trainer-board.html');
+      assert.deepEqual([...url.searchParams], [['trainer', '/trainers/sections-from-zero.html#' + encodeURIComponent(id)]]);
+      assert.equal(link.target, '', 'the cabinet workspace remains the current browsing context');
+      const before = f.saved();
+      const event = new f.w.MouseEvent('click', { bubbles: true, cancelable: true, button: 0 });
+      link.dispatchEvent(event);
+      assert.equal(event.defaultPrevented, true, 'an existing board can return without navigating away from its room');
+      assert.deepEqual(requested.at(-1), { lessonId: id });
+      assert.deepEqual(f.saved(), before, 'navigation does not copy, mark or erase personal answers');
+    }
+  } finally { await f.close(); }
+});
+
 test('all 186 existing cards render with their exact condition and an actual geometry model', async () => {
   const f = boot();
   try {
@@ -142,6 +168,8 @@ test('all 186 existing cards render with their exact condition and an actual geo
       assert.equal(f.state().current, lesson.id);
       assert.equal(f.doc.querySelector('#lesson-title').textContent, lesson.title);
       assert.equal(f.doc.querySelector('.app-error'), null, lesson.id);
+      assert.equal(new URL(f.doc.querySelector('[data-sections-board-open]').href).searchParams.get('trainer'),
+        '/trainers/sections-from-zero.html#' + encodeURIComponent(lesson.id));
       assert(f.doc.querySelector('.model-svg [data-label]'), lesson.id + ': visible authored labels');
       assert.equal(f.current().revealed, 0, lesson.id + ': navigation cannot solve the card');
     }

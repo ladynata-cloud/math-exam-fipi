@@ -174,12 +174,15 @@ test('the assigned sections course coexists with prior courses in every cabinet 
       assert.deepEqual([...destination.searchParams],[['trainer','/trainers/sections-from-zero.html']]);
       assert.equal(params.get('return'),route);assert.equal(link.target,'');
       assert(!destination.href.includes('fixture-pupil'),'Pupil identity never enters public trainer URL');
-      if(role==='student'){
-        const open=card.querySelector('[data-program-open]');assert(open);
-        assert.match(open.hash,/^#public-practice=/);
-        const courseParams=new URLSearchParams(open.hash.slice(1));
-        assert.equal(courseParams.get('public-practice'),'/stereo-course/sections/');
-        assert.equal(courseParams.get('return'),route);
+      const open=card.querySelector('[data-program-open]');assert(open);
+      assert.match(open.hash,/^#public-practice=/);
+      const courseParams=new URLSearchParams(open.hash.slice(1));
+      assert.equal(courseParams.get('public-practice'),'/stereo-course/sections/');
+      assert.equal(courseParams.get('return'),route);
+      if(role==='teacher'){
+        assert.match(open.textContent,/Посмотреть курс/);
+        assert.match(card.querySelector('[data-program-public-preview]').textContent,/работы из кабинета ученика не загружаются/);
+      }else{
         assert(f.main.querySelector('a[href="#attempt=fixture-work"]'));
       }
       assert(f.calls.every(call=>call.method==='GET'));
