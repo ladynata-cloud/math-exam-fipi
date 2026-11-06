@@ -67,6 +67,16 @@
     render();
     emit(stage < 3 ? 'hint' : 'navigate', stage < 3 ? { level: 1, stage } : { stage });
   }
+  function keepCurrentStageVisible() {
+    const nav = main.querySelector('.stage-nav'), active = nav?.querySelector('[aria-current="step"]');
+    if (!active || nav.scrollWidth <= nav.clientWidth) return;
+    const viewport = nav.getBoundingClientRect(), button = active.getBoundingClientRect();
+    // Only pan the stage strip. Hydration and resizing must not scroll the
+    // trainer document or its enclosing cabinet away from the condition.
+    if (button.left < viewport.left) nav.scrollLeft -= viewport.left - button.left;
+    else if (button.right > viewport.right) nav.scrollLeft += button.right - viewport.right;
+  }
+  root.addEventListener('resize', keepCurrentStageVisible, { passive: true });
   function photoTask() { return taskSpec.id.startsWith('grade7-r-photo-proof-'); }
   function geometryEntry(work) {
     if (!task.geometryRebuild || ![2, 3].includes(work.stage) || work.done) return '';
@@ -206,6 +216,7 @@
       });
     }
     showFeedback(state.view.feedback, state.view.feedbackKind); supportDetails(); setReadOnly(readonly);
+    keepCurrentStageVisible();
   }
   if (!root.MathExamLearning || typeof root.MathExamLearning.register !== 'function') {
     main.innerHTML = '<p class="notice" role="alert">Не удалось подключиться к кабинету. Обновите страницу задания.</p>'; return;

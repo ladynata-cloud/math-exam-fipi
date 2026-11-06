@@ -30,3 +30,4 @@
 .rehearsal-loading{padding:40px 20px;text-align:center;color:var(--green,#16804c)}
 @media(max-width:1100px){.rehearsal-columns{grid-template-columns:minmax(0,1fr)}.teacher-rehearsal [data-rehearsal-drawing]{height:400px;min-height:400px;flex:auto}}
 @media(max-width:600px){.rehearsal-heading{gap:8px;flex-wrap:wrap}.rehearsal-heading h1{font-size:1.2rem}.rehearsal-heading>button{min-height:36px;padding:5px 10px;font-size:.76rem}.rehearsal-actions{gap:7px}.rehearsal-actions button{width:100%;font-size:.82rem}.teacher-rehearsal [data-rehearsal-frame]{height:650px}.rehearsal-footer{align-items:stretch}.rehearsal-footer button{width:100%}}
+@media(max-width:760px){.rehearsal-heading{flex-wrap:nowrap;gap:8px}.rehearsal-heading>div{min-width:0}.rehearsal-heading h1{font-size:1.15rem;line-height:1.25}.rehearsal-heading>button{font-size:.72rem;min-height:36px;padding:5px 8px}.rehearsal-private{padding:7px 9px;margin-bottom:10px}.rehearsal-panel>h2{padding:8px 12px}}

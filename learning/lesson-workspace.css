@@ -5,3 +5,35 @@
 #lesson-material-queue{margin:0 0 14px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);min-width:0}.lesson-queue-heading strong{font-size:.9rem}.lesson-queue-items{display:flex;gap:7px;overflow-x:auto;max-width:100%;padding-top:8px;padding-bottom:4px;overscroll-behavior:contain}.lesson-queue-items button{flex:0 0 auto;max-width:230px;font-size:.8rem;text-align:left;justify-content:start;padding:.4rem .7rem;min-height:40px;overflow-wrap:anywhere}.lesson-queue-items button>span{background:#edf1ec;border-radius:50%;display:grid;place-items:center;min-width:22px;height:22px}.lesson-queue-items button[aria-current=step]{opacity:1;background:var(--green-light);color:var(--green);border-color:#9abcaa}.lesson-material-progress{margin:0;font-size:.8rem;color:var(--muted)}
 .lesson-session .workspace-heading .page-heading{margin-bottom:10px}.lesson-session .workspace-heading h1{font-size:clamp(1.25rem,2.3vw,1.8rem);margin:.4rem 0}.lesson-session .workspace-heading .back-link{margin-bottom:8px}.lesson-session .workspace-heading .page-heading p{font-size:.78rem}.lesson-session .workspace-heading .actions{gap:6px}.lesson-session .workspace-heading .actions button{font-size:.8rem;min-height:40px;padding:.45rem .65rem}.lesson-session .lesson-roster{margin-bottom:12px}.lesson-session-tools{margin-top:18px;border-top:1px solid var(--line);padding-top:10px}.lesson-session-tools>summary{cursor:pointer;font-size:.85rem;color:var(--muted)}.lesson-session-tools>.actions{margin-top:12px}
 @media(max-width:600px){.lesson-join-entry{align-items:stretch;flex-direction:column;padding:14px;gap:10px}.lesson-join-entry .button{width:100%}.lesson-session .workspace-heading .page-heading{gap:8px}.lesson-session .workspace-heading .actions{width:100%}.lesson-session .workspace-heading .actions>button{flex:1}.lesson-session .workspace-heading .back-link{font-size:.8rem}.lesson-session .lesson-roster{margin-bottom:8px}.lesson-queue-items button{max-width:190px}#lesson-material-queue{padding:8px;margin-bottom:10px}.lesson-material-results{max-height:175px}.lesson-queue-heading strong span{display:none}}
+
+/* Keep the cabinet identity and navigation available without pushing the
+   condition below the first screen while a lesson or private copy is open. */
+body:has(.lesson-session,[data-teacher-rehearsal]) .content-column{padding-top:12px}
+.lesson-session .workspace-heading{margin-bottom:10px}
+.lesson-session .workspace-heading .page-heading{margin-bottom:6px;gap:8px}
+.lesson-session .workspace-heading .badge{font-size:.7rem;padding:3px 7px;white-space:normal}
+.lesson-session #control-notice{padding:8px 10px;margin:8px 0 0;line-height:1.4}
+.lesson-session .lesson-roster{padding:0 0 4px;margin-bottom:8px}
+.lesson-session .lesson-roster button{padding:6px 10px;min-height:36px}
+.lesson-session .work-panel-header{padding:8px;gap:6px}
+.lesson-session .work-panel-header h2{display:none}
+.lesson-session .work-panel-header .segmented{width:100%;justify-content:center}
+@media(max-width:760px){
+ body:has(.lesson-session,[data-teacher-rehearsal]) .app-header{height:auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.65fr);padding:7px 12px;gap:8px}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .app-header .brand{font-size:1rem;gap:5px}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .app-header .brand small,body:has(.lesson-session,[data-teacher-rehearsal]) .app-header .avatar{display:none}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .app-header .brand-mark{font-size:1.6rem}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .account-area{display:grid;grid-template-columns:1fr auto;gap:2px 4px;min-width:0}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .account-name{grid-column:1 / -1;display:block;max-width:none;font-size:.75rem;line-height:1.3;overflow-wrap:anywhere}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .account-name small{display:inline;font-size:.7rem;margin-left:5px}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .account-area button{font-size:.7rem;min-height:32px;padding:4px}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .sidebar{padding:4px 8px}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .sidebar nav a{padding:7px 8px;font-size:.75rem}
+ body:has(.lesson-session,[data-teacher-rehearsal]) .content-column{padding:10px 12px 35px}
+ .lesson-session .workspace-heading h1{font-size:1rem;line-height:1.3;margin:5px 0}
+ .lesson-session .workspace-heading .page-heading p{margin-top:4px}
+ .lesson-session .workspace-heading .back-link{margin-bottom:4px}
+ .lesson-session .workspace-tabs{margin-bottom:8px}
+ .lesson-session .work-panel-header .segmented button{min-height:36px;padding:6px 9px}
+ .lesson-session #lesson-material-queue .lesson-queue-items{padding-top:6px}
+}

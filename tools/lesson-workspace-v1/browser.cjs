@@ -86,13 +86,27 @@ async function firstCondition(page, frame, label, width) {
   const condition = frame.locator('#lesson .task').first();
   await condition.waitFor();
   const bounds = await condition.boundingBox(), viewport = page.viewportSize();
-  const inner = await frame.evaluate(() => ({ width: innerWidth, scrollWidth: document.documentElement.scrollWidth }));
+  const inner = await frame.evaluate(() => {
+    const bounds = element => {
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width, height: rect.height };
+    };
+    const nav = document.querySelector('#main .stage-nav');
+    return { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth,
+      stageNav: bounds(nav), currentStage: bounds(nav?.querySelector('[aria-current="step"]')) };
+  });
   layout.push({ label, width, viewportHeight: viewport.height, firstCondition: bounds, childLayout: inner });
   assert(bounds && bounds.width > 20 && bounds.height > 10, label + ': real task condition exists');
   assert(bounds.x >= -1 && bounds.x + bounds.width <= width + 1, label + ': condition is horizontally clipped');
   assert(bounds.y >= -1 && bounds.y + bounds.height <= viewport.height + 1,
     label + ': the complete first condition must be visible without scrolling, ' + JSON.stringify(bounds));
   assert(inner.scrollWidth <= inner.width + 1, label + ': trainer has horizontal overflow');
+  const nav = inner.stageNav, current = inner.currentStage;
+  assert(nav && current && current.width > 0 && current.height >= 24, label + ': native current stage exists');
+  assert(current.left >= Math.max(0, nav.left) - 1 && current.right <= Math.min(inner.width, nav.right) + 1 &&
+    current.top >= Math.max(0, nav.top) - 1 && current.bottom <= Math.min(inner.height, nav.bottom) + 1,
+  label + ': current native stage is clipped after resize, ' + JSON.stringify({ nav, current }));
   const file = label + '-first-screen-' + width + '.png';
   await page.screenshot({ path: path.join(artifactDir, file), fullPage: false }); screenshots.push(file);
 }
@@ -133,7 +147,8 @@ async function checkLayout(page, label, width) {
   let service, browser;
   const clients = [];
   const tracked = ['learning/app.js', 'learning/teaching.js', 'learning/trainer-frame.js',
-    'learning/teacher-rehearsal.js', 'learning/lesson-workspace.js', 'board-server/learning-store.js',
+    'learning/teacher-rehearsal.js', 'learning/teacher-rehearsal.css', 'learning/lesson-workspace.js', 'learning/lesson-workspace.css',
+    'ege-baza/path/managed.js', 'ege-baza/path/style.css', 'ege-baza/path/index.html', 'board-server/learning-store.js',
     'board-server/learning-api.js', 'tools/lesson-workspace-v1/browser.cjs'];
   const hashes = Object.fromEntries(tracked.filter(file => fs.existsSync(path.join(ROOT, file))).map(file =>
     [file, createHash('sha256').update(fs.readFileSync(path.join(ROOT, file))).digest('hex')]));
@@ -269,11 +284,13 @@ async function checkLayout(page, label, width) {
     await sf.locator('#answerForm button').click();
     await until(() => work(aId).state.work.step === 1, 'completed first step saved');
     assert.equal(work(aId).state.work.answers.length, 1);
-    await sf.locator('#answer').fill('314'); await saved(sp);
+    await sf.locator('#answer').fill('314');
+    await until(() => work(aId).state.work.draft === '314', 'pupil draft acknowledged before handoff'); await saved(sp);
     await tp.locator('#trainer-control').click();
     await until(() => work(aId).controller === 'teacher', 'teacher takes explicit control');
     tf = await readyFrame(tp); await readonly(tf, false); await readonly(sf, true);
-    await tf.locator('#answer').fill('271'); await saved(tp); await value(sf, '271');
+    await tf.locator('#answer').fill('271');
+    await until(() => work(aId).state.work.draft === '271', 'teacher draft acknowledged'); await saved(tp); await value(sf, '271');
     const deniedControl = await sp.evaluate(async ({ id, version, state }) => {
       try { await LearningApp.api('/attempts/' + id + '/actions', { method: 'POST', body: JSON.stringify({
         opId: crypto.randomUUID(), expectedVersion: version, type: 'state', payload: { state } }) }); return 'accepted'; }
@@ -283,8 +300,10 @@ async function checkLayout(page, label, width) {
     await tp.locator('#trainer-control').click();
     await until(() => work(aId).controller === 'student', 'teacher returns control explicitly');
     await readonly(sf, false); await readonly(tf, true);
-    await tp.locator('[data-work-view="board"]').click(); await draw(tp); await saved(tp);
-    await sp.locator('[data-work-view="board"]').click(); await draw(sp); await saved(sp);
+    await tp.locator('[data-work-view="board"]').click(); await draw(tp);
+    await until(() => work(aId).strokes.length === 1, 'teacher ink acknowledged'); await saved(tp);
+    await sp.locator('[data-work-view="board"]').click(); await draw(sp);
+    await until(() => work(aId).strokes.length === 2, 'pupil ink acknowledged'); await saved(sp);
     assert.equal(work(aId).strokes.length, 2);
     assert.deepEqual(new Set(work(aId).strokes.map(stroke => stroke.author)), new Set([f.teacher.account.id, f.pupil.account.id]));
     const first = semantic(work(aId));
@@ -295,8 +314,11 @@ async function checkLayout(page, label, width) {
     await tp.locator('#lesson-material-queue [data-lesson-material="' + bId + '"]').click();
     await until(() => seat().attemptId === bId, 'second material selected');
     tf = await readyMaterial(tp, work(bId)); sf = await readyMaterial(sp, work(bId));
-    await readonly(sf, false); await sf.locator('#answer').fill('628'); await saved(sp);
-    await sp.locator('[data-work-view="board"]').click(); await draw(sp); await saved(sp);
+    await readonly(sf, false);
+    await sf.locator('#answer').fill('628');
+    await until(() => work(bId).state.work.draft === '628', 'second material draft acknowledged'); await saved(sp);
+    await sp.locator('[data-work-view="board"]').click(); await draw(sp);
+    await until(() => work(bId).strokes.length === 1, 'second material ink acknowledged'); await saved(sp);
     const second = semantic(work(bId)); assert.equal(second.strokes.length, 1);
     assert.deepEqual(semantic(work(aId)), first, 'Changing material never rewrites previous condition, steps, answers or ink');
     await tp.locator('#lesson-material-queue [data-lesson-material="' + aId + '"]').click();

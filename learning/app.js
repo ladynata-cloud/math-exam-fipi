@@ -899,6 +899,8 @@ function updateLessonMaterials(){
  if(host.dataset.key===key)return;host.dataset.key=key;
  host.innerHTML=LearningLessonWorkspace.queueMarkup(seat,{teacher:teacher(),busy:lessonMutationBusy});
  host.hidden=!teacher()&&!seat?.materials?.length;
+ const strip=host.querySelector('.lesson-queue-items'),selected=strip?.querySelector('[aria-current=step]');
+ if(selected){const viewport=strip.getBoundingClientRect(),button=selected.getBoundingClientRect();strip.scrollLeft+=Math.max(0,button.right-viewport.right);}
  host.querySelector('[data-lesson-add-material]')?.addEventListener('click',()=>lessonAssignmentDialog([learnerId]));
  const view=workspace,lessonId=activeLesson.id,actor=account.id,revision=authRevision,serial=routeNumber;
  host.querySelectorAll('[data-lesson-material]').forEach(button=>button.onclick=async()=>{
@@ -970,10 +972,10 @@ function mountWorkspace(a,{lesson=false,learnerId=null}={}){main.innerHTML=works
  if(lesson){
   const queue=document.createElement('nav');queue.id='lesson-material-queue';queue.setAttribute('aria-label','Задания этого урока');main.querySelector('.workspace-heading').after(queue);
   const details=document.createElement('details');details.className='lesson-session-tools';
-  const summary=document.createElement('summary');summary.textContent='История и дополнительные действия';details.append(summary);
+  const summary=document.createElement('summary');summary.textContent=teacher()?'История и дополнительные действия':'Помощь, сдача работы и история';details.append(summary);
   const actions=document.createElement('div');actions.className='actions';
   for(const id of ['show-history','present-work','workspace-assign','teacher-rehearse'])if($(id))actions.append($(id));
-  details.append(actions);main.append(details);
+  details.append(actions);if($('route-support'))details.append($('route-support'));main.append(details);
  }
  // Preserve the authored course navigation. A lesson already has one set of
  // secondary tools; a standalone LCM work keeps its existing course tools.
@@ -984,8 +986,7 @@ function mountWorkspace(a,{lesson=false,learnerId=null}={}){main.innerHTML=works
   const back=$('workspace-back'),catalog=$('workspace-vilenkin-catalog');
   if(back&&catalog){const navigation=document.createElement('nav');navigation.className='lcm-workspace-navigation';navigation.setAttribute('aria-label','Навигация по курсу');back.before(navigation);navigation.append(back,catalog);}
   const support=$('route-support');
-  if(lesson){if(support)main.querySelector('.lesson-session-tools').append(support);}
-  else{
+  if(!lesson){
    const tools=document.createElement('details');tools.className='lcm-workspace-tools';
    const summary=document.createElement('summary');summary.textContent='История, сдача работы и дополнительные действия';tools.append(summary);
    const actions=authorRoot.querySelector('.workspace-heading .actions');
@@ -1077,7 +1078,7 @@ function updateMultiplicationSupport(attempt,editable){
  });
 }
 function updateWorkspace(){if(!workspace||!activeAttempt||workspace.id!==activeAttempt.id)return;updateLessonMaterials();const a=workspace.history?.current||effective(activeAttempt),viewing=!!workspace.history,archived=!!activeAttempt.archivedAt,editable=!viewing&&owns(activeAttempt);updateMultiplicationSupport(a,editable);workspace.frame?.update(a,{readOnly:!editable});workspace.draw?.update(a.strokes,{readOnly:viewing||archived||!connected});if($('attempt-outcome'))$('attempt-outcome').textContent=labels[a.outcome]||'Начато';if($('trainer-control')){$('trainer-control').textContent=activeAttempt.controller==='teacher'?'Вернуть управление ученику':'Подключиться к тренажёру';$('trainer-control').disabled=viewing||archived||queuedFor(a.id).length>0;}
- const controlled=teacher()?activeAttempt.controller!=='teacher':activeAttempt.controller==='teacher';$('archived-notice').hidden=!archived;$('control-notice').hidden=!controlled||viewing||archived;$('control-notice').textContent=teacher()?'Вы наблюдаете за работой. Для изменения тренажёра нажмите «Подключиться». На листе можно писать вместе.':'Наталья Михайловна объясняет в Вашем тренажёре. Вы можете делать записи на листе.';
+ const controlled=teacher()?activeAttempt.controller!=='teacher':activeAttempt.controller==='teacher';$('archived-notice').hidden=!archived;$('control-notice').hidden=!controlled||viewing||archived;$('control-notice').textContent=teacher()?(workspace.lesson?'В тренажёре пишет ученик. Вы можете подключиться или писать вместе на листе.':'Вы наблюдаете за работой. Для изменения тренажёра нажмите «Подключиться». На листе можно писать вместе.'):'Наталья Михайловна объясняет в Вашем тренажёре. Вы можете делать записи на листе.';
  for(const id of ['pen','eraser','pen-color','pen-width','undo-stroke'])$(id).disabled=viewing||archived||!connected;if($('workspace-assign'))$('workspace-assign').disabled=viewing;
  if($('present-work')){$('present-work').textContent=activeLesson?.presentation?.target===workspace.learnerId?'Завершить объяснение':'Объяснять группе';$('present-work').disabled=viewing||archived;}
  $('reference-host').hidden=viewing;updateSubmit(activeAttempt,viewing||archived||!connected||queuedFor(a.id).length>0||rejected.some(q=>q.attemptId===a.id));if($('route-support'))$('route-support').querySelectorAll('[data-support-basis]').forEach(b=>b.disabled=viewing||archived);updateConnection();updateWatch();assistantDispose.refresh?.();}

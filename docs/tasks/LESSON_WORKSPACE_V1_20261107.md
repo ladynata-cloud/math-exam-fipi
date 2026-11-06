@@ -54,7 +54,9 @@ cabinet, lesson, trainer and board boundaries.
   message validation and explicit teacher/pupil control transfer.
 - Clear connection/save states and explicit handling of unsupported materials.
 - Responsive cabinet/lesson controls at 320 and 1280 px; short primary actions
-  and details disclosed on demand.
+  and details disclosed on demand. The existing managed EGE stage strip remains
+  compact and shows its current stage inside narrow embedded workspaces; the
+  public trainer layout, mathematics and message protocol are unchanged.
 - Required regression, isolation and real two-role browser evidence; a complete
   Draft PR and an accurate task/status record.
 
@@ -169,13 +171,19 @@ cabinet, lesson, trainer and board boundaries.
 - Tests passed: all 410 backend tests; 26 DOM checks (9 actual cabinet,
   7 picker/queue, 10 rehearsal); targeted Vilenkin cabinet regressions;
   JavaScript syntax and `git diff --check`.
-- Tests failed: none in the current local test set.
+- Tests failed: none in the current local test set. The first completed CI
+  browser run found the private condition below the 320 px viewport. The
+  candidate now compacts the outer work shell, uses the existing managed-stage
+  strip horizontally, and keeps its active stage visible without moving the
+  parent document. The full-condition assertion remains required; the final
+  exact-head browser result belongs in the PR handoff.
 - Independent technical review: confirmed and fixed private internal-navigation
   rejection, lost-acknowledgement lesson-form retry, and temporary identity-check
   lock during asynchronous preparation. Each has a passing regression.
   The duplicate authored-LCM tools panel is also fixed and reviewed; standalone
   LCM behavior is retained. Monotonic lesson/attempt state has actual cabinet
-  regressions.
+  regressions. The selected lesson material also remains visible when its
+  horizontal queue is rebuilt.
 - Tests not run locally: real Chromium gates because the local browser cannot
   create required sockets. The dedicated CI runs the new two-role journey and
   existing classroom/course-navigation gates before printing the final marker.

@@ -12,7 +12,7 @@ function run(command, args) {
   if (result.error) throw result.error;
   if (result.status !== 0) throw Error('Required check failed: ' + command + ' ' + args.join(' ') + ' (exit ' + result.status + ')');
 }
-for (const file of ['learning/app.js', 'learning/teaching.js', 'learning/lesson-workspace.js', 'learning/teacher-rehearsal.js',
+for (const file of ['ege-baza/path/managed.js', 'learning/app.js', 'learning/teaching.js', 'learning/lesson-workspace.js', 'learning/teacher-rehearsal.js',
   'tools/lesson-workspace-v1/fixture.cjs', 'tools/lesson-workspace-v1/browser.cjs', 'tools/lesson-workspace-v1/dom.cjs',
   'tools/lesson-workspace-v1/dom.test.cjs', 'tools/lesson-workspace-v1/rehearsal.dom.cjs',
   'tools/learning-cabinet.browser.cjs', 'tools/learning-course-navigation.browser.cjs']) {
