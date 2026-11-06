@@ -67,7 +67,7 @@ jobs:
       - name: Read public cabinet without accounts or writes
         run: |
           python - <<'PY'
-          import urllib.request, urllib.error, hashlib, json, pathlib, datetime, time
+          import urllib.request, urllib.error, hashlib, json, pathlib, datetime, time, traceback, platform, ssl
           origin='https://mathexam-board-ladynata.msk1.amvera.tech'
           results=[]
           for path in ['/health','/api/learning/status','/learning/','/learning/app.js']:
@@ -89,23 +89,67 @@ jobs:
               except Exception as error:
                   reason=getattr(error,'reason',error)
                   item.update(status=None,error=type(error).__name__,failure_phase=phase,error_cause=type(reason).__name__,error_errno=getattr(reason,'errno',None))
+                  # Function names locate the failure without exposing paths, source lines or local variables.
+                  item['error_frames']=[frame.name for frame in traceback.extract_tb(error.__traceback__)[-10:]]
+                  item['cause_frames']=[frame.name for frame in traceback.extract_tb(getattr(reason,'__traceback__',None))[-10:]]
                   # OSError.strerror describes the transport failure without printing request headers, environment or credentials.
                   if isinstance(reason,OSError) and reason.strerror:
                       item['error_detail']=reason.strerror[:240]
               item['elapsed_ms']=round((time.monotonic()-started)*1000)
               results.append(item)
-          report={'gate':'CABINET_PUBLIC_READINESS','checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True,'results':results}
+          report={'gate':'CABINET_PUBLIC_READINESS','checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'read_only':True,'runtime':{'python':platform.python_version(),'openssl':ssl.OPENSSL_VERSION},'results':results}
           report['status']='PASS' if all(x.get('status')==200 for x in results) else 'BLOCKED'
           pathlib.Path('cabinet-public-readiness.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
           print(json.dumps(report,ensure_ascii=False))
           if report['status']!='PASS': raise SystemExit(1)
+          PY
+      - name: Locate transport failure without changing the readiness verdict
+        if: failure()
+        run: |
+          python - <<'PY'
+          import datetime, ipaddress, json, os, pathlib, subprocess, sys
+          host='mathexam-board-ladynata.msk1.amvera.tech'
+          report={'diagnostic':'CABINET_TRANSPORT_LOCATION','read_only':True,'changes_readiness_verdict':False,'checked_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'proxy_configured':any(os.environ.get(key) for key in ['HTTPS_PROXY','https_proxy','ALL_PROXY','all_proxy'])}
+          dns_code="""
+          import json, socket, sys
+          try:
+              rows=sorted({('IPv6' if row[0]==socket.AF_INET6 else 'IPv4',row[4][0]) for row in socket.getaddrinfo(sys.argv[1],443,type=socket.SOCK_STREAM)})
+              print(json.dumps({'addresses':rows}))
+          except OSError as error:
+              print(json.dumps({'error':type(error).__name__,'errno':error.errno}))
+          """
+          try:
+              dns=subprocess.run([sys.executable,'-c',dns_code,host],capture_output=True,text=True,timeout=8,check=False)
+              data=json.loads(dns.stdout) if dns.returncode==0 else {'error':'resolver_process_failed'}
+              if 'addresses' in data:
+                  data['addresses']=[{'family':family,'address':address} for family,address in data['addresses'] if ipaddress.ip_address(address).is_global]
+              report['dns']=data
+          except Exception as error:
+              report['dns']={'error':type(error).__name__}
+          fields=['http_code','http_version','proxy_used','ssl_verify_result','time_namelookup','time_connect','time_appconnect','time_starttransfer','time_total']
+          write_out='\n'.join(key+'=%{'+key+'}' for key in fields)+'\npeer=%{remote_ip}\n'
+          command=['curl','--disable','--silent','--show-error','--http1.1','--connect-timeout','10','--max-time','20','--max-filesize','12000000','--proto','=https','--user-agent','MathExam-readonly-release-check','--header','Cache-Control: no-cache','--header','Connection: close','--output',os.devnull,'--write-out',write_out,'https://'+host+'/health']
+          try:
+              probe=subprocess.run(command,capture_output=True,text=True,timeout=22,check=False)
+              metrics={key:value for line in probe.stdout.splitlines() if '=' in line for key,value in [line.split('=',1)] if key in fields or key=='peer'}
+              peer=metrics.pop('peer',None)
+              if metrics.get('proxy_used')=='0' and not report['proxy_configured'] and peer and ipaddress.ip_address(peer).is_global:
+                  metrics['public_peer']=peer
+              report['curl']={'exit_code':probe.returncode,'metrics':metrics,'diagnostic_budget_seconds':20}
+          except Exception as error:
+              report['curl']={'error':type(error).__name__}
+          report['interpretation']='Diagnostic only; cumulative timings and peer may describe a proxy. A zero verification code without a completed TLS handshake is not a certificate success. The original readiness result is unchanged.'
+          pathlib.Path('cabinet-transport-diagnostics.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print(json.dumps(report,ensure_ascii=False))
           PY
       - name: Preserve public availability evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: cabinet-public-readiness
-          path: cabinet-public-readiness.json
+          path: |
+            cabinet-public-readiness.json
+            cabinet-transport-diagnostics.json
           retention-days: 14
 
   published:
