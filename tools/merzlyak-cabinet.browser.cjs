@@ -1,4 +1,5 @@
 'use strict';
+const publicDestination=require('./learning-public-return.assert.cjs');
 
 // Actual cabinet scripts and styles, synthetic DTOs matching learning-api/store.
 // This presentation gate performs no account creation or production requests.
@@ -93,8 +94,8 @@ const widths = [1280,320];
     }
     async function attachedEntry(page){
       await page.locator('[data-attached-course="merzlyak-10-base"]').waitFor();
-      assert.equal(await page.locator('[data-attached-course-open]').getAttribute('href'),COURSE);
-      const board=new URL(await page.locator('[data-attached-course-board]').getAttribute('href'));
+      assert.equal(publicDestination(await page.locator('[data-attached-course-open]').getAttribute('href')),COURSE);
+      const board=new URL(publicDestination(await page.locator('[data-attached-course-board]').getAttribute('href')));
       assert.equal(board.origin,'https://mathexam.space');assert.equal(board.pathname,'/trainers/trainer-board.html');
       assert.deepEqual([...board.searchParams],[['trainer','/trainers/merzlyak-10-base.html']]);
       assert(await page.locator('[data-attached-course-open]').isVisible());

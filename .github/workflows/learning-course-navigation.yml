@@ -6,6 +6,9 @@ on:
       - 'learning/app.js'
       - 'learning/index.html'
       - 'learning/route.js'
+      - 'learning/public-practice.*'
+      - 'learning/preparation.js'
+      - 'tools/learning-public-return.*'
       - 'learning/catalog.js'
       - 'tools/learning-course-navigation.browser.cjs'
       - '.github/workflows/learning-course-navigation.yml'
@@ -34,7 +37,7 @@ jobs:
       - name: Install locked server and browser tools
         run: |
           npm --prefix board-server ci --include=optional
-          npm install --prefix "$RUNNER_TEMP/course-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npm install --prefix "$RUNNER_TEMP/course-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           "$RUNNER_TEMP/course-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/course-browser/node_modules" >> "$GITHUB_ENV"
       - name: School navigation and saved-work regression
@@ -43,6 +46,8 @@ jobs:
         run: |
           node --check learning/app.js
           node tools/learning-catalog-reference-test.cjs
+          node --test tools/learning-public-return.dom.cjs tools/learning-focus-links.dom.cjs
+          node tools/learning-public-return.browser.cjs
           node tools/learning-course-navigation.browser.cjs
           node tools/learning-grade7.browser.cjs
           git diff --check

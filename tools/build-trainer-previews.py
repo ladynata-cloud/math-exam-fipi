@@ -91,13 +91,13 @@ def render(it,stage,phase=1):
   if stage>=4:txt(480,264,'15' if k=='triangle9' else '17' if k=='cone' else '5',36,PINK,True)
  elif k in ('percent','discount','fraction'):
   n=20 if k=='percent' else 10 if k=='discount' else 4
-  active=3 if k=='percent' else 2 if k=='discount' else (2 if stage<3 else 3)
+  active=[20,2,1,3,3][stage] if k=='percent' else 2 if k=='discount' else (2 if stage<3 else 3)
   txt(320,123,'200' if k=='percent' else '1 000 ₽' if k=='discount' else 'Одно целое',29,anchor='mt',b=True)
   for i in range(n):
    x=70+i*500/n
    fill= PINK if i<active and stage>=1 else SOFT
    box((x,187,x+500/n-3,261),fill,r=3)
-  txt(320,288,'15%' if k=='percent' else '20%' if k=='discount' else ('2/4' if stage<3 else '3/4'),32,PINK,True,anchor='mt')
+  txt(320,288,['100%','10%','5%','15%','15%'][stage] if k=='percent' else '20%' if k=='discount' else ('2/4' if stage<3 else '3/4'),32,PINK,True,anchor='mt')
  elif k=='rounding':
   nums=['3',',','7','4','6']
   for j,n in enumerate(nums):

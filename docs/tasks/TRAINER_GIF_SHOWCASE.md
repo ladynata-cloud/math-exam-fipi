@@ -46,7 +46,7 @@ instances of the linked arithmetic/practical exercise families.
 - Static: image bytes/frames/durations/budgets, independent mathematics, local routes and all embeds.
 - Browser: 320/390/1280, all 60 plays/stops, hash entrances, still loading, no-JS, real destination rendering, keyboard, one-at-a-time and timed stop.
 - Existing SEO/catalog, public showcase and four full learner journeys required in CI.
-- Local Chromium is unavailable (socket operation rejected by host). Browser QA runs in GitHub Actions; never claim local/browser checks passed without their result.
+- Local browser QA passed with installed Chromium134 (cache revision1161); pinned Chromium151 download returned an invalid archive. Exact-head GitHub Actions remains required for its pinned browser. All60 plays/stops,20 routes, no-JS and timer scenarios passed locally.
 - Production: deployment commit, bytes for all media and changed pages, links and public accessibility.
 - Final gate: TRAINER_GIF_SHOWCASE_PASS only after applicable CI and production evidence.
 
@@ -68,3 +68,7 @@ Local static checks and visual inspection recorded in the PR. The PR is the
 release record for exact head, CI, drift, merge/deployment and live verification.
 No ranking, enquiries, revenue increase, real-pupil test or physical-device test
 is claimed. Mobile checks use browser viewport emulation.
+
+### Final local reconciliation — 2026-11-06 UTC
+
+Current main changes were preserved, including the published division title and public navigator. The percent animation was corrected to shade 2/20 cells for10%,1/20 for5%,and3/20 for15%; the matching captions now change with each stage. A regression inspects delivered GIF pixels at the corresponding timestamps. The browser gate explicitly waits for lazy-loaded posters before decoding; the same visual/interaction assertions remain. Local results use the installed Chromium134, not the pinned CI browser.

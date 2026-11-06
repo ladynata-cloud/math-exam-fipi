@@ -11,7 +11,7 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
   if(!f.startsWith(root+path.sep)){res.writeHead(403).end();return;}
   try{const b=fs.readFileSync(f);res.writeHead(200,{'Content-Type':mime[path.extname(f)]||'application/octet-stream'});res.end(b)}catch{res.writeHead(404).end()}
  });await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;}
- const browser=await chromium.launch({headless:true});
+ const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
  const artifactDir=process.env.PREVIEW_ARTIFACTS;if(artifactDir)fs.mkdirSync(artifactDir,{recursive:true});
  const reports=[];
  try{
@@ -35,7 +35,8 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
    for(const it of expected){
     const box=page.locator('[data-me-preview="'+it.id+'"]');await box.scrollIntoViewIfNeeded();
     const img=box.locator('img'),button=box.locator('button');
-    await img.evaluate(img=>img.decode());assert.equal(await img.evaluate(i=>i.naturalWidth),640);
+    await page.waitForFunction(id=>document.getElementById(id)?.naturalWidth===640,await img.getAttribute("id"));
+    try { await img.evaluate(img=>img.decode()); } catch (error) { throw new Error(`${file} ${width} ${it.id}: ${await img.evaluate(i=>JSON.stringify({src:i.src,currentSrc:i.currentSrc,complete:i.complete,width:i.naturalWidth}))}: ${error.message}`); } assert.equal(await img.evaluate(i=>i.naturalWidth),640);
     await button.focus();await page.keyboard.press('Enter');await img.evaluate(img=>img.decode());assert.match(await img.getAttribute('src'),/\.gif$/);
     assert.equal(await button.getAttribute('aria-pressed'),'true');
     // A second click must really return to a still, not just change the label.

@@ -42,6 +42,22 @@ for page in sorted({i['page'] for i in items}):
  for it in expected:assert it['url'] in p.links,(page,it['url'])
 # Independent numeric/semantic review of every distinct mathematical example.
 assert Fraction(15,100)*200==30
+# Inspect delivered GIF pixels, not the generator's own stage constants. Each
+# shaded cell is 1/20 of 200 (=10): the 10%, 5%, and combined 15% stages must
+# show two, one, and three cells respectively. This catches a correct caption
+# paired with an incorrect fixed 15% diagram.
+percent=Image.open(ROOT/'assets/trainer-previews/01-percent.gif')
+elapsed=0; samples={2500:2,4500:1,6500:3,10000:3};checked=set()
+for frame in range(percent.n_frames):
+ percent.seek(frame);duration=percent.info['duration'];rgb=percent.convert('RGB')
+ for at,expected in samples.items():
+  if elapsed<=at<elapsed+duration:
+   colors=[rgb.getpixel((80+25*i,220)) for i in range(20)]
+   shaded=sum(r>150 and g<120 and b>70 for r,g,b in colors)
+   assert shaded==expected,(at,shaded,expected)
+   checked.add(at)
+ elapsed+=duration
+assert checked==set(samples)
 assert [0**2+c for c in range(-2,3)]==[-2,-1,0,1,2]
 assert math.hypot(3,4)==5 and math.hypot(9,12)==15 and math.hypot(8,15)==17
 assert round(3.746,1)==3.7 and 23*14==92+230==322

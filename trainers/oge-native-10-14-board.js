@@ -37,7 +37,13 @@ function value(el){return el.matches('details')?el.open:el.type==='checkbox'?el.
 function clean(s){return String(s).replace(/[<>\u0000-\u001f]/g,'').slice(0,80);}
 function atCapacity(){return history.length>=320||new Blob([JSON.stringify(history)]).size>=28000;}
 function reflectCapacity(){const full=atCapacity();stage().inert=full;const limit=byId('oge-board-limit');if(limit)limit.hidden=!full;}
-function add(op){const prev=history[history.length-1];if(['input','change','probe','details'].includes(op[0])&&prev&&prev[0]===op[0]&&prev[1]===op[1]&&prev[2]===op[2])history[history.length-1]=op;else history.push(op);reflectCapacity();}
+function canCoalesce(op,prev){
+ if(!['input','change','probe','details'].includes(op[0])||!prev||prev[0]!==op[0]||prev[1]!==op[1]||prev[2]!==op[2])return false;
+ // The root-function shift can clamp its separately movable x point. A later
+ // shift back retains that point, so replay must keep the earlier shift too.
+ return !(page===11&&controls()[op[1]]?.id==='t11-help-param-c');
+}
+function add(op){const prev=history[history.length-1];if(canCoalesce(op,prev))history[history.length-1]=op;else history.push(op);reflectCapacity();}
 function enqueue(){
  if(applying||queued)return;queued=true;
  // Native events may checkpoint microtasks between capture and target handlers.
@@ -50,7 +56,7 @@ function record(event){
  if(applying)return;
  const el=event.target.closest(event.type==='click'?'button,summary':event.type==='toggle'?'details':'input,select,textarea');
  if(!el||!stage().contains(el))return;
- if(event.type==='click'&&nextButton(el)){event.preventDefault();event.stopImmediatePropagation();newTask(undefined,el.id==='previous'?-1:1);return;}
+ if(event.type==='click'&&nextButton(el)){event.preventDefault();event.stopImmediatePropagation();if(!root.MathExamLearning?.managed)newTask(undefined,el.id==='previous'?-1:1);return;}
  if(el.closest(excluded)){markHelp(el);enqueue();return;}
  if(el.matches('summary')){const detail=el.parentElement,slot=controls().indexOf(detail);if(slot>=0&&ensureCapacity(event)){markHelp(detail);add(['details',slot,'details',!detail.open]);enqueue();}return;}
  if(page===13&&el.dataset.labAction==='move-term')return; // native move hook also covers keyboard/drop.
@@ -109,6 +115,7 @@ const bar=doc.createElement('div');bar.id='oge-board-toolbar';bar.style.cssText=
 const label=doc.createElement('label');label.textContent='Тип задачи ';const select=doc.createElement('select');select.id='oge-board-type';select.style.cssText='font:inherit;max-width:100%;padding:8px';types.forEach(([key,name])=>{const option=doc.createElement('option');option.value=key;option.textContent=name;select.append(option);});select.value=descriptor.type;select.onchange=()=>newTask(select.value);label.append(select);bar.append(label);const next=doc.createElement('button');next.textContent='Следующая задача';next.type='button';next.style.cssText='font:inherit;margin:8px;padding:8px';next.onclick=()=>newTask();bar.append(next);const limit=doc.createElement('p');limit.id='oge-board-limit';limit.hidden=true;limit.textContent='Достигнут предел действий в этой задаче. Выберите следующую задачу для продолжения общей тренировки.';bar.append(limit);stage().before(bar);
 last=JSON.stringify(getState());
 root.getBoardTrainerState=getState;root.applyBoardTrainerState=applyState;
+if(page===11)root.OgeLearningNative={number:11,checkSelector:'#m4-check',answerSelector:'#m4 input',answer:()=>M4.form.read()?.join('')||'',start:d=>{applying=true;try{mount(d);last=JSON.stringify(getState());}finally{applying=false;}}};
 root.MathExamBoard.register({id:ids[page],version:'1.0.0',stateSchemaVersion:1,parentOrigin:root.location.origin,getState,applyState,subscribe(fn){notify=fn;return()=>{notify=()=>{};};}});
 }
 if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',init,{once:true});else init();

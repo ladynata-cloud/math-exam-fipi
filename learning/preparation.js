@@ -2,7 +2,8 @@
 (function(root){
 'use strict';
 const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-// These are separate public exercises, never managed assignments or progress.
+// Six native OGE trainers also have managed attempts; board links stay public.
+function managedPractice(value){try{const u=new URL(value,'https://mathexam.space');if(u.origin!=='https://mathexam.space'||u.searchParams.has('board'))return '';const item=root.LearningCatalog?.items.find(i=>i.trainerId==='oge-public'&&i.url===u.pathname);return item?'#practice='+encodeURIComponent(item.id):'';}catch(_){return '';}}
 const focusPractices=Object.freeze({
  'https://mathexam.space/trainers/oge-task11-graphs-trainer.html':'ОГЭ №11: графики функций',
  'https://mathexam.space/stereo-course/merzlyak-10-base/':'10 класс · Геометрия Мерзляк',
@@ -16,12 +17,12 @@ function focusMarkup(value){
   html+=E(text.slice(offset,match.index));
   const token=match[0],url=token.replace(/[.,;:!?)\]}]+$/,'');
   if(Object.hasOwn(focusPractices,url)){
-   html+=`<a class="button small" data-focus-practice href="${E(url)}" target="_blank" rel="noopener noreferrer">${E(focusPractices[url])} ↗</a>${E(token.slice(url.length))}`;linked=true;
+   html+=`<a class="button small" data-focus-practice href="${E(managedPractice(url)||url)}"${managedPractice(url)?'':' target="_blank" rel="noopener noreferrer"'}>${E(focusPractices[url])} ↗</a>${E(token.slice(url.length))}`;linked=true;
   }else html+=E(token);
   offset=match.index+token.length;
  }
  html+=E(text.slice(offset));
- return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Тренажёры откроются в отдельной вкладке. Их результаты сохраняются в этом браузере и не входят в прогресс кабинета.</p>':''}`;
+ return `<p class="prep-focus">${html}</p>${linked?'<p class="small" data-focus-practice-note>Вернуться к заданиям можно кнопкой «В кабинет». ОГЭ №11 и №15–19 сохраняют ответы в кабинете после нажатия «Начать мою работу». Остальные ссылки ведут к отдельной практике.</p>':''}`;
 }
 // Fixed course references are presentation only. A saved plan may link a public
 // course without creating a managed attempt or claiming its whole-course result.
@@ -47,17 +48,17 @@ const ogeGeometryCards=Object.freeze([
  ['oge-task24-proofs','24','Доказательства','Выстраивай доказательство и объясняй, какое свойство используешь на каждом шаге.'],
  ['oge-task25-geometry','25','Сложные задачи по геометрии','Соединяй несколько свойств фигур, используй дополнительные построения и записывай полное решение.']
 ]);
-// Public trainer references only: an allowlisted URL in the saved plan exposes
-// a fixed link, without creating managed attempts or changing learner progress.
+// Saved links open a managed launch card for six supported trainers.
+// Opening the card never creates an attempt; the pupil explicitly starts work.
 function ogeGeometryCardsMarkup({teacher=false,ids=ogeGeometryCards.map(card=>card[0])}={}){
  const cards=[];
  for(const [id,number,title,description] of ogeGeometryCards){
   if(!ids.includes(id))continue;
-  const pathname='/trainers/'+id+'.html',href='https://mathexam.space'+pathname;
+  const pathname='/trainers/'+id+'.html',publicUrl='https://mathexam.space'+pathname,managed=managedPractice(publicUrl),href=managed||publicUrl;
   const shared='https://mathexam.space/trainers/trainer-board.html?trainer='+encodeURIComponent(pathname);
-  cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · ОГЭ №${number}</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}" target="_blank" rel="noopener noreferrer">Потренироваться →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
+  cards.push(`<section class="panel prep-linked-course" data-plan-course="${id}"><p class="eyebrow">ТРЕНАЖЁР · ОГЭ №${number}</p><h2>${title}</h2><p>${description}</p><div class="actions"><a class="button primary" data-plan-course-open href="${href}"${managed?'':' target="_blank" rel="noopener noreferrer"'}>${managed?(teacher?'Назначить в кабинете':'Работа с сохранением'):'Потренироваться'} →</a>${teacher?`<a class="button" data-plan-course-board href="${shared}" target="_blank" rel="noopener noreferrer">Открыть на доске</a>`:''}</div></section>`);
  }
- if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Тренажёры открываются отдельно и не входят в прогресс кабинета. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
+ if(cards.length)cards.push(`<p class="small" data-oge-geometry-plan-note>Вернуться к заданиям можно кнопкой «В кабинет». ОГЭ №11 и №15–19 сохраняют выполненные задачи, проверенные ответы и подсказки в кабинете. №23–25 пока остаются отдельной практикой. Совместная работа на доске не считается самостоятельным решением.${teacher?' Для общего урока создайте комнату на доске и передайте ученику ссылку подключения.':' Для общего урока открой ссылку доски от преподавателя.'}</p>`);
  return cards.join('');
 }
 // The same fixed cards serve plan references and the explicit two-trainer route.
@@ -105,7 +106,9 @@ function mountRoute(host,context){
   return `<section class="prep-start" data-prep-next aria-labelledby="prep-next-title"><p class="eyebrow">БЛИЖАЙШИЙ ШАГ</p><h2 id="prep-next-title">${E(title)}</h2><p>${E(lead)}</p>${action}<p class="prep-save-note">Ответы из задания в кабинете сохраняются автоматически. Дождись отметки «Сохранено» — тогда результат доступен преподавателю и родителю, которому открыт доступ.</p></section>`;
  }
  function entryCard(entry,reason=''){
-  const managed=entry.managedId&&context.catalog.get(entry.managedId),href=publicHref(entry);
+  const managedLink=managedPractice(publicHref(entry));
+  if(managedLink)entry={...entry,managedId:new URLSearchParams(managedLink.slice(1)).get('practice')};
+  const managed=entry.managedId&&context.catalog.get(entry.managedId),href=managedLink?'':publicHref(entry);
   return `<article class="prep-task" data-prep-item="${E(entry.id)}"><span class="prep-kind">${managed?'Результат в кабинете':'Практика на сайте'}</span><h3>${E(entry.title)}</h3>${reason?`<p>${E(reason)}</p>`:''}${entry.note?`<p class="small">${E(entry.note)}</p>`:''}${!teacher()&&managed?`<p class="prep-task-status">${E(state(entry))}</p>`:''}<div class="actions">${managed?openButton(entry):''}${href?`<a class="button ${managed?'small':''}" href="${E(href)}" target="_blank" rel="noopener">${managed?'Исследовать в лаборатории':'Открыть упражнение'} ↗</a>`:''}</div>${!managed?'<p class="small">Эта страница не передаёт результат в кабинет. Преподаватель и родитель его не увидят. Для общей истории выбирай задание с отметкой «Результат в кабинете».</p>':''}</article>`;
  }
  function rewardsMarkup(){
@@ -153,7 +156,7 @@ function mountRoute(host,context){
  function tasksMarkup(){
   const list=recommendations(),remaining=list.filter(x=>!hasCompleted(x.entry)),next=remaining.slice(0,3);
   const total=list.length,finished=total-remaining.length;
-  return `${homeworkMarkup()}<section class="prep-next"><div class="section-heading"><h2>${teacher()?'Подобрать следующее задание':plan?.items?.length?'Рекомендации преподавателя':'Следующие шаги'}</h2></div><p>${teacher()?'Выберите материал, затем ученика и письменную часть домашней работы.':planError?'Личный план сейчас не загрузился. Ниже — общий маршрут; домашняя работа остаётся выше.':plan?.note?E(plan.note):oge?E(map.goals[goalKey].lead):'Начните с нужной темы. Если основа уже понятна, можно сразу перейти дальше.'}</p>${!teacher()?`<p class="small">${progress?'В этом списке есть завершённые примеры к '+finished+' из '+total+' тренажёров. Это ещё не означает полного освоения тем.':progressError?'Полная история сейчас не загрузилась. Показаны доступные недавние работы; сохранённые решения не потеряны.':'Загружаем историю всех тем…'}</p>`:''}<div class="prep-task-grid">${(teacher()?list.slice(0,3):next.length?next:list.slice(0,3)).map(x=>entryCard(x.entry,x.reason)).join('')}</div></section><section><div class="section-heading"><h2>${oge?'Базовые темы, к которым можно вернуться':'Полный маршрут основ'}</h2></div><p>Все темы доступны. Предыдущие решения сохраняются.</p>${map.groups.map((g,index)=>`<details class="prep-group"><summary><span class="prep-group-number">${index+1}</span><span>${E(g.title)}</span><span class="prep-group-count">${g.items.filter(i=>i.tier==='core').length} шагов</span></summary><p>${E(g.lead)}</p><div class="prep-task-grid">${g.items.filter(i=>i.tier==='core').map(i=>entryCard(i)).join('')}</div></details>`).join('')}</section>${oge?`<section><div class="section-heading"><h2>Экзаменационная практика</h2></div><p>Разборы на сайте открываются отдельно. Эти материалы пока не передают результат в кабинет автоматически.</p><div class="prep-task-grid">${map.goals[goalKey].publicItems.map(i=>entryCard(i)).join('')}</div></section>`:''}`;
+  return `${homeworkMarkup()}<section class="prep-next"><div class="section-heading"><h2>${teacher()?'Подобрать следующее задание':plan?.items?.length?'Рекомендации преподавателя':'Следующие шаги'}</h2></div><p>${teacher()?'Выберите материал, затем ученика и письменную часть домашней работы.':planError?'Личный план сейчас не загрузился. Ниже — общий маршрут; домашняя работа остаётся выше.':plan?.note?E(plan.note):oge?E(map.goals[goalKey].lead):'Начните с нужной темы. Если основа уже понятна, можно сразу перейти дальше.'}</p>${!teacher()?`<p class="small">${progress?'В этом списке есть завершённые примеры к '+finished+' из '+total+' тренажёров. Это ещё не означает полного освоения тем.':progressError?'Полная история сейчас не загрузилась. Показаны доступные недавние работы; сохранённые решения не потеряны.':'Загружаем историю всех тем…'}</p>`:''}<div class="prep-task-grid">${(teacher()?list.slice(0,3):next.length?next:list.slice(0,3)).map(x=>entryCard(x.entry,x.reason)).join('')}</div></section><section><div class="section-heading"><h2>${oge?'Базовые темы, к которым можно вернуться':'Полный маршрут основ'}</h2></div><p>Все темы доступны. Предыдущие решения сохраняются.</p>${map.groups.map((g,index)=>`<details class="prep-group"><summary><span class="prep-group-number">${index+1}</span><span>${E(g.title)}</span><span class="prep-group-count">${g.items.filter(i=>i.tier==='core').length} шагов</span></summary><p>${E(g.lead)}</p><div class="prep-task-grid">${g.items.filter(i=>i.tier==='core').map(i=>entryCard(i)).join('')}</div></details>`).join('')}</section>${oge?`<section><div class="section-heading"><h2>Экзаменационная практика</h2></div><p>Задания с отметкой «Результат в кабинете» сохраняют ответы и подсказки. Остальные материалы открываются как отдельная практика.</p><div class="prep-task-grid">${map.goals[goalKey].publicItems.map(i=>entryCard(i)).join('')}</div></section>`:''}`;
  }
  function labMarkup(){return `<section class="prep-lab"><h2>Выбрать и исследовать</h2><p>Здесь можно свободно пробовать модели и способы решения. Для сохранения результата и начисления баллов нажмите «Начать задание» у материала с отметкой «Результат в кабинете».</p><label class="prep-search">Найти тему<input type="search" data-prep-search placeholder="Деление, проценты, углы…"></label><div data-prep-lab-groups>${labGroups('')}</div></section>`;}
  function labGroups(query){return map.groups.map(g=>{const items=g.items.filter(i=>(g.title+' '+i.title).toLocaleLowerCase('ru').includes(query));return items.length?`<details class="prep-group" ${query?'open':''}><summary><span>${E(g.title)}</span><span class="prep-group-count">${items.length} материалов</span></summary><p>${E(g.lead)}</p><div class="prep-task-grid">${items.map(i=>entryCard(i)).join('')}</div></details>`:'';}).join('')||'<p>Такой темы пока не найдено. Попробуйте другое слово.</p>';}

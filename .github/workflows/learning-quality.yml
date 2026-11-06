@@ -16,6 +16,21 @@ on:
       - 'grade7/geometry-rebuild/**'
       - 'ege-baza/path/**'
       - 'trainers/learning-bridge.js'
+      - 'trainers/oge-learning.js'
+      - 'trainers/board-bridge.js'
+      - 'trainers/oge-course-shared-mode.js'
+      - 'trainers/oge-geometry-board-mode.js'
+      - 'trainers/oge-geometry-board.js'
+      - 'trainers/oge-native-10-14-board.js'
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-task15-triangles.html'
+      - 'trainers/oge-task15-board.js'
+      - 'trainers/oge-task16-circle.html'
+      - 'trainers/oge-task17-quadrilaterals.html'
+      - 'trainers/oge-task18-grid.html'
+      - 'trainers/task19-*.js'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/task19-visual.css'
       - 'trainers/oge-basics/**'
       - 'trainers/motion-grade6/**'
       - 'tools/motion-grade6-*'
@@ -134,6 +149,8 @@ jobs:
           node tools/learning-multiplication-support.dom.cjs
           node tools/learning-assignment-geometry.dom.cjs
           node tools/photo-proof-clear.dom.cjs
+      - name: OGE independent homework across six native frames
+        run: node tools/learning-oge-homework.browser.cjs
       - name: Source helper boundaries and complete geometry object naming audit
         run: |
           node --test tools/learning-assistant-local.test.cjs tools/learning-assistant-dialogue.test.cjs tools/learning-assistant-context-label.test.cjs

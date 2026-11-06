@@ -42,7 +42,16 @@ assert.equal(authorTextbookIds.size,44);assert([...authorTextbookIds].every(id=>
 const authorTextbookItems=catalog.items.filter(item=>item.trainerId==='vilenkin6-textbook'&&item.source?.kind==='author');
 assert.deepEqual(authorTextbookItems.map(item=>item.id).sort(),[...authorTextbookIds].sort(),'Every authored LCM card belongs to its separate group exactly once');
 assert(authorTextbookItems.every(item=>item.unitKind==='author-supplement'&&item.unitId===1008&&item.relatedPoint===8&&item.page===null&&item.pointId===null),'Author cards do not claim a textbook page or point identity');
-assert.equal(catalog.items.length,221+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size,'Every catalog entry belongs to an explicitly checked group');
+const ogeHomeworkIds=[11,15,16,17,18,19].map(number=>'oge-public:'+number);
+const ogeHomeworkItems=catalog.items.filter(item=>item.trainerId==='oge-public');
+assert.deepEqual(ogeHomeworkItems.map(item=>item.id),ogeHomeworkIds,'Exactly the six approved OGE homework identities form their own group');
+for(const item of ogeHomeworkItems){
+ assert.equal(item.contentId,String(item.ogePosition));
+ assert.equal(item.topicId,item.ogePosition===11?'data':'plane');
+ assert.equal(item.position,null,'OGE homework cannot claim an EGE exam position');
+ assert.equal(item.geometryRebuild,undefined,'OGE homework cannot replace school geometry');
+}
+assert.equal(catalog.items.length,221+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size+ogeHomeworkIds.length,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

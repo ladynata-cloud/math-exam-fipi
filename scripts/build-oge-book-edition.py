@@ -49,8 +49,12 @@ class Edition:
 TEXT = {".html", ".js", ".css", ".json", ".svg"}
 REMOVED = {
     "assets/lesson-funnel.js", "assets/download-panel.css",
+    # The live-site navigator is optional public navigation, not a fixed-book dependency.
+    "assets/assistant/navigator-data.js",
+    "assets/assistant/navigator-widget.js",
+    "assets/assistant/widget.css",
     "ege-baza/return-to-course.js", "learning/practice-entry.js",
-    "trainers/learning-bridge.js",
+    "trainers/learning-bridge.js", "trainers/oge-learning.js",
     "trainers/task19-board-session.js", "trainers/oge-geometry-board-mode.js",
     "trainers/oge-geometry-board.js",
     # Native board adapters are integrations, never fixed-book dependencies.
