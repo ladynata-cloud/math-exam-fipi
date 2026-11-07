@@ -142,6 +142,50 @@ push was rejected by automatic approval review, so no Draft PR or exact-head CI
 run exists yet. No other publication path was used. Those gates remain pending
 explicit action authorization; no complete release marker is issued.
 
+### Release-candidate continuation review, 2026-11-07
+
+The later owner START and existing PR 482 supersede the historical pre-START
+submission block above. Merge and deployment still require the separate
+conversation-level authorization. This continuation is internal review;
+no external-provider verdict is claimed.
+
+An independent original-base comparison, separate from the PR's frozen fixture,
+verified all 722 original task objects,1955 steps, their indices and the unchanged
+`mathexam.makarychev8.2024.v1` storage key. The new checker had rejected old
+whitespace-tolerant aliases such as `2 s q r t (3)`, revoking a correct saved
+result on restoration. Removing whitespace before radical conversion restores
+that tolerance without accepting wrong signs/radicands, negative radicands,
+extra terms or concatenated factors. New engine and real state-restoration
+regressions fail against the defective checker and pass with the correction.
+A second reviewer independently confirmed the original checker behavior and
+reviewed the correction. A focused native-browser journey additionally checks
+the saved independent result, accepted assisted steps, unfinished draft and
+notebooks through actual reload and localStorage; its result must be read from
+the exact candidate's CI.
+
+The complete source rerun passes 34017 assertions; roots account for 9627 assertions
+and 1095 expectations. The engine has 778 checks.724 synthetic old saved records
+remain compatible; all 25234 previously accepted answers in a 25594-candidate
+differential sweep remain accepted. Full DOM verification covers 1789 cards and
+4116 steps. These checks use synthetic records and existing reviewed source
+oracles; no fresh textbook-PDF audit or pupil-data access is claimed.
+
+Native runs 42322793838 and 42323467801 found further mobile overflows beyond
+the originally failing 353 a. The strengthened browser gate checks all 1127
+chapter cards, including 60 preserved cards, at four widths. It retains the
+900 px bound, rejects overlap with the existing navigator, and saves the lowest
+prompt/figure screenshots. No prompt, required figure, mathematical typography
+or diagram is hidden/shrunk to pass. All 2161 new worked-step journeys remain;
+the 187 preserved chapter steps also remain in full DOM/legacy coverage.
+
+The read-only composition validator preserves the 612 current-main bindings,
+both VPR routes,631 total inventoried pages and 105 unrelated concurrent blobs.
+It rejects unknown provenance or scope and uses the unchanged canonical binding
+and preservation gates. A synthetic checkpoint belongs only to isolated test
+composition; actual synchronization must use its own real checkpoint and pass
+the actual-candidate checks. Native composed-course and navigator results,
+reviewed screenshots and exact SHAs are recorded in PR 482, not inferred here.
+
 ## Risk and release boundary
 
 The remaining material risk before CI is responsive formula/graph layout.

@@ -97,6 +97,34 @@ The current direct task authorizes implementation and verification of this exist
 - Current main advanced to `ac0fdfa68f3e6a79f5b08ae2ef43c16dc138c1f8` through the independent VPR release. Its additional navigator entries and source bindings must be preserved during any later composition; the global source checkpoint cannot be selected by blindly preferring either manifest. No branch synchronization, merge or deployment is performed by these fixes.
 - The final marker remains withheld pending the corrected exact-head and composed-candidate browser gates. The later request for the whole textbook is a separate proposed task, not content silently added to this roots PR.
 
+### PR #482 full release-candidate verification, 2026-11-07
+
+- The owner requested completion of this existing PR, safe current-main composition, full mathematics/native-browser checks, preservation of earlier work, and a read-only census of the remaining textbook. The separate conversation-level authorization boundary for branch synchronization, merge and deployment still applies.
+- Native run `42322793838` confirmed that the earlier spacing correction fixed the first observed case, but found `roots-353-e` ending at 940.75 px on 320 x 900. Run `42323467801` inspected every one of the 1127 chapter cards at that width and found three remaining overflows, `roots-353-e/f/g`, at 913.15625 px. These failures are recorded, not waived. The following correction compacts only mobile headings, logo and surrounding spacing; the full prompt, prompt typography and graph dimensions remain unchanged.
+- Layout acceptance now covers all 1127 chapter cards at 320/390/768/1280 widths and height 900: 4508 views and 264 figure placements. It additionally rejects navigator overlap and records the lowest prompt/figure with viewport screenshots. The existing 2161 new-step native journeys,242 searches, all 16 constructions, alternate answers and import/notes checks remain required.
+- Independent comparison with original base `6c64ac63e6bad70993ec50995d3a39976b1b0a36` preserves all 722 task objects,1955 prior steps and indexed URLs. A real regression in whitespace-tolerant `sqrt` aliases was reproduced and corrected before publication; state and native reload cases protect the old accepted answers, independent results, assisted steps, unfinished drafts and notebooks. A synthetic differential sweep preserves all 25234 responses accepted by the former checker across 25594 candidates and 724 saved records. No pupil account or actual saved pupil data was accessed.
+- The complete mathematical rerun passes 34017 source assertions, including 9627 roots assertions/1095 expectations. The roots engine now passes 778 checks. Existing schema/model/state/import/graph checks pass. Full DOM verification walks 1789 cards/4116 steps; a bounded 512 MiB V 8 heap completes it without changing assertions after an unbounded process was killed by the local environment.
+- The existing quality workflow now also runs on this exact task branch, so an unresolved PR/main conflict does not suppress native verification. Its original two jobs remain enabled. Task-scoped virtual-course and four navigator shards exercise the composed candidate before actual branch synchronization; they use read-only repository permissions and do not update refs.
+- `tools/makarychev8-roots-composition.py` requires explicit base/head, preserves all current-main source bindings and VPR routes, rejects unreviewed concurrent commits/paths/conflicts, and checks canonical source identity. Its synthetic checkpoint is temporary test evidence only; its manifest must never be published as actual merge history. After an authorized normal synchronization, bind the real source checkpoint and validate the resulting head again.
+- All five concurrent main commits at `ac0fdfa68f3e6a79f5b08ae2ef43c16dc138c1f8` were matched to merged PRs 476,475,478,480 and 477. There are 631 public navigator pages:612 source-bound pages and 19 earlier pages. Preserve 611 current-main bindings unchanged, the reviewed Makarychev binding, all source/discovery history and all 105 non-overlapping concurrent file blobs.
+- This checkpoint does not grant merge/publication permission or assert successful future CI. Exact native run links, screenshot review and the final gate are maintained in PR 482 for the actual candidate. Physical-device, real-pupil, external-provider and production checks are not implied.
+
+### Read-only census for the next approved course task
+
+The 2024 edition contains 1340 numbered exercises. Complete ranges are 1–109 and 268–509, totaling 351 numbers.411 numbers have at least one textbook card.929 have none; another 60 have selected cards whose complete subpart coverage must be checked. Existing chaptersIII–VI already have theory and examples.
+
+| Block to complete | Exercise numbers | Numbers without any textbook card | Numbers already partly represented |
+| --- | --- | ---: | ---: |
+| Remaining rational fractions | 110–267 | 148 | 10 |
+| Equations and systems | 510–837 | 305 | 23 |
+| Inequalities | 838–1062 | 212 | 13 |
+| Functions | 1063–1171 | 101 | 8 |
+| Integer powers | 1172–1270 | 93 | 6 |
+| Advanced problem bank | 1271–1340 | 70 | 0 |
+| Total requiring completion review | 989 numbers | 929 | 60 |
+
+This is a census of committed cards and source-map ranges, not a fresh PDF-page audit or authorization to add the remaining 989 exercises inside this PR. Completing 110–267 next would establish continuous full coverage 1–509.
+
 ## Required handoff
 
 ```text

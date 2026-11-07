@@ -21,16 +21,63 @@ const shots=process.env.M8_SCREENSHOTS||path.join(process.cwd(),'artifacts/makar
 const errors=[],layoutEvidence=[];let browser,views=0,walked=0,searches=0;
 function observe(page){page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon.ico'))errors.push(m.text());});}
 const route=v=>'#lesson/'+v.lesson+'/'+v.index;
+const overlaps=(a,b)=>a.x<b.x+b.width&&a.x+a.width>b.x&&a.y<b.y+b.height&&a.y+a.height>b.y;
 const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const url='http://127.0.0.1:'+server.address().port+'/school/makarychev8/';
  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});fs.mkdirSync(shots,{recursive:true});
+ // Seed previous-release records once, before loading the current app. Reloads
+ // must restore its persisted results; no init script may replace them again.
+ const legacyRecords={
+  'p17-t01':{value:'2 s q r t (3)',correct:true,independent:true,attempts:1,assisted:false,note:'Прежняя запись о корне',completion:{attempts:1,assisted:false,independent:true}},
+  'p19-t05':{value:'',values:['7','2+s q r t (3)','2-s q r t (3)','Черновик следующего шага'],step:3,assisted:true,guided:true,stepHints:{1:true},reveals:{1:true},note:'Прежние шаги с подсказкой'}
+ };
+ const legacyState={version:1,tasks:legacyRecords,practice:{},last:{hash:'#lesson/p19/4'},origin:null};
+ const legacyContext=await browser.newContext({viewport:{width:320,height:900},storageState:{cookies:[],origins:[{origin:new URL(url).origin,localStorage:[{name:KEY,value:JSON.stringify(legacyState)}]}]}});
+ try{
+  const legacyPage=await legacyContext.newPage();observe(legacyPage);
+  for(const [id,lesson,index]of [['p17-t01','p17',0],['p19-t05','p19',4]]){
+   const legacyTask=lessons.find(l=>l.id===lesson).tasks[index],legacyRoute='#lesson/'+lesson+'/'+index;
+   assert.equal(legacyTask.id,id,'previous-release route remains exact');
+   for(let load=0;load<2;load++){
+    if(load)await legacyPage.reload();else await legacyPage.goto(url+legacyRoute);
+    await legacyPage.waitForFunction(({hash,title})=>location.hash===hash&&window.MakarychevApp?.getState().last?.hash===hash&&document.querySelector('.task-heading h2')?.textContent===title,{hash:legacyRoute,title:legacyTask.title});
+    await legacyPage.waitForSelector('#answer-form');
+    assert.equal(await legacyPage.locator('.error-page').count(),0,id+' legacy route loads');
+    const restored=await legacyPage.evaluate(taskId=>window.MakarychevApp.getState().tasks[taskId],id);
+    assert.equal(restored.note,legacyRecords[id].note,id+' notebook restored');
+    assert.equal(await legacyPage.locator('#notebook').inputValue(),legacyRecords[id].note,id+' notebook rendered');
+    if(id==='p17-t01'){
+     assert(restored.correct&&restored.independent,'old spaced sqrt answer retains independent credit');
+     assert.deepEqual(restored.completion,legacyRecords[id].completion,'original completion snapshot retained');
+     assert.equal(await legacyPage.locator('#final-answer').inputValue(),legacyRecords[id].value,'old answer spelling rendered');
+     assert(await legacyPage.locator('#final-answer').evaluate(el=>el.readOnly),'completed old answer stays complete in the UI');
+     assert.equal(await legacyPage.locator('.task-heading .tag').innerText(),'Самостоятельно','independent result shown');
+    }else{
+     assert.equal(restored.step,3,'all three accepted old steps retained');
+     assert.deepEqual(restored.values,legacyRecords[id].values,'accepted steps and unfinished draft retained');
+     assert(restored.assisted&&restored.guided&&!restored.independent&&!restored.correct,'assisted unfinished work stays assisted and unfinished');
+     assert.deepEqual(restored.stepHints,{1:true},'old step-hint history retained');
+     assert.deepEqual(restored.reveals,{1:true},'old revealed-step history retained');
+     assert.equal(await legacyPage.locator('.step.completed').count(),3,'all accepted steps rendered');
+     assert.equal(await legacyPage.locator('[data-step-input="3"]').inputValue(),legacyRecords[id].values[3],'unfinished next-step draft rendered');
+    }
+    const persisted=await legacyPage.evaluate(({key,taskId})=>JSON.parse(localStorage.getItem(key)).tasks[taskId],{key:KEY,taskId:id});
+    assert.deepEqual(persisted,restored,id+' restored work is persisted without loss');
+    assert(await legacyPage.locator('#storage-warning').isHidden(),id+' no storage warning');
+   }
+   await legacyPage.screenshot({path:path.join(shots,'roots-legacy-restored-'+id+'-320.png'),fullPage:true});
+  }
+  console.log('ROOTS_LEGACY_RELOAD '+JSON.stringify({status:'PASS',cases:2,records:Object.keys(legacyRecords),loadsPerRecord:2}));
+ }finally{await legacyContext.close();}
  for(const width of [320,390,768,1280]){
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();observe(page);
   await page.goto(url);await page.waitForFunction(()=>window.MakarychevApp);
+  const launcher=page.locator('#maxexam-public-assistant .launcher');await launcher.waitFor({state:'visible'});
+  const launcherBox=await launcher.boundingBox();assert(launcherBox,'Existing navigator stays available');
   const nav=async hash=>{await page.evaluate(h=>{history.replaceState(null,'',h);window.MakarychevApp.route();scrollTo(0,0);},hash);};
-  const seenShots=new Set(),layoutFailures=[],measurements={width,height:900,cards:0,figures:0,maxPromptBottom:0,maxFigureBottom:0};
+  const seenShots=new Set(),layoutFailures=[],measurements={width,height:900,cards:0,figures:0,maxPromptBottom:0,maxFigureBottom:0,navigator:launcherBox};
   for(const v of chapterCards){
    const {t}=v;await nav(route(v));
    assert.equal(await page.locator('.error-page').count(),0,t.id+' route');
@@ -40,6 +87,7 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
     layoutFailures.push(t.id+' condition outside first screen at '+width+' '+JSON.stringify(box));
    }
    assert(box,t.id+' condition is visible');
+   if(overlaps(box,launcherBox))layoutFailures.push(t.id+' condition obscured by navigator at '+width);
    if(box.y+box.height>measurements.maxPromptBottom){measurements.maxPromptBottom=box.y+box.height;measurements.lowestPrompt=t.id;}
    assert(box.x>=0&&box.x+box.width<=width+1,t.id+' prompt outside screen');
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),t.id+' horizontal overflow at '+width);
@@ -53,6 +101,7 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
      layoutFailures.push(t.id+' necessary figure outside first screen at '+width+' '+JSON.stringify(fig));
     }
     assert(fig,t.id+' necessary figure is visible');
+    if(overlaps(fig,launcherBox))layoutFailures.push(t.id+' necessary figure obscured by navigator at '+width);
     assert(fig.x>=0&&fig.x+fig.width<=width+1,t.id+' figure outside screen width');
     measurements.figures++;
     if(fig.y+fig.height>measurements.maxFigureBottom){measurements.maxFigureBottom=fig.y+fig.height;measurements.lowestFigure=t.id;}
@@ -66,6 +115,10 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
   }
   layoutEvidence.push(measurements);
   fs.writeFileSync(path.join(shots,'roots-layout.json'),JSON.stringify({viewports:layoutEvidence,failures:layoutFailures},null,2)+'\n');
+  for(const [kind,id]of [['prompt',measurements.lowestPrompt],['figure',measurements.lowestFigure]]){
+   const v=chapterCards.find(v=>v.t.id===id);assert(v,'Measured chapter card exists');await nav(route(v));
+   await page.screenshot({path:path.join(shots,'roots-lowest-'+kind+'-'+width+'.png')});
+  }
   console.log('ROOTS_LAYOUT '+JSON.stringify(measurements));
   assert.deepEqual(layoutFailures,[],'Every chapter condition and necessary figure fits the first screen');
   if(width===320){
@@ -158,5 +211,5 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
   await page.reload();await page.waitForSelector('#final-answer');assert.equal(await page.locator('#final-answer').inputValue(),right,kind+' alternate retained');assert(await page.evaluate(id=>window.MakarychevApp.getState().tasks[id].correct,v.t.id),kind+' alternate revalidated');
  }
  await context.close();assert.deepEqual(errors,[]);
- console.log(JSON.stringify({status:'PASS',chapterCards:chapterCards.length,addedCards:added.length,views,walkedSteps:walked,searches,viewports:[320,390,768,1280],layoutEvidence,flows:['all chapter conditions and figures','all worked steps retained','all 242 searches','old independent result','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','no browser errors']}));
+ console.log(JSON.stringify({status:'PASS',chapterCards:chapterCards.length,addedCards:added.length,views,walkedSteps:walked,searches,legacyReloadCases:2,viewports:[320,390,768,1280],layoutEvidence,flows:['all chapter conditions and figures','all worked steps retained','all 242 searches','old independent result','previous-release spaced sqrt and assisted-step reload','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','no browser errors']}));
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();server.close();});

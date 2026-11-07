@@ -106,3 +106,22 @@ unchanged browser assertions. The exact navigator source binding is refreshed
 for the reviewed cache-version update, with all other bindings retained.
 Corrected and composed-candidate CI/visual evidence is still required. The
 complete release gate is pending; the expanded chapter has not been published.
+
+### PR 482 release-candidate follow-up
+
+The native gate now checks every one of the 1127 chapter cards at four widths
+(4508 initial views and 264 figure placements), including preserved cards. It
+keeps the 900 px bound, checks that the navigator does not obscure conditions or
+figures, and records viewport measurements and screenshots. It also restores
+two synthetic legacy records through real browser reloads, protecting old
+accepted radical notation, completed steps, drafts and notes. The roots engine
+has 778 passing checks; the independent old-checker comparison preserves 25234
+previously accepted responses. All 722 old task payloads and 1955 steps remain
+identical. Mathematical content and learner storage keys are unchanged.
+
+The existing workflow includes native checks on an isolated composition with
+the explicitly reviewed main, including all navigator pages and the VPR routes.
+The virtual checkpoint is test evidence only and must not be published as merge
+history. See PR 482 for the exact candidate's CI, screenshots, final acceptance
+and authorized release status; preparing these checks does not itself publish
+the course.

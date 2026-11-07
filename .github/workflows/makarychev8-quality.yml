@@ -4,6 +4,7 @@ on:
     paths:
       - 'school/makarychev8/**'
       - 'school/peterson6/math.js'
+      - 'tools/makarychev8-roots-composition.py'
       - '.github/workflows/makarychev8-quality.yml'
   push:
     # Keep native-browser verification available while this PR conflicts with main.
@@ -11,9 +12,12 @@ on:
     paths:
       - 'school/makarychev8/**'
       - 'school/peterson6/math.js'
+      - 'tools/makarychev8-roots-composition.py'
       - '.github/workflows/makarychev8-quality.yml'
 permissions:
   contents: read
+env:
+  MAKARYCHEV8_COMPOSITION_BASE: ac0fdfa68f3e6a79f5b08ae2ef43c16dc138c1f8
 jobs:
   course:
     runs-on: ubuntu-latest
@@ -105,3 +109,113 @@ jobs:
           name: makarychev8-square-roots-browser
           path: artifacts/makarychev8/
           if-no-files-found: ignore
+
+  # Task-scoped virtual acceptance: no source branch/ref is moved or merged.
+  # The pinned base is rechecked by the release workflow before any actual merge.
+  composed-course:
+    if: github.ref == 'refs/heads/feat/makarychev8-square-roots-complete-20261106' || github.event.pull_request.number == 482
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Isolated dependencies for unchanged course gates
+        run: |
+          python -m pip install sympy==1.14.0
+          npm install --prefix "$RUNNER_TEMP/makarychev-composed-qa" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          node "$RUNNER_TEMP/makarychev-composed-qa/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Compose the reviewed base without updating any branch
+        run: python tools/makarychev8-roots-composition.py --base "$MAKARYCHEV8_COMPOSITION_BASE" --head "$(git rev-parse HEAD)" --output "$RUNNER_TEMP/roots-composition"
+      - name: Full mathematics, legacy work and native course journeys on the composition
+        working-directory: ${{ runner.temp }}/roots-composition/candidate
+        env:
+          GIT_DIR: ${{ github.workspace }}/.git
+          GIT_WORK_TREE: ${{ runner.temp }}/roots-composition/candidate
+          GIT_INDEX_FILE: ${{ runner.temp }}/roots-composition/virtual.index
+          NODE_PATH: ${{ runner.temp }}/makarychev-composed-qa/node_modules
+          M8_SCREENSHOTS: ${{ runner.temp }}/roots-composition/screenshots
+          PYTHONDONTWRITEBYTECODE: 1
+        run: |
+          python school/makarychev8/test-exercises-1-24.py
+          python school/makarychev8/test-exercises-25-54.py
+          python school/makarychev8/test-exercises-55-74.py
+          python school/makarychev8/test-exercises-75-109.py
+          python school/makarychev8/test-roots-source.py
+          node school/makarychev8/build.cjs
+          git diff --exit-code -- school/makarychev8/data.js
+          node school/makarychev8/test-course.cjs
+          node school/makarychev8/test-models.cjs
+          node school/makarychev8/test-state.cjs
+          node school/makarychev8/test-task-graphs.cjs
+          node school/makarychev8/test-roots-engine.cjs
+          node --max-old-space-size=512 school/makarychev8/test-ui.cjs
+          node school/makarychev8/test-import.cjs
+          node school/makarychev8/test-browser.cjs
+          node school/makarychev8/test-browser-25-54.cjs
+          node school/makarychev8/test-browser-55-74.cjs
+          node school/makarychev8/test-browser-75-109.cjs
+          node school/makarychev8/test-browser-roots.cjs
+          git diff --check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: makarychev8-composed-course
+          path: |
+            ${{ runner.temp }}/roots-composition/identity.json
+            ${{ runner.temp }}/roots-composition/gates/
+            ${{ runner.temp }}/roots-composition/screenshots/
+          if-no-files-found: error
+
+  composed-navigator:
+    if: github.ref == 'refs/heads/feat/makarychev8-square-roots-complete-20261106' || github.event.pull_request.number == 482
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Compose the reviewed base and verify every source binding
+        run: python3 tools/makarychev8-roots-composition.py --base "$MAKARYCHEV8_COMPOSITION_BASE" --head "$(git rev-parse HEAD)" --output "$RUNNER_TEMP/roots-composition"
+      - name: Native navigator dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Every composed navigator page on desktop, mobile and landscape
+        working-directory: ${{ runner.temp }}/roots-composition/candidate
+        env:
+          GIT_DIR: ${{ github.workspace }}/.git
+          GIT_WORK_TREE: ${{ runner.temp }}/roots-composition/candidate
+          GIT_INDEX_FILE: ${{ runner.temp }}/roots-composition/virtual.index
+          NODE_PATH: ${{ runner.temp }}/navigator-qa/node_modules
+          ARTIFACT_DIR: ${{ runner.temp }}/roots-composition/navigator
+          NAV_LOCAL_SERVER: 1
+          NAV_SHARD_COUNT: 4
+          NAV_SHARD_INDEX: ${{ matrix.shard }}
+        run: node tools/public-navigator.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: makarychev8-composed-navigator-${{ matrix.shard }}
+          path: |
+            ${{ runner.temp }}/roots-composition/identity.json
+            ${{ runner.temp }}/roots-composition/gates/
+            ${{ runner.temp }}/roots-composition/navigator/
+          if-no-files-found: error
