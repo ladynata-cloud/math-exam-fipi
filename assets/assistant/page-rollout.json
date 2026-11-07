@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "6595c39c0b0f21e2d5fdda89af10c77a80216922",
+  "baseSha": "2a64a3f74ecd8d41a1905a72e6b9e5d1bc1f6130",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2113,8 +2113,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "67f0cdfe0691295d8e928d933bd3737c4ebd8bb33cb91c7cb59cddafd8d8596e",
-      "afterSha256": "bff376356dc8c8add2e7da75b4c3eb04c4706484d96c9a1bb6466f87fcd897fa",
+      "beforeSha256": "a3df6100fb7b094b87e582eca5f2405e4e9bf350f03ce1d5c47da4a2e10fee90",
+      "afterSha256": "a2c0633a8df4e236a304fa2af838aacceab949b686224972c20aa2182124ebf4",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -3830,6 +3830,15 @@
     {
       "previousBaseSha": "b0a7aee4f31b626d844ac3d833e5a1963208a771",
       "sourceBaseSha": "6595c39c0b0f21e2d5fdda89af10c77a80216922",
+      "task": "docs/tasks/MAKARYCHEV8_SQUARE_ROOTS_COMPLETE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6595c39c0b0f21e2d5fdda89af10c77a80216922",
+      "sourceBaseSha": "2a64a3f74ecd8d41a1905a72e6b9e5d1bc1f6130",
       "task": "docs/tasks/MAKARYCHEV8_SQUARE_ROOTS_COMPLETE.md",
       "changedPaths": [
         "school/makarychev8/index.html"
