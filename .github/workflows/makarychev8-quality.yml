@@ -6,10 +6,12 @@ on:
       - 'school/peterson6/math.js'
       - '.github/workflows/makarychev8-quality.yml'
   push:
-    branches: [main]
+    # Keep native-browser verification available while this PR conflicts with main.
+    branches: [main, feat/makarychev8-square-roots-complete-20261106]
     paths:
       - 'school/makarychev8/**'
       - 'school/peterson6/math.js'
+      - '.github/workflows/makarychev8-quality.yml'
 permissions:
   contents: read
 jobs:
