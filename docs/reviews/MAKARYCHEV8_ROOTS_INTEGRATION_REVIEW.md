@@ -178,6 +178,17 @@ prompt/figure screenshots. No prompt, required figure, mathematical typography
 or diagram is hidden/shrunk to pass. All 2161 new worked-step journeys remain;
 the 187 preserved chapter steps also remain in full DOM/legacy coverage.
 
+Run 42324773724 confirmed both native legacy reload cases and every chapter
+condition/figure at 320x900: the lowest prompt ended at 777.546875px and the lowest
+figure at 831.5px, above the navigator at 840px. The next stage exposed a test
+harness issue: expected search links were VM-realm arrays, while Playwright
+returned host-realm arrays. Node's strict deep equality rejected identical
+links for 268 because their array prototypes differed. The expectation is now
+converted with `Array.from(expected, route)`; exact link values and order are
+still compared. An independent reproduction confirms identical ordered links
+pass and reversed links fail. This changes no production code, answer or source
+binding. The remaining native stages still require a successful complete run.
+
 The read-only composition validator preserves the 612 current-main bindings,
 both VPR routes,631 total inventoried pages and 105 unrelated concurrent blobs.
 It rejects unknown provenance or scope and uses the unchanged canonical binding

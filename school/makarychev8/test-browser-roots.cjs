@@ -126,7 +126,8 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
     await nav('#home');await page.locator('#exercise-number').fill(String(n));await page.locator('#number-form button').click();
     const expected=orderedTasks.filter(v=>v.t.source?.type==='textbook'&&new RegExp('№\\s*'+n+'(?!\\d)').test(v.t.source.reference));
     assert.equal(await page.locator('#number-result a.button:not(.quiet)').count(),expected.length,'complete search '+n);
-    assert(expected.length>0);assert.deepEqual(await page.locator('#number-result a.button:not(.quiet)').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),expected.map(route),'source order for '+n);searches++;
+    // Fixtures originate in a VM; compare plain host arrays across the browser boundary.
+    assert(expected.length>0);assert.deepEqual(await page.locator('#number-result a.button:not(.quiet)').evaluateAll(nodes=>nodes.map(n=>n.getAttribute('href'))),Array.from(expected,route),'source order for '+n);searches++;
    }
    await nav('#home');
    for(const l of lessons.filter(l=>l.studyOrder))assert.equal(await page.locator('#chapter-2 .lesson-card').filter({has:page.getByText(l.title,{exact:true})}).getAttribute('href'),'#lesson/'+l.id+'/'+l.studyOrder[0],'chapter entry starts in source order '+l.id);
