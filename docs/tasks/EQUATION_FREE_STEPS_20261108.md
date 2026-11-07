@@ -21,13 +21,14 @@ History is separate from the original course statistics and stores up to 20 task
 - `node tools/equations/dom.test.cjs`: simulated DOM tests for rejected/corrected steps, completion, reload, draft and mode.
 - Original inline beginner JavaScript compared byte-for-byte with base source; unchanged.
 - Download ZIP matches the standalone HTML and existing prompt. Offline browser execution needs actual browser verification.
-- `node tools/equations/browser.test.cjs`: prepared tests for 320/390/768/1280 widths, controls, persistence, embedded frame and offline copy. **Not passed**: Chromium launch fails in execution environment (`socket() failed: Operation not permitted`); separate cloud browser cannot reach this workspace's localhost. Actual visual/mobile test and real shared-board/two-client test remain open.
+- `node tools/equations/browser.test.cjs`: GitHub Actions run 42426898004 passed on candidate `a31c71ee783a0b8f3a06b889cf9a1a8622097a20`: 320/390/768/1280 widths, controls, persistence, a simple embedded frame and offline copy. Local Chromium could not launch. This is not a real shared-board/two-client test.
+- Existing project checks failed: Public navigator visibility enforces a historical exact whole-page hash; OGE learner entrances and returns rejects the additional inline script against the recorded script snapshot. Both need a reviewed compatibility solution preserving their safeguards; do not bypass them.
 - Review: self-review only; no independent technical review, no real learners, no external provider audit. No accepted or updated ADR for the new interaction. These are release blockers under the repository NEW_ARCHETYPE policy, not a claim of release readiness.
 
 ## Risks and rollback
 
-Risk: this draft cannot establish graphical layout, browser compatibility or live shared-room behavior. Equivalence is limited to the stated domain and parser, and error diagnosis is suggestive rather than a proof of the precise reasoning mistake. Browser storage is device-specific, shared by users of the same browser and subject to its storage policy; 20-task rotation discards older free-mode tasks. If released only after required gates and authorization, rollback the affected source and download files as one unit; old beginner stats are not migrated.
+Risk: headless Chromium checks do not establish all device/browser compatibility or live shared-room behavior. Equivalence is limited to the stated domain and parser, and error diagnosis is suggestive rather than a proof of the precise reasoning mistake. Browser storage is device-specific, shared by users of the same browser and subject to its storage policy; 20-task rotation discards older free-mode tasks. If released only after required gates and authorization, rollback the affected source and download files as one unit; old beginner stats are not migrated.
 
 ## Status
 
-Draft only. Run actual browser, offline and real board checks, independent review and fulfill NEW_ARCHETYPE requirements before considering publication. Follow the owner's explicit merge/deployment hold.
+Draft only. Resolve the two existing preservation-gate failures, test the real shared board, obtain independent review and fulfill NEW_ARCHETYPE requirements before considering publication. Follow the owner's explicit merge/deployment hold.
