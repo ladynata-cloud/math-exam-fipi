@@ -14,6 +14,7 @@ COPY assistant-service/public/practice-core.js /app/assistant-service/public/pra
 COPY ege-baza/path/ /app/ege-baza/path/
 COPY trainers/oge-basics/ /app/trainers/oge-basics/
 COPY trainers/motion-grade6/ /app/trainers/motion-grade6/
+COPY trainers/spacemath/ /app/trainers/spacemath/
 COPY courses/vilenkin-6-part-1/math.js courses/vilenkin-6-part-1/learning-contracts.js /app/courses/vilenkin-6-part-1/
 COPY courses/vilenkin-6-part-1/data/ /app/courses/vilenkin-6-part-1/data/
 COPY courses/vilenkin-6-part-1/textbook-math.js courses/vilenkin-6-part-1/textbook-learning-contracts.js /app/courses/vilenkin-6-part-1/

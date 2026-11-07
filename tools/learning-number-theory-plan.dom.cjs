@@ -87,7 +87,14 @@ test('number-theory references coexist with the unchanged Peterson card and stay
   assert(peterson);
   assert.equal(peterson.querySelectorAll('a').length, 3);
   assert.match(peterson.textContent, /не входят в итоги кабинета/);
-  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook' && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length, 382);
+  // Preserve the complete academic baseline and account for the one explicit
+  // construction workspace without treating it as a number-theory exercise.
+  assert.equal(catalog.items.filter(item => item.trainerId !== 'vilenkin6-textbook'
+    && item.id !== 'spacemath:construction'
+    && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length, 382);
+  assert.deepEqual(catalog.items.filter(item => item.workspace || item.trainerId === 'spacemath')
+    .map(({ id, trainerId, contentId, workspace }) => ({ id, trainerId, contentId, workspace })),
+  [{ id: 'spacemath:construction', trainerId: 'spacemath', contentId: 'construction', workspace: true }]);
   assert.equal(catalog.items.filter(item => item.trainerId === 'vilenkin6-part1').length, 27);
   assert.equal(catalog.items.some(item => trainers.includes(item.trainerId)), false);
 });

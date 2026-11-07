@@ -5,7 +5,7 @@
   const MAX_MATERIALS=12;
   const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const clone=value=>JSON.parse(JSON.stringify(value));
-  const families={'ege-path':'7 класс и ЕГЭ · база','oge-basics':'Математическая основа','oge-public':'ОГЭ','vilenkin6-textbook':'6 класс · Виленкин','vilenkin6-part1':'6 класс · практика','atanasyan-7-9':'Геометрия · Атанасян','motion-grade6':'Задачи на движение'};
+  const families={'spacemath':'SpaceMath · Построения','ege-path':'7 класс и ЕГЭ · база','oge-basics':'Математическая основа','oge-public':'ОГЭ','vilenkin6-textbook':'6 класс · Виленкин','vilenkin6-part1':'6 класс · практика','atanasyan-7-9':'Геометрия · Атанасян','motion-grade6':'Задачи на движение'};
   function findItem(catalog,source){
     return catalog.items.find(item=>item.trainerId===source.trainerId&&item.contentId===source.contentId);
   }
@@ -46,7 +46,7 @@
   function queueMarkup(seat,{teacher=false,busy=false}={}){
     const materials=seat?.materials||[],active=seat?.attemptId;
     if(!teacher)return materials.length?'<p class="lesson-material-progress">На уроке: задание '+Math.max(1,materials.findIndex(item=>item.attemptId===active)+1)+' из '+materials.length+'</p>':'';
-    return '<div class="lesson-queue-heading"><strong>На этот урок <span>'+materials.length+' / '+MAX_MATERIALS+'</span></strong><button type="button" class="small" data-lesson-add-material '+(busy||materials.length>=MAX_MATERIALS?'disabled':'')+'>+ Задание</button></div><div class="lesson-queue-items">'+materials.map((item,index)=>'<button type="button" data-lesson-material="'+E(item.attemptId)+'" aria-current="'+(item.attemptId===active?'step':'false')+'" '+(busy||item.attemptId===active?'disabled':'')+' title="'+E(item.title)+'"><span>'+String(index+1)+'</span>'+E(item.title||'Задание')+'</button>').join('')+'</div>';
+    return '<div class="lesson-queue-heading"><strong>На этот урок <span>'+materials.length+' / '+MAX_MATERIALS+'</span></strong><span class="spacemath-lesson-actions"><button type="button" class="small" data-lesson-spacemath '+(busy||materials.length>=MAX_MATERIALS?'disabled':'')+'>SpaceMath</button><button type="button" class="small" data-lesson-add-material '+(busy||materials.length>=MAX_MATERIALS?'disabled':'')+'>+ Задание</button></span></div><div class="lesson-queue-items">'+materials.map((item,index)=>'<button type="button" data-lesson-material="'+E(item.attemptId)+'" aria-current="'+(item.attemptId===active?'step':'false')+'" '+(busy||item.attemptId===active?'disabled':'')+' title="'+E(item.title)+'"><span>'+String(index+1)+'</span>'+E(item.title||'Задание')+'</button>').join('')+'</div>';
   }
   function joinEntry(host,lessons){
     host.querySelector('#lesson-join-entry')?.remove();

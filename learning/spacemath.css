@@ -1,0 +1,13 @@
+.spacemath-library-create form{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+.spacemath-library-create form label{flex:1;min-width:180px}
+.spacemath-library-owner{display:block;max-width:440px;margin-top:16px}
+.spacemath-library-list{display:grid;gap:14px}
+.spacemath-library-model{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.spacemath-library-model h2{font-size:1.15rem;margin:0 0 8px;overflow-wrap:anywhere}
+.spacemath-library-model p{margin:0}
+.workspace-spacemath .trainer-host{min-height:560px}
+.workspace-spacemath .workspace-heading h1{font-size:1.4rem;overflow-wrap:anywhere}
+.workspace-spacemath #work-panel-title{font-size:1rem}
+.spacemath-lesson-actions{display:flex;flex-wrap:nowrap;flex-shrink:0;gap:6px}
+@media(max-width:600px){.spacemath-lesson-actions .small{font-size:.75rem;padding:.4rem .5rem}}
+@media(max-width:600px){.spacemath-library-create form{align-items:stretch}.spacemath-library-create form label{min-width:0;flex-basis:100%}.spacemath-library-model{align-items:stretch}.spacemath-library-model .actions{width:100%;flex-wrap:wrap}.workspace-spacemath .trainer-host{min-height:540px}.workspace-spacemath .workspace-heading .page-heading{gap:8px}.workspace-spacemath .workspace-heading h1{font-size:1.15rem}}

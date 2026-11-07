@@ -606,7 +606,13 @@ class LearningStore {
       requireValue(!this.row("SELECT id FROM assignments WHERE attempt_id=? AND status!='published'", source.id), 'LEARNING_HOMEWORK_DRAFT', 409);
       const taskSpec = parse(source.task_json);
       requireValue(taskSpec && typeof taskSpec.contentId === 'string', 'LEARNING_TASK_INVALID');
-      return { trainerId: source.trainer_id, generated: { taskSpec, state: parse(source.initial_state_json) }, sourceAttemptId: source.id, sourceLearnerId: source.learner_id };
+      const state = source.trainer_id === 'spacemath'
+        ? this.contracts.normalize(source.trainer_id, taskSpec, parse(source.state_json))
+        : parse(source.initial_state_json);
+      // A private teacher document may become the shared common material. Its
+      // contents are an explicit copy; its private library identity stays private.
+      const sourceAttemptId = source.trainer_id === 'spacemath' && source.learner_id === source.teacher_id ? null : source.id;
+      return { trainerId: source.trainer_id, generated: { taskSpec, state }, sourceAttemptId, sourceLearnerId: source.learner_id };
     }
     exactKeys(descriptor, ['trainerId','contentId','seed'], ['trainerId','contentId']);
     return { trainerId: descriptor.trainerId, generated: this.contracts.create(descriptor.trainerId, descriptor.contentId, descriptor.seed), sourceAttemptId: null };
@@ -707,6 +713,7 @@ class LearningStore {
   }
   createAssignments(auth, body) {
     this.teacher(auth); exactKeys(body, ['opId','learnerIds','title','trainerId','contentId','dueAt','count'], ['opId','learnerIds','title','trainerId','contentId']);
+    requireValue(body.trainerId !== 'spacemath', 'LEARNING_ACTION_UNSUPPORTED');
     const title = safeName(body.title, 160);
     const count=body.count ?? 1;
     requireValue(Number.isSafeInteger(count)&&count>=1&&count<=10&&(count===1||body.trainerId==='oge-public'),'LEARNING_INVALID');
@@ -766,6 +773,7 @@ class LearningStore {
       requireValue(this.row('SELECT COUNT(*) AS n FROM events WHERE attempt_id=?', id).n < 20000, 'LEARNING_LIMIT_EXCEEDED', 507);
       const { type, payload } = body;
       requireValue(['state','check','hint','reference','stroke','erase','undo','control','textbook-help'].includes(type));
+      requireValue(attempt.trainerId !== 'spacemath' || !['check','hint','textbook-help'].includes(type), 'LEARNING_ACTION_UNSUPPORTED');
       let evaluation;
       if (['state','check','hint'].includes(type)) requireValue(attempt.controller === auth.role, 'LEARNING_CONTROL_REQUIRED', 409);
       if (type === 'state') {
@@ -816,7 +824,7 @@ class LearningStore {
         requireValue(stroke, 'LEARNING_STROKE_NOT_FOUND', 409); requireValue(stroke.author === auth.id, 'LEARNING_FORBIDDEN', 403);
         attempt.strokes = attempt.strokes.filter(item => item.id !== stroke.id);
       }
-      if ((auth.role === 'teacher' || (attempt.trainerId === 'oge-public' && body.lessonId !== undefined)) && ['state','check','hint','stroke'].includes(type)) attempt.assistance.teacher = true;
+      if (attempt.trainerId !== 'spacemath' && (auth.role === 'teacher' || (attempt.trainerId === 'oge-public' && body.lessonId !== undefined)) && ['state','check','hint','stroke'].includes(type)) attempt.assistance.teacher = true;
       requireValue(Buffer.byteLength(json(attempt.strokes)) <= 1024 * 1024, 'LEARNING_DRAWING_LIMIT_EXCEEDED', 507);
       if (row.outcome === 'started' && attempt.outcome !== 'started') {
         attempt.outcome = attempt.assistance.teacher ? 'together' : attempt.assistance.hints ? 'hinted' : 'independent';
@@ -880,9 +888,9 @@ class LearningStore {
     const titles = this.lessonMaterialTitles ||= new Map((this.contracts.list?.() || []).map(item => [item.trainerId + ':' + item.contentId, item.title]));
     const ownSeats = seats.filter(seat => auth.role === 'teacher' || seat.learnerId === auth.id).map(seat => ({
       learnerId: seat.learnerId, attemptId: seat.attemptId, name: this.account(seat.learnerId).name, attempt: visibleAttempt(seat.attemptId),
-      materials: this.lessonMaterialIds(seat).map(id => visibleRow(id, "id,learner_id,teacher_id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,outcome"))
+      materials: this.lessonMaterialIds(seat).map(id => visibleRow(id, "id,learner_id,teacher_id,trainer_id,json_extract(task_json,'$.contentId') AS content_id,json_extract(state_json,'$.title') AS construction_title,outcome"))
         .filter(attempt => attempt && attempt.learner_id === seat.learnerId && attempt.teacher_id === row.teacher_id)
-        .map(attempt => ({ attemptId: attempt.id, title: titles.get(attempt.trainer_id + ':' + attempt.content_id) || attempt.content_id || 'Задание',
+        .map(attempt => ({ attemptId: attempt.id, title: (attempt.trainer_id === 'spacemath' ? attempt.construction_title : null) || titles.get(attempt.trainer_id + ':' + attempt.content_id) || attempt.content_id || 'Задание',
           contentId: attempt.content_id, trainerId: attempt.trainer_id, outcome: attempt.outcome })) }));
     let presentation = { target: null };
     if (row.presentation_target) {
