@@ -340,7 +340,10 @@ async function run(){
    функции реестра вызываются напрямую. Так ловятся и count() без isFinite,
    и entry() без приведения w, r к целым. */
 {
-  const RAW = '{"student":{"name":"Аня"},"mistakes":{' +
+  const RAW = '{"student":{"name":"Аня"},' +
+    /* hinted = Infinity — порча: кабинет не печатает «из них после «С чего начать?»» и не выводит Infinity */
+    '"righttri-t1":{"topics":{"1":{"solved":3,"correct":1,"hinted":1e400}}},' +
+    '"mistakes":{' +
     '"righttri-t1|t1-ratio":{"w":1e400,"r":0},' +                     /* w = Infinity — мусор */
     '"righttri-t1|t1-side":{"w":2,"r":1e400},' +                       /* r = Infinity — мусор */
     '"righttri-t1|t2-sinFromSeg":{"w":1,"r":0,"lastWrong":1e400},' +  /* метка = Infinity — мусор */
@@ -354,6 +357,8 @@ async function run(){
     ok(li.length === 1 && li[0].classList.contains('open') && MOVE.test(li[0].textContent),
        label + ': у righttri одна открытая запись «промахов: 2 · подряд верных: 1»: ' + li.map(x => x.textContent).join(' | '));
     ok(/17\.02\.2026/.test(rt.textContent), label + ': дата последней ошибки — из верной записи');
+    const pr = rt.querySelector('.progress') || d.createElement('div');
+    ok(/^чистые серии: 1 из 15 · решено: 3$/.test(pr.textContent), label + ': righttri с hinted 1e400 — без «из них после «С чего начать?»»: ' + pr.textContent);
   };
 
   const t = open('teacher.html', RAW);
