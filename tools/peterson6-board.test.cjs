@@ -248,7 +248,11 @@ test('the actual SDK publishes local interactions and deduplicates remote hydrat
   const source = fixture({ realSdk: true }), observer = fixture({ realSdk: true });
   async function changed(f, label, action) {
     const count = f.published().length;
-    await action(); await f.settle();
+    await action();
+    // Wait for the SDK's debounced publication; keep the same assertions on
+    // the actual message and state even on a busy CI runner.
+    const deadline = Date.now() + 3000;
+    while (f.published().length <= count && Date.now() < deadline) await f.settle();
     const sent = f.published();
     assert(sent.length > count, label + ': subscriber reaches the actual SDK');
     assert(f.valid(sent.at(-1)), label + ': published snapshot is valid');

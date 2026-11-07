@@ -26,8 +26,13 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'t
    assert.equal(await page.locator('h1').count(),1);
    assert(await page.locator('link[rel=canonical]').getAttribute('href'));
    if(file==='trainers/index.html') {
-    assert.equal(await page.locator('#catalog [data-card]').count(),59);
+    assert.equal(await page.locator('#catalog [data-card]').count(),60);
     assert.equal(await page.locator('#catalog [data-card] a[href="./college-logarithms/"]').count(),1);
+    const vprCard=page.locator('#catalog [data-card]').filter({has:page.locator('a[href="/vpr/"]')});
+    assert.equal(await vprCard.count(),1,'one VPR course catalogue card');
+    assert.equal(await vprCard.locator('h3').innerText(),'ВПР по математике: 5–8 и 10 классы');
+    assert.equal(await vprCard.locator('.actions a[href="/vpr/"]').count(),1);
+    assert(await vprCard.locator('.actions a[href="/vpr/"]').isVisible(),'VPR catalogue entry is visible');
    }
    if(file==='oge/variants/2027/index.html') assert.equal(await page.locator('.card[data-number]').count(),104);
    assert.equal(await page.locator('[data-me-preview]').count(),expected.length);

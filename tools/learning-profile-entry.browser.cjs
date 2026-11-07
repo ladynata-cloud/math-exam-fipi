@@ -141,7 +141,10 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
     await tp.locator('#assignment-form').waitFor();
     assert.equal(await tp.locator('#assignment-form [name=course]').inputValue(), 'all', 'Profile pupil must not fall back to the OGE/foundation assignment catalogue');
     assert.equal(await tp.locator('#assignment-form [name=course] option[value="ege-profile"]').count(), 0, 'External profile course is not presented as cabinet-saved assignments');
-    assert.equal(await tp.locator('#assignment-form [name=content] option').count(), await tp.evaluate(() => LearningCatalog.items.length));
+    const assignmentIds = await tp.locator('#assignment-form [name=content] option').evaluateAll(nodes => nodes.map(node => node.value));
+    const catalog = await tp.evaluate(() => LearningCatalog.items.map(({ id, workspace }) => ({ id, workspace: !!workspace })));
+    assert.deepEqual(assignmentIds, catalog.filter(item => !item.workspace).map(item => item.id), 'Every academic item remains assignable in catalogue order');
+    assert.deepEqual(catalog.filter(item => item.workspace).map(item => item.id), ['spacemath:construction'], 'SpaceMath is a workspace rather than an assignment');
     await tp.locator('#dialog-close').click();
     await navigate(tp, 'course'); await tp.locator('#catalog-grid').waitFor();
     await tp.locator('a[href="#course=ege-profile"]').click(); await entry(tp, false);

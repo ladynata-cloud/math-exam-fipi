@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Подготовка к ВПР по математике · 5–8 и 10 классы — MathExam</title>
+  <meta name="description" content="Семь интерактивных курсов подготовки к ВПР по математике: 5, 6, 7, 8 и 10 классы, базовый и углублённый уровни для 7–8 классов. Теория, примеры, проверка по шагам и общая доска.">
+  <link rel="canonical" href="https://mathexam.space/vpr/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Подготовка к ВПР по математике — MathExam">
+  <meta property="og:description" content="Выберите класс и уровень: теория, разобранные примеры, пошаговая практика и самостоятельная проверка.">
+  <meta property="og:url" content="https://mathexam.space/vpr/">
+  <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    :root { --vpr-ink:#183b34; --vpr-muted:#48625a; --vpr-line:#d3e0d5; --vpr-accent:#27654c; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#f6f7f1; color:var(--vpr-ink); font-family:system-ui,-apple-system,"Segoe UI",sans-serif; line-height:1.6; }
+    a { color:var(--vpr-accent); }
+    a:focus-visible { outline:3px solid #b77725; outline-offset:4px; }
+    .skip { position:absolute; left:16px; top:-90px; z-index:10; background:#fff; padding:10px; }
+    .skip:focus { top:10px; }
+    .vpr-wrap { width:min(1100px,100%); margin:auto; padding:0 24px; }
+    .vpr-header { border-bottom:1px solid var(--vpr-line); background:#fff; }
+    .vpr-header .vpr-wrap { display:flex; align-items:center; flex-wrap:wrap; gap:18px; padding-top:17px; padding-bottom:17px; }
+    .vpr-brand { margin-right:auto; font-size:1.2rem; font-weight:800; text-decoration:none; }
+    .vpr-header nav { display:flex; flex-wrap:wrap; gap:16px; }
+    .vpr-header nav a { font-size:.94rem; }
+    .vpr-hero { padding:56px 0 30px; max-width:780px; }
+    .vpr-eyebrow { font-size:.8rem; font-weight:750; letter-spacing:.1em; text-transform:uppercase; color:var(--vpr-accent); }
+    h1 { margin:12px 0 18px; font-size:clamp(2rem,5vw,3.4rem); line-height:1.13; letter-spacing:-.025em; }
+    .vpr-lead { font-size:1.14rem; color:var(--vpr-muted); }
+    .vpr-facts { display:flex; gap:10px; flex-wrap:wrap; padding:0; list-style:none; }
+    .vpr-facts li { padding:5px 11px; border:1px solid var(--vpr-line); border-radius:20px; background:#fff; font-size:.88rem; }
+    .vpr-section { margin:24px 0 40px; }
+    .vpr-section h2 { margin:0 0 10px; font-size:1.6rem; line-height:1.3; }
+    .vpr-section > p { max-width:800px; color:var(--vpr-muted); }
+    .vpr-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .vpr-card { display:flex; flex-direction:column; background:#fff; border:1px solid var(--vpr-line); border-radius:15px; padding:24px; }
+    .vpr-card h3 { font-size:1.2rem; line-height:1.35; margin:7px 0 10px; }
+    .vpr-card p { margin:0 0 18px; color:var(--vpr-muted); }
+    .vpr-level { font-size:.82rem; font-weight:700; color:var(--vpr-accent); }
+    .vpr-open { display:block; width:fit-content; max-width:100%; margin-top:auto; padding:10px 16px; border-radius:8px; color:#fff; background:var(--vpr-accent); text-decoration:none; font-weight:700; }
+    .vpr-open:hover { background:#194c38; }
+    .vpr-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); padding-left:22px; gap:30px; }
+    .vpr-steps strong { display:block; }
+    .vpr-note { background:#eaf0e7; border-radius:12px; padding:23px; }
+    .vpr-note p { margin:8px 0; }
+    .vpr-footer { padding:22px 0 34px; border-top:1px solid var(--vpr-line); color:var(--vpr-muted); font-size:.9rem; }
+    @media(max-width:650px) { .vpr-wrap { padding:0 18px; } .vpr-hero { padding-top:34px; } .vpr-grid,.vpr-steps { grid-template-columns:1fr; } .vpr-steps { gap:14px; } .vpr-card { padding:21px; } .vpr-header nav { gap:12px; } }
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Подготовка к ВПР по математике","url":"https://mathexam.space/vpr/","description":"Семь интерактивных учебных маршрутов для 5–8 и 10 классов.","inLanguage":"ru-RU"}</script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="vpr-header"><div class="vpr-wrap"><a class="vpr-brand" href="/">∑ MathExam</a><nav aria-label="Основные разделы"><a href="/trainers/">Тренажёры</a><a href="/vpr/" aria-current="page">ВПР</a><a href="/learning/">Кабинет</a></nav></div></header>
+  <main class="vpr-wrap" id="main">
+    <section class="vpr-hero" aria-labelledby="vpr-title">
+      <span class="vpr-eyebrow">Математика · подготовка к ВПР</span>
+      <h1 id="vpr-title">От понятного шага<br>к самостоятельному решению</h1>
+      <p class="vpr-lead">Выберите класс, разберите пример и попробуйте решить задачу. Курс проверяет шаги, объясняет ошибки и помогает вернуться к теме, которую нужно повторить.</p>
+      <ul class="vpr-facts" aria-label="О курсах"><li>7 учебных маршрутов</li><li>Открытый доступ</li><li>Можно заниматься с телефона</li></ul>
+    </section>
+    <section class="vpr-section" aria-labelledby="choose-route">
+      <h2 id="choose-route">Выберите класс и уровень</h2>
+      <p>Для 7 и 8 классов есть отдельные маршруты базового и углублённого уровней. Выбирайте уровень, который изучаете в школе; общие темы доступны в обоих маршрутах.</p>
+      <div class="vpr-grid">
+        <article class="vpr-card" data-vpr-route="g5"><span class="vpr-level">Основной маршрут</span><h3>5 класс</h3><p>Натуральные числа и дроби, текстовые задачи, единицы измерения, геометрия и чтение данных.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g5">Открыть курс 5 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g6"><span class="vpr-level">Основной маршрут</span><h3>6 класс</h3><p>Рациональные числа, отношения и проценты, уравнения, координаты, движение и логические задачи.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g6">Открыть курс 6 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g7"><span class="vpr-level">Базовый уровень</span><h3>7 класс</h3><p>Выражения и уравнения, графики движения, треугольники, вероятность, статистика и геометрические рассуждения.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g7">Открыть базовый курс 7 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g7u"><span class="vpr-level">Углублённый уровень</span><h3>7 класс</h3><p>Общая основа и дополнительные задачи на преобразования, делимость, подсчёт вариантов, графы и доказательства.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g7u">Открыть углублённый курс 7 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g8"><span class="vpr-level">Базовый уровень</span><h3>8 класс</h3><p>Корни, квадратные уравнения и текстовые задачи, графики, четырёхугольники, подобие, вероятность и статистика.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g8">Открыть базовый курс 8 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g8u"><span class="vpr-level">Углублённый уровень</span><h3>8 класс</h3><p>Общая основа, многошаговые преобразования, рациональные уравнения, вероятностные модели и доказательства.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g8u">Открыть углублённый курс 8 класса</a></article>
+        <article class="vpr-card" data-vpr-route="g10"><span class="vpr-level">Основной маршрут</span><h3>10 класс</h3><p>Тригонометрия, прогрессии, функции и неравенства, планиметрия, стереометрия, множества и вероятность.</p><a class="vpr-open" href="/trainers/vpr-math/index.html?route=g10">Открыть курс 10 класса</a></article>
+      </div>
+    </section>
+    <section class="vpr-section" aria-labelledby="how-to-study">
+      <h2 id="how-to-study">Как построить занятие</h2>
+      <ol class="vpr-steps"><li><strong>Вспомните правило.</strong>Прочитайте короткое объяснение и разобранный пример.</li><li><strong>Пройдите задачу по шагам.</strong>Проверьте промежуточный ответ и используйте подсказку, если она нужна.</li><li><strong>Решите самостоятельно.</strong>Вернитесь к ошибкам и повторите тему. Доказательства запишите полностью и обсудите с преподавателем.</li></ol>
+    </section>
+    <section class="vpr-section vpr-note" aria-labelledby="with-teacher">
+      <h2 id="with-teacher">Самостоятельно и с преподавателем</h2>
+      <p>Курс можно включить в программу ученика в <a href="/learning/">кабинете</a> и открыть на общей доске для совместного разбора. Совместная работа не засчитывается как самостоятельная попытка ученика.</p>
+      <p>Прогресс самостоятельных занятий хранится в этом браузере. На общем устройстве записи могут быть общими; на другом устройстве они не появятся автоматически.</p>
+    </section>
+    <section class="vpr-section" aria-labelledby="about-format">
+      <h2 id="about-format">О заданиях и формате</h2>
+      <p>Это авторские учебные задания, подготовленные с опорой на опубликованные <a href="https://fioco.ru/obraztsi_i_opisaniya_vpr">образцы и описания ВПР 2027 года ФИОКО</a>. Уроки объединяют близкие навыки: один урок может помогать в нескольких заданиях проверочной работы.</p>
+      <p>Диагностика курса помогает выбрать темы для повторения. Она не заменяет полный вариант ВПР и проверку письменного решения и не выставляет официальную отметку.</p>
+    </section>
+  </main>
+  <footer class="vpr-footer"><div class="vpr-wrap">MathExam · <a href="/trainers/">Все тренажёры</a> · <a href="/courses/">Курсы по учебникам</a></div></footer>
+<!-- MathExam public navigator -->
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+</body>
+</html>
