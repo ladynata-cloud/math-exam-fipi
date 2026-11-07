@@ -1,0 +1,160 @@
+{
+  "checkedDate": "2026-10-26",
+  "timezone": "Asia/Novosibirsk",
+  "baseCommit": "1aa517ed819d09ff18649b0855319ecccaee5bc0",
+  "method": "HTTPS GET compared byte-for-byte with the checked-out main snapshot; content inventory, not a new mathematics or browser review",
+  "publicBase": "https://mathexam.space/",
+  "files": [
+    {
+      "path": "stereo-course/merzlyak-10-base/data/course.json",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "95a5c2ee0427b94e9590ff64941e3dce52e9ce40b3e5afed356b8bc56d6a5f17"
+    },
+    {
+      "path": "geometry-course/textbook/data/course.json",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d"
+    },
+    {
+      "path": "stereo-course/textbook/data/course.json",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "0aca5154f8f81edbc2df35d7bff112a0781c862b956d51fabc022ae2e00e6fa2"
+    },
+    {
+      "path": "stereo-course/shestakov-yaschenko-10-11/data/course.json",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "581f90697a950ce3bb1b17df9f1c3fc0808726238183c16d7da0c76b16ee9f44"
+    },
+    {
+      "path": "geometry-pogorelov/textbook/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "78dfa02608f677538bfd8cd26385451e10126c9379d2789a9325735adf330a31"
+    },
+    {
+      "path": "school/peterson5/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "e15753cd576f443a233e6ccf672960889fed4a099dab5e48cdcd9dd574d878c1"
+    },
+    {
+      "path": "school/peterson6/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "ab6ad93068de450eb6fcb7f48fe7afc1c0049b1e6d073d3fa73be78332426d60"
+    },
+    {
+      "path": "school/makarychev7/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "65e9d4cd400b7e6f2972d15252eebae37ffe20ee521c5d93bca19f0312218bb4"
+    },
+    {
+      "path": "school/makarychev8/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "69be4fd73297600a81bcbb913ff68cf147cfbac7d5959c0cd4db5700405957c3"
+    },
+    {
+      "path": "school/nikolsky10/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "a8c808715c0dc745be4e2b57a492bd22f1c981d63ee737b3c9190e8d6910da61"
+    },
+    {
+      "path": "school/alimov10-11/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "6f1fe79cad59eb00e59b28929c8736df6fc677e497bc988b8736e034b0a022f2"
+    },
+    {
+      "path": "school/vilenkin5-lessons.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "08ea5df56a02440c16649f12ec2eee0a0310352b97f57ece7f2c261a07e32b8a"
+    },
+    {
+      "path": "school/vilenkin6-lessons.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "f707ca4d68faa0b89269b24965cfb12a3d1a58bf4ad5003b6c66a323741024c0"
+    },
+    {
+      "path": "school/makarychev9-lessons.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "5363591ce8677e987a8ab175b781875fe64d16e6e4ae9e1c9b94d443b919092a"
+    },
+    {
+      "path": "school/m9-exercises/data.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "59ab8d53ae0f8fff922fee0e83971c98923d64671a18746abe640a774cf86955"
+    },
+    {
+      "path": "geometry-merzlyak/data/course.json",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "122e03490cfc516e915f81ea935d7a742adf0492b26d20bd1e295552ff46cb23"
+    },
+    {
+      "path": "soviet-math/sources.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "17730d194e917d21746bd87fe07921d3485ae54168cb5c16674cf7e973f0534f"
+    },
+    {
+      "path": "courses/vilenkin-6-part-1/textbook-course.js",
+      "http": 200,
+      "matches_main": true,
+      "sha256": "f0094688d07cb032fba01c08495a41e17a4502581e12ed0f4ccd6b0581825c56"
+    }
+  ],
+  "numberedCourses": {
+    "atanasyan-7-9": {
+      "cards": 569,
+      "catalogEntries": 569,
+      "mainExerciseNumbers": 330,
+      "collections": {
+        "main": 444,
+        "theory": 38,
+        "selfcheck": 87
+      }
+    },
+    "atanasyan-10-11": {
+      "cards": 507,
+      "catalogEntries": 1374,
+      "mainExerciseNumbers": 309,
+      "collections": {
+        "main": 375,
+        "theory": 88,
+        "selfcheck": 44
+      }
+    },
+    "merzlyak-10-basic": {
+      "cards": 989,
+      "catalogEntries": 989,
+      "mainExerciseNumbers": 723,
+      "collections": {
+        "practical": 39,
+        "main": 749,
+        "research": 18,
+        "selfcheck": 97,
+        "theory": 86
+      }
+    },
+    "shestakov-yaschenko-10-11": {
+      "cards": 543,
+      "catalogEntries": 2007,
+      "mainExerciseNumbers": 258,
+      "collections": {
+        "theory": 27,
+        "main": 516
+      }
+    }
+  }
+}
