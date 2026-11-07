@@ -6,6 +6,8 @@ const root=path.resolve(__dirname,'../..'),scope={window:{}};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'data.js'),'utf8'),scope);
 const lessons=scope.window.MakarychevCourse.lessons,added=lessons.flatMap(l=>l.tasks.map((t,index)=>({t,index,lesson:l.id}))).filter(v=>v.t.id.startsWith('roots-'));
 assert(added.length>600,'Full chapter content must be built before browser verification');
+const chapterCards=lessons.filter(l=>l.chapter==='Квадратные корни').flatMap(l=>l.tasks.map((t,index)=>({t,index,lesson:l.id})));
+assert.equal(chapterCards.length,1127,'Every preserved and added chapter card participates in layout acceptance');
 const orderedTasks=lessons.flatMap(l=>(l.studyOrder||l.tasks.map((_,i)=>i)).map(index=>({t:l.tasks[index],index,lesson:l.id})));
 const server=http.createServer((req,res)=>{
  const name=decodeURIComponent(new URL(req.url,'http://local.test').pathname);
@@ -16,10 +18,10 @@ const server=http.createServer((req,res)=>{
  res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));
 });
 const shots=process.env.M8_SCREENSHOTS||path.join(process.cwd(),'artifacts/makarychev8'),KEY='mathexam.makarychev8.2024.v1';
-const errors=[];let browser,views=0,walked=0,searches=0;
+const errors=[],layoutEvidence=[];let browser,views=0,walked=0,searches=0;
 function observe(page){page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('favicon.ico'))errors.push(m.text());});}
 const route=v=>'#lesson/'+v.lesson+'/'+v.index;
-const sampleNumbers=new Set([300,355,388,398,411,421,436,439,445,500,509]);
+const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const url='http://127.0.0.1:'+server.address().port+'/school/makarychev8/';
@@ -28,28 +30,44 @@ const sampleNumbers=new Set([300,355,388,398,411,421,436,439,445,500,509]);
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();observe(page);
   await page.goto(url);await page.waitForFunction(()=>window.MakarychevApp);
   const nav=async hash=>{await page.evaluate(h=>{history.replaceState(null,'',h);window.MakarychevApp.route();scrollTo(0,0);},hash);};
-  const seenShots=new Set();
-  for(const v of added){
+  const seenShots=new Set(),layoutFailures=[],measurements={width,height:900,cards:0,figures:0,maxPromptBottom:0,maxFigureBottom:0};
+  for(const v of chapterCards){
    const {t}=v;await nav(route(v));
    assert.equal(await page.locator('.error-page').count(),0,t.id+' route');
    const box=await page.locator('.prompt').boundingBox();
-   if(!box||box.y+box.height>900)await page.screenshot({path:path.join(shots,'roots-prompt-failure-'+t.id+'-'+width+'.png'),fullPage:true});
-   assert(box&&box.y+box.height<=900,t.id+' condition below first screen at '+width+' '+JSON.stringify(box));
+   if(!box||box.y<0||box.y+box.height>900){
+    if(layoutFailures.length<12)await page.screenshot({path:path.join(shots,'roots-prompt-failure-'+t.id+'-'+width+'.png'),fullPage:true});
+    layoutFailures.push(t.id+' condition outside first screen at '+width+' '+JSON.stringify(box));
+   }
+   assert(box,t.id+' condition is visible');
+   if(box.y+box.height>measurements.maxPromptBottom){measurements.maxPromptBottom=box.y+box.height;measurements.lowestPrompt=t.id;}
    assert(box.x>=0&&box.x+box.width<=width+1,t.id+' prompt outside screen');
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),t.id+' horizontal overflow at '+width);
    assert.equal(await page.locator('.task-menu').evaluate(el=>el.open),width>900,'menu default '+width);
-   const note=t.source.type==='textbook'?'Из учебника: '+t.source.reference+', с. '+t.source.page:'Самопроверка по учебнику: '+t.source.reference+', с. '+t.source.page;
+   const note=t.source.type==='textbook'?'Из учебника: '+t.source.reference+', с. '+t.source.page:t.source.adaptation?'Самопроверка по учебнику: '+t.source.reference+', с. '+t.source.page:'Авторская задача по теме учебника';
    assert.equal(await page.locator('.source-note').innerText(),note,t.id+' provenance');
    if(t.graph){
     const fig=await page.locator('#task-graph').boundingBox();
-    if(!fig||fig.y+fig.height>900)await page.screenshot({path:path.join(shots,'roots-figure-failure-'+t.id+'-'+width+'.png'),fullPage:true});
-    assert(fig&&fig.y+fig.height<=900,t.id+' necessary figure below first screen at '+width+' '+JSON.stringify(fig));
+    if(!fig||fig.y<0||fig.y+fig.height>900){
+     if(layoutFailures.length<12)await page.screenshot({path:path.join(shots,'roots-figure-failure-'+t.id+'-'+width+'.png'),fullPage:true});
+     layoutFailures.push(t.id+' necessary figure outside first screen at '+width+' '+JSON.stringify(fig));
+    }
+    assert(fig,t.id+' necessary figure is visible');
+    assert(fig.x>=0&&fig.x+fig.width<=width+1,t.id+' figure outside screen width');
+    measurements.figures++;
+    if(fig.y+fig.height>measurements.maxFigureBottom){measurements.maxFigureBottom=fig.y+fig.height;measurements.lowestFigure=t.id;}
     if(['root-build','curve-build'].includes(t.graph.type))assert.equal(await page.locator('#task-graph [data-root-curve]').count(),0,t.id+' no prefilled construction');
    }
    const n=Number(/№\s*(\d+)/.exec(t.source.reference)?.[1]);
    if((width===320||width===1280)&&sampleNumbers.has(n)&&!seenShots.has(n)){seenShots.add(n);await page.screenshot({path:path.join(shots,'roots-'+n+'-'+width+'.png'),fullPage:true});}
+   if(t.id==='roots-353-e')await page.screenshot({path:path.join(shots,'roots-353-e-first-screen-'+width+'.png')});
+   measurements.cards++;
    views++;
   }
+  layoutEvidence.push(measurements);
+  fs.writeFileSync(path.join(shots,'roots-layout.json'),JSON.stringify({viewports:layoutEvidence,failures:layoutFailures},null,2)+'\n');
+  console.log('ROOTS_LAYOUT '+JSON.stringify(measurements));
+  assert.deepEqual(layoutFailures,[],'Every chapter condition and necessary figure fits the first screen');
   if(width===320){
    for(let n=268;n<=509;n++){
     await nav('#home');await page.locator('#exercise-number').fill(String(n));await page.locator('#number-form button').click();
@@ -140,5 +158,5 @@ const sampleNumbers=new Set([300,355,388,398,411,421,436,439,445,500,509]);
   await page.reload();await page.waitForSelector('#final-answer');assert.equal(await page.locator('#final-answer').inputValue(),right,kind+' alternate retained');assert(await page.evaluate(id=>window.MakarychevApp.getState().tasks[id].correct,v.t.id),kind+' alternate revalidated');
  }
  await context.close();assert.deepEqual(errors,[]);
- console.log(JSON.stringify({status:'PASS',addedCards:added.length,views,walkedSteps:walked,searches,viewports:[320,390,768,1280],flows:['all new conditions and figures','all worked steps retained','all 242 searches','old independent result','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','no browser errors']}));
+ console.log(JSON.stringify({status:'PASS',chapterCards:chapterCards.length,addedCards:added.length,views,walkedSteps:walked,searches,viewports:[320,390,768,1280],layoutEvidence,flows:['all chapter conditions and figures','all worked steps retained','all 242 searches','old independent result','notes/reload/import priority','unfilled learner construction','wrong branch','radical keyboard','source-ordered entry/search/next','free examples and line alternatives/reload','no browser errors']}));
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();server.close();});

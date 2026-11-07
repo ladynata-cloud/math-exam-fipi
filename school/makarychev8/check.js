@@ -2,8 +2,10 @@
 (function(root,factory){const api=factory(typeof module==='object'&&module.exports?require('../peterson6/math.js'):root.PetersonMath,typeof module==='object'&&module.exports?require('./task-graphs.js'):root.MakarychevTaskGraphs);if(typeof module==='object'&&module.exports)module.exports=api;else root.MakarychevCheck=api;})(typeof globalThis!=='undefined'?globalThis:this,function(M,G){
 'use strict';
 function normalize(value){return String(value??'').trim().toLowerCase()
+ // Keep legacy whitespace-tolerant sqrt aliases valid when rechecking saved work.
+ .replace(/\s+/g,'')
  .replace(/(?:sqrt|корень)\s*\(/g,'√(')
- .replace(/[−–—]/g,'-').replace(/[×·⋅]/g,'*').replace(/\s+/g,'').replace(/√\((\d+(?:[.,]\d+)?|[a-zа-я])\)(?![\d.,])/g,'√$1')
+ .replace(/[−–—]/g,'-').replace(/[×·⋅]/g,'*').replace(/√\((\d+(?:[.,]\d+)?|[a-zа-я])\)(?![\d.,])/g,'√$1')
  .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,s=>'^'+Array.from(s,c=>'⁰¹²³⁴⁵⁶⁷⁸⁹'.indexOf(c)).join(''))
  .replace(/≤/g,'<=').replace(/≥/g,'>=').replace(/≠/g,'!=')
  .replace(/([0-9a-zа-я)])\*(?=[a-zа-я(√])/g,'$1').replace(/∈/g,'in').replace(/\bpi\b/g,'π')

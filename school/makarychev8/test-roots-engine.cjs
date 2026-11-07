@@ -4,10 +4,11 @@ const assert=require('node:assert/strict'),{JSDOM}=require('jsdom');
 const C=require('./check.js'),G=require('./task-graphs.js');
 let checks=0;
 function ok(value,message){assert(value,message);checks++;}
-for(const value of ['2√3','2*√(3)','2sqrt(3)','2 sqrt( 3 )','2·√3'])ok(C.check(value,{kind:'text',answer:'2√3'}),'radical notation '+value);
-for(const value of ['√12','-2√3','2√9','2sqrt(3)+1'])ok(!C.check(value,{kind:'text',answer:'2√3'}),'required simplified form '+value);
+for(const value of ['2√3','2*√(3)','2sqrt(3)','2 sqrt( 3 )','2·√3','2sqrt (3)','2s q r t (3)','2 s q r t ( 3 )','2s\tq\tr\nt(3)'])ok(C.check(value,{kind:'text',answer:'2√3'}),'radical notation '+value);
+for(const value of ['√12','-2√3','2√9','2sqrt(3)+1','2 s q r t (9)','-2 s q r t (3)','2 s q r t (-3)','2s q r t (3)+1'])ok(!C.check(value,{kind:'text',answer:'2√3'}),'required simplified form '+value);
 ok(C.check('sqrt(a)*sqrt(b)',{kind:'text',answer:'√a√b'}),'simple variable radicals');
 ok(!C.check('sqrt(4)9',{kind:'text',answer:'√49'}),'do not merge factors into radicand');
+ok(!C.check('s q r t (4)9',{kind:'text',answer:'√49'}),'legacy whitespace never merges factors into radicand');
 ok(!C.check('2*3',{kind:'text',answer:'23'}),'do not concatenate numeric factors');
 for(const value of ['9','18/2','9,0'])ok(C.check(value,{answer:'9'}),'positive arithmetic root');
 for(const value of ['-9','±9','9;-9','81'])ok(!C.check(value,{answer:'9'}),'arithmetic root is one nonnegative number');
