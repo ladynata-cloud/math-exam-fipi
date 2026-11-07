@@ -189,6 +189,25 @@ still compared. An independent reproduction confirms identical ordered links
 pass and reversed links fail. This changes no production code, answer or source
 binding. The remaining native stages still require a successful complete run.
 
+Run `42325247843` (workflow run 47) on
+`fd486fbba9595ccb493709fc7f582972d8a5ffab` passed both 320 x 900 and 390 x 900
+chapter layouts, all 242 source-number searches and all 2161 added-step
+journeys. Its next layout sweep found six actual overflows at 768 x 900:
+`roots-314-build` and `roots-353-a` ended at 938.421875 px;
+`roots-353-e/f/g` and `roots-468-a2` ended at 908.375 px. These figures did not
+overlap the navigator horizontally; their bottom coordinates exceeded the
+unchanged 900 px limit. The 1280-width sweep and the later construction and
+alternate-answer cases were not reached in this run. The ordinary course job
+and all four composed-navigator shards passed, independently of this failure.
+
+The follow-up changes only tablet interface spacing at widths 601–900; prompt
+font/line-height and SVG sizes remain unchanged. All seven coupled course
+resources advance to `20261107-roots5`. The test order becomes 768/1280/390/320,
+retaining the same four widths, 900 px height, every card/figure and every
+assertion, while completing all layouts before the long 320 px solution/import
+journeys. These changes require a new successful exact-candidate native run;
+the current review does not claim that future result.
+
 The read-only composition validator preserves the 612 current-main bindings,
 both VPR routes,631 total inventoried pages and 105 unrelated concurrent blobs.
 It rejects unknown provenance or scope and uses the unchanged canonical binding
@@ -197,13 +216,41 @@ composition; actual synchronization must use its own real checkpoint and pass
 the actual-candidate checks. Native composed-course and navigator results,
 reviewed screenshots and exact SHAs are recorded in PR 482, not inferred here.
 
+### Downgrade and recovery review, 2026-11-07
+
+The verified legacy-state direction is old release to expanded course, followed
+by reloads within the expanded course. It does not establish safe downgrade to
+the earlier 722-card payload. An independent in-memory reproduction compared
+the original base `6c64ac63e6bad70993ec50995d3a39976b1b0a36` with candidate
+`fd486fbba9595ccb493709fc7f582972d8a5ffab`, using only two synthetic saved
+records: old `p17-t01` and newly added `roots-268-a`, each with an answer and
+notebook. Opening `#lesson/p17/0` retained both records in the expanded course.
+The old application retained the old record but removed the new one on its
+first `localStorage.setItem` call.
+
+The code path is explicit: `resolveTask` cannot find a new ID in the old
+`data.js`; `sanitizeState` skips that record; startup loads the reduced state;
+`lessonView` then calls `save`, overwriting the same storage key. No explicit
+`removeItem` is needed to lose the new record. The earlier promise of an
+ordinary full-task revert without storage loss is therefore withdrawn. The
+forward-compatibility result remains valid; no production storage or pupil
+record was accessed, and no new backward-migration mechanism is added here.
+
 ## Risk and release boundary
 
 The remaining material risk before CI is responsive formula/graph layout.
 The mathematical and persistence risks are controlled by the independent source
 fixtures, exact arithmetic, domain tests, append-only data and old-work snapshot.
-Rollback is an ordinary scoped revert of this task's files; it must not delete
-learner storage.
+Recovery must preserve the expanded data/ID registry and compatible checker.
+Prefer a scoped corrective release. If running the course must be paused,
+temporarily serve a static maintenance entry that does not load the course
+runtime or access learner storage, retaining the expanded assets for the
+subsequent correction. Check that the maintenance response cannot boot the
+application before publication. A CSS/UI-only rollback needs verification
+against the current data and saved records. Do not restore the old data/checker
+or apply a blanket task revert after new results may exist: keeping the same
+storage key is insufficient, and there is no automatic downgrade backup.
+No recovery deployment is performed or authorized by this review.
 
 This is internal agent review, not an external-provider approval. No actual-pupil
 trial, physical-device test, shared-board connection, merge or production

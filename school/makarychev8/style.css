@@ -35,6 +35,18 @@
  .lesson-page .lesson-layout{gap:14px}
  .lesson-page .side details{margin:0 0 8px}
 }
+/* Keep the stacked tablet lesson header compact without shrinking its mathematics. */
+@media(min-width:601px) and (max-width:900px){
+ body:has(.lesson-page) .topbar{padding-block:16px}
+ main.lesson-page{padding-top:18px}
+ .lesson-page .breadcrumb{margin-bottom:8px}
+ .lesson-page>.eyebrow{margin:6px 0}
+ .lesson-page .lesson-title{margin:6px 0 10px}
+ .lesson-page .side summary{padding:6px 0}
+ .lesson-page .problem{padding-block:24px}
+ .lesson-page .source-note{margin:6px 0}
+ .lesson-page .problem .prompt{margin:12px 0 18px}
+}
 @media(min-width:701px){.task-graphs.alternatives{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}}
 .task-graphs .graph-zoom{background:transparent;color:var(--ink);border:0;padding:0;min-height:44px;font-size:inherit;text-decoration:underline;text-underline-offset:3px}
 .graph-dialog{width:500px;max-width:94vw;max-height:94vh;border:1px solid var(--line);border-radius:16px;padding:16px;color:var(--ink)}

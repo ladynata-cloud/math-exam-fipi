@@ -71,7 +71,8 @@ const sampleNumbers=new Set([300,353,355,388,398,411,421,436,439,445,500,509]);
   }
   console.log('ROOTS_LEGACY_RELOAD '+JSON.stringify({status:'PASS',cases:2,records:Object.keys(legacyRecords),loadsPerRecord:2}));
  }finally{await legacyContext.close();}
- for(const width of [320,390,768,1280]){
+ // Finish every layout size before the longer 320 px solution/import journeys.
+ for(const width of [768,1280,390,320]){
   const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();observe(page);
   await page.goto(url);await page.waitForFunction(()=>window.MakarychevApp);
   const launcher=page.locator('#maxexam-public-assistant .launcher');await launcher.waitFor({state:'visible'});
