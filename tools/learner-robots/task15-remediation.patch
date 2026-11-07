@@ -1,0 +1,180 @@
+--- a/trainers/oge-task15-triangles.html
++++ b/trainers/oge-task15-triangles.html
+@@ -142,7 +142,9 @@
+   .grid{gap:10px}
+   .meta{margin-bottom:6px}
+   .controls{margin:10px 0 4px}
+-  .tabs{gap:4px;padding:8px 10px 0}
++  .tabs{display:grid;grid-template-columns:.85fr 1.12fr .73fr 1.2fr;gap:4px;padding:8px 10px 0}
++  .tabs .tab{min-width:0;padding:6px 3px}
++  .diagram svg{max-height:min(25vh,180px)}
+   .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+   .filters .chip{flex:0 0 auto;white-space:nowrap}
+   .tab .cnt{display:none}
+@@ -1913,8 +1915,8 @@
+ 
+ /* ---------- Тренировка ---------- */
+ /* строка над лестницей до первого нажатия (решение D3, дословно) */
+-const LADDER_NOTE='Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
+-const PNOTE15='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без «Показать шаг»; ошибка, исправленная самостоятельно, этому не мешает. «Подсказка» и «Решить по шагам» ничего не отнимают. Ошибки попадают в «Работу над ошибками» курса. Каждый способ решения закрывается после трёх задач подряд без промаха; весь тип — когда повторены все способы, в которых были ошибки.</div></details>';
++const LADDER_NOTE='Подсказки помогают учиться: задача будет отмечена «с подсказкой», а не как самостоятельная. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
++const PNOTE15='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Задача засчитывается как решённая, если ответ получен без «Показать шаг»; ошибка, исправленная самостоятельно, этому не мешает. В счётчике «Решено» сохраняется учебный результат. Содержательные подсказки и пояснения ошибок отмечаются отдельно: «с подсказкой». Они не считаются самостоятельной серией и не закрывают работу над ошибками. Решение по шагам без подсказок отмечается отдельно от решения сразу. Старые результаты не переклассифицируются. Ошибки попадают в «Работу над ошибками» курса. Каждый способ решения закрывается после трёх задач подряд без промаха; весь тип — когда повторены все способы, в которых были ошибки.</div></details>';
+ const MSG_NUM='Введите число: целое или десятичную дробь (через запятую или точку).';
+ /* ответ задания 15 — целое или конечная десятичная дробь, корни бывают только в условии (поправка 1 делегата) */
+ function numMsg(s){return /√|sqrt|корен/i.test(String(s))?'Ответ задания 15 записывается числом без корня — целым или десятичной дробью. Корни бывают только в условии.':MSG_NUM;}
+@@ -1931,13 +1933,25 @@
+ function startRazborSub(k,id){rzOpen=k;rzVariant=id||TASK_VARIANTS.find(v=>v.k===k).id;rzStep=0;rzAns=false;switchTab('razbor');focusMain();}
+ /* учёт задачи (решения D1, F8): промах — сразу и один раз; решено — без показанных шагов */
+ function trMiss(){if(!tr||tr.missed||tr.shown||tr.done)return;tr.missed=true;logTaskVerdict(tr.t,false);streak=0;updStats();}
++function trHelp(kind){
++  if(!tr||tr.done)return;
++  tr.hinted=true;
++  if(kind==='feedback')tr.feedbackCount=CP.num(tr.feedbackCount)+1;
++  else tr.hintCount=CP.num(tr.hintCount)+1;
++}
+ function trFinish(){
+   if(!tr||tr.done)return;
+   tr.done=true;
+-  const clean=!tr.shown;
+-  if(clean){CP.solvedOne(tr.t.k);if(!tr.missed)logTaskVerdict(tr.t,true);}
+-  streak=clean&&!tr.missed?streak+1:0;
+-  CP.saveRec(rec=>{const x=CP.isObj(rec.train)?rec.train:{};rec.train={solved:CP.num(x.solved)+(clean?1:0),shown:CP.num(x.shown)+(clean?0:1)};});
++  const clean=!tr.shown, independent=clean&&!tr.hinted;
++  // Preserve educational credit; never label assisted work as independent.
++  if(clean){CP.solvedOne(tr.t.k);if(independent&&!tr.missed)logTaskVerdict(tr.t,true);}
++  streak=independent&&!tr.missed?streak+1:0;
++  CP.saveRec(rec=>{const x=CP.isObj(rec.train)?rec.train:{};
++    rec.train=Object.assign({},x,{solved:CP.num(x.solved)+(clean?1:0),shown:CP.num(x.shown)+(clean?0:1),
++      independent:CP.num(x.independent)+(independent?1:0),supported:CP.num(x.supported)+(clean&&!independent?1:0)});
++    rec.lastPracticeOutcome={variantId:tr.t.variantId,kind:tr.shown?'shown':tr.hinted?'supported':tr.missed?'corrected':'independent',
++      mode:tr.ladder?'steps':'direct',hints:CP.num(tr.hintCount),feedback:CP.num(tr.feedbackCount)};
++  });
+   st=loadSt(); updStats();
+ }
+ /* двойное касание: второе касание в первые 400 мс после смены экрана не срабатывает (находка ревью 4) */
+@@ -1993,10 +2007,11 @@
+     if(tr.done||tr.ladder||fresh(tr.t0))return;
+     const v=parseAns(inp.value);
+     if(!isFinite(v)){fb.className='fb show';fb.textContent=numMsg(inp.value);return;}
+-    if(eqAns(v,t.ans)){trFinish();doneUi(`Верно! Ответ ${fmtNum(t.ans)}.${tr.missed?' Ошибку вы исправили сами — задача засчитана.':''}`,'ok');}
++    if(eqAns(v,t.ans)){trFinish();doneUi(`Верно! Ответ ${fmtNum(t.ans)}.${tr.hinted?' Решено с подсказкой — учебная задача засчитана.':tr.missed?' Ошибку вы исправили сами — задача засчитана.':''}`,'ok');}
+     else{
+       trMiss();
+       const d=matchDiag(v,t.diag);
++      if(d)trHelp('feedback');
+       fb.className=d?'fb diag show':'fb bad show';
+       fb.innerHTML=(d||'Пока неверно. Сверьтесь с чертежом: что дано и что спрашивают.')+' Можно попробовать ещё раз или открыть «Решить по шагам».'; reveal(fb);
+     }
+@@ -2005,9 +2020,10 @@
+     if(tr.done||tr.ladder||fresh(tr.t0))return;
+     tr.ladder=true; inp.disabled=true; $('#check').disabled=true; $('#ladBtn').style.display='none';
+     const lad=$('#lad'); lad.style.display='';
+-    mountLadder(lad,t,{onMiss:trMiss,onShow:()=>{tr.shown=true;},onDone:()=>{
++    mountLadder(lad,t,{onMiss:trMiss,onHint:trHelp,onShow:()=>{tr.shown=true;},onDone:()=>{
+       trFinish();
+       doneUi(tr.shown?`Ответ задачи: ${fmtNum(t.ans)}. Шаг был показан — эта задача в счёт не идёт; попробуйте следующую такую же сами.`
++        :tr.hinted?`Решено с подсказкой — учебная задача засчитана. Ответ ${fmtNum(t.ans)}.`
+         :`Все шаги решены самостоятельно — задача засчитана. Ответ ${fmtNum(t.ans)}.`,tr.shown?'':'ok');
+     }});
+   });
+@@ -2038,13 +2054,13 @@
+       if(!isFinite(v)){fb.className='fb show';fb.textContent=numMsg(inp.value)+(!isDec(s.a)?' Если число не записывается конечной десятичной дробью, введите обыкновенную дробь, например 5/13.':'');return;}
+       const near=!isDec(s.a)&&Math.abs(v-s.a)<=0.005;   // неконечное значение введено приближённо — верно, с точной записью
+       if(eqAns(v,s.a)||near){resolved=true;fb.className='fb ok show';fb.innerHTML=(near?'Верно: точное значение — '+(s.at||fmtNum(s.a))+'. ':'Верно! ')+s.show;div.classList.add('ok');lock();i++;next();}
+-      else{h.onMiss();const d=last?matchDiag(v,t.diag):null;fb.className=d?'fb diag show':'fb bad show';
++      else{h.onMiss();if(h.onHint)h.onHint('feedback');const d=last?matchDiag(v,t.diag):null;fb.className=d?'fb diag show':'fb bad show';
+         const c=s.chk||'этот шаг';fb.innerHTML=d||('Пока не сходится: проверьте'+(c[0]===','?c:' '+c)+'.');}
+     };
+     div.querySelector('#'+id+'c').addEventListener('click',check);
+     inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check();}});
+     const hb=div.querySelector('#'+id+'h');
+-    if(hb)hb.addEventListener('click',()=>{if(div.querySelector('.hintbox'))return;const x=document.createElement('div');x.className='hintbox';x.innerHTML='Подсказка: '+s.hint;div.insertBefore(x,fb);hb.disabled=true;});
++    if(hb)hb.addEventListener('click',()=>{if(div.querySelector('.hintbox'))return;if(h.onHint)h.onHint('hint');const x=document.createElement('div');x.className='hintbox';x.innerHTML='Подсказка: '+s.hint;div.insertBefore(x,fb);hb.disabled=true;});
+     div.querySelector('#'+id+'s').addEventListener('click',()=>{
+       if(resolved)return;resolved=true;h.onShow();
+       fb.className='fb show';fb.innerHTML=s.show;div.classList.add('shown');lock();i++;next();
+--- a/tools/oge-task15-triangles.test.mjs
++++ b/tools/oge-task15-triangles.test.mjs
+@@ -76,7 +76,7 @@
+ /* число ступени: конечная дробь до десятитысячных (например, cos²A = 0,9216) */
+ const stepDec = (x) => Number.isFinite(x) && Math.abs(Math.round(x * 1e4) - x * 1e4) < 1e-6;
+ const ANGLE_TYPES = ['angSum', 'extAng', 'isoBase', 'isoApex', 'bisIso', 'bisExt', 'twoExt', 'bisAlt', 'altAlt', 'rtAcute'];
+-const LADDER_NOTE = 'Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
++const LADDER_NOTE = 'Подсказки помогают учиться: задача будет отмечена «с подсказкой», а не как самостоятельная. «Показать шаг» открывает результат ступени — после этого задача в счёт решённых не пойдёт (промахом это не считается). Ответ задачи — на последней ступени.';
+ 
+ /* числа текста; noDeg — без чисел с «°» */
+ function nums(h, noDeg) { const r = []; plainText(h).replace(/(\d+(?:[.,]\d+)?)(\s*°)?/g, (m, x, d) => { if (!(noDeg && d)) r.push(parseFloat(x.replace(',', '.'))); return m; }); return r; }
+@@ -397,7 +397,7 @@
+   ok((html.match(/aria-live="polite"/g) || []).length >= 3, '13', 'aria-live у сообщений проверки');
+   ok(/button,select,input:not\(\[type=checkbox\]\):not\(\[type=radio\]\):not\(\[type=range\]\)\{min-height:44px\}/.test(html), '13', 'цели касания 44 px');
+   ok(/:focus-visible\{outline:3px solid/.test(html), '13', 'видимый фокус');
+-  ok(/Подсказки ничего не отнимают/.test(html), '13', '«Подсказки ничего не отнимают» сказано ученику');
++  ok(/задача будет отмечена «с подсказкой», а не как самостоятельная/.test(html), '13', 'ученику объяснён честный статус помощи');
+ });
+ 
+ /* 14. регрессии независимого методического ревью: предмет вопроса и подписи */
+@@ -525,6 +525,24 @@
+     '16', 'консервативная миграция сохраняет число и время прежних ошибок нетронутой ветки');
+ });
+ 
++
++section('Owner remediation: help provenance and preservation', () => {
++  const T=loadTrainer(FILE), get=code=>JSON.parse(T.run('JSON.stringify('+code+')'));
++  T.run("tr={t:buildVariant('bisIso:B',true),missed:false,shown:false,done:false,ladder:true};trHelp('hint');trFinish();");
++  const assisted=get("CP.readAll()[TID]");
++  ok(assisted.train.supported===1 && assisted.train.independent===0,'help','assisted result is not independent');
++  ok(assisted.lastPracticeOutcome.kind==='supported' && assisted.lastPracticeOutcome.hints===1,'help','persisted evidence');
++  ok(T.run('streak')===0,'help','hint does not advance clean streak');
++  T.run('trFinish()');
++  ok(get('CP.readAll()[TID].train').supported===1,'help','repeated completion cannot mint credit');
++  T.run("tr={t:buildVariant('bisIso:B',true),missed:false,shown:false,done:false,ladder:false};trFinish();");
++  ok(get('CP.readAll()[TID].train').independent===1,'help','clean result remains independent');
++  T.run("tr={t:buildVariant('bisIso:B',true),missed:false,shown:false,done:false,ladder:true};trHelp('feedback');tr.shown=true;trFinish();");
++  const shown=get('CP.readAll()[TID]');
++  ok(shown.train.shown===1 && shown.train.supported===1 && shown.train.independent===1,'help','reveal is not supported or independent credit');
++  ok(shown.lastPracticeOutcome.kind==='shown','help','reveal has priority');
++});
++
+ console.log('\nпроверок: ' + checks + ', провалов: ' + fails);
+ if (fails) { console.log(failed.slice(0, 60).join('\n')); process.exit(1); }
+ console.log('OGE_TASK15_GATE_OK');
+--- a/tools/oge-task15-triangles.browser.mjs
++++ b/tools/oge-task15-triangles.browser.mjs
+@@ -185,15 +185,15 @@
+     await page.locator('#ans').fill(fmt(t.ans)); await page.locator('#ans').press('Enter');   // верный ответ клавишей Enter
+     let r = await rec(page); j = await jr(page, 'extAng');
+     ok(r.solvedByType.extAng === 1 && j.w === 1 && j.r === 0, 'D', 'исправленная ошибка засчитана, верного вердикта в журнал нет: ' + JSON.stringify([r.solvedByType, j]));
+-    ok(/исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'сообщение о самостоятельном исправлении');
++    ok(/Решено с подсказкой/.test(await page.locator('#fb').innerText()), 'D', 'сообщение о самостоятельном исправлении');
+     ok(await page.evaluate(() => window.__oge15.debug().streak) === 0, 'D', 'промах обнуляет серию');
+     const txt = await page.locator('#taskText').innerText();
+     await settle(); await page.keyboard.press('Enter'); await page.keyboard.press('Enter');   // и после защитной паузы
+-    ok(await page.locator('#taskText').innerText() === txt && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'Enter после ответа не перелистывает задачу');
++    ok(await page.locator('#taskText').innerText() === txt && /Решено с подсказкой/.test(await page.locator('#fb').innerText()), 'D', 'Enter после ответа не перелистывает задачу');
+     await page.keyboard.press('Tab');
+     ok(await page.evaluate(() => document.activeElement && document.activeElement.id) === 'next', 'D', 'Tab с итога ведёт на «Следующая →»');
+     await tap(page, '.tab[data-tab=refs]'); await tap(page, '.tab[data-tab=train]');
+-    ok(await page.locator('#next').isVisible() && await page.locator('#ans').isDisabled() && /исправили сами/.test(await page.locator('#fb').innerText()), 'D', 'после смены вкладки итог задачи и «Следующая →» сохранены');
++    ok(await page.locator('#next').isVisible() && await page.locator('#ans').isDisabled() && /Решено с подсказкой/.test(await page.locator('#fb').innerText()), 'D', 'после смены вкладки итог задачи и «Следующая →» сохранены');
+     await tap(page, '.tab[data-tab=train]');
+     ok(await page.locator('#next').isVisible(), 'D', 'нажатие на открытую вкладку не сбрасывает задачу');
+     await settle(); await page.locator('#next').tap(); await settle();
+@@ -209,7 +209,7 @@
+     t = await task(page);
+     await tap(page, '#ladBtn');
+     ok(await page.locator('#ans').isDisabled(), 'D', '«Решить по шагам» закрывает главное поле');
+-    ok((await page.locator('.lnote').innerText()).startsWith('Подсказки ничего не отнимают. «Показать шаг» открывает результат ступени'), 'D', 'строка над лестницей D3');
++    ok((await page.locator('.lnote').innerText()).startsWith('Подсказки помогают учиться: задача будет отмечена «с подсказкой»'), 'D', 'строка над лестницей D3');
+     for (let i = 0; i < t.steps.length; i++) {
+       const st = page.locator('.lstep').nth(i);
+       if (i === 0) { const hb = st.locator('button.soft'); if (await hb.count()) { await hb.tap(); ok(await st.locator('.hintbox').count() === 1, 'D', 'подсказка открывается'); } }
+@@ -217,7 +217,8 @@
+     }
+     r = await rec(page);
+     ok(r.solvedByType.bisIso === 1, 'D', 'лестница без показа (с подсказкой) — решено: ' + JSON.stringify(r.solvedByType));
+-    ok(/Все шаги решены самостоятельно/.test(await page.locator('#after').innerText()) && await page.locator('#next2').count() === 1, 'D', 'итог и «Следующая →» под лестницей');
++    ok(/Решено с подсказкой/.test(await page.locator('#after').innerText()) && await page.locator('#next2').count() === 1, 'D', 'честный итог и «Следующая →» под лестницей');
++    ok(r.train.supported === 2 && r.train.independent === 1 && r.lastPracticeOutcome.hints === 1, 'D', 'помощь отделена от самостоятельной работы');
+     // D4: промах на ступени — промах задачи; «Показать шаг» — не в счёт
+     await TW('isoApex', { a: 38, f: 0 });
+     t = await task(page);
