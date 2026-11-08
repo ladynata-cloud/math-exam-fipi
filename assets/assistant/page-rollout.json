@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+  "baseSha": "7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
-      "beforeSha256": "e881d3c743a3e4fa0c5720e30d1f9a9cbfc05404987f086f87a4e69c3ca6bff0",
-      "afterSha256": "49808bbd235101066bb8e2aa8e1d5c03c8b508df72bdfc465b4118d6abcac7d2",
+      "beforeSha256": "c1dc727804de1128d2b061522d78b18a40462bef1f2a975d2b394f41e569da64",
+      "afterSha256": "b91f75af87ad5c9fea9fad3706b1747bcbc0240e4837aa3faf056e8ed4eeb9af",
       "placement": "before-head-close"
     },
     "trainers/task14-progressions-trainer.html": {
@@ -3913,6 +3913,15 @@
       "task": "docs/tasks/OGE8_ROOT_DOMAINS_20261109.md",
       "changedPaths": [
         "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+      "sourceBaseSha": "7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a",
+      "task": "docs/tasks/EQUATION_FREE_STEPS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
