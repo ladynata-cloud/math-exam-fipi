@@ -102,6 +102,45 @@ test('one confirmed request creates a ready account and two-course program witho
   assert.deepEqual((await f.request('/teacher/students')).data.students.find(s => s.id === result.data.student.id).profile, result.data.profile);
 });
 
+test('college logarithms is assignable without a school grade and supplies course and shared-board destinations', async t => {
+  const course = courseProgram.get('college-logarithms');
+  assert.equal(course.publicURL, 'https://mathexam.space/trainers/college-logarithms/');
+  const board = new URL(course.boardURL);
+  assert.equal(board.origin + board.pathname, 'https://mathexam.space/trainers/trainer-board.html');
+  assert.equal(board.searchParams.get('trainer'), '/trainers/college-logarithms/index.html?task=meaning-1');
+  assert.equal(course.storage, 'browser');
+  const f = await fixture(t);
+  const profile = { course: 'school', goal: null, focus: '', program: { grade: null, courseIds: [course.id] } };
+  const created = await f.request('/teacher/students', input({ profile }));
+  assert.equal(created.status, 201);
+  assert.deepEqual(created.data.profile.program, profile.program);
+  const login = await f.request('/login', { login: 'synthetic_new', password: CODE, expectedRole: 'student' }, null);
+  assert.equal(login.status, 200);
+  assert.deepEqual((await f.request('/profile', undefined, login)).data.profile.program, profile.program);
+});
+
+test('all seven VPR programmes persist through creation and login without changing peer work or assignments', async t => {
+  const f = await fixture(t);
+  const untouched = ['attempts','assignments','events','learning_plans'];
+  const before = rows(f.store, untouched), peer = f.store.account(f.peer.id);
+  for (const [route,grade] of [['g5',5],['g6',6],['g7',7],['g7u',7],['g8',8],['g8u',8],['g10',10]]) {
+    const course = courseProgram.get('vpr-' + route), loginName = 'synthetic_vpr_' + route;
+    assert(course);
+    const trainerPath = '/trainers/vpr-math/index.html?route=' + route;
+    assert.equal(course.publicPath, trainerPath);
+    assert.equal(new URL(course.boardURL).searchParams.get('trainer'), trainerPath);
+    const profile = {course:'school',goal:null,focus:'VPR synthetic fixture',program:{grade,courseIds:[course.id]}};
+    const created = await f.request('/teacher/students', input({login:loginName,profile}));
+    assert.equal(created.status, 201, route);
+    assert.deepEqual(created.data.profile.program, profile.program);
+    const login = await f.request('/login', {login:loginName,password:CODE,expectedRole:'student'}, null);
+    assert.equal(login.status, 200, route);
+    assert.deepEqual((await f.request('/profile', undefined, login)).data.profile.program, profile.program);
+  }
+  assert.deepEqual(rows(f.store, untouched), before);
+  assert.deepEqual(f.store.account(f.peer.id), peer);
+});
+
 test('lost-response replay uses the same account and code, and changed input cannot reuse its operation', async t => {
   const f = await fixture(t), body = input();
   const first = await f.request('/teacher/students', body), snapshot = rows(f.store, ['accounts', 'learning_profiles', 'learning_programs', 'operations']);

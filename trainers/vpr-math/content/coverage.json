@@ -1,0 +1,2368 @@
+{
+  "schema_version": 1,
+  "source_year": 2027,
+  "coverage_kind": "author_training_by_official_category",
+  "scope_note": "Матрица связывает категории заданий официальных описаний с авторской тренировкой. Это не утверждение о покрытии каждого допустимого подтипа, совпадении сложности или экспертной оценке полной официальной работы.",
+  "source_matrix": "official_sources.json",
+  "content_sha256": {
+    "lower.json": "e2656fbd2b217e3f638fd0eac740f2079bacca7b06cab6846fc79e53a209a58b",
+    "middle.json": "6ea4407dffee532f0c50df41bd788e6febd70e7d1e1b4fbdc21774db7a694666",
+    "upper.json": "1e53d5d148c8b55137ee0f39ff28dcbb9d6dc8bc5c176f9612fc573917c13c38",
+    "supplement.json": "8f7b5adbd1090af10f35e7fa7e218d8dfb55082020f3a41392cc6b5ece4b1ba5"
+  },
+  "assessment_policy": {
+    "automatic_training_answers": "Автоматически проверяются числовые ответы, множества, упорядоченные пары и выбор готового утверждения.",
+    "taught;full_written_answer_human": "Навык обучается по шагам; полное самостоятельно написанное решение и его официальный балл требуют проверки человеком.",
+    "construction": "Лаборатория даёт практику построения по точкам; официальная полнота чертежа и оформления отдельно не оценивается."
+  },
+  "routes": [
+    {
+      "route_id": "g5",
+      "grade": 5,
+      "official_level": "общий",
+      "official_task_count": 17,
+      "official_max_points": 24,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-5_Opisanie_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/07/VPR_MA-5_Opisanie_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Действия с числами и дробями",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-natural",
+            "g5-fractions",
+            "g5-decimals"
+          ],
+          "evidence_task_ids": [
+            "g5-natural-1",
+            "g5-fractions-6",
+            "g5-decimals-1"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Доля и целое",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-parts"
+          ],
+          "evidence_task_ids": [
+            "g5-parts-1",
+            "g5-parts-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Неизвестный компонент действия",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-natural"
+          ],
+          "evidence_task_ids": [
+            "g5-natural-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "Чтение диаграмм",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-data"
+          ],
+          "evidence_task_ids": [
+            "g5-data-1",
+            "g5-data-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Площадь и периметр",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-geometry"
+          ],
+          "evidence_task_ids": [
+            "g5-geometry-1",
+            "g5-geometry-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 6,
+          "official_category": "Координатный луч",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-ray"
+          ],
+          "evidence_task_ids": [
+            "g5-ray-1",
+            "g5-ray-2",
+            "g5-ray-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Практическая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-word",
+            "g5-units"
+          ],
+          "evidence_task_ids": [
+            "g5-word-1",
+            "g5-word-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Объём куба и прямоугольного параллелепипеда",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-volume"
+          ],
+          "evidence_task_ids": [
+            "g5-volume-1",
+            "g5-volume-2",
+            "g5-volume-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Признаки делимости",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-logic"
+          ],
+          "evidence_task_ids": [
+            "g5-logic-1",
+            "g5-logic-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Отдельные задачи посвящены признакам 2, 3 и 5; признаки 9 и 10 не выделены в самостоятельные задания."
+          ]
+        },
+        {
+          "number": 10,
+          "official_category": "Сравнение дробей",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-fractions",
+            "g5-decimals"
+          ],
+          "evidence_task_ids": [
+            "g5-fractions-4",
+            "g5-decimals-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Логика и организованный перебор",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g5-logic"
+          ],
+          "evidence_task_ids": [
+            "g5-logic-3",
+            "g5-logic-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 12,
+          "official_category": "Движение, работа, стоимость: полное решение",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-word",
+            "g5-natural"
+          ],
+          "evidence_task_ids": [
+            "g5-word-3",
+            "g5-word-6",
+            "g5-natural-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Порядок действий: полное решение",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-order"
+          ],
+          "evidence_task_ids": [
+            "g5-order-5",
+            "g5-order-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 14,
+          "official_category": "Таблицы, величины и единицы",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-data",
+            "g5-units"
+          ],
+          "evidence_task_ids": [
+            "g5-data-4",
+            "g5-units-4",
+            "g5-units-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Составные фигуры и площади",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-geometry"
+          ],
+          "evidence_task_ids": [
+            "g5-geometry-4",
+            "g5-geometry-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Многошаговые логические задачи",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-logic"
+          ],
+          "evidence_task_ids": [
+            "g5-logic-4",
+            "g5-logic-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Многошаговые задачи на зависимости",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g5-parts",
+            "g5-word"
+          ],
+          "evidence_task_ids": [
+            "g5-parts-5",
+            "g5-parts-6",
+            "g5-word-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": []
+    },
+    {
+      "route_id": "g6",
+      "grade": 6,
+      "official_level": "общий",
+      "official_task_count": 16,
+      "official_max_points": 22,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-6_Opisanie_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/07/VPR_MA-6_Opisanie_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Целые числа и арифметика",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-integers"
+          ],
+          "evidence_task_ids": [
+            "g6-integers-1",
+            "g6-integers-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Дроби и числовые выражения",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-fractions",
+            "g6-decimals"
+          ],
+          "evidence_task_ids": [
+            "g6-fractions-3",
+            "g6-decimals-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Доля и целое",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-ratio",
+            "g6-percent",
+            "g6-fractions"
+          ],
+          "evidence_task_ids": [
+            "g6-fractions-6",
+            "g6-percent-3",
+            "g6-ratio-1"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Обратная задача на целое тренируется через проценты и отношения; не все разновидности формулировок с обыкновенными дробями представлены."
+          ]
+        },
+        {
+          "number": 4,
+          "official_category": "Таблицы и диаграммы",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-data"
+          ],
+          "evidence_task_ids": [
+            "g6-data-1",
+            "g6-data-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Проценты, отношения и пропорции",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-ratio",
+            "g6-percent"
+          ],
+          "evidence_task_ids": [
+            "g6-ratio-3",
+            "g6-ratio-5",
+            "g6-percent-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 6,
+          "official_category": "Модуль и значение выражения",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-integers"
+          ],
+          "evidence_task_ids": [
+            "g6-integers-5",
+            "g6-integers-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Рациональные числа на прямой",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-coordinates"
+          ],
+          "evidence_task_ids": [
+            "g6-coordinates-2",
+            "g6-coordinates-3",
+            "g6-coordinates-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Неизвестный компонент равенства",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-equations"
+          ],
+          "evidence_task_ids": [
+            "g6-equations-1",
+            "g6-equations-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Многошаговая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-equations",
+            "g6-ratio",
+            "g6-decimals"
+          ],
+          "evidence_task_ids": [
+            "g6-equations-6",
+            "g6-ratio-6",
+            "g6-decimals-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 10,
+          "official_category": "Истинность утверждений по данным",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-data"
+          ],
+          "evidence_task_ids": [
+            "g6-data-4",
+            "g6-data-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Осевая и центральная симметрия",
+          "official_part": 1,
+          "official_subject": "Математика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g6-geometry"
+          ],
+          "evidence_task_ids": [
+            "g6-geometry-1",
+            "g6-geometry-2",
+            "g6-geometry-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Отрабатываются оси симметрии и координаты образа точки; самостоятельное построение образа сложной фигуры не оценивается."
+          ]
+        },
+        {
+          "number": 12,
+          "official_category": "Движение и совместная работа",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g6-motion",
+            "g6-ratio"
+          ],
+          "evidence_task_ids": [
+            "g6-motion-3",
+            "g6-motion-4",
+            "g6-motion-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Многошаговые вычисления с дробями",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g6-fractions",
+            "g6-decimals"
+          ],
+          "evidence_task_ids": [
+            "g6-fractions-4",
+            "g6-fractions-5",
+            "g6-decimals-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 14,
+          "official_category": "Периметр, площадь и перевод единиц",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g6-geometry"
+          ],
+          "evidence_task_ids": [
+            "g6-geometry-4",
+            "g6-geometry-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Многошаговые задачи на проценты и зависимости",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g6-percent",
+            "g6-ratio"
+          ],
+          "evidence_task_ids": [
+            "g6-percent-5",
+            "g6-percent-6",
+            "g6-ratio-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Логика и алгоритмы",
+          "official_part": 2,
+          "official_subject": "Математика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g6-logic",
+            "g6-divisibility"
+          ],
+          "evidence_task_ids": [
+            "g6-logic-4",
+            "g6-logic-5",
+            "g6-logic-6",
+            "g6-divisibility-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": []
+    },
+    {
+      "route_id": "g7",
+      "grade": 7,
+      "official_level": "базовый",
+      "official_task_count": 17,
+      "official_max_points": 24,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-7_Opisanie_(B)_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/07/VPR_MA-7_Opisanie_B_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Вычисления с рациональными числами",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-rational"
+          ],
+          "evidence_task_ids": [
+            "g7-rational-3",
+            "g7-rational-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Степени с натуральным показателем",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-powers"
+          ],
+          "evidence_task_ids": [
+            "g7-powers-3",
+            "g7-powers-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Линейное уравнение: краткий ответ",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-equations"
+          ],
+          "evidence_task_ids": [
+            "g7-equations-1",
+            "g7-equations-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "Расположение точки на прямой",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-numberline"
+          ],
+          "evidence_task_ids": [
+            "g7-numberline-1",
+            "g7-numberline-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Чтение и достраивание графика движения",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-process-graphs",
+            "g7-linear-function"
+          ],
+          "evidence_task_ids": [
+            "g7-process-graphs-1",
+            "g7-process-graphs-6",
+            "g7-linear-function-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Построение графика тренируется через лабораторию точек; полное качество самостоятельного чертежа проверяет человек."
+          ]
+        },
+        {
+          "number": 6,
+          "official_category": "Преобразование буквенного выражения",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-powers"
+          ],
+          "evidence_task_ids": [
+            "g7-powers-5",
+            "g7-powers-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Линейное уравнение: полное решение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-equations"
+          ],
+          "evidence_task_ids": [
+            "g7-equations-3",
+            "g7-equations-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Текстовая задача через уравнение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-word-model"
+          ],
+          "evidence_task_ids": [
+            "g7-word-model-1",
+            "g7-word-model-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Многошаговая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-motion-work",
+            "g7-percent"
+          ],
+          "evidence_task_ids": [
+            "g7-motion-work-5",
+            "g7-percent-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 10,
+          "official_category": "Геометрия на клетчатой бумаге",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-area"
+          ],
+          "evidence_task_ids": [
+            "g7-area-5",
+            "g7-area-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Треугольники, углы и отрезки",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-angles",
+            "g7-triangles"
+          ],
+          "evidence_task_ids": [
+            "g7-angles-5",
+            "g7-triangles-1"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 12,
+          "official_category": "Геометрическая задача с обоснованием",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7u-geometry-proof"
+          ],
+          "evidence_task_ids": [
+            "g7u-geometry-proof-1",
+            "g7u-geometry-proof-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Истинные геометрические утверждения",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-geometry-statements"
+          ],
+          "evidence_task_ids": [
+            "g7-geometry-statements-1",
+            "g7-geometry-statements-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 14,
+          "official_category": "Геометрия повышенной сложности",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7u-geometry-proof"
+          ],
+          "evidence_task_ids": [
+            "g7u-geometry-proof-4",
+            "g7u-geometry-proof-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Тренируются цепочки обоснований стандартных конфигураций; сложность банка не охватывает все возможные задачи этого номера."
+          ]
+        },
+        {
+          "number": 15,
+          "official_category": "Таблицы и диаграммы",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-data"
+          ],
+          "evidence_task_ids": [
+            "g7-data-1",
+            "g7-data-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Логические выводы",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-logic"
+          ],
+          "evidence_task_ids": [
+            "g7-logic-3",
+            "g7-logic-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Статистические характеристики",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-data"
+          ],
+          "evidence_task_ids": [
+            "g7-data-3",
+            "g7-data-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": [
+        {
+          "lesson_id": "g7-probability",
+          "title": "Вероятность и подсчёт исходов",
+          "role": "additional_practice_or_enrichment"
+        },
+        {
+          "lesson_id": "g7-divisibility",
+          "title": "Делимость, НОД и НОК",
+          "role": "additional_practice_or_enrichment"
+        }
+      ]
+    },
+    {
+      "route_id": "g7u",
+      "grade": 7,
+      "official_level": "углублённый",
+      "official_task_count": 17,
+      "official_max_points": 24,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-7_Opisanie_(U)_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/07/VPR_MA-7_Opisanie_U_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Степени и рациональные вычисления",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-rational",
+            "g7-powers"
+          ],
+          "evidence_task_ids": [
+            "g7-rational-3",
+            "g7-powers-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Рациональные приёмы вычислений",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-rational",
+            "g7u-polynomials"
+          ],
+          "evidence_task_ids": [
+            "g7u-polynomials-3",
+            "g7u-polynomials-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Многочлены и формулы сокращённого умножения",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7u-polynomials"
+          ],
+          "evidence_task_ids": [
+            "g7u-polynomials-1",
+            "g7u-polynomials-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "График реального процесса",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-process-graphs"
+          ],
+          "evidence_task_ids": [
+            "g7-process-graphs-3",
+            "g7-process-graphs-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Делимость и запись числа",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7u-integer-reasoning",
+            "g7-divisibility"
+          ],
+          "evidence_task_ids": [
+            "g7u-integer-reasoning-1",
+            "g7-divisibility-1"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 6,
+          "official_category": "Текстовая задача через линейное уравнение или систему",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-word-model"
+          ],
+          "evidence_task_ids": [
+            "g7-word-model-2",
+            "g7-word-model-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Линейное и приводимое к нему уравнение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-equations"
+          ],
+          "evidence_task_ids": [
+            "g7-equations-3",
+            "g7-equations-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Линейные уравнения представлены; полный набор приводимых к линейным форм и систем не заявляется."
+          ]
+        },
+        {
+          "number": 8,
+          "official_category": "Делимость, остатки, НОД и НОК",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7u-integer-reasoning",
+            "g7-divisibility"
+          ],
+          "evidence_task_ids": [
+            "g7u-integer-reasoning-3",
+            "g7u-integer-reasoning-5",
+            "g7-divisibility-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Многошаговая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-motion-work",
+            "g7-percent"
+          ],
+          "evidence_task_ids": [
+            "g7-motion-work-6",
+            "g7-percent-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 10,
+          "official_category": "Геометрические вычисления",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-angles",
+            "g7-triangles",
+            "g7-area"
+          ],
+          "evidence_task_ids": [
+            "g7-angles-6",
+            "g7-triangles-6",
+            "g7-area-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Геометрические утверждения",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-geometry-statements"
+          ],
+          "evidence_task_ids": [
+            "g7-geometry-statements-3",
+            "g7-geometry-statements-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 12,
+          "official_category": "Геометрия с полным обоснованием",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7u-geometry-proof"
+          ],
+          "evidence_task_ids": [
+            "g7u-geometry-proof-1",
+            "g7u-geometry-proof-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Геометрия повышенной сложности",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7u-geometry-proof"
+          ],
+          "evidence_task_ids": [
+            "g7u-geometry-proof-4",
+            "g7u-geometry-proof-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Углублённая тренировка включает обоснования равенства и углов; полный спектр сложных конфигураций не представлен."
+          ]
+        },
+        {
+          "number": 14,
+          "official_category": "Логические утверждения",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-logic"
+          ],
+          "evidence_task_ids": [
+            "g7-logic-3",
+            "g7-logic-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Статистика по таблице или диаграмме",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g7-data"
+          ],
+          "evidence_task_ids": [
+            "g7-data-1",
+            "g7-data-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Графы",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-networks"
+          ],
+          "evidence_task_ids": [
+            "g8-networks-1",
+            "g8-networks-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Задача на статистику с решением",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g7-data"
+          ],
+          "evidence_task_ids": [
+            "g7-data-5",
+            "g7-data-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Есть восстановление неизвестного значения по среднему; набор сложных статистических сюжетов ограничен."
+          ]
+        }
+      ],
+      "additional_lessons": [
+        {
+          "lesson_id": "g7-linear-function",
+          "title": "Линейная функция и координаты",
+          "role": "additional_practice_or_enrichment"
+        },
+        {
+          "lesson_id": "g7-probability",
+          "title": "Вероятность и подсчёт исходов",
+          "role": "additional_practice_or_enrichment"
+        },
+        {
+          "lesson_id": "g7u-counting",
+          "title": "Подсчёт с ограничениями",
+          "role": "additional_practice_or_enrichment"
+        },
+        {
+          "lesson_id": "g7-numberline",
+          "title": "Числовая прямая: координата и середина",
+          "role": "additional_practice_or_enrichment"
+        }
+      ]
+    },
+    {
+      "route_id": "g8",
+      "grade": 8,
+      "official_level": "базовый",
+      "official_task_count": 17,
+      "official_max_points": 22,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-8_Opisanie_(B)_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/08/VPR_MA-8_Opisanie_B_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Действительные числа и вычисления",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-roots"
+          ],
+          "evidence_task_ids": [
+            "g8-roots-1",
+            "g8-roots-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Линейные неравенства",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-inequalities"
+          ],
+          "evidence_task_ids": [
+            "g8-inequalities-1",
+            "g8-inequalities-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Текстовая задача через квадратное уравнение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-quadratic-word"
+          ],
+          "evidence_task_ids": [
+            "g8-quadratic-word-1",
+            "g8-quadratic-word-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "Оценка чисел и точка на прямой",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-roots"
+          ],
+          "evidence_task_ids": [
+            "g8-roots-5",
+            "g8-roots-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Графики элементарных функций",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-functions"
+          ],
+          "evidence_task_ids": [
+            "g8-functions-1",
+            "g8-functions-3",
+            "g8-functions-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Связь формулы, координат и графика тренируется на прямой, параболе и обратной пропорциональности; не все разновидности сопоставления графиков представлены."
+          ]
+        },
+        {
+          "number": 6,
+          "official_category": "Преобразование корней",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-roots"
+          ],
+          "evidence_task_ids": [
+            "g8-roots-3",
+            "g8-roots-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Преобразование алгебраических дробей",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-fractions"
+          ],
+          "evidence_task_ids": [
+            "g8-fractions-1",
+            "g8-fractions-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Квадратное уравнение: полное решение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-quadratics"
+          ],
+          "evidence_task_ids": [
+            "g8-quadratics-3",
+            "g8-quadratics-4",
+            "g8-quadratics-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Многошаговая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-motion-work",
+            "g8-percent"
+          ],
+          "evidence_task_ids": [
+            "g8-motion-work-6",
+            "g8-percent-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 10,
+          "official_category": "Четырёхугольники и углы",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-geometry-statements",
+            "g8-quadrilaterals"
+          ],
+          "evidence_task_ids": [
+            "g8-geometry-statements-2",
+            "g8-quadrilaterals-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Расстояния и геометрия на клетках",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-pythagoras"
+          ],
+          "evidence_task_ids": [
+            "g8-pythagoras-5",
+            "g8-pythagoras-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Расстояния на плоскости вычисляются по координатам с помощью теоремы Пифагора; отдельный рисунок клетчатой плоскости в этих двух задачах не дан."
+          ]
+        },
+        {
+          "number": 12,
+          "official_category": "Истинные геометрические утверждения",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-geometry-statements"
+          ],
+          "evidence_task_ids": [
+            "g8-geometry-statements-2",
+            "g8-geometry-statements-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Геометрия с полным обоснованием",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-similarity",
+            "g8-circle"
+          ],
+          "evidence_task_ids": [
+            "g8-similarity-5",
+            "g8-circle-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 14,
+          "official_category": "Равновозможные исходы и вероятность",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-probability"
+          ],
+          "evidence_task_ids": [
+            "g8-probability-3",
+            "g8-probability-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Графы и обход рёбер",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-networks"
+          ],
+          "evidence_task_ids": [
+            "g8-networks-3",
+            "g8-networks-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Статистика и диаграммы",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-statistics"
+          ],
+          "evidence_task_ids": [
+            "g8-statistics-1",
+            "g8-statistics-4",
+            "g8-statistics-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Вероятность с полным решением",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-probability"
+          ],
+          "evidence_task_ids": [
+            "g8-probability-5",
+            "g8-probability-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": []
+    },
+    {
+      "route_id": "g8u",
+      "grade": 8,
+      "official_level": "углублённый",
+      "official_task_count": 17,
+      "official_max_points": 23,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-8_Opisanie_(U)_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/08/VPR_MA-8_Opisanie_U_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Корни и действительные числа",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-roots",
+            "g8u-transform"
+          ],
+          "evidence_task_ids": [
+            "g8u-transform-1",
+            "g8u-transform-4"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Квадратные уравнения и теорема Виета",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-quadratics"
+          ],
+          "evidence_task_ids": [
+            "g8-quadratics-3",
+            "g8-quadratics-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Квадратные уравнения разбираются через дискриминант; теорема Виета не выделена в самостоятельный учебный блок."
+          ]
+        },
+        {
+          "number": 3,
+          "official_category": "Неравенства и оценка чисел на прямой",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-inequalities",
+            "g8-roots"
+          ],
+          "evidence_task_ids": [
+            "g8-inequalities-4",
+            "g8-roots-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "Формула функции по графику",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-functions"
+          ],
+          "evidence_task_ids": [
+            "g8-functions-1",
+            "g8-functions-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": [
+            "Формула прямой восстанавливается по данным двух точек и рисунку; распознавание всех видов функций по неподписанному графику не заявляется."
+          ]
+        },
+        {
+          "number": 5,
+          "official_category": "Рациональные выражения",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-fractions",
+            "g8u-transform"
+          ],
+          "evidence_task_ids": [
+            "g8-fractions-6",
+            "g8u-transform-5",
+            "g8u-transform-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 6,
+          "official_category": "Линейные неравенства: полное решение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-inequalities"
+          ],
+          "evidence_task_ids": [
+            "g8-inequalities-3",
+            "g8-inequalities-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Уравнения, приводимые к квадратным",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8u-rational-equations"
+          ],
+          "evidence_task_ids": [
+            "g8u-rational-equations-1",
+            "g8u-rational-equations-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Многошаговая текстовая задача",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8-motion-work",
+            "g8-quadratic-word",
+            "g8-percent"
+          ],
+          "evidence_task_ids": [
+            "g8-quadratic-word-6",
+            "g8-motion-work-6",
+            "g8-percent-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Геометрические утверждения",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-geometry-statements"
+          ],
+          "evidence_task_ids": [
+            "g8-geometry-statements-1",
+            "g8-geometry-statements-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 10,
+          "official_category": "Углы и свойства фигур",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-geometry-statements",
+            "g8-circle"
+          ],
+          "evidence_task_ids": [
+            "g8-geometry-statements-2",
+            "g8-circle-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Площади и длины",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-quadrilaterals",
+            "g8-pythagoras"
+          ],
+          "evidence_task_ids": [
+            "g8-quadrilaterals-5",
+            "g8-pythagoras-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 12,
+          "official_category": "Геометрия с обоснованием",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8u-geometry-chain"
+          ],
+          "evidence_task_ids": [
+            "g8u-geometry-chain-1",
+            "g8u-geometry-chain-3"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Геометрия повышенной сложности",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8u-geometry-chain"
+          ],
+          "evidence_task_ids": [
+            "g8u-geometry-chain-4",
+            "g8u-geometry-chain-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 14,
+          "official_category": "Сравнение вероятностей событий",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8u-probability-cases"
+          ],
+          "evidence_task_ids": [
+            "g8u-probability-cases-1",
+            "g8u-probability-cases-2"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Графы и степени вершин",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-networks"
+          ],
+          "evidence_task_ids": [
+            "g8-networks-1",
+            "g8-networks-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Вероятность и комбинаторика",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g8-probability",
+            "g8u-probability-cases"
+          ],
+          "evidence_task_ids": [
+            "g8-probability-3",
+            "g8u-probability-cases-5"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Вероятность с полным решением",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g8u-probability-cases"
+          ],
+          "evidence_task_ids": [
+            "g8u-probability-cases-3",
+            "g8u-probability-cases-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": [
+        {
+          "lesson_id": "g8-statistics",
+          "title": "Среднее, медиана, размах",
+          "role": "additional_practice_or_enrichment"
+        },
+        {
+          "lesson_id": "g8-similarity",
+          "title": "Подобие и масштаб",
+          "role": "additional_practice_or_enrichment"
+        }
+      ]
+    },
+    {
+      "route_id": "g10",
+      "grade": 10,
+      "official_level": "общий",
+      "official_task_count": 17,
+      "official_max_points": 22,
+      "description_url": "https://fioco.ru/Media/Default/Documents/ВПР_2027/VPR_MA-10_Opisanie_2027.pdf",
+      "read_primary_document_url": "https://100ballnik.com/wp-content/uploads/2026/08/VPR_MA-10_Opisanie_2027.pdf",
+      "slots": [
+        {
+          "number": 1,
+          "official_category": "Проценты и доли",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-percent"
+          ],
+          "evidence_task_ids": [
+            "g10-percent-1",
+            "g10-percent-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 2,
+          "official_category": "Степени и корни",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-powers"
+          ],
+          "evidence_task_ids": [
+            "g10-powers-1",
+            "g10-powers-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 3,
+          "official_category": "Значения тригонометрических функций",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-trig-values"
+          ],
+          "evidence_task_ids": [
+            "g10-trig-values-1",
+            "g10-trig-values-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 4,
+          "official_category": "Арифметическая и геометрическая прогрессии",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-progressions"
+          ],
+          "evidence_task_ids": [
+            "g10-progressions-1",
+            "g10-progressions-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 5,
+          "official_category": "Чтение графика функции",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-graphs-read"
+          ],
+          "evidence_task_ids": [
+            "g10-graphs-read-1",
+            "g10-graphs-read-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 6,
+          "official_category": "Тригонометрические преобразования",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-trig-identities"
+          ],
+          "evidence_task_ids": [
+            "g10-trig-identities-1",
+            "g10-trig-identities-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 7,
+          "official_category": "Тригонометрическое уравнение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g10-trig-equations"
+          ],
+          "evidence_task_ids": [
+            "g10-trig-equations-1",
+            "g10-trig-equations-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 8,
+          "official_category": "Дробно-рациональное неравенство",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g10-rational-inequalities"
+          ],
+          "evidence_task_ids": [
+            "g10-rational-inequalities-1",
+            "g10-rational-inequalities-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        },
+        {
+          "number": 9,
+          "official_category": "Построение графика и графическое решение",
+          "official_part": 1,
+          "official_subject": "Алгебра",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g10-graphs-build"
+          ],
+          "evidence_task_ids": [
+            "g10-graphs-build-1",
+            "g10-graphs-build-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Лаборатория проверяет принадлежность выбранных точек заданной параболе; это не экспертная оценка полного письменного построения."
+          ]
+        },
+        {
+          "number": 10,
+          "official_category": "Практическая планиметрия",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-planimetry"
+          ],
+          "evidence_task_ids": [
+            "g10-planimetry-1",
+            "g10-planimetry-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 11,
+          "official_category": "Геометрические величины и площади",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-areas"
+          ],
+          "evidence_task_ids": [
+            "g10-areas-1",
+            "g10-areas-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 12,
+          "official_category": "Прямые, плоскости и углы в пространстве",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-space-lines"
+          ],
+          "evidence_task_ids": [
+            "g10-space-lines-1",
+            "g10-space-lines-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 13,
+          "official_category": "Стереометрия с полным решением",
+          "official_part": 2,
+          "official_subject": "Геометрия",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g10-stereometry"
+          ],
+          "evidence_task_ids": [
+            "g10-stereometry-1",
+            "g10-stereometry-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": [
+            "Представлены прямоугольный параллелепипед и правильная четырёхугольная пирамида; все возможные пространственные конфигурации не заявляются."
+          ]
+        },
+        {
+          "number": 14,
+          "official_category": "Классическая вероятность",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-probability"
+          ],
+          "evidence_task_ids": [
+            "g10-probability-1",
+            "g10-probability-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 15,
+          "official_category": "Множества и диаграммы Эйлера–Венна",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-sets"
+          ],
+          "evidence_task_ids": [
+            "g10-sets-1",
+            "g10-sets-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 16,
+          "official_category": "Условная вероятность и дерево опыта",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 1,
+          "official_requires_full_solution": false,
+          "lesson_ids": [
+            "g10-conditional"
+          ],
+          "evidence_task_ids": [
+            "g10-conditional-1",
+            "g10-conditional-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "automatic_training_answers",
+          "subtype_limits": []
+        },
+        {
+          "number": 17,
+          "official_category": "Сложные события и серии испытаний",
+          "official_part": 2,
+          "official_subject": "Вероятность и статистика",
+          "official_max_points": 2,
+          "official_requires_full_solution": true,
+          "lesson_ids": [
+            "g10-probability-series"
+          ],
+          "evidence_task_ids": [
+            "g10-probability-series-1",
+            "g10-probability-series-6"
+          ],
+          "coverage_status": "taught",
+          "assessment": "taught;full_written_answer_human",
+          "subtype_limits": []
+        }
+      ],
+      "additional_lessons": []
+    }
+  ],
+  "summary": {
+    "official_slots": 118,
+    "taught_categories": 118,
+    "pending_categories": 0,
+    "categories_with_explicit_subtype_limits": 14
+  },
+  "pending_dependencies": [],
+  "canonical_source_sha256": "21c2fd87db2f9ef39232dc758b2c2afcfece621ea94963fb3447b875ee3778a4"
+}

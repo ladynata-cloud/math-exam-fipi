@@ -40,7 +40,7 @@ test('the original expressions URL and literal same-origin entry aliases open th
   assert.equal(local.normalize('http://127.0.0.1:5173' + sourcePath + '#exam/8'), wrapperPath + '#exam/8');
 });
 
-test('only the six expressions lessons and their supported complete routes are aliased', () => {
+test('only the six expressions lessons resolve to their wrapper; unknown routes stay unaliased', () => {
   const { normalize } = picker();
   const hashes = ['#exam/8', '#calm/8'];
   for (const id of lessonIds) {
@@ -54,7 +54,7 @@ test('only the six expressions lessons and their supported complete routes are a
   }
   for (const hash of [
     '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#calm/9',
-    '#lesson/trig-angle', '#example/bridge-fractions', '#repair-task/expr-powers',
+    '#lesson/trig-unregistered', '#example/bridge-fractions', '#repair-task/expr-powers',
     '#practice/expr-powers', '#practice/expr-powers/other',
     '#practice/expr-powers/guided/extra', '#lesson/expr-powers/extra',
     '#exam/8/', '#exam/8/extra', '#lesson/EXPR-powers', '#%65xam/8'

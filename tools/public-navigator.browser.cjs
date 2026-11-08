@@ -34,6 +34,7 @@ for (const item of catalogue) {
   const browser = await chromium.launch({ headless: true, ...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{}) });
   const results = [];
   const failures = [];
+  const focusRegressions = [];
   async function originalPageErrors(filename,viewport){
     const context=await browser.newContext({viewport});
     const original=restorePublicNavigator(filename,fs.readFileSync(path.join(process.cwd(),filename)));
@@ -119,6 +120,55 @@ for (const item of catalogue) {
       }
       await context.close();
     }
+    // Exercise the actual delayed rounding callback at a deterministic point.
+    // A dedicated context keeps this clock out of the ordinary page journeys.
+    if (pages.includes('rounding.html')) {
+      const viewport = { width: 844, height: 390 };
+      const context = await browser.newContext({ viewport });
+      await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
+      const page = await context.newPage(), pageErrors = [];
+      page.setDefaultTimeout(10000);
+      page.on('pageerror', error => pageErrors.push(error.message));
+      try {
+        const initialTime = Date.UTC(2026, 10, 6);
+        await page.clock.install({ time: initialTime });
+        await page.clock.pauseAt(initialTime + 60000);
+        await page.goto(origin + '/rounding.html', { waitUntil: 'load' });
+        const answer = page.locator('#userAnswer');
+        await page.clock.runFor(100);
+        assert.equal(await answer.evaluate(node => document.activeElement === node), true, 'initial rounding autofocus');
+        await answer.fill(await page.evaluate(() => buildAITaskPayload('focus-regression', true).correctAnswer));
+        await answer.press('Enter');
+        await page.locator('#feedback .feedback-correct').waitFor();
+        await page.locator('#nextBtn').click();
+        await page.clock.runFor(100);
+        assert.equal(await answer.evaluate(node => document.activeElement === node), true, 'Next restores answer focus after hiding its button');
+        assert.equal(await answer.isEnabled(), true);
+        assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('roundingTrainer2025')).totalAttempts), 1);
+
+        // The category starts a fresh real 100 ms callback. Opening/filling the
+        // navigator is a newer focus choice that callback must respect.
+        await page.locator('[data-category="decimals"]').click();
+        const host = page.locator('#maxexam-public-assistant');
+        await host.locator('.launcher').click();
+        const input = host.locator('textarea');
+        await input.fill('Я в 6 классе, надо делить уголком');
+        await page.clock.runFor(100);
+        assert.equal(await input.evaluate(node => node.getRootNode().activeElement === node && document.activeElement === node.getRootNode().host), true, 'rounding timer preserves navigator focus before native Enter');
+        await input.press('Enter');
+        assert.equal(await host.locator('.navigator').last().locator('a').first().getAttribute('href'), '/trainers/long-division-stepwise.html');
+        assert.equal(await host.locator('.visitor').count(), 1);
+        assert.equal(await answer.inputValue(), '', 'navigator text never enters the rounding answer');
+        assert.equal(await page.locator('#feedback').textContent(), '');
+        assert.deepEqual(pageErrors, []);
+        focusRegressions.push({ route: '/rounding.html', viewport, scenarios: ['hidden-next-button', 'navigator-native-enter'], passed: true });
+        console.log('ROUNDING_FOCUS_NATIVE_OK');
+      } catch (error) {
+        const failure = { route: '/rounding.html', viewport, scenario: 'delayed-autofocus', error: error.message, pageErrors: pageErrors.slice() };
+        focusRegressions.push({ ...failure, passed: false }); failures.push(failure);
+        console.error('ROUNDING_FOCUS_NATIVE_FAIL', error.message);
+      } finally { await context.close(); }
+    }
     // The existing navigator must stay absent when a public trainer is hosted
     // inside the board/cabinet or another course iframe.
     const frameContext=await browser.newContext();
@@ -134,7 +184,7 @@ for (const item of catalogue) {
       assert.equal(await frame.locator('#maxexam-public-assistant').count(),0,'No competing navigator in iframe: '+filename);
     }
     await frameContext.close();
-    fs.writeFileSync(path.join(out,'results.json'), JSON.stringify({result:failures.length?'PUBLIC_NAVIGATOR_FAILED':'PUBLIC_NAVIGATOR_VISIBLE_OK',shardIndex,shardCount,inventoryPages:allPages.length,shardPages:pages.length,browserVersion:browser.version(),catalogue:catalogue.length,results,failures},null,2));
+    fs.writeFileSync(path.join(out,'results.json'), JSON.stringify({result:failures.length?'PUBLIC_NAVIGATOR_FAILED':'PUBLIC_NAVIGATOR_VISIBLE_OK',shardIndex,shardCount,inventoryPages:allPages.length,shardPages:pages.length,browserVersion:browser.version(),catalogue:catalogue.length,results,focusRegressions,failures},null,2));
     assert.equal(results.length,pages.length*3,'Every page/viewport journey must pass; see recorded failures');
     assert.deepEqual(failures,[]);
     console.log('PUBLIC_NAVIGATOR_VISIBLE_OK', results.length, 'page/viewport journeys;', catalogue.length, 'catalogue entries');

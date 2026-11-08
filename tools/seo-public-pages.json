@@ -169,6 +169,7 @@
     "/trainers/attestaciya-1-kurs.html",
     "/trainers/college-functions/",
     "/trainers/college-logarithms/",
+    "/trainers/college-logarithms/intro/",
     "/trainers/credit-differential-payment-trainer.html",
     "/trainers/decimal-cash-trainer.html",
     "/trainers/desyatichnye-drobi-level-1.html",
@@ -289,7 +290,9 @@
     "/trainers/turing-trainer-polish.html",
     "/trainers/turing-trainer-universal.html",
     "/trainers/turing-trainer-upgrade.html",
-    "/trainers/who-is-stronger.html"
+    "/trainers/vpr-math/",
+    "/trainers/who-is-stronger.html",
+    "/vpr/"
   ],
   "follow_prefixes": [
     "/articles/",

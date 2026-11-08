@@ -274,6 +274,18 @@
     svg += text(16, 350, 'Числа на сетке задают масштаб по каждой оси.', 'font-size="12" fill="' + C.muted + '"') + '</svg>';
     return { svg, scene: s };
   }
+  function validBoardState(task, context, value) {
+    const keys = ['taskId', 'help', 'explore', 'cursor'];
+    if (!value || typeof value !== 'object' || Array.isArray(value) ||
+        ![Object.prototype, null].includes(Object.getPrototypeOf(value)) ||
+        Reflect.ownKeys(value).length !== keys.length || !keys.every(key => {
+          const property = Object.getOwnPropertyDescriptor(value, key);
+          return property && property.enumerable && Object.hasOwn(property, 'value');
+        }) || value.taskId !== task.id || typeof value.help !== 'boolean' || typeof value.explore !== 'boolean' ||
+        !finite(value.cursor)) return false;
+    const [min, max] = sceneFor(task, context, { help: value.help }).cursorDomain;
+    return value.cursor >= min && value.cursor <= max;
+  }
   function render(container, task, context) {
     context = context || {};
     const doc = container.ownerDocument || document, id = 'function-plot-' + (++serial), options = { help: false, explore: false, cursor: 0 };
@@ -283,12 +295,13 @@
     const button = doc.createElement('button'); button.type = 'button'; button.className = 'button quiet'; button.dataset.modelAction = 'function-help'; button.setAttribute('aria-pressed', 'false'); controls.append(button);
     const details = doc.createElement('details'), summary = doc.createElement('summary'), label = doc.createElement('label'), slider = doc.createElement('input'), output = doc.createElement('p');
     const independent = context.mode === 'independent' && !context.solved;
-    details.className = 'extra-help'; summary.textContent = independent ? 'Показать значения на графике (подсказка)' : 'Исследовать график'; details.append(summary);
+    details.className = 'extra-help function-explore'; summary.textContent = independent ? 'Показать значения на графике (подсказка)' : 'Исследовать график'; details.append(summary);
     label.textContent = 'Переместить точку по оси x'; label.style.display = 'block'; slider.type = 'range'; slider.setAttribute('aria-label', 'Координата x подвижной точки'); slider.style.width = '100%'; output.className = 'small'; output.setAttribute('aria-live', 'polite'); label.append(slider); details.append(label, output);
     wrap.append(plot, legend, caption, controls, helperText, details); container.replaceChildren(wrap);
     const initial = sceneFor(task, context, options);
     options.cursor = task.meta.x ?? task.meta.x0 ?? task.meta.a?.[0] ?? task.meta.px ?? (initial.cursorDomain[0] + initial.cursorDomain[1]) / 2;
     slider.min = String(initial.cursorDomain[0]); slider.max = String(initial.cursorDomain[1]); slider.step = String(niceStep(initial.cursorDomain[1] - initial.cursorDomain[0], 50) / 2); slider.value = String(options.cursor);
+    options.cursor = Number(slider.value);
     function assist() { if (independent && typeof context.onHelp === 'function') context.onHelp(); }
     function paint() {
       const result = svgFor(task, context, options, id), s = result.scene;
@@ -306,13 +319,28 @@
     details.ontoggle = () => { if (details.open && !options.explore) assist(); options.explore = details.open; paint(); };
     slider.oninput = () => { options.cursor = Number(slider.value); options.explore = details.open; paint(); };
     paint();
-    return () => { button.onclick = null; details.ontoggle = null; slider.oninput = null; };
+    let disposed = false;
+    const cleanup = () => { disposed = true; button.onclick = null; details.ontoggle = null; slider.oninput = null; };
+    cleanup.getBoardState = () => ({ taskId: task.id, help: options.help, explore: options.explore, cursor: options.cursor });
+    cleanup.applyBoardState = value => {
+      if (disposed || !validBoardState(task, context, value)) throw new TypeError('Invalid function model board state');
+      // Restore the construction directly. A delayed toggle event observes the
+      // restored explore flag and cannot turn hydration into a help action.
+      options.help = value.help; options.explore = value.explore; options.cursor = value.cursor;
+      slider.value = String(value.cursor); details.open = value.explore; paint();
+    };
+    return cleanup;
   }
   const lessons = (root.ProfileLessons || []).filter(l => ['calculus', 'functions'].includes(l.group) && /^(calc-|fn-)/.test(l.id));
   root.ProfileTaskModels = root.ProfileTaskModels || {}; root.ProfileModels = root.ProfileModels || {};
   lessons.forEach(l => {
-    l.tasks.forEach(task => { root.ProfileTaskModels[task.id] = render; });
+    l.tasks.forEach(task => {
+      const model = (container, current, context) => render(container, task, context);
+      model.validateBoardState = (value, context) => validBoardState(task, context, value);
+      root.ProfileTaskModels[task.id] = model;
+    });
     root.ProfileModels[l.model] = container => render(container, l.tasks[0], { mode: 'guided', step: 0 });
+    root.ProfileModels[l.model].validateBoardState = value => validBoardState(l.tasks[0], { mode: 'guided', step: 0 }, value);
   });
-  if (typeof module !== 'undefined' && module.exports) module.exports = { functionFor, sceneFor, curveSegments, svgFor, render };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { functionFor, sceneFor, curveSegments, svgFor, render, validBoardState };
 })(globalThis);

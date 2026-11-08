@@ -3,6 +3,9 @@ const C=window.LogCourseCore,D=C.D,E=C.E,P=window.LogCoursePlot,$=id=>document.g
 const rich=v=>esc(v).replace(/x − \((-?\d+)\)/g,(_,h)=>Number(h)===0?'x':Number(h)>0?'x − '+h:'x + '+(-Number(h))).replace(/ \+ \((-?\d+)\)/g,(_,k)=>Number(k)===0?'':Number(k)>0?' + '+k:' − '+(-Number(k))).replace(/log\[([^\]]+)\]/g,'log<sub>$1</sub>').replace(/\^(-?\d+)/g,'<sup>$1</sup>');
 let state=C.blank(),saved={},storageOK=true,adapter;
 if(!BOARD)try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw&&raw.attempts&&typeof raw.attempts==='object'){for(const [k,s]of Object.entries(raw.attempts)){if(C.validate(s)&&k===s.mode+':'+s.taskId)saved[k]=s;}if(C.validate(raw.current))state=raw.current;}}catch(_){storageOK=false;}
+// Lesson links select an existing task only. Room hydration remains authoritative.
+const requestedTask=new URLSearchParams(location.search).get('task');
+if(C.task(requestedTask))state=!BOARD&&saved['learn:'+requestedTask]?C.clone(saved['learn:'+requestedTask]):C.blank(requestedTask,'learn');
 function save(){if(BOARD)return;saved[state.mode+':'+state.taskId]=C.clone(state);try{localStorage.setItem(KEY,JSON.stringify({current:state,attempts:saved}));}catch(_){storageOK=false;}}
 function changed(renderAll=true){if(!C.validate(state))throw Error('Invalid local logarithm state');save();if(renderAll)render();if(adapter)adapter.changed();}
 function select(id,mode=state.mode){if(!C.task(id))return;save();const previous=!BOARD?saved[mode+':'+id]:null;state=previous&&C.validate(previous)?C.clone(previous):C.blank(id,mode);changed();}
@@ -12,6 +15,7 @@ function lab(){const p=state.lab;$('base').value=String(p.a);$('shift-h').value=
 const pts=[[p.h+1,p.k],[p.h+p.a,p.k+1],[p.h+1/p.a,p.k-1]];P.render($('lab-graph'),p,pts,true);
 $('lab-facts').innerHTML=`<p><b>ОДЗ:</b> x &gt; ${p.h}. Значения y — все действительные числа.</p><p><b>${p.a>1?'Возрастает':'Убывает'}</b> на (${p.h}; +∞), потому что ${p.a>1?'a > 1':'0 < a < 1'}.</p><p><b>Асимптота:</b> x = ${p.h}; график приближается к ней, но не пересекает.</p><p><b>Опорные точки:</b> ${pts.map(([x,y])=>'('+E.formatNumber(x)+'; '+E.formatNumber(y)+')').join(', ')}.</p>`;}
 function render(){const t=C.task(state.taskId),chapter=D.chapters.find(c=>c.id===t.chapter),step=t.steps[state.stage];
+$('open-board').href='../trainer-board.html?trainer='+encodeURIComponent('/trainers/college-logarithms/index.html?task='+t.id);
 $('chapter').value=t.chapter;$('task').innerHTML=D.tasks.filter(q=>q.chapter===t.chapter).map((q,i)=>`<option value="${q.id}">${i+1}. ${esc(q.title)}</option>`).join('');$('task').value=t.id;
 $('learn').setAttribute('aria-pressed',state.mode==='learn');$('test').setAttribute('aria-pressed',state.mode==='test');
 $('mode-note').textContent=BOARD?'Совместная работа: состояние задачи и записи передаются участнику комнаты.':state.mode==='learn'?'Учимся: используй подсказки по необходимости. Каждый выполненный шаг остаётся на экране.':'Режим без подсказок: решай в тетради или в поле записей, затем проверяй шаги.';
@@ -49,6 +53,9 @@ $('notes').addEventListener('input',e=>{state.note=e.target.value.slice(0,1500);
 for(const id of ['theory','reference','lab'])$(id).addEventListener('toggle',()=>{const current=id==='lab'?state.lab.open:state[id],next=$(id).open;if(current===next)return;if(state.mode==='test'&&id!=='reference'){$(id).open=false;return;}if(id==='lab')state.lab.open=next;else state[id]=next;changed(false);if(id==='lab'&&next)lab();});
 for(const [id,key]of [['base','a'],['shift-h','h'],['shift-k','k']])$(id).addEventListener(id==='base'?'change':'input',e=>{const n=Number(e.target.value);if(key==='a'?!C.bases.includes(n):!Number.isInteger(n)||Math.abs(n)>3)return;state.lab[key]=n;changed(false);lab();});
 $('task-graph').addEventListener('click',e=>{const t=C.task(state.taskId),s=t.steps[state.stage];if(!t.graph||s?.kind!=='point')return;const p=P.coordinates($('task-graph'),e,t.graph);if(p){$('answer').value=p.map(E.formatNumber).join('; ');setDraft($('answer').value);check();}});
+// Consume a standalone entry link once; later reloads resume the learner's
+// current task instead of jumping back to the original lesson target.
+if(!BOARD&&C.task(requestedTask)){save();const entryURL=new URL(location.href);entryURL.searchParams.delete('task');history.replaceState(null,'',entryURL.href);}
 render();
 adapter=window.LogCourseBoardAdapter.create({read:()=>state,write:value=>{state=value;render();}});
 window.LogCourseApp={snapshot:()=>({state:C.clone(state),attempts:C.clone(saved),board:BOARD}),select};

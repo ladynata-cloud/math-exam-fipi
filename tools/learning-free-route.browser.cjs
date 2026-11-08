@@ -24,6 +24,36 @@ const PASSWORD = '0753';
 const PUPIL_LOGIN = 'fixture_free_pupil';
 const PUPIL_PASSWORD = '0381';
 const uuid = () => crypto.randomUUID();
+// Wall-clock milliseconds and random task seeds can coincidentally contain a
+// four-digit fixture PIN. Control those nonsecret sources; keep the receipt
+// scan strict. The real API rate limiter retains its own wall clock.
+function fixtureSources() {
+  let nextSeed = 41;
+  return { clock: () => Date.UTC(2026, 0, 1), contracts: { ...contracts,
+    create(trainerId, contentId, seed = nextSeed++) {
+      return contracts.create(trainerId, contentId, seed);
+    }
+  } };
+}
+function verifyFixtureSources() {
+  const fixture = fixtureSources();
+  assert.equal(fixture.clock(), Date.UTC(2026, 0, 1));
+  assert.equal(fixture.clock(), fixture.clock(), 'Store fixture time does not depend on runner time');
+  const first = fixture.contracts.create('ege-path', 'equations-signs');
+  const next = fixture.contracts.create('ege-path', 'equations-signs');
+  assert.deepEqual(first, contracts.create('ege-path', 'equations-signs', 41));
+  assert.deepEqual(next, contracts.create('ege-path', 'equations-signs', 42));
+  assert.notEqual(contracts.questionIdentity(first.taskSpec), contracts.questionIdentity(next.taskSpec),
+    'Fresh fixture tasks retain different questions');
+  assert.deepEqual(fixture.contracts.create('ege-path', 'equations-signs', 10381),
+    contracts.create('ege-path', 'equations-signs', 10381), 'An explicit seed is never replaced or filtered');
+  assert.equal(fixture.contracts.create('ege-path', 'equations-signs').taskSpec.seed, 43,
+    'An explicit seed does not consume the default sequence');
+  assert.throws(() => fixture.contracts.create('ege-path', 'equations-signs', null), { code: 'LEARNING_TASK_INVALID' });
+  assert.equal(fixture.contracts.normalize, contracts.normalize, 'Real contract validation remains in use');
+  assert.equal(fixture.contracts.evaluate, contracts.evaluate, 'Real contract evaluation remains in use');
+  console.log('LEARNING_FIXTURE_SOURCES_OK: fixed store time; varied deterministic tasks; explicit seeds preserved.');
+}
 // A four-digit PIN can occur inside a valid UUID or SHA256 by coincidence.
 // Audit every payload key/value except exact DTO identity paths independently
 // verified against persisted identity columns. Never exempt a field by name.
@@ -212,6 +242,9 @@ function verifyReceiptPrivacyGuard() {
     check('noncanonical photo URL', { photo: { ...photo, url } }, false);
   }
   for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
+    { attempt: { ...attempt, createdAt: 1793990381000 } },
+    { attempt: { ...attempt, updatedAt: 1793990381000 } },
+    { attempt: { ...attempt, taskSpec: { seed: 10381 } } },
     { id: PUPIL_PASSWORD }, { id: attemptId }, { learnerId }, { nested: { recoveryCode: 'different-credential-value' } },
     { attempt: { ...attempt, taskSpec: { extra: { id: attemptId } } } },
     { attempt: { ...attempt, state: { work: { learnerId } } } },
@@ -296,9 +329,10 @@ async function login(page, origin, login, password) {
 }
 
 async function main() {
+  verifyFixtureSources();
   verifyReceiptPrivacyGuard();
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-free-route-'));
-  const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts });
+  const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), ...fixtureSources() });
   assert.equal(store.available, true, 'Use the supported Node version with SQLite');
   const app = express(), trainerApp = express();
   app.use(express.json({ limit: '6mb' }));
@@ -817,5 +851,5 @@ async function verifyPaperHomework({ teacher, student, pupil, peer, store, origi
     await teacher.page.screenshot({ path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'paper-homework-teacher-desktop.png'), fullPage: true });
   }
 }
-if (process.argv.includes('--receipt-guard-only')) verifyReceiptPrivacyGuard();
+if (process.argv.includes('--receipt-guard-only')) { verifyFixtureSources(); verifyReceiptPrivacyGuard(); }
 else main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
