@@ -38,3 +38,7 @@ Owner directly authorized overnight cloud work, publication after gates and this
 - Initial combined native suite ended with two process-level failures after 33 assertions/tests passed; separate scoped runs and CI are used to identify the actual result rather than relabel the failures.
 - Separate scoped native runs passed: task11 7/7 (22.7s), task19 9/9 (12.5s).
 - Exact head, CI result, sanitized JSON evidence, failures and unrun checks are to be recorded in the PR after execution.
+
+## First CI evidence and test correction
+
+Run `42519969988` passed both native suites (7 + 9), matched 25 live asset hashes, and passed task11's five families, answer feedback, hint/model, typed note/drawings, nonwriter protection, both control directions and both automatic reconnects. It stopped at task11 reload because the test captured the last stroke from the optimistic writer, whose `createdAt` differs from the server timestamp. The corrected test captures the observer's acknowledged server pages, like the established task25 test, and still requires exact complete pages including timestamps after reload. No production failure is inferred from that test-fixture difference. Task19 live was not reached in that run.

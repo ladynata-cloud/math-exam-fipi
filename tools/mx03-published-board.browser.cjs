@@ -211,7 +211,11 @@ async function run() {
     await control(teacher,pupil,false); pass(TRAINER+' teacher regains control');
     await reconnect(pupil,teacher);
     phase=TRAINER+' reload';
-    const expectedNative=await native(teacher), expectedPages=(await board(teacher)).pages;
+    // The last stroke was written by teacher; pupil has its authoritative
+    // server acknowledgement (createdAt is assigned by the server). Keep the
+    // exact timestamp in reload assertions rather than an optimistic writer copy.
+    await sameBoard(teacher,pupil);
+    const expectedNative=await native(pupil), expectedPages=(await board(pupil)).pages;
     for(const target of [teacher,pupil]) {
       await target.page.reload({waitUntil:'domcontentloaded'}); await connected(target);
       await target.frame.waitForFunction(value=>JSON.stringify(getBoardTrainerState())===JSON.stringify(value),expectedNative);
