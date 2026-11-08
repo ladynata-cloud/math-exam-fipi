@@ -1,0 +1,83 @@
+name: Linear learning pilot
+on:
+  pull_request:
+    paths:
+      - 'equations/**'
+      - 'trainers/oge-course/index.html'
+      - 'tools/equations/linear-pilot*'
+      - '.github/workflows/linear-learning-pilot.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'equations/**'
+      - 'trainers/oge-course/index.html'
+      - 'tools/equations/linear-pilot*'
+      - '.github/workflows/linear-learning-pilot.yml'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Run against checked-out source or published production
+        type: choice
+        options: [local, production]
+        default: local
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+      - run: node --test tools/equations/linear-pilot.test.cjs
+      - run: npx playwright install --with-deps chromium
+      - name: Local Chromium learning journeys
+        run: node tools/equations/linear-pilot.browser.cjs
+      - name: Wait for exact published pilot and course resources
+        if: github.event_name == 'push' || inputs.target == 'production'
+        run: |
+          mv artifacts/linear-pilot artifacts/linear-pilot-local
+          node <<'NODE'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const files=['equations/linear-pilot/index.html','equations/linear-pilot/app.js','equations/linear-pilot/store.js','equations/linear-pilot/data.js','equations/linear-pilot/style.css','equations/index.html','equations/app.js','equations/data.js','equations/algebra.js','equations/style.css','trainers/oge-course/index.html'];
+          const expected=new Map(files.map(file=>[file,fs.readFileSync(file)]));
+          (async()=>{
+            let failures=[];
+            for(let attempt=0;attempt<30;attempt++){
+              failures=(await Promise.all(files.map(async file=>{
+                try{
+                  const response=await fetch('https://mathexam.space/'+file+'?pilot-release='+process.env.GITHUB_SHA+'&attempt='+attempt,{signal:AbortSignal.timeout(8000),cache:'no-store'});
+                  const body=Buffer.from(await response.arrayBuffer());
+                  return response.ok&&body.equals(expected.get(file))?null:file;
+                }catch{return file;}
+              }))).filter(Boolean);
+              if(!failures.length){
+                console.log('LINEAR_PILOT_LIVE_BYTES_OK',process.env.GITHUB_SHA,files.length);
+                for(const file of files)console.log(crypto.createHash('sha256').update(expected.get(file)).digest('hex'),file);
+                return;
+              }
+              console.log('Waiting for deployment',attempt+1,failures.join(', '));
+              await new Promise(resolve=>setTimeout(resolve,10000));
+            }
+            throw Error('Published resources do not match release: '+failures.join(', '));
+          })().catch(error=>{console.error(error);process.exitCode=1;});
+          NODE
+      - name: Actual production entrance, gap return and full learning journey
+        if: github.event_name == 'push' || inputs.target == 'production'
+        run: node tools/equations/linear-pilot.browser.cjs
+        env:
+          PILOT_BASE_URL: https://mathexam.space
+      - name: Browser screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linear-pilot-screenshots
+          path: |
+            artifacts/linear-pilot/
+            artifacts/linear-pilot-local/
+          if-no-files-found: warn
