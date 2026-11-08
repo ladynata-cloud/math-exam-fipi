@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+  "baseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
-      "beforeSha256": "08eb1ec9be45e9801c79be8ca87b040adb4ee9dff636319ec237f56c0f00ae10",
-      "afterSha256": "bfc5847772ffa83bf101b0eb2b4de9d702aa1764a960111a38438c9a099bf873",
+      "beforeSha256": "e881d3c743a3e4fa0c5720e30d1f9a9cbfc05404987f086f87a4e69c3ca6bff0",
+      "afterSha256": "49808bbd235101066bb8e2aa8e1d5c03c8b508df72bdfc465b4118d6abcac7d2",
       "placement": "before-head-close"
     },
     "trainers/task14-progressions-trainer.html": {
@@ -3877,6 +3877,33 @@
       "task": "docs/tasks/VPR_INTERACTIVE_COURSES_2027.md",
       "changedPaths": [
         "rounding.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+      "sourceBaseSha": "58f7ed895de259071eeba48b7947f3b187faa93a",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "58f7ed895de259071eeba48b7947f3b187faa93a",
+      "sourceBaseSha": "de1b8e06d015ade17e3acb8a9cd2116d79e3bddb",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "de1b8e06d015ade17e3acb8a9cd2116d79e3bddb",
+      "sourceBaseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
