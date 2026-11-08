@@ -1,0 +1,41 @@
+name: Linear learning pilot
+on:
+  pull_request:
+    paths:
+      - 'equations/**'
+      - 'trainers/oge-course/index.html'
+      - 'tools/equations/linear-pilot*'
+      - '.github/workflows/linear-learning-pilot.yml'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Run against checked-out source or published production
+        type: choice
+        options: [local, production]
+        default: local
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+      - run: node --test tools/equations/linear-pilot.test.cjs
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/equations/linear-pilot.browser.cjs
+        env:
+          PILOT_BASE_URL: ${{ inputs.target == 'production' && 'https://mathexam.space' || '' }}
+      - name: Browser screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linear-pilot-screenshots
+          path: artifacts/linear-pilot
+          if-no-files-found: warn
