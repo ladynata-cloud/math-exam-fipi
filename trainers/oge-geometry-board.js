@@ -84,6 +84,12 @@
   const params = new WeakMap(), descriptors = new WeakMap();
   const originalBuild = build;
   const originalGenerators = Object.fromEntries(ids.map(key=>[key,types[key].gen]));
+  // Managed conditions use the server's original seeded stream, including
+  // recursive retries through this.gen(). Keep legacy public room descriptors
+  // on their existing wrapped receiver so previously shared tasks do not change.
+  const generatorReceivers = root.MathExamLearning?.managed === true
+    ? Object.fromEntries(ids.map(key=>[key,Object.assign(Object.create(types[key]),{gen:originalGenerators[key]})]))
+    : types;
   function seeded(seed, fn) {
     const saved = Math.random;
     let n = seed >>> 0;
@@ -93,7 +99,7 @@
   ids.forEach(key=>{
     types[key].gen=function(){
       const seed = Math.floor(Math.random()*4294967296);
-      const p=seeded(seed,()=>originalGenerators[key].call(types[key]));
+      const p=seeded(seed,()=>originalGenerators[key].call(generatorReceivers[key]));
       params.set(p,{key,source:'generator',value:seed});return p;
     };
   });
@@ -117,7 +123,7 @@
       return archTask(a);
     }
     if(source==='prototype')return build(key,types[key].proto,page===16?{kind:'proto'}:page===17?{gen:false,srcLab:'прототип'}:{});
-    const p=seeded(value,()=>originalGenerators[key].call(types[key]));
+    const p=seeded(value,()=>originalGenerators[key].call(generatorReceivers[key]));
     params.set(p,description);
     return build(key,p,page===16?{kind:'gen'}:page===17?{gen:true,srcLab:'генератор',note:types[key].note}:{});
   }

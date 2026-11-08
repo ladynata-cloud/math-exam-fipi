@@ -9,6 +9,14 @@
   // Reviewed public destinations, not a conversation store or a model prompt.
   // Keep URLs literal: neither a query nor the current path may create a link.
   var rows = [
+    ["vpr", "ВПР по математике: выбрать класс и уровень", "/vpr/", "ВПР", ["впр", "подготовка", "проверочная работа"], {"grades": [5, 6, 7, 8, 10], "exam": "ВПР"}],
+    ["vpr-g5", "ВПР: 5 класс", "/trainers/vpr-math/index.html?route=g5", "ВПР", ["впр", "5 класс", "по шагам"], {"grades": [5], "exam": "ВПР"}],
+    ["vpr-g6", "ВПР: 6 класс", "/trainers/vpr-math/index.html?route=g6", "ВПР", ["впр", "6 класс", "по шагам"], {"grades": [6], "exam": "ВПР"}],
+    ["vpr-g7", "ВПР: 7 класс, базовый уровень", "/trainers/vpr-math/index.html?route=g7", "ВПР", ["впр", "7 класс", "базовый"], {"grades": [7], "exam": "ВПР", "examLevel": "базовый"}],
+    ["vpr-g7u", "ВПР: 7 класс, углублённый уровень", "/trainers/vpr-math/index.html?route=g7u", "ВПР", ["впр", "7 класс", "углублённый"], {"grades": [7], "exam": "ВПР", "examLevel": "углублённый"}],
+    ["vpr-g8", "ВПР: 8 класс, базовый уровень", "/trainers/vpr-math/index.html?route=g8", "ВПР", ["впр", "8 класс", "базовый"], {"grades": [8], "exam": "ВПР", "examLevel": "базовый"}],
+    ["vpr-g8u", "ВПР: 8 класс, углублённый уровень", "/trainers/vpr-math/index.html?route=g8u", "ВПР", ["впр", "8 класс", "углублённый"], {"grades": [8], "exam": "ВПР", "examLevel": "углублённый"}],
+    ["vpr-g10", "ВПР: 10 класс", "/trainers/vpr-math/index.html?route=g10", "ВПР", ["впр", "10 класс", "по шагам"], {"grades": [10], "exam": "ВПР"}],
     ["ege-base-reference", "Справочные материалы базового ЕГЭ", "/ege-baza/reference/exam.html", "ЕГЭ", ["справочник", "справочные листы", "формулы", "булавки", "закрепить лист", "вспомнить формулу"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-map", "Базовый ЕГЭ: карта курса", "/ege-baza/#map", "ЕГЭ", ["карта курса", "маршрут", "план подготовки", "все темы"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
     ["ege-base-foundation", "Базовый ЕГЭ: вспомнить основу", "/ege-baza/#foundation", "ЕГЭ", ["основы", "повторение", "пробелы", "с нуля"], {"grades": [10, 11], "exam": "ЕГЭ", "examLevel": "базовый"}],
@@ -619,6 +627,30 @@
     return null;
   }
 
+  function vprRequested(text) {
+    var positive = text.replace(/(?:^|[^а-я])(?:(?:не\s+(?:(?:к|для)\s+)?|без\s+|не\s+(?:хочу|хотим|нужен|нужна|нужно|нужны|готовлюсь|готовимся)\s+(?:готовиться\s+)?(?:(?:к|для)\s+)?)впр|впр\s+(?:мне\s+)?(?:пока\s+)?не\s+(?:нуж[а-я]*|интересу[а-я]*|сдаю))/g, ' ');
+    return /(?:^|[^а-я])впр(?:$|[^а-я])|всероссийск[а-я]*\s+проверочн[а-я]*\s+работ/.test(positive);
+  }
+  function vprDestination(text, state) {
+    var grade = classNumber(text);
+    var shorthand = /(?:^|[^а-я])впр\s*(?:по математике\s*)?[:,·-]?\s*(5|6|7|8|10)(?!\d)/.exec(text);
+    if (grade === null && shorthand) grade = Number(shorthand[1]);
+    var single = {5:'vpr-g5',6:'vpr-g6',10:'vpr-g10'};
+    if (Object.hasOwn(single, grade)) return result('vpr', 'Откройте курс подготовки к ВПР: короткая теория, примеры, проверка шагов и самостоятельная практика. Прогресс сохраняется в этом браузере.', [single[grade], 'vpr'], state);
+    if (grade === 7 || grade === 8) {
+      var options = grade === 7 ? ['vpr-g7','vpr-g7u'] : ['vpr-g8','vpr-g8u'];
+      var withoutAdvanced = /(?:^|[^а-я])(?:не|без)\s+углубл[а-я]*/.test(text);
+      var withoutBasic = /(?:^|[^а-я])(?:не|без)\s+(?:базов|обычн|стандартн)[а-я]*/.test(text);
+      var positiveLevel = text.replace(/(?:^|[^а-я])(?:не|без)\s+(?:углубл|базов|обычн|стандартн)[а-я]*(?:\s+уров[а-я]*)?/g, ' ');
+      var advanced = /углуб/.test(positiveLevel) || (withoutBasic && !withoutAdvanced);
+      var basic = /базов|обычн|стандартн/.test(positiveLevel) || (withoutAdvanced && !withoutBasic);
+      if (advanced && !basic && !withoutAdvanced) return result('vpr', 'Откройте углублённый маршрут: общие темы и дополнительные задачи на преобразования и рассуждение. Прогресс сохраняется в этом браузере.', [options[1], 'vpr'], state);
+      if (basic && !advanced && !withoutBasic) return result('vpr', 'Откройте базовый маршрут: объяснения, пошаговая практика и самостоятельная проверка. Прогресс сохраняется в этом браузере.', [options[0], 'vpr'], state);
+      return result('clarify', 'Для ' + grade + ' класса есть базовый и углублённый маршруты ВПР. Выберите уровень, который изучаете в школе.', options, state,
+        [choice('Базовый уровень', 'ВПР ' + grade + ' класс базовый уровень'),choice('Углублённый уровень', 'ВПР ' + grade + ' класс углублённый уровень')]);
+    }
+    return result('vpr', grade === null ? 'В подготовке к ВПР доступны семь маршрутов для 5–8 и 10 классов. Откройте каталог и выберите класс и уровень.' : 'В этом каталоге есть курсы ВПР для 5–8 и 10 классов. Отдельного маршрута для ' + grade + ' класса здесь пока нет.', ['vpr'], state);
+  }
   function respond(input) {
     input = input && typeof input === 'object' ? input : {};
     var state = stateFrom(input);
@@ -645,13 +677,14 @@
     if (/(?:родител|мам[аыеу]|пап[аыеу]|мо(?:его|ей)\s+(?:ребенк|сына|дочер))/.test(text) && /успех|результат|прогресс|успеваемост|следить|наблюдат|посмотр|продвига/.test(text) && !/петерс[ое]н|дорофеев/.test(text) && context !== 'peterson6' && context !== 'atanasyan') {
       return result('parent-progress', 'О результатах ученика и доступе для родителя можно узнать у преподавателя. Если у вас уже есть данные для входа, откройте кабинет отдельно. Не вводите здесь PIN или личную ссылку.', ['cabinet', 'contact'], state);
     }
-    var namedLearningTopic = /дроб|делен|делить|уголком|умнож|процент|уравнен|неравен|график|треугол|окружност|вектор|вероятност|геометр|таблиц|учебник|задани|задач|номер/.test(text) || hasExam(text, 'огэ') || hasExam(text, 'егэ');
+    var namedLearningTopic = /дроб|делен|делить|уголком|умнож|процент|уравнен|неравен|график|треугол|окружност|вектор|вероятност|геометр|таблиц|учебник|задани|задач|номер/.test(text) || hasExam(text, 'огэ') || hasExam(text, 'егэ') || vprRequested(text);
     if (!accessIntent(text) && !namedLearningTopic && !tutorRequested(text) && /(?:бесплатн|бесплатно|платн|стоимост|сколько стоит|без регистрац)/.test(text) && /(?:сайт|тренаж|самостоятельн|занимат|заняти|учит|урок|доступ)/.test(text) && !/(?:мини[ -]?групп|с преподавател|у наталь|индивидуальн|репетитор)/.test(text)) {
       return result('pricing', 'На сайте есть бесплатные тренажёры для самостоятельной работы. Условия и стоимость занятий с преподавателем указаны отдельно на странице занятий.', ['trainers', 'lessons'], state);
     }
     if (accessIntent(text)) {
       return result('cabinet', 'Кабинет открывается отдельно. Используйте личную ссылку или данные входа, выданные преподавателем. Если ссылка не работает или код потерян, попросите преподавателя помочь со входом. В навигатор код или пароль вводить не нужно.', ['cabinet'], state);
     }
+    if (vprRequested(text)) return vprDestination(text, state);
     var direct = !material ? directDestination(text, context, state, input.studyGoal) : null;
     if (direct) return direct;
     if (/(?:^|[^а-я])прогресс(?:$|[^а-я])|продвига[а-я]*|успеваемост|достижени|мои результаты|сохран(?:ить|ение|ено|ил|ятся)|результаты.{0,20}(?:пропал|где|посмотр)|где.{0,20}результат/.test(text)) {
@@ -896,6 +929,13 @@
     var original = shortReply(input.text);
     var changedGoal = /(?:^|\s)(?:раньше|до этого|сначала)\s.+?[,;]\s*(?:но\s+|а\s+)?(?:сейчас|теперь)\s+(.+)$/.exec(original);
     if (changedGoal) original = changedGoal[1];
+    // An explicit current VPR request selects a course after an OGE/EGE task.
+    // Leave access and privacy decisions in the normal response path.
+    if (vprRequested(normalize(original))) {
+      var vprResponse = respond(Object.assign({}, input, {text:original,studyGoal:'school'}));
+      vprResponse.dialog = {goal:'school',grade:classNumber(normalize(original)),choices:vprResponse.kind === 'clarify' ? (vprResponse.actions || []).slice(0,3) : []};
+      return vprResponse;
+    }
     // A bare number after an explicit exam goal is a task, not a new grade.
     // Naming a class still changes the goal to school in the normal path below.
     if (Object.hasOwn(goalLabels,goal) && /^\d{1,2}$/.test(original)) original = 'задание ' + original;
