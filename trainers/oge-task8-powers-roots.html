@@ -1049,7 +1049,7 @@ function buildLearn(){
 
   <div class="card" id="p3">
     <h2><span class="num">3</span>Корень из степени: показатель — пополам</h2>
-    <p>${M(rt("a<sup>n</sup>")+" = a<sup>n/2</sup>")} (при a ≥ 0). Почему? Потому что квадрат и корень — взаимно обратные: ${M(par("a<sup>3</sup>")+"<sup>2</sup> = a<sup>6</sup>")}, значит ${M(rt("a<sup>6</sup>")+" = a<sup>3</sup>")}.</p>
+    <p>${M(rt("a<sup>n</sup>")+" = a<sup>n/2</sup>")} (при a ≥ 0 и натуральном n). Почему? Потому что квадрат и корень — взаимно обратные: ${M(par("a<sup>3</sup>")+"<sup>2</sup> = a<sup>6</sup>")}, значит ${M(rt("a<sup>6</sup>")+" = a<sup>3</sup>")}.</p>
     <div class="tool"><div class="tl">проверь идею · введи показатель — увидишь результат</div>
       ${M(rt("5<sup>n</sup>"))} где n = <input class="ans" id="halfIn" style="width:70px" value="6">
       <button class="act" onclick="halfGo()">извлечь корень</button>
@@ -1066,7 +1066,7 @@ function buildLearn(){
 
   <div class="card" id="p4">
     <h2><span class="num">4</span>Корни: под один корень и обратно</h2>
-    <p>Главное свойство: ${M(rt("a")+" · "+rt("b")+" = "+rt("ab"))}. Работает в обе стороны, и с дробью тоже: ${M(fr(rt("a"),rt("b"))+" = "+rt(fr("a","b")))}.</p>
+    <p>Главное свойство: ${M(rt("a")+" · "+rt("b")+" = "+rt("ab"))} при a ≥ 0 и b ≥ 0. Работает в обе стороны. Для дроби ${M(fr(rt("a"),rt("b"))+" = "+rt(fr("a","b")))} при a ≥ 0 и b &gt; 0.</p>
     <p><b>Зачем:</b> по отдельности ${M(rt(21))} и ${M(rt(14))} — страшные бесконечные дроби. А вместе: ${M(fr(rt(21)+" · "+rt(14),rt(6))+" = "+rt(fr("21 · 14","6"))+" = "+rt(49)+" = 7")}. Некрасивое стало красивым.</p>
     <div class="tool"><div class="tl">объединялка · два корня — под один</div>
       ${M(rt('<input class="ans" id="unA" style="width:70px" value="32">'))} · ${M(rt('<input class="ans" id="unB" style="width:70px" value="2">'))}
