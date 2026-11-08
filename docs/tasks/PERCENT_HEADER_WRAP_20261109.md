@@ -62,3 +62,17 @@ No separate owner decision or external audit is pending.
 ## Execution record
 Branch and base as above. Local/CI outcomes and exact candidate hashes supplied
 in handoff; do not treat a queued browser test as passed. No scope deviation.
+
+### Composition verification
+Ordinary merge of published percent-resume main
+`2bf8214d1c391b8f53f19321122712a8a7a90cf1` produced local candidate
+`44ef8c5a039ab921807e8de811b5125b4bdffad2`. Independent comparison confirmed:
+all inline and external script tags match that main byte-for-byte; no external
+script file changed; the HTML delta is exactly the three reviewed scoped CSS
+rules and comment. The composed HTML SHA256 is
+`4df0dbea939309753f07d1abf0d10202fad0e2387c49d9e59cada17b22cf3d67`.
+All 56 tests passed: nine resume regressions plus 47 existing percent-action and
+practical-minimal tests. Browser syntax and diff checks passed. Actual Chromium
+layout, screenshot review and production verification remain pending CI/release;
+local Chromium launch failed with the environment's socket permission restriction.
+Independent focused reviewer found no source/test blocker before composition.
