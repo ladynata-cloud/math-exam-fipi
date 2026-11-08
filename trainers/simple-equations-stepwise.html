@@ -14,8 +14,10 @@
 
   const KEY = 'mathExamCourseProgress.v1';
   const TOPIC = 'simpleEquationsStepwise';
+  const RECOVERY = 'simpleEquationsStepwiseRecoveryV1';
   const operations = ['minus', 'plus', 'divide', 'multiply'];
   const recentHelpLimit = 6;
+  const historyLimit = 12;
   const buttons = { minus: 'opMinus', plus: 'opPlus', divide: 'opDivide', multiply: 'opMultiply' };
   const names = { minus: 'вычесть', plus: 'прибавить', divide: 'разделить', multiply: 'умножить' };
   const labels = {
@@ -37,16 +39,81 @@
     if (!storageAvailable) return null;
     try {
       const raw = localStorage.getItem(KEY);
+      let store;
       try {
-        const parsed = JSON.parse(raw);
-        return isRecord(parsed) ? parsed : {};
+        store = JSON.parse(raw);
       } catch {
         return {};
       }
+      if (!isRecord(store)) return {};
+      const saved = store[RECOVERY];
+      const projection = store.topics?.[TOPIC];
+      if (isRecord(saved) && JSON.stringify(projection) !== JSON.stringify(saved)) {
+        // Restore both copies for subsequent readers, including MEP1 export.
+        // A repeated read then cannot count the same write twice.
+        writeStats(store, recoverLegacyWrite(saved, projection));
+      }
+      return store;
     } catch {
       storageAvailable = false;
       return null;
     }
+  }
+
+  function writeStats(store, summary) {
+    if (!isRecord(store.topics)) store.topics = {};
+    store.topics[TOPIC] = summary;
+    // The old page replaces the topic but retains the rest of this same object.
+    store[RECOVERY] = summary;
+    try {
+      localStorage.setItem(KEY, JSON.stringify(store));
+    } catch {
+      storageAvailable = false;
+    }
+  }
+
+  function recoverLegacyWrite(saved, projection) {
+    if (!isRecord(projection) || (projection.legacyWriteEpoch ?? 1) !== saved.legacyWriteEpoch) return saved;
+    if (!Array.isArray(projection.history) || !count(projection.total)) return saved;
+
+    // Only the new prefix is attributable to the old writer. With a stale
+    // snapshot, we can establish just its latest write, even if more rows differ.
+    const sameEvidence = JSON.stringify(projection.assessmentV1) === JSON.stringify(saved.assessmentV1);
+    const maximum = sameEvidence ? count(projection.total) - count(saved.total) : 1;
+    if (maximum < 1) return saved;
+    const recovered = [];
+    for (const row of projection.history.slice(0, maximum)) {
+      if (!isRecord(row) || Object.hasOwn(row, 'kind') || typeof row.text !== 'string') break;
+      const answer = /^.+ → x = (-?\d+)\. Ваш ответ: (.+)\. (Верно|Ошибка)\.$/.exec(row.text);
+      if (!answer || String(Number(answer[2])) !== answer[2]) break;
+      const correct = Number(answer[2]) === Number(answer[1]);
+      if (correct !== (answer[3] === 'Верно')) break;
+      recovered.push({ row, correct });
+    }
+    if (!recovered.length) return saved;
+
+    const summary = readStats({ topics: { [TOPIC]: saved } });
+    const legacy = summary.assessmentV1.legacy;
+    const right = recovered.filter(result => result.correct).length;
+    summary.total += recovered.length;
+    summary.right += right;
+    legacy.total = count(legacy.total) + recovered.length;
+    legacy.right = count(legacy.right) + right;
+    if (typeof projection.date === 'string') legacy.date = projection.date;
+    addHistory(summary, recovered.map(({ row }) => ({
+      kind: 'legacy-unknown',
+      text: row.text + ' Самостоятельность неизвестна.'
+    })));
+    return summary;
+  }
+
+  function addHistory(summary, entries) {
+    let recent = 0, recovered = 0;
+    summary.history = entries.concat(summary.history).filter(row => {
+      if (Object.hasOwn(labels, row?.kind)) return recent++ < historyLimit;
+      if (row?.kind === 'legacy-unknown') return recovered++ < historyLimit;
+      return true;
+    });
   }
 
   function readStats(store) {
@@ -67,6 +134,7 @@
     }
     return {
       ...record,
+      legacyWriteEpoch: count(record.legacyWriteEpoch) || 1,
       total: count(total), right: count(right), streak: count(streak), best: count(best),
       date: date || null,
       history: Array.isArray(history) ? history : [],
@@ -88,15 +156,7 @@
     // Refresh the topic as well as its neighbours before each write.
     if (store) stats = readStats(store);
     change(stats, stats.assessmentV1);
-    if (store) {
-      if (!isRecord(store.topics)) store.topics = {};
-      store.topics[TOPIC] = stats;
-      try {
-        localStorage.setItem(KEY, JSON.stringify(store));
-      } catch {
-        storageAvailable = false;
-      }
-    }
+    if (store) writeStats(store, stats);
     renderStats();
   }
 
@@ -251,9 +311,7 @@
       const detail = kind === 'hint' ? '' :
         answer === undefined ? ' x = ' + task.x + '.' : ' Твой ответ: ' + answer + '.';
       const entry = { kind, text: task.eq + '. ' + labels[kind] + detail };
-      const recent = summary.history.filter(item => Object.hasOwn(labels, item?.kind));
-      const legacy = summary.history.filter(item => !Object.hasOwn(labels, item?.kind));
-      summary.history = [entry, ...recent.slice(0, 11), ...legacy];
+      addHistory(summary, [entry]);
     });
   }
 
@@ -358,13 +416,19 @@
   };
   el('reset').onclick = () => {
     updateStats(summary => {
-      Object.assign(summary, readStats(null));
+      Object.assign(summary, readStats(null), { legacyWriteEpoch: summary.legacyWriteEpoch + 1 });
     });
     next();
     msg('Статистика сброшена.', 'tip');
   };
   el('ans').onkeydown = event => { if (event.key === 'Enter') check(); };
   el('fb').setAttribute('role', 'status');
+  window.addEventListener('storage', event => {
+    if (event.key !== KEY) return;
+    const latest = readStore();
+    if (latest) stats = readStats(latest);
+    renderStats();
+  });
   next();
 }());
 </script>

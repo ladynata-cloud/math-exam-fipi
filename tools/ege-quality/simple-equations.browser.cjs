@@ -161,9 +161,33 @@ async function checkMastery(browser, url, offline, surface) {
         return PROGRESS_CODE.decode(await PROGRESS_CODE.encode(data));
       }),await saved(),'MEP1 transports the new record and old course data unchanged');
     }
+    const confirmed = await current();
+    const submitFromOldPage = () => page.evaluate(({key,topic,legacy}) => {
+      const latest = JSON.parse(localStorage.getItem(key));
+      latest.topics[topic] = {
+        ...legacy, total:legacy.total+1, right:legacy.right+1,
+        history:[{text:'x + 2 = 6 → x = 4. Ваш ответ: 4. Верно.'},...legacy.history].slice(0,12)
+      };
+      localStorage.setItem(key,JSON.stringify(latest));
+    },{key,topic,legacy});
+    await submitFromOldPage();
+    await page.reload();
+    assert.equal((await evidence()).independent,confirmed.assessmentV1.independent);
+    assert.equal((await evidence()).best,confirmed.assessmentV1.best);
+    assert.equal((await evidence()).legacy.total,43);
+    assert.equal((await evidence()).legacy.right,43);
+    assert.equal((await current()).history[0].kind,'legacy-unknown');
+    assert.deepEqual((await current()).history.slice(1),confirmed.history);
+    assert.deepEqual((await saved()).simpleEquationsStepwiseRecoveryV1,await current());
+    assert.equal(await id('status').innerText(),'тема освоена');
+
     await click('reset');
     assert.equal((await evidence()).independent,0);
     assert.equal((await current()).history.length,0);
+    const cleared = await saved();
+    await submitFromOldPage();
+    await page.reload();
+    assert.deepEqual(await saved(),cleared,'an old tab cannot restore records cleared by the current trainer');
     assert.deepEqual((await saved()).topics.earlier,earlier);
     assert.deepEqual((await saved())['oge-t9-uravneniya'],original['oge-t9-uravneniya']);
     report.masteryCases++;

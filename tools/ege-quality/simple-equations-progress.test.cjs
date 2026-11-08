@@ -10,6 +10,7 @@ const root = path.resolve(__dirname, '../..');
 const slug = 'simple-equations-stepwise';
 const key = 'mathExamCourseProgress.v1';
 const topic = 'simpleEquationsStepwise';
+const recoveryKey = 'simpleEquationsStepwiseRecoveryV1';
 const freeKey = 'mathExam.equationSteps.v1';
 const ops = ['opMinus', 'opPlus', 'opDivide', 'opMultiply'];
 const legacy = {
@@ -182,6 +183,80 @@ test('an already open tab cannot credit a ready answer opened in another tab', t
   assert.deepEqual(b.state().topics.neighbour,original.topics.neighbour);
 });
 
+test('stale old writers cannot erase confirmed progress or history', t => {
+  const values = new Map();
+  const store = { getItem:k => values.get(k) ?? null, setItem:(k,v) => values.set(k,v) };
+  const legacySubmit = (snapshot, answer) => {
+    const right = answer === 4;
+    snapshot.total++;
+    if (right) snapshot.right++;
+    snapshot.history.unshift({text:'x + 2 = 6 → x = 4. Ваш ответ: '+answer+'. '+(right ? 'Верно.' : 'Ошибка.')});
+    snapshot.history = snapshot.history.slice(0,12);
+    const latest = JSON.parse(store.getItem(key));
+    latest.topics[topic] = snapshot;
+    store.setItem(key,JSON.stringify(latest));
+  };
+  const staleLegacy = structuredClone(legacy);
+  const a = boot(t,files[0],{[key]:original},0,store);
+  a.submit();
+  const staleWithEvidence = a.record();
+  a.click('next');
+  a.click('hint');
+  a.click('solution');
+  const confirmed = a.record();
+
+  legacySubmit(staleLegacy,4);
+  const b = boot(t,files[0],{},0,store);
+  assert.deepEqual(b.record().history.slice(1),confirmed.history);
+  assert.equal(b.record().history[0].kind,'legacy-unknown');
+  assert.equal(b.evidence().legacy.total,43);
+  assert.equal(b.evidence().legacy.right,43);
+
+  legacySubmit(staleWithEvidence,5);
+  const c = boot(t,files[0],{},0,store);
+  assert.deepEqual(c.record().history.slice(0,2).map(row => row.kind),['legacy-unknown','legacy-unknown']);
+  assert.deepEqual(c.record().history.slice(2),confirmed.history);
+  const { legacy: unknown, ...confirmedEvidence } = c.evidence();
+  const expectedEvidence = {...confirmed.assessmentV1};
+  delete expectedEvidence.legacy;
+  assert.deepEqual(confirmedEvidence,expectedEvidence);
+  assert.equal(unknown.total,44);
+  assert.equal(unknown.right,43);
+  assert.equal(c.record().total,45);
+  assert.equal(c.record().right,44);
+  assert.deepEqual(c.state()[recoveryKey],c.record());
+  assert.deepEqual(c.state().topics.neighbour,original.topics.neighbour);
+  assert.deepEqual(c.state()['oge-t9-uravneniya'],original['oge-t9-uravneniya']);
+  assert.deepEqual(boot(t,files[0],{},0,store).state(),c.state(),'reloading does not count recovery twice');
+
+  for (let i=0;i<15;i++) {
+    legacySubmit(staleWithEvidence,4);
+    c.click('next');
+  }
+  assert.equal(c.evidence().legacy.total,59,'all distinct observed old writes reach the aggregate');
+  assert.equal(c.record().history.filter(row => row.kind === 'legacy-unknown').length,12);
+  assert.deepEqual(c.record().history.slice(12),confirmed.history,'recovered rows never displace prior history');
+
+  c.click('reset');
+  const cleared = c.state();
+  assert.equal(c.evidence().legacy.total,0);
+  assert.deepEqual(c.record().history,[]);
+  legacySubmit(staleLegacy,4);
+  assert.deepEqual(boot(t,files[0],{},0,store).state(),cleared,'untagged writer cannot undo a reset');
+  legacySubmit(staleWithEvidence,4);
+  assert.deepEqual(boot(t,files[0],{},0,store).state(),cleared,'old tagged writer cannot undo a reset');
+
+  const reopenedOldTab = structuredClone(cleared.topics[topic]);
+  legacySubmit(reopenedOldTab,4);
+  legacySubmit(reopenedOldTab,5);
+  const d = boot(t,files[0],{},0,store);
+  assert.equal(d.evidence().legacy.total,2,'a shared baseline proves both old submissions');
+  assert.equal(d.evidence().legacy.right,1);
+  assert.equal(d.evidence().independent,0);
+  assert.deepEqual(d.record().history.map(row => row.kind),['legacy-unknown','legacy-unknown']);
+  assert.deepEqual(d.state()[recoveryKey],d.record());
+});
+
 test('help cannot move a borderline accuracy across the mastery threshold', t => {
   const a = boot(t,files[0]);
   for (let i=0;i<40;i++) {
@@ -213,6 +288,7 @@ test('MEP1 carries new evidence and legacy topics, with reversible import', asyn
   a.click('retest');
   a.submit();
   const result = a.state();
+  assert.deepEqual(result[recoveryKey],result.topics[topic]);
   a.w.eval(fs.readFileSync(path.join(root,'ege-profil/progress-code.js'),'utf8'));
   const code = a.w.PROGRESS_CODE;
   const decoded = await code.decode(await code.encode(code.readLive()));
