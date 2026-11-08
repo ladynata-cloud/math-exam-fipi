@@ -122,7 +122,7 @@ function createTeachingRouter(learning) {
   }
   function report(auth, learnerId) {
     const learner = store.ownsStudent(auth, learnerId), items = catalog();
-    const attempts = store.rows("SELECT * FROM attempts WHERE learner_id=? AND trainer_id!='board' ORDER BY updated_at DESC,id", learnerId);
+    const attempts = store.rows("SELECT * FROM attempts WHERE learner_id=? AND trainer_id NOT IN ('board','spacemath') ORDER BY updated_at DESC,id", learnerId);
     const rows = attempts.map(row => {
       const taskSpec = parse(row.task_json), item = items.find(i => i.trainerId === row.trainer_id && i.contentId === taskSpec.contentId);
       const checks = store.row("SELECT COUNT(*) AS n,SUM(CASE WHEN json_extract(payload_json,'$.evaluation.correct')=0 AND trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))!='' THEN 1 ELSE 0 END) AS wrong,SUM(CASE WHEN trim(COALESCE(json_extract(payload_json,'$.details.answer'),''))='' THEN 1 ELSE 0 END) AS skipped FROM events WHERE attempt_id=? AND type='check'", row.id);
@@ -167,6 +167,7 @@ function createTeachingRouter(learning) {
     requireValue(auth.role === 'student', 'LEARNING_FORBIDDEN', 403);
     requireValue(Number.isSafeInteger(req.body.expectedVersion) && req.body.expectedVersion >= 0);
     const current = store.attemptRow(auth, req.params.id);
+    requireValue(current.trainer_id !== 'spacemath', 'LEARNING_ACTION_UNSUPPORTED');
     requireValue(current.archived_at == null, 'LEARNING_ATTEMPT_ARCHIVED', 409);
     const result = store.operation(auth, { ...req.body, operation: 'submit-work', attemptId: current.id }, () => {
       const attempt = store.attemptRow(auth, current.id);
@@ -252,7 +253,10 @@ function createTeachingRouter(learning) {
     exactKeys(req.body, ['opId', 'scope', 'value', 'reason'], ['opId', 'scope', 'reason']); const auth = req.learningAuth;
     store.ownsStudent(auth, req.params.id); const reason = text(req.body.reason, 1000);
     requireValue(['all', 'topic', 'content'].includes(req.body.scope) && reason.length > 0, 'LEARNING_RESET_INVALID');
-    const items = catalog().filter(item => req.body.scope === 'all' || (req.body.scope === 'topic' ? item.topicId === req.body.value : item.id === req.body.value));
+    // Academic resets archive exercise results, never the learner's saved
+    // construction documents, even when they share the same geometry topic.
+    const items = catalog().filter(item => !item.workspace && item.trainerId !== 'spacemath'
+      && (req.body.scope === 'all' || (req.body.scope === 'topic' ? item.topicId === req.body.value : item.id === req.body.value)));
     requireValue(items.length > 0, 'LEARNING_RESET_INVALID');
     const keys = new Set(items.map(item => item.trainerId + ':' + item.contentId));
     res.json(store.operation(auth, { ...req.body, reason, operation: 'archive-results', learnerId: req.params.id }, () => {

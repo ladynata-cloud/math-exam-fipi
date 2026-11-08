@@ -12,6 +12,7 @@ const motion = require('../trainers/motion-grade6/learning-contracts');
 const vilenkin6 = require('../courses/vilenkin-6-part-1/learning-contracts');
 const vilenkinTextbook = require('../courses/vilenkin-6-part-1/textbook-learning-contracts');
 const atanasyan = require('../geometry-course/textbook/learning-contracts');
+const spacemath = require('../trainers/spacemath/model');
 const catalog = require('../learning/catalog');
 const pathExamPool = require('../ege-baza/path/exam-pool');
 const context = vm.createContext({}, { codeGeneration: { strings: false, wasm: false } });
@@ -48,6 +49,10 @@ function list() {
 
 function create(trainerId, contentId, seed = crypto.randomInt(1, 1000000)) {
   requireValue(Number.isSafeInteger(seed) && seed >= 0 && seed <= 1000000000, 'LEARNING_TASK_INVALID');
+  if (trainerId === 'spacemath') {
+    requireValue(contentId === 'construction', 'LEARNING_TRAINER_UNKNOWN');
+    return { taskSpec: { trainerId, contentId, id: contentId, seed, contentVersion: spacemath.version }, state: spacemath.empty() };
+  }
   if (trainerId === 'oge-public') return ogePublic.create(contentId, seed);
   if (trainerId === 'vilenkin6-textbook') {
     requireValue(catalog.get('vilenkin6-textbook:' + contentId), 'LEARNING_TRAINER_UNKNOWN');
@@ -80,6 +85,11 @@ function normalize(trainerId, taskSpec, state, previousState) {
   try {
     if (trainerId === 'atanasyan-7-9') return atanasyan.normalize(taskSpec, state);
     bounded(state);
+    if (trainerId === 'spacemath') {
+      requireValue(taskSpec?.trainerId === trainerId && taskSpec.contentId === 'construction'
+        && taskSpec.contentVersion === spacemath.version, 'LEARNING_TASK_INVALID');
+      return spacemath.normalize(state);
+    }
     if (trainerId === 'oge-public') return ogePublic.normalize(taskSpec, state, previousState);
     if (trainerId === 'vilenkin6-textbook') return vilenkinTextbook.normalize(taskSpec, state, previousState);
     if (trainerId === 'vilenkin6-part1') return vilenkin6.normalize(taskSpec, state, previousState);
@@ -95,6 +105,7 @@ function normalize(trainerId, taskSpec, state, previousState) {
 
 function evaluate(trainerId, taskSpec, details, normalizedState) {
   try {
+    requireValue(trainerId !== 'spacemath', 'LEARNING_ACTION_UNSUPPORTED');
     if (trainerId === 'atanasyan-7-9') return atanasyan.evaluate(taskSpec, details, normalizedState);
     bounded(details);
     if (trainerId === 'oge-public') return ogePublic.evaluate(taskSpec, details, normalizedState);
@@ -122,6 +133,7 @@ function evaluate(trainerId, taskSpec, details, normalizedState) {
 }
 
 function describe(taskSpec) {
+  if (taskSpec.trainerId === 'spacemath') return { title: 'SpaceMath', prompt: 'Совместные построения', contentId: 'construction', steps: 0 };
   if (taskSpec.trainerId === 'oge-public') return ogePublic.describe(taskSpec);
   if (taskSpec.trainerId === 'vilenkin6-textbook') return vilenkinTextbook.describe(taskSpec);
   if (taskSpec.trainerId === 'vilenkin6-part1') return vilenkin6.describe(taskSpec);

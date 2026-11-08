@@ -158,7 +158,7 @@ class FamilyAccess {
       const profile = store.row('SELECT course,goal FROM learning_profiles WHERE learner_id=? AND teacher_id=?', child.id, parent.teacher_id);
       const runFilter = store.runGuard ? `AND NOT EXISTS(SELECT 1 FROM learning_run_attempts ra
         JOIN learning_runs r ON r.id=ra.run_id WHERE ra.attempt_id=a.id AND r.finished_at IS NULL)` : '';
-      const visible = `a.learner_id=? AND a.teacher_id=? AND a.archived_at IS NULL
+      const visible = `a.learner_id=? AND a.teacher_id=? AND a.archived_at IS NULL AND a.trainer_id!='spacemath'
         AND NOT EXISTS(SELECT 1 FROM assignments hidden WHERE hidden.attempt_id=a.id AND hidden.status!='published') ${runFilter}`;
       const titles = new Map((store.contracts.list?.() || []).map(item => [JSON.stringify([item.trainerId, item.contentId]), item.title]));
       const progress = { totalAttempts: 0, startedAttempts: 0, completedAttempts: 0, independentAttempts: 0,

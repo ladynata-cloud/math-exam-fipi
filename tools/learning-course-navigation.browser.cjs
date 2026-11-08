@@ -127,7 +127,9 @@ async function navigate(page, route) {
     const teacherPage = await login(teacher.login);
     await navigate(teacherPage, 'course');
     assert.equal(await teacherPage.locator('#catalog-grid').getAttribute('data-course-scope'), 'all');
-    assert.equal(await teacherPage.locator('[data-content]').count(), catalog.items.length);
+    assert.deepEqual(await teacherPage.locator('[data-content]').evaluateAll(nodes => nodes.map(node => node.dataset.content).sort()), catalog.items.filter(item => !item.workspace).map(item => item.id).sort());
+    assert.equal(await teacherPage.locator('[data-content="spacemath:construction"]').count(), 0);
+    assert.equal(await teacherPage.locator('[data-nav=spacemath]').getAttribute('href'), '#spacemath');
     assert.equal(await teacherPage.getByRole('link', { name: 'Маршрут 7 класса и повторение основ →' }).getAttribute('href'), '/grade7/');
     await teacherPage.locator('[data-course-mode=exam]').click();
     assert.equal(await teacherPage.locator('.catalog-group').count(), 21);

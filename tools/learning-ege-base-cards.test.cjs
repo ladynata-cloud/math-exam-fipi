@@ -122,7 +122,13 @@ test('actual pupil home, course and route use latest course URLs and retain prio
       assert.equal(f.main.querySelector('a[href="#attempt=peer-work"]'),null);
       assert(f.calls.every(call=>call.method==='GET'));
       assert.equal(f.profile.focus,focus);assert.equal(f.profile.version,1);
-      assert.equal(f.attempts.length,2);assert.equal(catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook' && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length,382);
+      assert.equal(f.attempts.length,2);
+      // The academic baseline is unchanged; SpaceMath is one named workspace.
+      assert.equal(catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook' && item.id!=='spacemath:construction'
+        && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length,382);
+      assert.deepEqual(catalog.items.filter(item=>item.workspace||item.trainerId==='spacemath')
+        .map(({id,trainerId,contentId,contentVersion,workspace,url})=>({id,trainerId,contentId,contentVersion,workspace,url})),
+      [{id:'spacemath:construction',trainerId:'spacemath',contentId:'construction',contentVersion:1,workspace:true,url:'/trainers/spacemath/'}]);
     }finally{f.dom.window.close();}
   }
 });
