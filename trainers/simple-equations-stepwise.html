@@ -22,6 +22,7 @@
     independent: 'Верно самостоятельно.',
     recheck: 'Верно самостоятельно на повторной проверке.',
     guided: 'Верно с помощью.',
+    hint: 'Открыта подсказка.',
     solution: 'Открыто готовое решение.',
     'wrong-action': 'Ошибка в выборе действия.',
     'wrong-answer': 'Ошибка в числовом ответе.'
@@ -29,7 +30,7 @@
   const el = id => document.getElementById(id);
   const isRecord = value => value !== null && typeof value === 'object' && !Array.isArray(value);
   const count = value => Number.isSafeInteger(value) && value >= 0 ? value : 0;
-  let level = 'easy', task, chosen, result, helped, wrongAction, retest;
+  let level = 'easy', task, chosen, result, helped, hintShown, wrongAction, retest;
   let storageAvailable = true;
 
   function readStore() {
@@ -71,7 +72,8 @@
       history: Array.isArray(history) ? history : [],
       assessmentV1: {
         independent: count(assessment.independent), independentErrors: count(assessment.independentErrors),
-        guided: count(assessment.guided), revealed: count(assessment.revealed), errors: count(assessment.errors),
+        guided: count(assessment.guided), hints: count(assessment.hints),
+        revealed: count(assessment.revealed), errors: count(assessment.errors),
         streak: count(assessment.streak), best: count(assessment.best), rechecks: count(assessment.rechecks), pending,
         legacy: isRecord(assessment.legacy) ? assessment.legacy :
           { total: count(total), right: count(right), streak: count(streak), best: count(best), date: date || null }
@@ -176,7 +178,7 @@
     }
     task = makeTask(op);
     chosen = result = null;
-    helped = wrongAction = false;
+    helped = hintShown = wrongAction = false;
     el('easy').classList.toggle('active', level === 'easy');
     el('med').classList.toggle('active', level === 'med');
     clearOps();
@@ -227,6 +229,7 @@
       } else {
         evidence.streak = 0;
         if (kind === 'guided') evidence.guided++;
+        if (kind === 'hint') evidence.hints++;
         if (kind === 'solution') evidence.revealed++;
         if (error) {
           evidence.errors++;
@@ -245,8 +248,8 @@
       summary.best = Math.max(summary.best, evidence.best);
       summary.date = new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
 
-      if (kind === 'hint') return;
-      const detail = answer === undefined ? ' x = ' + task.x + '.' : ' Твой ответ: ' + answer + '.';
+      const detail = kind === 'hint' ? '' :
+        answer === undefined ? ' x = ' + task.x + '.' : ' Твой ответ: ' + answer + '.';
       const entry = { kind, text: task.eq + '. ' + labels[kind] + detail };
       const recent = summary.history.filter(item => Object.hasOwn(labels, item?.kind));
       const legacy = summary.history.filter(item => !Object.hasOwn(labels, item?.kind));
@@ -283,7 +286,10 @@
 
   function hint() {
     if (result) return;
-    if (!helped) record('hint');
+    if (!hintShown) {
+      record('hint');
+      hintShown = true;
+    }
     helped = true;
     msg(explain(), 'tip');
   }
@@ -322,7 +328,7 @@
     el('status').textContent = title;
     el('advice').textContent = advice;
     el('assistanceStats').textContent = 'Верно с помощью: ' + evidence.guided +
-      ' · Открыто решений: ' + evidence.revealed + ' · Ошибки: ' + evidence.errors +
+      ' · Открыто подсказок: ' + evidence.hints + ' · Открыто решений: ' + evidence.revealed + ' · Ошибки: ' + evidence.errors +
       ' · Повторно проверено: ' + evidence.rechecks;
     el('retest').hidden = !pending;
     el('retestCount').textContent = pending ? 'Типов и уровней к повторной проверке: ' + pending : '';

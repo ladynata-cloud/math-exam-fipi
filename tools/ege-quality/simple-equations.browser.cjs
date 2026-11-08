@@ -73,6 +73,10 @@ async function checkMastery(browser, url, offline, surface) {
 
     await click('hint');
     const hinted = await saved();
+    assert.equal((await evidence()).hints,1);
+    assert.equal((await evidence()).independent,0);
+    assert.equal((await current()).history[0].kind,'hint');
+    assert.match(await id('assistanceStats').innerText(),/Открыто подсказок: 1/);
     await click('hint');
     assert.deepEqual(await saved(),hinted,'repeat hint does not write');
     await answer(0,true);
@@ -94,7 +98,8 @@ async function checkMastery(browser, url, offline, surface) {
     assert.deepEqual(await saved(),shown,'autofill, confirmation and repeated clicks award nothing');
     assert.equal((await evidence()).revealed,1);
     assert.equal((await current()).right,43);
-    assert.equal((await current()).history[0].kind,'solution');
+    assert.equal((await evidence()).hints,2);
+    assert.deepEqual((await current()).history.slice(0,2).map(item => item.kind),['solution','hint']);
     assert.deepEqual((await current()).history.slice(-12),legacy.history);
     assert.deepEqual((await current()).assessmentV1.legacy,
       {total:42,right:42,streak:42,best:42,date:'07.11'});
@@ -102,6 +107,7 @@ async function checkMastery(browser, url, offline, surface) {
 
     await page.reload();
     assert.deepEqual(await saved(),shown);
+    assert.match(await id('assistanceStats').innerText(),/Открыто подсказок: 2 · Открыто решений: 1/);
     assert.equal(Object.keys((await evidence()).pending).length,2);
     await click('retest');
     assert.deepEqual(await task().then(([op,root]) => [op,root !== 1]),['minus',true]);

@@ -71,12 +71,21 @@ for (const file of files) {
         a.click('check');
         assert.deepEqual(a.state(),original,'unselected and blank checks do not save');
         a.click('hint');
+        const hinted = a.state();
+        assert.equal(a.evidence().hints,1);
+        assert.equal(a.evidence().independent,0);
+        assert.equal(a.record().history[0].kind,'hint');
+        assert.match(a.record().history[0].text,/Открыта подсказка\.$/);
+        a.click('hint');
+        assert.deepEqual(a.state(),hinted,'a repeated hint does not add a second event');
         a.submit(1);
         assert.equal(a.evidence().errors,1);
         assert.equal(a.evidence().independentErrors,0);
         a.click('solution');
         const before = a.state();
         assert.equal(a.evidence().revealed,1);
+        assert.deepEqual(a.record().history.slice(0,3).map(item => item.kind),
+          ['solution','wrong-answer','hint']);
         assert.equal(a.record().right,42);
         assert(a.id('ans').disabled);
         assert.equal(a.id('ans').value,String(answer));
@@ -85,6 +94,8 @@ for (const file of files) {
         a.click('hint');
         assert.deepEqual(a.state(),before);
         const b = boot(t,file,{[key]:before,[freeKey]:{keep:true}},type);
+        assert.equal(b.evidence().hints,1);
+        assert.equal(b.evidence().revealed,1);
         b.click('retest');
         const [newType,newAnswer] = b.equation();
         assert.equal(newType,type);
@@ -119,6 +130,10 @@ test('errors, guided success, repeated help, and attainment thresholds stay sepa
   assert.equal(a.id('status').textContent,'тема начата');
   a.click('opPlus');
   a.click('opDivide');
+  assert.equal(a.evidence().hints,0,'wrong-action feedback is not a requested hint');
+  a.click('hint');
+  assert.equal(a.evidence().hints,1,'explicit hint is recorded after a wrong action');
+  assert.deepEqual(a.record().history.slice(0,2).map(item => item.kind),['hint','wrong-action']);
   a.submit();
   assert.equal(a.evidence().independentErrors,1);
   assert.equal(a.evidence().guided,1);
@@ -148,6 +163,7 @@ test('errors, guided success, repeated help, and attainment thresholds stay sepa
   a.click('reset');
   assert.equal(a.record().history.length,0);
   assert.equal(a.evidence().independent,0);
+  assert.equal(a.evidence().hints,0);
   assert.deepEqual(a.state().topics.neighbour,original.topics.neighbour);
   assert.deepEqual(a.state()['oge-t9-uravneniya'],original['oge-t9-uravneniya']);
 });
