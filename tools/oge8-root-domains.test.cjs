@@ -3,6 +3,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { restoreRootTeaching } = require('./oge8-root-domains-preservation.cjs');
 
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task8-powers-roots.html'), 'utf8');
 const learn = source.slice(source.indexOf('function buildLearn(){'), source.indexOf('/* --- лесенка --- */'));
@@ -22,4 +23,12 @@ test('the conditions exclude real-domain counterexamples and allow boundary case
   for (const a of [0, 1, 4, 9]) for (const n of [1, 2, 3, 4]) {
     assert.equal(Math.sqrt(a ** n), a ** (n / 2));
   }
+});
+
+test('historical normalization rejects missing, duplicate and altered reviewed fragments', () => {
+  const fragment = '(при a ≥ 0 и натуральном n). Почему?';
+  assert.doesNotThrow(() => restoreRootTeaching(learn));
+  assert.throws(() => restoreRootTeaching(learn.replace(fragment, '')), /fragment/);
+  assert.throws(() => restoreRootTeaching(learn + fragment), /fragment/);
+  assert.throws(() => restoreRootTeaching(learn.replace('b &gt; 0', 'b ≥ 0')), /fragment/);
 });
