@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
+  "baseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "655f6982340cbf720351ac2fe47fb1bb5d0449c6b94b6d277c839069e4118d8d",
-      "afterSha256": "3f5a6a0b8962d13929f0afbc1227f0167da238c8eb477b8cca4c4b4a9c695e32",
+      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
+      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3904,6 +3904,15 @@
       "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
       "changedPaths": [
         "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
+      "sourceBaseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+      "task": "docs/tasks/OGE8_ROOT_DOMAINS_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
