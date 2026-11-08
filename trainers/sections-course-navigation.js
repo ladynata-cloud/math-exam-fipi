@@ -54,7 +54,6 @@
     const status = element('p', { class: 'sections-course-status', role: 'status', 'data-sections-course-status': '', hidden: '' });
     const course = element('iframe', {
       id: 'sectionsCourseFrame', title: 'Курс «Сечения с нуля»',
-      sandbox: 'allow-scripts allow-same-origin allow-forms allow-downloads',
       referrerpolicy: 'no-referrer'
     });
     course.inert = true;
@@ -131,6 +130,10 @@
         course.inert = true;
         course.setAttribute('aria-busy', 'true');
         announce('Курс загружается…');
+        // The inert initial about:blank needs no permissions. Apply the same
+        // restrictions before navigating, avoiding a needless browser warning
+        // on every unrelated board load.
+        course.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-downloads');
         course.src = COURSE + '#' + encodeURIComponent(id);
       }
       if (!panel.open) panel.showModal();

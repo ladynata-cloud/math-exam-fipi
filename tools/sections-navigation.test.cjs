@@ -28,8 +28,11 @@ function fixture(t, allowed = true) {
   });
   const toggle = d.querySelector('#sectionsCourseToggle'), panel = d.querySelector('#sectionsCoursePanel');
   const course = d.querySelector('#sectionsCourseFrame');
+  assert.equal(course.getAttribute('sandbox'), null, 'the unused inert blank frame has no sandbox warning');
+  assert.equal(course.inert, true);
   function loadCourse() {
     toggle.click();
+    assert.equal(course.getAttribute('sandbox'), 'allow-scripts allow-same-origin allow-forms allow-downloads', 'sandbox restrictions are set before course navigation');
     assert.equal(course.inert, true, 'the first course button cannot navigate before its return handler is installed');
     const view = course.contentWindow;
     let selected = decodeURIComponent(new URL(view.location.href).hash.slice(1));

@@ -571,8 +571,12 @@ async function run() {
     await t.mouse.move(inkBox.x + inkBox.width * .5, inkBox.y + inkBox.height * .5, { steps: 5 });
     await t.mouse.up();
     await reloadedBoard.waitForFunction(() => state.pages[state.current].strokes.length > 0);
-    const sharedInk = await reloadedBoard.evaluate(() => JSON.stringify(state.pages[state.current].strokes));
-    await s.waitForFunction(expected => JSON.stringify(state.pages[state.current].strokes) === expected, sharedInk);
+    // The server assigns its own createdAt to each stroke. Compare every
+    // other field, including points, object ID, author and layer, as in the
+    // existing real shared-writing gate; do not compare client/server clocks.
+    const sharedInk = await reloadedBoard.evaluate(() => JSON.stringify(state.pages[state.current].strokes.map(({ createdAt, ...stroke }) => stroke)));
+    await s.waitForFunction(expected => JSON.stringify(state.pages[state.current].strokes.map(({ createdAt, ...stroke }) => stroke)) === expected, sharedInk);
+    assert.equal(await s.evaluate(() => state.pages[state.current].strokes.every(stroke => Number.isFinite(Date.parse(stroke.createdAt)))), true, 'the observer receives server-dated strokes');
     const hostDocument = await reloadedBoard.evaluate(() => performance.timeOrigin);
     const trainerDocument = await teacherFrame.evaluate(() => performance.timeOrigin);
     const roomBeforeCourse = reloadedBoard.url();
