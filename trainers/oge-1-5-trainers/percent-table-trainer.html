@@ -451,6 +451,11 @@
     .skill-row{grid-template-columns:1fr auto}
     .skill-bar{grid-column:1/-1;grid-row:2}
   }
+  /* Keep the folded mode menu inside the percent header at every width. */
+  body[data-practical-page="percent-table"].pm-minimal .topbar-inner{flex-wrap:wrap}
+  body[data-practical-page="percent-table"].pm-minimal .nav-scroll{flex:1 1 480px;min-width:0;max-width:100%;overflow:visible}
+  body[data-practical-page="percent-table"].pm-minimal .main-nav{min-width:0;width:100%;flex-wrap:wrap}
+  body[data-practical-page="percent-table"].pm-minimal .hint-stack{grid-template-columns:minmax(0,1fr)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
