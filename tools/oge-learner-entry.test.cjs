@@ -1,12 +1,13 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{execFileSync}=require('node:child_process'),{JSDOM}=require('jsdom');
+const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
-// PR468 / SIMPLE_EQUATIONS_CHECK_CURRENT: the reviewed choose() correction has
-// its own immutable engine source. Original navigation metrics and controls,
-// and the engines of every other page, still use the published baseline above.
-const engineSources={'trainers/simple-equations-stepwise.html':'76b7957fc919aa9e66f5b663eeaa436d23ef979d'};
+// This task updates the simple-equations engine and adds a recheck control.
+// Bind both to the exact task source. Other pages and link metrics still
+// compare against the published baseline above.
+const taskSources={'trainers/simple-equations-stepwise.html':'2dbf617f7785c0f25d3979a776164a47e1da249b'};
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 let links=0,beforeDirect=0,beforeHome=0;
@@ -26,11 +27,19 @@ for(const p of routes.pages){
   assert(d.querySelector('link[href^="/assets/oge-wayfinding.css"]'));
   // Adding navigation must not alter the actual exercise, saved-work keys or controls.
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
-  const reviewed=engineSources[p]?parse(execFileSync('git',['show',engineSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
-  assert.deepEqual(scripts(d),scripts(reviewed?reviewed.window.document:od),p+' inline engines preserved');
-  if(reviewed)reviewed.window.close();
+  const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
+  const baseline=taskSource?taskSource.window.document:od;
+  const actualScripts=scripts(d);
+  if(p==='trainers/oge-task8-powers-roots.html'){
+    const matches=actualScripts.filter(script=>script.includes('(при a ≥ 0 и натуральном n). Почему?'));
+    assert.equal(matches.length,1,p+' reviewed teaching script');
+    const index=actualScripts.indexOf(matches[0]);
+    actualScripts[index]=restoreRootTeaching(matches[0]);
+  }
+  assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   const controls=doc=>[...doc.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d),controls(od),p+' controls preserved');
+  assert.deepEqual(controls(d),controls(baseline),p+' controls preserved');
+  if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();
 }

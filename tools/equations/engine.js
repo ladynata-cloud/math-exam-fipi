@@ -11,6 +11,7 @@ function times(u,v){if(!iszero(u.a)&&!iszero(v.a))throw Error('Произвед�
 function over(u,v){if(!iszero(v.a))throw Error('Деление на выражение с x пока не поддерживается: могут измениться допустимые значения.');if(iszero(v.b))throw Error('Деление на ноль недопустимо.');return lin(div(u.a,v.b),div(u.b,v.b));}
 function parse(s){
  if(typeof s!=='string'||s.length>160)throw Error('Запись слишком длинная.');
+ if(/\d\s+\d/.test(s))throw Error('Между цифрами нужен знак действия: например, 1 + 2.');
  s=s.replace(/[−–—]/g,'-').replace(/[×·]/g,'*').replace(/:/g,'/').replace(/х/gi,'x').replace(/,/g,'.').replace(/\s/g,'').toLowerCase();
  if(!s||/[^\dx.+\-*/()=]/.test(s))throw Error('Используй числа, x, знаки + − * / и скобки.');
  const tokens=s.match(/(?:\d+(?:\.\d+)?|\.\d+)|[x+\-*/()=]/g)||[];if(tokens.join('')!==s||tokens.length>120)throw Error('Проверь запись числа или знаки.');let i=0,depth=0;

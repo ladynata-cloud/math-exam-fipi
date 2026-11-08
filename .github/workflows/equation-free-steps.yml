@@ -7,6 +7,13 @@ on:
       - 'downloads/trainers/simple-equations-stepwise/**'
       - 'tools/equations/**'
       - '.github/workflows/equation-free-steps.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/simple-equations-stepwise.html'
+      - 'downloads/trainers/simple-equations-stepwise/**'
+      - 'tools/equations/**'
+      - '.github/workflows/equation-free-steps.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,3 +40,14 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Browser layouts, restoration, embedded frame and offline copy
         run: node tools/equations/browser.test.cjs
+      - name: Published free-step learning journey
+        if: github.event_name == 'push'
+        run: node tools/equations/browser.test.cjs --production
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: equation-free-steps-browser
+          path: artifacts/equation-free-steps/
+          if-no-files-found: warn
+          retention-days: 14

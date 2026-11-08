@@ -32,3 +32,36 @@ Risk: headless Chromium checks do not establish all device/browser compatibility
 ## Status
 
 Draft only. Resolve the two existing preservation-gate failures, test the real shared board, obtain independent review and fulfill NEW_ARCHETYPE requirements before considering publication. Follow the owner's explicit merge/deployment hold.
+
+## Resumed authorized implementation — 9 November 2026
+
+This section supersedes the earlier draft-only permission/status above. The owner
+explicitly requested completing this PR first during the overnight implementation,
+preserving #484, repairing the real failing gates, and publishing only after
+checks. Standing `docs/OWNER_RELEASE_AUTHORIZATION.md` and the current direct
+START authorize history-preserving updates, commit/push, PR readiness, controlled
+merge and verification. No further publication confirmation is pending.
+
+- Base for resumed work: `1f49566c5411767b67062a3bf172f1dd719e63ed`.
+- Existing branch/PR: `draft/equation-free-steps-20261108`, #483.
+- Review: NEW_ARCHETYPE; scoped accepted decision in ADR 0013.
+- Concurrent main delta: #484 only, explicitly authorized by owner; must preserve
+  its whole beginner engine, assistance classification and migration protections.
+- Virtual merge: conflicts in public HTML, standalone HTML and ZIP. Resolve by
+  composing the new free mode with #484 rather than choosing an old whole file.
+- In scope: free-step correctness, concurrent record preservation, unfinished
+  task continuation, explanation/help distinction, corresponding regressions,
+  exact source bindings and downloadable artifacts.
+- Excluded: server/board protocol changes, real pupil data or assignments.
+
+Acceptance requires preserving all #484 regression cases; no stale-tab deletion
+of submitted steps; unfinished task resumption; unambiguous typed numbers;
+truthful help/explanation labels; working keyboard and 320/390/768/1280 layouts;
+offline copy parity; independent review of the ready source; actual CI and live
+resource verification. External provider audit and real learner pilot are not
+performed and are not claimed. Shared-board acceptance belongs to MX-03, not to
+this unregistered trainer.
+
+Rollback is a follow-up revert of this bounded runtime plus matching downloads;
+it must not erase local attempt records. Exact head/test/release evidence is
+recorded in the PR and the final run report after execution.
