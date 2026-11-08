@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "8d73ca92b41e3cef1985116a20477e56117372d1",
+  "baseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2448,8 +2448,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/percent-table-trainer.html": {
-      "beforeSha256": "29f170bf5f1cb19340bbe58c38b1556aa35ec9190ca887a0f5ad66d6b6aa2f3c",
-      "afterSha256": "4df0dbea939309753f07d1abf0d10202fad0e2387c49d9e59cada17b22cf3d67",
+      "beforeSha256": "907560506879ff0044c24c5325c242683c9c545c91056c7d69ca0d183894d18b",
+      "afterSha256": "0cd5ef7d913047069ad84c4e45ad8720626214099186d39e29ac39c192fd0ef4",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-apartments.html": {
@@ -3947,6 +3947,15 @@
     {
       "previousBaseSha": "e258e438cd30e396c7741741384911f0a424581d",
       "sourceBaseSha": "8d73ca92b41e3cef1985116a20477e56117372d1",
+      "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8d73ca92b41e3cef1985116a20477e56117372d1",
+      "sourceBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
       "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
       "changedPaths": [
         "trainers/oge-1-5-trainers/percent-table-trainer.html"
