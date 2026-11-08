@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // This task updates the simple-equations engine and adds a recheck control.
 // Bind both to the exact task source. Other pages and link metrics still
 // compare against the published baseline above.
-const taskSources={'trainers/simple-equations-stepwise.html':'2dbf617f7785c0f25d3979a776164a47e1da249b'};
+const taskSources={'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a'};
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 let links=0,beforeDirect=0,beforeHome=0;

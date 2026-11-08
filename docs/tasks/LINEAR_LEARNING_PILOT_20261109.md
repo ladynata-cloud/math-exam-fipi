@@ -65,3 +65,19 @@ Synchronous disclosure capture before grading, finishing, stage navigation and p
 ## Base composition
 
 Authoritative fetched main advanced to `8c35bb0e41808c5baf19942cedd124659f8bab5c` with unrelated ОГЭ №8 root-condition clarification. Read-only merge-tree composition was clean. Ordinary history-preserving merge produced tree `e66f4c32fde5579ea5d0620d97d8c829001c00f4`; reviewed pilot runtime hashes unchanged. Publication still requires fresh main/head checks, preservation bindings and CI in the release-owned branch.
+
+## Release composition after #483
+
+The release base advanced to `86038a8020d80de7b277905cbada6ae2942fe8d5`
+(our reviewed #487 resume and #483 free-step releases). The pilot runtime and
+entrance HTML remain identical to the independently reviewed source. The only
+merge conflict was the shared navigator source-binding manifest: retain the
+current-main manifest and refresh precisely the two pilot entrance bindings
+against the new composed source commit. This preserves #483's exact binding;
+no navigator guard or runtime changes. Repeat applicable tests and CI on the
+composed candidate; source/head IDs and actual release evidence are in PR #488.
+
+First pilot Chromium CI `42521206104` on `adfc8d592b38fb316a55b6b4e7e8900500552991`
+passed 17 tests and four viewports through diagnosis, four lessons, final,
+controlled five-day form, two tabs and report. This is not a real learner's
+five-day follow-up. Production remains a separate required verification.
