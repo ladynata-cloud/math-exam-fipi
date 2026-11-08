@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "9c999a1eb1ca67b83098f351b849669b6fc08bfe",
+  "baseSha": "e258e438cd30e396c7741741384911f0a424581d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2448,8 +2448,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/percent-table-trainer.html": {
-      "beforeSha256": "cb41ef26577ebd8a57d8026205ba0a90bb6dd6effaf5b566008bddcfb2a23133",
-      "afterSha256": "d84357892f926bf8fa9ac17e9d073cf4f7dd8dedee0aacd19b1ad1994c563a0c",
+      "beforeSha256": "17c34e1cef2edb4e129c836d9907823b4b38608838e38fa2b517d4513e353c35",
+      "afterSha256": "7eabf9b86cfe8b14e5e05dd37a787b30e93a23c25a1f14d0552dfb284828913f",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-apartments.html": {
@@ -3932,6 +3932,15 @@
       "changedPaths": [
         "equations/index.html",
         "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9c999a1eb1ca67b83098f351b849669b6fc08bfe",
+      "sourceBaseSha": "e258e438cd30e396c7741741384911f0a424581d",
+      "task": "docs/tasks/PERCENT_CHECK_RESUME_20261109.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/percent-table-trainer.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
