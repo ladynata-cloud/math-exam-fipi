@@ -51,7 +51,7 @@ async function sameTrainer(a, b) {
     const ids = ['m4-desc','m4-soft','m4-good','t11-help-readout','statement','answerExplanation','resultTitle'];
     return { text: Object.fromEntries(ids.map(id=>[id,document.getElementById(id)?.textContent||''])),
       graphs: [...document.querySelectorAll('#m4-graphs svg,#t11-help-graph,#visualHost svg')].map(el=>el.outerHTML),
-      fields: [...document.querySelectorAll('#m4 input,#m4 select,#t11-help-panel input,#visualHost input')].map(el=>[el.id,el.value,el.disabled]) };
+      fields: [...document.querySelectorAll('#m4 input,#m4 select,#t11-help-panel input,#visualHost input')].map(el=>[el.dataset.key || el.id,el.value,el.disabled,el.min,el.max,el.step,[...(el.labels||[])].map(label=>label.textContent)]) };
   });
   assert.deepEqual(await visible(b.frame), await visible(a.frame), 'rendered condition, graphs, feedback and model controls');
 }
