@@ -177,6 +177,8 @@ jobs:
         run: |
           B2_SMOKE_SECTION=arrival node tools/trainer-registry-client-cutover-smoke.cjs
           B2_SMOKE_SECTION=reconnect node tools/trainer-registry-client-cutover-smoke.cjs
+      - name: Preserve roads-grid collaboration and exact registry parity
+        run: B2_SMOKE_SECTION=roads node tools/trainer-registry-client-cutover-smoke.cjs
       - name: Preserve synthetic board evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

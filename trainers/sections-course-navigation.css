@@ -9,5 +9,10 @@
 .sections-course-status{margin:0;padding:8px 16px;background:#fff7ed;color:#7c2d12;font-size:14px;line-height:1.4;flex:0 0 auto}
 .sections-course-status[hidden]{display:none}
 #sectionsCourseFrame{display:block;width:100%;flex:1 1 auto;min-height:0;border:0;background:#fff}
+/* Keep the connection label readable when the course action takes another
+   mobile header slot; move the session as a whole instead of crushing it. */
+@media(max-width:720px){
+  .workspace-bar:has(#sectionsCourseToggle:not([hidden])) .workspace-session{flex:1 0 auto;max-width:100%}
+}
 @media(max-width:480px){.sections-course-heading{padding:8px}.sections-course-heading h2{font-size:15px}.sections-course-status{padding:8px}}
 @media print{#sectionsCourseToggle,.sections-course-panel{display:none!important}}

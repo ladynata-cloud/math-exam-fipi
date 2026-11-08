@@ -534,6 +534,38 @@ async function run() {
     await t.setViewportSize({ width: 320, height: 900 });
     const narrow = await teacherFrame.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth }));
     assert(narrow.width <= 320 && narrow.scroll <= narrow.width + 1, 'nested board fits 320px');
+    const inspectHeader = () => reloadedBoard.evaluate(() => {
+      const status = document.querySelector('#shareStatus');
+      const text = document.createRange(); text.selectNodeContents(status);
+      const controls = ['#sectionsCourseToggle', '#shareStatus', '#openShare', '#workspaceModes'].map(selector => {
+        const box = document.querySelector(selector).getBoundingClientRect();
+        return { selector, x: box.x, y: box.y, right: box.right, bottom: box.bottom, width: box.width, height: box.height };
+      });
+      return { width: innerWidth, height: innerHeight, barHeight: document.querySelector('.workspace-bar').getBoundingClientRect().height, textLines: [...text.getClientRects()].filter(box => box.width > 0).length, controls };
+    });
+    function assertHeader(header, state) {
+      assert(header.barHeight <= 200, '320px: ' + state + ' header keeps space for the lesson');
+      for (const box of header.controls) {
+        assert(box.width > 0 && box.height > 0 && box.x >= -1 && box.right <= header.width + 1 && box.y >= -1 && box.bottom <= header.height + 1, '320px: ' + state + ' header control fits: ' + box.selector);
+      }
+      for (let i = 0; i < header.controls.length; i++) for (let j = i + 1; j < header.controls.length; j++) {
+        const a = header.controls[i], b = header.controls[j];
+        const overlap = Math.min(a.right, b.right) - Math.max(a.x, b.x) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y) > 1;
+        assert(!overlap, '320px: ' + state + ' header controls do not overlap: ' + a.selector + ', ' + b.selector);
+      }
+    }
+    const header = await inspectHeader();
+    assert.equal(header.textLines, 1, '320px: the connected status is readable on one line, not one letter per row');
+    assertHeader(header, 'connected');
+    const savedStatus = await reloadedBoard.evaluate(() => {
+      const node = document.querySelector('#shareStatus'), previous = node.textContent;
+      node.textContent = 'Подключение потеряно. Проверьте соединение и попробуйте ещё раз.';
+      return previous;
+    });
+    try { assertHeader(await inspectHeader(), 'long connection message'); }
+    finally {
+      await reloadedBoard.evaluate(text => { document.querySelector('#shareStatus').textContent = text; }, savedStatus);
+    }
     if (process.env.SECTIONS_SHOTS) await t.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-shared-cabinet-320.png') });
     await t.setViewportSize({ width: 1280, height: 900 });
     if (process.env.SECTIONS_SHOTS) await t.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-shared-cabinet-1280.png') });
