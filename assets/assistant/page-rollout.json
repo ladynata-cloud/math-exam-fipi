@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+  "baseSha": "9cf2a7f91d668713b50cf33f9a335f1faf28a7ae",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -448,8 +448,8 @@
       "placement": "before-head-close"
     },
     "equations/index.html": {
-      "beforeSha256": "a104a8510de8c3f632f107cff2a35f80ffa78b42b82f84ee30c89923035124f6",
-      "afterSha256": "8f7ab612d2a4c7f76cb16cbe0a17ecfcf43575695d0b621a76dc1a82ea3a1160",
+      "beforeSha256": "bf03dec8b3c3b6a6d791756f7532c12d1a62f1695c3edb2642068e8fe87ed329",
+      "afterSha256": "6d43359c2a9a408320a76f82811af63527305186c05e649a0657ff90e737f3f8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "ec30d939052b44346c11a4af8d6429fc5aebd9a26f9cd9f51278119e29c01736",
-      "afterSha256": "8503bd87fbed764cd1fb84950468f66a10b3791df37f6ad4428b1e33952e04f5",
+      "beforeSha256": "cca49e7eb80bf1514832d1b3a961ab09690b3c9723b43dc03b32e0355630e2cc",
+      "afterSha256": "240204e8683ede87906aff7d222b733dfb715435e9922333999f1e4debdbb967",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3913,6 +3913,16 @@
       "task": "docs/tasks/OGE8_ROOT_DOMAINS_20261109.md",
       "changedPaths": [
         "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+      "sourceBaseSha": "9cf2a7f91d668713b50cf33f9a335f1faf28a7ae",
+      "task": "docs/tasks/LINEAR_LEARNING_PILOT_20261109.md",
+      "changedPaths": [
+        "equations/index.html",
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
