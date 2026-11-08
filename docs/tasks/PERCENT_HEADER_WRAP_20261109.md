@@ -17,7 +17,7 @@ makes that outer scroll container scroll the summary too. Keeping the menu and
 all five choices visible makes returning to the current exercise practical.
 
 ## Approved scope
-Only percent-page scoped CSS, a dedicated Chromium regression/workflow, and this
+Only percent-page scoped CSS (including the demonstrated review-table overflow), a dedicated Chromium regression/workflow, and this
 specification. Wrap mode buttons and constrain the header menu. Preserve native
 details and keyboard navigation. No engine, mathematics, assistance accounting,
 storage, shared navigation script or floating navigator changes. Compose the
@@ -76,3 +76,14 @@ practical-minimal tests. Browser syntax and diff checks passed. Actual Chromium
 layout, screenshot review and production verification remain pending CI/release;
 local Chromium launch failed with the environment's socket permission restriction.
 Independent focused reviewer found no source/test blocker before composition.
+
+### Browser-discovered review table overflow
+CI run 42525293383 on diagnostic head 4ca1af086ceeb570be5e2aba503598db4db15038
+passed the menu bounds and first four modes at 320 pixels, then found review
+mode document width605. Actual artifact13634853360 shows hint cards width572
+from x33 to605: the 540px table forces an implicit grid track's minimum width.
+One additional percent-only CSS rule uses `minmax(0,1fr)` for hint-stack columns,
+allowing the existing table scroller to contain its table. No content or engine
+changes. The browser retains all menu assertions and aggregates document
+overflows across every mode/width, failing on any nonempty result after capturing
+evidence. Final Chromium outcome remains pending; the failure is not a pass.
