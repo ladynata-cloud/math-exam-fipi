@@ -276,6 +276,10 @@
       pausedTrainerBridge=null;bridgeSession=session;bridgeReloadNeeded=false;return true
     }
     function updateMirrorStatusForCurrentTrainer(){if(trainerRegistry.status==='pending'||trainerRegistry.status==='idle'){setMirrorStatus('pending');return}if(trainerRegistry.status==='failed'){setMirrorStatus('registry-unavailable');return}const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry){setMirrorStatus('unsupported-trainer');return}if(bridgeSession?.hydrated){setMirrorStatus('connected');return}setMirrorStatus(readyCandidate?.timedOut?'bridge-timeout':'pending')}
+    function selectedSameDocumentTarget(next){
+      try{const target=new URL(next,location.href),live=new URL(frame.contentWindow.location.href);if(target.origin===location.origin&&live.origin===location.origin&&!target.username&&!target.password&&!live.username&&!live.password&&target.pathname===live.pathname&&target.search===live.search&&target.hash!==live.hash)return target}catch(_e){}
+      return null
+    }
     function reloadTrainerDocument(next){
       // Assigning a src with the same resource and a fragment can keep the
       // expired document alive. Reload its real document, retaining the live
@@ -286,7 +290,7 @@
       }catch(_e){}
       frame.src=next
     }
-    function setTrainerFrameSrc(url,{force=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}if(!force&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;if(force)reloadTrainerDocument(next);else frame.src=next;updateMirrorStatusForCurrentTrainer()}
+    function setTrainerFrameSrc(url,{force=false,selection=false}={}){let next;try{next=normalizeTrainer(url)}catch(e){BoardPicker.error(e.message);return false}const selected=selection?selectedSameDocumentTarget(next):null;if(!force&&!selected&&frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;if(selected){frame.contentWindow.location.hash=selected.hash;reloadTrainerDocument(next)}else if(force)reloadTrainerDocument(next);else frame.src=next;updateMirrorStatusForCurrentTrainer()}
     function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;reloadTrainerDocument(next);setMirrorStatus('pending');return true}
     function bridgeDeadlineExpired(candidate=readyCandidate){return !!candidate&&(candidate.timedOut||Date.now()>=candidate.deadline)}
     function recoverExpiredBridgeOnce(){if(!roomStateReceived||trainerRegistry.status!=='ready'||!readyCandidate||!bridgeDeadlineExpired(readyCandidate)||automaticRecoveryGeneration===frameGeneration)return false;automaticRecoveryGeneration=frameGeneration;return reloadTrainerFrameForBridge()}
@@ -380,7 +384,7 @@
     function emitWriter(name,data={}){if(shared.connected&&canWrite())shared.socket.emit(name,roomPayload(data))}
     function emitSnapshot(){if(shared.connected&&shared.role==='teacher')shared.socket.emit('board:snapshot',roomPayload({state:publicSnapshot()}))}
 
-    function openTrainer(u){if(shared.role!=='teacher')return false;let next;try{next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId)}catch(e){BoardPicker.error(e.message);return false}BoardPicker.clearError();trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next);save();emit('board:trainer-url-change',{trainerUrl:next});return true}
+    function openTrainer(u){if(shared.role!=='teacher')return false;let next;try{next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId)}catch(e){BoardPicker.error(e.message);return false}BoardPicker.clearError();trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next,{selection:true});save();emit('board:trainer-url-change',{trainerUrl:next});return true}
     function setTrainerHidden(hidden){if(shared.role!=='teacher')return;document.dispatchEvent(new Event('board:view-changing'));lesson.classList.remove('trainer-only');state.trainerHidden=hidden;lesson.classList.toggle('hide-trainer',hidden);$('toggleTrainer').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';$('toggleTrainerBoard').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';requestAnimationFrame(resize);save()}
     function applyRemotePageAdd(payload){if(!payload?.page)return;cancelGesture(false);closeTextEditor();applyingRemote=true;const index=Number.isInteger(Number(payload.pageIndex))?Math.min(Math.max(Number(payload.pageIndex),0),state.pages.length):state.pages.length;state.pages.splice(index,0,remotePage(payload.page,index));state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):index;sync(false);applyingRemote=false}
     function applyRemotePageDelete(payload){const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||index<0||index>=state.pages.length)return;cancelGesture(false);closeTextEditor();forgetPageRedo(state.pages[index].id);applyingRemote=true;if(state.pages.length===1){state.pages[0]=payload?.page?remotePage(payload.page,0):blank();state.current=0}else{state.pages.splice(index,1);state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):Math.min(index,state.pages.length-1)}sync(false);applyingRemote=false}
@@ -459,7 +463,7 @@
           updateControlUi();setTool(tool)
         });
         shared.socket.on('board:snapshot',payload=>applySnapshot(payload?.state));
-        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl)}});
+        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl,{selection:true})}});
         shared.socket.on('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
         shared.socket.on('board:stroke-start',payload=>{const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||!state.pages[index])return;state.current=index;current=payload?.stroke||null;scheduleRender()});
         shared.socket.on('board:stroke-points',payload=>{if(!current)return;if(current.kind==='path'&&payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;scheduleRender()});
