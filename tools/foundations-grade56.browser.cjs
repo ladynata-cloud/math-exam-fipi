@@ -25,12 +25,27 @@ let browser;
   await capture('workshop-fraction',inquiry);
   await page.locator('[data-reset]').click();const slider=page.locator('#model [data-param=n]'),handle=await slider.elementHandle();await slider.focus();await page.keyboard.press('ArrowRight');assert(await handle.evaluate(el=>el.isConnected),'keyboard slider keeps DOM identity');
   for(const [grade,id,selector] of [[5,21,'.g5-lab-inquiry'],[6,2,'.lab-inquiry']]){
-   await go('/courses/vilenkin-'+grade+'-part-1/#lesson/'+id+'/theory');const form=page.locator(selector);await form.waitFor();const input=form.locator('input');
+   await go('/courses/vilenkin-'+grade+'-part-1/'+(grade===6?'?legacy=1':'')+'#lesson/'+id+'/theory');const form=page.locator(selector);await form.waitFor();const input=form.locator('input');
    await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),false,'empty prediction does not submit');
    await input.fill('999');await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),true);
    await page.reload();await page.locator(selector+' input').waitFor();assert.equal(await page.locator(selector+' input').inputValue(),'999','first prediction restored');
    await capture('vilenkin'+grade,page.locator(selector));
   }
+  await go('/courses/vilenkin-6-part-1/#lesson/2/theory');await page.waitForURL('**/textbook.html#unit/2');
+  await go('/courses/vilenkin-6-part-1/textbook.html#unit/2/task/v6-book-2-1-42-d');
+  const textbookInput=page.locator('#answer');await textbookInput.waitFor();
+  await textbookInput.fill('   ');
+  const bookBefore=await page.evaluate(()=>localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1'));
+  await page.locator('#answer-form [type=submit]').click();await page.locator('#answer-form [type=submit]').click();
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1')),bookBefore,'blank textbook answer preserves saved attempts');
+  assert((await page.locator('.work .feedback').innerText()).includes('не считается попыткой'));
+  await textbookInput.fill('0');await page.locator('#answer-form [type=submit]').click();
+  const textbookState=await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1')));
+  assert.equal(textbookState.tasks['v6-book-2-1-42-d'].attempts,1,'zero is an actual textbook attempt');
+  const modelLink=page.locator('[data-v6-model=percent]');assert.equal(await modelLink.getAttribute('href'),'https://mathexam.space/courses/vilenkin-6-part-1/?legacy=1#lesson/2/theory');
+  assert.equal(textbookState.tasks['v6-book-2-1-42-d'].helped,false,'showing a model link does not mark help');
+  await capture('vilenkin6-textbook-model-link',modelLink);
+  await capture('vilenkin6-textbook',page.locator('#answer-form'));
   await go('/school/peterson5/#lesson/p25/0');await page.locator('details.model-panel > summary').click();
   const p5=page.locator('.model-inquiry');await p5.locator('[data-inquiry-input=draft]').fill('1/3');await p5.locator('[data-inquiry-check=draft]').click();
   await p5.locator('[data-inquiry-input=draft]').fill('2/3');await p5.locator('[data-inquiry-check=draft]').click();await p5.locator('[data-inquiry-open]').click();
