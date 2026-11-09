@@ -55,6 +55,12 @@ for(const p of routes.pages){
     assert.equal(matches.length,1,p+' reviewed teaching script');
     const index=actualScripts.indexOf(matches[0]);
     actualScripts[index]=restoreRootTeaching(restoreRootAcceptance(matches[0],'learning'));
+    const {restoreNumericSafety}=require('./oge8-numeric-safety-preservation.cjs');
+    for(const [marker,scope] of [['function isqrtB(', 'arithmetic'],['function finishQuiz8(', 'quiz']]){
+      const regions=actualScripts.filter(script=>script.includes(marker));
+      assert.equal(regions.length,1,p+' exact numeric-safety '+scope+' script');
+      const i=actualScripts.indexOf(regions[0]);actualScripts[i]=restoreNumericSafety(regions[0],scope);
+    }
   }
   assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   const controls=doc=>[...doc.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
