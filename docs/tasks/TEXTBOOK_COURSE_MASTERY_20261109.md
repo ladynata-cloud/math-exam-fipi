@@ -86,3 +86,21 @@ The #499 overlap has also been resolved and independently reviewed locally:
 one map, exact draft continuation, separate fresh/review action and retained
 mastery evidence. It will be uploaded as a follow-up whose parent is the actual
 uploaded #497 head; it remains a separate release candidate.
+
+## Composition after published Vilenkin entrances
+
+Main advanced to d063ca10200c9fa208df15077b11a6bea67659e5 through #493.
+Its nine files add two static Vilenkin entrances, catalogue/sitemap coverage and
+their browser checks. The automatic merge preserved both candidates' full
+patch identity and every non-manifest source blob. The new browser scenario
+still selected the old Vilenkin course label, however. Its selector now names
+the specific current action "К следующему навыку" and checks its learn command;
+the saved-lesson URL, answer, attempt history, re-entry and navigation assertions
+remain intact. No fallback selector or product behaviour changed.
+
+Affected local gates passed: navigator preservation 4/4, bindings 5/5,
+sitemap 12/12, generated sitemap 557 URLs, SEO and 73 catalogue destinations.
+Local Chromium could not launch because socket creation is prohibited by this
+environment; no local browser PASS is claimed. The uploaded candidate must pass
+the complete current SEO browser workflow and other actual-head checks. Existing
+source bindings remain canonical uploaded commits, with #493 coverage retained.
