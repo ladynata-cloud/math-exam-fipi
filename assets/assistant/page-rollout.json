@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+  "baseSha": "20650a177876c33b0ec609beadfcb8579028039b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2215,8 +2215,8 @@
       "placement": "before-head-close"
     },
     "trainers/college-logarithms/intro/index.html": {
-      "beforeSha256": "a0a058aaa8135692bf73c5174901943585327ee789139eb755ef7ecbe1643323",
-      "afterSha256": "9351681c8d208c2a68e08443e7b788fbe4223cc96b67f0d450d42933e182e929",
+      "beforeSha256": "674af39ce83322f0e1e67135ee8c6139d9f262b6cda6641cf40760a960561874",
+      "afterSha256": "0b3f3ffa97db3771b0a8e1cf272e8aa8b8307b961241b312b3e2d0543d026ca2",
       "placement": "before-head-close"
     },
     "trainers/credit-differential-payment-trainer.html": {
@@ -4107,6 +4107,15 @@
         "ege-profil/start/index.html",
         "ege-profil/trainers/numbers-t19.html",
         "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "20650a177876c33b0ec609beadfcb8579028039b",
+      "task": "docs/tasks/COURSE_LEARNING_INTEGRITY_20261110.md",
+      "changedPaths": [
+        "trainers/college-logarithms/intro/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

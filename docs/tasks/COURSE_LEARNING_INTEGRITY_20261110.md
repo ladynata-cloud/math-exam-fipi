@@ -45,3 +45,19 @@ Source is checkpointed in GitHub before repeating final validation to prevent an
 ## Coverage boundary
 
 This packet does not certify that every MathExam exercise has been redesigned. It supplements prepared OGE, EGE, textbook, foundations and course-design packages, which retain their own dependencies and gates. Final delivery must separate merged, published, prepared and blocked work.
+
+## Reconstructed candidate acceptance
+
+Source checkpoint `20650a177876c33b0ec609beadfcb8579028039b`, tree `4f5d0c4f0b23667d28288e77bd34b080d173dc22`, is saved on the task branch. The locally reconstructed source tree matched it exactly. Navigator binding now names that real source commit and changes only the logarithm-introduction HTML receipt.
+
+Completed again after reconstruction:
+- 32 equation tests and 21 logarithm core/DOM tests, including stale-tab help/first-answer preservation and condition identity.
+- Both algebra state suites, eight import scenarios, focused history/provenance regressions.
+- Full Alimov DOM: 300 tasks, 695 steps, 597 model-control states. Full Nikolsky DOM: 270 tasks, 815 steps. Both passed sequentially at a 768 MB heap cap. The original monolithic run exhausted memory; yielding between tasks releases pending jsdom events without removing any case or assertion (41 and 57 assertions retained).
+- Pogorelov: 134 full guided journeys, 340 steps, 201 independent numeric values; legacy/corrupt/conflicting storage, first/corrected answers, latest continuation, pending final answer/proof and long-answer wrapping regressions.
+- Catalogue two tests; five binding and four preservation tests; syntax and whitespace.
+- Actual Chromium: catalogue and both algebra history journeys at 320/1280; logarithm 3 widths × 8 stages, 39 discovery answers, 36 transfer answers and 9 practice return routes; advanced equation complete route at 4 widths including two tabs, model/prediction and delayed review; basic equation route at 320/1280 including remediation, archived forms and previous drafts. All passed. Two actual equation screenshots were inspected.
+
+Initial native Chromium startup failures and a failed browser archive download are environment failures, not passes. The successful final browser runs used the repository's pinned Playwright and an available headless Chromium executable. Remote exact-head CI remains required before merge; no new packet production pass is asserted.
+
+Final independent browser acceptance also passed for the Pogorelov history with a 180-character answer: scrollWidth equals 320/1280 viewport width, first response retained, zero page errors. Test-only algebra yield changes were independently verified to preserve all assertions. No remaining reviewed blocker.

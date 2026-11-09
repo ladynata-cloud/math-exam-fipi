@@ -2,6 +2,8 @@
 // In-memory DOM contracts; visual browser review is recorded separately.
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),assert=require('node:assert/strict');
 function boot(saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://alimov.test/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};const errors=[];w.console.error=(...args)=>errors.push(args.join(' '));if(saved)w.localStorage.setItem('mathexam.alimov10-11.2016.v1',saved);for(const file of ['../peterson6/math.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));return {w,d:w.document,errors};}
+// Let jsdom dispatch pending DOM events between tasks so detached trees can be collected.
+(async function run(){
 const {w,d,errors}=boot(),api=w.AlimovApp;
 const nav=hash=>{w.history.replaceState(null,'',hash);api.route();};
 const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();};
@@ -14,6 +16,7 @@ for(const l of w.AlimovCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  click('[data-action="guided"]');
  for(let k=0;k<t.steps.length;k++){input('[data-step-input="'+k+'"]',t.steps[k].answer);submit('[data-step-form="'+k+'"]');assert.equal(state().tasks[t.id].step,k+1,t.id+' step '+k);assert.equal(d.querySelectorAll('.step.completed').length,k+1);walkedSteps++;}
  if(t.kind==='choice')click('[data-choice="'+t.choices.indexOf(t.answer)+'"]');else input('#final-answer',t.answer);submit('#answer-form');assert(state().tasks[t.id].correct,t.id);assert(!state().tasks[t.id].independent,t.id+' helped');renders++;
+ await new Promise(resolve=>setImmediate(resolve));
  }}
 // Draft, completed step and notebook survive detour and reload.
 const lesson=w.AlimovCourse.lessons.find(l=>l.tasks.some(t=>t.kind!=='choice'&&t.skills.length));const index=lesson.tasks.findIndex(t=>t.kind!=='choice'&&t.skills.length),task=lesson.tasks[index],route='#lesson/'+lesson.id+'/'+index;
@@ -24,7 +27,7 @@ for(const q of ['№ 267','№ 277','№ 900','§ 19','логарифм']){nav('
 nav('#home');input('#exercise-number','№ 999999');submit('#number-form');assert(d.querySelector('#number-result').textContent.includes('не найден'));
 // Every model must render valid geometry and retain controls across navigation.
 let controls=0;
-for(const lesson of w.AlimovCourse.lessons){nav('#lesson/'+lesson.id);for(const el of [...d.querySelectorAll('#model input,#model select')]){const values=el.tagName==='SELECT'?[...el.options].map(o=>o.value):[el.min,el.max];for(const value of values){el.value=value;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));assert(!/NaN|Infinity|undefined/.test(d.querySelector('#model').innerHTML),lesson.id);controls++;}}}
+for(const lesson of w.AlimovCourse.lessons){nav('#lesson/'+lesson.id);for(const el of [...d.querySelectorAll('#model input,#model select')]){const values=el.tagName==='SELECT'?[...el.options].map(o=>o.value):[el.min,el.max];for(const value of values){el.value=value;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));assert(!/NaN|Infinity|undefined/.test(d.querySelector('#model').innerHTML),lesson.id);controls++;}}await new Promise(resolve=>setImmediate(resolve));}
 nav('#lesson/p21');const angle=d.querySelector('#model input');angle.value='135';angle.dispatchEvent(new w.Event('input'));nav('#home');nav('#lesson/p21');assert.equal(d.querySelector('#model input').value,'135');
 for(const hash of ['#lesson/unknown','#lesson/p01/9999','#practice/unknown/1','#skills','#progress','#home']){nav(hash);assert(!d.querySelector('.error-page'),hash);}
 assert.deepEqual(errors,[]);
@@ -49,3 +52,5 @@ console.log(JSON.stringify({status:'PASS',renders,walkedSteps,controls,flows:['a
  const again=boot(aw.localStorage.getItem('mathexam.alimov10-11.2016.v1'));assert.equal(again.w.AlimovApp.getState().tasks[task.id].attemptHistory.steps[0][0].assisted,true);assert.equal(again.w.AlimovApp.getState().tasks[task.id].independent,true);again.w.close();aw.close();
  console.log(JSON.stringify({ok:true,attemptHistoryDOM:'step error, reload feedback, corrected answer and post-success help retained without changing earned credit'}));
 })();
+
+})().catch(error=>{console.error(error);process.exitCode=1;});
