@@ -72,8 +72,14 @@ test('combined START wrapper loads existing canonical lesson assets, bridge and 
   const html = fs.readFileSync(path.join(ROOT, start.path), 'utf8');
   const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
   const source = require('./public-page-script.cjs').sourceForProfileBoard(ROOT, html);
-  const canonical = [...source.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src.split('?')[0]);
-  assert.deepEqual(scripts.filter(src => !src.startsWith('/trainers/board-bridge') && !src.startsWith('/ege-profil/start/board-session')).map(src => src.split('?')[0]), canonical);
+  // This wrapper already has the reviewed 2026-11-06 board-runtime stamps.
+  // Keep those exact exceptions instead of discarding every query string.
+  const boardStamps = new Map([
+    ['functions-tasks.js?v=20261009-calm', 'functions-tasks.js?v=20261106-log-trig'],
+    ['app.js?v=20261101-trainer-repair', 'app.js?v=20261106-log-trig']
+  ]);
+  const canonical = require('./public-page-script.cjs').canonicalProfileLearningScripts(source, html).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + (boardStamps.get(src) || src));
+  assert.deepEqual(scripts.filter(src => src !== '/trainers/board-bridge.js' && src !== '/ege-profil/start/board-session.js?v=20261106-log-trig'), canonical);
   assert.match(html, /data-profile-board="log-trig"/); assert.match(html, /href="#course"/);
   assert.doesNotMatch(html, /<iframe\b|<base\b|navigator-widget|location\.(?:replace|assign)/);
   for (const src of scripts) assert.equal(fs.statSync(path.join(ROOT, new URL(src, 'https://mathexam.space').pathname)).isFile(), true);
