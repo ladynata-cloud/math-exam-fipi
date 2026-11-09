@@ -12,12 +12,64 @@ function strip(n,d,label,second=0){return '<div aria-label="'+esc(label)+'"><div
 function select(name,label,values,value){return '<label>'+esc(label)+'<select data-p5="'+name+'">'+values.map(v=>{const a=Array.isArray(v)?v:[v,v];return '<option value="'+esc(a[0])+'"'+(String(a[0])===String(value)?' selected':'')+'>'+esc(a[1])+'</option>';}).join('')+'</select></label>';}
 function number(name,label,value,min,max){return '<label>'+esc(label)+'<input data-p5="'+name+'" type="number" min="'+min+'" max="'+max+'" step="1" value="'+value+'"></label>';}
 function button(action,label,quiet=false){return '<button type="button" data-p5-action="'+action+'"'+(quiet?' class="p5-quiet"':'')+'>'+esc(label)+'</button>';}
+
+// Personal model questions are practice observations, never course credit.
+function inquiryState(raw){
+ const out={};for(const k of ['draft','first','last','transferDraft','transferFirst','transferLast'])out[k]=typeof raw?.[k]==='string'?raw[k].slice(0,200):'';
+ out.open=raw?.open===true;return out;
+}
+function mountInquiry(host,model,q,raw,changed,reveal){
+ const state=inquiryState(raw),box=document.createElement('section');box.className='model-inquiry';
+ const equal=(v,a)=>!!root.PetersonMath?.check(v,a);
+ function emit(){changed({...state});}
+ function draw(){
+  model.hidden=!state.open;
+  box.replaceChildren();
+  const title=document.createElement('h4');title.textContent='Предскажи → проверь на модели → реши новый пример';box.append(title);
+  const note=document.createElement('p');note.textContent='Прогноз относится к начальному примеру. Затем меняй параметры модели и сравнивай. Опыт не отмечает задачу учебника как решённую.';box.append(note);
+  function question(text,key,first,last,answer,why){
+   const form=document.createElement('form'),label=document.createElement('label'),input=document.createElement('input'),check=document.createElement('button'),feedback=document.createElement('p');
+   label.textContent=text;input.type='text';input.maxLength=200;input.value=state[key];input.autocomplete='off';input.setAttribute('aria-label',text);input.dataset.inquiryInput=key;label.append(input);
+   input.addEventListener('input',()=>{state[key]=input.value.slice(0,200);emit();});
+   check.type='submit';check.textContent='Проверить прогноз';check.dataset.inquiryCheck=key;
+   feedback.setAttribute('role','status');feedback.dataset.inquiryFeedback=key;
+   if(state[last])feedback.textContent=(equal(state[last],answer)?'Верно. ':'Пока не совпало. ')+why;
+   if(state[first]){const firstLine=document.createElement('p');firstLine.textContent='Первая запись: '+state[first]+(state[last]!==state[first]?' · Последняя: '+state[last]:'');form.append(firstLine);}
+   form.append(label,check,feedback);form.addEventListener('submit',event=>{event.preventDefault();const value=input.value.trim();if(!value){feedback.textContent='Сначала запиши свой прогноз.';input.focus();return;}state[key]=value;if(!state[first])state[first]=value;state[last]=value;emit();draw();box.querySelector('[data-inquiry-input="'+key+'"]').focus();});box.append(form);
+  }
+  question(q[0],'draft','first','last',q[1],q[2]);
+  const open=document.createElement('button');open.type='button';open.dataset.inquiryOpen='';open.textContent=state.open?'Модель открыта ниже':'Открыть модель и исследовать';open.disabled=state.open;open.addEventListener('click',()=>{state.open=true;emit();if(reveal?.())return;draw();box.querySelector('[data-inquiry-input="transferDraft"]').focus();});box.append(open);
+  if(state.open)question(q[3],'transferDraft','transferFirst','transferLast',q[4],q[5]);
+ }
+ draw();host.append(box);
+}
+
+function inquiryQuestion(kind){
+ const q={
+ 'order':['Чему равно 8 + 3 · 4 без скобок?','20','Сначала умножение; скобки изменяют порядок.','Новый пример: чему равно (8 + 3) · 5?','55','Сначала 8 + 3, затем умножение на 5.'],
+ 'balance':['x + 7 = 12. Сколько карандашей было сначала?','5','Проверь найденное число сложением с 7.','Новый пример: x + 9 = 15. Найди x.','6','Вычти добавленное количество из общего.'],
+ 'trial':['3x + 2 = 17. Предскажи x.','5','Сначала убери 2, затем раздели на 3 одинаковые части.','Новый пример: 4x + 3 = 19. Найди x.','4','Четыре одинаковые части вместе дают 16.'],
+ 'gcd':['Какой наибольший размер равных групп подходит и для 12, и для 18 предметов?','6','Размер группы должен делить оба числа без остатка.','Новый пример: найди НОД чисел 8 и 12.','4','Проверь все общие делители и выбери наибольший.'],
+ 'lcm':['Встречи проходят через 12 и 18 дней. Через сколько дней они впервые совпадут?','36','Нужно наименьшее положительное общее кратное.','Новый пример: встречи через 8 и 12 дней. Первое совпадение?','24','24 делится и на 8, и на 12.'],
+ 'fraction':['Целое разделено на 3 равные части, взяты 2. Какая доля взята?','2/3','Знаменатель считает все равные доли, числитель — выбранные.','Новый пример: из 5 равных долей взяты 3. Запиши дробь.','3/5','Размер целого тот же; доля теперь одна пятая.'],
+ 'equivalent-fraction':['Каждую треть разделили пополам. Сколько шестых в двух третях?','4','Размер доли уменьшился вдвое, число долей удвоилось.','Новый пример: сколько двенадцатых в трёх четвертях?','9','Каждую четверть разделили на три равные доли.'],
+ 'fraction-add':['Сложи 1/3 и 1/3. Какая доля того же целого получится?','2/3','Складываем число долей; размер доли не меняется.','Новый пример: 1/5 + 2/5 = ?','3/5','Знаменатель сохраняется: все доли одинаковые.'],
+ 'fraction-multiply':['Какую долю целого составляет половина от 2/3?','1/3','Две трети разделили на две равные части.','Новый пример: половина от 3/4 целого — какая доля?','3/8','Можно разделить каждую четверть пополам.'],
+ 'fraction-divide':['Сколько отрезков по 1/4 помещается в 3/4?','3','Деление здесь считает одинаковые части.','Новый пример: сколько отрезков по 1/6 помещается в 5/6?','5','Считай шестые, а не целые.'],
+ 'part-whole':['Целое — 20 кг. Сколько килограммов составляют 3/5?','12','Сначала найдём одну пятую, затем три такие доли.','Новый пример: 3/5 от 30 кг — сколько килограммов?','18','Доля та же, но целое выросло: часть тоже выросла.'],
+ 'decimal':['347 сотых: запиши число десятичной дробью.','3.47','100 сотых — одна целая, 10 сотых — одна десятая.','Новый пример: запиши десятичной дробью 506 сотых.','5.06','Ноль десятых сохраняет место цифры сотых.'],
+ 'rounding':['Округли 3,47 до десятых.','3.5','Смотрим на сотые: 7, поэтому увеличиваем число десятых.','Новый пример: округли 3,42 до десятых.','3.4','Цифра сотых 2: десятые сохраняем.'],
+ 'decimal-add':['Предскажи сумму 3,7 + 0,46.','4.16','Сложи одинаковые разряды: 370 + 46 сотых.','Новый пример: 2,8 + 0,35 = ?','3.15','280 сотых и 35 сотых дают 315 сотых.'],
+ 'decimal-divide':['Чему равно 0,84 : 0,07?','12','Умножь оба числа на 100: частное не изменится.','Новый пример: 0,99 : 0,09 = ?','11','99 сотых содержат одиннадцать групп по 9 сотых.']
+ };return q[kind];
+}
+
 function mount(container,lesson,task,options={}){
  if(!container)return ()=>{};style();
  const kind=lesson.model||'order';let state={open:true,step:0,n:12,d:3,a:12,b:18,num:2,den:3,k:2,trial:4,digit:4,whole:20,workers:3,hundredths:347,places:1,shown:0,choice:''};
  const limits={step:[0,4],n:[1,100],d:[2,10],a:[2,30],b:[2,30],num:[1,5],den:[2,6],k:[1,4],trial:[1,9],digit:[0,9],whole:[5,50],workers:[2,8],hundredths:[1,999],places:[0,2],shown:[0,6]};
  const incoming=options&&options.state;
- if(incoming&&typeof incoming==='object'){for(const [key,[lo,hi]]of Object.entries(limits))if(Number.isInteger(incoming[key]))state[key]=Math.max(lo,Math.min(hi,incoming[key]));if(typeof incoming.open==='boolean')state.open=incoming.open;if(['true','false'].includes(incoming.choice))state.choice=incoming.choice;}
+ if(incoming&&typeof incoming==='object'){for(const [key,[lo,hi]]of Object.entries(limits))if(Number.isInteger(incoming[key]))state[key]=Math.max(lo,Math.min(hi,incoming[key]));if(typeof incoming.open==='boolean')state.open=incoming.open;for(const [key,value] of Object.entries(inquiryState(Object.fromEntries(Object.entries(incoming).filter(([k])=>k.startsWith('iq_')).map(([k,v])=>[k.slice(3),v])))))state['iq_'+key]=value;if(['true','false'].includes(incoming.choice))state.choice=incoming.choice;}
  function emit(){if(typeof options.onChange==='function')options.onChange({...state});}
  function controls(v){return '<div class="p5-controls">'+v+'</div>';}
  function math(v){return '<div class="p5-math">'+v+'</div>';}
@@ -89,9 +141,10 @@ function mount(container,lesson,task,options={}){
   else if(kind==='decimal-multiply'){body=math('1,2 · 0,35');const steps=['Без запятых: 12 · 35 = 420.','В множителях всего 1 + 2 = 3 цифры после запятой.','Отделяем справа три цифры: 0,420 = 0,42.'];body+=steps.slice(0,state.step).map(record).join('')+(state.step<3?button('next','Следующий шаг'):'');}
   else{body=math('0,84 : 0,07');const steps=['В делителе два знака после запятой. Умножаем оба числа на 100.','0,84 · 100 = 84; 0,07 · 100 = 7.','Теперь 84 : 7 = 12. Проверка: 12 · 0,07 = 0,84.'];body+=steps.slice(0,state.step).map(record).join('')+(state.step<3?button('next','Следующий шаг'):'');}
  }
- container.innerHTML='<section class="p5-model"><details'+(state.open?' open':'')+'><summary>Модель темы · авторский пример</summary><h3>'+title+'</h3><p class="p5-small">Это отдельный пример для понимания темы. Твоя задача из учебника остаётся на странице.</p>'+body+'</details></section>';
+ container.innerHTML='<section class="p5-model"><details'+(state.open?' open':'')+'><summary>Модель темы · авторский пример</summary><h3>'+title+'</h3><p class="p5-small">Это отдельный пример для понимания темы. Твоя задача из учебника остаётся на странице.</p>'+'<div data-inquiry-host></div><div data-inquiry-model>'+body+'</div></details></section>';
+ const inquiry=inquiryQuestion(kind);if(options.inquiry&&inquiry)mountInquiry(container.querySelector('[data-inquiry-host]'),container.querySelector('[data-inquiry-model]'),inquiry,Object.fromEntries(Object.entries(state).filter(([k])=>k.startsWith('iq_')).map(([k,v])=>[k.slice(3),v])),value=>{for(const [k,v]of Object.entries(value))state['iq_'+k]=v;emit();},()=>{Object.assign(state,{step:0,n:12,d:3,a:12,b:18,num:2,den:3,k:2,trial:5,digit:4,whole:20,workers:3,hundredths:347,places:1,shown:0,choice:''});emit();draw();container.querySelector('[data-inquiry-input="transferDraft"]')?.focus();return true;});
  const details=container.querySelector('details');details.addEventListener('toggle',()=>{if(state.open!==details.open){state.open=details.open;emit();}});
- container.querySelectorAll('[data-p5]').forEach(el=>el.addEventListener('change',()=>{const key=el.dataset.p5;if(key==='choice'){state.choice=['true','false'].includes(el.value)?el.value:'';}else{const value=Number(el.value),range=limits[key];if(!range||!Number.isInteger(value)||value<range[0]||value>range[1]){el.value=state[key];return;}state[key]=value;if(state.num>=state.den)state.num=state.den-1;}state.open=true;emit();draw();}));
+ container.querySelectorAll('[data-p5]').forEach(el=>el.addEventListener('change',()=>{const key=el.dataset.p5;if(key==='choice'){state.choice=['true','false'].includes(el.value)?el.value:'';}else{const value=Number(el.value),range=limits[key];if(!range||!Number.isInteger(value)||value<range[0]||value>range[1]){el.value=state[key];return;}state[key]=value;if(state.num>=state.den)state.num=state.den-1;}state.open=true;emit();draw();container.querySelector('[data-p5="'+key+'"]')?.focus();}));
  container.querySelectorAll('[data-p5-action]').forEach(el=>el.addEventListener('click',()=>{if(el.dataset.p5Action==='enumerate')state.shown=Math.min(6,state.shown+1);else state.step=Math.min(4,state.step+1);state.open=true;emit();draw();}));
  }
  draw();const cleanup=()=>{container.replaceChildren();};cleanup.getState=()=>({...state});return cleanup;
