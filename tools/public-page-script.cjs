@@ -54,7 +54,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
   const publicMap = ['journey.js?v=20261109', 'second-part.js?v=20261109',
-    'practice-feedback.js?v=20261109-active', 'practice-coach.js?v=20261109-active'];
+    'practice-feedback.js?v=20261109-active', 'practice-coach.js?v=20261109-integrity'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const mapPaths = new Set(publicMap.map(pathname));
   assert.deepEqual(page.filter(script => mapPaths.has(pathname(script.src))).map(script => script.src), publicMap,
@@ -66,8 +66,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   assert.ok(board.every(script => !mapPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
   const cacheStamps = new Map([
     ['calm-ui.js?v=20261109-journey', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261109-active', 'app.js?v=20261101-trainer-repair'],
-    ['state.js?v=20261109-active', 'state.js?v=20261101-trainer-repair']
+    ['app.js?v=20261109-integrity', 'app.js?v=20261101-trainer-repair'],
+    ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())
     assert.deepEqual(page.filter(script => pathname(script.src) === pathname(current)).map(script => script.src), [current],
