@@ -963,7 +963,7 @@ function buildRef(){
     <div class="refhead">Свойства арифметического квадратного корня</div>
     ${refRow(rt("ab")+" = "+rt("a")+" · "+rt("b"),"p4",["prod","letters","sqroot"],"при a ≥ 0, b ≥ 0")}
     ${refRow(rt(fr("a","b"))+" = "+fr(rt("a"),rt("b")),"p4",["prod","letters"],"при a ≥ 0, b > 0")}
-    ${refRow(par(rt("a"))+"<sup>2</sup> = a","p5",["sqroot","dsq","sqsum"],"этой строчки нет на листе — но это само определение корня")}
+    ${refRow(par(rt("a"))+"<sup>2</sup> = a","p5",["sqroot","dsq","sqsum"],"при a ≥ 0; этой строчки нет на листе — но это само определение корня")}
     <div class="refhead">Свойства степени (a > 0, b > 0)</div>
     ${refRow("a<sup>−n</sup> = "+fr(1,"a<sup>n</sup>"),"p1",["pow1"])}
     ${refRow("a<sup>n</sup> · a<sup>m</sup> = a<sup>n+m</sup>","p2",["pow1"])}
@@ -997,8 +997,12 @@ window.sqCell=function(n){
 window.sqSearch=function(){
   const fb=document.getElementById("sqFb");
   const x=parseAns(document.getElementById("sqFind").value);
-  if(!x||!fint(x)){fb.textContent="введи целое число";fb.className="fb no";return;}
-  const r=isqrtB(x.n<0n?-x.n:x.n);
+  document.querySelectorAll("table.sq td.hl").forEach(td=>td.classList.remove("hl"));
+  if(!x){fb.textContent="введи целое неотрицательное число";fb.className="fb no";return;}
+  if(x.d===0n){fb.textContent="На ноль делить нельзя: такая запись не задаёт число.";fb.className="fb no";return;}
+  if(x.n<0n){fb.textContent="В действительных числах корень из отрицательного числа не определён: квадрат любого действительного числа неотрицателен.";fb.className="fb no";return;}
+  if(!fint(x)){fb.textContent="Поиск по таблице принимает целые неотрицательные числа. Корни из положительных дробей тоже существуют.";fb.className="fb no";return;}
+  const r=isqrtB(x.n);
   if(r!==null&&r>=10n&&r<=99n){sqCell(Number(r));}
   else if(r!==null){fb.textContent=`√${x.n} = ${r} (это вне таблицы, но точный квадрат)`;fb.className="fb ok";
     document.querySelectorAll("table.sq td.hl").forEach(td=>td.classList.remove("hl"));}
@@ -1050,6 +1054,7 @@ function buildLearn(){
   <div class="card" id="p3">
     <h2><span class="num">3</span>Корень из степени: показатель — пополам</h2>
     <p>${M(rt("a<sup>n</sup>")+" = a<sup>n/2</sup>")} (при a ≥ 0 и натуральном n). Почему? Потому что квадрат и корень — взаимно обратные: ${M(par("a<sup>3</sup>")+"<sup>2</sup> = a<sup>6</sup>")}, значит ${M(rt("a<sup>6</sup>")+" = a<sup>3</sup>")}.</p>
+    <p class="note">Если знак буквы неизвестен, помни: ${M(rt("x<sup>2</sup>")+" = |x|")}. Например, ${M(rt("(−3)<sup>2</sup>")+" = "+rt(9)+" = 3")}, а не −3. Условие a ≥ 0 позволяет обойтись без модуля.</p>
     <div class="tool"><div class="tl">проверь идею · введи показатель — увидишь результат</div>
       ${M(rt("5<sup>n</sup>"))} где n = <input class="ans" id="halfIn" style="width:70px" value="6">
       <button class="act" onclick="halfGo()">извлечь корень</button>
@@ -1058,7 +1063,7 @@ function buildLearn(){
     <h3>Случай 1: показатель чётный</h3>
     <p>Просто дели пополам: ${M(rt("4<sup>6</sup>")+" = 4<sup>3</sup> = 64")}. Это задачи <button type="button" class="crosslink" onclick="gotoMarathon('rootdeg')">№1</button>.</p>
     <h3>Случай 2: показатель нечётный</h3>
-    <p>Пополам не делится… но посмотри на <b>основание</b>: в ОГЭ оно всегда будет полным квадратом. ${M(rt("4<sup>3</sup>"))}: замени 4 = 2², получится ${M(rt(par("2<sup>2</sup>")+"<sup>3</sup>")+" = "+rt("2<sup>6</sup>")+" = 2<sup>3</sup> = 8")}. Это задачи <button type="button" class="crosslink" onclick="gotoMarathon('rootdeg')">№2</button>.</p>
+    <p>Пополам не делится… но посмотри на <b>основание</b>: в задачах №2 нашего банка оно является полным квадратом. ${M(rt("4<sup>3</sup>"))}: замени 4 = 2², получится ${M(rt(par("2<sup>2</sup>")+"<sup>3</sup>")+" = "+rt("2<sup>6</sup>")+" = 2<sup>3</sup> = 8")}. Это задачи <button type="button" class="crosslink" onclick="gotoMarathon('rootdeg')">№2</button>.</p>
     <h3>Случай 3: под корнем буквы</h3>
     <p>То же правило работает с каждой буквой отдельно: ${M(rt("49x<sup>8</sup>y<sup>4</sup>")+" = 7x<sup>4</sup>y<sup>2</sup>")} — корень из числа по таблице квадратов, показатели букв пополам. Потом подставляй значения. Это <button type="button" class="crosslink" onclick="gotoMarathon('letters')">№3–5 и 26–29</button>.</p>
     <div class="note">Если встретил ${M(par("−a")+"<sup>4</sup>")} — чётная степень съедает минус: ${M(par("−a")+"<sup>4</sup> = a<sup>4</sup>")}. Задачи №26 только этим и пугают.</div>
@@ -1067,12 +1072,15 @@ function buildLearn(){
   <div class="card" id="p4">
     <h2><span class="num">4</span>Корни: под один корень и обратно</h2>
     <p>Главное свойство: ${M(rt("a")+" · "+rt("b")+" = "+rt("ab"))} при a ≥ 0 и b ≥ 0. Работает в обе стороны. Для дроби ${M(fr(rt("a"),rt("b"))+" = "+rt(fr("a","b")))} при a ≥ 0 и b &gt; 0.</p>
+    <div class="note"><b>Почему нужны условия?</b> В действительных числах квадрат не бывает отрицательным, поэтому ${M(rt("−1"))} не определён. Хотя ${M(rt("(−1) · (−1)")+" = 1")}, выражение ${M(rt("−1")+" · "+rt("−1"))} не имеет значения. Сначала проверь каждый корень, затем объединяй.</div>
+    <p><b>А если ноль?</b> ${M(rt(0)+" · "+rt(4)+" = 0")} и ${M(fr(rt(0),rt(4))+" = 0")} допустимы. Но ${M(fr(rt(4),rt(0)))} и ${M(fr(rt(0),rt(0)))} не определены: ${M(rt(0)+" = 0")}, а на ноль делить нельзя. Поэтому в знаменателе нужно b &gt; 0.</p>
     <p><b>Зачем:</b> по отдельности ${M(rt(21))} и ${M(rt(14))} — страшные бесконечные дроби. А вместе: ${M(fr(rt(21)+" · "+rt(14),rt(6))+" = "+rt(fr("21 · 14","6"))+" = "+rt(49)+" = 7")}. Некрасивое стало красивым.</p>
     <div class="tool"><div class="tl">объединялка · два корня — под один</div>
       ${M(rt('<input class="ans" id="unA" style="width:70px" value="32">'))} · ${M(rt('<input class="ans" id="unB" style="width:70px" value="2">'))}
       <button class="act" onclick="uniGo()">под один корень</button>
       <button class="act sec" onclick="uniRnd()">случайная пара</button>
-      <div class="hintbox" id="unOut"></div>
+      <p class="hintbox">В этой модели вводи целые числа от 0 до 10000. Само свойство верно и для неотрицательных дробей.</p>
+      <div class="hintbox" id="unOut" aria-live="polite"></div>
     </div>
     <p><b>Совет из практики:</b> не перемножай числа в лоб. Сначала сократи с знаменателем, раскладывая на множители: ${M(fr("21 · 14","6"))} = ${M(fr("3 · 7 · 2 · 7","2 · 3"))} = 49. Оба пути дают одно и то же — иди тем, который видишь.</p>
     <p>Так решаются <button type="button" class="crosslink" onclick="gotoMarathon('prod')">№8–10, 13–14</button>.</p>
@@ -1080,7 +1088,7 @@ function buildLearn(){
 
   <div class="card" id="p5">
     <h2><span class="num">5</span>Формулы сокращённого умножения + корни</h2>
-    <p>Сначала — самое простое и самое важное: <b>корень в квадрате исчезает</b>: ${M(par(rt("a"))+"<sup>2</sup> = a")}. Например ${M(par("4"+rt(2))+"<sup>2</sup> = 16 · 2 = 32")} — и задачи <button type="button" class="crosslink" onclick="gotoMarathon('sqroot')">№6–7</button> уже решены.</p>
+    <p>Сначала — самое простое и самое важное: <b>корень в квадрате исчезает</b>: ${M(par(rt("a"))+"<sup>2</sup> = a")} при a ≥ 0. Например ${M(par("4"+rt(2))+"<sup>2</sup> = 16 · 2 = 32")} — и задачи <button type="button" class="crosslink" onclick="gotoMarathon('sqroot')">№6–7</button> уже решены.</p>
     <h3>Разность квадратов — корни исчезают парой</h3>
     <p>${M(par(rt(23)+" − 2")+par(rt(23)+" + 2")+" = "+par(rt(23))+"<sup>2</sup> − 2<sup>2</sup> = 23 − 4 = 19")}. Увидел скобки-близнецы с разными знаками — это <button type="button" class="crosslink" onclick="gotoMarathon('dsq')">№11–12</button>, решается в одну строчку.</p>
     <h3>Квадрат суммы — корни уничтожаются</h3>
@@ -1130,7 +1138,7 @@ function ladderDraw(){
   box.innerHTML=h;
   const n=document.getElementById("ladderNote");
   n.innerHTML=LE>0?`Пока всё привычно: ${M(pw(LB,LE))} — это ${LE===1?"просто "+LB:LB+" перемножили "+LE+" раз(а)"}. Спускайся ниже нуля!`
-    :LE===0?`Шаг вниз — деление на ${LB}. Из ${M(pw(LB,1)+" = "+LB)} получаем ${M(pw(LB,0)+" = 1")}. Любое число в нулевой степени — единица!`
+    :LE===0?`Шаг вниз — деление на ${LB}. Из ${M(pw(LB,1)+" = "+LB)} получаем ${M(pw(LB,0)+" = 1")}. Любое ненулевое число в нулевой степени — единица!`
     :`Продолжаем делить на ${LB} — и уходим в дроби: ${M(pw(LB,LE)+" = "+fr(1,pw(LB,-LE)))}. Отрицательная степень = перевёрнутая положительная.`;
 }
 /* --- разворачивалка правил --- */
@@ -1154,15 +1162,18 @@ window.halfGo=function(){
   if(!x||!fint(x)||x.n<1n||x.n>12n){o.innerHTML="возьми целый показатель от 1 до 12";return;}
   const n=Number(x.n);
   if(n%2===0){o.innerHTML=`${M(rt("5<sup>"+n+"</sup>")+" = 5<sup>"+(n/2)+"</sup>")} — показатель пополам. Проверка: ${M(par("5<sup>"+(n/2)+"</sup>")+"<sup>2</sup> = 5<sup>"+n+"</sup>")} ✓`;}
-  else{o.innerHTML=`${n} — нечётный, пополам не делится. С основанием 5 корень «красиво» не берётся: ${M(rt("5<sup>"+n+"</sup>")+" = 5<sup>"+((n-1)/2)+"</sup>"+rt(5))}. В ОГЭ при нечётном показателе основание всегда будет полным квадратом (4, 9, 16, 25) — тогда работает случай 2 ниже.`;}
+  else{o.innerHTML=`${n} — нечётный, пополам не делится. С основанием 5 корень «красиво» не берётся: ${M(rt("5<sup>"+n+"</sup>")+" = 5<sup>"+((n-1)/2)+"</sup>"+rt(5))}. В задачах №2 нашего банка основание — полный квадрат (4, 9, 16, 25); для них работает случай 2 ниже.`;}
 };
 /* --- объединялка корней --- */
 window.uniGo=function(){
   const o=document.getElementById("unOut");
   const a=parseAns(document.getElementById("unA").value),b=parseAns(document.getElementById("unB").value);
-  if(!a||!b||!fint(a)||!fint(b)||a.n<1n||b.n<1n||a.n>10000n||b.n>10000n){o.innerHTML="введи два натуральных числа";return;}
+  if(!a||!b){o.textContent="Введи два числа. В этой модели можно использовать целые числа от 0 до 10000.";return;}
+  if(a.d===0n||b.d===0n){o.textContent="На ноль делить нельзя: такая запись не задаёт число.";return;}
+  if(a.n<0n||b.n<0n){o.textContent="Объединять нельзя: корень из отрицательного числа не определён в действительных числах. Даже если произведение положительно, сначала должны существовать оба корня.";return;}
+  if(!fint(a)||!fint(b)||a.n>10000n||b.n>10000n){o.textContent="В этой модели вводи целые числа от 0 до 10000. Это ограничение модели: свойство верно для любых неотрицательных чисел, в том числе дробей.";return;}
   const P=a.n*b.n,r=isqrtB(P);
-  o.innerHTML=`${M(rt(String(a.n))+" · "+rt(String(b.n))+" = "+rt(a.n+" · "+b.n)+" = "+rt(String(P)))}${r!==null?M(" = "+r)+` — полный квадрат, корень взялся!`:` — не полный квадрат: так и останется ${M(rt(String(P)))}. Подбери пару, чтобы произведение стало квадратом (например ${a.n} и ${a.n}).`}`;
+  o.innerHTML=`${M(rt(String(a.n))+" · "+rt(String(b.n))+" = "+rt(a.n+" · "+b.n)+" = "+rt(String(P)))}${r!==null?M(" = "+r)+` — полный квадрат, корень взялся!`:` — не полный квадрат: целого ответа нет; корень иногда можно упростить. Подбери пару, чтобы произведение стало квадратом (например ${a.n} и ${a.n}).`}`;
 };
 window.uniRnd=function(){
   const pairs=[[32,2],[27,3],[8,2],[18,2],[12,3],[50,2],[20,5],[48,3],[45,5],[24,6]];
