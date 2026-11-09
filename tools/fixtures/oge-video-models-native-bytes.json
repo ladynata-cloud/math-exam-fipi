@@ -1,0 +1,57 @@
+{
+  "baseCommit": "89ee66bfe5068f16364d61d091fcbf1a1cbd6287",
+  "closedPreview": {
+    "tasks": [24, 25],
+    "lesson": "midpoints-common-circle",
+    "selector": "#oge-video-models:not([open]) [data-ovm-preview] > svg",
+    "stage": "prediction",
+    "svgSha256": "94583dec723bec6767c5cdd50b506488241f0057a4e87e39cd0ec7ac3c36d2d6"
+  },
+  "pages": {
+    "trainers/oge-task11-graphs-trainer.html": {
+      "task": 11,
+      "bookId": "54",
+      "sha256": "1fc5b5736e68acfb289a97b2409a7f646ffad3ed11edc39a30b58a823e265b37"
+    },
+    "trainers/oge-task15-triangles.html": {
+      "task": 15,
+      "bookId": null,
+      "sha256": "178fc56c9e4d85748d15aaafa4b1014c93cbd1fb06886192a3b89675dbcd3f4b"
+    },
+    "trainers/oge-task16-circle.html": {
+      "task": 16,
+      "bookId": "58",
+      "sha256": "49b6d157d6c761bf32b66d90f6ae72ed37f1c6c3013dc495a9d5825fbafdb4f3"
+    },
+    "trainers/oge-task17-quadrilaterals.html": {
+      "task": 17,
+      "bookId": "59",
+      "sha256": "3898882b0ce1d2d07726f76b3c06b99e30633ec43f3337f9991fc6e3fdace4da"
+    },
+    "trainers/task19-trainer.html": {
+      "task": 19,
+      "bookId": "71",
+      "sha256": "3905ffd479be02fe22cdf055cd369a45489ddef93670f22baefff28675ca1627"
+    },
+    "trainers/oge-task22-functions-graphs.html": {
+      "task": 22,
+      "bookId": "63",
+      "sha256": "9771dd1793c417e79560f9cd9f87c86235fb7eaecc0a576217edfdc196dedfc5"
+    },
+    "trainers/oge-task23-geometry-calculations.html": {
+      "task": 23,
+      "bookId": "64",
+      "sha256": "fd8b989f973f6b1aaa11f3ce6f32e54ce83f4fdb570932979237a70652b1bdd0"
+    },
+    "trainers/oge-task24-proofs.html": {
+      "task": 24,
+      "bookId": "65",
+      "sha256": "4d97b6eaac4fceb689d60a5d42b76396c36bbda30d0ecba60254a7db7b032589"
+    },
+    "trainers/oge-task25-geometry.html": {
+      "task": 25,
+      "bookId": "66",
+      "sha256": "8029dbb18448c3ee3253349fb4c21dbadfbd3e6edf0420ae73ae19a6e4cc406a"
+    }
+  }
+}

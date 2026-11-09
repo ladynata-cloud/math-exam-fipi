@@ -45,7 +45,9 @@ class GeneratorTests(unittest.TestCase):
         # Main 30e1af62 adds exactly four course-map dependencies, checked below.
         # The course guide adds exactly two local assets, checked below.
         # This is the future candidate closure; published v1/v2 stay immutable.
-        self.assertEqual(len(first), 234)
+        # Video-model investigations add exactly four self-contained local assets.
+        # PR525 adds one all-topics stylesheet, with its exact closure checked below.
+        self.assertEqual(len(first), 239)
         self.assertEqual(first[edition.prefix + "assets/math-home.css"],
                          (ROOT / "assets/math-home.css").read_bytes())
         # The navigation-only continuation adds exactly these two dependencies.
@@ -123,11 +125,100 @@ class GeneratorTests(unittest.TestCase):
         original_read = Path.read_bytes
         with patch.object(Path, "read_bytes", lambda path: raw if path == ROOT / entry else original_read(path)):
             previous, previous_manifest = builder.build(edition)
-        self.assertEqual(len(previous), 232)
+        # The independent video-model additions remain in the no-guide candidate.
+        self.assertEqual(len(previous), 237)
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
         self.assertEqual(set(sources) - old_sources, reviewed)
+        self.assertEqual(old_sources - set(sources), set())
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
+
+    def test_video_models_add_only_four_dependencies_and_preserve_prior_closure(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        entries = {
+            11: "trainers/oge-task11-graphs-trainer.html",
+            15: "trainers/oge-task15-triangles.html",
+            16: "trainers/oge-task16-circle.html",
+            17: "trainers/oge-task17-quadrilaterals.html",
+            19: "trainers/task19-trainer.html",
+            22: "trainers/oge-task22-functions-graphs.html",
+            23: "trainers/oge-task23-geometry-calculations.html",
+            24: "trainers/oge-task24-proofs.html",
+            25: "trainers/oge-task25-geometry.html",
+        }
+        reviewed = {"trainers/oge-video-models.css", "trainers/oge-video-graphs.js",
+                    "trainers/oge-video-geometry.js", "trainers/oge-video-models.js"}
+        sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        old_html = {}
+        for number, entry in entries.items():
+            block = ('<!-- OGE video-model investigations: standalone practice -->\n'
+                     '<link rel="stylesheet" href="oge-video-models.css">\n'
+                     '<script defer src="oge-video-graphs.js"></script>\n'
+                     '<script defer src="oge-video-geometry.js"></script>\n'
+                     f'<script defer src="oge-video-models.js" data-oge-video-task="{number}"></script>\n')
+            raw = (ROOT / entry).read_bytes()
+            self.assertEqual(raw.count(block.encode()), 1)
+            self.assertIn(block.encode() + b"</head>", raw)
+            old_html[ROOT / entry] = raw.replace(block.encode(), b"", 1)
+            if number == 15:
+                # The established 71-entry book maps no source to this newer
+                # standalone trainer; adding lessons must not expand its routes.
+                self.assertNotIn(entry, sources)
+                continue
+            self.assertTrue(reviewed.issubset(sources[entry]["dependencies"]))
+            page = output[edition.prefix + entry].decode()
+            bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
+            self.assertEqual(page.count(bootstrap), 1)
+            for asset in reviewed:
+                frozen = '/' + edition.prefix + asset
+                self.assertEqual(page.count(frozen), 1)
+                self.assertLess(page.index(bootstrap), page.index(frozen))
+        for asset in reviewed:
+            self.assertEqual(sources[asset]["dependencies"], [], asset + ": no hidden dependencies")
+            self.assertEqual(sources[asset]["sha256"], hashlib.sha256((ROOT / asset).read_bytes()).hexdigest())
+            self.assertEqual(output[edition.prefix + asset], (ROOT / asset).read_bytes())
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: old_html[path] if path in old_html else original_read(path)):
+            previous, previous_manifest = builder.build(edition)
+        self.assertEqual(len(previous), 235, "the guide/map package with the reviewed all-topics stylesheet is recovered")
+        self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
+        self.assertEqual(set(previous) - set(output), set())
+        old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
+        self.assertEqual(set(sources) - old_sources, reviewed)
+        self.assertEqual(old_sources - set(sources), set())
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
+
+    def test_all_topics_adds_only_its_stylesheet_and_preserves_prior_closure(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        entry = "trainers/oge-course/index.html"
+        asset = "assets/oge-all-topics.css"
+        tag = '<link rel="stylesheet" href="/assets/oge-all-topics.css?v=20261110">'
+        raw = (ROOT / entry).read_bytes()
+        self.assertEqual(raw.count(tag.encode()), 1, "exact reviewed all-topics include")
+        sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        self.assertIn(asset, sources[entry]["dependencies"])
+        self.assertEqual(sources[asset]["dependencies"], [], "no hidden stylesheet dependencies")
+        self.assertEqual(sources[asset]["sha256"], hashlib.sha256((ROOT / asset).read_bytes()).hexdigest())
+        self.assertEqual(output[edition.prefix + asset], (ROOT / asset).read_bytes())
+        page = output[edition.prefix + entry].decode()
+        bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
+        frozen = '/' + edition.prefix + asset + '?v=20261110'
+        self.assertEqual(page.count(bootstrap), 1)
+        self.assertEqual(page.count(frozen), 1)
+        self.assertNotIn('"/' + asset, page)
+        self.assertLess(page.index(bootstrap), page.index(frozen))
+        previous_raw = raw.replace(tag.encode(), b"", 1)
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: previous_raw if path == ROOT / entry else original_read(path)):
+            previous, previous_manifest = builder.build(edition)
+        self.assertEqual(len(previous), 238, "removing only the reviewed stylesheet restores the prior closure")
+        self.assertEqual(set(output) - set(previous), {edition.prefix + asset})
+        self.assertEqual(set(previous) - set(output), set())
+        old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
+        self.assertEqual(set(sources) - old_sources, {asset})
         self.assertEqual(old_sources - set(sources), set())
         self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
 

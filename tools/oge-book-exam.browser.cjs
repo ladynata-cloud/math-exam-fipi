@@ -5,6 +5,8 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const videoContext=require('./oge-video-models-book-context.cjs');
+const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -69,6 +71,17 @@ async function captureInitialVisibleText(page,report){
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
+ const relative=path.relative(ROOT,file);
+ if(videoContext.pins.pages[relative]){
+  const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
+   const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
+   return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};
+  });
+  // Preserve both complete visible snapshots above. The independent verifier
+  // may invert only this separately recorded, source-bound closed summary.
+  report.videoModelContext=videoContext.receipt({file:relative,raw,id:report.id,prefix:report.prefix,visible:report.initialVisibleText,dom,
+   assetHashes:Object.fromEntries(videoAssets.map(asset=>['/'+asset,videoContext.hash(fs.readFileSync(path.join(ROOT,asset)))]))});
+ }
 }
 
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
@@ -92,7 +105,18 @@ async function numeric(p,r,cfg){
   if(cfg.save===false)record(r,'saved-result','NA',{reason:'Standalone worked example; no promised progress record.'});else if(!cfg.deferSave)await saved(p,r,before,cfg.storageFilter||/mathExam|mathexam|oge|task|progress/i);
   record(r,'session-completion',cfg.session||'NA',{reason:cfg.sessionReason||'Selected practice presents individual questions; other exam/quiz modes are outside this case.',scope:cfg.mode||'default practice'});
 }
-async function diagrams(p,r){r.visibleSvgLabels=await p.locator('svg').evaluateAll(nodes=>nodes.filter(n=>n.getClientRects().length).map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})));}
+async function diagrams(p,r){
+ // Keep the historical raw collector intact. Closed details can still produce
+ // client rects; attest only the known addon preview separately for comparison.
+ const captured=await p.locator('svg').evaluateAll(nodes=>{
+  const selected=nodes.filter(n=>n.getClientRects().length),selector='#oge-video-models:not([open]) [data-ovm-preview] > svg';
+  return {rows:selected.map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})),
+   addon:selected.flatMap((n,index)=>{const shell=n.closest('#oge-video-models');if(!shell)return [];const host=n.closest('[data-ovm-lesson]');return [{index,selector:n.matches(selector)?selector:'unreviewed',lesson:host?.dataset.ovmLesson,stage:host?.dataset.ovmStage,closed:!shell.hasAttribute('open'),hidden:!n.checkVisibility()}];})};
+ });
+ r.visibleSvgLabels=captured.rows;
+ if(r.videoModelContext)r.videoModelContext.closedSvg=videoContext.geometryReceipt(r.videoModelContext,captured.rows,captured.addon);
+ else assert.equal(captured.addon.length,0,'no unbound addon geometry');
+}
 async function scenario(p,r){
  const route=r.route;
  if(route.includes('task-15-external'))return numeric(p,r,{input:'#ocg15-answer',feedback:'.ocg-feedback',hint:'#hintPanel > summary',panel:'#hintPanel',answers:38,prompt:'.ocg-primary-figure',save:false,mode:'single external-angle exercise, 180−142=38'});
