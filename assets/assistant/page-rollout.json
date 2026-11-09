@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d52a0503057062baf04ef1e2724dcbfdafc84789",
+  "baseSha": "7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4232,7 +4232,7 @@
     },
     {
       "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
-      "sourceBaseSha": "d52a0503057062baf04ef1e2724dcbfdafc84789",
+      "sourceBaseSha": "7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5",
       "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
       "changedPaths": [
         "ege-baza/index.html",
@@ -4269,7 +4269,7 @@
       "reason": "New original VPR course and seven-route catalogue in the approved task; exact existing navigator pair bound to the committed source."
     },
     {
-      "sourceBaseSha": "d52a0503057062baf04ef1e2724dcbfdafc84789",
+      "sourceBaseSha": "7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5",
       "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
       "addedPages": [
         "ege-baza/topics/izmenenie-tseny-procenty/index.html",

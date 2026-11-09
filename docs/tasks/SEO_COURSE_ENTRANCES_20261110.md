@@ -45,3 +45,5 @@ START, branch, commit, push and Draft PR: yes. Merge/deploy: standing owner auth
 - CI and publication are pending; final PR records exact tested head and public verification.
 
 - Navigator gate required the existing navigation widget on the nine new sitemap pages. Added the exact unchanged include pair, source-bound to d52a0503057062baf04ef1e2724dcbfdafc84789; updated coverage 557→567, 9 new pages plus already-covered EGE catalogue. No exclusions or gate assertions were relaxed.
+
+- HTTPS Git push had no CLI credential. The authenticated GitHub connector created source commit `7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5`, whose tree exactly equals the locally validated tree. Navigator receipts now reference this accessible public source commit; historical receipts from main remain intact. The final manifest update is a child commit, with no force operation.
