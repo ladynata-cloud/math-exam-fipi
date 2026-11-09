@@ -640,7 +640,7 @@ root.SpaceViewer={mount};})(window);
       const borderX = (parseFloat(style?.borderLeftWidth) || 0) + (parseFloat(style?.borderRightWidth) || 0);
       const borderY = (parseFloat(style?.borderTopWidth) || 0) + (parseFloat(style?.borderBottomWidth) || 0);
       viewportWidth = svg.clientWidth || (bounds.width > borderX ? bounds.width - borderX : 420);
-      viewportHeight = Math.max(options.compact&&viewportWidth<480?220:360, Math.min(680, viewportWidth * .76));
+      viewportHeight = options.compact ? Math.max(220, Math.min(310, viewportWidth * .76)) : Math.max(360, Math.min(680, viewportWidth * .76));
       svg.style.height = (viewportHeight + borderY) + 'px';
       svg.setAttribute('viewBox', '0 0 ' + viewportWidth + ' ' + viewportHeight);
       render();
@@ -1223,7 +1223,7 @@ case'section':{
   const target=forward?next:previous, pair=forward?'MN':'MP', pairCode=forward?1:2, edgeCode=names.indexOf(missing)+1;
   return {
    ...task(
-    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две точки сечения MNP лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
+    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две из этих точек лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
     [pairCode,edgeCode],
     [
      step('Какие две отмеченные точки лежат на указанной грани? Введи номер пары.',pairCode,'Обе точки лежат на вертикальных рёбрах с нижними концами '+anchor+' и '+target+'. Соедини '+pair+' на этой грани.'),

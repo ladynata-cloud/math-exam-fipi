@@ -14,7 +14,7 @@ case'section':{
   const target=forward?next:previous, pair=forward?'MN':'MP', pairCode=forward?1:2, edgeCode=names.indexOf(missing)+1;
   return {
    ...task(
-    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две точки сечения MNP лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
+    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две из этих точек лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
     [pairCode,edgeCode],
     [
      step('Какие две отмеченные точки лежат на указанной грани? Введи номер пары.',pairCode,'Обе точки лежат на вертикальных рёбрах с нижними концами '+anchor+' и '+target+'. Соедини '+pair+' на этой грани.'),

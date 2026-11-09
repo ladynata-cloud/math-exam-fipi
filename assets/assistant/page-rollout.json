@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+  "baseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -448,8 +448,8 @@
       "placement": "before-head-close"
     },
     "equations/index.html": {
-      "beforeSha256": "bf03dec8b3c3b6a6d791756f7532c12d1a62f1695c3edb2642068e8fe87ed329",
-      "afterSha256": "6d43359c2a9a408320a76f82811af63527305186c05e649a0657ff90e737f3f8",
+      "beforeSha256": "4a48e546aad426c305691a297de62227e4a95a44ff1fa7975f27f3a7244659bf",
+      "afterSha256": "47399e548333733b45702970a7fc8b74e40c0285164dfefc414463295dd25d80",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "cca49e7eb80bf1514832d1b3a961ab09690b3c9723b43dc03b32e0355630e2cc",
-      "afterSha256": "240204e8683ede87906aff7d222b733dfb715435e9922333999f1e4debdbb967",
+      "beforeSha256": "9c90f12253c1321eea974cc77ce00807fffff583f8c1ccd6908ff29b530d663e",
+      "afterSha256": "72906a91a8f51445c9789b8e99cfa0a010a62dc143ad7a16373c4d837a646496",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3959,6 +3959,16 @@
       "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
       "changedPaths": [
         "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+      "sourceBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "task": "docs/tasks/LINEAR_PILOT_GUIDED_BASICS.md",
+      "changedPaths": [
+        "equations/index.html",
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
