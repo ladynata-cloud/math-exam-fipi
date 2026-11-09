@@ -72,4 +72,13 @@ function restoreRootAcceptance(source, scope = 'all') {
   }
   return result;
 }
-module.exports = { restoreRootAcceptance };
+// This CSS-only follow-up belongs to the full-page guard, never the inline
+// engine normalization. Keep the previous page baseline byte for byte.
+const anchorLayout = '/* Explanation anchors clear the sticky desktop header; mobile header is static. */\n'
+  + '#view-learn > .card{scroll-margin-top:10rem}\n'
+  + '@media(max-width:640px){#view-learn > .card{scroll-margin-top:12px}}\n';
+function restoreRootAnchorLayout(source) {
+  assert.equal(source.split(anchorLayout).length, 2, 'exact reviewed anchor layout fragment must occur once');
+  return source.replace(anchorLayout, '');
+}
+module.exports = { restoreRootAcceptance, restoreRootAnchorLayout };
