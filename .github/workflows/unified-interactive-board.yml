@@ -1,0 +1,55 @@
+name: Unified interactive board
+on:
+  pull_request:
+    paths:
+      - 'board-server/**'
+      - 'trainers/group-*'
+      - 'trainers/spacemath/**'
+      - 'trainers/board-bridge.js'
+      - 'tools/unified-*'
+      - 'tools/group-board.browser.cjs'
+      - 'tools/spacemath/**'
+      - 'Dockerfile'
+      - '.github/workflows/unified-interactive-board.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: unified-interactive-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  group-and-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and browser tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/unified-board-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/unified-board-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/unified-board-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Full server contracts
+        run: npm --prefix board-server test
+      - name: Geometry, local assets and bridge
+        run: node --test trainers/spacemath/model.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/unified-frame.test.cjs
+      - name: Existing eight-learner regression
+        run: node tools/group-board.browser.cjs
+      - name: Independent materials, handoff and restoration
+        env:
+          UNIFIED_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-board-artifacts
+        run: node tools/unified-board.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: unified-board-browser
+          path: ${{ runner.temp }}/unified-board-artifacts
+          if-no-files-found: ignore
+          retention-days: 7

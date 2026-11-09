@@ -7,6 +7,7 @@ RUN npm ci --omit=dev --include=optional
 
 COPY board-server/ ./
 COPY trainers/board-compat.json /app/trainers/board-compat.json
+COPY trainers/spacemath/model.js /app/trainers/spacemath/model.js
 COPY learning/ /app/learning/
 COPY trainers/oge-task11-graphs-trainer.html trainers/oge-task15-triangles.html trainers/oge-task16-circle.html trainers/oge-task17-quadrilaterals.html trainers/oge-task18-grid.html trainers/task19-visual-data.js trainers/task19-board-session.js trainers/task19-visual-models.js trainers/task19-reference.js trainers/task19-models-triangles.js trainers/task19-models-circles.js trainers/task19-models-lines-polygons.js /app/trainers/
 COPY assistant-service/package.json /app/assistant-service/package.json
