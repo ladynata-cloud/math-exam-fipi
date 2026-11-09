@@ -22,6 +22,7 @@
 - Чтение существующих форматов без миграции/изменения результатов; явное различение активности и освоения.
 - Возвращение к недавней теме по проверенным датам активности или отдельной сохранённой ссылке.
 - Доступные ссылки без JavaScript, адаптивная карта, целевые регрессии и независимый обзор.
+- Точное обновление контрольной записи страницы в assets/assistant/page-rollout.json по проверенному исходному коммиту; проверки сохранности навигатора остаются неизменными.
 ### Out of scope
 - Новые генераторы, переоценка старых результатов, синхронизация с кабинетом, изменение авторизации, серверов или общих протоколов.
 - Новая диагностика, алгоритм подтверждения освоения, новые уроки и переработка подсказок — последующие самостоятельные пакеты.
@@ -34,8 +35,8 @@
 - [x] Открытие/переход не создаёт решённого задания и не меняет существующую историю.
 - [x] Подсказки/старый passed/начатая тема не объявляются самостоятельным освоением.
 - [x] Повреждённое или заблокированное хранилище не блокирует обучение.
-- [ ] Обновление результатов при возврате, на другом табе и после перезагрузки; безопасная точка продолжения.
-- [ ] Проверены 320/390/768/1280 px, клавиатура и режим без JavaScript.
+- [x] Обновление результатов при возврате, на другом табе и после перезагрузки; безопасная точка продолжения.
+- [x] Проверены 320/390/768/1280 px, клавиатура и режим без JavaScript.
 
 ## Checks and gates
 - Model and DOM: tools/oge-learning-map.test.cjs; oge/tests; navigation/learner-entry preservation gates.
@@ -63,3 +64,10 @@
 ## Execution record
 - Validation and exact release identity: recorded in the task PR.
 - Failures and unavailable checks must be reported explicitly.
+
+## Verified candidate evidence
+- Head f8e57150dcd939f7cbd3c3974bad4b2f486bb297: 13 new DOM/model tests; 6 navigation tests; learner-entry and focus-navigation gates; OGE registry/adapters/junk suite all PASS.
+- Independent HIGH source review: PASS after malformed-data, focus and №6 format corrections.
+- Chromium workflow 42577827217: PASS at 320/390/768/1280 px; keyboard, actual links, continuation, cross-tab refresh, no-JS, denied storage. Downloaded screenshots visually reviewed.
+- Initial navigator gate failed on the intentionally changed HTML checksum. Refreshed only that reviewed source binding through the established tool; unmodified preservation tests 4/4 and binding negative controls 5/5 pass.
+- Final candidate CI and production evidence are recorded in PR #494; no pupil learning-effect study or authenticated cabinet synchronization is claimed.
