@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+  "baseSha": "914d78e35d8d306a85705efa1836ee0ec8db0969",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3083,8 +3083,8 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "a6a0f933a62f662c6123fa965d77707a9aec7788f6ff3bf991fdcb94748fd414",
-      "afterSha256": "36d13799bddb3faf25eafe02b09658dca32dea592e5a4df26018218b514cd797",
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3959,6 +3959,15 @@
       "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
       "changedPaths": [
         "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+      "sourceBaseSha": "914d78e35d8d306a85705efa1836ee0ec8db0969",
+      "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
+      "changedPaths": [
+        "trainers/vpr-math/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
