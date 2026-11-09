@@ -35,6 +35,8 @@ const localScripts = [
   'oge-course-shared-mode.js?v=20261025',
   'board-bridge.js',
   'oge-foundation-board.js?v=20261025',
+  'oge-active-learning-data.js?v=20261109',
+  'oge-active-learning.js?v=20261109',
 ];
 const inlineScripts = scripts.filter(([, attributes]) => !/\bsrc\s*=/i.test(attributes));
 assert.equal(inlineScripts.length, 1, 'Exactly one native inline script');
@@ -42,6 +44,8 @@ assert.deepEqual(scripts.map(([, attributes]) => attributes.trim()), [
   'src="' + localScripts[0] + '"',
   'defer src="/assets/assistant/navigator-data.js?v=20261105-site1"',
   'defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"',
+  'defer src="' + localScripts[3] + '"',
+  'defer src="' + localScripts[4] + '" data-oa-task="6"',
   '',
   'src="' + localScripts[1] + '"',
   'src="' + localScripts[2] + '"',
@@ -512,11 +516,14 @@ test('summary gives disjoint counts for current order and all-skipped truth', ()
     { first: 0, retry: 0, revealed: 0, skipped: 0, unseen: 0, independent: 0, total: 0 });
 });
 
-test('native trainer remains offline with only the reviewed local board integration', () => {
+test('native trainer remains offline with only the exact reviewed local integrations', () => {
   for (const source of localScripts) {
-    assert.match(source, /^[a-z0-9-]+\.js(?:\?v=20261025)?$/, 'Script paths stay local with only the reviewed version query');
+    if (!['oge-active-learning-data.js?v=20261109', 'oge-active-learning.js?v=20261109'].includes(source))
+      assert.match(source, /^[a-z0-9-]+\.js(?:\?v=20261025)?$/, 'Script paths stay local with only the reviewed version query');
     assert.ok(fs.statSync(path.join(root, 'trainers', source.split('?')[0])).isFile(), source);
   }
+  assert.equal(html.split('<link rel="stylesheet" href="oge-active-learning.css?v=20261109">').length, 2,
+    'Exactly one reviewed local teaching stylesheet');
   // Current main already carries canonical SEO metadata. It does not load a
   // resource; every other remote link (stylesheet, preload, etc.) stays banned.
   for (const [tag] of html.matchAll(/<link\b[^>]*>/gi)) {
