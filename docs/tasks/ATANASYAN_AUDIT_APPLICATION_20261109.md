@@ -50,3 +50,23 @@ Risks are changed condition identity, stale browser state, incorrect help attrib
 ## Execution record
 
 Implementation and exact coverage are recorded in the resulting PR and review. Until checks and deployment are verified, this document does not declare the changes published.
+
+### Reload-gate correction, 10 November 2026
+
+The failed `task-feedback.browser.cjs` assertion was reproduced on head
+`551e3439665a65029b3e8376a7393a4f5a2c7b2b`. In a diagnostic installed before
+application scripts, Chromium returned an empty `localStorage` area after a
+`file://` reload: the course key was `null` and there were no storage keys.
+Before the reload, the synthetic learner's unfinished `1/` and earlier topics
+were present. The application therefore started with no saved input; this is
+not evidence of a runtime serializer deleting a learner answer on the website.
+The unchanged generated lesson completed all 78 journeys at 320/1280 widths
+when served on a stable web origin.
+
+The browser gate now serves the exact generated files from a loopback HTTP
+origin, matching the site's storage-origin contract. All existing assertions
+remain, with additional checks for the stored draft before and after reload
+and unchanged work in every earlier topic. No runtime code, saved-work schema,
+storage key, expected answer, retry or timeout is changed. The single-file
+lesson and the existing file-based offline checks remain available; the gate
+does not promise browser-independent persistence for `file://` URLs.
