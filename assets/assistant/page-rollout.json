@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+  "baseSha": "31f790ea228432b4845064cfba40f41c10874690",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "9c90f12253c1321eea974cc77ce00807fffff583f8c1ccd6908ff29b530d663e",
-      "afterSha256": "72906a91a8f51445c9789b8e99cfa0a010a62dc143ad7a16373c4d837a646496",
+      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
+      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3978,6 +3978,15 @@
       "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
       "changedPaths": [
         "trainers/vpr-math/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "sourceBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
+      "task": "docs/tasks/OGE_LEARNING_MAP_20261109.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
