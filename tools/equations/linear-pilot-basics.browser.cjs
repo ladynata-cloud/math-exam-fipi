@@ -68,6 +68,7 @@ async function walkthrough(browser, base, width) {
     assert.equal(await page.locator('#basics-count').innerText(), `0 из ${scenes.length} шагов`);
     assert.equal(await page.locator('#advanced-count').innerText(), '0 из 4 занятий');
     await assertFit(page, ['[data-basics="begin"]']);
+    await page.screenshot({ path: path.join(artifacts, `basics-welcome-${width}.png`) });
     await action(page, 'begin').click();
     assert.equal(await screen.getAttribute('data-phase'), 'lesson');
     await page.evaluate(() => scrollTo(0, 0));
@@ -114,6 +115,14 @@ async function walkthrough(browser, base, width) {
         await action(page, 'hint').click();
         assert.ok((await screen.innerText()).includes(hint));
         await assertFit(page, ['#basics-hint']);
+        if (index === 2) {
+          await page.screenshot({ path: path.join(artifacts, `basics-balance-hint-${width}.png`) });
+          await action(page, 'experiment').click();
+          assert.equal(await page.locator('[data-basics-balance]').getAttribute('data-tilt'), '0');
+          assert.match(await screen.innerText(), /После того как слева сняли 2/);
+          await action(page, 'experiment').click();
+          assert.equal(await page.locator('[data-basics-balance]').getAttribute('data-tilt'), '1');
+        }
         if (!errorAndHintChecked) {
           const wrong = options.findLastIndex((_, index) => index !== correct);
           assert.equal(await screen.getAttribute('data-scene'), String(index));
@@ -135,6 +144,11 @@ async function walkthrough(browser, base, width) {
           errorAndHintChecked = true;
         }
         await choice(correct).click();
+        if (index === 2) {
+          assert.match(await feedback.innerText(), /Теперь снимем 2 справа/);
+          await assertFit(page, ['#basics-feedback']);
+          await page.screenshot({ path: path.join(artifacts, `basics-balance-correct-${width}.png`) });
+        }
         assert.ok((await feedback.innerText()).includes(scene.question.success));
         await assertFit(page, ['#basics-feedback']);
       }
