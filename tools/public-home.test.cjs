@@ -49,11 +49,12 @@ test('embedded trainers and frozen editions retain their existing navigation', (
   assert.equal(dom.window.document.querySelector('iframe').contentDocument.querySelector('#mathexam-home-navigation'), null);
   dom.window.close();
 });
-test('centered flex-row trainer retains one body layout column', () => {
+test('centered flex-row trainer retains one body layout column without shifting its first task', () => {
   const dom = page('/trainers/example.html', '<body style="display:flex;flex-direction:row"><main><input id="answer" value="42"></main></body>');
   mount(dom.window);
   assert.equal(dom.window.document.body.children.length, 1);
-  assert.equal(dom.window.document.querySelector('main').firstElementChild.id, 'mathexam-home-navigation');
+  assert.equal(dom.window.document.querySelector('main').firstElementChild.id, 'answer');
+  assert.equal(dom.window.document.querySelector('main').lastElementChild.id, 'mathexam-home-navigation');
   dom.window.close();
 });
 test('lessons logos and explicit menu return home even when its fragment is opened', () => {
