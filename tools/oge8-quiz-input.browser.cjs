@@ -17,6 +17,8 @@ const lessonKey = 'oge-t8-stepeni';
 const output = path.resolve(process.env.SCREENSHOT_DIR || 'artifacts/oge8-quiz-input');
 const expectedHash = process.env.OGE8_EXPECT_SHA256 || crypto.createHash('sha256')
   .update(fs.readFileSync(path.join(root, route))).digest('hex');
+const utf8Bom = Buffer.from([0xef, 0xbb, 0xbf]);
+const withoutLeadingBom = bytes => bytes.subarray(0, 3).equals(utf8Bom) ? bytes.subarray(3) : bytes;
 fs.mkdirSync(output, { recursive: true });
 
 // A renderer regression may loop synchronously. Bound the whole process as well
@@ -69,6 +71,11 @@ async function layout(page, tag) {
       const local = await serve(); server = local.server; base = local.base;
     }
     const url = new URL(route, base).href;
+    const rawResponse = await fetch(url, { signal: AbortSignal.timeout(20000) });
+    assert(rawResponse.ok, 'raw HTTP lesson loads successfully');
+    const rawBytes = Buffer.from(await rawResponse.arrayBuffer());
+    const actualHash = crypto.createHash('sha256').update(rawBytes).digest('hex');
+    assert.equal(actualHash, expectedHash, 'raw HTTP response has the reviewed lesson bytes');
     browser = await chromium.launch({ headless: true });
     for (const width of [320, 360, 1280]) {
       const mobile = width < 640;
@@ -82,8 +89,11 @@ async function layout(page, tag) {
       try {
         const response = await page.goto(url);
         assert(response && response.ok(), 'lesson loads successfully');
-        const actualHash = crypto.createHash('sha256').update(await response.body()).digest('hex');
-        assert.equal(actualHash, expectedHash, 'browser receives the reviewed lesson bytes');
+        const browserBytes = await response.body();
+        const browserBodySHA256 = crypto.createHash('sha256').update(browserBytes).digest('hex');
+        // Chromium's text response body may omit one leading UTF-8 BOM. Keep
+        // the raw SHA gate above and permit only that encoding difference.
+        assert.deepEqual(withoutLeadingBom(browserBytes), withoutLeadingBom(rawBytes), 'browser receives the reviewed lesson content');
         await page.waitForFunction(() => document.documentElement.dataset.ogeAlgebraExperience === 'ready');
         assert.equal(await snapshot(page), null, 'fresh isolated context has no pupil progress');
 
@@ -180,7 +190,7 @@ async function layout(page, tag) {
         assert.equal(await snapshot(page), afterQuiz, 'quiz and solved task survive browser reload');
         assert.equal((await record(page)).runs, 1);
         assert.deepEqual(errors, [], 'no uncaught JavaScript errors');
-        evidence.push({ width, height: 900, mobile, url, htmlSHA256: actualHash, rootLookup: { squareDigits: square.length, rootDigits: squareRoot.length, exact: true, hugeSquareLayout, rootFeedback }, rejected, invalidLayout, summaryLayout, quizRows: 10, savedTaskCount: 1, quizRuns: 1, duplicateSubmitPrevented: true, nativeReloads: 2, errors });
+        evidence.push({ width, height: 900, mobile, url, htmlSHA256: actualHash, browserBodySHA256, rootLookup: { squareDigits: square.length, rootDigits: squareRoot.length, exact: true, hugeSquareLayout, rootFeedback }, rejected, invalidLayout, summaryLayout, quizRows: 10, savedTaskCount: 1, quizRuns: 1, duplicateSubmitPrevented: true, nativeReloads: 2, errors });
         fs.writeFileSync(path.join(output, 'results.json'), JSON.stringify(evidence, null, 2) + '\n');
       } finally { await context.close(); }
     }
