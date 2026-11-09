@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d13657c1e00c3972990d587432e500c21cd43d03",
+  "baseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -448,8 +448,8 @@
       "placement": "before-head-close"
     },
     "equations/index.html": {
-      "beforeSha256": "bf03dec8b3c3b6a6d791756f7532c12d1a62f1695c3edb2642068e8fe87ed329",
-      "afterSha256": "6d43359c2a9a408320a76f82811af63527305186c05e649a0657ff90e737f3f8",
+      "beforeSha256": "4a48e546aad426c305691a297de62227e4a95a44ff1fa7975f27f3a7244659bf",
+      "afterSha256": "47399e548333733b45702970a7fc8b74e40c0285164dfefc414463295dd25d80",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "cca49e7eb80bf1514832d1b3a961ab09690b3c9723b43dc03b32e0355630e2cc",
-      "afterSha256": "240204e8683ede87906aff7d222b733dfb715435e9922333999f1e4debdbb967",
+      "beforeSha256": "9c90f12253c1321eea974cc77ce00807fffff583f8c1ccd6908ff29b530d663e",
+      "afterSha256": "72906a91a8f51445c9789b8e99cfa0a010a62dc143ad7a16373c4d837a646496",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "27c286e4550b3532311209fefcdce366c58fee74a01859b084be263ba827aa38",
-      "afterSha256": "2f4275a362aae99d2a9f7e9c0c7aebd91fe6fb66db7eacff233b608c35e97f46",
+      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
+      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3964,10 +3964,11 @@
     },
     {
       "previousBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
-      "sourceBaseSha": "d13657c1e00c3972990d587432e500c21cd43d03",
-      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "sourceBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "task": "docs/tasks/LINEAR_PILOT_GUIDED_BASICS.md",
       "changedPaths": [
-        "trainers/oge-task8-powers-roots.html"
+        "equations/index.html",
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

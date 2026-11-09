@@ -6,12 +6,16 @@ const root=path.resolve(__dirname,'../..'),artifacts=path.join(root,'artifacts/l
 {
 const context=await browser.newContext({viewport:{width:390,height:900}}),page=await context.newPage();
 await page.goto(base+'/trainers/oge-course/');
-await page.locator('a[href="/equations/linear-pilot/"]').first().click();
+await page.getByRole('link',{name:'Линейные уравнения: начать с основ или продолжить →',exact:true}).click();
 await page.waitForURL('**/equations/linear-pilot/');
+await page.getByRole('button',{name:'Начать урок с нуля',exact:true}).waitFor({state:'visible'});
+await page.locator('#advanced-route').click();
 await page.locator('#c0w0').fill('Черновик после входа из курса ОГЭ');
+await page.evaluate(()=>localStorage.removeItem('mathexam.linearPilot.basics.v1.route'));
 await page.goto(base+'/equations/');
-await page.locator('a[href="/equations/linear-pilot/"]').first().click();
+await page.getByRole('link',{name:'Начать с основ или продолжить →',exact:true}).click();
 await page.waitForURL('**/equations/linear-pilot/');
+await page.locator('#advanced-content').waitFor({state:'visible'});
 assert.equal(await page.locator('#c0w0').inputValue(),'Черновик после входа из курса ОГЭ');
 for(let j=0;j<3;j++){await page.locator('#c0p'+j).fill(String([-3,3,6][j]));await page.locator('#c0a'+j).fill(String([6,9,8][j]));await page.locator('#c0w'+j).fill('Сохраняю равенство одинаковым действием.');}
 await page.getByRole('button',{name:'Сдать и открыть ключи',exact:true}).click();
@@ -24,13 +28,14 @@ assert.equal(new URL(page.url()).search,'?return=linear-pilot');
 assert.equal(new URL(page.url()).hash,'#signed');
 await page.getByRole('link',{name:'← Вернуться к уроку',exact:true}).click();
 await page.waitForURL('**/equations/linear-pilot/');
+await page.locator('#advanced-content').waitFor({state:'visible'});
 assert.equal(await page.locator('#l1t0work').inputValue(),'Мой ход до повторения: к обеим частям прибавить 7.');
 assert.match(await page.locator('#position').innerText(),/Равенство/);
 assert(await page.evaluate(()=>LinearPilotStore.create(localStorage).state().lessons[1].tasks[0].help.includes('gap')));
 await page.screenshot({path:path.join(artifacts,'entrance-gap-return-390.png'),fullPage:true});
 await context.close();
 }
-for(const width of [320,390,768,1280]){const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'/equations/linear-pilot/');await page.locator('#c0w0').fill('Черновик с клавиатуры');await page.reload();assert.equal(await page.locator('#c0w0').inputValue(),'Черновик с клавиатуры');await page.getByRole('button',{name:'Сдать и открыть ключи'}).click();assert.equal(await page.locator('form').count(),1);
+for(const width of [320,390,768,1280]){const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'/equations/linear-pilot/');await page.locator('#advanced-route').click();await page.locator('#c0w0').fill('Черновик с клавиатуры');await page.reload();await page.locator('#advanced-content').waitFor({state:'visible'});assert.equal(await page.locator('#c0w0').inputValue(),'Черновик с клавиатуры');await page.getByRole('button',{name:'Сдать и открыть ключи'}).click();assert.equal(await page.locator('#advanced-content form').count(),1);
 for(let j=0;j<3;j++){await page.locator('#c0p'+j).fill(String([-3,3,6][j]));await page.locator('#c0a'+j).fill(String([6,9,8][j]));await page.locator('#c0w'+j).fill('Одинаковое действие с обеими частями.');}await page.locator('#c0a2').press('Enter');await page.getByRole('button',{name:'Начать урок',exact:true}).click();
 assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:path.join(artifacts,`lesson-${width}.png`),fullPage:true});
 const other=await context.newPage();await other.goto(base+'/equations/linear-pilot/');await other.locator('#l1t0work').fill('Старая вкладка: прибавить 7.');
