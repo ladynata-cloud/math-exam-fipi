@@ -15,7 +15,12 @@ let browser;
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),page=await context.newPage();
   page.setDefaultTimeout(15000);page.on('pageerror',e=>report.errors.push(e.message));
   const go=async url=>{const response=await page.goto(origin+url);assert.equal(response.status(),200,url);};
-  const capture=async(name,locator)=>{await locator.scrollIntoViewIfNeeded();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+': page fits');const fit=await locator.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;});assert(fit,name+': inquiry fits');await page.screenshot({path:path.join(out,name+'-'+width+'.png'),fullPage:true});report.scenarios.push({name,width,status:'PASS'});};
+  const capture=async(name,locator)=>{
+   await locator.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,name+'-'+width+'.png'),fullPage:true});
+   const layout=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,overflow:Array.from(document.querySelectorAll('body *')).map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,classes:el.className?.baseVal??el.className,left:r.left,right:r.right,width:r.width};}).filter(r=>r.left< -1||r.right>innerWidth+1).slice(0,30)}));
+   if(layout.width>layout.viewport+1)(report.layoutIssues??=[]).push({name,...layout});
+   assert(layout.width<=layout.viewport+1,name+': page fits');const fit=await locator.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;});assert(fit,name+': inquiry fits');report.scenarios.push({name,width,status:'PASS'});
+  };
   await go('/school/#lesson/fraction');const inquiry=page.locator('[data-model-inquiry]');await inquiry.waitFor();
   const saved=await page.evaluate(()=>localStorage.getItem('mathexam.workshop.v1'));
   await inquiry.locator('[data-model-check]').click();assert.equal(await inquiry.locator('[data-model-prediction]').isDisabled(),false);
@@ -73,6 +78,14 @@ let browser;
   assert((await fresh.locator('.bh-transfer-feedback').innerText()).includes('с намёком'));
   const before=await fresh.locator('.bh-transfer-history').innerText();await answer.press('Enter');assert.equal(await fresh.locator('.bh-transfer-history').innerText(),before,'completed task cannot double count');
   await capture('basics-percent-transfer',fresh);
+  await frame.locator('.bh-start-understanding').click();const understanding=frame.locator('.bh-understanding');
+  await understanding.locator('.bh-understanding-answer').fill('59');await understanding.locator('.bh-understanding-check').click();
+  assert.equal(await fresh.getAttribute('data-bh-transfer-solved'),'true','wrong inverse answer does not undo solved forward task');
+  assert.equal(await fresh.locator('.bh-transfer-history').innerText(),before,'understanding history is separate');
+  await understanding.locator('.bh-understanding-answer').fill('60');await understanding.locator('.bh-understanding-check').click();
+  assert.equal(await understanding.getAttribute('data-bh-understanding-solved'),'true');
+  assert((await understanding.locator('.bh-understanding-history').innerText()).includes('59'),'inverse task retains first response');
+  await capture('basics-percent-inverse',understanding);
   await context.close();
  }
  assert.deepEqual(report.errors,[]);console.log('FOUNDATIONS_GRADE56_BROWSER_OK',report.scenarios.length);

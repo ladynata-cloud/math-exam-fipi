@@ -98,7 +98,88 @@ test('managed renderer keeps transfer history through server echoes without alte
  $('.bh-transfer-hint').click();input.value='30';$('.bh-transfer-check').click();
  assert.equal(JSON.stringify(bridge.getState()),baseline);assert.equal(events.length,eventCount);
  assert.match($('.bh-transfer-feedback').textContent,/Получилось с намёком/);
+ $('.bh-start-understanding').click();$('.bh-understanding-answer').value='30';$('.bh-understanding-check').click();
+ const inverseInput=$('.bh-understanding-answer');bridge.applyState({taskSpec:envelope.taskSpec,state:JSON.parse(baseline),readOnly:false});
+ assert.equal($('.bh-understanding-answer'),inverseInput);assert.match($('.bh-understanding-history').textContent,/Первый ответ: 30/);
+ $('.bh-understanding-hint').click();inverseInput.value='60';$('.bh-understanding-check').click();
+ assert.equal($('.bh-understanding').dataset.bhUnderstandingSolved,'true');assert.equal($('.bh-transfer').dataset.bhTransferSolved,'true');
+ assert.equal(JSON.stringify(bridge.getState()),baseline);assert.equal(events.length,eventCount);
  assert.equal($('#lm-answer').value,'working draft');assert.equal(bridge.getState().completed,false);
  const next=contracts.create('oge-basics','percentages/percent-of-number-and-whole',19);
  bridge.applyState({...JSON.parse(JSON.stringify(next)),readOnly:false});assert(!input.isConnected);assert.equal($('.bh-transfer-history'),null);
+});
+const understandingExpected={'percent-part':18/30*100,'percent-change':24/20*100,'fraction-parts':3*4,'fraction-equivalent':'no','fraction-add':[1,2],proportion:'unit'};
+function openUnderstanding(f,id){
+ f.start();f.submit(raw(expected[id]));assert.equal(f.$('.bh-transfer').dataset.bhTransferSolved,'true');
+ assert(f.$('.bh-start-understanding'));assert(f.$('.bh-understanding').hidden);f.$('.bh-start-understanding').click();assert(!f.$('.bh-understanding').hidden);
+}
+function answerUnderstanding(f,value){
+ const input=f.$('.bh-understanding-answer');if(input)input.value=raw(value);else f.$('[data-understanding-choice="'+value+'"]').click();f.$('.bh-understanding-check').click();
+}
+test('six optional understanding questions change the structure while preserving the completed transfer',t=>{
+ assert.equal(H.understandingFor('count'),null);
+ for(const [id,answer]of Object.entries(understandingExpected)){
+  const data=H.understandingFor(id);assert(data,id);assert.notEqual(data.question,H.transferFor(id).question);
+  if(data.choices)assert.equal(data.answer,answer);else assert(H.acceptsAnswer(data.answer,raw(answer)));
+  const f=mount(t,id);openUnderstanding(f,id);
+  const forwardHistory=f.$('.bh-transfer-history').textContent,forwardFeedback=f.$('.bh-transfer-feedback').textContent;
+  f.$('.bh-understanding-check').click();assert.equal(f.$('.bh-understanding-history').textContent,'');
+  answerUnderstanding(f,data.choices?data.choices.find(row=>row[0]!==data.answer)[0]:999);
+  assert.equal(f.$('.bh-transfer').dataset.bhTransferSolved,'true');assert(f.$('.bh-transfer-answer').readOnly);
+  assert.equal(f.$('.bh-transfer-history').textContent,forwardHistory);assert.equal(f.$('.bh-transfer-feedback').textContent,forwardFeedback);
+  assert(!f.$('.bh-understanding').dataset.bhUnderstandingSolved);assert(f.$('.bh-understanding-hint-text').hidden);
+  answerUnderstanding(f,answer);assert.equal(f.$('.bh-understanding').dataset.bhUnderstandingSolved,'true');
+  assert.match(f.$('.bh-understanding-history').textContent,/Попыток: 2\. Без помощи/);
+  assert.match(f.$('.bh-understanding-feedback').textContent,/после исправления без помощи/);
+  assert(f.$('.bh-understanding-feedback').textContent.includes(data.why));assert.deepEqual(f.events,['hint']);
+  const understandingHistory=f.$('.bh-understanding-history').textContent,check=f.$('.bh-understanding-check');check.onclick();check.click();
+  assert.equal(f.$('.bh-understanding-history').textContent,understandingHistory);assert.equal(f.d.querySelector('#main-answer').value,'черновик');
+ }
+});
+test('understanding preserves first answer and its own help through echoes, readonly mode and teardown',t=>{
+ const f=mount(t,'percent-part');openUnderstanding(f,'percent-part');
+ for(const value of ['', '1/0','abc'])answerUnderstanding(f,value);assert.equal(f.$('.bh-understanding-history').textContent,'');
+ answerUnderstanding(f,30);answerUnderstanding(f,18);assert.match(f.$('.bh-understanding-history').textContent,/Первый ответ: 30\. Попыток: 2\. Без помощи/);
+ assert(f.$('.bh-understanding-hint-text').hidden);assert.match(f.$('.bh-understanding-feedback').textContent,/Можно открыть намёк/);
+ f.$('.bh-understanding-hint').click();assert.match(f.$('.bh-understanding-history').textContent,/Помощь использована/);
+ const input=f.$('.bh-understanding-answer');input.value='60';const oldCheck=f.$('.bh-understanding-check');
+ f.helper.update({...f.options,disabled:true});oldCheck.onclick();assert(!f.$('.bh-understanding').dataset.bhUnderstandingSolved);
+ f.helper.update(f.options);f.helper.open();assert.equal(f.$('.bh-understanding-answer'),input);assert.equal(input.value,'60');
+ input.dispatchEvent(new f.dom.window.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));assert.match(f.$('.bh-understanding-feedback').textContent,/Получилось с помощью/);
+ assert.equal(f.$('.bh-transfer').dataset.bhTransferSolved,'true');assert.match(f.$('.bh-transfer-history').textContent,/Без намёка/);
+ f.helper.update({...f.options,disabled:true});f.helper.update(f.options);assert(oldCheck.disabled);assert(f.$('.bh-understanding-hint').disabled);
+ const oldHistory=f.$('.bh-understanding-history'),before=oldHistory.textContent;f.helper.update({...f.options,identity:'another-task'});oldCheck.onclick();assert.equal(oldHistory.textContent,before);assert(!input.isConnected);
+});
+test('actual prerequisite detour counts as help for unfinished checks, not a mere link offer',t=>{
+ const f=mount(t,'percent-part');f.start();f.submit('20');
+ const input=f.$('.bh-transfer-answer');input.value='30';assert.match(f.$('.bh-transfer-history').textContent,/Без намёка/);
+ f.$('[data-bh-skill="divide"]').click();assert.equal(f.helper.getState().nodeId,'divide');
+ f.d.querySelector('.bh-back').click();assert.equal(f.helper.getState().nodeId,'percent-part');assert.equal(f.$('.bh-transfer-answer'),input);assert.equal(input.value,'30');
+ assert.match(f.$('.bh-transfer-history').textContent,/Первый ответ: 20\. Попыток: 1\. Разбор простого действия открыт/);
+ f.submit('30');assert.match(f.$('.bh-transfer-feedback').textContent,/после разбора простого действия/);assert.doesNotMatch(f.$('.bh-transfer-feedback').textContent,/без намёка/);
+ const forwardHistory=f.$('.bh-transfer-history').textContent;f.$('.bh-start-understanding').click();answerUnderstanding(f,18);
+ f.$('.bh-understanding-answer').value='60';f.$('[data-bh-skill="divide"]').click();f.d.querySelector('.bh-back').click();
+ assert.match(f.$('.bh-understanding-history').textContent,/Первый ответ: 18\. Попыток: 1\. Помощь использована/);
+ assert.equal(f.$('.bh-understanding-answer').value,'60');answerUnderstanding(f,60);assert.match(f.$('.bh-understanding-feedback').textContent,/Получилось с помощью/);
+ assert.equal(f.$('.bh-transfer-history').textContent,forwardHistory);assert.deepEqual(f.events,['hint']);
+});
+test('retained transfer and understanding actions cannot mutate a closed panel or detoured frame',t=>{
+ const f=mount(t,'percent-part'),start=f.$('.bh-start-transfer');
+ f.helper.close(false);start.onclick();assert(f.$('.bh-transfer').hidden);
+ f.helper.open();start.click();const transferInput=f.$('.bh-transfer-answer');transferInput.value='30';
+ const transferCheck=f.$('.bh-transfer-check'),transferHint=f.$('.bh-transfer-hint');
+ f.helper.close(false);transferCheck.onclick();transferHint.onclick();
+ assert(!f.$('.bh-transfer').dataset.bhTransferSolved);assert.equal(f.$('.bh-transfer-history').textContent,'');assert(f.$('.bh-transfer-hint-text').hidden);
+ f.helper.open();assert.equal(transferInput.value,'30');f.$('[data-bh-skill="divide"]').click();
+ const transferHistory=f.$('.bh-transfer-history').textContent;transferCheck.onclick();transferHint.onclick();
+ assert(!f.$('.bh-transfer').dataset.bhTransferSolved);assert.equal(f.$('.bh-transfer-history').textContent,transferHistory);assert(f.$('.bh-transfer-hint-text').hidden);
+ f.d.querySelector('.bh-back').click();transferCheck.click();assert.equal(f.$('.bh-transfer').dataset.bhTransferSolved,'true');
+ const startUnderstanding=f.$('.bh-start-understanding');f.helper.close(false);startUnderstanding.onclick();assert(f.$('.bh-understanding').hidden);
+ f.helper.open();startUnderstanding.click();const inverseInput=f.$('.bh-understanding-answer');inverseInput.value='60';
+ const inverseCheck=f.$('.bh-understanding-check'),inverseHint=f.$('.bh-understanding-hint');
+ f.helper.close(false);inverseCheck.onclick();inverseHint.onclick();assert(!f.$('.bh-understanding').dataset.bhUnderstandingSolved);assert.equal(f.$('.bh-understanding-history').textContent,'');assert(f.$('.bh-understanding-hint-text').hidden);
+ f.helper.open();assert.equal(inverseInput.value,'60');f.$('[data-bh-skill="divide"]').click();
+ const inverseHistory=f.$('.bh-understanding-history').textContent;inverseCheck.onclick();inverseHint.onclick();assert(!f.$('.bh-understanding').dataset.bhUnderstandingSolved);assert.equal(f.$('.bh-understanding-history').textContent,inverseHistory);
+ f.d.querySelector('.bh-back').click();assert.equal(inverseInput.value,'60');inverseCheck.click();assert.equal(f.$('.bh-understanding').dataset.bhUnderstandingSolved,'true');
+ assert.equal(f.$('.bh-transfer').dataset.bhTransferSolved,'true');assert.match(f.$('.bh-understanding-feedback').textContent,/Получилось с помощью/);
 });
