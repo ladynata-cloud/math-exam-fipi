@@ -100,7 +100,26 @@ course PR as released.
 
 ## Execution
 
-Implementation and exact candidate validation are in progress. Source review,
+Implementation is complete. Independent code and mathematical review accepted
+all 58 practice keys, model domains, event semantics, keyboard focus, select
+restoration and the corrected Task7 fraction explanation. Local checks passed:
+113 new math/DOM/preservation/fraction regressions; 668 retained algebra checks;
+37 course integration checks; learner-entry preservation across 147 pages;
+12 generator checks and immutable book verification. The exact candidate book
+closure adds only the three local assets (232 to 235 files).
+
+An initial over-parallelized local retained-suite run terminated two workers
+without assertion diagnostics; both unchanged suites passed sequentially (17
+checks). The new workflow runs these memory-heavy suites sequentially. This is
+reported as an initial execution failure, not as a mathematical defect or a
+reason to remove tests.
+
+Source checkpoint: `5a6a5573cc8e0ff6ceca3a9d5cf88e16c64f0e95`.
+Navigator bindings explicitly update only the seven named HTML pages. Additional
+strict inverse witnesses account for the exact optional closed summary and
+include triple while preserving the original browser mathematics fixtures.
+
+Actual Chromium and production verification are pending. Source review,
 Node/JSDOM tests, CI browser evidence and public browser checks are distinct.
 Physical phones, Safari, external-provider review and a real-pupil pilot are not
 claimed. Final release evidence and standard executive/base-drift fields belong

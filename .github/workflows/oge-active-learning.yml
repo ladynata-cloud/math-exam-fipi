@@ -18,6 +18,9 @@ on:
       - 'tools/oge7-fraction-explanation*'
       - 'tools/oge-course-algebra.test.cjs'
       - 'tools/oge-learner-entry.test.cjs'
+      - 'tools/oge8-root-interactions.test.cjs'
+      - 'tools/oge-book-exam.browser.cjs'
+      - 'tools/oge-book-exam-math.py'
       - '.github/workflows/oge-active-learning.yml'
   workflow_dispatch:
 permissions:
@@ -48,6 +51,7 @@ jobs:
           node --check trainers/oge-active-learning-data.js
           node --test --test-concurrency=1 tools/oge-active-learning*.test.cjs
           node --test --test-concurrency=1 tools/oge7-fraction-explanation*.test.cjs
+          node --test --test-concurrency=1 tools/oge8-root-domains.test.cjs tools/oge8-root-interactions.test.cjs
           node --test --test-concurrency=1 tools/oge-task6-fractions-focused.test.mjs tools/task6-minimal.test.cjs tools/task6-interactive.test.cjs tools/task6-scope.test.cjs
           node --test --test-concurrency=1 tools/task9-*.test.cjs tools/task11-*.test.cjs
           node tools/oge-algebra-contract.test.mjs
