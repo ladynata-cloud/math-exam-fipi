@@ -50,6 +50,7 @@ function open(options = {}) {
   }
   w.scrollTo = () => {};
   w.HTMLElement.prototype.scrollIntoView = () => {};
+  if (options.now !== undefined) w.Date.now = () => options.now;
   w.URL.createObjectURL = () => 'blob:local-test';
   w.URL.revokeObjectURL = () => {};
   if (options.saved !== undefined) {
@@ -540,4 +541,188 @@ test('known board iframe isolates personal storage even when the board-mode asse
       ui.assertClean();
     } finally { ui.close(); }
   }
+});
+
+const STRATEGY_START = Date.UTC(2026, 10, 9, 8);
+const FIVE_DAYS = 5 * 24 * 60 * 60 * 1000;
+const routePrimary = '.route-actions [data-action=task]';
+const topicStatus = lesson => '.lesson-card[data-lesson="' + lesson + '"] [data-topic-status]';
+
+function openStrategy(t, params, options = {}) {
+  const ui = open({now: STRATEGY_START, ...options, url: PAGE + '?' + new URLSearchParams(params)});
+  t.after(ui.close);
+  return ui;
+}
+
+test('a shown answer stays assisted and fresh independent practice resumes in solo mode', async t => {
+  const lesson = 'g5-parts';
+  const shown = BY_ID.get(lesson + '-1');
+  const fresh = BY_ID.get(lesson + '-2');
+  const params = {route: 'g5', lesson, task: shown.task.id};
+  const ui = openStrategy(t, params);
+  ui.check(shown.task.steps[0], 0);
+  for (let i = 1; i <= 2; i++) {
+    ui.enter(shown.task.steps[1], 1, 'task', '20');
+    ui.click('[data-action=check]');
+    assert.equal(ui.d.querySelectorAll('[data-action=hint]').length, i === 2 ? 1 : 0);
+  }
+  ui.click('[data-action=hint]');
+  ui.click('[data-action=solution]');
+  const next = ui.find('.complete [data-purpose=fresh]');
+  assert.equal(next.dataset.task, fresh.task.id);
+  assert.equal(next.dataset.mode, 'solo');
+  assert.equal(next.dataset.lesson, lesson);
+
+  await ui.navigate({view: 'route', route: 'g5'});
+  assert.match(ui.find(topicStatus(lesson)).textContent, /Разобрал с помощью/);
+
+  const revisit = openStrategy(t, {...params, mode: 'solo'}, {saved: ui.saved()});
+  revisit.check(shown.task.steps[1], 1);
+  assert.equal(revisit.state().learning.verified[shown.task.id], undefined, 'An answer already revealed cannot verify independence');
+
+  const practice = openStrategy(t, params, {saved: revisit.saved()});
+  practice.click('.complete [data-purpose=fresh]');
+  await tick();
+  assert.equal(practice.w.VPRApp.getView().task, fresh.task.id);
+  assert.equal(practice.w.VPRApp.getView().mode, 'solo');
+  assert.equal(practice.d.querySelector('.hint-area'), null);
+  const route = openStrategy(t, {route: 'g5'}, {saved: practice.saved()});
+  assert.equal(route.find(routePrimary).dataset.task, fresh.task.id);
+  assert.equal(route.find(routePrimary).dataset.mode, 'solo');
+  route.click(routePrimary);
+  await tick();
+  route.check(fresh.task.steps[1], 1);
+  assert.equal(route.state().learning.verified[fresh.task.id], STRATEGY_START);
+  await route.navigate({view: 'route', route: 'g5'});
+  assert.match(route.find(topicStatus(lesson)).textContent, /Решил новую задачу сам/);
+  for (const view of [ui, revisit, practice, route]) view.assertClean();
+});
+
+test('the graph prediction survives reopening and stays out of solo and shared-board views', async t => {
+  const params = {route: 'g7', lesson: 'g7-process-graphs'};
+  const ui = openStrategy(t, params);
+  assert.equal(ui.find('.motion-pilot').open, false);
+  ui.click('.motion-pilot > summary');
+  ui.click('[data-action=motion-predict][data-prediction=lower]');
+  assert.equal(ui.find('[data-action=motion-stop][data-stop="1"]').getAttribute('aria-pressed'), 'true');
+  assert.equal(ui.d.querySelector('.motion-feedback'), null, 'The explanation follows the experiment');
+  ui.click('[data-action=motion-stop][data-stop="2"]');
+  assert.match(ui.find('.motion-feedback').textContent, /2,4 км\/ч.*2 км\/ч/);
+  assert.deepEqual([...ui.d.querySelectorAll('.motion-table tr:first-child td')].map(cell => cell.textContent), ['0', '2', '4', '6']);
+  const saved = ui.saved();
+  const reopened = openStrategy(t, params, {saved});
+  assert.equal(reopened.find('.motion-pilot').open, true);
+  assert.equal(reopened.find('[data-action=motion-stop][data-stop="2"]').getAttribute('aria-pressed'), 'true');
+  assert.equal(reopened.state().learning.motion.prediction, 'lower');
+  const fresh = reopened.find('.motion-next [data-purpose=fresh]');
+  assert.equal(fresh.dataset.task, 'g7-process-graphs-5');
+  fresh.click();
+  await tick();
+  assert.equal(reopened.w.VPRApp.getView().mode, 'solo');
+  assert.equal(reopened.d.querySelector('.motion-pilot'), null);
+  const board = openStrategy(t, {...params, board: '1'}, {saved});
+  assert.equal(board.w.VPRBoardMode, true);
+  assert.equal(board.d.querySelector('.motion-pilot'), null);
+  assert.equal(board.saved(), saved, 'Shared work cannot alter the stored personal prediction');
+  for (const view of [ui, reopened, board]) view.assertClean();
+});
+
+test('after five days the route offers a fresh motion problem and records delayed evidence', async t => {
+  const route = 'g7';
+  const lesson = 'g7-process-graphs';
+  const first = BY_ID.get(lesson + '-5').task;
+  const unrelated = BY_ID.get(lesson + '-1').task;
+  const reviewId = lesson + '-review';
+  const now = openStrategy(t, {route, lesson, task: first.id, mode: 'solo'});
+  now.check(first.steps.at(-1), first.steps.length - 1);
+  assert.equal(now.state().learning.verified[first.id], STRATEGY_START);
+
+  const early = openStrategy(t, {route}, {saved: now.saved(), now: STRATEGY_START + FIVE_DAYS - 1});
+  assert.match(early.find(topicStatus(lesson)).textContent, /Решил новую задачу сам/);
+  assert.equal(early.d.querySelector('[data-purpose=review]'), null);
+
+  const unrelatedCheck = openStrategy(t, {route, lesson, task: unrelated.id, mode: 'solo'}, {
+    saved: now.saved(), now: STRATEGY_START + FIVE_DAYS,
+  });
+  unrelatedCheck.check(unrelated.steps.at(-1), unrelated.steps.length - 1);
+  assert.equal(unrelatedCheck.state().learning.verified[unrelated.id], STRATEGY_START + FIVE_DAYS);
+  const due = openStrategy(t, {route}, {saved: unrelatedCheck.saved(), now: STRATEGY_START + FIVE_DAYS});
+  assert.match(due.find(topicStatus(lesson)).textContent, /Пора повторить/);
+  const review = due.find(routePrimary + '[data-purpose=review]');
+  assert.equal(review.dataset.task, reviewId);
+  assert.equal(review.dataset.mode, 'solo');
+  review.click();
+  await tick();
+  due.fill('.step.current [data-answer=task]', '2,5');
+  due.click('.step.current [data-action=check]');
+  assert.equal(due.state().learning.verified[reviewId], STRATEGY_START + FIVE_DAYS);
+  await due.navigate({view: 'route', route});
+  assert.match(due.find(topicStatus(lesson)).textContent, /Подтвердил после паузы/);
+  await due.navigate({view: 'route', route: 'g7u'});
+  assert.match(due.find(topicStatus(lesson)).textContent, /Подтвердил после паузы/);
+  for (const view of [now, early, unrelatedCheck, due]) view.assertClean();
+});
+
+test('opening a graph lab that reveals the coefficient disqualifies same-item evidence', async t => {
+  const item = BY_ID.get('g7-linear-function-5');
+  const params = {route: 'g7', lesson: item.lesson.id, task: item.task.id};
+  const ui = openStrategy(t, params);
+  assert.equal(ui.find('.plot-lab').open, false);
+  ui.click('.plot-lab summary');
+  await tick();
+  assert.equal(ui.find('.plot-lab').open, true);
+  assert.ok(ui.state().learning.exposed[item.task.id], 'The displayed formula contains the coefficient');
+  const solo = openStrategy(t, {...params, mode: 'solo'}, {saved: ui.saved()});
+  solo.check(item.task.steps.at(-1), item.task.steps.length - 1);
+  assert.equal(solo.state().learning.verified[item.task.id], undefined);
+  ui.assertClean();
+  solo.assertClean();
+});
+
+test('the diagnostic recommends an incorrect topic before an earlier skipped task', async t => {
+  const ui = open();
+  t.after(ui.close);
+  const session = await startDiagnostic(ui, 'g5');
+  ui.click('[data-action=diagnostic-skip]');
+  const wrong = BY_ID.get(session.ids[1]);
+  const step = wrong.task.steps.at(-1);
+  const value = step.answer.kind === 'choice' ? (step.answer.value + 1) % step.options.length : '999999';
+  submitDiagnostic(ui, value);
+  for (let i = 2; i < session.ids.length; i++) submitDiagnostic(ui);
+  const statuses = [...ui.d.querySelectorAll('.result-list .result-item-head > span')].map(el => el.textContent);
+  assert.deepEqual(statuses.slice(0, 3), ['пропущено', 'неверно', 'верно']);
+  assert.equal(ui.find('.diagnostic-next-step h2').textContent, wrong.lesson.title);
+  assert.equal(ui.find('.diagnostic-next-step button').dataset.task, wrong.lesson.tasks[0].id);
+  ui.click('.diagnostic-next-step button');
+  await tick();
+  assert.equal(ui.w.VPRApp.getView().mode, 'learn');
+  assert.equal(ui.w.VPRApp.getView().task, wrong.lesson.tasks[0].id);
+  ui.assertClean();
+});
+
+test('recognizable errors get specific feedback only during guided practice', async t => {
+  const ui = open();
+  t.after(ui.close);
+  const graph = BY_ID.get('g7-process-graphs-5');
+  await ui.task(graph);
+  for (let i = 1; i <= 2; i++) {
+    ui.enter(graph.task.steps[0], 0, 'task', 1);
+    ui.click('[data-action=check]');
+    assert.match(ui.find('.feedback').textContent, /Высота верхней точки/);
+    assert.equal(ui.d.querySelectorAll('[data-action=hint]').length, i === 2 ? 1 : 0);
+    assert.equal(ui.d.querySelectorAll('.hint-text,.step.done').length, 0);
+  }
+  await ui.task(graph, 'solo');
+  ui.enter(graph.task.steps[3], 3, 'task', 6);
+  ui.click('[data-action=check]');
+  assert.doesNotMatch(ui.find('.feedback').textContent, /ось времени|осью времени/);
+  assert.equal(ui.d.querySelectorAll('[data-action=hint],.hint-text').length, 0);
+
+  const percent = BY_ID.get('g6-percent-5');
+  await ui.task(percent);
+  ui.check(percent.task.steps[0], 0);
+  ui.enter(percent.task.steps[1], 1, 'task', 200);
+  ui.click('[data-action=check]');
+  assert.match(ui.find('.feedback').textContent, /От какой цены берутся вторые 20%/);
+  ui.assertClean();
 });
