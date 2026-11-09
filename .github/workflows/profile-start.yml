@@ -25,6 +25,10 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Course journey, whole-profile map, progress and practice layout
         run: node --test tools/profile-journey*.test.cjs tools/profile-second-part-map.test.cjs tools/profile-practice-layout.test.cjs
+      - name: Active practice, misconception feedback and safe independent handoff
+        run: node --test tools/profile-active-*.test.cjs
+      - name: Prediction experiments and independent handoff in the browser
+        run: node tools/profile-active-practice.browser.cjs
       - name: Audited mathematics, links, honest progress and requested help
         run: node --test tools/profile-*repair*.test.cjs tools/profile-main-geometry-disclosure.test.cjs tools/profile-progress-report-dom.test.cjs
       - name: Main geometry, construction and graph controls at 320, 390 and 1280 pixels
@@ -47,6 +51,7 @@ jobs:
         with:
           name: profile-trainer-repair-viewports
           path: |
+            /tmp/profile-active-practice-shots
             /tmp/profile-main-geometry-disclosure-shots
             /tmp/profile-progress-repair-shots
             /tmp/profile-legacy-geometry-shots
