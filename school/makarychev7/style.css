@@ -8,3 +8,34 @@
 .learning-next{border-top:1px solid var(--line);margin-top:22px;padding-top:12px}.attempt-log{overflow-wrap:anywhere}.attempt-log ol{padding-left:24px;font-size:.85rem}.m7-investigation{margin:16px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:white}.m7-investigation label{display:block}.m7-investigation textarea{margin:8px 0;min-height:90px}.m7-investigation select{display:block;width:100%;white-space:normal;margin:12px 0}.m7-control input[type=number]{grid-column:1/-1;max-width:100%;width:100%}.m7-model [hidden]{display:none!important}@media(max-width:900px){.task-menu:not([open]){margin-bottom:8px}.lesson-title{font-size:1.65rem;margin-bottom:16px}.breadcrumb{margin-bottom:8px}.problem .prompt{font-size:1.1rem;line-height:1.65}.m7-investigation{padding:12px}}
 
 .demo-notice{border-left:4px solid var(--green);background:var(--pale);padding:10px 14px;font-size:.85rem}main [hidden]{display:none!important}
+
+/* Keep the initial condition and complete answer controls on a 320 × 900 screen.
+   Help stays available immediately after the answer; opening it retains the
+   original explanation-before-answer order. No task content is truncated. */
+@media(max-width:620px){
+ .m7-task-page .topbar{padding:12px;gap:8px}
+ .m7-task-page .brand{font-size:16px;gap:8px}
+ .m7-task-page .brand-icon{width:32px;height:32px;font-size:22px;border-radius:10px}
+ .m7-task-page .brand-sub{font-size:12px}
+ .m7-task-page .topbar nav{gap:12px}
+ .m7-task-page .topbar nav a{font-size:14px;line-height:1.5}
+ .m7-task-page main{padding:16px 12px 55px}
+ .m7-task-page .breadcrumb{font-size:13px;line-height:1.4;gap:4px 10px;margin-bottom:6px}
+ .m7-task-page main>.eyebrow{font-size:12px;line-height:1.4;margin:6px 0}
+ .m7-task-page .lesson-title{font-size:1.45rem;line-height:1.2;margin:6px 0 10px}
+ .m7-task-page .task-menu summary{font-size:16px;padding:8px 0;min-height:40px}
+ .m7-task-page .problem{padding:16px 12px;border-radius:18px}
+ .m7-task-page .task-heading{gap:8px}
+ .m7-task-page .task-heading h2{font-size:1.05rem;line-height:1.25}
+ .m7-task-page .task-heading .tag{font-size:12px;line-height:1.4}
+ .m7-task-page .source-note{font-size:12px;line-height:1.4;margin:6px 0}
+ .m7-task-page .problem .prompt{font-size:1.05rem;line-height:1.55;margin:12px 0 14px}
+ .m7-task-page .answer-form{margin-top:12px}
+ .m7-task-page .answer-form label{line-height:1.4;margin-bottom:8px}
+ .m7-task-page .answer-form>p.small{font-size:13px;line-height:1.4;margin:6px 0 10px}
+ .m7-task-page .answer-controls input{font-size:18px;min-height:48px;padding:10px}
+ .m7-task-page .answer-preview{min-height:0;margin:8px 0}
+ .m7-task-page .answer-preview:empty{margin:0}
+ .m7-task-page .problem>.row{margin-top:14px}
+ .m7-task-page .problem>.row button{font-size:14px;padding:10px 12px;min-height:44px}
+}

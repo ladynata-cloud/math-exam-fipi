@@ -35,8 +35,19 @@
  }
  function bind(main,lesson,session,save,M,answerText){
   const panel=main.querySelector('#task-panel'),head=main.querySelector('.lesson-head');
-  // The problem and answer stay above optional explanations on small screens.
-  if(panel&&head)head.after(panel);
+  // Keep the course return and mode choice above the problem. Secondary actions
+  // follow the task, so the pupil sees the question and answer on a narrow screen.
+  main.dataset.m9Lesson='true';
+  if(panel&&head){
+   head.after(panel);
+   const utility=main.ownerDocument.createElement('div');utility.className='row m9-lesson-tools';
+   const modes=head.querySelector('[data-cmd="mode"]')?.parentElement;
+   if(modes){modes.classList.add('m9-mode-controls');const board=modes.querySelector('a[href*="trainer-board.html?trainer="]');if(board)utility.append(board);}
+   const jumps=head.querySelector('.lesson-jumps');if(jumps)utility.append(jumps);
+   if(utility.childNodes.length)panel.after(utility);
+   const back=head.querySelector('a[href="#course/makarychev9"]');if(back){back.title=back.textContent;back.textContent='← Макарычев 9';}
+   const eyebrow=head.querySelector('.eyebrow');if(eyebrow){eyebrow.classList.remove('section');eyebrow.textContent=({learn:'Разбираемся',practice:'Тренировка',check:'Самостоятельная проверка',review:'Повторение',diagnostic:'Диагностика'}[session.mode]||'Занятие')+' · пункт '+lesson.point;}
+  }
   const theory=main.querySelector('.v6-theory');if(theory){const details=main.ownerDocument.createElement('details');details.className='panel';details.innerHTML='<summary>Коротко о главном и разобранный пример</summary>';theory.before(details);details.append(theory);}
   if(session.mode==='learn'){
    const model=main.querySelector('#model');if(model){model.insertAdjacentHTML('beforebegin',render(lesson,session.task,session));const details=main.ownerDocument.createElement('details');details.className='panel m9-model-details';details.innerHTML='<summary>Исследовать на модели</summary>';model.before(details);details.append(model);}

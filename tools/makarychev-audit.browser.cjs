@@ -232,7 +232,10 @@ async function thematicFlow(page, record) {
   assert.equal(await page.locator('[data-param=h]').inputValue(), '2');
   assert.equal(await page.locator('[data-param=a]').inputValue(), '0');
   assert.equal(await page.locator('.m9-open').count(), 1);
-  assert.equal((await workshopState(page)).skills['m9f-rational-shift'].checks.length, 0, 'M9 exploration must not create independent credit');
+  // An untouched skill need not have a result record: saving a model draft alone
+  // deliberately does not create one. If it exists, its checks must still be empty.
+  const exploredSkill = (await workshopState(page)).skills['m9f-rational-shift'];
+  assert.equal(exploredSkill === undefined ? 0 : exploredSkill.checks.length, 0, 'M9 exploration must not create independent credit');
   await noOverflow(page, 'M9 expanded model');
   await page.locator('#model').scrollIntoViewIfNeeded();
   record.screenshots.push(await screenshot(page, 'm9-' + record.width + '-model-restored'));

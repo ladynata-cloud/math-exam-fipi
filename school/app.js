@@ -95,6 +95,7 @@
  function lesson(){
   if(!session){var id=location.hash.split('/')[1];return begin(id,'learn');}
   var l=C.byId[session.id],t=session.task,isLearn=session.mode==='learn',parts=steps(),current=isLearn?parts[Math.min(session.step,parts.length-1)]:t;
+  if(!t.m9Full)main.removeAttribute('data-m9-lesson');
   var modeLabel={learn:'Разбираемся',practice:'Тренировка',check:'Самостоятельная проверка',review:'Повторение спустя время',diagnostic:'Диагностика'}[session.mode];
   var exactTrainerVideo=['numeric-expressions','variable-expressions','compare-expressions','arithmetic-properties','identities','equation-roots','linear-cases','equation-word-problems'].includes(l.video);
   main.innerHTML='<div class="lesson-head">'+(activeCourse?'<a href="#course/'+activeCourse+'">← '+esc(C.pathById[activeCourse].title)+'</a>':'<a href="#map">← Карта тем</a>')+'<p class="eyebrow section">'+esc(l.area)+' · '+modeLabel+'</p><h1>'+esc(l.title)+'</h1>'+(returns.length?button('← Вернуться к исходному шагу','return','','quiet'):'')+
@@ -184,7 +185,7 @@
  main.addEventListener('click',function(e){
   var b=e.target.closest('[data-cmd]');if(!b)return;var cmd=b.dataset.cmd,val=b.dataset.value;
   try{
-   if(cmd==='jump'){var target=document.getElementById(val);if(target){target.scrollIntoView({block:'start'});if(val==='task-panel')document.getElementById('answer').focus({preventScroll:true});}}
+   if(cmd==='jump'){var target=document.getElementById(val);if(target){if(session?.task.m9Full&&val==='model'){var disclosure=target.closest('details');if(disclosure)disclosure.open=true;}target.scrollIntoView({block:'start'});if(val==='task-panel')document.getElementById('answer').focus({preventScroll:true});}}
    else if(cmd==='learn'){returns=[];begin(val,'learn',{resume:!!C.byId[val]?.m9Course});}
    else if(cmd==='mode'){begin(session.id,val);}
    else if(cmd==='review')begin(val,'review');
@@ -215,6 +216,7 @@
   }catch(err){notice.textContent=err.message;notice.scrollIntoView({block:'nearest'});}
  });
  function render(){
+  main.removeAttribute('data-m9-lesson');
   var hash=location.hash.slice(1)||'home',parts=hash.split('/');
   document.querySelectorAll('[data-nav]').forEach(function(a){a.classList.toggle('active',a.dataset.nav===parts[0]||(parts[0]==='lesson'&&a.dataset.nav==='map'));});
   if(parts[0]==='lesson'){if(!C.byId[parts[1]]){location.hash='#map';return;}if(!session||session.id!==parts[1])return begin(parts[1],'learn',{resume:true});lesson();}

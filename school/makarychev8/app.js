@@ -51,8 +51,11 @@ function formatProblem(value,q){
   if(q.answerFormat&&!M.check(text,text,q.answerFormat))return 'Уточни форму записи. '+inputNote(q)+' Математическая попытка ещё не засчитана.';
  }
  if(q.kind==='graph'||q.kind==='graph-pair'){
+  const graphs=window.MakarychevTaskGraphs;
+  const parsed=q.kind==='graph'?graphs?.parse(text):graphs?.parsePair(text);
+  if(parsed)return '';
   const entries=text.split(';').map(v=>v.trim());
-  if(entries.some(v=>!M.parse(v))||(q.kind==='graph-pair'?entries.length!==4:entries.length<2))return message;
+  if(entries.some(v=>!M.parse(v))||(q.kind==='graph-pair'?entries.length!==4:entries.length<3))return message;
  }
  if(q.kind==='set'){
   const empty=/^(нет|неткорней|корнейнет|пусто|∅|\{\})$/;

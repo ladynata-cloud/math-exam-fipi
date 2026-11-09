@@ -27,7 +27,7 @@ const text=(w,t)=>t.answerFormat==='m9-pairs'?t.answer.map(p=>'('+p.map(x=>text(
  assert(!w.WorkshopMath.accepts('(1 1/2;6)',{answer:'(5.5;6)',answerFormat:'m9-set'}));
  assert(!w.WorkshopMath.accepts('[-inf;3]',{answer:'(-∞;3]',answerFormat:'m9-set'}));
  const ids=w.WorkshopCurriculum.pathById.makarychev9.ids;assert.equal(ids.length,93);
- for(const id of ids){w.location.hash='lesson/'+id;await tick();assert(w.document.querySelector('#m9-prediction'),id);assert(w.document.querySelector('#m9-explanation'),id);assert(w.document.querySelector('.m9-model-details'),id);assert(!w.document.querySelector('.m9-model-details').open,id);assert.equal(w.document.querySelector('.lesson-head').nextElementSibling.id,'task-panel');}
+ for(const id of ids){w.location.hash='lesson/'+id;await tick();assert(w.document.querySelector('#m9-prediction'),id);assert(w.document.querySelector('#m9-explanation'),id);assert(w.document.querySelector('.m9-model-details'),id);assert(!w.document.querySelector('.m9-model-details').open,id);assert.equal(w.document.querySelector('.lesson-head').nextElementSibling.id,'task-panel');assert.equal(w.document.querySelector('.m9-mode-controls').querySelectorAll('[data-cmd=mode]').length,3);assert(!w.document.querySelector('.lesson-head a[href*="trainer-board"]'));assert(w.document.querySelector('.m9-lesson-tools a[href*="trainer-board"]'));}
  w.location.hash='lesson/m9f-root-square';await tick();
  input(w,'#m9-prediction','Проверю знак корня');input(w,'#m9-explanation','Квадрат положителен; корень неотрицательный.');
  click(w,'[data-cmd=mode][data-value=check]');await tick();
