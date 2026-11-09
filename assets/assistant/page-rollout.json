@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5cc381ca37419fdb1b91d09315ef521e9d001292",
+  "baseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -213,8 +213,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "d18ca8f4d9b73fab42278600fc2bd5f40aa3e2ae4ea133414b6e8e648225741d",
-      "afterSha256": "ac1f1f9d87f5c027034d7b51c5111402cf527dddcd1c9f2c9b673a5e92545ec3",
+      "beforeSha256": "9c872e1a4f0570c155f42f36b4429ae559a89a8da8d42fb9d08ed0f538c48ccf",
+      "afterSha256": "b68d7325acd0fc57b27e62f597c9f7de4394c28f14eef1bc3e6f008d7c0c080e",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -223,8 +223,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "f7dfc2ecc2e6db869cd096a472f5f3f28bbf3b213729482013546b9ddcfd5273",
-      "afterSha256": "1ae52ab78f4948f20419cf5b3b400b53f2d8bc7dea177a3feea7471b80bfe48a",
+      "beforeSha256": "05f9788e4e89242a042b1326ada051a9ddf9e91de093791cea732a310e7bc1b3",
+      "afterSha256": "fa45af36e15c6a79e78ed953f37e8ba7369eefd5ad0ac4061ac8285d7dd1cae5",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -448,8 +448,8 @@
       "placement": "before-head-close"
     },
     "equations/index.html": {
-      "beforeSha256": "bf03dec8b3c3b6a6d791756f7532c12d1a62f1695c3edb2642068e8fe87ed329",
-      "afterSha256": "6d43359c2a9a408320a76f82811af63527305186c05e649a0657ff90e737f3f8",
+      "beforeSha256": "4a48e546aad426c305691a297de62227e4a95a44ff1fa7975f27f3a7244659bf",
+      "afterSha256": "47399e548333733b45702970a7fc8b74e40c0285164dfefc414463295dd25d80",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "cca49e7eb80bf1514832d1b3a961ab09690b3c9723b43dc03b32e0355630e2cc",
-      "afterSha256": "240204e8683ede87906aff7d222b733dfb715435e9922333999f1e4debdbb967",
+      "beforeSha256": "9c90f12253c1321eea974cc77ce00807fffff583f8c1ccd6908ff29b530d663e",
+      "afterSha256": "72906a91a8f51445c9789b8e99cfa0a010a62dc143ad7a16373c4d837a646496",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3964,11 +3964,11 @@
     },
     {
       "previousBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
-      "sourceBaseSha": "5cc381ca37419fdb1b91d09315ef521e9d001292",
-      "task": "docs/tasks/EGE_BASE_LEARNING_PATH_20261109.md",
+      "sourceBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "task": "docs/tasks/LINEAR_PILOT_GUIDED_BASICS.md",
       "changedPaths": [
-        "ege-baza/index.html",
-        "ege-baza/path/index.html"
+        "equations/index.html",
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
