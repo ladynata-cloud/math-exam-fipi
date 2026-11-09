@@ -29,6 +29,8 @@
 <script defer src="/oge/registry.js?v=20261109"></script>
 <script defer src="/oge/learning-map.js?v=20261109"></script>
 <script defer src="/oge/learning-map-view.js?v=20261109"></script>
+<link rel="stylesheet" href="/oge/course-guide.css?v=20261109">
+<script defer src="/oge/course-guide.js?v=20261109"></script>
 </head><body><header class="site-header">
 <div class="container">
 <a class="logo" href="/">
@@ -46,8 +48,15 @@
 <section class="course-map" id="learning-map" aria-labelledby="course-map-title">
   <div class="course-next">
     <div><p class="eyebrow">Твой следующий шаг</p><h2 id="course-next-title">Числа и вычисления</h2><p id="course-next-note">Начни с короткой практики. Если тема знакома, выбери другую линию ниже.</p></div>
-    <a class="primary-link" id="course-continue" href="/trainers/oge-task6-fractions.html">Начать обучение →</a>
+    <div class="course-next-actions">
+      <a class="primary-link" id="course-continue" href="/trainers/oge-task6-fractions.html">Начать обучение →</a>
+      <div class="course-guide-entry" aria-label="Помощь с началом занятия">
+        <button type="button" data-course-guide="start" aria-controls="course-guide-panel" aria-expanded="false" hidden>▶ Как начать</button>
+        <button type="button" data-course-guide="resume" aria-controls="course-guide-panel" aria-expanded="false" hidden>▶ Как продолжить</button>
+      </div>
+    </div>
   </div>
+  <section id="course-guide-panel" hidden aria-label="Показать, как заниматься"></section>
   <div class="course-map-heading"><h2 id="course-map-title">Твой путь по ОГЭ</h2><p id="course-progress-summary">7 учебных линий · в своём темпе</p></div>
   <div class="course-track-grid" id="course-track-list"><article class="course-track course-fallback"><h3>Числа и вычисления</h3><p>Дроби, числовая прямая, степени и корни.</p><a href="/trainers/oge-task6-fractions.html">Начать линию →</a></article>
 <article class="course-track course-fallback"><h3>Практические задачи</h3><p>Планы, масштаб, проценты и восемь сюжетов №1–5.</p><a href="/trainers/oge-1-5-trainers/">Начать линию →</a></article>
