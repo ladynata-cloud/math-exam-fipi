@@ -7,7 +7,7 @@
 - Branch: `codex/course-design-standard`
 - Review: MEDIUM — opt-in CSS on existing course entrances, no state or engine changes.
 - Scope approval: current owner request to align OGE/EGE/VPR/textbooks/sections design with new principles.
-- Release: the owner explicitly authorized uploading prepared changes, merging checked PRs and publishing on mathexam.space after checks. The release coordinator records the final composition and performs merges.
+- Release: preparation and checks are authorized. The current task-specific owner instruction requires presenting the exact final base/head/tree, release delta, confirmed checks and remaining risks, then obtaining fresh explicit approval before any merge or publication. Standing authorization and earlier approvals do not remove this hold.
 
 ## Goal and scope
 Apply a shared visual shell to the 29 explicitly listed pages in
@@ -70,9 +70,10 @@ Final browser and full CI results belong to the exact final PR head and are
 reported in the PR acceptance record. Local browser process launch is unavailable;
 CI screenshots and browser tests provide the full viewport evidence.
 
-The earlier release hold was superseded by the owner's explicit upload,
-checked-merge and publication authorization. Final head/base acceptance and
-production validation remain required; preparation does not declare release.
+The current task-specific release hold remains active. The owner must approve
+the exact final composition after its checks and remaining risks are presented.
+Do not merge or publish until that explicit approval is received. A prior
+authorization recorded elsewhere does not supersede this task's restriction.
 
 Final viewport review also found two pre-existing 320px entrance overflows
 (Makarychev7:338px; Alimov:342px), caused by long titles in flex lesson cards.
@@ -110,7 +111,7 @@ existing navigator remain unchanged. A selector limited to Vilenkin
 secondary action. No runtime, state, task bank or model changes are included.
 
 The manifest automatically adds both pages to the paired browser cases at
-320×900 and 1280×900: 29 entrances plus five internal regressions, 68 results.
+320×900 and 1280×900: 29 entrances plus seven internal regressions, 72 results.
 Source restoration, navigator and SEO checks cover the composed pages. These
 pages remain navigator `existingPages`; no source bindings are invented for
 them. Publication waits for the final composition and its exact-head checks.
@@ -153,3 +154,28 @@ checkpoint. No bindings are added for the two Vilenkin `existingPages`.
 The guide and active-learning future-book guards are retained alongside the
 stylesheet guard. Exact-head CI and screenshots for this final composition are
 required; earlier-head evidence is not labelled as final acceptance.
+
+
+## HTTP coverage correction and stereo task spacing
+
+Supplemental QA on unchanged head `bb95d9b7` exposed a real layout regression:
+`#box` and `#sections` models moved down by 27.1875px at 320×900; desktop
+shifts were 6.640625px and 5.71875px. The original stereo task test used
+`file://`, so the root-relative shared stylesheet was not loaded there.
+Actual shared-CSS interaction checks passed for all 39 units, retained drafts,
+honest assisted credit, camera, expansion/Escape and two-tab recovery.
+
+The correction excludes only `body[data-mx-course="stereo"]:has(#app > .workspace)`
+from common heading/eyebrow metrics and catalogue navigation target expansion.
+The stereo home and every other course keep their reviewed styles. No HTML,
+mathematics, renderer, state schema, storage key or student record is changed.
+
+The permanent visual gate retains all previous 68 cases and adds four paired
+stereo cases with a before/after model-position check. Stereo and Vilenkin
+mastery browser tests now use HTTP, verify the actual stylesheet through
+CSSOM, and run when the common shell changes. Their existing state and
+independent-progress assertions remain in place. This expands the own-PR
+delta from 47 to 49 files only by those two existing browser-test files.
+The exact corrected head's browser outcome is recorded in the PR acceptance
+report; the earlier bb95 PASS counts do not constitute acceptance of this fix.
+The explicit owner release hold remains active.

@@ -7,6 +7,11 @@ const http = require('node:http');
 const { chromium } = require('playwright');
 const pages = require('../assets/course-ui-pages.json');
 const scenarios = [
+  ...['box','sections'].map(id=>({
+    file:'stereo-course/index.html',family:'stereo',name:'stereo-'+id,
+    hash:'#'+id,ready:'#answer-form',compactHeading:'.workspace > h1',
+    model:'#task-model svg',preserveModelTop:true
+  })),
   ...Object.entries(pages).map(([file,family])=>({file,family})),
   {
     file:'trainers/vpr-math/index.html', family:'vpr', name:'vpr-route-g5',
@@ -121,6 +126,7 @@ const server = http.createServer((req,res)=>{
             },scenario);
             sample.errors=errors.sort(); samples.push(sample);
             if(control) {
+              if(scenario.preserveModelTop) await page.screenshot({path:path.join(out,name+'-'+width+'-without-shell.png'),animations:'disabled'});
               assert.equal(sample.family,undefined,'Control document must not opt into the shared CSS');
               assert.equal(sample.styles.length,0,'Control document must not load the shared CSS');
             }
@@ -142,6 +148,8 @@ const server = http.createServer((req,res)=>{
                 assert.ok(sample.model.width>0 && sample.model.height>0,'Task drawing is rendered');
                 if(scenario.firstScreenModel) assert.ok(sample.model.top>=0 && sample.model.bottom<=900,
                   `Complete task drawing must fit the first screen: ${JSON.stringify(sample.model)}`);
+                if(scenario.preserveModelTop) assert.ok(sample.model.top<=samples[0].model.top+1,
+                  `Task drawing moved down: ${samples[0].model.top} -> ${sample.model.top}`);
                 assert.equal(sample.model.viewBox,samples[0].model.viewBox,'Drawing coordinate system is unchanged');
                 for(const dimension of ['width','height']) assert.ok(sample.model[dimension]>=samples[0].model[dimension]-1,
                   `Task drawing ${dimension} shrank: ${samples[0].model[dimension]} -> ${sample.model[dimension]}`);
