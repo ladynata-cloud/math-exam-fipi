@@ -14,7 +14,14 @@ let browser;
  for(const width of [320,1280]){
   const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),page=await context.newPage();
   page.setDefaultTimeout(15000);page.on('pageerror',e=>report.errors.push(e.message));
-  const go=async url=>{const response=await page.goto(origin+url);assert.equal(response.status(),200,url);};
+  const go=async url=>{
+   const target=new URL(url,origin),before=new URL(page.url()),response=await page.goto(target.href);
+   if(response)assert.equal(response.status(),200,url);
+   else{
+    assert.equal(before.origin+before.pathname+before.search,target.origin+target.pathname+target.search,'null response is only valid for same-document navigation');
+    assert.equal(page.url(),target.href,'same-document navigation reaches the requested task');
+   }
+  };
   const capture=async(name,locator)=>{
    await locator.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,name+'-'+width+'.png'),fullPage:true});
    const layout=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,overflow:Array.from(document.querySelectorAll('body *')).map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,classes:el.className?.baseVal??el.className,left:r.left,right:r.right,width:r.width};}).filter(r=>r.left< -1||r.right>innerWidth+1).slice(0,30)}));
