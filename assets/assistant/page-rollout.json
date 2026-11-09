@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "47edc9e103829ff663fea81b6ce1e4e77fb50f26",
+  "baseSha": "c0b8bcf3b971ffacae8d7fb6ac1f79d95c74e0d3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2140,8 +2140,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "ca4eb4365e65ff4e5664eee63aab83fe9106ee85852709ad9b55c315f76a34d2",
-      "afterSha256": "230dbeddf63b916eca04d3a321e06c2160db911327414f6cc626a975064482ee",
+      "beforeSha256": "0415d0b8598c9285ff9f58ea260b472ed338b2e414e262f1748eae0393c1e5ab",
+      "afterSha256": "965f78b44b015d44bd1eda89e9ff2d7ee0c8a4d527a306ece2a64fe87a74aa50",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -4304,6 +4304,15 @@
         "geometry-course/trainers/ch4-p4-t2-distance-parallels.html",
         "geometry-course/trainers/ch4-p4-t3-construct-sss.html",
         "geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "47edc9e103829ff663fea81b6ce1e4e77fb50f26",
+      "sourceBaseSha": "c0b8bcf3b971ffacae8d7fb6ac1f79d95c74e0d3",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [
         "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
