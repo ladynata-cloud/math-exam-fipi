@@ -159,3 +159,29 @@ uses the authenticated GitHub connector.
   Full server checks: 426/426; final model/editor/bridge checks: 65/65.
   Full automated browser gate remains pending on the updated Draft candidate.
 - No merge or production deployment has been performed in this continuation.
+
+## Independent browser acceptance — 10 November Novosibirsk
+
+- The owner's current instruction explicitly prohibits merging or deploying
+  until a separate release decision. PR #519 stays Draft; the automatic board
+  release task is paused. This supersedes any earlier publication permission
+  for this task.
+- Synthetic teacher + two-pupil manual acceptance covered ink, constructions,
+  graph parameters, trainer completion, control, observers, history, recovery,
+  concurrent independent work, and 320×900 / 1280×900 layouts.
+- Two real notification defects were fixed: stale read-failure warnings after
+  reconnect, and loss of rejected-work warnings after another write or reload.
+  Regression coverage was expanded without weakening existing assertions.
+- Runtime head: `ab4f1cf7d1bcfd120f65b633b9afc3c3894337a3`.
+  Final [board CI](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42705061495)
+  passed 426 server checks, 65 model/editor/bridge checks, the eight-pupil suite,
+  and the three-context unified-board suite including concurrent ink.
+- CI used merge-ref `9aee5a557ed6febb0a6bd73f2b27df3f15311585` against
+  `c8a4f1fc61dd07038e30764f8cedf0725b767539`; reviewed runtime blobs match.
+  Local manual testing used the earlier base `833856e6`.
+- [Acceptance report and screenshots](../reports/unified-board-browser-acceptance-20261110.md)
+  distinguish product defects from the local Chromium restriction and preview
+  interruption. Mobile scrolling, SpaceMath feature gaps, physical devices,
+  load testing and production acceptance are explicitly bounded.
+- Recommendation: functionally accepted for owner review and a controlled
+  pilot, not an authorization to publish. No real pupil data was used.
