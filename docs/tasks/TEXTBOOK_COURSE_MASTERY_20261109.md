@@ -131,3 +131,22 @@ five named pages. PR #497 is based on feat/oge-course-start-guide-20261109 while
 its dependency is checked; #499 is based on this PR's branch. The coordinator
 will retarget each to main after merging its predecessor with history retained,
 then verify fresh base/head, exact delta and applicable checks.
+
+## Composition with published Makarychev audit, 10 November 2026
+
+The owner authorized completing the remaining publication queue. The candidate
+combines remote #497 `9855b7d13786944fe6d35a3a0cb753668e3da565` with published
+main `c8a4f1fc61dd07038e30764f8cedf0725b767539` using a history-preserving merge.
+The seven conflicts retain both Vilenkin draft checkpoints and M9 draft/history,
+M9 board isolation, #520 first-answer/model evidence and conservative legacy
+provenance, plus #497 chapter mastery and the delayed M7 pilot. Existing task
+IDs, storage version and mathematical content are not removed. The regression
+browser scenario now also switches between unfinished Vilenkin and M9 work
+and verifies both records after reload.
+
+Local source checks passed for workshop state (7,400 generated checks), Vilenkin
+5 (16,080), Vilenkin 6 (23,280), M9 (13,020), the grade-7 route, M7 audit,
+M8 audit (16), M9 audit DOM (93 entries), and numbered-M9 audit (9). Final local
+browser, composition review, navigator rebinding, exact remote CI and production
+acceptance are tracked by the release coordinator. A local source commit is not
+an assertion that publication has occurred or that GitHub CI has completed.
