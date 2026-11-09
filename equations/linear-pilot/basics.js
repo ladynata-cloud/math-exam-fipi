@@ -84,13 +84,9 @@
   }
 
   function updateAdvancedCount() {
-    try {
-      const { lessons } = window.LinearPilotStore.create(localStorage).state();
-      const completed = [1, 2, 3, 4].filter(index => lessons[index]?.done).length;
-      document.getElementById('advanced-count').textContent = `${completed} из 4 занятий`;
-    } catch {
-      document.getElementById('advanced-count').textContent = 'Прогресс недоступен';
-    }
+    const completed = Number(document.getElementById('position').dataset.completedLessons);
+    document.getElementById('advanced-count').textContent = Number.isInteger(completed) && completed >= 0 && completed <= 4
+      ? `${completed} из 4 занятий` : 'Прогресс недоступен';
   }
 
   function balanceView(balance) {
@@ -380,9 +376,8 @@
       load();
       render();
     }
-    if (event.key?.startsWith(window.LinearPilotStore.PREFIX)) updateAdvancedCount();
   });
-  new MutationObserver(updateAdvancedCount).observe(document.getElementById('position'), { childList: true });
+  new MutationObserver(updateAdvancedCount).observe(document.getElementById('position'), { attributes: true, attributeFilter: ['data-completed-lessons'] });
 
   load();
   render();

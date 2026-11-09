@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "62e2aa3e68bb5e86c471dd947faf7adae472feeb",
+  "baseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "27c286e4550b3532311209fefcdce366c58fee74a01859b084be263ba827aa38",
-      "afterSha256": "2f4275a362aae99d2a9f7e9c0c7aebd91fe6fb66db7eacff233b608c35e97f46",
+      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
+      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3083,8 +3083,8 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "a6a0f933a62f662c6123fa965d77707a9aec7788f6ff3bf991fdcb94748fd414",
-      "afterSha256": "36d13799bddb3faf25eafe02b09658dca32dea592e5a4df26018218b514cd797",
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3974,10 +3974,10 @@
     },
     {
       "previousBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
-      "sourceBaseSha": "62e2aa3e68bb5e86c471dd947faf7adae472feeb",
-      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "sourceBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
       "changedPaths": [
-        "trainers/oge-task8-powers-roots.html"
+        "trainers/vpr-math/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
