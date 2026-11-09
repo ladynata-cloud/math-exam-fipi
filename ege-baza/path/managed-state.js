@@ -84,6 +84,6 @@
     const clean = copy(value); clean.work.model = model(w.model, taskSpec.task); clean.view.supportOpen = v.supportOpen || [];
     return clean;
   }
-  root.PathManagedState = { fresh, validate, model };
+  root.PathManagedState = { fresh, validate, model, supportsLearningDiscovery: true };
   if (typeof module !== 'undefined') module.exports = root.PathManagedState;
 })(typeof window === 'undefined' ? globalThis : window);

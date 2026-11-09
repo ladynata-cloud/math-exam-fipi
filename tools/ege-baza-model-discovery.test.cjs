@@ -91,4 +91,47 @@ for(const id of ['scale','practice-percent-whole']){
  const f=fixture(id,1,undefined,false);if(id.startsWith('practice-percent'))f.$('[data-base="whole"]').click();
  eq(f.$('#modelPrediction'),null,'model discovery requires an explicit opt-in');legacyModel(f.state());f.restore();f.dom.window.close();
 }
-console.log(`EGE_BAZA_MODEL_DISCOVERY_OK: ${checks} checks; personal predictions/restoration, strict optional state, stale feedback repair; actual managed/board controllers retain legacy model payloads without personal discovery.`);
+// A stale validator must never consume and erase a newer personal forecast.
+function personal(id,saved,cachedValidator=false){
+ const dom=new JSDOM(fs.readFileSync(path.join(root,'ege-baza/path/index.html'),'utf8'),{url:'https://cache.test/ege-baza/path/index.html#lesson='+id,runScripts:'outside-only'}),w=dom.window,d=w.document;
+ w.structuredClone=x=>w.JSON.parse(JSON.stringify(x));w.matchMedia=()=>({matches:true});w.HTMLElement.prototype.scrollIntoView=()=>{};
+ if(saved)w.localStorage.setItem('mathexam.ege-baza.path.v1',saved);
+ let validationCalls=0;
+ for(const script of d.querySelectorAll('script[src]')){
+  const name=new URL(script.src).pathname;if(name.startsWith('/assets/assistant/'))continue;
+  w.eval(fs.readFileSync(path.join(root,name),'utf8'));
+  if(cachedValidator===true&&name==='/ege-baza/path/managed-state.js'){
+   delete w.PathManagedState.supportsLearningDiscovery;
+   const current=w.PathManagedState.model;
+   w.PathManagedState.model=(value,task)=>{validationCalls++;if(value?.discovery)throw new TypeError('Old validator rejects discovery');return current(value,task);};
+  }
+  if(cachedValidator==='models'&&name==='/ege-baza/path/models.js'){delete w.PathModels.discovery;delete w.PathModels.discoveryMarkup;}
+ }
+ for(const name of ['taskHelp','taskModel']){const el=d.querySelector('#'+name);el.open=true;el.dispatchEvent(new w.Event('toggle'));}
+ const input=(selector,value)=>{const el=d.querySelector(selector);el.value=String(value);el.dispatchEvent(new w.Event('input',{bubbles:true}));};
+ const lesson=()=>JSON.parse(JSON.stringify(w.PathCourse.state().lessons[id])),save=()=>w.localStorage.getItem(w.PathCourse.KEY);
+ return {dom,w,d,input,lesson,save,validationCalls:()=>validationCalls};
+}
+for(const id of ['scale','practice-percent-whole']){
+ const initial=personal(id);
+ initial.input('#answer','17/');initial.input('#note','Моя сохранённая запись');
+ if(id!=='scale')initial.d.querySelector('[data-base="whole"]').click();
+ const predicted=id==='scale'?'1/8':String(initial.w.PathData.task(id,initial.lesson().seed).model.whole/2);
+ initial.input('#modelPrediction',predicted);initial.d.querySelector('#checkPrediction').click();
+ const before=initial.lesson(),saved=initial.save();initial.dom.window.close();
+ const staleModels=personal(id,saved,'models');eq(staleModels.lesson().taskFirst.model,before.taskFirst.model,'cached model helpers cannot erase the saved forecast');eq(staleModels.d.querySelector('#modelPrediction'),null);assert.match(staleModels.d.querySelector('#model').textContent,/Перезагрузи страницу/);checks++;eq(staleModels.d.querySelector('#answer').value,'17/');eq(staleModels.lesson().note,before.note);staleModels.dom.window.close();
+ let stale=personal(id,saved,true);
+ for(let reload=0;reload<2;reload++){
+  eq(stale.validationCalls(),0,'incompatible validator is bypassed before reading the saved forecast');
+  eq(stale.lesson().taskFirst.model,before.taskFirst.model,'cached validator cannot erase forecast or model position');
+  eq(stale.d.querySelector('#modelPrediction'),null);assert.match(stale.d.querySelector('#model').textContent,/Перезагрузи страницу.*Твоя работа сохранена/);checks++;
+  eq(stale.d.querySelector('#answer').value,'17/');eq(stale.d.querySelector('#note').value,before.note);eq(stale.lesson().checks,before.checks);eq(stale.lesson().independent,before.independent);
+  if(reload===0){const retained=stale.save();stale.dom.window.close();stale=personal(id,retained,true);}
+ }
+ stale.input('#answer',stale.w.PathData.task(id,stale.lesson().seed).answer);stale.d.querySelector('#answerForm').dispatchEvent(new stale.w.Event('submit',{bubbles:true,cancelable:true}));
+ eq(stale.lesson().done,true,'final checking remains usable while the model waits for refresh');eq(stale.lesson().independent,before.independent);eq(stale.lesson().taskFirst.model,before.taskFirst.model);eq(stale.lesson().note,before.note);
+ const restored=personal(id,stale.save());eq(restored.lesson().taskFirst.model,before.taskFirst.model,'current validator resumes the preserved forecast');eq(restored.d.querySelector('#modelPrediction').value,predicted);assert.match(restored.d.querySelector('#predictionRead').textContent,/^Верно/);checks++;
+ restored.dom.window.close();stale.dom.window.close();
+ const fresh=personal(id,null,true);eq(fresh.lesson().taskFirst.model,null,'stale validator cannot create a new incompatible forecast');eq(fresh.validationCalls(),0);eq(fresh.d.querySelector('#modelPrediction'),null);fresh.dom.window.close();
+}
+console.log(`EGE_BAZA_MODEL_DISCOVERY_OK: ${checks} checks; personal predictions/restoration, strict optional state, stale feedback repair; managed/board legacy payloads; cached-validator guard preserves forecast, position, answer and note while final checking remains usable.`);

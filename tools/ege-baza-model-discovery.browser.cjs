@@ -51,7 +51,30 @@ async function openModel(page){for(const id of ['taskHelp','taskModel'])if(!awai
    await page.reload();await page.evaluate(saved=>__bazaBoard.applyState(saved),board);await openModel(page);
    assert.deepEqual(await page.evaluate(()=>__bazaBoard.getState()),board);assert.equal(await page.locator('#modelPrediction').count(),0);
   }
+  const staleValidator=fs.readFileSync(path.join(root,'ege-baza/path/managed-state.js'),'utf8')+'\n;(()=>{delete PathManagedState.supportsLearningDiscovery;window.__cachedModelCalls=0;const current=PathManagedState.model;PathManagedState.model=(value,task)=>{__cachedModelCalls++;if(value?.discovery)throw new TypeError("Old validator rejects discovery");return current(value,task);};})();';
+  for(const width of [320,1280]){
+   await page.setViewportSize({width,height:900});
+   for(const id of ['scale','practice-percent-whole']){
+    await page.goto(url+'#lesson='+id);await page.locator('#new').click();await page.locator('#answer').fill('17/');
+    await page.locator('#taskNote>summary').click();await page.locator('#note').fill('Моя сохранённая запись');await openModel(page);
+    if(id!=='scale')await page.locator('[data-base="whole"]').click();
+    const predicted=await page.evaluate(id=>id==='scale'?'1/8':String(PathData.task(id,PathCourse.state().lessons[id].seed).model.whole/2),id);
+    await page.locator('#modelPrediction').fill(predicted);await page.locator('#checkPrediction').click();
+    const before=await page.evaluate(id=>PathCourse.state().lessons[id],id);
+    await page.route('**/managed-state.js*',route=>route.fulfill({contentType:'text/javascript',body:staleValidator}));
+    for(let reload=0;reload<2;reload++){
+     await page.reload();await openModel(page);assert.equal(await page.evaluate(()=>__cachedModelCalls),0);
+     const retained=await page.evaluate(id=>PathCourse.state().lessons[id],id);assert.deepEqual(retained.taskFirst.model,before.taskFirst.model);assert.deepEqual(retained.checks,before.checks);assert.equal(retained.independent,before.independent);
+     assert.equal(await page.locator('#modelPrediction').count(),0);assert.match(await page.locator('#model').innerText(),/Перезагрузи страницу.*Твоя работа сохранена/);
+     assert.equal(await page.locator('#answer').inputValue(),'17/');assert.equal(await page.locator('#note').inputValue(),before.note);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    }
+    const final=await page.evaluate(id=>String(PathData.task(id,PathCourse.state().lessons[id].seed).answer),id);await page.locator('#answer').fill(final);await page.locator('#answer').press('Enter');
+    const checked=await page.evaluate(id=>PathCourse.state().lessons[id],id);assert.equal(checked.done,true);assert.equal(checked.independent,before.independent);assert.deepEqual(checked.taskFirst.model,before.taskFirst.model);assert.equal(checked.note,before.note);
+    await page.unroute('**/managed-state.js*');await page.reload();await openModel(page);
+    assert.deepEqual(await page.evaluate(id=>PathCourse.state().lessons[id].taskFirst.model,id),before.taskFirst.model);assert.equal(await page.locator('#modelPrediction').inputValue(),predicted);assert.match(await page.locator('#predictionRead').innerText(),/^Верно/);
+   }
+  }
   assert.deepEqual(errors,[]);
-  console.log('EGE_BAZA_MODEL_DISCOVERY_BROWSER_OK: 320/1280 personal predictions, exact third/restoration, preserved final draft, no model credit; managed cabinet and board retain legacy model fields without prediction controls across reload.');
+  console.log('EGE_BAZA_MODEL_DISCOVERY_BROWSER_OK: 320/1280 personal predictions/restoration; managed cabinet and board retain legacy payloads; stale-validator reload preserves forecast, position, draft and note, final checking works, current validator resumes the forecast.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());

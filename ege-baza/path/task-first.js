@@ -105,6 +105,14 @@
   let mountedModel=false;
   function mountModel(){
    if(mountedModel)return;
+   // An older cached validator rejects personal forecasts. Keep the saved
+   // model intact until the matching scripts arrive instead of resetting it.
+   const discoveryModel=t.model.kind==='percent-base'||t.model.kind==='solid'&&t.model.section;
+   const discoveryReady=root.PathManagedState.supportsLearningDiscovery===true&&typeof root.PathModels.discovery==='function'&&typeof root.PathModels.discoveryMarkup==='function';
+   if(learningCycle&&discoveryModel&&!discoveryReady){
+    $('#model').innerHTML='<p role="status">Перезагрузи страницу, чтобы продолжить работу с моделью. Твоя работа сохранена.</p>';
+    return;
+   }
    // Reuse the existing strict model-state validator before returning any saved
    // value to an interactive model. Malformed optional UI state is not executed.
    let saved=null;try{saved=root.PathManagedState.model(u.model,t);}catch{u.model=null;}
