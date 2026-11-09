@@ -326,8 +326,8 @@
   function renderConnection() {
     if (!snapshot) return;
     $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
-    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!connected?'offline':outbox.length?'pending':'saved';
+    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!connected?'offline':outbox.length||rejected.length?'pending':'saved';
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
     if(!teacher()&&$('teacherWatchStatus'))$('teacherWatchStatus').textContent=presentationCaption()+(connected?'':' · нет связи');
@@ -634,6 +634,7 @@
     if(!supportsUnifiedBoard(capability))throw Error('Сервер ещё не поддерживает единую доску со SpaceMath. Сохранённое занятие не изменено.');
     accept(data);rememberSession();
     try{const saved=JSON.parse(sessionStorage.getItem(queueKey())||'{}');outbox=Array.isArray(saved.outbox)?saved.outbox:[];rejected=Array.isArray(saved.rejected)?saved.rejected:[];}catch(_){}
+    if(rejected.length)notice(errorText({code:rejected[rejected.length-1].error}),true);
     $('strokeColor').value=teacher()?'#15803d':'#172033';render();
     pump();later(async function tick(){await poll();if(!stopped)later(tick,1100);},1100);
   }

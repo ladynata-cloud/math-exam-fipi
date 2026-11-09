@@ -322,6 +322,7 @@ async function main() {
     await trainer.locator('#ans').fill(String(problem.task.res));
     await trainer.locator('#check').click();
     await poll(async () => (await work(first.id)).trainerState.phase === 'done', 'inserted trainer completed through UI');
+    assert.match(await pupil.locator('#errorNotice').textContent(), /Построение не прошло проверку/, 'later successful trainer edit preserves rejected geometry warning');
     const allMaterials = await work(first.id);
     for (const surface of ['geometry', 'board', 'split', 'trainer']) await mode(pupil, surface);
     assert.deepEqual(await work(first.id), allMaterials, 'material switching changes no saved work');
@@ -369,6 +370,7 @@ async function main() {
     assert.deepEqual(await work(first.id), allMaterials, 'read outage and recovery do not alter saved work');
     assert.equal(await pupil.locator('#recoverWorkButton').isVisible(), true, 'actual rejected edit remains recoverable after later successful writes');
     assert.match(await pupil.locator('#errorNotice').textContent(), /Построение не прошло проверку/, 'successful later writes do not erase the actual rejection warning');
+    assert.equal(await pupil.locator('#connectionStatus').textContent(), 'Есть отклонённые действия', 'reload must not claim all work saved while rejected edits remain');
     console.log('PASS connection recovery distinguishes transient read failure from rejected work');
 
     await teacher.locator('#historyButton').click();
