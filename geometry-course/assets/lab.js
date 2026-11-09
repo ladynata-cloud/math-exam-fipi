@@ -6,17 +6,33 @@ function objectName(object){
  return kind+' '+object.a+object.b;
 }
 function mount(el,spec,onChange){
- const board=new G.Board(spec.scene||G.scene(spec.figure||'triangle'));let tool='move',selected=[],selectedPoint='A',active=null,highlight=[],moved=false;
+ const board=new G.Board(spec.scene||G.scene(spec.figure||'triangle'));
+ const scratch=spec.figure==='scratch';
+ let tool=scratch?'point':'move',selected=[],selectedPoint='A',active=null,highlight=[],moved=false;
  el.innerHTML='<div class="canvas-wrap"><canvas tabindex="0" aria-label="Интерактивный чертёж. Стрелки двигают выбранную точку; Shift увеличивает шаг." width="640" height="420"></canvas></div><div class="lab-readout" aria-live="polite"></div><div class="tools"><button data-tool="move" class="on">Двигать</button><button data-tool="point">Точка</button><button data-tool="segment">Отрезок</button><button data-tool="line">Прямая</button><button data-tool="circle">Окружность</button><button data-tool="intersection">Пересечение</button><button data-tool="midpoint">Середина</button><button data-tool="perpendicular">Перпендикуляр</button><button data-tool="parallel">Параллельная</button><button data-tool="bisector">Биссектриса</button><button data-tool="reflection">Отражение</button></div><p class="tool-instruction"></p><div class="keyboard-panel"><label>Точка <select class="point-select"></select></label><label>x <input class="point-x" type="number" min="25" max="615" step="5"></label><label>y <input class="point-y" type="number" min="30" max="385" step="5"></label><button data-act="move">Передвинуть точку</button><button data-act="select">Выбрать для построения</button></div><div class="object-panel" hidden><label style="min-width:0;max-width:100%">Объект <select class="object-select" style="max-width:100%"></select></label><button data-act="object">Выбрать объект</button></div><div class="row"><button data-act="undo">Отменить построение / движение</button><button data-act="reset">Начать чертёж заново</button><button data-act="goal" class="primary">Проверить построение</button></div><p class="lab-feedback" role="status"></p><details><summary>Как пользоваться чертежом</summary><p>Синие точки двигаются мышью, пальцем, стрелками или полями координат. Зелёные зависят от построения и пересчитываются вместе с исходными. Пересечения относятся к полным прямым и окружностям, даже если показаны отрезки. Координаты экрана — техническая помощь; длины подписаны в условных единицах.</p><p>Выбор инструмента ещё ничего не строит: укажи точки по порядку. Можно выбрать их и кнопкой под чертежом. Геометрическая проверка подтверждает построение на модели; общее утверждение требует доказательства.</p></details>';
  const cv=el.querySelector('canvas'),ctx=cv.getContext('2d'),dpr=Math.min(devicePixelRatio||1,2);cv.width=640*dpr;cv.height=420*dpr;ctx.scale(dpr,dpr);const readout=el.querySelector('.lab-readout'),feedback=el.querySelector('.lab-feedback');
  const need={move:1,point:0,segment:2,line:2,circle:2,intersection:2,midpoint:2,perpendicular:3,parallel:3,bisector:3,reflection:3};
  const instructions={move:'Потяни синюю точку. Выбранную точку также можно двигать стрелками.',point:'Нажми на свободное место; для точного ввода укажи x и y и нажми «Передвинуть точку».',segment:'Выбери два конца отрезка.',line:'Выбери две точки прямой.',circle:'Сначала центр, затем точку окружности.',intersection:'Выбери два объекта в списке или нажатием на линию/окружность.',midpoint:'Выбери концы отрезка: середина будет зависеть от них.',perpendicular:'Сначала точку, через которую провести перпендикуляр, затем две точки исходной прямой.',parallel:'Сначала точку новой прямой, затем две точки исходной прямой.',bisector:'Выбери точку первого луча, вершину угла и точку второго луча.',reflection:'Выбери отражаемую точку, затем две точки оси.'};
- const movable=p=>(!p.kind||p.kind==='free'||p.draggable)&&p.valid!==false;
+ const movable=p=>p&&(!p.kind||p.kind==='free'||p.draggable)&&p.valid!==false;
  function notify(type){if(onChange)onChange({type,board,moved});}
  function fail(msg){feedback.textContent=msg;feedback.className='lab-feedback error';}
- function options(){let old=selectedPoint;el.querySelector('.point-select').innerHTML=board.points.map(p=>'<option value="'+E(p.id)+'">Точка '+E(p.id)+(movable(p)?' — подвижная':' — построенная')+'</option>').join('');if(board.point(old)){el.querySelector('.point-select').value=old;}else selectedPoint=board.points[0].id;el.querySelector('.object-select').innerHTML=board.objects.map(o=>'<option value="'+E(o.id)+'">'+E(objectName(o))+'</option>').join('');syncFields();}
- function syncFields(){const p=board.point(selectedPoint);if(!p)return;el.querySelector('.point-x').value=Math.round(p.x);el.querySelector('.point-y').value=Math.round(p.y);}
- function instruction(){const names=selected.map(id=>tool==='intersection'&&board.object(id)?objectName(board.object(id)):'Точка '+id);el.querySelector('.tool-instruction').textContent=instructions[tool]+(names.length?' Выбрано: '+names.join(', ')+'.':'');el.querySelector('.object-panel').hidden=tool!=='intersection';el.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===tool));}
+ function options(){
+  const points=el.querySelector('.point-select');
+  points.innerHTML=board.points.map(p=>'<option value="'+E(p.id)+'">Точка '+E(p.id)+(movable(p)?' — подвижная':' — построенная')+'</option>').join('');
+  if(!board.point(selectedPoint))selectedPoint=board.points[0]?.id||'';
+  points.value=selectedPoint;
+  el.querySelector('.object-select').innerHTML=board.objects.map(o=>'<option value="'+E(o.id)+'">'+E(objectName(o))+'</option>').join('');
+  syncFields();
+ }
+ function syncFields(){const p=board.point(selectedPoint);el.querySelector('.point-x').value=p?Math.round(p.x):'';el.querySelector('.point-y').value=p?Math.round(p.y):'';}
+ function instruction(){
+  const names=selected.map(id=>tool==='intersection'&&board.object(id)?objectName(board.object(id)):'Точка '+id);
+  const pointInstruction=scratch&&tool==='point'?'Нажми на свободное место. С клавиатуры введи x и y и нажми «Добавить точку».':instructions[tool];
+  el.querySelector('.tool-instruction').textContent=pointInstruction+(names.length?' Выбрано: '+names.join(', ')+'.':'');
+  if(scratch)el.querySelector('[data-act="move"]').textContent=tool==='point'?'Добавить точку':'Передвинуть точку';
+  el.querySelector('.object-panel').hidden=tool!=='intersection';
+  el.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('on',b.dataset.tool===tool));
+ }
  function pick(id){selected.push(id);instruction();if(selected.length<need[tool])return;try{board.make(tool,selected);moved=true;feedback.className='lab-feedback';feedback.textContent='Построено. Передвинь исходные точки: связь должна сохраниться.';selected=[];options();draw();notify('construction');}catch(e){selected=[];fail(e.message);}instruction();}
  function screen(e){const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*420/r.height};}
  function nearest(q){const tol=24*640/cv.getBoundingClientRect().width;return board.points.filter(p=>p.valid!==false).sort((a,b)=>G.dist(a,q)-G.dist(b,q)).find(p=>G.dist(p,q)<tol);}
@@ -27,11 +43,17 @@ function mount(el,spec,onChange){
  for(const event of ['pointerup','pointercancel','lostpointercapture'])cv.addEventListener(event,()=>{active=null;});
  cv.addEventListener('keydown',e=>{const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!d)return;e.preventDefault();const p=board.point(selectedPoint);if(!movable(p)){fail('Выбери подвижную точку в списке.');return;}board.remember();move(p.id,{x:p.x+d[0]*(e.shiftKey?10:2),y:p.y+d[1]*(e.shiftKey?10:2)});});
  el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.tool){tool=b.dataset.tool;selected=[];instruction();return;}const act=b.dataset.act;
-  if(act==='select'){if(tool==='move'||tool==='point')return;pick(el.querySelector('.point-select').value);}
-  if(act==='object')pick(el.querySelector('.object-select').value);
+  if(act==='select'){const id=el.querySelector('.point-select').value;if(tool==='move'||tool==='point'||!id)return;pick(id);}
+  if(act==='object'){const id=el.querySelector('.object-select').value;if(id)pick(id);}
   if(act==='undo'){board.undo();selected=[];options();draw();notify('undo');instruction();}
-  if(act==='reset'){board.reset();selected=[];moved=false;options();draw();instruction();feedback.textContent='Исходный чертёж восстановлен.';notify('reset');}
-  if(act==='move'){const x=Number(el.querySelector('.point-x').value),y=Number(el.querySelector('.point-y').value);if(!Number.isFinite(x+y))return fail('Введите конечные координаты.');if(tool==='point'){board.addPoint(x,y);options();draw();notify('construction');}else{board.remember();if(!movable(board.point(selectedPoint)))return fail('Выбери подвижную исходную точку.');move(selectedPoint,{x,y});}}
+  if(act==='reset'){board.reset();selected=[];moved=false;if(scratch)tool='point';options();draw();instruction();feedback.textContent=scratch?'Поле очищено.':'Исходный чертёж восстановлен.';notify('reset');}
+  if(act==='move'){
+   const xText=el.querySelector('.point-x').value,yText=el.querySelector('.point-y').value;
+   const x=Number(xText),y=Number(yText);
+   if(!xText||!yText||!Number.isFinite(x+y))return fail('Введи координаты x и y.');
+   if(tool==='point'){board.addPoint(x,y);options();draw();notify('construction');}
+   else{if(!movable(board.point(selectedPoint)))return fail('Выбери подвижную исходную точку.');board.remember();move(selectedPoint,{x,y});}
+  }
   if(act==='goal'){const result=board.goal(spec.goal||'explore');feedback.textContent=(result.ok?'Построение выполнено. Теперь объясни, почему оно работает. ':'')+result.message;feedback.className='lab-feedback '+(result.ok?'good':'');notify(result.ok?'goal':'goal-attempt');}
  });
  el.querySelector('.point-select').addEventListener('change',e=>{selectedPoint=e.target.value;syncFields();draw();});

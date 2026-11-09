@@ -3,11 +3,17 @@
 (function(doc){
 'use strict';
 const name=location.pathname.split('/').pop(),construction=/constr|construct/.test(name),parallel=name.startsWith('ch3-')||name.includes('distance-parallels');
+const intersectingAngles=name==='ch1-p6-t2-angle-problems.html';
 const section=doc.createElement('section');section.className='geometry7-reasoning';section.setAttribute('aria-label','Объясни решение своими словами');
-const heading=doc.createElement('h2');heading.textContent=construction?'Построение и его обоснование':parallel?'От условия к выводу о параллельности':'Как записать доказательство';section.append(heading);
-const intro=doc.createElement('p');intro.textContent=construction?'После каждого действия объясни, что оно гарантирует. Линейка проводит прямую через две точки; циркуль переносит длину. Измерение по экрану не заменяет обоснование.':'Сначала назови, что дано и что требуется доказать. Каждое равенство нужно обосновать; похожий вид рисунка сам по себе ничего не доказывает.';section.append(intro);
+const heading=doc.createElement('h2');heading.textContent=intersectingAngles?'Как объяснить решение задачи на углы':construction?'Построение и его обоснование':parallel?'От условия к выводу о параллельности':'Как записать доказательство';section.append(heading);
+const intro=doc.createElement('p');intro.textContent=intersectingAngles?'Запиши, что известно об углах и что требуется найти или проверить. Для каждого шага назови свойство углов, которое используешь.':construction?'После каждого действия объясни, что оно гарантирует. Линейка проводит прямую через две точки; циркуль переносит длину. Измерение по экрану не заменяет обоснование.':'Сначала назови, что дано и что требуется доказать. Каждое равенство нужно обосновать; похожий вид рисунка сам по себе ничего не доказывает.';section.append(intro);
 const details=doc.createElement('details'),summary=doc.createElement('summary');summary.textContent='Опора для рассуждения';details.append(summary);
-const items=construction?[
+const items=intersectingAngles?[
+ 'Найди вершину углов и определи, как расположена нужная пара.',
+ 'Вертикальные углы лежат напротив друг друга. Их величины равны.',
+ 'У смежных углов одна сторона общая, а две другие образуют прямую. Сумма таких углов равна 180°.',
+ 'Если величины заданы отношением или разностью, вырази оба угла через одну неизвестную. Затем запиши равенство или сумму в зависимости от пары углов.'
+]:construction?[
  'Дуги одного раствора циркуля задают равные расстояния от своих центров. Сначала проверь, что точки пересечения действительно существуют.',
  'Чтобы построить серединный перпендикуляр, возьми одинаковые радиусы больше половины отрезка. Соедини обе точки пересечения окружностей.',
  'Чтобы построить биссектрису, отметь на сторонах угла равноудалённые от вершины точки. От них одинаковым раствором проведи дуги. Обоснуй равенство полученных треугольников по трём сторонам.',
@@ -25,6 +31,6 @@ const items=construction?[
  'Общая сторона равна самой себе; вертикальные углы равны. Эти причины нужно назвать. Равенство остальных элементов следует уже ПОСЛЕ доказанного равенства треугольников.'
 ];
 const list=doc.createElement('ol');for(const text of items){const li=doc.createElement('li');li.textContent=text;list.append(li);}details.append(list);section.append(details);
-for(const [key,text]of [['givens','Дано и что нужно доказать'],['reasons','Ход решения: утверждение — его основание'],['conclusion','Вывод и проверка условий']]){const label=doc.createElement('label');label.textContent=text;const input=doc.createElement('textarea');input.id='geometry7-'+key;input.maxLength=2000;input.rows=3;label.append(input);section.append(label);}
+for(const [key,text]of [['givens',intersectingAngles?'Дано и что нужно найти или проверить':'Дано и что нужно доказать'],['reasons','Ход решения: утверждение — его основание'],['conclusion','Вывод и проверка условий']]){const label=doc.createElement('label');label.textContent=text;const input=doc.createElement('textarea');input.id='geometry7-'+key;input.maxLength=2000;input.rows=3;label.append(input);section.append(label);}
 const note=doc.createElement('p');note.textContent='Записи помогают обсудить решение с преподавателем. Совпадение ответа или собранные карточки ещё не означают, что самостоятельное доказательство проверено.';section.append(note);doc.body.append(section);
 })(document);
