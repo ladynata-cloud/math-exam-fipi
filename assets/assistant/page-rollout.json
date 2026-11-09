@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+  "baseSha": "2a45b687d6212e5313ccbd102d8906846b0e5bc4",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4037,6 +4037,13 @@
     {
       "previousBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
       "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "2a45b687d6212e5313ccbd102d8906846b0e5bc4",
       "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
