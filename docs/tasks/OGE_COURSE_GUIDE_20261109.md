@@ -38,3 +38,36 @@ Branch, local commits, push and Draft PR are authorized by the current task. Pub
 
 ## Execution
 Exact base/head, review results, passes/failures/not-run checks and release evidence are recorded in the task PR. Repository project status was read; its older OGE preparation descriptions are superseded for this task by current main code and the published map's release record.
+## Continuation, 9 November 2026
+
+EXECUTIVE STATUS
+
+Task: OGE_COURSE_GUIDE_20261109
+PR: #505; local continuation not uploaded
+Base: 463d6bf
+Head: source da058b75, navigator binding 23d7f780
+Gate: local PASS; updated remote CI pending
+Tests: 22 OGE guide/map tests, 4 navigator preservation tests, 5 binding tests; syntax and diff checks PASS
+Failures: no local functional test failures; automatic approval review rejected branch upload twice
+Not run: final-head CI/browser/production checks; external review and pupil pilot
+Scope deviations: none; instructional source files remain identical to reviewed PR head f9439729
+Recommendation: push existing task branch after explicit approval, complete CI and publish
+Next user decision: explicit authorization to upload and release after successful checks, as requested by automatic approval review
+
+Authorized base: standing owner policy
+Actual current main at composition: 463d6bf
+Base drift detected: yes, published EGE basic/profile and OGE root/anchor fixes
+Authorization valid/invalid: standing policy applies; automatic execution approval blocked external write
+Virtual merge result: only navigator receipt conflicted; retained main history and rebound the single course entrance
+Rerun gates: all 31 local tests passed
+New owner authorization required: requested by automatic approval review
+Merge/deployment: not performed
+
+## Explicit release approval received
+
+On 9 November 2026 the owner explicitly authorized uploading the prepared
+changes to ladynata-cloud/math-exam-fipi, merging checked PRs and publishing
+on mathexam.space after successful checks. Previous execution-approval holds
+above are historical. Actual-head CI and controlled production verification
+remain required. Authenticated GitHub integration is used because Git CLI
+write credentials are unavailable.
