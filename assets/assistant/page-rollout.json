@@ -2030,8 +2030,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "1d68505349632fb15fe612a61160f351863c22eda0ce9ae64dcfb14ffcd9b4f4",
-      "afterSha256": "eaedf6d8ec69be9b7ba8fad458a96d8d47c764c6a4e7fe16efe20c8e05615395",
+      "beforeSha256": "c145995f9d939a19c378b3daa1ac76050de7f7c7b20ba8fc2ecfb8a257c05be9",
+      "afterSha256": "79cf88473d259f12125f2693342f530cd3ac61f61a89605100edc35db340831d",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2100,23 +2100,23 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8c4d159baa5e5aa92b3dfa6f0fdffd489d3907e5009ae5749b879981ef42288b",
-      "afterSha256": "7c1d1f49773470338c6eba4f7babf4a0224a688b191fce76f18212d431cd61a1",
+      "beforeSha256": "931a86c9511a0fba0eefa20bd75f7169abaebbfa2affddef2847952dc5d8501e",
+      "afterSha256": "d5781146bdb9fe5c9cd563efdd268268135f1581638db1af1bf3cc79c022f07e",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
-      "beforeSha256": "e0ebdf64cb3edb5a71283c667edfedc4dde2bf969a49d5cb0a8d74ca7495c72f",
-      "afterSha256": "755e362375ec14f6b9b34882f78d366174db05f736299d8d1d02e1636217e1ab",
+      "beforeSha256": "50f6aef6993511475931499d227a2512265194d660396178ec2b732c59c04fb6",
+      "afterSha256": "aac26dc0a82ab69c7b1793e98373db6ceca315a226ceb04a74405655a0271da8",
       "placement": "before-head-close"
     },
     "school/makarychev7/index.html": {
-      "beforeSha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
-      "afterSha256": "8eaecb7ba4717bb507bb1b6c3227029cae267a67bd98f18b4f9f48bcf1b139c7",
+      "beforeSha256": "30ff7761d8453683c4cbbe5ab3657fc4fbb087e074fe26781d0892e61da1c956",
+      "afterSha256": "88d62c85bb57c26a9eb0ef790b198db9e89a06ec61a217adaa090f0a8a98f84a",
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d2862188495afc6832225b565715e5b89158accb32ed85ee1ce66db0fcacff76",
-      "afterSha256": "89c354610d96bd28d956a43e60065f203a9098fe6dc94e5209c18da39c15d25b",
+      "beforeSha256": "84ac9745e19a6a03ec05440ece29cf33a5bb707f3d716cc42cb63e9b68411ce1",
+      "afterSha256": "29b972cf337c7ed55a22ba72dabd92a94ad5d79e77742eeef5b7377d893efa53",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -4354,6 +4354,67 @@
       "sourceBaseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
       "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "grade7/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
+      "sourceBaseSha": "492aab65a42329a54a6954187b61ce9906e3e409",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "school/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
+      "sourceBaseSha": "1bb9796c55938b2313f9902e0b21e890c9f59a95",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "grade7/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "491d922353e1b8bb6080f421851b73e416031c13",
+      "sourceBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "grade7/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "03b33ab0fe13ccd1c6dec466935e2c01979d206d",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

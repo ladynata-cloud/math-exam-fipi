@@ -41,6 +41,21 @@ const correctAnswer = page => page.evaluate(() => {
     assert.equal(await page.locator('#answer').inputValue(), 'мой черновик');
     assert.match(await page.locator('.v6-history summary').innerText(), /\(1\)/);
 
+    // Both published courses share a storage record: a lesson switch or reload
+    // must preserve the other course's unfinished work and assistance evidence.
+    const v5DraftBeforeM9 = (await saved(page)).vilenkinDrafts.vilenkin5;
+    await page.goto(`${base}?course=makarychev9#lesson/m9f-root-square`);
+    await page.locator('#m9-prediction').fill('Проверю знак корня');
+    await page.locator('#answer').fill('незавершённый ответ М9');
+    const m9DraftBeforeReload = (await saved(page)).m9Drafts['m9f-root-square'];
+    await page.reload();
+    assert.equal(await page.locator('#answer').inputValue(), 'незавершённый ответ М9');
+    assert.deepEqual((await saved(page)).vilenkinDrafts.vilenkin5, v5DraftBeforeM9);
+    await open(page, 5, 'lesson/v5f-fraction-same-add');
+    assert.equal(await page.locator('#answer').inputValue(), 'мой черновик');
+    assert.equal((await saved(page)).m9Drafts['m9f-root-square'].input, m9DraftBeforeReload.input);
+    assert.equal((await saved(page)).m9Drafts['m9f-root-square'].inquiry.prediction, 'Проверю знак корня');
+
     await open(page, 6, 'lesson/v6f-fraction-lcd');
     await page.locator('[data-cmd=mode][data-value=check]').click();
     const initialPrompt = await page.locator('#task-panel .question').innerText();
