@@ -147,3 +147,11 @@ PR #499 is temporarily based on improve/textbook-course-mastery-20261109;
 after the predecessor is merged with ancestry retained, the coordinator
 retargets to main and verifies the fresh pair and applicable checks. No earlier
 head's CI is substituted for the final current candidate.
+
+Uploaded source 81fc294333bfa31e9150c0c51d2a1464eb4903c2 has tree
+fbf950e8b044be51f309df845622db06c4b8426a, exactly matching reviewed local
+f863a655. Independent review verified both parents, unchanged school runtime,
+all 21 Merzlyak and 7 OGE source blobs and the exact inherited #497 manifest.
+After rebinding only school/makarychev8/index.html to that uploaded source,
+navigator preservation 4/4 and binding checks 5/5 passed. Final head and its
+actual-head browser/CI results are recorded in PR #499.
