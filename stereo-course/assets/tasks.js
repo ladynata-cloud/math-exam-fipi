@@ -14,7 +14,7 @@ case'section':{
   const target=forward?next:previous, pair=forward?'MN':'MP', pairCode=forward?1:2, edgeCode=names.indexOf(missing)+1;
   return {
    ...task(
-    'В кубе с ребром '+x+' точки M, N и P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁ и '+previous+previous+'₁ соответственно. Через них проведена плоскость. Назови пару точек для стороны сечения в боковой грани с нижним ребром '+anchor+target+' и ребро с четвёртой вершиной. Запиши два номера через точку с запятой. Пары — 1 MN, 2 MP, 3 NP. Рёбра — 1 AA₁, 2 BB₁, 3 CC₁, 4 DD₁.',
+    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две точки сечения MNP лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
     [pairCode,edgeCode],
     [
      step('Какие две отмеченные точки лежат на указанной грани? Введи номер пары.',pairCode,'Обе точки лежат на вертикальных рёбрах с нижними концами '+anchor+' и '+target+'. Соедини '+pair+' на этой грани.'),
