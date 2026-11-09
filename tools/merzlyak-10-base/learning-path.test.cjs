@@ -17,14 +17,14 @@ const resumeKey='mathExamTextbook.route.v1:'+bundle.catalog.book.id;
 const copy=value=>JSON.parse(JSON.stringify(value));
 function boot(saved={},board=false){
  const dom=new JSDOM('<div id="app"></div>',{url:'https://example.test/'+(board?'trainers/merzlyak-10-base.html':'stereo-course/merzlyak-10-base/'),runScripts:'outside-only',pretendToBeVisual:true});
- const w=dom.window,doc=w.document;w.TextEncoder=TextEncoder;w.scrollTo=()=>{};
+ const w=dom.window,doc=w.document,scrolls=[];w.TextEncoder=TextEncoder;w.scrollTo=(...args)=>scrolls.push(args);
  for(const [k,v]of Object.entries(saved))w.localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));
  w.TaskSceneViewer={mount(element,model,options={}){const svg=doc.createElement('svg'),live=doc.createElement('p');live.className='am-sr-only';element.append(svg,live);const camera=model.planar?{yaw:0,pitch:-Math.PI/2}:options.savedCamera||{yaw:.6,pitch:.4};svg.dataset.view='neutral';return {getState:()=>camera,setView:view=>{svg.dataset.view=view;},destroy:()=>element.replaceChildren()};}};
  for(const file of ['stereo-course/assets/math-text.js','stereo-course/merzlyak-10-base/assets/engine.js'])w.eval(fs.readFileSync(path.join(root,file),'utf8'));
  let app,session;
  if(board){doc.body.dataset.merzlyakBoard='true';w.MathExamBoard={register:()=>({destroy(){}})};w.eval(fs.readFileSync(path.join(root,'stereo-course/merzlyak-10-base/assets/board-session.js'),'utf8'));({app,session}=w.MerzlyakBoard.boot(w.JSON.parse(JSON.stringify(sample)),doc.getElementById('app')));}
  else app=w.StereoTextbook.createApp(doc.getElementById('app'),copy(sample));
- return {w,doc,app,state:lesson=>JSON.parse(w.localStorage.getItem(key(lesson))),close(){session?.destroy();app.destroy();w.close();}};
+ return {w,doc,app,scrolls,state:lesson=>JSON.parse(w.localStorage.getItem(key(lesson))),close(){session?.destroy();app.destroy();w.close();}};
 }
 function answer(f,value){const input=f.doc.querySelector('#final-answer');input.value=value;input.dispatchEvent(new f.w.Event('input',{bubbles:true}));f.doc.querySelector('[data-final-form]').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));}
 const tick=()=>new Promise(resolve=>setTimeout(resolve,5));
@@ -67,4 +67,9 @@ test('empty manual answer retains identical shared-room feedback after snapshot 
 test('restoring legacy open help leaves stored work byte-identical until a real edit',async()=>{
  const old={draft:'Личная работа до обновления',stepDrafts:{},revealed:1,assisted:true,checked:false,camera:{yaw:.4,pitch:.2}},raw=JSON.stringify(old,null,2);
  const f=boot({[key(exact)]:raw});try{f.app.open(exact.id);assert.equal(f.doc.querySelector('#final-answer').value,old.draft);assert.equal(f.doc.querySelectorAll('[data-step]').length,1);assert.equal(f.doc.querySelector('[data-main-help]').open,true);await tick();assert.equal(f.w.localStorage.getItem(key(exact)),raw,'queued restoration toggle must not migrate legacy storage');f.app.home();f.app.open(exact.id);await tick();assert.equal(f.w.localStorage.getItem(key(exact)),raw,'reopening is still read-only for stored work');answer(f,exact.answer.accepted[0]);assert.equal(f.state(exact).recordVersion,2,'an actual user response persists new metadata');assert.equal(f.state(exact).historyKnown,false);assert.equal(f.state(exact).outcome,'legacy','old work never acquires fresh independent credit');assert.equal(f.state(exact).assisted,true);}finally{f.close();}
+});
+
+test('standalone navigation starts at the top while shared-room navigation leaves scrolling alone',()=>{
+ const f=boot();try{assert.deepEqual(f.scrolls,[[0,0]],'initial personal route starts at the top');f.scrolls.length=0;f.doc.querySelector('[data-start-route]').click();assert.deepEqual(f.scrolls,[[0,0]],'opening theory starts at the top');f.scrolls.length=0;f.doc.querySelector('[data-next-practice]').click();assert.deepEqual(f.scrolls,[[0,0]],'bottom-of-theory practice link must reveal the new condition');f.scrolls.length=0;f.doc.querySelector('main>header>button').click();assert.deepEqual(f.scrolls,[[0,0]],'return to course reveals its next-step controls');}finally{f.close();}
+ const board=boot({},true);try{board.app.open(manual.id);board.app.home();assert.deepEqual(board.scrolls,[],'room navigation must not move either participant viewport');}finally{board.close();}
 });

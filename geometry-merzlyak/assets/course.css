@@ -2,3 +2,32 @@
 
 /* Personal journey: activity and demonstrated independent work stay separate. */
 .learning-path{padding:20px 0 24px}.learning-path h1{font-size:clamp(2rem,4vw,3.2rem)}.path-current{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:24px;background:var(--soft);border:1px solid #c8dcd2;border-radius:20px;padding:24px}.path-current h2{font-size:clamp(1.3rem,2.4vw,1.8rem);line-height:1.3}.path-current:has(>div:only-child){grid-template-columns:1fr}.path-next{border-left:1px solid #bed1c6;padding-left:24px;font-size:.9rem}.path-counts{display:flex;flex-wrap:wrap;gap:20px;margin:20px 0}.path-counts p{margin:0;flex:1;min-width:140px}.path-counts strong{display:block;font-size:1.8rem;line-height:1.3;color:var(--teal)}.path-counts span{font-size:.84rem;color:var(--muted)}.path-note{font-size:.82rem;max-width:850px}.path-grades{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}.path-grade{margin:0;padding:16px;background:var(--white);border:1px solid var(--line);border-radius:14px;min-width:0}.path-grade summary{font-size:1.05rem}.path-grade summary span{display:block;font-weight:400;font-size:.76rem;color:var(--muted)}.path-chapter{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;margin-top:14px;font-size:.8rem;align-items:start}.path-chapter progress{grid-column:1/-1;width:100%;height:9px;accent-color:var(--teal)}.path-card-details{border-top:1px solid var(--line);padding-top:10px!important;font-size:.76rem!important}.previous-work{font-size:.86rem}.previous-work h3{font-size:1rem}.previous-work .report-note{white-space:pre-wrap}@media(max-width:760px){.path-grades{grid-template-columns:1fr}.path-current{grid-template-columns:1fr;padding:20px 16px;gap:16px}.path-next{border-left:0;border-top:1px solid #bed1c6;padding:16px 0 0}.path-counts{gap:14px}.path-counts p{min-width:100px}}
+
+/* Keep the lesson question and complete drawing together on the first screen.
+   The canvas retains its 640:420 ratio and coordinate mapping at every width. */
+.geometry-lesson .container{padding-top:18px}
+.geometry-lesson .lesson-head{padding:0 0 12px}
+.geometry-lesson .lesson-head h1{font-size:clamp(1.35rem,2.6vw,2rem);line-height:1.2;max-width:100%;margin:.2rem 0 .45rem}
+.geometry-lesson .lesson-head .eyebrow{margin-bottom:.35rem}
+.geometry-lesson .lesson-head .pill{display:none}
+.geometry-lesson .stage-nav{padding-bottom:12px}
+.geometry-lesson #lesson{padding:20px}
+.geometry-lesson #lesson>.step-label{margin:0 0 8px}
+.geometry-lesson #lesson>h2{font-size:1.5rem;margin:.2rem 0 .5rem}
+.geometry-lesson #lesson>p{margin:.45rem 0 .65rem}
+.geometry-lesson #geo-board>.canvas-wrap{max-width:640px;margin:10px auto 8px}
+@media(max-width:760px){
+ .geometry-lesson .topbar{padding:8px 12px;gap:4px}
+ .geometry-lesson .brand{font-size:1rem}
+ .geometry-lesson .toplinks{width:100%;min-width:0;flex-wrap:nowrap;overflow-x:auto;gap:14px;padding-bottom:2px}
+ .geometry-lesson .toplinks>*{flex-shrink:0;white-space:nowrap}
+ .geometry-lesson .toplinks a{display:inline-flex;align-items:center;min-height:44px}
+ .geometry-lesson .container{padding:12px 12px 60px}
+ .geometry-lesson .lesson-head{padding-bottom:8px}
+ .geometry-lesson .lesson-head .eyebrow{font-size:.6rem;letter-spacing:.1em}
+ .geometry-lesson .stage-nav{padding:3px 0 8px;margin:0}
+ .geometry-lesson #lesson{padding:14px 12px}
+ .geometry-lesson #lesson>h2{font-size:1.2rem}
+ .geometry-lesson #lesson>p{font-size:.95rem;line-height:1.45}
+ .geometry-lesson #lesson>.step-label{font-size:.7rem;margin:0 0 6px}
+}

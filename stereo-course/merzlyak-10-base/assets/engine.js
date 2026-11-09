@@ -264,6 +264,7 @@ function createApp(root,options){
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
   side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
   renderNext(lesson);
+  if(!options.boardSession)win.scrollTo?.(0,0);
   return true;
  }
  function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title));renderJourney();
@@ -294,6 +295,7 @@ function createApp(root,options){
    }
   }
   function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,chapter])node.addEventListener('change',filterChanged);renderResults();
+  if(!options.boardSession)win.scrollTo?.(0,0);
  /* MERZLYAK_BOARD_BEGIN: semantic catalog state, activated only by the registered wrapper. */
   if(options.boardSession)boardCatalog={
    read:()=>({search:search.value,kind:kind.value,collection:collection.value,chapter:chapter.value,readyPage,pendingPage}),

@@ -23,7 +23,7 @@ const mimeTypes = {
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
   '.woff2': 'font/woff2', '.ico': 'image/x-icon',
 };
-const evidence = { commit: process.env.GITHUB_SHA || null, viewports, states: [], errors: [], completed: false };
+const evidence = { commit: process.env.GITHUB_SHA || null, viewports, states: [], firstViewportModels: [], errors: [], completed: false };
 fs.mkdirSync(output, { recursive: true });
 
 const server = http.createServer((request, response) => {
@@ -71,6 +71,11 @@ async function openPage(page, url) {
   assert(response?.ok(), `Cannot open ${url}: ${response?.status()}`);
 }
 
+async function assertAtTop(page, message) {
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  assert.equal(await page.evaluate(() => window.scrollY), 0, message);
+}
+
 async function checkHomes(page, base, viewport) {
   await openPage(page, base + '/geometry-merzlyak/');
   await visible(page.getByRole('heading', { level: 1, name: 'Мой путь по геометрии', exact: true }), '7–9 course heading');
@@ -95,15 +100,18 @@ async function checkHomes(page, base, viewport) {
   await recordLayout(page, 'stereo-home-expanded', viewport);
   await journey.getByRole('button', { name: 'Начать с первой темы', exact: true }).click();
   await visible(page.getByRole('navigation', { name: 'Дальше по теме', exact: true }), 'Theory offers a next learning step');
+  await assertAtTop(page, 'Starting a topic shows the condition at the top');
   await recordLayout(page, 'stereo-first-topic', viewport);
   await page.getByRole('button', { name: /^Перейти к практике:/ }).click();
   const title = await page.getByRole('heading', { level: 1 }).innerText();
+  await assertAtTop(page, 'Theory-to-practice navigation starts at the condition, not at the previous scroll position');
   await recordLayout(page, 'stereo-first-practice', viewport);
   await page.reload({ waitUntil: 'load' });
   await visible(page.getByRole('heading', { level: 1, name: title, exact: true }), 'A practice card survives reload');
   await openPage(page, base + '/stereo-course/merzlyak-10-base/');
   await page.getByRole('region', { name: 'Мой путь по курсу', exact: true }).getByRole('button', { name: /^Продолжить:/ }).click();
   await visible(page.getByRole('heading', { level: 1, name: title, exact: true }), 'Continue returns to the same practice card');
+  await assertAtTop(page, 'Continue shows the resumed condition at the top');
 }
 
 async function checkSimilarity(page, base, viewport) {
@@ -113,7 +121,18 @@ async function checkSimilarity(page, base, viewport) {
     for (const [index, stage] of stages.entries()) {
       await page.getByRole('button', { name: `${String(index + 1).padStart(2, '0')} ${stage}`, exact: true }).click();
       await visible(page.locator('#lesson').getByRole('heading', { level: 2 }), id + ' stage ' + stage);
-      if (index === 1) await visible(page.locator('#geo-board canvas'), 'Investigation has a working drawing surface');
+      if (index === 1) {
+        const canvas = page.locator('#geo-board canvas');
+        await visible(canvas, 'Investigation has a working drawing surface');
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        const bounds = await canvas.evaluate(node => {
+          const box = node.getBoundingClientRect();
+          return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, width: box.width, height: box.height };
+        });
+        evidence.firstViewportModels.push({ id, viewport, bounds });
+        assert(bounds.width > 0 && bounds.height > 0 && bounds.top >= 0 && bounds.bottom <= viewport.height + 1 && bounds.left >= 0 && bounds.right <= viewport.width + 1,
+          `${id} investigation canvas must fit in the first ${viewport.width}×${viewport.height} viewport: ${JSON.stringify(bounds)}`);
+      }
       if (index === 3) await page.getByRole('button', { name: 'Показать смысл шага', exact: true }).click();
       if (index === 4) await page.getByRole('button', { name: 'Нужен разбор', exact: true }).click();
       await recordLayout(page, `${id}-stage-${index + 1}`, viewport);
