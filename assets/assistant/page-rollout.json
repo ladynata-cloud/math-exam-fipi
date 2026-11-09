@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+  "baseSha": "dca64d44637cc673ec8a20c17919989725f85b9a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2113,8 +2113,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d2862188495afc6832225b565715e5b89158accb32ed85ee1ce66db0fcacff76",
-      "afterSha256": "89c354610d96bd28d956a43e60065f203a9098fe6dc94e5209c18da39c15d25b",
+      "beforeSha256": "d9f575233eafccb51f01e6c776388b60631b1931b26db9ac1304c31e4662a10f",
+      "afterSha256": "cd759ee2bf2630931e18481440bbb60092649116bbc3657a3538c4feca5ae296",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -3978,6 +3978,15 @@
       "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
       "changedPaths": [
         "trainers/vpr-math/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "sourceBaseSha": "dca64d44637cc673ec8a20c17919989725f85b9a",
+      "task": "docs/tasks/TEXTBOOK_LEARNING_ROUTE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

@@ -44,3 +44,11 @@ Progress stays local to this browser, not a new server journal. Optional theory 
 ## Execution record
 
 Final test outcomes, exact head and PR are recorded in the Draft PR. Production and real-account testing are intentionally excluded until owner approval; simulated cabinet/board compatibility is checked locally.
+
+### Review follow-up
+
+- The existing cabinet/board browser gates now select the same first task and saved continuation through the new route controls. Their assertions and shared-board selectors are retained.
+- Navigator source binding is refreshed only for `school/makarychev8/index.html`, using the existing binding tool and an explicit committed source. No validator or historical hash assertion is weakened.
+- Current main `8bd4c47adcacd52c0f5fd109027f25c46af39c6b` was composed with this task without conflicts; concurrent linear-pilot and VPR work is retained. Binding source commit: `dca64d44637cc673ec8a20c17919989725f85b9a`.
+- The route gate passed all 27 model/adapter checks and real Chromium journeys at 320×900 and 1280×900, including empty/mixed/complete, independent/help, theory, keyboard, drafts, backup/import, earlier-method history, denied/corrupt storage and board personal-storage isolation. Eight screenshots were inspected. Runtime files are unchanged since this successful run: https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42579771785 .
+- Initial browser fixture failure was corrected to use the required decimal answer format; no product scoring change. Whole-course Makarychev CI also passed. Final broader CI status is recorded in the PR, without treating old failed runs as passing.
