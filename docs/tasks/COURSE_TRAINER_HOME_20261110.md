@@ -62,3 +62,34 @@ A rejected source-binding attempt changed nothing: lessons is an existingPages
 entry, and the original preservation gate passes without manifest changes.
 Publication is pending the exact candidate CI, fresh main/head guard and live
 verification; no external audit or live release is claimed in this record.
+
+## Browser regression verification — 10 November 2026
+
+The owner explicitly requests a draft-only correction and verification of #522:
+no merge and no publication during this check. This task-specific hold overrides
+the standing release permission above. Starting head: `3e9dc8f8af29e868aa6df61f1c0a7af97e954b99`.
+
+The reported `267d0ab` failures have already been addressed in that head: the
+lessons anchors explicitly target the same tab, and ordinary pages append the
+home bar after authored content. Native showcase run `42690398557` and video run
+`42690398773` both passed. This follow-up retains those fixes and adds actual
+same-tab clicks for all four lessons home links, popup detection, historical
+source replay, first-screen media coordinate comparison and no-overlap checks at
+320, 390, 1280 and 1440 pixels. The historical replay uses only the three changed
+navigation/lessons files from `267d0ab`; the video entry HTML/CSS/JS are unchanged
+between the reported and starting heads.
+
+The existing strict home browser gate also exposed four first-visit trig pages
+whose onboarding dismiss button was below the mobile viewport. Their authored
+cards now have a viewport-bound scroll area. The same real dismiss-button click,
+home click, coverage, mathematics, persistence and source checks remain in place;
+there is no forced click, hidden modal, extra exclusion or relaxed timeout.
+
+Local Chromium cannot create its process socket in this environment. Browser
+results must come from native GitHub Actions; local syntax/DOM/source checks do
+not stand in for browser acceptance. The separate no-JavaScript GIF preview
+failure has been re-run without changing its assertions or runtime.
+
+Risk/rollback: this follow-up changes only four onboarding CSS blocks and test
+coverage. Revert those scoped changes if needed; there are no data migrations,
+account writes or exercise changes. Final exact-head results belong in the PR.

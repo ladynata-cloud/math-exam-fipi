@@ -96,6 +96,26 @@ async function popup(page, link, expected, ready) {
   if (ready) assert.equal(await tab.evaluate(() => window.opener), null, 'the demo has no opener access');
   await tab.close();
 }
+async function homeReturns(page, width) {
+  const selectors = ['.showcase-header a.brand', '.showcase-nav a[href="/"]', '.showcase-footer a.brand', '#mathexam-home-navigation a'];
+  const context = page.context(), opened = [];
+  const recordPage = tab => opened.push(tab);
+  context.on('page', recordPage);
+  try {
+    for (const selector of selectors) {
+      await page.goto(base + '/lessons/#examples', {waitUntil:'load'});
+      const link = page.locator(selector);
+      assert.equal(await link.getAttribute('href'), '/');
+      await link.click();
+      await page.waitForURL(base + '/');
+      await page.waitForLoadState('load');
+      assert.equal(page.url(), base + '/', selector + ': actual same-tab home navigation');
+      assert.deepEqual(opened, [], selector + ': no new tab or popup');
+      assert.equal(context.pages().length, 1, selector + ': original tab remains the only tab');
+    }
+    report.cases.push({page:'lessons-home', width, links:selectors.length, sameTab:true});
+  } finally { context.off('page', recordPage); }
+}
 async function metadataAndLinks(page) {
   assert.equal(await page.locator('h1').count(), 1);
   assert.match(await page.title(), /5–11.*ОГЭ.*ЕГЭ/);
@@ -159,6 +179,8 @@ async function responsiveCase(browser, width) {
   try {
     await page.goto(base + '/lessons/', {waitUntil:'load'});
     await fits(page, 'initial ' + width);
+    await homeReturns(page, width);
+    await page.goto(base + '/lessons/', {waitUntil:'load'});
     await metadataAndLinks(page);
     await inViewport(page, '#hero-title', 'initial heading');
     await inViewport(page, '.hero-subjects', 'grades and exam offer');

@@ -37,6 +37,8 @@ const server = http.createServer((req, res) => {
       const context = await browser.newContext({ viewport: { width, height: 900 } });
       await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
       const page = await context.newPage();
+      const popups = [];
+      context.on('page', tab => popups.push(tab.url()));
       page.setDefaultTimeout(8000);
       for (const file of sample) {
         if (!report.covered.includes(file)) continue;
@@ -63,6 +65,8 @@ const server = http.createServer((req, res) => {
           if (['lessons/index.html', 'trainers/ege-t1-planimetry-trainer.html', 'trainers/geometry7-practice.html', 'school/peterson6/index.html'].includes(file)) await page.screenshot({ path: path.join(out, file.replace(/\W/g, '_') + '-' + width + '.png') });
           await link.click();
           await page.waitForURL(origin + '/');
+          assert.deepEqual(popups, [], file + ' home return must not open another tab');
+          assert.equal(context.pages().length, 1, file + ' stays in the original tab');
           results.push({ file, width, box, homeClick: true, onboardingDismissed });
         } catch (error) { failures.push({ file, width, error: error.message }); }
       }
