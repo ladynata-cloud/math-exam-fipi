@@ -44,7 +44,10 @@ function replay(history) {
     const payload = event.payload;
     if (event.type === 'assign') work = { assignmentId: payload.assignmentId, trainerId: payload.trainerId,
       trainerState: structuredClone(payload.initialState), strokes: [], controller: history.target === 'common' ? 'teacher' : 'student',
-      revision: event.revision, trainerVersion: 0 };
+      revision: event.revision, trainerVersion: 0,
+      geometryState: { version: 1, title: 'Новое построение', objects: [], view: { axes: true, grid: true, viewport: { x: 0, y: 0, span: 12 } } },
+      geometryVersion: 0, geometryController: history.target === 'common' ? 'teacher' : 'student',
+      geometryAssignmentId: payload.assignmentId, boardAssignmentId: payload.assignmentId };
     if (event.type === 'trainer') { work.trainerState = structuredClone(payload.state); work.trainerVersion++; }
     if (event.type === 'control') { work.controller = payload.controller; work.trainerVersion++; }
     if (event.type === 'stroke') work.strokes.push({ ...structuredClone(payload), author: event.actor, at: event.at });
