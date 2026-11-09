@@ -105,13 +105,15 @@ async function metadataAndLinks(page) {
   assert.match(await page.locator('meta[name="viewport"]').getAttribute('content'), /width=device-width/);
   assert.match(await page.locator('meta[name="description"]').getAttribute('content'), /5–11.*ОГЭ.*ЕГЭ/);
   const links = await page.locator('a[href]').evaluateAll(nodes => nodes.map(a => ({href:a.getAttribute('href'), target:a.target, rel:a.rel})));
-  const allowed = new Set([...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
+  const allowed = new Set(['/', ...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
   for (const link of links) {
     if (link.href.startsWith('#')) {
       assert(link.href.length > 1 && await page.locator(link.href).count() === 1, 'native anchor has one real target: ' + link.href);
     } else {
       assert(allowed.has(link.href), 'showcase exposes only checked examples, direct contacts and approved review profiles: ' + link.href);
-      if (!link.href.startsWith('mailto:')) {
+      if (link.href === '/') {
+        assert.equal(link.target, '_self', 'the home return stays in the current tab');
+      } else if (!link.href.startsWith('mailto:')) {
         assert.equal(link.target, '_blank');
         assert(link.rel.split(/\s+/).includes('noopener'));
         assert(link.rel.split(/\s+/).includes('noreferrer'));
