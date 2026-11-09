@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+  "baseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4257,6 +4257,13 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
+      "changedPaths": [],
+      "boundary": "Complete composed source identity after preserving OGE and course entrance bindings; no HTML or gate exceptions."
     }
   ],
   "coverageUpdates": [
