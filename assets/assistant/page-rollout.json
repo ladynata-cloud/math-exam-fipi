@@ -2870,8 +2870,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "e2f3f95dff2e35f08c7c240ebfc903b4d03c1f23d6873b876bb47e0f7f89ad9e",
-      "afterSha256": "864756ada88bae9c181f6f250a41822b9f8c39958bb81f493d18de1f99bc9b73",
+      "beforeSha256": "6e0000a1e0d35715328d3a2991db906d6b3c76b36d0abcb93e53e8055d2b6570",
+      "afterSha256": "f0dc2f13b99e9373dcfdf5d6079bf0d4dcc55af59b6756a3bd18287d011d3fbf",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4150,6 +4150,15 @@
       "sourceBaseSha": "f2c96efae7822d051ac8fdbfb63ec3c5957aa8f7",
       "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
+      "sourceBaseSha": "491d922353e1b8bb6080f421851b73e416031c13",
+      "task": "docs/tasks/OGE_VISIBLE_25_TOPICS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
