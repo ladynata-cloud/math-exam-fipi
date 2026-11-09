@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'oge/learning-map*'
+      - 'oge/course-guide*'
       - 'oge/registry.js'
       - 'oge/progress-adapters.js'
       - 'trainers/oge-course/index.html'
@@ -13,11 +14,13 @@ on:
       - 'trainers/oge-1-5-trainers/*.html'
       - 'trainers/oge-1-5-trainers/progress.js'
       - 'tools/oge-learning-map*'
+      - 'tools/oge-course-guide*'
       - '.github/workflows/oge-learning-map.yml'
   push:
     branches: [main]
     paths:
       - 'oge/learning-map*'
+      - 'oge/course-guide*'
       - 'oge/registry.js'
       - 'oge/progress-adapters.js'
       - 'trainers/oge-course/index.html'
@@ -28,6 +31,7 @@ on:
       - 'trainers/oge-1-5-trainers/*.html'
       - 'trainers/oge-1-5-trainers/progress.js'
       - 'tools/oge-learning-map*'
+      - 'tools/oge-course-guide*'
       - '.github/workflows/oge-learning-map.yml'
   workflow_dispatch:
 permissions:
@@ -56,15 +60,17 @@ jobs:
         run: |
           node --check oge/learning-map.js
           node --check oge/learning-map-view.js
+          node --check oge/course-guide.js
           node --check tools/oge-learning-map.browser.cjs
           node --test tools/oge-learning-map.test.cjs
+          node --test tools/oge-course-guide.test.cjs
           git diff --check
       - name: Wait for this exact public release
         if: github.event_name == 'push'
         run: |
           node - <<'JS'
           const fs=require('node:fs'),crypto=require('node:crypto');
-          const files=['trainers/oge-course/index.html','oge/registry.js','oge/learning-map.js','oge/learning-map-view.js','oge/learning-map.css'];
+          const files=['trainers/oge-course/index.html','oge/registry.js','oge/learning-map.js','oge/learning-map-view.js','oge/learning-map.css','oge/course-guide.js','oge/course-guide.css'];
           const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
           (async()=>{for(let n=0;n<40;n++){
             const matches=await Promise.all(files.map(async file=>{try{const r=await fetch('https://mathexam.space/'+file+'?release='+process.env.GITHUB_SHA,{signal:AbortSignal.timeout(15000)});return r.ok&&hash(Buffer.from(await r.arrayBuffer()))===hash(fs.readFileSync(file));}catch{return false;}}));

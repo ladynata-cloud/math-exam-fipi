@@ -1,0 +1,63 @@
+name: OGE8 published lesson acceptance
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: [main]
+    paths:
+      - 'trainers/oge-task8-powers-roots.html'
+      - 'tools/oge8-*'
+      - '.github/workflows/oge8-published-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  published-acceptance:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge8-published" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/oge8-published/node_modules" >> "$GITHUB_ENV"
+          node "$RUNNER_TEMP/oge8-published/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Wait for the exact checkout lesson to reach GitHub Pages
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const crypto = require('node:crypto');
+          const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+          const expected = sha(fs.readFileSync('trainers/oge-task8-powers-roots.html'));
+          (async () => {
+            for (let attempt = 1; attempt <= 15; attempt++) {
+              try {
+                const response = await fetch('https://mathexam.space/trainers/oge-task8-powers-roots.html', { signal: AbortSignal.timeout(10000), cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                const actual = sha(Buffer.from(await response.arrayBuffer()));
+                console.log('Published lesson SHA', attempt, actual);
+                if (actual === expected) { console.log('OGE8_PUBLISHED_SHA_OK', expected); return; }
+              } catch (error) { console.log('Published lesson attempt', attempt, error.message); }
+              if (attempt < 15) await new Promise(resolve => setTimeout(resolve, 20000));
+            }
+            throw new Error('Published lesson did not match checkout SHA ' + expected);
+          })().catch(error => { console.error(error); process.exitCode = 1; });
+          NODE
+      - name: Verify published lesson bytes, mobile controls and saved results
+        env:
+          OGE8_BASE_URL: https://mathexam.space
+        run: node tools/oge8-quiz-input.browser.cjs
+      - name: Preserve published acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge8-published-evidence
+          path: artifacts/oge8-quiz-input
+          if-no-files-found: warn
+          retention-days: 14

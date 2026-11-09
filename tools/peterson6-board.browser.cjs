@@ -248,7 +248,7 @@ async function run(browser, siteOrigin, boardOrigin, failures) {
   await entry.page.goto(siteOrigin + '/school/peterson6/', { waitUntil: 'domcontentloaded' });
   await entry.page.locator('.board-link').waitFor();
   assert.equal(await entry.page.evaluate(() => typeof window.__peterson6Board), 'undefined', 'ordinary course does not activate board mode');
-  assert.equal(await entry.page.locator('.hero a.button').first().getAttribute('href'), '#lesson/p09/2', 'ordinary course still reads its existing personal continuation');
+  assert.equal(await entry.page.locator('.lr-primary').getAttribute('href'), '#lesson/p09/2', 'ordinary course still reads its existing personal continuation');
   const boardLink = new URL(await entry.page.locator('.board-link').getAttribute('href'), siteOrigin);
   const canonical = boardLink.searchParams.get('trainer');
   assert(['/school/peterson6/', '/school/peterson6/#home', '/school/peterson6/index.html#home'].includes(canonical), 'board link carries the canonical course entry');

@@ -24,13 +24,15 @@ const copy = value => JSON.parse(JSON.stringify(value));
 // Execute the complete production page and its real scripts. Only browser
 // rendering, HTTP, Socket.IO and the child frame's wire protocol are fixtures;
 // no parent room/bridge handler is copied or replaced here.
-async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
+async function createBoardFixture({ role = 'student', sourceOverride, trainer = TRAINER,
+  trainerUrl = TRAINER_URL, registry = REGISTRY, querySuffix = '' } = {}) {
   const errors = [], sockets = [], requests = [], registryRequests = [], timers = new Map();
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('jsdomError', error => errors.push(error.message));
   const query = role === 'teacher' ? '' : `?role=${role === 'student' ? 'student' : 'teacher'}&room=fixture-room&token=fixture-token&server=${encodeURIComponent(SERVER)}`;
   const html = sourceOverride ?? fs.readFileSync(path.join(ROOT, 'trainers/trainer-board.html'), 'utf8');
-  const dom = new JSDOM(html, { url: `${ORIGIN}/trainers/trainer-board.html${query}`, runScripts: 'outside-only', virtualConsole });
+  const suffix = querySuffix ? `${query ? '&' : '?'}${querySuffix}` : '';
+  const dom = new JSDOM(html, { url: `${ORIGIN}/trainers/trainer-board.html${query}${suffix}`, runScripts: 'outside-only', virtualConsole });
   const w = dom.window, context = dom.getInternalVMContext();
   const evaluate = source => new vm.Script(source).runInContext(context);
   const inRealm = value => w.JSON.parse(JSON.stringify(value));
@@ -41,6 +43,7 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   w.cancelAnimationFrame = () => {};
   w.matchMedia = media => ({ media, matches: false, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} });
   w.HTMLElement.prototype.scrollIntoView = () => {};
+  w.HTMLDialogElement.prototype.close = function () { this.open = false; };
   w.HTMLCanvasElement.prototype.getContext = function () {
     return new Proxy({ canvas: this, measureText: value => ({ width: String(value).length * 8 }) }, {
       get(target, key) { return key in target ? target[key] : () => {}; }
@@ -49,7 +52,7 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   w.addEventListener('error', event => errors.push(event.error?.stack || event.message));
   w.localStorage.setItem('mathexam.trainerBoard.serverUrl', SERVER);
   w.localStorage.setItem('mathexam.trainerBoard.v1', JSON.stringify({
-    current: 0, trainerUrl: TRAINER_URL, trainerHidden: false,
+    current: 0, trainerUrl, trainerHidden: false,
     pages: [{ id: 'fixture-page', bg: 'blank', strokes: [], redo: [] }]
   }));
   if (role === 'restored') w.sessionStorage.setItem('mathexam.trainerBoard.teacherRoomSession.v1', JSON.stringify({
@@ -71,8 +74,8 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   w.fetch = async (input, options = {}) => {
     const url = new URL(String(input), w.location.href); requests.push({ url: url.href, method: options.method || 'GET' });
     if (url.origin === SERVER && url.pathname === '/api/trainer-registry') {
-      if (!holdRegistry) return response(REGISTRY, url.href);
-      return new Promise(resolve => registryRequests.push(data => resolve(response(data || REGISTRY, url.href))));
+      if (!holdRegistry) return response(registry, url.href);
+      return new Promise(resolve => registryRequests.push(data => resolve(response(data || registry, url.href))));
     }
     if (url.origin === SERVER && url.pathname === '/api/rooms' && options.method === 'POST') {
       return response({ roomId: `fixture-new-${++roomNumber}`, teacherToken: 'fixture-teacher-token', studentToken: 'fixture-student-token', state: { participants: [], control: '', controlVersion: 0 } }, url.href);
@@ -129,7 +132,7 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   });
   function sendFrame(type, extra = {}) {
     w.dispatchEvent(new w.MessageEvent('message', { source: frameWindow, origin: ORIGIN, data: inRealm({
-      type, protocolVersion: 1, trainerId: TRAINER, trainerVersion: child.version,
+      type, protocolVersion: 1, trainerId: trainer, trainerVersion: child.version,
       stateSchemaVersion: 1, bridgeInstanceId: child.instanceId, ...extra
     }) }));
   }
@@ -154,7 +157,7 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
       const participantRole = role === 'student' ? 'student' : 'teacher';
       const participantId = `fixture-${participantRole}`;
       const roomState = { control: participantId, controlVersion: 4, participants: [{ id: participantId, role: participantRole, connected: true }] };
-      if (!empty) Object.assign(roomState, fixture.snapshot(), { trainerUrl: TRAINER_URL });
+      if (!empty) Object.assign(roomState, fixture.snapshot(), { trainerUrl });
       socket.deliver('room:state', { state: roomState, you: { participantId, role: participantRole } });
     },
     async connect() {
@@ -170,6 +173,76 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
   };
   return fixture;
 }
+
+const SECTIONS_WRAPPER = '/trainers/sections-from-zero.html';
+const SECTIONS_REGISTRY = {
+  ...REGISTRY,
+  trainers: [{ ...REGISTRY.trainers[0], trainerId: 'sections-from-zero', file: SECTIONS_WRAPPER.slice(1) }]
+};
+
+test('restored sections room retains its selected card and hydrates when child ready precedes room state', async () => {
+  const trainerUrl = SECTIONS_WRAPPER + '?seed=fixture-room#starter-18';
+  const querySuffix = new URLSearchParams({ trainer: SECTIONS_WRAPPER, layout: 'trainer', note: 'keep + &' }) + '#host-review';
+  const f = await createBoardFixture({ role: 'restored', trainer: 'sections-from-zero', trainerUrl,
+    registry: SECTIONS_REGISTRY, querySuffix });
+  try {
+    // A reloaded course can announce readiness before Socket.IO accepts the
+    // teacher. The authoritative room retains the non-first card and pupil's turn.
+    f.frame.onload(); f.sendFrame('mathexam:trainer-ready'); await tick();
+    assert.equal(f.evaluate('!!readyCandidate'), true);
+    const instanceId = f.child.instanceId, loads = f.child.navigations.length;
+    const socket = f.socket(); socket.deliver('connect');
+    socket.deliver('room:state', { state: { ...f.snapshot(), trainerUrl,
+      control: 'fixture-student', controlVersion: 5,
+      participants: [{ id: 'fixture-teacher', role: 'teacher', connected: true },
+        { id: 'fixture-student', role: 'student', connected: true }] },
+      you: { participantId: 'fixture-teacher', role: 'teacher' } });
+    await tick();
+    assert.equal(f.status(), 'connected', 'room restoration must retain the announced bridge');
+    assert.equal(f.evaluate('shared.connected && roomStateReceived && bridgeSession.hydrated'), true);
+    assert.equal(f.child.hydrated, true);
+    assert.equal(f.child.instanceId, instanceId);
+    assert.equal(f.child.navigations.length, loads, 'room acceptance does not replace the course document');
+    assert.equal(loads, 1, 'the obsolete launch query never reopens the first card');
+    assert.deepEqual(f.child.fragmentNavigations, [], 'room restoration does not invalidate a same-document bridge');
+    assert.equal(f.frame.getAttribute('src'), trainerUrl);
+    assert.equal(f.frame.contentWindow.location.hash, '#starter-18');
+    assert.equal(f.evaluate('shared.control'), 'fixture-student');
+    assert.equal(f.evaluate('canWrite()'), false, 'restoring the teacher never takes the pupil turn');
+    const url = new URL(f.w.location.href);
+    assert.deepEqual([...url.searchParams].sort(), [['layout', 'trainer'], ['note', 'keep + &'],
+      ['role', 'teacher'], ['room', 'fixture-room'], ['server', SERVER]].sort());
+    assert.equal(url.hash, '#host-review');
+    const session = JSON.parse(f.w.sessionStorage.getItem('mathexam.trainerBoard.teacherRoomSession.v1'));
+    assert.equal(session.teacherToken, 'fixture-teacher-token');
+    assert.equal(session.studentToken, 'fixture-student-token');
+    assert(!JSON.stringify({ ...f.w.localStorage }).includes('fixture-teacher-token'));
+    assert(!JSON.stringify({ ...f.w.localStorage }).includes('fixture-student-token'));
+  } finally { f.close(); }
+});
+
+test('no-room trainer query still selects the requested course and becomes a clean teacher room URL', async () => {
+  const selection = SECTIONS_WRAPPER + '#starter-18';
+  const querySuffix = new URLSearchParams({ trainer: selection, layout: 'trainer', note: 'keep + &' }) + '#host-review';
+  const f = await createBoardFixture({ role: 'teacher', trainer: 'sections-from-zero', registry: SECTIONS_REGISTRY, querySuffix });
+  try {
+    assert.equal(new URL(f.w.location.href).searchParams.get('trainer'), selection);
+    assert.equal(f.frame.getAttribute('src'), selection, 'the initial direct link still opens its selected course card');
+    assert.equal(f.w.sessionStorage.getItem('mathexam.trainerBoard.teacherRoomSession.v1'), null);
+    await f.clickCreateRoom();
+    const url = new URL(f.w.location.href);
+    assert.deepEqual([...url.searchParams].sort(), [['layout', 'trainer'], ['note', 'keep + &'],
+      ['role', 'teacher'], ['room', 'fixture-new-1'], ['server', SERVER]].sort());
+    assert.equal(url.hash, '#host-review');
+    assert.equal(f.frame.getAttribute('src'), SECTIONS_WRAPPER + '?seed=fixture-new-1#starter-18');
+    const session = JSON.parse(f.w.sessionStorage.getItem('mathexam.trainerBoard.teacherRoomSession.v1'));
+    assert.equal(session.roomId, 'fixture-new-1');
+    assert.equal(session.teacherToken, 'fixture-teacher-token');
+    assert.equal(session.studentToken, 'fixture-student-token');
+    assert(!JSON.stringify({ ...f.w.localStorage }).includes('fixture-teacher-token'));
+    assert(!JSON.stringify({ ...f.w.localStorage }).includes('fixture-student-token'));
+  } finally { f.close(); }
+});
 
 test('late room acceptance reloads an expired fragment document and hydrates a fresh bridge', async () => {
   const f = await createBoardFixture({ role: 'teacher' });

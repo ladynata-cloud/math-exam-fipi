@@ -64,7 +64,7 @@ const changes = [
 
 function restoreRootAcceptance(source, scope = 'all') {
   assert(['all', 'reference', 'learning', 'learn-content'].includes(scope), 'known normalization scope');
-  let result = source;
+  let result = scope === 'all' ? require('./oge8-numeric-safety-preservation.cjs').restoreNumericSafety(source) : source;
   const selected = changes.filter(c => scope === 'all' || c.scope === scope || (scope === 'learning' && c.scope === 'learn-content'));
   for (const {current, original} of selected) {
     assert.equal(result.split(current).length, 2, 'exact reviewed acceptance fragment must occur once: ' + current.slice(0, 60));

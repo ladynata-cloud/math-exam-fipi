@@ -96,3 +96,35 @@ test('previous profile aliases and ordinary trainer opening remain unchanged', (
   assert.equal(normalize('/trainers/negative-numbers-line.html'), '/trainers/negative-numbers-line.html');
   assert.throws(() => normalize('/trainers/trainer-board.html'));
 });
+
+
+test('sections public aliases preserve every reviewed card and reject ambiguous origins or paths', () => {
+  const { normalize, canonical } = picker();
+  const source = '/stereo-course/sections/', wrapper = '/trainers/sections-from-zero.html';
+  const course = JSON.parse(fs.readFileSync(path.join(root, source, 'data/course.json'), 'utf8'));
+  assert.equal(course.lessons.length, 186);
+  for (const lesson of course.lessons) {
+    const suffix = '?from=course&seed=123#' + lesson.id;
+    for (const prefix of ['', 'https://mathexam.space', '//mathexam.space']) {
+      for (const entry of [source, source + 'index.html']) {
+        assert.equal(normalize(prefix + entry + suffix), wrapper + new URL(wrapper + suffix, 'https://mathexam.space').search + new URL(wrapper + suffix, 'https://mathexam.space').hash);
+      }
+    }
+    assert.equal(canonical(source + suffix), canonical(wrapper + suffix));
+  }
+  for (const value of ['https://example.org' + source, '/stereo-course/sections',
+    '/stereo-course/sections//', '/stereo-course/%73ections/', '/stereo-course/x/../sections/',
+    '/stereo-course/sections/%69ndex.html', '/stereo-course/sections/other.html']) {
+    assert.equal(normalize(value), value);
+  }
+  assert.throws(() => normalize('https://name:password@mathexam.space' + source));
+  const catalog = JSON.parse(fs.readFileSync(path.join(root, 'trainers/board-picker-data.json'), 'utf8'));
+  assert.equal(catalog.entries.filter(entry => canonical(entry.href) === wrapper).length, 1);
+  const { loadTrainerRegistry } = require('../board-server/trainer-registry');
+  const registry = loadTrainerRegistry({ env: {} });
+  assert.equal(registry.getByTrainerUrl(source), null);
+  assert.deepEqual(registry.getByTrainerUrl(wrapper + '#starter-01'), {
+    trainerId: 'sections-from-zero', file: wrapper.slice(1), version: '1.0.0',
+    stateSchemaVersion: 1, bridgeProtocolVersion: 1, allowLegacyHtml: false
+  });
+});

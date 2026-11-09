@@ -12,8 +12,8 @@ point,chapter,printed_page,source_title,unit,lesson,practice_type,proof_argument
 11,1,22,Смежные и вертикальные углы,perpendicular,atlas/perpendicular.html,adjacent,vertical
 12,1,23,Перпендикулярные прямые,perpendicular,atlas/perpendicular.html,adjacent,vertical
 13,1,24,Построение прямых углов на местности,perpendicular,atlas/perpendicular.html,adjacent,vertical
-14,2,29,Треугольник,triangle-sas,atlas/triangle-sas.html,perimeter,sas
-15,2,30,Первый признак равенства треугольников,triangle-sas,atlas/triangle-sas.html,perimeter,sas
+14,2,29,Треугольник,triangle-sas,atlas/triangle-sas.html,congruence,sas
+15,2,30,Первый признак равенства треугольников,triangle-sas,atlas/triangle-sas.html,congruence,sas
 16,2,33,Перпендикуляр к прямой,cevians,atlas/cevians.html,isosceles,iso
 17,2,34,"Медианы, биссектрисы и высоты треугольника",cevians,atlas/cevians.html,isosceles,iso
 18,2,35,Свойства равнобедренного треугольника,cevians,atlas/cevians.html,isosceles,iso

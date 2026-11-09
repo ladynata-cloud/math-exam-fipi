@@ -85,6 +85,7 @@ body[data-mx-course] :is(.primary-link, .vpr-open, button.primary, a.button.prim
 body[data-mx-course="profile"] .button:not(.quiet),
 body[data-mx-course="profile-home"] .btn:not(.secondary):not(.ghost),
 body[data-mx-course="catalog"] .button,
+body[data-mx-course="vilenkin"] .topic-actions .btn:not(.secondary),
 body[data-mx-course="oge"] .btn:not(.secondary) {
   background: var(--mx-green);
   border-color: var(--mx-green);
@@ -94,6 +95,7 @@ body[data-mx-course] :is(.primary-link, .vpr-open, button.primary, a.button.prim
 body[data-mx-course="profile"] .button:not(.quiet):hover,
 body[data-mx-course="profile-home"] .btn:not(.secondary):not(.ghost):hover,
 body[data-mx-course="catalog"] .button:hover,
+body[data-mx-course="vilenkin"] .topic-actions .btn:not(.secondary):hover,
 body[data-mx-course="oge"] .btn:not(.secondary):hover {
   background: var(--mx-green-hover);
 }
