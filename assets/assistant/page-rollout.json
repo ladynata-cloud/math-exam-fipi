@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c4624d4f17d65456e626198a6b298d45d2bd9b14",
+  "baseSha": "358160c2521b2e2db46429dcd53df1d4afdcaa2f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -198,8 +198,8 @@
       "placement": "before-head-close"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
-      "afterSha256": "29acd2dde161949bf5782de1dfd257a32e5bc50142f79f44d9c79124e532c9b0",
+      "beforeSha256": "81dc3b3c5e31f4bbb44283e0c5fb9e94d995023c4ed3ed5f528addd11a4c6ad8",
+      "afterSha256": "c69669fb3bca4abc91e0ca772494c6966e11a2fc949d3bfaeabb195eb102e1f7",
       "placement": "before-head-close"
     },
     "credit-payment-table-trainer.html": {
@@ -4008,6 +4008,15 @@
         "trainers/oge-course/index.html",
         "trainers/vpr-math/index.html",
         "vpr/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c4624d4f17d65456e626198a6b298d45d2bd9b14",
+      "sourceBaseSha": "358160c2521b2e2db46429dcd53df1d4afdcaa2f",
+      "task": "docs/tasks/COURSE_DESIGN_STANDARD_20261109.md",
+      "changedPaths": [
+        "courses/vilenkin-6-part-1/textbook.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
