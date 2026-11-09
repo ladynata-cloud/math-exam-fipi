@@ -28,6 +28,7 @@ function fresh(id,stage=3){
   // Finite banks may only offer the same condition. A changed seed alone is not a new task.
   if(taskKey(D.task(id,l.seed))===taskKey(previous))expose(D.task(id,l.seed));
  }
+ if(ege)delete l.taskFirst; // A fresh attempt resets its UI even when the bounded serial reuses the same seed.
  l.stage=stage;l.step=0;l.help=false;l.attempted=false;l.draft='';l.done=false;save();render();
 }
 const positionNames=['Покупки и округление','Величины и единицы','Таблицы и диаграммы','Вычисления по формулам','Вероятность','Выбор по условиям','Графики и изменение','Логические выводы','Геометрия на сетке','Практическая геометрия','Объёмы и поверхности','Планиметрия','Стереометрия','Числа и дроби','Проценты и отношения','Выражения и функции','Уравнения','Числа, неравенства и ось','Цифры и делимость','Текстовые задачи','Рассуждения и целые числа'];
