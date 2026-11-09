@@ -134,7 +134,7 @@ async function readCounts(page) {
       await page.waitForFunction(()=>Math.abs(document.getElementById('chapter-6').getBoundingClientRect().top)<100);
     }
     await page.goto(origin+'/school/'+course.slug+'/#course-number-search');await loaded(page,course);
-    await page.waitForFunction(()=>Math.abs(document.getElementById('course-number-search').getBoundingClientRect().top)<100);
+    await page.waitForFunction(()=>{const box=document.getElementById('exercise-number').getBoundingClientRect();return box.top>=0&&box.bottom<=innerHeight;});
     // Download and reimport include the old task format and separate study metadata.
     if(width===320){
       await nav(page,course,'#progress');
