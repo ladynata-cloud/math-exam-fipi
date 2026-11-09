@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "f47924cfb81ee4ed8a95a5b1b96a123575d43cc2",
+  "baseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -193,13 +193,13 @@
       "placement": "before-head-close"
     },
     "courses/vilenkin-5-part-1/index.html": {
-      "beforeSha256": "d877e3ca837e0418d14a76865ed2751fcfbbafe1c48a4e08048fd248d15de174",
-      "afterSha256": "5db654ccdef69c78499f8c2d8cf582aba6489cda532bc0671146b5ac364367f0",
+      "beforeSha256": "75cbb902b85c33a7c46e58641402dbb0f8f22750323e947645d6fc2ed516c245",
+      "afterSha256": "434288d7f32897b0699887ac6ece67176494f2c312ad1c5648935c9411e82ba1",
       "placement": "before-head-close"
     },
     "courses/vilenkin-6-part-1/textbook.html": {
-      "beforeSha256": "81dc3b3c5e31f4bbb44283e0c5fb9e94d995023c4ed3ed5f528addd11a4c6ad8",
-      "afterSha256": "c69669fb3bca4abc91e0ca772494c6966e11a2fc949d3bfaeabb195eb102e1f7",
+      "beforeSha256": "80e82db7d3da2939a3122fa1688d5c14059a6a5c5d699c35316c2d4b1b2d09dd",
+      "afterSha256": "29acd2dde161949bf5782de1dfd257a32e5bc50142f79f44d9c79124e532c9b0",
       "placement": "before-head-close"
     },
     "credit-payment-table-trainer.html": {
@@ -213,8 +213,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "8205ab03f4e8a334c735d15455bbc5678ed4061c4087766fe09d09cfa4520075",
-      "afterSha256": "384d2558f80bf1a691d367cffb4d30ae46a0466dd8c44c36ea6c1538535b6128",
+      "beforeSha256": "d18ca8f4d9b73fab42278600fc2bd5f40aa3e2ae4ea133414b6e8e648225741d",
+      "afterSha256": "ac1f1f9d87f5c027034d7b51c5111402cf527dddcd1c9f2c9b673a5e92545ec3",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -223,8 +223,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "886f8b48782d9d3c460e878f2b692e638c0b645e499ec7815eaaf3fb9926942e",
-      "afterSha256": "b6f6954d55fbb24f853b31b07c7074c8077c7fd4f8bb7218dd8de0fe577138a6",
+      "beforeSha256": "f7dfc2ecc2e6db869cd096a472f5f3f28bbf3b213729482013546b9ddcfd5273",
+      "afterSha256": "1ae52ab78f4948f20419cf5b3b400b53f2d8bc7dea177a3feea7471b80bfe48a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -283,8 +283,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "d43da0a8956cc2ad96f2c191c7b243e1c8d2422340ef37bf95de50ad7504ac59",
-      "afterSha256": "17ee87c51da59ca69e0c7017f3225b139bf49e1c28ba960be649049a482bb441",
+      "beforeSha256": "aad18ecc6808eb2e82b17b4255c5154e0732cc7eb6be274af6d48f901364169f",
+      "afterSha256": "dc6924307d9f90060bcc571a40c06ffa7970701279c594a70bf8745d79e54ae9",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -298,8 +298,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "5271d26ba3b2028ee97c15da09a0a80f59e84e80ef9d69f5c9bf9436390142d5",
-      "afterSha256": "6f9ce948b5b22219ccefe32b08ce2442a20eb9e972ce334e95b4d0c220ed3e4d",
+      "beforeSha256": "0d929b7e730854732e2d49746445bcf3e03a607574f3a957e49b9f38a01b53ae",
+      "afterSha256": "14892d55587b03dad2559cf78cdf54a6d02668617ca56fb3393843f748530fd8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -783,8 +783,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "1b9dcf570bffe7ca150d802d30594651002c3e707c18250c909ff75f8769d9b7",
-      "afterSha256": "23ebf1d3ca0b19275da86dddb817e74dffda6c8121be3ced7f7abfc4e4908a95",
+      "beforeSha256": "a704136cd0ee413ad0f0a843f21a9270a0864d3669f496f2b9061a490bc6ad97",
+      "afterSha256": "c1591035779b8f46125322f1b554edf4072ca4883cbaf3e58b3e725ce32db8f0",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -793,8 +793,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "9d609080404843e1c7cadb2b21c01b2aa80ba7d7f400fc072309690e4b009742",
-      "afterSha256": "86d105bca53ef8be19a7afd7e8bb9c4f5e5e8631c141ed64ad13966a7cf2f2ff",
+      "beforeSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+      "afterSha256": "f6fe2c259cd4e65c169071760301818df1f4188ef56c880c7400c3af0fffce44",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
@@ -1568,8 +1568,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/index.html": {
-      "beforeSha256": "509811a1f752def5535efc6047afe81725a37a7270acc1874e9d9a5e5d897441",
-      "afterSha256": "0295c097c260f5d7bf9f501530ec6c261e8069f7a699dcb86d149e2a7e1c9fe7",
+      "beforeSha256": "7f27088731437e74b1edbc12011999c5e1692f9b9bc5e06358bf29f0461bc12d",
+      "afterSha256": "45156dea13747b4c838e9db7f0f17cd7534f51370de29f79e5e9bd640969b74e",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-1.html": {
@@ -2013,8 +2013,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/index.html": {
-      "beforeSha256": "de0847c0492f34737faf74665c3087d03173c917aaecdd4369ef417a50c58a3a",
-      "afterSha256": "ec89268b7edcdd19c9bed75479f8cdac332ce2ef263feaf1d9048b110907ddce",
+      "beforeSha256": "f6ba290f14ded11bb654ba1fbc5f4f08f2c5a177e124e40f9a0cc8e2737c08ab",
+      "afterSha256": "25541f966c69ed1c2b926e341a7cbfe95dd0fb7b1b1b2612e64cfc9db72fb3a3",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/textbook/index.html": {
@@ -2093,38 +2093,38 @@
       "placement": "before-head-close"
     },
     "school/alimov10-11/index.html": {
-      "beforeSha256": "5125370f841b4abf3b754760a444b0f64e73b2288d328d74f3aac0556678af68",
-      "afterSha256": "3e89c7a1af85fd763073dddad91a857aeba87e206d7a472ee0e77843c6871207",
+      "beforeSha256": "f067b8e9c2fd646d9512d8229da7759e825e18da1c3182ec5538f210e8235094",
+      "afterSha256": "589620f440ed8d8aee2895aa8f9b74e4f442bded074775c69f11179b438644bb",
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "6a7a2d74d1bf500aca6c0f6698e5d979eef6cdd4a6194e8c6cbebeb3a0680d66",
-      "afterSha256": "16dc005502d7d6c695d8b05daa8f40b783c4a28698d605d0b3e38512b35d191a",
+      "beforeSha256": "28f1a7c30579e464d661865a2c2ebd6c8d5bc7b02efb123c8ec7aebee2a64ebd",
+      "afterSha256": "b7d9a50f8ccc8dccdabd0e235927ea0ea05819cdc2b98774f7df02d284040aad",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
-      "beforeSha256": "bd4bcb7ef1a7d417037fa3041be8734aa0e38e6b6dd52a725d18cc36f7c294fc",
-      "afterSha256": "9068a243bd5a8492be289b2910d88481e25c1a0a312ab809810cac48c0bbdfd1",
+      "beforeSha256": "e0ebdf64cb3edb5a71283c667edfedc4dde2bf969a49d5cb0a8d74ca7495c72f",
+      "afterSha256": "755e362375ec14f6b9b34882f78d366174db05f736299d8d1d02e1636217e1ab",
       "placement": "before-head-close"
     },
     "school/makarychev7/index.html": {
-      "beforeSha256": "62be6741dc8d9e5acae8034309e428e0be39cded21b7aa58049769ba30e63a66",
-      "afterSha256": "19867846af495cd8cf1e68a956c5fba7bc190cb8f27df6e423bd823824020ea1",
+      "beforeSha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
+      "afterSha256": "8eaecb7ba4717bb507bb1b6c3227029cae267a67bd98f18b4f9f48bcf1b139c7",
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "28302078f34527b168bee0a44f24c579511e7ef96e084a25ef9ab014727d4453",
-      "afterSha256": "2fa3a8089b44ae786cc1c7a905c5138ba9aae1ea80a1e1d493867a9d2c5f18b1",
+      "beforeSha256": "d2862188495afc6832225b565715e5b89158accb32ed85ee1ce66db0fcacff76",
+      "afterSha256": "89c354610d96bd28d956a43e60065f203a9098fe6dc94e5209c18da39c15d25b",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
-      "beforeSha256": "1bb94eb43b75865cc59776721530c05f70d85348a36fb29b4b187533ae4c8728",
-      "afterSha256": "e00a49b5806f116490c66dc638e30d92d4f538a1b95f9f212f3958c41d6fc957",
+      "beforeSha256": "fe483d9a9d47d5cfaa14afeba5d820f58dfe3cda3ae78a17d86ac2e0b066b2b8",
+      "afterSha256": "3664c63c1cbc5d7b4fc314cbfbe0fdb2b7db507ff233e2ea36496ba551f9b782",
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "b93c02b8a8e11f026d878acedda1d56184c34594649bfbdcb214de0129c253eb",
-      "afterSha256": "ded0e06df19df8eed90c6b6a67f8b00bdc2162abce1ec4931bccd4d7c81e63bb",
+      "beforeSha256": "1a52d74533fcb8569000f1f64717b1647313e0ffaa4b38ec2f0cd82ef36cdce3",
+      "afterSha256": "d545c38b6d0ad4657ea8b662cc0e430e8c474306d1dabec413aedd06b3530854",
       "placement": "before-head-close"
     },
     "soviet-math/arithmetic-practice.html": {
@@ -2138,18 +2138,18 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "14ea86284e150e9f8e1fd879219d607b3a281475039b3783e17db879fa5b7efb",
-      "afterSha256": "843b1c0bf6f9320fab17507e0eb1d6ccd979cab4c0a3ffdb803ff0849e5e9949",
+      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
+      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
-      "beforeSha256": "7b43b18326dfbb3a66cb06c077dff81bdbf61e3291b30b3e8c1434785a0c0fb4",
-      "afterSha256": "f23173d84779ddd0960b156d3331177e7335dcdd12144a82653166ad19b44018",
+      "beforeSha256": "a9da6498f42936ac165b7694a102e1372d11f06a1b265482479de4d340de381b",
+      "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
       "placement": "before-head-close"
     },
     "stereo-course/textbook/index.html": {
-      "beforeSha256": "2bf08f44e5ef7ae5cb5a4f236ba27c7db13c38546cba407046d4011af5012bfb",
-      "afterSha256": "790a28409f6be254bc298415511b8014a4f59d82cdd10c1a6de076ba16815f7c",
+      "beforeSha256": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c",
+      "afterSha256": "c0bb328d34008c12b721d0cd1e4efb8fa95aa56c75747335cbf5246c56c46e11",
       "placement": "before-head-close"
     },
     "topics/delenie-ugolkom/index.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "ddc203e2ef3db3e0656f3fcb46f217f099b00afc7dea120fc6012c3ace714f34",
-      "afterSha256": "6d2ef0026de3d78327cd18da3f166b0f10e75565e0d8bb487a26ea2ef17ffc91",
+      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
+      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
-      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
+      "beforeSha256": "0e02c94e942d760f6877a895853d905988f1285023f23ac2928bfa7a382cef24",
+      "afterSha256": "def5a8e5d2d979bef43bd54f09354c3cb6b372be7d98d64e37017378ceb486b1",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3083,13 +3083,13 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "7b74bd31b82a898e57c29a340baf0b448fe8956ec9754b458b8973c0b1c5841f",
-      "afterSha256": "5edbdb806938b7519345314447594bf20b62727591123d9000eaeccb5f09ee56",
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
-      "beforeSha256": "9c484d4b68f177fe940decd5f9a8d21ec1625c9828a53be61f44fc1abbdfc36a",
-      "afterSha256": "ea97937c34cb1dc5dd35deabcb62a6a6ead4cf8ab5dc8ead1a35d5d910fae742",
+      "beforeSha256": "f82ba87a274389caec5dd1aa3675a5f7ceb6ce85f55b879fd5804e6dc915f695",
+      "afterSha256": "6413e920dcea07042764ffee5dac811f81f5f0093860aef7c21094476113f6aa",
       "placement": "before-body-close"
     }
   },
@@ -3992,32 +3992,39 @@
     },
     {
       "previousBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
-      "sourceBaseSha": "f47924cfb81ee4ed8a95a5b1b96a123575d43cc2",
-      "task": "docs/tasks/COURSE_DESIGN_STANDARD_20261109.md",
+      "sourceBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "task": "docs/tasks/EGE_BASE_LEARNING_PATH_20261109.md",
       "changedPaths": [
-        "courses/vilenkin-5-part-1/index.html",
-        "courses/vilenkin-6-part-1/textbook.html",
         "ege-baza/index.html",
-        "ege-baza/path/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "task": "docs/tasks/PROFILE_LEARNING_JOURNEY_20261109.md",
+      "changedPaths": [
         "ege-profil/index.html",
-        "ege-profil/start/index.html",
-        "geometry-course/index.html",
-        "geometry-course/textbook/index.html",
-        "geometry-merzlyak/index.html",
-        "geometry-pogorelov/index.html",
-        "school/alimov10-11/index.html",
-        "school/index.html",
-        "school/m9-exercises/index.html",
-        "school/makarychev7/index.html",
-        "school/makarychev8/index.html",
-        "school/nikolsky10/index.html",
-        "school/peterson5/index.html",
-        "stereo-course/index.html",
-        "stereo-course/merzlyak-10-base/index.html",
-        "stereo-course/textbook/index.html",
-        "trainers/oge-course/index.html",
-        "trainers/vpr-math/index.html",
-        "vpr/index.html"
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "sourceBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "sourceBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "task": "docs/tasks/OGE8_LEARN_ANCHOR_CLEARANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

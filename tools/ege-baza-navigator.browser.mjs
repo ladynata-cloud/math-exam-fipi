@@ -35,6 +35,10 @@ try{
  // Hash navigation precedes the render handler that moves keyboard focus.
  await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
  ok(await page.locator('#content').evaluate(el=>el===document.activeElement),'Keyboard route focuses content');
+ // The unified map keeps the earlier module catalogue available on request.
+ const earlierModules=page.locator('#content details.journey-legacy');
+ ok(!await earlierModules.evaluate(el=>el.open),'Earlier module catalogue starts collapsed');
+ await earlierModules.locator('summary').click();
  await page.click('[data-module="m01"] a');await page.click('.lesson a.btn');
  await page.waitForURL('**/trainers/ege-baza/course/#learn-decimal');ok(await page.locator('#slider').isVisible(),'Real lesson opens');
  await page.click('a[href="../../../ege-baza/#map"]');await page.waitForURL('**/ege-baza/#map');
