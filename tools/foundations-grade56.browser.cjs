@@ -1,0 +1,154 @@
+'use strict';
+// Synthetic learners on local HTTP assets; never use a real pupil's cabinet.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const {chromium}=require('playwright');
+const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/foundations-grade56');
+fs.mkdirSync(out,{recursive:true});
+const report={scenarios:[],errors:[]};
+const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'};
+const server=http.createServer((req,res)=>{try{let f=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));assert(f.startsWith(root+path.sep));if(fs.statSync(f).isDirectory())f=path.join(f,'index.html');res.setHeader('Content-Type',types[path.extname(f)]||'application/octet-stream');res.end(fs.readFileSync(f));}catch{res.writeHead(404).end();}});
+let browser;
+(async()=>{try{
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
+ browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
+ for(const width of [320,1280]){
+  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),page=await context.newPage();
+  page.setDefaultTimeout(15000);page.on('pageerror',e=>report.errors.push(e.message));
+  const go=async url=>{
+   const target=new URL(url,origin),before=new URL(page.url()),response=await page.goto(target.href);
+   if(response)assert.equal(response.status(),200,url);
+   else{
+    assert.equal(before.origin+before.pathname+before.search,target.origin+target.pathname+target.search,'null response is only valid for same-document navigation');
+    assert.equal(page.url(),target.href,'same-document navigation reaches the requested task');
+   }
+  };
+  const capture=async(name,locator)=>{
+   await locator.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,name+'-'+width+'.png'),fullPage:true});
+   const layout=await page.evaluate(()=>({viewport:innerWidth,width:document.documentElement.scrollWidth,overflow:Array.from(document.querySelectorAll('body *')).map(el=>{const r=el.getBoundingClientRect();return {tag:el.tagName,classes:el.className?.baseVal??el.className,left:r.left,right:r.right,width:r.width};}).filter(r=>r.left< -1||r.right>innerWidth+1).slice(0,30)}));
+   if(layout.width>layout.viewport+1)(report.layoutIssues??=[]).push({name,...layout});
+   assert(layout.width<=layout.viewport+1,name+': page fits');const fit=await locator.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;});assert(fit,name+': inquiry fits');report.scenarios.push({name,width,status:'PASS'});
+  };
+  await go('/school/#lesson/fraction');const inquiry=page.locator('[data-model-inquiry]');await inquiry.waitFor();
+  const saved=await page.evaluate(()=>localStorage.getItem('mathexam.workshop.v1'));
+  await inquiry.locator('[data-model-check]').click();assert.equal(await inquiry.locator('[data-model-prediction]').isDisabled(),false);
+  await inquiry.locator('[data-model-prediction]').fill('999');await inquiry.locator('[data-model-check]').click();
+  assert((await inquiry.locator('[data-model-feedback]').innerText()).includes('999'));
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mathexam.workshop.v1')),saved,'model never awards course progress');
+  const navigator=page.locator('#maxexam-public-assistant'),navLauncher=navigator.locator('.launcher'),navPanel=navigator.locator('.panel');
+  await navLauncher.waitFor();
+  const navStorage=await page.evaluate(()=>JSON.stringify({...localStorage}));
+  assert.equal(await navigator.evaluate(el=>getComputedStyle(el).contain),'layout','model gives navigator its own flow space');
+  assert(await navLauncher.evaluate(el=>el.getBoundingClientRect().top>=document.querySelector('main').getBoundingClientRect().bottom),'navigator is below the learner content');
+  const instruction=inquiry.locator('p.tiny');await instruction.scrollIntoViewIfNeeded();
+  assert(await instruction.evaluate(el=>{const r=el.getBoundingClientRect();return [r.left+2,r.right-2].every(x=>[r.top+2,r.bottom-2].every(y=>x>=0&&x<innerWidth&&y>=0&&y<innerHeight&&el.contains(document.elementFromPoint(x,y))));}),'model instruction is uncovered at all four corners');
+  await capture('workshop-fraction',inquiry);
+  await page.locator('[data-reset]').click();const slider=page.locator('#model [data-param=n]'),handle=await slider.elementHandle();await slider.focus();await page.keyboard.press('ArrowRight');assert(await handle.evaluate(el=>el.isConnected),'keyboard slider keeps DOM identity');
+  await navLauncher.click();assert(await navPanel.isVisible());
+  assert(await navPanel.evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=-1&&r.bottom<=innerHeight+1;}),'navigator dialog remains within the viewport');
+  await capture('workshop-navigator-open',navPanel);
+  await page.keyboard.press('Escape');assert(await navPanel.isHidden());
+  assert(await navLauncher.evaluate(el=>el.getRootNode().activeElement===el),'navigator restores keyboard focus');
+  assert(await navLauncher.evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=-1&&r.bottom<=innerHeight+1;}),'restored navigator launcher remains in the viewport');
+  assert.equal(await page.evaluate(()=>JSON.stringify({...localStorage})),navStorage,'navigator does not rewrite learner work');
+  await go('/school/#home');
+  await page.locator('[data-model-inquiry]').waitFor({state:'detached'});
+  assert.equal(await navigator.evaluate(el=>getComputedStyle(el).contain),'none','leaving model restores normal navigator placement');
+  assert.equal(await navLauncher.evaluate(el=>getComputedStyle(el).position),'fixed');
+  await capture('workshop-navigator-restored',navLauncher);
+  for(const [grade,id,selector] of [[5,21,'.g5-lab-inquiry'],[6,2,'.lab-inquiry']]){
+   await go('/courses/vilenkin-'+grade+'-part-1/'+(grade===6?'?legacy=1':'')+'#lesson/'+id+'/theory');const form=page.locator(selector);await form.waitFor();const input=form.locator('input');
+   await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),false,'empty prediction does not submit');
+   await input.fill('999');await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),true);
+   await page.reload();await page.locator(selector+' input').waitFor();assert.equal(await page.locator(selector+' input').inputValue(),'999','first prediction restored');
+   await capture('vilenkin'+grade,page.locator(selector));
+  }
+  await go('/courses/vilenkin-6-part-1/#lesson/2/theory');await page.waitForURL('**/textbook.html#unit/2');
+  await go('/courses/vilenkin-6-part-1/textbook.html#unit/2/task/v6-book-2-1-42-d');
+  const textbookInput=page.locator('#answer');await textbookInput.waitFor();
+  await textbookInput.fill('   ');
+  const bookBefore=await page.evaluate(()=>localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1'));
+  await page.locator('#answer-form [type=submit]').click();await page.locator('#answer-form [type=submit]').click();
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1')),bookBefore,'blank textbook answer preserves saved attempts');
+  assert((await page.locator('.work .feedback').innerText()).includes('не считается попыткой'));
+  await textbookInput.fill('0');await page.locator('#answer-form [type=submit]').click();
+  const textbookState=await page.evaluate(()=>JSON.parse(localStorage.getItem('mathexam-vilenkin6-textbook-2024-v1')));
+  assert.equal(textbookState.tasks['v6-book-2-1-42-d'].attempts,1,'zero is an actual textbook attempt');
+  const modelLink=page.locator('[data-v6-model=percent]');assert.equal(await modelLink.getAttribute('href'),'https://mathexam.space/courses/vilenkin-6-part-1/?legacy=1#lesson/2/theory');
+  assert.equal(textbookState.tasks['v6-book-2-1-42-d'].helped,false,'showing a model link does not mark help');
+  await capture('vilenkin6-textbook-model-link',modelLink);
+  await capture('vilenkin6-textbook',page.locator('#answer-form'));
+  await go('/school/peterson5/#lesson/p25/0');await page.locator('details.model-panel > summary').click();
+  const p5=page.locator('.model-inquiry');await p5.locator('[data-inquiry-input=draft]').fill('1/3');await p5.locator('[data-inquiry-check=draft]').click();
+  await p5.locator('[data-inquiry-input=draft]').fill('2/3');await p5.locator('[data-inquiry-check=draft]').click();await p5.locator('[data-inquiry-open]').click();
+  await p5.locator('[data-inquiry-input=transferDraft]').fill('3/5');await p5.locator('[data-inquiry-check=transferDraft]').click();
+  await capture('peterson5-fraction',p5);
+  await page.reload();await page.locator('details.model-panel > summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'3/5','P5 transfer restored');
+  await go('/school/peterson6/#lesson/p11/0');await page.locator('details.inquiry-model summary').click();
+  const p6=page.locator('.model-inquiry'),draft=p6.locator('[data-inquiry-input=draft]');await draft.waitFor();
+  await draft.fill('20');await p6.locator('[data-inquiry-check=draft]').click();
+  await draft.fill('30');await p6.locator('[data-inquiry-check=draft]').click();
+  await p6.locator('[data-inquiry-open]').click();
+  const transfer=p6.locator('[data-inquiry-input=transferDraft]');await transfer.fill('40');await p6.locator('[data-inquiry-check=transferDraft]').click();
+  const state=await page.evaluate(()=>window.PetersonApp.getState().tasks['p11-t01']);assert(!state.correct,'experiment is not a solved textbook task');assert(state.assisted,'revealed model marked as help');
+  const helper=page.locator('.peterson-help'),launcher=helper.locator('.peterson-help-launcher'),helperPanel=helper.locator('.peterson-help-panel');
+  const inquirySummary=page.locator('details.inquiry-model > summary');
+  const helperStorage=await page.evaluate(()=>{window.__foundationsHelperHost=document.querySelector('.peterson-help');return JSON.stringify({...localStorage});});
+  const assertHelperIdentity=async()=>{
+   assert.equal(await helper.count(),1,'one existing helper host');
+   assert(await helper.evaluate(el=>el===window.__foundationsHelperHost),'helper host retained');
+   assert.equal(await page.evaluate(()=>JSON.stringify({...localStorage})),helperStorage,'model/helper visibility preserves all saved work');
+  };
+  const assertClosedHelperInFlow=async()=>{
+   assert(await helperPanel.isHidden(),'helper remains closed');
+   assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'static','closed helper leaves the open model unobstructed');
+   assert(await helper.evaluate(el=>el.getBoundingClientRect().top>=document.querySelector('main').getBoundingClientRect().bottom),'closed helper follows course content');
+   await assertHelperIdentity();
+  };
+  await assertClosedHelperInFlow();
+  const transferFeedback=p6.locator('[data-inquiry-feedback=transferDraft]');
+  await transferFeedback.scrollIntoViewIfNeeded();
+  assert(await transferFeedback.evaluate(el=>{const r=el.getBoundingClientRect(),x=(r.left+r.right)/2,y=(r.top+r.bottom)/2;return x>=0&&x<innerWidth&&y>=0&&y<innerHeight&&el.contains(document.elementFromPoint(x,y));}),'transfer explanation is uncovered');
+  await capture('peterson6-percent',p6);
+  // The existing panel remains usable and restores focus to the same launcher.
+  await launcher.click();assert(await helperPanel.isVisible());
+  assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'fixed','opened helper retains its established panel position');
+  assert(await helper.locator('.peterson-help-close').isVisible());await assertHelperIdentity();
+  await capture('peterson6-helper-open',helperPanel);
+  await page.keyboard.press('Escape');await assertClosedHelperInFlow();
+  assert(await launcher.evaluate(el=>el===document.activeElement),'Escape restores focus to visible launcher');
+  await inquirySummary.click();
+  assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'fixed','collapsing model restores floating launcher');
+  assert(await launcher.isVisible());await assertHelperIdentity();
+  await capture('peterson6-helper-restored',launcher);
+  // Opening a model while the panel is already open must not move or hide it.
+  await launcher.click();
+  await inquirySummary.focus();await page.keyboard.press('Space');
+  assert(await inquirySummary.evaluate(el=>el.parentElement.open),'keyboard opens model while helper panel is open');
+  assert(await helperPanel.isVisible());assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'fixed');
+  await helper.locator('.peterson-help-close').click();await assertClosedHelperInFlow();
+  assert(await launcher.evaluate(el=>el===document.activeElement),'Close restores focus to visible launcher');
+  await page.reload();await page.locator('details.inquiry-model summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'40','transfer draft restored');
+  await go('/trainers/oge-basics/percentages/percent-of-number-and-whole.html');await page.locator('.bh-toggle:visible').first().click();
+  await page.locator('[data-bh-skill="percent-part"]:visible').first().click();
+  const frame=page.locator('.bh-frame:visible');await frame.locator('.bh-answer').fill('20');await frame.locator('.bh-check').click();await frame.locator('.bh-start-transfer').click();
+  const fresh=frame.locator('.bh-transfer'),answer=fresh.locator('.bh-transfer-answer');
+  await fresh.locator('.bh-transfer-check').click();assert(!(await fresh.locator('.bh-transfer-history').innerText()).includes('Первый ответ'));
+  await answer.fill('20');await answer.press('Enter');await answer.fill('21');await answer.press('Enter');
+  assert.equal(await fresh.locator('.bh-transfer-hint-text').isVisible(),false,'offer does not disclose help');
+  await fresh.locator('.bh-transfer-hint').click();await answer.fill('30');await answer.press('Enter');
+  assert((await fresh.locator('.bh-transfer-history').innerText()).includes('Первый ответ: 20'));
+  assert((await fresh.locator('.bh-transfer-feedback').innerText()).includes('с намёком'));
+  const before=await fresh.locator('.bh-transfer-history').innerText();await answer.press('Enter');assert.equal(await fresh.locator('.bh-transfer-history').innerText(),before,'completed task cannot double count');
+  await capture('basics-percent-transfer',fresh);
+  await frame.locator('.bh-start-understanding').click();const understanding=frame.locator('.bh-understanding');
+  await understanding.locator('.bh-understanding-answer').fill('59');await understanding.locator('.bh-understanding-check').click();
+  assert.equal(await fresh.getAttribute('data-bh-transfer-solved'),'true','wrong inverse answer does not undo solved forward task');
+  assert.equal(await fresh.locator('.bh-transfer-history').innerText(),before,'understanding history is separate');
+  await understanding.locator('.bh-understanding-answer').fill('60');await understanding.locator('.bh-understanding-check').click();
+  assert.equal(await understanding.getAttribute('data-bh-understanding-solved'),'true');
+  assert((await understanding.locator('.bh-understanding-history').innerText()).includes('59'),'inverse task retains first response');
+  await capture('basics-percent-inverse',understanding);
+  await context.close();
+ }
+ assert.deepEqual(report.errors,[]);console.log('FOUNDATIONS_GRADE56_BROWSER_OK',report.scenarios.length);
+}finally{fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));if(browser)await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});
