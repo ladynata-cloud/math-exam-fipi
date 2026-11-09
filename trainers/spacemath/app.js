@@ -12,7 +12,7 @@
     angle: ['point', 'point', 'point'], bisector: ['point', 'point', 'point'], circle3: ['point', 'point', 'point'],
     intersection: ['curve', 'curve'], area: ['surface'], perimeter: ['polygon'], circumference: ['circle'],
     pointOn: ['path'], vector: ['point', 'point'], translate: ['point', 'vector'],
-    circleRadius: ['point'], tangent: ['circle', 'point']
+    circleRadius: ['point'], tangent: ['circle', 'point'], functionRoot: ['graph'], functionIntersection: ['graph', 'graph']
   };
   const names = {
     point: 'Точка', pointOn: 'Точка на объекте', segment: 'Отрезок', line: 'Прямая', ray: 'Луч',
@@ -22,7 +22,7 @@
     reflectPoint: 'Симметрия относительно точки', reflectLine: 'Симметрия относительно прямой', rotate: 'Поворот', dilate: 'Гомотетия',
     vector: 'Вектор', translate: 'Перенос по вектору', distance: 'Расстояние', angle: 'Угол', area: 'Площадь',
     perimeter: 'Периметр', circumference: 'Длина окружности', slider: 'Параметр',
-    functionGraph: 'График функции', functionTable: 'Таблица значений'
+    functionGraph: 'График функции', functionTable: 'Таблица значений', functionRoot: 'Корень функции', functionIntersection: 'Пересечение графиков'
   };
   const toolParameters = {
     rotate: { key: 'angle', label: 'Угол, °', min: -36000, max: 36000, initial: 90 },
@@ -58,7 +58,9 @@
     vector: 'Выберите начало вектора, затем его конец.',
     translate: 'Выберите исходную точку, затем вектор переноса.',
     circleRadius: 'Введите радиус и выберите центр окружности.',
-    tangent: 'Выберите окружность, затем точку, через которую пройдут касательные.'
+    tangent: 'Выберите окружность, затем точку, через которую пройдут касательные.',
+    functionRoot: 'Выберите график прямой или параболы на поле или в списке. Найдём точки на оси x. Например: a*x^2+b*x+c.',
+    functionIntersection: 'Выберите два графика прямых или парабол на поле или в списке. Точки пересчитаются при изменении формул и параметров.'
   };
   let state = M.empty(), evaluated, board, drawings = {}, tool = 'move', pending = [], selected = null;
   let readOnly = managed, applying = false, rendering = false, dragBefore = null, dragId = null, lastDragEmit = 0, dragBoundsError = false;
@@ -133,6 +135,7 @@
     if (kind === 'curve') return lineTypes.has(item.type) || circleTypes.has(item.type);
     if (kind === 'path') return lineTypes.has(item.type) || circleTypes.has(item.type) || item.type === 'functionGraph';
     if (kind === 'vector') return item.type === 'vector';
+    if (kind === 'graph') return item.type === 'functionGraph';
     if (kind === 'surface') return item.type === 'polygon' || circleTypes.has(item.type);
     return kind === 'polygon' && item.type === 'polygon';
   }
@@ -151,7 +154,7 @@
     if (readOnly || !pending.length || tool === 'polygon' && pending.length < 3) return;
     const type = tool, parents = [...pending], id = nextId();
     const newObject = { id, type, label: pointTypes.has(type) ? pointLabel() : names[type].slice(0, 26) + ' ' + (state.objects.filter(o => o.type === type).length + 1), parents };
-    if (type === 'intersection' || type === 'tangent') newObject.branch = 0;
+    if (['intersection', 'tangent', 'functionRoot', 'functionIntersection'].includes(type)) newObject.branch = 0;
     const parameter = toolParameters[type];
     if (parameter) {
       const input = $('tool-parameter');
@@ -166,7 +169,7 @@
     try {
       // Both branches remain in the model, including a currently missing one.
       // This lets a second intersection or tangent recover when the model moves.
-      if (type === 'tangent' || type === 'intersection' && parents.some(parent => circleTypes.has(object(parent).type))) {
+      if (['tangent', 'functionRoot', 'functionIntersection'].includes(type) || type === 'intersection' && parents.some(parent => circleTypes.has(object(parent).type))) {
         let suffix = 1; while (candidate.objects.some(o => o.id === 'o' + suffix)) suffix++;
         let secondLabel = newObject.label + '₂'; if (secondLabel.length > 30) secondLabel = names[type] + ' 2';
         candidate.objects.push({ id: 'o' + suffix, type, label: secondLabel, parents, branch: 1 });
@@ -359,6 +362,11 @@
     try {
       const candidate = clone(state); candidate.objects.find(item => item.id === id).value = value;
       state = M.normalize(candidate); evaluated = M.evaluate(state); updateDrawings(); renderFunctionTable(object(selected));
+      for (const item of state.objects.filter(o => ['functionRoot', 'functionIntersection'].includes(o.type))) {
+        const row = $('object-list').querySelector('[data-object="' + item.id + '"]');
+        if (row) { row.querySelector('small').textContent = description(item); row.querySelector('.object-dot').classList.toggle('undefined', !val(item.id).defined); }
+        if (selected === item.id) $('selected-description').textContent = description(item);
+      }
       if (performance.now() - lastSliderEmit > 120) { lastSliderEmit = performance.now(); saveAndEmit(); }
     } catch (error) { say(error.message, true); }
   }
@@ -446,6 +454,10 @@
   function description(item) {
     const r = val(item.id), parents = (item.parents || []).map(label).join(', ');
     if (!r.defined) return 'Не определено · ' + undefinedReason(item, r);
+    if (item.type === 'functionRoot' || item.type === 'functionIntersection') {
+      const coordinate = value => new Intl.NumberFormat('ru-RU', { maximumSignificantDigits: 12, notation: value !== 0 && Math.abs(value) < 1e-6 ? 'scientific' : 'standard' }).format(value);
+      return '≈ (' + coordinate(r.x) + '; ' + coordinate(r.y) + ') · ' + (r.relation === 'tangent' ? 'касание · ' : '') + parents;
+    }
     if (r.kind === 'point') return '(' + format(r.x) + '; ' + format(r.y) + ')' + (item.type === 'point' ? ' · свободная' : ' · ' + parents);
     if (r.kind === 'measurement') return '≈ ' + format(r.value) + r.unit + ' · ' + parents;
     if (r.kind === 'slider') return r.name + ' = ' + String(r.value) + ' · от ' + String(r.min) + ' до ' + String(r.max);
@@ -565,11 +577,12 @@
     const incoming = M.normalize(value); interactionEpoch++;
     if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; }
     if (JSON.stringify(incoming) === JSON.stringify(state)) return;
-    // Keep an inspected table open while a remote editor changes its function.
-    const keepTable = object(selected)?.type === 'functionTable'
-      && incoming.objects.some(item => item.id === selected && item.type === 'functionTable');
+    // Keep inspected graph results open while a remote editor changes inputs.
+    const selectedType = object(selected)?.type;
+    const keepResult = ['functionTable', 'functionRoot', 'functionIntersection'].includes(selectedType)
+      && incoming.objects.some(item => item.id === selected && item.type === selectedType);
     applying = true;
-    try { if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); state = incoming; history = []; future = []; pending = []; if (!keepTable) selected = null; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; render(); }
+    try { if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); state = incoming; history = []; future = []; pending = []; if (!keepResult) selected = null; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; render(); }
     finally { applying = false; }
   }
   function ask(title, message, accept, action) {

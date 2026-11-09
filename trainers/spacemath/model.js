@@ -8,7 +8,7 @@
   'use strict';
   const VERSION = 1, MAX_OBJECTS = 160, MAX_GRAPHS = 12, MAX_BYTES = 65536, MAX_COORD = 1000000;
   const MAX_TABLES = 4, MAX_TABLE_ROWS = 101;
-  const POINTS = new Set(['point', 'midpoint', 'intersection', 'projection', 'reflectPoint', 'reflectLine', 'rotate', 'dilate', 'pointOn', 'translate']);
+  const POINTS = new Set(['point', 'midpoint', 'intersection', 'projection', 'reflectPoint', 'reflectLine', 'rotate', 'dilate', 'pointOn', 'translate', 'functionRoot', 'functionIntersection']);
   const LINES = new Set(['segment', 'line', 'ray', 'parallel', 'perpendicular', 'bisector', 'perpendicularBisector', 'tangent']);
   const CIRCLES = new Set(['circle', 'circle3', 'circleRadius']);
   const MEASUREMENTS = new Set(['distance', 'angle', 'area', 'perimeter', 'circumference']);
@@ -88,7 +88,7 @@
     const objects = value.objects.map(item => {
       if (!item || !TYPES.has(item.type)) fail('Неизвестный инструмент.');
       const fields = item.type === 'point' ? ['id', 'type', 'label', 'x', 'y'] : ['id', 'type', 'label', 'parents'];
-      if (item.type === 'intersection' || item.type === 'tangent') fields.push('branch');
+      if (['intersection', 'tangent', 'functionRoot', 'functionIntersection'].includes(item.type)) fields.push('branch');
       if (item.type === 'rotate') fields.push('angle');
       if (item.type === 'dilate') fields.push('factor');
       if (item.type === 'slider') fields.push('name', 'min', 'max', 'step', 'value');
@@ -146,6 +146,11 @@
           const supplied = parents.map(p => p.name);
           valid = parents.every(p => p.type === 'slider') && parents.length === required.length && new Set(supplied).size === supplied.length && required.every(name => supplied.includes(name));
           result.expression = program.source;
+        } else if (item.type === 'functionRoot' || item.type === 'functionIntersection') {
+          valid = parents.length === (item.type === 'functionRoot' ? 1 : 2)
+            && parents.every(p => p.type === 'functionGraph')
+            && new Set(item.parents).size === parents.length && (item.branch === 0 || item.branch === 1);
+          result.branch = item.branch;
         } else if (item.type === 'intersection') {
           valid = parents.length === 2 && parents.every(p => LINES.has(p.type) || CIRCLES.has(p.type)) && item.parents[0] !== item.parents[1] && (item.branch === 0 || item.branch === 1);
           result.branch = item.branch;
@@ -284,6 +289,7 @@
   }
   function evaluate(value) {
     const state = normalize(value), results = Object.create(null);
+    const graphSolutions = new Map();
     const definitions = new Map(state.objects.map(item => [item.id, item]));
     for (const object of state.objects) {
       const kind = POINTS.has(object.type) ? 'point' : LINES.has(object.type) ? 'line' : CIRCLES.has(object.type) ? 'circle' : MEASUREMENTS.has(object.type) ? 'measurement' : object.type;
@@ -305,7 +311,25 @@
         result = tangent(parents[0], xy(parents[1]), object.branch, onCircle);
       } else if (object.type === 'slider') result = { kind: 'slider', defined: true, name: object.name, min: object.min, max: object.max, step: object.step, value: object.value };
       else if (object.type === 'functionGraph') result = { kind: 'functionGraph', defined: true, expression: object.expression, parameters: Object.fromEntries(parents.map(p => [p.name, p.value])) };
-      else if (object.type === 'functionTable') {
+      else if (object.type === 'functionRoot' || object.type === 'functionIntersection') {
+        const key = object.parents.join('|');
+        if (!graphSolutions.has(key)) graphSolutions.set(key, Expression.graphSolutions(
+          parents[0].expression, parents[0].parameters, parents[1]?.expression || '0', parents[1]?.parameters || {}));
+        const solution = graphSolutions.get(key), candidate = solution.roots[object.branch];
+        const status = solution.status !== 'finite' ? solution.status : candidate?.status || 'missing-branch';
+        const reasons = {
+          none: 'Действительных решений нет.', infinite: 'Бесконечно много решений: графики совпадают.',
+          unsupported: 'Этот этап поддерживает только прямые и параболы: многочлены степени не выше 2, без ограничений области определения.',
+          undefined: 'Формула не определена или её вычисление выходит за допустимый диапазон.',
+          uncertain: 'Недостаточно численной точности. Точка не построена; измените масштаб коэффициентов или формулу.',
+          'out-of-range': 'Решение выходит за диапазон построений ±1 000 000.',
+          'missing-branch': solution.tangent ? 'Касание: есть одна точка. Вторая ветвь сохранена.' : 'Есть только одна точка. Вторая ветвь сохранена.'
+        };
+        result = status === 'finite' ? point([candidate.x, object.type === 'functionRoot' ? 0 : candidate.y]) : undef('point', reasons[status]);
+        result.solutionStatus = status;
+        if (status === 'finite') result.relation = solution.tangent ? 'tangent' : 'crossing';
+        if (status === 'infinite' && object.type === 'functionRoot') result.reason = 'Бесконечно много корней: функция тождественно равна нулю.';
+      } else if (object.type === 'functionTable') {
         const graph = parents[0], program = Expression.parse(graph.expression);
         const rows = tableCoordinates(object).map(x => {
           const y = Expression.evaluate(program, x, graph.parameters);

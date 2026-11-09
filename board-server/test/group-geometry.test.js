@@ -381,3 +381,42 @@ test('HTTP geometry uses bearer access, exact origin-independent state and capab
   const rejected = await request(`/${initial.id}?token=${token}`);
   assert.equal(rejected.status, 401);
 });
+
+test('graph roots and intersections: canonical journal, permissions, version fences and replay', t => {
+  const f = fixture(t);
+  const state = { ...model.empty(), objects: [
+    { id: 'a', type: 'slider', label: 'a', parents: [], name: 'a', min: -5, max: 5, step: 1, value: -4 },
+    { id: 'f', type: 'functionGraph', label: 'f', parents: ['a'], expression: 'x^2+a' },
+    { id: 'g', type: 'functionGraph', label: 'g', parents: [], expression: '0' },
+    { id: 'r0', type: 'functionRoot', label: 'R', parents: ['f'], branch: 0 },
+    { id: 'r1', type: 'functionRoot', label: 'S', parents: ['f'], branch: 1 },
+    { id: 'i0', type: 'functionIntersection', label: 'I', parents: ['f', 'g'], branch: 0 },
+    { id: 'i1', type: 'functionIntersection', label: 'J', parents: ['f', 'g'], branch: 1 },
+    { id: 'd', type: 'distance', label: 'd', parents: ['r0', 'r1'] }
+  ] };
+  f.action('s1', 'geometry', 's1', { state }, { expectedVersion: 0 });
+  f.action('teacher', 'present', 'common', { target: 's1', surface: 'geometry' });
+  assert.deepEqual(f.snapshot('teacher').students[0].workspace.geometryState, state);
+  assert.deepEqual(f.snapshot('s2').presentation.workspace.geometryState, state);
+  assert.deepEqual([model.evaluate(state).r0.x, model.evaluate(state).i1.x, model.evaluate(state).d.value], [-2, 2, 4]);
+  rejects(() => f.action('s2', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_FORBIDDEN', 403);
+  f.action('teacher', 'geometry-control', 's1', { controller: 'teacher' });
+  rejects(() => f.action('s1', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_CONTROL_REQUIRED', 409);
+  const states = [structuredClone(state)];
+  for (const value of [0, 1, -1]) {
+    const next = structuredClone(state); next.objects[0].value = value; states.push(next);
+    f.action('teacher', 'geometry', 's1', { state: next }, { expectedVersion: f.work('s1').geometryVersion });
+  }
+  const before = structuredClone(f.work('s1'));
+  const forged = structuredClone(state); forged.objects[3].x = 99;
+  rejects(() => f.action('teacher', 'geometry', 's1', { state: forged }, { expectedVersion: before.geometryVersion }), 'GROUP_GEOMETRY_STATE_INVALID');
+  rejects(() => f.action('teacher', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_STATE_CONFLICT', 409);
+  assert.deepEqual(f.work('s1'), before);
+  f.restart();
+  assert.deepEqual(f.work('s1'), before);
+  assert.deepEqual(f.history('teacher', 's1').events.filter(e => e.type === 'geometry').map(e => e.payload.state), states);
+  assert.equal(model.evaluate(states[1]).r0.relation, 'tangent');
+  assert.equal(model.evaluate(states[1]).r1.defined, false);
+  assert.equal(model.evaluate(states[2]).i0.solutionStatus, 'none');
+  assert.equal(model.evaluate(f.work('s1').geometryState).d.value, 2);
+});

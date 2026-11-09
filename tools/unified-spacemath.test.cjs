@@ -10,13 +10,14 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-function fixture(t) {
+function fixture(t, saved) {
   const dom = new JSDOM(read('trainers/spacemath/index.html'), {
     url: 'https://mathexam.space/trainers/spacemath/', runScripts: 'outside-only', pretendToBeVisual: true
   });
   t.after(() => dom.window.close());
   const w = dom.window, d = w.document;
   w.TextEncoder = TextEncoder;
+  if (saved) w.localStorage.setItem('mathexam.spacemath.draft.v1', JSON.stringify(saved));
   let created = [], activeBoard;
   w.JXG = { COORDS_BY_USER: 0, JSXGraph: {
     freeBoard() {},
@@ -377,4 +378,66 @@ test('a graph table follows formula and slider edits, then opens in read-only mo
   viewer.app.applyState(viewer.w.JSON.parse(JSON.stringify(author.app.getState())));
   assert.deepEqual(tableCells(viewer).map(row => row[1]), ['—', '1', '5'], 'an open table follows the author without needing to be selected again');
   assert.deepEqual(outgoing, []);
+});
+
+test('graph solution tools create both persistent branches, undo together and refuse writes in observation', t => {
+  const f = fixture(t);
+  f.install([{ id: 'g', type: 'functionGraph', label: 'f', parents: [], expression: 'x^2-4' }, { id: 'h', type: 'functionGraph', label: 'g', parents: [], expression: 'x+2' }]);
+  const tool = type => f.d.querySelector('[data-tool="' + type + '"]').click();
+  tool('functionRoot'); f.select('g');
+  let model = f.app.getState(), roots = model.objects.filter(o => o.type === 'functionRoot');
+  assert.equal(roots.length, 2); assert.deepEqual(Array.from(roots, o => o.branch), [0, 1]);
+  assert.equal(f.w.SpaceMathModel.evaluate(model)[roots[0].id].x, -2);
+  f.d.getElementById('undo').click(); assert.equal(f.app.getState().objects.length, 2);
+  f.d.getElementById('redo').click(); assert.equal(f.app.getState().objects.length, 4);
+  tool('functionIntersection'); f.select('g'); f.select('h');
+  model = f.app.getState(); const intersections = model.objects.filter(o => o.type === 'functionIntersection');
+  assert.equal(intersections.length, 2);
+  const values = f.w.SpaceMathModel.evaluate(model);
+  assert.deepEqual(Array.from(intersections, o => [values[o.id].x, values[o.id].y]), [[-2, 0], [3, 5]]);
+  tool('move'); f.select(roots[0].id);
+  assert.equal(f.d.getElementById('coordinate-editor').hidden, true);
+  assert.match(f.d.getElementById('selected-description').textContent, /≈/);
+  const persisted = JSON.parse(f.w.localStorage.getItem('mathexam.spacemath.draft.v1'));
+  assert.deepEqual(persisted.objects.map(o => o.type), Array.from(model.objects, o => o.type));
+  const reloaded = fixture(t, persisted);
+  assert.deepEqual(JSON.parse(JSON.stringify(reloaded.app.getState())), persisted, 'actual editor startup restores local storage');
+  let writes = 0; f.app.subscribe(() => writes++);
+  f.app.setReadOnly(true);
+  const before = JSON.stringify(f.app.getState());
+  tool('functionRoot'); f.select('g'); f.d.getElementById('undo').click(); f.submit();
+  assert.equal(JSON.stringify(f.app.getState()), before); assert.equal(writes, 0);
+  for (const type of ['functionRoot', 'functionIntersection']) assert.equal(f.d.querySelector('[data-tool="' + type + '"]').disabled, true);
+});
+
+test('graph solutions update through sliders and synchronized observation, with missing branches retained', t => {
+  const editor = fixture(t), observer = fixture(t);
+  editor.install([{ id: 'a', type: 'slider', label: 'a', parents: [], name: 'a', min: -5, max: 5, step: 1, value: 1 }, { id: 'f', type: 'functionGraph', label: 'f', parents: ['a'], expression: 'x^2+a' }]);
+  editor.d.querySelector('[data-tool="functionRoot"]').click(); editor.select('f');
+  editor.d.querySelector('[data-tool="move"]').click();
+  const roots = Array.from(editor.app.getState().objects.filter(o => o.type === 'functionRoot'), o => o.id);
+  observer.app.setReadOnly(true);
+  let observerWrites = 0; observer.app.subscribe(() => observerWrites++);
+  const sync = () => observer.app.applyState(observer.w.JSON.parse(JSON.stringify(editor.app.getState())));
+  editor.app.subscribe(sync); sync();
+  for (const [value, expected] of [[0, [0]], [-4, [-2, 2]], [1, []], [-1, [-1, 1]]]) {
+    const input = editor.d.querySelector('[data-slider="a"]'); input.value = String(value);
+    input.dispatchEvent(new editor.w.Event('input')); input.dispatchEvent(new editor.w.Event('change'));
+    const values = observer.w.SpaceMathModel.evaluate(observer.app.getState());
+    assert.deepEqual(roots.filter(id => values[id].defined).map(id => values[id].x), expected);
+    assert.equal(observer.app.getState().objects.length, 4);
+  }
+  assert.equal(observerWrites, 0);
+  const restored = fixture(t); restored.app.applyState(restored.w.JSON.parse(JSON.stringify(observer.app.getState())));
+  assert.deepEqual(JSON.parse(JSON.stringify(restored.app.getState())), JSON.parse(JSON.stringify(editor.app.getState())));
+});
+
+test('unsupported formulas and numerical uncertainty stay visible; tiny valid roots never display as zero', t => {
+  const f = fixture(t);
+  for (const [expression, expected] of [['1/x', /только прямые и параболы/], ['(x-1)^2-1e-30', /Недостаточно численной точности/], ['0', /Бесконечно много корней/], ['x^2+1', /Действительных решений нет/], ['x^2', /касание/]]) {
+    f.install([{ id: 'g', type: 'functionGraph', label: 'f', parents: [], expression }, { id: 'r', type: 'functionRoot', label: 'R', parents: ['g'], branch: 0 }]);
+    f.select('r'); assert.match(f.d.getElementById('selected-description').textContent, expected);
+  }
+  f.install([{ id: 'g', type: 'functionGraph', label: 'f', parents: [], expression: 'x-1e-20' }, { id: 'r', type: 'functionRoot', label: 'R', parents: ['g'], branch: 0 }]);
+  f.select('r'); assert.match(f.d.getElementById('selected-description').textContent, /1E-20/);
 });

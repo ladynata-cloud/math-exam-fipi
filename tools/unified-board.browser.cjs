@@ -11,6 +11,7 @@ const path = require('node:path');
 const { spawn } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
 const { chromium } = require('playwright');
+const graphSolutions = require('./spacemath/graph-solutions.browser.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const ARTIFACTS = process.env.UNIFIED_BOARD_ARTIFACTS || fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-unified-board-'));
@@ -256,6 +257,9 @@ async function main() {
     await pupilGeometry.locator('#edit-parameter').fill('0.5');
     await pupilGeometry.locator('#edit-object-form button[type="submit"]').click();
     await poll(async () => (await work(first.id)).geometryState.objects.find(object => object.id === attached.id)?.parameter === .5, 'graph point parameter saved');
+    const graphSolutionIds = await graphSolutions.prepare(pupilGeometry);
+    const preparedGeometry = await geometry(pupilGeometry);
+    await poll(async () => JSON.stringify((await work(first.id)).geometryState) === JSON.stringify(preparedGeometry), 'graph solution definitions saved');
     const firstGeometry = (await work(first.id)).geometryState;
     assert.equal((await work(second.id)).geometryState.objects.length, 0, 'other pupil construction remains independent');
     console.log('PASS independent handwriting, function parameters, shared table and graph point, and immediate tab switch');
@@ -281,6 +285,9 @@ async function main() {
     const expectedObjects = firstGeometry.objects.length + 1;
     await poll(async () => (await work(first.id)).geometryState.objects.length === expectedObjects, 'teacher geometry saved');
     await poll(async () => (await geometry(pupilGeometry)).objects.length === expectedObjects, 'teacher geometry reaches pupil');
+    await graphSolutions.exercise(teacherGeometry, pupilGeometry, graphSolutionIds);
+    const solvedGeometry = await geometry(teacherGeometry);
+    await poll(async () => JSON.stringify((await work(first.id)).geometryState) === JSON.stringify(solvedGeometry), 'graph solutions acknowledged');
     const oldViewport = (await work(first.id)).geometryState.view.viewport;
     await teacherGeometry.locator('#zoom-in').click();
     await poll(async () => (await work(first.id)).geometryState.view.viewport.span === oldViewport.span * .8, 'teacher zoom saved in canonical viewport');
@@ -345,6 +352,7 @@ async function main() {
     await pupil.locator('#focus').waitFor({ state: 'visible' });
     await mode(pupil, 'geometry'); pupilGeometry = await geometryFrame(pupil);
     await poll(async () => JSON.stringify(await geometry(pupilGeometry)) === JSON.stringify(allMaterials.geometryState), 'reload restores geometry');
+    await graphSolutions.assertRestored(pupilGeometry, graphSolutionIds);
     await selectGeometryObject(pupilGeometry, table.id);
     assert.deepEqual(await tableValues(pupilGeometry), ['6', '1', '6'], 'restored table still uses the saved graph parameters');
     await mode(pupil, 'trainer');
@@ -388,6 +396,8 @@ async function main() {
     await mode(teacher, 'geometry');
     const historyGeometry = await geometryFrame(teacher);
     assert.equal(await historyGeometry.locator('#add-point-form button').isDisabled(), true, 'history geometry read only');
+    await graphSolutions.assertRestored(historyGeometry, graphSolutionIds);
+    assert.equal(await historyGeometry.locator('[data-tool="functionRoot"]').isDisabled(), true);
     assert.deepEqual(await work(first.id), allMaterials, 'history never mutates saved materials');
     await teacher.locator('#historyExit').click();
 
@@ -413,6 +423,7 @@ async function main() {
     await mode(pupil, 'geometry');
     const afterRestart = await geometryFrame(pupil);
     assert.deepEqual(await geometry(afterRestart), allMaterials.geometryState);
+    await graphSolutions.assertRestored(afterRestart, graphSolutionIds);
     for (const page of [teacher, ...pupils]) {
       for (const frame of page.frames().slice(1)) {
         const url = new URL(frame.url());
