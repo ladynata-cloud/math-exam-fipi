@@ -1,0 +1,23 @@
+.profile-practice-coach{max-width:100%;min-width:0;margin:16px 0;border:1px solid #c7d9cc;border-radius:12px;background:#f6faf5;color:#203c2c;font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+.profile-practice-coach>summary{min-height:44px;box-sizing:border-box;cursor:pointer;padding:11px 14px;font-weight:700}
+.profile-practice-coach .coach-body{padding:0 14px 14px;min-width:0}
+.profile-practice-coach h3{font-size:19px;margin:8px 0}.profile-practice-coach h4{font-size:17px;margin:12px 0 8px}
+.profile-practice-coach p{margin:10px 0}.profile-practice-coach .coach-note,.profile-practice-coach .coach-first{font-size:16px;color:#536454}
+.profile-practice-coach label{display:block;font-weight:600;margin:12px 0}
+.profile-practice-coach select,.profile-practice-coach input{display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;min-height:44px;margin-top:6px;padding:8px;border:1px solid #879e8d;border-radius:6px;font:inherit;color:#203c2c;background:#fff}
+.profile-practice-coach .coach-action{display:block;min-height:44px;max-width:100%;padding:9px 13px;border:1px solid #247044;border-radius:7px;background:#247044;color:white;font:inherit;white-space:normal;cursor:pointer}
+.profile-practice-coach .coach-action:disabled{background:#e3ebe1;border-color:#a0b09f;color:#546451;cursor:default}
+.profile-practice-coach :is(summary,button,input,select):focus-visible{outline:3px solid #a36122;outline-offset:3px}
+.profile-practice-coach .coach-scene{padding:10px;border:1px solid #d5dfd1;border-radius:8px;background:#fff;min-width:0;margin-top:12px}
+.profile-practice-coach .coach-stage{font-weight:700;margin-top:0}.profile-practice-coach .coach-formula{font-weight:700}
+.profile-practice-coach svg{display:block;width:100%;max-width:420px;height:auto;margin:auto}.profile-practice-coach svg text{font:12px system-ui,sans-serif;fill:#354e3e}
+.profile-practice-coach table{width:100%;table-layout:fixed;border-collapse:collapse;margin:10px 0;font-size:16px}
+.profile-practice-coach :is(td,th){padding:6px 4px;border-bottom:1px solid #d9e2d5;text-align:left;overflow-wrap:anywhere}
+.profile-practice-coach th{background:#edf3e9;font-weight:600}.profile-practice-coach .coach-transfer{margin-top:14px;border-top:1px solid #c7d9cc;padding-top:4px}
+.profile-practice-coach [hidden]{display:none!important}.profile-practice-coach .coach-feedback{font-size:16px}
+.profile-practice-coach .coach-feedback[data-correct=true]{color:#175f35}.profile-practice-coach .coach-unsaved{color:#775121;font-size:16px}
+.profile-practice-coach .coach-tokens{display:flex;flex-wrap:wrap;gap:8px}.profile-practice-coach .coach-token{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;font-weight:700;color:#fff}
+.profile-practice-coach .coach-token.red{background:#a44449}.profile-practice-coach .coach-token.blue{background:#386498}
+.profile-practice-coach .coach-bars{display:grid;gap:8px}.profile-practice-coach .coach-bar-row{display:grid;grid-template-columns:70px minmax(0,1fr) 35px;align-items:center;gap:5px;font-size:16px}
+.profile-practice-coach .coach-bar{display:block;max-width:100%;height:16px;background:#247044;border-radius:2px}
+@media(max-width:380px){.profile-practice-coach .coach-body{padding:0 10px 10px}.profile-practice-coach .coach-scene{padding:8px}.profile-practice-coach :is(td,th){padding:6px 3px}}
