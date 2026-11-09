@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+  "baseSha": "c1c6427a86dd2ad978e8070cd1f0fc954a18a4a7",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
-      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
+      "beforeSha256": "27c286e4550b3532311209fefcdce366c58fee74a01859b084be263ba827aa38",
+      "afterSha256": "2f4275a362aae99d2a9f7e9c0c7aebd91fe6fb66db7eacff233b608c35e97f46",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3997,6 +3997,15 @@
       "changedPaths": [
         "ege-baza/index.html",
         "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "c1c6427a86dd2ad978e8070cd1f0fc954a18a4a7",
+      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
