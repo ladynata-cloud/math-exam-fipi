@@ -7,6 +7,185 @@ const o = (id, type, parents, extra = {}) => ({ id, type, label: id, parents, ..
 const construction = objects => ({ ...M.empty(), objects });
 const close = (actual, expected, tolerance = 1e-8) => assert.ok(Math.abs(actual - expected) <= tolerance, actual + ' ≈ ' + expected);
 
+test('constrained points follow changed parents, retain their parameters and recover after degeneracy', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 4, 0),
+    o('segment', 'segment', ['a', 'b']), o('ray', 'ray', ['a', 'b']), o('line', 'line', ['a', 'b']),
+    o('circle', 'circleRadius', ['b'], { radius: 3 }),
+    o('s', 'pointOn', ['segment'], { parameter: .25 }), o('r', 'pointOn', ['ray'], { parameter: 2 }),
+    o('l', 'pointOn', ['line'], { parameter: -1 }), o('c', 'pointOn', ['circle'], { parameter: .25 }),
+    o('fullturn', 'pointOn', ['circle'], { parameter: 1 })
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual([result.s.x, result.s.y], [1, 0]);
+  assert.deepEqual([result.r.x, result.r.y], [8, 0]);
+  assert.deepEqual([result.l.x, result.l.y], [-4, 0]);
+  assert.deepEqual([result.c.x, result.c.y], [4, 3]);
+  assert.deepEqual([result.fullturn.x, result.fullturn.y], [7, 0]);
+  state.objects[1].y = 4;
+  result = M.evaluate(state);
+  assert.deepEqual([result.s.x, result.s.y], [1, 1]);
+  assert.deepEqual([result.c.x, result.c.y], [4, 7]);
+  state.objects[1].x = state.objects[1].y = 0;
+  result = M.evaluate(state);
+  for (const id of ['s', 'r', 'l']) assert.equal(result[id].defined, false, id);
+  assert.deepEqual([result.c.x, result.c.y], [0, 3]);
+  state.objects[1].x = 8;
+  assert.equal(M.evaluate(state).s.x, 2);
+  assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(state))), state);
+});
+
+test('pointer projection clamps to the path, rejects invalid directions and works for a subnormal segment', () => {
+  const result = M.evaluate(construction([
+    p('a', 0, 0), p('b', 4, 0), p('tiny', 8 * Number.MIN_VALUE, 0),
+    o('segment', 'segment', ['a', 'b']), o('ray', 'ray', ['a', 'b']), o('line', 'line', ['a', 'b']),
+    o('circle', 'circleRadius', ['a'], { radius: 3 }), o('tinyseg', 'segment', ['a', 'tiny']),
+    o('f', 'functionGraph', [], { expression: 'sqrt(x)' })
+  ]));
+  assert.equal(M.projectParameter(result.segment, 2, 7), .5);
+  assert.equal(M.projectParameter(result.segment, -2, 7), 0);
+  assert.equal(M.projectParameter(result.segment, 6, 7), 1);
+  assert.equal(M.projectParameter(result.ray, -2, 7), 0);
+  assert.equal(M.projectParameter(result.ray, 12, 7), 3);
+  assert.equal(M.projectParameter(result.line, -2, 7), -.5);
+  assert.equal(M.projectParameter(result.line, -1e20, 7), -M.MAX_COORD);
+  assert.equal(M.projectParameter(result.circle, 0, -9), .75);
+  assert.equal(M.projectParameter(result.circle, 0, 0), null);
+  assert.equal(M.projectParameter(result.circle, NaN, 1), null);
+  assert.equal(M.projectParameter(result.a, 0, 1), null);
+  assert.equal(M.projectParameter(result.tinyseg, 4 * Number.MIN_VALUE, 0), .5);
+  assert.equal(M.projectParameter(result.tinyseg, 1, 0), 1);
+  assert.equal(M.projectParameter(result.f, -1e20, 7), -M.MAX_COORD);
+});
+
+test('a graph point and a table update from the same parameters and preserve undefined values', () => {
+  const state = construction([
+    o('a', 'slider', [], { name: 'a', min: -2, max: 2, step: 1, value: 1 }),
+    o('f', 'functionGraph', ['a'], { expression: 'sqrt(x-a)' }),
+    o('on', 'pointOn', ['f'], { parameter: 0 }),
+    o('table', 'functionTable', ['f'], { start: -1, end: 2, step: 1 })
+  ]);
+  let result = M.evaluate(state);
+  assert.equal(result.on.defined, false);
+  assert.deepEqual(result.table.rows, [{ x: -1, y: null }, { x: 0, y: null }, { x: 1, y: 0 }, { x: 2, y: 1 }]);
+  state.objects[0].value = -1;
+  result = M.evaluate(state);
+  assert.deepEqual([result.on.x, result.on.y], [0, 1]);
+  assert.deepEqual(result.table.rows, [{ x: -1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: Math.sqrt(2) }, { x: 2, y: Math.sqrt(3) }]);
+  assert.deepEqual(M.descendants(state, 'f'), ['f', 'on', 'table']);
+});
+
+test('decimal table grids include their aligned endpoint and do not hide a pole at zero', () => {
+  const state = construction([
+    o('f', 'functionGraph', [], { expression: '1/x' }),
+    o('t', 'functionTable', ['f'], { start: -.3, end: .3, step: .1 }),
+    o('u', 'functionTable', ['f'], { start: .1, end: .31, step: .1 }),
+    o('v', 'functionTable', ['f'], { start: .3, end: .3, step: Number.MIN_VALUE })
+  ]);
+  const result = M.evaluate(state);
+  assert.deepEqual(result.t.rows.map(row => row.x), [-.3, -.2, -.1, 0, .1, .2, .3]);
+  assert.deepEqual(result.t.rows[3], { x: 0, y: null });
+  assert.deepEqual(result.u.rows.map(row => row.x), [.1, .2, .3]);
+  assert.equal(result.v.rows.length, 1);
+  assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(state))), state);
+});
+
+test('vector translation follows endpoint edits and the zero vector acts as identity', () => {
+  const state = construction([
+    p('a', 2, -2), p('b', 6, 1), p('c', -1, 5),
+    o('v', 'vector', ['a', 'b']), o('moved', 'translate', ['c', 'v']),
+    o('segment', 'segment', ['c', 'moved'])
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual(result.v, { kind: 'vector', defined: true, a: [2, -2], d: [4, 3] });
+  assert.deepEqual([result.moved.x, result.moved.y], [3, 8]);
+  assert.deepEqual(result.segment.d, result.v.d);
+  state.objects[1].x = 2; state.objects[1].y = -2;
+  result = M.evaluate(state);
+  assert.equal(result.v.defined, true);
+  assert.deepEqual(result.v.d, [0, 0]);
+  assert.deepEqual([result.moved.x, result.moved.y], [-1, 5]);
+  assert.equal(result.segment.defined, false);
+});
+
+test('both tangents touch the circle, pass through the source point and recover at the same IDs', () => {
+  for (const scale of [1, 1e-280, 1e5]) {
+    const state = construction([
+      p('center', 0, 0), p('external', 5 * scale, 0),
+      o('circle', 'circleRadius', ['center'], { radius: 3 * scale }),
+      o('upper', 'tangent', ['circle', 'external'], { branch: 0 }),
+      o('lower', 'tangent', ['circle', 'external'], { branch: 1 })
+    ]);
+    let result = M.evaluate(state);
+    for (const [id, sign] of [['upper', 1], ['lower', -1]]) {
+      const tangent = result[id];
+      assert.equal(tangent.defined, true);
+      const [x, y] = tangent.a.map(value => value / scale), [dx, dy] = tangent.d;
+      close(x, 9 / 5); close(y, sign * 12 / 5);
+      close(Math.hypot(x, y), 3);
+      close(x * dx + y * dy, 0);
+      close((5 - x) * dy + y * dx, 0);
+    }
+    state.objects[1].x = 3 * scale;
+    result = M.evaluate(state);
+    assert.equal(result.upper.defined, true);
+    close(result.upper.d[0], 0); close(result.upper.d[1], 1);
+    assert.equal(result.lower.defined, false);
+    state.objects[1].x = scale;
+    result = M.evaluate(state);
+    assert.equal(result.upper.defined, false);
+    assert.equal(result.lower.defined, false);
+    state.objects[1].x = 5 * scale;
+    result = M.evaluate(state);
+    assert.ok(result.upper.defined && result.lower.defined);
+  }
+});
+
+test('tangency distinguishes a near-rim independent point from a point constrained to the circle', () => {
+  const state = construction([
+    p('center', 0, 0), p('p', 1 - Number.EPSILON, 0),
+    o('circle', 'circleRadius', ['center'], { radius: 1 }),
+    o('on', 'pointOn', ['circle'], { parameter: .1 }),
+    o('near', 'tangent', ['circle', 'p'], { branch: 0 }),
+    o('near2', 'tangent', ['circle', 'p'], { branch: 1 }),
+    o('boundary', 'tangent', ['circle', 'on'], { branch: 0 }),
+    o('boundary2', 'tangent', ['circle', 'on'], { branch: 1 })
+  ]);
+  let result = M.evaluate(state);
+  assert.equal(result.near.defined, false);
+  assert.equal(result.near2.defined, false);
+  assert.equal(result.boundary.defined, true);
+  assert.equal(result.boundary2.defined, false);
+  state.objects[1].x = 1 + Number.EPSILON;
+  result = M.evaluate(state);
+  assert.equal(result.near.defined, true);
+  assert.equal(result.near2.defined, true);
+});
+
+test('new construction schemas reject wrong parents, nonnumeric data and oversized tables', () => {
+  const base = [
+    p('a', 0, 0), p('b', 1, 0), o('segment', 'segment', ['a', 'b']), o('ray', 'ray', ['a', 'b']),
+    o('circle', 'circleRadius', ['a'], { radius: 2 }), o('f', 'functionGraph', [], { expression: 'x' })
+  ];
+  const invalid = [
+    o('bad', 'pointOn', ['a'], { parameter: .5 }), o('bad', 'pointOn', ['segment'], { parameter: 1.01 }),
+    o('bad', 'pointOn', ['ray'], { parameter: -.01 }), o('bad', 'pointOn', ['circle'], { parameter: '0.5' }),
+    o('bad', 'pointOn', ['f'], { parameter: M.MAX_COORD + 1 }),
+    o('bad', 'circleRadius', ['a'], { radius: 0 }), o('bad', 'circleRadius', ['a'], { radius: M.MAX_COORD + 1 }),
+    o('bad', 'vector', ['a', 'segment']), o('bad', 'translate', ['a', 'segment']),
+    o('bad', 'tangent', ['circle', 'a'], { branch: 2 }), o('bad', 'tangent', ['a', 'circle'], { branch: 0 }),
+    o('bad', 'functionTable', ['segment'], { start: 0, end: 1, step: .1 }),
+    o('bad', 'functionTable', ['f'], { start: 0, end: 101, step: 1 }),
+    o('bad', 'functionTable', ['f'], { start: 0, end: 1, step: 0 }),
+    o('bad', 'functionTable', ['f'], { start: 1, end: 1.0000000000000002, step: 1e-16 }),
+    o('bad', 'functionTable', ['f'], { start: 0, end: 1, step: .1, rows: [] })
+  ];
+  for (const item of invalid) assert.throws(() => M.normalize(construction([...base, item])), item.type);
+  const tables = Array.from({ length: M.MAX_TABLES }, (_, i) => o('table' + i, 'functionTable', ['f'], { start: 0, end: 100, step: 1 }));
+  assert.equal(M.evaluate(construction([...base, ...tables])).table0.rows.length, M.MAX_TABLE_ROWS);
+  assert.throws(() => M.normalize(construction([...base, ...tables, o('extra', 'functionTable', ['f'], { start: 0, end: 1, step: 1 })])));
+});
+
 test('v1 is a strict, cloned, bounded JSON contract', () => {
   const state = construction([p('a', 0, 0), p('b', 4, 0), o('middle', 'midpoint', ['a', 'b'])]);
   const normalized = M.normalize(state);

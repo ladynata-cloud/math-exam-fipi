@@ -7,11 +7,12 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (Expression) {
   'use strict';
   const VERSION = 1, MAX_OBJECTS = 160, MAX_GRAPHS = 12, MAX_BYTES = 65536, MAX_COORD = 1000000;
-  const POINTS = new Set(['point', 'midpoint', 'intersection', 'projection', 'reflectPoint', 'reflectLine', 'rotate', 'dilate']);
-  const LINES = new Set(['segment', 'line', 'ray', 'parallel', 'perpendicular', 'bisector', 'perpendicularBisector']);
-  const CIRCLES = new Set(['circle', 'circle3']);
+  const MAX_TABLES = 4, MAX_TABLE_ROWS = 101;
+  const POINTS = new Set(['point', 'midpoint', 'intersection', 'projection', 'reflectPoint', 'reflectLine', 'rotate', 'dilate', 'pointOn', 'translate', 'functionRoot', 'functionIntersection']);
+  const LINES = new Set(['segment', 'line', 'ray', 'parallel', 'perpendicular', 'bisector', 'perpendicularBisector', 'tangent']);
+  const CIRCLES = new Set(['circle', 'circle3', 'circleRadius']);
   const MEASUREMENTS = new Set(['distance', 'angle', 'area', 'perimeter', 'circumference']);
-  const TYPES = new Set([...POINTS, ...LINES, ...CIRCLES, ...MEASUREMENTS, 'polygon', 'slider', 'functionGraph']);
+  const TYPES = new Set([...POINTS, ...LINES, ...CIRCLES, ...MEASUREMENTS, 'polygon', 'slider', 'functionGraph', 'vector', 'functionTable']);
   const DEFAULT_VIEWPORT = Object.freeze({ x: 0, y: 0, span: 12 });
   function viewport(value) {
     keys(value, ['x', 'y', 'span']);
@@ -46,6 +47,33 @@
     if (typeof value !== 'string' || value.length > max || /[<>\u0000-\u001f\u007f]/.test(value)) fail('Текст должен быть коротким, без разметки.');
     return value;
   }
+  function parameterBounds(type) {
+    if (type === 'segment' || CIRCLES.has(type)) return [0, 1];
+    if (type === 'ray' || type === 'bisector') return [0, MAX_COORD];
+    return [-MAX_COORD, MAX_COORD];
+  }
+  function decimalParts(value) {
+    const [mantissa, exponent = '0'] = String(value).split('e');
+    const [whole, fraction = ''] = mantissa.split('.');
+    return { digits: BigInt(whole + fraction), power: Number(exponent) - fraction.length };
+  }
+  function tableCoordinates({ start, end, step }) {
+    if (![start, end, step].every(Number.isFinite) || Math.abs(start) > MAX_COORD || Math.abs(end) > MAX_COORD || start > end || step <= 0 || step > 2 * MAX_COORD) fail('Некорректные границы или шаг таблицы.');
+    // Build the decimal grid before converting each sample to a number. A step
+    // of 0.1 from −0.3 should sample the actual pole x = 0, not a nearby value.
+    const parts = [start, end, step].map(decimalParts);
+    const unit = Math.min(...parts.map(part => part.power));
+    const [first, last, stride] = parts.map(({ digits, power }) => digits * 10n ** BigInt(power - unit));
+    const count = (last - first) / stride + 1n;
+    if (count > BigInt(MAX_TABLE_ROWS)) fail('В таблице допускается не более 101 строки. Увеличьте шаг.');
+    const coordinates = [];
+    for (let i = 0n; i < count; i++) {
+      const x = Number(`${first + i * stride}e${unit}`);
+      if (coordinates.length && x <= coordinates[coordinates.length - 1]) fail('Шаг слишком мал: соседние значения x совпадают.');
+      coordinates.push(x);
+    }
+    return coordinates;
+  }
   function normalize(value) {
     safe(value);
     keys(value, ['version', 'title', 'objects', 'view']);
@@ -55,15 +83,19 @@
     if (typeof value.view.axes !== 'boolean' || typeof value.view.grid !== 'boolean') fail('Некорректный вид поля.');
     if (!Array.isArray(value.objects) || value.objects.length > MAX_OBJECTS) fail('Слишком много объектов.');
     if (value.objects.filter(item => item?.type === 'functionGraph').length > MAX_GRAPHS) fail('На одном поле допускается не более 12 графиков.');
+    if (value.objects.filter(item => item?.type === 'functionTable').length > MAX_TABLES) fail('На одном поле допускается не более 4 таблиц значений.');
     const seen = new Map(), parameterNames = new Set();
     const objects = value.objects.map(item => {
       if (!item || !TYPES.has(item.type)) fail('Неизвестный инструмент.');
       const fields = item.type === 'point' ? ['id', 'type', 'label', 'x', 'y'] : ['id', 'type', 'label', 'parents'];
-      if (item.type === 'intersection') fields.push('branch');
+      if (['intersection', 'tangent', 'functionRoot', 'functionIntersection'].includes(item.type)) fields.push('branch');
       if (item.type === 'rotate') fields.push('angle');
       if (item.type === 'dilate') fields.push('factor');
       if (item.type === 'slider') fields.push('name', 'min', 'max', 'step', 'value');
       if (item.type === 'functionGraph') fields.push('expression');
+      if (item.type === 'pointOn') fields.push('parameter');
+      if (item.type === 'circleRadius') fields.push('radius');
+      if (item.type === 'functionTable') fields.push('start', 'end', 'step');
       keys(item, fields);
       if (typeof item.id !== 'string' || !/^[a-z][a-z0-9_-]{0,39}$/i.test(item.id) || seen.has(item.id) || ['__proto__', 'prototype', 'constructor'].includes(item.id)) fail('Некорректный или повторный номер объекта.');
       const result = { id: item.id, type: item.type, label: text(item.label, 30) };
@@ -74,11 +106,30 @@
         if (!Array.isArray(item.parents) || item.parents.some(id => typeof id !== 'string' || !seen.has(id))) fail('Родитель должен быть создан раньше объекта.');
         const parents = item.parents.map(id => seen.get(id)), point = i => POINTS.has(parents[i]?.type), line = i => LINES.has(parents[i]?.type);
         let valid = false;
-        if (['segment', 'line', 'ray', 'circle', 'midpoint', 'distance', 'perpendicularBisector', 'reflectPoint', 'rotate', 'dilate'].includes(item.type)) valid = parents.length === 2 && point(0) && point(1);
+        if (['segment', 'line', 'ray', 'circle', 'midpoint', 'distance', 'perpendicularBisector', 'reflectPoint', 'rotate', 'dilate', 'vector'].includes(item.type)) valid = parents.length === 2 && point(0) && point(1);
         else if (['angle', 'bisector', 'circle3'].includes(item.type)) valid = parents.length === 3 && point(0) && point(1) && point(2);
         else if (item.type === 'polygon') valid = parents.length >= 3 && parents.length <= 30 && parents.every(p => POINTS.has(p.type));
         else if (['parallel', 'perpendicular', 'projection', 'reflectLine'].includes(item.type)) valid = parents.length === 2 && line(0) && point(1);
-        else if (item.type === 'area') valid = parents.length === 1 && (parents[0].type === 'polygon' || CIRCLES.has(parents[0].type));
+        else if (item.type === 'translate') valid = parents.length === 2 && point(0) && parents[1].type === 'vector';
+        else if (item.type === 'pointOn') {
+          const source = parents[0]?.type;
+          valid = parents.length === 1 && (LINES.has(source) || CIRCLES.has(source) || source === 'functionGraph');
+          const [min, max] = parameterBounds(source);
+          if (!Number.isFinite(item.parameter) || item.parameter < min || item.parameter > max) fail('Параметр точки выходит за пределы исходного объекта.');
+          result.parameter = item.parameter;
+        } else if (item.type === 'circleRadius') {
+          valid = parents.length === 1 && point(0);
+          if (!Number.isFinite(item.radius) || item.radius <= 0 || item.radius > MAX_COORD) fail('Радиус должен быть положительным и не больше 1 000 000.');
+          result.radius = item.radius;
+        } else if (item.type === 'tangent') {
+          valid = parents.length === 2 && CIRCLES.has(parents[0].type) && point(1) && (item.branch === 0 || item.branch === 1);
+          result.branch = item.branch;
+        } else if (item.type === 'functionTable') {
+          valid = parents.length === 1 && parents[0].type === 'functionGraph';
+          tableCoordinates(item);
+          const { start, end, step } = item;
+          Object.assign(result, { start, end, step });
+        } else if (item.type === 'area') valid = parents.length === 1 && (parents[0].type === 'polygon' || CIRCLES.has(parents[0].type));
         else if (item.type === 'perimeter') valid = parents.length === 1 && parents[0].type === 'polygon';
         else if (item.type === 'circumference') valid = parents.length === 1 && CIRCLES.has(parents[0].type);
         else if (item.type === 'slider') {
@@ -95,6 +146,11 @@
           const supplied = parents.map(p => p.name);
           valid = parents.every(p => p.type === 'slider') && parents.length === required.length && new Set(supplied).size === supplied.length && required.every(name => supplied.includes(name));
           result.expression = program.source;
+        } else if (item.type === 'functionRoot' || item.type === 'functionIntersection') {
+          valid = parents.length === (item.type === 'functionRoot' ? 1 : 2)
+            && parents.every(p => p.type === 'functionGraph')
+            && new Set(item.parents).size === parents.length && (item.branch === 0 || item.branch === 1);
+          result.branch = item.branch;
         } else if (item.type === 'intersection') {
           valid = parents.length === 2 && parents.every(p => LINES.has(p.type) || CIRCLES.has(p.type)) && item.parents[0] !== item.parents[1] && (item.branch === 0 || item.branch === 1);
           result.branch = item.branch;
@@ -132,6 +188,55 @@
   const xy = p => [p.x, p.y];
   function line(a, d, domain) { return nonzero(d) && Number.isFinite(length(d)) && finitePoint(a) && finitePoint(d) ? { kind: 'line', defined: true, a, d, domain } : undef('line', 'Для прямой нужны две различные точки.'); }
   const onDomain = (t, d) => t >= d[0] - EPS && t <= d[1] + EPS;
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const finitePair = value => Array.isArray(value) && value.length === 2 && finitePoint(value);
+  function projectParameter(target, x, y) {
+    if (!target?.defined || !Number.isFinite(x) || !Number.isFinite(y)) return null;
+    if (target.kind === 'functionGraph') return clamp(x, -MAX_COORD, MAX_COORD);
+    if (target.kind === 'circle') {
+      if (!finitePair(target.c) || !Number.isFinite(target.r) || target.r <= 0) return null;
+      const delta = sub([x, y], target.c);
+      if (!finitePoint(delta) || !nonzero(delta)) return null;
+      const turns = Math.atan2(delta[1], delta[0]) / (2 * Math.PI);
+      return turns < 0 ? turns + 1 : turns || 0;
+    }
+    if (target.kind !== 'line' || !finitePair(target.a) || !finitePair(target.d) || !Array.isArray(target.domain) || target.domain.length !== 2) return null;
+    const size = length(target.d), delta = sub([x, y], target.a);
+    if (!size || !Number.isFinite(size) || !finitePoint(delta)) return null;
+    // Divide each component instead of multiplying by 1/size, which can
+    // overflow even for a perfectly valid subnormal segment.
+    const unit = [target.d[0] / size, target.d[1] / size];
+    const t = dot(delta, unit) / size;
+    const min = Math.max(-MAX_COORD, target.domain[0]), max = Math.min(MAX_COORD, target.domain[1]);
+    const parameter = clamp(t, min, max);
+    return min <= max && Number.isFinite(parameter) ? parameter : null;
+  }
+  function pointOn(target, parameter) {
+    if (target.kind === 'line') return point(add(target.a, mul(target.d, parameter)));
+    if (target.kind === 'circle') {
+      const quarter = parameter * 4, angle = parameter * 2 * Math.PI;
+      const direction = Number.isInteger(quarter) ? [[1, 0], [0, 1], [-1, 0], [0, -1]][quarter % 4] : [Math.cos(angle), Math.sin(angle)];
+      return point(add(target.c, mul(direction, target.r)));
+    }
+    const y = Expression.evaluate(target.expression, parameter, target.parameters);
+    return Number.isFinite(y) ? point([parameter, y]) : undef('point', 'Функция не определена при этом x.');
+  }
+  function tangent(circle, position, branch, onCircle) {
+    const radial = sub(position, circle.c), distance = length(radial);
+    if (!distance || !Number.isFinite(distance)) return undef('line', 'Касательная не определена.');
+    const unit = [radial[0] / distance, radial[1] / distance];
+    if (onCircle || distance === circle.r) {
+      return branch === 0 ? line(position, [-unit[1], unit[0]], [-Infinity, Infinity]) : undef('line', 'В точке окружности есть одна касательная.');
+    }
+    if (distance < circle.r) return undef('line', 'Из точки внутри окружности касательная не проводится.');
+    // Compute the unit normal directly. This avoids squaring either a tiny
+    // radius or a large distance to the external point.
+    const ratio = circle.r / distance;
+    const side = Math.sqrt((1 - ratio) * (1 + ratio)) * (branch === 0 ? 1 : -1);
+    const normal = add(mul(unit, ratio), mul([-unit[1], unit[0]], side));
+    const contact = add(circle.c, mul(normal, circle.r));
+    return line(contact, [-normal[1], normal[0]], [-Infinity, Infinity]);
+  }
   function intersections(a, b) {
     if (a.kind === 'line' && b.kind === 'line') {
       const aLength = length(a.d), bLength = length(b.d), ad = mul(a.d, 1 / aLength), bd = mul(b.d, 1 / bLength), determinant = cross(ad, bd);
@@ -184,15 +289,54 @@
   }
   function evaluate(value) {
     const state = normalize(value), results = Object.create(null);
+    const graphSolutions = new Map();
+    const definitions = new Map(state.objects.map(item => [item.id, item]));
     for (const object of state.objects) {
       const kind = POINTS.has(object.type) ? 'point' : LINES.has(object.type) ? 'line' : CIRCLES.has(object.type) ? 'circle' : MEASUREMENTS.has(object.type) ? 'measurement' : object.type;
       const parents = (object.parents || []).map(id => results[id]);
       let result;
       if (parents.some(p => !p.defined)) result = undef(kind, 'Исходный объект не определён.');
       else if (object.type === 'point') result = point([object.x, object.y]);
-      else if (object.type === 'slider') result = { kind: 'slider', defined: true, name: object.name, min: object.min, max: object.max, step: object.step, value: object.value };
+      else if (object.type === 'pointOn') result = pointOn(parents[0], object.parameter);
+      else if (object.type === 'vector') {
+        const a = xy(parents[0]), d = sub(xy(parents[1]), a);
+        result = finitePoint(d) ? { kind: 'vector', defined: true, a, d } : undef('vector', 'Компоненты вектора не определены.');
+      } else if (object.type === 'translate') result = point(add(xy(parents[0]), parents[1].d));
+      else if (object.type === 'circleRadius') result = { kind: 'circle', defined: true, c: xy(parents[0]), r: object.radius };
+      else if (object.type === 'tangent') {
+        const circle = definitions.get(object.parents[0]), source = definitions.get(object.parents[1]);
+        // Parent identity proves incidence for a constrained point or a defining
+        // vertex even when the computed radial distance rounds off the radius.
+        const onCircle = (source.type === 'pointOn' && source.parents[0] === circle.id) || (circle.type === 'circle3' && circle.parents.includes(source.id));
+        result = tangent(parents[0], xy(parents[1]), object.branch, onCircle);
+      } else if (object.type === 'slider') result = { kind: 'slider', defined: true, name: object.name, min: object.min, max: object.max, step: object.step, value: object.value };
       else if (object.type === 'functionGraph') result = { kind: 'functionGraph', defined: true, expression: object.expression, parameters: Object.fromEntries(parents.map(p => [p.name, p.value])) };
-      else if (object.type === 'midpoint') result = point(mul(add(xy(parents[0]), xy(parents[1])), 0.5));
+      else if (object.type === 'functionRoot' || object.type === 'functionIntersection') {
+        const key = object.parents.join('|');
+        if (!graphSolutions.has(key)) graphSolutions.set(key, Expression.graphSolutions(
+          parents[0].expression, parents[0].parameters, parents[1]?.expression || '0', parents[1]?.parameters || {}));
+        const solution = graphSolutions.get(key), candidate = solution.roots[object.branch];
+        const status = solution.status !== 'finite' ? solution.status : candidate?.status || 'missing-branch';
+        const reasons = {
+          none: 'Действительных решений нет.', infinite: 'Бесконечно много решений: графики совпадают.',
+          unsupported: 'Этот этап поддерживает только прямые и параболы: многочлены степени не выше 2, без ограничений области определения.',
+          undefined: 'Формула не определена или её вычисление выходит за допустимый диапазон.',
+          uncertain: 'Недостаточно численной точности. Точка не построена; измените масштаб коэффициентов или формулу.',
+          'out-of-range': 'Решение выходит за диапазон построений ±1 000 000.',
+          'missing-branch': solution.tangent ? 'Касание: есть одна точка. Вторая ветвь сохранена.' : 'Есть только одна точка. Вторая ветвь сохранена.'
+        };
+        result = status === 'finite' ? point([candidate.x, object.type === 'functionRoot' ? 0 : candidate.y]) : undef('point', reasons[status]);
+        result.solutionStatus = status;
+        if (status === 'finite') result.relation = solution.tangent ? 'tangent' : 'crossing';
+        if (status === 'infinite' && object.type === 'functionRoot') result.reason = 'Бесконечно много корней: функция тождественно равна нулю.';
+      } else if (object.type === 'functionTable') {
+        const graph = parents[0], program = Expression.parse(graph.expression);
+        const rows = tableCoordinates(object).map(x => {
+          const y = Expression.evaluate(program, x, graph.parameters);
+          return { x, y: Number.isFinite(y) ? y : null };
+        });
+        result = { kind: 'functionTable', defined: true, rows };
+      } else if (object.type === 'midpoint') result = point(mul(add(xy(parents[0]), xy(parents[1])), 0.5));
       else if (object.type === 'perpendicularBisector') {
         const a = xy(parents[0]), b = xy(parents[1]), d = sub(b, a);
         result = line(mul(add(a, b), .5), [-d[1], d[0]], [-Infinity, Infinity]);
@@ -288,5 +432,5 @@
     for (const object of state.objects) if (object.parents?.some(parent => removed.has(parent))) removed.add(object.id);
     return state.objects.filter(object => removed.has(object.id)).map(object => object.id);
   }
-  return Object.freeze({ version: VERSION, MAX_OBJECTS, MAX_GRAPHS, MAX_BYTES, MAX_COORD, normalize, empty, evaluate, descendants, pointTypes: Object.freeze([...POINTS]), lineTypes: Object.freeze([...LINES]), circleTypes: Object.freeze([...CIRCLES]) });
+  return Object.freeze({ version: VERSION, MAX_OBJECTS, MAX_GRAPHS, MAX_TABLES, MAX_TABLE_ROWS, MAX_BYTES, MAX_COORD, normalize, empty, evaluate, descendants, projectParameter, pointTypes: Object.freeze([...POINTS]), lineTypes: Object.freeze([...LINES]), circleTypes: Object.freeze([...CIRCLES]) });
 });

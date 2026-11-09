@@ -32,7 +32,7 @@
       if (number) {
         const value = Number(number[0]);
         if (!finite(value)) fail('Число вне допустимого диапазона.', start);
-        result.push({ type: 'number', value, position: start });
+        result.push({ type: 'number', value, literal: number[0], position: start });
         position += number[0].length;
       } else if (identifier) {
         result.push({ type: 'name', value: identifier[0], position: start });
@@ -104,7 +104,7 @@
     function primary(depth) {
       guard(depth);
       const token = tokens[index++];
-      if (token.type === 'number') return node('number', { value: token.value });
+      if (token.type === 'number') return node('number', { value: token.value, literal: token.literal });
       if (token.type === 'name') {
         if (variables.has(token.value)) { used.add(token.value); return node('variable', { name: token.value }); }
         if (token.value === 'pi' || token.value === 'e') return node('number', { value: token.value === 'pi' ? Math.PI : Math.E });
@@ -198,6 +198,161 @@
       }
       return visit(tree);
     } catch (_) { return NaN; }
+  }
+
+  // Algebra for the first graph-solution stage. It consumes this parser's AST,
+  // not sampled pixels or a second expression language. Exact rational arithmetic
+  // on decimal literals and displayed parameters prevents cancellation from
+  // inventing tangency. Candidate coordinates are checked as actual binary64
+  // numbers, including against the existing numerical drawing evaluator.
+  // Only everywhere-defined polynomials of degree <= 2 are accepted. In
+  // particular x/x and x^0 are NOT simplified across their missing domain point.
+  function graphSolutions(source, parameterValues = {}, otherSource = '0', otherParameters = {}) {
+    const problem = status => { throw { graphSolutionStatus: status }; };
+    const bits = n => (n < 0n ? -n : n).toString(2).length;
+    function rational(n, d = 1n) {
+      if (!d) problem('undefined');
+      if (bits(n) > 8192 || bits(d) > 8192) problem('uncertain');
+      if (d < 0n) { n = -n; d = -d; }
+      let a = n < 0n ? -n : n, b = d;
+      while (b) { const r = a % b; a = b; b = r; }
+      return { n: n / a, d: d / a };
+    }
+    const zero = { n: 0n, d: 1n }, one = { n: 1n, d: 1n };
+    const add = (a, b) => rational(a.n * b.d + b.n * a.d, a.d * b.d);
+    const neg = a => ({ n: -a.n, d: a.d });
+    const sub = (a, b) => add(a, neg(b));
+    const mul = (a, b) => rational(a.n * b.n, a.d * b.d);
+    const div = (a, b) => rational(a.n * b.d, a.d * b.n);
+    function exact(value) {
+      if (!finite(value)) problem('undefined');
+      const data = new DataView(new ArrayBuffer(8)); data.setFloat64(0, value);
+      const raw = data.getBigUint64(0), exponent = Number((raw >> 52n) & 2047n);
+      let numerator = raw & ((1n << 52n) - 1n);
+      if (exponent) numerator += 1n << 52n;
+      if (raw >> 63n) numerator = -numerator;
+      const shift = (exponent || 1) - 1023 - 52;
+      return shift >= 0 ? rational(numerator << BigInt(shift)) : rational(numerator, 1n << BigInt(-shift));
+    }
+    function decimal(literal) {
+      const [mantissa, exponent = '0'] = literal.toLowerCase().split('e');
+      const [whole, fraction = ''] = mantissa.split('.');
+      const power = Number(exponent) - fraction.length;
+      if (!Number.isInteger(power) || Math.abs(power) > 2048) problem('uncertain');
+      const digits = BigInt(whole + fraction);
+      return power < 0 ? rational(digits, 10n ** BigInt(-power)) : rational(digits * 10n ** BigInt(power));
+    }
+    function approximate(a) {
+      if (!a.n) return 0;
+      const sign = a.n < 0n ? -1 : 1, n = a.n < 0n ? -a.n : a.n;
+      const ns = Math.max(0, bits(n) - 54), ds = Math.max(0, bits(a.d) - 54);
+      const ratio = Number(n >> BigInt(ns)) / Number(a.d >> BigInt(ds));
+      const power = ns - ds;
+      // Splitting the final power preserves representable subnormal results.
+      return sign * (power < -1022 ? ratio * 2 ** (power + 1022) * 2 ** -1022 : ratio * 2 ** power);
+    }
+    const constant = p => !p[1].n && !p[2].n;
+    function product(a, b) {
+      const out = Array(5).fill(zero);
+      for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) out[i + j] = add(out[i + j], mul(a[i], b[j]));
+      if (out[3].n || out[4].n) problem('unsupported');
+      return out.slice(0, 3);
+    }
+    function polynomial(source, values) {
+      const program = typeof source === 'string' ? parse(source) : source;
+      const tree = programs.get(program), environment = parameters(values);
+      if (!tree || !environment) problem('undefined');
+      function visit(node) {
+        const result = expand(node);
+        // Constant subexpressions must be executable by the drawing evaluator,
+        // even when a later subtraction or multiplication cancels them.
+        if (constant(result)) {
+          const converted = approximate(result[0]);
+          if (!finite(converted)) problem('undefined');
+          if (result[0].n && !converted) problem('uncertain');
+        }
+        return result;
+      }
+      function expand(node) {
+        if (node.type === 'number') {
+          return [node.literal ? decimal(node.literal) : exact(node.value), zero, zero];
+        }
+        if (node.type === 'variable') {
+          if (node.name === 'x') return [zero, one, zero];
+          if (!own(environment, node.name)) problem('undefined');
+          return [decimal(String(environment[node.name])), zero, zero];
+        }
+        if (node.type === 'unary') { const a = visit(node.children[0]); return node.operator === '-' ? a.map(neg) : a; }
+        if (node.type !== 'binary' || !['+', '-', '*', '/', '^'].includes(node.operator)) problem('unsupported');
+        const a = visit(node.children[0]), b = visit(node.children[1]);
+        if (node.operator === '+') return a.map((c, i) => add(c, b[i]));
+        if (node.operator === '-') return a.map((c, i) => sub(c, b[i]));
+        if (node.operator === '*') return product(a, b);
+        if (node.operator === '/') {
+          if (!constant(b)) problem('unsupported');
+          return a.map(c => div(c, b[0]));
+        }
+        if (!constant(b) || b[0].d !== 1n || b[0].n < 0n || b[0].n > 2n) problem('unsupported');
+        if (b[0].n === 0n) {
+          if (!constant(a)) problem('unsupported');
+          if (!a[0].n) problem('undefined');
+          return [one, zero, zero];
+        }
+        return b[0].n === 1n ? a : product(a, a);
+      }
+      return { program, values, coefficients: visit(tree) };
+    }
+    try {
+      const f = polynomial(source, parameterValues), g = polynomial(otherSource, otherParameters);
+      const coefficients = f.coefficients.map((c, i) => sub(c, g.coefficients[i]));
+      const [c, b, a] = coefficients;
+      let roots, tangent = false;
+      if (!a.n && !b.n) return { status: c.n ? 'none' : 'infinite', roots: [] };
+      if (!a.n) roots = [approximate(div(neg(c), b))];
+      else {
+        const discriminant = sub(mul(b, b), mul(exact(4), mul(a, c)));
+        if (discriminant.n < 0n) return { status: 'none', roots: [] };
+        if (!discriminant.n) { roots = [approximate(div(neg(b), mul(exact(2), a)))]; tangent = true; }
+        else {
+          // Normalize before conversion; use q/a and c/q to avoid loss of the
+          // small root in -b + sqrt(D). The sign of D above is exact.
+          const scale = coefficients.reduce((largest, v) => {
+            const abs = { n: v.n < 0n ? -v.n : v.n, d: v.d };
+            return sub(abs, largest).n > 0n ? abs : largest;
+          }, zero);
+          const an = approximate(div(a, scale)), bn = approximate(div(b, scale)), cn = approximate(div(c, scale));
+          const dn = approximate(div(discriminant, mul(scale, scale)));
+          if (!an || !(dn > 0) || coefficients.some((v, i) => v.n && ![cn, bn, an][i])) problem('uncertain');
+          const q = -.5 * (bn + (bn < 0 ? -1 : 1) * Math.sqrt(dn));
+          roots = [q / an, cn / q].sort((x, y) => x - y);
+          if (roots[1] - roots[0] <= 128 * Number.EPSILON * Math.max(Math.abs(roots[0]), Math.abs(roots[1]))) problem('uncertain');
+        }
+      }
+      const at = (p, x) => add(mul(add(mul(p[2], x), p[1]), x), p[0]);
+      const points = roots.map(x => {
+        if (!Number.isFinite(x) || Math.abs(x) > 1e6) return { status: 'out-of-range' };
+        const xr = exact(x), residual = at(coefficients, xr);
+        const derivative = add(mul(exact(2), mul(a, xr)), b);
+        const errorRatio = residual.n ? div(residual, tangent ? a : derivative) : zero;
+        const convertedError = Math.abs(approximate(errorRatio));
+        const error = tangent ? Math.sqrt(convertedError) : convertedError;
+        if (errorRatio.n && !convertedError || !Number.isFinite(error) || error > 1e-10 * Math.abs(x)) return { status: 'uncertain' };
+        const fy = evaluate(f.program, x, f.values), gy = evaluate(g.program, x, g.values);
+        if (!Number.isFinite(fy) || !Number.isFinite(gy)) return { status: 'undefined' };
+        const y = approximate(at(f.coefficients, xr));
+        // Recheck the actual evaluator and both graphs, including intermediate
+        // overflow/domain limits. Do not put a point on a numerically lost curve.
+        const stableEvaluation = (graph, actual) => {
+          const expected = approximate(at(graph.coefficients, xr));
+          const magnitude = graph.coefficients.reduce((sum, coefficient, i) => sum + Math.abs(approximate(coefficient)) * Math.abs(x) ** i, 0);
+          return Number.isFinite(magnitude) && Math.abs(actual - expected) <= 128 * Number.EPSILON * Math.max(magnitude, Number.MIN_VALUE);
+        };
+        if (!stableEvaluation(f, fy) || !stableEvaluation(g, gy)) return { status: 'uncertain' };
+        if (Math.abs(y) > 1e6) return { status: 'out-of-range' };
+        return { status: 'finite', x: x || 0, y: y || 0 };
+      });
+      return { status: 'finite', roots: points, tangent };
+    } catch (error) { return { status: error.graphSolutionStatus || 'undefined', roots: [] }; }
   }
 
   // Bounded numerical drawing, not a symbolic continuity test. Curved segments
@@ -378,5 +533,5 @@
     return output;
   }
 
-  return Object.freeze({ parse, validate, evaluate, sample, parameters: PARAMETERS, limits: Object.freeze({ length: MAX_LENGTH, tokens: MAX_TOKENS, depth: MAX_DEPTH, steps: MAX_STEPS, magnitude: MAX_MAGNITUDE, parameter: MAX_PARAMETER }) });
+  return Object.freeze({ parse, validate, evaluate, sample, graphSolutions, parameters: PARAMETERS, limits: Object.freeze({ length: MAX_LENGTH, tokens: MAX_TOKENS, depth: MAX_DEPTH, steps: MAX_STEPS, magnitude: MAX_MAGNITUDE, parameter: MAX_PARAMETER }) });
 });

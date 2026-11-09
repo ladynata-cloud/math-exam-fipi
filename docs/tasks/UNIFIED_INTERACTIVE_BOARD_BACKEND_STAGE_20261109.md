@@ -48,3 +48,42 @@ The existing frontend remains usable against the upgraded server. New geometry/i
 - Full server: **426/426 passed**, including legacy contracts, persistence/restart, registry packaging and new geometry integration.
 - Syntax checks and `git diff --check`: **passed**. All nine source files match the selected tree byte-for-byte; public interface isolation and the exact changed-file set are verified. No failure or scope deviation was observed.
 - Browser tests, Docker build, remote CI, push, merge and deployment: **not run in this local stage**. Browser coverage belongs to the later full-interface gate; remote release remains with the release owner.
+
+## Coordinated release continuation — 10 November 2026
+
+The owner accepted the plan to finish the pending publications, including a
+coordinated server-first board release. This backend stage is extended to the
+approved dependent #527 and #528 construction types before enabling any of
+their interfaces. The source is #528 `4f0bafa7f7225b3eaf38beab2e5bc73544109c4d`,
+composed with the accepted #519 recovery fixes and current main
+`c8a4f1fc61dd07038e30764f8cedf0725b767539`.
+
+The final `model.js`, `expression.js`, model tests and group-geometry server
+tests are copied unchanged. `trainers/spacemath/graph-solutions.test.cjs` is
+added as a backend/parser regression gate. These support point-on-object,
+vectors, transformations, tables, tangents, function roots and graph
+intersections without exposing the new public editor. No public HTML, CSS,
+editor app, bridge, workflow, credentials or production data is changed.
+
+This avoids a window where a newer editor submits construction types rejected
+by the deployed server. Existing `/api/group-lessons/status` geometry flags
+alone do not distinguish these model revisions: after the backend update,
+verify source/deployment identity and a disposable synthetic session containing
+new construction types, plus journal replay after restart. The recoverable
+`/data` snapshot and one-process store ownership requirements still apply.
+Never roll the reader back below the newest journal types already written.
+
+Required local gate for this expanded server stage: full server suite,
+expression/model/graph-solution tests, syntax/diff checks, and exact source-blob
+identity plus frontend isolation against current main. Remote CI and production
+acceptance remain with the release owner; this local preparation does not
+perform a deployment or access real learner data.
+
+Local expanded-stage results: **428/428 server tests** and **69/69
+expression/model/graph-solution tests passed**, with zero failures, skips or
+cancellations. Syntax and `git diff --check` passed. The five extended source
+files exactly match #528 blobs; existing group-board HTML/JS/CSS/frame files
+match `c8a4f1fc` byte-for-byte. The complete stage changes eleven files relative
+to that main: the previous ten-file backend stage plus the graph-solution test.
+No frontend activation, provider operation, production snapshot or deployment
+is claimed by these local results.
