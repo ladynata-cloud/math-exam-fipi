@@ -35,14 +35,14 @@ function answer(p, value) {
 function rows(p) { return [...p.host.querySelectorAll('.coach-scene tbody tr')].map(row => [...row.children].map(cell => cell.textContent)); }
 function stored(p) { return JSON.parse(p.store.value()).records.at(-1); }
 
-test('all seven bindings name existing course lessons, while unrelated lessons do not get a coach', () => {
+test('all eight bindings name existing course lessons, while unrelated lessons do not get a coach', () => {
   const p = page();
   try {
     const realm = new JSDOM('', { runScripts: 'outside-only' });
     try {
       for (const file of ['functions-data.js', 'probability-data.js', 'equations-data.js', 'finance-data.js']) realm.window.eval(fs.readFileSync(path.join(__dirname, '../ege-profil/start/', file), 'utf8'));
       const actual = new Set(realm.window.ProfileLessons.map(x => x.id));
-      for (const id of ['fn-line', 'calc-sign', 'prob-count', 'prob-conditional', 'prob-distribution', 'eq-linear', 'finance-lesson-01-ledger']) {
+      for (const id of ['fn-line', 'fn-hyperbola', 'calc-sign', 'prob-count', 'prob-conditional', 'prob-distribution', 'eq-linear', 'finance-lesson-01-ledger']) {
         assert(actual.has(id), id); assert(p.w.ProfilePracticeCoach.supports({ id }), id);
       }
       assert.equal(p.w.ProfilePracticeCoach.supports({ id: 'geo-right' }), false);
@@ -77,6 +77,58 @@ test('stationary point is not promoted to extremum without a sign change', () =>
     assert.match(p.host.querySelector('.coach-feedback').textContent, /продолжает возрастать/);
     answer(p, 'Минимум'); assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'false');
     answer(p, 'Максимум'); assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'true');
+  } finally { p.close(); }
+});
+
+test('zero numerator preserves the excluded argument and replaces the asymptote with a hole', () => {
+  const p = page('fn-hyperbola');
+  try {
+    assert.deepEqual(rows(p), [['0', '0'], ['1', 'Не определено'], ['2', '4']]);
+    assert.equal(p.host.querySelectorAll('[data-graph-role="vertical-asymptote"]').length, 1);
+    const branches = [...p.host.querySelectorAll('[data-graph-role="function"]')];
+    assert.equal(branches.length, 2);
+    // Compare every drawn point to the original equation, recovering graph
+    // coordinates from the labelled axis scale. Neither branch crosses x = 1.
+    branches.forEach((branch, index) => {
+      const points = [...branch.getAttribute('d').matchAll(/[ML]([\d.e+-]+) ([\d.e+-]+)/g)];
+      assert(points.length > 2);
+      for (const [, px, py] of points) {
+        const x = (+px - 40) / 38 - 2, y = (160 - +py) / 12 - 4;
+        assert(index === 0 ? x < 1 : x > 1);
+        assert(Math.abs(y - (2 / (x - 1) + 2)) < 1e-10);
+        assert(y >= -4 - 1e-10 && y <= 8 + 1e-10);
+      }
+    });
+    assert(p.host.querySelector('[data-coach-transfer]').hidden);
+    reveal(p, 1);
+    assert.deepEqual(rows(p), [['0', '2'], ['1', 'Не определено'], ['2', '2']]);
+    assert.equal(p.host.querySelectorAll('[data-graph-role="vertical-asymptote"]').length, 0);
+    assert.equal(p.host.querySelectorAll('[data-graph-role="horizontal-asymptote"]').length, 0);
+    const hole = p.host.querySelector('[data-graph-role="excluded-point"]');
+    assert(hole); assert.equal(+hole.getAttribute('cx'), 154); assert.equal(+hole.getAttribute('cy'), 88);
+    assert.equal(hole.getAttribute('fill'), '#fff');
+    assert.match(p.host.querySelector('svg').getAttribute('aria-label'), /Вертикальной асимптоты нет/);
+    assert.match(p.host.querySelector('.coach-formula').textContent, /x ≠ 1/);
+    answer(p, 'Никакую'); assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'false');
+    answer(p, '(2; −1)'); assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'false');
+    answer(p, '(−2; −1)'); assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'true');
+    assert.equal(JSON.stringify({ task: p.task, session: p.session }), p.original);
+  } finally { p.close(); }
+});
+
+test('hyperbola first forecast, correction and new-domain answer survive remount without mastery credit', () => {
+  const store = storage(); let p = page('fn-hyperbola', { storage: store });
+  try {
+    reveal(p, 1); choose(p, 0); answer(p, '(2; −1)'); answer(p, '(−2; −1)');
+    p.close(); p = page('fn-hyperbola', { storage: store });
+    assert.equal(stored(p).firstPrediction, 1); assert.equal(stored(p).choice, 0);
+    assert.equal(stored(p).transferFirst, '(2; −1)'); assert.equal(stored(p).transferLast, '(−2; −1)');
+    assert.match(p.host.querySelector('.coach-first').textContent, /вся прямая/);
+    assert.equal(p.host.querySelectorAll('[data-graph-role="excluded-point"]').length, 1);
+    assert.equal(p.host.querySelectorAll('[data-graph-role="vertical-asymptote"]').length, 0);
+    assert.equal(p.host.querySelector('[data-coach-answer]').value, '(−2; −1)');
+    assert.equal(p.host.querySelector('.coach-transfer .coach-feedback').dataset.correct, 'true');
+    assert.equal(JSON.stringify({ task: p.task, session: p.session }), p.original);
   } finally { p.close(); }
 });
 
@@ -183,8 +235,8 @@ test('a failed transfer leaves the final result for the learner to compute', () 
 });
 
 test('independent, checkpoint-like mode, and all board flags prevent UI and storage access', () => {
-  for (const options of [{ mode: 'independent' }, { mode: 'checkpoint' }, { board: 'true' }, { board: '' }]) {
-    const store = storage(), p = page('fn-line', { ...options, storage: store });
+  for (const id of ['fn-line', 'fn-hyperbola']) for (const options of [{ mode: 'independent' }, { mode: 'checkpoint' }, { board: 'true' }, { board: '' }]) {
+    const store = storage(), p = page(id, { ...options, storage: store });
     try { assert.equal(p.host.childElementCount, 0); assert.deepEqual(store.calls, []); } finally { p.close(); }
   }
 });
