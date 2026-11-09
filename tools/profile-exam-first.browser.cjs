@@ -68,15 +68,29 @@ async function accept(page, value) {
       await page.goto(base + hash); await page.locator('[data-calm-exam="13"]').waitFor();
       assert.equal(await page.locator('[data-calm-exam]').count(), 13);
       assert.deepEqual(await page.locator('[data-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), entries.map(id => '#practice/' + id + '/independent'));
-      assert(await page.evaluate(() => {
-        const first = document.querySelector('[data-calm-exam]');
-        return [...document.querySelectorAll('main a[href="#readiness"]')].every(link => Boolean(first.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING));
-      }), 'The catalogue comes before optional foundation navigation');
+      assert.deepEqual(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [14, 15, 16, 17, 18, 19, 20], 'All seven second-part lines are represented');
+      assert.equal(await page.locator('.journey-tabs a[href="#calm/first"]').count(), 1);
+      assert.equal(await page.locator('.journey-tabs a[href="#calm/second"]').count(), 1);
+      assert.equal(await page.locator('.journey-tabs a[href="#readiness"]').count(), 1, 'Foundation remains an optional navigation choice');
+      assert.equal(await page.locator('#diagnostic-form, #answer-form').count(), 0, 'Opening the course does not force a prerequisite lesson or diagnostic');
+      assert.equal(await page.locator('[data-exam-start][aria-disabled="true"]').count(), 0, 'All exam lines are available without prerequisite completion');
       await noOverflow(page, 'catalogue');
     }
     const desktop = await learner(1280), page = desktop.page;
     assert.deepEqual(exams.map(exam => exam.entry), entries);
     await catalog(page, ''); // Opening the course directly is exam-first too.
+    const beforeTabs = await page.evaluate(key => localStorage.getItem(key), KEY);
+    await page.locator('.journey-tabs a[href="#calm/second"]').click();
+    await page.locator('.journey-tabs a[href="#calm/second"][aria-current="page"]').waitFor();
+    assert.equal(await page.locator('[data-calm-exam]').count(), 0, 'Second-part tab focuses its own map');
+    assert.equal(await page.locator('.second-part-grid [data-course-extra]').count(), 7);
+    await noOverflow(page, 'second-part tab');
+    await page.locator('.journey-tabs a[href="#calm/first"]').click();
+    await page.locator('.journey-tabs a[href="#calm/first"][aria-current="page"]').waitFor();
+    assert.equal(await page.locator('[data-calm-exam]').count(), 13);
+    assert.equal(await page.locator('.second-part-grid [data-course-extra]').count(), 0, 'First-part tab focuses its own map');
+    assert.equal(await page.evaluate(key => localStorage.getItem(key), KEY), beforeTabs, 'Changing map tabs neither opens tasks nor alters learning evidence');
+    await catalog(page);
     if (process.env.PROFILE_EXAM_FIRST_SHOTS) {
       fs.mkdirSync(process.env.PROFILE_EXAM_FIRST_SHOTS, { recursive: true });
       await page.screenshot({ path: path.join(process.env.PROFILE_EXAM_FIRST_SHOTS, 'catalog-desktop.png'), fullPage: true });
@@ -170,6 +184,6 @@ async function accept(page, value) {
     await noOverflow(pupil, 'guided return');
     await mobile.context.close();
     assert.deepEqual(errors, []); assert.deepEqual(requests, []);
-    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 13 independent entries and targeted repairs; invalid input; optional school/trig detours; nested return and reload; same draft/task/accepted step; helped work excluded from mastery; fresh next task; desktop/mobile');
+    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 13 independent entries, seven second-part lines, both map tabs and targeted repairs; invalid input; optional school/trig detours; nested return and reload; same draft/task/accepted step; helped work excluded from mastery; fresh next task; desktop/mobile');
   } finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
