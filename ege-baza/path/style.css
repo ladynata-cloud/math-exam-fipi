@@ -69,3 +69,8 @@ main:has(>.task-first-course){margin-top:18px}
 
 /* Standalone learning line; managed and shared-board tasks do not supply it. */
 .journey-lesson-nav{display:flex;align-items:baseline;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;margin-bottom:8px}.journey-lesson-nav a{font-size:14px;line-height:1.4}.task-first-next [data-journey-next]{flex-basis:100%;justify-content:flex-start}.task-first-next [hidden]{display:none!important}
+
+/* The existing header supplies the course and home returns without another bar. */
+header .path-home{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none}
+header .path-home:focus-visible{outline:3px solid #ad591d;outline-offset:3px}
+header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}

@@ -44,9 +44,14 @@ Out of scope: generators, answer keys, new lesson content, adaptive diagnosis, a
 - Independent design review: read-only projection, no mixed mastery denominator, preserve unknown states, and an opt-in standalone navigation boundary. Independent ready-result review required before release.
 - No external provider review or real-pupil learning-effect study claimed.
 - Main risk: interpreting older results too optimistically or offering a wrong continuation link. Mitigation: separate sources, conservative validation and tests with mixed/corrupt records.
+- Compatibility boundary: the lightweight home loads EGE metadata only. Valid shared saves containing lessons of other grades keep readable EGE history, but automatic exact continuation is withheld when full-store compatibility cannot be established; manual lesson entry remains available. This is not data loss or an invented zero result.
 - Rollback: an ordinary revert of this task's commit restores navigation. No data migration or deletion is introduced, so existing result stores survive rollback.
 - Gate: EGE_BASE_LEARNING_PATH_OK only after applicable checks pass.
 
 ## Execution record
 
-Implementation and verification in progress. Final base/head, PR, checks, failed/not-run checks, release authorization, deployment and live observations are recorded in the PR handoff. Exact remote main/head are rechecked immediately before merge; any drift requires a newly reviewed composition.
+PR #496 records exact release refs and results. The initial tree passed 16 unit tests, 293 actual-script DOM checks and the existing task-first, board, backup, reference, equation and stereometry contracts. Independent review reproduced and verified the fixes for an edited successful draft and a malformed sibling in a saved document.
+
+Initial CI passed all three viewport layout loops (320/390/1280); its new keyboard-route test then exposed an incorrect URL matcher, corrected to inspect the exact hash. Existing public-navigation gates also identified the expected page-payload rebind and the historical misclassification of the EGE path as an OGE route. The reviewed route now retains explicit parent, home, keyboard, touch and no-JavaScript coverage for its correct EGE parent; the navigator pair and all unrelated source payloads remain preserved.
+
+Final base/head, CI, failed/not-run checks, deployment and live observations are recorded in the PR handoff. Exact remote main/head are rechecked immediately before merge; any drift requires a newly reviewed composition. No browser or CI failure is waived merely because its assertion needs to reflect the intended new route.

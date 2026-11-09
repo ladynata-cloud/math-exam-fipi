@@ -43,9 +43,9 @@ const ok=(value,label)=>{assert.ok(value,label);checks++;};
   }
   await page.setViewportSize({width:1280,height:900});
   await page.goto(home+'#today');await page.locator('[data-nav="map"]').focus();await page.keyboard.press('Enter');
-  await page.waitForURL('**/#map');await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
+  await page.waitForURL(url=>url.hash==='#map');await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
   ok(await page.locator('#content').evaluate(node=>node===document.activeElement),'keyboard route focuses main');
-  await page.locator('[data-line="m05"] .actions a').click();await page.waitForURL('**/#line?line=m05');
+  await page.locator('[data-line="m05"] .actions a').click();await page.waitForURL(url=>url.hash==='#line?line=m05');
   await page.locator('[data-journey-item="box"] a').first().click();await page.locator('#answer').waitFor();
   const answer=await page.evaluate(()=>{const row=PathCourse.state().lessons.box;return PathData.task('box',row.seed).answer;});
   ok(await page.locator('[data-journey-next]').isHidden(),'next-topic action waits for answer');
