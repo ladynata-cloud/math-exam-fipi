@@ -237,9 +237,11 @@ test('graphs, dependent constructions and canonical viewport survive control, st
   evaluated = model.evaluate(restored.geometryState);
   assert.deepEqual(evaluated.graph.parameters, { a: -2, b: -1 });
   assert.deepEqual([evaluated.H.x, evaluated.H.y], [2, 0]);
-  assert.deepEqual(evaluated.circle.c, [2, 0]);
-  assert.equal(evaluated.circle.r, 2);
-  assert.equal(evaluated.area.value, 4 * Math.PI);
+  // Derived circle coordinates use floating arithmetic; persisted model data
+  // above must still round-trip exactly, while geometry is checked to 1e-12.
+  assert.ok(Math.abs(evaluated.circle.c[0] - 2) < 1e-12 && Math.abs(evaluated.circle.c[1]) < 1e-12);
+  assert.ok(Math.abs(evaluated.circle.r - 2) < 1e-12);
+  assert.ok(Math.abs(evaluated.area.value - 4 * Math.PI) < 1e-12);
   const history = f.history('s1', 's1');
   assert.deepEqual(history.events.filter(event => event.type === 'geometry').map(event => event.payload.state), [state, edited]);
   const resumed = structuredClone(edited); resumed.objects.find(object => object.id === 'b').value = .5;
