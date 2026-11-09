@@ -22,6 +22,16 @@ const scenarios = [
     file:'ege-profil/start/index.html', family:'profile', name:'profile-practice',
     hash:'#practice/geo-angles/independent', ready:'.practice-head h1',
     compactHeading:'.practice-head h1'
+  },
+  {
+    file:'ege-profil/start/index.html', family:'profile', name:'profile-similarity',
+    hash:'#practice/geo-similarity/independent', ready:'#answer-form',
+    compactHeading:'.practice-head h1', model:'#task-model svg', firstScreenModel:true
+  },
+  {
+    file:'school/makarychev8/index.html', family:'textbook', name:'makarychev8-ex041',
+    hash:'#lesson/p02/' + (require('../school/makarychev8/exercises-25-54.json').findIndex(task=>task.id==='p02-ex041-')+6),
+    ready:'#task-graph', model:'#task-graph', firstScreenModel:true
   }
 ];
 const root = path.resolve(__dirname, '..');
@@ -41,7 +51,7 @@ const server = http.createServer((req,res)=>{
 (async()=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const origin = 'http://127.0.0.1:' + server.address().port;
-  const browser = await chromium.launch({headless:true});
+  const browser = await chromium.launch({headless:true, executablePath:process.env.CHROMIUM_EXECUTABLE_PATH});
   const results = [], failures = [];
   try {
     for (const width of [1280,320]) {
@@ -88,7 +98,7 @@ const server = http.createServer((req,res)=>{
               }
               if(model) {
                 const element=document.querySelector(model),rect=element.getBoundingClientRect();
-                result.model={width:rect.width,height:rect.height,viewBox:element.getAttribute('viewBox')};
+                result.model={width:rect.width,height:rect.height,top:rect.top,bottom:rect.bottom,viewBox:element.getAttribute('viewBox')};
               }
               if(contrast) {
                 // These regression fixtures use an opaque, solid panel background.
@@ -130,6 +140,8 @@ const server = http.createServer((req,res)=>{
               }
               if(scenario.model) {
                 assert.ok(sample.model.width>0 && sample.model.height>0,'Task drawing is rendered');
+                if(scenario.firstScreenModel) assert.ok(sample.model.top>=0 && sample.model.bottom<=900,
+                  `Complete task drawing must fit the first screen: ${JSON.stringify(sample.model)}`);
                 assert.equal(sample.model.viewBox,samples[0].model.viewBox,'Drawing coordinate system is unchanged');
                 for(const dimension of ['width','height']) assert.ok(sample.model[dimension]>=samples[0].model[dimension]-1,
                   `Task drawing ${dimension} shrank: ${samples[0].model[dimension]} -> ${sample.model[dimension]}`);

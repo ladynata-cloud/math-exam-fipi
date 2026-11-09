@@ -26,8 +26,8 @@ body[data-mx-course] {
   font-weight: 720;
   line-height: 1.16;
   letter-spacing: -.025em;
-  margin-block: 12px 18px;
-  overflow-wrap: break-word;
+  /* Keep authored heading spacing, including zero top margins in task panels. */
+  overflow-wrap: anywhere;
 }
 :where(body[data-mx-course]) h2 {
   font-family: inherit;
@@ -74,7 +74,7 @@ body[data-mx-course] :is(a.button, a.btn, .primary-link, .vpr-open,
   line-height: 1.4;
   font-weight: 650;
   white-space: normal;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 body[data-mx-course] :is(.primary-link, .vpr-open, button.primary, a.button.primary),
 body[data-mx-course="profile"] .button:not(.quiet),
@@ -100,7 +100,9 @@ body[data-mx-course] :is(a, button, input, select, textarea, summary):focus-visi
 body[data-mx-course] :is(.topbar, .top, .site-header, .vpr-header) {
   border-bottom-color: var(--mx-line);
 }
-body[data-mx-course] :is(.topbar, .top, .site-header, .vpr-header) nav a {
+/* Compact task headers already place the condition and model on the first
+   screen. Increase catalogue targets without expanding those task headers. */
+body[data-mx-course]:not(.supplement-task):not(:has(.lesson-page, .focused-practice)) :is(.topbar, .top, .site-header, .vpr-header) nav a {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -141,8 +143,8 @@ body[data-mx-course="profile-home"] .sheet {
 @media (max-width: 600px) {
   :where(body[data-mx-course]) h1 { font-size: 1.75rem; }
   body[data-mx-course] :is(.hero, .vpr-hero) { padding-block: 16px; gap: 20px; }
-  body[data-mx-course] :is(.topbar, .top) { height: auto; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
-  body[data-mx-course] :is(.topbar, .top) nav { gap: 6px 14px; flex-wrap: wrap; }
+  :where(body[data-mx-course]) :is(.topbar, .top) { height: auto; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
+  :where(body[data-mx-course]) :is(.topbar, .top) nav { gap: 6px 14px; flex-wrap: wrap; }
   body[data-mx-course="profile-home"] .sheet { padding: 20px 16px 48px; }
   body[data-mx-course] :is(.actions, .row) > :is(.button, .btn) { max-width: 100%; }
 }
