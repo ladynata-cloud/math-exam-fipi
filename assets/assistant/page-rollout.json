@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+  "baseSha": "b7147e4afa7d8f0d7c69dd9b774358dff0f99e62",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2870,8 +2870,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "e2f3f95dff2e35f08c7c240ebfc903b4d03c1f23d6873b876bb47e0f7f89ad9e",
-      "afterSha256": "864756ada88bae9c181f6f250a41822b9f8c39958bb81f493d18de1f99bc9b73",
+      "beforeSha256": "6e0000a1e0d35715328d3a2991db906d6b3c76b36d0abcb93e53e8055d2b6570",
+      "afterSha256": "f0dc2f13b99e9373dcfdf5d6079bf0d4dcc55af59b6756a3bd18287d011d3fbf",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4107,6 +4107,15 @@
         "ege-profil/start/index.html",
         "ege-profil/trainers/numbers-t19.html",
         "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "b7147e4afa7d8f0d7c69dd9b774358dff0f99e62",
+      "task": "docs/tasks/OGE_VISIBLE_25_TOPICS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
