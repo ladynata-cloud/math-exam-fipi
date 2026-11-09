@@ -51,10 +51,36 @@
   const currentIndex=D.meta.filter(m=>!m.grade7&&!m.pre7&&m.pos===meta.pos);
   const journey=context.journey?.line?context.journey:null;
   const lineNav=journey?`<nav class="journey-lesson-nav" aria-label="Учебная линия"><a class="back" href="${E(journey.line.href)}">← ${E(journey.line.title)}</a><a class="back" href="#map">Все задания</a></nav>`:'<a class="back" href="#map">← Все задания</a>';
-  const nextLink=journey?`<a class="btn primary" data-journey-next href="${E(journey.next?.href||journey.line.href)}" ${l.done?'':'hidden'}>${journey.next?'Дальше: '+E(journey.next.title):'К результатам линии'}</a>`:'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p><details id="taskHelp" class="task-first-help"><summary>Хочешь подсказку?</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}<p class="task-first-idea">${M(meta.idea)}</p><details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Другие числа</button><a class="btn" href="#map">Выбрать задание</a></div></section><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  // Keep a useful continuation even when the optional journey catalogue is unavailable.
+  const ordered=D.meta.filter(m=>!m.grade7&&!m.pre7).slice().sort((a,b)=>a.pos-b.pos);
+  const fallback=ordered[ordered.findIndex(m=>m.id===meta.id)+1];
+  const nextTask=context.nextTask!==undefined?context.nextTask:journey?journey.next:fallback&&{title:fallback.title,href:'#lesson='+fallback.id};
+  const nextHref=nextTask?.href||journey?.line.href||'#map';
+  const nextLabel=nextTask?'Следующая задача →':journey?'К результатам линии →':'К списку заданий →';
+  const nextLink=`<a class="btn primary" data-task-next ${journey?'data-journey-next':''} href="${E(nextHref)}" ${l.done?'':'hidden'}>${nextLabel}</a>`;
+  const nextHint=nextTask?'Следующий тип: '+nextTask.title+'. Можно продолжить или закрепить эту тему на другом примере.':journey?'Можно посмотреть результаты линии или закрепить эту тему на другом примере.':'Можно выбрать другой тип задачи из списка или закрепить эту тему на другом примере.';
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p><details id="taskHelp" class="task-first-help"><summary>Хочешь подсказку?</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}<p class="task-first-idea">${M(meta.idea)}</p><details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><section id="taskNext" class="task-first-next" aria-label="Что делать дальше"><h2 id="taskNextTitle" hidden>Задача решена</h2><p id="taskNextHint" hidden>${E(nextHint)}</p><div class="actions">${nextLink}<button id="new" type="button">Ещё пример по этой теме</button><a class="btn" data-task-list href="#map">К списку заданий</a></div></section></section><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
   const answer=$('#answer');answer.value=u.finalDraft;
+  function showCompletion(moveFocus=false) {
+   const panel=$('#taskNext'),next=$('[data-task-next]');
+   if(!l.done){
+    panel.classList.remove('is-complete');$('#taskNextTitle').hidden=true;$('#taskNextHint').hidden=true;next.hidden=true;
+    help.after(panel);answer.readOnly=false;$('[data-task-list]').hidden=false;
+    host.querySelectorAll('[data-answer-choice]').forEach(button=>button.disabled=false);
+    const check=$('#answerForm button[type="submit"]');check.disabled=false;check.textContent='Проверить ответ';
+    return;
+   }
+   panel.classList.add('is-complete');$('[data-task-list]').hidden=nextHref==='#map';
+   $('#taskNextTitle').hidden=false;$('#taskNextHint').hidden=false;next.hidden=false;
+   // Place the next action beside the checked answer, above all optional help.
+   help.before(panel);
+   answer.readOnly=!context.editableAfterSuccess;
+   host.querySelectorAll('[data-answer-choice]').forEach(button=>button.disabled=!context.editableAfterSuccess);
+   const check=$('#answerForm button[type="submit"]');check.disabled=true;check.textContent='Ответ проверен';
+   if(moveFocus){panel.scrollIntoView?.({block:'nearest'});next.focus({preventScroll:true});}
+  }
+  showCompletion();
   const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';$('#feedback').innerHTML=M(text);$('#feedback').className='feedback '+u.feedbackKind;save();};
   $('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;
   function bindChoices(prefix,change) {
@@ -62,15 +88,15 @@
    const redraw=()=>buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.getAttribute('data-'+prefix+'-choice')===input.value)));
    buttons.forEach(b=>b.onclick=()=>{input.value=b.getAttribute('data-'+prefix+'-choice');change(input.value);redraw();});redraw();
   }
-  const writeFinal=value=>{u.finalDraft=value.slice(0,10000);l.draft=u.finalDraft;save();};
+  const writeFinal=value=>{u.finalDraft=value.slice(0,10000);l.draft=u.finalDraft;save();showCompletion();};
   answer.oninput=()=>writeFinal(answer.value);bindChoices('answer',writeFinal);
   $('#answerForm').onsubmit=event=>{
    event.preventDefault();const value=answer.value;
+   if(l.done){showCompletion(true);return;}
    if(!value.trim())return feedback('Сначала запиши ответ на вопрос задачи.',true);
-   if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
-   if(ok){l.done=true;const next=$('[data-journey-next]');if(next)next.hidden=false;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}
+   if(ok){l.done=true;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');showCompletion(true);}
    else{l.help=true;feedback(root.PathPracticeView.wrongFeedback(t,value,'Пока неверно. Проверь, что нужно найти, знак и единицы. Если трудно, открой подсказку.'),true);root.EgeRemediation.show({id:remediationId(meta),value,expected:t.answer});}
    save();
   };
