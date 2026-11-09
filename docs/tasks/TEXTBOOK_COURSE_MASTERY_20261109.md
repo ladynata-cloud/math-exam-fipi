@@ -104,3 +104,30 @@ Local Chromium could not launch because socket creation is prohibited by this
 environment; no local browser PASS is claimed. The uploaded candidate must pass
 the complete current SEO browser workflow and other actual-head checks. Existing
 source bindings remain canonical uploaded commits, with #493 coverage retained.
+
+## Final release chain after Merzlyak and the OGE guide
+
+Published main is 39705bc5669acb5b97a33c72f5badc044faff298 after #503.
+This candidate also includes the actual uploaded #505 head
+f878e2146ff01c960138f52576a778b8a31167e5. Release order is #505, #497, #499;
+the coordinator preserves dependency ancestry when merging #505. The new #497
+source has parents its previous remote head dfdc8aeb and the exact #505 head.
+Only a subsequent binding commit points the five textbook pages at that actual
+uploaded source. The complete #505 manifest history, all four Merzlyak bindings
+and the two published Vilenkin entrances are retained.
+
+Independent review confirmed all 21 non-manifest files published by #503 remain
+exact. Its bounded gates passed: learning records 24/24 and 26/26, trainer
+feedback 311478 checks, similarity 720 cases and existing course 39480 checks.
+The OGE guide's seven non-manifest files are inherited unchanged from the
+coordinator's checked head. Textbook application and exercise files are unchanged
+from the reviewed #497 candidate. Final navigator checks and exact-head CI are
+reported in PR #497; no obsolete-head result is substituted for the new head.
+
+Uploaded source: 864e1eb3d962d01253895e8bf49d59a1e77ea861, tree
+8a4cffc1b41cd5818b7e32a549115207507e7a3d, exactly matching reviewed local
+1269e7b4. Navigator preservation 4/4 and bindings 5/5 passed after rebinding the
+five named pages. PR #497 is based on feat/oge-course-start-guide-20261109 while
+its dependency is checked; #499 is based on this PR's branch. The coordinator
+will retarget each to main after merging its predecessor with history retained,
+then verify fresh base/head, exact delta and applicable checks.

@@ -133,3 +133,17 @@ bound HTML did not change. Affected navigator, sitemap, SEO and catalogue gates
 passed, and JSDOM journeys through both new entrances confirmed the next-skill
 action, practice attempt and reload. Local Chromium remains blocked by socket
 permissions; actual-head browser CI is required before release.
+
+## Final stacked release candidate
+
+Release order is #505, #497, #499. This candidate preserves the actual final
+#497 head eb7072b7ebc6b8fd9c6298fff23f643d9f229ddc, which already contains
+published main 39705bc5 and actual #505 head f878e214. The source parents are
+the prior remote #499 head a0fcc95e and that exact #497 head. The manifest is
+resolved from #497, preserving complete OGE/Merzlyak history; only the M8 entry
+is rebound to the actual uploaded composition source in the following commit.
+All route/mastery runtime remains identical to the reviewed prior #499 head.
+PR #499 is temporarily based on improve/textbook-course-mastery-20261109;
+after the predecessor is merged with ancestry retained, the coordinator
+retargets to main and verifies the fresh pair and applicable checks. No earlier
+head's CI is substituted for the final current candidate.
