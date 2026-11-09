@@ -26,11 +26,12 @@ jobs:
         run: |
           node tools/merzlyak-learning-path.test.cjs
           node tools/merzlyak-10-base/learning-path.test.cjs
+          node tools/merzlyak/trainer-feedback.test.cjs
           node tools/merzlyak/similarity.test.cjs
           node tools/merzlyak/check.cjs
       - name: Existing lesson journeys and narrow mobile layout
         run: node tools/merzlyak/browser.cjs
-      - name: New learning path and similarity on phone and desktop
+      - name: Real task interactions and learning path on phone and desktop
         run: node tools/merzlyak-learning-path.browser.cjs
       - name: Preserve learning-path screenshots
         if: always()

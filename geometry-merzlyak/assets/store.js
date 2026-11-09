@@ -5,7 +5,11 @@ const plain=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=x=>typeof x==='n
 function drawing(x){if(!plain(x)||!Array.isArray(x.points)||!Array.isArray(x.objects)||x.points.length>150||x.objects.length>180)return null;const kinds=['free','midpoint','sum','perp','iso','equalarm','onCircle','rightArc','foot','parallel','normal','bisector','affine','reflection','intersection'];const ids=new Set();for(const p of x.points){if(!plain(p)||!/^([A-Z][A-Z0-9]*|P\d+)$/.test(p.id)||ids.has(p.id)||!kinds.includes(p.kind)||!finite(p.x)||!finite(p.y)||Math.abs(p.x)+Math.abs(p.y)>1e7)return null;ids.add(p.id);for(const k of ['k','t'])if(p[k]!==undefined&&!finite(p[k]))return null;}const os=new Set();for(const o of x.objects){if(!plain(o)||typeof o.id!=='string'||o.id.length>40||os.has(o.id)||!['line','circle'].includes(o.type)||!ids.has(o.a)||!ids.has(o.b))return null;os.add(o.id);}for(const p of x.points){for(const k of ['a','b','c'])if(p[k]!==undefined&&!ids.has(p[k]))return null;for(const k of ['o1','o2'])if(p[k]!==undefined&&!os.has(p[k]))return null;}
  const pc=['id','kind','x','y','a','b','c','k','t','o1','o2','branch','draggable','added'],oc=['id','type','extent','a','b','added','construction'];return {points:x.points.map(p=>Object.fromEntries(pc.filter(k=>p[k]!==undefined).map(k=>[k,p[k]]))),objects:x.objects.map(o=>Object.fromEntries(oc.filter(k=>o[k]!==undefined).map(k=>[k,o[k]])))};}
 function model(x){if(!plain(x)||!['box','pyramid','tetrahedron','octahedron','prism','frustum','cylinder','cone','cone-frustum','sphere'].includes(x.kind))return null;const out={kind:x.kind};for(const [k,lo,hi,d] of [['a',1,6,4],['b',.5,6,3],['h',1,6,4],['level',-.2,1.2,.5],['tilt',0,90,0],['turn',0,360,0]])out[k]=finite(x[k])?Math.max(lo,Math.min(hi,x[k])):d;out.points=Array.isArray(x.points)?x.points.slice(0,30).filter(p=>plain(p)&&/^[A-Z][0-9]*$/.test(p.id)&&['edge','foot'].includes(p.kind)).map(p=>p.kind==='edge'?{id:p.id,kind:p.kind,edge:num(p.edge,2000),t:finite(p.t)?Math.max(0,Math.min(1,p.t)):.5}:{id:p.id,kind:p.kind,source:str(p.source,10)}):[];out.lines=Array.isArray(x.lines)?x.lines.slice(0,100).filter(p=>plain(p)).map(p=>({a:str(p.a,10),b:str(p.b,10)})):[];out.planeMode=x.planeMode==='points'?'points':'slider';out.planeIds=Array.isArray(x.planeIds)?x.planeIds.slice(0,3).map(v=>str(v,10)):[];return out;}
-function clean(x,depth=0){if(!plain(x))return null;return {contentVersion:num(x.contentVersion,99),previousContent:depth<1&&plain(x.previousContent)?clean(x.previousContent,1):null,model:model(x.model),updated:num(x.updated,9e15),stage:num(x.stage,5),seed:num(x.seed,1e8),taskStep:num(x.taskStep,20),draft:str(x.draft,300),diagnosis:str(x.diagnosis,5000),attemptSchema:x.attemptSchema===2?2:0,tries:num(x.tries,1e6),solved:!!x.solved,result:['first','corrected','helped','repeated','legacy'].includes(x.result)?x.result:'',selfCorrected:num(x.selfCorrected,1e6),assistedSolved:num(x.assistedSolved,1e6),seenTasks:Array.isArray(x.seenTasks)?[...new Set(x.seenTasks.filter(k=>typeof k==='string'&&k.length>0&&k.length<=1000))].slice(-2048):[],currentTaskKey:str(x.currentTaskKey,1000),repeatedTask:!!x.repeatedTask,written:str(x.written,20000),observation:str(x.observation,5000),proofDone:Array.isArray(x.proofDone)?x.proofDone.filter(s=>typeof s==='string'&&/^s\d+$/.test(s)).slice(0,20):[],moved:!!x.moved,construction:!!x.construction,guided:!!x.guided,proof:!!x.proof,complete:!!x.complete,independent:num(x.independent,1e6),attempts:num(x.attempts,1e6),hints:num(x.hints,1e6),assisted:!!x.assisted,checked:!!x.checked,drawing:drawing(x.drawing),events:Array.isArray(x.events)?x.events.slice(-300).filter(e=>plain(e)&&typeof e.type==='string').map(e=>({type:str(e.type,40),time:num(e.time,9e15)})):[]};}
+const indices=x=>Array.isArray(x)?[...new Set(x.filter(i=>Number.isInteger(i)&&i>=0&&i<20))]:[];
+const outcome=x=>['first','corrected','helped','repeated','legacy'].includes(x)?x:'';
+function support(x){return {guidedDraft:typeof x.guidedDraft==='string'?str(x.guidedDraft,300):x.stage===3?str(x.draft,300):'',helpRevealed:num(x.helpRevealed,20),helpExplained:indices(x.helpExplained),fullSolution:!!x.fullSolution,guidedHintSteps:indices(x.guidedHintSteps),mistakes:num(x.mistakes,1e6),lastCheck:['wrong','correct'].includes(x.lastCheck)?x.lastCheck:'',lastCheckMode:['guided','independent'].includes(x.lastCheckMode)?x.lastCheckMode:x.lastCheck?(x.stage===3?'guided':'independent'):'',lastWrong:str(x.lastWrong,300),errorAdvice:str(x.errorAdvice,3000),errorAdviceCode:str(x.errorAdviceCode,80),errorAdviceAnswer:str(x.errorAdviceAnswer,300),guidedErrorStep:num(x.guidedErrorStep,20)};}
+function attempt(x){return {taskKey:str(x.taskKey,1000),seed:num(x.seed,1e8),question:str(x.question,2000),draft:str(x.draft,300),result:outcome(x.result),assisted:!!(x.assisted||num(x.helpRevealed,20)||indices(x.helpExplained).length||x.fullSolution||indices(x.guidedHintSteps).length||str(x.errorAdvice,3000)),tries:num(x.tries,1e6),taskStep:num(x.taskStep,20),time:num(x.time,9e15),...support(x)};}
+function clean(x,depth=0){if(!plain(x))return null;return {...support(x),proofChecks:indices(x.proofChecks),diagnosisShown:!!x.diagnosisShown,observationShown:!!x.observationShown,noFreshTask:!!x.noFreshTask,recentAttempts:Array.isArray(x.recentAttempts)?x.recentAttempts.filter(plain).slice(-20).map(attempt):[],contentVersion:num(x.contentVersion,99),previousContent:depth<1&&plain(x.previousContent)?clean(x.previousContent,1):null,model:model(x.model),updated:num(x.updated,9e15),stage:num(x.stage,5),seed:num(x.seed,1e8),taskStep:num(x.taskStep,20),draft:str(x.draft,300),diagnosis:str(x.diagnosis,5000),attemptSchema:x.attemptSchema===2?2:0,tries:num(x.tries,1e6),solved:!!x.solved,result:outcome(x.result),selfCorrected:num(x.selfCorrected,1e6),assistedSolved:num(x.assistedSolved,1e6),seenTasks:Array.isArray(x.seenTasks)?[...new Set(x.seenTasks.filter(k=>typeof k==='string'&&k.length>0&&k.length<=1000))].slice(-2048):[],currentTaskKey:str(x.currentTaskKey,1000),repeatedTask:!!x.repeatedTask,written:str(x.written,20000),observation:str(x.observation,5000),proofDone:Array.isArray(x.proofDone)?x.proofDone.filter(s=>typeof s==='string'&&/^s\d+$/.test(s)).slice(0,20):[],moved:!!x.moved,construction:!!x.construction,guided:!!x.guided,proof:!!x.proof,complete:!!x.complete,independent:num(x.independent,1e6),attempts:num(x.attempts,1e6),hints:num(x.hints,1e6),assisted:!!(x.assisted||num(x.helpRevealed,20)||indices(x.helpExplained).length||x.fullSolution||indices(x.guidedHintSteps).length||str(x.errorAdvice,3000)),checked:!!x.checked,drawing:drawing(x.drawing),events:Array.isArray(x.events)?x.events.slice(-300).filter(e=>plain(e)&&typeof e.type==='string').map(e=>({type:str(e.type,40),time:num(e.time,9e15)})):[]};}
 function currentVersion(id){return CONTENT_VERSIONS[id]||1;}
 function migrateUnit(id,state){
  const version=currentVersion(id);
@@ -33,7 +37,8 @@ function recordAnswer(state,correct){
  const first=!state.checked,alreadySolved=state.solved;
  state.checked=true;if(first)state.attempts++;
  state.tries=(state.tries||0)+1;
- if(!correct)return 'wrong';
+ state.lastCheck=correct?'correct':'wrong';state.lastCheckMode='independent';
+ if(!correct){state.mistakes=(state.mistakes||0)+1;return 'wrong';}
  if(alreadySolved)return state.result||'legacy';
  state.solved=true;
  if(state.repeatedTask)state.result='repeated';
@@ -43,9 +48,23 @@ function recordAnswer(state,correct){
  else{state.result='corrected';state.selfCorrected++;}
  return state.result;
 }
-function hasWork(v){return !!v&&(v.stage>0||!!v.draft?.trim()||!!v.diagnosis?.trim()||!!v.written?.trim()||!!v.observation?.trim()||v.moved||v.construction||v.guided||v.proof||v.attempts>0||v.independent>0||v.selfCorrected>0);}
+// A bounded search proves only that this batch contains no unseen condition.
+// Keep the live attempt untouched when that happens, including its assistance.
+function findFreshTask(make,fingerprint,seen,start,limit=1024){
+ const known=new Set(seen);
+ for(let offset=1;offset<=limit;offset++){
+  const seed=(start+offset)%100000001,t=make(seed),key=fingerprint(t);
+  if(!known.has(key))return {seed,task:t,key};
+ }
+ return null;
+}
+function archiveAttempt(state,t,key){
+ if(!(state.draft||state.checked||state.assisted||state.taskStep||state.helpRevealed))return;
+ state.recentAttempts=[...(state.recentAttempts||[]),attempt({...state,taskKey:key,question:t.question,time:Date.now()})].slice(-20);
+}
+function hasWork(v){return !!v&&(v.stage>0||!!v.draft?.trim()||!!v.guidedDraft?.trim()||v.helpRevealed>0||v.recentAttempts?.length>0||!!v.diagnosis?.trim()||!!v.written?.trim()||!!v.observation?.trim()||v.moved||v.construction||v.guided||v.proof||v.attempts>0||v.independent>0||v.selfCorrected>0);}
 function progress(v){
  return {started:hasWork(v),independent:(v?.independent||0)+(v?.selfCorrected||0),first:v?.independent||0,corrected:v?.selfCorrected||0,helped:v?.assistedSolved||0,investigated:!!(v?.moved&&v?.observation?.trim()),guided:!!v?.guided,proofWithSupport:!!v?.proof,written:!!v?.written?.trim(),complete:!!v?.complete};
 }
-const api={open,clean,validate,drawing,download,recordAnswer,hasWork,progress,currentVersion,KEY};root.GeoStore=api;if(typeof module!=='undefined')module.exports=api;
+const api={open,clean,validate,drawing,download,recordAnswer,findFreshTask,archiveAttempt,hasWork,progress,currentVersion,KEY};root.GeoStore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

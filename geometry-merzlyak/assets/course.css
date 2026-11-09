@@ -31,3 +31,28 @@
  .geometry-lesson #lesson>p{font-size:.95rem;line-height:1.45}
  .geometry-lesson #lesson>.step-label{font-size:.7rem;margin:0 0 6px}
 }
+
+/* Keep the attempt first; reveal support in small, retained pieces below it. */
+.geometry-lesson .answer-format{margin:4px 0 12px;padding-top:4px;font-size:.82rem}
+.geometry-lesson .answer-format summary{font-weight:500;min-height:36px;display:flex;align-items:center}
+.geometry-lesson .answer-format summary::before{content:'▸';margin-right:7px}
+.geometry-lesson .answer-format[open] summary::before{content:'▾'}
+.geometry-lesson .answer-row{margin:8px 0}
+.geometry-lesson #answer-feedback:empty{min-height:0;padding:0;margin:0}
+.geometry-lesson .attempt-summary{padding:10px 12px;background:var(--soft);border-radius:10px;font-size:.86rem;line-height:1.5}
+.geometry-lesson .support-actions{margin:12px 0}
+.geometry-lesson .support-actions button,.geometry-lesson .help-steps button{font-size:.84rem}
+.geometry-lesson .help-steps:empty{margin:0}
+.geometry-lesson .help-steps li{font-size:.92rem;padding:12px 14px}
+.geometry-lesson .help-steps button{margin-top:10px}
+.geometry-lesson .help-steps p{margin:.5rem 0}
+.geometry-lesson #attempt-totals,.geometry-lesson #attempt-history{font-size:.82rem}
+.geometry-lesson .attempt-record{padding:12px 0;border-bottom:1px solid var(--line)}
+.geometry-lesson .attempt-record p{margin:.4rem 0;white-space:pre-wrap}
+.geometry-lesson .help-offer{font-size:.86rem}
+.geometry-lesson [data-action="observation-compare"],.geometry-lesson [data-action="diagnosis"]{margin-top:10px}
+@media(max-width:480px){
+ .geometry-lesson .answer-row input{min-width:0;width:100%}
+ .geometry-lesson .support-actions{gap:8px}
+ .geometry-lesson .support-actions button{width:100%}
+}

@@ -3,10 +3,10 @@ const T=(q,a,steps,meta)=>({question:q,answer:a,steps:steps.map(s=>({question:s[
 function similarityTask(kind,seed){
  const u=1+Math.floor(seed/4)%7,k=2+Math.floor(seed/28)%4,mode=seed%4;
  if(kind==='similarity-definition'){
-  if(mode===0)return T('Треугольники ABC и DFE подобны именно в таком порядке. AB='+3*u+' см, BC='+4*u+' см, CA='+5*u+' см, DF='+3*u*k+' см. Какой стороне соответствует BC? Ответ: FE, DE или DF.','FE',[
+  if(mode===0){const t=T('Треугольники ABC и DFE подобны именно в таком порядке. AB='+3*u+' см, BC='+4*u+' см, CA='+5*u+' см, DF='+3*u*k+' см. Какой стороне соответствует BC? Ответ: FE, DE или DF.','FE',[
    S('Какая вершина соответствует B? Ответ одной буквой.','F','В записи ABC ∼ DFE сопоставляем вторые вершины.'),
    S('Какая вершина соответствует C? Ответ одной буквой.','E','Сопоставляем третьи вершины.'),
-   S('Какой стороне соответствует BC?','FE','Соединяем соответствующие вершины F и E.')],{skill:'correspondence',order:['ABC','DFE'],side:'BC'});
+   S('Какой стороне соответствует BC?','FE','Соединяем соответствующие вершины F и E.')],{skill:'correspondence',order:['ABC','DFE'],side:'BC'});t.accepted=['FE','EF'];t.steps[2].accepted=['FE','EF'];return t;}
   if(mode===1)return T('Треугольники ABC и DEF подобны: A↔D, B↔E, C↔F. AB='+3*u+' см, DE='+3*u*k+' см, BC='+4*u+' см. Найди EF.',4*u*k,[
    S('Во сколько раз DE длиннее AB?',k,'Коэффициент берём от ABC к DEF: DE/AB.'),
    S('Найди соответствующую сторону EF.',4*u*k,'Один коэффициент относится ко всем соответствующим сторонам.')],{skill:'scale',small:[3*u,4*u,5*u],large:[3*u*k,4*u*k,5*u*k]});
@@ -80,7 +80,7 @@ case 'rectangle':return T('Диагонали прямоугольника ABCD 
 case 'rhombus':return T('Диагонали ромба ABCD пересекаются в O. Угол BAD равен '+(2*A)+'°. Найди угол ABO.',90-A,[S('Найди угол BAO.',A,'Диагональ AC ромба делит угол BAD пополам.'),S('Найди угол AOB.',90,'Диагонали ромба перпендикулярны.'),S('Найди угол ABO.',90-A,'В треугольнике ABO сумма углов 180°; из неё вычитаем BAO и прямой угол.')]);
 case 'central':return T('Точки A и A′ симметричны относительно центра O. AA′ = '+(2*x)+' см. Найди OA′.',x,[S('На сколько равных частей O делит AA′?',2,'По определению центральной симметрии O — середина AA′.'),S('Найди длину одной части.',x,'OA=OA′=AA′/2.')]);
 case 'area':return T('Прямоугольник имеет стороны '+x+' м и '+y+' м. Найди площадь в квадратных сантиметрах.',x*y*10000,[S('Найди площадь в квадратных метрах.',x*y,'S=ab.'),S('Сколько см² в одном м²?',10000,'Каждый метр даёт множитель 100.'),S('Переведи площадь.',x*y*10000,'Линейный коэффициент надо возвести в квадрат.')]);
-case 'area-parallelogram':return T('Основание параллелограмма '+(2*x)+' см, высота к нему '+y+' см, боковая сторона '+(y+2)+' см. Найди площадь.',2*x*y,[S('Какая высота соответствует выбранному основанию?',y,'В формулу не подставляем наклонную сторону.'),S('Умножь основание на высоту.',2*x*y,'S=ah.')]);
+case 'area-parallelogram':return T('Основание параллелограмма '+(2*x)+' см, высота к нему '+y+' см, боковая сторона '+(y+2)+' см. Найди площадь.',2*x*y,[S('Какая высота соответствует выбранному основанию?',y,'В формулу не подставляем наклонную сторону.'),S('Умножь основание на высоту.',2*x*y,'S=ah.')],{base:2*x,height:y,side:y+2});
 case 'area-triangle':return T('В треугольнике AB = '+(2*x)+' см, высота CH к прямой AB равна '+y+' см. Найди площадь.',x*y,[S('Найди произведение основания на высоту.',2*x*y,'Они относятся к одной стороне.'),S('Раздели произведение пополам.',x*y,'S=ah/2.')]);
 case 'area-trapezoid':return T('Основания трапеции '+x+' и '+(x+2*y)+' см, высота '+k+' см. Найди площадь.',(x+y)*k,[S('Найди среднюю линию.',x+y,'Полусумма оснований.'),S('Умножь её на высоту.',(x+y)*k,'S=(a+b)h/2.')]);
 case 'pythagoras':return T('Гипотенуза прямоугольного треугольника '+c+' см, один катет '+a+' см. Найди второй катет.',b,[S('Найди квадрат неизвестного катета.',c*c-a*a,'Вычитаем квадрат известного катета из квадрата гипотенузы.'),S('Извлеки положительный квадратный корень.',b,'Длина положительна.')]);
@@ -126,5 +126,86 @@ function number(value){let s=String(value).toLowerCase().replace(/\s/g,'').repla
 function equal(value,a){if(Array.isArray(a)){const p=String(value).split(';');return p.length===a.length&&p.every((x,i)=>equal(x,a[i]));}if(typeof a==='string')return String(value).trim().toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ')===a.toLowerCase().replace(/[′']/g,'').replace(/\s+/g,' ');try{const n=number(value);return Math.abs(n-a)<= (Number.isInteger(a)?1e-8:0.00051);}catch(_){return false;}}
 function format(a){return Array.isArray(a)?a.map(format).join('; '):typeof a==='number'?(Number.isInteger(a)?String(a):String(Number(a.toFixed(6)))):a;}
 function fingerprint(t){return JSON.stringify([t.question,t.answer]);}
-const api={task,number,equal,format,fingerprint};root.GeoTasks=api;if(typeof module!=='undefined')module.exports=api;
+function equalTask(t,value,stepIndex=null){
+ if(!t||stepIndex!==null&&(!Number.isInteger(stepIndex)||stepIndex<0))return false;
+ const target=stepIndex===null?t:t.steps?.[stepIndex];
+ if(!target||target.answer===undefined)return false;
+ return equal(value,target.answer)||(Array.isArray(target.accepted)&&target.accepted.some(a=>equal(value,a)));
+}
+// Optional, substantive help: callers should reveal it only on request and
+// record that help was used. A matched value suggests a question to check;
+// it does not establish which reasoning the learner actually used.
+function diagnose(kind,t,value,stepIndex=null){
+ if(!t||!Array.isArray(t.steps)||typeof value!=='string'||!value.trim()||value.length>300)return null;
+ const final=stepIndex===null;
+ if(!final&&(!Number.isInteger(stepIndex)||stepIndex<0||stepIndex>=t.steps.length))return null;
+ const expected=final?t.answer:t.steps[stepIndex].answer;
+ if(expected===undefined||equalTask(t,value,stepIndex))return null;
+ const hits=[],at=i=>final||stepIndex===i,step=i=>t.steps[i]?.answer;
+ const match=(candidate,code,message)=>{
+  if(candidate===undefined||typeof candidate==='number'&&!Number.isFinite(candidate))return;
+  if(equal(value,candidate))hits.push({code,message});
+ };
+ switch(kind){
+ case 'adjacent':
+  if(at(1)&&typeof t.answer==='number')match(180-t.answer,'adjacent-vs-vertical','Проверь, какой угол нужен: смежный или вертикальный. Какое условие выполняется для суммы смежных углов?');
+  break;
+ case 'triangle-angle':
+  if(at(1))match(step(0),'interior-vs-exterior','Проверь, найден внутренний или внешний угол. Как связаны внешний угол и смежный с ним внутренний?');
+  else if(stepIndex===0)match(t.answer,'interior-step','На этом шаге нужен третий внутренний угол. Проверь сумму внутренних углов треугольника.');
+  break;
+ case 'area-triangle':
+  if(at(1))match(step(0),'triangle-area-half','Сравни площади треугольника и параллелограмма с теми же основанием и высотой. Какое действие ещё требуется?');
+  else if(stepIndex===0)match(t.answer,'triangle-area-product-step','На этом шаге требуется только произведение основания и высоты. Проверь, не выполнено ли следующее действие раньше времени.');
+  break;
+ case 'area-parallelogram':{
+  const m=t.meta;
+  if(!m||![m.base,m.height,m.side].every(n=>Number.isFinite(n)&&n>0))break;
+  if(at(1))match(m.base*m.side,'height-vs-side','Отметь основание и перпендикулярную ему высоту. Проверь, какая из данных длин относится к высоте, а какая — к наклонной стороне.');
+  else if(stepIndex===0)match(m.side,'height-vs-side','Высота перпендикулярна выбранному основанию. Проверь, какая из данных длин имеет это свойство.');
+  break;
+ }
+ case 'area':
+  if(at(2)&&typeof t.answer==='number'){
+   match(t.answer/100,'area-unit-square','Проверь перевод квадратных единиц: сколько сантиметров приходится на каждую из двух сторон квадрата со стороной один метр?');
+   match(t.answer/10000,'area-unit-square','Проверь единицу полученной площади. В условии требуется перейти от квадратных метров к квадратным сантиметрам.');
+  }else if(stepIndex===1)match(100,'area-unit-square','Для площади меняются две длины. Проверь, достаточно ли коэффициента перевода только одной стороны.');
+  break;
+ case 'pythagoras':
+  if(at(1))match(step(0),'length-vs-square','Проверь, получена длина катета или её квадрат. Какая операция возвращает положительную длину?');
+  else if(stepIndex===0)match(t.answer,'square-step','На этом шаге нужен квадрат неизвестного катета. Длину будем находить следующим действием.');
+  break;
+ case 'circle-equation':
+  if(Array.isArray(t.answer)&&t.answer.length===2){
+   if(final)match([t.answer[0],-t.answer[1]],'circle-centre-sign','Сравни запись со стандартным видом (x−a)²+(y−b)²=R². Проверь знак второй координаты центра.');
+   else if(stepIndex===1)match(-t.answer[1],'circle-centre-sign','В выражении (y−b)² перед координатой центра стоит минус. Проверь, как получить знак из условия.');
+  }
+  break;
+ case 'vector-scale':
+  if(typeof expected==='number')match(-expected,'length-sign','Минус у коэффициента меняет направление вектора. Проверь, может ли длина вектора быть отрицательной.');
+  break;
+ case 'trig-circle':
+  if(at(1)&&typeof t.answer==='number')match(-t.answer,'cosine-quadrant-sign','Определи четверть тупого угла. Какой знак имеет горизонтальная координата точки единичной окружности в этой четверти?');
+  else if(stepIndex===0&&typeof expected==='number')match(-expected,'square-sign','На этом шаге ищем квадрат косинуса. Проверь, может ли квадрат действительного числа иметь такой знак.');
+  break;
+ case 'similarity-definition':{
+  const m=t.meta||{};
+  if(m.skill==='scale'&&m.small?.length===3&&m.large?.length===3){
+   const k=m.large[0]/m.small[0];
+   if(at(1)){
+    match(m.small[1]/k,'scale-direction','Уточни направление перехода: от меньшего треугольника к большему. Искомая соответствующая сторона должна увеличиться или уменьшиться?');
+    match(m.small[1]*k*k,'linear-vs-area-scale','Ищем длину стороны. Проверь, как меняются при подобии длины и площади: одинаков ли для них множитель?');
+   }else if(stepIndex===0)match(1/k,'scale-direction','Сверь числитель и знаменатель с отношением, которое требуется на этом шаге. Обратное отношение описывает обратный переход.');
+  }
+  if(m.skill==='angle-invariance'&&(at(1))){
+   match(m.angle*m.k,'angle-vs-length-scale','Коэффициент подобия сравнивает длины. Проверь, меняются ли при подобии соответствующие углы.');
+   if(final&&t.answer==='нет')match('да','angle-vs-length-scale','Коэффициент подобия сравнивает длины. Проверь, меняются ли при подобии соответствующие углы.');
+  }
+  break;
+ }
+ }
+ const codes=new Set(hits.map(h=>h.code));
+ return codes.size===1?hits[0]:null;
+}
+const api={task,number,equal,equalTask,format,fingerprint,diagnose};root.GeoTasks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

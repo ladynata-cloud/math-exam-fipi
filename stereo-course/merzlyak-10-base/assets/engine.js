@@ -84,7 +84,7 @@ function inspectBundle(catalog,lessons,options={}){
 function createApp(root,options){
  const {catalog,lessons}=options,{available,coverage,issues}=inspectBundle(catalog,lessons,options),doc=root.ownerDocument,win=doc.defaultView,math=options.math||win.StereoMath,sceneViewer=options.sceneViewer||win.TaskSceneViewer;
  let storage;try{storage=options.storage??win.localStorage;}catch{storage=null;}
- let current=null,state=null,key='',expected=null,viewer=null,dialogViewer=null,dialog=null,dialogView='neutral',locked=false,destroyed=false;
+ let current=null,state=null,key='',expected=null,viewer=null,dialogViewer=null,dialog=null,dialogView='neutral',locked=false,destroyed=false,refreshPersonal=()=>{};
  const theoryTrail=[];
  const cache=new Map();
  /* MERZLYAK_BOARD_BEGIN: optional isolated room state; standalone code is retained verbatim. */
@@ -93,14 +93,16 @@ function createApp(root,options){
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
  function setDisplayText(node,text){node.replaceChildren();math.appendText(node,String(text));}
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
+ const siteNav=!options.boardSession?doc.querySelector('body>.course-nav'):null,navigation=siteNav?el('details',undefined,{class:'merzlyak-navigation'}):null;
+ if(navigation){navigation.append(el('summary','Курсы и доска'));siteNav.before(navigation);navigation.append(siteNav);}
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
  // Personal outcomes stay in this browser; the shared room keeps its original wire contract.
- function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,...(!options.boardSession?{recordVersion:2,historyKnown:true,attempts:0,firstAnswer:null,outcome:'',manualSaved:false}: {})};}
+ function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,...(!options.boardSession?{recordVersion:2,historyKnown:true,attempts:0,firstAnswer:null,outcome:'',manualSaved:false,plan:'',proofChecks:[false,false,false],explanations:[]}: {})};}
  function readState(raw,lesson=current){try{
   const saved=JSON.parse(raw);if(!saved||typeof saved!=='object'||Array.isArray(saved))return initial();
   const result={draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'&&!Array.isArray(saved.stepDrafts)?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,lesson.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null};
-  if(!options.boardSession)Object.assign(result,{recordVersion:2,historyKnown:saved.recordVersion===2&&saved.historyKnown===true,attempts:Number.isSafeInteger(saved.attempts)&&saved.attempts>=0?saved.attempts:0,firstAnswer:typeof saved.firstAnswer==='string'?saved.firstAnswer:null,outcome:result.checked?(saved.recordVersion===2&&['first','corrected','assisted','legacy'].includes(saved.outcome)?saved.outcome:'legacy'):'',manualSaved:saved.manualSaved===true&&!!result.draft.trim()});
+  if(!options.boardSession)Object.assign(result,{recordVersion:2,historyKnown:saved.recordVersion===2&&saved.historyKnown===true,attempts:Number.isSafeInteger(saved.attempts)&&saved.attempts>=0?saved.attempts:0,firstAnswer:typeof saved.firstAnswer==='string'?saved.firstAnswer:null,outcome:result.checked?(saved.recordVersion===2&&['first','corrected','assisted','legacy'].includes(saved.outcome)?saved.outcome:'legacy'):'',manualSaved:saved.manualSaved===true&&!!result.draft.trim(),plan:typeof saved.plan==='string'?saved.plan:'',proofChecks:[0,1,2].map(index=>saved.proofChecks?.[index]===true),explanations:lesson.steps.slice(0,result.revealed).filter(step=>Array.isArray(saved.explanations)&&saved.explanations.includes(step.id)).map(step=>step.id)});
   return result;
  }catch{return initial();}}
  const storageKey=lesson=>'mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;
@@ -111,13 +113,16 @@ function createApp(root,options){
  function workStatus(value){
   if(value.checked)return {first:'С первого раза',corrected:'Исправил самостоятельно',assisted:'Ответ с помощью',legacy:'Прежний ответ: самостоятельность не определена'}[value.outcome]||'Ответ совпал';
   if(value.manualSaved)return 'Рассуждение сохранено — нужна проверка';
+  if(value.assisted||value.revealed)return 'Разбор с помощью';
   if(value.draft.trim()||Object.values(value.stepDrafts).some(Boolean))return 'Черновик сохранён';
-  return value.assisted||value.revealed?'Разбор с помощью':'Можно начать';
+  if(value.plan?.trim())return 'План сохранён';
+  return 'Можно начать';
  }
  function pointOf(lesson){const source=lesson.source;return source.point&&/^\d+$/.test(source.point)?Number(source.point):['main','selfcheck','example'].includes(source.collection)?Number(source.exercise?.match(/^(\d+)\./)?.[1])||null:source.collection==='practical'?Number(source.exercise?.match(/^paragraph-(\d+)$/)?.[1])||null:null;}
  const route=[...available.values()].filter(lesson=>lesson.kind==='theory'&&lesson.source.subpart==='обзор'&&pointOf(lesson)).sort((a,b)=>pointOf(a)-pointOf(b));
  function workDone(value){return value.checked||value.manualSaved;}
  function nextPractice(lesson){return [...available.values()].find(item=>item.source.collection==='main'&&pointOf(item)===pointOf(lesson)&&item.id!==lesson.id&&!workDone(savedState(item)));}
+ function freshPractice(lesson){const point=pointOf(lesson);if(!point)return null;return [...available.values()].find(item=>item.kind==='exercise'&&item.id!==lesson.id&&pointOf(item)===point&&item.source.collection===lesson.source.collection&&item.answer?.mode===lesson.answer?.mode&&sourceGroup(item)!==sourceGroup(lesson)&&!cache.has(storageKey(item))&&!safeRead(storageKey(item)));}
  function nextTopic(lesson){return route.find(item=>pointOf(item)>pointOf(lesson));}
  function lessonButton(lesson,label,attribute){const button=el('button',label||lesson.title,{type:'button',...(attribute?{[attribute]:lesson.id}:{})});button.addEventListener('click',()=>open(lesson.id));return button;}
  function renderJourney(){
@@ -157,16 +162,16 @@ function createApp(root,options){
  function freeze(){
   if(locked)return;locked=true;
   const note=el('section',undefined,{class:'course-conflict'});note.append(el('strong','В другом окне уже сохранена новая работа. Твои записи ниже можно скопировать.'),el('p',current.statement.text));
-  const backup=el('textarea',undefined,{readonly:'',rows:'6','aria-label':'Записи прежнего окна'});backup.value=[state.draft,...Object.entries(state.stepDrafts).map(([id,value])=>id+': '+value)].join('\n');note.append(backup);
+  const backup=el('textarea',undefined,{readonly:'',rows:'6','aria-label':'Записи прежнего окна'});backup.value=[state.draft,...(state.plan?['Мой план: '+state.plan]:[]),...Object.entries(state.stepDrafts).map(([id,value])=>id+': '+value)].join('\n');note.append(backup);
   const recover=el('button','Открыть сохранённую работу');recover.addEventListener('click',()=>{cache.delete(key);locked=false;open(current.id);recover.remove();});note.append(recover);alerts.append(note);
-  view.querySelectorAll('input,textarea').forEach(node=>node.readOnly=true);view.querySelectorAll('button').forEach(node=>node.disabled=true);
+  view.querySelectorAll('input,textarea').forEach(node=>{node.readOnly=true;if(node.type==='checkbox')node.disabled=true;});view.querySelectorAll('button').forEach(node=>node.disabled=true);
  }
  function save(){
   if(locked||!current)return false;
   const latest=safeRead(key);if(latest!==expected){freeze();return false;}
   const raw=JSON.stringify(state);
   try{if(storage){storage.setItem(key,raw);expected=raw;cache.delete(key);}else cache.set(key,{raw,base:expected});}catch{cache.set(key,{raw,base:expected});status('Не удалось сохранить на устройстве. Текст остаётся в открытой странице.');}
-  return true;
+  refreshPersonal();return true;
  }
  function assisted(){
   if(locked||!current)return false;
@@ -225,20 +230,34 @@ function createApp(root,options){
  }
  function open(id){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
-  destroyScene();current=lesson;key=storageKey(lesson);expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
+  destroyScene();refreshPersonal=()=>{};current=lesson;key=storageKey(lesson);expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
+  if(!options.boardSession){root.classList.add('merzlyak-personal');doc.body.classList.add('merzlyak-task-active');if(navigation)navigation.open=false;}
   remember(lesson.id);
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
   const header=el('header');header.append(back,el('p',lesson.kind==='theory'?'Теория':'Задача'),el('h1',lesson.title));if(!options.boardSession)header.append(el('p',workStatus(state),{class:'lesson-work-status','data-work-status':'',role:'status'}));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
-  main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
+  const prompt=options.boardSession?main:el('div',undefined,{class:'merzlyak-prompt'});
+  prompt.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));prompt.append(list);}prompt.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
+  let hintButton=null,hintOffer=null,challenge=null;
+  if(options.boardSession)main.append(model,el('p',lesson.visualization.caption),sourceNode(lesson));
+  else{
+   const figure=el('div',undefined,{class:'merzlyak-figure'}),guide=el('div',undefined,{class:'merzlyak-model-guide',id:'model-guide',hidden:''});guide.append(el('p',lesson.visualization.caption),el('p',lesson.visualization.model.planar?'Сопоставь обозначения на рисунке с условием. Какие связи заданы, а какие ещё надо доказать?':'Найди на модели объекты из условия. Поверни её и сравни: какие связи сохраняются? Рисунок помогает проверить догадку, но не заменяет доказательство.'));
+   figure.append(model,guide);main.append(prompt,figure);
+   const actions=el('div',undefined,{class:'merzlyak-task-actions','aria-label':'Как продолжить задачу'}),inspect=el('button','Разберусь с рисунком',{type:'button','data-inspect-model':'','aria-expanded':'false','aria-controls':'model-guide'}),attempt=el('button','Попробую сам',{type:'button','data-try-answer':''});hintButton=el('button','Подсказка по шагу',{type:'button','data-step-hint':''});
+   inspect.addEventListener('click',()=>{guide.hidden=!guide.hidden;inspect.setAttribute('aria-expanded',String(!guide.hidden));if(!guide.hidden){model.querySelector('svg')?.focus();guide.scrollIntoView?.({block:'nearest'});}});
+   attempt.addEventListener('click',()=>{const input=main.querySelector('#final-answer');input?.focus();input?.scrollIntoView?.({block:'center'});});actions.append(inspect);if(lesson.answer)actions.append(attempt);actions.append(hintButton);main.append(actions);
+   const planBox=el('details',undefined,{class:'merzlyak-plan'}),plan=el('textarea',undefined,{id:'personal-plan','data-personal-plan':'',rows:'2',placeholder:'Что предполагаю? С какого свойства или построения начну?'});plan.value=state.plan;
+   plan.addEventListener('input',()=>{if(locked)return;state.plan=plan.value;save();});planBox.append(el('summary','Моя догадка или первый шаг · необязательно'),el('label','Запиши свой план',{for:'personal-plan'}),plan,el('small','Это личная запись, без автоматической проверки. Она сохранится вместе с задачей.'));main.append(planBox);
+  }
   if(lesson.answer){
    const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
-   input.addEventListener('input',()=>{state.draft=input.value;save();});
+   input.addEventListener('input',()=>{state.draft=input.value;if(!options.boardSession&&lesson.answer.mode==='manual'&&!state.draft.trim())state.manualSaved=false;save();});
    form.addEventListener('submit',event=>{event.preventDefault();if(locked)return;state.draft=input.value;
     // Open native disclosures count as help even before their queued toggle fires.
-    if(side.querySelector('details[open]'))state.assisted=true;
+    if(side.querySelector('[data-main-help][open], [data-main-help] details[open]'))state.assisted=true;
     if(!save())return;
+    if(!options.boardSession&&!state.draft.trim()){if(lesson.answer.mode==='manual'&&state.manualSaved){state.manualSaved=false;save();}setDisplayText(feedback,lesson.answer.mode==='manual'?'Сначала запиши своё рассуждение.':'Сначала введи ответ. Пустая запись не считается попыткой.');return;}
     if(lesson.answer.mode==='manual'){
      if(!options.boardSession){state.manualSaved=!!state.draft.trim();save();setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));}
      setDisplayText(feedback,options.boardSession||state.draft.trim()?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Сначала запиши своё рассуждение.');return;
@@ -246,28 +265,49 @@ function createApp(root,options){
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
     if(!options.boardSession){
      if(!state.checked){state.attempts++;if(state.firstAnswer===null)state.firstAnswer=input.value;if(correct){state.checked=true;state.outcome=!state.historyKnown?'legacy':state.assisted?'assisted':state.attempts===1?'first':'corrected';}}
-     setDisplayText(feedback,correct?'Ответ совпал. '+workStatus(state)+'.':(lesson.answer.feedback||'Ответ пока не совпал. Исправь его сам или открой подсказку.'));
+     setDisplayText(feedback,correct?'Ответ совпал. '+workStatus(state)+'.':state.attempts<2?'Ответ пока не совпал. Попробуй исправить его сам: сверь ответ с условием.':'Ответ пока не совпал. Можно проверить рассуждение ещё раз или открыть следующий шаг ниже.');
      setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));
     }else{
      setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;
     }save();
-   });form.append(label,input,check,feedback);main.append(form);
+   });form.append(label,input,check,feedback);
+   if(!options.boardSession){hintOffer=el('button','Открыть следующий шаг подсказки',{type:'button','data-hint-offer':'',hidden:''});form.append(hintOffer);
+    if(lesson.answer.mode==='manual'){const checklist=el('fieldset',undefined,{class:'merzlyak-proof-checks'});checklist.append(el('legend','Самопроверка рассуждения · необязательно'),el('p','Это твоя оценка записи, не автоматическая проверка доказательства.'));
+     for(const [index,text]of ['Я использовал все необходимые данные условия.','Каждый переход опирается на определение, свойство или теорему.','Вывод отвечает на вопрос задачи.'].entries()){const row=el('label'),box=el('input',undefined,{type:'checkbox','data-proof-check':String(index)});box.checked=state.proofChecks[index];box.addEventListener('change',()=>{if(locked)return;state.proofChecks[index]=box.checked;save();});row.append(box,el('span',text));checklist.append(row);}form.append(checklist);
+    }
+   }main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);
-  function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details');explain.append(el('summary','Показать объяснение'),el('p',step.explanation));justifications(step,explain);section.append(explain);
+  function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details'),explainSummary=el('summary','Показать объяснение');explain.append(explainSummary,el('p',step.explanation));justifications(step,explain);section.append(explain);
+   if(!options.boardSession){explain.dataset.stepExplanation=step.id;explain.open=state.explanations.includes(step.id);explainSummary.addEventListener('click',event=>{if(!assisted()){event.preventDefault();return;}state.explanations=state.explanations.filter(id=>id!==step.id);if(!explain.open)state.explanations.push(step.id);if(!save())event.preventDefault();});}
    if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
    const onModel=el('button','Показать на рисунке',{type:'button'});onModel.addEventListener('click',()=>{if(assisted())viewer?.setView(step.view||'neutral');});section.append(onModel);steps.append(section);
   }
   for(let i=0;i<state.revealed;i++)addStep(i);if(state.revealed>0){help.open=true;state.assisted=true;}
-  function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
-  next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
+  function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';if(hintButton)hintButton.textContent=next.hidden?'Вернуться к открытым шагам':'Подсказка по шагу';}nextLabel();
+  function revealStep(){if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();}
+  next.addEventListener('click',revealStep);
+  function personalHint(){if(locked)return;if(state.revealed<lesson.steps.length)revealStep();if(locked)return;help.open=true;steps.lastElementChild?.scrollIntoView?.({block:'start'});}
+  hintButton?.addEventListener('click',personalHint);hintOffer?.addEventListener('click',personalHint);
   side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  if(!options.boardSession){
+   // Move only the neutral drawing's reading notes behind the model action. Controls
+   // and the selected authored view stay next to the drawing; no help is implied.
+   const guide=main.querySelector('#model-guide');for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);
+   side.append(sourceNode(lesson));challenge=el('section',undefined,{class:'merzlyak-fresh-task','data-fresh-offer':'',hidden:''});view.append(challenge);
+   refreshPersonal=()=>{setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));if(hintOffer)hintOffer.hidden=state.checked||state.attempts<2||state.revealed>=lesson.steps.length;
+    challenge.hidden=lesson.kind!=='exercise'||!(state.assisted||state.checked||state.manualSaved);if(challenge.hidden)return;
+    const fresh=freshPractice(lesson),theory=route.find(item=>pointOf(item)===pointOf(lesson));challenge.replaceChildren(el('h2','Проверить себя на другой задаче'));
+    if(fresh){const retry=el('button','Попробовать № '+fresh.source.exercise,{type:'button','data-fresh-task':fresh.id});retry.addEventListener('click',()=>{if(cache.has(storageKey(fresh))||safeRead(storageKey(fresh))){refreshPersonal();status('Предложенная задача уже начата в другом окне. Список обновлён; прежние записи сохранены.');return;}open(fresh.id);});challenge.append(el('p','Другая ещё не начатая задача в этой теме и разделе. Условие и способ решения могут отличаться; твоя история здесь сохранится.'),retry);}
+    else{challenge.append(el('p',pointOf(lesson)?'Другой ещё не начатой задачи с таким способом ответа в этой теме и разделе нет. Можно вернуться к теме или продолжить эту карточку: прежняя история сохранится.':'Для этой карточки пока нет отдельной задачи с подтверждённой привязкой к той же теме. Можно продолжить здесь или вернуться к материалам курса; прежняя история сохранится.'));if(theory)challenge.append(lessonButton(theory,'Вернуться к теме § '+pointOf(lesson),'data-fresh-topic'));}
+   };refreshPersonal();
+  }
   renderNext(lesson);
   if(!options.boardSession)win.scrollTo?.(0,0);
   return true;
  }
- function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title));renderJourney();
+ function home(){if(destroyed||locked)return;destroyScene();refreshPersonal=()=>{};if(!options.boardSession){root.classList.remove('merzlyak-personal');doc.body.classList.remove('merzlyak-task-active');}current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title));renderJourney();
   if(options.boardSession)view.append(el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
   else{const inventory=el('details',undefined,{class:'course-inventory'});inventory.append(el('summary','Материалы и издание учебника'),el('p',catalog.book.edition),el('p','Доступно разборов и частей задач: '+coverage.available+'. Пунктов теории: '+coverage.availableTheoryPoints+'. Вопросов самопроверки: '+coverage.availableSelfchecks+'.'));view.append(inventory);}
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
@@ -407,7 +447,7 @@ function createApp(root,options){
  /* MERZLYAK_BOARD_END */
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
- return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();win.removeEventListener('storage',onStorage);root.replaceChildren();}};
+ return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();win.removeEventListener('storage',onStorage);if(!options.boardSession){root.classList.remove('merzlyak-personal');doc.body.classList.remove('merzlyak-task-active');if(navigation){navigation.before(siteNav);navigation.remove();}}root.replaceChildren();}};
 }
 const api={validateLesson,inspectBundle,createApp};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
