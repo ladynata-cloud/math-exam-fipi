@@ -347,3 +347,27 @@ Remote provenance must use an actual GitHub source checkpoint followed by an
 exact manifest rebind. Final remote refs, actual-head CI and release evidence
 are recorded in the PR. Full browser/CI verification and Pages/Amvera live
 checks remain mandatory; no new release or assignment is claimed here.
+
+
+## Final dependency composition, 9 November 2026
+
+The approved release now stacks this course after #507, actual predecessor
+ce19ca31d4776034503d81c8997feba5fbccbb1b, which preserves #508, #499, #497,
+#505 and published main 39705bc5. PR #474 targets the existing predecessor
+branch until root release coordination merges dependencies with their history.
+PR #504 continues to target this course. Branches are retained.
+
+The two published Vilenkin heading links and the sections catalogue card are
+preserved together. Navigator coverage is 558/557 with the existing Peterson
+exclusion, all predecessor/source histories and the sections provenance row.
+All merged HTML bindings already match their reviewed rows; the final receipt
+only advances source identity to an actual uploaded composition checkpoint.
+The binding tool does not rewrite HTML or expand coverage.
+
+The preceding actual course head 9c31b4b57b2b47a058a99dbb122220cc7ab586fb
+passed 32/32 workflows (50 successful checks, 3 expected conditional skips).
+Its profile run 42607870110 passed 9/9 jobs including independent mathematics,
+real two-participant sections browser work, cabinet/navigation, registry/roads
+and all navigator browser shards. All 6 screenshots were reviewed; artifact
+13670902707, ZIP SHA-256 f354de83cb47d5f4bf77ad63195a5a552d1bbab1899b220fb1ea6c95fed1e106.
+These are prior source evidence; final composed actual-head CI remains required.

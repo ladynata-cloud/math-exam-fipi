@@ -112,3 +112,27 @@ The original 52 local checks passed before composition. Deterministic build,
 independent geometry and source identity checks passed after composition.
 Actual-head CI, including real browser and two-participant shared-board
 scenarios, is mandatory before release. Historical CI is not a current pass.
+
+
+## Final dependency composition, 9 November 2026
+
+The final stacked base is actual #474 head
+655376985f35ae0f872926d781313b819051a162, which preserves the reviewed OGE,
+textbook and publication predecessor chain. The navigator receipt is identical
+to that base and binds its unchanged HTML to actual remote source
+5ef21975c189f3bd5cb7d1ce5d5475462ebe106e. This merge has no content conflicts.
+All nine runtime/test blobs remain identical to previous actual #504 head
+4011caaf4ec759c124dede8bd9b95040138adade; only this execution record changes.
+
+Previous profile run 42608170497 passed course-and-shared-room, including
+independent mathematics, retained work, server tests and the real two-participant
+browser journey. The active-model selector correction is thereby exercised in
+a real browser. All 12 screenshots at 320/1280 were reviewed; its six common
+course/board/return screenshots exactly match the passing #474 evidence.
+Artifact 13670422966, ZIP SHA-256
+9ff0e61739676d220d0783b9cd1ac4be76b71f91f766da69a3f2053526d52eb3.
+Final composed actual-head CI is still mandatory; previous profile evidence
+does not claim completion of any remaining or final workflow.
+
+Root release coordination owns dependency merge, retarget-to-main guards and
+publication. Live pupil records, assignments and rooms are not changed here.
