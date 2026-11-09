@@ -4,14 +4,16 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 555,
-    "covered": 554,
+    "total": 557,
+    "covered": 556,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
   },
   "existingPages": [
     "courses/index.html",
+    "courses/vilenkin-5/index.html",
+    "courses/vilenkin-6/index.html",
     "foundations/index.html",
     "index.html",
     "lessons/index.html",
@@ -3122,7 +3124,9 @@
     "azbuka-postroeniy-reviewed/index.html": "laboratory/index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
+    "courses/vilenkin-5/index.html": "sitemap",
     "courses/vilenkin-6-part-1/textbook.html": "sitemap",
+    "courses/vilenkin-6/index.html": "sitemap",
     "credit-payment-table-trainer.html": "sitemap",
     "ege-baza/algebra/index.html": "ege-baza/index.html",
     "ege-baza/index.html": "index.html",
