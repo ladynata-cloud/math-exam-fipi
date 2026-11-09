@@ -29,15 +29,39 @@ async function checkExpandedBox(page,base,width){
  await page.locator('#task-model button[aria-label="Повернуть влево"]').click();
  assert.notEqual(await page.locator('#task-model svg').innerHTML(),before,'camera changes the visible box');
  await page.waitForFunction(({draft,oldCamera})=>{const rec=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;return rec.taskFirst.mainDraft===draft&&JSON.stringify(rec.taskFirst.camera)!==oldCamera;},{draft,oldCamera});
- const saved=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;window.expansionModel=document.querySelector('#task-model svg');return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted,overflow:document.body.style.overflow};});
- const expand=page.locator('#task-model .am-expand');await expand.click();
- const dialog=page.locator('#task-model .am-expanded');await dialog.waitFor({state:'visible'});assert.equal(await dialog.getAttribute('role'),'dialog');assert.equal(await dialog.getAttribute('aria-modal'),'true');assert.equal(await expand.getAttribute('aria-expanded'),'true');assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');
- await page.screenshot({path:path.join(out,'qa-with-shell-box-expanded-'+width+'.png'),animations:'disabled'});
- await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'});assert.equal(await expand.getAttribute('aria-expanded'),'false');assert.equal(await page.evaluate(()=>document.body.style.overflow),saved.overflow);assert.equal(await page.inputValue('#answer'),draft);assert(await page.evaluate(()=>window.expansionModel===document.querySelector('#task-model svg')),'Escape retains the live model');
- const after=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted};});
- assert.deepEqual(after,{camera:saved.camera,independent:saved.independent,assisted:saved.assisted},'expand/Escape never alters camera or learning credit');
- await page.screenshot({path:path.join(out,'qa-with-shell-box-escaped-'+width+'.png'),animations:'disabled'});
- expansionEvidence.push({width,height:900,draftRetained:true,liveModelRetained:true,cameraRetained:true,progressRetained:true,escapeRestoresOverflow:true});fs.writeFileSync(path.join(out,'expansion-escape-evidence.json'),JSON.stringify(expansionEvidence,null,2)+'\n');
+ const navigator=page.locator('#maxexam-public-assistant'),launcher=navigator.locator('.launcher'),panel=navigator.locator('.panel');
+ await launcher.waitFor({state:'visible'});
+ const originalNavigator=await navigator.elementHandle();
+ const saved=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;window.expansionModel=document.querySelector('#task-model svg');return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted,overflow:document.body.style.overflow,storage:localStorage.getItem('mathExamStereo.v1')};});
+ const expand=page.locator('#task-model .am-expand'),dialog=page.locator('#task-model .am-expanded');
+ for(const close of ['Escape','button']){
+  // Preserve a previously open navigator and its unfinished question as well
+  // as the usual closed launcher. Keyboard activation can leave its panel open.
+  if(close==='button'){await launcher.click();await navigator.locator('textarea').fill('сечения');await expand.focus();await page.keyboard.press('Enter');}
+  else await expand.click();
+  await dialog.waitFor({state:'visible'});assert.equal(await dialog.getAttribute('role'),'dialog');assert.equal(await dialog.getAttribute('aria-modal'),'true');assert.equal(await expand.getAttribute('aria-expanded'),'true');assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');
+  assert.equal(await launcher.isVisible(),false,'expanded model excludes the global navigator launcher');
+  assert.equal(await panel.isVisible(),false,'expanded model excludes an already-open navigator panel');
+  assert(await expand.evaluate(node=>node===document.activeElement),'expansion keeps focus on the model close control');
+  for(const label of ['Повернуть влево','Повернуть вправо','Наклонить вверх','Наклонить вниз','Вернуть исходный вид']){
+   const control=dialog.getByRole('button',{name:label,exact:true});assert(await control.isVisible(),label+' remains visible');assert(await control.isEnabled(),label+' remains enabled');
+   assert(await control.evaluate(node=>{const b=node.getBoundingClientRect();return node.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2));}),label+' is not covered');
+  }
+  await page.screenshot({path:path.join(out,'qa-with-shell-box-expanded'+(close==='button'?'-open-navigator':'')+'-'+width+'.png'),animations:'disabled'});
+  if(close==='Escape')await page.keyboard.press('Escape');else await expand.click();
+  await dialog.waitFor({state:'hidden'});assert.equal(await expand.getAttribute('aria-expanded'),'false');assert.equal(await page.evaluate(()=>document.body.style.overflow),saved.overflow);assert.equal(await page.inputValue('#answer'),draft);assert(await page.evaluate(()=>window.expansionModel===document.querySelector('#task-model svg')),close+' retains the live model');
+  assert(await originalNavigator.evaluate(node=>node===document.getElementById('maxexam-public-assistant')),close+' retains the navigator host');
+  assert.equal(await navigator.count(),1);assert(await launcher.isVisible(),close+' restores the navigator');
+  assert.equal(await launcher.getAttribute('aria-expanded'),String(close==='button'));
+  assert.equal(await panel.isVisible(),close==='button',close+' retains the navigator open state');
+  assert(await expand.evaluate(node=>node===document.activeElement),close+' restores focus to the model control');
+  const after=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted};});
+  assert.deepEqual(after,{camera:saved.camera,independent:saved.independent,assisted:saved.assisted},'expand/'+close+' never alters camera or learning credit');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mathExamStereo.v1')),saved.storage,'expand/'+close+' preserves exact saved work');
+  if(close==='button'){assert.equal(await navigator.locator('textarea').inputValue(),'сечения');await navigator.getByRole('button',{name:'Закрыть помощника',exact:true}).click();}
+  await page.screenshot({path:path.join(out,'qa-with-shell-box-'+(close==='Escape'?'escaped':'closed')+'-'+width+'.png'),animations:'disabled'});
+ }
+ expansionEvidence.push({width,height:900,draftRetained:true,liveModelRetained:true,cameraRetained:true,progressRetained:true,exactStorageRetained:true,escapeRestoresOverflow:true,closeRestoresOverflow:true,navigatorPausedDuringExpansion:true,sameNavigatorRetained:true,navigatorOpenStateAndDraftRetained:true,modelControlsUncovered:true});fs.writeFileSync(path.join(out,'expansion-escape-evidence.json'),JSON.stringify(expansionEvidence,null,2)+'\n');
 }
 const hash=bytes=>require('node:crypto').createHash('sha256').update(bytes).digest('hex');
 const heroSources=()=>Object.fromEntries(['stereo-course/assets/app.js','stereo-course/index.html','assets/course-ui.css'].map(file=>[file,hash(fs.readFileSync(path.join(root,file)))]));
@@ -109,6 +133,6 @@ async function checkFigureLabels(page,id,width,stage){
   const latest=await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1'));await page.locator('[data-recover-latest]').waitFor({state:'visible'});assert(await page.locator('#answer-form button').isDisabled());
   await page.locator('#answer-form').evaluate(el=>el.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));assert.equal(await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1')),latest);assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');
   await page.locator('[data-recover-latest]').click();assert.equal(await page.inputValue('#answer'),'новая сохранённая работа');assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');await second.close();
-  assert.deepEqual(errors,[]);console.log('STEREO_TASK_FIRST_HTTP_CSS_OK: all39units, retained live models/drafts, honest help,320/768/1280x900; expanded box/Escape at320/1280; shared CSS verified');
+  assert.deepEqual(errors,[]);console.log('STEREO_TASK_FIRST_HTTP_CSS_OK: all39units, retained live models/drafts, honest help,320/768/1280x900; expanded box navigator exclusion/Close/Escape at320/1280; shared CSS verified');
  }catch(error){await page.screenshot({path:path.join(out,'failure.png'),fullPage:true});console.error(error);process.exitCode=1;}finally{await browser.close();server.close();}
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});
