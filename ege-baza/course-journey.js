@@ -59,6 +59,8 @@
     if (value === undefined) return true;
     return plain(value) && value.version === 1 && integer(value.seed) && string(value.finalDraft) && string(value.stepDraft) &&
       (value.legacyDraft === undefined || string(value.legacyDraft)) && string(value.feedback, 4000) && string(value.stepFeedback, 4000) &&
+      (value.mistakes === undefined || integer(value.mistakes, 1000)) &&
+      ['ideaOpen', 'repeatedVariant'].every(key => value[key] === undefined || typeof value[key] === 'boolean') &&
       Array.isArray(value.stepAnswers) && value.stepAnswers.length <= 20 && value.stepAnswers.every(answer => string(answer)) &&
       ['', 'good', 'bad'].includes(value.feedbackKind) && ['helpOpen', 'modelOpen', 'stepsOpen', 'whyOpen', 'noteOpen'].every(key => typeof value[key] === 'boolean') &&
       (value.model === null || plain(value.model) && JSON.stringify(value.model).length <= 16000);

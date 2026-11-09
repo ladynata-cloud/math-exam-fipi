@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
+  "baseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "f7dfc2ecc2e6db869cd096a472f5f3f28bbf3b213729482013546b9ddcfd5273",
-      "afterSha256": "1ae52ab78f4948f20419cf5b3b400b53f2d8bc7dea177a3feea7471b80bfe48a",
+      "beforeSha256": "04f4cd93570169b2161aa3a73b2aeb73a9ec6b256431314ea052d5c69481b66f",
+      "afterSha256": "01899211045583ab754eea90cbb890fea0ecddd22678b997941b446e53381e33",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -300,8 +300,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "aa06644d18c22e834a5e56f9b222f975bced71e1e07a5d047787c024dc2c48a2",
-      "afterSha256": "3dbcc968d81eac068fa55d93d30e7b67aafb55b271a7653af6cc063a4fc8576e",
+      "beforeSha256": "6a6fcca84ee3ba94ec0102a934166653a8c90227880b67ced99ad656b5ca78c5",
+      "afterSha256": "d8558128820435dca69e29549275abeba39ca911b83fdaf9a78c7cfb7f6ab6e3",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -340,8 +340,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "f0eeb39ce92ebc0c3f65e5bb7c50f3b8e049eca5a599805e470e7b82cefa6de2",
-      "afterSha256": "8f2a2f3a7c6b37a0942864d51424ee4ac71d3f79bf88d3768b01c79804a37d5a",
+      "beforeSha256": "2d7fad16b2b7f7e3d168fd815ddb31264f6d4b02ab845450d0146cb0fadcc1cb",
+      "afterSha256": "82c03bedf3c836c9a405019e353d0cf80da1239954be75de1ef88a6cca5ca167",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
@@ -380,8 +380,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-t18.html": {
-      "beforeSha256": "0c0591e281f7ef5399b7f33ef4acc3648e697b2d4cbd857a92b498b6e4f8af09",
-      "afterSha256": "5face9edd6e07868604b051817696e197d7ed4c49f52950c16547699feef215e",
+      "beforeSha256": "82e50ae47ce8a2380b00598fe93b8bf339d98ea6d3841dad01207c990e17edcf",
+      "afterSha256": "33c2f9b863e1d149363cdb0cbcc3efd51b66d5d9d01f5b222293ea28a0c8e0de",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t1.html": {
@@ -4097,6 +4097,26 @@
       "sourceBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
       "task": "docs/tasks/PROFILE_ACTIVE_PRACTICE_20261109.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
+      "sourceBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "task": "docs/tasks/PROFILE_AUDIT_INTEGRITY_20261109.md",
+      "changedPaths": [
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
+      "task": "docs/tasks/EGE_BASE_TRAINER_CYCLE_20261109.md",
+      "changedPaths": [
+        "ege-baza/path/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

@@ -64,7 +64,7 @@
     },
     "after": {
       "report": "docs/reports/arithmetic-robots-after.json",
-      "reportSha256": "9b6b23dbbd8582ceee49c78ca700356b9f6e8e88e10b8936315df3f7e6e6e91b",
+      "reportSha256": "711ebc2d68991b94f69e472ba728d726538f5384ac9257f50c8dc92bebf0195f",
       "summary": {
         "scenarios": 22,
         "completed": 22,
@@ -80,7 +80,7 @@
     },
     "current": {
       "report": "docs/reports/arithmetic-robots-current.json",
-      "reportSha256": "ff431057fa0264cc8eeb75b1cd469f8d152903b185018a5016dff16959eb9d34",
+      "reportSha256": "64535d0dfa183694707e19b4882aaa47dc38f53e54edef71bf248e58b1f8e023",
       "summary": {
         "scenarios": 22,
         "completed": 22,

@@ -197,3 +197,20 @@ test('unavailable localStorage does not throw or attempt to establish another pe
   assert.equal(result.status, 'blocked'); assert.equal(result.recommendation.kind, 'recovery');
   assert.equal(result.lines[0].independent, null);
 });
+
+
+test('optional personal learning-cycle fields resume safely and malformed siblings block exact resume', () => {
+  const ctx = runtime(), key = ctx.EgeBazaJourney.keys.path;
+  const row = lesson({ draft: '7/', taskFirst: ui(12, { finalDraft: '7/', mistakes: 2, ideaOpen: true, repeatedVariant: false }) });
+  const save = pathSave({ round: row }), valid = actualPathValidator(ctx);
+  assert.equal(valid(save), true);
+  assert.equal(ctx.EgeBazaJourney.snapshot(storage({ [key]: save })).recommendation.kind, 'resume');
+  for (const patch of [{ mistakes: -1 }, { mistakes: 1001 }, { mistakes: 0.5 }, { ideaOpen: 1 }, { repeatedVariant: 'yes' }]) {
+    const broken = pathSave({ round: row, units: lesson({ taskFirst: ui(12, patch) }) });
+    assert.equal(valid(broken), false);
+    const store = storage({ [key]: broken }), before = JSON.stringify(store.text), result = ctx.EgeBazaJourney.snapshot(store);
+    assert.equal(result.sources.path.resumeCompatible, false);
+    assert.equal(result.recommendation.kind, 'recovery');
+    assert.equal(JSON.stringify(store.text), before);
+  }
+});
