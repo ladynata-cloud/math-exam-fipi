@@ -5,6 +5,8 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {routes:activeRoutes,includeBlock,restoreActiveLearningIncludes}=require('./oge-active-learning-preservation.cjs');
+const {restoreFractionExplanation}=require('./oge7-fraction-explanation-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -40,6 +42,11 @@ function originalWayfindingHtml(html,route=''){
  }
  return original;
 }
+function beforeActiveLearning(file,raw){
+ const relative=path.relative(ROOT,file).split(path.sep).join('/');
+ const original=restoreActiveLearningIncludes(relative,raw);
+ return relative===activeRoutes[7]?restoreFractionExplanation(original):original;
+}
 {
  const original='<html><head></head><body><p>Exact condition</p></body></html>';
  const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
@@ -64,10 +71,23 @@ async function captureInitialVisibleText(page,report){
  assert(file.startsWith(ROOT+path.sep));
  const raw=fs.readFileSync(file,'utf8');
  const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
- const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
+ const original=originalWayfindingHtml(beforeActiveLearning(file,beforeNavigator),report.finalPath);
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
+ const activeNumber=Object.keys(activeRoutes).find(n=>'/'+activeRoutes[n]===report.finalPath);
+ if(activeNumber){
+  const optional=page.locator('details.oa-learning');
+  assert.equal(await optional.count(),1,'one separately reviewed optional mini-lesson');
+  assert.equal(await optional.evaluate(node=>node.open),false,'native book witness requires the optional mini-lesson to remain collapsed');
+  assert.equal(await optional.getAttribute('data-oa-task'),activeNumber);
+  assert.equal(await text(optional),'Разобраться на опыте','only its exact summary is visible');
+  // Preserve actual raw/initial visible text. The independent reader may
+  // invert this one declared summary only after verifying all witness fields.
+  report.optionalActiveLearning={kind:'oge-active-learning-v1',task:Number(activeNumber),collapsed:true,
+   visibleText:'Разобраться на опыте',includeBlockSha256:crypto.createHash('sha256').update(includeBlock(activeNumber)).digest('hex'),
+   preservedNativeSha256:crypto.createHash('sha256').update(beforeActiveLearning(file,raw)).digest('hex')};
+ }
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
 }
 

@@ -46,6 +46,19 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 .stereo-math-atom,.stereo-mixed-number{display:inline;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-denominator{border-top:2px solid currentColor}
+
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:310px}
+@media(max-width:480px){
+.section-transfer h1{font-size:1.6rem;margin:.15rem 0 .45rem}
+.section-transfer .back-row{margin-bottom:8px}
+.section-transfer .eyebrow{margin-bottom:4px}
+.section-transfer .lesson-actions{margin:4px 0 8px}
+.section-transfer .task-main{padding-top:12px}
+.section-transfer .task-main #task-title{margin-bottom:9px}
+.section-transfer .task-main .task-question{font-size:1rem;line-height:1.4;margin-bottom:.5rem}
+.section-transfer .task-scene{margin:.5rem 0}
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:280px}
+}
 .atanasyan-model {
   min-width: 0;
   color: #243b3a;
@@ -945,7 +958,23 @@ function build(kind,t){
  case'skew':cube();given('ABCDA₁B₁C₁D₁ — куб');view(m,'neutral','Найди угол между AB и CC₁.',[['A','B'],['C','C₁']]);view(m,'step0','Сравни направления CC₁ и BB₁.',[['A','B'],['C','C₁'],['B','B₁']]);sample();break;
  case'plane-parallel':{const lo=planePatch(m,0,2,'_lo'),hi=planePatch(m,2,2,'_hi');add(m,'A',[-2,0,0]);add(m,'B',[2,0,0]);add(m,'C',[-2,0,2]);add(m,'D',[2,0,2]);m.faces.push(['A','B','D','C']);line(m,'A','B');line(m,'C','D');given('Две разные параллельные плоскости; третья пересекает обе');view(m,'neutral','Рассмотри две линии пересечения.',[['A','B'],['C','D']]);sample();break;}
  case'euler':{[a,b]=take(q,/имеет (\d+) вершин и (\d+) рёбер/);const n=a-1;for(let i=0;i<n;i++)add(m,'V'+(i+1),[Math.cos(2*PI*i/n),Math.sin(2*PI*i/n),0],'');add(m,'S',[0,0,1.6]);const base=Array.from({length:n},(_,i)=>'V'+(i+1));m.faces.push(base);for(let i=0;i<n;i++){line(m,base[i],base[(i+1)%n]);line(m,base[i],'S');m.faces.push([base[i],base[(i+1)%n],'S']);}F.vertices=a;F.edges=b;given('Вершин: '+a);given('Рёбер: '+b);sample();break;}
- case'section':{[a]=take(q,/стороной (\d+)/);cube(a);add(m,'M',mid(m.points.A,m.points.B));add(m,'N',mid(m.points.A,m.points.D));add(m,'P',mid(m.points.A,m.points['A₁']));given('Ребро куба: '+a);given('M, N, P — середины рёбер из A');dims([['A','B',String(a)],['M','N','MN² = ?']]);view(m,'neutral','Сечение проходит через три заданные середины.',[],['M','N','P']);view(m,'step0','Найди половину ребра.',[['A','M'],['A','N']],['M','N','P']);view(m,'step1','Рассмотри прямоугольный треугольник AMN.',[['A','M'],['A','N'],['M','N']],['M','N','P']);F.edge=a;F.section=['M','N','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);break;}
+ case'section':{
+  if(t.section){
+   const {edge,anchor,next,previous,missing,target,pair}=t.section;
+   cube(edge);
+   scene.figureFirst=true;
+   scene.find='Укажи первую сторону сечения и ребро с четвёртой вершиной.';
+   const midpoint=(label,vertex,visible=true)=>add(m,label,mid(m.points[vertex],m.points[vertex+'₁']),visible?label:'');
+   midpoint('M',anchor);midpoint('N',next);midpoint('P',previous);midpoint('Q',missing,false);
+   given('M, N, P — середины трёх вертикальных рёбер');
+   given('Нижнее ребро указанной грани — '+anchor+target);
+   view(m,'neutral','Поверни куб и найди грань. Контур сечения пока скрыт.');
+   view(m,'step0','Ищи пару точек на рёбрах, которые принадлежат указанной грани.',[[anchor,target],[anchor,anchor+'₁'],[target,target+'₁']]);
+   view(m,'step1','Сравни высоту трёх известных точек и найди четвёртое вертикальное ребро.',[pair.split('')]);
+   F.edge=edge;F.section=['M','N','Q','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);
+   break;
+  }
+  [a]=take(q,/стороной (\d+)/);cube(a);add(m,'M',mid(m.points.A,m.points.B));add(m,'N',mid(m.points.A,m.points.D));add(m,'P',mid(m.points.A,m.points['A₁']));given('Ребро куба: '+a);given('M, N, P — середины рёбер из A');dims([['A','B',String(a)],['M','N','MN² = ?']]);view(m,'neutral','Сечение проходит через три заданные середины.',[],['M','N','P']);view(m,'step0','Найди половину ребра.',[['A','M'],['A','N']],['M','N','P']);view(m,'step1','Рассмотри прямоугольный треугольник AMN.',[['A','M'],['A','N'],['M','N']],['M','N','P']);F.edge=a;F.section=['M','N','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);break;}
  case'perpendicular':planePatch(m);add(m,'O',[0,0,0]);add(m,'A',[2,0,0]);add(m,'B',[0,2,0]);add(m,'P',[0,0,3]);line(m,'O','A');line(m,'O','B');line(m,'O','P');given('OP ⟂ OA; OP ⟂ OB; OA и OB пересекаются в плоскости');sample();break;
  case'projection':{[a,b]=take(q,/длину (\d+), её проекция (\d+)/);h=Math.sqrt(a*a-b*b);planePatch(m,0,b*.7);add(m,'O',[0,0,0]);add(m,'A',[0,0,h]);add(m,'B',[b,0,0]);line(m,'A','B');line(m,'O','B');line(m,'A','O');dims([['A','B','AB = '+a],['O','B','OB = '+b],['A','O','AO = ?']]);given('Наклонная AB = '+a);given('Проекция OB = '+b);view(m,'step0','AO — расстояние до плоскости. Рассмотри AOB.',[['A','O'],['O','B'],['A','B']]);F.slant=a;F.projection=b;break;}
  case'dihedral':case'pyramid':{[h,a]=kind==='dihedral'?take(q,/высота (\d+), сторона основания (\d+)/):take(q,/основания.*? (\d+), высота (\d+)/).reverse();pyramid(m,a,h);line(m,'S','O');dims([['A','B','AB = '+a],['S','O','SO = '+h]]);given('Квадратное основание: a = '+a);given('Высота SO = '+h);view(m,'step0','O — центр основания, M — середина AB.',[['S','O'],['O','M'],['S','M']],['S','O','M']);view(m,'step1','Используй нормальное сечение SOM.',[['S','M'],['O','M']],['S','O','M']);F.baseSide=a;F.height=h;break;}
@@ -1000,7 +1029,7 @@ function buildConic(scene,q){const m=scene.model,F=scene.facts,given=text=>scene
  const patch=S.section(clipping,{n:[-tilt,0,1],d:offset}),ps=patch.map((p,i)=>add(m,'_secplane'+i,p,''));
  view(m,'neutral','Рассмотри, как плоскость пересекает полную двойную поверхность.',segments,ps);F.plane={n:[-tilt,0,1],d:offset};F.section=all;F.sectionSegments=segments;F.planeAngle=beta;
 }
-function mountScene(el,scene,options={}){const doc=el.ownerDocument;el.replaceChildren();const shell=doc.createElement('section');shell.className='task-scene';shell.setAttribute('aria-label','Модель и данные задачи');const givens=doc.createElement('div');givens.className='task-scene-givens';const title=doc.createElement('strong');title.textContent='Дано';givens.append(title);for(const text of scene.given){const chip=doc.createElement('span');chip.textContent=text;givens.append(chip);}const find=doc.createElement('p');find.className='task-scene-find';const findLabel=doc.createElement('strong');findLabel.textContent=(scene.goalLabel||'Найти')+': ';find.append(findLabel,doc.createTextNode(scene.find));const canvas=doc.createElement('div');shell.append(givens,canvas,find);el.append(shell);let viewer=null;if(scene.status==='unsupported'){const note=doc.createElement('p');note.textContent=scene.note;canvas.append(note);}else{viewer=root.TaskSceneViewer.mount(canvas,scene.model,{savedCamera:options.savedCamera||options.saved,onChange:options.onChange});}
+function mountScene(el,scene,options={}){const doc=el.ownerDocument;el.replaceChildren();const shell=doc.createElement('section');shell.className='task-scene';shell.setAttribute('aria-label','Модель и данные задачи');const givens=doc.createElement('div');givens.className='task-scene-givens';const title=doc.createElement('strong');title.textContent='Дано';givens.append(title);for(const text of scene.given){const chip=doc.createElement('span');chip.textContent=text;givens.append(chip);}const find=doc.createElement('p');find.className='task-scene-find';const findLabel=doc.createElement('strong');findLabel.textContent=(scene.goalLabel||'Найти')+': ';find.append(findLabel,doc.createTextNode(scene.find));const canvas=doc.createElement('div');shell.append(...(scene.figureFirst?[canvas,givens,find]:[givens,canvas,find]));el.append(shell);let viewer=null;if(scene.status==='unsupported'){const note=doc.createElement('p');note.textContent=scene.note;canvas.append(note);}else{viewer=root.TaskSceneViewer.mount(canvas,scene.model,{savedCamera:options.savedCamera||options.saved,onChange:options.onChange});}
  const api={scene,getState:()=>viewer?.getState()||null,setStep(index){return viewer?.setView(index>=0&&scene.stepViews[index]?scene.stepViews[index]:'neutral');},destroy(){viewer?.destroy();shell.remove();}};api.state=api.getState;api.highlightStep=api.setStep;api.setStep(options.step??-1);return api;}
 function mount(el,options){return mountScene(el,build(options.kind,options.task),options);}
 const helpers={model,add,line,mark,ring,mergeMesh,box,pyramid,planePatch,view,triangle,axes};
@@ -1186,14 +1215,31 @@ const api={number,equal,format};root.Answer=api;if(typeof module!=='undefined')m
 })(typeof window!=='undefined'?window:globalThis);
 </script><script>(function(root){'use strict';
 const step=(q,a,why)=>({q,a,why}),task=(q,a,steps)=>({q,a,steps});
-function make(kind,seed=0){let x=2+Math.abs(seed)%6,y=3+Math.abs(seed*3)%5,h=2*x,r=x,k=2+seed%3;let a,b,c,p;
+function make(kind,seed=0,{legacySection=false}={}){let x=2+Math.abs(seed)%6,y=3+Math.abs(seed*3)%5,h=2*x,r=x,k=2+seed%3;let a,b,c,p;
 switch(kind){
 case'incidence':return task('Сколько различных плоскостей проходит через три точки, не лежащие на одной прямой?',1,[step('Лежат ли точки на одной прямой? Ответ да или нет.','нет','Это прямо сказано в условии.'),step('Сколько плоскостей задаёт такая тройка?',1,'Аксиома существования и единственности плоскости.')]);
 case'parallel':return task('В кубе ABCDA₁B₁C₁D₁ прямая A₁B₁ параллельна плоскости ABC? Ответ да или нет.','да',[step('Есть ли общая точка прямой A₁B₁ с плоскостью ABC?','нет','Эта прямая лежит в параллельной верхней грани.'),step('Каков ответ?','да','Также A₁B₁ параллельна AB в нижней плоскости и не принадлежит ей.')]);
 case'skew':return task('Найди угол между прямыми AB и CC₁ в кубе ABCDA₁B₁C₁D₁. Ответ в градусах.',90,[step('Какой угол образуют AB и параллельная CC₁ прямая BB₁?',90,'BB₁ перпендикулярна всей плоскости основания.'),step('Каков угол исходных скрещивающихся прямых?',90,'Параллельный перенос направления не меняет угол между прямыми.')]);
 case'plane-parallel':return task('Две различные плоскости пересечены третьей. Первые две параллельны. Могут ли линии их пересечения с третьей плоскостью пересекаться? Ответ да или нет.','нет',[step('При пересечении линий появилась бы общая точка первых двух плоскостей?','да','Точка каждой линии принадлежит соответствующей плоскости.'),step('Допустима ли общая точка у различных параллельных плоскостей?','нет','По определению у них нет общих точек.')]);
 case'euler':return task('Выпуклый многогранник имеет '+(x+2)+' вершин и '+(2*x+2)+' рёбер. Сколько у него граней?',x+2,[step('Чему равно В−Р+Г?',2,'Формула Эйлера для выпуклого многогранника.'),step('Вырази число граней.',x+2,'Г=2−В+Р.')]);
-case'section':return task('Куб со стороной '+x+' пересечён плоскостью через середины трёх рёбер, выходящих из одной вершины. Найди квадрат стороны треугольного сечения.',x*x/2,[step('Какова длина половины ребра?',x/2,'Каждая заданная точка — середина.'),step('Найди квадрат отрезка между серединами двух перпендикулярных рёбер.',x*x/2,'В прямоугольном треугольнике складываются квадраты катетов, а не сами катеты.')]);
+case'section':{
+ if(!legacySection&&Math.abs(seed)%3===2){
+  const names='ABCD',i=Math.floor(Math.abs(seed)/3)%4,forward=Math.floor(Math.abs(seed)/12)%2===0;
+  const anchor=names[i], next=names[(i+1)%4],previous=names[(i+3)%4],missing=names[(i+2)%4];
+  const target=forward?next:previous, pair=forward?'MN':'MP', pairCode=forward?1:2, edgeCode=names.indexOf(missing)+1;
+  return {
+   ...task(
+    'Куб. M, N, P — середины рёбер '+anchor+anchor+'₁, '+next+next+'₁, '+previous+previous+'₁ по порядку. Какие две из этих точек лежат на боковой грани с ребром '+anchor+target+'? На каком ребре четвёртая вершина?',
+    [pairCode,edgeCode],
+    [
+     step('Какие две отмеченные точки лежат на указанной грани? Введи номер пары.',pairCode,'Обе точки лежат на вертикальных рёбрах с нижними концами '+anchor+' и '+target+'. Соедини '+pair+' на этой грани.'),
+     step('На каком ребре лежит четвёртая вершина? Введи номер ребра.',edgeCode,'Три середины лежат на одной высоте. Их плоскость параллельна основанию и пересекает четвёртое вертикальное ребро '+missing+missing+'₁ в середине.')
+    ]
+   ),
+   section:{edge:x,anchor,next,previous,missing,target,pair}
+  };
+ }
+ return task('Куб со стороной '+x+' пересечён плоскостью через середины трёх рёбер, выходящих из одной вершины. Найди квадрат стороны треугольного сечения.',x*x/2,[step('Какова длина половины ребра?',x/2,'Каждая заданная точка — середина.'),step('Найди квадрат отрезка между серединами двух перпендикулярных рёбер.',x*x/2,'В прямоугольном треугольнике складываются квадраты катетов, а не сами катеты.')]);}
 case'perpendicular':return task('Прямая перпендикулярна двум пересекающимся прямым плоскости. Какой угол она образует с этой плоскостью?',90,[step('Достаточно ли данных для признака перпендикулярности?','да','Две прямые именно пересекаются.'),step('Каков угол перпендикуляра с плоскостью?',90,'По определению он прямой.')]);
 case'projection':a=3*x;b=4*x;c=5*x;return task('Наклонная к плоскости имеет длину '+c+', её проекция '+b+'. Найди расстояние от начала наклонной до плоскости.',a,[step('Найди квадрат перпендикуляра.',c*c-b*b,'Наклонная — гипотенуза, проекция — катет.'),step('Найди положительный корень.',a,'Расстояние неотрицательно.')]);
 case'dihedral':return task('В правильной четырёхугольной пирамиде высота '+x+', сторона основания '+(2*x)+'. Найди угол боковой грани с основанием.',45,[step('Расстояние от центра квадрата до середины его стороны равно?',x,'Это половина стороны основания.'),step('В нормальном сечении два катета равны. Найди острый угол.',45,'Равнобедренный прямоугольный треугольник имеет острые углы по 45°.')]);
@@ -1499,7 +1545,17 @@ function later(){clearTimeout(timer);timer=setTimeout(()=>save(),180);}
 function destroyViewers(){snapshotCamera();viewer?.destroy();taskViewer?.destroy();proofViewer?.destroy();viewer=null;taskViewer=null;proofViewer=null;}
 window.addEventListener('pagehide',()=>save());
 function setHash(value){history.replaceState(null,'','#'+value);}
-function home(){if(!save())return;destroyViewers();unit=null;record=null;setHash('');const all=store.all().units;root.innerHTML='<section class="stereo-hero"><div><p class="eyebrow">Атанасян · 10–11 классы · 2024</p><h1>Увидеть пространство.<br>Построить доказательство.</h1><p class="lead">Вращай тела, двигай точки на рёбрах, создавай секущие плоскости. Разбирайся, откуда берутся углы, расстояния и объёмы.</p><div class="row"><button class="primary" data-unit="sections">Попробовать сечения →</button><button data-unit="space">Начать с основ</button></div><div class="stats"><div class="stat"><strong>39</strong><span>учебных узлов</span></div><div class="stat"><strong>99</strong><span>пунктов в карте</span></div><div class="stat"><strong>3D</strong><span>зависимые построения</span></div></div></div><div class="hero-art"><svg viewBox="0 0 400 330" aria-hidden="true"><path data-hero-fill="section" d="M65 160L235 220L345 130L180 95Z" fill="#eeb66d55" stroke="none"/><path data-hero-lines="body-hidden" d="M65 240L180 165L345 210M180 165L180 20" fill="none" stroke="#95cbbb" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="section-hidden" d="M65 160L180 95L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="body-visible" d="M65 240L235 290L345 210M65 240L65 85L180 20L345 70L345 210M65 85L235 135L345 70M235 135L235 290" fill="none" stroke="#95cbbb" stroke-width="2.5"/><path data-hero-lines="section-visible" d="M65 160L235 220L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5"/><g fill="#ffdf97"><circle cx="65" cy="160" r="7"/><circle cx="235" cy="220" r="7"/><circle cx="345" cy="130" r="7"/></g></svg></div></section><section class="panel"><p>В основе — реальная пространственная геометрия. Ракурс можно менять, но длины, углы и условия задачи от этого не меняются. Карта включает введение, семь глав стереометрии и углублённую планиметрию из присланного учебника.</p><p class="muted">В каждом узле — объяснение, исследование, основной тип задачи и место для собственного рассуждения. Это не решебник всех упражнений. Звёздочкой отмечены узлы, полностью относящиеся к углублённому материалу; в остальных могут встречаться отдельные дополнительные пункты.</p></section><div class="filters"><input id="course-search" type="search" placeholder="Найти сечения, объёмы, векторы…" aria-label="Найти тему"><button data-action="reports">Работы учеников</button><label>Восстановить прогресс<input id="import" type="file" accept=".json,application/json"></label></div>'+C.chapters.map((title,i)=>'<section class="chapter"><div class="chapter-head"><span class="chapter-number">'+(i?'ГЛАВА '+i:'ВВЕДЕНИЕ')+'</span><h2>'+E(title)+'</h2></div><div class="cards">'+C.units.filter(u=>u.chapter===i).map(u=>'<article class="card"><p class="eyebrow">Пункты '+u.points.join(', ')+(u.advanced?' · ★ Углубление':'')+'</p><h3>'+E(u.title)+'</h3><p>'+E(u.investigate)+'</p><div class="card-bottom"><span class="status">'+(all[u.id]?.independent?'Самостоятельных: '+all[u.id].independent:all[u.id]?'В работе':'Можно начать')+'</span><button data-unit="'+u.id+'">Открыть →</button></div></article>').join('')+'</div></section>').join('');}
+const resumeStages=['Теория','Лаборатория','Доказательство','Разбор','Задача','Своё обоснование'];
+function resumeButton(all){
+ const latest=C.units.filter(u=>all[u.id]?.updated).sort((a,b)=>all[b.id].updated-all[a.id].updated)[0];
+ return latest?'<button class="primary" data-unit="'+latest.id+'">Продолжить · '+E(latest.title)+' · '+resumeStages[all[latest.id].stage]+'</button>':'';
+}
+function chapterProgress(all,chapter){
+ const units=C.units.filter(u=>u.chapter===chapter);
+ const count=check=>units.filter(u=>check(all[u.id])).length;
+ return '<p class="chapter-progress muted" aria-label="Прогресс главы">Тем с построением: '+count(r=>r?.construction)+' из '+units.length+' · Самостоятельно проверено: '+count(r=>r?.independent)+' · Обоснований для учителя: '+count(r=>r?.written.trim())+'</p>';
+}
+function home(){if(!save())return;destroyViewers();unit=null;record=null;setHash('');const all=store.all().units;root.innerHTML='<section class="stereo-hero"><div><p class="eyebrow">Атанасян · 10–11 классы · 2024</p><h1>Увидеть пространство.<br>Построить доказательство.</h1><p class="lead">Вращай тела, двигай точки на рёбрах, создавай секущие плоскости. Разбирайся, откуда берутся углы, расстояния и объёмы.</p><div class="row">'+resumeButton(all)+'<button data-unit="sections">Попробовать сечения →</button><button data-unit="space">Начать с основ</button></div><div class="stats"><div class="stat"><strong>39</strong><span>учебных узлов</span></div><div class="stat"><strong>99</strong><span>пунктов в карте</span></div><div class="stat"><strong>3D</strong><span>зависимые построения</span></div></div></div><div class="hero-art"><svg viewBox="0 0 400 330" aria-hidden="true"><path data-hero-fill="section" d="M65 160L235 220L345 130L180 95Z" fill="#eeb66d55" stroke="none"/><path data-hero-lines="body-hidden" d="M65 240L180 165L345 210M180 165L180 20" fill="none" stroke="#95cbbb" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="section-hidden" d="M65 160L180 95L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="body-visible" d="M65 240L235 290L345 210M65 240L65 85L180 20L345 70L345 210M65 85L235 135L345 70M235 135L235 290" fill="none" stroke="#95cbbb" stroke-width="2.5"/><path data-hero-lines="section-visible" d="M65 160L235 220L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5"/><g fill="#ffdf97"><circle cx="65" cy="160" r="7"/><circle cx="235" cy="220" r="7"/><circle cx="345" cy="130" r="7"/></g></svg></div></section><section class="panel"><p>В основе — реальная пространственная геометрия. Ракурс можно менять, но длины, углы и условия задачи от этого не меняются. Карта включает введение, семь глав стереометрии и углублённую планиметрию из присланного учебника.</p><p class="muted">В каждом узле — объяснение, исследование, основной тип задачи и место для собственного рассуждения. Это не решебник всех упражнений. Звёздочкой отмечены узлы, полностью относящиеся к углублённому материалу; в остальных могут встречаться отдельные дополнительные пункты.</p></section><div class="filters"><input id="course-search" type="search" placeholder="Найти сечения, объёмы, векторы…" aria-label="Найти тему"><button data-action="reports">Работы учеников</button><label>Восстановить прогресс<input id="import" type="file" accept=".json,application/json"></label></div>'+C.chapters.map((title,i)=>'<section class="chapter"><div class="chapter-head"><span class="chapter-number">'+(i?'ГЛАВА '+i:'ВВЕДЕНИЕ')+'</span><h2>'+E(title)+'</h2></div>'+chapterProgress(all,i)+'<div class="cards">'+C.units.filter(u=>u.chapter===i).map(u=>'<article class="card"><p class="eyebrow">Пункты '+u.points.join(', ')+(u.advanced?' · ★ Углубление':'')+'</p><h3>'+E(u.title)+'</h3><p>'+E(u.investigate)+'</p><div class="card-bottom"><span class="status">'+(all[u.id]?.independent?'Самостоятельных: '+all[u.id].independent:all[u.id]?'В работе':'Можно начать')+'</span><button data-unit="'+u.id+'">Открыть →</button></div></article>').join('')+'</div></section>').join('');}
 function migrateUI(){
  if(record.taskFirst)return;
  const legacy=record.stage, draft=record.draft;
@@ -1511,7 +1567,11 @@ function migrateUI(){
 function open(id){
  if(!save())return;destroyViewers();unit=C.units.find(u=>u.id===id)||C.units[0];record=store.get(unit.id);migrateUI();stage=record.stage;setHash(unit.id);if(!save('start'))return;render();window.scrollTo(0,0);
 }
-function task(){return StereoTasks.make(unit.task,record.seed);}
+function task(){
+ // Keep an already opened triangle task stable across the addition of new section configurations.
+ const legacySection=unit.task==='section'&&record.currentTaskKey.startsWith('["Куб со стороной ');
+ return StereoTasks.make(unit.task,record.seed,{legacySection});
+}
 function proof(){return PROOFS[unit.proof||unit.task]||null;}
 function rememberTask(){
  const t=task(),key=JSON.stringify([t.q,t.a]);if(record.currentTaskKey===key)return;
@@ -1549,7 +1609,11 @@ function guidedBody(t){
 }
 function taskPanel(){
  rememberTask();const t=task(),ui=record.taskFirst;
- return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p><button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button><div id="task-model" aria-label="Рисунок к условию"></div><form id="answer-form" data-mode="independent"><label for="answer">'+E(taskQuestion(t))+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status"></p>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p></section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
+ const model='<div id="task-model" aria-label="Рисунок к условию"></div>';
+ const help='<button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button>';
+ const options=t.section?'<p>Пары · 1 MN, 2 MP, 3 NP.</p><p>Рёбра · 1 AA₁, 2 BB₁, 3 CC₁, 4 DD₁.</p>':'';
+ const label=t.section?'Номер пары и номер ребра через точку с запятой':taskQuestion(t);
+ return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status"></p>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p></section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
 }
 function proofPanel(){
  const p=proof();
@@ -1576,7 +1640,8 @@ function writtenPanel(){
 }
 function render(){
  if(conflict)return;if([1,2,5].includes(stage))markAssisted();if(conflict)return;destroyViewers();pending=null;
- let h='<div class="workspace"><div class="back-row"><button data-action="home">← Карта курса</button><span class="pill">Пункты '+unit.points.join(', ')+'</span></div><p class="eyebrow">'+E(C.chapters[unit.chapter])+'</p><h1>'+E(unit.title)+'</h1>'+nav();
+ const transfer=stage===4&&task().section;
+ let h='<div class="workspace'+(transfer?' section-transfer':'')+'"><div class="back-row"><button data-action="home">← Карта курса</button><span class="pill">Пункты '+unit.points.join(', ')+'</span></div><p class="eyebrow">'+E(C.chapters[unit.chapter])+'</p><h1>'+E(transfer?'Сечение куба':unit.title)+'</h1>'+nav();
  if([0,3,4].includes(stage))h+=taskPanel();
  if(stage===1)h+='<section class="panel"><h2>Свободная 3D-лаборатория</h2><p>'+E(unit.investigate)+'</p><p class="callout">Это отдельное исследование. Параметры здесь можно менять; условие твоей задачи сохранено. Вернись к нему кнопкой «К задаче».</p><div id="viewer"></div><label for="observation">Что ты изменил(а), какое свойство заметил(а) и как его объяснишь?</label><textarea id="observation">'+E(record.observation)+'</textarea></section>';
  if(stage===2)h+=proofPanel();
@@ -1618,7 +1683,7 @@ function checkFinal(){
  if(document.getElementById('task-help').open)markAssisted();
  const ok=Answer.equal(a,t.a),first=!record.checked;record.checked=true;if(first)record.attempts++;
  if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;f.textContent=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
- else{record.assisted=true;f.textContent='Пока неверно. Проверь, какую величину нужно найти, её единицы и основание для формулы. Можно открыть подсказку.';f.className='feedback error';}
+ else{record.assisted=true;f.textContent=t.section?'Найди две точки на указанной грани. Близость на экране этого не гарантирует. Для четвёртой вершины сравни высоты трёх заданных точек.':'Пока неверно. Проверь, какую величину нужно найти, её единицы и основание для формулы. Можно открыть подсказку.';f.className='feedback error';}
  document.querySelector('.stage-status').textContent='Первые самостоятельные решения новых условий: '+record.independent+'.';
  if(!save(ok?'solved':'attempt')){f.textContent='Результат этого окна не сохранён: открой сохранённую версию выше.';document.querySelector('.stage-status').textContent='Сохранённый результат не изменён.';}
 }

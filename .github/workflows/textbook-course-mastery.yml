@@ -1,0 +1,45 @@
+name: Textbook course mastery
+on:
+  pull_request:
+    paths:
+      - 'school/**'
+      - 'grade7/index.html'
+      - 'geometry-course/**'
+      - 'stereo-course/**'
+      - 'tools/textbook-vilenkin-mastery.browser.cjs'
+      - 'tools/geometry/browser-check.js'
+      - '.github/workflows/textbook-course-mastery.yml'
+permissions:
+  contents: read
+jobs:
+  learner-journeys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/textbook-course" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/textbook-course/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/textbook-course/node_modules" >> "$GITHUB_ENV"
+      - name: Workshop progress and saved work
+        run: |
+          node tools/workshop-state.test.cjs
+          node tools/textbook-vilenkin5.test.cjs
+          node tools/textbook-vilenkin-full.test.cjs
+          node tools/textbook-makarychev9.test.cjs
+          node tools/textbook-vilenkin-mastery.browser.cjs
+      - name: Planimetry models and independent practice
+        run: |
+          node tools/geometry/check.js
+          node tools/geometry/browser-check.js
+      - name: Seventh-grade course links
+        run: node tools/grade7-route-map.test.cjs
+      - name: Check patch whitespace
+        run: git diff --check

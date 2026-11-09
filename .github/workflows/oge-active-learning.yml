@@ -1,0 +1,70 @@
+name: OGE 6–12 active learning and retained native work
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task6-fractions.html'
+      - 'trainers/oge-task7-number-line.html'
+      - 'trainers/oge-task8-powers-roots.html'
+      - 'trainers/oge-task9-equations.html'
+      - 'trainers/oge-task10-probability.html'
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-task12-formulas-trainer.html'
+      - 'trainers/oge-active-learning.js'
+      - 'trainers/oge-active-learning-data.js'
+      - 'trainers/oge-active-learning.css'
+      - 'tools/oge-active-learning*'
+      - 'tools/oge-task6-fractions-focused.test.mjs'
+      - 'tools/oge-book-exam-corrections.test.cjs'
+      - 'tools/oge7-fraction-explanation*'
+      - 'tools/oge-course-algebra.test.cjs'
+      - 'tools/oge-learner-entry.test.cjs'
+      - 'tools/oge8-root-interactions.test.cjs'
+      - 'tools/oge-book-exam.browser.cjs'
+      - 'tools/oge-book-exam-math.py'
+      - '.github/workflows/oge-active-learning.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: oge-active-learning-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  learning-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated DOM and Chromium tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-active" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-active/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-active/node_modules" >> "$GITHUB_ENV"
+      - name: New learning contracts and unchanged native mathematics
+        run: |
+          node --check trainers/oge-active-learning.js
+          node --check trainers/oge-active-learning-data.js
+          node --test --test-concurrency=1 tools/oge-active-learning*.test.cjs
+          node --test --test-concurrency=1 tools/oge7-fraction-explanation*.test.cjs
+          node --test --test-concurrency=1 tools/oge8-root-domains.test.cjs tools/oge8-root-interactions.test.cjs
+          node --test --test-concurrency=1 tools/oge-task6-fractions-focused.test.mjs tools/task6-minimal.test.cjs tools/task6-interactive.test.cjs tools/task6-scope.test.cjs
+          node --test --test-concurrency=1 tools/task9-*.test.cjs tools/task11-*.test.cjs
+          node tools/oge-algebra-contract.test.mjs
+          git diff --check
+      - name: Seven real lessons on mobile and desktop, retention and shared-mode isolation
+        env:
+          OGE_ACTIVE_ARTIFACTS: artifacts/oge-active-learning
+        run: node tools/oge-active-learning.browser.cjs
+      - name: Keep browser evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge-active-learning-browser
+          path: artifacts/oge-active-learning
+          if-no-files-found: error
+          retention-days: 14

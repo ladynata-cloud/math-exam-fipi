@@ -4,6 +4,7 @@ const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
+const {restoreFractionExplanation}=require('./oge7-fraction-explanation-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -63,6 +64,7 @@ test('all eight inline engines retain their reviewed mirror-audit snapshots outs
   const file='trainers/oge-task'+n+'-'+suffix+'.html';
   const html=restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8'));
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
+  if(n==='7')scripts=restoreFractionExplanation(scripts);
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.
   if(n==='8')scripts=restoreRootTeaching(restoreRootAcceptance(scripts))
