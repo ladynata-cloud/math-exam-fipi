@@ -109,3 +109,10 @@ test('fresh adapter resume preserves Begin and practice resume avoids a false ch
   const practice = render(course([lesson('p01')],{resume:{href:'#practice/fractions/1',lessonId:null}}));
   assert.match(practice,/class="lr-next-chapter">Отдельная тренировка</);
 });
+
+
+test('small positive progress is never labelled zero percent', () => {
+  const html=render(course([lesson('p01',{total:722,done:2,independent:1})]));
+  assert.match(html,/Решено 2 из 722 задач · меньше 1%/);
+  assert.doesNotMatch(html,/задач · 0%/);
+});

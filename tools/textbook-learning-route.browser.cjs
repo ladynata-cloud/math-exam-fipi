@@ -200,7 +200,7 @@ async function readCounts(page) {
     await page.goto(origin + '/school/' + course.slug + '/'); await loaded(page,course);
     const complete = await page.evaluate(({api,data}) => {
       const raw = {version:1,tasks:{},practice:{},last:null,origin:null};
-      for (const lesson of window[data].lessons) for (const t of lesson.tasks) raw.tasks[t.id] = {value:String(t.answer),correct:true,independent:true,attempts:1,assisted:false,...(t.methodVersion?{methodVersion:t.methodVersion}:{})};
+      for (const lesson of window[data].lessons) for (const t of lesson.tasks) raw.tasks[t.id] = {value:t.answerFormat==='decimal'?window.PetersonMath.decimal(t.answer):String(t.answer),correct:true,independent:true,attempts:1,assisted:false,...(t.methodVersion?{methodVersion:t.methodVersion}:{})};
       return window[api].validateState(raw);
     },course);
     await page.evaluate(({key,value}) => localStorage.setItem(key,value),{key:course.key,value:JSON.stringify(complete)});

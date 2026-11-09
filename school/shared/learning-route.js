@@ -17,9 +17,10 @@
   }
   function bar(s, label) {
     const percent = s.total ? Math.floor(100*s.done/s.total) : 0;
+    const percentLabel = s.done > 0 && percent === 0 ? 'меньше 1%' : percent+'%';
     return '<div class="lr-bar" role="progressbar" aria-label="'+escape(label)+'" aria-valuemin="0" aria-valuemax="'+(s.total||1)+'" aria-valuenow="'+s.done+'" aria-valuetext="'+s.done+' из '+s.total+' задач; самостоятельно '+s.independent+'">'+
       '<span class="lr-bar-independent" style="width:'+(s.total?100*s.independent/s.total:0)+'%"></span><span class="lr-bar-assisted" style="width:'+(s.total?100*s.assisted/s.total:0)+'%"></span></div>'+
-      '<p class="lr-bar-caption">Решено '+s.done+' из '+s.total+' задач · '+percent+'%</p>';
+      '<p class="lr-bar-caption">Решено '+s.done+' из '+s.total+' задач · '+percentLabel+'</p>';
   }
   function status(l) {
     if (l.confirmed) return ['confirmed','Все задачи самостоятельно'];
