@@ -37,7 +37,21 @@ function build(kind,t){
  case'skew':cube();given('ABCDA₁B₁C₁D₁ — куб');view(m,'neutral','Найди угол между AB и CC₁.',[['A','B'],['C','C₁']]);view(m,'step0','Сравни направления CC₁ и BB₁.',[['A','B'],['C','C₁'],['B','B₁']]);sample();break;
  case'plane-parallel':{const lo=planePatch(m,0,2,'_lo'),hi=planePatch(m,2,2,'_hi');add(m,'A',[-2,0,0]);add(m,'B',[2,0,0]);add(m,'C',[-2,0,2]);add(m,'D',[2,0,2]);m.faces.push(['A','B','D','C']);line(m,'A','B');line(m,'C','D');given('Две разные параллельные плоскости; третья пересекает обе');view(m,'neutral','Рассмотри две линии пересечения.',[['A','B'],['C','D']]);sample();break;}
  case'euler':{[a,b]=take(q,/имеет (\d+) вершин и (\d+) рёбер/);const n=a-1;for(let i=0;i<n;i++)add(m,'V'+(i+1),[Math.cos(2*PI*i/n),Math.sin(2*PI*i/n),0],'');add(m,'S',[0,0,1.6]);const base=Array.from({length:n},(_,i)=>'V'+(i+1));m.faces.push(base);for(let i=0;i<n;i++){line(m,base[i],base[(i+1)%n]);line(m,base[i],'S');m.faces.push([base[i],base[(i+1)%n],'S']);}F.vertices=a;F.edges=b;given('Вершин: '+a);given('Рёбер: '+b);sample();break;}
- case'section':{[a]=take(q,/стороной (\d+)/);cube(a);add(m,'M',mid(m.points.A,m.points.B));add(m,'N',mid(m.points.A,m.points.D));add(m,'P',mid(m.points.A,m.points['A₁']));given('Ребро куба: '+a);given('M, N, P — середины рёбер из A');dims([['A','B',String(a)],['M','N','MN² = ?']]);view(m,'neutral','Сечение проходит через три заданные середины.',[],['M','N','P']);view(m,'step0','Найди половину ребра.',[['A','M'],['A','N']],['M','N','P']);view(m,'step1','Рассмотри прямоугольный треугольник AMN.',[['A','M'],['A','N'],['M','N']],['M','N','P']);F.edge=a;F.section=['M','N','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);break;}
+ case'section':{
+  if(t.section){
+   const {edge,anchor,next,previous,missing,target,pair}=t.section;
+   cube(edge);
+   const midpoint=(label,vertex,visible=true)=>add(m,label,mid(m.points[vertex],m.points[vertex+'₁']),visible?label:'');
+   midpoint('M',anchor);midpoint('N',next);midpoint('P',previous);midpoint('Q',missing,false);
+   given('M, N, P — середины трёх вертикальных рёбер');
+   given('Нижнее ребро указанной грани — '+anchor+target);
+   view(m,'neutral','Поверни куб и найди грань. Контур сечения пока скрыт.');
+   view(m,'step0','Ищи пару точек на рёбрах, которые принадлежат указанной грани.',[[anchor,target],[anchor,anchor+'₁'],[target,target+'₁']]);
+   view(m,'step1','Сравни высоту трёх известных точек и найди четвёртое вертикальное ребро.',[pair.split('')]);
+   F.edge=edge;F.section=['M','N','Q','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);
+   break;
+  }
+  [a]=take(q,/стороной (\d+)/);cube(a);add(m,'M',mid(m.points.A,m.points.B));add(m,'N',mid(m.points.A,m.points.D));add(m,'P',mid(m.points.A,m.points['A₁']));given('Ребро куба: '+a);given('M, N, P — середины рёбер из A');dims([['A','B',String(a)],['M','N','MN² = ?']]);view(m,'neutral','Сечение проходит через три заданные середины.',[],['M','N','P']);view(m,'step0','Найди половину ребра.',[['A','M'],['A','N']],['M','N','P']);view(m,'step1','Рассмотри прямоугольный треугольник AMN.',[['A','M'],['A','N'],['M','N']],['M','N','P']);F.edge=a;F.section=['M','N','P'];F.plane=S.plane(m.points.M,m.points.N,m.points.P);break;}
  case'perpendicular':planePatch(m);add(m,'O',[0,0,0]);add(m,'A',[2,0,0]);add(m,'B',[0,2,0]);add(m,'P',[0,0,3]);line(m,'O','A');line(m,'O','B');line(m,'O','P');given('OP ⟂ OA; OP ⟂ OB; OA и OB пересекаются в плоскости');sample();break;
  case'projection':{[a,b]=take(q,/длину (\d+), её проекция (\d+)/);h=Math.sqrt(a*a-b*b);planePatch(m,0,b*.7);add(m,'O',[0,0,0]);add(m,'A',[0,0,h]);add(m,'B',[b,0,0]);line(m,'A','B');line(m,'O','B');line(m,'A','O');dims([['A','B','AB = '+a],['O','B','OB = '+b],['A','O','AO = ?']]);given('Наклонная AB = '+a);given('Проекция OB = '+b);view(m,'step0','AO — расстояние до плоскости. Рассмотри AOB.',[['A','O'],['O','B'],['A','B']]);F.slant=a;F.projection=b;break;}
  case'dihedral':case'pyramid':{[h,a]=kind==='dihedral'?take(q,/высота (\d+), сторона основания (\d+)/):take(q,/основания.*? (\d+), высота (\d+)/).reverse();pyramid(m,a,h);line(m,'S','O');dims([['A','B','AB = '+a],['S','O','SO = '+h]]);given('Квадратное основание: a = '+a);given('Высота SO = '+h);view(m,'step0','O — центр основания, M — середина AB.',[['S','O'],['O','M'],['S','M']],['S','O','M']);view(m,'step1','Используй нормальное сечение SOM.',[['S','M'],['O','M']],['S','O','M']);F.baseSide=a;F.height=h;break;}
