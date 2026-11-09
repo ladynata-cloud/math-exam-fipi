@@ -42,7 +42,7 @@
    head.after(panel);
    const utility=main.ownerDocument.createElement('div');utility.className='row m9-lesson-tools';
    const modes=head.querySelector('[data-cmd="mode"]')?.parentElement;
-   if(modes){modes.classList.add('m9-mode-controls');const board=modes.querySelector('a[href*="trainer-board.html?trainer="]');if(board)utility.append(board);}
+   if(modes){modes.classList.add('m9-mode-controls');for(const button of modes.querySelectorAll('[data-cmd="mode"]')){const full=button.textContent;button.setAttribute('aria-label',full);button.title=full;button.textContent={learn:'Разбор',practice:'Практика',check:'Самому'}[button.dataset.value]||full;}const board=modes.querySelector('a[href*="trainer-board.html?trainer="]');if(board)utility.append(board);}
    const jumps=head.querySelector('.lesson-jumps');if(jumps)utility.append(jumps);
    if(utility.childNodes.length)panel.after(utility);
    const back=head.querySelector('a[href="#course/makarychev9"]');if(back){back.title=back.textContent;back.textContent='← Макарычев 9';}
