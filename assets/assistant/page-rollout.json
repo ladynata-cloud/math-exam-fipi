@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "8477035cf6376889bb55415aa9ba4e88d818724e",
+  "baseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -300,8 +300,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "0d929b7e730854732e2d49746445bcf3e03a607574f3a957e49b9f38a01b53ae",
-      "afterSha256": "14892d55587b03dad2559cf78cdf54a6d02668617ca56fb3393843f748530fd8",
+      "beforeSha256": "aa06644d18c22e834a5e56f9b222f975bced71e1e07a5d047787c024dc2c48a2",
+      "afterSha256": "3dbcc968d81eac068fa55d93d30e7b67aafb55b271a7653af6cc063a4fc8576e",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -4081,6 +4081,22 @@
       "changedPaths": [
         "trainers/oge-course/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
+      "sourceBaseSha": "48efdd94b2da96e201afe2b9b5028f4ae367e6ac",
+      "task": "docs/tasks/PROFILE_ACTIVE_PRACTICE_20261109.md",
+      "changedPaths": [
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8477035cf6376889bb55415aa9ba4e88d818724e",
+      "sourceBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
+      "task": "docs/tasks/PROFILE_ACTIVE_PRACTICE_20261109.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

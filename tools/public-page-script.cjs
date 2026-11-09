@@ -45,27 +45,29 @@ function sourceForProfileBoard(root, wrapper) {
   return canonical;
 }
 
-// The public map has exactly two presentation-only modules. Board wrappers
-// deliberately omit them, but must retain every learning script in order.
-// Only the two reviewed public cache-stamp changes differ from wrapper URLs;
+// The public page has exactly four scoped map/coaching modules. Board wrappers
+// deliberately omit them, but must retain every shared learning script in order.
+// Only the explicitly reviewed public cache-stamp changes differ from wrapper URLs;
 // this is not a general query-string normalizer or script ignore list.
 function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicMap = ['journey.js?v=20261109', 'second-part.js?v=20261109'];
+  const publicMap = ['journey.js?v=20261109', 'second-part.js?v=20261109',
+    'practice-feedback.js?v=20261109-active', 'practice-coach.js?v=20261109-active'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const mapPaths = new Set(publicMap.map(pathname));
   assert.deepEqual(page.filter(script => mapPaths.has(pathname(script.src))).map(script => script.src), publicMap,
-    'The public page contains exactly the two reviewed map modules, once and in order');
+    'The public page contains exactly the four reviewed public modules, once and in order');
   assert.deepEqual(page.slice(0, publicMap.length).map(script => script.src), publicMap,
-    'Public map modules precede the canonical learning runtime');
+    'Public-only modules precede the canonical learning runtime');
   for (let index = 0; index < publicMap.length; index++)
-    assert.equal(page[index].tag, '<script defer src="' + publicMap[index] + '"></script>', 'Exact deferred public-map include');
-  assert.ok(board.every(script => !mapPaths.has(pathname(script.src))), 'Board wrappers must not load public map modules');
+    assert.equal(page[index].tag, '<script defer src="' + publicMap[index] + '"></script>', 'Exact deferred public-module include');
+  assert.ok(board.every(script => !mapPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
   const cacheStamps = new Map([
     ['calm-ui.js?v=20261109-journey', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261109-journey', 'app.js?v=20261101-trainer-repair']
+    ['app.js?v=20261109-active', 'app.js?v=20261101-trainer-repair'],
+    ['state.js?v=20261109-active', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())
     assert.deepEqual(page.filter(script => pathname(script.src) === pathname(current)).map(script => script.src), [current],

@@ -66,6 +66,28 @@ function create(lessons,storage){
  const pool=mode!=='independent'?l.tasks.slice(0,-3):l.tasks.slice(-3);let t=pool.find(t=>!data.seen[t.id]);if(!t)t=pool.reduce((a,b)=>(data.seen[a.id]||0)<=(data.seen[b.id]||0)?a:b);
  const s={taskId:t.id,step:0,wrong:false,assisted:mode!=='independent',familiar:!!data.seen[t.id],done:false,draft:'',answers:[],started:startedAt(),registered:false};
  data.seen[t.id]=(data.seen[t.id]||0)+1;data.sessions[key]=s;persist();return s;}
+ // Public result handoff: looking ahead does not open a condition. Execute
+ // the choice again on click, after merging any work saved by another tab.
+ function independentHandoff(id,completed,begin=false){
+  const l=known.get(id);if(!l?.tasks.some(t=>t.id===completed?.taskId))throw Error('Unknown completed task');
+  const key=id+':independent',saved=persist(),current=saved?refreshSession(key):data.sessions[key];
+  const sourceTime=Date.parse(completed.started)||0,currentTime=Date.parse(current?.started)||0;
+  // Only the identifiable, earlier assisted source of this same remediation
+  // may be replaced. A newer attempt (even of the same task), accepted work,
+  // or an old session without comparable timestamps must remain resumable.
+  const remediated=current?.taskId===completed.taskId&&current.assisted&&!current.answers.length&&sourceTime>currentTime&&currentTime>0;
+  if(current&&!current.done&&!remediated)return {kind:'resume',taskId:current.taskId,familiar:current.familiar,assisted:current.assisted||current.wrong,session:current};
+  const r=data.records[id]||{},seen=new Set([completed.taskId]);
+  for(const kind of ['guided','independent','recovered','checkpointIndependent','mistakes'])for(const taskId of r[kind]||[])seen.add(taskId);
+  for(const mode of ['guided','plan','independent'])if(data.sessions[id+':'+mode])seen.add(data.sessions[id+':'+mode].taskId);
+  const knownTask=t=>!!data.seen[t.id]||seen.has(t.id),pool=l.tasks.slice(-3).filter(t=>t.id!==completed.taskId);
+  const t=pool.find(t=>!knownTask(t))||pool.reduce((a,b)=>(data.seen[a.id]||0)<=(data.seen[b.id]||0)?a:b),familiar=knownTask(t);
+  const choice={kind:familiar?'familiar':'new',taskId:t.id,familiar,assisted:false};
+  if(!begin)return choice;
+  const s={taskId:t.id,step:0,wrong:false,assisted:false,familiar,done:false,draft:'',answers:[],started:startedAt(),registered:false};
+  data.seen[t.id]=(data.seen[t.id]||0)+1;data.sessions[key]=s;persist();
+  return {...choice,session:s};
+ }
  function finish(id,mode,s){
   // Read saved help/mistakes before awarding any credit, not after it.
   persist();const current=data.sessions[id+':'+mode];if(!sameAttempt(s,current)||current.registered)return false;
@@ -85,7 +107,7 @@ function create(lessons,storage){
  function remediate(id,taskId){const l=known.get(id),t=l?.tasks.find(t=>t.id===taskId);if(!t)throw Error('Unknown remediation task');const saved=persist();const source=saved?refreshSession(id+':independent'):data.sessions[id+':independent'];if(source?.taskId===taskId&&!source.answers.length&&!source.done&&!source.registered){source.assisted=true;}
  const key=id+':guided',old=saved?refreshSession(key):data.sessions[key];if(old?.taskId===taskId&&!old.done){persist();return old;}
  const s={taskId,step:0,wrong:false,assisted:true,familiar:!!data.seen[taskId],done:false,draft:'',answers:[],started:startedAt(),registered:false};data.seen[taskId]=Math.max(1,data.seen[taskId]||0);data.sessions[key]=s;persist();return s;}
- return {KEY,data,record,start,finish,remediate,canAdvance,creditCheckpoint,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot(mergeSessions(latestSessions))};}};
+ return {KEY,data,record,start,independentHandoff,finish,remediate,canAdvance,creditCheckpoint,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot(mergeSessions(latestSessions))};}};
 }
 const api={KEY,create};root.ProfileState=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);
