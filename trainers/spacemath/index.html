@@ -24,6 +24,7 @@
         <button type="button" data-tool="circle" aria-pressed="false">Окружность</button>
         <button type="button" data-tool="polygon" aria-pressed="false">Многоугольник</button>
         <details class="tool-group"><summary>Построения</summary><div>
+          <button type="button" data-tool="pointOn" aria-pressed="false">Точка на объекте</button>
           <button type="button" data-tool="midpoint" aria-pressed="false">Середина</button>
           <button type="button" data-tool="intersection" aria-pressed="false">Пересечение</button>
           <button type="button" data-tool="parallel" aria-pressed="false">Параллельная</button>
@@ -31,9 +32,15 @@
           <button type="button" data-tool="bisector" aria-pressed="false">Биссектриса</button>
           <button type="button" data-tool="perpendicularBisector" aria-pressed="false">Серединный перпендикуляр</button>
           <button type="button" data-tool="projection" aria-pressed="false">Проекция точки</button>
+          <button type="button" data-tool="vector" aria-pressed="false">Вектор по двум точкам</button>
+        </div></details>
+        <details class="tool-group"><summary>Окружности</summary><div>
           <button type="button" data-tool="circle3" aria-pressed="false">Окружность через 3 точки</button>
+          <button type="button" data-tool="circleRadius" aria-pressed="false">Окружность по радиусу</button>
+          <button type="button" data-tool="tangent" aria-pressed="false">Касательные к окружности</button>
         </div></details>
         <details class="tool-group"><summary>Преобразования</summary><div>
+          <button type="button" data-tool="translate" aria-pressed="false">Перенос точки по вектору</button>
           <button type="button" data-tool="reflectPoint" aria-pressed="false">Симметрия относительно точки</button>
           <button type="button" data-tool="reflectLine" aria-pressed="false">Симметрия относительно прямой</button>
           <button type="button" data-tool="rotate" aria-pressed="false">Поворот точки</button>
@@ -82,8 +89,22 @@
             <div class="coordinate-fields"><label>Шаг<input id="edit-slider-step" type="number" step="any" min="0.000001" required></label><label>Значение<input id="edit-slider-value" type="number" step="any" required></label></div>
           </div>
           <label id="selected-expression" hidden>Формула f(x)<input id="edit-expression" maxlength="512" autocomplete="off"></label>
+          <div id="selected-table-settings" class="coordinate-fields" hidden>
+            <label>От x<input id="edit-table-start" type="number" step="any" min="-1000000" max="1000000" required disabled></label>
+            <label>До x<input id="edit-table-end" type="number" step="any" min="-1000000" max="1000000" required disabled></label>
+            <label>Шаг<input id="edit-table-step" type="number" step="any" max="2000000" required disabled></label>
+          </div>
           <button type="submit" class="primary">Применить</button>
         </form>
+        <button id="add-function-table" type="button" hidden>Создать таблицу значений</button>
+        <div id="function-table-output" class="function-table-output" role="region" aria-label="Таблица значений функции" tabindex="0" hidden>
+          <table>
+            <caption id="function-table-caption">Таблица значений</caption>
+            <thead><tr><th scope="col">x</th><th scope="col">f(x)</th></tr></thead>
+            <tbody id="function-table-body"></tbody>
+          </table>
+        </div>
+        <p id="function-table-note" class="muted" hidden>Прочерк означает, что функция в этой точке не определена.</p>
         <button id="delete-object" type="button" class="danger">Удалить объект…</button>
       </section>
       <section class="panel">

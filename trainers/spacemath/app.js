@@ -10,11 +10,27 @@
     midpoint: ['point', 'point'], perpendicularBisector: ['point', 'point'], distance: ['point', 'point'], reflectPoint: ['point', 'point'], rotate: ['point', 'point'], dilate: ['point', 'point'],
     parallel: ['line', 'point'], perpendicular: ['line', 'point'], projection: ['line', 'point'], reflectLine: ['line', 'point'],
     angle: ['point', 'point', 'point'], bisector: ['point', 'point', 'point'], circle3: ['point', 'point', 'point'],
-    intersection: ['curve', 'curve'], area: ['surface'], perimeter: ['polygon'], circumference: ['circle']
+    intersection: ['curve', 'curve'], area: ['surface'], perimeter: ['polygon'], circumference: ['circle'],
+    pointOn: ['path'], vector: ['point', 'point'], translate: ['point', 'vector'],
+    circleRadius: ['point'], tangent: ['circle', 'point']
   };
-  const names = { point: 'Точка', segment: 'Отрезок', line: 'Прямая', ray: 'Луч', circle: 'Окружность', polygon: 'Многоугольник', midpoint: 'Середина', intersection: 'Пересечение', parallel: 'Параллельная', perpendicular: 'Перпендикуляр', bisector: 'Биссектриса', distance: 'Расстояние', angle: 'Угол', perpendicularBisector: 'Серединный перпендикуляр', projection: 'Проекция', reflectPoint: 'Симметрия относительно точки', reflectLine: 'Симметрия относительно прямой', rotate: 'Поворот', dilate: 'Гомотетия', circle3: 'Окружность через 3 точки', area: 'Площадь', perimeter: 'Периметр', circumference: 'Длина окружности', slider: 'Параметр', functionGraph: 'График функции' };
+  const names = {
+    point: 'Точка', pointOn: 'Точка на объекте', segment: 'Отрезок', line: 'Прямая', ray: 'Луч',
+    circle: 'Окружность', circle3: 'Окружность через 3 точки', circleRadius: 'Окружность по радиусу', tangent: 'Касательная',
+    polygon: 'Многоугольник', midpoint: 'Середина', intersection: 'Пересечение', projection: 'Проекция',
+    parallel: 'Параллельная', perpendicular: 'Перпендикуляр', perpendicularBisector: 'Серединный перпендикуляр', bisector: 'Биссектриса',
+    reflectPoint: 'Симметрия относительно точки', reflectLine: 'Симметрия относительно прямой', rotate: 'Поворот', dilate: 'Гомотетия',
+    vector: 'Вектор', translate: 'Перенос по вектору', distance: 'Расстояние', angle: 'Угол', area: 'Площадь',
+    perimeter: 'Периметр', circumference: 'Длина окружности', slider: 'Параметр',
+    functionGraph: 'График функции', functionTable: 'Таблица значений'
+  };
+  const toolParameters = {
+    rotate: { key: 'angle', label: 'Угол, °', min: -36000, max: 36000, initial: 90 },
+    dilate: { key: 'factor', label: 'Коэффициент', min: -1000, max: 1000, initial: 2 },
+    circleRadius: { key: 'radius', label: 'Радиус', min: 0, max: M.MAX_COORD, initial: 2 }
+  };
   const hints = {
-    move: 'Перетаскивайте свободные точки. Зависимые объекты следуют за ними.',
+    move: 'Перетаскивайте свободные точки и точки на объектах. Остальные построения обновятся.',
     point: 'Коснитесь свободного места на поле. Или задайте координаты справа.',
     segment: 'Выберите начало и конец отрезка. На свободном месте появится новая точка.',
     line: 'Выберите две точки прямой. На свободном месте появится новая точка.',
@@ -37,7 +53,12 @@
     circle3: 'Выберите три точки окружности. Они не должны лежать на одной прямой.',
     area: 'Выберите многоугольник или окружность. Измерим площадь фигуры.',
     perimeter: 'Выберите многоугольник для измерения периметра.',
-    circumference: 'Выберите окружность для измерения её длины.'
+    circumference: 'Выберите окружность для измерения её длины.',
+    pointOn: 'Коснитесь линии, окружности или графика. Точку можно будет двигать вдоль выбранного объекта.',
+    vector: 'Выберите начало вектора, затем его конец.',
+    translate: 'Выберите исходную точку, затем вектор переноса.',
+    circleRadius: 'Введите радиус и выберите центр окружности.',
+    tangent: 'Выберите окружность, затем точку, через которую пройдут касательные.'
   };
   let state = M.empty(), evaluated, board, drawings = {}, tool = 'move', pending = [], selected = null;
   let readOnly = managed, applying = false, rendering = false, dragBefore = null, dragId = null, lastDragEmit = 0, dragBoundsError = false;
@@ -79,6 +100,20 @@
   }
   function object(id) { return state.objects.find(o => o.id === id); }
   function label(id) { const item = object(id); return item?.label || names[item?.type] || id; }
+  function movablePoint(item) { return item?.type === 'point' || item?.type === 'pointOn'; }
+  function pathParameter(parent) {
+    if (circleTypes.has(parent.type)) return { key: 'parameter', label: 'Доля оборота', min: 0, max: 1, initial: 0, step: 1 / 36, largeStep: 1 / 12 };
+    if (parent.type === 'segment') return { key: 'parameter', label: 'Доля отрезка', min: 0, max: 1, initial: .5, step: .01, largeStep: .1 };
+    if (parent.type === 'functionGraph') return { key: 'parameter', label: 'Координата x', min: -M.MAX_COORD, max: M.MAX_COORD, initial: Math.max(-M.MAX_COORD, Math.min(M.MAX_COORD, state.view.viewport.x)), step: .1, largeStep: 1 };
+    const min = parent.type === 'ray' || parent.type === 'bisector' ? 0 : -M.MAX_COORD;
+    return { key: 'parameter', label: 'Параметр t', min, max: M.MAX_COORD, initial: 0, step: .1, largeStep: 1 };
+  }
+  function setParameterInput(input, caption, settings, value) {
+    input.min = String(settings.min);
+    input.max = String(settings.max);
+    caption.textContent = settings.label;
+    if (value !== undefined) input.value = String(value);
+  }
   function addPoint(x, y, choose = true) {
     const id = nextId(), point = { id, type: 'point', label: pointLabel(), x, y };
     if (commit(s => s.objects.push(point), 'Добавлена точка ' + point.label + '.')) {
@@ -90,40 +125,50 @@
   function expectedKind() { return tool === 'polygon' ? 'point' : inputKinds[tool]?.[pending.length]; }
   function expectedPoint() { return expectedKind() === 'point'; }
   function accepts(item) {
-    if (!item || pending.includes(item.id)) return false;
+    if (!item || (tool !== 'vector' && pending.includes(item.id))) return false;
     const kind = expectedKind();
     if (kind === 'point') return pointTypes.has(item.type);
     if (kind === 'line') return lineTypes.has(item.type);
     if (kind === 'circle') return circleTypes.has(item.type);
     if (kind === 'curve') return lineTypes.has(item.type) || circleTypes.has(item.type);
+    if (kind === 'path') return lineTypes.has(item.type) || circleTypes.has(item.type) || item.type === 'functionGraph';
+    if (kind === 'vector') return item.type === 'vector';
     if (kind === 'surface') return item.type === 'polygon' || circleTypes.has(item.type);
     return kind === 'polygon' && item.type === 'polygon';
   }
-  function choose(id) {
+  function choose(id, position) {
     selected = id;
     if (!readOnly && tool !== 'move' && tool !== 'point') {
       if (!accepts(object(id))) { say('Этот объект сейчас не подходит. ' + hints[tool], true); renderPanels(); return; }
       pending.push(id);
       const needed = inputKinds[tool]?.length;
-      if (tool !== 'polygon' && pending.length === needed) finishConstruction();
+      if (tool !== 'polygon' && pending.length === needed) finishConstruction(position);
       else updateTool();
     }
     renderPanels();
   }
-  function finishConstruction() {
+  function finishConstruction(position) {
     if (readOnly || !pending.length || tool === 'polygon' && pending.length < 3) return;
     const type = tool, parents = [...pending], id = nextId();
     const newObject = { id, type, label: pointTypes.has(type) ? pointLabel() : names[type].slice(0, 26) + ' ' + (state.objects.filter(o => o.type === type).length + 1), parents };
-    if (type === 'intersection') newObject.branch = 0;
-    if (type === 'rotate') newObject.angle = Number($('tool-parameter').value);
-    if (type === 'dilate') newObject.factor = Number($('tool-parameter').value);
+    if (type === 'intersection' || type === 'tangent') newObject.branch = 0;
+    const parameter = toolParameters[type];
+    if (parameter) {
+      const input = $('tool-parameter');
+      if (!input.reportValidity()) { pending = []; updateTool(); return; }
+      newObject[parameter.key] = Number(input.value);
+    }
+    if (type === 'pointOn') {
+      const projected = position ? M.projectParameter(val(parents[0]), ...position) : null;
+      newObject.parameter = projected ?? pathParameter(object(parents[0])).initial;
+    }
     const candidate = clone(state); candidate.objects.push(newObject);
     try {
-      // Both algebraic roots are retained, including a currently missing root.
-      // This keeps the second intersection recoverable when the model moves.
-      if (type === 'intersection' && parents.some(parent => circleTypes.has(object(parent).type))) {
+      // Both branches remain in the model, including a currently missing one.
+      // This lets a second intersection or tangent recover when the model moves.
+      if (type === 'tangent' || type === 'intersection' && parents.some(parent => circleTypes.has(object(parent).type))) {
         let suffix = 1; while (candidate.objects.some(o => o.id === 'o' + suffix)) suffix++;
-        let secondLabel = newObject.label + '₂'; if (secondLabel.length > 30) secondLabel = 'Пересечение 2';
+        let secondLabel = newObject.label + '₂'; if (secondLabel.length > 30) secondLabel = names[type] + ' 2';
         candidate.objects.push({ id: 'o' + suffix, type, label: secondLabel, parents, branch: 1 });
       }
       M.normalize(candidate);
@@ -134,19 +179,16 @@
         say(result.defined ? names[type] + ': построение готово.' : names[type] + ': ' + undefinedReason(newObject, result), !result.defined);
       }
       updateTool();
-    } catch (error) { say(error.message, true); }
+    } catch (error) { pending = []; updateTool(); say(error.message, true); }
   }
   function setTool(value) {
     if (readOnly) return;
     finishSlider(); interactionEpoch++; tool = value; pending = [];
     document.querySelectorAll('.tool-group').forEach(group => { group.open = false; });
-    if (value === 'rotate' || value === 'dilate') {
-      $('tool-parameter').value = value === 'rotate' ? '90' : '2';
-      $('tool-parameter').min = value === 'rotate' ? '-36000' : '-1000';
-      $('tool-parameter').max = value === 'rotate' ? '36000' : '1000';
-    }
+    const parameter = toolParameters[value];
+    if (parameter) setParameterInput($('tool-parameter'), $('tool-parameter-label'), parameter, parameter.initial);
     updateTool();
-    for (const item of state.objects) if (item.type === 'point') drawings[item.id]?.setAttribute({ fixed: tool !== 'move' });
+    for (const item of state.objects) if (movablePoint(item)) drawings[item.id]?.setAttribute({ fixed: tool !== 'move' });
     renderPanels();
   }
   function updateTool() {
@@ -155,10 +197,62 @@
     $('pending-selection').textContent = pending.length ? 'Выбрано: ' + pending.map(label).join(' → ') : '';
     $('finish-polygon').hidden = tool !== 'polygon' || pending.length < 3;
     $('cancel-selection').hidden = !pending.length;
-    $('transformation-parameter').hidden = !['rotate', 'dilate'].includes(tool);
-    $('tool-parameter-label').textContent = tool === 'rotate' ? 'Угол, °' : 'Коэффициент';
+    $('transformation-parameter').hidden = !toolParameters[tool];
   }
   const val = id => evaluated[id];
+  function placePoint(element, result) {
+    if (result.defined) element?.setPosition(root.JXG.COORDS_BY_USER, [result.x, result.y]);
+  }
+  function updateDrawings() {
+    for (const item of state.objects) {
+      if (item.type === 'pointOn') placePoint(drawings[item.id], val(item.id));
+    }
+    board?.update();
+  }
+  function pointChange(item, x, y) {
+    if (item.type === 'pointOn') {
+      const parameter = M.projectParameter(val(item.parents[0]), x, y);
+      return parameter === null ? null : { parameter };
+    }
+    return [x, y].every(n => Number.isFinite(n) && Math.abs(n) <= M.MAX_COORD) ? { x, y } : null;
+  }
+  function bindPointDrag(element, id) {
+    element.on('down', () => {
+      if (readOnly || tool !== 'move') return;
+      dragBefore = clone(state);
+      dragId = id;
+      dragBoundsError = false;
+      selected = id;
+      renderPanels();
+    });
+    element.on('drag', () => {
+      const current = object(id);
+      if (!current) return;
+      const restore = () => { placePoint(element, val(id)); board.update(); };
+      if (readOnly || tool !== 'move' || !dragBefore || dragId !== id) { restore(); return; }
+      const change = pointChange(current, element.X(), element.Y());
+      const candidate = clone(state);
+      if (change) Object.assign(candidate.objects.find(item => item.id === id), change);
+      let next;
+      try { next = change && M.evaluate(candidate); }
+      catch (error) { restore(); say(error.message, true); return; }
+      if (!next || !next[id].defined) {
+        restore();
+        dragBoundsError = true;
+        const message = current.type === 'pointOn'
+          ? 'На этом участке точка не определена. Сохранили последнее положение.'
+          : 'Координаты должны быть в пределах от −1 000 000 до 1 000 000. Точка осталась в последнем допустимом положении.';
+        say(message, true);
+        return;
+      }
+      if (dragBoundsError) { say('Точка снова в допустимом положении.'); dragBoundsError = false; }
+      state = candidate;
+      evaluated = next;
+      updateDrawings();
+      schedulePanels();
+      if (performance.now() - lastDragEmit > 120) { lastDragEmit = performance.now(); saveAndEmit(); }
+    });
+  }
   function renderBoard() {
     if (!root.JXG) { say('Не загрузился геометрический модуль. Обновите страницу.', true); return; }
     rendering = true;
@@ -183,33 +277,26 @@
         const id = item.id, result = val(id), common = { name: '', withLabel: false, strokeColor: '#4c7161', highlightStrokeColor: '#c28b2d', strokeWidth: 2, fixed: true, visible: () => !!val(id)?.defined };
         let element;
         if (result.kind === 'point') {
-          const free = item.type === 'point';
-          element = board.create('point', free ? [item.x, item.y] : [() => val(id).defined ? val(id).x : NaN, () => val(id).defined ? val(id).y : NaN], {
+          const free = item.type === 'point', movable = movablePoint(item);
+          const coordinates = movable
+            ? [result.x ?? 0, result.y ?? 0]
+            : [() => val(id).defined ? val(id).x : NaN, () => val(id).defined ? val(id).y : NaN];
+          element = board.create('point', coordinates, {
             ...common, name: item.label, withLabel: true, label: { display: 'internal', useMathJax: false, parse: false, fontSize: 14, strokeColor: '#203a32' },
-            size: free ? 4.5 : 4, strokeWidth: 2, fillColor: free ? '#23765a' : '#507db6', strokeColor: '#fff', highlightStrokeColor: '#c28b2d', fixed: !free || readOnly || tool !== 'move', snapToGrid: false
+            size: movable ? 4.5 : 4, strokeWidth: 2, fillColor: free ? '#23765a' : '#507db6', strokeColor: '#fff', highlightStrokeColor: '#c28b2d', fixed: !movable || readOnly || tool !== 'move', snapToGrid: false
           });
-          if (free) {
-            element.on('down', () => { if (!readOnly && tool === 'move') { dragBefore = clone(state); dragId = id; dragBoundsError = false; selected = id; renderPanels(); } });
-            element.on('drag', () => {
-              const current = object(id);
-              if (!current) return;
-              const restore = () => { element.setPosition(root.JXG.COORDS_BY_USER, [current.x, current.y]); board.update(); };
-              if (readOnly || tool !== 'move' || !dragBefore || dragId !== id) { restore(); return; }
-              const x = element.X(), y = element.Y();
-              if (![x, y].every(n => Number.isFinite(n) && Math.abs(n) <= M.MAX_COORD)) {
-                restore(); dragBoundsError = true; say('Координаты должны быть в пределах от −1 000 000 до 1 000 000. Точка осталась в последнем допустимом положении.', true); return;
-              }
-              if (dragBoundsError) { say('Точка снова в допустимом диапазоне.'); dragBoundsError = false; }
-              current.x = x; current.y = y; evaluated = M.evaluate(state);
-              board.update(); schedulePanels();
-              if (performance.now() - lastDragEmit > 120) { lastDragEmit = performance.now(); saveAndEmit(); }
-            });
-          }
-        } else if (result.kind === 'line') {
+          if (movable) bindPointDrag(element, id);
+        } else if (result.kind === 'line' || result.kind === 'vector') {
           const a = axis => () => val(id).defined ? val(id).a[axis] : NaN;
           const b = axis => () => val(id).defined ? val(id).a[axis] + val(id).d[axis] : NaN;
+          const vector = result.kind === 'vector', bounded = item.type === 'segment' || vector;
           const isRay = item.type === 'ray' || item.type === 'bisector';
-          element = board.create('line', [[a(0), a(1)], [b(0), b(1)]], { ...common, straightFirst: item.type !== 'segment' && !isRay, straightLast: item.type !== 'segment', lastArrow: isRay ? { type: 2, size: 5 } : false, dash: ['parallel', 'perpendicular', 'bisector', 'perpendicularBisector'].includes(item.type) ? 2 : 0 });
+          element = board.create('line', [[a(0), a(1)], [b(0), b(1)]], {
+            ...common, straightFirst: !bounded && !isRay, straightLast: !bounded,
+            lastArrow: isRay || vector ? { type: 2, size: 5 } : false,
+            strokeColor: vector ? '#7453b8' : common.strokeColor,
+            dash: ['parallel', 'perpendicular', 'bisector', 'perpendicularBisector'].includes(item.type) ? 2 : 0
+          });
         } else if (result.kind === 'circle') {
           element = board.create('circle', [[() => val(id).defined ? val(id).c[0] : NaN, () => val(id).defined ? val(id).c[1] : NaN], () => val(id).defined ? val(id).r : NaN], { ...common, strokeColor: '#779249', fillOpacity: 0 });
         } else if (result.kind === 'polygon') {
@@ -271,7 +358,7 @@
     if (!sliderBefore) { sliderBefore = clone(state); sliderId = id; }
     try {
       const candidate = clone(state); candidate.objects.find(item => item.id === id).value = value;
-      state = M.normalize(candidate); evaluated = M.evaluate(state); board?.update();
+      state = M.normalize(candidate); evaluated = M.evaluate(state); updateDrawings(); renderFunctionTable(object(selected));
       if (performance.now() - lastSliderEmit > 120) { lastSliderEmit = performance.now(); saveAndEmit(); }
     } catch (error) { say(error.message, true); }
   }
@@ -306,7 +393,8 @@
     const threshold = 14 / Math.min(board.unitX, board.unitY);
     const matches = [];
     for (const item of state.objects) {
-      const r = val(item.id); if (!r.defined) continue;
+      const r = val(item.id);
+      if (!r.defined || (tool !== 'move' && !accepts(item))) continue;
       let distance = Infinity;
       if (r.kind === 'point') distance = Math.hypot(x - r.x, y - r.y);
       else if (r.kind === 'circle') distance = Math.abs(Math.hypot(x - r.c[0], y - r.c[1]) - r.r);
@@ -317,12 +405,19 @@
           if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside;
         }
         distance = inside ? 0 : Infinity;
-      } else if (r.kind === 'line') {
-        const q = [x - r.a[0], y - r.a[1]], norm = r.d[0] ** 2 + r.d[1] ** 2;
-        const t = Math.max(r.domain[0], Math.min(r.domain[1], (q[0] * r.d[0] + q[1] * r.d[1]) / norm));
-        distance = Math.hypot(x - r.a[0] - t * r.d[0], y - r.a[1] - t * r.d[1]);
+      } else if (r.kind === 'line' || r.kind === 'vector') {
+        const q = [x - r.a[0], y - r.a[1]], size = Math.hypot(...r.d);
+        if (size === 0) distance = Math.hypot(...q);
+        else {
+          const direction = [r.d[0] / size, r.d[1] / size], domain = r.kind === 'vector' ? [0, 1] : r.domain;
+          const along = Math.max(domain[0] * size, Math.min(domain[1] * size, q[0] * direction[0] + q[1] * direction[1]));
+          distance = Math.hypot(q[0] - along * direction[0], q[1] - along * direction[1]);
+        }
+      } else if (r.kind === 'functionGraph') {
+        const ordinate = Expression.evaluate(r.expression, x, r.parameters);
+        if (Number.isFinite(ordinate)) distance = Math.abs(y - ordinate);
       }
-      if (distance <= threshold && (tool === 'move' || accepts(item))) matches.push({ id: item.id, priority: r.kind === 'point' ? 0 : 1, distance });
+      if (distance <= threshold) matches.push({ id: item.id, priority: r.kind === 'point' ? 0 : 1, distance });
     }
     matches.sort((a, b) => a.priority - b.priority || a.distance - b.distance);
     return matches[0]?.id;
@@ -337,7 +432,7 @@
     root.setTimeout(() => {
       if (readOnly || epoch !== interactionEpoch || activeTool !== tool || activeBoard !== board) return;
       if (tool === 'point') addPoint(x, y);
-      else if (hit) choose(hit);
+      else if (hit) choose(hit, position);
       else if (expectedPoint()) { const id = addPoint(x, y, false); if (id) choose(id); }
       else say(hints[tool], true);
     }, 0);
@@ -355,8 +450,32 @@
     if (r.kind === 'measurement') return '≈ ' + format(r.value) + r.unit + ' · ' + parents;
     if (r.kind === 'slider') return r.name + ' = ' + String(r.value) + ' · от ' + String(r.min) + ' до ' + String(r.max);
     if (r.kind === 'functionGraph') return 'f(x) = ' + r.expression;
+    if (r.kind === 'functionTable') return parents + ' · x от ' + tableNumber(item.start) + ' до ' + tableNumber(item.end) + ' · шаг ' + tableNumber(item.step);
+    if (r.kind === 'vector') return '(' + format(r.d[0]) + '; ' + format(r.d[1]) + ') · ' + parents;
     if (r.kind === 'circle') return 'r ≈ ' + format(r.r) + ' · ' + parents;
     return parents;
+  }
+  const tableNumber = value => String(value).replace('.', ',');
+  function tableOrdinate(value) {
+    if (value === null) return '—';
+    const rounded = Number(value.toPrecision(10));
+    return (rounded === value ? '' : '≈ ') + tableNumber(rounded);
+  }
+  function renderFunctionTable(item) {
+    const result = item?.type === 'functionTable' ? val(item.id) : null;
+    const visible = result?.defined === true;
+    $('function-table-output').hidden = !visible;
+    $('function-table-note').hidden = !visible || !result.rows.some(row => row.y === null);
+    if (!visible) { $('function-table-body').replaceChildren(); return; }
+    $('function-table-caption').textContent = 'Значения функции ' + label(item.parents[0]);
+    $('function-table-body').replaceChildren(...result.rows.map(({ x, y }) => {
+      const row = document.createElement('tr');
+      const argument = document.createElement('td'), ordinate = document.createElement('td');
+      argument.textContent = tableNumber(x);
+      ordinate.textContent = tableOrdinate(y);
+      row.append(argument, ordinate);
+      return row;
+    }));
   }
   function schedulePanels() { if (uiFrame === null) uiFrame = requestAnimationFrame(() => { uiFrame = null; renderPanels(); }); }
   function renderPanels() {
@@ -371,7 +490,7 @@
       const sub = document.createElement('small'); sub.textContent = description(item); info.append(title, sub); row.append(dot, info); row.onclick = () => choose(item.id); return row;
     }));
     if (active) list.querySelector('[data-object="' + active + '"]')?.focus({ preventScroll: true });
-        const activeSlider = document.activeElement?.dataset?.slider;
+    const activeSlider = document.activeElement?.dataset?.slider;
     const sliders = state.objects.filter(item => item.type === 'slider');
     $('slider-list').replaceChildren(...sliders.map(parameter => {
       const control = document.createElement('label'); control.className = 'slider-control';
@@ -389,9 +508,17 @@
     inspectorRevision = revision;
     if (item) {
       $('selected-heading').textContent = names[item.type] + ' ' + item.label;
-      const graph = item.type === 'functionGraph', slider = item.type === 'slider';
+      const graph = item.type === 'functionGraph', slider = item.type === 'slider', table = item.type === 'functionTable';
       $('selected-expression').hidden = !graph; $('edit-expression').disabled = !graph || readOnly;
       if (graph && inspectorChanged) $('edit-expression').value = item.expression;
+      $('add-function-table').hidden = !graph;
+      $('add-function-table').disabled = readOnly;
+      $('selected-table-settings').hidden = !table;
+      for (const field of ['start', 'end', 'step']) {
+        const input = $('edit-table-' + field);
+        input.disabled = !table || readOnly;
+        if (table && inspectorChanged) input.value = String(item[field]);
+      }
       $('selected-slider-settings').hidden = !slider;
       for (const field of ['min', 'max', 'step', 'value']) {
         const input = $('edit-slider-' + field); input.disabled = !slider || readOnly;
@@ -400,13 +527,10 @@
       $('selected-description').textContent = description(item);
       if (inspectorChanged) $('object-label').value = item.label;
       const free = item.type === 'point'; $('coordinate-editor').hidden = !free;
-      const transform = item.type === 'rotate' || item.type === 'dilate';
-      $('selected-parameter').hidden = !transform;
-      $('selected-parameter-label').textContent = item.type === 'rotate' ? 'Угол, °' : 'Коэффициент';
-      $('edit-parameter').min = item.type === 'rotate' ? '-36000' : '-1000';
-      $('edit-parameter').max = item.type === 'rotate' ? '36000' : '1000';
-      $('edit-parameter').disabled = !transform || readOnly;
-      if (transform && inspectorChanged) $('edit-parameter').value = String(item.type === 'rotate' ? item.angle : item.factor);
+      const parameter = item.type === 'pointOn' ? pathParameter(object(item.parents[0])) : toolParameters[item.type];
+      $('selected-parameter').hidden = !parameter;
+      $('edit-parameter').disabled = !parameter || readOnly;
+      if (parameter && inspectorChanged) setParameterInput($('edit-parameter'), $('selected-parameter-label'), parameter, item[parameter.key]);
       $('edit-x').disabled = !free || readOnly; $('edit-y').disabled = !free || readOnly;
       if (free) {
         // These are editable model values, not rounded display measurements.
@@ -415,6 +539,7 @@
         if (inspectorChanged) $('edit-y').value = String(item.y);
       }
     }
+    renderFunctionTable(item);
     $('undo').disabled = readOnly || !history.length; $('redo').disabled = readOnly || !future.length;
     updateTool();
   }
@@ -427,11 +552,11 @@
     const next = value === true;
     if (accessInitialized && readOnly === next) return;
     accessInitialized = true; readOnly = next; document.documentElement.dataset.spacemathReadonly = String(readOnly);
-    if (readOnly) { if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; } interactionEpoch++; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; pending = []; if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); }
+    if (readOnly) { if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; } interactionEpoch++; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; pending = []; inspectorRevision = null; if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); }
     document.querySelectorAll('#tools button,#add-function-form input,#add-function-form button,#add-slider-form input,#add-slider-form select,#add-slider-form button,#tool-parameter,#fit-view,#zoom-in,#zoom-out,#model-title,#show-axes,#show-grid,#add-point-form input,#add-point-form button,#edit-object-form input,#edit-object-form button,#delete-object,#new-model,#example,#import-json,#finish-polygon,#cancel-selection').forEach(control => { control.disabled = readOnly; });
-    for (const item of state.objects) if (item.type === 'point') {
+    for (const item of state.objects) if (movablePoint(item)) {
       drawings[item.id]?.setAttribute({ fixed: readOnly || tool !== 'move' });
-      if (readOnly) drawings[item.id]?.setPosition(root.JXG.COORDS_BY_USER, [item.x, item.y]);
+      if (readOnly) placePoint(drawings[item.id], val(item.id));
     }
     if (board) { board.setAttribute({ pan: { enabled: !readOnly }, zoom: { enabled: !readOnly } }); if (readOnly) { restoreViewport(); board.update(); } }
     renderPanels(); updateSaveStatus();
@@ -440,8 +565,11 @@
     const incoming = M.normalize(value); interactionEpoch++;
     if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; }
     if (JSON.stringify(incoming) === JSON.stringify(state)) return;
+    // Keep an inspected table open while a remote editor changes its function.
+    const keepTable = object(selected)?.type === 'functionTable'
+      && incoming.objects.some(item => item.id === selected && item.type === 'functionTable');
     applying = true;
-    try { if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); state = incoming; history = []; future = []; pending = []; selected = null; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; render(); }
+    try { if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); state = incoming; history = []; future = []; pending = []; if (!keepTable) selected = null; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; render(); }
     finally { applying = false; }
   }
   function ask(title, message, accept, action) {
@@ -504,15 +632,32 @@
   $('show-grid').onchange = () => commit(s => { s.view.grid = $('show-grid').checked; });
   localForm($('add-point-form'), () => { const id = addPoint(Number($('point-x').value), Number($('point-y').value), false); if (id) { if (expectedPoint()) choose(id); else { selected = id; renderPanels(); } } });
   localForm($('edit-object-form'), () => {
-    if (!object(selected)) return;
+    const selectedObject = object(selected);
+    if (!selectedObject) return;
     const id = selected, newLabel = $('object-label').value, x = Number($('edit-x').value), y = Number($('edit-y').value);
-    commit(s => { const item = s.objects.find(o => o.id === id); item.label = newLabel; if (item.type === 'point') { item.x = x; item.y = y; } if (item.type === 'rotate') item.angle = Number($('edit-parameter').value); if (item.type === 'dilate') item.factor = Number($('edit-parameter').value);
+    const parameter = selectedObject.type === 'pointOn' ? pathParameter(object(selectedObject.parents[0])) : toolParameters[selectedObject.type];
+    commit(s => {
+      const item = s.objects.find(o => o.id === id);
+      item.label = newLabel;
+      if (item.type === 'point') { item.x = x; item.y = y; }
+      if (parameter) item[parameter.key] = Number($('edit-parameter').value);
       if (item.type === 'slider') for (const field of ['min', 'max', 'step', 'value']) item[field] = Number($('edit-slider-' + field).value);
+      if (item.type === 'functionTable') for (const field of ['start', 'end', 'step']) item[field] = Number($('edit-table-' + field).value);
       if (item.type === 'functionGraph') {
-        // A graph can acquire a newly created parameter; keep parents before it.
-        s.objects = s.objects.filter(o => o.id !== id);
-        Object.assign(item, graphParents($('edit-expression').value, s, true)); s.objects.push(item);
-      } }, 'Объект обновлён.');
+        Object.assign(item, graphParents($('edit-expression').value, s, true));
+        // Only a newly referenced slider can move before this graph. Existing
+        // points and tables must stay after their parent when its formula changes.
+        const index = s.objects.indexOf(item);
+        const following = s.objects.slice(index + 1);
+        const required = new Set(item.parents);
+        s.objects = [
+          ...s.objects.slice(0, index),
+          ...following.filter(o => required.has(o.id)),
+          item,
+          ...following.filter(o => !required.has(o.id))
+        ];
+      }
+    }, 'Объект обновлён.');
   });
   localForm($('add-function-form'), () => {
     let id;
@@ -526,6 +671,17 @@
     const id = nextId();
     if (commit(s => s.objects.push({ id, type: 'slider', label: $('slider-name').value, parents: [], name: $('slider-name').value, min: Number($('slider-min').value), max: Number($('slider-max').value), step: Number($('slider-step').value), value: Number($('slider-value').value) }), 'Параметр добавлен. Используйте его имя в формуле.')) { selected = id; renderPanels(); }
   });
+  $('add-function-table').onclick = () => {
+    const graph = object(selected);
+    if (readOnly || graph?.type !== 'functionGraph') return;
+    const id = nextId();
+    const table = { id, type: 'functionTable', label: 'Значения ' + graph.label.slice(0, 20), parents: [graph.id], start: -3, end: 3, step: 1 };
+    if (commit(s => s.objects.push(table), 'Таблица добавлена. Задайте нужный диапазон x.')) {
+      selected = id;
+      renderPanels();
+      $('edit-table-start').focus({ preventScroll: true });
+    }
+  };
   $('confirm-dialog').querySelectorAll('button[value]').forEach(button => {
     button.onclick = event => { event.preventDefault(); $('confirm-dialog').close(button.value); };
   });
@@ -557,9 +713,26 @@
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); travel(event.shiftKey); }
     else if (event.key === 'Escape') { setTool('move'); say('Выбор инструмента отменён.'); }
     else if (event.key === 'Delete' && selected) { event.preventDefault(); $('delete-object').click(); }
-    else if (tool === 'move' && object(selected)?.type === 'point' && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key) && (event.target.id === 'geometry-board' || event.target.dataset.object)) {
-      event.preventDefault(); const step = event.shiftKey ? 1 : .1, dx = event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0, dy = event.key === 'ArrowUp' ? step : event.key === 'ArrowDown' ? -step : 0;
-      commit(s => { const item = s.objects.find(o => o.id === selected); if (dx) item.x += dx; if (dy) item.y += dy; });
+    else if (tool === 'move' && movablePoint(object(selected)) && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key) && (event.target.id === 'geometry-board' || event.target.dataset.object)) {
+      event.preventDefault();
+      const selectedObject = object(selected);
+      if (selectedObject.type === 'pointOn') {
+        const parent = object(selectedObject.parents[0]), settings = pathParameter(parent);
+        const sign = event.key === 'ArrowRight' || event.key === 'ArrowUp' ? 1 : -1;
+        let parameter = selectedObject.parameter + sign * (event.shiftKey ? settings.largeStep : settings.step);
+        if (circleTypes.has(parent.type)) parameter = ((parameter % 1) + 1) % 1;
+        else parameter = Math.max(settings.min, Math.min(settings.max, parameter));
+        commit(s => {
+          const point = s.objects.find(o => o.id === selectedObject.id);
+          point.parameter = parameter;
+          if (!M.evaluate(s)[point.id].defined) throw new Error('На этом участке точка не определена.');
+        });
+      } else {
+        const step = event.shiftKey ? 1 : .1;
+        const dx = event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0;
+        const dy = event.key === 'ArrowUp' ? step : event.key === 'ArrowDown' ? -step : 0;
+        commit(s => { const item = s.objects.find(o => o.id === selectedObject.id); if (dx) item.x += dx; if (dy) item.y += dy; });
+      }
     }
   });
   root.addEventListener('pointerup', () => { finishDrag(); finishSlider(); flushViewport(); });

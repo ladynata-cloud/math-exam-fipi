@@ -27,12 +27,25 @@ function fixture(t) {
       const update = () => created.forEach(element => element.updateDataArray?.());
       activeBoard = {
         canvasWidth: 800, canvasHeight: 600,
+        unitX: 50, unitY: 50,
         getBoundingBox: () => [...bounds],
+        getUsrCoordsOfMouse: event => event.coordinates,
         setBoundingBox(value) { bounds = [...value]; handlers.get('boundingbox')?.(); },
         setAttribute() {}, suspendUpdate() {}, unsuspendUpdate: update,
         on(type, callback) { handlers.set(type, callback); }, update, fullUpdate: update,
+        emit(type, event) { handlers.get(type)?.(event); },
         create(type, args, attrs) {
-          const element = { type, args, attrs, on() {}, setAttribute() {}, setPosition() {} };
+          const events = new Map();
+          let position;
+          const coordinate = i => position?.[i] ?? (typeof args[i] === 'function' ? args[i]() : args[i]);
+          const element = {
+            type, args, attrs,
+            on(name, callback) { events.set(name, callback); },
+            emit(name, event) { events.get(name)?.(event); },
+            setAttribute() {},
+            setPosition(_method, value) { position = [...value]; },
+            X: () => coordinate(0), Y: () => coordinate(1)
+          };
           created.push(element); return element;
         }
       };
@@ -52,6 +65,8 @@ function fixture(t) {
   return { w, d, select, submit, install, app: w.SpaceMathApp, created: () => created, board: () => activeBoard };
 }
 const point = (id, x, y) => ({ id, type: 'point', label: id.toUpperCase(), x, y });
+const tableCells = f => Array.from(f.d.querySelectorAll('#function-table-output tbody tr'), row =>
+  Array.from(row.cells, cell => cell.textContent.trim()));
 
 test('renaming a free point preserves full coordinates and dependent geometry, including tiny coordinates', t => {
   const f = fixture(t);
@@ -242,4 +257,124 @@ test('local zoom and pan emit canonical viewport while remote views and readonly
   await new Promise(resolve => setTimeout(resolve, 160));
   assert.deepEqual(JSON.parse(JSON.stringify(f.app.getState().view.viewport)), { x: 3, y: -2, span: 6 });
   assert.equal(updates.length, 2, 'read-only viewport events cannot publish changes');
+});
+
+test('a point placed on a segment moves along it and stays locked in a shared view', async t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 4, 2), { id: 'ab', type: 'segment', label: 'AB', parents: ['a', 'b'] }]);
+  f.d.querySelector('[data-tool="pointOn"]').click();
+  f.board().emit('down', { coordinates: [3, 1.5] });
+  await new Promise(resolve => f.w.setTimeout(resolve, 0));
+  const attached = f.app.getState().objects.find(item => item.type === 'pointOn');
+  assert.ok(attached, 'clicking the segment creates a dependent point');
+  assert.deepEqual(Array.from(attached.parents), ['ab']);
+  assert.ok(Math.abs(attached.parameter - .75) < 1e-12, 'the placement uses the click rather than the default position');
+
+  f.d.querySelector('[data-tool="move"]').click();
+  const drawing = f.created().find(element => element.type === 'point' && element.attrs.name === attached.label);
+  assert.ok(drawing, 'attached point is rendered');
+  drawing.emit('down');
+  drawing.setPosition(f.w.JXG.COORDS_BY_USER, [8, 6]);
+  drawing.emit('drag');
+  f.board().emit('up');
+  const current = () => f.w.SpaceMathModel.evaluate(f.app.getState())[attached.id];
+  assert.deepEqual([current().x, current().y], [4, 2], 'dragging past the segment stops at its endpoint');
+
+  f.select(attached.id);
+  f.d.getElementById('edit-parameter').value = '.25';
+  f.submit();
+  assert.deepEqual([current().x, current().y], [1, .5], 'the precise editor preserves the segment constraint');
+  f.d.getElementById('undo').click();
+  assert.deepEqual([current().x, current().y], [4, 2]);
+  f.d.getElementById('redo').click();
+  f.app.setReadOnly(true);
+  f.select(attached.id);
+  assert.equal(f.d.getElementById('edit-parameter').disabled, true);
+  f.d.getElementById('edit-parameter').value = '.5';
+  f.d.getElementById('edit-object-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+  assert.deepEqual([current().x, current().y], [1, .5], 'an observer cannot alter the saved parameter');
+});
+
+test('vector transfer and both tangent branches remain attached to their defining objects', t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 4, 0), point('c', 0, 1)]);
+  const tool = name => f.d.querySelector('[data-tool="' + name + '"]').click();
+  const byType = name => f.app.getState().objects.filter(item => item.type === name);
+  const evaluate = () => f.w.SpaceMathModel.evaluate(f.app.getState());
+  tool('vector'); f.select('a'); f.select('b');
+  const [vector] = byType('vector');
+  assert.ok(vector);
+  tool('translate'); f.select('c'); f.select(vector.id);
+  const [translated] = byType('translate');
+  assert.deepEqual([evaluate()[translated.id].x, evaluate()[translated.id].y], [4, 1]);
+
+  tool('circleRadius'); f.d.getElementById('tool-parameter').value = '2'; f.select('a');
+  const [circle] = byType('circleRadius');
+  assert.equal(evaluate()[circle.id].r, 2);
+  tool('tangent'); f.select(circle.id); f.select('b');
+  const branches = byType('tangent');
+  assert.equal(branches.length, 2, 'a single construction stores both tangent branches');
+  assert.equal(branches.filter(branch => evaluate()[branch.id].defined).length, 2);
+
+  tool('move'); f.select('b');
+  f.d.getElementById('edit-x').value = '2';
+  f.submit();
+  assert.equal(branches.filter(branch => evaluate()[branch.id].defined).length, 1, 'there is only one tangent at the contact point');
+  assert.equal(evaluate()[translated.id].x, 2, 'vector transfer follows the changed vector');
+  f.d.getElementById('undo').click();
+  assert.deepEqual(byType('tangent').map(branch => branch.id), branches.map(branch => branch.id), 'both identities survive moving through the tangency boundary');
+  assert.equal(branches.filter(branch => evaluate()[branch.id].defined).length, 2);
+});
+
+test('a graph table follows formula and slider edits, then opens in read-only mode without echoing changes', t => {
+  const author = fixture(t), viewer = fixture(t);
+  author.d.getElementById('function-expression').value = 'a*sqrt(x)';
+  author.d.querySelector('#add-function-form button').click();
+  const graph = author.app.getState().objects.find(item => item.type === 'functionGraph');
+  author.select(graph.id);
+  author.d.getElementById('add-function-table').click();
+  const table = author.app.getState().objects.find(item => item.type === 'functionTable');
+  assert.ok(table, 'the selected graph can create a saved table');
+  author.select(table.id);
+  for (const [key, value] of [['start', '-1'], ['end', '1'], ['step', '1']]) {
+    author.d.getElementById('edit-table-' + key).value = value;
+  }
+  author.submit();
+  assert.deepEqual(tableCells(author).map(row => row[1]), ['—', '0', '1']);
+
+  author.select(graph.id);
+  author.d.getElementById('edit-expression').value = 'a*sqrt(x)+b';
+  author.submit();
+  const edited = author.app.getState();
+  assert.equal(edited.objects.find(item => item.id === graph.id).expression, 'a*sqrt(x)+b');
+  assert.deepEqual(Array.from(edited.objects.find(item => item.id === table.id).parents), [graph.id]);
+  author.select(table.id);
+  assert.deepEqual(tableCells(author).map(row => row[1]), ['—', '1', '2'], 'adding a formula parameter retains its downstream table');
+
+  const a = edited.objects.find(item => item.type === 'slider' && item.name === 'a');
+  const range = author.d.querySelector('[data-slider="' + a.id + '"]');
+  range.value = '3';
+  range.dispatchEvent(new author.w.Event('input', { bubbles: true }));
+  assert.deepEqual(tableCells(author).map(row => row[1]), ['—', '1', '4'], 'table cells recompute during slider input');
+  assert.equal(range.isConnected, true, 'updating the table must not replace the slider being dragged');
+  range.dispatchEvent(new author.w.Event('change', { bubbles: true }));
+
+  viewer.app.setReadOnly(true);
+  const received = JSON.stringify(author.app.getState()), outgoing = [];
+  viewer.app.subscribe(() => outgoing.push(viewer.app.getState()));
+  viewer.app.applyState(viewer.w.JSON.parse(received));
+  viewer.select(table.id);
+  assert.deepEqual(tableCells(viewer), tableCells(author));
+  assert.equal(viewer.d.getElementById('edit-table-end').disabled, true);
+  viewer.d.getElementById('edit-table-end').value = '2';
+  viewer.d.getElementById('edit-object-form').dispatchEvent(new viewer.w.Event('submit', { bubbles: true, cancelable: true }));
+  assert.equal(JSON.stringify(viewer.app.getState()), received);
+
+  const nextRange = author.d.querySelector('[data-slider="' + a.id + '"]');
+  nextRange.value = '4';
+  nextRange.dispatchEvent(new author.w.Event('input', { bubbles: true }));
+  nextRange.dispatchEvent(new author.w.Event('change', { bubbles: true }));
+  viewer.app.applyState(viewer.w.JSON.parse(JSON.stringify(author.app.getState())));
+  assert.deepEqual(tableCells(viewer).map(row => row[1]), ['—', '1', '5'], 'an open table follows the author without needing to be selected again');
+  assert.deepEqual(outgoing, []);
 });

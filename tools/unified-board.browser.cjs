@@ -85,6 +85,8 @@ async function geometryFrame(page, host = '#geometryHost') {
   }, 'geometry bridge ready');
 }
 const geometry = frame => frame.evaluate(() => window.SpaceMathApp.getState());
+const selectGeometryObject = (frame, id) => frame.locator('#object-list [data-object="' + id + '"]').click();
+const tableValues = frame => frame.locator('#function-table-output tbody tr > :nth-child(2)').allTextContents();
 async function addPoint(frame, x, y) {
   await frame.locator('#point-x').fill(String(x));
   await frame.locator('#point-y').fill(String(y));
@@ -232,9 +234,31 @@ async function main() {
     const pupilSlider = pupilGeometry.locator('#slider-list input[data-slider="' + coefficient.id + '"]');
     await pupilSlider.focus(); await pupilSlider.press('End');
     await poll(async () => (await work(first.id)).geometryState.objects.find(object => object.id === coefficient.id)?.value === 5, 'visible parameter control updates shared graph');
+
+    await selectGeometryObject(pupilGeometry, graph.id);
+    await pupilGeometry.locator('#add-function-table').click();
+    const table = await poll(async () => (await geometry(pupilGeometry)).objects.find(object => object.type === 'functionTable'), 'pupil creates graph table');
+    await selectGeometryObject(pupilGeometry, table.id);
+    await pupilGeometry.locator('#edit-table-start').fill('-1');
+    await pupilGeometry.locator('#edit-table-end').fill('1');
+    await pupilGeometry.locator('#edit-table-step').fill('1');
+    await pupilGeometry.locator('#edit-object-form button[type="submit"]').click();
+    await poll(async () => (await work(first.id)).geometryState.objects.find(object => object.id === table.id)?.end === 1, 'table interval saved');
+    assert.deepEqual(await tableValues(pupilGeometry), ['6', '1', '6'], 'table uses the shared slider value');
+
+    const pointOnTool = pupilGeometry.locator('[data-tool="pointOn"]');
+    if (!await pointOnTool.isVisible()) await pupilGeometry.locator('.tool-group:has([data-tool="pointOn"]) > summary').click();
+    await pointOnTool.click();
+    await selectGeometryObject(pupilGeometry, graph.id);
+    const attached = await poll(async () => (await geometry(pupilGeometry)).objects.find(object => object.type === 'pointOn'), 'pupil places a point on the graph');
+    await pupilGeometry.locator('[data-tool="move"]').click();
+    await selectGeometryObject(pupilGeometry, attached.id);
+    await pupilGeometry.locator('#edit-parameter').fill('0.5');
+    await pupilGeometry.locator('#edit-object-form button[type="submit"]').click();
+    await poll(async () => (await work(first.id)).geometryState.objects.find(object => object.id === attached.id)?.parameter === .5, 'graph point parameter saved');
     const firstGeometry = (await work(first.id)).geometryState;
     assert.equal((await work(second.id)).geometryState.objects.length, 0, 'other pupil construction remains independent');
-    console.log('PASS independent handwriting, function parameters and immediate tab switch');
+    console.log('PASS independent handwriting, function parameters, shared table and graph point, and immediate tab switch');
 
     await teacher.locator('#roster button').first().click();
     await mode(teacher, 'geometry');
@@ -242,6 +266,12 @@ async function main() {
     await poll(async () => JSON.stringify(await geometry(teacherGeometry)) === JSON.stringify(firstGeometry), 'teacher observes canonical geometry');
     assert.equal(await teacherGeometry.locator('#add-point-form button').isDisabled(), true, 'observation does not take control');
     assert.equal(await teacherGeometry.locator('#slider-list input[data-slider="' + coefficient.id + '"]').isDisabled(), true, 'teacher observes parameter without gaining write access');
+    await selectGeometryObject(teacherGeometry, table.id);
+    assert.deepEqual(await tableValues(teacherGeometry), ['6', '1', '6'], 'teacher observes the same table');
+    assert.equal(await teacherGeometry.locator('#edit-table-end').isDisabled(), true, 'table interval is read only for the observer');
+    await selectGeometryObject(teacherGeometry, attached.id);
+    assert.equal(await teacherGeometry.locator('#edit-parameter').isDisabled(), true, 'graph point parameter is read only for the observer');
+    assert.match(await teacherGeometry.locator('#selected-description').textContent(), /2[.,]25/, 'teacher sees the evaluated ordinate of the saved point');
     await teacher.locator('#geometryControlButton').click();
     await poll(async () => (await work(first.id)).geometryController === 'teacher', 'teacher takes geometry control');
     await poll(async () => await pupilGeometry.locator('#add-point-form button').isDisabled(), 'pupil geometry locked');
@@ -315,6 +345,8 @@ async function main() {
     await pupil.locator('#focus').waitFor({ state: 'visible' });
     await mode(pupil, 'geometry'); pupilGeometry = await geometryFrame(pupil);
     await poll(async () => JSON.stringify(await geometry(pupilGeometry)) === JSON.stringify(allMaterials.geometryState), 'reload restores geometry');
+    await selectGeometryObject(pupilGeometry, table.id);
+    assert.deepEqual(await tableValues(pupilGeometry), ['6', '1', '6'], 'restored table still uses the saved graph parameters');
     await mode(pupil, 'trainer');
     const restoredTrainer = await negativeFrame(pupil);
     assert.equal(await restoredTrainer.evaluate(() => window.getBoardTrainerState().phase), 'done');
