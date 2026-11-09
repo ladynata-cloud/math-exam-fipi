@@ -17,15 +17,20 @@
       'grade7-geometry': ['selected', 'revealed'],
       'pre7-lab': ['selected', 'revealed'],
       'grade7-construction': ['selected', 'built', 'revealed'],
-      derivative: ['x', 'h'], solid: ['angle', 'tilt', 'cut'],
+      derivative: ['x', 'h'], solid: ['angle', 'tilt', 'cut', 'discovery'],
       iso: ['constructed', 'choicesOpen', 'wrong'], triangle: ['constructed', 'choicesOpen', 'wrong'],
       trapezoid: ['constructed', 'choicesOpen', 'wrong'], chord: ['constructed', 'choicesOpen', 'wrong'], rectangle: ['constructed', 'choicesOpen', 'wrong'],
       digits: ['kept'], journey: ['part'], ring: ['mode'], 'ring-motion': ['time'], line: ['x'], bars: [],
-      'fraction-bars': ['selected', 'checked', 'checkedCount'], 'percent-base': ['base', 'experiment', 'percent'],
+      'fraction-bars': ['selected', 'checked', 'checkedCount'], 'percent-base': ['base', 'experiment', 'percent', 'discovery'],
       'ratio-parts': ['chosen', 'checked', 'checkedCount'], 'polygon-build': ['constructed', 'choice'],
       'interval-signs': ['x'], 'digit-work': ['digits', 'checkedDigits'], 'data-read': ['item'], statements: ['open']
     };
     keys(v, ['kind', ...(fields[v.kind] || ['revealed'])]);
+    if ('discovery' in v) {
+      requireValue(v.kind === 'percent-base' || v.kind === 'solid' && m.section === true);
+      keys(v.discovery, ['answer', 'checkedAnswer']); string(v.discovery.answer, 80);
+      requireValue(v.discovery.checkedAnswer === null || typeof v.discovery.checkedAnswer === 'string' && v.discovery.checkedAnswer.length <= 80 && v.discovery.checkedAnswer === v.discovery.answer);
+    }
     for (const k of ['constructed', 'choicesOpen', 'wrong', 'checked', 'experiment']) if (k in v) requireValue(typeof v[k] === 'boolean');
     if (v.kind === 'grade7-geometry' || v.kind === 'pre7-lab' || v.kind === 'grade7-construction') {
       requireValue(Array.isArray(m.elements) && (v.selected === null || typeof v.selected === 'string' && m.elements.some(element => element.id === v.selected)));
