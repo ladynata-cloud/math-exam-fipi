@@ -1,5 +1,7 @@
 name: Course visual consistency
 on:
+  push:
+    branches: [qa/course-ui-corrected-20261109]
   pull_request:
     paths:
       - 'assets/course-ui*'
@@ -19,6 +21,14 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+      - name: Verify exact corrected candidate source
+        run: |
+          git show -s --format='%H %P %T'
+          test "$(git show -s --format=%P)" = "6463e076ffca4724566a196644f6d145a91ae736"
+          test "$(git diff-tree --no-commit-id --name-only -r HEAD)" = ".github/workflows/course-ui.yml"
+          git diff --exit-code HEAD^ HEAD -- assets stereo-course school courses trainers ege-baza ege-profil geometry-course geometry-merzlyak geometry-pogorelov oge vpr tools
       - name: Course screens and paired layout controls
         run: |
           npm install --prefix "$RUNNER_TEMP/course-ui" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
