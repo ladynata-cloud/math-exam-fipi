@@ -93,6 +93,31 @@
 .gentle-new-idea{font-size:1rem;line-height:1.6;margin:.4rem 0}
 .gentle-start{min-height:48px;padding:.75rem;margin:.65rem 0 .3rem}
 .next-lesson-label{margin:.25rem 0 .7rem}
+.path-summary{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem 1rem;padding:.8rem 1rem;border:1px solid #bad1c1;border-radius:.8rem;background:#e7f2e9}
+.path-summary>p{margin:0}
+.path-summary-count{font-size:.85rem;font-weight:650;color:#254f39}
+.path-summary>.small{flex:1 1 220px;font-size:.8rem}
+.path-summary>button{flex:1 1 100%;text-align:left;overflow-wrap:anywhere}
+.path-overview{margin:1.25rem 0}
+.path-overview>h3{font-size:1.2rem;margin-bottom:.4rem}
+.path-overview>.small{font-size:.82rem;line-height:1.5}
+.path-overview .gentle-path-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:.6rem;margin:.8rem 0}
+.path-overview .path-node{padding:0;border:1px solid #d3ded5;overflow:hidden;background:#fff;min-width:0}
+.path-overview .path-node-current{border:2px solid #196d48;box-shadow:0 0 0 2px #e0eee4}
+.path-overview .path-node-action{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.25rem .5rem;border:0;border-radius:0;background:transparent;padding:.75rem;text-align:left;min-height:112px;align-content:start}
+.path-node-action:hover{background:#f0f6ef}
+.path-node-action:focus-visible{outline:3px solid #245ccc;outline-offset:-3px}
+.path-node-number{grid-row:1/4;display:flex;align-items:center;justify-content:center;align-self:start;border-radius:50%;width:2rem;height:2rem;background:#edf1eb;color:#42594b;font-size:.85rem}
+.path-node-title{font-size:.85rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere}
+.path-node-kind{font-size:.69rem;color:var(--muted);font-weight:400}
+.path-node-status{font-size:.73rem;font-weight:650;line-height:1.4;color:#42594b}
+.path-node[data-stage-progress="checked"] .path-node-number{background:#196d48;color:#fff}
+.path-node[data-stage-progress="checked"] .path-node-status{color:#196d48}
+.path-node[data-stage-progress="help"] .path-node-status{color:#78591a}
+.path-node[data-stage-progress="started"] .path-node-status,.path-node[data-stage-progress="built"] .path-node-status{color:#2c5480}
+.path-overview .path-node-manual{border-top:1px solid #edf1eb;margin:0;padding:.35rem .75rem;font-size:.7rem;color:var(--muted);background:#fafcf9}
+@media(max-width:650px){.path-summary{padding:.7rem}.path-summary-count{font-size:.8rem}.path-overview .path-node-action{min-height:90px}.path-overview .gentle-path-list{grid-template-columns:1fr}.path-node-title{font-size:.85rem}}
+@media print{.path-overview .path-node-action{display:grid!important}.path-overview .gentle-path-list{grid-template-columns:repeat(2,minmax(0,1fr))}.path-summary>button{display:none!important}}
 .stage-examples .gentle-lesson-list{margin:.25rem 0 .5rem}
 .gentle-readiness{padding:1.15rem}
 
@@ -328,7 +353,15 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
 
   function taskState(lesson) {
     let s = state.tasks[lesson.id];
-    if (!s || typeof s !== 'object' || Array.isArray(s)) s = state.tasks[lesson.id] = {};
+    if (!s || typeof s !== 'object' || Array.isArray(s)) {
+      s = state.tasks[lesson.id] = board ? {} : { attemptEvidenceVersion: 1, mistakes: 0 };
+    }
+    // Older records mixed mistakes and opened help. Never upgrade that history
+    // into independent work. Personal evidence does not enter the board schema.
+    if (!board && s.attemptEvidenceVersion === 1) {
+      s.mistakes = Number.isInteger(s.mistakes) ? clamp(s.mistakes, 0, 1000000) : 0;
+      if (!['first', 'corrected'].includes(s.choiceEvidence)) delete s.choiceEvidence;
+    }
     s.mode = ['choose', 'study', 'practice'].includes(s.mode) ? s.mode : 'choose';
     s.revealed = Number.isInteger(s.revealed) ? clamp(s.revealed, 0, lesson.steps.length) : 0;
     s.viewCount = Number.isInteger(s.viewCount) ? clamp(s.viewCount, 0, s.revealed) : s.revealed;
@@ -365,6 +398,20 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     return s;
   }
   function save() {
+    // Keep an earned result when the learner later compares it with a worked
+    // solution or repeats the card. Only actual completed, unassisted choices
+    // in this version can earn it; proof and freehand work remain separate.
+    if (!board) {
+      const lesson = lessonMap.get(state.current), s = state.tasks[state.current];
+      if (lesson && s && s.attemptEvidenceVersion === 1 && !s.choiceEvidence && s.mode === 'practice' &&
+          guidanceFor(lesson)?.phase !== 'guided' && s.revealed === lesson.steps.length &&
+          s.independentSteps === lesson.steps.length && !s.helpUsed && !s.workedSeen && !s.resultSeen &&
+          !s.calculationSeen && !s.calculationRevealed &&
+          (!lesson.check || (s.checkCorrect && s.selectedCheck === lesson.check.correct)) &&
+          (!lesson.result?.numeric || (s.answerChecked && s.correctAnswer))) {
+        s.choiceEvidence = s.mistakes > 0 ? 'corrected' : 'first';
+      }
+    }
     try { storage.setItem(KEY, JSON.stringify(state)); }
     catch (_) {
       if (!storageFailed) {
@@ -375,6 +422,21 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     }
   }
   function announce(text) { if (live) live.textContent = text; }
+  function beginAttempt(s) {
+    // The old catalog precreated empty records for every card. Starting one of
+    // those is a new attempt; completed/started history is never reclassified.
+    if (board || s.attemptEvidenceVersion === 1 || s.mode !== 'choose' || s.revealed ||
+        s.workedSeen || s.helpUsed || s.resultSeen || s.calculationSeen || s.calculationRevealed ||
+        s.independentSteps || s.answer || s.answerChecked || s.selectedCheck >= 0 || s.draft ||
+        s.theoryOpen || s.notesOpen || s.hints.length || s.helpReasons.length || s.proofChecks.some(Boolean) ||
+        Object.keys(s.planeAttempts).length || Object.keys(s.questionAttempts).length ||
+        Object.values(s.hintOpen).some(Boolean)) return;
+    s.attemptEvidenceVersion = 1; s.mistakes = 0;
+  }
+  function markMistake(lesson, s) {
+    if (!board && s.attemptEvidenceVersion === 1) s.mistakes = Math.min(1000000, s.mistakes + 1);
+    save(); refreshStatus(lesson, s); renderCatalog();
+  }
   function markHelp(id, reason) {
     const lesson = lessonMap.get(id); if (!lesson) return false;
     const s = taskState(lesson); s.helpUsed = true;
@@ -386,11 +448,11 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
       if(s.calculationRevealed<(lesson.calculationSteps || []).length)return s.helpUsed?'Построено с подсказкой':'Построение завершено';
       if (s.helpUsed) return 'Разобрано с подсказкой';
       if (s.workedSeen || s.resultSeen) return 'Разобрано';
-      return 'Построение выполнено';
+      return !board && s.attemptEvidenceVersion === 1 && s.mistakes > 0 ? 'Построено после своих исправлений' : 'Построение выполнено';
     }
     if (s.mode === 'practice' && guidanceFor(lesson)?.phase === 'guided') return 'Пробуем с опорой';
     if (s.mode === 'practice' && (s.workedSeen || s.helpUsed || s.resultSeen)) return 'Проверка после помощи';
-    if (s.mode === 'practice') return 'Самостоятельная попытка';
+    if (s.mode === 'practice') return !board && s.attemptEvidenceVersion === 1 && s.mistakes > 0 ? 'Исправляю самостоятельно' : 'Самостоятельная попытка';
     if (s.mode === 'study') return 'Разбор по шагам';
     return 'Выбери способ работы';
   }
@@ -822,8 +884,8 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
   function renderStepPanel(panel, lesson, s, planes) {
     if (s.mode === 'choose') {
       const choice = el('div', { class: 'mode-choice' });
-      const startStudy=()=>{s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
-      const startPractice=()=>{s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
+      const startStudy=()=>{beginAttempt(s);s.mode='study';s.workedSeen=true;save();renderLesson();renderCatalog();};
+      const startPractice=()=>{beginAttempt(s);s.mode='practice';if(guidanceFor(lesson)?.phase==='guided')markHelp(lesson.id,'Учебная попытка с опорой');save();renderLesson();};
       if (guidanceFor(lesson)) {
         const phase=guidanceFor(lesson).phase,model=phase==='model';
         choice.append(el('h3',{},model?(lesson.scaffold?'Разберём новый приём':'Посмотрим одно действие'):phase==='guided'?'Теперь попробуем с опорой':'Теперь новый пример'),para(guidanceFor(lesson).intro || (lesson.scaffold?'Назовём рабочую плоскость. Затем обоснуем каждую новую линию.':'Сначала назовём плоскость. Потом выполним одно действие.')));
@@ -885,7 +947,7 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
               s.approved = s.revealed; save(); renderLesson(); announce(question?'Плоскость выбрана. Выбери обоснование, прежде чем выполнять построение.':'Плоскость выбрана. Теперь объясни принадлежность точек и выполни построение.');
             } else {
               const attempt=s.planeAttempts[s.revealed] || {wrong:[]};attempt.selected=p.id;attempt.correct=false;if(!Array.isArray(attempt.wrong))attempt.wrong=[];if(!attempt.wrong.includes(p.id))attempt.wrong.push(p.id);s.planeAttempts[s.revealed]=attempt;
-              markHelp(lesson.id,'Ошибка выбора плоскости, шаг '+(s.revealed+1));
+              markMistake(lesson, s);
               renderLesson(); announce('Для этого шага нужна другая плоскость. Проверь, где лежат нужные точки.');
             }
           }, planeAttempt?.wrong?.includes(p.id)?'incorrect':'', { 'data-plane-choice': p.id }); candidates.append(b);
@@ -911,11 +973,11 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
                 if(!previous.correct && !previous.wrong.includes(index))previous.wrong.push(index);
                 s.questionAttempts[s.revealed]=previous;
                 if(previous.correct){s.questionApproved=s.revealed;save();renderLesson();announce('Обоснование выбрано. Прочитай основания и выполни построение.');}
-                else {markHelp(lesson.id,'Ошибка обоснования, шаг '+(s.revealed+1));renderLesson();announce('Это основание не подтверждает действие. '+(question.explanation || 'Проверь принадлежность точек и условие применяемого свойства.'));}
+                else {markMistake(lesson,s);renderLesson();announce('Это основание не подтверждает действие. Проверь принадлежность точек и условие применяемого свойства.');}
               },selected?'incorrect':'',{'data-reason-choice':index,'aria-pressed':selected});b.append(math(option));choices.append(b);
             });
             questionBox.append(choices);
-            if(attempt && !attempt.correct)questionBox.append(para('Это основание не подтверждает действие. '+(question.explanation || 'Проверь принадлежность точек и условие применяемого свойства.'),'feedback retry'));
+            if(attempt && !attempt.correct)questionBox.append(para('Это основание не подтверждает действие. Проверь принадлежность точек и условие применяемого свойства. Можно исправить выбор или открыть подсказку.','feedback retry'));
           }
           box.append(questionBox);
         } else {
@@ -1021,7 +1083,9 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
         function checkAnswer() {
           const value = numericValue(input.value);
           if (!Number.isFinite(value)) { s.answer = input.value.slice(0, 120); s.answerInvalid = true; s.answerChecked = false; s.correctAnswer = false; save(); drawFeedback(); return; }
-          s.answer = input.value.slice(0, 120); s.answerInvalid = false; s.answerChecked = true; s.correctAnswer = Math.abs(value - num.value) <= (num.tolerance || 1e-6); save(); drawFeedback();
+          s.answer = input.value.slice(0, 120); s.answerInvalid = false; s.answerChecked = true; s.correctAnswer = Math.abs(value - num.value) <= (num.tolerance || 1e-6);
+          if (!s.correctAnswer) markMistake(lesson,s); else { save(); refreshStatus(lesson,s); }
+          drawFeedback();
         }
         // Cabinet frames forbid native form submission; checking stays local.
         input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); checkAnswer(); } });
@@ -1050,12 +1114,12 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
         function feedbackText() {
           if (s.selectedCheck < 0) return;
           feedback.className = 'feedback ' + (s.checkCorrect ? 'good' : 'retry');
-          feedback.replaceChildren(math((s.checkCorrect ? 'Верно. ' : 'Подумай ещё. ') + check.explanation));
+          feedback.replaceChildren(math(s.checkCorrect ? 'Верно. ' + check.explanation : 'Пока неверно. Сверь выбранное утверждение с условием и своим построением. Можно исправить ответ самостоятельно.'));
         }
         check.options.forEach((option, index) => {
           const b = button('', () => {
             s.selectedCheck = index; s.checkCorrect = index === check.correct;
-            if (!s.checkCorrect) s.helpUsed = true;
+            if (!s.checkCorrect) markMistake(lesson,s);
             save(); refreshStatus(lesson, s); [...options.children].forEach((node, j) => node.classList.toggle('selected', j === index)); feedbackText();
           }, s.selectedCheck === index ? 'selected' : '', { 'data-check-option': index }); b.append(math(option)); options.append(b);
         }); feedbackText(); section.append(options, feedback); if (guidanceFor(lesson)) bottom.prepend(section); else bottom.append(section);
@@ -1357,33 +1421,94 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
   function openLab(id){state.labs.family=id;show('labs');}
   function openExam(id){state.examId=id;show('control');}
   function stageStats(){const tasks=api.getState().tasks||{},started=C.lessons.filter(l=>(tasks[l.id]?.revealed||0)>0),built=started.filter(l=>tasks[l.id].revealed===l.steps.length),help=started.filter(l=>tasks[l.id].helpUsed||tasks[l.id].workedSeen||tasks[l.id].resultSeen);return{started:started.length,built:built.length,help:help.length};}
+  function lessonProgress(id,tasks){
+    const lesson=lessonById.get(id),s=tasks[id];
+    if(!lesson)return{started:false,built:false,finished:false,checked:false,help:false,label:'Нет задания'};
+    const evidence=s?.attemptEvidenceVersion===1&&['first','corrected'].includes(s.choiceEvidence)?s.choiceEvidence:null;
+    const started=!!s&&(s.mode==='study'||s.mode==='practice'||s.revealed>0||!!s.draft||s.answerChecked||s.selectedCheck>=0||!!evidence);
+    const built=started&&s.revealed===lesson.steps.length;
+    const finished=built&&(!lesson.check||(s.checkCorrect===true&&s.selectedCheck===lesson.check.correct))&&(!lesson.result?.numeric||(s.answerChecked===true&&s.correctAnswer===true));
+    const help=!!s&&(s.helpUsed||s.workedSeen||s.resultSeen||s.calculationSeen||(s.calculationRevealed||0)>0);
+    // Old records cannot establish how an attempt was made. A manual readiness
+    // checkbox and a revealed diagram never certify an independent construction.
+    const currentChecked=finished&&s.attemptEvidenceVersion===1&&s.mode==='practice'&&!help&&
+      (lesson.starter||lesson.scaffold)?.phase!=='guided'&&s.independentSteps===lesson.steps.length;
+    // An explanation opened after a successful attempt must not erase it.
+    // The engine records this evidence only when the independent attempt ends.
+    const checked=!!evidence||currentChecked,corrected=evidence?evidence==='corrected':(s?.mistakes||0)>0;
+    const historical=!!evidence&&!currentChecked;
+    let label='Ещё не выполняли';
+    if(started){
+      if(checked)label=historical?(corrected?'Ранее сам исправил; выборы без подсказки':'Ранее проверены выборы без подсказки'):(corrected?'Сам исправил; выборы без подсказки':'Выборы проверены без подсказки');
+      else if(help)label=built?'Построено с разбором или помощью':'В работе с разбором или помощью';
+      else if(built)label=finished?'Построено; способ работы не подтверждён':'Построено; ответ ещё не проверен';
+      else label='В работе: '+(s.revealed||0)+' из '+lesson.steps.length+' действий';
+    }
+    return{started,built,finished,checked,help,corrected,historical,label};
+  }
+  function stageProgress(stage,tasks){
+    const ids=[...stage.lessons,...(stage.reserveLesson?[stage.reserveLesson]:[])];
+    const records=ids.map(id=>({id,...lessonProgress(id,tasks)}));
+    const transferIds=stage.lessons.filter(id=>(lessonById.get(id).starter||lessonById.get(id).scaffold)?.phase==='transfer');
+    const checks=new Set([...(transferIds.length?transferIds:[stage.lessons[stage.lessons.length-1]]),...(stage.reserveLesson?[stage.reserveLesson]:[])]);
+    const verified=records.find(r=>checks.has(r.id)&&r.checked);
+    const started=records.some(r=>r.started),help=records.some(r=>r.help);
+    if(verified)return{kind:'checked',label:verified.historical?(verified.corrected?'Ранее сам исправил; без подсказки':'Ранее проверены выборы без подсказки'):(verified.corrected?'Сам исправил; без подсказки':'Выборы без подсказки'),started,verified:verified.id};
+    if(help)return{kind:'help',label:'Есть работа с помощью',started,verified:null};
+    if(records.some(r=>r.built))return{kind:'built',label:'Построено; нужна проверка',started,verified:null};
+    return{kind:started?'started':'new',label:started?'В работе':'Ещё не начато',started,verified:null};
+  }
+  function stageRecommendation(stage,tasks,current){
+    const ids=[...stage.lessons,...(stage.reserveLesson?[stage.reserveLesson]:[])];
+    const currentWork=lessonProgress(current,tasks);
+    if(ids.includes(current)&&currentWork.started&&!currentWork.finished)return{id:current,label:'Продолжить занятие',note:'Вернись к сохранённому действию и ответу.'};
+    const progress=stageProgress(stage,tasks);
+    if(progress.verified)return{id:progress.verified,label:'Открыть своё построение',note:'Выборы проверены. Теперь воспроизведи чертёж и объяснение на бумаге или доске.'};
+    const unfinished=stage.lessons.find(id=>!lessonProgress(id,tasks).finished);
+    if(unfinished)return{id:unfinished,label:stage.lessons.some(id=>lessonProgress(id,tasks).started)?'Продолжить занятие':stage.id==='begin-01'?'Начать с первой грани':'Начать этот этап',note:'Следующий пример этого этапа.'};
+    if(!progress.verified&&stage.reserveLesson&&!lessonProgress(stage.reserveLesson,tasks).finished)return{id:stage.reserveLesson,label:'Новый пример без прежнего разбора',note:'Проверь выбор плоскостей на другом примере.'};
+    return{id:stage.lessons[stage.lessons.length-1],label:'Открыть своё построение',note:'Построения сохранены. Теперь объясни каждую линию на бумаге или доске.'};
+  }
   function renderMap(){
     const path=C.learningPath||[];
     if(!path.length){renderFullMap();return;}
     let index=path.findIndex(x=>x.id===state.path.stageId);if(index<0)index=0;
-    const stage=path[index],tasks=api.getState().tasks||{},manual=state.path.readiness[stage.id]||(state.path.readiness[stage.id]=[]);
-    const completed=id=>{const lesson=lessonById.get(id),s=tasks[id];return !!s&&s.revealed===lesson.steps.length;};
-    const lessonStatus=id=>{const l=lessonById.get(id),s=tasks[id];if(!s||!s.revealed)return 'Ещё не выполняли';if(!completed(id))return 'В работе: '+s.revealed+' из '+l.steps.length+' действий';if(s.workedSeen||s.helpUsed||s.resultSeen)return 'Построено с разбором или помощью';return 'Построено; объяснение проверяем отдельно';};
+    const stage=path[index],work=api.getState(),tasks=work.tasks||{},manual=state.path.readiness[stage.id]||(state.path.readiness[stage.id]=[]);
+    const summaries=path.map(item=>stageProgress(item,tasks)),started=summaries.filter(x=>x.started).length,verified=summaries.filter(x=>x.verified).length;
+    const saved=lessonById.get(work.current),resume=saved&&lessonProgress(saved.id,tasks).started;
     portal.append(title('Мой путь',null,'Сначала вместе, затем с опорой и на новом примере самостоятельно.'));
-    const box=el('section',{class:'master-panel gentle-stage','data-stage-id':stage.id});
+    const overview=el('section',{class:'path-summary','aria-label':'Ход работы по курсу'});
+    overview.append(p('Начато этапов: '+started+' из '+path.length,'path-summary-count'),p('Проверены выборы на новом примере: '+verified+' из '+path.length,'path-summary-count'),p('Чертёж и доказательство проверяем отдельно.','small muted'));
+    if(resume)overview.append(btn('Продолжить: '+saved.title,()=>openLesson(saved.id),'primary',{'data-action':'path-resume'}));
+    portal.append(overview);
+    const box=el('section',{class:'master-panel gentle-stage','data-stage-id':stage.id,'aria-labelledby':'path-stage-title'});
     const kindStages=path.filter(s=>s.kind===stage.kind),kindIndex=kindStages.findIndex(s=>s.id===stage.id)+1,kindLabel=stage.kind==='starter'?'Начальная ступень':stage.kind==='bridge'?'Подготовка к методу':'Основной этап';
-    box.append(p(kindLabel+' '+kindIndex+' из '+kindStages.length,'eyebrow'),el('h3',{},stage.title),p(stage.newIdea,'gentle-new-idea'));
-    const nextId=stage.lessons.find(id=>!completed(id))||stage.lessons[stage.lessons.length-1];
-    const stageStarted=stage.lessons.some(id=>tasks[id] && (tasks[id].revealed>0 || tasks[id].mode==='study' || tasks[id].mode==='practice'));
-    const startLabel=stage.lessons.every(completed)?'Повторить последний пример':stageStarted?'Продолжить занятие':index===0?'Начать с первой грани':'Начать этот этап';
-    box.append(btn(startLabel,()=>openLesson(nextId),'primary gentle-start',{'data-action':'path-start'}),p(lessonById.get(nextId).title,'small muted next-lesson-label'));
+    box.append(p('Этап '+(index+1)+' из '+path.length+' · '+kindLabel+' '+kindIndex+' из '+kindStages.length,'eyebrow'),el('h3',{id:'path-stage-title',tabindex:'-1'},stage.title),p(stage.newIdea,'gentle-new-idea'));
+    const recommendation=stageRecommendation(stage,tasks,work.current);
+    box.append(btn(recommendation.label,()=>openLesson(recommendation.id),'primary gentle-start',{'data-action':'path-start','data-next-lesson':recommendation.id}),p(lessonById.get(recommendation.id).title,'small next-lesson-label'),p(recommendation.note,'small muted'));
     const rows=el('ol',{class:'gentle-lesson-list'});
-    stage.lessons.forEach((id,i)=>{const l=lessonById.get(id),row=el('li'),guidance=l.starter||l.scaffold,role=guidance?({model:'Сделаем вместе',guided:'Попробуем с опорой',transfer:'Новый пример самостоятельно'})[guidance.phase]:'Задание '+(i+1);row.append(btn(role+' · '+l.title,()=>openLesson(id),'ghost',{'data-path-lesson':id}),p(lessonStatus(id),'small muted'));rows.append(row);});box.append(disclosure('Примеры этого этапа',[rows],'stage-examples'));
-    if(stage.reserveLesson){const reserve=stage.reserveLesson,extra=disclosure('Если понадобилась помощь',[p('Сначала разберись в трудном действии. Для следующей самостоятельной попытки есть отдельный пример с другими точками или гранью. Повтор открытого разбора сохраняется как работа после помощи.'),btn('Новый пример без прежнего разбора',()=>openLesson(reserve),'ghost',{'data-action':'path-reserve'}),p(lessonStatus(reserve),'small muted')]);box.append(extra);}
+    stage.lessons.forEach((id,i)=>{const l=lessonById.get(id),row=el('li'),guidance=l.starter||l.scaffold,role=guidance?({model:'Сделаем вместе',guided:'Попробуем с опорой',transfer:'Новый пример самостоятельно'})[guidance.phase]:'Задание '+(i+1);row.append(btn(role+' · '+l.title,()=>openLesson(id),'ghost',{'data-path-lesson':id}),p(lessonProgress(id,tasks).label,'small muted'));rows.append(row);});box.append(disclosure('Примеры этого этапа',[rows],'stage-examples'));
+    if(stage.reserveLesson){const reserve=stage.reserveLesson,extra=disclosure('Если понадобилась помощь',[p('Сначала разберись в трудном действии. Для следующей самостоятельной попытки есть отдельный пример с другими точками или гранью. Повтор открытого разбора сохраняется как работа после помощи.'),btn('Новый пример без прежнего разбора',()=>openLesson(reserve),'ghost',{'data-action':'path-reserve'}),p(lessonProgress(reserve,tasks).label,'small muted')]);box.append(extra);}
     else box.append(disclosure('Опора перед этим этапом',[p(stage.entrySupport),btn('Потренировать нужное умение',()=>openPractice(stage.practice),'ghost')]));
     portal.append(box);
-    const readiness=el('section',{class:'master-panel gentle-readiness',id:'path-readiness'});readiness.append(el('h3',{},'Когда двигаться дальше'),p('Выполни новое задание на бумаге или доске и объясни каждый шаг. Кнопки тренируют выбор плоскости; собственный чертёж и объяснение проверяй отдельно.','small'),p('Отмечай только то, что уже получается без разбора. Эти отметки сохраняются как самопроверка.','small muted'));
-    stage.readiness.forEach((text,i)=>{const label=el('label',{class:'gentle-ready-check'}),input=el('input',{type:'checkbox',checked:!!manual[i],'data-readiness':i});input.addEventListener('change',()=>{manual[i]=input.checked;save();show('map',false);});label.append(input,el('span',{},text));readiness.append(label);});
+    const map=el('section',{class:'path-overview','aria-labelledby':'path-overview-title'});
+    map.append(el('h3',{id:'path-overview-title'},'Все этапы курса'),p('6 начальных ступеней · 6 подготовительных · 14 основных. Идём в указанном порядке; нужный этап можно открыть сразу.','small muted'));
+    const all=el('ol',{class:'gentle-path-list'});
+    path.forEach((item,i)=>{
+      const progress=summaries[i],selected=item.id===stage.id,checked=(state.path.readiness[item.id]||[]).filter(Boolean).length;
+      const li=el('li',{'data-stage-progress':progress.kind,class:'path-node'+(selected?' path-node-current':'')});
+      const choose=()=>{state.path.stageId=item.id;save();show('map',false);const heading=document.getElementById('path-stage-title');heading?.focus({preventScroll:true});heading?.scrollIntoView({block:'start'});};
+      const action=btn('',choose,'path-node-action',{'data-path-stage':item.id,'aria-label':'Этап '+(i+1)+'. '+item.title+'. '+(selected?'Вы здесь. ':'')+progress.label,...(selected?{'aria-current':'step'}:{})});
+      action.append(el('span',{class:'path-node-number','aria-hidden':'true'},i+1),el('span',{class:'path-node-title'},item.title),el('span',{class:'path-node-kind'},item.kind==='starter'?'Начальная ступень':item.kind==='bridge'?'Подготовка к методу':'Основной этап'),el('span',{class:'path-node-status'},(selected?'Вы здесь · ':'')+progress.label));
+      li.append(action,p('Самооценка: '+checked+' из '+item.readiness.length,'path-node-manual'));all.append(li);
+    });
+    map.append(all,p('«Выборы без подсказки» означает проверку действий и ответов в модели. Просмотр разбора и самооценка не подтверждают самостоятельное доказательство.','small muted'));
+    const readiness=el('section',{class:'master-panel gentle-readiness',id:'path-readiness'});readiness.append(el('h3',{},'Моя самопроверка'),p('Выполни новое задание на бумаге или доске и объясни каждый шаг. Кнопки тренируют выбор плоскости; собственный чертёж и объяснение проверяй отдельно.','small'),p('Отмечай только то, что уже получается без разбора. Эти отметки сохраняются как самопроверка.','small muted'));
+    stage.readiness.forEach((text,i)=>{const label=el('label',{class:'gentle-ready-check'}),input=el('input',{type:'checkbox',checked:!!manual[i],'data-readiness':i});input.addEventListener('change',()=>{manual[i]=input.checked;save();show('map',false);portal.querySelector('[data-readiness="'+i+'"]')?.focus({preventScroll:true});});label.append(input,el('span',{},text));readiness.append(label);});
     const ready=stage.readiness.every((_,i)=>manual[i]);readiness.append(p(ready?'Критерии отмечены вручную. Можно переходить к следующему этапу; это не автоматическая оценка полного доказательства.':'Если действие пока не получается, вернись к одному короткому примеру. Темп можно менять.','small muted'));
     if(index+1<path.length){const go=()=>{state.path.stageId=path[index+1].id;save();show('map');};if(ready)readiness.append(btn('К следующему этапу: '+path[index+1].title,go,'primary',{'data-action':'path-next-stage'}));else readiness.append(disclosure('Выбрать следующий этап по решению преподавателя',[p('Переход оставит критерии готовности неотмеченными.'),btn('Открыть следующий этап',go,'ghost',{'data-action':'path-next-stage'})]));}
-    else readiness.append(p('Путь пройден до последнего этапа. Итог - новая смешанная задача с собственным построением, доказательством, вычислениями и разбором случаев.','step-note'));
-    portal.append(readiness);
-    const all=el('ol',{class:'gentle-path-list'});path.forEach((stage,i)=>{const li=el('li'),checked=(state.path.readiness[stage.id]||[]).filter(Boolean).length;li.append(btn((i+1)+'. '+stage.title,()=>{state.path.stageId=stage.id;save();show('map');},stage.id===state.path.stageId?'selected':'ghost',{'data-path-stage':stage.id}),p(checked?'Критерии отмечены вручную: '+checked+' из '+stage.readiness.length:'Готовность ещё не отмечена','small muted'));all.append(li);});portal.append(disclosure('Весь путь: от первого действия до исследования',[p('Шесть начальных ступеней, шесть коротких переходов к методам и четырнадцать основных этапов. Все сложные темы сохранены; к каждой ведут подготовительные действия.'),all]));
+    else readiness.append(p('Это последний этап маршрута. Итог — новая смешанная задача с собственным построением, доказательством, вычислениями и разбором случаев.','step-note'));
+    portal.append(readiness,map);
     const start=portal.childNodes.length;renderFullMap();const oldNodes=Array.from(portal.childNodes).slice(start);portal.append(disclosure('Другие маршруты и полный банк задач',oldNodes,'gentle-full-catalog'));
   }
   function renderFullMap(){

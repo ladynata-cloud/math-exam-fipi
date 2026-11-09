@@ -259,3 +259,104 @@ test('completing a demonstrated card does not automatically certify independent 
     assert.equal([...f.doc.querySelectorAll('[data-readiness]')].some(node => node.checked), false);
   } finally { await f.close(); }
 });
+
+test('self-corrected choices remain distinct from hints across reload and retry', async () => {
+  const f = boot({ hash: '#starter-03' }); let again;
+  try {
+    click(f, '[data-action="start-practice"]');
+    click(f, '[data-plane-choice="EFGH"]');
+    assert.equal(f.current().mistakes, 1);
+    assert.equal(f.current().helpUsed, false);
+    assert.equal(f.current().revealed, 0);
+    click(f, '[data-plane-choice="DHEA"]'); construct(f, 1);
+    click(f, '[data-check-option="1"]');
+    assert.equal(f.current().mistakes, 2);
+    assert.equal(f.current().helpUsed, false);
+    assert(!f.doc.querySelector('#starter-check .feedback').textContent.includes(course.lessons.find(l => l.id === 'starter-03').check.explanation), 'wrong choice does not reveal the answer');
+    click(f, '[data-check-option="0"]');
+    assert.equal(f.current().independentSteps, 1);
+    assert.equal(f.current().checkCorrect, true);
+    const saved = f.saved(); again = boot({ storage: saved });
+    assert.equal(again.state().current, 'starter-03');
+    assert.equal(again.current().attemptEvidenceVersion, 1);
+    assert.equal(again.current().mistakes, 2);
+    assert.equal(again.current().helpUsed, false);
+    click(again, '[data-action="restart"]');
+    assert.equal(again.current().mistakes, 2, 'retry cannot erase earlier corrections');
+    click(again, '[data-action="start-practice"]');
+    click(again, '.step-hint > summary'); await tick();
+    assert.equal(again.current().helpUsed, true, 'opening help is recorded separately');
+    assert.equal(again.current().mistakes, 2);
+  } finally { await f.close(); if (again) await again.close(); }
+});
+
+test('a wrong reason retains the construction gate without revealing its explanation', async () => {
+  const f = boot({ hash: '#auth-method-01' });
+  try {
+    click(f, '[data-action="start-practice"]');
+    click(f, '[data-plane-choice="AA1B1B"]');
+    click(f, '[data-reason-choice="0"]');
+    assert.equal(f.current().mistakes, 1);
+    assert.equal(f.current().helpUsed, false);
+    assert.equal(f.doc.querySelector('[data-action="construct"]'), null);
+    const question = course.lessons.find(l => l.id === 'auth-method-01').steps[0].question;
+    assert(!f.doc.querySelector('.step-question').textContent.includes(question.explanation));
+    click(f, '[data-reason-choice="2"]'); construct(f, 1);
+    assert.equal(f.current().revealed, 1);
+    assert.equal(f.current().independentSteps, 1);
+    assert.equal(f.current().mistakes, 1);
+  } finally { await f.close(); }
+});
+
+test('old records keep their unknown provenance and existing help flags', async () => {
+  const legacy = { current: 'starter-03', tasks: { 'starter-03': {
+    mode: 'practice', revealed: 0, helpUsed: true, helpReasons: ['Ошибка выбора плоскости, шаг 1'],
+    planeAttempts: { 0: { wrong: ['EFGH'], selected: 'EFGH', correct: false } }
+  } } };
+  const f = boot({ hash: '#starter-03', storage: { [course.storageKey]: JSON.stringify(legacy) } });
+  try {
+    assert.equal(f.current().attemptEvidenceVersion, undefined);
+    click(f, '[data-plane-choice="DHEA"]'); construct(f, 1);
+    click(f, '[data-check-option="0"]');
+    assert.equal(f.current().helpUsed, true);
+    assert.equal(f.current().independentSteps, 0);
+    assert.equal(f.current().attemptEvidenceVersion, undefined);
+    assert.deepEqual(f.current().helpReasons, legacy.tasks['starter-03'].helpReasons);
+  } finally { await f.close(); }
+});
+
+test('numeric mistakes are saved without converting them into opened help', async () => {
+  const f = boot({ hash: '#auth-method-04' });
+  try {
+    click(f, '[data-action="start-study"]');
+    const lesson = course.lessons.find(l => l.id === 'auth-method-04'); construct(f, lesson.steps.length);
+    input(f, '#numeric-answer', '1/0'); click(f, '[data-action="check-numeric-answer"]');
+    assert.equal(f.current().mistakes, 0, 'invalid notation is not a mathematical answer');
+    input(f, '#numeric-answer', String(lesson.result.numeric.value + 10)); click(f, '[data-action="check-numeric-answer"]');
+    assert.equal(f.current().mistakes, 1);
+    assert.equal(f.current().helpUsed, false);
+    input(f, '#numeric-answer', String(lesson.result.numeric.value)); click(f, '[data-action="check-numeric-answer"]');
+    assert.equal(f.current().correctAnswer, true);
+    assert.equal(f.current().mistakes, 1);
+    assert.equal(f.current().workedSeen, true, 'a correct answer cannot erase the viewed construction');
+  } finally { await f.close(); }
+});
+
+test('an untouched legacy catalog record starts new evidence while old work stays unknown', async () => {
+  const original = boot(); let f;
+  try {
+    const old = original.state();
+    assert.equal(Object.keys(old.tasks).length, 186, 'catalog creates a placeholder for every lesson');
+    for (const record of Object.values(old.tasks)) { delete record.attemptEvidenceVersion; delete record.mistakes; }
+    Object.assign(old.tasks['starter-01'], { mode: 'practice', revealed: 1, viewCount: 1, independentSteps: 1, selectedCheck: 0, checkCorrect: true });
+    f = boot({ hash: '#starter-03', storage: { [course.storageKey]: JSON.stringify(old) } });
+    assert.equal(f.current().attemptEvidenceVersion, undefined);
+    click(f, '[data-action="start-practice"]');
+    assert.equal(f.current().attemptEvidenceVersion, 1, 'actual start of untouched old placeholder is tracked');
+    click(f, '[data-plane-choice="DHEA"]'); construct(f, 1); click(f, '[data-check-option="0"]');
+    assert.equal(f.current().independentSteps, 1);
+    assert.equal(f.state().tasks['starter-01'].attemptEvidenceVersion, undefined, 'completed old result is not upgraded');
+    click(f, '[data-view="map"]');
+    assert.equal(f.doc.querySelector('[data-path-stage="begin-01"]').closest('li').dataset.stageProgress, 'checked');
+  } finally { await original.close(); if (f) await f.close(); }
+});

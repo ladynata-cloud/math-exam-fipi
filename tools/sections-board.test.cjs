@@ -289,6 +289,8 @@ test('malformed state is rejected atomically before DOM, route, draft or storage
     const mutations = [
       s => { s.version = 2; }, s => { s.courseId = 'other'; }, s => { s.lessonId = 'unknown'; }, s => { s.route = 'labs'; },
       s => { s.extra = true; }, s => { s.work.extra = true; }, s => { s.work.revealed = 1000; }, s => { s.work.viewCount = 1; },
+      s => { s.work.attemptEvidenceVersion = 1; }, s => { s.work.mistakes = 1; },
+      s => { s.work.choiceEvidence = 'first'; },
       s => { s.work.draft = 'x'.repeat(2001); }, s => { s.work.draft = '<img src=x>'; }, s => { s.work.answer = 'x'.repeat(121); },
       s => { s.work.camera.yaw = 2 * Math.PI; }, s => { s.work.camera.pitch = 99; }, s => { s.work.camera = {}; },
       s => { s.work.approved = 0; }, s => { s.work.questionApproved = 0; }, s => { s.work.independentSteps = 1; },

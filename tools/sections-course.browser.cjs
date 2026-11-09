@@ -209,6 +209,30 @@ async function standalone(browser, publicOrigin, errors) {
   page.on('pageerror', error => errors.push('personal: ' + error.message));
   try {
     await page.goto(publicOrigin + COURSE);
+    assert.equal(await page.locator('[data-path-stage]').count(), 26, 'all route stages are exposed');
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.locator('[data-action="path-start"]').scrollIntoViewIfNeeded();
+      const map = await page.evaluate(() => ({
+        width: innerWidth, scroll: document.documentElement.scrollWidth,
+        stages: [...document.querySelectorAll('[data-path-stage]')].map(node => {
+          const r = node.getBoundingClientRect();
+          return { id: node.dataset.pathStage, width: r.width, height: r.height, x: r.x, right: r.right,
+            hiddenInDisclosure: !!node.closest('details:not([open])') };
+        })
+      }));
+      assert(map.scroll <= width + 1, 'route has no horizontal overflow at ' + width);
+      assert.deepEqual(map.stages.map(node => node.id), course.learningPath.map(stage => stage.id));
+      for (const item of map.stages) {
+        assert(!item.hiddenInDisclosure && item.height >= 44 && item.width > 0 && item.x >= -1 && item.right <= width + 1, 'visible, usable route stage at ' + width + ': ' + item.id);
+      }
+      if (process.env.SECTIONS_SHOTS) {
+        fs.mkdirSync(process.env.SECTIONS_SHOTS, { recursive: true });
+        await page.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-path-top-' + width + '.png') });
+        await page.locator('#path-overview-title').scrollIntoViewIfNeeded();
+        await page.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-path-map-' + width + '.png') });
+      }
+    }
     await page.getByRole('button', { name: 'Начать с первой грани', exact: true }).click();
     assert.equal(await page.locator('#lesson-title').textContent(), 'Находим одну грань');
     assert.equal(await page.evaluate(() => typeof window.__sectionsBoard), 'undefined');
@@ -241,6 +265,21 @@ async function standalone(browser, publicOrigin, errors) {
     assert.deepEqual(await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-18']), saved);
     assert.deepEqual(await visible(page), oldView);
     assert.equal(saved.independentSteps, 0, 'helped work never certifies independent mastery');
+    assert.equal(saved.mistakes, 2, 'mistakes stay distinct from the hint');
+    await page.locator('[data-view="map"]').click();
+    await page.locator('[data-action="path-resume"]').click();
+    assert.deepEqual(await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-18']), saved, 'visible continuation preserves exact saved work');
+    await page.goto(publicOrigin + COURSE + '#starter-03');
+    await page.locator('[data-action="start-practice"]').click();
+    await page.locator('[data-plane-choice="EFGH"]').click();
+    assert.equal(await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-03'].helpUsed), false);
+    await page.locator('[data-plane-choice="DHEA"]').click(); await construct(page, 1);
+    await page.locator('[data-check-option="0"]').click();
+    assert.equal(await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-03'].choiceEvidence), 'corrected');
+    await page.locator('.result-details > summary').click();
+    await page.waitForFunction(() => window.SECTIONS_APP.getState().tasks['starter-03'].resultSeen);
+    await page.locator('[data-view="map"]').click();
+    assert.equal(await page.locator('[data-path-stage="begin-01"]').evaluate(node => node.closest('li').dataset.stageProgress), 'checked', 'earned choices persist after comparison with the result');
     await page.goto(publicOrigin + COURSE + '#auth-method-04');
     assert.equal(await page.evaluate(() => window.SECTIONS_MASTER.getState().view), 'lessons');
     assert.match(await page.locator('.lesson-condition').innerText(), /BQ/);

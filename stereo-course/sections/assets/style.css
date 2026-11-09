@@ -78,6 +78,31 @@
 .gentle-new-idea{font-size:1rem;line-height:1.6;margin:.4rem 0}
 .gentle-start{min-height:48px;padding:.75rem;margin:.65rem 0 .3rem}
 .next-lesson-label{margin:.25rem 0 .7rem}
+.path-summary{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem 1rem;padding:.8rem 1rem;border:1px solid #bad1c1;border-radius:.8rem;background:#e7f2e9}
+.path-summary>p{margin:0}
+.path-summary-count{font-size:.85rem;font-weight:650;color:#254f39}
+.path-summary>.small{flex:1 1 220px;font-size:.8rem}
+.path-summary>button{flex:1 1 100%;text-align:left;overflow-wrap:anywhere}
+.path-overview{margin:1.25rem 0}
+.path-overview>h3{font-size:1.2rem;margin-bottom:.4rem}
+.path-overview>.small{font-size:.82rem;line-height:1.5}
+.path-overview .gentle-path-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:.6rem;margin:.8rem 0}
+.path-overview .path-node{padding:0;border:1px solid #d3ded5;overflow:hidden;background:#fff;min-width:0}
+.path-overview .path-node-current{border:2px solid #196d48;box-shadow:0 0 0 2px #e0eee4}
+.path-overview .path-node-action{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.25rem .5rem;border:0;border-radius:0;background:transparent;padding:.75rem;text-align:left;min-height:112px;align-content:start}
+.path-node-action:hover{background:#f0f6ef}
+.path-node-action:focus-visible{outline:3px solid #245ccc;outline-offset:-3px}
+.path-node-number{grid-row:1/4;display:flex;align-items:center;justify-content:center;align-self:start;border-radius:50%;width:2rem;height:2rem;background:#edf1eb;color:#42594b;font-size:.85rem}
+.path-node-title{font-size:.85rem;font-weight:700;line-height:1.45;overflow-wrap:anywhere}
+.path-node-kind{font-size:.69rem;color:var(--muted);font-weight:400}
+.path-node-status{font-size:.73rem;font-weight:650;line-height:1.4;color:#42594b}
+.path-node[data-stage-progress="checked"] .path-node-number{background:#196d48;color:#fff}
+.path-node[data-stage-progress="checked"] .path-node-status{color:#196d48}
+.path-node[data-stage-progress="help"] .path-node-status{color:#78591a}
+.path-node[data-stage-progress="started"] .path-node-status,.path-node[data-stage-progress="built"] .path-node-status{color:#2c5480}
+.path-overview .path-node-manual{border-top:1px solid #edf1eb;margin:0;padding:.35rem .75rem;font-size:.7rem;color:var(--muted);background:#fafcf9}
+@media(max-width:650px){.path-summary{padding:.7rem}.path-summary-count{font-size:.8rem}.path-overview .path-node-action{min-height:90px}.path-overview .gentle-path-list{grid-template-columns:1fr}.path-node-title{font-size:.85rem}}
+@media print{.path-overview .path-node-action{display:grid!important}.path-overview .gentle-path-list{grid-template-columns:repeat(2,minmax(0,1fr))}.path-summary>button{display:none!important}}
 .stage-examples .gentle-lesson-list{margin:.25rem 0 .5rem}
 .gentle-readiness{padding:1.15rem}
 
