@@ -56,6 +56,7 @@ for key,c in COURSES.items():
   s=s.replace('<script',includes+'<script',1)
  footer='<nav class="ce-guide-footer" aria-label="Наглядные разборы"><a href="/">Главная MathExam</a>'+''.join(f'<a href="{url(t)}">{e(t["short"])}</a>' for t in topics)+'</nav>'
  s=re.sub(r'<nav class="ce-guide-footer".*?</nav>\n?','',s,flags=re.S);s=s.replace('</body>',footer+'\n</body>')
+ if key=='peterson6':s=s.replace('src="/assets/course-examples','src="../../assets/course-examples').replace('href="/assets/course-examples','href="../../assets/course-examples')
  outputs[path]=s
 args=argparse.ArgumentParser();args.add_argument('--check',action='store_true');check=args.parse_args().check
 changed=[]

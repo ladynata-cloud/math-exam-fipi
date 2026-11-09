@@ -170,7 +170,7 @@ ${['Язык и логика','Арифметика'].map((chapter,i)=>'<section
 <details class="panel section"><summary>Что входит в курс</summary><p>Все 14 тем части 1 учебника Г. В. Дорофеева и Л. Г. Петерсон, БИНОМ, 2019. Авторские объяснения, интерактивные модели, учебные задачи и выбранные примеры из книги. Авторские задачи помечены; они не выдаются за номера учебника.</p><p>Решения всех 497 номеров и частей 2–3 сюда не входят. Успех в отдельной тренировке не отмечает исходную задачу как решённую.</p><p>Дроби можно вводить как 3/4, десятичные — с запятой, смешанные числа — как 2 1/3. Никаких таймеров. Для самостоятельного результата реши новую задачу с первой попытки без подсказок.</p></details>`;
 const numberInput=document.getElementById('exercise-number');
 numberInput.oninput=()=>{if(boardSession){numberInput.value=numberInput.value.replace(/[^0-9]/g,'').slice(0,3);boardNumber.draft=numberInput.value;}};
-bindLocalForm(document.getElementById('number-form'),()=>{const n=Number(numberInput.value);if(boardSession)boardNumber={draft:numberInput.value,submitted:Number.isInteger(n)&&n>=1&&n<=497?n:'invalid'};findNumber(n);});window.MathExamCourseExamples?.catalogue(main,'peterson6');}
+bindLocalForm(document.getElementById('number-form'),()=>{const n=Number(numberInput.value);if(boardSession)boardNumber={draft:numberInput.value,submitted:Number.isInteger(n)&&n>=1&&n<=497?n:'invalid'};findNumber(n);});if(!boardSession)window.MathExamCourseExamples?.catalogue(main,'peterson6');}
 
 function findNumber(n){
  const r=document.getElementById('number-result');
