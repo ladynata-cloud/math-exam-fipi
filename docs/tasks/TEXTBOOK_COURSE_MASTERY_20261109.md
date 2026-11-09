@@ -33,3 +33,56 @@
 - Владелец согласовал пакет сообщением «Давай, делай» после разбора курсов. Публикация по [действующему разрешению](../OWNER_RELEASE_AUTHORIZATION.md) после проверок. При необходимости откат выполняется отменой коммита с сохранением прежнего формата локальной истории.
 
 При подготовке выпуска в `main` вошёл #492 с отдельным уроком уравнений. Проверяемая основа обновлена до `adc2c9445f6ce7f0a56bca67ed2bc31b8b82ec3c`.
+## Continuation, 9 November 2026
+
+The following record describes the earlier local preparation. The later explicit
+owner authorization and uploaded source identity are recorded below.
+
+EXECUTIVE STATUS
+
+Task: TEXTBOOK_COURSE_MASTERY_20261109
+PR: #497; local continuation not uploaded
+Base: 463d6bf
+Head: source 7a6720a2, navigator binding d8cf35d8
+Gate: targeted local PASS; updated remote CI pending
+Tests: navigator 4/4; bindings 5/5; workshop state, Vilenkin 5, Vilenkin full, Makarychev 9 and grade7 route suites PASS; 7400/16080/23280/13020 generated task/answer checks respectively
+Failures: no test failure in these suites
+Not run: updated full browser/CI and production; real-pupil/external review
+Scope deviations: none; course source unchanged from b085e210
+Recommendation: upload existing PR after explicit approval and complete exact-head CI; resolve overlap with #499 before publishing that follow-up
+Next user decision: external-write authorization requested by automatic approval review
+
+Authorized base: standing policy
+Actual current main at composition: 463d6bf
+Base drift detected: yes; published #496/#498/#501/#506
+Authorization valid/invalid: standing policy applies; execution review blocks external upload
+Virtual merge result: single navigator receipt conflict resolved with all published bindings retained
+Rerun gates: listed above
+New owner authorization required: requested by automatic approval review
+
+Read-only composition with #499 exposes a real school/makarychev8/app.js
+conflict between two home/progress implementations; it is not ready for blind
+sequential merging. #503 has only the shared navigator-receipt conflict with
+this candidate; its source remains separate and unchanged.
+
+## Authorized upload, 9 November 2026
+
+The owner explicitly authorized sending prepared changes to
+ladynata-cloud/math-exam-fipi, merging checked PRs and publishing to
+mathexam.space after successful checks. This supersedes the execution-review
+upload blocker above. The coordinating agent owns merge and publication.
+
+The uploaded source 407e2b1a5416b03496a8879239c1b3cd4460cff2 has parents
+b085e2102a9e04dfa02185796f4cc5c2c1eaa595 and current main
+463d6bf56fc8f1f944da8d237102f77888711e79. Its tree exactly equals the reviewed
+local source 7a6720a2. Five public pages are rebound to this uploaded source,
+retaining every published receipt. Independent read-only review confirmed tree
+equality and both parents. Application code and authored content are unchanged
+from the locally checked candidate; the follow-up changes only the binding and
+this record. The final remote head and actual-head CI outcomes are tracked in
+PR #497. Merge/publication have not yet been performed.
+
+The #499 overlap has also been resolved and independently reviewed locally:
+one map, exact draft continuation, separate fresh/review action and retained
+mastery evidence. It will be uploaded as a follow-up whose parent is the actual
+uploaded #497 head; it remains a separate release candidate.
