@@ -1,8 +1,8 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
 const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
-const map=['journey.js?v=20261109','second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-active'];
-const runtime=['geometry-data.js','state.js?v=20261109-active','calm-ui.js?v=20261109-journey','app.js?v=20261109-active'];
+const map=['journey.js?v=20261109','second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity'];
+const runtime=['geometry-data.js','state.js?v=20261109-integrity','calm-ui.js?v=20261109-journey','app.js?v=20261109-integrity'];
 const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
 const canonical=html([...map,...runtime]),wrapper=html(boardRuntime);

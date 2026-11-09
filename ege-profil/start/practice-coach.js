@@ -2,7 +2,7 @@
   'use strict';
   const KEY = 'mathexam.profilePracticeCoach.v1', MAX_RECORDS = 80;
   const lessons = {
-    'fn-line': 'line', 'calc-sign': 'derivative', 'prob-count': 'tokens',
+    'fn-line': 'line', 'fn-hyperbola': 'hyperbola', 'calc-sign': 'derivative', 'prob-count': 'tokens',
     'prob-conditional': 'tokens', 'prob-distribution': 'expectation',
     'eq-linear': 'equation', 'finance-lesson-01-ledger': 'finance'
   };
@@ -16,6 +16,17 @@
       transfer: 'Теперь b = −2. Чему равно y = 2x − 2 при x = 1?', answer: 0,
       transferRetry: 'Подставьте 1 вместо x. Сначала умножьте на 2, затем вычтите 2.',
       transferWhy: 'Подставляем x = 1: 2 · 1 − 2 = 0. Новый свободный член действует при каждом x.'
+    },
+    hyperbola: {
+      title: 'Нулевой числитель отменяет ограничение?',
+      question: 'В y = k/(x − 1) + 2 заменим только k: вместо 2 возьмём 0. Станет ли допустимым x = 1?',
+      choices: ['Нет: знаменатель по-прежнему равен нулю', 'Да: получится вся прямая y = 2', 'При k = 0 нет допустимых x'], correct: 0,
+      action: 'Заменить k: 2 → 0',
+      why: 'При x ≠ 1 дробь 0/(x − 1) равна нулю. Но при x = 1 получается 0/0: это не число. Поэтому график — прямая y = 2 с выколотой точкой (1; 2). Вертикальной асимптоты больше нет: рядом с x = 1 значения y остаются равны 2.',
+      transfer: 'Другая формула: y = 0/(x + 2) − 1. Какую точку нужно исключить из прямой y = −1?',
+      transferChoices: ['(−2; −1)', '(2; −1)', 'Никакую'], answer: '(−2; −1)',
+      transferRetry: 'Найдите x, при котором исходный знаменатель x + 2 равен нулю. Даже нулевой числитель не разрешает деление на ноль.',
+      transferWhy: 'x + 2 = 0 при x = −2. При всех остальных x значение равно −1, поэтому исключена точка (−2; −1).'
     },
     derivative: {
       title: 'Достаточно ли нуля производной?',
@@ -216,11 +227,44 @@
       }
       return svg;
     }
+    function hyperbolaGraph(after) {
+      const ns = 'http://www.w3.org/2000/svg', svg = doc.createElementNS(ns, 'svg');
+      const description = after
+        ? 'y = 2 при x ≠ 1: прямая с выколотой точкой (1; 2). Вертикальной асимптоты нет.'
+        : 'Гипербола y = 2/(x − 1) + 2. Асимптоты x = 1 и y = 2; x = 1 не входит в область определения.';
+      svg.setAttribute('viewBox', '0 0 300 190'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', description);
+      svg.dataset.coefficient = after ? '0' : '2'; svg.dataset.excludedX = '1';
+      const add = (tag, attrs, text) => { const node = doc.createElementNS(ns, tag); Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value))); if (text !== undefined) node.textContent = text; svg.append(node); return node; };
+      const X = x => 40 + 38 * (x + 2), Y = y => 160 - 12 * (y + 4);
+      add('title', {}, description);
+      add('path', { d: `M28 ${Y(0)}H280M${X(0)} 174V10`, fill: 'none', stroke: '#52675d', 'stroke-width': 1.5 });
+      [-2, 0, 1, 2, 4].forEach(x => add('text', { x: X(x), y: 184, 'text-anchor': 'middle' }, fmt(x)));
+      [-4, 0, 2, 4, 8].forEach(y => add('text', { x: 27, y: Y(y) + 4, 'text-anchor': 'end' }, fmt(y)));
+      add('text', { x: 281, y: Y(0) - 6 }, 'x'); add('text', { x: X(0) + 8, y: 14 }, 'y');
+      if (after) {
+        add('path', { d: `M${X(-2)} ${Y(2)}H${X(4)}`, fill: 'none', stroke: '#176b50', 'stroke-width': 3, 'data-graph-role': 'function' });
+        add('circle', { cx: X(1), cy: Y(2), r: 5, fill: '#fff', stroke: '#176b50', 'stroke-width': 2.5, 'data-graph-role': 'excluded-point' });
+      } else {
+        add('path', { d: `M${X(1)} 12V170`, fill: 'none', stroke: '#87958e', 'stroke-width': 1.5, 'stroke-dasharray': '5 4', 'data-graph-role': 'vertical-asymptote' });
+        add('path', { d: `M${X(-2)} ${Y(2)}H${X(4)}`, fill: 'none', stroke: '#87958e', 'stroke-width': 1.5, 'stroke-dasharray': '5 4', 'data-graph-role': 'horizontal-asymptote' });
+        // Sample each branch separately and clip to the plotted y interval.
+        // Never connect points across the excluded x = 1.
+        for (const [start, end] of [[-2, 2 / 3], [4 / 3, 4]]) {
+          const d = Array.from({ length: 81 }, (_, i) => { const x = start + (end - start) * i / 80, y = 2 / (x - 1) + 2; return `${i ? 'L' : 'M'}${X(x)} ${Y(y)}`; }).join(' ');
+          add('path', { d, fill: 'none', stroke: '#176b50', 'stroke-width': 3, 'data-graph-role': 'function' });
+        }
+      }
+      return svg;
+    }
     function draw() {
       const after = record.revealed; scene.replaceChildren(); scene.dataset.stage = after ? 'after' : 'before';
       scene.append(el('p', after ? 'После изменения' : 'До изменения', 'coach-stage'));
       if (kind === 'line') {
         scene.append(graph('line', after), el('p', after ? 'y = 2x + 4' : 'y = 2x + 1', 'coach-formula'), table(['x', 'y'], [0, 1, 2].map(x => [x, 2 * x + (after ? 4 : 1)])));
+      } else if (kind === 'hyperbola') {
+        scene.append(hyperbolaGraph(after), el('p', after ? 'y = 0/(x − 1) + 2 = 2, x ≠ 1' : 'y = 2/(x − 1) + 2, x ≠ 1', 'coach-formula'),
+          table(['x', 'y'], [[0, after ? 2 : 0], [1, 'Не определено'], [2, after ? 2 : 4]]),
+          el('p', after ? 'Выколотая точка: (1; 2). Вертикальной асимптоты нет.' : 'Пунктир — асимптоты x = 1 и y = 2. Они не входят в график.', 'coach-note'));
       } else if (kind === 'derivative') {
         scene.querySelector('.coach-stage').textContent = after ? 'Знаки проверены' : 'График производной';
         scene.append(graph('derivative', after), el('p', 'f′(x) = (x − 1)²', 'coach-formula'));
