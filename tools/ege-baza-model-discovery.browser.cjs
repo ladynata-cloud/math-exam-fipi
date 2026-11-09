@@ -27,6 +27,31 @@ async function openModel(page){for(const id of ['taskHelp','taskModel'])if(!awai
    for(let i=0;i<n;i++)await page.locator(`[${selector}="${i}"]`).click();await page.locator(check).click();assert((await page.locator(read).innerText()).length);await page.locator(`[${selector}="0"]`).click();assert.equal(await page.locator(read).innerText(),'');
   }
   await page.goto(url+'#lesson=practice-digits-multiple');await page.locator('#new').click();await openModel(page);await page.locator('#checkDigits').click();assert((await page.locator('#digitRead').innerText()).length);await page.selectOption('[data-place="0"]','1');assert.equal(await page.locator('#digitRead').innerText(),'');assert.deepEqual(errors,[]);
-  console.log('EGE_BAZA_MODEL_DISCOVERY_BROWSER_OK: 320/1280, keyboard predictions and ranges, exact third/restoration, preserved final draft, no independent credit for model, stale feedback cleared.');
+  // The cabinet bridge is stubbed only at the transport boundary. The real
+  // managed controller must continue to emit the older server's model schema.
+  await page.route('**/trainers/learning-bridge.js*',route=>route.fulfill({contentType:'text/javascript',body:'window.MathExamLearning={register(api){window.__discoveryManaged=api;window.__discoveryEvents=[];api.subscribe(event=>window.__discoveryEvents.push(structuredClone(event)));}};'}));
+  const legacyModel=model=>assert.deepEqual(Object.keys(model).sort(),(model.kind==='solid'?['kind','angle','tilt','cut']:['kind','base','experiment','percent']).sort(),'shared model has only fields accepted before personal discovery');
+  for(const width of [320,1280]){
+   await page.setViewportSize({width,height:900});
+   for(const id of ['scale','practice-percent-whole']){
+    await page.goto(url+'?learning=1#lesson='+id);
+    await page.evaluate(id=>{const spec={trainerId:'ege-path',contentVersion:1,id,contentId:id,seed:17,task:PathData.task(id,17)};__discoveryManaged.applyState({taskSpec:spec,state:null,readOnly:false});},id);
+    await page.locator('[data-stage="1"]').click();
+    if(id==='scale'){await page.locator('#halfHeight').click();await page.locator('#thirdHeight').click();assert.equal(await page.evaluate(()=>__discoveryManaged.getState().work.model.cut),1/3);}
+    else{await page.locator('[data-base="whole"]').click();await page.locator('#percentSlide').focus();await page.keyboard.press('End');assert.equal(await page.evaluate(()=>__discoveryManaged.getState().work.model.percent),100);}
+    assert.equal(await page.locator('#modelPrediction').count(),0);
+    const saved=await page.evaluate(()=>__discoveryManaged.getState());legacyModel(saved.work.model);
+    for(const model of await page.evaluate(()=>__discoveryEvents.map(event=>event.state.work.model).filter(Boolean)))legacyModel(model);
+    await page.reload();await page.evaluate(({id,saved})=>{const spec={trainerId:'ege-path',contentVersion:1,id,contentId:id,seed:17,task:PathData.task(id,17)};__discoveryManaged.applyState({taskSpec:spec,state:saved,readOnly:false});},{id,saved});
+    assert.deepEqual(await page.evaluate(()=>__discoveryManaged.getState()),saved);assert.equal(await page.locator('#modelPrediction').count(),0);
+   }
+   await page.goto(new URL('/trainers/ege-baza-13.html#lesson=scale',url).href);await openModel(page);
+   await page.locator('#halfHeight').click();await page.locator('#thirdHeight').click();assert.equal(await page.locator('#modelPrediction').count(),0);
+   const board=await page.evaluate(()=>__bazaBoard.getState());legacyModel(board.work.ui.model);assert.equal(board.work.ui.model.cut,1/3);
+   await page.reload();await page.evaluate(saved=>__bazaBoard.applyState(saved),board);await openModel(page);
+   assert.deepEqual(await page.evaluate(()=>__bazaBoard.getState()),board);assert.equal(await page.locator('#modelPrediction').count(),0);
+  }
+  assert.deepEqual(errors,[]);
+  console.log('EGE_BAZA_MODEL_DISCOVERY_BROWSER_OK: 320/1280 personal predictions, exact third/restoration, preserved final draft, no model credit; managed cabinet and board retain legacy model fields without prediction controls across reload.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());

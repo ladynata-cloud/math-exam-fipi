@@ -108,7 +108,9 @@
    // Reuse the existing strict model-state validator before returning any saved
    // value to an interactive model. Malformed optional UI state is not executed.
    let saved=null;try{saved=root.PathManagedState.model(u.model,t);}catch{u.model=null;}
-   root.PathModels.mount($('#model'),t,{state:saved,onChange:value=>{u.model=value;markHelp();}});
+   // Personal forecasts are opt-in: shared classrooms must keep the model
+   // state accepted by the server and participants from the previous release.
+   root.PathModels.mount($('#model'),t,{state:saved,learningDiscovery:learningCycle,onChange:value=>{u.model=value;markHelp();}});
    mountedModel=true;u.model=$('#model').pathModel?.getState()||null;save();
   }
   function renderSteps(){
