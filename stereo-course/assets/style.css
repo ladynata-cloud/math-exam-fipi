@@ -47,9 +47,15 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-denominator{border-top:2px solid currentColor}
 
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:310px}
 @media(max-width:480px){
 .section-transfer h1{font-size:1.6rem;margin:.15rem 0 .45rem}
-.section-transfer .lesson-actions{margin:6px 0 12px}
+.section-transfer .back-row{margin-bottom:8px}
+.section-transfer .eyebrow{margin-bottom:4px}
+.section-transfer .lesson-actions{margin:4px 0 8px}
+.section-transfer .task-main{padding-top:12px}
+.section-transfer .task-main #task-title{margin-bottom:9px}
 .section-transfer .task-main .task-question{font-size:1rem;line-height:1.4;margin-bottom:.5rem}
 .section-transfer .task-scene{margin:.5rem 0}
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:280px}
 }

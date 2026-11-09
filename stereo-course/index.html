@@ -47,11 +47,17 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 .stereo-fraction,.stereo-numerator,.stereo-denominator{white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
 .stereo-denominator{border-top:2px solid currentColor}
 
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:310px}
 @media(max-width:480px){
 .section-transfer h1{font-size:1.6rem;margin:.15rem 0 .45rem}
-.section-transfer .lesson-actions{margin:6px 0 12px}
+.section-transfer .back-row{margin-bottom:8px}
+.section-transfer .eyebrow{margin-bottom:4px}
+.section-transfer .lesson-actions{margin:4px 0 8px}
+.section-transfer .task-main{padding-top:12px}
+.section-transfer .task-main #task-title{margin-bottom:9px}
 .section-transfer .task-main .task-question{font-size:1rem;line-height:1.4;margin-bottom:.5rem}
 .section-transfer .task-scene{margin:.5rem 0}
+.section-transfer .atanasyan-model:not(.am-expanded) .am-svg{max-height:280px}
 }
 .atanasyan-model {
   min-width: 0;
@@ -640,7 +646,7 @@ root.SpaceViewer={mount};})(window);
       const borderX = (parseFloat(style?.borderLeftWidth) || 0) + (parseFloat(style?.borderRightWidth) || 0);
       const borderY = (parseFloat(style?.borderTopWidth) || 0) + (parseFloat(style?.borderBottomWidth) || 0);
       viewportWidth = svg.clientWidth || (bounds.width > borderX ? bounds.width - borderX : 420);
-      viewportHeight = options.compact ? Math.max(220, Math.min(310, viewportWidth * .76)) : Math.max(360, Math.min(680, viewportWidth * .76));
+      viewportHeight = Math.max(360, Math.min(680, viewportWidth * .76));
       svg.style.height = (viewportHeight + borderY) + 'px';
       svg.setAttribute('viewBox', '0 0 ' + viewportWidth + ' ' + viewportHeight);
       render();
@@ -1023,7 +1029,7 @@ function buildConic(scene,q){const m=scene.model,F=scene.facts,given=text=>scene
  const patch=S.section(clipping,{n:[-tilt,0,1],d:offset}),ps=patch.map((p,i)=>add(m,'_secplane'+i,p,''));
  view(m,'neutral','Рассмотри, как плоскость пересекает полную двойную поверхность.',segments,ps);F.plane={n:[-tilt,0,1],d:offset};F.section=all;F.sectionSegments=segments;F.planeAngle=beta;
 }
-function mountScene(el,scene,options={}){const doc=el.ownerDocument;el.replaceChildren();const shell=doc.createElement('section');shell.className='task-scene';shell.setAttribute('aria-label','Модель и данные задачи');const givens=doc.createElement('div');givens.className='task-scene-givens';const title=doc.createElement('strong');title.textContent='Дано';givens.append(title);for(const text of scene.given){const chip=doc.createElement('span');chip.textContent=text;givens.append(chip);}const find=doc.createElement('p');find.className='task-scene-find';const findLabel=doc.createElement('strong');findLabel.textContent=(scene.goalLabel||'Найти')+': ';find.append(findLabel,doc.createTextNode(scene.find));const canvas=doc.createElement('div');shell.append(...(scene.figureFirst?[canvas,givens,find]:[givens,canvas,find]));el.append(shell);let viewer=null;if(scene.status==='unsupported'){const note=doc.createElement('p');note.textContent=scene.note;canvas.append(note);}else{viewer=root.TaskSceneViewer.mount(canvas,scene.model,{savedCamera:options.savedCamera||options.saved,onChange:options.onChange,compact:scene.figureFirst});}
+function mountScene(el,scene,options={}){const doc=el.ownerDocument;el.replaceChildren();const shell=doc.createElement('section');shell.className='task-scene';shell.setAttribute('aria-label','Модель и данные задачи');const givens=doc.createElement('div');givens.className='task-scene-givens';const title=doc.createElement('strong');title.textContent='Дано';givens.append(title);for(const text of scene.given){const chip=doc.createElement('span');chip.textContent=text;givens.append(chip);}const find=doc.createElement('p');find.className='task-scene-find';const findLabel=doc.createElement('strong');findLabel.textContent=(scene.goalLabel||'Найти')+': ';find.append(findLabel,doc.createTextNode(scene.find));const canvas=doc.createElement('div');shell.append(...(scene.figureFirst?[canvas,givens,find]:[givens,canvas,find]));el.append(shell);let viewer=null;if(scene.status==='unsupported'){const note=doc.createElement('p');note.textContent=scene.note;canvas.append(note);}else{viewer=root.TaskSceneViewer.mount(canvas,scene.model,{savedCamera:options.savedCamera||options.saved,onChange:options.onChange});}
  const api={scene,getState:()=>viewer?.getState()||null,setStep(index){return viewer?.setView(index>=0&&scene.stepViews[index]?scene.stepViews[index]:'neutral');},destroy(){viewer?.destroy();shell.remove();}};api.state=api.getState;api.highlightStep=api.setStep;api.setStep(options.step??-1);return api;}
 function mount(el,options){return mountScene(el,build(options.kind,options.task),options);}
 const helpers={model,add,line,mark,ring,mergeMesh,box,pyramid,planePatch,view,triangle,axes};
