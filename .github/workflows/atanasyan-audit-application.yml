@@ -1,0 +1,63 @@
+name: Atanasyan audit application
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/assets/**'
+      - 'geometry-course/atlas/**'
+      - 'geometry-course/trainers/**'
+      - 'stereo-course/**'
+      - 'tools/geometry/**'
+      - 'tools/stereo/**'
+      - 'tools/atanasyan-legacy-audit*'
+      - '.github/workflows/atanasyan-audit-application.yml'
+permissions:
+  contents: read
+jobs:
+  models-and-learner-work:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/atanasyan-audit" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/atanasyan-audit/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/atanasyan-audit/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematics, boundaries and saved work
+        run: |
+          node tools/geometry/check.js
+          node tools/geometry/investigations.test.cjs
+          node tools/stereo/check.js
+          node tools/stereo/regression-check.js
+          node tools/stereo/stale-state.test.cjs
+          node tools/stereo/investigations.test.cjs
+          node tools/stereo/investigations.dom.test.cjs
+          node tools/atanasyan-legacy-audit.test.cjs
+      - name: Reproducible offline lessons
+        run: |
+          python3 tools/geometry/build_site.py
+          python3 tools/stereo/build_site.py
+          python3 tools/atanasyan-legacy-audit.build.py
+          git diff --exit-code -- geometry-course stereo-course
+      - name: New learner journeys at mobile and desktop widths
+        env:
+          ATANASYAN_AUDIT_ARTIFACTS: artifacts/atanasyan-audit
+        run: |
+          node tools/geometry/investigations.browser.cjs
+          node tools/stereo/investigations.browser.cjs
+          node tools/atanasyan-legacy-audit.browser.cjs
+      - name: Preserve actual browser evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: atanasyan-audit-application
+          path: artifacts/atanasyan-audit/
+          retention-days: 7
+          if-no-files-found: warn
+      - run: git diff --check

@@ -4,8 +4,8 @@ const C=window.CATALOG;
 const notice=document.getElementById('storage-notice');
 const store=GeoStore.open(C.map(u=>u.id),m=>{notice.hidden=false;notice.textContent=m;});
 const labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'];
-const checked=(id,record)=>id==='triangle-sas'?GeoCongruence.progress(record)?.verified:record?.independent;
-const constructed=(id,record)=>id==='triangle-sas'?Boolean(GeoCongruence.progress(record)?.prediction&&record.observation.trim().length>=10):record?.construction;
+const checked=(id,record)=>id==='triangle-sas'?GeoCongruence.progress(record)?.verified:(GeoInvestigations.forUnit(id)?.progress(record)?.verified||0)+(record?.independent||0);
+const constructed=(id,record)=>id==='triangle-sas'?Boolean(GeoCongruence.progress(record)?.prediction&&record.observation.trim().length>=10):Boolean(GeoInvestigations.forUnit(id)?.progress(record)?.prediction&&record?.observation.trim().length>=10)||record?.construction;
 let grade='all';
 
 function refresh(){
@@ -41,8 +41,8 @@ document.getElementById('import-progress').addEventListener('change',async e=>{
  const f=e.target.files[0];if(!f)return;
  try{
   if(f.size>8e6)throw Error('Файл слишком большой.');
-  const n=store.import(JSON.parse(await f.text()));
-  document.getElementById('import-result').textContent='Прочитано учебных записей: '+n+'. Более новые записи этого браузера сохранены.';
+  const input=JSON.parse(await f.text()),n=store.import(input);
+  document.getElementById('import-result').textContent='Прочитано учебных записей: '+n+'. Более новые записи этого браузера сохранены.'+(input.recoveryDrafts?' В файле также есть отдельная локальная копия: открой этот файл в разделе «Учителю», чтобы прочитать её. Она не заменяет основной прогресс.':'');
   refresh();
  }catch(err){document.getElementById('import-result').textContent='Не удалось импортировать: '+err.message;}
  e.target.value='';
