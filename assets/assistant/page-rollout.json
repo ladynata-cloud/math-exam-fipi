@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+  "baseSha": "f70315110ef350c893e4e848e8409b1249c0dea9",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4183,6 +4183,13 @@
       "changedPaths": [
         "trainers/college-logarithms/intro/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "f70315110ef350c893e4e848e8409b1249c0dea9",
+      "task": "docs/tasks/COURSE_LEARNING_INTEGRITY_20261110.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

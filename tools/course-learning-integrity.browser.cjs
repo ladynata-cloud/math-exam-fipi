@@ -11,8 +11,13 @@ const server=http.createServer((req,res)=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const base='http://127.0.0.1:'+server.address().port;
   browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
-  for(const width of [320,1280]){
+  // Linux's DejaVu fallback is wider than some system fonts. Keep the narrow
+  // lesson-heading case even when the local default font happens to fit.
+  for(const [width,fallbackFont] of [[320,false],[1280,false],[320,true]]){
    const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
+   if(fallbackFont)await context.addInitScript(()=>document.addEventListener('DOMContentLoaded',()=>{
+    const style=document.createElement('style');style.textContent=':root{font-family:"DejaVu Sans",sans-serif}';document.head.append(style);
+   }));
    page.on('pageerror',e=>errors.push(e.message));
    await page.goto(base+'/courses/');
    const count=await page.locator('main > .grid > .card').count();assert(count>=25);
@@ -24,6 +29,8 @@ const server=http.createServer((req,res)=>{
     await page.goto(base+'/school/'+folder+'/');
     const info=await page.evaluate(name=>{const c=window[name],l=c.lessons.find(l=>l.tasks.some(t=>t.kind==='number'));const i=l.tasks.findIndex(t=>t.kind==='number');return {hash:'#lesson/'+l.id+'/'+i,answer:l.tasks[i].answer};},global);
     await page.goto(base+'/school/'+folder+'/'+info.hash);
+    const heading=await page.locator('.lesson-title').evaluate(el=>({scroll:el.scrollWidth,width:el.clientWidth}));
+    assert(heading.scroll<=heading.width,folder+' lesson title overflow '+width+(fallbackFont?' (DejaVu fallback)':''));
     await page.locator('#final-answer').fill('not a number');await page.locator('#answer-form').evaluate(form=>form.requestSubmit());
     await page.locator('.attempt-history summary').click();assert.match(await page.locator('.attempt-history').innerText(),/not a number/);
     await page.reload();await page.locator('.attempt-history summary').click();assert.match(await page.locator('.attempt-history').innerText(),/not a number/);
@@ -33,6 +40,6 @@ const server=http.createServer((req,res)=>{
    }
    assert.deepEqual(errors,[]);await context.close();
   }
-  console.log('COURSE_INTEGRITY_BROWSER_OK: catalogue search and every link retained; Alimov/Nikolsky wrong→reload→correct history at 320/1280; no JS errors or overflow');
+  console.log('COURSE_INTEGRITY_BROWSER_OK: catalogue search and every link retained; Alimov/Nikolsky wrong→reload→correct history at 320/1280 and 320 DejaVu fallback; lesson titles fit; no JS errors or overflow');
  }finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});
