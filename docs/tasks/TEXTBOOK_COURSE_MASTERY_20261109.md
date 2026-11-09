@@ -104,3 +104,22 @@ Local Chromium could not launch because socket creation is prohibited by this
 environment; no local browser PASS is claimed. The uploaded candidate must pass
 the complete current SEO browser workflow and other actual-head checks. Existing
 source bindings remain canonical uploaded commits, with #493 coverage retained.
+
+## Final release chain after Merzlyak and the OGE guide
+
+Published main is 39705bc5669acb5b97a33c72f5badc044faff298 after #503.
+This candidate also includes the actual uploaded #505 head
+f878e2146ff01c960138f52576a778b8a31167e5. Release order is #505, #497, #499;
+the coordinator preserves dependency ancestry when merging #505. The new #497
+source has parents its previous remote head dfdc8aeb and the exact #505 head.
+Only a subsequent binding commit points the five textbook pages at that actual
+uploaded source. The complete #505 manifest history, all four Merzlyak bindings
+and the two published Vilenkin entrances are retained.
+
+Independent review confirmed all 21 non-manifest files published by #503 remain
+exact. Its bounded gates passed: learning records 24/24 and 26/26, trainer
+feedback 311478 checks, similarity 720 cases and existing course 39480 checks.
+The OGE guide's seven non-manifest files are inherited unchanged from the
+coordinator's checked head. Textbook application and exercise files are unchanged
+from the reviewed #497 candidate. Final navigator checks and exact-head CI are
+reported in PR #497; no obsolete-head result is substituted for the new head.

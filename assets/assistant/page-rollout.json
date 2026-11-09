@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "407e2b1a5416b03496a8879239c1b3cd4460cff2",
+  "baseSha": "8477035cf6376889bb55415aa9ba4e88d818724e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -730,8 +730,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "60c0b193f553018803aa35d3615c1a8081728aaf000eb06196fd7d031f597ac7",
-      "afterSha256": "323a632b81f92db426c256c9a0faba486a2d35517da9d57ef0852092b7f5858f",
+      "beforeSha256": "d5d99bab6eb23f54b724565d4461ee9a672a98f3cecee3cd96b3c636df9675d2",
+      "afterSha256": "fb212a61a3c64a95bb88d31c4c986c3bfdff06327a868d710c2cad6d724f1a71",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
@@ -785,8 +785,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "0a65e384fc0250e70460893ba6f4d0a6a1f31477eb1895fee9d66d9c8ed868f4",
-      "afterSha256": "4f7de92e280f6ce5c2170aec13fda504d3bcd204b3d7d2dab35f8c767a45d3f4",
+      "beforeSha256": "a704136cd0ee413ad0f0a843f21a9270a0864d3669f496f2b9061a490bc6ad97",
+      "afterSha256": "c1591035779b8f46125322f1b554edf4072ca4883cbaf3e58b3e725ce32db8f0",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -1360,18 +1360,18 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-12.html": {
-      "beforeSha256": "b7a92e0561e33e6add7dfdaa2620420575ea8f74e82cbca7284aa0c1893acc11",
-      "afterSha256": "b3ca08ce83faff37f04d014de4c5f8c79b3ed172ac6bd4cc1c1af322f075a1c1",
+      "beforeSha256": "95a65c59dc15f1b478f13ae6ccf24e8e2ebb1e96ce782f595f9f73c6b576afb5",
+      "afterSha256": "d2ed48d1bd24c1881065a5ec437a56f5ea5aa5adb2f21da4d981ef99ba45511f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-13.html": {
-      "beforeSha256": "83b983af37418528ae5ab4ec0157fe689a8f5fb361ab3d473b9b880e897f0a39",
-      "afterSha256": "1a2921cc74acc9e866fb5e4a9c024ae41a9b1b6f59dabd1dd579b2169fcea394",
+      "beforeSha256": "b0591c1934d996fd5e99e235ad66d964deabc8849d38678b237b9150ffa5ada2",
+      "afterSha256": "6f7b272be6650db53567ffe2c1d93dedc121e604c84572c5874f578fa3647561",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-14.html": {
-      "beforeSha256": "32b65c61829935ff97888e136d1bc976b3a71e0ed353d9cff3f02827c1458979",
-      "afterSha256": "26bf93aa7b8d665d15e7dea86a31c6957e874048431c41c3d379166d30eb62e1",
+      "beforeSha256": "1733180545d958971e99c7374cf6251ad7c199c7628c3ef9f36f34b17b502cd5",
+      "afterSha256": "a049d20ca65e4962c470be7afab2393803f215a00177860b628776a172fe41c8",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-15.html": {
@@ -1570,8 +1570,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/index.html": {
-      "beforeSha256": "7f27088731437e74b1edbc12011999c5e1692f9b9bc5e06358bf29f0461bc12d",
-      "afterSha256": "45156dea13747b4c838e9db7f0f17cd7534f51370de29f79e5e9bd640969b74e",
+      "beforeSha256": "6af76610cda46f70d748b9920be9262755e3aed2e6f6dbfc82054424c689b275",
+      "afterSha256": "a887c4cd5130219f26c06ac6f0d7ca29fea08ef786439892cb186d498a918f33",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-1.html": {
@@ -2030,8 +2030,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "1d68505349632fb15fe612a61160f351863c22eda0ce9ae64dcfb14ffcd9b4f4",
-      "afterSha256": "eaedf6d8ec69be9b7ba8fad458a96d8d47c764c6a4e7fe16efe20c8e05615395",
+      "beforeSha256": "9487d78249477eb839dc094f454419a23f5fb9962e019bd4a67a82b785aac7f2",
+      "afterSha256": "08f0ff4ac805d7f1a53c9b4afe45b130ddce5d8d61ed63556f8d9388eace9e86",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2100,8 +2100,8 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8c4d159baa5e5aa92b3dfa6f0fdffd489d3907e5009ae5749b879981ef42288b",
-      "afterSha256": "7c1d1f49773470338c6eba4f7babf4a0224a688b191fce76f18212d431cd61a1",
+      "beforeSha256": "28f1a7c30579e464d661865a2c2ebd6c8d5bc7b02efb123c8ec7aebee2a64ebd",
+      "afterSha256": "b7d9a50f8ccc8dccdabd0e235927ea0ea05819cdc2b98774f7df02d284040aad",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
@@ -2140,8 +2140,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "5331b3a637073bcd81e8b248fd8fbeddf98472c425ed6f969f866a6e9b77b0de",
-      "afterSha256": "b3b90948831e9e3b4f6bf4b23d1d3aa7eb09641aa59694c856a056c0dbe67766",
+      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
+      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -2870,8 +2870,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
-      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
+      "beforeSha256": "e2f3f95dff2e35f08c7c240ebfc903b4d03c1f23d6873b876bb47e0f7f89ad9e",
+      "afterSha256": "864756ada88bae9c181f6f250a41822b9f8c39958bb81f493d18de1f99bc9b73",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4033,15 +4033,53 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
-      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
-      "sourceBaseSha": "407e2b1a5416b03496a8879239c1b3cd4460cff2",
-      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "previousBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
+      "sourceBaseSha": "821ec89e09acdbf2d6fcc91c17ad12141e5e8304",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
       "changedPaths": [
-        "geometry-course/atlas/triangle-sas.html",
-        "geometry-course/index.html",
-        "grade7/index.html",
-        "school/index.html",
-        "stereo-course/index.html"
+        "geometry-merzlyak/atlas/merzlyak-base-8-12.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-13.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-14.html",
+        "geometry-merzlyak/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "0b22565945c4a6c7e4cefa558b0b3c69359f9b5e",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "sourceBaseSha": "7010f1c934ebe58207e2e8ba5823a04f5c460998",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "0739454e9e5f1454f1f40ff1b91f204aa8f4024c",
+      "task": "docs/tasks/OGE_COURSE_GUIDE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
+      "sourceBaseSha": "8477035cf6376889bb55415aa9ba4e88d818724e",
+      "task": "docs/tasks/OGE_COURSE_GUIDE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
