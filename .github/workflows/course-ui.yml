@@ -1,0 +1,27 @@
+name: Course visual consistency
+on:
+  pull_request:
+    paths:
+      - 'assets/course-ui*'
+      - 'tools/course-ui.browser.cjs'
+      - '.github/workflows/course-ui.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  course-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Course screens and paired layout controls
+        run: |
+          npm install --prefix "$RUNNER_TEMP/course-ui" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/course-ui/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/course-ui/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/course-ui-evidence" node tools/course-ui.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-ui-evidence
+          path: ${{ runner.temp }}/course-ui-evidence
+          if-no-files-found: error
