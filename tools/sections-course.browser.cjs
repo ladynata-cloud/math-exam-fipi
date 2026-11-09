@@ -95,7 +95,7 @@ function visible(frame) {
     disclosures: [...document.querySelectorAll('.course-main details')].map(node => [node.querySelector('summary')?.textContent, node.open]),
     // Participants have different iframe widths. Compare visible authored
     // topology/plane/focus, while shared semantic state checks exact camera.
-    geometry: [...document.querySelectorAll('.model-svg [data-edge],.model-svg [data-segment],.model-svg [data-point],.model-svg [data-label],.model-svg [data-active-plane],.model-svg [data-section-polygon]')].map(node => [
+    geometry: [...document.querySelectorAll('.course-main .model-svg [data-edge],.course-main .model-svg [data-segment],.course-main .model-svg [data-point],.course-main .model-svg [data-label],.course-main .model-svg [data-active-plane],.course-main .model-svg [data-section-polygon]')].map(node => [
       node.tagName, node.textContent, ...['class', 'data-edge', 'data-hidden', 'data-segment', 'data-kind', 'data-step', 'data-label', 'data-point', 'data-active-plane', 'data-section-polygon'].map(key => node.getAttribute(key))
     ])
   }));
@@ -187,7 +187,7 @@ async function layout(page, frame, width, shot) {
       const r = document.querySelector(selector).getBoundingClientRect();
       return { x: r.x, y: r.y, right: r.right, bottom: r.bottom, width: r.width, height: r.height };
     };
-    return { width: innerWidth, height: innerHeight, scroll: document.documentElement.scrollWidth, condition: rect('.lesson-condition'), model: rect('.model-svg'), boardAction: rect('[data-sections-board-open]') };
+    return { width: innerWidth, height: innerHeight, scroll: document.documentElement.scrollWidth, condition: rect('.lesson-condition'), model: rect('.course-main .model-svg'), boardAction: rect('[data-sections-board-open]') };
   });
   assert(boxes.scroll <= boxes.width + 1, width + ': no horizontal overflow');
   for (const [name, b] of [['condition', boxes.condition], ['model', boxes.model], ['board action', boxes.boardAction]]) {
@@ -291,7 +291,8 @@ async function standalone(browser, publicOrigin, errors) {
     assert.equal(await page.locator('[data-history-step]').count(), 2);
     await page.locator('.starter-draft > summary').click();
     await page.locator('#proof-draft').fill('M и N принадлежат грани AEFB.');
-    await page.locator('.model-svg').press('ArrowRight');
+    assert.equal(await page.locator('.course-main .model-svg').count(), 1, 'one active lesson model, separate from the tour example');
+    await page.locator('.course-main .model-svg').press('ArrowRight');
     await delay(100);
     const saved = await page.evaluate(() => window.SECTIONS_APP.getState().tasks['starter-18']);
     const oldView = await visible(page);
@@ -508,7 +509,7 @@ async function run() {
     assert.equal(await studentFrame.locator('[data-history-step]').count(), 2);
     await teacherFrame.locator('.starter-draft > summary').click();
     await teacherFrame.locator('#proof-draft').fill('a < b, c > d; <img src=x> — это текст рассуждения');
-    await teacherFrame.locator('.model-svg').press('ArrowRight');
+    await teacherFrame.locator('.course-main .model-svg').press('ArrowRight');
     await synchronized(teacherFrame, studentFrame, 'lossless text and camera');
     assert.equal(await studentFrame.locator('img[src=x]').count(), 0);
     assert.equal(await s.evaluate(() => window.__sectionsGatePublished), observerMessages, 'observer hydration does not echo');
@@ -524,7 +525,7 @@ async function run() {
     await board.locator('#sharePanel [data-close-panel]').click();
     assert.equal(await board.locator('#trainerFrame').evaluate(node => getComputedStyle(node).pointerEvents), 'none');
     await studentFrame.locator('#proof-draft').fill('Запись ученика после передачи управления');
-    await studentFrame.locator('.model-svg').press('ArrowUp');
+    await studentFrame.locator('.course-main .model-svg').press('ArrowUp');
     const pupilState = await synchronized(studentFrame, teacherFrame, 'student text and camera reach teacher');
     // Reload the board host's current document, whose URL contains the room
     // marker. Reloading the outer cabinet instead remounts its original entry
@@ -595,7 +596,7 @@ async function run() {
     await construct(teacherFrame, course.lessons.find(l => l.id === 'auth-method-04').steps.length);
     const answered = await checkNumericLesson(teacherFrame, studentFrame);
     assert.equal(answered.work.correctAnswer, true); assert.equal(answered.work.workedSeen, true);
-    const svg = teacherFrame.locator('.model-svg'); await svg.scrollIntoViewIfNeeded();
+    const svg = teacherFrame.locator('.course-main .model-svg'); await svg.scrollIntoViewIfNeeded();
     const box = await svg.boundingBox(), beforeCamera = answered.work.camera;
     assert(box && box.width > 0 && box.height > 0);
     await t.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await t.mouse.down();

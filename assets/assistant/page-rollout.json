@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+  "baseSha": "2a45b687d6212e5313ccbd102d8906846b0e5bc4",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -213,8 +213,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "9c872e1a4f0570c155f42f36b4429ae559a89a8da8d42fb9d08ed0f538c48ccf",
-      "afterSha256": "b68d7325acd0fc57b27e62f597c9f7de4394c28f14eef1bc3e6f008d7c0c080e",
+      "beforeSha256": "d18ca8f4d9b73fab42278600fc2bd5f40aa3e2ae4ea133414b6e8e648225741d",
+      "afterSha256": "ac1f1f9d87f5c027034d7b51c5111402cf527dddcd1c9f2c9b673a5e92545ec3",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -223,8 +223,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "05f9788e4e89242a042b1326ada051a9ddf9e91de093791cea732a310e7bc1b3",
-      "afterSha256": "fa45af36e15c6a79e78ed953f37e8ba7369eefd5ad0ac4061ac8285d7dd1cae5",
+      "beforeSha256": "f7dfc2ecc2e6db869cd096a472f5f3f28bbf3b213729482013546b9ddcfd5273",
+      "afterSha256": "1ae52ab78f4948f20419cf5b3b400b53f2d8bc7dea177a3feea7471b80bfe48a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -283,8 +283,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "45b1a44a5253d69d43e6f31f5a969429dad0c3497c4be0b5ddc7f96d6ca5922f",
-      "afterSha256": "d096e4df5c9e79dfd9d58d943a4f9e8c26a40702612e828ff9708290fa1f95a6",
+      "beforeSha256": "aad18ecc6808eb2e82b17b4255c5154e0732cc7eb6be274af6d48f901364169f",
+      "afterSha256": "dc6924307d9f90060bcc571a40c06ffa7970701279c594a70bf8745d79e54ae9",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -298,8 +298,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "641f0ab08d71a5e2d517391228a8ebb3e04ddf8771c7d579c3510f8c57a0e059",
-      "afterSha256": "aa95826e293c52551c53ac2ebbbbed973034ec4c665c9db9c2161d855cc8d148",
+      "beforeSha256": "0d929b7e730854732e2d49746445bcf3e03a607574f3a957e49b9f38a01b53ae",
+      "afterSha256": "14892d55587b03dad2559cf78cdf54a6d02668617ca56fb3393843f748530fd8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -448,8 +448,8 @@
       "placement": "before-head-close"
     },
     "equations/index.html": {
-      "beforeSha256": "a104a8510de8c3f632f107cff2a35f80ffa78b42b82f84ee30c89923035124f6",
-      "afterSha256": "8f7ab612d2a4c7f76cb16cbe0a17ecfcf43575695d0b621a76dc1a82ea3a1160",
+      "beforeSha256": "4a48e546aad426c305691a297de62227e4a95a44ff1fa7975f27f3a7244659bf",
+      "afterSha256": "47399e548333733b45702970a7fc8b74e40c0285164dfefc414463295dd25d80",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/angle-locus.html": {
@@ -2448,8 +2448,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/percent-table-trainer.html": {
-      "beforeSha256": "cb41ef26577ebd8a57d8026205ba0a90bb6dd6effaf5b566008bddcfb2a23133",
-      "afterSha256": "d84357892f926bf8fa9ac17e9d073cf4f7dd8dedee0aacd19b1ad1994c563a0c",
+      "beforeSha256": "907560506879ff0044c24c5325c242683c9c545c91056c7d69ca0d183894d18b",
+      "afterSha256": "0cd5ef7d913047069ad84c4e45ad8720626214099186d39e29ac39c192fd0ef4",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-apartments.html": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "ec30d939052b44346c11a4af8d6429fc5aebd9a26f9cd9f51278119e29c01736",
-      "afterSha256": "8503bd87fbed764cd1fb84950468f66a10b3791df37f6ad4428b1e33952e04f5",
+      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
+      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "655f6982340cbf720351ac2fe47fb1bb5d0449c6b94b6d277c839069e4118d8d",
-      "afterSha256": "3f5a6a0b8962d13929f0afbc1227f0167da238c8eb477b8cca4c4b4a9c695e32",
+      "beforeSha256": "0e02c94e942d760f6877a895853d905988f1285023f23ac2928bfa7a382cef24",
+      "afterSha256": "def5a8e5d2d979bef43bd54f09354c3cb6b372be7d98d64e37017378ceb486b1",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
-      "beforeSha256": "08eb1ec9be45e9801c79be8ca87b040adb4ee9dff636319ec237f56c0f00ae10",
-      "afterSha256": "bfc5847772ffa83bf101b0eb2b4de9d702aa1764a960111a38438c9a099bf873",
+      "beforeSha256": "c1dc727804de1128d2b061522d78b18a40462bef1f2a975d2b394f41e569da64",
+      "afterSha256": "b91f75af87ad5c9fea9fad3706b1747bcbc0240e4837aa3faf056e8ed4eeb9af",
       "placement": "before-head-close"
     },
     "trainers/task14-progressions-trainer.html": {
@@ -3083,8 +3083,8 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "a6a0f933a62f662c6123fa965d77707a9aec7788f6ff3bf991fdcb94748fd414",
-      "afterSha256": "36d13799bddb3faf25eafe02b09658dca32dea592e5a4df26018218b514cd797",
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3888,7 +3888,162 @@
     },
     {
       "previousBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+      "sourceBaseSha": "58f7ed895de259071eeba48b7947f3b187faa93a",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "58f7ed895de259071eeba48b7947f3b187faa93a",
+      "sourceBaseSha": "de1b8e06d015ade17e3acb8a9cd2116d79e3bddb",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "de1b8e06d015ade17e3acb8a9cd2116d79e3bddb",
+      "sourceBaseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
+      "task": "docs/tasks/SIMPLE_EQUATIONS_INDEPENDENT_PROGRESS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2dbf617f7785c0f25d3979a776164a47e1da249b",
+      "sourceBaseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+      "task": "docs/tasks/OGE8_ROOT_DOMAINS_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2c1883e3f411879a1f5d248bfebaa1c64dc6fda3",
+      "sourceBaseSha": "7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a",
+      "task": "docs/tasks/EQUATION_FREE_STEPS_20261108.md",
+      "changedPaths": [
+        "trainers/simple-equations-stepwise.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a",
+      "sourceBaseSha": "9c999a1eb1ca67b83098f351b849669b6fc08bfe",
+      "task": "docs/tasks/LINEAR_LEARNING_PILOT_20261109.md",
+      "changedPaths": [
+        "equations/index.html",
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9c999a1eb1ca67b83098f351b849669b6fc08bfe",
+      "sourceBaseSha": "e258e438cd30e396c7741741384911f0a424581d",
+      "task": "docs/tasks/PERCENT_CHECK_RESUME_20261109.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e258e438cd30e396c7741741384911f0a424581d",
+      "sourceBaseSha": "8d73ca92b41e3cef1985116a20477e56117372d1",
+      "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8d73ca92b41e3cef1985116a20477e56117372d1",
+      "sourceBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+      "task": "docs/tasks/PERCENT_HEADER_WRAP_20261109.md",
+      "changedPaths": [
+        "trainers/oge-1-5-trainers/percent-table-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "8f682d84a99caad1a4cd9da6006cb9eebf2734d1",
+      "sourceBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "task": "docs/tasks/LINEAR_PILOT_GUIDED_BASICS.md",
+      "changedPaths": [
+        "equations/index.html",
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "sourceBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
+      "changedPaths": [
+        "trainers/vpr-math/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "sourceBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
+      "task": "docs/tasks/OGE_LEARNING_MAP_20261109.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
+      "sourceBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "task": "docs/tasks/EGE_BASE_LEARNING_PATH_20261109.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "task": "docs/tasks/PROFILE_LEARNING_JOURNEY_20261109.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "sourceBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "sourceBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "task": "docs/tasks/OGE8_LEARN_ANCHOR_CLEARANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
       "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "2a45b687d6212e5313ccbd102d8906846b0e5bc4",
       "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."

@@ -31,8 +31,8 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-      - name: Fetch preservation baseline and reviewed PR468 engine source
-        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 76b7957fc919aa9e66f5b663eeaa436d23ef979d
+      - name: Fetch preservation baseline and exact reviewed task sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

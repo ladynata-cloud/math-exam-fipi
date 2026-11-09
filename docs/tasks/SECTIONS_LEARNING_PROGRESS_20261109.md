@@ -70,3 +70,45 @@ delta and the original release decision.
 
 Results, reviewed head and actual CI are recorded in the PR after execution.
 An unperformed visual or real-pupil check must not be reported as passed.
+## Earlier continuation, 9 November 2026 (superseded release boundary)
+
+EXECUTIVE STATUS
+
+Task: SECTIONS_LEARNING_PROGRESS_20261109
+PR: #504, still based on sections-from-zero; local correction not uploaded
+Base: existing PR head b9c60769
+Head: local follow-up to b9c60769
+Gate: 52 local tests PASS; corrected browser scenario requires CI
+Tests: sections course/navigation/progress/tour suites 52/52; all 186 cards rendered in DOM; generated offline/data files current; syntax and diff checks PASS
+Failures: prior CI selected both the active model and the retained tour SVG
+Not run: corrected real-browser CI, publication, pupil trial, external review
+Scope deviations: none; only test selectors and this record changed
+Recommendation: upload correction to existing PR, run full browser/shared-board gate; preserve dependency on #474
+Next user decision: explicit upload/release permission requested by automatic approval review
+
+The browser gate now scopes camera operations, layout measurements and topology
+snapshots to .course-main .model-svg and asserts one active learner model.
+Existing camera/state equality, topology, viewport and board assertions remain.
+The separate tour remains covered by its six dedicated interaction tests.
+This does not remove either SVG or change the mathematical runtime.
+
+
+## Authorized release continuation, 9 November 2026
+
+The owner explicitly authorized sending the prepared changes to
+ladynata-cloud/math-exam-fipi, merging verified PRs and publishing on
+mathexam.space after successful checks. This supersedes the previous upload
+and publication hold. Root release coordination owns merge/deployment; real
+pupil assignments are outside this scope.
+
+The stacked candidate includes the actual uploaded #474 head
+9c31b4b57b2b47a058a99dbb122220cc7ab586fb. The navigator receipt uses the
+remote source checkpoint 2a45b687d6212e5313ccbd102d8906846b0e5bc4; only the
+obsolete local source identity conflicted, and the uploaded receipt is retained
+without changing its coverage. All course/progress/tour implementation blobs
+and the scoped browser correction are preserved from the tested continuation.
+
+The original 52 local checks passed before composition. Deterministic build,
+independent geometry and source identity checks passed after composition.
+Actual-head CI, including real browser and two-participant shared-board
+scenarios, is mandatory before release. Historical CI is not a current pass.

@@ -88,6 +88,7 @@ test('A recovered theme is labelled separately and never counted as two new inde
     const card=d.querySelector('[data-calm-exam="1"]');
     assert.match(card.textContent,/0 из 6 тем: два новых самостоятельных условия/);
     assert.match(card.textContent,/Закреплено на знакомых задачах: 1/);
-    assert.equal(card.querySelector('[data-exam-start]').textContent,'Повторить без подсказок');
+    assert.equal(card.querySelector('[data-exam-start]').getAttribute('href'),'#practice/geo-angles/independent','clean recovery advances to the next unmastered topic');
+    assert.equal(card.querySelector('[data-exam-start]').textContent,'Начать тему');
   }finally{dom.window.close();}
 });
