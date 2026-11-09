@@ -1,0 +1,153 @@
+/* MathExam course surfaces. Opt in with data-mx-course; model colours and
+   learning-state semantics belong to the individual course, not this sheet. */
+body[data-mx-course] {
+  --mx-paper: #f6f7f2;
+  --mx-surface: #ffffff;
+  --mx-ink: #203b36;
+  --mx-muted: #52665e;
+  --mx-green: #176b50;
+  --mx-green-hover: #10523d;
+  --mx-soft: #eaf3ed;
+  --mx-line: #d4dfd7;
+  --mx-focus: #95571d;
+  --mx-radius: 16px;
+  margin: 0;
+  background: var(--mx-paper);
+  color: var(--mx-ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+
+/* A clear hierarchy without taking the whole first screen for a title. */
+body[data-mx-course] h1 {
+  color: var(--mx-ink);
+  font-family: inherit;
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 720;
+  line-height: 1.16;
+  letter-spacing: -.025em;
+  margin-block: 12px 18px;
+  overflow-wrap: break-word;
+}
+body[data-mx-course] h2 {
+  font-family: inherit;
+  font-size: clamp(1.25rem, 2.1vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+body[data-mx-course] h3 { font-family: inherit; line-height: 1.35; }
+body[data-mx-course] :is(.lead, .lede, .intro, .vpr-lead) {
+  color: var(--mx-muted);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  max-width: 72ch;
+}
+body[data-mx-course] :is(.eyebrow, .kicker, .vpr-eyebrow) {
+  color: var(--mx-green);
+  letter-spacing: .075em;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+/* Leave backgrounds that communicate a result, warning or help untouched. */
+body[data-mx-course] :is(.card, .panel, .lesson-card, .course-card,
+  .course-section, .entry, .hub-card, .vpr-card, .course, .current-course) {
+  border-radius: var(--mx-radius);
+}
+body[data-mx-course] :is(.entry, .vpr-card, .course-section) {
+  background: var(--mx-surface);
+  border-color: var(--mx-line);
+}
+body[data-mx-course] :is(.lesson-card, .course-card):hover {
+  transform: none;
+  border-color: var(--mx-green);
+}
+
+/* Explicit action classes only: answer choices, tabs, canvas tools and
+   correct/incorrect feedback keep their original state styles. */
+body[data-mx-course] :is(a.button, a.btn, .primary-link, .vpr-open,
+  button.primary, .actions > button, .actions > .button) {
+  min-height: 44px;
+  border-radius: 10px;
+  line-height: 1.4;
+  font-weight: 650;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+body[data-mx-course] :is(.primary-link, .vpr-open, button.primary, a.button.primary),
+body[data-mx-course="profile"] .button:not(.quiet),
+body[data-mx-course="profile-home"] .btn:not(.secondary):not(.ghost),
+body[data-mx-course="catalog"] .button,
+body[data-mx-course="oge"] .btn:not(.secondary) {
+  background: var(--mx-green);
+  border-color: var(--mx-green);
+  color: #fff;
+}
+body[data-mx-course] :is(.primary-link, .vpr-open, button.primary, a.button.primary):hover,
+body[data-mx-course="profile"] .button:not(.quiet):hover,
+body[data-mx-course="profile-home"] .btn:not(.secondary):not(.ghost):hover,
+body[data-mx-course="catalog"] .button:hover,
+body[data-mx-course="oge"] .btn:not(.secondary):hover {
+  background: var(--mx-green-hover);
+}
+body[data-mx-course] :is(.actions, .row, .topbar, .top-links) { min-width: 0; }
+body[data-mx-course] :is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid var(--mx-focus);
+  outline-offset: 3px;
+}
+body[data-mx-course] :is(.topbar, .top, .site-header, .vpr-header) {
+  border-bottom-color: var(--mx-line);
+}
+body[data-mx-course] :is(.topbar, .top, .site-header, .vpr-header) nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+body[data-mx-course] :is(.hero, .vpr-hero) { padding-block: 24px; }
+body[data-mx-course] .hero-art { transform: none; }
+
+/* The profile entrance no longer needs notebook margins on a small screen. */
+body[data-mx-course="profile-home"]::before { content: none; }
+body[data-mx-course="profile-home"] .sheet {
+  max-width: 1180px;
+  padding: 32px 24px 64px;
+}
+
+/* Shared vocabulary for new progress maps. Never infer a status from colour,
+   a visited URL or a click on 'solution'; visible text comes from course data. */
+.mx-learning-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  border-radius: 7px;
+  font-size: .875rem;
+  line-height: 1.4;
+}
+.mx-learning-state[data-state="new"] { color: #52665e; background: #f6f7f2; }
+.mx-learning-state[data-state="started"] { color: #245c83; background: #edf5fb; }
+.mx-learning-state[data-state="helped"] { color: #87551e; background: #fff4df; }
+.mx-learning-state[data-state="independent"] { color: #176b50; background: #eaf3ed; }
+.mx-learning-state[data-state="review"] { color: #6c4289; background: #f4edf8; }
+.mx-course-guide { border: 1px solid #d4dfd7; border-radius: 16px; padding: 16px 20px; margin: 24px 0; background: #fff; }
+.mx-course-guide summary { min-height: 44px; cursor: pointer; color: #176b50; font-weight: 700; }
+.mx-course-guide ol { padding-left: 24px; }
+.mx-course-guide li { margin: 8px 0; }
+.mx-course-legend { display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 600px) {
+  body[data-mx-course] h1 { font-size: 1.75rem; }
+  body[data-mx-course] :is(.hero, .vpr-hero) { padding-block: 16px; gap: 20px; }
+  body[data-mx-course] :is(.topbar, .top) { height: auto; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
+  body[data-mx-course] :is(.topbar, .top) nav { gap: 6px 14px; flex-wrap: wrap; }
+  body[data-mx-course="profile-home"] .sheet { padding: 20px 16px 48px; }
+  body[data-mx-course] :is(.actions, .row) > :is(.button, .btn) { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-mx-course] :is(a, button, .card, .lesson-card) { transition: none; animation: none; }
+}
+@media print {
+  body[data-mx-course] { background: #fff; color: #000; }
+  .mx-course-guide { display: none; }
+}
