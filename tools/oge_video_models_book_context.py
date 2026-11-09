@@ -36,7 +36,7 @@ def verified_context(record):
         if not pin or not pin['bookId']: return None
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
-        if context['task'] != pin['task'] or context['sourceBase'] != PINS['baseCommit']: return None
+        if context['task'] != pin['task']: return None
         if context['kind'] != 'oge-video-models-closed-v1' or context['closed'] is not True: return None
         if context['label'] != LABEL or context['summaryHtml'] != SUMMARY_HTML: return None
         raw = (ROOT / file).read_bytes()
@@ -46,8 +46,14 @@ def verified_context(record):
                  '<script defer src="oge-video-geometry.js"></script>\n'
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if raw.count(block) != 1 or block + b'</head>' not in raw: return None
-        native = raw.replace(block, b'', 1)
-        if sha(native) != pin['sha256'] or context['nativeSha256'] != pin['sha256']: return None
+        native_hash = sha(raw.replace(block, b'', 1))
+        if native_hash == pin['sha256']:
+            source_base = PINS['baseCommit']
+        elif native_hash == pin.get('currentSource', {}).get('sha256'):
+            source_base = pin['currentSource']['commit']
+        else:
+            return None
+        if context['sourceBase'] != source_base or context['nativeSha256'] != native_hash: return None
         if sha(raw) != context['sourceSha256']: return None
         if record['resources'][route]['sha256'] != context['sourceSha256']: return None
         if set(context['assets']) != set(ASSETS): return None

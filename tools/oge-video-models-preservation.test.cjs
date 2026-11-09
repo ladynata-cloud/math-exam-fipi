@@ -5,13 +5,17 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
 const {entries, snippet, restoreVideoModels} = require('./oge-video-models-preservation.cjs');
+const pins = require('./fixtures/oge-video-models-native-bytes.json');
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
 for (const [number, file] of Object.entries(entries)) {
   test(file + ': only the exact optional model includes change', () => {
     const current = fs.readFileSync(path.join(ROOT, file), 'utf8');
-    const baseline = execFileSync('git', ['show', BASE + ':' + file], {cwd: ROOT, encoding: 'utf8'});
+    const candidate = pins.pages[file].currentSource;
+    const revision = candidate?.commit || pins.baseCommit;
+    const pinnedSource = execFileSync('git', ['show', revision + ':' + file], {cwd: ROOT, encoding: 'utf8'});
+    const baseline = candidate ? restoreVideoModels(file, pinnedSource) : pinnedSource;
     assert.equal(current.split(snippet(number)).length, 2);
+    if (candidate) assert.equal(current, pinnedSource);
     assert.equal(restoreVideoModels(file, current), baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);
     for (const changed of [snippet(number) + snippet(number), snippet(number).replace('defer', 'async'), snippet(number).replace('data-oge-video-task="' + number + '"', 'data-oge-video-task="0"')]) {

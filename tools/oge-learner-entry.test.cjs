@@ -5,9 +5,15 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
-// Explicit reviewed task sources bind the free-equation and percent-resume
-// changes. Other pages and link metrics retain the published baseline.
-const taskSources={'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+// Explicit reviewed task sources cover changes to exercise behavior.
+// Other pages and link metrics retain the published baseline.
+const trainerFeedbackSource='aa5f27628d5c384e001df55334fc703e83e6f36e';
+const taskSources={
+ 'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a',
+ 'trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d',
+ 'trainers/oge-task11-graphs-trainer.html':trainerFeedbackSource,
+ 'trainers/oge-task16-circle.html':trainerFeedbackSource,
+};
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 // This shared engine's default course is EGE; retain full return coverage while
