@@ -25,9 +25,15 @@ function estimationTrail(){
 }
 function divisionSegment(){return spec.divisionTasks.find(t=>state.step<t.endIndex)||spec.divisionTasks.at(-1)||null;}
 function answerDisplay(q){const x=q.answer;if(q.kind==='choice')return q.options.find(o=>o.id===String(x))?.html||esc(x);if(x&&typeof x==='object')return '<span class="lm-fraction"><span>'+esc(x.n)+'</span><span>'+esc(x.d)+'</span></span>';return esc(x);}
-function input(value){if(readOnly)return;if(state.view==='learn'){while(state.lessonAnswers.length<=state.lessonIndex)state.lessonAnswers.push('');state.lessonAnswers[state.lessonIndex]=value;}else state.answer=value;send('input',{scope:state.view==='learn'?'lesson':spec.steps.length?'step':'practice',step:state.view==='learn'?state.lessonIndex:state.step});}
+function input(value){if(readOnly)return;$('lm-answer-required')?.remove();if(state.view==='learn'){while(state.lessonAnswers.length<=state.lessonIndex)state.lessonAnswers.push('');state.lessonAnswers[state.lessonIndex]=value;}else state.answer=value;send('input',{scope:state.view==='learn'?'lesson':spec.steps.length?'step':'practice',step:state.view==='learn'?state.lessonIndex:state.step});}
 function check(){
- if(readOnly||!raw().trim()||!active())return;
+ if(readOnly||!active())return;
+ if(!raw().trim()){
+  let note=$('lm-answer-required');
+  if(!note){note=document.createElement('p');note.id='lm-answer-required';note.setAttribute('role','status');const button=$('lm-check');(button.closest('.lm-answer-row')||button).after(note);}
+  note.textContent=active().kind==='choice'?'Сначала выбери ответ. Это ещё не попытка решения.':'Сначала введи ответ. Пустое поле не считается ошибкой.';
+  ($('lm-answer')||host.querySelector('[data-choice]'))?.focus();return;
+ }
  const scope=state.view==='learn'?'lesson':spec.steps.length?'step':'practice',step=scope==='lesson'?state.lessonIndex:state.step,answer=raw();
  const details={scope,step,answer,answers:state.answers.slice()},result=api.evaluate(spec,details);
  state.feedback={kind:result.correct?'correct':'incorrect',scope,step,answer};
