@@ -6,6 +6,11 @@
 .profile-journey-page .focused-practice .task-panel {
   min-width: 0;
 }
+.profile-journey-page:has(.focused-practice) .practice-head .eyebrow,
+.profile-journey-page:has(.focused-practice) .practice-head .text-link,
+.profile-journey-page:has(.focused-practice) #pause-practice {
+  font-size: 16px;
+}
 .profile-journey-page .focused-practice .task-panel > .solution-history {
   margin-bottom: 16px;
 }
@@ -75,17 +80,14 @@
   .profile-journey-page:has(.focused-practice) #calm-toggle {
     grid-column: 2;
     grid-row: 1;
-    font-size: 14px;
+    font-size: 16px;
     padding: 8px;
   }
   .profile-journey-page:has(.focused-practice) .topbar nav {
     grid-column: 1 / -1;
     grid-row: 2;
     gap: 12px;
-    font-size: 14px;
-  }
-  .profile-journey-page .practice-head .eyebrow {
-    font-size: 14px;
+    font-size: 16px;
   }
   .profile-journey-page .focused-practice .task-condition {
     font-size: 18px;

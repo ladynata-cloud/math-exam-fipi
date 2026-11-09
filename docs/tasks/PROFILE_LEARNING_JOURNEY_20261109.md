@@ -55,3 +55,15 @@ Gate: PROFILE_LEARNING_JOURNEY_OK.
 Risks: incorrect next lesson, misleading summary, wrong legacy destination,
 layout regression. Revert the scoped commit; no storage migration or deletion.
 Detailed execution and release evidence will be recorded in the PR.
+
+## Release preparation update
+- The owner explicitly authorized sending the changes to the repository and
+  publication after successful checks in the current conversation.
+- Main advanced only through approved PR #492 (linear-equation lesson). The
+  composition preserves it, with unchanged profile patch blobs; 32 targeted
+  checks passed on that composed tree.
+- Initial CI exposed stale navigator bindings and board script-parity fixtures
+  after adding public-only map modules. Refresh the exact two page bindings;
+  keep strict teaching-script parity and prohibit map modules in board wrappers.
+- Preserve the existing readable-label requirement of at least 16px on mobile.
+- Final CI, current base/head, merge and live verification are recorded in PR #498.
