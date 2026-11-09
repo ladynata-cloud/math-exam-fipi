@@ -203,7 +203,7 @@ async function checkStereoInteraction(page, base, viewport) {
   assert.equal(await page.locator('[data-step]').count(), 1, 'One request reveals one step');
   const explanation = page.locator('[data-step]').first().locator('[data-step-explanation]');
   assert.equal(await explanation.evaluate(node => node.open), false, 'A step starts with a question, not its explanation');
-  await explanation.locator('summary').click();
+  await explanation.locator(':scope > summary').click();
   await visible(explanation.locator('p').first(), 'The learner can request the explanation');
   await page.reload({ waitUntil: 'load' });
   await visible(page.locator('[data-step]').first(), 'Requested help stays visible after reload');
