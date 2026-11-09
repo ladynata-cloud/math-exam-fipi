@@ -18,8 +18,8 @@ body[data-mx-course] {
   line-height: 1.6;
 }
 
-/* A clear hierarchy without taking the whole first screen for a title. */
-body[data-mx-course] h1 {
+/* Shared defaults yield to compact task headings and colours on dark panels. */
+:where(body[data-mx-course]) h1 {
   color: var(--mx-ink);
   font-family: inherit;
   font-size: clamp(1.75rem, 3.5vw, 2.75rem);
@@ -29,20 +29,22 @@ body[data-mx-course] h1 {
   margin-block: 12px 18px;
   overflow-wrap: break-word;
 }
-body[data-mx-course] h2 {
+:where(body[data-mx-course]) h2 {
   font-family: inherit;
   font-size: clamp(1.25rem, 2.1vw, 1.65rem);
   font-weight: 700;
   line-height: 1.3;
 }
-body[data-mx-course] h3 { font-family: inherit; line-height: 1.35; }
-body[data-mx-course] :is(.lead, .lede, .intro, .vpr-lead) {
+:where(body[data-mx-course]) h3 { font-family: inherit; line-height: 1.35; }
+/* Practice headings inherit a zero top margin from their original h1 rule. */
+body[data-mx-course="profile"] .practice-head h1 { margin-top: 0; }
+:where(body[data-mx-course]) :is(.lead, .lede, .intro, .vpr-lead) {
   color: var(--mx-muted);
   font-size: 1.0625rem;
   line-height: 1.6;
   max-width: 72ch;
 }
-body[data-mx-course] :is(.eyebrow, .kicker, .vpr-eyebrow) {
+:where(body[data-mx-course]) :is(.eyebrow, .kicker, .vpr-eyebrow) {
   color: var(--mx-green);
   letter-spacing: .075em;
   font-size: .78rem;
@@ -137,7 +139,7 @@ body[data-mx-course="profile-home"] .sheet {
 .mx-course-legend { display: flex; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 600px) {
-  body[data-mx-course] h1 { font-size: 1.75rem; }
+  :where(body[data-mx-course]) h1 { font-size: 1.75rem; }
   body[data-mx-course] :is(.hero, .vpr-hero) { padding-block: 16px; gap: 20px; }
   body[data-mx-course] :is(.topbar, .top) { height: auto; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
   body[data-mx-course] :is(.topbar, .top) nav { gap: 6px 14px; flex-wrap: wrap; }
