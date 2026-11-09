@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+  "baseSha": "03b33ab0fe13ccd1c6dec466935e2c01979d206d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -730,8 +730,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "d5d99bab6eb23f54b724565d4461ee9a672a98f3cecee3cd96b3c636df9675d2",
-      "afterSha256": "fb212a61a3c64a95bb88d31c4c986c3bfdff06327a868d710c2cad6d724f1a71",
+      "beforeSha256": "60c0b193f553018803aa35d3615c1a8081728aaf000eb06196fd7d031f597ac7",
+      "afterSha256": "323a632b81f92db426c256c9a0faba486a2d35517da9d57ef0852092b7f5858f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
@@ -785,8 +785,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "a704136cd0ee413ad0f0a843f21a9270a0864d3669f496f2b9061a490bc6ad97",
-      "afterSha256": "c1591035779b8f46125322f1b554edf4072ca4883cbaf3e58b3e725ce32db8f0",
+      "beforeSha256": "0a65e384fc0250e70460893ba6f4d0a6a1f31477eb1895fee9d66d9c8ed868f4",
+      "afterSha256": "4f7de92e280f6ce5c2170aec13fda504d3bcd204b3d7d2dab35f8c767a45d3f4",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -2030,8 +2030,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "d7986fa36826d0058599fac7e4d3c184f0a81c6422b070bf2c39bfe45ab18c3f",
-      "afterSha256": "1542ebd051ac1fd638b7d7aeed61351afbb5b8e17c2d44f9fb6f28b1fd72fecd",
+      "beforeSha256": "c145995f9d939a19c378b3daa1ac76050de7f7c7b20ba8fc2ecfb8a257c05be9",
+      "afterSha256": "79cf88473d259f12125f2693342f530cd3ac61f61a89605100edc35db340831d",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2100,8 +2100,8 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
-      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
+      "beforeSha256": "931a86c9511a0fba0eefa20bd75f7169abaebbfa2affddef2847952dc5d8501e",
+      "afterSha256": "d5781146bdb9fe5c9cd563efdd268268135f1581638db1af1bf3cc79c022f07e",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
@@ -2140,8 +2140,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
-      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
+      "beforeSha256": "5331b3a637073bcd81e8b248fd8fbeddf98472c425ed6f969f866a6e9b77b0de",
+      "afterSha256": "b3b90948831e9e3b4f6bf4b23d1d3aa7eb09641aa59694c856a056c0dbe67766",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -4213,6 +4213,19 @@
         "school/m9-exercises/index.html",
         "school/makarychev7/index.html",
         "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "03b33ab0fe13ccd1c6dec466935e2c01979d206d",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
