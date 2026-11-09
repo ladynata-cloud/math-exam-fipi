@@ -112,7 +112,13 @@
   document.getElementById('answer-form').onsubmit=function(e){e.preventDefault();check(document.getElementById('answer').value);};
  }
  function check(value){
-  if(session.correct)return;session.savedInput=value;session.attempt++;
+  if(session.correct)return;
+  if(!String(value).trim()){
+   var form=document.getElementById('answer-form'),input=document.getElementById('answer'),note=document.getElementById('answer-required');
+   if(!note){note=document.createElement('p');note.id='answer-required';note.setAttribute('role','status');form.appendChild(note);input.addEventListener('input',function clear(){note.remove();},{once:true});}
+   note.textContent='Сначала введи ответ. Пустое поле не считается ошибкой.';input.focus();return;
+  }
+  session.savedInput=value;session.attempt++;
   var isLearn=session.mode==='learn',target=isLearn?steps()[session.step]:session.task,correct=M.accepts(value,target);
   session.correct=correct;
   session.message=correct?(isLearn?steps()[session.step].why:'Ответ верный. '+(session.assisted?'Использована помощь.':session.exposed?'Условие уже было знакомо.':session.attempt>1?'Решено после исправления.':'Получилось с первой попытки без помощи.')):(target.answerFormat&&M.equal(value,target.answer)?'Значение верное, теперь выполни требуемое преобразование. '+formatNote(target):'Пока не совпало. Проверь смысл действия, знак и единицы. Подсказка поможет разобрать именно этот шаг.');

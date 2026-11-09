@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "68add415b86115585e5b8c10d97570a63fbb3821",
+  "baseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "f7dfc2ecc2e6db869cd096a472f5f3f28bbf3b213729482013546b9ddcfd5273",
-      "afterSha256": "1ae52ab78f4948f20419cf5b3b400b53f2d8bc7dea177a3feea7471b80bfe48a",
+      "beforeSha256": "04f4cd93570169b2161aa3a73b2aeb73a9ec6b256431314ea052d5c69481b66f",
+      "afterSha256": "01899211045583ab754eea90cbb890fea0ecddd22678b997941b446e53381e33",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2885,8 +2885,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "816b34c2a8f0f93bedca13d963518dc6d782727dc079b0210048f80f414c4b29",
-      "afterSha256": "3ed2c6f27e6620af6d63293135e66bfbbf3cdc7c865f9031ed6958de0ec3503a",
+      "beforeSha256": "f09601765965e309541010001ebf316b3f1e6688f52a9fd7c5f8c782dadd67e4",
+      "afterSha256": "1fc5b5736e68acfb289a97b2409a7f646ffad3ed11edc39a30b58a823e265b37",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2905,18 +2905,18 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "c744e4a010e533d2019535c723487957df7930faecb93f4bba7475d322ea8db8",
-      "afterSha256": "700ae207633026c7aadd78b763a9741c83ff01a8eba7ad0430ce507b53e6a9b5",
+      "beforeSha256": "498d01e3fd48fb71ae85d09a01ebf6dd8bec5b3cf668258933358d738bae397c",
+      "afterSha256": "178fc56c9e4d85748d15aaafa4b1014c93cbd1fb06886192a3b89675dbcd3f4b",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
-      "beforeSha256": "47102c432d7fc816b12910d7de9f4b23dc5e4fd55391b6cc19b3271a39ec6a46",
-      "afterSha256": "e701fd8fd8e4ba42f651e9e1efb839f8292597984e1ae5454ca44da15ad85017",
+      "beforeSha256": "9620446029a4b12e8864506e64ec0c2e21b205e0b3ec2f2a6c2806fea1d0b827",
+      "afterSha256": "49b6d157d6c761bf32b66d90f6ae72ed37f1c6c3013dc495a9d5825fbafdb4f3",
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "609adc6e44f63d20d67f05b2625965c2257d64d025e6f53470ec4d0789d22f50",
-      "afterSha256": "b2c3894dbc0668c1e718589a39ac8db21e8dfdc5e5b702b6875ed54c5d1c09cb",
+      "beforeSha256": "7bc857f3e7b08efddca4cdc48e3db6ebb29419aaee519b96d82c7efb745b1475",
+      "afterSha256": "3898882b0ce1d2d07726f76b3c06b99e30633ec43f3337f9991fc6e3fdace4da",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
@@ -2935,23 +2935,23 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "6a1442abbfc85df4df49faf5b17a4dcf9df6d069638d8ac6395aab62f102a6bc",
-      "afterSha256": "5f9cee5dfecaa7afbe9f17e18c3438ff82c5dd95aa21a8bb03f6f907dcfecdab",
+      "beforeSha256": "372c1c08b66aebed59c7c3fcce459acbc3abfb8cd141ddc1443ff8fa1105e67b",
+      "afterSha256": "9771dd1793c417e79560f9cd9f87c86235fb7eaecc0a576217edfdc196dedfc5",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
-      "beforeSha256": "d647f78690e1dbaa8a8c3d053a18d1113b41642e72f7d44efe9e609733962d06",
-      "afterSha256": "bdf05903fdc390fe05c72768819dc307a1482b231a82fb76fe6d0805895060b4",
+      "beforeSha256": "78d68d572d8e0d05558ec3aaabe01fdc2ff1cc7cd21b13b09de7abfe97edd970",
+      "afterSha256": "fd8b989f973f6b1aaa11f3ce6f32e54ce83f4fdb570932979237a70652b1bdd0",
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "0220dcbb6abb000d699547aaae752881ed0acb89424ba24454eeecb6ea39dd10",
-      "afterSha256": "24fe4cc1dcaf7481597c67bd76aacb2f09980f847e43b1d23e8fbd14ad7beb93",
+      "beforeSha256": "b47ceb9827127e401915bda222fa25d3771e51e6907bec0e103e4b117588c16a",
+      "afterSha256": "4d97b6eaac4fceb689d60a5d42b76396c36bbda30d0ecba60254a7db7b032589",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
-      "beforeSha256": "8f2dbb2fa8f87bd4cdb36cd652422fe48e90aff3664f43aed2b9966f890e433e",
-      "afterSha256": "c10063dedf9434326216d83e6d8473b960c6421d72a702c51c48b72232aa0e5b",
+      "beforeSha256": "d0e9a37b8eddef014c547913bd04c6d21872c4f4d4975d6968126dbcc5573529",
+      "afterSha256": "8029dbb18448c3ee3253349fb4c21dbadfbd3e6edf0420ae73ae19a6e4cc406a",
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
@@ -3025,8 +3025,8 @@
       "placement": "before-head-close"
     },
     "trainers/task19-trainer.html": {
-      "beforeSha256": "4a2e9dbaf37ee671d05c772217035cce50ebe93b14fddd382a1b9ee1dbb7af27",
-      "afterSha256": "d181fa45b1d62fb3ae0d2ebe84d9f467120baded502772e8cf5f9f9f0b02d77c",
+      "beforeSha256": "2e60d35d2501362a716767d7d5d014b0538611b2e8a1279bd39ddb148f5e6c50",
+      "afterSha256": "3905ffd479be02fe22cdf055cd369a45489ddef93670f22baefff28675ca1627",
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
@@ -4112,18 +4112,10 @@
     },
     {
       "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
-      "sourceBaseSha": "68add415b86115585e5b8c10d97570a63fbb3821",
-      "task": "docs/tasks/OGE_VIDEO_MODELS_20261109.md",
+      "sourceBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
+      "task": "docs/tasks/EGE_BASE_TRAINER_CYCLE_20261109.md",
       "changedPaths": [
-        "trainers/oge-task11-graphs-trainer.html",
-        "trainers/oge-task15-triangles.html",
-        "trainers/oge-task16-circle.html",
-        "trainers/oge-task17-quadrilaterals.html",
-        "trainers/oge-task22-functions-graphs.html",
-        "trainers/oge-task23-geometry-calculations.html",
-        "trainers/oge-task24-proofs.html",
-        "trainers/oge-task25-geometry.html",
-        "trainers/task19-trainer.html"
+        "ege-baza/path/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
