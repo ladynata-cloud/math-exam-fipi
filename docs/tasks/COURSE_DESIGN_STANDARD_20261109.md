@@ -9,7 +9,7 @@
 - Release authorization: [standing policy](../OWNER_RELEASE_AUTHORIZATION.md).
 
 ## Goal and scope
-Apply a shared visual shell to the 26 explicitly listed pages in
+Apply a shared visual shell to the 27 explicitly listed pages in
 `assets/course-ui-pages.json`, document the learning UI standard, and explain
 the learning cycle in the existing course catalogue. Shared font hierarchy,
 primary actions, card shape, mobile header and keyboard focus. Model palettes,

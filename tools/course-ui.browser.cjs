@@ -82,5 +82,5 @@ const server = http.createServer((req,res)=>{
   }
   for(const failure of failures) console.error(JSON.stringify(failure));
   assert.equal(failures.length,0,'Course layout regressions');
-  console.log('COURSE_UI_BROWSER_OK: 26 entrances × 2 widths, paired controls');
+  console.log('COURSE_UI_BROWSER_OK: 27 entrances × 2 widths, paired controls');
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});
