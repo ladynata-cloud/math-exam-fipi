@@ -1,0 +1,64 @@
+'use strict';
+// Synthetic learners on local HTTP assets; never use a real pupil's cabinet.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const {chromium}=require('playwright');
+const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/foundations-grade56');
+fs.mkdirSync(out,{recursive:true});
+const report={scenarios:[],errors:[]};
+const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'};
+const server=http.createServer((req,res)=>{try{let f=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));assert(f.startsWith(root+path.sep));if(fs.statSync(f).isDirectory())f=path.join(f,'index.html');res.setHeader('Content-Type',types[path.extname(f)]||'application/octet-stream');res.end(fs.readFileSync(f));}catch{res.writeHead(404).end();}});
+let browser;
+(async()=>{try{
+ await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
+ browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
+ for(const width of [320,1280]){
+  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'}),page=await context.newPage();
+  page.setDefaultTimeout(15000);page.on('pageerror',e=>report.errors.push(e.message));
+  const go=async url=>{const response=await page.goto(origin+url);assert.equal(response.status(),200,url);};
+  const capture=async(name,locator)=>{await locator.scrollIntoViewIfNeeded();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),name+': page fits');const fit=await locator.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1;});assert(fit,name+': inquiry fits');await page.screenshot({path:path.join(out,name+'-'+width+'.png'),fullPage:true});report.scenarios.push({name,width,status:'PASS'});};
+  await go('/school/#lesson/fraction');const inquiry=page.locator('[data-model-inquiry]');await inquiry.waitFor();
+  const saved=await page.evaluate(()=>localStorage.getItem('mathexam.workshop.v1'));
+  await inquiry.locator('[data-model-check]').click();assert.equal(await inquiry.locator('[data-model-prediction]').isDisabled(),false);
+  await inquiry.locator('[data-model-prediction]').fill('999');await inquiry.locator('[data-model-check]').click();
+  assert((await inquiry.locator('[data-model-feedback]').innerText()).includes('999'));
+  assert.equal(await page.evaluate(()=>localStorage.getItem('mathexam.workshop.v1')),saved,'model never awards course progress');
+  await capture('workshop-fraction',inquiry);
+  await page.locator('[data-reset]').click();const slider=page.locator('#model [data-param=n]'),handle=await slider.elementHandle();await slider.focus();await page.keyboard.press('ArrowRight');assert(await handle.evaluate(el=>el.isConnected),'keyboard slider keeps DOM identity');
+  for(const [grade,id,selector] of [[5,21,'.g5-lab-inquiry'],[6,2,'.lab-inquiry']]){
+   await go('/courses/vilenkin-'+grade+'-part-1/#lesson/'+id+'/theory');const form=page.locator(selector);await form.waitFor();const input=form.locator('input');
+   await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),false,'empty prediction does not submit');
+   await input.fill('999');await form.locator('button[type=submit]').click();assert.equal(await input.isDisabled(),true);
+   await page.reload();await page.locator(selector+' input').waitFor();assert.equal(await page.locator(selector+' input').inputValue(),'999','first prediction restored');
+   await capture('vilenkin'+grade,page.locator(selector));
+  }
+  await go('/school/peterson5/#lesson/p25/0');await page.locator('details.model-panel > summary').click();
+  const p5=page.locator('.model-inquiry');await p5.locator('[data-inquiry-input=draft]').fill('1/3');await p5.locator('[data-inquiry-check=draft]').click();
+  await p5.locator('[data-inquiry-input=draft]').fill('2/3');await p5.locator('[data-inquiry-check=draft]').click();await p5.locator('[data-inquiry-open]').click();
+  await p5.locator('[data-inquiry-input=transferDraft]').fill('3/5');await p5.locator('[data-inquiry-check=transferDraft]').click();
+  await capture('peterson5-fraction',p5);
+  await page.reload();await page.locator('details.model-panel > summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'3/5','P5 transfer restored');
+  await go('/school/peterson6/#lesson/p11/0');await page.locator('details.inquiry-model summary').click();
+  const p6=page.locator('.model-inquiry'),draft=p6.locator('[data-inquiry-input=draft]');await draft.waitFor();
+  await draft.fill('20');await p6.locator('[data-inquiry-check=draft]').click();
+  await draft.fill('30');await p6.locator('[data-inquiry-check=draft]').click();
+  await p6.locator('[data-inquiry-open]').click();
+  const transfer=p6.locator('[data-inquiry-input=transferDraft]');await transfer.fill('40');await p6.locator('[data-inquiry-check=transferDraft]').click();
+  const state=await page.evaluate(()=>window.PetersonApp.getState().tasks['p11-t01']);assert(!state.correct,'experiment is not a solved textbook task');assert(state.assisted,'revealed model marked as help');
+  await capture('peterson6-percent',p6);
+  await page.reload();await page.locator('details.inquiry-model summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'40','transfer draft restored');
+  await go('/trainers/oge-basics/percentages/percent-of-number-and-whole.html');await page.locator('.bh-toggle:visible').first().click();
+  await page.locator('[data-bh-skill="percent-part"]:visible').first().click();
+  const frame=page.locator('.bh-frame:visible');await frame.locator('.bh-answer').fill('20');await frame.locator('.bh-check').click();await frame.locator('.bh-start-transfer').click();
+  const fresh=frame.locator('.bh-transfer'),answer=fresh.locator('.bh-transfer-answer');
+  await fresh.locator('.bh-transfer-check').click();assert(!(await fresh.locator('.bh-transfer-history').innerText()).includes('Первый ответ'));
+  await answer.fill('20');await answer.press('Enter');await answer.fill('21');await answer.press('Enter');
+  assert.equal(await fresh.locator('.bh-transfer-hint-text').isVisible(),false,'offer does not disclose help');
+  await fresh.locator('.bh-transfer-hint').click();await answer.fill('30');await answer.press('Enter');
+  assert((await fresh.locator('.bh-transfer-history').innerText()).includes('Первый ответ: 20'));
+  assert((await fresh.locator('.bh-transfer-feedback').innerText()).includes('с намёком'));
+  const before=await fresh.locator('.bh-transfer-history').innerText();await answer.press('Enter');assert.equal(await fresh.locator('.bh-transfer-history').innerText(),before,'completed task cannot double count');
+  await capture('basics-percent-transfer',fresh);
+  await context.close();
+ }
+ assert.deepEqual(report.errors,[]);console.log('FOUNDATIONS_GRADE56_BROWSER_OK',report.scenarios.length);
+}finally{fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));if(browser)await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

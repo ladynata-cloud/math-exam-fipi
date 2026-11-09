@@ -82,18 +82,53 @@
     return 'order';
   }
 
-  function numeric(raw) {
+  // Compare exact rational values: a close decimal is not the same fraction.
+  function rational(raw) {
     const text = String(raw ?? '').trim().replace(/\s+/g, '').replace(/−/g, '-').replace(',', '.');
-    if (/^[+-]?\d+(?:\.\d+)?$/.test(text)) return Number(text);
+    if (!text || text.length > 100) return null;
     const pair = text.match(/^([+-]?\d+)\/([+-]?\d+)$/);
-    return pair && Number(pair[2]) !== 0 ? Number(pair[1]) / Number(pair[2]) : null;
+    if (pair) { const d = BigInt(pair[2]); return d ? [BigInt(pair[1]), d] : null; }
+    const number = text.match(/^([+-]?)(\d+)(?:\.(\d+))?$/);
+    if (!number) return null;
+    return [BigInt((number[1] === '-' ? '-' : '') + number[2] + (number[3] || '')), 10n ** BigInt((number[3] || '').length)];
   }
-  function accepts(id, raw) {
-    const node = curriculum[id], value = numeric(raw);
-    if (!node || value === null || !Number.isFinite(value)) return false;
-    const answer = Array.isArray(node.answer) ? node.answer[0] / node.answer[1] : node.answer;
-    return Math.abs(value - answer) < 1e-9;
+  function acceptsAnswer(answer, raw) {
+    const value = rational(raw), target = rational(Array.isArray(answer) ? answer.join('/') : answer);
+    return !!(value && target && value[0] * target[1] === target[0] * value[1]);
   }
+  function accepts(id, raw) { return !!curriculum[id] && acceptsAnswer(curriculum[id].answer, raw); }
+
+  // Own transfer examples. The support example's revealed answer cannot finish
+  // these; the same skill is used with genuinely different mathematical data.
+  const transfers = Object.freeze({
+    'percent-meaning': {question:'Из 100 равных клеток закрашено 40. Сколько это процентов?', answer:40, hint:'Процент означает одну сотую целого.', why:'40 клеток из 100 — это 40%.'},
+    'percent-part': {question:'Теперь целое равно 120. Найди 25% от 120.', answer:30, hint:'Процент прежний: это всё ещё одна четверть. Раздели новое целое на 4.', why:'120 : 4 = 30. Было 25% от 80 — 20; процент тот же, но целое и часть увеличились в полтора раза.'},
+    'percent-change': {question:'Цена 90 рублей выросла на 20%. На сколько рублей выросла цена?', answer:18, hint:'Сначала найди одну пятую от 90. Спрашивают прибавку, а не новую цену.', why:'90 : 5 = 18 рублей — прибавка. Новая цена равна 108 рублям, это другой вопрос.'},
+    proportion: {question:'Четыре одинаковых билета стоят 280 рублей. Сколько стоит один?', answer:70, hint:'Все билеты стоят одинаково. Раздели 280 на число билетов.', why:'280 : 4 = 70 рублей. Проверка: 4 · 70 = 280.'},
+    'fraction-parts': {question:'Полоску разделили на 8 равных частей и взяли 5. Какую часть целого взяли? Запиши дробь.', answer:[5,8], hint:'В знаменателе — все равные части; в числителе — взятые.', why:'Взяли 5 из 8 равных частей: 5/8. Равные записи, например 10/16, тоже подходят.'},
+    'fraction-equivalent': {question:'Треть полоски разделили на двенадцатые доли того же целого. Сколько двенадцатых долей в одной трети?', answer:4, hint:'Размер целого не меняется. Каждую треть делят на четыре одинаковые части.', why:'1/3 = 4/12. Изменился размер доли, но закрашенная длина осталась прежней.'},
+    'fraction-add': {question:'Сложи одну шестую и четыре шестых. Запиши полученную дробь.', answer:[5,6], hint:'Размер долей одинаковый. Сложи их количества, сохрани размер доли.', why:'1/6 + 4/6 = 5/6. Знаменатель не складывают.'},
+    decimal: {question:'Целое разделили на 100 равных частей и взяли 7. Запиши долю десятичной дробью.', answer:0.07, hint:'Это семь сотых; десятых здесь нет.', why:'7/100 = 0,07. В числе 0,7 было бы семь десятых, то есть 70 сотых.'},
+    'decimal-add': {question:'Вычисли 0,4 + 0,3.', answer:0.7, hint:'Сложи четыре и три одинаковые десятые доли.', why:'4 десятых + 3 десятых = 7 десятых = 0,7.'},
+    rounding: {question:'Округли 4,2 до целого числа.', answer:4, hint:'Сравни расстояния от 4,2 до соседних целых 4 и 5.', why:'До 4 расстояние 0,2, до 5 — 0,8. Поэтому 4,2 ≈ 4, а не 4,2 = 4.'},
+    'decimal-shift': {question:'Делим 7,2 на 0,8. Оба числа умножили на 10. Каким стал делитель?', answer:8, hint:'Делитель — число 0,8. Увеличь его в 10 раз.', why:'Делитель стал 8, делимое — 72. Обе величины умножены на 10, поэтому частное сохраняется.'},
+    negative: {question:'Начни в точке −4 и сделай 2 шага вправо. Где окажешься?', answer:-2, hint:'Каждый шаг вправо увеличивает число на 1.', why:'−4 → −3 → −2. Движение вправо не обязательно сразу приводит к положительному числу.'},
+    units: {question:'Сколько сантиметров в 5 метрах?', answer:500, hint:'В каждом метре 100 сантиметров. Нужно пять таких групп.', why:'5 · 100 = 500 сантиметров.'},
+    'area-units': {question:'Квадрат разбили на 4 ряда по 4 клетки. Сколько всего клеток?', answer:16, hint:'В каждом из четырёх рядов по четыре клетки.', why:'4 · 4 = 16 клеток. Число клеток вдоль стороны и площадь — разные величины.'},
+    order: {question:'Вычисли 5 + 3 · 4.', answer:17, hint:'Умножение выполняется раньше сложения.', why:'3 · 4 = 12; 5 + 12 = 17.'},
+    'first-part': {question:'Делим 936 на 4. Сколько первых цифр нужно взять, чтобы начать деление?', answer:1, hint:'Сравни первую цифру 9 с делителем 4. Если её достаточно, следующую пока не бери.', why:'9 ≥ 4. Достаточно одной первой цифры — 9.'},
+    compare: {question:'На сколько 9 больше 5?', answer:4, hint:'Убери пять пар и посчитай, сколько осталось в большей группе.', why:'9 − 5 = 4. Это разность, а не сумма групп.'},
+    bring: {question:'После вычитания осталось 2. Переносим справа цифру 3. Какое число получилось?', answer:23, hint:'Цифра 2 теперь обозначает два десятка. Справа приписали 3 единицы.', why:'2 · 10 + 3 = 23. Приписать цифру — не то же самое, что прибавить её.'},
+    divide: {question:'Разложи 20 фишек поровну в 4 коробки. Сколько будет в каждой?', answer:5, hint:'Найди число, которое при умножении на 4 даёт 20.', why:'20 : 4 = 5. Проверка: 4 · 5 = 20.'},
+    quotient: {question:'Сколько раз по 7 помещается в 38? Впиши одну цифру.', answer:5, hint:'Нужно наибольшее произведение цифры на 7, которое не больше 38.', why:'5 · 7 = 35 ≤ 38, а 6 · 7 = 42 > 38. Подходит 5.'},
+    'write-digit': {question:'Получилось 37. Какую цифру напишем крайней справа?', answer:7, hint:'Пишем цифру единиц получившегося числа.', why:'7 пишем справа, 3 держим в уме.'},
+    'in-mind': {question:'Получилось 48. Цифру 8 уже написали справа. Сколько оставим в уме?', answer:4, hint:'Посмотри, сколько десятков в числе 48.', why:'8 написали, 4 десятка переносим в следующий разряд.'},
+    multiply: {question:'В пяти коробках по 4 фишки. Сколько фишек всего?', answer:20, hint:'Возьми четыре пять раз.', why:'4 + 4 + 4 + 4 + 4 = 20, то есть 5 · 4 = 20.'},
+    subtract: {question:'Было 15 фишек. Убрали 6. Сколько осталось?', answer:9, hint:'Убираем шесть из пятнадцати. Можно проверить ответ сложением.', why:'15 − 6 = 9. Проверка: 9 + 6 = 15.'},
+    add: {question:'Вычисли 8 + 6.', answer:14, hint:'Сначала дополни 8 до 10; затем прибавь оставшуюся часть шестёрки.', why:'8 + 2 = 10, осталось ещё 4. Получилось 14.'},
+    count: {question:'Сколько здесь точек?', answer:10, picture:'count', hint:'Считай по рядам: сначала верхний, затем нижний; не считай точку дважды.', why:'Два ряда по пять точек: всего 10.'}
+  });
+  function transferFor(id) { const q = transfers[id]; return q ? {...q, answer:Array.isArray(q.answer) ? q.answer.slice() : q.answer} : null; }
   function svg(body, label, width = 320, height = 120) {
     return '<svg class="bh-svg" viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + esc(label) + '">' + body + '</svg>';
   }
@@ -197,12 +232,60 @@
     function skillButton(id) {
       const b=button(curriculum[id].title,'bh-deeper',()=>enter(id));b.dataset.bhSkill=id;return b;
     }
+    function makeTransfer(id) {
+      const data=transferFor(id), section=doc.createElement('section');
+      section.className='bh-transfer';section.hidden=true;section.dataset.bhTransfer=id;
+      const record={first:null,attempts:0,help:false,done:false};
+      const title=doc.createElement('h4');title.textContent='Проверь себя на другом примере';
+      const note=doc.createElement('p');note.className='bh-small';note.textContent='Это короткая проверка после разбора. Она не начисляет результат курса; вернись затем к основной задаче. Ответ хранится, пока открыта эта задача.';
+      const question=doc.createElement('p');question.className='bh-question';question.textContent=data.question;
+      section.append(title,note,question);
+      if(data.picture==='count'){
+        const dots=doc.createElement('div');dots.className='bh-transfer-dots';
+        for(let i=0;i<10;i++){const dot=doc.createElement('span');dot.setAttribute('role','img');dot.setAttribute('aria-label','Точка');dots.append(dot);}
+        section.append(dots);
+      }
+      const input=doc.createElement('input');input.type='text';input.className='bh-transfer-answer';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ на новый пример');
+      const feedback=doc.createElement('p');feedback.className='bh-transfer-feedback';feedback.setAttribute('role','status');
+      const history=doc.createElement('p');history.className='bh-small bh-transfer-history';history.setAttribute('aria-live','polite');
+      const hintText=doc.createElement('p');hintText.className='bh-transfer-hint-text';hintText.hidden=true;
+      const hint=button('Нужен намёк','bh-transfer-hint',()=>{
+        if(!enabled()||record.done||!section.isConnected||section.hidden)return;
+        record.help=true;hintText.hidden=false;hintText.textContent=data.hint;updateHistory();
+      });
+      function updateHistory(){
+        history.textContent=(record.first===null?'':('Первый ответ: '+record.first+'. Попыток: '+record.attempts+'. '))+(record.help?'Намёк открыт.':'Без намёка.');
+      }
+      const check=button('Проверить новый пример','bh-transfer-check',()=>{
+        if(!enabled()||record.done||!section.isConnected||section.hidden)return;
+        const raw=input.value.trim();
+        if(!raw){feedback.textContent='Впиши ответ. Пустое поле не считается попыткой.';safeFocus(input);return;}
+        if(!rational(raw)){feedback.textContent='Впиши число или дробь через /. Знаменатель не может быть нулём.';safeFocus(input);return;}
+        if(record.first===null)record.first=raw;
+        record.attempts++;
+        const correct=acceptsAnswer(data.answer,raw);updateHistory();
+        feedback.classList.toggle('bh-correct',correct);
+        if(correct){
+          record.done=true;section.dataset.bhTransferSolved='true';input.readOnly=true;check.disabled=true;hint.disabled=true;
+          feedback.textContent=(record.help?'Получилось с намёком. ':record.attempts===1?'Верно с первой попытки без намёка. ':'Верно после исправления без намёка. ')+data.why;
+        }else{
+          feedback.textContent='Пока не совпало. Проверь, какое число требуется найти.'+(record.attempts>=2?' Можно открыть намёк — он появится только по нажатию.':'');
+          // Do not reveal the direction or answer merely because two errors occurred.
+          hint.classList.toggle('bh-help-offered',record.attempts>=2);
+        }
+      });
+      input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
+      const row=doc.createElement('div');row.className='bh-answer-row';row.append(input,check);
+      section.append(row,feedback,history,hint,hintText);
+      return section;
+    }
     function makeFrame(id) {
       const data=curriculum[id], frame=doc.createElement('section');frame.className='bh-frame';frame.dataset.bhNode=id;frame.tabIndex=-1;
       const label=doc.createElement('p');label.className='bh-small';label.textContent='На более простом примере';
       const heading=doc.createElement('h3');heading.textContent=data.title;
       const q=doc.createElement('p');q.className='bh-question';q.textContent=data.question;
-      const model=buildModel(doc,id,{},enabled);
+      const model=buildModel(doc,id,{},enabled), transfer=makeTransfer(id);
+      const startTransfer=button('Теперь сам: другой пример','bh-start-transfer',()=>{if(!enabled()||frame.dataset.bhSolved!=='true')return;transfer.hidden=false;startTransfer.hidden=true;safeFocus(transfer.querySelector('input'));});startTransfer.hidden=true;
       const answerRow=doc.createElement('div');answerRow.className='bh-answer-row';
       const input=doc.createElement('input');input.className='bh-answer';input.type='text';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ в маленьком задании');
       if(data.model==='write-digit')input.oninput=()=>{if(enabled())model.querySelector('[data-bh-write-slot]').textContent=/^\d$/.test(input.value)?input.value:'·';};
@@ -212,11 +295,11 @@
         if(!input.value.trim()){feedback.textContent='Впиши ответ.';safeFocus(input);return;}
         const correct=accepts(id,input.value);feedback.classList.toggle('bh-correct',correct);
         feedback.textContent=correct?'Верно. '+data.why+' Теперь можно вернуться на шаг выше.':'Пока не совпало. '+data.hint;
-        if(correct){input.readOnly=true;check.disabled=true;frame.dataset.bhSolved='true';const slot=model.querySelector('[data-bh-write-slot]');if(slot)slot.textContent=String(data.answer);}
+        if(correct){input.readOnly=true;check.disabled=true;frame.dataset.bhSolved='true';startTransfer.hidden=false;const slot=model.querySelector('[data-bh-write-slot]');if(slot)slot.textContent=String(data.answer);}
       });
       input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
       answerRow.append(input,check);
-      frame.append(label,heading,q,model,answerRow,feedback);
+      frame.append(label,heading,q,model,answerRow,feedback,startTransfer,transfer);
       if(Array.isArray(data.answer)){
         const format=doc.createElement('p');format.className='bh-small';format.innerHTML='Дробь вводи через знак /. Например, для '+fraction(1,2)+' введи 1, затем /, затем 2.';frame.append(format);
       }
@@ -292,5 +375,5 @@
     const handle={update,open,close,isOpen:()=>isOpen,getState:()=>({identity,isOpen,depth:stack.length-1,nodeId:stack[stack.length-1]}),destroy(){close(false);root?.remove();frames.clear();destroyed=true;}};
     return handle;
   }
-  return Object.freeze({create,skillFor,accepts,curriculum});
+  return Object.freeze({create,skillFor,accepts,acceptsAnswer,transferFor,curriculum});
 });

@@ -1,0 +1,63 @@
+name: Foundations and grades 5–6 — audited learning models
+on:
+  pull_request:
+    paths:
+      - 'school/models.js'
+      - 'school/peterson5/**'
+      - 'school/peterson6/**'
+      - 'courses/vilenkin-5-part-1/**'
+      - 'courses/vilenkin-6-part-1/**'
+      - 'trainers/oge-basics/basics-help*'
+      - 'tools/foundations-*'
+      - 'tools/oge-basics-transfer.test.cjs'
+      - 'tools/vilenkin5-course/inquiry.test.cjs'
+      - '.github/workflows/foundations-grade56-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/models.js'
+      - 'school/peterson5/**'
+      - 'school/peterson6/**'
+      - 'courses/vilenkin-5-part-1/**'
+      - 'courses/vilenkin-6-part-1/**'
+      - 'trainers/oge-basics/basics-help*'
+      - 'tools/foundations-*'
+      - '.github/workflows/foundations-grade56-audit.yml'
+permissions:
+  contents: read
+concurrency:
+  group: foundations-grade56-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  learning-models:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned isolated test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/foundations-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 linkedom@0.18.14 playwright@1.62.1
+          "$RUNNER_TEMP/foundations-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/foundations-qa/node_modules" >> "$GITHUB_ENV"
+      - name: Models, first attempts and unchanged course credit
+        run: |
+          node --max-old-space-size=384 school/peterson5/test-inquiry.cjs
+          node tools/workshop-state.test.cjs
+          node tools/foundations-workshop-models.test.cjs
+          node tools/vilenkin5-course/inquiry.test.cjs
+          node --test tools/oge-basics-transfer.test.cjs
+          git diff --check
+      - name: Real mobile and desktop learner journeys
+        run: node tools/foundations-grade56.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: foundations-grade56-browser
+          path: artifacts/foundations-grade56
+          if-no-files-found: error
+          retention-days: 14
