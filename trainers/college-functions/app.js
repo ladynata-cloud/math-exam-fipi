@@ -88,7 +88,14 @@
   function openHint(){const a=attempt();a.helpUsed=true;a.hintOpen=!a.hintOpen;a.hintLevel=Math.max(1,a.hintLevel||0);save();$('assistance').textContent='С подсказкой';renderHelp();}
   function wrong(msg){const a=attempt();a.errors=BOARD?Math.min(100000,a.errors+1):a.errors+1;save();$('assistance').textContent=a.helpUsed?'С подсказкой':'Были исправления';feedback(msg);}
   function success(summary){feedbackCode='none';const a=attempt();a.accepted[a.stage]=summary;a.stage++;a.hintOpen=false;a.hintLevel=0;if(a.stage===8){a.completed=true;if(!BOARD){const old=store.results[key()];if(!old||!(old.fresh&&!old.helpUsed&&!old.errors))store.results[key()]={completed:true,fresh:a.fresh,helpUsed:a.helpUsed,errors:a.errors};}}save();render();if(a.stage<8)feedback('Верно. Предыдущий шаг сохранён. Перейдём дальше.',true);}
+  function requireAnswers(container){
+    const missing=[...container.querySelectorAll('input[data-answer],select[data-answer]')].find(el=>!el.value.trim());
+    if(!missing)return true;
+    $('feedback').textContent=missing.tagName==='SELECT'?'Сначала выберите ответ. Это ещё не попытка решения.':container.id==='point-controls'?'Введите обе координаты точки. Пустое поле не считается ошибкой.':attempt().stage===1?'Заполните значения y в таблице. Незаконченный шаг не считается ошибкой.':'Заполните поле ответа. Если значений нет, напишите «нет». Незаконченный шаг не считается ошибкой.';
+    missing.focus();return false;
+  }
   function check(){const a=attempt(), v=a.drafts;
+    if(!requireAnswers($('current-step')))return;
     if(a.stage===0){if(E.sameSet(v.domain,task.domain))success('D(f) = '+setText(task.domain));else wrong('Проверьте допустимые x и скобку на границе. Если записываете промежуток, разделите его концы точкой с запятой.');}
     else if(a.stage===1){let all=true;task.points.forEach((p,i)=>{const num=E.parseNumber(v['y'+i]);const ok=num!==null&&E.near(num,p.y);all=all&&ok;const el=document.querySelector('[data-answer="y'+i+'"]');el.classList.toggle('valid',ok);el.classList.toggle('invalid',!ok);$('row-status-'+i).textContent=ok?'✓ Верно':'Проверьте y';});if(all)success(task.points.map(pointLabel).join('; '));else wrong('Проверьте выделенные значения y. Правильные вычисления сохранены.');}
     else if(a.stage===3){if(E.sameSet(v.range,task.range))success('E(f) = '+setText(task.range));else wrong('Проверьте именно значения y. Достигается ли каждая граница? Нет ли пропущенных высот при скачке?');}
@@ -125,7 +132,7 @@
     if(b.id==='check-step')check();if(b.id==='toggle-help')openHint();
     if(b.id==='close-help'){attempt().hintOpen=false;save();renderHelp();}
     if(b.id==='more-help'){attempt().hintLevel=2;save();renderHelp();}
-    if(b.id==='place-point')markPoint(E.parseNumber($('plot-x').value),E.parseNumber($('plot-y').value));
+    if(b.id==='place-point'&&requireAnswers($('point-controls')))markPoint(E.parseNumber($('plot-x').value),E.parseNumber($('plot-y').value));
     if(b.id==='fresh-check')next(true);
     if(b.id==='repeat-task'){feedbackCode='none';store.attempts[key()]=blank(false);save();render();}
     if(b.dataset.diag&&diag&&diag.index<D.diagnostics.length){const q=D.diagnostics[diag.index];if(!q.optionItems.some(o=>o.id===b.dataset.diag))return;diag.answers.push({choice:b.dataset.diag,id:q.id,correct:b.dataset.diag===String(q.correctId),family:q.recommendFamily,explanation:q.explanation});diag.index++;renderDiagnostic();}
