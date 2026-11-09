@@ -254,7 +254,7 @@
         const criteria=item.selfCheck || [],checks=p.manualChecks[String(key)] || [];ok=criteria.length>0&&criteria.every((_,i)=>checks[i]);
         if(!ok)p.feedback[String(key)]={kind:'manual'};
       }else{
-        const value=input.value.slice(0,180);input.value=value;p.attempts=Math.min(10000,p.attempts+1);if(key==='final')p.draft=value;else p.stepDrafts[key]=value;
+        const value=input.value.slice(0,180);input.value=value;if(!value.trim()){let note=main.querySelector('.work .feedback');if(!note){note=document.createElement('div');note.className='feedback';note.setAttribute('role','status');answerForm.after(note);}note.textContent='Сначала запиши ответ. Пустое поле не считается попыткой.';input.focus();return;}p.attempts=Math.min(10000,p.attempts+1);if(key==='final')p.draft=value;else p.stepDrafts[key]=value;
         const result=M.check(value,item.answer,item.answerType || 'number');ok=result.ok;
         if(!ok){p.feedback[String(key)]={kind:result.format?'wrong':'format'};if(result.format)p.wrongCounts[String(key)]=Math.min(10000,(p.wrongCounts[String(key)]||0)+1);}
       }

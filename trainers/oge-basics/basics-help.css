@@ -42,3 +42,22 @@
 .bh-help .bh-dot{width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;background:#26815d;border:3px solid #26815d}
 .bh-help .bh-dot[aria-pressed=true]{background:#e8c568;border-color:#b18b26}
 @media(max-width:420px){.bh-panel{padding:13px 10px}.bh-panel-head{gap:6px}.bh-frame h3{font-size:19px}.bh-question{font-size:18px}.bh-answer-row{gap:8px}.bh-help .bh-answer{width:130px}.bh-help button{padding:10px 11px}.bh-navigation{flex-direction:column;align-items:flex-start}.bh-small{font-size:13px!important}.bh-model{margin:14px 0}.bh-count{gap:9px}}
+/* A fresh question follows the worked support example; it never credits the course. */
+.bh-transfer{margin:20px 0;padding-top:16px;border-top:2px solid #bdd2c2}
+.bh-transfer h4{font-size:19px;line-height:1.5;margin:0 0 10px;color:#203c2d}
+.bh-help .bh-transfer-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;color:#203c2d;background:white;width:160px;min-height:46px;max-width:100%;font-size:22px}
+.bh-help .bh-transfer-answer[readonly]{background:#edf7ef}
+.bh-help .bh-transfer-check{color:#fff;background:#287148;border-color:#287148;font-weight:700}
+.bh-transfer-feedback,.bh-transfer-hint-text{font-size:16px;line-height:1.65;overflow-wrap:anywhere}
+.bh-transfer-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}
+.bh-transfer-history{overflow-wrap:anywhere}
+.bh-help .bh-help-offered{border-color:#b18b26;background:#fff9e8}
+.bh-transfer-dots{display:grid;grid-template-columns:repeat(5,20px);gap:14px;margin:16px 0}
+.bh-transfer-dots>span{width:20px;height:20px;border-radius:50%;background:#26815d}
+.bh-understanding{margin-top:20px;padding-top:14px;border-top:1px solid #bdd2c2}
+.bh-understanding h4{font-size:19px;line-height:1.5;margin:0 0 10px}
+.bh-help .bh-understanding-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;width:160px;min-height:46px;max-width:100%;font-size:22px;color:#203c2d;background:#fff}
+.bh-understanding-choices{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.bh-help .bh-understanding-choice[aria-pressed=true]{background:#e1efe6;border-color:#287148}
+.bh-understanding-feedback,.bh-understanding-hint-text,.bh-understanding-history{font-size:16px;line-height:1.65;overflow-wrap:anywhere}
+.bh-understanding-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}

@@ -11,6 +11,19 @@ function click(w,s){const x=w.document.querySelector(s);assert(x,'missing '+s);x
 function answer(w,v){const f=w.document.querySelector('#answer');assert(f);f.value=v;f.dispatchEvent(new w.Event('input'));w.document.querySelector('#answerForm').dispatchEvent(new w.Event('submit',{cancelable:true}))}
 (async()=>{const {w,mem,errors,nav}=await boot();assert(w.document.body.textContent.includes('Твой маршрут'));const data=[1,2,3,4,5].flatMap(n=>JSON.parse(fs.readFileSync(path.join(root,'data/lessons-'+n+'.json'))));let models=0,controls=0,renders=0;
  for(const l of data){for(const tab of ['theory','steps','practice','check']){nav(`#lesson/${l.id}/${tab}`);assert(w.document.querySelector('#lessonBody'));assert(!w.document.body.textContent.includes('Курс не загрузился'));renders++;if(tab==='theory'){models++;for(const c of [...w.document.querySelectorAll('#labHost input, #labHost select')]){const orig=c.value;let vals=c.tagName==='SELECT'?[...c.querySelectorAll('option')].map(o=>o.value):[c.min,c.max];for(const v of vals){c.value=v;c.dispatchEvent(new w.Event('input'));assert(!/\bNaN\b|undefined|Infinity/.test(w.document.querySelector('#labHost').textContent),'invalid lab '+l.id)}c.value=orig;c.dispatchEvent(new w.Event('input'));controls++}}}}
+ // Prediction and the selected parameters survive the existing course backup parser.
+ {
+  const predict=await boot(),topic=data.find(l=>l.lab==='percent');assert(topic);
+  predict.nav(`#lesson/${topic.id}/theory`);
+  const entry=predict.w.document.querySelector('[class$="-inquiry"] input');entry.value='17';entry.dispatchEvent(new predict.w.Event('input'));
+  const key='mathexam-vilenkin6-v1',saved=predict.mem.get(key);
+  const restored=await boot(saved);restored.nav(`#lesson/${topic.id}/theory`);
+  assert.equal(restored.w.document.querySelector('[class$="-inquiry"] input').value,'17');
+  restored.w.document.querySelector('[class$="-inquiry"]').dispatchEvent(new restored.w.Event('submit',{cancelable:true}));
+  const record=JSON.parse(restored.mem.get(key)).lessons[topic.id];assert.equal(record.lab.inquiryFirst,'17');assert.equal(record.lab.inquirySeen,1);assert.deepEqual(record.tasks,{},'model prediction never awards exercise credit');
+  const again=await boot(restored.mem.get(key));again.nav(`#lesson/${topic.id}/theory`);
+  assert(!again.w.document.querySelector('[class$="-visual"]').hidden);assert(again.w.document.querySelector('[class$="-inquiry"]').textContent.includes('не совпал'));assert.deepEqual(again.errors,[]);
+ }
  // Same item records one result. Hint provenance survives reload and return.
  const l=data.find(l=>l.id===1),t=l.tasks[0];nav('#lesson/1/practice/0');click(w,'#hint');answer(w,t.answer);let saved=JSON.parse(mem.get('mathexam-vilenkin6-v1'));assert.equal(saved.lessons[1].tasks[t.id].result,'assisted');assert.equal(Object.values(saved.lessons[1].tasks).filter(t=>t.solved).length,1);nav('#lesson/1/practice/0');assert(w.document.querySelector('.badge.assisted'));
  const reload=await boot(mem.get('mathexam-vilenkin6-v1'));reload.nav('#lesson/1/practice/0');assert(reload.w.document.querySelector('.badge.assisted'));assert.equal(reload.errors.length,0);

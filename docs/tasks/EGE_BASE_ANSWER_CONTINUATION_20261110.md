@@ -1,5 +1,21 @@
 # Ясное продолжение после правильного ответа
 
+## Composition with the published learning cycle
+The 10 November publication continuation composes this change with published
+`c8a4f1fc61dd07038e30764f8cedf0725b767539`. Conflicts were limited to the common
+renderer and its stylesheet. The result retains the existing two-error offer,
+intermediate-question feedback, saved optional help, personal model forecasts,
+honest repeated-variant labels and assisted-practice action from the published
+learning cycle, together with this PR's explicit completion and bounded board
+continuation. Both sets of styles are retained. No bank, schema or protocol is
+changed by the conflict resolution.
+
+Local combined checks passed: all 111 task-first family journeys, the learning
+cycle suite, 373 discovery checks, and 23 board/journey contract tests. These
+tests execute the composed renderer and cover retained drafts, assisted versus
+independent credit, reload and board edits. New-head CI/browser acceptance and
+production verification remain required before declaring publication complete.
+
 ## Identity and goal
 - Task: EGE_BASE_ANSWER_CONTINUATION_20261110
 - Owner: MathExam owner; date: 2026-11-10 Asia/Novosibirsk.
