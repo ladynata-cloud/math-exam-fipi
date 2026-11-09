@@ -2,9 +2,45 @@
 const {chromium}=require('playwright'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'../..'),C=require(root+'/stereo-course/data/course.json'),T=require(root+'/stereo-course/assets/tasks.js'),A=require(root+'/stereo-course/assets/answer.js'),out=process.env.STEREO_ARTIFACTS||path.join(require('os').tmpdir(),'mathexam-stereo-task-first');
 fs.mkdirSync(out,{recursive:true});
-const labelEvidence=[];
+const labelEvidence=[],shellEvidence=[],expansionEvidence=[];
+const http=require('node:http');
+const mime={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.ico':'image/x-icon','.woff2':'font/woff2'};
+const server=http.createServer((req,res)=>{
+ try{
+  let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));
+  if(!file.startsWith(root+path.sep))return res.writeHead(403).end();
+  if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');
+  res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');
+  res.end(fs.readFileSync(file));
+ }catch{res.writeHead(404).end();}
+});
+async function checkSharedShell(page){
+ const sample=await page.evaluate(()=>({url:location.href,width:innerWidth,height:innerHeight,family:document.body.dataset.mxCourse,background:getComputedStyle(document.body).backgroundColor,
+  sheets:[...document.styleSheets].filter(sheet=>sheet.href&&new URL(sheet.href).pathname==='/assets/course-ui.css').map(sheet=>({href:sheet.href,rules:sheet.cssRules.length}))}));
+ assert.equal(sample.family,'stereo');assert.equal(sample.background,'rgb(246, 247, 242)');assert.equal(sample.sheets.length,1);assert(sample.sheets[0].rules>20,'shared course CSS really loaded over HTTP');assert.equal(sample.height,900);
+ shellEvidence.push(sample);fs.writeFileSync(path.join(out,'shared-css-http-evidence.json'),JSON.stringify(shellEvidence,null,2)+'\n');
+}
+async function checkExpandedBox(page,base,width){
+ await page.setViewportSize({width,height:900});await page.goto(base+'#box');await page.reload();await page.locator('#task-model svg').waitFor({state:'visible'});await checkSharedShell(page);
+ if(await page.locator('#task-help').evaluate(e=>e.open))await page.locator('[data-action=close-help]').click();
+ const draft='черновик расширения '+width;await page.fill('#answer',draft);
+ const before=await page.locator('#task-model svg').innerHTML();
+ const oldCamera=await page.evaluate(()=>JSON.stringify(JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box.taskFirst.camera));
+ await page.locator('#task-model button[aria-label="Повернуть влево"]').click();
+ assert.notEqual(await page.locator('#task-model svg').innerHTML(),before,'camera changes the visible box');
+ await page.waitForFunction(({draft,oldCamera})=>{const rec=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;return rec.taskFirst.mainDraft===draft&&JSON.stringify(rec.taskFirst.camera)!==oldCamera;},{draft,oldCamera});
+ const saved=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;window.expansionModel=document.querySelector('#task-model svg');return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted,overflow:document.body.style.overflow};});
+ const expand=page.locator('#task-model .am-expand');await expand.click();
+ const dialog=page.locator('#task-model .am-expanded');await dialog.waitFor({state:'visible'});assert.equal(await dialog.getAttribute('role'),'dialog');assert.equal(await dialog.getAttribute('aria-modal'),'true');assert.equal(await expand.getAttribute('aria-expanded'),'true');assert.equal(await page.evaluate(()=>document.body.style.overflow),'hidden');
+ await page.screenshot({path:path.join(out,'qa-with-shell-box-expanded-'+width+'.png'),animations:'disabled'});
+ await page.keyboard.press('Escape');await dialog.waitFor({state:'hidden'});assert.equal(await expand.getAttribute('aria-expanded'),'false');assert.equal(await page.evaluate(()=>document.body.style.overflow),saved.overflow);assert.equal(await page.inputValue('#answer'),draft);assert(await page.evaluate(()=>window.expansionModel===document.querySelector('#task-model svg')),'Escape retains the live model');
+ const after=await page.evaluate(()=>{const r=JSON.parse(localStorage.getItem('mathExamStereo.v1')).units.box;return {camera:r.taskFirst.camera,independent:r.independent,assisted:r.assisted};});
+ assert.deepEqual(after,{camera:saved.camera,independent:saved.independent,assisted:saved.assisted},'expand/Escape never alters camera or learning credit');
+ await page.screenshot({path:path.join(out,'qa-with-shell-box-escaped-'+width+'.png'),animations:'disabled'});
+ expansionEvidence.push({width,height:900,draftRetained:true,liveModelRetained:true,cameraRetained:true,progressRetained:true,escapeRestoresOverflow:true});fs.writeFileSync(path.join(out,'expansion-escape-evidence.json'),JSON.stringify(expansionEvidence,null,2)+'\n');
+}
 const hash=bytes=>require('node:crypto').createHash('sha256').update(bytes).digest('hex');
-const heroSources=()=>Object.fromEntries(['stereo-course/assets/app.js','stereo-course/index.html'].map(file=>[file,hash(fs.readFileSync(path.join(root,file)))]));
+const heroSources=()=>Object.fromEntries(['stereo-course/assets/app.js','stereo-course/index.html','assets/course-ui.css'].map(file=>[file,hash(fs.readFileSync(path.join(root,file)))]));
 async function checkHomeHero(page){
  const data=await page.locator('.hero-art svg').evaluate(svg=>({
   paths:[...svg.querySelectorAll('[data-hero-lines]')].map(p=>{const s=getComputedStyle(p);return{group:p.dataset.heroLines,dash:s.strokeDasharray,stroke:s.stroke,width:parseFloat(s.strokeWidth),length:p.getTotalLength()};}),
@@ -24,12 +60,15 @@ async function checkFigureLabels(page,id,width,stage){
  assert.deepEqual(overlaps,[],id+' overlapping labels at'+width+' '+stage);
 }
 (async()=>{
- const browser=await chromium.launch({headless:true,executablePath:process.env.STEREO_CHROMIUM||undefined,args:['--no-sandbox']}),context=await browser.newContext({viewport:{width:1280,height:960},reducedMotion:'reduce'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+ const origin='http://127.0.0.1:'+server.address().port;
+ const browser=await chromium.launch({headless:true,executablePath:process.env.STEREO_CHROMIUM||undefined,args:['--no-sandbox']}),context=await browser.newContext({viewport:{width:1280,height:900},reducedMotion:'reduce'}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
-  const base='file://'+root+'/stereo-course/index.html';await page.goto(base);
+  await context.route('**/*',route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
+  const base=origin+'/stereo-course/index.html';await page.goto(base);await checkSharedShell(page);
   const heroEvidence={sourceHashes:heroSources(),views:[]};
   for(const width of [320,1280]){
-   await page.setViewportSize({width,height:960});const paint=await checkHomeHero(page);
+   await page.setViewportSize({width,height:900});await checkSharedShell(page);const paint=await checkHomeHero(page);
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'course cover fits '+width);
    const filename='home-hero-'+width+'.png',bytes=await page.locator('.hero-art').screenshot({path:path.join(out,filename)});
    heroEvidence.views.push({width,filename,sha256:hash(bytes),paint});
@@ -54,21 +93,22 @@ async function checkFigureLabels(page,id,width,stage){
    await page.locator('[data-action=home]').first().click();
   }
   for(const width of [320,768,1280]){
-   await page.setViewportSize({width,height:960});
+   await page.setViewportSize({width,height:900});
    for(const id of ['sections','sphere','box','ceva-menelaus','cone']){
     // Use direct known source IDs only; no guessed lesson route.
     assert(C.units.some(u=>u.id===id),id+' known lesson');
-    await page.goto(base+'#'+id);await page.reload();await page.locator('#task-model svg').waitFor({state:'visible'});if(await page.locator('#task-help').evaluate(e=>e.open))await page.locator('[data-action=close-help]').click();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' initial overflow '+width);
+    await page.goto(base+'#'+id);await page.reload();await page.locator('#task-model svg').waitFor({state:'visible'});await checkSharedShell(page);if(await page.locator('#task-help').evaluate(e=>e.open))await page.locator('[data-action=close-help]').click();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' initial overflow '+width);
     await page.screenshot({path:path.join(out,id+'-'+width+'-task.png'),fullPage:true});await checkFigureLabels(page,id,width,'task');if(!await page.locator('#task-help').evaluate(e=>e.open))await page.locator('[data-action=help]').click();if(!await page.locator('#task-guide').evaluate(e=>e.open))await page.locator('#task-guide>summary').click();await page.locator('#step-answer').waitFor({state:'visible'});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' help overflow '+width);
     await page.screenshot({path:path.join(out,id+'-'+width+'-help.png'),fullPage:true});await checkFigureLabels(page,id,width,'help');
    }
   }
+  for(const width of [320,1280])await checkExpandedBox(page,base,width);
   // Two real tabs share saved work; an old tab must not overwrite a later condition.
   await page.goto(base+'#box');await page.reload();await page.locator('[data-action=new]').click();await page.fill('#answer','старый локальный черновик');
-  const second=await page.context().newPage();second.on('pageerror',e=>errors.push(e.message));await second.goto(base+'#box');await second.locator('#answer').waitFor();await second.locator('[data-action=new]').click();await second.fill('#answer','новая сохранённая работа');await second.locator('[data-action=help]').click();
+  const second=await page.context().newPage();second.on('pageerror',e=>errors.push(e.message));await second.goto(base+'#box');await second.locator('#answer').waitFor();await checkSharedShell(second);await second.locator('[data-action=new]').click();await second.fill('#answer','новая сохранённая работа');await second.locator('[data-action=help]').click();
   const latest=await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1'));await page.locator('[data-recover-latest]').waitFor({state:'visible'});assert(await page.locator('#answer-form button').isDisabled());
   await page.locator('#answer-form').evaluate(el=>el.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true})));assert.equal(await second.evaluate(()=>localStorage.getItem('mathExamStereo.v1')),latest);assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');
   await page.locator('[data-recover-latest]').click();assert.equal(await page.inputValue('#answer'),'новая сохранённая работа');assert.equal(await page.locator('[data-recovery-drafts] textarea').first().inputValue(),'старый локальный черновик');await second.close();
-  assert.deepEqual(errors,[]);console.log('STEREO_TASK_FIRST_BROWSER_OK: all39units, retained live models/drafts, honest help,320/768/1280px');
- }catch(error){await page.screenshot({path:path.join(out,'failure.png'),fullPage:true});console.error(error);process.exitCode=1;}finally{await browser.close();}
-})().catch(error=>{console.error(error);process.exitCode=1;});
+  assert.deepEqual(errors,[]);console.log('STEREO_TASK_FIRST_HTTP_CSS_OK: all39units, retained live models/drafts, honest help,320/768/1280x900; expanded box/Escape at320/1280; shared CSS verified');
+ }catch(error){await page.screenshot({path:path.join(out,'failure.png'),fullPage:true});console.error(error);process.exitCode=1;}finally{await browser.close();server.close();}
+})().catch(error=>{console.error(error);server.close();process.exitCode=1;});

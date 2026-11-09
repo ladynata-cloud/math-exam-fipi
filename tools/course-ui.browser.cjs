@@ -6,34 +6,12 @@ const path = require('node:path');
 const http = require('node:http');
 const { chromium } = require('playwright');
 const pages = require('../assets/course-ui-pages.json');
-const scenarios = [
-  ...Object.entries(pages).map(([file,family])=>({file,family})),
-  {
-    file:'trainers/vpr-math/index.html', family:'vpr', name:'vpr-route-g5',
-    hash:'#view=route&route=g5', ready:'.route-head h1',
-    contrast:{background:'.route-head',text:['.route-head h1','.route-head .eyebrow']}
-  },
-  {
-    file:'geometry-course/textbook/index.html', family:'geometry', name:'geometry-textbook-task',
-    hash:'#atanasyan-7-9-main-1-part-1', ready:'.textbook-lesson-header h1',
-    compactHeading:'.textbook-lesson-header h1', model:'[data-main-model] .planar-svg'
-  },
-  {
-    file:'ege-profil/start/index.html', family:'profile', name:'profile-practice',
-    hash:'#practice/geo-angles/independent', ready:'.practice-head h1',
-    compactHeading:'.practice-head h1'
-  },
-  {
-    file:'ege-profil/start/index.html', family:'profile', name:'profile-similarity',
-    hash:'#practice/geo-similarity/independent', ready:'#answer-form',
-    compactHeading:'.practice-head h1', model:'#task-model svg', firstScreenModel:true
-  },
-  {
-    file:'school/makarychev8/index.html', family:'textbook', name:'makarychev8-ex041',
-    hash:'#lesson/p02/' + (require('../school/makarychev8/exercises-25-54.json').findIndex(task=>task.id==='p02-ex041-')+6),
-    ready:'#task-graph', model:'#task-graph', firstScreenModel:true
-  }
-];
+// Supplemental exact-product-tree QA: only the two previously uncovered routes.
+const scenarios = ['box','sections'].map(id=>({
+  file:'stereo-course/index.html',family:'stereo',name:'qa-stereo-'+id,
+  hash:'#'+id,ready:'#answer-form',compactHeading:'.workspace > h1',
+  model:'#task-model svg',preserveModelTop:true
+}));
 const root = path.resolve(__dirname, '..');
 const out = process.env.ARTIFACT_DIR;
 assert(out, 'Set ARTIFACT_DIR for review screenshots');
@@ -120,12 +98,12 @@ const server = http.createServer((req,res)=>{
               return result;
             },scenario);
             sample.errors=errors.sort(); samples.push(sample);
+            await page.screenshot({path:path.join(out,name+'-'+width+'-'+(control?'without-shell':'with-shell')+'.png'),animations:'disabled'});
             if(control) {
               assert.equal(sample.family,undefined,'Control document must not opt into the shared CSS');
               assert.equal(sample.styles.length,0,'Control document must not load the shared CSS');
             }
             if(!control) {
-              await page.screenshot({path:path.join(out,name.replaceAll('/','-')+'-'+width+'.png'),animations:'disabled'});
               assert.equal(sample.family,family);
               assert.equal(sample.colour,'rgb(246, 247, 242)');
               assert.ok(sample.styles[0]>20,'Shared CSS parsed and loaded');
@@ -142,6 +120,8 @@ const server = http.createServer((req,res)=>{
                 assert.ok(sample.model.width>0 && sample.model.height>0,'Task drawing is rendered');
                 if(scenario.firstScreenModel) assert.ok(sample.model.top>=0 && sample.model.bottom<=900,
                   `Complete task drawing must fit the first screen: ${JSON.stringify(sample.model)}`);
+                if(scenario.preserveModelTop) assert.ok(sample.model.top<=samples[0].model.top+1,
+                  `Task drawing moved down: ${samples[0].model.top} -> ${sample.model.top}`);
                 assert.equal(sample.model.viewBox,samples[0].model.viewBox,'Drawing coordinate system is unchanged');
                 for(const dimension of ['width','height']) assert.ok(sample.model[dimension]>=samples[0].model[dimension]-1,
                   `Task drawing ${dimension} shrank: ${samples[0].model[dimension]} -> ${sample.model[dimension]}`);
@@ -171,5 +151,5 @@ const server = http.createServer((req,res)=>{
   }
   for(const failure of failures) console.error(JSON.stringify(failure));
   assert.equal(failures.length,0,'Course layout regressions');
-  console.log(`COURSE_UI_BROWSER_OK: ${Object.keys(pages).length} entrances + ${scenarios.length-Object.keys(pages).length} task/route regressions × 2 widths, paired controls`);
+  console.log(`STEREO_COURSE_UI_PAIRED_OK: ${scenarios.length} stereo routes × 2 widths at 900px height, with/without shell; model top does not worsen`);
 })().catch(error=>{console.error(error);server.close();process.exitCode=1;});

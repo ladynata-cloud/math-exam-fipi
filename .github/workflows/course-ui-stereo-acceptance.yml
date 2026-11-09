@@ -1,0 +1,37 @@
+name: Course styling supplemental stereo acceptance
+on:
+  push:
+    branches: [qa/course-ui-stereo-bb95-20261109]
+permissions:
+  contents: read
+jobs:
+  styled-stereo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+      - name: Verify unchanged product source
+        run: |
+          git show -s --format='%H %P %T'
+          test "$(git show -s --format=%P)" = "bb95d9b7c10c75d436c1d679318d9700ebb24e7b"
+          git diff-tree --no-commit-id --name-only -r HEAD
+          git diff --exit-code HEAD^ HEAD -- assets stereo-course school courses trainers ege-baza ege-profil geometry-course geometry-merzlyak geometry-pogorelov oge vpr
+      - name: Browser setup
+        run: |
+          npm install --prefix "$RUNNER_TEMP/course-ui" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/course-ui/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Paired styled and original stereo screens
+        run: NODE_PATH="$RUNNER_TEMP/course-ui/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/paired-stereo" node tools/course-ui.browser.cjs
+      - name: Styled stereo interaction and retained work
+        if: always()
+        run: NODE_PATH="$RUNNER_TEMP/course-ui/node_modules" STEREO_ARTIFACTS="$RUNNER_TEMP/styled-stereo" node tools/stereo/task-first.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-ui-stereo-supplemental
+          path: |
+            ${{ runner.temp }}/paired-stereo
+            ${{ runner.temp }}/styled-stereo
+          if-no-files-found: error
