@@ -794,7 +794,7 @@ if (typeof module !== "undefined") module.exports = N19;
   renderList();
 
   /* ---------- дриллы ---------- */
-  var D = null, streak = 0, curType = "mix";
+  var D = null, streak = 0, curType = "mix", drillLocked = false, nextDrillTimer = null, drillGeneration = 0;
   var Z = { active:false, i:0, score:0, marks:[] };
   var chipsHost = document.getElementById("drillChips");
   [{ id:"mix", label:"вперемешку" }].concat(N19.TYPES).forEach(function(t){
@@ -811,14 +811,24 @@ if (typeof module !== "undefined") module.exports = N19;
     chipsHost.appendChild(b);
   });
   function newDrill(){
+    if (nextDrillTimer !== null) clearTimeout(nextDrillTimer);
+    nextDrillTimer = null; drillGeneration++; drillLocked = false;
     D = N19.drill(Z.active ? "mix" : curType);
     document.getElementById("dText").textContent = (Z.active ? (Z.i + 1) + " из 8. " : "") + D.text;
     document.getElementById("dNum").style.display = D.kind === "num" ? "flex" : "none";
     document.getElementById("dYN").style.display = D.kind === "yn" ? "flex" : "none";
     document.getElementById("dAnswer").value = "";
+    ["dAnswer", "dCheck", "dYes", "dNo"].forEach(function(id){ document.getElementById(id).disabled = false; });
     document.getElementById("dFb").className = "feedback";
     document.getElementById("dSol").disabled = Z.active;
     document.getElementById("dNext").disabled = Z.active;
+  }
+  function nextDrillAfter(delay){
+    var generation = drillGeneration;
+    nextDrillTimer = setTimeout(function(){
+      if (generation !== drillGeneration) return;
+      nextDrillTimer = null; newDrill();
+    }, delay);
   }
   function zDots(){
     var host = document.getElementById("zDots");
@@ -841,6 +851,10 @@ if (typeof module !== "undefined") module.exports = N19;
     }catch(err){}
   }
   function answer(ok){
+    if (drillLocked) return;
+    // Keep the first test answer; free practice may correct a wrong answer.
+    drillLocked = Z.active || ok;
+    ["dAnswer", "dCheck", "dYes", "dNo"].forEach(function(id){ document.getElementById(id).disabled = drillLocked; });
     mlog(D.type, ok);
     var fb = document.getElementById("dFb");
     fb.className = "feedback on " + (ok ? "ok" : "bad");
@@ -859,7 +873,7 @@ if (typeof module !== "undefined") module.exports = N19;
         save(function(s){ s.drillBest = Math.max(s.drillBest || 0, Z.score); if (passed) s.passed = true; });
         newDrill();
       } else {
-        setTimeout(newDrill, 800);
+        nextDrillAfter(800);
       }
     } else {
       streak = ok ? streak + 1 : 0;
@@ -867,6 +881,7 @@ if (typeof module !== "undefined") module.exports = N19;
     }
   }
   document.getElementById("dCheck").addEventListener("click", function(){
+    if (drillLocked) return;
     var v = parseNum(document.getElementById("dAnswer").value);
     if (isNaN(v)) return;
     answer(v === D.answer);
