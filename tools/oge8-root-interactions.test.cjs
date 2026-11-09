@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
-const { restoreRootAcceptance } = require('./oge8-root-acceptance-preservation.cjs');
+const { restoreRootAcceptance, restoreRootAnchorLayout } = require('./oge8-root-acceptance-preservation.cjs');
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task8-powers-roots.html'), 'utf8');
 
 function between(start, end) {
@@ -106,12 +106,15 @@ test('power checker retains even/odd behavior and rejects unsupported exponents'
 });
 
 test('acceptance normalization restores the immutable PR485 page byte for byte', () => {
-  const restored=restoreRootAcceptance(source);
+  const restored=restoreRootAcceptance(restoreRootAnchorLayout(source));
   assert.equal(crypto.createHash('sha256').update(restored).digest('hex'),'8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b');
   const marker='Любое ненулевое число в нулевой степени — единица!';
   assert.throws(()=>restoreRootAcceptance(source.replace(marker,'')),/fragment/);
   assert.throws(()=>restoreRootAcceptance(source+marker),/fragment/);
   assert.throws(()=>restoreRootAcceptance(source.replace('if(x.n<0n){fb.textContent=','if(x.n>0n){fb.textContent=')),/fragment/);
+  assert.throws(()=>restoreRootAnchorLayout(source.replace('scroll-margin-top:10rem','scroll-margin-top:0')),/fragment/);
+  assert.throws(()=>restoreRootAnchorLayout(restoreRootAnchorLayout(source)),/fragment/);
+  assert.throws(()=>restoreRootAnchorLayout(source+source),/fragment/);
 });
 
 test('JSDOM: actual page buttons replace feedback and render domain explanations', async () => {
