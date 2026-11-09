@@ -119,7 +119,16 @@ Navigator bindings explicitly update only the seven named HTML pages. Additional
 strict inverse witnesses account for the exact optional closed summary and
 include triple while preserving the original browser mathematics fixtures.
 
-Actual Chromium and production verification are pending. Source review,
+The first actual Chromium run exercised all seven routes at 320/360/1280.
+All 21 shared/embedded/managed cases and three public Task7 journeys passed.
+The other 18 journeys stopped at the exact native subtree comparison: trace
+inspection showed only empty style attributes introduced by screenshot caret
+hiding; controls and existing storage matched exactly. Screenshots now preserve
+the caret, and the unchanged complete-subtree assertion remains in force.
+Independent visual inspection also found a real desktop Task8 header overlap.
+The scoped layout fix and actual overlap regression must pass before release.
+
+Final actual Chromium and production verification are pending. Source review,
 Node/JSDOM tests, CI browser evidence and public browser checks are distinct.
 Physical phones, Safari, external-provider review and a real-pupil pilot are not
 claimed. Final release evidence and standard executive/base-drift fields belong

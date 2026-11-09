@@ -73,7 +73,31 @@ async function fits(page, label) {
   assert.deepEqual(bounds.outside, [], label + ': component/formula/control bounds');
   return bounds;
 }
-async function shot(page, name) { await page.screenshot({path: path.join(output, name + '.png'), fullPage: true, animations: 'disabled'}); }
+async function shot(page, name) { await page.screenshot({path: path.join(output, name + '.png'), fullPage: true, animations: 'disabled', caret: 'initial'}); }
+async function uncovered(page, target, label) {
+  // Real layout and hit testing after ordinary browser scrolling. Full-page
+  // screenshots alone can miss a sticky native header covering this lesson.
+  await target.scrollIntoViewIfNeeded(); await settle(page);
+  const observed = await target.evaluate(element => {
+    const r = element.getBoundingClientRect();
+    const visible = {left: Math.max(0, r.left), top: Math.max(0, r.top), right: Math.min(innerWidth, r.right), bottom: Math.min(innerHeight, r.bottom)};
+    const point = {x: (visible.left + visible.right) / 2, y: (visible.top + visible.bottom) / 2};
+    const hit = document.elementFromPoint(point.x, point.y);
+    const headers = [...document.querySelectorAll('header')].filter(header => !header.closest('.oa-learning') && header.getClientRects().length).map(header => {
+      const h = header.getBoundingClientRect();
+      const overlap = {left: Math.max(visible.left, h.left), top: Math.max(visible.top, h.top), right: Math.min(visible.right, h.right), bottom: Math.min(visible.bottom, h.bottom)};
+      const intersects = overlap.right > overlap.left + 1 && overlap.bottom > overlap.top + 1;
+      const covering = intersects ? document.elementFromPoint((overlap.left + overlap.right) / 2, (overlap.top + overlap.bottom) / 2) : null;
+      return {top: h.top, bottom: h.bottom, position: getComputedStyle(header).position, intersects, covers: !!covering && header.contains(covering)};
+    });
+    return {visible, point, centerInTarget: !!hit && element.contains(hit), headers};
+  });
+  assert(observed.visible.right > observed.visible.left && observed.visible.bottom > observed.visible.top, label + ': target has visible area');
+  assert.equal(observed.centerInTarget, true, label + ': visible center is not covered ' + JSON.stringify(observed));
+  assert(!observed.headers.some(header => header.covers), label + ': native header does not cover any intersecting content ' + JSON.stringify(observed));
+  return observed;
+}
+
 async function rangeTo(page, box, key, value) {
   const control = box.locator('[data-oa-control="' + key + '"]');
   if (await control.evaluate(e => e.tagName === 'SELECT')) {
@@ -92,8 +116,12 @@ async function rootBoundaries(page, box, label) {
   await rangeTo(page, box, 'op', 0); await rangeTo(page, box, 'a', -1); await rangeTo(page, box, 'b', -1);
   assert.match(await caption(), /не определено в действительных числах/);
   assert.match(await caption(), /равно 1, но это не разрешает/);
+  await uncovered(page, box.locator('[data-oa-model]'), label + ' negative roots model');
+  await uncovered(page, box.locator('[data-oa-caption]'), label + ' negative roots explanation');
   await rangeTo(page, box, 'op', 1); await rangeTo(page, box, 'a', 0); await rangeTo(page, box, 'b', 0);
   assert.match(await caption(), /на ноль делить нельзя.*числитель тоже равен 0/);
+  await uncovered(page, box.locator('[data-oa-model]'), label + ' zero denominator model');
+  await uncovered(page, box.locator('[data-oa-caption]'), label + ' zero denominator explanation');
   await shot(page, label + '-roots-zero-denominator');
   await rangeTo(page, box, 'b', 9);
   assert.match(await caption(), /Частное: √0 \/ √9 = √\(0\) = 0\./);
@@ -120,7 +148,7 @@ async function fractionBoundaries(page, label) {
       assert.doesNotMatch(text, /≈/);
     }
     await fits(page, label + ' native fraction ' + m + '/' + n);
-    await result.screenshot({path: path.join(output, label + '-fraction-' + m + '-' + n + '.png')});
+    await result.screenshot({path: path.join(output, label + '-fraction-' + m + '-' + n + '.png'), caret: 'initial'});
   }
 }
 async function nativeSnapshot(page, n) {
@@ -183,12 +211,22 @@ async function publicCase(browser, origin, n, width) {
     assert.equal(await box.locator(':scope > summary').innerText(), 'Разобраться на опыте');
     const card = page.locator(native[n].card);
     await card.waitFor();
-    if (native[n].input) await card.locator(native[n].input).first().fill(n === 11 ? '123' : '17,5');
+    const nativeHeaderMode = n === 8 ? {closed: await page.locator('body > header').evaluate(e => getComputedStyle(e).position)} : null;
+    if (nativeHeaderMode) assert.equal(nativeHeaderMode.closed, width > 640 ? 'sticky' : 'static', 'closed mini-lesson keeps the native responsive header');
+    if (native[n].input) {
+      const draft = n === 11 ? '123' : '17,5', input = card.locator(native[n].input).first();
+      await input.fill(draft); await input.press('Tab'); await settle(page);
+      assert.equal(await input.inputValue(), draft, 'native draft survives ordinary blur before baseline capture');
+    }
     await settle(page);
     const original = await nativeSnapshot(page, n);
     await fits(page, label + ' collapsed'); await shot(page, label + '-01-entry');
     await box.locator(':scope > summary').focus(); await page.keyboard.press('Enter');
     await action(box, 'begin').click(); await phase(page, 'predict');
+    if (nativeHeaderMode) {
+      nativeHeaderMode.open = await page.locator('body > header').evaluate(e => getComputedStyle(e).position);
+      assert.equal(nativeHeaderMode.open, 'static', 'open roots mini-lesson prevents native sticky header overlap');
+    }
     const wrongPrediction = await page.evaluate(n => window.OgeActiveLearningData.lessons[n].prediction.options.findIndex(o => !o.correct), n);
     assert(wrongPrediction >= 0, 'prediction offers a real misconception');
     await box.locator('[data-oa-question="prediction"] [data-oa-choice="' + wrongPrediction + '"]').click();
@@ -218,6 +256,11 @@ async function publicCase(browser, origin, n, width) {
     await box.locator('[data-oa-question="concept"] [data-oa-choice="' + choices.wrong + '"]').click();
     await action(box, 'check-concept').click(); await phase(page, 'experiment');
     assert((await box.locator('[data-oa-feedback]').innerText()).trim(), 'wrong concept is explained before practice');
+    const experimentUncovered = {
+      heading: await uncovered(page, box.locator('.oa-screen h2'), label + ' experiment heading'),
+      model: await uncovered(page, box.locator('[data-oa-model]'), label + ' experiment model'),
+      explanation: await uncovered(page, box.locator('[data-oa-caption]'), label + ' experiment explanation')
+    };
     await fits(page, label + ' experiment'); await shot(page, label + '-02-experiment');
     await box.locator('[data-oa-question="concept"] [data-oa-choice="' + choices.right + '"]').click();
     await action(box, 'check-concept').click(); await phase(page, 'practice');
@@ -248,12 +291,17 @@ async function publicCase(browser, origin, n, width) {
     await retainNative(page, n, original, 'new independent practice');
     await action(box, 'summary').click(); await phase(page, 'summary');
     assert.match(await box.locator('[data-oa-summary]').innerText(), /самостоятельно 1.*с опорой 1/);
+    const summaryUncovered = await uncovered(page, box.locator('[data-oa-summary]'), label + ' result summary');
     await fits(page, label + ' result'); await shot(page, label + '-04-result');
     const saved = await record(page);
     await action(box, 'native').click();
     assert.equal(await box.evaluate(e => e.open), false);
     assert.equal(await box.locator(':scope > summary').evaluate(e => e === document.activeElement), true, 'return restores keyboard focus');
     await retainNative(page, n, original, 'return to trainer');
+    if (nativeHeaderMode) {
+      nativeHeaderMode.returned = await page.locator('body > header').evaluate(e => getComputedStyle(e).position);
+      assert.equal(nativeHeaderMode.returned, nativeHeaderMode.closed, 'closing mini-lesson restores original native header behavior');
+    }
     await nativeWorks(page, n);
     if (n === 7) await fractionBoundaries(page, label);
     assert.deepEqual((await record(page)).attempts, saved.attempts, 'native practice cannot rewrite mini-lesson attempts');
@@ -269,7 +317,7 @@ async function publicCase(browser, origin, n, width) {
     assert.deepEqual(errors, [], 'no runtime or resource console errors');
     return {lesson: n, width, forecastCorrection: true, actualModelChange: true, conceptCorrection: true,
       zeroDenominatorRejected: true, rootModelBoundaries: n === 8 ? 5 : null, nativeFractionCases: n === 7 ? 4 : null,
-      helped: 1, independent: 1, nativeDraftRetained: true, nativeCheckWorks: true, reloadRetained: true};
+      experimentUncovered, summaryUncovered, nativeHeaderMode, helped: 1, independent: 1, nativeDraftRetained: true, nativeCheckWorks: true, reloadRetained: true};
   } catch (error) { failure = error; try { await shot(page, label + '-FAIL'); } catch (_) {} throw error; }
   finally {
     await context.tracing.stop({path: path.join(output, label + '-trace.zip')}).catch(error => { if (!failure) throw error; });
