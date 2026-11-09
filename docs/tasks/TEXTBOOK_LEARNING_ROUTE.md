@@ -116,3 +116,20 @@ be7b5522a1672a641c125b31442bdd516dd627d1, tree
 f2feffa95dc59dc1f424200aaab5162087fb6c60, exactly matching the prepared local
 7851166b tree. Final head and actual-head CI outcomes are recorded in PR #499. Merge and site
 publication have not yet been performed; #497 precedes this follow-up.
+
+## Published entrance compatibility follow-up
+
+Main advanced through #493 to d063ca10200c9fa208df15077b11a6bea67659e5.
+This follow-up composes the actual updated #497 head
+dfdc8aeb564f898b7821e01e190ba3a86a2ec97d with the prior #499 head dc8f24e8.
+It retains the two static Vilenkin entrances and their catalogue/sitemap
+coverage. The SEO browser scenario now selects the specific current
+"К следующему навыку" action and asserts its learn command, while all saved
+lesson URL, wrong-answer attempt, history and re-entry checks remain unchanged.
+The earlier exact selector was obsolete after #497; no broad fallback was added.
+Route/mastery runtime files remain identical to the independently reviewed
+composition. Canonical source binding be7b5522 remains an uploaded ancestor;
+bound HTML did not change. Affected navigator, sitemap, SEO and catalogue gates
+passed, and JSDOM journeys through both new entrances confirmed the next-skill
+action, practice attempt and reload. Local Chromium remains blocked by socket
+permissions; actual-head browser CI is required before release.
