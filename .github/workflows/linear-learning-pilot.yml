@@ -34,17 +34,19 @@ jobs:
         with:
           node-version: '24.21.0'
       - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
-      - run: node --test tools/equations/linear-pilot.test.cjs
+      - run: node --test tools/equations/linear-pilot*.test.cjs
       - run: npx playwright install --with-deps chromium
       - name: Local Chromium learning journeys
-        run: node tools/equations/linear-pilot.browser.cjs
+        run: |
+          node tools/equations/linear-pilot.browser.cjs
+          node tools/equations/linear-pilot-basics.browser.cjs
       - name: Wait for exact published pilot and course resources
         if: github.event_name == 'push' || inputs.target == 'production'
         run: |
           mv artifacts/linear-pilot artifacts/linear-pilot-local
           node <<'NODE'
           const fs=require('node:fs'),crypto=require('node:crypto');
-          const files=['equations/linear-pilot/index.html','equations/linear-pilot/app.js','equations/linear-pilot/store.js','equations/linear-pilot/data.js','equations/linear-pilot/style.css','equations/index.html','equations/app.js','equations/data.js','equations/algebra.js','equations/style.css','trainers/oge-course/index.html'];
+          const files=['equations/linear-pilot/index.html','equations/linear-pilot/app.js','equations/linear-pilot/store.js','equations/linear-pilot/data.js','equations/linear-pilot/style.css','equations/linear-pilot/basics-data.js','equations/linear-pilot/basics.js','equations/linear-pilot/basics.css','equations/index.html','equations/app.js','equations/data.js','equations/algebra.js','equations/style.css','trainers/oge-course/index.html'];
           const expected=new Map(files.map(file=>[file,fs.readFileSync(file)]));
           (async()=>{
             let failures=[];
@@ -69,7 +71,9 @@ jobs:
           NODE
       - name: Actual production entrance, gap return and full learning journey
         if: github.event_name == 'push' || inputs.target == 'production'
-        run: node tools/equations/linear-pilot.browser.cjs
+        run: |
+          node tools/equations/linear-pilot.browser.cjs
+          node tools/equations/linear-pilot-basics.browser.cjs
         env:
           PILOT_BASE_URL: https://mathexam.space
       - name: Browser screenshots
