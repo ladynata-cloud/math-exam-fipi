@@ -25,7 +25,7 @@ for(const raw of ['0,5','.5','1/2',' 1 / 2 ']){const s=P.freshState();assert.equ
  P.submit(s,tasks[2],'');assert.equal(s.records[s.active].attempts,0);P.submit(s,tasks[2],'not-an-option');assert.equal(s.records[s.active].attempts,0);P.submit(s,tasks[2],'median');assert.equal(s.credits.length,1);checks+=3;
  for(const task of tasks)P.select(s,task);assert.equal(P.nextUnseen(s,tasks),null);checks++;
 }
-function mount(raw){const dom=new JSDOM('<div class="bar"></div>',{url:'https://mathexam.space/geometry-course/trainers/fixture.html'}),w=dom.window;w.HTMLElement.prototype.scrollIntoView=function(){};const old='{"fixture":{"passed":true,"best":100}}';w.localStorage.setItem('mathExamCourseProgress.v1',old);if(raw!==undefined)w.localStorage.setItem('mathExamGeometryTransfer.v1.fixture',raw);const app=P.mount(w,w.document,config);return {dom,w,app,old};}
+function mount(raw){const dom=new JSDOM('<div class="bar"></div>',{url:'https://mathexam.space/geometry-course/trainers/fixture.html'}),w=dom.window,motions={scroll:[],focus:[]};w.HTMLElement.prototype.scrollIntoView=function(options){motions.scroll.push({id:this.id,options});};const originalFocus=w.HTMLElement.prototype.focus;w.HTMLElement.prototype.focus=function(options){motions.focus.push({tag:this.tagName,options});return originalFocus.call(this,options);};const old='{"fixture":{"passed":true,"best":100}}';w.localStorage.setItem('mathExamCourseProgress.v1',old);if(raw!==undefined)w.localStorage.setItem('mathExamGeometryTransfer.v1.fixture',raw);const app=P.mount(w,w.document,config);return {dom,w,app,old,motions};}
 function input(ctx,value){const field=ctx.app.panel.querySelector('#ap-answer');field.value=value;field.dispatchEvent(new ctx.w.Event('input',{bubbles:true}));}
 function click(ctx,selector){ctx.app.panel.querySelector(selector).click();}
 function submit(ctx){ctx.app.panel.querySelector('[data-practice-form]').dispatchEvent(new ctx.w.Event('submit',{bubbles:true,cancelable:true}));}
@@ -42,6 +42,18 @@ function submit(ctx){ctx.app.panel.querySelector('[data-practice-form]').dispatc
 {
  const ctx=mount('malformed');input(ctx,'Запись после ошибки');assert.equal(ctx.w.localStorage.getItem(ctx.app.key),'malformed');assert.match(ctx.app.panel.querySelector('[data-practice-status]').textContent,/скачай/);checks+=2;ctx.dom.window.close();
  const dom=new JSDOM('<div class="bar"></div>',{url:'https://mathexam.space/?g7-board=1'});assert.equal(P.mount(dom.window,dom.window.document,config),null);assert.equal(dom.window.document.querySelector('.bar').children.length,0);checks+=2;dom.window.close();
+}
+// Changing the condition must bring the new problem back into view; ordinary work stays put.
+{
+ const ctx=mount();input(ctx,'130');submit(ctx);input(ctx,'140');submit(ctx);click(ctx,'[data-practice-hint]');
+ assert.equal(ctx.motions.scroll.length,0,'input, answer and hint never jump to the top');assert.equal(ctx.motions.focus.length,0,'ordinary work never steals keyboard focus');checks+=2;
+ const firstKey=ctx.app.state().active;click(ctx,'[data-practice-next]');
+ assert.deepEqual(ctx.motions.scroll.at(-1),{id:'atanasyan-active-practice',options:{block:'start'}},'next condition scrolls the practice panel into view');assert.deepEqual(ctx.motions.focus.at(-1),{tag:'H2',options:{preventScroll:true}},'new heading receives accessible focus without a second scroll');assert.equal(ctx.w.document.activeElement.tagName,'H2');assert.equal(ctx.app.state().records[firstKey].draft,'140','changing condition preserves previous draft');checks+=4;
+ input(ctx,'60');submit(ctx);assert.equal(ctx.motions.scroll.length,1,'successful answer does not reset viewport');assert.equal(ctx.motions.focus.length,1,'successful answer does not move focus');checks+=2;
+ click(ctx,'[data-practice-repeat]');assert.equal(ctx.motions.scroll.length,2,'known repeat shows its condition');assert.equal(ctx.motions.focus.length,2);assert.deepEqual(ctx.motions.scroll.at(-1).options,{block:'start'});assert.deepEqual(ctx.motions.focus.at(-1).options,{preventScroll:true});checks+=4;
+ const selector=ctx.app.panel.querySelector('[data-practice-select]');selector.value=tasks[0].id;selector.dispatchEvent(new ctx.w.Event('change',{bubbles:true}));
+ assert.equal(ctx.motions.scroll.length,3,'resumed condition is brought into view');assert.equal(ctx.motions.focus.length,3);assert.equal(ctx.app.panel.querySelector('#ap-answer').value,'140','resumed condition retains the saved answer');assert.equal(ctx.app.state().records[firstKey].hint,true,'resumed help remains recorded');checks+=4;
+ ctx.dom.window.close();
 }
 // Exact embedded source, all 70 banks, retained-core identity, and composition.
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'geometry-course/trainers');
