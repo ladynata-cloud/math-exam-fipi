@@ -111,6 +111,8 @@ new composition preserves the actual uploaded #497 head
 head 55263f767d649685882eb997ace9e7292ad60ce1. All runtime files match the locally
 reviewed 5345256a candidate. Its manifest starts from the uploaded #497 receipt,
 and only school/makarychev8/index.html is rebound to the new uploaded source.
-The #497 task record is preserved from that actual head. Exact uploaded source,
-final head and actual-head CI outcomes are recorded in PR #499. Merge and site
+The #497 task record is preserved from that actual head. Uploaded source:
+be7b5522a1672a641c125b31442bdd516dd627d1, tree
+f2feffa95dc59dc1f424200aaab5162087fb6c60, exactly matching the prepared local
+7851166b tree. Final head and actual-head CI outcomes are recorded in PR #499. Merge and site
 publication have not yet been performed; #497 precedes this follow-up.
