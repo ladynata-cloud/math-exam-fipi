@@ -23,16 +23,33 @@
         <button type="button" data-tool="ray" aria-pressed="false">Луч</button>
         <button type="button" data-tool="circle" aria-pressed="false">Окружность</button>
         <button type="button" data-tool="polygon" aria-pressed="false">Многоугольник</button>
-        <button type="button" data-tool="midpoint" aria-pressed="false">Середина</button>
-        <button type="button" data-tool="intersection" aria-pressed="false">Пересечение</button>
-        <button type="button" data-tool="parallel" aria-pressed="false">Параллельная</button>
-        <button type="button" data-tool="perpendicular" aria-pressed="false">Перпендикуляр</button>
-        <button type="button" data-tool="bisector" aria-pressed="false">Биссектриса</button>
-        <button type="button" data-tool="distance" aria-pressed="false">Расстояние</button>
-        <button type="button" data-tool="angle" aria-pressed="false">Угол</button>
+        <details class="tool-group"><summary>Построения</summary><div>
+          <button type="button" data-tool="midpoint" aria-pressed="false">Середина</button>
+          <button type="button" data-tool="intersection" aria-pressed="false">Пересечение</button>
+          <button type="button" data-tool="parallel" aria-pressed="false">Параллельная</button>
+          <button type="button" data-tool="perpendicular" aria-pressed="false">Перпендикуляр</button>
+          <button type="button" data-tool="bisector" aria-pressed="false">Биссектриса</button>
+          <button type="button" data-tool="perpendicularBisector" aria-pressed="false">Серединный перпендикуляр</button>
+          <button type="button" data-tool="projection" aria-pressed="false">Проекция точки</button>
+          <button type="button" data-tool="circle3" aria-pressed="false">Окружность через 3 точки</button>
+        </div></details>
+        <details class="tool-group"><summary>Преобразования</summary><div>
+          <button type="button" data-tool="reflectPoint" aria-pressed="false">Симметрия относительно точки</button>
+          <button type="button" data-tool="reflectLine" aria-pressed="false">Симметрия относительно прямой</button>
+          <button type="button" data-tool="rotate" aria-pressed="false">Поворот точки</button>
+          <button type="button" data-tool="dilate" aria-pressed="false">Гомотетия точки</button>
+        </div></details>
+        <details class="tool-group"><summary>Измерения</summary><div>
+          <button type="button" data-tool="distance" aria-pressed="false">Расстояние</button>
+          <button type="button" data-tool="angle" aria-pressed="false">Угол</button>
+          <button type="button" data-tool="area" aria-pressed="false">Площадь</button>
+          <button type="button" data-tool="perimeter" aria-pressed="false">Периметр</button>
+          <button type="button" data-tool="circumference" aria-pressed="false">Длина окружности</button>
+        </div></details>
       </nav>
       <div class="construction-bar">
         <div><p id="tool-hint">Перетаскивайте свободные точки. Зависимые объекты следуют за ними.</p><p id="pending-selection" class="pending-selection"></p></div>
+        <label id="transformation-parameter" hidden><span id="tool-parameter-label">Угол, °</span><input id="tool-parameter" type="number" step="any" value="90" required></label>
         <button id="finish-polygon" type="button" class="primary" hidden>Замкнуть</button>
         <button id="cancel-selection" type="button" hidden>Отменить выбор</button>
       </div>
@@ -42,7 +59,7 @@
       </div>
       <div class="canvas-controls">
         <div class="button-group"><button id="undo" type="button" aria-label="Отменить действие" title="Ctrl+Z">↶ Отменить</button><button id="redo" type="button" aria-label="Повторить действие" title="Ctrl+Shift+Z">↷ Повторить</button></div>
-        <div class="view-options"><label><input id="show-axes" type="checkbox" checked> Оси</label><label><input id="show-grid" type="checkbox" checked> Сетка</label><button id="fit-view" type="button">Всё поле</button></div>
+        <div class="view-options"><label><input id="show-axes" type="checkbox" checked> Оси</label><label><input id="show-grid" type="checkbox" checked> Сетка</label><button id="zoom-in" type="button" aria-label="Приблизить">+</button><button id="zoom-out" type="button" aria-label="Отдалить">−</button><button id="fit-view" type="button">Всё поле</button></div>
       </div>
       <p id="feedback" class="feedback" role="status" aria-live="polite">Свободные точки — зелёные, зависимые — синие.</p>
     </section>
@@ -59,6 +76,12 @@
         <form id="edit-object-form">
           <label for="object-label">Подпись</label><input id="object-label" maxlength="30" autocomplete="off">
           <div id="coordinate-editor" class="coordinate-fields"><label>X<input id="edit-x" type="number" min="-1000000" max="1000000" step="any" required></label><label>Y<input id="edit-y" type="number" min="-1000000" max="1000000" step="any" required></label></div>
+          <label id="selected-parameter" hidden><span id="selected-parameter-label">Параметр</span><input id="edit-parameter" type="number" step="any" required></label>
+          <div id="selected-slider-settings" hidden>
+            <div class="coordinate-fields"><label>От<input id="edit-slider-min" type="number" step="any" min="-1000000" max="1000000" required></label><label>До<input id="edit-slider-max" type="number" step="any" min="-1000000" max="1000000" required></label></div>
+            <div class="coordinate-fields"><label>Шаг<input id="edit-slider-step" type="number" step="any" min="0.000001" required></label><label>Значение<input id="edit-slider-value" type="number" step="any" required></label></div>
+          </div>
+          <label id="selected-expression" hidden>Формула f(x)<input id="edit-expression" maxlength="512" autocomplete="off"></label>
           <button type="submit" class="primary">Применить</button>
         </form>
         <button id="delete-object" type="button" class="danger">Удалить объект…</button>
@@ -70,6 +93,24 @@
           <button type="submit">Добавить точку</button>
         </form>
       </section>
+      <section class="panel graph-panel">
+        <h2>Графики и параметры</h2>
+        <form id="add-function-form">
+          <label for="function-expression">f(x) =</label><input id="function-expression" maxlength="512" placeholder="a*x^2+b" autocomplete="off" required>
+          <button type="submit">Построить график</button>
+        </form>
+        <p class="muted">Умножение: *. Степень: ^. Функции: sqrt, abs, sin, cos, tan, ln. Углы — в радианах. Параметры a, b, c создаются автоматически.</p>
+        <p id="graph-warning" class="feedback error" role="status" hidden>Показана только часть сложного графика. Приблизьте нужную область или упростите формулу.</p>
+        <div id="slider-list" class="slider-list" aria-label="Параметры графиков"></div>
+        <details class="parameter-settings"><summary>Новый параметр</summary>
+          <form id="add-slider-form">
+            <label>Имя<select id="slider-name"><option>a</option><option>b</option><option>c</option></select></label>
+            <div class="coordinate-fields"><label>От<input id="slider-min" type="number" step="any" min="-1000000" max="1000000" value="-5" required></label><label>До<input id="slider-max" type="number" step="any" min="-1000000" max="1000000" value="5" required></label></div>
+            <div class="coordinate-fields"><label>Шаг<input id="slider-step" type="number" step="any" min="0.000001" value="0.1" required></label><label>Значение<input id="slider-value" type="number" step="any" value="1" required></label></div>
+            <button type="submit">Добавить параметр</button>
+          </form>
+        </details>
+      </section>
       <section class="panel file-actions">
         <h2>Модель</h2>
         <button id="example" type="button">Пример: медиана и высота</button>
@@ -79,12 +120,13 @@
         <button id="new-model" type="button">Новое построение…</button>
         <p id="persistence-note" class="muted">Черновик сохраняется в этом браузере. Скачайте модель, чтобы перенести её на другое устройство.</p>
       </section>
-      <details class="panel help"><summary>Как строить вместе</summary><p>На общей доске изменения получает второй участник. Из кабинета открывается сохранённая работа; право редактирования задаёт кабинет.</p><p>Выберите инструмент, затем исходные объекты в нужном порядке. Для угла и биссектрисы вторая точка — вершина. Для окружности первая — центр.</p><p>В режиме «Выбор» свободную точку можно переместить мышью, касанием, координатами или стрелками после выбора. Шаг стрелок — 0,1; с Shift — 1. Escape отменяет выбор инструмента.</p><p>При исчезновении пересечения зависимые объекты временно не определены. Верните исходные точки — построение восстановится.</p></details>
+      <details class="panel help"><summary>Как строить вместе</summary><p>На общей доске изменения, параметры и область просмотра получает второй участник. Масштаб меняется кнопками + и −; поле перемещается с Shift или двумя пальцами. Участник без права редактирования следует за общей областью просмотра. Из кабинета открывается сохранённая работа; право редактирования задаёт кабинет.</p><p>Выберите инструмент, затем исходные объекты в нужном порядке. Для угла и биссектрисы вторая точка — вершина. Для окружности первая — центр.</p><p>В режиме «Выбор» свободную точку можно переместить мышью, касанием, координатами или стрелками после выбора. Шаг стрелок — 0,1; с Shift — 1. Escape отменяет выбор инструмента.</p><p>При исчезновении пересечения зависимые объекты временно не определены. Верните исходные точки — построение восстановится.</p></details>
     </aside>
   </main>
   <dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">Подтвердите действие</h2><p id="confirm-description"></p><div class="dialog-actions"><button value="cancel" autofocus>Отмена</button><button id="confirm-accept" value="confirm" class="danger">Продолжить</button></div></form></dialog>
   <noscript>Для интерактивных построений включите JavaScript.</noscript>
   <script src="vendor/jsxgraphcore.js"></script>
+  <script src="expression.js"></script>
   <script src="model.js"></script>
   <script src="../learning-bridge.js"></script>
   <script src="../board-bridge.js"></script>

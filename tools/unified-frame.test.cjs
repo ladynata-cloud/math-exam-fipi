@@ -6,17 +6,17 @@ const path = require('node:path');
 const {JSDOM} = require('jsdom');
 const ROOT=path.resolve(__dirname,'..');
 const origin='https://board-fixture.invalid';
-const empty=()=>({version:1,title:'Построение',objects:[],view:{axes:true,grid:true}});
-function fixture(t,readOnly=false) {
+const empty=()=>({version:1,title:'Построение',objects:[],view:{axes:true,grid:true,viewport:{x:0,y:0,span:12}}});
+function fixture(t,readOnly=false,{preview=false,editorLock=true}={}) {
   const dom=new JSDOM('<div id="host"></div>',{url:origin+'/trainers/group-board.html',runScripts:'outside-only',pretendToBeVisual:true});
   const w=dom.window;
   w.TextEncoder=TextEncoder;
   w.eval(fs.readFileSync(path.join(ROOT,'trainers/group-trainer-frame.js'),'utf8'));
   const states=[],locks=[],messages=[];
-  const wrap=new w.GroupTrainerFrame(w.document.getElementById('host'),{trainerId:'spacemath',assignmentId:'synthetic-workspace',state:w.JSON.parse(JSON.stringify(empty())),readOnly,onState:s=>states.push(s)});
+  const wrap=new w.GroupTrainerFrame(w.document.getElementById('host'),{trainerId:'spacemath',assignmentId:'synthetic-workspace',state:w.JSON.parse(JSON.stringify(empty())),readOnly,preview,onState:s=>states.push(s)});
   const child=new JSDOM('<html><head></head><body><main class="workspace"></main></body></html>',{url:wrap.iframe.src,runScripts:'outside-only'});
   let state=empty();
-  child.window.SpaceMathApp={setReadOnly:value=>locks.push(value)};
+  child.window.SpaceMathApp=editorLock?{setReadOnly:value=>locks.push(value)}:{};
   child.window.postMessage=(data,targetOrigin)=>{
     assert.equal(targetOrigin,origin);messages.push(data);
     if(data.type==='mathexam:hydrate'&&data.state)state=JSON.parse(JSON.stringify(data.state));
@@ -44,7 +44,11 @@ test('SpaceMath hydration is credential-free and locks the actual editor until r
   const css=f.child.window.document.getElementById('group-trainer-presentation').textContent;
   assert.ok(css.includes('.jxgbox'));assert.ok(!css.includes('.grid>aside'));
   f.wrap.update({readOnly:true});assert.equal(f.locks.at(-1),true);
-  assert.equal(f.wrap.iframe.style.pointerEvents,'none');
+  assert.equal(f.wrap.iframe.style.pointerEvents,'auto','ready observer may scroll the editor');
+  assert.equal(f.child.window.document.body.inert,false);
+  assert.equal(f.wrap.viewport.inert,false);
+  assert.equal(f.wrap.overlay.style.display,'none');
+  assert.equal(f.wrap.iframe.tabIndex,0);
 });
 test('geometry state only accepts the current origin, source and bridge; observer cannot emit edits',async t=>{
   const f=fixture(t);
@@ -56,8 +60,24 @@ test('geometry state only accepts the current origin, source and bridge; observe
   assert.equal(f.states.length,0);
   f.send('mathexam:trainer-state',{state});assert.equal(f.states.length,1);
   f.wrap.update({readOnly:true});
+  assert.equal(f.locks.at(-1),true,'document is scrollable only with actual editor lock');
+  assert.equal(f.wrap.iframe.style.pointerEvents,'auto');
   f.send('mathexam:trainer-state',{state:{...state,title:'Observer attempt'}});
   assert.equal(f.states.length,1);
+});
+test('SpaceMath preview or missing editor lock retains its full input shield',async t=>{
+  for(const options of [{preview:true},{editorLock:false}]) {
+    const f=fixture(t,true,options);
+    f.send('mathexam:trainer-ready');await f.wrap.getState();
+    assert.equal(f.wrap.element.dataset.status,'ready');
+    assert.equal(f.wrap.iframe.style.pointerEvents,'none');
+    assert.equal(f.child.window.document.body.inert,true);
+    assert.equal(f.wrap.viewport.inert,true);
+    assert.equal(f.wrap.overlay.style.display,'block');
+    assert.equal(f.wrap.iframe.tabIndex,-1);
+    f.send('mathexam:trainer-state',{state:{...empty(),title:'Blocked observer attempt'}});
+    assert.equal(f.states.length,0);
+  }
 });
 test('snapshot flush includes a pending edit and remote hydration does not echo',async t=>{
   const f=fixture(t);

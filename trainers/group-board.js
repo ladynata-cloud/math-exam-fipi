@@ -11,11 +11,11 @@
   let connected = false, polling = false, sending = false, stopped = false;
   let focusFrame = null, focusKey = '', cardKey = '', historyEvents = null;
   let watchFrame = null, watchKey = '', watchBoard = false, watchPresentationKey = '';
-  let geometryFrame = null, geometryKey = '', navigating = false;
+  let geometryFrame = null, geometryKey = '', navigating = false, historyLoading = false;
   const surfaces = new Map();
   const SURFACES = ['board', 'geometry', 'trainer', 'split'];
   const SURFACE_LABELS = {board:'Записи на доске',geometry:'Геометрические построения',trainer:'Интерактивное задание',split:'Тренажёр и доска'};
-  const emptyGeometry = () => ({version:1,title:'Новое построение',objects:[],view:{axes:true,grid:true}});
+  const emptyGeometry = () => ({version:1,title:'Новое построение',objects:[],view:{axes:true,grid:true,viewport:{x:0,y:0,span:12}}});
   const currentSurface = () => target() === 'presentation' ? (snapshot?.presentation?.surface || 'split') : (surfaces.get(target()) || 'split');
   let historyWorkspace = null, historyInitial = null, drawing = null, tool = 'pen', outbox = [], rejected = [];
   const cardFrames = new Map(), cardCanvases = new Map(), cardSurfaces = new Map();
@@ -128,8 +128,26 @@
       }
     }
     outbox.push(body); saveQueue(); renderConnection();
-    const promise = new Promise((resolve,reject) => waiters.set(body.opId,{resolve,reject}));
+    const promise = actionAcknowledgement(body.opId);
     pump(); return promise;
+  }
+  function actionAcknowledgement(opId) {
+    if(waiters.has(opId))return waiters.get(opId).promise;
+    let resolve,reject;
+    const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});
+    waiters.set(opId,{promise,resolve,reject});
+    return promise;
+  }
+  // A frame flush only enqueues its latest edit. History must wait until each
+  // captured operation has actually been durably acknowledged by the server.
+  async function awaitQueuedWrites() {
+    const acknowledgements=outbox.map(action=>actionAcknowledgement(action.opId));
+    if(!acknowledgements.length)return;
+    let timeout;
+    try {
+      const deadline=new Promise((_resolve,reject)=>{timeout=setTimeout(()=>reject(Error('Последние действия ещё сохраняются. Дождитесь связи и откройте запись снова.')),12000);});
+      await Promise.race([Promise.all(acknowledgements),deadline]);
+    }finally{clearTimeout(timeout);}
   }
   async function pump() {
     if (sending || polling || !outbox.length || stopped) return;
@@ -215,7 +233,7 @@
   function ownsTrainer(ws,id) {return id==='common'?teacher():teacher()?ws?.controller==='teacher':id===snapshot.seatId&&ws?.controller==='student';}
   function writer(ws,id) {
     const pending=pendingTrainer(ws,id);
-    return connected&&!historyEvents&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
+    return connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
       &&(!pending.length||pending[0].expectedVersion===ws.trainerVersion)&&ownsTrainer(ws,id);
   }
   function focusState(ws,id) {
@@ -229,7 +247,7 @@
   function ownsGeometry(ws,id) {return id==='common'?teacher():teacher()?ws?.geometryController==='teacher':id===snapshot.seatId&&ws?.geometryController==='student';}
   function geometryWriter(ws,id) {
     const pending=pendingGeometry(ws,id);
-    return connected&&!historyEvents&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
+    return connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
       &&(!pending.length||pending[0].expectedVersion===ws.geometryVersion)&&ownsGeometry(ws,id);
   }
   function geometryState(ws,id) {
@@ -250,7 +268,7 @@
     }
   }
   async function navigate(action) {
-    if(navigating)return;
+    if(navigating||historyLoading)return;
     navigating=true;
     try{await flushFrames();await action();}
     catch(error){notice(errorText(error),true);}
@@ -294,9 +312,10 @@
       geometryFrame.update({...(!pending.length?{state:ws.geometryState||emptyGeometry()}:{}),readOnly:!geometryWriter(live,id)});
     }
   }
-  function canDraw() { return connected && !historyEvents && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
+  function canDraw() { return connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
   function renderConnection() {
     if (!snapshot) return;
+    $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
     $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':'Все изменения сохранены';
     $('connectionStatus').dataset.state=!connected?'offline':outbox.length?'pending':'saved';
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
@@ -555,16 +574,20 @@
     return work;
   }
   async function showHistory() {
-    const id=target();if(!id)return;
+    const id=target();if(!id||historyLoading)return;
+    const rejectedBefore=rejected.length;
     $('historyButton').disabled=true;
     try {
       if(teacher()&&presentationTarget())await enqueue('present','common',{target:null});
       await flushFrames();
+      historyLoading=true;renderFocus();
+      await awaitQueuedWrites();
+      if(rejected.length>rejectedBefore)throw Error('Последнее действие не сохранено. Проверьте сообщение об ошибке перед открытием записи.');
       const record=await fetchHistory(id);if(target()!==id)return;
       const events=record.events;
       if(!events.length){notice('В этой работе пока нет записанных действий.');return;}
       historyInitial=record.initialWorkspace;historyEvents=events;$('historyRange').max=String(events.length-1);$('historyRange').value=String(events.length-1);seekHistory();
-    } catch(error){notice(errorText(error),true);}finally{$('historyButton').disabled=false;}
+    } catch(error){notice(errorText(error),true);}finally{historyLoading=false;$('historyButton').disabled=false;renderFocus();}
   }
   function seekHistory() {
     const event=historyEvents?.[Number($('historyRange').value)];if(!event)return;
@@ -574,6 +597,11 @@
     renderFocus();
   }
   function download(name,data) {const a=element('a');const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+  function recoverWork() {
+    if(!snapshot||teacher()||!outbox.length&&!rejected.length)return;
+    download('mathexam-unsent-work.json',{format:'mathexam-unsent-work',version:1,title:snapshot.title,exportedAt:new Date().toISOString(),unsent:clone(outbox),rejected:clone(rejected)});
+    notice('Копия несохранённых действий скачана. Ссылки и ключи доступа в неё не включены.');
+  }
   async function exportLesson() {
     $('exportButton').disabled=true;
     try {
@@ -652,6 +680,7 @@
   $('teacherWatchOpen').addEventListener('click',()=>openSeat('presentation'));
   $('helpButton').addEventListener('click',()=>fire('help',target(),{active:!seat(target()).help}));
   $('historyButton').addEventListener('click',showHistory);$('historyRange').addEventListener('input',seekHistory);
+  $('recoverWorkButton').addEventListener('click',recoverWork);
   $('historyExit').addEventListener('click',()=>{historyEvents=null;historyWorkspace=null;renderFocus();});
   $('penButton').addEventListener('click',()=>{tool='pen';$('penButton').setAttribute('aria-pressed','true');$('eraserButton').setAttribute('aria-pressed','false');});
   $('eraserButton').addEventListener('click',()=>{tool='eraser';$('penButton').setAttribute('aria-pressed','false');$('eraserButton').setAttribute('aria-pressed','true');});

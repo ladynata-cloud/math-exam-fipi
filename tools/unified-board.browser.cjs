@@ -90,6 +90,51 @@ async function addPoint(frame, x, y) {
   await frame.locator('#point-y').fill(String(y));
   await frame.locator('#add-point-form button[type="submit"]').click();
 }
+async function historyWaitsForGeometry(page, frame, lessonURL, rejectWrite = false) {
+  let held = false, historyReads = 0, release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const countHistory = request => {
+    if (request.method() === 'GET' && request.url().startsWith(lessonURL + '/history?')) historyReads++;
+  };
+  const holdGeometry = async route => {
+    const request = route.request();
+    if (request.method() !== 'POST' || request.postDataJSON()?.type !== 'geometry') return route.continue();
+    held = true; await gate;
+    if (rejectWrite) return route.fulfill({ status: 400, contentType: 'application/json', body: JSON.stringify({ error: 'GROUP_GEOMETRY_STATE_INVALID' }), headers: { 'Access-Control-Allow-Origin': '*' } });
+    return route.continue();
+  };
+  page.on('request', countHistory);
+  await page.route(lessonURL + '/actions', holdGeometry);
+  try {
+    await frame.locator('#zoom-out').click();
+    const latest = await geometry(frame);
+    await poll(() => held, 'geometry save held before server acknowledgement');
+    await page.locator('#historyButton').click();
+    await poll(() => page.locator('#historyButton').isDisabled(), 'history waits for queued write');
+    await delay(350);
+    assert.equal(historyReads, 0, 'history GET must not overtake pending geometry POST');
+    assert.equal(await page.locator('#historyPanel').isVisible(), false, 'unfinished save must not show incomplete history');
+    release();
+    if (rejectWrite) {
+      await poll(async () => !await page.locator('#historyButton').isDisabled(), 'failed save exits history loading');
+      assert.equal(historyReads, 0, 'rejected save must not fetch a misleading history snapshot');
+      assert.equal(await page.locator('#historyPanel').isVisible(), false, 'failed save stays in live workspace');
+      assert.equal(await page.locator('#errorNotice').isVisible(), true, 'save failure is visible');
+      assert.match(await page.locator('#errorNotice').textContent(), /Построение не прошло проверку/);
+    } else {
+      await page.locator('#historyPanel').waitFor({ state: 'visible' });
+      assert.ok(historyReads > 0, 'history is fetched after durable acknowledgement');
+      const recorded = await geometryFrame(page);
+      await poll(async () => JSON.stringify(await geometry(recorded)) === JSON.stringify(latest), 'history contains the latest acknowledged viewport');
+      await page.locator('#historyExit').click();
+      await page.locator('#historyPanel').waitFor({ state: 'hidden' });
+    }
+  } finally {
+    release();
+    await page.unroute(lessonURL + '/actions', holdGeometry);
+    page.off('request', countHistory);
+  }
+}
 async function draw(page) {
   await mode(page, 'board');
   const canvas = page.locator('#boardCanvas');
@@ -175,25 +220,72 @@ async function main() {
     await poll(async () => (await work(first.id)).geometryState.objects.length === 1, 'geometry flushed before material switch');
     await mode(pupil, 'geometry'); pupilGeometry = await geometryFrame(pupil);
     await poll(async () => (await geometry(pupilGeometry)).objects[0]?.x === preciseX, 'precise point restores on return');
+    await pupilGeometry.locator('#function-expression').fill('a*x^2+b');
+    await pupilGeometry.locator('#add-function-form button').click();
+    await poll(async () => (await work(first.id)).geometryState.objects.some(object => object.type === 'functionGraph'), 'pupil function saved');
+    const graphState = await geometry(pupilGeometry);
+    const graph = graphState.objects.find(object => object.type === 'functionGraph');
+    const parameters = graphState.objects.filter(object => object.type === 'slider');
+    assert.deepEqual(parameters.map(parameter => parameter.name), ['a', 'b'], 'formula creates exactly its required parameters');
+    assert.deepEqual(graph.parents, parameters.map(parameter => parameter.id), 'graph retains live slider dependencies');
+    const coefficient = parameters.find(parameter => parameter.name === 'a');
+    const pupilSlider = pupilGeometry.locator('#slider-list input[data-slider="' + coefficient.id + '"]');
+    await pupilSlider.focus(); await pupilSlider.press('End');
+    await poll(async () => (await work(first.id)).geometryState.objects.find(object => object.id === coefficient.id)?.value === 5, 'visible parameter control updates shared graph');
     const firstGeometry = (await work(first.id)).geometryState;
     assert.equal((await work(second.id)).geometryState.objects.length, 0, 'other pupil construction remains independent');
-    console.log('PASS independent handwriting, geometry and immediate tab switch');
+    console.log('PASS independent handwriting, function parameters and immediate tab switch');
 
     await teacher.locator('#roster button').first().click();
     await mode(teacher, 'geometry');
     let teacherGeometry = await geometryFrame(teacher);
     await poll(async () => JSON.stringify(await geometry(teacherGeometry)) === JSON.stringify(firstGeometry), 'teacher observes canonical geometry');
     assert.equal(await teacherGeometry.locator('#add-point-form button').isDisabled(), true, 'observation does not take control');
+    assert.equal(await teacherGeometry.locator('#slider-list input[data-slider="' + coefficient.id + '"]').isDisabled(), true, 'teacher observes parameter without gaining write access');
     await teacher.locator('#geometryControlButton').click();
     await poll(async () => (await work(first.id)).geometryController === 'teacher', 'teacher takes geometry control');
     await poll(async () => await pupilGeometry.locator('#add-point-form button').isDisabled(), 'pupil geometry locked');
+    assert.equal(await pupilSlider.isDisabled(), true, 'pupil parameter locked during teacher control');
+    assert.equal(await pupilGeometry.locator('#function-expression').isDisabled(), true, 'pupil formula locked during teacher control');
     await addPoint(teacherGeometry, 4, -1);
-    await poll(async () => (await work(first.id)).geometryState.objects.length === 2, 'teacher geometry saved');
-    await poll(async () => (await geometry(pupilGeometry)).objects.length === 2, 'teacher geometry reaches pupil');
+    const expectedObjects = firstGeometry.objects.length + 1;
+    await poll(async () => (await work(first.id)).geometryState.objects.length === expectedObjects, 'teacher geometry saved');
+    await poll(async () => (await geometry(pupilGeometry)).objects.length === expectedObjects, 'teacher geometry reaches pupil');
+    const oldViewport = (await work(first.id)).geometryState.view.viewport;
+    await teacherGeometry.locator('#zoom-in').click();
+    await poll(async () => (await work(first.id)).geometryState.view.viewport.span === oldViewport.span * .8, 'teacher zoom saved in canonical viewport');
+    const zoomed = await work(first.id);
+    await poll(async () => JSON.stringify((await geometry(pupilGeometry)).view.viewport) === JSON.stringify(zoomed.geometryState.view.viewport), 'teacher viewport reaches pupil');
+    await delay(500);
+    assert.equal((await work(first.id)).geometryVersion, zoomed.geometryVersion, 'receiving viewport causes no feedback writes');
+    await historyWaitsForGeometry(teacher, teacherGeometry, lessonURL);
+    teacherGeometry = await geometryFrame(teacher);
     await teacher.locator('#geometryControlButton').click();
     await poll(async () => (await work(first.id)).geometryController === 'student', 'geometry control returned');
     await poll(async () => !await pupilGeometry.locator('#add-point-form button').isDisabled(), 'pupil geometry enabled after handoff');
-    console.log('PASS geometry observation, teacher takeover and return');
+    assert.equal(await pupilSlider.isDisabled(), false, 'parameter editing returns to pupil');
+    console.log('PASS geometry and parameter observation, teacher takeover, shared viewport and return');
+
+    const beforeFailedSave = await work(first.id);
+    await historyWaitsForGeometry(pupil, pupilGeometry, lessonURL, true);
+    assert.deepEqual(await work(first.id), beforeFailedSave, 'rejected geometry save changes no durable material');
+    await pupil.locator('#recoverWorkButton').waitFor({ state: 'visible' });
+    const [recoveryDownload] = await Promise.all([
+      pupil.waitForEvent('download'), pupil.locator('#recoverWorkButton').click()
+    ]);
+    const recoveryFile = path.join(ARTIFACTS, 'pupil-rejected-geometry.json');
+    await recoveryDownload.saveAs(recoveryFile);
+    const recoveryText = fs.readFileSync(recoveryFile, 'utf8'), recovery = JSON.parse(recoveryText);
+    assert.equal(recovery.format, 'mathexam-unsent-work');
+    assert.deepEqual(recovery.unsent, []);
+    assert.equal(recovery.rejected.length, 1, 'pupil recovers exactly their rejected edit');
+    assert.equal(recovery.rejected[0].action.type, 'geometry');
+    assert.equal(recovery.rejected[0].action.target, first.id);
+    assert.equal(recovery.rejected[0].error, 'GROUP_GEOMETRY_STATE_INVALID');
+    for (const token of [teacherToken, ...created.invites.map(invite => invite.studentToken)]) {
+      assert.equal(recoveryText.includes(token), false, 'recovery file contains no lesson credentials');
+    }
+    console.log('PASS history acknowledges edits, rejection stays live, and pupil recovers the rejected work');
 
     const beforeInsert = await work(first.id);
     await teacher.locator('#assignButton').click();
@@ -236,6 +328,7 @@ async function main() {
     const presentedGeometry = await geometryFrame(observer);
     await poll(async () => JSON.stringify(await geometry(presentedGeometry)) === JSON.stringify(allMaterials.geometryState), 'peer observes presented construction');
     assert.equal(await presentedGeometry.locator('#add-point-form button').isDisabled(), true, 'presented construction read only');
+    assert.equal(await presentedGeometry.locator('#slider-list input[data-slider="' + coefficient.id + '"]').isDisabled(), true, 'presented graph parameters read only');
     const observerView = await json(lessonURL, second.studentToken);
     assert.equal(observerView.students.length, 1); assert.equal(observerView.students[0].id, second.id);
     assert.equal(observerView.invites, undefined);

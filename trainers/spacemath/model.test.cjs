@@ -100,3 +100,339 @@ test('parent kinds and branch selection are strict', () => {
   const base = [p('a', 0, 0), p('b', 1, 0), o('line', 'line', ['a', 'b'])];
   for (const item of [o('bad', 'circle', ['line', 'a']), o('bad', 'perpendicular', ['a', 'line']), o('bad', 'intersection', ['line', 'line'], { branch: 0 }), o('bad', 'intersection', ['a', 'line'], { branch: 0 }), o('bad', 'intersection', ['line', 'line'], { branch: 2 })]) assert.throws(() => M.normalize(construction([...base, item])));
 });
+
+test('legacy views gain a bounded, cloned canonical viewport', () => {
+  const legacy = { version: 1, title: 'Старая модель', objects: [], view: { axes: true, grid: false } };
+  const restored = M.normalize(legacy);
+  assert.deepEqual(restored.view, { axes: true, grid: false, viewport: { x: 0, y: 0, span: 12 } });
+  assert.deepEqual(legacy.view, { axes: true, grid: false });
+  assert.deepEqual(M.empty().view.viewport, { x: 0, y: 0, span: 12 });
+  const state = { ...legacy, view: { axes: false, grid: true, viewport: { x: -4000000, y: 4000000, span: 8000000 } } };
+  const normalized = M.normalize(state);
+  assert.deepEqual(normalized.view, state.view);
+  assert.notEqual(normalized.view.viewport, state.view.viewport);
+  state.view.viewport.span = 1e-9;
+  assert.equal(M.normalize(state).view.viewport.span, 1e-9);
+  for (const viewport of [
+    null, [], { x: 0, y: 0 }, { x: 0, y: 0, span: 12, zoom: 1 },
+    { x: '0', y: 0, span: 12 }, { x: 4000001, y: 0, span: 12 },
+    { x: 0, y: -4000001, span: 12 }, { x: Infinity, y: 0, span: 12 },
+    { x: 0, y: 0, span: 0 }, { x: 0, y: 0, span: 1e-10 },
+    { x: 0, y: 0, span: 8000001 }, { x: 0, y: 0, span: NaN }
+  ]) assert.throws(() => M.normalize({ ...legacy, view: { ...legacy.view, viewport } }));
+  let executed = false;
+  const viewport = { x: 0, y: 0 };
+  Object.defineProperty(viewport, 'span', { enumerable: true, get() { executed = true; return 12; } });
+  assert.throws(() => M.normalize({ ...legacy, view: { ...legacy.view, viewport } }));
+  assert.equal(executed, false);
+});
+
+test('perpendicular bisector, projection and reflections follow their source geometry', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 4, 0), p('q', 6, 3), p('center', 1, 1),
+    o('ab', 'segment', ['a', 'b']), o('bisector', 'perpendicularBisector', ['a', 'b']),
+    o('foot', 'projection', ['ab', 'q']), o('mirror_line', 'reflectLine', ['ab', 'q']),
+    o('mirror_center', 'reflectPoint', ['q', 'center']), o('child', 'segment', ['foot', 'mirror_line'])
+  ]);
+  let r = M.evaluate(state);
+  close(r.bisector.a[0], 2); close(r.bisector.a[1], 0);
+  close(r.bisector.d[0], 0); assert.ok(r.bisector.d[1] !== 0);
+  // The projection is on the supporting line, even beyond a segment endpoint.
+  close(r.foot.x, 6); close(r.foot.y, 0);
+  close(r.mirror_line.x, 6); close(r.mirror_line.y, -3);
+  close(r.mirror_center.x, -4); close(r.mirror_center.y, -1);
+  assert.equal(r.child.defined, true);
+  state.objects[1].x = 0; state.objects[1].y = 4;
+  r = M.evaluate(state);
+  close(r.foot.x, 0); close(r.foot.y, 3);
+  close(r.mirror_line.x, -6); close(r.mirror_line.y, 3);
+  close(r.bisector.a[0], 0); close(r.bisector.a[1], 2); close(r.bisector.d[1], 0);
+  state.objects[1].y = 0;
+  r = M.evaluate(state);
+  for (const id of ['ab', 'bisector', 'foot', 'mirror_line', 'child']) assert.equal(r[id].defined, false, id);
+  assert.equal(r.mirror_center.defined, true);
+  state.objects[1].y = 4;
+  r = M.evaluate(state);
+  for (const id of ['ab', 'bisector', 'foot', 'mirror_line', 'child']) assert.equal(r[id].defined, true, id);
+  assert.deepEqual(M.descendants(state, 'b'), ['b', 'ab', 'bisector', 'foot', 'mirror_line', 'child']);
+});
+
+test('rotated and dilated points stay dependent, including negative and zero scale', () => {
+  const state = construction([
+    p('p', 6, 3), p('center', 1, 1),
+    o('rotated', 'rotate', ['p', 'center'], { angle: 90 }),
+    o('dilated', 'dilate', ['p', 'center'], { factor: -2 }),
+    o('collapsed', 'dilate', ['p', 'center'], { factor: 0 }),
+    o('segment', 'segment', ['rotated', 'dilated'])
+  ]);
+  let r = M.evaluate(state);
+  close(r.rotated.x, -1); close(r.rotated.y, 6);
+  close(r.dilated.x, -9); close(r.dilated.y, -3);
+  close(r.collapsed.x, 1); close(r.collapsed.y, 1);
+  assert.equal(r.segment.defined, true);
+  state.objects[0].x = 1; state.objects[0].y = 1;
+  r = M.evaluate(state);
+  for (const id of ['rotated', 'dilated', 'collapsed']) {
+    assert.equal(r[id].defined, true); close(r[id].x, 1); close(r[id].y, 1);
+  }
+  assert.equal(r.segment.defined, false);
+  state.objects[0].x = 6; state.objects[0].y = 3;
+  state.objects[2].angle = -90; state.objects[3].factor = 2;
+  r = M.evaluate(state);
+  close(r.rotated.x, 3); close(r.rotated.y, -4);
+  close(r.dilated.x, 11); close(r.dilated.y, 5);
+  assert.equal(r.segment.defined, true);
+});
+
+test('three-point circles and measurements recover after collinearity', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 4, 0), p('c', 0, 3),
+    o('triangle', 'polygon', ['a', 'b', 'c']), o('circle', 'circle3', ['a', 'b', 'c']),
+    o('area', 'area', ['triangle']), o('perimeter', 'perimeter', ['triangle']),
+    o('disk_area', 'area', ['circle']), o('circumference', 'circumference', ['circle']),
+    o('line', 'line', ['a', 'b']), o('intersection', 'intersection', ['line', 'circle'], { branch: 0 })
+  ]);
+  let r = M.evaluate(state);
+  assert.equal(r.circle.kind, 'circle'); close(r.circle.c[0], 2); close(r.circle.c[1], 1.5); close(r.circle.r, 2.5);
+  close(r.area.value, 6); close(r.perimeter.value, 12);
+  close(r.disk_area.value, 6.25 * Math.PI); close(r.circumference.value, 5 * Math.PI);
+  assert.equal(r.intersection.defined, true);
+  state.objects[2].x = 2; state.objects[2].y = 0;
+  r = M.evaluate(state);
+  for (const id of ['triangle', 'circle', 'area', 'disk_area', 'circumference', 'intersection']) assert.equal(r[id].defined, false, id);
+  state.objects[2].x = 0; state.objects[2].y = 3;
+  r = M.evaluate(state);
+  for (const id of ['triangle', 'circle', 'area', 'perimeter', 'disk_area', 'circumference', 'intersection']) assert.equal(r[id].defined, true, id);
+  close(r.area.value, 6);
+});
+
+test('three-point circles preserve small valid geometry and reject coincident points', () => {
+  for (const scale of [1, 1e-6, 1e-12]) {
+    const state = construction([p('a', 0, 0), p('b', 4 * scale, 0), p('c', 0, 3 * scale), o('circle', 'circle3', ['a', 'b', 'c'])]);
+    const r = M.evaluate(state).circle;
+    assert.equal(r.defined, true); close(r.c[0] / scale, 2); close(r.c[1] / scale, 1.5); close(r.r / scale, 2.5);
+    state.objects[2].y = 0;
+    assert.equal(M.evaluate(state).circle.defined, false);
+  }
+});
+
+test('polygon area is orientation-independent and undefined for crossed boundaries', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 4, 0), p('c', 4, 3), p('d', 0, 3),
+    o('forward', 'polygon', ['a', 'b', 'c', 'd']), o('reverse', 'polygon', ['d', 'c', 'b', 'a']),
+    o('area', 'area', ['forward']), o('reverse_area', 'area', ['reverse']), o('perimeter', 'perimeter', ['forward'])
+  ]);
+  let r = M.evaluate(state);
+  close(r.area.value, 12); close(r.reverse_area.value, 12); close(r.perimeter.value, 14);
+  // This crossing has nonzero signed shoelace area, so a zero-area check alone is insufficient.
+  state.objects[1].x = 4; state.objects[1].y = 4;
+  state.objects[2].x = 0; state.objects[2].y = 4;
+  state.objects[3].x = 3; state.objects[3].y = 0;
+  r = M.evaluate(state);
+  assert.equal(r.area.defined, false); assert.equal(r.reverse_area.defined, false);
+  state.objects[1].x = 4; state.objects[1].y = 0;
+  state.objects[2].x = 4; state.objects[2].y = 3;
+  state.objects[3].x = 0; state.objects[3].y = 3;
+  close(M.evaluate(state).area.value, 12);
+});
+
+test('new constructions reject wrong parents, extra fields and unbounded parameters', () => {
+  const base = [p('a', 0, 0), p('b', 4, 0), p('c', 0, 3), o('line', 'line', ['a', 'b']), o('circle', 'circle', ['a', 'b']), o('polygon', 'polygon', ['a', 'b', 'c'])];
+  const invalid = [
+    o('bad', 'perpendicularBisector', ['line', 'a']), o('bad', 'projection', ['a', 'line']),
+    o('bad', 'reflectPoint', ['a', 'line']), o('bad', 'reflectLine', ['circle', 'a']),
+    o('bad', 'circle3', ['a', 'b']), o('bad', 'circle3', ['a', 'b', 'line']),
+    o('bad', 'area', ['line']), o('bad', 'area', ['polygon', 'a']),
+    o('bad', 'perimeter', ['circle']), o('bad', 'circumference', ['polygon']),
+    o('bad', 'rotate', ['a', 'b']), o('bad', 'dilate', ['a', 'b']),
+    o('bad', 'rotate', ['a', 'line'], { angle: 90 }), o('bad', 'dilate', ['a', 'line'], { factor: 2 }),
+    o('bad', 'rotate', ['a', 'b'], { angle: 90, factor: 1 }), o('bad', 'reflectPoint', ['a', 'b'], { angle: 90 })
+  ];
+  for (const angle of [-36001, 36001, '90', NaN, Infinity]) invalid.push(o('bad', 'rotate', ['a', 'b'], { angle }));
+  for (const factor of [-1001, 1001, '2', NaN, Infinity]) invalid.push(o('bad', 'dilate', ['a', 'b'], { factor }));
+  for (const item of invalid) assert.throws(() => M.normalize(construction([...base, item])), item.type);
+  for (const angle of [-36000, 0, 36000]) assert.doesNotThrow(() => M.normalize(construction([...base, o('valid', 'rotate', ['a', 'b'], { angle })])));
+  for (const factor of [-1000, 0, 1000]) assert.doesNotThrow(() => M.normalize(construction([...base, o('valid', 'dilate', ['a', 'b'], { factor })])));
+});
+
+const slider = (id, name, extra = {}) => o(id, 'slider', [], { name, min: -5, max: 5, step: .1, value: 1, ...extra });
+const graph = (id, expression, parents = []) => o(id, 'functionGraph', parents, { expression });
+
+test('function graphs and sliders round-trip as declarative state and retain parameter dependencies', () => {
+  const state = construction([
+    slider('parameter_a', 'a', { value: 2 }), slider('parameter_b', 'b', { value: -3 }),
+    graph('parabola', '  a*x^2+b  ', ['parameter_b', 'parameter_a']),
+    graph('unparameterized', 'sin(x)+pi'), graph('repeated_parameter', 'a*x+a', ['parameter_a'])
+  ]);
+  // Existing files need no migration before adding functions.
+  state.view = { axes: false, grid: true };
+  const normalized = M.normalize(state);
+  assert.equal(normalized.objects[2].expression, 'a*x^2+b');
+  assert.deepEqual(normalized.objects[2].parents, ['parameter_b', 'parameter_a']);
+  assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(normalized))), normalized);
+  assert.deepEqual(normalized.view.viewport, { x: 0, y: 0, span: 12 });
+  let result = M.evaluate(state);
+  assert.equal(result.parameter_a.kind, 'slider'); assert.equal(result.parameter_a.value, 2);
+  assert.equal(result.parabola.kind, 'functionGraph'); assert.equal(result.parabola.defined, true);
+  assert.equal(result.parabola.expression, 'a*x^2+b');
+  assert.deepEqual(result.parabola.parameters, { a: 2, b: -3 });
+  assert.deepEqual(result.unparameterized.parameters, {});
+  assert.deepEqual(result.repeated_parameter.parameters, { a: 2 });
+  state.objects[0].value = -1.5;
+  result = M.evaluate(state);
+  assert.equal(result.parameter_a.value, -1.5);
+  assert.deepEqual(result.parabola.parameters, { a: -1.5, b: -3 });
+  assert.deepEqual(result.repeated_parameter.parameters, { a: -1.5 });
+  assert.deepEqual(M.descendants(state, 'parameter_a'), ['parameter_a', 'parabola', 'repeated_parameter']);
+  const removed = new Set(M.descendants(state, 'parameter_a'));
+  const surviving = { ...state, objects: state.objects.filter(item => !removed.has(item.id)) };
+  assert.doesNotThrow(() => M.normalize(surviving));
+  assert.deepEqual(surviving.objects.map(item => item.id), ['parameter_b', 'unparameterized']);
+});
+
+test('graph parameters must match unique preceding slider parents exactly', () => {
+  const base = [slider('parameter_a', 'a'), slider('parameter_b', 'b'), p('point', 0, 0), graph('independent', 'x')];
+  for (const item of [
+    graph('bad', 'a*x', []), graph('bad', 'a*x+b', ['parameter_a']),
+    graph('bad', 'a*x', ['parameter_a', 'parameter_b']), graph('bad', 'x', ['parameter_a']),
+    graph('bad', 'a*x', ['parameter_a', 'parameter_a']), graph('bad', 'a*x+b', ['parameter_a', 'parameter_a']),
+    graph('bad', 'a*x', ['parameter_b']), graph('bad', 'a*x', ['point']),
+    graph('bad', 'x', ['independent']), graph('bad', 'c*x', ['parameter_c']),
+    { ...graph('bad', 'x'), parameters: { a: 1 } }
+  ]) assert.throws(() => M.normalize(construction([...base, item])), item.expression);
+  assert.throws(() => M.normalize(construction([graph('premature', 'a*x', ['later']), slider('later', 'a')])));
+  assert.throws(() => M.normalize(construction([...base, slider('duplicate_name', 'a')])));
+  assert.doesNotThrow(() => M.normalize(construction([
+    slider('parameter_a', 'a'), slider('parameter_b', 'b'), slider('parameter_c', 'c'),
+    graph('all_parameters', 'a*x^2+b*x+c', ['parameter_c', 'parameter_a', 'parameter_b'])
+  ])));
+});
+
+test('slider names, ranges, steps, values and exact fields are bounded', () => {
+  const invalid = [
+    { name: 'x' }, { name: 'd' }, { name: 'A' }, { name: '__proto__' },
+    { min: -1000001 }, { max: 1000001 }, { min: 5 }, { min: 6 },
+    { min: '-5' }, { max: Infinity }, { step: '0.1' }, { step: NaN },
+    { step: 0 }, { step: -1 }, { step: 1e-7 }, { step: 10.1 },
+    { value: -5.1 }, { value: 5.1 }, { value: Infinity }, { value: '1' },
+    { parents: ['point'] }, { expression: 'x' }
+  ];
+  for (const extra of invalid) assert.throws(() => M.normalize(construction([p('point', 0, 0), slider('bad', 'a', extra)])));
+  for (const field of ['name', 'min', 'max', 'step', 'value', 'parents']) {
+    const item = slider('bad', 'a'); delete item[field];
+    assert.throws(() => M.normalize(construction([item])), field);
+  }
+  for (const extra of [
+    { min: -1000000, max: 1000000, step: 2000000, value: -1000000 },
+    { min: -1000000, max: 1000000, step: 1e-6, value: 1000000 },
+    { min: 0, max: 1e-6, step: 1e-6, value: 0 }
+  ]) assert.doesNotThrow(() => M.normalize(construction([slider('valid', 'c', extra)])));
+});
+
+test('graph imports reject executable or malformed expressions as data', () => {
+  for (const expression of [
+    '', '  ', 'x+', 'sin(', 'unknown(x)', 'y+x', 'globalThis.alert(1)',
+    'fetch("https://example.invalid")', 'x.constructor', 'x;alert(1)',
+    '(()=>1)()', 'x=1', 'Math.sin(x)', '<script>', '1'.repeat(513),
+    null, 123, { source: 'x' }
+  ]) assert.throws(() => M.normalize(construction([graph('bad', expression)])));
+  let executed = false;
+  const item = graph('bad', 'x');
+  Object.defineProperty(item, 'expression', { enumerable: true, get() { executed = true; return 'x'; } });
+  assert.throws(() => M.normalize(construction([item])));
+  assert.equal(executed, false);
+  assert.doesNotThrow(() => M.normalize(construction([graph('piecewise', 'If(x<0,-x,sqrt(x))')])));
+});
+
+
+test('graph count stays within a bounded rendering budget', () => {
+  const model = M.empty();
+  model.objects = Array.from({ length: M.MAX_GRAPHS }, (_, i) => ({ id: 'graph' + i, type: 'functionGraph', label: 'f' + i, parents: [], expression: 'sin(x)' }));
+  assert.equal(M.normalize(model).objects.length, M.MAX_GRAPHS);
+  model.objects.push({ id: 'extra', type: 'functionGraph', label: 'extra', parents: [], expression: 'x' });
+  assert.throws(() => M.normalize(model), /12 графиков/);
+});
+
+
+test('unequal edge scales preserve real circles and simple polygon area', () => {
+  const model = M.empty();
+  model.objects = [
+    { id: 'a', type: 'point', label: 'A', x: 0, y: 0 },
+    { id: 'b', type: 'point', label: 'B', x: 1e-15, y: 0 },
+    { id: 'c', type: 'point', label: 'C', x: 0, y: 1 },
+    { id: 'd', type: 'point', label: 'D', x: 1, y: 1 },
+    { id: 'circle', type: 'circle3', label: '', parents: ['a', 'b', 'c'] },
+    { id: 'polygon', type: 'polygon', label: '', parents: ['a', 'b', 'd', 'c'] },
+    { id: 'area', type: 'area', label: '', parents: ['polygon'] }
+  ];
+  const values = M.evaluate(model);
+  assert.equal(values.circle.defined, true);
+  assert.ok(Math.abs(values.circle.c[0] - 5e-16) < 1e-30);
+  assert.equal(values.circle.c[1], .5);
+  assert.equal(values.circle.r, .5);
+  assert.equal(values.area.defined, true);
+  assert.ok(Math.abs(values.area.value - .5000000000000005) < 2e-16);
+});
+
+test('undefined area preserves its specific explanation', () => {
+  const model = M.empty();
+  model.objects = [[0, 0], [4, 3], [0, 3], [3, 0]].map(([x, y], i) => ({ id: 'p' + i, type: 'point', label: '', x, y }));
+  model.objects.push({ id: 'polygon', type: 'polygon', label: '', parents: ['p0', 'p1', 'p2', 'p3'] });
+  model.objects.push({ id: 'area', type: 'area', label: '', parents: ['polygon'] });
+  assert.match(M.evaluate(model).area.reason, /самопересекающегося/);
+});
+
+
+test('identity and quarter-turn transformations preserve exact coincidences', () => {
+  const model = M.empty();
+  model.objects = [p('o', 0, 0), p('a', 1, 0), p('far', 1e6, 0), p('tiny', 1e-12, 0), p('d', 2, 2), p('on', 1, 1), o('line', 'line', ['o', 'd'])];
+  for (const angle of [0, 90, 180, 270, 360, -90]) model.objects.push(o('rot' + String(angle).replace('-', 'n'), 'rotate', ['a', 'o'], { angle }));
+  model.objects.push(o('identity', 'rotate', ['tiny', 'far'], { angle: 0 }), o('scale', 'dilate', ['tiny', 'far'], { factor: 1 }));
+  model.objects.push(o('foot', 'projection', ['line', 'on']), o('mirror', 'reflectLine', ['line', 'on']));
+  model.objects.push(o('zero', 'circle', ['a', 'rot360']));
+  const values = M.evaluate(model);
+  for (const [id, x, y] of [['rot0', 1, 0], ['rot90', 0, 1], ['rot180', -1, 0], ['rot270', 0, -1], ['rot360', 1, 0], ['rotn90', 0, -1], ['identity', 1e-12, 0], ['scale', 1e-12, 0], ['foot', 1, 1], ['mirror', 1, 1]]) {
+    assert.equal(values[id].x, x); assert.equal(values[id].y, y);
+  }
+  assert.equal(values.zero.defined, false);
+});
+
+test('slider values must agree with the step shown by the range control', () => {
+  assert.throws(() => M.normalize(construction([slider('s', 'a', { min: 0, max: 1, step: .3, value: .99 })])), /шагу/);
+  assert.doesNotThrow(() => M.normalize(construction([slider('s', 'a', { min: 0, max: 1, step: .1, value: .3 })])));
+});
+
+
+test('slider step alignment survives offset coordinates without accepting off-grid values', () => {
+  assert.doesNotThrow(() => M.normalize(construction([slider('s', 'a', { min: 100000, max: 100001, step: .1, value: 100000.1 })])));
+  assert.doesNotThrow(() => M.normalize(construction([slider('s', 'a', { min: 100000, max: 100000.000001, step: 1e-6, value: 100000 })])));
+  assert.throws(() => M.normalize(construction([slider('s', 'a', { min: 100000, max: 100001, step: .1, value: 100000.11 })])));
+});
+
+test('tiny nonzero rotations are not rounded to an identity', () => {
+  const result = M.evaluate(construction([p('a', 1, 0), p('o', 0, 0), o('r', 'rotate', ['a', 'o'], { angle: 1e-15 })]));
+  assert.ok(result.r.y > 0);
+  assert.ok(Math.abs(result.r.y - Math.PI / 180 * 1e-15) < 1e-31);
+});
+
+
+test('three-point circles use a stable anchor for all six selection orders', () => {
+  const orders = [['a', 'b', 'c'], ['a', 'c', 'b'], ['b', 'a', 'c'], ['b', 'c', 'a'], ['c', 'a', 'b'], ['c', 'b', 'a']];
+  for (const edge of [1e-15, 1e-150, 1e-320]) {
+    let expected;
+    for (const parents of orders) {
+      const state = construction([p('a', 0, 0), p('b', edge, 0), p('c', 0, 1), o('circle', 'circle3', parents)]);
+      const circle = M.evaluate(state).circle;
+      assert.equal(circle.defined, true, edge + ': ' + parents.join(''));
+      assert.equal(circle.c[0], edge / 2);
+      assert.equal(circle.c[1], .5);
+      assert.equal(circle.r, .5);
+      if (expected) assert.deepEqual(circle, expected);
+      else expected = circle;
+      state.objects[2].y = 0;
+      assert.equal(M.evaluate(state).circle.defined, false);
+      state.objects[2].y = 1;
+      assert.deepEqual(M.evaluate(state).circle, expected);
+    }
+  }
+});

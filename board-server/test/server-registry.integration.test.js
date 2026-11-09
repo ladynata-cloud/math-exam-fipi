@@ -266,6 +266,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /COPY board-server\/ \.\//);
   assert.match(dockerfile, /COPY trainers\/board-compat\.json \/app\/trainers\/board-compat\.json/);
   assert.match(dockerfile, /COPY trainers\/spacemath\/model\.js \/app\/trainers\/spacemath\/model\.js/);
+  assert.match(dockerfile, /COPY trainers\/spacemath\/expression\.js \/app\/trainers\/spacemath\/expression\.js/);
   assert.match(dockerfile, /FROM node:24\.21\.0-alpine/);
   assert.match(dockerfile, /RUN npm ci --omit=dev --include=optional/);
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) assert.ok(dockerfile.includes(`COPY ${folder}/ /app/${folder}/`));
@@ -306,6 +307,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   // model that Docker bundles. Keep this isolated runtime faithful to the image.
   fs.mkdirSync(path.join(runtimeTrainerDir, 'spacemath'), { recursive: true });
   fs.copyFileSync(path.join(rootDir, 'trainers/spacemath/model.js'), path.join(runtimeTrainerDir, 'spacemath/model.js'));
+  fs.copyFileSync(path.join(rootDir, 'trainers/spacemath/expression.js'), path.join(runtimeTrainerDir, 'spacemath/expression.js'));
   const ogeAssets=['oge-task11-graphs-trainer.html','oge-task15-triangles.html','oge-task16-circle.html','oge-task17-quadrilaterals.html','oge-task18-grid.html','task19-visual-data.js','task19-board-session.js','task19-visual-models.js','task19-reference.js','task19-models-triangles.js','task19-models-circles.js','task19-models-lines-polygons.js'];
   for(const file of ogeAssets){assert(dockerfile.includes('trainers/'+file));fs.copyFileSync(path.join(rootDir,'trainers',file),path.join(runtimeTrainerDir,file));}
   for (const folder of ['learning', 'ege-baza/path', 'trainers/oge-basics', 'trainers/motion-grade6']) fs.cpSync(path.join(rootDir, folder), path.join(directory, 'app', folder), { recursive: true });

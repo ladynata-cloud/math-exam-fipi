@@ -234,18 +234,24 @@
     _setAccess() {
       const locked = this.readOnly || !this._ready || this._failed;
       this.element.dataset.readOnly = String(locked);
-      this.viewport.inert = locked;
-      this.iframe.tabIndex = locked ? -1 : 0;
-      this.iframe.style.pointerEvents = locked ? 'none' : 'auto';
-      this.overlay.style.display = locked ? 'block' : 'none';
+      // Geometry has its own complete read-only mode. Keep its document
+      // scrollable so an observer can inspect objects and formulas below the
+      // drawing; legacy trainers still require the whole-frame input shield.
+      const editor = this.trainerId === 'spacemath' && this._document?.defaultView?.SpaceMathApp;
+      const inspectable = locked && this.readOnly && this._ready && !this._failed && !this.preview && typeof editor?.setReadOnly === 'function';
+      const blocked = locked && !inspectable;
       if (this._document && this._document.body) {
         // Stop active geometry gestures as well as DOM input when control is
         // revoked. Backend role/version fences remain the authority.
-        if (this.trainerId === 'spacemath') this._document.defaultView?.SpaceMathApp?.setReadOnly(locked);
-        this._document.body.inert = locked;
-        if (locked && this._document.activeElement && typeof this._document.activeElement.blur === 'function') this._document.activeElement.blur();
+        if (typeof editor?.setReadOnly === 'function') editor.setReadOnly(locked);
+        this._document.body.inert = blocked;
+        if (blocked && this._document.activeElement && typeof this._document.activeElement.blur === 'function') this._document.activeElement.blur();
       }
-      if (locked && document.activeElement === this.iframe) this.iframe.blur();
+      this.viewport.inert = blocked;
+      this.iframe.tabIndex = blocked ? -1 : 0;
+      this.iframe.style.pointerEvents = blocked ? 'none' : 'auto';
+      this.overlay.style.display = blocked ? 'block' : 'none';
+      if (blocked && document.activeElement === this.iframe) this.iframe.blur();
     }
 
     _fit() {

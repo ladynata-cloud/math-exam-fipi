@@ -17,21 +17,29 @@ function fixture(t) {
   t.after(() => dom.window.close());
   const w = dom.window, d = w.document;
   w.TextEncoder = TextEncoder;
-  let created = [];
+  let created = [], activeBoard;
   w.JXG = { COORDS_BY_USER: 0, JSXGraph: {
     freeBoard() {},
     initBoard() {
       created = [];
-      return {
-        getBoundingBox: () => [-8, 6, 8, -6], setBoundingBox() {}, suspendUpdate() {}, unsuspendUpdate() {},
-        on() {}, update() {}, fullUpdate() {},
+      const handlers = new Map();
+      let bounds = [-8, 6, 8, -6];
+      const update = () => created.forEach(element => element.updateDataArray?.());
+      activeBoard = {
+        canvasWidth: 800, canvasHeight: 600,
+        getBoundingBox: () => [...bounds],
+        setBoundingBox(value) { bounds = [...value]; handlers.get('boundingbox')?.(); },
+        setAttribute() {}, suspendUpdate() {}, unsuspendUpdate: update,
+        on(type, callback) { handlers.set(type, callback); }, update, fullUpdate: update,
         create(type, args, attrs) {
           const element = { type, args, attrs, on() {}, setAttribute() {}, setPosition() {} };
           created.push(element); return element;
         }
       };
+      return activeBoard;
     }
   }};
+  w.eval(read('trainers/spacemath/expression.js'));
   w.eval(read('trainers/spacemath/model.js'));
   w.eval(read('trainers/spacemath/app.js'));
   const select = id => d.querySelector('[data-object="' + id + '"]').click();
@@ -41,7 +49,7 @@ function fixture(t) {
     state.objects = w.JSON.parse(JSON.stringify(objects));
     w.SpaceMathApp.applyState(state);
   };
-  return { w, d, select, submit, install, app: w.SpaceMathApp, created: () => created };
+  return { w, d, select, submit, install, app: w.SpaceMathApp, created: () => created, board: () => activeBoard };
 }
 const point = (id, x, y) => ({ id, type: 'point', label: id.toUpperCase(), x, y });
 
@@ -144,4 +152,94 @@ test('the triangle example contains an actual height segment with live perpendic
   assert.ok(Math.abs(base[0] * altitude[0] + base[1] * altitude[1]) < 1e-10);
   assert.equal(result[height.id].a[0], result.c.x);
   assert.equal(result[height.id].a[1], result.c.y);
+});
+
+test('projection, three-point circle and its area remain live after editing their parent point', t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 4, 0), point('c', 1, 3), { id: 'base', type: 'line', label: 'AB', parents: ['a', 'b'] }]);
+  f.d.querySelector('[data-tool="projection"]').click(); f.select('base'); f.select('c');
+  const projection = f.app.getState().objects.find(item => item.type === 'projection');
+  f.d.querySelector('[data-tool="circle3"]').click(); f.select('a'); f.select('b'); f.select('c');
+  const circle = f.app.getState().objects.find(item => item.type === 'circle3');
+  f.d.querySelector('[data-tool="area"]').click(); f.select(circle.id);
+  const area = f.app.getState().objects.find(item => item.type === 'area');
+  let result = f.w.SpaceMathModel.evaluate(f.app.getState());
+  assert.deepEqual([result[projection.id].x, result[projection.id].y], [1, 0]);
+  assert.ok(Math.abs(result[area.id].value - 5 * Math.PI) < 1e-12);
+  f.d.querySelector('[data-tool="move"]').click(); f.select('c');
+  f.d.getElementById('edit-x').value = '2'; f.d.getElementById('edit-y').value = '2'; f.submit();
+  result = f.w.SpaceMathModel.evaluate(f.app.getState());
+  assert.deepEqual([result[projection.id].x, result[projection.id].y], [2, 0]);
+  assert.ok(Math.abs(result[circle.id].c[0] - 2) < 1e-12 && Math.abs(result[circle.id].c[1]) < 1e-12);
+  assert.ok(Math.abs(result[circle.id].r - 2) < 1e-12);
+  assert.ok(Math.abs(result[area.id].value - 4 * Math.PI) < 1e-12);
+  f.select(area.id); assert.match(f.d.getElementById('selected-description').textContent, /12[.,]566/);
+  const label = f.created().find(item => item.type === 'text');
+  assert.match(label.args[2](), /≈/);
+  f.d.getElementById('undo').click();
+  assert.deepEqual([f.w.SpaceMathModel.evaluate(f.app.getState())[projection.id].x, f.w.SpaceMathModel.evaluate(f.app.getState())[projection.id].y], [1, 0]);
+});
+
+test('function form creates its parameters, slider updates rendered samples and undo, and readonly blocks edits', t => {
+  const f = fixture(t);
+  f.d.getElementById('function-expression').value = 'f(x)=a*x^2+b';
+  f.d.querySelector('#add-function-form button').click();
+  const state = f.app.getState(), graph = state.objects.find(item => item.type === 'functionGraph');
+  const sliders = state.objects.filter(item => item.type === 'slider');
+  assert.equal(graph.expression, 'a*x^2+b');
+  assert.deepEqual(Array.from(sliders, item => item.name), ['a', 'b']);
+  assert.deepEqual(Array.from(graph.parents), Array.from(sliders, item => item.id));
+  const curve = () => f.created().find(item => item.type === 'curve');
+  const assertSamples = coefficient => {
+    const drawing = curve();
+    // Boundary endpoints are linearly clipped for SVG; interior samples remain exact evaluations.
+    const bounds = f.board().getBoundingBox();
+    const finite = drawing.dataX.map((x, i) => [x, drawing.dataY[i]])
+      .filter(pair => pair.every(Number.isFinite) && pair[1] > bounds[3] && pair[1] < bounds[1]);
+    assert.ok(finite.length > 20, 'visible graph has real rendered samples');
+    for (const [x, y] of finite) assert.ok(Math.abs(y - (coefficient * x * x + 1)) < 1e-10);
+  };
+  assertSamples(1);
+  const range = f.d.querySelector('[data-slider="' + sliders[0].id + '"]');
+  range.value = '2.5'; range.dispatchEvent(new f.w.Event('input', { bubbles: true }));
+  assertSamples(2.5);
+  assert.match(range.closest('label').querySelector('output').textContent, /^2[.,]5$/);
+  range.dispatchEvent(new f.w.Event('change', { bubbles: true }));
+  assert.equal(f.app.getState().objects.find(item => item.id === sliders[0].id).value, 2.5);
+  f.d.getElementById('undo').click(); assertSamples(1);
+  f.d.getElementById('redo').click(); assertSamples(2.5);
+  f.select(sliders[0].id); f.app.setReadOnly(true);
+  for (const selector of ['#function-expression', '#add-function-form button', '#edit-slider-value', '#zoom-in', '[data-slider="' + sliders[0].id + '"]']) {
+    assert.equal(f.d.querySelector(selector).disabled, true, selector + ' is read only');
+  }
+  const before = JSON.stringify(f.app.getState());
+  const lockedRange = f.d.querySelector('[data-slider="' + sliders[0].id + '"]');
+  lockedRange.value = '4'; lockedRange.dispatchEvent(new f.w.Event('input', { bubbles: true }));
+  f.d.getElementById('edit-slider-value').value = '4';
+  f.d.getElementById('edit-object-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+  f.d.getElementById('add-function-form').dispatchEvent(new f.w.Event('submit', { bubbles: true, cancelable: true }));
+  assert.equal(JSON.stringify(f.app.getState()), before, 'readonly events cannot change parameters or add graphs');
+});
+
+test('local zoom and pan emit canonical viewport while remote views and readonly do not echo updates', async t => {
+  const f = fixture(t), updates = [];
+  f.app.subscribe(() => updates.push(JSON.parse(JSON.stringify(f.app.getState()))));
+  f.d.getElementById('zoom-in').click();
+  assert.equal(f.app.getState().view.viewport.span, 12 * .8);
+  assert.equal(updates.length, 1);
+  f.board().setBoundingBox([-2, 7, 14, -5]);
+  await new Promise(resolve => setTimeout(resolve, 160));
+  assert.deepEqual(JSON.parse(JSON.stringify(f.app.getState().view.viewport)), { x: 6, y: 1, span: 12 });
+  assert.equal(updates.length, 2, 'one debounced viewport update for a local pan');
+  const incoming = f.app.getState(); incoming.view.viewport = f.w.JSON.parse('{"x":3,"y":-2,"span":6}');
+  f.app.applyState(incoming);
+  assert.deepEqual(f.board().getBoundingBox(), [-1, 1, 7, -5], 'remote canonical viewport maps to current aspect ratio');
+  await new Promise(resolve => setTimeout(resolve, 160));
+  assert.equal(updates.length, 2, 'receiving the remote viewport does not publish it again');
+  f.app.setReadOnly(true);
+  f.d.getElementById('zoom-in').click();
+  f.board().setBoundingBox([1, 4, 9, -2]);
+  await new Promise(resolve => setTimeout(resolve, 160));
+  assert.deepEqual(JSON.parse(JSON.stringify(f.app.getState().view.viewport)), { x: 3, y: -2, span: 6 });
+  assert.equal(updates.length, 2, 'read-only viewport events cannot publish changes');
 });

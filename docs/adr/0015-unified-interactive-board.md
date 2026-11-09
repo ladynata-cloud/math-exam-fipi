@@ -1,10 +1,18 @@
 # Independent materials in the MathExam group board
 
-Status: Proposed
+Status: Accepted (integrated board scope; release remains gated by acceptance)
 Date: 2026-11-09
 Task: [UNIFIED_INTERACTIVE_BOARD_20261109](../tasks/UNIFIED_INTERACTIVE_BOARD_20261109.md)
 
-## Decision under review
+## Decision
+
+The owner explicitly requested the combined board, SpaceMath and trainer,
+then reaffirmed implementation and required teacher/pupil synchronization,
+including a wider school geometry and graphing toolset. This accepts the
+integrated use below. It does not accept or merge the separate cabinet/library
+product in PR #481. Standing publication authorization applies after the
+technical acceptance of this integrated candidate, subject to the owner's
+latest explicit pause: review with different models before any merge/deployment.
 
 Reuse the accepted ADR 0009 group seats, bearer access, fsynced journal,
 idempotency, presentation projection and explicit control. Add SpaceMath from
@@ -24,7 +32,10 @@ contains only the chosen workspace, and its consumers cannot write or read peer
 history. Switching a local view does not mutate another learner's view; explicit
 teacher presentation chooses the shared surface. Before navigation/handoff,
 client snapshots flush debounced edits; delayed and conflicting operations remain
-version-fenced. Canonical models contain no executable expressions or HTML.
+version-fenced. Canonical models contain no executable JavaScript or HTML.
+Function formulas are bounded mathematical strings parsed by a local allowlist
+parser; parameters, dependencies and the logical viewport belong to the same
+validated model. Only the controller publishes viewport and parameter changes.
 
 ## Compatibility and operational constraints
 
@@ -38,6 +49,6 @@ persistence or simultaneous geometry writers are promised.
 ## Evidence and remaining acceptance
 
 The accompanying task and PR record actual tests and independent review.
-This proposal does not claim owner acceptance of the complete SpaceMath product
-or revoke the specific PR #481 release hold. Broader trainer coverage, richer
+This decision does not claim owner acceptance of the complete SpaceMath product
+or revoke the separate PR #481 release hold. Broader trainer coverage, richer
 ordinary-board tools and real-learner acceptance are later stages.

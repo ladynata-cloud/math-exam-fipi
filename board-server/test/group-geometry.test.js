@@ -194,6 +194,59 @@ test('all three surfaces and presentation restore after durable storage restart 
   assert.deepEqual(f.history('s1', 's1').events.map(item => item.type), ['geometry', 'stroke', 'insert', 'trainer']);
 });
 
+test('graphs, dependent constructions and canonical viewport survive control, stale writes, presentation and restart', t => {
+  const f = fixture(t);
+  const state = {
+    ...model.empty(), title: 'График и геометрия',
+    view: { axes: true, grid: false, viewport: { x: 2.5, y: -1 / 3, span: 9.6 } },
+    objects: [
+      { id: 'A', type: 'point', label: 'A', x: 0, y: 0 },
+      { id: 'B', type: 'point', label: 'B', x: 4, y: 0 },
+      { id: 'C', type: 'point', label: 'C', x: 1, y: 3 },
+      { id: 'base', type: 'line', label: 'AB', parents: ['A', 'B'] },
+      { id: 'H', type: 'projection', label: 'H', parents: ['base', 'C'] },
+      { id: 'circle', type: 'circle3', label: 'k', parents: ['A', 'B', 'C'] },
+      { id: 'area', type: 'area', label: 'S', parents: ['circle'] },
+      { id: 'a', type: 'slider', label: 'a', parents: [], name: 'a', min: -5, max: 5, step: .1, value: 2.5 },
+      { id: 'b', type: 'slider', label: 'b', parents: [], name: 'b', min: -5, max: 5, step: .1, value: -1 },
+      { id: 'graph', type: 'functionGraph', label: 'f', parents: ['a', 'b'], expression: 'a*x^2+b' }
+    ]
+  };
+  f.action('s1', 'geometry', 's1', { state }, { expectedVersion: 0 });
+  assert.deepEqual(f.snapshot('s1').students[0].workspace.geometryState, state, 'exact graph, parents and camera round trip');
+  let evaluated = model.evaluate(f.work('s1').geometryState);
+  assert.deepEqual(evaluated.graph.parameters, { a: 2.5, b: -1 });
+  assert.deepEqual([evaluated.H.x, evaluated.H.y], [1, 0]);
+  assert.ok(Math.abs(evaluated.area.value - 5 * Math.PI) < 1e-12);
+  f.action('teacher', 'present', 'common', { target: 's1', surface: 'geometry' });
+  assert.deepEqual(f.snapshot('s2').presentation.workspace.geometryState, state);
+  f.action('teacher', 'geometry-control', 's1', { controller: 'teacher' });
+  const edited = structuredClone(state);
+  Object.assign(edited.objects.find(object => object.id === 'C'), { x: 2, y: 2 });
+  edited.objects.find(object => object.id === 'a').value = -2;
+  edited.view.viewport = { x: -3, y: 4, span: 6 };
+  f.action('teacher', 'geometry', 's1', { state: edited }, { expectedVersion: 2 });
+  f.action('teacher', 'geometry-control', 's1', { controller: 'student' });
+  const before = structuredClone(f.work('s1'));
+  rejects(() => f.action('s1', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_STATE_CONFLICT', 409);
+  assert.deepEqual(f.work('s1'), before, 'old parameter or viewport cannot overwrite teacher changes');
+  f.restart();
+  const restored = f.work('s1');
+  assert.deepEqual(restored, before, 'controller, graph, dependency IDs and camera are durable');
+  assert.deepEqual(f.snapshot('s3').presentation.workspace.geometryState, edited, 'late presentation sees saved function and viewport');
+  evaluated = model.evaluate(restored.geometryState);
+  assert.deepEqual(evaluated.graph.parameters, { a: -2, b: -1 });
+  assert.deepEqual([evaluated.H.x, evaluated.H.y], [2, 0]);
+  assert.deepEqual(evaluated.circle.c, [2, 0]);
+  assert.equal(evaluated.circle.r, 2);
+  assert.equal(evaluated.area.value, 4 * Math.PI);
+  const history = f.history('s1', 's1');
+  assert.deepEqual(history.events.filter(event => event.type === 'geometry').map(event => event.payload.state), [state, edited]);
+  const resumed = structuredClone(edited); resumed.objects.find(object => object.id === 'b').value = .5;
+  f.action('s1', 'geometry', 's1', { state: resumed }, { expectedVersion: restored.geometryVersion });
+  assert.equal(model.evaluate(f.work('s1').geometryState).graph.parameters.b, .5, 'returned pupil control works after restart');
+});
+
 test('presentation surface follows partial snapshots without altering personal work or granting rights', t => {
   const f = fixture(t);
   const before = structuredClone(f.work('s2'));

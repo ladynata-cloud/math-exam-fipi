@@ -10,7 +10,7 @@
 - Branch: feat/unified-interactive-board
 - Review level: NEW_ARCHETYPE (geometry material in the accepted group architecture)
 - Existing architecture: [ADR 0009](../adr/0009-group-lessons.md), Accepted.
-- Proposed extension: [ADR 0015](../adr/0015-unified-interactive-board.md).
+- Accepted integrated extension: [ADR 0015](../adr/0015-unified-interactive-board.md).
 
 ## Goal and approved scope
 
@@ -34,6 +34,14 @@ are outside this first stage. Ordinary board initially retains the existing
 pen, color, width, authored eraser and undo; text, images, PDF and multi-page
 editing are not claimed as added here.
 
+Current owner continuation: «сделай сначала и доску», «Будешь доску делать?»,
+«постарайся чтобы наша геогебра максимально обладала всеми необходимыми
+функциями которые есть у обычной геогебры», and «чтобы ученик и учитель могли
+видеть одно и то же». This adds bounded school construction/measurement tools,
+safe function graphs with serialized parameters and a shared logical viewport.
+It does not claim full GeoGebra parity. The future AI assistant remains outside
+implementation: no provider calls, training or API spending in this task.
+
 ## Acceptance
 
 - Material switches never reassign the exercise or erase another material.
@@ -47,6 +55,10 @@ editing are not claimed as added here.
 - Exact coordinates survive rename and unrelated coordinate edits; rounded
   measurements use approximate equality; an altitude is a segment in the example.
 - 320/1280 layouts and separate teacher/pupil browsers are checked by the CI gate.
+- New constructions, graph formulas, sliders and viewport survive the same
+  server validation, round-trip, handoff and restore as existing objects.
+- Formula input never executes JavaScript; undefined domains do not produce
+  misleading connecting lines. Mathematical and resource limits have tests.
 
 ## Checks and review
 
@@ -58,12 +70,18 @@ under the standing owner waiver. Record actual results in the PR.
 
 ## Permissions and release boundary
 
-Current request is START for implementation, validation, branch, commit, push
-and Draft PR. Standing release permission exists, but the specific earlier
-SpaceMath #481 hold remains: this integrated use is a review candidate, not a
-workaround to release the held geometry editor. Do not merge #481 or this
-geometry-bearing candidate before its remaining acceptance is complete and the
-specific hold is resolved. No real learner data is read or modified for tests.
+The current direct owner requests authorize this integrated board and its
+synchronized SpaceMath tools. The standing owner release authorization applies
+after all relevant checks, subject to the latest pause below. This supersedes the earlier integration hold in
+this task; it does not authorize merging the broader standalone PR #481.
+Remaining browser failures and incomplete acceptance still block release.
+No real learner data is read or modified for tests.
+
+**Latest owner decision: publication paused.** «не торопись публиковать.
+давай проверим доску на твоих разных моделях». Keep PR #519 as a review
+candidate; do not merge or deploy. Finish the implementation and run independent
+reviews with different named models, consolidate reproducible findings, fix
+confirmed defects, and present the evidence for the owner's next decision.
 
 ## Risks and rollback
 
@@ -74,7 +92,7 @@ safe for stored data; do not deploy an old backend against new journals, erase
 journals or silently downgrade them. Snapshot backups before a future rollout
 and retain original files for any deliberate migration.
 
-## Execution record
+## Historical execution record (before PR #519)
 
 - Implemented source commit: 4decb79b88c1c97ef2a60a98de536ae13e486843.
 - Focused backend: 29/29 passed, independently repeated after the stable-material
@@ -118,3 +136,26 @@ The blocked-push entries above are historical. Actual remote commit and PR
 identity are recorded in the resulting PR, whose source tree must equal this
 local candidate. Git CLI has no credentials in this executor, so submission
 uses the authenticated GitHub connector.
+
+## Current continuation — 9 November UTC / 10 November Novosibirsk
+
+- PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/519 (Draft).
+- Validated base advanced by clean ordinary merge to
+  `833856e60fcdc3f82715d85a222581a0e21656f2`.
+- Remote candidate `aac9407ed9c3e20f62909a6e7071720371700ab7` fixed the isolated
+  server test fixture to copy the real SpaceMath model, matching the existing
+  Dockerfile. Local and remote full server suite: **425/425 passed**;
+  model/editor/bridge suite: **23/23 passed**.
+- Remote eight-learner browser suite then exposed a handwriting timeout;
+  its pointer helper is being corrected to use the actually visible canvas
+  region in the nested split workspace. Persisted-stroke assertions remain.
+- Manual browser checks in a synthetic local room verified pupil handwriting,
+  teacher annotation, geometry observation/control/coordinate synchronization,
+  trainer insertion without losing ink, a correct trainer answer mirrored to
+  the teacher, and pupil reload. These are not production acceptance or a
+  substitute for the remaining automated browser gate.
+- Wider SpaceMath tools implemented and independently reviewed using three
+  different configured models; see the [review record](../reports/unified-board-multimodel-review-20261109.md).
+  Full server checks: 426/426; final model/editor/bridge checks: 65/65.
+  Full automated browser gate remains pending on the updated Draft candidate.
+- No merge or production deployment has been performed in this continuation.
