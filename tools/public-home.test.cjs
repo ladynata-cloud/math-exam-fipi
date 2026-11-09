@@ -57,6 +57,15 @@ test('centered flex-row trainer retains one body layout column without shifting 
   assert.equal(dom.window.document.querySelector('main').lastElementChild.id, 'mathexam-home-navigation');
   dom.window.close();
 });
+test('ordinary course keeps its authored content before the added navigation', () => {
+  const dom = page('/video-lessons/cheatsheets.html', '<header>MathExam</header><main><p id="condition">Условие</p><svg id="diagram"></svg><video id="video-player"></video></main>');
+  const children = Array.from(dom.window.document.body.children);
+  mount(dom.window);
+  assert.deepEqual(Array.from(dom.window.document.body.children).slice(0, -1), children);
+  assert.equal(dom.window.document.body.lastElementChild.id, 'mathexam-home-navigation');
+  assert.deepEqual(Array.from(dom.window.document.querySelector('main').children).map(node => node.id), ['condition', 'diagram', 'video-player']);
+  dom.window.close();
+});
 test('lessons logos and explicit menu return home even when its fragment is opened', () => {
   const dom = page('/lessons/#demo-oge', fs.readFileSync('lessons/index.html', 'utf8'));
   for (const logo of dom.window.document.querySelectorAll('a.brand')) assert.equal(logo.getAttribute('href'), '/');

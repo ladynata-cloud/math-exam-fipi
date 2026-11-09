@@ -24,18 +24,15 @@
     link.textContent = '← На главную';
     nav.append(link);
     shadow.append(style, nav);
-    // Keep the first task/canvas coordinates stable in full-screen and centered
-    // layouts. Ordinary document pages keep the return at the top; constrained
-    // app shells receive it after their content, still in normal document flow.
+    // Keep authored first-screen conditions, diagrams and videos at their
+    // existing coordinates. The return follows the content in document flow,
+    // and stays inside the sole content column of a centered flex-row shell.
     let container = document.body;
     const bodyStyle = root.getComputedStyle(document.body);
     if (bodyStyle.display === 'flex' && /^row/.test(bodyStyle.flexDirection)) {
       container = document.body.querySelector('main') || Array.from(document.body.children).find(node => /^(?:DIV|ARTICLE|SECTION)$/.test(node.tagName)) || document.body;
     }
-    const constrained = /^(?:flex|grid|inline-flex|inline-grid)$/.test(bodyStyle.display)
-      || document.querySelector('#trainerFrame, #canvas, [data-board-workspace], .board-shell');
-    if (constrained) container.append(host);
-    else container.prepend(host);
+    container.append(host);
   }
   if (root.document.readyState === 'loading') root.document.addEventListener('DOMContentLoaded', mountHomeLink, { once: true });
   else mountHomeLink();

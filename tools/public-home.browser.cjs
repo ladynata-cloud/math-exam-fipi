@@ -42,6 +42,17 @@ const server = http.createServer((req, res) => {
         if (!report.covered.includes(file)) continue;
         try {
           await page.goto(origin + '/' + file, { waitUntil: 'load' });
+          // First-time trig lessons open their existing onboarding dialog.
+          // Follow its normal dismiss action before testing background navigation;
+          // keep the same real home click and do not bypass the modal with force.
+          const onboarding = page.locator('#onboarding-overlay');
+          let onboardingDismissed = false;
+          if (await onboarding.isVisible()) {
+            await onboarding.getByRole('button', { name: 'Закрыть и работать как обычно', exact: true }).click();
+            await onboarding.waitFor({ state: 'hidden' });
+            assert.equal(await onboarding.isVisible(), false, file + ' onboarding closes through its visible action');
+            onboardingDismissed = true;
+          }
           const link = page.locator('#mathexam-home-navigation').locator('a');
           await link.waitFor({ state: 'visible' });
           await link.scrollIntoViewIfNeeded();
@@ -52,7 +63,7 @@ const server = http.createServer((req, res) => {
           if (['lessons/index.html', 'trainers/ege-t1-planimetry-trainer.html', 'trainers/geometry7-practice.html', 'school/peterson6/index.html'].includes(file)) await page.screenshot({ path: path.join(out, file.replace(/\W/g, '_') + '-' + width + '.png') });
           await link.click();
           await page.waitForURL(origin + '/');
-          results.push({ file, width, box, homeClick: true });
+          results.push({ file, width, box, homeClick: true, onboardingDismissed });
         } catch (error) { failures.push({ file, width, error: error.message }); }
       }
       // A real parent/child document must keep the trainer area free of the bar.
