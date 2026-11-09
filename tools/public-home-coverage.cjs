@@ -11,7 +11,7 @@ const SITE = 'https://mathexam.space';
 const PUBLIC_ROOTS = new Set([
   'azbuka-postroeniy-reviewed', 'courses', 'ege-baza', 'ege-profil', 'ege-profile',
   'equations', 'foundations', 'geometry-course', 'geometry-merzlyak',
-  'geometry-pogorelov', 'grade7', 'laboratory', 'lessons', 'oge', 'school',
+  'geometry-pogorelov', 'ggb', 'grade7', 'laboratory', 'lessons', 'oge', 'school',
   'soviet-math', 'stereo-course', 'topics', 'trainers', 'trainings', 'video-lessons', 'vpr'
 ]);
 const EXCLUDED = new Map([

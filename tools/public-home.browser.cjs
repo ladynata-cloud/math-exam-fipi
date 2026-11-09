@@ -12,6 +12,7 @@ assert.deepEqual(report.failures, []);
 const sample = new Set([
   'lessons/index.html', 'courses/index.html', 'school/index.html', 'oge/index.html',
   'ege-baza/index.html', 'ege-profil/index.html', 'vpr/index.html',
+  'ege-profil/trainers/planimetry-t1.html', 'ege-profil/trainers/stereo/trainer.html',
   'trainers/desyatichnye-drobi-level-1.html', 'trainers/inequalities-number-line.html',
   'trainers/oge-task8-powers-roots.html', 'geometry-course/index.html',
   'stereo-course/index.html', 'trainers/index.html'

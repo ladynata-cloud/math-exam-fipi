@@ -40,3 +40,25 @@ workspace. Isolated styles, an in-flow bar, explicit embed checks and browser
 checks cover these boundaries. Roll back this scoped commit without deleting
 or migrating saved results. Use the normal release workflow and fresh main/head
 guard; do not force, reset, rebase or weaken existing tests.
+
+## Execution record
+
+PR #522. Source coverage includes 657 direct public learning pages and 7
+verified redirects (including the standalone GeoGebra page). Independent
+source review accepted the isolated home code, unmodified navigator remainder
+and exact trainer-source restoration. Local checks passed: six new home DOM
+suites, 43 navigator regressions, four preservation checks, five binding tests,
+45 strict profile picker/script contracts, 65 board contracts after the focused
+Peterson expectation update, 24 linear-pilot and 23 Vilenkin/Maxim entry checks.
+Existing canonical script arrays stay strict: only the exact appended home
+asset and deferred tag are additionally required. The regenerated Vilenkin
+sixth-grade offline edition is byte-identical to the previous edition.
+Desktop preview showed the link and actual home transitions from lessons and
+planimetry; the full-height geometry wrapper layout was visually inspected.
+Mobile and full integration browser acceptance remain required in GitHub CI.
+Initial disk/environment recovery and unavailable git credentials were resolved
+using a fresh checkout and connector delivery with exact tree verification.
+A rejected source-binding attempt changed nothing: lessons is an existingPages
+entry, and the original preservation gate passes without manifest changes.
+Publication is pending the exact candidate CI, fresh main/head guard and live
+verification; no external audit or live release is claimed in this record.
