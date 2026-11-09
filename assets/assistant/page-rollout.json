@@ -1,17 +1,19 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0739454e9e5f1454f1f40ff1b91f204aa8f4024c",
+  "baseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 555,
-    "covered": 554,
+    "total": 557,
+    "covered": 556,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
   },
   "existingPages": [
     "courses/index.html",
+    "courses/vilenkin-5/index.html",
+    "courses/vilenkin-6/index.html",
     "foundations/index.html",
     "index.html",
     "lessons/index.html",
@@ -1358,18 +1360,18 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-12.html": {
-      "beforeSha256": "b7a92e0561e33e6add7dfdaa2620420575ea8f74e82cbca7284aa0c1893acc11",
-      "afterSha256": "b3ca08ce83faff37f04d014de4c5f8c79b3ed172ac6bd4cc1c1af322f075a1c1",
+      "beforeSha256": "95a65c59dc15f1b478f13ae6ccf24e8e2ebb1e96ce782f595f9f73c6b576afb5",
+      "afterSha256": "d2ed48d1bd24c1881065a5ec437a56f5ea5aa5adb2f21da4d981ef99ba45511f",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-13.html": {
-      "beforeSha256": "83b983af37418528ae5ab4ec0157fe689a8f5fb361ab3d473b9b880e897f0a39",
-      "afterSha256": "1a2921cc74acc9e866fb5e4a9c024ae41a9b1b6f59dabd1dd579b2169fcea394",
+      "beforeSha256": "b0591c1934d996fd5e99e235ad66d964deabc8849d38678b237b9150ffa5ada2",
+      "afterSha256": "6f7b272be6650db53567ffe2c1d93dedc121e604c84572c5874f578fa3647561",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-14.html": {
-      "beforeSha256": "32b65c61829935ff97888e136d1bc976b3a71e0ed353d9cff3f02827c1458979",
-      "afterSha256": "26bf93aa7b8d665d15e7dea86a31c6957e874048431c41c3d379166d30eb62e1",
+      "beforeSha256": "1733180545d958971e99c7374cf6251ad7c199c7628c3ef9f36f34b17b502cd5",
+      "afterSha256": "a049d20ca65e4962c470be7afab2393803f215a00177860b628776a172fe41c8",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-15.html": {
@@ -1568,8 +1570,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/index.html": {
-      "beforeSha256": "7f27088731437e74b1edbc12011999c5e1692f9b9bc5e06358bf29f0461bc12d",
-      "afterSha256": "45156dea13747b4c838e9db7f0f17cd7534f51370de29f79e5e9bd640969b74e",
+      "beforeSha256": "6af76610cda46f70d748b9920be9262755e3aed2e6f6dbfc82054424c689b275",
+      "afterSha256": "a887c4cd5130219f26c06ac6f0d7ca29fea08ef786439892cb186d498a918f33",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-7-1.html": {
@@ -2868,8 +2870,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "e2f3f95dff2e35f08c7c240ebfc903b4d03c1f23d6873b876bb47e0f7f89ad9e",
-      "afterSha256": "864756ada88bae9c181f6f250a41822b9f8c39958bb81f493d18de1f99bc9b73",
+      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
+      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3122,7 +3124,9 @@
     "azbuka-postroeniy-reviewed/index.html": "laboratory/index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
+    "courses/vilenkin-5/index.html": "sitemap",
     "courses/vilenkin-6-part-1/textbook.html": "sitemap",
+    "courses/vilenkin-6/index.html": "sitemap",
     "credit-payment-table-trainer.html": "sitemap",
     "ege-baza/algebra/index.html": "ege-baza/index.html",
     "ege-baza/index.html": "index.html",
@@ -4026,6 +4030,39 @@
       "changedPaths": [
         "trainers/oge-task8-powers-roots.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "31f790ea228432b4845064cfba40f41c10874690",
+      "sourceBaseSha": "821ec89e09acdbf2d6fcc91c17ad12141e5e8304",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [
+        "geometry-merzlyak/atlas/merzlyak-base-8-12.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-13.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-14.html",
+        "geometry-merzlyak/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "0b22565945c4a6c7e4cefa558b0b3c69359f9b5e",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "sourceBaseSha": "7010f1c934ebe58207e2e8ba5823a04f5c460998",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
+      "task": "docs/tasks/MERZLYAK_LEARNING_PATH_20261109.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
