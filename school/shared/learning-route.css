@@ -18,6 +18,10 @@
 .lr-counts p:nth-child(2) strong{color:#876028}
 .lr-counts span{font-size:13px;color:var(--lr-muted)}
 .lr-confirmed-count{font-size:13px;color:var(--lr-muted);border-top:1px solid var(--lr-line);padding-top:10px}
+.lr-assessment-summary{font-size:13px;color:var(--lr-muted);padding-top:8px}
+.lr-assessment-label{display:block;font-size:13px;color:var(--lr-green);font-weight:650}
+.lr-practice{margin:8px 0!important;font-size:14px}
+.lr-practice a{display:inline-flex;align-items:center;min-height:44px;color:var(--lr-green);font-weight:650}
 .lr-next{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 26px;background:#e7f0e6;border:1px solid #b9cfbc;border-radius:18px}
 .lr-next-title{font-size:20px;font-weight:700;margin:6px 0!important;line-height:1.3}
 .lr-next-chapter{font-size:13px;color:var(--lr-muted)}

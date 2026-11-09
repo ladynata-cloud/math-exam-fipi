@@ -31,6 +31,7 @@ jobs:
         run: |
           node tools/learning-route.test.cjs
           node tools/learning-route-progress.test.cjs
+          node tools/makarychev8-learning-route-mastery.test.cjs
           node school/peterson6/test-state.cjs
           node school/peterson6/test-equation-state.cjs
           node school/makarychev8/test-state.cjs

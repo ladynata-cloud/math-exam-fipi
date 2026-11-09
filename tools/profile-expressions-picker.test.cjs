@@ -111,7 +111,7 @@ test('the wrapper reuses the original scripts in order without a base, redirect,
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
   const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
-  const canonicalScripts = scripts(canonical)
+  const canonicalScripts = require('./public-page-script.cjs').canonicalProfileLearningScripts(canonical, wrapper)
     .filter(src => !src.startsWith('../learning/'))
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);

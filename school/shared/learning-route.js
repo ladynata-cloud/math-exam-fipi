@@ -7,8 +7,14 @@
   function lessonModel(lesson) {
     const total = count(lesson.total), done = Math.min(total, count(lesson.done));
     const independent = Math.min(done, count(lesson.independent));
+    const evidence = lesson.assessment;
+    const assessment = evidence && typeof evidence === 'object' ? {
+      included:evidence.included === true, mastered:evidence.mastered === true,
+      reviewed:evidence.reviewed === true, needsReview:evidence.needsReview === true,
+      label:typeof evidence.label === 'string' ? evidence.label : ''
+    } : null;
     return {...lesson, total, done, independent, assisted:done-independent, studied:lesson.studied === true,
-      started:lesson.started === true || done > 0, href:route(lesson.href), confirmed:total > 0 && independent === total};
+      started:lesson.started === true || done > 0, href:route(lesson.href), assessment, confirmed:total > 0 && independent === total};
   }
   function summary(lessons) {
     return lessons.reduce((s, l) => ({total:s.total+l.total, done:s.done+l.done,
@@ -42,20 +48,24 @@
     const action = isNew ? 'Начать' : complete && !resume ? 'Повторить' : resume || touched ? 'Продолжить' : 'Начать';
     const currentHref = resume ? route(resume.href) : current.href;
     const currentLabel = resume && resume.label ? resume.label : current.title;
+    const assessments = lessons.map(l=>l.assessment).filter(a=>a?.included);
+    const practice = options.practice && route(options.practice.href).startsWith('#lesson/') ? options.practice : null;
     return '<section class="lr-route" aria-label="Маршрут обучения">'+
       '<header class="lr-overview"><div class="lr-intro"><p class="lr-eyebrow">Твой маршрут</p><h1>'+escape(options.title)+'</h1><p class="lr-scope">'+escape(options.scope)+'</p></div>'+
       '<div class="lr-course-progress">'+bar(totals,'Решённые задачи курса')+
       '<div class="lr-counts"><p><strong>'+totals.independent+'</strong><span>самостоятельно</span></p><p><strong>'+totals.assisted+'</strong><span>с помощью / после попыток</span></p></div>'+
-      '<p class="lr-confirmed-count">Тем с самостоятельным решением всех задач: <strong>'+totals.confirmed+' из '+lessons.length+'</strong></p></div></header>'+
+      '<p class="lr-confirmed-count">Тем с самостоятельным решением всех задач: <strong>'+totals.confirmed+' из '+lessons.length+'</strong></p>'+
+      (assessments.length?'<p class="lr-assessment-summary">Две разные задачи самостоятельно: <strong>'+assessments.filter(a=>a.mastered).length+' из '+assessments.length+' основных тем</strong>'+(assessments.some(a=>a.needsReview)?' · пора повторить: '+assessments.filter(a=>a.needsReview).length:'')+'</p>':'')+'</div></header>'+
       '<div class="lr-next"><div><p class="lr-eyebrow">'+(complete?'Можно повторить':resume && !isNew?'Продолжаем с твоего места':'Следующий шаг')+'</p><p class="lr-next-title">'+escape(currentLabel)+'</p><p class="lr-next-chapter">'+(resume && resume.lessonId == null?'Отдельная тренировка':'Глава '+escape(currentChapter.id)+' · тема '+escape(current.order)+' из '+lessons.length)+'</p></div><a class="lr-primary" href="'+escape(currentHref)+'">'+action+' <span aria-hidden="true">→</span></a></div>'+
-      '<details class="lr-guide"><summary>Что означают отметки?</summary><p>«Теория изучена» — твоя отметка после чтения. Она не добавляет решённых задач. Самостоятельный результат — верный ответ с первой попытки без подсказок и разбора. Остальные верные решения показаны отдельно.</p><p>Отметка «Все задачи самостоятельно» относится только к заданиям этой темы в курсе. Она не заменяет проверку знаний на новых задачах. Отдельные тренировки не засчитываются вместо задач темы.</p></details>'+
+      (practice?'<p class="lr-practice"><a href="'+escape(route(practice.href))+'">'+escape(practice.label)+'</a></p>':'')+
+      '<details class="lr-guide"><summary>Что означают отметки?</summary><p>«Теория изучена» — твоя отметка после чтения. Она не добавляет решённых задач. Самостоятельный результат — верный ответ с первой попытки без подсказок и разбора. Остальные верные решения показаны отдельно.</p><p>Отметка «Все задачи самостоятельно» относится только к заданиям этой темы в курсе. Она не заменяет проверку знаний на новых задачах. Отдельные тренировки не засчитываются вместо задач темы.</p>'+(assessments.length?'<p>Две разные задачи с первой попытки без подсказок подтверждают навык. Для повторения через три дня выбери ещё одну задачу. «Продолжить» возвращает к работе; «Попробовать» и «Повторить» предлагают новый пример.</p>':'')+'</details>'+
       '<div class="lr-map-heading"><h2>Главы и темы</h2><p>Иди по порядку или выбери нужную тему.</p></div><ol class="lr-chapters">'+
       chapters.map(chapter => {
         const s = summary(chapter.lessons), active = chapter === currentChapter;
         return '<li><section id="chapter-'+escape(chapter.id)+'" class="lr-chapter"><details'+(active?' open':'')+'><summary><span class="lr-chapter-number" aria-hidden="true">'+escape(chapter.id)+'</span><span class="lr-chapter-text"><span class="lr-chapter-title">'+escape(chapter.title)+'</span><span class="lr-chapter-caption">'+(active?'Текущая глава · ':'')+'тем: '+chapter.lessons.length+' · все задачи самостоятельно: '+s.confirmed+'</span><span class="lr-chapter-caption">Решено '+s.done+' / '+s.total+' · самостоятельно '+s.independent+'</span></span><span class="lr-chevron" aria-hidden="true">⌄</span></summary>'+bar(s,'Решённые задачи главы '+chapter.id)+
           '<ol class="lr-lessons">'+chapter.lessons.map(l => {
             const [kind,label] = status(l), selected = l === current;
-            return '<li class="lr-topic lr-topic-'+kind+(selected?' lr-current':'')+'"><a href="'+escape(l.href)+'"'+(selected?' aria-current="step"':'')+'><span class="lr-topic-number" aria-hidden="true">'+escape(l.order)+'</span><span class="lr-topic-body">'+(selected?'<span class="lr-current-label">Ты здесь</span>':'')+'<span class="lr-topic-title">'+escape(l.title)+'</span><span class="lr-topic-status">'+label+'</span><span class="lr-topic-counts">Решено '+l.done+' / '+l.total+' · самостоятельно '+l.independent+'</span>'+(l.assisted?'<span class="lr-topic-help">С помощью / после попыток: '+l.assisted+'</span>':'')+(l.studied?'<span class="lr-theory-mark">Теория изучена · твоя отметка</span>':'')+'</span><span class="lr-topic-arrow" aria-hidden="true">→</span></a></li>';
+            return '<li class="lr-topic lr-topic-'+kind+(selected?' lr-current':'')+'"><a href="'+escape(l.href)+'"'+(selected?' aria-current="step"':'')+'><span class="lr-topic-number" aria-hidden="true">'+escape(l.order)+'</span><span class="lr-topic-body">'+(selected?'<span class="lr-current-label">Ты здесь</span>':'')+'<span class="lr-topic-title">'+escape(l.title)+'</span><span class="lr-topic-status">'+label+'</span>'+(l.assessment?.label&&(l.assessment.mastered||l.assessment.needsReview||l.assessment.reviewed)?'<span class="lr-assessment-label">'+escape(l.assessment.label)+'</span>':'')+'<span class="lr-topic-counts">Решено '+l.done+' / '+l.total+' · самостоятельно '+l.independent+'</span>'+(l.assisted?'<span class="lr-topic-help">С помощью / после попыток: '+l.assisted+'</span>':'')+(l.studied?'<span class="lr-theory-mark">Теория изучена · твоя отметка</span>':'')+'</span><span class="lr-topic-arrow" aria-hidden="true">→</span></a></li>';
           }).join('')+'</ol></details></section></li>';
       }).join('')+'</ol></section>';
   }

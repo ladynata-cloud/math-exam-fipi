@@ -33,7 +33,7 @@ function create(options) {
       });
       const index = l.tasks.findIndex(t => !state.tasks[t.id]?.correct || !credit(t,state.tasks[t.id]));
       return {id:l.id, title:l.title, order:l.order, total:l.tasks.length, done, independent, started,
-        studied:meta.studied[l.id] === true, href:'#lesson/' + l.id + '/' + Math.max(0,index)};
+        studied:meta.studied[l.id] === true, assessment:options.lessonAssessment?.(l), href:'#lesson/' + l.id + '/' + Math.max(0,index)};
     });
   }
   function resume(rows) {
@@ -55,7 +55,7 @@ function create(options) {
     html() {
       const rows = lessonRows();
       return root.MathExamLearningRoute.render({title:options.title, scope:options.scope,
-        chapters:chapters.map(c=>({id:c.id,title:c.title,lessons:rows.filter(r=>c.lessonIds.includes(r.id))})),resume:resume(rows)})
+        chapters:chapters.map(c=>({id:c.id,title:c.title,lessons:rows.filter(r=>c.lessonIds.includes(r.id))})),resume:resume(rows),practice:options.nextPractice?.()})
         + '<div class="row lr-tools"><a class="button quiet" href="#skills">Отдельные тренировки</a><a class="button quiet" href="#progress">Результаты и сохранение</a><a class="button quiet" href="#course-number-search">Найти номер учебника</a></div>';
     },
     studyButton(id) {

@@ -18,7 +18,10 @@ function sanitizeTask(raw,t){const safe=fresh();if(!record(raw))return safe;for(
  const help=safe.assisted||safe.guided||safe.hint||Object.keys(safe.stepHints).length>0||Object.keys(safe.reveals).length>0||safe.step>0;
  const c=raw.completion,hasCompletion=safe.correct&&record(c)&&Number.isInteger(c.attempts)&&c.attempts>=1&&c.attempts<=1000000&&typeof c.assisted==='boolean';
  if(hasCompletion){safe.attempts=c.attempts;safe.assisted=c.assisted;safe.independent=c.independent===true&&!c.assisted&&c.attempts===1;}else{safe.assisted=help;safe.independent=safe.correct&&raw.independent===true&&!help&&safe.attempts===1;}
- if(safe.correct)safe.completion={attempts:safe.attempts,assisted:safe.assisted,independent:safe.independent};
+ if(safe.correct) {
+  safe.completion={attempts:safe.attempts,assisted:safe.assisted,independent:safe.independent};
+  if (hasCompletion && Number.isSafeInteger(c.at) && c.at > 0 && c.at <= Date.now()) safe.completion.at = c.at;
+ }
  if(t.id.startsWith('practice:'))safe.signature=taskSignature(t);
  return safe;
 }
@@ -35,26 +38,146 @@ function button(text,action,extra='',quiet=false){return '<button type="button" 
 function go(hash){if(location.hash===hash)route();else location.hash=hash;}
 function count(lesson){return lesson.tasks.filter(t=>ts(t.id).correct).length;}
 function independent(lesson){return lesson.tasks.filter(t=>ts(t.id).independent).length;}
+const reviewDelay = 3 * 24 * 60 * 60 * 1000;
+function lessonProgress(lesson, now) {
+  const evidence = new Map();
+  let firstFresh = -1;
+  let started = false;
+  let solvedWithHelp = false;
+  lesson.tasks.forEach((task, index) => {
+    const saved = state.tasks[task.id];
+    if (saved?.attempts || saved?.assisted || saved?.value || saved?.note) started = true;
+    if (saved?.correct && saved.assisted) solvedWithHelp = true;
+    if (task.pilot === 'diagnostic') return;
+    if (task.pilot !== 'review' && firstFresh < 0 && !saved?.attempts && !saved?.assisted && !saved?.correct) firstFresh = index;
+    if (saved?.independent) {
+      const key = taskSignature(task);
+      const at = saved.completion?.at || 0;
+      if (!evidence.has(key) || at < evidence.get(key)) evidence.set(key, at);
+    }
+  });
+  const successes = [...evidence.values()].sort((a, b) => a - b);
+  const mastered = successes.length >= 2;
+  const due = successes[1] ? successes[1] + reviewDelay : 0;
+  const reviewed = due > 0 && successes.some(at => at >= due);
+  if (firstFresh < 0 && pilotReviewAvailable(lesson)) {
+    const index = lesson.tasks.findIndex(t => t.pilot === 'review');
+    const saved = state.tasks[lesson.tasks[index].id];
+    if (!saved?.attempts && !saved?.assisted) firstFresh = index;
+  }
+  const needsReview = due > 0 && now >= due && !reviewed && firstFresh >= 0;
+  const label = reviewed ? 'Подтверждено повторением' : needsReview ? 'Пора повторить' :
+    mastered ? 'Решаю самостоятельно' : successes.length ? 'Первый самостоятельный успех' :
+    solvedWithHelp ? 'Разобрано с помощью' : started ? 'В работе' : 'Можно начать';
+  return { mastered, needsReview, label, firstFresh };
+}
+function progressSummary(items, label) {
+  const done = items.filter(p => p.mastered).length;
+  const due = items.filter(p => p.needsReview).length;
+  return '<p class="small"><strong>' + done + ' из ' + items.length + '</strong> ' + label +
+    (due ? ' · пора повторить: ' + due : '') + '</p>';
+}
+function renderChapter(chapter, progress) {
+  const lessons = D.lessons.filter(l => l.order >= chapter.topics[0] && l.order <= chapter.topics[1]);
+  const summary = progressSummary(lessons.filter(l => !l.advanced).map(l => progress.get(l.id)), 'основных тем проверено самостоятельно');
+  const cards = lessons.map(l => '<a class="lesson-card" href="#lesson/' + l.id + '"><span class="lesson-number">' +
+    String(l.order).padStart(2, '0') + '</span><div><h3>' + e(l.title) + '</h3><p class="small">С. ' + l.page +
+    ' · ' + l.tasks.length + ' задач · наглядная модель</p><p>' +
+    (l.advanced ? '<span class="tag warm">Хочу знать больше</span>' : '') +
+    '<span class="tag">' + progress.get(l.id).label + '</span>' +
+    '<span class="tag">' + count(l) + ' / ' + l.tasks.length + ' решено</span></p></div></a>').join('');
+  return '<section class="section" id="chapter-' + chapter.id + '"><p class="eyebrow">Глава ' + chapter.id +
+    '</p><h2>' + e(chapter.title) + '</h2>' + summary + '<div class="grid">' + cards + '</div></section>';
+}
 function returnBanner(){return state.origin?'<div class="return-banner"><div><strong>Тренируем отдельный навык</strong><br><span class="small">Условие, ответы и шаги исходной задачи сохранены.</span></div>'+button('← Вернуться к задаче','return')+'</div>':'';}
 function skillLinks(ids){return (ids||[]).filter(id=>skills[id]).map(id=>button(e(skills[id].title),'detour','data-skill="'+id+'"',true)).join('');}
-function home(){const total=D.lessons.reduce((s,l)=>s+l.tasks.length,0),done=D.lessons.reduce((s,l)=>s+count(l),0),original=D.lessons.flatMap(l=>l.tasks).filter(t=>t.source?.type==='textbook').length;main.innerHTML=`
+function home(){
+ const total=D.lessons.reduce((s,l)=>s+l.tasks.length,0),done=D.lessons.reduce((s,l)=>s+count(l),0);
+ const original=D.lessons.flatMap(l=>l.tasks).filter(t=>t.source?.type==='textbook').length;
+ const now=Date.now(), basic=D.lessons.filter(l=>!l.advanced);
+ const progress=new Map(D.lessons.map(l=>[l.id,lessonProgress(l,now)]));
+ const next=basic.find(l=>progress.get(l.id).needsReview) ||
+   basic.find(l=>!progress.get(l.id).mastered&&progress.get(l.id).firstFresh>=0);
+ main.innerHTML=`
 <section class="hero"><div><p class="eyebrow">Макарычев · Алгебра · 7 класс · 2024</p><h1>Разобраться.<br>Сделать по шагам.<br>Решить самому.</h1><p class="lead">От первых выражений до систем уравнений. Все темы учебника — с наглядными моделями, объяснениями и решениями.</p><div class="row"><a class="button" href="${e(state.last?.hash||'#lesson/p01')}">${state.last?'Продолжить занятие':'Начать с первой темы'} →</a><a class="button quiet" href="#skills">Потренировать вычисления</a></div></div><div class="hero-art"><span class="eyebrow">Сначала увидим связь</span><div class="equation">3(x + 2) = 3x + 6</div><p>Один множитель → каждый член скобки</p><p class="small">Проверь на числах. Посмотри на модели. Объясни своими словами.</p></div></section>
 <div class="stats"><div class="stat"><strong>${D.lessons.length}</strong><span>тем · 6 глав</span></div><div class="stat"><strong>${total}</strong><span>задач с разбором</span></div><div class="stat"><strong>${original}</strong><span>разборов номеров и подпунктов учебника</span></div><div class="stat"><strong>${done}</strong><span>решено в этом браузере</span></div></div>
+<section class="panel section"><p class="eyebrow">Мой прогресс по курсу</p><h2>Твой следующий шаг</h2>
+${progressSummary(basic.map(l=>progress.get(l.id)), 'основных тем проверено самостоятельно')}
+<p class="small">Две разные задачи с первой попытки без подсказок подтверждают навык. Для повторения через три дня выбери ещё одну задачу.</p>
+${next?'<a class="button quiet" href="#lesson/'+next.id+'/'+progress.get(next.id).firstFresh+'">'+
+  (progress.get(next.id).needsReview?'Повторить: ':'Попробовать: ')+e(next.title)+'</a>':''}
+<a class="button quiet" href="#lesson/p08/6">Уравнения: исправь первый неверный шаг →</a></section>
 <section class="panel section"><h2>Найти номер из учебника</h2><form id="number-form" class="number-form"><label for="exercise-number">Номер упражнения (1–1247)<input id="exercise-number" type="number" min="1" max="1247" required inputmode="numeric"></label><button>Найти тему и разбор</button></form><div id="number-result" class="search-results" aria-live="polite"></div><p class="small">Карта охватывает все номера. Индивидуальные решения подготовлены для выбранных упражнений и подпунктов; остальные номера ведут к соответствующей теме.</p></section>
 <nav class="chapter-jumps section" aria-label="Главы курса">${D.chapters.map(c=>'<a class="button quiet" href="#chapter/'+c.id+'">'+c.id+'. '+e(c.title)+'</a>').join('')}</nav>
-${D.chapters.map((chapter,i)=>'<section class="section" id="chapter-'+chapter.id+'"><p class="eyebrow">Глава '+(i+1)+'</p><h2>'+e(chapter.title)+'</h2><div class="grid">'+D.lessons.filter(l=>l.order>=chapter.topics[0]&&l.order<=chapter.topics[1]).map(l=>'<a class="lesson-card" href="#lesson/'+l.id+'"><span class="lesson-number">'+String(l.order).padStart(2,'0')+'</span><div><h3>'+e(l.title)+'</h3><p class="small">С. '+l.page+' · '+l.tasks.length+' задач · наглядная модель</p><p>'+(l.advanced?'<span class="tag warm">Хочу знать больше</span>':'')+'<span class="tag">'+count(l)+' / '+l.tasks.length+' решено</span>'+(independent(l)?'<span class="tag">'+independent(l)+' самостоятельно</span>':'')+'</p></div></a>').join('')+'</div></section>').join('')}
+${D.chapters.map(chapter=>renderChapter(chapter,progress)).join('')}
 <details class="panel section"><summary>Как устроен курс</summary><p>Порядок и темы соответствуют учебнику Ю. Н. Макарычева, Н. Г. Миндюк, К. И. Нешкова, С. Б. Суворовой «Алгебра. 7 класс», Просвещение, 2024. Объяснения и дополнительные задачи созданы для этого курса. Оригинальные задания имеют номер, подпункт и страницу.</p><p>Все 46 тем представлены. Это не сборник готовых решений всех 1247 номеров. Дополнительные упражнения и задачи повышенной трудности включены в карту; наличие конкретного разбора показывает поиск.</p><p>Шаги остаются видимыми. Помощь и самостоятельное решение учитываются отдельно. Тренировка вычислений сохраняет исходную задачу и возвращает к тем же записям.</p><p>Ответы и записи сохраняются в этом браузере. В разделе результатов можно скачать копию для переноса на другой компьютер.</p></details>`;document.getElementById('number-form').onsubmit=ev=>{ev.preventDefault();findNumber(Number(document.getElementById('exercise-number').value));};}
 function findNumber(n){const r=document.getElementById('number-result');if(!Number.isInteger(n)||n<1||n>1247){r.textContent='Введи целый номер от 1 до 1247.';return;}const ref=D.sourceMap.sections.find(s=>s.exerciseRange&&n>=s.exerciseRange[0]&&n<=s.exerciseRange[1]);if(!ref){r.textContent='Номер не найден.';return;}const matches=D.lessons.flatMap(l=>l.tasks.map((t,i)=>({t,l,i}))).filter(x=>x.t.source?.type==='textbook'&&new RegExp('№\\s*'+n+'(?!\\d)').test(x.t.source.reference));let related=ref.kind==='topic'?D.lessons.filter(l=>l.order===ref.id):D.lessons.filter(l=>(()=>{const c=D.chapters.find(c=>c.id===ref.chapter);return c&&l.order>=c.topics[0]&&l.order<=c.topics[1];})());if(ref.kind==='difficult')related=[];r.innerHTML='<h3>№ '+n+'</h3><p>'+e(ref.title)+' · с. '+ref.printedPage+'–'+ref.printedEndPage+'</p><div class="row">'+matches.map(x=>'<a class="button" href="#lesson/'+x.l.id+'/'+x.i+'">'+e(x.t.source.reference)+'</a>').join('')+related.map(l=>'<a class="button quiet" href="#lesson/'+l.id+'">'+e(l.title)+'</a>').join('')+'</div>'+(matches.length?'':'<p class="small">Индивидуального разбора этого номера в курсе пока нет. Для повторения воспользуйся темами курса ниже или картой глав.</p>');}
 function skillPage(){main.innerHTML=returnBanner()+'<p class="eyebrow">Вычислительная мастерская</p><h1>Потренируй один навык</h1><p class="lead">Выбери действие. Начни с простых чисел, затем переходи к более сложным. Кнопка «Новый пример» даёт другое задание.</p><div class="skill-grid">'+M.skills.map(s=>'<article class="skill-card"><span class="eyebrow">Практика</span><h2>'+e(s.title)+'</h2><p>'+e(s.description)+'</p><a class="button quiet" href="#practice/'+s.id+'/1">Начать →</a></article>').join('')+'</div>';}
-function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const t=l.tasks[index];active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>/ '+l.chapter+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="lesson-layout"><aside class="side"><details open><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):l.order<D.lessons.length?'<a class="button quiet" href="#lesson/p'+String(l.order+1).padStart(2,'0')+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l);renderProblem();document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
+function pilotChecks(lesson) {
+  if (lesson.id !== 'p08') return [];
+  return lesson.tasks.filter(t => t.pilot === 'check' || ['p08-t02', 'p08-t03', 'p08-t04'].includes(t.id));
+}
+function pilotReviewDue(lesson) {
+  const dates = pilotChecks(lesson).map(t => {
+    const saved = state.tasks[t.id];
+    return saved?.independent && saved.completion?.at;
+  }).filter(Boolean).sort((a, b) => a - b);
+  return dates[1] ? dates[1] + reviewDelay : 0;
+}
+function pilotReviewAvailable(lesson, due = pilotReviewDue(lesson)) {
+  return due > 0 && Date.now() >= due;
+}
+function pilotNavigation(lesson) {
+  const due = pilotReviewDue(lesson);
+  const available = pilotReviewAvailable(lesson, due);
+  const checks = pilotChecks(lesson);
+  const review = lesson.tasks.find(t => t.pilot === 'review');
+  const reviewed = available && [...checks, review].some(t => {
+    const saved = state.tasks[t.id];
+    return saved?.independent && saved.completion?.at >= due;
+  });
+  let message = 'Разбери ошибку и реши две новые задачи с первой попытки без подсказок.';
+  if (reviewed) message = 'Навык подтверждён спустя три дня.';
+  else if (available) message = 'Проверка после перерыва открыта.';
+  else if (due) message = 'Две задачи решены самостоятельно. Для отсроченной проверки вернись ' +
+    new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium', timeStyle: 'short' }).format(due) + '.';
+  const attemptedWithHelp = [...checks, review].some(t => {
+    const saved = state.tasks[t.id];
+    return (saved?.attempts || saved?.assisted) && !saved.independent;
+  });
+  const fresh = checks.find(t => {
+    const saved = state.tasks[t.id];
+    return !saved?.attempts && !saved?.assisted;
+  });
+  const recovery = !reviewed && attemptedWithHelp && fresh
+    ? '<a class="button quiet" href="#lesson/p08/' + lesson.tasks.indexOf(fresh) + '">Попробовать другую задачу</a>'
+    : '';
+  const links = lesson.tasks.map((t, i) => {
+    if (!t.pilot || (t.pilot === 'review' && !available)) return '';
+    return '<a class="button quiet" href="#lesson/p08/' + i + '">' + e(t.title.replace('Пилот · ', '')) + '</a>';
+  }).join('');
+  return '<section class="panel"><h2>Уравнения: исправь шаг и проверь себя</h2><p class="small">' +
+    message + '</p><div class="row">' + links + recovery + '</div></section>';
+}
+function finalError(task, value) {
+  const normalize = window.MakarychevCheck.normalize;
+  return Object.entries(task.firstError || {}).find(([wrong]) => normalize(wrong) === normalize(value))?.[1];
+}
+function lessonView(id,index){const l=byId[id];if(!l)return home();index=Math.max(0,Math.min(l.tasks.length-1,Math.trunc(Number(index))||0));const t=l.tasks[index],reviewAvailable=id==='p08'&&pilotReviewAvailable(l);
+ if(t.pilot==='review'&&!reviewAvailable){
+   main.innerHTML='<a href="#lesson/p08">← К теме</a><h1>Проверка после перерыва</h1>'+pilotNavigation(l);
+   return;
+ }
+ active={lesson:l,task:t,index,practice:false};state.last={hash:'#lesson/'+id+'/'+index};save();main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>/ '+l.chapter+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><details class="panel"><summary>Коротко о главном</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="lesson-layout'+(t.pilot?' pilot-layout':'')+'"><aside class="side"><details'+(t.pilot?'':' open')+'><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>q.pilot==='review'&&!reviewAvailable?'':'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div>'+(id==='p08'?'<div id="pilot-navigation"></div>':'')+'<details class="panel model-panel"><summary>Исследовать на модели</summary><div id="model" class="model"></div></details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1&&(l.tasks[index+1].pilot!=='review'||reviewAvailable)?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):l.order<D.lessons.length?'<a class="button quiet" href="#lesson/p'+String(l.order+1).padStart(2,'0')+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';cleanup=window.MakarychevModels?.mount(document.getElementById('model'),l);renderProblem();document.querySelectorAll('main details.panel').forEach(el=>{el.addEventListener('toggle',()=>{if(el.open){markAssisted(ts(t.id));save();}});});}
 function practiceView(id,level){if(!skills[id])return skillPage();level=[1,2,3].includes(Number(level))?Number(level):1;const key=id+':'+level;let p=state.practice[key];if(!p||!Number.isSafeInteger(p.seed))p=state.practice[key]={seed:1};const t=M.generate(id,p.seed,level);t.id='practice:'+id+':'+level+':'+p.seed;t.signature=taskSignature(t);const saved=ts(t.id);if(!saved.signature){saved.signature=t.signature;saved.repeated=Object.entries(state.tasks).some(([other,r])=>other!==t.id&&r.signature===t.signature);}active={task:t,practice:true,skill:id,level,key};if(!state.origin)state.last={hash:'#practice/'+id+'/'+level};save();main.innerHTML=returnBanner()+'<div class="breadcrumb"><a href="#skills">← Выбрать другой навык</a></div><p class="eyebrow">Отдельная тренировка · пример '+p.seed+'</p><h1 class="lesson-title">'+e(skills[id].title)+'</h1><div class="row"><label for="level">Сложность</label><select id="level" class="level-select"><option value="1">1 · Начинаем с простого</option><option value="2">2 · Закрепляем</option><option value="3">3 · Проверяем себя</option></select><span class="small">Без ограничения времени</span></div><div id="problem" class="section"></div><div class="navigation">'+button('Новый пример →','new')+(state.origin?button('Вернуться к исходной задаче','return','',true):'<a class="button quiet" href="#skills">Другой навык</a>')+'</div><p class="small">Для самостоятельного результата реши новый пример без подсказок и с первой попытки. Разобранный пример остаётся в результатах как решение с помощью.</p>';document.getElementById('level').value=level;document.getElementById('level').onchange=ev=>go('#practice/'+id+'/'+ev.target.value);renderProblem();}
 function inputNote(target){if(target.inputNote)return target.inputNote;if(target.kind==='text')return 'Следуй формату, указанному в вопросе. Дробь можно вводить через /, квадрат — как ^2 или ².';if(target.kind==='set')return 'Введи все значения через точку с запятой. Порядок не важен. Для пустого множества можно ввести: нет.';const f=target.answerFormat;return {'decimal':'Введи десятичную дробь с запятой или точкой.','reduced-fraction':'Введи несократимую дробь, например 3/4, или целое число.','improper-fraction':'Введи неправильную дробь, например 7/3.','mixed-number':'Введи смешанное число с пробелом: 2 1/3.','integer':'Введи целое число.'}[f]||'Можно ввести 3/4, 0,75 или 2 1/3. Единицы измерения не вводи.';}
 function renderProblem(){if(!active)return;const t=active.task,s=ts(t.id),host=document.getElementById('problem');host.innerHTML='<article class="problem"><div class="task-heading"><h2>'+e(t.title)+'</h2><span class="tag">'+(s.correct?(s.independent?'Самостоятельно':'С помощью / после попыток'):'Твоя задача')+'</span></div>'+(t.source?'<p class="source-note">'+e(t.source.type==='textbook'?'Из учебника: '+t.source.reference+', с. '+t.source.page:'Авторская задача по теме учебника')+'</p>':'')+'<div class="prompt">'+fmt(t.prompt)+'</div><div class="row">'+button(s.hint?'Закрыть подсказку':'Хочешь подсказку?','hint','',true)+(t.steps?.length?button(s.guided?'Скрыть разбор':'Разобрать по шагам','guided','',true):'')+'</div>'+(s.hint?'<div class="help"><strong>Подсказка</strong><p>'+fmt(t.hint||'Выдели, что известно и что требуется найти. Вспомни правило из раздела «Коротко о главном».')+'</p></div>':'')+(s.guided?renderSteps(t,s):'')+'<form class="answer-form" id="answer-form"><label for="final-answer">'+fmt(t.finalLabel||(t.kind==='choice'?'Выбери верный ответ на вопрос задачи.':'Чему равен результат? Введи число.'))+'</label>'+(t.kind==='choice'?'<div class="choices" role="group" aria-label="Варианты ответа">'+t.choices.map((v,i)=>'<button type="button" data-action="choice" data-choice="'+i+'" class="'+(s.value===v?'selected':'')+'" aria-pressed="'+(s.value===v)+'">'+fmt(v)+'</button>').join('')+'</div><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button>':'<p class="small">'+inputNote(t)+'</p><div class="answer-controls"><input id="final-answer" name="final-answer" type="text" inputmode="text" autocomplete="off" spellcheck="false" value="'+e(s.value)+'" '+(s.correct?'readonly':'')+'><button type="submit" '+(s.correct?'disabled':'')+'>Проверить ответ</button></div><div id="answer-preview" class="answer-preview small" aria-live="polite"></div>')+'<div class="feedback '+(s.feedback&&!s.correct?'error':'')+'" role="status">'+e(s.feedback)+'</div></form>'+(s.correct?'<div class="feedback"><strong>'+(s.independent?'Верно, самостоятельно.':'Верно. Теперь закрепи навык на новом примере.')+'</strong><p>'+fmt(t.explanation)+'</p></div>':'')+((t.skills?.length)?'<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">'+skillLinks(t.skills)+'</div></section>':'')+'<details '+(s.note?'open':'')+'><summary>Мои записи к задаче</summary><label class="small" for="notebook">Сохраняются вместе с этой задачей</label><textarea id="notebook" placeholder="Запиши свою мысль или промежуточные вычисления">'+e(s.note)+'</textarea></details></article>';
+if(active.lesson?.id==='p08')document.getElementById('pilot-navigation').innerHTML=pilotNavigation(active.lesson);
 document.getElementById('answer-form').onsubmit=ev=>{ev.preventDefault();checkFinal();};const inp=document.getElementById('final-answer');if(inp){inp.oninput=()=>{s.value=inp.value.slice(0,1000);inp.value=s.value;save();preview(inp.value);};preview(inp.value);}document.getElementById('notebook').oninput=ev=>{s.note=ev.target.value.slice(0,15000);ev.target.value=s.note;save();};host.querySelectorAll('[data-step-input]').forEach(el=>{el.oninput=()=>{s.values[Number(el.dataset.stepInput)]=el.value.slice(0,1000);el.value=s.values[Number(el.dataset.stepInput)];save();};});host.querySelectorAll('[data-step-form]').forEach(el=>{el.onsubmit=ev=>{ev.preventDefault();checkStep(Number(el.dataset.stepForm));};});}
 function preview(value){const p=document.getElementById('answer-preview');if(!p)return;if(active?.task.kind==='text'||active?.task.kind==='set'){p.textContent=value.trim()?'Твоя запись: '+value:'';return;}const r=M.parse(value);p.innerHTML=value.trim()?(r?'Ты ввёл: '+fmt(displayValue(value)):'Формат пока не распознан. Примеры: 0,5 · 1/2 · 2 1/3') : '';}
 function renderSteps(t,s){let html='<section class="steps"><p class="small">Каждый завершённый шаг остаётся видимым. Разбор считается помощью.</p>';for(let i=0;i<Math.min(t.steps.length,s.step+1);i++){const q=t.steps[i],done=i<s.step;html+='<div class="step '+(done?'completed':'')+'"><span class="step-label">Шаг '+(i+1)+(done?' · готово':'')+'</span><h3>'+fmt(q.prompt)+'</h3>'+(done?'<div class="recorded">Твоя запись: '+fmt(displayValue(s.values[i]))+' ✓</div><p>'+fmt(q.explanation||'')+'</p>':'<form data-step-form="'+i+'"><p class="small">'+inputNote(q)+'</p><div class="answer-controls"><input aria-label="Ответ к шагу '+(i+1)+'" data-step-input="'+i+'" type="text" autocomplete="off" value="'+e(s.values[i]||'')+'"><button>Проверить шаг</button></div></form><div class="row">'+button(s.stepHints[i]?'Скрыть подсказку':'Подсказка к этому шагу','step-hint','data-step="'+i+'"',true)+(s.stepHints[i]?button('Показать этот шаг','reveal','data-step="'+i+'"',true):'')+'</div>'+(s.stepHints[i]?'<div class="help">'+fmt(q.hint||q.explanation)+'</div>':'')+(s.reveals[i]?'<div class="help">'+fmt(q.explanation||'Выполни указанное действие.')+'<p>Результат шага: '+fmt(displayValue(q.answer,q.answerFormat))+'. Введи его и проверь.</p></div>':'')+'<div id="step-feedback-'+i+'" class="feedback error" role="status"></div>')+'</div>';}if(s.step>=t.steps.length)html+='<p class="feedback">Все шаги готовы. Теперь ответь на вопрос исходной задачи ниже.</p>';return html+'</section>';}
 function check(user,q){return window.MakarychevCheck.check(user,q);}
-function checkFinal(){const t=active.task,s=ts(t.id);if(s.correct)return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent};s.feedback='';}else{s.feedback='Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':t.answerFormat?'Проверь вычисление и требуемую запись ответа.':'Проверь действие и вычисление. Можно открыть подсказку или отдельную тренировку.');}save();renderProblem();}
+function checkFinal(){const t=active.task,s=ts(t.id);if(s.correct)return;if(!s.value.trim()){s.feedback=t.kind==='choice'?'Сначала выбери ответ.':'Сначала введи результат.';renderProblem();return;}s.attempts++;if(check(s.value,t)){s.correct=true;s.independent=!s.assisted&&!s.repeated&&s.attempts===1;s.completion={attempts:s.attempts,assisted:s.assisted,independent:s.independent,at:Date.now()};s.feedback='';}else{s.feedback=finalError(t,s.value)||'Пока не совпало. '+(t.kind==='choice'?'Проверь смысл каждого варианта.':t.answerFormat?'Проверь вычисление и требуемую запись ответа.':'Проверь действие и вычисление. Можно открыть подсказку или отдельную тренировку.');}save();renderProblem();}
 function checkStep(i){const t=active.task,s=ts(t.id),q=t.steps[i];if(i!==s.step)return;const v=s.values[i]||'';if(!v.trim()){document.getElementById('step-feedback-'+i).textContent='Сначала введи результат этого шага.';return;}if(check(v,q)){s.step++;save();renderProblem();}else{document.getElementById('step-feedback-'+i).textContent='Проверь вычисление в этом шаге. Подсказка поможет выбрать действие.';}}
 function progress(){const lessonRows=D.lessons.map(l=>'<tr><td><a href="#lesson/'+l.id+'">'+e(l.title)+'</a></td><td>'+independent(l)+'</td><td>'+(count(l)-independent(l))+'</td><td>'+l.tasks.length+'</td></tr>').join(''),pr=Object.entries(state.tasks).filter(([id,s])=>id.startsWith('practice:')&&s.correct);main.innerHTML='<p class="eyebrow">Мои результаты</p><h1>Виден каждый шаг</h1><p class="lead">Самостоятельно — с первой попытки, без открытого разбора и подсказок. Решение с помощью тоже полезно: оно учитывается отдельно.</p><div class="panel table-scroll" role="region" aria-label="Результаты по темам" tabindex="0"><table class="progress-table"><thead><tr><th>Тема</th><th>Сам</th><th>С помощью / после попыток</th><th>Всего задач</th></tr></thead><tbody>'+lessonRows+'</tbody></table></div><h2>Отдельные тренировки</h2><p>Решено '+pr.length+' примеров, из них '+pr.filter(([,s])=>s.independent).length+' самостоятельно.</p><div class="grid">'+M.skills.map(sk=>{const list=pr.filter(([id])=>id.split(':')[1]===sk.id);return list.length?'<div class="panel"><h3>'+e(sk.title)+'</h3><p>'+list.filter(([,s])=>s.independent).length+' самостоятельно · '+list.filter(([,s])=>!s.independent).length+' с помощью / после попыток</p><a href="#practice/'+sk.id+'/1">Продолжить</a></div>':'';}).join('')+'</div><div class="panel"><h2>Сохранить свою работу</h2><p>Результаты и черновики находятся в этом браузере. Скачай резервную копию, чтобы перенести их на другое устройство.</p><div class="row">'+button('Скачать сохранение','export')+'<label class="button quiet" for="import-file">Открыть сохранение<input class="sr-only" id="import-file" type="file" accept="application/json,.json"></label></div><p id="import-status" role="status" class="small"></p></div>';document.getElementById('import-file').onchange=importState;}
 function download(){const blob=new Blob([JSON.stringify({course:'makarychev7-2024',exportedAt:new Date().toISOString(),state},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Makarychev7-progress.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}

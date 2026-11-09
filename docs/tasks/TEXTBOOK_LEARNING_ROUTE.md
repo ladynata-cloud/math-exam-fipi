@@ -7,7 +7,7 @@
 - Branch: `draft/textbook-learning-route`.
 - Review: HIGH (separate optional study metadata, legacy storage compatibility).
 - START, branch, commits, push and Draft PR explicitly authorized by current request.
-- Merge and deployment explicitly **on hold until separate owner confirmation**. This task-specific restriction supersedes standing publication authorization.
+- Original merge/deployment hold was superseded by the owner's explicit authorization on 9 November 2026 to upload prepared changes to ladynata-cloud/math-exam-fipi, merge checked PRs and publish to mathexam.space after successful checks. The coordinating agent owns release sequencing and final verification.
 - Accepted ADR 0010 account boundary retained. ADR 0005 remains Proposed; this task adds a bounded presentation component over existing course evidence, not a replacement skill engine or account system.
 
 ## Goal and approved scope
@@ -53,3 +53,64 @@ Final test outcomes, exact head and PR are recorded in the Draft PR. Production 
 - The route gate passed all 27 model/adapter checks and real Chromium journeys at 320×900 and 1280×900, including empty/mixed/complete, independent/help, theory, keyboard, drafts, backup/import, earlier-method history, denied/corrupt storage and board personal-storage isolation. Eight screenshots were inspected. Runtime files are unchanged since this successful run: https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42579771785 .
 - Initial browser fixture failure was corrected to use the required decimal answer format; no product scoring change. Whole-course Makarychev CI also passed. Final broader CI status is recorded in the PR, without treating old failed runs as passing.
 - Full cabinet/helper browser run passed after updating its first-task selector: https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42579986785 .
+
+## Composition with textbook mastery, 9 November 2026
+
+This records the earlier local preparation; the authorized uploaded candidate is
+described below.
+
+The overlap with #497 is resolved in one course map, not two competing home
+screens. The primary action still resumes the exact unfinished draft. A separate
+optional action offers the next fresh task or a delayed review. Raw solved and
+independent totals and the all-included-tasks confirmation remain unchanged.
+Two distinct independent examples and the delayed third result are shown as a
+separate assessment; old unknown timestamps never invent a review deadline.
+Completion timestamps, signature deduplication, notebook/steps, backup import
+and theory acknowledgements retain their existing formats. New/in-progress rows
+do not display redundant assessment labels. Missing route resources keep the
+#497 mastery home as fallback. Peterson has no new assessment callbacks.
+
+EXECUTIVE STATUS
+
+Task: TEXTBOOK_LEARNING_ROUTE
+PR: #499; local composition only, not uploaded
+Base: published main 463d6bf plus #497 candidate f4840fed
+Head: source composition 2eedbd95; final checked follow-up recorded in handoff
+Gate: targeted local PASS; browser/remote CI still required
+Tests: 33 route/adapter/integration tests, independently rerun; M8 state and import; Peterson state/equation-state, picker 6, session 12, exact search 8; navigator 4 and bindings 5 PASS; syntax/diff checks PASS
+Failures: initial local Peterson equation test lacked NODE_PATH, rerun with installed dependencies passed
+Not run: current composition browser/remote CI, production, pupil study, external provider review; full M8 DOM suite started but final output unavailable, outcome unverified and not claimed as PASS
+Scope deviations: none; #497 evidence remains distinct from #499 task-completion progress
+Recommendation: retain #497-before-#499 release order; upload only after execution approval and run actual-head CI
+Next user decision: exact external-write authorization requested by automatic approval review; task-specific release hold retained until resolved by owner
+
+Authorized base: local composition within the requested course update
+Actual current main at composition: 463d6bf
+Base drift detected: yes; current #497 already incorporates #496/#498/#501/#506
+Virtual merge result: navigator receipt and M8 home conflict resolved, preserving both learning models
+Rerun gates: listed above, including six new combined-course scenarios
+New owner authorization required: external write/release confirmation requested by automatic approval review
+
+The navigator receipt starts from #497's current published bindings and adds only
+school/makarychev8/index.html at source checkpoint 2eedbd95. This composition
+neither publishes #497 implicitly nor changes the source of exercise answers.
+
+Independent focused review of source checkpoint 2eedbd95 and the final badge
+refinement passed without blocking findings. The reviewer compared both parents,
+confirmed the single map, exact-draft priority, separate mastery/all-task counts,
+retained timestamps and read-only map rendering, and reran all 33 combined tests.
+Peterson's application remains unchanged from #499; the added callbacks are
+optional. This review does not substitute for the current-head browser/CI gates.
+
+## Authorized uploaded composition
+
+The owner has explicitly authorized uploading, merging checked PRs and publishing
+after successful checks. No additional task-specific release hold remains. The
+new composition preserves the actual uploaded #497 head
+768c7ac3074c9260387af2da3bf6e26c52783ab4 as a parent alongside the original #499
+head 55263f767d649685882eb997ace9e7292ad60ce1. All runtime files match the locally
+reviewed 5345256a candidate. Its manifest starts from the uploaded #497 receipt,
+and only school/makarychev8/index.html is rebound to the new uploaded source.
+The #497 task record is preserved from that actual head. Exact uploaded source,
+final head and actual-head CI outcomes are recorded in PR #499. Merge and site
+publication have not yet been performed; #497 precedes this follow-up.

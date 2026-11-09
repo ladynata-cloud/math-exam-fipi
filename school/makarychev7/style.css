@@ -3,3 +3,8 @@
 .hero>*{min-width:0}.table-scroll{overflow-x:auto}.progress-table{min-width:480px}@media(max-width:620px){.hero{grid-template-columns:minmax(0,1fr)}.hero h1{font-size:clamp(1.9rem,8.5vw,2.5rem);overflow-wrap:anywhere}.hero-art .equation{font-size:clamp(1.6rem,7vw,2rem)}}
 
 .fra{max-width:100%;font-size:.98em}.fra>span{padding:.17em .23em}.prompt{overflow-wrap:anywhere}.hero-art .equation{font-size:clamp(1.4rem,2.8vw,2.2rem);white-space:normal}.model-panel{margin-top:25px}.number-form input{display:block;margin-top:10px} .step h3{font-weight:550}.side-list{max-height:70vh;overflow-y:auto}.problem .prompt{font-size:1.32rem;line-height:2} @media(max-width:600px){.fra{font-size:.93em}.problem{padding:22px 16px}.hero-art{padding:25px}.lesson-layout{display:block}.side{position:static}.side-list{display:flex;overflow:auto;max-height:none;gap:6px}.side button{min-width:150px;width:auto;font-size:.75rem}.hero-art .equation{font-size:1.45rem}.step h3{font-size:1rem}.answer-controls input{width:100%}}
+@media (max-width: 700px) {
+  .pilot-layout { display: grid; }
+  .pilot-layout .content-column { grid-row: 1; }
+  .pilot-layout .side { grid-row: 2; }
+}

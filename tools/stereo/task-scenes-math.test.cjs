@@ -51,7 +51,23 @@ function specific(kind,seed,t,s){
  case'parallel':case'skew':for(const e of m.edges)close(dist(p[e[0]],p[e[1]]),2,'cube edge');close(dot(sub(p.B,p.A),sub(p['C₁'],p.C)),0);break;
  case'plane-parallel':close(p.A[2],p.B[2]);close(p.C[2],p.D[2]);assert.notEqual(p.A[2],p.C[2]);close(norm(cross(sub(p.B,p.A),sub(p.D,p.C))),0);break;
  case'euler':{[a,b]=match(q,/имеет (\d+) вершин и (\d+) рёбер/);const vertices=new Set(m.faces.flat());assert.equal(vertices.size,a);assert.equal(m.edges.length,b);assert.equal(m.faces.length,t.a);assert.equal(vertices.size-m.edges.length+m.faces.length,2);assert(volume(p,m.faces)>0);break;}
- case'section':{[a]=match(q,/стороной (\d+)/);vec(p.M,mul(add(p.A,p.B),.5));vec(p.N,mul(add(p.A,p.D),.5));vec(p.P,mul(add(p.A,p['A₁']),.5));close(dist(p.A,p.B),a);for(const name of f.section)close(dot(p[name],f.plane.n),f.plane.d);for(const [x,y] of [['M','N'],['N','P'],['P','M']])close(dist(p[x],p[y])**2,t.a,'section side square');assert.equal(f.section.length,3);const intersections=[];for(const [u,v] of m.edges){const du=dot(p[u],f.plane.n)-f.plane.d,dv=dot(p[v],f.plane.n)-f.plane.d;if(du*dv<0){const hit=add(p[u],mul(sub(p[v],p[u]),du/(du-dv)));if(!intersections.some(x=>dist(x,hit)<1e-7))intersections.push(hit);}}assert.equal(intersections.length,3);for(const hit of intersections)assert(f.section.some(n=>dist(p[n],hit)<1e-7));break;}
+ case'section':{
+  if(t.section){
+   const {edge,anchor,next,previous,missing,target,pair}=t.section;
+   close(dist(p.A,p.B),edge);
+   for(const [name,vertex] of [['M',anchor],['N',next],['P',previous],['Q',missing]]){
+    vec(p[name],mul(add(p[vertex],p[vertex+'₁']),.5));
+    close(dot(p[name],f.plane.n),f.plane.d);
+   }
+   assert.equal(f.section.length,4);
+   close(polygonArea(f.section.map(n=>p[n])),edge**2);
+   assert.deepEqual(t.a,[target===next?1:2,'ABCD'.indexOf(missing)+1]);
+   assert.equal(pair,target===next?'MN':'MP');
+   assert.deepEqual(m.views.neutral.polygon,[]);
+   assert(!m.labelNames.includes('Q'));
+   break;
+  }
+  [a]=match(q,/стороной (\d+)/);vec(p.M,mul(add(p.A,p.B),.5));vec(p.N,mul(add(p.A,p.D),.5));vec(p.P,mul(add(p.A,p['A₁']),.5));close(dist(p.A,p.B),a);for(const name of f.section)close(dot(p[name],f.plane.n),f.plane.d);for(const [x,y] of [['M','N'],['N','P'],['P','M']])close(dist(p[x],p[y])**2,t.a,'section side square');assert.equal(f.section.length,3);const intersections=[];for(const [u,v] of m.edges){const du=dot(p[u],f.plane.n)-f.plane.d,dv=dot(p[v],f.plane.n)-f.plane.d;if(du*dv<0){const hit=add(p[u],mul(sub(p[v],p[u]),du/(du-dv)));if(!intersections.some(x=>dist(x,hit)<1e-7))intersections.push(hit);}}assert.equal(intersections.length,3);for(const hit of intersections)assert(f.section.some(n=>dist(p[n],hit)<1e-7));break;}
  case'perpendicular':close(dot(sub(p.P,p.O),sub(p.A,p.O)),0);close(dot(sub(p.P,p.O),sub(p.B,p.O)),0);assert(norm(cross(sub(p.A,p.O),sub(p.B,p.O)))>0);break;
  case'projection':[a,b]=match(q,/длину (\d+), её проекция (\d+)/);close(dist(p.A,p.B),a);close(dist(p.O,p.B),b);close(dot(sub(p.A,p.O),sub(p.B,p.O)),0);close(dist(p.A,p.O),t.a);break;
  case'dihedral':case'pyramid':{[h,a]=kind==='dihedral'?match(q,/высота (\d+), сторона основания (\d+)/):match(q,/основания.*? (\d+), высота (\d+)/).reverse();close(dist(p.A,p.B),a);close(dist(p.B,p.C),a);close(dist(p.S,p.O),h);vec(p.M,mul(add(p.A,p.B),.5));if(kind==='dihedral')close(angle(sub(p.S,p.M),sub(p.O,p.M)),t.a);else{const areas=m.faces.filter(x=>x.includes('S')).map(face=>polygonArea(face.map(n=>p[n])));close(areas.reduce((a,b)=>a+b,0),t.a);}break;}
