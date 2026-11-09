@@ -77,3 +77,10 @@
 - Read-only merge-tree found only navigator-manifest conflict. Ordinary merge source 7399432e2e4feef52fb47b38c4adfd71d91ae591 retains the released lesson files unchanged and both the new lesson entrance and OGE map.
 - Navigator manifest keeps main's provenance and receives one explicit binding for the combined OGE HTML. No force, reset, rebase or test weakening.
 - Affected local model/DOM/navigation checks: 19/19 PASS; final composed head must pass CI again and have an exact current base/head check before release.
+
+## Final gate scope after concurrent VPR publication
+- Main8bd4c47 adds approved VPR #495 after PR500. Ordinary merge source31f790ea228432b4845064cfba40f41c10874690 preserves all main files; only navigator provenance needs rebinding. All OGE page/runtime/test blobs equal reviewed ff103a4.
+- Current composed regressions:51/51 PASS, covering OGE, linear lessons, navigation preservation and VPR journeys (all492 tasks); binding negative controls5/5 PASS. Entrance/focus and existing OGE registry/adapter checks are also rerun.
+- Applicable final release gate: independent composed-tree review, current local checks, final-head OGE map Chromium CI, authoritative current main/head, exact merge delta and production verification.
+- Unchanged broad suites retain their successful receipts: native OGE board/math ff103a4 run42579038950, minimal interface42579038872, learner entrances42579038811, linear pilot42579038842, showcase42579038798. Exact current course navigator is inventory index586/shard2, successfully tested at three viewports by job129033174878/run42579038794. The inventory, navigator assets and OGE course blobs are unchanged in final composition.
+- Repository-wide jobs triggered again by synchronization may remain queued; they are reported as pending, not passed. No required status, assertion or workflow is removed, and no known technical failure is ignored. This scope follows the standing policy's affected/applicable-gate rule; no exception approval is requested or claimed.
