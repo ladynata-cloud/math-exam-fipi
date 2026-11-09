@@ -6,10 +6,11 @@ const path = require('node:path');
 const {createHash} = require('node:crypto');
 const {routes, assets, includeBlock, restoreActiveLearningIncludes} = require('./oge-active-learning-preservation.cjs');
 const {restoreFractionExplanation} = require('./oge7-fraction-explanation-preservation.cjs');
+const {restoreNumericSafety, restoreNumericLayout} = require('./oge8-numeric-safety-preservation.cjs');
 const root = path.resolve(__dirname, '..');
 // Entire published documents at 463d6bf56fc8f1f944da8d237102f77888711e79.
-// New teaching is external. The separately reviewed №7 explanation has its
-// own exact inverse; all other published document bytes remain unchanged.
+// New teaching is external. The separately reviewed №7 explanation and №8
+// input-safety correction have exact inverses; historical hashes stay fixed.
 const nativeHashes = Object.freeze({
   6: '4b959d2462005bd7ef796a29c1e75b42527bb58a4db80d7ee782e11db902b6e5',
   7: '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca',
@@ -22,6 +23,7 @@ const nativeHashes = Object.freeze({
 const sha = source => createHash('sha256').update(source).digest('hex');
 const nativeSource = (number, file, raw) => {
   const source = restoreActiveLearningIncludes(file, raw);
+  if (Number(number) === 8) return restoreNumericSafety(restoreNumericLayout(source));
   return Number(number) === 7 ? restoreFractionExplanation(source) : source;
 };
 for (const [number, file] of Object.entries(routes)) {

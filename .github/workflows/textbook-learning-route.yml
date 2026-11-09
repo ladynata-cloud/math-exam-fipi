@@ -1,0 +1,52 @@
+name: Textbook learning route
+on:
+  pull_request:
+    paths:
+      - 'school/shared/learning-route*'
+      - 'school/peterson6/**'
+      - 'school/makarychev8/**'
+      - 'trainers/peterson6.html'
+      - 'tools/*learning-route*'
+      - '.github/workflows/textbook-learning-route.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  route:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/route-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/route-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/route-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Route and existing persistence regressions
+        run: |
+          node tools/learning-route.test.cjs
+          node tools/learning-route-progress.test.cjs
+          node tools/makarychev8-learning-route-mastery.test.cjs
+          node school/peterson6/test-state.cjs
+          node school/peterson6/test-equation-state.cjs
+          node school/makarychev8/test-state.cjs
+          node school/makarychev8/test-import.cjs
+          node tools/peterson6-picker.test.cjs
+          node tools/peterson6-session.test.cjs
+          node tools/peterson6-exact-number-search.test.cjs
+          git diff --check
+      - name: Chromium at 320 and 1280
+        run: node tools/textbook-learning-route.browser.cjs
+      - name: Keep review screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: textbook-learning-route
+          path: artifacts/textbook-learning-route
+          if-no-files-found: ignore
+          retention-days: 14

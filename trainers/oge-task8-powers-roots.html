@@ -14,6 +14,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+#sqFb{overflow-wrap:anywhere}
 body{
   margin:0; color:var(--ink);
   font:16px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
@@ -268,9 +269,16 @@ const feq=(a,b)=>a.n===b.n&&a.d===b.d;
 const fint=a=>a.d===1n;
 function ipow(b,e){b=BigInt(b);e=BigInt(e);let r=1n;for(let i=0n;i<e;i++)r*=b;return r}
 function fpow(f,e){e=Number(e);return e>=0?Fr(ipow(f.n,e),ipow(f.d,e)):Fr(ipow(f.d,-e),ipow(f.n,-e))}
-function isqrtB(x){if(x<0n)return null;if(x<2n)return x;let r=BigInt(Math.floor(Math.sqrt(Number(x))));while(r*r>x)r--;while((r+1n)*(r+1n)<=x)r++;return r*r===x?r:null}
+function isqrtB(x){
+  if(x<0n)return null;if(x<2n)return x;
+  // Start above the root and stay in exact integer arithmetic, even for large input.
+  let r=1n<<BigInt(Math.ceil(x.toString(2).length/2)),next=(r+x/r)/2n;
+  while(next<r){r=next;next=(r+x/r)/2n;}
+  return r*r===x?r:null;
+}
 function fsqrt(f){const a=isqrtB(f.n),b=isqrtB(f.d);return(a===null||b===null)?null:Fr(a,b)}
 function fmtFr(f){ // человеческая запись: целое, десятичная с запятой или a/b
+  if(f.d===0n)return "не определено";
   if(fint(f))return f.n.toString();
   let d=f.d,two=0,five=0;
   while(d%2n===0n){d/=2n;two++} while(d%5n===0n){d/=5n;five++}
@@ -1645,6 +1653,7 @@ function runQuiz8(){
       if(answered)return;   // двойное касание — один ответ
       const x=parseAns(inp.value);
       if(!x){ fb.textContent="Впиши число: целое, десятичную дробь (0,5) или обыкновенную (1/4).";fb.className="fb no";return; }  // не попытка
+      if(x.d===0n){fb.textContent="На ноль делить нельзя: такая запись не задаёт число.";fb.className="fb no";return;}
       answered=true;
       const ans=quizAns(t), ok=feq(x,ans), tr=ok?null:finalTraps(t).find(o=>feq(o.v,x));
       res.push({t,x,ok,diag:tr?tr.m:""});

@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  var DAY=86400000, KEY='mathexam.workshop.v1', TEACHER='mathexam.workshop.teacher.v1';
- function blank(){return {schema:'mathexam-workshop',version:1,route:'5',last:null,seen:[],events:[],skills:{},assignment:null};}
+ function blank(){return {schema:'mathexam-workshop',version:1,route:'5',last:null,vilenkinDrafts:{},seen:[],events:[],skills:{},assignment:null};}
  function safeObject(x){return x&&typeof x==='object'&&!Array.isArray(x);}
  function validId(x){return typeof x==='string'&&/^[a-z][a-z0-9-]{0,60}$/.test(x);}
  function validate(data,ids){
@@ -11,6 +11,14 @@
   s.route=data.route;
   if(data.last!==null&&(!safeObject(data.last)||!known.has(data.last.skill)||!['learn','practice','check','review','diagnostic'].includes(data.last.mode)||!Number.isInteger(data.last.seed)||data.last.seed<0||data.last.seed>1000000))throw Error('Повреждена запись последнего занятия.');
   s.last=data.last?{skill:data.last.skill,mode:data.last.mode,seed:data.last.seed}:null;
+  if(safeObject(data.vilenkinDrafts))['vilenkin5','vilenkin6'].forEach(function(course){
+   var d=data.vilenkinDrafts[course];
+   if(d===null){s.vilenkinDrafts[course]=null;return;}
+   if(!safeObject(d)||!known.has(d.skill)||!d.skill.startsWith('v'+course.slice(-1)+'f-')||!['learn','practice','check','review'].includes(d.mode))return;
+   if(!Number.isInteger(d.seed)||d.seed<0||d.seed>1000000||!Number.isInteger(d.step)||d.step<0||d.step>50||!Number.isInteger(d.attempt)||d.attempt<0||d.attempt>100||![0,1,2].includes(d.checkIndex))return;
+   if(![d.correct,d.assisted,d.exposed].every(function(value){return typeof value==='boolean';})||typeof d.fingerprint!=='string'||d.fingerprint.length>700)return;
+   s.vilenkinDrafts[course]={skill:d.skill,mode:d.mode,seed:d.seed,step:d.step,attempt:d.attempt,checkIndex:d.checkIndex,correct:d.correct,assisted:d.assisted,exposed:d.exposed,fingerprint:d.fingerprint,savedInput:typeof d.savedInput==='string'?d.savedInput.slice(0,240):'',message:typeof d.message==='string'?d.message.slice(0,800):'',remedy:known.has(d.remedy)?d.remedy:''};
+  });
   if(!Array.isArray(data.seen)||data.seen.length>3000||data.seen.some(function(x){return typeof x!=='string'||x.length>700;}))throw Error('Повреждена история заданий.');
   s.seen=data.seen.slice();
   if(!Array.isArray(data.events)||data.events.length>3000)throw Error('Повреждён журнал.');

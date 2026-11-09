@@ -7,6 +7,7 @@ const vm = require('node:vm');
 const crypto = require('node:crypto');
 const { restoreRootAcceptance, restoreRootAnchorLayout } = require('./oge8-root-acceptance-preservation.cjs');
 const { restoreActiveLearningIncludes } = require('./oge-active-learning-preservation.cjs');
+const {restoreNumericLayout}=require('./oge8-numeric-safety-preservation.cjs');
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task8-powers-roots.html'), 'utf8');
 
 function between(start, end) {
@@ -108,7 +109,7 @@ test('power checker retains even/odd behavior and rejects unsupported exponents'
 
 test('acceptance normalization restores the immutable PR485 page byte for byte', () => {
   const nativeSource=restoreActiveLearningIncludes('trainers/oge-task8-powers-roots.html',source);
-  const restored=restoreRootAcceptance(restoreRootAnchorLayout(nativeSource));
+  const restored=restoreRootAcceptance(restoreRootAnchorLayout(restoreNumericLayout(nativeSource)));
   assert.equal(crypto.createHash('sha256').update(restored).digest('hex'),'8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b');
   const marker='Любое ненулевое число в нулевой степени — единица!';
   assert.throws(()=>restoreRootAcceptance(source.replace(marker,'')),/fragment/);

@@ -9,6 +9,7 @@ on:
       - 'trainers/trainer-board.html'
       - 'board-server/test/*registry*'
       - 'tools/oge-*'
+      - 'tools/oge8-*'
       - 'tools/fixtures/oge-course-board-entries.json'
       - 'docs/tasks/OGE_COURSE_MIRROR*'
       - '.github/workflows/oge-course-mirror.yml'
@@ -22,6 +23,7 @@ on:
       - 'trainers/trainer-board.html'
       - 'board-server/test/*registry*'
       - 'tools/oge-*'
+      - 'tools/oge8-*'
       - 'tools/fixtures/oge-course-board-entries.json'
       - '.github/workflows/oge-course-mirror.yml'
 permissions:
@@ -47,6 +49,7 @@ jobs:
           node tools/oge-algebra-contract.test.mjs
           node tools/oge-geometry-contract.test.mjs
           node --test tools/oge-course-algebra.test.cjs tools/oge-course-proof.test.cjs tools/oge8-root-domains.test.cjs tools/oge8-root-interactions.test.cjs
+          node --test tools/oge8-quiz-input.test.cjs
       - name: Native two-window restoration and visible capability
         run: |
           node --test tools/oge-foundation-board.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-20-22-board.test.cjs tools/oge-part2-geometry-board.test.cjs tools/oge-practical-diagnostic-board.test.cjs tools/oge-percent-table-board.test.cjs tools/oge-practical-variant-board.test.cjs tools/oge-course-board-ui.test.cjs
@@ -80,6 +83,15 @@ jobs:
           node "$RUNNER_TEMP/oge-native-browser/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Native teacher actions publish their completed state to the peer
         run: node tools/oge-course-native-events.browser.cjs
+      - name: OGE8 quiz invalid input, completion and saved result
+        run: node tools/oge8-quiz-input.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge8-quiz-input-evidence
+          path: artifacts/oge8-quiz-input
+          if-no-files-found: warn
+          retention-days: 14
       - name: Existing picker viewport and room controls
         if: always()
         run: node tools/board-picker-smoke.cjs

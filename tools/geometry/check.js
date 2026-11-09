@@ -77,4 +77,19 @@ for(let seed=0;seed<100;seed++){
  t=T.task('trig',seed);a=nums(t.question);near(a[0]**2+a[1]**2,a[2]**2);near(t.answer*a[2],a[3]);
  t=T.task('trig-circle',seed);a=nums(t.question);near((a[0]/a[1])**2+t.answer**2,1);assert.ok(t.answer<0);
 }
+// The first criterion pilot checks vertex correspondence and a genuine SSA counterexample.
+require(root+'/geometry-course/assets/congruence.js');
+const Sas=globalThis.GeoCongruence;
+assert.deepEqual(Sas.positions(4,'included'),[4]);
+for(let seed=0;seed<60;seed++){
+ const t=Sas.task(seed);
+ assert.ok(Sas.check(T.format(t.answer),t.answer,T.equal));
+ assert.equal(Sas.check(t.between?'0':'1; DEF',t.answer,T.equal),false);
+ if(t.between)assert.equal(Sas.check('1; '+[...t.order].reverse().join(''),t.answer,T.equal),false);
+ for(const step of t.steps)assert.ok(Sas.check(T.format(step.answer),step.answer,T.equal));
+ const positions=Sas.positions(t.a,'opposite',t.b);
+ assert.equal(positions.length,2);
+ assert.notEqual(positions[0],positions[1]);
+ for(const d of positions)near(d**2+t.b**2-2*d*t.b*Math.cos(Math.PI/6),t.a**2);
+}
 console.log(JSON.stringify({status:'PASS',units:63,points:137,proofs:Object.keys(P).length,assertions:n},null,2));
