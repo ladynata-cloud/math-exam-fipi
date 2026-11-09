@@ -47,8 +47,8 @@
         const p = xy(add(v, ua)), q = xy(add(add(v, ua), ub)), r = xy(add(v, ub));
         chunks.push(`<path d="M${p.x},${p.y} L${q.x},${q.y} L${r.x},${r.y}" fill="none" stroke="${ORANGE}" stroke-width="1.5"/>`);
       },
-      finish() {
-        return `<svg xmlns="http://www.w3.org/2000/svg" class="ovm-geometry" viewBox="0 0 480 300" role="img" aria-label="${escape(title)}" preserveAspectRatio="xMidYMid meet"><title>${escape(title)}</title>${chunks.join('')}</svg>`;
+      finish(viewBox = '0 0 480 300') {
+        return `<svg xmlns="http://www.w3.org/2000/svg" class="ovm-geometry" viewBox="${viewBox}" role="img" aria-label="${escape(title)}" preserveAspectRatio="xMidYMid meet"><title>${escape(title)}</title>${chunks.join('')}</svg>`;
       }
     };
   }
@@ -168,7 +168,7 @@
     },
     {
       id: 'midpoints-common-circle', title: 'Найти общую окружность', tasks: [24, 25],
-      goal: 'Пройди путь от равных сторон через медианы равнобедренных треугольников к окружности с диаметром BC.',
+      goal: 'Из равных сторон получи прямые углы и общую окружность.',
       source: source('урок 8 · равные отрезки, середины и окружность'),
       controls: [{ key: 'x', label: 'Положение A при сохранении BC = CB₁ = BC₁', min: 1, max: 3, step: .25, value: 2 }],
       predict: { question: 'B₁ лежит на AC, C₁ — на AB; BC = CB₁ = BC₁. M и N — середины BB₁ и CC₁. На какой окружности могут лежать B, M, N, C?', choices: ['С диаметром BC', 'С центром A', 'С диаметром BB₁'], answer: 0, explain: 'В равнобедренном CBB₁ медиана CM является высотой; аналогично BN ⟂ CC₁. Получаются прямые углы BMC и BNC.' },
@@ -187,7 +187,7 @@
         d.label(g.A, 'A', -6, -12); d.label(g.B, 'B', -21, 24); d.label(g.C, 'C', 10, 24);
         d.label(g.B1, 'B₁', 12, -7); d.label(g.C1, 'C₁', -34, -7);
         d.label(g.M, 'M', -28, 3, GREY); d.label(g.N, 'N', 12, 3, GREY);
-        return { svg: d.finish(), readout: 'Дано: BC = CB₁ = BC₁. B₁ лежит на AC, C₁ — на AB. M — середина BB₁; N — середина CC₁.' };
+        return { svg: d.finish('130 0 220 300'), readout: 'BC = CB₁ = BC₁. B₁ ∈ AC, C₁ ∈ AB. M и N — середины BB₁ и CC₁.' };
       },
       render(params) {
         const g = commonCircleGeometry(params), d = canvas('B, M, N и C лежат на окружности с диаметром BC', [-1, 5, -2.7, 6.9]);
@@ -195,7 +195,7 @@
         d.right(g.M, g.B, g.C); d.right(g.N, g.B, g.C);
         d.label(g.A, 'A', -6, -12); d.label(g.B, 'B', -21, 21); d.label(g.C, 'C', 10, 21);
         d.label(g.B1, 'B₁', 11, -7); d.label(g.C1, 'C₁', -29, -7); d.label(g.M, 'M', -26, 3, ORANGE); d.label(g.N, 'N', 11, 3, ORANGE);
-        return { svg: d.finish(), readout: 'BC = CB₁ = BC₁ = 4. M — середина BB₁; N — середина CC₁. ∠BMC = ∠BNC = 90°. Общая окружность имеет центр в середине BC и радиус 2. Изменение A сохраняет все заданные связи.' };
+        return { svg: d.finish('130 0 220 300'), readout: 'BC = CB₁ = BC₁ = 4; M и N — середины BB₁ и CC₁. ∠BMC = ∠BNC = 90° ⇒ диаметр BC, радиус 2.' };
       },
       practices: [
         { prompt: 'В невырожденном треугольнике ABC точки B₁ и C₁ лежат соответственно на AC и AB; BC = CB₁ = BC₁ = 10. M и N — середины BB₁ и CC₁. Докажи, что B, M, N, C лежат на одной окружности, и найди её радиус. В поле ответа введи радиус.', answer: 5, hint: 'В равнобедренных CBB₁ и BCC₁ медианы CM и BN являются высотами.', solution: '∠BMC = ∠BNC = 90°; общая окружность имеет диаметр BC = 10, поэтому R = 5.', proof: 'CB = CB₁, поэтому в равнобедренном CBB₁ медиана CM перпендикулярна BB₁. Аналогично из BC = BC₁ следует BN ⟂ CC₁. Значит, ∠BMC = ∠BNC = 90°, и M,N лежат на окружности с диаметром BC. Её радиус равен BC/2 = 5.' },

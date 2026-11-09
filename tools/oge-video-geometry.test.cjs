@@ -114,7 +114,7 @@ test('all scenes are pure accessible SVG and remain finite at every slider value
   for(const value of [...range(c),NaN,Infinity,undefined,'bad',-1e30,1e30]){
    const params={[c.key]:value},before={...params};const result=l.render(params);
    assert.deepEqual(params,before,'render must not mutate caller');
-   assert.match(result.svg,/^<svg /);assert.match(result.svg,/viewBox="0 0 480 300"/);assert.match(result.svg,/role="img"/);assert.match(result.svg,/<title>/);
+   assert.match(result.svg,/^<svg /);assert.match(result.svg,l.id==='midpoints-common-circle'?/viewBox="130 0 220 300"/:/viewBox="0 0 480 300"/);assert.match(result.svg,/role="img"/);assert.match(result.svg,/<title>/);
    assert.doesNotMatch(result.svg,/NaN|Infinity|undefined|<script|foreignObject|onload|(?:href|src)=/);
    assert.ok(result.readout.length>20,l.id);
   }
@@ -144,5 +144,26 @@ test('L8 prediction preview contains the givens but does not disclose circle or 
   assert.match(scene.svg,/<path /,'full scene explains right angles');
   const fullRadii=Array.from(scene.svg.matchAll(/<circle [^>]*r="([^"]+)"[^>]*>/g),m=>Number(m[1]));
   assert.ok(fullRadii.some(r=>r>3.5),'full scene includes the common circumference');
+ }
+});
+
+
+test('L8 portrait viewBox retains every given, constructed point, and mobile-size label over the full control domain',()=>{
+ const l=byId('midpoints-common-circle');
+ function inside(x,y,margin=0){assert.ok(x>=130+margin&&x<=350-margin,`x=${x}`);assert.ok(y>=margin&&y<=300-margin,`y=${y}`);}
+ // Dense sampling additionally covers numeric-field values between slider increments.
+ for(let i=0;i<=200;i++){
+  const x=1+i/100;
+  for(const scene of [l.preview({x}),l.render({x})]){
+   assert.match(scene.svg,/viewBox="130 0 220 300"/);
+   for(const match of scene.svg.matchAll(/<line x1="([^"]+)" y1="([^"]+)" x2="([^"]+)" y2="([^"]+)"/g)){inside(+match[1],+match[2],2);inside(+match[3],+match[4],2);}
+   for(const match of scene.svg.matchAll(/<circle cx="([^"]+)" cy="([^"]+)" r="([^"]+)"/g)){const [cx,cy,r]=match.slice(1).map(Number);inside(cx-r,cy-r,2);inside(cx+r,cy+r,2);}
+   for(const match of scene.svg.matchAll(/<polygon points="([^"]+)"/g))for(const pair of match[1].split(' ')){const [px,py]=pair.split(',').map(Number);inside(px,py,2);}
+   for(const match of scene.svg.matchAll(/<path d="([^"]+)"/g))for(const pair of match[1].replace(/[ML]/g,'').split(' ')){const [px,py]=pair.split(',').map(Number);inside(px,py,2);}
+   for(const match of scene.svg.matchAll(/<text x="([^"]+)" y="([^"]+)"[^>]*>([^<]+)<\/text>/g)){
+    // Conservative 22-unit box per glyph and 22-unit ascent matches the mobile CSS.
+    const tx=+match[1],ty=+match[2];inside(tx,ty-22);inside(tx+22*Array.from(match[3]).length,ty+5);
+   }
+  }
  }
 });
