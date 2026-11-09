@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+  "baseSha": "0739454e9e5f1454f1f40ff1b91f204aa8f4024c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
-      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
+      "beforeSha256": "e2f3f95dff2e35f08c7c240ebfc903b4d03c1f23d6873b876bb47e0f7f89ad9e",
+      "afterSha256": "864756ada88bae9c181f6f250a41822b9f8c39958bb81f493d18de1f99bc9b73",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4025,6 +4025,15 @@
       "task": "docs/tasks/OGE8_LEARN_ANCHOR_CLEARANCE_20261109.md",
       "changedPaths": [
         "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "0739454e9e5f1454f1f40ff1b91f204aa8f4024c",
+      "task": "docs/tasks/OGE_COURSE_GUIDE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
