@@ -7,6 +7,7 @@ Only explicitly reviewed prompt+geometry fixtures may receive a PASS.
 import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
+from oge_video_models_book_context import verified_context
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 IDS = {'03','04','06','08','09','10','12','54','55','57','58','59','60','63','65','66','67','68','71'}
@@ -118,7 +119,9 @@ def exact_reviewed_context(record, oracle, fixtures):
             old = 'Перейти к заданию ← К курсу ОГЭ '
             if not all(value.startswith(old) and value.count(old)==1 for value in fixture_texts):return False
             fixture_texts = ['Перейти к заданию '+value[len(old):] for value in fixture_texts]
-    text = record['initialVisibleText']
+    context = verified_context(record)
+    if context is None:return False
+    text, native_geometry = context
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -137,7 +140,7 @@ def exact_reviewed_context(record, oracle, fixtures):
             actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
             if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
     return (text in fixture_texts and
-            geom(record.get('visibleSvgLabels', [])) == fixture['geometrySha256'] and
+            geom(native_geometry) == fixture['geometrySha256'] and
             item in fixture['oracles'])
 
 def wayfinding_context_selftest(fixtures):
