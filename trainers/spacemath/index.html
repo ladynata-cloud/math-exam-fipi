@@ -13,6 +13,11 @@
     <div class="document-name"><label class="sr-only" for="model-title">Название построения</label><input id="model-title" maxlength="120" value="Новое построение" autocomplete="off"></div>
     <span id="save-status" class="save-status" role="status">Локальный черновик</span>
   </header>
+  <nav id="workspace-controls" class="workspace-controls" aria-label="Вид рабочего места" hidden>
+    <button id="workspace-tools-toggle" type="button" aria-expanded="true" aria-controls="tools">Инструменты</button>
+    <button id="workspace-objects-toggle" type="button" aria-expanded="true" aria-controls="workspace-inspector">Объекты</button>
+    <button id="workspace-focus-toggle" type="button" aria-pressed="false">Развернуть</button>
+  </nav>
   <main class="workspace">
     <section class="studio" aria-label="Геометрическое построение">
       <nav id="tools" class="tools" aria-label="Инструменты построения">
@@ -25,6 +30,9 @@
         <button type="button" data-tool="polygon" aria-pressed="false">Многоугольник</button>
         <details class="tool-group"><summary>Построения</summary><div>
           <button type="button" data-tool="pointOn" aria-pressed="false">Точка на объекте</button>
+          <button type="button" data-tool="fixedLength" aria-pressed="false">Отрезок заданной длины</button>
+          <button type="button" data-tool="fixedAngle" aria-pressed="false">Угол заданной величины</button>
+          <button type="button" data-tool="regularPolygon" aria-pressed="false">Правильный многоугольник</button>
           <button type="button" data-tool="midpoint" aria-pressed="false">Середина</button>
           <button type="button" data-tool="intersection" aria-pressed="false">Пересечение</button>
           <button type="button" data-tool="parallel" aria-pressed="false">Параллельная</button>
@@ -41,14 +49,15 @@
         <details class="tool-group"><summary>Окружности</summary><div>
           <button type="button" data-tool="circle3" aria-pressed="false">Окружность через 3 точки</button>
           <button type="button" data-tool="circleRadius" aria-pressed="false">Окружность по радиусу</button>
+          <button type="button" data-tool="circleCenter" aria-pressed="false">Центр окружности</button>
           <button type="button" data-tool="tangent" aria-pressed="false">Касательные к окружности</button>
         </div></details>
         <details class="tool-group"><summary>Преобразования</summary><div>
-          <button type="button" data-tool="translate" aria-pressed="false">Перенос точки по вектору</button>
+          <button type="button" data-tool="translate" aria-pressed="false">Перенос фигуры по вектору</button>
           <button type="button" data-tool="reflectPoint" aria-pressed="false">Симметрия относительно точки</button>
           <button type="button" data-tool="reflectLine" aria-pressed="false">Симметрия относительно прямой</button>
-          <button type="button" data-tool="rotate" aria-pressed="false">Поворот точки</button>
-          <button type="button" data-tool="dilate" aria-pressed="false">Гомотетия точки</button>
+          <button type="button" data-tool="rotate" aria-pressed="false">Поворот фигуры</button>
+          <button type="button" data-tool="dilate" aria-pressed="false">Гомотетия фигуры</button>
         </div></details>
         <details class="tool-group"><summary>Измерения</summary><div>
           <button type="button" data-tool="distance" aria-pressed="false">Расстояние</button>
@@ -74,7 +83,7 @@
       </div>
       <p id="feedback" class="feedback" role="status" aria-live="polite">Свободные точки — зелёные, зависимые — синие.</p>
     </section>
-    <aside class="inspector" aria-label="Объекты и точные построения">
+    <aside id="workspace-inspector" class="inspector" aria-label="Объекты и точные построения">
       <section class="panel">
         <div class="panel-heading"><h1>Построение</h1><span id="object-count" class="count">0 / 160</span></div>
         <p class="muted">Выбирайте объекты на поле или в списке — оба способа работают с инструментами.</p>
@@ -86,6 +95,16 @@
         <p id="selected-description" class="muted"></p>
         <form id="edit-object-form">
           <label for="object-label">Подпись</label><input id="object-label" maxlength="30" autocomplete="off">
+          <fieldset class="appearance-fields"><legend>Вид объекта</legend>
+            <label><input id="appearance-visible" type="checkbox" checked> Показывать объект</label>
+            <label><input id="appearance-label" type="checkbox" checked> Показывать подпись</label>
+            <div class="appearance-grid">
+              <label>Цвет<input id="appearance-color" type="color" value="#23765a"></label>
+              <label>Толщина<input id="appearance-width" type="number" min="1" max="6" step="1" value="2"></label>
+              <label>Линия<select id="appearance-dash"><option value="0">Сплошная</option><option value="1">Пунктирная</option><option value="2">Штриховая</option></select></label>
+              <label>Заливка<input id="appearance-fill" type="number" min="0" max="0.6" step="any" value="0.16"></label>
+            </div>
+          </fieldset>
           <div id="coordinate-editor" class="coordinate-fields"><label>X<input id="edit-x" type="number" min="-1000000" max="1000000" step="any" required></label><label>Y<input id="edit-y" type="number" min="-1000000" max="1000000" step="any" required></label></div>
           <label id="selected-parameter" hidden><span id="selected-parameter-label">Параметр</span><input id="edit-parameter" type="number" step="any" required></label>
           <div id="selected-slider-settings" hidden>
@@ -153,9 +172,11 @@
   <script src="vendor/jsxgraphcore.js"></script>
   <script src="expression.js"></script>
   <script src="model.js"></script>
+  <script src="constructions.js"></script>
   <script src="../learning-bridge.js"></script>
   <script src="../board-bridge.js"></script>
   <script src="app.js"></script>
+  <script src="workspace.js"></script>
   <script src="adapter.js"></script>
 </body>
 </html>

@@ -55,6 +55,7 @@ function fixture(t, saved) {
   }};
   w.eval(read('trainers/spacemath/expression.js'));
   w.eval(read('trainers/spacemath/model.js'));
+  w.eval(read('trainers/spacemath/constructions.js'));
   w.eval(read('trainers/spacemath/app.js'));
   const select = id => d.querySelector('[data-object="' + id + '"]').click();
   const submit = () => d.querySelector('#edit-object-form button[type="submit"]').click();
@@ -440,4 +441,93 @@ test('unsupported formulas and numerical uncertainty stay visible; tiny valid ro
   }
   f.install([{ id: 'g', type: 'functionGraph', label: 'f', parents: [], expression: 'x-1e-20' }, { id: 'r', type: 'functionRoot', label: 'R', parents: ['g'], branch: 0 }]);
   f.select('r'); assert.match(f.d.getElementById('selected-description').textContent, /1E-20/);
+});
+
+test('classroom batch tools create one undo step and keep regular polygon dependencies', t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 2, 0)]);
+  f.d.querySelector('[data-tool="regularPolygon"]').click();
+  f.d.getElementById('tool-parameter').value = '4';
+  f.select('a'); f.select('b');
+  const square = f.app.getState(), polygon = square.objects.find(o => o.type === 'polygon');
+  assert.ok(polygon);
+  assert.equal(new Set(square.objects.filter(o => f.w.SpaceMathModel.pointTypes.includes(o.type)).map(o => o.label)).size, 4);
+  const values = f.w.SpaceMathModel.evaluate(square);
+  assert.ok(Math.abs(values[polygon.parents[2]].x - 2) < 1e-12);
+  assert.ok(Math.abs(values[polygon.parents[2]].y - 2) < 1e-12);
+  f.d.getElementById('undo').click();
+  assert.equal(f.app.getState().objects.length, 2);
+  f.d.getElementById('redo').click();
+  assert.deepEqual(f.app.getState(), square);
+  f.d.querySelector('[data-tool="move"]').click(); f.select('b');
+  f.d.getElementById('edit-x').value = '4'; f.submit();
+  assert.ok(Math.abs(f.w.SpaceMathModel.evaluate(f.app.getState())[polygon.parents[2]].y - 4) < 1e-12);
+  const beforeInvalid = f.app.getState();
+  f.d.querySelector('[data-tool="regularPolygon"]').click();
+  f.d.getElementById('tool-parameter').value = '3.5'; f.select('a'); f.select('b');
+  assert.deepEqual(f.app.getState(), beforeInvalid, 'fractional vertex count makes no partial batch');
+});
+
+test('whole polygon transformation shares a single editable angle and follows original vertices', t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 2, 0), point('c', 0, 2),
+    {id:'tri',type:'polygon',label:'ABC',parents:['a','b','c']}]);
+  f.d.querySelector('[data-tool="rotate"]').click();
+  f.d.getElementById('tool-parameter').value = '90';
+  f.select('tri'); f.select('a');
+  const initial = f.app.getState(), descriptor = initial.objects.find(o => o.type === 'transformation');
+  const image = initial.objects.filter(o => o.type === 'polygon').at(-1);
+  assert.ok(descriptor && image);
+  const images = initial.objects.filter(o => o.type === 'transformedPoint');
+  assert.equal(images.length, 3);
+  assert.ok(images.every(o => o.parents[1] === descriptor.id));
+  f.d.querySelector('[data-tool="move"]').click(); f.select(descriptor.id);
+  f.d.getElementById('edit-parameter').value = '180'; f.submit();
+  const values = f.w.SpaceMathModel.evaluate(f.app.getState());
+  assert.equal(values[image.parents[1]].x, -2);
+  assert.equal(values[image.parents[1]].y, 0);
+  assert.equal(values[image.parents[2]].x, 0);
+  assert.equal(values[image.parents[2]].y, -2);
+  f.select('b'); f.d.getElementById('edit-x').value = '3'; f.submit();
+  assert.equal(f.w.SpaceMathModel.evaluate(f.app.getState())[image.parents[1]].x, -3);
+});
+
+test('saved appearance hides auxiliaries without removing dependent geometry and stays readonly to observers', t => {
+  const f = fixture(t);
+  f.install([point('a', 0, 0), point('b', 4, 0), {id:'m',type:'midpoint',label:'M',parents:['a','b']},
+    {id:'seg',type:'segment',label:'AB',parents:['a','b']}]);
+  f.select('a'); f.d.getElementById('appearance-visible').checked = false;
+  f.d.getElementById('appearance-color').value = '#c62828'; f.submit();
+  const state = f.app.getState();
+  assert.equal(state.objects[0].appearance.visible, false);
+  assert.equal(f.w.SpaceMathModel.evaluate(state).m.x, 2);
+  const hidden = f.created().find(o => o.type === 'point' && o.attrs.name === 'A');
+  assert.equal(hidden.attrs.visible(), false);
+  f.select('seg'); f.d.getElementById('appearance-dash').value = '1';
+  f.d.getElementById('appearance-width').value = '5'; f.submit();
+  const line = f.created().find(o => o.type === 'line');
+  assert.equal(line.attrs.dash, 1); assert.equal(line.attrs.strokeWidth, 5);
+  f.app.setReadOnly(true);
+  for (const id of ['appearance-visible','appearance-label','appearance-color','appearance-width','appearance-dash','appearance-fill'])
+    assert.equal(f.d.getElementById(id).disabled, true, id);
+  const before = f.app.getState();
+  f.d.getElementById('appearance-color').value = '#000000';
+  f.d.getElementById('edit-object-form').dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));
+  assert.deepEqual(f.app.getState(), before);
+  const incoming = f.app.getState(); incoming.objects[1].x = 6; f.app.applyState(incoming);
+  assert.match(f.d.getElementById('selected-heading').textContent, /Отрезок/);
+  assert.equal(f.w.SpaceMathModel.evaluate(f.app.getState()).m.x, 3);
+});
+
+test('valid imported appearance remains editable and tiny infinite line direction stays drawable', t => {
+  const f = fixture(t);
+  f.install([point('a',0,0),point('b',1e-20,0),point('c',1e6,0),
+    {id:'line',type:'line',label:'l',parents:['a','b']},
+    {id:'par',type:'parallel',label:'p',parents:['line','c']},
+    {id:'poly',type:'polygon',label:'ABC',parents:['a','b','c'],appearance:{fillOpacity:.123,dash:1}}]);
+  const parallel = f.created().filter(o => o.type === 'line')[1];
+  assert.notEqual(parallel.args[0][0](), parallel.args[1][0](), 'display direction of infinite line is normalized');
+  f.select('poly'); f.d.getElementById('object-label').value = 'P'; f.submit();
+  const polygon = f.app.getState().objects.find(o => o.id === 'poly');
+  assert.equal(polygon.label, 'P'); assert.equal(polygon.appearance.fillOpacity, .123); assert.equal(polygon.appearance.dash, 1);
 });

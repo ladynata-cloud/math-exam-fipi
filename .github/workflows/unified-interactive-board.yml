@@ -39,7 +39,7 @@ jobs:
       - name: Full server contracts
         run: npm --prefix board-server test
       - name: Geometry, local assets and bridge
-        run: node --test trainers/spacemath/expression.test.cjs trainers/spacemath/model.test.cjs trainers/spacemath/graph-solutions.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/unified-frame.test.cjs
+        run: node --test trainers/spacemath/expression.test.cjs trainers/spacemath/model.test.cjs trainers/spacemath/graph-solutions.test.cjs trainers/spacemath/constructions.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/spacemath-workspace.test.cjs tools/unified-frame.test.cjs
       - name: Existing eight-learner regression
         env:
           GROUP_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-board-artifacts/group

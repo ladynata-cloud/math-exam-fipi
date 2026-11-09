@@ -65,10 +65,11 @@
     };
     return map[code] || (error.status ? 'Действие не сохранено сервером (' + code + '). Его можно скачать вместе с записью.' : String(code || 'Не удалось выполнить действие.'));
   }
-  function notice(text, error = false) {
+  function notice(text, error = false, kind = '') {
     const node = $(error ? 'errorNotice' : 'notice');
     node.textContent = text;
     node.hidden = !text;
+    node.dataset.kind = kind;
   }
   function saveQueue() {
     try { sessionStorage.setItem(queueKey(), JSON.stringify({outbox, rejected})); }
@@ -102,6 +103,7 @@
       }
     } else snapshot = data;
     connected = true;
+    if ($('errorNotice').dataset.kind === 'connection') notice('', true);
     if (!teacher() && !selected) selected = data.seatId;
     render();
   }
@@ -109,7 +111,15 @@
     if (!credentials || !snapshot || polling || sending || stopped) return;
     polling = true;
     try { accept(await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision)); }
-    catch (error) { connected = false; renderConnection(); if (!outbox.length) notice(errorText(error), true); }
+    catch (error) {
+      connected = false; renderConnection();
+      // A failed read is not a rejected edit. Keep actual rejected-work warnings
+      // and retire only this temporary connection notice after a successful read.
+      if (!outbox.length && !rejected.length) notice(
+        error.status >= 500 || error.status === 429 || error.name === 'AbortError' || error instanceof TypeError
+          ? 'Нет связи с сервером. Сохранённая работа остаётся доступной; подключение восстановится автоматически.'
+          : errorText(error), true, 'connection');
+    }
     finally { polling = false; }
     if (outbox.length) pump();
   }
@@ -157,7 +167,7 @@
       const data = await request('/api/group-lessons/' + credentials.id + '/actions', {method:'POST',body:JSON.stringify(body)});
       outbox.shift(); saveQueue(); accept(data);
       waiters.get(body.opId)?.resolve(data); waiters.delete(body.opId);
-      if (!outbox.length) notice('', true);
+      if (!outbox.length && !rejected.length) notice('', true);
     } catch (error) {
       if (error.status && error.status < 500 && error.status !== 429) {
         outbox.shift(); rejected.push({action:body,error:error.code || error.message,at:new Date().toISOString()});
@@ -194,7 +204,9 @@
   function button(text,fn,cls='button') { const b=element('button',cls,text);b.type='button';b.addEventListener('click',fn);return b; }
   function cleanFrames() { cardFrames.forEach(frame=>frame.destroy());cardFrames.clear();cardCanvases.clear();$('studentGrid').replaceChildren();cardKey=''; }
   function destroyFocus() { focusFrame?.destroy();focusFrame=null;focusKey='';$('trainerHost').replaceChildren(); }
-  function destroyGeometry() { geometryFrame?.destroy();geometryFrame=null;geometryKey='';$('geometryHost').replaceChildren(); }
+  function setGeometryFocus(value) { document.body.dataset.geometryFocus=String(value===true); }
+  function exitGeometryFocus() { geometryFrame?.exitWorkspaceFocus?.();setGeometryFocus(false); }
+  function destroyGeometry() { exitGeometryFocus();geometryFrame?.destroy();geometryFrame=null;geometryKey='';$('geometryHost').replaceChildren(); }
   function presentationTarget() {
     const queued=outbox.filter(action=>action.type==='present');
     return queued.length?queued[queued.length-1].payload.target:snapshot?.presentation?.target;
@@ -269,6 +281,7 @@
   }
   async function navigate(action) {
     if(navigating||historyLoading)return;
+    exitGeometryFocus();
     navigating=true;
     try{await flushFrames();await action();}
     catch(error){notice(errorText(error),true);}
@@ -276,6 +289,7 @@
   }
   function renderMaterialTabs() {
     const surface=currentSurface();
+    if(surface!=='geometry')exitGeometryFocus();
     $('workspacePanels').dataset.surface=surface;
     $('trainerPanel').hidden=!['trainer','split'].includes(surface);
     $('boardPanel').hidden=!['board','split'].includes(surface);
@@ -305,7 +319,15 @@
         onState:state=>{
           if(!geometryWriter(workspace(id),id)||target()!==id||geometryAssignment(workspace(id))!==materialAssignment)return;
           fire('geometry',id,{state},{assignmentId:materialAssignment});
-        },onStatus:text=>{$('geometryStatus').textContent=text;}
+        },onStatus:text=>{$('geometryStatus').textContent=text;},
+        onWorkspaceFocus:active=>{
+          if(geometryKey!==key)return;
+          const accepted=active&&target()===id&&currentSurface()==='geometry'&&!navigating&&!$('geometryPanel').hidden;
+          setGeometryFocus(accepted);
+          // A late local click can race a pending navigation snapshot. If the
+          // navigation fails, both layouts must already agree on normal mode.
+          if(active&&!accepted)geometryFrame?.exitWorkspaceFocus?.();
+        }
       });
     }else if(geometryFrame) {
       const pending=historyEvents?[]:pendingGeometry(live,id);
@@ -316,8 +338,8 @@
   function renderConnection() {
     if (!snapshot) return;
     $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
-    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!connected?'offline':outbox.length?'pending':'saved';
+    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!connected?'offline':outbox.length||rejected.length?'pending':'saved';
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
     if(!teacher()&&$('teacherWatchStatus'))$('teacherWatchStatus').textContent=presentationCaption()+(connected?'':' · нет связи');
@@ -624,6 +646,7 @@
     if(!supportsUnifiedBoard(capability))throw Error('Сервер ещё не поддерживает единую доску со SpaceMath. Сохранённое занятие не изменено.');
     accept(data);rememberSession();
     try{const saved=JSON.parse(sessionStorage.getItem(queueKey())||'{}');outbox=Array.isArray(saved.outbox)?saved.outbox:[];rejected=Array.isArray(saved.rejected)?saved.rejected:[];}catch(_){}
+    if(rejected.length)notice(errorText({code:rejected[rejected.length-1].error}),true);
     $('strokeColor').value=teacher()?'#15803d':'#172033';render();
     pump();later(async function tick(){await poll();if(!stopped)later(tick,1100);},1100);
   }
@@ -674,6 +697,11 @@
     event.preventDefault();const buttons=[...$('materialTabs').querySelectorAll('[data-surface]')],index=buttons.indexOf(document.activeElement);
     const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;
     buttons[next].focus();setSurface(buttons[next].dataset.surface);
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&document.body.dataset.geometryFocus==='true'&&!document.querySelector('dialog[open]')){
+      event.preventDefault();exitGeometryFocus();
+    }
   });
   $('presentButton').addEventListener('click',()=>navigate(()=>fire('present','common',{target:presentationTarget()?null:target(),surface:currentSurface()})));
   $('teacherWatchToggle').addEventListener('click',()=>{watchBoard=!watchBoard;renderTeacherWatch();});
