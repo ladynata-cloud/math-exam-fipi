@@ -12,6 +12,9 @@ for(const [id,label] of proofExamples){
  await page.locator('[data-stage="2"]').click();
  assert.match(await page.locator('.proof-diagram').getAttribute('aria-label'),label);
  assert.ok(await page.locator('.proof-diagram').isVisible());
+ const condition=await page.locator('#lesson .callout').boundingBox();
+ const diagram=await page.locator('.proof-diagram').boundingBox();
+ assert.ok(condition.y>=0&&diagram.y+diagram.height<=900,id+' condition and drawing fit in view');
  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
 }
 await page.goto(base+'atlas/segments.html');

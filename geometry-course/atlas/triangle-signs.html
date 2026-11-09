@@ -429,7 +429,16 @@ if(state.stage===2)mountProofSketch();
 if(state.stage===3||state.stage===4){const a=document.getElementById('answer');if(a)a.value=state.draft;}
 root.querySelector('h2')?.setAttribute('tabindex','-1');}
 function answerUI(mode){return '<form id="answer-form" data-mode="'+mode+'"><label for="answer">Твой ответ</label><div class="answer-row"><input id="answer" autocomplete="off" spellcheck="false" placeholder="Число, дробь или ответ словами"><button class="primary" type="submit">Проверить</button></div></form><p class="muted">Дроби: <code>3/4</code>, корень: <code>sqrt(5)</code>, π: <code>2π</code> или <code>2*pi</code>. Координаты: <code>(2; -3)</code>. Для десятичного ответа достаточно трёх знаков после запятой.</p><p id="answer-feedback" class="feedback" role="status"></p>';}
-function stage(n){if(n===4&&state.stage!==4){newTask(false);}state.stage=n;if(n===3)rememberTask();save('step');render();root.querySelector('h2')?.focus({preventScroll:true});}
+function stage(n){
+ if(n===4&&state.stage!==4)newTask(false);
+ state.stage=n;
+ if(n===3)rememberTask();
+ save('step');render();
+ root.querySelector('h2')?.focus({preventScroll:true});
+ if(n===2&&proofDiagram&&window.matchMedia('(max-width: 600px)').matches){
+  root.scrollIntoView({block:'start'});
+ }
+}
 function rememberTask(){const key=T.fingerprint(task());if(!state.seenTasks.includes(key))state.seenTasks.push(key);return key;}
 function openIndependentTask(){const key=T.fingerprint(task());state.repeatedTask=state.seenTasks.includes(key);rememberTask();state.currentTaskKey=key;}
 function newTask(redraw=true){state.seed++;state.taskStep=0;state.draft='';state.assisted=false;state.checked=false;openIndependentTask();save('task_start');if(redraw)render();}
