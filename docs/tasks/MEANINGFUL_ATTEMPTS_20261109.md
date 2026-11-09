@@ -48,3 +48,21 @@ Release is allowed after applicable checks and fresh main/head verification, fol
 - Focused code review: validation returns before attempt/error writes; only transient DOM guidance is added; numeric zero and explicit absence remain valid inputs; room serializers, data, hints, completion rules and read-only controls are unchanged.
 - Syntax and `git diff --check`: PASS. Current-head GitHub Actions, browser and production verification still required. The shared preview daemon is occupied; no takeover or local real-browser pass is claimed.
 - External provider review and pupil pilot: not performed. No further owner decision is needed within this scope.
+
+## Arithmetic evidence refresh after current-head CI
+
+The first Unified learning run on `85019f85adbe984914b93fb672a8df2a19ce3c81` (`42625098765`, job `129186709690`) correctly rejected stale arithmetic reports: they described the earlier managed renderer instead of this change. The historical baseline, fixtures, robot policy, oracle, executable tests and workflow assertions are unchanged.
+
+On 9 November 2026 the following unchanged commands were executed against that exact source commit using Node.js 24.22.1 and JSDOM 26.1.0 with real SQLite persistence:
+
+```sh
+node tools/learning-arithmetic-robots.cjs --generator-version=1 --output=docs/reports/arithmetic-robots-after.json
+node tools/learning-arithmetic-robots.cjs --output=docs/reports/arithmetic-robots-current.json
+node tools/learning-arithmetic-robots-compare.cjs
+```
+
+Both robot runs passed all 22 scenarios across 11 fixed profiles with zero unresolved findings. The legacy replay independently verified 475 arithmetic steps; the current generators verified 470. Each run retained all 22 saved-work/observer and next-practice scenarios, with 28 explicitly requested solutions. The generated comparison passed; complete scenario results are identical to the previous reports. Only the actual source commit, renderer digest and derived report digests changed. These are synthetic DOM/SQLite results, not a Chromium run or a pupil study.
+
+The historical baseline remains byte-identical (SHA-256 `2b03bf848066b6b2842cc45ad6d64b8fc165715ab1161a72cc0f8afa63d1aa21`). The updated renderer digest recorded by the real runs is `5136c5b5bdf25ce541b3e8614729b385d59b708b24eb219dfb92ce7430f9e5d3`.
+
+The original fixed-book run `42625098832` also failed, reporting screenshot protocol and navigation/stability timeouts. Infrastructure is a possible explanation, not an established cause or a passing result. The full unchanged fixed-book gate, Unified learning gate and remaining applicable checks must pass on the corrective head before release; no test, timeout or acceptance condition is relaxed.
