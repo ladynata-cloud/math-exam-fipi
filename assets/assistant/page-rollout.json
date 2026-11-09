@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
+  "baseSha": "0346a518e473375f1d296856c0a6a7fb6be60f74",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4415,6 +4415,13 @@
         "school/index.html",
         "stereo-course/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
+      "sourceBaseSha": "0346a518e473375f1d296856c0a6a7fb6be60f74",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
