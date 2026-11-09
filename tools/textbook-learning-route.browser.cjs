@@ -50,6 +50,58 @@ async function solve(page, course, index, helped) {
 async function readCounts(page) {
   return page.locator('.lr-counts strong').evaluateAll(nodes => nodes.map(node => Number(node.textContent)));
 }
+async function routeHelp(page, course, width, scenario) {
+  if (course.slug !== 'peterson6') return;
+  const before = await saved(page, course.key), theory = await saved(page, course.key + '.route.v1');
+  const host = page.locator('.peterson-help'), launcher = page.locator('.peterson-help-launcher');
+  const original = await host.elementHandle();
+  async function placement() {
+    const result = await host.evaluate(node => {
+      const box = node.getBoundingClientRect(), previous = node.previousElementSibling?.getBoundingClientRect();
+      const heading = document.querySelector('.lr-map-heading').getBoundingClientRect();
+      return {position:getComputedStyle(node).position,body:node.parentNode===document.body,
+        beforeHeading:box.bottom<=heading.top,afterGuide:!!previous&&previous.bottom<=box.top};
+    });
+    if (width <= 480) {
+      assert.equal(result.position, 'static', scenario + ': narrow map helper has its own flow space');
+      assert.equal(result.body, false);
+      assert(result.beforeHeading && result.afterGuide, scenario + ': helper does not overlap preceding guide or following chapter heading');
+    } else {
+      assert.equal(result.position, 'fixed', 'desktop helper remains floating');
+      assert.equal(result.body, true);
+    }
+  }
+  await placement();
+  await launcher.click();
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'true');
+  assert(await page.locator('.peterson-help-close').evaluate(node=>node===document.activeElement));
+  await nav(page, course, '#home'); // Replacing the map must not detach or duplicate the focused helper.
+  assert(await original.evaluate(node=>node===document.querySelector('.peterson-help')));
+  assert.equal(await host.count(), 1);
+  assert(await page.locator('.peterson-help-close').evaluate(node=>node===document.activeElement));
+  assert(await page.locator('.peterson-help-panel').isVisible());
+  await placement();
+  if (width <= 480) {
+    await page.screenshot({path:path.join(SHOTS, course.slug+'-'+scenario+'-help-'+width+'.png'),fullPage:true});
+    await page.setViewportSize({width:1280,height:900});
+    await page.waitForFunction(()=>document.querySelector('.peterson-help').parentNode===document.body);
+    assert(await page.locator('.peterson-help-close').evaluate(node=>node===document.activeElement));
+    await page.setViewportSize({width,height:900});
+    await page.waitForFunction(()=>document.querySelector('.peterson-help').classList.contains('peterson-help-inline'));
+    assert(await page.locator('.peterson-help-close').evaluate(node=>node===document.activeElement));
+    await placement();
+  }
+  await page.keyboard.press('Escape');
+  assert(await page.locator('.peterson-help-panel').isHidden());
+  assert(await launcher.evaluate(node=>node===document.activeElement));
+  await launcher.click();await page.locator('.peterson-help-close').click();
+  assert(await page.locator('.peterson-help-panel').isHidden());
+  assert.equal(await launcher.getAttribute('aria-expanded'), 'false');
+  assert(await launcher.evaluate(node=>node===document.activeElement));
+  assert.equal(await saved(page, course.key), before, 'map help does not rewrite task progress');
+  assert.equal(await saved(page, course.key + '.route.v1'), theory, 'map help does not rewrite theory marks');
+  await page.evaluate(()=>window.scrollTo(0,0));
+}
 (async () => {
   fs.mkdirSync(SHOTS, {recursive:true});
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -68,6 +120,7 @@ async function readCounts(page) {
     assert.deepEqual(await readCounts(page), [0,0]);
     const button = page.locator('.lr-primary'), box = await button.boundingBox();
     assert(box && box.y >= 0 && box.y + box.height <= 900, 'continuation visible on first screen at ' + width);
+    await routeHelp(page, course, width, 'empty');
     await noOverflow(page, course.slug + ' empty ' + width);
     await page.screenshot({path:path.join(SHOTS, course.slug + '-empty-' + width + '.png'),fullPage:true});
     // Native keyboard activation retains cabinet query and opens a genuine lesson.
@@ -103,11 +156,13 @@ async function readCounts(page) {
     assert.equal(await saved(page, course.key), before, 'home reload does not rewrite legacy progress');
     assert.equal(await saved(page, course.key + '.route.v1'), studiedRecord, 'theory persists');
     assert.deepEqual(await readCounts(page), [1,1]);
+    await routeHelp(page, course, width, 'mixed');
     await noOverflow(page, course.slug + ' mixed ' + width);
     await page.screenshot({path:path.join(SHOTS, course.slug + '-mixed-' + width + '.png'),fullPage:true});
     await page.locator('.lr-primary').click(); await page.waitForSelector('#notebook');
     assert.equal(await page.locator('#notebook').inputValue(), 'Черновик маршрута: сохранить эту запись');
     assert.equal(new URL(page.url()).search, '?cabinet=peterson-helper');
+    if (course.slug === 'peterson6') assert.equal(await page.locator('.peterson-help').evaluate(node=>getComputedStyle(node).position), 'fixed', 'task helper retains floating placement after resume');
     const restored = await state(page, course);
     assert.equal(restored.tasks[independentId].independent, true);
     assert.equal(restored.tasks[assistedId].independent, false);
@@ -238,7 +293,7 @@ async function readCounts(page) {
   assert.equal(await page.evaluate(()=>window.__peterson6Board.validateState(window.__peterson6Board.getState())),true);
   await context.close();
   assert.deepEqual(errors,[]);
-  console.log(JSON.stringify({status:'PASS',results,extra:['direct chapter and search anchors','export/import task records and study marks','earlier-method history separate','complete saved courses','corrupt saves preserved','denied storage','shared-board personal-storage isolation'],screenshots:8}));
+  console.log(JSON.stringify({status:'PASS',results,extra:['direct chapter and search anchors','export/import task records and study marks','earlier-method history separate','complete saved courses','corrupt saves preserved','denied storage','shared-board personal-storage isolation','Peterson map help flow space, focus, resize and rerender'],screenshots:10}));
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(async()=>{
   if(browser)await browser.close();
   server.close();
