@@ -19,6 +19,14 @@ choices set the same flag as opening help. These are the bounded changes here.
 No new freehand evaluator, automatic proof grading, server storage, assignment,
 room protocol, authentication, mathematical bank or unrelated course changes.
 
+Owner follow-up: add short visual demonstrations of starting, resuming and
+obtaining a section. Extend this same UX package with three optional, controllable
+animations on the map. They show existing control labels and a separate exact
+cube/triangle example, never an answer or action in the current learner's card.
+Keep a static initial frame, manual frames, pause/replay, text alternatives,
+reduced-motion support and keyboard dialog controls. No progress or storage
+changes from watching. Include the demonstrations in the self-contained edition.
+
 ## Acceptance and checks
 
 - The complete route is visible, responsive and keyboard accessible; current
@@ -30,6 +38,9 @@ room protocol, authentication, mathematical bank or unrelated course changes.
 - Old unversioned results remain unclassified, and previously recorded help is
   never removed by retrying or upgrading the course.
 - Shared work retains its exact schema, validation and local-storage isolation.
+- Demonstrations leave the card, camera, draft, storage and hash unchanged;
+  closing or hiding the page stops playback. Check keyboard operation and 320px
+  layout, and independently verify the demonstration's section geometry.
 - Required: `node --test tools/sections-*.test.cjs`, independent course Python
   tests, deterministic offline build, syntax and whitespace checks; focused
   browser checks at 320/1280 and independent technical/learning review.

@@ -159,6 +159,58 @@ body[data-sections-board="true"] .app-header .brand{font-size:.75rem}
  html[data-sections-view="lessons"] .model-caption{min-height:2.1rem;padding:.4rem .6rem;font-size:.78rem}
  .sections-board-note{padding:0 .7rem;font-size:.69rem}
 }
+
+/* Isolated, controllable previews: the course remains untouched underneath. */
+.sections-tour{box-sizing:border-box;width:min(760px,calc(100% - 1rem));max-width:calc(100% - 1rem);max-height:90vh;max-height:90dvh;margin:auto;padding:1rem;border:1px solid #bdd3c3;border-radius:1rem;background:#fffefa;color:#183b2b;overflow:auto;overscroll-behavior:contain;box-shadow:0 1rem 4rem #10271b40}
+.sections-tour::backdrop{background:#10271ba8}
+.sections-tour:not([open]){display:none}
+.sections-tour-fallback{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);margin:0;z-index:10002}
+.sections-tour-shade{position:fixed;inset:0;z-index:10001;background:#10271ba8}
+.sections-tour [hidden],.sections-tour-shade[hidden]{display:none!important}
+.sections-tour *{box-sizing:border-box;min-width:0}
+.sections-tour-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.5rem}
+.sections-tour-header h2{font-size:1.25rem;line-height:1.3;margin:0}
+.sections-tour button{min-height:44px;padding:.55rem .8rem;border-radius:.6rem;white-space:normal;overflow-wrap:anywhere;line-height:1.35}
+.sections-tour button:focus-visible,.sections-tour summary:focus-visible{outline:3px solid #2864c6;outline-offset:2px}
+.sections-tour-header button{flex:0 0 auto;font-size:.85rem}
+.sections-tour-notice,.sections-tour-example-note{font-size:.82rem;line-height:1.45;margin:.35rem 0 .65rem;color:#51675a}
+.sections-tour-example-note{border-left:3px solid #98bca3;padding-left:.6rem}
+.sections-tour-media{width:100%;border:1px solid #d6e3d9;border-radius:.8rem;background:#f5f9f2;overflow:hidden}
+.sections-tour-model .model-svg{display:block;width:100%;height:300px;max-height:36dvh;touch-action:none}
+.sections-tour-model .model-plane{fill:#b4dccc;fill-opacity:.55;stroke:#4c936c;stroke-width:1.4}
+.sections-tour-model .model-segment{stroke:#196d48;stroke-width:3}
+.sections-tour-model .model-segment.current{stroke:#b86526;stroke-width:4}
+.sections-tour-model .model-final{fill:#75bf9c;fill-opacity:.38;stroke:#196d48;stroke-width:2}
+.sections-tour-caption{min-height:112px;margin:.8rem 0 .5rem}
+.sections-tour-caption h3{font-size:1.08rem;line-height:1.4;margin:0 0 .35rem}
+.sections-tour-caption p{font-size:.94rem;line-height:1.6;margin:0;overflow-wrap:anywhere}
+.sections-tour-counter{font-size:.78rem;color:#5c7062;margin:.4rem 0}
+.sections-tour-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:.6rem 0 .9rem}
+.sections-tour-controls button{font-size:.88rem}
+.sections-tour-controls [data-tour-action="play"]{background:#196d48;color:#fff;border-color:#196d48}
+.sections-tour-controls button:disabled{opacity:.5;cursor:default}
+.sections-tour details{margin:.6rem 0 0;padding:0 .7rem;border:1px solid #d6e3d9;border-radius:.65rem}
+.sections-tour summary{min-height:44px;display:flex;align-items:center;font-size:.88rem;cursor:pointer}
+.sections-tour details ol{margin:.3rem 0 1rem;padding-left:1.2rem}
+.sections-tour details li{padding:.35rem 0;font-size:.88rem;line-height:1.55}
+.sections-tour details li p{margin:.25rem 0}
+.sections-tour-mini{padding:1rem;min-height:230px;pointer-events:none;user-select:none}
+.sections-tour-mini-brand{font-size:.8rem;font-weight:750;margin-bottom:.6rem;color:#496450}
+.sections-tour-mini-nav{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.85rem}
+.sections-tour-mini-button{display:block;border:1px solid #c7d7ca;border-radius:.5rem;padding:.65rem .8rem;font-size:.9rem;font-weight:600;line-height:1.4;color:#3d5643;background:#fff;overflow-wrap:anywhere}
+.sections-tour-mini-nav .sections-tour-mini-button{font-size:.75rem;padding:.45rem .55rem}
+.sections-tour-mini-button.is-active{border-color:#196d48;background:#196d48;color:#fff;box-shadow:0 0 0 3px #d9ecdf}
+.sections-tour-mini-panel{border:1px solid #d1dfd4;background:#fff;border-radius:.7rem;padding:.9rem}
+.sections-tour-mini-panel>strong{display:block;font-size:1rem;line-height:1.45;margin-bottom:.5rem}
+.sections-tour-mini-panel>p{font-size:.86rem;line-height:1.5;margin:.4rem 0 .65rem}
+.sections-tour-mini-eyebrow{display:block;font-size:.7rem;color:#57715d;margin-bottom:.35rem}
+.sections-tour-mini-node{display:inline-flex;width:2.4rem;height:2.4rem;align-items:center;justify-content:center;border:1px solid #c6d8c9;border-radius:50%;margin:.3rem .6rem .1rem 0;font-size:.9rem;background:#edf4ec}
+.sections-tour-mini-node.is-active{background:#196d48;color:#fff}
+@media(max-width:480px){.sections-tour{padding:.75rem;border-radius:.8rem}.sections-tour-header{gap:.4rem}.sections-tour-header h2{font-size:1.06rem}.sections-tour-header button{font-size:.78rem;padding:.5rem .6rem}.sections-tour-model .model-svg{height:240px;max-height:31dvh}.sections-tour-mini{padding:.7rem;min-height:215px}.sections-tour-mini-panel{padding:.75rem}.sections-tour-mini-panel>strong{font-size:.92rem}.sections-tour-caption{min-height:140px}.sections-tour-caption h3{font-size:.98rem}.sections-tour-caption p{font-size:.87rem;line-height:1.55}.sections-tour-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.sections-tour-controls button{font-size:.85rem}}
+@media(prefers-reduced-motion:reduce){.sections-tour *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.sections-tour,.sections-tour-shade{display:none!important}}
+
+.sections-tour-links{display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem 0 .2rem}.sections-tour-links button{min-height:44px;max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
 </style>
 </head>
 <body>
@@ -1480,6 +1532,12 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     const overview=el('section',{class:'path-summary','aria-label':'Ход работы по курсу'});
     overview.append(p('Начато этапов: '+started+' из '+path.length,'path-summary-count'),p('Проверены выборы на новом примере: '+verified+' из '+path.length,'path-summary-count'),p('Чертёж и доказательство проверяем отдельно.','small muted'));
     if(resume)overview.append(btn('Продолжить: '+saved.title,()=>openLesson(saved.id),'primary',{'data-action':'path-resume'}));
+    const tours=el('div',{class:'sections-tour-links'});
+    [['start','Как начать'],['resume','Как продолжить'],['construct','Как получается сечение']].forEach(([kind,label])=>{
+      const trigger=btn('▶ '+label,()=>window.SECTIONS_TOUR?.open(kind,trigger),'ghost',{'data-tour-open':kind});
+      tours.append(trigger);
+    });
+    overview.append(disclosure('Как заниматься · короткие показы',[tours],'sections-tours'));
     portal.append(overview);
     const box=el('section',{class:'master-panel gentle-stage','data-stage-id':stage.id,'aria-labelledby':'path-stage-title'});
     const kindStages=path.filter(s=>s.kind===stage.kind),kindIndex=kindStages.findIndex(s=>s.id===stage.id)+1,kindLabel=stage.kind==='starter'?'Начальная ступень':stage.kind==='bridge'?'Подготовка к методу':'Основной этап';
@@ -1629,6 +1687,255 @@ window.COURSE={"title":"Сечения с нуля","subtitle":"От одной 
     if(linkedLesson.pathStageId)state.path.stageId=linkedLesson.pathStageId;
   }
   show(['map','lessons','practice','labs','control','teacher'].includes(state.view)?state.view:'map',false);
+})();
+
+(function () {
+  'use strict';
+  // A teaching preview is isolated from the course, its storage and board state.
+  if (window.SECTIONS_BOARD_SESSION || window.SECTIONS_TOUR) return;
+  const api = window.SECTIONS_APP;
+  if (!api || typeof api.createScene !== 'function') return;
+  const motion = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  let dialog, shade, heading, notice, media, caption, counter, transcript, playButton, previousButton, nextButton, repeatButton;
+  let opened = false, nativeModal = false, opener = null, timer = null, playing = false, scene = null;
+  let kind = 'start', position = 0, frames = [], camera = { yaw: -2.14, pitch: -.4 };
+  const delay = 3200;
+
+  function el(tag, attrs, text) {
+    const node = document.createElement(tag);
+    for (const [name, value] of Object.entries(attrs || {})) {
+      if (name === 'class') node.className = value;
+      else node.setAttribute(name, String(value));
+    }
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+  function button(label, action, fn) {
+    const node = el('button', { type: 'button', 'data-tour-action': action }, label);
+    node.addEventListener('click', fn); return node;
+  }
+  function textOf(selector, fallback) {
+    const text = document.querySelector(selector)?.textContent?.trim();
+    return text ? text.slice(0, 180) : fallback;
+  }
+  function previewItem(text, active, className) {
+    return el('span', { class: (className || 'sections-tour-mini-button') + (active ? ' is-active' : '') }, text);
+  }
+  function makeFrames(selected) {
+    if (selected === 'construct') return [
+      { title: 'Сначала прочитай условие', text: 'Точки P, Q и R отмечены на рёбрах AB, AD и AE куба. Построй сечение плоскостью PQR.', count: 0, plane: null },
+      { title: '1. Назови грань для P и Q', text: 'P лежит на AB, а Q — на AD. Эти рёбра принадлежат грани ABCD. Сначала выделяем её плоскость; линию пока не проводим.', count: 0, plane: 'ABCD' },
+      { title: 'Проведи PQ в грани ABCD', text: 'P и Q принадлежат грани ABCD и секущей плоскости. Поэтому отрезок PQ лежит в обеих плоскостях и является стороной сечения.', count: 1, plane: 'ABCD' },
+      { title: '2. Назови грань для Q и R', text: 'Q лежит на AD, а R — на AE. Общая грань этих точек — ADHE. Сначала называем плоскость следующего действия.', count: 1, plane: 'ADHE' },
+      { title: 'Проведи QR в грани ADHE', text: 'Q и R принадлежат грани ADHE и секущей плоскости. Соединяем их и получаем вторую сторону сечения.', count: 2, plane: 'ADHE' },
+      { title: '3. Назови грань для R и P', text: 'R лежит на AE, а P — на AB. Обе точки принадлежат грани ABFE. До последней линии выделяем эту плоскость.', count: 2, plane: 'ABFE' },
+      { title: 'Проведи RP в грани ABFE', text: 'R и P принадлежат грани ABFE и секущей плоскости. Отрезок RP замыкает треугольник PQR.', count: 3, plane: 'ABFE' },
+      { title: 'Сечение — треугольник PQR', text: 'Каждая сторона лежит на грани куба и в секущей плоскости. Плоскость отсекает угол при A: с противоположными гранями она не встречается. Теперь объясни, почему допустима каждая из трёх линий.', count: 3, plane: null, result: true }
+    ];
+    if (selected === 'resume') {
+      const hasSaved = !!document.querySelector('[data-action="path-resume"]');
+      const savedTitle = hasSaved ? textOf('#lesson-title', 'Твоя сохранённая задача') : 'Пример сохранённой задачи';
+      const resumeLabel = textOf('[data-action="path-resume"]', 'Продолжить: …');
+      return [
+        { title: 'Открой «Мой путь»', text: hasSaved ? 'Здесь видны этапы и сохранённое занятие. Кнопка продолжения возвращает к твоей работе.' : 'Это учебный показ. Кнопка продолжения появится после того, как ты начнёшь работу.', view: 'navigation', active: 'map' },
+        { title: 'Найди кнопку «Продолжить: …»', text: 'Название на кнопке подсказывает, какая задача сохранена. Нажми её в самом курсе, когда закроешь показ.', view: 'resume', label: resumeLabel, hasSaved },
+        { title: 'Вернись на точное место', text: 'Откроется та же карточка с твоими шагами, ответом и записью. Незавершённая проверка останется на месте.', view: 'saved', label: savedTitle },
+        { title: 'Выполни оставшееся действие', text: 'Продолжай с сохранённого шага: выбери плоскость, построй линию или проверь ответ — в зависимости от того, где остановился.', view: 'remaining', label: savedTitle }
+      ];
+    }
+    return [
+      { title: 'Открой «Мой путь»', text: 'Начало курса — одна грань и одна точка. Весь маршрут можно посмотреть на карте этапов.', view: 'navigation', active: 'map' },
+      { title: 'Начни с первой грани', text: 'В первом этапе нажми «Начать с первой грани». Откроется короткий пример «Находим одну грань».', view: 'start' },
+      { title: 'Выбери «Сделаем вместе»', text: 'Первый пример показывает одно действие. После него будут похожий пример с опорой и новый пример для твоей попытки.', view: 'mode' },
+      { title: 'Выполни один шаг', text: 'Прочитай, в какой плоскости работаем. Нажми «Выполнить этот шаг» и посмотри, что выделилось на модели.', view: 'step' },
+      { title: 'Перейди к следующему примеру', text: 'Ответь на короткий вопрос. Затем нажми «Следующий пример →». Свой ход работы можно продолжить позже.', view: 'next' }
+    ];
+  }
+  function demoLesson() {
+    const faces = [
+      { id: 'ABCD', label: 'ABCD', vertices: ['A','B','C','D'] },
+      { id: 'EFGH', label: 'EFGH', vertices: ['E','F','G','H'] },
+      { id: 'ABFE', label: 'ABFE', vertices: ['A','B','F','E'] },
+      { id: 'BCGF', label: 'BCGF', vertices: ['B','C','G','F'] },
+      { id: 'CDHG', label: 'CDHG', vertices: ['C','D','H','G'] },
+      { id: 'ADHE', label: 'ADHE', vertices: ['A','D','H','E'] }
+    ];
+    return {
+      id: 'tour-cube-triangle', title: 'Учебный пример: сечение куба PQR',
+      model: {
+        points: { A:[0,0,0], B:[1,0,0], C:[1,1,0], D:[0,1,0], E:[0,0,1], F:[1,0,1], G:[1,1,1], H:[0,1,1], P:[.35,0,0], Q:[0,.55,0], R:[0,0,.70] },
+        edges: [['A','B'],['B','C'],['C','D'],['D','A'],['E','F'],['F','G'],['G','H'],['H','E'],['A','E'],['B','F'],['C','G'],['D','H']],
+        faces, planes: faces, given: ['P','Q','R'], initialCamera: { yaw: -2.14, pitch: -.4 }
+      },
+      steps: [
+        { plane: 'ABCD', points: [], segments: [{ a:'P', b:'Q', kind:'section' }] },
+        { plane: 'ADHE', points: [], segments: [{ a:'Q', b:'R', kind:'section' }] },
+        { plane: 'ABFE', points: [], segments: [{ a:'R', b:'P', kind:'section' }] }
+      ],
+      result: { polygon: ['P','Q','R'] }
+    };
+  }
+  function miniNavigation(active) {
+    const nav = el('div', { class:'sections-tour-mini-nav' });
+    for (const [id, fallback] of [['map','Мой путь'],['lessons','Задачи'],['practice','Практика']]) {
+      nav.append(previewItem(textOf('[data-view="'+id+'"]',fallback),id===active));
+    }
+    return nav;
+  }
+  function renderPreview(frame) {
+    media.replaceChildren(); media.classList.remove('sections-tour-model');
+    const mini = el('div', { class:'sections-tour-mini', 'aria-hidden':'true', inert:'' });
+    mini.append(el('div', { class:'sections-tour-mini-brand' }, 'Сечения с нуля'), miniNavigation(frame.view==='navigation'?'map':null));
+    const panel = el('div', { class:'sections-tour-mini-panel' });
+    if (frame.view === 'navigation') {
+      panel.append(el('strong',{},'Мой путь'),el('p',{},'Одна грань и одна точка'),previewItem('1',true,'sections-tour-mini-node'),previewItem('2',false,'sections-tour-mini-node'),previewItem('3',false,'sections-tour-mini-node'));
+    } else if (frame.view === 'start') {
+      panel.append(el('span',{class:'sections-tour-mini-eyebrow'},'Этап 1 из 26'),el('strong',{},'Одна грань и одна точка'),previewItem('Начать с первой грани',true));
+    } else if (frame.view === 'mode') {
+      panel.append(el('strong',{},'Находим одну грань'),el('p',{},'Посмотрим одно действие'),previewItem('Сделаем вместе',true));
+    } else if (frame.view === 'step') {
+      panel.append(el('strong',{},'Работаем в плоскости'),el('p',{},'Сначала называем грань и нужную точку.'),previewItem('Выполнить этот шаг',true));
+    } else if (frame.view === 'next') {
+      panel.append(el('strong',{},'Один короткий вопрос'),el('p',{},'Проверь понимание'),previewItem('Следующий пример →',true));
+    } else if (frame.view === 'resume') {
+      panel.append(el('strong',{},'Мой путь'),el('p',{},frame.hasSaved?'Твоё сохранённое занятие':'После начала работы'),previewItem(frame.label,true));
+    } else if (frame.view === 'saved') {
+      panel.append(el('strong',{},frame.label),previewItem('Что уже сделали',true),el('p',{},'Шаги · ответ · мои рассуждения'));
+    } else {
+      panel.append(el('strong',{},frame.label),el('p',{},'Сохранённое действие'),previewItem('Продолжай с того места, где остановился',true));
+    }
+    mini.append(panel); media.append(mini);
+  }
+  function controls() {
+    if (!dialog) return;
+    const reduced = !!motion.matches;
+    playButton.disabled = reduced;
+    playButton.textContent = playing ? 'Пауза' : position === frames.length-1 ? 'Смотреть ещё раз' : 'Смотреть';
+    playButton.setAttribute('aria-pressed',String(playing));
+    previousButton.disabled = position===0;
+    nextButton.disabled = position===frames.length-1;
+    notice.textContent = reduced ? 'Без автоматического движения: переключай кадры кнопками «Назад» и «Далее».' : 'Показ; твоя работа не меняется.';
+  }
+  function pause() { if(timer!==null)window.clearTimeout(timer);timer=null;playing=false;controls(); }
+  function schedule() {
+    if (!opened || !playing || motion.matches || document.hidden) { pause(); return; }
+    timer = window.setTimeout(() => {
+      timer=null;
+      if (!opened || !playing || motion.matches || document.hidden) { pause(); return; }
+      if(position<frames.length-1){position++;render();}
+      if(position===frames.length-1)pause();else schedule();
+    },delay);
+  }
+  function render() {
+    const frame=frames[position];
+    media.dataset.tourFrame=String(position);
+    counter.textContent='Кадр '+(position+1)+' из '+frames.length;
+    caption.replaceChildren(el('h3',{id:'sections-tour-frame-title'},frame.title),el('p',{},frame.text));
+    if(kind==='construct') {
+      media.classList.add('sections-tour-model');
+      if(!scene) {
+        media.replaceChildren();
+        scene=api.createScene(media,demoLesson(),value=>{camera={...value};});
+        media.querySelector('svg')?.setAttribute('aria-label','Учебная модель куба с точками P, Q и R. Можно повернуть мышью или стрелками.');
+      }
+      scene.update({viewCount:frame.count,planeId:frame.plane,planeView:false,camera:{...camera},showHelpers:true,cleanView:false,showResult:!!frame.result});
+    } else renderPreview(frame);
+    controls();
+  }
+  function go(delta) { pause();position=Math.max(0,Math.min(frames.length-1,position+delta));render(); }
+  function repeat() { pause();position=0;camera={yaw:-2.14,pitch:-.4};render(); }
+  function togglePlay() {
+    if(playing){pause();return;}
+    if(motion.matches||document.hidden)return;
+    if(position===frames.length-1){position=0;render();}
+    playing=true;controls();schedule();
+  }
+  function focusable() {
+    return [...dialog.querySelectorAll('button:not([disabled]),summary,a[href],input:not([disabled]),[tabindex="0"]')].filter(node=>{
+      if(node.closest('[hidden]'))return false;
+      const closed=node.closest('details:not([open])');
+      return !closed||node===closed.querySelector('summary');
+    });
+  }
+  function finish(restoreFocus) {
+    if(!opened)return;
+    opened=false;pause();scene?.destroy();scene=null;
+    shade.hidden=true;dialog.classList.remove('sections-tour-fallback');dialog.removeAttribute('open');
+    const target=opener;opener=null;
+    if(restoreFocus&&target?.isConnected&&typeof target.focus==='function')target.focus({preventScroll:true});
+  }
+  function close(restoreFocus=true) {
+    if(!opened)return;
+    if(nativeModal&&typeof dialog.close==='function')dialog.close();
+    finish(restoreFocus);
+  }
+  function ensureDialog() {
+    if(dialog)return;
+    shade=el('div',{class:'sections-tour-shade',hidden:''});
+    dialog=el('dialog',{class:'sections-tour','data-sections-tour':'','aria-labelledby':'sections-tour-title','aria-describedby':'sections-tour-notice',tabindex:'-1'});
+    const top=el('header',{class:'sections-tour-header'});
+    heading=el('h2',{id:'sections-tour-title'});
+    top.append(heading,button('Закрыть','close',()=>close()));
+    notice=el('p',{id:'sections-tour-notice',class:'sections-tour-notice'});
+    const modelNote=el('p',{class:'sections-tour-example-note'},'Учебный пример. В заданиях будут другие точки.');
+    modelNote.dataset.tourExample='';
+    media=el('div',{class:'sections-tour-media','data-tour-frame':'0'});
+    caption=el('section',{class:'sections-tour-caption','aria-live':'polite','aria-atomic':'true'});
+    counter=el('p',{class:'sections-tour-counter'});
+    const actions=el('div',{class:'sections-tour-controls','aria-label':'Управление показом'});
+    previousButton=button('Назад','previous',()=>go(-1));
+    playButton=button('Смотреть','play',togglePlay);
+    nextButton=button('Далее','next',()=>go(1));
+    repeatButton=button('Сначала','repeat',repeat);
+    actions.append(previousButton,playButton,nextButton,repeatButton);
+    const text=el('details',{'data-tour-transcript':''});
+    text.append(el('summary',{},'Все шаги текстом'));transcript=el('ol');text.append(transcript);
+    dialog.append(top,notice,modelNote,media,caption,counter,actions,text);
+    document.body.append(shade,dialog);
+    dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
+    dialog.addEventListener('close',()=>finish(true));
+    shade.addEventListener('click',()=>close());
+    dialog.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();close();return;}
+      if(event.key!=='Tab')return;
+      const nodes=focusable(),first=nodes[0],last=nodes[nodes.length-1];
+      if(!first){event.preventDefault();dialog.focus();return;}
+      if(event.shiftKey&&(document.activeElement===first||document.activeElement===dialog)){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&(document.activeElement===last||document.activeElement===dialog)){event.preventDefault();first.focus();}
+    });
+    document.addEventListener('focusin',event=>{
+      if(opened&&!dialog.contains(event.target))(focusable()[0]||dialog).focus({preventScroll:true});
+    });
+  }
+  function open(selected,trigger) {
+    if(!['start','resume','construct'].includes(selected))return false;
+    ensureDialog();pause();scene?.destroy();scene=null;media.replaceChildren();
+    const candidate=trigger||document.activeElement;
+    if(candidate&&!dialog.contains(candidate))opener=candidate;
+    kind=selected;position=0;frames=makeFrames(kind);camera={yaw:-2.14,pitch:-.4};
+    dialog.dataset.tourKind=kind;
+    heading.textContent=kind==='start'?'Как начать курс':kind==='resume'?'Как продолжить занятие':'Как построить сечение';
+    const exampleNote=dialog.querySelector('[data-tour-example]');
+    const emptyResume=kind==='resume'&&!document.querySelector('[data-action="path-resume"]');
+    exampleNote.hidden=kind!=='construct'&&!emptyResume;
+    exampleNote.textContent=emptyResume?'Учебный показ. Сохранённого занятия пока нет.':'Учебный пример. В заданиях будут другие точки.';
+    transcript.replaceChildren(...frames.map(frame=>{const item=el('li');item.append(el('strong',{},frame.title),el('p',{},frame.text));return item;}));
+    dialog.querySelector('[data-tour-transcript]').open=false;
+    if(!opened){
+      opened=true;nativeModal=false;
+      if(typeof dialog.showModal==='function'){
+        try{dialog.showModal();nativeModal=true;}catch(_){nativeModal=false;}
+      }
+      if(!nativeModal){dialog.setAttribute('open','');dialog.setAttribute('aria-modal','true');dialog.setAttribute('role','dialog');dialog.classList.add('sections-tour-fallback');shade.hidden=false;}
+    }
+    render();dialog.querySelector('[data-tour-action="close"]').focus({preventScroll:true});
+    return true;
+  }
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+  window.addEventListener('pagehide',()=>close(false));
+  if(typeof motion.addEventListener==='function')motion.addEventListener('change',()=>{if(motion.matches)pause();controls();});
+  else if(typeof motion.addListener==='function')motion.addListener(()=>{if(motion.matches)pause();controls();});
+  window.SECTIONS_TOUR=Object.freeze({open});
 })();
 </script>
 </body>

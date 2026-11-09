@@ -233,6 +233,41 @@ async function standalone(browser, publicOrigin, errors) {
         await page.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-path-map-' + width + '.png') });
       }
     }
+    const beforeTour = await personal(page);
+    await page.locator('.sections-tours > summary').click();
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const kind of ['start', 'resume', 'construct']) {
+        const trigger = page.locator('[data-tour-open="' + kind + '"]');
+        await trigger.click();
+        const dialog = page.locator('[data-sections-tour]');
+        await dialog.waitFor({ state: 'visible' });
+        assert.equal(await dialog.locator('[data-tour-frame]').getAttribute('data-tour-frame'), '0');
+        while (await dialog.locator('[data-tour-action="next"]').isEnabled()) await dialog.locator('[data-tour-action="next"]').click();
+        const bounds = await dialog.evaluate(node => {
+          const box = node.getBoundingClientRect();
+          return { left: box.left, right: box.right, top: box.top, bottom: box.bottom,
+            width: innerWidth, height: innerHeight, scroll: node.scrollWidth, client: node.clientWidth,
+            controls: [...node.querySelectorAll('button')].map(button => button.getBoundingClientRect().height) };
+        });
+        assert(bounds.left >= 0 && bounds.right <= bounds.width + 1 && bounds.top >= 0 && bounds.bottom <= bounds.height + 1, 'tour remains in viewport');
+        assert(bounds.scroll <= bounds.client + 1 && bounds.controls.every(height => height >= 44), 'tour has no horizontal overflow and usable controls');
+        if (kind === 'construct') {
+          assert.equal(await dialog.locator('[data-segment]').count(), 3);
+          if (process.env.SECTIONS_SHOTS) await page.screenshot({ path: path.join(process.env.SECTIONS_SHOTS, 'sections-tour-section-' + width + '.png') });
+        }
+        await dialog.press('Escape');
+        assert.equal(await trigger.evaluate(node => document.activeElement === node), true, 'tour returns keyboard focus');
+        assert.deepEqual(await personal(page), beforeTour, 'watching does not change personal work');
+      }
+    }
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.locator('[data-tour-open="construct"]').click();
+    assert.equal(await page.locator('[data-tour-action="play"]').isEnabled(), false);
+    await page.locator('[data-tour-action="next"]').click();
+    assert.equal(await page.locator('[data-tour-frame]').getAttribute('data-tour-frame'), '1');
+    await page.locator('[data-tour-action="close"]').click();
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.getByRole('button', { name: 'Начать с первой грани', exact: true }).click();
     assert.equal(await page.locator('#lesson-title').textContent(), 'Находим одну грань');
     assert.equal(await page.evaluate(() => typeof window.__sectionsBoard), 'undefined');

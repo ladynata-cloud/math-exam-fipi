@@ -144,3 +144,55 @@ body[data-sections-board="true"] .app-header .brand{font-size:.75rem}
  html[data-sections-view="lessons"] .model-caption{min-height:2.1rem;padding:.4rem .6rem;font-size:.78rem}
  .sections-board-note{padding:0 .7rem;font-size:.69rem}
 }
+
+/* Isolated, controllable previews: the course remains untouched underneath. */
+.sections-tour{box-sizing:border-box;width:min(760px,calc(100% - 1rem));max-width:calc(100% - 1rem);max-height:90vh;max-height:90dvh;margin:auto;padding:1rem;border:1px solid #bdd3c3;border-radius:1rem;background:#fffefa;color:#183b2b;overflow:auto;overscroll-behavior:contain;box-shadow:0 1rem 4rem #10271b40}
+.sections-tour::backdrop{background:#10271ba8}
+.sections-tour:not([open]){display:none}
+.sections-tour-fallback{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);margin:0;z-index:10002}
+.sections-tour-shade{position:fixed;inset:0;z-index:10001;background:#10271ba8}
+.sections-tour [hidden],.sections-tour-shade[hidden]{display:none!important}
+.sections-tour *{box-sizing:border-box;min-width:0}
+.sections-tour-header{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.5rem}
+.sections-tour-header h2{font-size:1.25rem;line-height:1.3;margin:0}
+.sections-tour button{min-height:44px;padding:.55rem .8rem;border-radius:.6rem;white-space:normal;overflow-wrap:anywhere;line-height:1.35}
+.sections-tour button:focus-visible,.sections-tour summary:focus-visible{outline:3px solid #2864c6;outline-offset:2px}
+.sections-tour-header button{flex:0 0 auto;font-size:.85rem}
+.sections-tour-notice,.sections-tour-example-note{font-size:.82rem;line-height:1.45;margin:.35rem 0 .65rem;color:#51675a}
+.sections-tour-example-note{border-left:3px solid #98bca3;padding-left:.6rem}
+.sections-tour-media{width:100%;border:1px solid #d6e3d9;border-radius:.8rem;background:#f5f9f2;overflow:hidden}
+.sections-tour-model .model-svg{display:block;width:100%;height:300px;max-height:36dvh;touch-action:none}
+.sections-tour-model .model-plane{fill:#b4dccc;fill-opacity:.55;stroke:#4c936c;stroke-width:1.4}
+.sections-tour-model .model-segment{stroke:#196d48;stroke-width:3}
+.sections-tour-model .model-segment.current{stroke:#b86526;stroke-width:4}
+.sections-tour-model .model-final{fill:#75bf9c;fill-opacity:.38;stroke:#196d48;stroke-width:2}
+.sections-tour-caption{min-height:112px;margin:.8rem 0 .5rem}
+.sections-tour-caption h3{font-size:1.08rem;line-height:1.4;margin:0 0 .35rem}
+.sections-tour-caption p{font-size:.94rem;line-height:1.6;margin:0;overflow-wrap:anywhere}
+.sections-tour-counter{font-size:.78rem;color:#5c7062;margin:.4rem 0}
+.sections-tour-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.45rem;margin:.6rem 0 .9rem}
+.sections-tour-controls button{font-size:.88rem}
+.sections-tour-controls [data-tour-action="play"]{background:#196d48;color:#fff;border-color:#196d48}
+.sections-tour-controls button:disabled{opacity:.5;cursor:default}
+.sections-tour details{margin:.6rem 0 0;padding:0 .7rem;border:1px solid #d6e3d9;border-radius:.65rem}
+.sections-tour summary{min-height:44px;display:flex;align-items:center;font-size:.88rem;cursor:pointer}
+.sections-tour details ol{margin:.3rem 0 1rem;padding-left:1.2rem}
+.sections-tour details li{padding:.35rem 0;font-size:.88rem;line-height:1.55}
+.sections-tour details li p{margin:.25rem 0}
+.sections-tour-mini{padding:1rem;min-height:230px;pointer-events:none;user-select:none}
+.sections-tour-mini-brand{font-size:.8rem;font-weight:750;margin-bottom:.6rem;color:#496450}
+.sections-tour-mini-nav{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.85rem}
+.sections-tour-mini-button{display:block;border:1px solid #c7d7ca;border-radius:.5rem;padding:.65rem .8rem;font-size:.9rem;font-weight:600;line-height:1.4;color:#3d5643;background:#fff;overflow-wrap:anywhere}
+.sections-tour-mini-nav .sections-tour-mini-button{font-size:.75rem;padding:.45rem .55rem}
+.sections-tour-mini-button.is-active{border-color:#196d48;background:#196d48;color:#fff;box-shadow:0 0 0 3px #d9ecdf}
+.sections-tour-mini-panel{border:1px solid #d1dfd4;background:#fff;border-radius:.7rem;padding:.9rem}
+.sections-tour-mini-panel>strong{display:block;font-size:1rem;line-height:1.45;margin-bottom:.5rem}
+.sections-tour-mini-panel>p{font-size:.86rem;line-height:1.5;margin:.4rem 0 .65rem}
+.sections-tour-mini-eyebrow{display:block;font-size:.7rem;color:#57715d;margin-bottom:.35rem}
+.sections-tour-mini-node{display:inline-flex;width:2.4rem;height:2.4rem;align-items:center;justify-content:center;border:1px solid #c6d8c9;border-radius:50%;margin:.3rem .6rem .1rem 0;font-size:.9rem;background:#edf4ec}
+.sections-tour-mini-node.is-active{background:#196d48;color:#fff}
+@media(max-width:480px){.sections-tour{padding:.75rem;border-radius:.8rem}.sections-tour-header{gap:.4rem}.sections-tour-header h2{font-size:1.06rem}.sections-tour-header button{font-size:.78rem;padding:.5rem .6rem}.sections-tour-model .model-svg{height:240px;max-height:31dvh}.sections-tour-mini{padding:.7rem;min-height:215px}.sections-tour-mini-panel{padding:.75rem}.sections-tour-mini-panel>strong{font-size:.92rem}.sections-tour-caption{min-height:140px}.sections-tour-caption h3{font-size:.98rem}.sections-tour-caption p{font-size:.87rem;line-height:1.55}.sections-tour-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.sections-tour-controls button{font-size:.85rem}}
+@media(prefers-reduced-motion:reduce){.sections-tour *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.sections-tour,.sections-tour-shade{display:none!important}}
+
+.sections-tour-links{display:flex;flex-wrap:wrap;gap:.5rem;padding:.7rem 0 .2rem}.sections-tour-links button{min-height:44px;max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
