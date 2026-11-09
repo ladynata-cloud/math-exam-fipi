@@ -1,0 +1,57 @@
+name: Makarychev — audit learning and saved work
+
+on:
+  pull_request:
+    paths:
+      - 'school/**'
+      - 'grade7/index.html'
+      - 'tools/*makarychev*'
+      - 'tools/m9-exercises*'
+      - '.github/workflows/makarychev-audit-learning.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/**'
+      - 'grade7/index.html'
+      - 'tools/*makarychev*'
+      - 'tools/m9-exercises*'
+      - '.github/workflows/makarychev-audit-learning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-learning:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Isolated pinned test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/makarychev-audit" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          node "$RUNNER_TEMP/makarychev-audit/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Inquiry, assistance, old records and saved drafts
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+          NODE_OPTIONS: --max-old-space-size=1024
+        run: |
+          node school/makarychev7/test-audit.cjs
+          node school/makarychev8/test-audit-learning.cjs
+          node tools/textbook-makarychev9-audit.dom.cjs
+          node tools/m9-exercises-audit.test.cjs
+          node tools/workshop-state.test.cjs
+          git diff --check
+      - name: Real browser, first screen, restoration and demonstration isolation
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+        run: node tools/makarychev-audit.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: makarychev-audit-learning
+          path: artifacts/makarychev-audit/
+          if-no-files-found: warn
