@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'school/models.js'
+      - 'school/style.css'
       - 'school/peterson5/**'
       - 'school/peterson6/**'
       - 'courses/vilenkin-5-part-1/**'
@@ -16,6 +17,7 @@ on:
     branches: [main]
     paths:
       - 'school/models.js'
+      - 'school/style.css'
       - 'school/peterson5/**'
       - 'school/peterson6/**'
       - 'courses/vilenkin-5-part-1/**'

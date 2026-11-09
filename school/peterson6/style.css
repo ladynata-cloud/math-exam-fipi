@@ -8,3 +8,7 @@
 
 /* Personal investigations retain the task and the first prediction. */
 .model-inquiry input{display:block;width:100%;max-width:22rem;box-sizing:border-box;font:inherit;padding:10px;margin:8px 0;border:1px solid #789d8d;border-radius:8px}.model-inquiry form{margin:16px 0}.model-inquiry h4{line-height:1.4}.model-inquiry [role="status"]{overflow-wrap:anywhere}.model-inquiry button{min-height:44px}.model-inquiry input:focus-visible{outline:3px solid #b07418;outline-offset:3px}
+
+/* An open personal model must not sit behind the closed floating helper.
+   Keep the same launcher in document flow; an opened helper stays available. */
+body:has(main details.inquiry-model[open]) .peterson-help:has(> .peterson-help-panel[hidden]){position:static;margin:16px auto}
