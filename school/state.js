@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  var DAY=86400000, KEY='mathexam.workshop.v1', TEACHER='mathexam.workshop.teacher.v1';
- function blank(){return {schema:'mathexam-workshop',version:1,route:'5',last:null,seen:[],events:[],skills:{},assignment:null};}
+ function blank(){return {schema:'mathexam-workshop',version:1,route:'5',last:null,seen:[],events:[],skills:{},assignment:null,m9Drafts:{},m9History:[]};}
  function safeObject(x){return x&&typeof x==='object'&&!Array.isArray(x);}
  function validId(x){return typeof x==='string'&&/^[a-z][a-z0-9-]{0,60}$/.test(x);}
  function validate(data,ids){
@@ -17,8 +17,20 @@
   s.events=data.events.map(function(e){if(!safeObject(e)||!known.has(e.skill)||!['learn','practice','check','review','diagnostic'].includes(e.mode)||typeof e.correct!=='boolean'||typeof e.assisted!=='boolean'||typeof e.independent!=='boolean'||!Number.isInteger(e.attempt)||e.attempt<1||e.attempt>100||!Number.isFinite(e.time)||e.time<0||typeof e.fingerprint!=='string'||e.fingerprint.length>700)throw Error('Некорректная запись результата.');return {skill:e.skill,mode:e.mode,correct:e.correct,assisted:e.assisted,independent:e.independent,attempt:e.attempt,time:e.time,fingerprint:e.fingerprint};});
   if(!safeObject(data.skills)||Object.keys(data.skills).length>ids.length)throw Error('Повреждена карта навыков.');
   Object.keys(data.skills).forEach(function(id){var x=data.skills[id];if(!known.has(id)||!safeObject(x)||!Number.isInteger(x.learned)||x.learned<0||x.learned>100000||!Array.isArray(x.checks)||x.checks.length>3000||x.checks.some(function(v){return typeof v!=='string'||v.length>700;})||!Number.isInteger(x.reviews)||x.reviews<0||x.reviews>100000||![x.nextReview,x.lastSuccess].every(function(v){return Number.isFinite(v)&&v>=0;}))throw Error('Некорректные данные навыка.');s.skills[id]={learned:x.learned,checks:Array.from(new Set(x.checks)),reviews:x.reviews,nextReview:x.nextReview,lastSuccess:x.lastSuccess};});
+  s.m9Drafts=sanitizeM9Drafts(data.m9Drafts,known);
+  s.m9History=Array.isArray(data.m9History)?data.m9History.slice(-30).map(function(d){return d&&sanitizeM9Drafts({[d.skill]:d},known)[d.skill];}).filter(Boolean):[];
   if(data.assignment!==null)s.assignment=validateAssignment(data.assignment,ids);
   return s;
+ }
+ function sanitizeM9Drafts(raw,known){
+  var out={};if(!safeObject(raw))return out;
+  Object.keys(raw).slice(0,100).forEach(function(id){var d=raw[id];if(!/^m9f-/.test(id)||!known.has(id)||!safeObject(d)||!['learn','practice','check','review'].includes(d.mode)||!Number.isInteger(d.seed)||d.seed<0||d.seed>1000000||typeof d.prompt!=='string')return;
+   var text=function(v,n){return typeof v==='string'?v.slice(0,n):'';},num=function(v,max){return Number.isInteger(v)?Math.max(0,Math.min(max,v)):0;},flags={};
+   if(safeObject(d.hintLevels))Object.keys(d.hintLevels).slice(0,30).forEach(function(k){if(/^(?:check|[0-9]{1,2})$/.test(k))flags[k]=num(d.hintLevels[k],3);});
+   var log=Array.isArray(d.attemptLog)?d.attemptLog.slice(-20).filter(safeObject).map(function(e){return {value:text(e.value,400),step:num(e.step,30),correct:e.correct===true,assisted:e.assisted!==false,kind:e.kind==='format'?'format':'answer',time:Number.isFinite(e.time)?Math.max(0,e.time):0};}):[];
+   var model=null;if(safeObject(d.modelState)){model={};Object.keys(d.modelState).slice(0,30).forEach(function(k){var v=d.modelState[k];if(/^[a-zA-Z]{1,20}$/.test(k)&&(['string','boolean'].includes(typeof v)||typeof v==='number'&&Number.isFinite(v)||Array.isArray(v)&&v.length<=3&&v.every(function(x){return typeof x==='boolean';})))model[k]=typeof v==='string'?v.slice(0,k==='status'?300:30):v;});}
+   out[id]={skill:id,mode:d.mode,seed:d.seed,prompt:text(d.prompt,1000),step:num(d.step,30),attempt:num(d.attempt,100),assisted:d.assisted!==false||Object.values(flags).some(function(v){return v>0;}),exposed:d.exposed!==false,correct:d.correct===true,input:text(d.input,2000),message:text(d.message,2000),checkIndex:num(d.checkIndex,2),hintLevels:flags,inquiry:{prediction:text(d.inquiry&&d.inquiry.prediction,2000),explanation:text(d.inquiry&&d.inquiry.explanation,2000)},answers:Array.isArray(d.answers)?d.answers.slice(0,30).map(function(v){return text(v,2000);}):[],attemptLog:log,firstAttempt:safeObject(d.firstAttempt)?{value:text(d.firstAttempt.value,400),correct:d.firstAttempt.correct===true,assisted:d.firstAttempt.assisted!==false}:null,modelState:model,time:Number.isFinite(d.time)?Math.max(0,d.time):0};
+  });return out;
  }
  function validateAssignment(a,ids){if(!safeObject(a)||a.schema!=='mathexam-assignment'||a.version!==1||!validId(a.id)||typeof a.title!=='string'||a.title.length>100||!Array.isArray(a.skills)||a.skills.length<1||a.skills.length>30||a.skills.some(function(id){return !ids.includes(id);})||!Number.isInteger(a.seed)||a.seed<1||a.seed>1000000)throw Error('Неверный код задания.');return {schema:a.schema,version:1,id:a.id,title:a.title,skills:Array.from(new Set(a.skills)),seed:a.seed};}
  function load(storage,ids){try{var raw=storage.getItem(KEY);return {state:raw?validate(JSON.parse(raw),ids):blank(),warning:''};}catch(e){return {state:blank(),warning:'Не удалось прочитать прежний прогресс. Он не перезаписан. Скачайте данные для восстановления или явно начните новую запись.',blocked:true};}}
