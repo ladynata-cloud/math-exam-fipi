@@ -65,10 +65,11 @@
     };
     return map[code] || (error.status ? 'Действие не сохранено сервером (' + code + '). Его можно скачать вместе с записью.' : String(code || 'Не удалось выполнить действие.'));
   }
-  function notice(text, error = false) {
+  function notice(text, error = false, kind = '') {
     const node = $(error ? 'errorNotice' : 'notice');
     node.textContent = text;
     node.hidden = !text;
+    node.dataset.kind = kind;
   }
   function saveQueue() {
     try { sessionStorage.setItem(queueKey(), JSON.stringify({outbox, rejected})); }
@@ -102,6 +103,7 @@
       }
     } else snapshot = data;
     connected = true;
+    if ($('errorNotice').dataset.kind === 'connection') notice('', true);
     if (!teacher() && !selected) selected = data.seatId;
     render();
   }
@@ -109,7 +111,15 @@
     if (!credentials || !snapshot || polling || sending || stopped) return;
     polling = true;
     try { accept(await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision)); }
-    catch (error) { connected = false; renderConnection(); if (!outbox.length) notice(errorText(error), true); }
+    catch (error) {
+      connected = false; renderConnection();
+      // A failed read is not a rejected edit. Keep actual rejected-work warnings
+      // and retire only this temporary connection notice after a successful read.
+      if (!outbox.length && !rejected.length) notice(
+        error.status >= 500 || error.status === 429 || error.name === 'AbortError' || error instanceof TypeError
+          ? 'Нет связи с сервером. Сохранённая работа остаётся доступной; подключение восстановится автоматически.'
+          : errorText(error), true, 'connection');
+    }
     finally { polling = false; }
     if (outbox.length) pump();
   }
@@ -157,7 +167,7 @@
       const data = await request('/api/group-lessons/' + credentials.id + '/actions', {method:'POST',body:JSON.stringify(body)});
       outbox.shift(); saveQueue(); accept(data);
       waiters.get(body.opId)?.resolve(data); waiters.delete(body.opId);
-      if (!outbox.length) notice('', true);
+      if (!outbox.length && !rejected.length) notice('', true);
     } catch (error) {
       if (error.status && error.status < 500 && error.status !== 429) {
         outbox.shift(); rejected.push({action:body,error:error.code || error.message,at:new Date().toISOString()});

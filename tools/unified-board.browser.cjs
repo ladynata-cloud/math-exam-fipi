@@ -158,6 +158,20 @@ async function assertFits(page, width) {
   assert.equal(await selected.count(), 1, 'one accessible active material tab');
 }
 
+async function connectionRecovery(page, lessonURL) {
+  const outage = route => route.fulfill({ status: 503, contentType: 'application/json',
+    body: JSON.stringify({ error: 'QA_SIMULATED_OFFLINE' }),
+    headers: { 'Access-Control-Allow-Origin': '*' } });
+  const endpoint = lessonURL + '?after=*';
+  await page.route(endpoint, outage);
+  try {
+    await poll(async () => /Нет связи/.test(await page.locator('#connectionStatus').textContent()), 'disconnected status');
+    await poll(async () => /Нет связи с сервером/.test(await page.locator('#errorNotice').textContent()), 'read outage does not claim a rejected edit');
+  } finally { await page.unroute(endpoint, outage); }
+  await poll(async () => /Все изменения сохранены/.test(await page.locator('#connectionStatus').textContent()), 'connection restored automatically');
+  await poll(async () => !await page.locator('#errorNotice').isVisible(), 'temporary connection warning clears after recovery');
+}
+
 async function main() {
   const site = await staticServer();
   const port = await freePort();
@@ -351,6 +365,12 @@ async function main() {
     await poll(async () => (await read()).presentation.target === null, 'presentation explicitly stopped');
     console.log('PASS presented geometry, pupil isolation and denied peer mutation');
 
+    await connectionRecovery(observer, lessonURL);
+    assert.deepEqual(await work(first.id), allMaterials, 'read outage and recovery do not alter saved work');
+    assert.equal(await pupil.locator('#recoverWorkButton').isVisible(), true, 'actual rejected edit remains recoverable after later successful writes');
+    assert.match(await pupil.locator('#errorNotice').textContent(), /Построение не прошло проверку/, 'successful later writes do not erase the actual rejection warning');
+    console.log('PASS connection recovery distinguishes transient read failure from rejected work');
+
     await teacher.locator('#historyButton').click();
     await teacher.locator('#historyPanel').waitFor({ state: 'visible' });
     await mode(teacher, 'geometry');
@@ -381,6 +401,17 @@ async function main() {
     await mode(pupil, 'geometry');
     const afterRestart = await geometryFrame(pupil);
     assert.deepEqual(await geometry(afterRestart), allMaterials.geometryState);
+    await pupil.setViewportSize({ width: 1280, height: 900 });
+    await mode(teacher, 'board'); await mode(pupil, 'board');
+    const beforeConcurrentInk = (await work(first.id)).strokes;
+    await Promise.all([draw(teacher), draw(pupil)]);
+    await poll(async () => (await work(first.id)).strokes.length === beforeConcurrentInk.length + 2, 'simultaneous teacher and pupil strokes both survive');
+    const concurrentInk = (await work(first.id)).strokes;
+    assert.equal(new Set(concurrentInk.slice(-2).map(stroke => stroke.author)).size, 2, 'concurrent ink retains separate authors');
+    assert.deepEqual((await work(first.id)).geometryState, allMaterials.geometryState, 'concurrent ink preserves geometry');
+    assert.deepEqual((await work(first.id)).trainerState, allMaterials.trainerState, 'concurrent ink preserves trainer');
+    assert.equal((await work(second.id)).strokes.length, 0, 'concurrent ink never leaks into the other pupil workspace');
+    console.log('PASS simultaneous teacher/pupil handwriting retains both authors and all other materials');
     for (const page of [teacher, ...pupils]) {
       for (const frame of page.frames().slice(1)) {
         const url = new URL(frame.url());
