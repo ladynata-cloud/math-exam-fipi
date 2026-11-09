@@ -168,7 +168,13 @@ function createApp(root,options){
   try{if(storage){storage.setItem(key,raw);expected=raw;cache.delete(key);}else cache.set(key,{raw,base:expected});}catch{cache.set(key,{raw,base:expected});status('Не удалось сохранить на устройстве. Текст остаётся в открытой странице.');}
   return true;
  }
- function assisted(){state.assisted=true;return save();}
+ function assisted(){
+  if(locked||!current)return false;
+  // Restoring an already-open disclosure emits a native toggle. Reading old work
+  // must not rewrite it merely to add the new personal outcome fields.
+  if(state.assisted){if(safeRead(key)!==expected){freeze();return false;}return true;}
+  state.assisted=true;return save();
+ }
  function sourceText(source){return catalog.book.edition+' · стр. '+source.printedPages.join(', ')+' · PDF '+source.pdfPages.join(', ')+(source.point?' · пункт '+source.point:'')+(source.exercise?' · № '+source.exercise:'')+(source.subpart?' · '+source.subpart:'')+(source.examTask?' · номер ЕГЭ в книге: '+source.examTask:'');}
  function sourceNode(lesson){const details=el('details');details.append(el('summary','Где это в учебнике?'),el('p',sourceText(lesson.source)));return details;}
  function closeTheory(){if(!dialog)return;theoryTrail.length=0;dialogViewer?.destroy();dialogViewer=null;const old=dialog;dialog=null;if(old.close)old.close();old.remove();old._returnFocus?.focus();}
