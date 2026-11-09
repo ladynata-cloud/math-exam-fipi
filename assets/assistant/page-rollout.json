@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0b22565945c4a6c7e4cefa558b0b3c69359f9b5e",
+  "baseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -283,8 +283,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "45b1a44a5253d69d43e6f31f5a969429dad0c3497c4be0b5ddc7f96d6ca5922f",
-      "afterSha256": "d096e4df5c9e79dfd9d58d943a4f9e8c26a40702612e828ff9708290fa1f95a6",
+      "beforeSha256": "aad18ecc6808eb2e82b17b4255c5154e0732cc7eb6be274af6d48f901364169f",
+      "afterSha256": "dc6924307d9f90060bcc571a40c06ffa7970701279c594a70bf8745d79e54ae9",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -298,8 +298,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "641f0ab08d71a5e2d517391228a8ebb3e04ddf8771c7d579c3510f8c57a0e059",
-      "afterSha256": "aa95826e293c52551c53ac2ebbbbed973034ec4c665c9db9c2161d855cc8d148",
+      "beforeSha256": "0d929b7e730854732e2d49746445bcf3e03a607574f3a957e49b9f38a01b53ae",
+      "afterSha256": "14892d55587b03dad2559cf78cdf54a6d02668617ca56fb3393843f748530fd8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "235575c466187e5a5ad59ebbbeab2baa31102db93040098ee11657d08c5ac611",
-      "afterSha256": "8ace32a9b021ed5c6597b1ae990539936b245d8bea0ff15f7a36255aa48f897b",
+      "beforeSha256": "27c286e4550b3532311209fefcdce366c58fee74a01859b084be263ba827aa38",
+      "afterSha256": "2f4275a362aae99d2a9f7e9c0c7aebd91fe6fb66db7eacff233b608c35e97f46",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -3997,6 +3997,25 @@
       "changedPaths": [
         "ege-baza/index.html",
         "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed09d8ad2a49d0c3fd69cb04475a7a8198282ff7",
+      "sourceBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "task": "docs/tasks/PROFILE_LEARNING_JOURNEY_20261109.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c6394df6768fb2156758bd870ac73bcc23fcc2c4",
+      "sourceBaseSha": "72197eddd86f331d2cdc3f88211965e47ec2e8b0",
+      "task": "docs/tasks/OGE8_INDEPENDENT_ACCEPTANCE_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },

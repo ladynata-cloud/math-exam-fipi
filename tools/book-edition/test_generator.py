@@ -42,8 +42,9 @@ class GeneratorTests(unittest.TestCase):
         second, _ = builder.build(edition)
         self.assertEqual(first, second)
         # PR442 already added the general-home stylesheet to the source closure.
-        # This pins that exact addition; published v1/v2 bytes remain immutable.
-        self.assertEqual(len(first), 228)
+        # Main 30e1af62 adds exactly four course-map dependencies, checked below.
+        # This is the future candidate closure; published v1/v2 stay immutable.
+        self.assertEqual(len(first), 232)
         self.assertEqual(first[edition.prefix + "assets/math-home.css"],
                          (ROOT / "assets/math-home.css").read_bytes())
         # The navigation-only continuation adds exactly these two dependencies.
@@ -57,6 +58,41 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
         self.assertIn(b'"version":"v2"', first[edition.prefix + "edition-assets/bootstrap.js"])
         self.assertIn("Редакция 31.10.2026 · v2.".encode(), first[edition.alias + "01/index.html"])
+
+    def test_reviewed_course_map_closure_retains_dependencies_and_storage_boundary(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        # Exact additions from the published OGE map (30e1af62), not a relaxed
+        # minimum count. Replacing only the entry HTML with pre-map 8bd4c47
+        # reproduces 228 outputs; these four paths are the complete 232-228 delta.
+        reviewed = {
+            "oge/learning-map-view.js": [],
+            "oge/learning-map.css": [],
+            "oge/learning-map.js": ["oge/registry.js"],
+            "oge/registry.js": [],
+        }
+        sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        entry = "trainers/oge-course/index.html"
+        self.assertTrue(set(reviewed).issubset(sources[entry]["dependencies"]))
+        for asset, dependencies in reviewed.items():
+            with self.subTest(asset=asset):
+                self.assertIn(asset, sources)
+                self.assertEqual(sources[asset]["dependencies"], dependencies)
+                self.assertEqual(sources[asset]["sha256"],
+                                 hashlib.sha256((ROOT / asset).read_bytes()).hexdigest())
+                self.assertIn(edition.prefix + asset, output)
+                self.assertTrue(output[edition.prefix + asset])
+        page = output[edition.prefix + entry].decode()
+        bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
+        self.assertEqual(page.count(bootstrap), 1)
+        for asset in reviewed:
+            frozen = '/' + edition.prefix + asset + '?v=20261109'
+            self.assertEqual(page.count(frozen), 1)
+            self.assertNotIn('"/' + asset, page)
+            self.assertLess(page.index(bootstrap), page.index(frozen))
+        # The map reads localStorage only after the fixed-edition bootstrap has
+        # installed its namespace. Existing package/runtime tests verify isolation.
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
 
     def test_reviewed_task13_redirects_preserve_query_and_fragment(self):
         source = "trainers/oge-task13-inequalities.html"
