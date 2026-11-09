@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "a12bc32db0016ad3ebfc2de21196be2a54681005",
+  "baseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -728,8 +728,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "60c0b193f553018803aa35d3615c1a8081728aaf000eb06196fd7d031f597ac7",
-      "afterSha256": "323a632b81f92db426c256c9a0faba486a2d35517da9d57ef0852092b7f5858f",
+      "beforeSha256": "d5d99bab6eb23f54b724565d4461ee9a672a98f3cecee3cd96b3c636df9675d2",
+      "afterSha256": "fb212a61a3c64a95bb88d31c4c986c3bfdff06327a868d710c2cad6d724f1a71",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
@@ -783,8 +783,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "0a65e384fc0250e70460893ba6f4d0a6a1f31477eb1895fee9d66d9c8ed868f4",
-      "afterSha256": "4f7de92e280f6ce5c2170aec13fda504d3bcd204b3d7d2dab35f8c767a45d3f4",
+      "beforeSha256": "a704136cd0ee413ad0f0a843f21a9270a0864d3669f496f2b9061a490bc6ad97",
+      "afterSha256": "c1591035779b8f46125322f1b554edf4072ca4883cbaf3e58b3e725ce32db8f0",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -2028,8 +2028,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "1d68505349632fb15fe612a61160f351863c22eda0ce9ae64dcfb14ffcd9b4f4",
-      "afterSha256": "eaedf6d8ec69be9b7ba8fad458a96d8d47c764c6a4e7fe16efe20c8e05615395",
+      "beforeSha256": "9487d78249477eb839dc094f454419a23f5fb9962e019bd4a67a82b785aac7f2",
+      "afterSha256": "08f0ff4ac805d7f1a53c9b4afe45b130ddce5d8d61ed63556f8d9388eace9e86",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2098,8 +2098,8 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "8c4d159baa5e5aa92b3dfa6f0fdffd489d3907e5009ae5749b879981ef42288b",
-      "afterSha256": "7c1d1f49773470338c6eba4f7babf4a0224a688b191fce76f18212d431cd61a1",
+      "beforeSha256": "28f1a7c30579e464d661865a2c2ebd6c8d5bc7b02efb123c8ec7aebee2a64ebd",
+      "afterSha256": "b7d9a50f8ccc8dccdabd0e235927ea0ea05819cdc2b98774f7df02d284040aad",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
@@ -2138,8 +2138,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "5331b3a637073bcd81e8b248fd8fbeddf98472c425ed6f969f866a6e9b77b0de",
-      "afterSha256": "b3b90948831e9e3b4f6bf4b23d1d3aa7eb09641aa59694c856a056c0dbe67766",
+      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
+      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -3083,8 +3083,8 @@
       "placement": "before-head-close"
     },
     "trainers/vpr-math/index.html": {
-      "beforeSha256": "a6a0f933a62f662c6123fa965d77707a9aec7788f6ff3bf991fdcb94748fd414",
-      "afterSha256": "36d13799bddb3faf25eafe02b09658dca32dea592e5a4df26018218b514cd797",
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3974,14 +3974,10 @@
     },
     {
       "previousBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
-      "sourceBaseSha": "a12bc32db0016ad3ebfc2de21196be2a54681005",
-      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "sourceBaseSha": "56d8806360d3d3f662b1cf0662f59dd9826080e6",
+      "task": "docs/tasks/VPR_LEARNING_PROGRESS_2026-11-09.md",
       "changedPaths": [
-        "geometry-course/atlas/triangle-sas.html",
-        "geometry-course/index.html",
-        "grade7/index.html",
-        "school/index.html",
-        "stereo-course/index.html"
+        "trainers/vpr-math/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
