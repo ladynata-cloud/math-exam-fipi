@@ -117,3 +117,26 @@ canvas.preview-board{display:block;width:min(100%,calc(100cqh * 4 / 3));height:a
   .workspace-panels[data-surface=geometry]{min-height:580px}.geometry-host>.group-trainer-frame{min-height:540px!important}
 }
 @media(max-width:420px){.material-tab{font-size:11px;padding:8px 3px}.panel-heading{padding:9px}.panel-status{font-size:10px}}
+
+/* A local SpaceMath focus fills the host board, not just its short iframe. */
+body[data-geometry-focus=true]{overflow:hidden}
+body[data-geometry-focus=true] .global-header{position:fixed;inset:0 0 auto;z-index:1002;min-height:36px;height:36px;padding:3px 8px;display:flex;background:#fff;border-bottom:1px solid var(--line)}
+body[data-geometry-focus=true] .global-header .brand,
+body[data-geometry-focus=true] .global-header .lesson-heading,
+body[data-geometry-focus=true] .global-header .role-badge{display:none}
+body[data-geometry-focus=true] .global-header .session-info{width:100%;margin:0;padding:0;justify-content:flex-start;gap:6px}
+body[data-geometry-focus=true] .global-messages{position:fixed;top:36px;left:0;right:0;z-index:1003;padding:0 8px;pointer-events:none}
+body[data-geometry-focus=true] .global-messages .notice{display:none}
+body[data-geometry-focus=true] .global-messages .error-notice,
+body[data-geometry-focus=true] .global-messages #recoverWorkButton{pointer-events:auto}
+body[data-geometry-focus=true] #app>.lesson-toolbar,
+body[data-geometry-focus=true] #roster,
+body[data-geometry-focus=true] #overview,
+body[data-geometry-focus=true] #sheetTabs,
+body[data-geometry-focus=true] #teacherWatch,
+body[data-geometry-focus=true] #focus>:not(#workspacePanels),
+body[data-geometry-focus=true] #workspacePanels>:not(#geometryPanel){display:none!important}
+body[data-geometry-focus=true] #geometryPanel{position:fixed;inset:36px 0 0;z-index:1001;display:flex!important;min-height:0!important;height:auto!important;margin:0;border:0;border-radius:0;box-shadow:none;background:#fff}
+body[data-geometry-focus=true] #geometryPanel>.panel-heading{display:none}
+body[data-geometry-focus=true] #geometryHost{min-height:0;flex:1}
+body[data-geometry-focus=true] #geometryHost>.group-trainer-frame{min-height:0!important;height:100%!important;flex:1}

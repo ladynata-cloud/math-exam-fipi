@@ -51,3 +51,71 @@
     align-self: start;
   }
 }
+
+/* Workspace controls change only this participant's layout, not the model. */
+.workspace-controls{display:flex;align-items:center;gap:6px;max-width:1800px;margin:0 auto;padding:10px 20px 0}
+.workspace-controls button{min-height:40px;font-size:12px;padding:7px 10px}
+.workspace-controls button[aria-expanded=true],.workspace-controls button[aria-pressed=true]{background:#eaf5ea;border-color:#7caa8c}
+#workspace-focus-toggle{margin-left:auto}
+html[data-workspace-ready=true] .workspace{padding-top:10px}
+html[data-workspace-tools=closed] #tools>:not([data-tool=move]):not([data-tool=point]){display:none}
+html[data-workspace-objects=closed] .inspector{display:none}
+html[data-workspace-objects=closed] .workspace{grid-template-columns:minmax(0,1fr)}
+html[data-workspace-ready=true] .construction-bar{min-height:56px;padding:8px 3px}
+html[data-spacemath-embedded=true] .app-header{min-height:46px;padding:6px 10px;gap:8px}
+html[data-spacemath-embedded=true] .app-header .brand,
+html[data-spacemath-embedded=true] .save-status,
+html[data-spacemath-embedded=true] .file-actions,
+html[data-spacemath-embedded=true] .help{display:none!important}
+html[data-spacemath-embedded=true] .document-name{width:100%;max-width:400px}
+html[data-spacemath-embedded=true] .workspace{padding:8px;gap:10px}
+html[data-spacemath-embedded=true] .workspace-controls{padding:6px 8px 0}
+html[data-spacemath-embedded=true] .jxgbox{height:54vh;min-height:300px}
+.appearance-fields{margin:12px 0;padding:10px;border:1px solid var(--border);border-radius:9px;min-width:0}
+.appearance-fields legend{font-size:12px;font-weight:650;padding:0 4px}
+.appearance-fields>label{display:flex;align-items:center;gap:6px;margin:6px 0;font-size:12px}
+.appearance-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:10px}
+.appearance-grid label{font-size:12px;min-width:0}
+.appearance-grid input,.appearance-grid select{margin-top:4px}
+.appearance-grid select{font:inherit;width:100%;min-height:42px;padding:6px;border:1px solid var(--border);border-radius:8px;background:#fff;color:inherit}
+.appearance-grid input[type=color]{padding:4px;cursor:pointer}
+
+@media(max-width:700px){
+  .workspace-controls{padding:8px 10px 0;gap:5px}
+  .workspace-controls button{min-height:36px;font-size:11px;padding:6px 8px}
+  html[data-workspace-ready=true] .workspace{padding:8px}
+  html[data-workspace-ready=true] #tools{padding:6px;gap:5px}
+  html[data-workspace-tools=open] #tools{max-height:45dvh;overflow:auto;overscroll-behavior:contain;align-items:flex-start}
+  html[data-workspace-tools=open] #tools .tool-group{flex:1 0 100%}
+  html[data-workspace-tools=open] #tools .tool-group>div{position:static;width:100%;max-height:none;box-shadow:none;left:auto!important;right:auto!important;box-sizing:border-box}
+  html[data-workspace-ready=true] .construction-bar{min-height:0;gap:5px;padding:6px 2px}
+  html[data-workspace-ready=true] .construction-bar p{font-size:11px;line-height:1.45}
+  html[data-workspace-ready=true] .construction-bar p:empty{display:none}
+  html[data-workspace-ready=true] #cancel-selection{min-height:30px;padding:4px 8px;font-size:11px}
+  html[data-workspace-ready=true] .jxgbox{height:48vh;min-height:300px}
+  html[data-workspace-objects=open] .studio{display:none}
+  html[data-workspace-objects=open] .inspector{display:flex}
+  html[data-workspace-ready=true] .canvas-controls{gap:7px}
+}
+
+html[data-workspace-focus=true],html[data-workspace-focus=true] body{height:100%;overflow:hidden}
+html[data-workspace-focus=true] .app-header{display:none}
+html[data-workspace-focus=true] .workspace-controls{height:52px;max-width:none;padding:6px 8px;border-bottom:1px solid var(--border);background:#fff}
+html[data-workspace-focus=true] .workspace{height:calc(100dvh - 52px);max-width:none;padding:8px;overflow:auto;align-items:stretch}
+html[data-workspace-focus=true] .studio{position:static!important;align-self:stretch!important;display:flex;flex-direction:column;min-height:0;height:100%}
+html[data-workspace-focus=true] .canvas-shell{flex:1;min-height:200px}
+html[data-workspace-focus=true] .jxgbox{height:100%;min-height:200px}
+html[data-workspace-focus=true] .canvas-controls{padding:6px 0}
+html[data-workspace-focus=true] .feedback{margin:0 2px;min-height:0}
+html[data-workspace-focus=true] .inspector{min-height:0;overflow:auto}
+@media(max-width:700px){
+  html[data-workspace-focus=true][data-workspace-objects=open] .studio{display:none}
+  html[data-workspace-focus=true] .inspector{height:100%}
+  html[data-workspace-focus=true] .view-options{gap:5px;justify-content:flex-start}
+  html[data-workspace-focus=true] .canvas-controls{flex-wrap:nowrap;align-items:flex-start}
+  html[data-workspace-focus=true] .canvas-controls .button-group{flex-wrap:wrap;gap:4px}
+  html[data-workspace-focus=true] .canvas-controls button{min-height:32px;font-size:10px;padding:5px 6px}
+}
+
+/* Preview cards remain noninteractive and show the same fixed drawing crop. */
+html[data-spacemath-preview=true] .workspace-controls{display:none!important}

@@ -69,6 +69,8 @@
       this.readOnly = options.readOnly !== false || this.preview;
       this.onState = typeof options.onState === 'function' ? options.onState : null;
       this.onStatus = typeof options.onStatus === 'function' ? options.onStatus : null;
+      this.onWorkspaceFocus = typeof options.onWorkspaceFocus === 'function' ? options.onWorkspaceFocus : null;
+      this._workspaceFocused = false;
       this._config = TRAINERS[this.trainerId];
       this._origin = location.origin;
       this._destroyed = false;
@@ -93,6 +95,12 @@
         if (['hydration-timeout', 'hydrate-apply-failed', 'remote-apply-failed', 'get-state-failed'].includes(detail.code) || /^state-/.test(detail.code)) {
           this._fail('Не удалось восстановить работу в тренажёре. Обновите страницу.');
         }
+      };
+      this._onWorkspaceLayout = event => {
+        if (this._destroyed || this.trainerId !== 'spacemath' || this.preview || !this._ready || this._failed) return;
+        if (event.target !== this._diagnosticWindow || this._currentDocument() !== this._document) return;
+        if (typeof event.detail?.focused !== 'boolean') return;
+        this._setWorkspaceFocus(event.detail.focused);
       };
       if (options.state != null) this._remember(options.state);
 
@@ -151,6 +159,7 @@
 
     _fail(text) {
       if (this._destroyed) return;
+      this.exitWorkspaceFocus();
       clearTimeout(this._timer);
       this._failed = true;
       this._ready = false;
@@ -185,11 +194,16 @@
 
     _useDocument(doc) {
       if (doc !== this._document) {
-        if (this._diagnosticWindow) this._diagnosticWindow.removeEventListener('mathexam:bridge-diagnostic', this._onDiagnostic);
+        this._setWorkspaceFocus(false);
+        if (this._diagnosticWindow) {
+          this._diagnosticWindow.removeEventListener('mathexam:bridge-diagnostic', this._onDiagnostic);
+          this._diagnosticWindow.removeEventListener('mathexam:spacemath-layout', this._onWorkspaceLayout);
+        }
         if (this._contentObserver) this._contentObserver.disconnect();
         this._document = doc;
         this._diagnosticWindow = doc.defaultView;
         this._diagnosticWindow.addEventListener('mathexam:bridge-diagnostic', this._onDiagnostic);
+        if(this.trainerId === 'spacemath') this._diagnosticWindow.addEventListener('mathexam:spacemath-layout', this._onWorkspaceLayout);
         this._bridgeId = null;
         this._hydrated = false;
         this._ready = false;
@@ -203,12 +217,15 @@
         }
       }
       if (!doc.getElementById('group-trainer-presentation')) {
+        if (this.trainerId === 'spacemath') {
+          doc.documentElement.dataset.spacemathEmbedded = 'true';
+          doc.documentElement.dataset.spacemathPreview = String(this.preview);
+        }
         const style = doc.createElement('style');
         style.id = 'group-trainer-presentation';
         // Solo statistics are device-local, not this student's group results.
         style.textContent = this.trainerId === 'spacemath'
-          ? '.app-header{min-height:52px;padding:8px 12px;gap:10px}.app-header .brand,.save-status{display:none!important}.document-name{width:100%;max-width:400px}.workspace{padding:10px;gap:10px}.file-actions,.help{display:none!important}.jxgbox{height:54vh;min-height:300px}' +
-            (this.preview ? '.app-header,.tools,.construction-bar,.canvas-controls,.feedback,.inspector{display:none!important}.workspace{display:block!important;padding:0!important}.jxgbox{height:480px!important;min-height:480px!important}' : '')
+          ? (this.preview ? '.app-header,.workspace-controls,.tools,.construction-bar,.canvas-controls,.feedback,.inspector{display:none!important}.workspace{display:block!important;padding:0!important}.jxgbox{height:480px!important;min-height:480px!important}' : '')
           : '.download-panel,.back{display:none!important}' +
           (this.trainerId === 'negative-numbers-line'
             ? '.page>.card~.card{display:none!important}.top{display:none!important}body{padding:10px!important}.card{margin-bottom:0!important}'
@@ -337,6 +354,7 @@
       clearTimeout(this._timer);
       this.element.dataset.status = 'ready';
       this._setAccess();
+      if (this.trainerId === 'spacemath' && !this.preview) this._setWorkspaceFocus(this._document.documentElement.dataset.workspaceFocus === 'true');
       this._status(this.readOnly ? 'Просмотр работы' : 'Тренажёр подключён');
       this._waiters.splice(0).forEach(waiter => waiter.resolve(JSON.parse(JSON.stringify(clean))));
       // A requested snapshot can include input not yet sent by the child's debounce.
@@ -377,8 +395,24 @@
       });
     }
 
+    _setWorkspaceFocus(value) {
+      const next = value === true;
+      if (next === this._workspaceFocused) return;
+      this._workspaceFocused = next;
+      if (this.onWorkspaceFocus) this.onWorkspaceFocus(next);
+    }
+
+    exitWorkspaceFocus() {
+      this._setWorkspaceFocus(false);
+      const win = this._diagnosticWindow;
+      if (win && this.trainerId === 'spacemath' && this._currentDocument() === this._document) {
+        win.dispatchEvent(new win.CustomEvent('mathexam:spacemath-exit-focus'));
+      }
+    }
+
     destroy() {
       if (this._destroyed) return;
+      this.exitWorkspaceFocus();
       this._destroyed = true;
       clearTimeout(this._timer);
       global.removeEventListener('message', this._onMessage);
@@ -388,12 +422,16 @@
       if (this._resizeObserver) this._resizeObserver.disconnect();
       if (this._contentObserver) this._contentObserver.disconnect();
       if (this._fitRequest !== null) global.cancelAnimationFrame(this._fitRequest);
-      if (this._diagnosticWindow) this._diagnosticWindow.removeEventListener('mathexam:bridge-diagnostic', this._onDiagnostic);
+      if (this._diagnosticWindow) {
+        this._diagnosticWindow.removeEventListener('mathexam:bridge-diagnostic', this._onDiagnostic);
+        this._diagnosticWindow.removeEventListener('mathexam:spacemath-layout', this._onWorkspaceLayout);
+      }
       this._waiters.splice(0).forEach(waiter => waiter.reject(new Error('Тренажёр закрыт')));
       this.element.dataset.status = 'destroyed';
       this.element.remove();
       this.onState = null;
       this.onStatus = null;
+      this.onWorkspaceFocus = null;
       this._document = null;
       this._diagnosticWindow = null;
     }

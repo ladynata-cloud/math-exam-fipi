@@ -7,6 +7,471 @@ const o = (id, type, parents, extra = {}) => ({ id, type, label: id, parents, ..
 const construction = objects => ({ ...M.empty(), objects });
 const close = (actual, expected, tolerance = 1e-8) => assert.ok(Math.abs(actual - expected) <= tolerance, actual + ' ≈ ' + expected);
 
+function regularPolygon(sides, orientation = 1, a = [0, 0], b = [2, 0]) {
+  const objects = [p('a', ...a), p('b', ...b)], vertices = ['a', 'b'];
+  for (let index = 2; index < sides; index++) {
+    const id = 'v' + index; vertices.push(id);
+    objects.push(o(id, 'regularVertex', ['a', 'b'], { sides, index, orientation }));
+  }
+  objects.push(o('shape', 'polygon', vertices), o('area', 'area', ['shape']), o('perimeter', 'perimeter', ['shape']));
+  return construction(objects);
+}
+const signedArea = vertices => vertices.reduce((sum, a, i) => {
+  const b = vertices[(i + 1) % vertices.length]; return sum + a[0] * b[1] - a[1] * b[0];
+}, 0) / 2;
+
+test('fixed distance follows direction and origin, supports zero length, and recovers after a collapsed direction', () => {
+  const state = construction([
+    p('a', 1, -2), p('direction', 4, 2),
+    o('end', 'fixedDistance', ['a', 'direction'], { length: 10 }),
+    o('segment', 'segment', ['a', 'end']), o('distance', 'distance', ['a', 'end'])
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual([result.end.x, result.end.y], [7, 6]);
+  assert.equal(result.distance.value, 10);
+  for (const [a, direction] of [[[2, 3], [2, 8]], [[-8, -4], [-11, -8]], [[0, 0], [Number.MIN_VALUE, 0]]]) {
+    Object.assign(state.objects[0], { x: a[0], y: a[1] });
+    Object.assign(state.objects[1], { x: direction[0], y: direction[1] });
+    result = M.evaluate(state);
+    assert.equal(result.end.defined, true);
+    close(result.distance.value, 10, 1e-13);
+  }
+  assert.deepEqual([result.end.x, result.end.y], [10, 0]);
+  state.objects[1].y = Number.MIN_VALUE;
+  result = M.evaluate(state);
+  close(result.end.x, 10 / Math.sqrt(2), 1e-14);
+  close(result.end.y, 10 / Math.sqrt(2), 1e-14);
+  close(result.distance.value, 10, 1e-14);
+  state.objects[2].length = 0;
+  result = M.evaluate(state);
+  assert.deepEqual([result.end.x, result.end.y], [0, 0]);
+  assert.equal(result.segment.defined, false);
+  assert.equal(result.distance.value, 0);
+  state.objects[1].x = state.objects[1].y = 0;
+  assert.equal(M.evaluate(state).end.defined, false, 'even zero length cannot choose a missing direction');
+  state.objects[2].length = M.MAX_COORD; state.objects[1].y = -1;
+  result = M.evaluate(state);
+  assert.deepEqual([result.end.x, result.end.y], [0, -M.MAX_COORD]);
+  assert.deepEqual(M.descendants(state, 'direction'), ['direction', 'end', 'segment', 'distance']);
+  assert.deepEqual(M.normalize(JSON.parse(JSON.stringify(state))), state);
+});
+
+test('fixed distance does not silently represent a positive unresolvable length as a zero-length segment', () => {
+  const state = construction([p('a', 1, 1), p('direction', 2, 1), o('end', 'fixedDistance', ['a', 'direction'], { length: Number.MIN_VALUE })]);
+  assert.equal(M.evaluate(state).end.defined, false);
+  state.objects[0].x = state.objects[0].y = 0;
+  state.objects[1].y = 0;
+  assert.equal(M.evaluate(state).end.defined, true);
+});
+
+test('fixed distance rejects large relative length errors from offset quantization without snapping the endpoint', () => {
+  const state = construction([p('a', 999999, 0), p('direction', 1000000, 0), o('end', 'fixedDistance', ['a', 'direction'], { length: 6e-11 })]);
+  for (const requested of [6e-11, 1e-10]) {
+    state.objects[2].length = requested;
+    const representedLength = 999999 + requested - 999999;
+    assert.ok(Math.abs(representedLength / requested - 1) > .1, 'fixture reproduces the large relative error');
+    const result = M.evaluate(state);
+    assert.equal(result.end.defined, false);
+    assert.match(result.end.reason, /точности/);
+    assert.equal(state.objects[2].length, requested, 'requested length is retained, never rounded or replaced');
+  }
+  state.objects[2].length = 2 ** -33;
+  let result = M.evaluate(state);
+  assert.equal(result.end.defined, true, 'an exactly representable one-ULP length at the same offset remains valid');
+  assert.equal(result.end.x - 999999, 2 ** -33);
+  state.objects[2].length = 1;
+  result = M.evaluate(state);
+  assert.deepEqual([result.end.x, result.end.y], [1000000, 0]);
+});
+
+test('fixed-distance fidelity accepts ordinary translated, tiny and representable subnormal constructions', () => {
+  const fixtures = [
+    [[0, 0], [3, 4], 5], [[1000, -1000], [1003, -996], .1],
+    [[999999, -999999], [1000000, -999998], 1],
+    [[0, 0], [3e-300, 4e-300], 5e-300],
+    [[0, 0], [Number.MIN_VALUE, 0], Number.MIN_VALUE],
+    [[0, 0], [0, -Number.MIN_VALUE], 8 * Number.MIN_VALUE]
+  ];
+  for (const [origin, direction, requested] of fixtures) {
+    const result = M.evaluate(construction([p('a', ...origin), p('direction', ...direction), o('end', 'fixedDistance', ['a', 'direction'], { length: requested })]));
+    assert.equal(result.end.defined, true, JSON.stringify({ origin, direction, requested }));
+    close(Math.hypot((result.end.x - origin[0]) / requested, (result.end.y - origin[1]) / requested), 1, 1e-8);
+  }
+  const diagonal = construction([p('a', 0, 0), p('direction', 2, 1), o('end', 'fixedDistance', ['a', 'direction'], { length: Number.MIN_VALUE })]);
+  assert.equal(M.evaluate(diagonal).end.defined, false, 'a matching scalar length must not hide an unrepresentable direction');
+  diagonal.objects[2].length = 1e-300;
+  assert.equal(M.evaluate(diagonal).end.defined, true, 'the same source recovers once its vector is representable');
+});
+
+test('regular polygons retain equal sides, angles, area and perimeter at several scales and orientations', () => {
+  for (let sides = 3; sides <= 30; sides++) for (const orientation of [-1, 1]) for (const scale of [1e-100, 1, 1e5]) {
+    const result = M.evaluate(regularPolygon(sides, orientation, [0, 0], [2 * scale, 0]));
+    const vertices = result.shape.vertices, edgeLength = 2 * scale;
+    assert.equal(result.shape.defined, true);
+    const edges = vertices.map((a, i) => {
+      const b = vertices[(i + 1) % sides], dx = (b[0] - a[0]) / edgeLength, dy = (b[1] - a[1]) / edgeLength;
+      close(Math.hypot(dx, dy), 1, 4e-14);
+      return [dx, dy];
+    });
+    for (let i = 0; i < sides; i++) {
+      const a = edges[i], b = edges[(i + 1) % sides];
+      close(a[0] * b[0] + a[1] * b[1], Math.cos(2 * Math.PI / sides), 8e-14);
+      close(a[0] * b[1] - a[1] * b[0], orientation * Math.sin(2 * Math.PI / sides), 8e-14);
+    }
+    close(result.perimeter.value / edgeLength, sides, 5e-13);
+    close(result.area.value / (scale * scale), sides / Math.tan(Math.PI / sides), 5e-12);
+    assert.equal(Math.sign(signedArea(vertices.map(v => v.map(x => x / scale)))), orientation);
+  }
+});
+
+test('regular vertices follow rotated or reflected defining sides and recover with unchanged identities', () => {
+  const state = regularPolygon(4), before = M.evaluate(state);
+  assert.deepEqual(before.shape.vertices, [[0, 0], [2, 0], [2, 2], [0, 2]]);
+  for (const object of state.objects.filter(item => item.type === 'point')) {
+    const { x, y } = object; object.x = -y + 3; object.y = x - 1;
+  }
+  assert.deepEqual(M.evaluate(state).shape.vertices, before.shape.vertices.map(([x, y]) => [-y + 3, x - 1]));
+  for (const object of state.objects.filter(item => item.type === 'point')) object.x = -object.x;
+  for (const object of state.objects.filter(item => item.type === 'regularVertex')) object.orientation *= -1;
+  const reflected = M.evaluate(state);
+  assert.deepEqual(reflected.shape.vertices, before.shape.vertices.map(([x, y]) => [y - 3, x - 1]));
+  assert.equal(reflected.area.value, before.area.value);
+  const saved = JSON.parse(JSON.stringify(state));
+  state.objects[1].x = state.objects[0].x; state.objects[1].y = state.objects[0].y;
+  const collapsed = M.evaluate(state);
+  for (const id of ['v2', 'v3', 'shape', 'area', 'perimeter']) assert.equal(collapsed[id].defined, false, id);
+  state.objects[1] = saved.objects[1];
+  assert.deepEqual(M.evaluate(state), reflected);
+  assert.deepEqual(M.descendants(state, 'a'), ['a', 'v2', 'v3', 'shape', 'area', 'perimeter']);
+});
+
+test('fixed-distance and regular-vertex schemas reject wrong parents, bounds, types and unknown keys', () => {
+  const base = [p('a', 0, 0), p('b', 1, 0), o('line', 'line', ['a', 'b'])];
+  const regular = { sides: 4, index: 2, orientation: 1 };
+  const invalid = [
+    o('bad', 'fixedDistance', ['a'], { length: 1 }), o('bad', 'fixedDistance', ['a', 'line'], { length: 1 }),
+    ...[-1, M.MAX_COORD + 1, '2', null, true, NaN, Infinity].map(length => o('bad', 'fixedDistance', ['a', 'b'], { length })),
+    ...[2, 31, 3.5, '4'].map(sides => o('bad', 'regularVertex', ['a', 'b'], { ...regular, sides })),
+    ...[0, 1, 4, 2.5, '2'].map(index => o('bad', 'regularVertex', ['a', 'b'], { ...regular, index })),
+    ...[0, 2, '1', true].map(orientation => o('bad', 'regularVertex', ['a', 'b'], { ...regular, orientation })),
+    o('bad', 'regularVertex', ['a', 'line'], regular), o('bad', 'regularVertex', ['a', 'b'], { ...regular, vertices: [] })
+  ];
+  for (const value of invalid) assert.throws(() => M.normalize(construction([...base, value])), JSON.stringify(value));
+});
+
+test('one transformation descriptor changes every dependent vertex and retains exact quarter-turn and identity semantics', () => {
+  const state = construction([
+    p('origin', 0, 0), p('a', 1, 0), p('b', 3, 0), p('c', 1, 2),
+    o('turn', 'transformation', ['origin'], { mode: 'rotate', angle: 90 }),
+    ...['a', 'b', 'c'].map(id => o(id + 'image', 'transformedPoint', [id, 'turn'])),
+    o('shape', 'polygon', ['aimage', 'bimage', 'cimage']), o('area', 'area', ['shape'])
+  ]);
+  assert.deepEqual(M.evaluate(state).shape.vertices, [[0, 1], [0, 3], [-2, 1]]);
+  const descriptor = state.objects.find(item => item.id === 'turn');
+  for (const angle of [0, 90, 180, 270, 360, -90, 1e-15]) {
+    descriptor.angle = angle;
+    const withLegacy = JSON.parse(JSON.stringify(state));
+    for (const id of ['a', 'b', 'c']) withLegacy.objects.push(o(id + 'legacy', 'rotate', [id, 'origin'], { angle }));
+    const result = M.evaluate(withLegacy);
+    for (const id of ['a', 'b', 'c']) assert.deepEqual(result[id + 'image'], result[id + 'legacy']);
+    close(result.area.value, 2, 1e-14);
+  }
+  descriptor.mode = 'dilate'; delete descriptor.angle; descriptor.factor = -2;
+  let result = M.evaluate(state);
+  assert.deepEqual(result.shape.vertices, [[-2, 0], [-6, 0], [-2, -4]]);
+  assert.equal(result.area.value, 8);
+  assert.ok(signedArea(result.shape.vertices) > 0, 'negative scaling in two dimensions preserves orientation');
+  descriptor.factor = 0; assert.equal(M.evaluate(state).shape.defined, false);
+  descriptor.factor = 1; result = M.evaluate(state);
+  assert.deepEqual(result.shape.vertices, [[1, 0], [3, 0], [1, 2]]);
+  assert.deepEqual(M.descendants(state, 'turn'), ['turn', 'aimage', 'bimage', 'cimage', 'shape', 'area']);
+});
+
+test('shared reflection and translation respect live references, degeneracy and zero-vector identity', () => {
+  const state = construction([
+    p('o', 0, 0), p('direction', 1, 1), p('source', 3, 1),
+    o('axis', 'line', ['o', 'direction']), o('vector', 'vector', ['o', 'direction']),
+    o('mirror', 'transformation', ['axis'], { mode: 'reflectLine' }),
+    o('central', 'transformation', ['o'], { mode: 'reflectPoint' }),
+    o('shift', 'transformation', ['vector'], { mode: 'translate' }),
+    o('reflected', 'transformedPoint', ['source', 'mirror']),
+    o('opposite', 'transformedPoint', ['source', 'central']),
+    o('translated', 'transformedPoint', ['source', 'shift'])
+  ]);
+  let result = M.evaluate(state);
+  close(result.reflected.x, 1, 2e-15); close(result.reflected.y, 3, 2e-15);
+  assert.deepEqual([result.opposite.x, result.opposite.y], [-3, -1]);
+  assert.deepEqual([result.translated.x, result.translated.y], [4, 2]);
+  state.objects[1].x = state.objects[1].y = 0;
+  result = M.evaluate(state);
+  assert.equal(result.mirror.defined, false); assert.equal(result.reflected.defined, false);
+  assert.equal(result.shift.defined, true);
+  assert.deepEqual([result.translated.x, result.translated.y], [3, 1]);
+  state.objects[1].x = 2;
+  result = M.evaluate(state);
+  assert.deepEqual([result.reflected.x, result.reflected.y], [3, -1]);
+  assert.deepEqual([result.translated.x, result.translated.y], [5, 1]);
+});
+
+test('circle centers and transformed circle helpers track radius, center and zero-factor recovery', () => {
+  const state = construction([
+    p('o', 1, 2), p('center', 3, 4), o('source', 'circleRadius', ['center'], { radius: 2 }),
+    o('middle', 'circleCenter', ['source']), o('edge', 'pointOn', ['source'], { parameter: 0 }),
+    o('scale', 'transformation', ['o'], { mode: 'dilate', factor: -3 }),
+    o('middleimage', 'transformedPoint', ['middle', 'scale']), o('edgeimage', 'transformedPoint', ['edge', 'scale']),
+    o('image', 'circle', ['middleimage', 'edgeimage'])
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual(result.image.c, [-5, -4]); assert.equal(result.image.r, 6);
+  state.objects[1].x = 4; state.objects[2].radius = 5;
+  result = M.evaluate(state);
+  assert.deepEqual(result.image.c, [-8, -4]); assert.equal(result.image.r, 15);
+  state.objects[5].factor = 0; assert.equal(M.evaluate(state).image.defined, false);
+  state.objects[5].factor = -3; assert.deepEqual(M.evaluate(state).image, result.image);
+  const degenerate = construction([p('a', 0, 0), p('b', 1, 0), p('c', 0, 1), o('circle', 'circle3', ['a', 'b', 'c']), o('center', 'circleCenter', ['circle'])]);
+  assert.deepEqual([M.evaluate(degenerate).center.x, M.evaluate(degenerate).center.y], [.5, .5]);
+  degenerate.objects[2].y = 0; assert.equal(M.evaluate(degenerate).center.defined, false);
+  degenerate.objects[2].y = 2; assert.deepEqual([M.evaluate(degenerate).center.x, M.evaluate(degenerate).center.y], [.5, 1]);
+});
+
+test('direct transformed circles preserve tiny offset radii, shared changes, negative scale and path behavior', () => {
+  const state = construction([
+    p('o', 0, 0), p('center', M.MAX_COORD, 0), o('source', 'circleRadius', ['center'], { radius: 1e-20 }),
+    o('scale', 'transformation', ['o'], { mode: 'dilate', factor: 1 }),
+    o('image', 'transformedCircle', ['source', 'scale'], { appearance: { color: '#123456', visible: false } }),
+    o('middle', 'circleCenter', ['image']), o('on', 'pointOn', ['image'], { parameter: .25 }),
+    o('length', 'circumference', ['image']), o('area', 'area', ['image'])
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual(result.image, result.source, 'identity must preserve a tiny radius even when center+radius equals center');
+  assert.deepEqual([result.middle.x, result.middle.y], [M.MAX_COORD, 0]);
+  assert.equal(result.on.defined, true); assert.equal(result.on.y, 1e-20);
+  assert.equal(M.projectParameter(result.image, M.MAX_COORD, 1), .25);
+  close(result.length.value / 1e-20, 2 * Math.PI, 1e-14);
+  close(result.area.value / 1e-40, Math.PI, 1e-14);
+  state.objects[3].factor = -3;
+  result = M.evaluate(state);
+  assert.deepEqual(result.image.c, [-3 * M.MAX_COORD, 0]); close(result.image.r / 1e-20, 3, 1e-15);
+  state.objects[3].factor = 0;
+  for (const id of ['image', 'middle', 'on', 'length', 'area']) assert.equal(M.evaluate(state)[id].defined, false);
+  state.objects[3].factor = -3; assert.deepEqual(M.evaluate(state).image, result.image);
+  assert.deepEqual(M.normalize(state).objects[4].appearance, { visible: false, color: '#123456' });
+  state.objects[2].radius = 2e-20; close(M.evaluate(state).image.r / 1e-20, 6, 2e-15);
+});
+
+test('direct transformed circles follow a three-point circle through reflection, rotation and degeneracy', () => {
+  const state = construction([
+    p('a', 1, 0), p('b', 0, 1), p('c', -1, 0), p('origin', 0, 0), p('axisend', 0, 2),
+    o('source', 'circle3', ['a', 'b', 'c']), o('axis', 'line', ['origin', 'axisend']),
+    o('mirror', 'transformation', ['axis'], { mode: 'reflectLine' }),
+    o('image', 'transformedCircle', ['source', 'mirror']),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 90 }), o('turned', 'transformedCircle', ['image', 'turn'])
+  ]);
+  let result = M.evaluate(state);
+  close(result.image.c[0], 0, 5e-16); close(result.image.c[1], 0, 5e-16); close(result.image.r, 1, 5e-16);
+  close(result.turned.c[0], 1, 5e-16); close(result.turned.c[1], -1, 5e-16); close(result.turned.r, 1, 5e-16);
+  state.objects[1].y = 2;
+  result = M.evaluate(state);
+  close(result.image.c[1], .75, 1e-15); close(result.image.r, 1.25, 1e-15);
+  state.objects[1].y = 0;
+  assert.equal(M.evaluate(state).image.defined, false); assert.equal(M.evaluate(state).turned.defined, false);
+  state.objects[1].y = 2; assert.deepEqual(M.evaluate(state).image, result.image);
+  assert.deepEqual(M.descendants(state, 'source'), ['source', 'image', 'turned']);
+});
+
+test('a shared similarity preserves circle incidence for tangents without snapping independent near-rim points', () => {
+  const state = construction([
+    p('a', 0, 0), o('circle', 'circleRadius', ['a'], { radius: 1 }),
+    o('on', 'pointOn', ['circle'], { parameter: .1 }), p('near', 1 + Number.EPSILON, 0),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 1 }),
+    o('circleimage', 'transformedCircle', ['circle', 'turn']),
+    o('onimage', 'transformedPoint', ['on', 'turn']),
+    o('first', 'tangent', ['circleimage', 'onimage'], { branch: 0 }),
+    o('second', 'tangent', ['circleimage', 'onimage'], { branch: 1 }),
+    o('identity', 'transformation', ['a'], { mode: 'rotate', angle: 0 }),
+    o('independentcircle', 'transformedCircle', ['circle', 'identity']),
+    o('independentpoint', 'transformedPoint', ['near', 'identity']),
+    o('nearfirst', 'tangent', ['independentcircle', 'independentpoint'], { branch: 0 }),
+    o('nearsecond', 'tangent', ['independentcircle', 'independentpoint'], { branch: 1 }),
+    o('scale', 'transformation', ['a'], { mode: 'dilate', factor: -3 }),
+    o('twicecircle', 'transformedCircle', ['circleimage', 'scale']),
+    o('twicepoint', 'transformedPoint', ['onimage', 'scale']),
+    o('twicefirst', 'tangent', ['twicecircle', 'twicepoint'], { branch: 0 }),
+    o('twicesecond', 'tangent', ['twicecircle', 'twicepoint'], { branch: 1 })
+  ]);
+  for (const angle of [1, 7, 15, 273]) {
+    state.objects[4].angle = angle;
+    const result = M.evaluate(state);
+    assert.equal(result.first.defined, true); assert.equal(result.second.defined, false);
+    assert.equal(result.twicefirst.defined, true); assert.equal(result.twicesecond.defined, false);
+    assert.equal(result.nearfirst.defined, true); assert.equal(result.nearsecond.defined, true);
+  }
+});
+
+test('direct transformed lines preserve tiny directions at offset anchors instead of rebuilding rounded endpoints', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 1e-20, 0), p('offset', M.MAX_COORD, 0),
+    o('base', 'line', ['a', 'b']), o('source', 'parallel', ['base', 'offset']),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 0 }),
+    o('image', 'transformedLine', ['source', 'turn'])
+  ]);
+  let result = M.evaluate(state);
+  assert.equal(result.source.a[0] + result.source.d[0], result.source.a[0], 'the endpoint-based reconstruction would collapse');
+  assert.deepEqual(result.image, result.source);
+  state.objects[5].angle = 90; result = M.evaluate(state);
+  assert.deepEqual(result.image.a, [0, M.MAX_COORD]); assert.deepEqual(result.image.d, [0, 1e-20]);
+  state.objects[5].mode = 'dilate'; delete state.objects[5].angle; state.objects[5].factor = -2;
+  result = M.evaluate(state);
+  assert.deepEqual(result.image.a, [-2 * M.MAX_COORD, 0]);
+  assert.equal(result.image.d[0], -2e-20); assert.equal(Math.abs(result.image.d[1]), 0);
+  state.objects[5].factor = 0; assert.equal(M.evaluate(state).image.defined, false);
+  state.objects[5].factor = -2; assert.deepEqual(M.evaluate(state).image, result.image);
+});
+
+test('transformed segment and ray chains retain their domains for validation, dragging and intersections', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 2, 0), p('left', -1, -2), p('right', 1, -2),
+    o('segment', 'segment', ['a', 'b']), o('ray', 'ray', ['a', 'b']), o('line', 'line', ['a', 'b']),
+    o('crossline', 'line', ['left', 'right']),
+    o('scale', 'transformation', ['a'], { mode: 'dilate', factor: -2 }),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 90 }),
+    o('segmentimage', 'transformedLine', ['segment', 'scale']),
+    o('rayimage', 'transformedLine', ['ray', 'scale']), o('lineimage', 'transformedLine', ['line', 'scale']),
+    o('twice', 'transformedLine', ['segmentimage', 'turn']),
+    o('on', 'pointOn', ['twice'], { parameter: .25 }), o('onray', 'pointOn', ['rayimage'], { parameter: 2 }),
+    o('online', 'pointOn', ['lineimage'], { parameter: -2 }),
+    o('cross', 'intersection', ['twice', 'crossline'], { branch: 0 })
+  ]);
+  const result = M.evaluate(state);
+  assert.deepEqual(result.twice.domain, [0, 1]);
+  assert.deepEqual(result.rayimage.domain, [0, Infinity]);
+  assert.deepEqual(result.lineimage.domain, [-Infinity, Infinity]);
+  assert.deepEqual([result.on.x, result.on.y], [0, -1]);
+  assert.deepEqual([result.onray.x, result.onray.y], [-8, 0]);
+  assert.deepEqual([result.online.x, result.online.y], [8, 0]);
+  assert.deepEqual([result.cross.x, result.cross.y], [0, -2]);
+  assert.equal(M.projectParameter(result.twice, 0, -100), 1);
+  assert.equal(M.projectParameter(result.rayimage, 2, 0), 0);
+  for (const [parent, parameter] of [['twice', -Number.EPSILON], ['twice', 1 + Number.EPSILON], ['rayimage', -Number.EPSILON], ['lineimage', M.MAX_COORD + 1]]) {
+    assert.throws(() => M.normalize({ ...state, objects: [...state.objects, o('bad', 'pointOn', [parent], { parameter })] }));
+  }
+});
+
+test('transformed vectors retain their linear component, accept zero scale and can drive another translation', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', 1e-20, 0), p('far', M.MAX_COORD, 0), p('sample', 2, 3),
+    o('source', 'vector', ['a', 'b']), o('shiftvector', 'vector', ['a', 'far']),
+    o('shift', 'transformation', ['shiftvector'], { mode: 'translate' }),
+    o('offsetvector', 'transformedVector', ['source', 'shift']),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 90 }),
+    o('turnedvector', 'transformedVector', ['offsetvector', 'turn']),
+    o('move', 'transformation', ['turnedvector'], { mode: 'translate' }),
+    o('direct', 'translate', ['a', 'turnedvector']), o('image', 'transformedPoint', ['a', 'move'])
+  ]);
+  let result = M.evaluate(state);
+  assert.deepEqual(result.offsetvector.a, [M.MAX_COORD, 0]);
+  assert.deepEqual(result.offsetvector.d, [1e-20, 0]);
+  assert.deepEqual(result.turnedvector.a, [0, M.MAX_COORD]);
+  assert.deepEqual(result.turnedvector.d, [0, 1e-20]);
+  assert.deepEqual(result.direct, result.image); assert.equal(result.image.y, 1e-20);
+  state.objects[8].mode = 'dilate'; delete state.objects[8].angle; state.objects[8].factor = 0;
+  result = M.evaluate(state);
+  assert.equal(result.turnedvector.defined, true); assert.deepEqual(result.turnedvector.d, [0, 0]);
+  assert.deepEqual([result.image.x, result.image.y], [0, 0]);
+  assert.deepEqual(M.vectorTypes, ['vector', 'transformedVector']);
+});
+
+test('nonzero vector underflow is undefined while genuine zero vectors and explicit zero scale remain valid', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', Number.MIN_VALUE, 0), o('source', 'vector', ['a', 'b']),
+    o('scale', 'transformation', ['a'], { mode: 'dilate', factor: .1 }),
+    o('image', 'transformedVector', ['source', 'scale'])
+  ]);
+  assert.equal(M.evaluate(state).image.defined, false);
+  state.objects[3].factor = 1;
+  assert.deepEqual(M.evaluate(state).image.d, [Number.MIN_VALUE, 0]);
+  state.objects[3].factor = 0;
+  assert.equal(M.evaluate(state).image.defined, true); assert.deepEqual(M.evaluate(state).image.d, [0, 0]);
+  state.objects[3].factor = .1; state.objects[1].x = 0;
+  assert.equal(M.evaluate(state).image.defined, true); assert.deepEqual(M.evaluate(state).image.d, [0, 0]);
+});
+
+test('reflection descriptors normalize even subnormal reference directions without changing the angle', () => {
+  const state = construction([
+    p('a', 0, 0), p('b', Number.MIN_VALUE, Number.MIN_VALUE), p('source', 1, 0),
+    o('axis', 'line', ['a', 'b']), o('reflection', 'transformation', ['axis'], { mode: 'reflectLine' }),
+    o('image', 'transformedPoint', ['source', 'reflection']),
+    o('vector', 'vector', ['a', 'source']), o('vectorimage', 'transformedVector', ['vector', 'reflection'])
+  ]);
+  const result = M.evaluate(state);
+  close(result.image.x, 0, 3e-16); close(result.image.y, 1, 3e-16);
+  close(result.vectorimage.d[0], 0, 3e-16); close(result.vectorimage.d[1], 1, 3e-16);
+});
+
+test('transformation schemas permit only a matching reference, bounded parameter and preceding descriptor', () => {
+  const base = [p('a', 0, 0), p('b', 1, 0), o('axis', 'line', ['a', 'b']), o('v', 'vector', ['a', 'b']), o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 90 })];
+  const invalid = [
+    o('bad', 'transformation', ['a'], { mode: 'matrix', angle: 0 }),
+    o('bad', 'transformation', ['v'], { mode: 'rotate', angle: 90 }),
+    o('bad', 'transformation', ['a', 'b'], { mode: 'rotate', angle: 90 }),
+    o('bad', 'transformation', ['a'], { mode: 'rotate', angle: 36001 }),
+    o('bad', 'transformation', ['a'], { mode: 'rotate', angle: '90' }),
+    o('bad', 'transformation', ['a'], { mode: 'rotate', angle: 90, factor: 1 }),
+    o('bad', 'transformation', ['a'], { mode: 'dilate', factor: -1001 }),
+    o('bad', 'transformation', ['a'], { mode: 'dilate', factor: null }),
+    o('bad', 'transformation', ['a'], { mode: 'dilate', angle: 0 }),
+    o('bad', 'transformation', ['a'], { mode: 'reflectLine' }),
+    o('bad', 'transformation', ['axis'], { mode: 'reflectPoint' }),
+    o('bad', 'transformation', ['v'], { mode: 'translate', angle: 0 }),
+    o('bad', 'transformation', ['axis'], { mode: 'translate' }),
+    o('bad', 'transformedPoint', ['a', 'v']), o('bad', 'transformedPoint', ['axis', 'turn']),
+    o('bad', 'transformedPoint', ['a', 'missing']), o('bad', 'circleCenter', ['a']),
+    o('bad', 'circleCenter', ['axis'], { radius: 1 }),
+    o('bad', 'transformedCircle', ['axis', 'turn']), o('bad', 'transformedCircle', ['a', 'turn']),
+    o('bad', 'transformedLine', ['v', 'turn']), o('bad', 'transformedLine', ['axis', 'a']),
+    o('bad', 'transformedVector', ['axis', 'turn']), o('bad', 'transformedVector', ['v', 'a'])
+  ];
+  for (const item of invalid) assert.throws(() => M.normalize(construction([...base, item])), JSON.stringify(item));
+});
+
+test('optional partial appearance round-trips without changing geometry or adding fields to old models', () => {
+  const state = regularPolygon(4);
+  state.objects.push(o('f', 'functionGraph', [], { expression: 'x^2' }), o('table', 'functionTable', ['f'], { start: 0, end: 2, step: 1 }),
+    o('turn', 'transformation', ['a'], { mode: 'rotate', angle: 90 }), o('image', 'transformedPoint', ['v2', 'turn']));
+  const oldJSON = JSON.stringify(M.normalize(state)), expected = M.evaluate(state);
+  assert.equal(JSON.stringify(M.normalize(state)), oldJSON);
+  const legacy = construction([p('a', 1, 2), p('b', 3, 4), o('middle', 'midpoint', ['a', 'b']),
+    { id: 'f', type: 'functionGraph', label: 'f', expression: 'x^2', parents: [] },
+    { id: 'table', type: 'functionTable', label: 'table', start: 0, end: 2, step: 1, parents: ['f'] }]);
+  assert.equal(JSON.stringify(M.normalize(legacy)), JSON.stringify(legacy), 'the canonical byte representation of legacy models does not gain appearance defaults');
+  const full = { visible: false, labelVisible: false, color: '#aBc123', width: 6, dash: 2, fillOpacity: .6 };
+  state.objects.forEach((item, i) => { item.appearance = i % 3 === 0 ? { ...full } : i % 3 === 1 ? { color: '#ff0000' } : {}; });
+  const normalized = M.normalize(state);
+  assert.deepEqual(normalized, state);
+  assert.notEqual(normalized.objects[0].appearance, state.objects[0].appearance);
+  assert.deepEqual(M.evaluate(state), expected, 'hidden parents still participate in every mathematical dependency');
+  normalized.objects[0].appearance.visible = true;
+  assert.equal(state.objects[0].appearance.visible, false);
+  assert.equal(JSON.stringify(M.normalize(JSON.parse(oldJSON))), oldJSON);
+});
+
+test('appearance is data only: hostile colors, unknown fields, wrong types, prototypes and accessors are rejected', () => {
+  const invalid = [
+    null, [], 'red', { color: 'red' }, { color: '#fff' }, { color: '#000000ff' }, { color: 'url(javascript:alert(1))' },
+    { color: '#123456;display:none' }, { color: '<svg>' }, { color: 123456 },
+    { visible: 0 }, { labelVisible: 'false' }, { width: 0 }, { width: 7 }, { width: 1.5 }, { width: '2' },
+    { dash: -1 }, { dash: 3 }, { dash: .5 }, { dash: true },
+    { fillOpacity: -.01 }, { fillOpacity: .60001 }, { fillOpacity: '0.2' }, { fillOpacity: NaN },
+    { fillOpacity: Infinity }, { onclick: 'alert(1)' }, { css: {} },
+    JSON.parse('{"__proto__":{"visible":true}}'), Object.assign(Object.create({ color: '#ffffff' }), { visible: true })
+  ];
+  for (const appearance of invalid) assert.throws(() => M.normalize(construction([{ ...p('a', 0, 0), appearance }])));
+  let invoked = 0;
+  const accessor = Object.defineProperty({}, 'visible', { enumerable: true, get() { invoked++; return true; } });
+  assert.throws(() => M.normalize(construction([{ ...p('a', 0, 0), appearance: accessor }])));
+  assert.equal(invoked, 0, 'untrusted appearance accessors never execute');
+});
+
 test('constrained points follow changed parents, retain their parameters and recover after degeneracy', () => {
   const state = construction([
     p('a', 0, 0), p('b', 4, 0),

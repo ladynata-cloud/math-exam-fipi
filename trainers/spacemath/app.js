@@ -1,18 +1,19 @@
 /* SpaceMath editor: semantic state is the source of every dependent object. */
 (function (root) {
   'use strict';
-  const M = root.SpaceMathModel, Expression = root.SpaceMathExpression, $ = id => document.getElementById(id);
+  const M = root.SpaceMathModel, Expression = root.SpaceMathExpression, C = root.SpaceMathConstructions, $ = id => document.getElementById(id);
   const managed = root.MathExamLearning?.managed === true, standalone = root.parent === root && !managed;
   const STORAGE_KEY = 'mathexam.spacemath.draft.v1';
-  const pointTypes = new Set(M.pointTypes), lineTypes = new Set(M.lineTypes), circleTypes = new Set(M.circleTypes);
+  const pointTypes = new Set(M.pointTypes), lineTypes = new Set(M.lineTypes), circleTypes = new Set(M.circleTypes), vectorTypes = new Set(M.vectorTypes || ['vector']);
   const inputKinds = {
     segment: ['point', 'point'], line: ['point', 'point'], ray: ['point', 'point'], circle: ['point', 'point'],
-    midpoint: ['point', 'point'], perpendicularBisector: ['point', 'point'], distance: ['point', 'point'], reflectPoint: ['point', 'point'], rotate: ['point', 'point'], dilate: ['point', 'point'],
-    parallel: ['line', 'point'], perpendicular: ['line', 'point'], projection: ['line', 'point'], reflectLine: ['line', 'point'],
+    midpoint: ['point', 'point'], perpendicularBisector: ['point', 'point'], distance: ['point', 'point'], reflectPoint: ['shape', 'point'], rotate: ['shape', 'point'], dilate: ['shape', 'point'],
+    parallel: ['line', 'point'], perpendicular: ['line', 'point'], projection: ['line', 'point'], reflectLine: ['line', 'shape'],
     angle: ['point', 'point', 'point'], bisector: ['point', 'point', 'point'], circle3: ['point', 'point', 'point'],
     intersection: ['curve', 'curve'], area: ['surface'], perimeter: ['polygon'], circumference: ['circle'],
-    pointOn: ['path'], vector: ['point', 'point'], translate: ['point', 'vector'],
-    circleRadius: ['point'], tangent: ['circle', 'point'], functionRoot: ['graph'], functionIntersection: ['graph', 'graph']
+    pointOn: ['path'], vector: ['point', 'point'], translate: ['shape', 'vector'],
+    circleRadius: ['point'], circleCenter: ['circle'], tangent: ['circle', 'point'], functionRoot: ['graph'], functionIntersection: ['graph', 'graph'],
+    fixedLength: ['point', 'point'], fixedAngle: ['point', 'point'], regularPolygon: ['point', 'point']
   };
   const names = {
     point: 'Точка', pointOn: 'Точка на объекте', segment: 'Отрезок', line: 'Прямая', ray: 'Луч',
@@ -22,12 +23,20 @@
     reflectPoint: 'Симметрия относительно точки', reflectLine: 'Симметрия относительно прямой', rotate: 'Поворот', dilate: 'Гомотетия',
     vector: 'Вектор', translate: 'Перенос по вектору', distance: 'Расстояние', angle: 'Угол', area: 'Площадь',
     perimeter: 'Периметр', circumference: 'Длина окружности', slider: 'Параметр',
-    functionGraph: 'График функции', functionTable: 'Таблица значений', functionRoot: 'Корень функции', functionIntersection: 'Пересечение графиков'
+    functionGraph: 'График функции', functionTable: 'Таблица значений', functionRoot: 'Корень функции', functionIntersection: 'Пересечение графиков',
+    fixedLength: 'Отрезок заданной длины', fixedAngle: 'Угол заданной величины', regularPolygon: 'Правильный многоугольник',
+    fixedDistance: 'Точка на заданном расстоянии', regularVertex: 'Вершина правильного многоугольника',
+    transformation: 'Преобразование фигуры', transformedPoint: 'Образ точки', circleCenter: 'Центр окружности',
+    transformedCircle: 'Образ окружности', transformedLine: 'Образ линии', transformedVector: 'Образ вектора'
   };
   const toolParameters = {
     rotate: { key: 'angle', label: 'Угол, °', min: -36000, max: 36000, initial: 90 },
     dilate: { key: 'factor', label: 'Коэффициент', min: -1000, max: 1000, initial: 2 },
-    circleRadius: { key: 'radius', label: 'Радиус', min: 0, max: M.MAX_COORD, initial: 2 }
+    circleRadius: { key: 'radius', label: 'Радиус', min: 0, max: M.MAX_COORD, initial: 2 },
+    fixedLength: { key: 'length', label: 'Длина', min: 0, max: M.MAX_COORD, initial: 3 },
+    fixedDistance: { key: 'length', label: 'Длина', min: 0, max: M.MAX_COORD, initial: 3 },
+    fixedAngle: { key: 'angle', label: 'Угол, °', min: -180, max: 180, initial: 60 },
+    regularPolygon: { key: 'sides', label: 'Число вершин', min: 3, max: 30, initial: 4, step: 1 }
   };
   const hints = {
     move: 'Перетаскивайте свободные точки и точки на объектах. Остальные построения обновятся.',
@@ -46,21 +55,25 @@
     angle: 'Выберите три точки. Вторая точка — вершина измеряемого угла.',
     perpendicularBisector: 'Выберите два конца отрезка. Построим прямую через середину под прямым углом.',
     projection: 'Выберите прямую, отрезок или луч, затем точку. Проекция строится на содержащую их прямую.',
-    reflectPoint: 'Выберите исходную точку, затем центр симметрии.',
-    reflectLine: 'Выберите ось — прямую, отрезок или луч, затем отражаемую точку.',
-    rotate: 'Задайте угол. Выберите исходную точку, затем центр поворота. Положительный угол — против часовой стрелки.',
-    dilate: 'Задайте коэффициент. Выберите исходную точку, затем центр гомотетии.',
+    reflectPoint: 'Выберите точку или фигуру, затем центр симметрии.',
+    reflectLine: 'Выберите ось — прямую, отрезок или луч, затем отражаемую точку или фигуру.',
+    rotate: 'Задайте угол. Выберите точку или фигуру, затем центр поворота. Положительный угол — против часовой стрелки.',
+    dilate: 'Задайте коэффициент. Выберите точку или фигуру, затем центр гомотетии.',
     circle3: 'Выберите три точки окружности. Они не должны лежать на одной прямой.',
     area: 'Выберите многоугольник или окружность. Измерим площадь фигуры.',
     perimeter: 'Выберите многоугольник для измерения периметра.',
     circumference: 'Выберите окружность для измерения её длины.',
     pointOn: 'Коснитесь линии, окружности или графика. Точку можно будет двигать вдоль выбранного объекта.',
     vector: 'Выберите начало вектора, затем его конец.',
-    translate: 'Выберите исходную точку, затем вектор переноса.',
+    translate: 'Выберите исходную точку или фигуру, затем вектор переноса.',
     circleRadius: 'Введите радиус и выберите центр окружности.',
+    circleCenter: 'Выберите окружность — построим её зависимый центр.',
     tangent: 'Выберите окружность, затем точку, через которую пройдут касательные.',
     functionRoot: 'Выберите график прямой или параболы на поле или в списке. Найдём точки на оси x. Например: a*x^2+b*x+c.',
-    functionIntersection: 'Выберите два графика прямых или парабол на поле или в списке. Точки пересчитаются при изменении формул и параметров.'
+    functionIntersection: 'Выберите два графика прямых или парабол на поле или в списке. Точки пересчитаются при изменении формул и параметров.',
+    fixedLength: 'Задайте длину. Выберите начало A, затем точку B, задающую направление отрезка. Двигайте B, чтобы повернуть отрезок.',
+    fixedAngle: 'Задайте угол от −180° до 180°. Выберите точку первой стороны, затем вершину. Положительный угол — против часовой стрелки.',
+    regularPolygon: 'Задайте число вершин от 3 до 30. Выберите A и B — сторону многоугольника. Остальные вершины будут слева от направления A → B.'
   };
   let state = M.empty(), evaluated, board, drawings = {}, tool = 'move', pending = [], selected = null;
   let readOnly = managed, applying = false, rendering = false, dragBefore = null, dragId = null, lastDragEmit = 0, dragBoundsError = false;
@@ -94,25 +107,55 @@
     } catch (error) { say(error.message || 'Не удалось изменить построение.', true); return false; }
   }
   function nextId(model = state) { let serial = 1; while (model.objects.some(o => o.id === 'o' + serial)) serial++; return 'o' + serial; }
-  function pointLabel() {
-    const used = new Set(state.objects.filter(o => pointTypes.has(o.type)).map(o => o.label));
+  function pointLabel(model = state) {
+    const used = new Set(model.objects.filter(o => pointTypes.has(o.type)).map(o => o.label));
     let i = 0, label;
     do { label = String.fromCharCode(65 + i % 26) + (i >= 26 ? Math.floor(i / 26) : ''); i++; } while (used.has(label));
     return label;
   }
   function object(id) { return state.objects.find(o => o.id === id); }
   function label(id) { const item = object(id); return item?.label || names[item?.type] || id; }
+  function parameterSettings(item) {
+    return item.type === 'pointOn' ? pathParameter(object(item.parents[0]))
+      : item.type === 'transformation' ? toolParameters[item.mode] : toolParameters[item.type];
+  }
+  function appearanceDefaults(item) {
+    const point = pointTypes.has(item.type), measure = ['distance', 'angle', 'area', 'perimeter', 'circumference'].includes(item.type);
+    return { visible: true, labelVisible: point || measure,
+      color: point ? (item.type === 'point' ? '#23765a' : '#507db6')
+        : item.type === 'polygon' ? '#779775' : circleTypes.has(item.type) ? '#779249'
+        : ['vector', 'functionGraph'].includes(item.type) ? '#7453b8' : measure ? '#52689c' : '#4c7161',
+      width: 2, dash: ['parallel', 'perpendicular', 'bisector', 'perpendicularBisector'].includes(item.type) ? 2 : 0,
+      fillOpacity: item.type === 'polygon' ? .16 : item.type === 'angle' ? .2 : 0 };
+  }
+  function appearance(item) { return { ...appearanceDefaults(item), ...item.appearance }; }
+  const appearanceFields = { visible: 'appearance-visible', labelVisible: 'appearance-label', color: 'appearance-color',
+    width: 'appearance-width', dash: 'appearance-dash', fillOpacity: 'appearance-fill' };
+  function saveAppearance(item) {
+    const defaults = appearanceDefaults(item), next = { ...item.appearance };
+    for (const [key, id] of Object.entries(appearanceFields)) {
+      const input = $(id);
+      if (!input || input.disabled) continue;
+      const value = ['visible', 'labelVisible'].includes(key) ? input.checked : key === 'color' ? input.value : Number(input.value);
+      if (value === defaults[key]) delete next[key]; else next[key] = value;
+    }
+    if (Object.keys(next).length) item.appearance = next; else delete item.appearance;
+  }
   function movablePoint(item) { return item?.type === 'point' || item?.type === 'pointOn'; }
   function pathParameter(parent) {
+    let source = parent;
+    while (source?.type === 'transformedLine') source = object(source.parents[0]);
+    const sourceType = source?.type;
     if (circleTypes.has(parent.type)) return { key: 'parameter', label: 'Доля оборота', min: 0, max: 1, initial: 0, step: 1 / 36, largeStep: 1 / 12 };
-    if (parent.type === 'segment') return { key: 'parameter', label: 'Доля отрезка', min: 0, max: 1, initial: .5, step: .01, largeStep: .1 };
+    if (sourceType === 'segment') return { key: 'parameter', label: 'Доля отрезка', min: 0, max: 1, initial: .5, step: .01, largeStep: .1 };
     if (parent.type === 'functionGraph') return { key: 'parameter', label: 'Координата x', min: -M.MAX_COORD, max: M.MAX_COORD, initial: Math.max(-M.MAX_COORD, Math.min(M.MAX_COORD, state.view.viewport.x)), step: .1, largeStep: 1 };
-    const min = parent.type === 'ray' || parent.type === 'bisector' ? 0 : -M.MAX_COORD;
+    const min = sourceType === 'ray' || sourceType === 'bisector' ? 0 : -M.MAX_COORD;
     return { key: 'parameter', label: 'Параметр t', min, max: M.MAX_COORD, initial: 0, step: .1, largeStep: 1 };
   }
   function setParameterInput(input, caption, settings, value) {
     input.min = String(settings.min);
     input.max = String(settings.max);
+    input.step = String(settings.step ?? 'any');
     caption.textContent = settings.label;
     if (value !== undefined) input.value = String(value);
   }
@@ -130,11 +173,12 @@
     if (!item || (tool !== 'vector' && pending.includes(item.id))) return false;
     const kind = expectedKind();
     if (kind === 'point') return pointTypes.has(item.type);
+    if (kind === 'shape') return pointTypes.has(item.type) || lineTypes.has(item.type) || circleTypes.has(item.type) || vectorTypes.has(item.type) || item.type === 'polygon';
     if (kind === 'line') return lineTypes.has(item.type);
     if (kind === 'circle') return circleTypes.has(item.type);
     if (kind === 'curve') return lineTypes.has(item.type) || circleTypes.has(item.type);
     if (kind === 'path') return lineTypes.has(item.type) || circleTypes.has(item.type) || item.type === 'functionGraph';
-    if (kind === 'vector') return item.type === 'vector';
+    if (kind === 'vector') return vectorTypes.has(item.type);
     if (kind === 'graph') return item.type === 'functionGraph';
     if (kind === 'surface') return item.type === 'polygon' || circleTypes.has(item.type);
     return kind === 'polygon' && item.type === 'polygon';
@@ -153,6 +197,27 @@
   function finishConstruction(position) {
     if (readOnly || !pending.length || tool === 'polygon' && pending.length < 3) return;
     const type = tool, parents = [...pending], id = nextId();
+    const shapeIndex = type === 'reflectLine' ? 1 : 0;
+    const wholeFigure = ['rotate', 'dilate', 'reflectPoint', 'reflectLine', 'translate'].includes(type)
+      && !pointTypes.has(object(parents[shapeIndex])?.type);
+    if (wholeFigure || ['fixedLength', 'fixedAngle', 'regularPolygon'].includes(type)) {
+      const parameter = toolParameters[type], input = $('tool-parameter');
+      if (parameter && !input.reportValidity()) { pending = []; updateTool(); return; }
+      try {
+        const options = parameter ? { [parameter.key]: Number(input.value) } : {};
+        const batch = wholeFigure
+          ? C.build(state, 'transformFigure', [parents[shapeIndex], parents[1 - shapeIndex]], { mode: type, ...options })
+          : C.build(state, type, parents, options);
+        pending = [];
+        if (commit(s => { s.objects = batch.objects; })) {
+          selected = batch.parameterId || batch.selectedId;
+          const result = val(batch.selectedId);
+          say(result.defined ? names[type] + ': построение готово.' : names[type] + ': ' + result.reason, !result.defined);
+          renderPanels();
+        }
+      } catch (error) { pending = []; say(error.message || 'Не удалось построить фигуру.', true); }
+      updateTool(); return;
+    }
     const newObject = { id, type, label: pointTypes.has(type) ? pointLabel() : names[type].slice(0, 26) + ' ' + (state.objects.filter(o => o.type === type).length + 1), parents };
     if (['intersection', 'tangent', 'functionRoot', 'functionIntersection'].includes(type)) newObject.branch = 0;
     const parameter = toolParameters[type];
@@ -277,7 +342,10 @@
       restoreViewport();
       board.suspendUpdate();
       for (const item of state.objects) {
-        const id = item.id, result = val(id), common = { name: '', withLabel: false, strokeColor: '#4c7161', highlightStrokeColor: '#c28b2d', strokeWidth: 2, fixed: true, visible: () => !!val(id)?.defined };
+        const id = item.id, result = val(id), look = appearance(item), shown = () => !!val(id)?.defined && look.visible;
+        const common = { name: item.label, withLabel: look.labelVisible,
+          label: { display: 'internal', useMathJax: false, parse: false, fontSize: 14, strokeColor: '#203a32' },
+          strokeColor: look.color, highlightStrokeColor: '#c28b2d', strokeWidth: look.width, dash: look.dash, fixed: true, visible: shown };
         let element;
         if (result.kind === 'point') {
           const free = item.type === 'point', movable = movablePoint(item);
@@ -285,28 +353,32 @@
             ? [result.x ?? 0, result.y ?? 0]
             : [() => val(id).defined ? val(id).x : NaN, () => val(id).defined ? val(id).y : NaN];
           element = board.create('point', coordinates, {
-            ...common, name: item.label, withLabel: true, label: { display: 'internal', useMathJax: false, parse: false, fontSize: 14, strokeColor: '#203a32' },
-            size: movable ? 4.5 : 4, strokeWidth: 2, fillColor: free ? '#23765a' : '#507db6', strokeColor: '#fff', highlightStrokeColor: '#c28b2d', fixed: !movable || readOnly || tool !== 'move', snapToGrid: false
+            ...common, size: movable ? 4.5 : 4, fillColor: look.color, strokeColor: '#fff', highlightStrokeColor: '#c28b2d', fixed: !movable || readOnly || tool !== 'move', snapToGrid: false
           });
           if (movable) bindPointDrag(element, id);
         } else if (result.kind === 'line' || result.kind === 'vector') {
+          const vector = result.kind === 'vector', bounded = result.domain?.[0] === 0 && result.domain?.[1] === 1 || vector;
+          const isRay = !bounded && result.domain?.[0] === 0;
           const a = axis => () => val(id).defined ? val(id).a[axis] : NaN;
-          const b = axis => () => val(id).defined ? val(id).a[axis] + val(id).d[axis] : NaN;
-          const vector = result.kind === 'vector', bounded = item.type === 'segment' || vector;
-          const isRay = item.type === 'ray' || item.type === 'bisector';
+          const b = axis => () => {
+            const current = val(id); if (!current.defined) return NaN;
+            // Infinite lines/rays need a representable second display point.
+            // Normalizing the direction changes no mathematical line or domain.
+            const scale = bounded ? 1 : Math.max(Math.abs(current.d[0]), Math.abs(current.d[1]));
+            return current.a[axis] + current.d[axis] / scale;
+          };
           element = board.create('line', [[a(0), a(1)], [b(0), b(1)]], {
             ...common, straightFirst: !bounded && !isRay, straightLast: !bounded,
-            lastArrow: isRay || vector ? { type: 2, size: 5 } : false,
-            strokeColor: vector ? '#7453b8' : common.strokeColor,
-            dash: ['parallel', 'perpendicular', 'bisector', 'perpendicularBisector'].includes(item.type) ? 2 : 0
+            lastArrow: isRay || vector ? { type: 2, size: 5 } : false
           });
         } else if (result.kind === 'circle') {
-          element = board.create('circle', [[() => val(id).defined ? val(id).c[0] : NaN, () => val(id).defined ? val(id).c[1] : NaN], () => val(id).defined ? val(id).r : NaN], { ...common, strokeColor: '#779249', fillOpacity: 0 });
+          element = board.create('circle', [[() => val(id).defined ? val(id).c[0] : NaN, () => val(id).defined ? val(id).c[1] : NaN], () => val(id).defined ? val(id).r : NaN], { ...common, fillColor: look.color, fillOpacity: look.fillOpacity });
         } else if (result.kind === 'polygon') {
-          element = board.create('polygon', item.parents.map(parent => drawings[parent]), { ...common, fillColor: '#a5c8ac', fillOpacity: .16, borders: { strokeColor: '#779775', strokeWidth: 2, highlightStrokeColor: '#c28b2d', fixed: true }, vertices: { visible: false }, hasInnerPoints: false });
+          element = board.create('polygon', item.parents.map(parent => drawings[parent]), { ...common, fillColor: look.color, fillOpacity: look.fillOpacity,
+            borders: { strokeColor: look.color, strokeWidth: look.width, dash: look.dash, highlightStrokeColor: '#c28b2d', fixed: true, visible: shown }, vertices: { visible: false }, hasInnerPoints: false });
         } else if (result.kind === 'functionGraph') {
           const program = Expression.parse(item.expression);
-          element = board.create('curve', [[], []], { ...common, strokeColor: '#7453b8', strokeWidth: 2.5, doAdvancedPlot: false });
+          element = board.create('curve', [[], []], { ...common, doAdvancedPlot: false });
           element.updateDataArray = function () {
             const box = board.getBoundingBox(), current = val(id);
             const samples = Expression.sample(program, current.parameters, { left: box[0], right: box[2], bottom: box[3], top: box[1], points: 256 });
@@ -315,8 +387,8 @@
             $('graph-warning').hidden = limitedGraphs.size === 0;
           };
         } else if (result.kind === 'measurement') {
-          element = board.create('text', [() => val(id).defined ? val(id).position[0] + .15 : NaN, () => val(id).defined ? val(id).position[1] + .4 : NaN, () => val(id).defined ? item.label + ' ≈ ' + format(val(id).value) + val(id).unit : ''], { ...common, fontSize: 13, strokeColor: '#52689c', display: 'internal', parse: false, useMathJax: false, anchorX: 'left', anchorY: 'bottom' });
-          if (item.type === 'angle') board.create('nonreflexangle', item.parents.map(parent => drawings[parent]), { ...common, name: '', radius: .7, fillColor: '#a6b9d8', fillOpacity: .2, strokeColor: '#7d95bd', strokeWidth: 1, orthoType: 'square' });
+          element = board.create('text', [() => val(id).defined ? val(id).position[0] + .15 : NaN, () => val(id).defined ? val(id).position[1] + .4 : NaN, () => val(id).defined ? item.label + ' ≈ ' + format(val(id).value) + val(id).unit : ''], { ...common, name: '', withLabel: false, visible: () => shown() && look.labelVisible, fontSize: 13, display: 'internal', parse: false, useMathJax: false, anchorX: 'left', anchorY: 'bottom' });
+          if (item.type === 'angle') board.create('nonreflexangle', item.parents.map(parent => drawings[parent]), { ...common, name: '', withLabel: false, radius: .7, fillColor: look.color, fillOpacity: look.fillOpacity, orthoType: 'square' });
         }
         drawings[id] = element;
       }
@@ -402,11 +474,11 @@
     const matches = [];
     for (const item of state.objects) {
       const r = val(item.id);
-      if (!r.defined || (tool !== 'move' && !accepts(item))) continue;
+      if (!r.defined || item.appearance?.visible === false || (tool !== 'move' && !accepts(item))) continue;
       let distance = Infinity;
       if (r.kind === 'point') distance = Math.hypot(x - r.x, y - r.y);
       else if (r.kind === 'circle') distance = Math.abs(Math.hypot(x - r.c[0], y - r.c[1]) - r.r);
-      else if (r.kind === 'polygon' && ['area', 'perimeter'].includes(tool)) {
+      else if (r.kind === 'polygon' && (['move', 'area', 'perimeter'].includes(tool) || expectedKind() === 'shape')) {
         const vertices = r.vertices; let inside = false;
         for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
           const a = vertices[i], b = vertices[j];
@@ -465,6 +537,7 @@
     if (r.kind === 'functionTable') return parents + ' · x от ' + tableNumber(item.start) + ' до ' + tableNumber(item.end) + ' · шаг ' + tableNumber(item.step);
     if (r.kind === 'vector') return '(' + format(r.d[0]) + '; ' + format(r.d[1]) + ') · ' + parents;
     if (r.kind === 'circle') return 'r ≈ ' + format(r.r) + ' · ' + parents;
+    if (r.kind === 'transformation') return names[item.mode] + ' · ' + (item.mode === 'rotate' ? item.angle + '° · ' : item.mode === 'dilate' ? 'k = ' + item.factor + ' · ' : '') + parents;
     return parents;
   }
   const tableNumber = value => String(value).replace('.', ',');
@@ -499,7 +572,7 @@
       row.classList.toggle('selected', selected === item.id); row.classList.toggle('pending', pending.includes(item.id)); row.setAttribute('aria-pressed', String(selected === item.id));
       const dot = document.createElement('span'); dot.className = 'object-dot' + (item.type === 'point' ? ' free' : '') + (!val(item.id).defined ? ' undefined' : ''); dot.setAttribute('aria-hidden', 'true');
       const info = document.createElement('span'); info.className = 'object-info'; const title = document.createElement('b'); title.textContent = (item.label || names[item.type]) + ' · ' + names[item.type];
-      const sub = document.createElement('small'); sub.textContent = description(item); info.append(title, sub); row.append(dot, info); row.onclick = () => choose(item.id); return row;
+      const sub = document.createElement('small'); sub.textContent = (item.appearance?.visible === false ? 'Скрыт · ' : '') + description(item); info.append(title, sub); row.append(dot, info); row.onclick = () => choose(item.id); return row;
     }));
     if (active) list.querySelector('[data-object="' + active + '"]')?.focus({ preventScroll: true });
     const activeSlider = document.activeElement?.dataset?.slider;
@@ -539,7 +612,7 @@
       $('selected-description').textContent = description(item);
       if (inspectorChanged) $('object-label').value = item.label;
       const free = item.type === 'point'; $('coordinate-editor').hidden = !free;
-      const parameter = item.type === 'pointOn' ? pathParameter(object(item.parents[0])) : toolParameters[item.type];
+      const parameter = parameterSettings(item);
       $('selected-parameter').hidden = !parameter;
       $('edit-parameter').disabled = !parameter || readOnly;
       if (parameter && inspectorChanged) setParameterInput($('edit-parameter'), $('selected-parameter-label'), parameter, item[parameter.key]);
@@ -549,6 +622,16 @@
         // Number -> String -> Number preserves coordinates during label-only edits.
         if (inspectorChanged) $('edit-x').value = String(item.x);
         if (inspectorChanged) $('edit-y').value = String(item.y);
+      }
+      const look = appearance(item), hasDrawing = !['slider', 'functionTable', 'transformation'].includes(item.type);
+      document.querySelector('.appearance-fields').hidden = !hasDrawing;
+      for (const [key, id] of Object.entries(appearanceFields)) {
+        const input = $(id); if (!input) continue;
+        input.disabled = readOnly || !hasDrawing;
+        if (inspectorChanged) {
+          if (['visible', 'labelVisible'].includes(key)) input.checked = look[key];
+          else input.value = String(look[key]);
+        }
       }
     }
     renderFunctionTable(item);
@@ -565,7 +648,7 @@
     if (accessInitialized && readOnly === next) return;
     accessInitialized = true; readOnly = next; document.documentElement.dataset.spacemathReadonly = String(readOnly);
     if (readOnly) { if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; } interactionEpoch++; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; pending = []; inspectorRevision = null; if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); }
-    document.querySelectorAll('#tools button,#add-function-form input,#add-function-form button,#add-slider-form input,#add-slider-form select,#add-slider-form button,#tool-parameter,#fit-view,#zoom-in,#zoom-out,#model-title,#show-axes,#show-grid,#add-point-form input,#add-point-form button,#edit-object-form input,#edit-object-form button,#delete-object,#new-model,#example,#import-json,#finish-polygon,#cancel-selection').forEach(control => { control.disabled = readOnly; });
+    document.querySelectorAll('#tools button,#add-function-form input,#add-function-form button,#add-slider-form input,#add-slider-form select,#add-slider-form button,#tool-parameter,#fit-view,#zoom-in,#zoom-out,#model-title,#show-axes,#show-grid,#add-point-form input,#add-point-form button,#edit-object-form input,#edit-object-form select,#edit-object-form button,#delete-object,#new-model,#example,#import-json,#finish-polygon,#cancel-selection').forEach(control => { control.disabled = readOnly; });
     for (const item of state.objects) if (movablePoint(item)) {
       drawings[item.id]?.setAttribute({ fixed: readOnly || tool !== 'move' });
       if (readOnly) placePoint(drawings[item.id], val(item.id));
@@ -577,10 +660,10 @@
     const incoming = M.normalize(value); interactionEpoch++;
     if (viewTimer !== null) { root.clearTimeout(viewTimer); viewTimer = null; }
     if (JSON.stringify(incoming) === JSON.stringify(state)) return;
-    // Keep inspected graph results open while a remote editor changes inputs.
+    // Inspection is local UI state. Preserve a surviving object while another
+    // participant edits its parents; this never grants model write access.
     const selectedType = object(selected)?.type;
-    const keepResult = ['functionTable', 'functionRoot', 'functionIntersection'].includes(selectedType)
-      && incoming.objects.some(item => item.id === selected && item.type === selectedType);
+    const keepResult = selectedType && incoming.objects.some(item => item.id === selected && item.type === selectedType);
     applying = true;
     try { if ($('confirm-dialog').open) $('confirm-dialog').close('cancel'); state = incoming; history = []; future = []; pending = []; if (!keepResult) selected = null; dragBefore = null; dragId = null; sliderBefore = null; sliderId = null; render(); }
     finally { applying = false; }
@@ -648,10 +731,11 @@
     const selectedObject = object(selected);
     if (!selectedObject) return;
     const id = selected, newLabel = $('object-label').value, x = Number($('edit-x').value), y = Number($('edit-y').value);
-    const parameter = selectedObject.type === 'pointOn' ? pathParameter(object(selectedObject.parents[0])) : toolParameters[selectedObject.type];
+    const parameter = parameterSettings(selectedObject);
     commit(s => {
       const item = s.objects.find(o => o.id === id);
       item.label = newLabel;
+      saveAppearance(item);
       if (item.type === 'point') { item.x = x; item.y = y; }
       if (parameter) item[parameter.key] = Number($('edit-parameter').value);
       if (item.type === 'slider') for (const field of ['min', 'max', 'step', 'value']) item[field] = Number($('edit-slider-' + field).value);

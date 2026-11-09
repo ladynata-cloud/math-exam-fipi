@@ -420,3 +420,60 @@ test('graph roots and intersections: canonical journal, permissions, version fen
   assert.equal(model.evaluate(states[2]).i0.solutionStatus, 'none');
   assert.equal(model.evaluate(f.work('s1').geometryState).d.value, 2);
 });
+
+test('classroom constructions and appearance retain dependencies, control and exact journal history', t => {
+  const f = fixture(t);
+  const initial = { ...model.empty(), objects: [
+    { id: 'a', type: 'point', label: 'A', x: 0, y: 0, appearance: { visible: false } },
+    { id: 'b', type: 'point', label: 'B', x: 2, y: 0 },
+    { id: 'c', type: 'regularVertex', label: 'C', parents: ['a', 'b'], sides: 4, index: 2, orientation: 1 },
+    { id: 'd', type: 'regularVertex', label: 'D', parents: ['a', 'b'], sides: 4, index: 3, orientation: 1 },
+    { id: 'square', type: 'polygon', label: 'ABCD', parents: ['a', 'b', 'c', 'd'], appearance: { color: '#bf3f5f', width: 4, dash: 2, fillOpacity: .3, labelVisible: true } },
+    { id: 'length', type: 'fixedDistance', label: 'L', parents: ['a', 'b'], length: 3 },
+    { id: 'rotation', type: 'transformation', label: 'Поворот', parents: ['a'], mode: 'rotate', angle: 90 },
+    { id: 'rc', type: 'transformedPoint', label: 'C1', parents: ['c', 'rotation'] },
+    { id: 'circle', type: 'circleRadius', label: 'k', parents: ['b'], radius: 3 },
+    { id: 'center', type: 'circleCenter', label: 'O', parents: ['circle'], appearance: { visible: false, labelVisible: false } },
+    { id: 'edge', type: 'pointOn', label: 'E', parents: ['circle'], parameter: 0, appearance: { visible: false } },
+    { id: 'dilation', type: 'transformation', label: 'Гомотетия', parents: ['a'], mode: 'dilate', factor: 2 },
+    { id: 'imageCenter', type: 'transformedPoint', label: 'O1', parents: ['center', 'dilation'] },
+    { id: 'imageEdge', type: 'transformedPoint', label: 'E1', parents: ['edge', 'dilation'] },
+    { id: 'imageCircle', type: 'transformedCircle', label: 'k1', parents: ['circle', 'dilation'] }
+  ] };
+  const state = model.normalize(initial);
+  f.action('s1', 'geometry', 's1', { state }, { expectedVersion: 0 });
+  f.action('teacher', 'present', 'common', { target: 's1', surface: 'geometry' });
+  assert.deepEqual(f.snapshot('s2').presentation.workspace.geometryState, state);
+  const computed = model.evaluate(state);
+  assert.equal(computed.square.defined, true, 'hidden points still define a polygon');
+  assert.equal(computed.length.x, 3);
+  assert.ok(Math.abs(computed.rc.x + 2) < 1e-12 && Math.abs(computed.rc.y - 2) < 1e-12);
+  assert.deepEqual(computed.imageCircle.c, [4, 0]); assert.equal(computed.imageCircle.r, 6);
+  rejects(() => f.action('s2', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_FORBIDDEN', 403);
+  f.action('teacher', 'geometry-control', 's1', { controller: 'teacher' });
+  rejects(() => f.action('s1', 'geometry', 's1', { state }, { expectedVersion: f.work('s1').geometryVersion }), 'GROUP_CONTROL_REQUIRED', 409);
+
+  const collapsed = structuredClone(state);
+  collapsed.objects.find(item => item.id === 'dilation').factor = 0;
+  f.action('teacher', 'geometry', 's1', { state: collapsed }, { expectedVersion: f.work('s1').geometryVersion });
+  assert.equal(model.evaluate(f.work('s1').geometryState).imageCircle.defined, false);
+  const recovered = structuredClone(state);
+  recovered.objects.find(item => item.id === 'b').x = 3;
+  recovered.objects.find(item => item.id === 'dilation').factor = -2;
+  f.action('teacher', 'geometry', 's1', { state: recovered }, { expectedVersion: f.work('s1').geometryVersion });
+  const accepted = structuredClone(f.work('s1'));
+  for (const appearance of [{ color: 'url(https://example.invalid/style)' }, { width: 100 }, { onClick: 'alert(1)' }]) {
+    const forged = structuredClone(recovered); forged.objects[0].appearance = appearance;
+    rejects(() => f.action('teacher', 'geometry', 's1', { state: forged }, { expectedVersion: accepted.geometryVersion }), 'GROUP_GEOMETRY_STATE_INVALID');
+    assert.deepEqual(f.work('s1'), accepted, 'invalid appearance never appends a partial construction');
+  }
+  rejects(() => f.action('teacher', 'geometry', 's1', { state }, { expectedVersion: 1 }), 'GROUP_STATE_CONFLICT', 409);
+  f.restart();
+  assert.deepEqual(f.work('s1'), accepted);
+  assert.deepEqual(f.history('teacher', 's1').events.filter(event => event.type === 'geometry').map(event => event.payload.state), [state, collapsed, recovered]);
+  const replayed = model.evaluate(f.work('s1').geometryState);
+  assert.equal(replayed.length.x, 3);
+  assert.ok(Math.abs(replayed.c.x - 3) < 1e-12 && Math.abs(replayed.c.y - 3) < 1e-12);
+  assert.deepEqual(replayed.imageCircle.c, [-6, 0]); assert.equal(replayed.imageCircle.r, 6);
+  assert.deepEqual(f.work('s1').geometryState.objects.find(item => item.id === 'square').appearance, state.objects.find(item => item.id === 'square').appearance);
+});
