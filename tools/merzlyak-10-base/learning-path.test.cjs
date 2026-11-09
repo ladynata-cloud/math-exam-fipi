@@ -17,7 +17,7 @@ const key=lesson=>'mathExamTextbook.v1:'+bundle.catalog.book.id+':'+lesson.id+':
 const resumeKey='mathExamTextbook.route.v1:'+bundle.catalog.book.id;
 const copy=value=>JSON.parse(JSON.stringify(value));
 function boot(saved={},board=false){
- const dom=new JSDOM('<nav class="course-nav"><a href="/">Курсы</a></nav><div id="app"></div>',{url:'https://example.test/'+(board?'trainers/merzlyak-10-base.html':'stereo-course/merzlyak-10-base/'),runScripts:'outside-only',pretendToBeVisual:true});
+ const dom=new JSDOM('<nav class="course-nav"><a href="/">Курсы</a><a id="course-board-link" href="/trainers/trainer-board.html?trainer=%2Fstereo-course%2Fmerzlyak-10-base%2F">Открыть курс на доске</a></nav><div id="app"></div>',{url:'https://example.test/'+(board?'trainers/merzlyak-10-base.html':'stereo-course/merzlyak-10-base/'),runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,doc=w.document,scrolls=[];w.TextEncoder=TextEncoder;w.scrollTo=(...args)=>scrolls.push(args);
  for(const [k,v]of Object.entries(saved))w.localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));
  w.TaskSceneViewer={mount(element,model,options={}){const svg=doc.createElement('svg'),live=doc.createElement('p');live.className='am-sr-only';element.append(svg,live);const camera=model.planar?{yaw:0,pitch:-Math.PI/2}:options.savedCamera||{yaw:.6,pitch:.4};svg.dataset.view='neutral';return {getState:()=>camera,setView:view=>{svg.dataset.view=view;},destroy:()=>element.replaceChildren()};}};
@@ -126,4 +126,8 @@ test('fresh practice is rechecked at click time when another window starts the p
 
 test('research cards without a known paragraph never propose an unrelated project as same-topic practice',()=>{
  const f=boot();try{f.app.open('research-sections-001');answer(f,'Записал план сечения.');assert.equal(f.doc.querySelector('[data-fresh-task]'),null);assert.match(f.doc.querySelector('[data-fresh-offer]').textContent,/нет отдельной задачи с подтверждённой привязкой/);assert.doesNotMatch(f.doc.querySelector('[data-fresh-offer]').textContent,/периодической решётки/);}finally{f.close();}
+});
+
+test('shared-board entry stays outside collapsed navigation and restores its original parent on destroy',()=>{
+ const f=boot();try{const boardLink=f.doc.querySelector('#course-board-link'),href=boardLink.getAttribute('href');let clicks=0;boardLink.addEventListener('click',event=>{event.preventDefault();clicks++;});assert.equal(boardLink.closest('details'),null);assert.equal(f.doc.querySelector('.merzlyak-navigation-links').open,false);boardLink.click();f.app.open(exact.id);assert.equal(f.doc.querySelector('#course-board-link'),boardLink);assert.equal(boardLink.closest('details'),null);assert.equal(boardLink.getAttribute('href'),href);assert.equal(boardLink.parentElement.className,'merzlyak-navigation');f.app.home();assert.equal(boardLink.closest('details'),null);f.app.destroy();assert.equal(f.doc.querySelector('body>.course-nav>#course-board-link'),boardLink);assert.equal(f.doc.querySelector('body>.course-nav').children.length,2);assert.equal(boardLink.previousElementSibling.getAttribute('href'),'/');boardLink.click();assert.equal(clicks,2,'moving the original anchor retains its event listeners');}finally{f.close();}
 });

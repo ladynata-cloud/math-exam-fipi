@@ -317,7 +317,7 @@ async function checkGeometryInteraction(page, base, viewport) {
   evidence.interactions.push({ course: 'geometry-merzlyak', id, viewport, checks: ['two-errors-without-auto-help', 'optional-error-advice', 'advice-and-answer-reload', 'progressive-explanation-reload', 'assisted-result', 'different-condition', 'prior-variant-and-totals-retained'] });
 }
 
-let browser;
+let browser, activePage;
 (async () => {
   try {
     await new Promise((resolve, reject) => { server.once('error', reject); server.listen(0, '127.0.0.1', resolve); });
@@ -326,6 +326,7 @@ let browser;
     for (const viewport of viewports) {
       const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
       const page = await context.newPage();
+      activePage = page;
       page.setDefaultTimeout(15000);
       page.on('pageerror', error => evidence.errors.push({ viewport, url: page.url(), kind: 'pageerror', message: error.message }));
       page.on('console', message => {
@@ -344,6 +345,16 @@ let browser;
     evidence.failure = error.stack;
     console.error(error);
     process.exitCode = 1;
+    if (activePage && !activePage.isClosed()) {
+      const viewport = activePage.viewportSize();
+      const screenshot = `failure-${viewport?.width || 'unknown'}.png`;
+      try {
+        await activePage.screenshot({ path: path.join(output, screenshot), fullPage: false });
+        evidence.failureScreenshot = { screenshot, viewport, url: activePage.url() };
+      } catch (captureError) {
+        evidence.failureScreenshotError = captureError.message;
+      }
+    }
   } finally {
     fs.writeFileSync(path.join(output, 'browser-evidence.json'), JSON.stringify(evidence, null, 2) + '\n');
     await browser?.close();

@@ -124,6 +124,18 @@ guided/independent draft boundary. No blocking code-review issue remains.
 New CI acceptance records 72 layouts and actual learner interactions; its result
 is pending until the updated candidate runs. No local browser pass is claimed.
 
+Trainer CI on `8537462d` passed the existing 84 browser journeys but found two
+interaction/layout regressions: the standalone board link was hidden in the new
+collapsed navigation, and the representative grade-10 model extended 17.81px
+below the 320x900 viewport. The product now keeps the original board anchor
+visible beside the course menu and places the secondary hint button below the
+model on narrow screens. Existing browser assertions remain unchanged. Failure
+screenshots are now retained for diagnosis. A separate history review also fixed
+correct-answer -> later wrong draft -> new variant: the first successful response
+and latest draft are retained separately, without inventing missing legacy data
+or awarding the result twice. New semantic regressions cover these boundaries;
+the new head requires fresh CI and visual inspection before publication.
+
 Implementation and exact candidate checks are recorded in the task PR. The
 release record must include current main/head, drift handling, checks, deployment
 and live verification. No release is implied by this task document alone.

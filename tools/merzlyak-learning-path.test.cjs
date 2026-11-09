@@ -101,3 +101,18 @@ test('saved visible assistance cannot be cleaned into an unassisted attempt',()=
 test('a wrong final answer is not diagnosed as a wrong guided substep when switching stages',()=>{
  const c=lesson();independent(c);submit(c,'0');assert.ok(c.w.document.querySelector('[data-action="error-advice"]'));click(c,'[data-stage="3"]');assert.equal(c.w.document.querySelector('[data-action="error-advice"]'),null);independent(c);assert.ok(c.w.document.querySelector('[data-action="error-advice"]'));c.dom.window.close();
 });
+
+test('history separates the first successful answer from a later wrong draft without changing earned credit',()=>{
+ let c=lesson();independent(c);const successful=answer(c);submit(c,successful);submit(c,successful);assert.equal(c.get().independent,1);
+ submit(c,'0');assert.equal(c.get().solvedDraft,successful);assert.equal(c.get().draft,'0');assert.equal(c.get().independent,1);
+ c=reload(c);assert.equal(c.get().solvedDraft,successful);assert.equal(c.w.document.getElementById('answer').value,'0');click(c,'[data-action="new-task"]');
+ const archived=c.get().recentAttempts[0];assert.equal(archived.solvedDraft,successful);assert.equal(archived.draft,'0');assert.equal(archived.result,'first');assert.equal(c.get().solvedDraft,'');assert.equal(c.get().independent,1);
+ const history=c.w.document.getElementById('attempt-history').textContent;assert.ok(history.includes('Успешный ответ: '+successful));assert.ok(history.includes('Последняя запись: 0'));
+ c=reload(c);assert.equal(c.get().recentAttempts[0].solvedDraft,successful);assert.ok(c.w.document.getElementById('attempt-history').textContent.includes('Последняя запись: 0'));c.dom.window.close();
+});
+test('an older solved attempt without its original response does not infer it from the latest draft',()=>{
+ let c=lesson();independent(c);submit(c,answer(c));submit(c,'0');const saved=JSON.parse(c.w.localStorage.getItem(S.KEY));delete saved.units[c.id].solvedDraft;c.dom.window.close();
+ c=lesson(c.id,saved);assert.equal(c.get().solvedDraft,'');submit(c,'0');click(c,'[data-action="new-task"]');
+ assert.equal(c.get().recentAttempts[0].solvedDraft,'');assert.equal(c.get().recentAttempts[0].draft,'0');assert.equal(c.get().independent,1);
+ assert.match(c.w.document.getElementById('attempt-history').textContent,/Успешный ответ в прежней записи не сохранён/);assert.match(c.w.document.getElementById('attempt-history').textContent,/Последняя запись: 0/);c.dom.window.close();
+});

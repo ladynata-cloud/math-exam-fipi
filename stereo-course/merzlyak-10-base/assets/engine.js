@@ -93,8 +93,8 @@ function createApp(root,options){
  function el(tag,text,attrs={}){const node=doc.createElement(tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)math.appendText(node,String(text));return node;}
  function setDisplayText(node,text){node.replaceChildren();math.appendText(node,String(text));}
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
- const siteNav=!options.boardSession?doc.querySelector('body>.course-nav'):null,navigation=siteNav?el('details',undefined,{class:'merzlyak-navigation'}):null;
- if(navigation){navigation.append(el('summary','Курсы и доска'));siteNav.before(navigation);navigation.append(siteNav);}
+ const siteNav=!options.boardSession?doc.querySelector('body>.course-nav'):null,navigation=siteNav?el('div',undefined,{class:'merzlyak-navigation'}):null,navigationLinks=siteNav?el('details',undefined,{class:'merzlyak-navigation-links'}):null,boardLink=siteNav?.querySelector('#course-board-link'),boardPosition=boardLink?doc.createComment('course-board-link'):null;
+ if(navigation){navigationLinks.append(el('summary','Курсы'));siteNav.before(navigation);navigationLinks.append(siteNav);navigation.append(navigationLinks);if(boardLink){boardLink.replaceWith(boardPosition);navigation.append(boardLink);}}
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
  // Personal outcomes stay in this browser; the shared room keeps its original wire contract.
@@ -231,7 +231,7 @@ function createApp(root,options){
  function open(id){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
   destroyScene();refreshPersonal=()=>{};current=lesson;key=storageKey(lesson);expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
-  if(!options.boardSession){root.classList.add('merzlyak-personal');doc.body.classList.add('merzlyak-task-active');if(navigation)navigation.open=false;}
+  if(!options.boardSession){root.classList.add('merzlyak-personal');doc.body.classList.add('merzlyak-task-active');if(navigationLinks)navigationLinks.open=false;}
   remember(lesson.id);
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
@@ -246,7 +246,7 @@ function createApp(root,options){
    figure.append(model,guide);main.append(prompt,figure);
    const actions=el('div',undefined,{class:'merzlyak-task-actions','aria-label':'Как продолжить задачу'}),inspect=el('button','Разберусь с рисунком',{type:'button','data-inspect-model':'','aria-expanded':'false','aria-controls':'model-guide'}),attempt=el('button','Попробую сам',{type:'button','data-try-answer':''});hintButton=el('button','Подсказка по шагу',{type:'button','data-step-hint':''});
    inspect.addEventListener('click',()=>{guide.hidden=!guide.hidden;inspect.setAttribute('aria-expanded',String(!guide.hidden));if(!guide.hidden){model.querySelector('svg')?.focus();guide.scrollIntoView?.({block:'nearest'});}});
-   attempt.addEventListener('click',()=>{const input=main.querySelector('#final-answer');input?.focus();input?.scrollIntoView?.({block:'center'});});actions.append(inspect);if(lesson.answer)actions.append(attempt);actions.append(hintButton);main.append(actions);
+   attempt.addEventListener('click',()=>{const input=main.querySelector('#final-answer');input?.focus();input?.scrollIntoView?.({block:'center'});});actions.append(inspect);if(lesson.answer)actions.append(attempt);main.append(actions,hintButton);
    const planBox=el('details',undefined,{class:'merzlyak-plan'}),plan=el('textarea',undefined,{id:'personal-plan','data-personal-plan':'',rows:'2',placeholder:'Что предполагаю? С какого свойства или построения начну?'});plan.value=state.plan;
    plan.addEventListener('input',()=>{if(locked)return;state.plan=plan.value;save();});planBox.append(el('summary','Моя догадка или первый шаг · необязательно'),el('label','Запиши свой план',{for:'personal-plan'}),plan,el('small','Это личная запись, без автоматической проверки. Она сохранится вместе с задачей.'));main.append(planBox);
   }
@@ -447,7 +447,7 @@ function createApp(root,options){
  /* MERZLYAK_BOARD_END */
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
  win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
- return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();win.removeEventListener('storage',onStorage);if(!options.boardSession){root.classList.remove('merzlyak-personal');doc.body.classList.remove('merzlyak-task-active');if(navigation){navigation.before(siteNav);navigation.remove();}}root.replaceChildren();}};
+ return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();win.removeEventListener('storage',onStorage);if(!options.boardSession){root.classList.remove('merzlyak-personal');doc.body.classList.remove('merzlyak-task-active');if(navigation){navigation.before(siteNav);if(boardPosition?.parentNode)boardPosition.replaceWith(boardLink);navigation.remove();}}root.replaceChildren();}};
 }
 const api={validateLesson,inspectBundle,createApp};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

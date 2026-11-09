@@ -26,8 +26,11 @@
 .journey-topics progress{display:block;width:100%;height:.55rem;margin:.45rem 0 .2rem;accent-color:#1c6c43;border:0;border-radius:1rem;overflow:hidden}.journey-topics progress::-webkit-progress-bar{background:#e4ede7}.journey-topics progress::-webkit-progress-value{background:#1c6c43}.journey-topics progress::-moz-progress-bar{background:#1c6c43}.journey-meter-label{display:block;color:#506a59;font-size:.78rem}
 
 /* Standalone cards start with the task and model. The shared room keeps its layout. */
-.merzlyak-navigation{max-width:1480px;margin:0 auto;padding:0 1rem;border:0;background:transparent}
-.merzlyak-navigation>summary{font-size:.85rem;min-height:44px;padding:.4rem 0}
+.merzlyak-navigation{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 .7rem;align-items:start;max-width:1480px;margin:0 auto;padding:0 1rem;border:0;background:transparent}
+.merzlyak-navigation-links{grid-column:1;grid-row:1;margin:0;padding:0;border:0;background:transparent}
+.merzlyak-navigation-links[open]{grid-column:1/-1}
+.merzlyak-navigation-links>summary{font-size:.85rem;min-height:44px;padding:.4rem 0;width:max-content}
+.merzlyak-navigation>#course-board-link{grid-column:2;grid-row:1;display:flex;align-items:center;min-height:44px;font-size:.8rem;line-height:1.3;position:relative}
 .merzlyak-navigation .course-nav{padding:.1rem 0 .4rem;gap:.2rem 1rem;font-size:.85rem}
 .merzlyak-personal main>header{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .7rem;margin:.2rem 0 .65rem}
 .merzlyak-personal main>header>button{padding:.35rem .6rem;min-height:44px;font-size:.85rem}
@@ -36,8 +39,8 @@
 .merzlyak-personal main>header>.lesson-work-status{flex-basis:100%;font-size:.78rem}
 .merzlyak-personal .textbook-layout{display:block}
 .merzlyak-personal .textbook-main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:0 1rem;padding:.8rem;align-items:start}
-.merzlyak-personal .merzlyak-prompt,.merzlyak-personal .merzlyak-task-actions,.merzlyak-personal .merzlyak-plan,.merzlyak-personal [data-final-form]{grid-column:1;min-width:0}
-.merzlyak-personal .merzlyak-figure{grid-column:2;grid-row:1 / span 4;min-width:0}
+.merzlyak-personal .merzlyak-prompt,.merzlyak-personal .merzlyak-task-actions,.merzlyak-personal [data-step-hint],.merzlyak-personal .merzlyak-plan,.merzlyak-personal [data-final-form]{grid-column:1;min-width:0}
+.merzlyak-personal .merzlyak-figure{grid-column:2;grid-row:1 / span 5;min-width:0}
 .merzlyak-personal .textbook-condition{font-size:1rem;line-height:1.45;margin:0 0 .55rem}
 .merzlyak-personal .textbook-goal{font-size:.95rem;line-height:1.45;padding-left:.6rem;margin:.5rem 0 .7rem}
 .merzlyak-personal .merzlyak-prompt ul{padding-left:1.2rem;margin:.4rem 0}
@@ -45,6 +48,7 @@
 .merzlyak-personal .am-controls{margin:.4rem 0}.merzlyak-personal .am-focus:empty{display:none}
 .merzlyak-task-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0}
 .merzlyak-task-actions button{flex:1 1 9rem;padding:.45rem .6rem;font-size:.85rem;min-height:44px}
+.merzlyak-personal [data-step-hint]{padding:.45rem .6rem;font-size:.85rem;min-height:44px}
 .merzlyak-personal [data-try-answer]{background:#1c6c43;color:#fff}
 .merzlyak-personal .merzlyak-plan{margin:.4rem 0;padding:.2rem .65rem}
 .merzlyak-plan summary{font-size:.85rem;min-height:44px;padding:.35rem 0}
@@ -67,15 +71,14 @@
 @media(max-width:850px){
  .merzlyak-navigation{padding:0 .5rem}
  #textbook-app.merzlyak-personal{padding:0 .4rem 2rem}
- .merzlyak-personal main>header{gap:.15rem .5rem;margin:.1rem 0 .4rem}
+ .merzlyak-personal main>header{gap:.15rem .5rem;margin:.1rem 0 .2rem}
  .merzlyak-personal main>header>h1{font-size:1.15rem}
  .merzlyak-personal .textbook-main{display:flex;flex-direction:column;padding:.45rem;gap:0}
  .merzlyak-personal .textbook-main>*{width:100%}
  .merzlyak-personal .textbook-condition{font-size:.95rem}
- .merzlyak-personal .textbook-goal{font-size:.9rem;margin:.4rem 0 .6rem}
- .merzlyak-personal .merzlyak-prompt{order:0}.merzlyak-personal .merzlyak-task-actions{order:1}.merzlyak-personal .merzlyak-figure{order:2}.merzlyak-personal .merzlyak-plan{order:3}.merzlyak-personal [data-final-form]{order:4}
- .merzlyak-personal .merzlyak-task-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ .merzlyak-personal .textbook-goal{font-size:.9rem;margin:.4rem 0 .45rem}
+ .merzlyak-personal .merzlyak-prompt{order:0}.merzlyak-personal .merzlyak-task-actions{order:1}.merzlyak-personal .merzlyak-figure{order:2}.merzlyak-personal [data-step-hint]{order:3;margin:.4rem 0}.merzlyak-personal .merzlyak-plan{order:4}.merzlyak-personal [data-final-form]{order:5}
+ .merzlyak-personal .merzlyak-task-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:.3rem 0}
  .merzlyak-personal .merzlyak-task-actions button{font-size:.85rem;padding:.35rem .4rem}
- .merzlyak-personal [data-step-hint]{grid-column:1/-1}
  .merzlyak-personal .am-controls .am-button{padding:.45rem .3rem}
 }
