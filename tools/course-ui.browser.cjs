@@ -130,8 +130,8 @@ const server = http.createServer((req,res)=>{
               assert.equal(sample.colour,'rgb(246, 247, 242)');
               assert.ok(sample.styles[0]>20,'Shared CSS parsed and loaded');
               assert.deepEqual(sample.errors,samples[0].errors,'No additional page errors');
-              assert.ok(sample.scrollWidth<=Math.max(width,samples[0].scrollWidth)+1,
-                `Horizontal overflow grew: ${samples[0].scrollWidth} -> ${sample.scrollWidth}`);
+              assert.ok(sample.scrollWidth<=width+1,
+                `Horizontal page overflow: ${sample.scrollWidth} > ${width} (control ${samples[0].scrollWidth})`);
               if(scenario.compactHeading) {
                 for(const [property,value] of Object.entries(sample.compactHeading)) {
                   assert.ok(value<=samples[0].compactHeading[property]+0.1,

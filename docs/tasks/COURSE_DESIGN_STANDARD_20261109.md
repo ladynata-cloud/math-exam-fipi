@@ -69,3 +69,9 @@ CI screenshots and browser tests provide the full viewport evidence.
 
 Merge and production validation remain on hold until the owner explicitly
 approves the final head/base and release contents.
+
+Final viewport review also found two pre-existing 320px entrance overflows
+(Makarychev7:338px; Alimov:342px), caused by long titles in flex lesson cards.
+Only textbook card text is allowed to shrink and wrap; models are untouched.
+The paired browser gate now requires absolute absence of page overflow at both
+widths for every scenario, rather than merely no increase from the control.

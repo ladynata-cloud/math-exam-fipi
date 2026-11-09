@@ -64,6 +64,11 @@ body[data-mx-course] :is(.lesson-card, .course-card):hover {
   transform: none;
   border-color: var(--mx-green);
 }
+/* Long textbook topic names must fit beside the lesson number at 320px. */
+body[data-mx-course="textbook"] .lesson-card > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 
 /* Explicit action classes only: answer choices, tabs, canvas tools and
    correct/incorrect feedback keep their original state styles. */
