@@ -11,7 +11,7 @@ function intersections(a,b){
 }
 class Board{
  constructor(spec){this.spec=JSON.parse(JSON.stringify(spec));this.points=[];this.objects=[];this.history=[];this.reset();}
- reset(){this.points=JSON.parse(JSON.stringify(this.spec.points||[]));this.objects=JSON.parse(JSON.stringify(this.spec.objects||[]));this.history=[];this.update();}
+ reset(record=false){const previous=record?this.snapshot():null;this.points=JSON.parse(JSON.stringify(this.spec.points||[]));this.objects=JSON.parse(JSON.stringify(this.spec.objects||[]));if(record){this.history.push(previous);if(this.history.length>80)this.history.shift();}else this.history=[];this.update();}
  snapshot(){return JSON.stringify({points:this.points,objects:this.objects});}
  remember(){this.history.push(this.snapshot());if(this.history.length>80)this.history.shift();}
  undo(){if(!this.history.length)return false;const s=JSON.parse(this.history.pop());this.points=s.points;this.objects=s.objects;this.update();return true;}
@@ -19,7 +19,7 @@ class Board{
  object(id){return this.objects.find(o=>o.id===id);}
  pointName(){for(const n of 'MNPQHDEFGIJKLSTUVWXYZ'.split(''))if(!this.point(n))return n;return 'P'+(this.points.length+1);}
  objName(){return 'o'+(this.objects.length+1);}
- geometry(o){if(typeof o==='string')o=this.object(o);if(!o)return null;const p=this.point(o.a),q=this.point(o.b);if(!p||!q||p.valid===false||q.valid===false)return null;if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};return {type:'line',p,q};}
+ geometry(o){if(typeof o==='string')o=this.object(o);if(!o)return null;const p=this.point(o.a),q=this.point(o.b);if(!p||!q||p.valid===false||q.valid===false)return null;if(o.type==='circle')return {type:'circle',o:p,r:dist(p,q)};if(o.construction==='perpendicular'&&['foot','normal'].includes(q.kind)){const a=this.point(q.b),b=this.point(q.c);if(!a||!b||dist(a,b)<EPS)return null;return {type:'line',p,q:add(p,rot(sub(b,a)))};}if(dist(p,q)<EPS)return null;return {type:'line',p,q};}
  update(){for(const p of this.points){p.valid=true;if(!p.kind||p.kind==='free')continue;const a=this.point(p.a),b=this.point(p.b),c=this.point(p.c);let v=null;
   if(p.kind==='midpoint'&&a&&b)v=mul(add(a,b),.5);
   if(p.kind==='sum'&&a&&b&&c)v=add(b,sub(c,a));
@@ -43,11 +43,11 @@ class Board{
  else if(p.kind==='parallel'&&p.draggable){const c=this.point(p.c),v=sub(c,b);p.k=Math.max(.15,Math.min(1.3,dot(sub({x,y},a),v)/(dot(v,v)||1)));}
  else if(p.kind==='rightArc'&&p.draggable){const u=sub(b,a),m=mul(add(a,b),.5),w=sub({x,y},m);p.t=Math.atan2(cross(u,w),dot(u,w));if(Math.abs(Math.sin(p.t))<.12)p.t=p.t<0?-.12:.12;}
  else if(['equalarm','onCircle'].includes(p.kind)&&p.draggable)p.t=Math.atan2(y-a.y,x-a.x);else return false;this.update();return true;}
- make(tool,ids){const need={point:0,segment:2,line:2,circle:2,midpoint:2,perpendicular:3,parallel:3,bisector:3,reflection:3,intersection:2}[tool];if(ids.length!==need)throw Error('Выбери '+need+' разных '+(tool==='intersection'?'объекта.':'точки в указанном порядке.'));if(new Set(ids).size!==ids.length)throw Error('Нужны разные точки или объекты.');
+ make(tool,ids){const need={point:0,segment:2,line:2,circle:2,midpoint:2,perpendicular:3,parallel:3,bisector:3,reflection:3,intersection:2}[tool];if(ids.length!==need)throw Error('Выбери '+need+' разных '+(tool==='intersection'?'объекта.':'точки в указанном порядке.'));if(new Set(ids).size!==ids.length&&!(['perpendicular','parallel','reflection'].includes(tool)&&ids[1]!==ids[2]))throw Error('Нужны разные точки или объекты.');
   if(tool==='intersection'){const a=this.geometry(ids[0]),b=this.geometry(ids[1]);if(!a||!b)throw Error('Объект сейчас не определён.');const hits=intersections(a,b);if(!hits.length)throw Error('У этих объектов сейчас нет отдельных точек пересечения.');this.remember();const out=[];hits.forEach((q,i)=>{const p={id:this.pointName(),kind:'intersection',o1:ids[0],o2:ids[1],branch:i,x:q.x,y:q.y};this.points.push(p);out.push(p.id);});return out;}
   if(this.points.length>145||this.objects.length>175)throw Error('На поле уже много объектов. Отмени лишние построения или начни заново.');
-  const ps=ids.map(x=>this.point(x));if(ps.some(p=>!p||p.valid===false))throw Error('Точка не определена.');if(need>1&&dist(ps[0],ps[1])<1)throw Error('Точки почти совпали: сначала раздвинь их.');this.remember();let p,o;
-  if(['line','segment','circle'].includes(tool)){o={id:this.objName(),type:tool==='circle'?'circle':'line',extent:tool==='segment'?'segment':'line',a:ids[0],b:ids[1],added:true};this.objects.push(o);return [o.id];}
+  const ps=ids.map(x=>this.point(x));if(ps.some(p=>!p||p.valid===false))throw Error('Точка не определена.');if(need>1&&!['perpendicular','parallel','reflection'].includes(tool)&&dist(ps[0],ps[1])<1)throw Error('Точки почти совпали: сначала раздвинь их.');let p,o;
+  if(['line','segment','circle'].includes(tool)){this.remember();o={id:this.objName(),type:tool==='circle'?'circle':'line',extent:tool==='segment'?'segment':'line',a:ids[0],b:ids[1],added:true};this.objects.push(o);return [o.id];}
   if(tool==='midpoint')p={id:this.pointName(),kind:'midpoint',a:ids[0],b:ids[1]};
   if(['perpendicular','parallel','bisector','reflection'].includes(tool)){
    if(dist(ps[1],ps[2])<1)throw Error('Две точки исходной прямой должны различаться.');
@@ -55,7 +55,7 @@ class Board{
    if(tool==='bisector'&&norm(add(unit(sub(ps[0],ps[1])),unit(sub(ps[2],ps[1]))))<EPS)throw Error('Для развёрнутого угла выбери полуплоскость: эта модель строит внутреннюю биссектрису неразвёрнутого угла.');
    if(tool==='perpendicular'&&Math.abs(cross(sub(ps[0],ps[1]),sub(ps[2],ps[1])))<1)p.kind='normal';
   }
-  if(p){this.points.push(p);this.update();if(['perpendicular','parallel','bisector'].includes(tool)){o={id:this.objName(),type:'line',extent:tool==='bisector'?'ray':'line',a:tool==='bisector'?ids[1]:ids[0],b:p.id,added:true,construction:tool};this.objects.push(o);}return [p.id];}return [];
+  if(p){this.remember();this.points.push(p);this.update();if(['perpendicular','parallel','bisector'].includes(tool)){o={id:this.objName(),type:'line',extent:tool==='bisector'?'ray':'line',a:tool==='bisector'?ids[1]:ids[0],b:p.id,added:true,construction:tool};this.objects.push(o);}return [p.id];}return [];
  }
  addPoint(x,y){if(this.points.length>=150)throw Error('На поле уже 150 точек. Отмени лишние построения.');if(!Number.isFinite(x+y))throw Error('Координаты должны быть конечными.');x=Math.max(25,Math.min(615,x));y=Math.max(30,Math.min(385,y));this.remember();const id=this.pointName();this.points.push({id,kind:'free',x,y,added:true});return id;}
  goal(kind){const P=this.point.bind(this),O=this.objects,derived=this.points.filter(p=>p.valid!==false),same=(p,a,b)=>p.a===a&&p.b===b||p.a===b&&p.b===a,lineThrough=(a,b)=>O.some(o=>o.added&&o.type==='line'&&same(o,a,b));
@@ -64,11 +64,12 @@ class Board{
   if(kind==='diagonal')return {ok:lineThrough('A','C')||lineThrough('B','D'),message:'Проведи диагональ: она соединяет несоседние вершины и создаёт два треугольника.'};
   if(kind==='midpoint')return {ok:derived.some(p=>p.kind==='midpoint'&&same(p,'A','B')),message:'Построй середину AB как зависимую точку. Точка, поставленная на глаз, не сохраняет равенство при движении.'};
   if(kind==='median'){const m=derived.find(p=>p.kind==='midpoint'&&same(p,'A','B'));return {ok:!!m&&lineThrough('C',m.id),message:'Сначала построй середину AB, затем соедини её с C.'};}
-  if(kind==='perpendicular')return {ok:derived.some(p=>['foot','normal'].includes(p.kind)&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))&&lineThrough('C',p.id)&&dist(C,p)>EPS),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
+  if(kind==='perpendicular')return {ok:derived.some(p=>['foot','normal'].includes(p.kind)&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))&&lineThrough('C',p.id)&&O.some(o=>o.construction==='perpendicular'&&o.a==='C'&&o.b===p.id&&this.geometry(o))),message:'Нужен перпендикуляр через C к прямой AB: выбери C, затем A и B (или B и A).'};
   if(kind==='altitude'){return {ok:derived.some(p=>p.kind==='foot'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))),message:'Нужен перпендикуляр из C к прямой AB. Основание может оказаться на продолжении стороны.'};}
   if(kind==='bisector')return {ok:derived.some(p=>p.kind==='bisector'&&p.b==='C'&&((p.a==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Построй биссектрису угла ACB. Вершину C выбирают второй.'};
   if(kind==='reflection')return {ok:derived.some(p=>p.kind==='reflection'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.a==='B'&&p.c==='A'))),message:'Отрази C относительно прямой AB. Затем двигай C и проверь расстояния до оси.'};
   if(kind==='midline'){const m=derived.find(p=>p.kind==='midpoint'&&same(p,'A','C')),n=derived.find(p=>p.kind==='midpoint'&&same(p,'B','C'));return {ok:!!m&&!!n&&lineThrough(m.id,n.id),message:'Нужны середины AC и BC и соединяющий их отрезок.'};}
+  if(kind==='parallel'&&A&&B&&C&&Math.abs(cross(sub(C,A),sub(B,A)))/dist(A,B)<EPS)return {ok:false,message:'C лежит на AB: прямые совпадают. Передвинь C вне AB, чтобы получить две различные параллельные прямые.'};
   if(kind==='parallel')return {ok:derived.some(p=>p.kind==='parallel'&&p.a==='C'&&((p.b==='A'&&p.c==='B')||(p.b==='B'&&p.c==='A'))),message:'Проведи через C прямую, параллельную AB. Совпадение наклона на глаз не заменяет построения.'};
   if(kind==='perpbisector'){
    const cs=O.filter(o=>o.type==='circle'&&((o.a==='A'&&o.b==='B')||(o.a==='B'&&o.b==='A'))),is=derived.filter(p=>p.kind==='intersection'&&cs.some(c=>c.id===p.o1)&&cs.some(c=>c.id===p.o2));

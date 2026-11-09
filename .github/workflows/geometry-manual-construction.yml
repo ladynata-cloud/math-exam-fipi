@@ -1,0 +1,38 @@
+name: Atanasyan atlas manual construction
+on:
+  pull_request:
+    paths:
+      - 'geometry-course/assets/**'
+      - 'geometry-course/data/**'
+      - 'geometry-course/atlas/**'
+      - 'tools/geometry/**'
+      - '.github/workflows/geometry-manual-construction.yml'
+permissions:
+  contents: read
+jobs:
+  manual-construction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - run: |
+          node tools/geometry/check.js
+          node --test tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs
+          mkdir -p ../geometry-private
+          node tools/geometry/browser-check.js
+          node tools/geometry/manual-construction.browser.cjs
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: atanasyan-manual-evidence
+          path: ../geometry-private/
+          if-no-files-found: error
