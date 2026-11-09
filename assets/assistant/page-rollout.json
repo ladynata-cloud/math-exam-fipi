@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "1935596a6ca292df9c94e155bdf94b15b64be477",
+  "baseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4346,6 +4346,13 @@
       "previousBaseSha": "f2c96efae7822d051ac8fdbfb63ec3c5957aa8f7",
       "sourceBaseSha": "1935596a6ca292df9c94e155bdf94b15b64be477",
       "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1935596a6ca292df9c94e155bdf94b15b64be477",
+      "sourceBaseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
