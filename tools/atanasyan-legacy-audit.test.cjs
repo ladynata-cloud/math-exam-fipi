@@ -4,12 +4,23 @@ const {JSDOM}=require('jsdom');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'geometry-course/trainers'),runtime=fs.readFileSync(path.join(__dirname,'atanasyan-legacy-audit.runtime.js'),'utf8');
 const files=fs.readdirSync(dir).filter(n=>n.endsWith('.html'));assert.equal(files.length,70);
 const baseline=require('./atanasyan-legacy-audit.baseline.json');
+function stripActive(content,file){
+ const block=content.match(/<!-- atanasyan-active-practice:start -->[\s\S]*?<!-- atanasyan-active-practice:end -->\n/);if(!block)return content;
+ const raw=block[0].match(/id="atanasyan-active-practice-config">([\s\S]*?)<\/script>/)[1];
+ const banks=['active-practice-ch12.json','active-practice-ch34.json'].flatMap(name=>JSON.parse(fs.readFileSync(path.join(root,'geometry-course/data',name))));
+ assert.deepEqual(JSON.parse(raw),banks.find(bank=>bank.id===file.slice(0,-5)),'exact authored bank');
+ const active=fs.readFileSync(path.join(__dirname,'atanasyan-active-practice.runtime.js'),'utf8').replaceAll('</script','<\\/script');
+ assert.equal(block[0],'<!-- atanasyan-active-practice:start -->\n<script type="application/json" id="atanasyan-active-practice-config">'+raw+'</script>\n<script>\n'+active+'</script>\n<!-- atanasyan-active-practice:end -->\n','only exact active block may be stripped');
+ return content.replace(block[0],'');
+}
 let assertions=0;function ok(value,message){assert.ok(value,message);assertions++;}
 for(const file of files){
  const content=fs.readFileSync(path.join(dir,file),'utf8');
  const block=content.match(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/);
  ok(block,'notebook exists '+file);assert.equal(content.match(/id="atanasyan-notebook-config"/g).length,1);
- const core=content.replace(block[0],'');
+ const rawConfig=block[0].match(/id="atanasyan-notebook-config">([^<]+)<\/script>/)[1];
+ assert.equal(block[0],'<!-- atanasyan-personal-notebook:start -->\n<script type="application/json" id="atanasyan-notebook-config">'+rawConfig+'</script>\n<script>\n'+runtime.replaceAll('</script','<\\/script')+'</script>\n<!-- atanasyan-personal-notebook:end -->\n','only exact notebook block may be stripped');
+ const core=stripActive(content.replace(block[0],''),file);
  assert.equal(crypto.createHash('sha256').update(core).digest('hex'),baseline.files[file],'retained runtime and board contract byte identity '+file);assertions++;
  const config=JSON.parse(content.match(/id="atanasyan-notebook-config">([^<]+)<\/script>/)[1]);assert.equal(config.id,file.slice(0,-5));
  ok(fs.existsSync(path.join(root,'geometry-course/atlas',config.unit+'.html')),'offline linked atlas exists '+file);

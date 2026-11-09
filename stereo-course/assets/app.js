@@ -70,11 +70,32 @@ function rememberTask(){
  record.repeatedTask=record.seenTasks.includes(key);record.currentTaskKey=key;
  if(!record.repeatedTask)record.seenTasks.push(key);save();
 }
-function markAssisted(){if(!record.assisted){record.assisted=true;record.hints++;save('hint');}}
-function nextTask(){
- destroyViewers();const proofCamera=record.taskFirst.proofCamera;record.seed++;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
- record.taskFirst={version:1,mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+function markAssisted(){const already=record.assisted;record.assisted=true;const c=coach();if(!c.helpOpened){c.helpOpened=true;record.hints++;save('hint');}else if(!already)save('hint');}
+function coach(){return record.taskFirst.coach||(record.taskFirst.coach=StereoStore.coach({}));}
+function attemptHistory(){
+ const history=record.taskHistory||[];if(!history.length)return '';
+ return '<details class="attempt-history"><summary>Предыдущие условия и мои ответы · '+history.length+'</summary><p class="muted">Сохраняются последние 40 переходов к другому условию в этой теме.</p>'+history.map((r,index)=>({r,index})).reverse().map(({r,index})=>'<details><summary>'+E(r.condition)+'</summary><p>Первый отправленный ответ: '+E(r.coach.firstSubmitted||'не отправлен')+'</p><p>Последний ответ: '+E(r.mainDraft||'не записан')+'</p>'+(r.stepDraft?'<p>Незавершённый шаг: '+E(r.stepDraft)+'</p>':'')+'<p>Математических ошибок: '+r.coach.errors+'. '+(r.assisted?'Были исправления или помощь.':'Помощь не открывалась.')+'</p><button data-action="resume-attempt" data-history-index="'+index+'">Продолжить это условие</button></details>').join('')+'</details>';
+}
+function archiveTask(){
+ const current=task(),ui=StereoStore.clean({taskFirst:record.taskFirst}).taskFirst;
+ record.taskHistory=[...(record.taskHistory||[]),{condition:current.q,key:record.currentTaskKey,seed:record.seed,taskStep:record.taskStep,taskFirst:ui,mainDraft:ui.mainDraft,stepDraft:ui.stepDraft,assisted:record.assisted,checked:record.checked,coach:StereoStore.coach(coach())}].slice(-40);
+}
+function nextTask(fresh=false){
+ const proofCamera=record.taskFirst.proofCamera;archiveTask();
+ const candidate=fresh?StereoTasks.fresh(unit.task,record.seed,record.seenTasks):{seed:(record.seed+1)%100000000};
+ destroyViewers();record.seed=candidate.seed;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
+ record.taskFirst={version:1,coach:StereoStore.coach({}),mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
  record.taskFirst.proofCamera=proofCamera;stage=4;return save('task_start');
+}
+function restoreAttempt(index){
+ const prior=record.taskHistory?.[index];if(!prior)return;
+ const saved=StereoStore.clean({taskHistory:[prior]}).taskHistory[0],legacySection=unit.task==='section'&&saved.key.startsWith('["Куб со стороной '),candidate=StereoTasks.make(unit.task,saved.seed,{legacySection});
+ if(candidate.q!==saved.condition||(saved.key&&saved.key!==StereoTasks.key(candidate))){notice.hidden=false;notice.textContent='Это сохранённое условие не совпадает с текущим банком. Ответы остаются в истории; автоматический перенос в другую задачу не выполнен.';return;}
+ archiveTask();destroyViewers();record.seed=saved.seed;record.currentTaskKey=StereoTasks.key(candidate);record.repeatedTask=true;
+ if(!record.seenTasks.includes(record.currentTaskKey))record.seenTasks.push(record.currentTaskKey);
+ record.taskStep=Math.min(saved.taskStep,candidate.steps.length);record.assisted=saved.assisted;record.checked=saved.checked;record.draft=saved.mainDraft;
+ record.taskFirst=saved.taskFirst||{version:1,mainDraft:saved.mainDraft,stepDraft:saved.stepDraft,coach:saved.coach,helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+ stage=4;if(save('task_restore'))render();
 }
 function taskQuestion(t){
  // The final label may use only the actual condition, never an intermediate step or answer.
@@ -93,19 +114,19 @@ function answerFormat(){
 }
 function guidedBody(t){
  const i=Math.min(record.taskStep,t.steps.length);
- let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
+ let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(coach().steps[t.steps.indexOf(s)]?.accepted||Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
  if(i<t.steps.length){
-  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status"></p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
+  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status">'+E(coach().steps[i]?.message||'')+'</p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
  }else h+='<p class="good">Разбор завершён. Ответ: '+E(Answer.format(t.a))+'.</p><p>Вернись к полю ответа под условием или возьми новый вариант для самостоятельной проверки.</p><button data-action="independent" class="primary">Новый вариант без подсказки</button>';
  return h;
 }
 function taskPanel(){
- rememberTask();const t=task(),ui=record.taskFirst;
+ rememberTask();const t=task(),ui=record.taskFirst,c=coach();
  const model='<div id="task-model" aria-label="Рисунок к условию"></div>';
  const help='<button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button>';
  const options=t.section?'<p>Пары · 1 MN, 2 MP, 3 NP.</p><p>Рёбра · 1 AA₁, 2 BB₁, 3 CC₁, 4 DD₁.</p>':'';
  const label=t.section?'Номер пары и номер ребра через точку с запятой':taskQuestion(t);
- return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status"></p>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p></section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
+ return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status">'+E(c.message)+'</p><div id="coach-offer"'+(c.errors>=2&&!ui.helpOpen?'':' hidden')+'><p>Две попытки пока не дали верного результата. Разобрать ближайший шаг?</p><button data-action="coach-help">Открыть подсказку к этой задаче</button></div>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button><button data-action="fresh-practice"'+(record.assisted?'':' hidden')+'>Новое условие без подсказки</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p>'+attemptHistory()+'</section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
 }
 function proofPanel(){
  const p=proof();
@@ -155,7 +176,7 @@ function syncHelp(id,opened){
  record.taskFirst[key]=opened;
  if(opened&&id!=='answer-format')markAssisted();
  if(id==='task-help'){document.querySelector('#task-help>summary').textContent=opened?'Убрать подсказку':'Хочешь подсказку?';const button=document.querySelector('[data-action=help]');button.textContent=opened?'Убрать подсказку':'Хочешь подсказку?';button.setAttribute('aria-expanded',String(opened));}
- taskViewer?.setStep(activeStep());save();
+ const offer=document.getElementById('coach-offer');if(offer)offer.hidden=!(coach().errors>=2&&!record.taskFirst.helpOpen);const fresh=document.querySelector('[data-action=fresh-practice]');if(fresh)fresh.hidden=!record.assisted;taskViewer?.setStep(activeStep());save();
 }
 function bindHelp(){
  for(const id of Object.keys(helpFields)){
@@ -170,25 +191,35 @@ function changeStage(n){
  else {stage=n;if(n===1||n===2||n===5)markAssisted();}
  if(!save('step'))return;render();window.scrollTo(0,0);
 }
+function logResponse(c,mode,response,result,index=0){
+ c.log.push({mode,step:index,answer:response,kind:result.kind,code:result.code});c.log=c.log.slice(-40);
+}
 function checkFinal(){
- if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task();record.taskFirst.mainDraft=input.value;record.draft=input.value;
- if(!a){f.textContent='Впиши ответ на вопрос над полем.';f.className='feedback error';save();return;}
- // A script-triggered native disclosure must not race an immediate submission.
+ if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task(),c=coach();record.taskFirst.mainDraft=input.value;record.draft=input.value;
+ if(a&&!c.firstSubmitted)c.firstSubmitted=input.value;
  if(document.getElementById('task-help').open)markAssisted();
- const ok=Answer.equal(a,t.a),first=!record.checked;record.checked=true;if(first)record.attempts++;
- if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;f.textContent=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
- else{record.assisted=true;f.textContent=t.section?'Найди две точки на указанной грани. Близость на экране этого не гарантирует. Для четвёртой вершины сравни высоты трёх заданных точек.':'Пока неверно. Проверь, какую величину нужно найти, её единицы и основание для формулы. Можно открыть подсказку.';f.className='feedback error';}
+ const result=StereoTasks.assess(unit.task,t,a);logResponse(c,'final',input.value,result);
+ if(result.kind==='empty'||result.kind==='format'){c.message=result.message;c.kind=result.kind;f.textContent=c.message;f.className='feedback error';save('answer-format');return;}
+ if(!c.firstResponse)c.firstResponse=input.value;
+ const ok=result.kind==='correct',first=!record.checked;record.checked=true;if(first)record.attempts++;
+ if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;c.message=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
+ else{record.assisted=true;c.errors++;c.message=result.message;f.className='feedback error';}
+ c.kind=result.kind;f.textContent=c.message;
+ const offer=document.getElementById('coach-offer');offer.hidden=!(c.errors>=2&&!record.taskFirst.helpOpen);document.querySelector('[data-action=fresh-practice]').hidden=!record.assisted;
  document.querySelector('.stage-status').textContent='Первые самостоятельные решения новых условий: '+record.independent+'.';
  if(!save(ok?'solved':'attempt')){f.textContent='Результат этого окна не сохранён: открой сохранённую версию выше.';document.querySelector('.stage-status').textContent='Сохранённый результат не изменён.';}
 }
 function checkStep(){
- if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task();record.taskFirst.stepDraft=input.value;markAssisted();
- if(!a){f.textContent='Впиши ответ на вопрос этого шага.';f.className='feedback error';save();return;}
+ if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task(),c=coach();record.taskFirst.stepDraft=input.value;markAssisted();
  if(record.taskStep>=t.steps.length)return;
- if(Answer.equal(a,t.steps[record.taskStep].a)){
-  record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
+ const index=record.taskStep,result=StereoTasks.assess(unit.task,t,a,index),step=c.steps[index]||(c.steps[index]={first:'',last:'',accepted:'',errors:0,message:'',kind:''});
+ if(a&&!step.first)step.first=input.value;step.last=input.value;step.message=result.message;step.kind=result.kind;logResponse(c,'step',input.value,result,index);
+ if(result.kind==='empty'||result.kind==='format'){f.textContent=result.message;f.className='feedback error';save('step-format');return;}
+ markAssisted();
+ if(result.kind==='correct'){
+  step.accepted=input.value;record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
   document.getElementById('task-guide-body').innerHTML=guidedBody(t);StereoMath.formatFractions(document.getElementById('task-guide-body'));taskViewer?.setStep(activeStep());
- }else{f.textContent='Пока неверно. Перечитай вопрос над этим полем. Кнопка «Почему именно так?» пояснит шаг.';f.className='feedback error';save('attempt');}
+ }else{step.errors++;f.textContent=result.message;f.className='feedback error';save('attempt');}
 }
 root.addEventListener('input',event=>{
  const el=event.target;
@@ -212,8 +243,9 @@ root.addEventListener('click',event=>{
  if(a==='visual-trap'||a==='bad-reason'){document.getElementById('proof-feedback').textContent='Нужен факт из условия, определение, аксиома или уже установленная теорема. Измерения и вид рисунка не заменяют доказательство.';save('proof-error');}
  if(a==='good-reason'&&pending!==null){record.proofDone.push('s'+pending);record.proof=record.proofDone.length===proof().steps.length;if(save('proof-step'))render();}
  if(a==='reset-proof'){record.proofDone=[];record.proof=false;if(save())render();}
- if(a==='independent'||a==='new'){if(nextTask())render();}
- if(a==='help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
+ if(a==='resume-attempt'){restoreAttempt(Number(b.dataset.historyIndex));return;}
+ if(a==='independent'||a==='new'||a==='fresh-practice'){if(nextTask(a!=='new'))render();}
+ if(a==='help'||a==='coach-help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
  if(a==='close-help'){const el=document.getElementById('task-help');el.open=false;syncHelp('task-help',false);document.getElementById('answer').focus();}
  if(a==='finish'){
   record.complete=record.guided&&record.moved&&record.observation.trim().length>=10;if(!save('finish'))return;

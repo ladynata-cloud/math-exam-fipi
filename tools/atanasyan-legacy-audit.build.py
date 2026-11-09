@@ -30,5 +30,7 @@ for path in sorted((ROOT/'geometry-course/trainers').glob('*.html')):
     block=START+'\n<script type="application/json" id="atanasyan-notebook-config">'+config+'</script>\n<script>\n'+runtime.replace('</script','<\\/script')+'</script>\n'+END
     content=re.sub(re.escape(START)+r'.*?'+re.escape(END)+r'\s*','',content,flags=re.S)
     assert content.count('</body>')==1,path
-    path.write_bytes(content.replace('</body>',block+'\n</body>').encode('utf-8'))
+    target='<!-- atanasyan-active-practice:start -->' if '<!-- atanasyan-active-practice:start -->' in content else '</body>'
+    result=content.replace(target,block+'\n'+target,1).encode('utf-8')
+    if result!=path.read_bytes():path.write_bytes(result)
 print('Embedded personal notebooks in 70 retained trainers')

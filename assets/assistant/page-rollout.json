@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "1336c91ed23cd3af5946f2e2fd6286977450be4f",
+  "baseSha": "922ceeb7149d1493ab3ab4df6b3ce21d75f98f3a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -300,8 +300,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "aa06644d18c22e834a5e56f9b222f975bced71e1e07a5d047787c024dc2c48a2",
-      "afterSha256": "3dbcc968d81eac068fa55d93d30e7b67aafb55b271a7653af6cc063a4fc8576e",
+      "beforeSha256": "6a6fcca84ee3ba94ec0102a934166653a8c90227880b67ced99ad656b5ca78c5",
+      "afterSha256": "d8558128820435dca69e29549275abeba39ca911b83fdaf9a78c7cfb7f6ab6e3",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -340,8 +340,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "f0eeb39ce92ebc0c3f65e5bb7c50f3b8e049eca5a599805e470e7b82cefa6de2",
-      "afterSha256": "8f2a2f3a7c6b37a0942864d51424ee4ac71d3f79bf88d3768b01c79804a37d5a",
+      "beforeSha256": "2d7fad16b2b7f7e3d168fd815ddb31264f6d4b02ab845450d0146cb0fadcc1cb",
+      "afterSha256": "82c03bedf3c836c9a405019e353d0cf80da1239954be75de1ef88a6cca5ca167",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
@@ -380,8 +380,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-t18.html": {
-      "beforeSha256": "0c0591e281f7ef5399b7f33ef4acc3648e697b2d4cbd857a92b498b6e4f8af09",
-      "afterSha256": "5face9edd6e07868604b051817696e197d7ed4c49f52950c16547699feef215e",
+      "beforeSha256": "82e50ae47ce8a2380b00598fe93b8bf339d98ea6d3841dad01207c990e17edcf",
+      "afterSha256": "33c2f9b863e1d149363cdb0cbcc3efd51b66d5d9d01f5b222293ea28a0c8e0de",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t1.html": {
@@ -485,8 +485,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/area-triangle.html": {
-      "beforeSha256": "d3cc219bfb3174ce2ff14e96a425dc022f7fe06ed41317014863de32606b66d9",
-      "afterSha256": "8d5aedf7eac1f97c924b229c746d8ba65f2f992e34d14d1aa7feb5f22ea9d105",
+      "beforeSha256": "8b8c034878d4c2e10808fbfb2f4d4d466508ee96f3fd2c65ffbd20e8a021df34",
+      "afterSha256": "e2c60baeeb5362bdb2bb13477603ae6e7322a8a9edd949806993f4a8bed8f876",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/axis.html": {
@@ -515,8 +515,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chords-tangent.html": {
-      "beforeSha256": "953e33127d4fae823525806f5e6aaebd08c9955e228b92587659ebd70a189da6",
-      "afterSha256": "5e52aaa02195396b763ff6f7ca30ff2417bd16e3d3fa7ffcca98d45ca5bc1626",
+      "beforeSha256": "54ce2ded1d0544b8be4c15a604581463956b8840e245e5804023e533f86c7354",
+      "afterSha256": "2f0ce7ecc58b782d0dfe74974899e0af28397c901cd298730b18e45ebef9a9e0",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-metric.html": {
@@ -575,8 +575,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/inscribed.html": {
-      "beforeSha256": "1a72b2c403a941aec26b1f3035f70666cd68eecb2ab22d05a451945fdfe52989",
-      "afterSha256": "78d5bb76afdbc4855f4525e1ed790d7f1891102fbc8f3fa0b8f92ce9d3124dc3",
+      "beforeSha256": "2bdf67c09f4b040e72e43f7fc945eb3c04f6d3ec78f46bd0021c42abbdaa5c37",
+      "afterSha256": "605baf694a50ad242b4a4469e14354de2ece1486a38d356aaec31dcda8042ae2",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/length.html": {
@@ -685,8 +685,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-signs.html": {
-      "beforeSha256": "5fb052c88a60f8be9bd931ab612b37a9339e749587b82e6e5f69665cf41a2ddf",
-      "afterSha256": "c356c15b450a900a701c8f6ab05f1d9f3ee2f3af869f137ad525b46abb45425e",
+      "beforeSha256": "e0cbaecdc3be0523f8adb1be302abcee84066d980e586e45a5ae30a3a99a062c",
+      "afterSha256": "cdd2040ae033dd7c7ab943a1a3dc00d0f4b852ff98a9721d9ec3aea54d7ed744",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity.html": {
@@ -730,13 +730,13 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-sas.html": {
-      "beforeSha256": "d8b33db7d8ef242ef0f3ed5b76497d5171ffb670f73ae47e047ef7e70c8b13af",
-      "afterSha256": "1d98cb778ab80fda3d73dba193996e9f251841705d5e66f500f02de79b0074b2",
+      "beforeSha256": "60c0b193f553018803aa35d3615c1a8081728aaf000eb06196fd7d031f597ac7",
+      "afterSha256": "323a632b81f92db426c256c9a0faba486a2d35517da9d57ef0852092b7f5858f",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/triangle-signs.html": {
-      "beforeSha256": "37b2511fd2f7eb666ca47587bcce6ff1e1fe8473234d1bafa10b467cea019f8c",
-      "afterSha256": "fbc8bebb1235df7b853407f1276fd6a1aeef06d71fc9735c50796fbd927ce2f6",
+      "beforeSha256": "44fc6f5cbef9bf0cb93b4f334d52870a551c9bf0f6f19014c0f6d76fd136a186",
+      "afterSha256": "c485ba9f5d674b7339ef16d7d5b83bd4dd31780aed684d725b87d61239e2109c",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/trig-circle.html": {
@@ -785,8 +785,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/index.html": {
-      "beforeSha256": "a0db4a785b7ec1ba28475d104bf035ef0f861481ff44c2c28dc6ce30ef413069",
-      "afterSha256": "616107652ba2719438990385ed98b5b5ea44ab6ebd982efc15e937f9c7d2f4bc",
+      "beforeSha256": "0a65e384fc0250e70460893ba6f4d0a6a1f31477eb1895fee9d66d9c8ed868f4",
+      "afterSha256": "4f7de92e280f6ce5c2170aec13fda504d3bcd204b3d7d2dab35f8c767a45d3f4",
       "placement": "before-head-close"
     },
     "geometry-course/legacy7.html": {
@@ -800,353 +800,353 @@
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
-      "beforeSha256": "002d6b7080e7da60724f05a8aa2865ea797e2ef31a3416aad82976fd6f64871f",
-      "afterSha256": "08a472ebc2404f9194c311f4d254c271653b81086c8f3881a9dd2c71bf1b7c32",
+      "beforeSha256": "b79e90862fdcfead5543fb6bf42bd031913635f28e3896f7d4951d6004c8bc61",
+      "afterSha256": "683a13e21df08e79026f30283fc5891e64edf1469bfc24bdc321e635e4fa0c82",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html": {
-      "beforeSha256": "b56c137fbd95337debe34f6c4cdd29d0848fd636784bffb924e94cee6df71780",
-      "afterSha256": "1df5311cb64b5f04aa8c6ee5a639d13bfcf2b709ee0f3a045079607a686ece19",
+      "beforeSha256": "997e2fb4b2b22f35aa590d7032956d7642a5b9eedb6f6ea76706e133d6f56e39",
+      "afterSha256": "12b2dc915e304ebf7c04073b2c1799a34464752f992e81be01d87905bd5b1f2f",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p6-t2-angle-problems.html": {
-      "beforeSha256": "edd2736e4fd12e7f58377981451fbba418e8d766f5d6399051436205dfd4f571",
-      "afterSha256": "f4640440cc8d228653be9a53a91ff02563711bba22552dc0628a15f6d4835d83",
+      "beforeSha256": "c723edd16405b1bc8d1699e2d0732cfbe60f6d1f4ad34920668d46237755909d",
+      "afterSha256": "3d604f964ba3ee008edd42335679f1aae85c5043f2c627cc9e9a0ce66be9a89d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html": {
-      "beforeSha256": "f5224c91a5412a044f6ec8fcfc5c37136837827a9ca209d1cfe87312979182a5",
-      "afterSha256": "b95539c16b5bde91767b196de28746c95bf502b9fcc1c1a9f932cd11aa2a5fd1",
+      "beforeSha256": "bddf4b93a551941f3922b1dd7a00c88dd39f85621522a8df8f5c1cba1b0e61cf",
+      "afterSha256": "2efa144d80fd003716f267fa2893e0eecd67dc93a4b432ab2af18c91b9dffeec",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-constr-angle-bisector.html": {
-      "beforeSha256": "dee69bb1ab377f928308321a565f0467659b47d3fb66e9d1dd95dc907eb9da20",
-      "afterSha256": "603fd5a393a141a2091d1f46c0b4c635beab799912d2f7097c72b7f7c6545f7b",
+      "beforeSha256": "5f116131cc3eb10e87ed8c1c93845d9fe6b6934d41c10adb147158075bcdedfa",
+      "afterSha256": "20cd692547d67c9b96dab138f8c2477316b33bc896e70ab9c8d42789744ae2cf",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-constr-copy-angle.html": {
-      "beforeSha256": "e186c3ba42d076c6742cb2bc62fe012d6ab0282f106abd6ceb22b66ad5093e2f",
-      "afterSha256": "159d5685428ded2e7bd536293f0a72a04e06eabc39148227de1cbb350ebba6e7",
+      "beforeSha256": "2cf98b60c5befbc4d1a2d9ec7d6523d3f4b43b1f088052c6fb9673f185466169",
+      "afterSha256": "197aedf629e76d9ce7f87f6e26c50809f20f08f3bc78b6b833247422f04e240d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-constr-perp-bisector.html": {
-      "beforeSha256": "068b781be594e5bc59feb362f145c6fb38e447e02dff63569db925e4ee36551f",
-      "afterSha256": "62253ad3e2b6999f82173f5d83b0eb84db1e87c60f4da3cb6b14dfd5f95870ad",
+      "beforeSha256": "f3e193cade5b1763e6734f1d270e3c517a35d10f0c2972ee61881abc292a3b13",
+      "afterSha256": "bd5639ce59af12f81c1465dc1b102ed1131ebdf9997ed96e9d9a4b00da4af29c",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-constr-perpendicular-point.html": {
-      "beforeSha256": "487f986a496c47ad33c0954dbcc6a97bc533fcf187ee23ae32249479492ca5bc",
-      "afterSha256": "ec1949101a0e997a929ab0a676b50656821dbe256d91c65902f3e1b27115fa7f",
+      "beforeSha256": "df6ad14994bc3a59901a5d0c9cb8b43e6de20713ca9ae1d7407b1eecb2cab22b",
+      "afterSha256": "cc6c0229bd39b6123b76112e3e16e62f7b97ac7ab5c587f4109d5c1a4aa82e72",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p1-t1-overlay-equality.html": {
-      "beforeSha256": "dde99d3b48c39b9cc77cba5e7af2337845e9b90d9ed15ff8081d8ebdde9203e7",
-      "afterSha256": "ad528bd3e028f978bd25ce83591dfc51a299bc0b691297ab75c9d24286f9a1a3",
+      "beforeSha256": "1783de764ba5cde06ef3aa3261dde7ea1e3583707e5af4635fefc62578535a72",
+      "afterSha256": "4d8c640631ab73a17943d2d3c9b3e8b6c760df065e84d2041748df78c40406bf",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p1-t2-overlay-sas.html": {
-      "beforeSha256": "c9492534efe3c848322d78f5e355186a29b11ea38bc2cc11adb5b10a6b16ff5a",
-      "afterSha256": "0e5cc6be8a20d496f62f6468b1ec84af9c7bc52e9b7c321540b7029b2efa5337",
+      "beforeSha256": "444466dcf9ca10c29cee2087a08d136173242a67085f91df1780da6f4b0708eb",
+      "afterSha256": "f5c7caa75cf30f55f0140cc0e3dd5ff241f35de37598adca3d44f539a929a344",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p1-t3-proof-sas.html": {
-      "beforeSha256": "4145ae83c17a955ef9557a6453d852bad2fbd9c1b570f93f5c9eb04bcd68ad35",
-      "afterSha256": "ad1452d53010e86b77479da97916e87b9de811369527851b05d543ca15cbeced",
+      "beforeSha256": "aa8b29ddba7e19009d03817e9b545853c3699260931a0dda265b7ec6a97a3e7a",
+      "afterSha256": "4ac447c31eaf5c2ef98a337aeb690295bd57f4fb93ac4ce439001e584d7f07e3",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p1-t4-find-equal.html": {
-      "beforeSha256": "534482eab0d15a4e6c240618167e70d6e213c47eeeaaa6896e420e4c09b876db",
-      "afterSha256": "34c2087bd14b56b80cd4384d8035eaf4d04fcd0354f20bddef9ea5c4f6a54402",
+      "beforeSha256": "b87b9316b8588892753fb4fa4c79599656715ee127ae002e5551d42fbdf32fa3",
+      "afterSha256": "1739cb9b779828fa3601544bbc17f9ca905de5cca9b7260974a47e9d3dc5d871",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p1-t5-quiz.html": {
-      "beforeSha256": "d031ca3d104dd268ca7abe839efda22fce87940d79a17069ea37f902c0225988",
-      "afterSha256": "aa79e876ab61c47ad0b1bd05889f7a45d26597e5cb7a4824d9fddcab6a1217cd",
+      "beforeSha256": "040bc0db45a2be85ccc3cd25de2066926534563f57295695ba642470997cda97",
+      "afterSha256": "1b4db91d608e26fbd8b1162b08a041b21784726d6445f893bf43e988ac7058c0",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t0-three-cevians.html": {
-      "beforeSha256": "0f7c310e00a3209e3b9ab7093473883473f794da7b3d9c855b9325898e2990f2",
-      "afterSha256": "3e5c63453dce416a265b737389828470c6f4ef243eee609f3627762fa49eb131",
+      "beforeSha256": "76b1e6d0a6174ab9af5d94f0298e76227c93b3b965b305bc05d400a5624e05e5",
+      "afterSha256": "52621bccdfc8bce0e099858bdb45ba19434e2b8c855f953cb8dca42bea859876",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t1-perp-fold.html": {
-      "beforeSha256": "17f545b841df6447d028ac5394e0e7171c6ae9999f7dd61fc39d0ddc4b9f8351",
-      "afterSha256": "86d2ee0a23eba50fcfa0757dd171b9dd88a6c00b656629d1f4d019c05a0ff928",
+      "beforeSha256": "c2ea8dc67be7acc813e6a3bb80ec7491eb276d5b660ee590d014227d17ffb84e",
+      "afterSha256": "35a136fe6cb0b91abb5062787b3abb845a82888ce9bc345fab287a5a63b2a46f",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t2-isosceles-intro.html": {
-      "beforeSha256": "7c0d7db6d1efd57a8889cfaeb27fe06eedef80d57c55fd3d5765b45395cf414b",
-      "afterSha256": "1ccd6aca3eba461ddccc7969819f1b7b7e5159050efdfaaac5278cb392cc35cb",
+      "beforeSha256": "247c9ed572a1bbe5b1b1fe883c2506aa0d3c3c7cc4dddffd89d415f9c2489653",
+      "afterSha256": "c363d07c1740413d1e2d27de6d1aa552f08206391bb7169a4433f21ffc196784",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t3-proof-base-angles.html": {
-      "beforeSha256": "e52256dd8af35e4a8683a4987577ef32af4be4ea6f0163d90de4cef6fd098435",
-      "afterSha256": "b62942cdec2ee73c255d979c4ee128baec541eb1a6e1168cf7011608811d919a",
+      "beforeSha256": "393cecd623ef628e752be86c73998dab8f77669b09b9cfd8bed79ea9410042a8",
+      "afterSha256": "40a87c6da5cb7c455c3cea335ad600e735669be2004b3558fd2636489f6ef2e2",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t4-three-in-one.html": {
-      "beforeSha256": "2e544d6dc41f7cbc940ea853ff3c34a454ff46cf72b4cef8b7800e649749923f",
-      "afterSha256": "0871855547e9409300213427e788bdadfe646b3b61c46f1184bc6b7766428476",
+      "beforeSha256": "07dafc0cee7440578f967b12832b3f42f0c68b724ca0af48c0926d4921c6b2c2",
+      "afterSha256": "d82ccbc312bb3bc858183c66c341c08df48676104c0e6445db7d899b93724d7d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t5-find-equal-iso.html": {
-      "beforeSha256": "8ec52ec4e3602e4637d702fd43d40bd23647aed49b5c76fddec5f71ab5b0bac1",
-      "afterSha256": "1ef2b01c424f4b5329a8081516f90589a9632abb9fafb9013218b4ee986389af",
+      "beforeSha256": "e02e297456b3bfef842a689bee31fdac67d16b1588ed9eff4cb535b96ebbd734",
+      "afterSha256": "341bdf6901a68812bef15b4f181b69bd5e576b899db2d0e25f413cf8f8f97d3e",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p2-t6-quiz.html": {
-      "beforeSha256": "b9f0b1f619db8f095ad6f1fb24f983df90303e8e480c3ea296882427049d1071",
-      "afterSha256": "f1d0fc2d3999e36f5dae65e242093ec198e087f5d1719b8536885cf9f6ffcfef",
+      "beforeSha256": "8a228398cf097ee6836b2fafb82bacb02104433784367e7135be2231ec2db1a5",
+      "afterSha256": "0d163650f2358b2b42b278c0dbcf369c3418e4678436b93c5db11fbdc729b75b",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html": {
-      "beforeSha256": "d9f304ca64d62a01c350c53c9dd0770294a7a9bce937ec432a09b5cba85d51a8",
-      "afterSha256": "3ed9ce2b4a8a30bff6e4bab4ad0f77ba0ee0f5d7fa6a27424bca727d699b19cc",
+      "beforeSha256": "d322a2823463f0744acd027d85db09149e0bf10d565a43b591ac1f6d72811b99",
+      "afterSha256": "a783c33ccaa931ccb3b3facd3b1a5c31cd780aba7cc16f1b502223d87abda0b2",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t1-overlay-asa.html": {
-      "beforeSha256": "11390f08942c706948bae921057d666a023da9f99fb6f8ab3c609abb2a2fcb95",
-      "afterSha256": "ea1767b5483620da8f4ac4398f4ebf83de4f0882b0b498eed9d6ab79131d96ae",
+      "beforeSha256": "5a80b24ce9799703bca655c20dba8c16ad6d0ef04e5846081a731db16d8105b3",
+      "afterSha256": "2f1d93a2cf491373f070c52d9bae8b16a93e8443388b73c16cd6517ad15d4381",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t2-proof-asa.html": {
-      "beforeSha256": "ff3a7021fdfbdc80370c8e7e83eb2474ad874167ea2620e6c333b42b39f39be0",
-      "afterSha256": "0793f21b7b5cdee9daefdc362eb7c0c3ff71266860a383a2ef5d054638141881",
+      "beforeSha256": "06fb4663e0226d549e7cf2f31c7ed275b4f37053568431fcf2e42cf1e2d0386a",
+      "afterSha256": "793f0d15118a70f9fc7166f69d9a216f3d617565cc909a98aa540f6b695d4aaf",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t3-which-sign.html": {
-      "beforeSha256": "50f588803a766597970a1a5087fa96a58c218a4da5f1e07bd900515f8f7b839e",
-      "afterSha256": "a027a72a859b10fa3579908bc87ba74e14ede38342f129159b50b7b9097d2d12",
+      "beforeSha256": "d1aa545074ada3a21e7d35784db14175b66a71779c24c70df52de415647383bd",
+      "afterSha256": "a56779aee34259f0fd0ff239e2f18a13becc8e2de979c2616feb4e68d8cc2276",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t4-find-equal-asa.html": {
-      "beforeSha256": "2c8f9542769d2c5459f040d5910bf9cadb3b472761e155ff6e689b670d606d85",
-      "afterSha256": "eb7f9e2f07c83d82e5600720d4192dcea60ba8cdf739e56505c2dc9fe2cb28dc",
+      "beforeSha256": "dd81c1a06ccf616985ef06254e43ca2defd36d7bdf26175a4306ea5180de2c89",
+      "afterSha256": "b7d89f1aacc9c22bba682391a8a1ff69173a681cf1f961e92601a851e94cd6c6",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t5-quiz.html": {
-      "beforeSha256": "1ab4fb43725a0e5e4e57fb899114cee5357e5841f94587cb74d32a74618b3b8c",
-      "afterSha256": "cc04774e7fac4cccbd9cd853b6a5f99439335c866cab189c07e05f1e54744613",
+      "beforeSha256": "2d5c55c4ceb25a78b2d8f2ff908c04c10f2fb9b21db3e33a507f440cbba0bdcb",
+      "afterSha256": "57a5a66eda50cb61b6a811930d685829c499e866e9f1600b301be6ebb9c95d83",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t0-rigidity.html": {
-      "beforeSha256": "c3ab3c76ead227800388436a5983d52b3243ac6b085945891c9d1f99eaf9d6e5",
-      "afterSha256": "3ac16a147e062e84199dc35fbe0ba3c2b60c7781560499fca6ebf3fb1e2d7d17",
+      "beforeSha256": "ab2ac35f8b749a4d196f892df6824c87e302f59ade95576021dd8c71dc235ebf",
+      "afterSha256": "6ca478fe893f59a110f7358a3555e9c7f0927c19e7ce5f63a68d19d5c895b583",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t1-overlay-sss.html": {
-      "beforeSha256": "b4e99694f766073b97d12a6d751fffae7716ce146318981aefea8363b8d0bbfc",
-      "afterSha256": "931e3b31da3e0843592a534d3f3a6de0a9cda3db34cb5d5eada72aad001fa0e4",
+      "beforeSha256": "d62e0d6556b68bd5e2a4f7d2325d8742696863fbff35277259593bce22859b1d",
+      "afterSha256": "0cc380feccb70e621c6653853fde656e612c68e832cea051ef6126d38268bc78",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t2-proof-sss.html": {
-      "beforeSha256": "3241e8bbaf29804baf8efb86403e9d87a5be4293db6a950e34009d7c664778cf",
-      "afterSha256": "dc1ae45e1104216f32afffeb8374a3289bb8479fc4c93d522f51ac5904e4056e",
+      "beforeSha256": "a4b67318c998e07f5cf977d2dd517715a644a465772b54bdcfb00ca51470d375",
+      "afterSha256": "eb7717cb8cf27e9a534f9d8ca43285b52918139b4009eb7e6a224cb7b9b71a77",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t3-which-sign.html": {
-      "beforeSha256": "586ba1e70a3866be7b05e6123179d0c64b9603b22f7761583c9b2232af315d99",
-      "afterSha256": "52004e4ffead0f874797a49996aa05522c7d00d9053d21ec0e5adab5b01f8f09",
+      "beforeSha256": "ab9d6bee4cbac3155a8da5ceffdcff66ec9e2043ac83f55de71363b16e8bbf4a",
+      "afterSha256": "e244773be33d4d9df410930918064bf235293674f6b551ce441cf5ba003d370a",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t4-find-equal-sss.html": {
-      "beforeSha256": "22d6e3136602b0c1a81f8b57456f15f48ae546439d365b4a9f4c223522209732",
-      "afterSha256": "77e470029f0514285dfb9e3b84222bca1c73b4142373be4c039d94e0eb504863",
+      "beforeSha256": "df0aa1a6735cd9edd4a9dfad6ca8a3c8ff19cf7738568cf4c7fe264e30ba7872",
+      "afterSha256": "78c5a416561324d139c2fbcf4789adfa4ce3fa71c620a825393a8d46cfd17441",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p4-t5-quiz.html": {
-      "beforeSha256": "c7f7782d88c84b656937b8994af77f2c4fdcd336f3a784196c046e616b41b763",
-      "afterSha256": "bc34b5fcf20848bac61f334414348093945a0398216864f2e44d2c8f3c81bc91",
+      "beforeSha256": "c2024190d6f00c98fc523152f46c77e836f7b0784b38e704733c5a8b6c291bb9",
+      "afterSha256": "c0c7150c61aee4a52799f52c3e1a1ff39628879d037ef3d4defa95e7dc8bafe8",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t1-crossing-parallel.html": {
-      "beforeSha256": "0d228d793b4d257b7ed3e93d002691a57bb8d1983600080e9f4b6997960b3e1a",
-      "afterSha256": "5da43ae4b92eab452f829e2133c89f76f982593922933ba4cd76138cf120ea56",
+      "beforeSha256": "01d92f6f89b10f83bcfa474a4356734b87f7d02d4559206e7f32f7b7a79f4cfe",
+      "afterSha256": "20b0c1cde217f3a5169fb09625a44123fb9975eaafe5b1f78b2f4c709663f7b6",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t2-eight-angles.html": {
-      "beforeSha256": "f80e254ae363e313bbc2d9568dd3e5da85c23aeb4ca04856718ede47d3750ce0",
-      "afterSha256": "67c93ba9fd8abe80e9d331e782b0e813cb79528bd5fc624080b3181d3931fad4",
+      "beforeSha256": "29cd225d55d9607a6a6736eed1d789d5aaad37e17d0e970b9a78780b9f29f171",
+      "afterSha256": "de03f98b5f63e25ca0cc0318255601118e1538c503c472a94d88d87f7fdf4598",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t3-sign-lab.html": {
-      "beforeSha256": "57c61cb769e4165fbbfcf5d5a614939fb44a4ddbd5b0c8703fdd333518d38fa9",
-      "afterSha256": "20fd299bbb2fb8640a9d3fd11212421f0e72d2a1bdb37358fd63458c69a675be",
+      "beforeSha256": "5bed3dc5a6581cfbd22eb05d1c88e9b385d5218c0705d9d75b622017b8e3d91a",
+      "afterSha256": "8541ec3044769e14bab0713fd2ae6d9866d559bbdab0e931bbaa67683c171104",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t4-proof-sign.html": {
-      "beforeSha256": "52a43b8107b23cb89c2b98c5ad4dbcfa31460f3261c57ad64448dcb0fd6c1e60",
-      "afterSha256": "6ed581f22acc0a02694cdc731d20ba50234a058ff74b97eb21e0b552b698dbad",
+      "beforeSha256": "8110bda7ccb47e0d9d6787e327f7c821986f91a4fd08606dd0072fa2dcd753af",
+      "afterSha256": "0017806f2ebbd99f2459498fba5aaaf7eae55738f164bb496df38ee7e5034082",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t5-two-more-signs.html": {
-      "beforeSha256": "1972976c16db02e05004728db7fb606cfd59bd56e2bbc02f03dc5e210ebacdf9",
-      "afterSha256": "d545117045070b74a62e55978e6fb35c526bff665699ff24814451f17a2b28df",
+      "beforeSha256": "4b561fffe95f5066822d7039920a53d9e37e2910f3a52d4a19ae77a56a9bbf32",
+      "afterSha256": "bcfd7715a5817bffadaf84f3215df77bae40c9eb91ad938149637c05a5c0e5aa",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t6-practical.html": {
-      "beforeSha256": "d89fd8ed4ba931e862e86aab5ff44a8043d23b08b70755dd7bc5602b76218afa",
-      "afterSha256": "c374d2b85332d3191d7a418aaf759d7f721903504c63ae8d22565c97014efcf4",
+      "beforeSha256": "8aec8cf2cd86feb45016b572bb2c4b390a700fb57681f933d611f8bca751ad88",
+      "afterSha256": "ce0624cf902c7433fe0de48994f3ea894c0218cfd4a8193e00499cb5e92fbf90",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p1-t7-find-equal.html": {
-      "beforeSha256": "5134e5bcff683cf7ab8547fef3b1ea8f1ffd9ccdd0ebc202609cc333726283fe",
-      "afterSha256": "3870648fb571bec90ff59f20e70ef7ae913c64583196a6e3bace3104da717a68",
+      "beforeSha256": "8f755193b7ba6bab6c8356a7b6596148afb90c90e929be63598213a69c76e5f7",
+      "afterSha256": "0721adadf2b7d348b280ae44b753abbd70fa8f68c6b8cf6b52bdbdc8f41f1645",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p2-t1-parallel-axiom.html": {
-      "beforeSha256": "9cd7c4aec4aaceb501a6f0057f64791cadb419d9f824e916976cc0f57afc5534",
-      "afterSha256": "facd65f63726db443c92a0fa228e7eb9d2a62ba356489072e3165f02a703ed39",
+      "beforeSha256": "fdb94ae4aafc3b3e2ad782fe77bcb99b4eaf01a51e9e64046b555f3317461478",
+      "afterSha256": "d642f82f29b202069688f4dbb1e5e4378285ff196a294769e7ca5d9f000eaedb",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p2-t4-property-alt-angles.html": {
-      "beforeSha256": "b26b3a7e62e8283f69c375e23557dc2189a339b6e0a401a3410d2287ad99f423",
-      "afterSha256": "4d15558264ca8bcbe9ffab2ea2b7b4c5db03b9288e7ac553f84eb58a498050f5",
+      "beforeSha256": "3b6e033cba147d835ec7a5394cb944a6e06e61e09e2610e41b49a5ad70f67d7e",
+      "afterSha256": "2513cd50d2bcc26efbaed7e5c04741bc5f2a182f13286af5fafeed794cbf7894",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p2-t5-properties-2-3.html": {
-      "beforeSha256": "7a9a50dacfdadd2c01d53394a3ef4800d557cab6da3620787fd89a141cb1ffcc",
-      "afterSha256": "e84a56ebe815745665cde74affbc5d6786a877c3a30046738336e75dff326b9f",
+      "beforeSha256": "f6a240e08b86033671ae3672402eaf735cdcc8b4dd4613b388accefe1560a034",
+      "afterSha256": "48c4f2f06d2524b8988a28dfa81c82dc001d9c83307a83f0e1a258a5c8746403",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch3-p2-t6-direct-converse.html": {
-      "beforeSha256": "829b07121a9d06bdaf819c508c95eccd850b5d0c74c9bd1f40940ae70a517e67",
-      "afterSha256": "bdf97ec1a6e8222ec2ab601aae16768d05b303f4f90cd0e3dbe55d6651ce1b00",
+      "beforeSha256": "c226ff4df5ec9bc8ccede428556bc232b3276d306982a5b53e350b0f3f92ca05",
+      "afterSha256": "7fce63fe47e8919f511580c19441e0cc462ae502cbcfa43198c00f1fc5f8fbf0",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html": {
-      "beforeSha256": "5b51894dee5e7b31b1a8107ae2179184705fcb6f59efe1def7d8b51b06030dbb",
-      "afterSha256": "aec219d46b99d0dd39b78e9e3bed33dc98d5c874f2c1d0f1b6253f20af14085f",
+      "beforeSha256": "fe1a1e35e8104905e4d812ca8bb07328c237eb66adc3594ca9087b29306c01ff",
+      "afterSha256": "e09dfe2f082d55f853fe42a5e15b26dd3bd8b9a06f79cf2f2a9471d14211c921",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html": {
-      "beforeSha256": "b8949e06fe17ddd580a9d9ed4e54f97b514eeb03a27f1ac36b84f1710aa520aa",
-      "afterSha256": "e6df80572def7eb486e6eed01c5c5c4e82eae9f870385546bf655d904e8cb4c2",
+      "beforeSha256": "d05353045d97c5e0ed906b210731906f667a9de35091f6860445a58eac281ca2",
+      "afterSha256": "881dd6af00b16fb1b3f17113887a37d14de3c00fe04686d410e2abce841bb4e4",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t3-exterior-angle.html": {
-      "beforeSha256": "2ff9ab7fa622a0783f231057e8453da919cb684bfb4bb3278b6ddfe54cc13320",
-      "afterSha256": "c68d59cb9d40e86f68d4a1ac2222cb6a8f9d7f2af767cbaab6c579b9c402c0c8",
+      "beforeSha256": "b62050859629a21a9ecacd83a1a432f6cae7496d50343215630065255e3c6bc9",
+      "afterSha256": "3d49828bac5b89133eaa48eb3b20d31fb299879c8d5caa071223fd2eaddf11c4",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t4-triangle-types.html": {
-      "beforeSha256": "5b91ba33950494d4a974e659f17df56b54552f55d462af6350e7bf8183ef4ea9",
-      "afterSha256": "920309f70e46a19fdaa81f33ccb40c410786d50563615c329573d6a29609dccc",
+      "beforeSha256": "d26167415e215459ecb251d8e9ecdcd3449d2b171357905675dd6dc7e8a82a4d",
+      "afterSha256": "a8cee1db5b8130e0f6f8553b04bbda5d001b8daf12fb8c071adefdae30f92a02",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t5-find-angles.html": {
-      "beforeSha256": "0fe76dc44c840697c9a4b4b01f97a3c21642cccf88f5e70cfaff91341e1d8d42",
-      "afterSha256": "6d99680ff17d33340b44fd7062af4541b01b790c485260336ee0df9585dbafa7",
+      "beforeSha256": "aa43d27b681855583faaf3c32fe12c4f64bb725989438e1d5c44528bb68d8854",
+      "afterSha256": "42f245ede2d1c21fd80182481e4d4d1fbe01e1b3a0c0336e982b9828db385350",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t6-quiz.html": {
-      "beforeSha256": "53d78950de7d24dec363897805fe21cbf864fdd5a1b8414a70f1c87fbcbb60bc",
-      "afterSha256": "61025057d65348831127d9d9b950fc975b43571635eb4435ee6cdecb82aa6061",
+      "beforeSha256": "ac3a4ca45467a4700cbaaafa00ecad546a62f20ad221454fe9fecd941c5be453",
+      "afterSha256": "32575ee53af86779070852a030ed269fd496acad6fe20991b17e9c626d0d53a9",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t1-side-angle-lab.html": {
-      "beforeSha256": "25d14e23637b93cd98ef6ef2f7fe5a6927370e71af25542b9b8f587f1a763424",
-      "afterSha256": "026b798cb60b1d8426da1d69b6cf24bdbd96b528ea16d8ed773cca42f51e9749",
+      "beforeSha256": "e94b3467091de392002197bc7dc29fe1edc10ba6e1b6c4c1d289b42db47ddc38",
+      "afterSha256": "dac5a4e633a1ded4921f3bc58a5bc32eb3b46c07626f0fc8c7bb2a0de78b4d19",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t2-proof-side-angle.html": {
-      "beforeSha256": "eb7ea35b18cf3f06dc61348797868cb5c783b77154eae20fc5a62dd2f1f4d181",
-      "afterSha256": "ccfe117d8034b42a88cf27a4aa7c2e10c23cfe501a051358bee5174cf2e40a2f",
+      "beforeSha256": "a76b9e9820303bae3d97ed1f4c94e8c07368b7e7f5dad4f316eb56f4f13930ab",
+      "afterSha256": "8fc2d1c66cfe5ed2316f263024a78e7ce86bdc1ac74dd5ace64b35916c639655",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t3-converse-iso.html": {
-      "beforeSha256": "473ae089195a63a2c24cc52ca70df595c2471b8440717cbce6d9566bc0315a08",
-      "afterSha256": "d2ac2f1bbe3ad285f715f36b21d8cbce0ffb543846de0e839d128965981deb53",
+      "beforeSha256": "7788f619ccb1a94fbeb8362bb52de3cf028c8dff3724d54bf4936dff5c1356e3",
+      "afterSha256": "e587227bcbe94dab48aca3922e7cc2e59706d47fd72c88e31ae38d3c66aa8f72",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html": {
-      "beforeSha256": "e1f7c6e3f96ee51b80155e36f31688e583c327775ec5ff86083a8d1250409389",
-      "afterSha256": "2954a873405451c35be6c4f8561a522acb942425d6c1b3ff71220645e476e456",
+      "beforeSha256": "5d748760ae78ea61dcc8c981d058810bfdf6834b560e9cb5ba8fd8ae6855ad77",
+      "afterSha256": "3054ddf04803b3bfb65daefa02937b07aa81e47ae0839869dc15503a4aca8cc3",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t5-triangle-inequality.html": {
-      "beforeSha256": "c5ee1778d57875379164baef8f770fee889422f9372d28783292033a9a279a3f",
-      "afterSha256": "eb47f0da9087594481b1f7e0ed0cc803cd163984811eae817a5b35bd80976395",
+      "beforeSha256": "951b81c04b5779f1404d680d151d3e5dcec0a1d25a75116c809a1fd54d901c62",
+      "afterSha256": "d8da7f86ec8458af7deca274abe3737c273bd266e69fff551ff8446af0baf24d",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t6-prove-inequality.html": {
-      "beforeSha256": "c5579c6d7e4652000037513f929b435b79c3c076abd7ace58ce1be4a552cebb1",
-      "afterSha256": "8edcdd841e58aea7d0c8a24132ba8b18cc3a0f6b1c6f2d1e942b27adb17e3d89",
+      "beforeSha256": "cfd105dda3fd2f43c7c45f4c89b8e6d13db1b2fa2a026bcc9f1370e0624c778d",
+      "afterSha256": "2cd234b4aeaf3492510cbf701ff2fef49cd50e79d6937ae8b4c7f7a92d200cc4",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t7-triangle-generator.html": {
-      "beforeSha256": "ccdd10f598416c3a10f2af7bf966868d7d96ba490361114402fe285eef0b7bee",
-      "afterSha256": "58e4ee362d248bbf015aa91ff4afdaf050da3bb6e77a5ff5f2460f3af42ae00c",
+      "beforeSha256": "7c91842baff1435431f88fac9a29590badb90e8de04373f24c30bf6efd2b4b3f",
+      "afterSha256": "b9f9239b5dc4205853a0101edc798b3f0763ee0ddfac76ef30d9948f3a1db51e",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p2-t8-quiz.html": {
-      "beforeSha256": "099a2316db963bf365a8b10b4b1dd3853778b2a14dc34f550e210f70a27cb781",
-      "afterSha256": "ddbd2640297531f770ac91a7b532cf09e1591d0c5df97494fdeb64a517fad2aa",
+      "beforeSha256": "a35b53d214a021a3e400c679ca842febe82ebf497e7907f97aad1ee41e86484b",
+      "afterSha256": "bebbf229b2fb679378eb591902f6b313826d7ca69fa571a079a7d6c2f7b1a7be",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t1-two-acute-angles.html": {
-      "beforeSha256": "32b499f7a149440675450dff484d415572be89ef5cf99cb6dc73a9fdf4752702",
-      "afterSha256": "254ea123ec5db290112c0105c7756014756ba7c0a44fa8badc7a2a89f49858bc",
+      "beforeSha256": "e64acb62bca568547a4824249d3052e7c439d13105c23aaaed96d7e0b4652e19",
+      "afterSha256": "10f042f3a04d5625752fc8b969105a26fd4b15a76f205e2a240fd051ea29f59b",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t2-leg-against-30.html": {
-      "beforeSha256": "ddc0b9194e842c7750b6a5af2f4be8d8b4d4546068423d244e374248ba4c79a2",
-      "afterSha256": "d605ab918dfd4bb47681633a5cabb0a6f569ec08f8fad2456ed69252c11f4df7",
+      "beforeSha256": "51891570cab1a95cdff66b52bd5bc084f7b452da1bb58f41aff6037fa30d66ee",
+      "afterSha256": "a61641c04c926c09c9f2fbdf72800b527f69cd79cc521cf6db4d678bfa728c95",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t3-half-means-30.html": {
-      "beforeSha256": "70ec4a66b5ecf7a5a09fe794c86e56e2c4eba28b6758222f7f66f859e57a7026",
-      "afterSha256": "57530609f701aa411fe1193b764520f6c58bd42d0288a61e41adec0346332768",
+      "beforeSha256": "a0b04d9c1c9a1fe48a74fe85e170d05e3d861c1728256b1fa8f12f41b1b28153",
+      "afterSha256": "72a94f510abba73a6e76877dbdf59238d6b994bb7d118a0c3419a41a25eea837",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html": {
-      "beforeSha256": "9be5574e6a4c300fbe6072546acda07e7c254665a0327039a15aa3b363a093f9",
-      "afterSha256": "d9e73c55f02a4c10cd8fddf8c94c6eca3ef509a9699cca39c44edf6b188cdddf",
+      "beforeSha256": "8d4670473086a2a0afd85dde443fb9c969a71fd9a9f5a61ebabb5b28176e1e41",
+      "afterSha256": "d6fda7b065e3f2f765298b5336a59b57b4b450bc6bcc986bc6c2a5849bf48228",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t5-median-converse.html": {
-      "beforeSha256": "f98089b58f6c0e9a8b0c9ff5e156ce286a8e5163715b3cda2513bf2a4f198109",
-      "afterSha256": "f0d24d6f346f2208ad63280f9b8b6f24d24317338480ae234bd178d87fe45cdc",
+      "beforeSha256": "32bdac8c239ecdb58d2c4def4934031317bc2e2cb75cde8374525e40148b6c8b",
+      "afterSha256": "43dd9c54d790eb64f702c9a478c126a8eafb14bab73b45a146a7059931f437a1",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t6-which-sign.html": {
-      "beforeSha256": "4a322f6551eb11201f80df4808170cf93314a859a9f448ac8e5fe46cf4a4701d",
-      "afterSha256": "5d61a1edd87493037e16928f4eaae9a0918a561de49d1a5affa37f99367114b2",
+      "beforeSha256": "aa8c29791de31d4ab7468e1370585d92651195258e7d9fb84b0a1a7291afbdcf",
+      "afterSha256": "199d8348d0039ec38de99febea8c3b1916d584257e5abf72bd800df894682c0e",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html": {
-      "beforeSha256": "61a298ffae7c882e3df080cbd3cef1eda95d038c5e118d4286e07d67689358ce",
-      "afterSha256": "2fc3a9a72d014212556618e364668657043fddbd2df72af4ade745b579569f3e",
+      "beforeSha256": "7044d640f3481cba0bf190509c45dc1e48b0e992c7a60d3124362cb7e5b49382",
+      "afterSha256": "fe8c8af01e4c0f102d981c4fafbde0cf0c4d17f653932f2aaa44c0cf67a30f0a",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t8-generator.html": {
-      "beforeSha256": "c1e27141744c907879b97c62593fd9827775c3dd2ad72e71f9d507ba7a53f672",
-      "afterSha256": "181b17f234d6dd7fb6162693dc0d4f840b5ecdae1ee08594cd64f386862d7e8c",
+      "beforeSha256": "f33eb5cbed830e14870342ad73d9e02227fb5e16f8de0f72ec31bbbe253e864c",
+      "afterSha256": "903801974f939a5d7e1d93c070599c264a4002d93442eebcc3f1093604e0bc53",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p3-t9-quiz.html": {
-      "beforeSha256": "4dd40b2aaf71eede5efafdb5568dee43f8556c0ef9cf96512b316becfb8cbf58",
-      "afterSha256": "0edc198604c75ec3918cc7474141249a6a4f65c915ef54af995f8bb0f3c1b7a6",
+      "beforeSha256": "a9e077b01c975f138760fb62cf0cfc6451c692d43644d023152619dcb0ba8180",
+      "afterSha256": "02e9be9388de63cd1df5cc2c55ec26e2167d4e80947d2a93947737cbd546d670",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p4-t1-distance-point-line.html": {
-      "beforeSha256": "589243a81d54d0421e26427317858a45b6a62e6944dbff882969d1044d324029",
-      "afterSha256": "5a2c9694c7d1e16cb01408048bbcb11ebca7ee575edad48138c0f2b7fe4bc7af",
+      "beforeSha256": "83ddc1cdce66356b72851f4a66474d06efbd98ade65c213ba28c426de54720aa",
+      "afterSha256": "56aa64d7c42510db8fbf106666032e0a4648b50f4cf3d856581a7e1ef3eaf948",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p4-t2-distance-parallels.html": {
-      "beforeSha256": "9efa3b70007de4e8c77e5296c6e0cf7e4f17c829f00b6deb93165976ad134d76",
-      "afterSha256": "ba20c66c086102885f39b05ba6b9f8b7917fb98592fc35b6aa199c1d0641a979",
+      "beforeSha256": "af75b641d2ca5399155c71bc083a89768cdd71867979fb30d3813f872ff08938",
+      "afterSha256": "60ac83f99d6ac99d38f371e0ba2d7f8fa3db8bd13b72ca30fca7568059cde191",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p4-t3-construct-sss.html": {
-      "beforeSha256": "7da2063afcc03bafd26651bba8bb7626d34fd17d96023df328e826a97930b0e6",
-      "afterSha256": "75bc29e5c8408aaf3b44a28b3d39dafb70716a0cde17c72e909e9a58f3602c77",
+      "beforeSha256": "32549dccb8e6e51e571c3bc336120924da5f53347048edc1a2db03578c9537a0",
+      "afterSha256": "48c9c18a90770d6cc0058666f90ffc18ddefb3322215c83bbc671c4b30344247",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html": {
-      "beforeSha256": "e3eeafbd8190df19aa99bbcee86f5cae9f4f58bf61f5332c516c31602ecfdbbe",
-      "afterSha256": "eec2dca9d205cc4a7739711f2d5bff8b236992edeb2ededc55ccc891ccc316e8",
+      "beforeSha256": "002d86968887403ec1ed74367cbf6ed8a4a0596254cf98df2209be833a709252",
+      "afterSha256": "0eb70f76d53274ce4c848e12758bfb10da0dc8372241680fe05d23dffbb98535",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-advanced-7-17.html": {
@@ -2140,8 +2140,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "4bdbf0f64d31e1038de977c916331d330e54bbe40690c06ef5ba9c24ffbfdc40",
-      "afterSha256": "19bf8a2fb2523091ea59cb565f5c49b7cdd0ae95d3e6d7b34b508267097ec1b2",
+      "beforeSha256": "5331b3a637073bcd81e8b248fd8fbeddf98472c425ed6f969f866a6e9b77b0de",
+      "afterSha256": "b3b90948831e9e3b4f6bf4b23d1d3aa7eb09641aa59694c856a056c0dbe67766",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -4102,6 +4102,30 @@
     {
       "previousBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
       "sourceBaseSha": "bf3c10820399038adda9ac86ba325545f150a6f6",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
+      "sourceBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "task": "docs/tasks/PROFILE_AUDIT_INTEGRITY_20261109.md",
+      "changedPaths": [
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "922ceeb7149d1493ab3ab4df6b3ce21d75f98f3a",
       "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
       "changedPaths": [
         "geometry-course/atlas/triangle-sas.html",

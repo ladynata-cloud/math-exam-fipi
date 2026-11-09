@@ -3,6 +3,7 @@
 ## Identity and authorization
 
 - Owner request, 9 November 2026: apply the valuable results of Methodyzer, GeoGebra video and Brilliant audits to both Atanasyan courses.
+- Owner clarification: «к курсу и самим тренажерам». This includes substantive, mathematically checked practice in the trainers themselves, beyond course navigation or a personal notebook.
 - Review: HIGH (learner state, broad generated lesson content and interaction).
 - Working base: PR #497, `6f92a799f70d1b362db706d60cdb7678d97117de`; published main at task start: `89ee66bfe5068f16364d61d091fcbf1a1cbd6287`.
 - Branch: `improve/atanasyan-audit-application-20261109`.
@@ -27,7 +28,7 @@ Applied principles:
 
 ## Scope
 
-Extend existing 7–9 atlas lesson families with investigations and independently checked tasks in congruence, similarity, inscribed angles, tangency and altitude/area. Extend 10–11 investigations with exact cube sections, line-plane projections and sphere sections. Apply a compact personal-work/discussion/next-step cycle to retained 7–9 trainers where their existing interfaces support it; document exact coverage and avoid claiming a new independent result from historical counters.
+Extend existing 7–9 atlas lesson families with investigations and independently checked tasks in congruence, similarity, inscribed angles, tangency and altitude/area. Extend 10–11 investigations with exact cube sections, line-plane projections and sphere sections. Apply a compact personal-work/discussion/next-step cycle to retained 7–9 trainers and add topic-specific fresh-condition practice in each of them. Add task-specific feedback, first-answer history and preserved condition drafts to the actual stereometry task interface. Document exact coverage and avoid claiming a new independent result from historical counters.
 
 Do not alter textbook source scans, reviewed textbook problem banks, authentication, the shared-board protocol, unrelated courses or existing private audit dashboards. This is not a claim that every textbook exercise now has every audited model or that a real-pupil trial has been conducted.
 

@@ -1292,7 +1292,81 @@ case'ceva':{const n=Math.abs(seed),variant=n%4,j=Math.floor(n/4),p=2+j%4,q=2+Mat
 case'conics-plane':return task('У эллипса сумма расстояний от точки до фокусов равна '+(2*x)+'. Одно расстояние равно '+(x-.5)+'. Найди второе.',x+.5,[step('Какова постоянная сумма расстояний?',2*x,'Это определение эллипса.'),step('Вычти известное расстояние.',x+.5,'Не разность, а сумма расстояний остаётся постоянной.')]);
 default:throw Error('Unknown task '+kind);
 }}
-const api={make};root.StereoTasks=api;if(typeof module!=='undefined')module.exports=api;
+// Authored feedback belongs to the actual task family, not to a generic score.
+const feedbackPrompts={
+ incidence:'Проверь два условия: точки различны и не лежат на одной прямой. Примени аксиому о плоскости через такую тройку.',
+ parallel:'Отличай «прямая лежит в плоскости» от «не имеет с ней общих точек». Найди в плоскости параллельную ей прямую.',
+ skew:'Перенеси направление одной прямой параллельно так, чтобы прямые пересеклись. Угол на плоском изображении куба не даёт пространственный угол.',
+ 'plane-parallel':'Если линии пересечения встретятся, их общая точка будет принадлежать обеим исходным плоскостям. Согласуется ли это с их параллельностью?',
+ euler:'Запиши В − Р + Г = 2 и вырази именно число граней. Знаки при вершинах и рёбрах различаются.',
+ section:'Сначала найди грань, содержащую обе точки. Если требуется квадрат длины, не извлекай корень в окончательном ответе.',
+ perpendicular:'В признаке важны две пересекающиеся прямые одной плоскости. Свяжи перпендикулярность плоскости с определением угла прямой и плоскости.',
+ projection:'Наклонная — гипотенуза, её проекция — катет. Искомое расстояние — другой катет, а не разность длин.',
+ dihedral:'Возьми сечение, перпендикулярное ребру двугранного угла. Расстояние от центра основания до середины стороны — половина стороны, не диагональ.',
+ 'box-diagonal':'Пространственная диагональ учитывает все три измерения. Проверь, не найдена ли только диагональ одной грани.',
+ 'solid-angle':'Отдели сумму плоских углов от условий существования. Для выпуклого угла неравенства строгие; равенство на границе даёт вырождение.',
+ prism:'У боковой развёртки ширина равна периметру основания, высота — высоте прямой призмы. Основания в боковую площадь не входят.',
+ pyramid:'В площади боковой поверхности нужна апофема грани. Высота пирамиды и боковое ребро — другие отрезки.',
+ frustum:'Малая пирамида подобна исходной. Линейный коэффициент, коэффициент площадей и коэффициент объёмов различаются.',
+ regular:'Каждое ребро многогранника принадлежит двум граням. Счёт всех сторон всех граней учитывает каждое ребро дважды.',
+ 'cylinder-area':'Запрошена полная поверхность: учти боковую развёртку и два основания. Радиус и диаметр не взаимозаменяемы.',
+ 'cone-area':'Для боковой поверхности используй образующую. Найди её в осевом сечении; высота конуса не равна образующей.',
+ 'cone-frustum':'В осевом сечении катеты — высота и разность радиусов. Сумма радиусов здесь не является катетом.',
+ 'sphere-cut':'Проведи перпендикуляр от центра шара к плоскости. Радиус шара — гипотенуза; радиус круга сечения — катет. Вопрос требует площади: после радиуса найди площадь круга.',
+ insphere:'В осевом сечении вписанный шар даёт вписанную окружность треугольника. Различай радиус основания конуса и радиус шара.',
+ conic:'Сравни угол плоскости и угол образующей с одной и той же осью. Отдельно проверь, проходит ли плоскость через вершину.',
+ 'box-volume':'Объём учитывает три взаимно перпендикулярных размера. Произведение двух размеров даёт только площадь.',
+ 'cylinder-volume':'В условии дан диаметр. Сначала перейди к радиусу, затем найди площадь основания и умножь на высоту.',
+ cavalieri:'Высота призмы — расстояние между основаниями. Наклонное боковое ребро нельзя подставлять вместо неё.',
+ 'pyramid-volume':'Сравни с призмой с тем же основанием и высотой. У пирамиды объём составляет треть этого произведения.',
+ 'sphere-volume':'Объём шара зависит от куба радиуса. Не перепутай его с площадью сферы, которая зависит от квадрата радиуса.',
+ vectors:'Вектор BA направлен от B к A. Для каждой координаты вычитай начало B из конца A.',
+ 'vector-sum':'Складывай соответствующие координаты отдельно, сохраняя знаки. Длина вектора не является координатой суммы.',
+ basis:'Трёх векторов недостаточно лишь по количеству. Проверь, могут ли они задавать три независимых пространственных направления.',
+ distance:'Используй три координатные разности. Сумма их квадратов — квадрат расстояния; само расстояние неотрицательно.',
+ 'sphere-equation':'Сравни скобки с (x − a), (y − b), (z − c). Знак внутри скобки противоположен знаку соответствующей координаты центра.',
+ dot:'Сначала проверь скалярное произведение ненулевых векторов, затем переведи вывод о произведении в вывод об угле.',
+ 'plane-distance':'Одинаковое умножение всех коэффициентов плоскости не меняет расстояние. Значение линейного выражения делят на длину нормали.',
+ scale:'Сравни длины, площади и объёмы отдельно. При изменении всех размеров объём учитывает три множителя масштаба.',
+ 'circle-bridge':'Составь произведения двух частей каждой хорды: PA·PB и PC·PD. Не складывай отрезки разных хорд.',
+ 'triangle-bridge':'В равнобедренном треугольнике медиана к основанию также высота. Сначала раздели основание пополам.',
+ ceva:'Соблюдай циклический порядок отношений. Для внешней точки используй её положение на продолжении; AF и BF связаны суммой с AB.',
+ 'conics-plane':'У эллипса постоянна сумма расстояний до двух фокусов. Не подменяй её разностью или одним расстоянием.'
+};
+const feedbackAnswer=root.Answer||(typeof require==='function'?require('./answer.js'):null);
+function inputForm(value,expected){
+ const raw=String(value).trim();if(!raw)return {kind:'empty',message:'Впиши ответ; пустая запись не считается математической ошибкой.'};
+ if(Array.isArray(expected)){const parts=raw.split(';');if(parts.length!==expected.length)return {kind:'format',message:'Запиши '+expected.length+' числа в указанном порядке через точку с запятой. Формат ответа пока не позволяет проверить математику.'};for(let i=0;i<parts.length;i++){const r=inputForm(parts[i],expected[i]);if(r.kind!=='valid')return {kind:'format',message:'Проверь запись компоненты '+(i+1)+': '+r.message};}return {kind:'valid'};}
+ if(typeof expected==='string'){const allowed=['да','нет'].includes(expected)?['да','нет']:['эллипс','парабола','гипербола','окружность'];return allowed.includes(raw.toLowerCase())?{kind:'valid'}:{kind:'format',message:allowed.length===2?'Введи «да» или «нет». Это уточнение формата, а не ошибка в геометрии.':'Введи одно название: эллипс, парабола, гипербола или окружность.'};}
+ try{feedbackAnswer.number(raw);return {kind:'valid'};}catch(error){return {kind:'format',message:'Не удалось прочитать число. '+error.message+' Можно использовать дробь 1/3 или sqrt(2); единицы и знак ° писать не нужно.'};}
+}
+function assess(kind,t,value,index=null){
+ const item=index===null?t:t.steps[index];if(!item)throw Error('Unknown task step');const format=inputForm(value,item.a);if(format.kind!=='valid')return {...format,code:format.kind};
+ if(feedbackAnswer.equal(value,item.a))return {kind:'correct',code:'correct',message:index===null?'Ответ соответствует условию.':'Шаг верен: '+item.why};
+ if(index!==null)return {kind:'wrong',code:'step-reason',message:'Проверь шаг «'+item.q+'». '+item.why};
+ let message=feedbackPrompts[kind];if(!message)throw Error('Missing authored feedback for '+kind);let code='family';
+ if(kind==='conic'){if(t.q.includes('цилиндрическая'))message='Рассматривается сечение цилиндрической поверхности. Малая полуось равна радиусу, а проекция большой полуоси на поперечную плоскость — радиусу. Угол дан с осью, не с поперечной плоскостью.';else if(t.q.includes('проходит через ось'))message='Плоскость содержит ось и вершину конуса. Здесь спрашивают сечение полной поверхности: отдели образующие прямые от заполненного треугольника сечения тела.';else if(t.q.includes('перпендикулярна оси'))message='Плоскость перпендикулярна оси конуса. Сравни расстояния точек сечения от точки пересечения оси и плоскости, затем назови кривую.';}
+ const intermediate=t.steps.slice(0,-1).find(s=>!feedbackAnswer.equal(feedbackAnswer.format(s.a),t.a)&&feedbackAnswer.equal(value,s.a));
+ if(intermediate){code='intermediate';message='Получен результат промежуточного шага «'+intermediate.q+'». Вернись к вопросу задачи: требуется ещё один переход. '+message;}
+ else if(typeof t.a==='number'){
+  const n=feedbackAnswer.number(value),near=(a,b)=>Math.abs(a-b)<1e-7;
+  if(['projection','box-diagonal','distance','triangle-bridge','cone-frustum'].includes(kind)&&near(n,t.a*t.a)){code='squared-length';message='Получился квадрат искомой длины. В условии требуется длина, поэтому проверь последний переход от квадрата к длине.';}
+  else if(kind==='section'&&!t.section&&near(n*n,t.a)){code='length-instead-square';message='Записана длина стороны, а в условии просят её квадрат. Сверь название искомой величины.';}
+  else if(kind==='sphere-cut'&&near(n,t.a/Math.PI)){code='circle-area-factor';message='Получен квадрат радиуса сечения. Вопрос просит площадь круга, а не квадрат радиуса: проверь коэффициент в формуле площади.';}
+  else if(kind==='cylinder-volume'&&near(n,4*t.a)){code='diameter-radius';message='Такой результат получается, если подставить диаметр вместо радиуса в площадь круга. Проверь, какая длина дана.';}
+  else if(kind==='pyramid-volume'&&near(n,3*t.a)){code='prism-volume';message='Такое произведение даёт объём призмы с тем же основанием и высотой. В условии рассматривается пирамида.';}
+  else if(['projection','box-diagonal','distance','triangle-bridge','sphere-cut','cone-frustum','prism','pyramid','cylinder-area','cone-area','insphere','box-volume','cylinder-volume','cavalieri','pyramid-volume','sphere-volume'].includes(kind)&&n<0){code='negative-measure';message='Искомая длина, площадь или объём не могут быть отрицательными. Проверь выбор корня и знаки в вычислениях. '+message;}
+ }
+ if(t.section){code='section-pair';const parts=String(value).split(';');message=feedbackAnswer.equal(parts[0],t.a[0])?'Пара точек на указанной грани выбрана верно. Теперь найди оставшееся вертикальное ребро: середины всех трёх данных рёбер лежат на одной высоте.':'Сначала выбери две точки, лежащие на одной указанной грани. Близость точек на экране этого не гарантирует.';}
+ return {kind:'wrong',code,message};
+}
+function key(t){return JSON.stringify([t.q,t.a]);}
+function fresh(kind,seed,seen){
+ const used=new Set(seen);for(let delta=1;delta<=512;delta++){const next=(seed+delta)%100000000,t=make(kind,next);if(!used.has(key(t)))return {seed:next,repeated:false};}
+ return {seed:(seed+1)%100000000,repeated:true};
+}
+
+const api={make,feedbackPrompts,inputForm,assess,key,fresh};root.StereoTasks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 </script><script>/* Small authored investigations. Geometry and learning state are separate from
    task mastery. A visual observation is never an automatically checked proof. */
@@ -1378,20 +1452,24 @@ const plain=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=x=>typeof x==='n
 function drawing(x){if(!plain(x)||!Array.isArray(x.points)||!Array.isArray(x.objects)||x.points.length>150||x.objects.length>180)return null;const kinds=['free','midpoint','sum','perp','iso','equalarm','onCircle','rightArc','foot','parallel','normal','bisector','affine','reflection','intersection'];const ids=new Set();for(const p of x.points){if(!plain(p)||!/^([A-Z][A-Z0-9]*|P\d+)$/.test(p.id)||ids.has(p.id)||!kinds.includes(p.kind)||!finite(p.x)||!finite(p.y)||Math.abs(p.x)+Math.abs(p.y)>1e7)return null;ids.add(p.id);for(const k of ['k','t'])if(p[k]!==undefined&&!finite(p[k]))return null;}const os=new Set();for(const o of x.objects){if(!plain(o)||typeof o.id!=='string'||o.id.length>40||os.has(o.id)||!['line','circle'].includes(o.type)||!ids.has(o.a)||!ids.has(o.b))return null;os.add(o.id);}for(const p of x.points){for(const k of ['a','b','c'])if(p[k]!==undefined&&!ids.has(p[k]))return null;for(const k of ['o1','o2'])if(p[k]!==undefined&&!os.has(p[k]))return null;}
  const pc=['id','kind','x','y','a','b','c','k','t','o1','o2','branch','draggable','added'],oc=['id','type','extent','a','b','added','construction'];return {points:x.points.map(p=>Object.fromEntries(pc.filter(k=>p[k]!==undefined).map(k=>[k,p[k]]))),objects:x.objects.map(o=>Object.fromEntries(oc.filter(k=>o[k]!==undefined).map(k=>[k,o[k]])))};}
 function model(x){if(!plain(x)||!['box','pyramid','tetrahedron','octahedron','prism','frustum','cylinder','cone','cone-frustum','sphere'].includes(x.kind))return null;const out={kind:x.kind};for(const [k,lo,hi,d] of [['a',1,6,4],['b',.5,6,3],['h',1,6,4],['level',-.2,1.2,.5],['tilt',0,90,0],['turn',0,360,0]])out[k]=finite(x[k])?Math.max(lo,Math.min(hi,x[k])):d;out.points=Array.isArray(x.points)?x.points.slice(0,30).filter(p=>plain(p)&&/^[A-Z][0-9]*$/.test(p.id)&&['edge','foot'].includes(p.kind)).map(p=>p.kind==='edge'?{id:p.id,kind:p.kind,edge:num(p.edge,2000),t:finite(p.t)?Math.max(0,Math.min(1,p.t)):.5}:{id:p.id,kind:p.kind,source:str(p.source,10)}):[];out.lines=Array.isArray(x.lines)?x.lines.slice(0,100).filter(p=>plain(p)).map(p=>({a:str(p.a,10),b:str(p.b,10)})):[];out.planeMode=x.planeMode==='points'?'points':'slider';out.planeIds=Array.isArray(x.planeIds)?x.planeIds.slice(0,3).map(v=>str(v,10)):[];return out;}
+function coach(x){
+ x=plain(x)?x:{};return {helpOpened:!!x.helpOpened,firstSubmitted:str(x.firstSubmitted,300),firstResponse:str(x.firstResponse,300),errors:num(x.errors,10000),message:str(x.message,1800),kind:['empty','format','wrong','correct'].includes(x.kind)?x.kind:'',steps:Array.isArray(x.steps)?x.steps.slice(0,20).map(v=>{v=plain(v)?v:{};return {first:str(v.first,300),last:str(v.last,300),accepted:str(v.accepted,300),errors:num(v.errors,10000),message:str(v.message,1800),kind:['empty','format','wrong','correct'].includes(v.kind)?v.kind:''};}):[],log:Array.isArray(x.log)?x.log.slice(-40).filter(plain).map(v=>({mode:v.mode==='step'?'step':'final',step:num(v.step,20),answer:str(v.answer,300),kind:str(v.kind,12),code:str(v.code,40)})):[]};
+}
+function taskHistory(x){return Array.isArray(x)?x.slice(-40).filter(plain).map(v=>({condition:str(v.condition,1200),key:str(v.key,1000),seed:num(v.seed,1e8),taskStep:num(v.taskStep,20),taskFirst:taskFirst(v.taskFirst),mainDraft:str(v.mainDraft,300),stepDraft:str(v.stepDraft,300),assisted:!!v.assisted,checked:!!v.checked,coach:coach(v.coach)})):[];}
 function taskFirst(x){
  if(!plain(x)||x.version!==1)return null;
- const out={version:1,mainDraft:str(x.mainDraft,300),stepDraft:str(x.stepDraft,300),legacyDraft:str(x.legacyDraft,300),camera:null,proofCamera:null};
+ const out={version:1,coach:coach(x.coach),mainDraft:str(x.mainDraft,300),stepDraft:str(x.stepDraft,300),legacyDraft:str(x.legacyDraft,300),camera:null,proofCamera:null};
  for(const key of ['helpOpen','guideOpen','theoryOpen','sourceOpen','formatOpen'])out[key]=!!x[key];
  for(const key of ['camera','proofCamera'])if(plain(x[key])&&finite(x[key].yaw)&&finite(x[key].pitch)&&Math.abs(x[key].yaw)<=10000&&Math.abs(x[key].pitch)<=10000)out[key]={yaw:x[key].yaw,pitch:x[key].pitch};
  return out;
 }
-function clean(x){if(!plain(x))return null;return {investigation:Investigations&&Object.hasOwn(Investigations.specs,x.investigation?.kind)?Investigations.clean(x.investigation,x.investigation.kind):null,taskFirst:taskFirst(x.taskFirst),model:model(x.model),updated:num(x.updated,9e15),stage:num(x.stage,5),seed:num(x.seed,1e8),taskStep:num(x.taskStep,20),draft:str(x.draft,300),seenTasks:Array.isArray(x.seenTasks)?[...new Set(x.seenTasks.filter(k=>typeof k==='string'&&k.length>0&&k.length<=1000))].slice(-2048):[],currentTaskKey:str(x.currentTaskKey,1000),repeatedTask:!!x.repeatedTask,written:str(x.written,20000),observation:str(x.observation,5000),proofDone:Array.isArray(x.proofDone)?x.proofDone.filter(s=>typeof s==='string'&&/^s\d+$/.test(s)).slice(0,20):[],moved:!!x.moved,construction:!!x.construction,guided:!!x.guided,proof:!!x.proof,complete:!!x.complete,independent:num(x.independent,1e6),attempts:num(x.attempts,1e6),hints:num(x.hints,1e6),assisted:!!x.assisted,checked:!!x.checked,drawing:drawing(x.drawing),events:Array.isArray(x.events)?x.events.slice(-300).filter(e=>plain(e)&&typeof e.type==='string').map(e=>({type:str(e.type,40),time:num(e.time,9e15)})):[]};}
+function clean(x){if(!plain(x))return null;return {investigation:Investigations&&Object.hasOwn(Investigations.specs,x.investigation?.kind)?Investigations.clean(x.investigation,x.investigation.kind):null,taskFirst:taskFirst(x.taskFirst),taskHistory:taskHistory(x.taskHistory),model:model(x.model),updated:num(x.updated,9e15),stage:num(x.stage,5),seed:num(x.seed,1e8),taskStep:num(x.taskStep,20),draft:str(x.draft,300),seenTasks:Array.isArray(x.seenTasks)?[...new Set(x.seenTasks.filter(k=>typeof k==='string'&&k.length>0&&k.length<=1000))].slice(-2048):[],currentTaskKey:str(x.currentTaskKey,1000),repeatedTask:!!x.repeatedTask,written:str(x.written,20000),observation:str(x.observation,5000),proofDone:Array.isArray(x.proofDone)?x.proofDone.filter(s=>typeof s==='string'&&/^s\d+$/.test(s)).slice(0,20):[],moved:!!x.moved,construction:!!x.construction,guided:!!x.guided,proof:!!x.proof,complete:!!x.complete,independent:num(x.independent,1e6),attempts:num(x.attempts,1e6),hints:num(x.hints,1e6),assisted:!!x.assisted,checked:!!x.checked,drawing:drawing(x.drawing),events:Array.isArray(x.events)?x.events.slice(-300).filter(e=>plain(e)&&typeof e.type==='string').map(e=>({type:str(e.type,40),time:num(e.time,9e15)})):[]};}
 function validate(x,allowed){if(!plain(x)||x.version!==1||!plain(x.units))throw Error('Это не файл прогресса курса геометрии.');const units={};for(const [id,v] of Object.entries(x.units)){if(allowed.includes(id)){const c=clean(v);if(!c)throw Error('Повреждена запись урока '+id);units[id]=c;}}return {version:1,units};}
 function open(allowed,onError){let blocked=false,memory={version:1,units:{}};const warn=m=>{if(onError)onError(m);};function read(){if(blocked)return memory;try{const raw=localStorage.getItem(KEY);return raw?validate(JSON.parse(raw),allowed):{version:1,units:{}};}catch(e){blocked=true;warn('Сохранение в браузере недоступно или повреждено. Прогресс этой вкладки можно скачать файлом.');return memory;}}
  memory=read();return {get(id){return clean(read().units[id])||clean({seed:1});},all(){return read();},put(id,v,event,expectedUpdated){if(!allowed.includes(id))return null;const d=read(),previous=d.units[id],actualUpdated=previous?.updated||0;if(expectedUpdated!==undefined&&expectedUpdated!==actualUpdated)return {status:'conflict',record:clean(previous)||clean({seed:1})};if(actualUpdated>=9e15)return {status:'conflict',record:clean(previous)};const c=clean(v);c.updated=Math.max(Date.now(),actualUpdated+1);const seen=new Set();c.events=[...(d.units[id]?.events||[]),...c.events].filter(e=>{const k=e.time+':'+e.type;if(seen.has(k))return false;seen.add(k);return true;});if(event)c.events.push({type:event,time:c.updated});c.events=c.events.slice(-300);d.units[id]=c;memory=d;if(!blocked){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){blocked=true;warn('В браузере не удалось сохранить изменения. Скачайте файл прогресса.');}}
  try{const raw=localStorage.getItem(LEGACY),old=raw?JSON.parse(raw):{};if(plain(old)){const k='stereo-'+id,p=plain(old[k])?old[k]:{};old[k]={...p,runs:Math.max(num(p.runs,1e6),c.attempts),best:Math.max(num(p.best,100),c.independent?100:0),passed:!!c.independent,events:c.events};localStorage.setItem(LEGACY,JSON.stringify(old));}}catch(e){warn('Новая запись доступна в курсе; общий старый журнал обновить не удалось.');}return {status:'saved',record:clean(c)};},import(data){const d=validate(data,allowed),all=read();for(const [id,v] of Object.entries(d.units))if(!all.units[id]||v.updated>all.units[id].updated)all.units[id]=v;memory=all;if(!blocked){try{localStorage.setItem(KEY,JSON.stringify(all));}catch(e){blocked=true;warn('Импортированное сохранено в этой вкладке; скачайте резервную копию.');}}return Object.keys(d.units).length;},export(){return memory=read();}};}
 function download(data,name){const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
-const api={open,clean,validate,drawing,download,KEY};root.StereoStore=api;if(typeof module!=='undefined')module.exports=api;
+const api={open,clean,validate,drawing,download,coach,KEY};root.StereoStore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 </script><script>(function(root){'use strict';
 // Conservative display-only fraction utility derived from
@@ -1662,11 +1740,32 @@ function rememberTask(){
  record.repeatedTask=record.seenTasks.includes(key);record.currentTaskKey=key;
  if(!record.repeatedTask)record.seenTasks.push(key);save();
 }
-function markAssisted(){if(!record.assisted){record.assisted=true;record.hints++;save('hint');}}
-function nextTask(){
- destroyViewers();const proofCamera=record.taskFirst.proofCamera;record.seed++;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
- record.taskFirst={version:1,mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+function markAssisted(){const already=record.assisted;record.assisted=true;const c=coach();if(!c.helpOpened){c.helpOpened=true;record.hints++;save('hint');}else if(!already)save('hint');}
+function coach(){return record.taskFirst.coach||(record.taskFirst.coach=StereoStore.coach({}));}
+function attemptHistory(){
+ const history=record.taskHistory||[];if(!history.length)return '';
+ return '<details class="attempt-history"><summary>Предыдущие условия и мои ответы · '+history.length+'</summary><p class="muted">Сохраняются последние 40 переходов к другому условию в этой теме.</p>'+history.map((r,index)=>({r,index})).reverse().map(({r,index})=>'<details><summary>'+E(r.condition)+'</summary><p>Первый отправленный ответ: '+E(r.coach.firstSubmitted||'не отправлен')+'</p><p>Последний ответ: '+E(r.mainDraft||'не записан')+'</p>'+(r.stepDraft?'<p>Незавершённый шаг: '+E(r.stepDraft)+'</p>':'')+'<p>Математических ошибок: '+r.coach.errors+'. '+(r.assisted?'Были исправления или помощь.':'Помощь не открывалась.')+'</p><button data-action="resume-attempt" data-history-index="'+index+'">Продолжить это условие</button></details>').join('')+'</details>';
+}
+function archiveTask(){
+ const current=task(),ui=StereoStore.clean({taskFirst:record.taskFirst}).taskFirst;
+ record.taskHistory=[...(record.taskHistory||[]),{condition:current.q,key:record.currentTaskKey,seed:record.seed,taskStep:record.taskStep,taskFirst:ui,mainDraft:ui.mainDraft,stepDraft:ui.stepDraft,assisted:record.assisted,checked:record.checked,coach:StereoStore.coach(coach())}].slice(-40);
+}
+function nextTask(fresh=false){
+ const proofCamera=record.taskFirst.proofCamera;archiveTask();
+ const candidate=fresh?StereoTasks.fresh(unit.task,record.seed,record.seenTasks):{seed:(record.seed+1)%100000000};
+ destroyViewers();record.seed=candidate.seed;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
+ record.taskFirst={version:1,coach:StereoStore.coach({}),mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
  record.taskFirst.proofCamera=proofCamera;stage=4;return save('task_start');
+}
+function restoreAttempt(index){
+ const prior=record.taskHistory?.[index];if(!prior)return;
+ const saved=StereoStore.clean({taskHistory:[prior]}).taskHistory[0],legacySection=unit.task==='section'&&saved.key.startsWith('["Куб со стороной '),candidate=StereoTasks.make(unit.task,saved.seed,{legacySection});
+ if(candidate.q!==saved.condition||(saved.key&&saved.key!==StereoTasks.key(candidate))){notice.hidden=false;notice.textContent='Это сохранённое условие не совпадает с текущим банком. Ответы остаются в истории; автоматический перенос в другую задачу не выполнен.';return;}
+ archiveTask();destroyViewers();record.seed=saved.seed;record.currentTaskKey=StereoTasks.key(candidate);record.repeatedTask=true;
+ if(!record.seenTasks.includes(record.currentTaskKey))record.seenTasks.push(record.currentTaskKey);
+ record.taskStep=Math.min(saved.taskStep,candidate.steps.length);record.assisted=saved.assisted;record.checked=saved.checked;record.draft=saved.mainDraft;
+ record.taskFirst=saved.taskFirst||{version:1,mainDraft:saved.mainDraft,stepDraft:saved.stepDraft,coach:saved.coach,helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+ stage=4;if(save('task_restore'))render();
 }
 function taskQuestion(t){
  // The final label may use only the actual condition, never an intermediate step or answer.
@@ -1685,19 +1784,19 @@ function answerFormat(){
 }
 function guidedBody(t){
  const i=Math.min(record.taskStep,t.steps.length);
- let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
+ let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(coach().steps[t.steps.indexOf(s)]?.accepted||Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
  if(i<t.steps.length){
-  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status"></p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
+  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status">'+E(coach().steps[i]?.message||'')+'</p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
  }else h+='<p class="good">Разбор завершён. Ответ: '+E(Answer.format(t.a))+'.</p><p>Вернись к полю ответа под условием или возьми новый вариант для самостоятельной проверки.</p><button data-action="independent" class="primary">Новый вариант без подсказки</button>';
  return h;
 }
 function taskPanel(){
- rememberTask();const t=task(),ui=record.taskFirst;
+ rememberTask();const t=task(),ui=record.taskFirst,c=coach();
  const model='<div id="task-model" aria-label="Рисунок к условию"></div>';
  const help='<button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button>';
  const options=t.section?'<p>Пары · 1 MN, 2 MP, 3 NP.</p><p>Рёбра · 1 AA₁, 2 BB₁, 3 CC₁, 4 DD₁.</p>':'';
  const label=t.section?'Номер пары и номер ребра через точку с запятой':taskQuestion(t);
- return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status"></p>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p></section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
+ return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status">'+E(c.message)+'</p><div id="coach-offer"'+(c.errors>=2&&!ui.helpOpen?'':' hidden')+'><p>Две попытки пока не дали верного результата. Разобрать ближайший шаг?</p><button data-action="coach-help">Открыть подсказку к этой задаче</button></div>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button><button data-action="fresh-practice"'+(record.assisted?'':' hidden')+'>Новое условие без подсказки</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p>'+attemptHistory()+'</section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
 }
 function proofPanel(){
  const p=proof();
@@ -1747,7 +1846,7 @@ function syncHelp(id,opened){
  record.taskFirst[key]=opened;
  if(opened&&id!=='answer-format')markAssisted();
  if(id==='task-help'){document.querySelector('#task-help>summary').textContent=opened?'Убрать подсказку':'Хочешь подсказку?';const button=document.querySelector('[data-action=help]');button.textContent=opened?'Убрать подсказку':'Хочешь подсказку?';button.setAttribute('aria-expanded',String(opened));}
- taskViewer?.setStep(activeStep());save();
+ const offer=document.getElementById('coach-offer');if(offer)offer.hidden=!(coach().errors>=2&&!record.taskFirst.helpOpen);const fresh=document.querySelector('[data-action=fresh-practice]');if(fresh)fresh.hidden=!record.assisted;taskViewer?.setStep(activeStep());save();
 }
 function bindHelp(){
  for(const id of Object.keys(helpFields)){
@@ -1762,25 +1861,35 @@ function changeStage(n){
  else {stage=n;if(n===1||n===2||n===5)markAssisted();}
  if(!save('step'))return;render();window.scrollTo(0,0);
 }
+function logResponse(c,mode,response,result,index=0){
+ c.log.push({mode,step:index,answer:response,kind:result.kind,code:result.code});c.log=c.log.slice(-40);
+}
 function checkFinal(){
- if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task();record.taskFirst.mainDraft=input.value;record.draft=input.value;
- if(!a){f.textContent='Впиши ответ на вопрос над полем.';f.className='feedback error';save();return;}
- // A script-triggered native disclosure must not race an immediate submission.
+ if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task(),c=coach();record.taskFirst.mainDraft=input.value;record.draft=input.value;
+ if(a&&!c.firstSubmitted)c.firstSubmitted=input.value;
  if(document.getElementById('task-help').open)markAssisted();
- const ok=Answer.equal(a,t.a),first=!record.checked;record.checked=true;if(first)record.attempts++;
- if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;f.textContent=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
- else{record.assisted=true;f.textContent=t.section?'Найди две точки на указанной грани. Близость на экране этого не гарантирует. Для четвёртой вершины сравни высоты трёх заданных точек.':'Пока неверно. Проверь, какую величину нужно найти, её единицы и основание для формулы. Можно открыть подсказку.';f.className='feedback error';}
+ const result=StereoTasks.assess(unit.task,t,a);logResponse(c,'final',input.value,result);
+ if(result.kind==='empty'||result.kind==='format'){c.message=result.message;c.kind=result.kind;f.textContent=c.message;f.className='feedback error';save('answer-format');return;}
+ if(!c.firstResponse)c.firstResponse=input.value;
+ const ok=result.kind==='correct',first=!record.checked;record.checked=true;if(first)record.attempts++;
+ if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;c.message=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
+ else{record.assisted=true;c.errors++;c.message=result.message;f.className='feedback error';}
+ c.kind=result.kind;f.textContent=c.message;
+ const offer=document.getElementById('coach-offer');offer.hidden=!(c.errors>=2&&!record.taskFirst.helpOpen);document.querySelector('[data-action=fresh-practice]').hidden=!record.assisted;
  document.querySelector('.stage-status').textContent='Первые самостоятельные решения новых условий: '+record.independent+'.';
  if(!save(ok?'solved':'attempt')){f.textContent='Результат этого окна не сохранён: открой сохранённую версию выше.';document.querySelector('.stage-status').textContent='Сохранённый результат не изменён.';}
 }
 function checkStep(){
- if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task();record.taskFirst.stepDraft=input.value;markAssisted();
- if(!a){f.textContent='Впиши ответ на вопрос этого шага.';f.className='feedback error';save();return;}
+ if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task(),c=coach();record.taskFirst.stepDraft=input.value;markAssisted();
  if(record.taskStep>=t.steps.length)return;
- if(Answer.equal(a,t.steps[record.taskStep].a)){
-  record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
+ const index=record.taskStep,result=StereoTasks.assess(unit.task,t,a,index),step=c.steps[index]||(c.steps[index]={first:'',last:'',accepted:'',errors:0,message:'',kind:''});
+ if(a&&!step.first)step.first=input.value;step.last=input.value;step.message=result.message;step.kind=result.kind;logResponse(c,'step',input.value,result,index);
+ if(result.kind==='empty'||result.kind==='format'){f.textContent=result.message;f.className='feedback error';save('step-format');return;}
+ markAssisted();
+ if(result.kind==='correct'){
+  step.accepted=input.value;record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
   document.getElementById('task-guide-body').innerHTML=guidedBody(t);StereoMath.formatFractions(document.getElementById('task-guide-body'));taskViewer?.setStep(activeStep());
- }else{f.textContent='Пока неверно. Перечитай вопрос над этим полем. Кнопка «Почему именно так?» пояснит шаг.';f.className='feedback error';save('attempt');}
+ }else{step.errors++;f.textContent=result.message;f.className='feedback error';save('attempt');}
 }
 root.addEventListener('input',event=>{
  const el=event.target;
@@ -1804,8 +1913,9 @@ root.addEventListener('click',event=>{
  if(a==='visual-trap'||a==='bad-reason'){document.getElementById('proof-feedback').textContent='Нужен факт из условия, определение, аксиома или уже установленная теорема. Измерения и вид рисунка не заменяют доказательство.';save('proof-error');}
  if(a==='good-reason'&&pending!==null){record.proofDone.push('s'+pending);record.proof=record.proofDone.length===proof().steps.length;if(save('proof-step'))render();}
  if(a==='reset-proof'){record.proofDone=[];record.proof=false;if(save())render();}
- if(a==='independent'||a==='new'){if(nextTask())render();}
- if(a==='help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
+ if(a==='resume-attempt'){restoreAttempt(Number(b.dataset.historyIndex));return;}
+ if(a==='independent'||a==='new'||a==='fresh-practice'){if(nextTask(a!=='new'))render();}
+ if(a==='help'||a==='coach-help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
  if(a==='close-help'){const el=document.getElementById('task-help');el.open=false;syncHelp('task-help',false);document.getElementById('answer').focus();}
  if(a==='finish'){
   record.complete=record.guided&&record.moved&&record.observation.trim().length>=10;if(!save('finish'))return;

@@ -5,10 +5,12 @@ on:
       - 'geometry-course/assets/**'
       - 'geometry-course/atlas/**'
       - 'geometry-course/trainers/**'
+      - 'geometry-course/data/active-practice-*.json'
       - 'stereo-course/**'
       - 'tools/geometry/**'
       - 'tools/stereo/**'
       - 'tools/atanasyan-legacy-audit*'
+      - 'tools/atanasyan-active-practice*'
       - '.github/workflows/atanasyan-audit-application.yml'
 permissions:
   contents: read
@@ -38,12 +40,18 @@ jobs:
           node tools/stereo/stale-state.test.cjs
           node tools/stereo/investigations.test.cjs
           node tools/stereo/investigations.dom.test.cjs
+          node tools/stereo/task-feedback.test.cjs
+          node tools/stereo/task-feedback.dom.test.cjs
           node tools/atanasyan-legacy-audit.test.cjs
+          node tools/atanasyan-active-practice-ch12.test.cjs
+          node tools/atanasyan-active-practice-ch34.test.cjs
+          node tools/atanasyan-active-practice.test.cjs
       - name: Reproducible offline lessons
         run: |
           python3 tools/geometry/build_site.py
           python3 tools/stereo/build_site.py
           python3 tools/atanasyan-legacy-audit.build.py
+          python3 tools/atanasyan-active-practice.build.py
           git diff --exit-code -- geometry-course stereo-course
       - name: New learner journeys at mobile and desktop widths
         env:
@@ -51,7 +59,9 @@ jobs:
         run: |
           node tools/geometry/investigations.browser.cjs
           node tools/stereo/investigations.browser.cjs
+          node tools/stereo/task-feedback.browser.cjs
           node tools/atanasyan-legacy-audit.browser.cjs
+          node tools/atanasyan-active-practice.browser.cjs
       - name: Preserve actual browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
