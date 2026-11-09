@@ -1,7 +1,7 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-journey*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-journey*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
 permissions:
   contents: read
 jobs:
@@ -21,6 +21,17 @@ jobs:
         run: node --test tools/profile-task-first.test.cjs tools/profile-fraction-display.test.cjs tools/profile-calm-map.test.cjs tools/profile-calm-state.test.cjs tools/profile-step-solutions.test.cjs tools/profile-input-ui.test.cjs tools/profile-independent-models.test.cjs
       - name: Basic EGE all families and legacy state
         run: node tools/ege-baza-task-first.test.cjs
+      - name: Basic EGE help, independent practice and mathematical experiments
+        run: |
+          node tools/ege-baza-learning-cycle.test.cjs
+          node tools/ege-baza-model-discovery.test.cjs
+      - name: Basic EGE complete learning cycles in a real browser
+        env:
+          EGE_CYCLE_SHOTS: artifacts/base-cycle
+          EGE_DISCOVERY_SHOTS: artifacts/base-discovery
+        run: |
+          node tools/ege-baza-learning-cycle.browser.cjs
+          node tools/ege-baza-model-discovery.browser.cjs
       - name: Basic EGE unified learning lines and preserved progress
         run: |
           node --test tools/ege-baza-journey.test.cjs

@@ -40,7 +40,7 @@ test('course keeps every task route and the required honest trainer/variant labe
   assert.equal(links.length,1,'line '+n);
  }
  assert(d.querySelector('h3 a[href="/trainers/oge-1-5-trainers/"]'));
- const trainer=d.querySelector('a[href="/trainers/oge-task15-triangles.html"]').closest('article');
+ const trainer=d.querySelector('#geometry h3 a[href="/trainers/oge-task15-triangles.html"]').closest('article');
  assert.match(trainer.textContent,/биссектрисы.*по шагам/);
  assert(d.querySelector('#gaps a[href="/oge/geometry/task-15-external-angle.html"]'));
  assert.match(d.querySelector('#full-variants').textContent,/Не является официальным материалом ФИПИ/);
