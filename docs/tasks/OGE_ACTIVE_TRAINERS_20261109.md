@@ -133,3 +133,19 @@ Node/JSDOM tests, CI browser evidence and public browser checks are distinct.
 Physical phones, Safari, external-provider review and a real-pupil pilot are not
 claimed. Final release evidence and standard executive/base-drift fields belong
 in the task PR.
+
+## Base-drift composition
+
+During acceptance, main advanced to `39705bc5669acb5b97a33c72f5badc044faff298`
+through PR493 (Vilenkin SEO entrances) and PR503 (Merzlyak learning). The only
+intersection with this task was `assets/assistant/page-rollout.json`. The merge
+retains all current-main routes and history, the four Merzlyak bindings, and
+the seven reviewed OGE bindings. No OGE HTML, model, renderer, native bank or
+browser harness was changed by this composition.
+
+History-preserving source checkpoint: `6e7d871faae7e64124565300f8e5edea67089fe0`,
+parents `53d39492220de50ae57d9b75c7c0f64860fffe69` and the current main above.
+The official binding tool performs a provenance-only refresh against that
+committed composition, with an empty changed-path list and no HTML writes.
+Affected navigator, SEO, book-closure and scoped OGE gates are repeated; the
+final PR records exact candidate/CI and public-release evidence.

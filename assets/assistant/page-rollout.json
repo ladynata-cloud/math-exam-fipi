@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5a6a5573cc8e0ff6ceca3a9d5cf88e16c64f0e95",
+  "baseSha": "6e7d871faae7e64124565300f8e5edea67089fe0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4078,6 +4078,13 @@
         "trainers/oge-task8-powers-roots.html",
         "trainers/oge-task9-equations.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5a6a5573cc8e0ff6ceca3a9d5cf88e16c64f0e95",
+      "sourceBaseSha": "6e7d871faae7e64124565300f8e5edea67089fe0",
+      "task": "docs/tasks/OGE_ACTIVE_TRAINERS_20261109.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
