@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: '24.21.0'
       - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
-      - run: node --test tools/equations/linear-pilot.test.cjs
+      - run: node --test tools/equations/linear-pilot*.test.cjs
       - run: npx playwright install --with-deps chromium
       - name: Local Chromium learning journeys
         run: |
