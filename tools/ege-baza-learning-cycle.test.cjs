@@ -18,6 +18,19 @@ const open=async(d,id)=>{d.querySelector('#'+id).open=true;await tick();};
   const task=D.task(meta.id,11),message=w.PathTaskFirst.learningFeedback(task,'-987654321');
   assert.equal(typeof message,'string',meta.id);assert(message.length>30,meta.id);assert(!message.includes('Проверь, что нужно найти, знак и единицы'),meta.id);
  }
+ // Subject-specific wording must still reject incomplete matching and preserve the real attempt.
+ const matching=create(null,'lesson=practice-inequality-match'),match=matching.w.PathCourse.state().lessons['practice-inequality-match'];
+ const matchingCount=match.independent,matchingChecks=match.checks.length;
+ submit(matching.w,matching.d,'answer','12');
+ assert(matching.d.querySelector('#feedback').classList.contains('bad'));
+ assert.match(matching.d.querySelector('#feedback').textContent,/Проверь каждое соответствие отдельно\./);
+ assert.equal(!!match.done,false);assert.equal(match.attempted,true);assert.equal(match.help,true);assert.equal(match.independent,matchingCount);assert.equal(match.checks.length,matchingChecks);assert.equal(match.taskFirst.finalDraft,'12');assert.equal(match.taskFirst.mistakes,1);
+ const matchingRestored=create(matching.w.localStorage.getItem(matching.w.PathCourse.KEY),'lesson=practice-inequality-match');
+ const matchAgain=matchingRestored.w.PathCourse.state().lessons['practice-inequality-match'];
+ assert.equal(matchingRestored.d.querySelector('#answer').value,'12');assert.equal(!!matchAgain.done,false);assert.equal(matchAgain.attempted,true);assert.equal(matchAgain.help,true);assert.equal(matchAgain.taskFirst.feedbackKind,'bad');assert.equal(matchAgain.taskFirst.mistakes,1);assert.equal(matchAgain.independent,matchingCount);
+ const matchingAnswer=String(matchingRestored.w.PathData.task('practice-inequality-match',matchAgain.seed).answer);assert.equal(matchingAnswer.length,4);
+ submit(matchingRestored.w,matchingRestored.d,'answer',matchingAnswer);assert.equal(matchAgain.done,true);assert.equal(matchAgain.independent,matchingCount);assert.equal(matchAgain.checks.length,matchingChecks+1);assert.equal(matchAgain.checks.at(-1).independent,false);
+ matching.w.close();matchingRestored.w.close();
  let l=state.lessons.round,t=D.task('round',l.seed),answer=d.querySelector('#answer');
  assert(!d.querySelector('#taskHelp').open);assert(!d.querySelector('#taskIdea').open);assert(d.querySelector('#repairStep').hidden);
  submit(w,d,'answer','');assert.equal(l.taskFirst.mistakes,0,'empty input is not a mathematical error');
