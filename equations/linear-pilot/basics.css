@@ -15,6 +15,7 @@
 #basics-content { margin-bottom: 28px; }
 #basics-screen { scroll-margin-top: 12px; }
 #basics-screen:focus-visible { outline: 3px solid #218459; outline-offset: 3px; }
+#basics-experiment, #basics-feedback, #basics-hint { scroll-margin-block: 8px; }
 
 .basics-card > p { max-width: 68ch; }
 .basics-progress {

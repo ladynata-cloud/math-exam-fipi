@@ -6,12 +6,14 @@ const root=path.resolve(__dirname,'../..'),artifacts=path.join(root,'artifacts/l
 {
 const context=await browser.newContext({viewport:{width:390,height:900}}),page=await context.newPage();
 await page.goto(base+'/trainers/oge-course/');
-await page.locator('a[href="/equations/linear-pilot/"]').first().click();
+await page.getByRole('link',{name:'Линейные уравнения: начать с основ или продолжить →',exact:true}).click();
 await page.waitForURL('**/equations/linear-pilot/');
+await page.getByRole('button',{name:'Начать урок с нуля',exact:true}).waitFor({state:'visible'});
 await page.locator('#advanced-route').click();
 await page.locator('#c0w0').fill('Черновик после входа из курса ОГЭ');
+await page.evaluate(()=>localStorage.removeItem('mathexam.linearPilot.basics.v1.route'));
 await page.goto(base+'/equations/');
-await page.locator('a[href="/equations/linear-pilot/"]').first().click();
+await page.getByRole('link',{name:'Начать с основ или продолжить →',exact:true}).click();
 await page.waitForURL('**/equations/linear-pilot/');
 await page.locator('#advanced-content').waitFor({state:'visible'});
 assert.equal(await page.locator('#c0w0').inputValue(),'Черновик после входа из курса ОГЭ');

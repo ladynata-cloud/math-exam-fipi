@@ -78,6 +78,8 @@ async function walkthrough(browser, base, width) {
     let modelChecked = false;
     for (const [index, scene] of scenes.entries()) {
       assert.equal(await screen.getAttribute('data-scene'), String(index));
+      await page.evaluate(() => scrollTo(0, 0));
+      await assertFit(page, ['[data-basics-math]', '[data-basics-balance]']);
       if (scene.experiment) {
         const math = page.locator('[data-basics-math]');
         const original = await math.innerText();
@@ -89,6 +91,9 @@ async function walkthrough(browser, base, width) {
         if (originalLoad && scene.experiment.balance) {
           assert.notEqual(await balance.getAttribute('aria-label'), originalLoad);
         }
+        await assertFit(page, ['#basics-experiment']);
+        await page.evaluate(() => scrollTo(0, 0));
+        await assertFit(page, ['[data-basics-math]', '[data-basics-balance]']);
         if (!modelChecked) {
           await action(page, 'experiment').click();
           assert.equal(await math.innerText(), original);
@@ -99,14 +104,21 @@ async function walkthrough(browser, base, width) {
       if (scene.question) {
         const { correct, options, hint } = scene.question;
         const choice = index => page.locator(`[data-basics="choose"][data-option="${index}"]`);
-        if (!errorAndHintChecked) {
-          const wrong = options.findIndex((_, index) => index !== correct);
+        for (const [wrong, option] of options.entries()) {
+          if (wrong === correct) continue;
           await choice(wrong).click();
+          assert.ok((await feedback.innerText()).includes(option.feedback));
+          assert.equal(await action(page, 'next').isEnabled(), false);
+          await assertFit(page, ['#basics-feedback']);
+        }
+        await action(page, 'hint').click();
+        assert.ok((await screen.innerText()).includes(hint));
+        await assertFit(page, ['#basics-hint']);
+        if (!errorAndHintChecked) {
+          const wrong = options.findLastIndex((_, index) => index !== correct);
           assert.equal(await screen.getAttribute('data-scene'), String(index));
           assert.ok((await feedback.innerText()).includes(options[wrong].feedback));
           assert.equal(await action(page, 'next').isEnabled(), false);
-          await action(page, 'hint').click();
-          assert.ok((await screen.innerText()).includes(hint));
           await page.reload();
           assert.equal(await screen.getAttribute('data-scene'), String(index));
           assert.ok((await screen.innerText()).includes(hint));
@@ -114,12 +126,17 @@ async function walkthrough(browser, base, width) {
           await advancedRoute.click();
           assert.equal(await advancedContent.isVisible(), true);
           await page.locator('#c0w0').fill('Черновик другого маршрута');
+          await page.evaluate(() => localStorage.removeItem('mathexam.linearPilot.basics.v1.route'));
+          await page.reload();
+          assert.equal(await advancedContent.isVisible(), true);
+          assert.equal(await page.locator('#c0w0').inputValue(), 'Черновик другого маршрута');
           await basicsRoute.click();
           assert.equal(await screen.getAttribute('data-scene'), String(index));
           errorAndHintChecked = true;
         }
         await choice(correct).click();
         assert.ok((await feedback.innerText()).includes(scene.question.success));
+        await assertFit(page, ['#basics-feedback']);
       }
       await action(page, 'next').click();
       await assertFit(page, []);
@@ -140,6 +157,11 @@ async function walkthrough(browser, base, width) {
     await submitReview.click();
     assert.equal(await screen.getAttribute('data-question'), '0');
     await answer.fill('999');
+    assert.equal(await staleAnswer.inputValue(), '');
+    await staleAnswer.press('Enter');
+    assert.equal(await stalePage.locator('#basics-screen').getAttribute('data-question'), '0');
+    assert.equal(await staleAnswer.inputValue(), '999');
+    await staleAnswer.focus();
     await page.reload();
     assert.equal(await screen.getAttribute('data-phase'), 'review');
     assert.equal(await answer.inputValue(), '999');
@@ -155,14 +177,35 @@ async function walkthrough(browser, base, width) {
     }
     assert.equal(await screen.getAttribute('data-phase'), 'summary');
     assert.equal(await page.locator('#basics-trainer').isVisible(), false);
+    const lessonSteps = () => page.evaluate(() => JSON.parse(localStorage.getItem('mathexam.linearPilot.basics.v1')).steps);
+    const completedSteps = await lessonSteps();
     await action(page, 'remediate').first().click();
     for (const [index, scene] of scenes.entries()) {
       if (scene.group !== reviews[0][0].group) continue;
       assert.equal(await screen.getAttribute('data-phase'), 'lesson');
       assert.equal(await screen.getAttribute('data-scene'), String(index));
+      assert.equal(await action(page, 'next').isEnabled(), false);
+      if (scene.experiment) {
+        const math = page.locator('[data-basics-math]');
+        assert.equal(await math.innerText(), scene.math);
+        await action(page, 'experiment').click();
+        await page.reload();
+        assert.equal(await screen.getAttribute('data-scene'), String(index));
+        assert.equal(await math.innerText(), scene.experiment.math);
+      }
+      if (scene.question) {
+        const { correct, options } = scene.question;
+        const wrong = options.findIndex((_, optionIndex) => optionIndex !== correct);
+        const choice = optionIndex => page.locator(`[data-basics="choose"][data-option="${optionIndex}"]`);
+        await choice(wrong).click();
+        assert.equal(await feedback.innerText(), options[wrong].feedback);
+        assert.equal(await action(page, 'next').isEnabled(), false);
+        await choice(correct).click();
+      }
       await action(page, 'next').click();
     }
     assert.equal(await screen.getAttribute('data-phase'), 'summary');
+    assert.deepEqual(await lessonSteps(), completedSteps);
     await action(page, 'retry').click();
     assert.equal(await screen.getAttribute('data-phase'), 'review');
     assert.equal(await screen.getAttribute('data-question'), '0');

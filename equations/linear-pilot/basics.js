@@ -17,11 +17,13 @@
   })[char]);
   const isNumber = value => typeof value === 'string' && /^[+\-−]?\d+$/.test(value.trim());
   const correctAnswer = (value, expected) => isNumber(value) && Number(value.trim().replace('−', '-')) === expected;
+  const isStepMap = value => value && typeof value === 'object' && Object.values(value).every(step => step && typeof step === 'object');
   const button = (action, label, extra = '') => `<button type="button" data-basics="${action}" ${extra}>${label}</button>`;
 
   let state = initialState();
   let dirty = false;
   let route = 'basics';
+  let visibleReviewAnswer = '';
 
   function storageError() {
     storageMessage.textContent = 'Браузер не сохранил последние шаги. Пока вкладка открыта, можно продолжать.';
@@ -36,7 +38,7 @@
           Number.isSafeInteger(saved.turn) && saved.turn >= 0 &&
           Number.isInteger(saved.question) && reviews[saved.turn % reviews.length][saved.question] &&
           Array.isArray(saved.answers) && saved.answers.every(answer => typeof answer === 'string') &&
-          saved.steps && typeof saved.steps === 'object' && Object.values(saved.steps).every(step => step && typeof step === 'object') &&
+          isStepMap(saved.steps) && (saved.remediationSteps === undefined || isStepMap(saved.remediationSteps)) &&
           ['welcome', 'lesson', 'review', 'summary', 'complete'].includes(saved.phase)) {
         state = saved;
       }
@@ -114,10 +116,14 @@
     </section>`;
   }
 
+  function lessonSteps() {
+    return state.remediation === undefined ? state.steps : (state.remediationSteps ||= {});
+  }
+
   function lessonView() {
     const index = state.scene;
     const scene = scenes[index];
-    const step = state.steps[index] || {};
+    const step = lessonSteps()[index] || {};
     const { question, experiment } = scene;
     const after = experiment && step.showExperiment;
     const solved = question && step.option === question.correct;
@@ -153,6 +159,12 @@
 
   function nextRemediationScene() {
     return scenes.findIndex((scene, index) => index > state.scene && scene.group === state.remediation);
+  }
+
+  function finishRemediation() {
+    delete state.remediation;
+    delete state.remediationSteps;
+    state.phase = 'summary';
   }
 
   function reviewView() {
@@ -206,7 +218,10 @@
     delete screen.dataset.scene;
     delete screen.dataset.question;
     if (state.phase === 'lesson') screen.dataset.scene = state.scene;
-    if (state.phase === 'review') screen.dataset.question = state.question;
+    if (state.phase === 'review') {
+      screen.dataset.question = state.question;
+      visibleReviewAnswer = state.answers[state.question] ?? '';
+    }
     screen.innerHTML = view[state.phase]();
     if (focus) screen.focus();
   }
@@ -219,7 +234,7 @@
 
   function handleLessonAction(control) {
     const action = control.dataset.basics;
-    const step = state.steps[state.scene] ||= {};
+    const step = lessonSteps()[state.scene] ||= {};
     const scene = scenes[state.scene];
 
     if (action === 'experiment' && scene.experiment) {
@@ -235,8 +250,7 @@
       if (state.remediation !== undefined) {
         const previous = scenes.findLastIndex((item, i) => i < state.scene && item.group === state.remediation);
         if (previous === -1) {
-          delete state.remediation;
-          state.phase = 'summary';
+          finishRemediation();
         } else {
           state.scene = previous;
         }
@@ -250,8 +264,7 @@
       if (state.remediation !== undefined) {
         const next = nextRemediationScene();
         if (next === -1) {
-          delete state.remediation;
-          state.phase = 'summary';
+          finishRemediation();
         } else {
           state.scene = next;
         }
@@ -297,6 +310,7 @@
       const first = scenes.findIndex(scene => scene.group === group);
       if (first === -1) return;
       state.remediation = group;
+      state.remediationSteps = {};
       state.scene = first;
       state.phase = 'lesson';
     } else {
@@ -307,18 +321,22 @@
     render(!target);
     if (target) {
       const focus = document.getElementById(target);
-      (focus?.textContent ? focus : screen.querySelector('[data-basics="experiment"]'))?.focus({ preventScroll: true });
+      const destination = focus?.textContent ? focus : screen.querySelector('[data-basics="experiment"]');
+      destination?.focus({ preventScroll: true });
+      destination?.scrollIntoView({ block: 'nearest' });
     }
   });
 
-  function syncReviewAnswer(input) {
+  function syncReviewAnswer(input, submitting = false) {
     load();
     if (state.phase !== 'review' || Number(screen.dataset.turn) !== state.turn ||
-        Number(screen.dataset.question) !== state.question) {
+        Number(screen.dataset.question) !== state.question ||
+        (submitting && input.value === visibleReviewAnswer && input.value !== (state.answers[state.question] ?? ''))) {
       render(true);
       return false;
     }
     state.answers[state.question] = input.value;
+    visibleReviewAnswer = input.value;
     save();
     return true;
   }
@@ -331,7 +349,7 @@
     if (!event.target.matches('[data-basics-review]')) return;
     event.preventDefault();
     const input = event.target.elements.answer;
-    if (!syncReviewAnswer(input)) return;
+    if (!syncReviewAnswer(input, true)) return;
     if (!isNumber(input.value)) {
       document.getElementById('basics-feedback').textContent = 'Впиши целое число, например 3. Можно вернуться к этому примеру позже, открыв урок в том же браузере.';
       input.setAttribute('aria-invalid', 'true');
