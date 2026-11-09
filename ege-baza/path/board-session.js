@@ -132,7 +132,9 @@
         return;
       }
       const id = route.slice(8), meta = D.meta.find(item => item.id === id), task = D.task(id, lesson.seed);
-      root.PathTaskFirst.mount(main, { meta, task, lesson, save, seen: () => lesson.help || lesson.attempted, expose() {}, fresh: () => navigate(route, true),
+      const nextId=LESSONS[position][LESSONS[position].indexOf(id)+1];
+      const nextMeta=D.meta.find(item=>item.id===nextId);
+      root.PathTaskFirst.mount(main, { meta, task, lesson, save, editableAfterSuccess:true, nextTask:nextMeta?{title:nextMeta.title,href:'#lesson='+nextId}:null, seen: () => lesson.help || lesson.attempted, expose() {}, fresh: () => navigate(route, true),
         remediationId: () => '', equationPracticeLinks: () => '', fractionPracticeLink: () => '', setHash: value => navigate('#' + value) });
       if(position===7){
         main.querySelector('.task-first-heading .eyebrow').textContent='Геометрия · 7 класс · Общая доска';

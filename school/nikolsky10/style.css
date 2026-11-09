@@ -6,3 +6,6 @@
 
 
 #topic-search{display:block;width:min(460px,100%)}#topic-level{display:block}.lesson-number{min-width:2.8em;font-size:1.35rem}.lesson-card>div{min-width:0}.lesson-card h3{overflow-wrap:anywhere}.theory-block{line-height:1.9}.chapter-jumps a{font-size:.85rem}.hero-art .equation{padding:10px 8px}.model svg{max-width:100%;height:auto}sup,sub{line-height:0}
+
+.lesson-title{overflow-wrap:anywhere}
+.attempt-history{margin:20px 0;overflow-wrap:anywhere}.attempt-history summary{cursor:pointer;font-weight:650}.attempt-history li{margin:8px 0}.attempt-history h4{margin-bottom:8px}

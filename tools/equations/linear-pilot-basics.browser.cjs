@@ -193,6 +193,11 @@ async function walkthrough(browser, base, width) {
     assert.equal(await page.locator('#basics-trainer').isVisible(), false);
     const lessonSteps = () => page.evaluate(() => JSON.parse(localStorage.getItem('mathexam.linearPilot.basics.v1')).steps);
     const completedSteps = await lessonSteps();
+    assert.equal(completedSteps[0].attempts[0].option, 0);
+    assert.equal(completedSteps[0].attempts.at(-1).option, scenes[0].question.correct);
+    const archivedFirst = await page.evaluate(() => JSON.parse(localStorage.getItem('mathexam.linearPilot.basics.v1')).reviewHistory[0]);
+    assert.equal(archivedFirst.answers[0], '999');
+    assert.equal(archivedFirst.attempts[0][0].answer, '999');
     await action(page, 'remediate').first().click();
     for (const [index, scene] of scenes.entries()) {
       if (scene.group !== reviews[0][0].group) continue;
@@ -226,6 +231,7 @@ async function walkthrough(browser, base, width) {
     assert.equal(await answer.inputValue(), '');
     const alternateEquation = await page.locator('[data-basics-math]').innerText();
     assert.equal(alternateEquation, reviews[1][0].math);
+    assert.deepEqual(await page.evaluate(() => JSON.parse(localStorage.getItem('mathexam.linearPilot.basics.v1')).reviewHistory[0]), archivedFirst);
     assert.notEqual(firstEquation, alternateEquation);
     assert.equal(await stalePage.locator('[data-basics-math]').innerText(), firstEquation);
     await staleAnswer.fill('666');
@@ -239,6 +245,9 @@ async function walkthrough(browser, base, width) {
     }
 
     assert.equal(await screen.getAttribute('data-phase'), 'complete');
+    const history = await page.evaluate(() => JSON.parse(localStorage.getItem('mathexam.linearPilot.basics.v1')).reviewHistory);
+    assert.deepEqual(history[0], archivedFirst);
+    assert.equal(history[1].score, 5);
     await advancedRoute.click();
     assert.equal(await page.locator('#c0w0').inputValue(), 'Черновик другого маршрута');
     await basicsRoute.click();

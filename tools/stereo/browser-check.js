@@ -1,5 +1,25 @@
 'use strict';const fs=require('fs'),path=require('path'),assert=require('assert/strict'),{chromium}=require('playwright');const root=path.resolve(__dirname,'../..'),C=require(root+'/stereo-course/data/course.json'),T=require(root+'/stereo-course/assets/tasks.js'),A=require(root+'/stereo-course/assets/answer.js'),out=process.env.STEREO_ARTIFACTS||path.join(require('os').tmpdir(),'mathexam-stereo-check');fs.mkdirSync(out,{recursive:true});
-async function section(page,n){if(n!==4&&!await page.locator('.more-sections').evaluate(e=>e.open))await page.locator('.more-sections>summary').click();await page.locator('[data-stage="'+n+'"]').first().click();}
+async function section(page,n){
+ if(n!==4&&!await page.locator('.more-sections').evaluate(e=>e.open))await page.locator('.more-sections>summary').click();
+ await page.locator('[data-stage="'+n+'"]').first().click();
+ if(n===1){
+  // The authored investigation comes first in its twelve mapped topics. This
+  // existing journey still tests the full free laboratory through its own
+  // explicit disclosure, including live measurements and saved constructions.
+  const hasInvestigation=await page.evaluate(()=>Object.hasOwn(StereoInvestigations.topics,location.hash.slice(1)));
+  const laboratory=page.locator('.workspace > details.panel').filter({has:page.locator('#viewer')});
+  assert.equal(await laboratory.count(),hasInvestigation?1:0,'only mapped topics disclose the free laboratory');
+  assert.equal(await page.locator('#investigation').count(),hasInvestigation?1:0,'authored investigation has its own destination');
+  if(hasInvestigation){
+   const summary=laboratory.locator(':scope > summary');
+   assert.equal(await summary.innerText(),'Свободная 3D-лаборатория');
+   if(!await laboratory.evaluate(el=>el.open))await summary.click();
+   assert.equal(await laboratory.evaluate(el=>el.open),true,'explicit free laboratory disclosure opens');
+  }
+  assert.equal(await page.locator('#viewer canvas').isVisible(),true,'free laboratory canvas is visible');
+  assert.equal(await page.locator('#observation').isVisible(),true,'free laboratory observation field is visible');
+ }
+}
 (async()=>{const browser=await chromium.launch({executablePath:process.env.STEREO_CHROMIUM||chromium.executablePath(),headless:true,args:['--no-sandbox']}),page=await browser.newPage({viewport:{width:1280,height:950}}),errors=[];page.on('pageerror',e=>errors.push(e.message));try{await page.goto('file://'+root+'/stereo-course/index.html');assert.equal(await page.locator('.card').count(),39);await page.screenshot({path:out+'/home.png'});let n=0;
 for(const u of C.units){await page.locator('[data-unit="'+u.id+'"]').first().click();await section(page,1);assert.equal(await page.locator('#viewer canvas').count(),1);const before=await page.locator('.space-metrics').innerText();await page.locator('#viewer canvas').focus();await page.keyboard.press('ArrowLeft');assert.equal(await page.locator('.space-metrics').innerText(),before);await page.locator('#observation').fill('Я изменил положение модели и проверил, что измерения не зависят от ракурса.');await section(page,2);if(await page.locator('[data-proof]').count()){const p=await page.evaluate(id=>{const u=STEREO_COURSE.units.find(u=>u.id===id);return STEREO_PROOFS[u.proof||u.task]},u.id);for(let i=0;i<p.steps.length;i++){await page.locator('[data-proof="'+i+'"]').click();await page.locator('[data-action="good-reason"]').click();}}
 await section(page,3);const rec=await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamStereo.v1')).units[id],u.id),t=T.make(u.task,rec.seed);for(const s of t.steps){await page.locator('#step-answer').fill(A.format(s.a));await page.locator('#step-answer-form button').click();}await page.locator('[data-action="independent"]').click();const t2=T.make(u.task,rec.seed+1);await page.locator('#answer').fill(A.format(t2.a));await page.locator('#answer-form button').click();const repeated=JSON.stringify([t.q,t.a])===JSON.stringify([t2.q,t2.a]);assert.match(await page.locator('#feedback').innerText(),repeated?/повтор решён без нового самостоятельного зачёта/:/первой попытки/);await section(page,5);await page.locator('#written').fill('Проверяем условия, называем использованное свойство и обосновываем вывод.');await page.locator('[data-action="finish"]').click();assert.equal(await page.locator('#success').count(),1);await page.locator('[data-action="home"]').first().click();if(++n%10===0)console.log('Completed',n);}

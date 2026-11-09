@@ -5,6 +5,10 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {routes:activeRoutes,includeBlock,restoreActiveLearningIncludes}=require('./oge-active-learning-preservation.cjs');
+const {restoreFractionExplanation}=require('./oge7-fraction-explanation-preservation.cjs');
+const videoContext=require('./oge-video-models-book-context.cjs');
+const {assets:videoAssets,restoreVideoModels}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -40,6 +44,11 @@ function originalWayfindingHtml(html,route=''){
  }
  return original;
 }
+function beforeActiveLearning(file,raw){
+ const relative=path.relative(ROOT,file).split(path.sep).join('/');
+ const original=restoreActiveLearningIncludes(relative,restoreVideoModels(relative,raw));
+ return relative===activeRoutes[7]?restoreFractionExplanation(original):original;
+}
 {
  const original='<html><head></head><body><p>Exact condition</p></body></html>';
  const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
@@ -64,11 +73,35 @@ async function captureInitialVisibleText(page,report){
  assert(file.startsWith(ROOT+path.sep));
  const raw=fs.readFileSync(file,'utf8');
  const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
- const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
+ const original=originalWayfindingHtml(beforeActiveLearning(file,beforeNavigator),report.finalPath);
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
+ const activeNumber=Object.keys(activeRoutes).find(n=>'/'+activeRoutes[n]===report.finalPath);
+ if(activeNumber){
+  const optional=page.locator('details.oa-learning');
+  assert.equal(await optional.count(),1,'one separately reviewed optional mini-lesson');
+  assert.equal(await optional.evaluate(node=>node.open),false,'native book witness requires the optional mini-lesson to remain collapsed');
+  assert.equal(await optional.getAttribute('data-oa-task'),activeNumber);
+  assert.equal(await text(optional),'Разобраться на опыте','only its exact summary is visible');
+  // Preserve actual raw/initial visible text. The independent reader may
+  // invert this one declared summary only after verifying all witness fields.
+  report.optionalActiveLearning={kind:'oge-active-learning-v1',task:Number(activeNumber),collapsed:true,
+   visibleText:'Разобраться на опыте',includeBlockSha256:crypto.createHash('sha256').update(includeBlock(activeNumber)).digest('hex'),
+   preservedNativeSha256:crypto.createHash('sha256').update(beforeActiveLearning(file,raw)).digest('hex')};
+ }
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
+ const relative=path.relative(ROOT,file);
+ if(videoContext.pins.pages[relative]){
+  const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
+   const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
+   return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};
+  });
+  // Preserve both complete visible snapshots above. The independent verifier
+  // may invert only this separately recorded, source-bound closed summary.
+  report.videoModelContext=videoContext.receipt({file:relative,raw,id:report.id,prefix:report.prefix,visible:report.initialVisibleText,dom,
+   assetHashes:Object.fromEntries(videoAssets.map(asset=>['/'+asset,videoContext.hash(fs.readFileSync(path.join(ROOT,asset)))]))});
+ }
 }
 
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
@@ -92,7 +125,18 @@ async function numeric(p,r,cfg){
   if(cfg.save===false)record(r,'saved-result','NA',{reason:'Standalone worked example; no promised progress record.'});else if(!cfg.deferSave)await saved(p,r,before,cfg.storageFilter||/mathExam|mathexam|oge|task|progress/i);
   record(r,'session-completion',cfg.session||'NA',{reason:cfg.sessionReason||'Selected practice presents individual questions; other exam/quiz modes are outside this case.',scope:cfg.mode||'default practice'});
 }
-async function diagrams(p,r){r.visibleSvgLabels=await p.locator('svg').evaluateAll(nodes=>nodes.filter(n=>n.getClientRects().length).map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})));}
+async function diagrams(p,r){
+ // Keep the historical raw collector intact. Closed details can still produce
+ // client rects; attest only the known addon preview separately for comparison.
+ const captured=await p.locator('svg').evaluateAll(nodes=>{
+  const selected=nodes.filter(n=>n.getClientRects().length),selector='#oge-video-models:not([open]) [data-ovm-preview] > svg';
+  return {rows:selected.map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})),
+   addon:selected.flatMap((n,index)=>{const shell=n.closest('#oge-video-models');if(!shell)return [];const host=n.closest('[data-ovm-lesson]');return [{index,selector:n.matches(selector)?selector:'unreviewed',lesson:host?.dataset.ovmLesson,stage:host?.dataset.ovmStage,closed:!shell.hasAttribute('open'),hidden:!n.checkVisibility()}];})};
+ });
+ r.visibleSvgLabels=captured.rows;
+ if(r.videoModelContext)r.videoModelContext.closedSvg=videoContext.geometryReceipt(r.videoModelContext,captured.rows,captured.addon);
+ else assert.equal(captured.addon.length,0,'no unbound addon geometry');
+}
 async function scenario(p,r){
  const route=r.route;
  if(route.includes('task-15-external'))return numeric(p,r,{input:'#ocg15-answer',feedback:'.ocg-feedback',hint:'#hintPanel > summary',panel:'#hintPanel',answers:38,prompt:'.ocg-primary-figure',save:false,mode:'single external-angle exercise, 180−142=38'});

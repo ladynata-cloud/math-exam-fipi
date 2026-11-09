@@ -3,6 +3,8 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreActiveLearningIncludes}=require('./oge-active-learning-preservation.cjs');
+const {restoreVideoModels}=require('./oge-video-models-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
@@ -17,7 +19,8 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- let html=withoutReturnShell(restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8'));
+ // Bind the served document first, then invert both exact reviewed include blocks.
+ let html=withoutReturnShell(restoreActiveLearningIncludes(file,restoreVideoModels(file,restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8'))));
  if(file==='trainers/oge-task6-fractions.html'){
   const replacement='<main class="wrap">\n\n<header>';
   assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');

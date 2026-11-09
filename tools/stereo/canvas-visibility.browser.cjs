@@ -49,6 +49,18 @@ async function capture(page,item,width,stage){
  evidence.screenshots.push({course:item.course,id:item.id,kind:item.kind,width,stage,file,sha256:hash(fs.readFileSync(path.join(out,file)))});
  return result;
 }
+async function revealCanvas(page,item){
+ // Investigation topics keep the separate free laboratory behind its own
+ // disclosure. Follow that visible route instead of expecting hidden content
+ // to render as if the learner had already opened it.
+ if(item.course==='stereo-course'){
+  const lab=page.locator('details.panel').filter({has:page.locator(item.host)});
+  assert.equal(await lab.count(),1,item.id+' has the separate free laboratory');
+  if(!await lab.evaluate(node=>node.open))await lab.locator(':scope > summary').click();
+  assert.equal(await lab.evaluate(node=>node.open),true,item.id+' free laboratory opens through its summary');
+ }
+ await page.locator(item.host+' canvas').waitFor({state:'visible'});
+}
 (async()=>{
  fs.mkdirSync(out,{recursive:true});
  try{
@@ -65,7 +77,7 @@ async function capture(page,item,width,stage){
    await page.goto(base+item.route);
    if(item.course==='stereo-course'&&!await page.locator('.more-sections').evaluate(node=>node.open))await page.locator('.more-sections>summary').click();
    await page.locator('[data-stage="1"]').first().click();
-   const host=page.locator(item.host);await host.locator('canvas').waitFor({state:'visible'});
+   const host=page.locator(item.host);await revealCanvas(page,item);
    for(const [a,b]of item.manual||[]){await host.locator('.pick[data-pick="1"]').selectOption(a);await host.locator('.pick[data-pick="2"]').selectOption(b);await host.locator('[data-action="line"]').click();}
    await host.locator('[data-action="section"]').click();
    const before=await capture(page,item,width,'initial');
@@ -73,7 +85,7 @@ async function capture(page,item,width,stage){
    const rotated=await capture(page,item,width,'rotated');
    const note='Проверка видимости: '+item.course+' '+item.id+' '+width;
    await page.locator('#observation').fill(note);await page.waitForFunction(note=>Object.values(localStorage).some(value=>value.includes(note)),note);
-   await page.reload();await page.locator(item.host+' canvas').waitFor({state:'visible'});assert.equal(await page.locator('#observation').inputValue(),note,'real lesson observation survives reload');
+   await page.reload();await revealCanvas(page,item);assert.equal(await page.locator('#observation').inputValue(),note,'real lesson observation survives reload');
    if(item.manual)assert(await page.locator(item.host+' canvas').evaluate(canvas=>window.__visibilityCanvasRead(canvas).some(s=>s.color==='#a851ba')),'manual constructions survive reload');
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'actual lesson has no horizontal overflow');
    evidence.journeys.push({course:item.course,id:item.id,width,kind:item.kind,before,rotated,reloaded:true,manualLines:item.manual?.length||0});

@@ -11,7 +11,7 @@ const submit=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.dispatch
 const state=()=>api.getState();
 assert(d.querySelector('h1').textContent.includes('Разобраться'));let renders=0,walkedSteps=0;
 for(const l of w.MakarychevCourse.lessons){for(let i=0;i<l.tasks.length;i++){
- const t=l.tasks[i];nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
+ const t=l.tasks[i];if(t.pilot==='review')continue;nav('#lesson/'+l.id+'/'+i);assert(d.querySelector('.prompt'),t.id);assert(!d.querySelector('.error-page'));assert(d.querySelector('#model').textContent.trim(),l.id+' model');assert(d.querySelector('.answer-form label').textContent.trim());
  click('[data-action="guided"]');
  for(let k=0;k<t.steps.length;k++){input('[data-step-input="'+k+'"]',t.steps[k].answer);submit('[data-step-form="'+k+'"]');assert.equal(state().tasks[t.id].step,k+1,t.id+' step '+k);assert.equal(d.querySelectorAll('.step.completed').length,k+1);walkedSteps++;}
  if(t.kind==='choice')click('[data-choice="'+t.choices.indexOf(t.answer)+'"]');else input('#final-answer',t.answer);submit('#answer-form');assert(state().tasks[t.id].correct,t.id);assert(!state().tasks[t.id].independent,t.id+' helped');renders++;
@@ -27,6 +27,43 @@ for(const n of new Set(w.MakarychevCourse.sourceMap.sections.flatMap(s=>s.exerci
 for(const n of [0,1248,1.5]){nav('#home');input('#exercise-number',String(n));submit('#number-form');assert(d.querySelector('#number-result').textContent.includes('Введи целый номер'));}
 const source=w.MakarychevCourse.lessons.flatMap(l=>l.tasks).find(t=>t.source.type==='textbook'),n=/№\s*(\d+)/.exec(source.source.reference)[1];nav('#home');input('#exercise-number',n);submit('#number-form');assert(d.querySelector('#number-result a.button:not(.quiet)'),'source solution link');
 for(const hash of ['#lesson/unknown','#lesson/p01/9999','#practice/unknown/1','#skills','#progress','#home']){nav(hash);assert(!d.querySelector('.error-page'),hash);}
+// The pilot accepts different first moves, preserves an incorrect line, and delays its fresh review.
+function checkPilot(firstMove) {
+ const session=boot(), doc=session.d, win=session.w, app=win.MakarychevApp;
+ const go=hash=>{win.history.replaceState(null,'',hash);app.route();};
+ const answer=value=>{
+  const el=doc.querySelector('#final-answer');
+  el.value=value;el.dispatchEvent(new win.Event('input',{bubbles:true}));
+  doc.querySelector('#answer-form').dispatchEvent(new win.Event('submit',{cancelable:true,bubbles:true}));
+ };
+ go('#lesson/p08/9');
+ assert(!doc.querySelector('.prompt'),'The delayed problem is protected on a direct link');
+ go('#lesson/p08/6');
+ assert(!doc.querySelector('.prompt').textContent.includes('3x − 7 = 8'),'Prompt does not give away the repaired step');
+ answer('3x = 1');
+ assert(doc.querySelector('[role="status"].feedback').textContent.includes('к обеим частям нужно прибавить 7'));
+ assert.equal(doc.querySelector('#final-answer').value,'3x = 1');
+ answer(firstMove);
+ assert.equal(app.getState().tasks['p08-t07'].correct,true);
+ go('#lesson/p08/7');answer('7');
+ go('#lesson/p08/8');answer('-3');
+ assert(doc.querySelector('#pilot-navigation').textContent.includes('Две задачи решены самостоятельно'));
+ assert(!doc.querySelector('#pilot-navigation a[href="#lesson/p08/9"]'));
+ go('#home');
+ const topic=doc.querySelector('.lesson-card[href="#lesson/p08"]');
+ assert(topic.textContent.includes('Решаю самостоятельно'));
+ assert(doc.querySelector('#chapter-1').textContent.includes('1 из 9'));
+ const clock=win.Date.now();
+ win.Date.now=()=>clock+3*864e5+1000;
+ go('#lesson/p08/9');answer('-5');
+ assert(doc.querySelector('#pilot-navigation').textContent.includes('Навык подтверждён'));
+ go('#home');
+ assert(doc.querySelector('.lesson-card[href="#lesson/p08"]').textContent.includes('Подтверждено повторением'));
+ assert.deepEqual(session.errors,[]);
+ win.close();
+}
+checkPilot('3x − 7 = 8');
+checkPilot('5x = 2x + 15');
 assert.deepEqual(errors,[]);
 const malformed=boot('{bad');assert(!malformed.d.querySelector('#storage-warning').hidden);assert.equal(malformed.w.localStorage.getItem('mathexam.makarychev7.2024.v1'),'{bad');malformed.w.close();
 console.log(JSON.stringify({status:'PASS',renders,walkedSteps,flows:['all task/step answers','sticky assistance','detour return','notebook reload','all source-map boundaries','invalid routes','corrupt storage preserved']}));w.close();

@@ -40,6 +40,62 @@ test('closed initially, source text is safe, Escape and close restore launcher f
     assert.equal(w.document.activeElement.className,'peterson-help-launcher');
   }finally{w.close();}
 });
+test('optional inline anchor retains one helper and focused controls across map renders',()=>{
+  const dom=fixture('<body><main><h2 id="map">Главы и темы</h2></main></body>'),w=dom.window;
+  let inline=true;
+  try{
+    const help=w.PetersonTaskHelp.mount({getTask:()=>null,getInlineAnchor:()=>inline?w.document.querySelector('#map'):null});
+    const host=w.document.querySelector('.peterson-help');
+    assert.equal(host.nextElementSibling.id,'map');
+    click(w,'.peterson-help-launcher');
+    const close=w.document.activeElement;
+    help.sync();assert.equal(w.document.activeElement,close,'ordinary sync leaves focus in place');
+    help.beforeRender();
+    assert.equal(host.parentNode,w.document.body);
+    assert.equal(w.document.activeElement,close,'parking before a route render retains helper focus');
+    w.document.querySelector('main').innerHTML='<h2 id="map">Новая карта</h2>';
+    help.sync();
+    assert.equal(w.document.querySelector('.peterson-help'),host);
+    assert.equal(w.document.activeElement,close,'new map receives the same focused helper');
+    assert.equal(host.nextElementSibling.id,'map');
+    inline=false;w.dispatchEvent(new w.Event('resize'));
+    assert.equal(host.parentNode,w.document.body);
+    assert.equal(host.classList.contains('peterson-help-inline'),false);
+    assert.equal(w.document.activeElement,close);
+    w.document.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+    assert.equal(w.document.activeElement.className,'peterson-help-launcher');
+    help.destroy();w.dispatchEvent(new w.Event('resize'));
+    assert.equal(w.document.querySelector('.peterson-help'),null);
+  }finally{w.close();}
+});
+test('Peterson map re-render and task return preserve open help, draft and storage',()=>{
+  const dom=fixture(read('school/peterson6/index.html'),'https://course.example/school/peterson6/?cabinet=peterson-helper#home'),w=dom.window;
+  w.matchMedia=()=>({matches:true});
+  try{
+    for(const file of ['school/shared/learning-route.js','school/shared/learning-route-progress.js','school/peterson6/math.js','school/peterson6/models.js','school/peterson6/data.js','school/peterson6/app.js'])w.eval(read(file));
+    const host=w.document.querySelector('.peterson-help');
+    assert(host.classList.contains('peterson-help-inline'));
+    const initial=w.localStorage.getItem('mathexam.peterson6.part1.v1');
+    click(w,'.peterson-help-launcher');w.PetersonApp.route();
+    assert.equal(w.document.querySelector('.peterson-help'),host);
+    assert.equal(w.document.activeElement.className,'peterson-help-close');
+    assert.equal(w.localStorage.getItem('mathexam.peterson6.part1.v1'),initial);
+    click(w,'.peterson-help-close');
+    w.history.replaceState(null,'','#practice/decimal-add/1');w.PetersonApp.route();
+    assert.equal(host.parentNode,w.document.body);
+    const input=w.document.querySelector('#final-answer');input.value='12,345';input.dispatchEvent(new w.Event('input',{bubbles:true}));
+    click(w,'.peterson-help-launcher');click(w,'[data-peterson-help=hint]');click(w,'.peterson-help-close');
+    const before=w.localStorage.getItem('mathexam.peterson6.part1.v1');
+    w.history.replaceState(null,'','#home');w.PetersonApp.route();
+    assert.equal(host.nextElementSibling.className,'lr-map-heading');
+    assert.equal(w.localStorage.getItem('mathexam.peterson6.part1.v1'),before);
+    const resume=w.document.querySelector('.lr-primary').getAttribute('href');
+    w.history.replaceState(null,'',resume);w.PetersonApp.route();
+    assert.equal(w.document.querySelector('#final-answer').value,'12,345');
+    assert(Object.values(w.PetersonApp.getState().tasks).some(record=>record.assisted));
+    assert.equal(w.document.querySelector('.peterson-help'),host);
+  }finally{w.close();}
+});
 test('assistance precedes source disclosure and prior hints remain until task changes',()=>{
   const dom=fixture(),w=dom.window;let current=task(),before=[];
   try{

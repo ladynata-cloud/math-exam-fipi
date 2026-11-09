@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 557,
-    "covered": 556,
+    "total": 558,
+    "covered": 557,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2149,6 +2149,11 @@
       "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
       "placement": "before-head-close"
     },
+    "stereo-course/sections/index.html": {
+      "beforeSha256": "081659422dfaf59c9fb4d9cb819abfe499f8493109f667abfd8375c32456d8a4",
+      "afterSha256": "68c6450a48fbe1297f09912fdd25e9383d4a8f36011cafdc35bfb990ae99e84a",
+      "placement": "before-head-close"
+    },
     "stereo-course/textbook/index.html": {
       "beforeSha256": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c",
       "afterSha256": "c0bb328d34008c12b721d0cd1e4efb8fa95aa56c75747335cbf5246c56c46e11",
@@ -3074,6 +3079,11 @@
       "afterSha256": "a4f9495788caaccab339b08b437c5bd77aad8ecba5270d7c17aa4826455ad007",
       "placement": "before-head-close"
     },
+    "trainers/vpr-math/index.html": {
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
+      "placement": "before-head-close"
+    },
     "trainers/who-is-stronger.html": {
       "beforeSha256": "dededad6f3ec28813c639824b2e0fa4f502073c31503b421889d25ef09b82179",
       "afterSha256": "1336fe665983139e06daf7d8329e78c01d71536aa0d2b0c1984bdda4d6b289ff",
@@ -3082,11 +3092,6 @@
     "video-lessons/cheatsheets.html": {
       "beforeSha256": "feda13150e99a505cab042d1e6e4d4fd9d66736d9db88eaca2925c07ae3a3825",
       "afterSha256": "66b51f00cb91497aef304049251dc7cddc8fd81145952b9eb02cdd5f572500cb",
-      "placement": "before-head-close"
-    },
-    "trainers/vpr-math/index.html": {
-      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
-      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3122,6 +3127,12 @@
     "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html": "sitemap",
     "articles/stroynost-kursa-geometrii/index.html": "sitemap",
     "azbuka-postroeniy-reviewed/index.html": "laboratory/index.html",
+    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -3524,13 +3535,16 @@
     "rounding.html": "sitemap",
     "school/alimov10-11/index.html": "sitemap",
     "school/index.html": "courses/index.html",
+    "school/m9-exercises/index.html": "school/app.js",
     "school/makarychev7/index.html": "sitemap",
     "school/makarychev8/index.html": "sitemap",
     "school/nikolsky10/index.html": "sitemap",
     "school/peterson5/index.html": "sitemap",
+    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
     "soviet-math/index.html": "sitemap",
     "stereo-course/index.html": "sitemap",
     "stereo-course/merzlyak-10-base/index.html": "sitemap",
+    "stereo-course/sections/index.html": "sitemap",
     "stereo-course/textbook/index.html": "sitemap",
     "topics/delenie-ugolkom/index.html": "sitemap",
     "topics/index.html": "sitemap",
@@ -3543,6 +3557,8 @@
     "trainers/attestaciya-1-kurs.html": "sitemap",
     "trainers/bisector-trainer-v2.html": "trainers/index.html",
     "trainers/college-functions/index.html": "sitemap",
+    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
+    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
     "trainers/credit-differential-payment-trainer.html": "sitemap",
     "trainers/decimal-cash-trainer.html": "sitemap",
     "trainers/desyatichnye-drobi-level-1.html": "sitemap",
@@ -3550,9 +3566,11 @@
     "trainers/dvi/math-18-20-video-studio.html": "sitemap",
     "trainers/dvi/math-18-20.html": "sitemap",
     "trainers/ege-baza/course/index.html": "sitemap",
+    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
     "trainers/ege-baza/index.html": "trainers/index.html",
     "trainers/ege-informatics-task1-graphs-trainer.html": "sitemap",
     "trainers/ege-informatics-task15-logic-operations.html": "sitemap",
+    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/ege-profile-vectors-trainer.html": "sitemap",
     "trainers/ege-profile/inequalities/index.html": "sitemap",
     "trainers/ege-profile/inequalities/lesson.html": "trainers/ege-profile/inequalities/index.html",
@@ -3561,6 +3579,7 @@
     "trainers/ege-profile/log-inequalities/nested.html": "sitemap",
     "trainers/ege-profile/yashchenko-lines-1-2.html": "sitemap",
     "trainers/ege-t1-planimetry-generator.html": "sitemap",
+    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
     "trainers/equations-builder.html": "sitemap",
     "trainers/finance-nonstandard-trainer.html": "sitemap",
     "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html": "sitemap",
@@ -3581,6 +3600,8 @@
     "trainers/linear-systems-trainer.html": "sitemap",
     "trainers/logic-trainer/index.html": "trainers/index.html",
     "trainers/long-division-stepwise.html": "sitemap",
+    "trainers/motion-grade6/index.html": "learning/catalog.js",
+    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
     "trainers/multiplication-table/elevator-sprint.html": "trainers/oge-basics/multiplication-division/division-course.html",
     "trainers/negative-numbers-alternative.html": "foundations/index.html",
     "trainers/negative-numbers-line.html": "sitemap",
@@ -3709,25 +3730,10 @@
     "trainers/turing-trainer-polish.html": "sitemap",
     "trainers/turing-trainer-universal.html": "sitemap",
     "trainers/turing-trainer-upgrade.html": "sitemap",
+    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
+    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/who-is-stronger.html": "sitemap",
     "video-lessons/cheatsheets.html": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
-    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
-    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
-    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
-    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
-    "trainers/motion-grade6/index.html": "learning/catalog.js",
-    "school/m9-exercises/index.html": "school/app.js",
-    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
-    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
-    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
-    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
-    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
   },
   "excluded": {
@@ -4084,6 +4090,166 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
+      "previousBaseSha": "8477035cf6376889bb55415aa9ba4e88d818724e",
+      "sourceBaseSha": "864e1eb3d962d01253895e8bf49d59a1e77ea861",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "864e1eb3d962d01253895e8bf49d59a1e77ea861",
+      "sourceBaseSha": "81fc294333bfa31e9150c0c51d2a1464eb4903c2",
+      "task": "docs/tasks/TEXTBOOK_LEARNING_ROUTE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "93f16c2af7d1af73e89a9c79d6fba80378dd8525",
+      "task": "docs/tasks/OGE8_NUMERIC_INPUT_SAFETY_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "81fc294333bfa31e9150c0c51d2a1464eb4903c2",
+      "sourceBaseSha": "2d728fa1c69b6357966c3eadd2f25f2e6f3aef7e",
+      "task": "docs/tasks/OGE8_NUMERIC_INPUT_SAFETY_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "5a6a5573cc8e0ff6ceca3a9d5cf88e16c64f0e95",
+      "task": "docs/tasks/OGE_ACTIVE_TRAINERS_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task12-formulas-trainer.html",
+        "trainers/oge-task6-fractions.html",
+        "trainers/oge-task7-number-line.html",
+        "trainers/oge-task8-powers-roots.html",
+        "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5a6a5573cc8e0ff6ceca3a9d5cf88e16c64f0e95",
+      "sourceBaseSha": "6e7d871faae7e64124565300f8e5edea67089fe0",
+      "task": "docs/tasks/OGE_ACTIVE_TRAINERS_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2d728fa1c69b6357966c3eadd2f25f2e6f3aef7e",
+      "sourceBaseSha": "a2fcbdebb7e8dc2bc096d882571bb7c9230a7310",
+      "task": "docs/tasks/OGE_ACTIVE_TRAINERS_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task12-formulas-trainer.html",
+        "trainers/oge-task6-fractions.html",
+        "trainers/oge-task7-number-line.html",
+        "trainers/oge-task8-powers-roots.html",
+        "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ec6e74bbf76503db0ca9babe1b683402de1ecd7a",
+      "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fb7e68446c2f6380ac8aa51e14e1f91317812895",
+      "sourceBaseSha": "2a45b687d6212e5313ccbd102d8906846b0e5bc4",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "a2fcbdebb7e8dc2bc096d882571bb7c9230a7310",
+      "sourceBaseSha": "5ef21975c189f3bd5cb7d1ce5d5475462ebe106e",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
+      "sourceBaseSha": "85b5887b1510f0d2b47da0e6aa75efd518d7eb5a",
+      "task": "docs/tasks/COURSE_DESIGN_STANDARD_20261109.md",
+      "changedPaths": [
+        "courses/vilenkin-5-part-1/index.html",
+        "courses/vilenkin-6-part-1/textbook.html",
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "ege-profil/index.html",
+        "ege-profil/start/index.html",
+        "geometry-course/index.html",
+        "geometry-course/textbook/index.html",
+        "geometry-merzlyak/index.html",
+        "geometry-pogorelov/index.html",
+        "school/alimov10-11/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html",
+        "school/nikolsky10/index.html",
+        "school/peterson5/index.html",
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "stereo-course/textbook/index.html",
+        "trainers/oge-course/index.html",
+        "trainers/vpr-math/index.html",
+        "vpr/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ef21975c189f3bd5cb7d1ce5d5475462ebe106e",
+      "sourceBaseSha": "de277f0a54ac65be72bcc1425472b4eec9880a93",
+      "task": "docs/tasks/COURSE_DESIGN_STANDARD_20261109.md",
+      "changedPaths": [
+        "courses/vilenkin-5-part-1/index.html",
+        "courses/vilenkin-6-part-1/textbook.html",
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "ege-profil/index.html",
+        "ege-profil/start/index.html",
+        "geometry-course/index.html",
+        "geometry-course/textbook/index.html",
+        "geometry-merzlyak/index.html",
+        "geometry-pogorelov/index.html",
+        "school/alimov10-11/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html",
+        "school/nikolsky10/index.html",
+        "school/peterson5/index.html",
+        "stereo-course/index.html",
+        "stereo-course/merzlyak-10-base/index.html",
+        "stereo-course/textbook/index.html",
+        "trainers/oge-course/index.html",
+        "trainers/vpr-math/index.html",
+        "vpr/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
       "previousBaseSha": "7755d981bb58b7f85731d797b376a3ba016a363c",
       "sourceBaseSha": "48efdd94b2da96e201afe2b9b5028f4ae367e6ac",
       "task": "docs/tasks/PROFILE_ACTIVE_PRACTICE_20261109.md",
@@ -4101,12 +4267,38 @@
     },
     {
       "previousBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
+      "sourceBaseSha": "bf3c10820399038adda9ac86ba325545f150a6f6",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "309836aade0df3d9e5f5aa54276aace8255bef76",
       "sourceBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
       "task": "docs/tasks/PROFILE_AUDIT_INTEGRITY_20261109.md",
       "changedPaths": [
         "ege-profil/start/index.html",
         "ege-profil/trainers/numbers-t19.html",
         "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "922ceeb7149d1493ab3ab4df6b3ce21d75f98f3a",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
@@ -4121,11 +4313,25 @@
     },
     {
       "previousBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
+      "sourceBaseSha": "f2c96efae7822d051ac8fdbfb63ec3c5957aa8f7",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fcee6f4e5312f0bed5c159ce406dc7a87c604894",
       "sourceBaseSha": "491d922353e1b8bb6080f421851b73e416031c13",
       "task": "docs/tasks/OGE_VISIBLE_25_TOPICS_20261110.md",
       "changedPaths": [
         "trainers/oge-course/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "f2c96efae7822d051ac8fdbfb63ec3c5957aa8f7",
+      "sourceBaseSha": "1935596a6ca292df9c94e155bdf94b15b64be477",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
@@ -4175,6 +4381,247 @@
         "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "bf3c10820399038adda9ac86ba325545f150a6f6",
+      "sourceBaseSha": "1336c91ed23cd3af5946f2e2fd6286977450be4f",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/index.html",
+        "geometry-course/trainers/ch1-p3-t2-fold-imprint.html",
+        "geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html",
+        "geometry-course/trainers/ch1-p6-t2-angle-problems.html",
+        "geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html",
+        "geometry-course/trainers/ch2-constr-angle-bisector.html",
+        "geometry-course/trainers/ch2-constr-copy-angle.html",
+        "geometry-course/trainers/ch2-constr-perp-bisector.html",
+        "geometry-course/trainers/ch2-constr-perpendicular-point.html",
+        "geometry-course/trainers/ch2-p1-t1-overlay-equality.html",
+        "geometry-course/trainers/ch2-p1-t2-overlay-sas.html",
+        "geometry-course/trainers/ch2-p1-t3-proof-sas.html",
+        "geometry-course/trainers/ch2-p1-t4-find-equal.html",
+        "geometry-course/trainers/ch2-p1-t5-quiz.html",
+        "geometry-course/trainers/ch2-p2-t0-three-cevians.html",
+        "geometry-course/trainers/ch2-p2-t1-perp-fold.html",
+        "geometry-course/trainers/ch2-p2-t2-isosceles-intro.html",
+        "geometry-course/trainers/ch2-p2-t3-proof-base-angles.html",
+        "geometry-course/trainers/ch2-p2-t4-three-in-one.html",
+        "geometry-course/trainers/ch2-p2-t5-find-equal-iso.html",
+        "geometry-course/trainers/ch2-p2-t6-quiz.html",
+        "geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html",
+        "geometry-course/trainers/ch2-p3-t1-overlay-asa.html",
+        "geometry-course/trainers/ch2-p3-t2-proof-asa.html",
+        "geometry-course/trainers/ch2-p3-t3-which-sign.html",
+        "geometry-course/trainers/ch2-p3-t4-find-equal-asa.html",
+        "geometry-course/trainers/ch2-p3-t5-quiz.html",
+        "geometry-course/trainers/ch2-p4-t0-rigidity.html",
+        "geometry-course/trainers/ch2-p4-t1-overlay-sss.html",
+        "geometry-course/trainers/ch2-p4-t2-proof-sss.html",
+        "geometry-course/trainers/ch2-p4-t3-which-sign.html",
+        "geometry-course/trainers/ch2-p4-t4-find-equal-sss.html",
+        "geometry-course/trainers/ch2-p4-t5-quiz.html",
+        "geometry-course/trainers/ch3-p1-t1-crossing-parallel.html",
+        "geometry-course/trainers/ch3-p1-t2-eight-angles.html",
+        "geometry-course/trainers/ch3-p1-t3-sign-lab.html",
+        "geometry-course/trainers/ch3-p1-t4-proof-sign.html",
+        "geometry-course/trainers/ch3-p1-t5-two-more-signs.html",
+        "geometry-course/trainers/ch3-p1-t6-practical.html",
+        "geometry-course/trainers/ch3-p1-t7-find-equal.html",
+        "geometry-course/trainers/ch3-p2-t1-parallel-axiom.html",
+        "geometry-course/trainers/ch3-p2-t4-property-alt-angles.html",
+        "geometry-course/trainers/ch3-p2-t5-properties-2-3.html",
+        "geometry-course/trainers/ch3-p2-t6-direct-converse.html",
+        "geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html",
+        "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html",
+        "geometry-course/trainers/ch4-p1-t3-exterior-angle.html",
+        "geometry-course/trainers/ch4-p1-t4-triangle-types.html",
+        "geometry-course/trainers/ch4-p1-t5-find-angles.html",
+        "geometry-course/trainers/ch4-p1-t6-quiz.html",
+        "geometry-course/trainers/ch4-p2-t1-side-angle-lab.html",
+        "geometry-course/trainers/ch4-p2-t2-proof-side-angle.html",
+        "geometry-course/trainers/ch4-p2-t3-converse-iso.html",
+        "geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html",
+        "geometry-course/trainers/ch4-p2-t5-triangle-inequality.html",
+        "geometry-course/trainers/ch4-p2-t6-prove-inequality.html",
+        "geometry-course/trainers/ch4-p2-t7-triangle-generator.html",
+        "geometry-course/trainers/ch4-p2-t8-quiz.html",
+        "geometry-course/trainers/ch4-p3-t1-two-acute-angles.html",
+        "geometry-course/trainers/ch4-p3-t2-leg-against-30.html",
+        "geometry-course/trainers/ch4-p3-t3-half-means-30.html",
+        "geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html",
+        "geometry-course/trainers/ch4-p3-t5-median-converse.html",
+        "geometry-course/trainers/ch4-p3-t6-which-sign.html",
+        "geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html",
+        "geometry-course/trainers/ch4-p3-t8-generator.html",
+        "geometry-course/trainers/ch4-p3-t9-quiz.html",
+        "geometry-course/trainers/ch4-p4-t1-distance-point-line.html",
+        "geometry-course/trainers/ch4-p4-t2-distance-parallels.html",
+        "geometry-course/trainers/ch4-p4-t3-construct-sss.html",
+        "geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "922ceeb7149d1493ab3ab4df6b3ce21d75f98f3a",
+      "sourceBaseSha": "47edc9e103829ff663fea81b6ce1e4e77fb50f26",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/area-triangle.html",
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/inscribed.html",
+        "geometry-course/atlas/similarity-signs.html",
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/atlas/triangle-signs.html",
+        "geometry-course/index.html",
+        "geometry-course/trainers/ch1-p3-t2-fold-imprint.html",
+        "geometry-course/trainers/ch1-p6-t1-adjacent-vertical.html",
+        "geometry-course/trainers/ch1-p6-t2-angle-problems.html",
+        "geometry-course/trainers/ch1-p6-t3-two-perpendiculars.html",
+        "geometry-course/trainers/ch2-constr-angle-bisector.html",
+        "geometry-course/trainers/ch2-constr-copy-angle.html",
+        "geometry-course/trainers/ch2-constr-perp-bisector.html",
+        "geometry-course/trainers/ch2-constr-perpendicular-point.html",
+        "geometry-course/trainers/ch2-p1-t1-overlay-equality.html",
+        "geometry-course/trainers/ch2-p1-t2-overlay-sas.html",
+        "geometry-course/trainers/ch2-p1-t3-proof-sas.html",
+        "geometry-course/trainers/ch2-p1-t4-find-equal.html",
+        "geometry-course/trainers/ch2-p1-t5-quiz.html",
+        "geometry-course/trainers/ch2-p2-t0-three-cevians.html",
+        "geometry-course/trainers/ch2-p2-t1-perp-fold.html",
+        "geometry-course/trainers/ch2-p2-t2-isosceles-intro.html",
+        "geometry-course/trainers/ch2-p2-t3-proof-base-angles.html",
+        "geometry-course/trainers/ch2-p2-t4-three-in-one.html",
+        "geometry-course/trainers/ch2-p2-t5-find-equal-iso.html",
+        "geometry-course/trainers/ch2-p2-t6-quiz.html",
+        "geometry-course/trainers/ch2-p3-t0-adjacent-opposite.html",
+        "geometry-course/trainers/ch2-p3-t1-overlay-asa.html",
+        "geometry-course/trainers/ch2-p3-t2-proof-asa.html",
+        "geometry-course/trainers/ch2-p3-t3-which-sign.html",
+        "geometry-course/trainers/ch2-p3-t4-find-equal-asa.html",
+        "geometry-course/trainers/ch2-p3-t5-quiz.html",
+        "geometry-course/trainers/ch2-p4-t0-rigidity.html",
+        "geometry-course/trainers/ch2-p4-t1-overlay-sss.html",
+        "geometry-course/trainers/ch2-p4-t2-proof-sss.html",
+        "geometry-course/trainers/ch2-p4-t3-which-sign.html",
+        "geometry-course/trainers/ch2-p4-t4-find-equal-sss.html",
+        "geometry-course/trainers/ch2-p4-t5-quiz.html",
+        "geometry-course/trainers/ch3-p1-t1-crossing-parallel.html",
+        "geometry-course/trainers/ch3-p1-t2-eight-angles.html",
+        "geometry-course/trainers/ch3-p1-t3-sign-lab.html",
+        "geometry-course/trainers/ch3-p1-t4-proof-sign.html",
+        "geometry-course/trainers/ch3-p1-t5-two-more-signs.html",
+        "geometry-course/trainers/ch3-p1-t6-practical.html",
+        "geometry-course/trainers/ch3-p1-t7-find-equal.html",
+        "geometry-course/trainers/ch3-p2-t1-parallel-axiom.html",
+        "geometry-course/trainers/ch3-p2-t4-property-alt-angles.html",
+        "geometry-course/trainers/ch3-p2-t5-properties-2-3.html",
+        "geometry-course/trainers/ch3-p2-t6-direct-converse.html",
+        "geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html",
+        "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html",
+        "geometry-course/trainers/ch4-p1-t3-exterior-angle.html",
+        "geometry-course/trainers/ch4-p1-t4-triangle-types.html",
+        "geometry-course/trainers/ch4-p1-t5-find-angles.html",
+        "geometry-course/trainers/ch4-p1-t6-quiz.html",
+        "geometry-course/trainers/ch4-p2-t1-side-angle-lab.html",
+        "geometry-course/trainers/ch4-p2-t2-proof-side-angle.html",
+        "geometry-course/trainers/ch4-p2-t3-converse-iso.html",
+        "geometry-course/trainers/ch4-p2-t4-hypotenuse-leg.html",
+        "geometry-course/trainers/ch4-p2-t5-triangle-inequality.html",
+        "geometry-course/trainers/ch4-p2-t6-prove-inequality.html",
+        "geometry-course/trainers/ch4-p2-t7-triangle-generator.html",
+        "geometry-course/trainers/ch4-p2-t8-quiz.html",
+        "geometry-course/trainers/ch4-p3-t1-two-acute-angles.html",
+        "geometry-course/trainers/ch4-p3-t2-leg-against-30.html",
+        "geometry-course/trainers/ch4-p3-t3-half-means-30.html",
+        "geometry-course/trainers/ch4-p3-t4-median-to-hypotenuse.html",
+        "geometry-course/trainers/ch4-p3-t5-median-converse.html",
+        "geometry-course/trainers/ch4-p3-t6-which-sign.html",
+        "geometry-course/trainers/ch4-p3-t7-hyp-leg-congruence.html",
+        "geometry-course/trainers/ch4-p3-t8-generator.html",
+        "geometry-course/trainers/ch4-p3-t9-quiz.html",
+        "geometry-course/trainers/ch4-p4-t1-distance-point-line.html",
+        "geometry-course/trainers/ch4-p4-t2-distance-parallels.html",
+        "geometry-course/trainers/ch4-p4-t3-construct-sss.html",
+        "geometry-course/trainers/ch4-p4-t4-construct-two-sides-angle.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "47edc9e103829ff663fea81b6ce1e4e77fb50f26",
+      "sourceBaseSha": "c0b8bcf3b971ffacae8d7fb6ac1f79d95c74e0d3",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1935596a6ca292df9c94e155bdf94b15b64be477",
+      "sourceBaseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "03b33ab0fe13ccd1c6dec466935e2c01979d206d",
+      "task": "docs/tasks/TEXTBOOK_COURSE_MASTERY_20261109.md",
+      "changedPaths": [
+        "geometry-course/atlas/triangle-sas.html",
+        "geometry-course/index.html",
+        "grade7/index.html",
+        "school/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3b6f3dc95cfec0cdb648f0c305fb265dc1d9dd0b",
+      "sourceBaseSha": "0346a518e473375f1d296856c0a6a7fb6be60f74",
+      "task": "docs/tasks/ATANASYAN_AUDIT_APPLICATION_20261109.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "20650a177876c33b0ec609beadfcb8579028039b",
+      "task": "docs/tasks/COURSE_LEARNING_INTEGRITY_20261110.md",
+      "changedPaths": [
+        "trainers/college-logarithms/intro/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "f70315110ef350c893e4e848e8409b1249c0dea9",
+      "task": "docs/tasks/COURSE_LEARNING_INTEGRITY_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "task": "docs/tasks/OGE_VIDEO_MODELS_20261109.md",
+      "changedPaths": [
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task15-triangles.html",
+        "trainers/oge-task16-circle.html",
+        "trainers/oge-task17-quadrilaterals.html",
+        "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task23-geometry-calculations.html",
+        "trainers/oge-task24-proofs.html",
+        "trainers/oge-task25-geometry.html",
+        "trainers/task19-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -4202,6 +4649,14 @@
         "vpr/index.html"
       ],
       "reason": "New original VPR course and seven-route catalogue in the approved task; exact existing navigator pair bound to the committed source."
+    },
+    {
+      "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "addedPages": [
+        "stereo-course/sections/index.html"
+      ],
+      "reason": "New public sections course linked from the sitemap and course catalogue; include the existing navigator while preserving its reviewed teaching source."
     }
   ]
 }

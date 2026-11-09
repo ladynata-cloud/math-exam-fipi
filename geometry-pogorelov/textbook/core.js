@@ -34,7 +34,7 @@
     const n=parse(raw),tol=item.tolerance??Math.max(1e-7,Math.abs(item.value)*1e-7);
     return Number.isFinite(n)&&Math.abs(n-item.value)<=tol;
   }
-  function fresh(){return {schema:1,mode:'independent',drafts:[],stepDrafts:[],done:0,hints:[],reveals:[],assisted:false,checked:false,manual:false,notes:'',checks:[],modelStage:0,theory:false};}
+  function fresh(){return {schema:1,mode:'independent',drafts:[],stepDrafts:[],done:0,hints:[],reveals:[],assisted:false,checked:false,manual:false,notes:'',checks:[],modelStage:0,theory:false,trackingVersion:1,updatedAt:0,firstFinal:null,firstSteps:[],history:[]};}
   function restore(raw,t){
     const v=JSON.parse(raw);if(!v||v.schema!==1||typeof v!=='object'||Array.isArray(v))throw Error('version');
     const p=fresh(),limit=x=>typeof x==='string'?x.slice(0,180):'';
@@ -50,16 +50,41 @@
     p.notes=typeof v.notes==='string'?v.notes.slice(0,5000):'';
     p.checks=Array.isArray(v.checks)?v.checks.slice(0,t.checks?.length||0).map(x=>x===true):[];
     p.manual=!t.answers&&v.manual===true&&p.notes.trim().length>0;
+    p.trackingVersion=v.trackingVersion===1?1:0;
+    p.updatedAt=Number.isSafeInteger(v.updatedAt)&&v.updatedAt>=0?v.updatedAt:0;
+    p.firstFinal=readAttempt(v.firstFinal,t,'final');
+    p.firstSteps=t.steps.map((_,i)=>readAttempt(v.firstSteps?.[i],t,'step',i));
+    p.history=Array.isArray(v.history)?v.history.slice(-12).map(a=>readAttempt(a,t,a?.kind,a?.index)).filter(Boolean):[];
     return p;
   }
+  // Keep immutable first submissions separately from the bounded recent journal.
+  // Old saved answers never acquire invented first-attempt provenance.
+  function readAttempt(a,t,kind,index){
+    const items=kind==='final'?t.answers:kind==='step'&&Number.isInteger(index)&&index>=0&&index<t.steps.length?[t.steps[index]]:null;
+    if(!a||!items||!Array.isArray(a.values)||a.values.length!==items.length||a.values.some(x=>typeof x!=='string'||!x.trim()||x.length>180)||typeof a.assisted!=='boolean'||!Number.isSafeInteger(a.at)||a.at<0)return null;
+    return {kind,index:kind==='step'?index:null,values:a.values.slice(),ok:items.every((item,i)=>check(a.values[i],item)),assisted:a.assisted,at:a.at};
+  }
+  function submit(p,t,kind,values,index=null,at=Date.now()){
+    const a=readAttempt({values,assisted:p.assisted,at},t,kind,index);
+    if(!a)return null;
+    if(kind==='final'&&!p.firstFinal)p.firstFinal=a;
+    if(kind==='step'&&!p.firstSteps[index])p.firstSteps[index]=a;
+    p.history.push(a);p.history=p.history.slice(-12);return a;
+  }
+  function started(p){return !!(p.updatedAt||p.assisted||p.checked||p.manual||p.done||p.notes||p.drafts?.some(Boolean)||p.stepDrafts?.some(Boolean)||p.firstFinal||p.history?.length);}
+  function resume(rows){return rows.filter(({p,t})=>started(p)&&!p.checked&&!p.manual).sort((a,b)=>(b.p.updatedAt||0)-(a.p.updatedAt||0))[0]||null;}
   function status(p,t){
     if(!p)return '';
     if(p.manual)return 'Запись для проверки';
-    if(p.checked)return p.assisted?'Ответ проверен · с помощью':'Ответ проверен · без подсказок';
+    if(p.checked){
+      if(p.assisted)return 'Ответ проверен · с помощью';
+      if(p.trackingVersion!==1||!p.firstFinal)return 'Ответ проверен · прежняя запись без полной истории';
+      return p.firstFinal.ok?'Ответ проверен · с первой попытки без подсказок':'Ответ проверен · после исправления';
+    }
     if(p.done===t.steps.length)return 'Разобрано по шагам';
-    if(p.done||p.notes||p.drafts?.some(Boolean))return 'В работе';
+    if(started(p))return 'В работе';
     return '';
   }
-  const api={esc,fmt,parse,check,fresh,restore,status};
+  const api={esc,fmt,parse,check,fresh,restore,status,submit,started,resume};
   root.PogorelovCore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

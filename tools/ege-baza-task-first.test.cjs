@@ -1,13 +1,13 @@
 'use strict';
 const {JSDOM,VirtualConsole}=require('jsdom'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const root=path.resolve(__dirname,'..'),errors=[],tick=()=>new Promise(r=>setTimeout(r,5));
-function create(saved,hash='map'){
+function create(saved,hash='map',withoutJourney=false){
  const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
  const dom=new JSDOM(fs.readFileSync(path.join(root,'ege-baza/path/index.html'),'utf8'),{url:'https://course.test/ege-baza/path/index.html#'+hash,runScripts:'outside-only',virtualConsole:vc}),w=dom.window;
  w.structuredClone=structuredClone;w.matchMedia=()=>({matches:true});w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
  if(saved)w.localStorage.setItem('mathexam.ege-baza.path.v1',saved);
  w.localStorage.setItem('legacy-sentinel','unchanged');
- for(const script of w.document.querySelectorAll('script'))w.eval(fs.readFileSync(path.join(root,new URL(script.src).pathname),'utf8'));
+ for(const script of w.document.querySelectorAll('script'))if(!withoutJourney||!script.src.includes('course-journey.js'))w.eval(fs.readFileSync(path.join(root,new URL(script.src).pathname),'utf8'));
  return {dom,w,d:w.document};
 }
 function solution(D,t){if(t.rule==='digits22'){for(let mask=0;mask<1<<t.digits.length;mask++){const x=[...t.digits].filter((_,i)=>mask>>i&1).join('');if(D.correct(t,x))return x;}throw Error('No digit solution');}return t.a??t.solutions?.[0]??t.answer;}
@@ -19,7 +19,7 @@ function submit(w,d,prefix,value){const input=d.querySelector('#'+prefix);assert
  for(const id of ['practice-radical-equation','practice-log-equation','expressions']){const task=w.PathData.task(id,0),label=w.PathTaskFirst.question(task);assert(task.q.includes(label));assert(!label.includes(task.steps.at(-1).q)||task.q.includes(task.steps.at(-1).q));}
  for(const id of ids){
   await go(w,id);const l=w.PathCourse.state().lessons[id],t=w.PathData.task(id,l.seed);
-  assert(d.querySelector('.task-first-course'),id);assert(d.querySelector('#answer'),id+' final answer');assert(!d.querySelector('#taskHelp').open,id+' starts without help');assert.equal(l.help,false,id+' no automatic help');
+  assert(d.querySelector('.task-first-course'),id);assert(d.querySelector('#answer'),id+' final answer');assert(!d.querySelector('#taskHelp').open,id+' starts without help');assert.equal(l.help,false,id+' no automatic help');assert(d.querySelector('[data-task-next]').hidden,id+' no completion before answer');
   assert.equal(d.querySelector('#answerForm label').textContent,w.PathTaskFirst.question(t),id+' explicit target');
   if(t.display)assert(d.querySelector('.task-support svg,.task-support table'),id+' givens');
   const answer=d.querySelector('#answer');answer.value='12/';answer.dispatchEvent(new w.Event('input'));
@@ -31,7 +31,28 @@ function submit(w,d,prefix,value){const input=d.querySelector('#'+prefix);assert
   assert.equal(d.querySelector('#answer').value,'12/',id+' final draft preserved through guided work');
   d.querySelector('#taskHelp').open=false;await tick();assert.equal(d.querySelector('#answer').value,'12/');
   const before=l.independent;submit(w,d,'answer',solution(w.PathData,t));assert.match(d.querySelector('#feedback').textContent,/Верно/,id+' final grading');assert.equal(l.independent,before,id+' guided is not independent');
+  const completion=d.querySelector('#taskNext'),next=d.querySelector('[data-task-next]');
+  assert(!next.hidden,id+' explicit continuation');assert.equal(completion.nextElementSibling.id,'taskHelp',id+' completion above optional help');
+  assert.equal(d.activeElement,next,id+' keyboard moves to continuation');assert.equal(w.location.hash,'#lesson='+id,id+' no automatic navigation');
+  assert(d.querySelector('#answer').readOnly,id+' checked answer retained');assert(d.querySelector('#answerForm button[type=submit]').disabled,id+' no repeat submit');
+  const checks=l.checks.length;d.querySelector('#answerForm').dispatchEvent(new w.Event('submit',{cancelable:true}));assert.equal(l.checks.length,checks,id+' repeated completion is not credited');
  }
+ // A completed answer remains actionable after reload, and repeat clears only the current attempt.
+ const solvedSaved=w.localStorage.getItem(w.PathCourse.KEY),lastId=ids.at(-1),done=create(solvedSaved,'lesson='+lastId);await tick();
+ assert(!done.d.querySelector('[data-task-next]').hidden);assert.equal(done.d.querySelector('#taskNext').nextElementSibling.id,'taskHelp');
+ const doneRow=done.w.PathCourse.state().lessons[lastId],oldSeed=doneRow.seed,oldChecks=JSON.stringify(doneRow.checks);
+ done.d.querySelector('#new').click();assert.notEqual(doneRow.seed,oldSeed);assert.equal(done.d.querySelector('#answer').value,'');assert(!done.d.querySelector('#answer').readOnly);assert(done.d.querySelector('[data-task-next]').hidden);assert.equal(JSON.stringify(doneRow.checks),oldChecks);done.w.close();
+ // Optional catalogue failure must not strand a solved task, including the last family.
+ const fallback=create(undefined,'lesson=roundbody',true);await tick();
+ for(const id of ['roundbody',fallback.w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).slice().sort((a,b)=>a.pos-b.pos).at(-1).id]){
+  await go(fallback.w,id);const l=fallback.w.PathCourse.state().lessons[id],t=fallback.w.PathData.task(id,l.seed);
+  submit(fallback.w,fallback.d,'answer',solution(fallback.w.PathData,t));
+  const next=fallback.d.querySelector('[data-task-next]');assert(!next.hidden);assert(next.getAttribute('href').startsWith('#'));next.click();await tick();assert(fallback.d.querySelector('h1'));
+ }
+ fallback.w.close();
+ // End of a line returns to its results rather than silently wrapping to the first lesson.
+ const line=w.EgeBazaJourney.catalog().find(x=>x.items.length),last=line.items.at(-1).id;await go(w,last);
+ assert.equal(d.querySelector('[data-task-next]').getAttribute('href'),line.href);assert.match(d.querySelector('[data-task-next]').textContent,/К результатам линии/);
  // Final, intermediate and model state are distinct and survive hiding, routes and reload.
  await go(w,'equations-linear');d.querySelector('#new').click();await tick();const lesson=w.PathCourse.state().lessons['equations-linear'];
  const final=d.querySelector('#answer');final.value='7/';final.dispatchEvent(new w.Event('input'));

@@ -22,7 +22,7 @@
     const path=publicPath(value);
     return path?'#public-practice='+encodeURIComponent(path)+'&return='+encodeURIComponent(returnRoute(back)):'';
   }
-  const launches='a[data-plan-course-open],a[data-plan-course-practice],a[data-plan-course-board],a[data-focus-practice],a[data-attached-course-open],a[data-attached-course-board],a[data-lesson-practice],.prep-task .actions a[href]';
+  const launches='[data-program-course="sections-from-zero"] a[data-program-open],a[data-plan-course-open],a[data-plan-course-practice],a[data-plan-course-board],a[data-focus-practice],a[data-attached-course-open],a[data-attached-course-board],a[data-lesson-practice],.prep-task .actions a[href]';
   function enhance(host){
     for(const link of host.querySelectorAll(launches)){
       if(link.closest('[data-public-workspace], [data-peterson-workspace]'))continue;

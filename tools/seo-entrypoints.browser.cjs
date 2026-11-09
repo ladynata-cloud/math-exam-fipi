@@ -70,7 +70,9 @@ async function checkVilenkinEntrances(page, origin, javaScriptEnabled) {
 
     await Promise.all([page.waitForURL(origin + course), start.click()]);
     assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex,nofollow');
-    const next = page.getByRole('button', { name: 'Продолжить обучение', exact: true });
+    const next = page.getByRole('button', { name: 'К следующему навыку', exact: true });
+    assert.equal(await next.getAttribute('data-cmd'), 'learn',
+      `${id}: the course entrance must open the next skill, separately from saved-task resume`);
     const lesson = await next.getAttribute('data-value');
     assert(lesson.startsWith(`v${grade}f-`), `${id}: expected a lesson from this course`);
     const savedUrl = `${origin}/school/index.html?course=${id}#lesson/${lesson}`;

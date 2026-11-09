@@ -2,6 +2,8 @@
 // In-memory DOM contracts; visual browser review is recorded separately.
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),assert=require('node:assert/strict');
 function boot(saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://nikolsky.test/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};const errors=[];w.console.error=(...args)=>errors.push(args.join(' '));if(saved)w.localStorage.setItem('mathexam.nikolsky10.2022.v1',saved);for(const file of ['../peterson6/math.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));return {w,d:w.document,errors};}
+// Let jsdom dispatch pending DOM events between tasks so detached trees can be collected.
+(async function run(){
 const {w,d,errors}=boot(),api=w.NikolskyApp;
 const nav=hash=>{w.history.replaceState(null,'',hash);api.route();};
 const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();};
@@ -14,6 +16,7 @@ for(const l of w.NikolskyCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  click('[data-action="guided"]');
  for(let k=0;k<t.steps.length;k++){input('[data-step-input="'+k+'"]',t.steps[k].answer);submit('[data-step-form="'+k+'"]');assert.equal(state().tasks[t.id].step,k+1,t.id+' step '+k);assert.equal(d.querySelectorAll('.step.completed').length,k+1);walkedSteps++;}
  if(t.kind==='choice')click('[data-choice="'+t.choices.indexOf(t.answer)+'"]');else input('#final-answer',t.answer);submit('#answer-form');assert(state().tasks[t.id].correct,t.id);assert(!state().tasks[t.id].independent,t.id+' helped');renders++;
+ await new Promise(resolve=>setImmediate(resolve));
  }}
 // Draft, completed step and notebook survive detour and reload.
 const lesson=w.NikolskyCourse.lessons.find(l=>l.tasks.some(t=>t.kind!=='choice'&&t.skills.length));const index=lesson.tasks.findIndex(t=>t.kind!=='choice'&&t.skills.length),task=lesson.tasks[index],route='#lesson/'+lesson.id+'/'+index;
@@ -57,3 +60,24 @@ for(const hash of ['#lesson/constructor','#practice/constructor/1','#lesson/unkn
 assert.deepEqual(errors,[]);
 const malformed=boot('{bad');assert(!malformed.d.querySelector('#storage-warning').hidden);assert.equal(malformed.w.localStorage.getItem('mathexam.nikolsky10.2022.v1'),'{bad');malformed.w.close();
 console.log(JSON.stringify({gate:'NIKOLSKY10_UI_OK',status:'PASS',renders,walkedSteps,flows:['all task/step answers','sticky assistance','detour return','notebook reload','source search and explicit subparts','leading-zero paragraph','escaped fraction and superscript rendering','equivalent pi answers','invalid routes','corrupt storage preserved']}));w.close();
+
+// The actual step form retains the failed attempt and feedback after reload.
+(function(){
+ const first=boot(),win=first.w,doc=first.d,api=win.NikolskyApp;
+ const lesson=win.NikolskyCourse.lessons.find(l=>l.tasks.some(t=>t.kind==='number'&&t.steps.length)),index=lesson.tasks.findIndex(t=>t.kind==='number'&&t.steps.length),task=lesson.tasks[index],hash='#lesson/'+lesson.id+'/'+index;
+ win.history.replaceState(null,'',hash);api.route();doc.querySelector('[data-action="guided"]').click();
+ const step=value=>{const input=doc.querySelector('[data-step-input="0"]');input.value=value;input.dispatchEvent(new win.Event('input',{bubbles:true}));doc.querySelector('[data-step-form="0"]').dispatchEvent(new win.Event('submit',{bubbles:true,cancelable:true}));};
+ step('');assert.equal(api.getState().tasks[task.id].attemptHistory.steps[0],undefined);
+ step('not a number');assert(doc.querySelector('.attempt-history').textContent.includes('not a number'));assert(doc.querySelector('#step-feedback-0').textContent.includes('Проверь'));
+ const resumed=boot(win.localStorage.getItem('mathexam.nikolsky10.2022.v1'));resumed.w.history.replaceState(null,'',hash);resumed.w.NikolskyApp.route();assert(resumed.d.querySelector('#step-feedback-0').textContent.includes('Проверь'));resumed.w.close();
+ step(task.steps[0].answer);const h=api.getState().tasks[task.id].attemptHistory.steps[0];assert.equal(h.length,2);assert.equal(h[0].value,'not a number');assert.equal(h[0].correct,false);assert.equal(h[1].correct,true);assert.equal(h[1].assisted,true);assert(doc.querySelector('.attempt-history').textContent.includes('Первая сохранённая проверка'));
+ win.close();
+ const after=boot(),aw=after.w,ad=after.d;aw.history.replaceState(null,'',hash);aw.NikolskyApp.route();
+ const final=ad.querySelector('#final-answer');final.value=task.answer;final.dispatchEvent(new aw.Event('input',{bubbles:true}));ad.querySelector('#answer-form').dispatchEvent(new aw.Event('submit',{bubbles:true,cancelable:true}));assert.equal(aw.NikolskyApp.getState().tasks[task.id].independent,true);
+ ad.querySelector('[data-action="guided"]').click();const guided=ad.querySelector('[data-step-input="0"]');guided.value=task.steps[0].answer;guided.dispatchEvent(new aw.Event('input',{bubbles:true}));ad.querySelector('[data-step-form="0"]').dispatchEvent(new aw.Event('submit',{bubbles:true,cancelable:true}));
+ assert.equal(aw.NikolskyApp.getState().tasks[task.id].attemptHistory.steps[0][0].assisted,true,'Post-success guided step records actual help');assert.equal(aw.NikolskyApp.getState().tasks[task.id].independent,true,'Earlier independent completion is preserved');
+ const again=boot(aw.localStorage.getItem('mathexam.nikolsky10.2022.v1'));assert.equal(again.w.NikolskyApp.getState().tasks[task.id].attemptHistory.steps[0][0].assisted,true);assert.equal(again.w.NikolskyApp.getState().tasks[task.id].independent,true);again.w.close();aw.close();
+ console.log(JSON.stringify({ok:true,attemptHistoryDOM:'step error, reload feedback, corrected answer and post-success help retained without changing earned credit'}));
+})();
+
+})().catch(error=>{console.error(error);process.exitCode=1;});
