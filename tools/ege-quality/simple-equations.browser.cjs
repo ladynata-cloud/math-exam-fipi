@@ -23,7 +23,7 @@ const operators = ['minus', 'plus', 'divide', 'multiply'];
 const buttons = {minus:'opMinus', plus:'opPlus', divide:'opDivide', multiply:'opMultiply'};
 const back = '/ege-baza/path/index.html#lesson=practice-quadratic';
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'equations-browser-'));
-const report = {mode:production?'production':'local', commit:process.env.GITHUB_SHA||'local', status:'running', cases:0, correctClick:0, correctEnter:0, incorrectClick:0, incorrectEnter:0, incorrectNumber:0, wrongChoicesCleared:0, blankProtected:0, repeatProtected:0, restored:0, offlineCases:0, journeys:[], errors:[]};
+const report = {mode:production?'production':'local', commit:process.env.GITHUB_SHA||'local', status:'running', cases:0, masteryCases:0, correctClick:0, correctEnter:0, incorrectClick:0, incorrectEnter:0, incorrectNumber:0, wrongChoicesCleared:0, blankProtected:0, repeatProtected:0, restored:0, offlineCases:0, journeys:[], errors:[]};
 let browser, server;
 
 function parseEquation(text) {
@@ -33,6 +33,167 @@ function parseEquation(text) {
   if ((m = /^(\d+) · x = (-?\d+)$/.exec(text))) return ['divide', Number(m[2])/Number(m[1])];
   if ((m = /^x : (\d+) = (-?\d+)$/.exec(text))) return ['multiply', Number(m[2])*Number(m[1])];
   throw Error('Unexpected learner-visible equation: '+text);
+}
+
+async function checkMastery(browser, url, offline, surface) {
+  const context = await browser.newContext({offline, serviceWorkers:'block', viewport:{width:320,height:900}});
+  const legacy = {
+    total:42, right:42, streak:42, best:42, date:'07.11',
+    history:Array.from({length:12}, (_,i) => ({text:'Прежняя запись '+i})), oldMetadata:{keep:true}
+  };
+  const freeKey = 'mathExam.equationSteps.v1';
+  const original = {topics:{earlier,[topic]:legacy}, 'oge-t9-uravneniya':{best:8,total:10,passed:true}};
+  const page = await context.newPage();
+  try {
+    page.on('pageerror', error => report.errors.push(surface+': '+error.message));
+    await page.addInitScript(() => { Math.random = () => 0; });
+    await page.goto(url);
+    const id = name => page.locator('#'+name);
+    const click = name => id(name).click();
+    const saved = () => page.evaluate(k => JSON.parse(localStorage.getItem(k)),key);
+    const current = async () => (await saved()).topics[topic];
+    const evidence = async () => (await current()).assessmentV1;
+    const task = async () => parseEquation(await id('eq').innerText());
+    const answer = async (offset = 0, enter = false) => {
+      const [op, root] = await task();
+      await click(buttons[op]);
+      await id('ans').fill(String(root+offset));
+      if (enter) await id('ans').press('Enter'); else await click('check');
+    };
+    await page.evaluate(({key,original,freeKey}) => {
+      localStorage.setItem(key,JSON.stringify(original));
+      localStorage.setItem(freeKey,'{"sentinel":"free steps"}');
+    },{key,original,freeKey});
+    await page.reload();
+    assert.deepEqual(await saved(),original,'loading never rewrites the old format');
+    assert.equal(await id('status').innerText(),'тема начата');
+    assert.match(await id('legacyStats').innerText(),/42 верных из 42/);
+    assert.equal(await id('acc').innerText(),'—');
+    assert.equal(await id('best').innerText(),'0');
+
+    await click('hint');
+    const hinted = await saved();
+    assert.equal((await evidence()).hints,1);
+    assert.equal((await evidence()).independent,0);
+    assert.equal((await current()).history[0].kind,'hint');
+    assert.match(await id('assistanceStats').innerText(),/Открыто подсказок: 1/);
+    await click('hint');
+    assert.deepEqual(await saved(),hinted,'repeat hint does not write');
+    await answer(0,true);
+    assert.equal((await evidence()).guided,1);
+    assert.equal((await evidence()).independent,0);
+    assert.equal((await current()).right,43,'legacy aggregate still describes submitted answers');
+    assert.equal((await current()).history[0].kind,'guided');
+
+    await click('med');
+    const [helpedOp, helpedRoot] = await task();
+    await click('hint');
+    await click('solution');
+    assert(await id('ans').isDisabled());
+    assert.equal(await id('ans').inputValue(),String(helpedRoot));
+    const shown = await saved();
+    await click('check');
+    await click('solution');
+    await click('hint');
+    assert.deepEqual(await saved(),shown,'autofill, confirmation and repeated clicks award nothing');
+    assert.equal((await evidence()).revealed,1);
+    assert.equal((await current()).right,43);
+    assert.equal((await evidence()).hints,2);
+    assert.deepEqual((await current()).history.slice(0,2).map(item => item.kind),['solution','hint']);
+    assert.deepEqual((await current()).history.slice(-12),legacy.history);
+    assert.deepEqual((await current()).assessmentV1.legacy,
+      {total:42,right:42,streak:42,best:42,date:'07.11'});
+    assert.deepEqual((await current()).oldMetadata,legacy.oldMetadata);
+
+    await page.reload();
+    assert.deepEqual(await saved(),shown);
+    assert.match(await id('assistanceStats').innerText(),/Открыто подсказок: 2 · Открыто решений: 1/);
+    assert.equal(Object.keys((await evidence()).pending).length,2);
+    await click('retest');
+    assert.deepEqual(await task().then(([op,root]) => [op,root !== 1]),['minus',true]);
+    assert(await id('ans').isDisabled(),'recheck starts with an empty locked answer');
+    assert.equal(await id('ans').inputValue(),'');
+    await answer(1);
+    assert.equal((await evidence()).independentErrors,1);
+    assert.equal((await evidence()).errors,1);
+    assert.equal((await evidence()).rechecks,0);
+    assert.equal((await current()).history[0].kind,'wrong-answer');
+    await click('solution');
+    assert.equal((await evidence()).revealed,2,'solution can still be opened after an error');
+    await click('retest');
+    await click('hint');
+    await answer();
+    assert.equal((await evidence()).guided,2);
+    assert.equal((await evidence()).rechecks,0,'help during a recheck keeps it pending');
+    await click('retest');
+    await answer();
+    assert.equal((await evidence()).rechecks,1);
+    assert.equal((await evidence()).independent,1);
+    assert.equal(await id('acc').innerText(),'50%');
+    assert.equal((await current()).history[0].kind,'recheck');
+    await click('retest');
+    assert(await id('med').evaluate(button => button.classList.contains('active')));
+    assert.deepEqual(await task().then(([op,root]) => [op,root !== helpedRoot]),[helpedOp,true]);
+    await answer(0,true);
+    assert.equal((await evidence()).rechecks,2);
+    assert(await id('retest').isHidden());
+
+    for(let i=2;i<39;i++) { await click('next'); await answer(); }
+    assert.equal(await id('status').innerText(),'тема освоена','39 correct plus one independent error meet the 40-attempt threshold');
+    assert.equal(await id('acc').innerText(),'98%');
+    assert.equal((await evidence()).best,39);
+    assert.deepEqual((await current()).history.slice(-12),legacy.history,'fresh practice never evicts pre-update rows');
+    const proven = await evidence();
+    await click('next');
+    await click('solution');
+    const after = await evidence();
+    assert.equal(after.independent,proven.independent);
+    assert.equal(after.best,proven.best);
+    assert.equal(after.streak,0);
+    assert.equal(await id('status').innerText(),'тема освоена');
+    assert.deepEqual((await saved()).topics.earlier,earlier);
+    assert.deepEqual((await saved())['oge-t9-uravneniya'],original['oge-t9-uravneniya']);
+    assert.equal(await page.evaluate(k=>localStorage.getItem(k),freeKey),'{"sentinel":"free steps"}');
+    if (!offline) {
+      await page.addScriptTag({url:new URL('/ege-profil/progress-code.js',url).href});
+      assert.deepEqual(await page.evaluate(async () => {
+        const data = PROGRESS_CODE.readLive();
+        return PROGRESS_CODE.decode(await PROGRESS_CODE.encode(data));
+      }),await saved(),'MEP1 transports the new record and old course data unchanged');
+    }
+    const confirmed = await current();
+    const submitFromOldPage = () => page.evaluate(({key,topic,legacy}) => {
+      const latest = JSON.parse(localStorage.getItem(key));
+      latest.topics[topic] = {
+        ...legacy, total:legacy.total+1, right:legacy.right+1,
+        history:[{text:'x + 2 = 6 → x = 4. Ваш ответ: 4. Верно.'},...legacy.history].slice(0,12)
+      };
+      localStorage.setItem(key,JSON.stringify(latest));
+    },{key,topic,legacy});
+    await submitFromOldPage();
+    await page.reload();
+    assert.equal((await evidence()).independent,confirmed.assessmentV1.independent);
+    assert.equal((await evidence()).best,confirmed.assessmentV1.best);
+    assert.equal((await evidence()).legacy.total,43);
+    assert.equal((await evidence()).legacy.right,43);
+    assert.equal((await current()).history[0].kind,'legacy-unknown');
+    assert.deepEqual((await current()).history.slice(1),confirmed.history);
+    assert.deepEqual((await saved()).simpleEquationsStepwiseRecoveryV1,await current());
+    assert.equal(await id('status').innerText(),'тема освоена');
+
+    await click('reset');
+    assert.equal((await evidence()).independent,0);
+    assert.equal((await current()).history.length,0);
+    const cleared = await saved();
+    await submitFromOldPage();
+    await page.reload();
+    assert.deepEqual(await saved(),cleared,'an old tab cannot restore records cleared by the current trainer');
+    assert.deepEqual((await saved()).topics.earlier,earlier);
+    assert.deepEqual((await saved())['oge-t9-uravneniya'],original['oge-t9-uravneniya']);
+    report.masteryCases++;
+  } finally {
+    await context.close();
+  }
 }
 
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -108,6 +269,7 @@ async function main() {
   report.browser=browser.version();
   for(const [surface,url] of Object.entries({online:online.href,...local})){
     const offline=surface!=='online';
+    await checkMastery(browser,url,offline,surface);
     for(let i=0;i<8;i++) for(const submission of ['click','enter']) {
       const level=i>=4?'medium':'easy', op=operators[i%4];
       const ctx=await browser.newContext({offline,serviceWorkers:'block',viewport:{width:submission==='enter'?1280:390,height:900}});
@@ -158,13 +320,27 @@ async function main() {
             assert.equal(await page.locator('.ops .chosen').count(),0,'a rejected action is never marked as selected');
             assert.match(await id('instruction').innerText(),/^1\)/,'rejected action returns to step 1');
             assert(await id('ans').isDisabled());assert(await id('stepBox').isHidden());
-            await clickCheck();assert.equal(await id('total').innerText(),'0');assert.deepEqual(await saved(),initial);
+            await clickCheck();assert.equal(await id('total').innerText(),'1');
+            const rejected = (await saved()).topics[topic];
+            assert.equal(rejected.total,0,'wrong operations leave the legacy numeric total intact');
+            assert.equal(rejected.assessmentV1.independentErrors,1,'one failed first step per exercise');
+            assert.equal(rejected.assessmentV1.errors,1);
+            assert.equal(rejected.history[0].kind,'wrong-action');
             report.wrongChoicesCleared++;
           }
         }
         await chooseCorrect();
+        const wrongChoiceAnswer=parseEquation(await id('eq').innerText())[1];
+        await id('ans').fill(String(wrongChoiceAnswer));
+        await clickCheck();
+        assert.equal((await saved()).topics[topic].assessmentV1.guided,1,'revealed correct operation makes the answer guided');
+        assert.equal(await id('right').innerText(),'0');
+        await id('reset').click();
+        const cleared=await saved();
+        assert.deepEqual(cleared.topics.earlier,earlier);
+        await chooseCorrect();
         await clickCheck();await id('ans').press('Enter');
-        assert.equal(await id('total').innerText(),'0');assert.deepEqual(await saved(),initial,'blank answer is not saved by either control');report.blankProtected++;
+        assert.equal(await id('total').innerText(),'0');assert.deepEqual(await saved(),cleared,'blank answer is not saved by either control');report.blankProtected++;
         let previousHistory=[];
         for(const correct of [true,false]){
           if(!correct){
@@ -203,7 +379,7 @@ async function main() {
       } catch(error){throw new Error(surface+' '+level+' '+op+' '+submission+': '+error.message,{cause:error});} finally {await ctx.close();}
     }
   }
-  assert.equal(report.cases,48);assert.equal(report.wrongChoicesCleared,288);assert.equal(report.offlineCases,32);
+  assert.equal(report.cases,48);assert.equal(report.masteryCases,3);assert.equal(report.wrongChoicesCleared,288);assert.equal(report.offlineCases,32);
   assert.equal(report.blankProtected,48);assert.equal(report.repeatProtected,96);assert.equal(report.restored,96);
   for(const counter of ['correctClick','correctEnter','incorrectClick','incorrectEnter'])assert.equal(report[counter],24);
   assert.equal(report.incorrectNumber,48);assert.deepEqual(report.errors,[]);

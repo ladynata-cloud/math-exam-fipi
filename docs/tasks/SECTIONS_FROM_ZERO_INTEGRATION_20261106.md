@@ -320,3 +320,30 @@ Scope deviations:
 Recommendation:
 Next user decision:
 ```
+
+
+## Authorized release continuation — 9 November 2026
+
+The owner explicitly authorized sending the prepared changes to
+`ladynata-cloud/math-exam-fipi`, merging checked PRs and publishing on
+`mathexam.space` after successful checks. This supersedes the earlier release
+hold for this approved course; earlier hold paragraphs above are historical.
+No actual-pupil assignment is included.
+
+The local composition with main `463d6bf56fc8f1f944da8d237102f77888711e79`
+retains exactly the 43 original task paths; 41 task blobs are unchanged and all
+131 concurrent main files are preserved. The navigator-only conflict preserves
+all 612 current main page bindings plus the sections page and both histories.
+Stable code patch ID (excluding manifest/status):
+`889eb32866d3d80e9f3433d5167b912c0f2ce904`.
+
+Local validation: sections 41/41, independent geometry 8/8, sitemap 12/12,
+navigator 4/4, bindings 5/5, deterministic build of 556 URLs, syntax and
+whitespace PASS. The initial parallel local run reported two whole-file failures
+without assertion or signal details; the single sequential retry with 256 MiB
+heap passed 41/41 in 172.6 seconds without changing tests.
+
+Remote provenance must use an actual GitHub source checkpoint followed by an
+exact manifest rebind. Final remote refs, actual-head CI and release evidence
+are recorded in the PR. Full browser/CI verification and Pages/Amvera live
+checks remain mandatory; no new release or assignment is claimed here.

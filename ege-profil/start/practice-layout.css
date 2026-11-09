@@ -1,0 +1,108 @@
+/* The public course keeps the current action beside its condition on a wide
+   screen. Shared-board wrappers intentionally retain their own layout. */
+.profile-journey-page .focused-practice .current-question {
+  min-width: 0;
+}
+.profile-journey-page .focused-practice .task-panel {
+  min-width: 0;
+}
+.profile-journey-page:has(.focused-practice) .practice-head .eyebrow,
+.profile-journey-page:has(.focused-practice) .practice-head .text-link,
+.profile-journey-page:has(.focused-practice) #pause-practice {
+  font-size: 16px;
+}
+.profile-journey-page .focused-practice .task-panel > .solution-history {
+  margin-bottom: 16px;
+}
+.profile-journey-page .focused-practice .current-question > #task-model {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.profile-journey-page .focused-practice .current-question > #task-model .applied-model {
+  max-width: 560px;
+}
+@media (min-width: 980px) {
+  .profile-journey-page:has(.focused-practice) main {
+    max-width: 1240px;
+  }
+  .profile-journey-page .focused-practice,
+  .profile-journey-page .focused-practice.with-model {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 22px;
+  }
+  .profile-journey-page .focused-practice .condition-panel {
+    position: static;
+    margin-bottom: 0;
+  }
+  .profile-journey-page .focused-practice .task-condition {
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .profile-journey-page .focused-practice .current-question .question {
+    font-size: 21px;
+    line-height: 1.55;
+  }
+  .profile-journey-page .focused-practice .panel {
+    padding: 22px;
+  }
+}
+@media (max-width: 979px) {
+  .profile-journey-page .focused-practice,
+  .profile-journey-page .focused-practice.with-model {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .profile-journey-page .focused-practice > .panel {
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 600px) {
+  .profile-journey-page:has(.focused-practice) .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .profile-journey-page:has(.focused-practice) .topbar .brand {
+    font-size: 16px;
+    gap: 8px;
+  }
+  .profile-journey-page:has(.focused-practice) .brand small {
+    display: none;
+  }
+  .profile-journey-page:has(.focused-practice) .brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    font-size: 21px;
+  }
+  .profile-journey-page:has(.focused-practice) #calm-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 16px;
+    padding: 8px;
+  }
+  .profile-journey-page:has(.focused-practice) .topbar nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 12px;
+    font-size: 16px;
+  }
+  .profile-journey-page .focused-practice .task-condition {
+    font-size: 18px;
+    line-height: 1.55;
+  }
+  .profile-journey-page .focused-practice .current-question .question {
+    font-size: 19px;
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .profile-journey-page .focused-practice .current-step {
+    margin-bottom: 8px;
+  }
+  .profile-journey-page .focused-practice .current-question > #task-model {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+}
