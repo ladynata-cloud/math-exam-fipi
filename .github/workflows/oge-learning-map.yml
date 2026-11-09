@@ -1,0 +1,84 @@
+name: OGE learning map
+on:
+  pull_request:
+    paths:
+      - 'oge/learning-map*'
+      - 'oge/registry.js'
+      - 'oge/progress-adapters.js'
+      - 'trainers/oge-course/index.html'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/task19-visual-*.js'
+      - 'trainers/oge-1-5-trainers/*.html'
+      - 'trainers/oge-1-5-trainers/progress.js'
+      - 'tools/oge-learning-map*'
+      - '.github/workflows/oge-learning-map.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'oge/learning-map*'
+      - 'oge/registry.js'
+      - 'oge/progress-adapters.js'
+      - 'trainers/oge-course/index.html'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/task19-visual-*.js'
+      - 'trainers/oge-1-5-trainers/*.html'
+      - 'trainers/oge-1-5-trainers/progress.js'
+      - 'tools/oge-learning-map*'
+      - '.github/workflows/oge-learning-map.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: oge-learning-map-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  map-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-map" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-map/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-map/node_modules" >> "$GITHUB_ENV"
+      - name: Progress sources, honest labels, storage and fallback
+        run: |
+          node --check oge/learning-map.js
+          node --check oge/learning-map-view.js
+          node --test tools/oge-learning-map.test.cjs
+          git diff --check
+      - name: Wait for this exact public release
+        if: github.event_name == 'push'
+        run: |
+          node - <<'JS'
+          const fs=require('node:fs'),crypto=require('node:crypto');
+          const files=['trainers/oge-course/index.html','oge/learning-map.js','oge/learning-map-view.js','oge/learning-map.css'];
+          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
+          (async()=>{for(let n=0;n<40;n++){
+            const matches=await Promise.all(files.map(async file=>{try{const r=await fetch('https://mathexam.space/'+file+'?release='+process.env.GITHUB_SHA,{signal:AbortSignal.timeout(15000)});return r.ok&&hash(Buffer.from(await r.arrayBuffer()))===hash(fs.readFileSync(file));}catch{return false;}}));
+            if(matches.every(Boolean)){console.log('OGE_MAP_EXACT_RELEASE_OK');return;}
+            await new Promise(resolve=>setTimeout(resolve,15000));
+          }throw Error('Published files did not match the release');})().catch(e=>{console.error(e);process.exitCode=1;});
+          JS
+      - name: Mobile, keyboard, continuation and no-JavaScript routes
+        env:
+          OGE_MAP_BASE_URL: ${{ github.event_name == 'push' && 'https://mathexam.space' || '' }}
+        run: node tools/oge-learning-map.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-learning-map
+          path: artifacts/oge-learning-map
+          retention-days: 14
+          if-no-files-found: error
