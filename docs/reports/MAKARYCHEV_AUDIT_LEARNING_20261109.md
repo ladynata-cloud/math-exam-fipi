@@ -87,17 +87,17 @@ passed all five cases. The final full native DOM runs also passed as described a
 real-browser acceptance remain required.
 
 The candidate was composed with upstream `e5ca2174becd89064710af625b517feeab00e4bd`
-and the changed source paths were revalidated. No PR or remote branch was
-created: automatic review rejected the exact public upload twice, including
-after read-only destination/owner permission verification. Package-specific
-confirmation is required before another upload. GitHub Actions, merge and
-production verification have not occurred. External provider review and
+and the changed source paths were revalidated. Initially no PR or remote branch was created because automatic review rejected
+the upload twice. The owner then explicitly confirmed this 35-file package,
+checked merge and publication on 2026-11-09. Release proceeds through the
+authenticated GitHub connector; final remote refs, CI and production evidence
+are recorded in the PR, not inferred from local results. External provider review and
 real-pupil/mini-group trials were not performed.
 
 ## Release and rollback
 
-Prior owner permission was identified, but the automatic review block still
-requires package-specific confirmation for this publication.
+The owner supplied the requested package-specific publication confirmation.
+Mandatory successful checks remain a condition of merge/publication.
 Before merging, re-read remote main/head, inspect any concurrent changes and
 validate the composed result. Preserve pending #497/#499 work if it lands.
 The navigator binding is refreshed only against a real committed source.

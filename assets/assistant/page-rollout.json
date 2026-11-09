@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+  "baseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2030,8 +2030,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "9487d78249477eb839dc094f454419a23f5fb9962e019bd4a67a82b785aac7f2",
-      "afterSha256": "08f0ff4ac805d7f1a53c9b4afe45b130ddce5d8d61ed63556f8d9388eace9e86",
+      "beforeSha256": "d7986fa36826d0058599fac7e4d3c184f0a81c6422b070bf2c39bfe45ab18c3f",
+      "afterSha256": "1542ebd051ac1fd638b7d7aeed61351afbb5b8e17c2d44f9fb6f28b1fd72fecd",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2100,23 +2100,23 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "28f1a7c30579e464d661865a2c2ebd6c8d5bc7b02efb123c8ec7aebee2a64ebd",
-      "afterSha256": "b7d9a50f8ccc8dccdabd0e235927ea0ea05819cdc2b98774f7df02d284040aad",
+      "beforeSha256": "cb5f5bc990291681498ab09f6c90d35456b0b6fbcd95c7d238e8f936fde023b5",
+      "afterSha256": "325c9d9efe36a1510f47fadd6a9582dc434d1f36f39bc56d178312584fd70706",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
-      "beforeSha256": "e0ebdf64cb3edb5a71283c667edfedc4dde2bf969a49d5cb0a8d74ca7495c72f",
-      "afterSha256": "755e362375ec14f6b9b34882f78d366174db05f736299d8d1d02e1636217e1ab",
+      "beforeSha256": "50f6aef6993511475931499d227a2512265194d660396178ec2b732c59c04fb6",
+      "afterSha256": "aac26dc0a82ab69c7b1793e98373db6ceca315a226ceb04a74405655a0271da8",
       "placement": "before-head-close"
     },
     "school/makarychev7/index.html": {
-      "beforeSha256": "ee41be76237e0750c18d941cd98a1bf91f5faa4e7d28895f1302161d217b27c0",
-      "afterSha256": "8eaecb7ba4717bb507bb1b6c3227029cae267a67bd98f18b4f9f48bcf1b139c7",
+      "beforeSha256": "30ff7761d8453683c4cbbe5ab3657fc4fbb087e074fe26781d0892e61da1c956",
+      "afterSha256": "88d62c85bb57c26a9eb0ef790b198db9e89a06ec61a217adaa090f0a8a98f84a",
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "d2862188495afc6832225b565715e5b89158accb32ed85ee1ce66db0fcacff76",
-      "afterSha256": "89c354610d96bd28d956a43e60065f203a9098fe6dc94e5209c18da39c15d25b",
+      "beforeSha256": "84ac9745e19a6a03ec05440ece29cf33a5bb707f3d716cc42cb63e9b68411ce1",
+      "afterSha256": "29b972cf337c7ed55a22ba72dabd92a94ad5d79e77742eeef5b7377d893efa53",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -4107,6 +4107,19 @@
         "ege-profil/start/index.html",
         "ege-profil/trainers/numbers-t19.html",
         "ege-profil/trainers/parameters-t18.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e316964e7052c6375cf4c837c8f88587cce3d4ee",
+      "sourceBaseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "grade7/index.html",
+        "school/index.html",
+        "school/m9-exercises/index.html",
+        "school/makarychev7/index.html",
+        "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

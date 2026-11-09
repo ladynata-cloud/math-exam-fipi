@@ -9,7 +9,7 @@
 - Branch: `feat/makarychev-audit-learning-20261109`.
 - Review level: HIGH (learning interactions and compatible saved learner work).
 - START, local implementation, branch and commits: authorized by the current request.
-- Checked publication was planned under the prior explicit owner authorization and [standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md). Automatic action review nevertheless rejected this exact public GitHub upload; publication is blocked pending package-specific confirmation. No force, reset, rebase or gate weakening.
+- Checked publication was planned under the prior explicit owner authorization and [standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md). An initial automatic review required package-specific confirmation; the owner supplied it in this task on 2026-11-09, explicitly permitting this 35-file upload and checked merge/publication. No force, reset, rebase or gate weakening.
 
 ## Goal
 
@@ -97,7 +97,7 @@ removing assertions. Remote CI and real-browser acceptance remain required. Exac
 passed/failed/not-run checks, PR, CI and public verification will be recorded in
 the release report. No publication is asserted by this specification.
 
-## External action status
+## Initial external action status (historical)
 
 No branch upload, PR, merge or publication occurred in this task. The destination
 repository and owner push permission were verified read-only after an initial
@@ -105,3 +105,15 @@ rejection; a second upload attempt was again rejected by automatic review,
 which requires explicit confirmation for this exact package. No alternate
 external write route was used. The complete patch and commit bundle are prepared
 for review; local check results do not imply a GitHub Actions or production pass.
+
+## Authorized release continuation
+
+On 2026-11-09 the owner explicitly confirmed sending this 35-file package to
+`ladynata-cloud/math-exam-fipi`, then merging and publishing on `mathexam.space`
+after successful mandatory checks. No further permission is pending. The
+earlier rejected attempts above are historical. The authenticated GitHub
+connector is used because local Git has no HTTPS credentials. Its source
+checkpoint and final head are verified by tree/blob identity; navigator
+bindings name the actual reachable remote source commit. Final exact refs,
+CI and production evidence are recorded in the PR. Existing M9 browser suites
+are mandatory alongside the new four-surface suite.
