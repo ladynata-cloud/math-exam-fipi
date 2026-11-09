@@ -1,0 +1,43 @@
+name: Merzlyak learning path
+on:
+  pull_request:
+    paths:
+      - 'geometry-merzlyak/**'
+      - 'stereo-course/merzlyak-10-base/assets/**'
+      - 'tools/merzlyak/**'
+      - 'tools/merzlyak-learning-path.test.cjs'
+      - 'tools/merzlyak-learning-path.browser.cjs'
+      - 'tools/merzlyak-10-base/learning-path.test.cjs'
+      - '.github/workflows/merzlyak-learning-path.yml'
+permissions:
+  contents: read
+jobs:
+  learner-path:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1 playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Learning records and mathematical transfer
+        run: |
+          node tools/merzlyak-learning-path.test.cjs
+          node tools/merzlyak-10-base/learning-path.test.cjs
+          node tools/merzlyak/similarity.test.cjs
+          node tools/merzlyak/check.cjs
+      - name: Existing lesson journeys and narrow mobile layout
+        run: node tools/merzlyak/browser.cjs
+      - name: New learning path and similarity on phone and desktop
+        run: node tools/merzlyak-learning-path.browser.cjs
+      - name: Preserve learning-path screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: merzlyak-learning-path
+          path: artifacts/merzlyak-learning-path/
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check

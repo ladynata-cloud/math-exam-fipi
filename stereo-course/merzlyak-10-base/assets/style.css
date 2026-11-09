@@ -8,3 +8,19 @@
   overflow-wrap: normal;
   hyphens: none;
 }
+
+/* Personal course journey: content progress is kept distinct from mastery. */
+.learning-journey{border:1px solid #b3cfbe;border-radius:1rem;background:#f2f8f3;padding:clamp(.75rem,2vw,1.4rem);margin:1rem 0 1.5rem}
+.learning-journey h2{margin:.1rem 0 .6rem}.journey-intro{max-width:55rem;margin:.5rem 0 1rem}
+.journey-actions{display:flex;flex-wrap:wrap;gap:.6rem}.journey-actions button{background:#1c6c43;color:white;font-weight:650}
+.journey-stats{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin:1rem 0}
+.journey-stats li{margin:0;padding:.65rem;background:#fff;border:1px solid #cbd9cf;border-radius:.6rem;font-size:.9rem}
+.journey-note{font-size:.85rem;color:#405d4c;margin:.6rem 0}.journey-chapter{padding:.4rem .8rem}
+.journey-topics{list-style:none;padding:0;margin:.3rem 0}.journey-topics li{padding:.65rem 0;border-top:1px solid #dde7df}
+.journey-topics button{display:block;width:100%;border:0;background:transparent;padding:.35rem .1rem;min-height:44px;font-weight:650}
+.journey-topic-status{display:block;font-size:.85rem;color:#506a59;padding:.2rem .1rem}
+.lesson-work-status,.catalog-work-status{font-size:.9rem;color:#335e44;border-left:3px solid #76a78b;padding-left:.6rem}
+.journey-next{display:flex;flex-wrap:wrap;gap:.65rem;margin:1.5rem 0;border-top:1px solid #cbd9cf;padding-top:.8rem}.journey-next p{flex-basis:100%;font-size:.9rem;margin:0 0 .3rem}
+@media(max-width:650px){.journey-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.journey-actions button,.journey-next button{width:100%}.learning-journey{padding:.7rem}}
+
+.journey-topics progress{display:block;width:100%;height:.55rem;margin:.45rem 0 .2rem;accent-color:#1c6c43;border:0;border-radius:1rem;overflow:hidden}.journey-topics progress::-webkit-progress-bar{background:#e4ede7}.journey-topics progress::-webkit-progress-value{background:#1c6c43}.journey-topics progress::-moz-progress-bar{background:#1c6c43}.journey-meter-label{display:block;color:#506a59;font-size:.78rem}

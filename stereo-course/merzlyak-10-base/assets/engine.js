@@ -95,8 +95,65 @@ function createApp(root,options){
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
- function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null};}
- function readState(raw){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,current.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null};}catch{return initial();}}
+ // Personal outcomes stay in this browser; the shared room keeps its original wire contract.
+ function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,...(!options.boardSession?{recordVersion:2,historyKnown:true,attempts:0,firstAnswer:null,outcome:'',manualSaved:false}: {})};}
+ function readState(raw,lesson=current){try{
+  const saved=JSON.parse(raw);if(!saved||typeof saved!=='object'||Array.isArray(saved))return initial();
+  const result={draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'&&!Array.isArray(saved.stepDrafts)?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,lesson.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null};
+  if(!options.boardSession)Object.assign(result,{recordVersion:2,historyKnown:saved.recordVersion===2&&saved.historyKnown===true,attempts:Number.isSafeInteger(saved.attempts)&&saved.attempts>=0?saved.attempts:0,firstAnswer:typeof saved.firstAnswer==='string'?saved.firstAnswer:null,outcome:result.checked?(saved.recordVersion===2&&['first','corrected','assisted','legacy'].includes(saved.outcome)?saved.outcome:'legacy'):'',manualSaved:saved.manualSaved===true&&!!result.draft.trim()});
+  return result;
+ }catch{return initial();}}
+ const storageKey=lesson=>'mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;
+ const resumeKey='mathExamTextbook.route.v1:'+catalog.book.id;
+ let resumeId=!options.boardSession?safeRead(resumeKey):null;
+ function remember(id){if(options.boardSession)return;resumeId=id;try{storage?.setItem(resumeKey,id);}catch{status('Продолжение доступно в этой вкладке; сохранить его на устройстве не удалось.');}}
+ function savedState(lesson){const k=storageKey(lesson);return readState(cache.get(k)?.raw||safeRead(k),lesson);}
+ function workStatus(value){
+  if(value.checked)return {first:'С первого раза',corrected:'Исправил самостоятельно',assisted:'Ответ с помощью',legacy:'Прежний ответ: самостоятельность не определена'}[value.outcome]||'Ответ совпал';
+  if(value.manualSaved)return 'Рассуждение сохранено — нужна проверка';
+  if(value.draft.trim()||Object.values(value.stepDrafts).some(Boolean))return 'Черновик сохранён';
+  return value.assisted||value.revealed?'Разбор с помощью':'Можно начать';
+ }
+ function pointOf(lesson){const source=lesson.source;return source.point&&/^\d+$/.test(source.point)?Number(source.point):['main','selfcheck','example'].includes(source.collection)?Number(source.exercise?.match(/^(\d+)\./)?.[1])||null:source.collection==='practical'?Number(source.exercise?.match(/^paragraph-(\d+)$/)?.[1])||null:null;}
+ const route=[...available.values()].filter(lesson=>lesson.kind==='theory'&&lesson.source.subpart==='обзор'&&pointOf(lesson)).sort((a,b)=>pointOf(a)-pointOf(b));
+ function workDone(value){return value.checked||value.manualSaved;}
+ function nextPractice(lesson){return [...available.values()].find(item=>item.source.collection==='main'&&pointOf(item)===pointOf(lesson)&&item.id!==lesson.id&&!workDone(savedState(item)));}
+ function nextTopic(lesson){return route.find(item=>pointOf(item)>pointOf(lesson));}
+ function lessonButton(lesson,label,attribute){const button=el('button',label||lesson.title,{type:'button',...(attribute?{[attribute]:lesson.id}:{})});button.addEventListener('click',()=>open(lesson.id));return button;}
+ function renderJourney(){
+  if(options.boardSession||!route.length)return;
+  const section=el('section',undefined,{class:'learning-journey','data-learning-journey':'','aria-label':'Мой путь по курсу'}),all=[...available.values()].map(lesson=>({lesson,value:savedState(lesson)}));
+  const counts={first:0,corrected:0,assisted:0,legacy:0,manual:0};for(const {value}of all){if(value.checked)counts[value.outcome]++;else if(value.manualSaved)counts.manual++;}
+  section.append(el('h2','Мой путь по курсу'),el('p','Выбери тему, изучи объяснение и переходи к задачам. Работа сохраняется только в этом браузере.',{class:'journey-intro'}));
+  const actions=el('div',undefined,{class:'journey-actions'}),resume=available.get(resumeId);
+  if(resume)actions.append(lessonButton(resume,'Продолжить: '+resume.title,'data-resume'));
+  else actions.append(lessonButton(route[0],'Начать с первой темы','data-start-route'));
+  section.append(actions);
+  const stats=el('ul',undefined,{class:'journey-stats','aria-label':'Результаты работы'});
+  for(const [name,count]of [['С первого раза',counts.first],['Исправил сам',counts.corrected],['С помощью',counts.assisted],['Рассуждений на проверку',counts.manual]])stats.append(el('li',name+': '+count));
+  section.append(stats);if(counts.legacy)section.append(el('p','Прежних совпавших ответов: '+counts.legacy+'. Данных о самостоятельности недостаточно.',{class:'journey-note'}));
+  section.append(el('p','Это результаты отдельных заданий. Просмотр объяснения и сохранение рассуждения не означают освоения темы.',{class:'journey-note'}));
+  const chapters=new Map();for(const lesson of route){const name=lesson.source.chapter||'Темы';if(!chapters.has(name))chapters.set(name,[]);chapters.get(name).push(lesson);}
+  for(const [name,topics]of chapters){
+   const group=el('details',undefined,{class:'journey-chapter'});group.append(el('summary',name.replace(/^Глава\s+\d+\.\s*/,'')));
+   if(resume?topics.some(item=>pointOf(item)===pointOf(resume)):chapters.keys().next().value===name)group.open=true;
+   const list=el('ol',undefined,{class:'journey-topics'});
+   for(const lesson of topics){const item=el('li',undefined,{'data-route-point':String(pointOf(lesson))}),entries=all.filter(x=>pointOf(x.lesson)===pointOf(lesson)),checked=entries.filter(x=>x.value.checked).length,manual=entries.filter(x=>x.value.manualSaved&&!x.value.checked).length,started=entries.some(x=>workStatus(x.value)!=='Можно начать');
+    const independent=entries.filter(x=>x.value.checked&&['first','corrected'].includes(x.value.outcome)).length,recorded=checked+manual;
+    item.append(lessonButton(lesson,lesson.title.replace(/ · обзор$/,''),'data-route-lesson'),el('span',started?'Ответов совпало: '+checked+' · Самостоятельно: '+independent+' · Рассуждений на проверку: '+manual:'Можно начать',{class:'journey-topic-status'}),el('progress',recorded+' из '+entries.length,{max:String(entries.length||1),value:String(recorded),'aria-label':'§ '+pointOf(lesson)+': карточки с сохранённым ответом или рассуждением'}),el('small',recorded+' из '+entries.length+' карточек с результатом или рассуждением',{class:'journey-meter-label'}));
+    list.append(item);
+   }group.append(list);section.append(group);
+  }view.append(section);
+ }
+ function renderNext(lesson){
+  if(options.boardSession||!pointOf(lesson))return;
+  const nav=el('nav',undefined,{class:'journey-next','aria-label':'Дальше по теме'}),practice=nextPractice(lesson),topic=nextTopic(lesson),theory=route.find(item=>pointOf(item)===pointOf(lesson));
+  nav.append(el('p','Следующий шаг выбираешь ты. Переход не засчитывает освоение темы.'));
+  if(theory&&lesson.kind!=='theory')nav.append(lessonButton(theory,'К объяснению § '+pointOf(lesson),'data-next-theory'));
+  if(practice)nav.append(lessonButton(practice,lesson.kind==='theory'?'Перейти к практике: '+practice.source.exercise:'Следующая задача: '+practice.source.exercise,'data-next-practice'));
+  if(topic)nav.append(lessonButton(topic,'Следующая тема: § '+pointOf(topic),'data-next-topic'));
+  view.append(nav);
+ }
  function freeze(){
   if(locked)return;locked=true;
   const note=el('section',undefined,{class:'course-conflict'});note.append(el('strong','В другом окне уже сохранена новая работа. Твои записи ниже можно скопировать.'),el('p',current.statement.text));
@@ -162,10 +219,11 @@ function createApp(root,options){
  }
  function open(id){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
-  destroyScene();current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
+  destroyScene();current=lesson;key=storageKey(lesson);expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
+  remember(lesson.id);
   win.history?.replaceState(null,'','#'+lesson.id);
   const back=el('button','← Все материалы курса',{type:'button'});back.addEventListener('click',home);
-  const header=el('header');header.append(back,el('p',lesson.kind==='theory'?'Теория':'Задача'),el('h1',lesson.title));view.append(header);
+  const header=el('header');header.append(back,el('p',lesson.kind==='theory'?'Теория':'Задача'),el('h1',lesson.title));if(!options.boardSession)header.append(el('p',workStatus(state),{class:'lesson-work-status','data-work-status':'',role:'status'}));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
   main.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));main.append(list);}main.append(el('p',lesson.statement.goal,{class:'textbook-goal'}),model,el('p',lesson.visualization.caption),sourceNode(lesson));
   if(lesson.answer){
@@ -175,9 +233,18 @@ function createApp(root,options){
     // Open native disclosures count as help even before their queued toggle fires.
     if(side.querySelector('details[open]'))state.assisted=true;
     if(!save())return;
-    if(lesson.answer.mode==='manual'){setDisplayText(feedback,'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.');return;}
+    if(lesson.answer.mode==='manual'){
+     if(!options.boardSession){state.manualSaved=!!state.draft.trim();save();setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));}
+     setDisplayText(feedback,options.boardSession||state.draft.trim()?'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.':'Сначала запиши своё рассуждение.');return;
+    }
     const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
+    if(!options.boardSession){
+     if(!state.checked){state.attempts++;if(state.firstAnswer===null)state.firstAnswer=input.value;if(correct){state.checked=true;state.outcome=!state.historyKnown?'legacy':state.assisted?'assisted':state.attempts===1?'first':'corrected';}}
+     setDisplayText(feedback,correct?'Ответ совпал. '+workStatus(state)+'.':(lesson.answer.feedback||'Ответ пока не совпал. Исправь его сам или открой подсказку.'));
+     setDisplayText(header.querySelector('[data-work-status]'),workStatus(state));
+    }else{
+     setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;
+    }save();
    });form.append(label,input,check,feedback);main.append(form);
   }
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
@@ -190,9 +257,12 @@ function createApp(root,options){
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
   side.append(help);layout.append(main,side);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});if(cached&&cached.base!==expected)freeze();
+  renderNext(lesson);
   return true;
  }
- function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+ function home(){if(destroyed||locked)return;destroyScene();current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1',catalog.book.title));renderJourney();
+  if(options.boardSession)view.append(el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+  else{const inventory=el('details',undefined,{class:'course-inventory'});inventory.append(el('summary','Материалы и издание учебника'),el('p',catalog.book.edition),el('p','Доступно разборов и частей задач: '+coverage.available+'. Пунктов теории: '+coverage.availableTheoryPoints+'. Вопросов самопроверки: '+coverage.availableSelfchecks+'.'));view.append(inventory);}
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
   if(!available.size)view.append(el('p','Проверенные материалы пока не опубликованы.'));
   const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт или название'});
@@ -211,7 +281,7 @@ function createApp(root,options){
    results.append(el('p','Найдено карточек: '+filtered.length+'. Доступно: '+ready.length+'. Ещё готовятся: '+pending.length+'.'));
    function pager(parent,count,page,move){const total=Math.ceil(count/24);if(total<2)return;const nav=el('nav',undefined,{'aria-label':'Страницы списка'}),prev=el('button','← Назад',{type:'button'}),next=el('button','Далее →',{type:'button'});prev.disabled=page===0;next.disabled=page>=total-1;prev.addEventListener('click',()=>move(page-1));next.addEventListener('click',()=>move(page+1));nav.append(prev,el('span',(page+1)+' / '+total),next);parent.append(nav);}
    const readySection=el('section',undefined,{'data-catalog-ready':''});readySection.append(el('h2','Можно изучать сейчас'));if(!ready.length)readySection.append(el('p','По этому запросу проверенных материалов пока нет.'));readyPage=Math.min(readyPage,Math.max(0,Math.ceil(ready.length/24)-1));
-   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>open(entry.id));article.append(button,el('p',sourceText(entry.source)));readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
+   for(const entry of ready.slice(readyPage*24,(readyPage+1)*24)){const article=el('article'),button=el('button',entry.title,{type:'button','data-lesson':entry.id});button.addEventListener('click',()=>open(entry.id));article.append(button);if(!options.boardSession)article.append(el('p',workStatus(savedState(available.get(entry.id))),{class:'catalog-work-status'}));article.append(el('p',sourceText(entry.source)));readySection.append(article);}pager(readySection,ready.length,readyPage,page=>{readyPage=page;renderResults();});results.append(readySection);
    if(pending.length){const pendingSection=el('details',undefined,{'data-catalog-pending':''});pendingSection.append(el('summary','Учтены, но ещё не готовы: '+groups.size+' номеров / пунктов'));const groupList=[...groups.values()];pendingPage=Math.min(pendingPage,Math.max(0,Math.ceil(groupList.length/24)-1));
     for(const group of groupList.slice(pendingPage*24,(pendingPage+1)*24)){const entry=group[0],s=entry.source,article=el('article'),identity=entry.kind==='theory'?(String(s.point).startsWith('appendix-')?'Приложение '+s.point.slice(9):'Пункт '+s.point):'№ '+s.exercise;article.append(el('h3',identity+' · '+collectionNames[s.collection]+(s.examTask?' · исторический номер ЕГЭ '+s.examTask:'')),el('p',group.map(item=>item.title).join('; ')),el('p','Разбор ещё готовится.'));pendingSection.append(article);}
     pager(pendingSection,groupList.length,pendingPage,page=>{pendingPage=page;renderResults();results.querySelector('[data-catalog-pending]').open=true;});results.append(pendingSection);
@@ -249,7 +319,7 @@ function createApp(root,options){
   function feedbackText(lesson,kind){return {none:'',manual:'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.',already:'Этот ответ уже проверен.',assisted:'Ответ совпал с проверенным после обращения к помощи.',independent:'Ответ совпал с проверенным. Решено самостоятельно.',wrong:lesson.answer?.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'}[kind];}
   function getState(){
    if(!current){if(boardCatalog)catalogState=boardCatalog.read();return {version:1,bookId:catalog.book.id,lessonId:null,work:null,catalog:{...copy(catalogState),search:session.encodeText(catalogState.search)},view:null};}
-   const model=modelState(view.querySelector('[data-main-model]'),viewer),work=copy(state);work.camera=copy(model.camera);
+   const model=modelState(view.querySelector('[data-main-model]'),viewer),work=copy(Object.fromEntries(['draft','stepDrafts','revealed','assisted','checked','camera'].map(name=>[name,state[name]])));work.camera=copy(model.camera);
    work.draft=session.encodeText(work.draft);for(const id of Object.keys(work.stepDrafts))work.stepDrafts[id]=session.encodeText(work.stepDrafts[id]);
    const feedback={final:view.querySelector('[data-final-feedback]')?.dataset.boardFeedback||'none',steps:{}};
    for(const section of view.querySelectorAll('[data-step]')){const output=section.querySelector('form [role=status]');if(output)feedback.steps[section.dataset.step]=output.dataset.boardFeedback||'none';}
