@@ -71,3 +71,9 @@
 - Chromium workflow 42577827217: PASS at 320/390/768/1280 px; keyboard, actual links, continuation, cross-tab refresh, no-JS, denied storage. Downloaded screenshots visually reviewed.
 - Initial navigator gate failed on the intentionally changed HTML checksum. Refreshed only that reviewed source binding through the established tool; unmodified preservation tests 4/4 and binding negative controls 5/5 pass.
 - Final candidate CI and production evidence are recorded in PR #494; no pupil learning-effect study or authenticated cabinet synchronization is claimed.
+
+## Concurrent release composition
+- Initial candidate d6f58e396828a8d14d12661431dd16efa76dab59 passed all eight workflows. Immediately before merge, main advanced to adc2c9445f6ce7f0a56bca67ed2bc31b8b82ec3c (approved PR #492, guided linear equations).
+- Read-only merge-tree found only navigator-manifest conflict. Ordinary merge source 7399432e2e4feef52fb47b38c4adfd71d91ae591 retains the released lesson files unchanged and both the new lesson entrance and OGE map.
+- Navigator manifest keeps main's provenance and receives one explicit binding for the combined OGE HTML. No force, reset, rebase or test weakening.
+- Affected local model/DOM/navigation checks: 19/19 PASS; final composed head must pass CI again and have an exact current base/head check before release.

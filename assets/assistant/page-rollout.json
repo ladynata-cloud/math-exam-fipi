@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+  "baseSha": "7399432e2e4feef52fb47b38c4adfd71d91ae591",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2868,8 +2868,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "9c90f12253c1321eea974cc77ce00807fffff583f8c1ccd6908ff29b530d663e",
-      "afterSha256": "72906a91a8f51445c9789b8e99cfa0a010a62dc143ad7a16373c4d837a646496",
+      "beforeSha256": "ed87b354d09bc13953769706bf64cf7b92c40ee119c06ace01188b224aaa1669",
+      "afterSha256": "291079fe2ed8605356a63db6d4759a1fdb821edbfcb40131f44e06c3de69ba44",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3968,6 +3968,15 @@
       "task": "docs/tasks/LINEAR_PILOT_GUIDED_BASICS.md",
       "changedPaths": [
         "equations/index.html",
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c15ab018a3d3971220cb171033d58547b4f43f8b",
+      "sourceBaseSha": "7399432e2e4feef52fb47b38c4adfd71d91ae591",
+      "task": "docs/tasks/OGE_LEARNING_MAP_20261109.md",
+      "changedPaths": [
         "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
