@@ -123,3 +123,11 @@ test('larger-multiple feedback applies to the final LCM, not a prime multiplicit
  assert.doesNotMatch(f.w.document.querySelector('.feedback').textContent,/общее кратное/);
  assert.equal(f.changes().at(-1).state.task.step,3);
 });
+
+test('blank textbook submission preserves attempts, current draft and bridge checks; zero remains meaningful',async t=>{
+ const f=await fixture(t),task=tasks.find(x=>x.role==='practice'&&x.answerType==='number');assert(task);
+ const a=C.create(task.id,31);await f.hydrate(a.taskSpec,a.state);
+ f.input('   ');const before=JSON.stringify(f.changes()),input=f.w.document.querySelector('#answer');f.submit();f.submit();
+ assert.equal(JSON.stringify(f.changes()),before,'blank submit emits no check or progress');assert.equal(f.w.document.activeElement,input);assert(f.w.document.querySelector('.feedback').textContent.includes('не считается попыткой'));
+ f.input('0');f.submit();const change=f.changes().at(-1);assert.equal(change.kind,'check');assert.equal(change.state.task.attempts,1);C.normalize(a.taskSpec,change.state);
+});

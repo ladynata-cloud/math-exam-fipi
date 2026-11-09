@@ -74,3 +74,11 @@ main:has(>.task-first-course){margin-top:18px}
 header .path-home{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none}
 header .path-home:focus-visible{outline:3px solid #ad591d;outline-offset:3px}
 header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
+
+/* Guidance is offered after repeated difficulty without replacing the learner's work. */
+.task-first-course #repairStep[hidden]{display:none!important}
+.task-first-course #repairStep{margin:.3rem 0;min-height:44px;text-align:left;white-space:normal}
+.task-first-course .task-first-variant:empty{display:none}
+.task-first-course .task-first-variant{padding:.65rem .8rem;border-left:3px solid #388567;background:#f4faf5;line-height:1.5}
+.task-first-start{padding:.7rem 0;line-height:1.6}
+.task-first-next #new.primary{order:-1;flex-basis:100%;text-align:left;white-space:normal}
