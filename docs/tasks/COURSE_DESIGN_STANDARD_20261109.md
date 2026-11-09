@@ -2,7 +2,8 @@
 
 ## Identity
 - Date: 2026-11-09 (Asia/Novosibirsk)
-- Base: main `adc2c9445f6ce7f0a56bca67ed2bc31b8b82ec3c`
+- Initial base: main `adc2c9445f6ce7f0a56bca67ed2bc31b8b82ec3c`
+- Acceptance base: main `39705bc5669acb5b97a33c72f5badc044faff298`
 - Branch: `codex/course-design-standard`
 - Review: MEDIUM — opt-in CSS on existing course entrances, no state or engine changes.
 - Scope approval: current owner request to align OGE/EGE/VPR/textbooks/sections design with new principles.
@@ -48,9 +49,9 @@ The failures were current (not queue delays): compact mobile profile and
 Makarychev drawings, profile zoom wrapping, Vilenkin helper overlap, and
 historical Atanasyan source fingerprints.
 
-Composition preserves main `d063ca10200c9fa208df15077b11a6bea67659e5`: published
-EGE base/profile learning maps, OGE8 corrections and the Vilenkin SEO entrances
-from PR #493. HTML conflict resolution
+Composition preserves main `39705bc5669acb5b97a33c72f5badc044faff298`: EGE
+base/profile learning maps, OGE8 corrections, Vilenkin SEO entrances from PR #493,
+and the Merzlyak learning path and trainers from PR #503. HTML conflict resolution
 retains main in full and adds only the two CSS opt-ins. All 27 HTML files restore
 main exactly after removing those opt-ins and the single catalogue guide.
 No course JavaScript, bank, answer, persistence key or data schema is changed.
@@ -84,3 +85,11 @@ direct lesson and board links remain unchanged. The other 26 scoped HTML files
 and course-ui.css are byte-identical to reviewed head f1c93d04. Revalidate SEO,
 catalogue and navigator on the composed candidate; distinguish earlier-tree
 browser evidence from current-head CI status in the final acceptance record.
+
+Main then advanced to 39705bc5 via PR #503, including new Merzlyak runtime,
+progress fields and compact task controls. Preserve all 22 incoming files;
+resolve the catalogue by retaining its complete new learning path and adding
+only this task's CSS/body opt-ins. The new runtime requires composed Merzlyak
+browser checks; earlier renderer evidence is not a check of this new runtime.
+Reverting this design PR must retain the new main serializers and progress
+fields from #503; do not roll back or clear pupil data.
