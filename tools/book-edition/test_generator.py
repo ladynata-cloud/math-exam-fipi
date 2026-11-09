@@ -46,7 +46,8 @@ class GeneratorTests(unittest.TestCase):
         # The course guide adds exactly two local assets, checked below.
         # This is the future candidate closure; published v1/v2 stay immutable.
         # Video-model investigations add exactly four self-contained local assets.
-        self.assertEqual(len(first), 238)
+        # PR525 adds one all-topics stylesheet, with its exact closure checked below.
+        self.assertEqual(len(first), 239)
         self.assertEqual(first[edition.prefix + "assets/math-home.css"],
                          (ROOT / "assets/math-home.css").read_bytes())
         # The navigation-only continuation adds exactly these two dependencies.
@@ -125,7 +126,7 @@ class GeneratorTests(unittest.TestCase):
         with patch.object(Path, "read_bytes", lambda path: raw if path == ROOT / entry else original_read(path)):
             previous, previous_manifest = builder.build(edition)
         # The independent video-model additions remain in the no-guide candidate.
-        self.assertEqual(len(previous), 236)
+        self.assertEqual(len(previous), 237)
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
@@ -181,11 +182,43 @@ class GeneratorTests(unittest.TestCase):
         original_read = Path.read_bytes
         with patch.object(Path, "read_bytes", lambda path: old_html[path] if path in old_html else original_read(path)):
             previous, previous_manifest = builder.build(edition)
-        self.assertEqual(len(previous), 234, "the exact previously reviewed guide/map package is recovered")
+        self.assertEqual(len(previous), 235, "the guide/map package with the reviewed all-topics stylesheet is recovered")
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
         self.assertEqual(set(sources) - old_sources, reviewed)
+        self.assertEqual(old_sources - set(sources), set())
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
+
+    def test_all_topics_adds_only_its_stylesheet_and_preserves_prior_closure(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        entry = "trainers/oge-course/index.html"
+        asset = "assets/oge-all-topics.css"
+        tag = '<link rel="stylesheet" href="/assets/oge-all-topics.css?v=20261110">'
+        raw = (ROOT / entry).read_bytes()
+        self.assertEqual(raw.count(tag.encode()), 1, "exact reviewed all-topics include")
+        sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        self.assertIn(asset, sources[entry]["dependencies"])
+        self.assertEqual(sources[asset]["dependencies"], [], "no hidden stylesheet dependencies")
+        self.assertEqual(sources[asset]["sha256"], hashlib.sha256((ROOT / asset).read_bytes()).hexdigest())
+        self.assertEqual(output[edition.prefix + asset], (ROOT / asset).read_bytes())
+        page = output[edition.prefix + entry].decode()
+        bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
+        frozen = '/' + edition.prefix + asset + '?v=20261110'
+        self.assertEqual(page.count(bootstrap), 1)
+        self.assertEqual(page.count(frozen), 1)
+        self.assertNotIn('"/' + asset, page)
+        self.assertLess(page.index(bootstrap), page.index(frozen))
+        previous_raw = raw.replace(tag.encode(), b"", 1)
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: previous_raw if path == ROOT / entry else original_read(path)):
+            previous, previous_manifest = builder.build(edition)
+        self.assertEqual(len(previous), 238, "removing only the reviewed stylesheet restores the prior closure")
+        self.assertEqual(set(output) - set(previous), {edition.prefix + asset})
+        self.assertEqual(set(previous) - set(output), set())
+        old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
+        self.assertEqual(set(sources) - old_sources, {asset})
         self.assertEqual(old_sources - set(sources), set())
         self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
 

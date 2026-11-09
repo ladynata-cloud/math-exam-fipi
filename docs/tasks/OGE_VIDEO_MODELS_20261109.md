@@ -55,3 +55,23 @@ Main advanced to `e5ca2174becd89064710af625b517feeab00e4bd` during validation. A
 The fixed-book verifier identified an evidence-format mismatch: the source pages now contain one closed optional summary, and its historical SVG collector also records a hidden L8 preview on tasks 24/25. A narrow integration receipt preserves the complete raw text/SVG evidence, verifies native HTML byte identity and served asset hashes, and inverts only that exact summary and the pinned hidden preview during the existing fixture comparison. Original mathematics, text, geometry and oracle fixture pins are unchanged. Five new Node groups (including six Python negative-control groups) bring the local model suite to 53 passing tests. An offline replay of the archived browser evidence with projected receipts yielded 1185 PASS, 0 PENDING, 0 FAIL; this projection is not a fresh browser run, and CI must capture and validate actual DOM receipts on the final candidate.
 
 Release pending: all applicable CI on the final candidate, fresh main/head check, merge-delta verification and public resources. No merge or publication is claimed in this source record. No additional owner permission is pending within scope.
+
+### Publication repair after the all-topics update
+
+The 10 November continuation identified the three generator failures on
+`adeebef09f8c5d0bb2fe122b4f086b02e7ae2a5d`: the published #525 course entry adds
+exactly `assets/oge-all-topics.css` to the future edition's dependency closure.
+The video-model patch still adds only its four reviewed assets. The candidate
+therefore has 239 outputs, 237 without the course guide and 235 without the
+video models. An additional regression removes only the exact all-topics
+stylesheet include and proves the prior 238-output closure, the exact one-file
+source/output delta, no removals, unchanged CSS bytes, no transitive dependencies
+and the fixed namespace bootstrap preceding the rewritten include. No runtime,
+generator, published book, alias, content or learner storage is changed by this
+repair.
+
+The branch was composed with published `c8a4f1fc61dd07038e30764f8cedf0725b767539`
+by an ordinary merge with no file delta. Both the current and base book verifiers
+passed for the two immutable editions; generator 14/14, package 16/16,
+deployment-verifier regression 14/14 and evidence-collector 31/31 tests passed
+locally. Final candidate CI and real-browser acceptance remain mandatory.
