@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
+  "baseSha": "492aab65a42329a54a6954187b61ce9906e3e409",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2100,8 +2100,8 @@
       "placement": "before-head-close"
     },
     "school/index.html": {
-      "beforeSha256": "cb5f5bc990291681498ab09f6c90d35456b0b6fbcd95c7d238e8f936fde023b5",
-      "afterSha256": "325c9d9efe36a1510f47fadd6a9582dc434d1f36f39bc56d178312584fd70706",
+      "beforeSha256": "359864447bcaa6f710c66dd6194f3258146293ce1dbb8c572f4a02d3de45b9cc",
+      "afterSha256": "95b8e6e435b9b9e0ae56db46658b5a2ddced4762f1f9ed36644f71d2e9c76d52",
       "placement": "before-head-close"
     },
     "school/m9-exercises/index.html": {
@@ -4120,6 +4120,15 @@
         "school/m9-exercises/index.html",
         "school/makarychev7/index.html",
         "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6ead35317b117c5cb0aa359ba938628fdae6dc96",
+      "sourceBaseSha": "492aab65a42329a54a6954187b61ce9906e3e409",
+      "task": "docs/tasks/MAKARYCHEV_AUDIT_LEARNING_20261109.md",
+      "changedPaths": [
+        "school/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
