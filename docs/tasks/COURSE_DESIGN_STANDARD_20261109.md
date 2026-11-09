@@ -48,8 +48,9 @@ The failures were current (not queue delays): compact mobile profile and
 Makarychev drawings, profile zoom wrapping, Vilenkin helper overlap, and
 historical Atanasyan source fingerprints.
 
-Composition preserves main `463d6bf56fc8f1f944da8d237102f77888711e79`: published
-EGE base/profile learning maps and OGE8 corrections. HTML conflict resolution
+Composition preserves main `d063ca10200c9fa208df15077b11a6bea67659e5`: published
+EGE base/profile learning maps, OGE8 corrections and the Vilenkin SEO entrances
+from PR #493. HTML conflict resolution
 retains main in full and adds only the two CSS opt-ins. All 27 HTML files restore
 main exactly after removing those opt-ins and the single catalogue guide.
 No course JavaScript, bank, answer, persistence key or data schema is changed.
@@ -75,3 +76,11 @@ Final viewport review also found two pre-existing 320px entrance overflows
 Only textbook card text is allowed to shrink and wrap; models are untouched.
 The paired browser gate now requires absolute absence of page overflow at both
 widths for every scenario, rather than merely no increase from the control.
+
+During acceptance main advanced from 463d6bf5 to d063ca10 via approved PR #493.
+Its nine-file SEO delta contains no course runtime, task, model or CSS changes.
+The catalogue conflict preserves both new heading links and the shared guide;
+direct lesson and board links remain unchanged. The other 26 scoped HTML files
+and course-ui.css are byte-identical to reviewed head f1c93d04. Revalidate SEO,
+catalogue and navigator on the composed candidate; distinguish earlier-tree
+browser evidence from current-head CI status in the final acceptance record.
