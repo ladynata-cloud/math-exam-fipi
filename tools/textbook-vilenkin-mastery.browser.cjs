@@ -2,15 +2,39 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
-const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
 
-const base = process.env.WORKSHOP_URL || pathToFileURL(path.resolve(__dirname, '../school/index.html')).href;
+// Supplemental QA requires HTTP so root-relative shared course CSS is exercised.
+const base = process.env.WORKSHOP_URL;
+assert(base, 'WORKSHOP_URL must point to the local HTTP school entry');
+const origin = new URL(base).origin;
+assert.equal(new URL(base).protocol, 'http:', 'Use the QA local HTTP server');
+assert.equal(new URL(base).pathname, '/school/index.html');
+const out = process.env.VILENKIN_QA_ARTIFACTS || path.join(require('node:os').tmpdir(), 'qa-vilenkin-with-shell');
+const shellEvidence = [];
+const checkSharedShell = async page => {
+  const sample = await page.evaluate(() => ({
+    url: location.href, width: innerWidth, height: innerHeight,
+    family: document.body.dataset.mxCourse, background: getComputedStyle(document.body).backgroundColor,
+    sheets: [...document.styleSheets].filter(sheet => sheet.href && new URL(sheet.href).pathname === '/assets/course-ui.css')
+      .map(sheet => ({ href: sheet.href, rules: sheet.cssRules.length }))
+  }));
+  assert.equal(new URL(sample.url).origin, origin);
+  assert.equal(sample.family, 'school');
+  assert.equal(sample.background, 'rgb(246, 247, 242)');
+  assert.equal(sample.sheets.length, 1, 'Exactly one shared stylesheet is loaded');
+  assert.equal(new URL(sample.sheets[0].href).origin, origin);
+  assert(sample.sheets[0].rules > 20, 'The shared CSS parsed and loaded over HTTP');
+  assert.equal(sample.height, 900);
+  shellEvidence.push(sample);
+  await fs.writeFile(path.join(out, 'vilenkin-http-css-evidence.json'), JSON.stringify(shellEvidence, null, 2) + '\n');
+};
 const course = (grade, route = `course/vilenkin${grade}`) => `${base}?course=vilenkin${grade}#${route}`;
 const button = (page, command) => page.locator(`[data-cmd=${command}]`);
 const open = async (page, grade, route) => {
   await page.goto(course(grade, route));
   await page.locator('main h1').waitFor();
+  await checkSharedShell(page);
 };
 const submit = async (page, value) => {
   await page.locator('#answer').fill(value);
@@ -23,12 +47,15 @@ const correctAnswer = page => page.evaluate(() => {
 });
 
 (async () => {
+  await fs.mkdir(out, { recursive: true });
   const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
   const errors = [];
   try {
     const page = await browser.newPage({ viewport: { width: 320, height: 900 } });
     page.on('pageerror', error => errors.push(error.message));
+    await page.context().route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
     await open(page, 5);
+    await page.screenshot({ path: path.join(out, 'vilenkin5-home-with-shell-320.png'), animations: 'disabled' });
     assert.match(await page.locator('a[href="#v5-unit/29"]').innerText(), /Самостоятельно: 0 из/);
     assert.equal(await button(page, 'resume-vilenkin').count(), 0);
 
@@ -38,6 +65,7 @@ const correctAnswer = page => page.evaluate(() => {
     await button(page, 'next').click();
     await page.locator('#answer').fill('мой черновик');
     await page.reload();
+    await checkSharedShell(page);
     assert.equal(await page.locator('#answer').inputValue(), 'мой черновик');
     assert.match(await page.locator('.v6-history summary').innerText(), /\(1\)/);
 
@@ -59,6 +87,7 @@ const correctAnswer = page => page.evaluate(() => {
     assert.notEqual(await page.locator('#task-panel .question').innerText(), initialPrompt);
     await submit(page, '-999');
     await page.reload();
+    await checkSharedShell(page);
     assert.equal((await saved(page)).vilenkinDrafts.vilenkin6.checkIndex, 1);
     assert.equal(await page.locator('#answer').inputValue(), '-999');
     await submit(page, await correctAnswer(page));
@@ -80,6 +109,7 @@ const correctAnswer = page => page.evaluate(() => {
 
     await page.evaluate(() => localStorage.removeItem(WorkshopState.KEY));
     await page.reload();
+    await checkSharedShell(page);
     const pilot = page;
     await open(pilot, 5, 'lesson/v5f-fraction-same-add');
     await pilot.getByRole('link', { name: /Сложение дробей · из 5 в 6 класс/ }).click();
@@ -93,6 +123,8 @@ const correctAnswer = page => page.evaluate(() => {
     assert.match(await pilot.locator('#fraction-pilot-experiment details').innerText(), /5\/6/);
     for (const width of [320, 1280]) {
       await pilot.setViewportSize({ width, height: 900 });
+      await checkSharedShell(pilot);
+      await pilot.screenshot({ path: path.join(out, 'vilenkin-fraction-pilot-with-shell-' + width + '.png'), animations: 'disabled' });
       assert(await pilot.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     }
     await button(pilot, 'fraction-check').click();
@@ -118,11 +150,12 @@ const correctAnswer = page => page.evaluate(() => {
     });
     await pilot.goto(course(5, 'lesson/v5f-fraction-same-add'));
     await pilot.reload();
+    await checkSharedShell(pilot);
     assert.match(await pilot.locator('.lesson-head .eyebrow').innerText(), /Самостоятельная проверка/i);
     await submit(pilot, await correctAnswer(pilot));
     assert.equal((await saved(pilot)).events.at(-1).independent, false);
     assert.deepEqual(errors, []);
-    console.log('PASS Vilenkin mastery: course cards, separate drafts, reload, help and retries, report privacy, linked fractions and independent check, legacy data, mobile width.');
+    console.log('VILENKIN_MASTERY_HTTP_CSS_OK: actual shared CSS, course cards, separate drafts, reload, help and retries, report privacy, linked fractions and independent check, legacy data, 320/1280x900.');
   } finally {
     await browser.close();
   }

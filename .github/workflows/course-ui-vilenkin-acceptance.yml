@@ -1,0 +1,37 @@
+name: Course styling supplemental Vilenkin acceptance
+on:
+  push:
+    branches: [qa/course-ui-vilenkin-bb95-20261109]
+permissions:
+  contents: read
+jobs:
+  styled-vilenkin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 2
+      - name: Verify unchanged product source
+        run: |
+          git show -s --format='%H %P %T'
+          test "$(git show -s --format=%P)" = "bb95d9b7c10c75d436c1d679318d9700ebb24e7b"
+          git diff-tree --no-commit-id --name-only -r HEAD
+          git diff --exit-code HEAD^ HEAD -- assets stereo-course school courses trainers ege-baza ege-profil geometry-course geometry-merzlyak geometry-pogorelov oge vpr
+      - name: Browser setup
+        run: |
+          npm install --prefix "$RUNNER_TEMP/course-ui" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/course-ui/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Styled workshop, mastery and retained work over HTTP
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >"$RUNNER_TEMP/vilenkin-http.log" 2>&1 &
+          qa_http_pid=$!
+          trap 'kill "$qa_http_pid" || true' EXIT
+          for attempt in {1..20}; do curl -fsS http://127.0.0.1:8765/school/index.html >/dev/null && break; sleep 0.5; done
+          NODE_PATH="$RUNNER_TEMP/course-ui/node_modules" WORKSHOP_URL="http://127.0.0.1:8765/school/index.html" VILENKIN_QA_ARTIFACTS="$RUNNER_TEMP/vilenkin-qa" node tools/textbook-vilenkin-mastery.browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: course-ui-vilenkin-supplemental
+          path: ${{ runner.temp }}/vilenkin-qa
+          if-no-files-found: error
