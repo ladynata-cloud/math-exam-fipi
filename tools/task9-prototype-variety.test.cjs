@@ -93,6 +93,32 @@ test('generated two-bracket practice varies both the bracket multipliers and the
   assert.ok(divisors.size >= 4, 'brackets lead to different linear equations');
 });
 
+test('source disclosure distinguishes official demos, indirect bank verification and authored analogues', () => {
+  const trainer = math.loadTrainer(trainerPath);
+  const bank = trainer.run('EXAM_BANK');
+  const sourceHTML = trainer.run('taskSourceHTML');
+  assert.equal(bank.filter(task => task.src === 'fipi').length, 17);
+  assert.equal(bank.filter(task => task.src === 'fipi-demo').length, 2);
+  assert.equal(bank.filter(task => task.src === 'analog').length, 8);
+  assert.equal(bank.find(task => task.id === 'exam-demo-2027').tag, 'Проект демоверсии ФИПИ 2027');
+  for (const task of bank) {
+    const text = sourceHTML(task);
+    if (task.src === 'fipi') {
+      assert.match(text, /навигаторе ФИПИ/);
+      assert.match(text, /Прямая сверка карточки официального банка недоступна/);
+      assert.match(text, /100ballnik\.com/);
+      assert.match(text, /sdamgia\.online/);
+    } else if (task.src === 'analog') {
+      assert.match(text, /Авторское задание MathExam/);
+      assert.match(text, /не является заданием ФИПИ/);
+    } else {
+      const year = task.id.slice(-4);
+      assert.ok(text.includes('/' + year + '/ma_9_' + year + '.zip'));
+    }
+  }
+  assert.equal(sourceHTML(trainer.run('BANK.find(t=>!t.examKind)')), '');
+});
+
 test('each exam quiz draws five linear and five quadratic equations with all shapes and both root directions', () => {
   const trainer = math.loadTrainer(trainerPath);
   const bank = new Set(trainer.run('EXAM_BANK'));

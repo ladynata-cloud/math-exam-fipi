@@ -986,7 +986,6 @@ function transferFromABC(L,R){
   return {Lt:side(L),Rt:side(R)};
 }
 function stCanon(root, kc, mc, source){
-  if(fcmp(kc,F0)<0){kc=fneg(kc);mc=fneg(mc);}
   return (state)=>({
     q:'Собери слагаемые с <i>x</i> слева, числа — справа. Затем сложи подобные и впиши два результата в запись ниже:',
     ui:{type:'canon'},
@@ -1164,7 +1163,7 @@ function stRoots(lo,hi){
   return (state)=>({
     q:'Найди оба корня: <span class="fform">x = '+fracHTML(MINUS+'b ± √D','2a')+'</span>',
     ui:{type:'num2',labels:['x₁ =','x₂ =']},
-    hint:'Считай двумя строками: x₁ = (−b − √D) ÷ (2a) и x₂ = (−b + √D) ÷ (2a). Подставляй b со знаком!',
+    hint:'Считай двумя строками: (−b − √D) ÷ (2a) и (−b + √D) ÷ (2a). Подставляй b со знаком! Корни можно записать в любом порядке; при отрицательном a первая формула даёт больший корень.',
     check(vals){
       const f=parseAll(vals); if(!f)return needMsg();
       const [u,v]=f;
@@ -1227,7 +1226,7 @@ function stFactorNC(base){
       const [a,b]=f;
       if(fzero(a))return {ok:false,msg:'В скобке должен остаться и x с коэффициентом, и число.'};
       const lam=fdiv(a,base.a);
-      if(feq(b,fmul(lam,base.b)))return {ok:true};
+      if(feq(b,fmul(lam,base.b)))return {ok:true,msg:feq(lam,F1)?'':'Получилось равносильное уравнение: сначала умножили обе части на '+numHTML(lam)+', затем вынесли x. Это дополнительное преобразование, а не только вынесение множителя.'};
       return {ok:false,msg:'Проверь: если раскрыть скобку обратно, должно получиться исходное '+quadHTML(base.a,base.b,F0)+'.'};
     },
     reveal:{vals:[valStr(base.a),valStr(base.b)],
@@ -2319,7 +2318,7 @@ PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Дополнитель�
 /* Актуальный формат №9. Номера сверены по навигатору ФИПИ и публикациям
    заданий, ссылки и происхождение каждого типа — в спецификации задачи. */
 const EXAM_BANK=[
-  exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Демоверсия ФИПИ 2027'),
+  exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Проект демоверсии ФИПИ 2027'),
   exam('demo-2026','quad-nonmonic','QF',[X2(2),X(-3),N(1)],[N(0)],'min','0,5','fipi-demo','Демоверсия ФИПИ 2026'),
   exam('483ABF','linear-one-bracket','LB',[BR(4,[X(1),N(-6)])],[N(5)],null,'7,25'),
   exam('36E26B','quad-square','QNB',[X2(1),N(-144)],[N(0)],'max','12'),
@@ -2352,6 +2351,16 @@ BANK.push(...EXAM_BANK);
 function exam(code, examKind, fam, Lt, Rt, ask, exp, source='fipi', label){
   const tag=label || (source==='fipi'?'Открытый банк ФИПИ · '+code:'Тренировочный аналог');
   return {...bk('exam-'+code,fam,source,tag,{Lt,Rt},ask,exp),examKind};
+}
+
+function taskSourceHTML(t){
+  if(!t.examKind)return '';
+  if(t.src==='analog')return 'Авторское задание MathExam по типу № 9 ОГЭ; не является заданием ФИПИ.';
+  if(t.src==='fipi-demo'){
+    const year=t.id==='exam-demo-2027'?'2027':'2026';
+    return 'Условие и ответ № 9 сверены с <a href="https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip">официальным архивом ФИПИ '+year+'</a>'+(year==='2027'?' (проект демоверсии).':'.');
+  }
+  return 'Идентификатор указан в <a href="https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf">навигаторе ФИПИ, с. 4</a>. Условие и выбор корня сверены по <a href="https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf">PDF-подборке</a> и <a href="https://sdamgia.online/oge/matematika/zadanie-9">каталогу прототипов</a>. Прямая сверка карточки официального банка недоступна.';
 }
 
 if(typeof module!=='undefined')module.exports={BANK,EXAM_BANK};
@@ -3249,7 +3258,7 @@ function checkFinal(t, raw){
   }
   const trap=finalTraps(t).find(o=>feq(o.v,v));
   if(trap)return {ok:false,msg:trap.m,trap:true};
-  return {ok:false,msg:'Пока не сходится. Попробуй решить по шагам — кнопка ниже.'};
+  return {ok:false,msg:'Пока не сходится. Открой «Хочешь подсказку?» и попробуй решить по шагам.'};
 }
 
 /* --- инлайн-решение задачи по шагам (общий для обоих режимов) --- */
@@ -3555,7 +3564,9 @@ function makeMaraCard(t, onProgress){
   bStep.classList.add("minimal-hint");card.insertBefore(bStep,ansField);
   card.appendChild(row);
   card.appendChild(stepHost);
-  OGEMinimal.group(card,[badge,no],"Об этом задании");
+  const sourceHTML=taskSourceHTML(t),about=[badge,no];
+  if(sourceHTML){const source=elt('p','task-source',sourceHTML);card.appendChild(source);about.push(source);}
+  OGEMinimal.group(card,about,"Об этом задании");
 
   /* запись прогресса (решения F8, D1, D4): «Решить по шагам» — не помощь;
      «Подсказка» и «Показать шаг» снимают «без подсказок»; после показа
@@ -3605,8 +3616,8 @@ function makeMaraCard(t, onProgress){
 }
 
 /* ============ ЗАЧЁТ: 10 задач (решение D9) ============
-   3 линейных + 4 квадратных + 3 дробно-рациональных, семейства не
-   повторяются; одна попытка, подсказок и разбора нет; в зачёте — голый
+   5 линейных + 5 квадратных, все семь видов и оба направления выбора
+   корня; одна попытка, подсказок и разбора нет; в зачёте — голый
    вердикт, в итогах — строка диагностики по ловушкам Марафона. В журнал —
    один вердикт на задачу; solvedByType зачёт не трогает (как в 03A). */
 function buildQuiz(){
