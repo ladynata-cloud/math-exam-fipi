@@ -75,3 +75,12 @@ A read-only merge-tree check found only a navigator manifest conflict. An ordina
 merge preserved main's receipts and all course changes, added the three authored
 division pages, and regenerated the combined sitemap. Teaching source had no conflicts.
 Source bindings will be refreshed only against the exact committed composed source.
+
+## First CI feedback
+PR #542 on `47b567bc6d2eb2836e125287f778cca3156d5ab4` exposed missing self-canonical
+metadata on ten old course wrappers newly made reachable by this route. Exact
+HTTPS self-canonicals were added without changing exercises. The topic entrance
+opens multiples mode on the current/default skill; the full route keeps its explicit
+two-digit practice link. `tools/seo-check.py` now passes all 580 sitemap canonicals
+and 214 topic links. No gate or checker was weakened. Existing meaningful attempts,
+column multiplication and standalone-help checks also passed (56 tests).
