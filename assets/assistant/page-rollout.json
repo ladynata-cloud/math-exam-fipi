@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2b5e52ec0ba002706aaf8bee8a32f673105fa8f8",
+  "baseSha": "1a923a4e6f06613e58099f1f67c42f79c17acea0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4335,6 +4335,13 @@
     {
       "previousBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
       "sourceBaseSha": "811e8b6db40004e51ec32776da7134695753f751",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2b5e52ec0ba002706aaf8bee8a32f673105fa8f8",
+      "sourceBaseSha": "1a923a4e6f06613e58099f1f67c42f79c17acea0",
       "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
