@@ -1,9 +1,9 @@
 # Foundations: full finite routes — implementation and evidence
 
-Task: `FOUNDATIONS_COMPLETE_ROUTES_20261111`  
-Initial base: `19811cc15a33d63fc0fcc0b6a11c34863ec64d03`  
-Review level: HIGH.  
-Authorization: [standing owner publication policy](../OWNER_RELEASE_AUTHORIZATION.md), after the owner's explicit withdrawal of the former session instructions.
+Task: `FOUNDATIONS_COMPLETE_ROUTES_20261111`
+Initial base: `19811cc15a33d63fc0fcc0b6a11c34863ec64d03`
+Review level: HIGH.
+Implementation authorization: the owner’s direct autonomous work request. The latest session AGENTS instructions require a separate explicit authorization for merge and deployment; this candidate stops at Draft PR.
 
 ## Delivered candidate
 
@@ -44,7 +44,7 @@ Assessment pauses visibly if an event cannot be saved. Public learning remains a
 
 ## Release record
 
-At this initial candidate: Draft PR/CI and publication verification pending. Final exact head, tests, review, base/head movement, merge and deployed result will be recorded before/after the controlled release in the PR and the next approved task's project status. No further publication permission is required when all applicable checks pass.
+Draft PR #552 is open. No merge or deployment has occurred. The latest user-supplied AGENTS instructions supersede the earlier standing publication permission for this session. A separate explicit owner authorization naming the reviewed base/head is required for release. Final exact-head CI is recorded in the PR.
 
 Rollback: ordinary scoped revert; no migration or deletion of old learner records is required.
 
@@ -53,3 +53,13 @@ Rollback: ordinary scoped revert; no migration or deletion of old learner record
 On initial head `a40d2b3db2da81c56a3feaff547a30ec68c32936`, all 17 Node tests passed, including every trainer file target and navigation-only archived-source identity. Existing preparation contracts also passed. The full dedicated job stopped because the division DOM test preceded installation of jsdom; its order is corrected without removing any test. SEO found inconsistent shared descriptions; these are synchronised. Public navigator provenance correctly detected the approved PreOGE source edit; its existing explicit source-binding mechanism is updated for exactly `trainers/oge-basics/index.html` against that committed source. No navigator/runtime preservation test is weakened.
 
 Independent technical review additionally found active-pointer resume loss after a failed pointer write and a race between reading a question and another tab completing/deleting it. The corrected code reconciles valid active sessions by their start time, re-renders the current step after peer progress and returns safely after deletion. New state and real-DOM regressions cover these findings. Final browser and exact-head checks remain pending on the updated candidate.
+
+## Completed browser verification and final candidate
+
+On head `8648d96cdffa9a2688da98838fc8454a75b9629f`, the dedicated GitHub job passed all 18 Node tests and four real-DOM race regressions, existing foundations/EGE browser journeys, and the complete new Chromium run: all 135 routes, 810 fresh-check answers, 318 exact visual models, 320/390/1280px layouts, keyboard, reload, two-tab assistance and precise EGE return. Three actual screenshots were inspected (signed map, 320px decimal work, coordinate graph); no overlap or horizontal overflow was found. This is synthetic learner verification, not a pupil-effectiveness study.
+
+The remaining whitespace failure was Markdown hard-break spaces and CRLF line endings in six retained archived trainers. Markdown spaces are removed. The new diff check explicitly recognises CRLF while retaining trailing-space, trailing-blank-line and space-before-tab checks; the original archive blob-identity regression remains unchanged. No archive bytes are normalised or rewritten beyond the 16 reviewed return-link substitutions.
+
+The final follow-up also aligns the retry URL with the resumed check and avoids labelling an unchecked stale input correct when another tab has completed that question. Focused browser/DOM regressions exercise the save-retry and stale-answer cases. The execution environment returned later in the session; the local clean task branch was fast-forwarded to the already reviewed remote task head, enabling local verification. Final exact-head CI is required after these changes.
+
+Local follow-up: all 18 exact-math/state/source tests and all five real-DOM race tests passed. Local Chromium could not launch because the execution sandbox denied its socket; browser verification remains in the pinned GitHub Actions environment. No local browser success is claimed.

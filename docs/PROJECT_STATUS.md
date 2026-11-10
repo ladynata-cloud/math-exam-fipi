@@ -2,7 +2,7 @@
 
 ## 2026-11-11 — Full foundations routes candidate
 
-The owner requested finite routes and skill maps across the shared basic mathematics course, then prioritised conceptual maps throughout OGE. The foundations candidate covers 181 substantive entries in 12 groups with 135 routes and 2,430 checked questions. Prior source navigation and saves remain available. This entry records an implementation candidate; publication is not yet claimed. See [task and verification report](reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md). The later OGE map implementation is a separate approved task. Standing publication authorization applies after the owner's withdrawal of the former session restrictions.
+The owner requested finite routes and skill maps across the shared basic mathematics course, then prioritised conceptual maps throughout OGE. The foundations candidate covers 181 substantive entries in 12 groups with 135 routes and 2,430 checked questions. Prior source navigation and saves remain available. This entry records an implementation candidate; publication is not yet claimed. See [task and verification report](reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md). The later OGE map implementation is a separate approved task. The later user-supplied AGENTS rules reinstate a release hold: a separate explicit owner authorization is required before merge and deployment. Draft PR #552 is not published.
 
 
 - [Задача](tasks/EGE_BASE_CONCRETE_HINTS_20261110.md), MEDIUM: короткая помощь по текущей задаче, прямой вход в пошаговый разбор и понятная смена варианта. Формулировки покупки упаковок уточняются без изменения последовательности сохранённых ответов.

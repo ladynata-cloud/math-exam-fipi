@@ -106,7 +106,7 @@ function result(route,state){
 }
 function waitingForSave(route,mode){
  $('workspace').innerHTML='<section class="question-card"><h2>Сохранение проверки приостановилось</h2><p>Не удаётся записать ответы и отметки помощи. Незавершённая работа остаётся в этой вкладке. Пока можно перейти к учебной порции.</p><div class="actions"><button class="button primary" id="retry-save" type="button">Повторить сохранение</button><a class="button" href="'+E(routeURL(route.id,'session=practice'))+'">К учебной порции →</a></div></section>';
- $('retry-save').onclick=()=>{store.flush();renderSession(route,mode,sessionId);};warn();
+ $('retry-save').onclick=()=>{store.flush();window.history.replaceState(null,'',routeURL(route.id,'session='+mode));renderSession(route,mode,sessionId);};warn();
 }
 function missingSession(route){renderOverview(route);$('peer-notice').hidden=false;$('peer-notice').textContent='Прежняя попытка была удалена в другой вкладке. Выбери шаг, чтобы начать новую работу.';}
 function renderSession(route,mode,id){
@@ -135,7 +135,7 @@ function renderSession(route,mode,id){
   if(before.items.find(x=>x.id===q.id)?.correct){accepted(before);feedback.textContent='Этот шаг уже решён в другой вкладке. Показан сохранённый результат; новый ввод здесь не проверялся.';return;}
   const updated=store.act(sessionId,'submit',q.id,value);if(!updated)return missingSession(route);const answerState=updated.items.find(x=>x.id===q.id);
   if(mode!=='practice'&&store.read().pending)return waitingForSave(route,mode);
-  if(answerState.correct){accepted(updated);}
+  if(answerState.correct){accepted(updated);if(!C.correct(q,value))feedback.textContent='Этот шаг уже решён в другой вкладке. Показан сохранённый результат; новый ввод здесь не проверялся.';}
   else{feedback.className='feedback';feedback.textContent=C.formatProblem(q,value)||'Пока не сходится. Проверь условие и своё действие. Ответ можно исправить.';if(answerState.errors>=2){store.act(sessionId,'hint',q.id);if(mode!=='practice'&&store.read().pending)return waitingForSave(route,mode);$('question-hint').hidden=false;$('show-solution').hidden=false;feedback.textContent+=' Подсказка открыта ниже; помощь будет учтена.';}}
   warn();
  });

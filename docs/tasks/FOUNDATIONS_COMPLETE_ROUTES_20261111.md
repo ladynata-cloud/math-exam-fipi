@@ -32,12 +32,16 @@ Use the same public course from OGE and basic EGE and retain the earlier work.
 - The owner directly requested this large autonomous implementation. This is
   START for the stated scope. During execution the owner explicitly revoked
   the previously supplied AGENTS instructions; the repository's active
-  [standing release authorization](../OWNER_RELEASE_AUTHORIZATION.md) applies.
+  [standing release authorization](../OWNER_RELEASE_AUTHORIZATION.md) initially applied.
+  The later user-supplied AGENTS rules explicitly reinstate separate merge
+  authorization: finish implementation and Draft PR, then stop before release.
 - The initial scratch clone was clean and matched authoritative remote main.
   The execution environment subsequently became unavailable. Implementation
   continues through the GitHub connector; mathematical checks run in isolated
   JavaScript and full Node/browser gates run in GitHub Actions. No local
-  command result after that interruption is claimed.
+  command result during that interruption is claimed. The environment later
+  returned; the clean local branch was fast-forwarded to the existing reviewed
+  remote task head for local verification.
 
 ## Approved scope
 

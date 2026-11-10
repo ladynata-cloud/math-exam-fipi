@@ -43,3 +43,11 @@ test('peer deletes events between before-read and submit: no null state is deref
  assert.equal(f.w.document.querySelector('#peer-notice').hidden,false);assert.match(f.w.document.querySelector('#peer-notice').textContent,/удалена/);assert.deepEqual(f.errors,[]);
  }finally{f.dom.window.close();}
 });
+test('peer completes between before-read and submit: a stale wrong input is not called correct',()=>{
+ const f=fixture({trigger:'submit',operation:'advance'});
+ try{const form=f.w.document.querySelector('#answer-form'),q=f.C.questions(f.r,'check-a')[0];
+ if(q.input==='choice'){[...form.querySelectorAll('input')].find(n=>n.value!==String(q.answer)).checked=true;}else form.querySelector('input').value='9999999';
+ form.dispatchEvent(new f.w.Event('submit',{bubbles:true,cancelable:true}));
+ assert.match(f.w.document.querySelector('#answer-feedback').textContent,/новый ввод здесь не проверялся/);assert.equal(f.w.document.querySelector('#next-question').hidden,false);assert.deepEqual(f.errors,[]);
+ }finally{f.dom.window.close();}
+});
