@@ -37,6 +37,7 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/rounding-focus.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/public-navigator-oge.test.cjs
           NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" NAV_LOCAL_SERVER=1 NAV_SHARD_COUNT=4 NAV_SHARD_INDEX=${{ matrix.shard }} node tools/public-navigator.browser.cjs
       - name: Browser evidence
         if: always()

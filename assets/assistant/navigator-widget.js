@@ -2,7 +2,7 @@
 (function (root) {
   'use strict';
   const HOST_ID = 'maxexam-public-assistant';
-  const CSS = '/assets/assistant/widget.css?v=20261105-site1';
+  const CSS = '/assets/assistant/widget.css?v=20261111-oge1';
   const SITE = 'https://mathexam.space';
   const CABINET = 'https://mathexam-board-ladynata.msk1.amvera.tech';
   const privateClasses = 'ym-hide-content ym-disable-clickmap';
@@ -93,7 +93,15 @@
     footer.append(element('small', 'История только на этой странице.'), clear);
     panel.append(header, log, form, footer);
     shadow.append(stylesheet, panel, launcher);
-    document.body.append(host);
+    // On a narrow OGE screen the launcher belongs beside the route back to
+    // the course, in document flow. A floating circle can cover the learner's
+    // current answer or next-step button at any scroll position.
+    const courseNav = /^\/trainers\/(?:oge[-\d]|task19-trainer\.html)/.test(root.location.pathname)
+      ? Array.from(document.body.children).find(node => node.matches('nav.oge-wayfinding') && !node.hidden) : null;
+    if (courseNav) {
+      host.setAttribute('data-course-navigation', 'true');
+      courseNav.insertAdjacentElement('afterend', host);
+    } else document.body.append(host);
 
     function addMessage(text, visitor) {
       const article = element('article', undefined, { class: 'message ' + (visitor ? 'visitor' : 'navigator') + ' ' + privateClasses });

@@ -1,0 +1,83 @@
+name: OGE audit learning
+
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-task22-functions-graphs.html'
+      - 'trainers/oge-task24-proofs.html'
+      - 'trainers/oge-course-proof.js'
+      - 'trainers/oge-course-algebra.js'
+      - 'trainers/oge-course/index.html'
+      - 'oge/learning-map*'
+      - 'assets/assistant/navigator-widget.js'
+      - 'assets/assistant/widget.css'
+      - 'tools/task11-audit-learning*'
+      - 'tools/task11-test-evidence.cjs'
+      - 'tools/oge22-audit-learning*'
+      - 'tools/oge24-learning*'
+      - 'tools/oge-audit-navigation*'
+      - 'tools/oge-learning-map-evidence*'
+      - 'tools/public-navigator-oge*'
+      - '.github/workflows/oge-audit-learning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oge-audit-learning-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evidence-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-audit" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-audit/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-audit/node_modules" >> "$GITHUB_ENV"
+      - name: Mathematical feedback, restoration and independent evidence
+        run: |
+          node --test tools/task11-audit-learning.test.cjs tools/oge22-audit-learning.test.cjs tools/oge24-learning.test.cjs tools/oge-learning-map-evidence.test.cjs tools/public-navigator-oge.test.cjs
+          git diff --check
+      - name: Task 11 — help, new condition and return
+        run: node tools/task11-audit-learning.browser.cjs
+      - name: Task 22 — exact graph controls and saved work
+        if: ${{ !cancelled() }}
+        run: node tools/oge22-audit-learning.browser.cjs
+      - name: Task 24 — independent premises, keyboard and replay
+        if: ${{ !cancelled() }}
+        run: node tools/oge24-learning.browser.cjs
+      - name: Course recommendation and mobile navigation
+        if: ${{ !cancelled() }}
+        run: node tools/oge-audit-navigation.browser.cjs
+      - name: Reviewed source scenarios for the three updated book routes
+        if: ${{ !cancelled() }}
+        env:
+          BOOK_EXAM_MATCH: 'oge-task(11|22|24)-'
+          BOOK_EXAM_OUTPUT: artifacts/oge-audit-book-source
+        run: node tools/oge-book-exam.browser.cjs
+      - name: Save review evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: oge-audit-learning
+          path: |
+            artifacts/task11-audit-learning
+            artifacts/oge22-audit-learning
+            artifacts/oge24-learning
+            artifacts/oge-audit-navigation
+            artifacts/oge-audit-book-source
+          if-no-files-found: error
+          retention-days: 14

@@ -188,6 +188,10 @@ span.tchip,span.chip.jump{display:inline-flex;align-items:center;min-height:44px
 :root{--cream:#f6f7f5;--bg:#f6f7f5;--paper:#fff;--ink:#202820;--muted:#626b63;--blue:#216342;--accent:#216342;--green:#216342;--line:#dbe1da}
 body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
 .minimal-course .proof-fraction{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.15;margin:0 .16em;font-size:.95em}.minimal-course .proof-fraction>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .22em .12em}.minimal-course .proof-fraction>span:last-child{padding:.12em .22em 0}
+.proof-learning-result{margin:20px 0;padding:18px;border:1px solid #bbd2bf;border-radius:12px;background:#f0f7ef;line-height:1.6}
+.proof-learning-result strong{display:block;color:#216342;font-size:18px}.proof-learning-result p{margin:8px 0 14px;font-size:16px}
+.proof-learning-result .btn{max-width:100%;white-space:normal;text-align:left}.proof-learning-note,.proof-resume-note{font-size:14px;color:#59645a;line-height:1.5}
+.proof-resume-note{padding:8px 0;margin:6px 0}.minimal-course .diag ul{padding-left:20px}.minimal-course .diag li{margin:8px 0}
 @media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -392,15 +396,16 @@ function loadRec(){
   return {runs:CP.num(o.runs), best:CP.num(o.best), passed:o.passed===true,
     events:Array.isArray(o.events)?o.events.filter(CP.isObj):[], solved:CP.isObj(o.solved)?o.solved:{}};
 }
-CP.migrate(r=>Math.floor(CP.num(r.best)*QUIZ_TOTAL/100));   // до контракта best хранился в процентах
+if(proofStorageSnapshot().ok)CP.migrate(r=>Math.floor(CP.num(r.best)*QUIZ_TOTAL/100));   // до контракта best хранился в процентах
 const STORE={}; STORE[TID]=loadRec();
-function upd(fn){CP.saveRec(fn);STORE[TID]=loadRec();}
+function upd(fn){if(!proofLegacyWriteAllowed())return;CP.saveRec(fn);STORE[TID]=loadRec();}
 function rec(o){const e=Object.assign({t:Date.now()},o);
+  if(ST?.queue&&o.e!=='task_start'){ST.lastActionAt=e.t;ST.workStarted=true;}
   upd(r=>{r.events=(Array.isArray(r.events)?r.events:[]).concat([e]).slice(-300);});}
 function markSolved(id){upd(r=>{r.solved=CP.isObj(r.solved)?r.solved:{};r.solved[id]=true;});}
 /* журнал: один вердикт на задачу — первый промах (ловушка, ранний шаг, неверное
    обоснование) открывает тип */
-function missOnce(){if(!ST.missed){ST.missed=true;CP.mlog(curTask().id,false);}}
+function missOnce(){if(!ST.missed){ST.missed=true;if(proofLegacyWriteAllowed())CP.mlog(curTask().id,false);}}
 
 /* ================= SVG рендер ================= */
 function P(fig,n){return fig.pts[n];}
@@ -489,59 +494,290 @@ function lbl(n){ // A1 -> A₁
 let ST=null; // {mode, queue, qi, placed, dead:Set, err, hints, revealed, pool, solvedNow, results:[]}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-function loadTask(){
+/* A proof is a partial order, not a memorised list. Each array lists the
+   previously established facts used by that statement. The authored bank,
+   card IDs, legacy score and board action vocabulary remain unchanged. */
+const PROOF_DEPENDENCIES={
+  t1:[[],[0],[],[1,2]],
+  t10:[[],[],[1],[2],[0,3]],
+  t13:[[],[],[1],[0,1],[3],[4],[2,5]],
+  t15:[[],[0],[1],[2]],
+  t2:[[],[],[],[0,1,2],[3]],
+  t3:[[],[],[0,1],[2],[2,3]],
+  t4:[[],[0],[],[1,2]],
+  t5:[[],[],[0,1]],
+  t7:[[],[0],[0,1],[1,2]],
+  t6:[[],[0],[1],[2]],
+  t8:[[],[],[1],[2],[0,3]],
+  t9:[[],[0],[],[1,2]],
+  t12:[[],[0],[1]],
+  t11:[[],[0],[1]],
+  t14:[[],[],[0,1],[2]],
+  t16:[[],[0],[1],[2]],
+  t17:[[],[],[0,1],[0],[2,3]],
+  t18:[[],[0],[0,1],[2]],
+  t19:[[],[],[0,1],[2]],
+  t20:[[],[0],[],[1,2]]
+};
+function proofOrder(){
+  // Old checks and old in-memory clients may supply only the prefix count.
+  if(!Array.isArray(ST.order)||ST.order.length!==ST.placed)ST.order=Array.from({length:ST.placed},(_,i)=>i);
+  return ST.order;
+}
+function hasProofStep(i){return proofOrder().includes(i);}
+function missingProofFacts(i){return (PROOF_DEPENDENCIES[curTask().id][i]||[]).filter(n=>!hasProofStep(n));}
+function readyProofStep(i){return Number.isInteger(i)&&i>=0&&i<curTask().steps.length&&!hasProofStep(i)&&missingProofFacts(i).length===0;}
+function nextProofStep(){
+  const t=curTask(),phase=phasesOf(t)[ST.phase];
+  return phase.s.find(readyProofStep)??t.steps.findIndex((_,i)=>readyProofStep(i));
+}
+function acceptProofStep(i){
+  const st=curTask().steps[i];
+  proofOrder().push(i);ST.placed=ST.order.length;ST.early.delete(i);ST.pendingDependency=null;
+  if(st.lit&&st.lit.showcirc)ST.revealed=true;
+}
+function proofGiven(t){
+  // The diagram and this proof use the two secants in the order K–A–D,
+  // K–B–C. Stating that order makes its supplementary-angle step explicit.
+  return t.given+(t.id==='t10'?' На рисунке точки расположены в порядке <b>K — A — D</b> и <b>K — B — C</b>.':'');
+}
+
+/* Additive, personal evidence. Legacy solvedByType keeps its historical
+   meaning; new evidence never retroactively labels an old result independent.
+   A shared/managed frame and the exam do not create personal evidence/drafts. */
+let proofMemoryEvidence={v:1,attempts:[],byTask:{}},proofAttemptSerial=0,proofRestoring=false,proofMemoryOnly=false;
+function proofPersonal(){
+  return !CP.RO&&!window.OgeCourseSharedMode&&window.MathExamLearning?.managed!==true&&window.parent===window&&ST&&ST.mode!=='exam';
+}
+function proofStorageSnapshot(){
+  if(CP.RO||window.OgeCourseSharedMode||window.MathExamLearning?.managed===true||(window.parent!==undefined&&window.parent!==window))return {ok:false};
+  try{
+    const raw=localStorage.getItem('mathExamCourseProgress.v1'),all=raw===null?{}:JSON.parse(raw);
+    if(!CP.isObj(all)||(Object.hasOwn(all,TID)&&!CP.isObj(all[TID])))return {ok:false};
+    const rec=all[TID]||{};
+    if(Object.hasOwn(rec,'ext')&&!CP.isObj(rec.ext))return {ok:false};
+    const ext=rec.ext||{},a=ext.auditLearning;
+    if(Object.hasOwn(ext,'auditLearning')&&(!CP.isObj(a)||a.v!==1||!Array.isArray(a.attempts)||(Object.hasOwn(a,'byTask')&&!CP.isObj(a.byTask))))return {ok:false};
+    return {ok:true,all,rec,ext,audit:a};
+  }catch(_){return {ok:false};}
+}
+function proofHistoryKnown(){return !proofMemoryOnly&&proofStorageSnapshot().ok;}
+function proofLegacyWriteAllowed(){return !proofPersonal()||proofHistoryKnown();}
+function proofAudit(){
+  const stored=proofMemoryOnly?null:proofStorageSnapshot();
+  return stored?.ok&&stored.audit?stored.audit:proofMemoryEvidence;
+}
+function editProofAudit(change){
+  if(!proofPersonal())return false;
+  const stored=proofMemoryOnly?null:proofStorageSnapshot();
+  if(!stored?.ok)proofMemoryOnly=true;
+  const a=stored?.ok?(stored.audit||{v:1,attempts:[],byTask:{}}):JSON.parse(JSON.stringify(proofMemoryEvidence));
+  if(!a.byTask)a.byTask={};
+  if(change(a)===false)return false;
+  a.updatedAt=Date.now();
+  if(stored?.ok){
+    // Only this additive extension changes. Do not use the legacy writer,
+    // which also creates counters and updates the historical timestamp.
+    stored.rec.ext={...stored.ext,auditLearning:a};stored.all[TID]=stored.rec;
+    try{localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(stored.all));}
+    catch(_){proofMemoryOnly=true;}
+  }
+  proofMemoryEvidence=a;
+  return true;
+}
+function proofWasSeen(id,a=proofAudit()){
+  const r=CP.readAll()[TID]||{};
+  return !!(CP.isObj(a.byTask)&&CP.isObj(a.byTask[id])&&a.byTask[id].seenAt)||!!(CP.isObj(r.solved)&&r.solved[id])||
+    (Array.isArray(a.attempts)&&a.attempts.some(x=>CP.isObj(x)&&x.taskKey===id))||
+    (Array.isArray(r.events)&&r.events.some(e=>CP.isObj(e)&&e.task===id));
+}
+function proofTheme(id){const i=THEMES.findIndex(t=>t.tasks.includes(id));return 'theme-'+(i+1);}
+function beginProofEvidence(){
+  ST.auditErrors=0;ST.helpUsed=false;ST.hadError=false;ST.auditDone=false;ST.resumed=false;
+  ST.revision=0;
+  ST.lastActionAt=0;ST.workStarted=false;ST.noteEdited=false;
+  ST.attemptId='proof-'+Date.now()+'-'+(++proofAttemptSerial)+(window.crypto?.randomUUID?'-'+window.crypto.randomUUID():'');
+  ST.startedAt=Date.now();ST.historyKnown=proofPersonal()&&proofHistoryKnown();ST.fresh=ST.historyKnown&&!proofWasSeen(curTask().id);ST.claimDraft=true;
+  if(!proofPersonal())return;
+  const id=curTask().id;
+  editProofAudit(a=>{const old=CP.isObj(a.byTask[id])?a.byTask[id]:{};a.byTask[id]={...old,seenAt:old.seenAt||ST.startedAt,seenCount:CP.num(old.seenCount)+1,lastSeenAt:ST.startedAt};});
+}
+function markProofHelp(){
+  if(!proofEnsureCurrent())return false;
+  if(!ST?.queue||ST.solvedNow)return true;
+  ST.helpUsed=true;ST.lastActionAt=Date.now();ST.workStarted=true;
+  if(proofPersonal())editProofAudit(a=>{const id=curTask().id,old=CP.isObj(a.byTask[id])?a.byTask[id]:{};a.byTask[id]={...old,lastHelpAt:Date.now()};});
+  saveProofDraft();
+  return true;
+}
+function proofOutcome(){
+  if(!ST.fresh)return 'familiar';
+  if(ST.helpUsed||ST.gaveUp||ST.glows>0||ST.placedByHint>0)return 'helped';
+  return ST.hadError||ST.auditErrors>0?'corrected':'independent';
+}
+function finishProofEvidence(){
+  if(ST.auditDone)return;
+  ST.auditDone=true;ST.outcome=proofOutcome();
+  if(!proofPersonal())return;
+  const attempt={id:ST.attemptId,skill:proofTheme(curTask().id),taskKey:curTask().id,at:Date.now(),mode:ST.mode,
+    outcome:ST.outcome,helpUsed:!!(ST.helpUsed||ST.gaveUp||ST.glows||ST.placedByHint),fresh:ST.fresh===true,
+    errors:Math.max(CP.num(ST.auditErrors),CP.num(ST.err)),order:proofOrder().slice(),evidence:'proof-cards'};
+  editProofAudit(a=>{
+    if(a.attempts.some(x=>x&&x.id===attempt.id))return false;
+    a.attempts=a.attempts.concat(attempt).slice(-80);
+    const old=CP.isObj(a.byTask[attempt.taskKey])?a.byTask[attempt.taskKey]:{};
+    a.byTask[attempt.taskKey]={...old,[attempt.outcome]:CP.num(old[attempt.outcome])+1,lastAt:attempt.at,lastOutcome:attempt.outcome};
+  });
+}
+function proofNextChoice(){
+  const current=curTask().id,theme=THEMES.find(t=>t.tasks.includes(current));
+  const candidates=[...(theme?.tasks||[]),...TASKS.map(t=>t.id)].filter((id,i,all)=>id!==current&&all.indexOf(id)===i);
+  const historyKnown=proofHistoryKnown(),fresh=historyKnown&&candidates.find(id=>!proofWasSeen(id));
+  return {id:fresh||candidates[0]||current,fresh:!!fresh,historyKnown};
+}
+function nextProofPractice(){
+  const next=proofNextChoice();ST={mode:'train',queue:[next.id],qi:0,results:[]};
+  badge().textContent='Тренировка';renderTabs();loadTask();
+}
+function proofResultHTML(){
+  const outcome=ST.outcome||proofOutcome(),help=!!(ST.helpUsed||ST.gaveUp||ST.glows||ST.placedByHint);
+  const title={independent:'Собрано без подсказок',corrected:'Ошибка исправлена без подсказок',helped:'Собрано с помощью',familiar:ST.historyKnown?(help?'Знакомое доказательство · с помощью':'Знакомое доказательство · повтор'):'Новизна условия не подтверждена'+(help?' · с помощью':'')}[outcome];
+  const next=proofNextChoice();
+  return '<section class="proof-learning-result" data-proof-outcome="'+outcome+'" role="status"><strong>'+title+'</strong><p>'+
+    (outcome==='helped'?'Теперь проверь себя на другом доказательстве. ':outcome==='familiar'?(ST.historyKnown?'Это повтор уже встречавшегося условия. ':'Историю работы прочитать не удалось; результат отмечен как учебный повтор. '):'Это результат сборки из карточек. ')+
+    'Полное доказательство запиши в тетради с обоснованием каждого вывода.</p>'+
+    '<button class="btn dark" onclick="nextProofPractice()">'+(next.fresh?'Другое доказательство без подсказки →':next.historyKnown?'Повторить знакомое доказательство →':'Другое доказательство для практики →')+'</button>'+
+    (!next.historyKnown?'<p class="proof-learning-note">Сохранённая история недоступна или имеет другой формат. Работа продолжается на этой странице; новизна следующего условия не подтверждена.</p>':!next.fresh?'<p class="proof-learning-note">Все 20 условий уже встречались. Новый порядок карточек не делает условие новым.</p>':'')+'</section>';
+}
+function proofDraftSnapshot(){
+  const bank=ST.awaitJust==null?null:JUSTBANK[curTask().steps[ST.awaitJust].jc];
+  const justOptions=bank?[bank.ok,...bank.no]:[];
+  const panel=document.getElementById('courseHintPanel');
+  return {v:1,revision:ST.revision+1,at:Date.now(),attemptId:ST.attemptId,mode:ST.mode,queue:ST.queue.slice(),qi:ST.qi,
+    order:proofOrder().slice(),dead:[...ST.dead],early:[...ST.early],pool:ST.pool.map(x=>({...x})),phase:ST.phase,
+    err:ST.err,hints:ST.hints,glows:ST.glows,placedByHint:ST.placedByHint,auditErrors:ST.auditErrors,
+    revealed:ST.revealed,solvedNow:ST.solvedNow,gaveUp:ST.gaveUp,missed:ST.missed,helpUsed:ST.helpUsed,hadError:ST.hadError,
+    lastActionAt:ST.lastActionAt,workStarted:ST.workStarted,noteEdited:ST.noteEdited,
+    fresh:ST.fresh,historyKnown:ST.historyKnown,startedAt:ST.startedAt,auditDone:ST.auditDone,pendingDependency:ST.pendingDependency,
+    helpOpen:!!panel&&!panel.hidden,awaitJust:ST.awaitJust,
+    justOrder:ST.justPool?ST.justPool.map(x=>justOptions.indexOf(x.txt)):[],justDead:[...ST.justDead],
+    results:ST.results.map(x=>({id:x.id,grade:x.grade,self:x.self,err:x.err}))};
+}
+function saveProofDraft(){
+  if(proofRestoring||!proofPersonal()||!ST.queue||!curTask()||!ST.attemptId)return;
+  const snapshot=proofDraftSnapshot(),claim=ST.claimDraft;
+  editProofAudit(a=>{
+    // Another tab may have started a newer task. Never replace that draft
+    // from an old tab; explicit task selection is the only ownership change.
+    if(!claim&&(a.draft?.attemptId!==ST.attemptId||a.draft?.revision!==ST.revision))return false;
+    a.draft=snapshot;
+    ST.revision=snapshot.revision;
+    const hasWork=!!(ST.workStarted||ST.order.length||ST.auditErrors||ST.helpUsed||ST.noteEdited);
+    a.resume={at:hasWork?ST.lastActionAt:0,hasWork,unfinished:hasWork&&!ST.solvedNow,
+      helpUsed:!!(ST.helpUsed||ST.gaveUp||ST.glows||ST.placedByHint),skill:proofTheme(curTask().id)};
+  });
+  ST.claimDraft=false;
+}
+function validProofDraft(d){
+  if(!CP.isObj(d)||d.v!==1||!['study','train','recall','justify'].includes(d.mode)||typeof d.attemptId!=='string'||!/^[a-zA-Z0-9-]{1,110}$/.test(d.attemptId))return false;
+  if(!Number.isSafeInteger(d.revision)||d.revision<1)return false;
+  if(!Array.isArray(d.queue)||!d.queue.length||d.queue.length>20||!d.queue.every(id=>typeof id==='string'&&Object.hasOwn(byId,id))||!Number.isInteger(d.qi)||d.qi<0||d.qi>=d.queue.length)return false;
+  const t=byId[d.queue[d.qi]],ints=(xs,n)=>Array.isArray(xs)&&xs.length<=n&&xs.every(i=>Number.isInteger(i)&&i>=0&&i<n)&&new Set(xs).size===xs.length;
+  if(!ints(d.order,t.steps.length)||!ints(d.dead,t.traps.length)||!ints(d.early,t.steps.length))return false;
+  const accepted=new Set();for(const i of d.order){if(PROOF_DEPENDENCIES[t.id][i].some(p=>!accepted.has(p)))return false;accepted.add(i);}
+  if(!Array.isArray(d.pool)||d.pool.length!==t.steps.length+t.traps.length||new Set(d.pool.map(x=>x&&x.type+':'+x.i)).size!==d.pool.length||!d.pool.every(x=>CP.isObj(x)&&['s','x'].includes(x.type)&&Number.isInteger(x.i)&&x.i>=0&&x.i<(x.type==='s'?t.steps.length:t.traps.length)))return false;
+  for(const k of ['err','hints','glows','placedByHint','auditErrors'])if(!Number.isSafeInteger(d[k])||d[k]<0||d[k]>10000)return false;
+  for(const k of ['revealed','solvedNow','gaveUp','missed','helpUsed','hadError','fresh','historyKnown','auditDone','helpOpen','workStarted','noteEdited'])if(typeof d[k]!=='boolean')return false;
+  if(d.solvedNow!==(d.order.length===t.steps.length)||d.auditDone!==d.solvedNow||(!d.helpUsed&&(d.glows||d.placedByHint||d.gaveUp||d.helpOpen)))return false;
+  if(!Number.isSafeInteger(d.at)||d.at<=0||d.at>Date.now()+60000||!Number.isSafeInteger(d.startedAt)||d.startedAt<=0||d.startedAt>d.at)return false;
+  if(!Number.isSafeInteger(d.lastActionAt)||d.lastActionAt<0||d.lastActionAt>d.at)return false;
+  const phases=phasesOf(t);if(!Number.isInteger(d.phase)||d.phase<0||d.phase>=phases.length)return false;
+  if(phases.some((phase,i)=>i<d.phase&&!phase.s.every(s=>accepted.has(s))))return false;
+  if(phases.some((phase,i)=>i>d.phase&&phase.s.some(s=>accepted.has(s))))return false;
+  if(d.pendingDependency!==null&&(!Number.isInteger(d.pendingDependency)||d.pendingDependency<0||d.pendingDependency>=t.steps.length))return false;
+  if(d.awaitJust!==null){
+    const i=d.awaitJust;if(d.mode!=='justify'||!Number.isInteger(i)||!t.steps[i]?.jc||accepted.has(i)||PROOF_DEPENDENCIES[t.id][i].some(p=>!accepted.has(p)))return false;
+    const n=1+JUSTBANK[t.steps[i].jc].no.length;if(!ints(d.justOrder,n)||d.justOrder.length!==n||!ints(d.justDead,n))return false;
+  }else if(!Array.isArray(d.justOrder)||d.justOrder.length||!Array.isArray(d.justDead)||d.justDead.length)return false;
+  return Array.isArray(d.results)&&d.results.length<=20&&d.results.every(r=>CP.isObj(r)&&Object.hasOwn(byId,r.id)&&['g','y','r'].includes(r.grade)&&typeof r.self==='boolean'&&Number.isSafeInteger(r.err)&&r.err>=0&&r.err<=10000);
+}
+function restoreProofDraft(){
+  if(!proofPersonal())return false;
+  const d=proofAudit().draft;if(!validProofDraft(d))return false;
+  ST={...d,placed:d.order.length,order:d.order.slice(),queue:d.queue.slice(),results:d.results.map(x=>({...x})),
+    dead:new Set(d.dead),early:new Set(d.early),pool:d.pool.map(x=>({...x})),justDead:new Set(d.justDead),claimDraft:false,resumed:true};
+  if(d.awaitJust!==null){const bank=JUSTBANK[curTask().steps[d.awaitJust].jc],options=[{ok:true,txt:bank.ok},...bank.no.map(txt=>({ok:false,txt}))];ST.justPool=d.justOrder.map(i=>options[i]);}else ST.justPool=null;
+  if(ST.solvedNow)ST.outcome=proofOutcome();
+  badge().textContent={study:'Разбор',train:'Тренировка',recall:'По памяти',justify:'Обоснуй'}[ST.mode];
+  proofRestoring=true;
+  try{renderTabs();renderTask();return true;}finally{proofRestoring=false;}
+}
+function proofEnsureCurrent(){
+  if(!proofPersonal()||!ST?.queue||!ST.attemptId||ST.claimDraft||!Number.isSafeInteger(ST.revision))return true;
+  const draft=proofAudit().draft;
+  if(!draft||(draft.attemptId===ST.attemptId&&draft.revision===ST.revision)||!validProofDraft(draft))return true;
+  if(!restoreProofDraft())return true;
+  const message='В другой вкладке сохранена более свежая работа. Здесь восстановлены её шаги и помощь. Повтори своё действие.';
+  const note=document.querySelector('.proof-resume-note');if(note)note.textContent=message;
+  announce(message);return false;
+}
+
+function loadTask(options={}){
   const t=byId[ST.queue[ST.qi]];
   ST.placed=0; ST.dead=new Set(); ST.early=new Set(); ST.err=0; ST.hints=0; ST.revealed=false; ST.solvedNow=false; ST.gaveUp=false; ST.glows=0; ST.placedByHint=0; ST.missed=false; ST.phase=0; ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
+  ST.order=[];ST.pendingDependency=null;ST.helpUsed=false;ST.hadError=false;ST.helpOpen=false;
   const items=[];
   t.steps.forEach((_,i)=>items.push({type:'s',i}));
   t.traps.forEach((_,i)=>items.push({type:'x',i}));
   ST.pool=shuffle(items);
+  if(!options.restart)beginProofEvidence();
   rec({e:'task_start',task:t.id,mode:ST.mode});
-  renderTask();
+  if(!options.restart)renderTask();
 }
 function curTask(){return byId[ST.queue[ST.qi]];}
-function activeLit(){const t=curTask();return ST.placed>0?t.steps[ST.placed-1].lit:null;}
+function activeLit(){const t=curTask();return ST.placed>0?t.steps[proofOrder().at(-1)].lit:null;}
 function phasesOf(t){ if(t.phases)return t.phases; return [{name:'',s:t.steps.map((_,i)=>i),x:t.traps.map((_,i)=>i)}]; }
 function phaseOfStep(t,i){ const ph=phasesOf(t); for(let k=0;k<ph.length;k++) if(ph[k].s.indexOf(i)>=0) return k; return 0; }
 function advancePhaseIfDone(){ // если все шаги текущей фазы поставлены и есть следующая — перейти
   const t=curTask(), phs=phasesOf(t);
   if(ST.placed>=t.steps.length) return false;
   const cur=phs[ST.phase];
-  if(cur.s.every(si=>si<ST.placed) && ST.phase<phs.length-1){ ST.phase++; return true; }
+  if(cur.s.every(hasProofStep) && ST.phase<phs.length-1){ ST.phase++; return true; }
   return false;
 }
 
-const PNOTE24='<details class="pnote"><summary>О прогрессе: подсказки ничего не отнимают</summary><div>Баллов и «звёздочек» здесь нет. Доказательство засчитывается как собранное самостоятельно, если обошлось без «Сдаюсь» и «Поставить шаг», а подсветка («Подсказать») понадобилась не больше одного раза; ошибка, исправленная самостоятельно, этому не мешает. Иначе задача отмечается «решение показано» — к ней стоит вернуться. Ошибки попадают в «Работу над ошибками» курса; тип уходит оттуда после трёх задач подряд, решённых без промаха.</div></details>';
+const PNOTE24='<details class="pnote"><summary>Как записывается результат</summary><div>Прежние отметки курса сохраняют учебную работу. Новые результаты отдельно показывают сборку без подсказок, исправление ошибки, работу с помощью и знакомый повтор. Даже одна подсветка карточки означает помощь. После разбора можно выбрать другое доказательство. Сборка карточек не заменяет письменного доказательства на ОГЭ.</div></details>';
 /* короткое сообщение для экранного диктора */
 function announce(msg){const el=document.getElementById('live');if(el)el.textContent=msg;}
 function pickCard(item){
+  if(!proofEnsureCurrent())return;
   const t=curTask();
   if(ST.solvedNow)return;
   if(ST.awaitJust!=null)return; // идёт выбор обоснования
   if(item.type==='s'){
-    if(item.i===ST.placed){
+    if(!Number.isInteger(item.i)||!t.steps[item.i]||hasProofStep(item.i))return;
+    if(readyProofStep(item.i)){
       const st=t.steps[item.i];
       if(ST.mode==='justify' && st.jc){ enterJust(item.i); renderTask(); return; } // сначала обоснование
-      if(st.lit&&st.lit.showcirc)ST.revealed=true;
-      ST.early.delete(item.i);
-      ST.placed++;
+      acceptProofStep(item.i);
       rec({e:'step',task:t.id,step:item.i});
       announce('Верно: шаг '+ST.placed+' из '+t.steps.length+'.');
       if(ST.placed===t.steps.length){ onSolved(); renderTask(); return; }
       if(advancePhaseIfDone()){ renderTask({phaseDone:true}); return; }
       renderTask();
     } else {
-      const isNew=!ST.early.has(item.i);
       ST.early.add(item.i);
-      if(isNew){ST.err++;missOnce();}
+      ST.pendingDependency=item.i;
       rec({e:'early',task:t.id,step:item.i});
-      announce('Этот шаг верный, но не сейчас — сначала предыдущий.');
-      renderTask({shakeKey:'s'+item.i, diag:'Этот шаг верный, но не сейчас — сначала предыдущий. Он помечен: выбери его щелчком, когда дойдёт очередь.'});
+      announce('Это верный вывод, но для него ещё не хватает оснований.');
+      renderTask({shakeKey:'s'+item.i, diag:'Это верный вывод, но для него ещё не хватает оснований. Уже выбранные шаги сохранены. Можно вернуться к этому выводу позже.',blocked:item.i});
     }
   } else {
+    if(item.type!=='x'||!Number.isInteger(item.i)||!t.traps[item.i])return;
     const isNew=!ST.dead.has(item.i);
     ST.dead.add(item.i);
-    if(isNew){ST.err++;missOnce();}
+    if(isNew){ST.err++;ST.auditErrors++;ST.hadError=true;missOnce();}
+    if(t.traps[item.i].msg)markProofHelp();
     rec({e:'distractor',task:t.id,pick:item.i});
     announce('Неверно: '+stripTags(t.traps[item.i].msg));
     renderTask({shakeKey:'x'+item.i});
@@ -554,64 +790,73 @@ function enterJust(i){
   ST.justDead=new Set();
 }
 function pickJust(idx){
+  if(!proofEnsureCurrent())return;
   if(ST.awaitJust==null||ST.solvedNow)return;
   const opt=ST.justPool[idx];
+  if(!opt)return;
   if(opt.ok){ resolveJust(); }
-  else { if(!ST.justDead.has(idx)){ST.err++;missOnce();} ST.justDead.add(idx); rec({e:'just_wrong',task:curTask().id,step:ST.awaitJust,pick:idx}); renderTask({shakeJust:idx}); }
+  else { if(!ST.justDead.has(idx)){ST.err++;ST.auditErrors++;ST.hadError=true;missOnce();} ST.justDead.add(idx); rec({e:'just_wrong',task:curTask().id,step:ST.awaitJust,pick:idx}); renderTask({shakeJust:idx}); }
 }
 function resolveJust(){
   const t=curTask(), i=ST.awaitJust;
   ST.awaitJust=null; ST.justPool=null; ST.justDead=new Set();
-  const st=t.steps[i];
-  if(st.lit&&st.lit.showcirc)ST.revealed=true;
-  ST.early.delete(i);
-  ST.placed++;
+  acceptProofStep(i);
   rec({e:'step',task:t.id,step:i});
   if(ST.placed===t.steps.length){ onSolved(); renderTask(); return; }
   if(advancePhaseIfDone()){ renderTask({phaseDone:true}); return; }
   renderTask();
 }
 function onSolved(){
+  if(!proofEnsureCurrent())return;
+  if(ST.solvedNow)return;
   ST.solvedNow=true;
   const t=curTask();
   /* собрано самостоятельно: без «Сдаюсь», без «Поставить шаг» и не больше одной
      подсветки (решение F8 делегата владельца); только такая задача «решена» */
   const self=selfSolved(ST);
-  if(self){markSolved(t.id);CP.solvedOne(t.id);if(!ST.missed)CP.mlog(t.id,true);}
+  if(self&&proofLegacyWriteAllowed()){markSolved(t.id);CP.solvedOne(t.id);if(!ST.missed)CP.mlog(t.id,true);}
   let grade='g';
   if(!self||ST.err>=2)grade='r';
   else if(ST.err>=1||ST.hints>=1)grade='y';
   ST.results.push({id:t.id,grade:grade,self:self,err:ST.err});
   rec({e:'solved',task:t.id,mistakes:ST.err,hints:ST.hints,via:ST.gaveUp?'surrender':(ST.placedByHint?'placed':'self')});
+  finishProofEvidence();
 }
 function useHint(){
+  if(!proofEnsureCurrent())return;
   if(ST.solvedNow)return;
+  markProofHelp();
   ST.hints++; ST.glows++;   // подсветка — подсказка, но вторая уже означает сборку не самостоятельно
   if(ST.mode==='justify'&&ST.awaitJust!=null){ rec({e:'hint_just',task:curTask().id}); renderTask({hintJust:true}); return; }
-  rec({e:'hint_glow',task:curTask().id,step:ST.placed});
-  renderTask({hint:true});
+  rec({e:'hint_glow',task:curTask().id,step:nextProofStep()});
+  renderTask({hint:true,dependencyFor:ST.pendingDependency});
 }
 function hintPlace(){
+  if(!proofEnsureCurrent())return;
   if(ST.solvedNow)return;
+  markProofHelp();
   const t=curTask();
   if(ST.mode==='justify'&&ST.awaitJust!=null){ ST.hints++; ST.placedByHint++; resolveJust(); return; } // авто-обоснование — показ
   const willFinish=(ST.placed===t.steps.length-1);
-  const st=t.steps[ST.placed];
+  const stepIndex=nextProofStep(),st=t.steps[stepIndex];
+  if(!st)return;
   ST.hints++; ST.placedByHint++;   // шаг поставил тренажёр — это показ, а не подсказка
   if(willFinish)ST.gaveUp=true;
-  if(ST.mode==='justify'&&st.jc){ enterJust(ST.placed); renderTask(); return; } // сначала обоснование
-  if(st.lit&&st.lit.showcirc)ST.revealed=true;
-  ST.placed++;
-  rec({e:'hint_place',task:t.id,step:ST.placed-1,last:willFinish});
+  if(ST.mode==='justify'&&st.jc){ enterJust(stepIndex); renderTask(); return; } // сначала обоснование
+  acceptProofStep(stepIndex);
+  rec({e:'hint_place',task:t.id,step:stepIndex,last:willFinish});
   if(ST.placed===t.steps.length)onSolved();
   else advancePhaseIfDone();
   renderTask();
 }
 function surrender(){
+  if(!proofEnsureCurrent())return;
+  if(ST.solvedNow)return;
+  markProofHelp();
   const t=curTask();
-  ST.gaveUp=true; ST.awaitJust=null; ST.justPool=null;
+  ST.gaveUp=true; ST.awaitJust=null; ST.justPool=null;ST.justDead=new Set();
   // достроить всё доказательство
-  while(ST.placed<t.steps.length){const st=t.steps[ST.placed];if(st.lit&&st.lit.showcirc)ST.revealed=true;ST.placed++;}
+  while(ST.placed<t.steps.length)acceptProofStep(nextProofStep());
   ST.phase=phasesOf(t).length-1;
   onSolved(); // gaveUp → красная оценка
   renderTask();
@@ -633,6 +878,7 @@ function renderTabs(){
     b.textContent=name;b.onclick=()=>switchMode(k);el.appendChild(b);});
 }
 function switchMode(k){
+  if((k==='sheet'||k==='arsenal')&&ST?.queue&&!ST.solvedNow&&markProofHelp()===false)return;
   document.getElementById('succ').className='success';
   if(k==='sheet'){ST={mode:'sheet'};badge().textContent='Справочник';renderTabs();renderSheet();return;}
   if(k==='arsenal'){ST={mode:'arsenal'};badge().textContent='Арсенал';renderTabs();renderArsenal();return;}
@@ -656,7 +902,7 @@ function backToMenu(){
 /* --- меню Разбор --- */
 function menuStudy(){
   ST.results=[];
-  let h='<p class="lead">Тип 24 — <b>доказательство</b>. Ответ здесь не число, а <b>цепочка рассуждений</b>. Выбери задачу, собери доказательство из карточек по порядку и обходи ловушки. Каждый верный шаг подсвечивается на чертеже, а рядом видно, <b>почему</b> он работает.</p>';
+  let h='<p class="lead">Тип 24 — <b>доказательство</b>. Выбери задачу и собери цепочку рассуждений. Независимые факты можно брать в любом порядке; для вывода сначала нужны его основания. Каждый принятый шаг остаётся в доказательстве.</p>';
   THEMES.forEach(th=>{
     h+=`<h3 style="font-size:14px;margin:16px 0 8px;color:#5b5647">${th.name}</h3><div class="menu">`;
     th.tasks.forEach(id=>{const t=byId[id];const done=STORE[TID].solved&&STORE[TID].solved[id];
@@ -672,7 +918,7 @@ function startStudy(id){ST={mode:'study',queue:[id],qi:0,results:[]};loadTask();
 /* --- меню Тренировка --- */
 function menuTrain(){
   ST.results=[];
-  let h='<p class="lead">Собирай доказательства подряд. Ловушки и «рано» считаются как промахи; после разбора можно перейти к следующей задаче. Подсказки доступны, но лучше сначала подумать.</p>'+PNOTE24+'<div class="menu">';
+  let h='<p class="lead">Выбирай известный факт или обоснованный вывод. Если оснований пока не хватает, вернись к выводу позже: верное утверждение не становится ошибкой из-за порядка. Ловушки и неверные обоснования отмечаются отдельно.</p>'+PNOTE24+'<div class="menu">';
   h+=`<div class="mcard" onclick="startTrain('all')"><h3>Все 20 типов вперемешку</h3><div class="cnt">полный прогон случайным порядком</div></div>`;
   THEMES.forEach((th,idx)=>{h+=`<div class="mcard" onclick="startTrain(${idx})"><h3>${th.name}</h3><div class="cnt">${th.tasks.length} задач(и)</div>
     <div class="chips">${th.tasks.map(id=>`<span class="chip ${STORE[TID].solved&&STORE[TID].solved[id]?'done':''}">${byId[id].code.split(' · ')[0]}</span>`).join('')}</div></div>`;});
@@ -713,7 +959,7 @@ function startMode(mode,which){
 /* --- меню Зачёт --- */
 function menuExam(){
   ST.results=[];
-  let h='<p class="lead">Зачёт: по одной задаче из каждой темы (квота по темам, а не случайно), режим экзамена — <b>без подсказок</b>. Каждый неверный клик — промах. В конце — счёт, «светофор» и маршрут повторения слабых мест.</p>';
+  let h='<p class="lead">Зачёт: по одной задаче из каждой темы, <b>без подсказок</b>. Ложное утверждение или неверное обоснование — промах. Независимые факты можно выбирать в любом порядке. В конце — учебный результат и маршрут повторения.</p>';
   // топ слабых мест по журналу
   const weak=weakTop();
   if(weak.length){h+=`<div class="arsnote"><b>Твои слабые места</b> (по прошлым прогонам): ${weak.map(w=>byId[w].title).join(' · ')}. В зачёте они попадутся в первую очередь.</div>`;}
@@ -776,11 +1022,12 @@ function renderTask(opts){
   h.push('<div class="grid">');
   // левая колонка — чертёж
   h.push('<div><div class="figbox">'+renderFig(t.fig,lit,ST.revealed)+'</div>');
-  const capText = ST.solvedNow?'▮ Что и требовалось доказать':(ST.placed>0?stripTags(t.steps[ST.placed-1].t):'Собери доказательство по шагам →');
+  const capText = ST.solvedNow?'▮ Что и требовалось доказать':(ST.placed>0?stripTags(t.steps[proofOrder().at(-1)].t):'Выбери факт, который уже известен →');
   h.push(`<div class="cap${ST.solvedNow?' done':''}">${capText}</div></div>`);
   // правая колонка
   h.push('<div>');
-  h.push(`<div class="givens"><div class="g1"><b>Дано.</b> ${t.given}</div><div><b>Доказать.</b> ${t.prove}</div></div>`);
+  h.push(`<div class="givens"><div class="g1"><b>Дано.</b> ${proofGiven(t)}</div><div><b>Доказать.</b> ${t.prove}</div></div>`);
+  if(ST.resumed)h.push('<p class="proof-resume-note">Продолжаем сохранённое доказательство. Порядок шагов и использованная помощь сохранены.</p>');
   if(ST.mode!=='exam'){
     const tz=SHEET.zones.filter(z=>z.tasks.indexOf(t.id)>=0);
     if(tz.length)h.push(`<div class="sheetplate has"><span class="sp-ic">📋</span> С листа справочных материалов: ${tz.map(z=>'<b>'+z.formula+'</b>').join(', ')} <button class="sp-go" onclick="openSheetZone('${tz[0].id}')">показать на листе →</button></div>`);
@@ -790,20 +1037,26 @@ function renderTask(opts){
   // цепочка собранного (с разделителями фаз)
   if(ST.placed>0){h.push('<div class="chain">');
     let shp=-1;
-    for(let i=0;i<ST.placed;i++){
+    for(let position=0;position<ST.placed;position++){
+      const i=proofOrder()[position];
       if(phs.length>1){const pk=phaseOfStep(t,i); if(pk!==shp){shp=pk; if(phs[pk].name)h.push(`<div class="pdiv">${phs[pk].name}</div>`);}}
-      h.push(`<div class="citem"><span class="cnum">${i+1}</span><div class="ctext">${t.steps[i].t}${showWhy?`<span class="why">${t.steps[i].why}</span>`:''}</div></div>`);
+      h.push(`<div class="citem" data-proof-step="${i}"><span class="cnum">${position+1}</span><div class="ctext">${t.steps[i].t}${showWhy?`<span class="why">${t.steps[i].why}</span>`:''}</div></div>`);
     }
     h.push('</div>');}
   // диагностика (при промахе)
   if(opts.diag)h.push(`<div class="diag show">${opts.diag}</div>`);
+  if(opts.blocked!=null&&ST.mode!=='exam')h.push('<button class="btn ghost" data-proof-dependency="true" onclick="useHint()">Показать, чего не хватает</button>');
+  if(opts.dependencyFor!=null){
+    const missing=missingProofFacts(opts.dependencyFor);
+    if(missing.length)h.push('<div class="diag show"><b>Для этого вывода ещё нужны:</b><ul>'+missing.map(i=>'<li>'+t.steps[i].t+'</li>').join('')+'</ul></div>');
+  }
   // qed
   if(ST.solvedNow)h.push('<div class="qed show">▮ Доказательство собрано полностью.</div>');
   // подшаг обоснования (режим «Обоснуй»)
   if(!ST.solvedNow && ST.mode==='justify' && ST.awaitJust!=null){
     const st=t.steps[ST.awaitJust];
     h.push('<div class="justbox">');
-    h.push(`<div class="justclaim"><span class="jnum">${ST.awaitJust+1}</span>${st.claim||claimOf(st.t)}</div>`);
+    h.push(`<div class="justclaim"><span class="jnum">${ST.placed+1}</span>${st.claim||claimOf(st.t)}</div>`);
     h.push('<div class="justq">Почему это верно? Выбери обоснование:</div><div class="justpool">');
     ST.justPool.forEach((o,idx)=>{
       const dead=ST.justDead.has(idx);
@@ -818,16 +1071,16 @@ function renderTask(opts){
     const cur=phs[ST.phase];
     if(opts.phaseDone)h.push('<div class="phasedone">✓ Фаза пройдена — продолжаем</div>');
     if(phs.length>1)h.push(`<div class="phasehdr">Фаза ${ST.phase+1} из ${phs.length}${cur.name?' · '+cur.name:''}</div>`);
-    h.push('<div class="pooltitle">Карточки — выбирай по порядку <span class="poolhint">среди них есть лишние — их не бери</span></div><div class="pool">');
+    h.push('<div class="pooltitle">Какой факт уже можно обосновать? <span class="poolhint">независимые факты можно выбирать в любом порядке; есть лишние карточки</span></div><div class="pool">');
     ST.pool.forEach(item=>{
       const inPhase=(item.type==='s')?cur.s.indexOf(item.i)>=0:cur.x.indexOf(item.i)>=0;
       if(!inPhase)return;
       if(item.type==='s'){
-        if(item.i<ST.placed)return; // уже поставлен
+        if(hasProofStep(item.i))return; // уже поставлен
         const st=t.steps[item.i];
         const shakeCls=(opts.shakeKey==='s'+item.i)?' shake':'';
-        const glow=(opts.hint&&item.i===ST.placed)?' hintglow':'';
-        const earlyCls=(ST.early.has(item.i)&&item.i>ST.placed)?' early':'';
+        const glow=(opts.hint&&item.i===nextProofStep())?' hintglow':'';
+        const earlyCls=(ST.early.has(item.i)&&!readyProofStep(item.i))?' early':'';
         const label=(ST.mode==='recall'||ST.mode==='justify')?(st.claim||claimOf(st.t)):st.t;
         h.push(`<button class="card${earlyCls}${shakeCls}${glow}" onclick="pickCard({type:'s',i:${item.i}})">${label}</button>`);
       } else {
@@ -841,6 +1094,7 @@ function renderTask(opts){
   }
   // закон + управление
   if(ST.solvedNow){
+    if(proofPersonal())h.push(proofResultHTML());
     h.push(`<div class="law show"><h4>Приём этого типа</h4><p>${t.law}</p></div>`);
     h.push(`<details class="blank"><summary>📝 Как это записать на бланке ОГЭ</summary><div class="blanktext">${genBlank(t)}</div></details>`);
   }
@@ -855,7 +1109,7 @@ function renderTask(opts){
     if(ST.mode==='exam'){h.push('<button class="btn dark" onclick="nextTask()">'+(ST.qi+1<ST.queue.length?'Следующая →':'Итоги зачёта →')+'</button>');}
     else{
       if(ST.qi+1<ST.queue.length)h.push('<button class="btn dark" onclick="nextTask()">Следующая →</button>');
-      h.push('<button class="btn blue" onclick="trainThis()">Тренировать этот тип →</button>');
+      h.push('<button class="btn blue" onclick="trainThis()">Повторить это доказательство →</button>');
       h.push('<button class="btn ghost" onclick="backToMenu()">← К списку</button>');
     }
   }
@@ -864,10 +1118,16 @@ function renderTask(opts){
 }
 /* «Сначала» в зачёте раскладывает карточки заново, но промахи и подсказки задачи сохраняет */
 function restartTask(){
-  const keep={err:ST.err,hints:ST.hints,missed:ST.missed,glows:ST.glows,placedByHint:ST.placedByHint};
-  loadTask();
+  if(!proofEnsureCurrent())return;
+  if(ST.solvedNow){trainThis();return;}
+  const keep={err:ST.err,hints:ST.hints,missed:ST.missed,glows:ST.glows,placedByHint:ST.placedByHint,
+    helpUsed:ST.helpUsed,hadError:ST.hadError,auditErrors:ST.auditErrors,attemptId:ST.attemptId,startedAt:ST.startedAt,fresh:ST.fresh,
+    lastActionAt:ST.lastActionAt,workStarted:ST.workStarted,noteEdited:ST.noteEdited};
+  loadTask({restart:true});
   /* та же задача: вердикт журнала и показанные шаги сохраняются */
   ST.missed=keep.missed; ST.glows=keep.glows; ST.placedByHint=keep.placedByHint;
+  Object.assign(ST,{helpUsed:keep.helpUsed,hadError:keep.hadError,auditErrors:keep.auditErrors,attemptId:keep.attemptId,startedAt:keep.startedAt,fresh:keep.fresh,
+    lastActionAt:keep.lastActionAt,workStarted:keep.workStarted,noteEdited:keep.noteEdited,claimDraft:false});
   if(ST.mode==='exam'){ST.err=keep.err;ST.hints=keep.hints;}
   renderTask();
 }
@@ -921,7 +1181,7 @@ function renderSheet(){
   view().innerHTML=h.join('');
   flashZone=null;
 }
-function openSheetZone(zid){ flashZone=zid; ST={mode:'sheet'}; badge().textContent='Справочник'; renderTabs(); renderSheet(); }
+function openSheetZone(zid){ if(ST?.queue&&!ST.solvedNow&&markProofHelp()===false)return;flashZone=zid; ST={mode:'sheet'}; badge().textContent='Справочник'; renderTabs(); renderSheet(); }
 
 /* --- утилиты --- */
 function stripTags(s){return s.replace(/<[^>]+>/g,'');}
@@ -1037,7 +1297,8 @@ function claimOf(txt){const i=txt.indexOf(' — ');return i>0?txt.slice(0,i):txt
 function justOf(txt){const i=txt.indexOf(' — ');return i>0?txt.slice(i+3):'';}
 function genBlank(t){
   let s='<b>Доказательство.</b><br>';
-  t.steps.forEach((st,i)=>{s+=(i+1)+') '+stripTags(st.t)+'<br>';});
+  const order=ST?.queue&&curTask()===t&&ST.solvedNow?proofOrder():t.steps.map((_,i)=>i);
+  order.forEach((step,i)=>{s+=(i+1)+') '+stripTags(t.steps[step].t)+'<br>';});
   s+='Что и требовалось доказать. ▮';
   return s;
 }
@@ -1086,7 +1347,7 @@ const MinimalGeometry=(()=>{
     const panel=document.createElement('section');panel.id='courseHintPanel';panel.className='minimal-hint';panel.setAttribute('aria-label','Подсказка');panel.hidden=!open;
     if(typeof content==='string')panel.innerHTML=content;else if(content)panel.appendChild(content);
     anchor.insertAdjacentElement('afterend',button);button.insertAdjacentElement('afterend',panel);
-    button.onclick=()=>{panel.hidden=!panel.hidden;button.setAttribute('aria-expanded',String(!panel.hidden));};
+    button.onclick=()=>{if(!proofEnsureCurrent())return;const opening=panel.hidden;if(opening)markProofHelp();panel.hidden=!opening;ST.helpOpen=opening;button.setAttribute('aria-expanded',String(opening));saveProofDraft();};
     return {button,panel};
   }
   function disclosure(panel,nodes){
@@ -1117,17 +1378,32 @@ if(!CP.RO && document.documentElement.nodeType===1){
     });
   }
   const originalRenderTask=renderTask;let previousProofState=null,previousProofIndex=-1;
-  renderTask=function(opts){const oldPanel=document.getElementById('courseHintPanel');const keepOpen=previousProofState===ST&&previousProofIndex===ST.qi&&oldPanel&&!oldPanel.hidden;originalRenderTask(opts);previousProofState=ST;previousProofIndex=ST.qi;const main=document.getElementById('view');displayProofFractions(main);
+  renderTask=function(opts){const oldPanel=document.getElementById('courseHintPanel');const keepOpen=previousProofState===ST&&previousProofIndex===ST.qi&&oldPanel?!oldPanel.hidden:ST.resumed&&ST.helpOpen;originalRenderTask(opts);previousProofState=ST;previousProofIndex=ST.qi;const main=document.getElementById('view');displayProofFractions(main);
     MinimalGeometry.secondary(main,[':scope > .taskhead']);
-    if(ST.mode==='exam'||ST.solvedNow)return;
+    if(ST.mode==='exam'||ST.solvedNow){saveProofDraft();return;}
     const given=main.querySelector('.givens');if(!given)return;
-    const help=MinimalGeometry.hint(given,'<p>Собирай рассуждение по порядку. Верный шаг останется в доказательстве и подсветится на чертеже.</p>',!!keepOpen);
+    const help=MinimalGeometry.hint(given,'<p>Сначала выбери известные факты. Независимые посылки можно брать в любом порядке. Для нового вывода нужны все его основания; принятые шаги останутся видимыми.</p>',!!keepOpen);ST.helpOpen=!!keepOpen;
     const plate=main.querySelector('.sheetplate');if(plate)help.panel.appendChild(plate);
     const hinthelp=main.querySelector('.hinthelp');if(hinthelp)help.panel.appendChild(hinthelp);
-    main.querySelectorAll('button[onclick="useHint()"],button[onclick="hintPlace()"],button[onclick="surrender()"]').forEach(b=>help.panel.appendChild(b));
+    main.querySelectorAll('button[onclick="useHint()"]:not([data-proof-dependency]),button[onclick="hintPlace()"],button[onclick="surrender()"]').forEach(b=>help.panel.appendChild(b));
     MinimalGeometry.part2(main);
+    saveProofDraft();
   };
-  if(!CP.REVIEW)startTrain('all');else if(!ST.queue)startTrain('all');else renderTask();
+  document.addEventListener('click',event=>{
+    const control=event.target.closest('summary,button,a');if(!control||!ST?.queue||control.classList.contains('ocr-close'))return;
+    if(control.closest('.ocp-references,.ocp-step-reason,.sheetplate')){
+      const details=control.closest('details');if((control.tagName!=='SUMMARY'||!details?.open)&&markProofHelp()===false){event.preventDefault();event.stopImmediatePropagation();}
+    }
+  },true);
+  document.addEventListener('input',event=>{
+    if(event.target.matches('.ocp-writing textarea')&&!proofEnsureCurrent()){event.preventDefault();event.stopImmediatePropagation();}
+  },true);
+  document.addEventListener('input',event=>{
+    if(!ST?.queue||ST.solvedNow||!event.target.matches('.ocp-writing textarea'))return;
+    ST.noteEdited=event.target.value.trim().length>0;ST.lastActionAt=Date.now();ST.workStarted=true;saveProofDraft();
+  });
+  window.addEventListener('pagehide',saveProofDraft);
+  if(!CP.REVIEW){if(!restoreProofDraft())startTrain('all');}else if(!ST.queue)startTrain('all');else renderTask();
 }
 </script>
 <script src="task19-textbook-data.js"></script>

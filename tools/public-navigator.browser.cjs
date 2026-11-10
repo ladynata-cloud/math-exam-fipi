@@ -73,11 +73,19 @@ for (const item of catalogue) {
         assert.match(await launcher.innerText(), /Навигатор/);
         assert.equal(await panel.isVisible(), false);
         const box = await launcher.boundingBox();
-        assert.ok(box.x > viewport.width / 2 && box.y > viewport.height / 2);
+        const courseFlow = viewport.width <= 600 && await host.getAttribute('data-course-navigation') === 'true';
+        if(courseFlow) {
+          assert.equal(await launcher.evaluate(e => getComputedStyle(e).position), 'static', 'OGE launcher occupies its own line');
+          const routeBar=await page.locator('body > nav.oge-wayfinding').boundingBox();
+          assert(routeBar && box.y >= routeBar.y+routeBar.height-1, 'Launcher follows the existing course return');
+          assert(box.height>=44,'Course launcher remains an accessible touch target');
+        } else {
+          assert.ok(box.x > viewport.width / 2 && box.y > viewport.height / 2);
+          assert.equal(await launcher.evaluate(e => getComputedStyle(e).position), 'fixed');
+        }
         assert.ok(box.x + box.width <= viewport.width && box.y + box.height <= viewport.height);
-        assert.equal(await launcher.evaluate(e => getComputedStyle(e).position), 'fixed');
         assert.equal(await launcher.getAttribute('aria-label'), 'Открыть навигатор по MathExam');
-        if (viewport.width <= 600) assert.ok(box.width <= 56, 'Mobile launcher must leave answer columns reachable');
+        if (viewport.width <= 600 && !courseFlow) assert.ok(box.width <= 56, 'Mobile launcher must leave answer columns reachable');
         if (filename === 'index.html') await page.screenshot({ path: path.join(out, `home-${viewport.width}.png`) });
         await launcher.click();
         await panel.waitFor({state:'visible'});

@@ -62,7 +62,7 @@ jobs:
           node --check oge/learning-map-view.js
           node --check oge/course-guide.js
           node --check tools/oge-learning-map.browser.cjs
-          node --test tools/oge-learning-map.test.cjs
+          node --test tools/oge-learning-map.test.cjs tools/oge-learning-map-evidence.test.cjs
           node --test tools/oge-course-guide.test.cjs
           git diff --check
       - name: Wait for this exact public release

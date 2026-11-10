@@ -28,6 +28,26 @@ const assert=require('node:assert/strict');
 const WAYFINDING_HEAD='<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
 const WAYFINDING_BAR='\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
 const FRACTIONS_ROUTE='/trainers/oge-task6-fractions.html';
+const SOURCE_T11_CRYPTO={route:'/trainers/oge-task11-graphs-trainer.html',api:'crypto.getRandomValues',algorithm:'xorshift32 bytes in little-endian order',seedDerivation:'route Math.random seed XOR 0x9e3779b9; zero becomes 1',scope:'source route only; frozen editions retain native crypto'};
+function installRandomFixture({seed,cryptoSeed}){
+ let n=seed>>>0;Math.random=()=>{n^=n<<13;n^=n>>>17;n^=n<<5;return(n>>>0)/4294967296;};
+ if(cryptoSeed===null)return;
+ // This separate stream controls personal task generation, not the checker,
+ // task parameters, answer key, learner actions or progress. The legacy
+ // Math.random stream above is identical for source and frozen pages.
+ let stream=cryptoSeed>>>0;
+ const native=crypto.getRandomValues.bind(crypto);
+ Object.defineProperty(crypto,'getRandomValues',{configurable:true,value:function(array){
+  const integer=/^\[object (?:Uint8|Uint8Clamped|Int8|Uint16|Int16|Uint32|Int32|BigInt64|BigUint64)Array\]$/.test(Object.prototype.toString.call(array));
+  if(!integer||array.byteLength>65536)return native(array);
+  const bytes=new Uint8Array(array.buffer,array.byteOffset,array.byteLength);let word=0;
+  for(let i=0;i<bytes.length;i++){
+   if(i%4===0){stream^=stream<<13;stream^=stream>>>17;stream^=stream<<5;word=stream>>>0;}
+   bytes[i]=(word>>>((i%4)*8))&255;
+  }
+  return array;
+ }});
+}
 const REMOVED_RETURN_POSITION='<main class="wrap">\n\n<header>';
 const ORIGINAL_RETURN_POSITION='<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>';
 function originalWayfindingHtml(html,route=''){
@@ -247,7 +267,7 @@ const TEST_SCRIPT=fs.readFileSync(__filename);
 const TEST_SCRIPT_SHA=crypto.createHash('sha256').update(TEST_SCRIPT).digest('hex');
 const BASE=require('node:child_process').execFileSync('git',['rev-parse','HEAD'],{cwd:ROOT,encoding:'utf8'}).trim();
 const SEED_BASE=process.env.BOOK_EXAM_SEED||'oge-book-edition-20261031-v1';
-function metadata(){return {schemaVersion:2,generatedAt:new Date().toISOString(),startedAt:RUN_STARTED,base:BASE,testScriptSha256:TEST_SCRIPT_SHA,prefix:PREFIX,widths:WIDTHS,randomFixture:{base:SEED_BASE,algorithm:'xorshift32, seed from SHA256(base + canonical source route), independent of width and prefix'},coverage:'Learner UI lifecycle for selected cases; full finite assessment at1280; independent/source oracles labelled per question',reports};}
+function metadata(){return {schemaVersion:2,generatedAt:new Date().toISOString(),startedAt:RUN_STARTED,base:BASE,testScriptSha256:TEST_SCRIPT_SHA,prefix:PREFIX,widths:WIDTHS,randomFixture:{base:SEED_BASE,algorithm:'xorshift32, seed from SHA256(base + canonical source route), independent of width and prefix',...(!PREFIX?{sourceTask11Crypto:SOURCE_T11_CRYPTO}:{})},coverage:'Learner UI lifecycle for selected cases; full finite assessment at1280; independent/source oracles labelled per question',reports};}
 async function proofFeedbackRegression(p,r){
  const cases=[
   {id:'t9',trap:0,expected:'Равенство треугольников из условия не следует',rejected:'треугольники разного размера',reason:'Isosceles trapezoid A(-2,0), D(2,0), B(-1,1), C(1,1), O(0,2/3): unequal bases 4 and 2; AOB and DOC are mirror-congruent.'},
@@ -296,9 +316,10 @@ async function corruptedStorageRegression(p,r){
    const context=await browser.newContext({viewport:{width,height:950},reducedMotion:'reduce'});
    // The same explicit random fixture at every width and on source/frozen pages.
    // Task/check functions and progress are never replaced or directly written.
-   await context.addInitScript(seed=>{let n=seed>>>0;Math.random=()=>{n^=n<<13;n^=n>>>17;n^=n<<5;return(n>>>0)/4294967296;};},randomSeed);
+   const cryptoSeed=!PREFIX&&route===SOURCE_T11_CRYPTO.route?((randomSeed^0x9e3779b9)>>>0)||1:null;
+   await context.addInitScript(installRandomFixture,{seed:randomSeed,cryptoSeed});
    const p=await context.newPage();p.setDefaultTimeout(7000);
-   const r={id,route,prefix:PREFIX,width,checkedAt:new Date().toISOString(),base:BASE,testScriptSha256:TEST_SCRIPT_SHA,randomSeed,actions:[],oracles:[],errors:[],network:[],dependencyEscapes:[],blockedExternal:[],resources:{},resourceHashErrors:[],resourceReadWarnings:[],limitations:['Fixed representative random fixture; alternative bank items and seeds are not claimed mathematically verified.','Full separate finite assessments are exercised at1280; phone cases cover the selected practice and its hints/completion.']};
+   const r={id,route,prefix:PREFIX,width,checkedAt:new Date().toISOString(),base:BASE,testScriptSha256:TEST_SCRIPT_SHA,randomSeed,...(cryptoSeed===null?{}:{randomFixture:{mathRandom:{algorithm:'xorshift32',seed:randomSeed},cryptoGetRandomValues:{...SOURCE_T11_CRYPTO,seed:cryptoSeed}}}),actions:[],oracles:[],errors:[],network:[],dependencyEscapes:[],blockedExternal:[],resources:{},resourceHashErrors:[],resourceReadWarnings:[],limitations:['Fixed representative random fixture; alternative bank items and seeds are not claimed mathematically verified.','Full separate finite assessments are exercised at1280; phone cases cover the selected practice and its hints/completion.']};
    const file=path.join(ROOT,PREFIX+route);
    if(fs.existsSync(file)&&fs.statSync(file).isFile())r.sha256=crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
    const resourceReads=[];
