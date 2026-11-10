@@ -2164,9 +2164,17 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
   renderTrain=function(){originalRenderTrain();const main=document.getElementById('main');
     MinimalGeometry.secondary(main,[':scope > .filters',':scope > .pnote',':scope > .meta']);
     const task=main.querySelector('.task');if(!task)return;
-    const help=MinimalGeometry.hint(task,'<p>'+trTask.sub.law+'</p>'+refcallHtml(trTask.sub));
+    const currentTask=trTask,help=MinimalGeometry.hint(task,'<h3>Разбор этой задачи по шагам</h3>');
+    help.button.textContent='Разобрать по шагам';
+    const steps=document.createElement('div');steps.id='task16Steps';help.panel.appendChild(steps);
+    const next=document.createElement('button');next.type='button';next.id='hintBtn';next.textContent='Начать разбор';next.setAttribute('aria-controls',steps.id);help.panel.appendChild(next);
+    let step=0;next.onclick=()=>{if(step>=currentTask.sol.length)return;window.OgeGeometryHelpUsed=true;
+      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+currentTask.sol.length+'</h4>'+currentTask.sol[step];steps.appendChild(block);step++;
+      next.textContent=step===currentTask.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+currentTask.sol.length+')';next.disabled=step===currentTask.sol.length;
+    };
     bindRefcalls();
-    const show=document.getElementById('giveup');MinimalGeometry.disclosure(help.panel,[show]);
+    const show=document.getElementById('giveup'),complete=MinimalGeometry.disclosure(help.panel,[show]);complete.hidden=true;
+    document.getElementById('check').addEventListener('click',()=>{complete.hidden=show.style.display==='none';});
   };
   switchTab('train');
 }

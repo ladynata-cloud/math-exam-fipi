@@ -1761,9 +1761,9 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
     const task=main.querySelector('#tzone .task');if(!task)return;
     const oldHint=document.getElementById('hint'), oldStep=document.getElementById('stepH'),give=document.getElementById('give'),sol=document.getElementById('ssol');
     const answer=task.querySelector('.ansrow');const marker=document.createElement('span');answer.before(marker);
-    const help=MinimalGeometry.hint(marker,'<p>'+CUR.law+'</p><p>'+CUR.refWhy+'</p>');marker.remove();
+    const help=MinimalGeometry.hint(marker,'<h3>Разбор этой задачи по шагам</h3>');marker.remove();help.button.textContent='Разобрать по шагам';
     oldHint.remove();oldStep.textContent='Открыть следующий шаг';give.textContent='Показать всё решение';
-    MinimalGeometry.disclosure(help.panel,[oldStep,give]);help.panel.appendChild(sol);
+    help.panel.append(sol,oldStep);MinimalGeometry.disclosure(help.panel,[give]);
   };
   setTab('train');
 }
