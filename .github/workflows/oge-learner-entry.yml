@@ -5,7 +5,7 @@ on:
       - 'assets/oge-wayfinding.*'
       - 'trainers/**/*.html'
       - 'trainers/oge-course/index.html'
-      - 'ege-baza/path/index.html'
+      - 'ege-baza/**'
       - 'school/index.html'
       - 'soviet-math/index.html'
       - 'tools/oge-learner-*'
@@ -13,29 +13,48 @@ on:
   push:
     branches: [main]
     paths:
+      - 'ege-baza/**'
       - 'assets/oge-wayfinding.*'
       - 'tools/oge-learner-*'
       - 'trainers/oge-course/index.html'
       - '.github/workflows/oge-learner-entry.yml'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['pages build and deployment']
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
 concurrency:
-  group: oge-learner-entry-${{ github.ref }}
+  # A push must not cancel acceptance of the last completed publication.
+  group: oge-learner-entry-${{ github.event_name == 'workflow_run' && 'published' || github.ref }}
   cancel-in-progress: true
 jobs:
   public-routes:
+    # Only a successful Pages run in this repository may test production.
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      OGE_ENTRY_RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      OGE_ENTRY_ARTIFACTS: artifacts/oge-learner-entry
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          # workflow_run's github.sha can point at a newer, unpublished main.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Fetch preservation baseline and exact reviewed task sources
         run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
+      - name: Publication gate regression tests
+        run: node --test tools/oge-learner-release.test.cjs
       - name: Install isolated test tools
         run: |
           npm install --prefix "$RUNNER_TEMP/oge-entry" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
@@ -47,23 +66,17 @@ jobs:
           node tools/oge-focus-navigation.test.cjs
           git diff --check
       - name: Wait for the exact public release assets
-        if: github.event_name == 'push'
-        run: |
-          node - <<'JS'
-          const fs=require('node:fs'),crypto=require('node:crypto');
-          const paths=['assets/oge-wayfinding.js','assets/oge-wayfinding.css','trainers/oge-course/index.html'];
-          const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
-          (async()=>{for(let attempt=0;attempt<40;attempt++){
-            const matches=await Promise.all(paths.map(async p=>{try{const r=await fetch('https://mathexam.space/'+p+'?release='+process.env.GITHUB_SHA,{signal:AbortSignal.timeout(15000)});return r.ok&&hash(Buffer.from(await r.arrayBuffer()))===hash(fs.readFileSync(p));}catch{return false;}}));
-            if(matches.every(Boolean)){console.log('Exact published assets verified');return;}
-            await new Promise(r=>setTimeout(r,15000));
-          }throw Error('Publication did not match this release');})().catch(e=>{console.error(e);process.exitCode=1;});
-          JS
+        if: github.event_name == 'workflow_run'
+        run: node tools/oge-learner-release.cjs
       - name: Every recorded page, mobile and desktop, no JavaScript, actual returns
         env:
-          OGE_ENTRY_ARTIFACTS: artifacts/oge-learner-entry
-          OGE_ENTRY_BASE_URL: ${{ github.event_name == 'push' && 'https://mathexam.space' || '' }}
+          OGE_ENTRY_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://mathexam.space' || '' }}
         run: node tools/oge-learner-entry.browser.cjs
+      - name: Confirm the release stayed consistent during browser acceptance
+        if: github.event_name == 'workflow_run'
+        env:
+          OGE_ENTRY_VERIFY_ONCE: '1'
+        run: node tools/oge-learner-release.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
