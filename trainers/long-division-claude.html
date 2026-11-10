@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Деление уголком — тренажёр Клода | MathExam</title>
+<meta name="description" content="Сохранённый тренажёр Клода: первое неполное делимое, цифры частного, таблица кратных, остаток и снос цифры. Пять уровней, помощь и сохранение шага.">
+<link rel="canonical" href="https://mathexam.space/trainers/long-division-claude.html">
+<link rel="stylesheet" href="/trainers/oge-basics/skill-support.css">
+<!-- Adapted from the owner-provided final Claude division trainer (June 2026).
+Source SHA-256: 601194b83bcc5a180165cbbdd56edd3f3c238fc7a97f733d92b361c3d05d6502
+Original phase sequence, notebook, multiples table and learning controls retained.
+Publication adaptation: navigation, ordered levels, isolated attempt storage and honest help counts. -->
+<style>
+  *{box-sizing:border-box}
+  body{font-family:Verdana,Arial,sans-serif;background:#f3f6fb;color:#172033;margin:0;line-height:1.4}
+  .page{max-width:1100px;margin:auto;padding:22px}
+  .hero,.card{background:white;border-radius:24px;padding:22px;box-shadow:0 14px 34px #0002;margin-bottom:18px}
+  .back a{color:#2563eb;font-weight:800;text-decoration:none}
+  h1{font-size:34px;margin:6px 0}
+  h2{font-size:20px;margin:6px 0 10px}
+  h3{font-size:16px;margin:4px 0 6px}
+  p{margin:6px 0}
+  .grid{display:grid;grid-template-columns:1.35fr .75fr;gap:18px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+  button{border:0;border-radius:14px;padding:10px 14px;font-weight:800;cursor:pointer;background:#e7ebf3;color:#172033;font-family:inherit;font-size:14px;transition:.15s}
+  button:hover{filter:brightness(.97)}
+  button.active{background:#2563eb;color:white}
+  button.primary{background:#2563eb;color:white}
+  button.good{background:#15803d;color:white}
+  button.warn{background:#f59e0b;color:white}
+  button.danger{background:#fee4e2;color:#7a271a}
+  button.ghost{background:transparent;border:2px dashed #cbd5e1;color:#475569}
+  button.muted{background:transparent;border:0;color:#94a3b8;font-weight:600;font-size:12px;text-decoration:underline;padding:8px 10px}
+  button.muted:hover{color:#64748b;filter:none;background:transparent}
+  button:disabled{opacity:.5;cursor:not-allowed}
+
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  .row.center{justify-content:center}
+  .group-title{font-weight:800;font-size:13px;color:#475569;margin-right:6px;text-transform:uppercase;letter-spacing:.04em}
+
+  .task{text-align:center;font-size:42px;font-weight:900;margin:14px 0;color:#1e293b;letter-spacing:.02em}
+
+  .intro-banner{background:linear-gradient(135deg,#dbeafe,#ede9fe);border:2px solid #93c5fd;border-radius:14px;padding:10px 14px;margin:8px 0;font-weight:800;color:#1e40af;display:none}
+  .intro-banner.show{display:block}
+
+  /* Уголок */
+  .ugolok-wrap{background:#f8fafc;border:2px solid #e5e7eb;border-radius:20px;padding:18px;overflow-x:auto}
+  .ugolok{--division-cell:30px;--division-font:24px;--division-left:26px;--division-bar-gap:8px;font-family:"Courier New",ui-monospace,monospace;font-size:var(--division-font);display:block;width:100%;line-height:1.15;padding-left:var(--division-left)}
+  .urow{display:flex;gap:0;align-items:center;justify-content:flex-start;min-height:34px}
+  .cell{width:var(--division-cell);height:34px;display:inline-flex;align-items:center;justify-content:center;text-align:center;color:#0f172a}
+  .cell.used{color:#94a3b8}
+  .cell.sel{background:#dbeafe;color:#1e40af;border-radius:6px;font-weight:900}
+  .cell.bring{background:#fef3c7;color:#92400e;border-radius:6px;font-weight:900;animation:pulse 1.2s ease-in-out infinite}
+  .cell.gap{width:var(--division-cell);height:34px}
+  .cell.dot{color:#94a3b8;font-weight:900}
+  .cell.qdig{color:#15803d;font-weight:900}
+  .cell.qnow{background:#dcfce7;color:#15803d;border-radius:6px;font-weight:900}
+  .cell.minus{color:#dc2626;font-weight:900;width:18px}
+  .cell.eq{font-weight:900}
+  .cell.rem{color:#7c2d12;font-weight:900}
+  .cell.click{cursor:pointer;border:2px dashed #cbd5e1;border-radius:6px}
+  .cell.click:hover{background:#e0e7ff;border-color:#6366f1;color:#3730a3}
+  .cell.trysel{background:#dbeafe;color:#1e40af;border-radius:6px;font-weight:900;border:2px solid #60a5fa}
+  .vbar{width:3px;background:#0f172a;align-self:stretch;margin:0 var(--division-bar-gap);border-radius:2px}
+
+  /* Дужки над цифрами делимого — связь «блок сверху → точка/цифра частного снизу» */
+  .ugolok-arcs{display:flex;gap:0;align-items:flex-end;height:16px;margin-bottom:2px;padding-left:0}
+  .arc-cell{display:flex;justify-content:center;align-items:flex-end;height:16px;flex:0 0 auto}
+  .arc{
+    display:inline-block;
+    height:12px;
+    border:2px solid #cbd5e1;
+    border-bottom:0;
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    box-sizing:border-box;
+    transition:border-color .25s ease;
+  }
+  .arc.future {border-color:#e2e8f0}
+  .arc.neutral{border-color:#94a3b8}
+  .arc.done   {border-color:#cbd5e1}
+  .arc.now    {border-color:#2563eb}
+  .arc.bring  {border-color:#f59e0b}
+  .hbar{height:3px;background:#0f172a;border-radius:2px;margin:4px 0}
+  .right-col{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;padding-left:4px}
+  .quotient-row{display:flex;align-items:center;gap:0;margin-top:4px}
+  .subline{display:flex;align-items:center;padding-left:0}
+  .subline .indent{width:0}
+  @keyframes pulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+  /* Подсказка-промпт */
+  .prompt{background:#eef4ff;border:1px solid #bfdbfe;border-radius:16px;padding:14px;margin:10px 0;font-size:16px}
+  .prompt b{color:#1e40af}
+  .prompt .micro{display:block;font-size:13px;color:#475569;margin-top:4px}
+
+  .phase-bar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+  .phase{padding:6px 10px;border-radius:999px;background:#f1f5f9;color:#64748b;font-size:12px;font-weight:800;border:1px solid #e2e8f0}
+  .phase.now{background:#2563eb;color:white;border-color:#2563eb}
+  .phase.done{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+
+  /* Цифровая клавиатура */
+  .picker{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:10px 0}
+  @media(max-width:600px){.picker{grid-template-columns:repeat(5,1fr)}}
+  .dbtn{padding:14px 0;font-size:22px;background:#fff;border:2px solid #cbd5e1;color:#0f172a;border-radius:12px}
+  .dbtn:hover{border-color:#2563eb}
+  .dbtn.try-big{background:#fee4e2;border-color:#fecaca;color:#7a271a}
+  .dbtn.try-small{background:#fef3c7;border-color:#fde68a;color:#78350f}
+  .dbtn.try-ok{background:#dcfce7;border-color:#bbf7d0;color:#14532d}
+  .dbtn.zero-suggest{background:#fef3c7;border-color:#f59e0b;color:#92400e;box-shadow:0 0 0 3px rgba(245,158,11,.28);animation:pulse0 1.3s ease-in-out infinite}
+  @keyframes pulse0{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.45)}50%{box-shadow:0 0 0 7px rgba(245,158,11,0)}}
+
+  /* Таблица кратных делителя — справочник у клавиатуры */
+  .picker-area{display:flex;gap:14px;align-items:stretch;margin-top:6px}
+  @media(max-width:600px){.picker-area{flex-direction:column}}
+  #multiplesWrap{flex:0 0 auto;background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:10px 12px;min-width:140px}
+  @media(max-width:600px){#multiplesWrap{min-width:0}}
+  #picker{flex:1 1 auto;align-self:start}
+  #multiplesTitle{font-size:13px;font-weight:800;color:#475569;margin-bottom:4px}
+  #multiplesCaption{font-size:11px;color:#94a3b8;margin-bottom:8px;line-height:1.3}
+  #multiplesCaption:empty{display:none}
+  #multiples{display:flex;flex-direction:column;gap:2px;font-family:"Courier New",ui-monospace,monospace;font-size:14px}
+  @media(max-width:600px){
+    #multiples{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+    .mrow{justify-content:center;font-size:13px;padding:4px 6px}
+  }
+  .mrow{padding:3px 8px;border-radius:6px;display:flex;justify-content:space-between;gap:8px;border:1px solid transparent;transition:background .25s,border-color .25s}
+  .mrow .mleft{color:#94a3b8}
+  .mrow .mres{font-weight:800;color:#0f172a}
+  .mrow.target{background:#dcfce7;border-color:#86efac}
+  .mrow.target .mres{color:#14532d}
+  .mrow.flash-big{animation:mflashBig 1s ease-out}
+  .mrow.flash-small{animation:mflashSmall 1s ease-out}
+  @keyframes mflashBig{0%,40%{background:#fee4e2;border-color:#fecaca}100%{background:transparent;border-color:transparent}}
+  @keyframes mflashSmall{0%,40%{background:#fef3c7;border-color:#fde68a}100%{background:transparent;border-color:transparent}}
+
+  /* Интерактивные шаги: количество цифр / проверка остатка */
+  .step-wrap{margin:10px 0}
+  .cbtn{padding:12px 18px;font-size:20px;background:#fff;border:2px solid #cbd5e1;border-radius:12px;color:#0f172a}
+  .cbtn:hover{border-color:#2563eb}
+  .cbtn.good{background:#dcfce7;border-color:#86efac;color:#14532d}
+  .remcheck-info{font-size:15px;margin:6px 0}
+  .bring-btn{background:#15803d;color:#fff;border-color:#15803d;font-size:18px;padding:14px 22px;animation:cta 1.4s ease-in-out infinite}
+  .bring-btn:hover{background:#166534}
+  @keyframes cta{0%,100%{box-shadow:0 0 0 0 rgba(21,128,61,.35)}50%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+
+  /* Обратная связь */
+  .fb{border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:15px;margin-top:8px}
+  .fb.ok{background:#dcfce7;border-color:#bbf7d0}
+  .fb.err{background:#fee4e2;border-color:#fecaca}
+  .fb.tip{background:#fffbeb;border-color:#fde68a}
+  .fb .calc{font-family:"Courier New",monospace;font-weight:800;background:#fff;padding:2px 6px;border-radius:6px;border:1px solid #e5e7eb;display:inline-block;margin:2px 2px}
+
+  /* Сайдбар */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+  .stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:10px;text-align:center}
+  .stat b{font-size:26px;display:block;color:#1e293b}
+  .stat span{font-size:12px;color:#64748b}
+  .box{background:#eef4ff;border:1px solid #bfdbfe;border-radius:18px;padding:14px;margin:12px 0;font-size:14px}
+  .box.warn{background:#fffbeb;border-color:#fde68a}
+  .box.good{background:#dcfce7;border-color:#bbf7d0}
+  .box ul{padding-left:20px;margin:6px 0}
+  .box li{margin:2px 0}
+  .hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:8px;margin:6px 0;font-family:"Courier New",monospace;font-size:13px}
+
+  /* Кнопка/панель «не понимаю» */
+  .help-panel{display:none;background:#fffbeb;border:2px solid #fde68a;border-radius:18px;padding:16px;margin:10px 0}
+  .help-panel.open{display:block}
+  .help-panel h3{margin-top:0;color:#78350f}
+  .help-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+  @media(max-width:700px){.help-options{grid-template-columns:1fr}}
+  .help-options button{background:white;border:1px solid #fde68a;text-align:left;padding:10px;font-size:13px;font-weight:600;color:#7c2d12}
+  .help-options button:hover{background:#fef3c7}
+  .help-answer{background:white;border:1px solid #fde68a;border-radius:12px;padding:12px;margin-top:8px;font-size:14px;display:none}
+  .help-answer.open{display:block}
+  .help-answer b{color:#78350f}
+
+  /* Спец-карточка про ноль */
+  .zero-callout{background:linear-gradient(135deg,#fef3c7,#fed7aa);border:2px solid #f59e0b;border-radius:18px;padding:14px;margin:10px 0;display:none}
+  .zero-callout.show{display:block}
+  .zero-callout b{color:#92400e;font-size:16px}
+
+  .legend{font-size:12px;color:#64748b;margin-top:8px;display:flex;gap:12px;flex-wrap:wrap}
+  .legend span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:4px;vertical-align:middle}
+  .legend .l-sel::before{background:#dbeafe}
+  .legend .l-bring::before{background:#fef3c7}
+  .legend .l-used::before{background:#e2e8f0}
+  .legend .l-quot::before{background:#dcfce7}
+  .legend .l-arc::before{background:transparent;border:2px solid #2563eb;border-bottom:0;border-radius:50% 50% 0 0 / 100% 100% 0 0;height:8px;margin-bottom:3px}
+  [hidden]{display:none!important} .card{min-width:0} .grid{grid-template-columns:minmax(0,1.35fr) minmax(0,.75fr)}
+  .cell{flex:0 0 var(--division-cell)}.urow{position:relative}.vbar{flex-shrink:0}.cell.minus{position:absolute;flex:none;width:18px}
+  .division-note{display:block;margin:4px 0 8px!important;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
+  .back{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}.back a{padding:8px 0;min-height:44px}
+  :focus-visible{outline:3px solid #2563eb;outline-offset:3px}button{min-height:44px}.cell.click{padding:0;font:inherit;min-height:34px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero details{margin-top:8px;font-size:14px}.hero summary{cursor:pointer;color:#2563eb;font-weight:bold}
+  #saveWarning{padding:12px;border:1px solid #f59e0b;background:#fffbeb;border-radius:12px;margin-top:10px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  @media(max-width:480px){.page{padding:12px}.hero,.card{padding:14px;border-radius:16px}h1{font-size:26px}.task{font-size:32px}.ugolok-wrap{padding:12px}.row{gap:6px}.mode-btn,.lvl-btn{font-size:12px;padding:9px}.legend{font-size:11px}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
+</head>
+<body data-skill-support-saved="true">
+<main class="page">
+
+  <section class="hero">
+    <nav class="back" aria-label="Возврат"><a href="/">← На главную</a><a href="/trainers/oge-basics/multiplication-division/division-path.html">← К маршруту деления</a></nav>
+    <h1>Деление уголком — тренажёр Клода</h1>
+    <p>Учимся выбирать цифры частного. Умножение и вычитание тренажёр показывает в уголке.</p>
+    <details><summary>Как здесь учиться</summary>
+    <p>Деление уголком — это <b>повторяемый алгоритм</b>, а не угадывание. Сначала находим <b>первое неполное делимое</b>, затем считаем, <b>сколько цифр</b> будет в частном, и только потом повторяем цикл: подобрать цифру → умножить → вычесть → проверить остаток → снести следующую цифру.</p><p>«Обучение» показывает подсказки. В «Тренировке» таблица кратных остаётся справочником, но правильная строка не выделена. Полное самостоятельное деление — на следующей ступени маршрута.</p></details>
+    <div id="saveWarning" role="status" hidden></div>
+  </section>
+
+  <section class="grid">
+
+    <div class="card">
+
+      <div class="row">
+        <span class="group-title">Режим:</span>
+        <button class="mode-btn active" data-mode="learning">Обучение</button>
+        <button class="mode-btn" data-mode="training">Тренировка</button>
+        <button class="mode-btn" data-mode="teacher">Учитель</button>
+      </div>
+
+      <div class="row">
+        <span class="group-title">Уровень:</span>
+        <button class="lvl-btn active" data-lvl="first">1. Одна цифра</button>
+        <button class="lvl-btn" data-lvl="easy">2. Две цифры</button>
+        <button class="lvl-btn" data-lvl="med">3. Три цифры</button>
+        <button class="lvl-btn" data-lvl="hard">4. Четыре цифры</button>
+        <button class="lvl-btn" data-lvl="zero">5. Ноль в частном</button>
+      </div>
+
+      <div id="introBanner" class="intro-banner">📘 Учебный пример. Пройдём все шаги медленно и по порядку. Дальше задания будут случайными.</div>
+
+      <div id="task" class="task">— : —</div>
+
+      <div class="phase-bar" id="phaseBar"></div>
+
+      <div class="ugolok-wrap">
+        <div id="ugolok" class="ugolok"></div>
+        <div class="legend">
+          <span class="l-arc">дужка = одна будущая цифра частного</span>
+          <span class="l-sel">текущее неполное делимое</span>
+          <span class="l-bring">сносим</span>
+          <span class="l-used">уже разобрано</span>
+          <span class="l-quot">цифры частного</span>
+        </div>
+      </div>
+
+      <div id="prompt" class="prompt"></div>
+
+      <div id="zeroCallout" class="zero-callout">
+        <b>⚠ Особый случай: ноль в частном</b>
+        <p>Неполное делимое <span id="zcPartial"></span> <b>меньше</b> делителя <span id="zcDiv"></span>. Значит, делитель помещается в нём <b>0 раз</b>. Поэтому в частное пишем <b>0</b> — это <b>не пропуск</b>, а настоящая цифра частного. После этого сразу сносим следующую цифру.</p>
+      </div>
+
+      <!-- Шаг: сколько цифр в частном -->
+      <div id="countWrap" class="step-wrap" style="display:none">
+        <div class="row" style="margin:6px 0">
+          <span class="group-title">Сколько цифр в частном?</span>
+        </div>
+        <div id="countBtns" class="row"></div>
+      </div>
+
+      <!-- Шаг: подбор цифры частного -->
+      <div id="pickerWrap" style="display:none">
+        <div class="row" style="margin:6px 0">
+          <span class="group-title">Цифра частного (0–9):</span>
+        </div>
+        <div class="picker-area">
+          <div id="multiplesWrap">
+            <div id="multiplesTitle"></div>
+            <div id="multiplesCaption"></div>
+            <div id="multiples"></div>
+          </div>
+          <div id="picker" class="picker"></div>
+        </div>
+      </div>
+
+      <!-- Шаг: проверка остатка -->
+      <div id="remCheckWrap" class="step-wrap" style="display:none">
+        <div class="remcheck-info" id="remCheckInfo"></div>
+        <div id="remCheckBtns" class="row"></div>
+      </div>
+
+      <!-- Шаг: снос следующей цифры -->
+      <div id="bringWrap" class="step-wrap" style="display:none">
+        <div class="remcheck-info" id="bringInfo"></div>
+        <div class="row">
+          <button id="bringBtn" class="cbtn good bring-btn">↓ Снести следующую цифру</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="hint" class="warn">💡 Подсказка</button>
+        <button id="ndp" class="ghost">🤔 Я не понимаю, какой шаг непонятен?</button>
+        <button id="next" class="good">→ Следующий пример</button>
+        <button id="solution" class="muted">Я совсем застрял — показать решение</button>
+      </div>
+
+      <div id="helpPanel" class="help-panel">
+        <h3>Где именно непонятно?</h3>
+        <div class="help-options">
+          <button data-help="first">Как найти первое неполное делимое?</button>
+          <button data-help="count">Сколько цифр в частном?</button>
+          <button data-help="pick">Как подобрать цифру частного?</button>
+          <button data-help="big">Цифра «слишком большая» — что это значит?</button>
+          <button data-help="small">Цифра «слишком маленькая» — что это значит?</button>
+          <button data-help="remainder">Зачем проверять остаток?</button>
+          <button data-help="zero">Откуда берётся ноль в частном?</button>
+          <button data-help="bring">Что значит «снести цифру»?</button>
+          <button data-help="end">Когда деление закончено?</button>
+        </div>
+        <div id="helpAnswer" class="help-answer"></div>
+      </div>
+
+      <div id="fb" class="fb" role="status" aria-live="polite">Загружаем пример…</div>
+      <div id="divisionSkillSupport" data-skill-support-slot></div>
+
+    </div>
+
+    <aside class="card">
+      <div class="stats">
+        <div class="stat"><b id="total">0</b><span>решено</span></div>
+        <div class="stat"><b id="right">0</b><span>без подсказок</span></div>
+        <div class="stat"><b id="supported">0</b><span>с поддержкой</span></div>
+        <div class="stat"><b id="reviewed">0</b><span>разобрано</span></div>
+      </div>
+
+      <div class="box">
+        <h3>📋 Алгоритм</h3>
+        <ol style="padding-left:20px;margin:6px 0">
+          <li>Найти <b>первое неполное делимое</b> — наименьший слева блок цифр, который ≥ делителя.</li>
+          <li>Определить, <b>сколько цифр</b> будет в частном, и поставить столько <b>точек</b>.</li>
+          <li>Для каждой позиции:
+            <ul>
+              <li>Сколько раз делитель помещается в неполном делимом?</li>
+              <li>Умножить и вычесть.</li>
+              <li><b>Проверить: остаток &lt; делителя.</b></li>
+            </ul>
+          </li>
+          <li>Снести следующую цифру делимого.</li>
+          <li>Если новое неполное делимое меньше делителя — записать <b>0</b> и снести ещё.</li>
+          <li>Закончили — финальный остаток должен быть &lt; делителя.</li>
+        </ol>
+      </div>
+
+      <div class="box warn">
+        <h3>🎯 Главный вопрос</h3>
+        <p>На каждом шаге задавай себе:</p>
+        <p><b>«Сколько раз делитель помещается в текущем неполном делимом?»</b></p>
+        <p class="micro" style="font-size:12px;color:#78350f">Берём <b>наибольшее</b> количество. Считай по таблице кратных: самая большая строка ≤ неполного делимого — твой ответ. После вычитания проверяем: остаток меньше делителя.</p>
+      </div>
+
+      <h3>История</h3>
+      <div id="history"></div>
+      <button id="reset" class="danger" style="margin-top:8px">Сбросить статистику</button>
+    </aside>
+  </section>
+
+</main>
+
+<script>
+"use strict";
+
+/* ===== Состояние ===== */
+var KEY='mathExamDivisionClaude.v1';
+var storageBlocked=false, assisted=true, counted=false, lastSavedRaw=null;
+var mode='learning';           // 'learning' | 'training' | 'teacher'
+var level='first';              // easy | med | hard | zero
+var problem=null;              // {dividend:string, divisor:number, ...}
+var plan=null;                 // {steps:[...], firstLen, finalRem, quotient}
+var phase='findFirst';         // findFirst | countDigits | divide | done
+var stepIdx=0;                 // индекс текущего шага деления (в фазе divide)
+var subPhase='pick';           // pick | remcheck | bring  (внутри divide)
+var trySelLen=0;               // длина выделенного блока цифр в фазе findFirst
+var done=false;
+var attempts=0;
+var introShown=false;          // показан ли учебный пример
+var stats=emptyStats();
+function emptyStats(){return {total:0,right:0,supported:0,reviewed:0,streak:0,best:0,history:[]};}
+
+/* ===== Утилиты ===== */
+function el(id){return document.getElementById(id)}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function show(e,c){ if(e) e.style.display=c?'':'none'; }
+function plural(n){ // цифра / цифры / цифр
+  var n10=n%10, n100=n%100;
+  if(n10===1 && n100!==11) return 'цифра';
+  if(n10>=2 && n10<=4 && (n100<10||n100>=20)) return 'цифры';
+  return 'цифр';
+}
+function dotsWord(n){
+  var n10=n%10, n100=n%100;
+  if(n10===1 && n100!==11) return 'точку';
+  if(n10>=2 && n10<=4 && (n100<10||n100>=20)) return 'точки';
+  return 'точек';
+}
+
+function warnStorage(){
+  var box=el('saveWarning'); box.hidden=false;
+  box.textContent='Сохранение сейчас недоступно. Текущий пример остаётся на этой странице; помощь откроется в новой вкладке.';
+}
+function load(){
+  var raw;
+  try{
+    raw=localStorage.getItem(KEY);lastSavedRaw=raw; if(!raw) return false;
+    var v=JSON.parse(raw), a=v.attempt;
+    if(v.version!==1 || !a || !['learning','training','teacher'].includes(a.mode) || !['first','easy','med','hard','zero'].includes(a.level)) throw Error('state');
+    var p=a.problem;
+    if(!p || typeof p.dividend!=='string' || typeof p.quotient!=='string' || !/^[1-9][0-9]{0,6}$/.test(p.dividend) || !Number.isInteger(p.divisor) || p.divisor<2 || p.divisor>9 || !/^[1-9][0-9]{0,4}$/.test(p.quotient) || Number(p.dividend)!==p.divisor*Number(p.quotient)) throw Error('problem');
+    var bp=buildPlan(p);
+    if(!['findFirst','countDigits','divide','done'].includes(a.phase) || !['pick','remcheck','bring'].includes(a.subPhase) || !Number.isInteger(a.stepIdx) || a.stepIdx<0 || a.stepIdx>bp.steps.length || (a.phase==='divide' && a.stepIdx>=bp.steps.length) || (a.subPhase==='bring' && a.phase==='divide' && a.stepIdx+1>=bp.steps.length) || !Number.isInteger(a.trySelLen) || a.trySelLen<0 || a.trySelLen>p.dividend.length || typeof a.assisted!=='boolean' || typeof a.counted!=='boolean' || typeof a.done!=='boolean' || a.done!==(a.phase==='done') || !Number.isInteger(a.attempts) || a.attempts<0) throw Error('phase');
+    if(a.counted!==a.done || (a.done && a.stepIdx!==bp.steps.length) || (['findFirst','countDigits'].includes(a.phase) && (a.stepIdx!==0 || a.subPhase!=='pick'))) throw Error('completion');
+    var st=v.stats;
+    if(!st || !['total','right','supported','reviewed','streak','best'].every(k=>Number.isSafeInteger(st[k]) && st[k]>=0) || !Array.isArray(st.history)) throw Error('stats');
+    stats=Object.assign(emptyStats(),st,{history:st.history.slice(0,12).filter(x=>x && typeof x.text==='string' && x.text.length<=220)});
+    problem={dividend:p.dividend,divisor:p.divisor,quotient:p.quotient,intro:p.intro===true}; plan=bp;
+    mode=a.mode;level=a.level;phase=a.phase;subPhase=a.subPhase;stepIdx=a.stepIdx;trySelLen=a.trySelLen;done=a.done;attempts=a.attempts;
+    assisted=a.assisted || mode!=='training';counted=a.counted;introShown=true;
+    return true;
+  }catch(e){storageBlocked=true;warnStorage();return false;}
+}
+function save(){
+  if(storageBlocked || !problem) return false;
+  try{
+    if(localStorage.getItem(KEY)!==lastSavedRaw){storageBlocked=true;warnStorage();el('saveWarning').textContent='В другой вкладке уже есть более новый шаг. Чтобы продолжить его здесь, обнови страницу. Эта вкладка не перезапишет сохранённую работу.';return false;}
+    var nextRaw=JSON.stringify({version:1,stats:stats,attempt:{problem:problem,mode:mode,level:level,phase:phase,subPhase:subPhase,stepIdx:stepIdx,trySelLen:trySelLen,done:done,attempts:attempts,assisted:assisted,counted:counted}});
+    localStorage.setItem(KEY,nextRaw);lastSavedRaw=nextRaw;
+    return true;
+  }catch(e){storageBlocked=true;warnStorage();return false;}
+}
+function markHelp(){if(!done){assisted=true;save();}}
+
+/* ===== Генерация задачи ===== */
+function makeProblem(){
+  var div=rnd(2,9), len={first:1,easy:2,med:3,hard:4,zero:rnd(3,4)}[level], qs='';
+  for(var i=0;i<len;i++) qs+=String(rnd(1,9));
+  if(level==='zero') qs=qs[0]+'0'+qs.slice(2);
+  var q=Number(qs);
+  return {divisor:div,quotient:qs,dividend:String(div*q)};
+}
+
+/* ===== Построение полного плана решения ===== */
+function buildPlan(p){
+  var steps=[], s=p.dividend, d=p.divisor;
+  var i=0, partial=0, firstLen=0;
+  while(i<s.length){
+    partial = partial*10 + Number(s[i]);
+    i++;
+    if(partial>=d || i===s.length) break;
+  }
+  firstLen = i;
+  var q = Math.floor(partial/d);
+  var prod = q*d;
+  var rem = partial-prod;
+  steps.push({type:'first', partial:partial, q:q, prod:prod, rem:rem, used:firstLen});
+  while(i<s.length){
+    var newPartial = rem*10 + Number(s[i]);
+    var nq = Math.floor(newPartial/d);
+    var np = nq*d;
+    var nr = newPartial-np;
+    steps.push({type: newPartial<d ? 'zero':'normal', partial:newPartial, q:nq, prod:np, rem:nr, used:i+1, bringIdx:i});
+    rem = nr;
+    i++;
+  }
+  return {steps:steps, firstLen:firstLen, finalRem:rem, quotient: steps.map(function(x){return x.q}).join('')};
+}
+
+/* A single measured cell width keeps every written column aligned. At 320px,
+   normal four-digit quotients fit in full; only exceptionally wide work scrolls. */
+function notebookMetrics(available, columns){
+  var narrow=available<350, left=narrow?22:26, gap=narrow?5:8;
+  var cell=Math.min(30,Math.max(18,Math.floor((available-left-3-2*gap)/columns)));
+  return {cell:cell,font:Math.min(24,Math.max(18,cell-2)),left:left,gap:gap,width:Math.max(available,left+3+2*gap+columns*cell)};
+}
+function fitNotebook(u){
+  var wrap=u.parentElement, style=getComputedStyle(wrap);
+  var available=wrap.clientWidth-parseFloat(style.paddingLeft||0)-parseFloat(style.paddingRight||0);
+  if(!Number.isFinite(available) || available<=0) available=480;
+  var m=notebookMetrics(available,problem.dividend.length+plan.steps.length);
+  u.style.setProperty('--division-cell',m.cell+'px');u.style.setProperty('--division-font',m.font+'px');
+  u.style.setProperty('--division-left',m.left+'px');u.style.setProperty('--division-bar-gap',m.gap+'px');u.style.width=m.width+'px';
+  return m.cell;
+}
+
+/* ===== Отрисовка уголка ===== */
+function renderUgolok(){
+  var u = el('ugolok');
+  u.innerHTML='';
+  if(!problem){u.textContent='—';return}
+
+  var s = problem.dividend;
+  var d = problem.divisor;
+  var cellWidth=fitNotebook(u);
+
+  var inDivide = (phase==='divide' || phase==='done');
+
+  // drawnDigits — сколько цифр частного показать как готовые; subCount — сколько блоков вычитания
+  var drawnDigits=0, subCount=0;
+  if(phase==='done'){ drawnDigits=plan.steps.length; subCount=plan.steps.length; }
+  else if(phase==='divide'){
+    if(subPhase==='pick'){ drawnDigits=stepIdx; subCount=stepIdx; }
+    else if(subPhase==='remcheck'){ drawnDigits=stepIdx; subCount=stepIdx+1; }
+    else { /* bring */ drawnDigits=stepIdx+1; subCount=stepIdx+1; }
+  }
+
+  // что подсвечивать в строке делимого
+  var usedUpTo = 0, selStart=-1, selEnd=-1;
+  if(phase==='countDigits'){
+    selStart=0; selEnd=plan.firstLen;            // напоминаем найденное неполное делимое
+  } else if(phase==='divide'){
+    if(subPhase==='bring'){
+      usedUpTo = plan.steps[stepIdx].used;
+      selStart = plan.steps[stepIdx+1].bringIdx; selEnd = selStart+1;   // сносимая цифра
+    } else {
+      usedUpTo = stepIdx===0 ? 0 : plan.steps[stepIdx-1].used;
+      if(subPhase==='pick'){
+        if(stepIdx===0){ selStart=0; selEnd=plan.firstLen; }
+        else { selStart=plan.steps[stepIdx-1].used; selEnd=selStart+1; }
+      }
+    }
+  } else if(phase==='done'){
+    usedUpTo = s.length;
+  }
+
+  // Ряд 0: дужки над цифрами делимого (начиная с фазы countDigits)
+  if(phase !== 'findFirst' && plan && plan.steps && plan.steps.length){
+    var arcsRow = document.createElement('div');
+    arcsRow.className = 'urow ugolok-arcs';
+    for(var bi=0; bi<plan.steps.length; bi++){
+      var blockSize = (bi===0) ? plan.firstLen : 1;
+      var cellW = blockSize * cellWidth;
+      var arcWrap = document.createElement('span');
+      arcWrap.className = 'arc-cell';
+      arcWrap.style.width = cellW + 'px';
+      var arc = document.createElement('span');
+      arc.className = 'arc';
+      // статус дужки
+      var cls = 'future';
+      if(phase === 'countDigits'){
+        cls = 'neutral';
+      } else if(phase === 'done'){
+        cls = 'done';
+      } else if(phase === 'divide'){
+        if(subPhase === 'bring'){
+          if(bi <= stepIdx) cls = 'done';
+          else if(bi === stepIdx+1) cls = 'bring';
+          else cls = 'future';
+        } else { // pick | remcheck
+          if(bi < stepIdx) cls = 'done';
+          else if(bi === stepIdx) cls = 'now';
+          else cls = 'future';
+        }
+      }
+      arc.classList.add(cls);
+      arc.style.width = Math.max(cellW - 6, 16) + 'px';
+      arcWrap.appendChild(arc);
+      arcsRow.appendChild(arcWrap);
+    }
+    u.appendChild(arcsRow);
+  }
+
+  // Ряд 1: делимое | делитель
+  var row1 = document.createElement('div'); row1.className='urow';
+  for(var i=0;i<s.length;i++){
+    var c = document.createElement(phase==='findFirst'?'button':'span');
+    c.className='cell';
+    if(phase==='findFirst'){c.type='button';c.setAttribute('aria-label','Выбрать '+s.slice(0,i+1));}
+    if(phase==='findFirst'){
+      c.classList.add('click');
+      if(i<trySelLen) c.classList.add('trysel');
+      (function(idx){ c.onclick=function(){selectFirst(idx+1)}; })(i);
+    } else {
+      if(i<usedUpTo) c.classList.add('used');
+      if(selStart>=0 && i>=selStart && i<selEnd){
+        if(phase==='divide' && subPhase==='bring') c.classList.add('bring');
+        else if(phase==='countDigits' || stepIdx===0 || done) c.classList.add('sel');
+        else c.classList.add('bring');
+      }
+    }
+    c.textContent=s[i];
+    row1.appendChild(c);
+  }
+  var vb = document.createElement('span'); vb.className='vbar'; row1.appendChild(vb);
+  var dv = document.createElement('span'); dv.className='cell'; dv.style.fontWeight='900'; dv.textContent=String(d);
+  row1.appendChild(dv);
+  u.appendChild(row1);
+
+  // Ряд 2: полоска под делителем
+  var row2 = document.createElement('div'); row2.className='urow';
+  for(var j=0;j<s.length;j++){var g=document.createElement('span'); g.className='cell gap'; row2.appendChild(g);}
+  var spacer=document.createElement('span'); spacer.className='vbar'; spacer.style.background='transparent'; row2.appendChild(spacer);
+  var hb=document.createElement('span');
+  hb.style.cssText='display:inline-block;height:3px;background:#0f172a;border-radius:2px;width:'+(String(d).length*cellWidth)+'px;align-self:center';
+  row2.appendChild(hb);
+  u.appendChild(row2);
+
+  // Ряд 3: цифры/точки частного — только после того, как посчитали количество
+  var row3 = document.createElement('div'); row3.className='urow';
+  for(var k=0;k<s.length;k++){var g2=document.createElement('span'); g2.className='cell gap'; row3.appendChild(g2);}
+  var spacer2=document.createElement('span'); spacer2.className='vbar'; spacer2.style.background='transparent'; row3.appendChild(spacer2);
+  if(inDivide){
+    var qLen = plan.steps.length;
+    for(var m=0;m<qLen;m++){
+      var qc = document.createElement('span'); qc.className='cell';
+      if(m<drawnDigits){ qc.classList.add('qdig'); qc.textContent=plan.steps[m].q; }
+      else if(phase==='divide' && subPhase==='remcheck' && m===stepIdx){ qc.classList.add('qnow'); qc.textContent=plan.steps[m].q; }
+      else { qc.classList.add('dot'); qc.textContent='·'; }
+      row3.appendChild(qc);
+    }
+  }
+  u.appendChild(row3);
+
+  // Ряды вычитаний: для завершённых шагов + для текущего шага во время проверки/сноса
+  for(var sidx=0; sidx<subCount; sidx++){
+    var isCurrent = (phase==='divide' && subPhase==='remcheck' && sidx===stepIdx);
+    renderStepSubtraction(u, sidx, isCurrent, cellWidth);
+  }
+}
+
+function renderStepSubtraction(u, sidx, isCurrent, cellWidth){
+  var st = plan.steps[sidx];
+  var d = problem.divisor;
+  var endCol = st.used;
+  var prodStr = String(st.prod);
+
+  // строка произведения с минусом
+  var subRow = document.createElement('div'); subRow.className='urow';
+  var prodStart = endCol - prodStr.length;
+  for(var x=0;x<prodStart;x++){var gg=document.createElement('span'); gg.className='cell gap'; subRow.appendChild(gg);}
+  var minusCell = document.createElement('span'); minusCell.className='cell minus'; minusCell.textContent='−';
+  minusCell.style.left=(prodStart*cellWidth-22)+'px';
+  subRow.appendChild(minusCell);
+  for(var y=0;y<prodStr.length;y++){
+    var pc=document.createElement('span'); pc.className='cell'; pc.style.color='#dc2626'; pc.textContent=prodStr[y]; subRow.appendChild(pc);
+  }
+  u.appendChild(subRow);
+
+  // полоска
+  var lineRow = document.createElement('div'); lineRow.className='urow';
+  for(var z=0;z<prodStart;z++){var gx=document.createElement('span'); gx.className='cell gap'; lineRow.appendChild(gx);}
+  var hl = document.createElement('span');
+  hl.style.cssText='display:inline-block;height:2px;background:#0f172a;width:'+(prodStr.length*cellWidth-4)+'px;margin:2px 2px';
+  lineRow.appendChild(hl);
+  u.appendChild(lineRow);
+
+  // остаток
+  var remRow = document.createElement('div'); remRow.className='urow';
+  var rowNote=null;
+  var nextStep = isCurrent ? null : plan.steps[sidx+1];
+  if(nextStep){
+    var remDisplay = (st.rem === 0) ? '' : String(st.rem);
+    var pad = endCol - remDisplay.length;
+    for(var rx=0;rx<pad;rx++){var gr=document.createElement('span');gr.className='cell gap';remRow.appendChild(gr)}
+    for(var rd=0;rd<remDisplay.length;rd++){
+      var rc=document.createElement('span'); rc.className='cell rem'; rc.textContent=remDisplay[rd]; remRow.appendChild(rc);
+    }
+    var bc = document.createElement('span'); bc.className='cell';
+    var bringActive = (subPhase==='bring' && sidx===stepIdx && !done);
+    var bringingNow = ((sidx+1===stepIdx && subPhase==='pick') || bringActive) && !done;
+    if(bringActive){
+      bc.classList.add('bring');                 // жёлтый + пульсация
+    } else {
+      bc.style.color = bringingNow ? '#92400e' : '#94a3b8';
+      bc.style.background = bringingNow ? '#fef3c7' : 'transparent';
+    }
+    bc.style.borderRadius='6px'; bc.style.fontWeight='900';
+    bc.textContent = problem.dividend[nextStep.bringIdx];
+    remRow.appendChild(bc);
+    if(bringActive){
+      var lab=document.createElement('span');
+      lab.style.cssText='font-family:Verdana,sans-serif;font-size:13px;color:#92400e;font-weight:800;margin-left:8px';
+      lab.textContent='↓ сносим '+problem.dividend[nextStep.bringIdx];
+      rowNote=lab;
+    }
+  } else {
+    var fr = String(st.rem);
+    var pad2 = endCol - fr.length;
+    for(var fx=0;fx<pad2;fx++){var gf=document.createElement('span');gf.className='cell gap';remRow.appendChild(gf)}
+    for(var fd=0;fd<fr.length;fd++){
+      var fc=document.createElement('span'); fc.className='cell rem'; fc.textContent=fr[fd];
+      if(done && !isCurrent) fc.style.background='#dcfce7';
+      remRow.appendChild(fc);
+    }
+    var label = document.createElement('span');
+    label.style.cssText='font-family:Verdana,sans-serif;font-size:13px;color:#475569;margin-left:8px';
+    if(isCurrent){
+      label.textContent = '(остаток '+st.rem+' — проверь: '+st.rem+' '+(st.rem<d?'<':'≥')+' '+d+'?)';
+    } else if(done){
+      label.textContent = st.rem===0 ? '(остаток 0 — поделилось нацело)' : '(остаток '+st.rem+', '+st.rem+' < '+d+' ✓)';
+    }
+    if(label.textContent) rowNote=label;
+  }
+  u.appendChild(remRow);
+  if(rowNote){rowNote.classList.add('division-note');u.appendChild(rowNote);}
+}
+
+/* ===== Полоска фаз ===== */
+function renderPhases(){
+  var pb = el('phaseBar'); pb.innerHTML='';
+  var phases = [
+    {key:'findFirst', label:'1. Первое неполное делимое'},
+    {key:'countDigits', label:'2. Сколько цифр в частном'},
+    {key:'divide',  label:'3. Подбор цифр и вычитание'},
+    {key:'done',   label:'4. Финальный остаток'}
+  ];
+  var order={findFirst:0,countDigits:1,divide:2,done:3};
+  var curIdx = order[phase];
+  phases.forEach(function(ph){
+    var div=document.createElement('span'); div.className='phase';
+    var idx=order[ph.key];
+    if(idx===curIdx) div.classList.add('now');
+    else if(idx<curIdx) div.classList.add('done');
+    div.textContent=ph.label;
+    pb.appendChild(div);
+  });
+}
+
+/* ===== Промпт (зависит от фазы и режима) ===== */
+function renderPrompt(){
+  var p = el('prompt');
+  if(!problem){p.innerHTML='';return}
+  var d = problem.divisor, s = problem.dividend;
+
+  if(phase==='done'){
+    el('zeroCallout').classList.remove('show');
+    var q = plan.quotient, r = plan.finalRem, prod = Number(q)*d;
+    var check = (r===0)
+      ? 'Проверка: '+q+' · '+d+' = '+prod
+      : 'Проверка: '+q+' · '+d+' + '+r+' = '+(prod+r);
+    p.innerHTML='<b>Готово!</b> Все цифры частного найдены. Финальный остаток '+r+' '+
+      (r===0?'= 0 — поделилось нацело.':'< '+d+' — корректно.')+'<br>'+
+      'Ответ: <b>'+s+' : '+d+' = '+q+(r?' (остаток '+r+')':'')+'</b>.'+
+      '<span class="micro">'+check+' = '+s+' ✓</span>';
+    return;
+  }
+
+  if(phase==='findFirst'){
+    el('zeroCallout').classList.remove('show');
+    if(mode==='learning'){
+      // явная инструкция клика + примеры на конкретных цифрах
+      var ex = '';
+      if(s.length>=1) ex += '<br>· чтобы выбрать <b>'+s[0]+'</b>, нажми на <b>'+s[0]+'</b>;';
+      if(s.length>=2) ex += '<br>· чтобы выбрать <b>'+s.slice(0,2)+'</b>, нажми на <b>'+s[1]+'</b>;';
+      if(s.length>=3) ex += '<br>· чтобы выбрать <b>'+s.slice(0,3)+'</b>, нажми на <b>'+s[2]+'</b>.';
+
+      var lead;
+      if(Number(s[0])>=d){
+        lead = 'Первая цифра <b>'+s[0]+'</b>. Она уже <b>не меньше</b> делителя '+d+'. Значит, первое неполное делимое — <b>'+s[0]+'</b>. Нажми на цифру <b>'+s[0]+'</b>.';
+      } else {
+        lead = 'Первая цифра <b>'+s[0]+'</b>. Её <b>мало</b> ('+s[0]+' &lt; '+d+'). Нажми на следующую цифру, чтобы взять блок из двух цифр — <b>'+s.slice(0,2)+'</b>.';
+      }
+
+      p.innerHTML =
+        '<b>Шаг 1. Найди первое неполное делимое.</b><br>'+
+        'Бери цифры делимого слева направо по одной, пока выбранный блок цифр не станет <b>не меньше делителя ('+d+')</b>. '+
+        'Нужен самый <b>короткий</b> левый блок цифр, в котором делитель уже помещается хотя бы один раз.<br>'+
+        '<b>Как выбирать:</b> нажми на <b>последнюю</b> цифру блока, который хочешь выбрать.'+ex+
+        '<span class="micro">'+lead+'</span>';
+    } else {
+      p.innerHTML='<b>Шаг 1.</b> Выдели первое неполное делимое: нажми на <b>последнюю</b> цифру блока, пока блок не станет ≥ '+d+'.';
+    }
+    return;
+  }
+
+  if(phase==='countDigits'){
+    el('zeroCallout').classList.remove('show');
+    var rest=s.length-plan.firstLen;
+    p.innerHTML =
+      '<b>Шаг 2. Сколько цифр будет в частном?</b><br>'+
+      'Над делимым появились <b>дужки</b> — каждая дужка соответствует одной будущей цифре частного. Сколько <b>точек</b> нужно поставить?'+
+      (mode==='learning'
+        ? '<span class="micro">Первое неполное делимое заняло <b>'+plan.firstLen+'</b> '+plural(plan.firstLen)+' слева — это первая дужка. После него осталось ещё <b>'+rest+'</b> '+plural(rest)+', над каждой — своя дужка. Посчитай дужки. Формула: <b>'+s.length+' − '+plan.firstLen+' + 1</b>.</span>'
+        : '<span class="micro">Подсказка: сколько дужек сверху — столько точек снизу.</span>');
+    return;
+  }
+
+  // phase === 'divide'
+  var step = plan.steps[stepIdx];
+  var more = (stepIdx+1 < plan.steps.length);
+
+  if(subPhase==='remcheck'){
+    el('zeroCallout').classList.remove('show');
+    p.innerHTML =
+      '<b>Шаг 3в. Проверь остаток.</b> Ты записал в частное цифру <b>'+step.q+'</b>. '+
+      'Умножили <span style="font-family:monospace">'+d+' · '+step.q+' = '+step.prod+'</span> и вычли — остаток <b>'+step.rem+'</b>. '+
+      'Сравни остаток с делителем '+d+'.'+
+      '<span class="micro">'+
+      (more
+        ? 'Если остаток <b>меньше</b> делителя, нажми зелёную кнопку — тренажёр снесёт следующую цифру делимого, и мы продолжим деление. Пример ещё не закончен!'
+        : 'Если остаток <b>меньше</b> делителя, нажми зелёную кнопку — это последняя цифра, и деление будет завершено.')+
+      '</span>';
+    return;
+  }
+
+  if(subPhase==='bring'){
+    el('zeroCallout').classList.remove('show');
+    var ns = plan.steps[stepIdx+1];
+    var bdg = s[ns.bringIdx];
+    if(mode==='training'){
+      p.innerHTML = '<b>'+step.rem+' &lt; '+d+' ✓</b> Сносим '+bdg+' → новое неполное делимое <b>'+ns.partial+'</b>. Нажми «Продолжить».';
+    } else {
+      p.innerHTML =
+        'Остаток <b>'+step.rem+'</b> меньше делителя <b>'+d+'</b> — значит, предыдущая цифра частного выбрана верно.<br>'+
+        'Теперь сносим следующую цифру делимого: <b>'+bdg+'</b> (она подсвечена жёлтым в уголке).<br>'+
+        'Получаем новое неполное делимое: <b>'+step.rem+' · 10 + '+bdg+' = '+ns.partial+'</b>.'+
+        '<span class="micro">Нажми кнопку ниже, чтобы продолжить подбор следующей цифры частного.</span>';
+    }
+    return;
+  }
+
+  // subPhase === 'pick'
+  if(step.type==='zero' && mode==='learning'){
+    el('zeroCallout').classList.add('show');
+    el('zcPartial').textContent = step.partial;
+    el('zcDiv').textContent = d;
+    var zlead = stepIdx>0 ? 'Мы получили новое неполное делимое: <b>'+step.partial+'</b>.<br>' : '';
+    p.innerHTML = zlead +
+      '<b>'+d+' не помещается в '+step.partial+' ни разу</b> ('+step.partial+' &lt; '+d+'). '+
+      'В частное идёт <b>0</b>. Нажми <b>0</b>.';
+    return;
+  } else {
+    el('zeroCallout').classList.remove('show');
+  }
+
+  if(stepIdx>0){
+    // снос уже выполнен на отдельном шаге — показываем непрерывность: получили новое делимое → делим дальше
+    p.innerHTML =
+      'Мы получили новое неполное делимое: <b>'+step.partial+'</b>.<br>'+
+      '<b>Сколько раз '+d+' помещается в '+step.partial+'?</b>'+
+      '<span class="micro">Считай по таблице кратных: самая большая строка ≤ '+step.partial+' — твой ответ.</span>';
+  } else {
+    p.innerHTML =
+      'Первое неполное делимое = <b>'+step.partial+'</b>.<br>'+
+      '<b>Шаг 3. Сколько раз '+d+' помещается в '+step.partial+'?</b>'+
+      '<span class="micro">Найди наибольшую цифру q, чтобы '+d+'·q ≤ '+step.partial+'. Таблица кратных уже всё посчитала.</span>';
+  }
+}
+
+/* ===== Кнопки «сколько цифр» ===== */
+function renderCount(){
+  var c=el('countBtns'); c.innerHTML='';
+  if(!problem) return;
+  var maxN = problem.dividend.length;
+  for(var n=1;n<=maxN;n++){
+    (function(n){
+      var b=document.createElement('button'); b.className='cbtn'; b.textContent=n;
+      b.onclick=function(){confirmCount(n)};
+      c.appendChild(b);
+    })(n);
+  }
+}
+
+/* ===== Кнопки проверки остатка ===== */
+function renderRemCheck(){
+  var w=el('remCheckBtns'); w.innerHTML='';
+  if(!problem || phase!=='divide' || subPhase!=='remcheck') return;
+  var st=plan.steps[stepIdx], d=problem.divisor;
+  var more = (stepIdx+1 < plan.steps.length);
+  var nextBring = more ? problem.dividend[plan.steps[stepIdx+1].bringIdx] : null;
+  el('remCheckInfo').innerHTML =
+    'Вычли: <span class="calc">'+st.partial+' − '+st.prod+' = '+st.rem+'</span>. '+
+    'Делитель <b>'+d+'</b>. Остаток меньше делителя?';
+  var yes=document.createElement('button'); yes.className='cbtn good';
+  yes.textContent = more
+    ? 'Да, '+st.rem+' < '+d+' — снести цифру '+nextBring
+    : 'Да, '+st.rem+' < '+d+' — завершить пример';
+  yes.onclick=function(){confirmRem(true)};
+  var no=document.createElement('button'); no.className='cbtn'; no.textContent='Нет';
+  no.onclick=function(){confirmRem(false)};
+  w.appendChild(yes); w.appendChild(no);
+}
+
+/* ===== Шаг сноса цифры ===== */
+function renderBring(){
+  if(!problem || phase!=='divide' || subPhase!=='bring') return;
+  var st = plan.steps[stepIdx];
+  var ns = plan.steps[stepIdx+1];
+  var bd = problem.dividend[ns.bringIdx];
+  if(mode==='training'){
+    el('bringInfo').innerHTML = '<b>'+st.rem+' &lt; '+problem.divisor+' ✓</b> Сносим '+bd+' → новое неполное делимое <b>'+ns.partial+'</b>.';
+  } else {
+    el('bringInfo').innerHTML =
+      'Остаток: <b>'+st.rem+'</b>.<br>'+
+      'Сносим следующую цифру делимого: <b>'+bd+'</b> (подсвечена жёлтым в уголке).<br>'+
+      'Новое неполное делимое: <b>'+st.rem+' · 10 + '+bd+' = '+ns.partial+'</b>.';
+  }
+  el('bringBtn').textContent = mode==='training' ? 'Продолжить' : 'Понятно: продолжаем с '+ns.partial;
+}
+
+/* ===== Цифровая клавиатура ===== */
+function renderPicker(){
+  var pk = el('picker'); pk.innerHTML='';
+  for(var i=0;i<=9;i++){
+    (function(d){
+      var b=document.createElement('button');
+      b.className='dbtn';
+      b.textContent=d;
+      b.onclick=function(){tryDigit(d, b)};
+      pk.appendChild(b);
+    })(i);
+  }
+}
+function clearPicker(){
+  Array.prototype.forEach.call(document.querySelectorAll('.dbtn'),function(b){
+    b.classList.remove('try-big','try-small','try-ok','zero-suggest');
+  });
+}
+
+/* ===== Таблица кратных делителя (справочник у клавиатуры) ===== */
+var MULT_NOUN = {2:'двойки',3:'тройки',4:'четвёрки',5:'пятёрки',6:'шестёрки',7:'семёрки',8:'восьмёрки',9:'девятки'};
+var MULT_NOUN_SG = {2:'двойка',3:'тройка',4:'четвёрка',5:'пятёрка',6:'шестёрка',7:'семёрка',8:'восьмёрка',9:'девятка'};
+function renderMultiples(){
+  var wrap = el('multiples'); if(!wrap) return;
+  wrap.innerHTML = '';
+  if(!problem || phase!=='divide' || subPhase!=='pick'){ return; }
+  var d = problem.divisor;
+  var step = plan.steps[stepIdx];
+  var partial = step ? step.partial : 0;
+
+  // подсветка целевой строки только в Обучении
+  var targetQ = -1;
+  if(mode==='learning'){
+    for(var q=9;q>=1;q--){ if(q*d<=partial){ targetQ=q; break; } }
+  }
+
+  // заголовок и подпись
+  if(mode==='learning'){
+    el('multiplesTitle').textContent = 'Считаем ' + (MULT_NOUN[d] || d+' раз');
+    if(targetQ>=1){
+      el('multiplesCaption').textContent = 'Самая большая строка ≤ '+partial+' — твой ответ.';
+    } else {
+      // нулевой шаг: ни одна семёрка не помещается
+      el('multiplesCaption').textContent = 'Ни одна '+(d)+' не помещается в '+partial+' → в частное идёт 0.';
+    }
+  } else {
+    el('multiplesTitle').textContent = '·'+d;
+    el('multiplesCaption').textContent = '';
+  }
+
+  for(var i=1;i<=9;i++){
+    var row = document.createElement('div');
+    row.className = 'mrow';
+    row.setAttribute('data-q', i);
+    if(i===targetQ) row.classList.add('target');
+    row.innerHTML = '<span class="mleft">'+i+' · '+d+' =</span><span class="mres">'+(i*d)+'</span>';
+    wrap.appendChild(row);
+  }
+}
+
+function flashMultiplesRow(q, kind){
+  if(mode!=='learning') return;
+  if(q<1 || q>9) return;
+  var row = el('multiples') && el('multiples').querySelector('[data-q="'+q+'"]');
+  if(!row) return;
+  var cls = (kind==='big') ? 'flash-big' : 'flash-small';
+  row.classList.remove('flash-big','flash-small');
+  // restart animation
+  void row.offsetWidth;
+  row.classList.add(cls);
+  setTimeout(function(){ row.classList.remove(cls); }, 1000);
+}
+
+function highlightZeroSuggest(){
+  var pk=el('picker'); if(!pk) return;
+  var isZero = (problem && phase==='divide' && subPhase==='pick' && mode==='learning' &&
+                plan.steps[stepIdx] && plan.steps[stepIdx].type==='zero');
+  Array.prototype.forEach.call(pk.children,function(b){
+    if(b.textContent==='0'){
+      if(isZero) b.classList.add('zero-suggest'); else b.classList.remove('zero-suggest');
+    }
+  });
+}
+
+/* ===== Видимость интерактивных панелей ===== */
+function updatePanels(){
+  show(el('countWrap'),    phase==='countDigits');
+  show(el('pickerWrap'),   phase==='divide' && subPhase==='pick'    && mode!=='teacher');
+  show(el('remCheckWrap'), phase==='divide' && subPhase==='remcheck' && mode!=='teacher');
+  show(el('bringWrap'),    phase==='divide' && subPhase==='bring'    && mode!=='teacher');
+  // «Следующий пример» — только когда текущий пример полностью решён
+  show(el('next'), phase==='done' || done);
+}
+
+/* ===== Общий перерисовщик ===== */
+function renderAll(){
+  renderUgolok();
+  renderPhases();
+  renderPrompt();
+  renderCount();
+  renderRemCheck();
+  renderBring();
+  updatePanels();
+  highlightZeroSuggest();
+  renderMultiples();
+  document.dispatchEvent(new CustomEvent('mathexam:division-step',{detail:{kind:subPhase==='remcheck'?'subtract':'digit',done:done}}));
+  save();
+}
+
+/* ===== Шаг 1: выбор первого неполного делимого ===== */
+function selectFirst(len){
+  if(phase!=='findFirst' || !problem || !Number.isInteger(len) || len<1 || len>problem.dividend.length) return;
+  var d=problem.divisor, s=problem.dividend;
+  var chunk=Number(s.slice(0,len));
+  trySelLen=len;
+  renderUgolok();
+  if(chunk < d){
+    markHelp();
+    msg('Делитель ещё не помещается: <span class="calc">'+chunk+' &lt; '+d+'</span>. Возьми ещё одну цифру справа.','err');
+    return;
+  }
+  if(len > plan.firstLen){
+    markHelp();
+    msg('Можно было начать раньше. Первое неполное делимое — это <b>самый короткий</b> левый блок цифр, который уже не меньше делителя. Попробуй взять меньше цифр.','tip');
+    return;
+  }
+  // len === firstLen, chunk >= d
+  msg('✓ Верно. Это первое неполное делимое: <span class="calc">'+chunk+' ≥ '+d+'</span>.','ok');
+  phase='countDigits';
+  renderAll();
+}
+
+/* ===== Шаг 2: количество цифр в частном ===== */
+function confirmCount(n){
+  if(phase!=='countDigits' || !problem || !Number.isInteger(n) || n<1) return;
+  var correct = plan.steps.length;
+  var s = problem.dividend;
+  if(n<correct){
+    markHelp();
+    msg('❌ Маловато. После первого неполного делимого осталось ещё '+(s.length-plan.firstLen)+' '+plural(s.length-plan.firstLen)+' делимого — каждую надо снести, и это ещё шаги. Пересчитай.','err');
+    return;
+  }
+  if(n>correct){
+    markHelp();
+    msg('❌ Многовато. Каждая снесённая цифра добавляет одну цифру частного. Формула: длина делимого − длина первого неполного делимого + 1 = '+s.length+' − '+plan.firstLen+' + 1.','err');
+    return;
+  }
+  msg('✓ Верно! В частном будет <b>'+n+'</b> '+plural(n)+'. Ставим '+n+' '+dotsWord(n)+' — каждая точка ждёт свою цифру.','ok');
+  phase='divide'; stepIdx=0; subPhase='pick';
+  clearPicker();
+  renderAll();
+}
+
+/* ===== Шаг 3: подбор цифры частного ===== */
+function tryDigit(q, btn){
+  if(!Number.isInteger(q) || q<0 || q>9) return;
+  btn=btn || el('picker').children[q];
+  if(done){ msg('Этот пример уже решён. Нажми «Следующий пример».','tip'); return; }
+  if(mode==='teacher'){ msg('В режиме «Учитель» цифры подставляются автоматически. Нажми «Показать решение» или поменяй режим.','tip'); return; }
+  if(phase!=='divide' || subPhase!=='pick'){
+    msg('Сначала пройди предыдущий шаг.','tip'); return;
+  }
+  var step = plan.steps[stepIdx];
+  var d = problem.divisor;
+  var prod = q*d;
+  var rem  = step.partial - prod;
+  attempts++;
+
+  if(prod > step.partial){
+    markHelp();
+    btn.classList.add('try-big');
+    flashMultiplesRow(q, 'big');
+    msg(
+      '❌ Столько раз <b>не помещается</b>.<br>'+
+      '<span class="calc">'+d+' · '+q+' = '+prod+'</span>, а в неполном делимом всего '+
+      '<span class="calc">'+step.partial+'</span>. Возьми <b>меньше</b>.', 'err');
+    return;
+  }
+  if(rem >= d){
+    markHelp();
+    btn.classList.add('try-small');
+    flashMultiplesRow(q, 'small');
+    var sg = MULT_NOUN_SG[d] || (d+'-ка');
+    msg(
+      '❌ <b>Ещё одна '+sg+' здесь поместится.</b><br>'+
+      '<span class="calc">'+d+' · '+q+' = '+prod+'</span> ≤ '+step.partial+', '+
+      'но после вычитания остаётся <span class="calc">'+step.partial+' − '+prod+' = '+rem+'</span>, '+
+      'а это ≥ '+d+'. Возьми <b>больше</b>.', 'err');
+    return;
+  }
+
+  // цифра верная → переходим к обязательной проверке остатка
+  btn.classList.add('try-ok');
+  subPhase='remcheck';
+  var okMsg;
+  if(step.type==='zero'){
+    okMsg = '✓ Верно. '+d+' не помещается в '+step.partial+' ни разу — в частное пошёл <b>0</b>.';
+  } else {
+    var rw = (q===1 || q>=5) ? 'раз' : 'раза';
+    okMsg = '✓ Верно: <b>'+d+' помещается в '+step.partial+' ровно '+q+' '+rw+'</b>. '+
+      '<span class="calc">'+d+' · '+q+' = '+prod+'</span> ≤ '+step.partial+'. Записываем '+q+' в частное.';
+  }
+  okMsg += '<br><b>Теперь проверь остаток</b> (кнопки ниже).';
+  msg(okMsg, 'ok');
+  renderAll();
+}
+
+/* ===== Проверка остатка ===== */
+function confirmRem(yes){
+  if(phase!=='divide' || subPhase!=='remcheck' || typeof yes!=='boolean') return;
+  var st = plan.steps[stepIdx];
+  var d = problem.divisor;
+  if(!yes){
+    markHelp();
+    msg('Проверь ещё раз: остаток <span class="calc">'+st.rem+'</span>, делитель <span class="calc">'+d+'</span>. '+
+        st.rem+' &lt; '+d+' — остаток <b>действительно меньше</b> делителя. Значит, цифра подобрана верно и можно сносить следующую. Нажми зелёную кнопку.','tip');
+    return;
+  }
+  var more = (stepIdx+1 < plan.steps.length);
+  if(more){
+    // остаток проверен → переходим к ОТДЕЛЬНОМУ шагу сноса цифры
+    var bd = problem.dividend[plan.steps[stepIdx+1].bringIdx];
+    msg('✓ Остаток '+st.rem+' &lt; '+d+'. Цифра '+st.q+' в частном выбрана верно. Теперь сносим следующую цифру '+bd+'.', 'ok');
+    subPhase='bring';
+    renderAll();
+  } else {
+    msg('✓ Остаток '+st.rem+' &lt; '+d+'. Это последний шаг — деление завершено.', 'ok');
+    stepIdx++;            // довести до конца плана
+    finish(true);
+  }
+}
+
+/* ===== Снос следующей цифры ===== */
+function doBring(){
+  if(phase!=='divide' || subPhase!=='bring') return;
+  var bd = problem.dividend[plan.steps[stepIdx+1].bringIdx];
+  stepIdx++;
+  subPhase='pick';
+  clearPicker();
+  var step = plan.steps[stepIdx];
+  var m = 'Снесли цифру '+bd+'. Новое неполное делимое: <b>'+step.partial+'</b>. ';
+  if(step.type==='zero' && mode==='learning'){
+    m += 'Оно <b>меньше</b> делителя '+problem.divisor+' — значит, в частное идёт <b>0</b>. Выбери цифру.';
+  } else {
+    m += 'Подбери следующую цифру частного.';
+  }
+  msg(m, '');
+  renderAll();
+}
+
+/* ===== Завершение ===== */
+function finish(byUser){
+  if(done || counted) return;
+  done=true; phase='done';
+  el('zeroCallout').classList.remove('show');
+  if(byUser){
+    counted=true;stats.total++;
+    if(assisted || mode!=='training'){stats.supported++;stats.streak=0;}
+    else {stats.right++;stats.streak++;stats.best=Math.max(stats.best,stats.streak);}
+    stats.history.unshift({text:problem.dividend+' : '+problem.divisor+' = '+plan.quotient+' — '+(assisted?'с поддержкой':'без подсказок'),at:Date.now()});
+    stats.history=stats.history.slice(0,12);
+  }
+  renderAll();renderStats();save();
+}
+
+/* ===== Сообщения ===== */
+function msg(html, cls){
+  var f=el('fb');
+  f.innerHTML = html;
+  f.className = 'fb '+(cls||'');
+  save();
+}
+
+/* ===== Подсказка ===== */
+function hintMsg(){
+  if(!problem || done){msg('Нажми «Следующий пример».','tip');return}
+  markHelp();
+  var d=problem.divisor, s=problem.dividend;
+
+  if(phase==='findFirst'){
+    msg('Бери цифры слева по одной: '+s[0]+', потом '+s.slice(0,2)+', и т.д. Нажимай на последнюю цифру блока. Как только блок цифр станет ≥ '+d+' — остановись. Самый короткий такой блок и есть первое неполное делимое.','tip');
+    return;
+  }
+  if(phase==='countDigits'){
+    msg('Количество цифр в частном = (всего цифр в делимом) − (длина первого неполного делимого) + 1 = '+s.length+' − '+plan.firstLen+' + 1 = <b>'+plan.steps.length+'</b>.','tip');
+    return;
+  }
+  if(phase==='divide' && subPhase==='remcheck'){
+    var st=plan.steps[stepIdx];
+    msg('Сравни числа: остаток '+st.rem+' и делитель '+d+'. Если остаток меньше — проверка пройдена, жми зелёную кнопку.','tip');
+    return;
+  }
+  if(phase==='divide' && subPhase==='bring'){
+    var bd=problem.dividend[plan.steps[stepIdx+1].bringIdx];
+    msg('Сейчас нужно снести следующую цифру делимого — <b>'+bd+'</b>. Нажми зелёную кнопку «↓ Снести цифру '+bd+'», и продолжим подбор цифры частного.','tip');
+    return;
+  }
+  var step=plan.steps[stepIdx];
+  if(step.type==='zero'){
+    msg('Подсказка: '+d+' не помещается в '+step.partial+' ни разу ('+step.partial+' &lt; '+d+'). В этой позиции цифра частного = <b>0</b>.','tip');
+    return;
+  }
+  msg('Посмотри на таблицу справа: какая самая большая строка ≤ <span class="calc">'+step.partial+'</span>? Её цифра <b>q</b> и есть ответ. Это число раз, сколько '+d+' помещается в '+step.partial+'.','tip');
+}
+
+/* ===== Показать решение ===== */
+function showSolution(){
+  if(!problem || done) return;
+  markHelp();
+  if(!counted){stats.reviewed++;counted=true;stats.streak=0;}
+  done=true; phase='done'; stepIdx=plan.steps.length; subPhase='pick';
+  renderAll();
+  renderStats();
+  if(mode!=='teacher'){
+    msg('Решение показано. Отмечено как разбор, не как решённый пример. Жми «Следующий пример».','tip');
+  } else {
+    msg('Полное решение: '+problem.dividend+' : '+problem.divisor+' = '+plan.quotient+(plan.finalRem?' (остаток '+plan.finalRem+')':' (без остатка)')+'.','tip');
+  }
+}
+
+/* ===== «Не понимаю» ===== */
+var HELP={
+  first: 'Берём цифры делимого <b>слева направо</b>, пока блок цифр не станет ≥ делителя.<br>'+
+         'Если первая цифра уже ≥ делителя — она и есть первое неполное делимое (одна цифра).<br>'+
+         'Если меньше — добавляем следующую, и так далее. Нужен <b>самый короткий</b> подходящий блок цифр. Нажимай на последнюю цифру блока.',
+  count: 'Считаем так: <b>(всего цифр в делимом) − (длина первого неполного делимого) + 1</b>.<br>'+
+         'Каждая цифра частного — это один шаг алгоритма. Сколько шагов, столько и цифр.<br>'+
+         'Ставим столько точек справа от делителя, чтобы заранее видеть, сколько цифр получим. Каждая точка — место для одной будущей цифры.',
+  pick:  'Главный вопрос: <b>«Сколько раз делитель помещается в неполном делимом?»</b><br>'+
+         'Считай по таблице кратных справа: 7, 14, 21, 28… — это «одна семёрка», «две семёрки», «три семёрки» и так далее. Найди <b>самую большую</b> строку, которая ещё ≤ неполного делимого, — её множитель и есть твой ответ.',
+  big:   'Цифра «слишком большая», если её произведение q·d <b>больше неполного делимого</b> — столько раз делитель уже не помещается. Бери цифру меньше.',
+  small: 'Цифра «слишком маленькая», если после вычитания <b>остаток ≥ делителя</b>. Это значит, что в неполном делимом ещё помещается хотя бы один делитель — то есть q можно было взять больше.',
+  remainder: 'После каждого вычитания обязательно проверяем: <b>остаток должен быть меньше делителя</b>.<br>'+
+         'Если остаток ≥ делителя — цифра частного была слишком маленькой, можно было взять делитель ещё один раз.<br>'+
+         'Только когда остаток меньше делителя, можно сносить следующую цифру.',
+  zero:  'Если после сноса очередной цифры неполное делимое получилось <b>меньше делителя</b>, то делитель помещается в нём <b>0 раз</b>. Тогда в частное записываем <b>0</b> и сразу сносим следующую цифру делимого.<br>'+
+         'Ноль в частном — это <b>не пропуск шага</b>, это настоящая цифра частного.',
+  bring: '«Снести цифру» — это значит приписать <b>следующую</b> (слева направо) цифру делимого справа к текущему остатку. Получится новое неполное делимое.<br>'+
+         'Например: остаток 2, следующая цифра 3 → новое неполное делимое = 2·10 + 3 = 23.',
+  end:   'Деление закончено, когда <b>все цифры делимого разобраны</b> — то есть мы прошли столько шагов, сколько цифр в частном.<br>'+
+         'Финальный остаток должен быть <b>меньше делителя</b>. Если он 0 — поделилось нацело. Если &gt;0 и &lt; делителя — это остаток от деления, всё корректно.'
+};
+
+el('ndp').onclick=function(){
+  var hp=el('helpPanel'); hp.classList.toggle('open');
+  el('helpAnswer').classList.remove('open');
+};
+document.querySelectorAll('.help-options button').forEach(function(b){
+  b.onclick=function(){
+    markHelp();
+    var k=b.getAttribute('data-help');
+    var ha=el('helpAnswer');
+    ha.innerHTML='<b>Ответ.</b> '+HELP[k];
+    ha.classList.add('open');
+  };
+});
+
+/* ===== Кнопки режимов/уровней ===== */
+document.querySelectorAll('.mode-btn').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.mode-btn').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');
+    mode=b.getAttribute('data-mode');
+    if(mode==='learning') markHelp();
+    if(mode==='teacher'){
+      if(problem) showSolution();
+    } else {
+      if(done) nextProblem();      // выходим из решённого примера к свежему
+      else { renderAll(); }
+    }
+    save();
+  };
+});
+document.querySelectorAll('.lvl-btn').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.lvl-btn').forEach(function(x){x.classList.remove('active')});
+    b.classList.add('active');
+    level=b.getAttribute('data-lvl');
+    nextProblem();
+  };
+});
+
+/* ===== Кнопки действий ===== */
+el('hint').onclick=hintMsg;
+el('solution').onclick=showSolution;
+el('next').onclick=function(){nextProblem()};
+el('bringBtn').onclick=doBring;
+el('reset').onclick=function(){
+  if(!confirm('Сбросить статистику?')) return;
+  stats=emptyStats();
+  save(); renderStats(); msg('Статистика сброшена.','tip');
+};
+
+/* ===== Следующий пример ===== */
+function nextProblem(){
+  el('helpPanel').classList.remove('open');el('helpAnswer').classList.remove('open');el('helpAnswer').textContent='';
+  if(!introShown && mode==='learning' && level==='first'){
+    introShown=true;
+    problem={divisor:3, dividend:'18', quotient:'6', intro:true};   // фиксированный учебный пример
+  } else {
+    introShown=true;
+    var previous=problem && problem.dividend+':'+problem.divisor;
+    for(var retry=0;retry<30;retry++){problem=makeProblem();if(problem.dividend+':'+problem.divisor!==previous)break;}
+  }
+  plan = buildPlan(problem);
+  phase='findFirst'; stepIdx=0; subPhase='pick'; trySelLen=0;
+  done=false; attempts=0;assisted=mode!=='training';counted=false;
+  el('task').textContent = problem.dividend+' : '+problem.divisor;
+  show(el('introBanner'), !!problem.intro);
+  el('zeroCallout').classList.remove('show');
+  clearPicker();
+  renderPicker();
+  renderAll();
+  renderStats();
+
+  if(mode==='teacher'){
+    showSolution();
+    return;
+  }
+  if(mode==='learning'){
+    msg('Начинаем с первого шага: найди первое неполное делимое. Нажми на последнюю цифру блока, который хочешь выбрать.','tip');
+  } else {
+    msg('Шаг 1: выбери первое неполное делимое — нажми на последнюю цифру нужного блока.','');
+  }
+}
+
+/* ===== Статистика ===== */
+function renderStats(){
+  ['total','right','supported','reviewed'].forEach(k=>el(k).textContent=stats[k]||0);
+  var h=el('history');h.textContent='';
+  if(!stats.history.length){h.textContent='Пока пусто.';return;}
+  stats.history.forEach(function(x){var row=document.createElement('div');row.className='hist';row.textContent=x.text;h.appendChild(row);});
+}
+
+/* ===== Запуск ===== */
+document.addEventListener('mathexam:skill-support',function(event){markHelp();if(!save())event.preventDefault();});
+window.addEventListener('pagehide',save);
+window.addEventListener('resize',function(){if(problem)renderUgolok();});
+var restored=load();
+if(restored){
+  el('task').textContent=problem.dividend+' : '+problem.divisor;
+  show(el('introBanner'),!!problem.intro);
+  document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+  document.querySelectorAll('.lvl-btn').forEach(b=>b.classList.toggle('active',b.dataset.lvl===level));
+  renderPicker();renderAll();renderStats();
+  msg(done?'Сохранённый пример завершён. Можно взять следующий.':'Продолжаем с сохранённого шага.','tip');
+}else nextProblem();
+</script>
+<script src="/trainers/oge-basics/skill-support.js" defer></script>
+</body>
+</html>

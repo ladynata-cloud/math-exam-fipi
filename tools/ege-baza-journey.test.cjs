@@ -36,6 +36,7 @@ function actualPathValidator(ctx) {
   const start = source.indexOf('const integer='), end = source.indexOf('try{let raw=localStorage');
   assert(start >= 0 && end > start, 'locate the existing loader validation without rewriting it');
   vm.runInContext('window = globalThis;', ctx);
+  vm.runInContext(fs.readFileSync(path.join(root, 'ege-baza/path/task-hints.js'), 'utf8'), ctx);
   vm.runInContext(fs.readFileSync(path.join(root, 'ege-baza/path/task-first.js'), 'utf8'), ctx);
   return vm.runInContext('(function(){const D=PathData;\n' + source.slice(start, end) + '\nreturn valid;})()', ctx);
 }
