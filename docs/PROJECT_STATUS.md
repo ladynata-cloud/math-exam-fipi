@@ -1,5 +1,10 @@
 # 10 ноября 2026 — конкретные подсказки в ЕГЭ базе
 
+## 2026-11-11 — Full foundations routes candidate
+
+The owner requested finite routes and skill maps across the shared basic mathematics course, then prioritised conceptual maps throughout OGE. The foundations candidate covers 181 substantive entries in 12 groups with 135 routes and 2,430 checked questions. Prior source navigation and saves remain available. This entry records an implementation candidate; publication is not yet claimed. See [task and verification report](reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md). The later OGE map implementation is a separate approved task. Standing publication authorization applies after the owner's withdrawal of the former session restrictions.
+
+
 - [Задача](tasks/EGE_BASE_CONCRETE_HINTS_20261110.md), MEDIUM: короткая помощь по текущей задаче, прямой вход в пошаговый разбор и понятная смена варианта. Формулировки покупки упаковок уточняются без изменения последовательности сохранённых ответов.
 - Предшествующий [PR #535](https://github.com/ladynata-cloud/math-exam-fipi/pull/535) опубликован в `aca5365e`; [Pages 42737165493](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42737165493) успешен. Карта №1–21, соответствие публичных файлов и возврат из задачи проверены. Это не подтверждает качество всех подсказок прежнего банка.
 - Точный результат нового изменения, проверки и публикация будут зафиксированы в PR; подготовка не означает выпуск.
