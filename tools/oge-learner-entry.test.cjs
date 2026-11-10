@@ -11,7 +11,7 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 const taskSources={'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
 // The reviewed №9 update is squash-merged, so bind its exact inline engine
 // without relying on a task branch's lifetime. Controls still use the baseline.
-const task9ReviewedScript='b820f89d0e57b4d82544478f7c3ef4621d0d075a60d40ead8cf79bf33afbe2f4';
+const task9ReviewedScript='7647922596379ff658965349ab4657b8c8e0cf0fe3e1680b29fa88cfd977fbc9';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 // This shared engine's default course is EGE; retain full return coverage while

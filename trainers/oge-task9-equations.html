@@ -2349,9 +2349,9 @@ const EXAM_BANK=[
 ];
 BANK.push(...EXAM_BANK);
 
-function exam(code, examKind, fam, Lt, Rt, ask, exp, src='fipi', label){
-  const tag=label || (src==='fipi'?'Открытый банк ФИПИ · '+code:'Тренировочный аналог');
-  return {...bk('exam-'+code,fam,src,tag,{Lt,Rt},ask,exp),examKind};
+function exam(code, examKind, fam, Lt, Rt, ask, exp, source='fipi', label){
+  const tag=label || (source==='fipi'?'Открытый банк ФИПИ · '+code:'Тренировочный аналог');
+  return {...bk('exam-'+code,fam,source,tag,{Lt,Rt},ask,exp),examKind};
 }
 
 if(typeof module!=='undefined')module.exports={BANK,EXAM_BANK};
