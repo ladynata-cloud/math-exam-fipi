@@ -63,3 +63,5 @@ The remaining whitespace failure was Markdown hard-break spaces and CRLF line en
 The final follow-up also aligns the retry URL with the resumed check and avoids labelling an unchecked stale input correct when another tab has completed that question. Focused browser/DOM regressions exercise the save-retry and stale-answer cases. The execution environment returned later in the session; the local clean task branch was fast-forwarded to the already reviewed remote task head, enabling local verification. Final exact-head CI is required after these changes.
 
 Local follow-up: all 18 exact-math/state/source tests and all five real-DOM race tests passed. Local Chromium could not launch because the execution sandbox denied its socket; browser verification remains in the pinned GitHub Actions environment. No local browser success is claimed.
+
+The added 390px save-retry scenario initially attempted to click a link inside the intentionally collapsed map. Its harness now opens the real map summary before that click; no learner behavior, visibility assertion or persistence check is removed. The earlier complete 135-route run remained successful before this added scenario.
