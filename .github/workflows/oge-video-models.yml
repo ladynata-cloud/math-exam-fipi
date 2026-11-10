@@ -83,7 +83,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - name: Fetch explicit preservation baseline
-        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287
+        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
