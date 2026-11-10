@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..'),out=process.env.EGE_BASE_VISIBILITY_OUT||path.join(root,'artifacts/ege-base-stereo-visibility');
 const cases=[['box',0],['pyramid',0],['roundbody',0],['roundbody',1],['roundbody',2],['scale',0],['practice-displacement',0],['practice-pour',0],['practice-joined-surface',0],['practice-faces',0],['practice-cone-area',0],['practice-pyramid-lateral',0],['practice-box-diagonal',0],['practice-similar-volume',0]];
-const files=['ege-baza/path/index.html','ege-baza/path/models.js','ege-baza/path/stereo-figures.js','ege-baza/path/data.js','ege-baza/path/practice.js','ege-baza/path/task-first.js','ege-baza/path/app.js','ege-baza/path/managed-state.js','ege-baza/path/style.css'];
+const files=['ege-baza/path/index.html','ege-baza/path/models.js','ege-baza/path/stereo-figures.js','ege-baza/path/data.js','ege-baza/path/practice.js','ege-baza/path/task-hints.js','ege-baza/path/task-first.js','ege-baza/path/app.js','ege-baza/path/managed-state.js','ege-baza/path/style.css'];
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex'),sources=()=>Object.fromEntries(files.map(file=>[file,hash(fs.readFileSync(path.join(root,file)))]));
 const evidence={completed:false,sourceHashes:sources(),widths:[320,1280],cases:[],screenshots:[],errors:[]};
 const save=()=>fs.writeFileSync(path.join(out,'base-stereo-visibility-evidence.json'),JSON.stringify(evidence,null,2)+'\n');

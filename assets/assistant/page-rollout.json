@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "9159b4f45902f4f5ce34e5addcfa9c317c38dea0",
+  "baseSha": "ad257fa442c1c40317b11ed5c54f1a937c3bf25b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "b7562302d7ec28dbd3cd166811841a0c6d20bd918078c63131e85fa5f1a6fe36",
-      "afterSha256": "2c24a0d26b26436f682381a00e33c778694e4aea9cbf009a04204a5b39fe4c0b",
+      "beforeSha256": "b012371e5c188df68f63d3748499ca739e594e0413de694f9ebcd884baf34125",
+      "afterSha256": "0ea6757c092c4bd3e55f6ff55363ee9329d12396b5f020919853c166d41749de",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4461,6 +4461,36 @@
         "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
         "trainers/oge-basics/multiplication-division/quotient-estimate.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "609963f5982bf78f42dfd08835d71b33b98be567",
+      "sourceBaseSha": "23fae498aa6f28cf457e8c133f902597388ca702",
+      "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
+      "changedPaths": [
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "54fab96d1a6b3cf0e5c74c96bbc8f374a03f8f2c",
+      "sourceBaseSha": "c0fe53215ed1b6920a5b74df113887347116852e",
+      "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d34073353315a9c1bd2e122965cb1c79991bf94f",
+      "sourceBaseSha": "cf55fb5017710ac60e0ffbd821a2aeefcf36178b",
+      "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9159b4f45902f4f5ce34e5addcfa9c317c38dea0",
+      "sourceBaseSha": "ad257fa442c1c40317b11ed5c54f1a937c3bf25b",
+      "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

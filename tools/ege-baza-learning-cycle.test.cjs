@@ -47,7 +47,7 @@ const open=async(d,id)=>{d.querySelector('#'+id).open=true;await tick();};
  let l=state.lessons.round,t=D.task('round',l.seed),answer=d.querySelector('#answer');
  assert(!d.querySelector('#taskHelp').open);assert(!d.querySelector('#taskIdea').open);assert(d.querySelector('#repairStep').hidden);
  submit(w,d,'answer','');assert.equal(l.taskFirst.mistakes,0,'empty input is not a mathematical error');
- submit(w,d,'answer',t.steps[0].a);assert.match(d.querySelector('#feedback').textContent,/промежуточный вопрос/);assert.equal(l.taskFirst.mistakes,1);assert(d.querySelector('#repairStep').hidden);
+ submit(w,d,'answer',t.steps[0].a);assert.match(d.querySelector('#feedback').textContent,new RegExp('В '+t.steps[0].a+' упаковках '+t.steps[0].a*9+' тетрадей'));assert.match(d.querySelector('#feedback').textContent,/Не хватает 4/);assert.equal(l.taskFirst.mistakes,1);assert(d.querySelector('#repairStep').hidden);
  submit(w,d,'answer',-99);assert.equal(l.taskFirst.mistakes,2);assert(!d.querySelector('#repairStep').hidden);assert(!d.querySelector('#taskHelp').open,'help is offered, never forced');assert.equal(d.querySelector('#answer'),answer,'repair feedback preserves original field');
  const saved=w.localStorage.getItem(w.PathCourse.KEY),restored=create(saved);await tick();
  assert.equal(restored.w.PathCourse.state().lessons.round.taskFirst.mistakes,2);assert(!restored.d.querySelector('#repairStep').hidden);assert.equal(restored.d.querySelector('#answer').value,'-99');restored.w.close();
@@ -57,19 +57,19 @@ const open=async(d,id)=>{d.querySelector('#'+id).open=true;await tick();};
  const afterHint=create(w.localStorage.getItem(w.PathCourse.KEY));await tick();assert(afterHint.d.querySelector('#taskIdea').open);assert.equal(afterHint.d.querySelector('#stepAnswer').value,'3/');afterHint.w.close();
  for(const step of t.steps)submit(w,d,'stepAnswer',step.a);
  submit(w,d,'answer',-99);assert.match(d.querySelector('#repairStep').textContent,/разобранным шагам/,'no invented step after guided completion');
- const count=l.independent;submit(w,d,'answer',t.answer);assert.equal(l.independent,count);assert(d.querySelector('#repairStep').hidden);assert.match(d.querySelector('#new').textContent,/Проверить себя/);assert(d.querySelector('#new').classList.contains('primary'));
+ const count=l.independent;submit(w,d,'answer',t.answer);assert.equal(l.independent,count);assert(d.querySelector('#repairStep').hidden);assert.equal(d.querySelector('#new').textContent,'Ещё задача этого типа');assert(d.querySelector('#new').classList.contains('primary'));
  const checkedSeed=l.seed;d.querySelector('#new').click();await tick();assert.notEqual(l.seed,checkedSeed);assert.notEqual(D.task('round',l.seed).q,t.q);assert.equal(l.taskFirst.mistakes,0);assert(!d.querySelector('#taskHelp').open);assert.equal(d.querySelector('#answer').value,'');
  submit(w,d,'answer',D.task('round',l.seed).answer);assert.equal(l.independent,count+1,'only fresh unassisted success adds evidence');
  // An unattempted condition must also be skipped when new numbers are requested.
  w.location.hash='lesson=graphs';await tick();l=state.lessons.graphs;t=D.task('graphs',l.seed);state.serial=l.seed+3;d.querySelector('#new').click();assert.notEqual(D.task('graphs',l.seed).q,t.q);
  // This actual family has one condition. Bounded search returns an honest repeat, with no false mastery.
  w.location.hash='lesson=logic';await tick();l=state.lessons.logic;t=D.task('logic',l.seed);const beforeSerial=state.serial;
- d.querySelector('#new').click();assert(state.serial-beforeSerial<=256);assert.equal(D.task('logic',l.seed).q,t.q);assert(l.taskFirst.repeatedVariant);assert.match(d.querySelector('#variantStatus').textContent,/знакомый вариант/);assert.match(d.querySelector('#new').textContent,/Повторить/);
+ d.querySelector('#new').click();assert(state.serial-beforeSerial<=256);assert.equal(D.task('logic',l.seed).q,t.q);assert(l.taskFirst.repeatedVariant);assert.match(d.querySelector('#variantStatus').textContent,/знакомый вариант/);assert.equal(d.querySelector('#new').textContent,'Повторить задачу этого типа');
  submit(w,d,'answer',t.answer);assert.equal(l.independent,0,'repeated condition cannot earn independent credit');
  // Bounded searching cannot invalidate the store when the serial reaches its supported maximum.
  state.serial=1e9-2;d.querySelector('#new').click();assert(state.serial<=1e9);assert(w.PathCourse.valid(state));
  // Seed reuse preserves old evidence, while the latest helped check controls the next action.
- l.checks.push({seed:l.seed,correct:true,independent:true});l.independent=1;submit(w,d,'answer',D.task('logic',l.seed).answer);assert.equal(l.independent,1);assert(d.querySelector('#new').classList.contains('primary'));assert.match(d.querySelector('#new').textContent,/Проверить себя/);
+ l.checks.push({seed:l.seed,correct:true,independent:true});l.independent=1;submit(w,d,'answer',D.task('logic',l.seed).answer);assert.equal(l.independent,1);assert(d.querySelector('#new').classList.contains('primary'));assert.equal(d.querySelector('#new').textContent,'Повторить задачу этого типа');
  // Optional fields remain compatible with old saves, and corrupt extras are rejected conservatively.
  const ui=JSON.parse(JSON.stringify(l.taskFirst));delete ui.mistakes;delete ui.ideaOpen;delete ui.repeatedVariant;assert(w.PathTaskFirst.valid(ui));
  for(const bad of [{mistakes:-1},{mistakes:1001},{mistakes:.5},{ideaOpen:'yes'},{repeatedVariant:1}])assert(!w.PathTaskFirst.valid({...ui,...bad}));
