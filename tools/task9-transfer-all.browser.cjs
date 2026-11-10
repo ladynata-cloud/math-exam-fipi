@@ -206,6 +206,7 @@ async function examBankJourney(page,url,width){
  for(const [coefficient,constant] of [['3','24'],['-2','16'],['1','40'],['1','-32']]){
   const fields=step.locator('input');
   assert.equal(await fields.count(),2);
+  await page.waitForFunction(()=>document.querySelector('.step.active input')===document.activeElement);
   await fields.nth(0).fill(coefficient);
   await fields.nth(1).fill(constant);
   await step.getByRole('button',{name:'Проверить',exact:true}).click();
