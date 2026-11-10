@@ -11,7 +11,7 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
   for(const course of ['ege-profil','ege-baza']){
    await page.goto(origin+'/'+course+'/');await page.locator('h1').first().waitFor();
    assert.match(await page.title(),/2027/);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),course+' fits '+width);
-   const start=course==='ege-profil'?'#profile-2027 a[href="start/index.html#calm"]':'.course-start a[href="path/index.html#map"]';
+   const start=course==='ege-profil'?'#profile-2027 a[href="start/index.html#calm"]':'[data-exam-position="1"] .exam-start';
    assert(await page.locator(start).isVisible(),course+' direct task route');
    if(course==='ege-profil'){
     // The complete-course entrance deliberately exposes every exam number
@@ -33,9 +33,13 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
     for(let index=0;index<await legacyLinks.count();index++)assert(await legacyLinks.nth(index).isVisible(),'existing profile link '+index+' visible without expanding a section');
     assert(await page.locator('#profile-2027 a[href="trigonometry/index.html"]').isVisible(),'earlier trigonometry course remains directly visible');
    }
-   else assert.equal(await page.locator('.course-recommendation').evaluate(n=>n.open),false,'initial check optional');
+   else {
+    assert.equal(await page.locator('[data-exam-position]').count(),21,'base entrance includes all 21 exam tasks');
+    assert.equal(await page.locator('#content details.journey-legacy').evaluate(n=>n.open),false,'broad learning lines remain secondary');
+   }
    const shots=process.env.EGE_ENTRY_SHOTS;if(shots){fs.mkdirSync(shots,{recursive:true});await page.screenshot({path:path.join(shots,course+'-'+width+'.png'),fullPage:true});}
    await page.locator(start).click();await page.locator('main h1').first().waitFor();
+   if(course==='ege-baza')await page.locator('#answer').waitFor();
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),course+' task menu fits '+width);
    if(course==='ege-profil'){
     // The old first-part continuation must still restore the actual work,
@@ -56,6 +60,6 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
  await page.goto(origin+'/ege-profil/#route');assert(await page.locator('#legacy-course').evaluate(n=>n.open),'old deep link opens its containing catalogue');
  assert(await page.locator('#route-h').isVisible());assert.match(await page.locator('#route-h').textContent(),/2026/);
  await page.goto(origin+'/ege-profil/#%');assert(await page.locator('#myCode').textContent(),'malformed anchor does not prevent progress UI');
- await page.goto(origin+'/ege-baza/');await page.locator('.course-recommendation summary').click();assert(await page.locator('[data-recommendation] a.btn').first().isVisible(),'old module recommendations remain accessible');
- assert.deepEqual(errors,[]);console.log('EGE_COURSE_ENTRIES_OK: 2027, all 20 profile routes and expanded legacy links, restored first-part draft, optional base checks, preserved deep links, 320/1280px');
+ await page.goto(origin+'/ege-baza/#today');await page.locator('.course-recommendation summary').click();assert(await page.locator('[data-recommendation] a.btn').first().isVisible(),'old module recommendations remain accessible');
+ assert.deepEqual(errors,[]);console.log('EGE_COURSE_ENTRIES_OK: 2027, all 20 profile routes and expanded legacy links, restored first-part draft, all 21 base numbers and optional checks, preserved deep links, 320/1280px');
 }finally{await browser?.close();if(server.listening)await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

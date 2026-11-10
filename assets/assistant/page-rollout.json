@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "de7b5893baa0035613527244b7223fb68fdd4700",
+  "baseSha": "609963f5982bf78f42dfd08835d71b33b98be567",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -215,8 +215,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "c5fb0474953318d2494937045210a3e6c210fb1cc330776f1d49e183789f9eb2",
-      "afterSha256": "6481582e0a78196003e897e1186803557cceed3e06b0ba4a9ea8a8c37d3d150c",
+      "beforeSha256": "2d02cd9f68414f5b5e394218781c0ef38581dd55ea535dd8080a5a143a73c556",
+      "afterSha256": "0a8ea958e5beef942a866dd968987318d40e69d701f5770f516b0b1ff53f8225",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "d01f80d19c863d9892091d62fff931f7bd813710f8e6fc427e8a731f7e2cfccb",
-      "afterSha256": "cdad2d5c78bfd0cc9aac2d106f49b99674c0765bc9342d25bf6cebc6937bae20",
+      "beforeSha256": "b7562302d7ec28dbd3cd166811841a0c6d20bd918078c63131e85fa5f1a6fe36",
+      "afterSha256": "2c24a0d26b26436f682381a00e33c778694e4aea9cbf009a04204a5b39fe4c0b",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2960,18 +2960,18 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
-      "beforeSha256": "4a3d337607336d1f61b2434bfb0576458c6d7a2e7f70426b1473c3f39abca12f",
-      "afterSha256": "efee15de247fd407d90d151895820fe8ab829886df4995da3da49d6483e13443",
+      "beforeSha256": "47102c432d7fc816b12910d7de9f4b23dc5e4fd55391b6cc19b3271a39ec6a46",
+      "afterSha256": "e701fd8fd8e4ba42f651e9e1efb839f8292597984e1ae5454ca44da15ad85017",
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "a3cf4025bce11c5cf3f6b3c9d6c8e2bbcff21e5317b2a21e693b1fb7d675cc28",
-      "afterSha256": "7b4b8f66caf247f0f061a90d8d041b55b8d28b9f378af4052043b00c78d20139",
+      "beforeSha256": "609adc6e44f63d20d67f05b2625965c2257d64d025e6f53470ec4d0789d22f50",
+      "afterSha256": "b2c3894dbc0668c1e718589a39ac8db21e8dfdc5e5b702b6875ed54c5d1c09cb",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
-      "beforeSha256": "6ee6ca8c16d50b6ad31f78a64cf316a5e43a16ee73956e807a7248c422a6ba1d",
-      "afterSha256": "7e2fc813ed61b48803012e47b421cb27ca5f746deb1a1ca17c407ef8c71935e1",
+      "beforeSha256": "daa5d1d52550eb8f3f874c7e4ae840afd56565396e9c057df0e96cee6bf2643b",
+      "afterSha256": "4838d7fc7fdd75e741e4c96e6ca20fbb2225f41a6edcbcca287473c1c0dd1ce3",
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
@@ -3025,8 +3025,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
-      "beforeSha256": "64d5c12655eda40d0d77c4b1934a50e98fe325d5bd9f2e22562ca250d00239f7",
-      "afterSha256": "1489528e477c9f6687b18b2e45b2e0a014e362fdfc34ee77e63bd92b2f1a912f",
+      "beforeSha256": "79f3155f3717531dfb269bf9ab89f2a16d32162ebbfc3675fb02bdd19d8d51d9",
+      "afterSha256": "d4286d8bf46b62559ea1689c039e9496b17c6f52774e5f14f9767054dfe0b047",
       "placement": "before-head-close"
     },
     "trainers/part-whole-share-assignment.html": {
@@ -3075,8 +3075,8 @@
       "placement": "before-head-close"
     },
     "trainers/task19-trainer.html": {
-      "beforeSha256": "531ec23c046938b0ffb3f0d60ba3b06b52c4eb36ad316a9c3c1d18a6868770d8",
-      "afterSha256": "a4f52b96194d7ecb28635b15e0f1780181a0abd654d9f41cca86e0690c2cc5f4",
+      "beforeSha256": "4a2e9dbaf37ee671d05c772217035cce50ebe93b14fddd382a1b9ee1dbb7af27",
+      "afterSha256": "d181fa45b1d62fb3ae0d2ebe84d9f467120baded502772e8cf5f9f9f0b02d77c",
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
@@ -4342,16 +4342,44 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
-      "previousBaseSha": "048dd882ae83c4ad4b2921971b45ad94191ef8b0",
-      "sourceBaseSha": "de7b5893baa0035613527244b7223fb68fdd4700",
-      "task": "docs/tasks/OGE18_STEPS_PAN_20261110.md",
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "029748b03a00ac8bf48b4f0a0fe5951a21813f4b",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
       "changedPaths": [
-        "trainers/oge-task16-circle.html",
-        "trainers/oge-task17-quadrilaterals.html",
-        "trainers/oge-task18-grid.html",
-        "trainers/oge13-inequalities-series.html",
-        "trainers/task19-trainer.html"
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "sourceBaseSha": "de863373622e99d773b82b4f18ff3760c27f2dd6",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+      "sourceBaseSha": "811e8b6db40004e51ec32776da7134695753f751",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2b5e52ec0ba002706aaf8bee8a32f673105fa8f8",
+      "sourceBaseSha": "1a923a4e6f06613e58099f1f67c42f79c17acea0",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "048dd882ae83c4ad4b2921971b45ad94191ef8b0",
+      "sourceBaseSha": "609963f5982bf78f42dfd08835d71b33b98be567",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

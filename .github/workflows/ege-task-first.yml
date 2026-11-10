@@ -1,7 +1,7 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-journey*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
 permissions:
   contents: read
 jobs:
@@ -32,9 +32,9 @@ jobs:
         run: |
           node tools/ege-baza-learning-cycle.browser.cjs
           node tools/ege-baza-model-discovery.browser.cjs
-      - name: Basic EGE unified learning lines and preserved progress
+      - name: Basic EGE 21 exam positions, learning lines and preserved progress
         run: |
-          node --test tools/ege-baza-journey.test.cjs
+          node --test tools/ege-baza-journey.test.cjs tools/ege-baza-exam-map.test.cjs
           node tools/ege-baza-journey.dom.cjs
       - name: Basic EGE learning route on narrow and desktop screens
         env:
