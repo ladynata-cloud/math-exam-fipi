@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+  "baseSha": "de863373622e99d773b82b4f18ff3760c27f2dd6",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -215,8 +215,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "c5fb0474953318d2494937045210a3e6c210fb1cc330776f1d49e183789f9eb2",
-      "afterSha256": "6481582e0a78196003e897e1186803557cceed3e06b0ba4a9ea8a8c37d3d150c",
+      "beforeSha256": "2d02cd9f68414f5b5e394218781c0ef38581dd55ea535dd8080a5a143a73c556",
+      "afterSha256": "0a8ea958e5beef942a866dd968987318d40e69d701f5770f516b0b1ff53f8225",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "d01f80d19c863d9892091d62fff931f7bd813710f8e6fc427e8a731f7e2cfccb",
-      "afterSha256": "cdad2d5c78bfd0cc9aac2d106f49b99674c0765bc9342d25bf6cebc6937bae20",
+      "beforeSha256": "b7562302d7ec28dbd3cd166811841a0c6d20bd918078c63131e85fa5f1a6fe36",
+      "afterSha256": "2c24a0d26b26436f682381a00e33c778694e4aea9cbf009a04204a5b39fe4c0b",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4268,6 +4268,16 @@
     {
       "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
       "sourceBaseSha": "029748b03a00ac8bf48b4f0a0fe5951a21813f4b",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "sourceBaseSha": "de863373622e99d773b82b4f18ff3760c27f2dd6",
       "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
       "changedPaths": [
         "ege-baza/index.html",
