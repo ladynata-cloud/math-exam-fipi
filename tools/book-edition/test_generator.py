@@ -89,8 +89,16 @@ class GeneratorTests(unittest.TestCase):
         page = output[edition.prefix + entry].decode()
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
+        # The audited learning-map update changes these three asset revisions;
+        # registry and the exact dependency closure remain unchanged.
+        revisions = {
+            "oge/learning-map-view.js": "20261111",
+            "oge/learning-map.css": "20261111",
+            "oge/learning-map.js": "20261111",
+            "oge/registry.js": "20261109",
+        }
         for asset in reviewed:
-            frozen = '/' + edition.prefix + asset + '?v=20261109'
+            frozen = '/' + edition.prefix + asset + '?v=' + revisions[asset]
             self.assertEqual(page.count(frozen), 1)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))

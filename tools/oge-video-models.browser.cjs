@@ -22,10 +22,26 @@ async function localState(page){return page.evaluate(prefix=>Object.fromEntries(
 async function nativeInputs(page){return page.evaluate(()=>Array.from(document.querySelectorAll('input,textarea,select')).filter(e=>!e.closest('#oge-video-models')).map(e=>({tag:e.tagName,id:e.id,name:e.name,type:e.type,value:e.value,checked:e.checked,disabled:e.disabled})));}
 async function completedRecords(page){return page.evaluate(keys=>Object.fromEntries(keys.flatMap(key=>{const raw=localStorage.getItem(key);return raw?[[key,JSON.parse(raw).results]]:[];})),lessons.map(lesson=>PREFIX+lesson.id));}
 const nativeReloadIds={16:'oge-task16-circle',17:'oge17-chetyrehugolniki',24:'oge24-dokazatelstva'};
-function assertNativeReload(before,after,task,started,finished){
+async function restoresProofDraft(page,task){
+ if(task!==24)return false;
+ return page.evaluate(()=>{
+  const draft=JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}')['oge24-dokazatelstva']?.ext?.auditLearning?.draft;
+  return typeof validProofDraft==='function'&&validProofDraft(draft);
+ });
+}
+function assertNativeReload(before,after,task,started,finished,restorableProof=false){
  const id=nativeReloadIds[task],key='mathExamCourseProgress.v1';
  if(!id){assert.deepEqual(after,before,'native reload preserves all existing storage');return;}
  const old=JSON.parse(before[key]),next=JSON.parse(after[key]);
+ if(restorableProof){
+  assert.equal(task,24,'only the reviewed proof draft has this read-only restore contract');
+  const audit=old[id]?.ext?.auditLearning,draft=audit?.draft;
+  assert.equal(audit?.v,1);assert.equal(draft?.v,1);assert(Number.isSafeInteger(draft.revision)&&draft.revision>0);
+  assert.equal(typeof draft.attemptId,'string');assert(draft.attemptId.length>0);assert(['study','train','recall','justify'].includes(draft.mode));
+  // The page validated this draft before reload. A reload is not a new task:
+  // preserve every byte, including the complete draft, legacy data and foreign keys.
+  assert.deepEqual(after,before,'restoring a valid proof draft is entirely read-only');return;
+ }
  assert.deepEqual({...after,[key]:before[key]},before,'reload changes no other native key');
  assert.deepEqual({...next,[id]:old[id]},old,'reload changes no other native trainer');
  const a=old[id],b=next[id],omit=record=>Object.fromEntries(Object.entries(record).filter(([field])=>!['events','updatedAt',...(task===17?['usedNums']:[])].includes(field)));
@@ -62,6 +78,24 @@ function nativeReloadNegativeControls(){
   assert.throws(()=>assertNativeReload(before,{...after,sentinel:'lost'},task,9,11));
   assert.throws(()=>assertNativeReload(before,after,task,11,12));
   if(task===17){const broken=JSON.parse(JSON.stringify(next));delete broken[id].usedNums.old;assert.throws(()=>assertNativeReload(before,{...after,[key]:JSON.stringify(broken)},task,9,11));}
+ }
+ // A full synthetic t2 draft matches the newly reviewed restore mode. Its
+ // no-write assertion is intentionally stricter than the legacy boot allowance.
+ {
+  const key='mathExamCourseProgress.v1',id=nativeReloadIds[24];
+  const draft={v:1,revision:3,at:10,attemptId:'proof-native-reload-control',mode:'train',queue:['t2'],qi:0,
+   order:[],dead:[],early:[],pool:[...Array.from({length:5},(_,i)=>({type:'s',i})),...Array.from({length:3},(_,i)=>({type:'x',i}))],phase:0,
+   err:0,hints:0,glows:0,placedByHint:0,auditErrors:0,revealed:false,solvedNow:false,gaveUp:false,missed:false,helpUsed:false,hadError:false,
+   lastActionAt:0,workStarted:false,noteEdited:false,fresh:true,historyKnown:true,startedAt:9,auditDone:false,pendingDependency:null,
+   helpOpen:false,awaitJust:null,justOrder:[],justDead:[],results:[]};
+  const data={untouched:{solved:7},[id]:{v:1,solvedByType:{prior:2},events:[{t:1,e:'prior'}],updatedAt:1,ext:{foreign:{keep:true},auditLearning:{v:1,attempts:[],byTask:{t2:{seenAt:9}},draft}}}};
+  const before={[key]:JSON.stringify(data),sentinel:'retained'};assertNativeReload(before,{...before},24,10,12,true);
+  for(const change of [x=>{x[id].solvedByType.prior++;},x=>{x[id].events[0].e='changed';},x=>{x[id].events.push({t:11,e:'task_start',task:'t2',mode:'train'});},x=>{x[id].updatedAt=11;},x=>{x[id].ext.auditLearning.draft.revision++;},x=>{x[id].ext.auditLearning.draft.helpUsed=true;},x=>{x[id].ext.auditLearning.attempts.push({id:'unearned'});},x=>{x[id].ext.foreign.keep=false;},x=>{delete x.untouched;}]){
+   const changed=JSON.parse(JSON.stringify(data));change(changed);assert.throws(()=>assertNativeReload(before,{...before,[key]:JSON.stringify(changed)},24,10,12,true));
+  }
+  assert.throws(()=>assertNativeReload(before,{...before,sentinel:'lost'},24,10,12,true));
+  assert.throws(()=>assertNativeReload(before,{...before},24,10,12,false),'a legacy boot cannot silently skip its expected event');
+  assert.throws(()=>assertNativeReload(before,{...before},16,10,12,true),'other native trainers retain their legacy contracts');
  }
  assert.throws(()=>assertNativeReload({native:'prior'},{native:'changed'},11,9,11));
 }
@@ -150,9 +184,9 @@ fs.mkdirSync(OUT,{recursive:true});
    try{
     await c.route(base+'/'+file,async route=>{const response=await route.fetch();await route.fulfill({response,body:restoreVideoModels(file,await response.text())});});
     await p.goto(base+'/'+file,{waitUntil:'load'});assert.equal(await p.locator('#oge-video-models').count(),0);
-    const before=await localState(p),started=await p.evaluate(()=>Date.now());await p.reload({waitUntil:'load'});
-    assertNativeReload(before,await localState(p),task,started,await p.evaluate(()=>Date.now()));
-    report.nativeReloads.push({number:task,status:'PASS'});
+    const before=await localState(p),restorable=await restoresProofDraft(p,task),started=await p.evaluate(()=>Date.now());await p.reload({waitUntil:'load'});
+    assertNativeReload(before,await localState(p),task,started,await p.evaluate(()=>Date.now()),restorable);
+    report.nativeReloads.push({number:task,mode:restorable?'restored-draft':'legacy-bootstrap',status:'PASS'});
    }catch(e){report.failures.push({kind:'native-reload-control',number:task,error:e.message});}
    finally{await c.close();}
   }
@@ -182,11 +216,11 @@ fs.mkdirSync(OUT,{recursive:true});
      let previousStorage=await localState(p),previousInputs=await nativeInputs(p);
      assert(await p.evaluate(()=>typeof navigator.locks?.request==='function'),'real browser supports durable cross-tab saving');
      const preserveNative=async()=>{await durableView(p);assert.deepEqual(await localState(p),previousStorage,'research must not alter native progress or drafts');assert.deepEqual(await nativeInputs(p),previousInputs,'research must not alter native form controls');};
-     // Native trainers intentionally generate fresh examples on reload. Compare
-     // each actual lesson-interaction segment with its native starting state.
+     // Legacy trainers may generate on reload; a valid proof draft resumes read-only.
+     // Compare each lesson segment against its actual native starting state.
      const reloadLesson=async()=>{
-      await preserveNative();const started=await p.evaluate(()=>Date.now());await p.reload({waitUntil:'load'});
-      const after=await localState(p);assertNativeReload(previousStorage,after,lesson.tasks[0],started,await p.evaluate(()=>Date.now()));
+      await preserveNative();const restorable=await restoresProofDraft(p,lesson.tasks[0]),started=await p.evaluate(()=>Date.now());await p.reload({waitUntil:'load'});
+      const after=await localState(p);assertNativeReload(previousStorage,after,lesson.tasks[0],started,await p.evaluate(()=>Date.now()),restorable);
       previousStorage=after;previousInputs=await nativeInputs(p);await openLesson(p,lesson);
      };
      await openLesson(p,lesson);

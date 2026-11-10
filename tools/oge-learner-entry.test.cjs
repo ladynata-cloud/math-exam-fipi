@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {createHash}=require('node:crypto');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
+const {receipt:auditSources,verifyAuditedSource}=require('./oge-audit-source-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -27,7 +28,12 @@ for(const p of Object.keys(courseParents)){
 }
 let links=0,beforeDirect=0,beforeHome=0;
 for(const p of routes.pages){
- const dom=parse(read(p),p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
+ const current=read(p);
+ // Only the three explicitly audited pages may use a new source. The helper
+ // seals the entire HTML to its allowed content checkpoint before navigation,
+ // controls and inline engines are compared with that same reviewed source.
+ if(auditSources.pages[p])verifyAuditedSource(p,current);
+ const dom=parse(current,p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
  const destinations=[...d.querySelectorAll('a[href]')].map(a=>new URL(a.href));
  const parent=courseParents[p],isCourse=u=>parent?u.pathname===parent.href:/\/trainers\/oge-course\/(?:index\.html)?$/.test(u.pathname),isHome=u=>/^\/(?:index\.html)?$/.test(u.pathname);
  const redirect=d.querySelector('meta[http-equiv="refresh"]');
@@ -51,7 +57,8 @@ for(const p of routes.pages){
  if(routes.wayfinding.includes(p)||parent){
   // Adding navigation must not alter the actual exercise, saved-work keys or controls.
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
-  const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
+  const reviewedSource=auditSources.pages[p]?.sourceCommit||taskSources[p];
+  const taskSource=reviewedSource?parse(execFileSync('git',['show',reviewedSource+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
   const actualScripts=scripts(d);
   if(p==='trainers/oge-task8-powers-roots.html'){

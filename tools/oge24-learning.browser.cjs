@@ -18,6 +18,22 @@ async function fit(page, label) {
     return {left:r.left,right:r.right,text:n.textContent.slice(0,80)};
   }).filter(r => r.left < -1 || r.right > document.documentElement.clientWidth + 1));
   assert.deepEqual(bad, [], label + ': proof controls fit');
+  const overflowingText = await page.locator('.proof-learning-result button').evaluateAll(buttons => buttons.flatMap(button => {
+    const bounds = button.getBoundingClientRect(), failures = [];
+    if (!button.getClientRects().length) return failures;
+    const walker = document.createTreeWalker(button, NodeFilter.SHOW_TEXT);
+    let text;
+    while ((text = walker.nextNode())) {
+      if (!text.textContent.trim()) continue;
+      const range = document.createRange();range.selectNodeContents(text);
+      for (const rect of range.getClientRects()) {
+        if (rect.left < bounds.left - 1 || rect.right > bounds.right + 1 || rect.top < bounds.top - 1 || rect.bottom > bounds.bottom + 1)
+          failures.push({text:text.textContent,left:rect.left,right:rect.right,buttonLeft:bounds.left,buttonRight:bounds.right});
+      }
+    }
+    return failures;
+  }));
+  assert.deepEqual(overflowingText, [], label + ': result button text fits inside its button');
 }
 async function snap(page, width, state) {
   await fit(page, state + '/' + width);

@@ -2810,7 +2810,7 @@ window.Task11Learning = (() => {
   const MODULES = ['m1','m2','m3','m4'], OUTCOMES = ['independent','corrected','helped','familiar'];
   const SKILL_IDS = Object.keys(SKILLS), MAX_ATTEMPTS = 100, MAX_SEEN = 600;
   const sessions = {}, panels = {}, expected = {};
-  let ready = false, restoring = false, serial = 0, available = true, lastMessage = '';
+  let ready = false, restoring = false, serial = 0, available = true, lastMessage = '', blockedGesture = false;
   const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
   const obj = x => !!x && typeof x === 'object' && !Array.isArray(x);
   const int = (x,max=1000000) => Number.isSafeInteger(x) && x>=0 && x<=max;
@@ -3019,8 +3019,21 @@ window.Task11Learning = (() => {
   function moduleFor(target){return target?.closest?.('section.module')?.id;}
   function protectedAction(event){
     if(restoring||!ready)return;
+    if(event.type==='pointerdown')blockedGesture=false;
+    // A dirty input may emit change before the button's click. Restoring on
+    // that change must not let the remaining click submit the peer's answer.
+    if(blockedGesture&&(event.type==='change'||event.type==='click')){
+      event.preventDefault();event.stopImmediatePropagation();
+      if(event.type==='click')blockedGesture=false;
+      return;
+    }
     const module=moduleFor(event.target);if(!MODULES.includes(module))return;
-    if(!current(module)){event.preventDefault();event.stopImmediatePropagation();note('В другой вкладке есть более свежая работа. Здесь загружено её состояние; повтори действие.');loadFresh(module);return;}
+    if(!current(module)){
+      event.preventDefault();event.stopImmediatePropagation();
+      if(event.type==='pointerdown'||event.type==='change')blockedGesture=true;
+      note('В другой вкладке есть более свежая работа. Здесь загружено её состояние; повтори действие.');loadFresh(module);return;
+    }
+    if(event.type==='pointerdown')return;
     const target=event.target.closest?.('button,summary,input,select');if(!target)return;
     if(module==='m3'&&target.closest('#m3-vertex')&&(target.matches('summary')||target.matches('button')))help(module,'vertex-guide');
     if(module==='m4'&&target.closest('#t11-help-panel'))help(module,'function-model');
@@ -3046,6 +3059,8 @@ window.Task11Learning = (() => {
     }
     if(explicitResume){try{const url=new URL(location.href);url.searchParams.delete('resume');history.replaceState(history.state,'',url.href);}catch(_){}}
     ready=true;
+    document.addEventListener('pointerdown',protectedAction,true);
+    document.addEventListener('keydown',()=>{if(!restoring)blockedGesture=false;},true);
     ['click','input','change'].forEach(type=>{document.addEventListener(type,protectedAction,true);document.addEventListener(type,persistEvent);});
     document.addEventListener('toggle',persistEvent,true);
     const active=document.querySelector('section.module.active')?.id;

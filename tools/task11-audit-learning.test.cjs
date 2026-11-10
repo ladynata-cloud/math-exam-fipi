@@ -90,6 +90,50 @@ test('a stale tab restores the newer answer and assistance before it can grade o
  assert.match(f.el('task11-learning-m4').textContent,/свеж|вкладк/);assert.deepEqual([...f.errors,...g.errors],[]);
 });
 
+test('one stale pointer gesture cannot submit a peer draft through its focus change, even when the peer answer is correct',t=>{
+ for(const peerCorrect of [false,true]){
+  const f=boot(t);f.input('m4-answer','12');f.el('m4-answer').focus();
+  const g=boot(t,{storage:f.storage()});g.input('m4-answer',peerCorrect?g.eval('M4.task.key.join("")'):'23');g.click('m4-hint');g.click('m4-hint');
+  const latest=g.w.localStorage.getItem(KEY),answer=g.el('m4-answer').value;
+  f.w.localStorage.setItem(KEY,latest);f.w.dispatchEvent(new f.w.StorageEvent('storage',{key:KEY,newValue:latest}));
+  const down=new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true});f.el('m4-check').dispatchEvent(down);
+  // A browser commits a dirty text field while moving focus to the button.
+  // Queued focus events and the ensuing click belong to that same gesture.
+  f.el('m4-answer').dispatchEvent(new f.w.Event('change',{bubbles:true,cancelable:true}));f.click('m4-check');
+  assert.equal(f.el('m4-answer').value,answer);assert.equal(f.api.getState('m4').helpUsed,true);
+  assert.equal(f.w.localStorage.getItem(KEY),latest,'the entire stale gesture must preserve both draft bytes and legacy credit');
+  assert.equal(f.records().length,0);assert.equal(down.defaultPrevented,true);
+  // The next distinct pointer gesture remains usable and can complete once.
+  const nextDown=new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true});f.el('m4-answer').dispatchEvent(nextDown);assert.equal(nextDown.defaultPrevented,false,'normal focus remains available on the next gesture');correctM4(f);
+  assert.equal(f.records().length,1);assert.equal(f.records()[0].outcome,'helped');f.click('m4-check');assert.equal(f.records().length,1);
+  assert.deepEqual([...f.errors,...g.errors],[]);
+ }
+});
+
+test('a stale change followed by a deliberate keyboard activation restores first and then accepts the new action',t=>{
+ const f=boot(t);f.input('m4-answer','12');const g=boot(t,{storage:f.storage()});
+ g.input('m4-answer',g.eval('M4.task.key.join("")'));g.click('m4-hint');const latest=g.w.localStorage.getItem(KEY);
+ f.w.localStorage.setItem(KEY,latest);f.el('m4-answer').dispatchEvent(new f.w.Event('change',{bubbles:true,cancelable:true}));
+ assert.equal(f.w.localStorage.getItem(KEY),latest);assert.equal(f.records().length,0);
+ f.el('m4-check').dispatchEvent(new f.w.KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}));f.click('m4-check');
+ assert.equal(f.records().length,1);assert.equal(f.records()[0].outcome,'helped');assert.deepEqual([...f.errors,...g.errors],[]);
+});
+
+test('an interrupted pointer gesture cannot activate a replacement task but a new gesture can navigate and start one',t=>{
+ const f=boot(t);f.input('m4-answer','12');const g=boot(t,{storage:f.storage()});
+ g.api.generate('m4',{fresh:true,starter:false});g.input('m4-answer',g.eval('M4.task.key.join("")'));g.click('m4-hint');
+ const latest=g.w.localStorage.getItem(KEY),key=g.api.getState('m4').taskKey;f.w.localStorage.setItem(KEY,latest);
+ f.el('m4-check').dispatchEvent(new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true}));
+ f.el('m4-answer').dispatchEvent(new f.w.Event('change',{bubbles:true,cancelable:true}));
+ f.d.querySelector('[data-task11-next="m4"]').click();
+ assert.equal(f.w.localStorage.getItem(KEY),latest,'a click landing on a restored control is still the old gesture');assert.equal(f.api.getState('m4').taskKey,key);assert.equal(f.records().length,0);
+ const other=f.d.querySelector('#tabs [data-m="m1"]');other.dispatchEvent(new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true}));other.click();
+ assert.equal(f.d.querySelector('section.module.active').id,'m1');assert.equal(f.records().length,0);
+ const back=f.d.querySelector('#tabs [data-m="m4"]');back.dispatchEvent(new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true}));back.click();
+ const next=f.d.querySelector('[data-task11-next="m4"]');next.dispatchEvent(new f.w.MouseEvent('pointerdown',{bubbles:true,cancelable:true}));next.click();
+ assert.notEqual(f.api.getState('m4').taskKey,key);assert.equal(f.api.getState('m4').completed,false);assert.equal(f.api.getState('m4').helpUsed,false);assert.equal(f.records().length,0);assert.deepEqual([...f.errors,...g.errors],[]);
+});
+
 test('restoring several drafts and receiving a storage event never echo a write, including delayed details toggles',async t=>{
  const settle=()=>new Promise(resolve=>setTimeout(resolve,35)),f=boot(t);
  f.click('m1-hint');step3(f);f.input('m3-x0','-3');f.input('m4-answer','12');

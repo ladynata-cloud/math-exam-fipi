@@ -42,7 +42,17 @@ async function fillCorrect(page){
     else{await row.locator('.v-dec').nth(0).fill(atom.lo);await row.locator('.v-dec').nth(1).fill(atom.hi);await row.locator('select').nth(0).selectOption(atom.loCl?'[':'(');await row.locator('select').nth(1).selectOption(atom.hiCl?']':')');}
   }}else for(const value of truth.values){await answer.getByRole('button',{name:'+ значение',exact:true}).click();await answer.locator('.v-dec').last().fill(value);}
 }
-async function exact(page,value){const panel=host(page).locator('.minimal-help');await panel.locator('.graph-exact-input').first().fill(value);await panel.locator('.graph-exact-input').first().press('Enter');return Number(await panel.locator('.badge-t2').first().textContent());}
+async function agreedGraphCount(page,panel){
+  const count=Number(await panel.locator('.badge-t2').first().textContent());assert(Number.isInteger(count)&&count>=0);
+  // The native SVG updates synchronously; the existing accessibility adapter
+  // mirrors it in a scheduled scan. Require its exact value after that scan.
+  await page.waitForFunction(({selector,count})=>{
+    const graph=document.querySelector(selector+' .minimal-help > .gview');
+    return graph?.querySelector('.badge-t2')?.textContent===String(count)&&graph?.querySelector('.oca-graph-count')?.textContent==='Общих точек сейчас: '+count+'.';
+  },{selector:CARD,count},{timeout:3000});
+  assert.equal(await panel.locator('.oca-graph-count').first().textContent(),'Общих точек сейчас: '+count+'.');return count;
+}
+async function exact(page,value){const panel=host(page).locator('.minimal-help');await panel.locator('.graph-exact-input').first().fill(value);await panel.locator('.graph-exact-input').first().press('Enter');return agreedGraphCount(page,panel);}
 async function attempt(page){return host(page).evaluate(node=>({id:node.__attempt.id,key:node.__attempt.taskKey,skill:node.__attempt.skill,fresh:node.__attempt.fresh,helpKinds:node.__attempt.helpKinds,errors:node.__attempt.errors,firstAnswer:node.__attempt.firstAnswer}));}
 
 (async()=>{
@@ -70,15 +80,15 @@ async function attempt(page){return host(page).evaluate(node=>({id:node.__attemp
       const prototypes=[];
       for(const [mod,sub] of [['m1','parline'],['m1','parhyp'],['m2','absquad'],['m2','xabsx'],['m2','sqminuslin'],['m2','alinplusquad'],['m3','inv_kx'],['m3','shift_m'],['m3','parab_kx']]){
         await chooseModule(page,mod);await subtype(page,sub);const before=await attempt(page),panel=await openHelp(page);
-        const critical=panel.locator('.graph-critical button');assert(await critical.count()>0);
+        const critical=panel.locator('.graph-critical button'),criticalCounts=[],criticalValues=[];assert(await critical.count()>0);
         for(let i=0;i<await critical.count();i++){
           const value=await critical.nth(i).getAttribute('data-parameter');await critical.nth(i).focus();await page.keyboard.press('Space');
           assert.equal(await panel.locator('.graph-exact-input').first().inputValue(),value);
-          const count=Number(await panel.locator('.badge-t2').first().textContent());assert(Number.isInteger(count)&&count>=0);
-          assert.match(await panel.locator('.oca-graph-count').textContent(),new RegExp(String(count)));
+          criticalValues.push(value);criticalCounts.push(await agreedGraphCount(page,panel));
         }
+        if(mod==='m1'&&sub==='parline'){assert.deepEqual(criticalValues,['-13/2','-5','-1'],'seed773 reviewed critical levels');assert.deepEqual(criticalCounts,[1,2,1],'exact boundary counts do not change while awaiting the accessibility mirror');}
         const svg=await panel.locator('svg').first().innerHTML(),slider=panel.getByRole('slider',{name:'Положение прямой'}).first();await slider.focus();await page.keyboard.press('ArrowLeft');
-        assert.notEqual(await panel.locator('svg').first().innerHTML(),svg,'keyboard changes the model');
+        assert.notEqual(await panel.locator('svg').first().innerHTML(),svg,'keyboard changes the model');await agreedGraphCount(page,panel);
         assert.equal((await attempt(page)).key,before.key);assert.equal(await host(page).locator('.oca-work').count(),1);
         await snap(page,width,mod+'-'+sub);await fillCorrect(page);await check(page);
         const record=(await evidence(page)).attempts.at(-1);assert.equal(record.outcome,before.fresh?'helped':'familiar');assert.equal(record.helpUsed,true);prototypes.push(sub);

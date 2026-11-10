@@ -121,7 +121,16 @@ async function tabsJourney(context,page,url,evidence){
   assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),latest,'the stale check restores before any score or draft overwrite');
   await solveM4(page);assert.equal((await attempts(page)).length,n+1);assert.equal((await attempts(page)).at(-1).outcome,'helped');
   const completed=legacy(await progress(page));await other.locator('#m4-check').click();assert.equal((await state(other,'m4')).completed,true);assert.equal((await attempts(other)).length,n+1);assert.deepEqual(legacy(await progress(other)),completed,'another stale check cannot duplicate legacy credit');
-  await other.close();evidence.push({twoTabs:true,staleCheckRestoresFirst:true,stickyHelp:true,oneCompletion:true});
+  // A valid peer answer must also wait for a new, deliberate action. A stale
+  // blur/change followed by the original click must never submit it unseen.
+  await fresh(page,'m4');await page.locator('#m4-answer').fill('12');await other.reload();await ready(other);
+  const peerAnswer=await other.evaluate(()=>M4.task.key.join(''));await other.locator('#m4-answer').fill(peerAnswer);await other.locator('#m4-hint').click();await other.locator('#m4-hint').click();
+  const validDraft=await other.evaluate(key=>localStorage.getItem(key),KEY);
+  await page.locator('#m4-check').click();assert.equal(await page.locator('#m4-answer').inputValue(),peerAnswer);assert.equal((await attempts(page)).length,n+1);
+  assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),validDraft,'the stale gesture cannot submit a correct peer answer');
+  await page.locator('#m4-check').focus();await page.keyboard.press('Enter');assert.equal((await attempts(page)).length,n+2);assert.equal((await attempts(page)).at(-1).outcome,'helped');
+  await other.locator('#m4-check').click();assert.equal((await attempts(other)).length,n+2);assert.equal((await state(other,'m4')).completed,true);
+  await other.close();evidence.push({twoTabs:true,staleCheckRestoresFirst:true,staleCorrectAnswerRestoresFirst:true,stickyHelp:true,oneCompletionPerAttempt:true,keyboardAfterRestore:true});
 }
 async function isolationJourney(browser,origin,evidence,errors){
   const context=await browser.newContext();await context.addInitScript(({key,value})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(value));},{key:KEY,value:fixture});
@@ -137,20 +146,21 @@ async function isolationJourney(browser,origin,evidence,errors){
 }
 async function main(){
   fs.mkdirSync(artifacts,{recursive:true});const server=http.createServer(serve);await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
-  const origin='http://127.0.0.1:'+server.address().port,url=origin+URL_PATH;let browser,livePage;const errors=[],evidence=[];
+  const origin='http://127.0.0.1:'+server.address().port,url=origin+URL_PATH;let browser,livePage,liveContext,liveWidth;const errors=[],evidence=[];
   try{
     browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
     for(const width of [320,390,1280]){
-      const context=await browser.newContext({viewport:{width,height:900}});await context.tracing.start({screenshots:true,snapshots:true});
+      const context=await browser.newContext({viewport:{width,height:900}});liveContext=context;liveWidth=width;await context.tracing.start({screenshots:true,snapshots:true});
       await context.addInitScript(({key,value})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(value));},{key:KEY,value:fixture});
       const page=await context.newPage();livePage=page;page.on('pageerror',error=>errors.push(width+': '+error.message));
       await publicJourney(page,url,width,evidence);if(width===390)await tabsJourney(context,page,url,evidence);
-      await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;
+      await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;liveContext=null;
     }
     await isolationJourney(browser,origin,evidence,errors);assert.deepEqual(errors,[],'no browser execution errors');
     fs.writeFileSync(path.join(artifacts,'evidence.json'),JSON.stringify({ok:true,evidence,errors},null,2)+'\n');console.log('TASK11_AUDIT_LEARNING_BROWSER_OK');
   }catch(error){
     if(livePage)await livePage.screenshot({path:path.join(artifacts,'failure.png'),fullPage:true}).catch(()=>{});
+    if(liveContext)await liveContext.tracing.stop({path:path.join(artifacts,liveWidth+'-trace.zip')}).catch(()=>{});
     fs.writeFileSync(path.join(artifacts,'evidence.json'),JSON.stringify({ok:false,evidence,errors,failure:error.stack||String(error)},null,2)+'\n');throw error;
   }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 }
