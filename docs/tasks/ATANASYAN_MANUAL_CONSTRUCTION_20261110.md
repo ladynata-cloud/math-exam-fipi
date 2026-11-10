@@ -73,3 +73,9 @@ Require independent composition review, geometry mathematics and module gates,
 navigator preservation/binding gates, relevant OGE preservation checks and CI
 on the final head. Verify the generated artifact again. This is ordinary
 history-preserving branch synchronization, without force or rebase.
+
+While the full CI was running, main advanced again to
+`ac4f17f2864b4a7b9e334ccaebfc9f7fd6f68104` with approved profile course #537
+and Alimov single-final-answer fix #540. Repeat the same manifest-only semantic
+composition and source binding, preserving these releases byte-for-byte.
+The geometry source and tests remain unchanged; no merge or deployment is authorized.
