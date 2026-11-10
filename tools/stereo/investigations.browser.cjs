@@ -17,7 +17,10 @@ const root=path.resolve(__dirname,'../..'),out=process.env.ATANASYAN_AUDIT_ARTIF
      assert(info.labels.every(l=>l.inside),'labels remain inside model');await svg.focus();await page.keyboard.press('ArrowRight');const yaw=await svg.getAttribute('data-yaw');assert.notEqual(yaw,info.yaw);const metric=await page.locator('[data-lab-metrics]').innerText();
      await page.reload();assert.equal(await page.locator('[data-lab-model] svg').getAttribute('data-yaw'),yaw,'camera restored');assert.equal(await page.locator('[data-lab-metrics]').innerText(),metric,'geometry unchanged by rotation/reload');
      evidence.push({id,kind,value,width,metric,labels:info.labels,restored:true});
-     if([0,1.5,3,4,5,6,8].includes(value)){await page.locator('#investigation').scrollIntoViewIfNeeded();await page.screenshot({path:path.join(out,'stereo-'+id+'-'+width+'-'+value+'.png'),fullPage:true});}
+     // Full-page screenshots already include the investigation below the fold.
+     if([0,1.5,3,4,5,6,8].includes(value)){
+      await page.screenshot({path:path.join(out,'stereo-'+id+'-'+width+'-'+value+'.png'),fullPage:true});
+     }
     }
     assert.equal(await page.locator('[data-lab-explanation]').inputValue(),'Проверю геометрическое основание и особый случай.');await page.locator('[data-lab-action=transfer]').click();assert.equal(await page.locator('[data-lab-model]').count(),0);
     let state=await page.evaluate(id=>JSON.parse(localStorage.getItem('mathExamStereo.v1')).units[id],id);const q=I.questions(kind)[state.investigation.question];await page.locator('[data-lab-answer]').fill(String(q.answer));await page.locator('[data-lab-check] button[type=submit]').click();

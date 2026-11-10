@@ -14,6 +14,7 @@ on:
       - 'oge/index.html'
       - 'oge/geometry/task-15-external-angle.html'
       - 'tools/oge-*-minimal*'
+      - 'tools/oge18-steps-pan.browser.cjs'
       - 'tools/oge-course-external-review.py'
       - 'tools/oge-course-review.test.py'
       - 'docs/tasks/OGE_COURSE_MINIMAL*'
@@ -56,11 +57,15 @@ jobs:
             node "tools/oge-${family}-minimal.browser.cjs" || status=1
           done
           exit "$status"
+      - name: Task 18 cumulative explanation and responsive figure controls
+        run: node tools/oge18-steps-pan.browser.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: oge-course-visual-evidence
-          path: artifacts/oge-*-minimal
+          path: |
+            artifacts/oge-*-minimal
+            artifacts/oge18-steps-pan
           if-no-files-found: error
           retention-days: 14
   external-review:

@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
-const {receipt,geometryReceipt,pins,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
+const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
 const {entries,assets,snippet}=require('./oge-video-models-preservation.cjs');
 const {includeBlock:activeIncludeBlock}=require('./oge-active-learning-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..');
@@ -21,10 +21,22 @@ test('receipt accepts the exact middle-position closed summary on each covered s
  for(const file of Object.values(entries)){
   const x=fixture(file);if(!x.id){assert.throws(()=>receipt(x));continue;}
   const result=receipt(x);assert.equal(result.beforeText+result.label+result.afterText,x.visible);
-  assert.equal(result.nativeSha256,pins.pages[file].sha256);assert.equal(result.sourceSha256,hash(x.raw));
+  assert.equal(result.nativeSha256,sourcePin(file).sha256);assert.equal(result.sourceSha256,hash(x.raw));
  }
  const x=fixture(entries[11]);x.visible='🧭 '+x.visible;const result=receipt(x);
  assert.equal(result.offsetCodePoints,[...result.beforeText].length);assert.notEqual(result.offsetCodePoints,result.beforeText.length);
+});
+test('later teaching receipts remain limited to three committed pages and reject native mutations',()=>{
+ const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
+ assert.equal(updates.task,'docs/tasks/OGE18_STEPS_PAN_20261110.md');
+ assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19]].sort());
+ for(const file of Object.keys(updates.pages)){
+  const x=fixture(file), result=receipt(x);
+  assert.equal(result.sourceBase,updates.pages[file].sourceCommit);
+  for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
+   assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
+  }
+ }
 });
 test('one exact serialized L8 preview may be attested only inside the closed prediction container',()=>{
  const {JSDOM}=require('jsdom'),preview=pins.closedPreview;

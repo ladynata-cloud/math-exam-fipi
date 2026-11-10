@@ -20,6 +20,19 @@ raw.last={hash:'javascript:alert(1)'};raw.origin={hash:'#lesson/p01/999999',scro
 raw.last={hash:'#practice/fraction-add/2'};raw.origin={hash:'#lesson/'+lessons[0].id+'/0',scroll:500};raw.practice={'fraction-add:1':{seed:12}};out=api.validateState(raw);assert.equal(out.last.hash,'#practice/fraction-add/2');assert.equal(out.origin.scroll,500);assert.equal(out.practice['fraction-add:1'].seed,12);
 const proto=JSON.parse('{"version":1,"tasks":{"__proto__":{},"constructor":{}},"practice":{}}');assert.equal(Object.keys(api.validateState(proto).tasks).length,0);
 assert.throws(()=>api.validateState({version:1,tasks:[],practice:{}}));assert.throws(()=>api.validateState({version:2,tasks:{},practice:{}}));
+// Previous saves can already contain an accepted guided final answer.
+const root=lessons[1].tasks[0];
+raw=blank();raw.tasks[root.id]={guided:true,step:root.steps.length,values:root.steps.map(q=>q.answer),attempts:0};
+out=api.validateState(raw);
+assert.deepEqual(serialize(out.tasks[root.id].completion),{attempts:1,assisted:true,independent:false});
+assert.equal(out.tasks[root.id].value,root.answer);
+assert.deepEqual(serialize(api.validateState(out)),serialize(out),'Migration is idempotent');
+// A legacy guided value accepted as a number may not be a reduced fraction.
+raw=blank();raw.tasks[numeric.id]={guided:true,step:numeric.steps.length,values:['125','25','1,25']};
+out=api.validateState(raw);
+assert.equal(out.tasks[numeric.id].correct,false);
+assert.equal(out.tasks[numeric.id].step,numeric.steps.length-1);
+assert.equal(out.tasks[numeric.id].values.at(-1),'1,25');
 // Find two seeds producing the same condition, then ensure only the first receives independent credit.
 let pair=null;const seen=new Map();for(let seed=1;seed<1000&&!pair;seed++){const t=M.generate('fraction-to-decimal',seed,1),sig=t.prompt+'|'+t.answer;if(seen.has(sig))pair=[seen.get(sig),seed,t];else seen.set(sig,seed);}assert(pair);
 raw=blank();for(const seed of pair.slice(0,2)){const id='practice:fraction-to-decimal:1:'+seed;raw.tasks[id]={value:pair[2].answer,attempts:1,correct:true,independent:true,assisted:false};}out=api.validateState(raw);assert.equal(Object.values(out.tasks).filter(s=>s.independent).length,1);assert.equal(Object.values(out.tasks).filter(s=>s.repeated).length,1);

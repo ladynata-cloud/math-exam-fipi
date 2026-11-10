@@ -5,6 +5,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
+UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
@@ -34,9 +35,10 @@ def verified_context(record):
         file = route[1:]
         pin = PINS['pages'].get(file)
         if not pin or not pin['bookId']: return None
+        pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
-        if context['task'] != pin['task'] or context['sourceBase'] != PINS['baseCommit']: return None
+        if context['task'] != pin['task'] or context['sourceBase'] != pin['sourceCommit']: return None
         if context['kind'] != 'oge-video-models-closed-v1' or context['closed'] is not True: return None
         if context['label'] != LABEL or context['summaryHtml'] != SUMMARY_HTML: return None
         raw = (ROOT / file).read_bytes()

@@ -24,11 +24,20 @@ const ok=(value,label)=>{assert.ok(value,label);checks++;};
   const fits=async label=>ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow: '+label);
   for(const width of [1280,320,390]){
    await page.setViewportSize({width,height:900});
-   for(const route of ['today','map','progress',...Array.from({length:7},(_,i)=>'line?line=m0'+(i+1))]){
+   for(const route of ['today','map','progress','lines',...Array.from({length:21},(_,i)=>'task?pos='+(i+1)),...Array.from({length:7},(_,i)=>'line?line=m0'+(i+1))]){
     await page.goto(home+'#'+route);await page.locator('#content h1').waitFor();await fits(width+' '+route);
-    if(['today','map','progress'].includes(route))ok(await page.locator('[data-line]').count()===7,'seven line cards '+route);
+    if(['today','map','progress'].includes(route)){
+     ok(await page.locator('[data-exam-position]').count()===21,'21 exam number cards '+route);
+     ok(await page.locator('[data-exam-position]').evaluateAll(nodes=>nodes.every(node=>!node.closest('details'))),'primary numbered map remains expanded '+route);
+    }
+    if(route==='lines')ok(await page.locator('[data-line]').count()===7,'seven secondary learning lines');
+    if(route.startsWith('task?')){
+     const pos=Number(route.split('=')[1]);
+     ok(await page.locator('[data-exam-task="'+pos+'"]').count()===1,'correct numbered task heading '+pos);
+     ok(await page.locator('[data-journey-item]').evaluateAll((nodes,pos)=>nodes.length>0&&nodes.every(node=>PathData.meta.find(item=>item.id===node.dataset.journeyItem)?.pos===pos),pos),'all visible families belong to task '+pos);
+    }
     if(route==='today')ok(await page.locator('.course-start .journey-continue').isVisible(),'main continuation visible '+width);
-    if(shots&&['today','line?line=m05'].includes(route))await page.screenshot({path:path.join(shots,'journey-'+width+'-'+(route==='today'?'today':'stereo-line')+'.png'),fullPage:true});
+    if(shots&&['today','map','task?pos=11','line?line=m05'].includes(route))await page.screenshot({path:path.join(shots,'journey-'+width+'-'+(route==='today'?'today':route==='map'?'exam-map':route==='task?pos=11'?'task-11':'stereo-line')+'.png'),fullPage:true});
    }
    ok(await page.evaluate(()=>localStorage.length)===0,'browsing root routes is read-only '+width);
    await page.goto(lesson+'#lesson=box');await page.locator('#answer').waitFor();await fits(width+' box');
@@ -45,17 +54,17 @@ const ok=(value,label)=>{assert.ok(value,label);checks++;};
   await page.goto(home+'#today');await page.locator('[data-nav="map"]').focus();await page.keyboard.press('Enter');
   await page.waitForURL(url=>url.hash==='#map');await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
   ok(await page.locator('#content').evaluate(node=>node===document.activeElement),'keyboard route focuses main');
-  await page.locator('[data-line="m05"] .actions a').click();await page.waitForURL(url=>url.hash==='#line?line=m05');
+  await page.locator('[data-exam-position="11"] .exam-topics').click();await page.waitForURL(url=>url.hash==='#task?pos=11');
   await page.locator('[data-journey-item="box"] a').first().click();await page.locator('#answer').waitFor();
   const answer=await page.evaluate(()=>{const row=PathCourse.state().lessons.box;return PathData.task('box',row.seed).answer;});
   ok(await page.locator('[data-journey-next]').isHidden(),'next-topic action waits for answer');
   await page.locator('#answer').fill(String(answer));await page.locator('#answer').press('Enter');await page.locator('[data-journey-next]').waitFor({state:'visible'});
   ok(await page.evaluate(()=>PathCourse.state().lessons.box.independent)===1,'first-attempt independent credit preserved');
   const nextId=(await page.locator('[data-journey-next]').getAttribute('href')).split('#lesson=')[1];
-  ok(await page.evaluate(id=>EgeBazaJourney.lineForLesson(id).id,nextId)==='m05','next-topic stays in same line');
+  ok(await page.evaluate(id=>EgeBazaExamMap.forLesson(id).pos,nextId)===11,'next topic stays in same exam number');
   await page.locator('.journey-lesson-nav .back').first().click();await page.locator('[data-journey-item="box"]').waitFor();
-  ok(await page.locator('[data-journey-item="box"] .journey-status').innerText()==='Самостоятельно','line shows actual saved independent result');
-  ok(await page.locator('.journey-line-summary progress').evaluate(node=>node.value===1&&node.max===12),'one success is one of 12 types');
+  ok(await page.locator('[data-journey-item="box"] .journey-status').innerText()==='Самостоятельно','numbered task shows actual saved independent result');
+  ok(await page.locator('[data-exam-task="11"] progress').evaluate(node=>node.value===1&&node.max===5),'one success is one of five families of task 11');
   const before=await page.evaluate(key=>localStorage.getItem(key),KEY);
   for(const hash of ['#map','#progress','#today']){await page.goto(home+hash);await page.locator('#content h1').waitFor();}
   ok(await page.evaluate(key=>localStorage.getItem(key),KEY)===before,'root navigation preserves stored bytes');
@@ -77,6 +86,6 @@ const ok=(value,label)=>{assert.ok(value,label);checks++;};
   await page.goto(lesson+'?learning=1#lesson=box');await page.locator('body.learning-managed').waitFor();
   ok(await page.locator('.journey-lesson-nav,[data-journey-next]').count()===0,'managed task has no autonomous continuation');
   ok(errors.length===0,'no browser errors: '+errors.join('; '));
-  console.log(`EGE_BAZA_JOURNEY_BROWSER_OK: ${checks} checks; 1280/320/390 widths, all seven lines, first-screen box controls, keyboard, actual success/return, exact draft resume, grade7/managed exclusions.`);
+  console.log(`EGE_BAZA_JOURNEY_BROWSER_OK: ${checks} checks; 1280/320/390 widths, all 21 exam positions and seven secondary lines, first-screen box controls, keyboard, actual success/return, exact draft resume, grade7/managed exclusions.`);
  }finally{await browser?.close();if(server.listening)await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});

@@ -1,0 +1,17 @@
+{
+  "task": "docs/tasks/OGE18_STEPS_PAN_20261110.md",
+  "pages": {
+    "trainers/oge-task16-circle.html": {
+      "sourceCommit": "7a7169c35c54351ace4f7844b7730899b4a61831",
+      "sha256": "080fa58bce14ec011c9c53fa9701944139caed852b62d977e1ebf31e8d88dca0"
+    },
+    "trainers/oge-task17-quadrilaterals.html": {
+      "sourceCommit": "7a7169c35c54351ace4f7844b7730899b4a61831",
+      "sha256": "6fbf708e116bd49579f3aa8b1b7feac8f93ca323b563f146da4e2a48ec8adb27"
+    },
+    "trainers/task19-trainer.html": {
+      "sourceCommit": "7a7169c35c54351ace4f7844b7730899b4a61831",
+      "sha256": "6ad106a63c13ca7d05653f22f1a3d8ac14cef14d0ce7aad878a7ae623eae0f35"
+    }
+  }
+}

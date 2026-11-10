@@ -65,3 +65,33 @@ The complete required CI must pass on the exact final remote candidate. The two-
 Only the coordinating release process may publish. Do not run competing Pages deployments. Requery authoritative main and feature heads before merging and revalidate any drift. Publish the aggregate only after required CI and the sections board-server dependency are ready. Verify the deployed source, public course routes and saved-work behavior.
 
 Rollback is a scoped ordinary revert of the aggregate if a material live regression is found; do not reset or delete learner storage, rewrite shared history, or modify immutable book editions. Backend compatibility must remain available for already published board clients. No test, branch protection or provenance gate is weakened by this composition.
+
+## Revalidation against the November 10 public release
+
+The follow-up owner request authorizes fixing the release blockers. The previous run
+[42714347491](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42714347491)
+timed out while preparing a full-page stereometry screenshot. The screenshot now
+captures the complete document directly. The mathematical, interaction, restoration
+and layout assertions remain in place.
+
+Recompose with public base `25ae3eb9158bd62b543d252206cdb1331fd77921`, retaining
+all pending work plus the published OGE explanations and division, EGE examination
+map and concrete hints, Alimov single answer check, and illustrated course examples.
+The merged OGE candidate has 244 resources. The additional resource relative to
+the prior aggregate is the published OGE entry sections stylesheet. The published
+books stay unchanged. The navigator union covers 580 of 581 canonical URLs, retaining
+the existing dedicated Peterson helper exception and both release histories.
+
+This update does not release the aggregate. The current-base and exact-candidate
+checks, public server prerequisite, and verified Pages rollout remain required.
+
+The next base `50765eca825ad97c00361bf640e0122b21b9d4a0` introduces #545's
+post-Pages check. Its four paths were reconciled cleanly; the aggregate keeps
+the active-learning path filters and the new post-publication verification.
+
+Local candidate checks passed for the stereometry investigations at widths
+320, 390 and 1280, and the complete two-participant sections browser test.
+The EGE base DOM and browser suites passed across all 111 existing families.
+The illustrated course entrances passed all 12 interactive routes. The
+Alimov, Peterson and Makarychev DOM/state suites and the exact fixed-book
+closure and OGE source-pin suites passed.

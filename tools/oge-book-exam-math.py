@@ -8,6 +8,7 @@ import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
 from oge_video_models_book_context import verified_context
+from oge_worked_steps_book_context import matches_worked_steps_ui
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 IDS = {'03','04','06','08','09','10','12','54','55','57','58','59','60','63','65','66','67','68','71'}
@@ -175,7 +176,7 @@ def exact_reviewed_context(record, oracle, fixtures):
             actual=record.get('resources',{}).get(route,{})
             actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
             if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
-    return (text in fixture_texts and
+    return ((text in fixture_texts or matches_worked_steps_ui(record, text, fixture_texts)) and
             geom(native_geometry) == fixture['geometrySha256'] and
             item in fixture['oracles'])
 
