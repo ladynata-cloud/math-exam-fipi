@@ -211,6 +211,7 @@ i{font-style:italic; font-family:var(--math);}
 .task-card.shown{border-color:var(--peek);}
 .src-badge{position:absolute; top:10px; right:12px; font-family:var(--hand); font-size:12.5px;
   color:var(--pencil); background:var(--chip); padding:2px 9px; border-radius:11px;}
+.task-card .minimal-options .src-badge{position:static;display:inline-block;margin-bottom:6px;}
 .task-q{font-family:var(--math); font-size:17px; margin:2px 40px 12px 0; line-height:1.7;}
 .task-no{font-family:var(--hand); color:var(--pencil); font-size:13.5px;}
 
@@ -1951,12 +1952,21 @@ function X2f(c){return T(c,2,true);}
 function rnd(){return ri(0,999999)/1000000;}
 function nz(a,b){let v=0;while(v===0)v=ri(a,b);return v;}
 function mkPoly(fam,Lt,Rt,extra){return Object.assign({fam,p:Object.assign({Lt,Rt},extra||{}),src:'gen'},{});}
-function finRoot(){ // «приятный» корень: целый или .5
-  const r=ri(-14,14); return rnd()<0.3?F(2*r+1,2):F(r);
+function decimalRoot(d){
+  if(d===1)return F(ri(-12,12));
+  const residues={2:[1],4:[1,3],5:[1,2,3,4],8:[1,3,5,7],10:[1,3,7,9]};
+  return F(pick([-1,1])*(ri(0,11)*d+pick(residues[d])),d);
+}
+function finRoot(){ // конечная десятичная дробь, не только целое или половина
+  return decimalRoot(pick([1,1,1,2,4,5,8,10]));
+}
+function coefficientRoot(a){ // дробный корень без дробных коэффициентов уравнения
+  const dens=[2,4,5,8,10].filter(d=>Math.abs(a)%d===0);
+  return decimalRoot(dens.length&&rnd()<0.55?pick(dens):1);
 }
 const GENS={
   g_l1(){ // ax + b = c  или  c − ax = b
-    const a=nz(-9,9), root=finRoot();
+    const a=nz(-12,12), root=finRoot();
     const b=ri(-20,20);
     const c=fadd(fmul(F(a),root),F(b));
     if(!fisint(c))return GENS.g_l1();
@@ -1964,7 +1974,7 @@ const GENS={
     return mkPoly('L',[T(a,1),T(b)],[T(c)]);
   },
   g_l2(){ // la x + lb = rb + ra x
-    let la=nz(-9,12), ra=nz(-9,12); if(la===ra)return GENS.g_l2();
+    let la=nz(-12,12), ra=nz(-12,12); if(la===ra)return GENS.g_l2();
     const root=finRoot();
     const lb=ri(-15,15);
     const rb=fadd(F(lb),fmul(F(la-ra),root));
@@ -1972,26 +1982,39 @@ const GENS={
     return mkPoly('L',[T(la,1),T(lb)],[T(rb),T(ra,1)]);
   },
   g_lb(){
-    const kind=pick(['one','with-x','two']);
-    const leftFactor=pick([3,4,5,6,7,8]), leftShift=nz(-9,9), root=finRoot();
+    const kind=pick(['one','reversed','with-x','outside','two','two-balanced']);
+    const leftFactor=pick([-10,-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9,10]), leftShift=nz(-9,9), root=finRoot();
     const left={br:{k:F(leftFactor),inner:[T(1,1),T(leftShift)]}};
     const leftValue=fmul(F(leftFactor),fadd(root,F(leftShift)));
-    if(kind==='one'){
+    if(kind==='one'||kind==='reversed'){
       if(!fisint(leftValue))return GENS.g_lb();
-      return mkPoly('LB',[left],[T(leftValue)]);
+      return kind==='reversed'?mkPoly('LB',[T(leftValue)],[left]):mkPoly('LB',[left],[T(leftValue)]);
     }
-    const otherFactor=pick([1,2,3,4,5,6,7,8].filter(k=>k!==leftFactor));
+    const otherFactor=pick([-9,-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8,9].filter(k=>k!==leftFactor));
     if(kind==='with-x'){
       const rightConst=fsub(leftValue,fmul(F(otherFactor),root));
       if(!fisint(rightConst))return GENS.g_lb();
       return mkPoly('LB',[left],[T(otherFactor,1),T(rightConst)].filter(t=>!fzero(t.c)));
     }
+    if(kind==='outside'){
+      if(leftFactor+otherFactor===0)return GENS.g_lb();
+      const rhs=fadd(leftValue,fmul(F(otherFactor),root));
+      if(!fisint(rhs))return GENS.g_lb();
+      return mkPoly('LB',[T(otherFactor,1),left],[T(rhs)]);
+    }
     const rightShift=nz(-9,9);
     const rightValue=fmul(F(otherFactor),fadd(root,F(rightShift)));
     const rhs=fsub(leftValue,rightValue);
     if(!fisint(rhs))return GENS.g_lb();
-    const other={br:{k:F(rnd()<0.5?-otherFactor:otherFactor),inner:[T(1,1),T(rightShift)]}};
-    if(fcmp(other.br.k,F0)<0)return mkPoly('LB',[left,other],[T(rhs)]);
+    if(kind==='two-balanced'){
+      const extra=nz(-12,12),other={br:{k:F(otherFactor),inner:[T(1,1),T(rightShift)]}};
+      return mkPoly('LB',[left,T(extra)],[other,T(fadd(rhs,F(extra)))].filter(t=>!t.c||!fzero(t.c)));
+    }
+    if(rnd()<0.5){
+      const other={br:{k:F(-otherFactor),inner:[T(1,1),T(rightShift)]}};
+      return mkPoly('LB',[left,other],[T(rhs)]);
+    }
+    const other={br:{k:F(otherFactor),inner:[T(1,1),T(rightShift)]}};
     return mkPoly('LB',[left],[other,T(rhs)].filter(t=>!t.c||!fzero(t.c)));
   },
   g_lsq(){
@@ -2028,27 +2051,28 @@ const GENS={
     return mkPoly('LF',[{fr:{top:[T(pq,1),T(q2)],bot:k}},T(c)],[T(1,1)],{dens:[k]});
   },
   g_qnb(){
-    const style=pick(['plain','plain','frac']);
-    if(style==='frac'){ const d=pick([3,4,5]); const sgn=pick([1,-1]); const s=d*ri(1,3);
-      return mkPoly('QNB',[X2f(F(sgn,d)),T(-sgn*s*s/d)],[T(0)]); }
-    const s=ri(2,13), sign=pick([1,-1]);
-    return mkPoly('QNB',[T(sign,2),T(-sign*s*s)],[T(0)]);
+    const d=pick([1,1,1,1,2,4,5]), sign=pick([1,-1]), scale=ri(1,d===1?8:3);
+    const numer=d===1?ri(1,12):pick([1,2,3,4,6,7,8,9,11].filter(n=>bgcd(BigInt(n),BigInt(d))===1n));
+    return mkPoly('QNB',[T(sign*scale*d*d,2),T(-sign*scale*numer*numer)],[T(0)]);
   },
   g_qnc(){
-    const a=pick([1,1,2,3,4,5,7,8]); const r2=nz(-9,9);
-    const b=-a*r2;
-    if(rnd()<0.4) return mkPoly('QNCm',[T(a,2)],[T(-b,1)]); // ax² = −b x
+    const a=nz(-10,10); let r2=coefficientRoot(a);while(fzero(r2))r2=coefficientRoot(a);
+    const b=fneg(fmul(F(a),r2));
+    if(rnd()<0.4) return mkPoly('QNCm',[T(a,2)],[T(fneg(b),1)]); // ax² = −b x
     return mkPoly('QNC',[T(a,2),T(b,1)],[T(0)]);
   },
   g_qf(opts){
     opts=opts||{};
-    const a=opts.monic?1:pick([1,1,1,2,2,3,5]);
-    let r1=ri(-9,9), r2=ri(-9,9);
-    if(opts.monic){ if(r1===r2)return GENS.g_qf(opts); }
-    else if(rnd()<0.35){ r1=F(2*ri(-7,7)+1,2); r2=F(ri(-8,8)); if(feq(r1,r2))return GENS.g_qf(opts); }
-    r1=(typeof r1==='object')?r1:F(r1); r2=(typeof r2==='object')?r2:F(r2);
-    if(feq(r1,r2)||fzero(fadd(r1,r2))||fzero(r1)||fzero(r2))return GENS.g_qf(opts);
-    const b=fneg(fmul(F(a),fadd(r1,r2))), c=fmul(F(a),fmul(r1,r2));
+    const a=opts.monic?1:ri(1,10);
+    let r1,r2,b,c;
+    // Keep the sampled leading coefficient; reject only the pair of roots.
+    // Variety should not turn basic OGE practice into large-number arithmetic.
+    do{
+      r1=coefficientRoot(a);r2=F(nz(-9,9));
+      b=fneg(fmul(F(a),fadd(r1,r2)));c=fmul(F(a),fmul(r1,r2));
+    }while(feq(r1,r2)||fzero(fadd(r1,r2))||fzero(r1)||
+      fcmp(fabs(b),F(60))>0||fcmp(fabs(c),F(200))>0||
+      fcmp(fabs(fmul(F(a),fsub(r1,r2))),F(40))>0);
     if(!fisint(b)||!fisint(c))return GENS.g_qf(opts);
     return Object.assign(mkPoly('QF',[T(a,2),T(b.n===0n?F0:b,1),T(c)].filter(t=>!(t.x===1&&fzero(t.c))),[T(0)]),{ask:pick(['min','max'])});
   },
@@ -2345,6 +2369,121 @@ const EXAM_BANK=[
   exam('transfer-1','linear-transfer','L',[N(-7),X(3)],[X(-5),N(6)],null,'1,625','analog'),
   exam('9937FD','quad-factor-x','QNCm',[X2(1)],[X(5)],'min','0'),
   exam('02AAF8','quad-monic','QF',[X2(1),X(-12),N(20)],[N(0)],'max','10'),
+  /* BEGIN fixed extension: tools/build-task9-expanded-bank.py */
+  {...exam('1C4217','linear-transfer','L',[X(-2),N(-4)],[X(3)],null,'-0,8','catalog','Каталог прототипов · 1C4217'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-2x-minus-4-ravno-3x-fipi-1c4217",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('AEA848','linear-one-bracket','LB',[BR(10,[X(1),N(-9)])],[N(7)],null,'9,7','catalog','Каталог прототипов · AEA848'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-minus-9-ravno-7-fipi-aea848",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('1610FB','linear-two-brackets','LB',[BR(3,[X(1),N(7)]),BR(-2,[X(1),N(-7)])],[N(7)],null,'-28','catalog','Каталог прототипов · 1610FB'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-dvumya-skobkami-3-x-plus-7-minus-2-x-minus-7-ravno-7-fipi-1610fb",catalogSecondary:"https://gia.guide/math_oge/9/1610FB/info/"},
+  {...exam('EBB379','quad-square','QNB',[X2(1),N(-49)],[N(0)],'max','7','catalog','Каталог прототипов · EBB379'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-49-ravno-0-bolshiy-koren-fipi-ebb379",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('CA994A','quad-factor-x','QNCm',[X2(10)],[X(80)],'min','0','catalog','Каталог прототипов · CA994A'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-10x2-ravno-80x-menshiy-koren-fipi-ca994a",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('7A8250','quad-monic','QF',[X2(1),X(-8),N(12)],[N(0)],'max','6','catalog','Каталог прототипов · 7A8250'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-8x-plus-12-ravno-0-bolshiy-koren-fipi-7a8250",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-quad-nonmonic-01','quad-nonmonic','QF',[X2(3),X(-3),N(-18)],[N(0)],'max','3','analog'),
+  {...exam('B55A23','linear-transfer','L',[N(7),X(8)],[X(-2),N(-5)],null,'-1,2','catalog','Каталог прототипов · B55A23'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7-plus-8x-ravno-minus-2x-minus-5-fipi-b55a23",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('AA49DF','linear-one-bracket','LB',[BR(10,[X(1),N(2)])],[N(-7)],null,'-2,7','catalog','Каталог прототипов · AA49DF'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-plus-2-ravno-minus-7-fipi-aa49df",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-linear-two-brackets-02','linear-two-brackets','LB',[BR(-8,[X(1),N(3)]),N(31)],[BR(-3,[X(1),N(-1)])],null,'0,8','analog'),
+  {...exam('3A067C','quad-square','QNB',[X2(1),N(-81)],[N(0)],'min','-9','catalog','Каталог прототипов · 3A067C'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-81-ravno-0-menshiy-koren-fipi-3a067c",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('8A6326','quad-factor-x','QNCm',[X2(3)],[X(9)],'min','0','catalog','Каталог прототипов · 8A6326'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-3x2-ravno-9x-menshiy-koren-fipi-8a6326",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('D06250','quad-monic','QF',[X2(1),X(-9),N(8)],[N(0)],'max','8','catalog','Каталог прототипов · D06250'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-9x-plus-8-ravno-0-bolshiy-koren-fipi-d06250",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-quad-nonmonic-02','quad-nonmonic','QF',[X2(-3),X(-21),N(-30)],[N(0)],'min','-5','analog'),
+  {...exam('0EDF5F','linear-transfer','L',[X(-3),N(-9)],[X(2)],null,'-1,8','catalog','Каталог прототипов · 0EDF5F'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-3x-minus-9-ravno-2x-fipi-0edf5f",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('636D61','linear-one-bracket','LB',[BR(4,[X(1),N(1)])],[N(9)],null,'1,25','catalog','Каталог прототипов · 636D61'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-4-x-plus-1-ravno-9-fipi-636d61",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-linear-two-brackets-04','linear-two-brackets','LB',[BR(5,[X(1),N(1)]),BR(5,[X(1),N(-4)])],[N(-93)],null,'-7,8','analog'),
+  {...exam('CC13D8','quad-square','QNB',[X2(1),N(-4)],[N(0)],'min','-2','catalog','Каталог прототипов · CC13D8'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-4-ravno-0-menshiy-koren-fipi-cc13d8",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('5FA26E','quad-factor-x','QNCm',[X2(5)],[X(35)],'min','0','catalog','Каталог прототипов · 5FA26E'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-5x2-ravno-35x-menshiy-koren-fipi-5fa26e",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('94925B','quad-monic','QF',[X2(1),X(-10),N(21)],[N(0)],'max','7','catalog','Каталог прототипов · 94925B'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-21-ravno-0-bolshiy-koren-fipi-94925b",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-quad-nonmonic-03','quad-nonmonic','QF',[X2(4),X(-13),N(3)],[N(0)],'max','3','analog'),
+  {...exam('F18DC8','linear-transfer','L',[N(1),X(-10)],[X(5),N(10)],null,'-0,6','catalog','Каталог прототипов · F18DC8'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-1-minus-10x-ravno-5x-plus-10-fipi-f18dc8",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('FF7B0B','linear-one-bracket','LB',[BR(2,[X(1),N(-6)]),X(-1)],[N(6)],null,'18','catalog','Каталог прототипов · FF7B0B'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-podobnye-slagaemye-2-x-minus-6-minus-x-ravno-6-fipi-ff7b0b",catalogSecondary:"https://gia.guide/math_oge/9/FF7B0B/info/"},
+  exam('var-linear-two-brackets-05','linear-two-brackets','LB',[N(15)],[BR(7,[X(1),N(3)]),BR(-6,[X(1),N(2)])],null,'6','analog'),
+  exam('var-quad-square-01','quad-square','QNB',[X2(-4)],[N(-1)],'min','-0,5','analog'),
+  exam('var-quad-factor-x-01','quad-factor-x','QNC',[X2(1),X(1)],[N(0)],'max','0','analog'),
+  {...exam('121FA3','quad-monic','QF',[X2(1),X(-10),N(24)],[N(0)],'min','4','catalog','Каталог прототипов · 121FA3'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-24-ravno-0-menshiy-koren-fipi-121fa3",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  exam('var-quad-nonmonic-04','quad-nonmonic','QF',[X2(-4),X(5),N(6)],[N(0)],'min','-0,75','analog'),
+  {...exam('5B34C1','linear-transfer','L',[N(-4),X(7)],[X(8),N(1)],null,'-5','catalog','Каталог прототипов · 5B34C1'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-4-plus-7x-ravno-8x-plus-1-fipi-5b34c1",catalogSecondary:"https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf"},
+  {...exam('E63206','linear-one-bracket','LB',[BR(2,[X(1),N(-8)])],[X(1),N(8)],null,'24','catalog','Каталог прототипов · E63206'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-perenos-x-2-x-minus-8-ravno-x-plus-8-fipi-e63206",catalogSecondary:"https://gia.guide/math_oge/9/E63206/info/"},
+  exam('var-linear-two-brackets-06','linear-two-brackets','LB',[BR(-8,[X(1),N(-3)]),BR(6,[X(1),N(-4)])],[N(-13)],null,'6,5','analog'),
+  exam('var-quad-square-02','quad-square','QNB',[N(-18),X2(8)],[N(0)],'max','1,5','analog'),
+  exam('var-quad-factor-x-02','quad-factor-x','QNCm',[X2(4)],[X(-6)],'min','-1,5','analog'),
+  exam('var-quad-monic-01','quad-monic','QF',[X2(1),X(5),N(4)],[N(0)],'max','-1','analog'),
+  exam('var-quad-nonmonic-05','quad-nonmonic','QF',[X2(5),X(13),N(-6)],[N(0)],'max','0,4','analog'),
+  {...exam('D6F84B','linear-transfer','L',[X(7),N(-7)],[N(19),X(5)],null,'13','catalog','Каталог прототипов · D6F84B'),catalogURL:"https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7x-minus-7-ravno-19-plus-5x-fipi-d6f84b",catalogSecondary:"https://gia.guide/math_oge/9/D6F84B/info/"},
+  exam('var-linear-one-bracket-02','linear-one-bracket','LB',[N(10)],[BR(4,[X(1),N(-3)])],null,'5,5','analog'),
+  exam('var-linear-two-brackets-07','linear-two-brackets','LB',[BR(3,[X(1),N(2)]),BR(2,[X(1),N(-4)])],[N(33)],null,'7','analog'),
+  exam('var-quad-square-03','quad-square','QNB',[N(25)],[X2(4)],'min','-2,5','analog'),
+  exam('var-quad-factor-x-03','quad-factor-x','QNC',[X2(-1),X(-2)],[N(0)],'max','0','analog'),
+  exam('var-quad-monic-02','quad-monic','QF',[X2(1),X(-3),N(-10)],[N(0)],'min','-2','analog'),
+  exam('var-quad-nonmonic-06','quad-nonmonic','QF',[X2(-5),X(-14),N(-8)],[N(0)],'min','-2','analog'),
+  exam('var-linear-transfer-01','linear-transfer','L',[X(10),N(3)],[X(1),N(21)],null,'2','analog'),
+  exam('var-linear-one-bracket-05','linear-one-bracket','LB',[N(11)],[BR(5,[X(1),N(2)])],null,'0,2','analog'),
+  exam('var-linear-two-brackets-09','linear-two-brackets','LB',[BR(-6,[X(1),N(3)]),BR(-2,[X(1),N(-4)])],[N(62)],null,'-9','analog'),
+  exam('var-quad-square-04','quad-square','QNB',[X2(-4)],[N(-49)],'max','3,5','analog'),
+  exam('var-quad-factor-x-04','quad-factor-x','QNCm',[X2(6)],[X(-21)],'min','-3,5','analog'),
+  exam('var-quad-monic-03','quad-monic','QF',[X2(1),X(10),N(21)],[N(0)],'max','-3','analog'),
+  exam('var-quad-nonmonic-07','quad-nonmonic','QF',[X2(6),X(-27),N(12)],[N(0)],'max','4','analog'),
+  exam('var-linear-transfer-02','linear-transfer','L',[X(8),N(-5)],[X(-4),N(-53)],null,'-4','analog'),
+  exam('var-linear-one-bracket-06','linear-one-bracket','LB',[BR(9,[X(1),N(1)]),N(2)],[X(3),N(-37)],null,'-8','analog'),
+  exam('var-linear-two-brackets-10','linear-two-brackets','LB',[N(-34)],[BR(-8,[X(1),N(-2)]),BR(-2,[X(1),N(2)])],null,'4,6','analog'),
+  exam('var-quad-square-05','quad-square','QNB',[N(-81),X2(4)],[N(0)],'min','-4,5','analog'),
+  exam('var-quad-factor-x-05','quad-factor-x','QNC',[X2(-2),X(-8)],[N(0)],'max','0','analog'),
+  exam('var-quad-monic-04','quad-monic','QF',[X2(1),X(3),N(-10)],[N(0)],'min','-5','analog'),
+  exam('var-quad-nonmonic-08','quad-nonmonic','QF',[X2(-6),X(9),N(27)],[N(0)],'min','-1,5','analog'),
+  exam('var-linear-transfer-03','linear-transfer','L',[N(-6),X(4)],[N(-6),X(1)],null,'0','analog'),
+  exam('var-linear-one-bracket-08','linear-one-bracket','LB',[BR(1,[X(1),N(-2)])],[N(1)],null,'3','analog'),
+  exam('var-linear-two-brackets-12','linear-two-brackets','LB',[BR(5,[X(1),N(3)]),N(-5)],[BR(1,[X(1),N(-1)])],null,'-2,75','analog'),
+  exam('var-quad-square-06','quad-square','QNB',[N(1)],[X2(16)],'max','0,25','analog'),
+  exam('var-quad-factor-x-06','quad-factor-x','QNCm',[X2(2)],[X(-9)],'min','-4,5','analog'),
+  exam('var-quad-monic-05','quad-monic','QF',[X2(1),X(8),N(12)],[N(0)],'max','-2','analog'),
+  exam('var-quad-nonmonic-09','quad-nonmonic','QF',[X2(7),X(28),N(-35)],[N(0)],'max','1','analog'),
+  exam('var-linear-transfer-05','linear-transfer','L',[N(-3),X(-2)],[X(4),N(63)],null,'-11','analog'),
+  exam('var-linear-one-bracket-09','linear-one-bracket','LB',[N(8)],[BR(2,[X(1),N(-1)])],null,'5','analog'),
+  exam('var-linear-two-brackets-13','linear-two-brackets','LB',[N(-19)],[BR(9,[X(1),N(2)]),BR(-1,[X(1),N(-2)])],null,'-4,875','analog'),
+  exam('var-quad-square-07','quad-square','QNB',[X2(-16)],[N(-9)],'min','-0,75','analog'),
+  exam('var-quad-factor-x-07','quad-factor-x','QNC',[X2(2),X(12)],[N(0)],'max','0','analog'),
+  exam('var-quad-monic-06','quad-monic','QF',[X2(1),X(-3),N(-28)],[N(0)],'min','-4','analog'),
+  exam('var-quad-nonmonic-10','quad-nonmonic','QF',[X2(7),X(28),N(21)],[N(0)],'min','-3','analog'),
+  exam('var-linear-transfer-06','linear-transfer','L',[X(-2),N(1)],[X(8),N(4)],null,'-0,3','analog'),
+  exam('var-linear-one-bracket-10','linear-one-bracket','LB',[BR(5,[X(1),N(2)])],[N(42)],null,'6,4','analog'),
+  exam('var-linear-two-brackets-15','linear-two-brackets','LB',[BR(-8,[X(1),N(2)]),BR(4,[X(1),N(-4)])],[N(-74)],null,'10,5','analog'),
+  exam('var-quad-square-08','quad-square','QNB',[N(-25),X2(16)],[N(0)],'max','1,25','analog'),
+  exam('var-quad-factor-x-08','quad-factor-x','QNCm',[X2(2)],[X(1)],'min','0','analog'),
+  exam('var-quad-monic-07','quad-monic','QF',[X2(1),X(11),N(24)],[N(0)],'max','-3','analog'),
+  exam('var-quad-nonmonic-11','quad-nonmonic','QF',[X2(8),X(5),N(-3)],[N(0)],'max','0,375','analog'),
+  exam('var-linear-transfer-08','linear-transfer','L',[X(-2),N(-6)],[X(3),N(-51)],null,'9','analog'),
+  exam('var-linear-one-bracket-11','linear-one-bracket','LB',[X(-2),N(-72)],[BR(6,[X(1),N(-4)])],null,'-6','analog'),
+  exam('var-linear-two-brackets-18','linear-two-brackets','LB',[BR(-4,[X(1),N(-3)]),N(7)],[BR(4,[X(1),N(-1)])],null,'2,875','analog'),
+  exam('var-quad-square-09','quad-square','QNB',[N(16)],[X2(1)],'min','-4','analog'),
+  exam('var-quad-factor-x-09','quad-factor-x','QNC',[X2(8),X(-10)],[N(0)],'max','1,25','analog'),
+  exam('var-quad-monic-08','quad-monic','QF',[X2(1),X(4),N(-21)],[N(0)],'min','-7','analog'),
+  exam('var-quad-nonmonic-12','quad-nonmonic','QF',[X2(-8),X(11),N(10)],[N(0)],'min','-0,625','analog'),
+  exam('var-linear-transfer-10','linear-transfer','L',[N(-4),X(-2)],[X(5),N(80)],null,'-12','analog'),
+  exam('var-linear-one-bracket-13','linear-one-bracket','LB',[N(9)],[BR(3,[X(1),N(2)])],null,'1','analog'),
+  exam('var-linear-two-brackets-22','linear-two-brackets','LB',[BR(7,[X(1),N(1)]),BR(1,[X(1),N(-4)])],[N(15)],null,'1,5','analog'),
+  exam('var-quad-square-10','quad-square','QNB',[X2(-2)],[N(-72)],'max','6','analog'),
+  exam('var-quad-factor-x-10','quad-factor-x','QNCm',[X2(-4)],[X(-9)],'min','0','analog'),
+  exam('var-quad-monic-09','quad-monic','QF',[X2(1),X(11),N(30)],[N(0)],'max','-5','analog'),
+  exam('var-quad-nonmonic-13','quad-nonmonic','QF',[X2(9),X(-45),N(36)],[N(0)],'max','4','analog'),
+  exam('var-linear-transfer-12','linear-transfer','L',[N(2),X(9)],[X(11),N(-5)],null,'3,5','analog'),
+  exam('var-linear-one-bracket-14','linear-one-bracket','LB',[BR(-5,[X(1),N(3)]),N(2)],[X(-9),N(-21)],null,'-2','analog'),
+  exam('var-linear-two-brackets-26','linear-two-brackets','LB',[N(34)],[BR(7,[X(1),N(2)]),BR(-2,[X(1),N(-2)])],null,'3,2','analog'),
+  exam('var-quad-square-11','quad-square','QNB',[N(-64),X2(1)],[N(0)],'min','-8','analog'),
+  exam('var-quad-factor-x-11','quad-factor-x','QNC',[X2(6),X(-33)],[N(0)],'max','5,5','analog'),
+  exam('var-quad-monic-10','quad-monic','QF',[X2(1),X(4),N(-32)],[N(0)],'min','-8','analog'),
+  exam('var-quad-nonmonic-14','quad-nonmonic','QF',[X2(9),X(54),N(72)],[N(0)],'min','-4','analog'),
+  exam('var-linear-transfer-13','linear-transfer','L',[N(5),X(8)],[N(34),X(3)],null,'5,8','analog'),
+  exam('var-linear-one-bracket-15','linear-one-bracket','LB',[BR(6,[X(1),N(-4)])],[N(42)],null,'11','analog'),
+  exam('var-linear-two-brackets-27','linear-two-brackets','LB',[N(98)],[BR(-10,[X(1),N(-2)]),BR(2,[X(1),N(2)])],null,'-9,25','analog'),
+  exam('var-quad-square-12','quad-square','QNB',[N(100)],[X2(1)],'max','10','analog'),
+  exam('var-quad-factor-x-12','quad-factor-x','QNCm',[X2(-4)],[X(-26)],'min','0','analog'),
+  exam('var-quad-monic-11','quad-monic','QF',[X2(1),X(13),N(36)],[N(0)],'max','-4','analog'),
+  exam('var-quad-nonmonic-15','quad-nonmonic','QF',[X2(10),X(13),N(-14)],[N(0)],'max','0,7','analog'),
+  exam('var-linear-one-bracket-16','linear-one-bracket','LB',[BR(9,[X(1),N(-2)]),N(1)],[X(1),N(-53)],null,'-4,5','analog'),
+  exam('var-linear-two-brackets-31','linear-two-brackets','LB',[BR(5,[X(1),N(2)]),N(73)],[BR(-3,[X(1),N(-1)])],null,'-10','analog'),
+  exam('var-quad-square-13','quad-square','QNB',[X2(-1)],[N(-121)],'min','-11','analog'),
+  exam('var-quad-factor-x-13','quad-factor-x','QNC',[X2(1),X(-9)],[N(0)],'max','9','analog'),
+  exam('var-quad-nonmonic-16','quad-nonmonic','QF',[X2(-10),X(-39),N(-27)],[N(0)],'min','-3','analog'),
+  exam('var-quad-square-14','quad-square','QNB',[N(-169),X2(1)],[N(0)],'max','13','analog'),
+  exam('var-quad-factor-x-14','quad-factor-x','QNCm',[X2(2)],[X(20)],'min','0','analog'),
+  exam('var-quad-nonmonic-17','quad-nonmonic','QF',[X2(4),X(11),N(-20)],[N(0)],'max','1,25','analog'),
+  /* END fixed extension */
 ];
 BANK.push(...EXAM_BANK);
 
@@ -2356,6 +2495,7 @@ function exam(code, examKind, fam, Lt, Rt, ask, exp, source='fipi', label){
 function taskSourceHTML(t){
   if(!t.examKind)return '';
   if(t.src==='analog')return 'Авторское задание MathExam по типу № 9 ОГЭ; не является заданием ФИПИ.';
+  if(t.src==='catalog')return 'Условие и идентификатор сверены по <a href="'+t.catalogURL+'">каталогу прототипов</a>'+(t.catalogSecondary?' и <a href="'+t.catalogSecondary+'">второй публикации</a>':'')+'. Прямая карточка официального банка ФИПИ не проверена; это подтверждение по вторичным источникам.';
   if(t.src==='fipi-demo'){
     const year=t.id==='exam-demo-2027'?'2027':'2026';
     return 'Условие и ответ № 9 сверены с <a href="https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip">официальным архивом ФИПИ '+year+'</a>'+(year==='2027'?' (проект демоверсии).':'.');
@@ -3094,7 +3234,7 @@ function buildLearnTab(root){
   root.innerHTML='';
   const intro=elt('div','card tinted');
   intro.innerHTML='<div class="eyebrow">по порядку, с разборами</div><h2>Учимся решать уравнения</h2>'+
-    '<p>Три главы: линейные → квадратные → дробные. Каждый пункт — маленький шаг с разбором и тренировкой. В конце главы — проверка себя на живых задачах открытого банка.</p>';
+    '<p>Три главы: линейные → квадратные → дробные. Каждый пункт — маленький шаг с разбором и тренировкой. В конце главы — проверка себя на задачах разных типов.</p>';
   root.appendChild(intro);
 
   /* ГЛАВА 1 — линейные */
@@ -3112,7 +3252,7 @@ function buildLearnTab(root){
   c1.appendChild(tie('Когда всё расставлено и подобные приведены, остаётся одно деление — пункт 3.'));
   c1.appendChild(point(3,'Привести подобные и разделить',[
     'После переноса складываем отдельно иксы, отдельно числа. Получается <span class="math">☐·<i>x</i> = ☐</span> — делим правую часть на коэффициент при <span class="math"><i>x</i></span>. Ответ бывает дробным — записываем десятичной дробью.',
-    worked(illus('L',{Lt:[T(4,1),T(-4)],Rt:[T(16),T(2,1)]}))
+    worked(illus('L',{Lt:[T(7,1),T(-4)],Rt:[T(13),T(3,1)]}))
   ]));
   c1.appendChild(tie('Если в уравнении есть скобки — их раскрывают <b>первыми</b>. Тут прячется частая ошибка со знаком — пункт 4.'));
   c1.appendChild(point(4,'Скобки и минус перед скобкой',[
@@ -3151,7 +3291,7 @@ function buildLearnTab(root){
   ]));
   c2.appendChild(point(10,'Случай c = 0: вынести x',[
     'Общий множитель <span class="math"><i>x</i></span> за скобку: <span class="math"><i>x</i>(<i>a</i><i>x</i> + <i>b</i>) = 0</span>. Произведение равно нулю, если множитель равен нулю — отсюда <span class="math"><i>x</i> = 0</span> и корень скобки. <b>Ноль не теряем!</b>',
-    worked(illus('QNC',{Lt:[T(2,2),T(-8,1)],Rt:[T(0)]}))
+    worked(illus('QNC',{Lt:[T(3,2),T(6,1)],Rt:[T(0)]}))
   ]));
   c2.appendChild(point(11,'Случай b = 0: корень ±√',[
     'Выражаем <span class="math"><i>x</i>²</span> и берём квадратный корень — корней <b>два</b>, со знаками <span class="math">+</span> и <span class="math">−</span>.',
@@ -3160,7 +3300,7 @@ function buildLearnTab(root){
   c2.appendChild(tie('Остальные квадратные — через дискриминант. Универсальный способ, работает всегда.'));
   c2.appendChild(point(12,'Дискриминант',[
     '<span class="fform"><i>D</i> = <i>b</i>² − 4<i>a</i><i>c</i></span>, затем <span class="fform"><i>x</i> = <span class="frac"><span class="tt">−<i>b</i> ± √<i>D</i></span><span class="bb">2<i>a</i></span></span></span>. Аккуратно со знаком <span class="math"><i>b</i></span> и с квадратом отрицательного числа.',
-    worked(illus('QF',{Lt:[T(1,2),T(-10,1),T(24)],Rt:[T(0)]},'min'))
+    worked(illus('QF',{Lt:[T(5,2),T(3,1),T(-2)],Rt:[T(0)]},'min'))
   ]));
   c2.appendChild(tie('Для «удобных» уравнений есть скоростной способ — Виета. Но у него честная цена.'));
   c2.appendChild(point(13,'Теорема Виета — для быстрых',[
