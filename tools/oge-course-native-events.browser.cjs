@@ -213,11 +213,28 @@ async function run(context, origin, entry) {
       await click('hint', teacher.locator('#hint-btn'));
     } else {
       const card = teacher.locator('.pv-shell .pv-question').first();
-      const field = card.locator('[data-pv-field]').first();
-      if (await field.evaluate(el => el.tagName) === 'SELECT') {
-        const value = await field.evaluate(el => [...el.options].find(option => option.value !== el.value && !option.disabled).value);
-        await act('answer choice', () => field.selectOption(value));
-      } else await fill('answer draft', field);
+      const fields = card.locator('[data-pv-field]');
+      for (let index = 0; index < await fields.count(); index++) {
+        const field = fields.nth(index);
+        if (await field.evaluate(el => el.tagName) === 'SELECT') {
+          const value = await field.evaluate(el => [...el.options].find(option => option.value !== '' && option.value !== el.value && !option.disabled)?.value);
+          assert.notEqual(value, undefined, entry.trainerId + ': nonempty answer option');
+          await act('answer choice ' + (index + 1), () => field.selectOption(value));
+        } else await fill('answer draft ' + (index + 1), field);
+        if (index === 0 && await fields.count() > 1) {
+          const before = await snapshot(teacher);
+          const count = await teacher.evaluate(() => window.__nativePublications.length);
+          await card.locator('.pv-check').click();
+          await hosts.get(teacher).waitForTimeout(60);
+          assert.deepEqual(await snapshot(teacher), before, entry.trainerId + ': partial matching is not a scored attempt');
+          assert.equal(await teacher.evaluate(() => window.__nativePublications.length), count, entry.trainerId + ': incomplete input does not publish a result');
+          assert.equal(await fields.nth(1).evaluate(el => el === document.activeElement), true, entry.trainerId + ': focus the first missing choice');
+          assert.equal(await card.evaluate(el => el.__practicalQuestion.capture().checked), false);
+          assert.equal(await card.evaluate(el => el.__practicalQuestion.capture().helpUsed), false);
+          assert.notEqual(await card.getAttribute('data-result'), 'incorrect');
+          await mirror();
+        }
+      }
       await click('check answer', card.locator('.pv-check'));
       await click('native help', card.locator('.pv-help-button'));
     }
