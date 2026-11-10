@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+  "baseSha": "2b5e52ec0ba002706aaf8bee8a32f673105fa8f8",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 567,
-    "covered": 566,
+    "total": 568,
+    "covered": 567,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -300,13 +300,18 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "aad18ecc6808eb2e82b17b4255c5154e0732cc7eb6be274af6d48f901364169f",
-      "afterSha256": "dc6924307d9f90060bcc571a40c06ffa7970701279c594a70bf8745d79e54ae9",
+      "beforeSha256": "74d613c1f339a7657a342a00b1b2f2a18bfc9450a7c4945360c36a9ce89c616d",
+      "afterSha256": "3402804ce1b59968d325df1a9ddd5f89b6c50c5edb95c9902fdfb14e8b522376",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
       "beforeSha256": "2123372c0b3328b4a86e60786ba5715120df1b453bf32820eadd72929c76b85e",
       "afterSha256": "82bfade127a412bcf02ad763c05677ac345016714f3bc873de10def8f00241bc",
+      "placement": "before-head-close"
+    },
+    "ege-profil/part-two/index.html": {
+      "beforeSha256": "3d7f24000051d2ce612efa75dce9d6368c1211c7918eaf68d2e787839adbe7da",
+      "afterSha256": "9f77a7d69a09ea0f18408236fc08712b851f925a555743a7bb4685fef46257c0",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -3199,6 +3204,7 @@
     "ege-profil/homework/index.html": "ege-profil/index.html",
     "ege-profil/index.html": "sitemap",
     "ege-profil/lesson/index.html": "ege-profil/index.html",
+    "ege-profil/part-two/index.html": "sitemap",
     "ege-profil/review.html": "sitemap",
     "ege-profil/start/index.html": "sitemap",
     "ege-profil/trainers/applied-t910.html": "sitemap",
@@ -4267,6 +4273,22 @@
     },
     {
       "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "194c7623e82b5a6930ef82cc365ab37ec90820c8",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "changedPaths": [
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "sourceBaseSha": "3cb6714c1c899f3838d35bf654622dacf169ff7a",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
       "sourceBaseSha": "78e442f6c56ba064b57611acfe931c5dda54bab1",
       "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
       "changedPaths": [
@@ -4281,6 +4303,13 @@
       "changedPaths": [
         "trainers/oge-course/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3cb6714c1c899f3838d35bf654622dacf169ff7a",
+      "sourceBaseSha": "2b5e52ec0ba002706aaf8bee8a32f673105fa8f8",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
@@ -4325,6 +4354,14 @@
         "school/peterson6/topics/zadachi-na-procenty/index.html"
       ],
       "reason": "Nine original topic entrances in the approved task; keep the existing site navigator on every new sitemap entrance, with exact committed before/after identity."
+    },
+    {
+      "sourceBaseSha": "194c7623e82b5a6930ef82cc365ab37ec90820c8",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "addedPages": [
+        "ege-profil/part-two/index.html"
+      ],
+      "reason": "Original second-part course linked from the full profile entrance and sitemap; existing navigator pair bound to reviewed committed teaching source."
     }
   ]
 }
