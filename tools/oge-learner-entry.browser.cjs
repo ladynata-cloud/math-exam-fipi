@@ -58,8 +58,11 @@ const types={'.html':'text/html; charset=utf-8','.js':'application/javascript','
     await page.screenshot({path:path.join(out,file.replaceAll('/','_')+'-'+width+'.png')});
     if(parent){
      await page.getByRole('link',{name:parent.label,exact:true}).click();await page.waitForURL(base+parent.href);
-     assert(await page.getByRole('heading',{name:'Твой следующий шаг',exact:true}).isVisible());
-     assert.equal(await page.locator('.journey-lines>article').count(),7,file+' correct seven-line course destination');
+     assert(await page.getByRole('heading',{name:'Все задания №1–21',exact:true}).isVisible());
+     const positions=page.locator('[data-exam-position]');
+     assert.deepEqual(await positions.evaluateAll(nodes=>nodes.map(node=>Number(node.dataset.examPosition))),Array.from({length:21},(_,i)=>i+1),file+' complete numbered base-course destination');
+     assert(await positions.evaluateAll(nodes=>nodes.every(node=>!node.closest('details'))),file+' all exam numbers are expanded');
+     assert(await page.locator('[data-exam-position="1"] .exam-start').isVisible(),file+' actual preparation entry available');
     }else{
      await bar.getByRole('link',{name:'← Все темы ОГЭ',exact:true}).click();await page.waitForURL(base+'/trainers/oge-course/');assert(await page.getByRole('heading',{name:'С чего начать?',exact:true}).isVisible());
     }
