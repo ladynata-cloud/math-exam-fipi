@@ -36,6 +36,9 @@ Name the first and second bracket groups in the Task 9 distribution helper
 - Replace equation-side captions only in the bracket-distribution helper.
 - Keep one sequence across both sides; use «Скобка N» for later groups.
 - Record this task and its verification.
+- Refresh the existing navigator source binding and the learner-entry inline
+  script fingerprint for this exact checked source. This is required to keep
+  the preservation gates bound to the new captions.
 
 ### Out of scope
 
@@ -44,8 +47,9 @@ Name the first and second bracket groups in the Task 9 distribution helper
 
 ### Files or areas that must not change
 
-- All production files except `trainers/oge-task9-equations.html`.
-- Existing tests and gates.
+- Other production source files and runtime behavior.
+- Existing test assertions and workflows. Only the Task 9 expected source
+  fingerprint and its provenance comment may change.
 
 ## Acceptance criteria
 
@@ -59,6 +63,8 @@ Name the first and second bracket groups in the Task 9 distribution helper
 - Required tests: existing `tools/task9-*.test.cjs` and
   `tools/oge-algebra-contract.test.mjs`.
 - Required static checks: final diff review and `git diff --check`.
+- Dependent preservation checks: `tools/public-navigator-preservation.test.cjs`,
+  `tools/public_navigator_bindings.test.py` and the existing learner-entry CI.
 - Manual checks: inspect rendered captions and the supplied example at
   desktop and narrow mobile widths.
 - Final gate marker: `TASK9_BRACKET_LABELS_OK` after relevant checks pass.
@@ -103,7 +109,24 @@ Name the first and second bracket groups in the Task 9 distribution helper
 - Local Chromium could not start because the executor forbids its singleton
   socket. Desktop/mobile browser checks remain assigned to the existing PR
   workflow; no local visual pass is claimed.
-- Scope deviations: none.
+- Initial PR CI exposed two stale expected-byte records for this changed
+  trainer. Update `assets/assistant/page-rollout.json` using the existing
+  explicit-source binding command with source commit
+  `88d8eb2cd8fdefa95b0aae7d6954a60c914e118d` and only
+  `trainers/oge-task9-equations.html` declared as changed. Independently
+  verified inline-script SHA-256:
+  `b226c3f4216892b8d8021ebf0029a49ebb1ba6859d1797c91b5a4a293084728f`.
+  The learner-entry fingerprint is updated to those exact bytes; all assertions,
+  historical baselines, other source pins and navigation coverage remain.
+- The existing binding command preview and write both succeeded with exactly
+  that one changed HTML path. All four navigator-preservation checks and all
+  five source-binding checks passed after the refresh.
+- Source commit `88d8eb2` also passed the existing Task 9 browser workflow
+  [42864006804](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42864006804),
+  including desktop and mobile interactions. Updated-head CI remains recorded
+  in the PR so source-only success is not confused with final-head validation.
+- Scope adjustment: two dependent preservation records are needed by the
+  existing CI; no additional product change.
 
 ## Required handoff
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b5dcca023496d938ade36ea2f5aa24d41f53283a",
+  "baseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3023,8 +3023,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "a9aeb084ff51c067a978b0140891424b765a59389242a4dfa1344754930339b3",
-      "afterSha256": "c3538f7eba74037b1933faf1b9cccb21c5db0343cce1741d2cea3779a284554f",
+      "beforeSha256": "6331c97a0bfbdbb6f51e84f0f2e1e39abb4fda9dc67dbb9bd2dae960da4acf14",
+      "afterSha256": "f222e742d904fa377339d4c47a03cc5e0e8ea6ed9471ba379dac6cc886d1dcf1",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -4653,6 +4653,15 @@
         "geometry-course/atlas/vector-basis.html",
         "geometry-course/atlas/vector-scale.html",
         "geometry-course/atlas/vectors.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b5dcca023496d938ade36ea2f5aa24d41f53283a",
+      "sourceBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "task": "docs/tasks/TASK9_BRACKET_LABELS_20261111.md",
+      "changedPaths": [
+        "trainers/oge-task9-equations.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
