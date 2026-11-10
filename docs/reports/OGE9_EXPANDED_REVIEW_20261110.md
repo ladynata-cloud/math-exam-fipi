@@ -1,7 +1,7 @@
 # ОГЭ № 9: расширение и независимая проверка 140 задач
 
 Дата: 10 ноября 2026 года, Новосибирск.  
-Предыдущий PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/539; PR продолжения будет указан после сохранения.  
+PR продолжения: https://github.com/ladynata-cloud/math-exam-fipi/pull/543 (Draft). Предыдущий PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/539.  
 Исходный проверенный коммит: `700a1d99680b4c8065627c8d897d2817317b9339`.
 Родитель продолжения после сохранённого согласования с main: `07478ae2b07d14d71a0cba76d449b159fd4e2f3e`; текущая база `3e9e24038f407b2abecf5d80485770dd39edbe16`.  
 База PR при начале проверки: `d3d63656806551148b597045657c03d54eb65700`.  
@@ -281,7 +281,7 @@ SHA256 проверенного реестра: `60e67e9acad25421b442d840220b65e
 ## EXECUTIVE STATUS
 
 Task: расширить существующий тренажёр №9 до 140 разнообразных задач и проверить математику, источники, шаги и генераторы.  
-Предыдущий PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/539; PR продолжения будет указан после сохранения.  
+PR продолжения: https://github.com/ladynata-cloud/math-exam-fipi/pull/543 (Draft). Предыдущий PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/539.  
 Base продолжения: `69e09c78d84cef5a206dcc420ec08fcce46ec00f`.  
 Parent: `69e09c78d84cef5a206dcc420ec08fcce46ec00f` — main после объединения #539; ранее сохранено согласование с курсом ЕГЭ профиль.  
 Head исходников: `137c2a7802b5e96cc3026456eae70201e0758917`; точный итоговый head указан в описании PR.  

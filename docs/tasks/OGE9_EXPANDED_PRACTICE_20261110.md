@@ -2,7 +2,7 @@
 
 Дата: 10 ноября 2026 года. Уровень проверки: MEDIUM.
 База: main `69e09c78d84cef5a206dcc420ec08fcce46ec00f`.
-Ветка: `fix/oge9-expanded-practice-20261110`.
+Ветка: `fix/oge9-expanded-practice-20261110`. PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/543 (Draft).
 
 ## Основание и граница
 
