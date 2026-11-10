@@ -42,14 +42,38 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/oge18-step
   }
   for(const width of [320,1280]){
    const page=await context.newPage();await page.setViewportSize({width,height:900});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+   // Fixed archive cards exercise cumulative multi-step solutions, independently of random task selection.
    for(const n of [16,17]){
-    await page.goto(base+'/trainers/oge-task'+n+'-'+(n===16?'circle':'quadrilaterals')+'.html');await page.locator('#ans').fill('17');await page.locator('#courseHintToggle').click();
+    await page.goto(base+'/trainers/oge-task'+n+'-'+(n===16?'circle':'quadrilaterals')+'.html');
+    const fixture=await page.evaluate(n=>window.eval(n===16
+     ?'(()=>{const record=ARCHIVE.find(t=>t.nums.includes("311956"));trTask=buildArchive(record);trAtt=2;trDone=false;trMissed=false;renderTrain();return {id:record.nums[0],sub:trTask.k,params:trTask.p,answer:trTask.ans,steps:trTask.sol.length};})()'
+     :'(()=>{const record=ARCHIVE.find(t=>t.nums.includes("356728"));CUR=build(record.sub,record.p,{gen:false,srcLab:srcLabel(record,true)});renderTrain(false);return {id:record.nums[0],sub:CUR.key,params:CUR.p,answer:CUR.ans,steps:CUR.sol.length};})()'),n);
+    assert.deepEqual(fixture,n===16?{id:'311956',sub:'insCen',params:{c:48},answer:24,steps:3}:{id:'356728',sub:'sqDiag',params:{k:7},answer:14,steps:2});
+    console.log(JSON.stringify({marker:'OGE_STEPS_FIXTURE',task:n,width,...fixture}));
+    await page.locator('#ans').fill('17');await page.locator('#courseHintToggle').click();
     assert.equal(await page.locator('#courseHintPanel>h3').textContent(),'Разбор этой задачи по шагам');
-    const next=page.locator(n===16?'#hintBtn':'#stepH');while(!await next.isDisabled())await next.click();
+    const next=page.locator(n===16?'#hintBtn':'#stepH'),steps=page.locator(n===16?'#task16Steps .step':'#ssol .step');
+    assert.equal(await steps.count(),0);
+    for(let i=1;i<=fixture.steps;i++){assert.equal(await next.isDisabled(),false);await next.click();assert.equal(await steps.count(),i);assert.equal(await page.locator('#ans').inputValue(),'17');}
+    assert.equal(await next.isDisabled(),true);
     assert.equal(await page.locator('#ans').inputValue(),'17');assert.ok(await page.locator(n===16?'#task16Steps .step':'#ssol .step').count()>=2);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
     await page.screenshot({path:path.join(out,`steps-task${n}-${width}.png`),fullPage:true});
    }
+   // The rhombus area formula legitimately completes in one step; it has a separate stopping contract.
+   await page.goto(base+'/trainers/oge-task17-quadrilaterals.html');
+   const single=await page.evaluate(()=>window.eval('(()=>{const record=ARCHIVE.find(t=>t.nums.includes("П-Рм10"));CUR=build(record.sub,record.p,{gen:false,srcLab:srcLabel(record,true)});renderTrain(false);return {id:record.nums[0],sub:CUR.key,params:CUR.p,answer:CUR.ans,steps:CUR.sol.length};})()'));
+   assert.deepEqual(single,{id:'П-Рм10',sub:'rhombAreaDiag',params:{d1:14,d2:6},answer:42,steps:1});
+   console.log(JSON.stringify({marker:'OGE_STEPS_FIXTURE',task:17,width,...single}));
+   await page.locator('#ans').fill('17');await page.locator('#courseHintToggle').click();
+   assert.equal(await page.locator('#courseHintPanel>h3').textContent(),'Разбор этой задачи по шагам');
+   const singleNext=page.locator('#stepH'),singleSteps=page.locator('#ssol .step');
+   assert.equal(await singleSteps.count(),0);assert.equal(await singleNext.isDisabled(),false);
+   await singleNext.click();
+   assert.equal(await singleSteps.count(),1);assert.equal(await singleNext.isDisabled(),true);assert.equal(await page.locator('#ans').inputValue(),'17');
+   assert.equal(await singleSteps.locator('b').textContent(),'42');assert.match(await page.locator('#fb').textContent(),/разобранное, а не решённое/);
+   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
+   await page.screenshot({path:path.join(out,`steps-task17-single-${width}.png`),fullPage:true});
    await page.goto(base+'/trainers/oge13-inequalities-series.html');
    for(const family of ['linear','quad','graph','special','systems']){
     await page.evaluate(family=>window.eval('jumpTask('+JSON.stringify(family+':0')+')'),family);await page.locator('#hintToggle').click();

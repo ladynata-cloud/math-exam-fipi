@@ -36,6 +36,7 @@ Source state was reconciled with the repository status: the complete profile and
 - Correct contextual profile algebra hints, fixed-log monotonicity and the Vieta sum sign.
 - Preserve current task IDs, conditions, answers, model data, generation order and progress schema.
 - Add targeted regressions and one OGE browser step to the existing workflow.
+- Stabilize the existing OGE 16/17 browser fixture with explicit archive cards; preserve multi-step requirements and separately cover a legitimate single-step solution.
 
 Out of scope: new course generators, new geometric models, global progress redesign, private audit exports, AI chat, authentication, backend contracts, broad publication of unrelated PRs, external messaging.
 
@@ -48,6 +49,7 @@ Out of scope: new course generators, new geometric models, global progress redes
 - Profile hints match each actual expression and logarithm base; Vieta sums have the correct sign.
 - A rational-expression hint with zero shift does not enumerate the final root candidates.
 - Existing mathematical, saved-state, board and browser gates continue to pass.
+- OGE 16/17 retained-step checks use known multi-step cards; a legitimate one-step card ends after exactly one step without changing the learner draft.
 
 ## Checks and gates
 
@@ -59,8 +61,9 @@ Targeted additions:
 - tools/ege-baza-concrete-hints.test.cjs: actual expressions and retained generated contracts.
 - tools/profile-part2-context-hints.test.cjs: mathematical semantics and no answer disclosure.
 - tools/oge-course-native-events.browser.cjs: fully populate multi-field practical answers before requiring publication; separately assert that incomplete input preserves state, publications and focus.
+- tools/oge18-steps-pan.browser.cjs: deterministic OGE 16/17 archive fixtures and explicit single-step coverage, retaining the previous multi-step, draft and overflow assertions.
 
-The local execution environment is unavailable. Pure JavaScript calculations and syntax checks were executed in V8; these are not reported as Node, DOM or browser runs. Full project tests run in GitHub Actions on the assembled candidate. CI must include a real git diff --check. No failing or unrun check is relabeled as passing.
+The local execution environment was unavailable during implementation. Pure JavaScript calculations and syntax checks were executed in V8; these are not reported as Node, DOM or browser runs. After the later context switch, local execution became available for report rendering. Full project tests run in GitHub Actions on the assembled candidate. CI must include a real git diff --check. No failing or unrun check is relabeled as passing.
 
 ## Review
 
@@ -82,5 +85,7 @@ Immediately before any separately authorized merge, query authoritative remote m
 No force, rebase, reset, access-control override or weakened gate is permitted.
 
 ## Execution record
+
+The final composition exposed a pre-existing nondeterministic OGE browser test: it selected a random 16/17 card but required at least two steps. The native 17 rhombus-diagonals and trapezoid-area builders legitimately produce one step. This package stabilizes that fixture without changing the generators or weakening the multi-step requirement. Independent code review confirmed archive cards 311956 (three steps), 356728 (two steps), and П-Рм10 (one step).
 
 The PR carries exact candidate SHAs, CI results, source-audit continuation notes, release evidence and the standard EXECUTIVE STATUS. Preparation is not publication.
