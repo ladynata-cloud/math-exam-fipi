@@ -47,7 +47,7 @@ class GeneratorTests(unittest.TestCase):
         # This is the future candidate closure; published v1/v2 stay immutable.
         # Video-model investigations add exactly four self-contained local assets.
         # PR525 adds one all-topics stylesheet, with its exact closure checked below.
-        self.assertEqual(len(first), 239)
+        self.assertEqual(len(first), 240)
         self.assertEqual(first[edition.prefix + "assets/math-home.css"],
                          (ROOT / "assets/math-home.css").read_bytes())
         # The navigation-only continuation adds exactly these two dependencies.
@@ -97,6 +97,26 @@ class GeneratorTests(unittest.TestCase):
         # installed its namespace. Existing package/runtime tests verify isolation.
         self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
 
+    def test_pr536_entry_sections_add_exactly_one_stylesheet(self):
+        # The published main already includes this dependency (PR536). Keep
+        # the future-candidate count exact and verify the complete one-file delta.
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        entry, asset = "trainers/oge-course/index.html", "assets/oge-entry-sections.css"
+        raw = (ROOT / entry).read_bytes()
+        tag = b'<link rel="stylesheet" href="/assets/oge-entry-sections.css?v=20261110">'
+        self.assertEqual(raw.count(tag), 1)
+        original_read = Path.read_bytes
+        with patch.object(Path, "read_bytes", lambda path: raw.replace(tag, b"", 1) if path == ROOT / entry else original_read(path)):
+            previous, _ = builder.build(edition)
+        self.assertEqual(len(previous), 239)
+        self.assertEqual(set(output) - set(previous), {edition.prefix + asset})
+        self.assertEqual(set(previous) - set(output), set())
+        sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        self.assertEqual(sources[asset]["dependencies"], [])
+        self.assertEqual(sources[asset]["sha256"], hashlib.sha256((ROOT / asset).read_bytes()).hexdigest())
+        self.assertEqual(output[edition.prefix + asset], (ROOT / asset).read_bytes())
+
     def test_course_guide_closure_is_exact_and_keeps_early_storage_namespace(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)
         output, manifest = builder.build(edition)
@@ -126,7 +146,7 @@ class GeneratorTests(unittest.TestCase):
         with patch.object(Path, "read_bytes", lambda path: raw if path == ROOT / entry else original_read(path)):
             previous, previous_manifest = builder.build(edition)
         # The independent video-model additions remain in the no-guide candidate.
-        self.assertEqual(len(previous), 237)
+        self.assertEqual(len(previous), 238)
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
@@ -182,7 +202,7 @@ class GeneratorTests(unittest.TestCase):
         original_read = Path.read_bytes
         with patch.object(Path, "read_bytes", lambda path: old_html[path] if path in old_html else original_read(path)):
             previous, previous_manifest = builder.build(edition)
-        self.assertEqual(len(previous), 235, "the guide/map package with the reviewed all-topics stylesheet is recovered")
+        self.assertEqual(len(previous), 236, "the guide/map package with the reviewed all-topics stylesheet is recovered")
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset for asset in reviewed})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}
@@ -214,7 +234,7 @@ class GeneratorTests(unittest.TestCase):
         original_read = Path.read_bytes
         with patch.object(Path, "read_bytes", lambda path: previous_raw if path == ROOT / entry else original_read(path)):
             previous, previous_manifest = builder.build(edition)
-        self.assertEqual(len(previous), 238, "removing only the reviewed stylesheet restores the prior closure")
+        self.assertEqual(len(previous), 239, "removing only the reviewed stylesheet restores the prior closure")
         self.assertEqual(set(output) - set(previous), {edition.prefix + asset})
         self.assertEqual(set(previous) - set(output), set())
         old_sources = {record["path"] for record in previous_manifest["sourceFiles"]}

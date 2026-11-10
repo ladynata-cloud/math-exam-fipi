@@ -7,7 +7,7 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
 // Explicit reviewed task sources bind the free-equation and percent-resume
 // changes. Other pages and link metrics retain the published baseline.
-const taskSources={'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+const taskSources={"trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 // This shared engine's default course is EGE; retain full return coverage while

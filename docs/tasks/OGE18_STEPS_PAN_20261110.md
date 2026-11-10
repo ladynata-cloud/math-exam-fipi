@@ -59,3 +59,9 @@ Local/CI and release evidence are recorded in this task's PR, with exact base/he
 - Course structure/review: 21 checks passed. `git diff --check` clean.
 - Offline rebuild exposed online-only assets introduced since the previous package. An explicit manifest omission list preserves the standalone lesson and its native models without broken file requests; the no-network test passes.
 - External review and pupil pilot: not performed.
+
+## Exact source receipts after the teaching update
+
+The first CI run correctly rejected new teaching bytes against older preservation receipts. Source commit `7a7169c35c54351ace4f7844b7730899b4a61831` contains the reviewed learner changes and cache version updates. Navigator bindings are refreshed through the established explicit-source tool for exactly five changed covered pages. The learner-return test names that source for those five pages. Three video-model routes (16, 17, 19) receive a separate exact teaching-source receipt; the nine historical native pins, frozen book editions, mathematical fixtures and original negative probes stay unchanged. Current receipts reject any additional native mutation, and preservation tests compare against the explicit committed source. No broad normalization or test removal is used.
+
+The book generator also failed identically on unmodified base main: PR536 added `assets/oge-entry-sections.css`, taking the future candidate closure from 239 to 240 files while leaving count assertions stale. A regression removes only that exact tag and proves the complete one-file delta and stylesheet bytes; exact counts are updated. No published frozen book files or integrity gates change.
