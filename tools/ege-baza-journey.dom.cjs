@@ -31,13 +31,35 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
 (async()=>{
  try{
   const clean=boot();await tick();
-  ok(clean.d.querySelectorAll('[data-line]').length===7,'today shows seven lines');
-  ok(clean.d.querySelector('.journey-continue'),'visible main continuation');
+  ok(clean.d.querySelectorAll('[data-exam-position]').length===21,'default entrance shows all 21 exam numbers');
+  ok(clean.d.querySelector('[data-exam-position="1"] .exam-start'),'visible direct preparation entry');
+  ok(!Array.from(clean.d.querySelectorAll('[data-exam-position]')).some(node=>node.closest('details')),'numbered map is not hidden inside disclosures');
+  ok(clean.d.querySelectorAll('[data-exam-jump]').length===21,'all numbers have compact jump links');
   const lines=clean.w.EgeBazaJourney.catalog();
   ok(lines.slice(0,6).reduce((sum,line)=>sum+line.items.length,0)===111,'all 111 current EGE families appear once');
   ok(new Set(lines.slice(0,6).flatMap(line=>line.items.map(item=>item.id))).size===111,'no duplicate family coverage');
-  for(const hash of ['#map','#progress','#line?line=m01','#line?line=m02','#line?line=m03','#line?line=m04','#line?line=m05','#line?line=m06','#line?line=m07','#progress?module=m01','#progress?module=m02','#backup?module=m01','#backup?module=m02']){
+  for(const hash of ['#today','#map','#lines','#progress','#line?line=m01','#line?line=m02','#line?line=m03','#line?line=m04','#line?line=m05','#line?line=m06','#line?line=m07','#progress?module=m01','#progress?module=m02','#backup?module=m01','#backup?module=m02']){
    await go(clean,hash);ok(clean.d.querySelector('main h1'),'route rendered: '+hash);
+  }
+  for(const hash of ['#map','#today','#progress']){
+   await go(clean,hash);ok(clean.d.querySelectorAll('[data-exam-position]').length===21,'all 21 number cards on '+hash);
+  }
+  await go(clean,'#lines');ok(clean.d.querySelectorAll('[data-line]').length===7,'secondary learning lines remain accessible');
+  for(let pos=1;pos<=21;pos++){
+   await go(clean,'#map');
+   const card=clean.d.querySelector('[data-exam-position="'+pos+'"]');
+   ok(card.querySelector('.exam-topics').hash==='#task?pos='+pos,'number card opens its own topics '+pos);
+   const first=new URL(card.querySelector('.exam-start').href).hash.slice('#lesson='.length);
+   ok(clean.w.PathData.meta.find(item=>item.id===first).pos===pos,'direct start opens a family of the correct number '+pos);
+   await go(clean,'#task?pos='+pos);
+   const expected=clean.w.PathData.meta.filter(item=>item.pos===pos&&!item.grade7&&!item.pre7);
+   const rows=Array.from(clean.d.querySelectorAll('[data-journey-item]'));
+   ok(clean.d.querySelector('[data-exam-task="'+pos+'"]'),'task number section '+pos);
+   ok(rows.length===expected.length&&rows.every(node=>expected.some(item=>item.id===node.dataset.journeyItem)),'all and only own families visible for '+pos);
+   ok(clean.d.querySelector('a[href="#map"]'),'return to all numbers '+pos);
+  }
+  for(const invalid of ['0','22','foo','1.5']){
+   await go(clean,'#task?pos='+invalid);ok(!clean.d.querySelector('[data-exam-task]'),'invalid task number is not silently replaced: '+invalid);
   }
   ok(clean.writes()===0,'opening root routes and backups never writes progress');
   ok(clean.values.size===0,'empty browser stays empty');
@@ -53,10 +75,10 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
 
   const bad=boot('ege-baza/index.html','#progress',{[PATH_KEY]:'{broken'});await tick();
   ok(!bad.d.querySelector('#storage-notice').hidden,'damaged store announced');
-  ok(bad.d.querySelectorAll('[data-line] progress').length===0,'unknown path data does not display zero progress');
+  ok(bad.d.querySelectorAll('[data-line] progress,[data-exam-position] progress').length===0,'unknown path data does not display zero progress in numbers or lines');
   ok(bad.values.get(PATH_KEY)==='{broken'&&bad.writes()===0,'damaged bytes retained');
   const blocked=boot('ege-baza/index.html','#progress',{}, {blocked:true});await tick();
-  ok(!blocked.d.querySelector('#storage-notice').hidden&&blocked.d.querySelectorAll('[data-line] progress').length===0,'blocked results remain unknown');
+  ok(!blocked.d.querySelector('#storage-notice').hidden&&blocked.d.querySelectorAll('[data-line] progress,[data-exam-position] progress').length===0,'blocked results remain unknown');
   ok(blocked.writes()===0,'blocked store not overwritten');
 
   const task=boot('ege-baza/path/index.html','#lesson=equations-linear');await tick();
@@ -83,11 +105,22 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
   submit(independent,'answer',answer);await tick();
   ok(stateOf(independent).lessons.box.independent===1,'new first-attempt solution retains honest credit');
   const next=independent.d.querySelector('[data-journey-next]');
-  ok(!next.hidden&&independent.w.EgeBazaJourney.lineForLesson(next.hash.slice(8)).id==='m05','next topic belongs to the same learning line');
+  ok(!next.hidden&&independent.w.EgeBazaExamMap.forLesson(next.hash.slice(8)).pos===11,'next topic belongs to the same exam number');
+  ok(independent.d.querySelector('.journey-lesson-nav .back').hash==='#task?pos=11','task returns directly to its exam number');
+  const numbered=boot('ege-baza/index.html','#task?pos=11',savedMap(independent));await tick();
+  ok(numbered.d.querySelector('[data-journey-item="box"] .journey-status').textContent.includes('Самостоятельно'),'actual solution appears on numbered topic');
+  ok(numbered.d.querySelector('progress').value===1&&numbered.d.querySelector('progress').max===5,'one family adds one of five steps to number 11');
+  ok(numbered.writes()===0,'numbered page reads saved results without writing');
   const progressed=boot('ege-baza/index.html','#line?line=m05',savedMap(independent));await tick();
   ok(progressed.d.querySelector('[data-journey-item="box"] .journey-status').textContent.includes('Самостоятельно'),'actual solution appears on line');
   ok(progressed.d.querySelector('progress').value===1&&progressed.d.querySelector('progress').max===12,'one family adds one line step');
   ok(progressed.writes()===0,'returning to line is read-only');
+  const last=boot('ege-baza/path/index.html','#lesson=practice-faces');await tick();
+  const lastState=stateOf(last).lessons['practice-faces'];
+  submit(last,'answer',last.w.PathData.task('practice-faces',lastState.seed).answer);await tick();
+  const endLink=last.d.querySelector('[data-journey-next]');
+  ok(endLink&&!endLink.hidden&&endLink.hash==='#task?pos=11','last family returns to its own number after success rather than crossing to another number');
+
 
   // A healthy row cannot promise exact resume when the real loader rejects a sibling.
   const partialState=stateOf(independent);
@@ -116,6 +149,6 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
   const grade7=task.w.PathData.meta.find(item=>item.grade7&&!item.geometryRebuild);await go(task,'#lesson='+grade7.id);
   ok(!task.d.querySelector('.journey-lesson-nav,[data-journey-next]')&&task.d.querySelector('[data-stage]'),'grade7 presentation preserved');
   ok(errors.length===0,'no DOM errors: '+errors.join('; '));
-  console.log(`EGE_BAZA_JOURNEY_DOM_OK: ${checks} checks; actual scripts, 7 lines/111 families, legacy/read-only/unknown states, exact draft resume, independent/assisted success and managed/board exclusions.`);
+  console.log(`EGE_BAZA_JOURNEY_DOM_OK: ${checks} checks; actual scripts, 21 exam numbers/111 families, 7 secondary lines, legacy/read-only/unknown states, exact draft resume, independent/assisted success and managed/board exclusions.`);
  }finally{for(const dom of open)dom.window.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
