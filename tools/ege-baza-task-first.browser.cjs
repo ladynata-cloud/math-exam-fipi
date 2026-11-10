@@ -6,9 +6,10 @@ async function openHelp(page,part){if(!await page.locator('#taskHelp').evaluate(
 async function roundStepsBrowser(browser,url,width){
  const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
-  await page.goto(url+'#lesson=round');
-  await page.evaluate(()=>{const state={version:1,serial:30,lessons:{round:{seed:3,stage:3,step:0,help:false,attempted:false,done:false,independent:0,guided:0,note:'',draft:'',checks:[]}},seen:{},runs:[],active:null};localStorage.setItem(PathCourse.KEY,JSON.stringify(state));});
-  await page.reload();const problem=await page.locator('.task-first-problem>.task').innerText();assert.match(problem,/49 тетрадей/);
+  // Seed before app.js mounts: a mounted course saves its current state during
+  // navigation. On later reloads keep the learner's real saved drafts intact.
+  await page.addInitScript(()=>{const key='mathexam.ege-baza.path.v1';if(localStorage.getItem(key)!==null)return;const state={version:1,serial:30,lessons:{round:{seed:3,stage:3,step:0,help:false,attempted:false,done:false,independent:0,guided:0,note:'',draft:'',checks:[]}},seen:{},runs:[],active:null};localStorage.setItem(key,JSON.stringify(state));});
+  await page.goto(url+'#lesson=round');const problem=await page.locator('.task-first-problem>.task').innerText();assert.match(problem,/49 тетрадей/);
   assert.equal(await page.locator('#taskHelp>summary').innerText(),'Подсказка к задаче');assert.equal(await page.locator('#startSteps').innerText(),'Решать по шагам');assert(await page.locator('#startSteps').isVisible());
   await page.locator('#answer').fill('7/');await page.locator('#startSteps').click();
   assert(await page.locator('#stepAnswer').isVisible(),'one click exposes first step '+width);assert(await page.locator('#taskHelp').evaluate(e=>e.open));assert(await page.locator('#taskSteps').evaluate(e=>e.open));assert.equal(await page.locator('#taskModel').evaluate(e=>e.open),false);
