@@ -47,13 +47,13 @@ Publication adaptation: navigation, ordered levels, isolated attempt storage and
 
   /* Уголок */
   .ugolok-wrap{background:#f8fafc;border:2px solid #e5e7eb;border-radius:20px;padding:18px;overflow-x:auto}
-  .ugolok{font-family:"Courier New",ui-monospace,monospace;font-size:24px;display:inline-block;min-width:100%;line-height:1.15;padding-left:26px}
+  .ugolok{--division-cell:30px;--division-font:24px;--division-left:26px;--division-bar-gap:8px;font-family:"Courier New",ui-monospace,monospace;font-size:var(--division-font);display:block;width:100%;line-height:1.15;padding-left:var(--division-left)}
   .urow{display:flex;gap:0;align-items:center;justify-content:flex-start;min-height:34px}
-  .cell{width:30px;height:34px;display:inline-flex;align-items:center;justify-content:center;text-align:center;color:#0f172a}
+  .cell{width:var(--division-cell);height:34px;display:inline-flex;align-items:center;justify-content:center;text-align:center;color:#0f172a}
   .cell.used{color:#94a3b8}
   .cell.sel{background:#dbeafe;color:#1e40af;border-radius:6px;font-weight:900}
   .cell.bring{background:#fef3c7;color:#92400e;border-radius:6px;font-weight:900;animation:pulse 1.2s ease-in-out infinite}
-  .cell.gap{width:30px;height:34px}
+  .cell.gap{width:var(--division-cell);height:34px}
   .cell.dot{color:#94a3b8;font-weight:900}
   .cell.qdig{color:#15803d;font-weight:900}
   .cell.qnow{background:#dcfce7;color:#15803d;border-radius:6px;font-weight:900}
@@ -63,7 +63,7 @@ Publication adaptation: navigation, ordered levels, isolated attempt storage and
   .cell.click{cursor:pointer;border:2px dashed #cbd5e1;border-radius:6px}
   .cell.click:hover{background:#e0e7ff;border-color:#6366f1;color:#3730a3}
   .cell.trysel{background:#dbeafe;color:#1e40af;border-radius:6px;font-weight:900;border:2px solid #60a5fa}
-  .vbar{width:3px;background:#0f172a;align-self:stretch;margin:0 8px;border-radius:2px}
+  .vbar{width:3px;background:#0f172a;align-self:stretch;margin:0 var(--division-bar-gap);border-radius:2px}
 
   /* Дужки над цифрами делимого — связь «блок сверху → точка/цифра частного снизу» */
   .ugolok-arcs{display:flex;gap:0;align-items:flex-end;height:16px;margin-bottom:2px;padding-left:0}
@@ -188,7 +188,8 @@ Publication adaptation: navigation, ordered levels, isolated attempt storage and
   .legend .l-quot::before{background:#dcfce7}
   .legend .l-arc::before{background:transparent;border:2px solid #2563eb;border-bottom:0;border-radius:50% 50% 0 0 / 100% 100% 0 0;height:8px;margin-bottom:3px}
   [hidden]{display:none!important} .card{min-width:0} .grid{grid-template-columns:minmax(0,1.35fr) minmax(0,.75fr)}
-  .cell{flex:0 0 30px}.urow{position:relative}.vbar{flex-shrink:0}.cell.minus{position:absolute;flex:none;width:18px}
+  .cell{flex:0 0 var(--division-cell)}.urow{position:relative}.vbar{flex-shrink:0}.cell.minus{position:absolute;flex:none;width:18px}
+  .division-note{display:block;margin:4px 0 8px!important;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.4}
   .back{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}.back a{padding:8px 0;min-height:44px}
   :focus-visible{outline:3px solid #2563eb;outline-offset:3px}button{min-height:44px}.cell.click{padding:0;font:inherit;min-height:34px}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero details{margin-top:8px;font-size:14px}.hero summary{cursor:pointer;color:#2563eb;font-weight:bold}
@@ -471,6 +472,23 @@ function buildPlan(p){
   return {steps:steps, firstLen:firstLen, finalRem:rem, quotient: steps.map(function(x){return x.q}).join('')};
 }
 
+/* A single measured cell width keeps every written column aligned. At 320px,
+   normal four-digit quotients fit in full; only exceptionally wide work scrolls. */
+function notebookMetrics(available, columns){
+  var narrow=available<350, left=narrow?22:26, gap=narrow?5:8;
+  var cell=Math.min(30,Math.max(18,Math.floor((available-left-3-2*gap)/columns)));
+  return {cell:cell,font:Math.min(24,Math.max(18,cell-2)),left:left,gap:gap,width:Math.max(available,left+3+2*gap+columns*cell)};
+}
+function fitNotebook(u){
+  var wrap=u.parentElement, style=getComputedStyle(wrap);
+  var available=wrap.clientWidth-parseFloat(style.paddingLeft||0)-parseFloat(style.paddingRight||0);
+  if(!Number.isFinite(available) || available<=0) available=480;
+  var m=notebookMetrics(available,problem.dividend.length+plan.steps.length);
+  u.style.setProperty('--division-cell',m.cell+'px');u.style.setProperty('--division-font',m.font+'px');
+  u.style.setProperty('--division-left',m.left+'px');u.style.setProperty('--division-bar-gap',m.gap+'px');u.style.width=m.width+'px';
+  return m.cell;
+}
+
 /* ===== Отрисовка уголка ===== */
 function renderUgolok(){
   var u = el('ugolok');
@@ -479,6 +497,7 @@ function renderUgolok(){
 
   var s = problem.dividend;
   var d = problem.divisor;
+  var cellWidth=fitNotebook(u);
 
   var inDivide = (phase==='divide' || phase==='done');
 
@@ -516,7 +535,7 @@ function renderUgolok(){
     arcsRow.className = 'urow ugolok-arcs';
     for(var bi=0; bi<plan.steps.length; bi++){
       var blockSize = (bi===0) ? plan.firstLen : 1;
-      var cellW = blockSize * 30;
+      var cellW = blockSize * cellWidth;
       var arcWrap = document.createElement('span');
       arcWrap.className = 'arc-cell';
       arcWrap.style.width = cellW + 'px';
@@ -578,7 +597,7 @@ function renderUgolok(){
   for(var j=0;j<s.length;j++){var g=document.createElement('span'); g.className='cell gap'; row2.appendChild(g);}
   var spacer=document.createElement('span'); spacer.className='vbar'; spacer.style.background='transparent'; row2.appendChild(spacer);
   var hb=document.createElement('span');
-  hb.style.cssText='display:inline-block;height:3px;background:#0f172a;border-radius:2px;width:'+(String(d).length*30)+'px;align-self:center';
+  hb.style.cssText='display:inline-block;height:3px;background:#0f172a;border-radius:2px;width:'+(String(d).length*cellWidth)+'px;align-self:center';
   row2.appendChild(hb);
   u.appendChild(row2);
 
@@ -601,11 +620,11 @@ function renderUgolok(){
   // Ряды вычитаний: для завершённых шагов + для текущего шага во время проверки/сноса
   for(var sidx=0; sidx<subCount; sidx++){
     var isCurrent = (phase==='divide' && subPhase==='remcheck' && sidx===stepIdx);
-    renderStepSubtraction(u, sidx, isCurrent);
+    renderStepSubtraction(u, sidx, isCurrent, cellWidth);
   }
 }
 
-function renderStepSubtraction(u, sidx, isCurrent){
+function renderStepSubtraction(u, sidx, isCurrent, cellWidth){
   var st = plan.steps[sidx];
   var d = problem.divisor;
   var endCol = st.used;
@@ -616,7 +635,7 @@ function renderStepSubtraction(u, sidx, isCurrent){
   var prodStart = endCol - prodStr.length;
   for(var x=0;x<prodStart;x++){var gg=document.createElement('span'); gg.className='cell gap'; subRow.appendChild(gg);}
   var minusCell = document.createElement('span'); minusCell.className='cell minus'; minusCell.textContent='−';
-  minusCell.style.left=(prodStart*30-22)+'px';
+  minusCell.style.left=(prodStart*cellWidth-22)+'px';
   subRow.appendChild(minusCell);
   for(var y=0;y<prodStr.length;y++){
     var pc=document.createElement('span'); pc.className='cell'; pc.style.color='#dc2626'; pc.textContent=prodStr[y]; subRow.appendChild(pc);
@@ -627,12 +646,13 @@ function renderStepSubtraction(u, sidx, isCurrent){
   var lineRow = document.createElement('div'); lineRow.className='urow';
   for(var z=0;z<prodStart;z++){var gx=document.createElement('span'); gx.className='cell gap'; lineRow.appendChild(gx);}
   var hl = document.createElement('span');
-  hl.style.cssText='display:inline-block;height:2px;background:#0f172a;width:'+(prodStr.length*30-4)+'px;margin:2px 2px';
+  hl.style.cssText='display:inline-block;height:2px;background:#0f172a;width:'+(prodStr.length*cellWidth-4)+'px;margin:2px 2px';
   lineRow.appendChild(hl);
   u.appendChild(lineRow);
 
   // остаток
   var remRow = document.createElement('div'); remRow.className='urow';
+  var rowNote=null;
   var nextStep = isCurrent ? null : plan.steps[sidx+1];
   if(nextStep){
     var remDisplay = (st.rem === 0) ? '' : String(st.rem);
@@ -657,7 +677,7 @@ function renderStepSubtraction(u, sidx, isCurrent){
       var lab=document.createElement('span');
       lab.style.cssText='font-family:Verdana,sans-serif;font-size:13px;color:#92400e;font-weight:800;margin-left:8px';
       lab.textContent='↓ сносим '+problem.dividend[nextStep.bringIdx];
-      remRow.appendChild(lab);
+      rowNote=lab;
     }
   } else {
     var fr = String(st.rem);
@@ -675,9 +695,10 @@ function renderStepSubtraction(u, sidx, isCurrent){
     } else if(done){
       label.textContent = st.rem===0 ? '(остаток 0 — поделилось нацело)' : '(остаток '+st.rem+', '+st.rem+' < '+d+' ✓)';
     }
-    remRow.appendChild(label);
+    if(label.textContent) rowNote=label;
   }
   u.appendChild(remRow);
+  if(rowNote){rowNote.classList.add('division-note');u.appendChild(rowNote);}
 }
 
 /* ===== Полоска фаз ===== */
@@ -1310,6 +1331,7 @@ function renderStats(){
 /* ===== Запуск ===== */
 document.addEventListener('mathexam:skill-support',function(event){markHelp();if(!save())event.preventDefault();});
 window.addEventListener('pagehide',save);
+window.addEventListener('resize',function(){if(problem)renderUgolok();});
 var restored=load();
 if(restored){
   el('task').textContent=problem.dividend+' : '+problem.divisor;

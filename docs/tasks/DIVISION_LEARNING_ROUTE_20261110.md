@@ -84,3 +84,25 @@ opens multiples mode on the current/default skill; the full route keeps its expl
 two-digit practice link. `tools/seo-check.py` now passes all 580 sitemap canonicals
 and 214 topic links. No gate or checker was weakened. Existing meaningful attempts,
 column multiplication and standalone-help checks also passed (56 tests).
+
+## Browser review and integration fixes
+The first Chromium run [42736017801](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42736017801)
+passed the real guided/progression/path/Claude/checkpoint/decimal journeys. Actual
+320px screenshots revealed a clipped Claude quotient; the final patch measures
+a shared column width, puts remainder prose below the numbers and adds bounding-box
+checks for 4–6-digit dividends. The route no longer repeats its prerequisite cards.
+
+The contextual browser inventory now explicitly preserves its original 70 paths
+and checks the two new pages separately, including eight ordered skills, empty
+submission, hidden answers, draft reload and exact return links.
+
+A full fixed-book generator run identified an ambiguous partial CSS selector in
+the public helper. The selector is exact; the helper and its loader skip book
+mode. Future fixed editions omit only the two public detour assets and the exact
+reviewed three-line loader, with negative mutation/duplication tests. Existing
+book and alias bytes are untouched. All 15 generator tests retain exactly 240
+outputs; all 13 offline/support tests pass.
+
+Main later advanced to `aca5365e36076e9c99f5395ad7f4dcdcc759fcba` (approved 21-task
+EGE base map). Its teaching changes do not overlap division; the shared navigator
+provenance is composed and re-bound to the exact final source.

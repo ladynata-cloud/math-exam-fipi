@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   // Shared prerequisites also work on the older standalone training pages.
-  if(new URLSearchParams(location.search).get('learning')!=='1'&&!window.MathExamSkillSupport&&!document.querySelector('script[data-skill-support-loader],script[src*="skill-support.js"]')){
+  if(!window.MathExamBookEdition&&new URLSearchParams(location.search).get('learning')!=='1'&&!window.MathExamSkillSupport&&!document.querySelector('script[data-skill-support-loader],script[src*="skill-support.js"]')){
     const script=document.createElement('script');script.src='/trainers/oge-basics/skill-support.js?v=20261110';script.dataset.skillSupportLoader='';document.head.append(script);
   }
   function fold(nodes,label,before){

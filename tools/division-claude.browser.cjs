@@ -13,6 +13,19 @@ const server=http.createServer((req,res)=>{
   try{res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}
   catch(e){res.writeHead(404);res.end();}
 });
+async function notebookVisible(page,expected){
+  const result=await page.evaluate(()=>{
+    const wrap=document.querySelector('.ugolok-wrap'),r=wrap.getBoundingClientRect();
+    const left=r.left+wrap.clientLeft,right=left+wrap.clientWidth;
+    const quotient=[...document.querySelectorAll('#ugolok .qdig')];
+    const cells=[...document.querySelectorAll('#ugolok .qdig,#ugolok .qnow,#ugolok .rem')];
+    return {quotient:quotient.map(x=>x.textContent).join(''),fits:cells.every(x=>{const b=x.getBoundingClientRect();return b.left>=left-1 && b.right<=right+1;}),notes:[...document.querySelectorAll('#ugolok .division-note')].every(x=>x.scrollWidth<=x.clientWidth+1),font:parseFloat(getComputedStyle(document.querySelector('#ugolok')).fontSize)};
+  });
+  assert.equal(result.quotient,expected);
+  assert(result.fits,'every quotient and remainder digit must be visible inside the notebook viewport');
+  assert(result.notes,'remainder notes wrap without clipping');
+  assert(result.font>=18,'written digits stay legible');
+}
 async function main(){
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const browser=await chromium.launch({headless:true});
@@ -48,11 +61,23 @@ async function main(){
       assert.equal(await page.locator('#total').innerText(),'1');
       assert.equal(await page.locator('#right').innerText(),'1');
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'finished document fits');
+      await notebookVisible(page,'1008');
       if(process.env.DIVISION_SCREENSHOTS){fs.mkdirSync(process.env.DIVISION_SCREENSHOTS,{recursive:true});await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,'claude-division-'+width+'.png'),fullPage:true});}
+      if(width===320){
+        for(const [dividend,divisor,quotient] of [['89991',9,'9999'],['899991',9,'99999']]){
+          await page.evaluate(({KEY,fixture,dividend,divisor,quotient})=>{
+            const saved=JSON.parse(JSON.stringify(fixture));
+            Object.assign(saved.attempt,{problem:{dividend,divisor,quotient},phase:'done',stepIdx:quotient.length,done:true,counted:true});
+            localStorage.setItem(KEY,JSON.stringify(saved));
+          },{KEY,fixture,dividend,divisor,quotient});
+          await page.reload();await notebookVisible(page,quotient);
+          if(process.env.DIVISION_SCREENSHOTS)await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,'claude-division-320-'+dividend+'.png'),fullPage:true});
+        }
+      }
       assert.deepEqual(errors,[]);
       await context.close();
     }
-    console.log('DIVISION_CLAUDE_BROWSER_OK: 320/1280, keyboard, zero, retained steps, column alignment');
+    console.log('DIVISION_CLAUDE_BROWSER_OK: 320/1280, keyboard, zero, retained steps, column alignment, visible full quotient and remainder (4–6 digit dividends)');
   }finally{await browser.close();server.close();}
 }
 main().catch(e=>{console.error(e);server.close();process.exitCode=1;});

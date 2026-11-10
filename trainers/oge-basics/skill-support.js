@@ -51,7 +51,7 @@
 
   function mount(w) {
     const d = w.document;
-    if (!d || new URLSearchParams(w.location.search).get('learning') === '1') return;
+    if (!d || w.MathExamBookEdition || new URLSearchParams(w.location.search).get('learning') === '1') return;
     function ready() {
       if (d.querySelector('[data-skill-support]')) return;
       const online = /^https?:$/.test(w.location.protocol);
@@ -60,7 +60,7 @@
       const back = localPath(params.get('skillReturn'), w.location.origin);
       const tabReturn = params.get('skillReturnMode') === 'tab';
       const currentPath = w.location.pathname;
-      if (!d.querySelector('link[data-skill-support-style],link[href*="skill-support.css"],style[data-inline-source$="/skill-support.css"]')) {
+      if (!d.querySelector('link[data-skill-support-style],link[href*="/trainers/oge-basics/skill-support.css"],style[data-inline-source="/trainers/oge-basics/skill-support.css"]')) {
         const style = d.createElement('link'); style.rel = 'stylesheet'; style.href = '/trainers/oge-basics/skill-support.css?v=20261110'; style.dataset.skillSupportStyle = ''; d.head.append(style);
       }
       const element = (tag, cls, text) => { const el = d.createElement(tag); if (cls) el.className = cls; if (text) el.textContent = text; return el; };

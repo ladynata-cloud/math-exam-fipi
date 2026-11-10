@@ -143,3 +143,18 @@ test('the helper does not touch an authenticated managed trainer or its progress
   const f = open(t, '<main id="learning-remediation-root">Managed</main>', 'https://mathexam.space/' + sub + 'course-whole-simple.html?learning=1', [base + 'skill-support.js']);
   await tick(); assert.equal(f.d.querySelector('[data-skill-support]'), null); assert.equal(f.w.localStorage.length, 0); assert.equal(f.w.sessionStorage.length, 0);
 });
+
+test('the fixed-book bootstrap keeps public detours and their loader inactive', async t => {
+  const f = open(t, '<main><h1>Книжный пример</h1><input id="answer" value="Черновик"></main>', 'https://mathexam.space/book/oge/2026-10-31/v2/trainers/long-division-stepwise.html');
+  Object.defineProperty(f.w, 'MathExamBookEdition', {value:Object.freeze({edition:'oge-2026-10-31-v2'})});
+  f.w.localStorage.setItem('mathExamBook:oge-2026-10-31-v2:fixture', 'preserve');
+  f.w.eval(read(base + 'navigation-minimal.js'));
+  f.w.eval(read(base + 'skill-support.js'));
+  await tick();
+  assert.equal(f.d.querySelector('script[data-skill-support-loader]'), null);
+  assert.equal(f.d.querySelector('[data-skill-support],[data-skill-return]'), null);
+  assert.equal(f.d.querySelector('link[data-skill-support-style]'), null);
+  assert.equal(f.d.getElementById('answer').value, 'Черновик');
+  assert.equal(f.w.localStorage.length, 1);
+  assert.equal(f.w.localStorage.getItem('mathExamBook:oge-2026-10-31-v2:fixture'), 'preserve');
+});

@@ -30,3 +30,18 @@ The local Chromium process could not start (`socket(): Operation not permitted`)
 before any page opened. The existing
 `tools/division-search-entry.browser.cjs` remains unchanged for a permitted
 browser environment; DOM completion does not substitute for visual acceptance.
+
+## Fixed-book boundary follow-up
+
+The new live prerequisite panel is excluded from future fixed-book candidates,
+just as the existing public navigator is. Its two direct asset tags and only
+the exact reviewed loader block in `navigation-minimal.js` are removed during
+candidate preparation. A changed, duplicated or unguarded loader fails review;
+the dependency scanner and the exact 240-output candidate check are retained.
+Runtime guards also keep this public panel inactive when the fixed-book
+bootstrap is present. Existing in-trainer contextual help remains available.
+Published edition bytes and manifests are not rebuilt or modified.
+
+The stylesheet-presence selector now names the real full asset path, avoiding a
+false `/skill-support.css` dependency. The public standalone download is rebuilt
+with this same source and retains its self-contained runtime.

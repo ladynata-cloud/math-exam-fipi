@@ -161,3 +161,16 @@ test('a fresh exercise closes old help and resets only the new attempt provenanc
   assert.equal(w.document.querySelector('#helpAnswer').textContent,'');
   assert.equal(w.assisted,false);assert.equal(w.stats.supported,1);
 });
+
+test('notebook uses one measured column width and moves prose below the written numbers',t=>{
+  const w=open(t,fixture());
+  for(const columns of [8,9,11]){
+    const m=w.notebookMetrics(240,columns);
+    assert(m.width<=240,'320px notebook fits '+columns+' digit columns');assert(m.font>=18);
+    assert.equal(m.left+3+2*m.gap+columns*m.cell<=m.width,true);
+  }
+  complete(w);
+  assert(w.document.querySelector('#ugolok .division-note'));
+  assert.equal(w.document.querySelector('#ugolok .urow .division-note'),null,'prose cannot extend a digit row');
+  const before=identity(w);w.dispatchEvent(new w.Event('resize'));assert.equal(identity(w),before,'responsive redraw preserves the attempt');
+});
