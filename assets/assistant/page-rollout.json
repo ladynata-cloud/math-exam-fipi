@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+  "baseSha": "029748b03a00ac8bf48b4f0a0fe5951a21813f4b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -215,8 +215,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "d18ca8f4d9b73fab42278600fc2bd5f40aa3e2ae4ea133414b6e8e648225741d",
-      "afterSha256": "ac1f1f9d87f5c027034d7b51c5111402cf527dddcd1c9f2c9b673a5e92545ec3",
+      "beforeSha256": "0876e3dcf740eb65e375922590260ccaf9309871bceb0f5e8cc93e4e0e8bd78e",
+      "afterSha256": "30d42efda41588aaac9c7d053058d9b6b5aa0c74bf2e7938fd74c5aa441b3efe",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "04f4cd93570169b2161aa3a73b2aeb73a9ec6b256431314ea052d5c69481b66f",
-      "afterSha256": "01899211045583ab754eea90cbb890fea0ecddd22678b997941b446e53381e33",
+      "beforeSha256": "40be3b3ac7bb85e902e19c8ba99241f793a7ba58b8fb44e7de0226dd73a18713",
+      "afterSha256": "9a41405ae5387ae547e2e4609cdf404db6aff33cc42282c5725c7a513cbd7c6f",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4190,6 +4190,16 @@
         "trainers/oge-task24-proofs.html",
         "trainers/oge-task25-geometry.html",
         "trainers/task19-trainer.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "029748b03a00ac8bf48b4f0a0fe5951a21813f4b",
+      "task": "docs/tasks/EGE_BASE_21_EXAM_MAP_20261110.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
