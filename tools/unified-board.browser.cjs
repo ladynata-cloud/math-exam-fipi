@@ -196,6 +196,49 @@ async function pendingInkContinuity(page, lessonURL, readWork) {
     await page.locator('#penButton').click();
   }
 }
+async function queueRoleIsolation(page, site, api, created, readWork) {
+  const actionURL=api.origin+'/api/group-lessons/'+created.id+'/actions';
+  const first=created.invites[0];
+  const link=token=>site.origin+'/trainers/group-board.html#'+new URLSearchParams({lesson:created.id,token,server:api.origin});
+  const failStroke=route=>route.request().method()==='POST'&&route.request().postDataJSON()?.type==='stroke'
+    ?route.fulfill({status:503,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({error:'QA_OFFLINE'})}):route.continue();
+  await page.locator('#roster button').first().click();
+  await page.route(actionURL,failStroke);
+  await draw(page);
+  await poll(async()=>/Нет связи/.test(await page.locator('#connectionStatus').textContent()),'teacher stroke retained offline');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.goto('about:blank');
+  await page.unroute(actionURL,failStroke);
+  let pupilPosts=0;
+  const count=request=>{if(request.url()===actionURL&&request.method()==='POST')pupilPosts++;};
+  page.on('request',count);
+  await page.goto(link(first.studentToken));
+  await page.locator('#focus').waitFor({state:'visible'});
+  await delay(1300);
+  assert.equal(pupilPosts,0,'teacher queue must not replay under pupil credentials');
+  assert.equal((await readWork()).strokes.length,0,'foreign queue changes no durable work');
+  page.off('request',count);
+  const corruptKey='mathexam.group.outbox.v2.'+encodeURIComponent(JSON.stringify([api.origin,created.id,first.id]));
+  const foreignEnvelope=JSON.stringify({version:2,principal:'other',outbox:[],rejected:[]});
+  await page.evaluate(({key,value})=>sessionStorage.setItem(key,value),{key:corruptKey,value:foreignEnvelope});
+  await page.reload();
+  await poll(async()=>/Сохранение заблокировано/.test(await page.locator('#connectionStatus').textContent()),'mismatched queue visibly blocks saving');
+  await mode(page,'board');
+  assert.equal(await page.locator('#penButton').isDisabled(),true,'unrecoverable queue does not accept handwriting');
+  assert.equal(await page.evaluate(key=>sessionStorage.getItem(key),corruptKey),foreignEnvelope,'unrecoverable envelope is not overwritten');
+  await page.evaluate(key=>sessionStorage.removeItem(key),corruptKey);
+  await page.goto('about:blank');
+  await page.goto(link(created.teacherToken));
+  await poll(async()=>(await readWork()).strokes.length===1,'returning teacher resumes original queue');
+  assert.equal((await readWork()).strokes[0].author,'teacher','resumed stroke keeps original author');
+  await page.locator('#roster button').first().click();
+  await mode(page,'board');
+  await poll(async()=>!await page.locator('#undoButton').isDisabled(),'teacher queue acknowledged');
+  await page.locator('#undoButton').click();
+  await poll(async()=>(await readWork()).strokes.length===0,'fixture ink removed by its original author');
+  await page.locator('#backButton').click();
+  console.log('PASS same-tab role change isolates queues and original teacher resumes safely');
+}
 async function negativeFrame(page) {
   return poll(async () => {
     const locator = page.locator('#trainerHost .group-trainer-frame[data-trainer-id="negative-numbers-line"][data-status="ready"] iframe');
@@ -266,6 +309,7 @@ async function main() {
     const [first, second] = created.invites;
     await teacher.locator('#app').waitFor({ state: 'visible' });
     if (await teacher.locator('#inviteDialog').isVisible()) await teacher.locator('#inviteDialog [data-close-dialog]').first().click();
+    await queueRoleIsolation(teacher,site,api,created,()=>work(first.id));
     const pupils = [];
     for (const invite of created.invites) {
       const page = await pageFor();

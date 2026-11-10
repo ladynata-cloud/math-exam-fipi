@@ -18,7 +18,7 @@
   const emptyGeometry = () => ({version:1,title:'Новое построение',objects:[],view:{axes:true,grid:true,viewport:{x:0,y:0,span:12}}});
   const currentSurface = () => target() === 'presentation' ? (snapshot?.presentation?.surface || 'split') : (surfaces.get(target()) || 'split');
   let historyWorkspace = null, historyInitial = null, drawing = null, tool = 'pen', outbox = [], rejected = [];
-  let inkPreviews = Object.create(null);
+  let inkPreviews = Object.create(null), queueOwner = null, queueWritable = false;
   const cardFrames = new Map(), cardCanvases = new Map(), cardSurfaces = new Map();
   const waiters = new Map();
   const timers = new Set();
@@ -42,7 +42,7 @@
   }
   const actionAssignment = (ws,type) => ['geometry','geometry-control'].includes(type)?geometryAssignment(ws):['stroke','erase','undo'].includes(type)?boardAssignment(ws):ws?.assignmentId;
   const sessionKey = id => 'mathexam.group.session.' + id;
-  const queueKey = () => 'mathexam.group.outbox.' + credentials.id;
+  const queueKey = () => GroupBoardQueue.key(queueOwner);
   const later = (fn, ms) => { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; };
 
   function serverUrl(raw) {
@@ -83,7 +83,7 @@
     node.dataset.kind = kind;
   }
   function saveQueue() {
-    try { sessionStorage.setItem(queueKey(), JSON.stringify({outbox, rejected, inkPreviews})); }
+    try { if (!queueWritable) return; sessionStorage.setItem(queueKey(), GroupBoardQueue.encode(queueOwner,{outbox,rejected,inkPreviews})); }
     catch (_) { notice('Браузер не сохранил резервную копию. Не закрывайте вкладку до отправки действий.', true); }
   }
   async function request(path, options = {}, auth = true) {
@@ -136,6 +136,7 @@
   }
   function enqueue(type, id, payload, options = {}) {
     const ws = workspace(id);
+    if (!queueWritable) return Promise.reject(Error('Очередь сохранения недоступна. Сохраните эту вкладку и откройте личную ссылку в новой вкладке.'));
     if (!credentials || !snapshot || !ws && !['assign','insert'].includes(type)) return Promise.reject(Error('Нет рабочего места.'));
     const body = {opId:uuid(), target:id, type, payload:clone(payload)};
     if (ws && !['assign','insert','present'].includes(type)) body.assignmentId = actionAssignment(ws,type);
@@ -173,7 +174,7 @@
     }finally{clearTimeout(timeout);}
   }
   async function pump() {
-    if (sending || polling || !outbox.length || stopped) return;
+    if (!queueWritable || sending || polling || !outbox.length || stopped) return;
     sending = true;
     const body = outbox[0];
     try {
@@ -256,7 +257,7 @@
   function ownsTrainer(ws,id) {return id==='common'?teacher():teacher()?ws?.controller==='teacher':id===snapshot.seatId&&ws?.controller==='student';}
   function writer(ws,id) {
     const pending=pendingTrainer(ws,id);
-    return connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
+    return queueWritable&&connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
       &&(!pending.length||pending[0].expectedVersion===ws.trainerVersion)&&ownsTrainer(ws,id);
   }
   function focusState(ws,id) {
@@ -270,7 +271,7 @@
   function ownsGeometry(ws,id) {return id==='common'?teacher():teacher()?ws?.geometryController==='teacher':id===snapshot.seatId&&ws?.geometryController==='student';}
   function geometryWriter(ws,id) {
     const pending=pendingGeometry(ws,id);
-    return connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
+    return queueWritable&&connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
       &&(!pending.length||pending[0].expectedVersion===ws.geometryVersion)&&ownsGeometry(ws,id);
   }
   function geometryState(ws,id) {
@@ -335,12 +336,12 @@
       geometryFrame.update({...(!pending.length?{state:ws.geometryState||emptyGeometry()}:{}),readOnly:!geometryWriter(live,id)});
     }
   }
-  function canDraw() { return connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
+  function canDraw() { return queueWritable && connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
   function renderConnection() {
     if (!snapshot) return;
     $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
-    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!connected?'offline':outbox.length||rejected.length?'pending':'saved';
+    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!queueWritable?'pending':!connected?'offline':outbox.length||rejected.length?'pending':'saved';
     renderInk();
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
@@ -656,7 +657,18 @@
     const capability=await request('/api/group-lessons/status',{},false);
     if(!supportsUnifiedBoard(capability))throw Error('Сервер ещё не поддерживает единую доску со SpaceMath. Сохранённое занятие не изменено.');
     accept(data);rememberSession();
-    try{const saved=JSON.parse(sessionStorage.getItem(queueKey())||'{}');outbox=Array.isArray(saved.outbox)?saved.outbox:[];rejected=Array.isArray(saved.rejected)?saved.rejected:[];inkPreviews=saved.inkPreviews&&typeof saved.inkPreviews==='object'&&!Array.isArray(saved.inkPreviews)?saved.inkPreviews:Object.create(null);}catch(_){}
+    queueOwner=GroupBoardQueue.principal(credentials.server,credentials.id,snapshot);
+    try {
+      const saved=GroupBoardQueue.restore(sessionStorage.getItem(queueKey()),queueOwner);
+      ({outbox,rejected,inkPreviews}=saved);queueWritable=true;
+      const legacy=sessionStorage.getItem('mathexam.group.outbox.'+credentials.id);
+      let legacyPending=!!legacy;
+      if(legacy)try{const old=JSON.parse(legacy);legacyPending=!Array.isArray(old.outbox)||!Array.isArray(old.rejected)||old.outbox.length>0||old.rejected.length>0;}catch(_){}
+      if(legacyPending)notice('В этой вкладке осталась очередь прежней версии. Она сохранена отдельно и не отправляется автоматически. Не закрывайте вкладку.',true);
+    } catch (_) {
+      outbox=[];rejected=[];inkPreviews=Object.create(null);queueWritable=false;
+      notice('Не удалось безопасно восстановить очередь. Сохраните эту вкладку; для продолжения откройте личную ссылку в новой вкладке.',true);
+    }
     if(rejected.length)notice(errorText({code:rejected[rejected.length-1].error}),true);
     $('strokeColor').value=teacher()?'#15803d':'#172033';render();
     pump();later(async function tick(){await poll();if(!stopped)later(tick,1100);},1100);

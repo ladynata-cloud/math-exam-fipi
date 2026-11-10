@@ -378,7 +378,7 @@ async function main() {
       for (let index = 0; index < queuedAnswers.length; index++) {
         await interruptedFrame.locator('#val').fill(queuedAnswers[index]);
         await poll(async () => interrupted.evaluate(({ key, count }) => JSON.parse(sessionStorage.getItem(key) || '{}').outbox?.length >= count,
-          { key: `mathexam.group.outbox.${id}`, count: index + 2 }), 'later student states queued behind unacknowledged action');
+          { key: 'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s3'])), count: index + 2 }), 'later student states queued behind unacknowledged action');
       }
       releaseAckLoss();
       await teacher.locator('#roster button').nth(2).click();
@@ -395,7 +395,7 @@ async function main() {
       await poll(async () => interrupted.evaluate(({ key, answers }) => {
         const queue = JSON.parse(sessionStorage.getItem(key) || '{}');
         return queue.outbox?.length === 0 && answers.every(answer => queue.rejected?.some(item => item.action?.payload?.state?.answerValue === answer));
-      }, { key: `mathexam.group.outbox.${id}`, answers: queuedAnswers }), 'all dependent queued edits rejected after deduplicated A');
+      }, { key: 'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s3'])), answers: queuedAnswers }), 'all dependent queued edits rejected after deduplicated A');
       assert.deepEqual(await work('s3'), corrected, 'stale queued state never overwrites teacher correction');
       await poll(async () => (await snapshotState(interruptedFrame)).answerValue === '-2', 'student sees preserved teacher correction after reconnect');
       console.log('PASS lost acknowledgement, deduplicated retry and stale queued update preserve teacher correction');
@@ -506,7 +506,7 @@ async function main() {
       assert.equal(await restoredPendingFrame.locator('#val').inputValue(), '616', 'tab roundtrip preserves pending input before its acknowledgement');
       await restoredPendingFrame.locator('#val').fill('617');
       await poll(async () => pendingPupil.evaluate(key => JSON.parse(sessionStorage.getItem(key) || '{}').outbox?.length >= 2,
-        `mathexam.group.outbox.${id}`), 'new input queues behind the preserved pending edit');
+        'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([api.origin,id,'s6']))), 'new input queues behind the preserved pending edit');
       releaseInputAck();
       await poll(async () => (await work('s6')).trainerState.answerValue === '617', 'continued input survives acknowledgement and tab switching');
       assert.equal(await restoredPendingFrame.locator('#val').inputValue(), '617');

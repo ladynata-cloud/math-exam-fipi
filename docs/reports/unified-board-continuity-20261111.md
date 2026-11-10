@@ -39,3 +39,14 @@ Scope deviations: none
 Recommendation: complete CI and continuation priorities above
 Next user decision: none for continued scoped implementation
 ```
+
+## Continuation — 11 November, principal-bound recovery
+Freshly verified: workflow [42920531165](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42920531165) completed successfully for d0c98475. Full server contracts, models/bridge, eight-learner browser regression and unified materials browser scenario all passed. This resolves the initial browser-CI pending status and confirms the partial-checkout local failures were not release evidence.
+
+New implementation: queue v2 is keyed by canonical server origin, lesson and server-authenticated principal (teacher or pupil seat). Its stored envelope must match that principal. A teacher queue is neither loaded nor sent under a pupil invitation; returning as the teacher restores the original queue. Tokens are not included in queue keys/envelopes. Corrupt/mismatched v2 storage is preserved and further queue writes are blocked. Ambiguous legacy storage is retained untouched and never adopted automatically; a neutral warning reveals no foreign payload. Automatic legacy recovery is intentionally unavailable because its original author cannot be established.
+
+Added four queue unit regressions and a real browser scenario: teacher stroke receives 503, same tab opens pupil link, no POST/replayed stroke occurs, teacher link resumes exactly one original-author stroke and removes it. Existing eight-learner queue assertions updated to the new keys without removing their lost-ACK coverage. The initial schema and journal are unchanged.
+
+Next checkpoint: verify CI of the new head, then add ink-specific lost-response-after-append/reload/permanent-reject browser cases. No local Chromium retry or sandbox bypass performed. Independent technical review and final tests recorded in subsequent checkpoint below. Publication and actual pupil lesson remain not performed; #529 holds remain in effect.
+
+Review follow-up: independent reviewer identified misleading saved status and enabled editors when v2 recovery is blocked; fixed all three editors and status. Added corrupted-envelope browser assertion preserving exact bytes, and malformed queue-entry validation to fail closed instead of crashing render. Empty legacy queues do not trigger a warning. Unit/model/bridge/assets suite passed 106 tests before the final malformed-entry regression; focused ink+queue suite now passes 17 tests. Full new browser gate remains required in CI. Live recheck still reports only two group trainers without geometry/insert/surfaces; SpaceMath public page still 404. No deployment attempted.
