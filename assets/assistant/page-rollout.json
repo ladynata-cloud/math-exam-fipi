@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+  "baseSha": "04bf2d57161b3260a0d8d80ca5126de8204b403b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2915,8 +2915,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "bad05fa220dcc337a3db0414c164d86e97345fd1e30e454829bfbdfcfe87f0dc",
-      "afterSha256": "d85f999f5cbc870818fb74fc1b7b8fae5b89eba795af3396db7d213995e492e9",
+      "beforeSha256": "a6f91f714756feae3c823e4be8ec8fd31cef32729186cb93f294dffab7d6032c",
+      "afterSha256": "acc26727e6b7ade04d8bb7742fec63c18ce4187702dff3e8eeee41fe5ef8136f",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3015,8 +3015,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "fd53cf12ff7c3959826f9066cdf51d7681b2c7fc8b2d34fd443a257a7b57ec80",
-      "afterSha256": "a3d4de85e84b02a7cd74f11d6b2bb444257f205ef63ab63784d0b682c7366224",
+      "beforeSha256": "3bab26de6c67f4000cbd1b75179e6eb3f7710b86e0143425d8c94e412202605e",
+      "afterSha256": "eb34a365c3a3dd9d02bab45590b1e0538fb1c6829e651298b27f0ee0313f0775",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -4280,6 +4280,16 @@
       "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
       "changedPaths": [
         "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+      "sourceBaseSha": "04bf2d57161b3260a0d8d80ca5126de8204b403b",
+      "task": "docs/tasks/OGE9_PROTOTYPE_VARIETY_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html",
+        "trainers/oge-task9-equations.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
