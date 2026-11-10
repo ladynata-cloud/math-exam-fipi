@@ -26,6 +26,35 @@ async function allTopics(p){
   assert.equal(await link.locator('xpath=ancestor::details[not(@open)]').count(),0);
   assert.equal((await p.request.get(base+t.href)).status(),200,'topic route '+t.number);
  }
+ const stories=p.locator('[data-oge-practical]'),skills=p.locator('[data-oge-foundation]');
+ assert.equal(await stories.count(),8,'eight practical stories are separate from exam numbers');
+ assert.equal(await skills.count(),12,'prior-grade skills have direct entries');
+ for(const entry of [...await stories.all(),...await skills.all()]){
+  assert(await entry.isVisible(),'entry is visible without a menu');
+  assert.equal(await entry.locator('xpath=ancestor::details[not(@open)]').count(),0);
+  const link=await entry.evaluate(el=>el.matches('a')?el.getAttribute('href'):el.querySelector('a').getAttribute('href'));
+  if(!checkedLinks.has(link)){assert.equal((await p.request.get(base+link)).status(),200,'entry destination exists: '+link);checkedLinks.add(link);}
+ }
+ for(const id of ['all-topics','practical-types','math-literacy']){
+  const jump=p.locator('.oge-section-nav a[href="#'+id+'"]');
+  await jump.press('Enter');
+  assert.equal(new URL(p.url()).hash,'#'+id,'keyboard section jump');
+  await p.waitForFunction(id=>{
+   const heading=document.getElementById(id).querySelector('h2').getBoundingClientRect();
+   const header=document.querySelector('.site-header');
+   const bottom=header&&['sticky','fixed'].includes(getComputedStyle(header).position)?header.getBoundingClientRect().bottom:0;
+   return heading.top>=bottom&&heading.bottom<=innerHeight;
+  },id);
+ }
+ const example=skills.first().locator('details');
+ assert.equal(await example.getAttribute('open'),null,'answer starts folded');
+ await example.locator('summary').press('Enter');
+ assert(await example.locator('p').isVisible(),'worked example opens with keyboard, including no-JS mode');
+ await example.locator('summary').press('Enter');
+ assert.equal(await example.getAttribute('open'),null);
+ if(out&&new URL(p.url()).pathname==='/oge/'){
+  for(const id of ['practical-types','math-literacy']){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.screenshot({path:path.join(out,id+'-'+p.viewportSize().width+'.png')});}
+ }
  await links.last().focus();
  assert.equal(await p.evaluate(()=>document.activeElement.dataset.ogeTopic),'25','last topic is keyboard reachable');
  await fits(p);
