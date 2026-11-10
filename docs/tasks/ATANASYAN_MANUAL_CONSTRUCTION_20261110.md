@@ -55,3 +55,21 @@ The PR currently conflicts with `main`. A push trigger restricted to this exact
 PR branch runs the same checks at its current head without composing or merging
 branches. Checkout uses the PR head for PR events and the pushed SHA for push
 events. This workflow has read-only contents permission and no deployment step.
+
+## Owner continuation: reconcile PR with main — 2026-11-10
+
+The owner requested continuation after the artifact fix. Reconcile the existing
+PR branch with main `d3d63656806551148b597045657c03d54eb65700`, preserving
+PR #531 public course entrances and #536 OGE story/foundation sections.
+The prohibition on merging this PR and publishing remains in force.
+
+The only conflicting file is the navigator source manifest. Keep all main
+coverage/provenance and its 13 changed/new page bindings, retain the PR's
+63 geometry page bindings and both branches' historical source receipts,
+then bind the combined pages to a reachable composed source commit. No teaching
+HTML, geometry tests or browser assertions are changed during reconciliation.
+
+Require independent composition review, geometry mathematics and module gates,
+navigator preservation/binding gates, relevant OGE preservation checks and CI
+on the final head. Verify the generated artifact again. This is ordinary
+history-preserving branch synchronization, without force or rebase.

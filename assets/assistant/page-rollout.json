@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "a8f7befcd2e9bb259237af444571df1606f11fb8",
+  "baseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 557,
-    "covered": 556,
+    "total": 567,
+    "covered": 566,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -215,8 +215,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "d18ca8f4d9b73fab42278600fc2bd5f40aa3e2ae4ea133414b6e8e648225741d",
-      "afterSha256": "ac1f1f9d87f5c027034d7b51c5111402cf527dddcd1c9f2c9b673a5e92545ec3",
+      "beforeSha256": "c5fb0474953318d2494937045210a3e6c210fb1cc330776f1d49e183789f9eb2",
+      "afterSha256": "6481582e0a78196003e897e1186803557cceed3e06b0ba4a9ea8a8c37d3d150c",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -225,8 +225,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "04f4cd93570169b2161aa3a73b2aeb73a9ec6b256431314ea052d5c69481b66f",
-      "afterSha256": "01899211045583ab754eea90cbb890fea0ecddd22678b997941b446e53381e33",
+      "beforeSha256": "d01f80d19c863d9892091d62fff931f7bd813710f8e6fc427e8a731f7e2cfccb",
+      "afterSha256": "cdad2d5c78bfd0cc9aac2d106f49b99674c0765bc9342d25bf6cebc6937bae20",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -247,6 +247,21 @@
     "ege-baza/reference/index.html": {
       "beforeSha256": "2e80c8a19175a2ff7a9cd1abf606f8a6a63a177cd6cdc5b3036da2e17eb386da",
       "afterSha256": "a183d7be3d9d6b7556a72b48b72a0248add3047d4834be109968479314d76271",
+      "placement": "before-head-close"
+    },
+    "ege-baza/topics/izmenenie-tseny-procenty/index.html": {
+      "beforeSha256": "4c12652f0b6df556ec24ae02322a2d80b0ad4283ee0769034b3f792cecef36be",
+      "afterSha256": "bbaf377d6573878052e80a0e190cc07ff617547625ff9fae08e4b60440699b33",
+      "placement": "before-head-close"
+    },
+    "ege-baza/topics/upakovki-okruglenie/index.html": {
+      "beforeSha256": "550abaf5dde3cbf1ace303f1e7ba2b49da53f7c926d8b768136a826ce5e50c28",
+      "afterSha256": "c79b4837204633f963d6103d005912235b46d20f314623e4363b9c2ea043c828",
+      "placement": "before-head-close"
+    },
+    "ege-baza/topics/veroyatnost/index.html": {
+      "beforeSha256": "4b81a0516fb65db413876194747419f4131f9f2aaad32b47bf58eb29bd56251a",
+      "afterSha256": "2e6f123ee8479be35e0e0a194f049367b2f1c302c16fa03d69868c02ba109b64",
       "placement": "before-head-close"
     },
     "ege-baza/work-rate/index.html": {
@@ -2115,8 +2130,23 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "84ac9745e19a6a03ec05440ece29cf33a5bb707f3d716cc42cb63e9b68411ce1",
-      "afterSha256": "29b972cf337c7ed55a22ba72dabd92a94ad5d79e77742eeef5b7377d893efa53",
+      "beforeSha256": "b2a2079b20137d0b24fab0cbecf2c33dd02c48f18ebb838bf6a822d7a598a504",
+      "afterSha256": "30fa8f34bfbd1b4a83d0bb0b02b7eefab9dd5673f7fd1fdcbc0c74997e630dec",
+      "placement": "before-head-close"
+    },
+    "school/makarychev8/topics/diskriminant-korni/index.html": {
+      "beforeSha256": "a472cd301cdcf3970c8f5fa3f283720f04afb7f1166b316f3a26786cef2fcb75",
+      "afterSha256": "c4dff2867cb93f7b16889235b9dc2fb77fba671ef8b7e90410648df48a9f21fe",
+      "placement": "before-head-close"
+    },
+    "school/makarychev8/topics/koren-iz-kvadrata/index.html": {
+      "beforeSha256": "ee194e23b35107d0fb95ae9c6fce0a26912f01daf3bd9c94a6e2df4e03934bd3",
+      "afterSha256": "232cd5b0784f854063bdcb128f994c7baa1926c199d7befb5f8e3df5b4507ace",
+      "placement": "before-head-close"
+    },
+    "school/makarychev8/topics/sokrashchenie-drobei-odz/index.html": {
+      "beforeSha256": "1dd0951205f7421bef7931406eb1cee3a53e8aedc9af67cb11375b02748d46c2",
+      "afterSha256": "6d40a988fc69fc97d70968e584025547327c374117d860deae75d60cdc471efe",
       "placement": "before-head-close"
     },
     "school/nikolsky10/index.html": {
@@ -2127,6 +2157,21 @@
     "school/peterson5/index.html": {
       "beforeSha256": "1a52d74533fcb8569000f1f64717b1647313e0ffaa4b38ec2f0cd82ef36cdce3",
       "afterSha256": "d545c38b6d0ad4657ea8b662cc0e430e8c474306d1dabec413aedd06b3530854",
+      "placement": "before-head-close"
+    },
+    "school/peterson6/topics/droby-i-desyatichnye/index.html": {
+      "beforeSha256": "922041dbe60ea1a11cc16b1b25fd587356563378d2f3c3c122145fb98f2be143",
+      "afterSha256": "133ef24c95b39d56befa36b6a3d0aaea40bf3809905db7e23271676968f7f50f",
+      "placement": "before-head-close"
+    },
+    "school/peterson6/topics/dvizhenie-po-reke/index.html": {
+      "beforeSha256": "771218a78576157898d9ea3d44176829376f6246fe3e44a9c556c6962427fb3b",
+      "afterSha256": "e2f30323b82042eaa9b885d64d113a4e7248ee13f51c9709f74e5e0e3600c037",
+      "placement": "before-head-close"
+    },
+    "school/peterson6/topics/zadachi-na-procenty/index.html": {
+      "beforeSha256": "493449bf0d54c0ac4799a9457f3b032f6975fcb48594055a5f2982a42337396f",
+      "afterSha256": "f8bd0fdbfef49ebe24b99f817a1ce19ecd8fb7afe53f45371527a5be95d638f3",
       "placement": "before-head-close"
     },
     "soviet-math/arithmetic-practice.html": {
@@ -2870,8 +2915,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "6e0000a1e0d35715328d3a2991db906d6b3c76b36d0abcb93e53e8055d2b6570",
-      "afterSha256": "f0dc2f13b99e9373dcfdf5d6079bf0d4dcc55af59b6756a3bd18287d011d3fbf",
+      "beforeSha256": "bad05fa220dcc337a3db0414c164d86e97345fd1e30e454829bfbdfcfe87f0dc",
+      "afterSha256": "d85f999f5cbc870818fb74fc1b7b8fae5b89eba795af3396db7d213995e492e9",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3074,6 +3119,11 @@
       "afterSha256": "a4f9495788caaccab339b08b437c5bd77aad8ecba5270d7c17aa4826455ad007",
       "placement": "before-head-close"
     },
+    "trainers/vpr-math/index.html": {
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
+      "placement": "before-head-close"
+    },
     "trainers/who-is-stronger.html": {
       "beforeSha256": "dededad6f3ec28813c639824b2e0fa4f502073c31503b421889d25ef09b82179",
       "afterSha256": "1336fe665983139e06daf7d8329e78c01d71536aa0d2b0c1984bdda4d6b289ff",
@@ -3082,11 +3132,6 @@
     "video-lessons/cheatsheets.html": {
       "beforeSha256": "feda13150e99a505cab042d1e6e4d4fd9d66736d9db88eaca2925c07ae3a3825",
       "afterSha256": "66b51f00cb91497aef304049251dc7cddc8fd81145952b9eb02cdd5f572500cb",
-      "placement": "before-head-close"
-    },
-    "trainers/vpr-math/index.html": {
-      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
-      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3122,6 +3167,12 @@
     "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html": "sitemap",
     "articles/stroynost-kursa-geometrii/index.html": "sitemap",
     "azbuka-postroeniy-reviewed/index.html": "laboratory/index.html",
+    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -3136,6 +3187,9 @@
     "ege-baza/reasoning/index.html": "ege-baza/index.html",
     "ege-baza/reference/exam.html": "ege-baza/index.html",
     "ege-baza/reference/index.html": "ege-baza/reference/exam.html",
+    "ege-baza/topics/izmenenie-tseny-procenty/index.html": "sitemap",
+    "ege-baza/topics/upakovki-okruglenie/index.html": "sitemap",
+    "ege-baza/topics/veroyatnost/index.html": "sitemap",
     "ege-baza/work-rate/index.html": "courses/index.html",
     "ege-profil/atanasyan-10-11/index.html": "ege-profil/index.html",
     "ege-profil/atanasyan-10-11/lesson.html": "ege-profil/atanasyan-10-11/index.html",
@@ -3524,10 +3578,18 @@
     "rounding.html": "sitemap",
     "school/alimov10-11/index.html": "sitemap",
     "school/index.html": "courses/index.html",
+    "school/m9-exercises/index.html": "school/app.js",
     "school/makarychev7/index.html": "sitemap",
     "school/makarychev8/index.html": "sitemap",
+    "school/makarychev8/topics/diskriminant-korni/index.html": "sitemap",
+    "school/makarychev8/topics/koren-iz-kvadrata/index.html": "sitemap",
+    "school/makarychev8/topics/sokrashchenie-drobei-odz/index.html": "sitemap",
     "school/nikolsky10/index.html": "sitemap",
     "school/peterson5/index.html": "sitemap",
+    "school/peterson6/topics/droby-i-desyatichnye/index.html": "sitemap",
+    "school/peterson6/topics/dvizhenie-po-reke/index.html": "sitemap",
+    "school/peterson6/topics/zadachi-na-procenty/index.html": "sitemap",
+    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
     "soviet-math/index.html": "sitemap",
     "stereo-course/index.html": "sitemap",
     "stereo-course/merzlyak-10-base/index.html": "sitemap",
@@ -3543,6 +3605,8 @@
     "trainers/attestaciya-1-kurs.html": "sitemap",
     "trainers/bisector-trainer-v2.html": "trainers/index.html",
     "trainers/college-functions/index.html": "sitemap",
+    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
+    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
     "trainers/credit-differential-payment-trainer.html": "sitemap",
     "trainers/decimal-cash-trainer.html": "sitemap",
     "trainers/desyatichnye-drobi-level-1.html": "sitemap",
@@ -3550,9 +3614,11 @@
     "trainers/dvi/math-18-20-video-studio.html": "sitemap",
     "trainers/dvi/math-18-20.html": "sitemap",
     "trainers/ege-baza/course/index.html": "sitemap",
+    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
     "trainers/ege-baza/index.html": "trainers/index.html",
     "trainers/ege-informatics-task1-graphs-trainer.html": "sitemap",
     "trainers/ege-informatics-task15-logic-operations.html": "sitemap",
+    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/ege-profile-vectors-trainer.html": "sitemap",
     "trainers/ege-profile/inequalities/index.html": "sitemap",
     "trainers/ege-profile/inequalities/lesson.html": "trainers/ege-profile/inequalities/index.html",
@@ -3561,6 +3627,7 @@
     "trainers/ege-profile/log-inequalities/nested.html": "sitemap",
     "trainers/ege-profile/yashchenko-lines-1-2.html": "sitemap",
     "trainers/ege-t1-planimetry-generator.html": "sitemap",
+    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
     "trainers/equations-builder.html": "sitemap",
     "trainers/finance-nonstandard-trainer.html": "sitemap",
     "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html": "sitemap",
@@ -3581,6 +3648,8 @@
     "trainers/linear-systems-trainer.html": "sitemap",
     "trainers/logic-trainer/index.html": "trainers/index.html",
     "trainers/long-division-stepwise.html": "sitemap",
+    "trainers/motion-grade6/index.html": "learning/catalog.js",
+    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
     "trainers/multiplication-table/elevator-sprint.html": "trainers/oge-basics/multiplication-division/division-course.html",
     "trainers/negative-numbers-alternative.html": "foundations/index.html",
     "trainers/negative-numbers-line.html": "sitemap",
@@ -3709,25 +3778,10 @@
     "trainers/turing-trainer-polish.html": "sitemap",
     "trainers/turing-trainer-universal.html": "sitemap",
     "trainers/turing-trainer-upgrade.html": "sitemap",
+    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
+    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/who-is-stronger.html": "sitemap",
     "video-lessons/cheatsheets.html": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
-    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
-    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
-    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
-    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
-    "trainers/motion-grade6/index.html": "learning/catalog.js",
-    "school/m9-exercises/index.html": "school/app.js",
-    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
-    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
-    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
-    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
-    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
   },
   "excluded": {
@@ -4195,6 +4249,42 @@
     },
     {
       "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
+      "sourceBaseSha": "7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5",
+      "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "school/makarychev8/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
+      "changedPaths": [],
+      "boundary": "Complete composed source identity after preserving OGE and course entrance bindings; no HTML or gate exceptions."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "78e442f6c56ba064b57611acfe931c5dda54bab1",
+      "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "sourceBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+      "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae5a3bc4f6d9f21ef2537db4553ae6e7664cffa3",
       "sourceBaseSha": "2f875ed3e30e7fbc930552b03168773c962ea751",
       "task": "docs/tasks/ATANASYAN_MANUAL_CONSTRUCTION_20261110.md",
       "changedPaths": [
@@ -4297,6 +4387,22 @@
         "vpr/index.html"
       ],
       "reason": "New original VPR course and seven-route catalogue in the approved task; exact existing navigator pair bound to the committed source."
+    },
+    {
+      "sourceBaseSha": "7100d03357a03c23ecf67fb9a7e45ce5cd51fbb5",
+      "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
+      "addedPages": [
+        "ege-baza/topics/izmenenie-tseny-procenty/index.html",
+        "ege-baza/topics/upakovki-okruglenie/index.html",
+        "ege-baza/topics/veroyatnost/index.html",
+        "school/makarychev8/topics/diskriminant-korni/index.html",
+        "school/makarychev8/topics/koren-iz-kvadrata/index.html",
+        "school/makarychev8/topics/sokrashchenie-drobei-odz/index.html",
+        "school/peterson6/topics/droby-i-desyatichnye/index.html",
+        "school/peterson6/topics/dvizhenie-po-reke/index.html",
+        "school/peterson6/topics/zadachi-na-procenty/index.html"
+      ],
+      "reason": "Nine original topic entrances in the approved task; keep the existing site navigator on every new sitemap entrance, with exact committed before/after identity."
     }
   ]
 }
