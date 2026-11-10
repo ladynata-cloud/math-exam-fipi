@@ -40,6 +40,9 @@ try{
  ok(!await secondaryLines.evaluate(el=>el.open),'Learning lines start collapsed on the exam map');
  await secondaryLines.locator('summary').click();
  await secondaryLines.locator('a[href="#lines"]').click();await page.waitForURL('**/#lines');
+ // The hash changes before app.js replaces the opened map disclosure. Wait
+ // for the destination's own heading before inspecting its collapsed state.
+ await page.getByRole('heading',{name:'Учебные линии',exact:true}).waitFor();
  const earlierModules=page.locator('#content details.journey-legacy');
  ok(!await earlierModules.evaluate(el=>el.open),'Earlier module catalogue starts collapsed');
  await earlierModules.locator('summary').click();

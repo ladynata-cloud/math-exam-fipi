@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "de863373622e99d773b82b4f18ff3760c27f2dd6",
+  "baseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2915,8 +2915,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "6e0000a1e0d35715328d3a2991db906d6b3c76b36d0abcb93e53e8055d2b6570",
-      "afterSha256": "f0dc2f13b99e9373dcfdf5d6079bf0d4dcc55af59b6756a3bd18287d011d3fbf",
+      "beforeSha256": "bad05fa220dcc337a3db0414c164d86e97345fd1e30e454829bfbdfcfe87f0dc",
+      "afterSha256": "d85f999f5cbc870818fb74fc1b7b8fae5b89eba795af3396db7d213995e492e9",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4264,6 +4264,24 @@
       "task": "docs/tasks/SEO_COURSE_ENTRANCES_20261110.md",
       "changedPaths": [],
       "boundary": "Complete composed source identity after preserving OGE and course entrance bindings; no HTML or gate exceptions."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "78e442f6c56ba064b57611acfe931c5dda54bab1",
+      "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fa8f894415554fbec544eeb3d7f0ba770244ccf",
+      "sourceBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+      "task": "docs/tasks/OGE_PRACTICAL_FOUNDATIONS_20261110.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
       "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
