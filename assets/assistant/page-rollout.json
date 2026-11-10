@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+  "baseSha": "194c7623e82b5a6930ef82cc365ab37ec90820c8",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 557,
-    "covered": 556,
+    "total": 558,
+    "covered": 557,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -285,13 +285,18 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "aad18ecc6808eb2e82b17b4255c5154e0732cc7eb6be274af6d48f901364169f",
-      "afterSha256": "dc6924307d9f90060bcc571a40c06ffa7970701279c594a70bf8745d79e54ae9",
+      "beforeSha256": "74d613c1f339a7657a342a00b1b2f2a18bfc9450a7c4945360c36a9ce89c616d",
+      "afterSha256": "3402804ce1b59968d325df1a9ddd5f89b6c50c5edb95c9902fdfb14e8b522376",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
       "beforeSha256": "2123372c0b3328b4a86e60786ba5715120df1b453bf32820eadd72929c76b85e",
       "afterSha256": "82bfade127a412bcf02ad763c05677ac345016714f3bc873de10def8f00241bc",
+      "placement": "before-head-close"
+    },
+    "ege-profil/part-two/index.html": {
+      "beforeSha256": "3d7f24000051d2ce612efa75dce9d6368c1211c7918eaf68d2e787839adbe7da",
+      "afterSha256": "9f77a7d69a09ea0f18408236fc08712b851f925a555743a7bb4685fef46257c0",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -3074,6 +3079,11 @@
       "afterSha256": "a4f9495788caaccab339b08b437c5bd77aad8ecba5270d7c17aa4826455ad007",
       "placement": "before-head-close"
     },
+    "trainers/vpr-math/index.html": {
+      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
+      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
+      "placement": "before-head-close"
+    },
     "trainers/who-is-stronger.html": {
       "beforeSha256": "dededad6f3ec28813c639824b2e0fa4f502073c31503b421889d25ef09b82179",
       "afterSha256": "1336fe665983139e06daf7d8329e78c01d71536aa0d2b0c1984bdda4d6b289ff",
@@ -3082,11 +3092,6 @@
     "video-lessons/cheatsheets.html": {
       "beforeSha256": "feda13150e99a505cab042d1e6e4d4fd9d66736d9db88eaca2925c07ae3a3825",
       "afterSha256": "66b51f00cb91497aef304049251dc7cddc8fd81145952b9eb02cdd5f572500cb",
-      "placement": "before-head-close"
-    },
-    "trainers/vpr-math/index.html": {
-      "beforeSha256": "7c4a84a67fbc94ce93dd5a85ac034725e8e1dd598e40c04f341001f5a915a70c",
-      "afterSha256": "8aaf421fa5f56d2dc89bd17359a311ef16fb06f9f0c3196ed6bc89313b886ef7",
       "placement": "before-head-close"
     },
     "vpr/index.html": {
@@ -3122,6 +3127,12 @@
     "articles/stroynost-kursa-geometrii/12-kak-sobrat-stroinyi-kurs/index.html": "sitemap",
     "articles/stroynost-kursa-geometrii/index.html": "sitemap",
     "azbuka-postroeniy-reviewed/index.html": "laboratory/index.html",
+    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
+    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
     "courses/index.html": "sitemap",
     "courses/vilenkin-5-part-1/index.html": "sitemap",
     "courses/vilenkin-5/index.html": "sitemap",
@@ -3145,6 +3156,7 @@
     "ege-profil/homework/index.html": "ege-profil/index.html",
     "ege-profil/index.html": "sitemap",
     "ege-profil/lesson/index.html": "ege-profil/index.html",
+    "ege-profil/part-two/index.html": "sitemap",
     "ege-profil/review.html": "sitemap",
     "ege-profil/start/index.html": "sitemap",
     "ege-profil/trainers/applied-t910.html": "sitemap",
@@ -3524,10 +3536,12 @@
     "rounding.html": "sitemap",
     "school/alimov10-11/index.html": "sitemap",
     "school/index.html": "courses/index.html",
+    "school/m9-exercises/index.html": "school/app.js",
     "school/makarychev7/index.html": "sitemap",
     "school/makarychev8/index.html": "sitemap",
     "school/nikolsky10/index.html": "sitemap",
     "school/peterson5/index.html": "sitemap",
+    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
     "soviet-math/index.html": "sitemap",
     "stereo-course/index.html": "sitemap",
     "stereo-course/merzlyak-10-base/index.html": "sitemap",
@@ -3543,6 +3557,8 @@
     "trainers/attestaciya-1-kurs.html": "sitemap",
     "trainers/bisector-trainer-v2.html": "trainers/index.html",
     "trainers/college-functions/index.html": "sitemap",
+    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
+    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
     "trainers/credit-differential-payment-trainer.html": "sitemap",
     "trainers/decimal-cash-trainer.html": "sitemap",
     "trainers/desyatichnye-drobi-level-1.html": "sitemap",
@@ -3550,9 +3566,11 @@
     "trainers/dvi/math-18-20-video-studio.html": "sitemap",
     "trainers/dvi/math-18-20.html": "sitemap",
     "trainers/ege-baza/course/index.html": "sitemap",
+    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
     "trainers/ege-baza/index.html": "trainers/index.html",
     "trainers/ege-informatics-task1-graphs-trainer.html": "sitemap",
     "trainers/ege-informatics-task15-logic-operations.html": "sitemap",
+    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/ege-profile-vectors-trainer.html": "sitemap",
     "trainers/ege-profile/inequalities/index.html": "sitemap",
     "trainers/ege-profile/inequalities/lesson.html": "trainers/ege-profile/inequalities/index.html",
@@ -3561,6 +3579,7 @@
     "trainers/ege-profile/log-inequalities/nested.html": "sitemap",
     "trainers/ege-profile/yashchenko-lines-1-2.html": "sitemap",
     "trainers/ege-t1-planimetry-generator.html": "sitemap",
+    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
     "trainers/equations-builder.html": "sitemap",
     "trainers/finance-nonstandard-trainer.html": "sitemap",
     "trainers/formuly-sokrashchennogo-umnozheniya-trainer.html": "sitemap",
@@ -3581,6 +3600,8 @@
     "trainers/linear-systems-trainer.html": "sitemap",
     "trainers/logic-trainer/index.html": "trainers/index.html",
     "trainers/long-division-stepwise.html": "sitemap",
+    "trainers/motion-grade6/index.html": "learning/catalog.js",
+    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
     "trainers/multiplication-table/elevator-sprint.html": "trainers/oge-basics/multiplication-division/division-course.html",
     "trainers/negative-numbers-alternative.html": "foundations/index.html",
     "trainers/negative-numbers-line.html": "sitemap",
@@ -3709,25 +3730,10 @@
     "trainers/turing-trainer-polish.html": "sitemap",
     "trainers/turing-trainer-universal.html": "sitemap",
     "trainers/turing-trainer-upgrade.html": "sitemap",
+    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
+    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/who-is-stronger.html": "sitemap",
     "video-lessons/cheatsheets.html": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
-    "azbuka-postroeniy-reviewed/trainers/segment-trainer-v6.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/angle-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/bisector-trainer-v4.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/midpoint-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "azbuka-postroeniy-reviewed/trainers/perpendicular-external-trainer-v2.html": "azbuka-postroeniy-reviewed/index.html",
-    "trainers/ege-baza/data-course/index.html": "ege-baza/reference/exam-data.js",
-    "trainers/ege-t2-vectors-trainer.html": "ege-profil/start/geometry-data.js",
-    "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
-    "trainers/veronika-logarithms.html": "ege-profil/start/algebra-data.js",
-    "trainers/motion-grade6/index.html": "learning/catalog.js",
-    "school/m9-exercises/index.html": "school/app.js",
-    "soviet-math/arithmetic-practice.html": "soviet-math/arithmetic-practice.js",
-    "trainers/motion-grade6/river-lab.html": "trainers/motion-grade6/index.html",
-    "trainers/college-logarithms/index.html": "sitemap; trainers/index.html; trainers/college-functions/index.html (published PR460/main60)",
-    "trainers/college-logarithms/intro/index.html": "sitemap; trainers/college-logarithms/index.html; original introductory lesson (PR473)",
-    "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
   },
   "excluded": {
@@ -4192,6 +4198,15 @@
         "trainers/task19-trainer.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
+      "sourceBaseSha": "194c7623e82b5a6930ef82cc365ab37ec90820c8",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "changedPaths": [
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -4219,6 +4234,14 @@
         "vpr/index.html"
       ],
       "reason": "New original VPR course and seven-route catalogue in the approved task; exact existing navigator pair bound to the committed source."
+    },
+    {
+      "sourceBaseSha": "194c7623e82b5a6930ef82cc365ab37ec90820c8",
+      "task": "docs/tasks/PROFILE_COMPLETE_COURSE_20261110.md",
+      "addedPages": [
+        "ege-profil/part-two/index.html"
+      ],
+      "reason": "Original second-part course linked from the full profile entrance and sitemap; existing navigator pair bound to reviewed committed teaching source."
     }
   ]
 }
