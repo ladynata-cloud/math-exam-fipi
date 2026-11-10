@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+  "baseSha": "509b598fb2196082611b234c03e6a9c6e506913a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4357,6 +4357,13 @@
     {
       "previousBaseSha": "c023492ef2412a7a9ff50eac541b7b7943de5f78",
       "sourceBaseSha": "a8f7befcd2e9bb259237af444571df1606f11fb8",
+      "task": "docs/tasks/ATANASYAN_MANUAL_CONSTRUCTION_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7af6da7e1f946396479451f408ea60f20f8e0c85",
+      "sourceBaseSha": "509b598fb2196082611b234c03e6a9c6e506913a",
       "task": "docs/tasks/ATANASYAN_MANUAL_CONSTRUCTION_20261110.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
