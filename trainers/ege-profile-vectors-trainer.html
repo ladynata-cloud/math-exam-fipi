@@ -420,7 +420,7 @@
 
     <!-- ПРАВАЯ КОЛОНКА -->
     <aside class="side">
-      <div class="stat-grid" aria-label="Статистика сессии">
+      <div class="stat-grid" aria-label="Сохранённая статистика">
         <div class="stat"><div class="v" id="stSolved">0</div><div class="l">Решено</div></div>
         <div class="stat"><div class="v" id="stRight">0</div><div class="l">Верно</div></div>
         <div class="stat"><div class="v acc" id="stAcc">—</div><div class="l">Точность</div></div>
@@ -537,7 +537,7 @@
   </section>
 
   <footer class="foot">
-    Enter — проверить, ещё раз Enter — следующая. Статистика считается за текущую сессию.
+    Enter — проверить, ещё раз Enter — следующая. Статистика сохраняется в этом браузере; незавершённая задача после перезагрузки меняется.
   </footer>
 </div>
 
@@ -1407,11 +1407,17 @@ function newProblem(){
   const stepMode=uiMode==="step"&&cur.steps&&cur.steps.length;
   el("fastRow").style.display=stepMode?"none":"";
   el("steps").innerHTML="";
-  if(stepMode){ sp={idx:0,errs:0,help:false,log:[]}; renderStep(); }
+  if(stepMode){ sp={idx:0,errs:0,help:false,stepHelp:false,log:[]}; renderStep(); }
   else inp.focus();
 }
 
 /* ---------- пошаговый UI ---------- */
+function revealStepHint(){
+  if(!sp||answered)return;
+  sp.help=true;
+  sp.stepHelp=true;
+  el("hintBox").classList.add("show");
+}
 function stepProgress(){
   const n=cur.steps.length;
   let dots="";
@@ -1442,7 +1448,7 @@ function renderStep(){
   }
   box.innerHTML=h;
   if(!st)return;
-  el("stepHint").addEventListener("click",()=>el("hintBox").classList.add("show"));
+  el("stepHint").addEventListener("click",revealStepHint);
   if(st.t==="n"){
     const inp=el("stepIn");
     el("stepCheck").addEventListener("click",()=>checkStep(st,inp));
@@ -1457,7 +1463,7 @@ function renderStep(){
         } else {
           b.classList.add("wrongOpt","anim-shake");
           sp.errs++;
-          if(sp.errs>=1) el("hintBox").classList.add("show");
+          if(sp.errs>=1) revealStepHint();
           const left=[...box.querySelectorAll(".choices button")].filter(x=>!x.classList.contains("wrongOpt"));
           if(left.length===1&&left[0].dataset.ok==="1"){
             left[0].classList.add("rightOpt");
@@ -1478,16 +1484,17 @@ function checkStep(st,inp){
     inp.classList.add("no","anim-shake");
     setTimeout(()=>inp.classList.remove("anim-shake"),420);
     setTimeout(()=>inp.classList.remove("no"),900);
-    if(sp.errs===2) el("hintBox").classList.add("show");
+    if(sp.errs===2) revealStepHint();
     if(sp.errs>=3) completeStep(st, fmt(st.a), true);
     else {inp.select();inp.focus();}
   }
 }
 function completeStep(st,valTxt,helped){
+  helped=helped||sp.stepHelp;
   if(helped) sp.help=true;
   sp.log.push({q:st.q.replace(/ = \?.*$/,"").replace(/\?\s*$/,"").trim(), val:valTxt, helped});
   if(st.fig) el("figure").innerHTML=`<div class="figwrap">${renderFigure(st.fig)}</div>`;
-  sp.idx++; sp.errs=0;
+  sp.idx++; sp.errs=0; sp.stepHelp=false;
   if(sp.idx>=cur.steps.length) finishStepTask();
   else renderStep();
 }
@@ -1508,7 +1515,7 @@ function finishStepTask(){
   } else {
     stats.streak=0;
     noteVectorAttempt(false);
-    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Разобрано с открытыми шагами — ответ ${fmt(cur.answer)}. Такая задача в «верно» не идёт. Enter — следующая.</span></div>`;
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Разобрано с подсказкой или открытым шагом — ответ ${fmt(cur.answer)}. Такая задача в «верно» не идёт. Enter — следующая.</span></div>`;
   }
   renderStats();
 }
