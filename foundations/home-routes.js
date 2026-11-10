@@ -16,7 +16,6 @@ for(const group of catalog.groups){
  body.append(intro,grid,old);
 }
 const start=document.getElementById('start-link');if(start){start.href=href(catalog.routes[0].id);start.textContent='Начать с первых навыков →';start.removeAttribute('data-visit');start.removeAttribute('data-mode');}
-const sourceOnly=document.querySelector('.hero .actions a[href="/trainers/oge-basics/"]');if(sourceOnly)sourceOnly.textContent='Прежние тренажёры →';
 const routeCount=document.querySelector('.route-note .small');if(routeCount)routeCount.textContent='Можно выбрать любой маршрут. Проверки основ и результаты экзаменационных курсов учитываются отдельно.';
 function refresh(){
  const result=store.read(),summary=C.summaries(catalog,result.events),verified=Object.values(summary).filter(s=>s.verified).length;
