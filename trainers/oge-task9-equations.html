@@ -5,17 +5,17 @@
 <script src="oge-course-shared-mode.js?v=20261025"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam</title>
-<meta name="description" content="Линейные, квадратные и дробно-рациональные уравнения задания 9 ОГЭ. Справочник, пошаговый разбор, тренировка и зачёт с проверкой ответов.">
+<meta name="description" content="Линейные и квадратные уравнения ОГЭ № 9. Задачи ФИПИ и тренировочные аналоги, пошаговый разбор и зачёт.">
 <link rel="canonical" href="https://mathexam.space/trainers/oge-task9-equations.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam">
-<meta property="og:description" content="Линейные, квадратные и дробно-рациональные уравнения задания 9 ОГЭ. Справочник, пошаговый разбор, тренировка и зачёт с проверкой ответов.">
+<meta property="og:description" content="Линейные и квадратные уравнения ОГЭ № 9. Задачи ФИПИ и тренировочные аналоги, пошаговый разбор и зачёт.">
 <meta property="og:url" content="https://mathexam.space/trainers/oge-task9-equations.html">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ОГЭ, задание 9: уравнения по шагам — тренажёр | MathExam">
-<meta name="twitter:description" content="Линейные, квадратные и дробно-рациональные уравнения задания 9 ОГЭ. Справочник, пошаговый разбор, тренировка и зачёт с проверкой ответов.">
+<meta name="twitter:description" content="Линейные и квадратные уравнения ОГЭ № 9. Задачи ФИПИ и тренировочные аналоги, пошаговый разбор и зачёт.">
 <style>
 :root{
   --paper:#fdfcf7; --ink:#2b3a55; --grid:#d8e3ef; --grid2:#e8eef5;
@@ -324,7 +324,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
   <a class="crumbs" href="../oge/">← Курс ОГЭ</a>
   <div class="sub">ОГЭ · математика · 2027</div>
   <h1>Задание 9. Уравнения</h1>
-  <div class="sub">линейные · квадратные · дробно-рациональные</div>
+  <div class="sub">линейные и квадратные · формат ОГЭ</div>
 </header>
 
 <nav class="tabs">
@@ -385,7 +385,7 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
   </div>
 
   <div class="card">
-    <h2>Дробно-рациональные уравнения</h2>
+    <h2>Дополнительно: дробно-рациональные уравнения</h2>
     <p>Есть <span class="math"><i>x</i></span> в знаменателе — обязательна проверка <b>ОДЗ</b>: знаменатель не может быть нулём. Корень, обнуляющий знаменатель, — <b>посторонний</b>, его выбрасывают.</p>
     <div class="case-row"><span class="k">дробь = дробь</span><span>&nbsp;пропорция → умножь «крест-накрест».</span></div>
     <div class="case-row"><span class="k">дробь = 0</span><span>&nbsp;числитель = 0, при этом знаменатель ≠ 0.</span></div>
@@ -986,7 +986,6 @@ function transferFromABC(L,R){
   return {Lt:side(L),Rt:side(R)};
 }
 function stCanon(root, kc, mc, source){
-  if(fcmp(kc,F0)<0){kc=fneg(kc);mc=fneg(mc);}
   return (state)=>({
     q:'Собери слагаемые с <i>x</i> слева, числа — справа. Затем сложи подобные и впиши два результата в запись ниже:',
     ui:{type:'canon'},
@@ -1011,16 +1010,16 @@ function stCanon(root, kc, mc, source){
 /* последний шаг линейного: x = ? */
 function stDivide(root){
   return (state)=>({
-    q:'Раздели обе части на коэффициент при <i>x</i>. Чему равен <i>x</i>?',
+    q:state.k&&feq(state.k,F1)?'Слева уже <i>x</i>. Запиши корень.':'Раздели обе части на коэффициент при <i>x</i>. Чему равен <i>x</i>?',
     ui:{type:'num',label:'<i>x</i> ='},
-    hint:'x = (число справа) ÷ (коэффициент при x). Знаки: минус на минус даёт плюс.',
+    hint:state.k&&feq(state.k,F1)?'Корень — число в правой части последнего уравнения.':'x = (число справа) ÷ (коэффициент при x). Знаки: минус на минус даёт плюс.',
     check(vals){
       const f=parseAll(vals); if(!f)return needMsg();
       const v=f[0];
       if(feq(v,root))return {ok:true,msg:fisint(root)?'':'Дробный ответ — нормально: в бланк пишем десятичной дробью, через запятую.'};
-      if(feq(v,fneg(root)))return {ok:false,msg:'Число верное, знак — нет. Проверь знаки при делении.'};
+      if(feq(v,fneg(root)))return {ok:false,msg:'Число верное, знак — нет. Проверь знак корня.'};
       if(state.k&&!fzero(root)&&feq(v,fdiv(state.k,state.m)))return {ok:false,msg:'Наоборот: делим правую часть на коэффициент при x, а не коэффициент на правую часть.'};
-      return {ok:false,msg:'Не то. Раздели правую часть на коэффициент при x — можно уголком или сократив дробь.'};
+      return {ok:false,msg:state.k&&feq(state.k,F1)?'Сверь ответ с числом в правой части последнего уравнения.':'Не то. Раздели правую часть на коэффициент при x — можно уголком или сократив дробь.'};
     },
     reveal:{vals:[valStr(root)], html:'<i>x</i> = '+numHTML(root)+blankNote(root)}
   });
@@ -1164,7 +1163,7 @@ function stRoots(lo,hi){
   return (state)=>({
     q:'Найди оба корня: <span class="fform">x = '+fracHTML(MINUS+'b ± √D','2a')+'</span>',
     ui:{type:'num2',labels:['x₁ =','x₂ =']},
-    hint:'Считай двумя строками: x₁ = (−b − √D) ÷ (2a) и x₂ = (−b + √D) ÷ (2a). Подставляй b со знаком!',
+    hint:'Считай двумя строками: (−b − √D) ÷ (2a) и (−b + √D) ÷ (2a). Подставляй b со знаком! Корни можно записать в любом порядке; при отрицательном a первая формула даёт больший корень.',
     check(vals){
       const f=parseAll(vals); if(!f)return needMsg();
       const [u,v]=f;
@@ -1227,7 +1226,7 @@ function stFactorNC(base){
       const [a,b]=f;
       if(fzero(a))return {ok:false,msg:'В скобке должен остаться и x с коэффициентом, и число.'};
       const lam=fdiv(a,base.a);
-      if(feq(b,fmul(lam,base.b)))return {ok:true};
+      if(feq(b,fmul(lam,base.b)))return {ok:true,msg:feq(lam,F1)?'':'Получилось равносильное уравнение: сначала умножили обе части на '+numHTML(lam)+', затем вынесли x. Это дополнительное преобразование, а не только вынесение множителя.'};
       return {ok:false,msg:'Проверь: если раскрыть скобку обратно, должно получиться исходное '+quadHTML(base.a,base.b,F0)+'.'};
     },
     reveal:{vals:[valStr(base.a),valStr(base.b)],
@@ -1973,29 +1972,30 @@ const GENS={
     return mkPoly('L',[T(la,1),T(lb)],[T(rb),T(ra,1)]);
   },
   g_lb(){
-    const kind=pick(['b1','b2','b3','p1','p2']);
-    const root=F(ri(-12,12));
-    if(kind==='b1'){ const k=ri(2,4), m=nz(-9,9);
-      const n=fsub(fmul(F(k-1),root),F(k*m)); if(!fisint(n))return GENS.g_lb();
-      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(-m)]}}],[T(1,1),T(n)]); }
-    if(kind==='b2'){ const k=ri(2,4), m=nz(-9,9);
-      const n=fsub(fmul(F(k-1),root),F(k*m)); if(!fisint(n))return GENS.g_lb();
-      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(-m)]}},T(-1,1)],[T(fadd(n,root))]); }
-    if(kind==='b3'){ const m=nz(-8,8);
-      return mkPoly('LB',[{br:{k:F(3),inner:[T(1,1),T(m)]}},{br:{k:F(-2),inner:[T(1,1),T(-m)]}}],[T(fadd(root,F(5*m)))]); }
-    if(kind==='p1'){ const k=nz(-6,6);
-      const c=fmul(F(k),fadd(root,F(nz(-7,7))));
-      if(!fisint(c))return GENS.g_lb();
-      const m=fdiv(c,F(k)); const mm=fsub(m,root); // k(x+mm)=c
-      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(mm)]}}],[T(c)]); }
-    // p2: a + k(px + q) = r
-    const k=nz(-5,5), pk=nz(1,4), q=ri(-8,8), a=ri(-9,9);
-    const r=fadd(F(a),fmul(F(k),fadd(fmul(F(pk),root),F(q))));
-    if(!fisint(r))return GENS.g_lb();
-    return mkPoly('LB',[T(a),{br:{k:F(k),inner:[T(pk,1),T(q)]}}],[T(r)]);
+    const kind=pick(['one','with-x','two']);
+    const leftFactor=pick([3,4,5,6,7,8]), leftShift=nz(-9,9), root=finRoot();
+    const left={br:{k:F(leftFactor),inner:[T(1,1),T(leftShift)]}};
+    const leftValue=fmul(F(leftFactor),fadd(root,F(leftShift)));
+    if(kind==='one'){
+      if(!fisint(leftValue))return GENS.g_lb();
+      return mkPoly('LB',[left],[T(leftValue)]);
+    }
+    const otherFactor=pick([1,2,3,4,5,6,7,8].filter(k=>k!==leftFactor));
+    if(kind==='with-x'){
+      const rightConst=fsub(leftValue,fmul(F(otherFactor),root));
+      if(!fisint(rightConst))return GENS.g_lb();
+      return mkPoly('LB',[left],[T(otherFactor,1),T(rightConst)].filter(t=>!fzero(t.c)));
+    }
+    const rightShift=nz(-9,9);
+    const rightValue=fmul(F(otherFactor),fadd(root,F(rightShift)));
+    const rhs=fsub(leftValue,rightValue);
+    if(!fisint(rhs))return GENS.g_lb();
+    const other={br:{k:F(rnd()<0.5?-otherFactor:otherFactor),inner:[T(1,1),T(rightShift)]}};
+    if(fcmp(other.br.k,F0)<0)return mkPoly('LB',[left,other],[T(rhs)]);
+    return mkPoly('LB',[left],[other,T(rhs)].filter(t=>!t.c||!fzero(t.c)));
   },
   g_lsq(){
-    let a=ri(-9,9), b=ri(-9,9);
+    let a=ri(-10,10), b=ri(-10,10);
     if(a===b||((a+b)%2!==0&&rnd()<0.5))return GENS.g_lsq();
     return mkPoly('LSQ',[{sq:{s:F(a)}}],[{sq:{s:F(b)}}]);
   },
@@ -2158,7 +2158,7 @@ function genTask(gid){
 
 if(typeof module!=='undefined')module.exports={T,renderTerms,evalTermsABC,evalTermsAt,linAt,taskEqnHTML,taskNorm,taskSolve,taskKey,taskInstrHTML,askWord,taskSteps,taskCaseId,CASEOPTS,FAMMETA,GENS,genTask,valStr,exprStr,coefStr,lcm2,lcmArr,collectCanon,blankNote,
   stCanon,stDivide,stExpand,stM,stAfterM,stABC,stD,stSqrtD,stRoots,stPickRoot,stMoveLeft,stFactorNC,stNCroots,stNBiso,stNBroots,stZeroChoice,stPairRoots,stCross,stCrossProduct,stExpandProp,stODZ,stZnum,stSimpleRoot,stNZnumRoots,stNZdenAt,stFinalAnswer,stVietaPQ,stVietaSumProd,stVietaPick};
-/* ============ БАНК ЗАДАЧ: демоверсия-2026 (30) + прототипы открытого банка (105) ============ */
+/* ============ БАНК ЗАДАЧ: дополнительная практика и актуальный формат №9 ============ */
 'use strict';
 if(typeof module!=='undefined'){ Object.assign(globalThis, require('./p2_core.js'), require('./p3_families.js')); }
 
@@ -2172,27 +2172,27 @@ function bk(id,fam,src,tag,p,ask,exp){return {id,fam,src,tag,p,ask:ask||null,exp
 
 const BANK=[];
 
-/* ---------- ДЕМОВЕРСИЯ 2026 ---------- */
+/* ---------- ИСТОРИЧЕСКИЕ ТРЕНИРОВОЧНЫЕ СЕРИИ ---------- */
 [[4,-4,16,2,'10'],[5,-5,17,3,'11'],[6,-6,18,4,'12'],[11,-11,23,9,'17'],[9,-9,21,7,'15'],[12,-12,24,10,'18']]
-.forEach((d,i)=>BANK.push(bk('d91-'+(i+1),'L','demo','Демо-2026 · 9.1.'+(i+1),
+.forEach((d,i)=>BANK.push(bk('d91-'+(i+1),'L','demo','Тренировочная серия · 1.'+(i+1),
   {Lt:[X(d[0]),N(d[1])],Rt:[N(d[2]),X(d[3])]},null,d[4])));
 
 [[7,'21'],[1,'3'],[9,'27'],[5,'15'],[8,'24'],[6,'18']]
-.forEach((d,i)=>BANK.push(bk('d92-'+(i+1),'LB','demo','Демо-2026 · 9.2.'+(i+1),
+.forEach((d,i)=>BANK.push(bk('d92-'+(i+1),'LB','demo','Тренировочная серия · 2.'+(i+1),
   {Lt:[BR(2,[X(1),N(-d[0])])],Rt:[X(1),N(d[0])]},null,d[1])));
 
 [[3,'9'],[10,'30'],[5,'15'],[6,'18'],[1,'3'],[2,'6']]
-.forEach((d,i)=>BANK.push(bk('d93-'+(i+1),'LB','demo','Демо-2026 · 9.3.'+(i+1),
+.forEach((d,i)=>BANK.push(bk('d93-'+(i+1),'LB','demo','Тренировочная серия · 3.'+(i+1),
   {Lt:[BR(2,[X(1),N(-d[0])]),X(-1)],Rt:[N(d[0])]},null,d[1])));
 
 [[2,'-8'],[3,'-12'],[8,'-32'],[7,'-28'],[10,'-40'],[6,'-24']]
-.forEach((d,i)=>BANK.push(bk('d94-'+(i+1),'LB','demo','Демо-2026 · 9.4.'+(i+1),
+.forEach((d,i)=>BANK.push(bk('d94-'+(i+1),'LB','demo','Тренировочная серия · 4.'+(i+1),
   {Lt:[BR(3,[X(1),N(d[0])]),BR(-2,[X(1),N(-d[0])])],Rt:[N(d[0])]},null,d[1])));
 
 [[[2,-3,1],'min','0,5'],[[8,-12,4],'min','0,5'],[[-1,6,16],'min','-2'],
  [[5,8,3],'max','-0,6'],[[8,-10,2],'min','0,25'],[[2,-5,3],'max','1,5']]
 .forEach((d,i)=>{const [a,b,c]=d[0];
-  BANK.push(bk('d95-'+(i+1),'QF','demo','Демо-2026 · 9.5.'+(i+1),
+  BANK.push(bk('d95-'+(i+1),'QF','demo','Тренировочная серия · 5.'+(i+1),
     {Lt:[X2(a),X(b),N(c)],Rt:[N(0)]},d[1],d[2]));});
 
 /* ---------- ПРОТОТИПЫ: линейные (24) ---------- */
@@ -2222,7 +2222,7 @@ const PL=[
  ['LSQ',{Lt:[SQ(-5)],Rt:[SQ(-8)]},'6,5'],
  ['LSQ',{Lt:[SQ(1)],Rt:[SQR(2)]},'0,5']
 ];
-PL.forEach((d,i)=>BANK.push(bk('pl-'+(i+1),d[0],'proto','Прототип · линейные, №'+(i+1),d[1],null,d[2])));
+PL.forEach((d,i)=>BANK.push(bk('pl-'+(i+1),d[0],'proto','Дополнительная практика · линейные, №'+(i+1),d[1],null,d[2])));
 
 /* ---------- ПРОТОТИПЫ: квадратные (27) ---------- */
 const PQ=[
@@ -2254,7 +2254,7 @@ const PQ=[
  ['QP',{Lt:[MUL([X(-1),N(10)],[X(1),N(20)])],Rt:[N(0)]},'max','10'],
  ['QP',{Lt:[MUL([X(1),N(5)],[X(-1),N(3)])],Rt:[N(0)]},'min','-5']
 ];
-PQ.forEach((d,i)=>BANK.push(bk('pq-'+(i+1),d[0],'proto','Прототип · квадратные, №'+(i+1),d[1],d[2],d[3])));
+PQ.forEach((d,i)=>BANK.push(bk('pq-'+(i+1),d[0],'proto','Дополнительная практика · квадратные, №'+(i+1),d[1],d[2],d[3])));
 
 /* ---------- ПРОТОТИПЫ: дробные (54) ---------- */
 const PF=[
@@ -2313,9 +2313,57 @@ const PF=[
  ['SB',{k:1,m:2,n:-3},'max','2'],
  ['SB',{k:3,m:-3,n:-4},'max','3,25']
 ];
-PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Прототип · дробные, №'+(i+1),d[1],d[2],d[3])));
+PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Дополнительная практика · дробные, №'+(i+1),d[1],d[2],d[3])));
 
-if(typeof module!=='undefined')module.exports={BANK};
+/* Актуальный формат №9. Номера сверены по навигатору ФИПИ и публикациям
+   заданий, ссылки и происхождение каждого типа — в спецификации задачи. */
+const EXAM_BANK=[
+  exam('demo-2027','linear-two-brackets','LB',[BR(3,[X(1),N(8)]),BR(-2,[X(1),N(-8)])],[N(8)],null,'-32','fipi-demo','Проект демоверсии ФИПИ 2027'),
+  exam('demo-2026','quad-nonmonic','QF',[X2(2),X(-3),N(1)],[N(0)],'min','0,5','fipi-demo','Демоверсия ФИПИ 2026'),
+  exam('483ABF','linear-one-bracket','LB',[BR(4,[X(1),N(-6)])],[N(5)],null,'7,25'),
+  exam('36E26B','quad-square','QNB',[X2(1),N(-144)],[N(0)],'max','12'),
+  exam('AB4778','linear-transfer','L',[N(-1),X(-3)],[X(2),N(1)],null,'-0,4'),
+  exam('286CF5','quad-factor-x','QNCm',[X2(4)],[X(20)],'min','0'),
+  exam('two-brackets-1','linear-two-brackets','LB',[BR(5,[X(1),N(-3)]),BR(-2,[X(1),N(4)])],[N(-11)],null,'4','analog'),
+  exam('540ABC','quad-monic','QF',[X2(1),X(-11),N(30)],[N(0)],'min','5'),
+  exam('28287F','linear-transfer','L',[N(2),X(3)],[X(-7),N(-5)],null,'-0,7'),
+  exam('46C337','quad-square','QNB',[X2(1),N(-25)],[N(0)],'max','5'),
+  exam('5572B4','linear-one-bracket','LB',[BR(5,[X(1),N(4)])],[N(-9)],null,'-5,8'),
+  exam('nonmonic-1','quad-nonmonic','QF',[X2(5),X(1),N(-6)],[N(0)],'max','1','analog'),
+  exam('one-bracket-x','linear-one-bracket','LB',[BR(5,[X(1),N(-3)])],[X(1),N(-2)],null,'3,25','analog'),
+  exam('69EC44','quad-square','QNB',[X2(1),N(-9)],[N(0)],'min','-3'),
+  exam('4F57B2','linear-transfer','L',[X(-4),N(-9)],[X(6)],null,'-0,9'),
+  exam('4318F0','quad-monic','QF',[X2(1),X(-11),N(18)],[N(0)],'max','9'),
+  exam('01DB8F','linear-one-bracket','LB',[BR(5,[X(1),N(9)])],[N(-8)],null,'-10,6'),
+  exam('factor-x-max','quad-factor-x','QNC',[X2(6),X(-15)],[N(0)],'max','2,5','analog'),
+  exam('two-brackets-2','linear-two-brackets','LB',[BR(3,[X(1),N(-4)])],[BR(7,[X(1),N(2)])],null,'-6,5','analog'),
+  exam('EA4046','quad-monic','QF',[X2(1),X(-9),N(18)],[N(0)],'min','3'),
+  exam('E1A33F','linear-transfer','L',[X(1),N(-2)],[X(-3)],null,'0,5'),
+  exam('nonmonic-2','quad-nonmonic','QF',[X2(4),X(-4),N(-3)],[N(0)],'min','-0,5','analog'),
+  exam('two-brackets-3','linear-two-brackets','LB',[BR(7,[X(1),N(3)]),BR(-2,[X(1),N(1)])],[N(7)],null,'-2,4','analog'),
+  exam('30344D','quad-monic','QF',[X2(1),X(-6),N(5)],[N(0)],'min','1'),
+  exam('transfer-1','linear-transfer','L',[N(-7),X(3)],[X(-5),N(6)],null,'1,625','analog'),
+  exam('9937FD','quad-factor-x','QNCm',[X2(1)],[X(5)],'min','0'),
+  exam('02AAF8','quad-monic','QF',[X2(1),X(-12),N(20)],[N(0)],'max','10'),
+];
+BANK.push(...EXAM_BANK);
+
+function exam(code, examKind, fam, Lt, Rt, ask, exp, source='fipi', label){
+  const tag=label || (source==='fipi'?'Открытый банк ФИПИ · '+code:'Тренировочный аналог');
+  return {...bk('exam-'+code,fam,source,tag,{Lt,Rt},ask,exp),examKind};
+}
+
+function taskSourceHTML(t){
+  if(!t.examKind)return '';
+  if(t.src==='analog')return 'Авторское задание MathExam по типу № 9 ОГЭ; не является заданием ФИПИ.';
+  if(t.src==='fipi-demo'){
+    const year=t.id==='exam-demo-2027'?'2027':'2026';
+    return 'Условие и ответ № 9 сверены с <a href="https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/'+year+'/ma_9_'+year+'.zip">официальным архивом ФИПИ '+year+'</a>'+(year==='2027'?' (проект демоверсии).':'.');
+  }
+  return 'Идентификатор указан в <a href="https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf">навигаторе ФИПИ, с. 4</a>. Условие и выбор корня сверены по <a href="https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf">PDF-подборке</a> и <a href="https://sdamgia.online/oge/matematika/zadanie-9">каталогу прототипов</a>. Прямая сверка карточки официального банка недоступна.';
+}
+
+if(typeof module!=='undefined')module.exports={BANK,EXAM_BANK};
 /* ============ ДВИЖОК ШАГОВ (общий рендер + прогон) ============ */
 'use strict';
 
@@ -3157,7 +3205,7 @@ function buildLearnTab(root){
   root.appendChild(quizBlock('frac','Квиз 3 · дробные'));
 
   const outro=elt('div','card tinted');
-  outro.innerHTML='<p>Теорию прошли — теперь <b>Пошагово</b> для тренировки без конца и <b>Марафон</b> с реальными задачами открытого банка.</p>';
+  outro.innerHTML='<p>Теорию прошли — теперь <b>Пошагово</b> для тренировки без конца и <b>Марафон</b> с заданиями ФИПИ и тренировочными аналогами.</p>';
   root.appendChild(outro);
 }
 /* ============ РЕЖИМЫ: Пошагово + Марафон ============ */
@@ -3210,7 +3258,7 @@ function checkFinal(t, raw){
   }
   const trap=finalTraps(t).find(o=>feq(o.v,v));
   if(trap)return {ok:false,msg:trap.m,trap:true};
-  return {ok:false,msg:'Пока не сходится. Попробуй решить по шагам — кнопка ниже.'};
+  return {ok:false,msg:'Пока не сходится. Открой «Хочешь подсказку?» и попробуй решить по шагам.'};
 }
 
 /* --- инлайн-решение задачи по шагам (общий для обоих режимов) --- */
@@ -3261,17 +3309,19 @@ const GEN_GROUPS=[
     {gid:'g_l1', label:'простые'},
     {gid:'g_l2', label:'x с двух сторон'},
     {gid:'g_lb', label:'со скобками'},
-    {gid:'g_lf', label:'дробные коэффициенты'},
-    {gid:'g_lsq', label:'(x+a)² = (x+b)²'},
   ]},
   {title:'Квадратные', items:[
     {gid:'g_qnc', label:'без c (вынеси x)'},
     {gid:'g_qnb', label:'без b (±√)'},
     {gid:'g_qf', label:'полное', method:true},
+  ]},
+  {title:'Дополнительно · целые уравнения и дробные коэффициенты', items:[
+    {gid:'g_lf', label:'дробные коэффициенты'},
+    {gid:'g_lsq', label:'(x+a)² = (x+b)²'},
     {gid:'g_qp', label:'разложено на множители'},
     {gid:'g_qr', label:'сначала приведи'},
   ]},
-  {title:'Дробные', items:[
+  {title:'Дополнительно · дробно-рациональные', items:[
     {gid:'g_prop', label:'пропорция'},
     {gid:'g_nz', label:'дробь = 0'},
     {gid:'g_xf', label:'x и дробь'},
@@ -3406,16 +3456,16 @@ function renderGenTask(item, card){
 
 /* ============ МАРАФОН ============ */
 const MARA_FILTERS=[
-  {id:'all', label:'Все'},
-  {id:'demo', label:'Демо-2026'},
+  {id:'exam', label:'Формат ОГЭ'},
   {id:'lin', label:'Линейные'},
   {id:'quad', label:'Квадратные'},
-  {id:'frac', label:'Дробные'},
+  {id:'demo', label:'Демоверсии'},
+  {id:'extra', label:'Дополнительная практика'},
 ];
 function taskChapter(t){ return FAMMETA[t.fam].ch; }
 /* task[id] — состояние задачи на время открытой страницы: перерисовка карточек
    (фильтры, «порешать» из справочника) его не теряет (решение D4) */
-const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set(), shown:new Set(), task:{}};
+const maraState={filter:'exam', caseFilter:null, solved:new Set(), clean:new Set(), shown:new Set(), task:{}};
 function maraRec(id){ return maraState.task[id]||(maraState.task[id]={verdict:'',shown:false,hinted:false,counted:false}); }
 
 function buildMaraTab(root){
@@ -3423,9 +3473,10 @@ function buildMaraTab(root){
   // самопроверка банка — в режиме ?selftest=1 (консоль), ученику не показывается
 
   const intro=document.createElement('div'); intro.className='card tinted';
-  intro.innerHTML='<div class="eyebrow">банк реальных задач и демоверсии</div>'+
-    '<h2>Марафон · '+BANK.length+' задач</h2>'+
-    '<p>Реши сам и впиши ответ. Не выходит — <b>Решить по шагам</b>: ступени открываются по одной. Подсказки ничего не отнимают; «без подсказок» считаются задачи, решённые без «Подсказки» и «Показать шаг».</p>';
+  intro.innerHTML='<div class="eyebrow">задания ФИПИ и тренировочные аналоги</div>'+
+    '<h2>Марафон · '+EXAM_BANK.length+' задач в формате ОГЭ</h2>'+
+    '<p>Линейные и квадратные уравнения. В «Дополнительной практике» есть прежние тренировочные серии и дробно-рациональные задачи. Если нужна помощь, открой подсказку или реши по шагам.</p>'+
+    '<p><a href="https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf">Навигатор ФИПИ</a> · <a href="https://fipi.ru/oge/demoversii-specifikacii-kodifikatory">Демоверсии ФИПИ</a></p>';
   root.appendChild(intro);
 
   const filt=document.createElement('div'); filt.className='filter-row';
@@ -3455,11 +3506,10 @@ function buildMaraTab(root){
   }
   function filteredTasks(){
     if(maraState.caseFilter) return BANK.filter(t=>maraState.caseFilter.cases.indexOf(taskCaseId(t))>=0);
-    return BANK.filter(t=>{
-      if(maraState.filter==='all')return true;
-      if(maraState.filter==='demo')return t.src==='demo';
-      return taskChapter(t)===maraState.filter;
-    });
+    if(maraState.filter==='extra')return BANK.filter(t=>!t.examKind);
+    if(maraState.filter==='exam')return EXAM_BANK;
+    if(maraState.filter==='demo')return EXAM_BANK.filter(t=>t.src==='fipi-demo');
+    return EXAM_BANK.filter(t=>taskChapter(t)===maraState.filter);
   }
   function renderList(){
     list.innerHTML='';
@@ -3467,8 +3517,8 @@ function buildMaraTab(root){
       const cnt=filteredTasks().length;
       const bn=document.createElement('div'); bn.className='mara-banner';
       bn.innerHTML='<span>Из справочника: <b>'+maraState.caseFilter.label+'</b> · задач: '+cnt+'</span>';
-      const x=document.createElement('button'); x.className='bx'; x.textContent='показать все задачи';
-      x.addEventListener('click',()=>{ maraState.caseFilter=null; maraState.filter='all';
+      const x=document.createElement('button'); x.className='bx'; x.textContent='вернуться к формату ОГЭ';
+      x.addEventListener('click',()=>{ maraState.caseFilter=null; maraState.filter='exam';
         filt.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
         filt.querySelector('.chip').classList.add('on'); renderList(); });
       bn.appendChild(x); list.appendChild(bn);
@@ -3492,8 +3542,9 @@ function buildMaraTab(root){
 
 function makeMaraCard(t, onProgress){
   const card=document.createElement('div'); card.className='task-card'+(maraState.solved.has(t.id)?' solved':maraState.shown.has(t.id)?' shown':'');
+  card.dataset.taskId=t.id;
   const badge=document.createElement('div'); badge.className='src-badge';
-  badge.textContent=(t.src==='demo'?'Демо-2026':(taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробное'));
+  badge.textContent=taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробно-рациональное';
   card.appendChild(badge);
 
   const no=document.createElement('div'); no.className='task-no'; no.textContent=t.tag; card.appendChild(no);
@@ -3513,7 +3564,9 @@ function makeMaraCard(t, onProgress){
   bStep.classList.add("minimal-hint");card.insertBefore(bStep,ansField);
   card.appendChild(row);
   card.appendChild(stepHost);
-  OGEMinimal.group(card,[badge,no],"Об этом задании");
+  const sourceHTML=taskSourceHTML(t),about=[badge,no];
+  if(sourceHTML){const source=elt('p','task-source',sourceHTML);card.appendChild(source);about.push(source);}
+  OGEMinimal.group(card,about,"Об этом задании");
 
   /* запись прогресса (решения F8, D1, D4): «Решить по шагам» — не помощь;
      «Подсказка» и «Показать шаг» снимают «без подсказок»; после показа
@@ -3563,30 +3616,28 @@ function makeMaraCard(t, onProgress){
 }
 
 /* ============ ЗАЧЁТ: 10 задач (решение D9) ============
-   3 линейных + 4 квадратных + 3 дробно-рациональных, семейства не
-   повторяются; одна попытка, подсказок и разбора нет; в зачёте — голый
+   5 линейных + 5 квадратных, все семь видов и оба направления выбора
+   корня; одна попытка, подсказок и разбора нет; в зачёте — голый
    вердикт, в итогах — строка диагностики по ловушкам Марафона. В журнал —
    один вердикт на задачу; solvedByType зачёт не трогает (как в 03A). */
-function pickQuizFams(){
-  const one=f=>f.indexOf('|')>=0?pick(f.split('|')):f;
-  return ['L'].concat(shuffle(['LB','LF','LSQ']).slice(0,2),
-    ['QF'], shuffle(['QNB','QNC|QNCm','QP','QR']).slice(0,3),
-    ['PROP'], shuffle(['Z','NZ','XF','S2|SB']).slice(0,2)).map(one);
-}
 function buildQuiz(){
-  const out=[];
-  for(const f of pickQuizFams()){
-    let t=genByFam(f);
-    for(const g of shuffle(TYPE_IDS)){ if(t)break; t=genByFam(g); }   // запасной путь: генератор не справился
-    if(t)out.push(t);
-  }
-  return shuffle(out);
+  const linear=EXAM_BANK.filter(t=>taskChapter(t)==='lin');
+  const quad=EXAM_BANK.filter(t=>taskChapter(t)==='quad');
+  const linearKinds=['linear-transfer','linear-one-bracket','linear-two-brackets'];
+  const quiz=linearKinds.map(kind=>pick(linear.filter(t=>t.examKind===kind)));
+  quiz.push(...shuffle(linear.filter(t=>!quiz.includes(t))).slice(0,2));
+
+  const quadKinds=['quad-square','quad-factor-x','quad-monic','quad-nonmonic'];
+  const preferredAsk=shuffle(['min','min','max','max']);
+  const quadratics=quadKinds.map((kind,i)=>pick(quad.filter(t=>t.examKind===kind&&t.ask===preferredAsk[i])));
+  quadratics.push(pick(quad.filter(t=>!quadratics.includes(t))));
+  return shuffle(quiz.concat(quadratics));
 }
 function buildQuizTab(root){
   root.innerHTML='';
   const intro=document.createElement('div'); intro.className='card tinted';
   intro.innerHTML='<div class="eyebrow">проверка себя</div><h2>Зачёт · '+QUIZ_TOTAL+' уравнений</h2>'+
-    '<p>3 линейных, 4 квадратных, 3 дробно-рациональных — вперемешку. Одна попытка на уравнение, подсказок и разбора нет — как на экзамене. Если корней несколько, в ответ — тот, который просят. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.</p>';
+    '<p>5 линейных и 5 квадратных уравнений вперемешку. На каждое уравнение одна попытка. Если корней несколько, в ответ — тот, который просят. Зачёт сдан при '+PASS_AT+' верных из '+QUIZ_TOTAL+'.</p>';
   root.appendChild(intro);
   const row=document.createElement('div'); row.className='btn-row';
   const bStart=document.createElement('button'); bStart.className='btn'; bStart.type='button'; bStart.textContent='Начать зачёт';
@@ -3780,10 +3831,11 @@ function selftest(){
     const t=genByFam(f); if(!t)errs.push(f+': повтор не может собрать задачу этого типа'); else if(t.fam!==f)errs.push(f+': повтор дал '+t.fam);
   });
   for(let i=0;i<20;i++){
-    const fams=pickQuizFams(), ch={lin:0,quad:0,frac:0};
-    fams.forEach(f=>ch[FAMMETA[f].ch]++);
-    if(fams.length!==QUIZ_TOTAL||new Set(fams).size!==QUIZ_TOTAL||ch.lin!==3||ch.quad!==4||ch.frac!==3)errs.push('зачёт: состав '+fams.join(','));
-    if(buildQuiz().length!==QUIZ_TOTAL)errs.push('зачёт: собрано не '+QUIZ_TOTAL+' задач');
+    const quiz=buildQuiz();
+    const linear=quiz.filter(t=>taskChapter(t)==='lin');
+    const quad=quiz.filter(t=>taskChapter(t)==='quad');
+    if(quiz.length!==QUIZ_TOTAL||new Set(quiz).size!==QUIZ_TOTAL||linear.length!==5||quad.length!==5||
+      new Set(quiz.map(t=>t.examKind)).size!==7||new Set(quad.map(t=>t.ask)).size!==2)errs.push('зачёт: нарушен состав '+quiz.map(t=>t.id).join(','));
   }
   ASTK.done('OGE9',errs);
   return errs;
