@@ -147,6 +147,55 @@ async function draw(page) {
   await page.mouse.move(box.x + 30, box.y + 40); await page.mouse.down();
   await page.mouse.move(box.x + 105, box.y + 100, { steps: 8 }); await page.mouse.up();
 }
+// Observe actual canvas pixels while the server cannot yet acknowledge a stroke.
+// The server and a second participant must continue to see only durable work.
+async function pendingInkContinuity(page, lessonURL, readWork) {
+  await mode(page, 'board');
+  const before = (await readWork()).strokes;
+  let held = false, release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const holdStroke = async route => {
+    if (route.request().method() !== 'POST' || route.request().postDataJSON()?.type !== 'stroke') return route.continue();
+    held = true; await gate; return route.continue();
+  };
+  const inkAt = () => page.locator('#boardCanvas').evaluate(canvas => {
+    const x = Math.round(canvas.width * .6), y = Math.round(canvas.height * .5);
+    const pixels = canvas.getContext('2d').getImageData(x - 4, y - 4, 9, 9).data;
+    return Array.from(pixels).some((value, index) => index % 4 === 3 && value > 0);
+  });
+  await page.route(lessonURL + '/actions', holdStroke);
+  try {
+    const canvas = page.locator('#boardCanvas');
+    await canvas.scrollIntoViewIfNeeded();
+    const box = await canvas.boundingBox();
+    assert.equal(await inkAt(), false, 'test area starts empty');
+    await page.mouse.move(box.x + box.width * .55, box.y + box.height * .45); await page.mouse.down();
+    await page.mouse.move(box.x + box.width * .65, box.y + box.height * .55, { steps: 8 }); await page.mouse.up();
+    await poll(() => held, 'handwriting POST held before acknowledgement');
+    assert.equal(await page.locator('#undoButton').isDisabled(), true, 'undo waits for pending ink instead of targeting another server stroke');
+    await mode(page, 'geometry'); await mode(page, 'board');
+    assert.equal(await inkAt(), true, 'pending stroke survives material switch');
+    await page.setViewportSize({ width: 1024, height: 900 });
+    await poll(inkAt, 'pending stroke survives canvas resize');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await poll(inkAt, 'pending stroke survives return to desktop size');
+    assert.deepEqual((await readWork()).strokes, before, 'unacknowledged preview is not durable server work');
+    await page.locator('#eraserButton').click();
+    const resized = await canvas.boundingBox();
+    await page.mouse.click(resized.x + resized.width * .6, resized.y + resized.height * .5);
+    await mode(page, 'geometry'); await mode(page, 'board');
+    assert.equal(await inkAt(), false, 'queued erasure stays erased across material switch');
+    release();
+    await poll(async () => /Все изменения сохранены/.test(await page.locator('#connectionStatus').textContent()), 'pending stroke and erasure acknowledged');
+    assert.deepEqual((await readWork()).strokes, before, 'queued stroke and erasure leave original durable strokes intact');
+    assert.equal(await inkAt(), false, 'acknowledgements do not resurrect erased preview');
+    console.log('PASS delayed handwriting, material switch, resize, pending erasure and safe undo');
+  } finally {
+    release();
+    await page.unroute(lessonURL + '/actions', holdStroke);
+    await page.locator('#penButton').click();
+  }
+}
 async function negativeFrame(page) {
   return poll(async () => {
     const locator = page.locator('#trainerHost .group-trainer-frame[data-trainer-id="negative-numbers-line"][data-status="ready"] iframe');
@@ -228,6 +277,7 @@ async function main() {
     const [pupil, observer] = pupils;
     await draw(pupil);
     await poll(async () => (await work(first.id)).strokes.length === 1, 'pupil ink saved');
+    await pendingInkContinuity(pupil, lessonURL, () => work(first.id));
     await mode(pupil, 'geometry');
     let pupilGeometry = await geometryFrame(pupil);
     const preciseX = 1.234567890123456;
