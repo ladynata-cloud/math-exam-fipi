@@ -76,7 +76,11 @@
       "public": true,
       "downloadHtml": "/downloads/trainers/rounding-stepwise/rounding-stepwise.html",
       "prompt": "/downloads/trainers/rounding-stepwise/rounding-stepwise-deepseek-prompt.md",
-      "package": "/downloads/trainers/rounding-stepwise/rounding-stepwise-package.zip"
+      "package": "/downloads/trainers/rounding-stepwise/rounding-stepwise-package.zip",
+      "inlineAssets": [
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js"
+      ]
     },
     {
       "slug": "decimal-cash-trainer",

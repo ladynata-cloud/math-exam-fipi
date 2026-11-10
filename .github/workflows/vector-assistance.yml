@@ -1,0 +1,20 @@
+name: Bonus trainer input and assistance
+on:
+  pull_request:
+    paths:
+      - 'trainers/ege-profile-vectors-trainer.html'
+      - 'tools/vector-assistance.test.cjs'
+      - 'trainers/teatr-formul-daily.html'
+      - 'tools/bonus-theatre-input.test.cjs'
+      - '.github/workflows/vector-assistance.yml'
+permissions:
+  contents: read
+jobs:
+  assistance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tools/vector-assistance.test.cjs tools/bonus-theatre-input.test.cjs
