@@ -1,10 +1,14 @@
 'use strict';
 // Browser integration for every exam card. Step values are reused from the
 // trainer only to exercise real UI fields. Independent mathematics is checked
-// separately in task9-independent-review.test.cjs.
-const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
+// separately in task9-expanded-bank.test.cjs and task9-independent-review.test.cjs.
+const fs=require('fs'),path=require('path'),http=require('http'),crypto=require('crypto'),assert=require('assert/strict');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..');
+const trainerPath=path.join(root,'trainers/oge-task9-equations.html');
+// Serve one exact trainer snapshot so concurrent source edits cannot mix versions.
+const trainerHTML=fs.readFileSync(trainerPath);
+const testedFileSha256=crypto.createHash('sha256').update(trainerHTML).digest('hex');
 const artifacts=path.resolve(process.env.TASK9_REVIEW_ARTIFACTS||path.join(root,'artifacts/task9-independent-review'));
 fs.mkdirSync(artifacts,{recursive:true});
 const server=http.createServer((req,res)=>{
@@ -13,31 +17,55 @@ const server=http.createServer((req,res)=>{
  if(pathname==='/favicon.ico'){res.writeHead(204).end();return;}
  const file=path.resolve(root,'.'+pathname);
  if(!file.startsWith(root+path.sep)){res.writeHead(403).end();return;}
- fs.readFile(file,(err,data)=>{if(err){res.writeHead(404).end();return;}res.setHeader('Content-Type',file.endsWith('.html')?'text/html':file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':'application/octet-stream');res.end(data);});
+ const send=(err,data)=>{if(err){res.writeHead(404).end();return;}res.setHeader('Content-Type',file.endsWith('.html')?'text/html':file.endsWith('.js')?'application/javascript':file.endsWith('.css')?'text/css':'application/octet-stream');res.end(data);};
+ if(file===trainerPath)send(null,trainerHTML);else fs.readFile(file,send);
 });
-const result={evidence:[],errors:[],overflow:[]};
+const result={testedFile:'trainers/oge-task9-equations.html',testedFileSha256,status:'RUNNING',executions:1,resumedScenarios:0,evidence:[],errors:[],overflow:[]};
+if(process.env.TASK9_REVIEW_RESUME==='1'){
+ const previous=JSON.parse(fs.readFileSync(path.join(artifacts,'full-bank-results.json'),'utf8'));
+ assert.equal(previous.testedFileSha256,testedFileSha256,'resume requires the exact same trainer snapshot');
+ assert.deepEqual(previous.errors,[],'resume never skips JavaScript failures');
+ assert.deepEqual(previous.overflow,[],'resume never skips layout failures');
+ assert.equal(new Set(previous.evidence.map(r=>r.width+':'+r.id)).size,previous.evidence.length,'resume evidence has no duplicates');
+ result.evidence=previous.evidence;result.resumedScenarios=previous.evidence.length;result.executions=(previous.executions||1)+1;
+}
+const completed=new Set(result.evidence.map(r=>r.width+':'+r.id)),expected=new Set();
+const launchBrowser=()=>chromium.launch({headless:true,
+ ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH}:{}),
+ args:['--disable-dev-shm-usage']});
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const url='http://127.0.0.1:'+server.address().port+'/trainers/oge-task9-equations.html';
  let browser;
  try{
- browser=await chromium.launch({headless:true,
-  ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH}:{}),
-  args:['--disable-dev-shm-usage']});
+ browser=await launchBrowser();
  for(const width of [320,1280]){
-  const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
-  const page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>result.errors.push({width,error:e.message}));
+  let context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+  let page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>result.errors.push({width,error:e.message}));
   await page.goto(url);
   const tasks=await page.evaluate(()=>EXAM_BANK.map((t,index)=>{
    const state={},steps=taskSteps(t).map(factory=>{const d=factory(state);d.check(d.reveal.vals,state);return{q:d.q,vals:d.reveal.vals,type:d.ui.type};});
    const roots=taskSolve(t).roots.map(valStr);
    return{id:t.id,index,answer:t.exp,ask:t.ask,roots,steps};
   }));
+  for(const t of tasks){expected.add(width+':'+t.id);}
   for(const t of tasks){
+   if(completed.has(width+':'+t.id))continue;
+   // Bound retained DOM/browser memory for large banks, without skipping any card.
+   if(t.index>0&&t.index%10===0){
+    await context.close();await browser.close();browser=await launchBrowser();
+    context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+    page=await context.newPage();page.setDefaultTimeout(10000);page.on('pageerror',e=>result.errors.push({width,error:e.message}));
+    await page.goto(url);
+   }
    const picker=page.locator('#pane-mara .minimal-task-nav > details');if(await picker.getAttribute('open')===null)await picker.locator(':scope > summary').click();await picker.locator('select').selectOption(String(t.index));
    const card=page.locator('#mara-list > .task-card:not([hidden])'),q=card.locator(':scope > .task-q'),answer=card.locator(':scope > .field input');
    assert.equal(await card.getAttribute('data-task-id'),t.id);
    const question=await q.innerText();assert(question.length>15);await card.getByText('Об этом задании',{exact:true}).click();assert((await card.locator('.task-source').innerText()).length>15);
+   const badgeBounds=await card.locator('.src-badge').boundingBox(),questionBounds=await q.boundingBox();
+   assert(badgeBounds&&questionBounds,t.id+' source badge and prompt are visible');
+   const overlap=Math.min(badgeBounds.x+badgeBounds.width,questionBounds.x+questionBounds.width)>Math.max(badgeBounds.x,questionBounds.x)&&Math.min(badgeBounds.y+badgeBounds.height,questionBounds.y+questionBounds.height)>Math.max(badgeBounds.y,questionBounds.y);
+   assert.equal(overlap,false,t.id+' source badge does not cover the equation prompt');
    if(t.ask)assert(question.includes(t.ask==='min'?'меньший':'больший'));
    const check=card.locator(':scope > .btn-row').getByRole('button',{name:'Проверить',exact:true});
    await check.click();assert.match(await card.locator(':scope > .fb').innerText(),/Заполни|Не разобрала/);
@@ -55,14 +83,20 @@ const result={evidence:[],errors:[],overflow:[]};
    assert(await card.evaluate(el=>el.classList.contains('solved')),t.id+' solved after all steps');
    const over=await page.evaluate(()=>{const bad=[];for(const el of document.querySelectorAll('#mara-list > .task-card:not([hidden]) input,#mara-list > .task-card:not([hidden]) .task-source,#mara-list > .task-card:not([hidden]) .q,#mara-list > .task-card:not([hidden]) .task-q,#mara-list > .task-card:not([hidden]) button')){if(!el.getClientRects().length)continue;const r=el.getBoundingClientRect();if(r.left<-1||r.right>innerWidth+1)bad.push({text:el.textContent.slice(0,100),left:r.left,right:r.right});}return{page:document.documentElement.scrollWidth,viewport:innerWidth,bad};});
    if(over.bad.length||over.page>width+1)result.overflow.push({width,id:t.id,...over});
+   assert.deepEqual(over.bad,[],t.id+' controls fit the viewport');assert(over.page<=width+1,t.id+' page fits the viewport');
+   assert.deepEqual(result.errors,[],t.id+' no JavaScript errors');
    await card.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();
    await answer.fill(t.answer);await check.click();assert.equal(await answer.getAttribute('readonly'),'');assert.match(await card.locator(':scope > .fb').innerText(),/верно/);
-   result.evidence.push({width,id:t.id,question,steps:t.steps.length,accepted:t.answer,wrongRejected:wrong});
+   // Persist a completed scenario only after all its interaction/layout assertions.
+   result.evidence.push({width,id:t.id,question,steps:t.steps.length,accepted:t.answer,wrongRejected:wrong});completed.add(width+':'+t.id);
+   fs.writeFileSync(path.join(artifacts,'full-bank-results.json'),JSON.stringify(result,null,2));
    console.log('PASS',width,t.id,t.steps.length);
   }
   await page.screenshot({path:path.join(artifacts,width+'-last-card.png')});await context.close();
  }
  assert.deepEqual(result.errors,[]);assert.deepEqual(result.overflow,[]);
+ assert.deepEqual([...completed].sort(),[...expected].sort(),'every current bank card is checked at both widths');
+ assert.equal(result.evidence.length,expected.size);result.status='PASS';
  console.log('FULL_BANK_UI_OK',result.evidence.length);
- }finally{fs.writeFileSync(path.join(artifacts,'full-bank-results.json'),JSON.stringify(result,null,2));if(browser)await browser.close();await new Promise(r=>server.close(r));}
+ }catch(error){result.status='FAIL';result.failure={message:error.message};throw error;}finally{fs.writeFileSync(path.join(artifacts,'full-bank-results.json'),JSON.stringify(result,null,2));if(browser)await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1;});

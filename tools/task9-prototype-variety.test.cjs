@@ -25,7 +25,7 @@ test('exam bank covers the seven prototype shapes with varied divisors and indep
   const bank = trainer.run('EXAM_BANK');
   assert.deepEqual([...new Set(bank.map(task => task.examKind))].sort(), examKinds);
   assert.equal(new Set(bank.map(task => task.id)).size, bank.length);
-  assert.deepEqual([...new Set(bank.map(task => task.src))].sort(), ['analog', 'fipi', 'fipi-demo']);
+  assert.deepEqual([...new Set(bank.map(task => task.src))].sort(), ['analog', 'catalog', 'fipi', 'fipi-demo']);
   assert.equal(bank[0].id, 'exam-demo-2027');
   assert.equal(bank[0].exp, '-32');
   assert.equal(bank.find(task => task.id === 'exam-demo-2026').exp, '0,5');
@@ -99,7 +99,8 @@ test('source disclosure distinguishes official demos, indirect bank verification
   const sourceHTML = trainer.run('taskSourceHTML');
   assert.equal(bank.filter(task => task.src === 'fipi').length, 17);
   assert.equal(bank.filter(task => task.src === 'fipi-demo').length, 2);
-  assert.equal(bank.filter(task => task.src === 'analog').length, 8);
+  assert.equal(bank.filter(task => task.src === 'analog').length, 99);
+  assert.equal(bank.filter(task => task.src === 'catalog').length, 22);
   assert.equal(bank.find(task => task.id === 'exam-demo-2027').tag, 'Проект демоверсии ФИПИ 2027');
   for (const task of bank) {
     const text = sourceHTML(task);
@@ -111,6 +112,11 @@ test('source disclosure distinguishes official demos, indirect bank verification
     } else if (task.src === 'analog') {
       assert.match(text, /Авторское задание MathExam/);
       assert.match(text, /не является заданием ФИПИ/);
+    } else if (task.src === 'catalog') {
+      assert.match(text, /вторичным источникам/);
+      assert.match(text, /Прямая карточка официального банка ФИПИ не проверена/);
+      assert.match(task.catalogURL, /^https:\/\/sdamgia\.online\//);
+      assert.ok(text.includes(task.catalogURL));
     } else {
       const year = task.id.slice(-4);
       assert.ok(text.includes('/' + year + '/ma_9_' + year + '.zip'));
