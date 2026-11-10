@@ -1,0 +1,77 @@
+/* Companion skill maps: subject-specific actions and visible finite routes. */
+.oge-skills{background:#f6f4ed}
+.oge-skills main{max-width:1280px}
+.oge-skills .skill-breadcrumb{font-size:14px;margin:0 0 22px}
+.oge-skills .skill-hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:24px;align-items:center}
+.oge-skills .skill-hero aside{background:#e8efe4;border:1px solid #cad8c4;border-radius:22px;padding:24px}
+.oge-skills .skill-hero aside b{font-size:40px;color:#275c41;display:block}
+.oge-skills .skill-hero aside span{font-size:15px}
+.oge-skills .skill-search{display:block;font-weight:700;margin:22px 0}
+.oge-skills .skill-search input{display:block;width:100%;margin-top:8px;border:1px solid #a7b8a8;background:white;border-radius:12px;padding:13px;min-height:48px}
+.oge-skills .skill-filter{display:flex;flex-wrap:wrap;gap:9px}
+.oge-skills .skill-filter button{border:1px solid #b5c4b4;background:white;border-radius:99px;padding:9px 16px;color:#35533f;cursor:pointer}
+.oge-skills .skill-filter button[aria-pressed=true]{color:white;background:#275b42;border-color:#275b42}
+.oge-skills .skill-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:22px 0 38px}
+.oge-skills .skill-card{display:flex;flex-direction:column;gap:12px;background:white;border:1px solid #d3ddcf;border-radius:19px;padding:22px;min-width:0;color:#203e2d;text-decoration:none}
+.oge-skills .skill-card:hover,.oge-skills .skill-card:focus-visible{border-color:#43835d;box-shadow:0 4px 18px #29492c12}
+.oge-skills .skill-card h3{font-size:21px;line-height:1.25;margin:0}
+.oge-skills .skill-card p{font-size:15px;margin:0;color:#51604f}
+.oge-skills .skill-card small{font-size:13px;margin-top:auto;color:#536551}
+.oge-skills .skill-number{font-size:12px;letter-spacing:.6px;font-weight:750;color:#84612d}
+.oge-skills .skill-resume{padding:18px 22px;border-left:4px solid #4b8660;border-radius:0 12px 12px 0;background:#ebf4e9;margin:24px 0}
+.oge-skills .skill-map-panel{background:#eaf0e4;border:1px solid #c7d5bf;border-radius:22px;padding:20px;margin:24px 0}
+.oge-skills .skill-map-panel>summary{font-size:18px;font-weight:750;cursor:pointer}
+.oge-skills .skill-map-panel[open]>summary{margin-bottom:16px}
+.oge-skills .skill-map-wrap{position:relative}
+.oge-skills .skill-edges{position:absolute;inset:0;pointer-events:none;width:100%;height:100%;overflow:visible}
+.oge-skills .skill-edge{stroke:#90aa85;stroke-width:2;fill:none}
+.oge-skills .skill-nodes{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 30px;list-style:none;padding:0;margin:0}
+.oge-skills .skill-nodes li:nth-child(4){grid-column:3;grid-row:2}
+.oge-skills .skill-nodes li:nth-child(5){grid-column:2;grid-row:2}
+.oge-skills .skill-nodes li:nth-child(6){grid-column:1;grid-row:2}
+.oge-skills .skill-node-link{display:flex;align-items:flex-start;gap:12px;min-height:140px;padding:17px;background:#fffefa;border:1px solid #c2d0b9;border-radius:14px;position:relative;text-decoration:none;line-height:1.35}
+.oge-skills .skill-node-link[aria-current=step]{border:2px solid #2d7048;padding:16px;background:#f5fff3;box-shadow:0 0 0 3px #cfe3c7}
+.oge-skills .skill-node-link b{display:block;font-size:16px}
+.oge-skills .skill-node-link small{display:block;margin-top:7px;color:#586a53;font-size:12px}
+.oge-skills .skill-node-link em{display:block;margin-top:9px;font-style:normal;font-size:12px;color:#8c6226}
+.oge-skills .skill-node-dot{display:grid;place-items:center;flex:0 0 29px;height:29px;background:#e4eddd;border-radius:50%;font-size:14px;font-weight:800}
+.oge-skills .skill-map-legend{margin:18px 0 0;font-size:13px;color:#52674a}
+.oge-skills .skill-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.oge-skills .skill-tabs a[aria-current=page]{background:#285c42;color:white}
+.oge-skills .skill-columns{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:22px;align-items:start}
+.oge-skills .skill-stage{background:white;border:1px solid #d3ddcf;border-radius:22px;padding:28px;min-width:0}
+.oge-skills .skill-stage h2{font-size:27px}
+.oge-skills .skill-stage h3{font-size:18px;margin:22px 0 10px}
+.oge-skills .skill-resource{padding:18px;border:1px solid #d8e2d2;border-radius:14px;margin:14px 0;background:#fbfcf8}
+.oge-skills .skill-resource h3{margin:0 0 8px}
+.oge-skills .skill-resource p{font-size:15px;margin:8px 0}
+.oge-skills .skill-resource .button{font-size:14px}
+.oge-skills .skill-aside{padding:20px;background:#edf2e7;border-radius:18px;border:1px solid #d3dec9}
+.oge-skills .skill-aside h3{font-size:17px;margin:0 0 10px}
+.oge-skills .skill-aside a{display:block;font-size:15px;padding:8px 0;line-height:1.4}
+.oge-skills .skill-trap{border-left:3px solid #ca994a;background:#fff8e9;padding:15px 18px;font-size:15px}
+.oge-skills .skill-notebook{border-top:1px solid #dce4d6;margin-top:24px;padding-top:18px}
+.oge-skills .skill-notebook label{font-weight:650;display:block}
+.oge-skills textarea{box-sizing:border-box;display:block;width:100%;min-height:145px;font:inherit;font-size:16px;line-height:1.5;border:1px solid #aabda3;border-radius:12px;padding:13px;margin:10px 0;resize:vertical}
+.oge-skills .skill-checklist{display:grid;gap:9px;margin:12px 0}
+.oge-skills .skill-checklist label{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:400}
+.oge-skills .skill-checklist input{flex:0 0 18px;width:18px;height:18px;margin-top:3px;accent-color:#287348}
+.oge-skills .skill-note-status{font-size:13px;min-height:22px;color:#556d4c}
+.oge-skills .skill-evidence{padding:20px;border:1px solid #ceddc5;border-radius:16px;background:white;margin:16px 0}
+.oge-skills .skill-evidence h3{margin:0 0 10px;font-size:19px}
+.oge-skills .skill-evidence pre{font-family:inherit;white-space:pre-wrap;overflow-wrap:anywhere;margin:14px 0;font-size:16px}
+.oge-skills .skill-evidence details{font-size:14px;margin-top:14px}
+.oge-skills .skill-inventory{margin-top:24px;border-top:1px solid #d4dfcd;padding-top:16px}
+.oge-skills .skill-inventory ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 22px;padding-left:22px;font-size:14px}
+.oge-skills .skill-check-intro{max-width:850px}
+.oge-skills .skill-question{max-width:900px;margin:22px auto}
+.oge-skills .skill-source-notice{font-size:13px;color:#607257}
+.oge-skills .skill-record-label{font-size:13px;padding:5px 10px;border-radius:6px;background:#edf4e7;display:inline-block}
+.oge-skills .skill-result-list{list-style:none;padding:0;display:grid;gap:14px}
+.oge-skills .skill-result-list li{padding:18px;border:1px solid #d6e1cd;border-radius:14px;background:#fbfdf8}
+.oge-skills .skill-result-list p{font-size:15px}
+.oge-skills .skill-result-list strong{font-size:16px;display:block}
+.oge-skills .skill-empty{padding:25px;border:1px dashed #a5b69a;border-radius:16px;margin:20px 0}
+@media(max-width:950px){.oge-skills .skill-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.oge-skills .skill-columns{grid-template-columns:minmax(0,1fr)}.oge-skills .skill-aside{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px}.oge-skills .skill-aside h3{grid-column:1/-1}.oge-skills .skill-hero{grid-template-columns:minmax(0,1fr) 190px}.oge-skills .skill-map-panel{padding:16px}.oge-skills .skill-nodes{gap:24px 18px}.oge-skills .skill-node-link{padding:13px;gap:8px}.oge-skills .skill-node-link[aria-current=step]{padding:12px}}
+@media(max-width:650px){.oge-skills main{padding:20px 14px 45px}.oge-skills .skill-hero{display:block}.oge-skills .skill-hero aside{padding:14px 18px;margin:18px 0;display:flex;align-items:center;gap:15px}.oge-skills .skill-hero aside b{font-size:30px}.oge-skills .skill-card-grid{grid-template-columns:minmax(0,1fr);gap:12px}.oge-skills .skill-stage{padding:20px 16px}.oge-skills .skill-stage h2{font-size:24px}.oge-skills .skill-resource{padding:14px}.oge-skills .skill-aside{display:block}.oge-skills .skill-nodes{grid-template-columns:minmax(0,1fr);gap:18px}.oge-skills .skill-nodes li:nth-child(n){grid-column:auto;grid-row:auto}.oge-skills .skill-node-link{min-height:0;padding:15px}.oge-skills .skill-node-link[aria-current=step]{padding:14px}.oge-skills .skill-inventory ul{grid-template-columns:1fr}.oge-skills .skill-tabs{gap:8px}.oge-skills .skill-tabs .button{flex:1 1 135px}.oge-skills .skill-filter button{font-size:14px;padding:8px 12px}}
+@media print{.oge-skills .route-header,.oge-skills .route-footer,.oge-skills .skill-tabs,.oge-skills .skill-map-panel,.oge-skills .button{display:none!important}.oge-skills main{max-width:none;padding:0}.oge-skills .skill-evidence{break-inside:avoid}}

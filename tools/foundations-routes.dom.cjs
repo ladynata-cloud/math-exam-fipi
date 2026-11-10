@@ -5,7 +5,7 @@ const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p
 function fixture(race){
  const dom=new JSDOM(read('foundations/route.html'),{url:'https://fixture.test/foundations/route.html#number-parts?session=check-a',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window,errors=[];w.addEventListener('error',e=>errors.push(e.error?.message||e.message));
- for(const p of ['learning/division-course-map.js','learning/preparation-map.js','foundations/route-core.js','foundations/route-store.js','foundations/routes-arithmetic.js','foundations/routes-number-sense.js','foundations/routes-algebra-geometry.js','foundations/route-catalog.js'])w.eval(read(p));
+ for(const p of ['learning/division-course-map.js','learning/preparation-map.js','foundations/route-core.js','foundations/route-store.js','foundations/route-visuals.js','foundations/routes-arithmetic.js','foundations/routes-number-sense.js','foundations/routes-algebra-geometry.js','foundations/route-catalog.js'])w.eval(read(p));
  const C=w.FoundationRoutesCore,cat=w.FoundationRoutes,r=cat.byId['number-parts'],factory=w.FoundationRouteStore.create;
  let once=false;
  w.FoundationRouteStore.create=(...args)=>{

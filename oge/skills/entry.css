@@ -1,0 +1,9 @@
+/* Separate companion entrance; existing two-link return bars and task controls stay intact. */
+.oge-skill-entrance{box-sizing:border-box;display:block;width:calc(100% - 24px);max-width:1160px;margin:8px auto 14px;padding:0}
+.oge-skill-entrance[hidden]{display:none!important}
+.oge-skill-entrance a{box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;min-height:44px;border:1px solid #b7ceb0;border-radius:11px;background:#edf5e7;color:#285039;padding:10px 15px;font:650 15px/1.45 system-ui,sans-serif;text-decoration:none;max-width:100%;overflow-wrap:anywhere}
+.oge-skill-entrance a small{font-size:12px;font-weight:400;color:#4e6545}
+.oge-skill-entrance a:hover{background:#e3efdc;border-color:#719669}
+.oge-skill-entrance a:focus-visible{outline:3px solid #a47834;outline-offset:3px}
+@media(max-width:420px){.oge-skill-entrance a{font-size:14px;padding:10px 12px}.oge-skill-entrance a small{display:block;width:100%}}
+@media print{.oge-skill-entrance{display:none!important}}

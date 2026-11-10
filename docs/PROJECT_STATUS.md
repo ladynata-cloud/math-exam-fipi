@@ -1,5 +1,11 @@
 # 10 ноября 2026 — конкретные подсказки в ЕГЭ базе
 
+## 2026-11-11 — OGE conceptual skill maps candidate
+
+Production reconciliation: authoritative main remains `19811cc15a33d63fc0fcc0b6a11c34863ec64d03`. Draft PR #552 is not merged or deployed. Its reviewed dependency head is `74e5d9ef921919c6bfb24712bc5284f9ffd5c5db`; the dedicated 135-route browser gate passed, with the full repository CI tracked in that PR.
+
+The separate OGE candidate adds 28 conceptual maps, 168 steps and 504 checked questions, covering 604 actual native types/cards (including two preparatory tyre views). It adds 33 exact navigation-only companion entrances and links all ten existing investigations. Written explanations and self-review remain separate from short mathematical checks. See [task](tasks/OGE_CONCEPT_SKILL_MAPS_20261111.md) and [review report](reports/OGE_CONCEPT_SKILL_MAPS_20261111.md). This is an implementation candidate, not a production announcement. Latest session AGENTS requires a separate explicit merge/deployment authorization; both tasks remain Draft PRs until that decision.
+
 ## 2026-11-11 — Full foundations routes candidate
 
 The owner requested finite routes and skill maps across the shared basic mathematics course, then prioritised conceptual maps throughout OGE. The foundations candidate covers 181 substantive entries in 12 groups with 135 routes and 2,430 checked questions. Prior source navigation and saves remain available. This entry records an implementation candidate; publication is not yet claimed. See [task and verification report](reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md). The later OGE map implementation is a separate approved task. The later user-supplied AGENTS rules reinstate a release hold: a separate explicit owner authorization is required before merge and deployment. Draft PR #552 is not published.

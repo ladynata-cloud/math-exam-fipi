@@ -1,0 +1,107 @@
+name: OGE conceptual skill maps
+on:
+  pull_request:
+    paths:
+      - 'oge/skills/**'
+      - 'oge/index.html'
+      - 'foundations/route*'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/oge-1-5-trainers/**'
+      - 'trainers/oge-course/index.html'
+      - 'tools/oge-skills*'
+      - 'assets/assistant/page-rollout.json'
+      - 'assets/assistant/pages.json'
+      - 'tools/seo-public-pages.json'
+      - 'docs/tasks/OGE_CONCEPT_SKILL_MAPS_20261111.md'
+      - 'docs/reports/OGE_CONCEPT_SKILL_MAPS_20261111.md'
+      - '.github/workflows/oge-skills.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'oge/skills/**'
+      - 'foundations/route*'
+      - 'tools/oge-skills*'
+      - '.github/workflows/oge-skills.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: oge-concept-maps-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  content-and-state:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated DOM dependency
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-skills-state" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/oge-skills-state/node_modules" >> "$GITHUB_ENV"
+      - name: Independent mathematics, real native inventory, original bytes and persistence
+        run: |
+          node --test tools/oge-skills-content.test.cjs tools/oge-skills-notes.test.cjs tools/oge-skills.dom.cjs
+          node --test tools/foundations-routes.test.cjs tools/foundations-routes.dom.cjs
+          node tools/learning-preparation.test.cjs
+      - name: Public metadata and exact patch boundaries
+        env:
+          CHECK_BASE: ${{ github.event.pull_request.base.sha || github.event.before || '74e5d9ef921919c6bfb24712bc5284f9ffd5c5db' }}
+        run: |
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          git -c core.whitespace=trailing-space,space-before-tab,cr-at-eol diff --check "$CHECK_BASE" HEAD
+          git diff --stat "$CHECK_BASE" HEAD
+          git rev-parse HEAD
+  learner-journeys:
+    needs: content-and-state
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [maps, native]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned isolated Chromium
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-skills-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/oge-skills-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-skills-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Every map, fresh forms, notes, mobile and exact returns
+        if: matrix.suite == 'maps'
+        env:
+          OGE_SKILLS_INLINE_VISUALS: '1'
+        run: node tools/oge-skills.browser.cjs
+      - name: Every native entrance and all ten investigations through real controls
+        if: matrix.suite == 'native'
+        run: node tools/oge-skills-native.browser.cjs
+      - name: Gate marker
+        run: echo OGE_CONCEPT_SKILL_MAPS_OK
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-concept-skills-${{ matrix.suite }}
+          path: |
+            artifacts/oge-skills/
+            artifacts/oge-skills-native/
+          if-no-files-found: error
+          retention-days: 14
