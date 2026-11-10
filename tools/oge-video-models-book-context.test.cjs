@@ -1,25 +1,17 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
-const {receipt,geometryReceipt,pins,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
+const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
 const {entries,assets,snippet,restoreVideoModels}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..');
 const dom={count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label};
 const assetHashes=Object.fromEntries(assets.map(file=>['/'+file,hash(fs.readFileSync(path.join(ROOT,file)))]));
 const fixture=file=>({file,raw:fs.readFileSync(path.join(ROOT,file),'utf8'),id:pins.pages[file].bookId,prefix:'',visible:'Native condition. '+label+' Native footer.',dom:{...dom},assetHashes:{...assetHashes}});
-const CURRENT_SOURCE='aa5f27628d5c384e001df55334fc703e83e6f36e';
-test('native-byte pins independently match the historical and exact current sources and existing book routes',()=>{
+test('nine native-byte pins independently match the preserved89ee source and existing book routes',()=>{
  assert.equal(pins.baseCommit,'89ee66bfe5068f16364d61d091fcbf1a1cbd6287');
  assert.deepEqual(Object.keys(pins.pages).sort(),Object.values(entries).sort());
- assert.deepEqual(Object.keys(pins.pages).filter(file=>pins.pages[file].currentSource),[entries[11],entries[16]]);
  const book=JSON.parse(fs.readFileSync(path.join(ROOT,'scripts/oge-book-edition/urls.json')));
  for(const [file,pin] of Object.entries(pins.pages)){
   assert.equal(hash(execFileSync('git',['show',pins.baseCommit+':'+file],{cwd:ROOT})),pin.sha256,file);
-  if(pin.currentSource){
-   assert.equal(pin.currentSource.commit,CURRENT_SOURCE);
-   const candidate=execFileSync('git',['show',CURRENT_SOURCE+':'+file],{cwd:ROOT,encoding:'utf8'});
-   assert.equal(hash(restoreVideoModels(file,candidate)),pin.currentSource.sha256,file);
-   assert.notEqual(pin.currentSource.sha256,pin.sha256);
-  }
   assert.equal(entries[pin.task],file);
   assert.equal(book.find(row=>new URL(row.sourceUrl).pathname==='/'+file)?.id||null,pin.bookId,file);
  }
@@ -28,13 +20,22 @@ test('receipt accepts the exact middle-position closed summary on each covered s
  for(const file of Object.values(entries)){
   const x=fixture(file);if(!x.id){assert.throws(()=>receipt(x));continue;}
   const result=receipt(x);assert.equal(result.beforeText+result.label+result.afterText,x.visible);
-  const pin=pins.pages[file];
-  assert.equal(result.nativeSha256,(pin.currentSource||pin).sha256);
-  assert.equal(result.sourceBase,pin.currentSource?.commit||pins.baseCommit);
-  assert.equal(result.sourceSha256,hash(x.raw));
+  assert.equal(result.nativeSha256,sourcePin(file).sha256);assert.equal(result.sourceSha256,hash(x.raw));
  }
  const x=fixture(entries[11]);x.visible='🧭 '+x.visible;const result=receipt(x);
  assert.equal(result.offsetCodePoints,[...result.beforeText].length);assert.notEqual(result.offsetCodePoints,result.beforeText.length);
+});
+test('three worked-step source routes keep their pinned bytes and reject native mutations',()=>{
+ const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
+ assert.equal(updates.task,'docs/tasks/OGE18_STEPS_PAN_20261110.md');
+ assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19]].sort());
+ for(const file of Object.keys(updates.pages)){
+  const x=fixture(file), result=receipt(x);
+  assert.equal(result.sourceBase,sourcePin(file).sourceCommit);
+  for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
+   assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
+  }
+ }
 });
 test('the earlier sources of the two changed trainers still produce historical receipts',()=>{
  for(const number of [11,16]){
@@ -45,6 +46,19 @@ test('the earlier sources of the two changed trainers still produce historical r
   assert.equal(result.sourceBase,pins.baseCommit);
   assert.equal(result.nativeSha256,pin.sha256);
   assert.equal(result.sourceSha256,hash(x.raw));
+ }
+});
+test('feedback pins preserve both the previous worked steps and the exact composed source',()=>{
+ const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
+ const earlier=updates.pages[entries[16]],source=fixture(entries[16]);
+ source.raw=execFileSync('git',['show',earlier.sourceCommit+':'+source.file],{cwd:ROOT,encoding:'utf8'});
+ assert.equal(receipt(source).sourceBase,earlier.sourceCommit);
+ assert.deepEqual(Object.keys(pins.pages).filter(file=>pins.pages[file].currentSource),[entries[11],entries[16]]);
+ for(const number of [11,16]){
+  const file=entries[number], pin=pins.pages[file].currentSource;
+  const raw=execFileSync('git',['show',pin.commit+':'+file],{cwd:ROOT,encoding:'utf8'});
+  assert.equal(hash(restoreVideoModels(file,raw)),pin.sha256);
+  assert.equal(receipt(fixture(file)).sourceBase,pin.commit);
  }
 });
 test('one exact serialized L8 preview may be attested only inside the closed prediction container',()=>{

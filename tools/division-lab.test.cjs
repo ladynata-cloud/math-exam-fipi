@@ -104,7 +104,7 @@ function checkManaged(file,html){
 const base='/'+prefix;
 const guidedSources={
  [course]:['/trainers/oge-basics/learning-loader.js',base+'division-lab-core.js',base+'division-guided-core.js','/trainers/oge-basics/arithmetic-route.js',base+'decimal-shift.js',base+'multiplication-refresh.js',base+'division-guided.js','/trainers/oge-basics/navigation-minimal.js'],
- [searchEntry]:[base+'division-lab-core.js',base+'division-guided-core.js','/trainers/oge-basics/arithmetic-route.js','/trainers/long-division-entry.js',base+'decimal-shift.js',base+'multiplication-refresh.js','/trainers/oge-basics/basics-help.js',base+'division-guided.js','/trainers/oge-basics/navigation-minimal.js']
+ [searchEntry]:[base+'division-lab-core.js',base+'division-guided-core.js','/trainers/oge-basics/arithmetic-route.js','/trainers/long-division-entry.js',base+'decimal-shift.js',base+'multiplication-refresh.js','/trainers/oge-basics/basics-help.js',base+'division-guided.js','/trainers/oge-basics/navigation-minimal.js','/trainers/oge-basics/skill-support.js']
 };
 function checkGuided(file,html){
  const nodes=exerciseScripts(html,file),expected=guidedSources[file],hasBank=file===course;
@@ -152,6 +152,11 @@ rejects(course,'type="text/plain"','type="text/javascript"','reject reactivated 
 rejects(course,'division-guided-core.js','division-lab-core.js','reject missing guided core or duplicate dependency');
 rejects(searchEntry,'/trainers/long-division-entry.js','/trainers/oge-basics/arithmetic-route.js','reject removed public entry adapter');
 rejects(searchEntry,'defer></script>','async></script>','reject unordered runtime loading');
+// Division path adds exactly one reviewed, deferred prerequisite navigation helper.
+const supportTag='<script defer src="/trainers/oge-basics/skill-support.js?v=20261110"></script>';
+rejects(searchEntry,supportTag,'','reject missing prerequisite navigation');
+rejects(searchEntry,supportTag,supportTag+supportTag,'reject duplicate prerequisite navigation');
+rejects(searchEntry,supportTag,supportTag.replace('</script>','window.unexpected=true;</script>'),'reject inline helper payload');
 
 for(const file of [oneDigit,course,searchEntry]){
  rejects(file,'<script defer src="/assets/oge-wayfinding.js"></script>','', 'reject missing public return script');

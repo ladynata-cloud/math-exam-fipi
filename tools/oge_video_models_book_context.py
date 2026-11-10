@@ -5,6 +5,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
+UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
@@ -46,14 +47,15 @@ def verified_context(record):
                  '<script defer src="oge-video-geometry.js"></script>\n'
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if raw.count(block) != 1 or block + b'</head>' not in raw: return None
-        native_hash = sha(raw.replace(block, b'', 1))
-        if native_hash == pin['sha256']:
-            source_base = PINS['baseCommit']
-        elif native_hash == pin.get('currentSource', {}).get('sha256'):
-            source_base = pin['currentSource']['commit']
-        else:
-            return None
-        if context['sourceBase'] != source_base or context['nativeSha256'] != native_hash: return None
+        native = raw.replace(block, b'', 1)
+        native_hash = sha(native)
+        current = pin.get('currentSource', {})
+        reviewed = (dict(sourceCommit=current.get('commit'), sha256=current.get('sha256')),
+                    UPDATES['pages'].get(file, {}),
+                    dict(sourceCommit=PINS['baseCommit'], sha256=pin['sha256']))
+        if not any(source.get('sha256') == native_hash and source.get('sourceCommit') == context['sourceBase']
+                   for source in reviewed): return None
+        if context['nativeSha256'] != native_hash: return None
         if sha(raw) != context['sourceSha256']: return None
         if record['resources'][route]['sha256'] != context['sourceSha256']: return None
         if set(context['assets']) != set(ASSETS): return None

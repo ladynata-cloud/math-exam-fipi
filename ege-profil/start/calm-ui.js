@@ -30,9 +30,9 @@ function create(A){
  };}
  function secondPart(){
   if(!root.ProfileSecondPart)return root.ProfileCourse.card16();
-  return '<section class="journey-section" aria-labelledby="second-part-title"><div class="journey-section-title"><p class="eyebrow">Развёрнутое решение</p><h2 id="second-part-title">Вторая часть · №14–20</h2><p>Выберите линию. В карточке указано, какие материалы уже доступны.</p></div><div class="exam-grid second-part-grid">'+root.ProfileSecondPart.items.map(e=>{
+  return '<section class="journey-section" aria-labelledby="second-part-title"><div class="journey-section-title"><p class="eyebrow">Развёрнутое решение</p><h2 id="second-part-title">Вторая часть · №14–20</h2><p>Выберите линию: в каждом номере шесть тем с разбором и самостоятельными задачами.</p><p><a href="/ege-profil/part-two/index.html#progress">Мой прогресс второй части →</a></p></div><div class="exam-grid second-part-grid">'+root.ProfileSecondPart.items.map(e=>{
    const p=root.ProfileSecondPart.progress(e,storage);
-   return '<article class="exam-card" data-course-extra="'+e.number+'"><span class="exam-number">'+e.number+'</span><h2>'+esc(e.title)+'</h2><p>'+esc(e.goal)+'</p><p class="course-coverage">'+esc(e.coverage)+'</p>'+(e.legacyNumber?'<p class="small legacy-number-note">В материалах 2026 года: №'+e.legacyNumber+'.</p>':'')+'<p class="small course-card-status">'+esc(p.text)+'</p><div class="exam-card-actions"><a class="button" href="'+esc(e.href)+'">Открыть маршрут</a></div>'+(p.detail?'<details class="course-progress-detail"><summary>Как считается результат</summary><p>'+esc(p.detail)+'</p></details>':'')+'</article>';
+   return '<article class="exam-card" data-course-extra="'+e.number+'"><span class="exam-number">'+e.number+'</span><h2>'+esc(e.title)+'</h2><p>'+esc(e.goal)+'</p><p class="course-coverage">'+esc(e.coverage)+'</p>'+(e.legacyNumber?'<p class="small legacy-number-note">В материалах 2026 года: №'+e.legacyNumber+'.</p>':'')+'<p class="small course-card-status">Прежние материалы: '+esc(p.text)+'</p><div class="exam-card-actions"><a class="button" href="'+esc(e.href)+'">Открыть маршрут</a></div>'+(p.detail?'<details class="course-progress-detail"><summary>Как считается результат</summary><p>'+esc(p.detail)+'</p></details>':'')+'</article>';
   }).join('')+'</div></section>';
  }
  function overview(){

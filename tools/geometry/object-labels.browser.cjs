@@ -22,6 +22,7 @@ const output = process.env.GEOMETRY_OBJECT_LABEL_ARTIFACTS;
       for (const id of ['segments', 'trig-circle']) {
         await page.goto(pathToFileURL(path.join(root, 'geometry-course/atlas', id + '.html')).href);
         await page.locator('[data-stage="1"]').click();
+        await page.locator('.extra-tools summary').click();
         await page.locator('[data-tool="intersection"]').click();
         const first = await page.locator('.object-select option').first().textContent();
         assert.equal(first, id === 'segments' ? 'Отрезок AB' : 'Окружность с центром O через точку A');

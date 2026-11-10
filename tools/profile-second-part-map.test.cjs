@@ -5,10 +5,10 @@ const storage=values=>({getItem(key){return Object.hasOwn(values,key)?JSON.strin
 const rawStorage=raw=>({getItem(){return raw;},setItem(){throw Error('read-only');}});
 const work=(solved,extra={})=>({schema:1,step:solved.length,solved,answers:{},helps:[],errors:0,...extra});
 
-test('project 2027 has all seven second-part positions and explicit partial coverage',()=>{
+test('project 2027 has all seven second-part learning routes and retained resources',()=>{
  assert.deepEqual(M.items.map(x=>x.number),[14,15,16,17,18,19,20]);
  assert.deepEqual(M.items.map(x=>x.legacyNumber??null),[13,14,15,null,17,18,19]);
- assert.match(M.items.find(x=>x.number===17).coverage,/полный маршрут.*ещё не собран/);
+ for(const item of M.items){assert.equal(item.href,'/ege-profil/part-two/index.html#exam/'+item.number);assert.match(item.coverage,/6 учебных тем.*36 задач/);assert.ok(item.resources.length>=1);}
  for(const x of M.items){assert.ok(x.title&&x.goal&&x.coverage&&x.href);assert.ok(Array.isArray(x.resources));}
 });
 
@@ -20,7 +20,7 @@ test('every external destination exists and internal routes resolve to known top
   if(href.startsWith('#lesson/'))assert.ok(lessons.has(href.slice(8)),href);
   else if(href.startsWith('#calm/'))assert.ok(ctx.ProfileCalmData.exams.some(x=>x.number===Number(href.slice(6))),href);
   else if(href.startsWith('#'))assert.equal(href,'#exam/16');
-  else{assert.ok(href.startsWith('/'));assert.ok(fs.statSync(path.join(root,href.split('?')[0])).isFile(),href);}
+  else{assert.ok(href.startsWith('/'));assert.ok(fs.statSync(path.join(root,href.split(/[?#]/)[0])).isFile(),href);}
  }
 });
 

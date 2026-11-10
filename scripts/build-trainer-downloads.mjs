@@ -109,6 +109,8 @@ function fixLocalAssetLinks(html) {
 function inlineTrainerAssets(html, entry) {
   if (!Array.isArray(entry.inlineAssets) || !entry.inlineAssets.length) return html;
   const sources = new Map(entry.inlineAssets.map(sitePath => [sitePath, fs.readFileSync(repoPath(sitePath), "utf8")]));
+  // Explicit online-only enhancements must not leave broken file:// requests.
+  const omitted = new Set(entry.offlineOmitAssets || []);
   // Optional reference screenshots stay available in the standalone HTML offline.
   for (const imagePath of entry.inlineImageAssets || []) {
     if (!imagePath.endsWith('.png')) throw new Error(`Unsupported inline image: ${imagePath}`);
@@ -126,6 +128,7 @@ function inlineTrainerAssets(html, entry) {
   const siteRef = ref => path.posix.resolve(path.posix.dirname(entry.sourceHtml), ref.split(/[?#]/)[0]);
   html = html.replace(/<script\b[^>]*\bsrc="([^"]+)"[^>]*>\s*<\/script>/gi, (tag, ref) => {
     const key = siteRef(ref);
+    if (omitted.has(key)) return "";
     // Standalone downloads have no authenticated parent or server-side attempt.
     // Omit these managed-only integrations so file:// never requests website assets.
     if (key === "/trainers/learning-bridge.js" || key === "/trainers/oge-learning.js") return "";
@@ -137,6 +140,7 @@ function inlineTrainerAssets(html, entry) {
   html = html.replace(/^[\t ]+$/gm, "");
   html = html.replace(/<link\b[^>]*\brel="stylesheet"[^>]*\bhref="([^"]+)"[^>]*>/gi, (tag, ref) => {
     const key = siteRef(ref);
+    if (omitted.has(key)) return "";
     if (!sources.has(key)) return tag;
     used.add(key);
     return `<style data-inline-source="${key}">\n${sources.get(key).replace(/<\/style/gi, "<\\/style")}\n</style>`;
