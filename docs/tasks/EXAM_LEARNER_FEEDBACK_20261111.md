@@ -58,6 +58,7 @@ Targeted additions:
 - tools/oge-practical-empty-input.browser.cjs: actual focus and feedback at 320/1280, plus the downloadable package.
 - tools/ege-baza-concrete-hints.test.cjs: actual expressions and retained generated contracts.
 - tools/profile-part2-context-hints.test.cjs: mathematical semantics and no answer disclosure.
+- tools/oge-course-native-events.browser.cjs: fully populate multi-field practical answers before requiring publication; separately assert that incomplete input preserves state, publications and focus.
 
 The local execution environment is unavailable. Pure JavaScript calculations and syntax checks were executed in V8; these are not reported as Node, DOM or browser runs. Full project tests run in GitHub Actions on the assembled candidate. CI must include a real git diff --check. No failing or unrun check is relabeled as passing.
 
@@ -75,9 +76,9 @@ Rollback: revert the eventual task merge through a normal reviewed commit, resto
 
 ## Permissions and release
 
-The current owner's continuation request is the task START and approved scope.
-Branch, commits, push and Draft PR are authorized. The [standing publication policy](../OWNER_RELEASE_AUTHORIZATION.md) applies after successful checks.
-Immediately before release, re-read current main and PR head. Any drift requires classification, virtual composition and affected checks. Controlled merge, deployment verification and live checks follow mathexam-release. No new owner permission is needed solely because publication or routine branch maintenance is next.
+The current owner's continuation request started and authorized this bounded task. Branch, scoped commits, push and Draft PR remain authorized.
+The owner subsequently supplied stricter AGENTS.md instructions during this task: stop at a reviewed Draft PR; merge, auto-merge and deployment require separate explicit owner authorization. Those current task instructions supersede the earlier standing publication policy. No merge or deployment is authorized by this task.
+Immediately before any separately authorized merge, query authoritative remote main and PR head. A changed authorized base invalidates that authorization: inspect a read-only virtual merge, classify concurrent commits and rerun affected gates; request new explicit authorization for the newly reviewed pair. Do not automatically repair or synchronize the branch after such drift.
 No force, rebase, reset, access-control override or weakened gate is permitted.
 
 ## Execution record
