@@ -27,7 +27,8 @@ function columns(a,b,sign){
 }
 function numberModel(value){
  const ds=String(value).padStart(4,'0').split(''),names=['Тысячи','Сотни','Десятки','Единицы'];
- return table(['Разряд',...names],[['Цифра',...ds]],names.map((name,i)=>E('cell-0-'+(i+1),name,`Размер этого разряда в обычных единицах: ${10**(3-i)}. Пустой разряд обозначают нулём.`)));
+ const descriptions=['Одна тысяча — это 1000 единиц.','Одна сотня — это 100 единиц.','Один десяток — это 10 единиц.','Единицы — крайний правый разряд.'];
+ return table(['Разряд',...names],[['Цифра',...ds]],names.map((name,i)=>E('cell-0-'+(i+1),name,descriptions[i]+' Пустой разряд обозначают нулём.')));
 }
 function make(q,answer,steps,params,model){
  const final=steps.at(-1),choices=final.choices&&String(final.a)===String(answer)?final.choices.map(c=>({...c})):null;
@@ -38,11 +39,17 @@ function placeValue(n,mode){
  const value=1000*thousands+10*tens+units;
  if(mode===0){
   const position=n%4,weights=[1000,100,10,1],digits=[thousands,0,tens,units],names=['тысяч','сотен','десятков','единиц'];
-  return make(`Каков вклад цифры в разряде ${names[position]} числа ${value}?`,digits[position]*weights[position],[
-   S(`Сколько единиц содержит один разряд ${names[position]}?`,weights[position],'Веса разрядов справа налево: 1, 10, 100, 1000.'),
+  const params={mode,value,position},model=numberModel(value);
+  if(position===3){
+   const question=`Какая цифра стоит в разряде единиц числа ${value}?`;
+   return make(question,units,[S('Запиши цифру из столбца «Единицы».',units,'Посмотри на крайнюю правую цифру числа.')],params,model);
+  }
+  const group=['одна тысяча','одна сотня','один десяток'][position];
+  return make(`Какое значение имеет цифра в разряде ${names[position]} числа ${value}?`,digits[position]*weights[position],[
+   S(`Сколько единиц составляет ${group}?`,weights[position],'Сейчас считаем единицы в одной группе. Цифра в числе покажет, сколько таких групп.'),
    S(`Какая цифра стоит в разряде ${names[position]}?`,digits[position],'Найди нужный столбец таблицы. Нулевая цифра тоже занимает место.'),
-   S('Чему равен вклад этой цифры в число?',digits[position]*weights[position],'Умножь цифру на вес её разряда. Вклад нулевой цифры равен нулю.')
-  ],{mode,value,position},numberModel(value));
+   S(`Какое значение имеет цифра в разряде ${names[position]} числа ${value}?`,digits[position]*weights[position],'Умножь цифру на число единиц в одной группе. Если в этом разряде стоит 0, значение цифры равно 0.')
+  ],params,model);
  }
  if(mode===1){
   const hundreds=1+Math.floor(n/9)%9,value2=1000*thousands+100*hundreds+units;

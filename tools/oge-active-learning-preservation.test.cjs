@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {createHash} = require('node:crypto');
+const {execFileSync} = require('node:child_process');
 const {routes, assets, includeBlock, restoreActiveLearningIncludes} = require('./oge-active-learning-preservation.cjs');
 const {restoreVideoModels}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionExplanation} = require('./oge7-fraction-explanation-preservation.cjs');
@@ -21,6 +22,7 @@ const nativeHashes = Object.freeze({
   11: '1fc5b5736e68acfb289a97b2409a7f646ffad3ed11edc39a30b58a823e265b37',
   12: 'aa017e456d48c7bb11ee388a4fa5e0ce73fb7b80a06e86654c4dcd3134a08dc5'
 });
+const updates = require('./fixtures/oge-active-learning-native-updates.json');
 const sha = source => createHash('sha256').update(source).digest('hex');
 const nativeSource = (number, file, raw) => {
   const source = restoreActiveLearningIncludes(file, restoreVideoModels(file, raw));
@@ -29,8 +31,16 @@ const nativeSource = (number, file, raw) => {
 };
 for (const [number, file] of Object.entries(routes)) {
   const raw = fs.readFileSync(path.join(root, file), 'utf8');
+  const update = updates[number], expected = update?.sha256 || nativeHashes[number];
+  if (update) test(number + ': successor native bytes are pinned to the exact reviewed source', () => {
+    assert.equal(update.file, file);
+    const source = execFileSync('git', ['show', update.sourceCommit + ':' + file], {cwd: root, encoding: 'utf8'});
+    assert.equal(sha(restoreVideoModels(file, source)), expected);
+    const historical = execFileSync('git', ['show', '463d6bf56fc8f1f944da8d237102f77888711e79:' + file], {cwd: root});
+    assert.equal(sha(historical), nativeHashes[number]);
+  });
   test(number + ': exact three includes preserve the entire published lesson', () => {
-    assert.equal(sha(nativeSource(number, file, raw)), nativeHashes[number]);
+    assert.equal(sha(nativeSource(number, file, raw)), expected);
     for (const asset of assets) assert(fs.statSync(path.join(root, asset)).isFile(), asset);
   });
   test(number + ': inverse rejects altered, partial, duplicate and executable includes', () => {
@@ -44,7 +54,7 @@ for (const [number, file] of Object.entries(routes)) {
       raw.replace(block, block + '<script src="oge-active-learning-extra.js"></script>\n')
     ]) assert.throws(() => restoreActiveLearningIncludes(file, restoreVideoModels(file, invalid)));
     const changedEngine = raw.replace('</script>', '\nvoid "unreviewed native change";\n</script>');
-    assert.notEqual(sha(nativeSource(number, file, changedEngine)), nativeHashes[number], 'extra native bytes remain visible to the historical hash');
+    assert.notEqual(sha(nativeSource(number, file, changedEngine)), expected, 'extra native bytes remain visible to the historical hash');
   });
 }
 test('the inverse cannot normalize another route', () => {

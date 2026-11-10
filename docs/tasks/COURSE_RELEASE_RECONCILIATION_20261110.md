@@ -95,3 +95,15 @@ The EGE base DOM and browser suites passed across all 111 existing families.
 The illustrated course entrances passed all 12 interactive routes. The
 Alimov, Peterson and Makarychev DOM/state suites and the exact fixed-book
 closure and OGE source-pin suites passed.
+
+The updated candidate retains the checked construction, diagrams and answer
+feedback work in #533/#534 and the one-step place-value fix in #538. The
+geometry atlas was regenerated with both the new investigations and the shared
+construction controls. The native OGE revisions for №9 and №11 remain
+independently bound to the published #543 and approved #534 sources. Existing
+historical checks remain unchanged for the fixed books.
+
+GIF links follow the textbook route's next-step card, so the primary action is
+visible at 320 px. Compact EGE navigation keeps the question, diagram, answer
+and check button in the initial mobile viewport. The OGE explanation browser
+tests use deterministic reviewed exercise families and the original assertions.

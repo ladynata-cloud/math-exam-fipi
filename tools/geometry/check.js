@@ -5,6 +5,17 @@ assert.deepEqual(C.units.flatMap(u=>u.points).sort((a,b)=>a-b),Array.from({lengt
 for(const u of C.units){assert.ok(P[u.proof]);assert.ok(fs.existsSync(root+'/geometry-course/atlas/'+u.id+'.html'));for(const r of u.requires)assert.ok(C.units.some(z=>z.id===r));const seen=new Set();for(const s of P[u.proof].steps){assert.ok(s.depends.every(x=>seen.has(x)));seen.add(s.id);}for(let seed=0;seed<200;seed++){const t=T.task(u.calc,seed);assert.ok(T.equal(T.format(t.answer),t.answer),u.id);for(const st of t.steps)assert.ok(T.equal(T.format(st.answer),st.answer));n+=t.steps.length+1;}}
 for(const [v,a] of [['-2^2',-4],['(-2)^2',4],['2*pi',2*Math.PI],['sqrt(2)^2',2],['1/2+1/3',5/6],['-3--2',-1],['0,125',.125]])near(T.number(v),a);
 for(const v of ['Infinity','NaN','1/0','sqrt(-1)','alert(1)','1+','2**3','(2','9^99'])assert.throws(()=>T.number(v));
+const answerFormats=[
+ {answer:T.task('angle',1).steps[0].answer,yes:['∠ACB','АСВ','∠BCA'],no:['∠ACD','∠ABC','A′CB']},
+ {answer:T.task('midpoint',1).steps[0].answer,yes:['PA=PB','PB и PA','РА = РВ','AP=BP'],no:['PA=AB','PA≈PB','PA′=PB']},
+ {answer:T.task('right30',1).steps[0].answer,yes:['половина','1/2'],no:['половина длины','1/3']},
+ {answer:T.task('coordinates',1).answer,yes:['(7; −2)','7; -2','(6+1);(-2)'],no:['(-2; 7)','(7; 2)','(7; -2']},
+ {answer:T.task('arc',1).answer,yes:['6π','6pi','6*pi'],no:['6ππ','π6','12π']},
+];
+for(const {answer,yes,no} of answerFormats){
+ for(const value of yes){assert.equal(T.equal(value,answer),true,value);n++;}
+ for(const value of no){assert.equal(T.equal(value,answer),false,value);n++;}
+}
 for(const fig of ['triangle','iso','right','rectangle','square','rhombus','trapezoid'])for(let i=0;i<100;i++){const b=new G.Board(G.scene(fig));b.move('B',350+i,210+i*.8);const A=b.point('A'),B=b.point('B'),C=b.point('C'),D=b.point('D');if(fig==='iso')near(G.dist(A,C),G.dist(B,C));if(fig==='right')near(G.dot(G.sub(A,C),G.sub(B,C)),0,1e-6);if(['rectangle','square'].includes(fig))near(G.dot(G.sub(B,A),G.sub(D,A)),0,1e-6);if(['rhombus','square'].includes(fig))near(G.dist(A,B),G.dist(A,D));if(fig==='trapezoid')near(G.cross(G.sub(B,A),G.sub(C,D)),0,1e-6);}
 for(let i=0;i<100;i++){const b=new G.Board(G.scene('triangle'));const m=b.make('midpoint',['A','B'])[0];b.move('A',50+i,150+i);near(G.dist(b.point('A'),b.point(m)),G.dist(b.point('B'),b.point(m)));assert.ok(b.goal('midpoint').ok);b.make('segment',['C',m]);assert.ok(b.goal('median').ok);b.make('perpendicular',['C','A','B']);assert.ok(b.goal('altitude').ok);const r=b.make('reflection',['C','A','B'])[0],h=G.foot(b.point('C'),b.point('A'),b.point('B'));near(G.dist(b.point('C'),h),G.dist(b.point(r),h));b.make('parallel',['C','A','B']);assert.ok(b.goal('parallel').ok);}
 const b=new G.Board(G.scene('segment'));b.addPoint(320,235);assert.equal(b.goal('midpoint').ok,false);b.make('circle',['A','B']);b.make('circle',['B','A']);let os=b.objects.filter(o=>o.type==='circle');const pts=b.make('intersection',os.map(o=>o.id));b.make('line',pts);assert.ok(b.goal('perpbisector').ok);b.move('B',470,185);assert.ok(b.goal('perpbisector').ok);b.undo();assert.ok(!b.goal('perpbisector').ok);
@@ -29,7 +40,8 @@ for(const reverse of [false,true]){
  b.undo();assert.equal(b.goal('perpendicular').ok,false);
 }
 const onLine=new G.Board(G.scene('segment'));onLine.move('C',300,235);onLine.make('perpendicular',['C','A','B']);assert.equal(onLine.goal('perpendicular').ok,true);
-const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,false);
+const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,true); // A perpendicular remains defined when its source reaches AB.
+const cg=collapsed.geometry(collapsed.objects.at(-1));near(G.dot(G.sub(cg.q,cg.p),G.sub(collapsed.point('B'),collapsed.point('A'))),0);
 // Write denial must retain work for export, including later edits and imports.
 const originalStorage=globalThis.localStorage;
 try{

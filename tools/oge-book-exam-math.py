@@ -38,6 +38,8 @@ ACTIVE_NATIVE = {
     12: ('formulas-trainer', 'aa017e456d48c7bb11ee388a4fa5e0ce73fb7b80a06e86654c4dcd3134a08dc5'),
 }
 
+ACTIVE_NATIVE_UPDATES = json.loads((ROOT / 'tools/fixtures/oge-active-learning-native-updates.json').read_text())
+
 def active_include_hash(number):
     return digest('<link rel="stylesheet" href="oge-active-learning.css?v=20261109">\n'
                   '<script defer src="oge-active-learning-data.js?v=20261109"></script>\n'
@@ -54,7 +56,10 @@ def retained_active_text(record, text):
     if record.get('route') != route or record.get('finalPath') != route:return None
     if not record.get('publicWayfinding') or witness.get('kind') != 'oge-active-learning-v1':return None
     if witness.get('collapsed') is not True or witness.get('visibleText') != 'Разобраться на опыте':return None
-    if witness.get('includeBlockSha256') != active_include_hash(number) or witness.get('preservedNativeSha256') != native_hash:return None
+    update = ACTIVE_NATIVE_UPDATES.get(str(number))
+    approved_hashes = {native_hash}
+    if update and '/' + update['file'] == route: approved_hashes.add(update['sha256'])
+    if witness.get('includeBlockSha256') != active_include_hash(number) or witness.get('preservedNativeSha256') not in approved_hashes:return None
     marker = ' Разобраться на опыте '
     padded = ' '+text+' '
     if padded.count(marker) != 1:return None

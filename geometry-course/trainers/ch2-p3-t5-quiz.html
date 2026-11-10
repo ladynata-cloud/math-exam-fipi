@@ -20,6 +20,7 @@ body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',
 .topic{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#64748b;font-weight:800;margin-bottom:6px}
 .q{font-size:17px;line-height:1.45;font-weight:700;color:#1a1a2e;margin-bottom:16px}
 .q b{color:#0c447c}
+.q-diagram:not([hidden]){display:block;width:100%;max-width:320px;height:auto;margin:0 auto 14px;background:#f6f8fa;border-radius:10px}
 .opts{display:flex;flex-direction:column;gap:9px}
 .opt{text-align:left;border:1.5px solid #d1d5db;border-radius:12px;background:#fff;padding:13px 15px;font:600 14.5px/1.45 system-ui;color:#1f2937;cursor:pointer}
 .opt:hover{border-color:#2d70b3;background:#f0f7ff}
@@ -71,6 +72,7 @@ body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',
   <div class="body" id="bodyArea">
     <div class="topic" id="topic"></div>
     <div class="q" id="qtext"></div>
+    <img class="q-diagram" id="qdiagram" width="320" height="130" alt="" hidden>
     <div class="opts" id="opts"></div>
     <div class="msg" id="msg"></div>
     <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
@@ -126,11 +128,13 @@ const QS=[
    {t:'AB',ok:false,why:'AB соответствует NM (A↔N, B↔M).'},
    {t:'BC',ok:false,why:'BC соответствует MK (B↔M, C↔K). А NK ↔ AC.'}]},
  {topic:'Различение', q:'На чертеже отмечены <b>две стороны и угол между ними</b>. Каким признаком пользуемся?',
+  diagram:'sas', diagramAlt:'У треугольников ABC и NMK засечки обозначают AB = NM и AC = NK. Дуги обозначают равные углы при A и N.',
   opts:[
    {t:'Первым признаком',ok:true},
    {t:'Вторым признаком',ok:false,why:'второй — это сторона и два угла при ней, а здесь две стороны и угол между.'},
    {t:'Данных не хватает',ok:false,why:'данных достаточно: две стороны и угол между ними — это первый признак.'}]},
  {topic:'Различение', q:'На чертеже отмечены <b>сторона и два прилежащих к ней угла</b>. Каким признаком пользуемся?',
+  diagram:'asa', diagramAlt:'У треугольников ABC и NMK засечки обозначают AB = NM. Дуги обозначают равные углы при A и N, двойные дуги — при B и M.',
   opts:[
    {t:'Вторым признаком',ok:true},
    {t:'Первым признаком',ok:false,why:'первый — это две стороны и угол между ними, а здесь сторона и два угла.'},
@@ -153,6 +157,11 @@ function render(){
   const q=curQ();
   el('topic').textContent=q.topic;
   el('qtext').innerHTML=q.q;
+  const diagram=el('qdiagram');
+  diagram.hidden=!q.diagram;
+  diagram.alt=q.diagramAlt||'';
+  if(q.diagram) diagram.src='../assets/quiz-congruence-'+q.diagram+'.svg';
+  else diagram.removeAttribute('src');
   el('msg').className='msg';el('msg').innerHTML='';
   el('nextBtn').style.display='none';
   el('pf').style.width=Math.round(qi/QS.length*100)+'%';

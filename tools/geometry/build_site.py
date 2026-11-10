@@ -1,4 +1,4 @@
-"""Reproducible offline HTML builder. No external script, font or image requests."""
+"""Reproducible HTML builder with bundled lesson assets and public navigation."""
 import json,html,csv,io,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]; D=ROOT/'geometry-course'; A=D/'assets'
@@ -88,7 +88,7 @@ for u in units:
   investigation='Проведи высоту из вершины C к основанию AB равнобедренного треугольника. Двигай вершины: какие ещё роли выполняет эта высота? Объясни, почему основание высоты делит AB пополам.'
  if u['id']=='triangle-sas':investigation='Предскажи, сколько треугольников задают две стороны и угол, затем сравни оба расположения угла на модели.'
  cfg=dict(unit=u,proof=proofs[u['proof']],catalog=catalog,investigation=investigation,experiment=experiments.get(u['id']))
- scripts=data('COURSE_CONFIG',cfg)+''.join(js(f) for f in ['geometry.js','lab.js','experiments.js','tasks.js','store.js'])
+ scripts=data('COURSE_CONFIG',cfg)+''.join(js(f) for f in ['geometry.js','lab.js','experiments.js','tasks.js','store.js','proof-diagrams.js'])
  if u['id'] in UPGRADED:scripts+=js('congruence.js')+js('investigations.js')
  scripts+=lesson_script(u['id'] in UPGRADED)
  (D/'atlas'/f"{u['id']}.html").write_text(shell(u['title'],body,scripts,u['id']))

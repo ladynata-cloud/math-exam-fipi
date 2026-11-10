@@ -56,7 +56,11 @@ test('a learner can correct an error with optional help; duplicate submissions c
   t.el('m4-check').click();assert.equal(t.run('M4.attempts'),1);
   t.el('m4-hint').click();t.answer(key.join(''));
   assert.equal(t.saved()['oge-t11-grafiki'].solvedByType[type],1);assert.match(t.el('m4-good').textContent,/Верно/);
-  assert(t.el('m4-answer').disabled);t.el('m4-check').click();assert.equal(t.saved()['oge-t11-grafiki'].solvedByType[type],1);
+  assert(t.el('m4-answer').disabled);assert(t.el('m4-check').hidden);
+  const next=t.el('m4-next');assert.equal(next.textContent,'Следующее задание →');assert(next.classList.contains('btn-primary'));
+  assert.equal(next.parentElement,t.el('m4-check').parentElement);
+  t.el('m4-check').click();assert.equal(t.saved()['oge-t11-grafiki'].solvedByType[type],1);assert(!t.el('m4-soft').classList.contains('show'));
+  next.click();assert(!t.el('m4-check').hidden);assert.equal(next.textContent,'Другое задание →');assert(!next.classList.contains('btn-primary'));
   assert.deepEqual(t.errors,[]);
  }finally{t.dom.window.close();}
 });

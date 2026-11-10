@@ -1728,7 +1728,7 @@ function renderTrain(){
     <div class="task">${t.text}</div>
     <div class="controls"><input class="ans" id="ans" inputmode="decimal" placeholder="ответ" autocomplete="off">
       <button id="check">Проверить</button>
-      <button class="soft" id="giveup" style="display:none">Сдаюсь — решение</button>
+      <button class="soft" id="giveup" style="display:${trAtt<=0&&!trDone?'':'none'}">Сдаюсь — решение</button>
       <button class="blue" id="next" style="display:none">Следующая →</button></div>
     <div class="fb" id="fb" role="status" aria-live="polite"></div>
     ${solHtml(t,false)}
@@ -1741,7 +1741,8 @@ function renderTrain(){
   }));
   const off=$('#trSubOff'); if(off)off.addEventListener('click',()=>{trSubOnly=null;trTask=null;render();});
   const fb=$('#fb'), inp=$('#ans');
-  const finish=(good)=>{trDone=true;inp.disabled=true;$('#check').disabled=true;$('#next').style.display='';$('#giveup').style.display='none';
+  const setSolutionAvailable=available=>$$('#giveup, #openSolution').forEach(button=>{button.style.display=available?'':'none';});
+  const finish=(good)=>{trDone=true;inp.disabled=true;$('#check').disabled=true;$('#next').style.display='';setSolutionAvailable(false);
     CP.saveRec(rec=>{const tr=CP.isObj(rec.train)?rec.train:{};
       rec.train={solved:CP.num(tr.solved)+1,good:CP.num(tr.good)+(good?1:0),bad:CP.num(tr.bad)+(good?0:1)};});
     st=loadSt(); updStats();};
@@ -1762,9 +1763,10 @@ function renderTrain(){
       if(!trMissed){trMissed=true;CP.mlog(t.k,false);}
       const d=matchDiag(v,t.diag);
       fb.className=d?'fb diag show':'fb bad show';
-      fb.innerHTML=(d||'Пока неверно. Взгляните на чертёж: что дано и на какую дугу или отрезок опирается искомое?')+(trAtt>0?` <i>(осталась ${trAtt} попытка)</i>`:'');
+      const nextAction=trAtt>0?'После ещё одной ошибки можно открыть решение.':`Можно попробовать ещё раз или нажать «${($('#openSolution')||$('#giveup')).textContent}».`;
+      fb.innerHTML=(d||'Пока неверно. Взгляните на чертёж: что дано и на какую дугу или отрезок опирается искомое?')+' '+nextAction;
       logEv('opt_wrong',{sub:t.k,pick:v});
-      if(trAtt<=0){$('#giveup').style.display='';}
+      if(trAtt<=0)setSolutionAvailable(true);
     }
   });
   $('#giveup').addEventListener('click',()=>{
@@ -2173,7 +2175,12 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
       next.textContent=step===currentTask.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+currentTask.sol.length+')';next.disabled=step===currentTask.sol.length;
     };
     bindRefcalls();
-    const show=document.getElementById('giveup'),complete=MinimalGeometry.disclosure(help.panel,[show]);complete.hidden=true;
+    const show=document.getElementById('giveup');
+    const direct=show.cloneNode(false);direct.id='openSolution';direct.textContent='Показать решение';
+    // Both entry points use the native action, which the shared board records and replays.
+    direct.addEventListener('click',()=>show.click());show.before(direct);
+    const complete=MinimalGeometry.disclosure(help.panel,[show]);
+    complete.hidden=show.style.display==='none';
     document.getElementById('check').addEventListener('click',()=>{complete.hidden=show.style.display==='none';});
   };
   switchTab('train');

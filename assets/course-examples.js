@@ -89,7 +89,7 @@
   }
   function catalogue(host,course) {
     const list=items.filter(t=>t.course===course);if(!list.length||!host)return;
-    const anchor=host.querySelector('.lead')||host.querySelector('h1');if(!anchor)return;
+    const anchor=host.querySelector('.lr-next')||host.querySelector('.lead')||host.querySelector('h1');if(!anchor)return;
     const section=document.createElement('section');section.className='ce-native-link';
     section.innerHTML='<h2>Понять на одном примере</h2><ul class="ce-links">'+list.map(t=>'<li><a href="'+escape(t.url)+'">'+escape(t.short)+'</a></li>').join('')+'</ul>';
     anchor.insertAdjacentElement('afterend',section);
