@@ -2910,6 +2910,10 @@ window.Task11Learning = (() => {
       if(!a){note('В этом браузере сохранён более новый формат работы. Продолжай на странице; прежние записи сохранены.');available=false;return false;}
       const latest=readRevision(module,a),ex=expected[module];
       if(ex&&(latest.rev!==ex.rev||latest.id!==ex.id)){note('В другой вкладке появилась более свежая работа.');loadFresh(module);return false;}
+      // Resuming is a display hint, not a new learning action. Ignore old
+      // persisted copies of that transient flag when checking for changes.
+      if(obj(a.draft[module]))delete a.draft[module].resumed;
+      const before=JSON.stringify(a);
       const seen=a.seenKeys.find(x=>x.taskKey===s.taskKey);
       if(seen&&seen.id!==s.id)s.fresh=false;
       if(!seen){if(a.seenKeys.length<MAX_SEEN)a.seenKeys.push({taskKey:s.taskKey,id:s.id});else{a.seenFull=true;s.fresh=false;}}
@@ -2917,8 +2921,13 @@ window.Task11Learning = (() => {
         record.fresh=s.fresh;record.outcome=!s.fresh?'familiar':s.helpUsed?'helped':s.wrong?'corrected':'independent';
         a.attempts.push(record);a.attempts=a.attempts.slice(-MAX_ATTEMPTS);s.outcome=record.outcome;
       }
-      s.state=snapshot(module);s.rev=(ex?.rev||0)+1;a.draft[module]=copy(s);a.resume=resume(a);
+      s.state=snapshot(module);s.rev=ex?.rev||0;
+      const draft=copy(s);delete draft.resumed;a.draft[module]=draft;a.resume=resume(a);
       const active=document.querySelector('section.module.active')?.id;if(MODULES.includes(active))a.activeModule=active;
+      // pagehide still flushes an unsaved input, but an unchanged snapshot
+      // must not advance its revision or echo a write after reload.
+      if(JSON.stringify(a)===before){available=true;return true;}
+      s.rev++;draft.rev=s.rev;
       ext.auditLearning=a;rec.ext=ext;all[TID]=rec;localStorage.setItem(CP.KEY,JSON.stringify(all));
       const actual=CP.ext().auditLearning?.draft?.[module];stored=actual?.id===s.id&&actual.rev===s.rev;
     }catch(_){stored=false;}

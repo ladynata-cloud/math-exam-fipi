@@ -670,6 +670,10 @@ function saveProofDraft(){
     // Another tab may have started a newer task. Never replace that draft
     // from an old tab; explicit task selection is the only ownership change.
     if(!claim&&(a.draft?.attemptId!==ST.attemptId||a.draft?.revision!==ST.revision))return false;
+    // Leaving an already saved page is not a new revision or learning action.
+    // Compare content only; a dirty current draft still gets its final save.
+    if(CP.isObj(a.draft)&&Object.keys(snapshot).every(key=>key==='revision'||key==='at'||
+      JSON.stringify(a.draft[key])===JSON.stringify(snapshot[key])))return false;
     a.draft=snapshot;
     ST.revision=snapshot.revision;
     const hasWork=!!(ST.workStarted||ST.order.length||ST.auditErrors||ST.helpUsed||ST.noteEdited);

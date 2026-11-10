@@ -16,6 +16,12 @@ class Local extends ResourceLoader {
     return file.startsWith(ROOT + path.sep) && fs.existsSync(file) ? Promise.resolve(fs.readFileSync(file)) : null;
   }
 }
+class SharedLocal extends Local {
+  fetch(url) {
+    if(new URL(url).pathname==='/trainers/board-bridge.js')return Promise.resolve(Buffer.from('window.MathExamBoard={register(c){window.__registration=c;window.__notifications=0;c.subscribe(()=>window.__notifications++);}};'));
+    return super.fetch(url);
+  }
+}
 async function boot(t, options = {}) {
   const errors = [], vc = new VirtualConsole();
   vc.on('jsdomError', error => { if (!/Not implemented/.test(error.message)) errors.push(error.message); });
@@ -24,7 +30,7 @@ async function boot(t, options = {}) {
   const dom = new JSDOM(HTML, {
     url:'https://mathexam.test/trainers/oge-task22-functions-graphs.html' + (options.query || ''),
     runScripts:'dangerously', pretendToBeVisual:true, virtualConsole:vc,
-    ...(options.external ? {resources:new Local()} : {}),
+    ...(options.external ? {resources:options.board?new SharedLocal():new Local()} : {}),
     beforeParse(w) {
       w.scrollTo=()=>{}; w.HTMLElement.prototype.scrollIntoView=()=>{}; w.__TESTHOOK__=true;
       w.Math.random=()=> options.fixedSeed === undefined ? ((seed=(1664525*seed+1013904223)>>>0)/4294967296) : options.fixedSeed/4294967296;
@@ -69,6 +75,11 @@ function fillCorrect(f,host){
   }else for(const value of problem.vals){button(input,'+ значение').click();f.input([...input.querySelectorAll('.v-dec')].at(-1),value.toString());}
 }
 function graph(f,problem){const view=f.api.makeGraphView(true);f.d.body.append(view.el);view.show(problem);return view;}
+function sharedProblem(f,seed){
+  const previous=f.w.Math.random;let value=seed;
+  f.w.Math.random=()=>{value+=0x6D2B79F5;let n=value;n=Math.imul(n^(n>>>15),n|1);n^=n+Math.imul(n^(n>>>7),n|61);return ((n^(n>>>14))>>>0)/4294967296;};
+  try{return f.api.MODULES[0].gen();}finally{f.w.Math.random=previous;}
+}
 function exact(f,view,value){f.input(view.el.querySelector('.graph-exact-input'),value);button(view.el,'Поставить точно').click();return Number(view.el.querySelector('.badge-t2').textContent);}
 function problemInv(f,a=3,b=5){const {Fr}=f.api,xh=Fr(-b,a);return {kind:'hyperbola',sub:'inv_kx',a,b,xh,yh:Fr(1).div(xh),varname:'k',target:1};}
 function problemShift(f,C=2,p=3){const {Fr}=f.api;return {kind:'hyperbola',sub:'shift_m',C,p,xh:Fr(-p),varname:'m',target:0};}
@@ -77,6 +88,48 @@ function oldStorage(){return {[KEY]:{
   unrelated:{v:1,solvedByType:{x:3},ext:{preserve:true}},
   [TID]:{v:1,updatedAt:123,solvedByType:{legacy:9},ext:{skills:{kept:7},unrelated:{keep:['a',2]}}}
 },[LEGACY]:{m1:{solved:12,tries:18,foreign:'yes'},m3:{solved:4,tries:6},unrelated:{keep:true}}};}
+
+test('initial horizontal parameter stays inside slider bounds when every critical height has the same sign',async t=>{
+  const f=await boot(t);
+  for(const [seed,critical]of [[46,['-6','-23/4','-3']],[24,['4','8','14']]]){
+    const p=sharedProblem(f,seed),v=graph(f,p),slider=v.el.querySelector('.mslider');
+    assert.deepEqual(Array.from(f.api.criticalParameters(p),x=>x.toString()),critical,'actual production seed');
+    assert(Number(slider.min)<=0&&Number(slider.max)>=0,'the initial horizontal line is a reachable slider value');
+    assert.equal(slider.value,'0');assert.equal(v.getState().parameter,'0');
+    assert.equal(v.el.querySelector('.graph-exact-input').value,'0');
+    assert.equal(v.el.querySelector('.slider-lab').textContent,'y = 0');
+    assert.equal(v.el.querySelector('.measure-lab').textContent,'y=0');
+    assert.equal(v.el.querySelector('.badge-t2').textContent,'0');
+    slider.dispatchEvent(new f.w.Event('input',{bubbles:true}));
+    assert.equal(v.getState().parameter,'0','an unchanged slider does not move the line');
+  }
+  const k=graph(f,problemInv(f,9,1)),slider=k.el.querySelector('.mslider');
+  assert(Number(slider.min)<=1&&Number(slider.max)>=1);assert.equal(slider.value,'1');
+  assert.equal(k.getState().parameter,'1');assert.deepEqual(f.errors,[]);
+});
+
+test('negative-height native model round-trips to peers after slider input and a help action',async t=>{
+  const options={query:'?board=1',shared:true,external:true,board:true,fixedSeed:46};
+  const a=await boot(t,options),b=await boot(t,options),stage=f=>f.d.querySelector('.oge-native-shared-stage');
+  assert.equal(a.w.getBoardTrainerState().seed,46);
+  assert.deepEqual(Array.from(a.api.criticalParameters(stage(a).__problem),x=>x.toString()),['-6','-23/4','-3']);
+  async function sync(peer){
+    const state=copy(a.w.getBoardTrainerState()),value=peer.w.JSON.parse(JSON.stringify(state)),notifications=peer.w.__notifications;
+    assert(peer.w.Oge2022Board.validateState(value));peer.w.applyBoardTrainerState(value);await settle();
+    assert.deepEqual(copy(peer.w.getBoardTrainerState()),state);
+    assert.equal(stage(peer).textContent,stage(a).textContent,'the same history restores the actual graph position');
+    assert.equal(peer.w.__notifications,notifications,'remote restore has no echo');
+  }
+  button(stage(a),'Хочешь подсказку?').click();await settle();await sync(b);
+  const slider=stage(a).querySelector('.minimal-help .mslider');
+  slider.value=slider.max;slider.dispatchEvent(new a.w.Event('input',{bubbles:true}));
+  button(stage(a),'Разобрать по шагам').click();await settle();
+  button(stage(a).querySelector('.step-card.active'),'Показать шаг').click();await settle();await sync(b);
+  slider.value='-6';slider.dispatchEvent(new a.w.Event('input',{bubbles:true}));await settle();
+  assert.equal(stage(a).querySelector('.minimal-help .badge-t2').textContent,'2');await sync(b);
+  const c=await boot(t,options);await sync(c);
+  for(const f of [a,b,c]){assert.equal(f.w.localStorage.length,0);assert.deepEqual(f.errors,[]);}
+});
 
 test('exact fractional k and dynamic slider bounds reach 9/25 and 81 without counting the hole',async t=>{
   const f=await boot(t),v=graph(f,problemInv(f));

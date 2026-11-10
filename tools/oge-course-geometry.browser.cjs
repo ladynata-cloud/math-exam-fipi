@@ -1,7 +1,16 @@
 'use strict';
 // Run on the cloud CI runner, never from the local authoring session.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const{legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const{chromium}=require('playwright');const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/oge-course-geometry');
+function assertReferenceUnchanged(actual,expected,n){
+ if(n!==11){assert.equal(actual,expected);return;}
+ const before=JSON.parse(expected),after=JSON.parse(actual);
+ const a=helpFacts(before.progress),b=helpFacts(after.progress);
+ assert.deepEqual(b.attempts,a.attempts,'the reference creates no completed attempt');
+ before.progress=legacy(before.progress);after.progress=legacy(after.progress);
+ assert.deepEqual(after,before,'all legacy/foreign fields, the matching task, answers and attempt state remain unchanged');
+}
 async function checkFigurePan(figure,label){
  const nav=figure.locator('xpath=preceding-sibling::*[1]');
  assert.equal(await figure.evaluate(e=>getComputedStyle(e).display==='flex'),false,label+' must not center an oversized flex child');
@@ -22,13 +31,24 @@ const primary=page.locator('.ocg-primary-figure').first();const clipped=await ch
 if(n===15)await page.locator('#hintPanel>summary').click();else await page.locator('#courseHintToggle').click();const lab=page.locator('[data-geometry-model]');await lab.locator(':scope>summary').click();const range=lab.locator('input[type=range]').first();await range.focus();await range.press('ArrowRight');assert.equal(await input.inputValue(),'123,45');assert.ok(await lab.locator('.ocg-reading').textContent());await checkFigurePan(lab.locator('.ocg-figure-scroll'),`task${n} discovery ${width}`);if(n===17)assert.equal(await lab.getAttribute('data-geometry-model'),'square');if(n===18){assert.equal(await lab.getAttribute('data-geometry-model'),'rhombArea');await lab.getByRole('button',{name:'Достроить прямоугольник',exact:true}).click();}assert.ok(await lab.locator('svg text').evaluateAll(nodes=>nodes.every(t=>{const s=t.ownerSVGElement,r=s.getBoundingClientRect(),v=s.viewBox.baseVal;return parseFloat(getComputedStyle(t).fontSize)*r.width/v.width>=18;})),`task${n}: readable model labels at ${width}`);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`${n} help overflow ${width}`);await lab.screenshot({path:path.join(out,`task${n}-${width}-discovery.png`)});await page.locator('.ocr-theory>summary').click();assert.ok(await page.locator('.ocr-theory a').first().isVisible());assert.equal(await input.inputValue(),'123,45');await page.getByRole('button',{name:'Вернуться к моему ответу',exact:true}).click();assert.equal(await input.inputValue(),'123,45');assert.ok(await input.evaluate(e=>document.activeElement===e));assert.deepEqual(errors,[]);await page.close();}
 for(const width of[320,1280])for(const n of[9,11,13]){
  const page=await browser.newPage({viewport:{width,height:940}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+ if(n===11)await page.addInitScript(()=>localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify({
+  unknownRoot:{keep:['root',11]},'another-trainer':{v:1,solvedByType:{one:7},ext:{foreign:true}},
+  'oge-t11-grafiki':{v:1,updatedAt:123456,solvedByType:{t43:4},unknownRecord:{keep:'record'},ext:{skills:{oge:{total:4,first:3}},foreign:{keep:'extension'}}}
+ })));
  const route={9:'/trainers/oge-task9-equations.html',11:'/trainers/oge-task11-graphs-trainer.html',13:'/trainers/oge13-inequalities-series.html'}[n];await page.goto(base+route);
  let scope,input;
  if(n===9){await page.evaluate(()=>{const c=window.eval("makeMaraCard(BANK.find(t=>t.fam==='QF'),()=>{})");c.id='reference-entry-test';document.body.append(c);});scope=page.locator('#reference-entry-test');input=scope.locator('.field input');await input.fill('17');await scope.locator('button.minimal-hint').click();await scope.locator('.equation-discovery>summary').click();}
  if(n===11){input=page.locator('#m4-answer');await input.fill('231');await page.locator('#m4-desc .function-help[data-i="1"]').click();await page.locator('#t11-help-vertex-details>summary').click();scope=page.locator('#t11-help-vertex-details');}
  if(n===13){await page.locator('#chips button').first().click();await page.locator('#hintToggle').click();scope=page.locator('#task13LabHost [data-lab-kind="quad"]');}
- const snapshot=()=>page.evaluate(n=>JSON.stringify({progress:localStorage.getItem('mathExamCourseProgress.v1'),answer:n===9?document.querySelector('#reference-entry-test .field input').value:n===11?document.querySelector('#m4-answer').value:window.eval('JSON.stringify({selectedChoice,selectedZones,checked,solution})')}),n);
- const before=await snapshot(),box=scope.locator('.ocre-sheet').first();const urlBefore=page.url();await box.locator(':scope>details>summary').focus();await box.locator(':scope>details>summary').press('Enter');const image=box.locator('figure>img');await image.scrollIntoViewIfNeeded();await image.evaluate(img=>img.decode());assert.ok(await image.isVisible());assert.ok(await image.evaluate(img=>img.naturalWidth>0&&img.getBoundingClientRect().width>=Math.min(160,img.naturalWidth)));assert.ok(await box.locator('a').first().evaluate(a=>parseFloat(getComputedStyle(a).fontSize)>=15));assert.equal(await snapshot(),before);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`reference task${n} overflow ${width}`);
- await box.screenshot({path:path.join(out,`reference-task${n}-${width}.png`)});await box.locator(':scope>details>.ocr-close').focus();await box.locator(':scope>details>.ocr-close').press('Enter');assert.equal(page.url(),urlBefore);assert.ok(await box.locator(':scope>details>summary').evaluate(e=>document.activeElement===e));assert.equal(await snapshot(),before);assert.deepEqual(errors,[]);await page.close();
+ const snapshot=()=>page.evaluate(n=>{
+  const value={progress:localStorage.getItem('mathExamCourseProgress.v1'),answer:n===9?document.querySelector('#reference-entry-test .field input').value:n===11?document.querySelector('#m4-answer').value:window.eval('JSON.stringify({selectedChoice,selectedZones,checked,solution})')};
+  if(n===11){
+   const attempt=Task11Learning.getState('m4');delete attempt.rev;delete attempt.workAt;
+   value.matching={task:M4.task,attempt,discovery:Task11Discovery.getState(),selects:[...document.querySelectorAll('#m4-desc select[data-i]')].map(s=>s.value),attempts:M4.attempts,lastTry:M4.lastTry,shown:M4.shown,done:M4.done,missed:M4.missed,razborStep:M4.razborStep};
+  }
+  return JSON.stringify(value);
+ },n);
+ const before=await snapshot(),box=scope.locator('.ocre-sheet').first();const urlBefore=page.url();await box.locator(':scope>details>summary').focus();await box.locator(':scope>details>summary').press('Enter');const image=box.locator('figure>img');await image.scrollIntoViewIfNeeded();await image.evaluate(img=>img.decode());assert.ok(await image.isVisible());assert.ok(await image.evaluate(img=>img.naturalWidth>0&&img.getBoundingClientRect().width>=Math.min(160,img.naturalWidth)));assert.ok(await box.locator('a').first().evaluate(a=>parseFloat(getComputedStyle(a).fontSize)>=15));assertReferenceUnchanged(await snapshot(),before,n);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`reference task${n} overflow ${width}`);
+ await box.screenshot({path:path.join(out,`reference-task${n}-${width}.png`)});await box.locator(':scope>details>.ocr-close').focus();await box.locator(':scope>details>.ocr-close').press('Enter');assert.equal(page.url(),urlBefore);assert.ok(await box.locator(':scope>details>summary').evaluate(e=>document.activeElement===e));assertReferenceUnchanged(await snapshot(),before,n);assert.deepEqual(errors,[]);await page.close();
 }
 console.log('OGE_COURSE_GEOMETRY_BROWSER_OK 18 viewport/route scenarios');}finally{await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

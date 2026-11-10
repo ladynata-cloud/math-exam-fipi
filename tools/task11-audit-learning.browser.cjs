@@ -30,6 +30,11 @@ const progress=page=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)||'{
 const attempts=async page=>(await progress(page))[TID]?.ext?.auditLearning?.attempts||[];
 const condition=(page,module)=>page.evaluate(m=>m==='m1'?{title:M1.q.title,svg:M1.q.svg}:m==='m2'?{p:M2G.p}:m==='m3'?{formula:document.getElementById('m3-formula').textContent,xs:M3.task.xs,ys:M3.task.ys}:{type:M4.task.type,items:M4.task.items.map(i=>i.desc),graphs:document.getElementById('m4-graphs').innerHTML},module);
 async function ready(page){await page.waitForFunction(()=>window.Task11Learning&&document.querySelector('#m4-graphs svg'));}
+async function reloadExact(page){
+  const before=await page.evaluate(key=>localStorage.getItem(key),KEY);
+  await page.reload();await ready(page);
+  assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),before,'closing and restoring a saved page must preserve exact progress bytes');
+}
 async function openModule(page,module){
   if(!(await page.locator('#task11-more').evaluate(el=>el.open)))await page.locator('#task11-more > summary').click();
   await page.locator('#tabs button[data-m="'+module+'"]').click();
@@ -67,32 +72,32 @@ async function publicJourney(page,url,width,evidence){
   await page.goto(url);await ready(page);
   const legacyBefore=legacy(await progress(page));assert.deepEqual(legacyBefore,fixture);
   assert.equal((await progress(page))[TID].ext.auditLearning.resume,undefined,'a first view is not unfinished work');
-  await fits(page,width+' initial matching');
+  await reloadExact(page);await fits(page,width+' initial matching');
   const before=await condition(page,'m4'),id=(await state(page,'m4')).id;
   await page.locator('#m4-answer').fill('23');
   await page.locator('#m4-hint').focus();await page.keyboard.press('Enter');await page.locator('#m4-hint').click();
   await page.locator('#m4-desc .function-help').first().focus();await page.keyboard.press('Enter');await page.locator('#t11-help-close').click();
   assert.equal((await state(page,'m4')).helpUsed,true);assert.equal((await attempts(page)).length,0);
   assert.deepEqual(legacy(await progress(page)),legacyBefore,'opening and closing help preserves all legacy data');
-  await page.reload();await ready(page);
+  await reloadExact(page);
   assert.deepEqual(await condition(page,'m4'),before,'reload retains each formula and plotted graph');assert.equal((await state(page,'m4')).id,id);
   assert.equal(await page.locator('#m4-answer').inputValue(),'23');assert.equal((await state(page,'m4')).helpUsed,true);
   assert.deepEqual(legacy(await progress(page)),legacyBefore,'restore does not write score or error history');
   await solveM4(page);assert.equal((await attempts(page)).at(-1).outcome,'helped');const n=(await attempts(page)).length;
-  await page.locator('#m4-check').click();await page.reload();await ready(page);await page.locator('#m4-check').click();assert.equal((await attempts(page)).length,n,'double checks and reload create one completion');
+  await page.locator('#m4-check').click();await reloadExact(page);await page.locator('#m4-check').click();assert.equal((await attempts(page)).length,n,'double checks and reload create one completion');
   await fits(page,width+' helped matching');await page.screenshot({path:path.join(artifacts,width+'-01-helped-matching.png'),fullPage:true});
   await fresh(page,'m4');assert.equal((await condition(page,'m4')).type,before.type);await solveM4(page);assert.equal((await attempts(page)).at(-1).outcome,'independent');
 
   await openModule(page,'m1');const warmup=await condition(page,'m1'),warmType=await page.evaluate(()=>M1.q.type);
   await page.locator('#m1-opts button').nth(await page.evaluate(()=>M1.q.opts.findIndex(x=>!x.ok))).click();
   assert((await state(page,'m1')).helpKinds.includes('automatic-feedback'),'automatic rule feedback is assistance');
-  await page.reload();await ready(page);assert.deepEqual(await condition(page,'m1'),warmup);await solveM1(page);assert.equal((await attempts(page)).at(-1).outcome,'helped');
+  await reloadExact(page);assert.deepEqual(await condition(page,'m1'),warmup);await solveM1(page);assert.equal((await attempts(page)).at(-1).outcome,'helped');
   await fresh(page,'m1');assert.equal(await page.evaluate(()=>M1.q.type),warmType);await solveM1(page);assert.equal((await attempts(page)).at(-1).outcome,'independent');await fits(page,width+' warmup');
 
   await openModule(page,'m2');const vertex=await condition(page,'m2'),truth=await page.evaluate(()=>M2G.p.x0===0?'zero':M2G.p.x0<0?'left':'right');
   const wrong=['left','zero','right'].find(x=>x!==truth);await page.locator('#m2g-opts button[data-v="'+wrong+'"]').click();await page.locator('#m2g-build').click();
   const graph=await page.locator('#m2g-graph').innerHTML();await page.locator('#m2g-opts button[data-v="'+truth+'"]').click();
-  await page.reload();await ready(page);assert.deepEqual(await condition(page,'m2'),vertex);assert.equal(await page.locator('#m2g-graph').innerHTML(),graph);
+  await reloadExact(page);assert.deepEqual(await condition(page,'m2'),vertex);assert.equal(await page.locator('#m2g-graph').innerHTML(),graph);
   assert.equal((await state(page,'m2')).completed,false,'selecting a corrected forecast is not a completed answer');assert.equal((await state(page,'m2')).helpUsed,true);
   await page.locator('#m2g-build').click();assert.equal((await attempts(page)).at(-1).outcome,'helped');await fits(page,width+' vertex prediction');
   await page.screenshot({path:path.join(artifacts,width+'-02-vertex-reload.png'),fullPage:true});
@@ -101,7 +106,7 @@ async function publicJourney(page,url,width,evidence){
   await openModule(page,'m3');await firstM3(page);const construction=await condition(page,'m3');
   const fields=page.locator('#m3-stage table.pts input');await fields.nth(0).fill('-17');await fields.nth(1).fill('3/2');
   await page.locator('#m3-vertex-details > summary').click();await page.locator('#m3-vertex-details > summary').click();
-  const values=await fields.evaluateAll(nodes=>nodes.map(n=>n.value));await openModule(page,'m4');await page.reload();await ready(page);assert.equal(await page.locator('section.module.active').getAttribute('id'),'m4','ordinary reload retains the chosen module');
+  const values=await fields.evaluateAll(nodes=>nodes.map(n=>n.value));await openModule(page,'m4');await reloadExact(page);assert.equal(await page.locator('section.module.active').getAttribute('id'),'m4','ordinary reload retains the chosen module');
   await page.goto(url+'?resume=1');await ready(page);assert.equal(await page.locator('section.module.active').getAttribute('id'),'m3','the course resume link opens the unfinished construction');
   assert.deepEqual(await condition(page,'m3'),construction);assert.deepEqual(await page.locator('#m3-stage table.pts input').evaluateAll(nodes=>nodes.map(n=>n.value)),values);assert.equal((await state(page,'m3')).helpUsed,true);
   await fits(page,width+' partial table');await page.screenshot({path:path.join(artifacts,width+'-03-partial-table.png'),fullPage:true});
@@ -110,7 +115,7 @@ async function publicJourney(page,url,width,evidence){
   for(const kind of ['lin','hyp','root']){await page.locator('#m3-chips [data-k="'+kind+'"]').click();await firstM3(page);await tableM3(page);assert.equal((await attempts(page)).at(-1).outcome,'independent',kind+' first correct table');await fits(page,width+' '+kind+' table');}
   const after=await progress(page);assert.deepEqual(after['audit-sibling'],fixture['audit-sibling']);assert.deepEqual(after[TID].ext.foreign,fixture[TID].ext.foreign);
   assert.equal(after[TID].ext.auditLearning.resume.unfinished,false);assert(after[TID].ext.auditLearning.attempts.every(a=>a.id&&a.skill&&a.taskKey&&a.at>0&&typeof a.fresh==='boolean'&&typeof a.helpUsed==='boolean'));
-  evidence.push({width,matchingReload:true,warmupAutomaticHelp:true,vertexReload:true,partialTableReload:true,constructionFamilies:4,freshAfterHelp:true,keyboard:true,legacyAndForeignPreserved:true,completions:after[TID].ext.auditLearning.attempts.length});
+  evidence.push({width,reloadBytePreservation:true,matchingReload:true,warmupAutomaticHelp:true,vertexReload:true,partialTableReload:true,constructionFamilies:4,freshAfterHelp:true,keyboard:true,legacyAndForeignPreserved:true,completions:after[TID].ext.auditLearning.attempts.length});
 }
 async function tabsJourney(context,page,url,evidence){
   await openModule(page,'m4');await fresh(page,'m4');await page.locator('#m4-answer').fill('12');
@@ -123,14 +128,14 @@ async function tabsJourney(context,page,url,evidence){
   const completed=legacy(await progress(page));await other.locator('#m4-check').click();assert.equal((await state(other,'m4')).completed,true);assert.equal((await attempts(other)).length,n+1);assert.deepEqual(legacy(await progress(other)),completed,'another stale check cannot duplicate legacy credit');
   // A valid peer answer must also wait for a new, deliberate action. A stale
   // blur/change followed by the original click must never submit it unseen.
-  await fresh(page,'m4');await page.locator('#m4-answer').fill('12');await other.reload();await ready(other);
+  await fresh(page,'m4');await page.locator('#m4-answer').fill('12');await reloadExact(other);
   const peerAnswer=await other.evaluate(()=>M4.task.key.join(''));await other.locator('#m4-answer').fill(peerAnswer);await other.locator('#m4-hint').click();await other.locator('#m4-hint').click();
   const validDraft=await other.evaluate(key=>localStorage.getItem(key),KEY);
   await page.locator('#m4-check').click();assert.equal(await page.locator('#m4-answer').inputValue(),peerAnswer);assert.equal((await attempts(page)).length,n+1);
   assert.equal(await page.evaluate(key=>localStorage.getItem(key),KEY),validDraft,'the stale gesture cannot submit a correct peer answer');
   await page.locator('#m4-check').focus();await page.keyboard.press('Enter');assert.equal((await attempts(page)).length,n+2);assert.equal((await attempts(page)).at(-1).outcome,'helped');
   await other.locator('#m4-check').click();assert.equal((await attempts(other)).length,n+2);assert.equal((await state(other,'m4')).completed,true);
-  await other.close();evidence.push({twoTabs:true,staleCheckRestoresFirst:true,staleCorrectAnswerRestoresFirst:true,stickyHelp:true,oneCompletionPerAttempt:true,keyboardAfterRestore:true});
+  await other.close();evidence.push({twoTabs:true,staleReloadBytePreservation:true,staleCheckRestoresFirst:true,staleCorrectAnswerRestoresFirst:true,stickyHelp:true,oneCompletionPerAttempt:true,keyboardAfterRestore:true});
 }
 async function isolationJourney(browser,origin,evidence,errors){
   const context=await browser.newContext();await context.addInitScript(({key,value})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify(value));},{key:KEY,value:fixture});

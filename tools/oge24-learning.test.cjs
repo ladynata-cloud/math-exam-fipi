@@ -233,6 +233,72 @@ test('reload restores the actual order, pending justification, assistance and th
   } finally { second.close(); }
 });
 
+
+test('pagehide and reload preserve exact progress bytes for saved proof states', async () => {
+  for(const kind of ['initial','unfinished','justification','completed']){
+    const t=await boot();let restored;
+    try{
+      if(kind==='unfinished'){start(t,'t2');pick(t,2);run(t,'useHint()');}
+      if(kind==='justification'){start(t,'t2','justify');pick(t,2);assert.equal(state(t).awaitJust,2);}
+      if(kind==='completed'){start(t,'t5');complete(t,ORDERS.t5);}
+      const raw=t.w.localStorage.getItem(KEY),revision=state(t).revision,order=state(t).order;
+      t.w.dispatchEvent(new t.w.Event('pagehide'));
+      assert.equal(t.w.localStorage.getItem(KEY),raw,kind+': pagehide does not rewrite an already saved draft');
+      assert.equal(state(t).revision,revision,kind+': pagehide creates no revision');
+      restored=await boot({raw});
+      assert.equal(restored.w.localStorage.getItem(KEY),raw,kind+': reload is read-only');
+      assert.deepEqual(state(restored).order,order);
+      assert.equal(state(restored).revision,revision);
+      restored.w.dispatchEvent(new restored.w.Event('pagehide'));
+      assert.equal(restored.w.localStorage.getItem(KEY),raw,kind+': leaving the restored page is also read-only');
+      assert.deepEqual([...t.errors,...restored.errors],[]);
+    }finally{t.close();restored?.close();}
+  }
+});
+
+test('pagehide still saves a dirty current draft once without awarding a result or clearing help', async () => {
+  const t=await boot();let restored;
+  try{
+    start(t,'t2');pick(t,2);run(t,'useHint()');
+    const before=audit(t),coreBefore=storage(t),revision=state(t).revision;
+    assert.equal(before.draft.helpOpen,false);
+    // A final save must retain changed UI state even if no input handler ran.
+    t.d.querySelector('#courseHintPanel').hidden=false;
+    t.w.dispatchEvent(new t.w.Event('pagehide'));
+    const after=audit(t),coreAfter=storage(t),raw=t.w.localStorage.getItem(KEY);
+    assert.equal(after.draft.revision,revision+1);
+    assert.equal(after.draft.attemptId,before.draft.attemptId);
+    assert.equal(after.draft.helpOpen,true);assert.equal(after.draft.helpUsed,true);
+    assert.deepEqual(after.draft.order,[2]);assert.deepEqual(after.attempts,before.attempts);
+    assert.deepEqual(after.resume,before.resume,'saving UI state does not invent a new learning action');
+    delete coreBefore[TID].ext.auditLearning;delete coreAfter[TID].ext.auditLearning;
+    assert.deepEqual(coreAfter,coreBefore,'a final save changes no historical credit');
+    t.w.dispatchEvent(new t.w.Event('pagehide'));
+    assert.equal(t.w.localStorage.getItem(KEY),raw,'the dirty draft is saved exactly once');
+    restored=await boot({raw});
+    assert.equal(restored.d.querySelector('#courseHintPanel').hidden,false);
+    assert.equal(restored.w.localStorage.getItem(KEY),raw);
+    assert.deepEqual([...t.errors,...restored.errors],[]);
+  }finally{t.close();restored?.close();}
+});
+
+test('pagehide never replaces a newer revision from another tab, even with unsaved local UI state', async () => {
+  const old=await boot();let newer;
+  try{
+    start(old,'t2');pick(old,2);
+    newer=await boot({raw:old.w.localStorage.getItem(KEY)});
+    run(newer,'useHint()');pick(newer,1);
+    const latest=newer.w.localStorage.getItem(KEY),revision=state(old).revision;
+    old.w.localStorage.setItem(KEY,latest);
+    old.d.querySelector('#courseHintPanel').hidden=false;
+    old.w.dispatchEvent(new old.w.Event('pagehide'));
+    assert.equal(old.w.localStorage.getItem(KEY),latest,'a stale final save cannot replace newer help or order');
+    assert.equal(state(old).revision,revision,'a rejected stale save cannot advance the local revision');
+    assert.equal(audit(old).draft.helpUsed,true);assert.deepEqual(audit(old).draft.order,[2,1]);
+    assert.deepEqual([...old.errors,...newer.errors],[]);
+  }finally{old.close();newer?.close();}
+});
+
 test('a newer draft from another tab is preserved when an older task changes', async () => {
   const old = await boot(); let newer;
   try {

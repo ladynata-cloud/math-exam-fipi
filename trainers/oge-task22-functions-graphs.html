@@ -1135,7 +1135,11 @@ function makeGraphView(withSlider,measureKind){
       if(withSlider){
         const values=criticalParameters(prob),r=specRange(spec);
         if(spec.measure==='K'){const edge=Math.ceil(Math.max(3,...values.map(v=>Math.abs(v.toNum()))))+1;slider.min=-edge;slider.max=edge;current=Fr(1);}
-        else{slider.min=Math.floor(Math.min(r.ymin,...values.map(v=>v.toNum())))-1;slider.max=Math.ceil(Math.max(r.ymax,...values.map(v=>v.toNum())))+1;current=Fr(0);}
+        else{
+          // A range input clamps its value, so the initial line must be inside its bounds.
+          slider.min=Math.min(0,Math.floor(Math.min(r.ymin,...values.map(v=>v.toNum())))-1);
+          slider.max=Math.max(0,Math.ceil(Math.max(r.ymax,...values.map(v=>v.toNum())))+1);current=Fr(0);
+        }
         slider.step='any';slider.value=String(current.toNum());exactInput.value=current.toString();exactInput.setAttribute('aria-label','Точное значение '+(spec.measure==='K'?'k':'m'));
         critical.replaceChildren();values.forEach(value=>{const b=btn('btn-new',(spec.measure==='K'?'k':'m')+' = '+value.toString(),()=>{setParameter(value);notify();});b.dataset.parameter=value.toString();critical.append(b);});
         domain.textContent=domainText(prob);paramMessage.textContent='';xInput.value='';tableOut.textContent='';tableShown=false;

@@ -224,3 +224,67 @@ test('future evidence is preserved while practice remains usable, and a full see
  const g=boot(t,{storage:{[KEY]:{[TID]:{ext:{auditLearning:{v:1,attempts:[],draft:{},seenKeys}}}}}});correctM4(g);
  assert.equal(g.records().at(-1).fresh,false);assert.equal(g.records().at(-1).outcome,'familiar');assert.equal(g.api.projection().seenKeys.length,600);assert.equal(g.api.projection().seenFull,true);assert.deepEqual([...f.errors,...g.errors],[]);
 });
+
+
+test('unchanged pagehide and reload preserve exact progress bytes without persisting the resumed display flag',t=>{
+ const f=boot(t,{storage:foreignStore()}),raw=f.w.localStorage.getItem(KEY);
+ f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));
+ assert.equal(f.w.localStorage.getItem(KEY),raw,'a first view does not become a newer draft on close');
+ const g=boot(t,{storage:f.storage()});assert.equal(g.api.getState('m4').resumed,true);
+ assert.equal(g.api.save('m4'),true);g.w.dispatchEvent(new g.w.PageTransitionEvent('pagehide'));g.w.dispatchEvent(new g.w.PageTransitionEvent('pagehide'));
+ assert.equal(g.w.localStorage.getItem(KEY),raw,'repeated save, close and restored UI leave every stored byte unchanged');
+ assert.equal(g.all()[TID].ext.auditLearning.draft.m4.resumed,undefined);
+ const previous=JSON.parse(raw);previous[TID].ext.auditLearning.draft.m4.resumed=true;
+ const oldRaw=JSON.stringify(previous),h=boot(t,{storage:{[KEY]:oldRaw}});
+ h.w.dispatchEvent(new h.w.PageTransitionEvent('pagehide'));
+ assert.equal(h.w.localStorage.getItem(KEY),oldRaw,'an older transient field is ignored without a cleanup write');
+ h.input('m4-answer','2');assert.equal(h.all()[TID].ext.auditLearning.draft.m4.resumed,undefined,'real work stores only durable fields');
+ assert.deepEqual([...f.errors,...g.errors,...h.errors],[]);
+});
+
+test('closing restored helped, completed and partial drafts does not write any module again',async t=>{
+ const settle=()=>new Promise(resolve=>setTimeout(resolve,35)),f=boot(t,{storage:foreignStore()});
+ f.click('m1-hint');f.click('m2g-hint');
+ const truth=f.eval('M2G.p.x0===0?"zero":M2G.p.x0<0?"left":"right"');f.d.querySelector('#m2g-opts [data-v="'+truth+'"]').click();f.click('m2g-build');
+ step3(f);const field=f.el('m3-stage').querySelector('table.pts input');field.value='7/3';field.dispatchEvent(new f.w.Event('input',{bubbles:true}));
+ f.input('m4-answer','23');f.click('m4-hint');f.click('m4-hint');await settle();
+ const saved=f.storage(),raw=saved[KEY];assert.equal(Object.keys(f.api.projection().draft).length,4);assert.equal(f.records().length,1);
+ f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));assert.equal(f.w.localStorage.getItem(KEY),raw);
+ const g=boot(t,{storage:saved});await settle();assert.equal(g.api.getState('m2').completed,true);assert.equal(g.el('m3-stage').querySelector('table.pts input').value,'7/3');
+ for(const module of ['m1','m2','m3','m4']){assert.equal(g.api.save(module),true);assert.equal(g.all()[TID].ext.auditLearning.draft[module].resumed,undefined);}
+ g.w.dispatchEvent(new g.w.PageTransitionEvent('pagehide'));await settle();
+ assert.equal(g.w.localStorage.getItem(KEY),raw,'all module states, revisions, attempts and resume projection remain byte-identical');
+ assert.deepEqual([...f.errors,...g.errors],[]);
+});
+
+test('pagehide still flushes changed inputs in several drafts once and preserves sticky help',t=>{
+ const f=boot(t,{storage:foreignStore()});step3(f);f.input('m4-answer','12');f.click('m4-hint');f.click('m4-hint');
+ const before=f.all(),old=f.api.projection(),key=f.api.getState('m4').taskKey;
+ f.el('m4-answer').value='23';f.el('m3-stage').querySelector('table.pts input').value='-17/2';
+ f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));
+ const updated=f.api.projection(),raw=f.w.localStorage.getItem(KEY);
+ assert.equal(updated.draft.m4.state.answer,'23');assert.equal(updated.draft.m3.state.table[0],'-17/2');
+ assert.equal(updated.draft.m4.rev,old.draft.m4.rev+1);assert.equal(updated.draft.m3.rev,old.draft.m3.rev+1);
+ assert.equal(updated.draft.m4.helpUsed,true);assert.equal(updated.draft.m4.taskKey,key);assert.equal(f.records().length,0);
+ assert.deepEqual(f.all()['another-trainer'],before['another-trainer']);assert.deepEqual(f.all()[TID].solvedByType,before[TID].solvedByType);assert.deepEqual(f.all()[TID].ext.skills,before[TID].ext.skills);
+ f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));assert.equal(f.w.localStorage.getItem(KEY),raw,'a second flush has nothing new to write');
+ const g=boot(t,{storage:f.storage()});assert.equal(g.el('m4-answer').value,'23');assert.equal(g.el('m3-stage').querySelector('table.pts input').value,'-17/2');assert.equal(g.api.getState('m4').helpUsed,true);
+ g.w.dispatchEvent(new g.w.PageTransitionEvent('pagehide'));assert.equal(g.w.localStorage.getItem(KEY),raw);
+ assert.deepEqual([...f.errors,...g.errors],[]);
+});
+
+test('pagehide restores a newer peer before an unsaved local input can overwrite its answer or assistance',t=>{
+ for(const replacement of [false,true]){
+  const f=boot(t);f.input('m4-answer','12');const g=boot(t,{storage:f.storage()});
+  if(replacement)g.api.generate('m4',{fresh:true,type:'t44',starter:false});
+  g.input('m4-answer','23');g.click('m4-hint');g.click('m4-hint');
+  const latest=g.w.localStorage.getItem(KEY),key=g.api.getState('m4').taskKey,graph=g.el('m4-graphs').innerHTML;
+  f.el('m4-answer').value='13';f.w.localStorage.setItem(KEY,latest);
+  f.w.dispatchEvent(new f.w.StorageEvent('storage',{key:KEY,newValue:latest}));
+  f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));
+  assert.equal(f.w.localStorage.getItem(KEY),latest,'the stale flush is read-only');
+  assert.equal(f.el('m4-answer').value,'23');assert.equal(f.api.getState('m4').taskKey,key);assert.equal(f.el('m4-graphs').innerHTML,graph);assert.equal(f.api.getState('m4').helpUsed,true);assert.equal(f.records().length,0);
+  f.w.dispatchEvent(new f.w.PageTransitionEvent('pagehide'));assert.equal(f.w.localStorage.getItem(KEY),latest,'closing the restored peer draft remains a no-op');
+  assert.deepEqual([...f.errors,...g.errors],[]);
+ }
+});
