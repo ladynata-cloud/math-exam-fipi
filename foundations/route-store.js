@@ -32,7 +32,7 @@ function create(catalog,storage,options){
   if(!catalog.byId[routeId]||!C.MODES.includes(mode))throw Error('Unknown route/session');
   const key=C.PREFIX+'active.'+routeId+'.'+mode;
   if(!repeat){let saved=activeMemory[key];try{const raw=storage&&storage.getItem(key);if(raw){const p=JSON.parse(raw);if(p.version!==1||typeof p.session!=='string')throw Error('format');saved=p.session;}}catch(_){warn('Ссылка на прежнее занятие не читается. Прежняя запись оставлена без изменений.');}
-   const state=saved&&C.session(catalog,read().events,saved);if(state&&state.route===routeId&&state.mode===mode)return saved;}
+   const events=read().events,candidates=[...new Set([activeMemory[key],saved])].filter(Boolean).map(id=>C.session(catalog,events,id)).filter(state=>state&&state.route===routeId&&state.mode===mode).sort((a,b)=>b.startedAt-a.startedAt||b.id.localeCompare(a.id));if(candidates.length){activeMemory[key]=candidates[0].id;return candidates[0].id;}}
   const id=uid('s');append({type:'start',session:id,route:routeId,mode});activeMemory[key]=id;
   write(key,{version:1,session:id},true);return id;
  }

@@ -46,7 +46,6 @@ jobs:
         run: |
           node --test tools/foundations-routes.test.cjs
           node tools/learning-preparation.test.cjs
-          node --test tools/division-path.test.cjs
           node --test tools/arithmetic-url-contract.test.cjs
       - name: Install pinned isolated browser tools
         run: |
@@ -55,6 +54,7 @@ jobs:
           echo "NODE_PATH=$RUNNER_TEMP/foundations-routes/node_modules" >> "$GITHUB_ENV"
       - name: Existing foundation and EGE navigation journeys
         run: |
+          node --test tools/division-path.test.cjs tools/foundations-routes.dom.cjs
           node tools/ege-baza-navigator.test.mjs
           node tools/learning-foundations.browser.cjs
           node tools/ege-baza-navigator.browser.mjs

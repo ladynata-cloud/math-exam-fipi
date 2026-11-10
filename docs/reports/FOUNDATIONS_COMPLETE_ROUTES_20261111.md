@@ -18,7 +18,7 @@ Authorization: [standing owner publication policy](../OWNER_RELEASE_AUTHORIZATIO
 
 ## Original negative-number map
 
-Current archived sources reference a missing `skill-map.html`. They establish the six-station sequence: two negatives, different signs, subtraction as addition of the opposite, brackets/signs, mixed expressions, short check. Preparatory opposite/absolute-value/zero activities are also retained. The new map reconstructs this sequence and expands its prerequisites. The original map file has not yet been recovered; no claim of verbatim restoration is made.
+Current archived sources reference a missing `skill-map.html`. They establish the six-station sequence: two negatives, different signs, subtraction as addition of the opposite, brackets/signs, mixed expressions, short check. Preparatory opposite/absolute-value/zero activities are also retained. The new map reconstructs this sequence and expands its prerequisites. The original map file has not been recovered: the three exact Git history paths, the complete main tree, the archive-import tree and manifest, and 333 Library HTML filenames did not contain it. Nearby Library trainers were separate activities. Personal Context was unavailable in the later search. No claim of verbatim restoration or verified Claude authorship is made.
 
 ## Review and verification
 
@@ -47,3 +47,9 @@ Assessment pauses visibly if an event cannot be saved. Public learning remains a
 At this initial candidate: Draft PR/CI and publication verification pending. Final exact head, tests, review, base/head movement, merge and deployed result will be recorded before/after the controlled release in the PR and the next approved task's project status. No further publication permission is required when all applicable checks pass.
 
 Rollback: ordinary scoped revert; no migration or deletion of old learner records is required.
+
+## First CI and follow-up review
+
+On initial head `a40d2b3db2da81c56a3feaff547a30ec68c32936`, all 17 Node tests passed, including every trainer file target and navigation-only archived-source identity. Existing preparation contracts also passed. The full dedicated job stopped because the division DOM test preceded installation of jsdom; its order is corrected without removing any test. SEO found inconsistent shared descriptions; these are synchronised. Public navigator provenance correctly detected the approved PreOGE source edit; its existing explicit source-binding mechanism is updated for exactly `trainers/oge-basics/index.html` against that committed source. No navigator/runtime preservation test is weakened.
+
+Independent technical review additionally found active-pointer resume loss after a failed pointer write and a race between reading a question and another tab completing/deleting it. The corrected code reconciles valid active sessions by their start time, re-renders the current step after peer progress and returns safely after deletion. New state and real-DOM regressions cover these findings. Final browser and exact-head checks remain pending on the updated candidate.

@@ -128,3 +128,12 @@ test('same-time events cannot hide a stored peer hint or wrong answer behind a c
   assert.equal(state.verified,false,extra.type);assert.equal(state.assisted,1,extra.type);
  }
 });
+
+test('a newer unsaved active pointer is resumed, while a later peer pointer can still supersede it',()=>{
+ const f=fixture(),st=f.create(),old=st.start(first.id,'practice');solve(st,old,first,'practice');
+ const key=C.PREFIX+'active.'+first.id+'.practice',baseSet=f.storage.setItem;let reject=true;
+ f.storage.setItem=(k,v)=>{if(k===key&&reject)throw Error('pointer write denied');baseSet(k,v);};
+ const fresh=st.start(first.id,'practice',true),q=C.questions(first,'practice')[0];st.setDraft(fresh,q.id,'my draft');
+ assert.notEqual(fresh,old);assert.equal(st.start(first.id,'practice'),fresh);assert.equal(st.getDraft(fresh,q.id),'my draft');
+ reject=false;const peer=f.create(),newest=peer.start(first.id,'practice',true);assert.equal(st.start(first.id,'practice'),newest);
+});
