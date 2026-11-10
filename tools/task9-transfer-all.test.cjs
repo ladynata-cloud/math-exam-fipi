@@ -264,7 +264,9 @@ test('all 14 visible generator routes start with an answer and optional same-pag
 
 test('quadratic method switches retain model and coefficient drafts, and cannot erase a shown step to earn progress',async()=>{
   const dom=await boot();try{
-    const w=dom.window,task=w.eval("(()=>{RNG=mkRng(1);const t=genTask('g_qf');RNG=mkRng(1);return t;})()"),answer=independentAnswer(task);
+    // Exercise both methods on an explicitly monic fixture. General generator
+    // coefficient frequencies are checked separately, not encoded in this seed.
+    const w=dom.window,task=w.eval("(()=>{const generate=GENS.g_qf;GENS.g_qf=()=>generate({monic:true});RNG=mkRng(1);const t=genTask('g_qf');RNG=mkRng(1);return t;})()"),answer=independentAnswer(task);
     assert.equal(Q.str(rational(task.p.Lt[0].c)),'1','deterministic fixture supports both methods');assert.ok(!answer.bad);
     const card=w.document.createElement('div');w.document.body.appendChild(card);w.eval('renderGenTask')({gid:'g_qf',method:true},card);
     const before=progress(w);card.querySelector('.generated-help-toggle').click();const panel=card.querySelector('.generated-help'),disc=panel.querySelector('.generated-method[data-method="discriminant"]'),fields=disc.querySelectorAll('.step.active input'),lab=disc.querySelector('.transfer-lab');
