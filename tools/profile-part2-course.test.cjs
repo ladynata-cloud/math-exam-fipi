@@ -56,3 +56,8 @@ test('entrance exposes all twenty direct routes and original courses without hid
 test('task SVGs are self-contained and accessible, with no executable or external payloads',()=>{
  for(const l of lessons)for(const t of l.tasks)if(t.diagram){const dom=new JSDOM(t.diagram),svg=dom.window.document.querySelector('svg');assert.ok(svg?.getAttribute('viewBox'),t.id);assert.ok(svg.getAttribute('aria-label')||svg.querySelector('title'),t.id);assert.equal(svg.querySelector('script,foreignObject,image'),null,t.id);assert.ok(!/NaN|Infinity|undefined/.test(t.diagram),t.id);dom.window.close();}
 });
+
+test('new course is an explicit public sitemap hub',()=>{
+ const config=JSON.parse(fs.readFileSync(path.join(root,'tools/seo-public-pages.json'),'utf8'));
+ assert.ok(config.seed_paths.includes('/ege-profil/part-two/'));
+});
