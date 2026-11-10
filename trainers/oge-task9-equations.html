@@ -2668,7 +2668,8 @@ function makeEquationDiscovery(t,opts){
     let groupIndex=0;
     for(const side of ['Lt','Rt'])for(const tm of p[side])if(tm.br){
       const g=elt('section','discovery-bracket');g.dataset.bracket=String(groupIndex++);
-      g.appendChild(elt('p','math',(side==='Lt'?'Слева: ':'Справа: ')+renderTerms([tm])));
+      const bracketLabel=['Первая скобка','Вторая скобка'][groupIndex-1]||'Скобка '+groupIndex;
+      g.appendChild(elt('p','math',bracketLabel+': '+renderTerms([tm])));
       const buttons=row(),out=elt('div','math');out.style.marginTop='12px';const picked=new Set();
       tm.br.inner.forEach((inner,i)=>{const b=button(renderTerms([inner]),'distribute',self=>{picked.add(i);self.setAttribute('aria-pressed','true');out.innerHTML=tm.br.inner.filter((_,j)=>picked.has(j)).map(term=>product(numHTML(tm.br.k),renderTerms([term]))).join(' + ');result(picked.size===tm.br.inner.length?'В этой скобке каждое слагаемое получило множитель. Теперь вычисли произведения в основном шаге.':'Проверь остальные слагаемые этой скобки.');});b.dataset.term=String(i);b.setAttribute('aria-pressed','false');buttons.appendChild(b);});
       g.appendChild(buttons);g.appendChild(out);body.appendChild(g);
