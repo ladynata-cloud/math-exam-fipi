@@ -8,9 +8,9 @@ const {execFileSync}=require('node:child_process');
 const receipt=require('./fixtures/oge-audit-learning-native-bytes.json');
 const ROOT=path.resolve(__dirname,'..');
 const CONTENT_COMMITS=Object.freeze({
- 'trainers/oge-task11-graphs-trainer.html':'9307d13fc29a1d0f270f10751ea2cba78d666750',
- 'trainers/oge-task22-functions-graphs.html':'f20e80a896579b3febcb9e907ad1a51f97153ed4',
- 'trainers/oge-task24-proofs.html':'9307d13fc29a1d0f270f10751ea2cba78d666750'
+ 'trainers/oge-task11-graphs-trainer.html':'2b33a2315a22c98a70497e7395e4e67c4bd415e4',
+ 'trainers/oge-task22-functions-graphs.html':'2b33a2315a22c98a70497e7395e4e67c4bd415e4',
+ 'trainers/oge-task24-proofs.html':'2b33a2315a22c98a70497e7395e4e67c4bd415e4'
 });
 const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
 function committed(ref,file){return execFileSync('git',['show',ref+':'+file],{cwd:ROOT,encoding:'utf8',maxBuffer:2*1024*1024});}

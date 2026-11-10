@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Fetch the exact reviewed source and historical checkpoints
-        run: git fetch --no-tags origin f20e80a896579b3febcb9e907ad1a51f97153ed4 19811cc15a33d63fc0fcc0b6a11c34863ec64d03 9307d13fc29a1d0f270f10751ea2cba78d666750
+        run: git fetch --no-tags origin f20e80a896579b3febcb9e907ad1a51f97153ed4 19811cc15a33d63fc0fcc0b6a11c34863ec64d03 9307d13fc29a1d0f270f10751ea2cba78d666750 2b33a2315a22c98a70497e7395e4e67c4bd415e4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
@@ -54,6 +54,7 @@ jobs:
       - name: Mathematical feedback, restoration and independent evidence
         run: |
           node --test tools/task11-audit-learning.test.cjs tools/oge22-audit-learning.test.cjs tools/oge24-learning.test.cjs tools/oge-learning-map-evidence.test.cjs tools/public-navigator-oge.test.cjs tools/oge-audit-source-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.py --source-base 2b33a2315a22c98a70497e7395e4e67c4bd415e4 --task docs/tasks/OGE_AUDIT_LEARNING_20261111.md --paths trainers/oge-task11-graphs-trainer.html trainers/oge-task22-functions-graphs.html trainers/oge-task24-proofs.html
           git diff --check
       - name: Task 11 — help, new condition and return
         run: node tools/task11-audit-learning.browser.cjs

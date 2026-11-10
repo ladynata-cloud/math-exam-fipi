@@ -147,9 +147,8 @@
 
 - `START`: прямые поручения владельца в текущем разговоре, приведённые выше.
 - Branch creation, local commits, push, Draft PR: yes.
-- Release authorization: более поздние пользовательские AGENTS.md в этом
-  разговоре требуют отдельного явного разрешения и имеют приоритет над
-  standing policy в репозитории и шаблоне.
+- Release authorization: объединение и публикация не входят в scope этой
+  задачи. Подготовленный результат передаётся владельцу в одном Draft PR.
 - Merge, auto-merge, deployment: **no** в рамках текущего поручения.
 - Force, reset, rebase, non-fast-forward merge, admin override, отключение
   TLS и ослабление gates: **no**.
@@ -158,7 +157,10 @@
 
 - Actual branch: `improve/oge-audit-learning-20261111`.
 - Actual base SHA: `19811cc15a33d63fc0fcc0b6a11c34863ec64d03`.
-- Actual head SHA, PR, commits, final tests: заполняются в передаче результата.
+- PR: [Draft #550](https://github.com/ladynata-cloud/math-exam-fipi/pull/550).
+- Source checkpoint после исправления CI-находок: `2b33a2315a22c98a70497e7395e4e67c4bd415e4`.
+- Точный интеграционный head и итоговые CI receipts фиксируются в PR и отчёте;
+  content checkpoint сам по себе не означает успешный итоговый gate.
 - Tests failed / not run / scope deviations: фиксируются без подмены PASS.
 
 ## Required handoff

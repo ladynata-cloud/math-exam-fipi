@@ -3,19 +3,19 @@
   "baseCommit": "19811cc15a33d63fc0fcc0b6a11c34863ec64d03",
   "pages": {
     "trainers/oge-task11-graphs-trainer.html": {
-      "sourceCommit": "9307d13fc29a1d0f270f10751ea2cba78d666750",
-      "rawSha256": "b5826e3629528afdc2173a1d1cfd09db6bd4d9a47481a029368aabd311e17004",
-      "sha256": "81010725b5cf05b4f913c042ac0c0c318aa4a5b04358ce8267ac8f7f07952fcf"
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "990ccbffa3d384c0c3f1d939b8a4dd6e611526f6f7facb1b0da6e670d32759e3",
+      "sha256": "95e693dffc6ed1240090595ecd5144c212522244c3debacde056dac6e51ac609"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "sourceCommit": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
-      "rawSha256": "5cc5d022c508622a3fdae07b0cd3b989b8a7e52acef7ecef95886c5266252f01",
-      "sha256": "ea81c95348c548f1a4c079393d375b99224d60f64755d7d2e7b33b1be30d34a9"
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "e4c8ced20a2ec859651901f83ea3e0e88854a922ae23adddb3f12c4720367b31",
+      "sha256": "40374c7fa45f32cec11eb1e38385e7de629161506ee365f70c236327d448ce48"
     },
     "trainers/oge-task24-proofs.html": {
-      "sourceCommit": "9307d13fc29a1d0f270f10751ea2cba78d666750",
-      "rawSha256": "143d10c804f8659c801dd977c5a33b84c752499393f4255d4c2c45ee3cacaef4",
-      "sha256": "cd594e26920bd4ae5ff4ada657b44933f0debd977c48958e301e207173128938"
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "05b92d7d109f02809c8669ffd406d211f6c9e4c88f6964c09cf37e31806e06bf",
+      "sha256": "43608faa4a35e1a90333dd362256c66bce144a07a2b04c8f0e82c518e2be6cee"
     }
   }
 }

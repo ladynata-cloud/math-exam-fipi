@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
       - name: Fetch the exact reviewed navigation source checkpoint
-        run: git fetch --no-tags --depth=1 origin 9307d13fc29a1d0f270f10751ea2cba78d666750
+        run: git fetch --no-tags --depth=1 origin 2b33a2315a22c98a70497e7395e4e67c4bd415e4
       - name: Navigation regression and syntax
         run: |
           node --check assets/assistant/navigator-data.js
