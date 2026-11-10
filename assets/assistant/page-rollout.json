@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ad257fa442c1c40317b11ed5c54f1a937c3bf25b",
+  "baseSha": "1d77a22e16d0adf31b0109a660c8c323636dee4b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2333,8 +2333,8 @@
       "placement": "before-head-close"
     },
     "trainers/ege-profile-vectors-trainer.html": {
-      "beforeSha256": "98032a229cdd39a364b32df75ae182fe166e5e22428d29abaf2b5f9d437cc35a",
-      "afterSha256": "b308d1a71703ef17b56185f1ebe57f5993d1fbf660e6ee0ea85e7fc7955ef2b6",
+      "beforeSha256": "73a9e7c868e423f4121d65f604c1ad4150c8bb1f6c662bc11b9029aacd3c4deb",
+      "afterSha256": "9f638082c3e5b3921e915c2ae7f76019a321df66e47e673c55ed5596e7bfeee7",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/index.html": {
@@ -3063,8 +3063,8 @@
       "placement": "before-head-close"
     },
     "trainers/rounding-stepwise.html": {
-      "beforeSha256": "f2fa3bc7d1a1b3e1d73660f6f8015fd88560e619fe05730f1bcfecd4818f5beb",
-      "afterSha256": "16ec14a6cca24fe0a75d7a88261d534ca7b5a205b9bddde9440fa63903d12c7f",
+      "beforeSha256": "f4d0df1fd2031d849f291c4087be4557f045279ee6faea473835428f3cf15a70",
+      "afterSha256": "78203e3b7ea282917b0db97153558d72b916dcb5f78a16cc8667dbba7e7f24c3",
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
@@ -3083,8 +3083,8 @@
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
-      "beforeSha256": "9cb8a17c2c7916ed4048364120844fd51d86f89acee0a907f0092c609aa52028",
-      "afterSha256": "e9a4f7e9c9e4efb33ef2f593e3072c7a69de265727ceb51b446f10d621bb7eb8",
+      "beforeSha256": "87ba5fbff3b8f094e730cd6ae700c30ed3b61d4431bfc09a8e3d53a84e21b7e3",
+      "afterSha256": "c95611b867e9b7e9c84e371ae3173ccbc145f82c1c7db672cc8f8a2ce202864f",
       "placement": "before-head-close"
     },
     "trainers/trainers/long-division.html": {
@@ -4491,6 +4491,17 @@
       "sourceBaseSha": "ad257fa442c1c40317b11ed5c54f1a937c3bf25b",
       "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ad257fa442c1c40317b11ed5c54f1a937c3bf25b",
+      "sourceBaseSha": "1d77a22e16d0adf31b0109a660c8c323636dee4b",
+      "task": "docs/tasks/BONUS_TRAINERS_AUDIT_20261110.md",
+      "changedPaths": [
+        "trainers/ege-profile-vectors-trainer.html",
+        "trainers/rounding-stepwise.html",
+        "trainers/teatr-formul-daily.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

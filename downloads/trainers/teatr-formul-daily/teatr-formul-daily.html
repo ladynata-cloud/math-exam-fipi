@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Театр формул — квадрат суммы и разности, ежедневная отработка | MathExam</title>
+<link rel="canonical" href="https://mathexam.space/trainers/teatr-formul-daily.html">
 <meta name="description" content="Тренажёр по формулам сокращённого умножения для 7 класса: короткие ежедневные порции, проверка ответов и отправка прогресса учителю.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -662,9 +663,14 @@ function checkStep(i){
   var inp=$('ans-'+i); if(!inp||inp.disabled)return;
   var steps=stepConf(t.prob);
   var expected=steps[i-1].ans;
-  var raw=(inp.value||'').replace(/\s/g,'').replace(MINUS(),'-');
-  var val=parseInt(raw,10);
+  var val=parseCoef(inp.value);
   var hint=$('hint-'+i);
+  if(!Number.isFinite(val)){
+    inp.classList.remove('bad','good');
+    hint.textContent=String(inp.value||'').trim()===''?'Сначала введите ответ.':'Введите целое число полностью, без букв и дробной части.';
+    hint.classList.add('show');
+    return;
+  }
   if(val===expected){
     inp.classList.remove('bad'); inp.classList.add('good'); inp.disabled=true;
     hint.classList.remove('show');
@@ -943,7 +949,8 @@ function parseCoef(str){
   if(raw==='')return NaN;
   if(raw.charAt(0)==='+')raw=raw.slice(1);
   if(!/^-?\d+$/.test(raw))return NaN;
-  return parseInt(raw,10);
+  var value=Number(raw);
+  return Number.isSafeInteger(value)?value:NaN;
 }
 function sHint(P,i){
   var v=P.v, M=MINUS();
@@ -962,10 +969,17 @@ function sHint(P,i){
 }
 function sCheck(i){
   var P=s.prob; if(i!==s.step)return;
-  var ids=S_INPUTS[i], exp=sExpected(P,i), allGood=true, anyEmpty=false;
+  var ids=S_INPUTS[i], exp=sExpected(P,i), allGood=true;
+  var invalid=ids.filter(function(id){return !Number.isFinite(parseCoef($(id).value));});
+  if(invalid.length){
+    var formatHint=$('shint-'+i);
+    formatHint.textContent=invalid.some(function(id){return String($(id).value||'').trim()==='';})?'Заполните все поля шага.':'Введите целые коэффициенты полностью, без букв и дробной части.';
+    invalid.forEach(function(id){$(id).classList.remove('bad','good');});
+    formatHint.classList.add('show');
+    return;
+  }
   for(var j=0;j<ids.length;j++){
     var el=$(ids[j]), val=parseCoef(el.value);
-    if(isNaN(val))anyEmpty=true;
     if(val===exp[j]){ el.classList.remove('bad'); el.classList.add('good'); }
     else{ el.classList.remove('good'); el.classList.add('bad'); allGood=false; }
   }

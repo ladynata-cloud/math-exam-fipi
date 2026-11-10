@@ -23,10 +23,22 @@ button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visi
 details.foundation-options,details.foundation-results,details.foundation-reference{border:1px solid #e0e7e2;border-radius:12px;padding:12px 16px;margin:20px 0;background:#fff}details>summary{cursor:pointer;color:#47624e;font-weight:600;min-height:32px}details[open]>summary{margin-bottom:20px}.foundation-results .card{border:0;padding:0;margin:0}.foundation-results h2{font-size:20px}.foundation-actions{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.foundation-help{border-top:1px solid #dce8df;margin-top:26px;padding-top:24px}.foundation-help-step{padding:18px 0;border-bottom:1px solid #e5ece7}.foundation-help-step p{margin:0 0 16px}.foundation-help-step.done{color:#506c58}.foundation-help-step .mexp{font-size:24px;margin:12px 0}.foundation-help-note{font-size:16px;color:#58705f}.foundation-answer-preview{font-size:24px;margin:12px 0;min-height:1.6em}.hint-focus{background:#f1f9f3;padding:8px;border-radius:8px}.f{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.2}.fn{border-bottom:1.7px solid currentColor;padding:2px 6px 4px}.fd{padding:4px 6px 2px}.mo{padding:0 5px}.gsteps{gap:22px}.gstep{padding:20px;line-height:1.8}.gstep.done{margin-bottom:18px}.hintbox{line-height:1.8}.stats,.stat span,.mini,.sub{line-height:1.7}.danger,button.danger{background:#fff;color:#79534a;border-color:#d9ccc8}[hidden]{display:none!important}
 @media(max-width:600px){.page,.wrap{padding:16px 12px 50px}.card,.notebook{padding:18px 14px}.answer,.answer-row{justify-content:flex-start}.prompt,.mexp{font-size:clamp(23px,5.8vw,30px)}.foundation-actions>button{max-width:100%}details.foundation-options,details.foundation-results,details.foundation-reference{padding:12px}.corner,.vert,.pyth,.fracview{overflow-x:auto;max-width:100%}.corner,.vert{justify-content:flex-start}.cleft,.cright,.vgrid{flex-shrink:0}}
 </style>
-<style>.card.notebook{padding:24px}.mexp{max-width:100%;overflow-x:auto}.foundation-help .mexp{padding-bottom:8px}@media(max-width:600px){.card.notebook{padding:18px 14px}}</style></head>
+<style>.card.notebook{padding:24px}.mexp{max-width:100%;overflow-x:auto}.foundation-help .mexp{padding-bottom:8px}@media(max-width:600px){.card.notebook{padding:18px 14px}}</style><style data-inline-source="/assets/oge-wayfinding.css">
+/* Ordinary links remain usable without JavaScript, history or saved state. */
+nav.oge-wayfinding{box-sizing:border-box;display:flex!important;position:relative;flex:0 0 auto;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:4px 16px;width:100%;max-width:1100px;margin:0 auto!important;padding:6px 16px!important;background:#f6f7f2!important;border:0!important;border-bottom:1px solid #d8e0d6!important;border-radius:0!important;box-shadow:none!important;font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif!important;text-align:left!important;z-index:1}
+nav.oge-wayfinding a{box-sizing:border-box;display:inline-flex!important;align-items:center;min-height:44px;max-width:100%;margin:0!important;padding:4px 8px!important;color:#216342!important;background:transparent!important;border:0!important;border-radius:4px;font:inherit!important;font-weight:600!important;text-decoration:underline!important;text-underline-offset:3px;white-space:normal!important;overflow-wrap:anywhere}
+nav.oge-wayfinding a:focus-visible{outline:3px solid #216342;outline-offset:2px}
+nav.oge-wayfinding[hidden]{display:none!important}
+@media print{nav.oge-wayfinding{display:none!important}}
+
+</style>
+
+</head>
 <body>
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="https://mathexam.space/trainers/oge-course/">← Все темы ОГЭ</a><a href="https://mathexam.space/">Главная</a></nav>
+
 <main class="page">
-<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел по шагам</h1></section>
+<section class="hero"><a class="back" href="https://mathexam.space/index.html">← На главную</a><h1>Округление чисел по шагам</h1></section>
 <section class="grid">
 <div class="card">
 <details class="foundation-options" id="rounding-options"><summary>Тема и сложность</summary><div class="row"><label for="place"><b>Округляем до:</b></label><select id="place"><option value="1">десятков</option><option value="2">сотен</option><option value="3">тысяч</option><option value="4">десятков тысяч</option><option value="5">сотен тысяч</option><option value="6">миллионов</option><option value="0">единиц</option><option value="-1">десятых</option><option value="-2">сотых</option><option value="mixed">Вперемешку</option></select></div>
@@ -41,7 +53,7 @@ details.foundation-options,details.foundation-results,details.foundation-referen
 <p id="save-warning" class="save-warning" role="status" hidden></p>
 </div>
 <details class="foundation-results" id="rounding-results"><summary>Мои результаты и памятка</summary><aside class="card">
-<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>сразу верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>без ошибок и помощи</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
 <div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
 <div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
 <div class="box rules"><h2>Алгоритм</h2><p>1. Найди нужный разряд.</p><p>2. Посмотри на цифру справа.</p><p>3. 0–4 — оставляем, 5–9 — увеличиваем.</p><p>4. В целой части справа ставим нули, в дробной части лишние цифры справа убираем.</p><p class="mini">Примеры: 374 до десятков → 370; 12,46 до десятых → 12,5; 8,736 до сотых → 8,74.</p></div>
@@ -51,7 +63,7 @@ details.foundation-options,details.foundation-results,details.foundation-referen
 </main>
 <script>
 var KEY='mathExamCourseProgress.v1',TOPIC='roundingStepwise';
-var level='easy',task=null,step='target',solved=false,hadMistake=false,usedSolution=false,storageBlocked=false;
+var level='easy',task=null,step='target',solved=false,hadMistake=false,usedSolution=false,usedHint=false,storageBlocked=false;
 var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
 var names={6:'миллионов',5:'сотен тысяч',4:'десятков тысяч',3:'тысяч',2:'сотен',1:'десятков',0:'единиц','-1':'десятых','-2':'сотых'};
 var labels={6:'миллионы',5:'сотни тысяч',4:'десятки тысяч',3:'тысячи',2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые'};
@@ -112,14 +124,15 @@ function check(){
  if(step!=='answer'){msg('Сначала выполни шаг над числом. Подсказка покажет, куда нажать.','tip');return}
  if(norm(el('ans').value)!==task.ans){hadMistake=true;msg('Пока не получилось. '+explain()+' Попробуй ещё раз.','err');return}
  solved=true;stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
- var first=!hadMistake&&!usedSolution;
+ var first=!hadMistake&&!usedSolution&&!usedHint;
  if(first){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak)}else stats.streak=0;
- var result=usedSolution?'Решено с помощью разбора.':hadMistake?'Верно! Ты исправил ошибку.':'Верно!';
+ var result=usedSolution?'Решено с помощью разбора.':usedHint?'Решено с подсказкой.':hadMistake?'Верно! Ты исправил ошибку.':'Верно!';
  stats.history=stats.history||[];stats.history.unshift({text:task.display+' до '+names[task.p]+' → '+task.ansText+'. '+result});stats.history=stats.history.slice(0,12);
  var saved=save();renderStats();msg(result+(saved?' Результат сохранён.':' Можно решать следующий пример.'),'ok');
 }
 function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';var st=stats.total<10?'тема начата':'10 и больше примеров решено';el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров. Потом можно продолжать сколько угодно.':'Выбирай нужное округление и продолжай тренировку.';el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
 function hint(){
+ if(!solved)usedHint=true;
  mark();
  if(step==='target')msg('Нажми на синюю цифру. Под ней написано «'+placeLabel(task.p)+'».','tip');
  else if(step==='look')msg('Нажми на цифру сразу справа от синей.','tip');
@@ -135,12 +148,21 @@ function next(){
   var comma=candidate.display.indexOf(','),decimalPlaces=comma<0?0:candidate.display.length-comma-1,raw=Number(candidate.display.replace(',','')),last=raw%10;
   raw+=last===9?-1:1;var text=String(raw).padStart(decimalPlaces+1,'0');if(decimalPlaces)text=text.slice(0,-decimalPlaces)+','+text.slice(-decimalPlaces);candidate=taskFrom(text,candidate.p);
  }
- task=candidate;step='target';solved=false;hadMistake=false;usedSolution=false;render();renderStats();
+ task=candidate;step='target';solved=false;hadMistake=false;usedSolution=false;usedHint=false;render();renderStats();
 }
 function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика этой тренировки сброшена.','tip')}
 function setLevel(l){level=l;el('easy').classList.toggle('active',l==='easy');el('med').classList.toggle('active',l==='med');el('easy').setAttribute('aria-pressed',String(l==='easy'));el('med').setAttribute('aria-pressed',String(l==='med'));next()}
 var requestedPlace=new URLSearchParams(location.search).get('place');if(requestedPlace==='mixed'||Object.prototype.hasOwnProperty.call(names,requestedPlace))el('place').value=requestedPlace;
 el('place').onchange=next;el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
+</script>
+<script data-inline-source="/assets/oge-wayfinding.js">
+/* The board/cabinet owns navigation inside its embedded trainer. */
+(function(){
+  'use strict';
+  const nav=document.querySelector('nav.oge-wayfinding');
+  if(nav&&(window.self!==window.top||new URLSearchParams(location.search).get('board')==='1'))nav.hidden=true;
+})();
+
 </script>
 </body>
 </html>
