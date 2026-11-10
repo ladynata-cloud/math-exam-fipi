@@ -106,3 +106,12 @@ outputs; all 13 offline/support tests pass.
 Main later advanced to `aca5365e36076e9c99f5395ad7f4dcdcc759fcba` (approved 21-task
 EGE base map). Its teaching changes do not overlap division; the shared navigator
 provenance is composed and re-bound to the exact final source.
+
+The next fixed-book gate reached the preserved-engine check and correctly rejected
+the newly added public helper as an unlisted tenth dependency. Its exact path is
+now appended only to the search-entry dependency contract, with three negative
+controls for omission, duplication and injected inline code. Historical teaching
+comparisons remain unchanged: 3,500 plans and 30 negative controls pass; the full
+67-test mathematical/preservation step passes. This follow-up changes tests and
+this record only; all teaching and downloadable bytes remain identical to the
+Chromium candidate `a1010d4bff863fea5404e3ee07ff436580b13b08`.
