@@ -42,7 +42,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Fetch the exact reviewed source and historical checkpoints
-        run: git fetch --no-tags origin f20e80a896579b3febcb9e907ad1a51f97153ed4 19811cc15a33d63fc0fcc0b6a11c34863ec64d03
+        run: git fetch --no-tags origin f20e80a896579b3febcb9e907ad1a51f97153ed4 19811cc15a33d63fc0fcc0b6a11c34863ec64d03 9307d13fc29a1d0f270f10751ea2cba78d666750
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

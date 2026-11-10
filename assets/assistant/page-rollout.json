@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
+  "baseSha": "9307d13fc29a1d0f270f10751ea2cba78d666750",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2938,8 +2938,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "c52d181a337b037a1bfca1ab076e67551ab4901705b0bed4384e52e43dc63d81",
-      "afterSha256": "979c45df19edbfa121ad6208047bab2d3ee8c2db7c543cff47386c0394564455",
+      "beforeSha256": "078f4a391a7eae0abd5ef1895d43ed9f4c1cf87529d1db23251c4fbc195116ed",
+      "afterSha256": "b5826e3629528afdc2173a1d1cfd09db6bd4d9a47481a029368aabd311e17004",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2998,8 +2998,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "43fda5c580b464f241e7c0976a555a390fe9538240a2fc8d57d23fe0b6671665",
-      "afterSha256": "9bdc920c8c02885947e263f819d19f7cab2e0ec526ae3370201b7182ee4dbe23",
+      "beforeSha256": "8baf8c6facf6eb7b3dd3da384d17a7fc17dfc90d477e0cdaf9bba8e8ce29ce21",
+      "afterSha256": "143d10c804f8659c801dd977c5a33b84c752499393f4255d4c2c45ee3cacaef4",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
@@ -4673,6 +4673,16 @@
         "trainers/oge-course/index.html",
         "trainers/oge-task11-graphs-trainer.html",
         "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
+      "sourceBaseSha": "9307d13fc29a1d0f270f10751ea2cba78d666750",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-task11-graphs-trainer.html",
         "trainers/oge-task24-proofs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
