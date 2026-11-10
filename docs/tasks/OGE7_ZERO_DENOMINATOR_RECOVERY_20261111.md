@@ -135,11 +135,19 @@ Do not rewrite history or roll back unrelated work.
 ## Permissions
 
 The owner requested continuation of the audit and course improvements in the
-current conversation. Scoped implementation, an isolated branch, commits and a
-Draft PR are part of that work. Publication follows
-[the standing owner policy](../OWNER_RELEASE_AUTHORIZATION.md) only after
-applicable checks and current base/head verification. The completed permission
-and release for PR549 are not reused as evidence for this new candidate.
+current conversation; this scoped branch and Draft PR were prepared under that
+request. The later AGENTS.md supplied by the owner in the same session now
+requires a separate explicit owner authorization before merge or deployment.
+This later task boundary overrides the repository's standing release wording.
+
+MERGE HOLD: finish validation and report the exact current Base/Head. Do not
+merge, enable auto-merge or deploy PR551 until the owner authorizes that pair.
+The completed permission and release for PR549 do not authorize this candidate.
+
+Immediately before a later authorized merge, read authoritative remote main.
+If it differs from the owner-authorized base, stop; prepare only a read-only
+virtual composition and its evidence, and obtain a new owner authorization.
+Do not automatically repair or synchronize the branch after such drift.
 
 ## Execution record
 
