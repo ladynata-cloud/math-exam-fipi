@@ -9,9 +9,12 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // Explicit reviewed task sources bind the free-equation and percent-resume
 // changes. Other pages and link metrics retain the published baseline.
 const taskSources={"trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
-// PR #539 independent subject review: bind the exact reviewed inline engine.
-// Evidence: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md. Controls retain the baseline.
-const task9ReviewedScript='3c318b1cfa00fdb9af5871fcaeedd0ec35f28d79ac0d7a5d078f11604813f97d';
+// PR #539 subject-review baseline plus PR #548's checked bracket-caption change.
+// Exact source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d.
+// Evidence: docs/tasks/TASK9_BRACKET_LABELS_20261111.md;
+// earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
+// Controls retain the baseline; the complete inline engine remains pinned.
+const task9ReviewedScript='b226c3f4216892b8d8021ebf0029a49ebb1ba6859d1797c91b5a4a293084728f';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 // This shared engine's default course is EGE; retain full return coverage while
