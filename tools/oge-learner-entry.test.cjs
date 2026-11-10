@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),{execFileSync}=require('node:child_process'),{JSDOM}=require('jsdom');
+const {createHash}=require('node:crypto');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
@@ -8,6 +9,9 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // Explicit reviewed task sources bind the free-equation and percent-resume
 // changes. Other pages and link metrics retain the published baseline.
 const taskSources={'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+// The reviewed №9 update is squash-merged, so bind its exact inline engine
+// without relying on a task branch's lifetime. Controls still use the baseline.
+const task9ReviewedScript='b820f89d0e57b4d82544478f7c3ef4621d0d075a60d40ead8cf79bf33afbe2f4';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 // This shared engine's default course is EGE; retain full return coverage while
@@ -56,7 +60,12 @@ for(const p of routes.pages){
     const index=actualScripts.indexOf(matches[0]);
     actualScripts[index]=restoreRootTeaching(restoreRootAcceptance(matches[0],'learning'));
   }
-  assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
+  if(p==='trainers/oge-task9-equations.html'){
+    assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
+    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+  }else{
+    assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
+  }
   const controls=doc=>[...doc.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
   assert.deepEqual(controls(d),controls(baseline),p+' controls preserved');
   if(taskSource)taskSource.window.close();

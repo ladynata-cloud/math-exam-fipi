@@ -96,6 +96,9 @@ async function pointerDrag(page,source,target){
 }
 async function equations(page,base,width){
  await page.goto(base+'/trainers/oge-task9-equations.html');
+ const settings=page.locator('#pane-mara details').filter({has:page.locator('.filter-row')});
+ await settings.locator(':scope > summary').click();
+ await settings.getByRole('button',{name:'Дополнительная практика',exact:true}).click();
  const card=page.locator('#mara-list > .task-card:not([hidden])');await card.waitFor();
  const main=card.locator(':scope > .field input').first(),helpButton=card.getByRole('button',{name:'Хочешь подсказку?',exact:true});
  assert.equal(await main.getAttribute('aria-label'),'Чему равен x?');

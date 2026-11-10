@@ -31,6 +31,11 @@ async function fits(page,label){
 }
 const credit=page=>page.evaluate(key=>localStorage.getItem(key),KEY);
 const bankRecord=(page,index)=>page.evaluate(index=>({record:{...maraRec(BANK[index].id)},solved:[...maraState.solved],clean:[...maraState.clean],shown:[...maraState.shown]}),index);
+async function chooseBankFilter(page,label){
+ const settings=page.locator('#pane-mara details').filter({has:page.locator('.filter-row')});
+ if(await settings.getAttribute('open')===null)await settings.locator(':scope > summary').click();
+ await settings.getByRole('button',{name:label,exact:true}).click();
+}
 async function openBankPicker(page){
  const details=page.locator('#pane-mara .minimal-task-nav > details');if(await details.getAttribute('open')===null)await details.locator(':scope > summary').click();
  return page.locator('#pane-mara .minimal-task-nav select');
@@ -52,6 +57,8 @@ async function pointerDrag(page,source,target){
 }
 async function exerciseTransfer(page,lab,{touch=false,drag=false}={}){
  const original=await readTerms(lab);assert(original.length,'original equation has signed terms');assert(original.every(t=>!t.disabled));
+ // Step rendering focuses its answer after 30 ms. Wait before moving focus to a term.
+ await page.waitForTimeout(40);
  // Prefer a compound card; its whole body must survive the outer-sign change.
  const item=[...original].sort((a,b)=>b.body.length-a.body.length)[0],to=item.side==='L'?'R':'L';
  const chip=()=>lab.locator('[data-term-id="'+item.id+'"]');
@@ -103,7 +110,11 @@ async function checkOriginal(lab,expected){
 }
 async function bankJourney(page,url,width,seen){
  await page.goto(url);await page.locator('#mara-list > .task-card:not([hidden])').waitFor();
- const targets=await page.evaluate(()=>[...new Set(BANK.map(t=>t.fam))].map(fam=>{const index=BANK.findIndex(t=>t.fam===fam);return{fam,index,equation:taskEqnHTML(BANK[index])};}));
+ await chooseBankFilter(page,'Дополнительная практика');
+ const targets=await page.evaluate(()=>{
+  const legacy=BANK.filter(t=>!t.examKind);
+  return [...new Set(legacy.map(t=>t.fam))].map(fam=>{const index=legacy.findIndex(t=>t.fam===fam);return{fam,index,equation:taskEqnHTML(legacy[index])};});
+ });
  assert.deepEqual(targets.map(t=>t.fam).sort(),[...FAMILIES].sort());
  const selected=width===1280?targets:targets.filter(t=>['L','LSQ','QF','NZ','SB'].includes(t.fam));const coverage=[];
  for(const t of selected){
@@ -168,7 +179,7 @@ async function completeKnownLinearStep(panel){
 }
 async function completedStepJourney(page,url,width){
  for(const useBeforeFinish of[true,false]){
-  await page.goto(url);const card=page.locator('#mara-list > .task-card:not([hidden])');await card.getByRole('button',{name:'Хочешь подсказку?',exact:true}).click();const panel=card.locator('.minimal-hint-panel');
+  await page.goto(url);await chooseBankFilter(page,'Дополнительная практика');const card=page.locator('#mara-list > .task-card:not([hidden])');await card.getByRole('button',{name:'Хочешь подсказку?',exact:true}).click();const panel=card.locator('.minimal-hint-panel');
   await completeKnownLinearStep(panel);const accepted=panel.locator('.step.done').first(),lab=accepted.locator('.transfer-lab').first();
   const values=await accepted.locator('input').evaluateAll(inputs=>inputs.map(input=>({value:input.value,disabled:input.disabled})));assert(values.length&&values.every(i=>i.disabled));
   assert((await readTerms(lab)).every(t=>!t.disabled),'accepted steps retain live cards');assert.equal(await lab.getByRole('button',{name:'Перейти к сложению',exact:true}).isVisible(),false,'completed collection no longer prompts entry into locked fields');
@@ -184,6 +195,41 @@ async function completedStepJourney(page,url,width){
  }
  return{liveCards:true,lockedAcceptedAnswers:true,unfinishedAssistance:true,noRetroactiveCreditChange:true};
 }
+async function examBankJourney(page,url,width){
+ await page.goto(url);
+ const card=page.locator('#mara-list > .task-card:not([hidden])');
+ const equation=card.locator('.task-q'),answer=card.locator(':scope > .field input').first();
+ const demoEquation=/3\(x\+8\)-2\(x-8\)=8/;
+ assert.match(compact(await equation.innerText()),demoEquation);
+ await card.getByRole('button',{name:'Хочешь подсказку?',exact:true}).click();
+ const step=card.locator('.minimal-hint-panel .step.active');
+ for(const [coefficient,constant] of [['3','24'],['-2','16'],['1','40'],['1','-32']]){
+  const fields=step.locator('input');
+  assert.equal(await fields.count(),2);
+  await fields.nth(0).fill(coefficient);
+  await fields.nth(1).fill(constant);
+  await step.getByRole('button',{name:'Проверить',exact:true}).click();
+ }
+ const finalStep=await step.innerText();
+ assert.match(finalStep,/Слева уже x\. Запиши корень\./);
+ assert.doesNotMatch(finalStep,/Раздели/);
+ await card.getByRole('button',{name:'Вернуться к задаче',exact:true}).click();
+ await answer.fill('-32');
+ await card.getByRole('button',{name:'Проверить',exact:true}).click();
+ assert.equal(await card.evaluate(el=>el.classList.contains('solved')),true);
+ await page.locator('#pane-mara .minimal-next').click();
+ assert.equal(await answer.inputValue(),'','the next exam task opens with an empty answer');
+ assert.doesNotMatch(compact(await equation.innerText()),demoEquation);
+ await chooseBankFilter(page,'Квадратные');
+ const question=await card.locator('.task-q').innerText();
+ assert.match(question,/меньший|больший/);
+ await answerLabel(answer,question);
+ await fits(page,'exam bank '+width);
+ await chooseBankFilter(page,'Демоверсии');
+ assert.match(compact(await equation.innerText()),demoEquation);
+ assert.equal(await card.evaluate(el=>el.classList.contains('solved')),true,'changing filters preserves the result');
+ return {demoAnswerAccepted:true,quadraticRootPrompt:true,retainedProgress:true};
+}
 (async()=>{
  fs.mkdirSync(artifacts,{recursive:true});const{server,url}=await serve();let browser,livePage,liveContext;const errors=[],evidence=[],kinds=new Set();
  try{
@@ -192,8 +238,8 @@ async function completedStepJourney(page,url,width){
    const context=await browser.newContext({viewport:{width,height:900},hasTouch:width<600,reducedMotion:'reduce'});liveContext=context;await context.tracing.start({screenshots:true,snapshots:true});
    const page=await context.newPage();livePage=page;page.setDefaultTimeout(15000);
    page.on('pageerror',e=>errors.push(width+': '+e.message));page.on('console',m=>{if(m.type()==='error')errors.push(width+': '+m.text());});
-   const bank=await bankJourney(page,url,width,kinds),generators=await generatedJourney(page,width,kinds),completed=await completedStepJourney(page,url,width);
-   evidence.push({width,bank,generators,completed});assert.deepEqual(errors,[],'no runtime errors across every route');
+   const exam=await examBankJourney(page,url,width),bank=await bankJourney(page,url,width,kinds),generators=await generatedJourney(page,width,kinds),completed=await completedStepJourney(page,url,width);
+   evidence.push({width,exam,bank,generators,completed});assert.deepEqual(errors,[],'no runtime errors across every route');
    await context.tracing.stop({path:path.join(artifacts,width+'-trace.zip')});await context.close();livePage=null;liveContext=null;console.log('PASS '+width+'px: '+bank.length+' bank families, '+generators.length+' generator routes, retained live accepted steps');
   }
   assert.deepEqual([...kinds].sort(),[...KINDS].sort(),'every kind of optional discovery was opened and used');fs.writeFileSync(path.join(artifacts,'coverage.json'),JSON.stringify({evidence,discoveryKinds:[...kinds],errors},null,2));
