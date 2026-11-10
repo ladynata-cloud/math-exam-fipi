@@ -14,19 +14,57 @@ function solution(D,t){if(t.rule==='digits22'){for(let mask=0;mask<1<<t.digits.l
 const go=async(w,id)=>{w.location.hash='lesson='+id;await tick();};
 const open=async(w,d,id)=>{d.querySelector('#'+id).open=true;await tick();};
 function submit(w,d,prefix,value){const input=d.querySelector('#'+prefix);assert(input,prefix);input.value=String(value);input.dispatchEvent(new w.Event('input',{bubbles:true}));d.querySelector('#'+prefix+'Form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
+function assertCurrentHint(w,d,t,step){
+ const expected=d.createElement('p');expected.innerHTML=w.PathPracticeView.math(w.PathTaskHints.hint(t,step));
+ assert.equal(d.querySelector('#taskHint').textContent,expected.textContent,t.id+' hint follows the current step');
+}
+async function roundHintRegression(){
+ const saved={version:1,serial:30,lessons:{round:{seed:3,stage:3,step:0,help:false,attempted:false,done:false,independent:0,guided:0,note:'',draft:'',checks:[]}},seen:{},runs:[],active:null};
+ let {w,d}=create(JSON.stringify(saved),'lesson=round');await tick();
+ let l=w.PathCourse.state().lessons.round,t=w.PathData.task('round',l.seed);
+ assert.match(t.q,/49 тетрадей/);assert.match(t.q,/9 тетрадей/);assert.deepEqual(Array.from(t.steps,s=>s.a),[5,4,6]);
+ assert.equal(d.querySelector('#answerFormat').textContent,'Введи целое число упаковок.');
+ assert.equal(d.querySelector('#taskHelp>summary').textContent,'Подсказка к задаче');
+ assert.equal(d.querySelector('#new').textContent,'Ещё задача этого типа');
+ const firstHint=d.querySelector('#taskHint').textContent;
+ assert.match(firstHint,/49/);assert.match(firstHint,/9/);assert(!/(^|\D)6(\D|$)/.test(firstHint),'first hint must not give the final answer');
+ assert.notEqual(firstHint,t.steps[0].q,'a hint explains an action, not just the question');assertCurrentHint(w,d,t,0);
+ const final=d.querySelector('#answer');final.value='7/';final.dispatchEvent(new w.Event('input'));
+ assert.equal(d.querySelector('#startSteps').textContent,'Решать по шагам');d.querySelector('#startSteps').click();
+ assert(d.querySelector('#taskHelp').open);assert(d.querySelector('#taskSteps').open);assert.equal(d.activeElement,d.querySelector('#stepAnswer'));
+ assert.equal(d.querySelector('#stepAnswerFormat').textContent,'Введи целое число.');
+ assert(!d.querySelector('#taskModel').open);assert(!d.querySelector('#taskIdea').open);assert.equal(l.help,true);assert.equal(l.independent,0);
+ await tick();assert.equal(d.querySelector('#taskHelp>summary').textContent,'Скрыть подсказку');
+ submit(w,d,'stepAnswer',5);assert.equal(l.step,1);assertCurrentHint(w,d,t,1);assert.notEqual(d.querySelector('#taskHint').textContent,firstHint);
+ assert.match(d.querySelector('#stepAnswerForm label').textContent,/5 упаковок/);assert.match(d.querySelector('#stepAnswerForm label').textContent,/45 тетрадей/);
+ const intermediate=d.querySelector('#stepAnswer');intermediate.value='4/';intermediate.dispatchEvent(new w.Event('input'));
+ d.querySelector('#returnToAnswer').click();await tick();assert.equal(d.querySelector('#answer'),final);assert.equal(final.value,'7/');
+ assert.equal(d.querySelector('#taskHelp>summary').textContent,'Подсказка к задаче');d.querySelector('#startSteps').click();assert.equal(d.querySelector('#stepAnswer'),intermediate);assert.equal(intermediate.value,'4/');
+ const retained=w.localStorage.getItem(w.PathCourse.KEY);w.close();({w,d}=create(retained,'lesson=round'));await tick();
+ l=w.PathCourse.state().lessons.round;t=w.PathData.task('round',l.seed);assert.equal(l.step,1);assert.equal(d.querySelector('#answer').value,'7/');assert.equal(d.querySelector('#stepAnswer').value,'4/');
+ assert.deepEqual(Array.from(l.taskFirst.stepAnswers),['5']);assert(d.querySelector('#taskHelp').open);assert(d.querySelector('#taskSteps').open);assertCurrentHint(w,d,t,1);
+ submit(w,d,'stepAnswer',4);assert.equal(l.step,2);assertCurrentHint(w,d,t,2);
+ submit(w,d,'stepAnswer',6);assert.equal(l.step,3);assert.equal(l.guided,1);assert.match(d.querySelector('#taskStepsBody').textContent,/Разбор завершён/);assert.match(d.querySelector('#taskHint').textContent,/Все шаги пройдены/);assert.equal(d.querySelector('#answer').value,'7/');
+ submit(w,d,'answer',6);assert.equal(l.independent,0);assert.equal(l.checks.at(-1).independent,false);assert.equal(d.querySelector('#new').textContent,'Ещё задача этого типа');
+ d.querySelector('#new').click();await tick();assert.notEqual(w.PathData.task('round',l.seed).q,t.q);assert.equal(l.step,0);assert.equal(l.help,false);assert.equal(l.taskFirst.stepDraft,'');assert.equal(d.querySelector('#answer').value,'');assert.equal(d.querySelector('#stepAnswer').value,'');assert(!d.querySelector('#taskHelp').open);assert(!d.querySelector('#taskSteps').open);
+ submit(w,d,'answer',w.PathData.task('round',l.seed).answer);assert.equal(l.independent,1);assert(w.PathCourse.valid(w.PathCourse.state()));assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');w.close();
+}
 (async()=>{
+ await roundHintRegression();
  const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,111);
+ assert.equal(typeof w.PathTaskHints?.hint,'function','real index loads concrete hints before task-first');
  for(const id of ['practice-radical-equation','practice-log-equation','expressions']){const task=w.PathData.task(id,0),label=w.PathTaskFirst.question(task);assert(task.q.includes(label));assert(!label.includes(task.steps.at(-1).q)||task.q.includes(task.steps.at(-1).q));}
  for(const id of ids){
   await go(w,id);const l=w.PathCourse.state().lessons[id],t=w.PathData.task(id,l.seed);
   assert(d.querySelector('.task-first-course'),id);assert(d.querySelector('#answer'),id+' final answer');assert(!d.querySelector('#taskHelp').open,id+' starts without help');assert.equal(l.help,false,id+' no automatic help');
   assert.equal(d.querySelector('#answerForm label').textContent,w.PathTaskFirst.question(t),id+' explicit target');
+  assertCurrentHint(w,d,t,0);assert.notEqual(d.querySelector('#taskHint').textContent,t.steps[0].q,id+' explanatory hint');
   if(t.display)assert(d.querySelector('.task-support svg,.task-support table'),id+' givens');
   const answer=d.querySelector('#answer');answer.value='12/';answer.dispatchEvent(new w.Event('input'));
   await open(w,d,'taskHelp');await open(w,d,'taskModel');assert(d.querySelector('#model').textContent.trim(),id+' model');
   assert.equal(l.help,true,id+' help accounted');assert.equal(d.querySelector('#answer'),answer,id+' original input mounted');
   await open(w,d,'taskSteps');
-  for(const step of t.steps){submit(w,d,'stepAnswer',solution(w.PathData,step));}
+  for(const step of t.steps){assertCurrentHint(w,d,t,l.step);submit(w,d,'stepAnswer',solution(w.PathData,step));}
   assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),id+' guided completion');
   assert.equal(d.querySelector('#answer').value,'12/',id+' final draft preserved through guided work');
   d.querySelector('#taskHelp').open=false;await tick();assert.equal(d.querySelector('#answer').value,'12/');
@@ -60,5 +98,5 @@ function submit(w,d,prefix,value){const input=d.querySelector('#'+prefix);assert
  w.location.hash='exam';await tick();d.querySelector('#start').click();assert(!d.querySelector('#taskHelp'));assert.equal(w.PathCourse.state().active.ids.length,21);
  for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.task(run.ids[run.i],run.seed+run.i);submit(w,d,'answer',solution(w.PathData,t));await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');assert(w.PathCourse.valid(w.PathCourse.state()));assert.deepEqual(errors,[]);w.close();
- console.log('EGE_BAZA_TASK_FIRST_OK: 111 complete model/guided/final paths, retained givens and two drafts, saved model, all legacy stages, honest credit, grade7 exclusion and 21-task exam');
+ console.log('EGE_BAZA_TASK_FIRST_OK: 111 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
 })().catch(e=>{console.error(e);process.exitCode=1;});
