@@ -33,7 +33,15 @@ function oracle(k,t){const d=t.data,{a,b,c}=d,z=n(t.answer),x=n(d.x),y=n(d.y);
 assert.equal(P.units.length,53);assert.equal(P.ids.length,134);assert(P.units.every(x=>x.ids.length));assert.equal(new Set(C.lessons.map(l=>l.id)).size,C.lessons.length);assert(oldIds.every(id=>C.byId[id]));
 const visiting=new Set(),done=new Set();function visit(id){assert(C.byId[id],id);assert(!visiting.has(id),'Prerequisite cycle '+id);if(done.has(id))return;visiting.add(id);C.byId[id].requires.forEach(visit);visiting.delete(id);done.add(id);}C.lessons.forEach(l=>visit(l.id));
 let count=0;for(const id of P.ids){const l=C.byId[id];assert.equal(l.worked.length,3,id);assert(l.explanation.length>40&&l.misconception&&l.reflect.length>=2);for(const r of [...l.requires,...l.related])assert(C.byId[r],r);for(let seed=0;seed<120;seed++){
- const t=M.generate(id,seed);t._seed=seed;oracle(l.fullKey,t);assert(t.steps.length>=2,id);for(const s of [...t.steps,t]){const text=s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?String(n(s.answer)).includes('.')?String(n(s.answer)):n(s.answer)+'.0':fmt(s.answer);assert(M.accepts(text,s),id+' rejects its valid answer '+text);assert(!M.accepts('не знаю',s),id);assert(!/NaN|Infinity|undefined/.test(s.prompt));}count++;
+ const t=M.generate(id,seed);t._seed=seed;oracle(l.fullKey,t);
+ if(l.fullKey==='place-value'&&t.data.pos===3){
+  assert.equal(t.steps.length,1);
+  assert.equal(t.steps[0].prompt,t.prompt);
+  assert.match(t.prompt,/Какая цифра стоит в разряде единиц/);
+  assert.equal(t.steps[0].answer,t.answer);
+  assert(!M.accepts('1',t.steps[0]));
+ }else assert(t.steps.length>=2,id);
+ for(const s of [...t.steps,t]){const text=s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?String(n(s.answer)).includes('.')?String(n(s.answer)):n(s.answer)+'.0':fmt(s.answer);assert(M.accepts(text,s),id+' rejects its valid answer '+text);assert(!M.accepts('не знаю',s),id);assert(!/NaN|Infinity|undefined/.test(s.prompt));}count++;
 }}
 // Cross-class links preserve a one-way prerequisite graph and two-way optional navigation.
 for(const l of C.lessons.filter(l=>l.foundation5)){assert(l.requires.includes(l.foundation5));assert(C.byId[l.foundation5].related.includes(l.id));}
