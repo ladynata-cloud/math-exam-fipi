@@ -55,7 +55,7 @@ async function boot(){
   const dom=new JSDOM(fs.readFileSync(path.resolve(__dirname,'../trainers/oge-task9-equations.html'),'utf8'),{url:'https://mathexam.space/trainers/oge-task9-equations.html',runScripts:'dangerously',pretendToBeVisual:true,virtualConsole:vc,beforeParse(w){w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};}});
   await new Promise(r=>dom.window.addEventListener('load',r,{once:true}));assert.deepEqual(errors,[]);return dom;
 }
-function dataset(w){return w.eval(`(()=>{const generated=[];RNG=mkRng(19092026);for(const gid of Object.keys(GENS))for(let i=0;i<25;i++)generated.push(genTask(gid));return {bank:BANK,generated,types:TYPE_IDS,routes:GEN_GROUPS.flatMap(g=>g.items.map(i=>i.gid)),generators:Object.keys(GENS)};})()`);}
+function dataset(w){return w.eval(`(()=>{const generated=[];RNG=mkRng(19092026);for(const gid of Object.keys(GENS))for(let i=0;i<25;i++)generated.push(genTask(gid));return {bank:BANK,exam:EXAM_BANK,generated,types:TYPE_IDS,routes:GEN_GROUPS.flatMap(g=>g.items.map(i=>i.gid)),generators:Object.keys(GENS)};})()`);}
 function button(node,label){const b=[...node.querySelectorAll('button')].find(n=>n.textContent===label);assert.ok(b,'button '+label);return b;}
 function event(w,node,type,extra={}){const e=new w.Event(type,{bubbles:true,cancelable:true});Object.assign(e,extra);node.dispatchEvent(e);return e;}
 function openCard(w,fam='L'){
@@ -103,7 +103,7 @@ test('an omitted root choice keeps the implicit smaller-root instruction even wh
 test('initial transfer covers every bank/prototype family and every generator with original residual and domain',async()=>{
   const dom=await boot();try{
     const w=dom.window,data=dataset(w),sourceOf=w.eval('taskTransferSource'),create=w.eval('createTransferState'),stepsOf=w.eval('taskSteps');
-    assert.equal(data.bank.length,135);assert.equal(data.bank.filter(t=>t.src==='proto').length,105);
+    assert.equal(data.bank.length,135+data.exam.length);assert.equal(data.bank.filter(t=>t.src==='proto').length,105);
     assert.equal(data.generators.length,15);assert.equal(data.routes.length,14);
     assert.deepEqual([...new Set([...data.bank,...data.generated].map(t=>t.fam))].sort(),Array.from(data.types).sort());
     assert.deepEqual([...new Set(data.generated.map(t=>t.fam))].sort(),Array.from(data.types).sort(),'seed reaches all 16 generated families');
