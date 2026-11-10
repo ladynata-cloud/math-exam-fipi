@@ -53,6 +53,18 @@ in the PR. A prepared candidate is not described as published until Pages and
 the deployed resources are verified. External review and real-pupil trials are
 not performed.
 
+## Concurrent publication composition
+
+During CI, main advanced to `71a2f8c60e5a900e821e3f2696c697dcf8342164`
+with approved PR #531 (searchable course entrances and controlled GIF examples).
+An ordinary merge preserves its canonical metadata, generated static catalogue,
+all 111 static lesson links, example resources, topic pages and help tracking.
+The new 21-position navigation composes with those additions; no source or
+publication gate is weakened. Independent source review found no blocker.
+The course-entrance generator and its four semantic checks pass on the composed
+candidate. Navigator source bindings are refreshed only against the exact
+committed composition, preserving both prior task histories.
+
 ## Risks and rollback
 
 Risks: route regressions, confusing progress labels, hidden mobile controls,
