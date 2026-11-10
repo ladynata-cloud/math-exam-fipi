@@ -24,9 +24,25 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
    for(const lesson of lessons){
     const task=lesson.tasks[3];await go('#task/'+task.id+'/independent');assert(await page.locator('#final-form').isVisible());
     const metrics=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth,condition:document.querySelector('.condition').getBoundingClientRect().top}));
+    if(metrics.scroll>metrics.width+1||metrics.condition>=900){
+     const overflow=await page.evaluate(()=>Array.from(document.querySelectorAll('body *')).map(el=>{const r=el.getBoundingClientRect(),style=getComputedStyle(el);return{tag:el.tagName,id:el.id,className:el.getAttribute('class')||'',left:r.left,right:r.right,width:r.width,height:r.height,text:(el.textContent||'').trim().slice(0,180),display:style.display,minWidth:style.minWidth,overflowWrap:style.overflowWrap,whiteSpace:style.whiteSpace,gridTemplateColumns:style.gridTemplateColumns};}).filter(el=>el.width>0&&el.height>0&&el.display!=='none'&&(el.right>innerWidth+1||el.left<0)&&el.className!=='skip').slice(0,40));
+     const evidence={lesson:lesson.id,task:task.id,viewport:width,metrics,overflow};
+     fs.writeFileSync(path.join(shots,'layout-failure-'+lesson.id+'-'+width+'.json'),JSON.stringify(evidence,null,2));
+     await page.screenshot({path:path.join(shots,'layout-failure-'+lesson.id+'-'+width+'.png'),fullPage:true});
+     console.error('PROFILE_PART2_LAYOUT_FAILURE '+JSON.stringify(evidence));
+    }
     assert(metrics.scroll<=metrics.width+1,lesson.id+' horizontal overflow at '+width);assert(metrics.condition<900,lesson.id+' condition below first screen');screens++;
     if(lesson===lessons.find(l=>l.exam===lesson.exam))await page.screenshot({path:path.join(shots,'exam-'+lesson.exam+'-'+width+'.png'),fullPage:true});
     if(width===1280){await fill(task);await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();const r=await record(task.id);assert(r.completed&&r.independent,task.id+' independently checked numeric result');assert(await page.locator('#proof-draft').isVisible());assert.match(await page.locator('#main').innerText(),/обосновани.*провер|Обоснование требует проверки/i);completed++;}
+    if(lesson.id==='p2-15-coordinate-angle'){
+     // The same long exact expressions must also fit after every step of the
+     // vector proof is revealed, not only while its answer fields are empty.
+     await page.locator('#show-solution').click();await page.locator('.solution-list li').first().waitFor();
+     for(let count=1;count<task.solution.length;count++){await page.locator('#solution-next').click();await page.waitForFunction(expected=>document.querySelectorAll('.solution-list li').length===expected,count+1);}
+     const expanded=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:innerWidth}));
+     await page.screenshot({path:path.join(shots,'coordinate-angle-solution-'+width+'.png'),fullPage:true});
+     assert(expanded.scroll<=expanded.width+1,'expanded coordinate-angle solution horizontal overflow at '+width+': '+JSON.stringify(expanded));
+    }
    }
    // First error, correction, proof draft, reload and repeat submission.
    const t=lessons[0].tasks[4];await go('#task/'+t.id+'/independent');await page.locator('#final-form button[type=submit]').click();assert.equal((await record(t.id)).attemptCount,0,'empty field not attempt');
