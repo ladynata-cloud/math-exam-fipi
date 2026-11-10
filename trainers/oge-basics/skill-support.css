@@ -1,0 +1,16 @@
+.skill-support,.skill-return{box-sizing:border-box;max-width:100%;color:#193c3a;font:inherit;line-height:1.5}
+.skill-support{margin:1.1rem 0;padding:1rem;border:1px solid #cbded8;border-radius:16px;background:#f4faf6}
+.skill-support h2{margin:0 0 .35rem;font-size:1.05rem;line-height:1.3}
+.skill-support-note{font-size:.9rem;margin:.25rem 0 .8rem;color:#445c56}
+.skill-support-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.skill-support-choice{display:flex;flex-direction:column;justify-content:center;gap:.15rem;min-height:44px;padding:.65rem;border:1px solid #c5d9d1;border-radius:10px;background:white;text-decoration:none;color:#174e3c;font-weight:600;overflow-wrap:anywhere}
+.skill-support-label{font-size:.78rem;color:#53665f;font-weight:400}
+.skill-support-choice:hover,.skill-support-choice.is-relevant{border-color:#3c8064;background:#e9f6eb}
+.skill-support-more{margin:.8rem 0 .3rem}.skill-support-more summary{padding:.3rem 0;cursor:pointer;font-size:.9rem;min-height:32px}
+.skill-support-extras{display:flex;flex-wrap:wrap;gap:.3rem .8rem;margin:.3rem 0}.skill-support-extra,.skill-support-path{display:inline-flex;align-items:center;min-height:44px;color:#17543d;font-size:.9rem;text-underline-offset:3px}
+.skill-return{margin:0 0 1rem;padding:.7rem 1rem;border-left:4px solid #397b63;background:#f1f8f4;border-radius:8px}
+.skill-return p{margin:.2rem 0;font-size:.9rem}.skill-return a,.skill-return button{display:inline-flex;align-items:center;min-height:44px;color:#174e3c;font:inherit;font-weight:600}
+.skill-return button{border:1px solid #8cb7a2;border-radius:8px;background:#fff;padding:.4rem .65rem;cursor:pointer}
+.skill-support a:focus-visible,.skill-support summary:focus-visible,.skill-return a:focus-visible,.skill-return button:focus-visible{outline:3px solid #c08724;outline-offset:3px}
+@media(max-width:560px){.skill-support{padding:.75rem}.skill-support-choices{grid-template-columns:1fr}.skill-support-choice{flex-direction:row;justify-content:space-between;align-items:center;gap:.5rem}.skill-support-label{flex:1}.skill-support-choice>span:last-child{flex:1.4;font-size:.9rem}}
+@media print{.skill-support,.skill-return{display:none}}

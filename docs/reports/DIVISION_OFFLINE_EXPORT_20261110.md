@@ -1,0 +1,32 @@
+# Division download update — 2026-11-10
+
+Part of `DIVISION_LEARNING_ROUTE_20261110`, authorized by the owner's requested
+division-learning changes and standing release policy.
+
+The downloadable HTML and ZIP are regenerated from the current
+`trainers/long-division-stepwise.html` and its manifest-listed assets. The scoped
+manifest change includes the prerequisite panel and the existing OGE wayfinding
+CSS/JS so a single downloaded file requires no local or remote asset fetches.
+The general exporter and its guards are unchanged.
+
+The navigator receipt for `trainers/long-division-stepwise.html` is rebound to the
+sanctioned source edit: `afterSha256` covers the complete current HTML;
+`beforeSha256` covers that same HTML with only the exact recorded navigator pair
+removed. Unknown edits, duplicate pairs and changed include versions remain
+unrecognized and cannot be stripped. No historic global base is changed here.
+
+Offline prerequisite links use HTTPS and open separately, preserving the local
+exercise. Existing native progress accounting records the use of help. Route
+links use DOM creation so the existing exporter's static-link conversion cannot
+rewrite JavaScript string concatenations.
+
+Validation: `tools/division-offline-export.test.cjs` checks exact receipt
+binding and rejection of mutations, every inlined asset against current source,
+ZIP/HTML/prompt byte identity, and a complete file-URL division journey with the
+pupil-built multiples table and zero requested assets. The prerequisite DOM/URL
+suite remains applicable.
+
+The local Chromium process could not start (`socket(): Operation not permitted`)
+before any page opened. The existing
+`tools/division-search-entry.browser.cjs` remains unchanged for a permitted
+browser environment; DOM completion does not substitute for visual acceptance.

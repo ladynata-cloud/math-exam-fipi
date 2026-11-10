@@ -18,6 +18,16 @@ on:
       - 'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html'
       - 'tools/division-guided*'
       - 'tools/division-notebook*'
+      - 'tools/division-progression*'
+      - 'tools/division-path*'
+      - 'tools/division-claude*'
+      - 'tools/division-checkpoint*'
+      - 'tools/division-offline-export*'
+      - 'tools/skill-support*'
+      - 'trainers/long-division-claude.html'
+      - 'trainers/oge-basics/skill-support*'
+      - 'trainers/oge-basics/multiplication-division/division-path*'
+      - 'trainers/oge-basics/multiplication-division/division-checkpoint*'
       - '.github/workflows/division-guided-quality.yml'
   workflow_dispatch:
 permissions:
@@ -37,18 +47,28 @@ jobs:
         run: |
           node --check trainers/long-division-entry.js
           node tools/division-guided.test.cjs
+          node tools/division-progression.test.cjs
           node tools/arithmetic-url-contract.test.cjs
           node tools/learning-remediation-bank.cjs --check
           git diff --check
       - name: Install browser test tools
         run: |
-          npm install --prefix "$RUNNER_TEMP/division-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npm install --prefix "$RUNNER_TEMP/division-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           "$RUNNER_TEMP/division-browser/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/division-browser/node_modules" >> "$GITHUB_ENV"
       - name: Real pupil interactions and mobile notebook
         env:
           DIVISION_SCREENSHOTS: division-browser-results
         run: |
+          node tools/division-progression.dom.cjs
+          node tools/skill-support.test.cjs
+          node tools/division-path.test.cjs
+          node tools/division-claude.test.cjs
+          node tools/division-offline-export.test.cjs
+          node tools/division-progression.browser.cjs
+          node tools/division-path.browser.cjs
+          CHECKPOINT_BROWSER=1 node --test tools/division-checkpoint.test.cjs
+          node tools/division-claude.browser.cjs
           node tools/division-guided.browser.cjs
           node tools/division-notebook.browser.cjs
           DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html DIVISION_SCREENSHOTS=division-browser-results/search node tools/division-guided.browser.cjs

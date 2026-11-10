@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-11-06",
+  "updated": "2026-11-10",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -148,6 +148,8 @@
         "/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
         "/trainers/oge-basics/basics-help.css",
         "/trainers/oge-basics/navigation-minimal.css",
+        "/trainers/oge-basics/skill-support.css",
+        "/assets/oge-wayfinding.css",
         "/trainers/oge-basics/multiplication-division/division-lab-core.js",
         "/trainers/oge-basics/multiplication-division/division-guided-core.js",
         "/trainers/oge-basics/arithmetic-route.js",
@@ -156,6 +158,8 @@
         "/trainers/oge-basics/multiplication-division/multiplication-refresh.js",
         "/trainers/oge-basics/basics-help.js",
         "/trainers/oge-basics/multiplication-division/division-guided.js",
+        "/trainers/oge-basics/skill-support.js",
+        "/assets/oge-wayfinding.js",
         "/trainers/oge-basics/navigation-minimal.js"
       ],
       "interfaceRequirements": [

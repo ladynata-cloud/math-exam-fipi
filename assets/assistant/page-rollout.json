@@ -4,8 +4,8 @@
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 568,
-    "covered": 567,
+    "total": 580,
+    "covered": 579,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -31,7 +31,10 @@
     "pedagogam/raboty/geo-ravenstvo-treugolnikov/index.html",
     "pedagogam/raboty/index.html",
     "pedagogam/raboty/istochniki.html",
-    "trainers/index.html"
+    "trainers/index.html",
+    "trainers/long-division-claude.html",
+    "trainers/oge-basics/multiplication-division/division-checkpoint.html",
+    "trainers/oge-basics/multiplication-division/division-path.html"
   ],
   "addedPages": {
     "articles/index.html": {
@@ -3788,7 +3791,10 @@
     "trainers/vpr-math/index.html": "sitemap; vpr/index.html; learning/course-program.js (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/who-is-stronger.html": "sitemap",
     "video-lessons/cheatsheets.html": "articles/moy-vzglyad-na-geometriyu-atanasyana/01-nachalo-geometrii/index.html",
-    "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)"
+    "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)",
+    "trainers/long-division-claude.html": "sitemap",
+    "trainers/oge-basics/multiplication-division/division-path.html": "sitemap",
+    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
