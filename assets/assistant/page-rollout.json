@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d34073353315a9c1bd2e122965cb1c79991bf94f",
+  "baseSha": "cf55fb5017710ac60e0ffbd821a2aeefcf36178b",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4423,6 +4423,13 @@
     {
       "previousBaseSha": "54fab96d1a6b3cf0e5c74c96bbc8f374a03f8f2c",
       "sourceBaseSha": "c0fe53215ed1b6920a5b74df113887347116852e",
+      "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d34073353315a9c1bd2e122965cb1c79991bf94f",
+      "sourceBaseSha": "cf55fb5017710ac60e0ffbd821a2aeefcf36178b",
       "task": "docs/tasks/EGE_BASE_CONCRETE_HINTS_20261110.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
