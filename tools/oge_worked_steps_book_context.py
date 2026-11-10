@@ -18,7 +18,8 @@ def matches_worked_steps_ui(record, text, fixture_texts):
             return False
         if record['route'] != pin['route'] or record['finalPath'] != pin['route']:
             return False
-        for route, expected in {pin['route']: pin['sha256'], **PINS['assets']}.items():
+        current_source = pin.get('currentSource', pin)
+        for route, expected in {pin['route']: current_source['sha256'], **PINS['assets']}.items():
             loaded = record['resources'][route]
             if loaded['status'] != 200 or loaded['sha256'] != expected:
                 return False

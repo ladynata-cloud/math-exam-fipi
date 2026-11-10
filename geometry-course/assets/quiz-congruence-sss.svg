@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="130" viewBox="0 0 320 130">
+  <defs>
+    <g id="triangle">
+      <path d="M29 106H139L63 25Z" fill="#e9f2fb" stroke="#294564" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M84 100V112M39 66L50 71M42 60L53 65M94 67L102 59M97 70L105 62M100 73L108 65" fill="none" stroke="#08776d" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <use href="#triangle"/>
+  <use href="#triangle" transform="translate(320) scale(-1 1)"/>
+  <g fill="#183247" font-family="system-ui,sans-serif" font-size="15" font-weight="700" text-anchor="middle">
+    <text x="29" y="125">A</text><text x="139" y="125">B</text><text x="63" y="19">C</text>
+    <text x="291" y="125">N</text><text x="181" y="125">M</text><text x="257" y="19">K</text>
+  </g>
+</svg>

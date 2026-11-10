@@ -1,14 +1,39 @@
 (function(){'use strict';const C=window.COURSE_CONFIG,U=C.unit,P=C.proof,T=GeoTasks,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;}),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
+const proofSteps=new Map(P.steps.map(step=>[step.id,step]));
+const proofDiagram=GeoProofDiagrams.render(P.id);
+let proofSketch;
 function save(event){store.put(U.id,state,event);}function defer(){clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});
 function task(){return T.task(U.calc,state.seed);}function shuffle(a,s=state.seed){return a.map((v,i)=>({v,key:Math.sin((i+1)*19.17+s*2.39)})).sort((a,b)=>a.key-b.key).map(x=>x.v);}
 function nav(){document.querySelector('.stage-nav').innerHTML=labels.map((l,i)=>'<button data-stage="'+i+'" class="'+(i===state.stage?'on':'')+'"'+(i===state.stage?' aria-current="step"':'')+'>'+String(i+1).padStart(2,'0')+' '+l+'</button>').join('');}
 function footer(){return '<div class="stage-footer">'+(state.stage?'<button data-action="prev">← '+labels[state.stage-1]+'</button>':'<a href="../index.html">Все темы</a>')+(state.stage<5?'<button class="primary" data-action="next">'+labels[state.stage+1]+' →</button>':'<button class="primary" data-action="finish">Завершить занятие</button>')+'</div>';}
-function proofUI(){const done=new Set(state.proofDone),remaining=P.steps.filter(s=>!done.has(s.id));let h='<p class="step-label">Доказательство · '+done.size+' / '+P.steps.length+'</p><h2>'+E(P.title)+'</h2><div class="callout"><p><strong>Дано.</strong> '+E(P.given)+'</p><p><strong>Цель.</strong> '+E(P.goal)+'</p></div><p class="muted">Это отдельная задача со своими обозначениями. Сначала набросай её чертёж на бумаге или на свободном поле ниже. Затем собери обоснование. Не используй требуемый результат как известный факт.</p><ol class="proof-list">';
-for(const s of P.steps.filter(s=>done.has(s.id)))h+='<li><strong>'+E(s.text)+'</strong><small>'+E(s.reason)+'</small></li>';h+='</ol>';
-if(!remaining.length)h+='<div class="callout"><strong>Цепочка собрана с опорой.</strong><p>Закрой карточки и попробуй восстановить рассуждение в разделе «Своими словами». Самостоятельное доказательство проверяет учитель.</p></div><button data-action="proof-reset">Собрать ещё раз</button>';
-else{h+='<p>Какой переход сейчас можно обосновать?</p><div class="proof-options">';for(const s of shuffle(remaining.slice(0,3)))h+='<button data-proof="'+s.id+'">'+E(s.text)+'</button>';h+='<button class="trap" data-action="proof-trap">Это верно, потому что на рисунке выглядит именно так.</button></div><div id="reason"></div><p id="proof-feedback" class="feedback" role="status"></p>';}
-h+='<details><summary>Свободное поле для чертежа к доказательству</summary><p>Добавляй точки и линии. Имена точек на этом поле задаются автоматически: в записи можно явно указать соответствие своим обозначениям. Чертёж не проверяет логическое доказательство.</p><div id="proof-board"></div></details>';return h;}
+function proofUI(){
+ const done=new Set(state.proofDone),remaining=P.steps.filter(s=>!done.has(s.id));
+ let h='<p class="step-label">Доказательство · '+done.size+' / '+P.steps.length+'</p><h2>'+E(P.title)+'</h2><div class="callout"><p><strong>Дано.</strong> '+E(P.given)+'</p><p><strong>Цель.</strong> '+E(P.goal)+'</p></div>'+proofDiagram;
+ h+='<p class="muted">'+(proofDiagram?'Используй чертёж, чтобы увидеть, какие объекты связаны в условии.':'Если нужен чертёж, набросай его на бумаге или открой поле под ответами.')+' Для каждого перехода выбери математическое основание.</p><ol class="proof-list">';
+ for(const id of state.proofDone){
+  const s=proofSteps.get(id);
+  h+='<li><strong>'+E(s.text)+'</strong><small>'+E(s.reason)+'</small></li>';
+ }
+ h+='</ol>';
+ if(!remaining.length)h+='<div class="callout"><strong>Цепочка собрана с опорой.</strong><p>Восстанови рассуждение в разделе «Своими словами». Самостоятельное доказательство проверяет учитель.</p></div><button data-action="proof-reset">Собрать ещё раз</button>';
+ else{
+  h+='<p>Какой переход сейчас можно обосновать?</p><div class="proof-options">';
+  for(const s of shuffle(remaining.slice(0,3)))h+='<button data-proof="'+s.id+'">'+E(s.text)+'</button>';
+  h+='<button class="trap" data-action="proof-trap">'+(proofDiagram?'Считаю утверждение верным по виду чертежа.':'Если на моём наброске это так, считаю утверждение доказанным.')+'</button></div><div id="reason"></div><p id="proof-feedback" class="feedback" role="status"></p>';
+ }
+ return h+'<div id="proof-sketch-slot"></div>';
+}
+function mountProofSketch(){
+ if(!proofSketch){
+  proofSketch=document.createElement('details');
+  proofSketch.innerHTML='<summary>Свободное поле для чертежа к доказательству</summary><p>Начни с инструмента «Точка», затем соедини нужные точки. Поле подписывает точки автоматически. В своей записи укажи, каким точкам из условия они соответствуют.</p><div id="proof-board"></div>';
+  const board=proofSketch.querySelector('#proof-board');
+  GeoLab.mount(board,{scene:{points:[],objects:[]},figure:'scratch'});
+  board.querySelector('[data-act="goal"]').hidden=true;
+ }
+ document.getElementById('proof-sketch-slot').replaceWith(proofSketch);
+}
 function render(){clearTimeout(timer);if(lab)lab.destroy();lab=null;pending=null;showHint=false;document.body.classList.toggle('construction-active',state.stage===1);nav();let h='<p class="step-label">'+String(state.stage+1).padStart(2,'0')+' / '+labels.length+'</p>';
 if(state.stage===0){h+='<h2>Что будем понимать</h2><p class="law">'+E(U.idea)+'</p><div class="callout"><strong>Связь с тем, что уже известно</strong><p>'+E(U.bridge)+'</p></div><h3>Найди слабое место в утверждении</h3><p>«'+E(U.trap)+'»</p><label>Какое условие пропущено? Придумай пример или контрпример.<textarea id="diagnosis" placeholder="Например: это сработает только если…"></textarea></label><button data-action="diagnosis">Сравнить с объяснением</button><div id="diagnosis-feedback" role="status"></div><div id="extra-model"></div>';}
 if(state.stage===1){h+='<h2>Построй и проверь</h2><p>'+E(C.investigation)+'</p><div id="geo-board"></div><label>Моя догадка: что сохраняется и почему?<textarea id="observation" placeholder="Я изменил(а)… При этом… Думаю, причина в том, что…">'+E(state.observation)+'</textarea></label><p class="muted">Числа на экране округлены. Проверка построения опирается на его связи, а для общего вывода понадобится доказательство.</p><div id="extra-model"></div>';}
@@ -19,11 +44,20 @@ if(state.stage===5)h+='<h2>Теперь объясни сам</h2><p><strong>З�
 root.innerHTML=h+footer();
 if(state.stage===0){GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
 if(state.stage===1){lab=GeoLab.mount(document.getElementById('geo-board'),{figure:U.figure,goal:U.goal},ev=>{state.moved=ev.moved||state.moved;state.drawing=JSON.parse(ev.board.snapshot());state.construction=ev.board.goal(U.goal).ok;if(ev.type==='reset')state.moved=false;defer();});if(state.drawing){lab.board.points=state.drawing.points;lab.board.objects=state.drawing.objects;lab.board.update();lab.redraw();}GeoExperiments.mount(document.getElementById('extra-model'),C.experiment);}
-if(state.stage===2){const el=document.getElementById('proof-board');GeoLab.mount(el,{figure:'triangle',goal:'explore'},()=>{});}
+if(state.stage===2)mountProofSketch();
 if(state.stage===3||state.stage===4){const a=document.getElementById('answer');if(a)a.value=state.draft;}
 root.querySelector('h2')?.setAttribute('tabindex','-1');}
-function answerUI(mode){return '<form id="answer-form" data-mode="'+mode+'"><label for="answer">Твой ответ</label><div class="answer-row"><input id="answer" autocomplete="off" spellcheck="false" placeholder="Число, дробь или ответ словами"><button class="primary" type="submit">Проверить</button></div></form><p class="muted">Дроби: <code>3/4</code>, корень: <code>sqrt(5)</code>, π: <code>2*pi</code>. Координаты: <code>2; -3</code>. Для десятичного ответа достаточно трёх знаков после запятой.</p><p id="answer-feedback" class="feedback" role="status"></p>';}
-function stage(n){if(n===4&&state.stage!==4){newTask(false);}state.stage=n;if(n===3)rememberTask();save('step');render();root.querySelector('h2')?.focus({preventScroll:true});}
+function answerUI(mode){return '<form id="answer-form" data-mode="'+mode+'"><label for="answer">Твой ответ</label><div class="answer-row"><input id="answer" autocomplete="off" spellcheck="false" placeholder="Число, дробь или ответ словами"><button class="primary" type="submit">Проверить</button></div></form><p class="muted">Дроби: <code>3/4</code>, корень: <code>sqrt(5)</code>, π: <code>2π</code> или <code>2*pi</code>. Координаты: <code>(2; -3)</code>. Для десятичного ответа достаточно трёх знаков после запятой.</p><p id="answer-feedback" class="feedback" role="status"></p>';}
+function stage(n){
+ if(n===4&&state.stage!==4)newTask(false);
+ state.stage=n;
+ if(n===3)rememberTask();
+ save('step');render();
+ root.querySelector('h2')?.focus({preventScroll:true});
+ if(n===2&&proofDiagram&&window.matchMedia('(max-width: 600px)').matches){
+  root.scrollIntoView({block:'start'});
+ }
+}
 function rememberTask(){const key=T.fingerprint(task());if(!state.seenTasks.includes(key))state.seenTasks.push(key);return key;}
 function openIndependentTask(){const key=T.fingerprint(task());state.repeatedTask=state.seenTasks.includes(key);rememberTask();state.currentTaskKey=key;}
 function newTask(redraw=true){state.seed++;state.taskStep=0;state.draft='';state.assisted=false;state.checked=false;openIndependentTask();save('task_start');if(redraw)render();}
@@ -31,18 +65,44 @@ function finish(){save('finish');const done=state.guided&&state.proof&&(U.goal==
 document.querySelector('.stage-nav').addEventListener('click',e=>{const b=e.target.closest('[data-stage]');if(b)stage(+b.dataset.stage);});
 root.addEventListener('input',e=>{if(e.target.id==='observation')state.observation=e.target.value;if(e.target.id==='written')state.written=e.target.value;if(e.target.id==='answer')state.draft=e.target.value;defer();});
 root.addEventListener('submit',e=>{if(e.target.id!=='answer-form')return;e.preventDefault();const t=task(),mode=e.target.dataset.mode,feedback=document.getElementById('answer-feedback'),a=document.getElementById('answer').value.trim();if(!a){feedback.textContent='Сначала введи ответ.';return;}const expected=mode==='guided'?t.steps[state.taskStep]?.answer:t.answer;if(expected===undefined)return;const ok=T.equal(a,expected);if(mode==='guided'){if(ok){state.taskStep++;state.draft='';if(state.taskStep===t.steps.length)state.guided=true;save('solved');render();}else{feedback.className='feedback error';feedback.textContent='Пока не совпало. Проверь, какую величину нужно найти именно на этом шаге, знаки и единицы. Можно открыть объяснение шага.';save('attempt');}}else{const first=!state.checked;state.checked=true;if(first)state.attempts++;if(ok){if(first&&!state.assisted&&!state.repeatedTask)state.independent++;feedback.className='feedback good';feedback.textContent=state.repeatedTask?'Верно. Это знакомое условие: повторение не добавляет новый самостоятельный успех.':first&&!state.assisted?'Верно с первой попытки без подсказки. Этот вариант учтён как самостоятельный.':'Верно. Этот вариант решён с помощью или после исправления; для самостоятельной проверки возьми другой.';save('solved');}else{state.assisted=true;feedback.className='feedback error';feedback.textContent='Пока неверно. Проверь единицы, знак и смысл искомой величины. Можно разобрать этот вариант и затем решить новый самостоятельно.';save('attempt');}}});
-root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.proof){const s=P.steps.find(s=>s.id===b.dataset.proof),done=new Set(state.proofDone),f=document.getElementById('proof-feedback');if(!s.depends.every(x=>done.has(x))){f.textContent='Этот вывод появится позже. Сначала установи факт, на который он опирается.';f.className='feedback error';save('proof_order_error');return;}pending=s;const candidates=shuffle([{text:s.reason,ok:true},{text:'Это следует из того утверждения, которое мы сейчас должны доказать.',ok:false},{text:'Я измерил(а) линии или углы на одном чертеже и получил(а) подходящее число.',ok:false}],state.seed+state.proofDone.length);document.getElementById('reason').innerHTML='<div class="reason-panel"><strong>'+E(s.text)+'</strong><label>Какое основание разрешает этот переход?<select id="reason-choice"><option value="">Выбери основание</option>'+candidates.map((r,i)=>'<option value="'+(r.ok?'yes':'no'+i)+'">'+E(r.text)+'</option>').join('')+'</select></label><button data-action="reason-check" class="primary">Обосновать переход</button></div>';return;}
+root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+if(b.dataset.proof){
+ const s=proofSteps.get(b.dataset.proof),done=new Set(state.proofDone),f=document.getElementById('proof-feedback'),reason=document.getElementById('reason');
+ pending=null;
+ reason.replaceChildren();
+ if(!s.depends.every(x=>done.has(x))){
+  f.textContent='Этот вывод опирается на ещё не обоснованные шаги. Выбери переход, для которого уже есть основание.';
+  f.className='feedback error';save('proof_order_error');return;
+ }
+ pending=s;
+ f.textContent='';f.className='feedback';
+ const candidates=shuffle([{text:s.reason,ok:true},{text:'Это следует из того утверждения, которое мы сейчас должны доказать.',ok:false},{text:'Я измерил(а) линии или углы на одном чертеже и получил(а) подходящее число.',ok:false}],state.seed+state.proofDone.length);
+ reason.innerHTML='<div class="reason-panel"><strong>'+E(s.text)+'</strong><label>Какое основание разрешает этот переход?<select id="reason-choice"><option value="">Выбери основание</option>'+candidates.map((r,i)=>'<option value="'+(r.ok?'yes':'no'+i)+'">'+E(r.text)+'</option>').join('')+'</select></label><button data-action="reason-check" class="primary">Обосновать переход</button></div>';
+ return;
+}
 const a=b.dataset.action;
 if(a==='next')stage(Math.min(5,state.stage+1));if(a==='prev')stage(Math.max(0,state.stage-1));
 if(a==='diagnosis'){const text=document.getElementById('diagnosis').value.trim();document.getElementById('diagnosis-feedback').innerHTML='<div class="callout"><p>'+E(U.bridge)+'</p><p>'+E(U.idea)+'</p><small>'+(text?'Сравни свою формулировку: указаны ли нужные условия?':'Попробуй теперь сформулировать исправление своими словами.')+'</small></div>';save('diagnosis');}
-if(a==='proof-trap'){document.getElementById('proof-feedback').textContent='Один чертёж показывает только один случай. Нужны условия, определение, аксиома или уже доказанная теорема. Измерение с округлением также не устанавливает точного равенства.';save('proof_trap');}
+if(a==='proof-trap'){
+ pending=null;
+ document.getElementById('reason').replaceChildren();
+ const f=document.getElementById('proof-feedback');
+ f.className='feedback error';
+ f.textContent='Один чертёж показывает только один случай. Обоснуй утверждение условием, определением, аксиомой или уже доказанной теоремой.';
+ save('proof_trap');
+}
 if(a==='reason-check'&&pending){const v=document.getElementById('reason-choice').value,f=document.getElementById('proof-feedback');if(v==='yes'){state.proofDone.push(pending.id);state.proof=state.proofDone.length===P.steps.length;save('proof_step');render();}else{f.className='feedback error';f.textContent=v?'Это создаёт круг в рассуждении или подменяет доказательство наблюдением. Выбери уже установленное основание.':'Выбери основание перехода.';save('proof_reason_error');}}
-if(a==='proof-reset'){state.proofDone=[];save();render();}
+if(a==='proof-reset'){state.proofDone=[];state.proof=false;save();render();}
 if(a==='hint'){state.hints++;state.assisted=true;const s=task().steps[state.taskStep];document.getElementById('hint-box').innerHTML='<div class="callout">'+E(s.reason)+'</div>';save('hint');}
 if(a==='show-solution'){state.hints++;state.assisted=true;document.getElementById('hint-box').innerHTML='<ol class="proof-list">'+task().steps.map(s=>'<li><strong>'+E(s.question)+' '+E(T.format(s.answer))+'</strong><small>'+E(s.reason)+'</small></li>').join('')+'</ol>';save('hint');}
 if(a==='independent-start')stage(4);if(a==='new-task')newTask();if(a==='finish')finish();if(a==='download'){save();GeoStore.download(store.export(),'geometry-progress.json');}
 });
 document.getElementById('export-progress').onclick=()=>{save();GeoStore.download(store.export(),'geometry-progress.json');};
-// Restore only steps from this proof; corrupt/obsolete state cannot skip its prerequisites.
-state.proofDone=state.proofDone.filter((id,i)=>P.steps[i]?.id===id);state.proof=state.proofDone.length===P.steps.length;state.taskStep=Math.min(state.taskStep,task().steps.length);if(state.stage===3)rememberTask();if(state.stage===4&&state.currentTaskKey!==T.fingerprint(task()))openIndependentTask();save('start');render();
+// Preserve the learner's order while checking prerequisites and excluding duplicates.
+const restored=new Set();
+for(const id of state.proofDone){
+ const step=proofSteps.get(id);
+ if(step?.depends.every(dep=>restored.has(dep)))restored.add(id);
+}
+state.proofDone=[...restored];state.proof=state.proofDone.length===P.steps.length;state.taskStep=Math.min(state.taskStep,task().steps.length);if(state.stage===3)rememberTask();if(state.stage===4&&state.currentTaskKey!==T.fingerprint(task()))openIndependentTask();save('start');render();
 })();

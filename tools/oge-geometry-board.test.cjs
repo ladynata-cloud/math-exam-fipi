@@ -32,6 +32,23 @@ const native=n=>n===16?'trTask':n===17?'CUR':'TR.task';
 const ids=n=>({answer:n===18?'ansIn':'ans',check:{16:'check',17:'chk',18:'chkBtn'}[n],next:{16:'next',17:'nxt',18:'nextBtn'}[n],give:{16:'giveup',17:'give',18:'giveBtn'}[n]});
 function fill(w,d,id,value){d.getElementById(id).value=value;d.getElementById(id).dispatchEvent(new w.Event('input',{bubbles:true}));}
 function projection(d,n){return JSON.stringify({task:d.querySelector(n===17?'.qtext':'.task')?.textContent,figure:d.querySelector(n===16?'.diagram svg':n===17?'.fig svg':'.figwrap svg')?.outerHTML.replace(/(?:id=\"p|url\(#p)\d+/g,m=>m.replace(/\d+$/,'ID')),feedback:d.getElementById('fb')?.textContent,input:d.getElementById(ids(n).answer)?.value,disabled:d.getElementById(ids(n).answer)?.disabled,steps:d.querySelector(n===17?'#ssol':'#solBox')?.textContent,model:d.querySelector('.ocg-reading')?.textContent});}
+test('OGE16: solution is available by the answer after two misses and replays in a second window',async()=>{
+ const a=await load(16),b=await load(16);try{
+  const direct=a.d.getElementById('openSolution'),check=a.d.getElementById('check'),feedback=a.d.getElementById('fb');
+  assert.equal(direct.parentElement,check.parentElement);assert.equal(direct.style.display,'none');
+  fill(a.w,a.d,'ans','999999');check.click();
+  assert.match(feedback.textContent,/После ещё одной ошибки/);assert.equal(direct.style.display,'none');
+  fill(a.w,a.d,'ans','999998');check.click();
+  assert.match(feedback.textContent,/попробовать ещё раз или нажать «Показать решение»/);
+  assert.equal(direct.style.display,'');assert.equal(check.disabled,false);assert.equal(a.d.getElementById('courseHintPanel').hidden,true);
+  assert.equal(a.d.getElementById('solBox').classList.contains('show'),false);
+  direct.click();await tick();
+  assert.equal(direct.style.display,'none');assert.equal(a.d.getElementById('solBox').classList.contains('show'),true);
+  const packet=clone(b.w,a.w.OgeGeometryBoard.getState());assert.equal(packet.actions.at(-1)[0],'give');
+  assert.equal(b.w.OgeGeometryBoard.validateState(packet),true);b.w.OgeGeometryBoard.applyState(packet);
+  assert.equal(state(b.w),state(a.w));assert.equal(projection(b.d,16),projection(a.d,16));
+ }finally{a.dom.window.close();b.dom.window.close();}
+});
 for(const n of [16,17,18]){
  test(`OGE${n}: all native types, controls, two-view restore and completed work`,async()=>{
   const a=await load(n),b=await load(n);try{
