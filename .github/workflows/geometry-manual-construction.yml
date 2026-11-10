@@ -1,5 +1,8 @@
 name: Atanasyan atlas manual construction
 on:
+  # Keep exact-head checks available while this PR conflicts with main.
+  push:
+    branches: ['fix/geometry-manual-construction-undo']
   pull_request:
     paths:
       - 'geometry-course/assets/**'
@@ -13,11 +16,13 @@ jobs:
   manual-construction:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      GEOMETRY_EVIDENCE_DIR: ${{ github.workspace }}/artifacts/geometry-manual
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
@@ -26,13 +31,58 @@ jobs:
       - run: |
           node tools/geometry/check.js
           node --test tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs
-          mkdir -p ../geometry-private
+          mkdir -p "$GEOMETRY_EVIDENCE_DIR"
           node tools/geometry/browser-check.js
           node tools/geometry/manual-construction.browser.cjs
           git diff --check
+      - name: Verify complete browser evidence
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const assert = require('node:assert/strict');
+          const out = process.env.GEOMETRY_EVIDENCE_DIR;
+          const ids = ['segments', 'perpendicular', 'compass', 'axis', 'midline'];
+          const screenshots = ['catalog-desktop.png', 'lesson-mobile.png', 'lesson-desktop.png',
+            ...[320, 1280].flatMap(width => ids.map(id => `${id}-${width}.png`))];
+          const expected = [...screenshots, 'manual-results.json'];
+          assert.deepEqual(fs.readdirSync(out).sort(), expected.slice().sort());
+          for (const name of expected) {
+            const file = path.join(out, name);
+            const stat = fs.lstatSync(file);
+            assert.ok(stat.isFile() && stat.size > 0, `Missing or invalid evidence: ${name}`);
+          }
+          for (const name of screenshots) {
+            assert.equal(fs.readFileSync(path.join(out, name)).subarray(0, 8).toString('hex'),
+              '89504e470d0a1a0a', `Invalid PNG: ${name}`);
+          }
+          const report = JSON.parse(fs.readFileSync(path.join(out, 'manual-results.json'), 'utf8'));
+          assert.deepEqual(report, {
+            results: [320, 1280].flatMap(width => ids.map(id => ({id, width, manual: true, reload: true}))),
+            errors: []
+          });
+          console.log(`Verified ${expected.length} browser evidence files; synthetic test results only.`);
+          NODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: atanasyan-manual-evidence
-          path: ../geometry-private/
+          # Explicit allowlist: no profiles, exports, environment files or raw logs.
+          path: |
+            artifacts/geometry-manual/catalog-desktop.png
+            artifacts/geometry-manual/lesson-mobile.png
+            artifacts/geometry-manual/lesson-desktop.png
+            artifacts/geometry-manual/segments-320.png
+            artifacts/geometry-manual/perpendicular-320.png
+            artifacts/geometry-manual/compass-320.png
+            artifacts/geometry-manual/axis-320.png
+            artifacts/geometry-manual/midline-320.png
+            artifacts/geometry-manual/segments-1280.png
+            artifacts/geometry-manual/perpendicular-1280.png
+            artifacts/geometry-manual/compass-1280.png
+            artifacts/geometry-manual/axis-1280.png
+            artifacts/geometry-manual/midline-1280.png
+            artifacts/geometry-manual/manual-results.json
+            artifacts/geometry-manual/browser-failure.png
+          include-hidden-files: false
           if-no-files-found: error

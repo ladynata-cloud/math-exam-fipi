@@ -29,3 +29,29 @@ No stored-work format migration or clearing. Existing drawings are retained verb
 ## Helper follow-up
 
 The owner additionally requested a new Claude brief and starting the contextual helper. It is a separate bounded task, reusing the existing assistant service and addressing fields/geometry; paid API activation is not implied. The course fixes remain necessary independently.
+
+## PR #533 artifact-path follow-up — 2026-11-10
+
+Owner scope: repair evidence upload on existing PR #533; do not merge or publish.
+This later restriction overrides the release permission above for this task.
+Review level for the bounded CI follow-up: SMALL; the original product scope remains HIGH.
+Starting head: `d6a5fa6013b43054c9077989bcb4bea6047fbd12`.
+
+Both browser checks use `GEOMETRY_EVIDENCE_DIR` in CI, pointing to
+`artifacts/geometry-manual` inside the Actions workspace. Their existing local
+fallback is preserved. All original mathematical, module and browser commands,
+assertions and viewports remain mandatory and unchanged.
+
+Before upload, require all 13 nonempty PNG screenshots and the exact successful
+10-scenario `manual-results.json`. Upload only those explicit filenames plus
+optional `browser-failure.png`; hidden files are excluded. Fresh browser contexts
+use synthetic test answers. Browser profiles, progress exports, environment
+files and raw logs are not uploaded. Mathematical and full-course browser
+summaries remain in the CI log. Verify the downloaded Actions archive against
+this allowlist and the current PR head. Rollback is an ordinary revert of this
+bounded CI follow-up; no learner data or public course code is changed.
+
+The PR currently conflicts with `main`. A push trigger restricted to this exact
+PR branch runs the same checks at its current head without composing or merging
+branches. Checkout uses the PR head for PR events and the pushed SHA for push
+events. This workflow has read-only contents permission and no deployment step.
