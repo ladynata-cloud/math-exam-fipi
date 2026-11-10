@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "048dd882ae83c4ad4b2921971b45ad94191ef8b0",
+  "baseSha": "137c2a7802b5e96cc3026456eae70201e0758917",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3020,8 +3020,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "c7ce6655af4d818b558427165d7141f94693cf00facf49f6f4a114fa23e64858",
-      "afterSha256": "fbbac2d7b1d8b371116a5baab9cf7c1456f8272317f8f25e252c61bc34e03af4",
+      "beforeSha256": "a9aeb084ff51c067a978b0140891424b765a59389242a4dfa1344754930339b3",
+      "afterSha256": "c3538f7eba74037b1933faf1b9cccb21c5db0343cce1741d2cea3779a284554f",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -4337,6 +4337,15 @@
       "task": "docs/tasks/OGE9_PROTOTYPE_VARIETY_20261110.md",
       "changedPaths": [
         "trainers/oge-course/index.html",
+        "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "048dd882ae83c4ad4b2921971b45ad94191ef8b0",
+      "sourceBaseSha": "137c2a7802b5e96cc3026456eae70201e0758917",
+      "task": "docs/tasks/OGE9_EXPANDED_PRACTICE_20261110.md",
+      "changedPaths": [
         "trainers/oge-task9-equations.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
