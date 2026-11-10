@@ -284,6 +284,36 @@ class GeneratorTests(unittest.TestCase):
                     with self.subTest(page=name, asset=asset):
                         self.assertNotIn(asset.encode(), data)
 
+    def test_public_skill_detours_are_excluded_and_unknown_loader_changes_fail(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        source = "trainers/oge-basics/navigation-minimal.js"
+        original = (ROOT / source).read_text()
+        cleaned = builder.sanitize(source, original, edition)
+        self.assertEqual(cleaned, original.replace(builder.PUBLIC_SKILL_SUPPORT_LOADER, "", 1))
+        self.assertIn("function fold(nodes,label,before)", cleaned)
+        self.assertNotIn("skill-support", cleaned)
+        for changed in (
+                original.replace("skill-support.js?v=20261110", "skill-support.js?v=unreviewed"),
+                original.replace("!window.MathExamBookEdition&&", ""),
+                original.replace(builder.PUBLIC_SKILL_SUPPORT_LOADER,
+                                 builder.PUBLIC_SKILL_SUPPORT_LOADER * 2)):
+            with self.subTest(change=changed[:80]), self.assertRaisesRegex(ValueError, "skill-support loader changed"):
+                builder.sanitize(source, changed, edition)
+        # Direct includes are optional public UI too; instructional links remain.
+        retained = '<a href="/trainers/long-division-stepwise.html">Division</a>'
+        included = ('<script defer src="/trainers/oge-basics/skill-support.js?v=20261110"></script>'
+                    '<link rel="stylesheet" href="/trainers/oge-basics/skill-support.css?v=20261110">')
+        self.assertEqual(builder.sanitize("index.html", included + retained, edition), retained)
+        output, manifest = builder.build(edition)
+        excluded = {"trainers/oge-basics/skill-support.js", "trainers/oge-basics/skill-support.css"}
+        sources = {record["path"] for record in manifest["sourceFiles"]}
+        dependencies = {name for record in manifest["sourceFiles"] for name in record["dependencies"]}
+        self.assertFalse(sources & excluded)
+        self.assertFalse(dependencies & excluded)
+        for name in excluded:
+            self.assertNotIn(edition.prefix + name, output)
+        self.assertNotIn(b"skill-support", output[edition.prefix + source])
+
     def test_no_implicit_write_base(self):
         with self.assertRaisesRegex(ValueError, "explicit full --base"):
             builder.ensure_writable(builder.Edition("v2", builder.PUBLISHED_V1), None)

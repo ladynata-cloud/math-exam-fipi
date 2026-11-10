@@ -53,6 +53,10 @@ REMOVED = {
     "assets/assistant/navigator-data.js",
     "assets/assistant/navigator-widget.js",
     "assets/assistant/widget.css",
+    # Live prerequisite detours may leave the fixed inventory. They are public
+    # navigation, like the navigator above; the original in-trainer help stays.
+    "trainers/oge-basics/skill-support.js",
+    "trainers/oge-basics/skill-support.css",
     "ege-baza/return-to-course.js", "learning/practice-entry.js",
     "trainers/learning-bridge.js", "trainers/oge-learning.js",
     "trainers/task19-board-session.js", "trainers/oge-geometry-board-mode.js",
@@ -68,6 +72,10 @@ REMOVED = {
     "trainers/oge-1-5-trainers/practical-diagnostic-board.js",
 }
 NODE_ONLY = {"trainers/p2_core.js", "trainers/p3_families.js"}
+PUBLIC_SKILL_SUPPORT_LOADER = '''  if(!window.MathExamBookEdition&&new URLSearchParams(location.search).get('learning')!=='1'&&!window.MathExamSkillSupport&&!document.querySelector('script[data-skill-support-loader],script[src*="skill-support.js"]')){
+    const script=document.createElement('script');script.src='/trainers/oge-basics/skill-support.js?v=20261110';script.dataset.skillSupportLoader='';document.head.append(script);
+  }
+'''
 STATIC_REF = re.compile(r'''["']([^"'\s<>`]+\.(?:js|css|json|png|jpg|jpeg|webp|gif|svg|woff2?)(?:[?#][^"'\s<>`]*)?)["']''')
 ATTR = re.compile(r'''\b(href|src|poster|action)\s*=\s*(["'])(.*?)\2''', re.I | re.S)
 SCRIPT = re.compile(r"<script\b[^>]*>.*?</script\s*>", re.I | re.S)
@@ -121,6 +129,12 @@ def sanitize(source, text, edition):
         return tag
     text = LINK.sub(link, text)
     text = re.sub(r"<!-- download-panel:start:[\s\S]*?<!-- download-panel:end:[\s\S]*?-->", "", text)
+    if source == "trainers/oge-basics/navigation-minimal.js" and "skill-support" in text:
+        # Remove only the reviewed optional live-site loader. A changed loader
+        # is a new runtime boundary and must fail until explicitly reviewed.
+        if text.count(PUBLIC_SKILL_SUPPORT_LOADER) != 1:
+            raise ValueError("Public skill-support loader changed; review before packaging")
+        text = text.replace(PUBLIC_SKILL_SUPPORT_LOADER, "", 1)
     if source == "trainers/oge-basics/learning-loader.js":
         marker = "document.documentElement.classList.add('learning-remediation-mode');"
         if marker not in text:
