@@ -122,7 +122,12 @@ async function scenario(p,r){
  if(route.includes('task-15-external'))return numeric(p,r,{input:'#ocg15-answer',feedback:'.ocg-feedback',hint:'#hintPanel > summary',panel:'#hintPanel',answers:38,prompt:'.ocg-primary-figure',save:false,mode:'single external-angle exercise, 180−142=38'});
  if(route.includes('oge-task6-'))return fractions6(p,r);
  if(route.includes('oge-task8-'))return numeric(p,r,{host:'#marGrid > .mtask:not([hidden])',input:'input.ans',check:'.ck',feedback:':scope > .mrow .fb',hint:'.bs',answers:64,prompt:'.expr',next:'.minimal-next',nextGlobal:true,mode:'first root/power exercise; sqrt(4^6)=64'});
- if(route.includes('oge-task9-'))return numeric(p,r,{host:'.task-card:not([hidden])',input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:10,prompt:'.task-q',next:'.minimal-next',nextGlobal:true,mode:'first linear equation 4x−4=16+2x'});
+ if(route.includes('oge-task9-')){
+   const host='.task-card:not([hidden])',prompt='.task-q';
+   const first=PREFIX?{equation:'4x-4=16+2x',answer:10}:{equation:'3(x+8)-2(x-8)=8',answer:-32};
+   assert.equal((await text(p.locator(host).locator(prompt))).replace(/^Решите уравнение\s+|\.$/g,'').replace(/\s+/g,''),first.equation);
+   return numeric(p,r,{host,input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:first.answer,prompt,next:'.minimal-next',nextGlobal:true,mode:'first linear equation '+first.equation});
+ }
  if(route.includes('oge-task12-'))return numeric(p,r,{host:'#taskArea',input:'#ansIn',check:'#checkBtn',feedback:'#fb',hint:'.minimal-hint',answers:async()=>source(p,'cur.answer'),method:'source-derived read-only current-task answer; independent maths pending',prompt:'.story',next:'#nextBtn'});
  if(route.includes('oge-task16-'))return numeric(p,r,{input:'#ans',check:'#check',feedback:'#fb',hint:'#courseHintToggle',panel:'#courseHintPanel',answers:async()=>source(p,'trTask.ans'),method:'source-derived read-only trTask.ans',prompt:'#main .task',next:'#next'});
  if(route.includes('oge-task17-'))return numeric(p,r,{input:'#ans',check:'#chk',feedback:'#fb',hint:'#courseHintToggle',panel:'#courseHintPanel',answers:async()=>source(p,'CUR.ans'),method:'source-derived read-only CUR.ans',prompt:'.qtext',next:'#nxt'});
