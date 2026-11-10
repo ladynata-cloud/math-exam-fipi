@@ -19,13 +19,21 @@ function label(x,y,text,anchor='middle'){return `<text x="${x}" y="${y}" text-an
 function poly(points,cls='ocg-shape'){return `<polygon points="${points.map(p=>p.join(',')).join(' ')}" class="${cls}"/>`;}
 function rad(deg){return deg*Math.PI/180;}
 function circ(cx,cy,r,a){return[cx+r*Math.cos(rad(a)),cy-r*Math.sin(rad(a))];}
+const figureFrames=new Map();
+const figureObserver=global.ResizeObserver?new global.ResizeObserver(()=>figureFrames.forEach(update=>update())):null;
 function figureNavigation(wrap,title){
+ for(const [old] of figureFrames)if(!old.isConnected){figureObserver?.unobserve(old);figureFrames.delete(old);}
  wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label',title+'; рисунок можно прокручивать');
  const nav=el('div',null,'ocg-figure-nav');nav.append(el('p','Если рисунок не помещается, прокрути его пальцем или кнопками. Стрелки клавиатуры тоже работают.','ocg-scroll-note'));
  const left=button('← Влево',()=>{wrap.scrollLeft-=Math.max(160,wrap.clientWidth*.8);}),right=button('Вправо →',()=>{wrap.scrollLeft+=Math.max(160,wrap.clientWidth*.8);});
  left.dataset.geometryPan='left';right.dataset.geometryPan='right';nav.append(left,right);wrap.before(nav);
+ const update=()=>{const max=wrap.scrollWidth-wrap.clientWidth,overflow=wrap.clientWidth>0&&max>2;nav.hidden=!overflow;left.disabled=!overflow||wrap.scrollLeft<=1;right.disabled=!overflow||wrap.scrollLeft>=max-1;wrap.tabIndex=overflow?0:-1;wrap.setAttribute('aria-label',title+(overflow?'; рисунок можно прокручивать':''));};
+ figureFrames.set(wrap,update);figureObserver?.observe(wrap);wrap.addEventListener('scroll',update,{passive:true});
+ left.addEventListener('click',update);right.addEventListener('click',update);update();
  return nav;
 }
+global.addEventListener('resize',()=>figureFrames.forEach(update=>update()));
+doc.addEventListener('toggle',()=>global.requestAnimationFrame(()=>figureFrames.forEach(update=>update())),true);
 function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);figureNavigation(wrap,title);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
 function controls(host){const box=el('div',null,'ocg-controls');host.append(box);return box;}
 function watch(inputs,run){inputs.forEach(i=>i.addEventListener('input',run));run();}
@@ -166,11 +174,11 @@ function enhance(){
  const identity=page+'|'+info.key+'|'+info.text;
  input.setAttribute('aria-label',answerInstruction(info));preserveDraft(input,identity);
  const prompt=el('label',answerInstruction(info),'ocg-answer-label');prompt.htmlFor=input.id;input.parentElement.before(prompt);
- const [kind,topics,crops]=config(info),explore=details('Помочь разобраться на модели?');explore.dataset.geometryDiscovery='1';model(explore,kind,info.shape);panel.prepend(explore);
+ const [kind,topics,crops]=config(info),explore=details('Дополнительно: попробовать на других числах');explore.dataset.geometryDiscovery='1';model(explore,kind,info.shape);panel.append(explore);
  const applied=details('Как применить это к моему заданию?');applied.append(el('p','1. Найди на своём рисунке отрезки или углы, о которых говорит правило.'),el('p','2. Сверь все условия правила: прямой угол, параллельность, касание или положение точек.'),el('p','3. Подставь данные своей задачи. Запиши ответ в поле под условием.'));const law=el('div',null,'ocg-law');law.innerHTML=info.law;applied.append(law);panel.append(applied);
  const referenceBox=el('section',null,'ocg-reference-box');references(referenceBox,topics,crops);panel.append(referenceBox);
  const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();input.focus();});panel.append(returnButton);
- const update=()=>toggle.textContent=panel.hidden?'Хочешь подсказку?':'Убрать подсказку';toggle.addEventListener('click',update);update();
+ const update=()=>toggle.textContent=panel.hidden?'Разобрать по шагам':'Скрыть объяснение';toggle.addEventListener('click',update);update();
  // Same-page references must not replace the task or discard its typed answer.
  const main=q('#main');if(main&&!main.dataset.geometryReferences){main.dataset.geometryReferences='1';main.addEventListener('click',event=>{const link=event.target.closest('.refcall,[data-act="ref"],#toRef2,#toSheet2');if(!link||!q('#courseHintPanel'))return;event.preventDefault();event.stopImmediatePropagation();const live=q('#courseHintPanel');if(live.hidden)q('#courseHintToggle').click();const box=q('.ocg-reference-box',live);if(box){all('details',box).forEach(d=>d.open=true);box.scrollIntoView?.({block:'nearest'});q('summary',box)?.focus();}},true);}
  for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');

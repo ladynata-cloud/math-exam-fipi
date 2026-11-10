@@ -252,6 +252,14 @@
         "/trainers/task19-reference/trig-values.png",
         "/trainers/task19-textbook/atanasyan-parallel-third.png",
         "/trainers/task19-textbook/merzlyak-parallel-third.png"
+      ],
+      "offlineOmitAssets": [
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js"
       ]
     },
     {

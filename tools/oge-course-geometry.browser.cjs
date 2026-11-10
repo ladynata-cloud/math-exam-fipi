@@ -3,10 +3,12 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const{chromium}=require('playwright');const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/oge-course-geometry');
 async function checkFigurePan(figure,label){
- const nav=figure.locator('xpath=preceding-sibling::*[1]');assert.ok(await nav.locator('.ocg-scroll-note').isVisible(),label+' visible pan instruction');
+ const nav=figure.locator('xpath=preceding-sibling::*[1]');
  assert.equal(await figure.evaluate(e=>getComputedStyle(e).display==='flex'),false,label+' must not center an oversized flex child');
  assert.ok(await figure.evaluate(e=>e.querySelector('svg').getBoundingClientRect().left>=e.getBoundingClientRect().left-1),label+' left edge is reachable');
  const overflow=await figure.evaluate(e=>e.scrollWidth>e.clientWidth+2);
+ await nav.waitFor({state:overflow?'visible':'hidden'});
+ assert.equal(await nav.locator('.ocg-scroll-note').isVisible(),overflow,label+' pan instructions only when needed');
  if(overflow){const right=nav.locator('[data-geometry-pan="right"]'),left=nav.locator('[data-geometry-pan="left"]');await right.focus();await right.press('Enter');assert.ok(await figure.evaluate(e=>e.scrollLeft>0),label+' right button moves the figure');await left.focus();await left.press('Enter');assert.ok(await figure.evaluate(e=>e.scrollLeft<=1),label+' left button returns to the start');}
  return overflow;
 }
