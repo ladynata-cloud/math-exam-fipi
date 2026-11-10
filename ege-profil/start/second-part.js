@@ -4,7 +4,7 @@
 // pp. 16–19 (MA-11 EGE 2027 SPEC_profile, archive checked 2026-11-09):
 // https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip
 // Historical trainer filenames and saved-work keys deliberately stay unchanged.
-const items=[
+const legacyItems=[
  {number:14,title:'Уравнения с отбором корней',goal:'Решить уравнение, обосновать преобразования и отобрать корни.',href:'/ege-profil/trainers/trigonometry.html?topic=equations',coverage:'Подготовка по тригонометрии; полный набор типов №14 ещё не собран.',legacyNumber:13,resources:[{title:'Формулы суммы и произведения',href:'/ege-profil/trainers/trig-sum-to-product.html'},{title:'Окружность и тригонометрия',href:'/ege-profil/trigonometry/index.html'}]},
  {number:15,title:'Стереометрия с доказательством',goal:'Выбрать сечение или проекцию, доказать нужное свойство и вычислить искомое.',href:'/ege-profil/atanasyan-10-11/index.html',coverage:'Маршрут по Атанасяну и 12 задач с пунктами а) и б).',legacyNumber:14,resources:[{title:'Дополнительные разборы стереометрии · подборка 2026',href:'/ege-profil/trainers/stereo-t14.html'}]},
  {number:16,title:'Неравенства',goal:'Сохранить ОДЗ, решить неравенство и проверить граничные точки.',href:'#exam/16',coverage:'18 пошаговых примеров и отдельные разборы логарифмов.',legacyNumber:15,resources:[{title:'Обычные и логарифмические неравенства',href:'/trainers/ege-profile/inequalities/index.html'},{title:'Логарифм с переменным основанием',href:'/trainers/ege-profile/log-inequalities/lesson.html'},{title:'Внутренний и внешний логарифмы',href:'/trainers/ege-profile/log-inequalities/nested.html'}]},
@@ -13,6 +13,12 @@ const items=[
  {number:19,title:'Задачи с параметром',goal:'Исследовать число решений, особые значения и границы ответа.',href:'/ege-profil/trainers/parameters-t18.html',coverage:'6 разобранных задач и короткая практика; набор типов частичный.',legacyNumber:18,resources:[{title:'Функции и графики для параметров',href:'#calm/12'}]},
  {number:20,title:'Числа и их свойства',goal:'Построить пример, найти оценку и доказать, что других возможностей нет.',href:'/ege-profil/trainers/numbers-t19.html',coverage:'6 задач с пунктами а), б), в) и короткая практика; набор типов частичный.',legacyNumber:19,resources:[]}
 ];
+// The complete teaching sequence is distinct from the retained legacy collections.
+const items=legacyItems.map(item=>({...item,
+ href:'/ege-profil/part-two/index.html#exam/'+item.number,
+ coverage:'6 учебных тем · 36 задач: по шагам, с планом и самостоятельно. Письменное обоснование — по критериям и с преподавателем.',
+ resources:[{title:'Ранее созданные материалы этой темы',href:item.href},...item.resources]
+}));
 const stereoUnits=['space','polyhedra','box','parallel','skew','parallel-planes','sections','perpendicular','projection','dihedral','prism','pyramid','pyramid-frustum','box-volume','prism-volume','pyramid-volume','vectors','vector-operations','basis','coordinates','dot','plane-equation'];
 const inequalitySteps={'rational':7,'repeated':6,'exponential':7,'fixed-log':6,'variable-log':9,'radical':7};
 const inequalityLessons=Object.entries(inequalitySteps).flatMap(([family,steps])=>[1,2,3].map(i=>({id:family+'-'+i,steps,key:'mathExam.inequalities.'+family+'-'+i+'.v1'})));

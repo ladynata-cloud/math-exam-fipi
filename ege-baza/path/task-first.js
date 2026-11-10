@@ -21,14 +21,25 @@
   const source=String(task.q),matches=[...source.matchAll(/(?:Найд(?:и|ите)|Вычисл(?:и|ите)|Реш(?:и|ите)|Упрост(?:и|ите)|Сколько|Как(?:ов|ова|ово|ой|ая|ое|ую)|На какой|Во сколько|За сколько|Через сколько|Укаж(?:и|ите)|Запиш(?:и|ите)|Чему)(?=[\s:])/giu)];
   return matches.length?source.slice(matches.at(-1).index):source;
  }
- function inputMarkup(item,prefix,label) {
+ function inputMarkup(item,prefix,label,formatOverride) {
   const choices=root.PathPracticeView.answerChoices(item);
-  const format=item.answerKind==='match'?'Введи соответствующие цифры подряд, без пробелов.':item.answerKind==='multi'?'Введи номера подходящих утверждений подряд, без пробелов.':item.answerKind==='solutions'?'Введи любое число, которое удовлетворяет всем условиям.':'Введи число без единиц измерения. Десятичную дробь можно записать с запятой; обычную дробь — как 2/3.';
+  const format=formatOverride||(item.id==='round'?'Введи целое число упаковок.':item.answerKind==='match'?'Введи соответствующие цифры подряд, без пробелов.':item.answerKind==='multi'?'Введи номера подходящих утверждений подряд, без пробелов.':item.answerKind==='solutions'?'Введи любое число, которое удовлетворяет всем условиям.':'Введи число без единиц измерения. Десятичную дробь можно записать с запятой; обычную дробь — как 2/3.');
   return `<form id="${prefix}Form" class="task-first-form"><label for="${prefix}">${root.PathPracticeView.math(label)}</label><p id="${prefix}Format" class="muted">${format}</p><div class="actions"><input id="${prefix}" ${choices?'type="hidden"':''} maxlength="10000" autocomplete="off" aria-describedby="${prefix}Format" value="">${choices?`<div class="actions">${choices.map((choice,i)=>`<button type="button" data-${prefix}-choice="${E(choice.value)}" aria-pressed="false">${root.PathPracticeView.math(choice.label)}</button>`).join('')}</div>`:''}<button class="primary" type="submit">${prefix==='answer'?'Проверить ответ':'Проверить этот шаг'}</button></div></form>`;
  }
  // Match only mathematically verified intermediate values; never guess the learner's reasoning.
  function learningFeedback(task,value) {
   const D=root.PathData,kind=task.answerKind;
+  if(task.id==='round') {
+   const given=String(task.q).match(/нужно (\d+) тетрадей\. В упаковке (\d+) тетрадей/),count=D.parse(String(value));
+   if(given&&Number.isFinite(count)) {
+    const total=Number(given[1]),pack=Number(given[2]);
+    if(count===total)return `Это ${total} тетрадей. В ответе нужно количество упаковок по ${pack} тетрадей.`;
+    if(count<0)return 'Количество упаковок не может быть отрицательным.';
+    if(!Number.isInteger(count))return 'Упаковки продают целиком. Проверь, хватит ли тетрадей, если взять только целую часть этого числа упаковок.';
+    if(count<=1000000&&count*pack<total)return `В ${count} упаковках ${count*pack} тетрадей, а нужно ${total}. Не хватает ${total-count*pack}. Увеличь число упаковок и проверь ещё раз.`;
+    if(count<=1000000&&count>D.parse(String(task.answer)))return `В ${count} упаковках ${count*pack} тетрадей — хватит. Но нужно наименьшее количество упаковок. Проверь, хватит ли ${count-1}.`;
+   }
+  }
   if(!['match','multi','solutions'].includes(kind)&&!task.rule&&!root.PathPracticeView.answerChoices(task)) {
    const number=D.parse(String(value));
    if(!Number.isFinite(number))return 'Не удалось прочитать число. Запиши десятичную дробь с запятой или точкой, либо обычную дробь, например 2/3. Единицы в поле не нужны.';
@@ -67,11 +78,12 @@
   const markHelp=()=>{if(!root.document||!host.isConnected)return;l.help=true;expose(t);save();};
   const currentIndex=D.meta.filter(m=>!m.grade7&&!m.pre7&&m.pos===meta.pos);
   const journey=context.journey?.line?context.journey:null;
-  const lineNav=journey?`<nav class="journey-lesson-nav" aria-label="Учебная линия"><a class="back" href="${E(journey.line.href)}">← ${E(journey.line.title)}</a><a class="back" href="#map">Все задания</a></nav>`:'<a class="back" href="#map">← Все задания</a>';
-  const nextLink=journey?`<a class="btn primary" data-journey-next href="${E(journey.next?.href||journey.line.href)}" ${l.done?'':'hidden'}>${journey.next?'Дальше: '+E(journey.next.title):'К результатам линии'}</a>`:'';
-  const idea=learningCycle?`<p class="task-first-start"><strong>Начни с одного вопроса</strong><br>${M(t.steps[0]?.q||question(t))}</p><details id="taskIdea"><summary>Подсказать связь или правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:`<p class="task-first-idea">${M(meta.idea)}</p>`;
+  const lineNav=journey?`<nav class="journey-lesson-nav" aria-label="${journey.line.pos?'Задание ЕГЭ':'Учебная линия'}"><a class="back" href="${E(journey.line.href)}">← ${E(journey.line.title)}</a><a class="back" href="#map">Все задания</a></nav>`:'<a class="back" href="#map">← Все задания</a>';
+  const nextLink=journey?`<a class="btn primary" data-journey-next href="${E(journey.next?.href||journey.line.href)}" ${l.done?'':'hidden'}>${journey.next?'Дальше: '+E(journey.next.title):journey.line.pos?'К темам задания №'+journey.line.pos:'К результатам линии'}</a>`:'';
+  const hintText=()=>l.step>=t.steps.length?'Все шаги пройдены. Запиши ответ на вопрос задачи.':root.PathTaskHints?.hint(t,l.step)||t.steps[l.step].q;
+  const idea=`<p id="taskHint" class="task-first-start" aria-live="polite">${M(hintText())}</p>`+(learningCycle?`<details id="taskIdea"><summary>Короткое правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:'');
   const learningActions=learningCycle?'<button id="repairStep" type="button" hidden>Разобрать первый трудный шаг</button><p id="variantStatus" class="task-first-variant muted" role="status"></p>':'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<details id="taskHelp" class="task-first-help"><summary>Хочешь подсказку?</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Другие числа</button><a class="btn" href="#map">Выбрать задание</a></div></section><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
   const answer=$('#answer');answer.value=u.finalDraft;
   if(learningCycle && root.self===root.top && new URLSearchParams(root.location.search).get('learning')!=='1') root.MathExamCourseExamples?.mount(host.querySelector('.task-first-problem'),'ege-baza',meta.id,markHelp);
@@ -80,7 +92,8 @@
    $('#repairStep').hidden=l.done||u.mistakes<2;
    $('#repairStep').textContent=l.step>=t.steps.length?'Вернуться к разобранным шагам':l.step?'Продолжить с шага '+(l.step+1):'Разобрать первый трудный шаг';
    const lastCheck=(l.checks||[]).findLast(c=>c&&c.seed===l.seed),assisted=l.done&&lastCheck?.independent!==true;
-   $('#new').textContent=assisted?'Проверить себя на похожей задаче':l.done?'Ещё один вариант':u.repeatedVariant?'Повторить знакомый вариант':'Другие числа';
+   $('#new').textContent=u.repeatedVariant?'Повторить задачу этого типа':'Ещё задача этого типа';
+   $('#startSteps').hidden=!$('#repairStep').hidden;
    $('#new').classList.toggle('primary',assisted);
    $('#variantStatus').textContent=assisted?'Ответ найден после помощи, повторного показа или исправления. Следующий шаг — похожее условие без открытых подсказок. Повтор будет отмечен.':u.repeatedVariant?'Сейчас доступен знакомый вариант. Повтор полезен, но не добавит новое самостоятельное решение.':'';
   }
@@ -96,7 +109,7 @@
   $('#answerForm').onsubmit=event=>{
    event.preventDefault();const value=answer.value;
    if(!value.trim())return feedback('Сначала запиши ответ на вопрос задачи.',true);
-   if(l.done)return feedback('Этот вариант уже проверен. Возьми другие числа.');
+   if(l.done)return feedback('Этот вариант уже проверен. Нажми «Ещё задача этого типа».');
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
    if(ok){l.done=true;const next=$('[data-journey-next]');if(next)next.hidden=false;if(independent)l.independent++;l.checks=(l.checks||[]).concat({seed:l.seed,correct:true,independent}).slice(-100);feedback(independent?'Верно с первой попытки на новом варианте.':'Верно после помощи, повторного показа или исправления.');}
@@ -124,7 +137,8 @@
   }
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(u.stepAnswers[index]??(s.a===undefined?'Условия выполнены':root.PathPracticeView.answerText(s)))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, возьми другие числа.</p>'}`;
+   $('#taskHint').innerHTML=M(hintText());
+   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(u.stepAnswers[index]??(s.a===undefined?'Условия выполнены':root.PathPracticeView.answerText(s)))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
    if(!step)return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
@@ -135,12 +149,14 @@
   const bindDisclosure=(element,key,onOpen)=>{
    element.open=u[key];
    element.querySelector('summary').addEventListener('click',()=>{u[key]=!element.open;if(u[key])markHelp();else save();});
-   element.ontoggle=()=>{if(!root.document||!element.isConnected)return;u[key]=element.open;if(element.open){markHelp();onOpen?.();}else save();if(element===help)element.querySelector('summary').textContent=element.open?'Убрать подсказку':'Хочешь подсказку?';};
+   element.ontoggle=()=>{if(!root.document||!element.isConnected)return;u[key]=element.open;if(element.open){markHelp();onOpen?.();}else save();if(element===help)element.querySelector('summary').textContent=element.open?'Скрыть подсказку':'Подсказка к задаче';};
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  if(learningCycle){bindDisclosure($('#taskIdea'),'ideaOpen');$('#repairStep').onclick=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();$('#stepAnswer')?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};refreshLearning();}
-  help.querySelector('summary').textContent=help.open?'Убрать подсказку':'Хочешь подсказку?';
+  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();$('#stepAnswer')?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  $('#startSteps').onclick=openSteps;
+  if(learningCycle){bindDisclosure($('#taskIdea'),'ideaOpen');$('#repairStep').onclick=openSteps;refreshLearning();}
+  help.querySelector('summary').textContent=help.open?'Скрыть подсказку':'Подсказка к задаче';
   $('#returnToAnswer').onclick=()=>{help.open=false;u.helpOpen=false;save();answer.focus({preventScroll:true});answer.scrollIntoView?.({block:'center',behavior:'smooth'});};
   note.open=u.noteOpen;note.ontoggle=()=>{if(!root.document||!note.isConnected)return;u.noteOpen=note.open;save();};$('#note').value=l.note;$('#note').oninput=event=>{l.note=event.target.value.slice(0,10000);save();};
   $('#typeSelect').onchange=event=>context.setHash('lesson='+event.target.value);

@@ -15,6 +15,9 @@ on:
       - 'tools/oge-video-models-book-context.test.cjs'
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
+      - 'tools/oge_worked_steps_book_context.py'
+      - 'tools/oge-worked-steps-book-context.test.py'
+      - 'tools/fixtures/oge-worked-steps-book-ui.json'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
       - 'tools/fixtures/oge-book-*'
       - 'docs/reports/oge-book-20261031/**'
@@ -64,6 +67,7 @@ jobs:
           python3 tools/book-edition/test_generator.py
           python3 tools/book-edition/test_deployed.py
           python3 tools/oge-book-collect-results.test.py
+          python3 tools/oge-worked-steps-book-context.test.py
           git diff --check
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:

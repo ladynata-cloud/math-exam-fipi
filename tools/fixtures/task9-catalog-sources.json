@@ -1,0 +1,786 @@
+{
+  "checkedAt": "2026-11-10",
+  "boundary": "Catalogue transcription is secondary evidence. Only inOfficialNavigator IDs are directly confirmed by that FIPI document; no direct official bank cards were retrieved. Mathematical answers are independently solved using SymPy from transcribed equation, not copied from site solutions.",
+  "tasks": [
+    {
+      "id": "AEA848",
+      "equation": "10(x−9)=7",
+      "ask": null,
+      "answer": "9,7",
+      "roots": [
+        "97/10"
+      ],
+      "normalizedABC": [
+        "0",
+        "10",
+        "-97"
+      ],
+      "kind": "linear-one-bracket",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-minus-9-ravno-7-fipi-aea848",
+      "catalogIndex": 2,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения 10(x−9)=7",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-minus-9-ravno-7-fipi-aea848",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 1
+    },
+    {
+      "id": "CA994A",
+      "equation": "10x²=80x",
+      "ask": "min",
+      "answer": "0",
+      "roots": [
+        "0",
+        "8"
+      ],
+      "normalizedABC": [
+        "10",
+        "-80",
+        "0"
+      ],
+      "kind": "quad-factor-x",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-10x2-ravno-80x-menshiy-koren-fipi-ca994a",
+      "catalogIndex": 3,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 10x²=80x Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-10x2-ravno-80x-menshiy-koren-fipi-ca994a",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 1
+    },
+    {
+      "id": "EBB379",
+      "equation": "x²−49=0",
+      "ask": "max",
+      "answer": "7",
+      "roots": [
+        "-7",
+        "7"
+      ],
+      "normalizedABC": [
+        "1",
+        "0",
+        "-49"
+      ],
+      "kind": "quad-square",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-49-ravno-0-bolshiy-koren-fipi-ebb379",
+      "catalogIndex": 19,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -49=0 Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-49-ravno-0-bolshiy-koren-fipi-ebb379",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 3
+    },
+    {
+      "id": "3A067C",
+      "equation": "x²−81=0",
+      "ask": "min",
+      "answer": "-9",
+      "roots": [
+        "-9",
+        "9"
+      ],
+      "normalizedABC": [
+        "1",
+        "0",
+        "-81"
+      ],
+      "kind": "quad-square",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-81-ravno-0-menshiy-koren-fipi-3a067c",
+      "catalogIndex": 20,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -81=0 Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-81-ravno-0-menshiy-koren-fipi-3a067c",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 4
+    },
+    {
+      "id": "1C4217",
+      "equation": "−2x−4=3x",
+      "ask": null,
+      "answer": "-0,8",
+      "roots": [
+        "-4/5"
+      ],
+      "normalizedABC": [
+        "0",
+        "-5",
+        "-4"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-2x-minus-4-ravno-3x-fipi-1c4217",
+      "catalogIndex": 27,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения - 2x-4=3x",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-2x-minus-4-ravno-3x-fipi-1c4217",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 5
+    },
+    {
+      "id": "B55A23",
+      "equation": "7+8x=−2x−5",
+      "ask": null,
+      "answer": "-1,2",
+      "roots": [
+        "-6/5"
+      ],
+      "normalizedABC": [
+        "0",
+        "10",
+        "12"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7-plus-8x-ravno-minus-2x-minus-5-fipi-b55a23",
+      "catalogIndex": 31,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения 7+8x=- 2x-5",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7-plus-8x-ravno-minus-2x-minus-5-fipi-b55a23",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 5
+    },
+    {
+      "id": "8A6326",
+      "equation": "3x²=9x",
+      "ask": "min",
+      "answer": "0",
+      "roots": [
+        "0",
+        "3"
+      ],
+      "normalizedABC": [
+        "3",
+        "-9",
+        "0"
+      ],
+      "kind": "quad-factor-x",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-3x2-ravno-9x-menshiy-koren-fipi-8a6326",
+      "catalogIndex": 32,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 3x²=9x Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-3x2-ravno-9x-menshiy-koren-fipi-8a6326",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 5
+    },
+    {
+      "id": "AA49DF",
+      "equation": "10(x+2)=−7",
+      "ask": null,
+      "answer": "-2,7",
+      "roots": [
+        "-27/10"
+      ],
+      "normalizedABC": [
+        "0",
+        "10",
+        "27"
+      ],
+      "kind": "linear-one-bracket",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-plus-2-ravno-minus-7-fipi-aa49df",
+      "catalogIndex": 37,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения 10(x+2)=- 7",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-plus-2-ravno-minus-7-fipi-aa49df",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 6
+    },
+    {
+      "id": "CC13D8",
+      "equation": "x²−4=0",
+      "ask": "min",
+      "answer": "-2",
+      "roots": [
+        "-2",
+        "2"
+      ],
+      "normalizedABC": [
+        "1",
+        "0",
+        "-4"
+      ],
+      "kind": "quad-square",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-4-ravno-0-menshiy-koren-fipi-cc13d8",
+      "catalogIndex": 38,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -4=0 Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-4-ravno-0-menshiy-koren-fipi-cc13d8",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 6
+    },
+    {
+      "id": "0EDF5F",
+      "equation": "−3x−9=2x",
+      "ask": null,
+      "answer": "-1,8",
+      "roots": [
+        "-9/5"
+      ],
+      "normalizedABC": [
+        "0",
+        "-5",
+        "-9"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-3x-minus-9-ravno-2x-fipi-0edf5f",
+      "catalogIndex": 39,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения - 3x-9=2x",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-3x-minus-9-ravno-2x-fipi-0edf5f",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 6
+    },
+    {
+      "id": "7A8250",
+      "equation": "x²−8x+12=0",
+      "ask": "max",
+      "answer": "6",
+      "roots": [
+        "2",
+        "6"
+      ],
+      "normalizedABC": [
+        "1",
+        "-8",
+        "12"
+      ],
+      "kind": "quad-monic",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-8x-plus-12-ravno-0-bolshiy-koren-fipi-7a8250",
+      "catalogIndex": 41,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -8x+12=0 Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-8x-plus-12-ravno-0-bolshiy-koren-fipi-7a8250",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 6
+    },
+    {
+      "id": "D06250",
+      "equation": "x²−9x+8=0",
+      "ask": "max",
+      "answer": "8",
+      "roots": [
+        "1",
+        "8"
+      ],
+      "normalizedABC": [
+        "1",
+        "-9",
+        "8"
+      ],
+      "kind": "quad-monic",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-9x-plus-8-ravno-0-bolshiy-koren-fipi-d06250",
+      "catalogIndex": 43,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -9x+8=0 Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-9x-plus-8-ravno-0-bolshiy-koren-fipi-d06250",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 7
+    },
+    {
+      "id": "94925B",
+      "equation": "x²−10x+21=0",
+      "ask": "max",
+      "answer": "7",
+      "roots": [
+        "3",
+        "7"
+      ],
+      "normalizedABC": [
+        "1",
+        "-10",
+        "21"
+      ],
+      "kind": "quad-monic",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-21-ravno-0-bolshiy-koren-fipi-94925b",
+      "catalogIndex": 44,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -10x+21=0 Если уравнение имеет более одного корня, в ответ запишите больший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-21-ravno-0-bolshiy-koren-fipi-94925b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 7
+    },
+    {
+      "id": "121FA3",
+      "equation": "x²−10x+24=0",
+      "ask": "min",
+      "answer": "4",
+      "roots": [
+        "4",
+        "6"
+      ],
+      "normalizedABC": [
+        "1",
+        "-10",
+        "24"
+      ],
+      "kind": "quad-monic",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-24-ravno-0-menshiy-koren-fipi-121fa3",
+      "catalogIndex": 45,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение {x}^{2} -10x+24=0 Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-24-ravno-0-menshiy-koren-fipi-121fa3",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 7
+    },
+    {
+      "id": "F18DC8",
+      "equation": "1−10x=5x+10",
+      "ask": null,
+      "answer": "-0,6",
+      "roots": [
+        "-3/5"
+      ],
+      "normalizedABC": [
+        "0",
+        "-15",
+        "-9"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-1-minus-10x-ravno-5x-plus-10-fipi-f18dc8",
+      "catalogIndex": 47,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения 1−10x=5x+10",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-1-minus-10x-ravno-5x-plus-10-fipi-f18dc8",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 7
+    },
+    {
+      "id": "5B34C1",
+      "equation": "−4+7x=8x+1",
+      "ask": null,
+      "answer": "-5",
+      "roots": [
+        "-5"
+      ],
+      "normalizedABC": [
+        "0",
+        "-1",
+        "-5"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-4-plus-7x-ravno-8x-plus-1-fipi-5b34c1",
+      "catalogIndex": 48,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения - 4+7x=8x+1",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-4-plus-7x-ravno-8x-plus-1-fipi-5b34c1",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 7
+    },
+    {
+      "id": "5FA26E",
+      "equation": "5x²=35x",
+      "ask": "min",
+      "answer": "0",
+      "roots": [
+        "0",
+        "7"
+      ],
+      "normalizedABC": [
+        "5",
+        "-35",
+        "0"
+      ],
+      "kind": "quad-factor-x",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-5x2-ravno-35x-menshiy-koren-fipi-5fa26e",
+      "catalogIndex": 58,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 5x²=35x Если уравнение имеет более одного корня, в ответ запишите меньший из корней.",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-5x2-ravno-35x-menshiy-koren-fipi-5fa26e",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 9
+    },
+    {
+      "id": "636D61",
+      "equation": "4(x+1)=9",
+      "ask": null,
+      "answer": "1,25",
+      "roots": [
+        "5/4"
+      ],
+      "normalizedABC": [
+        "0",
+        "4",
+        "-5"
+      ],
+      "kind": "linear-one-bracket",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-4-x-plus-1-ravno-9-fipi-636d61",
+      "catalogIndex": 61,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Найдите корень уравнения 4(x+1)=9",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-4-x-plus-1-ravno-9-fipi-636d61",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "secondaryPDFVerified": true,
+      "secondaryPDFPage": 9
+    },
+    {
+      "id": "D6F84B",
+      "equation": "7x−7=19+5x",
+      "ask": null,
+      "answer": "13",
+      "roots": [
+        "13"
+      ],
+      "normalizedABC": [
+        "0",
+        "2",
+        "-26"
+      ],
+      "kind": "linear-transfer",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7x-minus-7-ravno-19-plus-5x-fipi-d6f84b",
+      "catalogIndex": 72,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 7x−7=19+5x",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7x-minus-7-ravno-19-plus-5x-fipi-d6f84b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/D6F84B/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/D6F84B/0.gif"
+        }
+      ],
+      "secondaryImageVerified": true
+    },
+    {
+      "id": "1610FB",
+      "equation": "3(x+7)−2(x−7)=7",
+      "ask": null,
+      "answer": "-28",
+      "roots": [
+        "-28"
+      ],
+      "normalizedABC": [
+        "0",
+        "1",
+        "28"
+      ],
+      "kind": "linear-two-brackets",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-dvumya-skobkami-3-x-plus-7-minus-2-x-minus-7-ravno-7-fipi-1610fb",
+      "catalogIndex": 75,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 3(x+7)−2(x−7)=7",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-dvumya-skobkami-3-x-plus-7-minus-2-x-minus-7-ravno-7-fipi-1610fb",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/1610FB/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/1610FB/0.gif"
+        }
+      ],
+      "secondaryImageVerified": true
+    },
+    {
+      "id": "FF7B0B",
+      "equation": "2(x−6)−x=6",
+      "ask": null,
+      "answer": "18",
+      "roots": [
+        "18"
+      ],
+      "normalizedABC": [
+        "0",
+        "1",
+        "-18"
+      ],
+      "kind": "linear-one-bracket",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-podobnye-slagaemye-2-x-minus-6-minus-x-ravno-6-fipi-ff7b0b",
+      "catalogIndex": 77,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 2(x−6)−x=6",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-podobnye-slagaemye-2-x-minus-6-minus-x-ravno-6-fipi-ff7b0b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/FF7B0B/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/FF7B0B/0.gif"
+        }
+      ],
+      "secondaryImageVerified": true
+    },
+    {
+      "id": "E63206",
+      "equation": "2(x−8)=x+8",
+      "ask": null,
+      "answer": "24",
+      "roots": [
+        "24"
+      ],
+      "normalizedABC": [
+        "0",
+        "1",
+        "-24"
+      ],
+      "kind": "linear-one-bracket",
+      "sourceURL": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-perenos-x-2-x-minus-8-ravno-x-plus-8-fipi-e63206",
+      "catalogIndex": 79,
+      "inOfficialNavigator": false,
+      "inExistingBankOrDemo": false,
+      "recommended": true,
+      "evidenceLevel": "secondary-catalog-only",
+      "rawCondition": "Решите уравнение 2(x−8)=x+8",
+      "directOfficialCardVerified": false,
+      "sources": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-perenos-x-2-x-minus-8-ravno-x-plus-8-fipi-e63206",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/E63206/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/E63206/0.gif"
+        }
+      ],
+      "secondaryImageVerified": true
+    }
+  ]
+}
