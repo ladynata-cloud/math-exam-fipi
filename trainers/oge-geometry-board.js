@@ -10,7 +10,7 @@
   const nativeTask = () => page === 16 ? trTask : page === 17 ? CUR : TR.task;
   const keyOf = task => task && (task.k || task.key || task.sub);
   const inputId = page === 18 ? 'ansIn' : 'ans';
-  const actionIds = page === 16 ? {check:'check',giveup:'give'} : page === 17 ? {chk:'check',stepH:'step',give:'give'} : {chkBtn:'check',hintBtn:'first',giveBtn:'give'};
+  const actionIds = page === 16 ? {check:'check',giveup:'give',hintBtn:'first'} : page === 17 ? {chk:'check',stepH:'step',give:'give'} : {chkBtn:'check',hintBtn:'first',giveBtn:'give'};
   const actionButtons = Object.fromEntries(Object.entries(actionIds).map(([id,action])=>[action,id]));
   const byId = id => doc.getElementById(id);
   const copy = value => JSON.parse(JSON.stringify(value));
@@ -39,12 +39,13 @@
       return valid&&!correct?index:-1;
     }).filter(i=>i>=0).slice(0,page===16?2:1);
     const lastCheck=actions.findLastIndex(a=>a[0]==='check');
-    const firstHint=actions.findIndex(a=>a[0]==='first'),lastHint=actions.findLastIndex(a=>a[0]==='first');
+    const stepHints=new Set(actions.map((a,i)=>a[0]==='first'?i:-1).filter(i=>i>=0).slice(0,task.sol.length));
     const firstGive=actions.findIndex(a=>a[0]==='give');
     // Native practice needs the first miss flag (two attempts in №16), the
     // last feedback and each genuine solution step. Superseded checks and
-    // repeated first-step clicks cannot accumulate an unbounded room packet.
-    actions=actions.filter((a,i)=>a[0]==='check'?(wrong.includes(i)||i===lastCheck):a[0]==='first'?(i===firstHint||i===lastHint):a[0]==='give'?i===firstGive:true);
+    // Each №16/18 click reveals one step; keep every genuine step for replay.
+    // The native solution length bounds the record even for repeated clicks.
+    actions=actions.filter((a,i)=>a[0]==='check'?(wrong.includes(i)||i===lastCheck):a[0]==='first'?stepHints.has(i):a[0]==='give'?i===firstGive:true);
   }
   // Native dispatch may checkpoint microtasks before target handlers run.
   // Capture the completed action/model and coalesce events from one dispatch.
@@ -196,7 +197,7 @@
         if(page!==17||stepsBlocked||steps>=task.sol.length)return false;
         steps++;
         if(steps===task.sol.length){closed=true;locked=draft;}
-      }else if(op!=='first'||page!==18)return false;
+      }else if(op!=='first'||![16,18].includes(page))return false;
     }
     // Once the native checker/solution closes a task, its disabled answer
     // field cannot change. A shared packet cannot combine a correct verdict

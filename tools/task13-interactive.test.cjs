@@ -87,6 +87,15 @@ function visible(node) { for (let p = node; p; p = p.parentElement) { if (p.hidd
 function get(lab, selector) { const node = lab.querySelector(selector); assert.ok(node, selector); return node; }
 function input(ui, el, value) { el.value = String(value); el.dispatchEvent(new ui.window.Event('input', { bubbles: true })); }
 function selected(ui) { return ui.eval('JSON.stringify({selectedChoice,selectedZones,checked,solution})'); }
+test('worked steps retain selected answers and navigation; assisted completion earns no independent credit',t=>{
+ const ui=boot(t);ui.eval('jumpTask("linear:1")');ui.get('hintToggle').click();
+ ui.eval('selectedChoice=current().ans;renderAll()');const before=ui.window.localStorage.getItem(TOPIC);
+ while(!ui.get('task13NextStep').disabled)ui.get('task13NextStep').click();
+ assert.equal(ui.eval('selectedChoice'),ui.eval('current().ans'));assert.match(ui.get('task13WorkedSteps').textContent,/Дел|Раздел/);
+ const shown=ui.get('task13WorkedSteps').textContent;ui.get('hintToggle').click();ui.get('hintToggle').click();assert.equal(ui.get('task13WorkedSteps').textContent,shown);
+ ui.get('next').click();assert.equal(ui.get('task13WorkedSteps').children.length,0);ui.get('previous').click();assert.equal(ui.get('task13WorkedSteps').textContent,shown);
+ ui.get('check').click();assert.match(ui.get('msg').textContent,/пошаговым объяснением/);assert.equal(ui.window.localStorage.getItem(TOPIC),before);
+});
 function stats(ui) { return ui.window.localStorage.getItem(TOPIC); }
 function snapshotMain(ui) { return { selected: selected(ui), stats: stats(ui) }; }
 function assertMain(ui, before, message) { assert.deepEqual(snapshotMain(ui), before, message); }

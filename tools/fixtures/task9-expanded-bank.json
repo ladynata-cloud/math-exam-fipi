@@ -1,0 +1,6832 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-10",
+  "sourceLabelling": "Two official demonstrations; 17 officially listed IDs with indirectly verified conditions; 22 additional secondary-catalogue transcriptions; remaining authored analogues. No direct bank card verification claimed.",
+  "tasks": [
+    {
+      "id": "exam-demo-2027",
+      "code": "demo-2027",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "fipi-demo",
+      "equation": "3(x+8)−2(x−8)=8",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "8"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-8"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "8"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "1",
+        "c": "32"
+      },
+      "roots": [
+        "-32"
+      ],
+      "ask": null,
+      "answer": "-32",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+          "role": "official demonstration condition and key"
+        }
+      ],
+      "label": "Проект демоверсии ФИПИ 2027",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-demo-2026",
+      "code": "demo-2026",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "fipi-demo",
+      "equation": "2x²−3x+1=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "2"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "2",
+        "b": "-3",
+        "c": "1"
+      },
+      "roots": [
+        "1/2",
+        "1"
+      ],
+      "ask": "min",
+      "answer": "0,5",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2026/ma_9_2026.zip",
+          "role": "official demonstration condition and key"
+        }
+      ],
+      "label": "Демоверсия ФИПИ 2026",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-483ABF",
+      "code": "483ABF",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "fipi",
+      "equation": "4(x−6)=5",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-6"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "5"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "-29"
+      },
+      "roots": [
+        "29/4"
+      ],
+      "ask": null,
+      "answer": "7,25",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-36E26B",
+      "code": "36E26B",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "fipi",
+      "equation": "x²−144=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-144"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-144"
+      },
+      "roots": [
+        "-12",
+        "12"
+      ],
+      "ask": "max",
+      "answer": "12",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-AB4778",
+      "code": "AB4778",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "fipi",
+      "equation": "−1−3x=2x+1",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "-2"
+      },
+      "roots": [
+        "-2/5"
+      ],
+      "ask": null,
+      "answer": "-0,4",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-286CF5",
+      "code": "286CF5",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "fipi",
+      "equation": "4x²=20x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "20"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "-20",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "5"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-two-brackets-1",
+      "code": "two-brackets-1",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x−3)−2(x+4)=−11",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-3"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-11"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "3",
+        "c": "-12"
+      },
+      "roots": [
+        "4"
+      ],
+      "ask": null,
+      "answer": "4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-540ABC",
+      "code": "540ABC",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "fipi",
+      "equation": "x²−11x+30=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "30"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-11",
+        "c": "30"
+      },
+      "roots": [
+        "5",
+        "6"
+      ],
+      "ask": "min",
+      "answer": "5",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-28287F",
+      "code": "28287F",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "fipi",
+      "equation": "2+3x=−7x−5",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "2"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-7"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-5"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "7"
+      },
+      "roots": [
+        "-7/10"
+      ],
+      "ask": null,
+      "answer": "-0,7",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-46C337",
+      "code": "46C337",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "fipi",
+      "equation": "x²−25=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-25"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-25"
+      },
+      "roots": [
+        "-5",
+        "5"
+      ],
+      "ask": "max",
+      "answer": "5",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-5572B4",
+      "code": "5572B4",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "fipi",
+      "equation": "5(x+4)=−9",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-9"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "29"
+      },
+      "roots": [
+        "-29/5"
+      ],
+      "ask": null,
+      "answer": "-5,8",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-nonmonic-1",
+      "code": "nonmonic-1",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "5x²+x−6=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-6"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "5",
+        "b": "1",
+        "c": "-6"
+      },
+      "roots": [
+        "-6/5",
+        "1"
+      ],
+      "ask": "max",
+      "answer": "1",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-one-bracket-x",
+      "code": "one-bracket-x",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x−3)=x−2",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-3"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-2"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "-13"
+      },
+      "roots": [
+        "13/4"
+      ],
+      "ask": null,
+      "answer": "3,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-69EC44",
+      "code": "69EC44",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "fipi",
+      "equation": "x²−9=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-9"
+      },
+      "roots": [
+        "-3",
+        "3"
+      ],
+      "ask": "min",
+      "answer": "-3",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-4F57B2",
+      "code": "4F57B2",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "fipi",
+      "equation": "−4x−9=6x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "6"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-10",
+        "c": "-9"
+      },
+      "roots": [
+        "-9/10"
+      ],
+      "ask": null,
+      "answer": "-0,9",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-4318F0",
+      "code": "4318F0",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "fipi",
+      "equation": "x²−11x+18=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "18"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-11",
+        "c": "18"
+      },
+      "roots": [
+        "2",
+        "9"
+      ],
+      "ask": "max",
+      "answer": "9",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-01DB8F",
+      "code": "01DB8F",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "fipi",
+      "equation": "5(x+9)=−8",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "9"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-8"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "53"
+      },
+      "roots": [
+        "-53/5"
+      ],
+      "ask": null,
+      "answer": "-10,6",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-factor-x-max",
+      "code": "factor-x-max",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "6x²−15x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-15"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "6",
+        "b": "-15",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "5/2"
+      ],
+      "ask": "max",
+      "answer": "2,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-two-brackets-2",
+      "code": "two-brackets-2",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "3(x−4)=7(x+2)",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "7",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-4",
+        "c": "-26"
+      },
+      "roots": [
+        "-13/2"
+      ],
+      "ask": null,
+      "answer": "-6,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-EA4046",
+      "code": "EA4046",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "fipi",
+      "equation": "x²−9x+18=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "18"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-9",
+        "c": "18"
+      },
+      "roots": [
+        "3",
+        "6"
+      ],
+      "ask": "min",
+      "answer": "3",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-E1A33F",
+      "code": "E1A33F",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "fipi",
+      "equation": "x−2=−3x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "-2"
+      },
+      "roots": [
+        "1/2"
+      ],
+      "ask": null,
+      "answer": "0,5",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-nonmonic-2",
+      "code": "nonmonic-2",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "4x²−4x−3=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "-4",
+        "c": "-3"
+      },
+      "roots": [
+        "-1/2",
+        "3/2"
+      ],
+      "ask": "min",
+      "answer": "-0,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-two-brackets-3",
+      "code": "two-brackets-3",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "7(x+3)−2(x+1)=7",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "7",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "1"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "7"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "12"
+      },
+      "roots": [
+        "-12/5"
+      ],
+      "ask": null,
+      "answer": "-2,4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-30344D",
+      "code": "30344D",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "fipi",
+      "equation": "x²−6x+5=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-6"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "5"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-6",
+        "c": "5"
+      },
+      "roots": [
+        "1",
+        "5"
+      ],
+      "ask": "min",
+      "answer": "1",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-transfer-1",
+      "code": "transfer-1",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−7+3x=−5x+6",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-7"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "6"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "8",
+        "c": "-13"
+      },
+      "roots": [
+        "13/8"
+      ],
+      "ask": null,
+      "answer": "1,625",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-9937FD",
+      "code": "9937FD",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "fipi",
+      "equation": "x²=5x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-5",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "5"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-02AAF8",
+      "code": "02AAF8",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "fipi",
+      "equation": "x²−12x+20=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-12"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "20"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-12",
+        "c": "20"
+      },
+      "roots": [
+        "2",
+        "10"
+      ],
+      "ask": "max",
+      "answer": "10",
+      "evidence": [
+        {
+          "url": "https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf",
+          "role": "official identifier only"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "secondary condition"
+        }
+      ],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-1C4217",
+      "code": "1C4217",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "−2x−4=3x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "-4"
+      },
+      "roots": [
+        "-4/5"
+      ],
+      "ask": null,
+      "answer": "-0,8",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-2x-minus-4-ravno-3x-fipi-1c4217",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 1C4217",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-AEA848",
+      "code": "AEA848",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "10(x−9)=7",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "10",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-9"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "7"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "-97"
+      },
+      "roots": [
+        "97/10"
+      ],
+      "ask": null,
+      "answer": "9,7",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-minus-9-ravno-7-fipi-aea848",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · AEA848",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-1610FB",
+      "code": "1610FB",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "3(x+7)−2(x−7)=7",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "7"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-7"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "7"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "1",
+        "c": "28"
+      },
+      "roots": [
+        "-28"
+      ],
+      "ask": null,
+      "answer": "-28",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-dvumya-skobkami-3-x-plus-7-minus-2-x-minus-7-ravno-7-fipi-1610fb",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/1610FB/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/1610FB/0.gif"
+        }
+      ],
+      "label": "Каталог прототипов · 1610FB",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-EBB379",
+      "code": "EBB379",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "catalog",
+      "equation": "x²−49=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-49"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-49"
+      },
+      "roots": [
+        "-7",
+        "7"
+      ],
+      "ask": "max",
+      "answer": "7",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-49-ravno-0-bolshiy-koren-fipi-ebb379",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · EBB379",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-CA994A",
+      "code": "CA994A",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "catalog",
+      "equation": "10x²=80x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "80"
+        }
+      ],
+      "coefficients": {
+        "a": "10",
+        "b": "-80",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "8"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-10x2-ravno-80x-menshiy-koren-fipi-ca994a",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · CA994A",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-7A8250",
+      "code": "7A8250",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "catalog",
+      "equation": "x²−8x+12=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-8"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "12"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-8",
+        "c": "12"
+      },
+      "roots": [
+        "2",
+        "6"
+      ],
+      "ask": "max",
+      "answer": "6",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-8x-plus-12-ravno-0-bolshiy-koren-fipi-7a8250",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 7A8250",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-01",
+      "code": "var-quad-nonmonic-01",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "3x²−3x−18=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "3"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-18"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "3",
+        "b": "-3",
+        "c": "-18"
+      },
+      "roots": [
+        "-2",
+        "3"
+      ],
+      "ask": "max",
+      "answer": "3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-B55A23",
+      "code": "B55A23",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "7+8x=−2x−5",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "7"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-5"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "12"
+      },
+      "roots": [
+        "-6/5"
+      ],
+      "ask": null,
+      "answer": "-1,2",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7-plus-8x-ravno-minus-2x-minus-5-fipi-b55a23",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · B55A23",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-AA49DF",
+      "code": "AA49DF",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "10(x+2)=−7",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "10",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-7"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "27"
+      },
+      "roots": [
+        "-27/10"
+      ],
+      "ask": null,
+      "answer": "-2,7",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-10-x-plus-2-ravno-minus-7-fipi-aa49df",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · AA49DF",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-02",
+      "code": "var-linear-two-brackets-02",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−8(x+3)+31=−3(x−1)",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-8",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "31"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "-3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-1"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "4"
+      },
+      "roots": [
+        "4/5"
+      ],
+      "ask": null,
+      "answer": "0,8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-3A067C",
+      "code": "3A067C",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "catalog",
+      "equation": "x²−81=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-81"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-81"
+      },
+      "roots": [
+        "-9",
+        "9"
+      ],
+      "ask": "min",
+      "answer": "-9",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-81-ravno-0-menshiy-koren-fipi-3a067c",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 3A067C",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-8A6326",
+      "code": "8A6326",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "catalog",
+      "equation": "3x²=9x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "9"
+        }
+      ],
+      "coefficients": {
+        "a": "3",
+        "b": "-9",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "3"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-3x2-ravno-9x-menshiy-koren-fipi-8a6326",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 8A6326",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-D06250",
+      "code": "D06250",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "catalog",
+      "equation": "x²−9x+8=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-9",
+        "c": "8"
+      },
+      "roots": [
+        "1",
+        "8"
+      ],
+      "ask": "max",
+      "answer": "8",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-9x-plus-8-ravno-0-bolshiy-koren-fipi-d06250",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · D06250",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-02",
+      "code": "var-quad-nonmonic-02",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−3x²−21x−30=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-21"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-30"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-3",
+        "b": "-21",
+        "c": "-30"
+      },
+      "roots": [
+        "-5",
+        "-2"
+      ],
+      "ask": "min",
+      "answer": "-5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-0EDF5F",
+      "code": "0EDF5F",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "−3x−9=2x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "2"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "-9"
+      },
+      "roots": [
+        "-9/5"
+      ],
+      "ask": null,
+      "answer": "-1,8",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-3x-minus-9-ravno-2x-fipi-0edf5f",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 0EDF5F",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-636D61",
+      "code": "636D61",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "4(x+1)=9",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "1"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "9"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "-5"
+      },
+      "roots": [
+        "5/4"
+      ],
+      "ask": null,
+      "answer": "1,25",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/uravnenie-s-odnoy-skobkoy-4-x-plus-1-ravno-9-fipi-636d61",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 636D61",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-04",
+      "code": "var-linear-two-brackets-04",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x+1)+5(x−4)=−93",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "1"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-93"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "78"
+      },
+      "roots": [
+        "-39/5"
+      ],
+      "ask": null,
+      "answer": "-7,8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-CC13D8",
+      "code": "CC13D8",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "catalog",
+      "equation": "x²−4=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-4"
+      },
+      "roots": [
+        "-2",
+        "2"
+      ],
+      "ask": "min",
+      "answer": "-2",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadrat-neizvestnogo-x2-minus-4-ravno-0-menshiy-koren-fipi-cc13d8",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · CC13D8",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-5FA26E",
+      "code": "5FA26E",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "catalog",
+      "equation": "5x²=35x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "5"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "35"
+        }
+      ],
+      "coefficients": {
+        "a": "5",
+        "b": "-35",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "7"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/vynesenie-x-za-skobki-5x2-ravno-35x-menshiy-koren-fipi-5fa26e",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 5FA26E",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-94925B",
+      "code": "94925B",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "catalog",
+      "equation": "x²−10x+21=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-10"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "21"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-10",
+        "c": "21"
+      },
+      "roots": [
+        "3",
+        "7"
+      ],
+      "ask": "max",
+      "answer": "7",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-21-ravno-0-bolshiy-koren-fipi-94925b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 94925B",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-03",
+      "code": "var-quad-nonmonic-03",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "4x²−13x+3=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-13"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "-13",
+        "c": "3"
+      },
+      "roots": [
+        "1/4",
+        "3"
+      ],
+      "ask": "max",
+      "answer": "3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-F18DC8",
+      "code": "F18DC8",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "1−10x=5x+10",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "10"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-15",
+        "c": "-9"
+      },
+      "roots": [
+        "-3/5"
+      ],
+      "ask": null,
+      "answer": "-0,6",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-1-minus-10x-ravno-5x-plus-10-fipi-f18dc8",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · F18DC8",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-FF7B0B",
+      "code": "FF7B0B",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "2(x−6)−x=6",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-6"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "6"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "1",
+        "c": "-18"
+      },
+      "roots": [
+        "18"
+      ],
+      "ask": null,
+      "answer": "18",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-podobnye-slagaemye-2-x-minus-6-minus-x-ravno-6-fipi-ff7b0b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/FF7B0B/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/FF7B0B/0.gif"
+        }
+      ],
+      "label": "Каталог прототипов · FF7B0B",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-05",
+      "code": "var-linear-two-brackets-05",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "15=7(x+3)−6(x+2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "15"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "7",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-6",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-1",
+        "c": "6"
+      },
+      "roots": [
+        "6"
+      ],
+      "ask": null,
+      "answer": "6",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-01",
+      "code": "var-quad-square-01",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−4x²=−1",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-1"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "0",
+        "c": "1"
+      },
+      "roots": [
+        "-1/2",
+        "1/2"
+      ],
+      "ask": "min",
+      "answer": "-0,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-01",
+      "code": "var-quad-factor-x-01",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "x²+x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "1",
+        "c": "0"
+      },
+      "roots": [
+        "-1",
+        "0"
+      ],
+      "ask": "max",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-121FA3",
+      "code": "121FA3",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "catalog",
+      "equation": "x²−10x+24=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-10"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "24"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-10",
+        "c": "24"
+      },
+      "roots": [
+        "4",
+        "6"
+      ],
+      "ask": "min",
+      "answer": "4",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/kvadratnoe-uravnenie-x2-minus-10x-plus-24-ravno-0-menshiy-koren-fipi-121fa3",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 121FA3",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-04",
+      "code": "var-quad-nonmonic-04",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−4x²+5x+6=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "6"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "5",
+        "c": "6"
+      },
+      "roots": [
+        "-3/4",
+        "2"
+      ],
+      "ask": "min",
+      "answer": "-0,75",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-5B34C1",
+      "code": "5B34C1",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "−4+7x=8x+1",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "7"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-1",
+        "c": "-5"
+      },
+      "roots": [
+        "-5"
+      ],
+      "ask": null,
+      "answer": "-5",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-minus-4-plus-7x-ravno-8x-plus-1-fipi-5b34c1",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf",
+          "role": "equation and attributed ID"
+        }
+      ],
+      "label": "Каталог прототипов · 5B34C1",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-E63206",
+      "code": "E63206",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "catalog",
+      "equation": "2(x−8)=x+8",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-8"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "8"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "1",
+        "c": "-24"
+      },
+      "roots": [
+        "24"
+      ],
+      "ask": null,
+      "answer": "24",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/skobki-i-perenos-x-2-x-minus-8-ravno-x-plus-8-fipi-e63206",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/E63206/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/E63206/0.gif"
+        }
+      ],
+      "label": "Каталог прототипов · E63206",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-06",
+      "code": "var-linear-two-brackets-06",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−8(x−3)+6(x−4)=−13",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-8",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-3"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "6",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-13"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-2",
+        "c": "13"
+      },
+      "roots": [
+        "13/2"
+      ],
+      "ask": null,
+      "answer": "6,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-02",
+      "code": "var-quad-square-02",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−18+8x²=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-18"
+        },
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "8",
+        "b": "0",
+        "c": "-18"
+      },
+      "roots": [
+        "-3/2",
+        "3/2"
+      ],
+      "ask": "max",
+      "answer": "1,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-02",
+      "code": "var-quad-factor-x-02",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "4x²=−6x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-6"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "6",
+        "c": "0"
+      },
+      "roots": [
+        "-3/2",
+        "0"
+      ],
+      "ask": "min",
+      "answer": "-1,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-01",
+      "code": "var-quad-monic-01",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+5x+4=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "5",
+        "c": "4"
+      },
+      "roots": [
+        "-4",
+        "-1"
+      ],
+      "ask": "max",
+      "answer": "-1",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-05",
+      "code": "var-quad-nonmonic-05",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "5x²+13x−6=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "13"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-6"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "5",
+        "b": "13",
+        "c": "-6"
+      },
+      "roots": [
+        "-3",
+        "2/5"
+      ],
+      "ask": "max",
+      "answer": "0,4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-D6F84B",
+      "code": "D6F84B",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "catalog",
+      "equation": "7x−7=19+5x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "7"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-7"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "19"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "2",
+        "c": "-26"
+      },
+      "roots": [
+        "13"
+      ],
+      "ask": null,
+      "answer": "13",
+      "evidence": [
+        {
+          "url": "https://sdamgia.online/oge/matematika/zadanie-9/lineynoe-uravnenie-7x-minus-7-ravno-19-plus-5x-fipi-d6f84b",
+          "role": "equation and attributed ID"
+        },
+        {
+          "url": "https://gia.guide/math_oge/9/D6F84B/info/",
+          "role": "Secondary catalogue ID and equation image directly viewed",
+          "imageURL": "https://gia.guide/math_oge/09/D6F84B/0.gif"
+        }
+      ],
+      "label": "Каталог прототипов · D6F84B",
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-02",
+      "code": "var-linear-one-bracket-02",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "10=4(x−3)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-3"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-4",
+        "c": "22"
+      },
+      "roots": [
+        "11/2"
+      ],
+      "ask": null,
+      "answer": "5,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-07",
+      "code": "var-linear-two-brackets-07",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "3(x+2)+2(x−4)=33",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "33"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "-35"
+      },
+      "roots": [
+        "7"
+      ],
+      "ask": null,
+      "answer": "7",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-03",
+      "code": "var-quad-square-03",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "25=4x²",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "25"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "0",
+        "c": "25"
+      },
+      "roots": [
+        "-5/2",
+        "5/2"
+      ],
+      "ask": "min",
+      "answer": "-2,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-03",
+      "code": "var-quad-factor-x-03",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "−x²−2x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-1",
+        "b": "-2",
+        "c": "0"
+      },
+      "roots": [
+        "-2",
+        "0"
+      ],
+      "ask": "max",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-02",
+      "code": "var-quad-monic-02",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²−3x−10=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-3",
+        "c": "-10"
+      },
+      "roots": [
+        "-2",
+        "5"
+      ],
+      "ask": "min",
+      "answer": "-2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-06",
+      "code": "var-quad-nonmonic-06",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−5x²−14x−8=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-5"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-14"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-5",
+        "b": "-14",
+        "c": "-8"
+      },
+      "roots": [
+        "-2",
+        "-4/5"
+      ],
+      "ask": "min",
+      "answer": "-2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-01",
+      "code": "var-linear-transfer-01",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "10x+3=x+21",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "10"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "21"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "9",
+        "c": "-18"
+      },
+      "roots": [
+        "2"
+      ],
+      "ask": null,
+      "answer": "2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-05",
+      "code": "var-linear-one-bracket-05",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "11=5(x+2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "11"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "1"
+      },
+      "roots": [
+        "1/5"
+      ],
+      "ask": null,
+      "answer": "0,2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-09",
+      "code": "var-linear-two-brackets-09",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−6(x+3)−2(x−4)=62",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-6",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "62"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-8",
+        "c": "-72"
+      },
+      "roots": [
+        "-9"
+      ],
+      "ask": null,
+      "answer": "-9",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-04",
+      "code": "var-quad-square-04",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−4x²=−49",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-49"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "0",
+        "c": "49"
+      },
+      "roots": [
+        "-7/2",
+        "7/2"
+      ],
+      "ask": "max",
+      "answer": "3,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-04",
+      "code": "var-quad-factor-x-04",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "6x²=−21x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "6"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-21"
+        }
+      ],
+      "coefficients": {
+        "a": "6",
+        "b": "21",
+        "c": "0"
+      },
+      "roots": [
+        "-7/2",
+        "0"
+      ],
+      "ask": "min",
+      "answer": "-3,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-03",
+      "code": "var-quad-monic-03",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+10x+21=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "10"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "21"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "10",
+        "c": "21"
+      },
+      "roots": [
+        "-7",
+        "-3"
+      ],
+      "ask": "max",
+      "answer": "-3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-07",
+      "code": "var-quad-nonmonic-07",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "6x²−27x+12=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-27"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "12"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "6",
+        "b": "-27",
+        "c": "12"
+      },
+      "roots": [
+        "1/2",
+        "4"
+      ],
+      "ask": "max",
+      "answer": "4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-02",
+      "code": "var-linear-transfer-02",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "8x−5=−4x−53",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-5"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-53"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "12",
+        "c": "48"
+      },
+      "roots": [
+        "-4"
+      ],
+      "ask": null,
+      "answer": "-4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-06",
+      "code": "var-linear-one-bracket-06",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "9(x+1)+2=3x−37",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "9",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "1"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-37"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "6",
+        "c": "48"
+      },
+      "roots": [
+        "-8"
+      ],
+      "ask": null,
+      "answer": "-8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-10",
+      "code": "var-linear-two-brackets-10",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−34=−8(x−2)−2(x+2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-34"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "-8",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "10",
+        "c": "-46"
+      },
+      "roots": [
+        "23/5"
+      ],
+      "ask": null,
+      "answer": "4,6",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-05",
+      "code": "var-quad-square-05",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−81+4x²=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-81"
+        },
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "0",
+        "c": "-81"
+      },
+      "roots": [
+        "-9/2",
+        "9/2"
+      ],
+      "ask": "min",
+      "answer": "-4,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-05",
+      "code": "var-quad-factor-x-05",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "−2x²−8x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-2",
+        "b": "-8",
+        "c": "0"
+      },
+      "roots": [
+        "-4",
+        "0"
+      ],
+      "ask": "max",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-04",
+      "code": "var-quad-monic-04",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+3x−10=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "3",
+        "c": "-10"
+      },
+      "roots": [
+        "-5",
+        "2"
+      ],
+      "ask": "min",
+      "answer": "-5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-08",
+      "code": "var-quad-nonmonic-08",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−6x²+9x+27=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "9"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "27"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-6",
+        "b": "9",
+        "c": "27"
+      },
+      "roots": [
+        "-3/2",
+        "3"
+      ],
+      "ask": "min",
+      "answer": "-1,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-03",
+      "code": "var-linear-transfer-03",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−6+4x=−6+x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "3",
+        "c": "0"
+      },
+      "roots": [
+        "0"
+      ],
+      "ask": null,
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-08",
+      "code": "var-linear-one-bracket-08",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "(x−2)=1",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "1",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "1",
+        "c": "-3"
+      },
+      "roots": [
+        "3"
+      ],
+      "ask": null,
+      "answer": "3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-12",
+      "code": "var-linear-two-brackets-12",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x+3)−5=(x−1)",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-5"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "1",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-1"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "11"
+      },
+      "roots": [
+        "-11/4"
+      ],
+      "ask": null,
+      "answer": "-2,75",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-06",
+      "code": "var-quad-square-06",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "1=16x²",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "16"
+        }
+      ],
+      "coefficients": {
+        "a": "-16",
+        "b": "0",
+        "c": "1"
+      },
+      "roots": [
+        "-1/4",
+        "1/4"
+      ],
+      "ask": "max",
+      "answer": "0,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-06",
+      "code": "var-quad-factor-x-06",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "2x²=−9x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        }
+      ],
+      "coefficients": {
+        "a": "2",
+        "b": "9",
+        "c": "0"
+      },
+      "roots": [
+        "-9/2",
+        "0"
+      ],
+      "ask": "min",
+      "answer": "-4,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-05",
+      "code": "var-quad-monic-05",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+8x+12=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "12"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "8",
+        "c": "12"
+      },
+      "roots": [
+        "-6",
+        "-2"
+      ],
+      "ask": "max",
+      "answer": "-2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-09",
+      "code": "var-quad-nonmonic-09",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "7x²+28x−35=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "7"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "28"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-35"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "7",
+        "b": "28",
+        "c": "-35"
+      },
+      "roots": [
+        "-5",
+        "1"
+      ],
+      "ask": "max",
+      "answer": "1",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-05",
+      "code": "var-linear-transfer-05",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−3−2x=4x+63",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "63"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-6",
+        "c": "-66"
+      },
+      "roots": [
+        "-11"
+      ],
+      "ask": null,
+      "answer": "-11",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-09",
+      "code": "var-linear-one-bracket-09",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "8=2(x−1)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-1"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-2",
+        "c": "10"
+      },
+      "roots": [
+        "5"
+      ],
+      "ask": null,
+      "answer": "5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-13",
+      "code": "var-linear-two-brackets-13",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−19=9(x+2)−(x−2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-19"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "9",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-1",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-8",
+        "c": "-39"
+      },
+      "roots": [
+        "-39/8"
+      ],
+      "ask": null,
+      "answer": "-4,875",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-07",
+      "code": "var-quad-square-07",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−16x²=−9",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-16"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-9"
+        }
+      ],
+      "coefficients": {
+        "a": "-16",
+        "b": "0",
+        "c": "9"
+      },
+      "roots": [
+        "-3/4",
+        "3/4"
+      ],
+      "ask": "min",
+      "answer": "-0,75",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-07",
+      "code": "var-quad-factor-x-07",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "2x²+12x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "2"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "12"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "2",
+        "b": "12",
+        "c": "0"
+      },
+      "roots": [
+        "-6",
+        "0"
+      ],
+      "ask": "max",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-06",
+      "code": "var-quad-monic-06",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²−3x−28=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-28"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-3",
+        "c": "-28"
+      },
+      "roots": [
+        "-4",
+        "7"
+      ],
+      "ask": "min",
+      "answer": "-4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-10",
+      "code": "var-quad-nonmonic-10",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "7x²+28x+21=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "7"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "28"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "21"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "7",
+        "b": "28",
+        "c": "21"
+      },
+      "roots": [
+        "-3",
+        "-1"
+      ],
+      "ask": "min",
+      "answer": "-3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-06",
+      "code": "var-linear-transfer-06",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−2x+1=8x+4",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "4"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-10",
+        "c": "-3"
+      },
+      "roots": [
+        "-3/10"
+      ],
+      "ask": null,
+      "answer": "-0,3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-10",
+      "code": "var-linear-one-bracket-10",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x+2)=42",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "42"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "-32"
+      },
+      "roots": [
+        "32/5"
+      ],
+      "ask": null,
+      "answer": "6,4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-15",
+      "code": "var-linear-two-brackets-15",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−8(x+2)+4(x−4)=−74",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-8",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-74"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-4",
+        "c": "42"
+      },
+      "roots": [
+        "21/2"
+      ],
+      "ask": null,
+      "answer": "10,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-08",
+      "code": "var-quad-square-08",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−25+16x²=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-25"
+        },
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "16"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "16",
+        "b": "0",
+        "c": "-25"
+      },
+      "roots": [
+        "-5/4",
+        "5/4"
+      ],
+      "ask": "max",
+      "answer": "1,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-08",
+      "code": "var-quad-factor-x-08",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "2x²=x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "2",
+        "b": "-1",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "1/2"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-07",
+      "code": "var-quad-monic-07",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+11x+24=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "24"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "11",
+        "c": "24"
+      },
+      "roots": [
+        "-8",
+        "-3"
+      ],
+      "ask": "max",
+      "answer": "-3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-11",
+      "code": "var-quad-nonmonic-11",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "8x²+5x−3=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-3"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "8",
+        "b": "5",
+        "c": "-3"
+      },
+      "roots": [
+        "-1",
+        "3/8"
+      ],
+      "ask": "max",
+      "answer": "0,375",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-08",
+      "code": "var-linear-transfer-08",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−2x−6=3x−51",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-6"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-51"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "45"
+      },
+      "roots": [
+        "9"
+      ],
+      "ask": null,
+      "answer": "9",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-11",
+      "code": "var-linear-one-bracket-11",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−2x−72=6(x−4)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-72"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "6",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-8",
+        "c": "-48"
+      },
+      "roots": [
+        "-6"
+      ],
+      "ask": null,
+      "answer": "-6",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-18",
+      "code": "var-linear-two-brackets-18",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−4(x−3)+7=4(x−1)",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-3"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "7"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "4",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-1"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-8",
+        "c": "23"
+      },
+      "roots": [
+        "23/8"
+      ],
+      "ask": null,
+      "answer": "2,875",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-09",
+      "code": "var-quad-square-09",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "16=x²",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "16"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "-1",
+        "b": "0",
+        "c": "16"
+      },
+      "roots": [
+        "-4",
+        "4"
+      ],
+      "ask": "min",
+      "answer": "-4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-09",
+      "code": "var-quad-factor-x-09",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "8x²−10x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "8"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "8",
+        "b": "-10",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "5/4"
+      ],
+      "ask": "max",
+      "answer": "1,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-08",
+      "code": "var-quad-monic-08",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+4x−21=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-21"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "4",
+        "c": "-21"
+      },
+      "roots": [
+        "-7",
+        "3"
+      ],
+      "ask": "min",
+      "answer": "-7",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-12",
+      "code": "var-quad-nonmonic-12",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−8x²+11x+10=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-8"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "10"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-8",
+        "b": "11",
+        "c": "10"
+      },
+      "roots": [
+        "-5/8",
+        "2"
+      ],
+      "ask": "min",
+      "answer": "-0,625",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-10",
+      "code": "var-linear-transfer-10",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "−4−2x=5x+80",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "80"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-7",
+        "c": "-84"
+      },
+      "roots": [
+        "-12"
+      ],
+      "ask": null,
+      "answer": "-12",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-13",
+      "code": "var-linear-one-bracket-13",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "9=3(x+2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-3",
+        "c": "3"
+      },
+      "roots": [
+        "1"
+      ],
+      "ask": null,
+      "answer": "1",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-22",
+      "code": "var-linear-two-brackets-22",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "7(x+1)+(x−4)=15",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "7",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "1"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "1",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "15"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "8",
+        "c": "-12"
+      },
+      "roots": [
+        "3/2"
+      ],
+      "ask": null,
+      "answer": "1,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-10",
+      "code": "var-quad-square-10",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−2x²=−72",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-72"
+        }
+      ],
+      "coefficients": {
+        "a": "-2",
+        "b": "0",
+        "c": "72"
+      },
+      "roots": [
+        "-6",
+        "6"
+      ],
+      "ask": "max",
+      "answer": "6",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-10",
+      "code": "var-quad-factor-x-10",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "−4x²=−9x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "9",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "9/4"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-09",
+      "code": "var-quad-monic-09",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+11x+30=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "30"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "11",
+        "c": "30"
+      },
+      "roots": [
+        "-6",
+        "-5"
+      ],
+      "ask": "max",
+      "answer": "-5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-13",
+      "code": "var-quad-nonmonic-13",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "9x²−45x+36=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "9"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-45"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "36"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "9",
+        "b": "-45",
+        "c": "36"
+      },
+      "roots": [
+        "1",
+        "4"
+      ],
+      "ask": "max",
+      "answer": "4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-12",
+      "code": "var-linear-transfer-12",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "2+9x=11x−5",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "2"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-5"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-2",
+        "c": "7"
+      },
+      "roots": [
+        "7/2"
+      ],
+      "ask": null,
+      "answer": "3,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-14",
+      "code": "var-linear-one-bracket-14",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "−5(x+3)+2=−9x−21",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "-5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "3"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-21"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "4",
+        "c": "8"
+      },
+      "roots": [
+        "-2"
+      ],
+      "ask": null,
+      "answer": "-2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-26",
+      "code": "var-linear-two-brackets-26",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "34=7(x+2)−2(x−2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "34"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "7",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "-2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "-5",
+        "c": "16"
+      },
+      "roots": [
+        "16/5"
+      ],
+      "ask": null,
+      "answer": "3,2",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-11",
+      "code": "var-quad-square-11",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−64+x²=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-64"
+        },
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-64"
+      },
+      "roots": [
+        "-8",
+        "8"
+      ],
+      "ask": "min",
+      "answer": "-8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-11",
+      "code": "var-quad-factor-x-11",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "6x²−33x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "6"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-33"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "6",
+        "b": "-33",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "11/2"
+      ],
+      "ask": "max",
+      "answer": "5,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-10",
+      "code": "var-quad-monic-10",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+4x−32=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-32"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "4",
+        "c": "-32"
+      },
+      "roots": [
+        "-8",
+        "4"
+      ],
+      "ask": "min",
+      "answer": "-8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-14",
+      "code": "var-quad-nonmonic-14",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "9x²+54x+72=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "9"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "54"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "72"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "9",
+        "b": "54",
+        "c": "72"
+      },
+      "roots": [
+        "-4",
+        "-2"
+      ],
+      "ask": "min",
+      "answer": "-4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-transfer-13",
+      "code": "var-linear-transfer-13",
+      "examKind": "linear-transfer",
+      "family": "L",
+      "source": "analog",
+      "equation": "5+8x=34+3x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "5"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "8"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "34"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "3"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "5",
+        "c": "-29"
+      },
+      "roots": [
+        "29/5"
+      ],
+      "ask": null,
+      "answer": "5,8",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-15",
+      "code": "var-linear-one-bracket-15",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "6(x−4)=42",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "6",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-4"
+            }
+          ]
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "42"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "6",
+        "c": "-66"
+      },
+      "roots": [
+        "11"
+      ],
+      "ask": null,
+      "answer": "11",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-27",
+      "code": "var-linear-two-brackets-27",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "98=−10(x−2)+2(x+2)",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "98"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "-10",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        },
+        {
+          "type": "bracket",
+          "coefficient": "2",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "8",
+        "c": "74"
+      },
+      "roots": [
+        "-37/4"
+      ],
+      "ask": null,
+      "answer": "-9,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-12",
+      "code": "var-quad-square-12",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "100=x²",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "100"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        }
+      ],
+      "coefficients": {
+        "a": "-1",
+        "b": "0",
+        "c": "100"
+      },
+      "roots": [
+        "-10",
+        "10"
+      ],
+      "ask": "max",
+      "answer": "10",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-12",
+      "code": "var-quad-factor-x-12",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "−4x²=−26x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-4"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-26"
+        }
+      ],
+      "coefficients": {
+        "a": "-4",
+        "b": "26",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "13/2"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-monic-11",
+      "code": "var-quad-monic-11",
+      "examKind": "quad-monic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "x²+13x+36=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "13"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "36"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "13",
+        "c": "36"
+      },
+      "roots": [
+        "-9",
+        "-4"
+      ],
+      "ask": "max",
+      "answer": "-4",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-15",
+      "code": "var-quad-nonmonic-15",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "10x²+13x−14=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "10"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "13"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-14"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "10",
+        "b": "13",
+        "c": "-14"
+      },
+      "roots": [
+        "-2",
+        "7/10"
+      ],
+      "ask": "max",
+      "answer": "0,7",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-one-bracket-16",
+      "code": "var-linear-one-bracket-16",
+      "examKind": "linear-one-bracket",
+      "family": "LB",
+      "source": "analog",
+      "equation": "9(x−2)+1=x−53",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "9",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-2"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-53"
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "8",
+        "c": "36"
+      },
+      "roots": [
+        "-9/2"
+      ],
+      "ask": null,
+      "answer": "-4,5",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-linear-two-brackets-31",
+      "code": "var-linear-two-brackets-31",
+      "examKind": "linear-two-brackets",
+      "family": "LB",
+      "source": "analog",
+      "equation": "5(x+2)+73=−3(x−1)",
+      "Lt": [
+        {
+          "type": "bracket",
+          "coefficient": "5",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "2"
+            }
+          ]
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "73"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "bracket",
+          "coefficient": "-3",
+          "terms": [
+            {
+              "type": "term",
+              "power": 1,
+              "coefficient": "1"
+            },
+            {
+              "type": "term",
+              "power": 0,
+              "coefficient": "-1"
+            }
+          ]
+        }
+      ],
+      "coefficients": {
+        "a": "0",
+        "b": "8",
+        "c": "80"
+      },
+      "roots": [
+        "-10"
+      ],
+      "ask": null,
+      "answer": "-10",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-13",
+      "code": "var-quad-square-13",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−x²=−121",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-121"
+        }
+      ],
+      "coefficients": {
+        "a": "-1",
+        "b": "0",
+        "c": "121"
+      },
+      "roots": [
+        "-11",
+        "11"
+      ],
+      "ask": "min",
+      "answer": "-11",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-13",
+      "code": "var-quad-factor-x-13",
+      "examKind": "quad-factor-x",
+      "family": "QNC",
+      "source": "analog",
+      "equation": "x²−9x=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-9"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "-9",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "9"
+      ],
+      "ask": "max",
+      "answer": "9",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-16",
+      "code": "var-quad-nonmonic-16",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "−10x²−39x−27=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "-10"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "-39"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-27"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "-10",
+        "b": "-39",
+        "c": "-27"
+      },
+      "roots": [
+        "-3",
+        "-9/10"
+      ],
+      "ask": "min",
+      "answer": "-3",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-square-14",
+      "code": "var-quad-square-14",
+      "examKind": "quad-square",
+      "family": "QNB",
+      "source": "analog",
+      "equation": "−169+x²=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-169"
+        },
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "1"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "1",
+        "b": "0",
+        "c": "-169"
+      },
+      "roots": [
+        "-13",
+        "13"
+      ],
+      "ask": "max",
+      "answer": "13",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-factor-x-14",
+      "code": "var-quad-factor-x-14",
+      "examKind": "quad-factor-x",
+      "family": "QNCm",
+      "source": "analog",
+      "equation": "2x²=20x",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "2"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "20"
+        }
+      ],
+      "coefficients": {
+        "a": "2",
+        "b": "-20",
+        "c": "0"
+      },
+      "roots": [
+        "0",
+        "10"
+      ],
+      "ask": "min",
+      "answer": "0",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    },
+    {
+      "id": "exam-var-quad-nonmonic-17",
+      "code": "var-quad-nonmonic-17",
+      "examKind": "quad-nonmonic",
+      "family": "QF",
+      "source": "analog",
+      "equation": "4x²+11x−20=0",
+      "Lt": [
+        {
+          "type": "term",
+          "power": 2,
+          "coefficient": "4"
+        },
+        {
+          "type": "term",
+          "power": 1,
+          "coefficient": "11"
+        },
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "-20"
+        }
+      ],
+      "Rt": [
+        {
+          "type": "term",
+          "power": 0,
+          "coefficient": "0"
+        }
+      ],
+      "coefficients": {
+        "a": "4",
+        "b": "11",
+        "c": "-20"
+      },
+      "roots": [
+        "-4",
+        "5/4"
+      ],
+      "ask": "max",
+      "answer": "1,25",
+      "evidence": [],
+      "label": null,
+      "directOfficialCardVerified": false
+    }
+  ]
+}

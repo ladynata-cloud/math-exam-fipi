@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Деление уголком (столбиком) — пошаговый тренажёр | MathExam</title>
+<title>Деление столбиком (уголком) — пошаговый тренажёр | MathExam</title>
 <meta name="description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
 <link rel="canonical" href="https://mathexam.space/trainers/long-division-stepwise.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta property="og:title" content="Деление столбиком (уголком) — пошаговый тренажёр | MathExam">
 <meta property="og:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
 <meta property="og:url" content="https://mathexam.space/trainers/long-division-stepwise.html">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Деление уголком (столбиком) — пошаговый тренажёр | MathExam">
+<meta name="twitter:title" content="Деление столбиком (уголком) — пошаговый тренажёр | MathExam">
 <meta name="twitter:description" content="Учимся делить уголком как в тетради: выбираем первое неполное делимое, находим цифру частного, умножаем, вычитаем и сносим цифру. Проверка каждого шага и подсказки.">
 <style data-inline-source="/trainers/oge-basics/multiplication-division/division-guided.css">
 :root {
@@ -210,6 +210,30 @@ dialog > p { color: var(--muted); font-size: 16px; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
+/* The route stays above the exercise; a table is opened only in its own mode. */
+.division-learning-route { display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 14px; font-size:14px; }
+.division-learning-route a { display:inline-flex; align-items:center; min-height:36px; }
+#division-recommendation { max-width:650px; color:var(--muted); font-size:16px; }
+.multiples-builder { padding:12px; margin:12px 0; border:1px solid var(--line); border-radius:12px; background:var(--soft); font-size:15px; }
+.multiples-builder > summary { min-height:36px; }
+.multiples-builder > p { margin:8px 0; }
+.multiples-builder-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.multiple-row { display:grid; grid-template-columns:minmax(0,1fr); gap:4px; padding:7px; border:1px solid var(--line); border-radius:8px; background:var(--paper); }
+.multiple-row label { font-weight:650; font-size:15px; white-space:nowrap; }
+.multiple-row input { display:block; width:100%; min-width:0; min-height:40px; padding:4px; border:1px solid #a5b9ae; border-radius:6px; color:var(--ink); font-size:17px; }
+.multiple-row .quiet { min-height:36px; padding:4px 2px; font-size:12px; }
+.multiple-row.is-checked { border-color:#91b69f; }
+.multiple-row.is-checked input { background:#f0f7ef; }
+.multiple-feedback { min-height:22px; }
+@media (max-width:480px) {
+  .division-learning-route { gap:0 14px; margin-bottom:10px; font-size:13px; }
+  .multiples-builder { padding:9px; }
+  .multiples-builder-grid { gap:5px; }
+  .multiple-row { padding:5px; }
+  .multiple-row label { font-size:13px; }
+  .multiple-row .quiet { font-size:11px; }
+}
+
 </style>
 <style data-inline-source="/trainers/oge-basics/multiplication-division/decimal-shift.css">
 .decimal-shift{--ds-cell:30px;border:1px solid #bbd5c8;border-radius:16px;padding:16px;background:#f3f9f5;color:#173c30;box-sizing:border-box;max-width:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.decimal-shift *{box-sizing:border-box}.decimal-shift p{margin:0 0 12px;line-height:1.5}.decimal-shift .ds-instruction{font-size:17px;font-weight:650}.ds-row{margin:14px 0 2px;min-width:0}.ds-row-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:14px}.ds-result{font-size:20px;color:#155d47;font-variant-numeric:tabular-nums}.ds-track{position:relative;height:75px;width:calc(var(--ds-digits)*var(--ds-cell) + 44px);max-width:100%;margin-top:6px}.ds-digits{display:flex;padding-left:22px;padding-top:10px;white-space:nowrap}.ds-digit{display:inline-flex;align-items:center;justify-content:center;flex:0 0 var(--ds-cell);height:34px;font:700 clamp(18px,3.5vw,26px)/1 ui-monospace,monospace;border-bottom:1px solid #cee1d4}.ds-digit[data-added=true]{color:#778c80;border-bottom:1px dashed #72917e}.ds-digit.ds-used-zero{color:#173c30;background:#dfeee2}.ds-origin{position:absolute;top:37px;font-size:24px;color:#819489;transform:translateX(-50%)}.decimal-shift button.ds-handle{position:absolute;top:28px;width:44px;min-width:44px;height:44px;min-height:44px;margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:#075b40;font:700 36px/.8 Georgia,serif;display:grid;place-items:center;cursor:grab;touch-action:none;user-select:none;box-shadow:none;z-index:2;transition:none;transform:none}.decimal-shift button.ds-handle:hover{background:#e5f1e8}.decimal-shift button.ds-handle:focus-visible{outline:none;background:#d7ecdf}.decimal-shift button.ds-handle:focus-visible::after{content:"";position:absolute;left:10px;right:10px;bottom:3px;height:3px;border-radius:2px;background:#14795b}.decimal-shift.ds-dragging button.ds-handle{cursor:grabbing;background:#d7ecdf}.decimal-shift.ds-locked button.ds-handle{color:#32624b;background:transparent;cursor:default;box-shadow:none}.decimal-shift.ds-locked button.ds-handle::after{display:none}.ds-controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.decimal-shift .ds-controls button{flex:1 1 120px;min-height:44px;padding:10px 8px;border:1px solid #91b09d;border-radius:11px;background:white;color:#205c44;font:650 14px/1.3 system-ui,sans-serif;cursor:pointer}.decimal-shift .ds-controls button:disabled{opacity:.45;cursor:default}.decimal-shift .ds-controls button:focus-visible{outline:3px solid #db8b1b;outline-offset:2px}.decimal-shift .ds-status{font-size:15px;margin-bottom:8px}.decimal-shift .ds-equation{font-size:clamp(16px,3.5vw,22px);font-weight:700;overflow-wrap:anywhere}.decimal-shift .ds-note{font-size:13px;color:#4f6d5e;margin-bottom:0}.ds-locked .ds-controls{display:none}@media(max-width:420px){.decimal-shift{padding:12px}.decimal-shift .ds-instruction{font-size:16px}.ds-result{font-size:18px}.ds-row{margin-top:12px}}
@@ -276,6 +300,25 @@ dialog > p { color: var(--muted); font-size: 16px; }
 .bh-help .bh-dot{width:46px;height:46px;min-height:46px;padding:0;border-radius:50%;background:#26815d;border:3px solid #26815d}
 .bh-help .bh-dot[aria-pressed=true]{background:#e8c568;border-color:#b18b26}
 @media(max-width:420px){.bh-panel{padding:13px 10px}.bh-panel-head{gap:6px}.bh-frame h3{font-size:19px}.bh-question{font-size:18px}.bh-answer-row{gap:8px}.bh-help .bh-answer{width:130px}.bh-help button{padding:10px 11px}.bh-navigation{flex-direction:column;align-items:flex-start}.bh-small{font-size:13px!important}.bh-model{margin:14px 0}.bh-count{gap:9px}}
+/* A fresh question follows the worked support example; it never credits the course. */
+.bh-transfer{margin:20px 0;padding-top:16px;border-top:2px solid #bdd2c2}
+.bh-transfer h4{font-size:19px;line-height:1.5;margin:0 0 10px;color:#203c2d}
+.bh-help .bh-transfer-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;color:#203c2d;background:white;width:160px;min-height:46px;max-width:100%;font-size:22px}
+.bh-help .bh-transfer-answer[readonly]{background:#edf7ef}
+.bh-help .bh-transfer-check{color:#fff;background:#287148;border-color:#287148;font-weight:700}
+.bh-transfer-feedback,.bh-transfer-hint-text{font-size:16px;line-height:1.65;overflow-wrap:anywhere}
+.bh-transfer-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}
+.bh-transfer-history{overflow-wrap:anywhere}
+.bh-help .bh-help-offered{border-color:#b18b26;background:#fff9e8}
+.bh-transfer-dots{display:grid;grid-template-columns:repeat(5,20px);gap:14px;margin:16px 0}
+.bh-transfer-dots>span{width:20px;height:20px;border-radius:50%;background:#26815d}
+.bh-understanding{margin-top:20px;padding-top:14px;border-top:1px solid #bdd2c2}
+.bh-understanding h4{font-size:19px;line-height:1.5;margin:0 0 10px}
+.bh-help .bh-understanding-answer{border:2px solid #b9cfc0;border-radius:10px;padding:10px 12px;width:160px;min-height:46px;max-width:100%;font-size:22px;color:#203c2d;background:#fff}
+.bh-understanding-choices{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.bh-help .bh-understanding-choice[aria-pressed=true]{background:#e1efe6;border-color:#287148}
+.bh-understanding-feedback,.bh-understanding-hint-text,.bh-understanding-history{font-size:16px;line-height:1.65;overflow-wrap:anywhere}
+.bh-understanding-feedback.bh-correct{border-left:3px solid #4f9467;padding:9px 12px;background:#edf7ef}
 
 </style>
 <!-- BEGIN OGE BASICS CONTEXTUAL SHELL -->
@@ -326,15 +369,47 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
 </style>
 
 <!-- END OGE BASICS CONTEXTUAL SHELL -->
+<style data-inline-source="/assets/oge-wayfinding.css">
+/* Ordinary links remain usable without JavaScript, history or saved state. */
+nav.oge-wayfinding{box-sizing:border-box;display:flex!important;position:relative;flex:0 0 auto;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:4px 16px;width:100%;max-width:1100px;margin:0 auto!important;padding:6px 16px!important;background:#f6f7f2!important;border:0!important;border-bottom:1px solid #d8e0d6!important;border-radius:0!important;box-shadow:none!important;font:16px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif!important;text-align:left!important;z-index:1}
+nav.oge-wayfinding a{box-sizing:border-box;display:inline-flex!important;align-items:center;min-height:44px;max-width:100%;margin:0!important;padding:4px 8px!important;color:#216342!important;background:transparent!important;border:0!important;border-radius:4px;font:inherit!important;font-weight:600!important;text-decoration:underline!important;text-underline-offset:3px;white-space:normal!important;overflow-wrap:anywhere}
+nav.oge-wayfinding a:focus-visible{outline:3px solid #216342;outline-offset:2px}
+nav.oge-wayfinding[hidden]{display:none!important}
+@media print{nav.oge-wayfinding{display:none!important}}
+
+</style>
+
+<style data-inline-source="/trainers/oge-basics/skill-support.css">
+.skill-support,.skill-return{box-sizing:border-box;max-width:100%;color:#193c3a;font:inherit;line-height:1.5}
+.skill-support{margin:1.1rem 0;padding:1rem;border:1px solid #cbded8;border-radius:16px;background:#f4faf6}
+.skill-support h2{margin:0 0 .35rem;font-size:1.05rem;line-height:1.3}
+.skill-support-note{font-size:.9rem;margin:.25rem 0 .8rem;color:#445c56}
+.skill-support-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem}
+.skill-support-choice{display:flex;flex-direction:column;justify-content:center;gap:.15rem;min-height:44px;padding:.65rem;border:1px solid #c5d9d1;border-radius:10px;background:white;text-decoration:none;color:#174e3c;font-weight:600;overflow-wrap:anywhere}
+.skill-support-label{font-size:.78rem;color:#53665f;font-weight:400}
+.skill-support-choice:hover,.skill-support-choice.is-relevant{border-color:#3c8064;background:#e9f6eb}
+.skill-support-more{margin:.8rem 0 .3rem}.skill-support-more summary{padding:.3rem 0;cursor:pointer;font-size:.9rem;min-height:32px}
+.skill-support-extras{display:flex;flex-wrap:wrap;gap:.3rem .8rem;margin:.3rem 0}.skill-support-extra,.skill-support-path{display:inline-flex;align-items:center;min-height:44px;color:#17543d;font-size:.9rem;text-underline-offset:3px}
+.skill-return{margin:0 0 1rem;padding:.7rem 1rem;border-left:4px solid #397b63;background:#f1f8f4;border-radius:8px}
+.skill-return p{margin:.2rem 0;font-size:.9rem}.skill-return a,.skill-return button{display:inline-flex;align-items:center;min-height:44px;color:#174e3c;font:inherit;font-weight:600}
+.skill-return button{border:1px solid #8cb7a2;border-radius:8px;background:#fff;padding:.4rem .65rem;cursor:pointer}
+.skill-support a:focus-visible,.skill-support summary:focus-visible,.skill-return a:focus-visible,.skill-return button:focus-visible{outline:3px solid #c08724;outline-offset:3px}
+@media(max-width:560px){.skill-support{padding:.75rem}.skill-support-choices{grid-template-columns:1fr}.skill-support-choice{flex-direction:row;justify-content:space-between;align-items:center;gap:.5rem}.skill-support-label{flex:1}.skill-support-choice>span:last-child{flex:1.4;font-size:.9rem}}
+@media print{.skill-support,.skill-return{display:none}}
+
+</style>
+
 </head>
 <body>
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="https://mathexam.space/trainers/oge-course/">← Все темы ОГЭ</a><a href="https://mathexam.space/">Главная</a></nav>
+
 <a class="skip-link" href="#question">К текущему шагу</a>
 <div id="guided-division">
 <header class="page-header"><a class="brand" href="https://mathexam.space/trainers/oge-basics/multiplication-division/index.html" aria-label="MathExam — умножение и деление">MathExam</a><button id="topics-open" class="quiet" type="button" aria-haspopup="dialog">Выбрать тему</button></header>
 <main class="page" id="main">
 <div id="storage-notice" role="status" hidden></div>
 <nav id="course-navigation" aria-label="Маршрут ПредОГЭ" hidden><p class="small"><a id="course-return" href="https://mathexam.space/trainers/oge-basics/arithmetic-route.html">← К моему маршруту ПредОГЭ</a></p></nav>
-<div class="intro"><p id="topic-label" class="eyebrow"></p><h1>Деление уголком</h1><p id="intro-text">Решаем по одному действию. Спешить не нужно.</p></div>
+<div class="intro"><p id="topic-label" class="eyebrow"></p><h1>Деление столбиком (уголком)</h1><p id="intro-text">Решаем по одному действию. Спешить не нужно.</p></div>
 <section class="workspace" aria-label="Текущий пример">
 <div class="exercise-header"><h2 id="problem"></h2><span id="step-counter"></span></div>
 <div id="topic-progress" class="topic-progress" aria-live="off"></div>
@@ -362,8 +437,8 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
 </section>
 <details id="results"><summary>Мои результаты</summary><p id="results-text"></p><button id="report-copy" class="quiet" type="button">Скопировать результат для учителя</button><p id="report-status" role="status"></p><textarea id="report-text" readonly rows="7" aria-label="Результат для учителя" hidden></textarea><p class="small">Отправь текст или снимок экрана учителю в MAX. Автоматической отправки здесь нет.</p></details>
 <section aria-labelledby="division-about-title">
-<h2 id="division-about-title">Пошаговый тренажёр деления уголком</h2>
-<p>Деление уголком, или столбиком, записывается как в школьной тетради. Выбери первое неполное делимое, наметь места для цифр частного, умножь, вычти и снеси следующую цифру. Каждый ответ проверяется отдельно, а строки решения остаются перед тобой.</p>
+<h2 id="division-about-title">Пошаговый тренажёр деления столбиком</h2>
+<p>Деление столбиком, или уголком, записывается как в школьной тетради. Выбери первое неполное делимое, наметь места для цифр частного, умножь, вычти и снеси следующую цифру. Каждый ответ проверяется отдельно, а строки решения остаются перед тобой.</p>
 <p>Начни с простого примера. Затем можно потренировать ноль в частном, деление с остатком, двузначный делитель и десятичные дроби. Если трудно, открой помощь к текущему шагу. Начатый пример сохраняется в этом браузере.</p>
 <p><a href="https://mathexam.space/topics/delenie-ugolkom/">Как делить столбиком: объяснение на примере</a></p>
 </section>
@@ -529,6 +604,71 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     return { ...D.make(level, sequence), topicId };
   }
 
+  // The original generator remains stable for stored classroom tasks. New public
+  // practice opts into these bands; the exact operands are saved in each session.
+  function progress(records, topicId) {
+    topicFor(topicId);
+    const seen = new Set();
+    let completed = 0, independent = 0;
+    for (const record of records) {
+      const key = record.task.dividend + ':' + record.task.divisor;
+      const first = !seen.has(key);
+      seen.add(key);
+      if (record.topic !== topicId) continue;
+      completed++;
+      if (first && !record.repeated && !record.errors && !record.hints && !record.reveals) independent++;
+    }
+    return {completed, independent, supported:completed - independent,
+      tier:Math.min(2, Math.floor(independent / 3)), target:3, ready:independent >= 3};
+  }
+
+  function makeProgressive(topicId, sequence = 0, tier = 0) {
+    topicFor(topicId);
+    if (!Number.isSafeInteger(sequence) || sequence < 0 || sequence > 1000000 || !Number.isInteger(tier) || tier < 0 || tier > 2) throw Error('Неверная ступень практики.');
+    if (topicId === 'start' || topicId === 'quotientDigit' || sequence === 0) return make(topicId, sequence);
+    // An odd multiplier walks through divisor choices instead of concentrating
+    // adjacent seeds on the same one-digit divisor.
+    const index = sequence - 1;
+    const d1 = 2 + index % 8;
+    const pick = values => values[index % values.length];
+    let d, q, dividend, divisor;
+    if (topicId === 'oneDigit') {
+      d = d1;
+      const low = [12, 100, 1000][tier], span = [88, 900, 9000][tier];
+      q = low + (index * 37 + Math.floor(index / 8) * 13) % span;
+      // Zero in the quotient has its own stage.
+      q = Number(String(q).replace(/0/g, '1'));
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'twoDigit') {
+      d = 12 + (index * 17) % (tier ? 88 : 38);
+      q = [12, 100, 300][tier] + (index * 23) % [88, 200, 700][tier];
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'zero') {
+      d = d1;
+      const front = 1 + Math.floor(index / 8) % 8, tail = 1 + index % 9;
+      q = tier === 0 ? front * 100 + tail : tier === 1 ? front * 1000 + tail : front * 10000 + tail * 100 + 1 + Math.floor(index / 9) % 9;
+      dividend = String(d * q); divisor = String(d);
+    } else if (topicId === 'remainder') {
+      d = d1; // Remainders precede the lesson on two-digit divisors.
+      q = [3, 30, 100][tier] + (index * 13) % [27, 70, 200][tier];
+      dividend = String(d * q + 1 + Math.floor(index / 8) % (d - 1)); divisor = String(d);
+    } else if (topicId === 'decimalNatural') {
+      d = d1; q = 11 + (index * 37) % [89, 989, 9989][tier];
+      dividend = D.decimal(d * q, tier + 1); divisor = String(d);
+    } else if (topicId === 'appendZeros') {
+      d = pick(tier === 0 ? [2, 4, 5, 8] : tier === 1 ? [16, 20, 25, 40] : [80, 125, 625]);
+      let n = 1 + (index * 7) % [9, 39, 199][tier];
+      if (n % d === 0) n++;
+      dividend = String(n); divisor = String(d);
+    } else if (topicId === 'decimalDivisor') {
+      d = pick(tier === 0 ? [12, 15, 16, 25] : [12, 16, 25, 32, 45, 75]);
+      q = 11 + (index * 37) % [89, 189, 989][tier];
+      const places = tier === 2 ? 2 : 1, quotientPlaces = tier === 0 ? 1 : 2;
+      dividend = D.decimal(d * q, places + quotientPlaces); divisor = D.decimal(d, places);
+    }
+    return {topicId, level:topicId, dividend, divisor};
+  }
+
   function wording(action, p) {
     const cycle = Number.isInteger(action.cycle) ? p.cycles[action.cycle] : null;
     const divisor = p.normalizedDivisor;
@@ -665,7 +805,7 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     return D.check(text, action);
   }
 
-  const api = { topics, make, plan, check, number: D.number, decimal: D.decimal, equal: D.equal };
+  const api = { topics, make, makeProgressive, progress, plan, check, number: D.number, decimal: D.decimal, equal: D.equal };
   root.DivisionGuided = api;
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window === 'undefined' ? globalThis : window);
@@ -1166,18 +1306,62 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     return 'order';
   }
 
-  function numeric(raw) {
+  // Compare exact rational values: a close decimal is not the same fraction.
+  function rational(raw) {
     const text = String(raw ?? '').trim().replace(/\s+/g, '').replace(/−/g, '-').replace(',', '.');
-    if (/^[+-]?\d+(?:\.\d+)?$/.test(text)) return Number(text);
+    if (!text || text.length > 100) return null;
     const pair = text.match(/^([+-]?\d+)\/([+-]?\d+)$/);
-    return pair && Number(pair[2]) !== 0 ? Number(pair[1]) / Number(pair[2]) : null;
+    if (pair) { const d = BigInt(pair[2]); return d ? [BigInt(pair[1]), d] : null; }
+    const number = text.match(/^([+-]?)(\d+)(?:\.(\d+))?$/);
+    if (!number) return null;
+    return [BigInt((number[1] === '-' ? '-' : '') + number[2] + (number[3] || '')), 10n ** BigInt((number[3] || '').length)];
   }
-  function accepts(id, raw) {
-    const node = curriculum[id], value = numeric(raw);
-    if (!node || value === null || !Number.isFinite(value)) return false;
-    const answer = Array.isArray(node.answer) ? node.answer[0] / node.answer[1] : node.answer;
-    return Math.abs(value - answer) < 1e-9;
+  function acceptsAnswer(answer, raw) {
+    const value = rational(raw), target = rational(Array.isArray(answer) ? answer.join('/') : answer);
+    return !!(value && target && value[0] * target[1] === target[0] * value[1]);
   }
+  function accepts(id, raw) { return !!curriculum[id] && acceptsAnswer(curriculum[id].answer, raw); }
+
+  // Own transfer examples. The support example's revealed answer cannot finish
+  // these; the same skill is used with genuinely different mathematical data.
+  const transfers = Object.freeze({
+    'percent-meaning': {question:'Из 100 равных клеток закрашено 40. Сколько это процентов?', answer:40, hint:'Процент означает одну сотую целого.', why:'40 клеток из 100 — это 40%.'},
+    'percent-part': {question:'Теперь целое равно 120. Найди 25% от 120.', answer:30, hint:'Процент прежний: это всё ещё одна четверть. Раздели новое целое на 4.', why:'120 : 4 = 30. Было 25% от 80 — 20; процент тот же, но целое и часть увеличились в полтора раза.'},
+    'percent-change': {question:'Цена 90 рублей выросла на 20%. На сколько рублей выросла цена?', answer:18, hint:'Сначала найди одну пятую от 90. Спрашивают прибавку, а не новую цену.', why:'90 : 5 = 18 рублей — прибавка. Новая цена равна 108 рублям, это другой вопрос.'},
+    proportion: {question:'Четыре одинаковых билета стоят 280 рублей. Сколько стоит один?', answer:70, hint:'Все билеты стоят одинаково. Раздели 280 на число билетов.', why:'280 : 4 = 70 рублей. Проверка: 4 · 70 = 280.'},
+    'fraction-parts': {question:'Полоску разделили на 8 равных частей и взяли 5. Какую часть целого взяли? Запиши дробь.', answer:[5,8], hint:'В знаменателе — все равные части; в числителе — взятые.', why:'Взяли 5 из 8 равных частей: 5/8. Равные записи, например 10/16, тоже подходят.'},
+    'fraction-equivalent': {question:'Треть полоски разделили на двенадцатые доли того же целого. Сколько двенадцатых долей в одной трети?', answer:4, hint:'Размер целого не меняется. Каждую треть делят на четыре одинаковые части.', why:'1/3 = 4/12. Изменился размер доли, но закрашенная длина осталась прежней.'},
+    'fraction-add': {question:'Сложи одну шестую и четыре шестых. Запиши полученную дробь.', answer:[5,6], hint:'Размер долей одинаковый. Сложи их количества, сохрани размер доли.', why:'1/6 + 4/6 = 5/6. Знаменатель не складывают.'},
+    decimal: {question:'Целое разделили на 100 равных частей и взяли 7. Запиши долю десятичной дробью.', answer:0.07, hint:'Это семь сотых; десятых здесь нет.', why:'7/100 = 0,07. В числе 0,7 было бы семь десятых, то есть 70 сотых.'},
+    'decimal-add': {question:'Вычисли 0,4 + 0,3.', answer:0.7, hint:'Сложи четыре и три одинаковые десятые доли.', why:'4 десятых + 3 десятых = 7 десятых = 0,7.'},
+    rounding: {question:'Округли 4,2 до целого числа.', answer:4, hint:'Сравни расстояния от 4,2 до соседних целых 4 и 5.', why:'До 4 расстояние 0,2, до 5 — 0,8. Поэтому 4,2 ≈ 4, а не 4,2 = 4.'},
+    'decimal-shift': {question:'Делим 7,2 на 0,8. Оба числа умножили на 10. Каким стал делитель?', answer:8, hint:'Делитель — число 0,8. Увеличь его в 10 раз.', why:'Делитель стал 8, делимое — 72. Обе величины умножены на 10, поэтому частное сохраняется.'},
+    negative: {question:'Начни в точке −4 и сделай 2 шага вправо. Где окажешься?', answer:-2, hint:'Каждый шаг вправо увеличивает число на 1.', why:'−4 → −3 → −2. Движение вправо не обязательно сразу приводит к положительному числу.'},
+    units: {question:'Сколько сантиметров в 5 метрах?', answer:500, hint:'В каждом метре 100 сантиметров. Нужно пять таких групп.', why:'5 · 100 = 500 сантиметров.'},
+    'area-units': {question:'Квадрат разбили на 4 ряда по 4 клетки. Сколько всего клеток?', answer:16, hint:'В каждом из четырёх рядов по четыре клетки.', why:'4 · 4 = 16 клеток. Число клеток вдоль стороны и площадь — разные величины.'},
+    order: {question:'Вычисли 5 + 3 · 4.', answer:17, hint:'Умножение выполняется раньше сложения.', why:'3 · 4 = 12; 5 + 12 = 17.'},
+    'first-part': {question:'Делим 936 на 4. Сколько первых цифр нужно взять, чтобы начать деление?', answer:1, hint:'Сравни первую цифру 9 с делителем 4. Если её достаточно, следующую пока не бери.', why:'9 ≥ 4. Достаточно одной первой цифры — 9.'},
+    compare: {question:'На сколько 9 больше 5?', answer:4, hint:'Убери пять пар и посчитай, сколько осталось в большей группе.', why:'9 − 5 = 4. Это разность, а не сумма групп.'},
+    bring: {question:'После вычитания осталось 2. Переносим справа цифру 3. Какое число получилось?', answer:23, hint:'Цифра 2 теперь обозначает два десятка. Справа приписали 3 единицы.', why:'2 · 10 + 3 = 23. Приписать цифру — не то же самое, что прибавить её.'},
+    divide: {question:'Разложи 20 фишек поровну в 4 коробки. Сколько будет в каждой?', answer:5, hint:'Найди число, которое при умножении на 4 даёт 20.', why:'20 : 4 = 5. Проверка: 4 · 5 = 20.'},
+    quotient: {question:'Сколько раз по 7 помещается в 38? Впиши одну цифру.', answer:5, hint:'Нужно наибольшее произведение цифры на 7, которое не больше 38.', why:'5 · 7 = 35 ≤ 38, а 6 · 7 = 42 > 38. Подходит 5.'},
+    'write-digit': {question:'Получилось 37. Какую цифру напишем крайней справа?', answer:7, hint:'Пишем цифру единиц получившегося числа.', why:'7 пишем справа, 3 держим в уме.'},
+    'in-mind': {question:'Получилось 48. Цифру 8 уже написали справа. Сколько оставим в уме?', answer:4, hint:'Посмотри, сколько десятков в числе 48.', why:'8 написали, 4 десятка переносим в следующий разряд.'},
+    multiply: {question:'В пяти коробках по 4 фишки. Сколько фишек всего?', answer:20, hint:'Возьми четыре пять раз.', why:'4 + 4 + 4 + 4 + 4 = 20, то есть 5 · 4 = 20.'},
+    subtract: {question:'Было 15 фишек. Убрали 6. Сколько осталось?', answer:9, hint:'Убираем шесть из пятнадцати. Можно проверить ответ сложением.', why:'15 − 6 = 9. Проверка: 9 + 6 = 15.'},
+    add: {question:'Вычисли 8 + 6.', answer:14, hint:'Сначала дополни 8 до 10; затем прибавь оставшуюся часть шестёрки.', why:'8 + 2 = 10, осталось ещё 4. Получилось 14.'},
+    count: {question:'Сколько здесь точек?', answer:10, picture:'count', hint:'Считай по рядам: сначала верхний, затем нижний; не считай точку дважды.', why:'Два ряда по пять точек: всего 10.'}
+  });
+  const understanding = Object.freeze({
+    'percent-part': {question:'18 — это 30% числа. Найди всё число: сколько составляет 100%?', answer:60, hint:'30 равных сотых составляют 18. Сначала найди одну сотую, затем всё число.', why:'18 : 30 · 100 = 60. Проверка: 30% от 60 равны 18.'},
+    'percent-change': {question:'Цена выросла на 20%. Прибавка составила 24 рубля. Какой была цена до повышения?', answer:120, hint:'Прибавка — это 20% первоначальной цены. Первоначальная цена — 100%.', why:'24 : 20 · 100 = 120 рублей. После повышения цена стала 144 рубля, а спрашивали первоначальную.'},
+    'fraction-parts': {question:'Три равные части составляют четверть всей полоски. На сколько таких равных частей разделена вся полоска?', answer:12, hint:'В целом четыре четверти. В каждой четверти по три такие части.', why:'4 · 3 = 12 частей. Проверка: три из двенадцати — 3/12 = 1/4.'},
+    'fraction-equivalent': {question:'Миша прибавил 1 к числителю и знаменателю: 1/2 → 2/3. Получилась ли равная дробь?', answer:'no', choices:[['yes','Да, доля не изменилась'],['no','Нет, доля изменилась']], hint:'Сравни обе дроби в шестых долях одного целого.', why:'1/2 = 3/6, а 2/3 = 4/6. Это контрпример: прибавление одного числа к числителю и знаменателю не всегда сохраняет значение дроби.'},
+    'fraction-add': {question:'Найди пропущенную дробь: 1/3 + □ = 5/6.', answer:[1,2], hint:'Представь одну треть в шестых долях. Сколько шестых не хватает до пяти?', why:'1/3 = 2/6. Не хватает 3/6 = 1/2. Проверка: 2/6 + 3/6 = 5/6.'},
+    proportion: {question:'На 3 одинаковые порции нужно 60 г крупы. Что останется прежним, если приготовить вдвое больше таких порций?', answer:'unit', choices:[['unit','Масса крупы на одну порцию'],['total','Общая масса крупы'],['count','Число порций']], hint:'Сравни одну и ту же порцию до и после увеличения их количества.', why:'На одну порцию по-прежнему 60 : 3 = 20 г. Порций станет 6, а общая масса увеличится до 120 г.'}
+  });
+  function understandingFor(id) { const q=understanding[id];return q?{...q,answer:Array.isArray(q.answer)?q.answer.slice():q.answer,choices:q.choices?.map(choice=>choice.slice())}:null; }
+  function transferFor(id) { const q = transfers[id]; return q ? {...q, answer:Array.isArray(q.answer) ? q.answer.slice() : q.answer} : null; }
   function svg(body, label, width = 320, height = 120) {
     return '<svg class="bh-svg" viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + esc(label) + '">' + body + '</svg>';
   }
@@ -1266,10 +1450,11 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
   function create() {
     let options = {}, identity, root, toggle, panel, body, navigation, back, returnRoot, level, rootFrame;
     let isOpen = false, destroyed = false, frames = new Map(), stack = ['root'], doc;
-    const savedDisabled = new WeakMap();
+    const savedDisabled = new WeakMap(), practiceAssistance = new WeakMap();
     const instance = ++instanceNumber;
     function button(label, className, fn) {const b=doc.createElement('button');b.type='button';b.className=className;b.textContent=label;b.onclick=fn;return b;}
     function enabled() {return !destroyed && !options.disabled;}
+    function visiblePractice(node) {return enabled()&&isOpen&&node.isConnected&&!node.closest('[hidden]')&&node.closest('.bh-frame')===frames.get(stack[stack.length-1]);}
     function safeFocus(node) {if(node?.isConnected && !node.disabled)node.focus({preventScroll:true});}
     function rootLinks(frame) {
       frame.querySelector('.bh-prerequisites')?.remove();
@@ -1281,12 +1466,100 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     function skillButton(id) {
       const b=button(curriculum[id].title,'bh-deeper',()=>enter(id));b.dataset.bhSkill=id;return b;
     }
+    function makeUnderstanding(id) {
+      const data=understandingFor(id);if(!data)return null;
+      const section=doc.createElement('section');section.className='bh-understanding';section.hidden=true;section.dataset.bhUnderstanding=id;
+      const record={first:null,attempts:0,help:false,done:false};let chosen='';
+      const title=doc.createElement('h4');title.textContent='Применим идею иначе';
+      const question=doc.createElement('p');question.className='bh-question';question.textContent=data.question;
+      const note=doc.createElement('p');note.className='bh-small';note.textContent='Дополнительный вопрос. Предыдущий пример уже решён; его результат не изменится.';
+      const feedback=doc.createElement('p');feedback.className='bh-understanding-feedback';feedback.setAttribute('role','status');
+      const history=doc.createElement('p');history.className='bh-small bh-understanding-history';history.setAttribute('aria-live','polite');
+      const hintText=doc.createElement('p');hintText.className='bh-understanding-hint-text';hintText.hidden=true;
+      function allowed(){return visiblePractice(section)&&!record.done;}
+      function updateHistory(){history.textContent=(record.first===null?'':('Первый ответ: '+record.first+'. Попыток: '+record.attempts+'. '))+(record.help?'Помощь использована.':'Без помощи.');}
+      practiceAssistance.set(section,()=>{if(!allowed())return;record.help=true;updateHistory();});
+      const hint=button('Нужен намёк','bh-understanding-hint',()=>{if(!allowed())return;record.help=true;hintText.hidden=false;hintText.textContent=data.hint;updateHistory();});
+      const row=doc.createElement('div');row.className='bh-answer-row';let input=null;
+      if(data.choices){
+        const choices=doc.createElement('div');choices.className='bh-understanding-choices';
+        for(const [value,label]of data.choices){const choice=button(label,'bh-understanding-choice',()=>{if(!allowed())return;chosen=value;for(const b of choices.children)b.setAttribute('aria-pressed',String(b.dataset.understandingChoice===value));});choice.dataset.understandingChoice=value;choice.setAttribute('aria-pressed','false');choices.append(choice);}
+        row.append(choices);
+      }else{
+        input=doc.createElement('input');input.type='text';input.className='bh-understanding-answer';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ на вопрос о понимании');row.append(input);
+      }
+      const check=button('Проверить понимание','bh-understanding-check',()=>{
+        if(!allowed())return;
+        const raw=input?input.value.trim():chosen;
+        if(!raw){feedback.textContent=input?'Впиши ответ. Пустое поле не считается попыткой.':'Выбери ответ. Пока ничего не выбрано, попытка не считается.';safeFocus(input||row.querySelector('button'));return;}
+        if(input&&!rational(raw)){feedback.textContent='Впиши число или дробь через /. Знаменатель не может быть нулём.';safeFocus(input);return;}
+        if(record.first===null)record.first=input?raw:data.choices.find(choice=>choice[0]===raw)[1];
+        record.attempts++;const correct=input?acceptsAnswer(data.answer,raw):raw===data.answer;updateHistory();feedback.classList.toggle('bh-correct',correct);
+        if(correct){
+          record.done=true;section.dataset.bhUnderstandingSolved='true';if(input)input.readOnly=true;for(const control of row.querySelectorAll('button'))control.disabled=true;hint.disabled=true;
+          feedback.textContent=(record.help?'Получилось с помощью. ':record.attempts===1?'Верно с первой попытки без помощи. ':'Верно после исправления без помощи. ')+data.why;
+        }else{feedback.textContent='Пока не совпало. Проверь, что дано и что требуется найти.'+(record.attempts>=2?' Можно открыть намёк.':'');hint.classList.toggle('bh-help-offered',record.attempts>=2);}
+      });
+      row.append(check);if(input)input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
+      section.append(title,note,question,row,feedback,history,hint,hintText);return section;
+    }
+    function makeTransfer(id) {
+      const data=transferFor(id), section=doc.createElement('section');
+      section.className='bh-transfer';section.hidden=true;section.dataset.bhTransfer=id;
+      const record={first:null,attempts:0,help:false,detour:false,done:false};
+      const extension=makeUnderstanding(id),startExtension=extension?button('Проверить понимание','bh-start-understanding',()=>{if(!visiblePractice(section)||!record.done)return;extension.hidden=false;startExtension.hidden=true;safeFocus(extension.querySelector('input,button'));}):null;if(startExtension)startExtension.hidden=true;
+      const title=doc.createElement('h4');title.textContent='Проверь себя на другом примере';
+      const note=doc.createElement('p');note.className='bh-small';note.textContent='Это короткая проверка после разбора. Она не начисляет результат курса; вернись затем к основной задаче. Ответ хранится, пока открыта эта задача.';
+      const question=doc.createElement('p');question.className='bh-question';question.textContent=data.question;
+      section.append(title,note,question);
+      if(data.picture==='count'){
+        const dots=doc.createElement('div');dots.className='bh-transfer-dots';
+        for(let i=0;i<10;i++){const dot=doc.createElement('span');dot.setAttribute('role','img');dot.setAttribute('aria-label','Точка');dots.append(dot);}
+        section.append(dots);
+      }
+      const input=doc.createElement('input');input.type='text';input.className='bh-transfer-answer';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ на новый пример');
+      const feedback=doc.createElement('p');feedback.className='bh-transfer-feedback';feedback.setAttribute('role','status');
+      const history=doc.createElement('p');history.className='bh-small bh-transfer-history';history.setAttribute('aria-live','polite');
+      const hintText=doc.createElement('p');hintText.className='bh-transfer-hint-text';hintText.hidden=true;
+      const hint=button('Нужен намёк','bh-transfer-hint',()=>{
+        if(!visiblePractice(section)||record.done)return;
+        record.help=true;hintText.hidden=false;hintText.textContent=data.hint;updateHistory();
+      });
+      function updateHistory(){
+        history.textContent=(record.first===null?'':('Первый ответ: '+record.first+'. Попыток: '+record.attempts+'. '))+(record.help?(record.detour?'Разбор простого действия открыт.':'Намёк открыт.'):'Без намёка.');
+      }
+      practiceAssistance.set(section,()=>{if(!visiblePractice(section)||record.done)return;record.help=true;record.detour=true;updateHistory();});
+      const check=button('Проверить новый пример','bh-transfer-check',()=>{
+        if(!visiblePractice(section)||record.done)return;
+        const raw=input.value.trim();
+        if(!raw){feedback.textContent='Впиши ответ. Пустое поле не считается попыткой.';safeFocus(input);return;}
+        if(!rational(raw)){feedback.textContent='Впиши число или дробь через /. Знаменатель не может быть нулём.';safeFocus(input);return;}
+        if(record.first===null)record.first=raw;
+        record.attempts++;
+        const correct=acceptsAnswer(data.answer,raw);updateHistory();
+        feedback.classList.toggle('bh-correct',correct);
+        if(correct){
+          record.done=true;section.dataset.bhTransferSolved='true';input.readOnly=true;check.disabled=true;hint.disabled=true;
+          if(startExtension)startExtension.hidden=false;
+          feedback.textContent=(record.help?(record.detour?'Получилось после разбора простого действия. ':'Получилось с намёком. '):record.attempts===1?'Верно с первой попытки без намёка. ':'Верно после исправления без намёка. ')+data.why;
+        }else{
+          feedback.textContent='Пока не совпало. Проверь, какое число требуется найти.'+(record.attempts>=2?' Можно открыть намёк — он появится только по нажатию.':'');
+          // Do not reveal the direction or answer merely because two errors occurred.
+          hint.classList.toggle('bh-help-offered',record.attempts>=2);
+        }
+      });
+      input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
+      const row=doc.createElement('div');row.className='bh-answer-row';row.append(input,check);
+      section.append(row,feedback,history,hint,hintText);if(extension)section.append(startExtension,extension);
+      return section;
+    }
     function makeFrame(id) {
       const data=curriculum[id], frame=doc.createElement('section');frame.className='bh-frame';frame.dataset.bhNode=id;frame.tabIndex=-1;
       const label=doc.createElement('p');label.className='bh-small';label.textContent='На более простом примере';
       const heading=doc.createElement('h3');heading.textContent=data.title;
       const q=doc.createElement('p');q.className='bh-question';q.textContent=data.question;
-      const model=buildModel(doc,id,{},enabled);
+      const model=buildModel(doc,id,{},enabled), transfer=makeTransfer(id);
+      const startTransfer=button('Теперь сам: другой пример','bh-start-transfer',()=>{if(!visiblePractice(frame)||frame.dataset.bhSolved!=='true')return;transfer.hidden=false;startTransfer.hidden=true;safeFocus(transfer.querySelector('input'));});startTransfer.hidden=true;
       const answerRow=doc.createElement('div');answerRow.className='bh-answer-row';
       const input=doc.createElement('input');input.className='bh-answer';input.type='text';input.inputMode=Array.isArray(data.answer)?'text':'decimal';input.autocomplete='off';input.maxLength=30;input.setAttribute('aria-label','Ответ в маленьком задании');
       if(data.model==='write-digit')input.oninput=()=>{if(enabled())model.querySelector('[data-bh-write-slot]').textContent=/^\d$/.test(input.value)?input.value:'·';};
@@ -1296,11 +1569,11 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
         if(!input.value.trim()){feedback.textContent='Впиши ответ.';safeFocus(input);return;}
         const correct=accepts(id,input.value);feedback.classList.toggle('bh-correct',correct);
         feedback.textContent=correct?'Верно. '+data.why+' Теперь можно вернуться на шаг выше.':'Пока не совпало. '+data.hint;
-        if(correct){input.readOnly=true;check.disabled=true;frame.dataset.bhSolved='true';const slot=model.querySelector('[data-bh-write-slot]');if(slot)slot.textContent=String(data.answer);}
+        if(correct){input.readOnly=true;check.disabled=true;frame.dataset.bhSolved='true';startTransfer.hidden=false;const slot=model.querySelector('[data-bh-write-slot]');if(slot)slot.textContent=String(data.answer);}
       });
       input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check.click();}};
       answerRow.append(input,check);
-      frame.append(label,heading,q,model,answerRow,feedback);
+      frame.append(label,heading,q,model,answerRow,feedback,startTransfer,transfer);
       if(Array.isArray(data.answer)){
         const format=doc.createElement('p');format.className='bh-small';format.innerHTML='Дробь вводи через знак /. Например, для '+fraction(1,2)+' введи 1, затем /, затем 2.';frame.append(format);
       }
@@ -1321,6 +1594,9 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
       const current=stack[stack.length-1];
       if(current==='root'){if(id!==skillFor(options.contentId,options.context))return false;}
       else if(!curriculum[current].children.includes(id))return false;
+      // A real prerequisite detour is assistance for an unfinished fresh check.
+      // Merely offering the link, or visiting after completion, changes nothing.
+      frames.get(current)?.querySelectorAll('.bh-transfer,.bh-understanding').forEach(section=>practiceAssistance.get(section)?.());
       stack.push(id);showFrame(true);return true;
     }
     function close(focus = true) {
@@ -1376,7 +1652,7 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     const handle={update,open,close,isOpen:()=>isOpen,getState:()=>({identity,isOpen,depth:stack.length-1,nodeId:stack[stack.length-1]}),destroy(){close(false);root?.remove();frames.clear();destroyed=true;}};
     return handle;
   }
-  return Object.freeze({create,skillFor,accepts,curriculum});
+  return Object.freeze({create,skillFor,accepts,acceptsAnswer,transferFor,understandingFor,curriculum});
 });
 
 </script>
@@ -1386,7 +1662,9 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
   if (window.MathExamRemediationManaged) return;
   const G = window.DivisionGuided;
   const route = window.PreOgeArithmetic;
-  const inCourse = new URLSearchParams(location.search).get('course') === 'preoge';
+  const parameters = new URLSearchParams(location.search);
+  const inCourse = parameters.get('course') === 'preoge';
+  let buildMultiples = parameters.get('multiples') === 'build';
   const $ = id => document.getElementById(id);
   const KEY = 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1399,6 +1677,9 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
   let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
   let multiplicationRefresh = null;
   let contextualHelp = null, contextualHost = null;
+  let multiplesHost = null, multiplesFeedback = '';
+  const PUBLIC_ORIGIN = location.protocol === 'file:' ? 'https://mathexam.space' : '';
+  const PATH = PUBLIC_ORIGIN + '/trainers/oge-basics/multiplication-division/division-path.html';
   function updateContextualHelp(s,a){
     if(!window.MathExamBasicsHelp)return;
     if(s.done||s.accepted){contextualHelp?.close();if(contextualHost)contextualHost.hidden=true;return;}
@@ -1426,6 +1707,12 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
       const count = s.step + (s.accepted ? 1 : 0);
       if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
       out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      if (s.multiples !== undefined) {
+        const m = s.multiples;
+        if (!m || m.divisor !== p.normalizedDivisor || typeof m.open !== 'boolean' || !Array.isArray(m.values) || m.values.length !== 9 || !m.values.every(v => typeof v === 'string' && v.length <= 12) || !Array.isArray(m.checked) || m.checked.length !== 9 || !m.checked.every((v, i) => typeof v === 'boolean' && (!v || G.equal(m.values[i], String(m.divisor * (i + 1))))) || s.hints < 1) throw Error('Неверная запись кратных.');
+        out.sessions[id].multiples = {divisor:m.divisor, open:m.open, values:[...m.values], checked:[...m.checked]};
+      }
+
       // Older v1 sessions could pause after checking. Keep the earned answer
       // and resume at the next question without asking for another confirmation.
       if (s.accepted && !s.done) {
@@ -1473,13 +1760,21 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
   function current() { return state.sessions[state.active]; }
   function newSession(id, repeat) {
     const old = state.sessions[id];
-    const sequence = state.next[id] || 0;
-    const task = repeat && old ? old.task : G.make(id, sequence);
-    if (!repeat) state.next[id] = sequence + 1;
+    let sequence = state.next[id] || 0;
+    const tier = G.progress(state.records, id).tier;
+    let task = repeat && old ? old.task : G.makeProgressive(id, sequence, tier);
+    if (!repeat) {
+      const seen = new Set(state.records.map(record => fingerprint(record.task)));
+      // Prefer an unseen example. The finite beginner bank may eventually repeat.
+      for (let tries = 0; tries < 80 && seen.has(fingerprint(task)) && sequence < 1000000; tries++) task = G.makeProgressive(id, ++sequence, tier);
+      state.next[id] = Math.min(1000000, sequence + 1);
+    }
     const repeated = state.records.some(r => fingerprint(r.task) === fingerprint(task));
     state.serial++;
     state.sessions[id] = {id:state.serial, task, step:0, answers:[], accepted:false, done:false, draft:'', errors:0, hints:0, reveals:0, repeated};
-    feedback = ''; helpOpen = false; revealOpen = false; save();
+    feedback = ''; helpOpen = false; revealOpen = false; multiplesFeedback = '';
+    if (buildMultiples) prepareMultiples();
+    save();
   }
   function independent(record) { return !record.errors && !record.hints && !record.reveals && !record.repeated; }
 
@@ -1649,6 +1944,132 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     requestAnimationFrame(drawNotebookMarks);
   }
 
+  function prepareMultiples() {
+    const s = current();
+    if (s.done || s.multiples) return;
+    s.multiples = {divisor:G.plan(s.task).normalizedDivisor, open:true, values:Array(9).fill(''), checked:Array(9).fill(false)};
+    // A visible table is an explicit scaffold, even when filled by the pupil.
+    // The existing route summaries already understand this assistance counter.
+    s.hints = Math.min(1000000, s.hints + 1);
+    save();
+  }
+  function renderMultiples(p, s) {
+    if (!multiplesHost) {
+      multiplesHost = document.createElement('details');
+      multiplesHost.id = 'multiples-builder';
+      multiplesHost.className = 'multiples-builder';
+      $('notebook-note').after(multiplesHost);
+      multiplesHost.addEventListener('toggle', () => {
+        const m = current()?.multiples;
+        if (m && m.open !== multiplesHost.open) { m.open = multiplesHost.open; save(); }
+      });
+      multiplesHost.addEventListener('input', event => {
+        const input = event.target.closest('[data-multiple-input]'), m = current().multiples;
+        if (!input || !m || m.checked[Number(input.dataset.multipleInput) - 1]) return;
+        m.values[Number(input.dataset.multipleInput) - 1] = input.value.slice(0, 12);
+        save();
+      });
+      multiplesHost.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' || !event.target.matches('[data-multiple-input]')) return;
+        event.preventDefault(); checkMultiple(Number(event.target.dataset.multipleInput));
+      });
+      multiplesHost.addEventListener('click', event => {
+        const check = event.target.closest('[data-multiple-check]');
+        if (check) { checkMultiple(Number(check.dataset.multipleCheck)); return; }
+        const reveal = event.target.closest('[data-multiple-reveal]');
+        if (reveal) {
+          const s = current(), m = s.multiples, index = m.checked.findIndex(v => !v);
+          if (index < 0 || s.done) return;
+          m.values[index] = String(m.divisor * (index + 1)); m.checked[index] = true;
+          s.reveals = Math.min(1000000, s.reveals + 1);
+          multiplesFeedback = 'Показано: ' + m.divisor + ' × ' + (index + 1) + ' = ' + m.values[index] + '. Следующую строку попробуй заполнить сам.';
+          save(); render();
+        }
+      });
+    }
+    const m = s.multiples;
+    multiplesHost.hidden = !m || s.done;
+    if (!m) return;
+    const checked = m.checked.filter(Boolean).length;
+    multiplesHost.open = m.open;
+    multiplesHost.innerHTML = '<summary>Моя выкладка кратных: ' + checked + ' из 9</summary>' +
+      '<p>Заполни произведения. Каждое следующее на ' + m.divisor + ' больше предыдущего. Для 0 × ' + m.divisor + ' результат — 0.</p>' +
+      (p.task.level === 'decimalDivisor' ? '<p>После переноса запятой делитель станет ' + m.divisor + '. Выкладку составляем для него.</p>' : '') +
+      '<div class="multiples-builder-grid">' + m.values.map((value, i) => '<div class="multiple-row' + (m.checked[i] ? ' is-checked' : '') + '"><label for="multiple-value-' + i + '">' + m.divisor + ' × ' + (i + 1) + '</label><input id="multiple-value-' + i + '" data-multiple-input="' + (i + 1) + '" inputmode="numeric" autocomplete="off" maxlength="12" aria-label="' + m.divisor + ' умножить на ' + (i + 1) + '" value="' + esc(value) + '"' + (m.checked[i] ? ' readonly' : '') + '><button type="button" class="quiet" data-multiple-check="' + (i + 1) + '" aria-label="Проверить ' + m.divisor + ' умножить на ' + (i + 1) + '"' + (m.checked[i] ? ' disabled' : '') + '>' + (m.checked[i] ? '✓' : 'Проверить') + '</button></div>').join('') + '</div>' +
+      '<p class="multiple-feedback" role="status">' + esc(multiplesFeedback || (checked === 9 ? 'Выкладка готова. Найди наибольшее кратное, которое не больше текущего неполного делимого.' : 'Вводи результаты по одному и нажимай «Проверить» или Enter.')) + '</p>' +
+      (checked < 9 ? '<button type="button" class="quiet" data-multiple-reveal>Показать одну незаполненную строку</button>' : '') +
+      '<p class="small">Это тренировка с опорой. Для решения без таблицы открой новый пример в обычном режиме.</p>';
+  }
+  function checkMultiple(multiplier) {
+    const s = current(), m = s.multiples, index = multiplier - 1;
+    if (!m || s.done || !Number.isInteger(index) || index < 0 || index > 8 || m.checked[index]) return;
+    const input = multiplesHost.querySelector('[data-multiple-input="' + multiplier + '"]');
+    m.values[index] = input.value.slice(0, 12);
+    const raw = m.values[index].trim();
+    if (!raw) multiplesFeedback = 'Сначала впиши произведение.';
+    else if (!/^\d+$/.test(raw) || !G.equal(raw, String(m.divisor * multiplier))) {
+      s.errors = Math.min(1000000, s.errors + 1);
+      multiplesFeedback = 'Проверь ' + m.divisor + ' × ' + multiplier + ': прибавь ' + m.divisor + ' к предыдущему кратному.';
+    } else {
+      m.checked[index] = true;
+      const complete = m.checked.every(Boolean);
+      multiplesFeedback = complete ? 'Все кратные проверены. Теперь используй выкладку при делении.' : 'Верно. Заполни следующее кратное.';
+      if (complete) m.open = false;
+    }
+    save(); render();
+    const next = m.checked.findIndex(v => !v);
+    if (m.open && next >= 0) multiplesHost.querySelector('[data-multiple-input="' + (next + 1) + '"]')?.focus({preventScroll:true});
+    else $('answer').focus({preventScroll:true});
+  }
+  function renderLearningRoute(s) {
+    let nav = $('division-learning-route');
+    if (!nav) {
+      nav = document.createElement('nav'); nav.id = 'division-learning-route';
+      nav.className = 'division-learning-route'; nav.setAttribute('aria-label', 'Учимся делению');
+      $('main').prepend(nav);
+    }
+    const back = document.createElement('a');
+    back.href = PATH; back.textContent = '← Все ступени деления';
+    const other = document.createElement('a');
+    other.href = PATH + '#other-trainers'; other.textContent = 'Другие тренажёры деления';
+    nav.replaceChildren(back, other);
+    const training = G.progress(state.records, state.active);
+    let recommendation = $('division-recommendation');
+    if (!recommendation) {
+      recommendation = document.createElement('p'); recommendation.id = 'division-recommendation';
+      $('completion-text').after(recommendation);
+    }
+    const missing = Math.max(0, training.target - training.independent);
+    recommendation.textContent = training.ready
+      ? 'Есть 3 разных решения по шагам без подсказок. Можно перейти к следующей теме или ' + (['start','quotientDigit'].includes(state.active) ? 'продолжить тренировку на новых примерах.' : 'продолжить на более сложных числах.') + ' Самостоятельная проверка — в конце маршрута.'
+      : 'Перед следующей темой реши ещё ' + missing + (missing === 1 ? ' новый пример' : ' новых примера') + ' по шагам без подсказок. Тему можно сменить в любой момент.';
+    if (s.multiples) recommendation.textContent += ' Этот пример выполнен с выкладкой кратных.';
+    let unassisted = $('next-without-multiples');
+    if (!unassisted) {
+      unassisted = document.createElement('button'); unassisted.id = 'next-without-multiples';
+      unassisted.type = 'button'; unassisted.className = 'quiet';
+      unassisted.textContent = 'Новый пример без выкладки';
+      $('next-example').after(unassisted);
+      unassisted.onclick = () => {
+        buildMultiples = false;
+        const url = new URL(location.href); url.searchParams.delete('multiples');
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+        newSession(state.active, false); render(); moveFocus();
+      };
+    }
+    unassisted.hidden = !s.multiples || !s.done;
+    let checkpoint = $('division-checkpoint-link');
+    if (!checkpoint) {
+      checkpoint = document.createElement('a'); checkpoint.id = 'division-checkpoint-link';
+      checkpoint.href = PUBLIC_ORIGIN + '/trainers/oge-basics/multiplication-division/division-checkpoint.html';
+      checkpoint.textContent = 'Самостоятельная проверка всех видов деления →';
+      const line = document.createElement('p'); line.append(checkpoint); $('completion').append(line);
+    }
+    checkpoint.parentElement.hidden = !s.done || state.active !== 'decimalDivisor';
+
+
+  }
+
   function renderResults() {
     const total = state.records.length;
     const alone = state.records.filter(independent).length;
@@ -1718,12 +2139,14 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     const percent = Math.round(100 * (s.step + Number(s.accepted)) / p.actions.length);
     $('step-progress').style.width = percent + '%';
     $('step-progress').parentElement.setAttribute('aria-valuenow', String(percent));
-    const topicFinished = state.records.filter(r => r.topic === state.active).length;
-    $('topic-progress').textContent = topicFinished ? 'В этой теме закончено примеров: ' + topicFinished : 'Первый пример в этой теме';
+    const training = G.progress(state.records, state.active);
+    $('topic-progress').textContent = 'По шагам без подсказок: ' + training.independent + ' · ориентир — ' + training.target + (training.supported ? ' · с помощью или повторно: ' + training.supported : '') + (training.tier && !['start','quotientDigit'].includes(state.active) ? ' · практика сложнее: ступень ' + (training.tier + 1) + ' из 3' : '');
     $('question').parentElement.classList.toggle('lesson-complete', s.done);
     $('notebook').parentElement.hidden = false;
     renderDecimalShift(p, s);
     renderNotebook(p, s);
+    renderMultiples(p, s);
+    renderLearningRoute(s);
     $('question').hidden = s.done;
     $('completion').hidden = !s.done;
     $('step-name').textContent = names[a.kind];
@@ -1745,6 +2168,7 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     $('help-content').hidden = !helpOpen;
     $('hint-text').textContent = a.hint;
     $('multiples').hidden = a.kind !== 'digit' && a.kind !== 'product';
+    if (s.multiples) $('multiples').hidden = true;
     if (!$('multiples').hidden) $('multiples').innerHTML = '<p class="table-note">Нажми на строку, чтобы подставить ' + (a.kind === 'digit' ? 'цифру' : 'произведение') + '. Затем проверь ответ.</p>' + Array.from({length:10}, (_, q) => '<button type="button" data-multiple="' + (a.kind === 'digit' ? q : p.normalizedDivisor * q) + '">' + p.normalizedDivisor + ' × <b>' + q + '</b> = ' + p.normalizedDivisor * q + '</button>').join('');
     $('revealed').textContent = revealOpen ? 'В этом шаге ответ: ' + a.answer + '. Впиши его и нажми «Проверить».' : '';
     if (s.done) {
@@ -1758,6 +2182,7 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     renderResults();
     renderRouteLinks();
     updateContextualHelp(s,a);
+    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done}}));
   }
   function moveFocus() {
     const s = current(), a = G.plan(s.task).actions[s.step];
@@ -1891,8 +2316,8 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     const groups = [{title:'Целые числа', ids:['start','oneDigit','zero','remainder','twoDigit']}, {title:'Десятичные дроби', ids:['decimalNatural','appendZeros','decimalDivisor']}, {title:'Короткая тренировка', ids:['quotientDigit']}];
     $('topics-list').innerHTML = groups.map(group => '<section class="topic-group"><h3>' + group.title + '</h3>' + group.ids.map(id => {
       const t = G.topics.find(item => item.id === id), session = state.sessions[id];
-      const finished = state.records.filter(r => r.topic === id).length;
-      const progress = (finished ? 'Закончено примеров: ' + finished + '.' : 'Ещё нет законченных примеров.') + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
+      const training = G.progress(state.records, id);
+      const progress = ('По шагам без подсказок: ' + training.independent + ' из 3.' + (training.supported ? ' С опорой или повторно: ' + training.supported + '.' : '')) + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
       return '<button type="button" data-topic="' + t.id + '" aria-current="' + (state.active === t.id) + '">' + esc(t.title) + '<small>' + esc(t.description) + '</small><small class="topic-progress" data-topic-progress="' + t.id + '">' + progress + '</small></button>';
     }).join('') + '</section>').join('');
     $('topics-dialog').showModal();
@@ -1904,6 +2329,7 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     state.active = id;
     history.replaceState(null, '', location.pathname + location.search + '#' + state.active);
     if (!current()) newSession(state.active, false);
+    else if (buildMultiples) prepareMultiples();
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render(); $('topics-dialog').close(); $('problem').scrollIntoView({block:'start'});
   }
@@ -1934,6 +2360,11 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
       $('report-text').focus(); $('report-text').select();
     }
   };
+  document.addEventListener('mathexam:skill-support', event => {
+    const s = current(); if (!s || s.done) return;
+    s.hints = Math.min(1000000, s.hints + 1); save();
+    if (blocked || !storageAvailable) event.preventDefault();
+  });
   window.addEventListener('storage', event => {
     if (event.key === KEY || event.key === null) { blocked = true; notice('Работа изменилась в другой вкладке. Обнови страницу, прежде чем продолжить.'); }
   });
@@ -1943,22 +2374,179 @@ body.basics-navigation,body.basics-special{--accent:#176447;--accent-deep:#14543
     if (!topicIds.has(id) || id === state.active) return;
     state.active = id;
     if (!current()) newSession(id, false);
+    else if (buildMultiples) prepareMultiples();
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render();
   });
   const requested = location.hash.slice(1);
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
-  else save();
+  else { if (buildMultiples) prepareMultiples(); save(); }
   window.addEventListener('mathexam-basics-help-ready',()=>render());
   render();
   window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
 })();
 
 </script>
+<script data-inline-source="/trainers/oge-basics/skill-support.js">
+/* Short prerequisite detours. Source trainers remain responsible for progress. */
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else if (!root.MathExamSkillSupport) {
+    root.MathExamSkillSupport = api;
+    api.mount(root);
+  }
+})(typeof window === 'undefined' ? globalThis : window, function () {
+  'use strict';
+  const base = '/trainers/oge-basics/multiplication-division/';
+  const skills = Object.freeze([
+    { id: 'subtract', title: 'Трудно вычитать', label: 'Вычитание по шагам', url: base + 'arithmetic-foundations.html#sub-columns' },
+    { id: 'multiply', title: 'Трудно умножать', label: 'Умножение столбиком', url: base + 'course-column-one-digit.html' },
+    { id: 'table', title: 'Не помню таблицу', label: 'Таблица с опорой', url: base + 'multiplication-pythagoras-table.html' }
+  ]);
+  const tablePractice = Object.freeze([
+    { label: 'Смешанная тренировка', url: base + 'multiplication-mixed.html' },
+    { label: 'Удобные приёмы', url: base + 'multiplication-tricks.html' },
+    { label: 'Лестница умножения', url: base + 'multiplication-ladder.html' }
+  ]);
+
+  function localPath(value, origin) {
+    if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//') || value.length > 1800 || /[\\\u0000-\u0020\u007f]/.test(value)) return null;
+    let decoded;
+    try { decoded = decodeURIComponent(value); } catch (_) { return null; }
+    // Never accept encoded slashes, dot segments, credentials or non-course destinations.
+    if (/[\\\u0000-\u001f\u007f]/.test(decoded) || /^\/\//.test(decoded) || /(?:^|\/)\.\.(?:\/|$)/.test(decoded.split(/[?#]/)[0])) return null;
+    try {
+      const url = new URL(value, origin);
+      if (url.origin !== new URL(origin).origin || url.username || url.password || !/^\/(?:trainers|courses|school|oge)\//.test(url.pathname)) return null;
+      return url.pathname + url.search + url.hash;
+    } catch (_) { return null; }
+  }
+
+  function linksFor(currentHref, saved) {
+    const current = new URL(currentHref), params = current.searchParams;
+    const online = /^https?:$/.test(current.protocol);
+    const origin = online ? current.origin : 'https://mathexam.space';
+    // A second detour returns to the original exercise, not to a growing chain.
+    const returnPath = online ? localPath(params.get('skillReturn'), origin) || localPath(current.pathname + current.search + current.hash, origin) : null;
+    const mode = !online || params.get('skillReturnMode') === 'tab' || !saved ? 'tab' : 'same';
+    return { mode, returnPath, urlFor(target) {
+      const url = new URL(target, origin);
+      if (mode === 'tab') url.searchParams.set('skillReturnMode', 'tab');
+      else if (returnPath) url.searchParams.set('skillReturn', returnPath);
+      return online ? url.pathname + url.search + url.hash : url.href;
+    } };
+  }
+
+  function mount(w) {
+    const d = w.document;
+    if (!d || w.MathExamBookEdition || new URLSearchParams(w.location.search).get('learning') === '1') return;
+    function ready() {
+      if (d.querySelector('[data-skill-support]')) return;
+      const online = /^https?:$/.test(w.location.protocol);
+      const saved = online && !!(d.body.dataset.skillSupportSaved === 'true' || d.getElementById('guided-division') || d.body.dataset.courseId || (w.ArithmeticFoundations && d.getElementById('exercise')));
+      const params = new URLSearchParams(w.location.search);
+      const back = localPath(params.get('skillReturn'), w.location.origin);
+      const tabReturn = params.get('skillReturnMode') === 'tab';
+      const currentPath = w.location.pathname;
+      if (!d.querySelector('link[data-skill-support-style],link[href*="/trainers/oge-basics/skill-support.css"],style[data-inline-source="/trainers/oge-basics/skill-support.css"]')) {
+        const style = d.createElement('link'); style.rel = 'stylesheet'; style.href = '/trainers/oge-basics/skill-support.css?v=20261110'; style.dataset.skillSupportStyle = ''; d.head.append(style);
+      }
+      const element = (tag, cls, text) => { const el = d.createElement(tag); if (cls) el.className = cls; if (text) el.textContent = text; return el; };
+      const main = d.querySelector('main,.course-public-container') || d.body;
+      if ((back || tabReturn) && !d.querySelector('[data-skill-return]')) {
+        const banner = element('aside', 'skill-return'); banner.dataset.skillReturn = ''; banner.setAttribute('aria-label', 'Возврат после тренировки');
+        if (tabReturn) {
+          banner.append(element('p', '', 'Твой пример остался в предыдущей вкладке.'));
+          const button = element('button', '', 'Закрыть помощь и вернуться'); button.type = 'button';
+          button.onclick = () => { w.close(); const note = banner.querySelector('p'); note.textContent = 'Если вкладка не закрылась, закрой её и вернись к своему примеру в предыдущей вкладке.'; };
+          banner.append(button);
+        } else {
+          const link = element('a', '', '← Вернуться к моему примеру'); link.href = back; banner.append(link);
+          banner.append(element('p', '', 'После короткой тренировки продолжи с того же шага.'));
+        }
+        main.prepend(banner);
+      }
+
+      const section = element('section', 'skill-support'); section.dataset.skillSupport = ''; section.setAttribute('aria-labelledby', 'skill-support-title');
+      const title = element('h2', '', 'Застрял на действии?'); title.id = 'skill-support-title'; section.append(title);
+      const lead = element('p', 'skill-support-note', saved ? 'Потренируй нужный навык и вернись к своему примеру.' : 'Помощь откроется в новой вкладке; твой пример останется здесь.'); section.append(lead);
+      const choices = element('div', 'skill-support-choices'); section.append(choices);
+      function linkFor(skill, item, extra) {
+        const link = element('a', extra ? 'skill-support-extra' : 'skill-support-choice');
+        link.dataset.skill = skill;
+        if (item.title) link.append(element('span', 'skill-support-label', item.title));
+        link.append(element('span', '', item.label + ' →'));
+        link.addEventListener('click', () => {
+          // If the optional task-first enhancement failed to load, the legacy
+          // trainer's own hint control still records that help was requested.
+          if (!saved && !d.body.dataset.basicsStandalone) {
+            const state = w.__trainerDebug?.state?.();
+            if ((state?.current || state?.task) && state.phase !== 'done') d.querySelector('#hint1:not(:disabled)')?.click();
+          }
+          const event = new w.CustomEvent('mathexam:skill-support', { cancelable: true, detail: { skill, href: link.href } });
+          const persistent = d.dispatchEvent(event);
+          // Storage failure must not discard the source work by navigating away.
+          const route = linksFor(w.location.href, saved && persistent);
+          link.href = route.urlFor(item.url);
+          if (route.mode === 'tab') { link.target = '_blank'; link.rel = 'noopener'; }
+          else { link.removeAttribute('target'); link.removeAttribute('rel'); }
+        });
+        const route = linksFor(w.location.href, saved);
+        link.href = route.urlFor(item.url);
+        if (route.mode === 'tab') { link.target = '_blank'; link.rel = 'noopener'; }
+        return link;
+      }
+      for (const skill of skills) choices.append(linkFor(skill.id, skill));
+      const more = element('details', 'skill-support-more'); more.append(element('summary', '', 'Ещё тренажёры таблицы умножения'));
+      const extras = element('div', 'skill-support-extras'); for (const item of tablePractice) extras.append(linkFor('table', item, true)); more.append(extras); section.append(more);
+      const pathLink = element('a', 'skill-support-path', 'Все ступени деления →'); pathLink.href = (online ? '' : 'https://mathexam.space') + base + 'division-path.html'; section.append(pathLink);
+      const slot = d.querySelector('[data-skill-support-slot]');
+      const anchor = d.querySelector('#guided-division .help-actions') || d.getElementById('learning-remediation-root') || d.getElementById('course-local-root') || d.getElementById('exercise') || d.getElementById('view-practice');
+      if (slot) slot.append(section); else if (anchor) anchor.after(section); else main.append(section);
+
+      function highlight(kind) {
+        const skill = /subtract|remainder/.test(kind) ? 'subtract' : /product|multiply/.test(kind) ? 'multiply' : /digit|table/.test(kind) ? 'table' : '';
+        for (const link of choices.children) link.classList.toggle('is-relevant', link.dataset.skill === skill);
+      }
+      d.addEventListener('mathexam:division-step', e => highlight(e.detail?.kind || ''));
+      function refreshLinks() {
+        const route = linksFor(w.location.href, saved);
+        const allItems = [...skills.map(item => [item.id, item]), ...tablePractice.map(item => ['table', item])];
+        for (const [i, link] of [...section.querySelectorAll('a[data-skill]')].entries()) link.href = route.urlFor(allItems[i][1].url);
+        const prompt = d.querySelector('#question,#phaseText')?.textContent || [...d.querySelectorAll('.lm-prompt')].at(-1)?.textContent || '';
+        highlight(/выч|разност/i.test(prompt) ? 'subtract' : /умнож/i.test(prompt) ? 'product' : /цифру.*(?:ответ|частн)|сколько раз/i.test(prompt) ? 'digit' : '');
+      }
+      w.addEventListener('hashchange', refreshLinks);
+      // Dynamic native renderers replace their question, but not this sibling panel.
+      if (w.MutationObserver && anchor && !anchor.classList.contains('help-actions')) new w.MutationObserver(refreshLinks).observe(anchor, { childList: true, subtree: true });
+      refreshLinks();
+      return { section, saved, currentPath };
+    }
+    if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', ready, { once: true }); else ready();
+  }
+  return Object.freeze({ skills, tablePractice, localPath, linksFor, mount });
+});
+
+</script>
+<script data-inline-source="/assets/oge-wayfinding.js">
+/* The board/cabinet owns navigation inside its embedded trainer. */
+(function(){
+  'use strict';
+  const nav=document.querySelector('nav.oge-wayfinding');
+  if(nav&&(window.self!==window.top||new URLSearchParams(location.search).get('board')==='1'))nav.hidden=true;
+})();
+
+</script>
 <script data-inline-source="/trainers/oge-basics/navigation-minimal.js">
 (function(){
   'use strict';
+  // Shared prerequisites also work on the older standalone training pages.
+  if(!window.MathExamBookEdition&&new URLSearchParams(location.search).get('learning')!=='1'&&!window.MathExamSkillSupport&&!document.querySelector('script[data-skill-support-loader],script[src*="skill-support.js"]')){
+    const script=document.createElement('script');script.src='/trainers/oge-basics/skill-support.js?v=20261110';script.dataset.skillSupportLoader='';document.head.append(script);
+  }
   function fold(nodes,label,before){
     nodes=nodes.filter(Boolean);if(!nodes.length)return null;
     const details=document.createElement('details');details.className='basics-secondary';

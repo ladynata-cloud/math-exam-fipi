@@ -101,6 +101,12 @@
       firstHint.click(); // Native accounting, including existing streak rules.
       capturePercentHint();
     }
+    d.addEventListener('mathexam:skill-support', () => {
+      // Native hint accounting prevents a detour from becoming an independent
+      // success. This live legacy exercise stays open in its original tab.
+      const completed = division ? root.__trainerDebug?.state?.().phase === 'done' : percent ? $('p-check')?.hidden : $('checkTask')?.hidden;
+      if (!practice.hidden && !completed) markUsed();
+    });
     function refresh() {
       scheduled = false;
       capturePercentHint();

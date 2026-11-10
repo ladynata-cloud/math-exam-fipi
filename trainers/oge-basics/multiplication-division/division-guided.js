@@ -3,7 +3,9 @@
   if (window.MathExamRemediationManaged) return;
   const G = window.DivisionGuided;
   const route = window.PreOgeArithmetic;
-  const inCourse = new URLSearchParams(location.search).get('course') === 'preoge';
+  const parameters = new URLSearchParams(location.search);
+  const inCourse = parameters.get('course') === 'preoge';
+  let buildMultiples = parameters.get('multiples') === 'build';
   const $ = id => document.getElementById(id);
   const KEY = 'mathExamBasics.guidedDivision.v1';
   const esc = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -16,6 +18,9 @@
   let decimalShift = null, decimalShiftKey = '', normalizationKey = '';
   let multiplicationRefresh = null;
   let contextualHelp = null, contextualHost = null;
+  let multiplesHost = null, multiplesFeedback = '';
+  const PUBLIC_ORIGIN = location.protocol === 'file:' ? 'https://mathexam.space' : '';
+  const PATH = PUBLIC_ORIGIN + '/trainers/oge-basics/multiplication-division/division-path.html';
   function updateContextualHelp(s,a){
     if(!window.MathExamBasicsHelp)return;
     if(s.done||s.accepted){contextualHelp?.close();if(contextualHost)contextualHost.hidden=true;return;}
@@ -43,6 +48,12 @@
       const count = s.step + (s.accepted ? 1 : 0);
       if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
       out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      if (s.multiples !== undefined) {
+        const m = s.multiples;
+        if (!m || m.divisor !== p.normalizedDivisor || typeof m.open !== 'boolean' || !Array.isArray(m.values) || m.values.length !== 9 || !m.values.every(v => typeof v === 'string' && v.length <= 12) || !Array.isArray(m.checked) || m.checked.length !== 9 || !m.checked.every((v, i) => typeof v === 'boolean' && (!v || G.equal(m.values[i], String(m.divisor * (i + 1))))) || s.hints < 1) throw Error('Неверная запись кратных.');
+        out.sessions[id].multiples = {divisor:m.divisor, open:m.open, values:[...m.values], checked:[...m.checked]};
+      }
+
       // Older v1 sessions could pause after checking. Keep the earned answer
       // and resume at the next question without asking for another confirmation.
       if (s.accepted && !s.done) {
@@ -90,13 +101,21 @@
   function current() { return state.sessions[state.active]; }
   function newSession(id, repeat) {
     const old = state.sessions[id];
-    const sequence = state.next[id] || 0;
-    const task = repeat && old ? old.task : G.make(id, sequence);
-    if (!repeat) state.next[id] = sequence + 1;
+    let sequence = state.next[id] || 0;
+    const tier = G.progress(state.records, id).tier;
+    let task = repeat && old ? old.task : G.makeProgressive(id, sequence, tier);
+    if (!repeat) {
+      const seen = new Set(state.records.map(record => fingerprint(record.task)));
+      // Prefer an unseen example. The finite beginner bank may eventually repeat.
+      for (let tries = 0; tries < 80 && seen.has(fingerprint(task)) && sequence < 1000000; tries++) task = G.makeProgressive(id, ++sequence, tier);
+      state.next[id] = Math.min(1000000, sequence + 1);
+    }
     const repeated = state.records.some(r => fingerprint(r.task) === fingerprint(task));
     state.serial++;
     state.sessions[id] = {id:state.serial, task, step:0, answers:[], accepted:false, done:false, draft:'', errors:0, hints:0, reveals:0, repeated};
-    feedback = ''; helpOpen = false; revealOpen = false; save();
+    feedback = ''; helpOpen = false; revealOpen = false; multiplesFeedback = '';
+    if (buildMultiples) prepareMultiples();
+    save();
   }
   function independent(record) { return !record.errors && !record.hints && !record.reveals && !record.repeated; }
 
@@ -266,6 +285,132 @@
     requestAnimationFrame(drawNotebookMarks);
   }
 
+  function prepareMultiples() {
+    const s = current();
+    if (s.done || s.multiples) return;
+    s.multiples = {divisor:G.plan(s.task).normalizedDivisor, open:true, values:Array(9).fill(''), checked:Array(9).fill(false)};
+    // A visible table is an explicit scaffold, even when filled by the pupil.
+    // The existing route summaries already understand this assistance counter.
+    s.hints = Math.min(1000000, s.hints + 1);
+    save();
+  }
+  function renderMultiples(p, s) {
+    if (!multiplesHost) {
+      multiplesHost = document.createElement('details');
+      multiplesHost.id = 'multiples-builder';
+      multiplesHost.className = 'multiples-builder';
+      $('notebook-note').after(multiplesHost);
+      multiplesHost.addEventListener('toggle', () => {
+        const m = current()?.multiples;
+        if (m && m.open !== multiplesHost.open) { m.open = multiplesHost.open; save(); }
+      });
+      multiplesHost.addEventListener('input', event => {
+        const input = event.target.closest('[data-multiple-input]'), m = current().multiples;
+        if (!input || !m || m.checked[Number(input.dataset.multipleInput) - 1]) return;
+        m.values[Number(input.dataset.multipleInput) - 1] = input.value.slice(0, 12);
+        save();
+      });
+      multiplesHost.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' || !event.target.matches('[data-multiple-input]')) return;
+        event.preventDefault(); checkMultiple(Number(event.target.dataset.multipleInput));
+      });
+      multiplesHost.addEventListener('click', event => {
+        const check = event.target.closest('[data-multiple-check]');
+        if (check) { checkMultiple(Number(check.dataset.multipleCheck)); return; }
+        const reveal = event.target.closest('[data-multiple-reveal]');
+        if (reveal) {
+          const s = current(), m = s.multiples, index = m.checked.findIndex(v => !v);
+          if (index < 0 || s.done) return;
+          m.values[index] = String(m.divisor * (index + 1)); m.checked[index] = true;
+          s.reveals = Math.min(1000000, s.reveals + 1);
+          multiplesFeedback = 'Показано: ' + m.divisor + ' × ' + (index + 1) + ' = ' + m.values[index] + '. Следующую строку попробуй заполнить сам.';
+          save(); render();
+        }
+      });
+    }
+    const m = s.multiples;
+    multiplesHost.hidden = !m || s.done;
+    if (!m) return;
+    const checked = m.checked.filter(Boolean).length;
+    multiplesHost.open = m.open;
+    multiplesHost.innerHTML = '<summary>Моя выкладка кратных: ' + checked + ' из 9</summary>' +
+      '<p>Заполни произведения. Каждое следующее на ' + m.divisor + ' больше предыдущего. Для 0 × ' + m.divisor + ' результат — 0.</p>' +
+      (p.task.level === 'decimalDivisor' ? '<p>После переноса запятой делитель станет ' + m.divisor + '. Выкладку составляем для него.</p>' : '') +
+      '<div class="multiples-builder-grid">' + m.values.map((value, i) => '<div class="multiple-row' + (m.checked[i] ? ' is-checked' : '') + '"><label for="multiple-value-' + i + '">' + m.divisor + ' × ' + (i + 1) + '</label><input id="multiple-value-' + i + '" data-multiple-input="' + (i + 1) + '" inputmode="numeric" autocomplete="off" maxlength="12" aria-label="' + m.divisor + ' умножить на ' + (i + 1) + '" value="' + esc(value) + '"' + (m.checked[i] ? ' readonly' : '') + '><button type="button" class="quiet" data-multiple-check="' + (i + 1) + '" aria-label="Проверить ' + m.divisor + ' умножить на ' + (i + 1) + '"' + (m.checked[i] ? ' disabled' : '') + '>' + (m.checked[i] ? '✓' : 'Проверить') + '</button></div>').join('') + '</div>' +
+      '<p class="multiple-feedback" role="status">' + esc(multiplesFeedback || (checked === 9 ? 'Выкладка готова. Найди наибольшее кратное, которое не больше текущего неполного делимого.' : 'Вводи результаты по одному и нажимай «Проверить» или Enter.')) + '</p>' +
+      (checked < 9 ? '<button type="button" class="quiet" data-multiple-reveal>Показать одну незаполненную строку</button>' : '') +
+      '<p class="small">Это тренировка с опорой. Для решения без таблицы открой новый пример в обычном режиме.</p>';
+  }
+  function checkMultiple(multiplier) {
+    const s = current(), m = s.multiples, index = multiplier - 1;
+    if (!m || s.done || !Number.isInteger(index) || index < 0 || index > 8 || m.checked[index]) return;
+    const input = multiplesHost.querySelector('[data-multiple-input="' + multiplier + '"]');
+    m.values[index] = input.value.slice(0, 12);
+    const raw = m.values[index].trim();
+    if (!raw) multiplesFeedback = 'Сначала впиши произведение.';
+    else if (!/^\d+$/.test(raw) || !G.equal(raw, String(m.divisor * multiplier))) {
+      s.errors = Math.min(1000000, s.errors + 1);
+      multiplesFeedback = 'Проверь ' + m.divisor + ' × ' + multiplier + ': прибавь ' + m.divisor + ' к предыдущему кратному.';
+    } else {
+      m.checked[index] = true;
+      const complete = m.checked.every(Boolean);
+      multiplesFeedback = complete ? 'Все кратные проверены. Теперь используй выкладку при делении.' : 'Верно. Заполни следующее кратное.';
+      if (complete) m.open = false;
+    }
+    save(); render();
+    const next = m.checked.findIndex(v => !v);
+    if (m.open && next >= 0) multiplesHost.querySelector('[data-multiple-input="' + (next + 1) + '"]')?.focus({preventScroll:true});
+    else $('answer').focus({preventScroll:true});
+  }
+  function renderLearningRoute(s) {
+    let nav = $('division-learning-route');
+    if (!nav) {
+      nav = document.createElement('nav'); nav.id = 'division-learning-route';
+      nav.className = 'division-learning-route'; nav.setAttribute('aria-label', 'Учимся делению');
+      $('main').prepend(nav);
+    }
+    const back = document.createElement('a');
+    back.href = PATH; back.textContent = '← Все ступени деления';
+    const other = document.createElement('a');
+    other.href = PATH + '#other-trainers'; other.textContent = 'Другие тренажёры деления';
+    nav.replaceChildren(back, other);
+    const training = G.progress(state.records, state.active);
+    let recommendation = $('division-recommendation');
+    if (!recommendation) {
+      recommendation = document.createElement('p'); recommendation.id = 'division-recommendation';
+      $('completion-text').after(recommendation);
+    }
+    const missing = Math.max(0, training.target - training.independent);
+    recommendation.textContent = training.ready
+      ? 'Есть 3 разных решения по шагам без подсказок. Можно перейти к следующей теме или ' + (['start','quotientDigit'].includes(state.active) ? 'продолжить тренировку на новых примерах.' : 'продолжить на более сложных числах.') + ' Самостоятельная проверка — в конце маршрута.'
+      : 'Перед следующей темой реши ещё ' + missing + (missing === 1 ? ' новый пример' : ' новых примера') + ' по шагам без подсказок. Тему можно сменить в любой момент.';
+    if (s.multiples) recommendation.textContent += ' Этот пример выполнен с выкладкой кратных.';
+    let unassisted = $('next-without-multiples');
+    if (!unassisted) {
+      unassisted = document.createElement('button'); unassisted.id = 'next-without-multiples';
+      unassisted.type = 'button'; unassisted.className = 'quiet';
+      unassisted.textContent = 'Новый пример без выкладки';
+      $('next-example').after(unassisted);
+      unassisted.onclick = () => {
+        buildMultiples = false;
+        const url = new URL(location.href); url.searchParams.delete('multiples');
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+        newSession(state.active, false); render(); moveFocus();
+      };
+    }
+    unassisted.hidden = !s.multiples || !s.done;
+    let checkpoint = $('division-checkpoint-link');
+    if (!checkpoint) {
+      checkpoint = document.createElement('a'); checkpoint.id = 'division-checkpoint-link';
+      checkpoint.href = PUBLIC_ORIGIN + '/trainers/oge-basics/multiplication-division/division-checkpoint.html';
+      checkpoint.textContent = 'Самостоятельная проверка всех видов деления →';
+      const line = document.createElement('p'); line.append(checkpoint); $('completion').append(line);
+    }
+    checkpoint.parentElement.hidden = !s.done || state.active !== 'decimalDivisor';
+
+
+  }
+
   function renderResults() {
     const total = state.records.length;
     const alone = state.records.filter(independent).length;
@@ -335,12 +480,14 @@
     const percent = Math.round(100 * (s.step + Number(s.accepted)) / p.actions.length);
     $('step-progress').style.width = percent + '%';
     $('step-progress').parentElement.setAttribute('aria-valuenow', String(percent));
-    const topicFinished = state.records.filter(r => r.topic === state.active).length;
-    $('topic-progress').textContent = topicFinished ? 'В этой теме закончено примеров: ' + topicFinished : 'Первый пример в этой теме';
+    const training = G.progress(state.records, state.active);
+    $('topic-progress').textContent = 'По шагам без подсказок: ' + training.independent + ' · ориентир — ' + training.target + (training.supported ? ' · с помощью или повторно: ' + training.supported : '') + (training.tier && !['start','quotientDigit'].includes(state.active) ? ' · практика сложнее: ступень ' + (training.tier + 1) + ' из 3' : '');
     $('question').parentElement.classList.toggle('lesson-complete', s.done);
     $('notebook').parentElement.hidden = false;
     renderDecimalShift(p, s);
     renderNotebook(p, s);
+    renderMultiples(p, s);
+    renderLearningRoute(s);
     $('question').hidden = s.done;
     $('completion').hidden = !s.done;
     $('step-name').textContent = names[a.kind];
@@ -362,6 +509,7 @@
     $('help-content').hidden = !helpOpen;
     $('hint-text').textContent = a.hint;
     $('multiples').hidden = a.kind !== 'digit' && a.kind !== 'product';
+    if (s.multiples) $('multiples').hidden = true;
     if (!$('multiples').hidden) $('multiples').innerHTML = '<p class="table-note">Нажми на строку, чтобы подставить ' + (a.kind === 'digit' ? 'цифру' : 'произведение') + '. Затем проверь ответ.</p>' + Array.from({length:10}, (_, q) => '<button type="button" data-multiple="' + (a.kind === 'digit' ? q : p.normalizedDivisor * q) + '">' + p.normalizedDivisor + ' × <b>' + q + '</b> = ' + p.normalizedDivisor * q + '</button>').join('');
     $('revealed').textContent = revealOpen ? 'В этом шаге ответ: ' + a.answer + '. Впиши его и нажми «Проверить».' : '';
     if (s.done) {
@@ -375,6 +523,7 @@
     renderResults();
     renderRouteLinks();
     updateContextualHelp(s,a);
+    document.dispatchEvent(new CustomEvent('mathexam:division-step', {detail:{kind:a.kind, done:s.done}}));
   }
   function moveFocus() {
     const s = current(), a = G.plan(s.task).actions[s.step];
@@ -508,8 +657,8 @@
     const groups = [{title:'Целые числа', ids:['start','oneDigit','zero','remainder','twoDigit']}, {title:'Десятичные дроби', ids:['decimalNatural','appendZeros','decimalDivisor']}, {title:'Короткая тренировка', ids:['quotientDigit']}];
     $('topics-list').innerHTML = groups.map(group => '<section class="topic-group"><h3>' + group.title + '</h3>' + group.ids.map(id => {
       const t = G.topics.find(item => item.id === id), session = state.sessions[id];
-      const finished = state.records.filter(r => r.topic === id).length;
-      const progress = (finished ? 'Закончено примеров: ' + finished + '.' : 'Ещё нет законченных примеров.') + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
+      const training = G.progress(state.records, id);
+      const progress = ('По шагам без подсказок: ' + training.independent + ' из 3.' + (training.supported ? ' С опорой или повторно: ' + training.supported + '.' : '')) + (session && !session.done ? ' Начат пример — шаг ' + (session.step + 1) + ' из ' + G.plan(session.task).actions.length + '.' : '');
       return '<button type="button" data-topic="' + t.id + '" aria-current="' + (state.active === t.id) + '">' + esc(t.title) + '<small>' + esc(t.description) + '</small><small class="topic-progress" data-topic-progress="' + t.id + '">' + progress + '</small></button>';
     }).join('') + '</section>').join('');
     $('topics-dialog').showModal();
@@ -521,6 +670,7 @@
     state.active = id;
     history.replaceState(null, '', location.pathname + location.search + '#' + state.active);
     if (!current()) newSession(state.active, false);
+    else if (buildMultiples) prepareMultiples();
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render(); $('topics-dialog').close(); $('problem').scrollIntoView({block:'start'});
   }
@@ -551,6 +701,11 @@
       $('report-text').focus(); $('report-text').select();
     }
   };
+  document.addEventListener('mathexam:skill-support', event => {
+    const s = current(); if (!s || s.done) return;
+    s.hints = Math.min(1000000, s.hints + 1); save();
+    if (blocked || !storageAvailable) event.preventDefault();
+  });
   window.addEventListener('storage', event => {
     if (event.key === KEY || event.key === null) { blocked = true; notice('Работа изменилась в другой вкладке. Обнови страницу, прежде чем продолжить.'); }
   });
@@ -560,13 +715,14 @@
     if (!topicIds.has(id) || id === state.active) return;
     state.active = id;
     if (!current()) newSession(id, false);
+    else if (buildMultiples) prepareMultiples();
     helpOpen = false; revealOpen = false; feedback = ''; feedbackKind = '';
     save(); render();
   });
   const requested = location.hash.slice(1);
   if (topicIds.has(requested)) state.active = requested;
   if (!current()) newSession(state.active, false);
-  else save();
+  else { if (buildMultiples) prepareMultiples(); save(); }
   window.addEventListener('mathexam-basics-help-ready',()=>render());
   render();
   window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
