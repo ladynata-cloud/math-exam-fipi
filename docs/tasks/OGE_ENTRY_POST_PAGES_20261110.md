@@ -51,4 +51,6 @@ Rollback: revert only this four-file CI patch through a normal reviewed commit. 
 
 ## Execution and handoff
 
+Managed Pages follow-up: publication `42800141198` completed successfully, but the displayed workflow name alone did not start the dependent check. Subscribe to the managed workflow identifier `pages-build-deployment` as well as its display name. Keep the same-repository, main, success and exact-SHA requirements and verify the next real publication event.
+
 Implementation is prepared from the immutable API base tree. Only the four scoped paths are added/replaced; the public runtime tree is unchanged. Exact resulting head, PR, CI and release evidence belong in the PR handoff to avoid self-referential commit hashes. Any base drift requires renewed composition and applicable validation before merge. No additional owner permission is needed solely for publication; technical checks remain mandatory.

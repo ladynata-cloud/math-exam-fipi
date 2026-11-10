@@ -132,7 +132,7 @@ test('redirect to another origin fails even if it returns matching bytes', async
 });
 test('workflow keeps local pre-release checks and pins post-Pages acceptance', () => {
   const yaml = fs.readFileSync(path.join(__dirname, '../.github/workflows/oge-learner-entry.yml'), 'utf8');
-  assert.match(yaml, /workflow_run:\s+workflows: \['pages build and deployment'\]\s+types: \[completed\]\s+branches: \[main\]/);
+  assert.match(yaml, /workflow_run:\s+workflows: \['pages-build-deployment', 'pages build and deployment'\]\s+types: \[completed\]\s+branches: \[main\]/);
   for (const required of ["github.event.workflow_run.conclusion == 'success'", 'github.event.workflow_run.head_repository.full_name == github.repository', 'ref: ${{ github.event.workflow_run.head_sha || github.sha }}', "OGE_ENTRY_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://mathexam.space' || '' }}", 'node tools/oge-learner-entry.test.cjs', 'node tools/oge-focus-navigation.test.cjs', 'node tools/oge-learner-entry.browser.cjs', "OGE_ENTRY_VERIFY_ONCE: '1'"]) assert(yaml.includes(required), required);
   assert(!yaml.includes("github.event_name == 'push' && 'https://mathexam.space'"));
   assert.match(yaml, /permissions:\s+contents: read/);
