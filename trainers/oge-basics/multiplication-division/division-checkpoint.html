@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Самостоятельная проверка деления столбиком | MathExam</title>
+<meta name="description" content="Восемь разных примеров на деление столбиком: целые числа, ноль в частном, остаток и десятичные дроби. Проверь себя и получи упражнения для повторения.">
+<link rel="canonical" href="https://mathexam.space/trainers/oge-basics/multiplication-division/division-checkpoint.html">
+<link rel="stylesheet" href="division-checkpoint.css?v=20261110">
+<script defer src="division-lab-core.js"></script>
+<script defer src="division-checkpoint.js?v=20261110"></script>
+<script defer src="/trainers/oge-basics/skill-support.js?v=20261110"></script>
+
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
+</head>
+<body data-skill-support-saved="true">
+<header class="checkpoint-nav"><a href="division-path.html">← Курс деления</a><a href="/">Главная</a></header>
+<main class="checkpoint-page">
+  <p class="checkpoint-eyebrow">Деление столбиком · самостоятельная работа</p>
+  <h1>Проверь себя</h1>
+  <p class="checkpoint-lead">8 разных примеров. Решай уголком в тетради, здесь записывай ответ.</p>
+  <p id="checkpoint-storage" class="checkpoint-notice" role="status" hidden></p>
+  <section id="checkpoint-exercise" class="checkpoint-card" aria-labelledby="checkpoint-problem">
+    <div class="checkpoint-counter"><span id="checkpoint-count"></span><span id="checkpoint-status"></span></div>
+    <progress id="checkpoint-progress" max="8" value="0" aria-label="Проверенные примеры"></progress>
+    <h2 id="checkpoint-problem" class="checkpoint-problem"></h2>
+    <p id="checkpoint-instruction"></p>
+    <form id="checkpoint-form" novalidate>
+      <div class="checkpoint-fields">
+        <label><span id="checkpoint-answer-label">Ответ</span><input id="checkpoint-answer" type="text" inputmode="decimal" autocomplete="off" maxlength="30" aria-describedby="checkpoint-rule checkpoint-feedback"></label>
+        <label id="checkpoint-remainder-label" hidden>Остаток<input id="checkpoint-remainder" type="text" inputmode="numeric" autocomplete="off" maxlength="10" aria-describedby="checkpoint-feedback"></label>
+      </div>
+      <p id="checkpoint-rule" class="checkpoint-small">Одна попытка на пример. После проверки ответ уже нельзя изменить.</p>
+      <button id="checkpoint-submit" class="checkpoint-primary" type="submit">Проверить ответ</button>
+    </form>
+    <p id="checkpoint-feedback" class="checkpoint-feedback" role="status" aria-live="polite"></p>
+    <section id="checkpoint-review" hidden aria-label="Проверка ответа">
+      <p id="checkpoint-correct-answer"></p>
+      <p id="checkpoint-verification" class="checkpoint-verification"></p>
+      <details><summary>Разобрать решение</summary><ol id="checkpoint-steps"></ol></details>
+      <button id="checkpoint-next" class="checkpoint-primary" type="button">Следующий пример →</button>
+    </section>
+    <p id="checkpoint-help-line"><a id="checkpoint-help" href="/trainers/long-division-stepwise.html">Потренировать этот вид деления</a><br><span class="checkpoint-small">Можно вернуться сюда. Этот пример тогда отметим «с помощью».</span></p>
+  </section>
+  <section id="checkpoint-results" class="checkpoint-card" hidden aria-labelledby="checkpoint-results-title">
+    <h2 id="checkpoint-results-title" tabindex="-1">Результат проверки</h2>
+    <p id="checkpoint-summary" class="checkpoint-lead"></p>
+    <p>Это результат одной работы. Повтори трудные действия, а позже реши новые примеры.</p>
+    <ol id="checkpoint-result-list" class="checkpoint-result-list"></ol>
+    <button id="checkpoint-new" class="checkpoint-primary" type="button">Новая проверка на других числах</button>
+    <a class="checkpoint-back" href="division-path.html">Вернуться к курсу →</a>
+  </section>
+  <div data-skill-support-slot></div>
+  <p class="checkpoint-small checkpoint-save-note">Начатая проверка и черновик ответа сохраняются в этом браузере.</p>
+  <noscript><p>Для проверки ответов нужен JavaScript. <a href="division-path.html">Вернуться к курсу деления</a>.</p></noscript>
+</main>
+</body>
+</html>
