@@ -96,6 +96,7 @@ const server=http.createServer((req,res)=>{
    assert.equal(await p.evaluate(key=>localStorage.getItem(key),KEY),before,'Map is read-only for real native drafts too');
    await p.locator('#course-practice-link').click();
    await p.waitForURL(url=>url.pathname==='/trainers/oge-task22-functions-graphs.html');
+   assert.equal(new URL(p.url()).searchParams.has('resume'),false,'The one-time resume request is consumed after restoring the draft');
    assert.equal(await task22.locator('.statement').innerText(),condition);
    assert.equal(await task22.locator('.ab-row .v-dec').inputValue(),'7');
    assert(await task22.locator('.minimal-help').isVisible(),'The exact unfinished help remains open');

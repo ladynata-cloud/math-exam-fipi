@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+  "baseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2923,8 +2923,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "a6f91f714756feae3c823e4be8ec8fd31cef32729186cb93f294dffab7d6032c",
-      "afterSha256": "acc26727e6b7ade04d8bb7742fec63c18ce4187702dff3e8eeee41fe5ef8136f",
+      "beforeSha256": "6da36409bb9614db788e74efb3f4e9c11c703aeb1879de043bb4403b46779e54",
+      "afterSha256": "5b3a7bb5d36314ad5c4d8c1d61e67bc6f24ecfe1fc6b2e63b1a3ad60528ced21",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2938,8 +2938,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "816b34c2a8f0f93bedca13d963518dc6d782727dc079b0210048f80f414c4b29",
-      "afterSha256": "3ed2c6f27e6620af6d63293135e66bfbbf3cdc7c865f9031ed6958de0ec3503a",
+      "beforeSha256": "c52d181a337b037a1bfca1ab076e67551ab4901705b0bed4384e52e43dc63d81",
+      "afterSha256": "979c45df19edbfa121ad6208047bab2d3ee8c2db7c543cff47386c0394564455",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2988,8 +2988,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "6a1442abbfc85df4df49faf5b17a4dcf9df6d069638d8ac6395aab62f102a6bc",
-      "afterSha256": "5f9cee5dfecaa7afbe9f17e18c3438ff82c5dd95aa21a8bb03f6f907dcfecdab",
+      "beforeSha256": "eab3ec74a8c467d4aee1130581a2d1b46d0a064d8bd507dfc79f609866edb5bf",
+      "afterSha256": "5cc5d022c508622a3fdae07b0cd3b989b8a7e52acef7ecef95886c5266252f01",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -2998,8 +2998,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "0220dcbb6abb000d699547aaae752881ed0acb89424ba24454eeecb6ea39dd10",
-      "afterSha256": "24fe4cc1dcaf7481597c67bd76aacb2f09980f847e43b1d23e8fbd14ad7beb93",
+      "beforeSha256": "43fda5c580b464f241e7c0976a555a390fe9538240a2fc8d57d23fe0b6671665",
+      "afterSha256": "9bdc920c8c02885947e263f819d19f7cab2e0ec526ae3370201b7182ee4dbe23",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
@@ -4662,6 +4662,18 @@
       "task": "docs/tasks/TASK9_BRACKET_LABELS_20261111.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "sourceBaseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task24-proofs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

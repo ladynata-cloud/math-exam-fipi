@@ -64,6 +64,9 @@ test('task22 all nine prototype choices keep the exact graph problem and reasoni
 // The exact full-engine pins below continue to reject unreviewed native changes.
 // Task 12 is re-pinned by OGE12_SOURCE_AUDIT: 40 provenance records, independent
 // rational answers, exhaustive replacement domains and retained room contracts.
+// Task 22 is pinned to the complete OGE_AUDIT_LEARNING source, without the old
+// persistence inverse: exact domains/critical values, preserved legacy credit,
+// semantic restoration and shared replay are independently checked.
 const inlineHashes={
   "7": "1c8377171051d6cd9582537dcfca1d270f00300b0b1a8f15fb0cd0f40f7348dc",
   "8": "9475a664fbb854c30f0836423e74fc073c08901d37b06ea153a46c52517d6807",
@@ -72,12 +75,13 @@ const inlineHashes={
   "14": "32588d0974854ae60a7e91d931da8c64b9694bfa2b78867bd13a7e3887dc4c00",
   "20": "f549780df61f1d966e0eab26589d3f426acd29d17ab254b1d6aec35074b07263",
   "21": "6b266bbaa9ffbd40adaccbd9a5f93c6b290b15566780dbcd770d71622c5982f8",
-  "22": "5298f2da7b65280813d2a97b4353c7c0029182359614625076e5939d2a39c5af"
+  "22": "09a4b8332814d00deda6df3afddc8e795e68b81b7167128f4d90caea865f838b"
 };
-test('all eight inline engines retain their reviewed mirror-audit snapshots outside approved season labels',()=>{
+test('all eight inline engines retain their exact reviewed snapshots outside approved season labels',()=>{
  for(const [n,suffix]of Object.entries(files)){
   const file='trainers/oge-task'+n+'-'+suffix+'.html';
-  const html=restoreHistoricalBytes(file,fs.readFileSync(path.join(root,file),'utf8'));
+  const raw=fs.readFileSync(path.join(root,file),'utf8');
+  const html=n==='22'?raw:restoreHistoricalBytes(file,raw);
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.

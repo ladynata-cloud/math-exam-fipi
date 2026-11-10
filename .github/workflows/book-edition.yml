@@ -19,6 +19,8 @@ on:
       - 'tools/oge-worked-steps-book-context.test.py'
       - 'tools/fixtures/oge-worked-steps-book-ui.json'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-audit-learning-native-bytes.json'
+      - 'tools/oge-audit-source-preservation*'
       - 'tools/fixtures/oge-book-*'
       - 'docs/reports/oge-book-20261031/**'
       - 'docs/tasks/OGE_BOOK_EDITION_AUDIT_20261031.md'
@@ -54,6 +56,8 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Fetch the exact audited source and historical checkpoints
+        run: git fetch --no-tags origin f20e80a896579b3febcb9e907ad1a51f97153ed4 19811cc15a33d63fc0fcc0b6a11c34863ec64d03
       - name: Verify protected bytes using the base verifier when available
         env:
           BOOK_BASE: ${{ github.event.pull_request.base.sha || github.sha }}

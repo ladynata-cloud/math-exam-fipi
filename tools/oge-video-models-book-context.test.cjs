@@ -37,6 +37,19 @@ test('later teaching receipts remain limited to three committed pages and reject
   }
  }
 });
+test('the separate learning-audit receipt covers exactly 11/22/24 and still rejects every extra native byte',()=>{
+ const audit=require('./fixtures/oge-audit-learning-native-bytes.json');
+ assert.equal(audit.task,'docs/tasks/OGE_AUDIT_LEARNING_20261111.md');
+ assert.equal(audit.baseCommit,'19811cc15a33d63fc0fcc0b6a11c34863ec64d03');
+ assert.deepEqual(Object.keys(audit.pages).sort(),[entries[11],entries[22],entries[24]].sort());
+ for(const file of Object.keys(audit.pages)){
+  const x=fixture(file),result=receipt(x),pin=audit.pages[file];
+  assert.equal(result.sourceBase,pin.sourceCommit);assert.equal(hash(x.raw),pin.rawSha256);
+  assert.equal(x.raw,execFileSync('git',['show',pin.sourceCommit+':'+file],{cwd:ROOT,encoding:'utf8'}));
+  for(const changed of [x.raw+'\n',x.raw.replace('<title>','<title>Changed '),x.raw.replace(snippet(pins.pages[file].task),'')])
+   assert.throws(()=>receipt({...x,raw:changed}),file+' rejects unreviewed bytes');
+ }
+});
 test('one exact serialized L8 preview may be attested only inside the closed prediction container',()=>{
  const {JSDOM}=require('jsdom'),preview=pins.closedPreview;
  const lesson=require('../trainers/oge-video-geometry.js').find(x=>x.id===preview.lesson);

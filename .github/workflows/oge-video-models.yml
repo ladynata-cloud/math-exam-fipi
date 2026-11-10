@@ -26,6 +26,7 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-audit-learning-native-bytes.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
       - 'tools/oge-book-exam-corrections.test.cjs'
@@ -59,6 +60,7 @@ on:
       - 'tools/oge-video-models-book-context.test.py'
       - 'tools/oge_video_models_book_context.py'
       - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/fixtures/oge-audit-learning-native-bytes.json'
       - 'tools/oge-book-exam.browser.cjs'
       - 'tools/oge-book-exam-math.py'
       - 'tools/oge-book-exam-corrections.test.cjs'
@@ -83,7 +85,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - name: Fetch explicit preservation baseline
-        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831
+        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831 f20e80a896579b3febcb9e907ad1a51f97153ed4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'
