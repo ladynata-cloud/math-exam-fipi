@@ -14,7 +14,6 @@ class Local extends ResourceLoader {
   fetch(url) {
     const parsed = new URL(url);
     if (parsed.origin !== 'https://mathexam.space') return null;
-    if (parsed.pathname.endsWith('/board-bridge.js')) return Promise.resolve(Buffer.from(''));
     const filename = path.join(root, parsed.pathname);
     return fs.existsSync(filename) && fs.statSync(filename).isFile()
       ? Promise.resolve(fs.readFileSync(filename)) : null;
@@ -33,7 +32,6 @@ async function open(story, shared = false) {
       window.scrollTo = () => {};
       window.confirm = () => true;
       window.matchMedia = () => ({ matches: false, addEventListener() {}, removeEventListener() {} });
-      window.MathExamBoard = { register() {} };
       window.localStorage.setItem('unrelated-pupil-draft', '{"value":"keep"}');
     }
   });
