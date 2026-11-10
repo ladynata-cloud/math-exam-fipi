@@ -99,4 +99,58 @@ assert.equal(H.hint(notebooks,-1),notebookHint);
 assert.equal(H.hint(notebooks,NaN),notebookHint);
 assert.equal(H.hint(notebooks,100),H.hint(notebooks,notebooks.steps.length-1));
 assert.equal(typeof H.hint(null),'string');
-console.log(`Concrete EGE hints: ${ids.length} families, ${checked} step variants, max ${longest} characters; no answer dependencies or task mutations.`);
+
+// The displayed scaffold must use the current givens, not the generator's k/b/c.
+// Check the whole 7×3×5 variant cycle and the supported serial boundary.
+let concreteScaffolds=0;
+for(const seed of [...Array.from({length:240},(_,i)=>i),1e9]){
+ const k=2+seed%7,j=seed%3,label='seed '+seed;
+ const expression=D.task('expressions',seed),equation=D.task('equations',seed);
+ for(const task of [expression,equation]){
+  const visible=task.steps.map(step=>step.q+' '+step.why).join(' ');
+  assert.doesNotMatch(visible,/\b(?:k|b|c|cx)\b|undefined|NaN/,'no undeclared generator symbols: '+task.id+', '+label);
+  assert.doesNotMatch(visible,/\+\s*[−-]|[−-]\s*[−-]/,'readable signs: '+task.id+', '+label);
+  for(const step of task.steps)assert(D.correct(step,String(step.a)),'the stated intermediate answer remains accepted: '+label);
+  assert(D.correct(task,String(task.answer)),'the final answer remains accepted: '+label);
+  concreteScaffolds++;
+ }
+ assert.deepEqual(Array.from(expression.steps,step=>step.a),[k,2*k+1],label+' cancellation answers');
+ assert(expression.steps[0].why.includes('x−'+k),label+' actual denominator');
+ assert(expression.steps[1].q.includes('x+'+k),label+' actual remaining factor');
+ assert(expression.steps[1].q.includes('x='+(k+1)),label+' actual substitution');
+ assert(expression.steps[1].why.includes('(x−'+k+')(x+'+k+')'),label+' factorization matches the numerator');
+ if(seed%5===0){
+  const c=k===2?1:2,b=k+3,x=j+2,r=(k-c)*x+b;
+  assert.deepEqual(Array.from(equation.steps,step=>step.a),[k-c,r-b,x],label+' linear arithmetic');
+  assert(equation.steps[0].q.includes('вычитания '+c+'x'),label+' subtract the actual right-hand variable term');
+  assert(equation.steps[1].q.includes('вычитания '+b+' из обеих частей'),label+' subtract the actual left-hand constant');
+  assert(equation.steps[2].why.includes((k-c)+'x='+(r-b)),label+' final equality uses the current operands');
+ }else if(seed%5===1){
+  assert.deepEqual(Array.from(equation.steps,step=>step.a),[1,k],label+' quadratic arithmetic');
+  assert(equation.steps[0].why.includes('(−'+(2*k+1)+')²−4·1·'+k*(k+1)),label+' negative coefficient is squared as a whole');
+  assert(equation.steps[1].why.includes('('+(2*k+1)+'−√D)/2'),label+' choose the smaller root');
+ }else if(seed%5===2){
+  assert.deepEqual(Array.from(equation.steps,step=>step.a),[k*k,k*k-k],label+' radical arithmetic');
+  assert(equation.steps[1].why.includes('x+'+k+'='+k*k),label+' equation after squaring');
+ }else if(seed%5===3){
+  assert.deepEqual(Array.from(equation.steps,step=>step.a),[8,8-k],label+' logarithmic arithmetic');
+  assert(equation.steps[0].q.includes('x+'+k),label+' actual logarithm argument');
+  assert.match(equation.steps[1].why,/положительным/,label+' retain the domain check');
+ }else{
+  assert.deepEqual(Array.from(equation.steps,step=>step.a),[5,5-k],label+' exponential arithmetic');
+  assert(equation.steps[1].why.includes('x+'+k+'=5'),label+' actual exponent equality');
+ }
+}
+const concreteLinear=D.task('equations',10);
+assert.equal(concreteLinear.q,'5x + 8 = 2x + 17. Найдите x.');
+assert.match(concreteLinear.steps[0].q,/вычитания 2x/);
+assert.match(concreteLinear.steps[1].q,/вычитания 8/);
+assert.match(concreteLinear.steps[2].why,/3x=9/);
+const concreteCancellation=D.task('expressions',1);
+assert.match(concreteCancellation.steps[1].q,/остаётся x\+3.*x=4/);
+// The separate signed-equation trainer must keep its explicit parentheses.
+const signedEquation=D.task('equations-signs',0);
+assert.match(signedEquation.steps[1].q,/Вычти \([-−]3\)/);
+assert.match(signedEquation.steps[1].why,/− \([-−]3\)/);
+
+console.log(`Concrete EGE hints: ${ids.length} families, ${checked} step variants, max ${longest} characters; no answer dependencies or task mutations; ${concreteScaffolds} concrete algebra scaffolds.`);
