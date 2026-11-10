@@ -71,4 +71,26 @@ const sources=JSON.parse(fs.readFileSync(path.join(dir,'source-map.json'),'utf8'
 assert.equal(sources.completeExerciseCoverage,false);assert.equal(sources.exercises.length,134);
 assert.ok(sources.exercises.every(s=>s.pdfPage===s.printedPage+1));
 assert.ok(!fs.readdirSync(dir).some(f=>/\.(pdf|png|jpg)$/i.test(f)));
+// The earliest submission survives corrections, truncation and reloading.
+const tracked=M.fresh();
+assert.equal(M.submit(tracked,t,'final',['']),null);
+assert.equal(tracked.firstFinal,null);
+M.submit(tracked,t,'final',['7'],null,10);
+for(let i=0;i<20;i++)M.submit(tracked,t,'final',['6'],null,20+i);
+assert.equal(tracked.firstFinal.values[0],'7');assert.equal(tracked.history.length,12);
+const again=M.restore(JSON.stringify(tracked),t);
+assert.equal(again.firstFinal.values[0],'7');assert.equal(again.firstFinal.ok,false);
+again.checked=true;again.drafts=['6'];assert.match(M.status(again,t),/после исправления/);
+const old=JSON.parse(JSON.stringify(again));delete old.trackingVersion;delete old.firstFinal;delete old.history;
+const legacy=M.restore(JSON.stringify(old),t);M.submit(legacy,t,'final',['6'],null,100);
+assert.match(M.status(legacy,t),/без полной истории/);
+const earlier=M.fresh(),later=M.fresh();earlier.drafts=['2'];earlier.updatedAt=30;later.notes='план';later.updatedAt=50;
+assert.equal(M.resume([{t,p:earlier},{t:mp,p:later}]).p,later);
+later.manual=true;assert.equal(M.resume([{t,p:earlier},{t:mp,p:later}]).p,earlier);
+// Finishing guided steps does not complete the final answer or written proof.
+later.manual=false;later.done=mp.steps.length;
+assert.equal(M.resume([{t,p:earlier},{t:mp,p:later}]).p,later);
+earlier.done=t.steps.length;earlier.updatedAt=60;
+assert.equal(M.resume([{t,p:earlier},{t:mp,p:later}]).p,earlier);
+assert.equal(M.started(M.fresh()),false);
 console.log(`POGORELOV_CONTENT_OK: 134 trainers, ${count} independently checked final values, 340 steps, 15 paragraphs; parser, restoration and geometry oracles pass.`);

@@ -6,6 +6,7 @@ if(e.type==='draft')return text(p.key,100)&&/^[a-zA-Z0-9_-]+$/.test(p.key)&&!['_
 if(!stage(p.stage))return false;if(e.type==='go')return true;
 if(e.type==='check')return [0,5,6].includes(p.stage)&&Array.isArray(p.answers)&&p.answers.length===3&&p.answers.every(a=>a&&text(a.answer,40)&&text(a.work,1600))&&Array.isArray(p.probes)&&p.probes.length===(p.stage===0?3:0)&&p.probes.every(a=>text(a,40));
 if(p.stage<1||p.stage>4||!Number.isInteger(p.task)||p.task<0||p.task>100000)return false;
+if(e.type==='prediction')return p.stage===1&&text(p.value,1600)&&p.value.trim().length>0;
 if(e.type==='attempt')return Number.isInteger(p.choice)&&p.choice>=-1&&p.choice<=2&&text(p.answer,40)&&text(p.work,1600)&&typeof p.correct==='boolean'&&text(p.feedback,500);
 if(e.type==='help')return ['example','model','hint','solution','external','gap'].includes(p.kind);
 return e.type==='next'||e.type==='finish';}
@@ -14,8 +15,9 @@ for(const ev of events){if(!valid(ev))continue;const p=ev.payload||{},i=p.stage;
 if(ev.type==='go')state.stage=i;
 if(ev.type==='draft'){const value=typeof p.value==='string'?p.value:(draftValues.get(p.base)||'').slice(0,p.prefix)+p.suffix;draftValues.set(ev.id,value);state.drafts[p.key]=value;}
 if(ev.type==='check'){(state.checks[i]??=[]).push({...p,at:ev.at,id:ev.id});}
-if(['attempt','help','next','finish'].includes(ev.type)){
+if(['attempt','help','next','finish','prediction'].includes(ev.type)){
 const l=state.lessons[i]??={current:0,done:false,tasks:{}};const t=l.tasks[p.task]??={attempts:[],help:[],helpEvents:[]};
+if(ev.type==='prediction'&&!t.prediction)t.prediction={value:p.value,at:ev.at};
 if(ev.type==='attempt')t.attempts.push({...p,at:ev.at});
 if(ev.type==='help'){t.helpEvents.push({kind:p.kind,at:ev.at});if(!t.help.includes(p.kind))t.help.push(p.kind);}
 if(ev.type==='next')l.current=Math.max(l.current,p.task+1);

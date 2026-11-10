@@ -35,10 +35,9 @@ def verified_context(record):
         file = route[1:]
         pin = PINS['pages'].get(file)
         if not pin or not pin['bookId']: return None
-        pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
-        if context['task'] != pin['task'] or context['sourceBase'] != pin['sourceCommit']: return None
+        if context['task'] != pin['task']: return None
         if context['kind'] != 'oge-video-models-closed-v1' or context['closed'] is not True: return None
         if context['label'] != LABEL or context['summaryHtml'] != SUMMARY_HTML: return None
         raw = (ROOT / file).read_bytes()
@@ -49,7 +48,22 @@ def verified_context(record):
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if raw.count(block) != 1 or block + b'</head>' not in raw: return None
         native = raw.replace(block, b'', 1)
-        if sha(native) != pin['sha256'] or context['nativeSha256'] != pin['sha256']: return None
+        if pin['task'] == 11 and (b'oge-active-learning' in native or record.get('optionalActiveLearning')):
+            if not record.get('optionalActiveLearning'): return None
+            active = ('<link rel="stylesheet" href="oge-active-learning.css?v=20261109">\n'
+                      '<script defer src="oge-active-learning-data.js?v=20261109"></script>\n'
+                      '<script defer src="oge-active-learning.js?v=20261109" data-oa-task="11"></script>\n').encode()
+            if native.count(active) != 1 or active + b'</head>' not in native: return None
+            native = native.replace(active, b'', 1)
+            if b'oge-active-learning' in native: return None
+        native_hash = sha(native)
+        current = pin.get('currentSource', {})
+        reviewed = (dict(sourceCommit=current.get('commit'), sha256=current.get('sha256')),
+                    UPDATES['pages'].get(file, {}),
+                    dict(sourceCommit=PINS['baseCommit'], sha256=pin['sha256']))
+        if not any(source.get('sha256') == native_hash and source.get('sourceCommit') == context['sourceBase']
+                   for source in reviewed): return None
+        if context['nativeSha256'] != native_hash: return None
         if sha(raw) != context['sourceSha256']: return None
         if record['resources'][route]['sha256'] != context['sourceSha256']: return None
         if set(context['assets']) != set(ASSETS): return None

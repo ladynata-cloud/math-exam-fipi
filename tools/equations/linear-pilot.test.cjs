@@ -29,3 +29,37 @@ test('revisiting example after finishing does not erase valid prior completion',
 test('opening example and immediately submitting before toggle registers help synchronously',()=>{const x=world();check(x,0);x.d.querySelector('[data-stage="1"]').click();x.d.querySelector('details[data-help="example"]').open=true;solve(x);assert(!x.d.querySelector('[data-action="finish"]'));assert(create(x.storage).state().lessons[1].tasks[0].help.includes('example'));});
 test('finish checks open help even before queued toggle event',()=>{const x=world();check(x,0);x.d.querySelector('[data-stage="1"]').click();solve(x);x.d.querySelector('details[data-help="example"]').open=true;click(x,'finish');assert.equal(create(x.storage).state().lessons[1].done,false);assert(create(x.storage).state().lessons[1].tasks[0].help.includes('example'));});
 test('navigation captures opened help before queued toggle',()=>{const x=world();check(x,0);x.d.querySelector('[data-stage="1"]').click();x.d.querySelector('details[data-help="example"]').open=true;x.d.querySelector('[data-stage="0"]').click();assert(create(x.storage).state().lessons[1].tasks[0].help.includes('example'));});
+
+test('equality model follows actual conditions, saves first forecast and exact parameter',()=>{
+  let x=world(); check(x,0); x.d.querySelector('[data-stage="1"]').click();
+  const details=x.d.querySelector('details[data-help="model"]'); details.open=true;
+  assert.match(details.textContent,/Для 4x − 7 = 13/);
+  assert(x.d.querySelector('#model-controls').hidden);
+  click(x,'prediction'); assert.equal(create(x.storage).state().lessons[1]?.tasks[0]?.prediction,undefined);
+  fill(x,'#l1t0prediction','Корень 5; прибавление 7 его не меняет.'); click(x,'prediction');
+  assert.equal(x.d.querySelector('#model-controls').hidden,false);
+  fill(x,'#parameter-exact','5'); assert.match(x.d.querySelector('#model-value').textContent,/Части: 13 и 13/);
+  assert.match(x.d.querySelector('#model-value').textContent,/После прибавления 7: 20 и 20/);
+  create(x.storage).append('prediction',{stage:1,task:0,value:'поздний прогноз'});
+  x=world(x.storage); assert.equal(x.d.querySelector('#parameter-exact').value,'5');
+  assert.equal(x.d.querySelector('#l1t0prediction').value,'Корень 5; прибавление 7 его не меняет.');
+  assert.match(x.w.LinearPilotTest.report(),/Первая догадка о модели: Корень 5/);
+  click(x,'new'); const next=x.d.querySelector('details[data-help="model"]'); next.open=true;
+  assert.match(next.textContent,/Для 5x \+ 8 = 38/);
+  fill(x,'#l1t1prediction','?'); click(x,'prediction'); fill(x,'#parameter-exact','6');
+  assert.match(x.d.querySelector('#model-value').textContent,/Части: 38 и 38/);
+  assert.match(x.d.querySelector('#model-value').textContent,/После вычитания 8: 30 и 30/);
+});
+
+test('every equality-model parameter set agrees with displayed equation and preserves the difference',()=>{
+  const x=world();
+  assert.equal(x.w.LinearPilotTest.number('9'.repeat(400)),null);
+  function evalAt(expr,v){const text=expr.replace(/−/g,'-').replace(/x/g,'('+v+')').replace(/(\d|\))\(/g,'$1*(');return Function('return ('+text+')')();}
+  for(let n=0;n<202;n++){
+    const t=x.w.LinearPilotTest.task(1,n),m=t[7],sides=t[0].split('=');
+    for(const v of [-2,0,0.5,t[4],t[4]+1]){
+      assert.equal(m.a*v+m.b,evalAt(sides[0],v)); assert.equal(m.c,evalAt(sides[1],v));
+      assert.equal(m.a*v+m.b-m.c,m.a*v-(m.c-m.b));
+    }
+  }
+});

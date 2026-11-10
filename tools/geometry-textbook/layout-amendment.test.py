@@ -1,7 +1,7 @@
 """The layout exception is exact and reversible, never a wildcard hash bypass."""
 import hashlib,json,shutil,tempfile,unittest
 from pathlib import Path
-from layout_amendment import BASE,PATCH,historical_bytes
+from layout_amendment import BASE,PATCH,historical_bytes,restore_course_shell
 from build_course import ROOT,COURSE,compose
 
 class LayoutAmendment(unittest.TestCase):
@@ -23,6 +23,21 @@ class LayoutAmendment(unittest.TestCase):
    raw=(COURSE/name).read_bytes()
    for changed in (raw+b'\n/* unreviewed */',raw.replace(b'font-size',b'font-FAKE-size',1),raw.replace(b'function save()',b'function changedSave()',1)):
     if changed!=raw:self.assertEqual(historical_bytes(COURSE/name,changed),changed)
+ def test_course_shell_restores_only_the_exact_index(self):
+  from public_navigator_preservation import restore_public_navigator
+  raw=(COURSE/'index.html').read_bytes()
+  shell=restore_public_navigator('geometry-course/textbook/index.html',raw)
+  original=restore_course_shell(shell)
+  self.assertEqual(hashlib.sha256(original).hexdigest(),'098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804')
+  self.assertNotIn(b'course-ui.css',original)
+  self.assertNotIn(b'data-mx-course',original)
+  self.assertEqual(restore_course_shell(original),original)
+  link=b'<link rel="stylesheet" href="/assets/course-ui.css?v=20261109-1">\n'
+  for changed in (shell+b'CORRUPTED',shell.replace(b'20261109-1',b'20261109-2',1),
+                  shell.replace(b'data-mx-course="geometry"',b'data-mx-course="stereo"',1),
+                  shell.replace(link,link+link,1),shell.replace(b'assets/engine.js',b'assets/other.js',1)):
+   self.assertNotEqual(changed,shell)
+   self.assertEqual(restore_course_shell(changed),changed,'Unknown bytes must invalidate the existing receipt')
  def test_all1247_cards_and_historical_review_identity_remain_exact(self):
   actual=compose();published=json.loads((COURSE/'data/course.json').read_text())
   self.assertEqual(actual,published,'No teaching/review/revision/storage-key migration')

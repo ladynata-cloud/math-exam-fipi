@@ -62,6 +62,37 @@ rd.querySelector('#guided').click();rd.querySelector('#hint').click();rd.querySe
 const saved=Object.fromEntries(Array.from({length:rw.localStorage.length},(_,i)=>{const k=rw.localStorage.key(i);return [k,rw.localStorage.getItem(k)];}));
 const reloaded=make(saved,'#task/p7-n2-2');assert.equal(reloaded.window.document.querySelector('#answer-0').value,'sqrt(');
 assert.ok(JSON.parse(reloaded.window.localStorage.getItem(key({id:'p7-n2-2'}))).assisted);retain.window.close();reloaded.window.close();
+// A first wrong answer remains visible after correction and reload; blank forms are not attempts.
+const audit=make({},'#task/p1-n7-1'),aw=audit.window,ad=aw.document;
+const auditSubmit=()=>ad.querySelector('#answer-form').dispatchEvent(new aw.Event('submit',{bubbles:true,cancelable:true}));
+const auditType=v=>{const input=ad.querySelector('#answer-0');input.value=v;input.dispatchEvent(new aw.Event('input',{bubbles:true}));};
+auditSubmit();assert.equal(JSON.parse(aw.localStorage.getItem(key({id:'p1-n7-1'}))).history.length,0);
+auditType('7');auditSubmit();auditType('6');auditSubmit();
+assert.match(ad.querySelector('#final-answer .badge').textContent,/после исправления/);
+assert.ok(ad.querySelector('#next-fresh'));assert.ok(!ad.querySelector('#next-fresh').href.endsWith('p1-n7-1'));
+const auditSaved=Object.fromEntries(Array.from({length:aw.localStorage.length},(_,i)=>{const k=aw.localStorage.key(i);return [k,aw.localStorage.getItem(k)];}));
+const auditReload=make(auditSaved,'#task/p1-n7-1');
+assert.ok(auditReload.window.document.body.textContent.includes('Итог: 7'));
+assert.match(auditReload.window.document.querySelector('#final-answer .badge').textContent,/после исправления/);
+audit.window.close();auditReload.window.close();
+// Continue the most recently active unfinished task, not the first task in book order.
+const older=M.fresh(),newer=M.fresh();older.drafts=['2'];older.updatedAt=10;newer.notes='план решения';newer.updatedAt=20;
+const recent=make({[key({id:'p1-n7-1'})]:JSON.stringify(older),[key({id:'p3-n2'})]:JSON.stringify(newer)});
+const continueLink=[...recent.window.document.querySelectorAll('a')].find(a=>a.textContent.startsWith('Продолжить'));
+assert.ok(continueLink.href.endsWith('p3-n2'));recent.window.close();
+// The last guided step is not the final answer/proof submission.
+for(const id of ['p1-n7-1','p3-n2']){
+ const task=C.units.flatMap(u=>u.tasks).find(t=>t.id===id),ready=M.fresh();ready.mode='guided';ready.assisted=true;ready.updatedAt=30;ready.done=task.steps.length;ready.stepDrafts=task.steps.map(s=>String(s.value));
+ const unfinished=make({[key(task)]:JSON.stringify(ready)});
+ const resume=[...unfinished.window.document.querySelectorAll('a')].find(a=>a.textContent.startsWith('Продолжить'));
+ assert.ok(resume?.href.endsWith(id),id+' final/proof remains unfinished');unfinished.window.close();
+}
+// Long permitted answers wrap inside the disclosed history (browser geometry is checked separately).
+const longTask=C.units.flatMap(u=>u.tasks).find(t=>t.id==='p1-n7-1'),longState=M.fresh();M.submit(longState,longTask,'final',['9'.repeat(180)],null,1);
+const narrow=make({[key(longTask)]:JSON.stringify(longState)},'#task/'+longTask.id),style=narrow.window.document.createElement('style');style.textContent=fs.readFileSync(path.join(dir,'style.css'),'utf8');narrow.window.document.head.append(style);
+const history=narrow.window.document.querySelector('.attempt-history');assert.ok(history);history.open=true;
+assert.equal(narrow.window.getComputedStyle(history).overflowWrap,'anywhere');assert.equal(narrow.window.getComputedStyle(history.querySelector('li')).overflowWrap,'anywhere');
+assert.ok(history.textContent.includes('9'.repeat(180)));narrow.window.close();
 // Exact paragraph/number search, not substring collisions with other pages.
 w.location.hash='';w.dispatchEvent(new w.HashChangeEvent('hashchange'));type('#search','§ 3 № 2');assert.equal(d.querySelectorAll('.task-card').length,1);assert.ok(d.querySelector('.task-card').href.endsWith('p3-n2'));
 type('#search','№ 7');assert.ok([...d.querySelectorAll('.task-card')].every(a=>/\bn7(?:-|$)/.test(a.href)));

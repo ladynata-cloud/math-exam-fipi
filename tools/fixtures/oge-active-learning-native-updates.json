@@ -1,0 +1,12 @@
+{
+  "9": {
+    "file": "trainers/oge-task9-equations.html",
+    "sourceCommit": "0ab769a38744d3ea6890933d2b5600f145721d46",
+    "sha256": "c3538f7eba74037b1933faf1b9cccb21c5db0343cce1741d2cea3779a284554f"
+  },
+  "11": {
+    "file": "trainers/oge-task11-graphs-trainer.html",
+    "sourceCommit": "aa5f27628d5c384e001df55334fc703e83e6f36e",
+    "sha256": "19cde8e19f4fb894c0d06f0e9c6152af7d674dddbebd5928d5e214bdc534d7e9"
+  }
+}

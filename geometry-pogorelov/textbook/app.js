@@ -8,7 +8,7 @@
   function record(t){
     if(cache.has(t.id))return cache.get(t.id);
     let raw=null,p=M.fresh(),blocked=false,reason='';
-    try{raw=localStorage.getItem(prefix+t.id);if(raw){if(raw.length>35000)throw Error('size');p=M.restore(raw,t);}}
+    try{raw=localStorage.getItem(prefix+t.id);if(raw){if(raw.length>128000)throw Error('size');p=M.restore(raw,t);}}
     catch(e){blocked=true;reason='Прежнюю запись не удалось прочитать. Она сохранена без изменений; новые ответы пока остаются только в этой вкладке.';}
     const r={p,expected:raw,blocked,reason};cache.set(t.id,r);return r;
   }
@@ -17,7 +17,7 @@
     try{
       const now=localStorage.getItem(prefix+t.id);
       if(now!==r.expected){r.blocked=true;r.reason='В другой вкладке уже сохранена новая работа с этой задачей. Скачай свою запись, затем открой сохранённую версию.';storageNote.textContent=r.reason;return false;}
-      const raw=JSON.stringify(r.p);localStorage.setItem(prefix+t.id,raw);r.expected=raw;
+      r.p.updatedAt=Date.now();const raw=JSON.stringify(r.p);localStorage.setItem(prefix+t.id,raw);r.expected=raw;
       storageNote.textContent='Работа сохраняется в этом браузере. Для переноса на другое устройство скачай записи.';return true;
     }catch(e){storageNote.textContent='Браузер не разрешил сохранить изменения. Записи остаются в этой вкладке; скачай работу перед её закрытием.';return false;}
   }
@@ -44,7 +44,7 @@
     }).join('')}</div>`;
   }
   function home(){
-    current=null;const last=Array.from(tasks.values()).find(({t})=>M.status(record(t).p,t)==='В работе');
+    current=null;const last=M.resume(Array.from(tasks.values(),row=>({...row,p:record(row.t).p})));
     main.innerHTML=`<section class="hero"><p class="eyebrow">Геометрия · 7–9 классы · издание 2022</p><h1>Курс к учебнику<br>А. В. Погорелова<span>Твоя задача. Понятные шаги.</span></h1><p class="intro">Учебник открыт рядом. Здесь — тренажёры к конкретным номерам, собственные объяснения и чертежи, которые помогают увидеть ход решения.</p><div class="ribbon"><span>15 параграфов</span><span>${tasks.size} тренажёра</span><span>92 номера с выбранными подпунктами</span></div><div class="row"><a class="button primary" href="#section/1">Начать с 7 класса →</a>${last?`<a class="button" href="${link(last.t)}">Продолжить ${esc(ref(last.u,last.t))}</a>`:''}</div></section><div class="filters" aria-label="Выбор класса">${['all','7','8','9'].map(g=>`<button type="button" data-grade="${g}" class="${g===filter?'active':''}" aria-pressed="${g===filter}">${g==='all'?'Все классы':g+' класс'}</button>`).join('')}<label class="search"><span class="sr-only">Найти тему или номер задачи</span><input type="search" id="search" placeholder="Тема или номер задачи…" value="${esc(query)}"></label></div><section id="results" aria-label="Разделы курса"></section>${bookNote()}`;
     main.querySelectorAll('[data-grade]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.grade;home();}));
     document.getElementById('search').addEventListener('input',e=>{query=e.target.value;renderResults();});renderResults();
@@ -102,9 +102,16 @@
     if(t.answers)return `<section class="card" id="final-answer"><h2>${p.mode==='guided'?'Запиши итог задачи':'Решаю самостоятельно'}</h2><form id="answer-form">${t.answers.map((a,j)=>field(a.label,p.drafts[j],j,'answer')).join('')}<button class="primary" type="submit">Проверить ответ</button></form><p class="info">Числа вводи без единиц. Подойдут десятичная запятая, дробь 5/7, sqrt(7), 20*pi. Если требуется округление, точность указана над полем.</p><div class="feedback ${feedback?.kind||''}" role="status">${feedback?.area==='final'?esc(feedback.text):''}</div>${p.checked?`<p class="badge">${esc(M.status(p,t))}</p>`:''}</section>`;
     return `<section class="card manual"><h2>Запись для проверки</h2><p class="info">Доказательство или построение проверяется по смыслу. Запиши рассуждение здесь или выполни чертёж в тетради и отметь это в записи. Эти отметки — самопроверка, а не автоматическая оценка.</p><label for="proof-notes"><strong>Моё доказательство или запись о построении</strong></label><textarea id="proof-notes" maxlength="5000">${esc(p.notes)}</textarea>${t.checks.map((s,j)=>`<label class="check-item"><input type="checkbox" data-selfcheck="${j}" ${p.checks[j]?'checked':''}><span>${esc(s)}</span></label>`).join('')}<button type="button" class="primary" id="save-proof">Сохранить для проверки</button><div class="feedback ${feedback?.kind||''}" role="status">${feedback?.area==='manual'?esc(feedback.text):''}</div>${p.manual?'<p class="badge">Запись сохранена. Обсуди её с преподавателем.</p>':''}</section>`;
   }
+  function attemptHistory(t,p){
+    if(!p.firstFinal&&!p.firstSteps.some(Boolean))return '';
+    const label=a=>(a.kind==='final'?'Итог':'Шаг '+(a.index+1))+': '+a.values.join('; ');
+    const result=a=>a.ok?'ответ совпал':'ответ не совпал';
+    const first=[p.firstFinal,...p.firstSteps].filter(Boolean);
+    return `<details class="card attempt-history"><summary>Мои первые ответы и исправления</summary><p class="info">Первый сохранённый ответ показан отдельно. ${p.trackingVersion!==1?'Начало работы в прежней версии не записывалось; самостоятельность старого результата не подтверждается. ':''}Ниже — до 12 последних проверок. Числовая проверка не оценивает доказательство.</p><h3>Первые сохранённые ответы</h3><ul>${first.map(a=>`<li>${esc(label(a))} — ${result(a)}${a.assisted?' · с помощью':''}</li>`).join('')}</ul><h3>Последние проверки</h3><ol>${p.history.map(a=>`<li>${esc(label(a))} — ${result(a)}${a.assisted?' · с помощью':''}</li>`).join('')}</ol></details>`;
+  }
   function taskView(u,t){
-    current=t.id;const r=record(t),p=r.p;const localIndex=u.tasks.findIndex(x=>x.id===t.id);
-    main.innerHTML=`<nav class="crumb"><a href="#">Все разделы</a><span>›</span><a href="${unitLink(u)}">§ ${u.id}. ${esc(u.title)}</a></nav>${source(u,t)}<h1 class="task-heading">${esc(t.title)}</h1><p class="intro">${fmt(t.goal)}</p>${r.blocked?`<div class="alert">${esc(r.reason)} <button id="reload-state" type="button">Открыть сохранённую версию</button></div>`:''}<div class="workspace"><div class="workpane"><div class="mode-switch"><button id="independent" type="button" class="${p.mode==='independent'?'selected':''}">Решаю сам</button><button id="guided" type="button" class="${p.mode==='guided'?'selected':''}">Разобрать по шагам</button></div><details id="theory" class="card rules" ${p.theory?'open':''}><summary>Нужное правило</summary>${rules(u)}</details>${p.mode==='guided'?t.steps.slice(0,Math.min(t.steps.length,p.done+1)).map((_,i)=>renderStep(t,p,i)).join(''):''}${p.mode==='guided'&&p.done===t.steps.length?'<p class="complete">Разбор завершён. Все шаги остались на экране. Теперь запиши итог.</p>':''}${p.mode==='independent'||p.done===t.steps.length?finalForm(t,p):''}</div><aside class="model-card"><figure><div id="drawing"></div><figcaption>${esc(t.model.caption)}</figcaption></figure><div class="model-tools"><button id="enlarge" type="button">Увеличить чертёж</button>${maxPhase(t)>0?`<button id="construction" type="button" ${phase(t,p)>=maxPhase(t)?'disabled':''}>Следующее построение</button>`:''}</div><p class="model-tip" id="model-tip">Нажми на отрезок, чтобы выделить его.</p>${t.notes?`<p class="info">${fmt(t.notes)}</p>`:''}</aside></div><div class="task-footer"><a class="button" href="${unitLink(u)}">Все задачи § ${u.id}</a>${localIndex+1<u.tasks.length?`<a class="button" href="${link(u.tasks[localIndex+1])}">Следующий тренажёр →</a>`:u.id<15?`<a class="button" href="#section/${u.id+1}">Следующий параграф →</a>`:''}</div><p class="footer-line">${p.assisted?'Помощь использована — эта отметка сохранится и после закрытия подсказки.':'Можно сначала решить без помощи, затем проверить ответ.'} Условие задачи находится в учебнике; здесь — авторский учебный разбор MathExam.</p>`;
+    current=t.id;const r=record(t),p=r.p;const localIndex=u.tasks.findIndex(x=>x.id===t.id);const nextFresh=u.tasks.find(x=>x.id!==t.id&&!record(x).blocked&&!M.started(record(x).p));
+    main.innerHTML=`<nav class="crumb"><a href="#">Все разделы</a><span>›</span><a href="${unitLink(u)}">§ ${u.id}. ${esc(u.title)}</a></nav>${source(u,t)}<h1 class="task-heading">${esc(t.title)}</h1><p class="intro">${fmt(t.goal)}</p>${r.blocked?`<div class="alert">${esc(r.reason)} <button id="reload-state" type="button">Открыть сохранённую версию</button></div>`:''}<div class="workspace"><div class="workpane"><div class="mode-switch"><button id="independent" type="button" class="${p.mode==='independent'?'selected':''}">Решаю сам</button><button id="guided" type="button" class="${p.mode==='guided'?'selected':''}">Разобрать по шагам</button></div><details id="theory" class="card rules" ${p.theory?'open':''}><summary>Нужное правило</summary>${rules(u)}</details>${p.mode==='guided'?t.steps.slice(0,Math.min(t.steps.length,p.done+1)).map((_,i)=>renderStep(t,p,i)).join(''):''}${p.mode==='guided'&&p.done===t.steps.length?'<p class="complete">Разбор завершён. Все шаги остались на экране. Теперь запиши итог.</p>':''}${p.mode==='independent'||p.done===t.steps.length?finalForm(t,p):''}</div><aside class="model-card"><figure><div id="drawing"></div><figcaption>${esc(t.model.caption)}</figcaption></figure><div class="model-tools"><button id="enlarge" type="button">Увеличить чертёж</button>${maxPhase(t)>0?`<button id="construction" type="button" ${phase(t,p)>=maxPhase(t)?'disabled':''}>Следующее построение</button>`:''}</div><p class="model-tip" id="model-tip">Нажми на отрезок, чтобы выделить его.</p>${t.notes?`<p class="info">${fmt(t.notes)}</p>`:''}</aside></div>${attemptHistory(t,p)}${(p.assisted||p.checked||p.manual||p.done===t.steps.length)&&nextFresh?`<section class="card"><h2>Проверь понимание на другом условии</h2><p>Выбран ещё не открывавшийся в этом браузере номер того же параграфа. Прочитай его условие в учебнике и попробуй без разбора. Текущая работа сохранится.</p><a class="button primary" id="next-fresh" href="${link(nextFresh)}">Другая задача: ${esc(ref(u,nextFresh))} →</a></section>`:''}<div class="task-footer"><a class="button" href="${unitLink(u)}">Все задачи § ${u.id}</a>${localIndex+1<u.tasks.length?`<a class="button" href="${link(u.tasks[localIndex+1])}">Следующий тренажёр →</a>`:u.id<15?`<a class="button" href="#section/${u.id+1}">Следующий параграф →</a>`:''}</div><p class="footer-line">${p.assisted?'Помощь использована — эта отметка сохранится и после закрытия подсказки.':'Можно сначала решить без помощи, затем проверить ответ.'} Условие задачи находится в учебнике; здесь — авторский учебный разбор MathExam.</p>`;
     draw(t,p);
     const on=(id,event,fn)=>document.getElementById(id)?.addEventListener(event,fn);
     const rerender=()=>{save(t);taskView(u,t);};
@@ -115,6 +122,8 @@
     main.querySelectorAll('[data-step]').forEach(el=>el.addEventListener('input',()=>{p.stepDrafts[Number(el.dataset.step)]=el.value;save(t);}));
     function checkStep(value){
       const i=p.done,s=t.steps[i];if(!s)return;p.stepDrafts[i]=value;
+      if(!String(value).trim()){feedback={area:'step',kind:'error',text:'Сначала введи ответ. Пустая форма не считается попыткой.'};taskView(u,t);return;}
+      M.submit(p,t,'step',[String(value)],i);
       if(M.check(value,s)){p.done++;feedback=null;rerender();document.getElementById('active-step')?.scrollIntoView({block:'nearest'});document.querySelector('#active-step input, #active-step button')?.focus();}
       else{feedback={area:'step',kind:'error',text:s.options?'Пока не подходит. Проверь, какое свойство можно применить именно здесь.':Number.isFinite(M.parse(value))?'Пока не совпало. Проверь действие и данные этого шага. Можно открыть подсказку.':'Введи число или выражение, например 2,5, 5/7 или sqrt(7).'};rerender();document.querySelector('#active-step input')?.focus();}
     }
@@ -124,7 +133,7 @@
     on('reveal','click',()=>{if(!p.reveals.includes(p.done))p.reveals.push(p.done);help(t);rerender();document.getElementById('advance-shown')?.focus();});
     on('advance-shown','click',()=>{if(p.reveals.includes(p.done))p.done++;feedback=null;rerender();});
     on('answer-form','submit',e=>{
-      e.preventDefault();const wrong=t.answers.map((a,i)=>M.check(p.drafts[i],a)?-1:i).filter(i=>i>=0);
+      e.preventDefault();if(t.answers.some((_,i)=>!String(p.drafts[i]||'').trim())){feedback={area:'final',kind:'error',text:'Заполни все ответы. Неполная форма не считается попыткой.'};taskView(u,t);return;}M.submit(p,t,'final',t.answers.map((_,i)=>String(p.drafts[i])));const wrong=t.answers.map((a,i)=>M.check(p.drafts[i],a)?-1:i).filter(i=>i>=0);
       p.checked=wrong.length===0;
       feedback=p.checked?{area:'final',kind:'success',text:'Все числовые ответы совпали. Объясни, почему получился такой результат.'}:{area:'final',kind:'error',text:'Проверь: '+wrong.map(i=>t.answers[i].label).join('; ')+'. Ответы сохранились.'};rerender();document.getElementById('final-answer')?.scrollIntoView({block:'nearest'});
     });
@@ -140,7 +149,7 @@
   function route(){
     if(dialog)dialog.close();feedback=null;selectedLine='';
     const hash=location.hash.slice(1),m=hash.match(/^task\/(p\d+-n\d+(?:-[a-zа-я0-9-]+)?)$/),s=hash.match(/^section\/(\d+)$/);
-    if(m&&tasks.has(m[1])){const {u,t}=tasks.get(m[1]);taskView(u,t);}
+    if(m&&tasks.has(m[1])){const {u,t}=tasks.get(m[1]);save(t);taskView(u,t);}
     else if(s&&units.has(Number(s[1])))section(units.get(Number(s[1])));
     else if(hash&&hash!=='main'){current=null;main.innerHTML='<h1>Тренажёр не найден</h1><p>В этой подборке такого адреса нет. Выбери номер в оглавлении.</p><a class="button" href="#">Открыть оглавление</a>';}
     else home();

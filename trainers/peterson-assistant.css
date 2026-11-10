@@ -23,4 +23,5 @@ body.peterson-help-ready{padding-bottom:88px}
 .peterson-help-fraction>span{padding:1px 3px}
 .peterson-help-fraction>span:first-child{border-bottom:1px solid currentColor}
 @media(max-width:480px){.peterson-help{right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:calc(100vw - 24px)}.peterson-help-header{padding:12px}.peterson-help-body{padding:13px}.peterson-help-panel{max-height:70vh;max-height:70dvh}}
+@media(max-width:480px){.peterson-help.peterson-help-inline{position:static;width:100%;margin:16px 0}.peterson-help.peterson-help-inline p{margin:0 0 12px}}
 @media print{.peterson-help{display:none}body.peterson-help-ready{padding-bottom:0}}

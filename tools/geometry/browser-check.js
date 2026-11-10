@@ -3,7 +3,56 @@ const fs=require('fs'),path=require('path'),http=require('http'),assert=require(
 const out=path.resolve(process.env.GEOMETRY_EVIDENCE_DIR||path.join(root,'../geometry-private'));
 (async()=>{fs.mkdirSync(out,{recursive:true});const server=http.createServer((req,res)=>{let p=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!p.startsWith(root+path.sep))return res.writeHead(403).end();try{if(fs.statSync(p).isDirectory())p+='/index.html';res.setHeader('Content-Type',p.endsWith('.html')?'text/html; charset=utf-8':'text/plain');res.end(fs.readFileSync(p));}catch(e){res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port+'/geometry-course/';const browser=await chromium.launch({executablePath:process.env.GEOMETRY_CHROMIUM||chromium.executablePath(),headless:true,args:['--no-sandbox']});const context=await browser.newContext({viewport:{width:1280,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));let passed=0;
 try{await page.goto(base);assert.equal(await page.locator('.course-card').count(),63);await page.getByRole('button',{name:'8 класс',exact:true}).click();assert.equal(await page.locator('.chapter:visible .course-card:visible').count(),C.units.filter(u=>u.grade===8).length);await page.getByRole('button',{name:'Все классы',exact:true}).click();await page.screenshot({path:path.join(out,'catalog-desktop.png'),fullPage:false});
-for(const u of C.units){await page.goto(base+'atlas/'+u.id+'.html');await page.locator('[data-stage="1"]').click();assert.equal(await page.locator('#geo-board canvas').count(),1);await page.locator('#observation').fill('После движения проверяю, сохраняется ли заданная связь.');await page.locator('[data-stage="2"]').click();await page.locator('[data-action="proof-trap"]').click();assert.match(await page.locator('#proof-feedback').innerText(),/чертёж/);const proof=await page.evaluate(()=>COURSE_CONFIG.proof);for(const step of proof.steps){await page.locator('[data-proof="'+step.id+'"]').click();await page.locator('#reason-choice').selectOption('yes');await page.locator('[data-action="reason-check"]').click();}await page.locator('[data-stage="3"]').click();let seed=await page.evaluate(()=>JSON.parse(localStorage.getItem('mathExamGeometry.v1')).units[COURSE_CONFIG.unit.id].seed);let t=T.task(u.calc,seed);for(const step of t.steps){await page.locator('#answer').fill(T.format(step.answer));await page.locator('#answer-form button').click();}await page.locator('[data-action="independent-start"]').click();seed++;t=T.task(u.calc,seed);await page.locator('#answer').fill(T.format(t.answer));await page.locator('#answer-form button').click();assert.match(await page.locator('#answer-feedback').innerText(),/первой попытки/);await page.locator('[data-stage="5"]').click();await page.locator('#written').fill('Проверяю условия. Использую установленную теорему и получаю требуемое утверждение.');await page.locator('[data-action="finish"]').click();assert.equal(await page.locator('#success').count(),1);await page.reload();assert.equal(await page.locator('#written').inputValue(),'Проверяю условия. Использую установленную теорему и получаю требуемое утверждение.');passed++;if(passed%10===0)console.log('Completed new lessons',passed);}
+const proofExamples=[
+ ['segments',/Отрезок AB длиной 10/],['chords-tangent',/Окружность с центром O/],
+ ['projections',/Высота CH/],['pythagoras',/четыре одинаковых прямоугольных треугольника/],
+];
+await page.setViewportSize({width:320,height:900});
+for(const [id,label] of proofExamples){
+ await page.goto(base+'atlas/'+id+'.html');
+ await page.locator('[data-stage="2"]').click();
+ assert.match(await page.locator('.proof-diagram').getAttribute('aria-label'),label);
+ assert.ok(await page.locator('.proof-diagram').isVisible());
+ const condition=await page.locator('#lesson .callout').boundingBox();
+ const diagram=await page.locator('.proof-diagram').boundingBox();
+ assert.ok(condition.y>=0&&diagram.y+diagram.height<=900,id+' condition and drawing fit in view');
+ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+}
+await page.goto(base+'atlas/segments.html');
+await page.locator('[data-stage="2"]').click();
+await page.locator('[data-proof="s3"]').click();
+assert.match(await page.locator('#proof-feedback').innerText(),/ещё не обоснованные шаги/);
+await page.getByText('Свободное поле для чертежа к доказательству',{exact:true}).click();
+assert.equal(await page.locator('#proof-board .point-select option').count(),0);
+await page.locator('#proof-board .point-x').fill('80');
+await page.locator('#proof-board .point-y').fill('100');
+await page.locator('#proof-board [data-act="move"]').click();
+await page.locator('[data-proof="s2"]').click();
+assert.equal(await page.locator('#proof-feedback').innerText(),'');
+await page.locator('#reason-choice').selectOption('yes');
+await page.locator('[data-action="reason-check"]').click();
+assert.equal(await page.locator('#proof-board .point-select option').count(),1);
+await page.reload();
+assert.match(await page.locator('.proof-list li').first().innerText(),/AB=AM\+MB/);
+for(const id of ['s1','s3']){
+ await page.locator('[data-proof="'+id+'"]').click();
+ await page.locator('#reason-choice').selectOption('yes');
+ await page.locator('[data-action="reason-check"]').click();
+}
+assert.equal(await page.locator('.proof-list li').count(),3);
+await page.getByRole('button',{name:'Собрать ещё раз'}).click();
+assert.equal(await page.locator('.proof-list li').count(),0);
+assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KEY)).units.segments.proof),false);
+await page.setViewportSize({width:1280,height:900});
+for(const u of C.units){await page.goto(base+'atlas/'+u.id+'.html');await page.locator('[data-stage="1"]').click();if(u.id==='triangle-sas'){
+ const model=page.locator('.congruence-model');
+ assert.equal(await model.isVisible(),false);
+ await page.locator('#congruence-prediction select').selectOption('opposite');
+ await page.locator('#congruence-prediction button').click();
+ assert.match(await model.locator('.model-question').innerText(),/двух точках/);
+ await model.locator('.congruence-mode').selectOption('included');
+ assert.match(await model.locator('.model-question').innerText(),/одна такая точка/);
+ }else if(await page.locator('.investigation-predict').count()){await page.locator('.investigation-predict select').selectOption({index:1});await page.locator('.investigation-predict button').click();assert.equal(await page.locator('.investigation-model svg').isVisible(),true);}else assert.equal(await page.locator('#geo-board canvas').count(),1);await page.locator('#observation').fill('После движения проверяю, сохраняется ли заданная связь.');await page.locator('[data-stage="2"]').click();await page.locator('[data-action="proof-trap"]').click();assert.match(await page.locator('#proof-feedback').innerText(),/чертёж/);const proof=await page.evaluate(()=>COURSE_CONFIG.proof);for(const step of proof.steps){await page.locator('[data-proof="'+step.id+'"]').click();await page.locator('#reason-choice').selectOption('yes');await page.locator('[data-action="reason-check"]').click();}await page.locator('[data-stage="3"]').click();let seed=await page.evaluate(()=>JSON.parse(localStorage.getItem('mathExamGeometry.v1')).units[COURSE_CONFIG.unit.id].seed);const getTask=async seed=>page.evaluate(({seed,calc})=>window.GeoInvestigations?.forUnit(COURSE_CONFIG.unit.id)?.task(seed)||window.GeoCongruence?.task(seed)||GeoTasks.task(calc,seed),{seed,calc:u.calc});let t=await getTask(seed);for(const step of t.steps){await page.locator('#answer').fill(T.format(step.answer));await page.locator('#answer-form button').click();}await page.locator('[data-action="independent-start"]').click();seed++;t=await getTask(seed);await page.locator('#answer').fill(T.format(t.answer));await page.locator('#answer-form button').click();assert.match(await page.locator('#answer-feedback').innerText(),/первой попытки/);await page.locator('[data-stage="5"]').click();await page.locator('#written').fill('Проверяю условия. Использую установленную теорему и получаю требуемое утверждение.');await page.locator('[data-action="finish"]').click();assert.equal(await page.locator('#success').count(),1);await page.reload();assert.equal(await page.locator('#written').inputValue(),'Проверяю условия. Использую установленную теорему и получаю требуемое утверждение.');passed++;if(passed%10===0)console.log('Completed new lessons',passed);}
 // Pointer geometry construction must persist on reload, and first-attempt state cannot be farmed.
 await page.goto(base+'atlas/segments.html');await page.locator('[data-stage="1"]').click();await page.locator('.extra-tools summary').click();await page.locator('[data-tool="midpoint"]').click();for(const id of ['A','B']){await page.locator('#geo-board .point-select').selectOption(id);await page.locator('#geo-board [data-act="select"]').click();}await page.locator('#geo-board [data-act="goal"]').click();assert.match(await page.locator('.lab-feedback').innerText(),/выполнено/);await page.locator('[data-tool="move"]').click();const rect=await page.locator('#geo-board canvas').boundingBox();await page.mouse.move(rect.x+140/640*rect.width,rect.y+235/420*rect.height);await page.mouse.down();await page.mouse.move(rect.x+180/640*rect.width,rect.y+180/420*rect.height,{steps:5});await page.mouse.up();await page.locator('[data-stage="0"]').click();await page.reload();await page.locator('[data-stage="1"]').click();assert.equal(await page.locator('.point-select option').count(),3);
 // The shipped lesson rejects a perpendicular through the wrong named point.

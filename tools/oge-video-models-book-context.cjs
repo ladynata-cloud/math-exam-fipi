@@ -3,16 +3,29 @@
 // a general visible-text filter. Original math fixtures and SVGs stay intact.
 const assert=require('node:assert/strict'),crypto=require('node:crypto');
 const {restoreVideoModels,assets}=require('./oge-video-models-preservation.cjs');
+const {routes:activeRoutes,restoreActiveLearningIncludes}=require('./oge-active-learning-preservation.cjs');
 const pins=require('./fixtures/oge-video-models-native-bytes.json');
 // Explicit later teaching revisions; original historical pins remain immutable.
 const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
-const sourcePin=file=>({...pins.pages[file],sourceCommit:pins.baseCommit,...updates.pages[file]});
+function sourcePin(file,nativeSha256){
+ const pin=pins.pages[file];if(!pin)return null;
+ const choices=[
+  pin.currentSource&&{sourceCommit:pin.currentSource.commit,sha256:pin.currentSource.sha256},
+  updates.pages[file],
+  {sourceCommit:pins.baseCommit,sha256:pin.sha256},
+ ].filter(Boolean);
+ const selected=nativeSha256===undefined?choices[0]:choices.find(source=>source.sha256===nativeSha256);
+ return selected?{...pin,...selected}:null;
+}
 const label='Разобраться на модели',summaryHtml='<summary data-ovm-open="">'+label+'</summary>';
 const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
-function receipt({file,raw,id,prefix,visible,dom,assetHashes}){
- const pin=sourcePin(file);assert(pin&&pin.bookId&&pin.bookId===id,'exact reviewed book/source route');assert.equal(prefix,'');
- const native=restoreVideoModels(file,raw);assert.notEqual(native,String(raw),'the exact optional include block is required');
- assert.equal(hash(native),pin.sha256,'every native HTML byte must retain its reviewed identity');
+function receipt({file,raw,id,prefix,visible,dom,assetHashes,historical=false}){
+ assert.equal(prefix,'');
+ const withoutVideo=restoreVideoModels(file,raw);assert.notEqual(withoutVideo,String(raw),'the exact optional include block is required');
+ const active=Object.values(activeRoutes).includes(file);
+ const native=active&&(!historical||withoutVideo.includes('oge-active-learning'))?restoreActiveLearningIncludes(file,withoutVideo):withoutVideo;
+ const pin=sourcePin(file,hash(native));
+ assert(pin&&pin.bookId&&pin.bookId===id,'every native HTML byte must match an exact reviewed book/source route');
  assert.deepEqual(dom,{count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label},'one exact closed summary is the complete visible addon');
  assert.deepEqual(Object.keys(assetHashes).sort(),assets.map(file=>'/'+file).sort(),'exact four local addon assets');
  for(const value of Object.values(assetHashes))assert.match(value,/^[a-f0-9]{64}$/);

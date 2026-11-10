@@ -75,3 +75,21 @@ by an ordinary merge with no file delta. Both the current and base book verifier
 passed for the two immutable editions; generator 14/14, package 16/16,
 deployment-verifier regression 14/14 and evidence-collector 31/31 tests passed
 locally. Final candidate CI and real-browser acceptance remain mandatory.
+
+### Combined course release
+
+The approved combined release retains the active-learning include triple from
+#507 and the shared course stylesheet from #502. On task 11 the active-learning
+triple precedes the exact video-model block. Both original strict inverses run
+in reverse order for historical byte comparisons; neither inverse accepts
+intervening, unknown or duplicated code. Original native hashes, mathematical
+fixtures and immutable editions are not repinned. The two closed summaries
+require separate receipts; new negative controls reject missing or altered
+receipts and either changed source block.
+
+The composed future edition has exactly 243 files: removing only the guide
+pair gives 241, active-learning triple 240, video assets 239, all-topics stylesheet
+242, and the shared course stylesheet is separately checked as a one-file delta.
+All inverse tests retain namespace ordering, exact source hashes, dependency
+sets and previously published book bytes. This source record does not itself
+claim a successful publication or substitute for the final combined CI.

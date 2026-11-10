@@ -284,12 +284,20 @@ A′B′=k(OB−OA)=k·AB как векторы^Подставляем опре�
 Длина A′B′ равна |k|·AB^Умножение вектора на число меняет длину в модуль этого числа раз; отрицательный знак меняет направление.
 '''
 proofs={}
+independent_openers={'segment', 'angles'}
 for block in RAW.strip().split('\n===\n'):
  lines=block.splitlines(); key,title,given,goal=lines.pop(0).split('|',3)
  steps=[]
  for i,line in enumerate(lines):
-  text,reason=line.split('^'); offset=100 if key=='area-parallelogram' else 0
-  steps.append(dict(id=f's{offset+i+1}',text=text,reason=reason,depends=[] if i==0 else [f's{offset+i}']))
+  text,reason=line.split('^')
+  offset=100 if key=='area-parallelogram' else 0
+  if key in independent_openers and i < 2:
+   depends=[]
+  elif key in independent_openers and i == 2:
+   depends=['s1','s2']
+  else:
+   depends=[] if i==0 else [f's{offset+i}']
+  steps.append(dict(id=f's{offset+i+1}',text=text,reason=reason,depends=depends))
  proofs[key]=dict(id=key,title=title,given=given,goal=goal,steps=steps)
 (ROOT/'geometry-course/data/proofs.json').write_text(json.dumps(proofs,ensure_ascii=False,indent=2)+'\n')
 print(len(proofs),'worked arguments')

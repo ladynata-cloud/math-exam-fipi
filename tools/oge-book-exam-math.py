@@ -26,6 +26,45 @@ BOOK_BANNERS = {
 def digest(data):
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
 
+# Exact public native documents at 463d6bf, before the three optional includes
+# and the separately normalized №7 explanation. No published fixture is repinned.
+ACTIVE_NATIVE = {
+    6: ('fractions', '4b959d2462005bd7ef796a29c1e75b42527bb58a4db80d7ee782e11db902b6e5'),
+    7: ('number-line', '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca'),
+    8: ('powers-roots', 'def5a8e5d2d979bef43bd54f09354c3cb6b372be7d98d64e37017378ceb486b1'),
+    9: ('equations', 'a3d4de85e84b02a7cd74f11d6b2bb444257f205ef63ab63784d0b682c7366224'),
+    10: ('probability', '6af36a504fd0d75c9166642876691709d932d51484d0d7a9e421b67204ef91a5'),
+    11: ('graphs-trainer', '1fc5b5736e68acfb289a97b2409a7f646ffad3ed11edc39a30b58a823e265b37'),
+    12: ('formulas-trainer', 'aa017e456d48c7bb11ee388a4fa5e0ce73fb7b80a06e86654c4dcd3134a08dc5'),
+}
+
+ACTIVE_NATIVE_UPDATES = json.loads((ROOT / 'tools/fixtures/oge-active-learning-native-updates.json').read_text())
+
+def active_include_hash(number):
+    return digest('<link rel="stylesheet" href="oge-active-learning.css?v=20261109">\n'
+                  '<script defer src="oge-active-learning-data.js?v=20261109"></script>\n'
+                  f'<script defer src="oge-active-learning.js?v=20261109" data-oa-task="{number}"></script>\n')
+
+def retained_active_text(record, text):
+    witness = record.get('optionalActiveLearning')
+    if witness is None:return text
+    if not isinstance(witness, dict) or set(witness) != {'kind','task','collapsed','visibleText','includeBlockSha256','preservedNativeSha256'}:return None
+    number = witness.get('task')
+    if type(number) is not int or number not in ACTIVE_NATIVE or record.get('prefix'):return None
+    suffix, native_hash = ACTIVE_NATIVE[number]
+    route = f'/trainers/oge-task{number}-{suffix}.html'
+    if record.get('route') != route or record.get('finalPath') != route:return None
+    if not record.get('publicWayfinding') or witness.get('kind') != 'oge-active-learning-v1':return None
+    if witness.get('collapsed') is not True or witness.get('visibleText') != 'Разобраться на опыте':return None
+    update = ACTIVE_NATIVE_UPDATES.get(str(number))
+    approved_hashes = {native_hash}
+    if update and '/' + update['file'] == route: approved_hashes.add(update['sha256'])
+    if witness.get('includeBlockSha256') != active_include_hash(number) or witness.get('preservedNativeSha256') not in approved_hashes:return None
+    marker = ' Разобраться на опыте '
+    padded = ' '+text+' '
+    if padded.count(marker) != 1:return None
+    return padded.replace(marker, ' ', 1).strip()
+
 def stable(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
 
@@ -123,6 +162,8 @@ def exact_reviewed_context(record, oracle, fixtures):
     context = verified_context(record)
     if context is None:return False
     text, native_geometry = context
+    text = retained_active_text(record, text)
+    if text is None:return False
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -175,6 +216,28 @@ def wayfinding_context_selftest(fixtures):
     assert not exact_reviewed_context(changed,oracle,fixtures)
     changed_oracle=copy.deepcopy(oracle);changed_oracle['expected']=['0']
     assert not exact_reviewed_context(record,changed_oracle,fixtures)
+    # Actual text stays raw; only one explicitly bound, collapsed disclosure is
+    # outside the historical native witness. Open/content changes cannot pass.
+    active=copy.deepcopy(record)
+    active['initialVisibleText']=text.replace('Перейти к заданию ','Перейти к заданию Разобраться на опыте ',1)
+    active['unfilteredInitialVisibleText']=label+' '+active['initialVisibleText']
+    active['optionalActiveLearning']={'kind':'oge-active-learning-v1','task':6,'collapsed':True,
+        'visibleText':'Разобраться на опыте','includeBlockSha256':active_include_hash(6),
+        'preservedNativeSha256':ACTIVE_NATIVE[6][1]}
+    assert exact_reviewed_context(active,oracle,fixtures)
+    for key,value in [('kind','other'),('task',7),('collapsed',False),('collapsed',1),
+                      ('visibleText','Changed summary'),('includeBlockSha256','b'*64),('preservedNativeSha256','b'*64)]:
+        changed=copy.deepcopy(active);changed['optionalActiveLearning'][key]=value
+        assert not exact_reviewed_context(changed,oracle,fixtures),key
+    for altered in [active['initialVisibleText'].replace('Разобраться на опыте ',''),
+                    active['initialVisibleText'].replace('Разобраться на опыте ','Разобраться на опыте Разобраться на опыте '),
+                    active['initialVisibleText']+' unreviewed instructional content']:
+        changed=copy.deepcopy(active);changed['initialVisibleText']=altered;changed['unfilteredInitialVisibleText']=label+' '+altered
+        assert not exact_reviewed_context(changed,oracle,fixtures)
+    changed=copy.deepcopy(active);del changed['optionalActiveLearning']
+    assert not exact_reviewed_context(changed,oracle,fixtures)
+    changed=copy.deepcopy(active);changed['prefix']=VARIANT_PREFIXES['frozen']
+    assert not exact_reviewed_context(changed,oracle,fixtures)
 
 def rendered_fraction(html):
     """Evaluate only the recorded, rendered expression HTML with exact rationals.

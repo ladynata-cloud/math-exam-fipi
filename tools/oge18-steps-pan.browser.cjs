@@ -42,13 +42,23 @@ const root=path.resolve(__dirname,'..'),out=path.join(root,'artifacts/oge18-step
   }
   for(const width of [320,1280]){
    const page=await context.newPage();await page.setViewportSize({width,height:900});const errors=[];page.on('pageerror',e=>errors.push(e.message));
-   for(const n of [16,17]){
-    await page.goto(base+'/trainers/oge-task'+n+'-'+(n===16?'circle':'quadrilaterals')+'.html');await page.locator('#ans').fill('17');await page.locator('#courseHintToggle').click();
+   // Fixed archived examples cover both multi-step reasoning and a valid one-step solution.
+   for(const [n,archiveId,steps] of [[16,'116',4],[17,'356728',2],[17,'356704',1]]){
+    await page.goto(base+'/trainers/oge-task'+n+'-'+(n===16?'circle':'quadrilaterals')+'.html');
+    await page.evaluate(({n,archiveId})=>window.eval(n===16
+      ?'trTask=buildArchive(ARCHIVE.find(r=>r.nums[0]==='+JSON.stringify(archiveId)+'));trDone=false;trAtt=2;renderTrain();'
+      :'{const r=ARCHIVE.find(r=>r.nums[0]==='+JSON.stringify(archiveId)+');CUR=build(r.sub,r.p,{gen:false,srcLab:srcLabel(r,true),note:S17[r.sub].note});renderTrain(false);}'),{n,archiveId});
+    await page.locator('#ans').fill('17');await page.locator('#courseHintToggle').click();
     assert.equal(await page.locator('#courseHintPanel>h3').textContent(),'Разбор этой задачи по шагам');
-    const next=page.locator(n===16?'#hintBtn':'#stepH');while(!await next.isDisabled())await next.click();
-    assert.equal(await page.locator('#ans').inputValue(),'17');assert.ok(await page.locator(n===16?'#task16Steps .step':'#ssol .step').count()>=2);
+    const next=page.locator(n===16?'#hintBtn':'#stepH'),revealed=page.locator(n===16?'#task16Steps .step':'#ssol .step');
+    for(let i=1;i<=steps;i++){
+     assert.equal(await next.isDisabled(),false);
+     await next.click();assert.equal(await revealed.count(),i);
+     assert.equal(await page.locator('#ans').inputValue(),'17');
+    }
+    assert.equal(await next.isDisabled(),true);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false);
-    await page.screenshot({path:path.join(out,`steps-task${n}-${width}.png`),fullPage:true});
+    await page.screenshot({path:path.join(out,`steps-task${n}-${archiveId}-${width}.png`),fullPage:true});
    }
    await page.goto(base+'/trainers/oge13-inequalities-series.html');
    for(const family of ['linear','quad','graph','special','systems']){

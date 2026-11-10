@@ -3,12 +3,13 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {createHash}=require('node:crypto');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
+const {restoreFractionExplanation}=require('./oge7-fraction-explanation-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
 // Explicit reviewed task sources bind the free-equation and percent-resume
 // changes. Other pages and link metrics retain the published baseline.
-const taskSources={"trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+const taskSources={"trainers/oge-task11-graphs-trainer.html":"aa5f27628d5c384e001df55334fc703e83e6f36e","trainers/oge-task16-circle.html":"7b54b3a6763f7b1dcfe7caa1079f734fb09989fa","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
 // PR #539 independent subject review: bind the exact reviewed inline engine.
 // Evidence: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md. Controls retain the baseline.
 const task9ReviewedScript='3c318b1cfa00fdb9af5871fcaeedd0ec35f28d79ac0d7a5d078f11604813f97d';
@@ -51,6 +52,11 @@ for(const p of routes.pages){
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
   const actualScripts=scripts(d);
+  if(p==='trainers/oge-task7-number-line.html'){
+    const matches=actualScripts.filter(script=>script.includes('function fracExplain('));
+    assert.equal(matches.length,1,p+' reviewed fractional explanation script');
+    actualScripts[actualScripts.indexOf(matches[0])]=restoreFractionExplanation(matches[0]);
+  }
   if(p==='trainers/oge-task8-powers-roots.html'){
     const reference=actualScripts.filter(script=>script.includes('window.sqSearch=function'));
     assert.equal(reference.length,1,p+' reviewed reference script');
@@ -59,6 +65,12 @@ for(const p of routes.pages){
     assert.equal(matches.length,1,p+' reviewed teaching script');
     const index=actualScripts.indexOf(matches[0]);
     actualScripts[index]=restoreRootTeaching(restoreRootAcceptance(matches[0],'learning'));
+    const {restoreNumericSafety}=require('./oge8-numeric-safety-preservation.cjs');
+    for(const [marker,scope] of [['function isqrtB(', 'arithmetic'],['function finishQuiz8(', 'quiz']]){
+      const regions=actualScripts.filter(script=>script.includes(marker));
+      assert.equal(regions.length,1,p+' exact numeric-safety '+scope+' script');
+      const i=actualScripts.indexOf(regions[0]);actualScripts[i]=restoreNumericSafety(regions[0],scope);
+    }
   }
   if(p==='trainers/oge-task9-equations.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');

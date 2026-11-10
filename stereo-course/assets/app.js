@@ -3,7 +3,7 @@ const C=STEREO_COURSE, PROOFS=STEREO_PROOFS;
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const root=document.getElementById('app'), notice=document.getElementById('storage-notice');
 const store=StereoStore.open(C.units.map(u=>u.id),message=>{notice.hidden=false;if(notice.querySelector('[data-recovery-drafts]')){const p=document.createElement('p');p.textContent=message;notice.append(p);}else notice.textContent=message;});
-let unit=null, record=null, viewer=null, taskViewer=null, proofViewer=null, stage=4, timer=null, pending=null, conflict=false;
+let unit=null, record=null, viewer=null, taskViewer=null, proofViewer=null, investigation=null, stage=4, timer=null, pending=null, conflict=false;
 const helpFields={'task-help':'helpOpen','task-theory':'theoryOpen','task-guide':'guideOpen','task-source':'sourceOpen','answer-format':'formatOpen'};
 function snapshotCamera(){if(record?.taskFirst&&taskViewer)record.taskFirst.camera=taskViewer.getState();if(record?.taskFirst&&proofViewer)record.taskFirst.proofCamera=proofViewer.getState();}
 function save(event){
@@ -21,8 +21,8 @@ function ensureCurrent(){
 function showConflict(){
  clearTimeout(timer);if(conflict)return;conflict=true;
  const t=task(),p=proof(),condition=root.dataset.condition||t.q,writtenCondition=root.dataset.proofCondition||(p?p.given+' '+p.goal:unit.investigate),older=[...notice.querySelectorAll('[data-recovery-drafts]')].map(el=>el.outerHTML).join(''),main=document.getElementById('answer')?.value??record.taskFirst.mainDraft,step=document.getElementById('step-answer')?.value??record.taskFirst.stepDraft;
- const written=document.getElementById('written')?.value??record.written,observation=document.getElementById('observation')?.value??record.observation;
- notice.hidden=false;notice.innerHTML='<strong>В другом окне уже сохранена новая работа по этой теме.</strong><p>Чтобы не затереть её, это окно приостановлено. Твои записи остались ниже: их можно скопировать. Они не переносятся в другое условие автоматически.</p>'+older+'<details data-recovery-drafts open><summary>Записи из этого окна</summary><p><strong>Условие:</strong> '+E(condition)+'</p><label>Ответ на задачу<textarea readonly>'+E(main)+'</textarea></label><label>Промежуточный ответ<textarea readonly>'+E(step)+'</textarea></label>'+(written?'<p><strong>Условие письменной работы:</strong> '+E(writtenCondition)+'</p><label>Моё рассуждение<textarea readonly>'+E(written)+'</textarea></label>':'')+(observation?'<label>Наблюдение в лаборатории<textarea readonly>'+E(observation)+'</textarea></label>':'')+'</details><p><button data-recover-latest class="primary">Открыть сохранённую версию</button></p><p>Эти записи останутся здесь и после открытия новой версии.</p>';
+ const written=document.getElementById('written')?.value??record.written,observation=document.getElementById('observation')?.value??record.observation,labExplanation=document.querySelector('[data-lab-explanation]')?.value??record.investigation?.explanation,labAnswer=document.querySelector('[data-lab-answer]')?.value??record.investigation?.draft;
+ notice.hidden=false;notice.innerHTML='<strong>В другом окне уже сохранена новая работа по этой теме.</strong><p>Чтобы не затереть её, это окно приостановлено. Твои записи остались ниже: их можно скопировать. Они не переносятся в другое условие автоматически.</p>'+older+'<details data-recovery-drafts open><summary>Записи из этого окна</summary><p><strong>Условие:</strong> '+E(condition)+'</p><label>Ответ на задачу<textarea readonly>'+E(main)+'</textarea></label><label>Промежуточный ответ<textarea readonly>'+E(step)+'</textarea></label>'+(written?'<p><strong>Условие письменной работы:</strong> '+E(writtenCondition)+'</p><label>Моё рассуждение<textarea readonly>'+E(written)+'</textarea></label>':'')+(observation?'<label>Наблюдение в лаборатории<textarea readonly>'+E(observation)+'</textarea></label>':'')+(labExplanation?'<label>Объяснение из исследования<textarea readonly>'+E(labExplanation)+'</textarea></label>':'')+(labAnswer?'<label>Ответ в исследовании<textarea readonly>'+E(labAnswer)+'</textarea></label>':'')+'</details><p><button data-recover-latest class="primary">Открыть сохранённую версию</button></p><p>Эти записи останутся здесь и после открытия новой версии.</p>';
  root.querySelectorAll('button,select').forEach(el=>el.disabled=true);
  root.querySelectorAll('input,textarea').forEach(el=>el.readOnly=true);
  notice.scrollIntoView({block:'start'});
@@ -34,10 +34,20 @@ notice.addEventListener('click',event=>{
 });
 window.addEventListener('storage',event=>{if(event.key===StereoStore.KEY&&unit&&record)ensureCurrent();});
 function later(){clearTimeout(timer);timer=setTimeout(()=>save(),180);}
-function destroyViewers(){snapshotCamera();viewer?.destroy();taskViewer?.destroy();proofViewer?.destroy();viewer=null;taskViewer=null;proofViewer=null;}
+function destroyViewers(){investigation?.destroy();investigation=null;snapshotCamera();viewer?.destroy();taskViewer?.destroy();proofViewer?.destroy();viewer=null;taskViewer=null;proofViewer=null;}
 window.addEventListener('pagehide',()=>save());
 function setHash(value){history.replaceState(null,'','#'+value);}
-function home(){if(!save())return;destroyViewers();unit=null;record=null;setHash('');const all=store.all().units;root.innerHTML='<section class="stereo-hero"><div><p class="eyebrow">Атанасян · 10–11 классы · 2024</p><h1>Увидеть пространство.<br>Построить доказательство.</h1><p class="lead">Вращай тела, двигай точки на рёбрах, создавай секущие плоскости. Разбирайся, откуда берутся углы, расстояния и объёмы.</p><div class="row"><button class="primary" data-unit="sections">Попробовать сечения →</button><button data-unit="space">Начать с основ</button></div><div class="stats"><div class="stat"><strong>39</strong><span>учебных узлов</span></div><div class="stat"><strong>99</strong><span>пунктов в карте</span></div><div class="stat"><strong>3D</strong><span>зависимые построения</span></div></div></div><div class="hero-art"><svg viewBox="0 0 400 330" aria-hidden="true"><path data-hero-fill="section" d="M65 160L235 220L345 130L180 95Z" fill="#eeb66d55" stroke="none"/><path data-hero-lines="body-hidden" d="M65 240L180 165L345 210M180 165L180 20" fill="none" stroke="#95cbbb" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="section-hidden" d="M65 160L180 95L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="body-visible" d="M65 240L235 290L345 210M65 240L65 85L180 20L345 70L345 210M65 85L235 135L345 70M235 135L235 290" fill="none" stroke="#95cbbb" stroke-width="2.5"/><path data-hero-lines="section-visible" d="M65 160L235 220L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5"/><g fill="#ffdf97"><circle cx="65" cy="160" r="7"/><circle cx="235" cy="220" r="7"/><circle cx="345" cy="130" r="7"/></g></svg></div></section><section class="panel"><p>В основе — реальная пространственная геометрия. Ракурс можно менять, но длины, углы и условия задачи от этого не меняются. Карта включает введение, семь глав стереометрии и углублённую планиметрию из присланного учебника.</p><p class="muted">В каждом узле — объяснение, исследование, основной тип задачи и место для собственного рассуждения. Это не решебник всех упражнений. Звёздочкой отмечены узлы, полностью относящиеся к углублённому материалу; в остальных могут встречаться отдельные дополнительные пункты.</p></section><div class="filters"><input id="course-search" type="search" placeholder="Найти сечения, объёмы, векторы…" aria-label="Найти тему"><button data-action="reports">Работы учеников</button><label>Восстановить прогресс<input id="import" type="file" accept=".json,application/json"></label></div>'+C.chapters.map((title,i)=>'<section class="chapter"><div class="chapter-head"><span class="chapter-number">'+(i?'ГЛАВА '+i:'ВВЕДЕНИЕ')+'</span><h2>'+E(title)+'</h2></div><div class="cards">'+C.units.filter(u=>u.chapter===i).map(u=>'<article class="card"><p class="eyebrow">Пункты '+u.points.join(', ')+(u.advanced?' · ★ Углубление':'')+'</p><h3>'+E(u.title)+'</h3><p>'+E(u.investigate)+'</p><div class="card-bottom"><span class="status">'+(all[u.id]?.independent?'Самостоятельных: '+all[u.id].independent:all[u.id]?'В работе':'Можно начать')+'</span><button data-unit="'+u.id+'">Открыть →</button></div></article>').join('')+'</div></section>').join('');}
+const resumeStages=['Теория','Лаборатория','Доказательство','Разбор','Задача','Своё обоснование'];
+function resumeButton(all){
+ const latest=C.units.filter(u=>all[u.id]?.updated).sort((a,b)=>all[b.id].updated-all[a.id].updated)[0];
+ return latest?'<button class="primary" data-unit="'+latest.id+'">Продолжить · '+E(latest.title)+' · '+resumeStages[all[latest.id].stage]+'</button>':'';
+}
+function chapterProgress(all,chapter){
+ const units=C.units.filter(u=>u.chapter===chapter);
+ const count=check=>units.filter(u=>check(all[u.id])).length;
+ return '<p class="chapter-progress muted" aria-label="Прогресс главы">Тем с построением: '+count(r=>r?.construction)+' из '+units.length+' · Самостоятельно проверено: '+count(r=>r?.independent)+' · Исследований с самостоятельной проверкой: '+count(r=>r?.investigation?.independent)+' · Обоснований для учителя: '+count(r=>r?.written.trim())+'</p>';
+}
+function home(){if(!save())return;destroyViewers();unit=null;record=null;setHash('');const all=store.all().units;root.innerHTML='<section class="stereo-hero"><div><p class="eyebrow">Атанасян · 10–11 классы · 2024</p><h1>Увидеть пространство.<br>Построить доказательство.</h1><p class="lead">Вращай тела, двигай точки на рёбрах, создавай секущие плоскости. Разбирайся, откуда берутся углы, расстояния и объёмы.</p><div class="row">'+resumeButton(all)+'<button data-unit="sections">Попробовать сечения →</button><button data-unit="space">Начать с основ</button></div><div class="stats"><div class="stat"><strong>39</strong><span>учебных узлов</span></div><div class="stat"><strong>99</strong><span>пунктов в карте</span></div><div class="stat"><strong>3D</strong><span>зависимые построения</span></div></div></div><div class="hero-art"><svg viewBox="0 0 400 330" aria-hidden="true"><path data-hero-fill="section" d="M65 160L235 220L345 130L180 95Z" fill="#eeb66d55" stroke="none"/><path data-hero-lines="body-hidden" d="M65 240L180 165L345 210M180 165L180 20" fill="none" stroke="#95cbbb" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="section-hidden" d="M65 160L180 95L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5" stroke-dasharray="6 5"/><path data-hero-lines="body-visible" d="M65 240L235 290L345 210M65 240L65 85L180 20L345 70L345 210M65 85L235 135L345 70M235 135L235 290" fill="none" stroke="#95cbbb" stroke-width="2.5"/><path data-hero-lines="section-visible" d="M65 160L235 220L345 130" fill="none" stroke="#f0bd76" stroke-width="2.5"/><g fill="#ffdf97"><circle cx="65" cy="160" r="7"/><circle cx="235" cy="220" r="7"/><circle cx="345" cy="130" r="7"/></g></svg></div></section><section class="panel"><p>В основе — реальная пространственная геометрия. Ракурс можно менять, но длины, углы и условия задачи от этого не меняются. Карта включает введение, семь глав стереометрии и углублённую планиметрию из присланного учебника.</p><p class="muted">В каждом узле — объяснение, исследование, основной тип задачи и место для собственного рассуждения. Это не решебник всех упражнений. Звёздочкой отмечены узлы, полностью относящиеся к углублённому материалу; в остальных могут встречаться отдельные дополнительные пункты.</p></section><div class="filters"><input id="course-search" type="search" placeholder="Найти сечения, объёмы, векторы…" aria-label="Найти тему"><button data-action="reports">Работы учеников</button><label>Восстановить прогресс<input id="import" type="file" accept=".json,application/json"></label></div>'+C.chapters.map((title,i)=>'<section class="chapter"><div class="chapter-head"><span class="chapter-number">'+(i?'ГЛАВА '+i:'ВВЕДЕНИЕ')+'</span><h2>'+E(title)+'</h2></div>'+chapterProgress(all,i)+'<div class="cards">'+C.units.filter(u=>u.chapter===i).map(u=>'<article class="card"><p class="eyebrow">Пункты '+u.points.join(', ')+(u.advanced?' · ★ Углубление':'')+'</p><h3>'+E(u.title)+'</h3><p>'+E(u.investigate)+'</p><div class="card-bottom"><span class="status">'+(all[u.id]?.independent?'Самостоятельных: '+all[u.id].independent:all[u.id]?'В работе':'Можно начать')+'</span><button data-unit="'+u.id+'">Открыть →</button></div></article>').join('')+'</div></section>').join('');}
 function migrateUI(){
  if(record.taskFirst)return;
  const legacy=record.stage, draft=record.draft;
@@ -49,18 +59,44 @@ function migrateUI(){
 function open(id){
  if(!save())return;destroyViewers();unit=C.units.find(u=>u.id===id)||C.units[0];record=store.get(unit.id);migrateUI();stage=record.stage;setHash(unit.id);if(!save('start'))return;render();window.scrollTo(0,0);
 }
-function task(){return StereoTasks.make(unit.task,record.seed);}
+function task(){
+ // Keep an already opened triangle task stable across the addition of new section configurations.
+ const legacySection=unit.task==='section'&&record.currentTaskKey.startsWith('["Куб со стороной ');
+ return StereoTasks.make(unit.task,record.seed,{legacySection});
+}
 function proof(){return PROOFS[unit.proof||unit.task]||null;}
 function rememberTask(){
  const t=task(),key=JSON.stringify([t.q,t.a]);if(record.currentTaskKey===key)return;
  record.repeatedTask=record.seenTasks.includes(key);record.currentTaskKey=key;
  if(!record.repeatedTask)record.seenTasks.push(key);save();
 }
-function markAssisted(){if(!record.assisted){record.assisted=true;record.hints++;save('hint');}}
-function nextTask(){
- destroyViewers();const proofCamera=record.taskFirst.proofCamera;record.seed++;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
- record.taskFirst={version:1,mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+function markAssisted(){const already=record.assisted;record.assisted=true;const c=coach();if(!c.helpOpened){c.helpOpened=true;record.hints++;save('hint');}else if(!already)save('hint');}
+function coach(){return record.taskFirst.coach||(record.taskFirst.coach=StereoStore.coach({}));}
+function attemptHistory(){
+ const history=record.taskHistory||[];if(!history.length)return '';
+ return '<details class="attempt-history"><summary>Предыдущие условия и мои ответы · '+history.length+'</summary><p class="muted">Сохраняются последние 40 переходов к другому условию в этой теме.</p>'+history.map((r,index)=>({r,index})).reverse().map(({r,index})=>'<details><summary>'+E(r.condition)+'</summary><p>Первый отправленный ответ: '+E(r.coach.firstSubmitted||'не отправлен')+'</p><p>Последний ответ: '+E(r.mainDraft||'не записан')+'</p>'+(r.stepDraft?'<p>Незавершённый шаг: '+E(r.stepDraft)+'</p>':'')+'<p>Математических ошибок: '+r.coach.errors+'. '+(r.assisted?'Были исправления или помощь.':'Помощь не открывалась.')+'</p><button data-action="resume-attempt" data-history-index="'+index+'">Продолжить это условие</button></details>').join('')+'</details>';
+}
+function focusTaskStart(){const title=document.getElementById('task-title');if(title){title.focus({preventScroll:true});title.scrollIntoView({block:'start',behavior:'auto'});}}
+function archiveTask(){
+ const current=task(),ui=StereoStore.clean({taskFirst:record.taskFirst}).taskFirst;
+ record.taskHistory=[...(record.taskHistory||[]),{condition:current.q,key:record.currentTaskKey,seed:record.seed,taskStep:record.taskStep,taskFirst:ui,mainDraft:ui.mainDraft,stepDraft:ui.stepDraft,assisted:record.assisted,checked:record.checked,coach:StereoStore.coach(coach())}].slice(-40);
+}
+function nextTask(fresh=false){
+ const proofCamera=record.taskFirst.proofCamera;archiveTask();
+ const candidate=fresh?StereoTasks.fresh(unit.task,record.seed,record.seenTasks):{seed:(record.seed+1)%100000000};
+ destroyViewers();record.seed=candidate.seed;record.currentTaskKey='';record.repeatedTask=false;record.taskStep=0;record.draft='';record.assisted=false;record.checked=false;
+ record.taskFirst={version:1,coach:StereoStore.coach({}),mainDraft:'',stepDraft:'',legacyDraft:'',helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
  record.taskFirst.proofCamera=proofCamera;stage=4;return save('task_start');
+}
+function restoreAttempt(index){
+ const prior=record.taskHistory?.[index];if(!prior)return;
+ const saved=StereoStore.clean({taskHistory:[prior]}).taskHistory[0],legacySection=unit.task==='section'&&saved.key.startsWith('["Куб со стороной '),candidate=StereoTasks.make(unit.task,saved.seed,{legacySection});
+ if(candidate.q!==saved.condition||(saved.key&&saved.key!==StereoTasks.key(candidate))){notice.hidden=false;notice.textContent='Это сохранённое условие не совпадает с текущим банком. Ответы остаются в истории; автоматический перенос в другую задачу не выполнен.';return;}
+ archiveTask();destroyViewers();record.seed=saved.seed;record.currentTaskKey=StereoTasks.key(candidate);record.repeatedTask=true;
+ if(!record.seenTasks.includes(record.currentTaskKey))record.seenTasks.push(record.currentTaskKey);
+ record.taskStep=Math.min(saved.taskStep,candidate.steps.length);record.assisted=saved.assisted;record.checked=saved.checked;record.draft=saved.mainDraft;
+ record.taskFirst=saved.taskFirst||{version:1,mainDraft:saved.mainDraft,stepDraft:saved.stepDraft,coach:saved.coach,helpOpen:false,guideOpen:false,theoryOpen:false,sourceOpen:false,formatOpen:false,camera:null,proofCamera:null};
+ stage=4;if(save('task_restore')){render();focusTaskStart();}
 }
 function taskQuestion(t){
  // The final label may use only the actual condition, never an intermediate step or answer.
@@ -72,22 +108,26 @@ function reference(){
  return '<p>'+E(C.edition)+'.</p><ul class="source-points">'+unit.source.map(s=>'<li>Пункт '+s.point+(s.advanced?' ★':'')+' «'+E(s.title)+'», страница '+s.page+'.</li>').join('')+'</ul><p class="muted">Выше — авторское объяснение по темам учебника. Это ссылка на нужный пункт, а не дословная цитата.</p>';
 }
 function nav(){
- return '<nav class="lesson-actions" aria-label="Разделы темы"><button data-stage="4"'+([0,3,4].includes(stage)?' aria-current="page"':'')+'>К задаче</button><details class="more-sections"><summary>Ещё по теме</summary><div class="section-links"><button data-stage="0">Вспомнить теорию</button><button data-stage="1">Свободная 3D-лаборатория</button><button data-stage="2">Отдельная задача на доказательство</button><button data-stage="3">Разобрать текущую задачу</button><button data-stage="5">'+(proof()?'Записать доказательство':'Обосновать исследование')+'</button></div></details></nav>';
+ return '<nav class="lesson-actions" aria-label="Разделы темы"><button data-stage="4"'+([0,3,4].includes(stage)?' aria-current="page"':'')+'>К задаче</button><details class="more-sections"><summary>Ещё по теме</summary><div class="section-links"><button data-stage="0">Вспомнить теорию</button><button data-stage="1">'+(window.StereoInvestigations?.topics[unit.id]?'Исследовать на модели':'Свободная 3D-лаборатория')+'</button><button data-stage="2">Отдельная задача на доказательство</button><button data-stage="3">Разобрать текущую задачу</button><button data-stage="5">'+(proof()?'Записать доказательство':'Обосновать исследование')+'</button></div></details></nav>';
 }
 function answerFormat(){
  return '<details id="answer-format"'+(record.taskFirst.formatOpen?' open':'')+'><summary>Как записать ответ?</summary><p>Дробь вводи через <code>/</code>, например <code>1/3</code>; корень — <code>sqrt(2)</code>; π — <code>pi</code>. Координаты разделяй <code>;</code>, умножение обозначай <code>*</code>. В вопросе «да или нет» введи одно из этих слов.</p></details>';
 }
 function guidedBody(t){
  const i=Math.min(record.taskStep,t.steps.length);
- let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
+ let h='<ol class="proof-list">'+t.steps.slice(0,i).map(s=>'<li><strong>'+E(s.q)+' '+E(coach().steps[t.steps.indexOf(s)]?.accepted||Answer.format(s.a))+'</strong><small>Почему: '+E(s.why)+'</small></li>').join('')+'</ol>';
  if(i<t.steps.length){
-  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status"></p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
+  const s=t.steps[i];h+='<p class="step-number">Шаг '+(i+1)+' из '+t.steps.length+'</p><form id="step-answer-form"><label for="step-answer">'+E(s.q)+'</label><div class="answer-row"><input id="step-answer" autocomplete="off" value="'+E(record.taskFirst.stepDraft)+'"><button class="primary" type="submit">Проверить шаг</button></div></form><p id="step-feedback" class="feedback" role="status">'+E(coach().steps[i]?.message||'')+'</p><details id="step-why"><summary>Почему именно так?</summary><p>'+E(s.why)+'</p></details>';
  }else h+='<p class="good">Разбор завершён. Ответ: '+E(Answer.format(t.a))+'.</p><p>Вернись к полю ответа под условием или возьми новый вариант для самостоятельной проверки.</p><button data-action="independent" class="primary">Новый вариант без подсказки</button>';
  return h;
 }
 function taskPanel(){
- rememberTask();const t=task(),ui=record.taskFirst;
- return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title">Задача</h2><p class="task-question">'+E(t.q)+'</p><button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button><div id="task-model" aria-label="Рисунок к условию"></div><form id="answer-form" data-mode="independent"><label for="answer">'+E(taskQuestion(t))+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status"></p>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p></section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
+ rememberTask();const t=task(),ui=record.taskFirst,c=coach();
+ const model='<div id="task-model" aria-label="Рисунок к условию"></div>';
+ const help='<button data-action="help" aria-controls="task-help" aria-expanded="'+ui.helpOpen+'">'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</button>';
+ const options=t.section?'<p>Пары · 1 MN, 2 MP, 3 NP.</p><p>Рёбра · 1 AA₁, 2 BB₁, 3 CC₁, 4 DD₁.</p>':'';
+ const label=t.section?'Номер пары и номер ребра через точку с запятой':taskQuestion(t);
+ return '<div class="task-layout"><section class="panel task-main" aria-labelledby="task-title"><h2 id="task-title" tabindex="-1">Задача</h2><p class="task-question">'+E(t.q)+'</p>'+(t.section?model+help:help+model)+'<form id="answer-form" data-mode="independent">'+options+'<label for="answer">'+E(label)+'</label><div class="answer-row"><input id="answer" autocomplete="off" aria-describedby="final-answer-note" value="'+E(ui.mainDraft)+'"><button type="submit" class="primary">Проверить ответ</button></div><p id="final-answer-note" class="muted">Впиши ответ на задачу. Для промежуточных вычислений открой подсказку.</p></form><p id="feedback" class="feedback" role="status">'+E(c.message)+'</p><div id="coach-offer"'+(c.errors>=2&&!ui.helpOpen?'':' hidden')+'><p>Две попытки пока не дали верного результата. Разобрать ближайший шаг?</p><button data-action="coach-help">Открыть подсказку к этой задаче</button></div>'+answerFormat()+(record.repeatedTask?'<p class="callout">Это условие уже открывалось. Повторить его можно; новый самостоятельный зачёт за повтор не начисляется.</p>':'')+'<div class="row"><button data-action="new">Другой вариант</button><button data-action="fresh-practice"'+(record.assisted?'':' hidden')+'>Новое условие без подсказки</button></div><p class="stage-status">Первые самостоятельные решения новых условий: '+record.independent+'.</p>'+attemptHistory()+'</section><aside class="help-column"><details id="task-help"'+(ui.helpOpen?' open':'')+'><summary>'+(ui.helpOpen?'Убрать подсказку':'Хочешь подсказку?')+'</summary><p>Условие, рисунок и твой ответ остаются на месте. Выбери, что нужно разобрать.</p>'+(ui.legacyDraft?'<p class="callout"><strong>Ранее записано:</strong> '+E(ui.legacyDraft)+'</p>':'')+'<details id="task-guide"'+(ui.guideOpen?' open':'')+'><summary>Помочь решить по шагам?</summary><div id="task-guide-body">'+guidedBody(t)+'</div></details><details id="task-theory"'+(ui.theoryOpen?' open':'')+'><summary>Какое правило здесь пригодится?</summary><p class="law">'+E(unit.idea)+'</p><details><summary>На что обратить внимание?</summary><p>'+E(unit.pitfall)+'</p></details></details><details id="task-source"'+(ui.sourceOpen?' open':'')+'><summary>Для ценителей строгости и точности</summary>'+reference()+'</details><p><button data-action="close-help">Вернуться к задаче</button></p></details></aside></div>';
 }
 function proofPanel(){
  const p=proof();
@@ -114,9 +154,11 @@ function writtenPanel(){
 }
 function render(){
  if(conflict)return;if([1,2,5].includes(stage))markAssisted();if(conflict)return;destroyViewers();pending=null;
- let h='<div class="workspace"><div class="back-row"><button data-action="home">← Карта курса</button><span class="pill">Пункты '+unit.points.join(', ')+'</span></div><p class="eyebrow">'+E(C.chapters[unit.chapter])+'</p><h1>'+E(unit.title)+'</h1>'+nav();
+ const transfer=stage===4&&task().section;
+ let h='<div class="workspace'+(transfer?' section-transfer':'')+'"><div class="back-row"><button data-action="home">← Карта курса</button><span class="pill">Пункты '+unit.points.join(', ')+'</span></div><p class="eyebrow">'+E(C.chapters[unit.chapter])+'</p><h1>'+E(transfer?'Сечение куба':unit.title)+'</h1>'+nav();
  if([0,3,4].includes(stage))h+=taskPanel();
- if(stage===1)h+='<section class="panel"><h2>Свободная 3D-лаборатория</h2><p>'+E(unit.investigate)+'</p><p class="callout">Это отдельное исследование. Параметры здесь можно менять; условие твоей задачи сохранено. Вернись к нему кнопкой «К задаче».</p><div id="viewer"></div><label for="observation">Что ты изменил(а), какое свойство заметил(а) и как его объяснишь?</label><textarea id="observation">'+E(record.observation)+'</textarea></section>';
+ if(stage===1&&window.StereoInvestigations?.topics[unit.id])h+='<div id="investigation"></div>';
+ if(stage===1)h+=(window.StereoInvestigations?.topics[unit.id]?'<details class="panel"><summary>Свободная 3D-лаборатория</summary>':'<section class="panel"><h2>Свободная 3D-лаборатория</h2>')+'<p>'+E(unit.investigate)+'</p><p class="callout">Это отдельное исследование. Параметры здесь можно менять; условие твоей задачи сохранено. Вернись к нему кнопкой «К задаче».</p><div id="viewer"></div><label for="observation">Что ты изменил(а), какое свойство заметил(а) и как его объяснишь?</label><textarea id="observation">'+E(record.observation)+'</textarea>'+(window.StereoInvestigations?.topics[unit.id]?'</details>':'</section>');
  if(stage===2)h+=proofPanel();
  if(stage===5)h+=writtenPanel();
  h+='<div class="stage-footer"><button data-action="home">← Карта курса</button>'+(stage===4?'<button data-stage="5">'+(proof()?'Записать доказательство отдельной задачи':'Обосновать исследование')+'</button>':'<button data-stage="4" class="primary">К задаче</button>')+'</div></div>';if(conflict)return;root.innerHTML=h;root.dataset.condition=task().q;root.dataset.proofCondition=proof()?proof().given+' '+proof().goal:unit.investigate;StereoMath.formatFractions(root);formatProofChoices(root);
@@ -125,6 +167,7 @@ function render(){
   StereoMath.formatFractions(document.getElementById('task-model'));bindHelp();
  }
  if((stage===2||stage===5)&&proof())proofViewer=StereoTaskScenes.mountProof(document.getElementById('proof-model'),{key:unit.proof||unit.task,proof:proof(),savedCamera:record.taskFirst.proofCamera,step:stage===2?record.proofDone.length-1:-1,onChange:camera=>{record.taskFirst.proofCamera=camera;later();}});
+ if(stage===1&&document.getElementById('investigation'))investigation=StereoInvestigations.mount(document.getElementById('investigation'),{kind:StereoInvestigations.topics[unit.id],saved:record.investigation,canEdit:ensureCurrent,onChange:(state,event)=>{record.investigation=state;save('investigation-'+event);},onPractice:()=>{if(nextTask()){render();focusTaskStart();}}});
  if(stage===1)viewer=SpaceViewer.mount(document.getElementById('viewer'),{kind:unit.kind,mode:unit.id==='sections'?'section':'explore',saved:record.model},ev=>{record.model=ev.state;record.moved=true;if(ev.type==='solved-construction')record.construction=true;if(ev.type==='hint')record.hints++;later();});
 }
 function activeStep(){return record.taskFirst.helpOpen&&record.taskFirst.guideOpen?Math.min(record.taskStep,task().steps.length-1):-1;}
@@ -134,7 +177,7 @@ function syncHelp(id,opened){
  record.taskFirst[key]=opened;
  if(opened&&id!=='answer-format')markAssisted();
  if(id==='task-help'){document.querySelector('#task-help>summary').textContent=opened?'Убрать подсказку':'Хочешь подсказку?';const button=document.querySelector('[data-action=help]');button.textContent=opened?'Убрать подсказку':'Хочешь подсказку?';button.setAttribute('aria-expanded',String(opened));}
- taskViewer?.setStep(activeStep());save();
+ const offer=document.getElementById('coach-offer');if(offer)offer.hidden=!(coach().errors>=2&&!record.taskFirst.helpOpen);const fresh=document.querySelector('[data-action=fresh-practice]');if(fresh)fresh.hidden=!record.assisted;taskViewer?.setStep(activeStep());save();
 }
 function bindHelp(){
  for(const id of Object.keys(helpFields)){
@@ -149,25 +192,35 @@ function changeStage(n){
  else {stage=n;if(n===1||n===2||n===5)markAssisted();}
  if(!save('step'))return;render();window.scrollTo(0,0);
 }
+function logResponse(c,mode,response,result,index=0){
+ c.log.push({mode,step:index,answer:response,kind:result.kind,code:result.code});c.log=c.log.slice(-40);
+}
 function checkFinal(){
- if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task();record.taskFirst.mainDraft=input.value;record.draft=input.value;
- if(!a){f.textContent='Впиши ответ на вопрос над полем.';f.className='feedback error';save();return;}
- // A script-triggered native disclosure must not race an immediate submission.
+ if(!ensureCurrent())return;const input=document.getElementById('answer'),f=document.getElementById('feedback'),a=input.value.trim(),t=task(),c=coach();record.taskFirst.mainDraft=input.value;record.draft=input.value;
+ if(a&&!c.firstSubmitted)c.firstSubmitted=input.value;
  if(document.getElementById('task-help').open)markAssisted();
- const ok=Answer.equal(a,t.a),first=!record.checked;record.checked=true;if(first)record.attempts++;
- if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;f.textContent=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
- else{record.assisted=true;f.textContent='Пока неверно. Проверь, какую величину нужно найти, её единицы и основание для формулы. Можно открыть подсказку.';f.className='feedback error';}
+ const result=StereoTasks.assess(unit.task,t,a);logResponse(c,'final',input.value,result);
+ if(result.kind==='empty'||result.kind==='format'){c.message=result.message;c.kind=result.kind;f.textContent=c.message;f.className='feedback error';save('answer-format');return;}
+ if(!c.firstResponse)c.firstResponse=input.value;
+ const ok=result.kind==='correct',first=!record.checked;record.checked=true;if(first)record.attempts++;
+ if(ok){if(first&&!record.assisted&&!record.repeatedTask)record.independent++;c.message=record.repeatedTask?'Верно. Это условие уже открывалось; повтор решён без нового самостоятельного зачёта.':!record.assisted?(first?'Верно с первой попытки без подсказки. Засчитан самостоятельный вариант.':'Ответ верный. Этот вариант уже учтён.'):'Верно после исправления или с подсказкой. Возьми другой вариант для самостоятельной проверки.';f.className='feedback good';}
+ else{record.assisted=true;c.errors++;c.message=result.message;f.className='feedback error';}
+ c.kind=result.kind;f.textContent=c.message;
+ const offer=document.getElementById('coach-offer');offer.hidden=!(c.errors>=2&&!record.taskFirst.helpOpen);document.querySelector('[data-action=fresh-practice]').hidden=!record.assisted;
  document.querySelector('.stage-status').textContent='Первые самостоятельные решения новых условий: '+record.independent+'.';
  if(!save(ok?'solved':'attempt')){f.textContent='Результат этого окна не сохранён: открой сохранённую версию выше.';document.querySelector('.stage-status').textContent='Сохранённый результат не изменён.';}
 }
 function checkStep(){
- if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task();record.taskFirst.stepDraft=input.value;markAssisted();
- if(!a){f.textContent='Впиши ответ на вопрос этого шага.';f.className='feedback error';save();return;}
+ if(!ensureCurrent())return;const input=document.getElementById('step-answer'),a=input.value.trim(),f=document.getElementById('step-feedback'),t=task(),c=coach();record.taskFirst.stepDraft=input.value;markAssisted();
  if(record.taskStep>=t.steps.length)return;
- if(Answer.equal(a,t.steps[record.taskStep].a)){
-  record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
+ const index=record.taskStep,result=StereoTasks.assess(unit.task,t,a,index),step=c.steps[index]||(c.steps[index]={first:'',last:'',accepted:'',errors:0,message:'',kind:''});
+ if(a&&!step.first)step.first=input.value;step.last=input.value;step.message=result.message;step.kind=result.kind;logResponse(c,'step',input.value,result,index);
+ if(result.kind==='empty'||result.kind==='format'){f.textContent=result.message;f.className='feedback error';save('step-format');return;}
+ markAssisted();
+ if(result.kind==='correct'){
+  step.accepted=input.value;record.taskStep++;record.taskFirst.stepDraft='';if(record.taskStep===t.steps.length)record.guided=true;if(!save('solved'))return;
   document.getElementById('task-guide-body').innerHTML=guidedBody(t);StereoMath.formatFractions(document.getElementById('task-guide-body'));taskViewer?.setStep(activeStep());
- }else{f.textContent='Пока неверно. Перечитай вопрос над этим полем. Кнопка «Почему именно так?» пояснит шаг.';f.className='feedback error';save('attempt');}
+ }else{step.errors++;f.textContent=result.message;f.className='feedback error';save('attempt');}
 }
 root.addEventListener('input',event=>{
  const el=event.target;
@@ -191,8 +244,9 @@ root.addEventListener('click',event=>{
  if(a==='visual-trap'||a==='bad-reason'){document.getElementById('proof-feedback').textContent='Нужен факт из условия, определение, аксиома или уже установленная теорема. Измерения и вид рисунка не заменяют доказательство.';save('proof-error');}
  if(a==='good-reason'&&pending!==null){record.proofDone.push('s'+pending);record.proof=record.proofDone.length===proof().steps.length;if(save('proof-step'))render();}
  if(a==='reset-proof'){record.proofDone=[];record.proof=false;if(save())render();}
- if(a==='independent'||a==='new'){if(nextTask())render();}
- if(a==='help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
+ if(a==='resume-attempt'){restoreAttempt(Number(b.dataset.historyIndex));return;}
+ if(a==='independent'||a==='new'||a==='fresh-practice'){if(nextTask(a!=='new')){render();focusTaskStart();}}
+ if(a==='help'||a==='coach-help'){const el=document.getElementById('task-help');el.open=!el.open;syncHelp('task-help',el.open);if(el.open&&window.innerWidth<861)el.scrollIntoView({block:'nearest'});}
  if(a==='close-help'){const el=document.getElementById('task-help');el.open=false;syncHelp('task-help',false);document.getElementById('answer').focus();}
  if(a==='finish'){
   record.complete=record.guided&&record.moved&&record.observation.trim().length>=10;if(!save('finish'))return;
@@ -208,7 +262,7 @@ root.addEventListener('change',async event=>{
  for(const f of event.target.files){try{if(f.size>8e6)throw Error('Слишком большой файл');const raw=JSON.parse(await f.text());if(report)renderReport(StereoStore.validate(raw,C.units.map(u=>u.id)),f.name);else{store.import(raw);home();}}catch(err){notice.hidden=false;notice.textContent='Не удалось прочитать файл: '+err.message;}}
 });
 function reports(){if(!save())return;destroyViewers();root.innerHTML='<div class="workspace"><button data-action="home">← Карта</button><h1>Работы учеников</h1><section class="panel"><p>Выберите файлы прогресса. Тексты и результаты читаются локально, без отправки на сервер.</p><label>Файлы работ<input id="reports-files" type="file" accept=".json,application/json" multiple></label><p>Разбор с опорой и самостоятельная первая попытка учитываются отдельно. Письменные доказательства проверьте по условиям, построениям, основаниям и полноте вывода.</p></section><div id="reports-output"></div></div>';renderReport(store.export(),'Этот браузер');}
-function renderReport(d,name){const el=document.createElement('section');el.className='panel';el.style.marginTop='20px';el.innerHTML='<h2>'+E(name)+'</h2>'+Object.entries(d.units).map(([id,r])=>'<details><summary>'+E(C.units.find(u=>u.id===id).title)+' · самостоятельно '+r.independent+' / попыток '+r.attempts+'</summary><p>Разбор: '+(r.guided?'пройден':'не закончен')+'. Цепочка: '+(r.proof?'собрана':'не закончена или отсутствует в узле')+'.</p><h3>Наблюдение</h3><p class="report-note">'+E(r.observation||'Нет записи')+'</p><h3>Рассуждение</h3><p class="report-note">'+E(r.written||'Нет записи')+'</p></details>').join('');document.getElementById('reports-output').appendChild(el);}
+function renderReport(d,name){const el=document.createElement('section');el.className='panel';el.style.marginTop='20px';el.innerHTML='<h2>'+E(name)+'</h2>'+Object.entries(d.units).map(([id,r])=>'<details><summary>'+E(C.units.find(u=>u.id===id).title)+' · самостоятельно '+r.independent+' / попыток '+r.attempts+'</summary><p>Разбор: '+(r.guided?'пройден':'не закончен')+'. Цепочка: '+(r.proof?'собрана':'не закончена или отсутствует в узле')+'.</p><h3>Наблюдение</h3><p class="report-note">'+E(r.observation||'Нет записи')+'</p><h3>Рассуждение</h3><p class="report-note">'+E(r.written||'Нет записи')+'</p>'+(r.investigation?'<h3>Исследование</h3><p>Самостоятельных проверок: '+r.investigation.independent+'.</p><p class="report-note">'+E(r.investigation.explanation||'Объяснение ещё не записано')+'</p>':'')+'</details>').join('');document.getElementById('reports-output').appendChild(el);}
 
 const returnRoutes={ege15:['../ege-profil/atanasyan-10-11/index.html#route','← К маршруту задания №15'],ege3:['../ege-profil/start/index.html#exam/3','← К заданию №3 ЕГЭ']};
 const routeName=new URLSearchParams(location.search).get('route');

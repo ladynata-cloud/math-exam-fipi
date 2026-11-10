@@ -27,7 +27,7 @@ function oracle(t){
  const p=t.params,s=t.steps,m=p.mode;
  switch(t.id){
   case 'pre7-place-value':{
-   if(m===0){const digits=[...String(p.value)].map(Number),weight=10**(3-p.position),answer=digits[p.position]*weight;sequence(s,[weight,digits[p.position],answer]);if(answer===0)zeroDigits++;return answer;}
+   if(m===0){const digits=[...String(p.value)].map(Number),weight=10**(3-p.position),answer=digits[p.position]*weight;sequence(s,p.position===3?[answer]:[weight,digits[p.position],answer]);if(answer===0)zeroDigits++;return answer;}
    if(m===1){const answer=p.thousands*1000+p.hundreds*100+p.units;sequence(s,[p.thousands*1000,p.hundreds*100,0,answer]);assert.equal(Math.floor(answer/10)%10,0);return answer;}
    const answer=p.center+(p.previousWanted?-1:1);sequence(s,[1,p.center-1,p.center+1,answer]);assert.equal(p.center%100,0);return answer;
   }
@@ -96,6 +96,11 @@ function oracle(t){
  }
 }
 assert.equal(D.pre7Arithmetic.families.length,9);assert.equal(D.pre7Arithmetic.count,360);
+const screenshotTask=D.task('pre7-place-value',11);
+assert.match(screenshotTask.q,/цифра стоит в разряде единиц числа 3022/);
+assert.match(screenshotTask.steps[0].q,/цифру из столбца «Единицы»/);
+assert(D.correct(screenshotTask.steps[0],'2'));
+assert(!D.correct(screenshotTask.steps[0],'1'));
 assert.equal(new Set(D.meta.map(m=>m.id)).size,D.meta.length);
 let tasks=0;
 for(const family of D.pre7Arithmetic.families){

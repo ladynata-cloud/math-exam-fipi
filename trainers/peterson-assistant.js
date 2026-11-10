@@ -64,6 +64,7 @@
     }
     function sync() {
       if (!alive) return null;
+      place();
       const task = read(), id = task?.id || null;
       if (id !== currentId) { log.replaceChildren(); shown.clear(); message.textContent = ''; currentId = id; currentStep = -1; }
       title.textContent = task?.title || 'Сначала открой задачу';
@@ -74,6 +75,19 @@
         message.textContent = task.complete ? 'Задача решена. Можно вернуться к её разбору.' : 'Подсказка относится к текущему шагу. Предыдущие подсказки остаются ниже.';
       }
       return task;
+    }
+    function place() {
+      if (!alive) return;
+      placeAt(options.getInlineAnchor?.());
+    }
+    function placeAt(anchor) {
+      const focused = host.contains(doc.activeElement) ? doc.activeElement : null;
+      const inline = !!(anchor?.isConnected && anchor.ownerDocument === doc && !host.contains(anchor));
+      if (inline) {
+        if (host.nextSibling !== anchor) anchor.before(host);
+      } else if (host.parentNode !== doc.body) doc.body.append(host);
+      host.classList.toggle('peterson-help-inline', inline);
+      if (focused?.isConnected && doc.activeElement !== focused) focused.focus({preventScroll:true});
     }
     function answer(mode) {
       const task = sync(); if (!task) return;
@@ -108,8 +122,9 @@
     const escape = event => { if (event.key === 'Escape' && !panel.hidden) { event.preventDefault(); hide(); } };
     doc.addEventListener('keydown', escape);
     const routeChanged = () => sync(); root.addEventListener('hashchange', routeChanged);
+    if (options.getInlineAnchor) root.addEventListener('resize', place);
     sync();
-    return Object.freeze({ sync, destroy() { alive = false; doc.removeEventListener('keydown', escape); root.removeEventListener('hashchange', routeChanged); host.remove(); doc.body.classList.remove('peterson-help-ready'); } });
+    return Object.freeze({ sync, beforeRender() { if (alive) placeAt(null); }, destroy() { alive = false; doc.removeEventListener('keydown', escape); root.removeEventListener('hashchange', routeChanged); root.removeEventListener('resize', place); host.remove(); doc.body.classList.remove('peterson-help-ready'); } });
   }
   root.PetersonTaskHelp = Object.freeze({ mount });
 })(typeof window === 'undefined' ? globalThis : window);

@@ -42,7 +42,7 @@ function staticResponse(req,res){try{const pathname=decodeURIComponent(new URL(r
    const {context,page}=await open({viewport});
    try{
     await page.locator('[data-peterson-course]').first().waitFor();assert.equal(await page.locator('[data-peterson-course]').count(),2);
-    for(const [route,task,taskTitle]of [['peterson-course','#lesson/p01','Найдём высказывание'],['peterson-line','#schemes','Узнай схему движения']]){
+    for(const [route,task,taskTitle]of [['peterson-course','#lesson/p01/0','Найдём высказывание'],['peterson-line','#schemes','Узнай схему движения']]){
      await page.locator('a[href="#'+route+'"]').click();
      const frameElement=page.locator('[data-peterson-workspace] iframe');await frameElement.waitFor();
      assert.equal(await frameElement.getAttribute('sandbox'),'allow-scripts allow-same-origin allow-downloads allow-modals');assert.equal(await frameElement.getAttribute('referrerpolicy'),'no-referrer');

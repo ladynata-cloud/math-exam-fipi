@@ -43,6 +43,22 @@ async function roundStepsBrowser(browser,url,width){
   await page.locator('#new').click();const fresh=await page.evaluate(()=>{const l=PathCourse.state().lessons['equations-linear'];return {answer:PathData.task('equations-linear',l.seed).answer,count:l.independent};});await page.locator('#answer').fill(String(fresh.answer));await page.locator('#answer').press('Enter');assert.equal(await page.evaluate(()=>PathCourse.state().lessons['equations-linear'].independent),fresh.count+1);
   if(shots)fs.mkdirSync(shots,{recursive:true});
   for(const [width,id] of [[320,'equations-linear'],[1280,'practice-grid-cut']]){await page.setViewportSize({width,height:900});await page.goto(url+'#lesson='+id);await page.locator('#new').click();assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-task.png'),fullPage:true});await page.locator('#answer').fill('17');await openHelp(page,'model');if(id==='practice-grid-cut'){await page.locator('#auxRect').click();assert.match(await page.locator('#constructionRead').innerText(),/вычесть/);}await openHelp(page,'steps');assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' open help overflow');if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-help.png'),fullPage:true});await page.locator('#returnToAnswer').click();assert.equal(await page.locator('#answer').inputValue(),'17');assert.equal(await page.locator('#taskHelp').evaluate(e=>e.open),false);}
+  // Correct-answer continuation is visible and actionable at desktop and phone widths.
+  for(const width of [320,1280]){
+   await page.setViewportSize({width,height:900});await page.goto(url+'#lesson=roundbody');await page.locator('#new').click();
+   const answer=await page.evaluate(()=>{const l=PathCourse.state().lessons.roundbody;return PathData.task('roundbody',l.seed).answer;});
+   await page.locator('#answer').fill(String(answer));await page.locator('#answer').press('Enter');
+   assert(await page.locator('[data-task-next]').isVisible());assert(await page.locator('#answerForm button[type=submit]').isDisabled());
+   assert.equal(await page.locator('#answer').inputValue(),String(answer));assert(page.url().endsWith('#lesson=roundbody'));
+   const layout=await page.locator('[data-task-next]').evaluate(e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth+1}));
+   assert(layout.top>=0&&layout.bottom<=layout.height,'primary next action in viewport');assert(!layout.overflow);
+   if(shots)await page.screenshot({path:path.join(shots,'base-'+width+'-completed.png'),fullPage:true});
+   await page.reload();assert(await page.locator('[data-task-next]').isVisible());
+   await page.locator('#new').click();assert.equal(await page.locator('#answer').inputValue(),'');assert(!await page.locator('[data-task-next]').isVisible());
+   const freshAnswer=await page.evaluate(()=>{const l=PathCourse.state().lessons.roundbody;return PathData.task('roundbody',l.seed).answer;});
+   await page.locator('#answer').fill(String(freshAnswer));await page.locator('#answer').press('Enter');
+   const nextURL=await page.locator('[data-task-next]').getAttribute('href');await page.locator('[data-task-next]').click();assert(page.url().endsWith(nextURL));
+  }
   const grade7=await page.evaluate(()=>PathData.meta.find(m=>m.grade7&&!m.geometryRebuild).id);await page.goto(url+'#lesson='+grade7);assert.equal(await page.locator('.task-first-course').count(),0);assert(await page.locator('[data-stage]').first().isVisible());await page.goto(url+'#exam');await page.locator('#start').click();assert.equal(await page.locator('#taskHelp').count(),0);assert(await page.locator('#answer').isVisible());assert.deepEqual(errors,[]);
   console.log('EGE_BAZA_TASK_FIRST_BROWSER_OK: 111 task/model paths; 49÷9 one-click steps and restored drafts at320/1280px; essential givens, independent/assisted accounting, saved model, interactive construction, grade7/exam exclusions; six screenshots');
  }finally{await browser.close();}

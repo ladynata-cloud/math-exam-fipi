@@ -5,8 +5,8 @@ Static course at `/school/makarychev7/`, using the published grade-eight course 
 ## Coverage
 
 - All 46 numbered topics in six chapters, including the six advanced topics.
-- 160 concise theory blocks, 276 tasks and 795 worked steps.
-- 92 selected textbook tasks/subparts, each with number and printed page; 184 explicitly labelled authored exercises.
+- 160 concise theory blocks, 280 tasks and 805 worked steps.
+- 92 selected textbook tasks/subparts, each with number and printed page; 188 explicitly labelled authored exercises.
 - Navigator for all 1247 exercise numbers, with exact header-page mapping. It distinguishes available solutions from links to matching topics. Individual solutions are not claimed for every exercise or subpart.
 - Ten interactive model families: number line, expressions, equations, functions, powers, divisibility, polynomials, identities, systems and half-planes.
 - Twenty computation skills at three levels, with return to the same task, unfinished input and notes.
@@ -25,7 +25,7 @@ Models display their domains. The system graph explorer uses y = kx + b; vertica
 
 Run `test-course.cjs`, `test-models.cjs` and `test-state.cjs` with Node. `test-models.cjs --dom`, `test-ui.cjs` and `test-import.cjs` additionally require jsdom 26.1.0. CI installs this dependency in a temporary directory.
 
-All 276 task journeys and 795 worked steps passed in-memory DOM verification, as did all 46 model mounts and 727 control changes. Tests cover corrupt storage, safe import, cross-course import rejection, assistance history, computation detours, all exercise-range boundaries and mathematical domains. Independent reviews checked all selected PDF conditions and chapter mathematics. Additional independent model probes covered 117649 systems and 1372 half-plane cases.
+The original 276 task journeys and 795 worked steps passed in-memory DOM verification, as did all 46 model mounts and 727 control changes. Tests cover corrupt storage, safe import, cross-course import rejection, assistance history, computation detours, all exercise-range boundaries and mathematical domains. Independent reviews checked all selected PDF conditions and chapter mathematics. Additional independent model probes covered 117649 systems and 1372 half-plane cases.
 
 Desktop browser inspection includes the home page, a worked-step journey and formula-model switching. A 390 px responsive iframe inspection of the half-plane lesson/model showed no horizontal overflow (body width and scroll width both 375 px after scrollbar). Final CI and deployment evidence is recorded in the PR. Physical touch-device behavior, real-pupil sessions, shared-board synchronization and cloud learner storage are not claimed. Claude consultation/review was unavailable; independent agents are not external Claude approval.
 

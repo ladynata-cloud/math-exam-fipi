@@ -21,7 +21,7 @@ function oracle(k,t){const d=t.data,{a,b,c}=d,z=n(t.answer),x=n(d.x),y=n(d.y);
  case 'solid-elements':same(z,[a,a,a,a,b,b,b,b,c,c,c,c].reduce((s,n)=>s+n,0));break;case 'solid-surface':same(z,a*b+a*b+a*c+a*c+b*c+b*c);break;case 'volume-layers':same(z,range(c).reduce(s=>s+a*b,0));break;case 'volume-litres':same(z-b*25,a*1000);break;case 'circle-radius':same(d.reverse?z*2:z/2,d.reverse?a*2:a);break;
  case 'fraction-parts':same(z*d.den,d.n);break;case 'fraction-line':same(z*d.den,d.num);break;case 'fraction-same-compare':same(z,d.n>d.m?'>':d.n<d.m?'<':'=');break;case 'fraction-unit-compare':same(z,1/d.den>1/d.other?'>':'<');break;case 'fraction-kind':same(z,d.num/d.den<1?'правильная':'неправильная');break;
  case 'fraction-same-add':same(z*d.den,d.n+d.m);break;case 'fraction-same-sub':same(z*d.den+d.m,d.n);break;case 'fraction-sharing':same(z*d.den,a);break;case 'mixed-extract':same(z[0]*d.den+z[1],d.num);assert(z[1]<d.den);break;case 'fraction-reduce':case 'fraction-reduce-check':same(z*d.den,d.num);break;
- case 'decimal-place':same(z*1000,c);break;case 'decimal-fraction':same(z*d.scale,d.num);break;case 'decimal-zeros':same(z,'да');break;case 'decimal-compare':same(z,x>y?'>':x<y?'<':'=');break;case 'decimal-between':same(z-n(d.left),n(d.right)-z);break;
+ case 'decimal-place':same(z*1000,c);assert.equal(t.answerFormat,'decimal');assert(!M.accepts(c+'/1000',t));break;case 'decimal-fraction':same(z*d.scale,d.num);break;case 'decimal-zeros':same(z,'да');break;case 'decimal-compare':same(z,x>y?'>':x<y?'<':'=');break;case 'decimal-between':same(z-n(d.left),n(d.right)-z);break;
  case 'decimal-add':case 'decimal-carry':case 'decimal-subtract':case 'decimal-borrow':case 'decimal-money':case 'decimal-times-int':case 'decimal-times-ten':case 'decimal-divide-int':case 'decimal-divide-zero':case 'decimal-divide-ten':case 'decimal-multiply':case 'decimal-small-product':case 'decimal-area':case 'decimal-divide':case 'decimal-portion':case 'decimal-reverse':case 'project-recipe':
   if(d.op==='add')same(z-y,x);else if(d.op==='subtract')same(z+y,x);else if(d.op==='multiply')same(z/y,x);else same(z*y,x);break;
  case 'round-decimal':case 'round-carry':{const step=10**-d.places,v=d.raw/d.scale;same(z/step,Number((BigInt(d.raw)*BigInt(10**d.places)*2n+BigInt(d.scale))/(BigInt(d.scale)*2n)));assert(Math.abs(v-z)<=step/2+1e-9);break;}
@@ -33,7 +33,15 @@ function oracle(k,t){const d=t.data,{a,b,c}=d,z=n(t.answer),x=n(d.x),y=n(d.y);
 assert.equal(P.units.length,53);assert.equal(P.ids.length,134);assert(P.units.every(x=>x.ids.length));assert.equal(new Set(C.lessons.map(l=>l.id)).size,C.lessons.length);assert(oldIds.every(id=>C.byId[id]));
 const visiting=new Set(),done=new Set();function visit(id){assert(C.byId[id],id);assert(!visiting.has(id),'Prerequisite cycle '+id);if(done.has(id))return;visiting.add(id);C.byId[id].requires.forEach(visit);visiting.delete(id);done.add(id);}C.lessons.forEach(l=>visit(l.id));
 let count=0;for(const id of P.ids){const l=C.byId[id];assert.equal(l.worked.length,3,id);assert(l.explanation.length>40&&l.misconception&&l.reflect.length>=2);for(const r of [...l.requires,...l.related])assert(C.byId[r],r);for(let seed=0;seed<120;seed++){
- const t=M.generate(id,seed);t._seed=seed;oracle(l.fullKey,t);assert(t.steps.length>=2,id);for(const s of [...t.steps,t]){const text=s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?String(n(s.answer)).includes('.')?String(n(s.answer)):n(s.answer)+'.0':fmt(s.answer);assert(M.accepts(text,s),id+' rejects its valid answer '+text);assert(!M.accepts('не знаю',s),id);assert(!/NaN|Infinity|undefined/.test(s.prompt));}count++;
+ const t=M.generate(id,seed);t._seed=seed;oracle(l.fullKey,t);
+ if(l.fullKey==='place-value'&&t.data.pos===3){
+  assert.equal(t.steps.length,1);
+  assert.equal(t.steps[0].prompt,t.prompt);
+  assert.match(t.prompt,/Какая цифра стоит в разряде единиц/);
+  assert.equal(t.steps[0].answer,t.answer);
+  assert(!M.accepts('1',t.steps[0]));
+ }else assert(t.steps.length>=2,id);
+ for(const s of [...t.steps,t]){const text=s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?String(n(s.answer)).includes('.')?String(n(s.answer)):n(s.answer)+'.0':fmt(s.answer);assert(M.accepts(text,s),id+' rejects its valid answer '+text);assert(!M.accepts('не знаю',s),id);assert(!/NaN|Infinity|undefined/.test(s.prompt));}count++;
 }}
 // Cross-class links preserve a one-way prerequisite graph and two-way optional navigation.
 for(const l of C.lessons.filter(l=>l.foundation5)){assert(l.requires.includes(l.foundation5));assert(C.byId[l.foundation5].related.includes(l.id));}

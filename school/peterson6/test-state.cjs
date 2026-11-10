@@ -5,7 +5,7 @@ assert(lessons.length,'Lessons must exist');
 // These minimal nodes all represent attached descendants of the active main
 // surface. Model the form APIs used by the local click/Enter binding as well
 // as submit events; full DOM/stale-control behavior has separate JSDOM gates.
-const elements={};const make=()=>({innerHTML:'',textContent:'',value:'',hidden:true,isConnected:true,elements:[{type:'submit',disabled:false}],contains:node=>!!node?.isConnected,querySelectorAll:()=>[],setAttribute(){},removeAttribute(){}});
+const elements={};const make=()=>({innerHTML:'',textContent:'',value:'',hidden:true,isConnected:true,elements:[{type:'submit',disabled:false}],contains:node=>!!node?.isConnected,querySelectorAll:()=>[],addEventListener(){},setAttribute(){},removeAttribute(){}});
 const document={getElementById:id=>elements[id]||(elements[id]=make()),querySelectorAll:()=>[],querySelector:()=>make(),addEventListener(){}};
 const window={PetersonCourse:{lessons,exerciseIndex:{}},PetersonMath:M,addEventListener(){},scrollTo(){}};
 const ctx={window,document,localStorage:{getItem:()=>null,setItem(){}},location:{hash:'#home'},console,requestAnimationFrame:fn=>fn(),setTimeout,URL,Blob};

@@ -83,6 +83,27 @@ test('all twelve current-course families preserve inputs, help, correct steps, m
     } finally { f.dom.window.close(); }
   }
 });
+test('successful board tasks continue only within their own set, then return to its list', async () => {
+  for (const position of [11, 13]) {
+    const f = fixture(position);
+    try {
+      for (const [index, id] of boards.LESSONS[position].entries()) {
+        f.api.navigate('#lesson=' + id);
+        assert(f.$('[data-task-next]').hidden);
+        const task = f.w.PathData.task(id, f.state().work.seed);
+        f.input('#answer', task.answer); f.submit('#answerForm');
+        const next = f.$('[data-task-next]'), target = boards.LESSONS[position][index + 1];
+        assert(!next.hidden); assert.equal(f.$('#taskNext').nextElementSibling.id, 'taskHelp');
+        assert.equal(next.getAttribute('href'), target ? '#lesson=' + target : '#map');
+        assert.equal(f.state().route, '#lesson=' + id, 'answer does not navigate automatically');
+        next.click(); await f.tick();
+        assert.equal(f.state().route, target ? '#lesson=' + target : '#map');
+        assert.equal(f.reads(), 0);
+      }
+    } finally { f.dom.window.close(); }
+  }
+});
+
 test('recreated step fields and long pasted answers/notes have identical visible and shared limits', async () => {
   const f = fixture(11);
   try {

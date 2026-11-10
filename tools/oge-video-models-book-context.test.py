@@ -48,6 +48,90 @@ class ContextTests(unittest.TestCase):
         self.assertTrue(self.accepted(self.record))
         self.assertEqual(self.record, before)
 
+    def test_composed_task11_requires_both_exact_closed_summary_witnesses(self):
+        record = copy.deepcopy(self.record)
+        route = '/trainers/oge-task11-graphs-trainer.html'
+        raw = (ROOT / route[1:]).read_bytes()
+        record.update(id='54', route=route, finalPath=route)
+        context = record['videoModelContext']
+        before, after = 'Native condition. Разобраться на опыте ', ' Native footer.'
+        context.update(route=route, bookId='54', task=11, sourceSha256=sha(raw),
+                       sourceBase=PINS['pages'][route[1:]]['currentSource']['commit'],
+                       nativeSha256=PINS['pages'][route[1:]]['currentSource']['sha256'],
+                       beforeText=before, afterText=after, offsetCodePoints=len(before))
+        record['initialVisibleText'] = before + LABEL + after
+        record['unfilteredInitialVisibleText'] = record['publicWayfinding']['visibleText']+' '+record['initialVisibleText']
+        record['publicWayfinding']['servedHtmlSha256'] = sha(raw)
+        record['resources'][route] = dict(sha256=sha(raw), status=200)
+        record['optionalActiveLearning'] = dict(kind='oge-active-learning-v1', task=11,
+            collapsed=True, visibleText='Разобраться на опыте',
+            includeBlockSha256=math.active_include_hash(11),
+            preservedNativeSha256=PINS['pages'][route[1:]]['currentSource']['sha256'])
+        oracle = dict(prompt='Synthetic condition', expected=['1'])
+        fixtures = {'54': dict(visibleText='Native condition. Native footer.',
+                              geometrySha256=math.geom([]), oracles=[oracle])}
+        accepted = lambda value: math.exact_reviewed_context(value, oracle, fixtures)
+        self.assertTrue(accepted(record))
+        for field in ['optionalActiveLearning', 'videoModelContext']:
+            changed=copy.deepcopy(record);del changed[field]
+            self.assertFalse(accepted(changed), field)
+        for key, value in [('collapsed', False), ('task', 12), ('preservedNativeSha256', '0'*64)]:
+            changed=copy.deepcopy(record);changed['optionalActiveLearning'][key]=value
+            self.assertFalse(accepted(changed), key)
+        original_read=type(ROOT).read_bytes;target=ROOT/route[1:]
+        for change in [lambda value:value.replace(b'defer src="oge-active-learning.js?v=',b'async src="oge-active-learning.js?v='),
+                       lambda value:value.replace(b' data-oa-task="11"',b' data-oa-task="12"'),
+                       lambda value:value.replace(b'</head>',b'<script>void "unreviewed";</script></head>')]:
+            self.assertNotEqual(change(raw), raw, 'negative control changes the actual source')
+            with patch.object(type(ROOT),'read_bytes',lambda p:change(original_read(p)) if p==target else original_read(p)):
+                self.assertFalse(accepted(record))
+
+    def test_current_source_receipts_remain_bound_to_the_exact_loaded_revision(self):
+        original_read = type(ROOT).read_bytes
+        for file, pin in PINS['pages'].items():
+            if not pin.get('currentSource'):
+                continue
+            route = '/' + file
+            target = ROOT / file
+            raw = target.read_bytes()
+            candidate = pin['currentSource']
+            record = copy.deepcopy(self.record)
+            context = record['videoModelContext']
+            record.update(id=pin['bookId'], route=route, finalPath=route)
+            context.update(route=route, bookId=pin['bookId'], task=pin['task'],
+                           sourceBase=candidate['commit'], nativeSha256=candidate['sha256'])
+
+            def bind_payload(payload):
+                source_hash = sha(payload)
+                context['sourceSha256'] = source_hash
+                record['resources'][route] = dict(sha256=source_hash, status=200)
+                record['publicWayfinding']['servedHtmlSha256'] = source_hash
+
+            bind_payload(raw)
+            if pin['task'] == 11:
+                record['optionalActiveLearning'] = dict(kind='oge-active-learning-v1', task=11,
+                    collapsed=True, visibleText='Разобраться на опыте',
+                    includeBlockSha256=math.active_include_hash(11),
+                    preservedNativeSha256=candidate['sha256'])
+            self.assertEqual(without_closed_video_summary(record), self.original_text)
+            context['sourceBase'] = PINS['baseCommit']
+            self.assertIsNone(without_closed_video_summary(record))
+            context['sourceBase'] = candidate['commit']
+            context['nativeSha256'] = pin['sha256']
+            self.assertIsNone(without_closed_video_summary(record))
+
+            # An old receipt is valid only when its own exact source was loaded.
+            start = raw.index(b'<!-- OGE video-model investigations: standalone practice -->')
+            stop = raw.index(b'</head>', start)
+            baseline = subprocess.check_output(['git','show',PINS['baseCommit']+':'+file], cwd=ROOT)
+            historical = baseline.replace(b'</head>', raw[start:stop]+b'</head>', 1)
+            context['sourceBase'] = PINS['baseCommit']
+            bind_payload(historical)
+            record.pop('optionalActiveLearning', None)
+            self.assertIsNone(without_closed_video_summary(record))
+            with patch.object(type(ROOT),'read_bytes',lambda p:historical if p==target else original_read(p)):
+                self.assertEqual(without_closed_video_summary(record), self.original_text)
+
     def test_changed_identity_closed_state_source_and_asset_receipts_reject(self):
         for key, value in [('kind','other'),('route','/other.html'),('bookId','54'),('task',11),
                            ('sourceBase','0'*40),('sourceSha256','0'*64),('nativeSha256','0'*64),

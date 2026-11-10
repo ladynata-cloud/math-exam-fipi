@@ -293,7 +293,6 @@ section.module{padding-top:0}
 .answer-line label{font-size:16px}
 input.ans{font-family:inherit;font-size:20px;min-height:48px}
 .answer-actions{margin-top:26px;gap:14px}
-.next-row{margin-top:24px}
 .fb{padding:18px;line-height:1.8;margin:22px 0}
 .fb p{margin:16px 0}.fb.hint{border-color:#d5e0d4;color:#264b38}
 .practice-settings{margin:22px 0;color:var(--muted)}
@@ -319,7 +318,7 @@ nav.tabs button .n{display:none}
 .lab-readout p{margin:13px 0}
 .lab-note{font-size:14px;color:var(--muted);margin-top:18px}
 :focus-visible{outline:3px solid #b68013;outline-offset:4px}
-@media(max-width:540px){body{font-size:17px}.wrap{padding-left:12px;padding-right:12px}.card{padding:22px 15px}.matching-exercise h2{font-size:23px}#m4-graphs{gap:6px}#m4-graphs .gitem{padding:3px}.match-desc .row{padding:12px 10px;gap:8px}.match-desc .row>span:nth-child(2){font-size:1.05em}.match-desc > .row > select{font-size:16px;max-width:100%}#m4-hint{width:100%}.lab-layout{grid-template-columns:1fr}.lab-graph{max-width:400px;width:100%;margin:auto}.lab-families{gap:8px}.lab-families button{font-size:15px;padding:8px 10px}.next-row .btn{width:100%}.settings-content{padding:16px}.answer-line{align-items:center}}
+@media(max-width:540px){body{font-size:17px}.wrap{padding-left:12px;padding-right:12px}.card{padding:22px 15px}.matching-exercise h2{font-size:23px}#m4-graphs{gap:6px}#m4-graphs .gitem{padding:3px}.match-desc .row{padding:12px 10px;gap:8px}.match-desc .row>span:nth-child(2){font-size:1.05em}.match-desc > .row > select{font-size:16px;max-width:100%}#m4-hint{width:100%}.lab-layout{grid-template-columns:1fr}.lab-graph{max-width:400px;width:100%;margin:auto}.lab-families{gap:8px}.lab-families button{font-size:15px;padding:8px 10px}.settings-content{padding:16px}.answer-line{align-items:center}}
 
 /* Help belongs to a particular formula; matching inputs stay mounted. */
 .match-desc .function-help{font:inherit;font-size:15px;min-height:44px;padding:8px 12px;border:1px solid #cbd6cc;border-radius:8px;background:#f1f5f1;color:var(--accent-dark);cursor:pointer}
@@ -366,6 +365,9 @@ nav.tabs button .n{display:none}
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
+<link rel="stylesheet" href="oge-active-learning.css?v=20261109">
+<script defer src="oge-active-learning-data.js?v=20261109"></script>
+<script defer src="oge-active-learning.js?v=20261109" data-oa-task="11"></script>
 <!-- OGE video-model investigations: standalone practice -->
 <link rel="stylesheet" href="oge-video-models.css">
 <script defer src="oge-video-graphs.js"></script>
@@ -633,7 +635,7 @@ nav.tabs button .n{display:none}
   <div class="fb hint" id="m4-review" aria-live="polite"></div>
   <div class="card matching-exercise">
     <p class="topic-label" id="m4-title"></p>
-    <h2 id="m4-heading">Найди график каждой функции</h2>
+    <h2 id="m4-heading" tabindex="-1">Найди график каждой функции</h2>
     <p id="m4-taskline">Выбери номер графика для каждой формулы.</p>
     <button class="btn btn-ghost" id="m4-hint" aria-expanded="false" aria-controls="m4-hintbox">Хочешь подсказку?</button>
     <section id="m4-hintbox" class="task11-lab" aria-label="Лаборатория графиков" hidden></section>
@@ -641,11 +643,11 @@ nav.tabs button .n{display:none}
     <div class="btnrow answer-actions">
       <button class="btn btn-primary" id="m4-check">Проверить</button>
       <button class="btn btn-ghost" id="m4-show" hidden>Показать разбор</button>
+      <button class="btn" id="m4-next">Другое задание →</button>
     </div>
     <div class="fb soft" id="m4-soft" aria-live="polite"></div>
     <div class="fb good" id="m4-good" aria-live="polite"></div>
     <div class="fb hint" id="m4-razbor" aria-live="polite"></div>
-    <div class="btnrow next-row"><button class="btn" id="m4-next">Другое задание →</button></div>
   </div>
   <details class="practice-settings" id="task11-settings">
     <summary>Выбрать тему · мои результаты</summary>
@@ -1951,14 +1953,16 @@ function m4New(){
   $("m4-hintbox").innerHTML = "";
   $("m4-hint").setAttribute("aria-expanded", "false");
   $("m4-hint").textContent = "Хочешь подсказку?";
+  $("m4-check").hidden = false;
+  $("m4-next").textContent = "Другое задание →";
+  $("m4-next").classList.remove("btn-primary");
   $("m4-show").hidden = true;
   M4.form = renderMatch(T, $("m4-match"), "m4");
   $("m4-show").disabled = false;
   renderProgressNotes();
 }
-$("m4-check").addEventListener("click", () => {
-  const T = M4.task; if (!T) return;
-  if (M4.done){ fb($("m4-soft"), "Это задание уже решено — жми «Следующее задание»."); return; }
+$("m4-check").addEventListener("click", event => {
+  const T = M4.task; if (!T || M4.done) return;
   const ans = M4.form.read();
   if (!ans){ fb($("m4-soft"), "Заполни соответствие для всех трёх букв — списками или строкой из трёх цифр."); return; }
   if (new Set(ans).size !== 3){ fb($("m4-soft"), "Каждый график используется ровно один раз — проверь, нет ли повторов."); return; }
@@ -1978,6 +1982,11 @@ $("m4-check").addEventListener("click", () => {
     T.items.forEach((it, i) => { ex += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
     if (!ok) ex += "<p>" + (M4.shown ? "Разбор был показан — задание в счёт решённых не идёт." : "Было две ошибки — задание в счёт решённых не идёт.") + "</p>";
     fb($("m4-good"), ex);
+    $("m4-check").hidden = true;
+    const next = $("m4-next");
+    next.textContent = "Следующее задание →";
+    next.classList.add("btn-primary");
+    if (event.isTrusted) next.focus({ preventScroll: true });
     return;
   }
   /* промах: один раз на задачу — в журнал и фактические признаки в статистику ошибок */
@@ -2006,7 +2015,11 @@ $("m4-show").addEventListener("click", () => {
   }
   fb($("m4-razbor"), h);
 });
-$("m4-next").addEventListener("click", () => { M11.acted = true; m4New(); });
+$("m4-next").addEventListener("click", event => {
+  M11.acted = true;
+  m4New();
+  if (event.isTrusted) $("m4-heading").focus();
+});
 
 /* Shared visual memories. The denominator example never changes a task model. */
 /* Read-only vertex guidance: every step uses the displayed parabola. */
