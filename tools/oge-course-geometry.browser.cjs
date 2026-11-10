@@ -38,7 +38,19 @@ for(const width of[320,1280])for(const n of[9,11,13]){
  const route={9:'/trainers/oge-task9-equations.html',11:'/trainers/oge-task11-graphs-trainer.html',13:'/trainers/oge13-inequalities-series.html'}[n];await page.goto(base+route);
  let scope,input;
  if(n===9){await page.evaluate(()=>{const c=window.eval("makeMaraCard(BANK.find(t=>t.fam==='QF'),()=>{})");c.id='reference-entry-test';document.body.append(c);});scope=page.locator('#reference-entry-test');input=scope.locator('.field input');await input.fill('17');await scope.locator('button.minimal-hint').click();await scope.locator('.equation-discovery>summary').click();}
- if(n===11){input=page.locator('#m4-answer');await input.fill('231');await page.locator('#m4-desc .function-help[data-i="1"]').click();await page.locator('#t11-help-vertex-details>summary').click();scope=page.locator('#t11-help-vertex-details');}
+ if(n===11){
+  const progressBefore=await page.evaluate(()=>localStorage.getItem('mathExamCourseProgress.v1'));
+  await page.locator('#task11-settings>summary').click();
+  await page.locator('#m4-chips button[data-t="t42"]').click();
+  assert.equal(await page.evaluate(()=>M4.task.type),'t42','the reference fixture uses the chosen parabola task');
+  input=page.locator('#m4-answer');await input.fill('231');
+  await page.locator('#m4-desc .function-help[data-i="1"]').click();
+  assert.equal(await page.evaluate(()=>Task11Discovery.getState().kind),'par','the chosen formula has vertex help');
+  await page.locator('#t11-help-vertex-details>summary').click();scope=page.locator('#t11-help-vertex-details');
+  const progressAfter=await page.evaluate(()=>localStorage.getItem('mathExamCourseProgress.v1'));
+  helpFacts(progressAfter);
+  assert.deepEqual(legacy(progressAfter),legacy(progressBefore),'choosing the parabola topic and opening help preserve all legacy and foreign progress');
+ }
  if(n===13){await page.locator('#chips button').first().click();await page.locator('#hintToggle').click();scope=page.locator('#task13LabHost [data-lab-kind="quad"]');}
  const snapshot=()=>page.evaluate(n=>{
   const value={progress:localStorage.getItem('mathExamCourseProgress.v1'),answer:n===9?document.querySelector('#reference-entry-test .field input').value:n===11?document.querySelector('#m4-answer').value:window.eval('JSON.stringify({selectedChoice,selectedZones,checked,solution})')};

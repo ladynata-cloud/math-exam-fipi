@@ -83,8 +83,10 @@
 Новый журнал находится только в `ext.auditLearning` соответствующего TID
 в существующем `mathExamCourseProgress.v1`. Исторические `solvedByType`,
 поля зачёта, сторонние расширения и чужие разделы сохраняются. Запись читает
-свежее значение общего ключа; идентификатор и ревизия не позволяют старой
-вкладке повторно завершить или перезаписать более свежую попытку.
+свежее значение общего ключа; идентификатор и ревизия отклоняют действие,
+если обнаружена более свежая попытка в другой вкладке, и предотвращают
+повторный учёт уже записанного завершения. Это не межпроцессная транзакция
+localStorage; абсолютная атомарность одновременных записей не заявляется.
 
 Журнал хранит не более 100 последних завершённых попыток. История встреченных
 условий тоже ограничена; после насыщения хранения повтор не объявляется
@@ -106,9 +108,10 @@
 ## Проверка и независимый разбор
 
 До реализации три отдельных исполнителя разобрали аудит, текущее поведение
-и математические риски. Готовые изменения передаются другому исполнителю:
-№11 проверяется автором доказательств, №22 — автором графических упражнений,
-№24 — автором анализа аудитов. Это внутреннее независимое техническое ревью;
+и математические риски. Готовые изменения проверены другим исполнителем:
+№11 — автором доказательств, №22 — автором графических упражнений,
+№24 — автором анализа аудитов. Последние изменения записи черновика
+дополнительно прошли взаимное ревью и третью независимую проверку. Это внутреннее независимое техническое ревью;
 оно не обозначается как внешний provider review.
 
 Основные новые регрессии:
@@ -219,8 +222,8 @@ Navigation preservation использует новые полные source rece
 Новым случаям добавлены только `sourceVariant`; исходные frozen fixtures
 остались прежними. Два независимых исполнителя подтвердили эти выводы.
 
-После исправлений требуется новый CI на окончательном head. Результаты
-первого запуска не подменяют его и не являются разрешением на выпуск.
+Эти находки потребовали повторного CI. Результаты первого запуска
+не подменяют последующую приёмку и не являются разрешением на выпуск.
 
 ## Второй полный CI и точечные исправления
 
@@ -283,6 +286,60 @@ head и проверенных hunks. Для всех новых blobs выпо�
 выполняет CI; source receipts сверяются полными hashes и новым checkpoint.
 Дополнительно CI запускает штатный source-binding helper на всём manifest,
 чтобы подтвердить точность восстановленных привязок.
+
+## Проверенная реализация и итоговая передача
+
+Учебный runtime после всех исправлений находится в
+[content checkpoint 2b33a231](https://github.com/ladynata-cloud/math-exam-fipi/commit/2b33a2315a22c98a70497e7395e4e67c4bd415e4).
+Он проверен в интеграционном head
+`65ee04576f66486e47321f02313f9b117d0e34b4`.
+Виртуальный PR merge `074084c5ef2d2f1a55b2edb9ec3fdf79db481322`
+имеет родителей исходный main и этот head; полное дерево
+`a4c612cf2f07fb1167acfc9dbcfeda08a7583dbb` совпадает с head.
+Это проверочная композиция GitHub, не выполненное слияние.
+
+| Проверка на 65ee0457 | Подтверждённый результат |
+| --- | --- |
+| [Audit learning](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654548) | 92/92 DOM; №11/22/24, navigation и source book browser PASS; 19 настоящих reload-сравнений всего raw progress; штатный binding helper дал BINDINGS_CURRENT |
+| [№11 compatibility](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654634) | 52/52 DOM, 668 математических проверок и обе retained browser suites PASS |
+| [Whole-course shared practice](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654579) | Два jobs PASS: 57/57 DOM, 87/87 two-window, 27/27 event-order, 84/84 practical, 32/32 actual transport, 32/32 registry/server; 105 независимых ответов шин; 30 тренажёров и 119 действий без personal/production writes |
+| [Video models](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654616) | 55/55 + 94/94 DOM; 27 layouts, 30 journeys, 54 isolation checks PASS; строгий raw-storage reload №11/24 сохранён |
+| [Minimal interface](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654689) | 21 Python и 123/123 DOM; мобильные и настольные browser scenarios PASS |
+| [Learner entrances](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654527) | 19/19 publication tests; 147 документов/133 return bars; 294 rendered pages и 134 no-JS checks PASS |
+| [Learning map](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654606) | 26/26 + 9/9 DOM; 320/390/768/1280 px PASS |
+| [Public navigator](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654795) | Все четыре shards PASS: 1938 page/viewport journeys, 195 catalogue entries |
+| [Geometry 15–19](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654591) | 50/50, 106/106, 36/36, 45/45 в отдельных группах; math/state/model/transport PASS |
+| [Fixed book editions](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654766) | Оба jobs PASS; 1185 математических случаев, 0 FAIL/PENDING/missing/unreviewed; сохранность двух редакций и все positive/negative image cases подтверждены |
+
+Числа относятся к названным наборам; пересекающиеся tests не суммируются
+в один показатель. Прежние математические gates дают 668 algebra и
+1873 geometry checks; отдельные новые случаи №22 проверяются дополнительно.
+
+В [course variants](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42895654735)
+на этом head четыре jobs прошли: proof — 168 browser cases, algebra —
+8 маршрутов × 3 ширины, practical — 107 cases, tire quiz — 12 cases.
+Оставшийся geometry browser использовал случайный тип №11 после добавления
+fixture прежнего прогресса: starter по штатным правилам отключался, и
+справка параболы могла отсутствовать. Последняя правка только в harness
+явно выбирает «Формулы парабол» через пользовательский control, подтверждает
+тип и вид модели, затем выполняет прежние строгие assertions.
+Все legacy/foreign поля дополнительно сравниваются до и после выбора;
+попытка не завершается. Учебный runtime при этой правке не менялся.
+
+Точные окончательные head, общий CI, результат этого harness и итоговый gate
+зафиксированы в [EXECUTIVE STATUS Draft PR #550](https://github.com/ladynata-cloud/math-exam-fipi/pull/550).
+Такой handoff привязан к полной версии PR, включая тесты и документацию;
+source checkpoint отдельно удостоверяет учебные HTML-страницы.
+Общий workflow accounts/classroom/trainers остаётся частью CI-приёмки.
+
+Артефакт audit нового runtime: `13800602618`, GitHub digest SHA-256
+`04c07d7fc8c68c579a8987b6d1eacfda24397fe22aed5f42cd90b4330eee4082`.
+После отключения среды этот новый ZIP локально не скачивался.
+Ранее просмотренный артефакт `13799571863` с теми же исправлениями вёрстки
+проверен локально по SHA-256
+`eac473bae6464fff31f066b0d4f19e5281b469c0f19e931f676001bbc8c4a4f7`.
+Последние runtime-изменения касаются записи и согласованности параметра,
+а новые browser checks подтверждают размеры, видимость, ввод и возврат.
 
 ## Границы и выпуск
 
