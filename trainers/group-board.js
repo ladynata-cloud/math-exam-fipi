@@ -18,7 +18,7 @@
   const emptyGeometry = () => ({version:1,title:'Новое построение',objects:[],view:{axes:true,grid:true,viewport:{x:0,y:0,span:12}}});
   const currentSurface = () => target() === 'presentation' ? (snapshot?.presentation?.surface || 'split') : (surfaces.get(target()) || 'split');
   let historyWorkspace = null, historyInitial = null, drawing = null, tool = 'pen', outbox = [], rejected = [];
-  let inkPreviews = Object.create(null), queueOwner = null, queueWritable = false;
+  let inkPreviews = Object.create(null), queueOwner = null, queueWritable = false, queueStorageFailed = false;
   const cardFrames = new Map(), cardCanvases = new Map(), cardSurfaces = new Map();
   const waiters = new Map();
   const timers = new Set();
@@ -83,8 +83,18 @@
     node.dataset.kind = kind;
   }
   function saveQueue() {
-    try { if (!queueWritable) return; sessionStorage.setItem(queueKey(), GroupBoardQueue.encode(queueOwner,{outbox,rejected,inkPreviews})); }
-    catch (_) { notice('Браузер не сохранил резервную копию. Не закрывайте вкладку до отправки действий.', true); }
+    if (!queueWritable) return;
+    try {
+      sessionStorage.setItem(queueKey(), GroupBoardQueue.encode(queueOwner,{outbox,rejected,inkPreviews}));
+      queueStorageFailed = false;
+      if ($('errorNotice').dataset.kind === 'queue-storage') notice('', true);
+    } catch (_) {
+      // Keep the in-memory action and let pump deliver it. Stop accepting more
+      // edits until this exact queue can be backed up again; never erase the
+      // previous stored envelope after a failed write.
+      queueStorageFailed = true;
+      notice('Браузер не сохранил резервную копию. Не закрывайте вкладку. Скачайте несохранённые действия; отправка на сервер продолжится автоматически.', true, 'queue-storage');
+    }
   }
   async function request(path, options = {}, auth = true) {
     const controller = new AbortController();
@@ -121,7 +131,12 @@
   async function poll() {
     if (!credentials || !snapshot || polling || sending || stopped) return;
     polling = true;
-    try { accept(await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision)); }
+    // Local recovery must not depend on network recovery.
+    if (queueStorageFailed) saveQueue();
+    try {
+      const data = await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision);
+      accept(data);
+    }
     catch (error) {
       connected = false; renderConnection();
       // A failed read is not a rejected edit. Keep actual rejected-work warnings
@@ -136,6 +151,7 @@
   }
   function enqueue(type, id, payload, options = {}) {
     const ws = workspace(id);
+    if (queueStorageFailed) return Promise.reject(Error('Браузер не сохранил резервную копию. Скачайте несохранённые действия и дождитесь восстановления сохранения.'));
     if (!queueWritable) return Promise.reject(Error('Очередь сохранения недоступна. Сохраните эту вкладку и откройте личную ссылку в новой вкладке.'));
     if (!credentials || !snapshot || !ws && !['assign','insert'].includes(type)) return Promise.reject(Error('Нет рабочего места.'));
     const body = {opId:uuid(), target:id, type, payload:clone(payload)};
@@ -181,7 +197,7 @@
       const data = await request('/api/group-lessons/' + credentials.id + '/actions', {method:'POST',body:JSON.stringify(body)});
       outbox.shift(); delete inkPreviews[body.opId]; saveQueue(); accept(data);
       waiters.get(body.opId)?.resolve(data); waiters.delete(body.opId);
-      if (!outbox.length && !rejected.length) notice('', true);
+      if (!outbox.length && !rejected.length && !queueStorageFailed) notice('', true);
     } catch (error) {
       if (error.status && error.status < 500 && error.status !== 429) {
         outbox.shift(); delete inkPreviews[body.opId]; rejected.push({action:body,error:error.code || error.message,at:new Date().toISOString()});
@@ -257,7 +273,7 @@
   function ownsTrainer(ws,id) {return id==='common'?teacher():teacher()?ws?.controller==='teacher':id===snapshot.seatId&&ws?.controller==='student';}
   function writer(ws,id) {
     const pending=pendingTrainer(ws,id);
-    return queueWritable&&connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
+    return queueWritable&&!queueStorageFailed&&connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
       &&(!pending.length||pending[0].expectedVersion===ws.trainerVersion)&&ownsTrainer(ws,id);
   }
   function focusState(ws,id) {
@@ -271,7 +287,7 @@
   function ownsGeometry(ws,id) {return id==='common'?teacher():teacher()?ws?.geometryController==='teacher':id===snapshot.seatId&&ws?.geometryController==='student';}
   function geometryWriter(ws,id) {
     const pending=pendingGeometry(ws,id);
-    return queueWritable&&connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
+    return queueWritable&&!queueStorageFailed&&connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
       &&(!pending.length||pending[0].expectedVersion===ws.geometryVersion)&&ownsGeometry(ws,id);
   }
   function geometryState(ws,id) {
@@ -336,12 +352,12 @@
       geometryFrame.update({...(!pending.length?{state:ws.geometryState||emptyGeometry()}:{}),readOnly:!geometryWriter(live,id)});
     }
   }
-  function canDraw() { return queueWritable && connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
+  function canDraw() { return queueWritable && !queueStorageFailed && connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
   function renderConnection() {
     if (!snapshot) return;
-    $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
-    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!queueWritable?'pending':!connected?'offline':outbox.length||rejected.length?'pending':'saved';
+    $('recoverWorkButton').hidden=!(rejected.length||(!connected||queueStorageFailed)&&outbox.length);
+    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':queueStorageFailed?'Нет резервной копии в браузере':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!queueWritable||queueStorageFailed?'pending':!connected?'offline':outbox.length||rejected.length?'pending':'saved';
     renderInk();
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
@@ -632,7 +648,7 @@
   }
   function download(name,data) {const a=element('a');const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
   function recoverWork() {
-    if(!snapshot||teacher()||!outbox.length&&!rejected.length)return;
+    if(!snapshot||!outbox.length&&!rejected.length)return;
     download('mathexam-unsent-work.json',{format:'mathexam-unsent-work',version:1,title:snapshot.title,exportedAt:new Date().toISOString(),unsent:clone(outbox),rejected:clone(rejected)});
     notice('Копия несохранённых действий скачана. Ссылки и ключи доступа в неё не включены.');
   }
@@ -660,7 +676,7 @@
     queueOwner=GroupBoardQueue.principal(credentials.server,credentials.id,snapshot);
     try {
       const saved=GroupBoardQueue.restore(sessionStorage.getItem(queueKey()),queueOwner);
-      ({outbox,rejected,inkPreviews}=saved);queueWritable=true;
+      ({outbox,rejected,inkPreviews}=saved);queueWritable=true;saveQueue();
       const legacy=sessionStorage.getItem('mathexam.group.outbox.'+credentials.id);
       let legacyPending=!!legacy;
       if(legacy)try{const old=JSON.parse(legacy);legacyPending=!Array.isArray(old.outbox)||!Array.isArray(old.rejected)||old.outbox.length>0||old.rejected.length>0;}catch(_){}
@@ -741,6 +757,6 @@
   resize.observe($('teacherWatchCanvas'));
   matchMedia('(min-width:1050px)').addEventListener('change',()=>{if(snapshot)renderTeacherWatch();});
   addEventListener('online',()=>{connected=true;pump();poll();});
-  addEventListener('beforeunload',event=>{if(outbox.length){event.preventDefault();event.returnValue='';}});
+  addEventListener('beforeunload',event=>{if(outbox.length||queueStorageFailed&&rejected.length){event.preventDefault();event.returnValue='';}});
   init();
 })();

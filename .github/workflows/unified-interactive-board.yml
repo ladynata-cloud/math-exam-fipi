@@ -10,6 +10,7 @@ on:
       - 'tools/group-board.browser.cjs'
       - 'tools/group-board-ink.test.cjs'
       - 'tools/group-board-ink.browser.cjs'
+      - 'tools/group-board-storage.browser.cjs'
       - 'tools/group-board-queue.test.cjs'
       - 'tools/spacemath/**'
       - 'Dockerfile'
