@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+  "baseSha": "8ee9af0d58beae10d773ed5bf754ad9836b4cf28",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2193,8 +2193,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
-      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
+      "beforeSha256": "ddac339c4f9116296e58b3aaeb4d5f34bdd82d082639b5da84a6cd3e30f832ee",
+      "afterSha256": "488d40e2fd4e75affa9ba9291f89ae3329c135dca835eba69a6c5e2db4fa5370",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -4775,6 +4775,15 @@
       "changedPaths": [
         "trainers/drobi-oge-trainer.html",
         "trainers/oge-task6-fractions.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "8ee9af0d58beae10d773ed5bf754ad9836b4cf28",
+      "task": "docs/tasks/ATANASYAN_EARLY_LEARNING_20261112.md",
+      "changedPaths": [
+        "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
