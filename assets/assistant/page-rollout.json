@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d8b3932a7cc16dfc67988a0f7b7e0dbf3dac6e26",
+  "baseSha": "324a5186bc514e72bc43af391f1123b9634c9997",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -233,8 +233,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
-      "beforeSha256": "09dc66dfb75f2a116345712e1ffb6e082ed57e88913a77314539c30f19b5f96a",
-      "afterSha256": "8299fbaae88891d25fca12347e6053eb031c44b0fa8b07d886e67aa90bb01b5e",
+      "beforeSha256": "399c57c29db9632ae86dad4effa38a943235fd0c574cf1aa0e1b39ab454c9954",
+      "afterSha256": "049af422ba5ee240392ebe15fa9ed36543220b08e19ad887d5b2601aebeaf93a",
       "placement": "before-head-close"
     },
     "ege-baza/reasoning/index.html": {
@@ -4689,6 +4689,15 @@
         "trainers/ege-baza/course/index.html",
         "trainers/ege-baza/data-course/index.html",
         "trainers/ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d8b3932a7cc16dfc67988a0f7b7e0dbf3dac6e26",
+      "sourceBaseSha": "324a5186bc514e72bc43af391f1123b9634c9997",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [
+        "ege-baza/percent/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
