@@ -68,6 +68,21 @@ async function roundHintRegression(){
   assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),id+' guided completion');
   assert.equal(d.querySelector('#answer').value,'12/',id+' final draft preserved through guided work');
   d.querySelector('#taskHelp').open=false;await tick();assert.equal(d.querySelector('#answer').value,'12/');
+
+  const skillMap=d.querySelector('#reasoningSkillMap,[data-ege-skill-map]');
+  assert(skillMap,id+' one skill route');
+  assert.equal(d.querySelectorAll('#reasoningSkillMap,[data-ege-skill-map]').length,1,id+' single map');
+  const check=skillMap.querySelector('[data-skill-check]');
+  assert(check,id+' authored self-check');
+  const checkData=w.EgeBazaSkillMaps.forLesson(id).selfCheck;
+  check.querySelector('input').value='1/0';
+  check.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  assert.match(check.querySelector('[data-skill-check-result]').textContent,/Введи число/);
+  check.querySelector('input').value=checkData.answer;
+  const credit=l.independent;
+  check.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  assert.equal(check.querySelector('[data-skill-check-result]').textContent,'Верно.');
+  assert.equal(l.independent,credit,id+' self-check has separate course evidence');
   const before=l.independent;submit(w,d,'answer',solution(w.PathData,t));assert.match(d.querySelector('#feedback').textContent,/Верно/,id+' final grading');assert.equal(l.independent,before,id+' guided is not independent');
  }
  // Final, intermediate and model state are distinct and survive hiding, routes and reload.

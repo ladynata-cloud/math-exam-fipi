@@ -65,6 +65,7 @@
  function mount(host,context) {
   const {meta,task:t,lesson:l,save,seen,expose,fresh,remediationId}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
+  let skillMap=null;
   let u=l.taskFirst;
   if(!valid(u)||!u||u.seed!==l.seed) {
    const resumed=!!(l.help||l.step||l.draft||l.note||l.done||l.attempted);
@@ -97,7 +98,7 @@
    $('#new').classList.toggle('primary',assisted);
    $('#variantStatus').textContent=assisted?'Ответ найден после помощи, повторного показа или исправления. Следующий шаг — похожее условие без открытых подсказок. Повтор будет отмечен.':u.repeatedVariant?'Сейчас доступен знакомый вариант. Повтор полезен, но не добавит новое самостоятельное решение.':'';
   }
-  const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';$('#feedback').innerHTML=M(text);$('#feedback').className='feedback '+u.feedbackKind;refreshLearning();save();};
+  const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';$('#feedback').innerHTML=M(text);$('#feedback').className='feedback '+u.feedbackKind;refreshLearning();save();skillMap?.refresh();};
   $('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;
   function bindChoices(prefix,change) {
    const input=$('#'+prefix),buttons=host.querySelectorAll('[data-'+prefix+'-choice]');
@@ -155,6 +156,7 @@
    $('#taskHint').innerHTML=M(hintText());
    body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
    refreshReasoningMap();
+   skillMap?.refresh();
    if(!step)return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
@@ -200,6 +202,16 @@
   if(root.EgeReferenceUI){
    const ids=root.EgeReferenceData.sheetsForTask?.(t)||root.EgeReferenceUI.forLesson(meta.id);
    root.EgeReferenceUI.attach(host.querySelector('.task-first-problem'),{sheetIds:ids,lessonId:meta.id,referenceBase:'../reference/',onReveal:markHelp});
+  }
+
+  if(learningCycle&&root.self===root.top&&new URLSearchParams(root.location.search).get('learning')!=='1'){
+   if(route){
+    root.EgeBazaSkillMap?.attachSelfCheck($('#reasoningSkillMap'),meta.id);
+   }else{
+    const target=host.ownerDocument.createElement('div');
+    host.querySelector('.task-first-problem').insertAdjacentElement('afterend',target);
+    skillMap=root.EgeBazaSkillMap?.attach(target,{lessonId:meta.id,lesson:l,task:t,onReveal:markHelp,onSteps:openSteps})||null;
+   }
   }
   save();
  }
