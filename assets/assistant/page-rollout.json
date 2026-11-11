@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "27cafe56f3f5e8ef62ecb2ca5068f3a615cc19cc",
+  "baseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2053,8 +2053,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "d7986fa36826d0058599fac7e4d3c184f0a81c6422b070bf2c39bfe45ab18c3f",
-      "afterSha256": "1542ebd051ac1fd638b7d7aeed61351afbb5b8e17c2d44f9fb6f28b1fd72fecd",
+      "beforeSha256": "eb2f27f7bca56e3e176177aed7acbd2fe8b713c4cafd9a8c869e8ceaf7e29a2a",
+      "afterSha256": "754dd210f462b84b1d45115727e55c10f8ee102d28e89bf803a13856bfd6ff5d",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -2208,8 +2208,8 @@
       "placement": "before-head-close"
     },
     "topics/delenie-ugolkom/index.html": {
-      "beforeSha256": "e234c3e561347bfde4ffdc1cfb3d9bcfdf42b898ab301c5ce255aaa6fd992cb8",
-      "afterSha256": "bc8db59fb659a692fa217deb2f26c8747d8a2565748cd4811f7518b186e9b236",
+      "beforeSha256": "aa7715246c1abd0c0b6ba654ea6609ca109b62dce788e62ac6f527fa3ff8b74c",
+      "afterSha256": "e67b7b0107ea1a75378b84cebc70d38d89164a83ce069de6a71e681aba149e4d",
       "placement": "before-head-close"
     },
     "topics/index.html": {
@@ -2218,23 +2218,23 @@
       "placement": "before-head-close"
     },
     "topics/lineynye-uravneniya/index.html": {
-      "beforeSha256": "76b27dd9d6b8a2df1029cdbda0b519f4cd9285f596b7a2239791bf2cf75d00b6",
-      "afterSha256": "3f20ecdfee0908071bf6185a49f05552bb068041af9c1fbd44ef0a5658a5b3db",
+      "beforeSha256": "a6bed4f235f52e13123aa4aabb909edf71ad0ad027e2999dd6aece0d7abd3c79",
+      "afterSha256": "bd69e60bff8798c80478624e9dac84f2feea8ef5ba2763b17857bb6bdcff30c2",
       "placement": "before-head-close"
     },
     "topics/obyknovennye-drobi/index.html": {
-      "beforeSha256": "c71a68175a768d822d6c59ff32321ead98b5c015942af36860f438f90116cdd7",
-      "afterSha256": "7f9bea08deb44da7abcbaee9fa482e733bca2d4763de03c7f6d0aec1b0a460c3",
+      "beforeSha256": "1b395226201218a787e0c39ab8a666b92f7f669ee0c6f53a213127ed52874fb3",
+      "afterSha256": "bbf9c853e632ae0730526113b9b5829b3adb540456ea81a11279e2ca0e3d842e",
       "placement": "before-head-close"
     },
     "topics/oge-geometriya/index.html": {
-      "beforeSha256": "8c24b421f25f994be3e7863a49d71d2a73ed33f8bba51beda99ab7388a931277",
-      "afterSha256": "9cbe789da774258517bb5026ae8a9f45b0e367204e06d6f7538257702b340286",
+      "beforeSha256": "e91406543ffc7247fee88885fc4621873a88e64e15a212df380cf607b44d0f58",
+      "afterSha256": "d7f3246edd53696a2f1f07d2efc992bf8776ffd149b3f2e1ceb0dccbd6056b04",
       "placement": "before-head-close"
     },
     "topics/procenty/index.html": {
-      "beforeSha256": "397d23fed03799e43737c17e875e4a4bc6ccbc30598674571167866c6d5f4794",
-      "afterSha256": "595208f4cd8970460330050e5f2df07b10af877d2e83aa5e8693768a94c67601",
+      "beforeSha256": "0ed9abae04e9376b83ad12119d63e0dedacc49dd4e3bf9e09bf67f4de1b1b023",
+      "afterSha256": "240af1f449289580c9d14ade5ccee34ec844aead44ab17798c524441b16aa000",
       "placement": "before-head-close"
     },
     "trainers/algebra-7/control-work.html": {
@@ -4729,14 +4729,10 @@
     },
     {
       "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
-      "sourceBaseSha": "27cafe56f3f5e8ef62ecb2ca5068f3a615cc19cc",
-      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "sourceBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "task": "docs/tasks/GEOMETRY7_CONTROL_WORK_20261112.md",
       "changedPaths": [
-        "topics/delenie-ugolkom/index.html",
-        "topics/lineynye-uravneniya/index.html",
-        "topics/obyknovennye-drobi/index.html",
-        "topics/oge-geometriya/index.html",
-        "topics/procenty/index.html"
+        "grade7/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
