@@ -2030,7 +2030,7 @@
   "monotone-inequality": {
     "id": "monotone-inequality",
     "title": "Монотонность и знак",
-    "description": "При основании больше 1 сохранить направление сравнения, при основании от 0 до 1 развернуть его.",
+    "description": "При основании больше 1 сохранить направление сравнения. При основании между 0 и 1 развернуть знак.",
     "practiceIds": [
       "practice-exponential-inequality",
       "practice-log-inequality"
