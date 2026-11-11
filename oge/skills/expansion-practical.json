@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "topics": [],
+  "routes": [
+    {
+      "id": "route-practical-n1-read-data",
+      "title": "Число, подпись и единица",
+      "topicId": "n1",
+      "goal": "Прочитать данные тарифа и маркировки, не смешивая величины.",
+      "steps": [
+        {
+          "taskId": "n1-q-tariff-table",
+          "optional": false
+        },
+        {
+          "taskId": "n1-c-units",
+          "optional": true
+        },
+        {
+          "taskId": "n1-q-tire-width",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n1-read-plan",
+      "title": "От описания к плану",
+      "topicId": "n1",
+      "goal": "Найти объект, выбрать нужные данные и прочитать обозначения дорог.",
+      "steps": [
+        {
+          "taskId": "n1-q-apartment-plan",
+          "optional": false
+        },
+        {
+          "taskId": "n1-c-needed-data",
+          "optional": true
+        },
+        {
+          "taskId": "n1-q-road-signs",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n2-length",
+      "title": "От рисунка к длине",
+      "topicId": "n2",
+      "goal": "Перевести изображённую длину в реальные единицы и проверить другой способ задания длины.",
+      "steps": [
+        {
+          "taskId": "n2-q-grid-scale",
+          "optional": false
+        },
+        {
+          "taskId": "n2-c-scale-plan",
+          "optional": true
+        },
+        {
+          "taskId": "n2-q-tire-inch",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n2-square-cube",
+      "title": "Площадь и объём в других единицах",
+      "topicId": "n2",
+      "goal": "Разобраться, почему перевод площади и объёма требует разных множителей.",
+      "steps": [
+        {
+          "taskId": "n2-q-apartment-area",
+          "optional": false
+        },
+        {
+          "taskId": "n2-c-unit-power",
+          "optional": true
+        },
+        {
+          "taskId": "n2-q-stove-volume",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n3-roads",
+      "title": "Сравнить два пути",
+      "topicId": "n3",
+      "goal": "Найти прямое расстояние, сравнить пути и рассчитать время по участкам.",
+      "steps": [
+        {
+          "taskId": "n3-q-grid-diagonal",
+          "optional": false
+        },
+        {
+          "taskId": "n3-c-road-comparison",
+          "optional": true
+        },
+        {
+          "taskId": "n3-q-road-time",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n3-geometry",
+      "title": "Выбрать нужный геометрический расчёт",
+      "topicId": "n3",
+      "goal": "Связать вопрос с площадью или объёмом и выбрать соответствующие действия.",
+      "steps": [
+        {
+          "taskId": "n3-q-plot-grass",
+          "optional": false
+        },
+        {
+          "taskId": "n3-c-choose-formula",
+          "optional": true
+        },
+        {
+          "taskId": "n3-q-stove-room",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n4-total",
+      "title": "Собрать полную стоимость",
+      "topicId": "n4",
+      "goal": "Учесть все слагаемые цены и не начислить повторно уже включённую услугу.",
+      "steps": [
+        {
+          "taskId": "n4-q-tariff-bill",
+          "optional": false
+        },
+        {
+          "taskId": "n4-c-bill-order",
+          "optional": true
+        },
+        {
+          "taskId": "n4-q-stove-total",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n4-percent",
+      "title": "От чего считаются проценты",
+      "topicId": "n4",
+      "goal": "Сравнить исходную и новую величины и проверить цену после скидки.",
+      "steps": [
+        {
+          "taskId": "n4-q-tire-percent",
+          "optional": false
+        },
+        {
+          "taskId": "n4-c-successive-percent",
+          "optional": true
+        },
+        {
+          "taskId": "n4-q-paper-discount",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n5-conditions",
+      "title": "Покупка по условиям",
+      "topicId": "n5",
+      "goal": "Проверить достаточность материала, бюджет и допустимый объём помещения.",
+      "steps": [
+        {
+          "taskId": "n5-q-plot-packs",
+          "optional": false
+        },
+        {
+          "taskId": "n5-c-pack-budget",
+          "optional": true
+        },
+        {
+          "taskId": "n5-q-stove-range",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "route-practical-n5-choice",
+      "title": "Обосновать свой выбор",
+      "topicId": "n5",
+      "goal": "Сравнить полные суммы и проверить, хватит ли выбранного количества.",
+      "steps": [
+        {
+          "taskId": "n5-q-tariff-choice",
+          "optional": false
+        },
+        {
+          "taskId": "n5-c-tariff-claims",
+          "optional": true
+        },
+        {
+          "taskId": "n5-q-paper-cutting",
+          "optional": false
+        }
+      ]
+    }
+  ]
+}
