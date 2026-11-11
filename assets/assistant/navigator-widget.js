@@ -1,4 +1,4 @@
-/* Public navigation only. No account, answer, URL-query or persistent context. */
+/* Public navigation and lesson contacts. No account, answer or persistent context. */
 (function (root) {
   'use strict';
   const HOST_ID = 'maxexam-public-assistant';
@@ -203,6 +203,67 @@
     }, true);
     root.addEventListener('pagehide', () => { reset(false); setOpen(false, false); });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });
-  else mount();
+  function mountLessonChoices() {
+    if (root.self !== root.top || !/^https?:$/.test(root.location.protocol) || root.MathExamBookEdition ||
+        root.OgeCourseSharedMode || root.MathExamLearning?.managed || document.body.dataset.profileBoard) return;
+    const params = new URLSearchParams(root.location.search);
+    if (['learning', 'board', 'groupLesson'].some(key => params.get(key) === '1')) return;
+
+    // The placements are public page choices; none is a trainer hint or action.
+    // Keep the edition snapshots and existing trainer source files intact.
+    const path = root.location.pathname.replace(/\/index\.html$/, '/');
+    const dialogRoute = 'dialog[data-profile-skill-dialog] .profile-skill-route';
+    const geometry = {
+      1: 'На занятии с Натальей Михайловной можно разобрать, как читать чертёж и выбирать свойства фигур.',
+      2: 'С Натальей Михайловной можно разобрать векторы: как читать рисунок, находить координаты и длину.',
+      3: 'С Натальей Михайловной можно разобрать чертёж объёмной фигуры и понять, какие отрезки понадобятся в решении.'
+    };
+    const placements = new Map([
+      ['/trainers/long-division-stepwise.html', ['[data-skill-support]', 'beforeend', 'Наталья Михайловна поможет разобрать деление уголком: от первого неполного делимого до выбора цифры частного.', '#guided-division']],
+      ['/trainers/negative-numbers.html', ['#negative-options', 'beforeend', 'Хотите разобраться со знаками на числовой прямой? Это можно сделать на занятии с Натальей Михайловной.']],
+      ['/trainers/oge-task6-fractions.html', ['#settings aside[aria-label="Повторить дроби"]', 'afterend', 'На занятии с Натальей Михайловной можно разобраться со смыслом дроби, общим знаменателем и порядком действий.']],
+      ['/trainers/oge-task9-equations.html', ['.generated-help .generated-return', 'beforebegin', 'Наталья Михайловна поможет разобрать преобразования уравнения и выбрать способ решения.', '.wrap']],
+      ['/trainers/oge-task11-graphs-trainer.html', ['#task11-more .settings-content > nav', 'afterend', 'На занятии с Натальей Михайловной можно разобрать, как связаны формула и график.']],
+      ['/trainers/oge13-inequalities-series.html', ['#hintReturn', 'beforebegin', 'Наталья Михайловна поможет разобраться, когда меняется знак неравенства и как выбрать нужные промежутки.']],
+      ['/trainers/oge-task21-word-problems.html', ['#task21Help', 'beforeend', 'На занятии с Натальей Михайловной можно потренироваться составлять уравнение по условию задачи.', '#content']],
+      ['/ege-baza/path/', ['#ege-remediation', 'beforeend', 'Эту задачу и нужные для неё навыки можно разобрать на занятии с Натальей Михайловной.', '#main']],
+      ['/ege-profil/start/', [dialogRoute, 'beforeend', anchor => {
+        const dialog = anchor.closest('dialog');
+        const number = dialog.querySelector('[data-profile-skill-select]')?.value ||
+          dialog.querySelector('.profile-skill-subtitle')?.textContent.match(/^№([123])(?:\s|$)/)?.[1];
+        return geometry[number];
+      }, '#main']],
+      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend', 'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', 'body']]
+    ]);
+    const placement = placements.get(path);
+    if (!placement) return;
+    const [selector, position, context, watch] = placement;
+    const scope = watch ? document.querySelector(watch) : document;
+    if (!scope) return;
+
+    function addChoices() {
+      for (const anchor of scope.querySelectorAll(selector)) {
+        const neighbor = position === 'beforeend' ? anchor.querySelector(':scope > [data-lesson-contact]') :
+          position === 'afterend' ? anchor.nextElementSibling : anchor.previousElementSibling;
+        if (neighbor?.hasAttribute('data-lesson-contact')) continue;
+        const description = typeof context === 'function' ? context(anchor) : context;
+        if (!description) continue;
+        if (!document.querySelector('[data-lesson-contact-style]')) {
+          document.head.append(element('link', undefined, { rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111', 'data-lesson-contact-style': '' }));
+        }
+        const choice = element('aside', undefined, { class: 'trainer-lesson-choice', 'data-lesson-contact': '' });
+        choice.append(element('p', description), element('a', 'Контакты и запись →', {
+          href: '/lessons/#contact', target: '_blank', rel: 'noopener noreferrer'
+        }));
+        anchor.insertAdjacentElement(position, choice);
+      }
+    }
+
+    addChoices();
+    if (watch) new root.MutationObserver(addChoices).observe(scope, { childList: true, subtree: true });
+  }
+
+  function start() { mount(); mountLessonChoices(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })(window);

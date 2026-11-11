@@ -1,0 +1,8 @@
+/* An optional lesson alongside independent practice. */
+.trainer-lesson-choice{box-sizing:border-box;max-width:100%;margin:1rem 0 0;padding:.8rem 1rem;border:1px solid #cbded8;border-radius:10px;background:#f4faf6;color:#193c3a;font:400 .95rem/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;overflow-wrap:break-word}
+.trainer-lesson-choice p{margin:0 0 .35rem;color:#193c3a;font:inherit}
+.trainer-lesson-choice a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;color:#17543d;font:600 .95rem/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:underline;text-underline-offset:3px;white-space:normal}
+.trainer-lesson-choice a:hover{color:#0d3b29}
+.trainer-lesson-choice a:focus-visible{outline:3px solid #a66a12;outline-offset:3px;border-radius:3px}
+@media(max-width:560px){.trainer-lesson-choice{padding:.7rem .8rem}}
+@media print{.trainer-lesson-choice{display:none}}
