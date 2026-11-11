@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+  "baseSha": "e31cedc856cf7ba4b7c512bff4f124306630a9fc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3013,8 +3013,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
-      "beforeSha256": "f67f7cf75c8bc54c80a50ab59c80b3ed91584dd7d47961c1f550edf4cd39c44e",
-      "afterSha256": "327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca",
+      "beforeSha256": "bc58c95ce3e0ce34cb70e7fc44a735edccf74a9b8367c27ac8797942cd4d4553",
+      "afterSha256": "d28cdf376c408decbe6a743c00116b4d8230d7f89cdadfa72abbbe9c470c0c13",
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
@@ -4662,6 +4662,15 @@
       "task": "docs/tasks/TASK9_BRACKET_LABELS_20261111.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "sourceBaseSha": "e31cedc856cf7ba4b7c512bff4f124306630a9fc",
+      "task": "docs/tasks/OGE7_ZERO_DENOMINATOR_RECOVERY_20261111.md",
+      "changedPaths": [
+        "trainers/oge-task7-number-line.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
