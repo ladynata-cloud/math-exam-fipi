@@ -248,6 +248,39 @@ test('wrong answers stay for correction, two mistakes unlock help, and shown ste
   } finally { ui.close(); }
 });
 
+test('a correct final answer on a guided step gets the current question without a mistake', async () => {
+  const ui = open();
+  const item = BY_ID.get('g5-fractions-1');
+  const {task} = item;
+  try {
+    await ui.task(item);
+    for (const finalAnswer of ['5/8', '0,625']) {
+      ui.enter(task.steps[0], 0, 'task', finalAnswer);
+      ui.click('[data-action="check"]');
+      assert.match(ui.find('.feedback[role="status"]').textContent, /Итоговый ответ верный/);
+      assert.ok(ui.find('.feedback').textContent.includes(task.steps[0].prompt));
+      assert.equal(ui.find('.answer-input').value, finalAnswer);
+      assert.equal(ui.state().attempts['learn:' + task.id].mistakes[0], 0);
+      assert.equal(ui.d.querySelector('.step.done,[data-action="hint"]'), null);
+    }
+
+    ui.enter(task.steps[0], 0, 'task', '3/8');
+    ui.click('[data-action="check"]');
+    assert.match(ui.find('.feedback').textContent, /Пока не совпало/);
+    assert.equal(ui.state().attempts['learn:' + task.id].mistakes[0], 1);
+    ui.check(task.steps[0], 0);
+    ui.enter(task.steps[1], 1, 'task', '5/8');
+    ui.click('[data-action="check"]');
+    assert.ok(ui.d.querySelector('.complete'));
+
+    await ui.task(item, 'solo');
+    ui.enter(task.steps[1], 1, 'task', '5/8');
+    ui.click('[data-action="check"]');
+    assert.ok(ui.d.querySelector('.complete'));
+    ui.assertClean();
+  } finally { ui.close(); }
+});
+
 test('reload restores partial answers and safe notes; later solo work remains separate', async () => {
   let ui = open();
   const item = ITEMS[0], task = item.task;
