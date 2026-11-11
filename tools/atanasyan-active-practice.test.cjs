@@ -1,6 +1,7 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process'),crypto=require('node:crypto');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
 const {JSDOM}=require('jsdom'),P=require('./atanasyan-active-practice.runtime.js');
+const {assertCoreIdentity}=require('./atanasyan-legacy-audit.core.cjs');
 const tasks=[
  {id:'a',prompt:'Два угла треугольника равны 60° и 70°. Найди третий угол.',answer:{kind:'number',value:50,unit:'°'},hint:'Сумма углов треугольника равна 180°.',solution:'180 − 60 − 70 = 50°.',errors:[{value:130,feedback:'Это сумма двух данных углов. Нужен оставшийся угол.'}]},
  {id:'b',prompt:'Два угла треугольника равны 50° и 70°. Найди третий угол.',answer:{kind:'number',value:60,unit:'°'},hint:'Найди, сколько не хватает до 180°.',solution:'180 − 50 − 70 = 60°.',errors:[]},
@@ -63,14 +64,14 @@ assert.ok(bankFiles.every(name=>fs.existsSync(path.join(root,'geometry-course/da
  const banks=bankFiles.flatMap(name=>JSON.parse(fs.readFileSync(path.join(root,'geometry-course/data',name))));assert.equal(banks.length,70);checks++;
  const byId=new Map(banks.map(bank=>[bank.id,bank]));assert.equal(byId.size,70);checks++;
  const baseline=require('./atanasyan-legacy-audit.baseline.json'),runtime=fs.readFileSync(path.join(__dirname,'atanasyan-active-practice.runtime.js'),'utf8');
- for(const [file,hash] of Object.entries(baseline.files)){
+ for(const file of Object.keys(baseline.files)){
   const content=fs.readFileSync(path.join(dir,file),'utf8'),bank=byId.get(file.slice(0,-5));ok(bank,'bank for '+file);ok(bank.tasks.length>=3,'three task variants '+file);assert.equal(new Set(bank.tasks.map(P.fingerprint)).size,bank.tasks.length);checks++;
   const snippet=content.match(/<!-- atanasyan-active-practice:start -->[\s\S]*?<!-- atanasyan-active-practice:end -->\n/);ok(snippet,'embedded '+file);
   const embedded=JSON.parse(snippet[0].match(/id="atanasyan-active-practice-config">([\s\S]*?)<\/script>/)[1]);assert.deepEqual(embedded,bank,'exact reviewed authored bank '+file);const rawConfig=snippet[0].match(/id="atanasyan-active-practice-config">([\s\S]*?)<\/script>/)[1];assert.equal(snippet[0],'<!-- atanasyan-active-practice:start -->\n<script type="application/json" id="atanasyan-active-practice-config">'+rawConfig+'</script>\n<script>\n'+runtime.replaceAll('</script','<\\/script')+'</script>\n<!-- atanasyan-active-practice:end -->\n','exact active block, no extra scripts '+file);checks++;
-  const core=content.replace(snippet[0],'').replace(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/,'');assert.equal(crypto.createHash('sha256').update(core).digest('hex'),hash,'original trainer bytes '+file);checks++;
+  const core=content.replace(snippet[0],'').replace(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/,'');assertCoreIdentity(core,file);checks++;
  }
  const negative=fs.readFileSync(path.join(dir,Object.keys(baseline.files)[0]),'utf8'),changed=negative.replace('<title>','<title>UNREVIEWED');
- assert.notEqual(crypto.createHash('sha256').update(changed.replace(/<!-- atanasyan-active-practice:start -->[\s\S]*?<!-- atanasyan-active-practice:end -->\n/,'').replace(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/,'')).digest('hex'),baseline.files[Object.keys(baseline.files)[0]],'arbitrary retained core edit is never hidden by known block stripping');checks++;
+ assert.throws(()=>assertCoreIdentity(changed.replace(/<!-- atanasyan-active-practice:start -->[\s\S]*?<!-- atanasyan-active-practice:end -->\n/,'').replace(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/,''),Object.keys(baseline.files)[0]),assert.AssertionError,'arbitrary retained core edit is never hidden by known block stripping');checks++;
  const before=Object.fromEntries([...byId.keys()].map(id=>[id,fs.readFileSync(path.join(dir,id+'.html'))]));
  for(const script of ['atanasyan-legacy-audit.build.py','atanasyan-active-practice.build.py','atanasyan-legacy-audit.build.py','atanasyan-active-practice.build.py'])cp.execFileSync('python3',[path.join(__dirname,script)],{stdio:'pipe'});
  for(const [id,buffer] of Object.entries(before)){assert.deepEqual(fs.readFileSync(path.join(dir,id+'.html')),buffer,'builders compose idempotently '+id);checks++;}

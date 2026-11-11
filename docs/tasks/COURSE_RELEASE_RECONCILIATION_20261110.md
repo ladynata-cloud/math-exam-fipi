@@ -107,3 +107,40 @@ GIF links follow the textbook route's next-step card, so the primary action is
 visible at 320 px. Compact EGE navigation keeps the question, diagram, answer
 and check button in the initial mobile viewport. The OGE explanation browser
 tests use deterministic reviewed exercise families and the original assertions.
+
+## November 11 CI compatibility repair
+
+The failed [Atanasyan audit run 42802404961](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42802404961)
+at candidate `9d6b5416be4f9e8e284a3fac20b26f6e3263327d` compared two
+diagram-bearing quizzes with their pre-diagram baseline. After removing only
+the exact notebook and active-practice blocks, both files are byte-identical
+to approved #534 head `50862960271fccc8e104405bb9a70bc9216929df`:
+
+| Retained trainer | Exact #534 core SHA-256 |
+|---|---|
+| `ch2-p3-t5-quiz.html` | `9e19c49f0215fe1101b44bb55846727ff9b6db78896ed4c2a5aa0704b2fea1e7` |
+| `ch2-p4-t5-quiz.html` | `5bee28ad007f9c8b78a39aa54d8a54d9cf655656ec225c198fcc17e063ff40b8` |
+
+Both existing preservation suites now require these exact revisions, reverse
+only their enumerated diagram additions and prompt clarification, then verify
+the original hashes from `6f92a799f70d1b362db706d60cdb7678d97117de`.
+The historical baseline and all 68 other core checks stay unchanged. Twelve
+negative checks reject missing/wrong diagrams, changed grading, progress keys
+or board binding, and reversion to the pre-diagram source.
+
+Local validation passed all 13 mathematical/DOM commands from the failed
+workflow, including 70 retained trainers / 387 notebook checks and 587
+active-practice checks. All four offline builders reproduced the committed
+course bytes. The five browser scripts still require a fresh cloud result;
+no local browser pass is claimed.
+
+The same read-only workflow also runs on pushes to the existing
+`release/pending-courses-verified-20261110` branch, checking the exact pushed
+SHA even while the PR conflicts with current main. Existing PR filters,
+permissions, test steps and assertions remain in place. Old-head CI results
+do not establish a pass for the repaired head.
+
+This repair changes no learner runtime or generated HTML and performs no main
+merge or branch synchronization. Under the current task's `AGENTS.md`
+instructions, merge and deployment remain held for separate explicit owner
+authorization and the existing backend/publication gates.

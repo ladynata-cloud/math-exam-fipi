@@ -1,9 +1,9 @@
 'use strict';
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cp=require('node:child_process'),crypto=require('node:crypto');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cp=require('node:child_process');
 const {JSDOM}=require('jsdom');
+const {assertCoreIdentity,restorePreDiagramCore,diagramFiles}=require('./atanasyan-legacy-audit.core.cjs');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'geometry-course/trainers'),runtime=fs.readFileSync(path.join(__dirname,'atanasyan-legacy-audit.runtime.js'),'utf8');
 const files=fs.readdirSync(dir).filter(n=>n.endsWith('.html'));assert.equal(files.length,70);
-const baseline=require('./atanasyan-legacy-audit.baseline.json');
 function stripActive(content,file){
  const block=content.match(/<!-- atanasyan-active-practice:start -->[\s\S]*?<!-- atanasyan-active-practice:end -->\n/);if(!block)return content;
  const raw=block[0].match(/id="atanasyan-active-practice-config">([\s\S]*?)<\/script>/)[1];
@@ -14,18 +14,34 @@ function stripActive(content,file){
  return content.replace(block[0],'');
 }
 let assertions=0;function ok(value,message){assert.ok(value,message);assertions++;}
+const cores={};
 for(const file of files){
  const content=fs.readFileSync(path.join(dir,file),'utf8');
  const block=content.match(/<!-- atanasyan-personal-notebook:start -->[\s\S]*?<!-- atanasyan-personal-notebook:end -->\n/);
  ok(block,'notebook exists '+file);assert.equal(content.match(/id="atanasyan-notebook-config"/g).length,1);
  const rawConfig=block[0].match(/id="atanasyan-notebook-config">([^<]+)<\/script>/)[1];
  assert.equal(block[0],'<!-- atanasyan-personal-notebook:start -->\n<script type="application/json" id="atanasyan-notebook-config">'+rawConfig+'</script>\n<script>\n'+runtime.replaceAll('</script','<\\/script')+'</script>\n<!-- atanasyan-personal-notebook:end -->\n','only exact notebook block may be stripped');
- const core=stripActive(content.replace(block[0],''),file);
- assert.equal(crypto.createHash('sha256').update(core).digest('hex'),baseline.files[file],'retained runtime and board contract byte identity '+file);assertions++;
+ const core=cores[file]=stripActive(content.replace(block[0],''),file);
+ assertCoreIdentity(core,file);assertions++;
  const config=JSON.parse(content.match(/id="atanasyan-notebook-config">([^<]+)<\/script>/)[1]);assert.equal(config.id,file.slice(0,-5));
  ok(fs.existsSync(path.join(root,'geometry-course/atlas',config.unit+'.html')),'offline linked atlas exists '+file);
  ok(content.includes(runtime),'embedded current runtime '+file);
  new vm.Script(runtime);
+}
+for(const file of diagramFiles){
+ const core=cores[file];
+ const mutations=[
+  ['missing diagram','id="qdiagram"','id="missing-diagram"'],
+  ['wrong diagram',"diagram:'sas'","diagram:'sss'"],
+  ['changed grading','if(o.ok){','if(!o.ok){'],
+  ['changed saved progress','mathExamCourseProgress.v1','mathExamCourseProgress.v2'],
+  ['removed board binding','/geometry-course/board/native-session.js','/unbound.js']
+ ];
+ for(const [label,from,to] of mutations){
+  assert.ok(core.includes(from),'mutation reaches '+label);
+  assert.throws(()=>assertCoreIdentity(core.replace(from,to),file),assert.AssertionError,file+': rejects '+label);assertions++;
+ }
+ assert.throws(()=>assertCoreIdentity(restorePreDiagramCore(core,file),file),assert.AssertionError,file+': rejects dropping the reviewed diagrams');assertions++;
 }
 const beforeBuild=Object.fromEntries(files.map(file=>[file,fs.readFileSync(path.join(dir,file))]));
 cp.execFileSync('python3',[path.join(__dirname,'atanasyan-legacy-audit.build.py')]);
