@@ -54,7 +54,23 @@ jobs:
       - name: Mathematical feedback, restoration and independent evidence
         run: |
           node --test tools/task11-audit-learning.test.cjs tools/oge22-audit-learning.test.cjs tools/oge24-learning.test.cjs tools/oge-learning-map-evidence.test.cjs tools/public-navigator-oge.test.cjs tools/oge-audit-source-preservation.test.cjs
-          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.py --source-base 2b33a2315a22c98a70497e7395e4e67c4bd415e4 --task docs/tasks/OGE_AUDIT_LEARNING_20261111.md --paths trainers/oge-task11-graphs-trainer.html trainers/oge-task22-functions-graphs.html trainers/oge-task24-proofs.html
+          navigator_source="$(node <<'JS'
+          const assert = require('node:assert/strict');
+          const rollout = require('./assets/assistant/page-rollout.json');
+          const audit = rollout.sourceBindingUpdates.find(update =>
+            update.sourceBaseSha === '2b33a2315a22c98a70497e7395e4e67c4bd415e4' &&
+            update.task === 'docs/tasks/OGE_AUDIT_LEARNING_20261111.md');
+          assert.deepEqual(audit?.changedPaths, [
+            'trainers/oge-task11-graphs-trainer.html',
+            'trainers/oge-task22-functions-graphs.html',
+            'trainers/oge-task24-proofs.html'
+          ]);
+          assert.match(rollout.baseSha, /^[0-9a-f]{40}$/);
+          process.stdout.write(rollout.baseSha);
+          JS
+          )"
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.py --source-base "$navigator_source" --task docs/tasks/OGE_AUDIT_LEARNING_20261111.md --paths
+          node --test tools/public-navigator-preservation.test.cjs
           git diff --check
       - name: Task 11 — help, new condition and return
         run: node tools/task11-audit-learning.browser.cjs
