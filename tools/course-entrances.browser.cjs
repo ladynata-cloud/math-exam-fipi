@@ -5,6 +5,16 @@ const root=path.resolve(__dirname,'..'),data=JSON.parse(fs.readFileSync(path.joi
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.json':'application/json','.png':'image/png','.gif':'image/gif','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{const url=new URL(req.url,'http://localhost');let f=path.resolve(root,'.'+decodeURIComponent(url.pathname));if(!f.startsWith(root+path.sep)&&f!==root)return res.writeHead(403).end();try{if(fs.statSync(f).isDirectory())f=path.join(f,'index.html');res.writeHead(200,{'Content-Type':mime[path.extname(f)]||'application/octet-stream'});res.end(fs.readFileSync(f));}catch{res.writeHead(404).end();}});
 const topicURL=t=>(t.course==='ege-baza'?'/ege-baza/':'/school/'+t.course+'/')+'topics/'+t.slug+'/';
+async function assertNativeCatalogue(page,course){
+ // Removing #lesson is a same-document navigation: goto() can finish before
+ // the hashchange router renders home. Wait for its visible output, then keep
+ // the exact count and destination checks (a missing catalogue still fails).
+ await page.locator('.ce-native-link').waitFor({state:'visible'});
+ const links=page.locator('.ce-native-link .ce-links a');
+ assert.equal(await links.count(),3,course+' native catalogue link count');
+ assert.deepEqual(await links.evaluateAll(items=>items.map(a=>a.getAttribute('href'))),
+  data.filter(t=>t.course===course).map(topicURL),course+' native catalogue destinations');
+}
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const base='http://127.0.0.1:'+server.address().port;
  const browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.CHROMIUM_EXECUTABLE_PATH}:{})});
@@ -43,14 +53,14 @@ const topicURL=t=>(t.course==='ege-baza'?'/ege-baza/':'/school/'+t.course+'/')+'
    await page.setViewportSize({width:320,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,course+' overflow');
    await page.reload();if(course==='peterson6')assert.equal(await page.locator('.side details').getAttribute('open'),null);
    if(shots)await page.screenshot({path:path.join(shots,course+'-native-320.png'),fullPage:true});
-   await page.goto(base+'/school/'+course+'/');assert.equal(await page.locator('.ce-native-link .ce-links a').count(),3);
+   await page.goto(base+'/school/'+course+'/');await assertNativeCatalogue(page,course);
    await page.setViewportSize({width:1280,height:900});count++;
   }
   await page.goto(base+'/ege-baza/path/index.html#lesson=percent');await page.locator('#answer').fill('123');await page.locator('[data-ce-native]>summary').click();
   assert.equal(await page.locator('#answer').inputValue(),'123');let ege=await page.evaluate(()=>PathCourse.state());assert.equal(ege.lessons.percent.help,true);assert.equal(ege.lessons.percent.independent,0);
   await page.locator('[data-ce-return]').click();await page.reload();assert.equal(await page.locator('#answer').inputValue(),'123');assert.equal((await page.evaluate(()=>PathCourse.state())).lessons.percent.help,true);
   await page.setViewportSize({width:320,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,'EGE overflow');if(shots)await page.screenshot({path:path.join(shots,'ege-native-320.png'),fullPage:true});
-  await page.goto(base+'/ege-baza/path/index.html#diagnostic');assert.equal(await page.locator('[data-ce-native]').count(),0);count++;
+  await page.goto(base+'/ege-baza/path/index.html#diagnostic');await page.locator('#start').waitFor({state:'visible'});assert.equal(await page.locator('[data-ce-native]').count(),0);count++;
   const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const plain=await nojs.newPage();
   for(const [url,total] of [['/school/peterson6/',14],['/school/makarychev8/',51],['/ege-baza/',111]]){await plain.goto(base+url);assert.equal(await plain.locator('h1').count(),1);assert.equal(await plain.locator('main .ce-catalog .ce-links').last().locator('a').count(),total);assert.equal(await plain.locator('meta[name="robots"]').count(),0);}
   await plain.goto(base+topicURL(data[0]));await plain.locator('[data-ce-explanation]>summary').click();assert.match(await plain.locator('.ce-steps').innerText(),/11/);assert.equal(await plain.locator('.ce-controls').isVisible(),false);

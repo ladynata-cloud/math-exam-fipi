@@ -39,6 +39,7 @@ jobs:
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
+          NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/course-entrances.routes.test.cjs
       - name: Public compatibility routes and actual catalog clicks
         run: |
           npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
