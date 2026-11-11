@@ -22,7 +22,8 @@
 .route-page .skip{position:absolute;left:10px;top:-100px;z-index:10;background:#fff;padding:10px}
 .route-page .skip:focus{top:10px}
 .route-page .route-header{background:#fff;border-bottom:1px solid #d5e1d8;padding:16px max(18px,calc((100% - 1240px)/2));display:flex;align-items:center;justify-content:space-between;gap:15px}
-.route-page .brand{font-size:23px;font-weight:800;text-decoration:none;letter-spacing:-.7px}
+.route-page .brand{display:flex;flex-direction:column;justify-content:center;min-height:44px;font-size:23px;font-weight:800;text-decoration:none;letter-spacing:-.7px}
+.route-page .brand small{font-size:13px;font-weight:600;letter-spacing:normal}
 .route-page .route-header nav{display:flex;gap:18px;flex-wrap:wrap;font-size:15px}
 .route-page main{max-width:1240px;margin:0 auto;padding:28px 24px 64px}
 .route-page h1{font-size:clamp(28px,4vw,44px);line-height:1.14;margin:8px 0 14px;max-width:900px;letter-spacing:-.7px}
