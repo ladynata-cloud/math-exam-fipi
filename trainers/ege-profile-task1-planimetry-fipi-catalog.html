@@ -459,5 +459,7 @@
     search.addEventListener('input',render);reset.addEventListener('click',()=>{search.value='';render();search.focus();});randomTask.addEventListener('click',()=>{const rows=visibleTasks();const task=rows[Math.floor(Math.random()*rows.length)]||tasks[0];window.open(task.link,'_blank','noopener');});copyVisible.addEventListener('click',async()=>{const rows=visibleTasks().map(t=>'ФИПИ № '+t.id+' - '+t.link);try{await navigator.clipboard.writeText(rows.join('
 '));copyVisible.textContent='Список скопирован';setTimeout(()=>copyVisible.textContent='Скопировать список',1800);}catch(e){copyVisible.textContent='Не удалось скопировать';setTimeout(()=>copyVisible.textContent='Скопировать список',1800);}});render();
   </script>
+
+<script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

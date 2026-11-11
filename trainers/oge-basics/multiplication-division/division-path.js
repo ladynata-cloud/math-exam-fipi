@@ -4,6 +4,8 @@
   const KEY = 'mathExamBasics.guidedDivision.v1';
   const topics = ['start','oneDigit','zero','remainder','twoDigit','decimalNatural','appendZeros','decimalDivisor'];
   const counts = Object.fromEntries(topics.map(id => [id, new Set()]));
+  const digitSkill = document.getElementById('skill-quotient-digit');
+  if (digitSkill) digitSkill.insertAdjacentHTML('beforeend', '<p id="digit-skill-status">Навык можно проверить отдельно.</p><a id="division-digit-check" href="/trainers/long-division-stepwise.html?digit-skill=check">Проверить самостоятельно</a>');
   function render() {
     for (const set of Object.values(counts)) set.clear();
     let raw, saved, unavailable = false;
@@ -32,14 +34,26 @@
     document.getElementById('path-summary').textContent = unavailable ? 'Прогресс не пересчитан.' : 'По 3 разных примера без ошибок и подсказок: ' + practised + ' из 8 ступеней. Это тренировка по шагам, а не итоговая проверка.';
     const link = document.getElementById('continue-division'), note = document.getElementById('continue-note');
     const active = saved?.active, s = saved?.sessions?.[active];
-    let resumable = false;
+    let resumable = false, needsDigitPractice = false;
     try {
       if (s && topics.includes(active) && s.task?.topicId === active && s.done === false && Number.isInteger(s.step) && s.step >= 0 && Array.isArray(s.answers)) {
         const p = G.plan(s.task);
         resumable = s.step < p.actions.length && s.answers.length === s.step + (s.accepted === true ? 1 : 0) && s.answers.every((v,i) => G.check(v,p.actions[i]));
+        const m = s.digitMistake;
+        needsDigitPractice = resumable && !s.accepted && p.actions[s.step].kind === 'digit' && m?.step === s.step &&
+          [m.high,m.low].every(n => Number.isSafeInteger(n) && n >= 0) && m.high + m.low >= 2;
       }
     } catch (_) {}
-    if (!unavailable && resumable) {
+    if (digitSkill) {
+      const skill = unavailable ? null : saved?.digitSkill;
+      document.getElementById('digit-skill-status').textContent = skill?.verified === true && skill.seen?.length ?
+        'Проверено самостоятельно' : (skill?.seen?.length || needsDigitPractice) ? 'Тренируюсь' : 'Навык можно проверить отдельно.';
+    }
+    if (!unavailable && needsDigitPractice) {
+      link.href = '/trainers/long-division-stepwise.html?digit-skill=practice#' + active;
+      link.textContent = 'Продолжить с подбора цифры';
+      note.textContent = 'После короткой тренировки вернёшься к сохранённому примеру.';
+    } else if (!unavailable && resumable) {
       link.href = '/trainers/long-division-stepwise.html#' + active;
       link.textContent = 'Продолжить начатый пример';
       note.textContent = 'Продолжим с сохранённого шага. Выбрать другую ступень можно ниже.';
@@ -50,7 +64,18 @@
       note.textContent = 'Можно начать с любого шага. Предварительная проверка необязательна.';
     }
   }
+  function revealLinkedSkill() {
+    const map = document.getElementById('division-skill-map');
+    if (!map) return;
+    let id;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); }
+    catch (_) { return; }
+    const target = id && document.getElementById(id);
+    if (target && (target === map || map.contains(target))) map.open = true;
+  }
   render();
+  revealLinkedSkill();
+  window.addEventListener('hashchange', revealLinkedSkill);
   window.addEventListener('pageshow', render);
   window.addEventListener('storage', e => { if (e.key === KEY || e.key === null) render(); });
 })();
