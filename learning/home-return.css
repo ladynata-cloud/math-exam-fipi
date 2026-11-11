@@ -16,6 +16,9 @@
   font-weight: 600;
 }
 
+/* The full-height practice view provides its own home link in the toolbar. */
+.public-practice-open .cabinet-home-return { display: none; }
+
 @media print {
   .cabinet-home-return { display: none; }
 }

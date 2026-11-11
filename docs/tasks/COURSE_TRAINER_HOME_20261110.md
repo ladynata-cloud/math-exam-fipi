@@ -96,3 +96,9 @@ failure has been re-run without changing its assertions or runtime.
 Risk/rollback: this follow-up changes only four onboarding CSS blocks and test
 coverage. Revert those scoped changes if needed; there are no data migrations,
 account writes or exercise changes. Final exact-head results belong in the PR.
+
+## Проверка полноэкранной практики кабинета
+
+В [проверке кабинета 43085022866](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43085022866) на `4d3a0528` браузер обнаружил, что общий нижний блок допускает прокрутку экрана практики и может увести кнопку «В кабинет» за верхнюю границу. На этой странице общий нижний блок скрывается, а ссылка на главную находится в существующем меню «О результатах». На обычных экранах кабинета остаётся нижняя ссылка.
+
+Локальный Chromium воспроизвёл падение на `4d3a0528`. После исправления прежнее ограничение положения кнопки «В кабинет» и остальные сценарии на шести тренажёрах прошли. Добавлена проверка действительного перехода на главную в той же вкладке. Отдельный сервер Amvera в ходе этой работы не обновлялся.
