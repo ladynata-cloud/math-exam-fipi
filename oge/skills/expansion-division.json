@@ -1,0 +1,562 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "topicId": "base",
+      "skills": [
+        {
+          "id": "base-round-tens",
+          "label": "Округляю до десятков",
+          "requires": [
+            "base-place"
+          ],
+          "evidence": "Определяет десятки и цифру единиц, округляет целое число, в том числе с переносом через 9.",
+          "supportLinks": [
+            {
+              "label": "Округление до десятков по шагам",
+              "href": "/trainers/rounding-stepwise.html?place=1&from=division",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "id": "base-round-hundreds",
+          "label": "Округляю до сотен",
+          "requires": [
+            "base-place"
+          ],
+          "evidence": "При округлении до сотен смотрит на десятки, учитывает границу с цифрой 5 и записывает нули в младших разрядах.",
+          "supportLinks": [
+            {
+              "label": "Округление до сотен по шагам",
+              "href": "/trainers/rounding-stepwise.html?place=2&from=division",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "id": "base-round-thousands",
+          "label": "Округляю до тысяч",
+          "requires": [
+            "base-place"
+          ],
+          "evidence": "При округлении до тысяч смотрит на сотни; сохраняет правильный разряд результата при переносе.",
+          "supportLinks": [
+            {
+              "label": "Округление до тысяч по шагам",
+              "href": "/trainers/rounding-stepwise.html?place=3&from=division",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "id": "base-quotient-digit",
+          "label": "Подбираю цифру частного",
+          "requires": [
+            "base-division"
+          ],
+          "evidence": "Выбирает наибольшую цифру от 0 до 9, произведение которой на делитель не превышает неполного делимого.",
+          "supportLinks": [
+            {
+              "label": "Подбор цифры по готовым кратным",
+              "href": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "id": "base-quotient-check",
+          "label": "Проверяю произведение и остаток",
+          "requires": [
+            "base-quotient-digit"
+          ],
+          "evidence": "Проверяет цифру по исходным числам: произведение не превышает неполного делимого, остаток неотрицателен и меньше делителя.",
+          "supportLinks": [
+            {
+              "label": "Подбор, умножение и проверка остатка",
+              "href": "/trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+              "newTab": true
+            }
+          ]
+        },
+        {
+          "id": "base-quotient-estimate",
+          "label": "Исправляю цифру после прикидки",
+          "requires": [
+            "base-round-tens",
+            "base-quotient-check"
+          ],
+          "evidence": "Использует округление только для пробной цифры; точной проверкой исправляет слишком большую или слишком маленькую цифру и не записывает 10 на месте одной цифры.",
+          "supportLinks": [
+            {
+              "label": "Прикидка и точная проверка по шагам",
+              "href": "/trainers/oge-basics/multiplication-division/quotient-estimate.html",
+              "newTab": true
+            }
+          ]
+        }
+      ],
+      "quick": [
+        {
+          "id": "exp-base-division-round-entry",
+          "title": "До ближайшего десятка",
+          "prompt": "Округли 147 до десятков.",
+          "type": "number",
+          "skillId": "base-round-tens",
+          "answer": 150,
+          "hint": "Найди цифру десятков и посмотри на цифру справа.",
+          "explanation": "В единицах стоит 7. Увеличиваем число десятков на один и заменяем единицы нулём: 147 ≈ 150.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-round-exit",
+          "title": "Когда десятки переходят в сотни",
+          "prompt": "Округли 995 до десятков.",
+          "type": "number",
+          "skillId": "base-round-tens",
+          "answer": 1000,
+          "hint": "Единиц пять. Подумай, что произойдёт при увеличении девяти десятков на один.",
+          "explanation": "995 находится посередине между 990 и 1000. По правилу округления увеличиваем число десятков: 995 ≈ 1000.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-hundreds",
+          "title": "Смотрим на десятки",
+          "prompt": "Округли 1450 до сотен.",
+          "type": "number",
+          "skillId": "base-round-hundreds",
+          "answer": 1500,
+          "hint": "При округлении до сотен решение зависит от цифры десятков.",
+          "explanation": "В разряде десятков стоит 5. Увеличиваем число сотен на один; десятки и единицы заменяем нулями: 1450 ≈ 1500.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-thousands",
+          "title": "Переход к десятку тысяч",
+          "prompt": "Округли 9500 до тысяч.",
+          "type": "number",
+          "skillId": "base-round-thousands",
+          "answer": 10000,
+          "hint": "Сотен пять. Увеличь число тысяч на один и проверь перенос.",
+          "explanation": "9500 находится посередине между 9000 и 10 000. Увеличение девяти тысяч на одну тысячу даёт 10 000.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-digit-entry",
+          "title": "Сколько полных групп поместится",
+          "prompt": "Неполное делимое равно 47, делитель — 6. Какую цифру нужно записать в частном?",
+          "type": "choice",
+          "skillId": "base-quotient-digit",
+          "options": [
+            {
+              "text": "6",
+              "correct": false
+            },
+            {
+              "text": "7",
+              "correct": true
+            },
+            {
+              "text": "8",
+              "correct": false
+            },
+            {
+              "text": "9",
+              "correct": false
+            }
+          ],
+          "hint": "Сравни произведение выбранной цифры и 6 с числом 47. Проверь и следующую цифру.",
+          "explanation": "6 × 7 = 42 ≤ 47, а 6 × 8 = 48 > 47. Цифра частного — 7; остаток 47 − 42 = 5 меньше 6.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-digit-exit",
+          "title": "Наибольшая подходящая цифра",
+          "prompt": "Неполное делимое равно 83, делитель — 9. Выбери цифру частного.",
+          "type": "choice",
+          "skillId": "base-quotient-digit",
+          "options": [
+            {
+              "text": "7",
+              "correct": false
+            },
+            {
+              "text": "8",
+              "correct": false
+            },
+            {
+              "text": "9",
+              "correct": true
+            },
+            {
+              "text": "0",
+              "correct": false
+            }
+          ],
+          "hint": "Нужна наибольшая цифра, произведение которой на 9 не больше 83.",
+          "explanation": "9 × 9 = 81, остаток равен 2 и меньше делителя 9. Поэтому выбираем цифру 9.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-estimate-entry",
+          "title": "Прикидка дала слишком много",
+          "prompt": "Для неполного делимого 266 и делителя 33 прикидка дала 270 : 30 = 9. Какую цифру запишем после проверки по исходным числам?",
+          "type": "choice",
+          "skillId": "base-quotient-estimate",
+          "options": [
+            {
+              "text": "9",
+              "correct": false
+            },
+            {
+              "text": "8",
+              "correct": true
+            },
+            {
+              "text": "7",
+              "correct": false
+            },
+            {
+              "text": "6",
+              "correct": false
+            }
+          ],
+          "hint": "Умножь 33 на пробную цифру. Если произведение больше 266, уменьши цифру и проверь снова.",
+          "explanation": "33 × 9 = 297 > 266, поэтому 9 не подходит. 33 × 8 = 264, остаток 2 меньше 33. Записываем 8.",
+          "learningMode": "quick"
+        },
+        {
+          "id": "exp-base-division-estimate-exit",
+          "title": "Прикидка дала слишком мало",
+          "prompt": "Для неполного делимого 244 и делителя 27 прикидка дала 240 : 30 = 8. Какую цифру нужно записать после точной проверки?",
+          "type": "choice",
+          "skillId": "base-quotient-estimate",
+          "options": [
+            {
+              "text": "7",
+              "correct": false
+            },
+            {
+              "text": "8",
+              "correct": false
+            },
+            {
+              "text": "9",
+              "correct": true
+            },
+            {
+              "text": "0",
+              "correct": false
+            }
+          ],
+          "hint": "Если после вычитания произведения остаток не меньше делителя, поместится ещё одна полная группа.",
+          "explanation": "27 × 8 = 216, остаток 28 ещё не меньше 27. Увеличиваем цифру: 27 × 9 = 243, остаток 1 меньше 27. Верная цифра — 9.",
+          "learningMode": "quick"
+        }
+      ],
+      "creative": [
+        {
+          "id": "exp-base-division-round-workshop",
+          "title": "Поймай ошибку в правиле",
+          "prompt": "Автор написал: «Любое целое число от 241 до 249 при округлении до десятков даёт 240». Найди в этом промежутке число, которое опровергает его правило.",
+          "type": "build",
+          "skillId": "base-round-tens",
+          "fields": [
+            {
+              "name": "n",
+              "label": "Число, на котором правило не работает",
+              "min": 241,
+              "max": 249,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            }
+          ],
+          "constants": {},
+          "conditions": [
+            {
+              "left": "n",
+              "op": "gte",
+              "right": "245"
+            }
+          ],
+          "exampleSolution": {
+            "n": 245
+          },
+          "alternativeSolutions": [
+            {
+              "n": 246
+            },
+            {
+              "n": 249
+            }
+          ],
+          "hint": "Граница между соседними десятками проходит посередине. С какой цифры единиц начинаем увеличивать число десятков?",
+          "explanation": "241–244 округляются до 240, а 245–249 — до 250. Поэтому подойдёт любое целое число от 245 до 249: правило автора неверно.",
+          "learningMode": "creative"
+        },
+        {
+          "id": "exp-base-division-digit-workshop",
+          "title": "Две проверки для одной цифры",
+          "prompt": "Лена для неполного делимого 184 и делителя 26 предлагает цифру 6, а Миша — 7. Выбери цифру и собери точную проверку. Произведение выбранной цифры не должно превышать 184; следующей цифры — должно быть больше 184.",
+          "type": "build",
+          "skillId": "base-quotient-check",
+          "fields": [
+            {
+              "name": "q",
+              "label": "Цифра частного",
+              "min": 0,
+              "max": 9,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            },
+            {
+              "name": "product",
+              "label": "26 × выбранная цифра",
+              "min": 0,
+              "max": 234,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            },
+            {
+              "name": "r",
+              "label": "Остаток после вычитания",
+              "min": 0,
+              "max": 184,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            },
+            {
+              "name": "next",
+              "label": "26 × следующая цифра",
+              "min": 26,
+              "max": 260,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            }
+          ],
+          "constants": {},
+          "conditions": [
+            {
+              "left": "product",
+              "op": "eq",
+              "right": "26*q"
+            },
+            {
+              "left": "r",
+              "op": "eq",
+              "right": "184-product"
+            },
+            {
+              "left": "r",
+              "op": "lt",
+              "right": "26"
+            },
+            {
+              "left": "next",
+              "op": "eq",
+              "right": "26*(q+1)"
+            },
+            {
+              "left": "next",
+              "op": "gt",
+              "right": "184"
+            }
+          ],
+          "exampleSolution": {
+            "q": 7,
+            "product": 182,
+            "r": 2,
+            "next": 208
+          },
+          "hint": "Посчитай произведение для пробной цифры и остаток. Остаток должен быть меньше 26. Затем проверь следующую цифру.",
+          "explanation": "Подходит 7: 26 × 7 = 182, 184 − 182 = 2 < 26; 26 × 8 = 208 > 184. Если взять 6, остаток получится 28, а в нём ещё помещается одна группа по 26.",
+          "learningMode": "creative"
+        },
+        {
+          "id": "exp-base-division-estimate-workshop",
+          "title": "Три пробные цифры",
+          "prompt": "После округления получились три пробные цифры. Соедини каждый случай с правильным решением после умножения исходного делителя на выбранную цифру.",
+          "type": "match",
+          "skillId": "base-quotient-estimate",
+          "pairs": [
+            {
+              "left": "266 : 33. Прикидка дала 9.",
+              "right": "Уменьшить до 8: 33 × 8 = 264, а 33 × 9 = 297."
+            },
+            {
+              "left": "184 : 26. Прикидка дала 6.",
+              "right": "Увеличить до 7: 26 × 7 = 182, а 26 × 8 = 208."
+            },
+            {
+              "left": "296 : 31. Прикидка дала 10.",
+              "right": "Записать 9: 31 × 9 = 279, а 31 × 10 = 310."
+            }
+          ],
+          "hint": "Одна цифра частного — от 0 до 9. Проверяй каждую пробу по исходным числам; прикидка может ошибаться в обе стороны.",
+          "explanation": "Первая проба завышена, вторая занижена. В третьем случае 10 не является одной цифрой и даёт слишком большое произведение. Точные проверки дают соответственно 8, 7 и 9; остатки 2, 2 и 17 меньше своих делителей.",
+          "learningMode": "creative"
+        },
+        {
+          "id": "exp-base-division-round-neighbors",
+          "title": "Соседи после округления",
+          "prompt": "Подбери два соседних целых числа. Меньшее при округлении до сотен должно дать 2500, а большее при округлении до тысяч — 3000. Большее число должно быть ровно на 1 больше меньшего. Подходит несколько ответов.",
+          "type": "build",
+          "skillId": "base-round-thousands",
+          "fields": [
+            {
+              "name": "a",
+              "label": "Меньшее число: округляем до сотен",
+              "min": 0,
+              "max": 9999,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            },
+            {
+              "name": "b",
+              "label": "Большее число: округляем до тысяч",
+              "min": 0,
+              "max": 9999,
+              "integer": true,
+              "step": 1,
+              "initial": ""
+            }
+          ],
+          "constants": {},
+          "conditions": [
+            {
+              "left": "b",
+              "op": "eq",
+              "right": "a+1"
+            },
+            {
+              "left": "a",
+              "op": "gte",
+              "right": "2450"
+            },
+            {
+              "left": "a",
+              "op": "lt",
+              "right": "2550"
+            },
+            {
+              "left": "b",
+              "op": "gte",
+              "right": "2500"
+            },
+            {
+              "left": "b",
+              "op": "lt",
+              "right": "3500"
+            }
+          ],
+          "exampleSolution": {
+            "a": 2499,
+            "b": 2500
+          },
+          "alternativeSolutions": [
+            {
+              "a": 2500,
+              "b": 2501
+            },
+            {
+              "a": 2549,
+              "b": 2550
+            }
+          ],
+          "hint": "Найди границы целых чисел, которые при округлении дают 2500 сотнями и 3000 тысячами. Потом выбери соседнюю пару.",
+          "explanation": "До сотен в 2500 округляются целые числа 2450–2549. До тысяч в 3000 — числа 2500–3499. Поэтому можно взять 2499 и 2500, 2500 и 2501 или другую пару: меньшее число может быть любым целым от 2499 до 2549.",
+          "learningMode": "creative"
+        }
+      ]
+    }
+  ],
+  "skillUpdates": [
+    {
+      "id": "base-division",
+      "supportLinks": [
+        {
+          "label": "Деление уголком: восемь ступеней и карта навыков",
+          "href": "/trainers/oge-basics/multiplication-division/division-path.html#division-skill-map",
+          "newTab": true
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "id": "route-exp-base-division-round",
+      "title": "Округление: от правила к проверке",
+      "topicId": "base",
+      "goal": "Округлить до десятков, найти ошибку в чужом правиле и решить новый пример с переносом.",
+      "steps": [
+        {
+          "taskId": "exp-base-division-round-entry",
+          "optional": false,
+          "label": "Короткий пример"
+        },
+        {
+          "taskId": "exp-base-division-round-workshop",
+          "optional": true,
+          "label": "Поиск ошибки по желанию"
+        },
+        {
+          "taskId": "exp-base-division-round-exit",
+          "optional": false,
+          "label": "Другой пример"
+        }
+      ]
+    },
+    {
+      "id": "route-exp-base-division-digit",
+      "title": "Подобрать цифру и убедиться",
+      "topicId": "base",
+      "goal": "Выбрать цифру частного, проверить произведение и остаток, затем подобрать цифру на новых числах.",
+      "steps": [
+        {
+          "taskId": "exp-base-division-digit-entry",
+          "optional": false,
+          "label": "Подбор одной цифры"
+        },
+        {
+          "taskId": "exp-base-division-digit-workshop",
+          "optional": true,
+          "label": "Подробная проверка по желанию"
+        },
+        {
+          "taskId": "exp-base-division-digit-exit",
+          "optional": false,
+          "label": "Новые числа"
+        }
+      ]
+    },
+    {
+      "id": "route-exp-base-division-estimate",
+      "title": "От прикидки к точной цифре",
+      "topicId": "base",
+      "goal": "Исправить пробную цифру по исходным числам; потренироваться и в уменьшении, и в увеличении цифры.",
+      "steps": [
+        {
+          "taskId": "exp-base-division-estimate-entry",
+          "optional": false,
+          "label": "Первая прикидка"
+        },
+        {
+          "taskId": "exp-base-division-estimate-workshop",
+          "optional": true,
+          "label": "Три случая по желанию"
+        },
+        {
+          "taskId": "exp-base-division-estimate-exit",
+          "optional": false,
+          "label": "Другая прикидка"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "1c68540fdebc21d3e593d9afc818d0bbcde12ee1",
+  "baseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2923,8 +2923,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "6da36409bb9614db788e74efb3f4e9c11c703aeb1879de043bb4403b46779e54",
-      "afterSha256": "5b3a7bb5d36314ad5c4d8c1d61e67bc6f24ecfe1fc6b2e63b1a3ad60528ced21",
+      "beforeSha256": "3d97b68192bfd43b801e70476e20d0c534a03937fb9bb28c11e4625a9805e26d",
+      "afterSha256": "d28daa98bc9c055e9344eb2b2ec856da2d47fd2134ebca87357f7080ac222c22",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4734,6 +4734,38 @@
       "changedPaths": [
         "grade7/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "e31cedc856cf7ba4b7c512bff4f124306630a9fc",
+      "sourceBaseSha": "4defc4ec01db3248290e71fe0fe7f0e6bc08f541",
+      "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "4defc4ec01db3248290e71fe0fe7f0e6bc08f541",
+      "sourceBaseSha": "d4e5550159012a51e274a4332265650415d76034",
+      "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d4e5550159012a51e274a4332265650415d76034",
+      "sourceBaseSha": "473577fd7ae9e8f3ae0da71ceb183559b74bd6cc",
+      "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "sourceBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
