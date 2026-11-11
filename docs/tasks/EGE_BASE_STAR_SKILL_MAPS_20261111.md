@@ -24,6 +24,7 @@ At start, the public course exposes 21 positions and the corresponding lesson ca
 - Star-sky navigation with 21 numbered nodes, topic selection, skills link and true existing progress; pause/reduced-motion/visibility cleanup.
 - Explicit learning-only hooks; maps revealing algorithms count as help within an active exercise.
 - Targeted regression and browser coverage, task documentation and release evidence.
+- Fix the mobile percent-header overflow found by the required browser gate; retain the same mathematical content and controls.
 - Refresh the existing public-navigator exact source bindings for the ten changed HTML pages using their committed source; preserve navigator tags and gate code.
 
 ## Boundaries

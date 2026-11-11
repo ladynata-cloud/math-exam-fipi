@@ -13,7 +13,7 @@ const sha = execFileSync('git', ['rev-parse','HEAD'], {cwd:root,encoding:'utf8'}
 const required = [
   'ege-baza/index.html','ege-baza/app.js','ege-baza/skill-map-data.js','ege-baza/skill-map.js','ege-baza/skill-map.css',
   'ege-baza/star-sky.js','ege-baza/star-sky.css','ege-baza/path/index.html','ege-baza/path/task-first.js',
-  'ege-baza/algebra/index.html','ege-baza/algebra/app.js','ege-baza/percent/index.html','ege-baza/percent/app.js',
+  'ege-baza/algebra/index.html','ege-baza/algebra/app.js','ege-baza/percent/index.html','ege-baza/percent/app.js','ege-baza/percent/style.css',
   'ege-baza/reasoning/index.html','ege-baza/reasoning/app.js','ege-baza/work-rate/index.html','ege-baza/work-rate/app.js',
   'ege-baza/labs/index.html','ege-baza/labs/labs.js','trainers/ege-baza/index.html',
   'trainers/ege-baza/course/index.html','trainers/ege-baza/data-course/index.html'
@@ -46,7 +46,7 @@ let browser;
 (async () => {
   try {
     await waitForPages();
-    ok(report.files.every(file=>file.matches),'All 22 public resources match the released checkout byte for byte');
+    ok(report.files.every(file=>file.matches),'All 23 public resources match the released checkout byte for byte');
     browser = await chromium.launch({headless:true, args:['--no-sandbox']});
     for (const width of [320,1280]) {
       const context = await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
@@ -87,7 +87,7 @@ let browser;
       await context.close();
     }
     report.status='PASS';
-    console.log('EGE_BASE_STAR_SKILL_RELEASE_PASS: '+report.checks.length+' checks; 22 exact public files; 320/1280px real browser journeys.');
+    console.log('EGE_BASE_STAR_SKILL_RELEASE_PASS: '+report.checks.length+' checks; 23 exact public files; 320/1280px real browser journeys.');
   } catch (error) {
     report.status='FAIL';report.failures.push(error.stack||error.message);process.exitCode=1;console.error(error);
   } finally {

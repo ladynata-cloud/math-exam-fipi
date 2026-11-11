@@ -15,7 +15,12 @@ const server=http.createServer((request,response)=>{
 let browser,checks=0;const errors=[];
 const ok=(value,label)=>{assert.ok(value,label);checks++;};
 const expectCount=async(page,selector,count,label)=>ok(await page.locator(selector).count()===count,label);
-const fits=async(page,label)=>ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow: '+label);
+const fits=async(page,label)=>{
+ const layout=await page.evaluate(()=>({viewport:innerWidth,scroll:document.documentElement.scrollWidth,offenders:[...document.querySelectorAll('body *')].map(e=>{const r=e.getBoundingClientRect();return {tag:e.tagName,id:e.id,cls:e.getAttribute('class'),text:e.textContent?.trim().slice(0,70),left:r.left,right:r.right,width:r.width};}).filter(e=>e.width>0&&(e.right>innerWidth+1||e.left< -1)).slice(0,15)}));
+ const fits=layout.scroll<=layout.viewport+1;
+ if(!fits)await page.screenshot({path:path.join(shots,'overflow-'+checks+'.png'),fullPage:true});
+ ok(fits,'no horizontal overflow: '+label+(fits?'':' '+JSON.stringify(layout)));
+};
 async function newPage(width=1280){
  const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
  page.on('pageerror',error=>errors.push(error.message));
