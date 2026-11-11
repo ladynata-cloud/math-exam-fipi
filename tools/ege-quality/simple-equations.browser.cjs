@@ -364,8 +364,31 @@ async function main() {
           await clickCheck();await id('ans').press('Enter');assert.deepEqual(await saved(),value);report.repeatProtected++;
           const reloaded=await page.reload();
           if(production&&!offline)assert((await reloaded.body()).equals(expectedSource),'reload retains the verified production version');
-          assert.equal(await id('total').innerText(),String(total));assert.equal(await id('right').innerText(),'1');
-          assert.equal(await page.locator('#history .hist').count(),total);assert.deepEqual(await saved(),value);report.restored++;
+          try {
+            assert.equal(await id('total').innerText(),String(total));assert.equal(await id('right').innerText(),'1');
+            assert.equal(await page.locator('#history .hist').count(),total);assert.deepEqual(await saved(),value);report.restored++;
+          } catch (error) {
+            // Preserve the failing assertion; distinguish missing storage from an
+            // uninitialized document when diagnosing native file:// reloads.
+            report.reloadFailure = await page.evaluate(({key,topic,expectedTotal}) => {
+              let persisted, storageError;
+              try { persisted = JSON.parse(localStorage.getItem(key)); }
+              catch (error) { storageError = error.name + ': ' + error.message; }
+              const current = persisted?.topics?.[topic];
+              return {
+                protocol:location.protocol, readyState:document.readyState, expectedTotal,
+                equation:document.getElementById('eq')?.textContent,
+                total:document.getElementById('total')?.textContent,
+                right:document.getElementById('right')?.textContent,
+                storageNoticeHidden:document.getElementById('storageNotice')?.hidden,
+                persistedTotal:current?.total, persistedRight:current?.right,
+                assessment:current?.assessmentV1, historyLength:current?.history?.length,
+                storageError
+              };
+            }, {key,topic,expectedTotal:total});
+            console.error('SIMPLE_EQUATIONS_RELOAD_FAILURE: '+JSON.stringify(report.reloadFailure));
+            throw error;
+          }
         }
         if(offline)report.offlineCases++;
         else {

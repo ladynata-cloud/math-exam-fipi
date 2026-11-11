@@ -132,5 +132,7 @@ function openTask(i){state.i=i;state.step=0;state.built=[];save();render();msg('
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.choice)pick(b.dataset.choice,b);if(b.dataset.task!==undefined)openTask(Number(b.dataset.task));if(b.id==='prev')openTask(state.i-1);if(b.id==='next')openTask(state.i+1);if(b.id==='checkOut')checkOut();if(b.id==='writeMode')$('writeBox').classList.toggle('hide');if(b.id==='checkCode')checkCode();if(b.id==='showSolution'){const t=tasks[state.i];$('stepBox').innerHTML='<h3>Готовое решение</h3><div class="code">'+esc(sol(t))+'</div><p><b>Вывод:</b> '+t.ans.join(', ')+'</p>';msg('Разбери решение и попробуй следующую задачу.')}if(b.id==='reset'&&confirm('Сбросить прогресс этой страницы? Прогресс других тренажёров и курса ЕГЭ сохранится.')){const r=resetOwnProgress(KEY,{topics:[TOPIC]});if(r==='failed'){msg('Не удалось сбросить прогресс: хранилище браузера недоступно или переполнено. Попробуйте ещё раз.','err');return}state={i:0,step:0,built:[],tries:0,right:0,solved:{}};render();msg(r==='cleaned'?'Прогресс этой страницы сброшен. Запись прогресса в этом браузере была повреждена: она очищена, и прогресс снова сохраняется.':'Прогресс этой страницы сброшен.')}});
 load();render();
 </script>
+
+<script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

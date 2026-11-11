@@ -10,7 +10,7 @@
 .skill-lab-shell{max-width:900px;margin:0 auto;color-scheme:light dark}
 .skill-lab-shell .skill-site-nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px;margin:0 0 12px;font:400 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif}
 .skill-lab-shell .skill-site-nav a{box-sizing:border-box;display:inline-flex;align-items:center;min-height:44px;max-width:100%;padding:4px 0;color:light-dark(#176c82,#99e1ef);text-underline-offset:3px}
-.skill-lab-shell .skill-site-nav a:last-child{margin-left:auto}
+.skill-lab-shell .skill-site-nav a:last-child:not(:only-child){margin-left:auto}
 .skill-lab-shell .skill-site-nav a:focus-visible,.skill-lab :is(button,a,input,select,summary):focus-visible{outline:3px solid light-dark(#176c82,#99e1ef);outline-offset:3px}
 .skill-lab .brand{padding-right:0}
 .skill-lab .topic-about{margin-top:20px;border-top:1px solid var(--rule)}
