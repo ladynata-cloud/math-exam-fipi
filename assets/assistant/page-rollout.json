@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+  "baseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2288,8 +2288,8 @@
       "placement": "before-main-open"
     },
     "trainers/drobi-oge-trainer.html": {
-      "beforeSha256": "ec96a9f156dd34064375d8504820aa934f94dbb9b2faaa2bdd82d11ff529b7b2",
-      "afterSha256": "c956df1e26a7f7842b8be14fae70984eb68c2958d2c2e9f50320b20ec38b31a9",
+      "beforeSha256": "b0a75e84e58034d21afc2e8726e079b98e63af25a4181df91269f20d60a67602",
+      "afterSha256": "ca70352b0dd57210c55ff975016ba5c1467a10fe1d9e2b30efaf4b2db69e254e",
       "placement": "before-head-close"
     },
     "trainers/dvi/math-18-20-video-studio.html": {
@@ -3008,8 +3008,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
-      "beforeSha256": "83db6c0d97ac36757a670d38db87a04e8ef2099948d111fbd7d38413e7ee2311",
-      "afterSha256": "4b959d2462005bd7ef796a29c1e75b42527bb58a4db80d7ee782e11db902b6e5",
+      "beforeSha256": "5ef7205fd95de15dcef3cf377d2e60e91ffdf7f681ee8575b39201295585f4b3",
+      "afterSha256": "74c88bda2c54cb264cb0b2c19b34faaaaabbe3af4ec1b7efd9d6fbe28d329607",
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
@@ -4766,6 +4766,16 @@
       "sourceBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
       "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "task": "docs/tasks/TASK6_NUMERATOR_INSTRUCTION_20261112.md",
+      "changedPaths": [
+        "trainers/drobi-oge-trainer.html",
+        "trainers/oge-task6-fractions.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
