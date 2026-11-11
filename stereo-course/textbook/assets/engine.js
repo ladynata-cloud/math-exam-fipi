@@ -5,6 +5,84 @@ const idOK=x=>typeof x==='string'&&/^[a-z][a-z0-9-]*$/.test(x)&&!reserved.has(x)
 const textOK=x=>typeof x==='string'&&x.trim().length>0;
 const stable=x=>JSON.stringify(x&&typeof x==='object'?Array.isArray(x)?x.map(v=>JSON.parse(stable(v))):Object.fromEntries(Object.keys(x).sort().map(k=>[k,JSON.parse(stable(x[k]))])):x);
 const normalized=x=>String(x).trim().replace(/\s+/g,' ').replace(/−/g,'-');
+const earlyCourse='atanasyan-2024-10-11';
+const earlyChapters=new Set(['Введение','I. Параллельность прямых и плоскостей','II. Перпендикулярность прямых и плоскостей']);
+const studyRoute=[
+ ['Точки, прямые и плоскости','atanasyan2024-theory-002-a1','atanasyan2024-main-004-a'],
+ ['Параллельность прямой и плоскости','theory-006','ex-main-0018-a'],
+ ['Скрещивающиеся прямые и угол между ними','theory-007','theory-009','ex-main-0044-b'],
+ ['Параллельные плоскости','theory-010','ex-main-0063-a'],
+ ['Тетраэдр, параллелепипед и сечения','theory-012','theory-014-example-3a','ex-main-0073'],
+ ['Перпендикулярность прямой и плоскости','theory-017','ex-main-0121'],
+ ['Наклонная, проекция и угол с плоскостью','theory-019','theory-020','theory-021','ex-main-0164'],
+ ['Двугранный угол и перпендикулярность плоскостей','theory-022','ex-main-0167','theory-023','ex-main-0171'],
+ ['Прямоугольный параллелепипед и многогранные углы','theory-024','theory-025','theory-026','ex-main-0191']
+];
+// Mobile wording keeps the givens and the question, with the original always available.
+const compactPrompts={
+ "theory-014-example-3a":{text:"Точки A, B, C лежат внутри трёх рёбер параллелепипеда, выходящих из одной вершины V.",goal:"Построй сечение плоскостью ABC и обоснуй его границу.",revision:1},
+ "ex-main-0025":{text:"Плоскости α и β пересекаются по прямой c. Прямая a ∥ c и не лежит ни в α, ни в β.",goal:"Докажи, что a параллельна обеим плоскостям.",revision:1},
+ "ex-main-0026":{text:"В треугольнике ABC сторона AC ∥ α. Плоскость α пересекает стороны AB и BC в точках M и N соответственно.",goal:"Докажи, что ABC и MBN подобны, если MBN невырожден.",revision:1},
+ "ex-main-0027":{text:"C лежит на AB, AB : BC = 4 : 3. Отрезок CD = 12 см параллелен плоскости α, проходящей через B.",goal:"Докажи, что AD пересекает α в точке E, и найди BE в см.",revision:1},
+ "ex-main-0028":{text:"В треугольнике ABC точки D и E лежат на AB и AC соответственно. DE = 5 см, BD : DA = 2 : 3. Плоскость α проходит через B и C, DE ∥ α.",goal:"Найди BC в см.",revision:1,answerLabel:"Длина BC в сантиметрах"},
+ "ex-main-0029":{text:"В трапеции ABCD основание BC = 12 см. Точка M вне плоскости трапеции, K — середина BM.",goal:"Докажи, что плоскость ADK пересекает MC в точке H, и найди KH в см.",revision:1},
+ "ex-main-0030":{text:"У трапеции ABCD основания AB и CD. Прямая AB ∥ α, точка C лежит в α.",goal:"Докажи: а) CD лежит в α; б) средняя линия трапеции параллельна α.",revision:1},
+ "ex-main-0033":{text:"Три плоскости попарно пересекаются. Общей для всех трёх прямой нет.",goal:"Докажи, что три линии пересечения либо параллельны, либо проходят через одну точку.",revision:1},
+ "ex-main-0034":{text:"D вне плоскости ABC. M, N, P — середины DA, DB, DC. K лежит на BN, K ≠ N.",goal:"Определи и обоснуй расположение прямых: а) ND и AB; б) PK и BC; в) MN и AB; г) MP и AC; д) KN и AC; е) MD и BC.",revision:1},
+ "ex-main-0035":{text:"Через точку M вне прямой a проведены две различные прямые b и c, обе без общих точек с a.",goal:"Докажи, что хотя бы одна из прямых b и c скрещивается с a.",revision:1},
+ "ex-main-0042-b":{text:"Параллелограмм ABCD и трапеция ABEK лежат в разных плоскостях. В трапецию вписана окружность. Основания AB = 22,5 см, EK = 27,5 см.",goal:"Найди периметр ABEK.",revision:1,answerLabel:"Периметр в сантиметрах"},
+ "ex-main-0044-a":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 40°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0044-b":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 135°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0044-c":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 90°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0045-a":{text:"Прямая a ∥ BC и не лежит в плоскости параллелограмма ABCD. Один из его углов равен 50°.",goal:"Докажи, что a и CD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0045-b":{text:"Прямая a ∥ BC и не лежит в плоскости параллелограмма ABCD. Один из его углов равен 121°.",goal:"Докажи, что a и CD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0046-b":{text:"Прямая m ∥ BD и не лежит в плоскости ромба ABCD. ∠ABC = 128°.",goal:"Докажи, что m и AD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0086":{text:"Дан параллелепипед ABCDA₁B₁C₁D₁.",goal:"Построй сечение плоскостью через AC, параллельной BD₁. Докажи, что это равнобедренный треугольник, если ABCD — ромб и ∠ABB₁ = ∠CBB₁ = 90°.",revision:2},
+ "ex-main-0100":{text:"Даны скрещивающиеся прямые a, b и точка A.",goal:"Докажи, что через A проходит ровно одна плоскость, параллельная обеим прямым или содержащая одну из них и параллельная другой. Построй её.",revision:1},
+ "ex-main-0109":{text:"Плоскости через пары боковых рёбер параллелепипеда, не лежащих на одной грани, пересекаются по a.",goal:"Найди a и докажи, что она параллельна боковым рёбрам и пересекает все четыре диагонали.",revision:1},
+ "ex-main-0184":{text:"Плоскости треугольников ABC и ABD перпендикулярны. AB = 10 см.",goal:"Найди CD, если оба треугольника а) равносторонние; б) прямоугольные равнобедренные с гипотенузой AB.",revision:1},
+ "ex-selfcheck-i-07":{text:"Из двух параллельных прямых a и b прямая a параллельна плоскости α.",goal:"Обязательно ли b параллельна α?",revision:2},
+ "ex-selfcheck-i-13":{text:"Два отрезка непараллельны. У каждого по одному концу в каждой из двух параллельных плоскостей.",goal:"Могут ли отрезки быть равны? Обоснуй.",revision:2},
+ "ex-selfcheck-i-15":{text:"Параллелепипед: а) ровно 1 грань — прямоугольник; б) ровно 2 смежные грани — ромбы; углы граней: в) все острые; г) все прямые; д) острых и тупых разное число.",goal:"Что возможно? Обоснуй.",revision:2},
+ "ex-selfcheck-i-16":{text:"Плоскость проходит через внутренние точки а) тетраэдра, б) параллелепипеда. Сечения невырожденные.",goal:"Назови все числа сторон сечения, докажи границы и приведи примеры для обоих тел.",revision:2},
+ "theory-005":{text:"Различные прямые a и b параллельны c. Плоскость α пересекает a в точке M.",goal:"Докажи лемму о пересечении плоскости параллельными прямыми и установи, как расположены a и b.",revision:1},
+ "theory-006":{text:"Даны b ⊂ α, a ∥ b и a не лежит в α.",goal:"Назови три положения прямой и плоскости. Докажи признак параллельности и два следствия пункта 6.",revision:1},
+ "theory-009":{text:"AB и CD — скрещивающиеся прямые.",goal:"Определи углы между пересекающимися и скрещивающимися прямыми. Докажи независимость от выбора точки. Построй угол с одной вспомогательной прямой.",revision:1},
+ "theory-011":{text:"α ∥ β, γ ∩ β = AC, γ ∩ α = BD. AB и CD лежат на разных параллельных прямых.",goal:"Сформулируй и докажи свойства линий пересечения и отрезков между параллельными плоскостями.",revision:1},
+ "theory-012":{text:"ABC — треугольник, D ∉ (ABC). Проведи DA, DB, DC.",goal:"Дай определения многоугольника и тетраэдра. Назови грани, рёбра, вершины и пары противоположных рёбер. Отличай фигуру от рисунка.",revision:1},
+ "theory-013":{text:"ABCD и A₁B₁C₁D₁ — равные параллелограммы в параллельных плоскостях; AA₁∥BB₁∥CC₁∥DD₁.",goal:"Дай определение и назови элементы. Докажи свойства противоположных граней и всех диагоналей.",revision:1},
+ "theory-014-example-3b":{text:"На рёбрах параллелепипеда отмечены A, B, C (рис. 39, б): A и B на разных рёбрах левой грани, B и C — задней.",goal:"Построй сечение плоскостью ABC и обоснуй каждый отрезок.",revision:1},
+ "theory-014-example-3c":{text:"Рис. 39, в. A на переднем левом ребре; B и C на соседних верхних рёбрах; A и B на левой грани.",goal:"Построй сечение параллелепипеда плоскостью ABC по следу в плоскости нижнего основания.",revision:1},
+ "theory-014":{text:"Даны параллелепипед и плоскость α.",goal:"Дай определения секущей плоскости и сечения. Перечисли возможные сечения тетраэдра и параллелепипеда и объясни построение их сторон.",revision:1},
+ "theory-016":{text:"Прямые a и b различны, a ⟂ α. На модели b ∥ a.",goal:"Определи перпендикулярность прямой к плоскости. Докажи: при a ⟂ α условия b ∥ a и b ⟂ α равносильны.",revision:1},
+ "theory-017-example":{text:"Даны прямая a и точка M. Рассмотри M ∈ a и M ∉ a.",goal:"Построй через M плоскость, перпендикулярную a. Обоснуй выбор двух пересекающихся прямых, существование и единственность.",revision:2},
+ "theory-020":{text:"AH ⟂ α, AM — наклонная к α, a лежит в α и проходит через M ≠ H.",goal:"Докажи a ⟂ HM ⇔ a ⟂ AM. В каждом направлении найди две пересекающиеся прямые и назови признак.",revision:1},
+ "theory-021-central":{text:"Даны плоскость α и центр O вне неё. Проектирующие прямые проходят через O.",goal:"Построй центральную проекцию точки. Объясни, почему исключается плоскость через O.",revision:1},
+ "theory-021":{text:"Даны плоскость α и прямая a. На рисунке a наклонна к α.",goal:"Построй прямоугольные проекции точки, прямой и фигуры. Докажи свойство проекции прямой. Определи угол прямой с плоскостью.",revision:1},
+ "theory-026":{text:"Грани — ∠A₁OA₂,…,∠AₙOA₁ с внутренними областями. Соседние лежат в разных плоскостях. У несоседних общая только O.",goal:"Дай определение выпуклого многогранного угла. Докажи, что некоторая плоскость пересекает все его рёбра.",revision:2},
+};
+const differentQuestion={
+ 'ex-main-0044-b':[['135','135°','135 °','135 градусов'],'Ты указал данный угол AOB. Вопрос об угле между прямыми OA и CD.'],
+ 'ex-main-0121':[['5','5 см','12','12 см'],'Ты указал другую длину. Вопрос о длине KM.'],
+ 'ex-main-0164':[['0,5','0.5','1/2'],'Ты указал отношение длин. Здесь просят величину угла в градусах.'],
+ 'ex-main-0171':[['30','30°','30 °','30 градусов'],'Это угол между катетом и плоскостью α. Вопрос об угле между двумя плоскостями.'],
+ 'ex-main-0174':[['90','90°','90 °','90 градусов'],'В условии уже даны прямые углы. Вопрос о двугранном угле ABCD.']
+};
+function rationalAnswer(value){
+ const match=normalized(value).match(/^(-?)(\d{1,16})(?:[,.](\d{1,16})|(?:\s+(\d{1,16}))?\s*\/\s*(\d{1,16}))?\s*(°|градус(?:а|ов)?|см)?$/i);
+ if(!match)return null;
+ const [,sign,whole,decimal,mixed,divisor,suffix]=match;
+ const denominator=decimal?10n**BigInt(decimal.length):BigInt(divisor||1);
+ if(!denominator)return null;
+ const numerator=mixed?BigInt(whole)*denominator+BigInt(mixed):decimal?BigInt(whole+decimal):BigInt(whole);
+ const unit=suffix?.toLowerCase()==='см'?'cm':suffix?'degree':'';
+ return {numerator:sign?-numerator:numerator,denominator,unit};
+}
+function answerMatches(actual,expected){
+ if(normalized(actual)===normalized(expected))return true;
+ const left=rationalAnswer(actual),right=rationalAnswer(expected);
+ return Boolean(left&&right&&left.unit===right.unit&&left.numerator*right.denominator===right.numerator*left.denominator);
+}
 const localChapter=source=>['main','theory'].includes(source.collection)?null:source.chapter||null;
 const sourceGroup=entry=>stable([entry.kind,entry.source.bookId,entry.source.collection,localChapter(entry.source),entry.source.examTask||null,entry.kind==='theory'?entry.source.point:entry.source.exercise,entry.source.collection==='example'?entry.source.point||null:null]);
 function coverageGroups(entries,available){
@@ -158,8 +236,35 @@ function createApp(root,options){
  const alerts=el('div',undefined,{class:'course-alerts','aria-live':'polite'}),view=el('main');root.replaceChildren(alerts,view);
  function status(text){if(![...alerts.children].some(node=>node.tagName==='P'&&node.textContent===text))alerts.append(el('p',text));}
  function safeRead(k){try{return storage?.getItem(k)||null;}catch{status('Сохранение в браузере недоступно. Оставь страницу открытой, чтобы сохранить текущие записи.');return null;}}
- function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null};}
- function readState(raw){try{const saved=JSON.parse(raw);if(!saved||typeof saved!=='object')return initial();return {draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,current.steps.length)):0,assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null};}catch{return initial();}}
+ function stateKey(lesson){return 'mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;}
+ function initial(){return {draft:'',stepDrafts:{},revealed:0,assisted:false,checked:false,camera:null,attempts:0,firstAnswer:null,result:null,manualSaved:false,solutionShown:false,helpUncertain:false};}
+ function readState(raw,lesson=current){
+  try{
+   const saved=JSON.parse(raw);
+   if(!saved||typeof saved!=='object')return initial();
+   const first=saved.firstAnswer;
+   return {
+    draft:typeof saved.draft==='string'?saved.draft:'',stepDrafts:saved.stepDrafts&&typeof saved.stepDrafts==='object'?saved.stepDrafts:{},
+    revealed:Number.isInteger(saved.revealed)?Math.max(0,Math.min(saved.revealed,lesson.steps.length)):0,
+    assisted:saved.assisted===true,checked:saved.checked===true,camera:saved.camera&&Number.isFinite(saved.camera.yaw)&&Number.isFinite(saved.camera.pitch)?saved.camera:null,
+    attempts:Number.isSafeInteger(saved.attempts)&&saved.attempts>0?saved.attempts:0,
+    firstAnswer:first&&typeof first.text==='string'&&typeof first.correct==='boolean'&&typeof first.assisted==='boolean'?first:null,
+    result:saved.checked===true&&['first-independent','corrected','with-help','previous-unknown'].includes(saved.result)?saved.result:null,
+    manualSaved:saved.manualSaved===true,solutionShown:saved.solutionShown===true,
+    helpUncertain:saved.helpUncertain===true||saved.assisted===true&&!Object.hasOwn(saved,'attempts')&&!saved.revealed
+   };
+  }catch{return initial();}
+ }
+ function studyStatus(lesson){
+  const id=stateKey(lesson),record=readState(cache.get(id)?.raw||safeRead(id),lesson);
+  if(record.result==='first-independent')return 'Верно с первой попытки';
+  if(record.result==='corrected')return 'Исправлено самостоятельно';
+  if(record.result==='with-help')return 'Решено с помощью';
+  if(record.checked)return 'Ответ проверен, самостоятельность не определена';
+  if(record.manualSaved)return 'Рассуждение сохранено';
+  if(record.assisted||record.revealed)return lesson.kind==='theory'?'Разбор открыт':'Открыта помощь';
+  return record.draft.trim()?'Есть черновик':'';
+ }
  function freeze(){
   if(locked)return;locked=true;
   const note=el('section',undefined,{class:'course-conflict'});note.append(el('strong','В другом окне уже сохранена новая работа. Твои записи ниже можно скопировать.'),el('p',current.statement.text));
@@ -174,7 +279,7 @@ function createApp(root,options){
   try{if(storage){storage.setItem(key,raw);expected=raw;cache.delete(key);}else cache.set(key,{raw,base:expected});}catch{cache.set(key,{raw,base:expected});status('Не удалось сохранить на устройстве. Текст остаётся в открытой странице.');}
   return true;
  }
- function assisted(){state.assisted=true;return save();}
+ function assisted(){state.assisted=true;state.helpUncertain=false;return save();}
  function sourceText(source){return [companionIdentity(source),companionLocation(source),'К учебнику «'+catalog.book.title+'»',catalog.book.edition,'стр. '+source.printedPages.join(', '),'PDF '+source.pdfPages.join(', ')].filter(Boolean).join(' · ');}
  function companionNode(lesson,compact=false){
   const box=el('div',undefined,{class:'companion-reference','data-companion-source':lesson.id});
@@ -233,28 +338,77 @@ function createApp(root,options){
  }
  function open(id){
   if(destroyed||locked)return false;const lesson=available.get(id);if(!lesson){status('Этот материал ещё не прошёл все проверки.');return false;}
-  destroyScene();if(navigation)root.after(navigation);current=lesson;key='mathExamTextbook.v1:'+catalog.book.id+':'+lesson.id+':r'+lesson.revision;expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
+  destroyScene();if(navigation)root.after(navigation);current=lesson;key=stateKey(lesson);expected=safeRead(key);const cached=cache.get(key);state=readState(cached?.raw||expected);view.replaceChildren();
   win.history?.replaceState(null,'','#'+lesson.id);
+  win.scrollTo(0,0);
   const back=el('button','← Все материалы',{type:'button','aria-label':'← Все материалы курса'});back.addEventListener('click',home);
-  const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,companionNode(lesson,true),el('h1',lesson.title));view.append(header);
+  const header=el('header',undefined,{class:'textbook-lesson-header'});header.append(back,el('a','На главную',{href:'/',class:'textbook-site-home'}),companionNode(lesson,true),el('h1',lesson.title));view.append(header);
   const layout=el('div',undefined,{class:'textbook-layout'}),main=el('section',undefined,{class:'textbook-main'}),side=el('aside',undefined,{class:'textbook-help','aria-label':'Помощь к текущей задаче'}),model=el('div',undefined,{class:'textbook-model task-scene','data-main-model':''});
+  const early=lesson.source.bookId===earlyCourse&&earlyChapters.has(lesson.source.chapter);
+  root.classList.toggle('textbook-early-reading',early);
   const prompt=el('div',undefined,{class:'textbook-prompt'});
-  prompt.append(el('p',lesson.statement.text,{class:'textbook-condition'}));if(lesson.statement.givens?.length){const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));prompt.append(list);}prompt.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
+  const short=early&&win.innerWidth<=480?compactPrompts[lesson.id]:null;
+  const compact=short?.revision===lesson.revision?short:null;
+  const original=compact?el('details',undefined,{class:'textbook-full-condition'}):prompt;
+  if(compact){
+   prompt.append(el('p',compact.text,{class:'textbook-compact-condition'}),el('p',compact.goal,{class:'textbook-compact-goal'}));
+   original.append(el('summary','Полное условие'));
+  }
+  original.append(el('p',lesson.statement.text,{class:'textbook-condition'}));
+  if(lesson.statement.givens?.length){
+   const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));
+   if(early&&!compact){const given=el('details',undefined,{class:'textbook-givens'});given.append(el('summary','Все данные условия'),list);original.append(given);}else original.append(list);
+  }
+  original.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
   const figure=el('div',undefined,{class:'textbook-figure'});figure.append(model);
-  main.append(prompt,figure,side);
+  main.append(prompt,figure);
+  if(compact)main.append(original);
+  if(early)main.classList.add('textbook-first-topics');else main.append(side);
   if(lesson.answer){
-   const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
-   input.addEventListener('input',()=>{state.draft=input.value;save();});
+   const form=el('form',undefined,{'data-final-form':''}),label=el('label',compact?.answerLabel||lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
+   input.addEventListener('input',()=>{if(state.draft!==input.value)state.manualSaved=false;state.draft=input.value;save();});
+   const detail=el('button','Показать разбор ответа',{type:'button'});detail.hidden=true;
+   detail.addEventListener('click',()=>{state.solutionShown=true;if(!assisted())return;setDisplayText(feedback,lesson.answer.feedback);detail.hidden=true;});
    form.addEventListener('submit',event=>{event.preventDefault();if(locked)return;state.draft=input.value;
     // Open native disclosures count as help even before their queued toggle fires.
-    if(side.querySelector('details[open]'))state.assisted=true;
+    if(side.querySelector('details[open]')){state.assisted=true;state.helpUncertain=false;}
+    detail.hidden=true;
+    if(!input.value.trim()){setDisplayText(feedback,lesson.answer.mode==='manual'?'Сначала запиши рассуждение.':'Сначала введи ответ.');return;}
+    if(lesson.answer.mode==='manual'){
+     state.manualSaved=true;
+     if(save())setDisplayText(feedback,'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.');
+     return;
+    }
+    const correct=lesson.answer.accepted.some(value=>early?answerMatches(input.value,value):normalized(value)===normalized(input.value));
+    const alreadyChecked=state.checked;
+    if(!state.firstAnswer&&!alreadyChecked&&!state.helpUncertain)state.firstAnswer={text:input.value,correct,assisted:state.assisted};
+    state.attempts++;
+    if(correct&&!alreadyChecked){
+     state.checked=true;
+     state.result=state.helpUncertain?'previous-unknown':state.assisted?'with-help':state.attempts===1?'first-independent':'corrected';
+    }
+    if(!correct&&!early)state.assisted=true;
     if(!save())return;
-    if(lesson.answer.mode==='manual'){setDisplayText(feedback,'Рассуждение сохранено. Его обоснованность нужно обсудить с учителем.');return;}
-    const correct=lesson.answer.accepted.some(value=>normalized(value)===normalized(input.value));
-    setDisplayText(feedback,correct?(state.checked?'Этот ответ уже проверен.':state.assisted?'Ответ совпал с проверенным после обращения к помощи.':'Ответ совпал с проверенным. Решено самостоятельно.'):(lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.'));if(correct)state.checked=true;else state.assisted=true;save();
-   });form.append(label,input,check,feedback);main.append(form);
+    if(correct){
+     const message=alreadyChecked?'Этот ответ уже проверен.':state.result==='previous-unknown'?'Ответ верный. В прежней записи не сохранились сведения о помощи.':state.result==='with-help'?'Ответ совпал с проверенным после обращения к помощи.':state.result==='corrected'?'Ответ верный. Ты исправил его самостоятельно.':'Ответ совпал с проверенным. Решено самостоятельно.';
+     setDisplayText(feedback,message);
+     return;
+    }
+    const mismatch=differentQuestion[lesson.id];
+    const targeted=early&&mismatch?.[0].some(value=>answerMatches(input.value,value));
+    setDisplayText(feedback,targeted?mismatch[1]:early?'Ответ пока не совпал. Сверь, какую величину просит найти условие.':lesson.answer.feedback||'Проверь ответ. Можно раскрыть помощь рядом с условием.');
+    detail.hidden=!early||!lesson.answer.feedback;
+   });
+   if(early&&lesson.answer.mode==='exact'){
+    const fields=el('div',undefined,{class:'textbook-compact-answer'});check.textContent='Проверить';fields.append(input,check);form.append(label,fields,feedback,detail);prompt.append(form);
+   }else{
+    form.append(label,input,check,feedback,detail);main.append(form);
+    if(early){const write=el('button','К записи решения',{type:'button',class:'textbook-prompt-action'});write.addEventListener('click',()=>input.focus());prompt.append(write);}
+   }
   }
+  if(early)main.append(side);
   const help=el('details',undefined,{'data-main-help':''}),summary=el('summary','Хочешь подсказку?'),helpBody=el('div');summary.addEventListener('click',event=>{if(!help.open&&!assisted())event.preventDefault();});help.addEventListener('toggle',()=>{if(help.isConnected&&help.open)assisted();});help.append(summary,helpBody);mountHelp(lesson.help,helpBody);
+  if(early&&!lesson.answer){const showHelp=el('button','Открыть подсказки',{type:'button',class:'textbook-prompt-action'});showHelp.addEventListener('click',()=>{if(assisted()){help.open=true;summary.focus();}});prompt.append(showHelp);}
   const steps=el('section',undefined,{'data-steps':''}),next=el('button','Разобрать по шагам',{type:'button'});helpBody.append(steps,next);
   function addStep(index){const step=lesson.steps[index],section=el('section',undefined,{class:'textbook-step','data-step':step.id});section.append(el('h3',step.title),el('p',step.prompt));const explain=el('details');explain.append(el('summary','Показать объяснение'),el('p',step.explanation));justifications(step,explain);section.append(explain);
    if(step.input){const form=el('form'),fieldId='step-'+step.id,input=el('input',undefined,{id:fieldId,autocomplete:'off'}),feedback=el('p',undefined,{role:'status'});input.value=state.stepDrafts[step.id]||'';input.addEventListener('input',()=>{state.stepDrafts[step.id]=input.value;save();});form.append(el('label',step.input.prompt,{for:fieldId}),input,el('button','Проверить этот шаг',{type:'submit'}),feedback);form.addEventListener('submit',event=>{event.preventDefault();if(!assisted())return;setDisplayText(feedback,step.input.accepted.some(value=>normalized(value)===normalized(input.value))?'Ответ на этот шаг совпал.':step.input.feedback);});section.append(form);}
@@ -264,11 +418,37 @@ function createApp(root,options){
   function nextLabel(){next.hidden=state.revealed>=lesson.steps.length;next.textContent=state.revealed?'Следующий шаг':'Разобрать по шагам';}nextLabel();
   next.addEventListener('click',()=>{if(!assisted()||state.revealed>=lesson.steps.length)return;const index=state.revealed;state.revealed++;if(!save())return;addStep(index);viewer?.setView(lesson.steps[index].view||'neutral');nextLabel();});
   side.append(help);layout.append(main);view.append(layout);viewer=sceneViewer.mount(model,lesson.visualization.model,{savedCamera:state.camera,onChange:camera=>{state.camera=camera;save();}});
-  const guide=el('details',undefined,{class:'textbook-model-guide'});guide.append(el('summary','Как работать с рисунком'));for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);guide.append(el('p',lesson.visualization.caption));main.insertBefore(guide,main.querySelector('[data-final-form]'));
+  const guide=el('details',undefined,{class:'textbook-model-guide'});guide.append(el('summary','Как работать с рисунком'));for(const note of model.querySelectorAll('.am-help,.am-note'))guide.append(note);guide.append(el('p',lesson.visualization.caption));
+  if(early)main.append(guide);else main.insertBefore(guide,main.querySelector('[data-final-form]'));
+  if(early&&!lesson.answer){
+   const practice=lesson.source.point==='22'?'#dihedral':lesson.source.point==='14'?'#sections':null;
+   if(practice)view.append(el('a','Попробовать в мастерской',{href:'../'+practice,class:'textbook-practice-link'}));
+  }
+  const footer=el('nav',undefined,{class:'textbook-study-footer','aria-label':'Навигация по курсу'}),returnButton=el('button','← К началу курса',{type:'button'});
+  returnButton.addEventListener('click',home);footer.append(returnButton,el('a','На главную',{href:'/'}));view.append(footer);
   if(cached&&cached.base!==expected)freeze();
   return true;
  }
  function home(){if(destroyed||locked)return;destroyScene();if(navigation)root.before(navigation);current=null;state=null;view.replaceChildren();win.history?.replaceState(null,'',win.location.pathname+win.location.search);view.append(el('h1','Курс к учебнику «'+catalog.book.title+'»'),el('p',catalog.book.edition),el('p','В учебнике учтено задач: '+coverage.exercises+'; пунктов теории: '+coverage.theoryPoints+(coverage.selfchecks?'; вопросов самопроверки: '+coverage.selfchecks:'')+(coverage.appendices?'; приложений: '+coverage.appendices:'')+'. Полностью доступны задачи: '+coverage.availableExercises+'; пункты теории: '+coverage.availableTheoryPoints+(coverage.availableSelfchecks?'; вопросы самопроверки: '+coverage.availableSelfchecks:'')+'.'),el('p','Доступно разборов и частей задач: '+coverage.available+'. Остальные материалы готовятся.'));
+  win.scrollTo(0,0);
+  root.classList.remove('textbook-early-reading');
+  const heading=view.querySelector('h1');view.insertBefore(el('a','← На главную',{href:'/',class:'textbook-site-home'}),heading);
+  if(catalog.book.id===earlyCourse&&studyRoute.every(([,id])=>available.has(id))){
+   const route=el('section',undefined,{class:'textbook-study-route','aria-label':'Первые темы стереометрии'});
+   route.append(el('h2','От аксиом до двугранных углов'));
+   for(const [name,...ids] of studyRoute){
+    const skill=el('details');skill.append(el('summary',name));
+    for(const id of ids){
+     const lesson=available.get(id);if(!lesson)continue;
+     const row=el('div',undefined,{class:'textbook-study-row'}),button=el('button',lesson.title,{type:'button'}),record=studyStatus(lesson);
+     button.addEventListener('click',()=>open(id));row.append(button);
+     if(record)row.append(el('span',record,{class:'textbook-study-status'}));
+     skill.append(row);
+    }
+    route.append(skill);
+   }
+   view.append(route);
+  }
   if(!coverage.inventoryComplete)view.append(el('p','Список учебника ещё дополняется. Эти числа пока не означают полное покрытие книги.',{class:'course-note'}));
   if(!available.size)view.append(el('p','Проверенные материалы пока не опубликованы.'));
   const controls=el('section',undefined,{class:'catalog-filters','aria-label':'Найти материал'}),search=el('input',undefined,{id:'catalog-search',type:'search',placeholder:'Номер задачи, пункт, параграф или тема'});
@@ -301,8 +481,9 @@ function createApp(root,options){
   function filterChanged(){readyPage=0;pendingPage=0;renderResults();}search.addEventListener('input',filterChanged);for(const node of [kind,collection,paragraph])node.addEventListener('change',filterChanged);chapter.addEventListener('change',()=>{updateParagraphs();filterChanged();});renderResults();
  }
  function onStorage(event){if(current&&event.key===key&&safeRead(key)!==expected)freeze();}
- win.addEventListener('storage',onStorage);const start=win.location.hash.slice(1);if(start&&available.has(start))open(start);else home();
- return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();if(navigation)root.before(navigation);root.classList.remove('textbook-reading');win.removeEventListener('storage',onStorage);root.replaceChildren();}};
+ function followLocation(){const id=win.location.hash.slice(1);if(available.has(id))open(id);else home();}
+ win.addEventListener('storage',onStorage);win.addEventListener('hashchange',followLocation);followLocation();
+ return {open,home,coverage,issues,destroy(){destroyed=true;destroyScene();if(navigation)root.before(navigation);root.classList.remove('textbook-reading','textbook-early-reading');win.removeEventListener('storage',onStorage);win.removeEventListener('hashchange',followLocation);root.replaceChildren();}};
 }
 const api={validateLesson,inspectBundle,createApp};global.StereoTextbook=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

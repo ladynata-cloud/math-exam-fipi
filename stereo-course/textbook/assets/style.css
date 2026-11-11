@@ -58,14 +58,43 @@ button{max-width:100%;white-space:normal}
 .textbook-navigation>summary{padding:.4rem 0;font-size:.9rem;min-height:44px}
 .textbook-navigation .course-nav{padding:.25rem 0;gap:0 1rem;line-height:1.35}
 .textbook-navigation a{display:flex;align-items:center;min-height:44px}
+.textbook-site-home,.textbook-study-footer>a,.textbook-practice-link{display:inline-flex;align-items:center;min-height:44px}
+.textbook-study-footer{display:flex;flex-wrap:wrap;gap:.6rem 1rem;margin-top:1rem}
+.textbook-study-route{margin:1rem 0 1.5rem;max-width:56rem}
+.textbook-study-route h2{margin-bottom:.6rem}
+.textbook-study-route details{padding:.15rem .7rem}
+.textbook-study-row{display:flex;align-items:center;flex-wrap:wrap;gap:.35rem .75rem;margin:.35rem 0 .6rem}
+.textbook-study-status{font-size:.85rem;color:#355648}
+.textbook-first-topics [data-final-form]{margin:.45rem 0 .6rem}
+.textbook-first-topics [data-final-form] label{margin:.3rem 0;line-height:1.2;font-size:.9rem}
+.textbook-first-topics [data-final-form] input{margin:.3rem 0 .5rem}
+.textbook-first-topics [data-final-form] textarea{min-height:6rem}
+.textbook-first-topics [data-final-feedback]:empty{margin:0}
+.textbook-practice-link{margin-top:.5rem}
+.textbook-first-topics .textbook-givens{margin:.35rem 0;padding:0 .5rem}
+.textbook-first-topics .textbook-givens summary{padding:.4rem 0;min-height:44px;font-size:.95rem}
+.textbook-compact-answer{display:flex;align-items:stretch;gap:.4rem}
+.textbook-first-topics .textbook-compact-answer input{margin:0;min-height:44px;padding:.35rem .5rem;width:auto;flex:1 1 0}
+.textbook-compact-answer button{min-height:44px;padding:.35rem .55rem;font-size:.9rem;white-space:nowrap}
+.textbook-prompt-action{min-height:44px;padding:.35rem .55rem;margin-bottom:.4rem}
+.textbook-compact-condition{font-size:1.1rem;line-height:1.25;margin:0 0 .35rem}
+.textbook-compact-goal{font-size:.95rem;line-height:1.25;font-weight:650;color:#185737;margin:.35rem 0 .45rem}
 @media(max-width:850px){
  #textbook-app.textbook-reading{padding:0 .4rem 2rem}
  .textbook-reading .textbook-main{padding:.3rem}
  .textbook-reading .textbook-lesson-header{gap:.2rem .45rem;margin-bottom:.25rem}
  .textbook-reading .textbook-lesson-header>button{font-size:.95rem;padding:.35rem .5rem}
- .textbook-reading .textbook-lesson-header .companion-reference{display:contents}
- .textbook-reading .textbook-lesson-header .companion-identity{order:1;flex-basis:100%;font-size:.95rem;line-height:1.35}
+ .textbook-reading .textbook-lesson-header>.textbook-site-home{font-size:.9rem;margin-left:auto}
+ .textbook-reading .textbook-lesson-header .companion-reference{display:flex;order:1;flex-basis:100%;justify-content:space-between;gap:0 .4rem}
+ .textbook-reading .textbook-lesson-header .companion-identity{flex:1 1 auto;min-width:0;font-size:.88rem;line-height:1.35}
  .textbook-reading .textbook-lesson-header>h1{order:2;font-size:1.2rem}
- .textbook-reading .textbook-lesson-header .companion-details{margin-left:auto}
- .textbook-reading .textbook-lesson-header .companion-details[open]{margin-left:0}
+ .textbook-reading .textbook-lesson-header .companion-details{flex:0 0 auto}
+ .textbook-reading .textbook-lesson-header .companion-details[open]{flex-basis:100%}
+ .textbook-early-reading .textbook-lesson-header>h1{font-size:1.06rem;line-height:1.17}
+ .textbook-early-reading .textbook-condition{line-height:1.25;margin-bottom:.35rem}
+ .textbook-early-reading .textbook-goal{font-size:.95rem;line-height:1.25;margin:.35rem 0 .45rem}
+}
+@media(max-width:480px){
+ /* Arial and Liberation Sans share metrics across mobile and desktop platforms. */
+ .textbook-reading .textbook-lesson-header,.textbook-reading .textbook-layout{font-family:Arial,"Liberation Sans",sans-serif}
 }

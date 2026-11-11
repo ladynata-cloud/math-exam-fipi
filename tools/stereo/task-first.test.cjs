@@ -3,10 +3,10 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const root=path.resolve(__dirname,'../..'),C=require(root+'/stereo-course/data/course.json'),T=require(root+'/stereo-course/assets/tasks.js'),A=require(root+'/stereo-course/assets/answer.js');
 const links={polyhedra:'section',coordinates:'box-diagonal','sphere-equation':'sphere-cut','plane-equation':'dot',transformations:'scale',slices:'pyramid-volume','pyramid-frustum':'frustum',sphere:'sphere-cut',box:'box-diagonal'};
 for(const u of C.units)if(links[u.id])u.proof=links[u.id];
-function boot(saved,hash=''){
+function boot(saved,hash='',now){
  const dom=new JSDOM('<header><button id="home"></button><nav class="toplinks"></nav><button id="export-progress"></button></header><p id="storage-notice" hidden></p><main id="app"></main>',{url:'https://example.test/stereo-course/index.html'+hash,runScripts:'outside-only',pretendToBeVisual:true});
- const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.STEREO_COURSE=C;w.STEREO_PROOFS=require(root+'/stereo-course/data/proofs.json');if(saved)w.localStorage.setItem('mathExamStereo.v1',JSON.stringify(saved));
- w.mounts=[];w.StereoTaskScenes={mount(el,options){assert.equal(options.task.q,T.make(options.kind,JSON.parse(w.localStorage.getItem('mathExamStereo.v1')).units[w.location.hash.slice(1)].seed).q);el.innerHTML='<svg data-task-scene="true"></svg>';let camera=options.savedCamera||{yaw:0.6,pitch:0.4};const mount={el,options,lastStep:options.step,destroyed:false,setStep(i){this.lastStep=i;},getState(){return camera;},destroy(){this.destroyed=true;},move(yaw,pitch){camera={yaw,pitch};options.onChange(camera);}};w.mounts.push(mount);return mount;}};
+ const w=dom.window;if(now!==undefined)w.Date.now=()=>now;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};w.STEREO_COURSE=C;w.STEREO_PROOFS=require(root+'/stereo-course/data/proofs.json');if(saved)w.localStorage.setItem('mathExamStereo.v1',JSON.stringify(saved));
+ w.mounts=[];w.StereoTaskScenes={mount(el,options){const stored=JSON.parse(w.localStorage.getItem('mathExamStereo.v1')).units[w.location.hash.slice(1)];const expected=stored.review?.active?T.makeReview(options.kind,stored.seed):T.make(options.kind,stored.seed);assert.equal(options.task.q,expected.q);el.innerHTML='<svg data-task-scene="true"></svg>';let camera=options.savedCamera||{yaw:0.6,pitch:0.4};const mount={el,options,lastStep:options.step,destroyed:false,setStep(i){this.lastStep=i;},getState(){return camera;},destroy(){this.destroyed=true;},move(yaw,pitch){camera={yaw,pitch};options.onChange(camera);}};w.mounts.push(mount);return mount;}};
  w.StereoTaskScenes.mountProof=(el,options)=>{el.innerHTML='<svg data-proof-scene="true"></svg>';let camera=options.savedCamera||{yaw:.5,pitch:.4};return{setStep(){},getState:()=>camera,destroy(){},move(yaw,pitch){camera={yaw,pitch};options.onChange(camera);}};};
  w.SpaceViewer={mount(el,options,callback){el.innerHTML='<canvas></canvas>';return{destroy(){},options,callback};}};
  for(const file of ['answer.js','tasks.js','store.js','math-text.js','app.js'])w.eval(fs.readFileSync(root+'/stereo-course/assets/'+file,'utf8'));
@@ -86,6 +86,93 @@ function checkHomeHero(doc){
   assert.ok(stale.doc.querySelector('[data-recovery-drafts]').textContent.includes(T.make('box-diagonal',old.seed).q));assert.equal(stale.doc.querySelector('[data-recovery-drafts] textarea').value,'мой прежний черновик');
   click(stale,'[data-recover-latest]');assert.equal(stale.doc.querySelector('#answer').value,'новый сохранённый черновик');assert.equal(stale.doc.querySelector('[data-recovery-drafts] textarea').value,'мой прежний черновик');assert.equal(state(stale,'box').seed,updated.seed);assert.equal(state(stale,'box').assisted,true);
   input(stale,'#answer',A.format(T.make('box-diagonal',updated.seed).a));submit(stale,'#answer-form');assert.equal(state(stale,'box').independent,0);stale.close();
+ }
+ // Answering a related quantity retains the condition and separates mistakes from help.
+ const day=24*60*60*1000,now=1_800_000_000_000;
+ const section=boot(undefined,'#sections',now);
+ const condition=section.doc.querySelector('.task-question');
+ input(section,'#answer','3/sqrt(2)');submit(section,'#answer-form');
+ assert.match(section.doc.querySelector('#feedback').textContent,/длина стороны.*квадрат/u);
+ assert.strictEqual(section.doc.querySelector('.task-question'),condition);
+ assert.equal(section.doc.querySelector('#answer').value,'3/sqrt(2)');
+ assert.equal(state(section,'sections').taskFirst.firstResult,'wrong');
+ assert.equal(state(section,'sections').assisted,false);
+ input(section,'#answer','9/2');submit(section,'#answer-form');
+ assert.equal(state(section,'sections').independent,0);assert.equal(state(section,'sections').review,null);
+ assert.match(section.doc.querySelector('#feedback').textContent,/после исправления/u);
+ click(section,'[data-action=new]');
+ let rec=state(section,'sections');
+ input(section,'#answer',A.format(T.make('section',rec.seed).a));submit(section,'#answer-form');
+ rec=state(section,'sections');
+ assert.equal(rec.independent,1);
+ assert.equal(rec.review.dueAt,now+day);
+ assert.equal(section.doc.querySelector('[data-action=review]'),null);
+ const savedSection=JSON.parse(section.w.localStorage.getItem('mathExamStereo.v1'));section.close();
+ const assistedReview=boot(savedSection,'#sections',now+day);
+ click(assistedReview,'[data-action=review]');click(assistedReview,'[data-action=help]');await tick();
+ assert.equal(state(assistedReview,'sections').review.dueAt,now+2*day);
+ click(assistedReview,'[data-action=new]');
+ assert.equal(assistedReview.doc.querySelector('[data-action=review]'),null);
+ assistedReview.close();
+ // An optional delayed task resumes correctly. An open ordinary draft is never replaced on reload.
+ const revisit=boot(savedSection,'#sections',now+day);
+ click(revisit,'[data-action=review]');
+ const delayed=state(revisit,'sections'),newTask=T.makeReview('section',delayed.seed);
+ assert.match(newTask.q,/Найди площадь/u);assert(!rec.seenTasks.includes(JSON.stringify([newTask.q,newTask.a])));
+ input(revisit,'#answer',A.format(newTask.steps[0].a));submit(revisit,'#answer-form');
+ assert.match(revisit.doc.querySelector('#feedback').textContent,/Это квадрат стороны.*площадь/u);
+ assert.equal(state(revisit,'sections').review.passedAt,0);
+ input(revisit,'#answer',A.format(newTask.a));submit(revisit,'#answer-form');
+ assert.equal(state(revisit,'sections').review.passedAt,0);
+ assert.equal(state(revisit,'sections').review.dueAt,now+2*day);
+ const attempt=JSON.parse(revisit.w.localStorage.getItem('mathExamStereo.v1'));revisit.close();
+ const nextDay=boot(attempt,'#sections',now+2*day);
+ click(nextDay,'[data-action=new]');input(nextDay,'#answer','открытый черновик');
+ await tick();nextDay.w.dispatchEvent(new nextDay.w.Event('pagehide'));
+ const incomplete=JSON.parse(nextDay.w.localStorage.getItem('mathExamStereo.v1'));nextDay.close();
+ const resumed=boot(incomplete,'#sections',now+2*day);
+ assert.equal(resumed.doc.querySelector('#answer').value,'открытый черновик');
+ assert.equal(resumed.doc.querySelector('[data-action=review]'),null);
+ assert.match(resumed.doc.querySelector('#review-status').textContent,/Сначала закончи/u);
+ resumed.w.location.hash='#dihedral';await tick();
+ assert.match(resumed.doc.querySelector('.workspace h1').textContent,/Двугранный угол/u);
+ input(resumed,'#answer','45°');submit(resumed,'#answer-form');
+ assert.equal(state(resumed,'dihedral').independent,1);
+ const angles=JSON.parse(resumed.w.localStorage.getItem('mathExamStereo.v1'));resumed.close();
+ const angleReview=boot(angles,'#dihedral',now+3*day);
+ click(angleReview,'[data-action=review]');
+ const angular=state(angleReview,'dihedral'),tangent=T.makeReview('dihedral',angular.seed);
+ assert.match(tangent.q,/тангенс/u);
+ input(angleReview,'#answer',A.format(tangent.a));submit(angleReview,'#answer-form');
+ assert.equal(state(angleReview,'dihedral').review.passedAt,now+3*day);
+ assert.match(angleReview.doc.querySelector('#review-status').textContent,/решён самостоятельно/u);
+ click(angleReview,'[data-action=home]');
+ assert.match(angleReview.doc.querySelectorAll('.chapter-progress')[2].textContent,/проверкой после паузы — 1/u);
+ angleReview.close();
+ // Each of the five formerly fixed topics now has a different optional transfer task.
+ for(const id of ['space','parallel','skew','parallel-planes','perpendicular']){
+  const kind=C.units.find(unit=>unit.id===id).task;
+  const first=boot(undefined,'#'+id,now),start=state(first,id),task=T.make(kind,start.seed);
+  input(first,'#answer',A.format(task.a));submit(first,'#answer-form');
+  assert.equal(state(first,id).review.dueAt,now+day,id+' earns the delayed check');
+  assert.equal(first.doc.querySelector('[data-action=review]'),null);
+  const saved=JSON.parse(first.w.localStorage.getItem('mathExamStereo.v1'));first.close();
+  const next=boot(saved,'#'+id,now+day);click(next,'[data-action=review]');
+  const delayed=T.makeReview(kind,state(next,id).seed);
+  assert.notEqual(delayed.q,task.q);
+  assert.equal(plainDisplay(next.doc.querySelector('.task-question')),delayed.q);
+  input(next,'#answer',A.format(delayed.a));submit(next,'#answer-form');
+  assert.equal(state(next,id).review.passedAt,now+day);
+  assert.equal(state(next,id).independent,2);
+  next.close();
+ }
+ // New questions use independent geometry, including the displayed normals.
+ const scenes=require(root+'/stereo-course/assets/task-scenes.js'),space=require(root+'/stereo-course/assets/space.js');
+ for(let seed=0;seed<12;seed++){
+  const area=T.makeReview('section',seed),sectionScene=scenes.build('section',area),coords=sectionScene.model.points;
+  assert.ok(Math.abs(space.area(['M','N','P'].map(id=>coords[id]))-area.a)<1e-9);
+  const angle=T.makeReview('dihedral',seed),dihedralScene=scenes.build('dihedral',angle),p=dihedralScene.model.points;
+  assert.ok(Math.abs(space.dist(p.S,p.O)/space.dist(p.O,p.M)-angle.a)<1e-9);
  }
  console.log('STEREO_TASK_FIRST_DOM_OK: 39 units, separated drafts, actual-model retention, legacy stages, honest first credit, proof return');
 })().catch(error=>{console.error(error);process.exitCode=1;});

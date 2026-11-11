@@ -103,6 +103,39 @@ for(const kind of expected)for(let seed=0;seed<120;seed++){
  catch(error){error.message=`${kind}, seed ${seed}: ${error.message}`;throw error;}
  scenes++;
 }
+// Transfer questions use the same geometric relationships in new settings.
+for(const kind of ['incidence','parallel','skew','plane-parallel','perpendicular']){
+ const task=Bank.makeReview(kind,0),scene=Scenes.build(kind,task),points=scene.model.points;
+ assert.notEqual(task.q,Bank.make(kind,0).q);
+ generic(scene,task);
+ if(kind==='incidence'){
+  assert.deepEqual(scene.model.views.neutral.segments,[],'the answer is not drawn for the learner');
+  const pairs=[['A','B'],['A','C'],['B','C']],directions=pairs.map(([a,b])=>sub(points[a],points[b]));
+  assert(directions.every((v,i)=>directions.slice(i+1).every(w=>norm(cross(v,w))>1e-8)));
+  assert.equal(task.a,pairs.length);
+ }
+ if(kind==='parallel'){
+  const [a,b,c]=['A','B','C'].map(name=>points[name]),normalABC=cross(sub(b,a),sub(c,a));
+  close(dot(sub(points.B,a),normalABC),0);
+  assert.notEqual(dot(sub(points['A₁'],a),normalABC),0);
+  assert.equal(task.a,1);
+ }
+ if(kind==='skew'){
+  const direction=sub(points['B₁'],points.A),edge=sub(points['C₁'],points.C);
+  assert.notEqual(dot(sub(points.C,points.A),cross(direction,edge)),0,'the lines are skew');
+  close(angle(direction,edge),task.a);
+ }
+ if(kind==='plane-parallel'){
+  close(points.A[2],points.B[2]);close(points.C[2],points.D[2]);
+  assert.notEqual(points.A[2],points.C[2]);
+  close(angle(sub(points.B,points.A),sub(points.D,points.C)),task.a);
+ }
+ if(kind==='perpendicular'){
+  for(const name of ['O','A','P'])close(points[name][2],0);
+  close(dot(sub(points.A,points.O),sub(points.P,points.O)),0);
+  assert.equal(task.a,'нет');
+ }
+}
 const unsupported=Scenes.build('not-a-task-family',{q:'Unknown condition.',steps:[]});assert.equal(unsupported.status,'unsupported');assert.equal(unsupported.stepViews.length,0);
 assert.throws(()=>Scenes.build('section',{q:'Unsupported rewritten question.',steps:[]}),/does not match/,'unknown condition must not silently use default dimensions');
 console.log(`TASK_SCENES_MATH_OK: ${scenes} task-bound scenes, ${expected.length} families, ${checked} independent geometric checks; all conic/trihedral/Ceva variants, actual givens, sections, volumes, answer privacy, immutable bank; unknown family explicitly unsupported.`);

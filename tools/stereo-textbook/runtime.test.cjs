@@ -45,6 +45,37 @@ function submit(e,selector){e.doc.querySelector(selector).dispatchEvent(new e.w.
  input(e,'#final-answer','1/2');submit(e,'[data-final-form]');assert.match(e.doc.querySelector('[data-final-feedback]').textContent,/после обращения к помощи/);const saved=e.w.localStorage.getItem(key);e.close();
  const restored=boot(undefined,{[key]:saved});restored.app.open('fixture-exercise');assert.equal(restored.doc.querySelector('#final-answer').value,'1/2');assert.equal(restored.doc.querySelector('#step-step-first').value,'2');assert.deepEqual(JSON.parse(JSON.stringify(restored.mounts[0].getState())),{yaw:1.2,pitch:.3});restored.close();
  const fresh=boot();fresh.app.open('fixture-exercise');input(fresh,'#final-answer','1/2');submit(fresh,'[data-final-form]');assert.match(fresh.doc.querySelector('[data-final-feedback]').textContent,/самостоятельно/);fresh.app.open('fixture-proof');input(fresh,'#final-answer','TEST ONLY неверное свободное рассуждение');submit(fresh,'[data-final-form]');assert.match(fresh.doc.querySelector('[data-final-feedback]').textContent,/обсудить с учителем/);assert.doesNotMatch(fresh.doc.querySelector('[data-final-feedback]').textContent,/верно|самостоятельно/);fresh.close();
+ // A wrong quantity gets its own feedback. It does not change the drawing or count as opened help.
+ const early=boot(production),earlyKey=id=>'mathExamTextbook.v1:atanasyan-2024-10-11:'+id+':r'+production.lessons.find(lesson=>lesson.id===id).revision;
+ assert.equal(early.doc.querySelectorAll('.textbook-study-route>details').length,9);
+ const id='ex-main-0171';early.app.open(id);
+ const earlyModel=early.doc.querySelector('[data-main-model] svg');
+ submit(early,'[data-final-form]');assert.equal(early.w.localStorage.getItem(earlyKey(id)),null,'empty input is not an attempt');
+ input(early,'#final-answer','30°');submit(early,'[data-final-form]');
+ assert.match(early.doc.querySelector('[data-final-feedback]').textContent,/между катетом и плоскостью/);
+ assert.doesNotMatch(early.doc.querySelector('[data-final-feedback]').textContent,/45/);
+ assert.equal(early.doc.querySelector('[data-main-model] svg'),earlyModel);
+ assert.equal(early.doc.querySelector('#final-answer').value,'30°');
+ assert.equal(JSON.parse(early.w.localStorage.getItem(earlyKey(id))).assisted,false);
+ input(early,'#final-answer','90/2 градусов');submit(early,'[data-final-form]');
+ const corrected=JSON.parse(early.w.localStorage.getItem(earlyKey(id)));
+ assert.equal(corrected.result,'corrected');assert.equal(corrected.attempts,2);assert.deepEqual(corrected.firstAnswer,{text:'30°',correct:false,assisted:false});
+ early.app.open('ex-main-0018-a');input(early,'#final-answer','14/4');submit(early,'[data-final-form]');
+ assert.equal(JSON.parse(early.w.localStorage.getItem(earlyKey('ex-main-0018-a'))).result,'first-independent');
+ early.app.open('ex-main-0164');input(early,'#final-answer','1/2');submit(early,'[data-final-form]');
+ click(early,'[data-final-form] button[type=button]');input(early,'#final-answer','60');submit(early,'[data-final-form]');
+ const helped=JSON.parse(early.w.localStorage.getItem(earlyKey('ex-main-0164')));
+ assert.equal(helped.result,'with-help');assert.equal(helped.solutionShown,true);assert.equal(helped.firstAnswer.assisted,false);
+ early.app.open('ex-main-0167');input(early,'#final-answer','Моя запись');submit(early,'[data-final-form]');
+ assert.equal(JSON.parse(early.w.localStorage.getItem(earlyKey('ex-main-0167'))).manualSaved,true);
+ early.app.home();assert.match(early.doc.querySelector('.textbook-study-route').textContent,/Исправлено самостоятельно/);
+ assert.match(early.doc.querySelector('.textbook-study-route').textContent,/Рассуждение сохранено/);
+ early.app.open(id);assert.equal(early.doc.querySelector('#final-answer').value,'90/2 градусов');early.close();
+ const legacy=boot(production,{[earlyKey(id)]:JSON.stringify({draft:'30',assisted:true,checked:false,revealed:0})});
+ legacy.app.open(id);input(legacy,'#final-answer','45');submit(legacy,'[data-final-form]');
+ const legacyRecord=JSON.parse(legacy.w.localStorage.getItem(earlyKey(id)));
+ assert.equal(legacyRecord.result,'previous-unknown');assert.equal(legacyRecord.firstAnswer,null);
+ assert.match(legacy.doc.querySelector('[data-final-feedback]').textContent,/сведения о помощи/);legacy.close();
  // A queued native details toggle cannot race an independent result.
  const native=boot();native.app.open('fixture-exercise');native.doc.querySelector('[data-main-help]').open=true;input(native,'#final-answer','1/2');submit(native,'[data-final-form]');assert.match(native.doc.querySelector('[data-final-feedback]').textContent,/после обращения к помощи/);native.close();
  const quick=boot();quick.app.open('fixture-exercise');quick.doc.querySelector('[data-main-help]').open=true;quick.app.home();await tick();assert.equal(quick.errors.length,0,'queued details event cannot mutate a different page');quick.close();
