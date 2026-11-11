@@ -6,9 +6,11 @@
 - Owner: MathExam owner, current conversation.
 - Date: 12 November 2026 (Asia/Novosibirsk).
 - Base branch: `feat/makarychev8-square-roots-complete-20261106` (#482).
-- Base SHA: `f3c6db70ec4286b751b69c3387cba7ce535959ce`.
+- Initial base SHA: `f3c6db70ec4286b751b69c3387cba7ce535959ce`.
+- Current integration target: `9802acdd84ca2711dbfac93c12639505b3263703`.
 - Comparison main: `96466665da8d8c4052040adf5c1f7ad92ffb20e5`.
-- Planned branch: `fix/course-entrance-gates-20261112`.
+- Branch: `fix/course-entrance-gates-20261112`.
+- Repair PR: [#563](https://github.com/ladynata-cloud/math-exam-fipi/pull/563), Draft.
 - Review level: `MEDIUM` — shared browser gate; focused independent review.
 - Related PRs: [#522](https://github.com/ladynata-cloud/math-exam-fipi/pull/522)
   and [#482](https://github.com/ladynata-cloud/math-exam-fipi/pull/482).
@@ -27,17 +29,17 @@ before asking the owner about merge or publication.
   was clean. Before any task commit or remote write, the independent task
   branch was created from current #482 so the repair PR can target #482 without
   importing or overwriting its prepared square-roots work.
-- #522 head is `4d3a0528bdd6cba951d0a1fecd9eb696d129e93f`.
+- Initially checked #522 head: `4d3a0528bdd6cba951d0a1fecd9eb696d129e93f`.
   Its prior head `4ccc693e7c68e54b842e37bba900b4b9c9961d55` failed
   [SEO run 43083112214](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43083112214)
   because the generated Peterson footer was followed by a newly added script.
-  Current head moves that script into head and restores generated ordering.
-  Local generation and all four entrance tests pass on current #522.
-  [Current SEO run 43085023177](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43085023177)
+  That head moves the script into head and restores generated ordering.
+  Local generation and all four entrance tests pass on that #522 revision.
+  [SEO run 43085023177](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43085023177)
   subsequently completed successfully at 2026-11-11 19:42:58 UTC, including the
   native entrance/GIF/saved-work step (job `130747024190`). No generator change
   is needed in this repair.
-- #482 head is `f3c6db70ec4286b751b69c3387cba7ce535959ce`.
+- Initially checked #482 head: `f3c6db70ec4286b751b69c3387cba7ce535959ce`.
   [SEO run 43084541206](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43084541206)
   checks the composition `587bc1b9c672f43026e7d333eab81f0262bedd28`
   of this head and the stated main. Its browser assertion at line 46 finds zero
@@ -45,15 +47,29 @@ before asking the owner about merge or publication.
   main: `449370ccc0302b4ed27a78827928c239865415f5`.
 - The hash router renders catalogue links after same-document navigation.
   Navigation completion alone does not establish that the catalogue is ready.
-- A real application regression is also confirmed: #482's `home()` lost the
+- A real application regression was confirmed on that #482 head: `home()` lost the
   existing optional catalogue call for Makarychev. The new asynchronous DOM
-  regression passes 2/2 on main and #522, but fails on unmodified #482 even
+  regression passes 2/2 on main and #522, but fails on the initial #482 head even
   after hashchange finishes. Restoring that single call is required; a wait
   alone is not a fix. The native lesson GIF adapter is still present.
-- Current #522 additionally fails cabinet-return geometry in
+- The initial #522 head additionally failed cabinet-return geometry in
   [run 43085022866](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43085022866).
-  This is a separate failure, not evidence of stale generation. Preserve its
-  strict viewport assertion and report its status independently.
+  This was a separate failure, not evidence of stale generation.
+- During the task, #522 independently advanced to
+  `8a9477f9177d8eedf9ef2d55046ed8dee463e1a5`. Its cabinet-layout repair retains
+  the strict viewport assertion and adds an actual same-tab homepage click.
+  [Cabinet run 43090951964](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43090951964)
+  and [SEO run 43090951754](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43090951754)
+  pass on that new head. Local generation, entrance tests 4/4 and router tests
+  2/2 also pass. No duplicate #522 patch is needed.
+- During the task, #482 independently advanced to
+  `9802acdd84ca2711dbfac93c12639505b3263703`: one commit restores exactly the
+  same guarded catalogue call, with different line breaks, and changes no
+  other file. [SEO run 43090786905](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43090786905)
+  passes on that head. The repair branch aligns app.js byte-for-byte with this
+  current target using an ordinary additive commit, without merging branches
+  or rewriting history. The remaining integration delta is limited to the
+  browser test, router regression, workflow and two task/status documents.
 - At task start the public Peterson index was fetched over HTTPS and matched
   main byte-for-byte (SHA-256
   `a16e8d8c1671516598f4a350c5751178887d24757962170091040d01578d7d13`).
@@ -88,11 +104,12 @@ before asking the owner about merge or publication.
 - [x] Current generated pages pass strict byte-for-byte generation checks.
 - [x] The delayed router produces the expected three exact links, without
   duplicates or changes to saved synthetic answers.
-- [ ] Native browser checks retain media, help, saved-work and no-JS assertions.
-- [x] The application differs from #482 only by the restored catalogue call;
+- [x] Native browser checks retain media, help, saved-work and no-JS assertions
+  on the first repair head; the final head must receive its own Actions result.
+- [x] The application is byte-identical to current #482 (`9802acdd`);
   exercise data, GIFs, existing URLs and saved-work contracts remain identical.
-- [ ] Local failures and unavailable/queued native checks are reported separately.
-- [ ] Candidate stays Draft until the owner's separate explicit release decision.
+- [x] Local failures and unavailable/queued native checks are reported separately.
+- [x] Candidate stays Draft until the owner's separate explicit release decision.
 
 ## Checks and gates
 
@@ -138,18 +155,28 @@ before asking the owner about merge or publication.
 
 ## Execution record and handoff
 
-Local gate before submission: the corrected router regression passes 2/2;
-unmodified #482 fails Makarychev after the real hashchange event, while main and
-#522 pass 2/2. Strict generation passes all 13 outputs on all three source
+Initial local gate: the corrected router regression passes 2/2; the initial
+#482 head fails Makarychev after the real hashchange event, while main and
+#522 pass 2/2. Strict generation passes all 13 outputs on all source
 checkouts. Entrance/media/mathematics tests pass 4/4, sitemap tests 12/12,
 the 580-URL sitemap is current, and static catalogue parity passes for 73
 destinations. Syntax and whitespace checks pass.
 
 Independent internal review reproduced the failing and fixed DOM results.
-Removing only the restored optional catalogue call recovers #482's app.js
-byte-for-byte. Course data, topic sources, example code and media are unchanged.
-Native browser validation of this new repair remains required through Actions;
-the successful #522 run is not substituted for this candidate's gate.
+Removing only the restored optional catalogue call recovered the initial
+#482 app.js byte-for-byte. The first remote repair head
+`f4cc52d413d58726cb30115847cb04681c01c83f` passed native SEO
+[43090424318](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43090424318),
+including 12 interactive routes, retained work and GIF controls. Its native
+Makarychev gate passed all 1789 cards / 4116 steps and 1127 roots cards /
+4508 browser views. Independent source/mathematics suites passed 34017
+assertions. Full local DOM walking exhausted an imposed 512 MiB heap; that
+local resource failure is retained even though the full native suite passed.
+
+The follow-up ordinary commit preserves the current #482 app.js exactly;
+course data, topic sources, example code and media remain unchanged. Earlier
+native results are historical evidence and do not substitute for the final
+repair head's Actions. No original PR branch was edited by this task.
 
 The PR records exact commits, final checks, failures/not-run checks, unchanged
 source identities, release proposal and rollback. Use the repository's
