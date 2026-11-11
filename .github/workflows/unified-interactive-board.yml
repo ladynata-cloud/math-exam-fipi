@@ -60,6 +60,10 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
   main-composition:
+    if: >-
+      github.head_ref == 'feature/unified-board-continuity-20261111' ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.ref_name == 'feature/unified-board-continuity-20261111')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
