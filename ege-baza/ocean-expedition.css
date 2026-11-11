@@ -1,0 +1,362 @@
+.ocean-expedition {
+  --ocean-ink: #edf9f5;
+  --ocean-muted: #bad4d7;
+  --ocean-rule: #365469;
+  --ocean-night: #102439;
+  --ocean-light: #9be8cc;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin: 28px 0;
+  border: 1px solid #263e53;
+  border-radius: 22px;
+  background: var(--ocean-night);
+  color: var(--ocean-ink);
+  container-type: inline-size;
+}
+
+.ocean-expedition-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 18px;
+  padding: 20px clamp(14px, 3.25cqi, 28px);
+}
+
+.ocean-expedition-header h2 {
+  font-family: Georgia, serif;
+  font-weight: 650;
+  font-size: clamp(25px, 5.1cqi, 40px);
+  letter-spacing: -.025em;
+}
+
+.ocean-expedition-header p,
+.ocean-expedition-description {
+  margin-top: 5px;
+  color: var(--ocean-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.ocean-expedition-motion,
+.ocean-expedition-step button,
+.ocean-expedition-mobile-select select {
+  border: 1px solid #597688;
+  border-radius: 8px;
+  background: #19394c;
+  color: var(--ocean-ink);
+  min-height: 44px;
+}
+
+.ocean-expedition-motion {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.ocean-expedition button:focus-visible,
+.ocean-expedition a:focus-visible,
+.ocean-expedition select:focus-visible,
+.ocean-expedition summary:focus-visible,
+.ocean-expedition input:focus-visible {
+  outline: 3px solid #ffe59d;
+  outline-offset: 3px;
+}
+
+.ocean-expedition-motion:hover,
+.ocean-expedition-step button:not([aria-disabled="true"]):hover {
+  border-color: var(--ocean-light);
+  background: #23485a;
+}
+
+.ocean-expedition-chart {
+  position: relative;
+  width: 100%;
+  min-height: 236px;
+  aspect-ratio: 1040 / 550;
+  background: linear-gradient(#1a778c, #173853 58%, #090e26);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ocean-expedition-chart canvas,
+.ocean-expedition-pins {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ocean-expedition-pin {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 44px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 99px;
+  color: var(--ocean-ink);
+  background: transparent;
+  transform: translate(-22px, -50%);
+}
+
+.ocean-expedition-pin-left {
+  flex-direction: row-reverse;
+  left: auto;
+  right: calc(100% - var(--x));
+  transform: translate(22px, -50%);
+}
+
+.ocean-expedition-pin[aria-pressed="true"],
+.ocean-expedition-pin:focus-visible {
+  z-index: 1;
+}
+
+.ocean-expedition-pin-dot {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--station-color);
+  border-radius: 50%;
+  color: var(--station-color);
+  background: #0b273b;
+  box-shadow: 0 0 0 3px #0e253655;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ocean-expedition-pin-name {
+  padding: 3px 9px;
+  border: 1px solid #5e8495;
+  border-radius: 8px;
+  color: #fff;
+  background: #0c283b;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.ocean-expedition-pin:hover .ocean-expedition-pin-name,
+.ocean-expedition-pin[aria-pressed="true"] .ocean-expedition-pin-name {
+  border-color: var(--station-color);
+}
+
+.ocean-expedition-pin[aria-pressed="true"] .ocean-expedition-pin-dot {
+  color: #082134;
+  background: var(--station-color);
+  box-shadow: 0 0 0 4px #0b273b, 0 0 0 6px var(--station-color);
+}
+
+.ocean-expedition-controls {
+  display: flex;
+  align-items: end;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px clamp(14px, 3.25cqi, 28px);
+  border-bottom: 1px solid var(--ocean-rule);
+}
+
+.ocean-expedition-mobile-select {
+  display: none;
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ocean-muted);
+}
+
+.ocean-expedition-mobile-select select {
+  display: block;
+  width: 100%;
+  margin-top: 3px;
+  padding: 5px 8px;
+  font: inherit;
+}
+
+.ocean-expedition-step {
+  display: flex;
+  gap: 6px;
+}
+
+.ocean-expedition-step button {
+  min-width: 44px;
+  padding: 0 7px;
+  line-height: 1;
+}
+
+.ocean-expedition-step button[aria-disabled="true"] {
+  color: #a5b5bd;
+  background: #1a2e42;
+  cursor: default;
+}
+
+.ocean-expedition-info {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: 20px;
+  padding: 20px clamp(14px, 3.25cqi, 28px);
+}
+
+.ocean-expedition-station h3 {
+  color: var(--ocean-ink);
+  margin-top: 5px;
+  font-size: clamp(20px, 3.3cqi, 26px);
+}
+
+.ocean-expedition-craft {
+  color: var(--ocean-light);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.ocean-expedition-progress {
+  margin-top: 10px;
+  color: var(--ocean-light);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.ocean-expedition-tasks {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.ocean-expedition-tasks a {
+  display: grid;
+  grid-template-columns: 33px minmax(0, 1fr) 15px;
+  align-items: center;
+  gap: 5px 8px;
+  padding: 8px 11px;
+  min-height: 44px;
+  border: 1px solid #48677a;
+  border-radius: 8px;
+  color: var(--ocean-ink);
+  background: #173247;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.ocean-expedition-tasks a:hover {
+  border-color: var(--ocean-light);
+  background: #23485a;
+}
+
+.ocean-expedition-task-number {
+  color: var(--ocean-light);
+  font-weight: 800;
+}
+
+.ocean-expedition-task-title {
+  overflow-wrap: anywhere;
+}
+
+.ocean-expedition-mission {
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid var(--ocean-rule);
+  border-radius: 8px;
+  background: #142c41;
+  font-size: 14px;
+}
+
+.ocean-expedition-mission summary {
+  min-height: 44px;
+  padding-block: 10px;
+  cursor: pointer;
+  font-weight: 750;
+}
+
+.ocean-expedition-mission summary span {
+  margin-left: 5px;
+  color: var(--ocean-light);
+}
+
+.ocean-expedition-mission > p {
+  max-width: 65ch;
+  color: var(--ocean-muted);
+  line-height: 1.55;
+}
+
+.ocean-expedition-mission form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.ocean-expedition-mission form label {
+  display: grid;
+  gap: 4px;
+  color: var(--ocean-ink);
+  font-size: 13px;
+}
+
+.ocean-expedition-mission input,
+.ocean-expedition-mission button {
+  min-height: 44px;
+  border: 1px solid #648391;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font: inherit;
+  background: #19394c;
+  color: var(--ocean-ink);
+}
+
+.ocean-expedition-mission input { width: 105px; font-size: 16px; }
+.ocean-expedition-mission button:hover { border-color: var(--ocean-light); }
+.ocean-expedition-mission [data-ocean-mission-feedback] { margin-bottom: 10px; }
+.ocean-expedition-mission [data-result="correct"] { color: var(--ocean-light); }
+.ocean-expedition-mission [data-result="retry"] { color: #ffdca1; }
+
+.ocean-expedition-announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@container (max-width: 700px) {
+  .ocean-expedition-pin-name { display: none; }
+  .ocean-expedition-mobile-select { display: block; }
+  .ocean-expedition-pin-left {
+    left: var(--x);
+    right: auto;
+    transform: translate(-22px, -50%);
+  }
+}
+
+@container (max-width: 490px) {
+  .ocean-expedition-header {
+    flex-wrap: wrap;
+    padding-block: 14px;
+  }
+
+  .ocean-expedition-chart {
+    aspect-ratio: auto;
+  }
+
+  .ocean-expedition-info {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding-block: 14px;
+  }
+}
