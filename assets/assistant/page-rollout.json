@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+  "baseSha": "1c68540fdebc21d3e593d9afc818d0bbcde12ee1",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4767,6 +4767,13 @@
         "trainers/oge-task22-functions-graphs.html",
         "trainers/oge-task24-proofs.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "sourceBaseSha": "1c68540fdebc21d3e593d9afc818d0bbcde12ee1",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
