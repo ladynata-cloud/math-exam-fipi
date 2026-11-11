@@ -12,6 +12,7 @@ const { spawn } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
 const { chromium } = require('playwright');
 const graphSolutions = require('./spacemath/graph-solutions.browser.cjs');
+const inkFaults = require('./group-board-ink.browser.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const ARTIFACTS = process.env.UNIFIED_BOARD_ARTIFACTS || fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-unified-board-'));
@@ -310,6 +311,9 @@ async function main() {
     await teacher.locator('#app').waitFor({ state: 'visible' });
     if (await teacher.locator('#inviteDialog').isVisible()) await teacher.locator('#inviteDialog [data-close-dialog]').first().click();
     await queueRoleIsolation(teacher,site,api,created,()=>work(first.id));
+    const faultPage=await pageFor();
+    await inkFaults({page:faultPage,origin:site.origin,server:api.origin,lesson:id,token:first.studentToken,seatId:first.id,readWork:()=>work(first.id)});
+    await faultPage.close();
     const pupils = [];
     for (const invite of created.invites) {
       const page = await pageFor();
