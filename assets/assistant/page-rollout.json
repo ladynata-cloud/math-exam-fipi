@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+  "baseSha": "05ced640de3b901ab5dd2547938a93a8d9739cd1",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2923,8 +2923,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "3d97b68192bfd43b801e70476e20d0c534a03937fb9bb28c11e4625a9805e26d",
-      "afterSha256": "d28daa98bc9c055e9344eb2b2ec856da2d47fd2134ebca87357f7080ac222c22",
+      "beforeSha256": "fca0c3a6d799ba83fe44582876d75d56b0ea99d1b88cec8f70e4663768861ce4",
+      "afterSha256": "5b68068164d44fe774d9e6d9190c3f6cdf81220e6f6b5c4b87dca31b05d2f5a4",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4806,6 +4806,15 @@
       "sourceBaseSha": "1c68540fdebc21d3e593d9afc818d0bbcde12ee1",
       "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "05ced640de3b901ab5dd2547938a93a8d9739cd1",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
