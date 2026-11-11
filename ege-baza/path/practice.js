@@ -176,38 +176,49 @@ catalog.at(-1).trainingOnly = true;
 
 add('vase-order', 21, 'Вазы — порядок и общая часть', 'Сначала сравни сумму двух групп с общим количеством роз. Если сумма больше, найди вазу, розы из которой вошли в обе группы.', 'logic', 21, seed => {
   const variant = seed % 240;
-  const white = 14 + variant % 8;
-  const yellow = 3 + Math.floor(variant / 8) % 6;
-  const blue = 23 + Math.floor(variant / 48);
-  const left = white + yellow;
-  const right = yellow + blue;
-  const total = white + yellow + blue;
-  const orders = rotate(['Белая → синяя → жёлтая', 'Белая → жёлтая → синяя', 'Жёлтая → белая → синяя'], variant);
-  const correctOrder = orders.indexOf('Белая → жёлтая → синяя') + 1;
+  const outerLeft = 14 + variant % 8;
+  const center = 3 + Math.floor(variant / 8) % 6;
+  const outerRight = 23 + Math.floor(variant / 48);
+  const left = outerLeft + center;
+  const right = center + outerRight;
+  const total = outerLeft + center + outerRight;
+  const colors = [
+    { name: 'Белая', of: 'белой' },
+    { name: 'Жёлтая', of: 'жёлтой' },
+    { name: 'Синяя', of: 'синей' }
+  ];
+  const [rightOf, middle, leftOf] = rotate(colors, Math.floor(variant / 8));
+  const correctLabel = `${rightOf.name} → ${middle.name} → ${leftOf.name}`;
+  const orders = rotate([
+    `${rightOf.name} → ${leftOf.name} → ${middle.name}`,
+    correctLabel,
+    `${middle.name} → ${rightOf.name} → ${leftOf.name}`
+  ], variant);
+  const correctOrder = orders.indexOf(correctLabel) + 1;
   const wrongOrders = Object.fromEntries(orders.flatMap((order, index) => index + 1 === correctOrder ? [] : [[index + 1,
     'В этом порядке группы роз не пересекаются. Тогда сумма двух групп была бы равна общему числу роз.']]));
-  return make(`В ряд поставили белую, жёлтую и синюю вазы. В каждой есть розы. Число роз слева от синей вазы — ${left}, справа от белой — ${right}. Всего роз — ${total}. Сколько роз в жёлтой вазе?`, yellow, [
-    reasoningChoice('Где не может стоять синяя ваза, если слева от неё есть розы?', 1,
-      'Слева от первой вазы ничего нет. По той же причине белая ваза не может быть последней: справа от неё есть розы.',
+  return make(`В ряд поставили белую, жёлтую и синюю вазы. В каждой есть розы. Число роз слева от ${leftOf.of} вазы — ${left}, справа от ${rightOf.of} — ${right}. Всего роз — ${total}. Сколько роз в ${middle.of} вазе?`, center, [
+    reasoningChoice(`Где не может стоять ${leftOf.name.toLowerCase()} ваза, если слева от неё есть розы?`, 1,
+      `Слева от первой вазы ничего нет. Так же рассуждаем о ${rightOf.of} вазе. Она не может стоять последней, ведь справа от неё есть розы.`,
       ['Первой слева', 'Посередине', 'Последней справа'],
-      { 2: 'Если синяя в середине, слева есть одна ваза.', 3: 'Если синяя последняя, слева есть две вазы.' }),
+      { 2: 'Если ваза в середине, слева есть одна ваза.', 3: 'Если ваза последняя, слева есть две вазы.' }),
     ...steps(['Какова сумма количества роз в двух группах из условия?', left + right,
       `Сложи ${left} и ${right}. Получится больше ${total}, поэтому какие-то розы посчитаны в обеих группах.`]),
     reasoningChoice('В каком из оставшихся порядков одна ваза входит в обе группы?', correctOrder,
-      'Общая ваза должна стоять одновременно справа от белой и слева от синей. Между ними остаётся жёлтая.',
+      `Общая ваза стоит одновременно справа от ${rightOf.of} и слева от ${leftOf.of}. Между ними остаётся ${middle.name.toLowerCase()} ваза.`,
       orders, wrongOrders),
     ...steps(
-      ['Сколько роз посчитали дважды, когда сложили числа из двух групп?', yellow,
-        `Лишний подсчёт равен (${left} + ${right}) − ${total}. Это розы в общей, жёлтой вазе.`],
-      ['Сколько роз в белой вазе, если слева от синей стоят белая и жёлтая?', white,
-        `Вычти розы в жёлтой вазе из ${left}. Для проверки в синей ${right} − ${yellow} = ${blue}. Получается ${white} + ${yellow} = ${left}, ${yellow} + ${blue} = ${right}, а всего ${total}.`]
+      ['Сколько роз посчитали дважды, когда сложили числа из двух групп?', center,
+        `Лишний подсчёт равен (${left} + ${right}) − ${total}. Это розы в общей вазе.`],
+      [`Сколько роз в ${rightOf.of} вазе?`, outerLeft,
+        `Вычти розы из средней вазы из ${left}. В другой крайней вазе ${right} − ${center} = ${outerRight} роз. Для проверки сложи ${outerLeft} + ${center} = ${left} и ${center} + ${outerRight} = ${right}. Всего роз — ${total}.`]
     )
-  ], 'vase-order', { left, right, total }, {
+  ], 'vase-order', { left, right, total, leftOf: leftOf.of, rightOf: rightOf.of }, {
     feedback: {
-      [white]: 'Это число роз в белой вазе. Найди, сколько роз посчитали дважды.',
-      [blue]: 'Это число роз в синей вазе. Найди, сколько роз посчитали дважды.',
+      [outerLeft]: `Это число роз в ${rightOf.of} вазе. Найди, сколько роз посчитали дважды.`,
+      [outerRight]: `Это число роз в ${leftOf.of} вазе. Найди, сколько роз посчитали дважды.`,
       [left + right]: 'При сложении этих двух групп часть роз посчитана дважды. Сравни результат с общим количеством.',
-      [Math.abs(left - right)]: 'Разность двух групп сравнивает крайние вазы. Для жёлтой посмотри, на сколько сумма групп больше общего числа роз.'
+      [Math.abs(left - right)]: 'Разность двух групп сравнивает крайние вазы. Для средней вазы посмотри, на сколько сумма групп больше общего числа роз.'
     }
   });
 });
