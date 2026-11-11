@@ -1,0 +1,47 @@
+name: Trainer GIF previews
+on:
+  pull_request:
+    paths:
+      - 'assets/trainer-previews*'
+      - 'assets/trainer-previews/**'
+      - 'tools/*trainer-previews*'
+      - 'index.html'
+      - 'oge/index.html'
+      - 'trainers/index.html'
+      - 'lessons/index.html'
+      - 'oge/variants/2027/index.html'
+      - '.github/workflows/trainer-previews.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  previews:
+    runs-on: ubuntu-latest
+    # Browser dependency provisioning took nine minutes in the first run.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Asset, mathematics and route checks
+        run: |
+          python3 -m pip install Pillow==13.0.0
+          python3 tools/trainer-previews.test.py
+          node --check assets/trainer-previews.js
+          git diff --check
+      - name: Browser runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/gif-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/gif-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Mobile layout, playback, still fallback and routes
+        env:
+          NODE_PATH: ${{ runner.temp }}/gif-qa/node_modules
+          PREVIEW_ARTIFACTS: ${{ runner.temp }}/gif-artifacts
+        run: node tools/trainer-previews.browser.cjs
+      - name: Save visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trainer-gif-previews
+          path: ${{ runner.temp }}/gif-artifacts

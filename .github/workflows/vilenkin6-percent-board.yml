@@ -1,0 +1,55 @@
+name: Vilenkin 6 percentages shared board
+on:
+  pull_request:
+    paths:
+      - 'trainers/vilenkin6-percent/**'
+      - 'courses/vilenkin-6-part-1/textbook-data/units-A.json'
+      - 'courses/vilenkin-6-part-1/textbook-math.js'
+      - 'learning/vilenkin6-textbook-course.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-bridge.js'
+      - '.github/workflows/vilenkin6-percent-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/vilenkin6-percent/**'
+      - 'courses/vilenkin-6-part-1/textbook-data/units-A.json'
+      - 'courses/vilenkin-6-part-1/textbook-math.js'
+      - 'learning/vilenkin6-textbook-course.js'
+      - 'trainers/board-compat.json'
+      - 'trainers/board-bridge.js'
+      - '.github/workflows/vilenkin6-percent-board.yml'
+permissions:
+  contents: read
+jobs:
+  source-state-and-paired-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install test dependencies
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/percent-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/percent-qa/node_modules" >> "$GITHUB_ENV"
+          "$RUNNER_TEMP/percent-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Source, mathematics, state, exact registry and cabinet links
+        run: |
+          node --check trainers/vilenkin6-percent/app.js
+          node --test trainers/vilenkin6-percent/core.test.cjs tools/learning-vilenkin-textbook.dom.cjs board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          git diff --check
+      - name: Teacher and pupil, real board transport, steps, hints, ink and reload
+        env:
+          PERCENT_SCREENSHOT_DIR: artifacts/vilenkin6-percent
+        run: node trainers/vilenkin6-percent/browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: vilenkin6-percent-browser
+          path: artifacts/vilenkin6-percent
+          if-no-files-found: ignore

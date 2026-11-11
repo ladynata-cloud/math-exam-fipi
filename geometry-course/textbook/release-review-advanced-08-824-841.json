@@ -42,7 +42,7 @@
   },
   "implementationFiles": {
     "tools/geometry-textbook/build_course.py": "a2b3ef3acfc6fadc967a7549715ec1180d1dda4e9f2420c5b38633c6fb67436b",
-    "tools/geometry-textbook/advanced8_release.py": "91f2fa3828cd862689c99d3a95351e5457217dc6f85329b0aa5c833d03ca73b7"
+    "tools/geometry-textbook/advanced8_release.py": "af4a7b4d6d207721cb88ac8091eb68a3899111738673d761f302c5e4e22c8f18"
   },
   "evidence": [
     {
@@ -85,5 +85,10 @@
       "reviewer": "ChatGPT coordinating reviewer (root); independent of authored content"
     }
   ],
-  "externalProviderReview": "not-run; owner waiver; no external-provider verdict claimed"
+  "externalProviderReview": "not-run; owner waiver; no external-provider verdict claimed",
+  "navigatorBindingAmendment": {
+    "historicalGateSha256": "91f2fa3828cd862689c99d3a95351e5457217dc6f85329b0aa5c833d03ca73b7",
+    "sourceCommit": "f3097192ed1343e4a5ca44e2f675f5c7ba3f9494",
+    "scope": "Use the existing exact navigator-source restoration for index.html only. Keep the original independent mathematics and visual evidence and raw bindings for the remaining runtime files."
+  }
 }

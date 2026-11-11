@@ -33,6 +33,27 @@
     { id: 'school7', title: '7 класс · алгебра и геометрия', grades: [7], directions: ['school','foundations'],
       description: 'Уравнения, геометрические задачи и повторение основ с сохранением каждой работы.',
       storage: 'server', route: 'program-course=school7', course: 'school', publicPath: '/grade7/' },
+    { id: 'vpr-g5', title: 'ВПР · 5 класс', grades: [5], directions: ['school','foundations'],
+      description: 'Числа, дроби, текстовые задачи, измерения и геометрия: теория, пример и проверка решения по шагам.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g5', boardPath: '/trainers/vpr-math/index.html?route=g5' },
+    { id: 'vpr-g6', title: 'ВПР · 6 класс', grades: [6], directions: ['school','foundations'],
+      description: 'Рациональные числа, отношения, проценты, уравнения и данные с пошаговой практикой и самопроверкой.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g6', boardPath: '/trainers/vpr-math/index.html?route=g6' },
+    { id: 'vpr-g7', title: 'ВПР · 7 класс · базовый уровень', grades: [7], directions: ['school','foundations'],
+      description: 'Выражения, уравнения, графики реальных процессов, геометрия, вероятность и статистика.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g7', boardPath: '/trainers/vpr-math/index.html?route=g7' },
+    { id: 'vpr-g7u', title: 'ВПР · 7 класс · углублённый уровень', grades: [7], directions: ['school','foundations'],
+      description: 'Общая основа и дополнительные задачи на преобразования, делимость, подсчёт вариантов, графы и доказательства.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g7u', boardPath: '/trainers/vpr-math/index.html?route=g7u' },
+    { id: 'vpr-g8', title: 'ВПР · 8 класс · базовый уровень', grades: [8], directions: ['school','foundations'],
+      description: 'Корни, квадратные уравнения и текстовые задачи, графики, геометрия, вероятность и статистика.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g8', boardPath: '/trainers/vpr-math/index.html?route=g8' },
+    { id: 'vpr-g8u', title: 'ВПР · 8 класс · углублённый уровень', grades: [8], directions: ['school','foundations'],
+      description: 'Общая основа, многошаговые преобразования, рациональные уравнения, вероятностные модели и доказательства.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g8u', boardPath: '/trainers/vpr-math/index.html?route=g8u' },
+    { id: 'vpr-g10', title: 'ВПР · 10 класс', grades: [10], directions: ['school','foundations'],
+      description: 'Тригонометрия, прогрессии, функции, геометрия, стереометрия и вероятность с разбором решений.',
+      storage: 'browser', publicPath: '/trainers/vpr-math/index.html?route=g10', boardPath: '/trainers/vpr-math/index.html?route=g10' },
     { id: 'oge', title: 'Подготовка к ОГЭ', grades: [8,9], directions: ['oge'],
       description: 'Учебный маршрут к выбранной цели и тренировка задач по темам.',
       storage: 'server', route: 'program-course=oge', course: 'oge', publicPath: '/oge/' },
@@ -77,17 +98,22 @@
       storage: 'browser', publicPath: '/school/nikolsky10/' },
     { id: 'merzlyak-10-base', title: 'Мерзляк · геометрия 10 класса', grades: [10], directions: ['school','ege'],
       description: 'Базовый курс стереометрии с задачами, самопроверкой и моделями.',
-      storage: 'browser', publicPath: '/stereo-course/merzlyak-10-base/' },
+      storage: 'browser', publicPath: '/stereo-course/merzlyak-10-base/', boardPath: '/trainers/merzlyak-10-base.html' },
     { id: 'ege-base-11-13', title: 'ЕГЭ база · пространственные тела', grades: [10,11], directions: ['ege'],
       description: 'Задания №11 и №13: объёмы, поверхности, сосуды и стереометрия.',
       storage: 'browser', route: 'program-course=ege-base-11-13', publicPath: '/ege-baza/path/index.html#lesson=box' },
     { id: 'college-functions', title: 'Графики функций · колледж', grades: [], directions: ['school','ege-profile'],
       description: 'Построение и исследование графиков: от парабол до функций по частям.',
-      storage: 'browser', publicPath: '/trainers/college-functions/' }
+      storage: 'browser', publicPath: '/trainers/college-functions/' },
+    { id: 'college-logarithms', title: 'Логарифмы · колледж', grades: [], directions: ['school','foundations','ege','ege-profile'],
+      description: 'Вводный урок и 60 задач: смысл логарифма, свойства, графики, уравнения, неравенства и тестовая часть ЕГЭ.',
+      storage: 'browser', publicPath: '/trainers/college-logarithms/',
+      boardPath: '/trainers/college-logarithms/index.html?task=meaning-1' }
   ];
   const courses = Object.freeze(definitions.map(item => Object.freeze({ ...item,
     grades: Object.freeze(item.grades), directions: Object.freeze(item.directions),
-    storageLabel: storageLabels[item.storage], publicURL: 'https://mathexam.space' + item.publicPath
+    storageLabel: storageLabels[item.storage], publicURL: 'https://mathexam.space' + item.publicPath,
+    ...(item.boardPath ? {boardURL: 'https://mathexam.space/trainers/trainer-board.html?trainer=' + encodeURIComponent(item.boardPath)} : {})
   })));
   const byId = new Map(courses.map(course => [course.id, course]));
   const get = id => typeof id === 'string' ? byId.get(id) || null : null;

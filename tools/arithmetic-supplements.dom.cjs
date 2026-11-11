@@ -10,7 +10,7 @@ function mount(t,file,query='',storage={},managedEnvelope){
  const gradient={addColorStop(){}};const ctx=new Proxy({measureText:s=>({width:String(s).length*10}),createLinearGradient:()=>gradient,createRadialGradient:()=>gradient},{get:(o,k)=>k in o?o[k]:()=>{}});w.HTMLCanvasElement.prototype.getContext=()=>ctx;
  for(const [key,value] of Object.entries(storage))w.localStorage.setItem(key,value);
  let adapter;if(managedEnvelope)w.MathExamLearning={register:a=>{adapter=a;}};
- for(const script of [...w.document.scripts]){const src=script.getAttribute('src');if(src){if(/^https?:/.test(src)||managedEnvelope&&src.includes('learning-bridge.js'))continue;w.eval(fs.readFileSync(path.resolve(root,path.dirname(file),src.split('?')[0]),'utf8'));}else if(script.textContent.trim())w.eval(script.textContent);}
+ for(const script of [...w.document.scripts]){const src=script.getAttribute('src');if(src){if(/^https?:/.test(src)||managedEnvelope&&src.includes('learning-bridge.js'))continue;w.eval(fs.readFileSync((src.startsWith('/')?path.join(root,src.split('?')[0]):path.resolve(root,path.dirname(file),src.split('?')[0])),'utf8'));}else if(script.textContent.trim())w.eval(script.textContent);}
  if(managedEnvelope){assert(adapter);adapter.applyState(w.JSON.parse(JSON.stringify({...managedEnvelope,readOnly:false})));}
  assert.deepEqual(errors,[]);t.after(()=>w.close());return {w,d:w.document,errors};
 }

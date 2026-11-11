@@ -233,7 +233,9 @@ async function enterCheckpoint(page) {
   await page.locator(UI.checkpoint.form).waitFor();
 }
 async function transferLearner(page, out, p) {
-  check(out, 'thirteen-calm-cards', await page.locator('main a[href^="#calm/"]').count() === 13);
+  check(out, 'thirteen-calm-cards', await page.locator('[data-calm-exam] a[href^="#calm/"]').count() === 13);
+  check(out, 'seven-second-part-cards', same(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [14, 15, 16, 17, 18, 19, 20]));
+  check(out, 'both-part-tabs-available', await page.locator('.journey-tabs a[href="#calm/first"]').count() === 1 && await page.locator('.journey-tabs a[href="#calm/second"]').count() === 1);
   await enterCheckpoint(page);
   const beforeRecords = (await saved(page)).records;
   for (let i = 0; i < p.items.length; i++) {

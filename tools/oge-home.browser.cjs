@@ -14,16 +14,61 @@ async function context(browser,options={}){
  await c.route('**/*',r=>new URL(r.request().url()).origin===new URL(base).origin?r.continue():r.fulfill({status:200,body:''}));
  c.on('page',p=>p.on('pageerror',e=>report.errors.push(e.message)));return c;
 }
+async function allTopics(p){
+ const links=p.locator('.oge-all-topics [data-oge-topic]');
+ assert.equal(await links.count(),25,'25 direct topic entries without opening a menu');
+ for(const [i,t] of topics.entries()){
+  const link=links.nth(i);
+  assert.equal(await link.getAttribute('data-oge-topic'),String(t.number));
+  assert.equal(await link.getAttribute('href'),t.href,'canonical route for '+t.number);
+  assert((await link.innerText()).includes(t.title),'canonical title for '+t.number);
+  assert(await link.isVisible(),'topic '+t.number+' is visible without disclosure');
+  assert.equal(await link.locator('xpath=ancestor::details[not(@open)]').count(),0);
+  assert.equal((await p.request.get(base+t.href)).status(),200,'topic route '+t.number);
+ }
+ const stories=p.locator('[data-oge-practical]'),skills=p.locator('[data-oge-foundation]');
+ assert.equal(await stories.count(),8,'eight practical stories are separate from exam numbers');
+ assert.equal(await skills.count(),12,'prior-grade skills have direct entries');
+ for(const entry of [...await stories.all(),...await skills.all()]){
+  assert(await entry.isVisible(),'entry is visible without a menu');
+  assert.equal(await entry.locator('xpath=ancestor::details[not(@open)]').count(),0);
+  const link=await entry.evaluate(el=>el.matches('a')?el.getAttribute('href'):el.querySelector('a').getAttribute('href'));
+  if(!checkedLinks.has(link)){assert.equal((await p.request.get(base+link)).status(),200,'entry destination exists: '+link);checkedLinks.add(link);}
+ }
+ for(const id of ['all-topics','practical-types','math-literacy']){
+  const jump=p.locator('.oge-section-nav a[href="#'+id+'"]');
+  await jump.press('Enter');
+  assert.equal(new URL(p.url()).hash,'#'+id,'keyboard section jump');
+  await p.waitForFunction(id=>{
+   const heading=document.getElementById(id).querySelector('h2').getBoundingClientRect();
+   const header=document.querySelector('.site-header');
+   const bottom=header&&['sticky','fixed'].includes(getComputedStyle(header).position)?header.getBoundingClientRect().bottom:0;
+   return heading.top>=bottom&&heading.bottom<=innerHeight;
+  },id);
+ }
+ const example=skills.first().locator('details');
+ assert.equal(await example.getAttribute('open'),null,'answer starts folded');
+ await example.locator('summary').press('Enter');
+ assert(await example.locator('p').isVisible(),'worked example opens with keyboard, including no-JS mode');
+ await example.locator('summary').press('Enter');
+ assert.equal(await example.getAttribute('open'),null);
+ if(out&&new URL(p.url()).pathname==='/oge/'){
+  for(const id of ['practical-types','math-literacy']){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.screenshot({path:path.join(out,id+'-'+p.viewportSize().width+'.png')});}
+ }
+ await links.last().focus();
+ assert.equal(await p.evaluate(()=>document.activeElement.dataset.ogeTopic),'25','last topic is keyboard reachable');
+ await fits(p);
+}
 async function fits(p){assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow');}
 async function destination(p,href){assert.equal(await p.locator('#model-link').getAttribute('href'),href);if(!checkedLinks.has(href)){assert.equal((await p.request.get(base+href)).status(),200,'topic destination exists: '+href);checkedLinks.add(href);}}
 (async()=>{
  if(!base){server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+new URL(req.url,'http://local').pathname);if(!file.startsWith(root+path.sep)&&file!==root)throw Error('path');if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;}
  let browser;
  try{
-  browser=await chromium.launch({headless:true});
+  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
   for(const width of [320,390,768,1280]){
    const c=await context(browser,{viewport:{width,height:1000},hasTouch:width<600,isMobile:width<600}),p=await c.newPage();
-   await p.goto(base+'/oge/');await p.locator('.model-exhibit[data-renderer]').waitFor();
+   await p.goto(base+'/oge/');await allTopics(p);await p.locator('.model-exhibit[data-renderer]').waitFor();
    assert(await p.locator('#oge-model-canvas').isVisible());assert(!await p.locator('.model-fallback').isVisible());
    await fits(p);assert.equal(await p.locator('h1').count(),1);assert.equal(await p.locator('[data-orbit]').count(),27);assert(await p.locator('.orbit-label').isVisible());
    assert.equal(await p.locator('#model-pause').getAttribute('aria-pressed'),'true','reduced motion starts paused');
@@ -53,7 +98,7 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    await p.locator('[data-orbit="11"]').press('Enter');await p.locator('[data-type="1"]').press('Enter');
    assert.match(await p.locator('#model-description').innerText(),/a > 0.*вверх.*a < 0.*вниз/);
    await p.locator('#model-link').click();await p.waitForURL(base+topics[10].href);assert(await p.locator('h1').isVisible(),'real graph trainer opens');
-   await p.goto(base+'/oge/');assert.match(await p.locator('.hero .btn').first().innerText(),/Начни уже с чего-нибудь!/);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');assert(await p.locator('#geometry').count());await fits(p);await p.screenshot(out?{path:path.join(out,`catalog-${width}.png`),fullPage:false}:{});
+   await p.goto(base+'/oge/');assert.match(await p.locator('.hero .btn').first().innerText(),/Начни уже с чего-нибудь!/);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);assert(await p.locator('#geometry').count());await fits(p);await p.screenshot(out?{path:path.join(out,`catalog-${width}.png`),fullPage:false}:{});
    for(const section of ['part1','geometry','part2'])assert(await p.locator('#'+section).count());
    assert(await p.getByRole('link',{name:'Рассмотреть модели ↗',exact:true}).isVisible());
    await p.getByRole('link',{name:'Рассмотреть модели ↗',exact:true}).click();await p.waitForURL(base+'/oge/#oge-models');
@@ -62,7 +107,7 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    await p.locator('[data-orbit=all]').click();assert(await p.locator('.orbit-numbers').isVisible());await p.locator('[data-orbit=intro]').click();assert(!await p.locator('.orbit-numbers').isVisible());
    report.cases.push({width,status:'PASS',orbits:25,subtypes:53,checks:['layout','every selection and destination','paused pixels','keyboard','course navigation','owner invitation preserved','intro and all-map modes','topic illustrations','catalog visual continuity','three starting paths']});await c.close();
   }
-  const c=await context(browser,{reducedMotion:'no-preference'}),p=await c.newPage();await p.goto(base+'/oge/');await p.locator('.model-exhibit[data-renderer]').waitFor();
+  const c=await context(browser,{reducedMotion:'no-preference'}),p=await c.newPage();await p.goto(base+'/oge/');await allTopics(p);await p.locator('.model-exhibit[data-renderer]').waitFor();
   await p.locator('[data-orbit=all]').click();const start=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(700);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),start,'whole universe moves');await picture(p,'orbit-moving');
   await p.locator('#model-pause').click();const frozen=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(180);assert.deepEqual(await p.locator('#oge-model-canvas').screenshot(),frozen,'pause freezes all 25 orbits');
   await p.locator('[data-orbit="2"]').click();await p.locator('[data-type="0"]').click();const still=await p.locator('#oge-model-canvas').screenshot();
@@ -72,14 +117,14 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
   await p.locator('[data-orbit="all"]').click();assert(!await p.locator('.model-tabs').isVisible());assert.match(await p.locator('#model-number').innerText(),/25/);
   report.cases.push({status:'PASS',checks:['orbit movement','pause','individual spin','drag','motion preference','return to all']});await c.close();
   for(const mode of ['no-js','no-library','no-topics','no-webgl']){
-   const c=await context(browser,{javaScriptEnabled:mode!=='no-js'});
+   const c=await context(browser,{javaScriptEnabled:mode!=='no-js',viewport:{width:320,height:1000}});
    if(mode==='no-library')await c.route('**/three.min.js',r=>r.abort());
    if(mode==='no-topics')await c.route('**/oge-home-topics.js*',r=>r.abort());
    if(mode==='no-webgl')await c.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/.test(type)?null:get.call(this,type,...args);};});
-   const p=await c.newPage();await p.goto(base+'/oge/');await fits(p);
+   const p=await c.newPage();await p.goto(base+'/oge/');await allTopics(p);await fits(p);
    if(mode==='no-webgl'){await p.locator('[data-renderer="canvas"]').waitFor();assert(await p.locator('#oge-model-canvas').isVisible());await picture(p,'software-system');await p.locator('[data-orbit=all]').click();await p.locator('[data-orbit="24"]').click();await destination(p,topics[23].href);}
    else{assert(await p.locator('.model-fallback').isVisible());assert(!await p.locator('.orbit-picker').isVisible());}
-   await picture(p,mode);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');report.cases.push({mode,status:'PASS'});await c.close();
+   await picture(p,mode);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);report.cases.push({mode,status:'PASS',visibleTopicsPerEntry:25});await c.close();
   }
   assert.deepEqual(report.errors,[]);console.log('OGE_HOME_3D_OK',JSON.stringify(report));
  }finally{if(out)fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));}

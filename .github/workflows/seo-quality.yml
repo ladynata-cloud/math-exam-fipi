@@ -7,6 +7,11 @@ on:
       - 'sitemap.xml'
       - 'robots.txt'
       - 'assets/topic-pages.css'
+      - 'assets/course-examples*'
+      - 'assets/course-examples/**'
+      - 'content/course-entrances/**'
+      - 'tools/course-entrances*'
+      - 'tools/build-course-*'
       - 'tools/build-sitemap.py'
       - 'tools/seo-*'
       - '.github/workflows/seo-quality.yml'
@@ -18,7 +23,8 @@ permissions:
 jobs:
   public-seo:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # Include browser/dependency installation as well as the actual route checks.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -38,3 +44,9 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
           "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
           NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+
+      - name: Course entrances, mathematical GIFs and retained work
+        run: |
+          python3 -m pip install Pillow==12.0.0
+          python3 tools/course-entrances.test.py
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/course-entrances.browser.cjs

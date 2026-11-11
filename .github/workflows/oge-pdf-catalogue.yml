@@ -39,6 +39,7 @@ jobs:
           python3 -m py_compile tools/oge-pdf-catalogue/live.py
           node --check tools/oge-pdf-catalogue/browser.cjs
           python3 -m pip install PyMuPDF==1.26.6
+          python3 tools/oge-pdf-catalogue/links.test.py
           python3 tools/oge-pdf-catalogue/check.py --output artifacts/oge-pdf-catalogue/pdf.json
       - name: All download links, filters, search and mobile buttons
         run: |

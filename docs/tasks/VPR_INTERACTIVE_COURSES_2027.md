@@ -1,0 +1,196 @@
+# MathExam task specification — interactive VPR preparation, 2027
+
+## Identity
+
+- Task: VPR_INTERACTIVE_COURSES_2027 — подключение подготовленных интерактивных курсов ВПР.
+- Owner: владелец MathExam.
+- Date: 2026-11-07, Asia/Novosibirsk.
+- Repository: `ladynata-cloud/math-exam-fipi`.
+- Base branch: `main`.
+- Verified base SHA: `25548b86df75b8c90a5dc5c6f1f1925c2ad70636`. Authoritative remote `main` and the clean checkout matched before branch creation. During preparation main advanced from PR #476 to PR #475; no branch or reviewed candidate existed before that verification.
+- Task branch: `feat/vpr-2027-interactive-courses`.
+- Review level: `HIGH`.
+- Related ADR: ADR 0001 — `Proposed`, не самостоятельный архитектурный источник истины.
+- Status: integration authorized by the owner; one branch and one Draft PR. Publication is a separate owner decision for this task.
+
+## Goal
+
+Добавить на MathExam семь маршрутов подготовки к ВПР-2027 по математике: 5, 6, 7 базовый, 7 углублённый, 8 базовый, 8 углублённый, 10 класс. Ученик выбирает тему, разбирается по шагам, решает самостоятельно, возвращается к ошибкам; преподаватель назначает маршрут и открывает выбранную задачу на общей доске. Перенести проверенное авторское содержание из автономного комплекта, сохранив принятые механизмы сайта и границы личного/совместного результата.
+
+## Context and evidence
+
+- Прямой запрос владельца: «давай ты создашь еще интерактивные курсы для подготовки ВПР по математике».
+- В связанных договорённостях указан диапазон 5–10 классов. Официальные описания ВПР-2027 предусматривают в этом диапазоне 5, 6, 7, 8 и 10 классы; отдельные углублённые варианты математики — для 7 и 8 классов. Маршрут 9 класса как официальной ВПР не создаётся.
+- Все семь официальных описаний 2027 года прочитаны. Ссылки и параметры работ зафиксированы в `trainers/vpr-math/content/full_data.json` (`sources`), сопоставление учебных тем с категориями — в `trainers/vpr-math/content/coverage.json`.
+- Существующий `trainers/college-logarithms/` использует общую модель проверяемых шагов, `MathExamBoard`, отдельный режим доски и browser-local личные попытки. Это установленное кодом поведение, не вывод из Proposed ADR.
+- `trainers/board-compat.json` и `board-server/trainer-registry.js` устанавливают действующий реестр совместимых тренажёров.
+- PR #476 добавил опубликованный курс логарифмов в `learning/course-program.js` и `learning/index.html`; именно существующий каталог программ следует расширить для новых маршрутов, без новой системы назначения.
+- Подготовлен автономный `MathExam_VPR_2027.html` с авторским банком, диагностикой, режимами работы, локальным сохранением, составными ответами, списком ошибок и построением прямой/параболы по точкам. Это не свидетельство публикации или работоспособности общей доски.
+
+## Approved scope
+
+### In scope
+
+- Использовать подготовленный учебный банк; устранить замечания применимых проверок и визуального просмотра.
+- Публичный каталог `/vpr/` и общий тренажёр в отдельной папке `trainers/vpr-math/` с устойчивыми ссылками на маршрут, тему и задачу.
+- Семь маршрутов; общий материал обычного и углублённого уровней не дублировать и не сбрасывать при переключении.
+- Короткая теория по раскрытию, пример, шесть заданий темы, самостоятельная практика и диагностика.
+- Подсказка после двух неверных попыток; неправильный ввод не переводит на следующий шаг. Выполненные действия остаются на экране.
+- Числа, дроби, неупорядоченные корни и упорядоченные многокомпонентные ответы; все запрошенные величины должны проверяться.
+- Для отмеченных задач на обоснование самостоятельный режим требует всю цепочку проверяемых шагов. Свободное письменное доказательство не оценивать автоматически.
+- Локальные попытки/заметки/история ошибок/диагностика. Продолжение каждой диагностики отдельно, экспорт/импорт с проверкой структуры и сохранением более свежего результата.
+- Включение маршрутов в существующий каталог программ кабинетов.
+- Подключение к общей доске через существующий SDK/адаптер и узкое расширение уже существующего переноса стартового состояния в host для нового `vpr-math`: выбранные маршрут/тема/задача, шаги, ввод, подсказки, отмеченные точки и записи. Совместный режим не записывается как личная самостоятельная попытка.
+- Ссылки «Все темы», «Все курсы» и возврат в исходный кабинет, каталог и sitemap; существующие требования SEO и навигации.
+- Узкое уточнение PROJECT_STATUS по реальному состоянию задачи в этом же PR, без отдельной рекурсивной status-only задачи.
+
+### Out of scope
+
+- Полные экзаменационные варианты и их PDF-пакеты как отдельный продукт.
+- Создание реальных учеников или изменение их назначений без отдельного запроса владельца.
+- Перестройка авторизации, серверного протокола доски, инфраструктуры или чужих тренажёров.
+- Обещание автоматической проверки свободных доказательств и официальной отметки ВПР.
+- Публикация под именем «официальные КИМ» или заявление об исчерпывающем покрытии каждого возможного подтипа.
+
+### Files or areas that must not change
+
+- Данные реальных пользователей, секреты и аутентификация.
+- Существующие учебные попытки, назначения, задания других курсов.
+- Серверные контракты board-server; допустимы новая запись существующего реестра и соответствующие scoped тесты. Существующий host переносит проверенный снимок новой ВПР при создании комнаты; новый протокол не вводится.
+- Защита веток, TLS, общие gates; запрещено ослаблять проверки ради прохождения.
+
+## Acceptance criteria
+
+- [ ] Все семь маршрутов открываются из каталога и кабинета, нужная задача сохраняется при входе на доску.
+- [ ] Актуальный банк и карта покрытия сверены, ограниченные подтипы перечислены честно.
+- [ ] Каждый учебный шаг принимает эталон, отклоняет типичную ошибку, проверяет весь составной ответ.
+- [ ] Подсказки/самостоятельные ответы и данные совместной комнаты не смешиваются.
+- [ ] Повтор не стирает заметки и историю ошибок; старая импортируемая копия не восстанавливает отменённую старую попытку.
+- [ ] Незавершённые диагностики разных маршрутов независимо восстанавливаются после перезагрузки и переноса.
+- [ ] Кривые строятся по выбранным точкам; проверены неверные точки, совпадающие абсциссы, очистка и ввод с клавиатуры.
+- [ ] Ручная визуальная проверка 320×900, 390×844 и 1280×900: читаемость, отсутствие горизонтального скролла, удобные элементы, условие и нужный рисунок в первом экране.
+- [ ] Две синтетические роли преподаватель/ученик: выбор задачи, ответы в обе стороны после передачи управления, рисунок/подсказки, переподключение, восстановление выбранной задачи.
+- [ ] Работа по прежним задачам возвращается после смены задачи, режима, маршрута, управления и перезагрузки в действующей комнате; общие ответы и записи не смешиваются с личными.
+- [ ] Добровольная передача управления отправляет последний ввод до смены ведущего. Превышение прежнего лимита снимка отклоняет новое изменение целиком и сохраняет ранее принятую работу без вытеснения задач.
+- [ ] Применимые repository gates и CI успешны на фактическом head.
+- [ ] Draft PR содержит точные base/head, изменения, результаты, ограничения и откат.
+
+## Checks and gates
+
+- Математика: отдельный вычислительный валидатор, смысловой просмотр условий и ответов, области допустимых значений, границы промежутков, комбинаторный перебор и проверки сложных задач.
+- Ядро: числовой ввод, эквивалентные дроби, строгие составные ответы, невозможные состояния, разграничение режимов.
+- Сценарии: все учебные задачи и самостоятельные попытки в DOM; отдельные регрессии истории, импорта, диагностик, графиков.
+- Реальный браузер: после START в среде с разрешённым запуском/просмотром. DOM-тесты не считать визуальной проверкой.
+- Репозиторий: `git diff --check`, реестр/контракты, соответствующие browser/board/navigation/SEO gates, актуальный CI; конкретные команды установить по текущему коду после START.
+- Final gate marker: `VPR_INTERACTIVE_2027_READY` можно записать только после выполненных применимых проверок, с указанием точного head. В этом документе это название будущего gate, не его успешный результат.
+- Не выполнено на этапе автономного комплекта: repository CI, реальные общие комнаты, визуальный прогон настоящего браузера, пилот с реальными учениками, внешнее provider review.
+
+## Review plan
+
+- Level rationale: личное сохранение и совместное состояние, включение в назначаемые программы; существенный объём учебного материала.
+- Перед реализацией: использовать уже проверенное устройство existing course/SDK, не вводить новый серверный протокол. При выявлении нового архитектурного примитива остановить эту часть и согласовать соответствующий ADR.
+- Готовый результат: отдельные математический, педагогический и технический просмотры; ясное разделение автоматической проверки итогов и проверки развёрнутой записи преподавателем.
+- Внутренние обзоры автономного комплекта приложены; они не являются внешним review или разрешением публикации.
+- При внешней передаче только минимальный очищенный diff и публичный контекст, без секретов, персональных данных и абсолютных путей машины.
+- Действительная внешняя рецензия, если она запрошена, должна содержать provider, PR, base, head, verdict и проверяемый источник/время.
+
+## Risk and rollback
+
+- Риски: неверная математическая нормализация, неполный многокомпонентный ответ, потеря сохранённой попытки, смешение личной и общей работы, несовпадение выбора задачи при создании комнаты, неудобный мобильный экран.
+- Rollback: отдельный проверенный revert коммита интеграции; исключить новые маршруты из каталога/реестра при сохранении личных данных. Не делать force/reset и не удалять результаты.
+- В будущем schema/key курсов версионировать; не использовать существующие ключи других тренажёров. Материалы и идентификаторы должны оставаться устойчивыми.
+
+## Permissions
+
+- Подготовка автономных курсов и материала спецификации: прямой текущий запрос владельца.
+- `START` для изменения репозитория: **предоставлен владельцем в текущем разговоре** — «START — подключи готовые курсы ВПР к MathExam, кабинетам и общей доске, выполни проверки и открой Draft PR».
+- Branch creation / commit / push / Draft PR: **разрешены этим START**.
+- Merge / auto-merge / deployment: **не разрешены присланными в текущем сообщении правилами без отдельного явного разрешения владельца**.
+- Присланная владельцем версия `AGENTS.md` имеет приоритет над отличающейся редакцией документов репозитория. Само чтение постоянного разрешения в репозитории не расширяет текущие более узкие границы.
+- Скопированные маркеры в этом документе не являются START, внешней рецензией или разрешением слияния.
+
+## Follow-up requested before release — 7 November 2026
+
+The owner asked to finish the prepared courses safely and then approved carrying
+out the necessary fixes. This continues PR #477 on its existing task branch;
+it does not create a separate task or change the explicit merge boundary.
+
+The original snapshot retained only the current attempt. A regression against
+head `8d1a3269460b18bd1529b6caee52add92b0d6813` reproduced loss of an earlier
+attempt after changing task and transferring control. A second reproduction
+lost an answer when control changed before the SDK's 40 ms notification.
+
+The follow-up adds a validated, bounded shared attempt history and a VPR-only
+flush before voluntary handoff using the existing SDK request/response messages.
+The server protocol, snapshot size limit, personal storage key, mathematical
+bank and real pupil records remain unchanged. Atomic overflow rejection retains
+the prior complete state. Other-trainer switching, server restart and unsent
+input during connection loss or forced remote revocation remain explicit boundaries, not new
+persistence guarantees. Final code review, exact source blobs, applicable gates
+and native browser results are recorded in the review record and PR handoff.
+
+### Release-blocker diagnosis and focused navigation correction
+
+The owner's request to carry out the necessary release preparation also covers
+diagnosing the failing availability check and correcting the concrete navigation
+interaction found by the applicable gate. This is a bounded follow-up in the
+same PR, not an expansion of the course bank or a redesign of another trainer.
+
+The cabinet readiness workflow retains its four original HTTPS requests, TLS
+verification, timeout and all-four-HTTP-200 requirement. It records sanitized
+exception function names and runtime versions; only after failure, one bounded
+DNS/curl diagnostic collects connection timings without retrying the gate or
+changing its verdict. On head `f554fa47f729f03ece74be646bc4ad6df5ddd670`
+the original readiness check passed at `2026-11-06T21:50:21Z`; the cause of the
+earlier intermittent reset, TLS EOF and timeout remains unproven.
+
+The unchanged public navigator gate failed on `/rounding.html` at 320 px on
+head `4dda38dcc9c85e2dcee1326446eb283feb60babe` and at 844 px on head
+`f554fa47f729f03ece74be646bc4ad6df5ddd670`. The page, widget and browser test
+were byte-identical in both runs and on the authorized main. A deterministic
+DOM reproduction using their actual scripts showed the page's delayed answer
+autofocus taking keyboard input from the navigator. The focused correction
+preserves a later user choice of control while retaining ordinary rounding
+autofocus. It does not change questions, answers, scoring, storage or routing.
+
+The regression must demonstrate the old failure and protect navigator typing,
+Enter submission and ordinary rounding controls. The existing native keyboard
+assertion and every page/viewport journey remain required, without additional
+retries, sleeps or exclusions. Navigator source bindings must name the reviewed
+real source commit and exactly `rounding.html`; the binding generator and
+preservation rules remain unchanged. Final receipts belong in the PR handoff.
+
+## Content provenance
+
+The 82 lessons, 492 tasks and 1284 checked steps were authored for MathExam from
+seven official VPR-2027 descriptions. They are not copied or lightly rewritten
+from Решу ЕГЭ / Решу ВПР. Similarity with standard school-mathematics situations
+is possible; a comparative difficulty/equivalence audit of that bank was not
+performed. The source metadata and coverage limitations remain in the course.
+
+## Execution record
+
+- Actual branch: `feat/vpr-2027-interactive-courses`.
+- Actual base SHA: `25548b86df75b8c90a5dc5c6f1f1925c2ad70636`.
+- Actual head SHA / Draft PR: recorded in the PR handoff after commit creation.
+- Source of runtime data: reviewed `content/full_data.json`; deterministic `build.py --check` verifies `data.js`.
+- Tests: commands and independent review are recorded in `VPR_INTERACTIVE_2027_REVIEW.md` and the PR.
+- No production deployment, merge or changes to real pupil records are authorized by this task.
+
+## Required handoff
+
+```text
+EXECUTIVE STATUS
+
+Task: VPR_INTERACTIVE_COURSES_2027
+PR:
+Base: 25548b86df75b8c90a5dc5c6f1f1925c2ad70636
+Head:
+Gate:
+Tests:
+Failures:
+Not run:
+Scope deviations:
+Recommendation:
+Next user decision: review the Draft PR; merge requires separate explicit authorization
+```

@@ -35,9 +35,14 @@
       groups.get(row.unitId).rows.push(row);
     }
     if(!all.length||all.length!==definitions.length){host.innerHTML='<section class="empty"><h1>Курс пока не загрузился</h1><p>Обновите страницу. Сохранённые работы остаются в кабинете.</p></section>';return()=>{alive=false;};}
+    function boardLink(item){
+      if(item.unitId!==2)return '';
+      const trainer='/trainers/vilenkin6-percent/index.html?task='+encodeURIComponent(item.contentId);
+      return `<a class="button v6-course-board" data-vilenkin-percent-board href="https://mathexam.space/trainers/trainer-board.html?trainer=${E(encodeURIComponent(trainer))}" target="_blank" rel="noopener noreferrer">Решать вместе на доске</a>`;
+    }
     function row(item){
       const action=teacher?'Выбрать задание':item.role==='learn'?'Разобрать пример':'Начать задание';
-      return `<li class="v6-course-task" data-v6-task-card="${E(item.id)}"><div class="v6-course-task-copy"><h3>${E(taskTitle(item))}</h3><p class="v6-course-source">${item.source?.kind==='example'?'Пример из учебника':'Задание учебника'}${item.source?.page?' · с. '+E(item.source.page):''}</p><p class="v6-course-task-status" data-vilenkin-textbook-status="${E(item.id)}">${teacher?'Выбрать ученика и подготовить задание':'Проверяем сохранённую работу…'}</p></div><div class="v6-course-task-actions"><button class="primary v6-course-task-button" type="button" data-vilenkin-textbook-open="${E(item.id)}" aria-label="${E(action+' — '+taskTitle(item))}"${teacher?'':' disabled'}><span data-v6-action-label>${action}</span><span aria-hidden="true">→</span></button>${teacher?'':`<button class="subtle small" type="button" data-vilenkin-textbook-fresh="${E(item.id)}" hidden disabled>Новое решение по текущей версии</button>`}</div></li>`;
+      return `<li class="v6-course-task" data-v6-task-card="${E(item.id)}"><div class="v6-course-task-copy"><h3>${E(taskTitle(item))}</h3><p class="v6-course-source">${item.source?.kind==='example'?'Пример из учебника':'Задание учебника'}${item.source?.page?' · с. '+E(item.source.page):''}</p><p class="v6-course-task-status" data-vilenkin-textbook-status="${E(item.id)}">${teacher?'Выбрать ученика и подготовить задание':'Проверяем сохранённую работу…'}</p></div><div class="v6-course-task-actions"><button class="primary v6-course-task-button" type="button" data-vilenkin-textbook-open="${E(item.id)}" aria-label="${E(action+' — '+taskTitle(item))}"${teacher?'':' disabled'}><span data-v6-action-label>${action}</span><span aria-hidden="true">→</span></button>${teacher?'':`<button class="subtle small" type="button" data-vilenkin-textbook-fresh="${E(item.id)}" hidden disabled>Новое решение по текущей версии</button>`}${boardLink(item)}</div></li>`;
     }
     function controls(item,label){
       const action=teacher?'Выбрать задание':item.role==='learn'?'Разобрать пример':'Начать задание';

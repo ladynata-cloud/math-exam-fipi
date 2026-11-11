@@ -43,7 +43,10 @@ const ENGINE_HASHES={
   "practice-1-5-roads-schema.html": "79e22555fac90ec073c59e08c111cb60efb1988f331a900b964f012f7046411d",
   "practice-1-5-map.html": "92a021c3a3a7c177f7efd9a6b439bd5e09139171758635b3bcb40b639bb2d903",
   "practice-1-5-tires.html": "7c9d25a566219e37698076db1e2e55083ea251f93aab2f948643b4d24c5c5501",
-  "percent-table-trainer.html": "384e143e5e5c3ca962d7b6e50fe3476184b2c05534318d4748cf9ad9fabb673d",
+  // PERCENT_CHECK_RESUME_20261109: independently reviewed exact source
+  // e258e438cd30e396c7741741384911f0a424581d; same normalization, new
+  // navigation/help accounting only. All other engines stay pinned.
+  "percent-table-trainer.html": "bb894316d96a9f0467214dbec873b4b666e37cdc52203a36aa1302d65be57e40",
   "practice-1-5-apartments.html": "e9957b28005a6a0a3fb029b570ab673307509349122f44e6738c51a20d5eefc4",
   "practice-1-5-stoves.html": "1efc4f134ee3e9df6fc8e705dd7a54e3ce8d56d7c155c212293c6021a1cb22aa",
   "practice-1-5-routes-checkpoint-2026.html": "cebdcffd0dd1ff43f8547ae5bf4bff4386d9da596ec20a651cc13183b6014584"

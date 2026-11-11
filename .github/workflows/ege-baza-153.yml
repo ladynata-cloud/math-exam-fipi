@@ -1,10 +1,10 @@
 name: EGE base — PR153 reconciliation
 on:
   pull_request:
-    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'tools/ege-baza-153*', '.github/workflows/ege-baza-153.yml']
+    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'tools/ege-baza-153*', 'tools/ege-baza-practice.browser.cjs', '.github/workflows/ege-baza-153.yml']
   push:
     branches: [main]
-    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'tools/ege-baza-153*', '.github/workflows/ege-baza-153.yml']
+    paths: ['ege-baza/**', 'trainers/ege-baza/**', 'tools/ege-baza-153*', 'tools/ege-baza-practice.browser.cjs', '.github/workflows/ege-baza-153.yml']
   workflow_dispatch:
 permissions:
   contents: read

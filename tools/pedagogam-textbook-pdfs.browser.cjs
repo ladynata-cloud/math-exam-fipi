@@ -14,25 +14,33 @@ fs.mkdirSync(OUT, { recursive: true });
 
 const packs = JSON.parse(fs.readFileSync(path.join(DATA, 'bank.json'), 'utf8'));
 const manifest = JSON.parse(fs.readFileSync(path.join(DATA, 'manifest.json'), 'utf8'));
+const wordSource = JSON.parse(fs.readFileSync(path.join(DATA, 'word-packs.json'), 'utf8'));
+const wordManifest = JSON.parse(fs.readFileSync(path.join(DATA, 'word-manifest.json'), 'utf8'));
+const wordByBank = new Map(wordSource.packs.map(pack => [pack.bankId, pack]));
 const normal = value => value.toLocaleLowerCase('ru').replaceAll('ё', 'е');
 const gradesFor = pack => {
-  if (pack.book_grades) return [...new Set(Object.values(pack.book_grades).flat())];
   const numbers = pack.grade.match(/\d+/g).map(Number);
-  return Array.from({ length: Math.max(...numbers) - Math.min(...numbers) + 1 },
+  const source = pack.book_grades ? [...new Set(Object.values(pack.book_grades).flat())] : Array.from({ length: Math.max(...numbers) - Math.min(...numbers) + 1 },
     (_, index) => Math.min(...numbers) + index);
+  const word = wordByBank.get(pack.id);
+  if (!word) return source;
+  const wordGrades = word.grade.match(/\d+/g).map(Number);
+  return [...new Set([...source, ...Array.from({ length: Math.max(...wordGrades) - Math.min(...wordGrades) + 1 },
+    (_, index) => Math.min(...wordGrades) + index)])];
 };
 const expectedIds = ({ grade = '', book = '', query = '' } = {}) => {
   const tokens = normal(query).split(/\s+/).filter(Boolean);
   return packs.filter(pack =>
     (!grade || (book && pack.book_grades ? (pack.book_grades[book] || []) : gradesFor(pack)).includes(Number.parseInt(grade, 10))) &&
     (!book || pack.books.includes(book)) &&
-    tokens.every(token => normal([pack.title, pack.grade, pack.subject, ...pack.books].join(' ')).includes(token))
+    tokens.every(token => normal([pack.title, pack.grade, pack.subject, ...pack.books,
+      ...(wordByBank.has(pack.id) ? [wordByBank.get(pack.id).title, 'Word DOCX'] : [])].join(' ')).includes(token))
   ).map(pack => pack.id).sort();
 };
 
 async function main() {
   assert(packs.length > 0, 'The built bank is empty');
-  const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
+  const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH || undefined, args: ['--no-sandbox'] });
   const pageErrors = [];
   const consoleErrors = [];
   let scenarios = 0;
@@ -102,6 +110,25 @@ async function main() {
       await checkState({}, `initial ${width}`);
       await shot('catalog', width);
 
+      await page.locator('#search').fill('Word');
+      await checkState({ query: 'Word' }, `Word format search ${width}`);
+      assert.deepEqual(await page.locator('#catalog .pack:visible').evaluateAll(cards => cards.map(card => card.id).sort()),
+        ['alg-line', 'arith-brackets-like-terms', 'geo-ugly-treugolnika']);
+      await shot('word', width);
+      for (const word of wordSource.packs) {
+        await page.locator('#search').fill(word.title);
+        await checkState({ query: word.title }, `Word topic ${word.title} at ${width}`);
+        const wordCard = page.locator(`#${word.bankId} .word-work`);
+        assert(await wordCard.isVisible());
+        assert.equal(await wordCard.getByRole('link', { name: 'Задания Word', exact: true }).count(), 1);
+        assert.equal(await wordCard.getByRole('link', { name: 'Ответы и решения Word', exact: true }).count(), 1);
+      }
+      await page.locator('#grade').selectOption({ label: '9 класс' });
+      await page.locator('#search').fill('Word');
+      await checkState({ grade: '9 класс', query: 'Word' }, `OGE Word grade-nine search ${width}`);
+      assert.deepEqual(await page.locator('#catalog .pack:visible').evaluateAll(cards => cards.map(card => card.id)), ['alg-line']);
+      await clearFilters();
+
       await page.locator('#search').fill(searchQuery);
       await checkState({ query: searchQuery }, `topic search ${width}`);
 
@@ -168,6 +195,19 @@ async function main() {
       href: await page.getByRole('link', { name: 'Скачать все PDF', exact: true }).getAttribute('href'),
       local: path.join(DATA, 'mathexam-raboty-pdf.zip'), type: 'zip'
     });
+    for (const word of wordSource.packs) {
+      const wordCard = page.locator(`#${word.bankId} .word-work`);
+      for (const [name, file] of [['Задания Word', word.studentFile], ['Ответы и решения Word', word.teacherFile]]) {
+        const href = await wordCard.getByRole('link', { name, exact: true }).getAttribute('href');
+        assert.equal(href, '/pedagogam/raboty/' + file);
+        downloads.push({ href, local: path.join(DATA, file), type: 'docx' });
+      }
+    }
+    for (const [name, file, type] of [
+      ['Лист работы над ошибками Word', wordSource.errorReviewFile, 'docx'],
+      ['Скачать три комплекта Word', wordSource.archive, 'zip']
+    ]) downloads.push({ href: await page.getByRole('link', { name, exact: true }).getAttribute('href'), local: path.join(DATA, file), type });
+    assert.equal(wordManifest.files.length, 7);
     for (const download of downloads) {
       assert(download.href, 'Download href is absent');
       const url = new URL(download.href, CATALOG);
@@ -178,12 +218,19 @@ async function main() {
       assert(body.equals(fs.readFileSync(download.local)), `Download bytes differ: ${url.pathname}`);
       if (download.type === 'pdf') assert.equal(body.subarray(0, 5).toString(), '%PDF-');
       else assert.equal(body.subarray(0, 2).toString(), 'PK');
+      if (download.type === 'docx') assert.match(response.headers()['content-type'], /wordprocessingml\.document/);
       scenarios += 1;
     }
+    const [wordDownload] = await Promise.all([
+      page.waitForEvent('download'),
+      page.locator('#arith-brackets-like-terms .word-work').getByRole('link', { name: 'Задания Word', exact: true }).click()
+    ]);
+    assert.equal(wordDownload.suggestedFilename(), 'minus-pered-skobkami-zadaniya.docx');
+    assert(fs.readFileSync(await wordDownload.path()).equals(fs.readFileSync(path.join(DATA, wordSource.packs[0].studentFile))));
     assert.deepEqual(pageErrors, [], 'Uncaught page errors');
     assert.deepEqual(consoleErrors, [], 'Browser console errors');
     Object.assign(report, { result: 'PASS', scenarios, screenshots, downloads: downloads.length,
-      pageErrors, consoleErrors });
+      wordFiles: wordManifest.files.length, wordDownloadJourneys: 1, pageErrors, consoleErrors });
     await context.close();
   } catch (error) {
     Object.assign(report, { result: 'FAIL', scenarios, screenshots, pageErrors, consoleErrors,

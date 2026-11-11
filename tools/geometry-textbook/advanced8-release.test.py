@@ -48,6 +48,10 @@ class Advanced8Release(unittest.TestCase):
             target = course / name
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(COURSE / name, target)
+            if name == 'index.html':
+                # The review fixture represents the original textbook page, before the public navigator.
+                from layout_amendment import historical_bytes
+                target.write_bytes(historical_bytes(COURSE / name))
         for name in IMPLEMENTATION + (MATH_EVIDENCE, NUMERIC_EVIDENCE):
             target = root / name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -145,7 +149,7 @@ class Advanced8Release(unittest.TestCase):
 
     def test_authored_edit_and_runtime_edit_invalidate_only_the_new_receipt(self):
         root, course, receipt = self.fixture()
-        for name in (SOURCE_FILE, 'assets/planar-viewer.js', 'assets/engine.js'):
+        for name in (SOURCE_FILE, 'index.html', 'assets/planar-viewer.js', 'assets/engine.js'):
             with self.subTest(file=name):
                 target = course / name
                 raw = target.read_bytes()

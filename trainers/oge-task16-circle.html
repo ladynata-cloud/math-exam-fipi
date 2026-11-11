@@ -154,9 +154,21 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
-<link rel="stylesheet" href="oge-course-geometry.css">
+<link rel="stylesheet" href="oge-course-geometry.css?v=worked-steps-20261110">
+<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
+<script defer src="/assets/oge-wayfinding.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
+<!-- OGE video-model investigations: standalone practice -->
+<link rel="stylesheet" href="oge-video-models.css">
+<script defer src="oge-video-graphs.js"></script>
+<script defer src="oge-video-geometry.js"></script>
+<script defer src="oge-video-models.js" data-oge-video-task="16"></script>
 </head>
 <body data-oge-geometry="16">
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
 <div class="app">
   <div class="head">
     <div>
@@ -2152,9 +2164,17 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
   renderTrain=function(){originalRenderTrain();const main=document.getElementById('main');
     MinimalGeometry.secondary(main,[':scope > .filters',':scope > .pnote',':scope > .meta']);
     const task=main.querySelector('.task');if(!task)return;
-    const help=MinimalGeometry.hint(task,'<p>'+trTask.sub.law+'</p>'+refcallHtml(trTask.sub));
+    const currentTask=trTask,help=MinimalGeometry.hint(task,'<h3>Разбор этой задачи по шагам</h3>');
+    help.button.textContent='Разобрать по шагам';
+    const steps=document.createElement('div');steps.id='task16Steps';help.panel.appendChild(steps);
+    const next=document.createElement('button');next.type='button';next.id='hintBtn';next.textContent='Начать разбор';next.setAttribute('aria-controls',steps.id);help.panel.appendChild(next);
+    let step=0;next.onclick=()=>{if(step>=currentTask.sol.length)return;window.OgeGeometryHelpUsed=true;
+      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+currentTask.sol.length+'</h4>'+currentTask.sol[step];steps.appendChild(block);step++;
+      next.textContent=step===currentTask.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+currentTask.sol.length+')';next.disabled=step===currentTask.sol.length;
+    };
     bindRefcalls();
-    const show=document.getElementById('giveup');MinimalGeometry.disclosure(help.panel,[show]);
+    const show=document.getElementById('giveup'),complete=MinimalGeometry.disclosure(help.panel,[show]);complete.hidden=true;
+    document.getElementById('check').addEventListener('click',()=>{complete.hidden=show.style.display==='none';});
   };
   switchTab('train');
 }
@@ -2162,8 +2182,8 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
 <script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-geometry.js?v=20261025-oge-geometry"></script>
+<script src="oge-course-geometry.js?v=worked-steps-20261110"></script>
 <script src="board-bridge.js?v=oge-homework-20261106"></script>
-<script src="oge-geometry-board.js?v=oge-homework-20261106"></script>
+<script src="oge-geometry-board.js?v=worked-steps-20261110"></script>
 </body>
 </html>

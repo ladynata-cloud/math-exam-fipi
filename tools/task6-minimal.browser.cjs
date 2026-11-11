@@ -264,7 +264,7 @@ async function run() {
     }
     await showTask(page,1);await page.locator('#ans').fill('retain previous');
     await page.locator('#previous').click();assert.equal(await state(page,'pos'),0);
-    assert.equal(await page.locator('.course-return a').getAttribute('href'),'../oge/');
+    assert.equal(await page.locator('nav.oge-wayfinding a').first().getAttribute('href'),'/trainers/oge-course/');
 
     const fractional = await state(page, 'TASKS.findIndex(task=>task.mode!=="numerator"&&!task.term)');
     await showTask(page, fractional);

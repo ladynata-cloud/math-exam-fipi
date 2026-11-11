@@ -4,41 +4,44 @@ on:
     paths:
       - 'assets/assistant/**'
       - 'tools/public-navigator*'
+      - 'tools/public_navigator*'
+      - 'tools/rounding-focus.test.cjs'
       - '.github/workflows/public-navigator.yml'
-      - 'index.html'
-      - 'trainers/index.html'
-      - 'courses/index.html'
-      - 'oge/index.html'
-      - 'foundations/index.html'
-      - 'lessons/index.html'
-      - 'pedagogam/index.html'
+      - '**/*.html'
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   public-navigator:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Navigation regression and syntax
         run: |
           node --check assets/assistant/navigator-data.js
           node --check assets/assistant/navigator-widget.js
+          node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
           node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
           git diff --check
       - name: Actual pages on desktop, mobile and landscape
         run: |
-          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
           "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
-          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/navigator-server.log" 2>&1 &
-          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" node tools/public-navigator.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/rounding-focus.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" NAV_LOCAL_SERVER=1 NAV_SHARD_COUNT=4 NAV_SHARD_INDEX=${{ matrix.shard }} node tools/public-navigator.browser.cjs
       - name: Browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: public-navigator-qa
+          name: public-navigator-qa-${{ matrix.shard }}
           path: ${{ runner.temp }}/public-navigator-qa
           if-no-files-found: error

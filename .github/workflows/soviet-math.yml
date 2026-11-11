@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   soviet-math:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
       NODE_PATH: ${{ github.workspace }}/video-worker/node_modules

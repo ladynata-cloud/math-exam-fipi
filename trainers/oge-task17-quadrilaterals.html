@@ -105,8 +105,20 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
-<link rel="stylesheet" href="oge-course-geometry.css">
+<link rel="stylesheet" href="oge-course-geometry.css?v=worked-steps-20261110">
+<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
+<script defer src="/assets/oge-wayfinding.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
+<!-- OGE video-model investigations: standalone practice -->
+<link rel="stylesheet" href="oge-video-models.css">
+<script defer src="oge-video-graphs.js"></script>
+<script defer src="oge-video-geometry.js"></script>
+<script defer src="oge-video-models.js" data-oge-video-task="17"></script>
 </head><body data-oge-geometry="17">
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
 <div class="wrap">
 <div class="head"><div><a class="crumbs" href="../oge/">← Курс ОГЭ</a><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
 <div class="app">
@@ -1749,9 +1761,9 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
     const task=main.querySelector('#tzone .task');if(!task)return;
     const oldHint=document.getElementById('hint'), oldStep=document.getElementById('stepH'),give=document.getElementById('give'),sol=document.getElementById('ssol');
     const answer=task.querySelector('.ansrow');const marker=document.createElement('span');answer.before(marker);
-    const help=MinimalGeometry.hint(marker,'<p>'+CUR.law+'</p><p>'+CUR.refWhy+'</p>');marker.remove();
+    const help=MinimalGeometry.hint(marker,'<h3>Разбор этой задачи по шагам</h3>');marker.remove();help.button.textContent='Разобрать по шагам';
     oldHint.remove();oldStep.textContent='Открыть следующий шаг';give.textContent='Показать всё решение';
-    MinimalGeometry.disclosure(help.panel,[oldStep,give]);help.panel.appendChild(sol);
+    help.panel.append(sol,oldStep);MinimalGeometry.disclosure(help.panel,[give]);
   };
   setTab('train');
 }
@@ -1759,8 +1771,8 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
 <script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-geometry.js?v=20261025-oge-geometry"></script>
+<script src="oge-course-geometry.js?v=worked-steps-20261110"></script>
 <script src="board-bridge.js?v=oge-homework-20261106"></script>
-<script src="oge-geometry-board.js?v=oge-homework-20261106"></script>
+<script src="oge-geometry-board.js?v=worked-steps-20261110"></script>
 </body>
 </html>

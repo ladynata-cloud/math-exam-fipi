@@ -12,6 +12,13 @@ const PROFILE_COURSES=[
  ['7','ege-profile-equations.html',new Set(['algebra-exponential','algebra-logarithmic','eq-linear','eq-rational','eq-quadratic','eq-root'])],
  ['8','ege-profile-expressions.html',PROFILE_EXPRESSIONS_LESSONS]
 ];
+const PROFILE_LOG_TRIG_LESSONS=new Set(['expr-logarithms','algebra-logarithmic','fn-explog','trig-angle','trig-coordinates','trig-special','trig-tangent','algebra-cosine','algebra-double-angle']);
+const PROFILE_CIRCLE_LESSONS=new Set(['before-circle','before-radians','m5-coordinates','m6-axis','m6-calculation','m6-identities','m6-equations']);
+const PROFILE_CIRCLE_TASKS=new Set(['prep-radius','prep-quarter','prep-top','prep-negative','prep-turns','prep-radians','m5-1-a','m5-1-b','m5-1-v','m5-1-g','m6-1-a','m6-1-b','m6-1-v','m6-1-g','m6-2-a','m6-2-b','m6-2-v','m6-2-g','m6-6-a','m6-6-b','m6-6-v','m6-6-g','m6-7-a','m6-7-b','m6-8-a','m6-8-b','m6-8-v','m6-8-g','m6-9-a','m6-9-b','m6-9-v','m6-9-g','m6-10-a','m6-10-b','m6-10-v','m6-10-g','m6-11-a','m6-11-b','m6-11-v','m6-11-g','m6-12-a','m6-12-b','m6-12-v','m6-12-g','m6-16-a','m6-16-b','m6-16-v','m6-16-g','m6-17-a','m6-17-b','m6-17-v','m6-17-g','m6-18-a','m6-18-b','m6-18-v','m6-18-g']);
+function profileCircleRoute(hash){
+ const parts=hash.slice(1).split('/');
+ return parts.length===2&&parts[0]==='lesson'&&PROFILE_CIRCLE_LESSONS.has(parts[1])||parts.length===3&&parts[0]==='task'&&PROFILE_CIRCLE_TASKS.has(parts[1])&&['guided','independent'].includes(parts[2]);
+}
 const PETERSON_TASK_COUNTS=Object.freeze({p01:14,p02:14,p03:14,p04:14,p05:14,p06:14,p07:14,p08:18,p09:18,p10:18,p11:18,p12:18,p13:18,p14:18});
 const PETERSON_SKILLS=new Set(['fraction-reduce','fraction-mixed','fraction-add','fraction-subtract','fraction-multiply','fraction-divide','decimal-add','decimal-subtract','decimal-multiply','decimal-divide','decimal-to-fraction','fraction-to-decimal','mixed-multiply','mixed-divide','unlike-multiply','unlike-divide','order-operations','percent-part','percent-whole','percent-ratio']);
 function petersonRoute(hash){
@@ -50,6 +57,10 @@ function normalize(value){
  if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/start/index.html','/ege-profil/start/'].includes(u.pathname)){
   const file=PROFILE_COURSES.find(([number,_,lessons])=>profileCourseRoute(u.hash,number,lessons))?.[1];
   if(file)return '/trainers/'+file+u.search+u.hash;
+  if(profileCourseRoute(u.hash,null,PROFILE_LOG_TRIG_LESSONS))return '/trainers/ege-profile-log-trig.html'+u.search+u.hash;
+ }
+ if(u.origin===location.origin&&rawPath===u.pathname&&['/ege-profil/circle/','/ege-profil/circle/index.html'].includes(u.pathname)&&profileCircleRoute(u.hash)){
+  return '/trainers/ege-profile-circle.html'+u.search+u.hash;
  }
  if(u.origin===location.origin&&rawPath===u.pathname&&['/stereo-course/merzlyak-10-base/','/stereo-course/merzlyak-10-base/index.html'].includes(u.pathname)){
   return '/trainers/merzlyak-10-base.html'+u.search+u.hash;
@@ -91,10 +102,10 @@ function mount(options){
  function loading(){const source=frame.getAttribute('src');if(!source||source==='about:blank')return;let url;try{url=normalize(source);}catch(e){error(e.message);return;}active=url;if(options.role()==='teacher')remember(url);loaded=false;check=null;const version=++generation;clearTimeout(timeout);show('loading','Загружаем тренажёр…');separate.href=new URL(url,location.href).href;$('openedTrainerTitle').textContent=titleFor(url);timeout=setTimeout(()=>{if(version===generation&&!loaded)show('error','Загрузка затянулась. Повторите попытку или откройте тренажёр отдельно.');},12000);inspect(url).then(result=>{if(version!==generation)return;check=result;update();});}
  function followLocation(){try{const u=frame.contentWindow.location;if(u.origin!==location.origin||u.href==='about:blank')return;const local=u.pathname+u.search+u.hash;separate.href=u.href;$('openedTrainerTitle').textContent=titleFor(local);if(options.role()==='teacher')remember(local);}catch(_){}}
  frame.addEventListener('load',()=>{try{frame.contentWindow.addEventListener('hashchange',followLocation);followLocation();}catch(_){}try{if(frame.contentWindow.location.href==='about:blank')return;}catch(_){}loaded=true;clearTimeout(timeout);update();});frame.addEventListener('error',()=>show('error','Не удалось загрузить тренажёр. Повторите попытку или откройте отдельно.'));new MutationObserver(loading).observe(frame,{attributes:true,attributeFilter:['src']});
- $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));options.retry();};loading();
+ $('retryOpenedTrainer').onclick=()=>{if(!active)return;checks.delete(headerKey(active));loading();options.retry();};loading();
  function setEntries(list){const seen=new Set();entries=list.filter(x=>{try{const key=canonical(x.href);if(seen.has(key))return false;seen.add(key);return typeof x.title==='string';}catch(_){return false;}});const groups=[...new Set(entries.map(x=>x.group))];group.replaceChildren(new Option('Все разделы',''),new Option('Недавние','recent'),...groups.map(x=>new Option(x,x)));renderRecent();render();if(active)$('openedTrainerTitle').textContent=titleFor(active);}
  setEntries(options.fallback.map(x=>({href:'/'+x.file,title:x.title,group:x.group})));
- fetch('board-picker-data.json?v=20261025-oge-course-college-mirror').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
+ fetch('board-picker-data.json?v=20261107-vpr').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(Array.isArray(data.entries))setEntries(data.entries);followLocation();}).catch(()=>{$('pickerCount').textContent='Полный каталог недоступен. Можно воспользоваться быстрым списком или ссылкой.';});
  const query=new URLSearchParams(location.search).get('trainer');if(query&&options.role()==='teacher')choose(query);
 }
 root.BoardPicker={normalize,canonical,mount,error,clearError};

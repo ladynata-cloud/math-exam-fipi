@@ -24,10 +24,10 @@ try{
  if(shots)fs.mkdirSync(shots,{recursive:true});
  for(const width of [1280,360]){
   await page.setViewportSize({width,height:850});
-  for(const hash of ['today','map','module?module=m01','module?module=m02','module?module=m03','today?module=m02','progress?module=m02','backup?module=m02','foundation?skill=p-fraction&from=m01','progress','teacher']){
+  for(const hash of ['today','map','lines','task?pos=1','task?pos=21','module?module=m01','module?module=m02','module?module=m03','today?module=m02','progress?module=m02','backup?module=m02','foundation?skill=p-fraction&from=m01','progress','teacher']){
    await page.goto(url+'#'+hash);await page.locator('h1').waitFor();
    ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No overflow '+width+' '+hash);
-   if(shots&&['today','map','module?module=m01'].includes(hash))await page.screenshot({path:path.join(shots,`${width}-${hash.split('?')[0]}.png`),fullPage:true});
+   if(shots&&['today','map','lines','task?pos=1','task?pos=21','module?module=m01'].includes(hash))await page.screenshot({path:path.join(shots,`${width}-${hash.replace(/[?=]/g,'-')}.png`),fullPage:true});
   }
  }
  await page.goto(url+'#today');await page.locator('[data-nav="map"]').focus();await page.keyboard.press('Enter');
@@ -35,16 +35,27 @@ try{
  // Hash navigation precedes the render handler that moves keyboard focus.
  await page.waitForFunction(()=>document.activeElement===document.getElementById('content'));
  ok(await page.locator('#content').evaluate(el=>el===document.activeElement),'Keyboard route focuses content');
+ // Numbered map keeps broad learning lines and earlier modules available on request.
+ const secondaryLines=page.locator('#content details.journey-legacy');
+ ok(!await secondaryLines.evaluate(el=>el.open),'Learning lines start collapsed on the exam map');
+ await secondaryLines.locator('summary').click();
+ await secondaryLines.locator('a[href="#lines"]').click();await page.waitForURL('**/#lines');
+ // The hash changes before app.js replaces the opened map disclosure. Wait
+ // for the destination's own heading before inspecting its collapsed state.
+ await page.getByRole('heading',{name:'Учебные линии',exact:true}).waitFor();
+ const earlierModules=page.locator('#content details.journey-legacy');
+ ok(!await earlierModules.evaluate(el=>el.open),'Earlier module catalogue starts collapsed');
+ await earlierModules.locator('summary').click();
  await page.click('[data-module="m01"] a');await page.click('.lesson a.btn');
  await page.waitForURL('**/trainers/ege-baza/course/#learn-decimal');ok(await page.locator('#slider').isVisible(),'Real lesson opens');
  await page.click('a[href="../../../ege-baza/#map"]');await page.waitForURL('**/ege-baza/#map');
- ok(await page.locator('[data-module]').count()===7,'Returns to course');
+ ok(await page.locator('[data-exam-position]').count()===21,'Returns to the complete numbered course map');
  await page.goBack();ok(await page.locator('#slider').isVisible(),'Browser back returns to lesson');
  await page.goto(url+'#module?module=m03');ok(await page.locator('.lesson a.btn').count()===6,'Six implemented algebra lessons launch');
  const blocked=await browser.newContext();await blocked.addInitScript(()=>{Storage.prototype.getItem=()=>{throw Error('disabled');};});
  const bp=await blocked.newPage();await bp.goto(url);ok(await bp.locator('#storage-notice').isVisible(),'Storage error visible');await blocked.close();
  const file=await context.newPage();await file.goto('file://'+path.join(root,'ege-baza/index.html'));await file.locator('h1').waitFor();
- ok(await file.locator('[data-recommendation]').count()===1,'File preview loads scripts');await file.close();
+ ok(await file.locator('[data-exam-position]').count()===21,'File preview loads all numbered task cards');await file.close();
  ok(errors.length===0,'No browser errors: '+errors.join('; '));
  console.log(`EGE_BAZA_NAVIGATOR_BROWSER_OK: ${checks} checks.`);
 }finally{await browser?.close();if(server.listening)await new Promise(r=>server.close(r));}

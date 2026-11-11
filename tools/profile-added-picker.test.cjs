@@ -99,12 +99,12 @@ for (const course of courses) {
 
   test('section ' + course.number + ': wrapper uses the canonical assets and existing bridge', () => {
     const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-    const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
+    const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
     const bridge = '/trainers/board-bridge.js';
     const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
     const wrapperScripts = scripts(wrapper);
     assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter),
-      scripts(canonical).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src));
+      require('./public-page-script.cjs').canonicalProfileLearningScripts(canonical, wrapper).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + src));
     const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
     assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
     assert.match(wrapper, new RegExp('<body data-profile-board="' + course.marker + '">'));

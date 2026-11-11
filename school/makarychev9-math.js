@@ -107,12 +107,36 @@ function generate(id,seed,M,C){
  return {prompt,answer,answerFormat:format,steps,errors,data:d,model:{kind:'m9lab',family,point,key,data:d},v6Full:true,m9Full:true};
 }
 const normalize=s=>String(s).trim().toLowerCase().replace(/[−–]/g,'-').replace(/\s/g,'').replace(/infinity|inf/gi,'∞').replace(/u|или/g,'∪').replace(/\+∞/g,'∞');
-function acceptsSet(value,answer){const parts=s=>normalize(s).split('∪').sort();const a=parts(value),b=parts(answer);return a.length===b.length&&a.every((v,i)=>v===b[i]);}
+function acceptsSet(value,answer,M){
+ M=M||root.WorkshopMath;
+ if(!M||!M.parse)return String(value)===String(answer);
+ const endpoint=s=>{s=s.trim();return s==='-∞'?-Infinity:s==='∞'?Infinity:M.parse(s);};
+ const cmp=(a,b)=>{if(a===b)return 0;if(a===-Infinity||b===Infinity)return -1;if(a===Infinity||b===-Infinity)return 1;const n=BigInt(a.n)*BigInt(b.d)-BigInt(b.n)*BigInt(a.d);return n<0n?-1:n>0n?1:0;};
+ const key=x=>x===Infinity?'inf':x===-Infinity?'-inf':x.n+'/'+x.d;
+ function canonical(source){
+  const raw=String(source).trim().toLowerCase().replace(/[−–]/g,'-').replace(/infinity|inf/gi,'∞').replace(/u|или/g,'∪').replace(/\+∞/g,'∞');if(raw.length>2000)return null;
+  const intervals=[];
+  for(const part of raw.split('∪')){const item=part.trim();let lo,hi,closedLo,closedHi;
+   if(/^\{[^{};]+\}$/.test(item)){lo=hi=endpoint(item.slice(1,-1));closedLo=closedHi=true;}
+   else {const m=/^([[(])([^;]+);([^;]+)([)\]])$/.exec(item);if(!m)return null;lo=endpoint(m[2]);hi=endpoint(m[3]);closedLo=m[1]==='[';closedHi=m[4]===']';}
+   if(lo===null||hi===null||lo===Infinity||hi===-Infinity||lo===-Infinity&&closedLo||hi===Infinity&&closedHi)return null;
+   const order=cmp(lo,hi);if(order>0)return null;if(order===0&&!(closedLo&&closedHi))continue;
+   intervals.push({lo,hi,closedLo,closedHi});
+  }
+  intervals.sort((a,b)=>cmp(a.lo,b.lo)||Number(b.closedLo)-Number(a.closedLo));const joined=[];
+  for(const next of intervals){const last=joined.at(-1);if(!last){joined.push(next);continue;}const gap=cmp(next.lo,last.hi);
+   if(gap<0||gap===0&&(last.closedHi||next.closedLo)){const end=cmp(next.hi,last.hi);if(end>0){last.hi=next.hi;last.closedHi=next.closedHi;}else if(end===0)last.closedHi=last.closedHi||next.closedHi;}
+   else joined.push(next);
+  }
+  return joined.map(x=>(x.closedLo?'[':'(')+key(x.lo)+';'+key(x.hi)+(x.closedHi?']':')')).join('∪');
+ }
+ const a=canonical(value),b=canonical(answer);return a!==null&&b!==null&&a===b;
+}
 function acceptsPairs(value,answer,M){
  const s=String(value).trim().replace(/[−–]/g,'-'),re=/\(\s*([^();]+)\s*;\s*([^();]+)\s*\)/g;const matches=[...s.matchAll(re)];
  if(s.replace(re,'').replace(/[;\s,]/g,'')||matches.length!==answer.length)return false;
  const remaining=answer.slice();for(const m of matches){const i=remaining.findIndex(p=>M.equal(m[1],p[0])&&M.equal(m[2],p[1]));if(i<0)return false;remaining.splice(i,1);}return !remaining.length;
 }
-function install(M,C){const old=M.generate,accept=M.accepts;M.generate=(id,seed)=>id.startsWith('m9f-')?generate(id,seed,M,C):old(id,seed);M.accepts=(value,t)=>t.answerFormat==='m9-set'?acceptsSet(value,t.answer):t.answerFormat==='m9-pairs'?acceptsPairs(value,t.answer,M):accept(value,t);}
+function install(M,C){const old=M.generate,accept=M.accepts;M.generate=(id,seed)=>id.startsWith('m9f-')?generate(id,seed,M,C):old(id,seed);M.accepts=(value,t)=>t.answerFormat==='m9-set'?acceptsSet(value,t.answer,M):t.answerFormat==='m9-pairs'?acceptsPairs(value,t.answer,M):accept(value,t);}
 const API={generate,install,acceptsSet,acceptsPairs};if(typeof module!=='undefined'&&module.exports)module.exports=API;else{root.WorkshopM9Math=API;install(root.WorkshopMath,root.WorkshopCurriculum);}
 })(typeof window!=='undefined'?window:globalThis);

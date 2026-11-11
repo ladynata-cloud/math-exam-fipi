@@ -9,6 +9,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from layout_amendment import historical_bytes
+
 ROOT = Path(__file__).resolve().parents[2]
 PREFIX = 'geometry-course/textbook/'
 KEY = '8-advanced-824-841'
@@ -177,7 +179,9 @@ def binding_fields(base, root=ROOT, course=None):
                 sourceFile=dict(path=PREFIX + SOURCE_FILE, sha256=sha(raw)),
                 sourceEdition=dict(pdfSha256=SOURCE_PDF_SHA, printedPages=[214, 215],
                                    pdfPages=[215, 216], figure=274),
-                runtimeFiles={name: sha((course / name).read_bytes()) for name in RUNTIME},
+                # Match the reviewed page after removing only the exact published, source-bound navigator pair.
+                runtimeFiles={name: sha(historical_bytes(course / name) if name == 'index.html'
+                                        else (course / name).read_bytes()) for name in RUNTIME},
                 implementationFiles={name: sha((root / name).read_bytes()) for name in IMPLEMENTATION},
                 evidence=[dict(path=name, sha256=sha((root / name).read_bytes())) for name in EVIDENCE])
 

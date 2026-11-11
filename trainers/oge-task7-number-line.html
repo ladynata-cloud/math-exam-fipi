@@ -162,8 +162,15 @@ body{background:#f6f7f5!important;color:#202820;font-family:var(--ui);font-size:
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
 <link rel="stylesheet" href="oge-course-algebra.css">
+<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
+<script defer src="/assets/oge-wayfinding.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
 </head>
 <body data-oge-foundation="7">
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
 <div class="margin-line"></div>
 <div class="wrap">
 <header class="top">
@@ -458,7 +465,8 @@ function parseQ(s){ s=String(s??"").trim().replace(/\u2212/g,"-").replace(",",".
   if(/^-?\d+$/.test(s)) return Q(BigInt(s));
   let m=s.match(/^(-?)(\d+)\.(\d+)$/); if(m){ const sign=m[1]==="-"?-1n:1n; const d=10n**BigInt(m[3].length);
     return Q(sign*(BigInt(m[2])*d+BigInt(m[3])), d); }
-  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m){ return Q(BigInt(m[1]),BigInt(m[2])); }
+  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m){
+    const d=BigInt(m[2]); return d===0n?null:Q(BigInt(m[1]),d); }
   return null; }
 
 /* ---------- Модель утверждений (тип А) ---------- */

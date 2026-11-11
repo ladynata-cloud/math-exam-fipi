@@ -5,3 +5,10 @@
 .lesson-layout>*{min-width:0}.side button,.lesson-title{overflow-wrap:anywhere}@media(max-width:620px){.lesson-title{font-size:clamp(1.65rem,7.7vw,1.9rem)}}
 
 .method-notice,.earlier-work{margin:0 0 20px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#f2f7f1}.method-notice p{margin-top:0}.earlier-work summary,.legacy-summary summary{cursor:pointer;font-weight:650}.earlier-work section{border-top:1px solid var(--line);margin-top:16px;padding-top:12px}.earlier-work li{margin:12px 0}.step .choices{margin:14px 0}.step .choices button{white-space:normal;overflow-wrap:anywhere}.legacy-summary li{margin:8px 0}.step .fra{font-size:1em}
+
+/* Personal investigations retain the task and the first prediction. */
+.model-inquiry input{display:block;width:100%;max-width:22rem;box-sizing:border-box;font:inherit;padding:10px;margin:8px 0;border:1px solid #789d8d;border-radius:8px}.model-inquiry form{margin:16px 0}.model-inquiry h4{line-height:1.4}.model-inquiry [role="status"]{overflow-wrap:anywhere}.model-inquiry button{min-height:44px}.model-inquiry input:focus-visible{outline:3px solid #b07418;outline-offset:3px}
+
+/* An open personal model must not sit behind the closed floating helper.
+   Keep the same launcher in document flow; an opened helper stays available. */
+body:has(main details.inquiry-model[open]) .peterson-help:has(> .peterson-help-panel[hidden]){position:static;margin:16px auto}
