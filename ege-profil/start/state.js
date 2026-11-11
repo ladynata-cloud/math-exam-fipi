@@ -1,13 +1,58 @@
 (function(root){'use strict';
 const KEY='mathexam.profileStart2027.v1';
-function create(lessons,storage){
+function create(lessons,storage,{publicAttempts=false}={}){
  const known=new Map(lessons.map(l=>[l.id,l])),tasks=new Set(lessons.flatMap(l=>l.tasks.map(t=>t.id)));let warning='',raw='',blocked=false;
  const data={version:1,records:{},seen:{},sessions:{}};
  const syncedSessions=Object.create(null);let latestSessions=Object.create(null),preserved={};
- const copy=s=>({...s,answers:[...s.answers]});
+ const traceBlocked=new Set();let traceWarning='';
+ const copy=s=>({...s,answers:[...s.answers],...(s.submissions?{submissions:JSON.parse(JSON.stringify(s.submissions))}:{})});
+ const helpRank={none:0,support:1,solution:2};
+ function cleanTrace(value,maxSteps,session){
+  if(!value||value.version!==1||value.taskId!==session.taskId||value.started!==session.started||typeof value.fromStart!=='boolean'||!Object.hasOwn(helpRank,value.help)||!Array.isArray(value.steps)||value.steps.length>Math.min(15,maxSteps))return null;
+  const used=new Set(),steps=[];
+  const event=e=>!!e&&typeof e.answer==='string'&&e.answer.length<=200&&typeof e.correct==='boolean'&&Object.hasOwn(helpRank,e.help)&&typeof e.at==='string'&&e.at.length<=32&&Number.isFinite(Date.parse(e.at));
+  for(const item of value.steps){if(!item||!Number.isInteger(item.step)||item.step<0||item.step>=maxSteps||used.has(item.step)||!event(item.first)||!event(item.last)||Date.parse(item.first.at)>Date.parse(item.last.at))return null;used.add(item.step);steps.push({step:item.step,first:{answer:item.first.answer,correct:item.first.correct,help:item.first.help,at:item.first.at},last:{answer:item.last.answer,correct:item.last.correct,help:item.last.help,at:item.last.at}});}
+  return {version:1,taskId:session.taskId,started:session.started,fromStart:value.fromStart,help:value.help,steps:steps.sort((a,b)=>a.step-b.step)};
+ }
+ function mergeTrace(own,incoming){
+  if(!own)return incoming&&JSON.parse(JSON.stringify(incoming));if(!incoming)return JSON.parse(JSON.stringify(own));
+  const steps=new Map(own.steps.map(item=>[item.step,JSON.parse(JSON.stringify(item))]));
+  for(const item of incoming.steps){const old=steps.get(item.step);if(!old){steps.set(item.step,JSON.parse(JSON.stringify(item)));continue;}
+   // The first committed answer wins a timestamp tie; later corrections never replace it.
+   if(Date.parse(item.first.at)<=Date.parse(old.first.at))old.first={...item.first};
+   if(Date.parse(item.last.at)>=Date.parse(old.last.at))old.last={...item.last};
+  }
+  return {version:1,taskId:own.taskId,started:own.started,fromStart:own.fromStart&&incoming.fromStart,help:helpRank[own.help]>=helpRank[incoming.help]?own.help:incoming.help,steps:[...steps.values()].sort((a,b)=>a.step-b.step).slice(0,15)};
+ }
+ function initTrace(s,key,fromStart){if(publicAttempts&&!traceBlocked.has(key)&&!s.submissions)s.submissions={version:1,taskId:s.taskId,started:s.started,fromStart,help:'none',steps:[]};}
+ function noteHelp(s,kind='support'){
+  if(!publicAttempts||!Object.hasOwn(helpRank,kind))return;
+  const key=Object.keys(data.sessions).find(key=>data.sessions[key]===s);if(!key||traceBlocked.has(key))return;
+  initTrace(s,key,false);if(helpRank[kind]>helpRank[s.submissions.help])s.submissions.help=kind;
+ }
+ function submitTrace(id,mode,s,input,correct){
+  if(!publicAttempts||typeof input!=='string'||typeof correct!=='boolean')return false;
+  const key=id+':'+mode;persist();const current=data.sessions[key];
+  if(traceBlocked.has(key)||!sameAttempt(s,current)||current.done)return false;
+  const task=known.get(id)?.tasks.find(t=>t.id===s.taskId),step=mode==='guided'?s.step:0;
+  if(!task||step>=Math.min(15,mode==='guided'?task.steps.length:1)||(mode==='guided'?current.answers.length>step:current.answers.length>0))return false;
+  initTrace(current,key,false);const trace=current.submissions;
+  const previous=trace.steps.find(item=>item.step===step),latest=previous?Date.parse(previous.last.at):0;
+  const event={answer:input.slice(0,200),correct,help:trace.help,at:new Date(Math.max(Date.now(),latest+1)).toISOString()};
+  if(previous)previous.last=event;else trace.steps.push({step,first:{...event},last:event});
+  trace.steps.sort((a,b)=>a.step-b.step);if(current!==s)s.submissions=JSON.parse(JSON.stringify(trace));persist();return true;
+ }
  const sameAttempt=(a,b)=>!!a&&!!b&&a.taskId===b.taskId&&a.started===b.started;
  function sessionFor(key,s){const [id,mode,extra]=key.split(':');const l=known.get(id);const t=l?.tasks.find(t=>t.id===s?.taskId);if(extra!==undefined||!t||!['guided','plan','independent'].includes(mode)||!Number.isInteger(s.step)||s.step<0||s.step>t.steps.length)return null;
-  return {taskId:t.id,step:s.step,wrong:!!s.wrong,assisted:!!s.assisted,familiar:!!s.familiar,done:!!s.done,draft:typeof s.draft==='string'?s.draft.slice(0,200):'',answers:Array.isArray(s.answers)?s.answers.slice(0,15).map(String):[],started:typeof s.started==='string'?s.started:'',registered:!!s.registered};}
+  let submissions;if(publicAttempts&&Object.hasOwn(s,'submissions')){
+   submissions=cleanTrace(s.submissions,mode==='guided'?t.steps.length:1,s);
+   const traceTask=l.tasks.find(task=>task.id===s.submissions?.taskId),traceStarted=s.submissions?.started;
+   // An older tab can carry an opaque trace into a replacement session. Keep
+   // that old trace on disk until new work starts, but never show it as this attempt.
+   const historical=!submissions&&traceTask&&typeof traceStarted==='string'&&traceStarted.length<=32&&Number.isFinite(Date.parse(traceStarted))&&cleanTrace(s.submissions,mode==='guided'?traceTask.steps.length:1,{taskId:traceTask.id,started:traceStarted});
+   if(!submissions&&!historical){traceBlocked.add(key);traceWarning='История первых ответов повреждена и оставлена без изменений. Новые отправки этой темы пока не записываются.';}
+  }
+  return {...(submissions?{submissions}:{}),taskId:t.id,step:s.step,wrong:!!s.wrong,assisted:!!s.assisted,familiar:!!s.familiar,done:!!s.done,draft:typeof s.draft==='string'?s.draft.slice(0,200):'',answers:Array.isArray(s.answers)?s.answers.slice(0,15).map(String):[],started:typeof s.started==='string'?s.started:'',registered:!!s.registered};}
  function mergeSessions(saved){const merged=Object.fromEntries(Object.entries(data.sessions).map(([key,s])=>[key,copy(s)]));for(const [key,value]of Object.entries(saved)){const incoming=sessionFor(key,value);if(!incoming)continue;const own=data.sessions[key],previous=syncedSessions[key];
   if(!own){data.sessions[key]=incoming;merged[key]=copy(incoming);continue;}
   if(!sameAttempt(own,incoming)){
@@ -28,6 +73,7 @@ function create(lessons,storage){
   target.step=Math.max(own.step,incoming.step);
   for(const flag of ['wrong','assisted','familiar','done','registered'])target[flag]=own[flag]=!!own[flag]||incoming[flag];
   target.draft=draft;
+  if(publicAttempts&&!traceBlocked.has(key)){const trace=mergeTrace(own.submissions,incoming.submissions);if(trace){target.submissions=trace;own.submissions=JSON.parse(JSON.stringify(trace));}}
  }return merged;}
  function refreshSession(key){const own=data.sessions[key],latest=latestSessions[key];if(sameAttempt(own,latest)){Object.assign(own,copy(latest));syncedSessions[key]=copy(own);}return data.sessions[key];}
  function startedAt(){let latest=Date.now()-1;for(const s of Object.values(data.sessions))latest=Math.max(latest,Date.parse(s.started)||0);return new Date(Math.max(Date.now(),latest+1)).toISOString();}
@@ -47,7 +93,7 @@ function create(lessons,storage){
     records[id][kind]=[...previous[kind].filter(value=>!pool.some(t=>t.id===value)),...r[kind]];
    }
   }
-  for(const [key,s]of Object.entries(sessions))savedSessions[key]={...(preserved.sessions?.[key]||{}),...s};
+  for(const [key,s]of Object.entries(sessions)){savedSessions[key]={...(preserved.sessions?.[key]||{}),...s};if(traceBlocked.has(key)&&Object.hasOwn(preserved.sessions?.[key]||{},'submissions'))savedSessions[key].submissions=preserved.sessions[key].submissions;}
   return {...preserved,...data,records,seen:{...(preserved.seen||{}),...data.seen},sessions:savedSessions};
  }
  function persist(){if(blocked)return false;try{let merged=mergeSessions({});
@@ -65,7 +111,29 @@ function create(lessons,storage){
  function start(id,mode,fresh=false){const l=known.get(id);if(!l||!['guided','plan','independent'].includes(mode))throw Error('Unknown lesson or mode');const key=id+':'+mode,hadSession=!!data.sessions[key];const saved=persist();const old=saved?refreshSession(key):data.sessions[key];if(old&&!fresh&&(hadSession||!old.done))return old;
  const pool=mode!=='independent'?l.tasks.slice(0,-3):l.tasks.slice(-3);let t=pool.find(t=>!data.seen[t.id]);if(!t)t=pool.reduce((a,b)=>(data.seen[a.id]||0)<=(data.seen[b.id]||0)?a:b);
  const s={taskId:t.id,step:0,wrong:false,assisted:mode!=='independent',familiar:!!data.seen[t.id],done:false,draft:'',answers:[],started:startedAt(),registered:false};
- data.seen[t.id]=(data.seen[t.id]||0)+1;data.sessions[key]=s;persist();return s;}
+ data.seen[t.id]=(data.seen[t.id]||0)+1;initTrace(s,key,true);data.sessions[key]=s;persist();return s;}
+ // Public result handoff: looking ahead does not open a condition. Execute
+ // the choice again on click, after merging any work saved by another tab.
+ function independentHandoff(id,completed,begin=false){
+  const l=known.get(id);if(!l?.tasks.some(t=>t.id===completed?.taskId))throw Error('Unknown completed task');
+  const key=id+':independent',saved=persist(),current=saved?refreshSession(key):data.sessions[key];
+  const sourceTime=Date.parse(completed.started)||0,currentTime=Date.parse(current?.started)||0;
+  // Only the identifiable, earlier assisted source of this same remediation
+  // may be replaced. A newer attempt (even of the same task), accepted work,
+  // or an old session without comparable timestamps must remain resumable.
+  const remediated=current?.taskId===completed.taskId&&current.assisted&&!current.answers.length&&sourceTime>currentTime&&currentTime>0;
+  if(current&&!current.done&&!remediated)return {kind:'resume',taskId:current.taskId,familiar:current.familiar,assisted:current.assisted||current.wrong,session:current};
+  const r=data.records[id]||{},seen=new Set([completed.taskId]);
+  for(const kind of ['guided','independent','recovered','checkpointIndependent','mistakes'])for(const taskId of r[kind]||[])seen.add(taskId);
+  for(const mode of ['guided','plan','independent'])if(data.sessions[id+':'+mode])seen.add(data.sessions[id+':'+mode].taskId);
+  const knownTask=t=>!!data.seen[t.id]||seen.has(t.id),pool=l.tasks.slice(-3).filter(t=>t.id!==completed.taskId);
+  const t=pool.find(t=>!knownTask(t))||pool.reduce((a,b)=>(data.seen[a.id]||0)<=(data.seen[b.id]||0)?a:b),familiar=knownTask(t);
+  const choice={kind:familiar?'familiar':'new',taskId:t.id,familiar,assisted:false};
+  if(!begin)return choice;
+  const s={taskId:t.id,step:0,wrong:false,assisted:false,familiar,done:false,draft:'',answers:[],started:startedAt(),registered:false};
+  data.seen[t.id]=(data.seen[t.id]||0)+1;initTrace(s,key,true);data.sessions[key]=s;persist();
+  return {...choice,session:s};
+ }
  function finish(id,mode,s){
   // Read saved help/mistakes before awarding any credit, not after it.
   persist();const current=data.sessions[id+':'+mode];if(!sameAttempt(s,current)||current.registered)return false;
@@ -84,8 +152,8 @@ function create(lessons,storage){
  }
  function remediate(id,taskId){const l=known.get(id),t=l?.tasks.find(t=>t.id===taskId);if(!t)throw Error('Unknown remediation task');const saved=persist();const source=saved?refreshSession(id+':independent'):data.sessions[id+':independent'];if(source?.taskId===taskId&&!source.answers.length&&!source.done&&!source.registered){source.assisted=true;}
  const key=id+':guided',old=saved?refreshSession(key):data.sessions[key];if(old?.taskId===taskId&&!old.done){persist();return old;}
- const s={taskId,step:0,wrong:false,assisted:true,familiar:!!data.seen[taskId],done:false,draft:'',answers:[],started:startedAt(),registered:false};data.seen[taskId]=Math.max(1,data.seen[taskId]||0);data.sessions[key]=s;persist();return s;}
- return {KEY,data,record,start,finish,remediate,canAdvance,creditCheckpoint,persist,get warning(){return warning;},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot(mergeSessions(latestSessions))};}};
+ const s={taskId,step:0,wrong:false,assisted:true,familiar:!!data.seen[taskId],done:false,draft:'',answers:[],started:startedAt(),registered:false};data.seen[taskId]=Math.max(1,data.seen[taskId]||0);initTrace(s,key,true);data.sessions[key]=s;persist();return s;}
+ return {KEY,data,record,start,noteHelp,submitTrace,independentHandoff,finish,remediate,canAdvance,creditCheckpoint,persist,get warning(){return [warning,traceWarning].filter(Boolean).join(' ');},get original(){return raw;},export(){return {kind:'mathexam-profile-start',exportedAt:new Date().toISOString(),storage:'local-browser',...snapshot(mergeSessions(latestSessions))};}};
 }
 const api={KEY,create};root.ProfileState=api;if(typeof module!=='undefined')module.exports=api;
 })(globalThis);

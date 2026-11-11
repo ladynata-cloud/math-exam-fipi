@@ -1,10 +1,10 @@
 name: Profile 2027 — learning start
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/ege-profile-stereometry.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-writing.js', 'trainers/board-images.js', 'trainers/board-ink.js', 'trainers/board-layout.js', 'trainers/board-tools.css', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/part-two/**', 'ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/ege-profile-stereometry.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-writing.js', 'trainers/board-images.js', 'trainers/board-ink.js', 'trainers/board-layout.js', 'trainers/board-tools.css', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
   push:
     branches: [main]
-    paths: ['ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/ege-profile-stereometry.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-writing.js', 'trainers/board-images.js', 'trainers/board-ink.js', 'trainers/board-layout.js', 'trainers/board-tools.css', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
+    paths: ['ege-profil/part-two/**', 'ege-profil/start/**', 'ege-profil/trainers/**', 'ege-profil/atanasyan-10-11/**', 'stereo-course/**', 'tools/atanasyan-profile15*', 'ege-profil/learning/**', 'ege-profil/lesson/**', 'ege-profil/homework/**', 'ege-profil/trigonometry/**', 'ege-profil/index.html', 'tools/profile-*', 'tools/fixtures/profile-*', 'trainers/ege-profile/inequalities/**', 'trainers/ege-profile/log-inequalities/**', 'trainers/ege-profile-expressions.html', 'trainers/ege-profile-stereometry.html', 'trainers/board-bridge.js', 'trainers/board-picker.js', 'trainers/board-picker.css', 'trainers/board-workspace.js', 'trainers/board-writing.js', 'trainers/board-images.js', 'trainers/board-ink.js', 'trainers/board-layout.js', 'trainers/board-tools.css', 'trainers/board-picker-data.json', 'trainers/board-compat.json', 'trainers/trainer-board.html', 'board-server/**', 'tools/board-picker-smoke.cjs', 'tools/trainer-registry-client-cutover-smoke.cjs', '.github/workflows/profile-start.yml']
 permissions:
   contents: read
 concurrency:
@@ -23,6 +23,28 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
+      - name: Complete second-part curriculum, mathematics, models and saved evidence
+        run: node --test tools/profile-part2-*.test.cjs
+      - name: Complete second-part learner journeys
+        run: node tools/profile-part2-course.browser.cjs
+      - name: Preserve complete course viewport evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: profile-part-two-viewports
+          path: /tmp/profile-part2-shots
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Course journey, whole-profile map, progress and practice layout
+        run: node --test tools/profile-journey*.test.cjs tools/profile-second-part-map.test.cjs tools/profile-practice-layout.test.cjs
+      - name: Active practice, misconception feedback and safe independent handoff
+        run: node --test tools/profile-active-*.test.cjs
+      - name: Exact model boundaries, one submission per condition and retained first attempts
+        run: node --test tools/profile-second-part-integrity.test.cjs tools/profile-first-attempt.test.cjs
+      - name: Audit integrity and mathematical model boundaries in the browser
+        run: node tools/profile-audit-integrity.browser.cjs
+      - name: Prediction experiments and independent handoff in the browser
+        run: node tools/profile-active-practice.browser.cjs
       - name: Audited mathematics, links, honest progress and requested help
         run: node --test tools/profile-*repair*.test.cjs tools/profile-main-geometry-disclosure.test.cjs tools/profile-progress-report-dom.test.cjs
       - name: Main geometry, construction and graph controls at 320, 390 and 1280 pixels
@@ -45,6 +67,8 @@ jobs:
         with:
           name: profile-trainer-repair-viewports
           path: |
+            /tmp/profile-active-practice-shots
+            /tmp/profile-audit-integrity-shots
             /tmp/profile-main-geometry-disclosure-shots
             /tmp/profile-progress-repair-shots
             /tmp/profile-legacy-geometry-shots

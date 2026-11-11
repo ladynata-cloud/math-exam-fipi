@@ -130,7 +130,9 @@
     el('answerPanel').hidden = false;
     el('answerPanel').dataset.correct = String(correct);
     el('resultTitle').textContent = correct ? (answerHelpUsed ? 'Верно. С подсказкой.' : boardMode ? 'Верно. Разобрали на уроке.' : 'Да, ты прав.') : 'Давай разберёмся.';
-    el('answerExplanation').textContent = `${card.truth ? 'Утверждение верное.' : 'Утверждение неверное.'} ${card.explanation}`;
+    const explanation=el('answerExplanation');explanation.replaceChildren();
+    const parts=[['Условия',card.hint.preserve],['Обоснование',card.explanation],['Вывод',card.truth?'Утверждение верное.':'Утверждение неверное.']];
+    parts.forEach(([title,text],i)=>{const step=document.createElement('span');step.className='task19-reason-step';const heading=document.createElement('strong');heading.textContent='Шаг '+(i+1)+'. '+title;step.append(heading,document.createElement('br'),document.createTextNode(text));explanation.append(step);});
     el('btnTrue').disabled = el('btnFalse').disabled = true;
     el('btnTrue').setAttribute('aria-pressed', String(answer));
     el('btnFalse').setAttribute('aria-pressed', String(!answer));

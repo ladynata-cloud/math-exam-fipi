@@ -259,10 +259,15 @@ async function homepageEntry(browser, width) {
     await page.goto(base + '/', {waitUntil:'load'});
     await fits(page, 'homepage ' + width);
     assert.match(await page.locator('.hero-inner .kicker').innerText(), /5–11 классы.*Бесплатно/i);
-    assert.equal(await page.locator('.home-directions article').count(),6);
+    assert.equal(await page.locator('.home-directions article').count(),7);
     for(const href of ['/trainers/','/foundations/','/courses/','/oge/','/ege-baza/','/ege-profil/','/geometry-course/']) {
       assert(await page.locator('a[href="'+href+'"]').first().isVisible(), 'home direction '+href);
     }
+    const vprCard = page.locator('.home-directions article').filter({has:page.locator('h3 a[href="/vpr/"]')});
+    assert.equal(await vprCard.count(), 1, 'one new VPR direction alongside all previous directions');
+    assert.equal(await vprCard.locator('h3').innerText(), 'Подготовка к ВПР');
+    assert.equal(await vprCard.locator('a.go[href="/vpr/"]').count(), 1);
+    assert(await vprCard.locator('a.go[href="/vpr/"]').isVisible(), 'the VPR course catalogue is reachable from its card');
     assert.equal(await page.locator('script[src*="oge-home"],script[src*="three.min.js"]').count(),0);
     await inViewport(page, '.hero-inner .kicker', 'homepage mathematics offer');
     await inViewport(page, '.hero-inner h1', 'homepage heading');

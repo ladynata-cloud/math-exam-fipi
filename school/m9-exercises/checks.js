@@ -19,7 +19,25 @@ function number(source){
 }
  const close=(a,b,t=1e-10)=>Math.abs(a-b)<=t*Math.max(1e-10,Math.abs(b));
 function values(s){return String(s).split(';').map(x=>number(x.trim()));}
+function formatIssue(step,raw){
+ const type=step.rule.type;
+ if(['choice','oneof'].includes(type))return !Array.isArray(raw)||!raw.length?'Сначала выберите ответ.':'';
+ if(type==='order'||type==='interval')return '';
+ let entries=[];
+ if(type==='form'){
+  if(!raw||typeof raw!=='object')return 'Заполните поля задания.';
+  for(const f of step.fields){if(String(raw[f.id]??'').trim()==='')return 'Заполните поле «'+f.label+'».';if(f.type==='text'){if(String(raw[f.id]).length<(f.id.startsWith('unit')?1:2))return 'Уточните запись в поле «'+f.label+'».';}else entries.push(raw[f.id]);}
+ }else if(type==='construction')entries=[raw?.a,raw?.point];
+ else if(type==='angle')entries=[raw?.reading];
+ else if(type==='pairs')entries=String(raw??'').split('|').flatMap(pair=>pair.trim().replace(/^\(([^()]*)\)$/,'$1').split(';'));
+ else if(['list','witness','counterexample'].includes(type))entries=String(raw??'').split(';');
+ else entries=[raw];
+ for(const value of entries){if(value===null||value===undefined||String(value).trim()==='')return 'Сначала заполните ответ.';try{number(value);}catch(e){if(!['На нуль делить нельзя.','Отрицательное число под корнем.'].includes(e.message))return e.message;}}
+ return '';
+}
 function check(step,raw){try{
+ const issue=formatIssue(step,raw);if(issue)return {ok:false,invalid:true,message:issue+' Это ещё не математическая попытка.'};
+
  const r=step.rule;let ok=false;
  if(r.type==='number')ok=close(number(raw).value,r.value,r.tolerance||1e-9);
  else if(r.type==='period')ok=/\([^()]+\)/.test(raw)&&close(number(raw).value,r.value,1e-12);
@@ -68,5 +86,5 @@ function check(step,raw){try{
  else throw Error('Неизвестный формат проверки.');
  return {ok,message:ok?step.explain:(step.error||'Проверьте условие. Подсказка поможет выбрать следующий ход.')};
 }catch(e){return {ok:false,message:e.message};}}
-const api={number,check,close};root.M9Checks=api;if(typeof module!=='undefined')module.exports=api;
+const api={number,check,close,formatIssue};root.M9Checks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);

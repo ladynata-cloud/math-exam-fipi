@@ -124,9 +124,9 @@ test('a helped check is not labelled independent, and course completion is not m
  repeated.dispose();repeated.dom.window.close();
 });
 
-test('teacher uses existing assignment entry without reading student progress',async()=>{
+test('teacher opens the task action choice without reading student progress',async()=>{
  const f=fixture('teacher',async()=>{throw Error('Teacher must not call /progress');});await flush();
- const button=f.host.querySelector('[data-division-stage]');assert.match(button.textContent,/Назначить ученику/);button.click();await flush();
+ const button=f.host.querySelector('[data-division-stage]');assert.match(button.textContent,/Открыть задание/);button.click();await flush();
  assert.equal(f.reads.length,0);
  assert.deepEqual(f.calls.map(args=>JSON.parse(JSON.stringify(args))),[['oge-basics:'+allStages[0].id,{}]]);
  f.dispose();f.dom.window.close();

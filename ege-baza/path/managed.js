@@ -67,6 +67,16 @@
     render();
     emit(stage < 3 ? 'hint' : 'navigate', stage < 3 ? { level: 1, stage } : { stage });
   }
+  function keepCurrentStageVisible() {
+    const nav = main.querySelector('.stage-nav'), active = nav?.querySelector('[aria-current="step"]');
+    if (!active || nav.scrollWidth <= nav.clientWidth) return;
+    const viewport = nav.getBoundingClientRect(), button = active.getBoundingClientRect();
+    // Only pan the stage strip. Hydration and resizing must not scroll the
+    // trainer document or its enclosing cabinet away from the condition.
+    if (button.left < viewport.left) nav.scrollLeft -= viewport.left - button.left;
+    else if (button.right > viewport.right) nav.scrollLeft += button.right - viewport.right;
+  }
+  root.addEventListener('resize', keepCurrentStageVisible, { passive: true });
   function photoTask() { return taskSpec.id.startsWith('grade7-r-photo-proof-'); }
   function geometryEntry(work) {
     if (!task.geometryRebuild || ![2, 3].includes(work.stage) || work.done) return '';
@@ -97,7 +107,7 @@
         if (correct) { work.answers.push(answer); work.step++; work.done = work.step === task.steps.length; work.draft = ''; state.view.hintText = ''; state.view.feedback = ''; state.view.feedbackKind = ''; render(); showFeedback(work.step === task.steps.length ? (photoTask() ? 'Разбор завершён. Объясни доказательство своими словами; для нового условия выбери похожий урок в маршруте.' : 'Разбор завершён. Для самостоятельной проверки возьми новый вариант.') : 'Верно. Продолжай со следующего шага.', 'good'); document.getElementById('answer')?.focus(); }
         else showFeedback(root.PathPracticeView.wrongFeedback(task.steps[step], answer, 'Проверь именно этот шаг. ' + task.steps[step].why), 'bad');
       } else {
-        if (correct) { work.done = true; showFeedback(work.help ? 'Верно. Этот вариант решён после разбора или помощи.' : 'Верно! Результат будет сохранён в истории работы.', 'good'); }
+        if (correct) { work.done = true; showFeedback(work.help ? 'Верно. Этот вариант решён после разбора или помощи.' : 'Верно! Ответ принят.', 'good'); }
         else showFeedback(root.PathPracticeView.wrongFeedback(task, answer, 'Пока неверно. Проверь знак, единицы и то, что спрашивается. Можно разобрать этот вариант по шагам.'), 'bad');
       }
       emit('check', scope === 'step' ? { scope, step, answer, answers } : { scope, answer });
@@ -159,7 +169,7 @@
     const work = state.work, meta = D.meta.find(m => m.id === taskSpec.id);
     model = null; document.title = meta.title + ' · Моя работа';
     if (root.PathPracticeView.photoProof?.supports(task)) { renderPhotoProof(); return; }
-    main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'Математика · личная практика'}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${(task.geometryRebuild ? ['Главная идея', 'Мастерская', 'По шагам', 'Мой ответ', 'Объясняю'] : stageLabels).map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav>${geometryEntry(work)}<div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Это одна сохранённая попытка. Разбор и подсказки остаются в её истории. ${photoTask() ? 'Этот рисунок повторяется. Для нового условия выбери похожий урок в своём маршруте.' : 'Для самостоятельного закрепления открой новый вариант.'}</p>`;
+    main.innerHTML = `<p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+E(({algebra:'Алгебра',geometry:'Геометрия',foundation:'Базовая математика'})[meta.subject]||'Математика'):'Математика · личная практика'}</p><h1>${E(meta.title)}</h1><nav class="stage-nav" aria-label="Шаги урока">${(task.geometryRebuild ? ['Главная идея', 'Мастерская', 'По шагам', 'Мой ответ', 'Объясняю'] : stageLabels).map((label, i) => `<button data-stage="${i}" ${i === work.stage ? 'aria-current="step"' : ''}>${i + 1}. ${label}</button>`).join('')}</nav>${geometryEntry(work)}<div id="lesson"></div><p id="feedback" class="feedback" role="status"></p><p class="muted managed-note">Можно разобрать решение и воспользоваться подсказками. ${photoTask() ? 'Этот рисунок повторяется. Для нового условия выбери похожий урок в своём маршруте.' : 'Для самостоятельного закрепления открой новый вариант.'}</p>`;
     main.querySelectorAll('[data-stage]').forEach(button => button.onclick = () => changeStage(+button.dataset.stage));
     main.querySelector('[data-geometry-explore]')?.addEventListener('click', () => changeStage(1));
     main.querySelector('[data-geometry-check]')?.addEventListener('click', () => changeStage(3));
@@ -206,6 +216,7 @@
       });
     }
     showFeedback(state.view.feedback, state.view.feedbackKind); supportDetails(); setReadOnly(readonly);
+    keepCurrentStageVisible();
   }
   if (!root.MathExamLearning || typeof root.MathExamLearning.register !== 'function') {
     main.innerHTML = '<p class="notice" role="alert">Не удалось подключиться к кабинету. Обновите страницу задания.</p>'; return;
