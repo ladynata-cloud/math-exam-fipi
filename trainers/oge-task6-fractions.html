@@ -524,7 +524,9 @@ const Task6Hints = (() => {
         });
         bn /= second; ad /= second;
       }
-      const numerator = calculate([an, 1n], '*', [bn, 1n], 'Умножь числители.', fraction(binaryHtml([an, 1n], '*', [bn, 1n]), binaryHtml([ad, 1n], '*', [bd, 1n])), { answerLabel: 'Числитель' });
+      const numerator = calculate([an, 1n], '*', [bn, 1n], 'Умножь числители.', fraction(binaryHtml([an, 1n], '*', [bn, 1n]), binaryHtml([ad, 1n], '*', [bd, 1n])), {
+        answerLabel: 'Числитель', note: 'Введи только числитель.'
+      });
       const denominator = ad * bd;
       if (ad !== 1n && bd !== 1n) calculate([ad, 1n], '*', [bd, 1n], 'Умножь знаменатели.', undefined, { answerLabel: 'Знаменатель' });
       return rational(numerator[0], denominator);
