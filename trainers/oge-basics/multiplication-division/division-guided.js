@@ -35,9 +35,23 @@
   function notice(text) { $('storage-notice').hidden = false; $('storage-notice').textContent = text; }
   function whole(value, max = 1000000) { return Number.isSafeInteger(value) && value >= 0 && value <= max; }
   function fingerprint(task) { return task.dividend + ':' + task.divisor; }
+  function digitErrors(mistake) { return mistake ? mistake.high + mistake.low : 0; }
+  function readDigitMistake(mistake, plan, lastStep) {
+    if (!mistake || !whole(mistake.step, lastStep) || plan.actions[mistake.step]?.kind !== 'digit' ||
+        !whole(mistake.high) || !whole(mistake.low) || !digitErrors(mistake) ||
+        !whole(mistake.digit, 9) || G.check(String(mistake.digit), plan.actions[mistake.step])) throw Error('Неверная запись подбора цифры.');
+    return {step:mistake.step, high:mistake.high, low:mistake.low, digit:mistake.digit};
+  }
   function validate(raw) {
     if (!raw || raw.version !== 1 || !topicIds.has(raw.active) || !whole(raw.serial) || !raw.sessions || typeof raw.sessions !== 'object' || !raw.next || typeof raw.next !== 'object' || !Array.isArray(raw.records) || raw.records.length > 10000) throw Error('Неверная запись');
     const out = {version:1, active:raw.active, serial:raw.serial, next:{}, sessions:{}, records:[]};
+    if (raw.digitSkill !== undefined) {
+      const skill = raw.digitSkill;
+      if (!skill || typeof skill.verified !== 'boolean' || !Array.isArray(skill.seen) || skill.seen.length > 440 ||
+          !skill.seen.every(key => typeof key === 'string' && /^\d{1,2}:[2-9]$/.test(key)) ||
+          new Set(skill.seen).size !== skill.seen.length || (skill.verified && !skill.seen.length)) throw Error('Неверная запись самостоятельной проверки.');
+      out.digitSkill = {seen:[...skill.seen], verified:skill.verified};
+    }
     for (const [id, seq] of Object.entries(raw.next)) {
       if (!topicIds.has(id) || !whole(seq)) throw Error('Неверная тема');
       out.next[id] = seq;
@@ -48,6 +62,7 @@
       const count = s.step + (s.accepted ? 1 : 0);
       if (s.step >= p.actions.length || count !== s.answers.length || s.done !== (count === p.actions.length) || !s.answers.every((v, i) => typeof v === 'string' && G.check(v, p.actions[i]))) throw Error('Ответы не совпали');
       out.sessions[id] = {id:s.id, task:p.task, step:s.step, answers:[...s.answers], accepted:s.accepted, done:s.done, draft:s.draft, errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      if (s.digitMistake !== undefined) out.sessions[id].digitMistake = readDigitMistake(s.digitMistake, p, s.step);
       if (s.multiples !== undefined) {
         const m = s.multiples;
         if (!m || m.divisor !== p.normalizedDivisor || typeof m.open !== 'boolean' || !Array.isArray(m.values) || m.values.length !== 9 || !m.values.every(v => typeof v === 'string' && v.length <= 12) || !Array.isArray(m.checked) || m.checked.length !== 9 || !m.checked.every((v, i) => typeof v === 'boolean' && (!v || G.equal(m.values[i], String(m.divisor * (i + 1))))) || s.hints < 1) throw Error('Неверная запись кратных.');
@@ -69,6 +84,7 @@
       if (p.topicId !== r.topic) throw Error('Неверный итог темы');
       ids.add(r.id);
       out.records.push({id:r.id, task:p.task, topic:r.topic, at:r.at, errors:r.errors, hints:r.hints, reveals:r.reveals, repeated:r.repeated});
+      if (r.digitMistake !== undefined) out.records.at(-1).digitMistake = readDigitMistake(r.digitMistake, p, p.actions.length - 1);
     }
     for (const s of Object.values(out.sessions)) {
       if (s.id > out.serial || (s.done && !ids.has(s.id))) throw Error('Незавершённый итог');
@@ -118,6 +134,93 @@
     save();
   }
   function independent(record) { return !record.errors && !record.hints && !record.reveals && !record.repeated; }
+
+  $('feedback').insertAdjacentHTML('afterend', '<button id="digit-practice" class="quiet" type="button" aria-haspopup="dialog" hidden>Потренировать подбор цифры</button>');
+  $('report-copy').insertAdjacentHTML('beforebegin', '<p id="digit-check-status" class="small"></p><button id="digit-check" class="quiet" type="button" aria-haspopup="dialog">Проверить подбор цифры самостоятельно</button> ');
+  $('results').insertAdjacentHTML('afterend', `
+    <dialog id="digit-skill-panel" aria-labelledby="digit-skill-title">
+      <h2 id="digit-skill-title"></h2>
+      <p id="digit-skill-prompt"></p>
+      <form id="digit-skill-form" novalidate>
+        <label for="digit-skill-answer">Цифра частного</label>
+        <input id="digit-skill-answer" type="text" inputmode="numeric" maxlength="1" autocomplete="off">
+        <label for="digit-skill-remainder">Остаток после вычитания</label>
+        <input id="digit-skill-remainder" type="text" inputmode="numeric" maxlength="2" autocomplete="off">
+        <button class="primary" type="submit">Проверить</button>
+      </form>
+      <p id="digit-skill-result" role="status"></p>
+      <button id="digit-skill-next" class="primary" type="button" hidden>Другой пример</button>
+      <button id="digit-skill-close" class="quiet" type="button">Вернуться к примеру</button>
+    </dialog>`);
+  let digitExercise = null;
+  function openDigitExercise(mode) {
+    const plan = G.plan(current().task);
+    const check = mode === 'check';
+    const seen = new Set(state.digitSkill?.seen);
+    for (const item of [...state.records, ...Object.values(state.sessions)]) seen.add(fingerprint(item.task));
+    for (const cycle of plan.cycles) seen.add(cycle.partial + ':' + plan.normalizedDivisor);
+    const candidates = [];
+    for (let divisor = 2; divisor <= 9; divisor++) {
+      for (let partial = divisor * 2; partial < divisor * 10; partial++) {
+        if (!seen.has(partial + ':' + divisor)) candidates.push({dividend:String(partial), divisor:String(divisor), topicId:'quotientDigit', level:'remainder'});
+      }
+    }
+    const preferredDivisor = check ? plan.normalizedDivisor + 1 : plan.normalizedDivisor;
+    const hasRemainder = task => Number(task.dividend) % Number(task.divisor) !== 0;
+    const task = candidates.find(task => Number(task.divisor) === preferredDivisor && hasRemainder(task)) ||
+      candidates.find(hasRemainder) || candidates[0];
+    const panel = $('digit-skill-panel'), form = $('digit-skill-form');
+    $('digit-skill-title').textContent = check ? 'Самостоятельная проверка' : 'Подбор цифры частного';
+    $('digit-skill-prompt').textContent = task ? 'Подбери цифру частного и запиши остаток для ' + task.dividend + ' : ' + task.divisor + '.' : '';
+    $('digit-skill-result').textContent = task ? '' : 'Все новые примеры для подбора цифры уже использованы.';
+    $('digit-skill-next').hidden = true;
+    form.hidden = !task;
+    if (task) {
+      state.digitSkill ??= {seen:[], verified:false};
+      state.digitSkill.seen.push(fingerprint(task));
+      digitExercise = {mode, plan:G.plan(task)};
+      panel.dataset.partial = task.dividend;
+      panel.dataset.divisor = task.divisor;
+      form.reset();
+      save();
+    } else digitExercise = null;
+    if (!panel.open) panel.showModal();
+    if (task) $('digit-skill-answer').focus();
+  }
+  $('digit-practice').onclick = () => openDigitExercise('practice');
+  $('digit-check').onclick = () => openDigitExercise('check');
+  $('digit-skill-close').onclick = () => $('digit-skill-panel').close();
+  $('digit-skill-panel').addEventListener('close', () => { digitExercise = null; });
+  $('digit-skill-next').onclick = () => openDigitExercise('check');
+  $('digit-skill-form').addEventListener('submit', event => {
+    event.preventDefault();
+    if (!digitExercise || event.currentTarget.hidden) return;
+    const {mode, plan} = digitExercise;
+    const digit = $('digit-skill-answer').value.trim(), remainder = $('digit-skill-remainder').value.trim();
+    const message = $('digit-skill-result');
+    if (!/^\d$/.test(digit) || !/^\d{1,2}$/.test(remainder)) {
+      message.textContent = 'Впиши одну цифру частного и неотрицательный остаток.';
+      return;
+    }
+    const correct = G.check(digit, plan.actions[0]) && G.equal(remainder, String(plan.remainder));
+    if (correct || mode === 'check') {
+      event.currentTarget.hidden = true;
+      $('digit-skill-next').hidden = correct;
+      message.textContent = correct ? 'Верно. Произведение помещается, а остаток меньше делителя.' : 'Пока не получилось. Возьми другой пример для самостоятельной проверки.';
+      if (correct && mode === 'check') {
+        state.digitSkill.verified = true;
+        save();
+        render();
+      }
+      $(correct ? 'digit-skill-close' : 'digit-skill-next').focus();
+    } else {
+      const product = Number(digit) * plan.normalizedDivisor;
+      const partial = plan.cycles[0].partial;
+      message.textContent = product > partial ? 'Произведение больше делимого. Попробуй меньшую цифру.' :
+        partial - product >= plan.normalizedDivisor ? 'В остатке помещается ещё один делитель. Попробуй большую цифру.' :
+        'Цифра подходит. Вычти ' + product + ' из ' + partial + ' и проверь остаток.';
+    }
+  });
 
   // Like arifmetika.html's renderCorner: every digit keeps its own column.
   // Visual choices only fill the existing draft; checking remains deliberate.
@@ -501,8 +604,12 @@
     $('answer-options').hidden = !a.options;
     $('answer-options').innerHTML = a.options ? a.options.map(o => '<button type="button" data-option="' + esc(o.value) + '" aria-pressed="' + (s.draft === o.value) + '" ' + (s.accepted ? 'disabled' : '') + '>' + esc(o.label) + '</button>').join('') : '';
     $('primary').textContent = 'Проверить';
-    $('feedback').textContent = feedback || (s.accepted ? a.kind.startsWith('shift-') ? 'Верно. Оба числа изменяются одинаково.' : 'Верно. Посмотри, что записалось в уголке.' : '');
-    $('feedback').className = feedbackKind || (s.accepted ? 'good' : '');
+    const needsDigitPractice = !s.done && !s.accepted && s.digitMistake?.step === s.step && digitErrors(s.digitMistake) >= 2;
+    const digitPrompt = needsDigitPractice ? digitHint(p, a, s.digitMistake.digit) : '';
+    $('feedback').textContent = feedback || digitPrompt || (s.accepted ? a.kind.startsWith('shift-') ? 'Верно. Оба числа изменяются одинаково.' : 'Верно. Посмотри, что записалось в уголке.' : '');
+    $('feedback').className = feedbackKind || (digitPrompt ? 'error' : s.accepted ? 'good' : '');
+    $('digit-practice').hidden = !needsDigitPractice;
+    $('digit-check-status').textContent = state.digitSkill?.verified ? 'Подбор цифры частного проверен самостоятельно.' : '';
     $('help-area').hidden = s.accepted;
     $('multiplication-refresh').hidden = !window.MultiplicationRefresh;
     $('help-toggle').setAttribute('aria-expanded', String(helpOpen));
@@ -575,6 +682,11 @@
     if (a.kind === 'digit') return 'Для одного места в ответе нужна одна цифра: от 0 до 9.';
     return 'Пока не совпало. Попробуй ещё раз или нажми «Помочь с этим шагом».';
   }
+  function digitHint(plan, action, digit) {
+    const {partial} = plan.cycles[action.cycle], divisor = plan.normalizedDivisor;
+    return digit * divisor > partial ? 'Помещается ли ' + divisor + ' × ' + digit + ' в ' + partial + '?' :
+      'Хватит ли остатка после вычитания ' + divisor + ' × ' + digit + ' ещё на один делитель?';
+  }
   $('answer-form').addEventListener('submit', event => {
     event.preventDefault();
     const s = current(); if (s.done) return;
@@ -586,14 +698,26 @@
       if (identity !== errorStep) { errorStep = identity; stepErrors = 0; }
       if (raw) { s.errors = Math.min(1000000, s.errors + 1); stepErrors++; }
       feedback = errorText(raw, p, a);
-      if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу.';
+      if (!p.micropractice && a.kind === 'digit' && /^\d$/.test(raw)) {
+        if (s.digitMistake?.step !== s.step) s.digitMistake = {step:s.step, high:0, low:0, digit:Number(raw)};
+        const mistake = s.digitMistake;
+        const side = Number(raw) > Number(a.answer) ? 'high' : 'low';
+        mistake[side] = Math.min(1000000, mistake[side] + 1);
+        mistake.digit = Number(raw);
+        if (digitErrors(mistake) === 2) s.hints = Math.min(1000000, s.hints + 1);
+        if (digitErrors(mistake) >= 2) feedback = digitHint(p, a, mistake.digit);
+      } else if (stepErrors >= 2) feedback += ' Если трудно, открой подсказку к этому шагу.';
       feedbackKind = 'error'; save(); render(); return;
     }
     s.answers.push(raw); s.accepted = true;
     feedback = 'Предыдущий шаг выполнен: ' + raw + '. Ответ записан.'; feedbackKind = 'good';
     helpOpen = false; revealOpen = false; errorStep = ''; stepErrors = 0;
     s.done = s.answers.length === p.actions.length;
-    if (s.done && !state.records.some(r => r.id === s.id)) state.records.push({id:s.id, task:s.task, topic:state.active, at:Date.now(), errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated});
+    if (s.done && !state.records.some(r => r.id === s.id)) {
+      const record = {id:s.id, task:s.task, topic:state.active, at:Date.now(), errors:s.errors, hints:s.hints, reveals:s.reveals, repeated:s.repeated};
+      if (s.digitMistake) record.digitMistake = {...s.digitMistake};
+      state.records.push(record);
+    }
     if (!s.done) { s.step++; s.accepted = false; s.draft = ''; }
     save(); render(); moveFocus();
   });
@@ -681,13 +805,25 @@
   $('next-topic').onclick = () => { const next = followingTopic(); if (next) activateTopic(next.id); };
   $('next-example').onclick = () => { newSession(state.active, false); render(); $('problem').scrollIntoView({block:'start'}); };
   $('repeat-example').onclick = () => { newSession(state.active, true); render(); $('problem').scrollIntoView({block:'start'}); };
+  function digitReport(mistake) {
+    const parts = [];
+    if (mistake.high) parts.push('завышенная цифра ×' + mistake.high);
+    if (mistake.low) parts.push('заниженная цифра ×' + mistake.low);
+    if (digitErrors(mistake) >= 2) parts.push('показана подсказка');
+    return 'Подбор цифры (шаг ' + (mistake.step + 1) + '): ' + parts.join(', ') + '.';
+  }
   function report() {
     const lines = ['Деление уголком · MathExam', $('results-text').textContent];
+    if (state.digitSkill?.verified) lines.push('Подбор цифры частного проверен самостоятельно на отдельном примере.');
     for (const r of state.records.slice(-12)) {
       lines.push(r.task.dividend + ' : ' + r.task.divisor + ' — ' + (independent(r) ? 'пошагово без ошибок и дополнительных подсказок, новое условие' : r.repeated ? 'повтор знакомого примера' : 'с помощью или исправлениями'));
+      if (r.digitMistake) lines.push(digitReport(r.digitMistake));
     }
     const s = current();
-    if (!s.done) lines.push('Начато: ' + s.task.dividend + ' : ' + s.task.divisor + ', шаг ' + (s.step + 1) + '.');
+    if (!s.done) {
+      lines.push('Начато: ' + s.task.dividend + ' : ' + s.task.divisor + ', шаг ' + (s.step + 1) + '.');
+      if (s.digitMistake) lines.push(digitReport(s.digitMistake));
+    }
     return lines.join('\n');
   }
   $('report-copy').onclick = async () => {
@@ -725,5 +861,12 @@
   else { if (buildMultiples) prepareMultiples(); save(); }
   window.addEventListener('mathexam-basics-help-ready',()=>render());
   render();
+  const requestedSkill = parameters.get('digit-skill');
+  if (requestedSkill === 'practice' || requestedSkill === 'check') {
+    parameters.delete('digit-skill');
+    const query = parameters.toString();
+    history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
+    openDigitExercise(requestedSkill);
+  }
   window.__divisionGuidedDebug = {KEY, state:() => structuredClone(state), plan:() => G.plan(current().task)};
 })();
