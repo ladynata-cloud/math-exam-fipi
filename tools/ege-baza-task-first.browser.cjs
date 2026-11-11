@@ -68,6 +68,25 @@ async function roundStepsBrowser(browser,url,width){
    await page.locator('#answer').press('Enter');
    assert.equal(await page.evaluate(id => PathCourse.state().lessons[id].independent, id), before + 1);
   }
+  for(const id of ids){
+   await page.goto(url+'#lesson='+id);
+   const map=page.locator('#reasoningSkillMap,[data-ege-skill-map]');
+   assert.equal(await map.count(),1,id+' single map');
+   await map.locator('summary').first().click();
+   await map.locator('.esm-self-check > summary').click();
+   const check=map.locator('[data-skill-check]');
+   const info=await page.evaluate(id=>({
+    answer:EgeBazaSkillMaps.forLesson(id).selfCheck.answer,
+    count:PathCourse.state().lessons[id].independent
+   }),id);
+   await check.locator('input').fill('1/0');
+   await check.locator('button').click();
+   assert.match(await check.locator('[data-skill-check-result]').textContent(),/Введи число/);
+   await check.locator('input').fill(info.answer);
+   await check.locator('button').click();
+   assert.equal(await check.locator('[data-skill-check-result]').textContent(),'Верно.');
+   assert.equal(await page.evaluate(id=>PathCourse.state().lessons[id].independent,id),info.count);
+  }
   // A guided answer cannot overwrite the final answer; models survive collapse and reload.
   await page.goto(url+'#lesson=equations-linear');await page.locator('#new').click();await page.locator('#answer').fill('9/');await openHelp(page,'steps');await page.locator('#stepAnswer').fill('3/');await openHelp(page,'model');await page.locator('#divisor').fill('7');await page.locator('#taskHelp>summary').click();await page.reload();assert.equal(await page.locator('#answer').inputValue(),'9/');await openHelp(page,'steps');assert.equal(await page.locator('#stepAnswer').inputValue(),'3/');await openHelp(page,'model');assert.equal(await page.locator('#divisor').inputValue(),'7');
   while(await page.locator('#stepAnswer').count()){const answer=await page.evaluate(()=>{const l=PathCourse.state().lessons['equations-linear'];return PathData.task('equations-linear',l.seed).steps[l.step].a;});await page.locator('#stepAnswer').fill(String(answer));await page.locator('#stepAnswer').press('Enter');}

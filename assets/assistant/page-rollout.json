@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
+  "baseSha": "3c46b64ea3cba20b118db14e18639cc98065874c",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "7d95793c4f3bbc0df8d8c8f3f5b85cd3a8ed477099374625ac6d91fabfaf7c88",
-      "afterSha256": "f3a17d1dd8e27c4b54cde8c16bb48b065999988d4d73de220c70d6890df0422c",
+      "beforeSha256": "99bcb10d32f4960e5557e4f3f3f57b2a7182eb4803589611556ccd6e7c60cdcd",
+      "afterSha256": "452105ed42efe292fa7b71f278e83f40669351d374eb9954c813cc1e692dd039",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "c8daf551777898d2fda97376b70b3896adca5f7b3bce19cb83657d9ecc169bdd",
-      "afterSha256": "a0be7396951a106fca0f0bddd51412d2a461edbe26c38b71af7f22294c0fc4cc",
+      "beforeSha256": "79e067db5f0275f2c182449a8243cda6ca459df17a06dfa7ad9213d503bdf9e6",
+      "afterSha256": "5ef44ab788d855973ba3c11aab6c8fca5028a44fce9054b962acc770aa915c2b",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4731,6 +4731,16 @@
       "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
       "sourceBaseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
       "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
+      "sourceBaseSha": "3c46b64ea3cba20b118db14e18639cc98065874c",
+      "task": "docs/tasks/EGE_BASE_ALL_SKILL_MAPS_20261111.md",
       "changedPaths": [
         "ege-baza/index.html",
         "ege-baza/path/index.html"

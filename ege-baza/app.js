@@ -72,7 +72,7 @@
   return link(label,item.resumeHref||item.href,'exam-start');
  }
  function examCard(task,j){
-  return `<article class="card exam-card" data-exam-position="${task.pos}"><div class="card-top"><span class="exam-number">№${task.pos}</span><span class="tag">Тренажёров: ${task.total}</span></div><h2><a href="${esc(task.href)}">${esc(task.title)}</a></h2><p>${esc(task.description)}</p>${lineProgress(task)}<div class="actions">${examAction(task,j)}${link('Все темы номера',task.href,'secondary exam-topics')}</div></article>`;
+  return `<article class="card exam-card" data-exam-position="${task.pos}"><div class="card-top"><span class="exam-number">№${task.pos}</span><span class="tag">Тренажёров: ${task.total}</span></div><h2><a href="${esc(task.href)}">${esc(task.title)}</a></h2><p>${esc(task.description)}</p>${lineProgress(task)}<div class="actions">${examAction(task,j)}${link('Все темы номера',task.href,'secondary exam-topics')}${link('Карта навыков',task.href+'&skills=1','secondary exam-skill-link')}</div></article>`;
  }
  function examCards(j){
   const tasks=examCatalog(j);
@@ -89,7 +89,7 @@
   const tasks=examCatalog(j),task=tasks.find(task=>String(task.pos)===query.get('pos'));if(!task)return missing();
   document.title='Задание №'+task.pos+': '+task.title+' · ЕГЭ база 2027 · MathExam';
   const next=tasks.find(item=>item.pos===task.pos+1);
-  return `<section data-exam-task="${task.pos}"><a class="back" href="#map">← Все задания №1–21</a><span class="eyebrow journey-line-eyebrow">ЕГЭ база · задание №${task.pos}</span><h1 class="journey-line-title">${esc(task.title)}</h1><p class="page-intro">${esc(task.description)}</p><section class="panel journey-line-summary">${lineProgress(task)}<div class="actions">${examAction(task,j)}${link('Вспомнить основу','#foundation','secondary')}</div><p class="small muted">Начни с задачи. Объяснение, модель и пошаговая помощь открываются рядом по запросу.</p></section><div class="section-head"><h2>Темы задания №${task.pos}</h2><p>Выбери нужный тренажёр</p></div>${journeyRows(task.items,j.sources?.path?.resumeCompatible!==false)}<div class="actions">${link('Все задания №1–21','#map','secondary')}${next?link('Следующий номер: №'+next.pos,next.href,'secondary'):link('Попробовать целый вариант','path/index.html#exam','secondary')}</div>${examJump(tasks,task.pos)}</section>`;
+  return `<section data-exam-task="${task.pos}"><a class="back" href="#map">← Все задания №1–21</a><span class="eyebrow journey-line-eyebrow">ЕГЭ база · задание №${task.pos}</span><h1 class="journey-line-title">${esc(task.title)}</h1><p class="page-intro">${esc(task.description)}</p><section class="panel journey-line-summary">${lineProgress(task)}<div class="actions">${examAction(task,j)}${link('Вспомнить основу','#foundation','secondary')}</div><p class="small muted">Начни с задачи. Объяснение, модель и пошаговая помощь открываются рядом по запросу.</p></section>${globalThis.EgeBazaSkillMap?.positionMarkup(task.pos,{journey:j,open:query.get('skills')==='1'})||''}<div class="section-head"><h2>Темы задания №${task.pos}</h2><p>Выбери нужный тренажёр</p></div>${journeyRows(task.items,j.sources?.path?.resumeCompatible!==false)}<div class="actions">${link('Все задания №1–21','#map','secondary')}${next?link('Следующий номер: №'+next.pos,next.href,'secondary'):link('Попробовать целый вариант','path/index.html#exam','secondary')}</div>${examJump(tasks,task.pos)}</section>`;
  }
  function journeyRows(items,canResume=true){
   return `<ol class="journey-steps">${items.map((item,i)=>`<li class="journey-step" data-journey-item="${esc(item.id)}"><span class="journey-step-number" aria-hidden="true">${i+1}</span><div><a class="journey-step-title" href="${esc(item.href)}">${esc(item.title)}</a>${journeyBadge(item)}${item.result?`<span class="small journey-result">Верных ответов: ${item.result.correct} из ${item.result.total}.${item.result.assisted?' С обращением к обучению.':''}${item.result.interrupted?' Завершена досрочно.':''}</span>`:''}${item.resume?'<span class="small journey-resume">Есть незавершённая работа</span>':''}</div>${link(item.source==='path'&&!canResume?'Открыть задачу':item.resume?'Продолжить':item.started?'Открыть':'Начать',item.resumeHref||item.href,'secondary')}</li>`).join('')}</ol>`;
@@ -147,7 +147,7 @@
   if(r.page==='backup')disposePage=globalThis.EgeBazaBackupUI.mount(main,first.id);
   if(r.page==='map'&&j&&globalThis.EgeBazaOceanExpedition)disposePage=globalThis.EgeBazaOceanExpedition.mount(main,examCatalog(j));
   document.querySelectorAll('[data-nav]').forEach(a=>{if(['today','progress'].includes(a.dataset.nav))a.href=j?'#'+a.dataset.nav:'#'+a.dataset.nav+'?module='+first.id;if(a.dataset.nav===(r.page==='task'?'map':['module','line'].includes(r.page)?'lines':r.page==='backup'?'progress':r.page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
-  if(focus){main.focus({preventScroll:true});main.scrollIntoView({block:'start'});}
+  if(focus){main.focus({preventScroll:true});main.scrollIntoView({block:'start'});if(r.page==='task'&&r.query.get('skills')==='1'){const skill=main.querySelector('[data-ege-skill-map]');skill?.querySelector('summary')?.focus({preventScroll:true});skill?.scrollIntoView({block:'start'});}}
  }
  // Refresh only after a change; do not discard a selection while reading a line.
  function refreshIfChanged(){
