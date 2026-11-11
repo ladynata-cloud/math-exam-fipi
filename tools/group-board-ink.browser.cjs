@@ -13,6 +13,71 @@ module.exports=async function inkFaults({page,origin,server,lesson,token,seatId,
   await page.goto(origin+'/trainers/group-board.html#'+new URLSearchParams({lesson,token,server}));
   await page.locator('#focus').waitFor({state:'visible'});
   assert.equal((await readWork()).strokes.length,0,'isolated fault scenario starts with empty ink');
+  // Chromium delivers real trusted touch/pointer events (not dispatchEvent).
+  // A secondary finger must neither replace, extend nor end the first stroke.
+  await mode('board');
+  await poll(async()=>await page.locator('#penButton').isEnabled(),'pen ready for pointer tests');
+  await page.locator('#penButton').click();
+  const canvas=page.locator('#boardCanvas');await canvas.scrollIntoViewIfNeeded();
+  const box=await canvas.boundingBox();
+  const cdp=await page.context().newCDPSession(page);
+  await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:2});
+  await canvas.evaluate(canvas=>{
+    window.inkPointerEvents=[];
+    for(const type of ['pointerdown','pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(type,event=>{
+      window.inkPointerEvents.push({type,id:event.pointerId,trusted:event.isTrusted});
+    });
+  });
+  const point=(id,x,y)=>({id,x:box.x+x,y:box.y+y});
+  const touch=(type,touchPoints)=>cdp.send('Input.dispatchTouchEvent',{type,touchPoints});
+  const strokePosts=[];
+  const observe=request=>{if(request.url()===actionURL&&request.method()==='POST'&&request.postDataJSON()?.type==='stroke')strokePosts.push(request.postDataJSON());};
+  page.on('request',observe);
+  try{
+    await touch('touchStart',[point(1,40,45)]);
+    await touch('touchMove',[point(1,65,65)]);
+    await touch('touchStart',[point(1,65,65),point(2,220,160)]);
+    await touch('touchMove',[point(1,80,80),point(2,240,180)]);
+    await touch('touchEnd',[point(2,240,180)]);
+    await delay(200);
+    const partialEvents=await page.evaluate(()=>window.inkPointerEvents);
+    const primaryId=partialEvents.find(e=>e.type==='pointerdown').id;
+    const secondaryId=partialEvents.filter(e=>e.type==='pointerdown')[1]?.id;
+    assert.ok(secondaryId!==undefined&&secondaryId!==primaryId,'distinct pointers started');
+    assert.deepEqual(partialEvents.filter(e=>e.type==='pointerup').map(e=>e.id),[secondaryId],'only secondary pointer released');
+    assert.equal(strokePosts.length,0,'secondary release does not finish primary ink');
+    assert.equal((await readWork()).strokes.length,0,'gesture remains pending until its own release');
+    await touch('touchMove',[point(1,110,100)]);
+    await touch('touchEnd',[]);
+    await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===1,'primary touch saved');
+    const stroke=(await readWork()).strokes[0];
+    assert.equal(strokePosts.length,1,'one gesture produces exactly one action');
+    assert.ok(Math.abs(stroke.points[0].x-40/box.width)<0.01,'primary start retained');
+    assert.ok(stroke.points.every(p=>p.x<150/box.width),'secondary points excluded');
+    assert.ok(stroke.points.at(-1).x>100/box.width,'primary continues after secondary release');
+    const events=await page.evaluate(()=>window.inkPointerEvents);
+    assert.equal(events.filter(e=>e.type==='pointerdown').length,2,'two actual pointers exercised');
+    assert.ok(events.every(e=>e.trusted),'browser generated all pointer events');
+    await page.locator('#undoButton').click();
+    await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===0,'touch fixture undone');
+  }finally{await touch('touchEnd',[]).catch(()=>{});await cdp.send('Emulation.setTouchEmulationEnabled',{enabled:false});await cdp.detach();}
+  // Losing capture while the mouse remains down saves the existing gesture once.
+  await page.mouse.move(box.x+45,box.y+50);await page.mouse.down();
+  await page.mouse.move(box.x+100,box.y+95,{steps:5});
+  await canvas.evaluate(canvas=>{
+    const event=window.inkPointerEvents.filter(e=>e.type==='pointerdown').at(-1);
+    if(!canvas.hasPointerCapture(event.id))throw Error('expected native pointer capture');
+    canvas.releasePointerCapture(event.id);
+  });
+  await page.mouse.move(box.x+120,box.y+110);
+  await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===1,'lost capture saves unfinished ink');
+  await page.mouse.up();await delay(200);
+  assert.equal(strokePosts.length,2,'capture loss and later release do not duplicate');
+  assert.ok((await page.evaluate(()=>window.inkPointerEvents)).some(e=>e.type==='lostpointercapture'&&e.trusted),'native capture-loss event observed');
+  await page.locator('#undoButton').click();
+  await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===0,'capture fixture undone');
+  page.off('request',observe);
+  console.log('PASS trusted Chromium multi-pointer ink ownership and lost-capture exactly-once save');
   async function lostAck(type,perform,expectedInk){
     let accepted=false,opId,release,retried=false,injectionError;
     const barrier=new Promise(resolve=>{release=resolve;});

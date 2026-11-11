@@ -302,10 +302,7 @@
     if(focusFrame&&writer(ws,id))pending.push(focusFrame.getState());
     if(geometryFrame&&geometryWriter(ws,id))pending.push(geometryFrame.getState());
     await Promise.all(pending);
-    if(drawing) {
-      const stroke=drawing;drawing=null;
-      fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId});
-    }
+    finishDraw();
   }
   async function navigate(action) {
     if(navigating||historyLoading)return;
@@ -528,22 +525,27 @@
     else notice('Ластик удаляет Ваши штрихи. Нажмите рядом с нужной линией.');
   }
   function startDraw(event) {
-    if(!canDraw()||event.button!==0)return;
+    if(drawing||!canDraw()||event.button!==0||event.isPrimary===false)return;
     event.preventDefault();const p=canvasPoint(event);
     if(tool==='eraser'){eraseAt(p);return;}
     drawing={id:uuid(),points:[p],color:$('strokeColor').value,width:Number($('strokeWidth').value)};
     drawing.assignmentId=boardAssignment(workspace(target()));drawing.target=target();
+    drawing.pointerId=event.pointerId;
     $('boardCanvas').setPointerCapture(event.pointerId);
   }
   function moveDraw(event) {
-    if(!drawing)return;event.preventDefault();
+    if(!drawing||event.pointerId!==drawing.pointerId)return;event.preventDefault();
     if(drawing.points.length<500)drawing.points.push(canvasPoint(event));
     const id=target(),ws=workspace(id);
     drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));
   }
   function endDraw(event) {
-    if(!drawing)return;event.preventDefault();const stroke=drawing;drawing=null;
-    if($('boardCanvas').hasPointerCapture(event.pointerId))$('boardCanvas').releasePointerCapture(event.pointerId);
+    if(!drawing||event.pointerId!==drawing.pointerId)return;event.preventDefault();finishDraw();
+  }
+  function finishDraw() {
+    if(!drawing)return;const stroke=drawing;drawing=null;
+    // Clear before releasing capture: lostpointercapture must not enqueue twice.
+    if($('boardCanvas').hasPointerCapture(stroke.pointerId))$('boardCanvas').releasePointerCapture(stroke.pointerId);
     fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId});
   }
   function sessionLink(token) {
@@ -749,6 +751,7 @@
   $('undoButton').addEventListener('click',()=>{if(canDraw()&&!pendingInk(target())&&!drawing)fire('undo',target(),{});});
   $('boardCanvas').addEventListener('pointerdown',startDraw);$('boardCanvas').addEventListener('pointermove',moveDraw);
   $('boardCanvas').addEventListener('pointerup',endDraw);$('boardCanvas').addEventListener('pointercancel',endDraw);
+  $('boardCanvas').addEventListener('lostpointercapture',endDraw);
   document.querySelectorAll('[data-close-dialog]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.closeDialog).close()));
   const resize=new ResizeObserver(()=>{
     if(target()){const id=target(),ws=historyWorkspace||workspace(id);drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));}
