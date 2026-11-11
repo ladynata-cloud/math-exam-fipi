@@ -32,10 +32,42 @@ function build(kind,t){
  const cube=(a=2)=>box(m,a,a,a);
  let a,b,h,r,v,p,ids;
  switch(kind){
- case'incidence':triangle(m,[0,0,0],[3,0,0],[1,2,0]);planePatch(m,0,4);given('A, B, C не лежат на одной прямой');scene.find='Сколько плоскостей проходит через A, B, C?';sample();break;
- case'parallel':cube();given('ABCDA₁B₁C₁D₁ — куб');view(m,'neutral','Дана прямая A₁B₁ и плоскость ABC.',[['A₁','B₁']],['A','B','C','D']);view(m,'step0','Сравни верхнее ребро с нижней гранью.',[['A₁','B₁'],['A','B']],['A','B','C','D']);sample();break;
- case'skew':cube();given('ABCDA₁B₁C₁D₁ — куб');view(m,'neutral','Найди угол между AB и CC₁.',[['A','B'],['C','C₁']]);view(m,'step0','Сравни направления CC₁ и BB₁.',[['A','B'],['C','C₁'],['B','B₁']]);sample();break;
- case'plane-parallel':{const lo=planePatch(m,0,2,'_lo'),hi=planePatch(m,2,2,'_hi');add(m,'A',[-2,0,0]);add(m,'B',[2,0,0]);add(m,'C',[-2,0,2]);add(m,'D',[2,0,2]);m.faces.push(['A','B','D','C']);line(m,'A','B');line(m,'C','D');given('Две разные параллельные плоскости; третья пересекает обе');view(m,'neutral','Рассмотри две линии пересечения.',[['A','B'],['C','D']]);sample();break;}
+ case'incidence':
+  if(q.includes('через пары')){
+   add(m,'A',[0,0,0]);add(m,'B',[3,0,0]);add(m,'C',[1,2,0]);
+   view(m,'neutral','Рассмотри три данные точки.',[],[],['A','B','C']);
+   view(m,'step0','Рассмотри пару точек A и B.',[['A','B']]);
+  }else{
+   triangle(m,[0,0,0],[3,0,0],[1,2,0]);scene.find='Сколько плоскостей проходит через A, B, C?';
+  }
+  planePatch(m,0,4);given('A, B, C не лежат на одной прямой');sample();break;
+ case'parallel':
+  cube();given('ABCDA₁B₁C₁D₁ — куб');
+  if(q.includes('у прямой A₁B и')){
+   view(m,'neutral','Рассмотри прямую A₁B и плоскость ABC.',[['A₁','B']],['A','B','C','D']);
+   view(m,'step0','Проверь, где находится точка A₁.',[['A₁','B']],['A','B','C','D'],['A₁']);
+   view(m,'step1','Проверь принадлежность точки B.',[['A₁','B']],['A','B','C','D'],['B']);
+  }else{
+   view(m,'neutral','Дана прямая A₁B₁ и плоскость ABC.',[['A₁','B₁']],['A','B','C','D']);
+   view(m,'step0','Сравни верхнее ребро с нижней гранью.',[['A₁','B₁'],['A','B']],['A','B','C','D']);
+  }
+  sample();break;
+ case'skew':
+  cube();given('ABCDA₁B₁C₁D₁ — куб');
+  if(q.includes('диагональю грани AB₁')){
+   view(m,'neutral','Найди угол между AB₁ и CC₁.',[['A','B₁'],['C','C₁']]);
+   view(m,'step0','Сравни направления CC₁ и BB₁.',[['C','C₁'],['B','B₁']]);
+   view(m,'step1','Рассмотри диагональ грани ABB₁A₁.',[['A','B₁'],['B','B₁']],['A','B','B₁','A₁']);
+  }else{
+   view(m,'neutral','Найди угол между AB и CC₁.',[['A','B'],['C','C₁']]);
+   view(m,'step0','Сравни направления CC₁ и BB₁.',[['A','B'],['C','C₁'],['B','B₁']]);
+  }
+  sample();break;
+ case'plane-parallel':{
+  planePatch(m,0,2,'_lo');planePatch(m,2,2,'_hi');add(m,'A',[-2,0,0]);add(m,'B',[2,0,0]);add(m,'C',[-2,0,2]);add(m,'D',[2,0,2]);m.faces.push(['A','B','D','C']);line(m,'A','B');line(m,'C','D');given('Две разные параллельные плоскости; третья пересекает обе');view(m,'neutral','Рассмотри две линии пересечения.',[['A','B'],['C','D']]);
+  if(q.includes('угол между AB и CD'))view(m,'step1','Обе прямые лежат в третьей плоскости.',[['A','B'],['C','D']],['A','B','D','C']);
+  sample();break;
+ }
  case'euler':{[a,b]=take(q,/имеет (\d+) вершин и (\d+) рёбер/);const n=a-1;for(let i=0;i<n;i++)add(m,'V'+(i+1),[Math.cos(2*PI*i/n),Math.sin(2*PI*i/n),0],'');add(m,'S',[0,0,1.6]);const base=Array.from({length:n},(_,i)=>'V'+(i+1));m.faces.push(base);for(let i=0;i<n;i++){line(m,base[i],base[(i+1)%n]);line(m,base[i],'S');m.faces.push([base[i],base[(i+1)%n],'S']);}F.vertices=a;F.edges=b;given('Вершин: '+a);given('Рёбер: '+b);sample();break;}
  case'section':{
   [a]=take(q,/стороной (\d+)/);cube(a);
@@ -53,7 +85,16 @@ function build(kind,t){
   }
   F.edge=a;F.section=sectionPoints;F.plane=S.plane(m.points.M,m.points.N,m.points.P);break;
  }
- case'perpendicular':planePatch(m);add(m,'O',[0,0,0]);add(m,'A',[2,0,0]);add(m,'B',[0,2,0]);add(m,'P',[0,0,3]);line(m,'O','A');line(m,'O','B');line(m,'O','P');given('OP ⟂ OA; OP ⟂ OB; OA и OB пересекаются в плоскости');sample();break;
+ case'perpendicular':
+  planePatch(m);add(m,'O',[0,0,0]);add(m,'A',[2,0,0]);line(m,'O','A');
+  if(q.includes('OA и OP лежат')){
+   add(m,'P',[0,2,0]);line(m,'O','P');given('OA и OP лежат в α; OA ⟂ OP');
+   view(m,'neutral','Определи, как расположена OP относительно плоскости α.',[['O','A'],['O','P']]);
+   view(m,'step0','Проверь, принадлежит ли P плоскости α.',[['O','P']],[],['P']);
+  }else{
+   add(m,'B',[0,2,0]);add(m,'P',[0,0,3]);line(m,'O','B');line(m,'O','P');given('OP ⟂ OA; OP ⟂ OB; OA и OB пересекаются в плоскости');
+  }
+  sample();break;
  case'projection':{[a,b]=take(q,/длину (\d+), её проекция (\d+)/);h=Math.sqrt(a*a-b*b);planePatch(m,0,b*.7);add(m,'O',[0,0,0]);add(m,'A',[0,0,h]);add(m,'B',[b,0,0]);line(m,'A','B');line(m,'O','B');line(m,'A','O');dims([['A','B','AB = '+a],['O','B','OB = '+b],['A','O','AO = ?']]);given('Наклонная AB = '+a);given('Проекция OB = '+b);view(m,'step0','AO — расстояние до плоскости. Рассмотри AOB.',[['A','O'],['O','B'],['A','B']]);F.slant=a;F.projection=b;break;}
  case'dihedral':case'pyramid':{[h,a]=kind==='dihedral'?take(q,/высота (\d+), сторона основания (\d+)/):take(q,/основания.*? (\d+), высота (\d+)/).reverse();pyramid(m,a,h);line(m,'S','O');dims([['A','B','AB = '+a],['S','O','SO = '+h]]);given('Квадратное основание: a = '+a);given('Высота SO = '+h);view(m,'step0','O — центр основания, M — середина AB.',[['S','O'],['O','M'],['S','M']],['S','O','M']);view(m,'step1','Используй нормальное сечение SOM.',[['S','M'],['O','M']],['S','O','M']);F.baseSide=a;F.height=h;break;}
  case'box-diagonal':case'box-volume':{[a,b,h]=kind==='box-diagonal'?take(q,/равны (\d+), (\d+), (\d+)/):take(q,/параллелепипеда (\d+), (\d+), (\d+)/);box(m,a,b,h);dims([['A','B',String(a)],['B','C',String(b)],['C','C₁',String(h)]]);given('Размеры: '+[a,b,h].join('; '));if(kind==='box-diagonal'){view(m,'neutral','Найди длину пространственной диагонали AC₁.',[['A','C₁']]);view(m,'step0','Рассмотри сначала диагональ основания.',[['A','C'],['C','C₁'],['A','C₁']]);mark(m,'A','C₁','AC₁ = ?');}F.dimensions=[a,b,h];break;}

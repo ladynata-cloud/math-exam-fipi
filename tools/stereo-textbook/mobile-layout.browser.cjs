@@ -5,6 +5,8 @@ const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'../..'),bundle=require(root+'/stereo-course/textbook/data/course.json');
 const newIds=require('./additional404-baseline.cjs').ids;
 const earlyRouteIds=['theory-014-example-3a','ex-main-0073','theory-022','ex-main-0167','ex-main-0171'];
+const earlyChapters=new Set(['Введение','I. Параллельность прямых и плоскостей','II. Перпендикулярность прямых и плоскостей']);
+const earlyIds=bundle.lessons.filter(lesson=>earlyChapters.has(lesson.source.chapter)).map(lesson=>lesson.id);
 const samples=[1,48,116,166,218,239,271,320,346,372,396].map(n=>bundle.lessons.find(l=>l.source.collection==='main'&&l.source.exercise===String(n)));
 samples.push(bundle.lessons.find(l=>l.id==='theory-033'),bundle.lessons.find(l=>l.source.collection==='selfcheck'));
 samples.push([...bundle.lessons].filter(l=>!newIds.has(l.id)).sort((a,b)=>b.statement.text.length-a.statement.text.length)[0]);
@@ -36,6 +38,13 @@ let server,browser;
    if(height<800)continue;
    if(newIds.has(card.id))assert(m.fits,card.id+' complete condition and model fit the primary viewport');
    if(height===900&&earlyRouteIds.includes(card.id))assert(m.fits&&m.firstAction?.bottom<=height,card.id+' first condition, model and action fit');
+   if(width===320&&card.id==='theory-014-example-3a'){
+    const full=page.locator('.textbook-full-condition');
+    assert(await page.locator('.textbook-compact-condition').isVisible());
+    assert.equal(await full.evaluate(node=>node.open),false);
+    await full.locator('summary').click();assert(await full.locator('.textbook-condition').isVisible());
+    await full.locator('summary').click();
+   }
    const disclosure=page.locator('.textbook-lesson-header .companion-details');await disclosure.locator('summary').click();assert(await disclosure.locator('.companion-book').first().isVisible());assert((await disclosure.innerText()).includes('2024'));assert((await disclosure.innerText()).includes('PDF '+card.source.pdfPages.join(', ')));await disclosure.locator('summary').click();
    const guide=page.locator('.textbook-model-guide');await guide.locator('summary').click();assert(await guide.locator('.am-help').isVisible());assert(await guide.locator('.am-note').isVisible());await guide.locator('summary').click();
    const svg=page.locator('[data-main-model] svg'),camera=await svg.getAttribute('data-yaw');
@@ -46,6 +55,17 @@ let server,browser;
    await page.locator('[data-step]').first().getByRole('button',{name:'Показать на рисунке',exact:true}).click();assert.equal(await svg.getAttribute('data-view'),card.steps[0].view||'neutral');assert.equal(await page.locator('[data-step]').count(),card.steps.length,'return to prior step retains all steps');
    const saved=await page.evaluate(k=>localStorage.getItem(k),key(card));await page.reload();await page.locator('[data-main-model] svg').waitFor();assert.equal(await page.evaluate(k=>localStorage.getItem(k),key(card)),saved);assert.equal(await page.locator('[data-step]').count(),card.steps.length);if(card.answer)assert.equal(await page.locator('#final-answer').inputValue(),'Проверка сохранения '+card.id);
    await page.getByRole('button',{name:'← Все материалы курса',exact:true}).click();assert(await page.locator('#catalog-search').isVisible());
+  }
+  if(height===900){
+   const missed=await page.evaluate(ids=>ids.filter(id=>{
+    if(!window.textbookApp.open(id))return true;
+    const prompt=document.querySelector('.textbook-prompt'),drawing=document.querySelector('[data-main-model] svg');
+    const action=document.querySelector('.textbook-prompt-action,.textbook-compact-answer');
+    const visible=element=>{const box=element?.getBoundingClientRect();return box&&box.top>=0&&box.bottom<=innerHeight&&box.width>0;};
+    return !visible(prompt)||!visible(drawing)||!visible(action)||document.documentElement.scrollWidth>innerWidth+1;
+   }),earlyIds);
+   assert.deepEqual(missed,[],'all early lessons fit the first screen at '+width+'px');
+   console.log('ATANASYAN_EARLY_FIRST_SCREEN_OK: '+earlyIds.length+' cards at '+width+'×'+height);
   }
   // Live checks verify deployed code as well as unchanged course content.
   if(process.env.MOBILE_LAYOUT_LIVE_URL)for(const file of resources){const response=await context.request.get(base+file+'?layout-check='+Date.now());assert.equal(response.status(),200);assert.equal(crypto.createHash('sha256').update(await response.body()).digest('hex'),evidence.resources[file],file+' deployed bytes');}

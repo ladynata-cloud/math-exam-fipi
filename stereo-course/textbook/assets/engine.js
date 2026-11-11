@@ -18,6 +18,49 @@ const studyRoute=[
  ['Двугранный угол и перпендикулярность плоскостей','theory-022','ex-main-0167','theory-023','ex-main-0171'],
  ['Прямоугольный параллелепипед и многогранные углы','theory-024','theory-025','theory-026','ex-main-0191']
 ];
+// Mobile wording keeps the givens and the question, with the original always available.
+const compactPrompts={
+ "theory-014-example-3a":{text:"Точки A, B, C лежат внутри трёх рёбер параллелепипеда, выходящих из одной вершины V.",goal:"Построй сечение плоскостью ABC и обоснуй его границу.",revision:1},
+ "ex-main-0025":{text:"Плоскости α и β пересекаются по прямой c. Прямая a ∥ c и не лежит ни в α, ни в β.",goal:"Докажи, что a параллельна обеим плоскостям.",revision:1},
+ "ex-main-0026":{text:"В треугольнике ABC сторона AC ∥ α. Плоскость α пересекает стороны AB и BC в точках M и N соответственно.",goal:"Докажи, что ABC и MBN подобны, если MBN невырожден.",revision:1},
+ "ex-main-0027":{text:"C лежит на AB, AB : BC = 4 : 3. Отрезок CD = 12 см параллелен плоскости α, проходящей через B.",goal:"Докажи, что AD пересекает α в точке E, и найди BE в см.",revision:1},
+ "ex-main-0028":{text:"В треугольнике ABC точки D и E лежат на AB и AC соответственно. DE = 5 см, BD : DA = 2 : 3. Плоскость α проходит через B и C, DE ∥ α.",goal:"Найди BC в см.",revision:1,answerLabel:"Длина BC в сантиметрах"},
+ "ex-main-0029":{text:"В трапеции ABCD основание BC = 12 см. Точка M вне плоскости трапеции, K — середина BM.",goal:"Докажи, что плоскость ADK пересекает MC в точке H, и найди KH в см.",revision:1},
+ "ex-main-0030":{text:"У трапеции ABCD основания AB и CD. Прямая AB ∥ α, точка C лежит в α.",goal:"Докажи: а) CD лежит в α; б) средняя линия трапеции параллельна α.",revision:1},
+ "ex-main-0033":{text:"Три плоскости попарно пересекаются. Общей для всех трёх прямой нет.",goal:"Докажи, что три линии пересечения либо параллельны, либо проходят через одну точку.",revision:1},
+ "ex-main-0034":{text:"D вне плоскости ABC. M, N, P — середины DA, DB, DC. K лежит на BN, K ≠ N.",goal:"Определи и обоснуй расположение прямых: а) ND и AB; б) PK и BC; в) MN и AB; г) MP и AC; д) KN и AC; е) MD и BC.",revision:1},
+ "ex-main-0035":{text:"Через точку M вне прямой a проведены две различные прямые b и c, обе без общих точек с a.",goal:"Докажи, что хотя бы одна из прямых b и c скрещивается с a.",revision:1},
+ "ex-main-0042-b":{text:"Параллелограмм ABCD и трапеция ABEK лежат в разных плоскостях. В трапецию вписана окружность. Основания AB = 22,5 см, EK = 27,5 см.",goal:"Найди периметр ABEK.",revision:1,answerLabel:"Периметр в сантиметрах"},
+ "ex-main-0044-a":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 40°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0044-b":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 135°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0044-c":{text:"OB ∥ CD. Прямые OA и CD скрещиваются. ∠AOB = 90°.",goal:"Найди угол между OA и CD.",revision:1,answerLabel:"Угол в градусах"},
+ "ex-main-0045-a":{text:"Прямая a ∥ BC и не лежит в плоскости параллелограмма ABCD. Один из его углов равен 50°.",goal:"Докажи, что a и CD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0045-b":{text:"Прямая a ∥ BC и не лежит в плоскости параллелограмма ABCD. Один из его углов равен 121°.",goal:"Докажи, что a и CD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0046-b":{text:"Прямая m ∥ BD и не лежит в плоскости ромба ABCD. ∠ABC = 128°.",goal:"Докажи, что m и AD скрещиваются, и найди угол между ними.",revision:1},
+ "ex-main-0086":{text:"Дан параллелепипед ABCDA₁B₁C₁D₁.",goal:"Построй сечение плоскостью через AC, параллельной BD₁. Докажи, что это равнобедренный треугольник, если ABCD — ромб и ∠ABB₁ = ∠CBB₁ = 90°.",revision:2},
+ "ex-main-0100":{text:"Даны скрещивающиеся прямые a, b и точка A.",goal:"Докажи, что через A проходит ровно одна плоскость, параллельная обеим прямым или содержащая одну из них и параллельная другой. Построй её.",revision:1},
+ "ex-main-0109":{text:"Плоскости через пары боковых рёбер параллелепипеда, не лежащих на одной грани, пересекаются по a.",goal:"Найди a и докажи, что она параллельна боковым рёбрам и пересекает все четыре диагонали.",revision:1},
+ "ex-main-0184":{text:"Плоскости треугольников ABC и ABD перпендикулярны. AB = 10 см.",goal:"Найди CD, если оба треугольника а) равносторонние; б) прямоугольные равнобедренные с гипотенузой AB.",revision:1},
+ "ex-selfcheck-i-07":{text:"Из двух параллельных прямых a и b прямая a параллельна плоскости α.",goal:"Обязательно ли b параллельна α?",revision:2},
+ "ex-selfcheck-i-13":{text:"Два отрезка непараллельны. У каждого по одному концу в каждой из двух параллельных плоскостей.",goal:"Могут ли отрезки быть равны? Обоснуй.",revision:2},
+ "ex-selfcheck-i-15":{text:"Параллелепипед: а) ровно 1 грань — прямоугольник; б) ровно 2 смежные грани — ромбы; углы граней: в) все острые; г) все прямые; д) острых и тупых разное число.",goal:"Что возможно? Обоснуй.",revision:2},
+ "ex-selfcheck-i-16":{text:"Плоскость проходит через внутренние точки а) тетраэдра, б) параллелепипеда. Сечения невырожденные.",goal:"Назови все числа сторон сечения, докажи границы и приведи примеры для обоих тел.",revision:2},
+ "theory-005":{text:"Различные прямые a и b параллельны c. Плоскость α пересекает a в точке M.",goal:"Докажи лемму о пересечении плоскости параллельными прямыми и установи, как расположены a и b.",revision:1},
+ "theory-006":{text:"Даны b ⊂ α, a ∥ b и a не лежит в α.",goal:"Назови три положения прямой и плоскости. Докажи признак параллельности и два следствия пункта 6.",revision:1},
+ "theory-009":{text:"AB и CD — скрещивающиеся прямые.",goal:"Определи углы между пересекающимися и скрещивающимися прямыми. Докажи независимость от выбора точки. Построй угол с одной вспомогательной прямой.",revision:1},
+ "theory-011":{text:"α ∥ β, γ ∩ β = AC, γ ∩ α = BD. AB и CD лежат на разных параллельных прямых.",goal:"Сформулируй и докажи свойства линий пересечения и отрезков между параллельными плоскостями.",revision:1},
+ "theory-012":{text:"ABC — треугольник, D ∉ (ABC). Проведи DA, DB, DC.",goal:"Дай определения многоугольника и тетраэдра. Назови грани, рёбра, вершины и пары противоположных рёбер. Отличай фигуру от рисунка.",revision:1},
+ "theory-013":{text:"ABCD и A₁B₁C₁D₁ — равные параллелограммы в параллельных плоскостях; AA₁∥BB₁∥CC₁∥DD₁.",goal:"Дай определение и назови элементы. Докажи свойства противоположных граней и всех диагоналей.",revision:1},
+ "theory-014-example-3b":{text:"На рёбрах параллелепипеда отмечены A, B, C (рис. 39, б): A и B на разных рёбрах левой грани, B и C — задней.",goal:"Построй сечение плоскостью ABC и обоснуй каждый отрезок.",revision:1},
+ "theory-014-example-3c":{text:"Рис. 39, в. A на переднем левом ребре; B и C на соседних верхних рёбрах; A и B на левой грани.",goal:"Построй сечение параллелепипеда плоскостью ABC по следу в плоскости нижнего основания.",revision:1},
+ "theory-014":{text:"Даны параллелепипед и плоскость α.",goal:"Дай определения секущей плоскости и сечения. Перечисли возможные сечения тетраэдра и параллелепипеда и объясни построение их сторон.",revision:1},
+ "theory-016":{text:"Прямые a и b различны, a ⟂ α. На модели b ∥ a.",goal:"Определи перпендикулярность прямой к плоскости. Докажи: при a ⟂ α условия b ∥ a и b ⟂ α равносильны.",revision:1},
+ "theory-017-example":{text:"Даны прямая a и точка M. Рассмотри M ∈ a и M ∉ a.",goal:"Построй через M плоскость, перпендикулярную a. Обоснуй выбор двух пересекающихся прямых, существование и единственность.",revision:2},
+ "theory-020":{text:"AH ⟂ α, AM — наклонная к α, a лежит в α и проходит через M ≠ H.",goal:"Докажи a ⟂ HM ⇔ a ⟂ AM. В каждом направлении найди две пересекающиеся прямые и назови признак.",revision:1},
+ "theory-021-central":{text:"Даны плоскость α и центр O вне неё. Проектирующие прямые проходят через O.",goal:"Построй центральную проекцию точки. Объясни, почему исключается плоскость через O.",revision:1},
+ "theory-021":{text:"Даны плоскость α и прямая a. На рисунке a наклонна к α.",goal:"Построй прямоугольные проекции точки, прямой и фигуры. Докажи свойство проекции прямой. Определи угол прямой с плоскостью.",revision:1},
+ "theory-026":{text:"Грани — ∠A₁OA₂,…,∠AₙOA₁ с внутренними областями. Соседние лежат в разных плоскостях. У несоседних общая только O.",goal:"Дай определение выпуклого многогранного угла. Докажи, что некоторая плоскость пересекает все его рёбра.",revision:2},
+};
 const differentQuestion={
  'ex-main-0044-b':[['135','135°','135 °','135 градусов'],'Ты указал данный угол AOB. Вопрос об угле между прямыми OA и CD.'],
  'ex-main-0121':[['5','5 см','12','12 см'],'Ты указал другую длину. Вопрос о длине KM.'],
@@ -304,17 +347,25 @@ function createApp(root,options){
   const early=lesson.source.bookId===earlyCourse&&earlyChapters.has(lesson.source.chapter);
   root.classList.toggle('textbook-early-reading',early);
   const prompt=el('div',undefined,{class:'textbook-prompt'});
-  prompt.append(el('p',lesson.statement.text,{class:'textbook-condition'}));
+  const short=early&&win.innerWidth<=480?compactPrompts[lesson.id]:null;
+  const compact=short?.revision===lesson.revision?short:null;
+  const original=compact?el('details',undefined,{class:'textbook-full-condition'}):prompt;
+  if(compact){
+   prompt.append(el('p',compact.text,{class:'textbook-compact-condition'}),el('p',compact.goal,{class:'textbook-compact-goal'}));
+   original.append(el('summary','Полное условие'));
+  }
+  original.append(el('p',lesson.statement.text,{class:'textbook-condition'}));
   if(lesson.statement.givens?.length){
    const list=el('ul');for(const text of lesson.statement.givens)list.append(el('li',text));
-   if(early){const given=el('details',undefined,{class:'textbook-givens'});given.append(el('summary','Все данные условия'),list);prompt.append(given);}else prompt.append(list);
+   if(early&&!compact){const given=el('details',undefined,{class:'textbook-givens'});given.append(el('summary','Все данные условия'),list);original.append(given);}else original.append(list);
   }
-  prompt.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
+  original.append(el('p',lesson.statement.goal,{class:'textbook-goal'}));
   const figure=el('div',undefined,{class:'textbook-figure'});figure.append(model);
   main.append(prompt,figure);
+  if(compact)main.append(original);
   if(early)main.classList.add('textbook-first-topics');else main.append(side);
   if(lesson.answer){
-   const form=el('form',undefined,{'data-final-form':''}),label=el('label',lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
+   const form=el('form',undefined,{'data-final-form':''}),label=el('label',compact?.answerLabel||lesson.answer.prompt,{for:'final-answer'}),input=el(lesson.answer.mode==='manual'?'textarea':'input',undefined,{id:'final-answer',autocomplete:'off'}),check=el('button',lesson.answer.mode==='manual'?'Сохранить рассуждение':'Проверить ответ',{type:'submit'}),feedback=el('p',undefined,{role:'status','data-final-feedback':''});input.value=state.draft;
    input.addEventListener('input',()=>{if(state.draft!==input.value)state.manualSaved=false;state.draft=input.value;save();});
    const detail=el('button','Показать разбор ответа',{type:'button'});detail.hidden=true;
    detail.addEventListener('click',()=>{state.solutionShown=true;if(!assisted())return;setDisplayText(feedback,lesson.answer.feedback);detail.hidden=true;});

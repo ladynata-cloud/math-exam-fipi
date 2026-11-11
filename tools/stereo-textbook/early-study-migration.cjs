@@ -10,8 +10,8 @@ const originals = {
   [directory + 'style.css']: 'a105ca117d3a452d04788042c1c7b417336705c3677139f878d084edaf77d98b'
 };
 const reviewed = {
-  [directory + 'engine.js']: '4f7f2916a498014d2133ce65bc8bb25ad9624b01ed3d3c0c268ecd0b715ee7cb',
-  [directory + 'style.css']: '7236b9a4d4d724e6527e105c146cb0a01e0129651719fc49a3a26d713121d5f1'
+  [directory + 'engine.js']: '3407b8649699cd683a4fd16f4b49497d0aab3136b0b65fdbe23a4f9a6aa0fd1a',
+  [directory + 'style.css']: 'bfbdd9bb20165d7db5036c3da97389805491f344ff956b5fba05c038beb57d2c'
 };
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 

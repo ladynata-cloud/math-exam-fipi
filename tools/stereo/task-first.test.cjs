@@ -149,6 +149,23 @@ function checkHomeHero(doc){
  click(angleReview,'[data-action=home]');
  assert.match(angleReview.doc.querySelectorAll('.chapter-progress')[2].textContent,/проверкой после паузы — 1/u);
  angleReview.close();
+ // Each of the five formerly fixed topics now has a different optional transfer task.
+ for(const id of ['space','parallel','skew','parallel-planes','perpendicular']){
+  const kind=C.units.find(unit=>unit.id===id).task;
+  const first=boot(undefined,'#'+id,now),start=state(first,id),task=T.make(kind,start.seed);
+  input(first,'#answer',A.format(task.a));submit(first,'#answer-form');
+  assert.equal(state(first,id).review.dueAt,now+day,id+' earns the delayed check');
+  assert.equal(first.doc.querySelector('[data-action=review]'),null);
+  const saved=JSON.parse(first.w.localStorage.getItem('mathExamStereo.v1'));first.close();
+  const next=boot(saved,'#'+id,now+day);click(next,'[data-action=review]');
+  const delayed=T.makeReview(kind,state(next,id).seed);
+  assert.notEqual(delayed.q,task.q);
+  assert.equal(plainDisplay(next.doc.querySelector('.task-question')),delayed.q);
+  input(next,'#answer',A.format(delayed.a));submit(next,'#answer-form');
+  assert.equal(state(next,id).review.passedAt,now+day);
+  assert.equal(state(next,id).independent,2);
+  next.close();
+ }
  // New questions use independent geometry, including the displayed normals.
  const scenes=require(root+'/stereo-course/assets/task-scenes.js'),space=require(root+'/stereo-course/assets/space.js');
  for(let seed=0;seed<12;seed++){
