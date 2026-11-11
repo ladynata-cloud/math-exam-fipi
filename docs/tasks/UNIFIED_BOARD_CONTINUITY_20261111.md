@@ -33,6 +33,7 @@ PROJECT_STATUS.md в базе описывает прошлые этапы и н
 - [x] Пройдены необходимые проверки; failed/not-run отражены отдельно.
 
 ## Checks and review
+- Isolated synthetic journal-copy restore rehearsal: materials/rights/history/dedup, immutable source/reference copy, unsupported complete event fails closed. This does not satisfy production /data backup evidence.
 - Separate read-only composition with reviewed current main, preservation proof, full server/models and real two browser suites on composed sources. Overlap/main movement fails closed; no release authorization inferred.
 - node --test tools/group-board-ink.test.cjs
 - Geometry/model/assets/bridge tests from unified-interactive-board.yml.
