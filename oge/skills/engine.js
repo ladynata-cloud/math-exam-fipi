@@ -425,7 +425,7 @@
     if(!target)return;
     if(!target.matches("button,input,select,summary,a"))target.setAttribute("tabindex","-1");
     try{
-      target.focus({preventScroll:true});
+      target.focus({preventScroll:!changedView});
       if(previous&&!changedView&&previous.selection&&target.setSelectionRange)target.setSelectionRange.apply(target,previous.selection);
     }catch(_){}
   }

@@ -286,6 +286,14 @@ function safeError(error) {
       async function focusOn(selector, label) {
         assert(await page.locator(selector).evaluate(element => document.activeElement === element), label + ': keyboard focus remains on the relevant control or task');
       }
+      async function promptWithinViewport(label) {
+        const prompt = page.locator('.task-prompt');
+        assert(await prompt.isVisible(), label + ': the new task prompt is visible');
+        const box = await prompt.boundingBox(), viewport = page.viewportSize();
+        assert(box && box.width > 0 && box.height > 0, label + ': the prompt has a rendered area');
+        assert(box.x >= 0 && box.x + box.width <= viewport.width, label + ': the prompt fits horizontally');
+        assert(box.y >= 0 && box.y + box.height <= viewport.height, label + ': native focus brings the whole prompt into view; actual top=' + box.y + ', bottom=' + (box.y + box.height));
+      }
       try {
         await ready(page, '?topic=n9');
         await page.locator('[data-action="hint"]').press('Enter');
@@ -333,7 +341,21 @@ function safeError(error) {
         await page.locator('[data-action="next"]').press('Enter');
         assert.equal(await page.evaluate(() => OGESkillLab.state.runs['route-exp-n6-errors'].cursor), 1);
         await focusOn('.task-prompt', 'Continue to the next route task');
+        await promptWithinViewport('Continue to the next route task');
         assert.deepEqual(await page.evaluate(() => OGESkillLab.progress['exp-n6-errors-entry']), routeRecord);
+
+        await ready(page, '?topic=n9');
+        await page.locator('details.teacher > summary').press('Enter');
+        await page.locator('details.teacher[open]').waitFor();
+        const differentTopic = '.teacher [data-action="topic"][data-topic="n19"]';
+        await page.locator(differentTopic).focus();
+        await focusOn(differentTopic, 'Reach another topic in the long teacher overview');
+        assert((await page.evaluate(() => window.scrollY)) > 900, 'The topic transition starts below the first viewport');
+        await page.locator(differentTopic).press('Enter');
+        assert.equal(await page.locator('#skill-topic').inputValue(), 'n19');
+        await focusOn('.task-prompt', 'Open another topic from the teacher overview');
+        await promptWithinViewport('Open another topic from the teacher overview');
+        await page.screenshot({path: path.join(out, 'teacher-topic-transition-390.png')});
         report.scenarios.push('Keyboard focus survives rendering; checked ordinary and route answers resume with Next without duplicate results');
       } finally { await c.close(); }
     }

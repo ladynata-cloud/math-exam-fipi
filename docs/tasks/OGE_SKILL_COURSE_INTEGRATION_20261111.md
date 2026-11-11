@@ -180,6 +180,13 @@
   teacher overview before its state was recorded. The fix reads the actual
   teacher `open` state before rendering. The browser assertion is retained;
   deterministic open/close regression checks cover the event-order boundary.
+- The full dedicated workflow passed on `f04b487c103f7054cb315da0ffc051f17816344b`.
+  A further review of the long teacher overview found that changing to a
+  different topic focused its question while suppressing scrolling. Changed
+  lessons now allow the browser to show the new focused question; same-lesson
+  controls still preserve scroll and the initial page still has no autofocus.
+  The browser check explicitly starts near the bottom of the long overview
+  and requires the new question to appear without any manual scroll afterward.
 - Initial CI found one dependent metadata mismatch: the public-navigator
   manifest still named the old exact course HTML. The existing binding command
   is used with source `7a273185deb80cfbe082ea2dcb48ea69fab46c63` and exactly
