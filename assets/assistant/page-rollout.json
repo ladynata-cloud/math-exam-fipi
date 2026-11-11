@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "be57be6f52271a6d5d7a53c31ff299d10bd9bdfa",
+  "baseSha": "550b122249ac42ef15563b0d73495776cba5b761",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "754810d8880db9f3925eb6f08c0b5e0d9924d0fea686a046a6132f1482298ad3",
-      "afterSha256": "93619d085e83c91f7522b8baae7876af41b29ea50b3b7f2265a9824078652dba",
+      "beforeSha256": "ab79a3e77b696a413fc86c0879275d89b1843051e14a9437b90a6e80db3ba995",
+      "afterSha256": "41dc608d0c1e328d84e353084856332fbb813fab35ea8f603211d9a691301a37",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -4676,7 +4676,7 @@
     },
     {
       "previousBaseSha": "e31cedc856cf7ba4b7c512bff4f124306630a9fc",
-      "sourceBaseSha": "be57be6f52271a6d5d7a53c31ff299d10bd9bdfa",
+      "sourceBaseSha": "550b122249ac42ef15563b0d73495776cba5b761",
       "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
       "changedPaths": [
         "ege-baza/index.html",
