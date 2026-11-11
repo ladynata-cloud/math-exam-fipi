@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ad1d60451b89ceaddbdc2f6c6b56143ef820d0da",
+  "baseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4850,6 +4850,13 @@
       "changedPaths": [
         "ege-baza/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ad1d60451b89ceaddbdc2f6c6b56143ef820d0da",
+      "sourceBaseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
