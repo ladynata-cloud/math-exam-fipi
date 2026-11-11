@@ -256,11 +256,22 @@
     return null;
   }
 
-  function mountLessonChoices() {
+  function standaloneTrainer() {
     if (root.self !== root.top || !/^https?:$/.test(root.location.protocol) || root.MathExamBookEdition ||
-        root.OgeCourseSharedMode || root.MathExamLearning?.managed || document.body.dataset.profileBoard) return;
+        root.OgeCourseSharedMode || root.MathExamLearning?.managed || document.body.dataset.profileBoard) return false;
     const params = new URLSearchParams(root.location.search);
-    if (['learning', 'board', 'groupLesson'].some(key => params.get(key) === '1')) return;
+    return !['learning', 'board', 'groupLesson', 'g7-board'].some(key => params.get(key) === '1');
+  }
+
+  function learningOptionsStyle() {
+    if (document.querySelector('[data-lesson-contact-style]')) return;
+    document.head.append(element('link', undefined, {
+      rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111-entry', 'data-lesson-contact-style': ''
+    }));
+  }
+
+  function mountLessonChoices() {
+    if (!standaloneTrainer()) return;
 
     // The placements are public page choices; none is a trainer hint or action.
     // Keep the edition snapshots and existing trainer source files intact.
@@ -311,9 +322,7 @@
         const [description, slug] = typeof context === 'function' ? (context(anchor) || []) :
           [context, typeof example === 'function' ? example(anchor) : example];
         if (!description) continue;
-        if (!document.querySelector('[data-lesson-contact-style]')) {
-          document.head.append(element('link', undefined, { rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111-gif', 'data-lesson-contact-style': '' }));
-        }
+        learningOptionsStyle();
         const options = element('div', undefined, { 'data-trainer-learning-options': '' });
         if (slug) options.append(skillGif(slug));
         const choice = element('aside', undefined, { class: 'trainer-lesson-choice', 'data-lesson-contact': '' });
@@ -329,7 +338,112 @@
     if (watch) new root.MutationObserver(addChoices).observe(scope, { childList: true, subtree: true });
   }
 
-  function start() { mount(); mountLessonChoices(); }
+  function mountTrainerEntrances() {
+    if (!standaloneTrainer()) return;
+    const path = root.location.pathname.replace(/\/index\.html$/, '/');
+    const divisionTopic = ['/topics/delenie-ugolkom/', 'Разбор деления'];
+    const divisionPath = ['/trainers/oge-basics/multiplication-division/division-path.html', 'Ступени деления'];
+    const fractionTopic = ['/topics/obyknovennye-drobi/', 'Разбор дробей'];
+    const percentTopic = ['/topics/procenty/', 'Разбор процентов'];
+    const percentPath = ['/trainers/oge-basics/percentages/', 'Все навыки по процентам'];
+    const equationsTopic = ['/topics/lineynye-uravneniya/', 'Разбор уравнений'];
+    const geometryTopic = ['/topics/oge-geometriya/', 'Разбор геометрии ОГЭ'];
+    const geometryPath = ['/trainers/oge-course/#geometry', 'Задания по геометрии ОГЭ'];
+    const gradeSeven = ['/geometry-course/grade7/', 'Курс геометрии 7 класса'];
+    const geoRightDemo = ['/lessons/#demo-ege', 'К примеру на странице занятий'];
+    const routes = new Map();
+    const add = (paths, links, options = {}) => {
+      for (const name of paths) routes.set(name, { links, ...options });
+    };
+
+    add(['/trainers/long-division-stepwise.html'], [divisionTopic, divisionPath, ['/lessons/#demo-division', 'К примеру на странице занятий']], { lesson: false });
+    add(['/trainers/long-division-claude.html'], [divisionTopic, divisionPath], { anchor: 'main .hero' });
+    add([divisionPath[0]], [divisionTopic, ['/trainers/long-division-stepwise.html', 'Деление по шагам']], { anchor: '.path-hero' });
+    add(['/trainers/oge-basics/multiplication-division/quotient-estimate.html'], [divisionTopic,
+      ['/trainers/oge-basics/multiplication-division/division-path.html#stage-twoDigit', 'Деление на двузначное число']], { anchor: '.rounding-preparation' });
+    add(['/trainers/rounding-stepwise.html'], [divisionTopic, ['/trainers/oge-basics/multiplication-division/quotient-estimate.html', 'Подбор цифры частного']], { anchor: 'main .hero' });
+
+    add(['/trainers/oge-task6-fractions.html'], [fractionTopic,
+      ['/trainers/oge-basics/fraction-common-denominator.html', 'Общий знаменатель']], { lesson: false });
+    add(['/trainers/oge-basics/fraction-meaning.html'], [fractionTopic,
+      ['/trainers/oge-basics/fraction-common-denominator.html', 'Дальше: общий знаменатель']]);
+    add(['/trainers/oge-basics/fraction-common-denominator.html'], [fractionTopic, ['/trainers/oge-task6-fractions.html', 'Дроби в ОГЭ №6']]);
+
+    add([percentPath[0]], [percentTopic, ['/trainers/oge-basics/percentages/percent-of-number-and-whole.html', 'Найти процент от числа']]);
+    add(['/trainers/oge-basics/percentages/percent-of-number-and-whole.html'], [percentTopic, percentPath]);
+    add(['/trainers/oge-1-5-trainers/percent-table-trainer.html'], [percentTopic, percentPath], { anchor: '#result-details' });
+    add(['/trainers/simple-equations-stepwise.html'], [equationsTopic, ['/trainers/oge-task9-equations.html', 'Уравнения в ОГЭ №9']], { anchor: 'main .hero' });
+    add(['/trainers/oge-task9-equations.html'], [equationsTopic, ['/trainers/simple-equations-stepwise.html', 'Простые уравнения по шагам']], { lesson: false });
+    add(['/trainers/oge-task11-graphs-trainer.html'], [['/lessons/#demo-graphs', 'К примеру на странице занятий'],
+      ['/trainers/oge-course/', 'Все задания ОГЭ']], { lesson: false });
+
+    add(['/trainers/oge-task15-triangles.html', '/trainers/oge-task16-circle.html', '/trainers/oge-task17-quadrilaterals.html',
+      '/trainers/oge-task18-grid.html', '/trainers/task19-trainer.html'], [geometryTopic, geometryPath]);
+    add(['/oge/geometry/task-15-external-angle.html'], [geometryTopic,
+      ['/trainers/oge-task15-triangles.html', 'Решать задачи №15']]);
+    add(['/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html'], [
+      ['/trainers/oge-1-5-trainers/practice-1-5-map.html', 'Выбрать сюжет заданий №1–5'], ['/oge/', 'Подготовка к ОГЭ']], { anchor: '#result .result-actions' });
+
+    add(['/stereo-course/textbook/'], [['/lessons/#demo-cone', 'К примеру на странице занятий'],
+      ['/stereo-course/', 'Курс стереометрии']], {
+      anchor: '.textbook-help', watch: '#textbook-app', match: hash => hash === '#ex-main-0346'
+    });
+    add(['/ege-profil/start/'], [geoRightDemo, ['/ege-profil/', 'Все задания профильного ЕГЭ']], {
+      anchor: '#main', position: 'afterbegin', lesson: false, watch: '#main',
+      match: hash => /^#(?:practice\/geo-right\/(?:guided|plan|independent)|(?:exam|calm)\/1)$/.test(hash)
+    });
+
+    add(['/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html'], [gradeSeven,
+      ['/geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html', 'Исследовать сумму углов']], { anchor: '#bar' });
+    add(['/geometry-course/trainers/ch2-p3-t2-proof-asa.html'], [gradeSeven,
+      ['/geometry-course/trainers/ch2-p3-t1-overlay-asa.html', 'Увидеть второй признак на чертеже']], { anchor: '#bar' });
+    add(['/trainers/ege-profile/log-inequalities/nested.html'], [
+      ['/trainers/ege-profile/log-inequalities/index.html#nested-example-title', 'Разбор вложенных логарифмов'],
+      ['/trainers/ege-profile/log-inequalities/lesson.html', 'Логарифмические неравенства по шагам']], { anchor: '#current .bottom-actions', watch: '#current' });
+    add(['/trainers/negative-numbers-alternative.html'], [
+      ['/trainers/oge-basics/negative-number-line.html', 'Потренировать числовую прямую'],
+      ['/trainers/negative-numbers.html', 'Сложение и вычитание со знаками']], { anchor: 'main.page > section.card:first-of-type', position: 'beforeend' });
+
+    const route = routes.get(path);
+    if (!route) return;
+    const { links, anchor: selector = 'nav.oge-wayfinding', position = 'afterend', match, watch, lesson = true } = route;
+    let menu;
+    let previousAnchor;
+
+    function addLinks() {
+      const anchor = document.querySelector(selector);
+      if (!anchor || (match && !match(root.location.hash))) {
+        menu?.remove();
+        return;
+      }
+      if (menu?.isConnected && previousAnchor === anchor) return;
+      menu?.remove();
+      learningOptionsStyle();
+      menu = element('nav', undefined, { class: 'trainer-entry-links', 'aria-label': 'Переходы по теме', 'data-trainer-entry-links': '' });
+      for (const [href, label] of links) {
+        menu.append(element('a', label, { href, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${label} (в новой вкладке)` }));
+      }
+      if (lesson) {
+        menu.append(element('a', 'Разобрать с репетитором', {
+          href: '/lessons/#contact', target: '_blank', rel: 'noopener noreferrer', class: 'trainer-entry-lesson',
+          'aria-label': 'Разобрать тему с Натальей Михайловной (в новой вкладке)'
+        }));
+      }
+      previousAnchor = anchor;
+      anchor.insertAdjacentElement(position, menu);
+    }
+
+    addLinks();
+    const observed = watch && document.querySelector(watch);
+    if (observed) new root.MutationObserver(addLinks).observe(observed, { childList: true, subtree: true });
+    if (match) root.addEventListener('hashchange', addLinks);
+  }
+
+  function start() {
+    mount();
+    mountLessonChoices();
+    mountTrainerEntrances();
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
 })(window);
