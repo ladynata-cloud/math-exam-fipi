@@ -1,0 +1,99 @@
+name: OGE skill course
+on:
+  pull_request:
+    paths:
+      - 'oge/skills/**'
+      - 'oge/skill-course-entry.css'
+      - 'oge/index.html'
+      - 'trainers/oge-course/index.html'
+      - 'assets/assistant/page-rollout.json'
+      - 'tools/oge-skill-course*'
+      - 'trainers/oge-basics/multiplication-division/division-path*'
+      - 'tools/division-skill-map.test.cjs'
+      - '.github/workflows/oge-skill-course.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'oge/skills/**'
+      - 'oge/skill-course-entry.css'
+      - 'oge/index.html'
+      - 'trainers/oge-course/index.html'
+      - 'assets/assistant/page-rollout.json'
+      - 'tools/oge-skill-course*'
+      - 'trainers/oge-basics/multiplication-division/division-path*'
+      - 'tools/division-skill-map.test.cjs'
+      - '.github/workflows/oge-skill-course.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: oge-skill-course-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lessons-and-navigation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Fetch pinned preservation sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-skills" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-skills/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-skills/node_modules" >> "$GITHUB_ENV"
+      - name: Verify reproducible page and mathematical sources
+        run: |
+          python oge/skills/build.py
+          git diff --exit-code -- oge/skills/index.html oge/skills/course-data.json oge/skills/series-catalog.json
+          node oge/skills/validate.js
+          node oge/skills/validate-series.js
+          node oge/skills/validate-expansion-arithmetic.js
+          node oge/skills/validate-expansion-functions.js
+          node oge/skills/validate-expansion-geometry.js
+          node oge/skills/validate-foundation-bridges.js
+          node oge/skills/validate-review-expansion-functions.js
+          node oge/skills/validate-practical.js
+          node oge/skills/validate-second-part.js
+          node oge/skills/validate-division-extension.js
+      - name: Verify lessons, help and saved work
+        run: |
+          node oge/skills/validate-ui.js
+          node oge/skills/validate-expansion-ui.js
+          node oge/skills/validate-answer-format.js
+          node --test tools/oge-skill-course.test.cjs
+          node --test tools/division-skill-map.test.cjs
+          node tools/division-path.test.cjs
+          node tools/quotient-estimate.test.cjs
+          node tools/rounding-stepwise.dom.cjs
+      - name: Preserve the existing course
+        run: |
+          node --test tools/oge-learning-map.test.cjs
+          node --test tools/oge-course-guide.test.cjs
+          node tools/oge-learner-entry.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Browser navigation, narrow screens and lesson continuation
+        run: node tools/oge-skill-course.browser.cjs
+      - name: Confirm integration gate
+        run: |
+          echo OGE_SKILL_COURSE_INTEGRATION_OK
+          echo OGE_COMPLETE_SKILL_MAPS_OK
+      - name: Collect focused reports
+        if: always()
+        run: |
+          mkdir -p artifacts/oge-skill-course/reports
+          find oge/skills -maxdepth 1 -name 'QA_*.json' -exec cp {} artifacts/oge-skill-course/reports/ \;
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-skill-course
+          path: artifacts/oge-skill-course
+          retention-days: 14
+          if-no-files-found: error
