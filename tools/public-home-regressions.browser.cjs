@@ -66,16 +66,32 @@ const server = http.createServer((req, res) => {
       await page.evaluate(() => window.scrollTo(0, 0));
       return page.locator('#video-player').evaluate(v => { const r=v.getBoundingClientRect(); return {top:r.top,bottom:r.bottom,width:r.width}; });
     }
-    const before = await sas(old.page);
-    assert(before.bottom > 1001, 'the reported old home bundle must reproduce first-screen overflow: ' + JSON.stringify(before));
+    const desktop = {width:1440,height:1000};
+    const fixed = await open(desktop);
+    const originalBefore = await sas(old.page), originalAfter = await sas(fixed.page);
+    function assertFixedFit(layout, height) {
+      assert(layout.top >= 0 && layout.bottom <= height + 1 && layout.width > 200, 'fixed SAS video fits the first screen');
+    }
+    assertFixedFit(originalAfter, desktop.height);
+    assert(originalBefore.bottom - originalAfter.bottom > 30, 'the original displacement is removed at 1440×1000');
+    let viewport = desktop, before = originalBefore, after = originalAfter;
+    if (before.bottom <= desktop.height + 1) {
+      // Browser and font builds can place the same historical video a few pixels
+      // higher. Keep the width and independently replay both versions at a real
+      // viewport height between the two measured bottoms.
+      viewport = {width:desktop.width,height:Math.floor((before.bottom + after.bottom) / 2)};
+      await old.page.setViewportSize(viewport);
+      await fixed.page.setViewportSize(viewport);
+      before = await sas(old.page);
+      after = await sas(fixed.page);
+    }
+    assert(before.bottom > viewport.height + 1, 'the reported old home bundle must reproduce first-screen overflow: ' + JSON.stringify({viewport,before}));
+    assertFixedFit(after, viewport.height);
+    assert(before.bottom - after.bottom > 30, 'the original displacement is removed in the overflow replay');
+    evidence.reproduction.video = {viewport,before,after,desktop:{viewport:desktop,before:originalBefore,after:originalAfter}};
     await old.page.screenshot({path:path.join(output, 'sas-before-1440.png')});
-    await old.context.close();
-    const fixed = await open({width:1440,height:1000});
-    const after = await sas(fixed.page);
-    assert(after.top >= 0 && after.bottom <= 1001 && after.width > 200, 'fixed SAS video fits the first screen');
-    assert(before.bottom - after.bottom > 30, 'the original displacement is removed');
-    evidence.reproduction.video = {before,after};
     await fixed.page.screenshot({path:path.join(output, 'sas-after-1440.png')});
+    await old.context.close();
     await fixed.context.close();
     const routes = ['/video-lessons/cheatsheets.html#grade7-g-core-sas', '/trainers/ege-t1-planimetry-trainer.html',
       '/trainers/geometry7-practice.html', '/ege-profil/trainers/stereo/trainer.html',

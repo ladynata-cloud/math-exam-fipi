@@ -18,10 +18,13 @@ copies and avoids adding a network dependency to the existing bundle.
 The lessons header/footer logos also return home, with a visible header menu
 entry. The common bar sits in document flow, avoiding overlays on answers.
 Iframe and explicit embedded modes retain their parent navigation. Public
-standalone board shells still expose home. Teacher/private panels, empty
-placeholders, source reports, offline and frozen book editions are excluded
-with explicit reasons in the coverage checker. No exercises, grading, saved
-work, account protocol or board synchronization is changed.
+standalone board shells still expose home. The expanded owner request also
+covers teacher assessment panels and the three existing cabinet shells. The
+cabinet uses native links to the public homepage because its separate origin
+serves only local assets. The generated OGE skills page uses a native link in
+its authored template. Empty placeholders, source reports, offline and frozen
+book editions keep explicit exclusions. No exercises, grading, saved work,
+account protocol or board synchronization is changed.
 
 ## Checks and review
 

@@ -11,7 +11,7 @@ const SITE = 'https://mathexam.space';
 const PUBLIC_ROOTS = new Set([
   'articles', 'azbuka-postroeniy-reviewed', 'courses', 'ege-baza', 'ege-profil', 'ege-profile',
   'equations', 'foundations', 'geometry-course', 'geometry-merzlyak',
-  'geometry-pogorelov', 'ggb', 'grade7', 'laboratory', 'lessons', 'metod-racionalizacii', 'oge', 'pedagogam', 'school',
+  'geometry-pogorelov', 'ggb', 'grade7', 'laboratory', 'learning', 'lessons', 'metod-racionalizacii', 'oge', 'pedagogam', 'school',
   'soviet-math', 'stereo-course', 'topics', 'trainers', 'trainings', 'video-lessons', 'vpr'
 ]);
 const EXCLUDED = new Map([
@@ -20,14 +20,7 @@ const EXCLUDED = new Map([
   ['courses/vilenkin-5-part-1/offline.html', 'Download/offline edition; preserve its standalone packaging.'],
   ['courses/vilenkin-6-part-1/offline.html', 'Download/offline edition; preserve its standalone packaging.'],
   ['ege-baza/sources/index.html', 'Source and coverage report, not a learner activity.'],
-  ['ege-profil/teacher.html', 'Teacher account panel; existing session navigation owns its exit.'],
-  ['geometry-course/teacher.html', 'Teacher work-review panel, not a public course.'],
-  ['geometry-course/teacher-atlas.html', 'Teacher work-review panel, not a public course.'],
-  ['geometry-merzlyak/teacher.html', 'Teacher work-review panel, not a public course.'],
-  ['geometry-pogorelov/teacher.html', 'Teacher work-review panel, not a public course.'],
-  ['trainers/algebra-7/control-work-teacher.html', 'Teacher assessment panel, not a public trainer.'],
-  ['trainers/dvi/math-18-20-teacher.html', 'Teacher assessment panel, not a public trainer.'],
-  ['trainers/ege-profile/yashchenko-lines-1-2-teacher.html', 'Teacher assessment panel, not a public trainer.'],
+  ['oge/skills/app-fragment.html', 'Source fragment assembled into the covered skill course, not a standalone page.'],
   ['trainers/fipi-ege-informatics-task1-report.html', 'Source-import report, not an interactive trainer.'],
   ['trainers/fipi-oge-informatics-report.html', 'Source-import report, not an interactive trainer.'],
   ['trainers/testing-hub.html', 'Internal testing inventory, not a public course.'],
@@ -63,6 +56,19 @@ function hasHomeBundle(name, html) {
     } catch (_) { /* A malformed source cannot count as executable coverage. */ }
   }
   return false;
+}
+
+function hasDirectHome(name, html) {
+  const expected = name.startsWith('learning/') ? SITE + '/' : '/';
+  return (uncomment(html).match(/<a\b[^>]*>/gi) || []).some(tag => {
+    if (!/\sdata-mathexam-home-link(?:\s|=|>)/i.test(tag)) return false;
+    const a = attributes(tag);
+    return a.href === expected && a.target === '_self';
+  });
+}
+
+function hasHomeReturn(name, html) {
+  return hasDirectHome(name, html) || (!name.startsWith('learning/') && hasHomeBundle(name, html));
 }
 
 function redirectDestination(name, html) {
@@ -105,7 +111,7 @@ function checkCoverage(root = ROOT) {
       if (!dest || dest.endsWith('/')) dest += 'index.html';
       return resolve(dest, [...chain, name]);
     }
-    if (!hasHomeBundle(name, html)) throw Error('Missing home-return bundle: ' + name);
+    if (!hasHomeReturn(name, html)) throw Error('Missing home return: ' + name);
     return name;
   }
   for (const name of listed.eligible) {
@@ -117,14 +123,14 @@ function checkCoverage(root = ROOT) {
       if (redirect) redirects.push({ path: name, target });
       else covered.push(name);
     } catch (error) {
-      if (!redirect && !hasHomeBundle(name, html)) uncovered.push(name);
+      if (!redirect && !hasHomeReturn(name, html)) uncovered.push(name);
       failures.push({ path: name, message: error.message });
     }
   }
   return { eligible: listed.eligible, covered, redirects, excluded: listed.excluded, uncovered, failures };
 }
 
-module.exports = { ROOT, PUBLIC_ROOTS, EXCLUDED, exclusion, attributes, hasHomeBundle, redirectDestination, inventory, checkCoverage };
+module.exports = { ROOT, PUBLIC_ROOTS, EXCLUDED, exclusion, attributes, hasHomeBundle, hasDirectHome, redirectDestination, inventory, checkCoverage };
 
 if (require.main === module) {
   const report = checkCoverage();
