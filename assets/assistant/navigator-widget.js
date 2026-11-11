@@ -208,7 +208,7 @@
   function loadSkillGifPlayer() {
     if (!skillGifPlayer) {
       skillGifPlayer = new Promise((resolve, reject) => {
-        const script = element('script', undefined, { src: '/assets/trainer-skill-gif.js?v=20261111' });
+        const script = element('script', undefined, { src: '/assets/trainer-skill-gif.js?v=20261112' });
         script.addEventListener('load', () => {
           if (root.MathExamTrainerSkillGif) resolve(root.MathExamTrainerSkillGif);
           else reject(new Error('GIF player unavailable'));
@@ -223,9 +223,9 @@
     return skillGifPlayer;
   }
 
-  function skillGif(slug) {
+  function skillGif(slug, label = 'Наглядный разбор (GIF)') {
     const details = element('details', undefined, { class: 'trainer-skill-gif', 'data-trainer-skill-gif': slug });
-    const summary = element('summary', 'Наглядный разбор (GIF)');
+    const summary = element('summary', label);
     const status = element('p', '', { 'data-trainer-gif-status': '', role: 'status' });
     details.append(summary, status);
     let pending = false;
@@ -266,7 +266,7 @@
   function learningOptionsStyle() {
     if (document.querySelector('[data-lesson-contact-style]')) return;
     document.head.append(element('link', undefined, {
-      rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111-entry', 'data-lesson-contact-style': ''
+      rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261112-entry', 'data-lesson-contact-style': ''
     }));
   }
 
@@ -360,7 +360,7 @@
     add(['/trainers/long-division-claude.html'], [divisionTopic, divisionPath], { anchor: 'main .hero' });
     add([divisionPath[0]], [divisionTopic, ['/trainers/long-division-stepwise.html', 'Деление по шагам']], { anchor: '.path-hero' });
     add(['/trainers/oge-basics/multiplication-division/quotient-estimate.html'], [divisionTopic,
-      ['/trainers/oge-basics/multiplication-division/division-path.html#stage-twoDigit', 'Деление на двузначное число']], { anchor: '.rounding-preparation' });
+      ['/trainers/oge-basics/multiplication-division/division-path.html#stage-twoDigit', 'Деление на двузначное число']], { anchor: '#view-practice' });
     add(['/trainers/rounding-stepwise.html'], [divisionTopic, ['/trainers/oge-basics/multiplication-division/quotient-estimate.html', 'Подбор цифры частного']], { anchor: 'main .hero' });
 
     add(['/trainers/oge-task6-fractions.html'], [fractionTopic,
@@ -404,20 +404,80 @@
       ['/trainers/oge-basics/negative-number-line.html', 'Потренировать числовую прямую'],
       ['/trainers/negative-numbers.html', 'Сложение и вычитание со знаками']], { anchor: 'main.page > section.card:first-of-type', position: 'beforeend' });
 
+    const examples = new Map();
+    const addExamples = (paths, first, second) => {
+      for (const name of paths) examples.set(name, [first, second]);
+    };
+    const division = ['division', 'Деление уголком'];
+    const remainder = ['division-remainder', 'Проверка остатка'];
+    const denominator = ['fractions', 'Общий знаменатель'];
+    const percent = ['base-percent', 'Процент от числа'];
+    const whole = ['percent-whole', 'Число по его проценту'];
+    const equations = ['oge-equations', 'Преобразование уравнения'];
+    const triangle = ['triangle-sum', 'Третий угол треугольника'];
+    const exterior = ['triangle-exterior', 'Внешний угол треугольника'];
+    const percentTable = ['percent-table', 'Проценты в таблице'];
+
+    addExamples(['/trainers/long-division-stepwise.html', '/trainers/long-division-claude.html', divisionTopic[0]], division, remainder);
+    addExamples([divisionPath[0]], division, ['division-zero', 'Ноль в частном']);
+    addExamples(['/trainers/oge-basics/multiplication-division/quotient-estimate.html'], ['quotient-estimate', 'Подбор цифры частного'], remainder);
+    addExamples(['/trainers/rounding-stepwise.html'], ['rounding-nearest', 'Округление до сотен'], ['rounding-place', 'Округление до тысяч']);
+    addExamples(['/trainers/oge-task6-fractions.html'], denominator, ['fraction-multiply', 'Умножение дробей']);
+    addExamples(['/trainers/oge-basics/fraction-meaning.html'], ['fraction-parts', 'Что показывают числитель и знаменатель'], ['fraction-of-number', 'Дробь от числа']);
+    addExamples(['/trainers/oge-basics/fraction-common-denominator.html', fractionTopic[0]], denominator, ['fraction-subtraction', 'Вычитание дробей']);
+    addExamples([percentPath[0], '/trainers/oge-basics/percentages/percent-of-number-and-whole.html', percentTopic[0]], percent, whole);
+    addExamples(['/trainers/oge-1-5-trainers/percent-table-trainer.html'], percentTable, ['percent-change', 'Скидка и новая цена']);
+    addExamples(['/trainers/simple-equations-stepwise.html', equationsTopic[0]], equations, ['linear-balance', 'Одинаковое действие в обеих частях']);
+    addExamples(['/trainers/oge-task9-equations.html'], equations, ['equation-distribute', 'Раскрытие скобок']);
+    addExamples(['/trainers/oge-task11-graphs-trainer.html'], ['oge-graphs', 'Коэффициенты линейной функции'], ['graph-points', 'Точки линейной функции']);
+    addExamples(['/trainers/oge-task15-triangles.html', '/oge/geometry/task-15-external-angle.html',
+      '/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html', geometryTopic[0]], triangle, exterior);
+    addExamples(['/trainers/oge-task16-circle.html'], ['circle-inscribed', 'Вписанный угол'], ['circle-tangent', 'Радиус и касательная']);
+    addExamples(['/trainers/oge-task17-quadrilaterals.html'], ['quad-area', 'Площадь трапеции'], ['quad-midline', 'Средняя линия трапеции']);
+    addExamples(['/trainers/oge-task18-grid.html'], ['grid-area', 'Площадь треугольника на клетках'], ['grid-diagonal', 'Длина отрезка по клеткам']);
+    addExamples(['/trainers/task19-trainer.html'], triangle, ['geometry-statement', 'Контрпример к утверждению']);
+    addExamples(['/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html'], percentTable, ['diagnostic-tariff', 'Сравнение тарифов']);
+    addExamples(['/stereo-course/textbook/'], ['cone-volume', 'Объём конуса'], ['cone-scale', 'Как меняется объём конуса']);
+    addExamples(['/ege-profil/start/'], ['profile-planimetry', 'Теорема Пифагора'], ['profile-area', 'Площадь прямоугольного треугольника']);
+    addExamples(['/geometry-course/trainers/ch2-p3-t2-proof-asa.html'], ['triangle-asa', 'Второй признак равенства треугольников'], ['triangle-asa-apply', 'Соответствие сторон равных треугольников']);
+    addExamples(['/trainers/ege-profile/log-inequalities/nested.html'], ['log-domain', 'Область допустимых значений'], ['log-decreasing', 'Убывающий логарифм']);
+    addExamples(['/trainers/negative-numbers-alternative.html'], ['negatives', 'Сложение на числовой прямой'], ['negative-subtract', 'Вычитание отрицательного числа']);
+
+    const pair = examples.get(path);
+    if (!pair) return;
+
+    function exampleGroup() {
+      const group = element('section', undefined, {
+        class: 'trainer-entry-examples', 'aria-label': 'Наглядные разборы (GIF)', 'data-trainer-entry-examples': ''
+      });
+      for (const [slug, label] of pair) group.append(skillGif(slug, label));
+      return group;
+    }
+
     const route = routes.get(path);
-    if (!route) return;
+    if (!route) {
+      const hero = document.querySelector('.topic-hero');
+      if (hero) {
+        learningOptionsStyle();
+        hero.after(exampleGroup());
+      }
+      return;
+    }
     const { links, anchor: selector = 'nav.oge-wayfinding', position = 'afterend', match, watch, lesson = true } = route;
     let menu;
+    let examplesNode;
     let previousAnchor;
 
     function addLinks() {
       const anchor = document.querySelector(selector);
       if (!anchor || (match && !match(root.location.hash))) {
         menu?.remove();
+        examplesNode?.remove();
         return;
       }
-      if (menu?.isConnected && previousAnchor === anchor) return;
+      if (menu?.isConnected && examplesNode?.isConnected && previousAnchor === anchor) return;
       menu?.remove();
+      examplesNode?.remove();
       learningOptionsStyle();
       menu = element('nav', undefined, { class: 'trainer-entry-links', 'aria-label': 'Переходы по теме', 'data-trainer-entry-links': '' });
       for (const [href, label] of links) {
@@ -430,7 +490,9 @@
         }));
       }
       previousAnchor = anchor;
+      examplesNode = exampleGroup();
       anchor.insertAdjacentElement(position, menu);
+      menu.after(examplesNode);
     }
 
     addLinks();

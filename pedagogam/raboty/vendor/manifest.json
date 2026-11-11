@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "path": "Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "DejaVu-LICENSE.txt",
+      "bytes": 3857,
+      "sha256": "e81d9dced49fea2a7d576cbea283873de58563c5d488f954deb282843c3ea79c"
+    },
+    {
+      "path": "MathExamSans-Bold.ttf",
+      "bytes": 84644,
+      "sha256": "e598086bf15dce07f976827166f9fb4487a194a466764813ee8b9d47a3c2369a"
+    },
+    {
+      "path": "MathExamSans.ttf",
+      "bytes": 94524,
+      "sha256": "582ab6779265ca1b29f450fcca373da2955727899895d7ec45969143afda6e3a"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2231,
+      "sha256": "826ab8522f1c4c7653dc8cc170dcade70a63e9e06b5ebbfabdc663a7054e0919"
+    },
+    {
+      "path": "fontkit-1.1.1.min.js",
+      "bytes": 758440,
+      "sha256": "d8df561b9fba98e24f2e5130e40948809281bbbc55a20c412359f1a0a5eb35a6"
+    },
+    {
+      "path": "fontkit-LICENSE.txt",
+      "bytes": 1497,
+      "sha256": "3709f0c98ec056fcbf0161f83f694b1425526e614b66816434d950124e29d97a"
+    },
+    {
+      "path": "fontkit-NOTICES.txt",
+      "bytes": 9821,
+      "sha256": "e09b92b3270405c00f84a0567133f3fda7fd3e93fcb133dd894621357cff6b57"
+    },
+    {
+      "path": "jszip-3.10.1.min.js",
+      "bytes": 97630,
+      "sha256": "acc7e41455a80765b5fd9c7ee1b8078a6d160bbbca455aeae854de65c947d59e"
+    },
+    {
+      "path": "jszip-LICENSE.txt",
+      "bytes": 33753,
+      "sha256": "566c953c6090b1218ca6217dd7359d45dde46581968586dc607d59a78af6a9c4"
+    },
+    {
+      "path": "pdf-lib-1.17.1.min.js",
+      "bytes": 525099,
+      "sha256": "0f9a5cad07941f0826586c94e089d89b918c46e5c17cf2d5a3c6f666e3bc694f"
+    },
+    {
+      "path": "pdf-lib-LICENSE.txt",
+      "bytes": 1070,
+      "sha256": "f2c9fc00fdb66eb99ac156ba52d734af66d8d309f65753ae809ad34ee2883bcb"
+    }
+  ]
+}

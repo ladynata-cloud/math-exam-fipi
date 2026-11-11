@@ -1,4 +1,4 @@
-# Lesson contacts and worked GIF examples inside ten trainers
+# Lesson contacts and worked GIF examples at trainer entrances
 
 ## Identity
 - Owner: Наталья, direct request in the current task on 2026-11-11.
@@ -42,6 +42,13 @@ New offers point to `/lessons/#contact` and open in a separate tab. Keep the
 existing offer in the original ten placements. Put links in the OGE diagnostic
 and percent-table results, and scope the cone offer to its showcase exercise.
 
+The owner then asked for GIFs in every updated entrance. Add two
+complementary worked examples to each of the 27 trainer entrances and each
+of the five topic pages. Share the same worked example when it teaches the
+same skill in more than one route. Keep the result-only and route-specific
+boundaries. Each example opens on request, supports manual frames and offers
+the full text transcript.
+
 Scope evidence: links from the homepage, its five topics and the four showcase
 examples, plus previously identified rounding and five public trainer pages
 with impressions in Google Search Console. Impressions establish search
@@ -54,6 +61,7 @@ bindings for the five modified topic pages through the existing tool.
 - [ ] Opening contacts leaves the task, input and stored learning state intact.
 - [ ] No lesson link goes through prerequisite return/assistance handlers.
 - [ ] All twelve GIFs play from their intended help panel and offer static frames.
+- [ ] All 27 trainer entrances and five topic pages each show two different, topic-specific examples.
 - [ ] Viewing the example leaves the learner's task and attempt state intact.
 - [ ] Homepage, topic and showcase links reach the stated exercises and anchors.
 - [ ] Trainer navigation and the optional lesson link work in the intended public mode.
@@ -61,7 +69,8 @@ bindings for the five modified topic pages through the existing tool.
 - [ ] Release and live verification are recorded in the PR.
 
 ## Checks and review
-Targeted existing division/skill-support, OGE and EGE tests; inline JS syntax;
+Targeted existing division/skill-support, OGE and EGE tests;
+`node tools/trainer-entry-gifs.browser.cjs` with Playwright; inline JS syntax;
 focused navigation/state checks; `git diff --check`; applicable GitHub checks.
 Review topic wording, placement, ordinary navigation and unchanged calculation
 logic. No new trainer or substantial learning sequence; external design/audit
@@ -84,3 +93,13 @@ checks and fresh base/head verification. No new publication permission needed.
 Initial clone was clean and matched authoritative main. Existing project status
 is historical; this task does not claim prior packages are live. Exact head,
 PR, checks, reviewed base, deployment and public results belong in the PR record.
+
+## Entrance GIF follow-up
+
+The trainer links expose 27 pairs and the topic pages expose five pairs.
+The original 12 examples are preserved. The new scenes add 33 examples,
+132 animated frames and matching static sheets. The GIF player still loads on
+request and stops motion on collapse. The browser check covers both GIFs on
+each public entry, result-only visibility, storage preservation and layout at
+320 and 1280 px. The quotient-estimation entry follows the practice area so its
+examples can be found without opening the rounding-only section.

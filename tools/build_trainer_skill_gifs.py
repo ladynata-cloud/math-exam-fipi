@@ -106,7 +106,7 @@ def render(title, steps, draw, index):
 
 
 def main():
-    groups = ('arithmetic', 'oge', 'profile')
+    groups = ('arithmetic', 'oge', 'profile', 'entries')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', choices=groups)
     args = parser.parse_args()

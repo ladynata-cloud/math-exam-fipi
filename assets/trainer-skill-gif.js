@@ -15,7 +15,7 @@
 
   function manifest() {
     if (!manifestRequest) {
-      manifestRequest = root.fetch(assetPath + 'index.json?v=20261111').then(response => {
+      manifestRequest = root.fetch(assetPath + 'index.json?v=20261112').then(response => {
         if (!response.ok) throw new Error('GIF examples unavailable');
         return response.json();
       }).catch(error => {

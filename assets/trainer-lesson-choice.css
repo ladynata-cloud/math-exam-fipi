@@ -100,3 +100,14 @@
 .trainer-entry-links a.trainer-entry-lesson { font-weight: 650; }
 .trainer-entry-links a:focus-visible { outline: 3px solid #a66a12; outline-offset: 2px; }
 @media print { .trainer-entry-links { display: none; } }
+
+.trainer-entry-examples {
+  box-sizing: border-box;
+  display: grid;
+  gap: .4rem;
+  width: min(calc(100% - 1.5rem), 68rem);
+  margin: .5rem auto;
+}
+
+.trainer-entry-examples .trainer-skill-gif { margin: 0; }
+@media print { .trainer-entry-examples { display: none; } }
