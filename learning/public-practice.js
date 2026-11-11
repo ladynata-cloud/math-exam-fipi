@@ -54,7 +54,7 @@
       return ()=>{};
     }
     const title=path.startsWith('/trainers/trainer-board.html')?'Общая доска':'Тренажёр';
-    host.innerHTML=`<section class="public-practice-workspace" data-public-workspace><header class="public-practice-toolbar"><a class="button primary" data-cabinet-return href="${E(back)}">← В кабинет</a><h1>${title}</h1><details><summary>О результатах</summary><p>Это отдельная практика. Она не добавляет выполненное домашнее задание в отчёт кабинета. Уже сохранённые работы кабинета остаются на месте.</p></details></header><div class="public-practice-stage"><p class="public-practice-loading" role="status">Открываем задание… Кнопка «В кабинет» всегда сверху.</p></div></section>`;
+    host.innerHTML=`<section class="public-practice-workspace" data-public-workspace><header class="public-practice-toolbar"><a class="button primary" data-cabinet-return href="${E(back)}">← В кабинет</a><h1>${title}</h1><details><summary>О результатах</summary><p>Это отдельная практика. Она не добавляет выполненное домашнее задание в отчёт кабинета. Уже сохранённые работы кабинета остаются на месте.<br><a class="button" data-public-home-return href="${publicOrigin}/" target="_self">← На главную</a></p></details></header><div class="public-practice-stage"><p class="public-practice-loading" role="status">Открываем задание… Кнопка «В кабинет» всегда сверху.</p></div></section>`;
     const frame=document.createElement('iframe');
     frame.title=title;
     frame.referrerPolicy='no-referrer';

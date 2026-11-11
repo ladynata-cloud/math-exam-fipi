@@ -136,7 +136,9 @@ async function createBoardFixture({ role = 'student', sourceOverride } = {}) {
 
   for (const script of w.document.querySelectorAll('script')) {
     const src = script.getAttribute('src');
-    const filename = src ? path.join(ROOT, 'trainers', src.split('?')[0]) : 'trainer-board.inline.js';
+    const pathname = src ? new URL(src, ORIGIN + '/trainers/trainer-board.html').pathname : '';
+    const filename = src ? path.resolve(ROOT, '.' + pathname) : 'trainer-board.inline.js';
+    if (src) assert(filename.startsWith(ROOT + path.sep), 'fixture script remains inside the repository');
     new vm.Script(src ? fs.readFileSync(filename, 'utf8') : script.textContent, { filename }).runInContext(context);
   }
   await tick();

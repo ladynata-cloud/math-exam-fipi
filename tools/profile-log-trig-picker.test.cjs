@@ -79,7 +79,10 @@ test('combined START wrapper loads existing canonical lesson assets, bridge and 
     ['app.js?v=20261101-trainer-repair', 'app.js?v=20261106-log-trig']
   ]);
   const canonical = require('./public-page-script.cjs').canonicalProfileLearningScripts(source, html).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + (boardStamps.get(src) || src));
-  assert.deepEqual(scripts.filter(src => src !== '/trainers/board-bridge.js' && src !== '/ege-profil/start/board-session.js?v=20261106-log-trig'), canonical);
+  const home = '/assets/assistant/home-link.js?v=20261110';
+  assert.deepEqual(scripts.filter(src => src !== '/trainers/board-bridge.js' && src !== '/ege-profil/start/board-session.js?v=20261106-log-trig'), [...canonical, home]);
+  assert.equal(scripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
+  assert.match(html, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
   assert.match(html, /data-profile-board="log-trig"/); assert.match(html, /href="#course"/);
   assert.doesNotMatch(html, /<iframe\b|<base\b|navigator-widget|location\.(?:replace|assign)/);
   for (const src of scripts) assert.equal(fs.statSync(path.join(ROOT, new URL(src, 'https://mathexam.space').pathname)).isFile(), true);
