@@ -96,6 +96,22 @@ async function checkRoute(page, origin, route, width) {
   assert.deepEqual(await storage(), saved, route + ' saved learning state');
 }
 
+async function checkRemediation(page, origin) {
+  await page.goto(origin + '/ege-baza/path/#lesson=practice-percent-whole');
+  const panel = page.locator('#ege-remediation');
+  const optional = page.locator('#ege-remediation + [data-trainer-learning-options]');
+  for (const [id, slug] of [['fractions', 'fractions'], ['equations', 'oge-equations']]) {
+    await page.evaluate(id => window.EgeRemediation.show({ id, value: '11', expected: 2 }), id);
+    await optional.waitFor();
+    assert.equal(await panel.locator('a').count(), 1, 'one return-to-lesson link');
+    assert.equal(await optional.locator('[data-trainer-skill-gif]').getAttribute('data-trainer-skill-gif'), slug);
+    assert.equal(await optional.locator('a[href="/lessons/#contact"]').count(), 1);
+  }
+  await page.evaluate(() => window.EgeRemediation.show({ id: 'not-a-skill', value: '11', expected: 2 }));
+  assert.equal(await panel.count(), 0);
+  assert.equal(await page.locator('[data-trainer-learning-options]').count(), 0, 'no outdated examples');
+}
+
 async function main() {
   const suppliedOrigin = process.env.TRAINER_GIF_TEST_ORIGIN;
   const origin = suppliedOrigin || 'http://127.0.0.1:8397';
@@ -120,7 +136,8 @@ async function main() {
       const page = await context.newPage();
       page.setDefaultTimeout(15000);
       for (const route of entries) await checkRoute(page, origin, route, width);
-      console.log('TRAINER_ENTRY_GIFS_OK', width, entries.length, 'entries, two GIFs each');
+      await checkRemediation(page, origin);
+      console.log('TRAINER_ENTRY_GIFS_OK', width, entries.length, 'entries, two GIFs each and one EGE remediation case');
       await context.close();
     }
   } finally {

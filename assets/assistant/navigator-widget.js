@@ -297,7 +297,8 @@
         'Наталья Михайловна поможет разобраться, когда меняется знак неравенства и как выбрать нужные промежутки.', null, 'oge-inequalities']],
       ['/trainers/oge-task21-word-problems.html', ['#task21Help', 'beforeend',
         'На занятии с Натальей Михайловной можно потренироваться составлять уравнение по условию задачи.', '#content', 'oge-word-problems']],
-      ['/ege-baza/path/', ['#ege-remediation', 'beforeend',
+      // Keep the remediation panel's single lesson-return link intact.
+      ['/ege-baza/path/', ['#ege-remediation', 'afterend',
         'Эту задачу и нужные для неё навыки можно разобрать на занятии с Натальей Михайловной.', '#main', baseSkillGif]],
       ['/ege-profil/start/', [dialogRoute, 'beforeend', anchor => {
         const dialog = anchor.closest('dialog');
@@ -313,8 +314,14 @@
     const [selector, position, context, watch, example] = placement;
     const scope = watch ? document.querySelector(watch) : document;
     if (!scope) return;
+    const adjacentChoices = new Map();
 
     function addChoices() {
+      for (const [anchor, options] of adjacentChoices) {
+        if (scope.contains(anchor)) continue;
+        options.remove();
+        adjacentChoices.delete(anchor);
+      }
       for (const anchor of scope.querySelectorAll(selector)) {
         const neighbor = position === 'beforeend' ? anchor.querySelector(':scope > [data-trainer-learning-options]') :
           position === 'afterend' ? anchor.nextElementSibling : anchor.previousElementSibling;
@@ -331,6 +338,7 @@
         }));
         options.append(choice);
         anchor.insertAdjacentElement(position, options);
+        if (watch && position !== 'beforeend') adjacentChoices.set(anchor, options);
       }
     }
 
