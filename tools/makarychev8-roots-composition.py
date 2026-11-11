@@ -42,6 +42,7 @@ COMPOSITION_PATHS = {MANIFEST, 'docs/PROJECT_STATUS.md', COURSE_PAGE,
 # provenance, not owner authorization. Unknown main commits require review;
 # they must not be silently absorbed by a green synthetic test.
 MAIN_PROVENANCE = {
+    'ace9e409deb0520d4e8d8ae9fbf4afcde1fc83a9': 479,
     '66172e7398d63c1f809cb3befbd29dbb92651109': 476,
     '25548b86df75b8c90a5dc5c6f1f1925c2ad70636': 475,
     'd435af8a6be1823210901d4e4dc13a44f65591a0': 478,

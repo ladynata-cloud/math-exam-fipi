@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+  "baseSha": "ff35c23599533b33244aac7a39144f5ce1a131ae",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2138,8 +2138,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "b2a2079b20137d0b24fab0cbecf2c33dd02c48f18ebb838bf6a822d7a598a504",
-      "afterSha256": "30fa8f34bfbd1b4a83d0bb0b02b7eefab9dd5673f7fd1fdcbc0c74997e630dec",
+      "beforeSha256": "78eb685481eefe477065a584ab7f2d8bc41a635f156636a8bc5ff16db2505f26",
+      "afterSha256": "656569cf7677b4a05b29a7f5d96e92318bdb48972a17b40548ad09e287b7bbfc",
       "placement": "before-head-close"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
@@ -4776,6 +4776,15 @@
       "task": "docs/tasks/GEOMETRY7_CONTROL_WORK_20261112.md",
       "changedPaths": [
         "grade7/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "sourceBaseSha": "ff35c23599533b33244aac7a39144f5ce1a131ae",
+      "task": "docs/tasks/MAKARYCHEV8_SQUARE_ROOTS_COMPLETE.md",
+      "changedPaths": [
+        "school/makarychev8/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
