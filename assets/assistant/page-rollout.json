@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
+  "baseSha": "11fa2761e54dba4dda65c71c023b358a0c8fb491",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "dba543162cda29f1525d107ad94f1182a260ca70e0b1ff69fb233237d31392fe",
-      "afterSha256": "9a4434f4394c1cdc3315d2816e99a5c525f7e91dac530384cc0413fae6a88f08",
+      "beforeSha256": "8688579c1334d198196b22b07127b9d4b153c7d8c7cc00078b48aeb46ad739d0",
+      "afterSha256": "f35881715f0ade3fb0de15a8cbe83b3ad29ef01f2141bc8ccd51451cb9bb0bdc",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -4857,6 +4857,15 @@
       "sourceBaseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
       "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
+      "sourceBaseSha": "11fa2761e54dba4dda65c71c023b358a0c8fb491",
+      "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
