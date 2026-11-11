@@ -531,7 +531,10 @@
         examplesNode?.remove();
         return;
       }
-      if (menu?.isConnected && examplesNode?.isConnected && previousAnchor === anchor) return;
+      const next = anchor.nextElementSibling;
+      const insertionAnchor = position === 'afterend' && next?.matches('#maxexam-public-assistant[data-course-navigation="true"]')
+        ? next : anchor;
+      if (menu?.isConnected && examplesNode?.isConnected && previousAnchor === insertionAnchor) return;
       menu?.remove();
       examplesNode?.remove();
       learningOptionsStyle();
@@ -545,9 +548,9 @@
           'aria-label': 'Разобрать тему с Натальей Михайловной (в новой вкладке)'
         }));
       }
-      previousAnchor = anchor;
+      previousAnchor = insertionAnchor;
       examplesNode = exampleGroup();
-      anchor.insertAdjacentElement(position, menu);
+      insertionAnchor.insertAdjacentElement(position, menu);
       menu.after(examplesNode);
     }
 
