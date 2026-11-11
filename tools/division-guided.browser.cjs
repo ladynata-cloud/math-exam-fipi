@@ -40,6 +40,87 @@ async function finish(page) {
 async function topic(page, id) {
   await page.locator('#topics-open').click(); await page.locator('[data-topic="' + id + '"]').click();
 }
+async function digitExercise(page) {
+  const panel = page.locator('#digit-skill-panel');
+  await panel.waitFor({state:'visible'});
+  const partial = Number(await panel.getAttribute('data-partial'));
+  const divisor = Number(await panel.getAttribute('data-divisor'));
+  assert(Number.isSafeInteger(divisor) && divisor > 0);
+  assert(Number.isSafeInteger(partial) && partial >= 0 && partial < 10 * divisor);
+  return {partial, divisor};
+}
+async function submitDigitExercise(page, exercise, wrong = false) {
+  const quotient = Math.floor(exercise.partial / exercise.divisor);
+  const answer = wrong ? (quotient + 1) % 10 : quotient;
+  await page.locator('#digit-skill-answer').fill(String(answer));
+  await page.locator('#digit-skill-remainder').fill(String(exercise.partial % exercise.divisor));
+  await page.locator('#digit-skill-form [type="submit"]').click();
+  const result = page.locator('#digit-skill-result');
+  await result.waitFor({state:'visible'});
+  assert.match(await result.innerText(), wrong ? /^Пока не получилось/u : /^Верно\./u);
+}
+async function checkDigitSkill(browser, url, errors) {
+  const context = await browser.newContext({viewport:{width:390,height:844}});
+  try {
+    const page = await context.newPage(); page.on('pageerror', error => errors.push(error.message));
+    await ready(page, url);
+    await one(page); await one(page);
+    const source = (await snapshot(page)).sessions.start;
+    const plan = G.plan(source.task), step = plan.actions[source.step];
+    assert.equal(step.kind, 'digit');
+    const original = {partial:plan.cycles[step.cycle].partial, divisor:plan.normalizedDivisor};
+    const wrong = String(Number(step.answer) + 1);
+    const checkWrong = async () => {
+      await page.locator('#answer').fill(wrong);
+      await page.locator('#primary').click();
+    };
+    await checkWrong();
+    assert.equal(await page.locator('#digit-practice').isVisible(), false, 'One error leaves the original exercise in view');
+    await page.reload(); await page.waitForFunction(() => window.__divisionGuidedDebug);
+    await checkWrong();
+    const offered = (await snapshot(page)).sessions.start;
+    assert.equal(offered.errors, 2);
+    assert.equal(offered.hints, 1, 'The visible hint is counted as help on the original example');
+    assert.equal(await page.locator('#feedback').innerText(), `Помещается ли ${original.divisor} × ${wrong} в ${original.partial}?`);
+    await page.locator('#digit-practice').click();
+    const practice = await digitExercise(page);
+    assert.notDeepEqual(practice, original, 'Practice uses different numbers from the original step');
+    await submitDigitExercise(page, practice);
+    await page.locator('#digit-skill-close').click();
+    assert.equal(await page.locator('#digit-skill-panel').isVisible(), false);
+    await page.reload(); await page.waitForFunction(() => window.__divisionGuidedDebug);
+    const resumed = (await snapshot(page)).sessions.start;
+    assert.equal(resumed.step, source.step);
+    assert.deepEqual(resumed.task, source.task);
+    assert.deepEqual(resumed.answers, source.answers, 'The detour preserves all accepted original answers');
+
+    const map = await context.newPage(); map.on('pageerror', error => errors.push(error.message));
+    await map.goto(new URL('/trainers/oge-basics/multiplication-division/division-path.html#skill-quotient-digit', url).href);
+    const mapStatus = map.locator('#digit-skill-status');
+    assert.equal((await mapStatus.innerText()).trim(), 'Тренируюсь', 'Supported practice does not verify the skill');
+    const continueLink = map.locator('#continue-division');
+    assert.equal((await continueLink.innerText()).trim(), 'Продолжить с подбора цифры');
+    assert.equal(await continueLink.getAttribute('href'), '/trainers/long-division-stepwise.html?digit-skill=practice#start');
+
+    const results = page.locator('#results');
+    if ((await results.getAttribute('open')) === null) await results.locator('summary').click();
+    await page.locator('#digit-check').click();
+    const firstCheck = await digitExercise(page);
+    assert.notDeepEqual(firstCheck, original);
+    assert.notDeepEqual(firstCheck, practice);
+    assert.equal(await page.locator('#digit-skill-remainder').isVisible(), true);
+    await submitDigitExercise(page, firstCheck, true);
+    await map.reload();
+    assert.equal((await mapStatus.innerText()).trim(), 'Тренируюсь', 'An incorrect independent answer does not verify the skill');
+    await page.locator('#digit-skill-next').click();
+    const freshCheck = await digitExercise(page);
+    assert.notDeepEqual(freshCheck, firstCheck, 'A new independent attempt uses fresh numbers');
+    await submitDigitExercise(page, freshCheck);
+    await map.reload();
+    assert.equal((await mapStatus.innerText()).trim(), 'Проверено самостоятельно');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'Skill exercise fits the mobile page');
+  } finally { await context.close(); }
+}
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const url = 'http://127.0.0.1:' + server.address().port + relative;
@@ -51,7 +132,7 @@ async function topic(page, id) {
     await ready(page, url);
     assert.equal(await page.locator('#problem').innerText(), '48 : 2');
     if (process.env.DIVISION_SCREENSHOTS) { fs.mkdirSync(process.env.DIVISION_SCREENSHOTS,{recursive:true}); await page.screenshot({path:path.join(process.env.DIVISION_SCREENSHOTS,'first-desktop.png'),fullPage:true}); }
-    assert.equal(await page.locator('dialog').isVisible(), false);
+    assert.equal(await page.locator('dialog[open]').count(), 0);
     assert.equal(await page.locator('#answer').isVisible(), true);
     await page.locator('#primary').click();
     assert.equal((await snapshot(page)).sessions.start.step, 0, 'empty input never accepted');
@@ -116,6 +197,7 @@ async function topic(page, id) {
     await page.locator('#repeat-example').click();
     assert.equal(await page.evaluate(key => localStorage.getItem(key), KEY), durable);
     await context.close();
+    await checkDigitSkill(browser, url, errors);
     for (const width of [320,390]) {
       const mobile = await browser.newContext({viewport:{width,height:844}});
       const p = await mobile.newPage(); p.on('pageerror', error => errors.push(error.message));
@@ -135,6 +217,6 @@ async function topic(page, id) {
     await finish(p); assert.equal(await p.evaluate(key => localStorage.getItem(key), KEY), '{broken');
     await broken.close();
     assert.deepEqual(errors, []);
-    console.log('DIVISION_GUIDED_NAVIGATION_OK: nine topics, single-submit continuation, notebook, hints, exact resume, topic restore, report fallback, duplicate prevention, stale tabs, corrupt storage and 320/390px.');
+    console.log('DIVISION_GUIDED_NAVIGATION_OK: nine topics, single-submit continuation, notebook, hints, exact resume, topic restore, quotient digit practice and independent check, report fallback, duplicate prevention, stale tabs, corrupt storage and 320/390px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); server.close(); process.exitCode = 1; });

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import bookCorrections from './oge-book-exam-corrections.cjs';
 import taskScope from './task6-scope.cjs';
+import { restoreFractionMultiplicationStep } from './task6-numerator-instruction.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const trainerPath = 'trainers/oge-task6-fractions.html';
@@ -566,12 +567,13 @@ test('two scoped relative help links resolve to existing offline files', () => {
   sourceMatches(/Потренировать общий знаменатель/);
 });
 
-test('the reviewed native engine and isolated progress adapter remain byte-identical', () => {
+test('only the explicit numerator instruction differs from the reviewed native engine and progress adapter', () => {
   // A whole-repository diff against the historical interactive-help release
   // misclassified later published courses and integrations as task-6 changes.
   // Pin the actual native engine instead; retain the frozen TASKS comparison,
   // independent arithmetic, local-script allowlist and offline/API checks.
   assert.equal(taskScope.auditHistoricalTask6(root).status, 'PASS');
-  assert.equal(createHash('sha256').update(script, 'utf8').digest('hex'), nativeScriptSha256,
-    'The board integration must not alter the reviewed native task-6 engine');
+  const historicalScript = restoreFractionMultiplicationStep(script);
+  assert.equal(createHash('sha256').update(historicalScript, 'utf8').digest('hex'), nativeScriptSha256,
+    'The reviewed native task-6 engine must match outside the exact instruction');
 });
