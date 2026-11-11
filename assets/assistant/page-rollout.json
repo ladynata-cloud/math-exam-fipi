@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+  "baseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "49be2bc8db5e44f784b1021bfac846f51585380d23b818bcd90c3314ddac1121",
-      "afterSha256": "a82869d210e4013843828ada3f3f0d05e7c7dbbffa2a536f8e808821a21e6035",
+      "beforeSha256": "7d95793c4f3bbc0df8d8c8f3f5b85cd3a8ed477099374625ac6d91fabfaf7c88",
+      "afterSha256": "f3a17d1dd8e27c4b54cde8c16bb48b065999988d4d73de220c70d6890df0422c",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "b012371e5c188df68f63d3748499ca739e594e0413de694f9ebcd884baf34125",
-      "afterSha256": "0ea6757c092c4bd3e55f6ff55363ee9329d12396b5f020919853c166d41749de",
+      "beforeSha256": "c8daf551777898d2fda97376b70b3896adca5f7b3bce19cb83657d9ecc169bdd",
+      "afterSha256": "a0be7396951a106fca0f0bddd51412d2a461edbe26c38b71af7f22294c0fc4cc",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4724,6 +4724,16 @@
         "trainers/ege-profile/log-inequalities/lesson.html",
         "trainers/ege-profile/log-inequalities/nested.html",
         "trainers/ege-profile/yashchenko-lines-1-2.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+      "sourceBaseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
+      "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
