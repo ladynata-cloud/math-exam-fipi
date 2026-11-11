@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+  "baseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2053,8 +2053,8 @@
       "placement": "before-head-close"
     },
     "grade7/index.html": {
-      "beforeSha256": "d7986fa36826d0058599fac7e4d3c184f0a81c6422b070bf2c39bfe45ab18c3f",
-      "afterSha256": "1542ebd051ac1fd638b7d7aeed61351afbb5b8e17c2d44f9fb6f28b1fd72fecd",
+      "beforeSha256": "eb2f27f7bca56e3e176177aed7acbd2fe8b713c4cafd9a8c869e8ceaf7e29a2a",
+      "afterSha256": "754dd210f462b84b1d45115727e55c10f8ee102d28e89bf803a13856bfd6ff5d",
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
@@ -4724,6 +4724,15 @@
         "trainers/ege-profile/log-inequalities/lesson.html",
         "trainers/ege-profile/log-inequalities/nested.html",
         "trainers/ege-profile/yashchenko-lines-1-2.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+      "sourceBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "task": "docs/tasks/GEOMETRY7_CONTROL_WORK_20261112.md",
+      "changedPaths": [
+        "grade7/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
