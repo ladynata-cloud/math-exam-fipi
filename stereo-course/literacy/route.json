@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "stages": [
+    {
+      "id": "literacy",
+      "title": "Стереометрическая грамота",
+      "description": "Читай записи A ∈ α и a ⊂ α. Узнавай точки, рёбра, грани и плоскости на чертеже. Применяй три аксиомы и находи общую прямую двух плоскостей.",
+      "lessonIds": [
+        "atanasyan2024-theory-001",
+        "atanasyan2024-theory-002-notation",
+        "atanasyan2024-theory-002-a1",
+        "atanasyan2024-theory-002-a2",
+        "atanasyan2024-theory-002-a3",
+        "atanasyan2024-theory-003-line-point",
+        "atanasyan2024-theory-003-intersecting-lines",
+        "atanasyan2024-main-001-c",
+        "atanasyan2024-main-001-d"
+      ]
+    },
+    {
+      "id": "lines-and-planes",
+      "title": "Прямые и плоскости",
+      "description": "Различай параллельные, пересекающиеся и скрещивающиеся прямые. Определяй угол между прямыми и доказывай параллельность плоскостей.",
+      "lessonIds": [
+        "theory-004",
+        "theory-005",
+        "theory-006",
+        "ex-main-0018-a",
+        "theory-007",
+        "theory-008",
+        "theory-009",
+        "theory-010",
+        "theory-011"
+      ]
+    },
+    {
+      "id": "sections",
+      "title": "Тетраэдр, параллелепипед и сечения",
+      "description": "Находи общую грань для двух точек, строй стороны сечения по граням и обосновывай, почему полученный многоугольник является сечением.",
+      "lessonIds": [
+        "theory-012",
+        "theory-013",
+        "theory-014",
+        "theory-014-example-1",
+        "theory-014-example-3a",
+        "ex-main-0070"
+      ]
+    },
+    {
+      "id": "perpendicular",
+      "title": "Перпендикуляр, наклонная и проекция",
+      "description": "Проводи перпендикуляр к плоскости, отличай его от наклонной и её проекции. Используй теорему о трёх перпендикулярах и находи угол между прямой и плоскостью.",
+      "lessonIds": [
+        "theory-015",
+        "theory-016",
+        "theory-017",
+        "theory-017-example",
+        "theory-018",
+        "theory-019",
+        "theory-020",
+        "theory-021"
+      ]
+    },
+    {
+      "id": "linear-angle",
+      "title": "Линейный угол двугранного угла",
+      "description": "Найди ребро двугранного угла. Из одной его точки проведи в каждой грани луч, перпендикулярный ребру. Примени построение в задаче №167 о правильном тетраэдре.",
+      "lessonIds": [
+        "theory-022",
+        "theory-022-right",
+        "theory-022-obtuse",
+        "ex-main-0167"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+name: Stereometry literacy — Atanasyan route and board
+on:
+  pull_request:
+    paths:
+      - 'stereo-course/literacy/**'
+      - 'stereo-course/textbook/data/course.json'
+      - 'stereo-course/assets/task-scene*'
+      - 'trainers/stereo-literacy-atanasyan.html'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'learning/course-program.js'
+      - 'tools/stereo-literacy-*'
+      - '.github/workflows/stereo-literacy-board.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'stereo-course/literacy/**'
+      - 'stereo-course/textbook/data/course.json'
+      - 'trainers/stereo-literacy-atanasyan.html'
+      - 'trainers/board-*'
+      - 'trainers/trainer-board.html'
+      - 'learning/course-program.js'
+      - 'tools/stereo-literacy-*'
+      - '.github/workflows/stereo-literacy-board.yml'
+permissions:
+  contents: read
+concurrency:
+  group: stereo-literacy-board-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  authored-route-and-shared-board:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked board and test dependencies
+        run: |
+          npm ci --prefix board-server --include=optional --no-audit --no-fund
+          npm install --prefix "$RUNNER_TEMP/stereo-literacy" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/stereo-literacy/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/stereo-literacy/node_modules" >> "$GITHUB_ENV"
+      - name: Verify authored cards, runtime and registry
+        run: |
+          python3 tools/stereo-literacy-build.py --check
+          python3 tools/stereo-literacy-build.test.py
+          node tools/stereo-literacy-runtime.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+      - name: Verify first screens and a two-participant board room
+        run: node tools/stereo-literacy-board.browser.cjs
+      - run: git diff --check
