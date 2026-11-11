@@ -322,6 +322,12 @@ async function main() {
         token:isTeacher?teacherToken:first.studentToken,seatId:first.id,teacher:isTeacher,offline,readWork:()=>work(first.id)});
       await storagePage.close();
     }
+    for(const isTeacher of [true,false]) {
+      const activeInkPage=await pageFor();
+      await storageFailure.activeInk({page:activeInkPage,origin:site.origin,server:api.origin,lesson:id,
+        token:isTeacher?teacherToken:first.studentToken,seatId:first.id,teacher:isTeacher,readWork:()=>work(first.id)});
+      await activeInkPage.close();
+    }
     const faultPage=await pageFor();
     await inkFaults({page:faultPage,origin:site.origin,server:api.origin,lesson:id,token:first.studentToken,seatId:first.id,readWork:()=>work(first.id)});
     await faultPage.close();

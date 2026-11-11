@@ -151,7 +151,10 @@
   }
   function enqueue(type, id, payload, options = {}) {
     const ws = workspace(id);
-    if (queueStorageFailed) return Promise.reject(Error('Браузер не сохранил резервную копию. Скачайте несохранённые действия и дождитесь восстановления сохранения.'));
+    // A gesture accepted before the storage failure must still enter the
+    // recoverable memory queue. This private flag never enters the wire body;
+    // new gestures and all other edits remain blocked until backup recovers.
+    if (queueStorageFailed && !(type === 'stroke' && options.finishCapturedInk === true)) return Promise.reject(Error('Браузер не сохранил резервную копию. Скачайте несохранённые действия и дождитесь восстановления сохранения.'));
     if (!queueWritable) return Promise.reject(Error('Очередь сохранения недоступна. Сохраните эту вкладку и откройте личную ссылку в новой вкладке.'));
     if (!credentials || !snapshot || !ws && !['assign','insert'].includes(type)) return Promise.reject(Error('Нет рабочего места.'));
     const body = {opId:uuid(), target:id, type, payload:clone(payload)};
@@ -546,7 +549,7 @@
     if(!drawing)return;const stroke=drawing;drawing=null;
     // Clear before releasing capture: lostpointercapture must not enqueue twice.
     if($('boardCanvas').hasPointerCapture(stroke.pointerId))$('boardCanvas').releasePointerCapture(stroke.pointerId);
-    fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId});
+    fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId,finishCapturedInk:true});
   }
   function sessionLink(token) {
     const url=new URL(location.pathname,location.origin);
