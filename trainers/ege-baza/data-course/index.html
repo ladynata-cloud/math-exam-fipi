@@ -22,6 +22,10 @@
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
+
+<link rel="stylesheet" href="../../../ege-baza/skill-map.css?v=20261111">
+<script src="../../../ege-baza/skill-map-data.js?v=20261111"></script>
+<script src="../../../ege-baza/skill-map.js?v=20261111"></script>
 </head>
 <body>
 <a class="skip" href="#main">К содержанию</a>
@@ -105,20 +109,29 @@ function attachReference(sheetIds,onReveal){
  $('main').querySelector('.panel')?.append(host);
  globalThis.EgeReferenceUI.attach(host,{sheetIds,onReveal,referenceBase:'../../../ege-baza/reference/',returnHref:location.pathname+location.search+location.hash,showPins:false});
 }
-function renderLearn(id){const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();
+let courseSkillMap=null;
+function clearSkillMap(){courseSkillMap?.dispose();courseSkillMap=null;}
+function attachSkillMap(skill,onReveal){
+ clearSkillMap();
+ courseSkillMap=globalThis.EgeBazaSkillMap?.attach($('main'),{module:'m02',skill,onReveal});
+}
+function renderLearn(id){clearSkillMap();const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();
  $('main').innerHTML=`<span class="eyebrow">Разобраться · Навык ${SKILLS.indexOf(s)+1} из 4</span><h1 class="lesson-title">${esc(s.title)}</h1><div class="two"><section class="panel"><h3>Что нужно понять</h3><ol>${s.lesson.map(p=>`<li>${esc(p)}</li>`).join('')}</ol><div class="model">${modelHTML(s)}</div></section><aside class="stack"><section class="panel"><span class="eyebrow">Цель урока</span><h3>${esc(s.goal)}</h3><p class="small muted">Пригодится: ${esc(s.exam)}.</p><div class="actions">${btn('Попробовать самостоятельно','practice-'+id+'-0')}</div></section><section class="panel"><h3>Нужен ещё один шаг?</h3><p>Откройте подробный тренажёр. Он работает отдельно; вернувшись, продолжите практику здесь.</p><p><a href="${s.link}" target="_blank" rel="noopener">${esc(s.linkTitle)} ↗</a></p></section><section class="panel"><h3>Объясните своими словами</h3><p>Почему выбранное действие работает? Как проверить результат другим способом?</p></section></aside></div>`;
  $('slider').addEventListener('input',()=>updateModel(s));$('example')?.addEventListener('change',()=>updateModel(s));updateModel(s);
  attachReference(globalThis.EgeReferenceLegacy?.skillSheets['m02-'+id],markLearning);
+ attachSkillMap(id,markLearning);
 }
-function renderPractice(id,index){const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();const tasks=list('practice',id),i=Math.max(0,Math.min(tasks.length-1,index||0)),t=tasks[i],r=practiceRec(t);
+function renderPractice(id,index){clearSkillMap();const s=SKILLS.find(s=>s.id===id);if(!s){route('#map');return;}markLearning();const tasks=list('practice',id),i=Math.max(0,Math.min(tasks.length-1,index||0)),t=tasks[i],r=practiceRec(t);
  $('main').innerHTML=`<div class="task-top"><div><span class="eyebrow">Самостоятельная практика</span><h2>${esc(s.title)}</h2></div>${btn('К объяснению','learn-'+id,'secondary small')}</div><div class="mini-nav" aria-label="Задания навыка">${tasks.map((q,j)=>`<button class="${i===j?'active':''} ${state.practice[q.id]?.done?'done':''}" data-action="practice-${id}-${j}" aria-label="Задание ${j+1}${state.practice[q.id]?.done?', решено':''}" ${i===j?'aria-current="step"':''}>${j+1}</button>`).join('')}</div>
  <section class="panel"><span class="eyebrow">Задача ${i+1} из ${tasks.length}</span><p class="prompt">${esc(t.text)}</p>${visual(t)}${r.done?`<div class="feedback"><b>${independent(r)?'Верно с первого раза — самостоятельно':r.hints||r.solution?'Верно — с поддержкой':'Верно после исправления'}</b><p>Ответ: ${fmt(t.answer)} ${esc(t.unit)}.</p><p>${esc(t.solution)}</p></div><div class="actions">${i<3?btn('Следующая задача','practice-'+id+'-'+(i+1)):btn('К карте навыков','map')}${btn('К проверкам','checks','secondary')}</div>`:`<form id="answer-form"><label for="answer">Ваш ответ ${t.unit?'('+esc(t.unit)+')':''}</label><p class="small muted" id="answer-format">Одно число без единиц. Можно использовать запятую или точку.</p><div class="answer-row"><input id="answer" inputmode="decimal" autocomplete="off" aria-describedby="answer-format feedback" value="${esc(r.answer)}"><button class="btn" type="submit">Проверить</button></div></form><div id="feedback" role="status" class="feedback" ${r.hints||r.solution?'':'hidden'}>${r.solution?esc(t.solution):r.hints?esc(t.hint):''}</div><div class="actions">${btn('Подсказка','hint','secondary small')}${btn('Разобрать решение','solution','secondary small')}</div><p class="small muted" style="margin-top:14px">Помощь доступна всегда. После подсказки задача учитывается как решённая с поддержкой.</p>`}</section>`;
- attachReference(globalThis.EgeReferenceLegacy?.taskSheets[t.id],()=>{
+ const onSkillReveal=()=>{
   if(r.done)return;
   r.hints=true;
   const input=$('answer');if(input)r.answer=input.value.slice(0,120);
   save();
- });
+ };
+ attachReference(globalThis.EgeReferenceLegacy?.taskSheets[t.id],onSkillReveal);
+ attachSkillMap(id,onSkillReveal);
  if(!r.done){$('answer-form').addEventListener('submit',e=>{e.preventDefault();const input=$('answer').value;if(parseNumber(input)===null){feedback('Введите одно число, например 0,75. Пустой ответ и выражения не засчитываются.','bad');return;}r.answer=input.trim();r.tries++;r.done=right(t,input);save();if(r.done){renderPractice(id,i);$('main').focus();}else feedback('Пока не совпало. Проверьте действие и вычисление. Можно воспользоваться подсказкой.','bad');});$('main').querySelector('[data-action="hint"]').onclick=()=>{r.hints=true;save();feedback(t.hint,'tip');};$('main').querySelector('[data-action="solution"]').onclick=()=>{r.solution=true;save();feedback(t.solution,'tip');};}
 }
 function feedback(message,kind=''){const f=$('feedback');f.hidden=false;f.className='feedback '+kind;f.textContent=message;}
@@ -143,7 +156,7 @@ function report(){const out=['MathExam · Базовый ЕГЭ','Модуль 2
 function downloadReport(){const url=URL.createObjectURL(new Blob([report()],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='mathexam-baza-module-2-report.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function renderReport(){const confirmed=SKILLS.filter(s=>skillState(s).level>=3).length;$('main').innerHTML=`<span class="eyebrow">Что уже получается</span><h1>Мой прогресс</h1><div class="two"><section class="panel"><h3>Подтверждено навыков: ${confirmed} из 4</h3><p>Отметка за модуль отражает только эти четыре навыка и не является прогнозом оценки за весь ЕГЭ.</p><label class="sr" for="report-text">Отчёт преподавателю</label><textarea class="report" id="report-text" readonly>${esc(report())}</textarea><div class="actions">${btn('Скачать отчёт','download')}${btn('Выделить текст','select-report','secondary')}</div></section><aside class="stack"><section class="panel"><h3>Сохранение</h3><p>Результаты доступны в этом браузере на этом устройстве. Для передачи преподавателю скачайте отчёт или скопируйте текст.</p><p><a href="../../../ege-baza/#backup?module=m02">Скачать или восстановить резервную копию</a> для продолжения работы в другом браузере.</p></section><section class="panel"><h3>Начать модуль заново</h3><p>Удалится только прогресс этого модуля. Сначала можно сохранить отчёт.</p><div class="actions"><button class="danger" data-action="reset-ask">Сбросить мой прогресс</button></div><div id="reset-confirm" hidden><p>Удалить диагностику, практику и проверки этого модуля?</p><div class="actions"><button class="danger" data-action="reset-confirm">Да, удалить</button>${btn('Отмена','reset-cancel','secondary')}</div></div></section></aside></div>`;}
 function renderTeacher(){$('main').innerHTML=`<span class="eyebrow">Второй модуль курса · Мини-группа</span><h1>Преподавателю</h1><div class="two"><section class="panel"><h3>Рабочая последовательность</h3><ol><li>Дайте входную диагностику. В отчёте видны четыре направления, но два вопроса по навыку — ориентир, а не полный диагноз.</li><li>Выберите общую тему для группы. Вычислительные пробелы назначайте для короткой самостоятельной работы.</li><li>На занятии обсудите интерактивную модель. Попросите ученика предсказать изменение до движения ползунка. Отдельно обсудите единицы на оси, дополнение вероятности до 1 и разницу между высотой графика и наклоном.</li><li>После практики проведите итоговую проверку. Используются задания, которых нет в тренировочном наборе.</li><li>Не раньше чем через сутки предложите повторную проверку на отдельном наборе. Уточните причины ошибок по записи решения.</li></ol><p>Отчёт ученик передаёт сам. Здесь нет общего журнала группы или автоматической отправки результатов.</p></section><aside class="panel"><h3>Объём первой версии</h3><p>40 авторских заданий: 8 входных, 16 тренировочных, 8 итоговых и 8 для повторения. Наборы фиксированы.</p><p>Модуль охватывает основные действия с данными, вероятностью, графиками и утверждениями. Полную матрицу подтипов и дополнительные проверочные формы ещё предстоит завершить.</p><p><a href="../">Существующий тренажёр по всем 21 заданиям ЕГЭ</a></p></aside></div><section class="panel" style="margin-top:20px"><h3>Связи навыков</h3><div class="table-wrap"><table><thead><tr><th>Навык</th><th>Результат</th><th>Применение</th></tr></thead><tbody>${SKILLS.map(s=>`<tr><td><a href="#learn-${s.id}">${esc(s.title)}</a></td><td>${esc(s.goal)}</td><td>${esc(s.exam)}</td></tr>`).join('')}</tbody></table></div></section>`;}
-function render(){refreshStored();const parts=(location.hash.slice(1)||'map').split('-'),page=parts[0];document.querySelectorAll('[data-page]').forEach(b=>{const active=b.dataset.page===(['test','results'].includes(page)?'checks':['learn','practice'].includes(page)?'map':page);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+function render(){clearSkillMap();refreshStored();const parts=(location.hash.slice(1)||'map').split('-'),page=parts[0];document.querySelectorAll('[data-page]').forEach(b=>{const active=b.dataset.page===(['test','results'].includes(page)?'checks':['learn','practice'].includes(page)?'map':page);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
  if(page==='learn')renderLearn(parts[1]);else if(page==='practice')renderPractice(parts[1],Number(parts[2]));else if(page==='test')renderTest(parts[1]);else if(page==='results')renderResults(parts[1]);else if(page==='checks')renderChecks();else if(page==='report')renderReport();else if(page==='teacher')renderTeacher();else renderMap();
  $('main').focus({preventScroll:true});
 }

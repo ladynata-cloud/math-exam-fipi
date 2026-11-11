@@ -1,0 +1,45 @@
+/* Scoped learning routes: keep the condition and answer above this disclosure. */
+.ege-skill-map{--esm-ink:#17364b;--esm-line:#c4d8e0;--esm-accent:#176c67;margin:18px 0;border:1px solid #c6d9df;border-radius:16px;background:#f7fbfc;color:var(--esm-ink);overflow:hidden;min-width:0}
+.ege-skill-map>summary{display:flex;align-items:center;gap:10px;min-height:52px;padding:13px 16px;font-size:1rem;font-weight:750;cursor:pointer;list-style:none}
+.ege-skill-map>summary::-webkit-details-marker{display:none}
+.ege-skill-map>summary:after{content:"+";margin-left:auto;font-size:1.4rem;line-height:1}
+.ege-skill-map[open]>summary:after{content:"−"}
+.ege-skill-map>summary:hover{background:#edf6f8}
+.ege-skill-map .esm-symbol{color:var(--esm-accent);font-size:1.4rem}
+.ege-skill-map .esm-count{font-size:.78rem;font-weight:500;color:#4c687a}
+.ege-skill-map .esm-body{border-top:1px solid #dbe8ec;padding:18px 20px}
+.ege-skill-map .esm-goal{margin:0 0 15px;max-width:76ch;line-height:1.55}
+.ege-skill-map .esm-prerequisites{margin:0 0 20px;border:1px solid #d8e5ea;border-radius:11px;background:#fff}
+.ege-skill-map .esm-prerequisites>summary{padding:12px 14px;min-height:44px;cursor:pointer;font-weight:650}
+.ege-skill-map .esm-prerequisites ul{margin:0;padding:0 22px 15px 34px}
+.ege-skill-map .esm-prerequisites li{margin:8px 0;line-height:1.5}
+.ege-skill-map .esm-prerequisites li span{display:block;font-size:.85rem;color:#496271}
+.ege-skill-map .esm-route{margin:0;padding:0;list-style:none}
+.ege-skill-map .esm-node{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;margin:0;padding:0 0 20px}
+.ege-skill-map .esm-node:not(:last-child):before{content:"";position:absolute;left:16px;top:34px;bottom:0;border-left:2px dashed var(--esm-line)}
+.ege-skill-map .esm-step{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid #aacbcf;border-radius:50%;background:#e9f4f4;color:#14574e;font-size:.9rem;font-weight:750}
+.ege-skill-map .esm-node-content{min-width:0;padding-top:3px}
+.ege-skill-map .esm-node h3{font-size:1rem;line-height:1.4;margin:0 0 5px;overflow-wrap:anywhere}
+.ege-skill-map .esm-node p{font-size:.9rem;line-height:1.5;margin:0 0 8px}
+.ege-skill-map a{color:#115c78;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.ege-skill-map .esm-practice-links{display:flex;flex-wrap:wrap;align-items:flex-start;gap:7px 13px}
+.ege-skill-map .esm-practice-links>a,.ege-skill-map .esm-more a{display:block;min-height:36px;padding:7px 0;font-size:.85rem;line-height:1.4}
+.ege-skill-map .esm-more{border:0;padding:0;margin:0;min-width:0}
+.ege-skill-map .esm-more>summary{min-height:36px;padding:7px 0;color:#395c6e;font-size:.85rem;cursor:pointer}
+.ege-skill-map .esm-evidence{margin-top:7px!important;font-size:.8rem!important;color:#46636c}
+.ege-skill-map [data-skill-evidence=independent]{border-left:3px solid #2b8673;padding-left:9px;color:#17594a}
+.ege-skill-map .esm-key{font-size:.81rem;line-height:1.5;color:#4d6573;border-top:1px solid #dae5e9;margin:0;padding:12px 0}
+.ege-skill-map .esm-task-steps{background:#edf5f4;border-radius:10px;padding:12px;margin:8px 0 15px}
+.ege-skill-map .esm-task-steps p{margin:0 0 10px;font-size:.85rem;line-height:1.5}
+.ege-skill-map [data-skill-steps]{padding:11px 14px;min-height:44px;max-width:100%;white-space:normal;border:1px solid #86b0ad;border-radius:9px;background:#fff;color:#174b49;font:inherit;font-size:.9rem;cursor:pointer}
+.ege-skill-map .esm-next{display:flex;flex-wrap:wrap;gap:7px 14px;margin:6px 0 15px;font-size:.9rem}
+.ege-skill-map .esm-next span{font-weight:700}
+.ege-skill-map .esm-course-link{display:inline-block;min-height:40px;padding:8px 0;font-size:.88rem}
+.ege-skill-map :is(a,button,summary):focus-visible{outline:3px solid #ad6819;outline-offset:4px;border-radius:4px}
+.exam-skill-link{font-size:.85rem}
+@media(min-width:1050px){.ege-skill-map[data-ege-skill-map^="position-"] .esm-route{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}.ege-skill-map[data-ege-skill-map^="position-"] .esm-node:before{display:none}}
+@media(max-width:480px){.ege-skill-map{margin:14px 0;border-radius:12px}.ege-skill-map>summary{padding:12px 10px;gap:7px;flex-wrap:wrap}.ege-skill-map .esm-count{font-size:.72rem}.ege-skill-map .esm-body{padding:14px 11px}.ege-skill-map .esm-node{gap:9px;grid-template-columns:30px minmax(0,1fr)}.ege-skill-map .esm-step{width:30px;height:30px}.ege-skill-map .esm-node:not(:last-child):before{left:14px;top:30px}.ege-skill-map .esm-practice-links{display:block}.ege-skill-map .esm-practice-links>a,.ege-skill-map .esm-more a{min-height:44px;padding:10px 0}.ege-skill-map .esm-next{display:block}.ege-skill-map .esm-next a{display:block;padding:9px 0}}
+@media(prefers-reduced-motion:reduce){.ege-skill-map *{scroll-behavior:auto!important}}
+@media print{.ege-skill-map{border-color:#aaa;background:#fff}.ege-skill-map .esm-body{display:block}.ege-skill-map button{display:none}}
+
+.ege-skill-map .esm-support-note{margin:0;padding:0 14px 14px;font-size:.8rem;line-height:1.5;color:#496271}
