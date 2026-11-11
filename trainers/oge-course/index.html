@@ -26,7 +26,33 @@
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
 <link rel="stylesheet" href="/assets/oge-all-topics.css?v=20261110">
-<link rel="stylesheet" href="/oge/skill-course-entry.css?v=20261111">
+<!-- Keep the optional entry self-contained in the existing book candidate. -->
+<style data-skill-course-entry>
+/* Optional short lessons beside the existing OGE entries. No script required. */
+.oge-skill-course-entry { box-sizing: border-box; max-width: 1200px; margin: 24px auto; padding: 0 24px; color: #243c32; scroll-margin-top: 100px; }
+.oge-skill-course-entry-inner { padding: 20px; border: 1px solid #bdcdbd; border-radius: 12px; background: #f1f5ed; }
+.oge-skill-course-entry h2 { margin: 0 0 8px; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.25; color: #173d30; }
+.oge-skill-course-entry p { max-width: 72ch; margin: 0; font: 400 16px/1.6 system-ui, sans-serif; }
+.oge-skill-course-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.oge-skill-course-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px; box-sizing: border-box; border: 1px solid #235d48; border-radius: 8px; background: #fffefa; color: #235d48; font: 700 16px/1.4 system-ui, sans-serif; text-decoration: none; text-align: center; }
+.oge-skill-course-actions a:first-child { color: #fff; background: #235d48; }
+.oge-skill-course-actions a:hover { background: #e0ebdb; }
+.oge-skill-course-actions a:first-child:hover { background: #173d30; }
+.oge-skill-course-entry details { margin: 0; padding: 0; border: 0; border-top: 1px solid #c7d5c4; border-radius: 0; background: transparent; }
+.oge-skill-course-entry summary { display: list-item; box-sizing: border-box; min-height: 44px; padding: 12px 0 0; color: #235d48; font: 600 16px/1.4 system-ui, sans-serif; cursor: pointer; }
+.oge-skill-course-topics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.oge-skill-course-topics li { min-width: 0; margin: 0; padding: 0; }
+.oge-skill-course-topics a { display: flex; align-items: center; min-height: 44px; height: 100%; box-sizing: border-box; padding: 9px 12px; border: 1px solid #c7d5c4; border-radius: 8px; background: #fffefa; color: #235d48; font: 600 15px/1.4 system-ui, sans-serif; text-decoration: none; overflow-wrap: anywhere; }
+.oge-skill-course-topics a:hover { background: #e0ebdb; border-color: #235d48; }
+.oge-skill-course-entry a:focus-visible, .oge-skill-course-entry summary:focus-visible { outline: 3px solid #235d48; outline-offset: 3px; }
+@media (max-width: 760px) { .oge-skill-course-topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) {
+  .oge-skill-course-entry { padding-inline: 16px; }
+  .oge-skill-course-entry-inner { padding: 16px; }
+  .oge-skill-course-actions a { width: 100%; }
+  .oge-skill-course-topics { grid-template-columns: 1fr; }
+}
+</style>
 <link rel="stylesheet" href="/assets/oge-entry-sections.css?v=20261110">
 <link rel="stylesheet" href="/oge/learning-map.css?v=20261109">
 <script defer src="/oge/registry.js?v=20261109"></script>

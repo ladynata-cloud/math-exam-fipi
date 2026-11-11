@@ -57,7 +57,19 @@ function safeError(error) {
       await page.locator('#mathexam-skill-lab .task').waitFor();
     }
     async function noOverflow(page, label) {
-      assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal overflow: ' + label);
+      const layout = await page.evaluate(() => ({
+        width: innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        offenders: Array.from(document.querySelectorAll('body *')).map(node => {
+          const rect = node.getBoundingClientRect();
+          return {tag: node.tagName, className: node.getAttribute('class'), text: (node.textContent || '').trim().slice(0, 120), left: rect.left, right: rect.right};
+        }).filter(node => node.left < -1 || node.right > innerWidth + 1).slice(-20)
+      }));
+      if (layout.scrollWidth > layout.width + 1) {
+        report.overflow = {label, ...layout};
+        await page.screenshot({path: path.join(out, 'overflow-failure.png'), fullPage: true});
+      }
+      assert(layout.scrollWidth <= layout.width + 1, 'No horizontal overflow: ' + label);
     }
     async function unchanged(page) {
       const values = await page.evaluate(keys => Object.fromEntries(keys.map(key => [key, localStorage.getItem(key)])), oldKeys);

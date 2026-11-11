@@ -95,6 +95,12 @@ test('existing course entries remain; all optional topic links also work without
     const dom = new JSDOM(read(file), {url: origin + '/' + file});
     try {
       const doc = dom.window.document;
+      if (file === 'trainers/oge-course/index.html') {
+        const styles = doc.querySelectorAll('style[data-skill-course-entry]');
+        assert.equal(styles.length, 1, 'The course entry includes its one reviewed stylesheet inline');
+        assert.equal(styles[0].textContent, '\n' + read('oge/skill-course-entry.css'), 'The inline entry style matches its shared source exactly');
+        assert.equal(doc.querySelectorAll('link[href^="/oge/skill-course-entry.css"]').length, 0, 'The existing book candidate gains no extra file dependency');
+      }
       const actual = Object.fromEntries(Array.from(doc.querySelectorAll('[data-oge-topic]'), a => [a.dataset.ogeTopic, a.getAttribute('href')]));
       assert.deepEqual(actual, oldTopics, file + ' retains the 25 existing trainer links');
       assert.deepEqual(Array.from(doc.querySelectorAll('[data-oge-practical]'), a => a.dataset.ogePractical).sort(), practical.slice().sort());
