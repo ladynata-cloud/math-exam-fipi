@@ -1915,8 +1915,7 @@
     "title": "Что значит «среди любых»",
     "description": "Попробовать составить группу, в которой отсутствует один из двух видов.",
     "practiceIds": [
-      "practice-mushroom-count",
-      "practice-logic-all"
+      "practice-mushroom-count"
     ]
   },
   "count-upper-bound": {
@@ -1932,8 +1931,7 @@
     "title": "Сумма верхних границ",
     "description": "Сопоставить сумму границ с общим числом. Если они равны, каждое количество достигает своей границы.",
     "practiceIds": [
-      "practice-mushroom-count",
-      "practice-whole-count"
+      "practice-mushroom-count"
     ]
   },
   "check-both-groups": {
@@ -1949,8 +1947,7 @@
     "title": "Крайние позиции",
     "description": "Если слева от вазы есть цветы, она не первая. Если справа есть цветы, она не последняя.",
     "practiceIds": [
-      "practice-vase-order",
-      "practice-logic-order"
+      "practice-vase-order"
     ]
   },
   "common-position": {
@@ -1958,8 +1955,7 @@
     "title": "Общая ваза",
     "description": "Найти вазу, которая одновременно стоит слева от одной указанной вазы и справа от другой.",
     "practiceIds": [
-      "practice-vase-order",
-      "practice-sets"
+      "practice-vase-order"
     ]
   },
   "subtract-extra": {
@@ -2098,7 +2094,7 @@
   },
   "trigTriangle": {
     "title": "Синус острого угла",
-    "reason": "Начни с отношения катетов и гипотенузы, затем разберись со знаком синуса на окружности.",
+    "reason": "Начни с отношения противолежащего катета к гипотенузе, затем разберись со знаком синуса на окружности.",
     "href": "/ege-baza/path/index.html#lesson=practice-right-ratio"
   }
 };

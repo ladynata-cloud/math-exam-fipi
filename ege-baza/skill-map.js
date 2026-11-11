@@ -87,7 +87,7 @@
       const answer = root.PathData.parse(input.value);
       if (!input.value.trim() || !Number.isFinite(answer)) {
         result.textContent = 'Введи число без единиц измерения или дробь, например 2/3.';
-      } else if (Math.abs(answer - expected) <= 1e-8 * Math.max(1, Math.abs(expected))) {
+      } else if (root.PathData.correct({a:expected,strict:true},input.value)) {
         result.textContent = 'Верно.';
       } else {
         result.textContent = 'Пока неверно. Попробуй ещё раз или сверь способ решения.';
