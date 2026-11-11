@@ -23,6 +23,35 @@ BOOK_BANNERS = {
     VARIANT_PREFIXES['frozen-v2']: BOOK_BANNER.replace(' · v1.', ' · v2.'),
 }
 
+# The six source routes gained a reviewed row of links and closed GIF examples
+# in #560. This is the exact leading text recorded at 320, 390 and 1280 px.
+TRAINER_ENTRY_PREFIXES = {
+    ('54', '/trainers/oge-task11-graphs-trainer.html'):
+        'К примеру на странице занятий Все задания ОГЭ Коэффициенты линейной функции Точки линейной функции',
+    ('58', '/trainers/oge-task16-circle.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Вписанный угол Радиус и касательная',
+    ('59', '/trainers/oge-task17-quadrilaterals.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Площадь трапеции Средняя линия трапеции',
+    ('60', '/trainers/oge-task18-grid.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Площадь треугольника на клетках Длина отрезка по клеткам',
+    ('67', '/trainers/oge-task6-fractions.html'):
+        'Разбор дробей Общий знаменатель Общий знаменатель Умножение дробей',
+    ('71', '/trainers/task19-trainer.html'):
+        'Разбор геометрии ОГЭ Задания по геометрии ОГЭ Разобрать с репетитором Третий угол треугольника Контрпример к утверждению',
+}
+
+
+def without_trainer_entry(record, text):
+    route = record.get('route')
+    if record.get('prefix') or record.get('finalPath') != route:
+        return text
+    labels = TRAINER_ENTRY_PREFIXES.get((record.get('id'), route))
+    source = record.get('resources', {}).get('/assets/assistant/navigator-widget.js', {})
+    if not labels or not isinstance(source, dict) or not re.fullmatch(r'[a-f0-9]{64}', str(source.get('sha256', ''))):
+        return text
+    return text.removeprefix(labels + ' ')
+
+
 def digest(data):
     return hashlib.sha256(data if isinstance(data, bytes) else data.encode()).hexdigest()
 
@@ -90,8 +119,8 @@ def graph_atoms(expected):
 def exact_reviewed_context(record, oracle, fixtures):
     """Replay is limited to the manually reviewed condition and visible geometry.
 
-    Only the fixed edition banner or the exact recorded return-navigation delta
-    may differ. New prompts cannot reuse a keyed arithmetic fixture by answer.
+    Known presentation changes use exact source-route text and leave all
+    remaining context, oracle prompts and geometry under the original checks.
     """
     fixture = fixtures.get(record['id'])
     if fixture is None:return False
@@ -123,6 +152,7 @@ def exact_reviewed_context(record, oracle, fixtures):
     context = verified_context(record)
     if context is None:return False
     text, native_geometry = context
+    text = without_trainer_entry(record, text)
     if record['prefix']:
         banner = BOOK_BANNERS.get(record['prefix'])
         if banner is None:return False
@@ -175,6 +205,17 @@ def wayfinding_context_selftest(fixtures):
     assert not exact_reviewed_context(changed,oracle,fixtures)
     changed_oracle=copy.deepcopy(oracle);changed_oracle['expected']=['0']
     assert not exact_reviewed_context(record,changed_oracle,fixtures)
+    with_examples = copy.deepcopy(record)
+    with_examples['resources']['/assets/assistant/navigator-widget.js'] = {'sha256':'c'*64}
+    prefix = TRAINER_ENTRY_PREFIXES[('67', route)] + ' '
+    with_examples['initialVisibleText'] = prefix + text
+    with_examples['unfilteredInitialVisibleText'] = label + ' ' + prefix + text
+    assert exact_reviewed_context(with_examples, oracle, fixtures)
+    for addition in ('Другая ссылка ', '9 вместо 1 '):
+        changed = copy.deepcopy(with_examples)
+        changed['initialVisibleText'] = prefix + addition + text
+        changed['unfilteredInitialVisibleText'] = label + ' ' + changed['initialVisibleText']
+        assert not exact_reviewed_context(changed, oracle, fixtures)
 
 def rendered_fraction(html):
     """Evaluate only the recorded, rendered expression HTML with exact rationals.
