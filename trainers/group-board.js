@@ -356,8 +356,8 @@
   function renderConnection() {
     if (!snapshot) return;
     $('recoverWorkButton').hidden=!(rejected.length||(!connected||queueStorageFailed)&&outbox.length);
-    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':queueStorageFailed?'Нет резервной копии в браузере':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!queueWritable||queueStorageFailed?'pending':!connected?'offline':outbox.length||rejected.length?'pending':'saved';
+    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':queueStorageFailed?'Нет резервной копии в браузере':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':drawing?'Штрих ещё не завершён':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!queueWritable||queueStorageFailed?'pending':!connected?'offline':outbox.length||rejected.length||drawing?'pending':'saved';
     renderInk();
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
@@ -535,6 +535,7 @@
     drawing.assignmentId=boardAssignment(workspace(target()));drawing.target=target();
     drawing.pointerId=event.pointerId;
     $('boardCanvas').setPointerCapture(event.pointerId);
+    renderConnection();
   }
   function moveDraw(event) {
     if(!drawing||event.pointerId!==drawing.pointerId)return;event.preventDefault();

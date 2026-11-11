@@ -33,6 +33,7 @@ PROJECT_STATUS.md в базе описывает прошлые этапы и н
 - [x] Пройдены необходимые проверки; failed/not-run отражены отдельно.
 
 ## Checks and review
+- A held unfinished stroke must show pending rather than All changes saved; existing storage/network/refusal warnings keep priority. Real browser verifies return to saved only after durable acknowledgement.
 - If a previous action ACK loses local backup while a stroke is already captured, that stroke still enters the existing recoverable memory outbox. New gestures remain blocked. Teacher/pupil browser scenarios require exact export, restored backup, retry/reload and one durable stroke.
 - Unfinished handwriting participates in the unload warning; cancelling reload retains the original gesture exactly once. Accepted reload/crash recovery for unfinished gestures is not claimed.
 - Active handwriting is bound to its starting primary pointer; secondary contact cannot replace, extend or end it. Navigation and native capture loss finish the same gesture once. Real Chromium multi-touch/capture regression is required; this is not a physical tablet test.

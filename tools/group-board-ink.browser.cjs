@@ -85,6 +85,8 @@ module.exports=async function inkFaults({page,origin,server,lesson,token,seatId,
   await page.mouse.move(box.x+100,box.y+95,{steps:5});
   assert.equal((await queue()).outbox.length,0,'held gesture not yet enqueued');
   assert.equal((await readWork()).strokes.length,0,'held gesture not yet saved');
+  assert.equal(await page.locator('#connectionStatus').textContent(),'Штрих ещё не завершён','active gesture is not advertised as saved');
+  assert.equal(await page.locator('#connectionStatus').getAttribute('data-state'),'pending');
   await page.evaluate(key=>{
     window.inkReloadMarker=true;
     addEventListener('beforeunload',()=>{
@@ -103,6 +105,8 @@ module.exports=async function inkFaults({page,origin,server,lesson,token,seatId,
     assert.deepEqual(await page.evaluate(()=>window.inkUnloadState),{queued:0,captured:true},'warning precedes capture loss or queueing, so active ink is its sole cause');
     await page.mouse.up();
     await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===1,'cancel reload then finish stroke');
+    await poll(async()=>await page.locator('#connectionStatus').getAttribute('data-state')==='saved','saved status follows durable ACK');
+    assert.equal(await page.locator('#connectionStatus').textContent(),'Все изменения сохранены');
     assert.equal(strokePosts.length,3,'cancelled reload and eventual release send only one stroke');
     const saved=(await readWork()).strokes[0];
     assert.ok(Math.abs(saved.points[0].x-45/box.width)<0.01,'original held gesture retained');
