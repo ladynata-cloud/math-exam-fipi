@@ -355,6 +355,14 @@ function check(index){
  const cur=current();if(!cur)return;
  const {task:t,state:s}=cur;if(index!==C.stage(s,t)||C.done(s,t))return;
  const p=t.steps[index],answer=s.answers[index],result=C.judge(p.answer,answer);
+ const finalStep=t.steps.at(-1);
+ if(!result.correct&&s.mode==='learn'&&p!==finalStep&&!t.assessAllSteps&&
+    p.answer.kind!=='choice'&&finalStep.answer.kind!=='choice'&&C.judge(finalStep.answer,answer).correct){
+  feedback={task:t.id,index,text:`Итоговый ответ верный. Сейчас ответь на вопрос «${p.prompt}»`};
+  render();
+  changed();
+  return;
+ }
  if(!result.valid){feedback={task:t.id,index,text:result.message};render();changed();return;}
  if(result.correct){s.solved[index]=true;feedback=null;setAchievement(s,t);}
  else{
