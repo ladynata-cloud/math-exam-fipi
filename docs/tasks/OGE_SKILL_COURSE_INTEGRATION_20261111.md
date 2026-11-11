@@ -49,6 +49,9 @@
 - Раздельный результат обычных задач и мастерских; сохранение учёта помощи.
 - Школьные формулировки без вымышленных математических терминов.
 - Документация, ограниченные проверки интеграции и CI-проверка браузера.
+- Служебная привязка публичного навигатора к точному проверенному коммиту
+  страницы курса: штатное обновление `assets/assistant/page-rollout.json`
+  только для `trainers/oge-course/index.html`. Проверки не ослабляются.
 
 ### Out of scope
 
@@ -65,8 +68,9 @@
 - Прежние задания, генераторы, ключи ответов и ключи хранения тренажёров.
 - `oge/registry.js`, `oge/learning-map*`, `oge/course-guide*`.
 - `foundations/**`, `learning/**`, backend и bridge.
-- Существующие защитные проверки, зафиксированные контрольные суммы
-  и branch protection.
+- Существующие защитные проверки, математические контрольные суммы
+  и branch protection. Единственное изменение привязки HTML описано выше;
+  исходные исторические записи и все остальные привязки сохраняются.
 
 ## Acceptance criteria
 
@@ -159,7 +163,24 @@
   in the partial clone; it reads historical Git objects and CI explicitly
   fetches its four pinned sources. The real Chromium gate and screenshot
   review run in CI.
-- Scope deviations: none. Resume and focus fixes are within lesson navigation.
+- CI source commit: `7a273185deb80cfbe082ea2dcb48ea69fab46c63` passed the
+  dedicated skill-course workflow, including real Chromium, and nine existing
+  workflows: minimal course interface, learner entrances/returns, learning map,
+  whole-course practice, PDF catalogue, linear pilot, SEO, GIF and lesson showcase.
+- Screenshot review found too much introductory text before the first answer
+  on a 320 px screen. The full topic description is now an optional details
+  block after the task. Mobile navigation is shorter; 44 px controls and main
+  text sizes are preserved. The browser gate now requires the question,
+  answer and Check control fully inside the initial 900 px viewport at
+  widths 320, 390 and 1280, before any scrolling. Final-head CI must confirm it.
+- Initial CI found one dependent metadata mismatch: the public-navigator
+  manifest still named the old exact course HTML. The existing binding command
+  is used with source `7a273185deb80cfbe082ea2dcb48ea69fab46c63` and exactly
+  `trainers/oge-course/index.html`. This is committed source identity,
+  not release approval. The test assertions and mathematical pins stay intact.
+- Scope adjustment: one dependent navigator provenance record, required by
+  the existing preservation gate. No additional product change. Resume and
+  focus fixes remain within lesson navigation. Final-head CI is recorded in PR.
 
 ## Required handoff
 

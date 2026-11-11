@@ -138,6 +138,11 @@ test('each explicit topic overrides stale selection and opens a finite ordinary 
       assert.equal(h.query('[data-action="map"]').getAttribute('aria-expanded'), 'false');
       assert(!h.document.querySelector('.map'));
       assert(!h.query('details.series-picker').open);
+      const about = h.query('details.topic-about');
+      assert.equal(about.open, false, 'The full topic description is optional');
+      assert.equal(h.query('.stage').nextElementSibling, about, 'The description follows the concrete task');
+      assert.equal(about.querySelector('.goal').textContent, h.api.data.topics.find(item => item.id === topic).goal, 'The complete learning goal is preserved');
+      assert.equal(h.document.querySelector('.heading .goal'), null, 'The full description does not push the first task down');
       assert.match(h.query('.stage-count').textContent, /Задание 1 из 4/);
       assert(h.api.task(), 'Topic opens a concrete task');
       assertNavigation(h, topic);
@@ -372,7 +377,7 @@ test('a successful helped answer resumes with Next without replaying its result'
   }
 });
 
-test('checking, help and map renders preserve a usable focus target', () => {
+test('checking, help and map renders preserve a usable focus target', {timeout: 30000}, async () => {
   const h = open('?topic=n9');
   function focusWithin(selectors, label) {
     const focused = h.document.activeElement;
@@ -397,6 +402,19 @@ test('checking, help and map renders preserve a usable focus target', () => {
     focusWithin('[data-action="map"], .map[tabindex]', 'Opening the optional map');
     h.click('[data-action="map"]');
     focusWithin('[data-action="map"]', 'Closing the optional map');
+
+    const teacher = h.query('details.teacher');
+    const toggled = new Promise(resolve => teacher.addEventListener('toggle', resolve, {once: true}));
+    h.openDetails('details.teacher');
+    // Wait for this native event: a timer does not synchronize JSDOM's task queue.
+    await toggled;
+    h.flush();
+    assert(teacher.isConnected && teacher.open, 'The current teacher overview is open');
+    const sameTopic = '.teacher [data-action="topic"][data-topic="n9"]';
+    h.query(sameTopic).focus();
+    h.click(sameTopic);
+    assert.equal(h.api.state.topic, 'n9');
+    focusWithin(sameTopic, 'Reopening the same topic from the teacher overview');
   } finally { h.close(); }
 });
 

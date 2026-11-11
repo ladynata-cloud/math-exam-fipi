@@ -101,11 +101,27 @@ function safeError(error) {
         assert.match(await page.locator('.stage-count').first().innerText(), /Задание 1 из 4/);
         assert.equal(await page.locator('[data-action="map"]').getAttribute('aria-expanded'), 'false');
         assert.equal(await page.locator('details.series-picker').getAttribute('open'), null);
+        assert.equal(await page.locator('details.topic-about').getAttribute('open'), null);
         const taskBox = await page.locator('.task').boundingBox();
         assert(taskBox && taskBox.y >= 0 && taskBox.y < 900, 'A concrete task appears in the first viewport at ' + width);
+        assert.equal(await page.evaluate(() => window.scrollY), 0, 'The initial lesson is checked before any scrolling');
+        await page.screenshot({path: path.join(out, 'ordinary-task-' + width + '.png')});
+        const firstScreen = {};
+        for (const [name, selector] of [
+          ['prompt', '.task-prompt'],
+          ['answer', '#skill-answer'],
+          ['check', '.task-actions [data-action="check"]']
+        ]) {
+          const control = page.locator(selector);
+          assert(await control.isVisible(), name + ' is visible on the initial lesson');
+          const box = await control.boundingBox();
+          assert(box && box.width > 0 && box.height > 0, name + ' has a rendered area');
+          assert(box.x >= 0 && box.x + box.width <= width, name + ' fits the viewport width ' + width);
+          assert(box.y >= 0 && box.y + box.height <= 900, name + ' must fit the initial 900px viewport at width ' + width + '; actual top=' + box.y + ', bottom=' + (box.y + box.height));
+          firstScreen[name] = {top: Math.round(box.y), bottom: Math.round(box.y + box.height)};
+        }
         await navigation(page, '/trainers/oge-task9-equations.html');
         await noOverflow(page, 'ordinary task at ' + width);
-        await page.screenshot({path: path.join(out, 'ordinary-task-' + width + '.png')});
 
         await page.locator('[data-action="map"]').focus();
         await page.keyboard.press('Enter');
@@ -119,7 +135,7 @@ function safeError(error) {
         await noOverflow(page, 'optional workshop at ' + width);
         await page.screenshot({path: path.join(out, 'workshop-' + width + '.png')});
         assert.deepEqual(errors, []);
-        report.layouts.push({width, status: 'PASS', firstTaskTop: Math.round(taskBox.y)});
+        report.layouts.push({width, status: 'PASS', firstTaskTop: Math.round(taskBox.y), initialScrollY: 0, firstScreen});
       } finally { await c.close(); }
     }
 
@@ -286,6 +302,13 @@ function safeError(error) {
         assert.equal(ordinaryRecord.successful, 1);
         assert.equal(ordinaryRecord.independent, 0);
         await page.screenshot({path: path.join(out, 'keyboard-feedback-390.png')});
+        await page.locator('details.teacher > summary').press('Enter');
+        await page.locator('details.teacher[open]').waitFor();
+        const sameTopic = '.teacher [data-action="topic"][data-topic="n9"]';
+        await page.locator(sameTopic).press('Enter');
+        assert.notEqual(await page.locator('details.teacher').getAttribute('open'), null);
+        await focusOn(sameTopic, 'Reopen the same topic from the teacher overview');
+        assert.deepEqual(await page.evaluate(() => OGESkillLab.progress['n9-q-linear']), ordinaryRecord);
         await page.reload({waitUntil: 'load'});
         assert(await page.locator('.task [data-action="next"]').isVisible(), 'The checked answer can continue after reload');
         assert(await page.evaluate(() => OGESkillLab.taskState(OGESkillLab.task()).helpUsed));

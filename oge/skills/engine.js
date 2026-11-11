@@ -478,11 +478,11 @@
     }
     root.innerHTML='<div class="brand"><span class="brand-name">MathExam · ОГЭ</span><span class="edition">Практика и мастерские</span></div><div class="topic-picker"><label for="skill-topic">Тема</label><select id="skill-topic" data-field="topic">'+topics.map(function(q){
       return '<option value="'+esc(q.id)+'"'+(q.id===state.topic?" selected":"")+'>'+esc(q.title)+'</option>';
-    }).join("")+'</select></div><div class="heading"><h1>'+esc(top.title)+'</h1><p class="goal">'+esc(top.goal)+'</p></div>'+
+    }).join("")+'</select></div><div class="heading"><h1>'+esc(top.title)+'</h1></div>'+
     (state.backStack.length?'<button type="button" class="ghost return-link cursor-interaction" data-action="return">Вернуться к прежнему заданию</button>':"")+
     '<nav class="modes" aria-label="Как заниматься"><button type="button" class="cursor-interaction" data-action="mode" data-mode="quick" aria-pressed="'+(!current&&state.mode==="quick")+'">Потренироваться</button><button type="button" class="cursor-interaction" data-action="mode" data-mode="creative" aria-pressed="'+(!current&&state.mode==="creative")+'">Разобраться в теме</button></nav>'+
     '<button type="button" class="ghost map-toggle cursor-interaction" data-action="map" aria-expanded="'+state.map+'">'+(state.map?"Свернуть карту навыков":"Открыть карту навыков")+'</button>'+seriesPickerHTML()+(state.map?mapHTML():"")+
-    '<div class="stage">'+content+'</div>'+reviewsHTML()+'<footer class="footer"><span>'+(storageAvailable?"Ответы и подсказки сохраняются в этом браузере. В кабинет они не передаются.":"Ответы и подсказки доступны в этой открытой вкладке.")+'</span></footer>'+teacherHTML();
+    '<div class="stage">'+content+'</div><details class="topic-about"><summary>Что разберём в этой теме</summary><p class="goal">'+esc(top.goal)+'</p></details>'+reviewsHTML()+'<footer class="footer"><span>'+(storageAvailable?"Ответы и подсказки сохраняются в этом браузере. В кабинет они не передаются.":"Ответы и подсказки доступны в этой открытой вкладке.")+'</span></footer>'+teacherHTML();
     saveSession();
     updateNavigation();
     restoreFocus(previousFocus,renderedView!==null&&renderedView!==view);

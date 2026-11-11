@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+  "baseSha": "7a273185deb80cfbe082ea2dcb48ea69fab46c63",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2923,8 +2923,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "a6f91f714756feae3c823e4be8ec8fd31cef32729186cb93f294dffab7d6032c",
-      "afterSha256": "acc26727e6b7ade04d8bb7742fec63c18ce4187702dff3e8eeee41fe5ef8136f",
+      "beforeSha256": "305b4e2aef27448d02104de6ed232668a93154b299c2d74f85aa694cec6e06c6",
+      "afterSha256": "c7b9c7944ae7f32c3effdf9d0fe597474321220734ed000bd9cb4d235b74951b",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -4662,6 +4662,15 @@
       "task": "docs/tasks/TASK9_BRACKET_LABELS_20261111.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "sourceBaseSha": "7a273185deb80cfbe082ea2dcb48ea69fab46c63",
+      "task": "docs/tasks/OGE_SKILL_COURSE_INTEGRATION_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

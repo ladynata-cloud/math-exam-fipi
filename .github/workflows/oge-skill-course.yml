@@ -6,6 +6,7 @@ on:
       - 'oge/skill-course-entry.css'
       - 'oge/index.html'
       - 'trainers/oge-course/index.html'
+      - 'assets/assistant/page-rollout.json'
       - 'tools/oge-skill-course*'
       - '.github/workflows/oge-skill-course.yml'
   push:
@@ -15,6 +16,7 @@ on:
       - 'oge/skill-course-entry.css'
       - 'oge/index.html'
       - 'trainers/oge-course/index.html'
+      - 'assets/assistant/page-rollout.json'
       - 'tools/oge-skill-course*'
       - '.github/workflows/oge-skill-course.yml'
   workflow_dispatch:

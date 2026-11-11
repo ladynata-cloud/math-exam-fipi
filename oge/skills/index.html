@@ -27,20 +27,23 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
 .skill-lab .creative-picker{margin:0 0 12px}.skill-lab .creative-picker summary{padding:6px 0}.skill-lab .probe-controls{display:grid;gap:8px;margin:16px 0}.skill-lab .exam-format{margin-top:18px;border-top:1px solid var(--rule);padding-top:12px}.skill-lab .exam-format summary{padding:5px 0}.skill-lab .exam-format p{margin:9px 0}.skill-lab .format-options{padding-left:27px;margin:12px 0}.skill-lab .format-options li{padding:4px 0;overflow-wrap:anywhere}.skill-lab .format-feedback{margin-top:10px;padding:10px 12px;border-radius:9px;background:var(--ground);color:var(--ink)}.skill-lab .ordinary-links{margin-top:12px}
 .skill-lab-shell{max-width:900px;margin:0 auto;color-scheme:light dark}
 .skill-lab-shell .skill-site-nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px 16px;margin:0 0 12px;font:400 14px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif}
-.skill-lab-shell .skill-site-nav a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;padding:4px 0;color:light-dark(#176c82,#99e1ef);text-underline-offset:3px}
+.skill-lab-shell .skill-site-nav a{box-sizing:border-box;display:inline-flex;align-items:center;min-height:44px;max-width:100%;padding:4px 0;color:light-dark(#176c82,#99e1ef);text-underline-offset:3px}
 .skill-lab-shell .skill-site-nav a:last-child{margin-left:auto}
 .skill-lab-shell .skill-site-nav a:focus-visible,.skill-lab :is(button,a,input,select,summary):focus-visible{outline:3px solid light-dark(#176c82,#99e1ef);outline-offset:3px}
 .skill-lab .brand{padding-right:0}
-@media(max-width:520px){.skill-lab-shell .skill-site-nav{gap:0 14px;margin-bottom:8px}.skill-lab-shell .skill-site-nav a:last-child{margin-left:0}}
+.skill-lab .topic-about{margin-top:20px;border-top:1px solid var(--rule)}
+.skill-lab .topic-about>summary{min-height:44px;padding:10px 0;color:var(--accent)}
+.skill-lab .topic-about>.goal{padding-bottom:8px}
+@media(max-width:520px){.skill-lab-shell .skill-site-nav{gap:0 14px;margin-bottom:8px}.skill-lab-shell .skill-site-nav a:last-child{margin-left:0}.skill-lab .brand{flex-wrap:nowrap;margin-bottom:12px}.skill-lab .brand-name{white-space:nowrap}.skill-lab .edition{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
 
 </style>
 </head>
 <body>
 <div class="skill-lab-shell" lang="ru">
   <nav class="skill-site-nav" data-skill-navigation aria-label="Навигация по курсу">
-    <a href="/trainers/oge-course/" data-skill-link="course">К курсу ОГЭ</a>
-    <a href="/trainers/oge-course/" data-skill-link="trainer">Обычный тренажёр</a>
-    <a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route" data-skill-link="cabinet">Мой кабинет</a>
+    <a href="/trainers/oge-course/" data-skill-link="course" aria-label="К курсу ОГЭ по математике">К курсу ОГЭ</a>
+    <a href="/trainers/oge-course/" data-skill-link="trainer" aria-label="Обычный тренажёр по выбранной теме">Тренажёр</a>
+    <a href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route" data-skill-link="cabinet" aria-label="Мой кабинет">Кабинет</a>
   </nav>
   <main id="mathexam-skill-lab" class="skill-lab" lang="ru" aria-label="MathExam: практика и карта навыков">
     <noscript>
@@ -3237,11 +3240,11 @@ html{color-scheme:light dark}body{margin:0;padding:16px 10px;background:light-da
     }
     root.innerHTML='<div class="brand"><span class="brand-name">MathExam · ОГЭ</span><span class="edition">Практика и мастерские</span></div><div class="topic-picker"><label for="skill-topic">Тема</label><select id="skill-topic" data-field="topic">'+topics.map(function(q){
       return '<option value="'+esc(q.id)+'"'+(q.id===state.topic?" selected":"")+'>'+esc(q.title)+'</option>';
-    }).join("")+'</select></div><div class="heading"><h1>'+esc(top.title)+'</h1><p class="goal">'+esc(top.goal)+'</p></div>'+
+    }).join("")+'</select></div><div class="heading"><h1>'+esc(top.title)+'</h1></div>'+
     (state.backStack.length?'<button type="button" class="ghost return-link cursor-interaction" data-action="return">Вернуться к прежнему заданию</button>':"")+
     '<nav class="modes" aria-label="Как заниматься"><button type="button" class="cursor-interaction" data-action="mode" data-mode="quick" aria-pressed="'+(!current&&state.mode==="quick")+'">Потренироваться</button><button type="button" class="cursor-interaction" data-action="mode" data-mode="creative" aria-pressed="'+(!current&&state.mode==="creative")+'">Разобраться в теме</button></nav>'+
     '<button type="button" class="ghost map-toggle cursor-interaction" data-action="map" aria-expanded="'+state.map+'">'+(state.map?"Свернуть карту навыков":"Открыть карту навыков")+'</button>'+seriesPickerHTML()+(state.map?mapHTML():"")+
-    '<div class="stage">'+content+'</div>'+reviewsHTML()+'<footer class="footer"><span>'+(storageAvailable?"Ответы и подсказки сохраняются в этом браузере. В кабинет они не передаются.":"Ответы и подсказки доступны в этой открытой вкладке.")+'</span></footer>'+teacherHTML();
+    '<div class="stage">'+content+'</div><details class="topic-about"><summary>Что разберём в этой теме</summary><p class="goal">'+esc(top.goal)+'</p></details>'+reviewsHTML()+'<footer class="footer"><span>'+(storageAvailable?"Ответы и подсказки сохраняются в этом браузере. В кабинет они не передаются.":"Ответы и подсказки доступны в этой открытой вкладке.")+'</span></footer>'+teacherHTML();
     saveSession();
     updateNavigation();
     restoreFocus(previousFocus,renderedView!==null&&renderedView!==view);
