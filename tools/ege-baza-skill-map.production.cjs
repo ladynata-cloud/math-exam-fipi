@@ -80,6 +80,8 @@ let browser;
       ok(after.seed===before.seed&&after.help===true&&after.independent===before.independent,'Public map marks help and keeps seed/results at '+width);
       await page.screenshot({path:path.join(output,'trainer-map-'+width+'.png'),fullPage:true});
       await page.goto(origin+'/ege-baza/path/index.html?release='+sha+'#exam',{waitUntil:'networkidle'});
+      await page.locator('#start').click();
+      await page.waitForFunction(()=>window.PathCourse?.state().active?.kind==='exam');
       ok(await page.locator('[data-ege-skill-map]').count()===0,'Public exam contains no learning map at '+width);
       ok(errors.length===0,'No public JavaScript errors at '+width+': '+errors.join('; '));
       await context.close();

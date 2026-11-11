@@ -119,7 +119,8 @@ async function newPage(width=1280){
 
   for(const kind of ['exam','diagnostic']){
    const check=await newPage();
-   await check.goto(trainer+'#'+kind);await check.waitForFunction(kind=>window.PathCourse?.state().active?.kind===kind,kind);
+   await check.goto(trainer+'#'+kind);await check.locator('#start').click();
+   await check.waitForFunction(kind=>window.PathCourse?.state().active?.kind===kind,kind);
    await expectCount(check,'[data-ege-skill-map]',0,kind+' has no learning map');await check.close();
   }
 
@@ -151,6 +152,7 @@ async function newPage(width=1280){
    }
    await early.goto(url+'#checks');await early.locator('[data-action="start-diagnostic"]').click();
    await early.waitForURL(url=>url.hash==='#test-diagnostic');
+   await early.locator('[role="progressbar"]').waitFor();
    await expectCount(early,'[data-ege-skill-map]',0,'early diagnostic has no map '+module);
    await early.close();
   }

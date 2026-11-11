@@ -24,6 +24,7 @@ At start, the public course exposes 21 positions and the corresponding lesson ca
 - Star-sky navigation with 21 numbered nodes, topic selection, skills link and true existing progress; pause/reduced-motion/visibility cleanup.
 - Explicit learning-only hooks; maps revealing algorithms count as help within an active exercise.
 - Targeted regression and browser coverage, task documentation and release evidence.
+- Refresh the existing public-navigator exact source bindings for the ten changed HTML pages using their committed source; preserve navigator tags and gate code.
 
 ## Boundaries
 Do not change mathematical answer banks, stored progress schema, assessment rules, authentication, board/server APIs, unrelated courses or deployment configuration. Do not expose learning maps inside exam/checkpoint/managed assessment modes. Do not turn one correct answer into mastery of every micro-skill. Existing status projections remain source of truth.
