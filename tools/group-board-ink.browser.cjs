@@ -78,6 +78,39 @@ module.exports=async function inkFaults({page,origin,server,lesson,token,seatId,
   await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===0,'capture fixture undone');
   page.off('request',observe);
   console.log('PASS trusted Chromium multi-pointer ink ownership and lost-capture exactly-once save');
+  // An in-progress gesture is not in the durable outbox yet. Accidental reload
+  // must offer a chance to remain; accepting reload/crash recovery is not claimed.
+  page.on('request',observe);
+  await page.mouse.move(box.x+45,box.y+50);await page.mouse.down();
+  await page.mouse.move(box.x+100,box.y+95,{steps:5});
+  assert.equal((await queue()).outbox.length,0,'held gesture not yet enqueued');
+  assert.equal((await readWork()).strokes.length,0,'held gesture not yet saved');
+  await page.evaluate(key=>{
+    window.inkReloadMarker=true;
+    addEventListener('beforeunload',()=>{
+      const id=window.inkPointerEvents.filter(e=>e.type==='pointerdown').at(-1).id;
+      window.inkUnloadState={queued:JSON.parse(sessionStorage.getItem(key)).outbox.length,captured:document.getElementById('boardCanvas').hasPointerCapture(id)};
+    },{once:true});
+  },key);
+  let warned=false,reloadError;
+  const stay=async dialog=>{assert.equal(dialog.type(),'beforeunload');warned=true;await dialog.dismiss();};
+  page.off('dialog',acceptUnload);page.on('dialog',stay);
+  try{
+    await page.reload({timeout:5000}).catch(error=>{reloadError=error;});
+    assert.equal(warned,true,'active ink alone triggers unload warning');
+    assert.ok(reloadError,'dismissal cancels navigation');
+    assert.equal(await page.evaluate(()=>window.inkReloadMarker),true,'original document retained');
+    assert.deepEqual(await page.evaluate(()=>window.inkUnloadState),{queued:0,captured:true},'warning precedes capture loss or queueing, so active ink is its sole cause');
+    await page.mouse.up();
+    await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===1,'cancel reload then finish stroke');
+    assert.equal(strokePosts.length,3,'cancelled reload and eventual release send only one stroke');
+    const saved=(await readWork()).strokes[0];
+    assert.ok(Math.abs(saved.points[0].x-45/box.width)<0.01,'original held gesture retained');
+    assert.ok(saved.points.length>=5,'drawn path survives cancelled reload');
+    await page.locator('#undoButton').click();
+    await poll(async()=>(await queue()).outbox.length===0&&(await readWork()).strokes.length===0,'reload fixture undone');
+  }finally{page.off('request',observe);page.off('dialog',stay);page.on('dialog',acceptUnload);await page.mouse.up();}
+  console.log('PASS held-pointer reload warns before losing active ink; staying retains one original stroke');
   async function lostAck(type,perform,expectedInk){
     let accepted=false,opId,release,retried=false,injectionError;
     const barrier=new Promise(resolve=>{release=resolve;});

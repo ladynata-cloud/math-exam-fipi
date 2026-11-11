@@ -760,6 +760,6 @@
   resize.observe($('teacherWatchCanvas'));
   matchMedia('(min-width:1050px)').addEventListener('change',()=>{if(snapshot)renderTeacherWatch();});
   addEventListener('online',()=>{connected=true;pump();poll();});
-  addEventListener('beforeunload',event=>{if(outbox.length||queueStorageFailed&&rejected.length){event.preventDefault();event.returnValue='';}});
+  addEventListener('beforeunload',event=>{if(drawing||outbox.length||queueStorageFailed&&rejected.length){event.preventDefault();event.returnValue='';}});
   init();
 })();
