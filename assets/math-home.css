@@ -14,7 +14,8 @@
 .math-home .route-more { min-height:36px; display:flex; align-items:center; }
 .math-home .home-catalog-link { margin-top:22px; font-weight:700; }
 .math-home .home-directions h3 { font-size:1.2rem; }
-.math-home #oge-models { scroll-margin-top:100px; }
+.math-home #oge-models, .math-home #topic-explanations { scroll-margin-top:100px; }
+@media (max-width:560px) { .math-home #topic-explanations { scroll-margin-top:135px; } }
 @media(max-width:860px) { .math-home .home-directions .entry-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:520px) {
   .math-home .hero { padding-top:24px; }
