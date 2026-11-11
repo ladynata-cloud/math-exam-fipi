@@ -3,6 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {createHash}=require('node:crypto');
 const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
+const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -54,6 +55,10 @@ for(const p of routes.pages){
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
   const actualScripts=scripts(d);
+  if(p==='trainers/oge-task7-number-line.html'){
+    assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
+    actualScripts[0]=restoreOge7Input(actualScripts[0]);
+  }
   if(p==='trainers/oge-task8-powers-roots.html'){
     const reference=actualScripts.filter(script=>script.includes('window.sqSearch=function'));
     assert.equal(reference.length,1,p+' reviewed reference script');

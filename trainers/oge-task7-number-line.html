@@ -465,7 +465,8 @@ function parseQ(s){ s=String(s??"").trim().replace(/\u2212/g,"-").replace(",",".
   if(/^-?\d+$/.test(s)) return Q(BigInt(s));
   let m=s.match(/^(-?)(\d+)\.(\d+)$/); if(m){ const sign=m[1]==="-"?-1n:1n; const d=10n**BigInt(m[3].length);
     return Q(sign*(BigInt(m[2])*d+BigInt(m[3])), d); }
-  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m){ return Q(BigInt(m[1]),BigInt(m[2])); }
+  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m){
+    const d=BigInt(m[2]); return d===0n?null:Q(BigInt(m[1]),d); }
   return null; }
 
 /* ---------- Модель утверждений (тип А) ---------- */
