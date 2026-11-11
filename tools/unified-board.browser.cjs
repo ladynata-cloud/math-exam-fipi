@@ -142,6 +142,10 @@ async function historyWaitsForGeometry(page, frame, lessonURL, rejectWrite = fal
 }
 async function draw(page) {
   await mode(page, 'board');
+  // After a server restart the still-open teacher tab may be reconnecting.
+  // Do not send a pointer gesture to a deliberately disabled editor.
+  await poll(async () => !await page.locator('#penButton').isDisabled(), 'handwriting enabled after connection recovery');
+  await page.locator('#penButton').click();
   const canvas = page.locator('#boardCanvas');
   await canvas.scrollIntoViewIfNeeded();
   const box = await canvas.boundingBox();
@@ -553,8 +557,12 @@ async function main() {
     await graphSolutions.assertRestored(afterRestart, graphSolutionIds);
     await pupil.setViewportSize({ width: 1280, height: 900 });
     await mode(teacher, 'board'); await mode(pupil, 'board');
+    await poll(async () => (await Promise.all([teacher, pupil].map(page => page.locator('#penButton').isDisabled()))).every(disabled => !disabled), 'both participants reconnect before concurrent handwriting');
     const beforeConcurrentInk = (await work(first.id)).strokes;
-    await Promise.all([draw(teacher), draw(pupil)]);
+    const concurrentPosts = Promise.all([teacher, pupil].map(page => page.waitForRequest(request =>
+      request.url() === lessonURL + '/actions' && request.method() === 'POST' && request.postDataJSON()?.type === 'stroke')));
+    const [posts] = await Promise.all([concurrentPosts, draw(teacher), draw(pupil)]);
+    assert.equal(new Set(posts.map(request => request.postDataJSON().opId)).size, 2, 'both pointer gestures enqueue distinct strokes');
     await poll(async () => (await work(first.id)).strokes.length === beforeConcurrentInk.length + 2, 'simultaneous teacher and pupil strokes both survive');
     const concurrentInk = (await work(first.id)).strokes;
     assert.equal(new Set(concurrentInk.slice(-2).map(stroke => stroke.author)).size, 2, 'concurrent ink retains separate authors');
