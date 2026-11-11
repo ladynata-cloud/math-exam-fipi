@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "11fa2761e54dba4dda65c71c023b358a0c8fb491",
+  "baseSha": "c931680dd90f258bbca057f6d5c93a8160e8202f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "8688579c1334d198196b22b07127b9d4b153c7d8c7cc00078b48aeb46ad739d0",
-      "afterSha256": "f35881715f0ade3fb0de15a8cbe83b3ad29ef01f2141bc8ccd51451cb9bb0bdc",
+      "beforeSha256": "410b40057f5399ed9fdbf51b996f0327e33e694b26a0bc9af24557877b621a7c",
+      "afterSha256": "e737a55df9bff217edd821ddf00bef05fb0d6a1abeb84099f333a67a507a15b8",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "20a719e6ad8da0357d964bdfad19bc20cbe88697b9da5297ccdee2b70be6eb73",
-      "afterSha256": "6cb09f7b1133ee0ac5156eb4bc87a31cf206f33d108114d051948228467de2e7",
+      "beforeSha256": "b0f01f5b3ed5cbf42d3bab9877f39ade8e439b3170b87deab3c12bd481e97c63",
+      "afterSha256": "2a00eaf890af52686c6bd2432f291e746778097049177bc6081bef357f34857a",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -4865,6 +4865,16 @@
       "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
       "changedPaths": [
         "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "11fa2761e54dba4dda65c71c023b358a0c8fb491",
+      "sourceBaseSha": "c931680dd90f258bbca057f6d5c93a8160e8202f",
+      "task": "docs/tasks/EGE_BASE_17_18_SPEC_GAPS_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
