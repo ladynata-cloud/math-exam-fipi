@@ -38,7 +38,7 @@ function mountSkills(){
  const directlyMapped=String(lesson.position||'').match(/\d+/)?.[0];
  const relevant=globalThis.ProfileCalmData?.exams.filter(exam=>exam.lessonIds.includes(id)||exam.prerequisites.includes(id)).map(exam=>exam.number)||[];
  const keys=directlyMapped?[directlyMapped]:relevant;
- const target=main.querySelector('.practice-head,.lesson-head,.repair-panel,.complete,.result-panel')||main;
+ const target=main.querySelector('.focused-practice .task-panel,.lesson-head,.repair-panel,.complete,.result-panel')||main;
  ProfileSkillMap.mount(target,keys,{lesson:{title:lesson.title,skill:lesson.summary}});
 }
 function shell(html){cleanup();cleanup=()=>{};boardViews=new Map();boardFeedback='none';boardHelp=null;boardRenderFeedback=()=>{};boardRenderHint=()=>{};boardRenderHelp=()=>{};if(returnToTask&&location.hash===returnToTask)setReturn(null);main.innerHTML=(returnToTask?'<p class="return-to-task"><a href="'+esc(returnToTask)+'">← Вернуться на сохранённый шаг исходной задачи</a></p>':'')+html;formatDisplay();boardSession?.scopeLinks(main);globalThis.ProfileRouteNav?.render();mountSkills();warn();const h=main.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}window.scrollTo(0,0);}

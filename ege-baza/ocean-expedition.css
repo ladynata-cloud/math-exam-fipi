@@ -6,6 +6,7 @@
   --ocean-light: #9be8cc;
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0;
   margin: 28px 0;
   border: 1px solid #263e53;
@@ -72,7 +73,7 @@
 
 .ocean-expedition-chart {
   position: relative;
-  min-width: 0;
+  width: 100%;
   min-height: 236px;
   aspect-ratio: 1040 / 550;
   background: linear-gradient(#1a778c, #173853 58%, #090e26);
@@ -349,8 +350,12 @@
     padding-block: 14px;
   }
 
+  .ocean-expedition-chart {
+    aspect-ratio: auto;
+  }
+
   .ocean-expedition-info {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
     padding-block: 14px;
   }
