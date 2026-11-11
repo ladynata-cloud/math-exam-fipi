@@ -51,7 +51,7 @@ async function roundHintRegression(){
 }
 (async()=>{
  await roundHintRegression();
- const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,111);
+ const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,113);
  assert.equal(typeof w.PathTaskHints?.hint,'function','real index loads concrete hints before task-first');
  for(const id of ['practice-radical-equation','practice-log-equation','expressions']){const task=w.PathData.task(id,0),label=w.PathTaskFirst.question(task);assert(task.q.includes(label));assert(!label.includes(task.steps.at(-1).q)||task.q.includes(task.steps.at(-1).q));}
  for(const id of ids){
@@ -98,5 +98,5 @@ async function roundHintRegression(){
  w.location.hash='exam';await tick();d.querySelector('#start').click();assert(!d.querySelector('#taskHelp'));assert.equal(w.PathCourse.state().active.ids.length,21);
  for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.task(run.ids[run.i],run.seed+run.i);submit(w,d,'answer',solution(w.PathData,t));await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');assert(w.PathCourse.valid(w.PathCourse.state()));assert.deepEqual(errors,[]);w.close();
- console.log('EGE_BAZA_TASK_FIRST_OK: 111 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
+ console.log('EGE_BAZA_TASK_FIRST_OK: 113 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
 })().catch(e=>{console.error(e);process.exitCode=1;});

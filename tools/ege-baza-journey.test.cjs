@@ -48,7 +48,7 @@ test('catalog contains every actual EGE family once, including focused practice,
   assert.equal(result.status, 'empty');
   assert.deepEqual(plain(result.lines.map(line => line.total)), [29, 13, 25, 14, 12, 18, 2]);
   const ids = result.lines.slice(0, 6).flatMap(line => line.groups[0].items.map(item => item.id));
-  assert.equal(ids.length, 111); assert.equal(new Set(ids).size, 111);
+  assert.equal(ids.length, 113); assert.equal(new Set(ids).size, 113);
   assert(ids.includes('equations-brackets')); assert(!ids.includes('grade7-fake')); assert(!ids.includes('pre7-fake'));
   assert.equal(result.lines[0].groups[1].total, 6); assert.equal(result.lines[1].groups[1].total, 4);
   assert.equal(result.lines[6].items.length, 2);
