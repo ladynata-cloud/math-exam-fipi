@@ -233,7 +233,7 @@
           dialog.querySelector('.profile-skill-subtitle')?.textContent.match(/^№([123])(?:\s|$)/)?.[1];
         return geometry[number];
       }, '#main']],
-      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend', 'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', 'body']]
+      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend', 'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', '#profile-course-nav']]
     ]);
     const placement = placements.get(path);
     if (!placement) return;
