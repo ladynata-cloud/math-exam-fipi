@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "fffa04c4054ca59a40c4a1fc7ec2a5a097a60fc5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4902,6 +4902,13 @@
       "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "fffa04c4054ca59a40c4a1fc7ec2a5a097a60fc5",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
