@@ -247,8 +247,64 @@ def zip_files(dest, paths):
             z.writestr(info, path.read_bytes())
 
 
+def read_numbering():
+    return json.loads((OUT / 'numbering.json').read_text())
+
+
+def work_heading(registry, work_id, grade=None):
+    work = registry['works'][work_id]
+    contexts = [(c['grade'], c[work['kind']].index(work_id) + 1)
+                for c in registry['collections'] if not c['bookId']
+                and (grade is None or c['grade'] == grade) and work_id in c[work['kind']]]
+    title = 'Самостоятельная работа' if work['kind'] == 'sr' else 'Контрольная работа'
+    if len(contexts) == 1:
+        title += f' № {contexts[0][1]}'
+    title += (' · Word' if work['format'] == 'docx' else '') + ' · 4 варианта'
+    label = '; '.join(f'{g} класс — № {n}' for g, n in contexts)
+    return html.escape(title), html.escape(label)
+
+
+def numbering_markup(bank_ids=None):
+    registry = read_numbering()
+    if bank_ids is not None:
+        registry['works'] = {key: value for key, value in registry['works'].items()
+                             if value['bankId'] in bank_ids}
+        ids = set(registry['works'])
+        registry['collections'] = [dict(c, references={key: value for key, value in c.get('references', {}).items() if key in ids})
+                                   for c in registry['collections'] if ids.intersection(c['sr'] + c['kr'])]
+        # Keep full sequence arrays: dropping preceding works would change numbers.
+    # Authoring provenance stays in numbering.json. The page carries only fields
+    # needed for selection, labels and downloads; no duplicate source inventories.
+    work_keys = ('id', 'bankId', 'kind', 'format', 'title', 'grades', 'studentUrl', 'teacherUrl')
+    collection_keys = ('id', 'grade', 'bookId', 'bookTitle', 'title', 'sr', 'kr', 'references', 'orderBasis', 'scopeNote')
+    registry = {'schemaVersion': registry['schemaVersion'],
+                'books': [{key: b[key] for key in ('id', 'title', 'grades')} for b in registry['books']],
+                'works': {id: {key: w[key] for key in work_keys} for id, w in registry['works'].items()},
+                'collections': [{key: c[key] for key in collection_keys} for c in registry['collections']]}
+    data = json.dumps(registry, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c')
+    # Download buttons start disabled. This small guard remains available when
+    # a runtime script cannot load, so the page never offers an unnumbered file
+    # under an already numbered heading. Source URLs are inert metadata only.
+    guard = '''<script>(function(){
+function unavailable(){
+document.querySelectorAll('[data-numbered-role],[data-numbered-archive],[data-numbered-pack]').forEach(function(button){button.disabled=true;});
+document.documentElement.dataset.workNumberingReady='false';
+var status=document.getElementById('numbering-download-status');
+if(status){status.hidden=false;status.dataset.error='true';status.setAttribute('aria-busy','false');status.textContent='Скачивание с номерами пока недоступно. Проверьте соединение и обновите страницу.';}
+}
+window.addEventListener('error',function(event){
+if((event.target&&event.target.matches&&event.target.matches('script[data-numbering-runtime]'))||/\\/pedagogam\\/raboty\\/(numbering-catalog|numbered-downloads)\\.js(?:\\?|$)/.test(event.filename||''))unavailable();
+},true);
+}());</script>'''
+    return ('<script type="application/json" id="work-numbering-data">' + data + '</script>'
+            + guard
+            + '<script defer data-numbering-runtime src="/pedagogam/raboty/numbered-downloads.js"></script>'
+            '<script defer data-numbering-runtime src="/pedagogam/raboty/numbering-catalog.js"></script>')
+
+
 def page_html(packs):
     esc = html.escape
+    numbering = read_numbering()
     word_source = OUT / 'word-packs.json'
     word_data = json.loads(word_source.read_text()) if word_source.exists() else None
     word_packs = {p['bankId']: p for p in word_data['packs']} if word_data else {}
@@ -261,50 +317,57 @@ def page_html(packs):
         source = ROOT / ('tools/teacher-topic-content-' + part + '.json')
         if source.exists():
             topic_pages.update({item['id']: item['heading'] for item in json.loads(source.read_text())})
-    topic_nav = '<details class="note"><summary>10 тем с рекомендациями и тренажёрами</summary><ul>' + ''.join(
-        '<li><a href="/pedagogam/raboty/' + pid + '/">' + esc(heading) + '</a></li>'
+    topic_nav = '<details class="note" data-numbered-topic-nav><summary>Рекомендации и тренажёры к темам подборки</summary><ul>' + ''.join(
+        '<li><a data-numbered-bank-id="' + pid + '" href="/pedagogam/raboty/' + pid + '/">' + esc(heading) + '</a></li>'
         for pid, heading in topic_pages.items()) + '</ul></details>' if topic_pages else ''
     cards = []
     for p in packs:
         base = '/pedagogam/raboty/' + p['id'] + '/'
-        refs = '; '.join(r['sections'] for r in p['source_refs'])
         word = word_packs.get(p['id'])
         search = esc(' '.join([p['title'], p['grade'], p['subject'], *p['books'],
                               *([word['title'], 'Word DOCX'] if word else [])]), quote=True)
-        links = ''.join(f'<div class="work"><h3>{name} · 4 варианта</h3>'
-                        f'<a class="button" href="{base}{FILES[kind][0]}" download>Задания PDF</a> '
-                        f'<a href="{base}{FILES[kind][1]}" download>Ответы и решения PDF</a></div>'
-                        for kind, name in [('sr','Самостоятельная'), ('kr','Контрольная')])
+        links = ''
+        for kind in ('sr', 'kr'):
+            work_id = p['id'] + ':' + kind
+            heading, label = work_heading(numbering, work_id)
+            links += (f'<div class="work" data-work-id="{work_id}"><h3 class="work-heading">{heading}</h3>'
+                      f'<p class="work-number-label">{label}</p>'
+                      f'<button type="button" class="button" data-numbered-source="{base}{FILES[kind][0]}" data-numbered-role="student" disabled>Задания PDF</button> '
+                      f'<button type="button" class="numbering-answer" data-numbered-source="{base}{FILES[kind][1]}" data-numbered-role="teacher" disabled>Ответы и решения PDF</button></div>')
         if word:
-            links += (f'<div class="work word-work"><h3>{esc(word["title"])} · Word · 4 варианта</h3>'
+            work_id = 'word:' + word['id']
+            heading, label = work_heading(numbering, work_id)
+            links += (f'<div class="work word-work" data-work-id="{work_id}"><h3 class="work-heading">{heading}</h3>'
+                      f'<p class="work-number-label">{label}</p><p class="word-title">{esc(word["title"])}</p>'
                       f'<p>{esc(word["grade"])}. Редактируемая самостоятельная: четыре базовых задания в каждом варианте.</p>'
-                      f'<a class="button" href="/pedagogam/raboty/{esc(word["studentFile"])}" download>Задания Word</a> '
-                      f'<a href="/pedagogam/raboty/{esc(word["teacherFile"])}" download>Ответы и решения Word</a></div>')
-        topic_link = ('<p><a href="' + base + '">Описание работы, рекомендации и тренажёры</a></p>') if p['id'] in topic_pages else ''
+                      f'<button type="button" class="button" data-numbered-source="/pedagogam/raboty/{esc(word["studentFile"])}" data-numbered-role="student" disabled>Задания Word</button> '
+                      f'<button type="button" class="numbering-answer" data-numbered-source="/pedagogam/raboty/{esc(word["teacherFile"])}" data-numbered-role="teacher" disabled>Ответы и решения Word</button></div>')
+        topic_link = ('<p><a data-numbered-topic href="' + base + '">Описание работы, рекомендации и тренажёры</a></p>') if p['id'] in topic_pages else ''
         numbers = [int(n) for n in re.findall(r'\d+', p['grade'])]
         applies = sorted({g for gs in p.get('book_grades', {}).values() for g in gs}) or list(range(min(numbers),max(numbers)+1))
         book_grades = p.get('book_grades', {book: applies for book in p['books']})
         if word:
             word_grades = [int(n) for n in re.findall(r'\d+', word['grade'])]
             applies = sorted(set(applies) | set(range(min(word_grades), max(word_grades)+1)))
-        cards.append(f'<article class="pack" data-grade="{esc(p["grade"], quote=True)}" data-grades="{esc(json.dumps(applies), quote=True)}" '
+        cards.append(f'<article class="pack" data-subject="{esc(p["subject"], quote=True)}" data-grade="{esc(p["grade"], quote=True)}" data-grades="{esc(json.dumps(applies), quote=True)}" '
                      f'data-books="{esc(json.dumps(p["books"], ensure_ascii=False), quote=True)}" '
                      f'data-book-grades="{esc(json.dumps(book_grades, ensure_ascii=False), quote=True)}" '
                      f'data-search="{search}" id="{esc(p["id"])}">'
                      f'<p class="kicker">{esc(p["grade"])} · {esc(p["subject"])}</p>'
                      f'<h2>{esc(p["title"])}</h2>{topic_link}'
                      f'<details class="books"><summary>Учебники: {len(p["books"])}</summary><ul>'+''.join(f'<li>{esc(b)}</li>' for b in p['books'])+'</ul></details>'
-                     f'{links}<details><summary>Темы учебника и оценивание</summary>'
-                     f'<p>{esc(p["scope_note"])}</p><p>{esc(refs)}</p><p>Самостоятельная: 4 задания, 6 баллов, около {p["sr_minutes"]} минут. '
+                     f'<div class="numbering-reference" hidden></div>{links}<details><summary>Темы учебника и оценивание</summary>'
+                     f'<p>{esc(p["scope_note"])}</p><p>Выберите учебник в фильтре: над работами появятся подтверждённые темы и разделы именно этого издания.</p>'
+                     f'<p>Самостоятельная: 4 задания, 6 баллов, около {p["sr_minutes"]} минут. '
                      f'Контрольная: 5 заданий, 10 баллов, около {p["kr_minutes"]} минут. '
                      'Четыре варианта одинаковы по структуре и баллам. '
                      'Критерии приведены в файлах с ответами; преподаватель может изменить время и шкалу отметок.</p>'
-                     f'</details><p><a href="{base}komplekt.zip" download>Скачать комплект ZIP</a></p></article>')
-    word_downloads = (f'<p class="downloads"><a class="button" href="{esc(word_data["archive"])}" download>Скачать три комплекта Word</a> '
+                     f'</details><p><button type="button" class="numbering-answer" data-numbered-source="{base}komplekt.zip" data-numbered-pack="{p["id"]}" disabled>Скачать комплект ZIP</button></p></article>')
+    word_downloads = (f'<p class="downloads"><button type="button" class="button" data-numbered-source="{esc(word_data["archive"])}" data-numbered-archive="docx" disabled>Скачать Word подборки</button> '
                       f'<a href="{esc(word_data["errorReviewFile"])}" download>Лист работы над ошибками Word</a></p>'
                       '<p>Word доступен для трёх тем: '
                       + ', '.join(f'<a href="#{esc(p["bankId"])}">{esc(p["title"])}</a>' for p in word_data['packs'])
-                      + '. В архиве отдельные задания и ответы, всего 12 вариантов и 48 заданий, а также пустой лист работы над ошибками.</p>') if word_data else ''
+                      + '. В архив входят показанные работы Word: отдельные задания и ответы, по четыре варианта каждой работы, а также пустой лист работы над ошибками.</p>') if word_data else ''
     formats = 'PDF и Word' if word_data else 'PDF'
     word_description = ' Редактируемые Word-комплекты по трём темам.' if word_data else ''
     return f'''<!doctype html>
@@ -316,7 +379,7 @@ def page_html(packs):
 <meta property="og:description" content="Математика 5–11 классов: задания для печати и отдельные решения для преподавателя.{word_description}">
 <meta property="og:type" content="website"><meta property="og:url" content="https://mathexam.space/pedagogam/raboty/">
 <meta property="og:site_name" content="MathExam"><meta property="og:locale" content="ru_RU">
-<link rel="stylesheet" href="/assets/site.css"><style>
+<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/pedagogam/raboty/numbering.css"><style>
 body{{background:#f4f7f2;color:#20352d}}main{{max-width:1120px;margin:auto;padding:32px 20px 70px}}
 h1{{font-size:clamp(27px,5vw,44px);line-height:1.15}}h2{{font-size:23px;line-height:1.25}}h3{{font-size:16px;margin:0 0 9px}}
 .intro{{max-width:790px;font-size:19px;line-height:1.55}}.filters{{display:flex;gap:15px;flex-wrap:wrap;margin:28px 0 16px;padding:18px;background:#e5eee1;border-radius:14px}}
@@ -332,24 +395,24 @@ details{{font-size:14px}}summary{{cursor:pointer;font-weight:bold}}.note{{paddin
 <nav class="site-nav" aria-label="Основные разделы"><a href="/pedagogam/">Педагогам</a><a href="/courses/">Учебные курсы</a><a href="/trainers/">Тренажёры</a></nav></div></header>
 <main><p><a href="/pedagogam/">← Все материалы для преподавателей</a></p>
 <h1>Самостоятельные и контрольные работы</h1>
-<p class="intro">Выберите тему и распечатайте нужный вариант. В каждой работе — четыре равноценных варианта с базовыми заданиями. Ответы, решения и критерии скачиваются отдельно.</p>
-<p class="downloads"><a class="button" href="mathexam-raboty-pdf.zip" download>Скачать все PDF</a> <a href="#catalog">Выбрать тему</a></p>
+<p class="intro">Выберите класс и учебник. Самостоятельные и контрольные работы имеют отдельные постоянные номера. В каждой работе — четыре варианта; ответы, решения и критерии скачиваются отдельно.</p>
+<p class="downloads"><button type="button" class="button" data-numbered-source="/pedagogam/raboty/mathexam-raboty-pdf.zip" data-numbered-archive="pdf" disabled>Скачать PDF подборки</button> <a href="#catalog">Выбрать тему</a></p>
 {word_downloads}
 <details class="note"><summary>Что входит в подборку</summary><p>Подборка охватывает указанные темы учебников, а не все упражнения и дополнительные разделы каждого издания. Порядок тем у разных авторов отличается: выбирайте работу после изучения нужного материала. Задания составлены для MathExam; исходные сборники издательств в архив не входят.</p></details>
 {topic_nav}
 <form class="filters" role="search" onsubmit="return false"><label>Класс<select id="grade"><option value="">Все классы</option>{options(grades)}</select></label>
 <label>Учебник<select id="book"><option value="">Все учебники</option>{options(books)}</select></label>
-<label>Тема<input id="search" type="search" placeholder="Например, дроби или Пифагор"></label><button type="reset">Сбросить фильтры</button></form>
+<label>Тема или номер<input id="search" type="search" placeholder="Дроби, СР 3 или КР 2"></label><button type="reset">Сбросить фильтры</button></form>
+<p id="numbering-note">У каждого класса и учебника свои номера работ. Поиск их не меняет.</p>
+<p><a id="numbering-selection-link" href="/pedagogam/raboty/">Ссылка на выбранную подборку</a></p>
+<details id="numbering-contents" hidden><summary>Содержание подборки</summary><div class="numbering-contents-body"></div></details>
+<details class="numbering-policy"><summary>Как устроены номера и соответствие учебнику</summary><p>Самостоятельные и контрольные нумеруются отдельно с № 1 в каждой подборке. Общая подборка класса и подборка к конкретному учебнику имеют свои последовательности. Номера принадлежат материалам MathExam; это не номера работ или упражнений издательства.</p><p>При выборе учебника показываются подтверждённые темы и параграфы. В некоторых источниках подтверждено только тематическое соответствие: это указано в описании. Отдельные работы Word имеют собственные номера. Поиск оставляет исходные номера, поэтому в результатах могут быть пропуски.</p><p>При скачивании номер и выбранная подборка добавляются в задания и ответы. Архив содержит показанные работы с теми же номерами и оглавление. Для подготовки файлов нужен JavaScript.</p></details>
+<noscript><p>Для фильтрации и скачивания с номером включите JavaScript. Кнопки скачивания пока недоступны.</p></noscript>
 <p id="count" role="status" aria-live="polite">Комплектов: {len(packs)}. В каждом — самостоятельная и контрольная.</p>
 <div id="catalog" class="grid">{''.join(cards)}</div><p id="empty" hidden>По этому сочетанию ничего не найдено. Измените класс, учебник или тему.</p>
 <details class="note" style="margin-top:30px"><summary>Источники и границы подборки</summary><p>Темы сверены с картами и прочитанными оглавлениями конкретных учебников, указанными в каждом комплекте. Открытые методические пособия и издательские фрагменты использованы для сверки школьного формата. Дополнительно предоставленные сборники Ершовой и Голобородько просмотрены по оглавлениям и выборке работ. Полные тексты всех сборников получить не удалось. Углублённые и нестандартные задачи в эту базовую подборку не включены.</p><p>Численные и символьные ответы пересчитаны. Доказательства и объяснения проверены отдельно чтением. Проверка в реальных классах ещё не проводилась.</p><p><a href="istochniki.html">Что удалось найти в открытых источниках</a></p></details>
-</main><script>
-const cards=[...document.querySelectorAll('.pack')],grade=document.querySelector('#grade'),book=document.querySelector('#book'),search=document.querySelector('#search');
-const norm=s=>s.toLocaleLowerCase('ru').replaceAll('ё','е');
-function filter(){{const tokens=norm(search.value).split(/\\s+/).filter(Boolean);let n=0;for(const card of cards){{const show=(!grade.value||(book.value?JSON.parse(card.dataset.bookGrades)[book.value]||[]:JSON.parse(card.dataset.grades)).includes(parseInt(grade.value)))&&(!book.value||JSON.parse(card.dataset.books).includes(book.value))&&tokens.every(t=>norm(card.dataset.search).includes(t));card.hidden=!show;if(show)n++;}}document.querySelector('#count').textContent='Комплектов: '+n+'. В каждом — самостоятельная и контрольная.';document.querySelector('#empty').hidden=!!n;}}
-for(const el of [grade,book,search])el.addEventListener('input',filter);
-document.querySelector('.filters').addEventListener('reset',event=>{{event.preventDefault();grade.value='';book.value='';search.value='';filter();}});
-</script><script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script><script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script></body></html>'''
+</main><div id="numbering-download-status" role="status" aria-live="polite" aria-busy="true">Готовлю скачивание с номерами. Если кнопки остаются недоступны, обновите страницу.</div>
+{numbering_markup()}<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script><script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script></body></html>'''
 
 
 def main():

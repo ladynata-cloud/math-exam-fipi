@@ -17,7 +17,7 @@ on:
 permissions:
   contents: read
 env:
-  MAKARYCHEV8_COMPOSITION_BASE: ${{ github.event.pull_request.base.sha || 'f3097192ed1343e4a5ca44e2f675f5c7ba3f9494' }}
+  MAKARYCHEV8_COMPOSITION_BASE: ${{ github.event.pull_request.base.sha || '96466665da8d8c4052040adf5c1f7ad92ffb20e5' }}
 jobs:
   course:
     runs-on: ubuntu-latest
