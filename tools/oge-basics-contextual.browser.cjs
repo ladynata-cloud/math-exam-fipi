@@ -5,7 +5,6 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
-const {chromium} = require('playwright');
 
 const root = path.resolve(__dirname, '..');
 const course = path.join(root, 'trainers', 'oge-basics');
@@ -16,11 +15,98 @@ const widths = [320, 360, 1280];
 const contentTypes = {'.html':'text/html; charset=utf-8', '.js':'text/javascript; charset=utf-8',
   '.css':'text/css; charset=utf-8', '.json':'application/json; charset=utf-8', '.svg':'image/svg+xml'};
 
+// Preserve the complete contextual-course inventory from d3d6365. New public
+// page types have their own contracts below; they do not replace an old route.
+const contextualRoutes = Object.freeze([
+  'arithmetic-route.html',
+  'decimal-add-subtract.html',
+  'fraction-common-denominator.html',
+  'fraction-meaning.html',
+  'index.html',
+  'multiplication-division.html',
+  'multiplication-division/arithmetic-foundations.html',
+  'multiplication-division/column-multiplication-one-digit.html',
+  'multiplication-division/column-multiplication-two-digit.html',
+  'multiplication-division/course-append-zeros.html',
+  'multiplication-division/course-bring-digit.html',
+  'multiplication-division/course-column-four-by-one.html',
+  'multiplication-division/course-column-mixed.html',
+  'multiplication-division/course-column-one-digit.html',
+  'multiplication-division/course-column-three-by-one.html',
+  'multiplication-division/course-column-three-by-three.html',
+  'multiplication-division/course-column-three-by-two.html',
+  'multiplication-division/course-column-two-by-three.html',
+  'multiplication-division/course-column-two-digit.html',
+  'multiplication-division/course-column-zeros.html',
+  'multiplication-division/course-decimal-divisor.html',
+  'multiplication-division/course-decimal-natural.html',
+  'multiplication-division/course-digit-choice.html',
+  'multiplication-division/course-estimate.html',
+  'multiplication-division/course-first-part.html',
+  'multiplication-division/course-independent-check.html',
+  'multiplication-division/course-mixed-guided.html',
+  'multiplication-division/course-multiply-bridge.html',
+  'multiplication-division/course-multiply-two-digit.html',
+  'multiplication-division/course-remainder.html',
+  'multiplication-division/course-simple-check.html',
+  'multiplication-division/course-subtract.html',
+  'multiplication-division/course-whole-simple.html',
+  'multiplication-division/course-whole-two-digit.html',
+  'multiplication-division/course-zeros.html',
+  'multiplication-division/decimal-division-natural.html',
+  'multiplication-division/decimal-divisor-shift.html',
+  'multiplication-division/division-append-zeros.html',
+  'multiplication-division/division-course.html',
+  'multiplication-division/division-diagnostic.html',
+  'multiplication-division/division-lab.html',
+  'multiplication-division/division-with-remainder.html',
+  'multiplication-division/index.html',
+  'multiplication-division/long-division-from-simple-to-decimals.html',
+  'multiplication-division/long-division-mixed-checkpoint.html',
+  'multiplication-division/long-division-one-digit.html',
+  'multiplication-division/long-division-quotient-digit.html',
+  'multiplication-division/long-division-two-digit.html',
+  'multiplication-division/long-division-with-remainder.html',
+  'multiplication-division/long-division-zero-in-quotient.html',
+  'multiplication-division/multiplication-ladder.html',
+  'multiplication-division/multiplication-meaning.html',
+  'multiplication-division/multiplication-mixed.html',
+  'multiplication-division/multiplication-pythagoras-table.html',
+  'multiplication-division/multiplication-tricks.html',
+  'multiplication-division/quotient-estimate.html',
+  'multiplication-division/tabular-division.html',
+  'negative-add-subtract.html',
+  'negative-number-line.html',
+  'order-of-operations.html',
+  'percentages/index.html',
+  'percentages/percent-change.html',
+  'percentages/percent-choose-question.html',
+  'percentages/percent-final-checkpoint.html',
+  'percentages/percent-meaning.html',
+  'percentages/percent-of-number-and-whole.html',
+  'percentages/proportion.html',
+  'rounding.html',
+  'units-area.html',
+  'units-length-time.html'
+]);
+const supplementalRoutes = Object.freeze({
+  divisionRoute: 'multiplication-division/division-path.html',
+  independentCheckpoint: 'multiplication-division/division-checkpoint.html'
+});
+
 function htmlFiles(folder) {
   return fs.readdirSync(folder, {withFileTypes:true}).flatMap(entry => {
     const file = path.join(folder, entry.name);
     return entry.isDirectory() ? htmlFiles(file) : entry.name.endsWith('.html') ? [file] : [];
   }).sort();
+}
+function checkInventory() {
+  assert.equal(contextualRoutes.length, 70, 'All original contextual course routes remain named');
+  const expected = [...contextualRoutes, ...Object.values(supplementalRoutes)].sort();
+  assert.equal(new Set(expected).size, expected.length, 'Each route has exactly one contract');
+  const actual = htmlFiles(course).map(file => path.relative(course, file).split(path.sep).join('/'));
+  assert.deepEqual(actual, expected, 'Every course HTML has an explicit contract; no old route may disappear');
+  return {contextualRoutes, supplementalRoutes, total:expected.length};
 }
 const server = http.createServer((req, res) => {
   try {
@@ -47,10 +133,21 @@ async function hitTarget(locator, label) {
     const r = element.getBoundingClientRect();
     const x = r.left + r.width / 2, y = r.top + r.height / 2;
     const top = document.elementFromPoint(x, y);
-    return r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
-      y >= 0 && y <= innerHeight && (top === element || element.contains(top));
+    return {
+      ok: r.width >= 24 && r.height >= 24 && r.left >= -1 && r.right <= innerWidth + 1 &&
+        y >= 0 && y <= innerHeight && (top === element || element.contains(top)),
+      rect: {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
+      viewport: {width:innerWidth,height:innerHeight}, scrollY,
+      target: element.outerHTML.slice(0,500),
+      interceptor: top ? top.outerHTML.slice(0,500) : null
+    };
   });
-  assert(hit, label + ': visible, usable hit target');
+  if (!hit.ok) {
+    const page=locator.page(), name='hit-target-failure-'+page.viewportSize().width;
+    fs.writeFileSync(path.join(output,name+'.json'),JSON.stringify({label,url:page.url(),...hit},null,2));
+    await page.screenshot({path:path.join(output,name+'.png'),fullPage:false});
+  }
+  assert(hit.ok, label + ': visible, usable hit target ' + JSON.stringify(hit));
 }
 async function shot(page, name) {
   await page.screenshot({path:path.join(output, name + '.png'), fullPage:true, animations:'disabled'});
@@ -96,6 +193,11 @@ async function chooseLegacyQuotientDigit(page) {
   assert(Number.isSafeInteger(partial) && Number.isSafeInteger(divisor) && divisor > 0);
   const digit = Math.floor(partial / divisor);
   assert(digit >= 0 && digit <= 9, 'The displayed partial dividend has a one-digit quotient');
+  // Every displayed digit must remain reachable beside the mobile navigator,
+  // independent of which random exercise happens to supply the correct digit.
+  const choices=page.locator('#multiples button:visible');
+  assert.equal(await choices.count(),10);
+  for (let i=0;i<10;i++) await hitTarget(choices.nth(i),'Visible quotient choice '+i);
   const choice = page.locator('#multiples button:visible').nth(digit);
   assert.match(await choice.innerText(), new RegExp('^' + digit + ' [·×] ' + divisor));
   await hitTarget(choice, 'Select the quotient digit from the visible multiples');
@@ -186,7 +288,67 @@ async function miniCheckWithoutHelp(page) {
   reports.push({scenario:'mini-check-no-help', width:page.viewportSize().width});
 }
 
+async function supplementalDivisionContracts(page) {
+  // These are a route map and an independent answer check, not contextual
+  // lesson pages. Dedicated division suites cover their complete journeys.
+  await open(page, supplementalRoutes.divisionRoute);
+  await page.locator('#continue-division').waitFor({state:'visible'});
+  const topics = ['start','oneDigit','zero','remainder','twoDigit','decimalNatural','appendZeros','decimalDivisor'];
+  assert.deepEqual(await page.locator('.path-step').evaluateAll(items => items.map(item => item.dataset.topic)), topics,
+    'Division route exposes all eight ordered skills');
+  assert.deepEqual(await page.locator('a[data-guided]').evaluateAll(links => links.map(link => {
+    const url = new URL(link.href);
+    return {topic:link.dataset.guided, path:url.pathname, hash:url.hash};
+  })), topics.map(topic => ({topic, path:'/trainers/long-division-stepwise.html', hash:'#' + topic})),
+  'Each route stage enters its exact guided skill');
+  assert.equal(await page.locator('a[href="/trainers/long-division-claude.html"]').count(), 1,
+    'The alternate Claude trainer remains reachable');
+  const checkpointLink = page.locator('.checkpoint a.button');
+  assert.equal(await checkpointLink.getAttribute('href'), 'division-checkpoint.html');
+  await hitTarget(page.locator('#continue-division'), 'Continue from the division route');
+  await hitTarget(checkpointLink, 'Open the independent division check');
+  await noOverflow(page, 'Division route');
+  reports.push({route:supplementalRoutes.divisionRoute, contract:'ordered-division-route',
+    status:200, width:page.viewportSize().width, stages:topics.length});
+
+  await open(page, supplementalRoutes.independentCheckpoint);
+  await page.locator('#checkpoint-form').waitFor({state:'visible'});
+  assert.equal((await page.locator('#checkpoint-count').innerText()).trim(), 'Пример 1 из 8');
+  assert.equal(await page.locator('#checkpoint-progress').getAttribute('max'), '8');
+  assert.equal(await page.locator('.bh-toggle,.bh-panel').count(), 0,
+    'The independent checkpoint does not mount contextual answer help');
+  assert(await page.locator('#checkpoint-review').isHidden(), 'Solution is hidden before submission');
+  assert.equal(await page.locator('#checkpoint-correct-answer').textContent(), '', 'No answer is revealed in advance');
+  const problem = await page.locator('#checkpoint-problem').textContent();
+  await hitTarget(page.locator('#checkpoint-submit'), 'Check the independent answer');
+  await page.locator('#checkpoint-submit').click();
+  assert.match(await page.locator('#checkpoint-feedback').innerText(), /Сначала введи ответ/);
+  assert.equal((await page.locator('#checkpoint-count').innerText()).trim(), 'Пример 1 из 8',
+    'Blank input does not consume the single attempt');
+  assert(await page.locator('#checkpoint-review').isHidden());
+  await page.locator('#checkpoint-answer').fill('17');
+  await page.reload({waitUntil:'load'});
+  assert.equal(await page.locator('#checkpoint-answer').inputValue(), '17', 'Checkpoint draft survives reload');
+  assert.equal(await page.locator('#checkpoint-problem').textContent(), problem, 'Checkpoint problem survives reload');
+  assert(await page.locator('#checkpoint-review').isHidden(), 'Saving a draft does not submit an answer');
+  const detour = new URL(await page.locator('#checkpoint-help').getAttribute('href'), page.url());
+  assert.equal(detour.pathname, '/trainers/long-division-stepwise.html');
+  assert.equal(detour.hash, '#start');
+  assert.equal(detour.searchParams.get('skillReturn'), '/trainers/oge-basics/' + supplementalRoutes.independentCheckpoint,
+    'Practice links carry a return to this independent check');
+  await hitTarget(page.locator('#checkpoint-help'), 'Practice before returning to the checkpoint');
+  await noOverflow(page, 'Independent division checkpoint');
+  reports.push({route:supplementalRoutes.independentCheckpoint, contract:'independent-answer-check',
+    status:200, width:page.viewportSize().width, retainedDraft:true, unrevealedAnswer:true});
+}
+
 (async () => {
+  const inventory = checkInventory();
+  if (process.argv.includes('--inventory-only')) {
+    console.log('OGE_BASICS_CONTEXTUAL_INVENTORY_OK: 70 unchanged routes + explicit division route and independent checkpoint; no missing or unclassified HTML.');
+    return;
+  }
+  const {chromium} = require('playwright');
   fs.mkdirSync(output, {recursive:true});
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   origin = 'http://127.0.0.1:' + server.address().port;
@@ -194,12 +356,9 @@ async function miniCheckWithoutHelp(page) {
   try {
     browser = await chromium.launch({headless:true,
       ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? {executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE} : {})});
-    const all = htmlFiles(course);
-    assert.equal(all.length, 70, 'All 70 existing course routes are explicitly covered');
     const routePage = await browser.newPage({viewport:{width:1280,height:900}});
     routePage.on('pageerror', error => errors.push({route:routePage.url(),message:error.message}));
-    for (const file of all) {
-      const relative = path.relative(course, file).split(path.sep).join('/');
+    for (const relative of contextualRoutes) {
       await open(routePage, relative);
       await routePage.locator('main:visible,section:visible').first().waitFor();
       assert((await routePage.title()).trim(), relative + ': descriptive page title');
@@ -231,11 +390,14 @@ async function miniCheckWithoutHelp(page) {
           answer:'#answer', prompt:'#problem', practice:'#workspace'});
         await miniCheckWithoutHelp(page);
         await diagnosticWithoutHelp(page);
+        await supplementalDivisionContracts(page);
       } finally { await context.close(); }
     }
     assert.deepEqual(errors, [], 'No browser runtime errors');
-    fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:70, widths, reports, errors}, null, 2));
-    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: 70 routes; 320/360/1280; deep help, draft retention, diagnostic boundaries and hit targets.');
+    fs.writeFileSync(path.join(output, 'report.json'), JSON.stringify({routes:inventory.total,
+      contextualRoutes:inventory.contextualRoutes, supplementalRoutes:inventory.supplementalRoutes,
+      widths, reports, errors}, null, 2));
+    console.log('OGE_BASICS_CONTEXTUAL_BROWSER_OK: all original 70 routes + division route and independent checkpoint; 320/360/1280; deep help, draft retention, diagnostic boundaries and hit targets.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

@@ -30,13 +30,15 @@ jobs:
   contracts-and-browser:
     # Locked Playwright 1.55 supports this runner; ubuntu-latest moved to 26.04.
     runs-on: ubuntu-24.04
-    # Verify all 136 active clips, 68 guides and three presets per topic.
-    timeout-minutes: 30
+    # Browser/media dependency provisioning can exceed 30 minutes on slow mirrors.
+    # Keep time for all 136 clips, 68 guides and three presets per topic afterward.
+    timeout-minutes: 60
     env:
       NODE_PATH: ${{ github.workspace }}/video-worker/node_modules
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:

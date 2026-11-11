@@ -37,6 +37,9 @@
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/oge-home.css?v=20261104b-25-orbits">
+<link rel="stylesheet" href="/assets/oge-all-topics.css?v=20261110">
+<link rel="stylesheet" href="/oge/skill-course-entry.css?v=20261111">
+<link rel="stylesheet" href="/assets/oge-entry-sections.css?v=20261110">
 <script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
 <script defer src="/assets/oge-home-topics.js?v=20261104-25-orbits"></script>
 <script defer src="/assets/oge-home.js?v=20261104b-25-orbits"></script>
@@ -63,6 +66,8 @@
 </style>
 <link rel="stylesheet" href="/assets/lesson-contacts.css?v=20261025">
 <script defer src="/assets/lesson-funnel.js?v=20261026"></script>
+<link rel="stylesheet" href="../assets/trainer-previews.css?v=20261105">
+<script defer src="../assets/trainer-previews.js?v=20261105"></script>
 </head>
 <body class="oge-home">
 <a class="skip-link" href="#main-content">К содержанию</a>
@@ -94,6 +99,7 @@
       <p class="lead">Покрутить колесо. Рассмотреть квартиру. Увидеть, как улыбается парабола.<br>А потом — решить задачу самому.</p>
       <div class="actions">
         <a class="btn" href="/trainers/oge-course/">Начни уже с чего-нибудь! <span aria-hidden="true">↗</span></a>
+        <a class="btn secondary" href="#all-topics">Все 25 тем ↓</a>
         <a class="btn secondary" href="#oge-models">Рассмотреть модели</a>
       </div>
       <p class="hero-note"><span aria-hidden="true">✓</span> Без регистрации · В своём темпе · С подсказками</p>
@@ -149,17 +155,120 @@
     </div>
   </div>
 </section>
-<section class="oge-topics section" aria-labelledby="oge-topics-title">
-  <div class="container">
-    <div class="section-intro"><div><p class="kicker">От картинки к решению</p><h2 id="oge-topics-title">Вот с чего можно начать</h2></div><a href="/trainers/oge-course/">Весь курс ОГЭ <span aria-hidden="true">↗</span></a></div>
-    <div class="topic-strip">
-      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-tires.html"><img class="topic-art" src="/assets/oge-illustrations/tires.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 1–5</span><h3>Шины</h3><p>Прочитать маркировку и рассчитать диаметр.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
-      <a class="topic-tile" href="/trainers/oge-1-5-trainers/practice-1-5-apartments.html"><img class="topic-art" src="/assets/oge-illustrations/apartment.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 1–5</span><h3>Квартиры</h3><p>План, масштаб и площадь — по порядку.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
-      <a class="topic-tile" href="/trainers/oge-task11-graphs-trainer.html"><img class="topic-art" src="/assets/oge-illustrations/graphs.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 11</span><h3>Графики</h3><p>Сопоставить график с формулой функции.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
-      <a class="topic-tile" href="/trainers/oge-course/#geometry"><img class="topic-art" src="/assets/oge-illustrations/geometry.svg" width="240" height="140" alt="" loading="lazy"><span class="topic-number">№ 15–19</span><h3>Геометрия</h3><p>Увидеть на чертеже то, что нужно для решения.</p><span class="topic-arrow" aria-hidden="true">↗</span></a>
-    </div>
+<nav class="oge-section-nav" aria-label="Выбрать раздел подготовки"><a href="#all-topics">Все 25 тем ОГЭ</a><a href="#practical-types">8 типов задач №1–5</a><a href="#math-literacy">Повторим предыдущие классы</a></nav>
+<section class="oge-skill-course-entry" id="skill-course" aria-labelledby="skill-course-title">
+  <div class="oge-skill-course-entry-inner">
+    <h2 id="skill-course-title">Выбери, как заниматься</h2>
+    <p>Можно сразу решать задания ОГЭ. Для подробного разбора начни с четырёх коротких заданий по теме. Мастерские и карта навыков — по желанию.</p>
+    <div class="oge-skill-course-actions"><a href="#all-topics">Решать задания ОГЭ</a><a href="/oge/skills/">Разобраться глубже →</a></div>
+    <details id="skill-course-topics">
+      <summary>Выбрать тему для короткого занятия</summary>
+      <ul class="oge-skill-course-topics">
+        <li><a data-oge-skill-topic="base" href="/oge/skills/?topic=base">Основы вычислений</a></li>
+        <li><a data-oge-skill-topic="n1" href="/oge/skills/?topic=n1">№1 · Практические задачи</a></li>
+        <li><a data-oge-skill-topic="n2" href="/oge/skills/?topic=n2">№2 · Практические задачи</a></li>
+        <li><a data-oge-skill-topic="n3" href="/oge/skills/?topic=n3">№3 · Практические задачи</a></li>
+        <li><a data-oge-skill-topic="n4" href="/oge/skills/?topic=n4">№4 · Практические задачи</a></li>
+        <li><a data-oge-skill-topic="n5" href="/oge/skills/?topic=n5">№5 · Практические задачи</a></li>
+        <li><a data-oge-skill-topic="n6" href="/oge/skills/?topic=n6">№6 · Дроби и вычисления</a></li>
+        <li><a data-oge-skill-topic="n7" href="/oge/skills/?topic=n7">№7 · Числовая прямая</a></li>
+        <li><a data-oge-skill-topic="n8" href="/oge/skills/?topic=n8">№8 · Степени и корни</a></li>
+        <li><a data-oge-skill-topic="n9" href="/oge/skills/?topic=n9">№9 · Уравнения</a></li>
+        <li><a data-oge-skill-topic="n10" href="/oge/skills/?topic=n10">№10 · Вероятность</a></li>
+        <li><a data-oge-skill-topic="n11" href="/oge/skills/?topic=n11">№11 · Графики функций</a></li>
+        <li><a data-oge-skill-topic="n12" href="/oge/skills/?topic=n12">№12 · Расчёты по формулам</a></li>
+        <li><a data-oge-skill-topic="n13" href="/oge/skills/?topic=n13">№13 · Неравенства</a></li>
+        <li><a data-oge-skill-topic="n14" href="/oge/skills/?topic=n14">№14 · Прогрессии</a></li>
+        <li><a data-oge-skill-topic="n15" href="/oge/skills/?topic=n15">№15 · Треугольники</a></li>
+        <li><a data-oge-skill-topic="n16" href="/oge/skills/?topic=n16">№16 · Окружность</a></li>
+        <li><a data-oge-skill-topic="n17" href="/oge/skills/?topic=n17">№17 · Четырёхугольники</a></li>
+        <li><a data-oge-skill-topic="n18" href="/oge/skills/?topic=n18">№18 · Клетчатая бумага</a></li>
+        <li><a data-oge-skill-topic="n19" href="/oge/skills/?topic=n19">№19 · Утверждения</a></li>
+        <li><a data-oge-skill-topic="n20" href="/oge/skills/?topic=n20">№20 · Уравнения и неравенства</a></li>
+        <li><a data-oge-skill-topic="n21" href="/oge/skills/?topic=n21">№21 · Текстовые задачи</a></li>
+        <li><a data-oge-skill-topic="n22" href="/oge/skills/?topic=n22">№22 · Графики и параметры</a></li>
+        <li><a data-oge-skill-topic="n23" href="/oge/skills/?topic=n23">№23 · Вычисления в геометрии</a></li>
+        <li><a data-oge-skill-topic="n24" href="/oge/skills/?topic=n24">№24 · Доказательства</a></li>
+        <li><a data-oge-skill-topic="n25" href="/oge/skills/?topic=n25">№25 · Сложные задачи по геометрии</a></li>
+      </ul>
+    </details>
   </div>
 </section>
+<section class="oge-topics oge-all-topics section" id="all-topics" aria-labelledby="oge-topics-title">
+  <div class="container">
+    <div class="section-intro"><div><p class="kicker">Выбери свой номер</p><h2 id="oge-topics-title">Все 25 тем ОГЭ</h2></div><a href="/trainers/oge-course/">Учебные линии и прогресс <span aria-hidden="true">↗</span></a></div>
+    <p class="oge-all-topics-note">№1–5 — практические задачи по общему сюжету. Все <a href="#practical-types">8 сюжетов</a> можно выбрать отдельно ниже.</p>
+    <ol class="oge-all-topics-grid" aria-label="Задания ОГЭ с 1 по 25">
+        <li><a data-oge-topic="1" href="/trainers/oge-1-5-trainers/practice-1-5-map.html"><span class="oge-all-topics-number">№1</span><span>Практические задачи</span></a></li>
+        <li><a data-oge-topic="2" href="/trainers/oge-1-5-trainers/practice-1-5-map.html"><span class="oge-all-topics-number">№2</span><span>Практические задачи</span></a></li>
+        <li><a data-oge-topic="3" href="/trainers/oge-1-5-trainers/practice-1-5-map.html"><span class="oge-all-topics-number">№3</span><span>Практические задачи</span></a></li>
+        <li><a data-oge-topic="4" href="/trainers/oge-1-5-trainers/practice-1-5-map.html"><span class="oge-all-topics-number">№4</span><span>Практические задачи</span></a></li>
+        <li><a data-oge-topic="5" href="/trainers/oge-1-5-trainers/practice-1-5-map.html"><span class="oge-all-topics-number">№5</span><span>Практические задачи</span></a></li>
+        <li><a data-oge-topic="6" href="/trainers/oge-task6-fractions.html"><span class="oge-all-topics-number">№6</span><span>Дроби</span></a></li>
+        <li><a data-oge-topic="7" href="/trainers/oge-task7-number-line.html"><span class="oge-all-topics-number">№7</span><span>Числовая прямая</span></a></li>
+        <li><a data-oge-topic="8" href="/trainers/oge-task8-powers-roots.html"><span class="oge-all-topics-number">№8</span><span>Степени и корни</span></a></li>
+        <li><a data-oge-topic="9" href="/trainers/oge-task9-equations.html"><span class="oge-all-topics-number">№9</span><span>Уравнения</span></a></li>
+        <li><a data-oge-topic="10" href="/trainers/oge-task10-probability.html"><span class="oge-all-topics-number">№10</span><span>Вероятность</span></a></li>
+        <li><a data-oge-topic="11" href="/trainers/oge-task11-graphs-trainer.html"><span class="oge-all-topics-number">№11</span><span>Графики</span></a></li>
+        <li><a data-oge-topic="12" href="/trainers/oge-task12-formulas-trainer.html"><span class="oge-all-topics-number">№12</span><span>Расчёты по формулам</span></a></li>
+        <li><a data-oge-topic="13" href="/trainers/oge13-inequalities-series.html"><span class="oge-all-topics-number">№13</span><span>Неравенства</span></a></li>
+        <li><a data-oge-topic="14" href="/trainers/oge-task14-progressions.html"><span class="oge-all-topics-number">№14</span><span>Прогрессии</span></a></li>
+        <li><a data-oge-topic="15" href="/trainers/oge-task15-triangles.html"><span class="oge-all-topics-number">№15</span><span>Треугольники</span></a></li>
+        <li><a data-oge-topic="16" href="/trainers/oge-task16-circle.html"><span class="oge-all-topics-number">№16</span><span>Окружность</span></a></li>
+        <li><a data-oge-topic="17" href="/trainers/oge-task17-quadrilaterals.html"><span class="oge-all-topics-number">№17</span><span>Четырёхугольники</span></a></li>
+        <li><a data-oge-topic="18" href="/trainers/oge-task18-grid.html"><span class="oge-all-topics-number">№18</span><span>Клетчатая бумага</span></a></li>
+        <li><a data-oge-topic="19" href="/trainers/task19-trainer.html"><span class="oge-all-topics-number">№19</span><span>Утверждения</span></a></li>
+        <li><a data-oge-topic="20" href="/trainers/oge-task20-equations.html"><span class="oge-all-topics-number">№20</span><span>Алгебра, часть 2</span></a></li>
+        <li><a data-oge-topic="21" href="/trainers/oge-task21-word-problems.html"><span class="oge-all-topics-number">№21</span><span>Текстовые задачи</span></a></li>
+        <li><a data-oge-topic="22" href="/trainers/oge-task22-functions-graphs.html"><span class="oge-all-topics-number">№22</span><span>Функции и параметры</span></a></li>
+        <li><a data-oge-topic="23" href="/trainers/oge-task23-geometry-calculations.html"><span class="oge-all-topics-number">№23</span><span>Геометрия: вычисления</span></a></li>
+        <li><a data-oge-topic="24" href="/trainers/oge-task24-proofs.html"><span class="oge-all-topics-number">№24</span><span>Доказательства</span></a></li>
+        <li><a data-oge-topic="25" href="/trainers/oge-task25-geometry.html"><span class="oge-all-topics-number">№25</span><span>Сложная геометрия</span></a></li>
+    </ol>
+  </div>
+</section>
+<!-- oge-extra-entries:start -->
+<section class="oge-entry-section" id="practical-types" aria-labelledby="practical-types-title">
+  <div class="oge-entry-inner">
+    <p class="oge-entry-kicker">Задания №1–5 · выбор сюжета</p>
+    <h2 id="practical-types-title">8 основных типов практических задач</h2>
+    <p class="oge-entry-lead">Один сюжет — пять связанных вопросов. Выбери, что хочешь разобрать: все восемь типов открыты сразу.</p>
+    <ul class="oge-entry-grid oge-practical-grid">
+      <li><a class="oge-story-card" data-oge-practical="roads-grid" href="/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html"><span class="oge-entry-kicker">№1–5</span><h3>Дороги по клеткам</h3><p>Масштаб, расстояния и выбор маршрута.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="roads-schema" href="/trainers/oge-1-5-trainers/practice-1-5-roads-schema.html"><span class="oge-entry-kicker">№1–5</span><h3>Дороги по схеме</h3><p>Сравнить пути и рассчитать время в дороге.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="tires" href="/trainers/oge-1-5-trainers/practice-1-5-tires.html"><span class="oge-entry-kicker">№1–5</span><h3>Шины</h3><p>Прочитать маркировку и найти диаметр колеса.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="stoves" href="/trainers/oge-1-5-trainers/practice-1-5-stoves.html"><span class="oge-entry-kicker">№1–5</span><h3>Печи</h3><p>Объём парной, выбор печи и стоимость.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="land-plots" href="/trainers/oge-1-5-trainers/practice-1-5-land-plots.html"><span class="oge-entry-kicker">№1–5</span><h3>Дачный участок</h3><p>План участка, площади и дорожки.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="apartments" href="/trainers/oge-1-5-trainers/practice-1-5-apartments.html"><span class="oge-entry-kicker">№1–5</span><h3>Квартира</h3><p>Читать план, считать площади и материалы.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="tariffs" href="/trainers/oge-1-5-trainers/practice-1-5-tariffs.html"><span class="oge-entry-kicker">№1–5</span><h3>Тарифы</h3><p>Сравнить условия и рассчитать расходы.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+      <li><a class="oge-story-card" data-oge-practical="paper-sheets" href="/trainers/oge-1-5-trainers/practice-1-5-paper-sheets.html"><span class="oge-entry-kicker">№1–5</span><h3>Листы бумаги</h3><p>Форматы листов, размеры и площадь.</p><span class="oge-entry-go">Решать этот тип →</span></a></li>
+    </ul>
+    <p class="oge-entry-footer">Не знаешь, с чего начать? <a href="/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html">Пройди входную диагностику №1–5 →</a></p>
+  </div>
+</section>
+<section class="oge-entry-section oge-foundations-section" id="math-literacy" aria-labelledby="math-literacy-title">
+  <div class="oge-entry-inner">
+    <p class="oge-entry-kicker">Повторим предыдущие классы</p>
+    <h2 id="math-literacy-title">Математический ликбез</h2>
+    <p class="oge-entry-lead">Забыл правило или запутался в вычислениях? Выбери нужный навык: попробуй короткий пример, при необходимости открой разбор и переходи к тренировке.</p>
+    <ul class="oge-entry-grid oge-foundations-grid">
+      <li><article class="oge-skill-card" data-oge-foundation="order"><h3>Порядок действий</h3><p>Скобки, умножение и деление.</p><p class="oge-skill-example">18 − 2 · (3 + 4) = ?</p><details><summary>Ответ и объяснение</summary><p>Сначала скобки: 3 + 4 = 7. Затем 2 · 7 = 14. Ответ: 18 − 14 = 4.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/order-of-operations.html" aria-label="Повторить и потренироваться: Порядок действий">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="division"><h3>Деление столбиком</h3><p>Восстановить каждый шаг деления.</p><p class="oge-skill-example">156 : 12 = ?</p><details><summary>Ответ и объяснение</summary><p>156 : 12 = 13. Проверка: 13 · 12 = 156.</p></details><a class="oge-entry-go" href="/trainers/long-division-stepwise.html" aria-label="Повторить и потренироваться: Деление столбиком">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="decimals"><h3>Десятичные дроби</h3><p>Запятая, разряды, сложение и вычитание.</p><p class="oge-skill-example">2,4 + 0,35 = ?</p><details><summary>Ответ и объяснение</summary><p>Запишем 2,40 + 0,35. Складываем одноимённые разряды: 2,75.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/decimal-add-subtract.html" aria-label="Повторить и потренироваться: Десятичные дроби">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="fractions"><h3>Смысл дроби</h3><p>Числитель, знаменатель и доля целого.</p><p class="oge-skill-example">3/4 от 20 = ?</p><details><summary>Ответ и объяснение</summary><p>Одна четверть: 20 : 4 = 5. Три четверти: 5 · 3 = 15.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/fraction-meaning.html" aria-label="Повторить и потренироваться: Смысл дроби">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="denominator"><h3>Общий знаменатель</h3><p>Сравнивать и складывать дроби.</p><p class="oge-skill-example">1/2 + 1/3 = ?</p><details><summary>Ответ и объяснение</summary><p>Приведём к шестым: 3/6 + 2/6 = 5/6.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/fraction-common-denominator.html" aria-label="Повторить и потренироваться: Общий знаменатель">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="negative"><h3>Отрицательные числа</h3><p>Числовая прямая и действия со знаками.</p><p class="oge-skill-example">−3 + 7 = ?</p><details><summary>Ответ и объяснение</summary><p>От −3 идём на 7 единиц вправо по числовой прямой. Получаем 4.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/negative-add-subtract.html" aria-label="Повторить и потренироваться: Отрицательные числа">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="rounding"><h3>Округление</h3><p>Найти нужный разряд и оценить ответ.</p><p class="oge-skill-example">Округли 3,47 до десятых.</p><details><summary>Ответ и объяснение</summary><p>Смотрим на сотые: 7 ≥ 5. Увеличиваем цифру десятых на 1. Ответ: 3,5.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/rounding.html" aria-label="Повторить и потренироваться: Округление">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="units"><h3>Длина и время</h3><p>Переводить единицы измерения.</p><p class="oge-skill-example">1,5 часа — сколько минут?</p><details><summary>Ответ и объяснение</summary><p>В часе 60 минут. 1,5 · 60 = 90 минут.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/units-length-time.html" aria-label="Повторить и потренироваться: Длина и время">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="area"><h3>Единицы площади</h3><p>Различать длину и площадь.</p><p class="oge-skill-example">1 м² — сколько см²?</p><details><summary>Ответ и объяснение</summary><p>1 м = 100 см. Квадрат 1 м × 1 м содержит 100 · 100 = 10 000 см².</p></details><a class="oge-entry-go" href="/trainers/oge-basics/units-area.html" aria-label="Повторить и потренироваться: Единицы площади">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="percent"><h3>Проценты и пропорции</h3><p>Находить часть, целое и процент.</p><p class="oge-skill-example">20% от 150 = ?</p><details><summary>Ответ и объяснение</summary><p>20% = 20/100. Получаем 150 · 20/100 = 30.</p></details><a class="oge-entry-go" href="/trainers/oge-basics/percentages/" aria-label="Повторить и потренироваться: Проценты и пропорции">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="equations"><h3>Линейные уравнения</h3><p>Равенство, неизвестное и проверка.</p><p class="oge-skill-example">x + 2 = 5. Чему равен x?</p><details><summary>Ответ и объяснение</summary><p>Вычитаем 2 из обеих частей: x = 3. Проверяем: 3 + 2 = 5.</p></details><a class="oge-entry-go" href="/equations/linear-pilot/" aria-label="Повторить и потренироваться: Линейные уравнения">Повторить и потренироваться →</a></article></li>
+      <li><article class="oge-skill-card" data-oge-foundation="geometry"><h3>Основы геометрии</h3><p>Луч, угол и его вершина.</p><p class="oge-skill-example">Где вершина угла ∠ABC?</p><details><summary>Ответ и объяснение</summary><p>Вершина — B, средняя буква в записи угла. Его стороны — лучи BA и BC.</p></details><a class="oge-entry-go" href="/geometry-course/atlas/angles.html" aria-label="Повторить и потренироваться: Основы геометрии">Повторить и потренироваться →</a></article></li>
+    </ul>
+    <div class="oge-entry-footer"><a href="/trainers/oge-basics/">Все навыки ПредОГЭ →</a><a href="/foundations/">Полный маршрут математических основ →</a><a href="#all-topics">Вернуться к 25 темам ОГЭ ↑</a></div>
+  </div>
+</section>
+<!-- oge-extra-entries:end -->
 <section class="section start-section" aria-labelledby="where-to-start">
   <div class="container">
     <p class="kicker">У каждого своя точка старта</p>
@@ -184,6 +293,35 @@
   </div>
 </section>
 
+
+<!-- trainer-previews:start -->
+<section class="me-preview-section" aria-label="Короткие примеры"><h2>Один пример — одна понятная идея</h2><p class="me-preview-intro">Короткие разборы показывают приёмы из тренажёров. Нажмите «Смотреть пример», затем попробуйте сами. Числа в заданиях могут отличаться.</p>
+<div class="me-preview-grid"><article class="me-preview-card"><div class="me-preview" id="preview-02-parabola" data-me-preview="02-parabola" data-duration="11000">
+  <img id="me-gif-02-parabola" src="../assets/trainer-previews/02-parabola.png" data-gif="../assets/trainer-previews/02-parabola.gif" width="640" height="500" loading="lazy" decoding="async" alt="При увеличении c от −2 до 2 парабола y = x² + c перемещается вверх. Форма остаётся прежней.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-02-parabola" aria-label="Смотреть или остановить пример: Как сдвигается парабола?">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Как сдвигается парабола?</h3><p>Огэ · графики</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>y = x² − 2: вершина (0; −2)</li><li>y = x² − 1: на 1 выше</li><li>y = x²: вершина в начале осей</li><li>y = x² + 1: на 1 выше</li><li>y = x² + 2: вершина (0; 2)</li></ol></details><a class="me-preview-link" href="/trainers/oge-task11-graphs-trainer.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/02-parabola.gif" download>Скачать GIF · 102 КБ</a></div></article><article class="me-preview-card"><div class="me-preview" id="preview-09-tires" data-me-preview="09-tires" data-duration="11000">
+  <img id="me-gif-09-tires" src="../assets/trainer-previews/09-tires.png" data-gif="../assets/trainer-previews/09-tires.gif" width="640" height="500" loading="lazy" decoding="async" alt="В маркировке шины 195/65 R15 высота боковины составляет 65 процентов от ширины 195 мм: 126,75 мм.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-09-tires" aria-label="Смотреть или остановить пример: Что означает 195/65?">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Что означает 195/65?</h3><p>Огэ · шины</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>195 — ширина шины, мм</li><li>65 — высота в % от ширины</li><li>h = 195 × 65/100</li><li>h = 195 × 0,65</li><li>Высота боковины: 126,75 мм</li></ol></details><a class="me-preview-link" href="/trainers/oge-1-5-trainers/practice-1-5-tires.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/09-tires.gif" download>Скачать GIF · 41 КБ</a></div></article><article class="me-preview-card"><div class="me-preview" id="preview-10-plan" data-me-preview="10-plan" data-duration="11000">
+  <img id="me-gif-10-plan" src="../assets/trainer-previews/10-plan.png" data-gif="../assets/trainer-previews/10-plan.gif" width="640" height="500" loading="lazy" decoding="async" alt="Прямоугольная комната 6 на 4 клетки. Сторона клетки 0,5 метра. Размеры комнаты 3 на 2 метра, площадь 6 квадратных метров.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-10-plan" aria-label="Смотреть или остановить пример: Площадь по клеткам">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Площадь по клеткам</h3><p>Огэ · план квартиры</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>Сторона клетки — 0,5 м</li><li>Комната: 6 на 4 клетки</li><li>Длина: 6 × 0,5 = 3 м</li><li>Ширина: 4 × 0,5 = 2 м</li><li>Площадь: 3 × 2 = 6 м²</li></ol></details><a class="me-preview-link" href="/trainers/oge-1-5-trainers/practice-1-5-apartments.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/10-plan.gif" download>Скачать GIF · 39 КБ</a></div></article><article class="me-preview-card"><div class="me-preview" id="preview-11-probability" data-me-preview="11-probability" data-duration="11000">
+  <img id="me-gif-11-probability" src="../assets/trainer-previews/11-probability.png" data-gif="../assets/trainer-previews/11-probability.gif" width="640" height="500" loading="lazy" decoding="async" alt="В мешке 10 одинаковых на ощупь шаров: 3 зелёных и 7 белых. При случайном выборе вероятность зелёного равна 0,3.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-11-probability" aria-label="Смотреть или остановить пример: Какова вероятность?">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Какова вероятность?</h3><p>Огэ · вероятность</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>В мешке 3 зелёных шара</li><li>И ещё 7 белых шаров</li><li>Выбираем один шар наугад</li><li>P = 3/10</li><li>P = 0,3</li></ol></details><a class="me-preview-link" href="/trainers/oge-task10-probability.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/11-probability.gif" download>Скачать GIF · 38 КБ</a></div></article><article class="me-preview-card"><div class="me-preview" id="preview-12-equation" data-me-preview="12-equation" data-duration="11000">
+  <img id="me-gif-12-equation" src="../assets/trainer-previews/12-equation.png" data-gif="../assets/trainer-previews/12-equation.gif" width="640" height="500" loading="lazy" decoding="async" alt="Уравнение 3x + 5 = 20. Вычитаем 5, делим на 3, получаем x = 5. Проверка даёт 20.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-12-equation" aria-label="Смотреть или остановить пример: Решаем и проверяем">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Решаем и проверяем</h3><p>Огэ · уравнения</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>3x + 5 = 20</li><li>Вычтем 5 из обеих частей</li><li>3x = 15</li><li>Разделим обе части на 3</li><li>x = 5; 3 × 5 + 5 = 20</li></ol></details><a class="me-preview-link" href="/trainers/oge-task9-equations.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/12-equation.gif" download>Скачать GIF · 42 КБ</a></div></article><article class="me-preview-card"><div class="me-preview" id="preview-13-inequality" data-me-preview="13-inequality" data-duration="11000">
+  <img id="me-gif-13-inequality" src="../assets/trainer-previews/13-inequality.png" data-gif="../assets/trainer-previews/13-inequality.gif" width="640" height="500" loading="lazy" decoding="async" alt="Неравенство −2x &lt; 6: при делении на −2 знак меняется. Ответ x &gt; −3; на прямой открытая точка −3 и луч вправо.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-13-inequality" aria-label="Смотреть или остановить пример: Знак меняет направление">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div><div class="me-preview-body"><h3>Знак меняет направление</h3><p>Огэ · неравенства</p><details class="me-preview-steps"><summary>Шаги текстом</summary><ol><li>−2x &lt; 6</li><li>Делим на отрицательное −2</li><li>Знак &lt; меняется на &gt;</li><li>x &gt; −3</li><li>Точка −3 не входит в ответ</li></ol></details><a class="me-preview-link" href="/trainers/oge-task13-inequalities.html">Открыть тренажёр →</a><a class="me-preview-download" href="../assets/trainer-previews/13-inequality.gif" download>Скачать GIF · 34 КБ</a></div></article></div></section>
+<!-- trainer-previews:end -->
 <section class="section lesson-entry" aria-labelledby="other-lessons-title"><div class="container">
   <p class="kicker">5–11 классы · ОГЭ · ЕГЭ базовый и профильный</p>
   <h2 id="other-lessons-title">Если нужна помощь преподавателя</h2>

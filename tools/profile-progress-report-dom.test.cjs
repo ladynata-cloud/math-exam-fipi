@@ -1,8 +1,9 @@
 'use strict';
+const {resolvePublicScript} = require('./public-page-script.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom'),{makeBoot}=require('../ege-profil/tests/boot.js');
 const root=path.resolve(__dirname,'..'),KEY='mathexam.profileStart2027.v1',DIAG='mathexam.profileReadinessDiagnostic.v1';
-function start(hash,entries=[]){const file=path.join(root,'ege-profil/start/index.html'),dom=new JSDOM(fs.readFileSync(file,'utf8'),{url:'https://mathexam.space/ege-profil/start/index.html#'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};for(const [key,value]of entries)w.localStorage.setItem(key,value);for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(path.resolve(path.dirname(file),script.getAttribute('src').split(/[?#]/)[0]),'utf8'));return dom;}
+function start(hash,entries=[]){const file=path.join(root,'ege-profil/start/index.html'),dom=new JSDOM(fs.readFileSync(file,'utf8'),{url:'https://mathexam.space/ege-profil/start/index.html#'+hash,runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};for(const [key,value]of entries)w.localStorage.setItem(key,value);for(const script of w.document.querySelectorAll('script[src]'))w.eval(fs.readFileSync(resolvePublicScript(path.resolve(__dirname, '..'), path.dirname(file), script.getAttribute('src')),'utf8'));return dom;}
 function storage(w){return Object.keys(w.localStorage).sort().map(key=>[key,w.localStorage.getItem(key)]);}
 function input(w,value){const e=w.document.getElementById('answer');e.value=String(value);e.dispatchEvent(new w.Event('input',{bubbles:true}));}
 const flush=()=>new Promise(r=>setImmediate(r));

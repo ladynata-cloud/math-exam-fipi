@@ -40,7 +40,7 @@ test('the original expressions URL and literal same-origin entry aliases open th
   assert.equal(local.normalize('http://127.0.0.1:5173' + sourcePath + '#exam/8'), wrapperPath + '#exam/8');
 });
 
-test('only the six expressions lessons and their supported complete routes are aliased', () => {
+test('only the six expressions lessons resolve to their wrapper; unknown routes stay unaliased', () => {
   const { normalize } = picker();
   const hashes = ['#exam/8', '#calm/8'];
   for (const id of lessonIds) {
@@ -54,7 +54,7 @@ test('only the six expressions lessons and their supported complete routes are a
   }
   for (const hash of [
     '', '#home', '#calm', '#progress', '#checkpoint', '#exam/5', '#calm/9',
-    '#lesson/trig-angle', '#example/bridge-fractions', '#repair-task/expr-powers',
+    '#lesson/trig-unregistered', '#example/bridge-fractions', '#repair-task/expr-powers',
     '#practice/expr-powers', '#practice/expr-powers/other',
     '#practice/expr-powers/guided/extra', '#lesson/expr-powers/extra',
     '#exam/8/', '#exam/8/extra', '#lesson/EXPR-powers', '#%65xam/8'
@@ -109,15 +109,18 @@ test('existing URL rejection and ordinary trainer opening remain intact', () => 
 
 test('the wrapper reuses the original scripts in order without a base, redirect, or nested frame', () => {
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-  const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
+  const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
-  const canonicalScripts = scripts(canonical)
+  const canonicalScripts = require('./public-page-script.cjs').canonicalProfileLearningScripts(canonical, wrapper)
     .filter(src => !src.startsWith('../learning/'))
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
   const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
-  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), canonicalScripts);
+  const home = '/assets/assistant/home-link.js?v=20261110';
+  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), [...canonicalScripts, home]);
+  assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
+  assert.match(wrapper, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
   const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
   assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
   assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);

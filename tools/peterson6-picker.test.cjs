@@ -101,12 +101,23 @@ test('the wrapper is a thin copy of the canonical shell and uses the exact commo
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
   const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(m => m[1]);
-  const canonicalScripts = scripts(canonical).map(src => '/school/peterson6/' + src);
+  const home = '/assets/assistant/home-link.js?v=20261110';
+  const homeTag = '<script defer src="' + home + '"></script>';
+  // The one new public shell is shared by both documents and suppressed in an
+  // iframe. Require its exact URL, deferred tag, count and trailing position;
+  // it must not relax the original common learning-runtime parity below.
+  for (const html of [canonical, wrapper]) {
+    assert.deepEqual(scripts(html).filter(src => src.includes('home-link.js')), [home]);
+    assert.equal(html.split(homeTag).length, 2);
+    assert.equal(scripts(html).at(-1), home);
+  }
+  assert.deepEqual(scripts(canonical).filter(src => src.startsWith('/')), [home]);
+  const canonicalScripts = scripts(canonical).map(src => src === home ? src : '/school/peterson6/' + src);
   const wrapperScripts = scripts(wrapper);
   const pathname = src => new URL(src, 'https://mathexam.space').pathname;
   const bridge = '/trainers/board-bridge.js', adapter = '/school/peterson6/board-session.js';
   assert.deepEqual(wrapperScripts.map(pathname).filter(src => src !== bridge && src !== adapter), canonicalScripts.map(pathname));
-  assert.deepEqual(wrapperScripts.map(pathname).slice(-3), [bridge, adapter, '/school/peterson6/app.js']);
+  assert.deepEqual(wrapperScripts.map(pathname).slice(-4), [bridge, adapter, '/school/peterson6/app.js', pathname(home)]);
   assert.match(wrapper, /<body data-peterson-board="part1">/);
   assert.match(wrapper, /Совместная работа на доске · без зачёта в личный прогресс/);
   assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);

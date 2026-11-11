@@ -24,40 +24,242 @@ const PASSWORD = '0753';
 const PUPIL_LOGIN = 'fixture_free_pupil';
 const PUPIL_PASSWORD = '0381';
 const uuid = () => crypto.randomUUID();
+// Wall-clock milliseconds and random task seeds can coincidentally contain a
+// four-digit fixture PIN. Control those nonsecret sources; keep the receipt
+// scan strict. The real API rate limiter retains its own wall clock.
+function fixtureSources() {
+  let nextSeed = 41;
+  return { clock: () => Date.UTC(2026, 0, 1), contracts: { ...contracts,
+    create(trainerId, contentId, seed = nextSeed++) {
+      return contracts.create(trainerId, contentId, seed);
+    }
+  } };
+}
+function verifyFixtureSources() {
+  const fixture = fixtureSources();
+  assert.equal(fixture.clock(), Date.UTC(2026, 0, 1));
+  assert.equal(fixture.clock(), fixture.clock(), 'Store fixture time does not depend on runner time');
+  const first = fixture.contracts.create('ege-path', 'equations-signs');
+  const next = fixture.contracts.create('ege-path', 'equations-signs');
+  assert.deepEqual(first, contracts.create('ege-path', 'equations-signs', 41));
+  assert.deepEqual(next, contracts.create('ege-path', 'equations-signs', 42));
+  assert.notEqual(contracts.questionIdentity(first.taskSpec), contracts.questionIdentity(next.taskSpec),
+    'Fresh fixture tasks retain different questions');
+  assert.deepEqual(fixture.contracts.create('ege-path', 'equations-signs', 10381),
+    contracts.create('ege-path', 'equations-signs', 10381), 'An explicit seed is never replaced or filtered');
+  assert.equal(fixture.contracts.create('ege-path', 'equations-signs').taskSpec.seed, 43,
+    'An explicit seed does not consume the default sequence');
+  assert.throws(() => fixture.contracts.create('ege-path', 'equations-signs', null), { code: 'LEARNING_TASK_INVALID' });
+  assert.equal(fixture.contracts.normalize, contracts.normalize, 'Real contract validation remains in use');
+  assert.equal(fixture.contracts.evaluate, contracts.evaluate, 'Real contract evaluation remains in use');
+  console.log('LEARNING_FIXTURE_SOURCES_OK: fixed store time; varied deterministic tasks; explicit seeds preserved.');
+}
 // A four-digit PIN can occur inside a valid UUID or SHA256 by coincidence.
-// Audit payload data and credential keys while validating (not substring-
-// scanning) the explicitly typed opaque identity/hash metadata.
+// Audit every payload key/value except exact DTO identity paths independently
+// verified against persisted identity columns. Never exempt a field by name.
 const opaqueId = /^(?:[A-Za-z0-9_-]{24}|[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i;
-const identityFields = new Set(['id', 'learnerId', 'teacherId', 'attemptId', 'sourceAttemptId', 'assignmentId', 'batchId', 'commonAttemptId']);
-function assertCredentialFreeReceipt(row, secret) {
+function receiptIdentityOracle(store) {
+  return Object.fromEntries([
+    ['attempts', 'id,learner_id,teacher_id,source_attempt_id'],
+    ['assignments', 'id,learner_id,attempt_id,batch_id'],
+    ['learning_photos', 'id'], ['learning_feedback', 'id'], ['accounts', 'id,role,teacher_id']
+  ].map(([table, columns]) => [table, new Map(store.rows('SELECT ' + columns + ' FROM ' + table).map(row => [row.id, row]))]));
+}
+function assertCredentialFreeReceipt(row, secret, identities) {
   assert.deepEqual(Object.keys(row).sort(), ['actor_id', 'fingerprint', 'op_id', 'result_json']);
   assert.match(row.actor_id, opaqueId); assert.match(row.op_id, opaqueId);
   assert.match(row.fingerprint, /^[a-f0-9]{64}$/);
-  function inspect(value, key = '') {
+  const actor = identities.accounts?.get(row.actor_id);
+  assert.ok(actor && ['teacher', 'student'].includes(actor.role), 'Receipt actor must be a persisted account');
+  const result = JSON.parse(row.result_json), trusted = new Map();
+  assert.ok(result && typeof result === 'object' && !Array.isArray(result), 'Receipt result must be an object');
+  function identity(dto, at, table, fields) {
+    if (dto === undefined) return;
+    assert.ok(dto && typeof dto === 'object' && !Array.isArray(dto), 'Receipt identity must be an object');
+    const persisted = identities[table]?.get(dto.id);
+    assert.ok(persisted, 'Receipt identity must exist independently in ' + table);
+    for (const [field, column] of Object.entries(fields)) if (Object.hasOwn(dto, field)) {
+      assert.equal(dto[field], persisted[column], 'Receipt identity matches its persisted row');
+      if (dto[field] !== null) {
+        assert.match(dto[field], opaqueId);
+        trusted.set(JSON.stringify([...at, field]), dto[field]);
+      }
+    }
+  }
+  function submission(dto, at) {
+    if (dto == null) return;
+    assert.ok(Array.isArray(dto.photoIds));
+    dto.photoIds.forEach((id, index) => {
+      assert.match(id, opaqueId);
+      assert.ok(identities.learning_photos?.has(id), 'Submitted photo identity must exist independently');
+      trusted.set(JSON.stringify([...at, 'photoIds', index]), id);
+    });
+  }
+  function attempt(dto, at) {
+    identity(dto, at, 'attempts', { id: 'id', learnerId: 'learner_id', teacherId: 'teacher_id', sourceAttemptId: 'source_attempt_id' });
+    submission(dto?.submission, [...at, 'submission']);
+  }
+  const assignmentFields = { id: 'id', learnerId: 'learner_id', attemptId: 'attempt_id', batchId: 'batch_id' };
+  if (result.operation === 'onboard-student') {
+    assert.deepEqual(Object.keys(result).sort(), ['authEpoch', 'learnerId', 'operation', 'profileVersion'],
+      'Onboarding stores only its minimal nonsecret retry metadata');
+    assert.equal(actor.role, 'teacher', 'Only a persisted teacher can issue pupil access');
+    assert.equal(result.authEpoch, 0); assert.equal(result.profileVersion, 1);
+    const pupil = identities.accounts?.get(result.learnerId);
+    assert.ok(pupil && pupil.role === 'student' && pupil.teacher_id === row.actor_id,
+      'An onboarding receipt refers to a persisted student of its issuing teacher');
+    assert.match(result.learnerId, opaqueId);
+    trusted.set(JSON.stringify(['learnerId']), result.learnerId);
+  }
+  attempt(result.attempt, ['attempt']);
+  identity(result.assignment, ['assignment'], 'assignments', assignmentFields);
+  if (result.assignments !== undefined) {
+    assert.ok(Array.isArray(result.assignments));
+    result.assignments.forEach((dto, index) => {
+      identity(dto, ['assignments', index], 'assignments', assignmentFields);
+      attempt(dto.attempt, ['assignments', index, 'attempt']);
+    });
+  }
+  identity(result.photo, ['photo'], 'learning_photos', { id: 'id' });
+  if (result.photo?.url !== undefined) {
+    assert.equal(result.photo.url, '/api/learning/photos/' + result.photo.id);
+    trusted.set(JSON.stringify(['photo', 'url']), result.photo.url);
+  }
+  identity(result.feedback, ['feedback'], 'learning_feedback', { id: 'id' });
+  submission(result.submission, ['submission']);
+  function inspect(value, at = [], key = '') {
     assert.equal(key.includes(secret), false, 'Plaintext credential is absent from operation payload keys');
     assert.doesNotMatch(key, /password|passphrase|credential|token|csrf|recovery.?code|^pin$/i,
       'Credential fields must never be stored in an operation receipt');
     if (value === null || value === undefined) return;
     if (typeof value === 'string') {
-      if (identityFields.has(key) && opaqueId.test(value)) return;
+      if (trusted.get(JSON.stringify(at)) === value) return;
       assert.equal(value.includes(secret), false, 'Plaintext credential is absent from operation payload data');
-    } else if (Array.isArray(value)) value.forEach(item => inspect(item));
-    else if (typeof value === 'object') for (const [name, child] of Object.entries(value)) inspect(child, name);
+    } else if (Array.isArray(value)) value.forEach((item, index) => inspect(item, [...at, index]));
+    else if (typeof value === 'object') for (const [name, child] of Object.entries(value)) inspect(child, [...at, name], name);
     else assert.equal(String(value).includes(secret), false, 'Plaintext credential is absent from primitive payload data');
   }
-  inspect(JSON.parse(row.result_json));
+  inspect(result);
 }
 function verifyReceiptPrivacyGuard() {
-  const row = { actor_id: 'A'.repeat(24), op_id: '03810000-0000-4000-8000-000000000001',
-    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: '0381' + 'B'.repeat(20) }, notice: 'Safe fixture' }) };
+  const id = letter => PUPIL_PASSWORD + letter.repeat(20);
+  const teacherId = id('T'), learnerId = id('L'), attemptId = id('A'), sourceId = id('S');
+  const assignmentId = id('W'), batchId = id('B'), photoId = id('P'), feedbackId = id('F');
+  // Unknown IDs without the PIN prove rejection comes from provenance checks,
+  // not merely the later secret-substring scan.
+  const unknownIds = [id('X'), 'U'.repeat(24)], unknownId = unknownIds[1];
+  const teacherRow = { id: teacherId, role: 'teacher', teacher_id: teacherId };
+  const pupilRow = { id: learnerId, role: 'student', teacher_id: teacherId };
+  const identities = {
+    accounts: new Map([[teacherId, teacherRow], [learnerId, pupilRow]]),
+    attempts: new Map([
+      [attemptId, { id: attemptId, learner_id: learnerId, teacher_id: teacherId, source_attempt_id: sourceId }],
+      [sourceId, { id: sourceId, learner_id: learnerId, teacher_id: teacherId, source_attempt_id: null }]
+    ]),
+    assignments: new Map([[assignmentId, { id: assignmentId, learner_id: learnerId, attempt_id: attemptId, batch_id: batchId }]]),
+    learning_photos: new Map([[photoId, { id: photoId }]]),
+    learning_feedback: new Map([[feedbackId, { id: feedbackId }]])
+  };
+  const row = { actor_id: teacherId, op_id: '03810000-0000-4000-8000-000000000001',
+    fingerprint: '0381' + 'a'.repeat(60), result_json: JSON.stringify({ attempt: { id: attemptId }, notice: 'Safe fixture' }) };
   assert.equal(JSON.stringify(row).includes(PUPIL_PASSWORD), true, 'The old substring guard falsely rejects valid opaque metadata');
-  assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
-  for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
-    { id: PUPIL_PASSWORD }, { nested: { recoveryCode: 'different-credential-value' } }]) {
-    assert.throws(() => assertCredentialFreeReceipt({ ...row, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD));
+  const counts = { accepted: 0, rejected: 0 };
+  function check(label, payload, expected, oracle = identities, metadata = {}) {
+    const run = () => assertCredentialFreeReceipt({ ...row, ...metadata, result_json: JSON.stringify(payload) }, PUPIL_PASSWORD, oracle);
+    if (expected) { assert.doesNotThrow(run, label); counts.accepted++; }
+    else { assert.throws(run, { code: 'ERR_ASSERTION' }, label); counts.rejected++; }
   }
-  assert.throws(() => assertCredentialFreeReceipt({ ...row, fingerprint: PUPIL_PASSWORD }, PUPIL_PASSWORD));
-  assert.throws(() => assertCredentialFreeReceipt({ ...row, op_id: PUPIL_PASSWORD }, PUPIL_PASSWORD));
+  const attempt = { id: attemptId, learnerId, teacherId, sourceAttemptId: sourceId, submission: { photoIds: [photoId] } };
+  const assignment = { id: assignmentId, learnerId, attemptId, batchId };
+  const onboarding = { operation: 'onboard-student', learnerId, authEpoch: 0, profileVersion: 1 };
+  const photo = { id: photoId, url: '/api/learning/photos/' + photoId };
+  for (const [label, payload] of [
+    ['attempt identities', { attempt }],
+    ['nullable source and submission', { attempt: { ...attempt, id: sourceId, sourceAttemptId: null, submission: null } }],
+    ['assignment identities', { assignment }],
+    ['minimal assignment publication receipt', { assignment: { id: assignmentId, status: 'published' } }],
+    ['nested assignment attempt', { assignments: [{ ...assignment, attempt }] }],
+    ['photo and top-level submission', { photo, submission: { photoIds: [photoId] } }],
+    ['empty photo submission', { submission: { photoIds: [] } }],
+    ['teacher feedback identity', { feedback: { id: feedbackId, text: 'Safe synthetic feedback' } }],
+    ['onboarding', onboarding],
+    ['ordinary nonsecret result', { profile: { version: 1, focus: 'Safe fixture' } }]
+  ]) check(label, payload, true);
+  check('student operation actor', { attempt }, true, identities, { actor_id: learnerId });
+
+  for (const [table, makePayload] of [
+    ['attempts', value => ({ attempt: { ...attempt, id: value } })],
+    ['assignments', value => ({ assignment: { ...assignment, id: value } })],
+    ['assignments[]', value => ({ assignments: [{ ...assignment, id: value, attempt }] })],
+    ['learning_photos', value => ({ photo: { id: value, url: '/api/learning/photos/' + value } })],
+    ['learning_feedback', value => ({ feedback: { id: value } })],
+    ['submission.photoIds', value => ({ submission: { photoIds: [value] } })],
+    ['attempt.submission.photoIds', value => ({ attempt: { ...attempt, submission: { photoIds: [value] } } })],
+    ['accounts', value => ({ ...onboarding, learnerId: value })]
+  ]) for (const value of unknownIds) check('unknown ' + table, makePayload(value), false);
+
+  for (const field of ['learnerId', 'teacherId', 'sourceAttemptId']) {
+    check('mismatched attempt ' + field, { attempt: { ...attempt, [field]: unknownId } }, false);
+    check('mismatched nested attempt ' + field, { assignments: [{ ...assignment, attempt: { ...attempt, [field]: unknownId } }] }, false);
+  }
+  for (const field of ['learnerId', 'attemptId', 'batchId']) {
+    check('mismatched assignment ' + field, { assignment: { ...assignment, [field]: unknownId } }, false);
+    check('mismatched assignment array ' + field, { assignments: [{ ...assignment, [field]: unknownId, attempt }] }, false);
+  }
+  for (const value of [null, [], 'safe', 7]) {
+    check('non-object receipt result', value, false);
+    for (const field of ['attempt', 'assignment', 'photo', 'feedback']) check('non-object ' + field, { [field]: value }, false);
+  }
+  for (const value of [null, 'safe', {}]) check('non-array assignments', { assignments: value }, false);
+  for (const value of [null, 'safe', {}, [17]]) check('invalid photo ID collection', { submission: { photoIds: value } }, false);
+
+  const withAccounts = accounts => ({ ...identities, accounts: new Map(accounts.map(account => [account.id, account])) });
+  check('missing persisted actor', { attempt }, false, withAccounts([pupilRow]));
+  check('forged actor', { attempt }, false, identities, { actor_id: unknownId });
+  check('unsupported persisted actor role', { attempt }, false, withAccounts([{ ...teacherRow, role: 'parent' }, pupilRow]));
+  const malformedId = 'not-an-opaque-id';
+  check('malformed persisted actor ID', { attempt }, false,
+    withAccounts([{ ...teacherRow, id: malformedId }, pupilRow]), { actor_id: malformedId });
+  for (const [field, column] of Object.entries({ id: 'id', learnerId: 'learner_id', teacherId: 'teacher_id', sourceAttemptId: 'source_attempt_id' })) {
+    const persisted = { ...identities.attempts.get(attemptId), [column]: malformedId };
+    check('malformed persisted attempt ' + field, { attempt: { ...attempt, [field]: malformedId } }, false,
+      { ...identities, attempts: new Map([[persisted.id, persisted]]) });
+  }
+  check('malformed persisted submitted photo ID', { submission: { photoIds: [malformedId] } }, false,
+    { ...identities, learning_photos: new Map([[malformedId, { id: malformedId }]]) });
+  check('non-student onboarding target', onboarding, false, withAccounts([teacherRow, { ...pupilRow, role: 'teacher' }]));
+  check('pupil belongs to another teacher', onboarding, false, withAccounts([teacherRow, { ...pupilRow, teacher_id: unknownId }]));
+  check('non-teacher onboarding actor', onboarding, false, withAccounts([{ ...teacherRow, role: 'student' }, pupilRow]));
+  for (const field of ['authEpoch', 'profileVersion', 'learnerId']) {
+    const missing = { ...onboarding }; delete missing[field];
+    check('missing onboarding ' + field, missing, false);
+  }
+  for (const change of [{ authEpoch: '0' }, { authEpoch: 1 }, { profileVersion: '1' }, { profileVersion: 0 }, { extra: 'safe' }]) {
+    check('noncanonical onboarding metadata', { ...onboarding, ...change }, false);
+  }
+  for (const url of ['/api/learning/photos/' + unknownId, photo.url + '?pin=' + PUPIL_PASSWORD,
+    photo.url + '?download=1', 'https://example.invalid' + photo.url]) {
+    check('noncanonical photo URL', { photo: { ...photo, url } }, false);
+  }
+  for (const payload of [{ password: PUPIL_PASSWORD }, { [PUPIL_PASSWORD]: 'value' }, { text: 10381 }, { nested: [{ text: 'PIN: ' + PUPIL_PASSWORD }] },
+    { attempt: { ...attempt, createdAt: 1793990381000 } },
+    { attempt: { ...attempt, updatedAt: 1793990381000 } },
+    { attempt: { ...attempt, taskSpec: { seed: 10381 } } },
+    { id: PUPIL_PASSWORD }, { id: attemptId }, { learnerId }, { nested: { recoveryCode: 'different-credential-value' } },
+    { attempt: { ...attempt, taskSpec: { extra: { id: attemptId } } } },
+    { attempt: { ...attempt, state: { work: { learnerId } } } },
+    { assignments: [{ ...assignment, extra: { id: assignmentId } }] },
+    { attempt: { ...attempt, password: 'another-value' } }]) {
+    check('secret or identity outside its trusted path', payload, false);
+  }
+  for (const field of ['password', 'passphrase', 'credential', 'token', 'csrf', 'recoveryCode', 'pin']) {
+    check('forbidden credential key ' + field, { nested: [{ [field]: 'different-value' }] }, false);
+  }
+  for (const field of ['actor_id', 'op_id', 'fingerprint']) {
+    check('invalid metadata ' + field, { attempt }, false, identities, { [field]: PUPIL_PASSWORD });
+  }
+  check('extra receipt column', { attempt }, false, identities, { password: PUPIL_PASSWORD });
+  console.log('LEARNING_RECEIPT_PRIVACY_GUARD_OK: ' + JSON.stringify(counts));
 }
 const serve = async app => { const server = app.listen(0, '127.0.0.1'); await once(server, 'listening'); return server; };
 const originOf = server => 'http://127.0.0.1:' + server.address().port;
@@ -127,9 +329,10 @@ async function login(page, origin, login, password) {
 }
 
 async function main() {
+  verifyFixtureSources();
   verifyReceiptPrivacyGuard();
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'learning-free-route-'));
-  const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), contracts });
+  const store = new LearningStore({ filePath: path.join(directory, 'learning.sqlite'), ...fixtureSources() });
   assert.equal(store.available, true, 'Use the supported Node version with SQLite');
   const app = express(), trainerApp = express();
   app.use(express.json({ limit: '6mb' }));
@@ -192,7 +395,7 @@ async function main() {
       'Onboarding preserves every earlier operation receipt');
     const onboardingReceipt = receiptsAfterIssuance.at(-1);
     assert.equal(onboardingReceipt.actor_id, teacherSession.account.id);
-    assertCredentialFreeReceipt(onboardingReceipt, PUPIL_PASSWORD);
+    assertCredentialFreeReceipt(onboardingReceipt, PUPIL_PASSWORD, receiptIdentityOracle(store));
     assert.equal(await teacher.page.locator('#access-login').inputValue(), PUPIL_LOGIN);
     assert.equal(await teacher.page.locator('#access-password').inputValue(), PUPIL_PASSWORD);
     const accessURL = new URL(await teacher.page.locator('#access-link').inputValue());
@@ -297,7 +500,8 @@ async function main() {
       teacherSession.csrfToken, (await api(student.page, '/session')).csrfToken];
     await assertPrivate(teacher.page, secrets); await assertPrivate(student.page, secrets);
     assert.equal(store.db.prepare('SELECT name FROM sqlite_master WHERE type=?').all('table').length > 0, true);
-    for (const row of store.rows('SELECT * FROM operations')) assertCredentialFreeReceipt(row, PUPIL_PASSWORD);
+    const receiptIdentities = receiptIdentityOracle(store);
+    for (const row of store.rows('SELECT * FROM operations')) assertCredentialFreeReceipt(row, PUPIL_PASSWORD, receiptIdentities);
     if (process.env.LEARNING_ARTIFACT_DIR) {
       fs.mkdirSync(process.env.LEARNING_ARTIFACT_DIR, { recursive: true });
       await navigate(student.page, 'route'); await student.page.locator('.route-grid').waitFor();
@@ -647,4 +851,5 @@ async function verifyPaperHomework({ teacher, student, pupil, peer, store, origi
     await teacher.page.screenshot({ path: path.join(process.env.LEARNING_ARTIFACT_DIR, 'paper-homework-teacher-desktop.png'), fullPage: true });
   }
 }
-main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
+if (process.argv.includes('--receipt-guard-only')) { verifyFixtureSources(); verifyReceiptPrivacyGuard(); }
+else main().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

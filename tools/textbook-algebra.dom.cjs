@@ -6,7 +6,7 @@ const dom=new JSDOM(fs.readFileSync(path.join(root,'school/index.html'),'utf8'),
 const w=dom.window,d=w.document;w.scrollTo=()=>{}; // jsdom has no layout/scrolling; this is not a visual browser check.
 w.localStorage.setItem('legacy-course-sentinel','keep');
 // Load the same ordered assets as the real page, including course navigation.
-for(const script of d.querySelectorAll('script[src]')){const file=script.getAttribute('src').split('?')[0];w.eval(fs.readFileSync(path.join(root,'school',file),'utf8'));}
+for(const script of d.querySelectorAll('script[src]')){const file=script.getAttribute('src').split('?')[0];w.eval(fs.readFileSync((file.startsWith('/')?path.join(root,file):path.join(root,'school',file)),'utf8'));}
 const tick=()=>new Promise(r=>setTimeout(r,5)),click=s=>{const el=d.querySelector(s);assert(el,s);el.click();},fmt=a=>Array.isArray(a)?a.map(fmt).join('; '):typeof a==='object'?w.WorkshopMath.fmt(a):String(a);
 const go=async hash=>{w.location.hash=hash;await tick();};
 const answer=value=>{d.querySelector('#answer').value=value;d.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));};
@@ -30,7 +30,7 @@ const answer=value=>{d.querySelector('#answer').value=value;d.querySelector('#an
  // A cached older HTML document may load a newer app.js without the new route module.
  const compat=new JSDOM('<div id="main"></div><div id="notice"></div><input id="file-input">',{url:'https://example.test/school/index.html',runScripts:'outside-only'});
  compat.window.scrollTo=()=>{};
- for(const file of ['math.js','curriculum.js','state.js','models.js','algebra7.js','secondary.js','app.js'])compat.window.eval(fs.readFileSync(path.join(root,'school',file),'utf8'));
+ for(const file of ['math.js','curriculum.js','state.js','models.js','algebra7.js','secondary.js','app.js'])compat.window.eval(fs.readFileSync((file.startsWith('/')?path.join(root,file):path.join(root,'school',file)),'utf8'));
  assert(compat.window.document.querySelector('h1'));assert(compat.window.document.getElementById('notice').textContent.includes('Обновите страницу'));compat.window.close();
  w.close();console.log('PASS: jsdom only — six full guided paths; claims; interactive controls; gap/return; independent vs assisted evidence; existing model and legacy data.');
 })().catch(e=>{w.close();console.error(e);process.exitCode=1;});

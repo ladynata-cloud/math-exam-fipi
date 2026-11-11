@@ -10,6 +10,16 @@ ROOT = Path(__file__).resolve().parents[1]
 ORIGIN = 'https://mathexam.space'
 OUT = ROOT / 'pedagogam/raboty'
 esc = html.escape
+_catalog_module = None
+
+
+def catalog_builder():
+    global _catalog_module
+    if _catalog_module is None:
+        spec = importlib.util.spec_from_file_location('pdf_catalog', ROOT / 'tools/build-pedagogam-textbook-pdfs.py')
+        _catalog_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_catalog_module)
+    return _catalog_module
 
 
 def load_content():
@@ -22,6 +32,8 @@ def bullets(items):
 
 
 def render(c, p, all_content):
+    builder = catalog_builder()
+    numbering = builder.read_numbering()
     base = '/pedagogam/raboty/' + p['id'] + '/'
     title = c['heading'] + ' | MathExam'
     short_heading = c['heading'].split(':')[0]
@@ -48,17 +60,17 @@ def render(c, p, all_content):
     cards = []
     for kind, name, file in [('sr', 'Самостоятельная работа', 'samostoyatelnaya'), ('kr', 'Контрольная работа', 'kontrolnaya')]:
         tasks = p['variants'][0][kind]
-        cards.append(f'''<section class="download-card" aria-labelledby="{kind}">
+        heading, label = builder.work_heading(numbering, p['id'] + ':' + kind, c['grade'])
+        cards.append(f'''<section class="download-card work" aria-labelledby="{kind}" data-work-id="{p['id']}:{kind}">
 <p class="eyebrow">{len(tasks)} {'задания' if len(tasks) == 4 else 'заданий'} · {sum(t['points'] for t in tasks)} баллов · около {p[kind + '_minutes']} минут</p>
-<h2 id="{kind}">{name}</h2>
-<a class="button" href="{base}{file}.pdf" download>Скачать задания PDF</a>
-<a class="answer-link" href="{base}{file}-otvety.pdf" download>Ответы, решения и критерии PDF</a>
+<h2 id="{kind}" class="work-heading">{heading}</h2><p class="work-number-label">{label}</p>
+<button type="button" class="button" data-numbered-source="{base}{file}.pdf" data-numbered-role="student" disabled>Скачать задания PDF</button>
+<button type="button" class="answer-link numbering-answer" data-numbered-source="{base}{file}-otvety.pdf" data-numbered-role="teacher" disabled>Ответы, решения и критерии PDF</button>
 <p class="small">Все 4 варианта в одном PDF. Один вариант — одна страница A4.</p><details><summary>Когда выбрать эту работу</summary><p>{esc(c[kind + '_use'])}</p></details></section>''')
     previews = ''.join(f'<li><p>{esc(t["q"])}</p><details><summary>Посмотреть решение</summary><p>{esc(t["solution"])}</p><p><strong>Ответ:</strong> {esc(t["a"])}</p></details></li>' for t in p['variants'][0]['sr'][:2])
     trainers = ''.join(f'<li><a href="{esc(t["url"], quote=True)}">{esc(t["label"])}</a><p>{esc(t["reason"])}</p></li>' for t in c['trainers'])
     mistakes = ''.join(f'<li><strong>{esc(m["error"])}</strong><p>{esc(m["remedy"])}</p></li>' for m in c['mistakes'])
     books = [b for b in p['books'] if c['grade'] in p.get('book_grades', {}).get(b, [c['grade']])]
-    refs = [r['sections'] for r in p['source_refs'] if r['path'] != 'tools/teacher-textbook-coverage.json']
     related = c.get('related_material')
     related_html = (f'<aside class="note"><h3>Ещё один формат по этой теме</h3><p><a href="{esc(related["url"], quote=True)}">{esc(related["label"])}</a>. {esc(related["reason"])}</p></aside>' if related else '')
     near = sorted((x for x in all_content if x['id'] != c['id']), key=lambda x: abs(x['grade'] - c['grade']))[:3]
@@ -70,28 +82,34 @@ def render(c, p, all_content):
 <meta property="og:description" content="{esc(c['description'], quote=True)}"><meta property="og:url" content="{ORIGIN}{base}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="MathExam"><meta property="og:locale" content="ru_RU">
 <link rel="stylesheet" href="/assets/pedagogam-topic-pages.css">
+<link rel="stylesheet" href="/pedagogam/raboty/numbering.css">
 <script type="application/ld+json">{json.dumps(schema, ensure_ascii=False).replace('<', chr(92) + 'u003c')}</script>
 </head><body><a class="skip-link" href="#main">К материалам</a>
 <header><a class="brand" href="/">∑ MathExam</a><nav aria-label="Основные разделы"><a href="/pedagogam/">Педагогам</a><a href="/trainers/">Тренажёры</a><a href="/courses/">Курсы</a></nav></header>
-<main id="main" class="topic-content">
-<nav class="breadcrumbs" aria-label="Путь к странице"><a href="/pedagogam/">Педагогам</a><span aria-hidden="true"> / </span><a href="/pedagogam/raboty/">Все работы</a></nav>
-<section class="intro"><p class="eyebrow">{c['grade']} класс · {esc(p['subject'])} · Бесплатно, без регистрации</p>
-<h1>{display_heading}</h1><p class="lead">Самостоятельная и контрольная: 4 базовых варианта, отдельные ответы и решения.</p>
+<main id="main" class="topic-content" data-numbering-grade="{c['grade']}">
+<nav class="breadcrumbs" aria-label="Путь к странице"><a href="/pedagogam/">Педагогам</a><span aria-hidden="true"> / </span><a data-numbering-return href="/pedagogam/raboty/">К выбранной подборке</a></nav>
+<section class="intro"><p class="eyebrow" data-numbered-grade-label>{c['grade']} класс · {esc(p['subject'])} · Бесплатно, без регистрации</p>
+<h1 data-numbered-title>{display_heading}</h1><p class="lead">Самостоятельная и контрольная: 4 базовых варианта, отдельные ответы и решения.</p>
 <nav class="jump-links" aria-label="На этой странице"><a href="#sr">Самостоятельная</a><a href="#kr">Контрольная</a><a href="#practice">Тренажёры</a></nav></section>
 <div class="download-grid">{''.join(cards)}</div>
-<p class="archive"><a href="{base}komplekt.zip" download>Скачать весь комплект ZIP</a> · 4 PDF: два вида работ и два файла с решениями.</p>
+<p class="archive"><button type="button" class="numbering-answer" data-numbered-source="{base}komplekt.zip" data-numbered-pack="{p['id']}" disabled>Скачать весь комплект ZIP</button> · 4 PDF: два вида работ и два файла с решениями.</p>
+<p class="small" id="numbering-topic-note">Номера общей подборки {c['grade']} класса.</p><p class="small"><a data-numbering-return href="/pedagogam/raboty/?grade={c['grade']}#{p['id']}">Выбрать свой учебник и его нумерацию</a>.</p>
+<noscript><p>Для скачивания с номером включите JavaScript. Кнопки скачивания пока недоступны.</p></noscript>
 <section class="section"><h2>Что проверяет работа</h2><p>{esc(c['intro'])}</p>{bullets(c['skills'])}
 <h3>Что нужно знать перед проверкой</h3>{bullets(c['prerequisites'])}</section>
 <section class="section"><h2>Место в школьной программе</h2><p>{esc(c['curriculum'])}</p>
-<details><summary>Учебники и границы соответствия</summary>{bullets(books)}{bullets(refs)}
+<details><summary>Учебники и границы соответствия</summary>{bullets(books)}
+<p><a data-numbering-return href="/pedagogam/raboty/?grade={c['grade']}#{p['id']}">Выберите учебник в каталоге</a>, чтобы увидеть подтверждённые темы и разделы именно этого издания.</p>
 <p>Темы сверены по указанным учебникам. Это авторские работы MathExam, а не копии упражнений издательства. Порядок изучения и объём темы у разных авторов различаются; комплект проверяет навыки, перечисленные выше.</p></details></section>
 <section class="section"><h2>Посмотрите задания перед скачиванием</h2><p>Первые два задания самостоятельной, вариант 1. Полная работа с местом для решения — в PDF.</p><ol class="examples">{previews}</ol></section>
 <section class="section"><h2>Как провести и проверить</h2><ol>{''.join('<li>' + esc(x) + '</li>' for x in c['lesson_plan'])}</ol>
 <p>Самостоятельная: 1 + 1 + 2 + 2 = 6 баллов. Контрольная: 5 заданий по 2 балла = 10 баллов. Подробные критерии и предлагаемая шкала отметок находятся в файлах с решениями. Время ориентировочное; его можно изменить с учётом класса.</p></section>
 <section class="section"><h2>Типичные ошибки и работа над ними</h2><ul class="mistakes">{mistakes}</ul></section>
 <section class="section" id="practice"><h2>Подготовка и разбор ошибок в тренажёрах</h2><ul class="trainer-links">{trainers}</ul></section>
-{related_html}<section class="section"><h2>Другие работы для уроков</h2><ul>{near_html}</ul><p><a href="/pedagogam/raboty/#{p['id']}">К этому комплекту в общем каталоге</a> · <a href="/pedagogam/raboty/">Все классы и темы</a></p></section>
+{related_html}<section class="section"><h2>Другие работы для уроков</h2><ul>{near_html}</ul><p><a data-numbering-return href="/pedagogam/raboty/#{p['id']}">К этому комплекту в выбранной подборке</a> · <a href="/pedagogam/raboty/">Все классы и темы</a></p></section>
 </main><footer><p>MathExam · Материалы можно распечатывать для занятий. <a href="/pedagogam/raboty/istochniki.html">Источники и границы подборки</a>.</p></footer>
+<div id="numbering-download-status" role="status" aria-live="polite" aria-busy="true">Готовлю скачивание с номерами. Если кнопки остаются недоступны, обновите страницу.</div>
+{builder.numbering_markup({p['id']})}
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script><script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 </body></html>
 '''
@@ -106,9 +124,7 @@ def main():
     packs = json.loads((OUT / 'bank.json').read_text())
     by_id = {p['id']: p for p in packs}
     outputs = {OUT / c['id'] / 'index.html': render(c, by_id[c['id']], content) for c in content}
-    spec = importlib.util.spec_from_file_location('pdf_catalog', ROOT / 'tools/build-pedagogam-textbook-pdfs.py')
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    module = catalog_builder()
     outputs[OUT / 'index.html'] = module.page_html(packs)
     for path, value in outputs.items():
         if args.check:

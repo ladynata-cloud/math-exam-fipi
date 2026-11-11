@@ -76,6 +76,12 @@
   .view.on{display:block}
   .crit{font-size:13px;color:var(--muted);margin:4px 0 0}
 </style>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
+<link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
+<script defer src="../skill-map-data.js?v=20261111-skills"></script>
+<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="parameters-graphic"></script>
 </head>
 <body>
 <div class="wrap">
@@ -120,6 +126,10 @@
         <h2 id="tTitle"></h2>
         <p id="tCond" style="font-size:17px"></p>
         <div class="row" id="tSliderRow"><label class="mono small" for="tSlider">a</label><input type="range" id="tSlider"><span class="mono small" id="tSliderVal"></span></div>
+        <div id="tExactControls" hidden>
+          <p class="small muted">Ползунок выбирает десятичные значения. Для точного касания выберите a = ±3√2.</p>
+          <div class="row"><button type="button" class="btn ghost" id="tExactMinus" aria-pressed="false">a = −3√2</button><button type="button" class="btn ghost" id="tExactPlus" aria-pressed="false">a = 3√2</button></div>
+        </div>
         <div class="figure" id="tFig"></div>
         <p class="liveinfo" id="tLive"></p>
         <div class="row" style="margin-top:8px">
@@ -371,8 +381,9 @@ if (typeof module !== "undefined") module.exports = P18;
         p.svg.appendChild(el("path",{d:d,fill:"none",stroke:"#1E3A9F","stroke-width":3}));
         curve(p, function(x){ return x + a; }, -5.2, 5.2, "#C22F2A", 2.5, "7 5");
         var dist = Math.abs(a)/Math.SQRT2;
-        var n = Math.abs(dist-3) < 0.035 ? 1 : dist < 3 ? 2 : 0;
-        return { svg:p.svg, info: "расстояние от центра до прямой: |a|/√2 ≈ " + P18.fmt(dist) + " → " + (n===1?"касание, 1 решение":n+" решений") };
+        // Only floating-point roundoff is allowed here, not visual closeness.
+        var n = Math.abs(dist-3) <= 8*Number.EPSILON*3 ? 1 : dist < 3 ? 2 : 0;
+        return { svg:p.svg, info: "расстояние от центра до прямой: |a|/√2 " + (n===1 ? "= 3" : "≈ " + P18.fmt(dist)) + " → " + (n===1?"касание, 1 решение":n+" решений") };
       },
       steps:[
         "Первое уравнение — окружность радиуса 3 с центром в начале координат. Второе — семейство параллельных прямых с наклоном 1: параметр a двигает прямую.",
@@ -443,7 +454,7 @@ if (typeof module !== "undefined") module.exports = P18;
       slider:{min:-4,max:4,step:0.1,val:0},
       draw:function(a){
         var p = makePlot(-3.4, 3.4, -4.4, 4.4);
-        curve(p, function(x){ return x*x*x - 3*x; }, -2.05, 2.05);
+        curve(p, function(x){ return x*x*x - 3*x; }, -2.4, 2.4);
         level(p, a);
         var n = Math.abs(Math.abs(a)-2) < 0.05 ? 2 : Math.abs(a) > 2 ? 1 : 3;
         return { svg:p.svg, info: "решений: " + n };
@@ -455,7 +466,7 @@ if (typeof module !== "undefined") module.exports = P18;
         "Ровно одно решение ⇔ a < −2 или a > 2."
       ],
       answer:"Ответ: a ∈ (−∞; −2) ∪ (2; +∞).",
-      key:{ q:"Наименьшее целое a, при котором решение единственно?", a:3 } },
+      key:{ q:"Наименьшее положительное целое a, при котором решение единственно?", a:3 } },
 
     { id:"z6", method:"замена и график", title:"Корень против прямой",
       cond:"Найдите все значения a, при каждом из которых уравнение √(x + 3) = x + a имеет ровно два решения.",
@@ -502,9 +513,9 @@ if (typeof module !== "undefined") module.exports = P18;
       listHost.appendChild(b);
     });
   }
-  var cur = null, stepIx = 0;
+  var cur = null, stepIx = 0, exactParameter = null;
   function openTask(t){
-    cur = t; stepIx = 0;
+    cur = t; stepIx = 0; exactParameter = null;
     document.getElementById("taskList").style.display = "none";
     document.getElementById("taskView").style.display = "block";
     document.getElementById("tMethod").textContent = "метод: " + t.method;
@@ -523,18 +534,32 @@ if (typeof module !== "undefined") module.exports = P18;
     document.getElementById("tKeyFb").className = "feedback";
     var slider = document.getElementById("tSlider");
     slider.min = t.slider.min; slider.max = t.slider.max; slider.step = t.slider.step; slider.value = t.slider.val;
+    document.getElementById("tExactControls").hidden = t.id !== "z2";
     redraw();
     renderSelf();
   }
   function redraw(){
-    var a = parseFloat(document.getElementById("tSlider").value);
-    document.getElementById("tSliderVal").textContent = "a = " + P18.fmt(a);
+    var slider = document.getElementById("tSlider");
+    var a = exactParameter ? exactParameter.value : parseFloat(slider.value);
+    var label = "a = " + (exactParameter ? exactParameter.label + " ≈ " : "") + P18.fmt(a);
+    document.getElementById("tSliderVal").textContent = label;
+    slider.setAttribute("aria-valuetext", exactParameter ? "a = " + exactParameter.label + " (точное значение)" : label);
+    document.getElementById("tExactMinus").setAttribute("aria-pressed", String(!!exactParameter && a < 0));
+    document.getElementById("tExactPlus").setAttribute("aria-pressed", String(!!exactParameter && a > 0));
     var r = cur.draw(a);
     var fig = document.getElementById("tFig");
     fig.innerHTML = ""; fig.appendChild(r.svg);
     document.getElementById("tLive").textContent = r.info;
   }
-  document.getElementById("tSlider").addEventListener("input", redraw);
+  document.getElementById("tSlider").addEventListener("input", function(){ exactParameter = null; redraw(); });
+  function exactTangent(sign){
+    if (!cur || cur.id !== "z2") return;
+    exactParameter = { value:sign*3*Math.SQRT2, label:sign < 0 ? "−3√2" : "3√2" };
+    document.getElementById("tSlider").value = exactParameter.value;
+    redraw();
+  }
+  document.getElementById("tExactMinus").addEventListener("click", function(){ exactTangent(-1); });
+  document.getElementById("tExactPlus").addEventListener("click", function(){ exactTangent(1); });
   document.getElementById("tStepBtn").addEventListener("click", function(){
     var steps = document.querySelectorAll("#tSteps .step");
     if (stepIx < steps.length){ steps[stepIx].classList.add("on"); stepIx++; }
@@ -579,9 +604,11 @@ if (typeof module !== "undefined") module.exports = P18;
   renderList();
 
   /* ---------- дриллы ---------- */
-  var D = null, streak = 0;
+  var D = null, streak = 0, drillLocked = false, nextDrillTimer = null, drillGeneration = 0;
   var Z = { active:false, i:0, score:0, marks:[] };
   function drawDrill(){
+    if (nextDrillTimer !== null) clearTimeout(nextDrillTimer);
+    nextDrillTimer = null; drillGeneration++; drillLocked = false;
     D = P18.drill();
     document.getElementById("dText").textContent = (Z.active ? (Z.i+1) + " из 8. " : "") + "Сколько решений имеет уравнение f(x) = " + P18.fmt(D.a) + "?";
     var p = makePlot(-6.6, 6.6, -3.6, 3.6);
@@ -594,7 +621,17 @@ if (typeof module !== "undefined") module.exports = P18;
     var fig = document.getElementById("dFig");
     fig.innerHTML = ""; fig.appendChild(p.svg);
     document.getElementById("dAnswer").value = "";
+    document.getElementById("dAnswer").disabled = false;
+    document.getElementById("dCheck").disabled = false;
+    document.getElementById("dNext").disabled = Z.active;
     document.getElementById("dFb").className = "feedback";
+  }
+  function nextDrillAfter(delay){
+    var generation = drillGeneration;
+    nextDrillTimer = setTimeout(function(){
+      if (generation !== drillGeneration) return;
+      nextDrillTimer = null; drawDrill();
+    }, delay);
   }
   function zDots(){
     var host = document.getElementById("zDots"); host.innerHTML = "";
@@ -616,7 +653,12 @@ if (typeof module !== "undefined") module.exports = P18;
     }catch(err){}
   }
   document.getElementById("dCheck").addEventListener("click", function(){
+    if (drillLocked) return;
     var ok = P18.eq(document.getElementById("dAnswer").value, D.n);
+    // A test condition is counted once; free practice may retry a wrong answer.
+    drillLocked = Z.active || ok;
+    document.getElementById("dAnswer").disabled = drillLocked;
+    document.getElementById("dCheck").disabled = drillLocked;
     mlog("drill", ok);
     var fb = document.getElementById("dFb");
     fb.className = "feedback on " + (ok ? "ok" : "bad");
@@ -634,13 +676,14 @@ if (typeof module !== "undefined") module.exports = P18;
           ? "Зачёт сдан: пересечения считаются на автомате."
           : "Зачёт не сдан: нужно 7 из 8. Потренируйтесь в свободном режиме и вернитесь.";
         save({ drillBest: Z.score, passed: passed });
+        document.getElementById("dNext").disabled = false;
       } else {
-        setTimeout(drawDrill, 700);
+        nextDrillAfter(700);
       }
     } else {
       streak = ok ? streak + 1 : 0;
       document.getElementById("dStreak").textContent = streak;
-      if (ok) setTimeout(drawDrill, 650);
+      if (ok) nextDrillAfter(650);
     }
   });
   document.getElementById("dAnswer").addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("dCheck").click(); });

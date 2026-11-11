@@ -210,6 +210,7 @@ test('a wrong answer explains the same statement, and duplicate clicks do not co
     env.el('btnTrue').click();
     assert.equal(env.el('answerPanel').hidden, false);
     assert(env.el('answerExplanation').textContent.trim().length > 20);
+    assert.equal(env.el('answerExplanation').querySelectorAll('.task19-reason-step').length,3);
     assert(env.el('btnTrue').disabled && env.el('btnFalse').disabled);
     const once = env.window.localStorage.getItem(KEY);
     env.el('btnTrue').click();

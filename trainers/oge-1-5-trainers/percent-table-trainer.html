@@ -451,6 +451,11 @@
     .skill-row{grid-template-columns:1fr auto}
     .skill-bar{grid-column:1/-1;grid-row:2}
   }
+  /* Keep the folded mode menu inside the percent header at every width. */
+  body[data-practical-page="percent-table"].pm-minimal .topbar-inner{flex-wrap:wrap}
+  body[data-practical-page="percent-table"].pm-minimal .nav-scroll{flex:1 1 480px;min-width:0;max-width:100%;overflow:visible}
+  body[data-practical-page="percent-table"].pm-minimal .main-nav{min-width:0;width:100%;flex-wrap:wrap}
+  body[data-practical-page="percent-table"].pm-minimal .hint-stack{grid-template-columns:minmax(0,1fr)}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="practical-minimal.css">
@@ -458,8 +463,15 @@
 <script src="../board-bridge.js"></script>
 <script src="percent-board.js"></script>
 <script src="practical-minimal.js"></script>
+<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
+<script defer src="/assets/oge-wayfinding.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
 </head>
 <body data-practical-page="percent-table">
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
 <header class="topbar">
   <div class="topbar-inner">
     <a class="brand-link" href="practice-1-5-map.html" aria-label="Вернуться к карте тренажёров">
@@ -691,9 +703,9 @@
           <div class="check-top">
             <span class="check-counter" id="check-counter">Задание 1 из 5</span>
             <div class="check-bar"><span id="check-progress-bar"></span></div>
-            <span class="check-time" id="check-time">00:00</span>
+            <span class="check-time" id="check-time" aria-label="Время с начала проверки, включая переходы">00:00</span>
           </div>
-          <div class="check-note">Подсказок и мгновенной проверки здесь нет. Ответы и разбор появятся после пятого задания.</div>
+          <div class="check-note" id="check-session-note" role="status">Подсказок и мгновенной проверки здесь нет. Ответы и разбор появятся после пятого задания.</div>
           <span class="task-badge" id="check-badge">Тип задачи скрыт</span>
           <h2 class="task-title" id="check-title">Задача</h2>
           <div class="question" id="check-question" style="margin-top:13px"></div>
@@ -712,7 +724,7 @@
           <div class="score-hero">
             <div class="score-orb"><div><b id="result-score">0/5</b><span id="result-time">00:00</span></div></div>
             <h2 id="result-title">Результат проверки</h2>
-            <p id="result-recommendation"></p>
+            <p id="result-recommendation"></p><p id="result-independence"></p>
           </div>
           <div class="result-columns">
             <div class="result-box"><h3>Уже получается</h3><ul id="result-strong"></ul></div>
@@ -725,6 +737,7 @@
             <button type="button" class="btn secondary" id="result-practice">К тренировке</button>
             <a class="btn green" id="stepik-result-link" href="https://stepik.org/lesson/2488519/step/1">Вернуться в Stepik</a>
           </div>
+          <p class="check-note">Полный отчёт доступен до закрытия или перезагрузки страницы. Чтобы сохранить краткий итог, скопируйте результат.</p>
           <div class="feedback" id="copy-feedback" role="status" aria-live="polite"></div>
         </section>
       </div>
@@ -944,6 +957,12 @@ function save(){
 function setView(view,options={}){
   if(shared&&!['practice','review'].includes(view))view='practice';
   if(!['home','learn','practice','check','review'].includes(view))view='home';
+  const cp=state.checkpoint;
+  if(cp&&!cp.finished){
+    if(state.view==='check')cp.draft=document.getElementById('check-input').value;
+    if(['learn','review','practice'].includes(view)&&!cp.helpVisits.includes(view))cp.helpVisits.push(view);
+    if(view!=='check')stopCheckTimer();
+  }
   const leavingReview=state.view==='review'&&view==='practice';
   state.view=view;
   document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==`view-${view}`);
@@ -954,7 +973,7 @@ function setView(view,options={}){
     if(leavingReview||options.fresh||!state.current)newPracticeTask();
     else renderPractice({preserveDraft:true});
   }
-  if(view==='check')renderCheckLanding();
+  if(view==='check'){if(state.checkpoint)resumeCheckpoint();else renderCheckLanding();}
   if(view==='review'){
     if(!state.reviewCurrent||options.fresh)newReviewTask();
     else renderReview();
@@ -969,7 +988,7 @@ function renderHome(){
   document.getElementById('home-ring').style.setProperty('--p',`${p}%`);
   document.getElementById('home-mastered').textContent=`${mastered}/5`;
   const best=state.checkpointBest.standard||0;
-  document.getElementById('home-progress-title').textContent=mastered===0&&best===0?'Ваш прогресс начнётся здесь':topicComplete()?'База процентов освоена':`Освоено навыков: ${mastered} из 5`;
+  document.getElementById('home-progress-title').textContent=mastered===0&&best===0?'Ваш прогресс начнётся здесь':topicComplete()?'Базовая проверка пройдена':`Освоено навыков: ${mastered} из 5`;
   document.getElementById('home-progress-copy').textContent=topicComplete()
     ?`Смешанная проверка: ${best}/5. Можно переходить к усложнённому уровню.`
     :best>=4?`Проверка пройдена на ${best}/5. Закрепите слабый тип в тренировке.`
@@ -1453,10 +1472,19 @@ function renderCheckLanding(){
   const s=state.checkpointBest.standard||0,a=state.checkpointBest.advanced||0;
   document.getElementById('check-best-line').innerHTML=(s||a)?`Лучшие результаты: базовая — <b>${s}/5</b>, усложнённая — <b>${a}/5</b>.`:'Лучший результат пока не зафиксирован.';
 }
+function resumeCheckpoint(){
+  const cp=state.checkpoint;if(!cp)return renderCheckLanding();
+  document.getElementById('check-start').hidden=true;
+  if(cp.finished){stopCheckTimer();renderCheckpointResult();return;}
+  document.getElementById('check-active').hidden=false;document.getElementById('check-result').hidden=true;
+  renderCheckpointQuestion();startCheckTimer();
+}
+function checkpointIndependence(cp){return cp.helpVisits.length?'Во время проверки открывались обучение, разбор или тренировка. Результат сохранён как тренировочный и не добавляет самостоятельный зачёт.':'Проверка завершена без зарегистрированного перехода к помощи. Это не подтверждает отсутствие внешней помощи.';}
 function startCheckpoint(level){
   if(shared)return;
+  if(state.checkpoint&&!state.checkpoint.finished)return resumeCheckpoint();
   const tasks=level==='standard'?shuffle(SKILLS.map(k=>standardTask(k))):Array.from({length:5},()=>advancedTask());
-  state.checkpoint={level,tasks,index:0,answers:[],startedAt:Date.now(),finished:false,duration:0,score:0};
+  state.checkpoint={level,tasks,index:0,answers:[],startedAt:Date.now(),finished:false,duration:0,score:0,draft:'',helpVisits:[]};
   document.getElementById('check-start').hidden=true;document.getElementById('check-active').hidden=false;document.getElementById('check-result').hidden=true;
   startCheckTimer();renderCheckpointQuestion();
 }
@@ -1465,6 +1493,8 @@ function stopCheckTimer(){if(checkTimerId){clearInterval(checkTimerId);checkTime
 function formatDuration(ms){const sec=Math.max(0,Math.round(ms/1000)),m=Math.floor(sec/60),s=sec%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
 function renderCheckpointQuestion(){
   const cp=state.checkpoint,t=cp.tasks[cp.index];
+  document.getElementById('check-time').textContent=formatDuration(Date.now()-cp.startedAt);
+  document.getElementById('check-session-note').textContent=cp.helpVisits.length?'Проверка продолжается после обращения к обучению, разбору или тренировке. Ответы останутся тренировочным результатом только до закрытия или перезагрузки этой страницы.':'Подсказок и мгновенной проверки здесь нет. Ответы и разбор появятся после пятого задания. Текущая проверка сохраняется только до закрытия или перезагрузки этой страницы.';
   document.getElementById('check-counter').textContent=`Задание ${cp.index+1} из 5`;
   document.getElementById('check-progress-bar').style.width=`${(cp.index+1)/5*100}%`;
   document.getElementById('check-badge').textContent=cp.level==='advanced'?'Усложнённый уровень':'Тип задачи скрыт';
@@ -1472,30 +1502,31 @@ function renderCheckpointQuestion(){
   document.getElementById('check-question').innerHTML=t.question;
   document.getElementById('check-unit').textContent=t.unit||'';
   renderAnswerPrompt('check',t);
-  const input=document.getElementById('check-input');input.value='';input.classList.remove('correct','wrong');clearFeedback('check-feedback');setTimeout(()=>input.focus(),0);
+  const input=document.getElementById('check-input');input.value=cp.draft||'';input.classList.remove('correct','wrong');clearFeedback('check-feedback');setTimeout(()=>input.focus(),0);
   document.getElementById('check-save').textContent=cp.index===4?'Завершить проверку':'Сохранить ответ';
 }
 function saveCheckpointAnswer(){
   const cp=state.checkpoint;if(!cp||cp.finished)return;const value=parseNumber(document.getElementById('check-input').value);
   if(!Number.isFinite(value)){showFeedback('check-feedback','warn','Введите числовой ответ.');return;}
-  cp.answers.push(value);
+  cp.answers.push(value);cp.draft='';
   if(cp.index<4){cp.index++;renderCheckpointQuestion();}
   else finishCheckpoint();
 }
 function finishCheckpoint(){
   const cp=state.checkpoint;cp.finished=true;cp.duration=Date.now()-cp.startedAt;cp.score=cp.tasks.reduce((n,t,i)=>n+(near(cp.answers[i],t.answer)?1:0),0);stopCheckTimer();
-  state.checkpointBest[cp.level]=Math.max(state.checkpointBest[cp.level]||0,cp.score);
-  state.checkpointLast={level:cp.level,score:cp.score,duration:cp.duration,date:new Date().toISOString()};save();renderCheckpointResult();
+  if(!cp.helpVisits.length)state.checkpointBest[cp.level]=Math.max(state.checkpointBest[cp.level]||0,cp.score);
+  state.checkpointLast={level:cp.level,score:cp.score,duration:cp.duration,date:new Date().toISOString(),supported:cp.helpVisits.length>0,helpVisits:[...cp.helpVisits]};save();renderCheckpointResult();
 }
 function resultRecommendation(score,level){
   if(level==='advanced')return score>=4?'Отличный результат: усложнённые проценты вам по силам.':score>=3?'База крепкая, но отдельные сложные ситуации стоит разобрать.':'Вернитесь к смешанной базовой тренировке, затем повторите вызов.';
   return score<=2?'Начните или повторите пошаговое обучение: сейчас важнее смысл 100%, чем скорость.':score<=4?'База есть. Потренируйтесь вперемешку и повторите проверку.':'Все пять типов распознаны верно. Можно открыть усложнённый уровень.';
 }
 function renderCheckpointResult(){
-  const cp=state.checkpoint;document.getElementById('check-active').hidden=true;document.getElementById('check-result').hidden=false;
+  const cp=state.checkpoint;document.getElementById('check-start').hidden=true;document.getElementById('check-active').hidden=true;document.getElementById('check-result').hidden=false;
   document.getElementById('result-score').textContent=`${cp.score}/5`;document.getElementById('result-time').textContent=formatDuration(cp.duration);
   document.getElementById('result-title').textContent=cp.level==='advanced'?'Усложнённая проверка завершена':'Базовая проверка завершена';
   document.getElementById('result-recommendation').textContent=resultRecommendation(cp.score,cp.level);
+  document.getElementById('result-independence').textContent=checkpointIndependence(cp);
   const strong=[],weak=[];
   cp.tasks.forEach((t,i)=>(near(cp.answers[i],t.answer)?strong:weak).push(t.label));
   document.getElementById('result-strong').innerHTML=(strong.length?strong:['Пока нет — это нормальная отправная точка']).map(x=>`<li>${x}</li>`).join('');
@@ -1508,7 +1539,7 @@ function renderCheckpointResult(){
 }
 function checkpointReport(){
   const cp=state.checkpoint;const strong=[],weak=[];cp.tasks.forEach((t,i)=>(near(cp.answers[i],t.answer)?strong:weak).push(t.label));
-  return `Тренажёр «Проценты без паники» — ${cp.level==='advanced'?'усложнённая':'базовая'} проверка\nРезультат: ${cp.score} из 5\nВремя: ${formatDuration(cp.duration)}\nПолучается: ${strong.length?strong.join(', '):'пока не определено'}\nПовторить: ${weak.length?weak.join(', '):'ошибок нет'}\n${resultRecommendation(cp.score,cp.level)}`;
+  return `Тренажёр «Проценты без паники» — ${cp.level==='advanced'?'усложнённая':'базовая'} проверка\nРезультат: ${cp.score} из 5\n${checkpointIndependence(cp)}\nВремя с начала, включая переходы: ${formatDuration(cp.duration)}\nПолучается: ${strong.length?strong.join(', '):'пока не определено'}\nПовторить: ${weak.length?weak.join(', '):'ошибок нет'}\n${resultRecommendation(cp.score,cp.level)}`;
 }
 async function copyCheckpointResult(){
   const text=checkpointReport();let ok=false;
@@ -1557,6 +1588,7 @@ document.getElementById('practice-to-check').addEventListener('click',()=>setVie
 document.getElementById('checkpoint-cta-btn').addEventListener('click',()=>setView('check'));
 document.querySelectorAll('[data-check-level]').forEach(b=>b.addEventListener('click',()=>startCheckpoint(b.dataset.checkLevel)));
 document.getElementById('check-save').addEventListener('click',saveCheckpointAnswer);
+document.getElementById('check-input').addEventListener('input',()=>{if(state.checkpoint&&!state.checkpoint.finished)state.checkpoint.draft=document.getElementById('check-input').value;});
 document.getElementById('check-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveCheckpointAnswer();});
 document.getElementById('copy-result').addEventListener('click',copyCheckpointResult);
 document.getElementById('repeat-check').addEventListener('click',()=>renderCheckLanding());

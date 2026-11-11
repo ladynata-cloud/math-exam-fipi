@@ -1,0 +1,35 @@
+#oge-video-models{max-width:850px;box-sizing:border-box;margin:24px auto;padding:0 18px;color:#202820;font:17px/1.65 system-ui,sans-serif;clear:both}
+#oge-video-models *{box-sizing:border-box}
+#oge-video-models>summary{padding:14px 18px;border:1px solid #b7cbb8;background:#f0f6ee;border-radius:12px;cursor:pointer;color:#174d31;font-weight:650;min-height:48px}
+#oge-video-models[open]{padding-bottom:24px}
+#oge-video-models section{background:#fff;padding:20px;border:1px solid #dbe1da;border-radius:12px;margin-top:16px}
+#oge-video-models h2{font-size:23px;line-height:1.35;margin:0 0 16px}
+#oge-video-models p{margin:12px 0}
+#oge-video-models .ovm-intro,#oge-video-models .ovm-note{font-size:14px;color:#59665b}
+#oge-video-models label{display:block;margin:10px 0}
+#oge-video-models select,#oge-video-models input[type=text],#oge-video-models input[type=number],#oge-video-models textarea{display:block;max-width:100%;width:100%;font:inherit;background:#fff;color:#202820;border:1px solid #aeb9ac;border-radius:8px;padding:10px;min-height:46px;margin-top:5px}
+#oge-video-models fieldset{border:0;margin:0;padding:0;min-width:0}
+#oge-video-models legend{font-weight:600;line-height:1.55;margin-bottom:12px}
+#oge-video-models .ovm-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid #dbe1da;border-radius:8px;cursor:pointer;min-height:48px}
+#oge-video-models .ovm-choice input{width:20px;height:20px;flex:none;margin-top:4px;accent-color:#216342}
+#oge-video-models button{font:inherit;border:1px solid #b7cbb8;border-radius:8px;background:#f1f6ee;color:#174d31;padding:10px 14px;min-height:46px;cursor:pointer;margin:8px 8px 0 0;max-width:100%;white-space:normal}
+#oge-video-models button:disabled{opacity:.55;cursor:default}
+#oge-video-models [data-ovm-action=check-practice],#oge-video-models [data-ovm-action=experiment],#oge-video-models [data-ovm-action=practice]{background:#216342;color:#fff}
+#oge-video-models :focus-visible{outline:3px solid #397b60;outline-offset:3px}
+#oge-video-models .ovm-scene{width:100%;background:#f7faf5;border-radius:10px;overflow:hidden}
+#oge-video-models .ovm-scene svg{display:block;width:100%;height:auto;max-height:440px}
+#oge-video-models .ovm-readout{padding:10px 12px;border-left:3px solid #216342;font-size:16px;background:#eef5eb}
+#oge-video-models .ovm-control{border-top:1px solid #e4e9e2;padding-top:6px;margin-top:10px}
+#oge-video-models .ovm-control label{display:flex;gap:12px;align-items:center;justify-content:space-between}
+#oge-video-models .ovm-control input[type=number]{width:120px;flex:none}
+#oge-video-models input[type=range]{display:block;width:100%;min-height:44px;accent-color:#216342}
+#oge-video-models .ovm-feedback,#oge-video-models .ovm-notice{color:#65461c}
+#oge-video-models .ovm-result{color:#174d31;font-weight:650}
+#oge-video-models .ovm-kicker{font-size:14px;color:#59665b}
+#oge-video-models .ovm-problem{font-size:18px}
+#oge-video-models textarea{resize:vertical}
+@media(max-width:560px){#oge-video-models{padding:0 12px;font-size:16px}#oge-video-models section{padding:14px 12px}#oge-video-models h2{font-size:20px}#oge-video-models .ovm-control label{font-size:15px;gap:6px}#oge-video-models .ovm-control input[type=number]{width:94px}#oge-video-models button{margin-right:5px;padding:10px}#oge-video-models select{font-size:15px}}
+@media(prefers-reduced-motion:reduce){#oge-video-models *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Geometry labels remain readable when the 480-unit scene fits a narrow phone. */
+@media(max-width:560px){#oge-video-models .ovm-scene svg.ovm-geometry text{font-size:22px}}

@@ -96,6 +96,26 @@ async function popup(page, link, expected, ready) {
   if (ready) assert.equal(await tab.evaluate(() => window.opener), null, 'the demo has no opener access');
   await tab.close();
 }
+async function homeReturns(page, width) {
+  const selectors = ['.showcase-header a.brand', '.showcase-nav a[href="/"]', '.showcase-footer a.brand', '#mathexam-home-navigation a'];
+  const context = page.context(), opened = [];
+  const recordPage = tab => opened.push(tab);
+  context.on('page', recordPage);
+  try {
+    for (const selector of selectors) {
+      await page.goto(base + '/lessons/#examples', {waitUntil:'load'});
+      const link = page.locator(selector);
+      assert.equal(await link.getAttribute('href'), '/');
+      await link.click();
+      await page.waitForURL(base + '/');
+      await page.waitForLoadState('load');
+      assert.equal(page.url(), base + '/', selector + ': actual same-tab home navigation');
+      assert.deepEqual(opened, [], selector + ': no new tab or popup');
+      assert.equal(context.pages().length, 1, selector + ': original tab remains the only tab');
+    }
+    report.cases.push({page:'lessons-home', width, links:selectors.length, sameTab:true});
+  } finally { context.off('page', recordPage); }
+}
 async function metadataAndLinks(page) {
   assert.equal(await page.locator('h1').count(), 1);
   assert.match(await page.title(), /5–11.*ОГЭ.*ЕГЭ/);
@@ -105,13 +125,15 @@ async function metadataAndLinks(page) {
   assert.match(await page.locator('meta[name="viewport"]').getAttribute('content'), /width=device-width/);
   assert.match(await page.locator('meta[name="description"]').getAttribute('content'), /5–11.*ОГЭ.*ЕГЭ/);
   const links = await page.locator('a[href]').evaluateAll(nodes => nodes.map(a => ({href:a.getAttribute('href'), target:a.target, rel:a.rel})));
-  const allowed = new Set([...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
+  const allowed = new Set(['/', ...demos.map(d => d.route), ...contacts, ...reviewProfiles.keys(), 'mailto:nata4os@bk.ru']);
   for (const link of links) {
     if (link.href.startsWith('#')) {
       assert(link.href.length > 1 && await page.locator(link.href).count() === 1, 'native anchor has one real target: ' + link.href);
     } else {
       assert(allowed.has(link.href), 'showcase exposes only checked examples, direct contacts and approved review profiles: ' + link.href);
-      if (!link.href.startsWith('mailto:')) {
+      if (link.href === '/') {
+        assert.equal(link.target, '_self', 'the home return stays in the current tab');
+      } else if (!link.href.startsWith('mailto:')) {
         assert.equal(link.target, '_blank');
         assert(link.rel.split(/\s+/).includes('noopener'));
         assert(link.rel.split(/\s+/).includes('noreferrer'));
@@ -157,6 +179,8 @@ async function responsiveCase(browser, width) {
   try {
     await page.goto(base + '/lessons/', {waitUntil:'load'});
     await fits(page, 'initial ' + width);
+    await homeReturns(page, width);
+    await page.goto(base + '/lessons/', {waitUntil:'load'});
     await metadataAndLinks(page);
     await inViewport(page, '#hero-title', 'initial heading');
     await inViewport(page, '.hero-subjects', 'grades and exam offer');
@@ -259,10 +283,15 @@ async function homepageEntry(browser, width) {
     await page.goto(base + '/', {waitUntil:'load'});
     await fits(page, 'homepage ' + width);
     assert.match(await page.locator('.hero-inner .kicker').innerText(), /5–11 классы.*Бесплатно/i);
-    assert.equal(await page.locator('.home-directions article').count(),6);
+    assert.equal(await page.locator('.home-directions article').count(),7);
     for(const href of ['/trainers/','/foundations/','/courses/','/oge/','/ege-baza/','/ege-profil/','/geometry-course/']) {
       assert(await page.locator('a[href="'+href+'"]').first().isVisible(), 'home direction '+href);
     }
+    const vprCard = page.locator('.home-directions article').filter({has:page.locator('h3 a[href="/vpr/"]')});
+    assert.equal(await vprCard.count(), 1, 'one new VPR direction alongside all previous directions');
+    assert.equal(await vprCard.locator('h3').innerText(), 'Подготовка к ВПР');
+    assert.equal(await vprCard.locator('a.go[href="/vpr/"]').count(), 1);
+    assert(await vprCard.locator('a.go[href="/vpr/"]').isVisible(), 'the VPR course catalogue is reachable from its card');
     assert.equal(await page.locator('script[src*="oge-home"],script[src*="three.min.js"]').count(),0);
     await inViewport(page, '.hero-inner .kicker', 'homepage mathematics offer');
     await inViewport(page, '.hero-inner h1', 'homepage heading');

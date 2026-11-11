@@ -151,6 +151,9 @@
             color: var(--text-muted);
         }
     </style>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
 </head>
 <body>
     <div class="container">
@@ -595,9 +598,13 @@
             // Reset AI helper
             resetAIUI(true);
 
-            // Focus input
+            // Keep a newer focus choice while this delayed autofocus is pending.
+            const focusOwner = document.activeElement;
             setTimeout(() => {
-                document.getElementById('userAnswer').focus();
+                const active = document.activeElement;
+                if (active === document.body || active === focusOwner) {
+                    document.getElementById('userAnswer').focus();
+                }
             }, 100);
         }
 

@@ -156,3 +156,12 @@ test('disposed course controls cannot navigate, open work or change the replacem
  assert.equal(f.host.innerHTML,'<button id="replacement">Другой кабинет</button>');assert.equal(f.w.document.activeElement,replacement);
  assert.deepEqual(f.calls,[]);assert.deepEqual(f.routes,[]);assert.deepEqual(f.reads,['/progress']);
 });
+
+
+test('exactly eight percentage cards open isolated shared practice without creating pupil attempts',async t=>{
+ for(const teacher of [true,false]){
+  const f=fixture(t,{teacher});await tick();const rows=definitions.filter(row=>row.unitId===2),links=[...f.host.querySelectorAll('[data-vilenkin-percent-board]')];assert.equal(links.length,8);
+  links.forEach((link,index)=>{const url=new URL(link.href),trainer=new URL(url.searchParams.get('trainer'),url.origin);assert.equal(url.origin,'https://mathexam.space');assert.equal(url.pathname,'/trainers/trainer-board.html');assert.equal(trainer.pathname,'/trainers/vilenkin6-percent/index.html');assert.equal(trainer.searchParams.get('task'),rows[index].contentId);assert.equal(link.target,'_blank');assert.match(link.rel,/noreferrer/);});
+  assert.deepEqual(f.calls,[]);assert.deepEqual(f.routes,[]);
+ }
+});

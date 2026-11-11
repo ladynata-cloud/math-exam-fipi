@@ -7660,6 +7660,136 @@
       "title": "Логарифмы с нуля · колледж и ЕГЭ · 60 задач",
       "group": "Колледж / математика",
       "href": "/trainers/college-logarithms/index.html"
+    },
+    {
+      "title": "Проценты · 8 задач из курса Виленкина · 6 класс",
+      "group": "Виленкин · 6 класс · задачи учебника",
+      "href": "/trainers/vilenkin6-percent/index.html"
+    },
+    {
+      "title": "Логарифмы и тригонометрия · 9 тем ЕГЭ профиль",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#course"
+    },
+    {
+      "title": "Тригонометрия с нуля · окружность",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#home"
+    },
+    {
+      "title": "Логарифмы: вычислить по определению",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/expr-logarithms"
+    },
+    {
+      "title": "Логарифмическое уравнение и ОДЗ",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/algebra-logarithmic"
+    },
+    {
+      "title": "Показательный и логарифмический графики",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/fn-explog"
+    },
+    {
+      "title": "Угол: поворот, градусы и радианы",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/trig-angle"
+    },
+    {
+      "title": "Синус и косинус — координаты точки",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/trig-coordinates"
+    },
+    {
+      "title": "Точные значения и симметрия",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/trig-special"
+    },
+    {
+      "title": "Тангенс: отношение и границы определения",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/trig-tangent"
+    },
+    {
+      "title": "Восстановить косинус по синусу и четверти",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/algebra-cosine"
+    },
+    {
+      "title": "Двойной угол: узнать произведение",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-log-trig.html#lesson/algebra-double-angle"
+    },
+    {
+      "title": "Что делает окружность единичной",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/before-circle"
+    },
+    {
+      "title": "Число превращается в путь",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/before-radians"
+    },
+    {
+      "title": "Координаты точки единичной окружности",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/m5-coordinates"
+    },
+    {
+      "title": "Синус, косинус и тангенс на осях",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/m6-axis"
+    },
+    {
+      "title": "Вычисления: сначала функции, затем действия",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/m6-calculation"
+    },
+    {
+      "title": "Тождества и область определения",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/m6-identities"
+    },
+    {
+      "title": "Простейшие уравнения: все точки и все обороты",
+      "group": "ЕГЭ профиль · логарифмы и тригонометрия",
+      "href": "/trainers/ege-profile-circle.html#lesson/m6-equations"
+    },
+    {
+      "title": "ВПР · 5 класс",
+      "href": "/trainers/vpr-math/index.html?route=g5",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 6 класс",
+      "href": "/trainers/vpr-math/index.html?route=g6",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 7 класс · базовый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g7",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 7 класс · углублённый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g7u",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 8 класс · базовый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g8",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 8 класс · углублённый уровень",
+      "href": "/trainers/vpr-math/index.html?route=g8u",
+      "group": "ВПР / математика"
+    },
+    {
+      "title": "ВПР · 10 класс",
+      "href": "/trainers/vpr-math/index.html?route=g10",
+      "group": "ВПР / математика"
     }
   ]
 }

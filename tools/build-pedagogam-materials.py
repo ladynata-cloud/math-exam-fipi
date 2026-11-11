@@ -7,6 +7,7 @@ import html
 import json
 from pathlib import Path
 import zipfile
+from public_navigator_preservation import SNIPPET
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
@@ -185,11 +186,17 @@ def catalog_fragment():
 <!-- ready-materials:end -->'''
 
 def main():
+    offline_html = {}
     for p in PACKS:
         dest=OUT/p['slug'];dest.mkdir(parents=True,exist_ok=True)
         pdf_students(p,dest/'zadaniya.pdf')
         pdf_teacher(p,dest/'otvety.pdf')
-        (dest/'index.html').write_text(pack_html(p))
+        # The downloadable page must remain usable directly from the ZIP.
+        # Only its hosted counterpart receives the public navigation scripts.
+        source = pack_html(p)
+        assert source.count('</head>') == 1
+        offline_html[p['slug']] = source.encode('utf-8')
+        (dest/'index.html').write_text(source.replace('</head>', SNIPPET.decode() + '</head>', 1))
     hub=ROOT/'pedagogam/index.html';text=hub.read_text()
     fragment=catalog_fragment()
     if '<!-- ready-materials:start -->' in text:
@@ -223,7 +230,8 @@ https://mathexam.space/pedagogam/
         for p in PACKS:
             for filename in ['zadaniya.pdf','otvety.pdf','index.html']:
                 info=zipfile.ZipInfo(p['slug']+'/'+filename,(2026,11,5,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED
-                z.writestr(info,(OUT/p['slug']/filename).read_bytes())
+                payload = offline_html[p['slug']] if filename == 'index.html' else (OUT/p['slug']/filename).read_bytes()
+                z.writestr(info, payload)
         info=zipfile.ZipInfo('README.txt',(2026,11,5,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED
         z.writestr(info,readme.encode('utf-8'))
     print('Built 5 packs, 10 PDFs, 5 standalone HTML pages and ZIP; 64 tasks.')

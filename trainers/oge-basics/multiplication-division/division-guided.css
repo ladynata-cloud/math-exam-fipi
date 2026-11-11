@@ -191,3 +191,37 @@ dialog > p { color: var(--muted); font-size: 16px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* The route stays above the exercise; a table is opened only in its own mode. */
+.division-learning-route { display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 14px; font-size:14px; }
+.division-learning-route a { display:inline-flex; align-items:center; min-height:36px; }
+#division-recommendation { max-width:650px; color:var(--muted); font-size:16px; }
+.multiples-builder { padding:12px; margin:12px 0; border:1px solid var(--line); border-radius:12px; background:var(--soft); font-size:15px; }
+.multiples-builder > summary { min-height:36px; }
+.multiples-builder > p { margin:8px 0; }
+.multiples-builder-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+.multiple-row { display:grid; grid-template-columns:minmax(0,1fr); gap:4px; padding:7px; border:1px solid var(--line); border-radius:8px; background:var(--paper); }
+.multiple-row label { font-weight:650; font-size:15px; white-space:nowrap; }
+.multiple-row input { display:block; width:100%; min-width:0; min-height:40px; padding:4px; border:1px solid #a5b9ae; border-radius:6px; color:var(--ink); font-size:17px; }
+.multiple-row .quiet { min-height:36px; padding:4px 2px; font-size:12px; }
+.multiple-row.is-checked { border-color:#91b69f; }
+.multiple-row.is-checked input { background:#f0f7ef; }
+.multiple-feedback { min-height:22px; }
+#digit-skill-panel {
+  width:min(420px, calc(100% - 24px)); padding:20px; border:1px solid var(--line);
+  border-radius:16px; background:var(--paper); color:var(--ink);
+}
+#digit-skill-panel::backdrop { background:rgba(16, 35, 30, .55); }
+#digit-skill-panel h2 { margin-top:0; }
+#digit-skill-form:not([hidden]) { display:grid; gap:8px; }
+#digit-skill-form input { width:100%; min-height:42px; padding:8px; border:1px solid var(--line); border-radius:8px; font-size:18px; }
+#digit-skill-form button { justify-self:start; }
+#digit-practice:not([hidden]) { margin-bottom:8px; }
+@media (max-width:480px) {
+  .division-learning-route { gap:0 14px; margin-bottom:10px; font-size:13px; }
+  .multiples-builder { padding:9px; }
+  .multiples-builder-grid { gap:5px; }
+  .multiple-row { padding:5px; }
+  .multiple-row label { font-size:13px; }
+  .multiple-row .quiet { font-size:11px; }
+}

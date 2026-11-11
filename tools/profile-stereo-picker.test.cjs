@@ -124,15 +124,18 @@ test('foreign origins and nonliteral source paths never gain the stereometry ali
 
 test('the stereometry wrapper reuses canonical assets and the existing bridge without nested navigation', () => {
   const wrapper = fs.readFileSync(path.join(root, wrapperPath), 'utf8');
-  const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
+  const canonical = require('./public-page-script.cjs').sourceForProfileBoard(root, wrapper);
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
-  const canonicalScripts = scripts(canonical)
+  const canonicalScripts = require('./public-page-script.cjs').canonicalProfileLearningScripts(canonical, wrapper)
     .filter(src => !src.startsWith('../learning/'))
     .map(src => '/ege-profil/start/' + src);
   const wrapperScripts = scripts(wrapper);
   const bridge = '/trainers/board-bridge.js';
   const adapter = '/ege-profil/start/board-session.js?v=20261101-trainer-repair';
-  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), canonicalScripts);
+  const home = '/assets/assistant/home-link.js?v=20261110';
+  assert.deepEqual(wrapperScripts.filter(src => src !== bridge && src !== adapter), [...canonicalScripts, home]);
+  assert.equal(wrapperScripts.at(-1), home, 'Only the exact standalone home script follows the canonical assets');
+  assert.match(wrapper, /<script defer src="\/assets\/assistant\/home-link\.js\?v=20261110"><\/script>\s*<\/body>/);
   const app = wrapperScripts.findIndex(src => src.startsWith('/ege-profil/start/app.js?'));
   assert.deepEqual(wrapperScripts.slice(app - 2, app), [bridge, adapter]);
   assert.doesNotMatch(wrapper, /<base\b|<iframe\b|http-equiv\s*=\s*["']refresh|location\.(?:replace|assign)/i);

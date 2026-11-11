@@ -13,10 +13,17 @@
 .course-back{display:inline-block;margin-bottom:18px;color:var(--accent);text-decoration:none;font-size:16px}.course-back:hover{text-decoration:underline}.task-position{margin:0 0 16px;font-size:15px;color:var(--muted)}.task-navigation{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:22px}.task-picker-label{display:grid;gap:8px;max-width:100%}#taskPicker{width:100%;max-width:100%}.board{min-width:0}.boardWrap{overflow:visible}.hint-reference-model{margin-top:20px}.hint-return{margin-top:24px}.hintBox:empty{display:none}#task13LabHost{min-width:0}#task13LabHost svg{max-width:100%;height:auto}#task13LabHost button,#task13LabHost input,#task13LabHost select{max-width:100%}.task13-empty-lab{font-size:17px}input:focus-visible,select:focus-visible{outline:3px solid #78a98c;outline-offset:3px}@media(max-width:560px){.main{padding:22px 14px}.hint-panel{padding:16px 10px}.task-navigation{gap:10px}.task-position{font-size:14px}.task-navigation button{flex:1;min-width:0}.head{gap:10px}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
+<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
+<script defer src="/assets/oge-wayfinding.js"></script>
+<script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
+<script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+
 </head>
 <body>
+<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
+
 <main class="app">
-<a class="course-back" href="../oge/">← Курс ОГЭ</a>
+
 <header class="head"><span class="sub">Тренировка</span><h1>ОГЭ №13. Неравенства</h1></header>
 <section class="main" aria-labelledby="taskHeading">
 <p id="taskPosition" class="task-position"></p>
@@ -25,6 +32,7 @@
 <div class="boardWrap" id="givenBoard"></div>
 <button id="hintToggle" type="button" onclick="toggleHint()" aria-expanded="false" aria-controls="hintPanel">Хочешь подсказку?</button>
 <section class="hint-panel" id="hintPanel" hidden aria-label="Подсказка">
+<h3>Разбор этой задачи по шагам</h3><div id="task13WorkedSteps"></div><button id="task13NextStep" type="button" onclick="revealWorkedStep()" aria-controls="task13WorkedSteps">Начать разбор</button>
 <div id="hintBox" class="hintBox"></div><div id="task13LabHost"></div>
 <details id="referenceDetails" class="hint-reference-model"><summary id="referenceTitle">Ещё опора: рисунок и правило</summary><div class="boardWrap" id="hintBoard"><svg id="board" class="board" role="img" aria-label="Модель неравенства" viewBox="0 0 740 560" xmlns="http://www.w3.org/2000/svg"></svg></div><p class="hint-reference" id="hintReference"></p></details>
 <details id="solutionDetails"><summary>Посмотреть решение</summary><button type="button" onclick="showSolution()">Показать решение</button><div class="solution-text" id="solutionText" hidden></div></details>
@@ -83,7 +91,7 @@ systems:[
 {e:['x > −1','3 − x > 0'],ans:'(−1; 3)',options:['(−∞; 3)','(−1; 3)','нет решений','(−1; +∞)'],rays:[{v:-1,dir:'right',closed:false},{v:3,dir:'left',closed:false}],hint:'x > −1 и x < 3. Пересечение — между −1 и 3.'}
 ]
 };
-let mod='quad', idx={linear:0,quad:0,graph:0,special:0,systems:0}, selectedChoice=null, selectedZones=[false,false,false], checked=false, solution=false, hintOpen=false;
+let mod='quad', idx={linear:0,quad:0,graph:0,special:0,systems:0}, selectedChoice=null, selectedZones=[false,false,false], checked=false, solution=false, hintOpen=false, revealedSteps=0;
 const sessionStates={};
 const labCache=new Map();
 const $=id=>document.getElementById(id);function make(tag,a){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in a)e.setAttribute(k,a[k]);return e}function setMsg(t,c='info'){$('msg').innerHTML=t;$('msg').className='msg '+c}function signText(s){return s==='gt'?'> 0':s==='gte'?'≥ 0':s==='lt'?'< 0':'≤ 0'}function strict(s){return s==='gt'||s==='lt'}function correctZones(t){if(t.a&&t.a<0){return (t.sign==='gt'||t.sign==='gte')?[false,true,false]:[true,false,true]}return (t.sign==='gt'||t.sign==='gte')?[true,false,true]:[false,true,false]}function zlab(i,t){if(i===0)return `(−∞; ${t.l1}${strict(t.sign)?')':']'}`;if(i===1)return `${strict(t.sign)?'(':'['}${t.l1}; ${t.l2}${strict(t.sign)?')':']'}`;return `${strict(t.sign)?'(':'['}${t.l2}; +∞)`}function answerText(t,z=selectedZones){let p=[];z.forEach((v,i)=>{if(v)p.push(zlab(i,t))});return p.length?p.join(' ∪ '):'—'}
@@ -131,13 +139,13 @@ function renderPanel(){
   if(mod==='graph')drawGraphTask(t);else $('board').replaceChildren();
  }
  (mod==='graph'?$('givenBoard'):$('hintBoard')).appendChild($('board'));
- renderLab();
+ renderWorkedSteps();renderLab();
 }
 function renderChips(t){const box=$('chips');box.replaceChildren();[0,1,2].forEach(i=>{const button=document.createElement('button');button.type='button';button.className='chip '+(selectedZones[i]?'on':'');button.innerHTML=mathHtml(zlab(i,t));button.setAttribute('aria-pressed',String(selectedZones[i]));button.disabled=checked||solution;button.onclick=()=>toggleZone(i);box.appendChild(button)});$('ansPrev').innerHTML=mathHtml(answerText(t))}
 function toggleZone(i){if(checked||solution)return;selectedZones[i]=!selectedZones[i];setMsg('');renderAll()}
-function resetState(){selectedChoice=null;selectedZones=[false,false,false];checked=false;solution=false;hintOpen=false;$('solutionDetails').open=false;$('referenceDetails').open=false;setMsg('')}
-function saveCurrentState(){sessionStates[mod+':'+idx[mod]]={selectedChoice,selectedZones:selectedZones.slice(),checked,solution,hintOpen,message:$('msg').innerHTML,messageClass:$('msg').className.replace(/^msg\s*/,''),solutionOpen:$('solutionDetails').open,referenceOpen:$('referenceDetails').open};}
-function restoreState(){const saved=sessionStates[mod+':'+idx[mod]];if(!saved){resetState();return;}selectedChoice=saved.selectedChoice;selectedZones=saved.selectedZones.slice();checked=saved.checked;solution=saved.solution;hintOpen=saved.hintOpen;setMsg(saved.message,saved.messageClass);$('solutionDetails').open=saved.solutionOpen;$('referenceDetails').open=!!saved.referenceOpen;}
+function resetState(){selectedChoice=null;selectedZones=[false,false,false];checked=false;solution=false;hintOpen=false;revealedSteps=0;$('solutionDetails').open=false;$('referenceDetails').open=false;setMsg('')}
+function saveCurrentState(){sessionStates[mod+':'+idx[mod]]={selectedChoice,selectedZones:selectedZones.slice(),checked,solution,hintOpen,revealedSteps,message:$('msg').innerHTML,messageClass:$('msg').className.replace(/^msg\s*/,''),solutionOpen:$('solutionDetails').open,referenceOpen:$('referenceDetails').open};}
+function restoreState(){const saved=sessionStates[mod+':'+idx[mod]];if(!saved){resetState();return;}selectedChoice=saved.selectedChoice;selectedZones=saved.selectedZones.slice();checked=saved.checked;solution=saved.solution;hintOpen=saved.hintOpen;revealedSteps=saved.revealedSteps||0;setMsg(saved.message,saved.messageClass);$('solutionDetails').open=saved.solutionOpen;$('referenceDetails').open=!!saved.referenceOpen;}
 function renderLab(){
  const host=$('task13LabHost'),key=mod+':'+idx[mod];
  if(!hintOpen){host.replaceChildren();return;}
@@ -153,8 +161,57 @@ function checkAnswer(){
  if(checked||solution)return;
  if(mod!=='quad'&&selectedChoice===null||mod==='quad'&&!selectedZones.some(Boolean)){setMsg('Сначала выбери ответ.','info');return;}
  const t=current(),ok=mod==='quad'?selectedZones.every((v,i)=>v===correctZones(t)[i]):selectedChoice===t.ans;
- checked=ok;rec(ok);setMsg(ok?'Верно!':'Пока не сходится. Можно изменить ответ или открыть подсказку.',ok?'ok':'err');renderAll();
+ checked=ok;if(!ok||!revealedSteps)rec(ok);setMsg(ok?(revealedSteps?'Верно! Решено с пошаговым объяснением. Для самостоятельной проверки выбери другое задание.':'Верно!'):'Пока не сходится. Можно изменить ответ или открыть подсказку.',ok?'ok':'err');renderAll();
 }
+function workedSteps(family,t,index){
+ const n=value=>String(value).replace('-','−').replace('.',',');
+ const linear=[
+  ['Прибавим 2x к обеим частям: 3 ≥ 10x − 1. Затем прибавим 1: 4 ≥ 10x.', 'Разделим обе части на положительное число 10. Знак сохраняется: 0,4 ≥ x, то есть x ≤ 0,4.'],
+  ['Вычтем 9x и прибавим 4 к обеим частям: 4x − 9x ≥ 6 + 4. Получаем −5x ≥ 10.', 'Разделим на −5. При делении на отрицательное число знак меняется: x ≤ −2.'],
+  ['Вычтем x и 4 из обеих частей: 5x − x < 6 − 4. Получаем 4x < 2.', 'Разделим на положительное число 4, сохранив знак: x < 0,5.'],
+  ['Раскроем скобки: −3(4x + 1) = −12x − 3. Получаем 6x − 12x − 3 > 6.', 'Приведём подобные и прибавим 3: −6x > 9. Делим на −6 и меняем знак: x < −1,5.'],
+  ['Вычтем x и прибавим 8: 10 ≤ 4x.', 'Делим на положительное число 4: 2,5 ≤ x. То же самое: x ≥ 2,5.'],
+  ['Прибавим 3x к обеим частям: x + 5 ≤ −3.', 'Вычтем 5 из обеих частей: x ≤ −8.']
+ ];
+ if(family==='linear')return [
+  'Начинаем с неравенства '+t.e+'. Одинаковое прибавление или вычитание в обеих частях сохраняет его решения.',
+  ...linear[index],
+  (/≤|≥/.test(t.e)?'Граница входит: знак нестрогий, точка закрашенная.':'Граница не входит: знак строгий, точка пустая.')+' Записываем ответ: '+t.ans+'.'
+ ];
+ if(family==='quad'){
+  const zones=correctZones(t),positive=t.sign==='gt'||t.sign==='gte';
+  const roots=['x² − 49 = 0 → x² = 49 → x = −7 или x = 7.','x² − 64 = 0 → x² = 64 → x = −8 или x = 8.','(x + 3)(x − 8) = 0: один из множителей равен нулю, поэтому x = −3 или x = 8.','(x + 2)(x − 7) = 0: x = −2 или x = 7.','49x² − 36 = 0 → x² = 36/49 → x = −6/7 или x = 6/7.','x² − 9 = 0 → x² = 9 → x = −3 или x = 3.','7x − x² = x(7 − x) = 0 → x = 0 или x = 7.','6x − x² = x(6 − x) = 0 → x = 0 или x = 6.'];
+  return ['Сравним левую часть с нулём. После переноса всех слагаемых влево получаем квадратное выражение с коэффициентом при x²: a = '+t.a+'.',
+   'Найдём, где выражение равно нулю: '+roots[index]+' Эти точки делят прямую на три промежутка.',
+   'Коэффициент a '+(t.a>0?'положительный: ветви параболы вверх, знак «+» вне корней и «−» между ними.':'отрицательный: ветви параболы вниз, знак «−» вне корней и «+» между ними.'),
+   'Нужно '+(positive?'положительное':'отрицательное')+' значение'+(strict(t.sign)?'.': ' или ноль.')+' Берём '+(zones[1]?'промежуток между корнями.':'два внешних промежутка.'),
+   (strict(t.sign)?'Неравенство строгое: нули не включаем.':'Неравенство нестрогое: нули включаем.')+' Ответ: '+answerText(t,zones)+'.'];
+ }
+ if(family==='systems')return [
+  'Решаем оба неравенства отдельно. В системе должны выполняться оба условия одновременно.',
+  ...t.rays.map((r,i)=>'Условие '+(i+1)+': '+t.e[i]+'. После переноса числа и деления на коэффициент при x получаем x '+(r.dir==='left'?(r.closed?'≤':'<'):(r.closed?'≥':'>'))+' '+n(r.v)+'.'+(index===3&&i===1?' Делили на −1, поэтому знак изменился.':'')),
+  'На прямой оставляем только общую часть двух лучей. '+t.hint,
+  'Проверяем границы: число входит, только если удовлетворяет обоим условиям. Ответ: '+t.ans+'.'
+ ];
+ if(family==='graph')return [
+  'Читаем границы отмеченных промежутков: '+t.labels.join(' и ')+'. Это нули нужного квадратного выражения.',
+  'На рисунке отмечены '+(t.zones[1]?'числа между границами.':'числа слева от первой и справа от второй границы.'),
+  'Точки '+(t.closed?'закрашены: границы входят, нужен нестрогий знак.':'пустые: границы не входят, нужен строгий знак.'),
+  'Выражение (x − ('+t.labels[0]+'))(x − ('+t.labels[1]+')) имеет именно эти нули. Его знак отрицательный между корнями и положительный вне корней.',
+  'Сопоставляем и промежутки, и границы. Подходит '+t.ans+'.'
+ ];
+ const constant=Number(t.ans.match(/\+ (\d+)/)[1]);
+ return ['При любом действительном x квадрат x² ≥ 0. Минимум достигается при x = 0.',
+  'Поэтому x² + '+constant+' ≥ '+constant+' > 0: выражение всегда строго положительно.',
+  t.hint,
+  'Ответ на вопрос «'+t.q+'»: '+t.ans+'.'];
+}
+function renderWorkedSteps(){
+ const plan=workedSteps(mod,current(),idx[mod]),host=$('task13WorkedSteps');host.replaceChildren();
+ plan.slice(0,revealedSteps).forEach((text,i)=>{const section=document.createElement('section');section.className='hintBox';section.innerHTML='<h4>Шаг '+(i+1)+' из '+plan.length+'</h4><p>'+mathHtml(text)+'</p>';host.append(section);});
+ const next=$('task13NextStep');next.disabled=revealedSteps>=plan.length;next.textContent=next.disabled?'Все шаги открыты':revealedSteps?'Следующий шаг ('+(revealedSteps+1)+' из '+plan.length+')':'Начать разбор';
+}
+function revealWorkedStep(){revealedSteps=Math.min(workedSteps(mod,current(),idx[mod]).length,revealedSteps+1);renderWorkedSteps();}
 function showSolution(){const t=current();solution=true;checked=true;hintOpen=true;if(mod==='quad'){selectedZones=correctZones(t).slice();setMsg('Ответ: '+mathHtml(answerText(t)),'warn')}else{selectedChoice=t.ans;setMsg('Ответ: '+mathHtml(t.ans),'warn')}renderAll();}
 function toggleHint(){hintOpen=!hintOpen;renderAll()}
 function returnToTask(){hintOpen=false;renderAll();$('hintToggle').focus();}

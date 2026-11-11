@@ -108,6 +108,7 @@
     try{const t=M.generate(m[1],seed,Number(m[2]),methodVersion);t.id=id;return t;}catch(_){return null;}
   }
   function validRoute(hash){if(typeof hash!=='string')return null;let m=/^#lesson\/(p\d{2})(?:\/(\d+))?$/.exec(hash);if(m&&byId[m[1]]){const i=Number(m[2]||0);return i<byId[m[1]].tasks.length?'#lesson/'+m[1]+'/'+i:null;}m=/^#(?:practice|check)\/([a-z-]+)\/([123])$/.exec(hash);return m&&skills[m[1]]?hash:null;}
+  function inquiryState(raw){const out={open:false};if(record(raw)){for(const k of ['draft','first','last','transferDraft','transferFirst','transferLast'])if(typeof raw[k]==='string')out[k]=raw[k].slice(0,200);out.open=raw.open===true;}return out;}
   function sanitizeTask(raw, t) {
     const safe=fresh(t.methodVersion||1);
     if(!record(raw))return safe;
@@ -116,19 +117,20 @@
     safe.attempts=Number.isSafeInteger(raw.attempts)?Math.max(0,Math.min(1000000,raw.attempts)):0;
     safe.values=Array.isArray(raw.values)?raw.values.slice(0,t.steps.length).map(v=>typeof v==='string'?v.slice(0,200):''):[];
     for(const k of ['stepHints','reveals'])if(record(raw[k]))for(const [i,v] of Object.entries(raw[k]))if(/^\d{1,2}$/.test(i)&&Number(i)<t.steps.length&&v===true)safe[k][i]=true;
+    if(!boardSession)safe.inquiry=inquiryState(raw.inquiry);
     const target=Number.isInteger(raw.step)?Math.max(0,Math.min(t.steps.length,raw.step)):0;
     while(safe.step<target&&check(safe.values[safe.step]||'',t.steps[safe.step]))safe.step++;
     if(t.kind==='manual'){safe.attempts=0;if(safe.value!=='recorded'||!safe.note.trim())safe.value='';}
     safe.correct=t.kind!=='manual'&&raw.correct===true&&check(safe.value,t);
-    const help=safe.assisted||safe.guided||safe.hint||Object.keys(safe.stepHints).length>0||Object.keys(safe.reveals).length>0||safe.step>0;
+    const help=safe.assisted||!!(safe.inquiry?.open||safe.inquiry?.last)||safe.guided||safe.hint||Object.keys(safe.stepHints).length>0||Object.keys(safe.reveals).length>0||safe.step>0;
     const c=raw.completion,hasCompletion=safe.correct&&record(c)&&Number.isInteger(c.attempts)&&c.attempts>=1&&c.attempts<=1000000&&typeof c.assisted==='boolean';
     if(hasCompletion){safe.attempts=c.attempts;safe.assisted=c.assisted;safe.independent=c.independent===true&&!c.assisted&&c.attempts===1;}else{safe.assisted=help;safe.independent=safe.correct&&raw.independent===true&&!help&&safe.attempts===1;}
     if(safe.correct)safe.completion={attempts:safe.attempts,assisted:safe.assisted,independent:safe.independent};
     if(/^(?:practice|check):/.test(t.id))safe.signature=taskSignature(t);
     return safe;
   }
-  function hasPreviousWork(r){return !!(r.value||r.note||r.feedback||r.correct||r.guided||r.assisted||r.hint||r.attempts||r.step||(r.values||[]).some(Boolean)||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
-  function hadHelpOrAnswer(r){return !!(r.assisted||r.guided||r.hint||r.correct||r.attempts||r.step||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
+  function hasPreviousWork(r){return !!(Object.values(r.inquiry||{}).some(Boolean)||r.value||r.note||r.feedback||r.correct||r.guided||r.assisted||r.hint||r.attempts||r.step||(r.values||[]).some(Boolean)||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
+  function hadHelpOrAnswer(r){return !!(r.inquiry?.open||r.inquiry?.last||r.assisted||r.guided||r.hint||r.correct||r.attempts||r.step||Object.values(r.stepHints||{}).some(Boolean)||Object.values(r.reveals||{}).some(Boolean));}
   function sanitizeState(raw) {
     if(!record(raw)||raw.version!==1||!record(raw.tasks)||!record(raw.practice))throw Error('Неподдерживаемый формат сохранения.');
     const safe=blank(),seen=new Set();
@@ -230,7 +232,7 @@
   if(!boardSession)try{const raw=localStorage.getItem(KEY);if(raw)state=sanitizeState(JSON.parse(raw));}catch(err){writable=false;warn('Не удалось прочитать сохранение. Оно не перезаписано. Текущую работу можно скачать в разделе результатов.');}
   if(!boardSession)try{const stored=JSON.parse(localStorage.getItem(HELP_KEY)||'{}');if(record(stored))for(const [id,value]of Object.entries(stored))if(taskById[id]&&record(value)&&typeof value.model==='boolean'&&typeof value.theory==='boolean')helpOpen[id]={model:value.model,theory:value.theory};}catch(_){}
   function save(){if(boardSession||!writable)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(err){writable=false;warn('Браузер не смог сохранить работу. Продолжайте занятие и скачайте результаты перед закрытием.');}}
-  function fresh(methodVersion=1){return {...(!boardSession?{methodVersion}:{}),value:'',values:[],step:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,note:'',feedback:'',signature:'',repeated:false,completion:null};}
+  function fresh(methodVersion=1){return {...(!boardSession?{methodVersion,inquiry:{open:false}}:{}),value:'',values:[],step:0,guided:false,assisted:false,hint:false,stepHints:{},reveals:{},attempts:0,correct:false,independent:false,note:'',feedback:'',signature:'',repeated:false,completion:null};}
   function ts(id){if(!state.tasks[id]||typeof state.tasks[id]!=='object')state.tasks[id]=fresh(resolveTask(id)?.methodVersion||1);const s=state.tasks[id];for(const [k,v] of Object.entries(fresh(resolveTask(id)?.methodVersion||1)))if(s[k]===undefined)s[k]=v;return s;}
   function button(text,action,extra='',quiet=false){return '<button type="button" data-action="'+action+'" '+extra+(quiet?' class="quiet"':'')+'>'+text+'</button>';}
   function bindLocalForm(form,onSubmit){
@@ -321,6 +323,7 @@ ${[1, 2, 3]
       boardNumber={part,draft:numberInput.value,submitted:Number.isInteger(n)&&n>=1&&n<=sourceLimit(part)?n:'invalid'};
       findNumber(n, part);
     });
+    if(!boardSession)window.MathExamCourseExamples?.catalogue(main,'peterson6');
   }
   function findNumber(n, part = 1) {
     const r=document.getElementById('number-result');
@@ -356,11 +359,21 @@ ${[1, 2, 3]
     active={lesson:l,task:t,index,practice:false,checking:false};
     state.last={hash:'#lesson/'+id+'/'+index};
     save();
-    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details open><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Модель темы · помощь</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
+    main.innerHTML='<div class="breadcrumb"><a href="#home">← Все темы</a><span>Часть '+partOf(l)+' / '+e(l.chapter)+'</span></div><p class="eyebrow">Тема '+l.order+' · с. '+l.page+' · № '+e(l.sourceRange)+'</p><h1 class="lesson-title">'+e(l.title)+'</h1><div class="lesson-layout"><aside class="side"><details open><summary>Задачи этой темы</summary><div class="side-list">'+l.tasks.map((q,i)=>'<button type="button" data-action="task" data-index="'+i+'" class="'+(i===index?'current':'')+'" '+(i===index?'aria-current="step"':'')+'><span class="status">'+(ts(q.id).correct?'✓':q.kind==='manual'&&ts(q.id).value==='recorded'?'•':'')+'</span>'+(i+1)+'. '+e(q.title)+'</button>').join('')+'</div></details></aside><div class="content-column"><div id="problem"></div><details class="panel lesson-help inquiry-model" data-lesson-help="model" '+(!boardSession&&helpOpen[t.id]?.model?'open':'')+'><summary>Предсказать и исследовать модель</summary><div id="model" class="model"></div></details><details class="panel lesson-help" data-lesson-help="theory" '+(!boardSession&&helpOpen[t.id]?.theory?'open':'')+'><summary>Коротко о главном · помощь</summary>'+l.theory.map(p=>'<div class="theory-block"><h3>'+e(p.title)+'</h3><p>'+fmt(p.text)+'</p>'+(p.example?'<div class="theory-example">'+fmt(p.example)+'</div>':'')+'</div>').join('')+'</details><div class="navigation">'+(index?button('← Предыдущая','task','data-index="'+(index-1)+'"',true):'<span></span>')+(index<l.tasks.length-1?button('Следующая задача →','task','data-index="'+(index+1)+'"',true):next?'<a class="button quiet" href="#lesson/'+next.id+'">Следующая тема →</a>':'<a class="button" href="#progress">Мои результаты →</a>')+'</div></div></div>';
     renderProblem();
-    cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,t);
+    cleanup=window.PetersonModels?.mount(document.getElementById('model'),l,boardSession?{task:t}:{
+      task:t,inquiry:true,state:ts(t.id).inquiry,onChange(value){
+        const progress=ts(t.id);
+        progress.inquiry=inquiryState(value);
+        if(progress.inquiry.open||progress.inquiry.last)markAssisted(progress);
+        save();
+      }
+    });
     const saved=state.models[t.id];
     if(saved&&cleanup?.applyBoardState)cleanup.applyBoardState(saved);
+    if(!boardSession)window.MathExamCourseExamples?.mount(
+      document.getElementById('problem'),'peterson6',l.id,()=>{markAssisted(ts(t.id));save();}
+    );
     captureModel();
     save();
   }
@@ -482,6 +495,10 @@ ${[1, 2, 3]
           fmt(t.explanation) +
           '</p></div>'
         : '') +
+      (s.correct&&!s.independent&&!boardSession&&(active.practice||(t.skills||[]).some(id=>skills[id]))
+        ? '<div class="independent-check">'+button('Проверить себя на новом примере','independent-check')+
+          '<p class="small">Разбор сохранён. Новая попытка проверяет навык без открытых подсказок.</p></div>'
+        : '') +
       (!checking && t.skills?.length
         ? '<section class="detour"><h3>С вычислением нужна помощь?</h3><p class="small">Потренируй отдельное действие. Затем вернись к этому же условию и записям.</p><div class="row">' +
           skillLinks(t.skills) +
@@ -597,6 +614,12 @@ ${[1, 2, 3]
     if (!b) return;
     const action=b.dataset.action;
     if(action==='start-check'){startCheck(b.dataset.skill,Number(b.dataset.level)||1);return;}
+    if(action==='independent-check'){
+      if(!active||boardSession)return;
+      const skill=active.practice?active.skill:(active.task.skills||[]).find(id=>skills[id]);
+      if(skill)startCheck(skill,active.practice?active.level:1);
+      return;
+    }
     if(action==='detour'){openDetour(b.dataset.skill);return;}
     if(action==='return'){const origin=state.origin;state.origin=null;save();if(origin){go(origin.hash);requestAnimationFrame(()=>requestAnimationFrame(()=>window.scrollTo(0,origin.scroll||0)));}else go('#home');return;}
     if(action==='saved-practice'){ev.preventDefault();if(boardSession)return;const id=b.dataset.task,m=/^practice:([a-z-]+):([123]):(\d+)$/.exec(id||'');if(m&&resolveTask(id)&&(state.tasks[id]||state.history[id])){state.practice[m[1]+':'+m[2]]={seed:Number(m[3])};save();go('#practice/'+m[1]+'/'+m[2]);}return;}

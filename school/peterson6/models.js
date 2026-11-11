@@ -334,6 +334,50 @@
     draw();
     return { getState: () => ({ initial, rate, years }), applyState(value) { initial = value.initial; rate = value.rate; years = value.years; initialControl.set(initial); rateControl.set(rate); yearsControl.set(years); draw(); } };
   }
+
+// Personal model questions are practice observations, never course credit.
+function inquiryState(raw){
+ const out={};for(const k of ['draft','first','last','transferDraft','transferFirst','transferLast'])out[k]=typeof raw?.[k]==='string'?raw[k].slice(0,200):'';
+ out.open=raw?.open===true;return out;
+}
+function mountInquiry(host,model,q,raw,changed,reveal){
+ const state=inquiryState(raw),box=document.createElement('section');box.className='model-inquiry';
+ const equal=(v,a)=>!!root.PetersonMath?.check(v,a);
+ function emit(){changed({...state});}
+ function draw(){
+  model.hidden=!state.open;
+  box.replaceChildren();
+  const title=document.createElement('h4');title.textContent='Предскажи → проверь на модели → реши новый пример';box.append(title);
+  const note=document.createElement('p');note.textContent='Прогноз относится к начальному примеру. Затем меняй параметры модели и сравнивай. Опыт не отмечает задачу учебника как решённую.';box.append(note);
+  function question(text,key,first,last,answer,why){
+   const form=document.createElement('form'),label=document.createElement('label'),input=document.createElement('input'),check=document.createElement('button'),feedback=document.createElement('p');
+   label.textContent=text;input.type='text';input.maxLength=200;input.value=state[key];input.autocomplete='off';input.setAttribute('aria-label',text);input.dataset.inquiryInput=key;label.append(input);
+   input.addEventListener('input',()=>{state[key]=input.value.slice(0,200);emit();});
+   check.type='submit';check.textContent='Проверить прогноз';check.dataset.inquiryCheck=key;
+   feedback.setAttribute('role','status');feedback.dataset.inquiryFeedback=key;
+   if(state[last])feedback.textContent=(equal(state[last],answer)?'Верно. ':'Пока не совпало. ')+why;
+   if(state[first]){const firstLine=document.createElement('p');firstLine.textContent='Первая запись: '+state[first]+(state[last]!==state[first]?' · Последняя: '+state[last]:'');form.append(firstLine);}
+   form.append(label,check,feedback);form.addEventListener('submit',event=>{event.preventDefault();const value=input.value.trim();if(!value){feedback.textContent='Сначала запиши свой прогноз.';input.focus();return;}state[key]=value;if(!state[first])state[first]=value;state[last]=value;emit();draw();box.querySelector('[data-inquiry-input="'+key+'"]').focus();});box.append(form);
+  }
+  question(q[0],'draft','first','last',q[1],q[2]);
+  const open=document.createElement('button');open.type='button';open.dataset.inquiryOpen='';open.textContent=state.open?'Модель открыта ниже':'Открыть модель и исследовать';open.disabled=state.open;open.addEventListener('click',()=>{state.open=true;emit();if(reveal?.())return;draw();box.querySelector('[data-inquiry-input="transferDraft"]').focus();});box.append(open);
+  if(state.open)question(q[3],'transferDraft','transferFirst','transferLast',q[4],q[5]);
+ }
+ draw();host.append(box);
+}
+
+  function inquiryQuestion(lesson){
+    const rows={
+      logic:['Какое наименьшее натуральное число из 1–8 опровергает утверждение «все числа набора чётные»?','1','Добавь нечётное число к набору 2, 4, 6 и проверь слово «все».','Новый пример: какой наименьший нечётный контрпример больше 2?','3','Одного подходящего нечётного числа достаточно; здесь это 3.'],
+      variable:['Для выражения 2x + 3 увеличили x на 1. На сколько увеличится значение?','2','Добавятся две единицы, слагаемое 3 не изменяется.','Новый пример: в 3x + 4 увеличили x на 2. На сколько изменится значение?','6','Три одинаковых слагаемых вырастут каждое на 2.'],
+      fractions:['В сетке 5 × 4 выделены 2 столбца и 3 строки. Какую долю целого занимает пересечение?','3/10','В пересечении 2 · 3 клеток из 5 · 4 равных клеток.','Новый пример: выделены 3 столбца из 5 и 3 строки из 4. Доля пересечения?','9/20','В пересечении 3 · 3 клеток из 20. Подходит любая равная этой дробь.'],
+      river:['Собственная скорость 10, течение 2 км/ч. На сколько скорость по течению больше скорости против течения?','4','В одном случае прибавили 2, в другом вычли 2.','Новый пример: собственная скорость 12, течение 3 км/ч. Разность скоростей?','6','(12 + 3) − (12 − 3) = 2 · 3.'],
+      mean:['В коробках 2, 8, 5 кружков. Переложили один из второй в первую. Каково теперь среднее?','5','Сумма и число коробок сохранились: 15 : 3.','Новый пример: в коробках 3, 9, 6 кружков. Какое среднее сохранится при перекладывании?','6','Среднее равно общей сумме 18, делённой на 3.'],
+      percent:['25% от 80 — это 20. Целое стало 120, процент тот же. Сколько теперь составляет часть?','30','Часть равна одной четверти целого, а не постоянным 20.','Новый пример: 25% от 160 — какое количество?','40','160 : 4 = 40. Целое, процент и часть — разные величины.'],
+      growth:lesson.id==='p13'?['Начало 1000, простой рост 10% в год. На сколько прибавится за второй год?','100','При простом росте процент каждый раз считают от начальных 1000.','Новый пример: начало 800, простой рост 5% в год. Прибавка за третий год?','40','5% от начальных 800 — это 40 каждый год.']:['Начало 1000, сложный рост 10% в год. На сколько прибавится за второй год?','110','После первого года стало 1100; 10% от 1100 — это 110.','Новый пример: начало 200, сложный рост 10% в год. Прибавка за второй год?','22','После первого года 220, следующая прибавка — 10% от 220.']
+    };if(lesson.id==='p03')return ['Из набора 2, 4, 6 убрали 2 и 4. Какое число подтверждает, что осталось хотя бы одно чётное?','6','Для слова «есть» достаточно одного подходящего элемента.','Новый пример: в наборе 1, 3, 8 какое число подтверждает наличие чётного?','8','Проверь остаток при делении на 2: 8 делится без остатка.'];if(lesson.id==='p01')return ['Какое наименьшее натуральное число из 1–8 делает утверждение «это число чётное» ложным?','1','Для целого числа отрицание чётности означает нечётность.','Новый пример: какое наименьшее нечётное число больше 2?','3','3 — нечётное; утверждение о чётности ложно.'];return rows[lesson.model];
+  }
+
   const renderers = { logic, variable, fractions, river, mean, percent, growth };
   function addStyles() {
     if (document.getElementById('peterson-model-styles')) return;
@@ -346,14 +390,16 @@
   }
   root.PetersonModels = {
     validateBoardState,
-    mount(container, lesson, task) {
-      if (lesson?.model === 'continuation') { addStyles(); return root.PetersonContinuationModels?.mount(container, lesson, task) || function () {}; }
+    mount(container, lesson, options = {}) {
+      if (lesson?.model === 'continuation') { addStyles(); return root.PetersonContinuationModels?.mount(container, lesson, options.task || options) || function () {}; }
       if (!container || !lesson || !renderers[lesson.model]) return function () {};
       addStyles();
       const host = el('section', 'pm-model');
       host.setAttribute('aria-label', 'Модель: ' + (lesson.title || 'Исследование'));
       container.replaceChildren(host);
-      const controller = renderers[lesson.model](host, lesson);
+      const modelHost=options.inquiry?el('div','pm-experiment'):host;
+      const controller = renderers[lesson.model](modelHost, lesson);
+      if(options.inquiry){const setup=()=>{if(lesson.model==='percent')controller.applyState({whole:120,p:25});if(lesson.model==='logic')controller.applyState({chosen:lesson.id==='p01'?[1]:lesson.id==='p03'?[6]:[1,2,4,6],mode:lesson.id==='p03'?'exists':'all'});};if(options.state?.open)setup();mountInquiry(host,modelHost,inquiryQuestion(lesson),options.state,value=>options.onChange?.(value),()=>{setup();return false;});host.append(modelHost);}
       function cleanup() { host.remove(); }
       cleanup.getBoardState = () => ({ lessonId: lesson.id, kind: lesson.model, ...controller.getState() });
       cleanup.validateBoardState = value => validateBoardState(lesson, value);

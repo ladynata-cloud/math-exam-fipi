@@ -4,6 +4,10 @@
 // A source answer oracle is explicitly labelled and is NOT independent maths QA.
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
+const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const videoContext=require('./oge-video-models-book-context.cjs');
+const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -20,6 +24,68 @@ function record(r,action,status,detail={}){r.actions.push({action,status:typeof 
 function oracle(r,prompt,expected,method,extra={}){r.oracles.push({prompt:clean(prompt),expected,method,...extra});}
 async function source(p,expression){return p.evaluate(x=>JSON.parse(JSON.stringify(eval(x),(_k,v)=>typeof v==='bigint'?String(v):v)),expression);}
 async function text(l){return clean(await l.innerText());}
+
+const assert=require('node:assert/strict');
+const WAYFINDING_HEAD='<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
+const WAYFINDING_BAR='\n<nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>\n';
+const FRACTIONS_ROUTE='/trainers/oge-task6-fractions.html';
+const REMOVED_RETURN_POSITION='<main class="wrap">\n\n<header>';
+const ORIGINAL_RETURN_POSITION='<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>';
+function originalWayfindingHtml(html,route=''){
+ assert.equal(html.split(WAYFINDING_HEAD).length,2,'one exact wayfinding asset pair');
+ assert.equal(html.split(WAYFINDING_BAR).length,2,'one exact wayfinding bar');
+ let original=html.replace(WAYFINDING_HEAD,'').replace(WAYFINDING_BAR,'');
+ assert(!original.includes('oge-wayfinding'),'no unknown extra wayfinding markup');
+ if(route===FRACTIONS_ROUTE){
+  assert.equal(original.split(REMOVED_RETURN_POSITION).length,2,'one exact removed legacy return position');
+  assert(!original.includes('<nav class="course-return">'),'legacy return was removed, not relocated');
+  original=original.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION);
+ }
+ return original;
+}
+{
+ const original='<html><head></head><body><p>Exact condition</p></body></html>';
+ const fixture=original.replace('</head>',WAYFINDING_HEAD+'</head>').replace('<body>','<body>'+WAYFINDING_BAR);
+ assert.equal(originalWayfindingHtml(fixture),original);
+ for(const mutated of [fixture.replace(WAYFINDING_BAR,''),fixture.replace(WAYFINDING_BAR,WAYFINDING_BAR+WAYFINDING_BAR),fixture.replace('aria-label="Навигация ОГЭ"','onclick="changed()" aria-label="Навигация ОГЭ"'),fixture.replace(' defer ',' async '),fixture.replace('/trainers/oge-course/','/changed/')])assert.throws(()=>originalWayfindingHtml(mutated));
+ const fractions=fixture.replace('<p>Exact condition</p>',REMOVED_RETURN_POSITION+'Exact condition</header></main>');
+ assert.equal(originalWayfindingHtml(fractions,FRACTIONS_ROUTE),original.replace('<p>Exact condition</p>',ORIGINAL_RETURN_POSITION+'Exact condition</header></main>'));
+ for(const mutated of [fractions.replace(REMOVED_RETURN_POSITION,'<main class="wrap">\n<header>'),fractions.replace(REMOVED_RETURN_POSITION,REMOVED_RETURN_POSITION+REMOVED_RETURN_POSITION),fractions.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION),fractions.replace('</main>','<nav class="course-return">relocated</nav></main>')])assert.throws(()=>originalWayfindingHtml(mutated,FRACTIONS_ROUTE));
+ assert(originalWayfindingHtml(fractions,'/other.html').includes(REMOVED_RETURN_POSITION),'legacy inverse is route-specific');
+}
+async function captureInitialVisibleText(page,report){
+ const full=await text(page.locator('body'));
+ const bars=page.locator('body > nav.oge-wayfinding');
+ if(await bars.count()===0){report.initialVisibleText=full;return;}
+ assert.equal(report.prefix,'','Fixed editions cannot acquire live return navigation');
+ assert.equal(await bars.count(),1);
+ assert.equal(await bars.evaluate(node=>node.outerHTML),WAYFINDING_BAR.trim(),'exact displayed return bar');
+ const label=await text(bars);
+ assert.equal(label,'← Все темы ОГЭ Главная');
+ assert(full.startsWith(label+' '),'return bar is a separate leading navigation block');
+ const file=path.resolve(ROOT,'.'+report.finalPath+(report.finalPath.endsWith('/')?'index.html':''));
+ assert(file.startsWith(ROOT+path.sep));
+ const raw=fs.readFileSync(file,'utf8');
+ const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
+ const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
+ const historical=report.finalPath===FRACTIONS_ROUTE?restoreFractionMultiplicationStep(original):original;
+ report.unfilteredInitialVisibleText=full;
+ report.initialVisibleText=full.slice(label.length+1);
+ report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(historical).digest('hex')};
+ if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
+ const relative=path.relative(ROOT,file);
+ if(videoContext.pins.pages[relative]){
+  const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
+   const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
+   return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};
+  });
+  // Preserve both complete visible snapshots above. The independent verifier
+  // may invert only this separately recorded, source-bound closed summary.
+  report.videoModelContext=videoContext.receipt({file:relative,raw,id:report.id,prefix:report.prefix,visible:report.initialVisibleText,dom,
+   assetHashes:Object.fromEntries(videoAssets.map(asset=>['/'+asset,videoContext.hash(fs.readFileSync(path.join(ROOT,asset)))]))});
+ }
+}
+
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
 async function dimensions(p,r,stage){const d=await p.evaluate(()=>({viewport:innerWidth,html:document.documentElement.scrollWidth,body:document.body.scrollWidth,overflow:document.documentElement.scrollWidth>innerWidth+2?[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect();return (b.width>innerWidth||b.right>innerWidth+2)&&e.getClientRects().length&&!e.closest('svg');}).slice(0,15).map(e=>({tag:e.tagName,id:e.id,cls:e.className,width:e.getBoundingClientRect().width,right:e.getBoundingClientRect().right,text:e.textContent.trim().slice(0,120)})):[]}));record(r,'layout',d.html<=d.viewport+2&&d.body<=d.viewport+2,{stage,...d});}
 async function storage(p){return p.evaluate(()=>Object.fromEntries(Object.entries(localStorage).sort(([a],[b])=>a.localeCompare(b))));}
@@ -41,13 +107,29 @@ async function numeric(p,r,cfg){
   if(cfg.save===false)record(r,'saved-result','NA',{reason:'Standalone worked example; no promised progress record.'});else if(!cfg.deferSave)await saved(p,r,before,cfg.storageFilter||/mathExam|mathexam|oge|task|progress/i);
   record(r,'session-completion',cfg.session||'NA',{reason:cfg.sessionReason||'Selected practice presents individual questions; other exam/quiz modes are outside this case.',scope:cfg.mode||'default practice'});
 }
-async function diagrams(p,r){r.visibleSvgLabels=await p.locator('svg').evaluateAll(nodes=>nodes.filter(n=>n.getClientRects().length).map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})));}
+async function diagrams(p,r){
+ // Keep the historical raw collector intact. Closed details can still produce
+ // client rects; attest only the known addon preview separately for comparison.
+ const captured=await p.locator('svg').evaluateAll(nodes=>{
+  const selected=nodes.filter(n=>n.getClientRects().length),selector='#oge-video-models:not([open]) [data-ovm-preview] > svg';
+  return {rows:selected.map(n=>({viewBox:n.getAttribute('viewBox'),aria:n.getAttribute('aria-label'),svg:n.outerHTML,text:[...n.querySelectorAll('text')].map(t=>t.textContent.trim()).filter(Boolean)})),
+   addon:selected.flatMap((n,index)=>{const shell=n.closest('#oge-video-models');if(!shell)return [];const host=n.closest('[data-ovm-lesson]');return [{index,selector:n.matches(selector)?selector:'unreviewed',lesson:host?.dataset.ovmLesson,stage:host?.dataset.ovmStage,closed:!shell.hasAttribute('open'),hidden:!n.checkVisibility()}];})};
+ });
+ r.visibleSvgLabels=captured.rows;
+ if(r.videoModelContext)r.videoModelContext.closedSvg=videoContext.geometryReceipt(r.videoModelContext,captured.rows,captured.addon);
+ else assert.equal(captured.addon.length,0,'no unbound addon geometry');
+}
 async function scenario(p,r){
  const route=r.route;
  if(route.includes('task-15-external'))return numeric(p,r,{input:'#ocg15-answer',feedback:'.ocg-feedback',hint:'#hintPanel > summary',panel:'#hintPanel',answers:38,prompt:'.ocg-primary-figure',save:false,mode:'single external-angle exercise, 180−142=38'});
  if(route.includes('oge-task6-'))return fractions6(p,r);
  if(route.includes('oge-task8-'))return numeric(p,r,{host:'#marGrid > .mtask:not([hidden])',input:'input.ans',check:'.ck',feedback:':scope > .mrow .fb',hint:'.bs',answers:64,prompt:'.expr',next:'.minimal-next',nextGlobal:true,mode:'first root/power exercise; sqrt(4^6)=64'});
- if(route.includes('oge-task9-'))return numeric(p,r,{host:'.task-card:not([hidden])',input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:10,prompt:'.task-q',next:'.minimal-next',nextGlobal:true,mode:'first linear equation 4x−4=16+2x'});
+ if(route.includes('oge-task9-')){
+   const host='.task-card:not([hidden])',prompt='.task-q';
+   const first=PREFIX?{equation:'4x-4=16+2x',answer:10}:{equation:'3(x+8)-2(x-8)=8',answer:-32};
+   assert.equal((await text(p.locator(host).locator(prompt))).replace(/^Решите уравнение\s+|\.$/g,'').replace(/\s+/g,''),first.equation);
+   return numeric(p,r,{host,input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:first.answer,prompt,next:'.minimal-next',nextGlobal:true,mode:'first linear equation '+first.equation});
+ }
  if(route.includes('oge-task12-'))return numeric(p,r,{host:'#taskArea',input:'#ansIn',check:'#checkBtn',feedback:'#fb',hint:'.minimal-hint',answers:async()=>source(p,'cur.answer'),method:'source-derived read-only current-task answer; independent maths pending',prompt:'.story',next:'#nextBtn'});
  if(route.includes('oge-task16-'))return numeric(p,r,{input:'#ans',check:'#check',feedback:'#fb',hint:'#courseHintToggle',panel:'#courseHintPanel',answers:async()=>source(p,'trTask.ans'),method:'source-derived read-only trTask.ans',prompt:'#main .task',next:'#next'});
  if(route.includes('oge-task17-'))return numeric(p,r,{input:'#ans',check:'#chk',feedback:'#fb',hint:'#courseHintToggle',panel:'#courseHintPanel',answers:async()=>source(p,'CUR.ans'),method:'source-derived read-only CUR.ans',prompt:'.qtext',next:'#nxt'});
@@ -268,7 +350,7 @@ async function corruptedStorageRegression(p,r){
    });
    try{
     await p.goto(origin+PREFIX+route,{waitUntil:'load'});await tick(p);
-    r.finalPath=new URL(p.url()).pathname;r.title=await p.title();r.initialVisibleText=await text(p.locator('body'));
+    r.finalPath=new URL(p.url()).pathname;r.title=await p.title();await captureInitialVisibleText(p,r);
     await diagrams(p,r);
     if(width===390||width===1280){r.initialScreenshot=`${id}-${width}-initial.png`;await p.screenshot({path:path.join(OUT,r.initialScreenshot),fullPage:true});}
     await dimensions(p,r,'initial');

@@ -1,0 +1,113 @@
+name: OGE video model investigations
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-video-models.css'
+      - 'trainers/oge-video-models.js'
+      - 'trainers/oge-video-graphs.js'
+      - 'trainers/oge-video-geometry.js'
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-task15-triangles.html'
+      - 'trainers/oge-task16-circle.html'
+      - 'trainers/oge-task17-quadrilaterals.html'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/oge-task22-functions-graphs.html'
+      - 'trainers/oge-task23-geometry-calculations.html'
+      - 'trainers/oge-task24-proofs.html'
+      - 'trainers/oge-task25-geometry.html'
+      - 'tools/oge-video-models.test.cjs'
+      - 'tools/oge-video-graphs.test.cjs'
+      - 'tools/oge-video-geometry.test.cjs'
+      - 'tools/oge-video-models-preservation.cjs'
+      - 'tools/oge-video-models-preservation.test.cjs'
+      - 'tools/oge-video-models.browser.cjs'
+      - 'tools/oge-video-models-book-context.cjs'
+      - 'tools/oge-video-models-book-context.test.cjs'
+      - 'tools/oge-video-models-book-context.test.py'
+      - 'tools/oge_video_models_book_context.py'
+      - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/oge-book-exam.browser.cjs'
+      - 'tools/oge-book-exam-math.py'
+      - 'tools/oge-book-exam-corrections.test.cjs'
+      - 'tools/book-edition/test_generator.py'
+      - 'docs/tasks/OGE_VIDEO_MODELS_20261109.md'
+      - '.github/workflows/oge-video-models.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trainers/oge-video-models.css'
+      - 'trainers/oge-video-models.js'
+      - 'trainers/oge-video-graphs.js'
+      - 'trainers/oge-video-geometry.js'
+      - 'trainers/oge-task11-graphs-trainer.html'
+      - 'trainers/oge-task15-triangles.html'
+      - 'trainers/oge-task16-circle.html'
+      - 'trainers/oge-task17-quadrilaterals.html'
+      - 'trainers/task19-trainer.html'
+      - 'trainers/oge-task22-functions-graphs.html'
+      - 'trainers/oge-task23-geometry-calculations.html'
+      - 'trainers/oge-task24-proofs.html'
+      - 'trainers/oge-task25-geometry.html'
+      - 'tools/oge-video-models.test.cjs'
+      - 'tools/oge-video-graphs.test.cjs'
+      - 'tools/oge-video-geometry.test.cjs'
+      - 'tools/oge-video-models-preservation.cjs'
+      - 'tools/oge-video-models-preservation.test.cjs'
+      - 'tools/oge-video-models.browser.cjs'
+      - 'tools/oge-video-models-book-context.cjs'
+      - 'tools/oge-video-models-book-context.test.cjs'
+      - 'tools/oge-video-models-book-context.test.py'
+      - 'tools/oge_video_models_book_context.py'
+      - 'tools/fixtures/oge-video-models-native-bytes.json'
+      - 'tools/oge-book-exam.browser.cjs'
+      - 'tools/oge-book-exam-math.py'
+      - 'tools/oge-book-exam-corrections.test.cjs'
+      - 'tools/book-edition/test_generator.py'
+      - 'docs/tasks/OGE_VIDEO_MODELS_20261109.md'
+      - '.github/workflows/oge-video-models.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: oge-video-models-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  mathematics-learning-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Fetch explicit preservation baseline
+        run: git fetch --no-tags --depth=1 origin 89ee66bfe5068f16364d61d091fcbf1a1cbd6287 7a7169c35c54351ace4f7844b7730899b4a61831
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated pinned verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-video" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-video/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-video/node_modules" >> "$GITHUB_ENV"
+      - name: Independent models, attempt history and preserved native behavior
+        run: |
+          node --check trainers/oge-video-models.js
+          node --check tools/oge-video-models.browser.cjs
+          node --test --test-concurrency=1 tools/oge-video-*.test.cjs
+          node --test --test-concurrency=1 tools/oge-course-algebra.test.cjs tools/oge-course-geometry.test.cjs tools/oge-course-proof.test.cjs tools/oge-geometry-minimal.test.cjs tools/oge-part2-minimal.test.cjs
+          node tools/oge-algebra-contract.test.mjs
+          node tools/oge-geometry-contract.test.mjs
+          python3 tools/book-edition/test_generator.py
+          git diff --check
+      - name: Mobile and desktop learning, restoration and embedded isolation
+        run: node tools/oge-video-models.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: oge-video-models-browser
+          path: artifacts/oge-video-models
+          retention-days: 14
+          if-no-files-found: error

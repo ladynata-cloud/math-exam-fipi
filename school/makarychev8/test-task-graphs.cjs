@@ -9,4 +9,10 @@ assert(!C.check('1;0;3',b));assert(!C.check('1;0;-3;-3',b));assert(!C.check('1;0
 assert.deepEqual(G.parse('1;0;нет'),{k:1,b:0,holes:[]});assert.equal(G.parse('1;0;;'),null);
 assert.deepEqual(G.alternatives,[{k:-1,b:1,holes:[0]},{k:1,b:-1,holes:[]},{k:-1,b:1,holes:[1]},{k:1,b:-1,holes:[1]}]);
 assert(C.check('b¹⁰',{kind:'text',answer:'b^10'}));assert(C.check('x⁶',{kind:'text',answer:'x^6'}));assert(!C.check('b¹⁰',{kind:'text',answer:'b^1*0'}));
+const pair={kind:'graph-pair',answer:'-4;1;2;-3'};
+for(const input of ['-4;1;2;-3','-8/2;2/2;4/2;-6/2','2;-3;-4;1'])assert(C.check(input,pair),input);
+for(const input of ['-4;1;2;3','-4;1;-4;1','-4;1;2','-4;1;2;-3;0','-4;1;2.00000000000000000001;-3','-4;1;2;-3.00000000000000000001','-4;1;2;Infinity','-4;1;2;0/0','-4;1;2;<script>'])assert(!C.check(input,pair),input);
+assert.deepEqual(G.parsePair('-4;1;2;-3'),[{k:-4,b:1,holes:[]},{k:2,b:-3,holes:[]}]);
+assert.equal(G.parsePair('-4;1;2'),null);assert.equal(G.parsePair('-4;1;2;1/0'),null);
 console.log('PASS: graph coefficients, unordered holes, duplicate/omitted/extra holes, malformed input, source figure2 and powers10');
+console.log('PASS: two independently entered lines, exact rational coefficients, reversed order and rejected near-matches');

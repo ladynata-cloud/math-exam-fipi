@@ -24,3 +24,61 @@ body.learning-managed>header,body.learning-managed>footer{display:none}body.lear
 .task-first-course{max-width:920px;margin:auto}.task-first-heading h1{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.3;margin:.5rem 0 1.4rem}.task-first-course .task{font-size:clamp(1.2rem,2.5vw,1.4rem);line-height:1.75}.task-first-form label{display:block;font-size:1.08rem;font-weight:650;line-height:1.6;margin-top:1.4rem}.task-first-form .muted{font-size:1rem}.task-first-form input{padding:.8rem;max-width:100%;min-width:0;flex:1 1 160px;font:inherit;border:1px solid #96b6a3;border-radius:9px}.task-first-help{margin:1.4rem 0;border:1px solid #b5d5bf;border-radius:12px;background:#f5fbf6}.task-first-help>summary{color:#145b40;font-weight:700;padding:16px;min-height:52px}.task-first-help-body{padding:0 18px 18px}.task-first-help-body>details{padding:14px 0;border-top:1px solid #d3e4d8}.task-first-help-body summary{font-size:1.05rem;min-height:40px;cursor:pointer}.task-first-help-body #model{margin-top:16px}.task-first-help-body .steps{padding-left:1.4rem}.task-first-help-body .steps li{margin:1rem 0}.task-first-help-body .steps p{line-height:1.7}.task-first-note,.task-first-options{margin:20px 0}.task-first-note summary,.task-first-options>summary{padding:12px 0;cursor:pointer}.task-first-note label{display:block;margin:1rem 0}.task-first-note textarea{display:block;width:100%;font:inherit;padding:12px;border:1px solid #96b6a3;border-radius:9px}.task-first-course .task-support .task-support{margin:0}.task-first-course .task-support:empty{display:none}.task-first-course .feedback:empty{display:none}.task-first-course .task-figure{font-size:19px}.task-first-course .task-table{font-size:1rem}.task-first-options select{width:100%}.task-first-course #stepAnswer{max-width:100%}.task-first-help-body #returnToAnswer{margin-top:16px}.task-first-course .task-first-next{margin-top:18px}.task-first-course .task-first-idea{font-size:1.08rem;line-height:1.7}@media(max-width:480px){.task-first-problem{padding:16px}.task-first-help-body{padding:0 12px 12px}.task-first-course .actions>button{white-space:normal}.task-first-form .actions{display:flex;flex-wrap:wrap}.task-first-course .task-table{font-size:1rem}.task-first-course .task-figure{font-size:20px}}
 
 .path-extra-nav{position:relative;margin:0}.path-extra-nav>summary{list-style:none;cursor:pointer;padding:9px 14px;border:1px solid var(--line);border-radius:9px;font-size:1rem}.path-extra-nav>div{position:absolute;right:0;top:100%;z-index:5;display:grid;gap:8px;padding:12px;background:white;border:1px solid var(--line);border-radius:12px;width:min(300px,85vw);box-shadow:0 10px 24px #173b2120}.path-extra-nav .btn{white-space:normal;text-align:left}@media(max-width:480px){header nav{gap:7px}.path-extra-nav>summary{padding:9px}}
+
+/* Cabinet frames keep the condition below one accessible strip of stages. */
+@media(max-width:750px){
+ body.learning-managed #main>.eyebrow{display:none}
+  body.learning-managed .stage-nav{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;min-width:0;max-width:100%;margin:10px 0;padding:6px 2px 8px;overscroll-behavior-x:contain}
+  body.learning-managed .stage-nav button{flex:0 0 auto;white-space:nowrap;min-height:44px}
+}
+
+/* The public EGE lesson keeps its first action close to the givens.
+   Models inside help and the separate Grade 7/managed lesson layouts are unchanged. */
+main:has(>.task-first-course){margin-top:18px}
+.task-first-heading h1{margin:.35rem 0 .85rem}
+.task-first-problem>.task{margin:0 0 .8rem;line-height:1.5}
+.task-first-problem>.task-support{margin:.5rem 0}
+.task-first-problem>#answerForm{display:flex;flex-direction:column;min-width:0}
+.task-first-problem>#answerForm>label{order:0;margin-top:.5rem}
+.task-first-problem>#answerForm>.actions{order:1;margin:.65rem 0}
+.task-first-problem>#answerForm>.muted{order:2;margin:.2rem 0 .65rem;line-height:1.45}
+.task-first-problem>.task-support .task-figure{max-height:320px;margin:.5rem auto}
+.task-first-problem>.task-support .stereo-figure{max-height:290px!important}
+@media(min-width:800px){
+ .task-first-problem:has(>.task-support .stereo-figures figure:only-child){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:24px;align-items:start}
+ .task-first-problem:has(>.task-support .stereo-figures figure:only-child)>*{grid-column:1/-1}
+ .task-first-problem:has(>.task-support .stereo-figures figure:only-child)>.task-support{grid-column:1;grid-row:2/span 2}
+ .task-first-problem:has(>.task-support .stereo-figures figure:only-child)>#answerForm{grid-column:2;grid-row:2}
+ .task-first-problem:has(>.task-support .stereo-figures figure:only-child)>#feedback{grid-column:2;grid-row:3}
+}
+@media(max-width:480px){
+ body:has(.task-first-course)>header{padding:10px 14px;gap:8px}
+ body:has(.task-first-course)>header strong{font-size:18px}
+ main:has(>.task-first-course){margin-top:12px;padding-inline:10px}
+ .task-first-heading h1{font-size:1.3rem;line-height:1.3}
+ .task-first-problem{padding:12px}
+ .task-first-problem>.task{font-size:1.05rem;line-height:1.5}
+ .task-first-problem>.task-support .stereo-figures:has(figure:only-child) .stereo-figure{max-height:185px!important;font-size:30px!important}
+ .task-first-problem>.task-support .stereo-figures figcaption{font-size:.9rem;line-height:1.4}
+ .task-first-problem>.task-support .muted{font-size:.8rem;line-height:1.4;margin:.35rem 0}
+ .task-first-problem>#answerForm>label{font-size:1rem;line-height:1.4}
+ .task-first-problem>#answerForm>.muted{font-size:.85rem}
+ .task-first-problem>#answerForm .actions{gap:8px}
+ .task-first-problem>#answerForm input{padding:.65rem}
+}
+
+/* Standalone learning line; managed and shared-board tasks do not supply it. */
+.journey-lesson-nav{display:flex;align-items:baseline;justify-content:space-between;gap:8px 18px;flex-wrap:wrap;margin-bottom:8px}.journey-lesson-nav a{font-size:14px;line-height:1.4}.task-first-next [data-journey-next]{flex-basis:100%;justify-content:flex-start}.task-first-next [hidden]{display:none!important}
+
+/* The existing header supplies the course and home returns without another bar. */
+header .path-home{display:inline-flex;align-items:center;min-height:44px;color:inherit;text-decoration:none}
+header .path-home:focus-visible{outline:3px solid #ad591d;outline-offset:3px}
+header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
+
+/* Guidance is offered after repeated difficulty without replacing the learner's work. */
+.task-first-course #repairStep[hidden]{display:none!important}
+.task-first-course #repairStep{margin:.3rem 0;min-height:44px;text-align:left;white-space:normal}
+.task-first-course .task-first-variant:empty{display:none}
+.task-first-course .task-first-variant{padding:.65rem .8rem;border-left:3px solid #388567;background:#f4faf5;line-height:1.5}
+.task-first-start{padding:.7rem 0;line-height:1.6}
+.task-first-next #new.primary{order:-1;flex-basis:100%;text-align:left;white-space:normal}

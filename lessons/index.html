@@ -18,13 +18,16 @@
   <meta name="twitter:description" content="Тренажёры по математике для 5–11 классов, ОГЭ и ЕГЭ. Онлайн-занятия с Натальей Алябьевой для 7–11 классов: индивидуально и в мини-группах. Цены и отзывы.">
   <link rel="stylesheet" href="/assets/lesson-showcase.css?v=20261105-profile">
   <script defer src="/assets/lesson-funnel.js?v=20261026"></script>
+<link rel="stylesheet" href="/assets/trainer-previews.css?v=20261105">
+<script defer src="/assets/trainer-previews.js?v=20261105"></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">К содержанию</a>
   <header class="showcase-header">
     <div class="wrap header-inner">
-      <a class="brand" href="#top" aria-label="MathExam — к началу страницы"><span class="brand-mark" aria-hidden="true">∑</span>MathExam<span class="brand-caption">с Натальей Михайловной</span></a>
-      <nav class="showcase-nav" aria-label="На этой странице">
+      <a class="brand" href="/" target="_self" aria-label="MathExam — на главную"><span class="brand-mark" aria-hidden="true">∑</span>MathExam<span class="brand-caption">с Натальей Михайловной</span></a>
+      <nav class="showcase-nav" aria-label="Навигация">
+        <a href="/" target="_self">На главную</a>
         <a href="#directions">Для кого</a>
         <a href="#examples">Попробовать</a>
         <a href="#formats">Цены</a>
@@ -121,22 +124,39 @@
     <section class="examples-section" id="examples" aria-labelledby="examples-title">
       <div class="wrap">
         <div class="section-heading"><div><p class="eyebrow">Можно попробовать прямо сейчас</p><h2 id="examples-title">Меньше слов.<br>Больше понятных шагов.</h2></div><p>Выберите один короткий пример. Посмотрите, как устроены подсказки, проверка ответа и наглядные объяснения.</p></div>
+        <p class="me-preview-intro">GIF показывает короткий пример по теме. В тренажёре могут быть другие числа.</p>
         <p class="examples-note" id="examples-note"><span aria-hidden="true">↗</span> Примеры откроются в новой вкладке. Эта страница с записью останется рядом — вернитесь к ней после задания.</p>
         <div class="examples-grid">
           <article class="demo-card" id="demo-division">
-            <div class="demo-picture division-picture" aria-hidden="true"><span class="picture-label">Вычисления по шагам</span><div class="division-preview"><span>48</span><span class="division-divisor">2</span><span class="division-quotient">24</span></div><span class="picture-note">Один вопрос — одно действие</span></div>
+            <div class="me-preview" id="preview-15-division" data-me-preview="15-division" data-duration="11000">
+  <img id="me-gif-15-division" src="/assets/trainer-previews/15-division.png" data-gif="/assets/trainer-previews/15-division.gif" width="640" height="500" loading="lazy" decoding="async" alt="Деление 48 на 2: четыре десятка делим на два, затем восемь единиц делим на два. Частное 24.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-15-division" aria-label="Смотреть или остановить пример: Делим по разрядам">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div>
             <div class="demo-body"><p class="small-label">5–6 классы · основы</p><h3>Деление столбиком (уголком)</h3><p>Вводите ответ на каждом шаге. Если трудно, откройте подсказку и попробуйте ещё раз.</p><p class="demo-detail">Первое знакомство: 48 : 2. Пройденные действия остаются перед глазами.</p><a class="button button-light demo-link" href="/trainers/long-division-stepwise.html#start" target="_blank" rel="noopener noreferrer" aria-describedby="examples-note">Решить по шагам <span aria-hidden="true">↗</span></a></div>
           </article>
           <article class="demo-card" id="demo-graphs">
-            <div class="demo-picture graphs-picture" aria-hidden="true"><span class="picture-label">Формула становится рисунком</span><svg viewBox="0 0 280 125" fill="none"><path d="M24 82H260M140 10V117" stroke="#b6b5cc" stroke-width="1.5"/><path d="M55 13Q140 153 225 13" stroke="#6553a2" stroke-width="3.5" stroke-linecap="round"/><path d="M58 108L220 28" stroke="#cb6844" stroke-width="3" stroke-linecap="round"/><circle cx="140" cy="82" r="3" fill="#6553a2"/></svg><span class="picture-note">Как связаны график и формула?</span></div>
+            <div class="me-preview" id="preview-16-line" data-me-preview="16-line" data-duration="11000">
+  <img id="me-gif-16-line" src="/assets/trainer-previews/16-line.png" data-gif="/assets/trainer-previews/16-line.gif" width="640" height="500" loading="lazy" decoding="async" alt="Построение прямой y = 2x + 1 по точкам (0; 1) и (1; 3).">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-16-line" aria-label="Смотреть или остановить пример: Формула и её график">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div>
             <div class="demo-body"><p class="small-label">7–9 классы · ОГЭ</p><h3>Узнать функцию по графику</h3><p>Сопоставьте графики с формулами. Наглядная помощь покажет, на что обратить внимание.</p><p class="demo-detail">Можно ошибиться, разобраться и исправить ответ. В конце — проверка результата.</p><a class="button button-light demo-link" href="/trainers/oge-task11-graphs-trainer.html" target="_blank" rel="noopener noreferrer" aria-describedby="examples-note">Попробовать графики <span aria-hidden="true">↗</span></a></div>
           </article>
           <article class="demo-card" id="demo-ege">
-            <div class="demo-picture triangle-picture" aria-hidden="true"><span class="picture-label">Чертёж помогает рассуждать</span><svg viewBox="0 0 280 125" fill="none"><path d="M65 100V20L215 100Z" stroke="#17664f" stroke-width="3" stroke-linejoin="round"/><path d="M65 86H79V100" stroke="#17664f" stroke-width="1.5"/><text x="42" y="65">9</text><text x="130" y="121">12</text><text x="150" y="48">?</text></svg><span class="picture-note">Теорема Пифагора в действии</span></div>
+            <div class="me-preview" id="preview-17-triangle" data-me-preview="17-triangle" data-duration="11000">
+  <img id="me-gif-17-triangle" src="/assets/trainer-previews/17-triangle.png" data-gif="/assets/trainer-previews/17-triangle.gif" width="640" height="500" loading="lazy" decoding="async" alt="Прямоугольный треугольник с катетами 9 и 12. Квадрат гипотенузы 225, длина гипотенузы 15.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-17-triangle" aria-label="Смотреть или остановить пример: От квадратов к длине">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div>
             <div class="demo-body"><p class="small-label">10–11 классы · подготовка к ЕГЭ</p><h3>Найти сторону треугольника</h3><p>Сначала найдите квадрат гипотенузы, затем её длину. Тренажёр проверит каждое действие.</p><p class="demo-detail">Начальный пример с катетами 9 и 12. Короткая задача, чтобы познакомиться с подходом.</p><a class="button button-light demo-link" href="/ege-profil/start/index.html#practice/geo-right/guided" target="_blank" rel="noopener noreferrer" aria-describedby="examples-note">Решить задачу <span aria-hidden="true">↗</span></a></div>
           </article>
           <article class="demo-card" id="demo-cone">
-            <div class="demo-picture cone-picture" aria-hidden="true"><span class="picture-label">Геометрию можно рассмотреть</span><svg viewBox="0 0 280 125" fill="none"><path d="M80 100L140 12L200 100" stroke="#aa5f38" stroke-width="2.5" stroke-linejoin="round"/><path d="M80 100C80 78 200 78 200 100" stroke="#aa5f38" stroke-width="1.8" stroke-dasharray="5 5"/><path d="M80 100C80 122 200 122 200 100" stroke="#aa5f38" stroke-width="2.5"/><path d="M140 12V100H200" stroke="#17664f" stroke-width="1.6" stroke-dasharray="4 4"/><text x="118" y="66">h</text><text x="168" y="96">r</text></svg><span class="picture-note">От объёмной фигуры к решению</span></div>
+            <div class="me-preview" id="preview-18-cone" data-me-preview="18-cone" data-duration="11000">
+  <img id="me-gif-18-cone" src="/assets/trainer-previews/18-cone.png" data-gif="/assets/trainer-previews/18-cone.gif" width="640" height="500" loading="lazy" decoding="async" alt="В прямом круговом конусе радиус 8, высота 15. Радиус, высота и образующая образуют прямоугольный треугольник; образующая 17.">
+  <div class="me-preview-controls"><button class="me-preview-play" type="button" hidden aria-pressed="false" aria-controls="me-gif-18-cone" aria-label="Смотреть или остановить пример: Треугольник внутри конуса">▶ Смотреть пример</button><span class="me-preview-time">11 секунд · GIF</span></div>
+  <noscript><p class="me-preview-noscript">На рисунке — итог разбора. Попробуйте решить в тренажёре.</p></noscript>
+</div>
             <div class="demo-body"><p class="small-label">10–11 классы · стереометрия</p><h3>Разобрать конус на 3D-модели</h3><p>Поверните модель и проследите решение: как высота и радиус помогают найти образующую.</p><p class="demo-detail">Задача №346 по Атанасяну. Пошаговый разбор с записью рассуждений, без автоматической оценки доказательства.</p><a class="button button-light demo-link" href="/stereo-course/textbook/#ex-main-0346" target="_blank" rel="noopener noreferrer" aria-describedby="examples-note">Открыть 3D-разбор <span aria-hidden="true">↗</span></a></div>
           </article>
         </div>
@@ -191,7 +211,7 @@
       </div>
     </section>
   </main>
-  <footer class="showcase-footer wrap"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">∑</span>MathExam</a><p>Математика, которую можно понять.<br>Занятия с Натальей Михайловной.</p><a class="text-link" href="#examples">Вернуться к примерам <span aria-hidden="true">↑</span></a></footer>
+  <footer class="showcase-footer wrap"><a class="brand" href="/" target="_self"><span class="brand-mark" aria-hidden="true">∑</span>MathExam</a><p>Математика, которую можно понять.<br>Занятия с Натальей Михайловной.</p><a class="text-link" href="#examples">Вернуться к примерам <span aria-hidden="true">↑</span></a></footer>
 
 <!-- MathExam public navigator -->
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>

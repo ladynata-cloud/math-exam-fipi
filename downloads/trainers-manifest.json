@@ -1,6 +1,6 @@
 {
   "stage": "1",
-  "updated": "2026-11-05",
+  "updated": "2026-11-11",
   "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
   "trainers": [
     {
@@ -106,7 +106,12 @@
       "public": true,
       "downloadHtml": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise.html",
       "prompt": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-deepseek-prompt.md",
-      "package": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-package.zip"
+      "package": "/downloads/trainers/simple-equations-stepwise/simple-equations-stepwise-package.zip",
+      "inlineAssets": [
+        "/ege-baza/return-to-course.js",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js"
+      ]
     },
     {
       "slug": "linear-systems-trainer",
@@ -143,6 +148,8 @@
         "/trainers/oge-basics/multiplication-division/multiplication-refresh.css",
         "/trainers/oge-basics/basics-help.css",
         "/trainers/oge-basics/navigation-minimal.css",
+        "/trainers/oge-basics/skill-support.css",
+        "/assets/oge-wayfinding.css",
         "/trainers/oge-basics/multiplication-division/division-lab-core.js",
         "/trainers/oge-basics/multiplication-division/division-guided-core.js",
         "/trainers/oge-basics/arithmetic-route.js",
@@ -151,6 +158,8 @@
         "/trainers/oge-basics/multiplication-division/multiplication-refresh.js",
         "/trainers/oge-basics/basics-help.js",
         "/trainers/oge-basics/multiplication-division/division-guided.js",
+        "/trainers/oge-basics/skill-support.js",
+        "/assets/oge-wayfinding.js",
         "/trainers/oge-basics/navigation-minimal.js"
       ],
       "interfaceRequirements": [
@@ -243,6 +252,14 @@
         "/trainers/task19-reference/trig-values.png",
         "/trainers/task19-textbook/atanasyan-parallel-third.png",
         "/trainers/task19-textbook/merzlyak-parallel-third.png"
+      ],
+      "offlineOmitAssets": [
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js"
       ]
     },
     {
