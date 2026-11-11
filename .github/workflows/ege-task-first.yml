@@ -1,7 +1,7 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml']
 permissions:
   contents: read
 jobs:
@@ -54,6 +54,8 @@ jobs:
         env:
           EGE_ENTRY_SHOTS: artifacts/course-entries
         run: node tools/ege-course-entry.browser.cjs
+      - name: Profile skill maps and base ocean expedition
+        run: node tools/ege-skill-map-ocean.browser.cjs
       - name: Keep actual browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

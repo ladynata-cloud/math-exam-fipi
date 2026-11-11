@@ -15,9 +15,18 @@ const shared = fs.readFileSync(path.join(root, 'stereo-course/assets/task-scene-
 const hash = text => crypto.createHash('sha256').update(text).digest('hex');
 const geometry = html.match(/<script>\n(\/\* ================= ГЕОМЕТРИЯ.*?<\/script>)/s)[1];
 assert.equal(hash(geometry), '736c2060342fc55ff9039d4168cf560bd16afeeb68e4ba1b01c2cd5d6e7b4720', 'tasks, formulae and original geometry remain unchanged');
-// Keep the historical receipt. Only the complete hash-bound rollout payload
-// can recover its exact pre-navigator bytes; any other edit remains visible.
-const original = restorePublicNavigator('ege-profil/trainers/stereo-t14.html', html).toString('utf8');
+// Keep the historical receipt. Restore the hash-bound navigator payload and
+// require the exact skill-map includes, so any other page change stays visible.
+const skillMapIncludes = [
+  '<link rel="stylesheet" href="../skill-map.css?v=20261111-skills">',
+  '<script defer src="../skill-map-data.js?v=20261111-skills"></script>',
+  '<script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="stereo-proof"></script>',
+  '',
+].join('\n');
+const restored = restorePublicNavigator('ege-profil/trainers/stereo-t14.html', html).toString('utf8');
+const originalParts = restored.split(skillMapIncludes);
+assert.equal(originalParts.length, 2, 'only one exact profile skill-map integration is allowed');
+const original = originalParts.join('');
 const outsideScene = original.slice(0, original.indexOf('/* ================= ИНТЕРФЕЙС')) + original.slice(original.indexOf('  /* ---------- хранение ---------- */'));
 assert.equal(hash(outsideScene), '926d0da0482466d42385b07e9cc93d2f39bd5b71c8fae66b10dcd445a1f2056a', 'all other UI, lesson data and storage remain unchanged');
 const core = (source, begin, end) => source.split(begin + '\n')[1].split(end)[0];

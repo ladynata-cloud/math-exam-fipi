@@ -26,7 +26,22 @@ function markHelp(s,mode,kind='support'){if(applyingBoardState)return;if(mode!==
 function warn(){const box=document.getElementById('storage-warning'),message=[state.warning,diagnosticWarning,boardConnectionWarning].filter(Boolean).join(' ');box.hidden=!message;if(message)box.textContent=message;}
 function board(hash){if(boardSession||window.self!==window.top)return '';return '<a class="button quiet board-link" href="/trainers/trainer-board.html?trainer='+encodeURIComponent('/ege-profil/start/index.html'+(globalThis.ProfileRouteNav?.query()||'')+hash)+'">Открыть на доске</a>';}
 function formatDisplay(container=main){globalThis.ProfileSolutions?.formatFractions(container);}
-function shell(html){cleanup();cleanup=()=>{};boardViews=new Map();boardFeedback='none';boardHelp=null;boardRenderFeedback=()=>{};boardRenderHint=()=>{};boardRenderHelp=()=>{};if(returnToTask&&location.hash===returnToTask)setReturn(null);main.innerHTML=(returnToTask?'<p class="return-to-task"><a href="'+esc(returnToTask)+'">← Вернуться на сохранённый шаг исходной задачи</a></p>':'')+html;formatDisplay();boardSession?.scopeLinks(main);globalThis.ProfileRouteNav?.render();warn();const h=main.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}window.scrollTo(0,0);}
+function mountSkills(){
+ if(boardSession||!globalThis.ProfileSkillMap)return;
+ const [page,id]=location.hash.slice(1).split('/');
+ if(page==='exam'||page==='calm'){
+  if(/^\d+$/.test(id||''))ProfileSkillMap.mount(main.querySelector('.lesson-head,.exam-head,.inequalities-entry'),[id]);
+  return;
+ }
+ if(!['lesson','practice','example','repair'].includes(page))return;
+ const lesson=byId.get(id);if(!lesson)return;
+ const directlyMapped=String(lesson.position||'').match(/\d+/)?.[0];
+ const relevant=globalThis.ProfileCalmData?.exams.filter(exam=>exam.lessonIds.includes(id)||exam.prerequisites.includes(id)).map(exam=>exam.number)||[];
+ const keys=directlyMapped?[directlyMapped]:relevant;
+ const target=main.querySelector('.focused-practice .task-panel,.lesson-head,.repair-panel,.complete,.result-panel')||main;
+ ProfileSkillMap.mount(target,keys,{lesson:{title:lesson.title,skill:lesson.summary}});
+}
+function shell(html){cleanup();cleanup=()=>{};boardViews=new Map();boardFeedback='none';boardHelp=null;boardRenderFeedback=()=>{};boardRenderHint=()=>{};boardRenderHelp=()=>{};if(returnToTask&&location.hash===returnToTask)setReturn(null);main.innerHTML=(returnToTask?'<p class="return-to-task"><a href="'+esc(returnToTask)+'">← Вернуться на сохранённый шаг исходной задачи</a></p>':'')+html;formatDisplay();boardSession?.scopeLinks(main);globalThis.ProfileRouteNav?.render();mountSkills();warn();const h=main.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}window.scrollTo(0,0);}
 function status(l){const r=state.record(l.id);if(r.independent.length>=2)return 'Две новые задачи самостоятельно';if(state.canAdvance(l.id))return 'Закреплено на знакомых задачах';const repeat=state.data.sessions[l.id+':independent'];if(repeat?.done&&repeat.familiar&&!repeat.wrong&&!repeat.assisted)return 'Повтор решён без подсказок';return r.independent.length?'Одна новая задача самостоятельно':r.guided.length?'Есть пошаговая практика':'Можно начать по шагам';}
 function allCompleted(){return lessons.filter(l=>state.record(l.id).independent.length>=2).length;}
 function home(){
