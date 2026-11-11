@@ -10,6 +10,12 @@ module.exports = async function storageFailure({page, origin, server, lesson, to
   const actionURL = server + '/api/group-lessons/' + lesson + '/actions';
   const key = 'mathexam.group.outbox.v2.' + encodeURIComponent(JSON.stringify([server, lesson, teacher ? 'teacher' : seatId]));
   const queue = () => page.evaluate(key => JSON.parse(sessionStorage.getItem(key) || '{}'), key);
+  const recoveryCopy = async () => {
+    const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#recoverWorkButton').click()]);
+    const stream = await download.createReadStream(); let text = ''; for await (const chunk of stream) text += chunk.toString();
+    assert.equal(text.includes(token), false, 'recovery export has no credentials');
+    return JSON.parse(text);
+  };
   const openBoard = async () => {
     if (teacher) await page.locator('#roster button').first().click();
     const button = page.locator('#materialTabs [data-surface="board"]');
@@ -56,15 +62,13 @@ module.exports = async function storageFailure({page, origin, server, lesson, to
       const p = c.getContext('2d').getImageData(0,0,c.width,c.height).data;
       return p.some((v, i) => i % 4 === 3 && v > 0);
     }), true, 'unbacked stroke remains visible');
-    const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#recoverWorkButton').click()]);
-    const stream = await download.createReadStream(); let text = ''; for await (const chunk of stream) text += chunk.toString();
-    const recovery = JSON.parse(text);
+    const recovery = await recoveryCopy();
     assert.equal(recovery.unsent[0].opId, body.opId, 'both roles can download exact in-memory action');
-    assert.equal(text.includes(token), false, 'recovery export has no credentials');
     release();
     if (offline) await poll(() => failedReads > 0, 'server polls also unavailable');
     else if (teacher) await poll(async () => (await readWork()).strokes.length === 1, 'unbacked stroke reaches durable server');
-    else await poll(async () => /Для этого действия нет доступа/.test(await page.locator('#errorNotice').textContent()), 'permanent refusal handled');
+    else await poll(async () => (await recoveryCopy()).rejected.some(entry =>
+      entry.action.opId === body.opId && entry.error === 'GROUP_FORBIDDEN'), 'permanent refusal retained in downloadable memory queue');
     assert.match(await page.locator('#connectionStatus').textContent(), /Нет резервной копии/, 'ACK or refusal does not hide storage failure');
     await page.evaluate(() => window.restoreQueueStorage());
     await poll(async () => !/Нет резервной копии/.test(await page.locator('#connectionStatus').textContent()), 'local checkpoint recovers independently of network');

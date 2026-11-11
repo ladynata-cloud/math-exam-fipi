@@ -79,3 +79,8 @@ Read-only main composition, before this storage increment:
 - This proves clean source composition of that pair, not full CI of a main-based candidate or deployment. The stacked PR target remains #529; no shared integration ref was moved. Recompute after any head/base change before actual integration.
 
 Release prerequisites remain: upgraded journal reader before frontend, consistent /data backup and verified restoration, exact-candidate gates and public capabilities. Neither production data nor reader rollback was touched. #532 remains separate. Real pupil lesson and physical tablet/stylus testing were not performed. Next: read current CI and correct failures, then complete composition validation/release prerequisites or continue the next bounded reliability check.
+
+
+CI follow-up: [42943765929](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/42943765929), head `6610ebb3df5055208977f2fb4e43017b44bf4cda`, passed full server, 107 model tests, eight-learner browser and teacher storage-failure scenario. Unified browser then failed waiting for the pupil's transient refusal notice: the next periodic backup retry legitimately replaces it with the persistent storage warning. The test now checks the stable downloadable rejected action and its original opId/error while storage is still unavailable, then retains all storage-recovery/reload assertions. No runtime or gate removal. New exact-head CI is required.
+
+The storage increment also composes cleanly with the same main: virtual tree `33530ee422ce26d1a1e1a0e43b69f297b0cf812a`, 49 task files, zero overlap with 397 main files, exact task delta/blobs and every main-only blob preserved. This is still read-only composition evidence, not a deployed/main-tested candidate.
