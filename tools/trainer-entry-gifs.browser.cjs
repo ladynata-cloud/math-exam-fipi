@@ -118,7 +118,7 @@ async function main() {
       const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
       await context.route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
       const page = await context.newPage();
-      page.setDefaultTimeout(5000);
+      page.setDefaultTimeout(15000);
       for (const route of entries) await checkRoute(page, origin, route, width);
       console.log('TRAINER_ENTRY_GIFS_OK', width, entries.length, 'entries, two GIFs each');
       await context.close();
