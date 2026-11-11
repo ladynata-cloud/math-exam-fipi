@@ -7,4 +7,9 @@ for(const [file,expected]of Object.entries(originals)){
  for(const target of [file,manifest.files[file].beforeFixture]){assert.throws(()=>historicalRead(file,p=>p===target?Buffer.concat([read(p),Buffer.from('CORRUPTED')]):read(p)));negatives++;}
 }
 const untouched='stereo-course/textbook/data/course.json';assert.deepEqual(historicalRead(untouched),read(untouched));
+for(const name of ['engine.js','style.css']){
+ const archived='tools/stereo-textbook/fixtures/early-study-before/'+name;
+ assert.throws(()=>historicalRead('stereo-course/textbook/assets/'+name,p=>p===archived?Buffer.concat([read(p),Buffer.from('CORRUPTED')]):read(p)),/exact pre-update reading layout/);
+ negatives++;
+}
 console.log('ATANASYAN_LAYOUT_MIGRATION_OK: 3 exact old/new UI files, '+negatives+' negative controls, untouched lesson bytes');

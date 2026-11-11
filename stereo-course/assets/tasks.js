@@ -54,5 +54,31 @@ case'ceva':{const n=Math.abs(seed),variant=n%4,j=Math.floor(n/4),p=2+j%4,q=2+Mat
 case'conics-plane':return task('У эллипса сумма расстояний от точки до фокусов равна '+(2*x)+'. Одно расстояние равно '+(x-.5)+'. Найди второе.',x+.5,[step('Какова постоянная сумма расстояний?',2*x,'Это определение эллипса.'),step('Вычти известное расстояние.',x+.5,'Не разность, а сумма расстояний остаётся постоянной.')]);
 default:throw Error('Unknown task '+kind);
 }}
-const api={make};root.StereoTasks=api;if(typeof module!=='undefined')module.exports=api;
+function makeReview(kind, seed) {
+ const x=2+Math.abs(seed)%6;
+ if(kind==='section'){
+  return task(
+   'Куб со стороной '+x+' пересечён плоскостью через середины трёх рёбер, выходящих из одной вершины. Найди площадь треугольного сечения.',
+   x*x*Math.sqrt(3)/8,
+   [
+    step('Найди квадрат стороны треугольного сечения.',x*x/2,'Два катета имеют длину, равную половине ребра куба.'),
+    step('Найди площадь равностороннего треугольника.',x*x*Math.sqrt(3)/8,'Площадь равна квадрату стороны, умноженному на √3/4.')
+   ]
+  );
+ }
+ if(kind==='dihedral'){
+  const side=(3+Math.abs(seed)%2)*x;
+  return task(
+   'В правильной четырёхугольной пирамиде высота '+x+', сторона основания '+side+'. Найди тангенс угла боковой грани с основанием.',
+   2*x/side,
+   [
+    step('Чему равно расстояние от центра основания до середины его стороны?',side/2,'Это половина стороны квадрата.'),
+    step('Раздели высоту пирамиды на найденное расстояние.',2*x/side,'Эти отрезки — противолежащий и прилежащий катеты линейного угла.')
+   ]
+  );
+ }
+ if(['euler','projection','box-diagonal','solid-angle'].includes(kind))return make(kind,seed);
+ return null;
+}
+const api={make,makeReview};root.StereoTasks=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

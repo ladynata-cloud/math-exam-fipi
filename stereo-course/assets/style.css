@@ -39,8 +39,36 @@ h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-
 .proof-problem .proof-list small{font-size:1rem;line-height:1.65}
 #task-model{min-width:0;max-width:100%}
 #answer-format>summary{font-size:.95rem;color:var(--teal)}
+.chapter-progress{color:var(--muted);font-size:.9rem;margin:-6px 0 14px}
+#review-status:not(:empty){margin-top:.8rem}
+#review-status p{font-size:.9rem;margin:.35rem 0}
+#toplinks-toggle{display:none}
+.workspace--foundation .back-row{margin-bottom:10px}
+.workspace--foundation .task-main{padding:16px}
+.workspace--foundation #task-title{margin:0 0 .4rem}
+.workspace--foundation .task-question{margin:0 0 .55rem}
+.workspace--foundation .task-scene{margin:.5rem 0 .8rem}
+.workspace--foundation #task-model .atanasyan-model:not(.am-expanded){max-width:500px;margin-inline:auto}
 @media(max-width:860px){.task-layout{display:flex;flex-direction:column}.help-column{position:static}.task-layout>.task-main,.task-layout>.help-column{width:100%}}
 @media(max-width:480px){.back-row{flex-wrap:wrap;gap:10px}.workspace h1{font-size:1.8rem}.task-main .task-question{font-size:1.1rem}.help-column>#task-help>*:not(summary){margin-left:14px;margin-right:14px}.help-column>#task-help>summary{padding:16px 14px}.toplinks a,.toplinks button{font-size:.9rem}.task-main .answer-row input{min-width:0;width:100%;flex-basis:100%}.more-sections{flex:1}}
+@media(max-width:480px){
+ .topbar{padding:8px 12px;gap:8px}
+ .topbar .brand{font-size:1rem}
+ #toplinks-toggle{display:inline-flex;align-items:center}
+ .toplinks{display:none;width:100%;gap:8px}
+ .toplinks.is-open{display:flex}
+ .container{padding-top:12px}
+ .workspace--foundation .back-row{margin-bottom:8px}
+ .workspace--foundation>.eyebrow{display:none}
+ .workspace--foundation h1{font-size:1.55rem;margin:.2rem 0 .65rem}
+ .workspace--foundation .task-main{padding:12px}
+ .workspace--foundation #task-title{font-size:1.05rem;margin:0 0 .35rem}
+ .workspace--foundation .task-question{font-size:1rem;line-height:1.45;margin:0 0 .55rem}
+ .workspace--foundation .task-scene{margin:.4rem 0 .7rem}
+ .workspace--foundation .task-scene-givens{font-size:.87rem;gap:.3rem;line-height:1.35;margin:0 0 .5rem}
+ .workspace--foundation .task-scene-givens>span{padding:.22rem .42rem}
+ .workspace--foundation .lesson-actions{margin:12px 0}
+}
 .stereo-fraction{display:inline-grid;grid-template-columns:minmax(0,1fr);vertical-align:middle;min-width:0;max-width:100%;text-align:center;line-height:1.35;margin-inline:.12em}
 .stereo-numerator,.stereo-denominator{padding:.18em .25em;overflow-wrap:anywhere}
 .stereo-math-atom,.stereo-mixed-number{display:inline;white-space:nowrap;overflow-wrap:normal;word-break:normal;hyphens:none}
