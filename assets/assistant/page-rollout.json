@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "4b678aebf220b9c748434ea5fee12e21bc9bc7ae",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2193,8 +2193,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "20fbf7769c91590253f9875f41fe4192ed7e317d548f115c83929328c91b3a7a",
-      "afterSha256": "18eb72f3db935d2a242eddd31b723c8ec7ce77eeef5ddb006595918bcacc02fe",
+      "beforeSha256": "a1bef17a3de6cc3ca96395f0cc749ef4bc2c0d7f75a4fe8b95638e29b9781d0f",
+      "afterSha256": "ce8657bf863ad81701a0b479fa2c253b4cb62e936e070304b4687d5e89ac656d",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -4796,6 +4796,15 @@
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "4b678aebf220b9c748434ea5fee12e21bc9bc7ae",
+      "task": "docs/tasks/ATANASYAN_EARLY_LEARNING_20261112.md",
+      "changedPaths": [
+        "stereo-course/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
