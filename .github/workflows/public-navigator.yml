@@ -4,6 +4,7 @@ on:
     paths:
       - 'assets/assistant/**'
       - 'tools/public-navigator*'
+      - 'tools/public-home*'
       - 'tools/public_navigator*'
       - 'tools/rounding-focus.test.cjs'
       - '.github/workflows/public-navigator.yml'
@@ -30,6 +31,8 @@ jobs:
         run: |
           node --check assets/assistant/navigator-data.js
           node --check assets/assistant/navigator-widget.js
+          node --check assets/assistant/home-link.js
+          node tools/public-home-coverage.cjs
           node --test tools/public-navigator-preservation.test.cjs
           PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
           node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
@@ -41,6 +44,12 @@ jobs:
           NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/rounding-focus.test.cjs
           NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/public-navigator-oge.test.cjs
           NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" NAV_LOCAL_SERVER=1 NAV_SHARD_COUNT=4 NAV_SHARD_INDEX=${{ matrix.shard }} node tools/public-navigator.browser.cjs
+      - name: Home return on active courses and standalone trainers
+        if: matrix.shard == 0
+        run: |
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/public-home.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home" node tools/public-home.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home-regressions" node tools/public-home-regressions.browser.cjs
       - name: Browser evidence
         if: always()
         uses: actions/upload-artifact@v4

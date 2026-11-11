@@ -5,6 +5,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const videoContext=require('./oge-video-models-book-context.cjs');
 const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
@@ -87,9 +88,10 @@ async function captureInitialVisibleText(page,report){
  const raw=fs.readFileSync(file,'utf8');
  const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
  const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
+ const historical=report.finalPath===FRACTIONS_ROUTE?restoreFractionMultiplicationStep(original):original;
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
- report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(original).digest('hex')};
+ report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(historical).digest('hex')};
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
  const relative=path.relative(ROOT,file);
  if(videoContext.pins.pages[relative]){

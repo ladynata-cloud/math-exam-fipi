@@ -15,4 +15,6 @@
 fetch('/stereo-course/merzlyak-10-base/data/course.json',{cache:'no-cache'}).then(response=>{if(!response.ok)throw Error('Course unavailable');return response.json();}).then(bundle=>{
  window.merzlyakBoardApp=MerzlyakBoard.boot(bundle,document.getElementById('textbook-app'));
 }).catch(()=>{document.getElementById('textbook-app').textContent='Материалы сейчас не удалось открыть. Попробуй обновить страницу.';});
-</script></body></html>
+</script>
+<script defer src="/assets/assistant/home-link.js?v=20261110"></script>
+</body></html>

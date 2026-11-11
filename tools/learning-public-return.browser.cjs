@@ -97,6 +97,16 @@ const close=server=>new Promise(resolve=>{server.closeAllConnections();server.cl
   await page.goto(origin+'/learning/#public-practice='+encodeURIComponent('https://evil.test/trainers/a.html')+'&return=route');
   await page.getByRole('heading',{name:'Не удалось открыть тренажёр'}).waitFor();assert.equal(await page.locator('#main iframe').count(),0);
   await page.getByRole('link',{name:'← В кабинет',exact:true}).click();await page.locator('[data-plan-course="task19-trainer"]').waitFor();
+  // The site homepage stays reachable from the viewport-height wrapper itself.
+  await page.context().route('https://mathexam.space/', route=>route.fulfill({contentType:'text/html',body:'<h1>Главная MathExam</h1>'}));
+  await page.goto(origin+'/learning/#public-practice='+encodeURIComponent('/trainers/task19-trainer.html')+'&return=route');
+  await page.frameLocator('[data-public-workspace] iframe').locator('h1').waitFor();
+  await page.locator('.public-practice-toolbar summary').click();
+  const home=page.locator('[data-public-home-return]');
+  assert.equal(await home.getAttribute('href'),'https://mathexam.space/');
+  assert.equal(await home.getAttribute('target'),'_self');
+  await home.click();await page.waitForURL('https://mathexam.space/');
+  assert.equal(page.context().pages().length,1);
   assert.deepEqual(store.row('SELECT * FROM learning_plans WHERE learner_id=?',pupil.id),initialPlan);
   assert.deepEqual(store.studentProfile(teacher,pupil.id),initialProfile);
   assert.equal(store.row('SELECT COUNT(*) AS n FROM attempts').n,0);
