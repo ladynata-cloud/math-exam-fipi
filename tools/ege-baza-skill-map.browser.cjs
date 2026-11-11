@@ -21,6 +21,78 @@ const fits=async(page,label)=>{
  if(!fits)await page.screenshot({path:path.join(shots,'overflow-'+checks+'.png'),fullPage:true});
  ok(fits,'no horizontal overflow: '+label+(fits?'':' '+JSON.stringify(layout)));
 };
+// Count real canvas drawing without replacing either renderer or its animation clock.
+async function watchCanvasDrawing(page){
+ await page.addInitScript(()=>{
+  window.__egeCanvasDraws=new WeakMap();
+  for(const name of ['clearRect','setTransform']){
+   const original=CanvasRenderingContext2D.prototype[name];
+   CanvasRenderingContext2D.prototype[name]=function(...args){
+    window.__egeCanvasDraws.set(this.canvas,(window.__egeCanvasDraws.get(this.canvas)||0)+1);
+    return Reflect.apply(original,this,args);
+   };
+  }
+ });
+}
+async function movingCanvas(page,selector,label){
+ const canvas=await page.locator(selector).elementHandle();
+ const before=await canvas.evaluate(node=>window.__egeCanvasDraws.get(node)||0);
+ await page.waitForFunction(({canvas,before})=>(window.__egeCanvasDraws.get(canvas)||0)>before+2,{canvas,before});
+ ok(true,label+' is actually drawing');
+ return canvas;
+}
+async function disposedCanvas(page,canvas,label){
+ ok(await canvas.evaluate(node=>!node.isConnected),label+' is detached');
+ const before=await canvas.evaluate(node=>window.__egeCanvasDraws.get(node)||0);
+ await page.evaluate(async()=>{for(let i=0;i<8;i++)await new Promise(resolve=>requestAnimationFrame(resolve));});
+ ok(await canvas.evaluate(node=>window.__egeCanvasDraws.get(node)||0)===before,label+' no longer draws after cleanup');
+ await canvas.dispose();
+}
+async function sameExamCards(page,label){
+ ok(await page.evaluate(()=>window.__egeExamCards.every((node,index)=>node===document.querySelectorAll('[data-exam-position]')[index])),'visual switch preserves card DOM: '+label);
+}
+async function checkVisualSwitch(page,width){
+ const stars=page.locator('[data-exam-visual="stars"]'),oceanChoice=page.locator('[data-exam-visual="ocean"]');
+ const oldStars=await movingCanvas(page,'.star-sky canvas','star animation');
+ await page.evaluate(()=>{window.__egeExamCards=[...document.querySelectorAll('[data-exam-position]')];});
+ await oceanChoice.press('Enter');
+ const ocean=page.getByRole('region',{name:'Подводная экспедиция'});
+ await ocean.waitFor();
+ ok(await page.locator('[data-exam-visual-host]').getAttribute('data-active-visual')==='ocean','ocean selection is explicit');
+ ok(await oceanChoice.getAttribute('aria-pressed')==='true'&&await stars.getAttribute('aria-pressed')==='false','visual buttons report ocean selection');
+ await expectCount(page,'.star-sky',0,'inactive star scene is unmounted');
+ await expectCount(page,'[data-ocean-station]',7,'all seven published ocean stations remain');
+ await expectCount(page,'[data-exam-position]',21,'ocean keeps all ordinary exam cards');
+ await sameExamCards(page,'stars to ocean');
+ await disposedCanvas(page,oldStars,'old star canvas');
+ await fits(page,'selected ocean '+width);
+ if(width===320)await ocean.getByRole('combobox',{name:'Станция'}).selectOption('4');
+ else await ocean.locator('[data-ocean-station="4"]').press('Enter');
+ await ocean.locator('canvas').scrollIntoViewIfNeeded();
+ await ocean.getByRole('button',{name:'Включить анимацию'}).click();
+ const firstOcean=await movingCanvas(page,'.ocean-expedition canvas','ocean animation');
+ await page.screenshot({path:path.join(shots,'combined-ocean-'+width+'.png'),fullPage:false});
+ const taskLink=ocean.locator('.ocean-expedition-tasks a').first(),href=await taskLink.getAttribute('href');
+ const number=new URLSearchParams(href.split('?')[1]).get('pos');
+ await taskLink.click();await page.locator('[data-exam-task="'+number+'"]').waitFor();
+ await disposedCanvas(page,firstOcean,'ocean canvas after leaving the map');
+ await page.locator('#content a[href="#map"]').first().click();await ocean.waitFor();
+ ok(await oceanChoice.getAttribute('aria-pressed')==='true','return from a task preserves the chosen visual');
+ ok(await ocean.locator('[data-ocean-station="4"]').getAttribute('aria-pressed')==='true','return preserves the chosen ocean station');
+ await ocean.locator('canvas').scrollIntoViewIfNeeded();
+ const secondOcean=await movingCanvas(page,'.ocean-expedition canvas','restored ocean animation');
+ await page.evaluate(()=>{window.__egeExamCards=[...document.querySelectorAll('[data-exam-position]')];});
+ await stars.press('Space');await page.locator('.star-sky').waitFor();
+ ok(await page.locator('[data-exam-visual-host]').getAttribute('data-active-visual')==='stars','keyboard Space selects stars');
+ ok(await stars.getAttribute('aria-pressed')==='true'&&await oceanChoice.getAttribute('aria-pressed')==='false','visual buttons report star selection');
+ await expectCount(page,'.ocean-expedition',0,'inactive ocean scene is unmounted');
+ await sameExamCards(page,'ocean to stars');
+ await disposedCanvas(page,secondOcean,'old ocean canvas');
+ ok(await page.locator('[data-star-position="21"]').getAttribute('aria-pressed')==='true','return preserves selected star');
+ await page.locator('.star-sky canvas').scrollIntoViewIfNeeded();
+ await page.waitForFunction(()=>document.querySelector('.star-sky').dataset.motion==='running');
+ await fits(page,'restored stars '+width);
+}
 async function newPage(width=1280){
  const page=await browser.newPage({viewport:{width,height:900},reducedMotion:'reduce'});
  page.on('pageerror',error=>errors.push(error.message));
@@ -35,7 +107,18 @@ async function newPage(width=1280){
 
   for(const width of [320,1280]){
    const page=await newPage(width);
+   await watchCanvasDrawing(page);
    await page.goto(home+'#map');await page.locator('.star-sky').waitFor();
+   ok(await page.locator('[data-exam-visual-host]').getAttribute('data-active-visual')==='stars','fresh course opens the requested star sky');
+   await expectCount(page,'.ocean-expedition',0,'ocean is available without a second active scene');
+   const visualButtons=page.locator('button[data-exam-visual]');
+   await expectCount(page,'button[data-exam-visual]',2,'both visual entrances use native buttons');
+   ok(await visualButtons.evaluateAll(nodes=>nodes.every(node=>{const r=node.getBoundingClientRect();return r.width>=44&&r.height>=44&&node.textContent.trim()&&document.getElementById(node.getAttribute('aria-controls'));})),'both visual controls have readable labels,44px targets and a real controlled region');
+   ok(await page.locator('[data-exam-visual="stars"]').getAttribute('aria-pressed')==='true','stars are initially selected');
+   const initialCanvas=await page.locator('.star-sky canvas').elementHandle();
+   await page.locator('[data-exam-visual="stars"]').press('Enter');
+   ok(await initialCanvas.evaluate(node=>node===document.querySelector('.star-sky canvas')),'selecting the active visual does not restart it');
+   await initialCanvas.dispose();
    await expectCount(page,'[data-star-position]',21,'all 21 stars '+width);
    await expectCount(page,'[data-exam-position]',21,'21 ordinary exam cards '+width);
    ok(await page.locator('[data-exam-position]').evaluateAll(nodes=>nodes.every(node=>!node.closest('details'))),'ordinary map stays expanded');
@@ -60,9 +143,10 @@ async function newPage(width=1280){
    ok(await page.locator('[data-star-position="21"]').evaluate(node=>node===document.activeElement),'keyboard End selects last star');
    await page.locator('[data-sky-pause]').click();
    await page.waitForFunction(()=>document.querySelector('.star-sky').dataset.motion==='running');
+   await checkVisualSwitch(page,width);
    await page.locator('[data-sky-pause]').click();
    await page.waitForFunction(()=>document.querySelector('.star-sky').dataset.motion==='paused');
-   ok(await page.evaluate(()=>JSON.stringify(Object.entries(localStorage)))===bytes,'sky interactions do not write learner saves');
+   ok(await page.evaluate(()=>JSON.stringify(Object.entries(localStorage)))===bytes,'star/ocean switches, animation and navigation do not write learner saves');
    await page.locator('[data-star-position="15"]').click();
    await page.screenshot({path:path.join(shots,'sky-'+width+'.png'),fullPage:false});
    await page.locator('[data-sky-skills]').click();await page.locator('[data-exam-task="15"]').waitFor();
@@ -212,6 +296,6 @@ async function newPage(width=1280){
   }
   await labs.close();
   ok(errors.length===0,'no browser exceptions: '+errors.join('; '));
-  console.log('EGE_BAZA_SKILL_MAP_BROWSER_OK: '+checks+' checks; all 111 families, 21 stars, '+fixedIds.length+' fixed examples, early and supplementary learning routes; drafts, assistance, exam boundaries, 320/1280px and screenshots.');
+  console.log('EGE_BAZA_SKILL_MAP_BROWSER_OK: '+checks+' checks; all 111 families, 21 stars, '+fixedIds.length+' fixed examples, early and supplementary learning routes; star/ocean switching and disposal, drafts, assistance, exam boundaries, 320/1280px and screenshots.');
  }finally{await browser?.close();if(server.listening)await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});

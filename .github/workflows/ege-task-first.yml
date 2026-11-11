@@ -1,10 +1,10 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/index.html', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-baza-skill-map*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml', 'tools/ege-baza-skill-map*', 'trainers/ege-baza/**']
   push:
     branches: [main]
-    paths: ['ege-baza/skill-map*', 'ege-baza/star-sky*', 'ege-baza/index.html', 'ege-baza/app.js', 'ege-baza/path/index.html', 'ege-baza/path/task-first.js', 'tools/ege-baza-skill-map*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-baza/skill-map*', 'ege-baza/star-sky*', 'ege-baza/ocean-expedition*', 'ege-baza/percent/style.css', 'ege-baza/index.html', 'ege-baza/app.js', 'ege-baza/path/index.html', 'ege-baza/path/task-first.js', 'tools/ege-baza-skill-map*', '.github/workflows/ege-task-first.yml']
 permissions:
   contents: read
 jobs:
@@ -68,6 +68,8 @@ jobs:
         env:
           EGE_ENTRY_SHOTS: artifacts/course-entries
         run: node tools/ege-course-entry.browser.cjs
+      - name: Profile skill maps and base ocean expedition
+        run: node tools/ege-skill-map-ocean.browser.cjs
       - name: Basic EGE skill routes, assistance and animation lifecycle
         run: node --test tools/ege-baza-skill-map.test.cjs
       - name: Basic EGE stars and skill maps in a real browser

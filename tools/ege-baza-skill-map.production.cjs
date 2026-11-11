@@ -12,7 +12,7 @@ const origin = 'https://mathexam.space';
 const sha = execFileSync('git', ['rev-parse','HEAD'], {cwd:root,encoding:'utf8'}).trim();
 const required = [
   'ege-baza/index.html','ege-baza/app.js','ege-baza/skill-map-data.js','ege-baza/skill-map.js','ege-baza/skill-map.css',
-  'ege-baza/star-sky.js','ege-baza/star-sky.css','ege-baza/path/index.html','ege-baza/path/task-first.js',
+  'ege-baza/star-sky.js','ege-baza/star-sky.css','ege-baza/ocean-expedition.js','ege-baza/ocean-expedition.css','ege-baza/path/index.html','ege-baza/path/task-first.js',
   'ege-baza/algebra/index.html','ege-baza/algebra/app.js','ege-baza/percent/index.html','ege-baza/percent/app.js','ege-baza/percent/style.css',
   'ege-baza/reasoning/index.html','ege-baza/reasoning/app.js','ege-baza/work-rate/index.html','ege-baza/work-rate/app.js',
   'ege-baza/labs/index.html','ege-baza/labs/labs.js','trainers/ege-baza/index.html',
@@ -46,7 +46,7 @@ let browser;
 (async () => {
   try {
     await waitForPages();
-    ok(report.files.every(file=>file.matches),'All 23 public resources match the released checkout byte for byte');
+    ok(report.files.every(file=>file.matches),'All 25 public resources match the released checkout byte for byte');
     browser = await chromium.launch({headless:true, args:['--no-sandbox']});
     for (const width of [320,1280]) {
       const context = await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
@@ -62,6 +62,18 @@ let browser;
       }));
       ok(boxes.every(rect=>rect.w>=44&&rect.h>=44&&rect.x>=0&&rect.x+rect.w<=width+.5),'Public sky touch targets fit at '+width);
       ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Public landing has no horizontal overflow at '+width);
+      ok(await page.locator('[data-exam-visual="stars"]').getAttribute('aria-pressed')==='true','Public course opens with the star map at '+width);
+      const savedProgress=await page.evaluate(()=>JSON.stringify(Object.entries(localStorage)));
+      await page.locator('[data-exam-visual="ocean"]').click();
+      await page.locator('.ocean-expedition').waitFor();
+      ok(await page.locator('[data-ocean-station]').count()===7,'All seven existing ocean stations remain available at '+width);
+      ok(await page.locator('.star-sky').count()===0,'Changing the public view removes the inactive star map at '+width);
+      ok(await page.locator('[data-exam-position]').count()===21,'The shared numbered catalogue survives a view change at '+width);
+      ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Public ocean and selector fit at '+width);
+      await page.locator('[data-exam-visual="stars"]').click();
+      await page.locator('.star-sky').waitFor();
+      ok(await page.locator('.ocean-expedition').count()===0,'Returning to stars removes the inactive ocean at '+width);
+      ok(await page.evaluate(()=>JSON.stringify(Object.entries(localStorage)))===savedProgress,'Switching public views does not write learner records at '+width);
       await page.locator('[data-star-position="17"]').click();
       ok((await page.locator('[data-sky-detail]').innerText()).includes('Уравнения'),'Selecting star 17 shows equations at '+width);
       await page.screenshot({path:path.join(output,'sky-'+width+'.png'),fullPage:false});
@@ -87,7 +99,7 @@ let browser;
       await context.close();
     }
     report.status='PASS';
-    console.log('EGE_BASE_STAR_SKILL_RELEASE_PASS: '+report.checks.length+' checks; 23 exact public files; 320/1280px real browser journeys.');
+    console.log('EGE_BASE_STAR_SKILL_RELEASE_PASS: '+report.checks.length+' checks; 25 exact public files; 320/1280px real browser journeys.');
   } catch (error) {
     report.status='FAIL';report.failures.push(error.stack||error.message);process.exitCode=1;console.error(error);
   } finally {
