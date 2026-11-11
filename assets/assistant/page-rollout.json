@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d4e5550159012a51e274a4332265650415d76034",
+  "baseSha": "473577fd7ae9e8f3ae0da71ceb183559b74bd6cc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4743,6 +4743,13 @@
       "changedPaths": [
         "trainers/oge-course/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d4e5550159012a51e274a4332265650415d76034",
+      "sourceBaseSha": "473577fd7ae9e8f3ae0da71ceb183559b74bd6cc",
+      "task": "docs/tasks/OGE_COMPLETE_SKILL_MAPS_DIVISION_20261111.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
