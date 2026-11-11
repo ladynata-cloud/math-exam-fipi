@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "12eee321134ac2719d889d356c9b3cb4ec354b8f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4851,6 +4851,13 @@
       "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "12eee321134ac2719d889d356c9b3cb4ec354b8f",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
