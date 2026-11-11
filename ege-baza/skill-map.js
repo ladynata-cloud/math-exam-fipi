@@ -54,12 +54,53 @@
       return '<li class="esm-node" data-skill-node="' + esc(skill.id) + '"><span class="esm-step" aria-hidden="true">' + (index + 1) +
         '</span><div class="esm-node-content"><h3>' + esc(skill.title) + '</h3><p>' + esc(skill.description) + '</p>' +
         (targets.length ? '<div class="esm-practice-links">' + targets.slice(0, 2).map(target => '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' +
-          (target.id === options.lessonId ? 'Этот тренажёр: ' : 'Тренировать: ') + esc(target.title) + '</a>').join('') +
+          (target.id === options.lessonId && options.onSteps ? 'Решать по шагам' : 'Тренировать: ' + esc(target.title)) + '</a>').join('') +
           (targets.length > 2 ? '<details class="esm-more"><summary>Ещё упражнения: ' + (targets.length - 2) + '</summary>' + targets.slice(2).map(target =>
             '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
         evidenceMarkup(skill, rows) + '</div></li>';
     }).join('') + '</ol>';
   }
+  function selfCheckMarkup(check, lessonId) {
+    if (!check || !root.PathData?.parse) return '';
+    const field = 'skill-check-' + lessonId;
+    const math = root.PathPracticeView?.math || esc;
+    return `<details class="esm-self-check"><summary>Проверь себя на другом примере</summary>
+      <form data-skill-check>
+        <label for="${esc(field)}">${math(check.question)}</label>
+        <div class="actions"><input type="text" id="${esc(field)}" autocomplete="off" maxlength="80" placeholder="Число или дробь">
+        <button type="submit">Проверить</button></div>
+        <p data-skill-check-result role="status"></p>
+      </form>
+      <details class="esm-check-explanation"><summary>Сверить решение</summary>
+        <p><strong>Ответ ${math(check.answer)}</strong></p><p>${math(check.explanation)}</p>
+      </details>
+    </details>`;
+  }
+  function bindSelfCheck(host, check) {
+    const form = host.querySelector('[data-skill-check]');
+    if (!form || !check) return;
+    const input = form.querySelector('input');
+    const result = form.querySelector('[data-skill-check-result]');
+    const expected = root.PathData.parse(check.answer);
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const answer = root.PathData.parse(input.value);
+      if (!input.value.trim() || !Number.isFinite(answer)) {
+        result.textContent = 'Введи число без единиц измерения или дробь, например 2/3.';
+      } else if (root.PathData.correct({a:expected,strict:true},input.value)) {
+        result.textContent = 'Верно.';
+      } else {
+        result.textContent = 'Пока неверно. Попробуй ещё раз или сверь способ решения.';
+      }
+    });
+  }
+  function attachSelfCheck(host, lessonId) {
+    if (!host || host.querySelector('[data-skill-check]')) return;
+    const check = root.EgeBazaSkillMaps?.forLesson(lessonId)?.selfCheck;
+    host.insertAdjacentHTML('beforeend', selfCheckMarkup(check, lessonId));
+    bindSelfCheck(host, check);
+  }
+
   function bodyMarkup(map, options) {
     const prerequisite = map.prerequisites || [];
     const title = map.goal || 'Выбери умение, которое хочешь отработать. Рядом — упражнения для практики.';
@@ -68,8 +109,9 @@
         prerequisite.map(item => '<li><a href="' + esc(safeHref(item.href)) + '" target="_blank" rel="noopener" aria-label="' + esc(item.title + ' — в новой вкладке') + '">' + esc(item.title) + ' <span aria-hidden="true">↗</span></a>' +
           (item.reason ? '<span>' + esc(item.reason) + '</span>' : '') + '</li>').join('') + '</ul><p class="esm-support-note">Упражнение откроется в новой вкладке. Эта задача останется на месте.</p></details>' : '') +
       skillsMarkup(map, options) +
+      (options.onSteps && options.task ? selfCheckMarkup(map.selfCheck, options.lessonId) : '') +
       '<p class="esm-key">Отметка относится к решению в указанном тренажёре. Для уверенного владения умением нужны разные задачи и повторение.</p>' +
-      (options.onSteps && options.task ? '<div class="esm-task-steps"><p data-skill-step-count></p><button type="button" data-skill-steps>Решать эту задачу по шагам</button></div>' : '') +
+      (options.onSteps && options.task ? '<div class="esm-task-steps"><p data-skill-step-count></p><details data-skill-next-action><summary>С чего начать текущий шаг</summary><p></p></details><button type="button" data-skill-steps>Решать эту задачу по шагам</button></div>' : '') +
       (map.next?.length && options.lessonId ? '<div class="esm-next"><span>Следующий тренажёр</span>' + map.next.slice(0, 2).map(item =>
         '<a href="' + esc(safeHref(item.href)) + '">' + esc(item.title) + '</a>').join('') + '</div>' : '') +
       '<a class="esm-course-link" href="/ege-baza/index.html#task?pos=' + Number(map.pos || options.pos) + '&amp;skills=1">Карта навыков задания №' +
@@ -83,8 +125,20 @@
       (options.pos && !options.lessonId ? ' · №' + Number(options.pos) : '') + '</span><span class="esm-count">Умений: ' + map.skills.length +
       '</span></summary>' + bodyMarkup(map, options) + '</details>';
   }
-  function positionMarkup(pos, options) {
-    return markup(Object.assign({}, options || {}, {pos:Number(pos)}));
+  function positionMarkup(pos, options = {}) {
+    const map = root.EgeBazaSkillMaps?.forPosition(Number(pos));
+    if (!map) return '';
+    const rows = evidenceRows(options);
+    return `<details class="ege-skill-map" data-ege-skill-map="position-${map.pos}" ${options.open ? 'open' : ''}>
+      <summary>Карта навыков · №${map.pos}</summary>
+      <div class="esm-body"><ol class="esm-position-list">${map.lessons.map(lesson => `<li>
+        <details class="esm-position-family"><summary>${esc(lesson.title)}</summary>
+          <p>${esc(lesson.goal)}</p>
+          <ul>${lesson.skills.map(skill => `<li data-skill-node="${esc(skill.id)}">${esc(skill.title)}</li>`).join('')}</ul>
+          ${evidenceMarkup({practiceIds:[lesson.id]}, rows)}
+          <a href="${esc(lesson.href)}">Открыть тренажёр и проверить себя</a>
+        </details></li>`).join('')}</ol></div>
+    </details>`;
   }
   function attach(host, options) {
     options = options || {};
@@ -101,6 +155,7 @@
     holder.innerHTML = html;
     const element = holder.firstElementChild;
     host.appendChild(element);
+    bindSelfCheck(element, mapFor(options)?.selfCheck);
     let disposed = false, revealed = false;
     const reveal = () => {
       if (disposed || !element.isConnected) return;
@@ -136,7 +191,11 @@
       if (count) {
         const total = options.task?.steps?.length || 0;
         const done = Math.min(total, Math.max(0, Number(options.lesson?.step) || 0));
-        count.textContent = 'Шагов разбора выполнено: ' + done + ' из ' + total + '. Это работа с помощью.';
+        count.textContent = 'Проверено шагов текущего условия: ' + done + ' из ' + total + '. Это работа с помощью.';
+        const next = element.querySelector('[data-skill-next-action]');
+        next.hidden = done === total;
+        next.querySelector('p').textContent = done < total ? root.PathTaskHints?.hint(options.task,done) || options.task.steps[done].q : '';
+        element.querySelector('[data-skill-steps]').textContent = done === total ? 'Посмотреть разбор' : done ? 'Продолжить с шага ' + (done + 1) : 'Разобрать эту задачу по шагам';
       }
     }
     function dispose() {
@@ -152,5 +211,5 @@
     refresh();
     return controller;
   }
-  root.EgeBazaSkillMap = Object.freeze({markup, positionMarkup, attach});
+  root.EgeBazaSkillMap = Object.freeze({markup, positionMarkup, attach, attachSelfCheck});
 })(typeof window === 'object' ? window : globalThis);

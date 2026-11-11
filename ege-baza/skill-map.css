@@ -43,3 +43,15 @@
 @media print{.ege-skill-map{border-color:#aaa;background:#fff}.ege-skill-map .esm-body{display:block}.ege-skill-map button{display:none}}
 
 .ege-skill-map .esm-support-note{margin:0;padding:0 14px 14px;font-size:.8rem;line-height:1.5;color:#496271}
+
+.ege-skill-map .esm-position-list{display:grid;gap:9px;padding-left:1.4rem;margin:0}
+.ege-skill-map .esm-position-family{padding:10px 12px;border:1px solid var(--esm-line);border-radius:10px;background:white}
+.ege-skill-map .esm-position-family summary,.esm-self-check summary{cursor:pointer;font-weight:650}
+.ege-skill-map .esm-position-family ul{padding-left:1.25rem}
+.esm-self-check{margin:12px 0;padding:12px;border:1px solid #c4d8e0;border-radius:10px;background:#f7fbfc}
+.esm-self-check form{margin-top:12px}
+.esm-self-check form label{display:block;margin-bottom:8px}
+.esm-self-check .actions{display:flex;flex-wrap:wrap;gap:8px}
+.esm-self-check input{min-width:0;width:min(100%,14rem)}
+.esm-self-check [data-skill-check-result]:empty{display:none}
+.esm-check-explanation{margin:10px 0 0}

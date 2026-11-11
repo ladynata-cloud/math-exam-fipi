@@ -23,7 +23,7 @@
  }
  function inputMarkup(item,prefix,label,formatOverride) {
   const choices=root.PathPracticeView.answerChoices(item);
-  const format=formatOverride||(item.id==='round'?'Введи целое число упаковок.':item.answerKind==='match'?'Введи соответствующие цифры подряд, без пробелов.':item.answerKind==='multi'?'Введи номера подходящих утверждений подряд, без пробелов.':item.answerKind==='solutions'?'Введи любое число, которое удовлетворяет всем условиям.':'Введи число без единиц измерения. Десятичную дробь можно записать с запятой; обычную дробь — как 2/3.');
+  const format=formatOverride||(choices?'Выбери вариант ответа.':item.id==='round'?'Введи целое число упаковок.':item.answerKind==='match'?'Введи соответствующие цифры подряд, без пробелов.':item.answerKind==='multi'?'Введи номера подходящих утверждений подряд, без пробелов.':item.answerKind==='solutions'?'Введи любое число, которое удовлетворяет всем условиям.':'Введи число без единиц измерения. Десятичную дробь можно записать с запятой; обычную дробь — как 2/3.');
   return `<form id="${prefix}Form" class="task-first-form"><label for="${prefix}">${root.PathPracticeView.math(label)}</label><p id="${prefix}Format" class="muted">${format}</p><div class="actions"><input id="${prefix}" ${choices?'type="hidden"':''} maxlength="10000" autocomplete="off" aria-describedby="${prefix}Format" value="">${choices?`<div class="actions">${choices.map((choice,i)=>`<button type="button" data-${prefix}-choice="${E(choice.value)}" aria-pressed="false">${root.PathPracticeView.math(choice.label)}</button>`).join('')}</div>`:''}<button class="primary" type="submit">${prefix==='answer'?'Проверить ответ':'Проверить этот шаг'}</button></div></form>`;
  }
  // Match only mathematically verified intermediate values; never guess the learner's reasoning.
@@ -43,7 +43,7 @@
   if(!['match','multi','solutions'].includes(kind)&&!task.rule&&!root.PathPracticeView.answerChoices(task)) {
    const number=D.parse(String(value));
    if(!Number.isFinite(number))return 'Не удалось прочитать число. Запиши десятичную дробь с запятой или точкой, либо обычную дробь, например 2/3. Единицы в поле не нужны.';
-   const step=task.steps.slice(0,-1).find(s=>Number.isFinite(s.a)&&D.correct(s,value));
+   const step=task.steps.slice(0,-1).find(s=>Number.isFinite(s.a)&&!root.PathPracticeView.answerChoices(s)&&D.correct(s,value));
    if(step)return 'Это совпадает с ответом на промежуточный вопрос: «'+step.q+'». Вернись к тому, что требуется в условии: '+question(task);
   }
   if(kind==='match')return 'Проверь каждое соответствие отдельно. Цифры записываются в порядке букв из условия, без пробелов.';
@@ -136,15 +136,31 @@
    root.PathModels.mount($('#model'),t,{state:saved,learningDiscovery:learningCycle,onChange:value=>{u.model=value;markHelp();}});
    mountedModel=true;u.model=$('#model').pathModel?.getState()||null;save();
   }
+  function refreshReasoningMap() {
+   const map = $('#reasoningSkillMap');
+   if (!map) return;
+   map.querySelectorAll('[data-skill-state]').forEach((status, index) => {
+    status.textContent = index < l.step ? '· проверено в разборе' : index === l.step ? '· следующий шаг' : '';
+    if (index === l.step) status.parentElement.setAttribute('aria-current', 'step');
+    else status.parentElement.removeAttribute('aria-current');
+   });
+   map.querySelector('#reasoningContinue').textContent = l.step >= t.steps.length ? 'Посмотреть разбор' : l.step ? 'Продолжить разбор' : 'Начать разбор';
+  }
+  function completedStepAnswer(step,index){
+   const stored=u.stepAnswers[index];
+   const choice=root.PathPracticeView.answerChoices(step)?.find(item=>item.value===stored);
+   return choice?.label??stored??(step.a===undefined?'Условия выполнены':root.PathPracticeView.answerText(step));
+  }
   function renderSteps(){
    const step=t.steps[l.step],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
-   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(u.stepAnswers[index]??(s.a===undefined?'Условия выполнены':root.PathPracticeView.answerText(s)))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
+   refreshReasoningMap();
    skillMap?.refresh();
    if(!step)return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
    const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();$('#stepAnswer')?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+step.why);$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -155,8 +171,33 @@
    if(element.open)onOpen?.();
   };
   bindDisclosure(help,'helpOpen');bindDisclosure(model,'modelOpen',mountModel);bindDisclosure(steps,'stepsOpen');
-  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();$('#stepAnswer')?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
+  const openSteps=()=>{help.open=true;u.helpOpen=true;steps.open=true;u.stepsOpen=true;markHelp();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});$('#taskSteps').scrollIntoView?.({block:'center',behavior:'smooth'});};
   $('#startSteps').onclick=openSteps;
+  // The route describes the guided steps of this variant. Exam and board modes
+  // keep using their existing renderer and progress rules.
+  const route = learningCycle && root.self === root.top && new URLSearchParams(root.location.search).get('learning') !== '1'
+    ? root.PathTaskHints?.reasoningRoute?.(meta.id) : null;
+  if (route?.length === t.steps.length) {
+   const prerequisite = {
+    'practice-mushroom-count': ['logic', 'Повторить контрпримеры в №8'],
+    'practice-vase-order': ['practice-sets', 'Потренировать подсчёт общих элементов']
+   }[meta.id];
+   const skills = root.EgeBazaSkillMaps?.forLesson(meta.id)?.skills || [];
+   const skillsMarkup = skills.map(skill => `<p data-skill-node="${E(skill.id)}"><strong>${E(skill.title)}</strong><br>${E(skill.description)}</p>`).join('');
+   const link = prerequisite ? `<p><a href="#lesson=${prerequisite[0]}" target="_blank" rel="noopener">${prerequisite[1]} (новая вкладка)</a></p>` : '';
+   host.querySelector('.task-first-problem').insertAdjacentHTML('afterend', `<details id="reasoningSkillMap" class="panel" data-ege-skill-map="${E(meta.id)}">
+    <summary>Карта навыков</summary>
+    ${skillsMarkup}
+    <ol class="steps">${route.map(skill => `<li>${E(skill)} <small class="muted" data-skill-state></small></li>`).join('')}</ol>
+    <button id="reasoningContinue" type="button"></button>${link}
+   </details>`);
+   const reasoningMap = $('#reasoningSkillMap');
+   const reveal = () => { if (!l.help) markHelp(); };
+   reasoningMap.querySelector('summary').addEventListener('click', () => { if (!reasoningMap.open) reveal(); });
+   reasoningMap.addEventListener('toggle', () => { if (reasoningMap.open && reasoningMap.isConnected) reveal(); });
+   $('#reasoningContinue').onclick = openSteps;
+   refreshReasoningMap();
+  }
   if(learningCycle){bindDisclosure($('#taskIdea'),'ideaOpen');$('#repairStep').onclick=openSteps;refreshLearning();}
   help.querySelector('summary').textContent=help.open?'Скрыть подсказку':'Подсказка к задаче';
   $('#returnToAnswer').onclick=()=>{help.open=false;u.helpOpen=false;save();answer.focus({preventScroll:true});answer.scrollIntoView?.({block:'center',behavior:'smooth'});};
@@ -168,8 +209,15 @@
    const ids=root.EgeReferenceData.sheetsForTask?.(t)||root.EgeReferenceUI.forLesson(meta.id);
    root.EgeReferenceUI.attach(host.querySelector('.task-first-problem'),{sheetIds:ids,lessonId:meta.id,referenceBase:'../reference/',onReveal:markHelp});
   }
+
   if(learningCycle&&root.self===root.top&&new URLSearchParams(root.location.search).get('learning')!=='1'){
-   skillMap=root.EgeBazaSkillMap?.attach(host.querySelector('.task-first-skill-map'),{lessonId:meta.id,lesson:l,task:t,onReveal:markHelp,onSteps:openSteps})||null;
+   const reasoningMap=$('#reasoningSkillMap');
+   if(reasoningMap){
+    root.EgeBazaSkillMap?.attachSelfCheck(reasoningMap,meta.id);
+   }else{
+    const target=$('.task-first-skill-map');
+    skillMap=root.EgeBazaSkillMap?.attach(target,{lessonId:meta.id,lesson:l,task:t,onReveal:markHelp,onSteps:openSteps})||null;
+   }
   }
   save();
  }

@@ -50,8 +50,14 @@ test('the published 194 source records, revisions, order and A–D bytes are imm
   }
   assert.deepEqual(catalog.items.filter(row => row.trainerId === 'vilenkin6-textbook'), manifest);
   assert.equal(catalog.items.filter(row => row.trainerId === 'vilenkin6-part1').length, 27);
-  const newEgeIds = new Set(['practice-digits-delete', 'practice-average-three', 'practice-ring-route', 'practice-ring-meeting'].map(id => 'path:' + id));
-  assert.equal(catalog.items.filter(row => newEgeIds.has(row.id)).length, 4);
+  const newEgeIds = new Set([
+    'practice-digits-delete', 'practice-average-three', 'practice-ring-route', 'practice-ring-meeting',
+    'practice-mushroom-count', 'practice-vase-order'
+  ].map(id => 'path:' + id));
+  assert.deepEqual(
+    catalog.items.filter(row => newEgeIds.has(row.id)).map(row => row.id).sort(),
+    [...newEgeIds].sort()
+  );
   const newOgeIds = new Set([11, 15, 16, 17, 18, 19].map(number => 'oge-public:' + number));
   assert.deepEqual(catalog.items.filter(row => row.trainerId === 'oge-public').map(row => row.id), [...newOgeIds]);
   const old = catalog.items.filter(row => row.trainerId !== 'vilenkin6-textbook' && !newEgeIds.has(row.id) && !newOgeIds.has(row.id));

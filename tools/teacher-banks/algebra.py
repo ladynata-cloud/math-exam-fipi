@@ -586,7 +586,7 @@ NEXT_SPECS = [
     ('piecewise-functions', 'Вычисление значений кусочной функции', 7, M7, 'school/makarychev7/source-map.json', 'Пункт 17: кусочно-заданные функции', piecewise_tasks),
     ('cube-formulas', 'Куб суммы и разности. Сумма и разность кубов', 7, M7, 'school/makarychev7/source-map.json', 'Пункты 32 и 36: куб суммы и разности, разложение суммы и разности кубов', cube_formula_tasks),
     ('inverse-function', 'Функция y = k/x: значения и свойства', 8, M8, 'school/makarychev8/source-map.json', 'Пункты 8 и 45: функция y = k/x и её свойства', inverse_function_tasks),
-    ('sqrt-function', 'Функция y = √x: значения и свойства', 8, M8, 'school/makarychev8/source-map.json', 'Пункты 14 и 45: функция y = √x и её свойства', sqrt_function_tasks),
+    ('sqrt-function', 'Функция y = √x: значения и свойства', 8, M8, 'school/makarychev8/source-map.json', 'Пункт 14: функция y = √x и её график. В контрольной последнее задание на множество значений на промежутке: проводить после пунктов 42 и 45 о множествах значений и свойствах функций.', sqrt_function_tasks),
     ('rational-equations', 'Дробные рациональные уравнения и ОДЗ', 8, M8, 'school/makarychev8/source-map.json', 'Пункт 26: решение дробных рациональных уравнений', rational_equation_tasks),
     ('quadratic-word-problems', 'Текстовые задачи через квадратное уравнение', 8, M8, 'school/makarychev8/source-map.json', 'Пункты 22 и 27: решение задач с помощью уравнений', quadratic_word_tasks),
     ('numerical-inequalities', 'Свойства числовых неравенств и оценка выражений', 8, M8, 'school/makarychev8/source-map.json', 'Пункты 34–36: числовые неравенства, их свойства, сложение и умножение', numerical_inequality_tasks),
