@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+  "baseSha": "cc24efb847e622c68db9197d83912c7132b81334",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -4780,6 +4780,13 @@
     {
       "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
       "sourceBaseSha": "74f5a688de2a6f2f931835f73b7805b998ea0b2e",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "cc24efb847e622c68db9197d83912c7132b81334",
       "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
