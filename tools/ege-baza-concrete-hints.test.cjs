@@ -12,7 +12,7 @@ for(const file of ['data','practice','equation-practice','task-hints']){
 }
 const D=context.PathData,H=context.PathTaskHints;
 const ids=Array.from(D.meta,m=>m.id);
-assert.equal(ids.length,111,'the existing EGE catalogue remains 111 families');
+assert.equal(ids.length,113,'the EGE catalogue contains 113 families');
 assert.deepEqual(Array.from(H.familyIds).sort(),ids.slice().sort(),'every existing family has authored hints');
 
 function freeze(value){

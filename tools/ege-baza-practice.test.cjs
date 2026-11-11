@@ -71,6 +71,33 @@ const numeric=(r,p)=>{
  case 'ring-meeting':return p.L/(p.same?p.fast-p.slow:p.fast+p.slow);
  case 'ring-route':return p.half-p.ac;
  case 'average-speed':return (2*p.d)/(p.d/p.slow+p.d/p.fast);
+ case 'mushroom-count': {
+  const possible = [];
+  for (let saffron = 0; saffron <= p.total; saffron++) {
+   const milk = p.total - saffron;
+   if (milk < p.anyWithSaffron && saffron < p.anyWithMilk) possible.push(p.askSaffron ? saffron : milk);
+  }
+  assert.equal(possible.length, 1);
+  return possible[0];
+ }
+ case 'vase-order': {
+  const possible = [];
+  const orders = ['WBY', 'WYB', 'BWY', 'BYW', 'YWB', 'YBW'];
+  for (let white = 1; white < p.total - 1; white++) {
+   for (let blue = 1; blue < p.total - white; blue++) {
+    const counts = { W: white, B: blue, Y: p.total - white - blue };
+    for (const order of orders) {
+     const sum = part => [...part].reduce((total, color) => total + counts[color], 0);
+     if (sum(order.slice(0, order.indexOf('B'))) === p.left && sum(order.slice(order.indexOf('W') + 1)) === p.right) {
+      possible.push({ order, ...counts });
+     }
+    }
+   }
+  }
+  assert.equal(possible.length, 1);
+  assert.equal(possible[0].order, 'WYB');
+  return possible[0].Y;
+ }
  case 'sets':return p.A+p.B-p.total;
  case 'integer-budget':return roots(x=>p.reward*x-p.penalty*(p.n-x)-p.score,0,p.n)[0];
  case 'whole-count':{let ns=roots(n=>n*p.a<=p.total&&p.total<=n*p.b?0:1,1,p.total);assert.equal(ns.length,1);return ns[0];}
@@ -100,7 +127,9 @@ let tested=0;
 for(const {id,tasks} of old)assert.deepEqual([0,1,2,11,45,100].map(s=>JSON.stringify(D.task(id,s))),tasks,'Legacy task changed: '+id);
 for(let pos=1;pos<=21;pos++)assert(D.practice.catalog.some(m=>m.pos===pos),'Empty position '+pos);
 for(const m of D.practice.catalog){
- for(let seed=0;seed<80;seed++){
+ const variants = ['practice-mushroom-count', 'practice-vase-order'].includes(m.id) ? 240 : 80;
+ const conditions = new Set();
+ for(let seed=0;seed<variants;seed++){
   const t=D.task(m.id,seed);assert(t.q&&t.steps.length&&t.steps.length<=20);assert.equal(t.pos,m.pos);
   if(t.answerKind==='solutions'){
    const expected=[];
@@ -109,7 +138,9 @@ for(const m of D.practice.catalog){
   }else{let value=semantic(t);if(value===null)value=numeric(t.reference,t.params);assert(Number.isFinite(value)||typeof value==='string',m.id);assert(D.correct(t,String(value)),m.id+' seed '+seed+': '+value+' vs '+t.answer);if(typeof value==='number')assert(!D.correct(t,String(value+.01)),m.id+' loose answer');}
   for(const step of t.steps){assert(step.q&&step.why);assert(D.correct(step,String(step.a)),m.id+' invalid step');}
   for(const bad of ['', 'Infinity', 'NaN','1/0','<script>','1e10'])assert(!D.correct(t,bad),m.id+' accepted '+bad);
+  conditions.add(t.q);
   tested++;
  }
+ if (variants === 240) assert.equal(conditions.size, variants, m.id + ' distinct conditions');
 }
 console.log(`EGE_BAZA_PRACTICE_MATH_OK: ${tested} generated conditions, ${D.practice.catalog.length} new families, all 21 positions, 168 unchanged legacy cases, exhaustive digit answers, independently recalculated keys.`);
