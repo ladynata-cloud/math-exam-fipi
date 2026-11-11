@@ -6,3 +6,66 @@
 .trainer-lesson-choice a:focus-visible{outline:3px solid #a66a12;outline-offset:3px;border-radius:3px}
 @media(max-width:560px){.trainer-lesson-choice{padding:.7rem .8rem}}
 @media print{.trainer-lesson-choice{display:none}}
+
+.trainer-skill-gif {
+  box-sizing: border-box;
+  margin: 1rem 0 0;
+  min-width: 0;
+  padding: .65rem .8rem;
+  border: 1px solid #cbded8;
+  border-radius: 10px;
+  background: #f8fbf7;
+  color: #193c3a;
+  font: 400 .95rem/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.trainer-skill-gif summary {
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: .55rem 0;
+  color: #174e3c;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.trainer-skill-gif-viewport {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 640 / 360;
+  border-radius: 8px;
+  background: #f8fbf7;
+}
+
+.trainer-skill-gif-viewport img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: none;
+}
+
+.trainer-skill-gif p { margin: .55rem 0; color: #193c3a; font: inherit; }
+.trainer-skill-gif-controls { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+.trainer-skill-gif-controls button {
+  min-height: 44px;
+  max-width: 100%;
+  padding: .35rem .65rem;
+  border: 1px solid #a9c4b9;
+  border-radius: 8px;
+  background: #fff;
+  color: #174e3c;
+  font: inherit;
+  cursor: pointer;
+}
+
+.trainer-skill-gif-controls button:disabled { opacity: .65; cursor: default; }
+.trainer-skill-gif summary:focus-visible,
+.trainer-skill-gif button:focus-visible { outline: 3px solid #a66a12; outline-offset: 2px; }
+.trainer-skill-gif-transcript ol { margin: 0; padding-inline-start: 1.4rem; }
+.trainer-skill-gif-transcript li + li { margin-top: .35rem; }
+@media print { .trainer-skill-gif { display: none; } }

@@ -1,4 +1,4 @@
-/* Public navigation and lesson contacts. No account, answer or persistent context. */
+/* Public navigation, worked examples and lesson contacts. */
 (function (root) {
   'use strict';
   const HOST_ID = 'maxexam-public-assistant';
@@ -203,6 +203,59 @@
     }, true);
     root.addEventListener('pagehide', () => { reset(false); setOpen(false, false); });
   }
+  let skillGifPlayer;
+
+  function loadSkillGifPlayer() {
+    if (!skillGifPlayer) {
+      skillGifPlayer = new Promise((resolve, reject) => {
+        const script = element('script', undefined, { src: '/assets/trainer-skill-gif.js?v=20261111' });
+        script.addEventListener('load', () => {
+          if (root.MathExamTrainerSkillGif) resolve(root.MathExamTrainerSkillGif);
+          else reject(new Error('GIF player unavailable'));
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.append(script);
+      }).catch(error => {
+        skillGifPlayer = null;
+        throw error;
+      });
+    }
+    return skillGifPlayer;
+  }
+
+  function skillGif(slug) {
+    const details = element('details', undefined, { class: 'trainer-skill-gif', 'data-trainer-skill-gif': slug });
+    const summary = element('summary', 'Наглядный разбор (GIF)');
+    const status = element('p', '', { 'data-trainer-gif-status': '', role: 'status' });
+    details.append(summary, status);
+    let pending = false;
+    let ready = false;
+    details.addEventListener('toggle', async () => {
+      if (!details.open || pending || ready) return;
+      pending = true;
+      status.textContent = 'Загружается пример…';
+      try {
+        const player = await loadSkillGifPlayer();
+        await player.mount(details, slug);
+        ready = true;
+      } catch (_) {
+        status.textContent = 'Разбор не загрузился. Закройте и откройте его ещё раз.';
+      } finally {
+        pending = false;
+      }
+    });
+    return details;
+  }
+
+  function baseSkillGif(anchor) {
+    const href = anchor.querySelector('a[href]')?.pathname || '';
+    if (href.startsWith('/trainers/oge-basics/percentages/')) return 'base-percent';
+    if (href.startsWith('/trainers/oge-basics/fraction-')) return 'fractions';
+    if (href.startsWith('/trainers/oge-basics/negative-')) return 'negatives';
+    if (href === '/trainers/simple-equations-stepwise.html') return 'oge-equations';
+    return null;
+  }
+
   function mountLessonChoices() {
     if (root.self !== root.top || !/^https?:$/.test(root.location.protocol) || root.MathExamBookEdition ||
         root.OgeCourseSharedMode || root.MathExamLearning?.managed || document.body.dataset.profileBoard) return;
@@ -214,48 +267,61 @@
     const path = root.location.pathname.replace(/\/index\.html$/, '/');
     const dialogRoute = 'dialog[data-profile-skill-dialog] .profile-skill-route';
     const geometry = {
-      1: 'На занятии с Натальей Михайловной можно разобрать, как читать чертёж и выбирать свойства фигур.',
-      2: 'С Натальей Михайловной можно разобрать векторы: как читать рисунок, находить координаты и длину.',
-      3: 'С Натальей Михайловной можно разобрать чертёж объёмной фигуры и понять, какие отрезки понадобятся в решении.'
+      1: ['На занятии с Натальей Михайловной можно разобрать, как читать чертёж и выбирать свойства фигур.', 'profile-planimetry'],
+      2: ['С Натальей Михайловной можно разобрать векторы: как читать рисунок, находить координаты и длину.', 'profile-vectors'],
+      3: ['С Натальей Михайловной можно разобрать чертёж объёмной фигуры и понять, какие отрезки понадобятся в решении.', 'profile-stereometry']
     };
     const placements = new Map([
-      ['/trainers/long-division-stepwise.html', ['[data-skill-support]', 'beforeend', 'Наталья Михайловна поможет разобрать деление уголком: от первого неполного делимого до выбора цифры частного.', '#guided-division']],
-      ['/trainers/negative-numbers.html', ['#negative-options', 'beforeend', 'Хотите разобраться со знаками на числовой прямой? Это можно сделать на занятии с Натальей Михайловной.']],
-      ['/trainers/oge-task6-fractions.html', ['#settings aside[aria-label="Повторить дроби"]', 'afterend', 'На занятии с Натальей Михайловной можно разобраться со смыслом дроби, общим знаменателем и порядком действий.']],
-      ['/trainers/oge-task9-equations.html', ['.generated-help .generated-return', 'beforebegin', 'Наталья Михайловна поможет разобрать преобразования уравнения и выбрать способ решения.', '.wrap']],
-      ['/trainers/oge-task11-graphs-trainer.html', ['#task11-more .settings-content > nav', 'afterend', 'На занятии с Натальей Михайловной можно разобрать, как связаны формула и график.']],
-      ['/trainers/oge13-inequalities-series.html', ['#hintReturn', 'beforebegin', 'Наталья Михайловна поможет разобраться, когда меняется знак неравенства и как выбрать нужные промежутки.']],
-      ['/trainers/oge-task21-word-problems.html', ['#task21Help', 'beforeend', 'На занятии с Натальей Михайловной можно потренироваться составлять уравнение по условию задачи.', '#content']],
-      ['/ege-baza/path/', ['#ege-remediation', 'beforeend', 'Эту задачу и нужные для неё навыки можно разобрать на занятии с Натальей Михайловной.', '#main']],
+      ['/trainers/long-division-stepwise.html', ['[data-skill-support]', 'beforeend',
+        'Наталья Михайловна поможет разобрать деление уголком: от первого неполного делимого до выбора цифры частного.', '#guided-division', 'division']],
+      ['/trainers/negative-numbers.html', ['#negative-options', 'beforeend',
+        'Хотите разобраться со знаками на числовой прямой? Это можно сделать на занятии с Натальей Михайловной.', null, 'negatives']],
+      ['/trainers/oge-task6-fractions.html', ['#settings aside[aria-label="Повторить дроби"]', 'afterend',
+        'На занятии с Натальей Михайловной можно разобраться со смыслом дроби, общим знаменателем и порядком действий.', null, 'fractions']],
+      ['/trainers/oge-task9-equations.html', ['.generated-help .generated-return', 'beforebegin',
+        'Наталья Михайловна поможет разобрать преобразования уравнения и выбрать способ решения.', '.wrap', 'oge-equations']],
+      ['/trainers/oge-task11-graphs-trainer.html', ['#task11-more .settings-content > nav', 'afterend',
+        'На занятии с Натальей Михайловной можно разобрать, как связаны формула и график.', null, 'oge-graphs']],
+      ['/trainers/oge13-inequalities-series.html', ['#hintReturn', 'beforebegin',
+        'Наталья Михайловна поможет разобраться, когда меняется знак неравенства и как выбрать нужные промежутки.', null, 'oge-inequalities']],
+      ['/trainers/oge-task21-word-problems.html', ['#task21Help', 'beforeend',
+        'На занятии с Натальей Михайловной можно потренироваться составлять уравнение по условию задачи.', '#content', 'oge-word-problems']],
+      ['/ege-baza/path/', ['#ege-remediation', 'beforeend',
+        'Эту задачу и нужные для неё навыки можно разобрать на занятии с Натальей Михайловной.', '#main', baseSkillGif]],
       ['/ege-profil/start/', [dialogRoute, 'beforeend', anchor => {
         const dialog = anchor.closest('dialog');
         const number = dialog.querySelector('[data-profile-skill-select]')?.value ||
           dialog.querySelector('.profile-skill-subtitle')?.textContent.match(/^№([123])(?:\s|$)/)?.[1];
         return geometry[number];
       }, '#main']],
-      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend', 'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', '#profile-course-nav']]
+      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend',
+        'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', '#profile-course-nav', 'profile-trigonometry']]
     ]);
     const placement = placements.get(path);
     if (!placement) return;
-    const [selector, position, context, watch] = placement;
+    const [selector, position, context, watch, example] = placement;
     const scope = watch ? document.querySelector(watch) : document;
     if (!scope) return;
 
     function addChoices() {
       for (const anchor of scope.querySelectorAll(selector)) {
-        const neighbor = position === 'beforeend' ? anchor.querySelector(':scope > [data-lesson-contact]') :
+        const neighbor = position === 'beforeend' ? anchor.querySelector(':scope > [data-trainer-learning-options]') :
           position === 'afterend' ? anchor.nextElementSibling : anchor.previousElementSibling;
-        if (neighbor?.hasAttribute('data-lesson-contact')) continue;
-        const description = typeof context === 'function' ? context(anchor) : context;
+        if (neighbor?.hasAttribute('data-trainer-learning-options')) continue;
+        const [description, slug] = typeof context === 'function' ? (context(anchor) || []) :
+          [context, typeof example === 'function' ? example(anchor) : example];
         if (!description) continue;
         if (!document.querySelector('[data-lesson-contact-style]')) {
-          document.head.append(element('link', undefined, { rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111', 'data-lesson-contact-style': '' }));
+          document.head.append(element('link', undefined, { rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261111-gif', 'data-lesson-contact-style': '' }));
         }
+        const options = element('div', undefined, { 'data-trainer-learning-options': '' });
+        if (slug) options.append(skillGif(slug));
         const choice = element('aside', undefined, { class: 'trainer-lesson-choice', 'data-lesson-contact': '' });
         choice.append(element('p', description), element('a', 'Контакты и запись →', {
           href: '/lessons/#contact', target: '_blank', rel: 'noopener noreferrer'
         }));
-        anchor.insertAdjacentElement(position, choice);
+        options.append(choice);
+        anchor.insertAdjacentElement(position, options);
       }
     }
 

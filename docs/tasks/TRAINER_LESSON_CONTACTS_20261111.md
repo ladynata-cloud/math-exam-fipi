@@ -1,4 +1,4 @@
-# Optional lesson contacts inside ten trainers
+# Lesson contacts and worked GIF examples inside ten trainers
 
 ## Identity
 - Owner: Наталья, direct request in the current task on 2026-11-11.
@@ -8,8 +8,8 @@
 - Related ADR: none; no new trainer architecture.
 
 ## Goal and evidence
-Offer a real online lesson with Наталья Михайловна beside existing independent
-practice and help choices. The owner's screenshot identifies the division
+Offer a worked GIF example and a real online lesson with Наталья Михайловна
+beside existing independent practice and help choices. The owner's screenshot identifies the division
 prerequisite panel. Existing `/lessons/#contact` contains her Telegram, VK and
 email; the homepage already uses this destination.
 
@@ -27,11 +27,20 @@ Mount the small presentation block through the existing public navigation
 script on the ten selected paths. Trainer HTML, navigator source receipts,
 and the standalone division download remain byte-identical.
 
+The owner requested GIFs in the same places. Include twelve worked examples,
+with separate visuals for profile geometry №1, №2 and №3. The basic EGE help
+panel selects a matching GIF for percentages, fractions, signed numbers or
+equations. Open each example on demand, with static frames, a play/stop
+control and a text version. Use examples separate from the current task.
+The checked-in media is built by `python tools/build_trainer_skill_gifs.py`.
+
 ## Acceptance criteria
 - [ ] All ten selected places offer a contextual lesson link.
 - [ ] Contact target is the existing `/lessons/#contact`, in a new tab with noopener.
 - [ ] Opening contacts leaves the task, input and stored learning state intact.
 - [ ] No lesson link goes through prerequisite return/assistance handlers.
+- [ ] All twelve GIFs play from their intended help panel and offer static frames.
+- [ ] Viewing the example leaves the learner's task and attempt state intact.
 - [ ] Relevant regressions, syntax and diff checks pass.
 - [ ] Release and live verification are recorded in the PR.
 
