@@ -21,6 +21,7 @@ const demos = [
   {id:'demo-cone', route:'/stereo-course/textbook/#ex-main-0346', ready:'[data-main-model] svg'}
 ];
 const contacts = ['https://t.me/ladynata3000', 'https://vk.ru/ladynata3000'];
+const homeTopics = '/#topic-explanations';
 const reviewProfiles = new Map([
   ['https://profi.ru/profile/AlyabevaNM/', /профи\.ру/i],
   ['https://www.avito.ru/brands/b497d42ca3b63662decb1cf108440ec7', /авито/i]
@@ -129,6 +130,8 @@ async function metadataAndLinks(page) {
   for (const link of links) {
     if (link.href.startsWith('#')) {
       assert(link.href.length > 1 && await page.locator(link.href).count() === 1, 'native anchor has one real target: ' + link.href);
+    } else if (link.href === homeTopics) {
+      assert(link.target === '' || link.target === '_self', 'topic links stay in the current tab');
     } else {
       assert(allowed.has(link.href), 'showcase exposes only checked examples, direct contacts and approved review profiles: ' + link.href);
       if (link.href === '/') {
@@ -206,6 +209,11 @@ async function responsiveCase(browser, width) {
       assert.equal(await link.getAttribute('href'), demo.route);
       await popup(page, link, base + demo.route, demo.ready);
     }
+    const topicLink = page.locator('.examples-after a[href="' + homeTopics + '"]');
+    assert.equal(await topicLink.count(), 1, 'one link to the homepage topic collection');
+    await topicLink.click();
+    await page.waitForURL(base + homeTopics);
+    await page.locator('#topic-explanations').waitFor({ state: 'visible' });
     await page.goto(base + '/lessons/');
     await page.locator('.showcase-nav a[href="#contact"]').click();
     assert.equal(new URL(page.url()).hash, '#contact');
