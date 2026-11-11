@@ -173,6 +173,13 @@
   text sizes are preserved. The browser gate now requires the question,
   answer and Check control fully inside the initial 900 px viewport at
   widths 320, 390 and 1280, before any scrolling. Final-head CI must confirm it.
+- CI on `88506e52a9bee4302e86fd97ae739317f670a537` confirmed all three
+  initial viewport checks and repeated the mathematical, DOM and existing
+  course gates successfully. Its new keyboard scenario exposed a delayed
+  native `details.toggle` event: choosing the current topic could close the
+  teacher overview before its state was recorded. The fix reads the actual
+  teacher `open` state before rendering. The browser assertion is retained;
+  deterministic open/close regression checks cover the event-order boundary.
 - Initial CI found one dependent metadata mismatch: the public-navigator
   manifest still named the old exact course HTML. The existing binding command
   is used with source `7a273185deb80cfbe082ea2dcb48ea69fab46c63` and exactly

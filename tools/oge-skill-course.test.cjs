@@ -415,6 +415,28 @@ test('checking, help and map renders preserve a usable focus target', {timeout: 
     h.click(sameTopic);
     assert.equal(h.api.state.topic, 'n9');
     focusWithin(sameTopic, 'Reopening the same topic from the teacher overview');
+
+    const closingTeacher = h.query('details.teacher');
+    let closeToggleDelivered = false;
+    closingTeacher.addEventListener('toggle', () => { closeToggleDelivered = true; }, {once: true});
+    h.click('details.teacher > summary');
+    assert.equal(closingTeacher.open, false, 'Native close changes the visible state immediately');
+    h.query('[data-action="hint"]').focus();
+    h.click('[data-action="hint"]');
+    assert.equal(closeToggleDelivered, false, 'The following action occurs before the queued close event');
+    assert.equal(h.query('details.teacher').open, false, 'Rendering does not reopen an overview the user just closed');
+    focusWithin('[data-action="hint"]', 'Task action immediately after closing the overview');
+
+    const openingTeacher = h.query('details.teacher');
+    let openToggleDelivered = false;
+    openingTeacher.addEventListener('toggle', () => { openToggleDelivered = true; }, {once: true});
+    h.openDetails('details.teacher');
+    assert.equal(openingTeacher.open, true, 'Native open is immediately usable');
+    h.query(sameTopic).focus();
+    h.click(sameTopic);
+    assert.equal(openToggleDelivered, false, 'The topic is selected before the queued open event');
+    assert.equal(h.query('details.teacher').open, true, 'A fast same-topic action preserves the opened overview');
+    focusWithin(sameTopic, 'Immediate same-topic action before the toggle event');
   } finally { h.close(); }
 });
 

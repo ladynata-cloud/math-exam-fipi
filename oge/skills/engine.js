@@ -430,6 +430,9 @@
     }catch(_){}
   }
   function render(){
+    var teacher=root.querySelector("details.teacher");
+    // Native open changes before its queued toggle event is delivered.
+    if(teacher)state.teacher=teacher.open;
     var top=topic(),current=run(),t=task(),count=quickCount(),practice=current?list():overview(top),ordinaryPractice=current?practice.filter(function(q){return q.learningMode!=="creative";}):practice,total=ordinaryPractice.length,content;
     var previousFocus=captureFocus(),view=JSON.stringify([state.topic,state.mode,state.activeRun,t?t.id:null,t?t.presentationId:null]);
     if(!t){
