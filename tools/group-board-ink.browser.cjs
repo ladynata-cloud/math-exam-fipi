@@ -32,8 +32,9 @@ module.exports=async function inkFaults({page,origin,server,lesson,token,seatId,
       const canonical=await readWork();assert.equal(canonical.strokes.length,expectedInk?1:0);
       await poll(async()=>/Нет связи/.test(await page.locator('#connectionStatus').textContent()),'lost response visibly disconnects');
       assert.equal((await queue()).outbox[0].opId,opId,'unacknowledged operation retained');
+      const requestsBeforeReload=ids.length;
       await page.reload();await page.locator('#focus').waitFor({state:'visible'});await mode('board');
-      await poll(()=>retried,'same action replayed after reload');
+      await poll(()=>retried&&ids.length>requestsBeforeReload,'same action replayed after reload');
       assert.equal((await queue()).outbox[0].opId,opId,'reload preserves idempotency identity');
       assert.equal(await ink(),expectedInk,'canvas agrees with accepted action plus pending preview');
       release();
