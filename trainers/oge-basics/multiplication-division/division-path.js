@@ -50,7 +50,18 @@
       note.textContent = 'Можно начать с любого шага. Предварительная проверка необязательна.';
     }
   }
+  function revealLinkedSkill() {
+    const map = document.getElementById('division-skill-map');
+    if (!map) return;
+    let id;
+    try { id = decodeURIComponent(window.location.hash.slice(1)); }
+    catch (_) { return; }
+    const target = id && document.getElementById(id);
+    if (target && (target === map || map.contains(target))) map.open = true;
+  }
   render();
+  revealLinkedSkill();
+  window.addEventListener('hashchange', revealLinkedSkill);
   window.addEventListener('pageshow', render);
   window.addEventListener('storage', e => { if (e.key === KEY || e.key === null) render(); });
 })();
