@@ -5,6 +5,39 @@ const root=path.resolve(__dirname,'..');
 class Local extends ResourceLoader{fetch(url){const u=new URL(url);if(u.origin!=='https://mathexam.space')return null;const f=path.join(root,u.pathname);return fs.existsSync(f)?Promise.resolve(fs.readFileSync(f)):null;}}
 async function load(n){const route=n===15?'oge/geometry/task-15-external-angle.html':`trainers/oge-task${n}-${{16:'circle',17:'quadrilaterals',18:'grid'}[n]}.html`,errors=[];const vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));const dom=new JSDOM(fs.readFileSync(path.join(root,route),'utf8'),{url:'https://mathexam.space/'+route,runScripts:'dangerously',resources:new Local(),pretendToBeVisual:true,virtualConsole:vc});await new Promise(r=>dom.window.addEventListener('load',r,{once:true}));assert.deepEqual(errors,[]);return{dom,w:dom.window,d:dom.window.document,errors};}
 const store=w=>JSON.stringify(Array.from({length:w.localStorage.length},(_,i)=>{const k=w.localStorage.key(i);return[k,w.localStorage.getItem(k)];}));
+test('task18: screenshot problem has six cumulative steps, diagram support and retained answer',async()=>{
+ const{dom,w,d}=await load(18);try{
+  w.eval('TR.task=archTask(ARCHIVE.find(t=>t.id===89));TR.done=false;TR.shown=false;drawTrain();');
+  const input=d.querySelector('#ansIn');input.value='1,5';input.dispatchEvent(new w.Event('input',{bubbles:true}));
+  d.querySelector('#courseHintToggle').click();const panel=d.querySelector('#courseHintPanel');
+  assert.match(panel.firstElementChild.textContent,/Разбор этой задачи/);
+  const steps=d.querySelector('#task18Steps'),next=d.querySelector('#hintBtn');
+  for(let i=1;i<=6;i++){next.click();assert.equal(steps.children.length,i);assert.equal(input.value,'1,5');assert.match(steps.lastElementChild.textContent,new RegExp('Шаг '+i+' из 6'));}
+  assert.match(steps.textContent,/8 − 5 = 3/);assert.match(steps.textContent,/подобны по двум углам/);assert.match(steps.textContent,/1,5/);
+  assert.ok(next.disabled);assert.ok(d.querySelector('.figwrap svg').textContent.includes('P'));assert.equal(w.eval('TR.shown'),true);
+  d.querySelector('#courseHintToggle').click();d.querySelector('#courseHintToggle').click();assert.equal(steps.children.length,6);
+  d.querySelector('#chkBtn').click();assert.match(d.querySelector('#fb').textContent,/Верно/);
+  assert.equal(JSON.parse(w.localStorage.getItem('mathExamCourseProgress.v1'))['oge18-kletki']?.solvedByType?.segAB||0,0);
+  d.querySelector('#nextBtn').click();assert.equal(d.querySelector('#task18Steps').children.length,0);assert.equal(d.querySelector('#courseHintPanel').hidden,true);
+ }finally{dom.window.close();}
+});
+test('task16: every circle family exposes its actual solution before submitting an answer',async()=>{
+ const{dom,w,d}=await load(16);try{
+  for(const key of w.eval('Object.keys(SUBS)')){w.__key=key;w.eval('trTask=buildGen(window.__key);trDone=false;trAtt=2;renderTrain();');
+   const input=d.querySelector('#ans');input.value='123,45';d.querySelector('#courseHintToggle').click();
+   const total=w.eval('trTask.sol.length');for(let i=0;i<total;i++)d.querySelector('#hintBtn').click();
+   assert.equal(d.querySelectorAll('#task16Steps .step').length,total,key);assert.equal(input.value,'123,45');assert.equal(input.disabled,false);assert.equal(d.querySelector('#hintBtn').disabled,true);
+  }
+ }finally{dom.window.close();}
+});
+test('task18: every prototype can reveal all steps without closing the answer',async()=>{
+ const{dom,w,d}=await load(18);try{
+  for(const key of w.eval('SUBKEYS')){w.__key=key;w.eval('TR.task=genTask(window.__key);TR.done=false;TR.shown=false;drawTrain();');
+   const total=w.eval('TR.task.sol.length');for(let i=0;i<total;i++)d.querySelector('#hintBtn').click();
+   assert.equal(d.querySelectorAll('#task18Steps .step').length,total,key);assert.equal(d.querySelector('#ansIn').disabled,false,key);assert.equal(d.querySelector('#hintBtn').disabled,true,key);
+  }
+ }finally{dom.window.close();}
+});
 for(const n of [16,17,18])test(`task${n}: all native prototypes get discoveries and justified references without progress or answer writes`,async()=>{
  const{dom,w,d,errors}=await load(n);try{
  const keys=w.eval(n===17?'SUBKEYS':'Object.keys(SUBS)');assert.equal(keys.length,{16:33,17:38,18:15}[n]);
@@ -12,7 +45,7 @@ for(const n of [16,17,18])test(`task${n}: all native prototypes get discoveries 
   w.__key=key;w.eval(n===16?'trTask=buildGen(window.__key);trDone=false;trAtt=2;renderTrain();':n===17?'CUR=build(window.__key,S17[window.__key].gen(),{gen:true});renderTrain(false);':'TR.task=genTask(window.__key);TR.done=false;TR.missed=false;TR.shown=false;drawTrain();');
   const input=d.querySelector(n===18?'#ansIn':'#ans');input.value='123,45';input.dispatchEvent(new w.Event('input',{bubbles:true}));const before=store(w),panel=d.querySelector('#courseHintPanel'),toggle=d.querySelector('#courseHintToggle');
   assert.equal(panel.hidden,true);assert.ok(input.getAttribute('aria-label').length>20,key);assert.equal(d.querySelectorAll('.ocg-answer-label').length,1,key);
-  toggle.click();assert.equal(panel.hidden,false);const lab=panel.querySelector('[data-geometry-model]');assert.ok(lab,key);assert.match(lab.textContent,/не являются ответом/);assert.match(lab.querySelector('.ocg-scroll-note').textContent,/кнопками/);assert.equal(lab.querySelectorAll('[data-geometry-pan]').length,2);assert.equal(lab.querySelector('.ocg-figure-scroll').getAttribute('tabindex'),'0');const ranges=[...lab.querySelectorAll('input[type=range]')];assert.ok(ranges.length,key);
+  toggle.click();assert.equal(panel.hidden,false);const lab=panel.querySelector('[data-geometry-model]');assert.ok(lab,key);assert.match(lab.textContent,/не являются ответом/);assert.match(lab.querySelector('.ocg-scroll-note').textContent,/кнопками/);assert.equal(lab.querySelectorAll('[data-geometry-pan]').length,2);assert.equal(lab.querySelector('.ocg-figure-scroll').getAttribute('tabindex'),'-1','unmeasurable closed model is not an extra keyboard stop');const ranges=[...lab.querySelectorAll('input[type=range]')];assert.ok(ranges.length,key);
   for(const range of ranges){for(const value of[range.min,range.max]){range.value=value;range.dispatchEvent(new w.Event('input',{bubbles:true}));assert.doesNotMatch(lab.innerHTML,/NaN|undefined|Infinity/,key);}}
   assert.ok(panel.querySelector('.ocr-theory a'),key+' has textbook citation');assert.ok(panel.querySelector('.ocg-reference-box'),key);assert.equal(input.value,'123,45');assert.equal(store(w),before,key+' lab must not grade');
   [...panel.querySelectorAll('button')].find(b=>b.textContent==='Вернуться к моему ответу').click();assert.equal(panel.hidden,true);assert.equal(d.activeElement,input);assert.equal(input.value,'123,45');assert.equal(store(w),before);

@@ -44,4 +44,35 @@ function sourceForProfileBoard(root, wrapper) {
   assert.doesNotMatch(wrapper, /\/assets\/assistant\/navigator-/, 'The board wrapper must not install the public navigator');
   return canonical;
 }
-module.exports = {resolvePublicScript, loadSchoolModels, sourceForProfileBoard};
+
+// The public page has six scoped map and coaching modules. Board wrappers
+// deliberately omit them, but must retain every shared learning script in order.
+// Only the explicitly reviewed public cache-stamp changes differ from wrapper URLs;
+// this is not a general query-string normalizer or script ignore list.
+function canonicalProfileLearningScripts(canonical, wrapper) {
+  const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
+    .map(match => ({tag: match[0], src: match[1]}));
+  const page = scripts(canonical), board = scripts(wrapper);
+  const publicModules = ['../skill-map-data.js?v=20261111-skills', '../skill-map.js?v=20261111-skills',
+    'journey.js?v=20261109', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
+    'practice-coach.js?v=20261109-integrity'];
+  const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
+  const publicPaths = new Set(publicModules.map(pathname));
+  assert.deepEqual(page.filter(script => publicPaths.has(pathname(script.src))).map(script => script.src), publicModules,
+    'The public page contains exactly the reviewed public modules, once and in order');
+  assert.deepEqual(page.slice(0, publicModules.length).map(script => script.src), publicModules,
+    'Public-only modules precede the canonical learning runtime');
+  for (let index = 0; index < publicModules.length; index++)
+    assert.equal(page[index].tag, '<script defer src="' + publicModules[index] + '"></script>', 'Exact deferred public-module include');
+  assert.ok(board.every(script => !publicPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
+  const cacheStamps = new Map([
+    ['calm-ui.js?v=20261109-journey', 'calm-ui.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261111-skills', 'app.js?v=20261101-trainer-repair'],
+    ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
+  ]);
+  for (const current of cacheStamps.keys())
+    assert.deepEqual(page.filter(script => pathname(script.src) === pathname(current)).map(script => script.src), [current],
+      'Only the reviewed public runtime cache stamp may differ: ' + current.split('?')[0]);
+  return page.slice(publicModules.length).map(script => cacheStamps.get(script.src) || script.src);
+}
+module.exports = {resolvePublicScript, loadSchoolModels, sourceForProfileBoard, canonicalProfileLearningScripts};

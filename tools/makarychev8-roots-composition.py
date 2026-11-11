@@ -33,7 +33,10 @@ MANIFEST = 'assets/assistant/page-rollout.json'
 COURSE_PAGE = 'school/makarychev8/index.html'
 ORIGINAL_BASE = '6c64ac63e6bad70993ec50995d3a39976b1b0a36'
 VPR_PAGES = {'trainers/vpr-math/index.html', 'vpr/index.html'}
-COMPOSITION_PATHS = {MANIFEST, 'docs/PROJECT_STATUS.md'}
+# The published saved-work audit and example catalogue also changed the course shell.
+# The composed head must preserve those features and pass their existing gates.
+COMPOSITION_PATHS = {MANIFEST, 'docs/PROJECT_STATUS.md', COURSE_PAGE,
+                     'school/makarychev8/app.js', '.github/workflows/makarychev8-quality.yml'}
 
 # Independently matched to merged PR metadata on 2026-11-07. This is commit
 # provenance, not owner authorization. Unknown main commits require review;

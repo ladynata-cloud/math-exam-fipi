@@ -17,7 +17,7 @@ on:
 permissions:
   contents: read
 env:
-  MAKARYCHEV8_COMPOSITION_BASE: ac0fdfa68f3e6a79f5b08ae2ef43c16dc138c1f8
+  MAKARYCHEV8_COMPOSITION_BASE: ${{ github.event.pull_request.base.sha || 'f3097192ed1343e4a5ca44e2f675f5c7ba3f9494' }}
 jobs:
   course:
     runs-on: ubuntu-latest
@@ -61,6 +61,7 @@ jobs:
         run: |
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-audit-learning.cjs
       - name: Chromium source exercises and responsive layout
         run: NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-browser.cjs
       - name: Chromium exercises25–54 and graph construction

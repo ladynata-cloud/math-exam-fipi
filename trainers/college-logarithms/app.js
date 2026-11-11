@@ -9,7 +9,9 @@ if(C.task(requestedTask))state=!BOARD&&saved['learn:'+requestedTask]?C.clone(sav
 function save(){if(BOARD)return;saved[state.mode+':'+state.taskId]=C.clone(state);try{localStorage.setItem(KEY,JSON.stringify({current:state,attempts:saved}));}catch(_){storageOK=false;}}
 function changed(renderAll=true){if(!C.validate(state))throw Error('Invalid local logarithm state');save();if(renderAll)render();if(adapter)adapter.changed();}
 function select(id,mode=state.mode){if(!C.task(id))return;save();const previous=!BOARD?saved[mode+':'+id]:null;state=previous&&C.validate(previous)?C.clone(previous):C.blank(id,mode);changed();}
-function check(){const t=C.task(state.taskId),step=t.steps[state.stage];if(!step)return;if(C.correct(step,state.drafts[state.stage])){state.stage++;state.hint=0;state.feedback='correct';}else{state.errors=Math.min(100000,state.errors+1);state.feedback='wrong';}changed();if(state.stage<t.steps.length)$('answer')?.focus();}
+function check(){const t=C.task(state.taskId),step=t.steps[state.stage];if(!step)return;
+if(!state.drafts[state.stage].trim()){$('feedback').className='';$('feedback').textContent=step.kind==='choice'?'Сначала выбери ответ. Это ещё не попытка решения.':'Сначала введи ответ. Пустое поле не считается ошибкой.';$('answer')?.focus();return;}
+if(C.correct(step,state.drafts[state.stage])){state.stage++;state.hint=0;state.feedback='correct';}else{state.errors=Math.min(100000,state.errors+1);state.feedback='wrong';}changed();if(state.stage<t.steps.length)$('answer')?.focus();}
 function setDraft(v){state.drafts[state.stage]=String(v).slice(0,200);state.feedback='none';changed(false);$('feedback').textContent='';$('feedback').className='';}
 function lab(){const p=state.lab;$('base').value=String(p.a);$('shift-h').value=p.h;$('shift-k').value=p.k;$('h-value').textContent=p.h;$('k-value').textContent=p.k;$('lab-formula').innerHTML=rich(`y = log[${E.formatNumber(p.a)}](x − (${p.h})) + (${p.k})`);
 const pts=[[p.h+1,p.k],[p.h+p.a,p.k+1],[p.h+1/p.a,p.k-1]];P.render($('lab-graph'),p,pts,true);
