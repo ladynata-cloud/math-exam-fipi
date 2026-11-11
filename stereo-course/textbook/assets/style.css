@@ -84,18 +84,17 @@ button{max-width:100%;white-space:normal}
  .textbook-reading .textbook-main{padding:.3rem}
  .textbook-reading .textbook-lesson-header{gap:.2rem .45rem;margin-bottom:.25rem}
  .textbook-reading .textbook-lesson-header>button{font-size:.95rem;padding:.35rem .5rem}
- .textbook-reading .textbook-site-home{font-size:.9rem}
- .textbook-reading .textbook-lesson-header .companion-reference{display:contents}
- .textbook-reading .textbook-lesson-header .companion-identity{order:1;flex-basis:100%;font-size:.95rem;line-height:1.35}
+ .textbook-reading .textbook-lesson-header>.textbook-site-home{font-size:.9rem;margin-left:auto}
+ .textbook-reading .textbook-lesson-header .companion-reference{display:flex;order:1;flex-basis:100%;justify-content:space-between;gap:0 .4rem}
+ .textbook-reading .textbook-lesson-header .companion-identity{flex:1 1 auto;min-width:0;font-size:.88rem;line-height:1.35}
  .textbook-reading .textbook-lesson-header>h1{order:2;font-size:1.2rem}
- .textbook-reading .textbook-lesson-header .companion-details{margin-left:auto}
- .textbook-reading .textbook-lesson-header .companion-details[open]{margin-left:0}
- .textbook-early-reading .textbook-lesson-header>.textbook-site-home{margin-left:auto}
- .textbook-early-reading .textbook-lesson-header .companion-reference{display:flex;order:1;flex-basis:100%;justify-content:space-between;gap:0 .4rem}
- .textbook-early-reading .textbook-lesson-header .companion-identity{flex:1 1 auto;min-width:0;font-size:.88rem}
- .textbook-early-reading .textbook-lesson-header .companion-details{flex:0 0 auto;margin-left:0}
- .textbook-early-reading .textbook-lesson-header .companion-details[open]{flex-basis:100%}
+ .textbook-reading .textbook-lesson-header .companion-details{flex:0 0 auto}
+ .textbook-reading .textbook-lesson-header .companion-details[open]{flex-basis:100%}
  .textbook-early-reading .textbook-lesson-header>h1{font-size:1.06rem;line-height:1.17}
  .textbook-early-reading .textbook-condition{line-height:1.25;margin-bottom:.35rem}
  .textbook-early-reading .textbook-goal{font-size:.95rem;line-height:1.25;margin:.35rem 0 .45rem}
+}
+@media(max-width:480px){
+ /* Arial and Liberation Sans share metrics across mobile and desktop platforms. */
+ .textbook-reading .textbook-lesson-header,.textbook-reading .textbook-layout{font-family:Arial,"Liberation Sans",sans-serif}
 }

@@ -11,7 +11,7 @@ const originals = {
 };
 const reviewed = {
   [directory + 'engine.js']: '3407b8649699cd683a4fd16f4b49497d0aab3136b0b65fdbe23a4f9a6aa0fd1a',
-  [directory + 'style.css']: 'bfbdd9bb20165d7db5036c3da97389805491f344ff956b5fba05c038beb57d2c'
+  [directory + 'style.css']: '57e438c58312be2c4c98506cec5f2bbfa8e5bce63adedb5cb6bbdb6bd518d915'
 };
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 
