@@ -1,4 +1,44 @@
-/* Public navigation only. No account, answer, URL-query or persistent context. */
+/* Shared home return. Also bundled verbatim at the start of navigator-widget.js. */
+(function (root) {
+  'use strict';
+  function mountHomeLink() {
+    const document = root.document;
+    if (root.self !== root.top || !document.body || document.getElementById('mathexam-home-navigation')) return;
+    const pathname = root.location.pathname;
+    if (pathname === '/' || pathname === '/index.html' || /^\/(?:book|b|learning|board-server|assistant-service|downloads|docs|tools|assets)\//.test(pathname)) return;
+    const params = new URLSearchParams(root.location.search);
+    if (['embed', 'embedded'].some(key => /^(?:1|true)$/.test(params.get(key) || ''))) return;
+    const host = document.createElement('div');
+    host.id = 'mathexam-home-navigation';
+    // Shadow styles keep existing trainer button/nav rules away from this link.
+    host.style.cssText = 'display:block;flex:none;grid-column:1 / -1;align-self:stretch;box-sizing:border-box;width:100%;max-width:100%;min-width:0;';
+    const shadow = host.attachShadow({ mode: 'open' });
+    const style = document.createElement('style');
+    style.textContent = ':host{color-scheme:light}*{box-sizing:border-box}nav{display:block;margin:0;padding:6px 12px;background:#f5f8f5;border-bottom:1px solid #d9e5dd;text-align:left;font:600 14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}a{display:inline-flex;align-items:center;gap:7px;min-height:44px;max-width:100%;padding:8px 12px;border:1px solid #b7cebf;border-radius:10px;background:#fff;color:#175d42;text-decoration:none;touch-action:manipulation}a:hover{background:#e8f3ed}a:focus-visible{outline:3px solid #176d49;outline-offset:2px}@media print{:host{display:none!important}}';
+    const nav = document.createElement('nav');
+    nav.setAttribute('aria-label', 'Переход на главную');
+    const link = document.createElement('a');
+    link.href = '/';
+    link.target = '_self';
+    link.setAttribute('aria-label', 'На главную MathExam');
+    link.textContent = '← На главную';
+    nav.append(link);
+    shadow.append(style, nav);
+    // Keep authored first-screen conditions, diagrams and videos at their
+    // existing coordinates. The return follows the content in document flow,
+    // and stays inside the sole content column of a centered flex-row shell.
+    let container = document.body;
+    const bodyStyle = root.getComputedStyle(document.body);
+    if (bodyStyle.display === 'flex' && /^row/.test(bodyStyle.flexDirection)) {
+      container = document.body.querySelector('main') || Array.from(document.body.children).find(node => /^(?:DIV|ARTICLE|SECTION)$/.test(node.tagName)) || document.body;
+    }
+    container.append(host);
+  }
+  if (root.document.readyState === 'loading') root.document.addEventListener('DOMContentLoaded', mountHomeLink, { once: true });
+  else mountHomeLink();
+})(window);
+
+/* Public navigation, worked examples and lesson contacts. */
 (function (root) {
   'use strict';
   const HOST_ID = 'maxexam-public-assistant';
@@ -203,6 +243,317 @@
     }, true);
     root.addEventListener('pagehide', () => { reset(false); setOpen(false, false); });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, { once: true });
-  else mount();
+  let skillGifPlayer;
+
+  function loadSkillGifPlayer() {
+    if (!skillGifPlayer) {
+      skillGifPlayer = new Promise((resolve, reject) => {
+        const script = element('script', undefined, { src: '/assets/trainer-skill-gif.js?v=20261112' });
+        script.addEventListener('load', () => {
+          if (root.MathExamTrainerSkillGif) resolve(root.MathExamTrainerSkillGif);
+          else reject(new Error('GIF player unavailable'));
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.append(script);
+      }).catch(error => {
+        skillGifPlayer = null;
+        throw error;
+      });
+    }
+    return skillGifPlayer;
+  }
+
+  function skillGif(slug, label = 'Наглядный разбор (GIF)') {
+    const details = element('details', undefined, { class: 'trainer-skill-gif', 'data-trainer-skill-gif': slug });
+    const summary = element('summary', label);
+    const status = element('p', '', { 'data-trainer-gif-status': '', role: 'status' });
+    details.append(summary, status);
+    let pending = false;
+    let ready = false;
+    details.addEventListener('toggle', async () => {
+      if (!details.open || pending || ready) return;
+      pending = true;
+      status.textContent = 'Загружается пример…';
+      try {
+        const player = await loadSkillGifPlayer();
+        await player.mount(details, slug);
+        ready = true;
+      } catch (_) {
+        status.textContent = 'Разбор не загрузился. Закройте и откройте его ещё раз.';
+      } finally {
+        pending = false;
+      }
+    });
+    return details;
+  }
+
+  function baseSkillGif(anchor) {
+    const href = anchor.querySelector('a[href]')?.pathname || '';
+    if (href.startsWith('/trainers/oge-basics/percentages/')) return 'base-percent';
+    if (href.startsWith('/trainers/oge-basics/fraction-')) return 'fractions';
+    if (href.startsWith('/trainers/oge-basics/negative-')) return 'negatives';
+    if (href === '/trainers/simple-equations-stepwise.html') return 'oge-equations';
+    return null;
+  }
+
+  function standaloneTrainer() {
+    if (root.self !== root.top || !/^https?:$/.test(root.location.protocol) || root.MathExamBookEdition ||
+        root.OgeCourseSharedMode || root.MathExamLearning?.managed || document.body.dataset.profileBoard) return false;
+    const params = new URLSearchParams(root.location.search);
+    return !['learning', 'board', 'groupLesson', 'g7-board'].some(key => params.get(key) === '1');
+  }
+
+  function learningOptionsStyle() {
+    if (document.querySelector('[data-lesson-contact-style]')) return;
+    document.head.append(element('link', undefined, {
+      rel: 'stylesheet', href: '/assets/trainer-lesson-choice.css?v=20261112-entry', 'data-lesson-contact-style': ''
+    }));
+  }
+
+  function mountLessonChoices() {
+    if (!standaloneTrainer()) return;
+
+    // The placements are public page choices; none is a trainer hint or action.
+    // Keep the edition snapshots and existing trainer source files intact.
+    const path = root.location.pathname.replace(/\/index\.html$/, '/');
+    const dialogRoute = 'dialog[data-profile-skill-dialog] .profile-skill-route';
+    const geometry = {
+      1: ['На занятии с Натальей Михайловной можно разобрать, как читать чертёж и выбирать свойства фигур.', 'profile-planimetry'],
+      2: ['С Натальей Михайловной можно разобрать векторы: как читать рисунок, находить координаты и длину.', 'profile-vectors'],
+      3: ['С Натальей Михайловной можно разобрать чертёж объёмной фигуры и понять, какие отрезки понадобятся в решении.', 'profile-stereometry']
+    };
+    const placements = new Map([
+      ['/trainers/long-division-stepwise.html', ['[data-skill-support]', 'beforeend',
+        'Наталья Михайловна поможет разобрать деление уголком: от первого неполного делимого до выбора цифры частного.', '#guided-division', 'division']],
+      ['/trainers/negative-numbers.html', ['#negative-options', 'beforeend',
+        'Хотите разобраться со знаками на числовой прямой? Это можно сделать на занятии с Натальей Михайловной.', null, 'negatives']],
+      ['/trainers/oge-task6-fractions.html', ['#settings aside[aria-label="Повторить дроби"]', 'afterend',
+        'На занятии с Натальей Михайловной можно разобраться со смыслом дроби, общим знаменателем и порядком действий.', null, 'fractions']],
+      ['/trainers/oge-task9-equations.html', ['.generated-help .generated-return', 'beforebegin',
+        'Наталья Михайловна поможет разобрать преобразования уравнения и выбрать способ решения.', '.wrap', 'oge-equations']],
+      ['/trainers/oge-task11-graphs-trainer.html', ['#task11-more .settings-content > nav', 'afterend',
+        'На занятии с Натальей Михайловной можно разобрать, как связаны формула и график.', null, 'oge-graphs']],
+      ['/trainers/oge13-inequalities-series.html', ['#hintReturn', 'beforebegin',
+        'Наталья Михайловна поможет разобраться, когда меняется знак неравенства и как выбрать нужные промежутки.', null, 'oge-inequalities']],
+      ['/trainers/oge-task21-word-problems.html', ['#task21Help', 'beforeend',
+        'На занятии с Натальей Михайловной можно потренироваться составлять уравнение по условию задачи.', '#content', 'oge-word-problems']],
+      // Keep the remediation panel's single lesson-return link intact.
+      ['/ege-baza/path/', ['#ege-remediation', 'afterend',
+        'Эту задачу и нужные для неё навыки можно разобрать на занятии с Натальей Михайловной.', '#main', baseSkillGif]],
+      ['/ege-profil/start/', [dialogRoute, 'beforeend', anchor => {
+        const dialog = anchor.closest('dialog');
+        const number = dialog.querySelector('[data-profile-skill-select]')?.value ||
+          dialog.querySelector('.profile-skill-subtitle')?.textContent.match(/^№([123])(?:\s|$)/)?.[1];
+        return geometry[number];
+      }, '#main']],
+      ['/ege-profil/trainers/trigonometry.html', [dialogRoute, 'beforeend',
+        'Наталья Михайловна поможет разобраться с тригонометрической окружностью, формулами и уравнениями.', '#profile-course-nav', 'profile-trigonometry']]
+    ]);
+    const placement = placements.get(path);
+    if (!placement) return;
+    const [selector, position, context, watch, example] = placement;
+    const scope = watch ? document.querySelector(watch) : document;
+    if (!scope) return;
+    const adjacentChoices = new Map();
+
+    function addChoices() {
+      for (const [anchor, options] of adjacentChoices) {
+        if (scope.contains(anchor)) continue;
+        options.remove();
+        adjacentChoices.delete(anchor);
+      }
+      for (const anchor of scope.querySelectorAll(selector)) {
+        const neighbor = position === 'beforeend' ? anchor.querySelector(':scope > [data-trainer-learning-options]') :
+          position === 'afterend' ? anchor.nextElementSibling : anchor.previousElementSibling;
+        if (neighbor?.hasAttribute('data-trainer-learning-options')) continue;
+        const [description, slug] = typeof context === 'function' ? (context(anchor) || []) :
+          [context, typeof example === 'function' ? example(anchor) : example];
+        if (!description) continue;
+        learningOptionsStyle();
+        const options = element('div', undefined, { 'data-trainer-learning-options': '' });
+        if (slug) options.append(skillGif(slug));
+        const choice = element('aside', undefined, { class: 'trainer-lesson-choice', 'data-lesson-contact': '' });
+        choice.append(element('p', description), element('a', 'Контакты и запись →', {
+          href: '/lessons/#contact', target: '_blank', rel: 'noopener noreferrer'
+        }));
+        options.append(choice);
+        anchor.insertAdjacentElement(position, options);
+        if (watch && position !== 'beforeend') adjacentChoices.set(anchor, options);
+      }
+    }
+
+    addChoices();
+    if (watch) new root.MutationObserver(addChoices).observe(scope, { childList: true, subtree: true });
+  }
+
+  function mountTrainerEntrances() {
+    if (!standaloneTrainer()) return;
+    const path = root.location.pathname.replace(/\/index\.html$/, '/');
+    const divisionTopic = ['/topics/delenie-ugolkom/', 'Разбор деления'];
+    const divisionPath = ['/trainers/oge-basics/multiplication-division/division-path.html', 'Ступени деления'];
+    const fractionTopic = ['/topics/obyknovennye-drobi/', 'Разбор дробей'];
+    const percentTopic = ['/topics/procenty/', 'Разбор процентов'];
+    const percentPath = ['/trainers/oge-basics/percentages/', 'Все навыки по процентам'];
+    const equationsTopic = ['/topics/lineynye-uravneniya/', 'Разбор уравнений'];
+    const geometryTopic = ['/topics/oge-geometriya/', 'Разбор геометрии ОГЭ'];
+    const geometryPath = ['/trainers/oge-course/#geometry', 'Задания по геометрии ОГЭ'];
+    const gradeSeven = ['/geometry-course/grade7/', 'Курс геометрии 7 класса'];
+    const geoRightDemo = ['/lessons/#demo-ege', 'К примеру на странице занятий'];
+    const routes = new Map();
+    const add = (paths, links, options = {}) => {
+      for (const name of paths) routes.set(name, { links, ...options });
+    };
+
+    add(['/trainers/long-division-stepwise.html'], [divisionTopic, divisionPath, ['/lessons/#demo-division', 'К примеру на странице занятий']], { lesson: false });
+    add(['/trainers/long-division-claude.html'], [divisionTopic, divisionPath], { anchor: 'main .hero' });
+    add([divisionPath[0]], [divisionTopic, ['/trainers/long-division-stepwise.html', 'Деление по шагам']], { anchor: '.path-hero' });
+    add(['/trainers/oge-basics/multiplication-division/quotient-estimate.html'], [divisionTopic,
+      ['/trainers/oge-basics/multiplication-division/division-path.html#stage-twoDigit', 'Деление на двузначное число']], { anchor: '#view-practice' });
+    add(['/trainers/rounding-stepwise.html'], [divisionTopic, ['/trainers/oge-basics/multiplication-division/quotient-estimate.html', 'Подбор цифры частного']], { anchor: 'main .hero' });
+
+    add(['/trainers/oge-task6-fractions.html'], [fractionTopic,
+      ['/trainers/oge-basics/fraction-common-denominator.html', 'Общий знаменатель']], { lesson: false });
+    add(['/trainers/oge-basics/fraction-meaning.html'], [fractionTopic,
+      ['/trainers/oge-basics/fraction-common-denominator.html', 'Дальше: общий знаменатель']]);
+    add(['/trainers/oge-basics/fraction-common-denominator.html'], [fractionTopic, ['/trainers/oge-task6-fractions.html', 'Дроби в ОГЭ №6']]);
+
+    add([percentPath[0]], [percentTopic, ['/trainers/oge-basics/percentages/percent-of-number-and-whole.html', 'Найти процент от числа']]);
+    add(['/trainers/oge-basics/percentages/percent-of-number-and-whole.html'], [percentTopic, percentPath]);
+    add(['/trainers/oge-1-5-trainers/percent-table-trainer.html'], [percentTopic, percentPath], { anchor: '#result-details' });
+    add(['/trainers/simple-equations-stepwise.html'], [equationsTopic, ['/trainers/oge-task9-equations.html', 'Уравнения в ОГЭ №9']], { anchor: 'main .hero' });
+    add(['/trainers/oge-task9-equations.html'], [equationsTopic, ['/trainers/simple-equations-stepwise.html', 'Простые уравнения по шагам']], { lesson: false });
+    add(['/trainers/oge-task11-graphs-trainer.html'], [['/lessons/#demo-graphs', 'К примеру на странице занятий'],
+      ['/trainers/oge-course/', 'Все задания ОГЭ']], { lesson: false });
+
+    add(['/trainers/oge-task15-triangles.html', '/trainers/oge-task16-circle.html', '/trainers/oge-task17-quadrilaterals.html',
+      '/trainers/oge-task18-grid.html', '/trainers/task19-trainer.html'], [geometryTopic, geometryPath]);
+    add(['/oge/geometry/task-15-external-angle.html'], [geometryTopic,
+      ['/trainers/oge-task15-triangles.html', 'Решать задачи №15']]);
+    add(['/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html'], [
+      ['/trainers/oge-1-5-trainers/practice-1-5-map.html', 'Выбрать сюжет заданий №1–5'], ['/oge/', 'Подготовка к ОГЭ']], { anchor: '#result .result-actions' });
+
+    add(['/stereo-course/textbook/'], [['/lessons/#demo-cone', 'К примеру на странице занятий'],
+      ['/stereo-course/', 'Курс стереометрии']], {
+      anchor: '.textbook-help', watch: '#textbook-app', match: hash => hash === '#ex-main-0346'
+    });
+    add(['/ege-profil/start/'], [geoRightDemo, ['/ege-profil/', 'Все задания профильного ЕГЭ']], {
+      anchor: '#main', position: 'afterbegin', lesson: false, watch: '#main',
+      match: hash => /^#(?:practice\/geo-right\/(?:guided|plan|independent)|(?:exam|calm)\/1)$/.test(hash)
+    });
+
+    add(['/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html'], [gradeSeven,
+      ['/geometry-course/trainers/ch4-p1-t1-angle-sum-lab.html', 'Исследовать сумму углов']], { anchor: '#bar' });
+    add(['/geometry-course/trainers/ch2-p3-t2-proof-asa.html'], [gradeSeven,
+      ['/geometry-course/trainers/ch2-p3-t1-overlay-asa.html', 'Увидеть второй признак на чертеже']], { anchor: '#bar' });
+    add(['/trainers/ege-profile/log-inequalities/nested.html'], [
+      ['/trainers/ege-profile/log-inequalities/index.html#nested-example-title', 'Разбор вложенных логарифмов'],
+      ['/trainers/ege-profile/log-inequalities/lesson.html', 'Логарифмические неравенства по шагам']], { anchor: '#current .bottom-actions', watch: '#current' });
+    add(['/trainers/negative-numbers-alternative.html'], [
+      ['/trainers/oge-basics/negative-number-line.html', 'Потренировать числовую прямую'],
+      ['/trainers/negative-numbers.html', 'Сложение и вычитание со знаками']], { anchor: 'main.page > section.card:first-of-type', position: 'beforeend' });
+
+    const examples = new Map();
+    const addExamples = (paths, first, second) => {
+      for (const name of paths) examples.set(name, [first, second]);
+    };
+    const division = ['division', 'Деление уголком'];
+    const remainder = ['division-remainder', 'Проверка остатка'];
+    const denominator = ['fractions', 'Общий знаменатель'];
+    const percent = ['base-percent', 'Процент от числа'];
+    const whole = ['percent-whole', 'Число по его проценту'];
+    const equations = ['oge-equations', 'Преобразование уравнения'];
+    const triangle = ['triangle-sum', 'Третий угол треугольника'];
+    const exterior = ['triangle-exterior', 'Внешний угол треугольника'];
+    const percentTable = ['percent-table', 'Проценты в таблице'];
+
+    addExamples(['/trainers/long-division-stepwise.html', '/trainers/long-division-claude.html', divisionTopic[0]], division, remainder);
+    addExamples([divisionPath[0]], division, ['division-zero', 'Ноль в частном']);
+    addExamples(['/trainers/oge-basics/multiplication-division/quotient-estimate.html'], ['quotient-estimate', 'Подбор цифры частного'], remainder);
+    addExamples(['/trainers/rounding-stepwise.html'], ['rounding-nearest', 'Округление до сотен'], ['rounding-place', 'Округление до тысяч']);
+    addExamples(['/trainers/oge-task6-fractions.html'], denominator, ['fraction-multiply', 'Умножение дробей']);
+    addExamples(['/trainers/oge-basics/fraction-meaning.html'], ['fraction-parts', 'Что показывают числитель и знаменатель'], ['fraction-of-number', 'Дробь от числа']);
+    addExamples(['/trainers/oge-basics/fraction-common-denominator.html', fractionTopic[0]], denominator, ['fraction-subtraction', 'Вычитание дробей']);
+    addExamples([percentPath[0], '/trainers/oge-basics/percentages/percent-of-number-and-whole.html', percentTopic[0]], percent, whole);
+    addExamples(['/trainers/oge-1-5-trainers/percent-table-trainer.html'], percentTable, ['percent-change', 'Скидка и новая цена']);
+    addExamples(['/trainers/simple-equations-stepwise.html', equationsTopic[0]], equations, ['linear-balance', 'Одинаковое действие в обеих частях']);
+    addExamples(['/trainers/oge-task9-equations.html'], equations, ['equation-distribute', 'Раскрытие скобок']);
+    addExamples(['/trainers/oge-task11-graphs-trainer.html'], ['oge-graphs', 'Коэффициенты линейной функции'], ['graph-points', 'Точки линейной функции']);
+    addExamples(['/trainers/oge-task15-triangles.html', '/oge/geometry/task-15-external-angle.html',
+      '/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html', geometryTopic[0]], triangle, exterior);
+    addExamples(['/trainers/oge-task16-circle.html'], ['circle-inscribed', 'Вписанный угол'], ['circle-tangent', 'Радиус и касательная']);
+    addExamples(['/trainers/oge-task17-quadrilaterals.html'], ['quad-area', 'Площадь трапеции'], ['quad-midline', 'Средняя линия трапеции']);
+    addExamples(['/trainers/oge-task18-grid.html'], ['grid-area', 'Площадь треугольника на клетках'], ['grid-diagonal', 'Длина отрезка по клеткам']);
+    addExamples(['/trainers/task19-trainer.html'], triangle, ['geometry-statement', 'Контрпример к утверждению']);
+    addExamples(['/trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html'], percentTable, ['diagnostic-tariff', 'Сравнение тарифов']);
+    addExamples(['/stereo-course/textbook/'], ['cone-volume', 'Объём конуса'], ['cone-scale', 'Как меняется объём конуса']);
+    addExamples(['/ege-profil/start/'], ['profile-planimetry', 'Теорема Пифагора'], ['profile-area', 'Площадь прямоугольного треугольника']);
+    addExamples(['/geometry-course/trainers/ch2-p3-t2-proof-asa.html'], ['triangle-asa', 'Второй признак равенства треугольников'], ['triangle-asa-apply', 'Соответствие сторон равных треугольников']);
+    addExamples(['/trainers/ege-profile/log-inequalities/nested.html'], ['log-domain', 'Область допустимых значений'], ['log-decreasing', 'Убывающий логарифм']);
+    addExamples(['/trainers/negative-numbers-alternative.html'], ['negatives', 'Сложение на числовой прямой'], ['negative-subtract', 'Вычитание отрицательного числа']);
+
+    const pair = examples.get(path);
+    if (!pair) return;
+
+    function exampleGroup() {
+      const group = element('section', undefined, {
+        class: 'trainer-entry-examples', 'aria-label': 'Наглядные разборы (GIF)', 'data-trainer-entry-examples': ''
+      });
+      for (const [slug, label] of pair) group.append(skillGif(slug, label));
+      return group;
+    }
+
+    const route = routes.get(path);
+    if (!route) {
+      const hero = document.querySelector('.topic-hero');
+      if (hero) {
+        learningOptionsStyle();
+        hero.after(exampleGroup());
+      }
+      return;
+    }
+    const { links, anchor: selector = 'nav.oge-wayfinding', position = 'afterend', match, watch, lesson = true } = route;
+    let menu;
+    let examplesNode;
+    let previousAnchor;
+
+    function addLinks() {
+      const anchor = document.querySelector(selector);
+      if (!anchor || (match && !match(root.location.hash))) {
+        menu?.remove();
+        examplesNode?.remove();
+        return;
+      }
+      if (menu?.isConnected && examplesNode?.isConnected && previousAnchor === anchor) return;
+      menu?.remove();
+      examplesNode?.remove();
+      learningOptionsStyle();
+      menu = element('nav', undefined, { class: 'trainer-entry-links', 'aria-label': 'Переходы по теме', 'data-trainer-entry-links': '' });
+      for (const [href, label] of links) {
+        menu.append(element('a', label, { href, target: '_blank', rel: 'noopener noreferrer', 'aria-label': `${label} (в новой вкладке)` }));
+      }
+      if (lesson) {
+        menu.append(element('a', 'Разобрать с репетитором', {
+          href: '/lessons/#contact', target: '_blank', rel: 'noopener noreferrer', class: 'trainer-entry-lesson',
+          'aria-label': 'Разобрать тему с Натальей Михайловной (в новой вкладке)'
+        }));
+      }
+      previousAnchor = anchor;
+      examplesNode = exampleGroup();
+      anchor.insertAdjacentElement(position, menu);
+      menu.after(examplesNode);
+    }
+
+    addLinks();
+    const observed = watch && document.querySelector(watch);
+    if (observed) new root.MutationObserver(addLinks).observe(observed, { childList: true, subtree: true });
+    if (match) root.addEventListener('hashchange', addLinks);
+  }
+
+  function start() {
+    mount();
+    mountLessonChoices();
+    mountTrainerEntrances();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
 })(window);

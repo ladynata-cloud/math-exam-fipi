@@ -4,6 +4,7 @@ const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreVideoModels}=require('./oge-video-models-preservation.cjs');
+const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
@@ -20,6 +21,7 @@ function withoutReturnShell(html) {
 function currentPage(file){
  let html=restoreVideoModels(file,withoutReturnShell(restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8')));
  if(file==='trainers/oge-task6-fractions.html'){
+  html=restoreFractionMultiplicationStep(html);
   const replacement='<main class="wrap">\n\n<header>';
   assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');
   html=html.replace(replacement,'<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>');
