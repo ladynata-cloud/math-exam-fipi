@@ -52,7 +52,7 @@ test('the published 194 source records, revisions, order and A–D bytes are imm
   assert.equal(catalog.items.filter(row => row.trainerId === 'vilenkin6-part1').length, 27);
   const newEgeIds = new Set([
     'practice-digits-delete', 'practice-average-three', 'practice-ring-route', 'practice-ring-meeting',
-    'practice-mushroom-count', 'practice-vase-order'
+    'practice-mushroom-count', 'practice-vase-order', 'practice-trig-equation', 'practice-exponential-inequality', 'practice-log-inequality'
   ].map(id => 'path:' + id));
   assert.deepEqual(
     catalog.items.filter(row => newEgeIds.has(row.id)).map(row => row.id).sort(),

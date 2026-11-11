@@ -122,7 +122,7 @@ test('actual pupil home, course and route use latest course URLs and retain prio
       assert.equal(f.main.querySelector('a[href="#attempt=peer-work"]'),null);
       assert(f.calls.every(call=>call.method==='GET'));
       assert.equal(f.profile.focus,focus);assert.equal(f.profile.version,1);
-      assert.equal(f.attempts.length,2);assert.equal(catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook' && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length,384);
+      assert.equal(f.attempts.length,2);assert.equal(catalog.items.filter(item=>item.trainerId!=='vilenkin6-textbook' && !['oge-public:11', 'oge-public:15', 'oge-public:16', 'oge-public:17', 'oge-public:18', 'oge-public:19'].includes(item.id)).length,387);
     }finally{f.dom.window.close();}
   }
 });

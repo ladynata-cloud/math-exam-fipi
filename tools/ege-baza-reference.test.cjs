@@ -90,9 +90,9 @@ function localTarget(href, base = 'https://reference.test/ege-baza/reference/ind
   return url;
 }
 
-test('all 113 EGE families use known, nonempty references; no orphan sheets or invented families', () => {
+test('all 116 EGE families use known, nonempty references; no orphan sheets or invented families', () => {
   const refs = referenceData();
-  assert.equal(families.length, 113);
+  assert.equal(families.length, 116);
   assert.equal(refs.sheets.length, 31);
   const sheetIds = refs.sheets.map(sheet => sheet.id), unique = new Set(sheetIds);
   assert.equal(unique.size, sheetIds.length, 'sheet IDs are unique');
@@ -219,7 +219,7 @@ test('all sheets render independently, without raw math tokens, unsafe markup or
   } finally { f.close(); }
 });
 
-test('each of 113 ordinary task screens has closed relevant references without automatic help', async () => {
+test('each of 116 ordinary task screens has closed relevant references without automatic help', async () => {
   const f = fixture();
   try {
     for (const family of families) {

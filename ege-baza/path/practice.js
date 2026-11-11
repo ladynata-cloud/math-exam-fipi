@@ -224,6 +224,89 @@ add('vase-order', 21, 'Вазы — порядок и общая часть', '�
 });
 catalog.at(-1).trainingOnly = true;
 
+add('trig-equation', 17, 'Тригонометрическое уравнение на одном обороте', 'Найди острый угол по табличному значению, выбери четверти по знаку и проверь, какой корень требуется.', 'equations', 11, seed => {
+  const fn = seed % 2 === 0 ? 'sin' : 'cos';
+  const negative = Math.floor(seed / 2) % 2 === 1;
+  const angleIndex = Math.floor(seed / 4) % 3;
+  const acute = [30, 45, 60][angleIndex];
+  const magnitude = (fn === 'sin' ? ['1/2', '√2/2', '√3/2'] : ['√3/2', '√2/2', '1/2'])[angleIndex];
+  const start = [0, 360, -360, 720][Math.floor(seed / 24) % 4];
+  const larger = Math.floor(seed / 12) % 2 === 1;
+  const standard = fn === 'sin'
+    ? (negative ? [180 + acute, 360 - acute] : [acute, 180 - acute])
+    : (negative ? [180 - acute, 180 + acute] : [acute, 360 - acute]);
+  const quarter = Math.floor(standard[0] / 90) + 1;
+  const candidates = standard.map(angle => angle + start);
+  const answer = candidates[larger ? 1 : 0];
+  return make(`Реши ${fn} x = ${negative ? '−' : ''}${magnitude} при ${start}° ≤ x < ${start + 360}°. Запиши ${larger ? 'больший' : 'меньший'} корень в градусах без знака градуса.`, answer, steps(
+    [`Какой острый угол в градусах имеет ${fn} x = ${magnitude}?`, acute, 'Используй табличные значения для углов 30°, 45° и 60°.'],
+    ['В какой четверти находится первый подходящий угол стандартного оборота? Введи номер четверти от 1 до 4.', quarter,
+      `У ${fn === 'sin' ? 'синуса' : 'косинуса'} нужный знак в четвертях ${quarter} и ${Math.floor(standard[1] / 90) + 1}.`],
+    ['Какой корень требуется записать?', answer, `В заданном промежутке корни ${candidates[0]}° и ${candidates[1]}°. Выбери нужный и учти единицу измерения.`]
+  ), 'trig-equation', {fn, negative, magnitude, start, larger});
+});
+
+const inequalitySigns = ['<', '≤', '>', '≥'];
+function inequalityDirection(sign, decreasing, boundary) {
+  const index = inequalitySigns.indexOf(sign);
+  const result = decreasing ? (index + 2) % 4 : index;
+  return reasoningChoice('Какой знак должен стоять между x и найденной границей?', result + 1,
+    decreasing ? 'При основании между 0 и 1 функция убывает. Направление сравнения меняется, а строгость сохраняется.'
+      : 'При основании больше 1 функция возрастает. Направление сравнения и строгость сохраняются.',
+    inequalitySigns.map(mark => `x ${mark} ${boundary}`));
+}
+function countIntegerInequality(low, high, boundary, sign, decreasing) {
+  const right = (sign === '>' || sign === '≥') !== decreasing;
+  const strict = sign === '<' || sign === '>';
+  const first = right ? Math.max(low, boundary + Number(strict)) : low;
+  const last = right ? high : Math.min(high, boundary - Number(strict));
+  return Math.max(0, last - first + 1);
+}
+
+add('exponential-inequality', 18, 'Показательное неравенство: направление сравнения', 'Сведи к одному основанию, проверь возрастание или убывание и учти строгую границу.', 'powers', 11, seed => {
+  const n = 2 + Math.floor(seed / 8) % 4;
+  const decreasing = seed % 2 === 1;
+  const sign = inequalitySigns[Math.floor(seed / 2) % 4];
+  const power = 1 + Math.floor(seed / 32) % 4;
+  const shift = 1 + Math.floor(seed / 16) % 5;
+  const base = decreasing ? 1 / n : n;
+  const baseText = decreasing ? `(1/${n})` : String(n);
+  const right = decreasing ? `1/${n ** power}` : String(n ** power);
+  const boundary = power - shift;
+  const low = boundary - 3 - Math.floor(seed / 64) % 3;
+  const high = boundary + 4 + Math.floor(seed / 48) % 3;
+  const answer = countIntegerInequality(low, high, boundary, sign, decreasing);
+  return make(`Сколько целых x от ${low} до ${high} включительно удовлетворяют неравенству ${baseText}^(x+${shift}) ${sign} ${right}?`, answer, [
+    ...steps(['Какой показатель степени даёт правую часть при том же основании?', power, 'Запиши правую часть степенью того же основания.'],
+      ['Какое x обращает неравенство в равенство?', boundary, 'Приравняй показатели степеней и вычти слагаемое, прибавленное к x.']),
+    inequalityDirection(sign, decreasing, boundary),
+    ...steps(['Сколько подходящих целых чисел в заданном диапазоне?', answer, 'Выпиши крайние допустимые целые числа. Если они есть, вычти первое из последнего и прибавь один.'])
+  ], 'exponential-inequality', {base, sign, power, shift, low, high});
+});
+
+add('log-inequality', 18, 'Логарифмическое неравенство и ОДЗ', 'Сначала потребуй положительный аргумент. После перехода к степеням пересекай найденный промежуток с ОДЗ.', 'powers', 11, seed => {
+  const n = 2 + Math.floor(seed / 8) % 3;
+  const decreasing = seed % 2 === 1;
+  const sign = inequalitySigns[Math.floor(seed / 2) % 4];
+  const magnitude = 1 + Math.floor(seed / 24) % 3;
+  const power = decreasing ? -magnitude : magnitude;
+  const origin = 1 + Math.floor(seed / 12) % 5;
+  const base = decreasing ? 1 / n : n;
+  const baseText = decreasing ? `(1/${n})` : String(n);
+  const target = n ** magnitude;
+  const boundary = origin + target;
+  const low = origin - 2 - Math.floor(seed / 48) % 3;
+  const high = boundary + 3 + Math.floor(seed / 36) % 4;
+  const answer = countIntegerInequality(origin + 1, high, boundary, sign, decreasing);
+  return make(`Сколько целых x от ${low} до ${high} включительно удовлетворяют неравенству log_${baseText}(x−${origin}) ${sign} ${power}?`, answer, [
+    ...steps(['Какое число x стоит на левой границе ОДЗ и в неё не входит?', origin, 'Подлогарифмическое выражение x минус указанное число должно быть строго положительным.'],
+      ['Какое значение аргумента соответствует равенству?', target, 'Возведи основание в показатель, указанный в правой части.'],
+      ['Какое x даёт это значение аргумента?', boundary, 'Прибавь к найденному значению аргумента вычитаемое число.']),
+    inequalityDirection(sign, decreasing, boundary),
+    ...steps(['Сколько подходящих целых чисел в заданном диапазоне?', answer, 'Пересеки решение, ОДЗ и заданный диапазон. Учти, какие границы включены.'])
+  ], 'log-inequality', {base, sign, power, origin, low, high});
+});
+
 D.meta.push(...catalog);
 D.F=F;
 D.task=function(id,seed=1){if(!factories[id])return oldTask(id,seed);let t=factories[id](Math.abs(Math.trunc(seed)));Object.assign(t,{id,seed,pos:catalog.find(m=>m.id===id).pos,strict:true});for(const step of t.steps)step.strict=true;

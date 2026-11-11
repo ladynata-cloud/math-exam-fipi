@@ -28,9 +28,9 @@ function internalLink(href) {
   return url;
 }
 
-test('each of the 113 actual EGE families has a specific, navigable skill route',()=>{
+test('each of the 116 actual EGE families has a specific, navigable skill route',()=>{
   const ctx=bank(),api=ctx.EgeBazaSkillMaps,meta=ctx.PathData.meta.filter(m=>!m.grade7&&!m.pre7),all=api.all();
-  assert.equal(meta.length,113);assert.equal(all.length,meta.length);
+  assert.equal(meta.length,116);assert.equal(all.length,meta.length);
   assert.deepEqual(plain(all.map(m=>m.id).sort()),plain(meta.map(m=>m.id).sort()));
   const skills=new Map();
   for(const family of meta){

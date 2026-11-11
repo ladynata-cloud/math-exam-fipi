@@ -7,7 +7,7 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const files = ['registry', 'foundation-reference', 'data-reference', 'course-definitions', 'course-state', 'backup',
   'path/data', 'path/practice', 'path/equation-practice', 'course-journey', 'exam-map'];
-const expectedCounts = [4, 4, 4, 4, 3, 4, 3, 3, 3, 4, 5, 7, 7, 6, 11, 8, 10, 3, 4, 9, 7];
+const expectedCounts = [4, 4, 4, 4, 3, 4, 3, 3, 3, 4, 5, 7, 7, 6, 11, 8, 11, 5, 4, 9, 7];
 const anchors = ['round', 'units', 'data', 'formulas', 'probability', 'choice', 'graphs', 'logic', 'grid', 'practical',
   'box', 'triangle', 'roundbody', 'fractions', 'percent', 'powers', 'equations', 'numberline', 'integers', 'motion', 'reasoning'];
 const plain = value => JSON.parse(JSON.stringify(value));
@@ -25,12 +25,12 @@ const row = extra => ({ seed: 12, stage: 3, step: 0, help: false, attempted: fal
 const save = lessons => ({ version: 1, serial: 30, lessons, seen: {}, runs: [], active: null });
 function map(ctx, storage) { return ctx.EgeBazaExamMap.catalog(ctx.EgeBazaJourney.snapshot(storage)); }
 
-test('the exam map has all 21 numbered positions and exactly the 113 preparation families', () => {
+test('the exam map has all 21 numbered positions and exactly the 116 preparation families', () => {
   const ctx = runtime(), storage = store(), cards = map(ctx, storage);
   assert.deepEqual(plain(cards.map(card => card.pos)), Array.from({ length: 21 }, (_, i) => i + 1));
   assert.deepEqual(plain(cards.map(card => card.total)), expectedCounts);
   const ids = cards.flatMap(card => card.items.map(item => item.id));
-  assert.equal(ids.length, 113); assert.equal(new Set(ids).size, 113);
+  assert.equal(ids.length, 116); assert.equal(new Set(ids).size, 116);
   const actual = ctx.PathData.meta.filter(item => !item.grade7 && !item.pre7);
   assert.deepEqual(plain(ids).sort(), plain(actual.map(item => item.id)).sort());
   for (const card of cards) {

@@ -36,8 +36,8 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
   ok(!Array.from(clean.d.querySelectorAll('[data-exam-position]')).some(node=>node.closest('details')),'numbered map is not hidden inside disclosures');
   ok(clean.d.querySelectorAll('[data-exam-jump]').length===21,'all numbers have compact jump links');
   const lines=clean.w.EgeBazaJourney.catalog();
-  ok(lines.slice(0,6).reduce((sum,line)=>sum+line.items.length,0)===113,'all 113 current EGE families appear once');
-  ok(new Set(lines.slice(0,6).flatMap(line=>line.items.map(item=>item.id))).size===113,'no duplicate family coverage');
+  ok(lines.slice(0,6).reduce((sum,line)=>sum+line.items.length,0)===116,'all 116 current EGE families appear once');
+  ok(new Set(lines.slice(0,6).flatMap(line=>line.items.map(item=>item.id))).size===116,'no duplicate family coverage');
   for(const hash of ['#today','#map','#lines','#progress','#line?line=m01','#line?line=m02','#line?line=m03','#line?line=m04','#line?line=m05','#line?line=m06','#line?line=m07','#progress?module=m01','#progress?module=m02','#backup?module=m01','#backup?module=m02']){
    await go(clean,hash);ok(clean.d.querySelector('main h1'),'route rendered: '+hash);
   }
@@ -149,6 +149,6 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
   const grade7=task.w.PathData.meta.find(item=>item.grade7&&!item.geometryRebuild);await go(task,'#lesson='+grade7.id);
   ok(!task.d.querySelector('.journey-lesson-nav,[data-journey-next]')&&task.d.querySelector('[data-stage]'),'grade7 presentation preserved');
   ok(errors.length===0,'no DOM errors: '+errors.join('; '));
-  console.log(`EGE_BAZA_JOURNEY_DOM_OK: ${checks} checks; actual scripts, 21 exam numbers/113 families, 7 secondary lines, legacy/read-only/unknown states, exact draft resume, independent/assisted success and managed/board exclusions.`);
+  console.log(`EGE_BAZA_JOURNEY_DOM_OK: ${checks} checks; actual scripts, 21 exam numbers/116 families, 7 secondary lines, legacy/read-only/unknown states, exact draft resume, independent/assisted success and managed/board exclusions.`);
  }finally{for(const dom of open)dom.window.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});

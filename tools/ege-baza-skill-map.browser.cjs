@@ -172,7 +172,7 @@ async function newPage(width=1280){
    await expectCount(page,'[data-ege-skill-map]',1,'exactly one map for '+id);
    ok(await page.locator('[data-skill-node]').count()>=3,'concrete skill nodes '+id);
   }
-  ok(ids.length===113,'all 113 actual trainers have maps');
+  ok(ids.length===116,'all 116 actual trainers have maps');
   await page.goto(trainer+'#lesson=round');await page.locator('#answer').waitFor();
   await page.locator('#answer').fill('7/');
   const before=await page.evaluate(()=>({seed:PathCourse.state().lessons.round.seed,help:PathCourse.state().lessons.round.help}));
@@ -296,6 +296,6 @@ async function newPage(width=1280){
   }
   await labs.close();
   ok(errors.length===0,'no browser exceptions: '+errors.join('; '));
-  console.log('EGE_BAZA_SKILL_MAP_BROWSER_OK: '+checks+' checks; all 113 families, 21 stars, '+fixedIds.length+' fixed examples, early and supplementary learning routes; star/ocean switching and disposal, drafts, assistance, exam boundaries, 320/1280px and screenshots.');
+  console.log('EGE_BAZA_SKILL_MAP_BROWSER_OK: '+checks+' checks; all 116 families, 21 stars, '+fixedIds.length+' fixed examples, early and supplementary learning routes; star/ocean switching and disposal, drafts, assistance, exam boundaries, 320/1280px and screenshots.');
  }finally{await browser?.close();if(server.listening)await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});

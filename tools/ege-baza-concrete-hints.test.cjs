@@ -12,7 +12,7 @@ for(const file of ['data','practice','equation-practice','task-hints']){
 }
 const D=context.PathData,H=context.PathTaskHints;
 const ids=Array.from(D.meta,m=>m.id);
-assert.equal(ids.length,113,'the EGE catalogue contains 113 families');
+assert.equal(ids.length,116,'the EGE catalogue contains 116 families');
 assert.deepEqual(Array.from(H.familyIds).sort(),ids.slice().sort(),'every existing family has authored hints');
 
 function freeze(value){
@@ -165,7 +165,7 @@ for(const file of ['path/data','path/practice','path/equation-practice','skill-m
 const mapData=mapContext.EgeBazaSkillMaps;
 const mapBank=mapContext.PathData;
 const familyMaps=mapData.all();
-assert.equal(familyMaps.length,113);
+assert.equal(familyMaps.length,116);
 assert.deepEqual(Array.from(familyMaps,m=>m.id).sort(),Array.from(mapBank.meta,m=>m.id).sort());
 const questions=new Set();
 for(const map of familyMaps){
@@ -176,7 +176,7 @@ for(const map of familyMaps){
  for(const node of map.skills)assert(node&&node.practiceIds.every(id=>mapData.forLesson(id)),map.id+' verified practice');
  for(const next of map.next)assert(mapData.forLesson(next.id),map.id+' verified next lesson');
 }
-assert.equal(questions.size,113,'distinct self-checks');
+assert.equal(questions.size,116,'distinct self-checks');
 assert.deepEqual(Array.from(mapData.forLesson('practice-work').skills,x=>x.id),['unit-work','fraction-sum','joint-rate','work-time']);
 assert(!mapData.forLesson('functions').skills.some(skill=>skill.practiceIds.includes('functions')),'mixed-family answer does not stand in for both branches');
 assert(mapData.forLesson('motion').skills.some(skill=>skill.id==='total-distance'));

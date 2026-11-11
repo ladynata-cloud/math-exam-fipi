@@ -28,7 +28,7 @@ const remediation = require('../board-server/learning-remediation-contracts.js')
 function contentGate() {
   const pathItems = C.items.filter(item => item.trainerId === 'ege-path');
   assert.equal(pathItems.length, D.meta.length);
-  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 175);
+  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 178);
   assert.equal(pathItems.filter(item => item.geometryRebuild).length, D.geometryRebuild.families.length);
   assert.equal(pathItems.filter(item => item.grade7 && !item.geometryRebuild).length, 62);
   assert.equal(pathItems.filter(item => item.pre7).length, 18);

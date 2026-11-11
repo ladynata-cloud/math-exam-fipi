@@ -2,7 +2,7 @@
  * Read-only editorial data: viewing a route never changes learner results.
  * practiceIds name focused exercises, not proof that every listed action is mastered.
  * Empty practiceIds occur only in supplementary legacy routes where the main
- * 113-family bank has no separate focused exercise for that action.
+ * 116-family bank has no separate focused exercise for that action.
  */
 (function (root) {
   'use strict';
@@ -1993,6 +1993,63 @@
       "motion",
       "practice-river",
       "practice-average-three"
+    ]
+  },
+  "trig-acute-angle": {
+    "id": "trig-acute-angle",
+    "title": "Острый угол по значению функции",
+    "description": "Использовать таблицу значений для 30°, 45° и 60° после перехода к модулю.",
+    "practiceIds": [
+      "practice-trig-equation"
+    ]
+  },
+  "trig-sign-quarters": {
+    "id": "trig-sign-quarters",
+    "title": "Четверти по знаку",
+    "description": "Проверить знак вертикальной координаты для синуса и горизонтальной для косинуса.",
+    "practiceIds": [
+      "practice-trig-equation"
+    ]
+  },
+  "trig-interval-root": {
+    "id": "trig-interval-root",
+    "title": "Корни на заданном обороте",
+    "description": "Перенести корни на нужный оборот и выбрать меньший или больший по условию.",
+    "practiceIds": [
+      "practice-trig-equation"
+    ]
+  },
+  "same-power-base": {
+    "id": "same-power-base",
+    "title": "Одинаковое основание",
+    "description": "Записать обе стороны степенями одного основания, включая случаи дробного основания.",
+    "practiceIds": [
+      "practice-exponential-inequality"
+    ]
+  },
+  "monotone-inequality": {
+    "id": "monotone-inequality",
+    "title": "Монотонность и знак",
+    "description": "При основании больше 1 сохранить направление сравнения, при основании от 0 до 1 развернуть его.",
+    "practiceIds": [
+      "practice-exponential-inequality",
+      "practice-log-inequality"
+    ]
+  },
+  "log-argument-bound": {
+    "id": "log-argument-bound",
+    "title": "Граница для аргумента",
+    "description": "Возвести основание в степень из правой части и найти соответствующую границу для x.",
+    "practiceIds": [
+      "practice-log-inequality"
+    ]
+  },
+  "intersect-integer-solutions": {
+    "id": "intersect-integer-solutions",
+    "title": "Пересечение с областью допустимых значений",
+    "description": "Учесть ОДЗ, заданный диапазон и строгость обеих границ при подсчёте целых решений.",
+    "practiceIds": [
+      "practice-log-inequality"
     ]
   }
 };
@@ -4131,6 +4188,56 @@
     "nextIds": [
       "practice-sets"
     ]
+  },
+  {
+    "id": "practice-trig-equation",
+    "pos": 17,
+    "title": "Тригонометрическое уравнение на одном обороте",
+    "goal": "Выбрать нужный корень уравнения с синусом или косинусом на заданном обороте.",
+    "skills": [
+      "trig-acute-angle",
+      "trig-sign-quarters",
+      "trig-interval-root"
+    ],
+    "prerequisites": [
+      "trigTriangle",
+      "equations"
+    ],
+    "nextIds": []
+  },
+  {
+    "id": "practice-exponential-inequality",
+    "pos": 18,
+    "title": "Показательное неравенство: направление сравнения",
+    "goal": "Привести степени к одному основанию и посчитать целые решения на заданном отрезке.",
+    "skills": [
+      "same-power-base",
+      "monotone-inequality",
+      "interval-ends",
+      "integer-count"
+    ],
+    "prerequisites": [
+      "powers"
+    ],
+    "nextIds": [
+      "practice-log-inequality"
+    ]
+  },
+  {
+    "id": "practice-log-inequality",
+    "pos": 18,
+    "title": "Логарифмическое неравенство и ОДЗ",
+    "goal": "Учесть положительность аргумента, сравнить аргументы и посчитать целые решения.",
+    "skills": [
+      "log-argument-bound",
+      "log-domain",
+      "monotone-inequality",
+      "intersect-integer-solutions"
+    ],
+    "prerequisites": [
+      "powers"
+    ],
+    "nextIds": []
   }
 ];
   const legacyDefinitions = [
@@ -4738,6 +4845,9 @@
     "practice-ring-route": ["На кольце кратчайшие расстояния AC = 47 км, AD = 38 км, CD = 55 км. Найди длину кольца в километрах.","140","Если C и D с одной стороны от A, их расстояние 9 км. Значит, дуга через A имеет длину 85 км, а другая 55 км. Вместе они дают 140 км."],
     "practice-mushroom-count": ["В корзине 42 гриба двух видов. Среди любых 18 найдётся рыжик, а среди любых 26 — груздь. Сколько рыжиков в корзине?","25","Груздей не больше 17, рыжиков не больше 25. Сумма границ равна 42, поэтому оба количества равны своим границам."],
     "practice-vase-order": ["В ряд стоят белая, оранжевая и синяя вазы. Слева от синей число роз равно 17, справа от белой 16. Всего 29 роз. Сколько роз в оранжевой вазе?","4","Сумма двух групп равна 33, что на 4 больше общего числа. Общая ваза стоит между белой и синей. Это оранжевая ваза."],
+    "practice-trig-equation": ["Реши cos x = −1/2 при 0° ≤ x < 360°. Запиши больший корень в градусах.","240","Острый угол равен 60°. Косинус отрицателен во II и III четвертях. Корни 120° и 240°."],
+    "practice-exponential-inequality": ["Сколько целых x от −2 до 5 включительно удовлетворяют неравенству 2^(x+1) ≥ 8?","4","Основание 2 больше 1, поэтому x + 1 ≥ 3. Подходят 2, 3, 4 и 5."],
+    "practice-log-inequality": ["Сколько целых x от 0 до 8 включительно удовлетворяют log_(1/2)(x−1) > −2?","3","По ОДЗ x > 1. Логарифм убывает, значит x−1 < (1/2)⁻² = 4. В пересечении остаются 2, 3 и 4."],
   };
   const positionTitles = [
   "Практические расчёты и округление",

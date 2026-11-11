@@ -4,6 +4,11 @@ const old=D.meta.map(m=>({id:m.id,tasks:[0,1,2,11,45,100].map(s=>JSON.stringify(
 require('../ege-baza/path/practice.js');
 const sum=a=>a.reduce((x,y)=>x+y,0);
 const roots=(fn,from=-100,to=100)=>Array.from({length:to-from+1},(_,i)=>i+from).filter(x=>Math.abs(fn(x))<1e-10);
+function compareInequality(left, right, sign) {
+ const delta=left-right;
+ const equal=Math.abs(delta)<1e-10;
+ return sign==='<' ? !equal&&delta<0 : sign==='≤' ? equal||delta<0 : sign==='>' ? !equal&&delta>0 : equal||delta>0;
+}
 const numeric=(r,p)=>{
  switch(r){
  case 'change':return p.paid-sum(Array(p.n).fill(p.price));
@@ -63,6 +68,19 @@ const numeric=(r,p)=>{
  case 'log-equation':return roots(x=>x+p.b>0?Math.log(x+p.b)/Math.log(p.a)-p.p:NaN, -100, 500)[0];
  case 'exponential-equation':return roots(x=>Math.pow(p.a,x+p.b)-Math.pow(p.a,p.p))[0];
  case 'rational-equation':return roots(x=>x!==p.a?p.num/(x-p.a)-p.b:NaN)[0];
+ case 'trig-equation': {
+  const magnitudes={'1/2':1/2,'√2/2':Math.sqrt(2)/2,'√3/2':Math.sqrt(3)/2};
+  const target=(p.negative?-1:1)*magnitudes[p.magnitude];
+  const candidates=roots(x=>Math[p.fn](x*Math.PI/180)-target,p.start,p.start+359);
+  assert.equal(candidates.length,2);
+  return candidates[p.larger?1:0];
+ }
+ case 'exponential-inequality':
+  return Array.from({length:p.high-p.low+1},(_,i)=>p.low+i)
+    .filter(x=>compareInequality(p.base**(x+p.shift),p.base**p.power,p.sign)).length;
+ case 'log-inequality':
+  return Array.from({length:p.high-p.low+1},(_,i)=>p.low+i)
+    .filter(x=>x>p.origin&&compareInequality(Math.log(x-p.origin)/Math.log(p.base),p.power,p.sign)).length;
  case 'meeting':return p.dist/(p.a+p.b);
  case 'river':return p.d1/(p.v+p.u)+p.d2/(p.v-p.u);
  case 'work':return p.a*p.b/(p.a+p.b);
@@ -124,6 +142,7 @@ function semantic(t){const p=t.params;
  return null;
 }
 let tested=0;
+const requiredDistinct = new Set(['practice-trig-equation', 'practice-exponential-inequality', 'practice-log-inequality']);
 for(const {id,tasks} of old)assert.deepEqual([0,1,2,11,45,100].map(s=>JSON.stringify(D.task(id,s))),tasks,'Legacy task changed: '+id);
 for(let pos=1;pos<=21;pos++)assert(D.practice.catalog.some(m=>m.pos===pos),'Empty position '+pos);
 for(const m of D.practice.catalog){
@@ -141,6 +160,6 @@ for(const m of D.practice.catalog){
   conditions.add(t.q);
   tested++;
  }
- if (variants === 240) assert.equal(conditions.size, variants, m.id + ' distinct conditions');
+ if (variants === 240 || requiredDistinct.has(m.id)) assert.equal(conditions.size, variants, m.id + ' distinct conditions');
 }
 console.log(`EGE_BAZA_PRACTICE_MATH_OK: ${tested} generated conditions, ${D.practice.catalog.length} new families, all 21 positions, 168 unchanged legacy cases, exhaustive digit answers, independently recalculated keys.`);
