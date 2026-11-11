@@ -52,7 +52,7 @@ async function main(){
   assert.equal(await page.evaluate(([k,t])=>JSON.parse(localStorage.getItem(k))['oge-t11-grafiki'].solvedByType[t],[KEY,type]),1);await fits('mobile feedback');
   await page.locator('#m4-next').click();assert.equal(await page.locator('#m4-hintbox').isVisible(),false);assert.equal(await page.locator('#m4-answer').inputValue(),'');
   // All former modes remain reachable and the ten-question exam still writes course progress.
-  await page.locator('#task11-more summary').click();await page.locator('#tabs button[data-m=m6]').click();
+  await page.locator('#task11-more > summary').click();await page.locator('#tabs button[data-m=m6]').click();
   await page.evaluate(()=>{const original=buildQuiz11;buildQuiz11=()=>{const list=original();window.__task11Quiz=list;return list;};});
   await page.locator('#m6-start').click();
   for(let n=0;n<10;n++){
