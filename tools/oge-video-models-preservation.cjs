@@ -2,6 +2,7 @@
 // Invert only the nine reviewed, additive lesson includes. The historical
 // candidate/engine hashes remain the authority for every other byte.
 const assert = require('node:assert/strict');
+const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
   15: 'trainers/oge-task15-triangles.html',
@@ -35,4 +36,9 @@ function restoreVideoModels(file, source) {
   assert(!marker.test(restored), file + ': no altered, duplicate or hidden lesson dependency');
   return restored;
 }
-module.exports = { entries, assets, snippet, restoreVideoModels };
+function restoreGraphScale(file, source) {
+  if (file !== graphScale.file) return source;
+  const parts = source.split(graphScale.after);
+  return parts.length === 2 ? parts.join(graphScale.before) : source;
+}
+module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale };

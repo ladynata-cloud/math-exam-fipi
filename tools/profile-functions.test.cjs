@@ -178,6 +178,15 @@ test('all 66 models register, render finite SVG, distinguish f from f′, and co
       assert.equal(container.querySelector('[data-revealed-value]'), null, task.id);
       assert.equal(container.querySelector('details').open, false, task.id);
       assert.equal(svg.querySelectorAll('[data-given="false"]').length, 0, task.id);
+      const scene = models.sceneFor(task, { mode: 'independent' });
+      const clip = svg.querySelector('clipPath rect');
+      const left = Number(clip.getAttribute('x')), top = Number(clip.getAttribute('y'));
+      const width = Number(clip.getAttribute('width')), height = Number(clip.getAttribute('height'));
+      close(width / (scene.maxX - scene.minX), height / (scene.maxY - scene.minY), task.id + ' unit scale');
+      for (const point of svg.querySelectorAll('circle[data-given="true"]')) {
+        const x = Number(point.getAttribute('cx')), y = Number(point.getAttribute('cy'));
+        assert.ok(x >= left - 1e-8 && x <= left + width + 1e-8 && y >= top - 1e-8 && y <= top + height + 1e-8, task.id + ' given point in view');
+      }
       const isDerivative = ['derivative-sign', 'derivative-touch'].includes(task.meta.kind);
       assert.equal(svg.querySelector('title').textContent.includes('производная'), isDerivative, task.id);
       if (task.meta.kind.startsWith('derivative-') && !isDerivative) assert.equal(svg.querySelector('[data-curve="tangent"]'), null, task.id);

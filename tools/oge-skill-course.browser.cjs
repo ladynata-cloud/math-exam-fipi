@@ -85,6 +85,62 @@ function safeError(error) {
       }
     }
 
+    async function checkScale(plot, bounds, expectedRatio = 1) {
+      const { unitX, unitY } = await plot.evaluate((svg, [xmin, xmax, ymin, ymax]) => {
+        const rect = svg.querySelector('clipPath rect'), matrix = svg.getScreenCTM();
+        return {
+          unitX: Math.hypot(matrix.a, matrix.b) * Number(rect.getAttribute('width')) / (xmax - xmin),
+          unitY: Math.hypot(matrix.c, matrix.d) * Number(rect.getAttribute('height')) / (ymax - ymin)
+        };
+      }, bounds);
+      assert(unitX > 0 && unitY > 0);
+      assert(Math.abs(unitX / unitY - expectedRatio) < 0.001, `X and Y pixel ratio ${unitX / unitY}; expected ${expectedRatio}`);
+    }
+
+    for (const width of [320, 1280]) {
+      const c = await context({viewport: {width, height: 900}}), page = await c.newPage();
+      try {
+        const plot = page.locator('.figure svg');
+        await ready(page, '?topic=n11');
+        assert.equal(await page.locator('.task-title').innerText(), 'Формула по графику');
+        await checkScale(plot, [-6, 6, -4, 6]);
+        const graph = await plot.evaluate(svg => {
+          const rect = svg.querySelector('clipPath rect'), line = svg.querySelector('g[clip-path] line');
+          const attr = (el, name) => Number(el.getAttribute(name));
+          const step = attr(rect, 'width') / 12;
+          const origin = [attr(rect, 'x') + 6 * step, attr(rect, 'y') + 6 * step];
+          const [x1, x2, y1, y2] = ['x1', 'x2', 'y1', 'y2'].map(name => attr(line, name));
+          const slope = (y2 - y1) / (x2 - x1);
+          return { slope, yAtZero: (origin[1] - (y1 + (origin[0] - x1) * slope)) / step };
+        });
+        assert(Math.abs(graph.slope + 1) < 1e-8, 'y = x − 2 rises at 45° on screen');
+        assert(Math.abs(graph.yAtZero + 2) < 1e-8, 'The y-intercept is still −2');
+        await noOverflow(page, 'formula by graph at ' + width);
+        await page.screenshot({path: path.join(out, 'line-scale-' + width + '.png')});
+
+        const choice = page.getByRole('button', {name: 'y = x − 2', exact: true});
+        await choice.press('Enter');
+        await page.locator('[data-action="check"]').press('Enter');
+        await page.locator('.feedback.good').waitFor();
+        await page.reload();
+        assert.equal(await choice.getAttribute('aria-pressed'), 'true');
+        await checkScale(plot, [-6, 6, -4, 6]);
+
+        for (const family of ['func-parabola-formula', 'func-inverse-coefficient', 'func-axis-scale']) {
+          await ready(page, '?route=family:' + family);
+          const bounds = await page.evaluate(() => {
+            const v = OGESkillLab.task().visual;
+            return [v.xMin, v.xMax, v.yMin, v.yMax];
+          });
+          const isScalePractice = family === 'func-axis-scale';
+          await checkScale(plot, bounds, isScalePractice ? 2 : 1);
+          assert.equal(await page.getByText('На осях X и Y разный масштаб.', {exact: true}).count(), Number(isScalePractice));
+          await noOverflow(page, family + ' at ' + width);
+        }
+        report.scenarios.push('Equal X and Y units for the №11 line, parabola and hyperbola, with a labelled scale exercise and saved answer at ' + width + 'px');
+      } finally { await c.close(); }
+    }
+
     for (const width of [320, 390, 1280]) {
       const c = await context({viewport: {width, height: 900}});
       const page = await c.newPage(), errors = [];
@@ -401,6 +457,11 @@ function safeError(error) {
 
         await ready(page, '?route=task:n22-q-hole');
         await page.locator('.figure svg').waitFor();
+        const holeBounds = await page.evaluate(() => {
+          const {xDomain, yDomain} = OGESkillLab.task().visual;
+          return xDomain.concat(yDomain);
+        });
+        await checkScale(page.locator('.figure svg'), holeBounds);
         assert.match(await page.locator('.written-step-label').innerText(), /Полное решение/);
         assert(await page.locator('.figure svg circle[data-endpoint="open"]').count() >= 1, 'The excluded point is visibly open');
         assert.equal(await page.locator('.figure svg circle[data-endpoint="closed"]').count(), 0, 'An excluded point must not be painted as included');
