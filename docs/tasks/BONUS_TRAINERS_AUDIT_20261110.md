@@ -42,3 +42,30 @@ The current user action request authorizes audit, scoped fixes, tests, branch, c
 
 ## Execution record
 The final PR records exact source/head commits, checks, failures and pending browser/CI work. Prepared repairs retain “needs correction” public status until a separately approved release and live verification.
+
+### CI completion — 11 November 2026
+
+Continued under the owner's request to finish unfinished work; the separate
+merge/deployment hold above remains in force. The working candidate starts at
+PR head `34ffb232d7cc86ca024f642c12d3fcb4a905fc9a`, without synchronizing its
+branch or changing production `main` (`80be25bd5f9e2d254532e8385d89baa394b6c49b`).
+
+Two exact-head failures were diagnosed from GitHub job logs. The rounding
+browser helper intentionally submits a completed answer twice, so its caller
+was checking the assisted-completion message after the expected duplicate
+message had replaced it. The assisted message is now checked before the second
+submission; duplicate prevention and the retained assisted history are both
+checked after it. No trainer behavior, answers, storage or downloads change.
+
+The learner-entry gate still compared rounding with its pre-fix source. The
+existing exact-source mechanism now binds only that page to reviewed commit
+`1d77a22e16d0adf31b0109a660c8c323636dee4b`; its Git blob
+`5e2394280a24c3705a606689d77437140a5b73b3` is identical to the PR head. Full
+inline-engine and control comparisons remain enabled, with original baselines
+retained for other pages. CI explicitly fetches this immutable source.
+
+The task's existing bonus workflow additionally runs rounding, source and
+full learner-entry browser checks on pushes to this task branch. This allows
+exact-head verification while the separate composition with current main is
+pending; it does not replace the existing PR workflows or authorize release.
+Final local and cloud results are recorded in the PR after execution.

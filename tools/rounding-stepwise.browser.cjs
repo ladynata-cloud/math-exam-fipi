@@ -107,8 +107,10 @@ async function solve(page, place, injectMistakes, askHint = false) {
   await page.locator('#ans').press('Enter');
   assert.equal(await total(page), before + 1, 'A corrected answer completes this same example: ' + problem.prompt + '; entered ' + problem.answer + '; feedback ' + await page.locator('#fb').innerText());
   assert.match(await page.locator('#fb').innerText(), /Верно|Решено/);
+  if (askHint) assert.match(await page.locator('#fb').innerText(), /подсказк/, 'The first completion explicitly identifies hint-assisted work');
   await page.locator('#check').click();
   assert.equal(await total(page), before + 1, 'Repeated checking cannot count a second completion');
+  assert.match(await page.locator('#fb').innerText(), /уже учтён/, 'Repeated submission receives the existing duplicate-completion message');
   return problem.prompt;
 }
 (async () => {
@@ -150,7 +152,7 @@ async function solve(page, place, injectMistakes, askHint = false) {
         await solve(practice,1,false,true);
         assert.equal(await progressValue(practice,'#right'),0,'A hint without mistakes is still assisted work');
         assert.equal(await progressValue(practice,'#streak'),0,'Assisted work cannot build an independent streak');
-        assert.match(await practice.locator('#fb').innerText(),/подсказк/);
+        assert.match(await practice.locator('#history .hist').first().textContent(),/подсказк/, 'Repeated checking preserves the assisted classification in saved history');
         await practice.reload();
         assert.equal(await total(practice),2,'Completed work survives reload');
         assert.equal(await progressValue(practice,'#right'),0,'Assistance classification survives reload');

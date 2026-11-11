@@ -6,7 +6,14 @@ on:
       - 'tools/vector-assistance.test.cjs'
       - 'trainers/teatr-formul-daily.html'
       - 'tools/bonus-theatre-input.test.cjs'
+      - 'trainers/rounding-stepwise.html'
+      - 'tools/rounding-stepwise.*.cjs'
+      - 'tools/oge-learner-entry.test.cjs'
       - '.github/workflows/vector-assistance.yml'
+  # Validate this task's exact head even while the separate main-composition
+  # decision is pending. This adds coverage; the existing PR gates remain.
+  push:
+    branches: ['fix/bonus-trainers-audit-20261110']
 permissions:
   contents: read
 jobs:
@@ -18,3 +25,40 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tools/vector-assistance.test.cjs tools/bonus-theatre-input.test.cjs
+  rounding-and-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Fetch exact historical and reviewed sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831 1d77a22e16d0adf31b0109a660c8c323636dee4b
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/bonus-acceptance" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/bonus-acceptance/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/bonus-acceptance/node_modules" >> "$GITHUB_ENV"
+      - name: Rounding state, source preservation and actual return links
+        run: |
+          node tools/rounding-stepwise.dom.cjs
+          node tools/learning-rounding-preparation.dom.cjs
+          node tools/oge-learner-entry.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Real Chromium rounding and complete learner entrances
+        env:
+          OGE_ENTRY_ARTIFACTS: artifacts/bonus-learner-entry
+        run: |
+          node tools/rounding-stepwise.browser.cjs
+          node tools/oge-learner-entry.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: bonus-learner-entry
+          path: artifacts/bonus-learner-entry
+          retention-days: 14
+          if-no-files-found: warn
