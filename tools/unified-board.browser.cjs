@@ -12,6 +12,8 @@ const { spawn } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
 const { chromium } = require('playwright');
 const graphSolutions = require('./spacemath/graph-solutions.browser.cjs');
+const inkFaults = require('./group-board-ink.browser.cjs');
+const storageFailure = require('./group-board-storage.browser.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const ARTIFACTS = process.env.UNIFIED_BOARD_ARTIFACTS || fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-unified-board-'));
@@ -140,12 +142,108 @@ async function historyWaitsForGeometry(page, frame, lessonURL, rejectWrite = fal
 }
 async function draw(page) {
   await mode(page, 'board');
+  // After a server restart the still-open teacher tab may be reconnecting.
+  // Do not send a pointer gesture to a deliberately disabled editor.
+  await poll(async () => !await page.locator('#penButton').isDisabled(), 'handwriting enabled after connection recovery');
+  await page.locator('#penButton').click();
   const canvas = page.locator('#boardCanvas');
   await canvas.scrollIntoViewIfNeeded();
   const box = await canvas.boundingBox();
   assert.ok(box && box.width > 120 && box.height > 120, 'usable handwriting canvas');
   await page.mouse.move(box.x + 30, box.y + 40); await page.mouse.down();
   await page.mouse.move(box.x + 105, box.y + 100, { steps: 8 }); await page.mouse.up();
+}
+// Observe actual canvas pixels while the server cannot yet acknowledge a stroke.
+// The server and a second participant must continue to see only durable work.
+async function pendingInkContinuity(page, lessonURL, readWork) {
+  await mode(page, 'board');
+  const before = (await readWork()).strokes;
+  let held = false, release;
+  const gate = new Promise(resolve => { release = resolve; });
+  const holdStroke = async route => {
+    if (route.request().method() !== 'POST' || route.request().postDataJSON()?.type !== 'stroke') return route.continue();
+    held = true; await gate; return route.continue();
+  };
+  const inkAt = () => page.locator('#boardCanvas').evaluate(canvas => {
+    const x = Math.round(canvas.width * .6), y = Math.round(canvas.height * .5);
+    const pixels = canvas.getContext('2d').getImageData(x - 4, y - 4, 9, 9).data;
+    return Array.from(pixels).some((value, index) => index % 4 === 3 && value > 0);
+  });
+  await page.route(lessonURL + '/actions', holdStroke);
+  try {
+    const canvas = page.locator('#boardCanvas');
+    await canvas.scrollIntoViewIfNeeded();
+    const box = await canvas.boundingBox();
+    assert.equal(await inkAt(), false, 'test area starts empty');
+    await page.mouse.move(box.x + box.width * .55, box.y + box.height * .45); await page.mouse.down();
+    await page.mouse.move(box.x + box.width * .65, box.y + box.height * .55, { steps: 8 }); await page.mouse.up();
+    await poll(() => held, 'handwriting POST held before acknowledgement');
+    assert.equal(await page.locator('#undoButton').isDisabled(), true, 'undo waits for pending ink instead of targeting another server stroke');
+    await mode(page, 'geometry'); await mode(page, 'board');
+    assert.equal(await inkAt(), true, 'pending stroke survives material switch');
+    await page.setViewportSize({ width: 1024, height: 900 });
+    await poll(inkAt, 'pending stroke survives canvas resize');
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await poll(inkAt, 'pending stroke survives return to desktop size');
+    assert.deepEqual((await readWork()).strokes, before, 'unacknowledged preview is not durable server work');
+    await page.locator('#eraserButton').click();
+    const resized = await canvas.boundingBox();
+    await page.mouse.click(resized.x + resized.width * .6, resized.y + resized.height * .5);
+    await mode(page, 'geometry'); await mode(page, 'board');
+    assert.equal(await inkAt(), false, 'queued erasure stays erased across material switch');
+    release();
+    await poll(async () => /Все изменения сохранены/.test(await page.locator('#connectionStatus').textContent()), 'pending stroke and erasure acknowledged');
+    assert.deepEqual((await readWork()).strokes, before, 'queued stroke and erasure leave original durable strokes intact');
+    assert.equal(await inkAt(), false, 'acknowledgements do not resurrect erased preview');
+    console.log('PASS delayed handwriting, material switch, resize, pending erasure and safe undo');
+  } finally {
+    release();
+    await page.unroute(lessonURL + '/actions', holdStroke);
+    await page.locator('#penButton').click();
+  }
+}
+async function queueRoleIsolation(page, site, api, created, readWork) {
+  const actionURL=api.origin+'/api/group-lessons/'+created.id+'/actions';
+  const first=created.invites[0];
+  const link=token=>site.origin+'/trainers/group-board.html#'+new URLSearchParams({lesson:created.id,token,server:api.origin});
+  const failStroke=route=>route.request().method()==='POST'&&route.request().postDataJSON()?.type==='stroke'
+    ?route.fulfill({status:503,contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({error:'QA_OFFLINE'})}):route.continue();
+  await page.locator('#roster button').first().click();
+  await page.route(actionURL,failStroke);
+  await draw(page);
+  await poll(async()=>/Нет связи/.test(await page.locator('#connectionStatus').textContent()),'teacher stroke retained offline');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.goto('about:blank');
+  await page.unroute(actionURL,failStroke);
+  let pupilPosts=0;
+  const count=request=>{if(request.url()===actionURL&&request.method()==='POST')pupilPosts++;};
+  page.on('request',count);
+  await page.goto(link(first.studentToken));
+  await page.locator('#focus').waitFor({state:'visible'});
+  await delay(1300);
+  assert.equal(pupilPosts,0,'teacher queue must not replay under pupil credentials');
+  assert.equal((await readWork()).strokes.length,0,'foreign queue changes no durable work');
+  page.off('request',count);
+  const corruptKey='mathexam.group.outbox.v2.'+encodeURIComponent(JSON.stringify([api.origin,created.id,first.id]));
+  const foreignEnvelope=JSON.stringify({version:2,principal:'other',outbox:[],rejected:[]});
+  await page.evaluate(({key,value})=>sessionStorage.setItem(key,value),{key:corruptKey,value:foreignEnvelope});
+  await page.reload();
+  await poll(async()=>/Сохранение заблокировано/.test(await page.locator('#connectionStatus').textContent()),'mismatched queue visibly blocks saving');
+  await mode(page,'board');
+  assert.equal(await page.locator('#penButton').isDisabled(),true,'unrecoverable queue does not accept handwriting');
+  assert.equal(await page.evaluate(key=>sessionStorage.getItem(key),corruptKey),foreignEnvelope,'unrecoverable envelope is not overwritten');
+  await page.evaluate(key=>sessionStorage.removeItem(key),corruptKey);
+  await page.goto('about:blank');
+  await page.goto(link(created.teacherToken));
+  await poll(async()=>(await readWork()).strokes.length===1,'returning teacher resumes original queue');
+  assert.equal((await readWork()).strokes[0].author,'teacher','resumed stroke keeps original author');
+  await page.locator('#roster button').first().click();
+  await mode(page,'board');
+  await poll(async()=>!await page.locator('#undoButton').isDisabled(),'teacher queue acknowledged');
+  await page.locator('#undoButton').click();
+  await poll(async()=>(await readWork()).strokes.length===0,'fixture ink removed by its original author');
+  await page.locator('#backButton').click();
+  console.log('PASS same-tab role change isolates queues and original teacher resumes safely');
 }
 async function negativeFrame(page) {
   return poll(async () => {
@@ -217,6 +315,22 @@ async function main() {
     const [first, second] = created.invites;
     await teacher.locator('#app').waitFor({ state: 'visible' });
     if (await teacher.locator('#inviteDialog').isVisible()) await teacher.locator('#inviteDialog [data-close-dialog]').first().click();
+    await queueRoleIsolation(teacher,site,api,created,()=>work(first.id));
+    for (const [isTeacher, offline] of [[true, false], [false, false], [false, true]]) {
+      const storagePage = await pageFor();
+      await storageFailure({page:storagePage,origin:site.origin,server:api.origin,lesson:id,
+        token:isTeacher?teacherToken:first.studentToken,seatId:first.id,teacher:isTeacher,offline,readWork:()=>work(first.id)});
+      await storagePage.close();
+    }
+    for(const isTeacher of [true,false]) {
+      const activeInkPage=await pageFor();
+      await storageFailure.activeInk({page:activeInkPage,origin:site.origin,server:api.origin,lesson:id,
+        token:isTeacher?teacherToken:first.studentToken,seatId:first.id,teacher:isTeacher,readWork:()=>work(first.id)});
+      await activeInkPage.close();
+    }
+    const faultPage=await pageFor();
+    await inkFaults({page:faultPage,origin:site.origin,server:api.origin,lesson:id,token:first.studentToken,seatId:first.id,readWork:()=>work(first.id)});
+    await faultPage.close();
     const pupils = [];
     for (const invite of created.invites) {
       const page = await pageFor();
@@ -228,6 +342,7 @@ async function main() {
     const [pupil, observer] = pupils;
     await draw(pupil);
     await poll(async () => (await work(first.id)).strokes.length === 1, 'pupil ink saved');
+    await pendingInkContinuity(pupil, lessonURL, () => work(first.id));
     await mode(pupil, 'geometry');
     let pupilGeometry = await geometryFrame(pupil);
     const preciseX = 1.234567890123456;
@@ -448,8 +563,12 @@ async function main() {
     await graphSolutions.assertRestored(afterRestart, graphSolutionIds);
     await pupil.setViewportSize({ width: 1280, height: 900 });
     await mode(teacher, 'board'); await mode(pupil, 'board');
+    await poll(async () => (await Promise.all([teacher, pupil].map(page => page.locator('#penButton').isDisabled()))).every(disabled => !disabled), 'both participants reconnect before concurrent handwriting');
     const beforeConcurrentInk = (await work(first.id)).strokes;
-    await Promise.all([draw(teacher), draw(pupil)]);
+    const concurrentPosts = Promise.all([teacher, pupil].map(page => page.waitForRequest(request =>
+      request.url() === lessonURL + '/actions' && request.method() === 'POST' && request.postDataJSON()?.type === 'stroke')));
+    const [posts] = await Promise.all([concurrentPosts, draw(teacher), draw(pupil)]);
+    assert.equal(new Set(posts.map(request => request.postDataJSON().opId)).size, 2, 'both pointer gestures enqueue distinct strokes');
     await poll(async () => (await work(first.id)).strokes.length === beforeConcurrentInk.length + 2, 'simultaneous teacher and pupil strokes both survive');
     const concurrentInk = (await work(first.id)).strokes;
     assert.equal(new Set(concurrentInk.slice(-2).map(stroke => stroke.author)).size, 2, 'concurrent ink retains separate authors');

@@ -36,7 +36,7 @@ function fixture(t) {
       }), ...extra };
     return store.action(access.entry, access.auth, body);
   };
-  return { initial, token, auth, work, action,
+  return { directory, initial, token, auth, work, action,
     get store() { return store; },
     restart() { store.close(); store = new GroupLessonStore({ directory }); stores.push(store); assert.equal(store.available, true); },
     snapshot(role, after) { const access = auth(role); return store.snapshot(access.entry, access.auth, after); },
@@ -419,4 +419,76 @@ test('graph roots and intersections: canonical journal, permissions, version fen
   assert.equal(model.evaluate(states[1]).r1.defined, false);
   assert.equal(model.evaluate(states[2]).i0.solutionStatus, 'none');
   assert.equal(model.evaluate(f.work('s1').geometryState).d.value, 2);
+});
+
+
+// Rehearse only on disposable synthetic journals. This does not claim that the
+// production /data volume has been backed up or authorize a reader rollback.
+test('a quiesced backup restores all materials, credentials, history and lost-ACK dedup into a separate directory', t => {
+  const f = fixture(t);
+  const ink = stroke(), opId = uuid(), boardId = f.work('s1').boardAssignmentId;
+  f.action('s1', 'stroke', 's1', ink, { opId });
+  f.action('s1', 'geometry', 's1', { state: construction() }, { expectedVersion: 0 });
+  f.action('teacher', 'insert', 's1', { targets: ['s1'], trainerId: 'negative-numbers-line', initialState: negative() });
+  f.action('s1', 'trainer', 's1', { state: { ...negative(), answer: '-2' } }, { expectedVersion: 0 });
+  f.action('teacher', 'geometry-control', 's1', { controller: 'teacher' });
+  f.action('teacher', 'present', 'common', { target: 's1', surface: 'split' });
+  const work = structuredClone(f.work('s1')), history = structuredClone(f.history('s1', 's1'));
+  const revision = f.snapshot('teacher').revision;
+  f.store.close();
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'unified-restore-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const backup = path.join(root, 'backup'), restoredDir = path.join(root, 'restored');
+  fs.cpSync(f.directory, backup, { recursive: true });
+  fs.cpSync(backup, restoredDir, { recursive: true });
+  const filename = `${f.initial.id}.jsonl`;
+  const digest = dir => crypto.createHash('sha256').update(fs.readFileSync(path.join(dir, filename))).digest('hex');
+  const originalDigest = digest(f.directory);
+  assert.equal(digest(backup), originalDigest); assert.equal(digest(restoredDir), originalDigest);
+  const restored = new GroupLessonStore({ directory: restoredDir });
+  t.after(() => restored.close());
+  assert.equal(restored.status().available, true);
+  const teacher = restored.authorize(f.initial.id, f.token('teacher'));
+  const pupil = restored.authorize(f.initial.id, f.token('s1'));
+  const observer = restored.authorize(f.initial.id, f.token('s2'));
+  const snapshot = restored.snapshot(teacher.entry, teacher.auth);
+  assert.equal(snapshot.revision, revision);
+  assert.deepEqual(snapshot.students.find(s => s.id === 's1').workspace, work);
+  assert.deepEqual(restored.history(pupil.entry, pupil.auth, { target: 's1' }), history);
+  const projected = restored.snapshot(observer.entry, observer.auth);
+  assert.equal(projected.presentation.surface, 'split');
+  assert.deepEqual(projected.presentation.workspace, work);
+  assert.deepEqual(projected.students.map(s => s.id), ['s2']);
+  rejects(() => restored.history(observer.entry, observer.auth, { target: 's1' }), 'GROUP_FORBIDDEN', 403);
+  const retry = { opId, type: 'stroke', target: 's1', assignmentId: boardId, payload: ink };
+  assert.equal(restored.action(pupil.entry, pupil.auth, retry).duplicate, true);
+  assert.equal(restored.snapshot(teacher.entry, teacher.auth).revision, revision);
+  assert.equal(digest(restoredDir), originalDigest, 'lost ACK retry appends nothing after restore');
+  restored.action(teacher.entry, teacher.auth, { opId: uuid(), type: 'stroke', target: 's1', assignmentId: boardId, payload: stroke() });
+  assert.equal(restored.snapshot(teacher.entry, teacher.auth).revision, revision + 1);
+  assert.notEqual(digest(restoredDir), originalDigest);
+  assert.equal(digest(backup), originalDigest, 'reference backup remains unchanged');
+  assert.equal(digest(f.directory), originalDigest, 'source journal is never modified by the rehearsal');
+});
+
+test('an incompatible complete event in a restored copy fails closed without rewriting source or backup', t => {
+  const f = fixture(t);
+  f.action('s1', 'geometry', 's1', { state: construction() }, { expectedVersion: 0 });
+  f.store.close();
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'unified-invalid-copy-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.cpSync(f.directory, path.join(root, 'copy'), { recursive: true });
+  const source = path.join(f.directory, `${f.initial.id}.jsonl`);
+  const copied = path.join(root, 'copy', `${f.initial.id}.jsonl`);
+  const original = fs.readFileSync(source, 'utf8');
+  const rows = original.trimEnd().split('\n').map(line => JSON.parse(line));
+  rows[1].type = 'unsupported-future-event';
+  const incompatible = rows.map(row => JSON.stringify(row)).join('\n') + '\n';
+  fs.writeFileSync(copied, incompatible);
+  const restored = new GroupLessonStore({ directory: path.join(root, 'copy') });
+  t.after(() => restored.close());
+  assert.equal(restored.status().available, false);
+  rejects(() => restored.authorize(f.initial.id, f.token('teacher')), 'GROUP_STORAGE_UNAVAILABLE', 503);
+  assert.equal(fs.readFileSync(source, 'utf8'), original);
+  assert.equal(fs.readFileSync(copied, 'utf8'), incompatible, 'complete unsupported records are not silently removed');
 });

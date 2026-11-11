@@ -18,6 +18,7 @@
   const emptyGeometry = () => ({version:1,title:'Новое построение',objects:[],view:{axes:true,grid:true,viewport:{x:0,y:0,span:12}}});
   const currentSurface = () => target() === 'presentation' ? (snapshot?.presentation?.surface || 'split') : (surfaces.get(target()) || 'split');
   let historyWorkspace = null, historyInitial = null, drawing = null, tool = 'pen', outbox = [], rejected = [];
+  let inkPreviews = Object.create(null), queueOwner = null, queueWritable = false, queueStorageFailed = false;
   const cardFrames = new Map(), cardCanvases = new Map(), cardSurfaces = new Map();
   const waiters = new Map();
   const timers = new Set();
@@ -29,9 +30,19 @@
   const seat = id => snapshot?.students?.find(s => s.id === id);
   const geometryAssignment = ws => ws?.geometryAssignmentId || ws?.assignmentId;
   const boardAssignment = ws => ws?.boardAssignmentId || ws?.assignmentId;
+  const inkActor = () => teacher() ? 'teacher' : snapshot?.seatId;
+  const inkTypes = new Set(['stroke', 'erase', 'undo']);
+  const pendingInk = id => outbox.some(action => inkTypes.has(action.type) && action.target === id && action.assignmentId === boardAssignment(workspace(id)));
+  function inkStrokes(ws, id) {
+    if (historyEvents || id === 'presentation') return ws?.strokes || [];
+    return GroupBoardInk.project(ws?.strokes, outbox, inkPreviews, {target:id, assignmentId:boardAssignment(ws), actor:inkActor()});
+  }
+  function inkDraft(ws, id) {
+    return !historyEvents && id !== 'presentation' && drawing?.target === id && drawing.assignmentId === boardAssignment(ws) ? drawing : null;
+  }
   const actionAssignment = (ws,type) => ['geometry','geometry-control'].includes(type)?geometryAssignment(ws):['stroke','erase','undo'].includes(type)?boardAssignment(ws):ws?.assignmentId;
   const sessionKey = id => 'mathexam.group.session.' + id;
-  const queueKey = () => 'mathexam.group.outbox.' + credentials.id;
+  const queueKey = () => GroupBoardQueue.key(queueOwner);
   const later = (fn, ms) => { const id = setTimeout(() => { timers.delete(id); fn(); }, ms); timers.add(id); return id; };
 
   function serverUrl(raw) {
@@ -72,8 +83,18 @@
     node.dataset.kind = kind;
   }
   function saveQueue() {
-    try { sessionStorage.setItem(queueKey(), JSON.stringify({outbox, rejected})); }
-    catch (_) { notice('Браузер не сохранил резервную копию. Не закрывайте вкладку до отправки действий.', true); }
+    if (!queueWritable) return;
+    try {
+      sessionStorage.setItem(queueKey(), GroupBoardQueue.encode(queueOwner,{outbox,rejected,inkPreviews}));
+      queueStorageFailed = false;
+      if ($('errorNotice').dataset.kind === 'queue-storage') notice('', true);
+    } catch (_) {
+      // Keep the in-memory action and let pump deliver it. Stop accepting more
+      // edits until this exact queue can be backed up again; never erase the
+      // previous stored envelope after a failed write.
+      queueStorageFailed = true;
+      notice('Браузер не сохранил резервную копию. Не закрывайте вкладку. Скачайте несохранённые действия; отправка на сервер продолжится автоматически.', true, 'queue-storage');
+    }
   }
   async function request(path, options = {}, auth = true) {
     const controller = new AbortController();
@@ -110,7 +131,12 @@
   async function poll() {
     if (!credentials || !snapshot || polling || sending || stopped) return;
     polling = true;
-    try { accept(await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision)); }
+    // Local recovery must not depend on network recovery.
+    if (queueStorageFailed) saveQueue();
+    try {
+      const data = await request('/api/group-lessons/' + credentials.id + '?after=' + snapshot.revision);
+      accept(data);
+    }
     catch (error) {
       connected = false; renderConnection();
       // A failed read is not a rejected edit. Keep actual rejected-work warnings
@@ -125,6 +151,11 @@
   }
   function enqueue(type, id, payload, options = {}) {
     const ws = workspace(id);
+    // A gesture accepted before the storage failure must still enter the
+    // recoverable memory queue. This private flag never enters the wire body;
+    // new gestures and all other edits remain blocked until backup recovers.
+    if (queueStorageFailed && !(type === 'stroke' && options.finishCapturedInk === true)) return Promise.reject(Error('Браузер не сохранил резервную копию. Скачайте несохранённые действия и дождитесь восстановления сохранения.'));
+    if (!queueWritable) return Promise.reject(Error('Очередь сохранения недоступна. Сохраните эту вкладку и откройте личную ссылку в новой вкладке.'));
     if (!credentials || !snapshot || !ws && !['assign','insert'].includes(type)) return Promise.reject(Error('Нет рабочего места.'));
     const body = {opId:uuid(), target:id, type, payload:clone(payload)};
     if (ws && !['assign','insert','present'].includes(type)) body.assignmentId = actionAssignment(ws,type);
@@ -137,6 +168,8 @@
         body.expectedVersion = Math.max(body.expectedVersion, pending.expectedVersion + 1);
       }
     }
+    const preview = GroupBoardInk.preview(type, inkStrokes(ws, id), inkActor());
+    if (preview) inkPreviews[body.opId] = preview;
     outbox.push(body); saveQueue(); renderConnection();
     const promise = actionAcknowledgement(body.opId);
     pump(); return promise;
@@ -160,17 +193,17 @@
     }finally{clearTimeout(timeout);}
   }
   async function pump() {
-    if (sending || polling || !outbox.length || stopped) return;
+    if (!queueWritable || sending || polling || !outbox.length || stopped) return;
     sending = true;
     const body = outbox[0];
     try {
       const data = await request('/api/group-lessons/' + credentials.id + '/actions', {method:'POST',body:JSON.stringify(body)});
-      outbox.shift(); saveQueue(); accept(data);
+      outbox.shift(); delete inkPreviews[body.opId]; saveQueue(); accept(data);
       waiters.get(body.opId)?.resolve(data); waiters.delete(body.opId);
-      if (!outbox.length && !rejected.length) notice('', true);
+      if (!outbox.length && !rejected.length && !queueStorageFailed) notice('', true);
     } catch (error) {
       if (error.status && error.status < 500 && error.status !== 429) {
-        outbox.shift(); rejected.push({action:body,error:error.code || error.message,at:new Date().toISOString()});
+        outbox.shift(); delete inkPreviews[body.opId]; rejected.push({action:body,error:error.code || error.message,at:new Date().toISOString()});
         const staleTrainer=['trainer','geometry'].includes(body.type)&&['GROUP_STATE_CONFLICT','GROUP_CONTROL_REQUIRED','GROUP_ASSIGNMENT_STALE'].includes(error.code);
         if(staleTrainer) {
           // Later versions in this queue depend on the rejected edit. Some can
@@ -243,7 +276,7 @@
   function ownsTrainer(ws,id) {return id==='common'?teacher():teacher()?ws?.controller==='teacher':id===snapshot.seatId&&ws?.controller==='student';}
   function writer(ws,id) {
     const pending=pendingTrainer(ws,id);
-    return connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
+    return queueWritable&&!queueStorageFailed&&connected&&!historyEvents&&!historyLoading&&!!ws?.trainerId&&!outbox.some(action=>action.target===id&&action.type==='control')
       &&(!pending.length||pending[0].expectedVersion===ws.trainerVersion)&&ownsTrainer(ws,id);
   }
   function focusState(ws,id) {
@@ -257,7 +290,7 @@
   function ownsGeometry(ws,id) {return id==='common'?teacher():teacher()?ws?.geometryController==='teacher':id===snapshot.seatId&&ws?.geometryController==='student';}
   function geometryWriter(ws,id) {
     const pending=pendingGeometry(ws,id);
-    return connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
+    return queueWritable&&!queueStorageFailed&&connected&&!historyEvents&&!historyLoading&&!!ws&&!outbox.some(action=>action.target===id&&action.type==='geometry-control')
       &&(!pending.length||pending[0].expectedVersion===ws.geometryVersion)&&ownsGeometry(ws,id);
   }
   function geometryState(ws,id) {
@@ -272,10 +305,7 @@
     if(focusFrame&&writer(ws,id))pending.push(focusFrame.getState());
     if(geometryFrame&&geometryWriter(ws,id))pending.push(geometryFrame.getState());
     await Promise.all(pending);
-    if(drawing) {
-      const stroke=drawing;drawing=null;
-      fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId});
-    }
+    finishDraw();
   }
   async function navigate(action) {
     if(navigating||historyLoading)return;
@@ -322,12 +352,13 @@
       geometryFrame.update({...(!pending.length?{state:ws.geometryState||emptyGeometry()}:{}),readOnly:!geometryWriter(live,id)});
     }
   }
-  function canDraw() { return connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
+  function canDraw() { return queueWritable && !queueStorageFailed && connected && !historyEvents && !historyLoading && !!target() && (target()==='common'?teacher():teacher()||target()===snapshot.seatId); }
   function renderConnection() {
     if (!snapshot) return;
-    $('recoverWorkButton').hidden=teacher()||!(rejected.length||!connected&&outbox.length);
-    $('connectionStatus').textContent=!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':'Все изменения сохранены';
-    $('connectionStatus').dataset.state=!connected?'offline':outbox.length||rejected.length?'pending':'saved';
+    $('recoverWorkButton').hidden=!(rejected.length||(!connected||queueStorageFailed)&&outbox.length);
+    $('connectionStatus').textContent=!queueWritable?'Сохранение заблокировано':queueStorageFailed?'Нет резервной копии в браузере':!connected?'Нет связи':outbox.length?'Сохраняю…':rejected.length?'Есть отклонённые действия':drawing?'Штрих ещё не завершён':'Все изменения сохранены';
+    $('connectionStatus').dataset.state=!queueWritable||queueStorageFailed?'pending':!connected?'offline':outbox.length||rejected.length||drawing?'pending':'saved';
+    renderInk();
     if (focusFrame) focusFrame.update({readOnly:!writer(workspace(target()),target())});
     if (geometryFrame) geometryFrame.update({readOnly:!geometryWriter(workspace(target()),target())});
     if(!teacher()&&$('teacherWatchStatus'))$('teacherWatchStatus').textContent=presentationCaption()+(connected?'':' · нет связи');
@@ -368,7 +399,7 @@
     canvas.hidden=surface!=='board';host.hidden=surface==='board';
     toggle.textContent=surface==='board'?'Показать тренажёр':'Показать доску';
     host.closest('.student-card')?.querySelector('.preview-geometry-toggle')?.setAttribute('aria-pressed',String(surface==='geometry'));
-    if(surface==='board'){drawCanvas(canvas,student.workspace.strokes||[]);return;}
+    if(surface==='board'){drawCanvas(canvas,inkStrokes(student.workspace,student.id));return;}
     const trainerId=surface==='geometry'?'spacemath':student.workspace.trainerId;
     const state=surface==='geometry'?(student.workspace.geometryState||emptyGeometry()):student.workspace.trainerState;
     if(host.dataset.material!==(trainerId||'empty')) {
@@ -434,7 +465,7 @@
     $('historyButton').textContent=historyEvents?'Обновить запись':'Запись решения';
     $('historyButton').hidden=id==='presentation';
     $('historyPanel').hidden=!historyEvents;
-    $('penButton').disabled=!canDraw();$('eraserButton').disabled=!canDraw();$('undoButton').disabled=!canDraw();
+    $('penButton').disabled=!canDraw();$('eraserButton').disabled=!canDraw();$('undoButton').disabled=!canDraw()||pendingInk(id);
     const newKey=id+':'+ws.assignmentId+':'+ws.trainerId+':'+(historyEvents?'history':'live');
     if(newKey!==focusKey) {
       destroyFocus();focusKey=newKey;
@@ -451,7 +482,7 @@
       focusFrame.update({...(!pending?{state:ws.trainerState}:{}),readOnly:!writer(live,id)});
     }
     renderMaterialTabs();renderGeometry(id,ws,live);
-    drawCanvas($('boardCanvas'),ws.strokes||[],drawing);
+    drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));
   }
   function render() {
     $('setup').hidden=true;$('app').hidden=false;document.body.dataset.role=snapshot.role;
@@ -468,6 +499,14 @@
   }
   function openSeat(id) { navigate(()=>{const following=teacher()&&!!presentationTarget();historyEvents=null;historyWorkspace=null;selected=id;render();if(following)fire('present','common',{target:id,surface:currentSurface()});}); }
   function showSheet(value) { navigate(()=>{const following=teacher()&&!!presentationTarget();historyEvents=null;historyWorkspace=null;selected=null;sheet=value;render();if(following)fire('present','common',{target:null});}); }
+  function renderInk() {
+    const id=target(),ws=historyWorkspace||workspace(id);
+    $('penButton').disabled=!canDraw();$('eraserButton').disabled=!canDraw();
+    // A rejected pending stroke must not make a queued undo delete an older saved stroke.
+    $('undoButton').disabled=!canDraw()||pendingInk(id);
+    if(id)drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));
+    else for(const [seatId,canvas] of cardCanvases)drawCanvas(canvas,inkStrokes(workspace(seatId),seatId));
+  }
   function drawCanvas(canvas,strokes,draft=null) {
     if(!canvas||canvas.hidden)return;
     const rect=canvas.getBoundingClientRect();if(!rect.width||!rect.height)return;
@@ -483,28 +522,35 @@
   function canvasPoint(event) { const r=$('boardCanvas').getBoundingClientRect();return{x:Math.min(1,Math.max(0,(event.clientX-r.left)/r.width)),y:Math.min(1,Math.max(0,(event.clientY-r.top)/r.height))}; }
   function eraseAt(p) {
     const ws=workspace(target()),role=teacher()?'teacher':snapshot.seatId;
-    const strokes=[...(ws.strokes||[])].reverse();
+    const strokes=inkStrokes(ws,target()).slice().reverse();
     const candidate=strokes.find(s=>(s.actor===role||s.author===role||s.actor?.role===role)&&s.points.some(q=>Math.hypot(q.x-p.x,q.y-p.y)<0.035));
     if(candidate)fire('erase',target(),{strokeId:candidate.id});
     else notice('Ластик удаляет Ваши штрихи. Нажмите рядом с нужной линией.');
   }
   function startDraw(event) {
-    if(!canDraw()||event.button!==0)return;
+    if(drawing||!canDraw()||event.button!==0||event.isPrimary===false)return;
     event.preventDefault();const p=canvasPoint(event);
     if(tool==='eraser'){eraseAt(p);return;}
     drawing={id:uuid(),points:[p],color:$('strokeColor').value,width:Number($('strokeWidth').value)};
     drawing.assignmentId=boardAssignment(workspace(target()));drawing.target=target();
+    drawing.pointerId=event.pointerId;
     $('boardCanvas').setPointerCapture(event.pointerId);
+    renderConnection();
   }
   function moveDraw(event) {
-    if(!drawing)return;event.preventDefault();
+    if(!drawing||event.pointerId!==drawing.pointerId)return;event.preventDefault();
     if(drawing.points.length<500)drawing.points.push(canvasPoint(event));
-    drawCanvas($('boardCanvas'),workspace(target())?.strokes||[],drawing);
+    const id=target(),ws=workspace(id);
+    drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));
   }
   function endDraw(event) {
-    if(!drawing)return;event.preventDefault();const stroke=drawing;drawing=null;
-    if($('boardCanvas').hasPointerCapture(event.pointerId))$('boardCanvas').releasePointerCapture(event.pointerId);
-    fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId});
+    if(!drawing||event.pointerId!==drawing.pointerId)return;event.preventDefault();finishDraw();
+  }
+  function finishDraw() {
+    if(!drawing)return;const stroke=drawing;drawing=null;
+    // Clear before releasing capture: lostpointercapture must not enqueue twice.
+    if($('boardCanvas').hasPointerCapture(stroke.pointerId))$('boardCanvas').releasePointerCapture(stroke.pointerId);
+    fire('stroke',stroke.target,{id:stroke.id,points:stroke.points,color:stroke.color,width:stroke.width},{assignmentId:stroke.assignmentId,finishCapturedInk:true});
   }
   function sessionLink(token) {
     const url=new URL(location.pathname,location.origin);
@@ -608,7 +654,7 @@
   }
   function download(name,data) {const a=element('a');const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
   function recoverWork() {
-    if(!snapshot||teacher()||!outbox.length&&!rejected.length)return;
+    if(!snapshot||!outbox.length&&!rejected.length)return;
     download('mathexam-unsent-work.json',{format:'mathexam-unsent-work',version:1,title:snapshot.title,exportedAt:new Date().toISOString(),unsent:clone(outbox),rejected:clone(rejected)});
     notice('Копия несохранённых действий скачана. Ссылки и ключи доступа в неё не включены.');
   }
@@ -633,7 +679,18 @@
     const capability=await request('/api/group-lessons/status',{},false);
     if(!supportsUnifiedBoard(capability))throw Error('Сервер ещё не поддерживает единую доску со SpaceMath. Сохранённое занятие не изменено.');
     accept(data);rememberSession();
-    try{const saved=JSON.parse(sessionStorage.getItem(queueKey())||'{}');outbox=Array.isArray(saved.outbox)?saved.outbox:[];rejected=Array.isArray(saved.rejected)?saved.rejected:[];}catch(_){}
+    queueOwner=GroupBoardQueue.principal(credentials.server,credentials.id,snapshot);
+    try {
+      const saved=GroupBoardQueue.restore(sessionStorage.getItem(queueKey()),queueOwner);
+      ({outbox,rejected,inkPreviews}=saved);queueWritable=true;saveQueue();
+      const legacy=sessionStorage.getItem('mathexam.group.outbox.'+credentials.id);
+      let legacyPending=!!legacy;
+      if(legacy)try{const old=JSON.parse(legacy);legacyPending=!Array.isArray(old.outbox)||!Array.isArray(old.rejected)||old.outbox.length>0||old.rejected.length>0;}catch(_){}
+      if(legacyPending)notice('В этой вкладке осталась очередь прежней версии. Она сохранена отдельно и не отправляется автоматически. Не закрывайте вкладку.',true);
+    } catch (_) {
+      outbox=[];rejected=[];inkPreviews=Object.create(null);queueWritable=false;
+      notice('Не удалось безопасно восстановить очередь. Сохраните эту вкладку; для продолжения откройте личную ссылку в новой вкладке.',true);
+    }
     if(rejected.length)notice(errorText({code:rejected[rejected.length-1].error}),true);
     $('strokeColor').value=teacher()?'#15803d':'#172033';render();
     pump();later(async function tick(){await poll();if(!stopped)later(tick,1100);},1100);
@@ -695,17 +752,18 @@
   $('historyExit').addEventListener('click',()=>{historyEvents=null;historyWorkspace=null;renderFocus();});
   $('penButton').addEventListener('click',()=>{tool='pen';$('penButton').setAttribute('aria-pressed','true');$('eraserButton').setAttribute('aria-pressed','false');});
   $('eraserButton').addEventListener('click',()=>{tool='eraser';$('penButton').setAttribute('aria-pressed','false');$('eraserButton').setAttribute('aria-pressed','true');});
-  $('undoButton').addEventListener('click',()=>fire('undo',target(),{}));
+  $('undoButton').addEventListener('click',()=>{if(canDraw()&&!pendingInk(target())&&!drawing)fire('undo',target(),{});});
   $('boardCanvas').addEventListener('pointerdown',startDraw);$('boardCanvas').addEventListener('pointermove',moveDraw);
   $('boardCanvas').addEventListener('pointerup',endDraw);$('boardCanvas').addEventListener('pointercancel',endDraw);
+  $('boardCanvas').addEventListener('lostpointercapture',endDraw);
   document.querySelectorAll('[data-close-dialog]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.closeDialog).close()));
   const resize=new ResizeObserver(()=>{
-    if(target())drawCanvas($('boardCanvas'),(historyWorkspace||workspace(target()))?.strokes||[],drawing);
+    if(target()){const id=target(),ws=historyWorkspace||workspace(id);drawCanvas($('boardCanvas'),inkStrokes(ws,id),inkDraft(ws,id));}
     if(snapshot&&!teacher()&&watchBoard)drawCanvas($('teacherWatchCanvas'),snapshot.presentation?.workspace?.strokes||[]);
   });resize.observe($('boardCanvas'));
   resize.observe($('teacherWatchCanvas'));
   matchMedia('(min-width:1050px)').addEventListener('change',()=>{if(snapshot)renderTeacherWatch();});
   addEventListener('online',()=>{connected=true;pump();poll();});
-  addEventListener('beforeunload',event=>{if(outbox.length){event.preventDefault();event.returnValue='';}});
+  addEventListener('beforeunload',event=>{if(drawing||outbox.length||queueStorageFailed&&rejected.length){event.preventDefault();event.returnValue='';}});
   init();
 })();

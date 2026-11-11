@@ -8,6 +8,10 @@ on:
       - 'trainers/board-bridge.js'
       - 'tools/unified-*'
       - 'tools/group-board.browser.cjs'
+      - 'tools/group-board-ink.test.cjs'
+      - 'tools/group-board-ink.browser.cjs'
+      - 'tools/group-board-storage.browser.cjs'
+      - 'tools/group-board-queue.test.cjs'
       - 'tools/spacemath/**'
       - 'Dockerfile'
       - '.github/workflows/unified-interactive-board.yml'
@@ -39,7 +43,7 @@ jobs:
       - name: Full server contracts
         run: npm --prefix board-server test
       - name: Geometry, local assets and bridge
-        run: node --test trainers/spacemath/expression.test.cjs trainers/spacemath/model.test.cjs trainers/spacemath/graph-solutions.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/unified-frame.test.cjs
+        run: node --test trainers/spacemath/expression.test.cjs trainers/spacemath/model.test.cjs trainers/spacemath/graph-solutions.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/unified-frame.test.cjs tools/group-board-ink.test.cjs tools/group-board-queue.test.cjs
       - name: Existing eight-learner regression
         env:
           GROUP_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-board-artifacts/group
@@ -54,4 +58,73 @@ jobs:
           name: unified-board-browser
           path: ${{ runner.temp }}/unified-board-artifacts
           if-no-files-found: ignore
+          retention-days: 7
+  main-composition:
+    if: >-
+      github.head_ref == 'feature/unified-board-continuity-20261111' ||
+      (github.event_name == 'workflow_dispatch' &&
+       github.ref_name == 'feature/unified-board-continuity-20261111')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Compose reviewed main without moving repository refs
+        working-directory: ${{ github.workspace }}
+        env:
+          EXPECTED_MAIN: 19811cc15a33d63fc0fcc0b6a11c34863ec64d03
+        run: |
+          python tools/unified-main-composition.test.py
+          git fetch origin main
+          actual_main=$(git rev-parse FETCH_HEAD)
+          test "$actual_main" = "$EXPECTED_MAIN"
+          python tools/unified-main-composition.py "$actual_main" "$RUNNER_TEMP/unified-composition.json" > "$RUNNER_TEMP/unified-composition-tree"
+          tree=$(cat "$RUNNER_TEMP/unified-composition-tree")
+          mkdir -p "$RUNNER_TEMP/unified-composed"
+          git archive "$tree" | tar -x -C "$RUNNER_TEMP/unified-composed"
+          cat "$RUNNER_TEMP/unified-composition.json"
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and browser tools
+        working-directory: ${{ runner.temp }}/unified-composed
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/unified-board-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/unified-board-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/unified-board-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Full server contracts
+        working-directory: ${{ runner.temp }}/unified-composed
+        run: npm --prefix board-server test
+      - name: Geometry, local assets and bridge
+        working-directory: ${{ runner.temp }}/unified-composed
+        run: node --test trainers/spacemath/expression.test.cjs trainers/spacemath/model.test.cjs trainers/spacemath/graph-solutions.test.cjs tools/spacemath/assets.test.cjs tools/unified-spacemath.test.cjs tools/unified-frame.test.cjs tools/group-board-ink.test.cjs tools/group-board-queue.test.cjs
+      - name: Existing eight-learner regression
+        env:
+          GROUP_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-composed-artifacts/group
+        working-directory: ${{ runner.temp }}/unified-composed
+        run: node tools/group-board.browser.cjs
+      - name: Independent materials, handoff and restoration
+        env:
+          UNIFIED_BOARD_ARTIFACTS: ${{ runner.temp }}/unified-composed-artifacts
+        working-directory: ${{ runner.temp }}/unified-composed
+        run: node tools/unified-board.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: unified-composed-browser
+          path: ${{ runner.temp }}/unified-composed-artifacts
+          if-no-files-found: ignore
+          retention-days: 7
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: unified-main-composition-proof
+          path: ${{ runner.temp }}/unified-composition.json
+          if-no-files-found: warn
           retention-days: 7
