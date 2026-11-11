@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ОГЭ. Задание 9 — Линейные уравнения | Math Exam FIPI</title>
+    <title>ОГЭ. Задание 9 — Линейные и квадратные уравнения | MathExam</title>
+    <meta name="description" content="Задание 9 ОГЭ по математике. Разберите линейное уравнение из демоверсии ФИПИ и научитесь выбирать нужный корень квадратного уравнения.">
     <link rel="stylesheet" href="/style.css">
     <style>
         .task-page {
@@ -12,7 +13,7 @@
         }
         .task-content {
             background: white;
-            padding: 2rem;
+            padding: clamp(1rem, 4vw, 2rem);
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin: 2rem 0;
@@ -44,6 +45,8 @@
         }
         .nav-buttons {
             display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
             justify-content: space-between;
             margin-top: 2rem;
         }
@@ -66,50 +69,46 @@
 
     <main class="container task-page">
         <div class="task-content">
-            <h1>Задание 9: Уравнения и их системы</h1>
-            <p class="task-meta">ОГЭ по математике • Алгебра • Средняя сложность</p>
-            
+            <h1>Задание 9 ОГЭ. Линейные и квадратные уравнения</h1>
+            <p class="task-meta">ОГЭ по математике · Алгебра · Краткий ответ</p>
+            <p>В бланк записывают одно число. Если у уравнения два корня, выберите тот, который указан в условии.</p>
+            <p><a href="/trainers/oge-task9-equations.html" class="btn btn-primary">Открыть тренажёр задания 9</a></p>
+
             <div class="step">
-                <h2>Условие задачи (из ФИПИ)</h2>
-                <p>Решите уравнение:</p>
-                <p class="formula">5x + 4 = 3x - 8</p>
+                <h2>Линейное уравнение из проекта демоверсии ФИПИ 2027</h2>
+                <p class="formula">3(x + 8) − 2(x − 8) = 8</p>
+                <p>Раскроем скобки. При умножении на −2 получаем −2x + 16.</p>
+                <p class="formula">3x + 24 − 2x + 16 = 8</p>
+                <p>Приведём подобные слагаемые и вычтем 40 из обеих частей.</p>
+                <p class="formula">x + 40 = 8<br>x = −32</p>
+                <p>Подстановка в исходное уравнение даёт −72 + 80 = 8.</p>
+                <p class="answer-box">В бланк запишем −32.</p>
             </div>
-            
+
             <div class="step">
-                <h2>Решение</h2>
-                <p><strong>Шаг 1.</strong> Переносим слагаемые с x в одну сторону, числа — в другую:</p>
-                <p class="formula">5x - 3x = -8 - 4</p>
-                
-                <p><strong>Шаг 2.</strong> Упрощаем:</p>
-                <p class="formula">2x = -12</p>
-                
-                <p><strong>Шаг 3.</strong> Делим обе части на коэффициент при x:</p>
-                <p class="formula">x = -12 ÷ 2</p>
-                <p class="formula">x = -6</p>
+                <h2>Квадратное уравнение. Как выбрать нужный корень</h2>
+                <p>Решите уравнение и запишите меньший из корней.</p>
+                <p class="formula">5x² − 7x + 2 = 0</p>
+                <p>Найдём дискриминант и оба корня.</p>
+                <p class="formula">D = (−7)² − 4 · 5 · 2 = 9<br>
+                    x₁ = (7 − 3) / 10 = 0,4<br>
+                    x₂ = (7 + 3) / 10 = 1</p>
+                <p>Так как 0,4 &lt; 1, выбираем корень 0,4.</p>
+                <p class="answer-box">В бланк запишем 0,4.</p>
             </div>
-            
-            <div class="answer-box">
-                <strong>Ответ:</strong> -6
-            </div>
-            
+
             <div class="warning-box">
-                <h3>⚠️ Типичные ошибки</h3>
+                <h2>Что проверить перед записью ответа</h2>
                 <ul>
-                    <li><strong>Ошибка знаков:</strong> При переносе через "=" знак меняется на противоположный</li>
-                    <li><strong>Потеря минуса:</strong> -8 - 4 = -12, а не -4</li>
-                    <li><strong>Деление:</strong> -12 ÷ 2 = -6, а не 6</li>
+                    <li>При раскрытии скобок множитель относится к каждому слагаемому.</li>
+                    <li>Если в линейном уравнении осталось ax = b, делите на получившийся коэффициент a. При a = 1 корень уже найден.</li>
+                    <li>После решения квадратного уравнения перечитайте условие и сравните оба корня.</li>
                 </ul>
             </div>
-            
-            <div class="step">
-                <h2>Проверка решения</h2>
-                <p>Подставим найденное значение в исходное уравнение:</p>
-                <p class="formula">5·(-6) + 4 = 3·(-6) - 8</p>
-                <p class="formula">-30 + 4 = -18 - 8</p>
-                <p class="formula">-26 = -26 ✓</p>
-                <p>Равенство верное, значит решение правильное.</p>
-            </div>
-            
+
+            <p><a href="https://doc.fipi.ru/navigator-podgotovki/navigator-oge/Ma-9_2_algebra.pdf">Навигатор ФИПИ по алгебре</a> ·
+                <a href="https://fipi.ru/oge/demoversii-specifikacii-kodifikatory">Демоверсии ФИПИ</a></p>
+
             <div class="nav-buttons">
                 <a href="/trainers/oge-task8-powers-roots.html" class="btn">← Задание 8</a>
                 <a href="/" class="btn">На главную</a>
@@ -121,7 +120,6 @@
     <footer class="footer">
         <div class="container">
             <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
-            <p class="footer-note">Задание из открытого банка ФИПИ</p>
         </div>
     </footer>
 

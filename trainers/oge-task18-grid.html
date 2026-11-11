@@ -108,7 +108,7 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
-<link rel="stylesheet" href="oge-course-geometry.css">
+<link rel="stylesheet" href="oge-course-geometry.css?v=worked-steps-20261110">
 <link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
 <script defer src="/assets/oge-wayfinding.js"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -662,16 +662,26 @@ SUBS.segAB={topic:'rel',name:'Отрезок по данным чертежа (�
     f.dot(A[0],A[1],{c:BLUE,r:3.6});f.dot(B[0],B[1],{c:BLUE,r:3.6});
     f.lab(A[0],A[1],'A',-16,-6,{c:BLUE});f.lab(B[0],B[1],'B',7,-6,{c:BLUE});
     f.lab(C[0],C[1],'C',-14,18);f.lab(D[0],D[1],'D',6,18);
-    if(aux){f.seg(P[0],P[1],P[0],1,{c:AUX,w:1.8,d:'5 5'});}
+    f.lab(P[0],P[1],'P',6,-9);
+    if(aux){
+      const stage=typeof aux==='number'?aux:6;
+      f.seg(C[0],C[1],D[0],D[1],{c:AUX,w:3.2});f.lab(1+d/2,1,String(d),-5,20,{c:AUX});
+      if(stage>=2){f.seg(P[0],P[1],P[0],1,{c:AUX,w:1.8,d:'5 5'});}
+      if(stage>=3){f.seg(P[0],1+h,P[0],1,{c:AUX,w:3});f.lab(P[0],1+h/2,String(h),8,4,{c:AUX});}
+      if(stage>=4){f.seg(P[0],P[1],P[0],1+h,{c:BLUE,w:3});f.lab(P[0],1+(h+H0)/2,String(H0-h),8,4,{c:BLUE});}
+    }
     f.node(C[0],C[1],'C');f.node(D[0],D[1],'D');f.node(P[0],P[1],'P');
     f.parallel(A,B,C,D,true);
     f.chk.push({t:'onside',v:Math.abs((A[1]-C[1])*(P[0]-C[0])-(A[0]-C[0])*(P[1]-C[1]))});
     f.chk.push({t:'ans',v:B[0]-A[0]});
     return f;},
   sol(p){const[d,H0,h]=p,k=(H0-h)/H0;return[
-    'Основание CD считаем по клеткам: CD = '+d+'. Высота треугольника H = '+H0+', отрезок AB проходит на высоте '+h+' — значит, до вершины остаётся '+(H0-h)+'.',
-    'AB ∥ CD, поэтому по расширенной теореме Фалеса маленький треугольник над AB подобен всему треугольнику с коэффициентом k = '+frac(String(H0-h),String(H0))+' = '+fmt(k)+'.',
-    'AB = CD · k = '+d+' · '+fmt(k)+' = '+fmt(d*k)+'.'];},
+    '<b>Считаем основание.</b> Между C и D по горизонтали '+d+' клеток. Каждая сторона клетки равна 1, поэтому CD = '+d+'. Считаем промежутки между линиями сетки, а не сами линии.',
+    '<b>Считаем полную высоту.</b> Верхнюю вершину обозначили P. От P до прямой CD по вертикали '+H0+' клеток. Высота большого треугольника равна '+H0+'. Наклонную сторону для этого не измеряем.',
+    '<b>Находим положение AB.</b> От основания CD до линии AB по вертикали '+h+' клеток. Это нижняя часть высоты, а нам нужна верхняя — от P до AB.',
+    '<b>Находим высоту маленького треугольника.</b> Из всей высоты вычитаем нижнюю часть: '+H0+' − '+h+' = '+(H0-h)+'. Это расстояние от P до AB.',
+    '<b>Почему можно сравнить высоты?</b> AB и CD идут по горизонтальным линиям сетки, поэтому AB ∥ CD. Треугольники PAB и PCD подобны по двум углам: угол при P общий, а углы при A и C равны при параллельных прямых. Их соответствующие длины, в том числе высоты, имеют одно отношение: '+frac('AB','CD')+' = '+frac(String(H0-h),String(H0))+'.',
+    '<b>Вычисляем длину AB.</b> AB = '+d+' · '+frac(String(H0-h),String(H0))+' = '+fmt(d*k)+'. Проверка: AB короче основания CD = '+d+', как и на рисунке.'];},
   diag(p){const[d,H0,h]=p;return[
     {v:d*h/H0,m:'Вы взяли коэффициент h/H — это доля высоты СНИЗУ. Маленький треугольник над AB отсекается СВЕРХУ: k = (H − h)/H = '+(H0-h)+'/'+H0+'.'},
     {v:d,m:'Это основание CD целиком. Отрезок AB короче: он получается из CD умножением на коэффициент подобия.'},
@@ -1547,11 +1557,24 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
   drawTrain=function(state){originalDrawTrain(state);const main=document.getElementById('main');
     MinimalGeometry.secondary(main,[':scope > .chips',':scope > .pnote',':scope > .card > h3',':scope > .card > .note']);
     const card=main.querySelector('.card'),oldHint=document.getElementById('hintBtn');if(!card||!oldHint)return;
-    const originalHint=oldHint.onclick,help=MinimalGeometry.hint(card.querySelector('.figwrap'),'<p>Посмотри на рисунок: что известно и какую величину нужно найти?</p>');
-    oldHint.textContent='Открыть первый шаг';help.panel.appendChild(oldHint);
-    const shown=document.createElement('div');shown.className='minimal-first-step';help.panel.appendChild(shown);
-    oldHint.onclick=()=>{originalHint();const fb=document.getElementById('fb');shown.replaceChildren(...Array.from(fb.childNodes));fb.className='msg';};
-    MinimalGeometry.disclosure(help.panel,[document.getElementById('giveBtn')]);help.panel.appendChild(document.getElementById('solBox'));
+    const t=TR.task,help=MinimalGeometry.hint(card.querySelector('.figwrap'),'<h3>Разбор этой задачи по шагам</h3><p>Смотрим на рисунок выше. Открывай по одному шагу — предыдущие останутся видны.</p>');
+    help.button.textContent='Разобрать по шагам';help.panel.setAttribute('aria-label','Пошаговое объяснение текущей задачи');
+    let step=0;
+    const shown=document.createElement('div');shown.id='task18Steps';shown.className='minimal-first-step';help.panel.appendChild(shown);
+    const status=document.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');help.panel.appendChild(status);
+    oldHint.textContent='Начать разбор';help.panel.appendChild(oldHint);oldHint.setAttribute('aria-controls',shown.id);
+    oldHint.onclick=()=>{
+      if(step>=t.sol.length)return;
+      if(!TR.hintUsed){TR.hintUsed=true;logE({e:'hint',sub:t.sub});}TR.shown=true;
+      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+t.sol.length+'</h4>'+t.sol[step];shown.appendChild(block);step++;
+      const figure=card.querySelector('.figwrap'),oldSvg=figure.querySelector('svg'),style=oldSvg?.style.cssText||'';
+      figure.innerHTML=t.sub==='segAB'?SUBS.segAB.fig(t.p,step).svg():t.figAux;
+      figure.querySelector('svg').style.cssText=style;
+      status.textContent=step===t.sol.length?'Все шаги открыты. Ответ: '+fmt(t.ans)+'. Можно проверить свой ответ или перейти к другой задаче.':'Открыт шаг '+step+' из '+t.sol.length+'.';
+      oldHint.textContent=step===t.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+t.sol.length+')';oldHint.disabled=step===t.sol.length;
+    };
+    const give=document.getElementById('giveBtn');give.textContent='Показать решение целиком';
+    const complete=MinimalGeometry.disclosure(help.panel,[give]);complete.querySelector('summary').textContent='Посмотреть все шаги сразу';complete.appendChild(document.getElementById('solBox'));
     document.getElementById('courseSettings').querySelectorAll('.chip').forEach(node=>{node.tabIndex=0;node.setAttribute('role','button');node.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();node.click();}};});
   };
   setMode('train');
@@ -1559,7 +1582,7 @@ if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.
 </script><script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-geometry.js?v=20261025-oge-geometry"></script>
+<script src="oge-course-geometry.js?v=worked-steps-20261110"></script>
 <script src="board-bridge.js?v=oge-homework-20261106"></script>
-<script src="oge-geometry-board.js?v=oge-managed-seed-20261107"></script>
+<script src="oge-geometry-board.js?v=worked-steps-20261110"></script>
 </body></html>

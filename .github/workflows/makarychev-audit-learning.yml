@@ -1,0 +1,83 @@
+name: Makarychev — audit learning and saved work
+
+on:
+  pull_request:
+    paths:
+      - 'school/**'
+      - 'grade7/index.html'
+      - 'tools/*makarychev*'
+      - 'tools/m9-exercises*'
+      - '.github/workflows/makarychev-audit-learning.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'school/**'
+      - 'grade7/index.html'
+      - 'tools/*makarychev*'
+      - 'tools/m9-exercises*'
+      - '.github/workflows/makarychev-audit-learning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit-learning:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Isolated pinned test dependencies
+        id: test-dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/makarychev-audit" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          node "$RUNNER_TEMP/makarychev-audit/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Inquiry, assistance, old records and saved drafts
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+          NODE_OPTIONS: --max-old-space-size=1024
+        run: |
+          node school/makarychev7/test-audit.cjs
+          node school/makarychev8/test-audit-learning.cjs
+          node tools/textbook-makarychev9-audit.dom.cjs
+          node tools/m9-exercises-audit.test.cjs
+          node tools/workshop-state.test.cjs
+          git diff --check
+      - name: Real browser, first screen, restoration and demonstration isolation
+        if: ${{ !cancelled() && steps.test-dependencies.outcome == 'success' }}
+        timeout-minutes: 8
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+        run: node tools/makarychev-audit.browser.cjs
+      - name: Existing M9 course browser suite, all 93 guided lessons
+        if: ${{ !cancelled() && steps.test-dependencies.outcome == 'success' }}
+        timeout-minutes: 12
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+          M9_SHOTS: ${{ github.workspace }}/artifacts/makarychev9-existing
+        run: node tools/textbook-makarychev9.browser.cjs
+      - name: Existing M9 numbered exercises browser suite, all 311 parts
+        if: ${{ !cancelled() && steps.test-dependencies.outcome == 'success' }}
+        timeout-minutes: 18
+        env:
+          NODE_PATH: ${{ runner.temp }}/makarychev-audit/node_modules
+        run: node tools/m9-exercises.browser.cjs
+      - name: Retain numbered exercise screenshots
+        if: always()
+        run: |
+          if [ -d /tmp/m9-exercise-shots ]; then
+            mkdir -p artifacts/m9-exercises-existing
+            cp -a /tmp/m9-exercise-shots/. artifacts/m9-exercises-existing/
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: makarychev-audit-learning
+          path: |
+            artifacts/makarychev-audit/
+            artifacts/makarychev9-existing/
+            artifacts/m9-exercises-existing/
+          if-no-files-found: warn

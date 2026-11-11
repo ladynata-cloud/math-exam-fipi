@@ -2,6 +2,7 @@
 // In-memory DOM contracts; visual browser review is recorded separately.
 const {JSDOM}=require('jsdom'),fs=require('node:fs'),assert=require('node:assert/strict');
 function boot(saved){const dom=new JSDOM(fs.readFileSync(__dirname+'/index.html','utf8'),{url:'https://makarychev.test/',runScripts:'outside-only',pretendToBeVisual:true});const w=dom.window;w.scrollTo=()=>{};const errors=[];w.console.error=(...args)=>errors.push(args.join(' '));if(saved)w.localStorage.setItem('mathexam.makarychev7.2024.v1',saved);for(const file of ['../peterson6/math.js','check.js','models.js','data.js','app.js'])w.eval(fs.readFileSync(__dirname+'/'+file,'utf8'));return {w,d:w.document,errors};}
+async function main(){
 const {w,d,errors}=boot(),api=w.MakarychevApp;
 const nav=hash=>{w.history.replaceState(null,'',hash);api.route();};
 const click=s=>{const el=d.querySelector(s);assert(el,'Missing '+s);el.click();};
@@ -14,6 +15,8 @@ for(const l of w.MakarychevCourse.lessons){for(let i=0;i<l.tasks.length;i++){
  click('[data-action="guided"]');
  for(let k=0;k<t.steps.length;k++){input('[data-step-input="'+k+'"]',t.steps[k].answer);submit('[data-step-form="'+k+'"]');assert.equal(state().tasks[t.id].step,k+1,t.id+' step '+k);assert.equal(d.querySelectorAll('.step.completed').length,k+1);walkedSteps++;}
  if(t.kind==='choice')click('[data-choice="'+t.choices.indexOf(t.answer)+'"]');else input('#final-answer',t.answer);submit('#answer-form');assert(state().tasks[t.id].correct,t.id);assert(!state().tasks[t.id].independent,t.id+' helped');renders++;
+ // Let jsdom release detached render trees; retain every task and the same saved state.
+ if(renders%20===0)await new Promise(resolve=>setImmediate(resolve));
  }}
 // Draft, completed step and notebook survive detour and reload.
 const lesson=w.MakarychevCourse.lessons.find(l=>l.tasks.some(t=>t.kind!=='choice'&&t.skills.length));const index=lesson.tasks.findIndex(t=>t.kind!=='choice'&&t.skills.length),task=lesson.tasks[index],route='#lesson/'+lesson.id+'/'+index;
@@ -27,3 +30,5 @@ for(const hash of ['#lesson/unknown','#lesson/p01/9999','#practice/unknown/1','#
 assert.deepEqual(errors,[]);
 const malformed=boot('{bad');assert(!malformed.d.querySelector('#storage-warning').hidden);assert.equal(malformed.w.localStorage.getItem('mathexam.makarychev7.2024.v1'),'{bad');malformed.w.close();
 console.log(JSON.stringify({status:'PASS',renders,walkedSteps,flows:['all task/step answers','sticky assistance','detour return','notebook reload','all source-map boundaries','invalid routes','corrupt storage preserved']}));w.close();
+}
+main().catch(error=>{console.error(error);process.exitCode=1;});

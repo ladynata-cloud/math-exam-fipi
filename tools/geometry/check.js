@@ -29,7 +29,8 @@ for(const reverse of [false,true]){
  b.undo();assert.equal(b.goal('perpendicular').ok,false);
 }
 const onLine=new G.Board(G.scene('segment'));onLine.move('C',300,235);onLine.make('perpendicular',['C','A','B']);assert.equal(onLine.goal('perpendicular').ok,true);
-const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,false);
+const collapsed=new G.Board(G.scene('segment'));collapsed.make('perpendicular',['C','A','B']);collapsed.move('C',300,235);assert.equal(collapsed.goal('perpendicular').ok,true); // A perpendicular remains defined when its source reaches AB.
+const cg=collapsed.geometry(collapsed.objects.at(-1));near(G.dot(G.sub(cg.q,cg.p),G.sub(collapsed.point('B'),collapsed.point('A'))),0);
 // Write denial must retain work for export, including later edits and imports.
 const originalStorage=globalThis.localStorage;
 try{

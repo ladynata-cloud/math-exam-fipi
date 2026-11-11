@@ -33,10 +33,10 @@
     if (Math.abs(mantissa) >= 10 - 1e-12) { mantissa /= 10; exponent++; }
     return { mantissa, exponent };
   }
-  function functionValue(mode, x, k, b) {
-    if (!finite(x, k, b)) return null;
+  function functionValue(mode, x, k, b, a = 0) {
+    if (!finite(x, k, b, a)) return null;
     if (mode === 'linear') return k * x + b;
-    if (mode === 'hyperbola') return x === 0 ? null : k / x || 0;
+    if (mode === 'hyperbola') return x === -a ? null : k / (x + a) + b;
     if (mode === 'sqrt') return x < 0 ? null : Math.sqrt(x);
     if (mode === 'square') return x * x;
     if (mode === 'floor') return Math.floor(x);
@@ -69,11 +69,15 @@
   }
   function slider(host, label, min, max, value, step, changed) {
     const box = el('div', 'm8-control'), id = 'm8-control-' + (++sequence), lab = el('label', '', label), out = el('output', 'm8-value', n(value));
-    const input = el('input'); input.type = 'range'; input.id = id; input.min = min; input.max = max; input.step = step; input.value = value;
+    const input = el('input'), numeric = el('input'); input.type = 'range'; input.id = id; input.min = min; input.max = max; input.step = step; input.value = value;
+    numeric.type = 'number'; numeric.min = min; numeric.max = max; numeric.step = step; numeric.value = value; numeric.setAttribute('aria-label', label + ': точное значение');
     lab.htmlFor = id; out.setAttribute('for', id);
-    input.addEventListener('input', () => { const v = Number(input.value); out.textContent = n(v); changed(v); });
-    box.append(lab, out, input); host.append(box);
-    return { input, set(v) { input.value = String(v); out.textContent = n(v); } };
+    function update(v) { input.value = String(v); numeric.value = input.value; out.textContent = n(Number(input.value)); changed(Number(input.value)); }
+    input.addEventListener('input', () => update(Number(input.value)));
+    numeric.addEventListener('input', () => { const v = Number(numeric.value); if (numeric.value.trim() && Number.isFinite(v) && v >= min && v <= max && Math.abs((v-min)/step-Math.round((v-min)/step))<1e-8) update(v); });
+    numeric.addEventListener('change', () => { numeric.value=input.value; });
+    box.append(lab, out, input, numeric); host.append(box);
+    return { input, numeric, set(v) { input.value = String(v); numeric.value=input.value; out.textContent = n(Number(input.value)); }, disable(v) { input.disabled=v; numeric.disabled=v; } };
   }
   function select(host, label, values, value, changed) {
     const box = el('div', 'm8-control'), id = 'm8-select-' + (++sequence), lab = el('label', '', label), node = el('select');
@@ -150,7 +154,7 @@
       if (size > 0) s.append(svg('rect', { x: left, y: top, width: size, height: size, fill: '#e1eedf', stroke: GREEN, 'stroke-width': 3 }));
       else circle(s, 260, 140, 4, GREEN);
       text(s, 260, 145, 'S = ' + n(area), { 'font-size': 23, 'font-weight': 600 });
-      text(s, 260, Math.min(285, top + size + 28), 'Сторона: √' + n(area) + ' = ' + n(side), { 'font-size': 20 });
+      text(s, 260, Math.min(285, top + size + 28), 'Сторона: √' + n(area) + (Number.isInteger(side) ? ' = ' : ' ≈ ') + n(side), { 'font-size': 20 });
       ui.visual.replaceChildren(s, equation(signed ? '√((' + n(value) + ')²) = |' + n(value) + '| = ' + n(side) : '√' + n(area) + (Number.isInteger(side) ? ' = ' : ' ≈ ') + n(side)));
       ui.result.textContent = signed ? (value < 0 ? 'Число a отрицательное, поэтому |a| = −a = ' + n(side) + '. √(a²) не равно a в этом случае.' : 'При a ≥ 0 модуль равен самому числу: |a| = a. Арифметический корень всегда неотрицателен.') : area === 0 ? '√0 = 0. Квадрат со стороной 0 вырождается в точку.' : Number.isInteger(side) ? side + '² = ' + area + ', поэтому √' + area + ' = ' + side + '.' : Math.floor(side) + '² < ' + area + ' < ' + Math.ceil(side) + '². Значит, ' + Math.floor(side) + ' < √' + area + ' < ' + Math.ceil(side) + '. Показанное десятичное значение округлено.';
     }
@@ -209,16 +213,18 @@
   }
   function graphModel(host, lesson) {
     const order = Number(lesson.order), systems = order >= 28 && order <= 32;
-    let mode = order === 8 || order === 45 ? 'hyperbola' : order === 14 ? 'sqrt' : order === 46 ? 'floor' : 'linear', k = systems ? 1 : 2, b = systems ? 1 : 0, point = 2;
+    let mode = order === 8 || order === 45 ? 'hyperbola' : order === 14 ? 'sqrt' : order === 46 ? 'floor' : 'linear', k = systems ? 1 : 2, b = systems ? 1 : 0, a = 0, point = 2;
     const ui = frame(host, systems ? 'Где встречаются два графика?' : 'Формула превращается в график', systems ? 'Зелёная прямая: y = kx + b. Коричневая: y = −x + 3. Общая точка удовлетворяет обоим уравнениям.' : 'Выбери функцию и двигай точку по оси x. Сравни значение по формуле и положение точки.');
-    if (!systems) select(ui.controls, 'Функция', [['linear', 'Линейная: y = kx + b'], ['hyperbola', 'Обратная пропорциональность'], ['sqrt', 'Корень: y = √x'], ['square', 'Квадрат: y = x²'], ['floor', 'Целая часть: y = [x]']], mode, v => { mode = v; sync(); draw(); });
+    if (!systems) select(ui.controls, 'Функция', [['linear', 'Линейная: y = kx + b'], ['hyperbola', 'Рациональная: y = k/(x + a) + b'], ['sqrt', 'Корень: y = √x'], ['square', 'Квадрат: y = x²'], ['floor', 'Целая часть: y = [x]']], mode, v => { mode = v; sync(); draw(); });
     const sk = slider(ui.controls, 'Коэффициент k', -4, 4, k, 1, v => { k = v; draw(); });
     const sb = slider(ui.controls, 'Свободный член b', -5, 5, b, 1, v => { b = v; draw(); });
+    const sa = !systems ? slider(ui.controls, 'Сдвиг в знаменателе a', -4, 4, a, 0.5, v => { a = v; draw(); }) : null;
     let sp;
     if (!systems) sp = slider(ui.controls, 'Аргумент x', -6, 6, point, 0.5, v => { point = v; draw(); });
     function sync() {
-      sk.input.disabled = !systems && !['linear', 'hyperbola'].includes(mode);
-      sb.input.disabled = !systems && mode !== 'linear';
+      sk.disable(!systems && !['linear', 'hyperbola'].includes(mode));
+      sb.disable(!systems && !['linear', 'hyperbola'].includes(mode));
+      if(sa) sa.disable(mode !== 'hyperbola');
     }
     function draw() {
       const g = grid(systems ? 'Графики двух линейных уравнений' : 'График выбранной функции');
@@ -237,20 +243,28 @@
       }
       if (mode === 'floor') {
         for (let i = -8; i < 8; i++) { line(g.s, g.x(i), g.y(i), g.x(i + 1), g.y(i), { stroke: GREEN, 'stroke-width': 3 }); circle(g.s, g.x(i), g.y(i), 3.5, GREEN); circle(g.s, g.x(i + 1), g.y(i), 3.5, '#f7faf5'); }
-      } else plot(g, x => functionValue(mode, x, k, b), GREEN, mode === 'hyperbola' ? [[-8, -0.01], [0.01, 8]] : mode === 'sqrt' ? [[0, 8]] : undefined);
-      const value = functionValue(mode, point, k, b);
-      const equationNode = mode === 'hyperbola' ? equation('y =', frac(n(k), 'x')) : equation(mode === 'linear' ? 'y = ' + n(k) + 'x ' + (b < 0 ? '− ' : '+ ') + n(Math.abs(b)) : mode === 'sqrt' ? 'y = √x' : mode === 'square' ? 'y = x²' : 'y = [x]');
+      } else plot(g, x => functionValue(mode, x, k, b, a), GREEN, mode === 'hyperbola' ? [[-8, -a - 0.01], [-a + 0.01, 8]] : mode === 'sqrt' ? [[0, 8]] : undefined);
+      const value = functionValue(mode, point, k, b, a);
+      const equationNode = mode === 'hyperbola' ? equation('y =', frac(n(k), a === 0 ? 'x' : 'x ' + (a < 0 ? '− ' : '+ ') + n(Math.abs(a))), b === 0 ? '' : (b < 0 ? '− ' : '+ ') + n(Math.abs(b))) : equation(mode === 'linear' ? 'y = ' + n(k) + 'x ' + (b < 0 ? '− ' : '+ ') + n(Math.abs(b)) : mode === 'sqrt' ? 'y = √x' : mode === 'square' ? 'y = x²' : 'y = [x]');
       if (value !== null && Math.abs(value) <= 8) {
         line(g.s, g.x(point), g.y(0), g.x(point), g.y(value), { stroke: ORANGE, 'stroke-dasharray': '5 4' });
         circle(g.s, g.x(point), g.y(value), 5, ORANGE, ORANGE);
       }
       // The zero-coefficient rational function still excludes x = 0.
-      if (mode === 'hyperbola' && k === 0) circle(g.s, g.x(0), g.y(0), 5, '#f7faf5');
+      if (mode === 'hyperbola' && k === 0) circle(g.s, g.x(-a), g.y(b), 5, '#f7faf5');
+      if (mode === 'hyperbola' && k !== 0) {
+        line(g.s,g.x(-a),g.y(-8),g.x(-a),g.y(8),{stroke:ORANGE,'stroke-dasharray':'5 5','data-asymptote':'vertical'});
+        line(g.s,g.x(-8),g.y(b),g.x(8),g.y(b),{stroke:ORANGE,'stroke-dasharray':'5 5','data-asymptote':'horizontal'});
+      }
       ui.visual.replaceChildren(equationNode, g.s);
-      const domain = mode === 'hyperbola' ? 'Область определения: x ≠ 0.' : mode === 'sqrt' ? 'Область определения: x ≥ 0.' : 'Область определения: все действительные числа.';
-      const p = el('p', '', value === null ? 'При x = ' + n(point) + ' значение не определено.' : 'При x = ' + n(point) + ' получаем y ' + (mode === 'sqrt' && !Number.isInteger(value) ? '≈ ' : '= ') + n(value) + '.');
+      const domain = mode === 'hyperbola' ? 'Область определения: x ≠ ' + n(-a) + '.' : mode === 'sqrt' ? 'Область определения: x ≥ 0.' : 'Область определения: все действительные числа.';
+      const p = el('p', '', value === null ? 'При x = ' + n(point) + ' значение не определено.' : 'При x = ' + n(point) + ' получаем y ' + (Math.abs(value-Number(value.toFixed(3))) > 1e-10 ? '≈ ' : '= ') + n(value) + '.');
       ui.result.replaceChildren(p, el('p', 'm8-note', domain));
-      if (mode === 'hyperbola') ui.result.append(el('p', 'm8-note', k === 0 ? 'При k = 0 получаем y = 0 при x ≠ 0. Это уже не гипербола.' : 'Ветви не соединены: при x = 0 деление невозможно.'));
+      const table=el('table','m8-value-table'), header=el('tr'); ['x','y'].forEach(v=>header.append(el('th','',v))); table.append(header); table.setAttribute('aria-label','Таблица значений по той же формуле');
+      const xs=mode==='hyperbola'?[-a-2,-a-1,-a,-a+1,-a+2]:[-2,-1,0,1,2];
+      xs.forEach(x=>{const y=functionValue(mode,x,k,b,a),row=el('tr');row.append(el('td','',n(x)),el('td','',y===null?'не определено':(Math.abs(y-Number(y.toFixed(3)))>1e-10?'≈ ':'')+n(y)));table.append(row);});ui.visual.append(table);
+
+      if (mode === 'hyperbola') ui.result.append(el('p', 'm8-note', k === 0 ? 'При k = 0 получаем y = ' + n(b) + ' при x ≠ ' + n(-a) + '. Выколотая точка сохраняется; вертикальной асимптоты нет.' : 'Асимптоты: x = ' + n(-a) + ' и y = ' + n(b) + '. Ветви не соединены: при x = ' + n(-a) + ' деление невозможно.'));
       if (mode === 'floor') ui.result.append(el('p', 'm8-note', '[x] — наибольшее целое число, не превосходящее x. Например, [−1,5] = −2. Пустой правый конец ступеньки не включён.'));
       if (value !== null && Math.abs(value) > 8) ui.result.append(el('p', 'm8-note', 'Точка находится за пределами показанного окна.'));
     }
@@ -297,15 +311,48 @@
   function styles() {
     if (document.getElementById('makarychev8-model-styles')) return;
     const style = el('style'); style.id = 'makarychev8-model-styles';
-    style.textContent = '.m8-model{background:#f6faf5;border:1px solid #c7d8c9;border-radius:18px;padding:24px;color:#203b36;font:18px/1.6 system-ui,sans-serif;max-width:100%;box-sizing:border-box}.m8-model *{box-sizing:border-box}.m8-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#397258;margin:0 0 6px}.m8-title{font-size:1.35rem;line-height:1.3;margin:0 0 10px}.m8-instruction{margin:0 0 20px;max-width:70ch}.m8-controls{display:flex;flex-wrap:wrap;align-items:end;gap:14px 24px}.m8-control{display:grid;grid-template-columns:1fr auto;gap:5px 14px;flex:1 1 190px;max-width:370px}.m8-control label{font-size:16px;font-weight:600}.m8-value{font-weight:700}.m8-control input,.m8-control select{grid-column:1/-1;min-height:46px;width:100%;accent-color:#18725b}.m8-control select{font:inherit;color:inherit;background:white;border:1px solid #9cb7a8;border-radius:9px;padding:8px}.m8-button{font:inherit;color:#21543f;background:white;border:1px solid #9bb6a5;border-radius:10px;padding:10px 14px;min-height:46px;cursor:pointer}.m8-control input:focus-visible,.m8-control select:focus-visible,.m8-button:focus-visible{outline:3px solid #b07418;outline-offset:4px}.m8-control input:disabled{opacity:.35}.m8-visual{margin:22px 0;min-width:0}.m8-chart{display:block;width:100%;max-width:650px;max-height:430px;margin:0 auto;overflow:visible}.m8-equation{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;font-size:clamp(20px,3vw,29px);line-height:1.7;margin:18px 0}.m8-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1.25;max-width:100%;font-variant-numeric:tabular-nums}.m8-fraction>span:first-child{padding:2px 5px 4px;border-bottom:2px solid currentColor}.m8-fraction>span:last-child{padding:4px 5px 2px}.m8-result{border-top:1px solid #ccdbcd;padding-top:14px}.m8-result p{margin:8px 0}.m8-note{font-size:16px;color:#4d6958}.m8-roots{font-weight:700;font-size:1.18rem}.m8-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.m8-value-card{background:#fffef9;border:1px solid #d5e2d2;border-radius:12px;padding:14px;text-align:center;min-width:0}.m8-value-card .m8-equation{font-size:21px}.m8-place-value{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}.m8-place{min-width:70px;border:1px solid #c8d9c7;border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;background:white}.m8-current{background:#dcefdc;border-color:#18725b}.m8-nowrap{white-space:nowrap}.m8-model sup{font-size:.72em}@media(max-width:480px){.m8-model{padding:18px 12px;font-size:17px}.m8-controls{gap:12px}.m8-control{flex-basis:100%;max-width:none}.m8-comparison{grid-template-columns:1fr}.m8-equation{font-size:21px;gap:8px}.m8-note{font-size:15px}.m8-title{font-size:1.2rem}}';
+    style.textContent = '.m8-model [hidden]{display:none!important}.m8-question{display:block;font-weight:600;margin:12px 0}.m8-question select{display:block;width:100%;max-width:100%;font:inherit;white-space:normal;min-height:48px}.m8-reflection{border-top:1px solid #ccdbcd;margin-top:20px;padding-top:10px}.m8-value-table{width:100%;max-width:360px;margin:12px auto;border-collapse:collapse}.m8-value-table th,.m8-value-table td{padding:5px;border-bottom:1px solid #ccdbcd;text-align:center}.m8-control input[type=number]{width:100%;font:inherit} .m8-model{background:#f6faf5;border:1px solid #c7d8c9;border-radius:18px;padding:24px;color:#203b36;font:18px/1.6 system-ui,sans-serif;max-width:100%;box-sizing:border-box}.m8-model *{box-sizing:border-box}.m8-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#397258;margin:0 0 6px}.m8-title{font-size:1.35rem;line-height:1.3;margin:0 0 10px}.m8-instruction{margin:0 0 20px;max-width:70ch}.m8-controls{display:flex;flex-wrap:wrap;align-items:end;gap:14px 24px}.m8-control{display:grid;grid-template-columns:1fr auto;gap:5px 14px;flex:1 1 190px;max-width:370px}.m8-control label{font-size:16px;font-weight:600}.m8-value{font-weight:700}.m8-control input,.m8-control select{grid-column:1/-1;min-height:46px;width:100%;accent-color:#18725b}.m8-control select{font:inherit;color:inherit;background:white;border:1px solid #9cb7a8;border-radius:9px;padding:8px}.m8-button{font:inherit;color:#21543f;background:white;border:1px solid #9bb6a5;border-radius:10px;padding:10px 14px;min-height:46px;cursor:pointer}.m8-control input:focus-visible,.m8-control select:focus-visible,.m8-button:focus-visible{outline:3px solid #b07418;outline-offset:4px}.m8-control input:disabled{opacity:.35}.m8-visual{margin:22px 0;min-width:0}.m8-chart{display:block;width:100%;max-width:650px;max-height:430px;margin:0 auto;overflow:visible}.m8-equation{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;font-size:clamp(20px,3vw,29px);line-height:1.7;margin:18px 0}.m8-fraction{display:inline-flex;vertical-align:middle;flex-direction:column;text-align:center;line-height:1.25;max-width:100%;font-variant-numeric:tabular-nums}.m8-fraction>span:first-child{padding:2px 5px 4px;border-bottom:2px solid currentColor}.m8-fraction>span:last-child{padding:4px 5px 2px}.m8-result{border-top:1px solid #ccdbcd;padding-top:14px}.m8-result p{margin:8px 0}.m8-note{font-size:16px;color:#4d6958}.m8-roots{font-weight:700;font-size:1.18rem}.m8-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.m8-value-card{background:#fffef9;border:1px solid #d5e2d2;border-radius:12px;padding:14px;text-align:center;min-width:0}.m8-value-card .m8-equation{font-size:21px}.m8-place-value{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}.m8-place{min-width:70px;border:1px solid #c8d9c7;border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;background:white}.m8-current{background:#dcefdc;border-color:#18725b}.m8-nowrap{white-space:nowrap}.m8-model sup{font-size:.72em}@media(max-width:480px){.m8-model{padding:18px 12px;font-size:17px}.m8-controls{gap:12px}.m8-control{flex-basis:100%;max-width:none}.m8-comparison{grid-template-columns:1fr}.m8-equation{font-size:21px;gap:8px}.m8-note{font-size:15px}.m8-title{font-size:1.2rem}}';
     document.head.append(style);
   }
-  function mount(container, lesson) {
+  function experiment(lesson) {
+    const order=Number(lesson.order);
+    if(lesson.model==='rational')return { question:'После сокращения (x² − a²)/(x − a) можно подставить x = a?', options:['Можно: осталось x + a.','Нельзя: исходный знаменатель равен нулю.'], answer:1, challenge:'Выбери a, затем нажми «Проверить x = a». Сравни две записи.', explanation:'Почему запрет сохраняется?', choices:['Мы сравниваем значения исходного выражения; при x = a его нет.','Сокращение определяет дробь в любой точке.'], correct:0, goal:v=>Number(v[0])===Number(v[1])};
+    if(lesson.model==='root'&&[16,17,18].includes(order))return {question:'При a < 0 чему равно √(a²)?',options:['a','−a'],answer:1,challenge:'Введи отрицательное a, отличное от начального. Сравни число и сторону квадрата.',explanation:'Почему результат не отрицательный?',choices:['Арифметический корень равен |a|, а длина неотрицательна.','Возведение в квадрат сохраняет знак a.'],correct:0,goal:v=>Number(v[0])<0};
+    if(lesson.model==='root')return {question:'Если площадь увеличить в 4 раза, как изменится сторона квадрата?',options:['Увеличится в 2 раза.','Увеличится в 4 раза.'],answer:0,challenge:'Сравни площади 4 и 16. Запиши наблюдение о сторонах.',explanation:'Как объяснить найденную связь?',choices:['Сторона равна квадратному корню из площади.','Сторона равна половине площади.'],correct:0,goal:v=>[4,16].includes(Number(v[0]))};
+    if(lesson.model==='quadratic')return {question:'При a = 0 уравнение ax² + bx + c = 0 всегда имеет два корня?',options:['Да.','Нет: нужно исследовать bx + c = 0.'],answer:1,challenge:'Поставь a = 0. Затем меняй b и c; проверь один корень, отсутствие корней и тождество.',explanation:'Почему формула с делением на 2a здесь не подходит?',choices:['Нельзя делить на 0; это уже не квадратное уравнение.','Любое уравнение без x² не имеет корней.'],correct:0,goal:v=>Number(v[0])===0};
+    if(lesson.model==='inequalities')return {question:'Можно ли умножить неравенство на 0 и получить равносильное?',options:['Можно.','Нельзя: разные числа станут одинаковыми.'],answer:1,challenge:'Поставь m = 0, затем сравни положительный и отрицательный множители.',explanation:'При отрицательном множителе…',choices:['направление неравенства меняется.','направление неравенства сохраняется.'],correct:0,goal:v=>Number(v[1])<0};
+    if(lesson.model==='graph'&&order>=28&&order<=32)return {question:'У двух прямых с одинаковым наклоном всегда нет общих точек?',options:['Да.','Нет: они могут совпасть.'],answer:1,challenge:'Поставь k = −1. Сравни b = 3 и другое b.',explanation:'Что означает совпадение прямых?',choices:['Каждая точка прямой решает оба уравнения.','Общих решений нет.'],correct:0,goal:v=>Number(v[0])===-1&&Number(v[1])===3};
+    if(lesson.model==='graph'&&order===14)return {question:'Есть ли у y = √x значение при x = −1?',options:['Нет.','Да, y = −1.'],answer:0,challenge:'Поставь x = −1 и x = 0. Сравни график и таблицу.',explanation:'Какое ограничение требуется?',choices:['x ≥ 0','x ≠ 0'],correct:0,goal:v=>v[0]==='sqrt'&&Number(v[4])<0};
+    if(lesson.model==='graph'&&order===46)return {question:'Чему равна целая часть числа −1,5?',options:['−2','−1'],answer:0,challenge:'Введи x = −1,5 и сравни ближайшие целые числа.',explanation:'[x] — это…',choices:['наибольшее целое, не превосходящее x.','число без дробных цифр.'],correct:0,goal:v=>v[0]==='floor'&&Number(v[4])===-1.5};
+    if(lesson.model==='graph')return {question:'При k = 0 в y = k/(x + a) + b исчезает запрет x = −a?',options:['Исчезает.','Остаётся.'],answer:1,challenge:'Выбери рациональную функцию. Поставь k = 0 и изменяй a и b. Найди выколотую точку.',explanation:'Чем становится график при k = 0?',choices:['Прямой y = b без точки (−a; b), без вертикальной асимптоты.','Полной прямой y = b.'],correct:0,goal:v=>v[0]==='hyperbola'&&Number(v[1])===0};
+    if(order===51)return {question:'Может ли x⁻² быть отрицательным?',options:['Нет.','Да, при x < 0.'],answer:0,challenge:'Выбери x⁻². Сравни ветви при положительном и отрицательном x.',explanation:'Почему значения положительные?',choices:['1/x² > 0 для любого x ≠ 0.','Отрицательный показатель даёт отрицательное число.'],correct:0,goal:v=>v[0]==='-2'};
+    if(order===49||order===50)return {question:'Если показатель 10 уменьшить на 1, число…',options:['уменьшится в 10 раз.','уменьшится на 10.'],answer:0,challenge:'Измени показатель на соседнее целое. Сравни числа при той же мантиссе.',explanation:'Как связаны соседние значения?',choices:['Каждый шаг показателя означает умножение или деление на 10.','Каждый шаг означает прибавление или вычитание 10.'],correct:0,goal:()=>true};
+    return {question:'Знак минус в показателе a⁻² означает отрицательный результат?',options:['Да.','Нет: это 1/a² при a ≠ 0.'],answer:1,challenge:'Поставь n = 0, затем n = −1 и n = −2. Сравни соседние степени.',explanation:'При уменьшении целого показателя на 1 значение…',choices:['делится на основание a.','уменьшается на a.'],correct:0,goal:v=>Number(v[1])<0};
+  }
+  function mount(container, lesson, options) {
     if (!container || !lesson || !renderers[lesson.model]) return () => {};
-    styles();
-    const host = el('section', 'm8-model'); host.setAttribute('aria-label', 'Интерактивная модель: ' + (lesson.title || 'Исследование'));
-    container.replaceChildren(host); renderers[lesson.model](host, lesson);
+    styles(); options=options||{};
+    const record=options.state||{}, spec=experiment(lesson), host=el('section','m8-model'), before=el('div','m8-prediction'), body=el('div'), after=el('div','m8-reflection');
+    host.setAttribute('aria-label','Интерактивная модель: '+(lesson.title||'Исследование')); container.replaceChildren(host);host.append(before,body,after);
+    const controls=()=>Array.from(body.querySelectorAll('.m8-controls input[type=range],.m8-controls select'));
+    let mounted=false;
+    function ensureBody(){if(mounted)return;mounted=true;renderers[lesson.model](body,lesson);
+    if(Array.isArray(record.parameters))controls().forEach((node,i)=>{const value=record.parameters[i];if(typeof value!=='string')return;if(node.tagName==='SELECT'){if(!Array.from(node.options).some(o=>o.value===value))return;node.value=value;node.dispatchEvent(new Event('change'));}else{const v=Number(value);if(!Number.isFinite(v)||v<Number(node.min)||v>Number(node.max)||Math.abs((v-Number(node.min))/Number(node.step)-Math.round((v-Number(node.min))/Number(node.step)))>1e-8)return;node.value=value;node.dispatchEvent(new Event('input'));}});
+    }
+    if(record.started)ensureBody();
+    function save(){if(options.onChange)options.onChange(record);}
+    function values(){return controls().map(node=>node.value);}
+    function choose(parent,label,items,current){const box=el('label','m8-question',label),node=el('select');node.append(new Option('Выбери ответ',''));items.forEach((text,i)=>node.append(new Option(text,String(i))));node.value=Number.isInteger(current)?String(current):'';box.append(node);parent.append(box);return node;}
+    before.append(el('p','m8-eyebrow','Прогноз → опыт → объяснение'));
+    const prediction=choose(before,spec.question,spec.options,record.prediction),status=el('p','m8-note');status.setAttribute('role','status');
+    const start=button(before,'Сохранить прогноз и исследовать',()=>{if(prediction.value===''){status.textContent='Сначала выбери своё предположение.';return;}record.prediction=Number(prediction.value);record.started=true;ensureBody();body.hidden=false;after.hidden=false;prediction.disabled=true;start.hidden=true;status.textContent='Прогноз записан. '+spec.challenge;save();});before.append(status);
+    after.append(el('p','m8-instruction',spec.challenge));
+    const explanation=choose(after,spec.explanation,spec.choices,record.explanation),feedback=el('p','m8-note');feedback.setAttribute('role','status');
+    button(after,'Проверить объяснение',()=>{if(!record.changed||!spec.goal(values())){feedback.textContent='Сначала выполни опыт: '+spec.challenge;return;}if(explanation.value===''){feedback.textContent='Выбери объяснение наблюдения.';return;}record.explanation=Number(explanation.value);record.explanationAttempts=Math.min(1000,(record.explanationAttempts||0)+1);record.explained=record.explanation===spec.correct;feedback.textContent=record.explained?(record.prediction===spec.answer?'Прогноз подтвердился. ':'Прогноз уточнён. ')+'Объяснение верно. Теперь реши новое условие самостоятельно.':'Сравни объяснение с моделью и попробуй ещё раз.';save();});after.append(feedback);
+    function changed(){record.parameters=values();record.changed=true;record.observation=(body.querySelector('.m8-result')?.textContent||'').slice(0,2000);record.explained=false;feedback.textContent='Модель изменилась. Сравни с прогнозом и объясни результат.';save();}
+    body.addEventListener('input',event=>{if(event.target.type==='number'&&event.target.value!==event.target.parentElement.querySelector('input[type=range]').value)return;changed();});body.addEventListener('change',event=>{if(event.target.tagName==='SELECT')changed();});body.addEventListener('click',event=>{if(event.target.closest('button'))changed();});
+    body.hidden=!record.started;after.hidden=!record.started;if(record.started){prediction.disabled=true;start.hidden=true;status.textContent='Твой прогноз сохранён. '+spec.challenge;}if(record.explained)feedback.textContent='Объяснение проверено. Для самостоятельного результата реши новое условие.';
     return () => host.remove();
   }
-  return { mount, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
+  return { mount, experiment, math: { quadratic, rational, rootValue, scaledInequality, scientific, functionValue } };
 });
