@@ -158,7 +158,7 @@ jobs:
           node school/makarychev8/test-state.cjs
           node school/makarychev8/test-task-graphs.cjs
           node school/makarychev8/test-roots-engine.cjs
-          node --max-old-space-size=512 school/makarychev8/test-ui.cjs
+          node --max-old-space-size=768 school/makarychev8/test-ui.cjs
           node school/makarychev8/test-import.cjs
           node school/makarychev8/test-browser.cjs
           node school/makarychev8/test-browser-25-54.cjs
