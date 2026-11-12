@@ -51,7 +51,7 @@ async function roundHintRegression(){
 }
 (async()=>{
  await roundHintRegression();
- const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,111);
+ const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,113);
  assert.equal(typeof w.PathTaskHints?.hint,'function','real index loads concrete hints before task-first');
  for(const id of ['practice-radical-equation','practice-log-equation','expressions']){const task=w.PathData.task(id,0),label=w.PathTaskFirst.question(task);assert(task.q.includes(label));assert(!label.includes(task.steps.at(-1).q)||task.q.includes(task.steps.at(-1).q));}
  for(const id of ids){
@@ -68,6 +68,21 @@ async function roundHintRegression(){
   assert(d.querySelector('#taskStepsBody').textContent.includes('Разбор завершён'),id+' guided completion');
   assert.equal(d.querySelector('#answer').value,'12/',id+' final draft preserved through guided work');
   d.querySelector('#taskHelp').open=false;await tick();assert.equal(d.querySelector('#answer').value,'12/');
+
+  const skillMap=d.querySelector('#reasoningSkillMap,[data-ege-skill-map]');
+  assert(skillMap,id+' one skill route');
+  assert.equal(d.querySelectorAll('#reasoningSkillMap,[data-ege-skill-map]').length,1,id+' single map');
+  const check=skillMap.querySelector('[data-skill-check]');
+  assert(check,id+' authored self-check');
+  const checkData=w.EgeBazaSkillMaps.forLesson(id).selfCheck;
+  check.querySelector('input').value='1/0';
+  check.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  assert.match(check.querySelector('[data-skill-check-result]').textContent,/Введи число/);
+  check.querySelector('input').value=checkData.answer;
+  const credit=l.independent;
+  check.dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));
+  assert.equal(check.querySelector('[data-skill-check-result]').textContent,'Верно.');
+  assert.equal(l.independent,credit,id+' self-check has separate course evidence');
   const before=l.independent;submit(w,d,'answer',solution(w.PathData,t));assert.match(d.querySelector('#feedback').textContent,/Верно/,id+' final grading');assert.equal(l.independent,before,id+' guided is not independent');
  }
  // Final, intermediate and model state are distinct and survive hiding, routes and reload.
@@ -98,5 +113,5 @@ async function roundHintRegression(){
  w.location.hash='exam';await tick();d.querySelector('#start').click();assert(!d.querySelector('#taskHelp'));assert.equal(w.PathCourse.state().active.ids.length,21);
  for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.task(run.ids[run.i],run.seed+run.i);submit(w,d,'answer',solution(w.PathData,t));await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');assert(w.PathCourse.valid(w.PathCourse.state()));assert.deepEqual(errors,[]);w.close();
- console.log('EGE_BAZA_TASK_FIRST_OK: 111 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
+ console.log('EGE_BAZA_TASK_FIRST_OK: 113 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
 })().catch(e=>{console.error(e);process.exitCode=1;});

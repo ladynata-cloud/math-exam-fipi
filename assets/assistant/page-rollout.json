@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "fffa04c4054ca59a40c4a1fc7ec2a5a097a60fc5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -213,33 +213,33 @@
       "placement": "before-head-close"
     },
     "ege-baza/algebra/index.html": {
-      "beforeSha256": "175a53a85843dea5b73b8fecdbfb4de7e50cda9cc0173392ae356f6add1957f7",
-      "afterSha256": "284405d56cb59ee04e6806a93bccb51816095fb5542778bdc3ab77d70e331332",
+      "beforeSha256": "da427d8a6509ee836ec92088ae57eaa5fa81ee897f45ae23606dff36b945553d",
+      "afterSha256": "c698139941b26bbe662ae91ebd53762e62ef6a8eaf9c64205868852e4e472ffd",
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "49be2bc8db5e44f784b1021bfac846f51585380d23b818bcd90c3314ddac1121",
-      "afterSha256": "a82869d210e4013843828ada3f3f0d05e7c7dbbffa2a536f8e808821a21e6035",
+      "beforeSha256": "8688579c1334d198196b22b07127b9d4b153c7d8c7cc00078b48aeb46ad739d0",
+      "afterSha256": "f35881715f0ade3fb0de15a8cbe83b3ad29ef01f2141bc8ccd51451cb9bb0bdc",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
-      "beforeSha256": "4ff40659195f1a14d7758c7734ed26642cfc917e05537bf2324ca0184319448d",
-      "afterSha256": "31f09bff616124552d0a8891d259c0c2e7c29095d5b891d2bb3715b8ad71d92e",
+      "beforeSha256": "736645083dddfef4acae86a6de986faefea95f39b505f8615516ad3b2c5ea2c2",
+      "afterSha256": "6fdf49f74348b353d12f000cc4ab9f0f36c91544c95cf3257377288e5a57346f",
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "b012371e5c188df68f63d3748499ca739e594e0413de694f9ebcd884baf34125",
-      "afterSha256": "0ea6757c092c4bd3e55f6ff55363ee9329d12396b5f020919853c166d41749de",
+      "beforeSha256": "20a719e6ad8da0357d964bdfad19bc20cbe88697b9da5297ccdee2b70be6eb73",
+      "afterSha256": "6cb09f7b1133ee0ac5156eb4bc87a31cf206f33d108114d051948228467de2e7",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
-      "beforeSha256": "f82728688cd8f6446796a8b601719d4b20cff807f58fc31a9d760c68947036fd",
-      "afterSha256": "ada7d19ab80e64f1c60409d40d44b7adfff98f1de64f899e692e9bad6a66ef47",
+      "beforeSha256": "399c57c29db9632ae86dad4effa38a943235fd0c574cf1aa0e1b39ab454c9954",
+      "afterSha256": "049af422ba5ee240392ebe15fa9ed36543220b08e19ad887d5b2601aebeaf93a",
       "placement": "before-head-close"
     },
     "ege-baza/reasoning/index.html": {
-      "beforeSha256": "9119272fceed5612b78d8dc32659da423d5d405fbc39f91e8b9e73c252af46f4",
-      "afterSha256": "9a2914f31df1c8651d670a1f1cc3d1ea6a18e3c25b18a8a0f8dfae1dcc199d50",
+      "beforeSha256": "deb9ff1291a57b82b976851885926622898eaea90060bd4e2ecaaf54f4ac9f8f",
+      "afterSha256": "e1e212cfc4a69355f51cca963c9ee6c84eb38e4d24cc8b442c2c0f853f282129",
       "placement": "before-head-close"
     },
     "ege-baza/reference/exam.html": {
@@ -268,8 +268,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/work-rate/index.html": {
-      "beforeSha256": "926e3519efaed399b63178d9c26ecc31197d46e9343bf1a2a3cb46d6a9325221",
-      "afterSha256": "ddca2da545ef534d13bffa32fba6fe593b98e38deb886d5c659696295745805e",
+      "beforeSha256": "53d27235ef38257a170be96e5af9274610459762632435d250263f95a6583694",
+      "afterSha256": "2405fc327fccf4df639459e8f899f4ea437acf06ca56fcce0dd6bce5ec0f59ab",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
@@ -2303,18 +2303,18 @@
       "placement": "before-head-close"
     },
     "trainers/ege-baza/course/index.html": {
-      "beforeSha256": "532b0b392b13df8a861d3fdee9cdb7ae703a4ad80339e2a7f90a029045209e57",
-      "afterSha256": "19f85d9e6180b4bd83750ffab54e216ea809b4695a1aab29e814184d74c263e5",
+      "beforeSha256": "05e2b1d5de7dc2044456f47dcd958e59b27bcf12a8dfccd3a496b0d0734bd4d5",
+      "afterSha256": "95226cb8e9908fdab9d35c2cab5e77610e384f5195b09dad1d3c55b63b54baea",
       "placement": "before-head-close"
     },
     "trainers/ege-baza/data-course/index.html": {
-      "beforeSha256": "37cee0d1cdee1457bf7debcde7fe356ea2c34a97fd4b65319bc36777dafdd3f8",
-      "afterSha256": "3c3053a7ec4d79dd6656073560f6fd2ad7f389203888ac1e8459969d0e655e65",
+      "beforeSha256": "b248b56aea2b1cecc96635848e4c96f59466aea4bcafbb51874ccaaae7b0f223",
+      "afterSha256": "ba2774600f98e928bd3c47cc6e1b8afeee980cfe70dc6d313d77895ea10ebc49",
       "placement": "before-head-close"
     },
     "trainers/ege-baza/index.html": {
-      "beforeSha256": "9e4f5acaf4742bd0593bd38a7043da4d409aa0b1b18b5acdc009b99a45087a05",
-      "afterSha256": "71666e6766807bbfaa76fa9cd74311afe080e4ffa82bf3034a7dabba29e870ca",
+      "beforeSha256": "8a35d0833a34b258a77b3c7fd16064b42ae28503b26950e29cd1be40b3c8671e",
+      "afterSha256": "5e6a241e6930c5cad1a4ef28cc23850f26519a9587e3c129a293aadec83ef82d",
       "placement": "before-head-close"
     },
     "trainers/ege-informatics-task1-graphs-trainer.html": {
@@ -4769,15 +4769,102 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
-      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
-      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
-      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "previousBaseSha": "e31cedc856cf7ba4b7c512bff4f124306630a9fc",
+      "sourceBaseSha": "d8b3932a7cc16dfc67988a0f7b7e0dbf3dac6e26",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
       "changedPaths": [
-        "topics/delenie-ugolkom/index.html",
-        "topics/lineynye-uravneniya/index.html",
-        "topics/obyknovennye-drobi/index.html",
-        "topics/oge-geometriya/index.html",
-        "topics/procenty/index.html"
+        "ege-baza/algebra/index.html",
+        "ege-baza/index.html",
+        "ege-baza/labs/index.html",
+        "ege-baza/path/index.html",
+        "ege-baza/percent/index.html",
+        "ege-baza/reasoning/index.html",
+        "ege-baza/work-rate/index.html",
+        "trainers/ege-baza/course/index.html",
+        "trainers/ege-baza/data-course/index.html",
+        "trainers/ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d8b3932a7cc16dfc67988a0f7b7e0dbf3dac6e26",
+      "sourceBaseSha": "324a5186bc514e72bc43af391f1123b9634c9997",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [
+        "ege-baza/percent/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+      "sourceBaseSha": "f6231c65ef08568762c4b58b26972836e628c33b",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [
+        "ege-baza/algebra/index.html",
+        "ege-baza/index.html",
+        "ege-baza/labs/index.html",
+        "ege-baza/path/index.html",
+        "ege-baza/percent/index.html",
+        "ege-baza/reasoning/index.html",
+        "ege-baza/work-rate/index.html",
+        "trainers/ege-baza/course/index.html",
+        "trainers/ege-baza/data-course/index.html",
+        "trainers/ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0ae37ecd45c90ffdbc2c44d7af456bb72c462b7d",
+      "sourceBaseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
+      "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b1b7d7dabec916fc663225ffbef1cbe9bf9abddb",
+      "sourceBaseSha": "3c46b64ea3cba20b118db14e18639cc98065874c",
+      "task": "docs/tasks/EGE_BASE_ALL_SKILL_MAPS_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3c46b64ea3cba20b118db14e18639cc98065874c",
+      "sourceBaseSha": "47a1165952a5482d04a92abe8637ef8314cffe72",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "47a1165952a5482d04a92abe8637ef8314cffe72",
+      "sourceBaseSha": "ad1d60451b89ceaddbdc2f6c6b56143ef820d0da",
+      "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ad1d60451b89ceaddbdc2f6c6b56143ef820d0da",
+      "sourceBaseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0fe6bf29cbbe67f437511cb7a378580114528c3e",
+      "sourceBaseSha": "11fa2761e54dba4dda65c71c023b358a0c8fb491",
+      "task": "docs/tasks/EGE_BASE_21_MUSHROOMS_VASES_20261111.md",
+      "changedPaths": [
+        "ege-baza/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
@@ -4793,8 +4880,35 @@
     },
     {
       "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "60d729d379a677d3b0b3dfeec63c8f3d4234a028",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
+      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [
+        "topics/delenie-ugolkom/index.html",
+        "topics/lineynye-uravneniya/index.html",
+        "topics/obyknovennye-drobi/index.html",
+        "topics/oge-geometriya/index.html",
+        "topics/procenty/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "fffa04c4054ca59a40c4a1fc7ec2a5a097a60fc5",
+      "task": "docs/tasks/EGE_BASE_STAR_SKILL_MAPS_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

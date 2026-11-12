@@ -102,6 +102,7 @@ async function checkOcean(page, origin) {
   for (const width of [320, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto(`${origin}/ege-baza/#map`);
+    await page.locator('[data-exam-visual="ocean"]').press('Enter');
     const ocean = page.getByRole('region', { name: 'Подводная экспедиция' });
     await ocean.waitFor();
     assert.equal(await page.locator('[data-exam-position]').count(), 21, 'the numbered basic EGE catalogue remains intact');
