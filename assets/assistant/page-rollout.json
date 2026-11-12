@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
+  "baseSha": "4162841384149d17196115f09a63fc811016968f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "f4e21bec2ce24e6b6819e5ac0e1ce0833f404d54f70fdc13d6bcb31eae5ef17f",
-      "afterSha256": "add070b3f05f313d9d8c1711e75a5bec85b44d5846da7fe221a15ba5bf4a3a2a",
+      "beforeSha256": "fff956e1ce378657a850ee966b96e79499bf1afb77478f109e3972567981ce50",
+      "afterSha256": "daed19c45fc66826d432f957e09864ea202c3a21dc998a82874d592fea583fc0",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -4854,6 +4854,15 @@
         "ege-profil/start/index.html",
         "ege-profil/trainers/vectors-t2.html",
         "ege-profil/trainers/vectors-yashchenko-t2.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
+      "sourceBaseSha": "4162841384149d17196115f09a63fc811016968f",
+      "task": "docs/tasks/EGE_BASE_OCEAN_MOTION_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
