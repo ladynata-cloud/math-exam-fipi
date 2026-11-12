@@ -35,7 +35,8 @@ def previous_inventory(raw,root=ROOT):
  require(sha(encoded(old))==frozen(root)['immutableFiles'][PREFIX+'source-inventory.json'],'Previous source index/order/metadata changed')
  return encoded(old)
 def previous_scope(scope,root=ROOT):
- old=deepcopy(scope)
+ from advanced8_release import previous_scope as before_advanced8
+ old=before_advanced8(scope)
  require(old.get('chapters',[])[-1:]==[SCOPE] and old.get('totalCards')==1407,'Wrong IX release union')
  old['chapters']=old['chapters'][:-1];old['totalCards']-=160
  require(sha(encoded(old))==frozen(root)['immutableFiles']['tools/geometry-textbook/release-scope.json'],'Previous release scope changed')
@@ -78,6 +79,9 @@ def restore_manifest(name,raw,root=ROOT,course=None):
 
 def assert_1247_preserved(bundle,root=ROOT,course=None,scope=None):
  course=course or root/PREFIX;base=frozen(root)
+ scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
+ from advanced8_release import historical_ix_projection
+ bundle,scope=historical_ix_projection(bundle,scope,root,course)
  rows=[x for x in bundle['lessons'] if x['source']['chapter']!='IX']
  entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter']!='IX']
  require(len(rows)==len(entries)==1247,'Unexpected old-card scope')
