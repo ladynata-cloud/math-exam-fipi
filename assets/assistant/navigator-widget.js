@@ -437,8 +437,7 @@
       anchor: '.textbook-help', watch: '#textbook-app', match: hash => hash === '#ex-main-0346'
     });
     add(['/ege-profil/start/'], [geoRightDemo, ['/ege-profil/', 'Все задания профильного ЕГЭ']], {
-      anchor: '#main', position: hash => hash.startsWith('#practice/') ? 'beforeend' : 'afterbegin',
-      lesson: false, watch: '#main',
+      anchor: '#main', position: 'beforeend', lesson: false, watch: '#main',
       match: hash => /^#(?:practice\/geo-right\/(?:guided|plan|independent)|(?:exam|calm)\/1)$/.test(hash)
     });
 
@@ -540,8 +539,7 @@
       }
       previousAnchor = anchor;
       examplesNode = exampleGroup();
-      const placement = typeof position === 'function' ? position(root.location.hash) : position;
-      anchor.insertAdjacentElement(placement, menu);
+      anchor.insertAdjacentElement(position, menu);
       menu.after(examplesNode);
     }
 
