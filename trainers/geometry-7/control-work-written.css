@@ -1,0 +1,333 @@
+.written-mode-active .banner .shell {
+  min-height: 0;
+  padding-block: 12px 15px;
+}
+
+.written-mode-active .banner .back-link {
+  margin-bottom: 2px;
+}
+
+.written-mode-active .banner p {
+  display: none;
+}
+
+.written-mode-active .banner h1 {
+  margin: 3px 0 0;
+  font-size: clamp(1.37rem, 3vw, 2rem);
+  line-height: 1.13;
+}
+
+.written-area {
+  padding-bottom: 38px;
+}
+
+.written-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 16px;
+}
+
+.written-navigation .switch {
+  margin: 0;
+}
+
+.written-problem {
+  padding-bottom: 19px;
+  margin-bottom: 19px;
+  border-bottom: 1px solid var(--line);
+}
+
+.written-problem h2 {
+  margin-bottom: 8px;
+  scroll-margin-top: 16px;
+}
+
+.written-problem .prompt {
+  max-width: 76ch;
+}
+
+.written-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.written-columns h3 {
+  margin: 0 0 9px;
+  font-size: 1.08rem;
+}
+
+.written-notes {
+  padding: 15px;
+  background: #f8f8fd;
+  border: 1px solid #e4e5f0;
+  border-radius: 13px;
+}
+
+.written-fields {
+  display: grid;
+  gap: 5px;
+}
+
+.written-fields label,
+.drawing-name label {
+  font-size: .88rem;
+  font-weight: 720;
+}
+
+.written-fields textarea,
+.drawing-name input {
+  min-width: 0;
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid #bfc4d7;
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+}
+
+.written-fields textarea {
+  min-height: 42px;
+  margin: 0 0 7px;
+  resize: vertical;
+  line-height: 1.48;
+}
+
+.written-fields textarea::placeholder,
+.drawing-name input::placeholder {
+  color: var(--muted);
+  opacity: .9;
+}
+
+.written-symbols,
+.drawing-tools,
+.drawing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.written-symbols .btn {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 4px 8px;
+  font-size: 1.06rem;
+}
+
+.draft-status,
+.drawing-instruction,
+.drawing-feedback {
+  color: var(--muted);
+  font-size: .84rem;
+  line-height: 1.42;
+}
+
+.draft-status {
+  margin: 9px 0;
+}
+
+.written-details {
+  border-top: 1px solid var(--line);
+  padding: 7px 0;
+  margin-top: 5px;
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+.written-details summary {
+  width: fit-content;
+  padding-block: 4px;
+  cursor: pointer;
+  color: var(--violet-dark);
+  font-weight: 700;
+}
+
+.written-details p,
+.written-details .figure {
+  margin: 7px 0 0;
+}
+
+.written-example {
+  margin: 8px 0 0;
+  padding: 11px 12px;
+  border-radius: 9px;
+  background: var(--white);
+}
+
+.written-example dt {
+  margin-top: 8px;
+  font-weight: 720;
+}
+
+.written-example dt:first-child {
+  margin-top: 0;
+}
+
+.written-example dd {
+  margin: 2px 0 0;
+  white-space: pre-line;
+}
+
+.written-example ol {
+  padding-left: 1.25em;
+  margin: 2px 0;
+}
+
+.written-example li + li {
+  margin-top: 5px;
+}
+
+.written-note {
+  color: var(--muted);
+}
+
+.drawing-extra {
+  border: 0;
+  margin-top: 4px;
+  padding: 0;
+}
+
+.drawing-extra .drawing-tools {
+  margin: 4px 0;
+}
+
+.drawing-tool[aria-pressed=true] {
+  border-color: var(--violet);
+  background: var(--violet-pale);
+  color: var(--violet-dark);
+}
+
+.drawing-instruction {
+  margin: 6px 0 8px;
+}
+
+.drawing-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin-top: 8px;
+}
+
+.drawing-name input {
+  width: 130px;
+  min-height: 40px;
+}
+
+.drawing-surface {
+  display: block;
+  width: 100%;
+  aspect-ratio: 640 / 420;
+  border: 1px solid #bfcbd9;
+  border-radius: 10px;
+  background-color: #fbfcff;
+  background-image: radial-gradient(#c9d5e4 1px, transparent 1px);
+  background-size: 19px 19px;
+  background-position: 9px 9px;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+}
+
+.drawing-surface > * {
+  pointer-events: none;
+}
+
+.drawing-line,
+.drawing-mark,
+.drawing-cursor {
+  fill: none;
+  stroke: #2b4563;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.drawing-line.selected,
+.drawing-cursor {
+  stroke: #a24b21;
+  stroke-width: 2.4;
+}
+
+.drawing-mark {
+  stroke: #315f9c;
+}
+
+.drawing-point {
+  fill: #286ea5;
+  stroke: #fff;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.drawing-point.selected {
+  fill: #a24b21;
+}
+
+.drawing-annotation {
+  fill: #172d49;
+  stroke: #fbfcff;
+  stroke-width: 2.8;
+  vector-effect: non-scaling-stroke;
+  paint-order: stroke;
+  font-weight: 750;
+}
+
+.drawing-actions {
+  margin-top: 8px;
+}
+
+.drawing-actions .btn:disabled {
+  opacity: .5;
+}
+
+.drawing-feedback {
+  min-height: 1.42em;
+  margin: 4px 0 0;
+}
+
+.written-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 780px) {
+  .written-columns {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+}
+
+@media (max-width: 410px) {
+  .mode:has(#written-mode:not([hidden])) {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mode:has(#written-mode:not([hidden])) button {
+    min-width: 0;
+    padding-inline: 3px;
+    font-size: .75rem;
+  }
+
+  .written-problem {
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .drawing-tool {
+    padding-inline: 8px;
+    font-size: .81rem;
+  }
+
+  .written-notes {
+    padding: 11px;
+  }
+}
