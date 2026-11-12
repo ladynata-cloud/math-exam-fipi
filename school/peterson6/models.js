@@ -32,7 +32,8 @@
     return typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max &&
       Number.isInteger((value - min) / step);
   }
-  function validateBoardState(lesson, value) {
+  function validateBoardState(lesson, value, task) {
+    if (lesson?.model === 'continuation') return root.PetersonContinuationModels?.validateBoardState(lesson, value, task) === true;
     try {
       const kind = lesson?.model, id = lesson?.id;
       if (!MODEL_LESSONS[kind]?.includes(id) || !fields(value, ['lessonId', 'kind', ...MODEL_FIELDS[kind]]) ||
@@ -390,6 +391,7 @@ function mountInquiry(host,model,q,raw,changed,reveal){
   root.PetersonModels = {
     validateBoardState,
     mount(container, lesson, options = {}) {
+      if (lesson?.model === 'continuation') { addStyles(); return root.PetersonContinuationModels?.mount(container, lesson, options.task || options) || function () {}; }
       if (!container || !lesson || !renderers[lesson.model]) return function () {};
       addStyles();
       const host = el('section', 'pm-model');

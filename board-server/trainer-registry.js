@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const REGISTRY_SCHEMA_VERSION = 1;
-const SUPPORTED_STATE_SCHEMA_VERSIONS = new Set([1]);
+const SUPPORTED_STATE_SCHEMA_VERSIONS = new Set([1, 2]);
 const SUPPORTED_BRIDGE_PROTOCOL_VERSIONS = new Set([1]);
 const SUPPORTED_PROGRESS_SCHEMA_VERSIONS = new Set([1]);
 const BOARD_COMPATIBILITY_VALUES = new Set([

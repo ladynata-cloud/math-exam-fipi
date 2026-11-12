@@ -85,18 +85,30 @@ let browser;
   await page.reload();await page.locator('details.model-panel > summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'3/5','P5 transfer restored');
   await go('/school/peterson6/#lesson/p11/0');await page.locator('details.inquiry-model summary').click();
   const p6=page.locator('.model-inquiry'),draft=p6.locator('[data-inquiry-input=draft]');await draft.waitFor();
-  await draft.fill('20');await p6.locator('[data-inquiry-check=draft]').click();
+  await draft.fill('20');
+  assert.equal(await page.evaluate(()=>window.PetersonApp.getState().tasks['p11-t01'].assisted),false,'typing a forecast is still independent');
+  await p6.locator('[data-inquiry-check=draft]').click();
   await draft.fill('30');await p6.locator('[data-inquiry-check=draft]').click();
   await p6.locator('[data-inquiry-open]').click();
   const transfer=p6.locator('[data-inquiry-input=transferDraft]');await transfer.fill('40');await p6.locator('[data-inquiry-check=transferDraft]').click();
   const state=await page.evaluate(()=>window.PetersonApp.getState().tasks['p11-t01']);assert(!state.correct,'experiment is not a solved textbook task');assert(state.assisted,'revealed model marked as help');
   const helper=page.locator('.peterson-help'),launcher=helper.locator('.peterson-help-launcher'),helperPanel=helper.locator('.peterson-help-panel');
   const inquirySummary=page.locator('details.inquiry-model > summary');
-  const helperStorage=await page.evaluate(()=>{window.__foundationsHelperHost=document.querySelector('.peterson-help');return JSON.stringify({...localStorage});});
+  await page.evaluate(()=>{window.__foundationsHelperHost=document.querySelector('.peterson-help');});
+  const savedCourseWork=()=>page.evaluate(()=>{
+   const records={...localStorage};
+   delete records['mathexam.peterson6.part1.v1.help'];
+   return JSON.stringify(records);
+  });
+  const helperStorage=await savedCourseWork();
   const assertHelperIdentity=async()=>{
    assert.equal(await helper.count(),1,'one existing helper host');
    assert(await helper.evaluate(el=>el===window.__foundationsHelperHost),'helper host retained');
-   assert.equal(await page.evaluate(()=>JSON.stringify({...localStorage})),helperStorage,'model/helper visibility preserves all saved work');
+   assert.equal(await savedCourseWork(),helperStorage,'model/helper visibility preserves all saved work');
+   await page.waitForFunction(()=>{
+    const help=JSON.parse(localStorage.getItem('mathexam.peterson6.part1.v1.help')||'{}');
+    return help['p11-t01']?.model===document.querySelector('details.inquiry-model').open;
+   });
   };
   const assertClosedHelperInFlow=async()=>{
    assert(await helperPanel.isHidden(),'helper remains closed');
@@ -127,7 +139,9 @@ let browser;
   assert(await helperPanel.isVisible());assert.equal(await helper.evaluate(el=>getComputedStyle(el).position),'fixed');
   await helper.locator('.peterson-help-close').click();await assertClosedHelperInFlow();
   assert(await launcher.evaluate(el=>el===document.activeElement),'Close restores focus to visible launcher');
-  await page.reload();await page.locator('details.inquiry-model summary').click();assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'40','transfer draft restored');
+  await page.reload();
+  assert(await inquirySummary.evaluate(el=>el.parentElement.open),'model panel visibility restored');
+  assert.equal(await page.locator('[data-inquiry-input=transferDraft]').inputValue(),'40','transfer draft restored');
   await go('/trainers/oge-basics/percentages/percent-of-number-and-whole.html');await page.locator('.bh-toggle:visible').first().click();
   await page.locator('[data-bh-skill="percent-part"]:visible').first().click();
   const frame=page.locator('.bh-frame:visible');await frame.locator('.bh-answer').fill('20');await frame.locator('.bh-check').click();await frame.locator('.bh-start-transfer').click();

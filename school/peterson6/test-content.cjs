@@ -1,6 +1,7 @@
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 const M=require('./math.js'),ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'data.js'),'utf8'),ctx);
-const D=ctx.window.PetersonCourse,ids=new Set(),skills=new Set(M.skills.map(s=>s.id));let numeric=0,choice=0,steps=0;
+// Retained first-part regression; the continuation has its own full-source gate.
+const D={...ctx.window.PetersonCourse,lessons:ctx.window.PetersonCourse.lessons.filter(l=>l.order<=14)},ids=new Set(),skills=new Set(M.skills.map(s=>s.id));let numeric=0,choice=0,steps=0;
 assert.equal(D.lessons.length,14);assert.equal(Object.keys(D.exerciseIndex).length,497);
 for(let n=1;n<=497;n++)assert(D.exerciseIndex[n]&&D.exerciseIndex[n].page>=6&&D.exerciseIndex[n].page<=110);
 for(const [i,l] of D.lessons.entries()){
