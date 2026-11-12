@@ -19,7 +19,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_PATH = Path("geometry-course/textbook/data/course.json")
 TARGET_PATH = Path("learning/atanasyan-first-steps/course.json")
-SOURCE_SHA256 = "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911"
+SOURCE_SHA256 = "39cbb16a09ac77541fba4fe175f6f344a762c47606b7324b60fd23b1b9dc6c7d"
 BOOK_ID = "atanasyan-2023-7-9"
 BOOK_SHA256 = "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72"
 GATE = "ATANASYAN_FIRST_STEPS_SOURCE_OK"
