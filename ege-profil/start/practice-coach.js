@@ -211,11 +211,13 @@
       svg.setAttribute('aria-label', description);
       const add = (tag, attrs, text) => { const n = doc.createElementNS(ns, tag); Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, String(v))); if (text !== undefined) n.textContent = text; svg.append(n); return n; };
       add('title', {}, description);
-      const X = x => 44 + x * 66, Y = y => 160 - y * 15;
-      add('path', { d: 'M22 160H280M44 174V12', fill: 'none', stroke: '#52675d', 'stroke-width': 1.5 });
-      for (let x = 0; x <= 3; x++) add('text', { x: X(x), y: 182, 'text-anchor': 'middle' }, x);
-      [0, 2, 4, 6, 8].forEach(y => add('text', { x: 32, y: Y(y) + 4, 'text-anchor': 'end' }, y));
-      add('text', { x: 281, y: 175 }, 'x'); add('text', { x: 51, y: 14 }, type === 'derivative' ? 'f′' : 'y');
+      const scale = 15, X = x => 126 + x * scale, Y = y => 166 - y * scale;
+      for (let x = 1; x <= 3; x++) add('path', { d: `M${X(x)} ${Y(10)}V${Y(0)}`, stroke: '#e2e9ed' });
+      for (let y = 1; y <= 10; y++) add('path', { d: `M${X(0)} ${Y(y)}H${X(3)}`, stroke: '#e2e9ed' });
+      add('path', { d: `M${X(0)-7} ${Y(0)}H${X(3)+7}M${X(0)} ${Y(0)+6}V${Y(10)-5}`, fill: 'none', stroke: '#52675d', 'stroke-width': 1.5 });
+      for (let x = 0; x <= 3; x++) add('text', { x: X(x), y: 184, 'text-anchor': 'middle' }, x);
+      [2, 4, 6, 8, 10].forEach(y => add('text', { x: X(0)-9, y: Y(y)+4, 'text-anchor': 'end' }, y));
+      add('text', { x: X(3)+11, y: Y(0)+4 }, 'x'); add('text', { x: X(0)+6, y: 14 }, type === 'derivative' ? 'f′' : 'y');
       if (type === 'line') {
         if (after) add('path', { d: `M${X(0)} ${Y(1)}L${X(3)} ${Y(7)}`, stroke: '#87958e', 'stroke-width': 2, 'stroke-dasharray': '5 4', fill: 'none' });
         add('path', { d: `M${X(0)} ${Y(after ? 4 : 1)}L${X(3)} ${Y(after ? 10 : 7)}`, stroke: '#176b50', 'stroke-width': 3, fill: 'none' });
@@ -235,12 +237,12 @@
       svg.setAttribute('viewBox', '0 0 300 190'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', description);
       svg.dataset.coefficient = after ? '0' : '2'; svg.dataset.excludedX = '1';
       const add = (tag, attrs, text) => { const node = doc.createElementNS(ns, tag); Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value))); if (text !== undefined) node.textContent = text; svg.append(node); return node; };
-      const X = x => 40 + 38 * (x + 2), Y = y => 160 - 12 * (y + 4);
+      const scale = 12, X = x => 150 + (x - 1) * scale, Y = y => 160 - (y + 4) * scale;
       add('title', {}, description);
-      add('path', { d: `M28 ${Y(0)}H280M${X(0)} 174V10`, fill: 'none', stroke: '#52675d', 'stroke-width': 1.5 });
-      [-2, 0, 1, 2, 4].forEach(x => add('text', { x: X(x), y: 184, 'text-anchor': 'middle' }, fmt(x)));
-      [-4, 0, 2, 4, 8].forEach(y => add('text', { x: 27, y: Y(y) + 4, 'text-anchor': 'end' }, fmt(y)));
-      add('text', { x: 281, y: Y(0) - 6 }, 'x'); add('text', { x: X(0) + 8, y: 14 }, 'y');
+      add('path', { d: `M${X(-2)-8} ${Y(0)}H${X(4)+8}M${X(0)} 174V10`, fill: 'none', stroke: '#52675d', 'stroke-width': 1.5 });
+      [-2, 0, 2, 4].forEach(x => add('text', { x: X(x), y: 184, 'text-anchor': 'middle' }, fmt(x)));
+      [-4, 0, 2, 4, 8].forEach(y => add('text', { x: X(-2)-11, y: Y(y) + 4, 'text-anchor': 'end' }, fmt(y)));
+      add('text', { x: X(4)+11, y: Y(0) - 6 }, 'x'); add('text', { x: X(0) + 8, y: 14 }, 'y');
       if (after) {
         add('path', { d: `M${X(-2)} ${Y(2)}H${X(4)}`, fill: 'none', stroke: '#176b50', 'stroke-width': 3, 'data-graph-role': 'function' });
         add('circle', { cx: X(1), cy: Y(2), r: 5, fill: '#fff', stroke: '#176b50', 'stroke-width': 2.5, 'data-graph-role': 'excluded-point' });

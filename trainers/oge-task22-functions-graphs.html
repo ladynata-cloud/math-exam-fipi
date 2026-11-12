@@ -664,12 +664,12 @@ class Grapher{
   constructor(svg){this.svg=svg;this.W=560;this.H=420;this.pad=8;
     svg.setAttribute('viewBox',`0 0 ${this.W} ${this.H}`);svg.setAttribute('class','grapher');}
   setRange(xmin,xmax,ymin,ymax){this.xmin=xmin;this.xmax=xmax;this.ymin=ymin;this.ymax=ymax;
-    this.sx=(this.W-2*this.margin())/(xmax-xmin);this.sy=(this.H-2*this.margin())/(ymax-ymin);
-    // keep square-ish unit if possible
+    this.scale=Math.min((this.W-60)/(xmax-xmin),(this.H-60)/(ymax-ymin));
+    this.left=(this.W-(xmax-xmin)*this.scale)/2;
+    this.bottom=(this.H+(ymax-ymin)*this.scale)/2;
   }
-  margin(){return 30;}
-  X(x){return this.margin()+(x-this.xmin)*(this.W-2*this.margin())/(this.xmax-this.xmin);}
-  Y(y){return this.H-this.margin()-(y-this.ymin)*(this.H-2*this.margin())/(this.ymax-this.ymin);}
+  X(x){return this.left+(x-this.xmin)*this.scale;}
+  Y(y){return this.bottom-(y-this.ymin)*this.scale;}
   clear(){while(this.svg.firstChild)this.svg.removeChild(this.svg.firstChild);}
   drawAxes(){
     const g=svgEl('g');this.svg.appendChild(g);

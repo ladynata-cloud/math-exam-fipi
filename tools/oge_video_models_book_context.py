@@ -49,6 +49,9 @@ def verified_context(record):
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if raw.count(block) != 1 or block + b'</head>' not in raw: return None
         native = raw.replace(block, b'', 1)
+        graph_scale = PINS['graphScale']
+        if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
+            native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)
         if sha(native) != pin['sha256'] or context['nativeSha256'] != pin['sha256']: return None
         if sha(raw) != context['sourceSha256']: return None
         if record['resources'][route]['sha256'] != context['sourceSha256']: return None

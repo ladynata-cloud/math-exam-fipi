@@ -99,14 +99,22 @@
     function line(s, x1, y1, x2, y2, color, width, dash) { s.append(svg('line', { x1, y1, x2, y2, stroke: color || '#b4c2b7', 'stroke-width': width || 1.5, 'stroke-dasharray': dash || '' })); }
     function dot(s, x, y, open, color) { s.append(svg('circle', { cx: x, cy: y, r: 5, fill: open ? '#fffef9' : color || GREEN, stroke: color || GREEN, 'stroke-width': 2 })); }
     function graph(label, lo, hi, ymax, fn, breaks, point, second) {
-      const s = chart(label, 370), X = x => 48 + (x - lo) / (hi - lo) * 504, Y = y => 175 - y / ymax * 128;
-      const x0 = Math.max(48, Math.min(552, X(0)));
-      line(s, 48, Y(0), 558, Y(0), '#657c70'); line(s, x0, 35, x0, 310, '#657c70');
-      for (let i = 0; i <= 4; i++) { const x = lo + (hi - lo) * i / 4; line(s, X(x), 42, X(x), 303, '#e3e8df'); text(s, X(x), 334, fmt(x, 2), { 'font-size': 15 }); }
-      for (let i = -1; i <= 1; i++) { const y = i * ymax; text(s, 33, Y(y) + 6, fmt(y), { 'text-anchor': 'end', 'font-size': 15 }); }
-      text(s, 574, 181, 'x'); text(s, x0 + 17, 28, 'y');
+      const s = chart(label, 370), scale = Math.min(504 / (hi - lo), 128 / ymax);
+      const X = x => 300 + (x - (lo + hi) / 2) * scale, Y = y => 175 - y * scale;
+      const left = X(lo), right = X(hi), top = Y(ymax), bottom = Y(-ymax);
+      const x0 = Math.max(left, Math.min(right, X(0)));
+      const step = Math.max(1, Math.ceil(28 / scale));
+      for (let x = Math.ceil(lo / step) * step; x <= hi; x += step) {
+        line(s, X(x), top, X(x), bottom, '#e3e8df'); text(s, X(x), bottom + 26, fmt(x), { 'font-size': 15 });
+      }
+      for (let y = Math.ceil(-ymax / step) * step; y <= ymax; y += step) {
+        line(s, left, Y(y), right, Y(y), '#e3e8df'); text(s, left - 11, Y(y) + 5, fmt(y), { 'text-anchor': 'end', 'font-size': 15 });
+      }
+      line(s, left, Y(0), right + 6, Y(0), '#657c70');
+      if (lo <= 0 && hi >= 0) line(s, x0, top - 8, x0, bottom, '#657c70');
+      text(s, right + 17, Y(0) + 6, 'x'); text(s, x0 + 10, top - 10, 'y');
       function paint(f, br, color) { curveSegments(f, lo, hi, br, ymax, 360).forEach(points => s.append(svg('path', { d: points.map((p, i) => (i ? 'L' : 'M') + X(p[0]).toFixed(2) + ' ' + Y(p[1]).toFixed(2)).join(' '), fill: 'none', stroke: color, 'stroke-width': 3, 'stroke-linejoin': 'round' }))); }
-      (breaks || []).filter(v => v >= lo && v <= hi).forEach(v => line(s, X(v), 43, X(v), 303, ORANGE, 1.5, '5 5'));
+      (breaks || []).filter(v => v >= lo && v <= hi).forEach(v => line(s, X(v), top, X(v), bottom, ORANGE, 1.5, '5 5'));
       paint(fn, breaks, GREEN); if (second) paint(second, [], ORANGE);
       if (point && point[1] !== null && Number.isFinite(point[1]) && point[1] >= -ymax && point[1] <= ymax) { line(s, X(point[0]), Y(0), X(point[0]), Y(point[1]), ORANGE, 1.5, '4 4'); dot(s, X(point[0]), Y(point[1]), false, ORANGE); }
       return { s, X, Y };

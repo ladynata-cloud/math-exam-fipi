@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -353,8 +353,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/inequalities.html": {
-      "beforeSha256": "3cf2f9eb38362659622b3d9ebd68167ba7059d10791aafddd4cf257de21a2425",
-      "afterSha256": "8b4687d4e9a5525a260f460034128b821e64743740b00ac7337e0b5eac120886",
+      "beforeSha256": "111f664ec530128fa06a618e3e5ce82d34e5cdb4267b9facebc11d82abdb5eff",
+      "afterSha256": "ccd58741a6db95d426e8678c5195a6c12e6045a580d07c44eee737997ab5ea17",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/interval-method.html": {
@@ -2988,8 +2988,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "6a1442abbfc85df4df49faf5b17a4dcf9df6d069638d8ac6395aab62f102a6bc",
-      "afterSha256": "5f9cee5dfecaa7afbe9f17e18c3438ff82c5dd95aa21a8bb03f6f907dcfecdab",
+      "beforeSha256": "c78af4ef43dbf2cb2df9ef5da618b3df3327791fbd3f9fdfe96a3423434d2ffe",
+      "afterSha256": "001c2eab214f35de65332c5fb4470ae5facd6a7a29f0482ec304c54960361ac9",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -4796,6 +4796,16 @@
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
+      "task": "docs/tasks/CARTESIAN_GRAPH_SCALE_20261112.md",
+      "changedPaths": [
+        "ege-profil/trainers/inequalities.html",
+        "trainers/oge-task22-functions-graphs.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
