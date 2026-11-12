@@ -352,7 +352,7 @@ def compose(course=COURSE, include_candidates=()):
     for entry in entries:
         if entry['id'] in by_id:
             entry['status'] = by_id[entry['id']]['status']
-    return dict(catalog=dict(schemaVersion=1, book=book, inventoryComplete=False, entries=entries),
+    bundle = dict(catalog=dict(schemaVersion=1, book=book, inventoryComplete=False, entries=entries),
                 lessons=lessons, sourceInventory=inventory,
                 build=dict(authoredContentSha256=content_hash,
                            publicationReviewMatches=all(item['publicationReviewMatches'] for item in chapter_builds + supplement_builds),
@@ -361,6 +361,8 @@ def compose(course=COURSE, include_candidates=()):
                            chapters=chapter_builds,
                            supplements=supplement_builds,
                            fullTextbookComplete=False))
+    from advanced8_release import append_release
+    return append_release(bundle, ROOT, course)
 
 
 def main():

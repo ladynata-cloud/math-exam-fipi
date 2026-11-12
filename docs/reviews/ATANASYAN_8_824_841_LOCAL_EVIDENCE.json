@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Editor audit and local browser evidence; not independent release approval",
+  "sourceSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+  "reviewedOriginalHead": "2d5e77c58a4ea53a0a50ef4186b0aafce9f61b06",
+  "mergedMain": "0d96ad84f0dd9dcadf123b3845db75c5476be93a",
+  "authoredFileSha256": "8af283ae92b28ee457fbb6817f42a69f8fd5740daec9977cf2633f0769fdfbbe",
+  "generatorSha256": "3ee97230041950b3fe98e3b7ca6df1dd69115b4dcf1c9b678377d1fb92dd34f2",
+  "candidateBundleSha256": "38c8a152cd590b18b3df5bf466abf199be9fd84fca9f9cecec7994c8a3b66fb7",
+  "productionBundleSha256": "84563ef900b15174be7f4dcb03bd450254bcce7789a90a364ae4b9ddf2de4911",
+  "counts": {
+    "cards": 18,
+    "steps": 72,
+    "modelViews": 94,
+    "modelAssertions": 220,
+    "publicCards": 1407,
+    "previewCards": 1425
+  },
+  "sourcePages": {
+    "printed": [
+      214,
+      215
+    ],
+    "pdf": [
+      215,
+      216
+    ],
+    "allConditionsVisuallyCompared": true
+  },
+  "localBrowser": "Chromium 153.0.8010.0",
+  "views": {
+    "completed": true,
+    "count": 188,
+    "widths": [
+      320,
+      1280
+    ],
+    "errors": [],
+    "rawReportSha256": "1ca77db739750e1cfc97b0afa0d0f57f08135055e8b63a33a8beaae45bbb62c4",
+    "visualInspection": "editor only; contact sheets plus six final changed views; no independent sign-off",
+    "sourceBundleSha256": "dacccad3373f2721697eb8df49a3e55c1bd1078751e90fe4e3bc81089af2a836",
+    "modelSetSha256": "c510d976e91a288b2084006000d0f844473dcbaffe894646023792125f03103b",
+    "modelsUnchangedAfterFinalProofClarification": true
+  },
+  "journeys": {
+    "completed": true,
+    "count": 36,
+    "preservedOldWork": 2,
+    "errors": [],
+    "firstViewport": {
+      "widths": [
+        320,
+        1280
+      ],
+      "height": 900,
+      "conditionAndDrawingFullyVisible": true
+    },
+    "rawReportSha256": "dbbcaefcd79678451e052c70a9dc11575ffcfe62e3db51947cd536ec2f50010c",
+    "sourceBundleSha256": "38c8a152cd590b18b3df5bf466abf199be9fd84fca9f9cecec7994c8a3b66fb7"
+  },
+  "board": {
+    "completed": true,
+    "actualBoardShell": true,
+    "previewCases": 36,
+    "canonicalRouteCases": 2,
+    "allDraftsRestored": true,
+    "allModelsVisibleAfterScroll": true,
+    "firstFrameClippedModelCount": 23,
+    "firstFrameClippedModels": [
+      {
+        "number": 825,
+        "width": 320
+      },
+      {
+        "number": 826,
+        "width": 320
+      },
+      {
+        "number": 828,
+        "width": 320
+      },
+      {
+        "number": 829,
+        "width": 320
+      },
+      {
+        "number": 833,
+        "width": 320
+      },
+      {
+        "number": 835,
+        "width": 320
+      },
+      {
+        "number": 837,
+        "width": 320
+      },
+      {
+        "number": 839,
+        "width": 320
+      },
+      {
+        "number": 824,
+        "width": 1280
+      },
+      {
+        "number": 825,
+        "width": 1280
+      },
+      {
+        "number": 826,
+        "width": 1280
+      },
+      {
+        "number": 828,
+        "width": 1280
+      },
+      {
+        "number": 829,
+        "width": 1280
+      },
+      {
+        "number": 830,
+        "width": 1280
+      },
+      {
+        "number": 831,
+        "width": 1280
+      },
+      {
+        "number": 832,
+        "width": 1280
+      },
+      {
+        "number": 833,
+        "width": 1280
+      },
+      {
+        "number": 834,
+        "width": 1280
+      },
+      {
+        "number": 835,
+        "width": 1280
+      },
+      {
+        "number": 836,
+        "width": 1280
+      },
+      {
+        "number": 837,
+        "width": 1280
+      },
+      {
+        "number": 839,
+        "width": 1280
+      },
+      {
+        "number": 840,
+        "width": 1280
+      }
+    ],
+    "canonicalRouteSupported": false,
+    "serverSynchronizationTested": false,
+    "sharedActionsSupported": false,
+    "reason": "Canonical textbook URL goes to grade 7 wrapper; grade 8 is outside its 619-card registry. Explicit unapproved preview fits horizontally and works locally; board frame and review notice require vertical scrolling in listed cases.",
+    "rawReportSha256": "85cbd189c4613f5df30ed630c762724a291e9fa27d72fa8569e214db9ff6f162",
+    "errors": [],
+    "sourceBundleSha256": "dacccad3373f2721697eb8df49a3e55c1bd1078751e90fe4e3bc81089af2a836",
+    "conditionsAndModelsUnchangedAfterFinalProofClarification": true
+  },
+  "technicalTests": {
+    "mathematicalAndProtectionTests": 16,
+    "reviewScopeTests": 13,
+    "runtimeRetentionChecks": 27,
+    "publishedRuntimeDomCheckpoints": 4879,
+    "reproduciblePublicBuild": true
+  },
+  "independentApproval": false,
+  "note": "Standing owner authorization exists; releaseApproved=false means the separate final subject approval has not happened.",
+  "remaining": [
+    "Separate reviewer validates final source, proofs, pedagogy and models against these bytes",
+    "Successful required exact-head CI",
+    "Normal promotion/build/publication verification after independent sign-off",
+    "Board route and two-client integration require separate implementation and verification"
+  ],
+  "finalProofClarification": "Exercise 839 also explains collinear O,X,Y by segment sum/difference. 16 tests rerun including two exact collinear examples; 36 full journeys rerun. All model objects and all conditions remain identical to the inspected 188 views and 36 board cases.",
+  "intermediateCloudVerification": {
+    "head": "73644ecf3d8dcabde1307d733aa11c273d26ed7d",
+    "candidateRun": 41914323650,
+    "conclusion": "success",
+    "artifactId": 13364855396,
+    "artifactSha256": "282318cef8d5bcbef542516ce603a9675a054658fc15dabd07782d7d4adf850a",
+    "doesNotApproveFinalHead": true
+  },
+  "releaseApproved": false
+}
