@@ -44,8 +44,11 @@
     if (!displayScale) return null;
     const x = (event.clientX - rect.left - (rect.width - width * displayScale) / 2) / displayScale;
     const y = (event.clientY - rect.top - (rect.height - height * displayScale) / 2) / displayScale;
-    if (x < left || x > right || y < top || y > bottom) return null;
-    return [Math.round((xmin + (x - left) / scale) * 4) / 4, Math.round((ymax - (y - top) / scale) * 4) / 4];
+    // Accept a rounded click on the outer grid line and snap it back to the grid.
+    const edgePixel = 1 / displayScale;
+    if (x <= left - edgePixel || x >= right + edgePixel || y <= top - edgePixel || y >= bottom + edgePixel) return null;
+    const graphX = Math.min(right, Math.max(left, x)), graphY = Math.min(bottom, Math.max(top, y));
+    return [Math.round((xmin + (graphX - left) / scale) * 4) / 4, Math.round((ymax - (graphY - top) / scale) * 4) / 4];
   }
 
   root.LogCoursePlot = { render, coordinates };

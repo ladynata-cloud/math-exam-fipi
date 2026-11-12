@@ -1161,32 +1161,45 @@ function mountFig(id, t, opts){
 function drawCurve(container, cfg){
   if(!container){ return; }
   container.innerHTML='';
-  var W=680, H=200, PAD=44, n=96, i;
+  var W=390, H=236, PAD=44, n=96, i;
   var ys=[], x;
   for(i=0;i<=n;i++){ x=cfg.x0+(cfg.x1-cfg.x0)*i/n; ys.push(cfg.f(x)); }
-  var ymin=Math.min.apply(null, ys.concat([0]));
-  var ymax=Math.max.apply(null, ys.concat([0]));
-  var pad=(ymax-ymin)*0.14 || 1;
-  ymin-=pad; ymax+=pad;
-  function MX(v){ return PAD+(v-cfg.x0)/(cfg.x1-cfg.x0)*(W-2*PAD); }
-  function MY(v){ return 16+(ymax-v)/(ymax-ymin)*(H-40); }
+  var xmin=Math.min(cfg.x0,0)-0.3, xmax=Math.max(cfg.x1,0)+0.3;
+  var ymin=Math.floor(Math.min.apply(null, ys.concat([0])))-1;
+  // Keep the roots and vertex readable. The remote ends of the parabola may extend past the frame.
+  var ymax=Math.min(Math.ceil(Math.max.apply(null, ys.concat([0])))+1, Math.ceil(xmax-xmin)+1);
+  var unit=Math.min((W-2*PAD)/(xmax-xmin),(H-65)/(ymax-ymin));
+  var left=(W-(xmax-xmin)*unit)/2, top=34, right=left+(xmax-xmin)*unit, bottom=top+(ymax-ymin)*unit;
+  function MX(v){ return left+(v-xmin)*unit; }
+  function MY(v){ return top+(ymax-v)*unit; }
   var svg=sv('svg',{viewBox:'0 0 '+W+' '+H, role:'img'});
   svg.setAttribute('aria-label', cfg.aria || 'Эскиз параболы');
   container.appendChild(svg);
-  var ax=MY(0);
-  sv('line',{x1:10, y1:ax, x2:W-12, y2:ax, stroke:C.ink, 'stroke-width':2}, svg);
-  sv('path',{d:'M '+(W-10)+' '+ax+' l -10 -5 l 0 10 z', fill:C.ink}, svg);
-  txt(svg, W-9, ax-9, 'x', {'font-family':FONTB,'font-style':'italic','font-size':'14',
-      fill:C.ink2,'text-anchor':'end'});
+  var clipId='interval-curve-'+container.id, marks=cfg.marks||[];
+  var defs=sv('defs',{},svg), clip=sv('clipPath',{id:clipId},defs);
+  sv('rect',{x:left,y:top,width:right-left,height:bottom-top},clip);
+  var step=unit>=20?1:2, ax=MY(0), axisX=MX(0), grid='#dfe8e9';
+  var tickStyle={'font-family':FONTB,'font-size':'12',fill:C.ink2};
+  for(x=Math.ceil(xmin/step)*step;x<=xmax;x+=step){
+    sv('line',{x1:MX(x),y1:top,x2:MX(x),y2:bottom,stroke:grid},svg);
+    txt(svg,MX(x),bottom+19,String(x),Object.assign({'text-anchor':'middle'},tickStyle));
+  }
+  for(var y=Math.ceil(ymin/step)*step;y<=ymax;y+=step){
+    sv('line',{x1:left,y1:MY(y),x2:right,y2:MY(y),stroke:grid},svg);
+    txt(svg,left-6,MY(y)+4,String(y),Object.assign({'text-anchor':'end'},tickStyle));
+  }
+  sv('line',{x1:left-5,y1:ax,x2:right+6,y2:ax,stroke:C.ink,'stroke-width':2},svg);
+  sv('line',{x1:axisX,y1:bottom+4,x2:axisX,y2:top-4,stroke:C.ink,'stroke-width':2},svg);
+  txt(svg,right+10,ax+4,'x',tickStyle);
+  txt(svg,axisX+8,top-4,'y',tickStyle);
   var d='M '+MX(cfg.x0)+' '+MY(ys[0]);
   for(i=1;i<=n;i++){ d+=' L '+MX(cfg.x0+(cfg.x1-cfg.x0)*i/n)+' '+MY(ys[i]); }
   sv('path',{d:d, fill:'none', stroke:C.brand, 'stroke-width':3,
-             'stroke-linecap':'round', 'stroke-linejoin':'round'}, svg);
+             'stroke-linecap':'round', 'stroke-linejoin':'round', 'clip-path':'url(#'+clipId+')'}, svg);
   if(cfg.label){
     txt(svg, PAD-24, 22, cfg.label, {'font-family':FONTM,'font-weight':'700','font-size':'14',
         fill:C.brand});
   }
-  var marks=cfg.marks||[];
   marks.forEach(function(m){
     sv('circle',{cx:MX(m.x), cy:ax, r:6, fill:'#FFFFFF', stroke:C.ink, 'stroke-width':2.4}, svg);
     txt(svg, MX(m.x), ax+24, m.lab, {'font-family':FONTB,'font-weight':'600','font-size':'14',

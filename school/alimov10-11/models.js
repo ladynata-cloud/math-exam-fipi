@@ -14,13 +14,25 @@ function mount(host,l,t,initial,onChange){if(!host)return()=>{};const st={};cons
  function changed(){draw();if(onChange)onChange({...st});}
  function range(key,label,min,max,step,value){const wrap=el('label','model-control',label),input=el('input');input.id=id+key;input.type='range';input.min=min;input.max=max;input.step=step;st[key]=typeof old[key]==='number'&&old[key]>=min&&old[key]<=max?old[key]:value;input.value=st[key];const out=el('span','model-value',num(st[key]));wrap.append(input,out);bar.append(wrap);input.addEventListener('input',()=>{st[key]=+input.value;out.textContent=num(st[key]);changed();});controls.push(input);}
  function select(key,label,opts,value){const wrap=el('label','model-control',label),input=el('select');for(const [v,label]of opts){const o=el('option','',label);o.value=v;input.append(o);}st[key]=opts.some(o=>o[0]===old[key])?old[key]:value;input.value=st[key];wrap.append(input);bar.append(wrap);input.addEventListener('change',()=>{st[key]=input.value;changed();});controls.push(input);}
- const svg=body=>'<svg viewBox="0 0 600 340" role="img" aria-label="'+esc(l.title)+': исследовательская модель">'+body+'</svg>';
+ const cartesian=['graph','derivative','integral','halfplane'].includes(type);
+ const svg=body=>'<svg viewBox="'+(cartesian?'105 0 390 340':'0 0 600 340')+'" role="img" aria-label="'+esc(l.title)+': исследовательская модель">'+body+'</svg>';
  const ln=(x1,y1,x2,y2,color='#c6d8d2',width=1,dash='')=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${width}" ${dash?'stroke-dasharray="'+dash+'"':''}/>`;
  const dot=(x,y,r=5,color='#166753')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${color}"/>`;
  const text=(x,y,s)=>`<text x="${x}" y="${y}" fill="#38574c" font-size="15">${esc(s)}</text>`;
- const X=x=>300+42*x,Y=y=>170-25*y;
- function axes(){let s='';for(let x=-6;x<=6;x++)s+=ln(X(x),20,X(x),320);for(let y=-6;y<=6;y++)s+=ln(30,Y(y),570,Y(y));s+=ln(30,170,575,170,'#708b80',1.7)+ln(300,20,300,325,'#708b80',1.7)+text(580,164,'x')+text(308,22,'y')+text(306,187,'0');for(const x of [-6,-4,-2,2,4,6])s+=text(X(x)-7,190,x);for(const y of [-4,-2,2,4])s+=text(306,Y(y)-3,y);return s;}
- function plot(f,color='#166753'){let d='',last=null;for(let i=0;i<=600;i++){const x=-6.4+i*12.8/600,y=f(x);if(!Number.isFinite(y)||Math.abs(y)>6){last=null;continue;}const xx=X(x),yy=Y(y);const join=last&&Math.abs(yy-last.y)<75;d+=(join?'L':'M')+xx.toFixed(2)+','+yy.toFixed(2);last={y:yy};}return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5"/>`;}
+ const xExtent=6.4,yExtent=type==='derivative'||type==='integral'?9:6,unit=150/yExtent;
+ const X=x=>300+unit*x,Y=y=>170-unit*y;
+ function axes(){
+  const left=X(-xExtent),right=X(xExtent),top=Y(yExtent),bottom=Y(-yExtent);
+  let s='';
+  for(let x=-6;x<=6;x++)s+=ln(X(x),top,X(x),bottom);
+  for(let y=-yExtent;y<=yExtent;y++)s+=ln(left,Y(y),right,Y(y));
+  s+=ln(left-4,Y(0),right+5,Y(0),'#708b80',1.7)+ln(X(0),top-5,X(0),bottom+4,'#708b80',1.7);
+  s+=text(right+10,Y(0)+5,'x')+text(X(0)+8,top-4,'y')+text(X(0)+6,Y(0)+17,'0');
+  for(const x of [-6,-4,-2,2,4,6])s+=text(X(x)-7,bottom+15,x);
+  for(let y=-Math.floor(yExtent/2)*2;y<=yExtent;y+=2)if(y)s+=text(left-26,Y(y)+5,y);
+  return s;
+ }
+ function plot(f,color='#166753'){let d='',last=null;for(let i=0;i<=600;i++){const x=-xExtent+i*2*xExtent/600,y=f(x);if(!Number.isFinite(y)||Math.abs(y)>yExtent){last=null;continue;}const xx=X(x),yy=Y(y);const join=last!==null&&Math.abs(y-last)<3;d+=(join?'L':'M')+xx.toFixed(2)+','+yy.toFixed(2);last=y;}return `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5"/>`;}
  if(type==='graph'){
  const n=l.order,def=n===6?'power':n===7?'linear':n===9||n===10?'root':n>=11&&n<=14?'exp':n>=15&&n<=20?'log':n===40?'cos':n===42?'tan':n===77?'rational':'sin';
  select('function','Функция',[['power','y = xⁿ (n целое)'],['root','y = √x'],['exp','y = aˣ'],['log','y = logₐ x'],['sin','y = sin(kx)'],['cos','y = cos(kx)'],['tan','y = tg(kx)'],['inverse','y = 1/x'],['rational','y = 2 + 1/(x + 1)'],['linear','y = ax + 1']],def);

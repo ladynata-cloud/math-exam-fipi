@@ -55,19 +55,35 @@
       drawing+=text(18,178,v.p===2?'В точке 1: + → 0 → +':'В точке 1: − → 0 → +');
       summary='Знаки слева направо: '+v.signs.map(s=>s>0?'плюс':'минус').join(', ')+'. В корнях −2 и 1 значение равно нулю.';
     }else if(exam===17){
-      const X=x=>35+x*43,Y=y=>191-y*9;let points=[];for(let i=0;i<=80;i++){const x=i/10;points.push(X(x)+','+Y(x*(8-x)));}
-      drawing=line(35,191,379,191)+line(35,200,35,30)+'<polyline points="'+points.join(' ')+'" fill="none" stroke="#839691" stroke-width="2"/>';
-      drawing+='<rect x="35" y="35" width="'+(43*v.p)+'" height="156" fill="#087f6b" opacity=".09"/>'+line(X(v.p),35,X(v.p),191,'#b04431','5 4')+dot(X(v.x),Y(v.maximum),'#087f6b',6)+text(43,23,'S = x(8 − x), 0 ≤ x ≤ '+v.p)+text(X(v.p)-4,214,fmt(v.p))+(v.p===4?'':text(201,214,'4'))+text(47,62,'max S = '+fmt(v.maximum));
+      const unit=10,X=x=>64+x*unit,Y=y=>195-y*unit,points=[];
+      const top=Y(17),bottom=Y(0),left=X(0),right=X(8);
+      drawing='<rect x="'+left+'" y="'+top+'" width="'+(X(v.p)-left)+'" height="'+(bottom-top)+'" fill="#087f6b" opacity=".09"/>';
+      for(let x=0;x<=8;x++){
+        drawing+=line(X(x),top,X(x),bottom,'#e1ebe8');
+        if(x%2===0)drawing+=text(X(x)-4,bottom+20,x);
+      }
+      for(let y=1;y<=17;y++){
+        drawing+=line(left,Y(y),right,Y(y),'#e1ebe8');
+        if(y%4===0)drawing+=text(left-24,Y(y)+5,y);
+      }
+      drawing+=line(left,bottom,right+9,bottom)+line(left,bottom,left,top-6)+text(right+12,bottom+4,'x')+text(left-12,top-6,'S');
+      for(let i=0;i<=80;i++){const x=i/10;points.push(X(x)+','+Y(x*(8-x)));}
+      drawing+='<polyline points="'+points.join(' ')+'" fill="none" stroke="#839691" stroke-width="2"/>';
+      drawing+=line(X(v.p),top,X(v.p),bottom,'#b04431','5 4')+text(X(v.p)+4,top+14,'L','#b04431')+dot(X(v.x),Y(v.maximum),'#087f6b',6);
+      drawing+=text(187,61,'S = x(8 − x)')+text(187,87,'0 ≤ x ≤ '+v.p)+text(187,113,'max S = '+fmt(v.maximum));
       summary='При L = '+v.p+' максимум '+fmt(v.maximum)+' достигается при x = '+fmt(v.x)+'. Зелёная область отмечает допустимые x, остальная кривая дана для сравнения.';
     }else if(exam===18){
       const polygon=(x,y,k)=>'<polygon points="'+x+','+y+' '+(x+40*k)+','+y+' '+x+','+(y-30*k)+'" fill="#087f6b" fill-opacity=".12" stroke="#087f6b" stroke-width="2"/>';
       drawing=text(18,24,'Один масштаб для обеих фигур')+polygon(30,175,1)+polygon(190,175,v.p)+text(25,203,'b = 4; h = 3')+text(185,203,'b = '+fmt(v.base)+'; h = '+fmt(v.height))+text(25,69,'S₁ = 6')+text(185,46,'S₂ = '+fmt(v.area))+text(185,69,'S₂ / S₁ = '+fmt(v.ratio));
       summary='k = '+fmt(v.p)+': основание '+fmt(v.base)+', высота '+fmt(v.height)+', площадь '+fmt(v.area)+'. Отношение площадей '+fmt(v.ratio)+'.';
     }else if(exam===19){
-      const X=x=>200+x*48,Y=y=>194-y*34;drawing=line(X(-3.5),Y(0),X(3.5),Y(0))+line(X(0),Y(0),X(0),Y(4.6));
+      const unit=28,X=x=>200+x*unit,Y=y=>198-y*unit;
+      for(let x=-3;x<=3;x++)drawing+=line(X(x),Y(0),X(x),Y(4.6),'#e1ebe8');
+      for(let y=1;y<=4;y++)drawing+=line(X(-3.5),Y(y),X(3.5),Y(y),'#e1ebe8')+text(X(-3.5)-14,Y(y)+5,y);
+      drawing+=line(X(-3.5),Y(0),X(3.5),Y(0))+line(X(0),Y(0),X(0),Y(4.6))+text(X(3.5)+8,Y(0)+4,'x')+text(X(0)+6,Y(4.6),'y');
       drawing+='<polyline points="'+[[-2.3,4.6],[-1,2],[1,2],[2.3,4.6]].map(([x,y])=>X(x)+','+Y(y)).join(' ')+'" fill="none" stroke="#087f6b" stroke-width="3"/>'+line(X(-3.3),Y(v.p),X(3.3),Y(v.p),'#b04431');
       if(v.count===Infinity)drawing+=line(X(-1),Y(2),X(1),Y(2),'#8e43a0');else for(const x of v.roots)drawing+=dot(X(x),Y(v.p),'#8e43a0',5);
-      drawing+=text(17,21,'|x − 1| + |x + 1| = '+fmt(v.p))+text(X(-1)-12,216,'−1')+text(X(1)-4,216,'1')+text(23,50,'Решений: '+(v.count===Infinity?'бесконечно много':v.count));
+      drawing+=text(17,21,'|x − 1| + |x + 1| = '+fmt(v.p))+text(X(-1)-8,218,'−1')+text(X(0)-4,218,'0')+text(X(1)-4,218,'1')+text(17,45,'Решений: '+(v.count===Infinity?'бесконечно много':v.count));
       summary=v.count===Infinity?'Подходит каждая точка отрезка [−1; 1], включая концы.':v.count===0?'Горизонталь ниже минимального значения 2. Решений нет.':'Два решения: '+v.roots.map(fmt).join('; ')+'.';
     }else{
       drawing=text(18,24,'n = 17 + 5 · ('+v.p+') = '+v.n)+text(18,48,'Полных пятёрок: '+v.quotient+'; остаток: 2');

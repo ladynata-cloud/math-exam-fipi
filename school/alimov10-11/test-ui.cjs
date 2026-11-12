@@ -63,6 +63,23 @@ nav('#home');input('#exercise-number','№ 999999');submit('#number-form');asser
 // Every model must render valid geometry and retain controls across navigation.
 let controls=0;
 for(const lesson of w.AlimovCourse.lessons){nav('#lesson/'+lesson.id);for(const el of [...d.querySelectorAll('#model input,#model select')]){const values=el.tagName==='SELECT'?[...el.options].map(o=>o.value):[el.min,el.max];for(const value of values){el.value=value;el.dispatchEvent(new w.Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));assert(!/NaN|Infinity|undefined/.test(d.querySelector('#model').innerHTML),lesson.id);controls++;}}}
+const coordinate = (node, name) => Number(node.getAttribute(name));
+for(const id of ['p06','p44','p54','p78']){
+  nav('#lesson/'+id);
+  const lines=[...d.querySelectorAll('#model svg line[stroke="#c6d8d2"]')];
+  const vertical=lines.filter(line=>coordinate(line,'x1')===coordinate(line,'x2'));
+  const horizontal=lines.filter(line=>coordinate(line,'y1')===coordinate(line,'y2'));
+  assert(vertical.length>1&&horizontal.length>1,id+' has both grid directions');
+  const dx=coordinate(vertical[1],'x1')-coordinate(vertical[0],'x1');
+  const dy=coordinate(horizontal[0],'y1')-coordinate(horizontal[1],'y1');
+  assert.ok(Math.abs(dx-dy)<1e-9,id+' uses one unit length');
+}
+nav('#lesson/p53');
+input('#am-p53-point','2');
+const tangentPoint=d.querySelector('#model svg circle');
+const gridLines=[...d.querySelectorAll('#model svg line[stroke="#c6d8d2"]')];
+const gridTop=Math.min(...gridLines.flatMap(line=>[coordinate(line,'y1'),coordinate(line,'y2')]));
+assert(coordinate(tangentPoint,'cy')>gridTop,'The point (2; 8) stays inside the plot');
 nav('#lesson/p21');const angle=d.querySelector('#model input');angle.value='135';angle.dispatchEvent(new w.Event('input'));nav('#home');nav('#lesson/p21');assert.equal(d.querySelector('#model input').value,'135');
 for(const hash of ['#lesson/unknown','#lesson/p01/9999','#practice/unknown/1','#skills','#progress','#home']){nav(hash);assert(!d.querySelector('.error-page'),hash);}
 assert.deepEqual(errors,[]);

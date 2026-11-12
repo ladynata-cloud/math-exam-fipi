@@ -41,6 +41,15 @@ test('logarithm grid units are equal and clicking a displayed point recovers its
     const clicked = plot.coordinates(svg, {clientX: 12 + 160 + b[0], clientY: 20 + b[1]});
     assert.deepEqual(Array.from(clicked), [2, 1]);
     assert.equal(plot.coordinates(svg, {clientX: 30, clientY: 180}), null);
+    const edge = svg.querySelector('clipPath rect');
+    for (const width of [258, 570]) {
+      const scale = width / 600, left = 20.35, top = 100.35;
+      svg.getBoundingClientRect = () => ({left, top, width, height: 380 * scale});
+      const clientX = Math.floor(left + Number(edge.getAttribute('x')) * scale);
+      const clientY = Math.floor(top + Number(edge.getAttribute('y')) * scale);
+      assert.deepEqual(Array.from(plot.coordinates(svg, {clientX, clientY})), [-5, 6]);
+      assert.equal(plot.coordinates(svg, {clientX: clientX - 2, clientY}), null);
+    }
   } finally { f.close(); }
 });
 
