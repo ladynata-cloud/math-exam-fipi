@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
+  "baseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 580,
-    "covered": 579,
+    "total": 581,
+    "covered": 580,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -2202,6 +2202,11 @@
       "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
       "placement": "before-head-close"
     },
+    "stereo-course/sections/index.html": {
+      "beforeSha256": "081659422dfaf59c9fb4d9cb819abfe499f8493109f667abfd8375c32456d8a4",
+      "afterSha256": "68c6450a48fbe1297f09912fdd25e9383d4a8f36011cafdc35bfb990ae99e84a",
+      "placement": "before-head-close"
+    },
     "stereo-course/textbook/index.html": {
       "beforeSha256": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c",
       "afterSha256": "c0bb328d34008c12b721d0cd1e4efb8fa95aa56c75747335cbf5246c56c46e11",
@@ -3602,6 +3607,7 @@
     "soviet-math/index.html": "sitemap",
     "stereo-course/index.html": "sitemap",
     "stereo-course/merzlyak-10-base/index.html": "sitemap",
+    "stereo-course/sections/index.html": "sitemap",
     "stereo-course/textbook/index.html": "sitemap",
     "topics/delenie-ugolkom/index.html": "sitemap",
     "topics/index.html": "sitemap",
@@ -4807,6 +4813,27 @@
         "trainers/oge-task22-functions-graphs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "e4e8af9ccf99275ce4bc60bc2ba6d3e6b56508a5",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "2cc07d59a4b6b437e9bc6e92ca10caa794e47021",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
+      "sourceBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -4858,6 +4885,14 @@
         "ege-profil/part-two/index.html"
       ],
       "reason": "Original second-part course linked from the full profile entrance and sitemap; existing navigator pair bound to reviewed committed teaching source."
+    },
+    {
+      "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "addedPages": [
+        "stereo-course/sections/index.html"
+      ],
+      "reason": "New public sections course linked from the sitemap and course catalogue; include the existing navigator while preserving its reviewed teaching source."
     }
   ]
 }

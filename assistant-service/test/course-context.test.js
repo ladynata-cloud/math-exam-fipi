@@ -21,9 +21,9 @@ function request(context = contextFor(), extra = {}) {
 
 test('independent service packages the exact minimum projection of all 255 reviewed course cards', () => {
   const digest = createHash('sha256').update(raw).digest('hex');
-  assert.equal(digest, '9c269243f2940f0f86d5ba5ee918759cd52c19152f006f093bb2412447ba2776', 'Companion cannot widen or rewrite the primary course');
+  assert.equal(digest, '5015852dfc64da82c72b0489b88ec9d086cb416e30dc18cbaf0dfe260b44bd5a', 'Companion cannot widen or rewrite the primary course');
   assert.equal(createHash('sha256').update(readFileSync(new URL('../knowledge/atanasyan-first-steps.json', import.meta.url))).digest('hex'),
-    '761e8f8e7d0e727d851cab792725f34d9830641682ca915e0ab94155adf2904e', 'Prepared source matches the audited provenance rebind');
+    '1cd5c59002db6cc0f746fd6c4fde70f7c005268bc8f58da471ca47a3b81a7ca6', 'Prepared source matches the audited provenance rebind');
   // Only the two provenance fingerprints changed after the canonical book
   // gained chapters V–IX. Preserve the earlier teaching projection exactly.
   const previousProvenance = { ...snapshot, courseSha256: '551c433a5332dba52779e74f7e6f95289c3915bdc55da3f7c0ed71d0b7e651a3', sourceSha256: 'afd4228a2e1444c8fca719fcc2dc0145ca5419354980a33dcadbf637b560325d' };
