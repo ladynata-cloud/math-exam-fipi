@@ -1,0 +1,214 @@
+.profile-clock[hidden] {
+  display: none;
+}
+
+.profile-clock {
+  --clock-ink: #f6e4c6;
+  margin: clamp(24px, 4vw, 38px) 0 0;
+  border: 1px solid #7d5835;
+  border-radius: 20px;
+  background: #13242a;
+  box-shadow: 0 16px 38px #1b302722;
+  color: var(--clock-ink);
+}
+
+.profile-clock-header,
+.profile-clock-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 15px clamp(12px, 3vw, 26px);
+}
+
+.profile-clock-header {
+  border-radius: 19px 19px 0 0;
+  background: radial-gradient(ellipse at top left, #293834, #13242a 72%);
+}
+
+.profile-clock-header h2 {
+  margin: 0;
+  color: #ffe8c1;
+  font: 600 clamp(21px, 3.8vw, 34px)/1.16 Spectral, Georgia, serif;
+  letter-spacing: -.02em;
+}
+
+.profile-clock-header p {
+  margin: 4px 0 0;
+  color: #d9c7aa;
+  font-size: clamp(13px, 2vw, 16px);
+  line-height: 1.4;
+}
+
+.profile-clock-toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #92704f;
+  border-radius: 9px;
+  background: #152326;
+  color: var(--clock-ink);
+  cursor: pointer;
+  font: 600 14px/1 system-ui, sans-serif;
+}
+
+.profile-clock-toggle:hover {
+  background: #394138;
+}
+
+.profile-clock-toggle::before {
+  content: "";
+  width: 10px;
+  height: 12px;
+  border-inline: 3px solid currentColor;
+}
+
+.profile-clock-toggle[data-paused]::before {
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-right: 0;
+  border-left: 9px solid currentColor;
+}
+
+.profile-clock-case {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 1000 / 620;
+  border-block: 1px solid #9a6a42;
+  background: #14262e url("clockwork-case.webp") center / 100% 100% no-repeat;
+}
+
+.profile-clock-case canvas,
+.profile-clock-dials {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.profile-clock-dials {
+  pointer-events: none;
+}
+
+.profile-clock-number,
+.profile-clock-part {
+  position: absolute;
+  left: var(--clock-x);
+  top: var(--clock-y);
+  translate: -50% -50%;
+}
+
+.profile-clock-number {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  z-index: 1;
+  pointer-events: auto;
+  border: 1px solid #58321f;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 36% 22%, #ffe1a2, #c68c51 82%);
+  box-shadow: inset 0 0 0 2px #f7cd8c9c, inset 0 0 0 3px #72492b70, 0 3px 5px #0009;
+  color: #281b15;
+  font: 700 clamp(15px, 2.2vw, 19px)/1 Spectral, Georgia, serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.profile-clock-number--written {
+  border-color: #bd9a66;
+  background: radial-gradient(ellipse at 38% 20%, #37676a, #102e36 85%);
+  box-shadow: inset 0 0 0 2px #c6a27282, inset 0 0 0 3px #07202bb0, 0 3px 5px #000a;
+  color: #fff0cd;
+}
+
+.profile-clock-number:hover,
+.profile-clock-number:focus-visible {
+  z-index: 2;
+  background: #fff0bf;
+  color: #281b15;
+  box-shadow: inset 0 0 0 2px #c49254, 0 0 16px #ffca7a96;
+}
+
+.profile-clock :is(a, button):focus-visible {
+  outline: 2px solid #fff1b9;
+  outline-offset: 2px;
+}
+
+.profile-clock-number:focus-visible {
+  border-radius: 50%;
+}
+
+.profile-clock-part {
+  padding: 4px 10px;
+  border: 1px solid #a27c526e;
+  border-radius: 4px;
+  background: #102329e8;
+  color: #f4d6a5;
+  white-space: nowrap;
+  font: 700 clamp(9px, 1.4vw, 12px)/1.15 system-ui, sans-serif;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.profile-clock-footer {
+  flex-wrap: wrap;
+  min-height: 60px;
+  padding-block: 4px;
+  font-size: 15px;
+}
+
+.profile-clock-topic {
+  flex: 1 1 180px;
+  color: #f6d9a7;
+}
+
+.profile-clock-topic:empty {
+  display: none;
+}
+
+.profile-clock-footer a {
+  display: inline-flex;
+  min-height: 44px;
+  margin-inline-start: auto;
+  align-items: center;
+  color: var(--clock-ink);
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 680px) {
+  .profile-clock {
+    max-width: 450px;
+    margin-inline: auto;
+  }
+
+  .profile-clock-case {
+    aspect-ratio: 360 / 616;
+    background-size: auto 100%;
+    box-shadow: inset 3px 0 #8a5b38, inset -3px 0 #8a5b38;
+  }
+
+  .profile-clock-header {
+    gap: 8px;
+  }
+
+  .profile-clock-toggle {
+    gap: 5px;
+    padding-inline: 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 420px) {
+  .profile-clock-footer {
+    gap: 0;
+    min-height: 48px;
+  }
+}

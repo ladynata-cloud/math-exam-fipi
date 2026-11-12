@@ -231,6 +231,8 @@
   @media(max-width:600px){.sheet{padding:22px 14px}.current-course,.legacy-course{padding:16px}.current-course .btn{display:flex;margin:10px 0}.first-three-links{grid-template-columns:1fr}.legacy-course .line{grid-template-columns:38px minmax(0,1fr)}.legacy-course .line-links{grid-column:2;justify-content:flex-start}.facts{font-size:14px}}
 </style>
 <link rel="stylesheet" href="skill-map.css?v=20261111-skills">
+<link rel="stylesheet" href="clockwork.css">
+<script defer src="clockwork.js"></script>
 <script defer src="skill-map-data.js?v=20261112-vectors"></script>
 <script defer src="skill-map.js?v=20261111-skills" data-profile-skill-map="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20" data-profile-skill-target="#profile-skill-entry"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -249,6 +251,24 @@
     <nav aria-label="Быстрые входы"><a class="pill" href="#profile-2027">Все 20 номеров</a> <a class="pill" href="#legacy-course">Прежний большой курс и тренажёры</a> <a class="pill" href="trigonometry/index.html">Курс тригонометрии</a> <a class="pill" href="atanasyan-10-11/index.html">Атанасян 10–11</a></nav>
   </header>
 
+  <section class="profile-clock" id="profile-clock" aria-labelledby="profile-clock-title" hidden>
+    <div class="profile-clock-header">
+      <div>
+        <h2 id="profile-clock-title">Часовая мастерская</h2>
+        <p>Выберите номер, чтобы открыть задание.</p>
+      </div>
+      <button type="button" class="profile-clock-toggle">Пауза</button>
+    </div>
+    <div class="profile-clock-case">
+      <canvas aria-hidden="true"></canvas>
+      <nav class="profile-clock-dials" aria-label="Задания на циферблатах"></nav>
+    </div>
+    <div class="profile-clock-footer">
+      <span class="profile-clock-topic" aria-hidden="true"></span>
+      <a href="#profile-2027">Все темы списком ↓</a>
+    </div>
+  </section>
+
   <section id="profile-2027" aria-labelledby="profile-2027-h" class="current-course">
     <p class="eyebrow">Понятный старт · ЕГЭ 2027</p>
     <h2 id="profile-2027-h">Весь профиль: карта тем и ваш следующий шаг</h2>
@@ -257,9 +277,9 @@
     <p><a class="btn" href="start/index.html#calm">Продолжить первую часть →</a> <a class="btn" href="part-two/index.html">Вторая часть: все задания №14–20 →</a></p>
     <p><a class="btn" href="atanasyan-10-11/index.html">Атанасян 10–11: отдельный курс к стереометрии №15 →</a></p>
     <nav class="first-three-links" aria-label="Первые три задания профильного ЕГЭ">
-      <a class="first-three-link" href="start/index.html#calm/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
-      <a class="first-three-link" href="start/index.html#calm/2"><strong>2. Векторы с нуля</strong><span>Азбука векторов: стрелки, сложение и другие действия на чертеже. Затем задачи ЕГЭ.</span></a>
-      <a class="first-three-link" href="start/index.html#calm/3"><strong>3. Стереометрия</strong><span>Поверните тело. Найдите нужную грань, высоту или радиус.</span></a>
+      <a class="first-three-link" data-exam-number="1" href="start/index.html#calm/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
+      <a class="first-three-link" data-exam-number="2" href="start/index.html#calm/2"><strong>2. Векторы с нуля</strong><span>Азбука векторов: стрелки, сложение и другие действия на чертеже. Затем задачи ЕГЭ.</span></a>
+      <a class="first-three-link" data-exam-number="3" href="start/index.html#calm/3"><strong>3. Стереометрия</strong><span>Поверните тело. Найдите нужную грань, высоту или радиус.</span></a>
     </nav>
     <h3 id="part-one-map">Первая часть · продолжение №4–13</h3>
     <nav class="first-three-links" aria-labelledby="part-one-map">
