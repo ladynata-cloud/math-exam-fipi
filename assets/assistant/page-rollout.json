@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
+  "baseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "aceda589a511a96b7526f456f8d360017f20cd5b52f359fad198252c4e8bcbc3",
-      "afterSha256": "327ce21226d870a117016d97e2ecdd9a507bbde611b7b3510d65b788ae71f08c",
+      "beforeSha256": "6e28c3feb1da7db5750d188a913240a7d17a8df9f8c03410721ed582b927f909",
+      "afterSha256": "784104b548dc007adc2febcf19e0f67822bc452d0d56e568d00bc8763e416e29",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -4870,6 +4870,15 @@
       "previousBaseSha": "4162841384149d17196115f09a63fc811016968f",
       "sourceBaseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
       "task": "docs/tasks/PROFILE_CLOCKWORK_20261112.md",
+      "changedPaths": [
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
+      "sourceBaseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
+      "task": "docs/tasks/PROFILE_GEAR_TRAIN_20261112.md",
       "changedPaths": [
         "ege-profil/index.html"
       ],
