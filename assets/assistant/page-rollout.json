@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "12eee321134ac2719d889d356c9b3cb4ec354b8f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2923,8 +2923,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "3d97b68192bfd43b801e70476e20d0c534a03937fb9bb28c11e4625a9805e26d",
-      "afterSha256": "d28daa98bc9c055e9344eb2b2ec856da2d47fd2134ebca87357f7080ac222c22",
+      "beforeSha256": "fca0c3a6d799ba83fe44582876d75d56b0ea99d1b88cec8f70e4663768861ce4",
+      "afterSha256": "5b68068164d44fe774d9e6d9190c3f6cdf81220e6f6b5c4b87dca31b05d2f5a4",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2938,8 +2938,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "816b34c2a8f0f93bedca13d963518dc6d782727dc079b0210048f80f414c4b29",
-      "afterSha256": "3ed2c6f27e6620af6d63293135e66bfbbf3cdc7c865f9031ed6958de0ec3503a",
+      "beforeSha256": "af839e3e3cf3a57011d28bca561845dd8f316594370fa1813e013aa209d3d15a",
+      "afterSha256": "990ccbffa3d384c0c3f1d939b8a4dd6e611526f6f7facb1b0da6e670d32759e3",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2988,8 +2988,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "6a1442abbfc85df4df49faf5b17a4dcf9df6d069638d8ac6395aab62f102a6bc",
-      "afterSha256": "5f9cee5dfecaa7afbe9f17e18c3438ff82c5dd95aa21a8bb03f6f907dcfecdab",
+      "beforeSha256": "2ec61eeef42b726035493c165468d3d309997aff91f312c1c6f4da8ce63883d7",
+      "afterSha256": "e4c8ced20a2ec859651901f83ea3e0e88854a922ae23adddb3f12c4720367b31",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -2998,8 +2998,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "0220dcbb6abb000d699547aaae752881ed0acb89424ba24454eeecb6ea39dd10",
-      "afterSha256": "24fe4cc1dcaf7481597c67bd76aacb2f09980f847e43b1d23e8fbd14ad7beb93",
+      "beforeSha256": "c100008c7394d819507d52618120e393127b22eaf87c77ce1ba3ac52d532c4ee",
+      "afterSha256": "05b92d7d109f02809c8669ffd406d211f6c9e4c88f6964c09cf37e31806e06bf",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
@@ -4769,15 +4769,51 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
-      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
-      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
-      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "previousBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "sourceBaseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
       "changedPaths": [
-        "topics/delenie-ugolkom/index.html",
-        "topics/lineynye-uravneniya/index.html",
-        "topics/obyknovennye-drobi/index.html",
-        "topics/oge-geometriya/index.html",
-        "topics/procenty/index.html"
+        "trainers/oge-course/index.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "f20e80a896579b3febcb9e907ad1a51f97153ed4",
+      "sourceBaseSha": "9307d13fc29a1d0f270f10751ea2cba78d666750",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9307d13fc29a1d0f270f10751ea2cba78d666750",
+      "sourceBaseSha": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task22-functions-graphs.html",
+        "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "sourceBaseSha": "1c68540fdebc21d3e593d9afc818d0bbcde12ee1",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "05ced640de3b901ab5dd2547938a93a8d9739cd1",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
@@ -4793,8 +4829,35 @@
     },
     {
       "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "f41d6026cbd71355bf2964349462c3e2999e6630",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
+      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [
+        "topics/delenie-ugolkom/index.html",
+        "topics/lineynye-uravneniya/index.html",
+        "topics/obyknovennye-drobi/index.html",
+        "topics/oge-geometriya/index.html",
+        "topics/procenty/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "12eee321134ac2719d889d356c9b3cb4ec354b8f",
+      "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

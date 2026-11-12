@@ -209,6 +209,16 @@ button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.bt
 .minimal-model-scroll svg.grapher{min-width:560px}
 .tick{fill:#626b63;font-size:12px}.badge-t1{font-size:12px}
 @media print{.minimal-model-scroll svg.grapher{min-width:0}}
+
+.graph-exact{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:12px 0}
+.graph-exact-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px;min-width:0}
+.graph-exact-input,.graph-point-input{width:120px;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.graph-critical{display:flex;flex-wrap:wrap;gap:8px}.graph-critical .btn{font-size:14px;padding:8px 10px}
+.graph-domain,.graph-critical-label,.graph-value,.graph-message{font-size:14px;line-height:1.6;margin:10px 0;overflow-wrap:anywhere}
+.graph-domain{border-left:3px solid var(--blue);padding-left:10px}.graph-message:empty,.graph-value:empty{display:none}
+.graph-clipping{font-size:14px;line-height:1.6;padding:10px;border:1px solid #dbb86f;border-radius:8px;background:#fff8e9;color:#704d11}
+[aria-invalid="true"]{border-color:#b42318!important}.audit22-state{font-size:14px;line-height:1.6;color:var(--muted);margin:8px 0}.audit22-history{font-size:14px;line-height:1.6}.audit22-history p{margin:8px 0;overflow-wrap:anywhere}
+@media(max-width:560px){.slider-wrap{flex-wrap:wrap}.mslider{min-width:120px;width:100%}.graph-exact .btn{font-size:14px}.graph-exact-label{width:100%}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
 <link rel="stylesheet" href="oge-course-algebra.css">
@@ -688,10 +698,12 @@ class Grapher{
     const ax=el;
     const lx=svgEl('text',{x:this.X(x1)-4,y:this.Y(0)-6,class:'axis-lab'});lx.textContent='x';g.appendChild(lx);
     const ly=svgEl('text',{x:this.X(0)+6,y:this.Y(y1)+12,class:'axis-lab'});ly.textContent='y';g.appendChild(ly);
-    // integer ticks labels (sparse)
-    for(let x=Math.ceil(x0);x<=x1;x++){if(x===0)continue;if((x1-x0)>16&&x%2)continue;
+    // Keep integer labels readable when a critical secant reaches far below the vertex.
+    const tickStep=span=>{if(span<=16)return 1;if(span<=32)return 2;const raw=span/14,power=Math.pow(10,Math.floor(Math.log10(raw)));return [1,2,5,10].find(n=>n*power>=raw)*power;};
+    const xt=tickStep(x1-x0),yt=tickStep(y1-y0);
+    for(let x=Math.ceil(x0);x<=x1;x++){if(x===0||x%xt)continue;
       const t=svgEl('text',{x:this.X(x),y:this.Y(0)+14,class:'tick'});t.textContent=x;g.appendChild(t);}
-    for(let y=Math.ceil(y0);y<=y1;y++){if(y===0)continue;if((y1-y0)>16&&y%2)continue;
+    for(let y=Math.ceil(y0);y<=y1;y++){if(y===0||y%yt)continue;
       const t=svgEl('text',{x:this.X(0)-8,y:this.Y(y)+4,class:'tick tickY'});t.textContent=y;g.appendChild(t);}
   }
   // sample one piece into polyline points (math coords), breaking on out-of-range jumps
@@ -749,44 +761,62 @@ class Grapher{
     if(holeX!=null){const hy=fn(holeX);const px=this.X(holeX),py=this.Y(hy);
       if(px>=0&&px<=this.W&&py>=0&&py<=this.H)this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-open'}));}
   }
-  addMeasureH(m,pieces,extraCount){
-    // draw y=m line + intersection markers; return count
+  addMeasureH(value,pieces,extraCount,extraXs){
+    // Count from exact arithmetic; floating coordinates only position the marks.
+    const exact=cf(value),m=exact.toNum();
     const py=this.Y(m);
     const ln=svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:'measure'});
     this.svg.appendChild(ln);this._mline=ln;
     // markers
     const g=svgEl('g');this.svg.appendChild(g);this._mmarks=g;
-    const xs=this.intersectH(pieces,m);
+    const xs=extraXs||this.intersectH(pieces,exact);
     for(const x of xs){g.appendChild(svgEl('circle',{cx:this.X(x),cy:py,r:5,class:'xmark'}));}
     // count badge
-    const cnt=(extraCount!=null)?extraCount:countH(pieces,Frac.fromNum(m.toFixed(4)));
+    const cnt=(extraCount!=null)?extraCount:countH(pieces,exact);
     const badge=svgEl('g');this.svg.appendChild(badge);this._mbadge=badge;
     const bx=this.W-96,by=14;
     badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));
     const t1=svgEl('text',{x:bx+43,y:by+16,class:'badge-t1'});t1.textContent='общих точек';badge.appendChild(t1);
-    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=xs.length;badge.appendChild(t2);
-    const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+(Math.round(m*100)/100);badge.appendChild(lab);
-    return xs.length;
+    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=cnt;badge.appendChild(t2);
+    const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+exact.toString();badge.appendChild(lab);
+    return cnt;
   }
-  intersectH(pieces,m){
-    const out=[];
+  intersectH(pieces,value){
+    const m=cf(value),out=[];
+    const belongs=(seg,x)=>(seg.lo===NEG_INF||x.cmp(seg.lo)>0||(x.eq(seg.lo)&&seg.loCl))&&
+      (seg.hi===POS_INF||x.cmp(seg.hi)<0||(x.eq(seg.hi)&&seg.hiCl));
     for(const seg of pieces){
-      if(seg.kind==='lin'){const[p,q]=seg.coef.map(c=>c.toNum());if(Math.abs(p)<1e-12)continue;const x=(m-q)/p;if(this.inDom(seg,x))out.push(x);}
-      else if(seg.kind==='hyp'){const[k,a,b]=seg.coef.map(c=>c.toNum());if(Math.abs(m-b)<1e-12)continue;const x=a+k/(m-b);if(this.inDom(seg,x))out.push(x);}
-      else{const[a,b,c]=seg.coef.map(c=>c.toNum());const D=b*b-4*a*(c-m);if(D<-1e-9)continue;const sq=Math.sqrt(Math.max(0,D));
-        for(const x of (D<1e-9?[-b/(2*a)]:[(-b-sq)/(2*a),(-b+sq)/(2*a)])){if(this.inDom(seg,x))out.push(x);}}
+      if(seg.kind==='lin'){
+        const [p,q]=seg.coef;if(p.isZero())continue;
+        const x=m.sub(q).div(p);if(belongs(seg,x))out.push(x.toNum());
+      }else if(seg.kind==='hyp'){
+        const [k,a,b]=seg.coef;if(m.eq(b))continue;
+        const x=a.add(k.div(m.sub(b)));if(belongs(seg,x))out.push(x.toNum());
+      }else{
+        const [a,b,c]=seg.coef,D=b.mul(b).sub(Fr(4).mul(a).mul(c.sub(m)));
+        if(D.sign()<0)continue;
+        const root=Math.sqrt(D.toNum()),an=a.toNum(),bn=b.toNum();
+        const xs=(D.isZero()?[-bn/(2*an)]:[(-bn-root)/(2*an),(-bn+root)/(2*an)]).sort((x,y)=>x-y);
+        const counts=quadCounts(a,b,c,m);
+        xs.forEach((x,i)=>{
+          const rank=xs.length-i;
+          const loOk=seg.lo===NEG_INF||(seg.loCl?counts.ge(seg.lo):counts.gt(seg.lo))>=rank;
+          const hiOk=seg.hi===POS_INF||(seg.hiCl?counts.gt(seg.hi):counts.ge(seg.hi))<rank;
+          if(loOk&&hiOk)out.push(x);
+        });
+      }
     }
-    // dedupe near-equal
-    out.sort((a,b)=>a-b);const r=[];for(const x of out){if(!r.length||Math.abs(x-r[r.length-1])>1e-6)r.push(x);}return r;
+    return out.sort((a,b)=>a-b);
   }
   inDom(seg,x){const lo=seg.lo===NEG_INF?-Infinity:seg.lo.toNum();const hi=seg.hi===POS_INF?Infinity:seg.hi.toNum();
     const okl=(lo===-Infinity)||x>lo+1e-9||(Math.abs(x-lo)<1e-9&&seg.loCl);
     const okh=(hi===Infinity)||x<hi-1e-9||(Math.abs(x-hi)<1e-9&&seg.hiCl);
     return okl&&okh;}
-  addLineK(k,drawFn){ // for module 3: line y=kx through origin, count via drawFn(k)->xs
+  addLineK(value,drawFn){ // Exact k decides roots; coordinates use its numeric value.
+    const exact=cf(value),k=exact.toNum();
     const px1=this.X(this.xmin),py1=this.Y(k*this.xmin),px2=this.X(this.xmax),py2=this.Y(k*this.xmax);
     this.svg.appendChild(svgEl('line',{x1:px1,y1:py1,x2:px2,y2:py2,class:'measure'}));
-    const xs=drawFn(k);const g=svgEl('g');this.svg.appendChild(g);
+    const xs=drawFn(exact);const g=svgEl('g');this.svg.appendChild(g);
     for(const x of xs)g.appendChild(svgEl('circle',{cx:this.X(x),cy:this.Y(k*x),r:5,class:'xmark'}));
     const bx=this.W-96,by=14;const badge=svgEl('g');this.svg.appendChild(badge);
     badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));
@@ -846,66 +876,99 @@ function autoRange(pieces){
 /* ============================================================
    VALUE INPUT (decimal <-> stacked fraction) + builders
    ============================================================ */
+function parseStudentFraction(raw){
+  if(typeof raw!=='string'||raw.length>80)return null;
+  const value=raw.trim().replace(/−/g,'-').replace(/,/g,'.');
+  if(!/^[+-]?(?:\d{1,24}(?:\.\d{1,24})?|\.\d{1,24})(?:\/[+-]?\d{1,24})?$/.test(value))return null;
+  // A fraction has integer numerator/denominator; decimals have a single separator.
+  if(value.includes('/')&&value.includes('.'))return null;
+  try{return Frac.fromNum(value);}catch(_){return null;}
+}
+function shortInput(value){return typeof value==='string'?value.slice(0,80):'';}
 function makeValueInput(){
   const wrap=el('span','vinput');
-  const dec=el('input','v-dec');dec.type='text';dec.inputMode='decimal';dec.placeholder='0';dec.setAttribute('aria-label','Значение');
+  const dec=el('input','v-dec');dec.type='text';dec.inputMode='decimal';dec.maxLength=80;dec.placeholder='0';dec.setAttribute('aria-label','Значение');
   const frac=el('span','v-frac hidden');
-  const num=el('input','v-num');num.type='text';num.placeholder='';num.setAttribute('aria-label','Числитель');
-  const den=el('input','v-den');den.type='text';den.placeholder='';den.setAttribute('aria-label','Знаменатель');
-  const bar=el('span','v-bar');
-  frac.append(num,bar,den);
-  const tog=el('button','v-tog');tog.type='button';tog.title='Дробь / десятичная';tog.textContent='½';
+  const num=el('input','v-num');num.type='text';num.inputMode='numeric';num.maxLength=25;num.setAttribute('aria-label','Числитель');
+  const den=el('input','v-den');den.type='text';den.inputMode='numeric';den.maxLength=25;den.setAttribute('aria-label','Знаменатель');
+  const bar=el('span','v-bar');frac.append(num,bar,den);
+  const tog=el('button','v-tog');tog.type='button';tog.title='Дробь / десятичная';tog.setAttribute('aria-label','Переключить запись дроби');tog.textContent='½';
   let mode='dec';
-  tog.onclick=()=>{if(mode==='dec'){mode='frac';dec.classList.add('hidden');frac.classList.remove('hidden');
-      // migrate if possible
-      const f=readDec();if(f){num.value=`${f.n<0n?'-':''}${f.n<0n?-f.n:f.n}`;den.value=`${f.d}`;}num.focus();}
-    else{mode='dec';frac.classList.add('hidden');dec.classList.remove('hidden');
-      try{const f=readFrac();if(f)dec.value=f.d===1n?`${f.n}`:f.toString();}catch(e){}dec.focus();}};
-  function readDec(){const v=dec.value.trim();if(v==='')return null;try{return Frac.fromNum(v.replace(',','.'));}catch(e){return null;}}
-  function readFrac(){const n=num.value.trim(),d=den.value.trim();if(n===''||d==='')return null;try{return new Frac(BigInt(n),BigInt(d));}catch(e){return null;}}
+  function drawMode(){dec.classList.toggle('hidden',mode!=='dec');frac.classList.toggle('hidden',mode!=='frac');tog.setAttribute('aria-pressed',String(mode==='frac'));}
+  function readDec(){return parseStudentFraction(dec.value);}
+  function readFrac(){
+    if(!/^[+−-]?\d{1,24}$/.test(num.value.trim())||!/^[+−-]?\d{1,24}$/.test(den.value.trim()))return null;
+    return parseStudentFraction(num.value.trim()+'/'+den.value.trim());
+  }
+  tog.onclick=()=>{
+    const f=mode==='dec'?readDec():readFrac();
+    if(mode==='dec'){mode='frac';if(f){num.value=String(f.n);den.value=String(f.d);}}
+    else{mode='dec';if(f)dec.value=f.toString();}
+    drawMode();(mode==='dec'?dec:num).focus();
+  };
   wrap.append(dec,frac,tog);
+  [dec,num,den].forEach(input=>input.addEventListener('input',()=>input.removeAttribute('aria-invalid')));
   return {el:wrap,getFrac:()=>mode==='dec'?readDec():readFrac(),
-    setFrac:(f)=>{mode='dec';frac.classList.add('hidden');dec.classList.remove('hidden');dec.value=f?(f.d===1n?`${f.n}`:f.toString()):'';},
+    getState:()=>({mode,decimal:shortInput(dec.value),numerator:shortInput(num.value),denominator:shortInput(den.value)}),
+    setState:state=>{if(!state||typeof state!=='object')return;mode=state.mode==='frac'?'frac':'dec';dec.value=shortInput(state.decimal);num.value=shortInput(state.numerator);den.value=shortInput(state.denominator);drawMode();},
+    issue:()=>{
+      const fields=mode==='dec'?[dec]:[num,den],empty=fields.find(x=>!x.value.trim());
+      if(empty)return {input:empty,message:empty===den?'Впиши знаменатель.':empty===num?'Впиши числитель.':'Впиши значение.'};
+      if(mode==='frac'&&/^[-+−]?0+$/.test(den.value.trim()))return {input:den,message:'Знаменатель не может быть равен нулю. Исправь запись дроби.'};
+      if((mode==='dec'?readDec():readFrac())===null)return {input:fields[0],message:'Запиши число, десятичную дробь или дробь вида 3/4. Делить на ноль нельзя.'};
+      return null;
+    },
+    setFrac:f=>{mode='dec';drawMode();dec.value=f?f.toString():'';},
     clear:()=>{dec.value='';num.value='';den.value='';}};
 }
-
 function makeAnswerBuilder(){
-  const box=el('div','abuilder');
-  const parts=el('div','ab-parts');
-  const controls=el('div','ab-controls');
-  const addP=el('button','ab-add');addP.type='button';addP.textContent='+ отдельное значение';
-  const addI=el('button','ab-add');addI.type='button';addI.textContent='+ промежуток';
-  controls.append(addP,addI);box.append(parts,controls);
-  const items=[];
-  function rmBtn(row,item){const b=el('button','ab-rm');b.type='button';b.textContent='×';b.title='Удалить';b.onclick=()=>{parts.removeChild(row);const i=items.indexOf(item);if(i>=0)items.splice(i,1);};return b;}
-  addP.onclick=()=>{const row=el('div','ab-row');const vi=makeValueInput();
-    const item={type:'point',vi};row.append(el('span','ab-lab','m ='),vi.el,rmBtn(row,item));parts.appendChild(row);items.push(item);};
-  addI.onclick=()=>{const row=el('div','ab-row');
-    const lb=el('select','ab-bracket');lb.innerHTML='<option value="[">[</option><option value="(">(</option>';
-    const rb=el('select','ab-bracket');rb.innerHTML='<option value="]">]</option><option value=")">)</option>';
-    const v1=makeValueInput(),v2=makeValueInput();
-    const item={type:'interval',lb,rb,v1,v2};
-    row.append(el('span','ab-lab','m ∈'),lb,v1.el,el('span','ab-semi',';'),v2.el,rb,rmBtn(row,item));
-    parts.appendChild(row);items.push(item);};
+  const box=el('div','abuilder'),parts=el('div','ab-parts'),controls=el('div','ab-controls');
+  const addP=el('button','ab-add'),addI=el('button','ab-add');addP.type=addI.type='button';addP.textContent='+ отдельное значение';addI.textContent='+ промежуток';
+  controls.append(addP,addI);box.append(parts,controls);const items=[];
+  function buttons(){addP.disabled=addI.disabled=items.length>=8;}
+  function add(type,state){
+    if(items.length>=8)return;
+    const row=el('div','ab-row'),item={type};
+    if(type==='point'){
+      item.vi=makeValueInput();row.append(el('span','ab-lab','m ='),item.vi.el);if(state)item.vi.setState(state.value);
+    }else{
+      item.lb=el('select','ab-bracket');item.lb.setAttribute('aria-label','Левый конец промежутка');item.lb.innerHTML='<option value="[">[</option><option value="(">(</option>';
+      item.rb=el('select','ab-bracket');item.rb.setAttribute('aria-label','Правый конец промежутка');item.rb.innerHTML='<option value="]">]</option><option value=")">)</option>';
+      item.v1=makeValueInput();item.v2=makeValueInput();
+      row.append(el('span','ab-lab','m ∈'),item.lb,item.v1.el,el('span','ab-semi',';'),item.v2.el,item.rb);
+      if(state){item.lb.value=state.leftClosed===false?'(':'[';item.rb.value=state.rightClosed===false?')':']';item.v1.setState(state.left);item.v2.setState(state.right);}
+    }
+    const remove=el('button','ab-rm','×');remove.type='button';remove.title='Удалить эту часть ответа';remove.setAttribute('aria-label','Удалить эту часть ответа');
+    remove.onclick=()=>{row.remove();items.splice(items.indexOf(item),1);buttons();};row.append(remove);parts.append(row);items.push(item);buttons();
+  }
+  addP.onclick=()=>add('point');addI.onclick=()=>add('interval');
   return {el:box,
     getAtoms:()=>{const atoms=[];for(const it of items){
       if(it.type==='point'){const f=it.vi.getFrac();if(f===null)return null;atoms.push({type:'point',v:f});}
-      else{const a=it.v1.getFrac(),b=it.v2.getFrac();if(a===null||b===null)return null;
-        if(a.cmp(b)>0)return null; atoms.push({type:'interval',lo:a,hi:b,loCl:it.lb.value==='[',hiCl:it.rb.value===']'});}
+      else{const a=it.v1.getFrac(),b=it.v2.getFrac();if(a===null||b===null||a.cmp(b)>0)return null;atoms.push({type:'interval',lo:a,hi:b,loCl:it.lb.value==='[',hiCl:it.rb.value===']'});}
     }return atoms;},
-    isEmpty:()=>items.length===0,
-    clear:()=>{items.length=0;parts.innerHTML='';}};
+    getState:()=>items.map(it=>it.type==='point'?{type:'point',value:it.vi.getState()}:{type:'interval',left:it.v1.getState(),right:it.v2.getState(),leftClosed:it.lb.value==='[',rightClosed:it.rb.value===']'}),
+    setState:state=>{items.length=0;parts.innerHTML='';if(Array.isArray(state))state.slice(0,8).forEach(x=>{if(x&&(x.type==='point'||x.type==='interval'))add(x.type,x);});buttons();},
+    issue:()=>{
+      if(!items.length)return {input:addP,message:'Добавь отдельное значение или промежуток ответа.'};
+      for(const it of items){for(const v of it.type==='point'?[it.vi]:[it.v1,it.v2]){const issue=v.issue();if(issue)return issue;}
+        if(it.type==='interval'&&it.v1.getFrac().cmp(it.v2.getFrac())>0)return {input:it.v1.el.querySelector('input:not(.hidden)'),message:'Левая граница должна быть не больше правой. Переставь границы, сохранив нужные скобки.'};}
+      return null;
+    },isEmpty:()=>items.length===0,clear:()=>{items.length=0;parts.innerHTML='';buttons();}};
 }
-
 function makeValueList(varname){
-  const box=el('div','abuilder');const parts=el('div','ab-parts');
-  const add=el('button','ab-add');add.type='button';add.textContent='+ значение';
-  box.append(parts,add);const items=[];
-  function rmBtn(row,item){const b=el('button','ab-rm');b.type='button';b.textContent='×';b.onclick=()=>{parts.removeChild(row);const i=items.indexOf(item);if(i>=0)items.splice(i,1);};return b;}
-  add.onclick=()=>{const row=el('div','ab-row');const vi=makeValueInput();const item={vi};row.append(el('span','ab-lab',varname+' ='),vi.el,rmBtn(row,item));parts.appendChild(row);items.push(item);};
-  add.onclick();
-  return {el:box,getVals:()=>{const v=[];for(const it of items){const f=it.vi.getFrac();if(f===null)return null;v.push(f);}return v;},
-    clear:()=>{items.length=0;parts.innerHTML='';add.onclick();}};
+  const box=el('div','abuilder'),parts=el('div','ab-parts'),add=el('button','ab-add','+ значение');add.type='button';box.append(parts,add);const items=[];
+  function addValue(state){
+    if(items.length>=8)return;
+    const row=el('div','ab-row'),vi=makeValueInput();if(state)vi.setState(state);const item={vi};
+    const remove=el('button','ab-rm','×');remove.type='button';remove.title='Удалить это значение';remove.setAttribute('aria-label','Удалить это значение');remove.onclick=()=>{row.remove();items.splice(items.indexOf(item),1);add.disabled=false;};
+    row.append(el('span','ab-lab',varname+' ='),vi.el,remove);parts.append(row);items.push(item);add.disabled=items.length>=8;
+  }
+  add.onclick=()=>addValue();addValue();
+  return {el:box,getVals:()=>{const values=[];for(const it of items){const f=it.vi.getFrac();if(f===null)return null;values.push(f);}return values;},
+    getState:()=>items.map(it=>it.vi.getState()),setState:state=>{items.length=0;parts.innerHTML='';add.disabled=false;if(Array.isArray(state))state.slice(0,8).forEach(addValue);if(!items.length)addValue();},
+    issue:()=>{if(!items.length)return {input:add,message:'Добавь значение ответа.'};for(const it of items){const issue=it.vi.issue();if(issue)return issue;}return null;},
+    clear:()=>{items.length=0;parts.innerHTML='';add.disabled=false;addValue();}};
 }
 function valsEqual(a,b){if(a.length!==b.length)return false;const norm=x=>x.map(f=>f.toString()).sort();const A=norm(a),B=norm(b);return A.every((x,i)=>x===B[i]);}
 
@@ -922,37 +985,86 @@ function graphSpec(problem){
     if(problem.sub==='inv_kx'){
       const xh=problem.xh.toNum();
       return {type:'hyper',fn:x=>1/x,holeX:xh,measure:'K',
-        intersectK:k=>{if(k<=0)return[];const r=1/Math.sqrt(k);return [-r,r].filter(x=>Math.abs(x-xh)>1e-6);}};
+        intersectK:value=>{
+          const k=cf(value);if(k.sign()<=0)return[];
+          const r=1/Math.sqrt(k.toNum()),xs=[-r,r];
+          // A nearby line must keep both roots. Only exact equality removes a hole.
+          if(k.mul(problem.xh).mul(problem.xh).eq(Fr(1)))return [problem.xh.sign()<0?r:-r];
+          return xs;
+        }};
     }else if(problem.sub==='parab_kx'){
       const pN=problem.p.toNum(),xhN=problem.xh.toNum(),yhN=problem.yh.toNum();
       const quadSeg={kind:'quad',coef:[Fr(-1),Fr(0),problem.p.neg()],lo:NEG_INF,hi:POS_INF,loCl:true,hiCl:true};
       return {type:'parabhole',quadSeg,holeX:xhN,holeY:yhN,pN,measure:'K',
-        intersectK:k=>{const D=k*k-4*pN;if(D<-1e-9)return[];const s=Math.sqrt(Math.max(0,D));
-          const xs=D<1e-9?[-k/2]:[(-k-s)/2,(-k+s)/2];return xs.filter(x=>Math.abs(x-xhN)>1e-6);}};
+        intersectK:value=>{
+          const k=cf(value),disc=k.mul(k).sub(Fr(4).mul(problem.p));
+          if(disc.sign()<0)return[];
+          const kn=k.toNum(),sq=Math.sqrt(disc.toNum());
+          const xs=disc.isZero()?[-kn/2]:[(-kn-sq)/2,(-kn+sq)/2];
+          const holeRoot=problem.xh.mul(problem.xh).add(k.mul(problem.xh)).add(problem.p).isZero();
+          if(!holeRoot)return xs;
+          if(xs.length===1)return[];
+          return Math.abs(xs[0]-xhN)<Math.abs(xs[1]-xhN)?[xs[1]]:[xs[0]];
+        }};
     }else{
       const C=problem.C,xh=problem.xh.toNum();
       return {type:'hyper',fn:x=>C-1/x,holeX:xh,measure:'H',
-        intersectHm:m=>{if(Math.abs(m-C)<1e-9)return[];const x=1/(C-m);return Math.abs(x-xh)>1e-6?[x]:[];}};
+        intersectHm:value=>{
+          const m=cf(value);if(m.eq(Fr(C)))return[];
+          const x=Fr(1).div(Fr(C).sub(m));return x.eq(problem.xh)?[]:[x.toNum()];
+        }};
     }
   }
-  return {type:'pieces',pieces:problem.pieces,measure:problem.kind==='hyperbola'?'H':'H'};
+  return {type:'pieces',pieces:problem.pieces,measure:'H'};
 }
-function hyperRange(holeX,fn){
+function criticalParameters(problem){
+  let values;
+  if(problem.kind!=='hyperbola')values=criticalMs(problem.pieces);
+  else if(problem.sub==='inv_kx')values=[Fr(0),Fr(1).div(problem.xh.mul(problem.xh))];
+  else if(problem.sub==='parab_kx')values=[problem.sq.mul(Fr(-2)),problem.sq.mul(Fr(2)),problem.yh.div(problem.xh)];
+  else values=[Fr(problem.C),Fr(problem.C).sub(Fr(1).div(problem.xh))];
+  return values.filter((v,i)=>values.findIndex(x=>x.eq(v))===i).sort((a,b)=>a.cmp(b));
+}
+function originalValue(problem,x){
+  if(problem.kind==='hyperbola'){
+    if(x.eq(problem.xh)||(problem.sub!=='parab_kx'&&x.isZero()))return null;
+    if(problem.sub==='inv_kx')return Fr(1).div(x);
+    if(problem.sub==='parab_kx')return x.mul(x).add(problem.p).neg();
+    return Fr(problem.C).sub(Fr(1).div(x));
+  }
+  for(const seg of problem.pieces){
+    if(seg.lo!==NEG_INF&&(x.cmp(seg.lo)<0||(x.eq(seg.lo)&&!seg.loCl)))continue;
+    if(seg.hi!==POS_INF&&(x.cmp(seg.hi)>0||(x.eq(seg.hi)&&!seg.hiCl)))continue;
+    if(seg.kind==='hyp'&&x.eq(seg.coef[1]))return null;
+    return pieceVal(seg,x);
+  }
+  return null;
+}
+function domainText(problem){
+  if(problem.kind!=='hyperbola')return 'Граница принадлежит тому куску, у которого стоит знак ≤ или ≥. Открытая точка в график не входит.';
+  const excluded=problem.sub==='parab_kx'?[problem.xh]:[Fr(0),problem.xh];
+  return 'Исходный знаменатель не равен нулю: '+excluded.map(x=>'x ≠ '+x.toString()).join(', ')+'. После сокращения эти ограничения сохраняются.';
+}
+function hyperRange(holeX,fn,includeMirror=false){
   let xmin=-7,xmax=7,ymin=-7,ymax=7;
-  const hx=holeX,hy=fn(holeX);
-  if(hx<xmin+1)xmin=Math.floor(hx-2);if(hx>xmax-1)xmax=Math.ceil(hx+2);
-  if(hy<ymin+1)ymin=Math.floor(hy-2);if(hy>ymax-1)ymax=Math.ceil(hy+2);
+  const points=includeMirror?[holeX,-holeX]:[holeX];
+  for(const hx of points){const hy=fn(hx);
+    if(hx<xmin+1)xmin=Math.floor(hx-2);if(hx>xmax-1)xmax=Math.ceil(hx+2);
+    if(hy<ymin+1)ymin=Math.floor(hy-2);if(hy>ymax-1)ymax=Math.ceil(hy+2);
+  }
   return {xmin,xmax,ymin,ymax};
 }
 function parabHoleRange(spec){
-  const R=Math.max(Math.abs(spec.holeX),Math.sqrt(spec.pN),3)+1.5;
-  const xm=Math.ceil(R);
-  let ymin=Math.min(spec.holeY,-2*spec.pN)-1.5; ymin=Math.max(Math.floor(ymin),-12);
+  // For the line through the hole, the second root is p / x_h. Include it,
+  // both tangent points and the hole: every offered critical position must be visible.
+  const otherX=spec.pN/spec.holeX,otherY=-(otherX*otherX+spec.pN);
+  const R=Math.max(Math.abs(spec.holeX),Math.abs(otherX),Math.sqrt(spec.pN),3)+1.5;
+  const xm=Math.ceil(R),ymin=Math.floor(Math.min(spec.holeY,otherY,-2*spec.pN)-1.5);
   return {xmin:-xm,xmax:xm,ymin,ymax:2};
 }
 function specRange(spec){
   if(spec.type==='pieces')return autoRange(spec.pieces);
-  if(spec.type==='hyper')return hyperRange(spec.holeX,spec.fn);
+  if(spec.type==='hyper')return hyperRange(spec.holeX,spec.fn,spec.measure==='K');
   return parabHoleRange(spec);
 }
 function drawStatic(g,problem){
@@ -967,47 +1079,80 @@ function drawWithMeasure(g,problem,val){
   const spec=drawStatic(g,problem);
   if(spec.type==='pieces')g.addMeasureH(val,spec.pieces);
   else if(spec.measure==='K')g.addLineK(val,spec.intersectK);
-  else g.addMeasureH(val,[],spec.intersectHm(val).length),g.svg.appendChild(svgEl('g')); // count already set
+  else g.addMeasureH(val,[],spec.intersectHm(val).length,spec.intersectHm(val));
   return spec;
 }
 function makeGraphView(withSlider,measureKind){
-  const box=el('div','gview');
-  const scroll=el('div','minimal-model-scroll');scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','График: прокрутка влево и вправо');box.appendChild(scroll);
-  const svg=svgEl('svg');scroll.appendChild(svg);
-  box.appendChild(el('p','minimal-model-note','График можно прокручивать влево и вправо.'));
-  const g=new Grapher(svg);
-  let slider,label,problem,curSpec;
+  const box=el('div','gview'),scroll=el('div','minimal-model-scroll');
+  scroll.tabIndex=0;scroll.setAttribute('role','region');scroll.setAttribute('aria-label','График: прокрутка влево и вправо');box.append(scroll);
+  const svg=svgEl('svg');scroll.append(svg);box.append(el('p','minimal-model-note','График можно прокручивать влево и вправо.'));
+  const g=new Grapher(svg);let slider,label,exactInput,critical,domain,xInput,tableOut,paramMessage,clipping,problem,current=Fr(0),tableShown=false;
   if(withSlider){
-    const sc=el('div','slider-wrap');
-    label=el('span','slider-lab','');
-    slider=el('input','mslider');slider.type='range';slider.setAttribute('aria-label','Положение прямой');
-    sc.append(label,slider);box.appendChild(sc);
-    slider.addEventListener('input',()=>redraw());
+    clipping=el('p','graph-clipping');clipping.hidden=true;clipping.setAttribute('role','status');clipping.setAttribute('aria-live','polite');box.append(clipping);
+    const sc=el('div','slider-wrap');label=el('span','slider-lab');slider=el('input','mslider');slider.type='range';slider.step='any';slider.setAttribute('aria-label','Положение прямой');sc.append(label,slider);box.append(sc);
+    const exactRow=el('div','graph-exact'),exactLabel=el('label','graph-exact-label','Точное значение ');exactInput=el('input','graph-exact-input');exactInput.type='text';exactInput.maxLength=80;exactInput.placeholder='Например, 9/25';exactLabel.append(exactInput);
+    const apply=btn('btn-new','Поставить точно',()=>applyExact());exactRow.append(exactLabel,apply);box.append(exactRow);
+    paramMessage=el('p','graph-message');paramMessage.setAttribute('role','status');box.append(paramMessage);
+    const criticalLabel=el('p','graph-critical-label','Особые положения — проверь, что меняется на границе:');critical=el('div','graph-critical');box.append(criticalLabel,critical);
+    domain=el('p','graph-domain');box.append(domain);
+    const tableRow=el('div','graph-exact'),tableLabel=el('label','graph-exact-label','Аргумент x ');xInput=el('input','graph-point-input');xInput.type='text';xInput.maxLength=80;xInput.setAttribute('aria-label','Аргумент x для таблицы');tableLabel.append(xInput);
+    tableRow.append(tableLabel,btn('btn-new','Найти значение',()=>showValue()));box.append(tableRow);
+    tableOut=el('p','graph-value');tableOut.setAttribute('role','status');box.append(tableOut);
+    slider.addEventListener('input',()=>{current=Frac.fromNum(slider.value);exactInput.value=current.toString();paramMessage.textContent='';redraw();});
+    exactInput.addEventListener('input',()=>{exactInput.removeAttribute('aria-invalid');paramMessage.textContent='';});
+    exactInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();applyExact();}});
+    xInput.addEventListener('input',()=>{xInput.removeAttribute('aria-invalid');tableShown=false;tableOut.textContent='';});
+    xInput.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();showValue();}});
+  }
+  function notify(){box.dispatchEvent(new Event('oge22-draft',{bubbles:true}));}
+  function setParameter(f){
+    current=f;const n=f.toNum();slider.min=String(Math.min(Number(slider.min),Math.floor(n)-1));slider.max=String(Math.max(Number(slider.max),Math.ceil(n)+1));slider.value=String(n);exactInput.value=f.toString();exactInput.removeAttribute('aria-invalid');paramMessage.textContent='';redraw();
+  }
+  function applyExact(){
+    const f=parseStudentFraction(exactInput.value);
+    if(!f||!Number.isFinite(f.toNum())||Math.abs(f.toNum())>10000){exactInput.setAttribute('aria-invalid','true');paramMessage.textContent='Впиши число или дробь, например 9/25. Для этого исследования достаточно значений от −10000 до 10000.';exactInput.focus();notify();return;}
+    setParameter(f);notify();
+  }
+  function showValue(){
+    const x=parseStudentFraction(xInput.value);tableShown=true;
+    if(!x){xInput.setAttribute('aria-invalid','true');tableOut.textContent='Впиши аргумент x числом или дробью. Делить на ноль нельзя.';xInput.focus();notify();return;}
+    const value=originalValue(problem,x);tableOut.textContent=value===null?'При x = '+x.toString()+' исходная функция не определена. Эта точка не входит в график и не считается пересечением.':'x = '+x.toString()+' → y = '+value.toString()+'. Значение вычислено по допустимой части исходной функции.';notify();
   }
   function redraw(){
     if(!problem)return;
-    const spec=graphSpec(problem);curSpec=spec;
     if(!withSlider){drawStatic(g,problem);return;}
-    const v=parseFloat(slider.value);
-    if(spec.type==='pieces'){drawStatic(g,problem);g.addMeasureH(v,spec.pieces);label.innerHTML=(spec.measure==='H'?'y = ':'y = ')+fmtNum(v);}
-    else if(spec.measure==='K'){drawStatic(g,problem);g.addLineK(v,spec.intersectK);label.innerHTML='y = '+fmtNum(v)+'·x';}
-    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v).length);label.innerHTML='y = '+fmtNum(v);}
+    const spec=drawStatic(g,problem);
+    if(spec.type==='pieces')g.addMeasureH(current,spec.pieces);
+    else if(spec.measure==='K')g.addLineK(current,spec.intersectK);
+    else{const xs=spec.intersectHm(current);g.addMeasureH(current,[],xs.length,xs);}
+    label.textContent='y = '+current.toString()+(spec.measure==='K'?' · x':'');
+    const total=Number(svg.querySelector('.badge-t2')?.textContent),visible=[...svg.querySelectorAll('.xmark')].filter(mark=>{const x=Number(mark.getAttribute('cx')),y=Number(mark.getAttribute('cy'));return x>=5&&x<=g.W-5&&y>=5&&y<=g.H-5;}).length;
+    const outside=Number.isFinite(total)?Math.max(0,total-visible):0;clipping.hidden=outside===0;clipping.textContent=outside?'Точек за пределами видимой области: '+outside+' из '+total+'. Счётчик учитывает весь график. Особые положения можно проверить кнопками ниже.':'';
   }
-  function fmtNum(v){return (Math.round(v*100)/100).toString();}
   return {el:box,
-    show(prob){problem=prob;const spec=graphSpec(prob);
+    show(prob){
+      problem=prob;const spec=graphSpec(prob);
       if(withSlider){
-        if(spec.type==='pieces'){const r=specRange(spec);slider.min=r.ymin;slider.max=r.ymax;slider.step=0.5;slider.value=((r.ymin+r.ymax)/2).toFixed(1);}
-        else if(spec.measure==='K'){
-          let kmax=3;
-          if(prob.vals&&prob.vals.length)kmax=Math.max(kmax,...prob.vals.map(v=>Math.abs(v.toNum())));
-          kmax=Math.min(Math.ceil(kmax)+1,12);
-          slider.min=-kmax;slider.max=kmax;slider.step=0.05;slider.value=1;}
-        else{const r=hyperRange(spec.holeX,spec.fn);slider.min=r.ymin;slider.max=r.ymax;slider.step=0.25;slider.value=((r.ymin+r.ymax)/2).toFixed(2);}
+        const values=criticalParameters(prob),r=specRange(spec);
+        if(spec.measure==='K'){const edge=Math.ceil(Math.max(3,...values.map(v=>Math.abs(v.toNum()))))+1;slider.min=-edge;slider.max=edge;current=Fr(1);}
+        else{
+          // A range input clamps its value, so the initial line must be inside its bounds.
+          slider.min=Math.min(0,Math.floor(Math.min(r.ymin,...values.map(v=>v.toNum())))-1);
+          slider.max=Math.max(0,Math.ceil(Math.max(r.ymax,...values.map(v=>v.toNum())))+1);current=Fr(0);
+        }
+        slider.step='any';slider.value=String(current.toNum());exactInput.value=current.toString();exactInput.setAttribute('aria-label','Точное значение '+(spec.measure==='K'?'k':'m'));
+        critical.replaceChildren();values.forEach(value=>{const b=btn('btn-new',(spec.measure==='K'?'k':'m')+' = '+value.toString(),()=>{setParameter(value);notify();});b.dataset.parameter=value.toString();critical.append(b);});
+        domain.textContent=domainText(prob);paramMessage.textContent='';xInput.value='';tableOut.textContent='';tableShown=false;
       }
-      redraw();},
-    stage(range,drawFn){g.setRange(range.xmin,range.xmax,range.ymin,range.ymax);g.clear();g.drawAxes();drawFn(g);},
-    grapher:g};
+      redraw();
+    },
+    getState:()=>withSlider?{parameter:current.toString(),parameterDraft:exactInput.value,x:xInput.value,tableShown}:null,
+    setState:state=>{
+      if(!withSlider||!state||typeof state!=='object')return;
+      const parameter=parseStudentFraction(state.parameter);if(parameter&&Math.abs(parameter.toNum())<=10000)setParameter(parameter);
+      exactInput.value=typeof state.parameterDraft==='string'?shortInput(state.parameterDraft):current.toString();xInput.value=shortInput(state.x);if(state.tableShown)showValue();
+    },
+    stage(range,drawFn){g.setRange(range.xmin,range.xmax,range.ymin,range.ymax);g.clear();g.drawAxes();drawFn(g);},grapher:g};
 }
 
 /* ============================================================
@@ -1199,7 +1344,7 @@ function stepPlan(problem){
   const spec=graphSpec(P);
   if(P.sub==='inv_kx'){
     const dHyp=g=>{g.drawHyperbola(spec.fn,spec.holeX);};
-    const dLine=g=>{g.drawHyperbola(spec.fn,spec.holeX);g.addLineK(P.vals[0].toNum(),spec.intersectK);};
+    const dLine=g=>{g.drawHyperbola(spec.fn,spec.holeX);g.addLineK(P.vals[0],spec.intersectK);};
     return [
       {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
        promptHtml:`В числителе и знаменателе есть общий множитель. Сократите дробь. Какой график получается?`,
@@ -1221,7 +1366,7 @@ function stepPlan(problem){
       {title:'Сокращаем дробь',kind:'choice',draw:dPar,
        promptHtml:`Числитель делится на (x − x₀) из знаменателя. Сократите дробь. Какой график получается?`,
        options:['парабола с выколотой точкой','гипербола','прямая'],answer:0,
-       showHtml:`После сокращения — <b>парабола</b> y = −(x² + p) с выколотой точкой ○.`},
+       showHtml:`После сокращения — <b>парабола</b> y = −(x² + ${P.p.toString()}) с выколотой точкой ○.`},
       {title:'Выколотая точка',kind:'value',draw:dPar,
        promptHtml:`Сокращённый множитель обращал знаменатель в нуль — там дырка. Найдите абсциссу выколотой точки x₀.`,answer:P.xh,
        hintHtml:`Это нуль знаменателя (x − x₀).`,
@@ -1238,7 +1383,7 @@ function stepPlan(problem){
     return [
       {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
        promptHtml:`Сократите дробь. Какой график получается?`,
-       options:['сдвинутая гипербола y = C − '+fracFromParts('1','x',false),'обычная парабола','прямая'],answer:0,
+       options:['сдвинутая гипербола y = '+P.C+' − '+fracFromParts('1','x',false),'обычная парабола','прямая'],answer:0,
        showHtml:`Получается <b>гипербола y = ${P.C} − ${fracFromParts('1','x',false)}</b> с выколотой точкой.`},
       {title:'Горизонтальная асимптота',kind:'value',draw:dAsym,
        promptHtml:`При x → ±∞ дробь стремится к нулю. К какой прямой y = m график приближается, но не достигает?`,answer:Frac.fromNum(P.C),
@@ -1268,14 +1413,15 @@ MODULES[2].subs=[{k:null,l:'Все'},{k:'inv_kx',l:'Гипербола 1/x'},{k:
 function genProblem(mod){for(let i=0;i<120;i++){const p=mod.gen();if(p)return p;}return mod.explorer();}
 function subtypeOf(p){if(p.kind==='piecewise')return p.variant||'parline';if(p.kind==='modulus')return p.meta.type;if(p.kind==='hyperbola')return p.sub;return 'other';}
 function genProblemFiltered(mod,key){if(!key)return genProblem(mod);for(let i=0;i<600;i++){const p=mod.gen();if(p&&subtypeOf(p)===key)return p;}return genProblem(mod);}
-function demoM1(){return {kind:'piecewise',pieces:[
-  {kind:'quad',coef:[Fr(-1),Fr(2),Fr(3)],lo:Fr(-1),hi:POS_INF,loCl:true,hiCl:true},
-  {kind:'lin',coef:[Fr(-1),Fr(1)],lo:NEG_INF,hi:Fr(-1),loCl:true,hiCl:false}],target:2};}
-function demoM2(){const r1=-1,r2=3,b=-(r1+r2),c=r1*r2;return {kind:'modulus',pieces:[
-  {kind:'quad',coef:[Fr(1),Fr(b),Fr(c)],lo:NEG_INF,hi:Fr(r1),loCl:true,hiCl:false},
-  {kind:'quad',coef:[Fr(-1),Fr(-b),Fr(-c)],lo:Fr(r1),hi:Fr(r2),loCl:true,hiCl:true},
-  {kind:'quad',coef:[Fr(1),Fr(b),Fr(c)],lo:Fr(r2),hi:POS_INF,loCl:false,hiCl:true}],target:3};}
-function demoM3(){return {kind:'hyperbola',sub:'inv_kx',a:3,b:5,xh:Fr(-5,3),yh:Fr(-3,5),vals:[Fr(9,25)],varname:'k'};}
+function demoM1(){
+  const pieces=[segQuad(-1,2,3,Fr(-1),POS_INF,true,true),segLin(-1,1,NEG_INF,Fr(-1),true,false)],atoms=solveTarget(pieces,2);
+  return {kind:'piecewise',a:Fr(-1),b:Fr(2),c:Fr(3),p:Fr(-1),q:Fr(1),bp:Fr(-1),paraRight:true,xv:Fr(1),yv:Fr(4),target:2,pieces,atoms,answer:fmtAnswer(atoms)};
+}
+function demoM2(){
+  const r1=-1,r2=3,b=-(r1+r2),c=r1*r2,pieces=[segQuad(1,b,c,NEG_INF,Fr(r1),true,false),segQuad(-1,-b,-c,Fr(r1),Fr(r2),true,true),segQuad(1,b,c,Fr(r2),POS_INF,false,true)],atoms=solveTarget(pieces,3);
+  return {kind:'modulus',sub:'absquad',pieces,target:3,atoms,answer:fmtAnswer(atoms),meta:{type:'absquad',b,c,r1,r2}};
+}
+function demoM3(){return {kind:'hyperbola',sub:'inv_kx',a:3,b:5,xh:Fr(-5,3),yh:Fr(-3,5),vals:[Fr(9,25)],varname:'k',target:1,answer:fmtVals([Fr(9,25)],'k')};}
 
 /* ============================================================
    STATEMENT rendering (original problem expression)
@@ -1342,77 +1488,243 @@ function statementHtml(P){
 function btn(cls,txt,on){const b=el('button','btn '+cls,txt);b.type='button';if(on)b.onclick=on;return b;}
 function retryBtn(on){return btn('btn-retry','Ещё пример этой темы →',on);}
 
+/* New evidence is additive: legacy practice counters keep their established meaning. */
+var TID = "oge-t22-grafiki";
+var KEY = "mathExamCourseProgress.v1";
+const Audit22=(function(){
+  const MAX_SEEN=2048,MAX_ATTEMPTS=100,knownModules=['m1','m2','m3'],knownModes=['marathon','step','learn'];
+  let memory={},serial=0,available=true,invalidStore=false,formatLocked=false;
+  const object=value=>!!value&&typeof value==='object'&&!Array.isArray(value);
+  const list=value=>Array.isArray(value)?value:[];
+  const small=(value,max=120)=>typeof value==='string'?value.slice(0,max):'';
+  function personal(){
+    if(window.OgeCourseSharedMode||window.MathExamLearning?.managed===true||window.parent!==window)return false;
+    const q=new URLSearchParams(location.search);
+    return q.get('mode')!=='exam'&&!q.has('exam')&&q.get('managed')!=='1'&&q.get('embed')!=='1'&&q.get('embedded')!=='1';
+  }
+  function readAll(){
+    if(!personal())return {};
+    try{const value=JSON.parse(localStorage.getItem(KEY)||'{}');invalidStore=!object(value);if(invalidStore)available=false;return object(value)?value:{};}catch(_){available=false;invalidStore=true;return {};}
+  }
+  function source(all){
+    const rawRec=all[TID],rec=object(rawRec)?rawRec:{},rawExt=rec.ext,ext=object(rawExt)?rawExt:{},value=ext.auditLearning;
+    formatLocked=(rawRec!=null&&!object(rawRec))||(rec.v!=null&&rec.v!==1)||(rawExt!=null&&!object(rawExt))||(value!=null&&(!object(value)||value.v!==1));
+    if(formatLocked)available=false;
+    return value;
+  }
+  function clean(value){
+    if(!object(value)||value.v!==1)return {v:1,attempts:[],seenKeys:[],seenSaturated:false,draft:{sessions:{}}};
+    const out=Object.assign({},value);
+    out.attempts=list(value.attempts).filter(x=>object(x)&&typeof x.id==='string'&&typeof x.taskKey==='string').slice(-MAX_ATTEMPTS);
+    out.seenKeys=list(value.seenKeys).filter(x=>typeof x==='string'&&x.length<120).slice(0,MAX_SEEN);
+    out.seenSaturated=value.seenSaturated===true||list(value.seenKeys).length>=MAX_SEEN;
+    out.draft=object(value.draft)?Object.assign({},value.draft):{};out.draft.sessions=object(out.draft.sessions)?Object.assign({},out.draft.sessions):{};
+    return out;
+  }
+  function read(){
+    const stored=source(readAll());
+    if(!formatLocked&&object(stored))memory=clean(stored);
+    const state=clean(memory);if(formatLocked||invalidStore)state.seenSaturated=true;
+    return state;
+  }
+  function mutate(fn){
+    if(!personal())return false;
+    const all=readAll(),stored=source(all),rec=object(all[TID])?all[TID]:{};
+    const ext=object(rec.ext)?rec.ext:{},state=clean(formatLocked||invalidStore?memory:stored||memory);
+    if(fn(state)===false)return false;
+    memory=state;
+    // An older page must not overwrite a future or unreadable journal. Keep a page-local fallback.
+    if(formatLocked||invalidStore)return false;
+    rec.ext=Object.assign({},ext,{auditLearning:state});all[TID]=rec;
+    try{localStorage.setItem(KEY,JSON.stringify(all));available=true;return true;}catch(_){available=false;return false;}
+  }
+  function rng(seed,fn){
+    const original=Math.random;let current=seed>>>0;
+    Math.random=()=>{current+=0x6D2B79F5;let t=current;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};
+    try{return fn();}finally{Math.random=original;}
+  }
+  function taskKey(problem){
+    const text=statementHtml(problem);let a=2166136261,b=5381;
+    for(let i=0;i<text.length;i++){a=Math.imul(a^text.charCodeAt(i),16777619);b=Math.imul(b,33)^text.charCodeAt(i);}
+    return 'oge22-v1-'+(a>>>0).toString(16)+'-'+(b>>>0).toString(16);
+  }
+  function fromSeed(mod,sub,seed){return rng(seed,()=>genProblemFiltered(mod,sub));}
+  function remember(key){mutate(state=>{if(state.seenKeys.includes(key))return;if(state.seenKeys.length>=MAX_SEEN){state.seenSaturated=true;return;}state.seenKeys.push(key);});}
+  function start(mod,sub,mode,previousKey){
+    if(!personal()){
+      const problem=genProblemFiltered(mod,sub);
+      return {problem,attempt:{v:1,bank:1,id:'context-'+(++serial),seed:0,sub:sub||null,mode,taskKey:taskKey(problem),skill:mod.id+':'+subtypeOf(problem),startedAt:Date.now(),fresh:false,helpKinds:[],errors:[],firstAnswer:null,finished:false,revision:0,hasWork:false,lastActionAt:0}};
+    }
+    let seed,problem,key,state=read(),fresh=false;
+    for(let i=0;i<24;i++){
+      seed=Math.floor(Math.random()*4294967296)>>>0;problem=fromSeed(mod,sub,seed);key=taskKey(problem);
+      fresh=!state.seenSaturated&&!state.seenKeys.includes(key);
+      if(key!==previousKey&&(fresh||i>=7))break;
+    }
+    remember(key);
+    const attempt={v:1,bank:1,id:'a22-'+Date.now().toString(36)+'-'+seed.toString(36)+'-'+(++serial),seed,sub:sub||null,mode,taskKey:key,skill:mod.id+':'+subtypeOf(problem),startedAt:Date.now(),fresh,repeatReason:fresh?null:state.seenKeys.includes(key)?'seen':'unconfirmed',helpKinds:[],errors:[],firstAnswer:null,finished:false,revision:0,hasWork:false,lastActionAt:0};
+    return {problem,attempt};
+  }
+  function restore(mod,mode){
+    if(!personal())return null;
+    const saved=read().draft.sessions[mod.id+'/'+mode];
+    if(!object(saved)||!object(saved.attempt)||!object(saved.ui))return null;
+    const a=saved.attempt;
+    if(a.v!==1||a.bank!==1||typeof a.id!=='string'||a.id.length>120||!Number.isInteger(a.seed)||a.seed<0||a.seed>4294967295||a.mode!==mode||typeof a.taskKey!=='string')return null;
+    if(a.sub!==null&&!(mod.subs||[]).some(x=>x.k===a.sub))return null;
+    try{
+      const problem=fromSeed(mod,a.sub,a.seed);if(taskKey(problem)!==a.taskKey)return null;
+      const attempt={v:1,bank:1,id:a.id,seed:a.seed,sub:a.sub,mode,taskKey:a.taskKey,skill:mod.id+':'+subtypeOf(problem),startedAt:Number.isFinite(a.startedAt)?a.startedAt:Date.now(),fresh:a.fresh===true,repeatReason:a.repeatReason==='unconfirmed'?'unconfirmed':'seen',helpKinds:list(a.helpKinds).filter(x=>['model','steps','hint','step-reveal','solution','theory','automatic-feedback'].includes(x)),errors:list(a.errors).filter(object).slice(-20),firstAnswer:typeof a.firstAnswer==='string'?small(a.firstAnswer,2000):null,finished:a.finished===true,revision:Number.isSafeInteger(saved.revision)?saved.revision:0,hasWork:a.hasWork===true||!!a.firstAnswer||list(a.helpKinds).length>0||list(a.errors).length>0,lastActionAt:Number.isFinite(a.lastActionAt)?a.lastActionAt:0};
+      // Help is monotone even if one stored flag is missing or a panel was closed.
+      if(saved.ui.peeked===true&&!attempt.helpKinds.some(x=>x==='solution'||x==='step-reveal'))attempt.helpKinds.push('solution');
+      if((saved.ui.helpOpen===true||saved.ui.helpBuilt===true||saved.ui.stepsBuilt===true)&&!attempt.helpKinds.includes('model'))attempt.helpKinds.push('model');
+      if(saved.ui.feedbackKind==='wrong'&&!attempt.helpKinds.includes('automatic-feedback'))attempt.helpKinds.push('automatic-feedback');
+      if(saved.ui.stepsBuilt===true&&!attempt.helpKinds.includes('steps'))attempt.helpKinds.push('steps');
+      const savedSteps=saved.ui.steps?.steps;
+      if(list(savedSteps).some(x=>object(x)&&x.status==='shown')&&!attempt.helpKinds.includes('step-reveal'))attempt.helpKinds.push('step-reveal');
+      return {problem,attempt,ui:saved.ui,updatedAt:saved.updatedAt};
+    }catch(_){return null;}
+  }
+  function touch(attempt){if(attempt&&!attempt.finished){attempt.hasWork=true;attempt.lastActionAt=Date.now();}}
+  function resume(state){
+    const sessions=Object.values(state.draft.sessions).filter(x=>object(x)&&object(x.attempt));
+    const unfinished=sessions.filter(x=>x.attempt.hasWork===true&&!x.attempt.finished&&Number.isFinite(x.attempt.lastActionAt)&&x.attempt.lastActionAt>0&&knownModules.includes(small(x.attempt.skill).split(':')[0])&&knownModes.includes(x.attempt.mode)).sort((a,b)=>b.attempt.lastActionAt-a.attempt.lastActionAt);
+    const last=Math.max(0,...sessions.map(x=>Number.isFinite(x.attempt.lastActionAt)?x.attempt.lastActionAt:0));
+    state.resume=unfinished.length?{at:unfinished[0].attempt.lastActionAt,hasWork:true,unfinished:true,helpUsed:list(unfinished[0].attempt.helpKinds).length>0,skill:unfinished[0].attempt.skill,module:unfinished[0].attempt.skill.split(':')[0],mode:unfinished[0].attempt.mode}:{at:last,hasWork:false,unfinished:false,helpUsed:false,skill:'',module:'',mode:''};
+  }
+
+  function latest(mod,mode,attempt){
+    if(!personal()||!attempt||!attempt.revision)return null;
+    const saved=read().draft.sessions[mod.id+'/'+mode];
+    if(!object(saved)||!object(saved.attempt))return null;
+    if(saved.attempt.id!==attempt.id||(Number.isSafeInteger(saved.revision)&&saved.revision>attempt.revision))return restore(mod,mode);
+    return null;
+  }
+  function save(mod,mode,attempt,ui,replace=false){
+    return mutate(state=>{
+      const slot=mod.id+'/'+mode,old=state.draft.sessions[slot];
+      if(!replace&&object(old)&&object(old.attempt)&&(old.attempt.id!==attempt.id||(old.revision||0)>attempt.revision))return false;
+      const revision=(object(old)&&Number.isSafeInteger(old.revision)?old.revision:0)+1;
+      attempt.revision=revision;state.draft.sessions[slot]={attempt,ui,revision,updatedAt:Date.now()};resume(state);
+    });
+  }
+  function active(){
+    const state=read();
+    if(new URLSearchParams(location.search).get('resume')==='1'){resume(state);if(state.resume.unfinished)return {module:state.resume.module,mode:state.resume.mode};}
+    const value=state.draft.active;return object(value)&&knownModules.includes(value.module)&&knownModes.includes(value.mode)?value:{module:'m1',mode:'marathon'};
+  }
+  function select(module,mode){if(knownModules.includes(module)&&knownModes.includes(mode))mutate(state=>{state.draft.active={module,mode,at:Date.now()};});}
+  function outcome(a){return !a.fresh?'familiar':a.helpKinds.length?'helped':a.errors.length?'corrected':'independent';}
+  function finish(a,problem){
+    if(a.finished)return false;a.finished=true;
+    if(personal()&&read().attempts.some(x=>x.id===a.id))return false;
+    const box=el('div');box.innerHTML=statementHtml(problem);
+    const result={id:a.id,skill:a.skill,taskKey:a.taskKey,at:Date.now(),outcome:outcome(a),fresh:a.fresh,helpUsed:a.helpKinds.length>0,helpKinds:a.helpKinds.slice(),firstAnswer:a.firstAnswer,errors:a.errors.slice(-20),condition:small(box.textContent.replace(/\s+/g,' ').trim(),700),mode:a.mode};
+    mutate(state=>{if(state.attempts.some(x=>x.id===a.id))return false;state.attempts.push(result);state.attempts=state.attempts.slice(-MAX_ATTEMPTS);});return true;
+  }
+  function postpone(a,problem){
+    if(!a||a.finished||!a.firstAnswer&&!a.helpKinds.length&&!a.errors.length)return;
+    mutate(state=>{const pending=list(state.postponed).filter(x=>object(x)&&x.id!==a.id);pending.push({id:a.id,skill:a.skill,taskKey:a.taskKey,seed:a.seed,sub:a.sub,mode:a.mode,at:Date.now(),firstAnswer:a.firstAnswer,errors:a.errors.slice(-20),helpKinds:a.helpKinds.slice()});state.postponed=pending.slice(-20);});
+  }
+  return {personal,read,mutate,start,restore,save,active,select,taskKey,finish,postpone,outcome,touch,latest,available:()=>available,formatLocked:()=>formatLocked};
+})();
+function setInputIssue(issue,fb){
+  feedback(fb,false,'',issue.message);
+  if(issue.input){issue.input.setAttribute('aria-invalid','true');issue.input.focus();}
+}
+function answerText(input){
+  if(!input||!input.getState)return '';
+  const value=state=>state&&state.mode==='frac'?(state.numerator||'□')+'/'+(state.denominator||'□'):state&&typeof state.decimal==='string'?(state.decimal||'□'):'□';
+  const state=input.getState();
+  if(typeof state==='number')return 'вариант '+(state+1);
+  if(Array.isArray(state))return state.map(item=>item&&item.type==='point'?'m = '+value(item.value):item&&item.type==='interval'?(item.leftClosed?'[':'(')+value(item.left)+'; '+value(item.right)+(item.rightClosed?']':')'):value(item)).join(' ∪ ').slice(0,2000);
+  return value(state).slice(0,2000);
+}
+function recordHelp(attempt,kind){if(attempt&&!attempt.finished&&!attempt.helpKinds.includes(kind)){attempt.helpKinds.push(kind);Audit22.touch(attempt);}}
+function mainMismatch(problem,input){
+  if(problem.kind==='hyperbola'){
+    const vals=input.getVals();
+    if(vals&&new Set(vals.map(x=>x.toString())).size!==vals.length)return 'Пока не совпадает: одинаковое значение параметра записывается один раз. Убери повтор и проверь остальные случаи.';
+    if(problem.sub==='inv_kx')return 'Пока не совпадает. Найди обе точки пересечения с y = kx, затем проверь, какая из них исключена исходным знаменателем.';
+    if(problem.sub==='shift_m')return 'Пока не совпадает. Проверь два разных случая: горизонтальную асимптоту и уровень выколотой точки. Сокращение не возвращает запрещённый аргумент.';
+    return 'Пока не совпадает. Отдельно проверь касание и прямую через выколотую точку. В ответ входят все подходящие значения k.';
+  }
+  return 'Пока не совпадает. Проверь каждый граничный уровень отдельно: включена ли точка в график и сколько различных пересечений осталось?';
+}
+
 /* ============================================================
    STEP MODE
    ============================================================ */
-function renderStep(mod,host,preset,onNew,onReveal){
-  host.innerHTML='';
-  const problem=preset||genProblem(mod);
-  const stmt=el('div');stmt.innerHTML=statementHtml(problem);host.appendChild(stmt);
-  const plan=stepPlan(problem);host.__problem=problem;host.__plan=plan;
-  const stepsWrap=el('div','steps');host.appendChild(stepsWrap);
-  const graphHost=el('div','step-graph hidden');host.appendChild(graphHost);
-  const gv=makeGraphView(false);graphHost.appendChild(gv.el);
-  let range;
-  range=specRange(graphSpec(problem));
-  const footer=el('div','step-footer');host.appendChild(footer);
-  const retry=retryBtn(onNew||(()=>renderStep(mod,host)));retry.classList.add('hidden');footer.appendChild(retry);
-  let revealedOnce=false;
-  function showRetry(){if(!revealedOnce){revealedOnce=true;retry.classList.remove('hidden');}}
-
-  let idx=0;
-  function renderNext(){ try{
-    if(idx>=plan.length){const done=el('div','all-done','Все шаги пройдены. Отличная работа!');stepsWrap.appendChild(done);return;}
-    const step=plan[idx];const sIdx=idx;idx++;
-    const card=el('div','step-card active');
-    card.innerHTML=`<div class="step-head"><span class="step-n">Шаг ${sIdx+1}</span><span class="step-title">${step.title}</span><span class="step-cue">твой ход</span></div>`;
-    const prompt=el('div','step-prompt');prompt.innerHTML=mathDisplay(step.promptHtml);card.appendChild(prompt);
-    if(step.draw){graphHost.classList.remove('hidden');
+let stepRadioSequence=0;
+function renderStep(mod,host,preset,onNew,onReveal,options={}){
+  host.innerHTML='';const radioGroup='oge22-step-'+(++stepRadioSequence)+'-';
+  const problem=preset||genProblem(mod),plan=stepPlan(problem);host.__problem=problem;host.__plan=plan;
+  const stmt=el('div');stmt.innerHTML=statementHtml(problem);host.append(stmt);
+  const stepsWrap=el('div','steps'),graphHost=el('div','step-graph hidden'),footer=el('div','step-footer');host.append(stepsWrap,graphHost,footer);
+  const retry=retryBtn(onNew||(()=>renderStep(mod,host)));retry.classList.add('hidden');footer.append(retry);
+  const range=specRange(graphSpec(problem)),saved=options.state&&typeof options.state==='object'?options.state:{},savedSteps=Array.isArray(saved.steps)?saved.steps:[];
+  const records=[];let idx=0,currentGraph=null,graphStep=-1,building=true,completed=false;
+  function showRetry(){retry.classList.remove('hidden');}
+  function getState(){return {steps:records.map(r=>({answer:r.input.getState(),status:r.status,hint:r.hint,feedback:r.feedback})),graph:currentGraph?.getState()||null,graphStep};}
+  function notify(){if(!building&&options.onChange)options.onChange(getState());}
+  function finish(){
+    if(completed)return;completed=true;showRetry();
+    stepsWrap.append(el('div','all-done','Все шаги пройдены. Теперь проверь себя на другом условии без открытого разбора.'));
+    if(!building&&options.onComplete)options.onComplete();
+  }
+  function renderNext(){try{
+    if(idx>=plan.length){finish();return;}
+    const step=plan[idx],sIdx=idx++,old=savedSteps[sIdx]||{},card=el('div','step-card active');
+    card.innerHTML='<div class="step-head"><span class="step-n">Шаг '+(sIdx+1)+'</span><span class="step-title">'+step.title+'</span><span class="step-cue">твой ход</span></div>';
+    const prompt=el('div','step-prompt');prompt.innerHTML=mathDisplay(step.promptHtml);card.append(prompt);
+    if(step.draw){
+      graphHost.classList.remove('hidden');graphHost.replaceChildren();graphStep=sIdx;
+      currentGraph=makeGraphView(step.kind==='atoms'||step.kind==='vals');graphHost.append(currentGraph.el);
       if(step.kind==='atoms'||step.kind==='vals'){
-        // counting/answer step: give the same draggable line + live counter as in theory/marathon
-        graphHost.innerHTML='';
-        const igv=makeGraphView(true);graphHost.appendChild(igv.el);
-        const gtype=graphSpec(problem).measure==='K'?'Двигайте прямую y = kx ползунком — счётчик покажет число общих точек.':'Двигайте прямую ползунком снизу вверх — счётчик покажет число общих точек.';
-        graphHost.appendChild(el('div','mhelp',gtype));
-        try{igv.show(problem);}catch(e){console.error('interactive step error',e);}
-      } else {
-        try{gv.stage(range,step.draw);}catch(e){console.error('draw layer error',e);}
-      }
+        currentGraph.show(problem);graphHost.append(el('div','mhelp','Исследуй особые положения точно: касание — одна точка, выколотая точка не входит в график.'));
+      }else currentGraph.stage(range,step.draw);
     }
-    const inputWrap=el('div','step-input');card.appendChild(inputWrap);
-    const fb=el('div','fb');card.appendChild(fb);
-    const row=el('div','btn-row');card.appendChild(row);
-    let getVal,checkFn,input;
+    const inputWrap=el('div','step-input'),fb=el('div','fb'),row=el('div','btn-row');fb.setAttribute('role','status');card.append(inputWrap,fb,row);
+    let input,checkFn;
     if(step.kind==='choice'){
-      input=el('div','choices');step.options.forEach((o,i)=>{const id=`c${sIdx}_${i}`;
-        const lab=el('label','choice');const r=el('input');r.type='radio';r.name='st'+sIdx;r.value=i;lab.append(r,el('span',null,o));input.appendChild(lab);});
-      inputWrap.appendChild(input);
-      checkFn=()=>{const sel=input.querySelector('input:checked');if(!sel)return null;return +sel.value===step.answer;};
-    }else if(step.kind==='value'){
-      const vi=makeValueInput();input=vi;inputWrap.appendChild(vi.el);
-      checkFn=()=>{const f=vi.getFrac();if(f===null)return null;return f.eq(step.answer);};
-    }else if(step.kind==='atoms'){
-      const ab=makeAnswerBuilder();input=ab;inputWrap.appendChild(ab.el);
-      checkFn=()=>{const at=ab.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,step.answer);};
-    }else{ // vals
-      const vl=makeValueList(step.varname);input=vl;inputWrap.appendChild(vl.el);
-      checkFn=()=>{const vs=vl.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,step.answer);};
-    }
-    let solved=false;
-    const check=btn('btn-check','Проверить',()=>{const r=checkFn();
-      if(r===null){feedback(fb,false,'','Введите ответ.');return;}
-      if(r){feedback(fb,true,'Верно!','');solved=true;card.classList.remove('active');card.classList.add('solved');
-        row.querySelectorAll('button').forEach(b=>b.disabled=true);inputWrap.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);advance();}
-      else{feedback(fb,false,'','Не сходится — попробуйте ещё раз.');}});
-    row.appendChild(check);
-    if(step.hintHtml){row.appendChild(btn('btn-hint','Подсказка',()=>{feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.hintHtml);}));}
-    row.appendChild(btn('btn-show','Показать шаг',()=>{if(onReveal)onReveal();feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.showHtml);
-      card.classList.remove('active');card.classList.add('peeked');row.querySelectorAll('button').forEach(b=>b.disabled=true);inputWrap.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);showRetry();
-      if(!solved){advance();}}));
-    stepsWrap.appendChild(card);
-    let advanced=false;function advance(){if(advanced)return;advanced=true;if(window.OgeCourseSharedMode)renderNext();else setTimeout(renderNext,120);}
-  }catch(e){console.error('step render error',e);const c=el('div','step-card');const p=el('div','step-prompt');p.textContent='Не удалось отобразить этот шаг. Возьмите новый пример.';c.appendChild(p);stepsWrap.appendChild(c);showRetry();} }
+      const choices=el('div','choices');step.options.forEach((text,i)=>{
+        const lab=el('label','choice'),radio=el('input'),label=el('span');radio.type='radio';radio.name=radioGroup+sIdx;radio.value=i;label.innerHTML=mathDisplay(text);lab.append(radio,label);choices.append(lab);
+      });inputWrap.append(choices);
+      input={el:choices,getState:()=>{const selected=choices.querySelector('input:checked');return selected?Number(selected.value):null;},setState:value=>{if(!Number.isInteger(value)||value<0||value>=step.options.length)return;const radio=choices.querySelector('input[value="'+value+'"]');if(radio)radio.checked=true;},issue:()=>choices.querySelector('input:checked')?null:{input:choices.querySelector('input'),message:'Выбери один из вариантов.'}};
+      checkFn=()=>{const selected=input.getState();return selected===null?null:selected===step.answer;};
+    }else if(step.kind==='value'){input=makeValueInput();inputWrap.append(input.el);checkFn=()=>{const value=input.getFrac();return value===null?null:value.eq(step.answer);};}
+    else if(step.kind==='atoms'){input=makeAnswerBuilder();inputWrap.append(input.el);checkFn=()=>{const value=input.getAtoms();return value===null||!value.length?null:setsEqual(value,step.answer);};}
+    else{input=makeValueList(step.varname);inputWrap.append(input.el);checkFn=()=>{const value=input.getVals();return value===null||!value.length?null:valsEqual(value,step.answer);};}
+    if(Object.prototype.hasOwnProperty.call(old,'answer'))input.setState(old.answer);
+    const record={input,status:'open',hint:old.hint===true,feedback:old.feedback==='wrong'?'wrong':''};records.push(record);
+    let advanced=false;
+    function advance(){if(advanced)return;advanced=true;renderNext();notify();}
+    function lock(status){record.status=status;card.classList.remove('active');card.classList.add(status==='shown'?'peeked':'solved');row.querySelectorAll('button').forEach(x=>x.disabled=true);inputWrap.querySelectorAll('input,select,button').forEach(x=>x.disabled=true);}
+    const check=btn('btn-check','Проверить',()=>{
+      if(record.status!=='open'||options.beforeAction?.())return;const issue=input.issue();if(issue){setInputIssue(issue,fb);return;}
+      const correct=checkFn();if(options.onAnswer)options.onAnswer({step:sIdx,answer:answerText(input)||String(input.getState()),correct});
+      if(correct){feedback(fb,true,'Верно!','');lock('solved');advance();}
+      else{record.feedback='wrong';feedback(fb,false,'','Пока не совпадает. '+(step.kind==='choice'?'Сверь выбранный признак с формулой и ограничениями.':'Проверь этот шаг по исходному условию. Уже введённые значения сохранены.'));notify();}
+    });row.append(check);
+    if(step.hintHtml)row.append(btn('btn-hint','Подсказка',()=>{if(options.beforeAction?.())return;record.hint=true;if(options.onHelp)options.onHelp('hint');feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.hintHtml);notify();}));
+    row.append(btn('btn-show','Показать шаг',()=>{
+      if(record.status!=='open'||options.beforeAction?.())return;if(onReveal)onReveal();if(options.onHelp)options.onHelp('step-reveal');
+      feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.showHtml);lock('shown');showRetry();advance();
+    }));
+    inputWrap.addEventListener('input',notify);inputWrap.addEventListener('change',notify);inputWrap.addEventListener('click',notify);
+    inputWrap.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.matches('input:not([type=radio])')){event.preventDefault();check.click();}});
+    stepsWrap.append(card);
+    if(old.status==='shown'){
+      feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.showHtml);lock('shown');showRetry();advance();
+    }else if(old.status==='solved'&&checkFn()===true){feedback(fb,true,'Верно!','');lock('solved');advance();}
+    else if(record.hint&&step.hintHtml){feedbackPeek(fb,'');fb.innerHTML=mathDisplay(step.hintHtml);}
+    else if(record.feedback==='wrong')feedback(fb,false,'','Пока не совпадает. Проверь этот шаг по исходному условию. Уже введённые значения сохранены.');
+  }catch(error){console.error('step render error',error);stepsWrap.append(el('div','step-card','Не удалось восстановить этот шаг. Можно выбрать другой пример.'));showRetry();}}
   renderNext();
+  if(currentGraph&&saved.graphStep===graphStep)currentGraph.setState(saved.graph);
+  graphHost.addEventListener('oge22-draft',notify);graphHost.addEventListener('input',notify);
+  building=false;
+  return {getState,completed:()=>completed};
 }
 
 /* ============================================================
@@ -1420,41 +1732,150 @@ function renderStep(mod,host,preset,onNew,onReveal){
    ============================================================ */
 function renderMarathon(mod,host){
   host.innerHTML='';
-  const score={solved:0,tries:0},results=el('details','minimal-results');results.appendChild(el('summary',null,'Мои результаты · подтипы'));
-  const progressKey='mathExam.oge22.practice.v1';
-  if(!window.OgeCourseSharedMode)try{const saved=JSON.parse(localStorage.getItem(progressKey)||'{}')[mod.id];if(saved)for(const k of ['solved','tries'])if(Number.isSafeInteger(saved[k])&&saved[k]>=0)score[k]=saved[k];}catch(e){}
-  const scoreEl=el('div','score');results.appendChild(scoreEl);
-  let subFilter=mod.sharedSub||null;const subs=mod.subs||[{k:null,l:'Все'}];
-  if(subs.length>1){const chipRow=el('div','sub-chips');subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};chipRow.appendChild(c);});results.appendChild(chipRow);}
-  const stmt=el('div');host.appendChild(stmt);
-  const hintRow=el('div','minimal-hint'),hint=btn('btn-new','Хочешь подсказку?');hintRow.appendChild(hint);host.appendChild(hintRow);
-  const helpPanel=el('section','minimal-help');helpPanel.id='help-'+mod.id;helpPanel.hidden=true;helpPanel.setAttribute('aria-label','Лаборатория и шаги решения');hint.setAttribute('aria-controls',helpPanel.id);hint.setAttribute('aria-expanded','false');hintRow.appendChild(helpPanel);
-  const gv=makeGraphView(true);helpPanel.appendChild(gv.el);const help=el('div','mhelp','Двигай прямую ползунком и наблюдай, как меняется число общих точек.');helpPanel.appendChild(help);
-  const stepsBtn=btn('btn-step','Разобрать по шагам'),stepsHost=el('div');helpPanel.appendChild(stepsBtn);helpPanel.appendChild(stepsHost);
-  const solDetails=el('details');solDetails.appendChild(el('summary',null,'Готовый ответ'));helpPanel.appendChild(solDetails);
-  const ansHost=el('div','ans-host');host.appendChild(ansHost);const fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');host.appendChild(fb);
-  const row=el('div','btn-row');host.appendChild(row);const retryRow=el('div','btn-row');host.appendChild(retryRow);
-  host.appendChild(el('p','minimal-proof-note','Проверяется ответ. Построение графика и развёрнутое решение выполни в тетради.'));host.appendChild(results);
-  let problem,input,peeked,solvedThis=false,helpBuilt=false,stepsBuilt=false;
-  function updScore(){
-    scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;
-    if(window.OgeCourseSharedMode)return;
-    try{
-      let all={};
-      try{all=JSON.parse(localStorage.getItem(progressKey)||'{}');}catch(e){}
-      if(!all||typeof all!=='object'||Array.isArray(all))all={};
-      all[mod.id]={solved:score.solved,tries:score.tries};
-      localStorage.setItem(progressKey,JSON.stringify(all));
-    }catch(e){}
+  const progressKey='mathExam.oge22.practice.v1',score={solved:0,tries:0},results=el('details','minimal-results');results.append(el('summary',null,'Мои результаты · подтипы'));
+  const scoreEl=el('div','score'),summary=el('p','audit22-state'),history=el('div','audit22-history');results.append(scoreEl,summary);
+  let subFilter=mod.sharedSub||null;
+  const chipButtons=[];if((mod.subs||[]).length>1){const chips=el('div','sub-chips');mod.subs.forEach(sub=>{
+    const c=btn('chip'+(sub.k===subFilter?' chip-on':''),sub.l,()=>{subFilter=sub.k;newProblem();});c.dataset.sub=sub.k||'';chips.append(c);chipButtons.push(c);
+  });results.append(chips);}
+  results.append(history);
+  const stmt=el('div'),stateLine=el('p','audit22-state');host.append(stmt,stateLine);
+  const hintRow=el('div','minimal-hint'),hint=btn('btn-new','Хочешь подсказку?');hintRow.append(hint);host.append(hintRow);
+  const helpPanel=el('section','minimal-help');helpPanel.id='help-'+mod.id;helpPanel.hidden=true;helpPanel.setAttribute('aria-label','Лаборатория и шаги решения');hint.setAttribute('aria-controls',helpPanel.id);hint.setAttribute('aria-expanded','false');hintRow.append(helpPanel);
+  const gv=makeGraphView(true);helpPanel.append(gv.el,el('div','mhelp','Двигай прямую, а особые положения проверяй точным числом или дробью. Модель относится к твоему условию.'));
+  const stepsBtn=btn('btn-step','Разобрать по шагам'),stepsHost=el('div');helpPanel.append(stepsBtn,stepsHost);
+  const solDetails=el('details');solDetails.append(el('summary',null,'Готовый ответ'));helpPanel.append(solDetails);
+  const ansHost=el('div','ans-host'),fb=el('div','fb');fb.setAttribute('role','status');fb.setAttribute('aria-live','polite');host.append(ansHost,fb);
+  const row=el('div','btn-row'),retryRow=el('div','btn-row');host.append(row,retryRow);
+  host.append(el('p','minimal-proof-note','Проверяется ответ. Построение графика и развёрнутое решение выполни в тетради.'),results);
+  let problem,input,attempt,peeked=false,solvedThis=false,helpBuilt=false,stepsBuilt=false,stepApi=null,restoring=false,feedbackKind='',lastSubmitted='',staleNotice=false;
+  function readLegacy(){
+    if(!Audit22.personal())return {};
+    try{const all=JSON.parse(localStorage.getItem(progressKey)||'{}');return all&&typeof all==='object'&&!Array.isArray(all)?all:{};}catch(_){return {};}
   }
-  function makeInput(){ansHost.innerHTML='';if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}else{input=makeValueList(problem.varname);ansHost.appendChild(input.el);}}
-  function grade(){if(mod.answerKind==='atoms'){const at=input.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,problem.atoms);}const vs=input.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,problem.vals);}
-  function newProblem(){problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;solvedThis=false;checkButton.disabled=false;helpBuilt=false;stepsBuilt=false;stmt.innerHTML=statementHtml(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';helpPanel.hidden=true;hint.setAttribute('aria-expanded','false');solDetails.open=false;stepsHost.innerHTML='';stepsBtn.hidden=false;}
-  hint.onclick=()=>{const opening=helpPanel.hidden;helpPanel.hidden=!opening;hint.setAttribute('aria-expanded',String(opening));if(opening&&!helpBuilt){gv.show(problem);helpBuilt=true;}};
-  stepsBtn.onclick=()=>{if(!stepsBuilt){renderStep(mod,stepsHost,problem,newProblem,()=>{peeked=true;});stepsBuilt=true;stepsBtn.hidden=true;}};
-  const checkButton=btn('btn-check','Проверить',()=>{if(solvedThis)return;const r=grade();if(r===null){feedback(fb,false,'','Собери ответ выше.');return;}score.tries++;if(r){solvedThis=true;ansHost.querySelectorAll('input,select,button').forEach(b=>b.disabled=true);checkButton.disabled=true;if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно!','');}else feedback(fb,false,'','Пока не совпадает — проверь концы промежутков и значения.');updScore();});row.appendChild(checkButton);
-  solDetails.appendChild(btn('btn-show','Показать ответ',()=>{peeked=true;feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+mathDisplay(problem.answer)+'</b>';if(!retryRow.querySelector('.btn-retry'))retryRow.appendChild(retryBtn(newProblem));}));
-  row.appendChild(btn('btn-new','Другая задача →',newProblem));updScore();newProblem();
+  function updateScore(){
+    const saved=readLegacy()[mod.id]||{};
+    if(Audit22.personal())for(const name of ['solved','tries'])score[name]=Number.isSafeInteger(saved[name])&&saved[name]>=0?saved[name]:0;
+    scoreEl.innerHTML='Решено: <b>'+score.solved+'</b> · попыток: '+score.tries;
+    const rows=Audit22.personal()?Audit22.read().attempts.filter(x=>typeof x.skill==='string'&&x.skill.startsWith(mod.id+':')):[];
+    const counts={independent:0,corrected:0,helped:0,familiar:0};rows.forEach(x=>{if(Object.prototype.hasOwnProperty.call(counts,x.outcome))counts[x.outcome]++;});
+    summary.textContent=Audit22.personal()?'Новый журнал: без подсказки — '+counts.independent+', исправлено самостоятельно — '+counts.corrected+', с помощью — '+counts.helped+', знакомые условия — '+counts.familiar+'. Прежний счёт сохранён; он не доказывает самостоятельность.':'Совместная или встроенная работа не меняет личный журнал.';
+    history.replaceChildren();rows.slice(-5).reverse().forEach(result=>{
+      const item=el('details');item.append(el('summary',null,({'independent':'Без подсказки','corrected':'Исправлено самостоятельно','helped':'С помощью','familiar':'Повтор знакомого условия'})[result.outcome]||'Запись'));
+      item.append(el('p',null,result.condition||''));
+      if(result.firstAnswer)item.append(el('p',null,'Первый ответ: '+result.firstAnswer));
+      if(Array.isArray(result.errors)&&result.errors.length)item.append(el('p',null,'Неудачные попытки: '+result.errors.map(x=>x.answer||'').join('; ')));
+      if(result.helpUsed)item.append(el('p',null,'При работе использовалась математическая помощь.'));
+      history.append(item);
+    });
+  }
+  function legacyAdd(correct){
+    if(!Audit22.personal()){score.tries++;if(correct)score.solved++;return;}
+    try{const all=readLegacy(),old=all[mod.id]&&typeof all[mod.id]==='object'?all[mod.id]:{};
+      const num=value=>Number.isSafeInteger(value)&&value>=0?value:0;
+      all[mod.id]=Object.assign({},old,{solved:num(old.solved)+(correct?1:0),tries:num(old.tries)+1});localStorage.setItem(progressKey,JSON.stringify(all));
+    }catch(_){score.tries++;if(correct)score.solved++;}
+  }
+  function snapshot(){return {input:input.getState(),peeked,solved:solvedThis,helpOpen:!helpPanel.hidden,helpBuilt,stepsBuilt,steps:stepApi?stepApi.getState():null,graph:helpBuilt?gv.getState():null,feedbackKind,subFilter,lastSubmitted};}
+  function synchronize(){
+    if(restoring||!attempt)return false;const newer=Audit22.latest(mod,'marathon',attempt);if(!newer)return false;
+    install(newer,true);staleNotice=true;stateLine.textContent='В другой вкладке сохранён более свежий черновик. Он восстановлен вместе с ответом и помощью. Повтори нужное действие.';return true;
+  }
+  function describeState(){
+    stateLine.textContent=(!Audit22.personal()?'Совместная или встроенная работа.':attempt.fresh?'Новое условие в журнале.':attempt.repeatReason==='unconfirmed'?'Новизна условия не подтверждена; оно учитывается как повтор.':'Повтор знакомого условия.')+(solvedThis?' Ответ проверен; обоснование проверь отдельно.':' Черновик и открытая помощь сохраняются при возвращении.');
+    if(staleNotice)stateLine.textContent='Восстановлен более свежий черновик из другой вкладки. Повтори нужное действие. '+stateLine.textContent;
+    if(Audit22.personal()&&Audit22.formatLocked())stateLine.textContent+=' Сохранён журнал другого формата: он оставлен без изменений. Новая работа доступна только на этой странице.';
+    else if(Audit22.personal()&&!Audit22.available())stateLine.textContent+=' Хранилище недоступно: работа сохраняется только на открытой странице.';
+  }
+  function save(replace=false){
+    if(restoring||!attempt||(!replace&&synchronize()))return;
+    Audit22.save(mod,'marathon',attempt,snapshot(),replace);describeState();
+  }
+  function makeInput(){ansHost.replaceChildren();if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.append(el('div','ans-lab','Ответ:'),input.el);}else{input=makeValueList(problem.varname);ansHost.append(input.el);}}
+  function grade(){if(mod.answerKind==='atoms'){const at=input.getAtoms();return at===null||!at.length?null:setsEqual(at,problem.atoms);}const vs=input.getVals();return vs===null||!vs.length?null:valsEqual(vs,problem.vals);}
+  function buildHelp(){if(!helpBuilt){gv.show(problem);helpBuilt=true;}}
+  function buildSteps(state){
+    if(stepsBuilt)return;
+    stepApi=renderStep(mod,stepsHost,problem,()=>newProblem(true),()=>{peeked=true;recordHelp(attempt,'step-reveal');},{state,beforeAction:synchronize,onHelp:kind=>{recordHelp(attempt,kind);save();},onChange:()=>save(),onAnswer:entry=>{Audit22.touch(attempt);if(!entry.correct&&!attempt.finished)attempt.errors.push({step:entry.step,answer:entry.answer,at:Date.now()});attempt.errors=attempt.errors.slice(-20);save();}});
+    stepsBuilt=true;stepsBtn.hidden=true;
+  }
+  function showSuccess(){
+    const out=Audit22.outcome(attempt);
+    const message=peeked?'Верно (ответ был показан).':out==='familiar'?(attempt.repeatReason==='unconfirmed'?'Верно. Новизна условия не подтверждена; результат учтён как повтор.':'Верно. Это повтор знакомого условия.'):out==='helped'?'Верно с помощью. Проверь себя на другом условии.':out==='corrected'?'Верно — ты исправил ответ самостоятельно.':'Верно! Новое условие решено без подсказки.';
+    feedback(fb,true,message,'');
+  }
+  function lockAnswer(){ansHost.querySelectorAll('input,select,button').forEach(x=>x.disabled=true);checkButton.disabled=true;}
+  function install(data,restore=false){
+    restoring=true;if(!restore)staleNotice=false;problem=data.problem;attempt=data.attempt;host.__problem=problem;host.__attempt=attempt;
+    const ui=restore?data.ui||{}:{};
+    if(restore&&Object.prototype.hasOwnProperty.call(ui,'subFilter'))subFilter=ui.subFilter===null?null:(mod.subs||[]).some(x=>x.k===ui.subFilter)?ui.subFilter:null;
+    peeked=ui.peeked===true||attempt.helpKinds.includes('solution')||attempt.helpKinds.includes('step-reveal');solvedThis=false;helpBuilt=false;stepsBuilt=false;stepApi=null;lastSubmitted=typeof ui.lastSubmitted==='string'?ui.lastSubmitted:'';feedbackKind=typeof ui.feedbackKind==='string'?ui.feedbackKind:'';
+    checkButton.disabled=false;stmt.innerHTML=statementHtml(problem);makeInput();if(restore)input.setState(ui.input);
+    fb.className='fb';fb.textContent='';retryRow.replaceChildren();helpPanel.hidden=true;hint.setAttribute('aria-expanded','false');solDetails.open=false;stepsHost.replaceChildren();stepsBtn.hidden=false;
+    chipButtons.forEach(c=>c.classList.toggle('chip-on',c.dataset.sub===(subFilter||'')));
+    if(ui.helpBuilt||ui.helpOpen||ui.stepsBuilt){buildHelp();gv.setState(ui.graph);}
+    if(ui.stepsBuilt)buildSteps(ui.steps);
+    if(ui.helpOpen){helpPanel.hidden=false;hint.setAttribute('aria-expanded','true');}
+    if(ui.solved&&grade()===true){solvedThis=true;attempt.finished=true;lockAnswer();showSuccess();}
+    else if(feedbackKind==='solution'){feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+mathDisplay(problem.answer)+'</b>';}
+    else if(feedbackKind==='wrong')feedback(fb,false,'',mainMismatch(problem,input));
+    if(peeked||solvedThis)retryRow.append(retryBtn(()=>newProblem(true)));
+    restoring=false;updateScore();if(restore)describeState();else save(true);
+  }
+  function newProblem(keepSkill=false){
+    if(synchronize())return;if(keepSkill===true&&problem)subFilter=subtypeOf(problem);const previous=attempt&&attempt.taskKey;Audit22.postpone(attempt,problem);
+    install(Audit22.start(mod,subFilter,'marathon',previous));
+  }
+  hint.onclick=()=>{
+    if(synchronize())return;const opening=helpPanel.hidden;helpPanel.hidden=!opening;hint.setAttribute('aria-expanded',String(opening));
+    if(opening){recordHelp(attempt,'model');buildHelp();}save();
+  };
+  stepsBtn.onclick=()=>{if(synchronize())return;recordHelp(attempt,'steps');buildSteps();save();};
+  const checkButton=btn('btn-check','Проверить',()=>{
+    if(solvedThis||synchronize())return;const issue=input.issue();if(issue){setInputIssue(issue,fb);save();return;}
+    Audit22.touch(attempt);const result=grade(),answer=answerText(input);if(answer===lastSubmitted&&feedbackKind==='wrong')return;lastSubmitted=answer;
+    if(attempt.firstAnswer===null)attempt.firstAnswer=answer;
+    if(result){
+      const newlyFinished=Audit22.finish(attempt,problem);solvedThis=true;lockAnswer();showSuccess();feedbackKind='success';
+      if(newlyFinished)legacyAdd(!peeked);
+      if(!retryRow.querySelector('.btn-retry'))retryRow.append(retryBtn(()=>newProblem(true)));
+    }else{
+      attempt.errors.push({answer,at:Date.now()});attempt.errors=attempt.errors.slice(-20);recordHelp(attempt,'automatic-feedback');legacyAdd(false);feedback(fb,false,'',mainMismatch(problem,input));feedbackKind='wrong';
+    }
+    updateScore();save();
+  });row.append(checkButton);
+  solDetails.append(btn('btn-show','Показать ответ',()=>{
+    if(synchronize())return;peeked=true;recordHelp(attempt,'solution');feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+mathDisplay(problem.answer)+'</b>';feedbackKind='solution';
+    if(!retryRow.querySelector('.btn-retry'))retryRow.append(retryBtn(()=>newProblem(true)));save();
+  }));
+  row.append(btn('btn-new','Другая задача →',newProblem));
+  host.__markHelp=kind=>{if(synchronize())return;recordHelp(attempt,kind);save();};
+  host.addEventListener('input',()=>{if(restoring||synchronize())return;staleNotice=false;Audit22.touch(attempt);save();});
+  host.addEventListener('change',()=>{if(restoring||synchronize())return;staleNotice=false;Audit22.touch(attempt);save();});
+  host.addEventListener('click',event=>{if(restoring||synchronize())return;if(event.target.closest('.ans-host button'))Audit22.touch(attempt);save();});
+  host.addEventListener('oge22-draft',()=>{if(restoring||synchronize())return;Audit22.touch(attempt);save();});
+  if(Audit22.personal())window.addEventListener('storage',event=>{if(event.key===KEY)synchronize();});
+  ansHost.addEventListener('keydown',event=>{if(event.key==='Enter'&&event.target.matches('input')){event.preventDefault();checkButton.click();}});
+  const restored=Audit22.restore(mod,'marathon');if(restored)install(restored,true);else newProblem();
+}
+
+function renderSavedSteps(mod,host){
+  let data=Audit22.restore(mod,'step'),stepApi,building=false;
+  function synchronize(){
+    if(building||!data)return false;const newer=Audit22.latest(mod,'step',data.attempt);if(!newer)return false;
+    data=newer;install(true);host.prepend(el('p','audit22-state','Восстановлен более свежий черновик из другой вкладки. Повтори нужное действие.'));return true;
+  }
+  function save(replace=false){if(!building&&data&&stepApi&&(replace||!synchronize()))Audit22.save(mod,'step',data.attempt,{steps:stepApi.getState()},replace);}
+  function install(restored){
+    building=true;recordHelp(data.attempt,'steps');host.__attempt=data.attempt;
+    stepApi=renderStep(mod,host,data.problem,()=>{if(synchronize())return;Audit22.postpone(data.attempt,data.problem);data=Audit22.start(mod,subtypeOf(data.problem),'step',data.attempt.taskKey);install(false);},()=>recordHelp(data.attempt,'step-reveal'),{
+      state:restored?data.ui.steps:null,beforeAction:synchronize,onHelp:kind=>{recordHelp(data.attempt,kind);save();},onChange:()=>{if(building||synchronize())return;Audit22.touch(data.attempt);save();},
+      onAnswer:entry=>{Audit22.touch(data.attempt);if(data.attempt.firstAnswer===null)data.attempt.firstAnswer=entry.answer;if(!entry.correct)data.attempt.errors.push({step:entry.step,answer:entry.answer,at:Date.now()});data.attempt.errors=data.attempt.errors.slice(-20);save();},
+      onComplete:()=>{Audit22.finish(data.attempt,data.problem);save();}
+    });building=false;if(!restored)save(true);
+  }
+  if(Audit22.personal())window.addEventListener('storage',event=>{if(event.key===KEY)synchronize();});
+  if(!data)data=Audit22.start(mod,null,'step');install(!!data.ui);
 }
 
 /* ============================================================
@@ -1494,37 +1915,36 @@ function buildQuiz(host){
 const stepHosts={};
 function stepHostFor(id){return stepHosts[id];}
 function boot(){
-  const root=$('#app');
-  const panels=el('div','panels');root.appendChild(panels);
-  const settings=el('details','minimal-settings');settings.id='courseSettings';settings.appendChild(el('summary',null,'Выбрать тему'));const modNav=el('div','module-nav');settings.appendChild(modNav);root.appendChild(settings);
-  MODULES.forEach((mod,mi)=>{
-    const mb=el('button','mod-btn'+(mi===0?' active':''),'');mb.innerHTML=`<span class="mb-title">${mod.title}</span><span class="mb-sub">${mod.sub}</span>`;mb.dataset.mod=mod.id;modNav.appendChild(mb);
-    const panel=el('section','panel'+(mi===0?'':' hidden'));panel.dataset.mod=mod.id;panels.appendChild(panel);
-    const modes=el('div','modes');
-    const defs=[['learn','Учимся'],['step','Пошагово'],['marathon','Марафон']];
-    const hosts={};
-    defs.forEach((d,di)=>{const b=el('button','mode-btn'+(di===0?' active':''),d[1]);b.dataset.mode=d[0];modes.appendChild(b);});
-    const body=el('div','panel-body');panel.appendChild(body);
-    const modeSettings=el('details','minimal-settings');modeSettings.appendChild(el('summary',null,'Другие режимы'));modeSettings.appendChild(modes);panel.appendChild(modeSettings);
-    defs.forEach((d,di)=>{const h=el('div','mode-host'+(di===0?'':' hidden'));h.dataset.mode=d[0];body.appendChild(h);hosts[d[0]]=h;});
-    stepHosts[mod.id]=hosts.step;
-    // lazy render flags
-    const rendered={};
-    function activate(mode){
-      [...modes.children].forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
-      Object.entries(hosts).forEach(([k,h])=>h.classList.toggle('hidden',k!==mode));
-      if(mode==='learn'&&!rendered.learn){renderTheory(mod,hosts.learn);rendered.learn=true;}
-      if(mode==='step'){const preset=hosts.step.__preset;hosts.step.__preset=null;renderStep(mod,hosts.step,preset);}
-      if(mode==='marathon'&&!rendered.marathon){renderMarathon(mod,hosts.marathon);rendered.marathon=true;}
+  const root=$('#app'),panels=el('div','panels');root.append(panels);
+  const settings=el('details','minimal-settings');settings.id='courseSettings';settings.append(el('summary',null,'Выбрать тему'));
+  const modNav=el('div','module-nav');settings.append(modNav);root.append(settings);
+  const initial=Audit22.active(),routes={};
+  if(Audit22.personal()&&new URLSearchParams(location.search).get('resume')==='1'){try{const url=new URL(location.href);url.searchParams.delete('resume');history.replaceState(history.state,'',url.pathname+url.search+url.hash);}catch(_){}}
+  MODULES.forEach(mod=>{
+    const selected=mod.id===initial.module,mb=el('button','mod-btn'+(selected?' active':''));mb.type='button';mb.innerHTML='<span class="mb-title">'+mod.title+'</span><span class="mb-sub">'+mod.sub+'</span>';mb.dataset.mod=mod.id;modNav.append(mb);
+    const panel=el('section','panel'+(selected?'':' hidden'));panel.dataset.mod=mod.id;panels.append(panel);
+    const modes=el('div','modes'),defs=[['learn','Учимся'],['step','Пошагово'],['marathon','Марафон']],hosts={};
+    defs.forEach(([key,label])=>{const button=btn('mode-btn',label);button.dataset.mode=key;modes.append(button);});
+    const body=el('div','panel-body');panel.append(body);
+    const modeSettings=el('details','minimal-settings');modeSettings.append(el('summary',null,'Другие режимы'),modes);panel.append(modeSettings);
+    defs.forEach(([key])=>{const host=el('div','mode-host hidden');host.dataset.mode=key;body.append(host);hosts[key]=host;});stepHosts[mod.id]=hosts.step;
+    const rendered={};let currentMode='marathon';
+    function activate(mode,remember=true){
+      currentMode=mode;[...modes.children].forEach(button=>button.classList.toggle('active',button.dataset.mode===mode));Object.entries(hosts).forEach(([key,host])=>host.classList.toggle('hidden',key!==mode));
+      if(mode==='learn'){hosts.marathon.__markHelp?.('theory');if(!rendered.learn){renderTheory(mod,hosts.learn);rendered.learn=true;}}
+      else if(mode==='step'&&!rendered.step){renderSavedSteps(mod,hosts.step);rendered.step=true;}
+      else if(mode==='marathon'&&!rendered.marathon){renderMarathon(mod,hosts.marathon);rendered.marathon=true;}
+      if(remember)Audit22.select(mod.id,mode);
     }
-    modes.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>activate(b.dataset.mode));
-    // initial
-    activate('marathon');
-    mb.onclick=()=>{[...modNav.children].forEach(x=>x.classList.toggle('active',x===mb));
-      [...panels.children].forEach(p=>p.classList.toggle('hidden',p.dataset.mod!==mod.id));};
+    modes.querySelectorAll('.mode-btn').forEach(button=>button.onclick=()=>activate(button.dataset.mode));
+    mb.onclick=()=>{
+      [...modNav.children].forEach(button=>button.classList.toggle('active',button===mb));[...panels.children].forEach(p=>p.classList.toggle('hidden',p.dataset.mod!==mod.id));activate(currentMode);
+    };
+    routes[mod.id]=activate;
   });
+  routes[initial.module](initial.mode,false);
 }
-if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal};
+if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,genParabHole,genPieceHyp,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal,countH,segCount,Grapher,graphSpec,criticalParameters,originalValue,domainText,makeGraphView,makeValueInput,makeAnswerBuilder,makeValueList,parseStudentFraction,MODULES,renderMarathon,renderStep,stepPlan,statementHtml,Audit22,genProblemFiltered,demoM1,demoM2,demoM3};
 if(window.OgeCourseSharedMode){
   const sharedModules=[];
   MODULES.forEach((m,i)=>{sharedModules.push({key:m.id,label:m.title,index:i,sub:null});(m.subs||[]).filter(s=>s.k!==null).forEach(s=>sharedModules.push({key:m.id+':'+s.k,label:m.title+' · '+s.l,index:i,sub:s.k}));});

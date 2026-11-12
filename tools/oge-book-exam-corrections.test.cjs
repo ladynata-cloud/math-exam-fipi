@@ -2,8 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
-const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restorePublicNavigator,snippet:navigatorSnippet}=require('./public-navigator-preservation.cjs');
 const {restoreVideoModels}=require('./oge-video-models-preservation.cjs');
+const {historicalAuditSource,committed}=require('./oge-audit-source-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
@@ -19,7 +20,26 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- let html=restoreVideoModels(file,withoutReturnShell(restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8')));
+ let raw=fs.readFileSync(path.join(root,file));
+ // №22 received a separately reviewed native update. Verify its entire new
+ // source first, then run these unchanged historical inverses on the exact
+ // pre-update source. Current mathematics, grading and storage have their own
+ // native contract, audit-learning, full-engine and board gates.
+ if(file==='trainers/oge-task22-functions-graphs.html'){
+  raw=historicalAuditSource(file,raw);
+  // The current rollout seals the new source. This historical source must use
+  // its own exact committed navigator receipt, never the current page hashes.
+  const oldRollout=JSON.parse(committed('19811cc15a33d63fc0fcc0b6a11c34863ec64d03','assets/assistant/page-rollout.json'));
+  assert.equal(oldRollout.schemaVersion,1);
+  assert.equal(oldRollout.snippet,navigatorSnippet,'The historical navigator snippet is unchanged');
+  const row=oldRollout.addedPages[file];
+  assert(row,'The exact historical source has a navigator receipt');
+  assert.equal(sha(raw),row.afterSha256,'The full historical source matches its navigator receipt');
+  assert.equal(raw.split(navigatorSnippet).length,2,'One exact historical navigator include pair');
+  raw=raw.replace(navigatorSnippet,'');
+  assert.equal(sha(raw),row.beforeSha256,'The full pre-navigator historical source is recovered');
+ }else raw=restorePublicNavigator(file,raw).toString('utf8');
+ let html=restoreVideoModels(file,withoutReturnShell(raw));
  if(file==='trainers/oge-task6-fractions.html'){
   html=restoreFractionMultiplicationStep(html);
   const replacement='<main class="wrap">\n\n<header>';

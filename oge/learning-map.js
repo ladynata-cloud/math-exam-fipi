@@ -9,6 +9,8 @@
   'use strict';
   var KEY = 'mathExamCourseProgress.v1';
   var MAX_COUNT = 1000000;
+  var REVIEW_DELAY = 24 * 60 * 60 * 1000;
+  var EVIDENCE_TASKS = ['task-11','task-22','task-24'];
   var SKILLS11 = ['lin_k','lin_b','par_a','par_c','par_vertex','hyp','family','build','oge'];
   // Published TASKS category ranges; validation mirrors task 6 restoreProgress.
   // The model test compares every category with the trainer's current bank.
@@ -234,6 +236,67 @@
   function stamp(value, now) { return Number.isSafeInteger(value) && value > 0 && value <= now + 60000 ? value : 0; }
   function types(tid) { return registry && typeof registry.typesOf === 'function' ? registry.typesOf(tid) : []; }
   function coverage(value,total,label) { return total > 0 ? {value:Math.min(value,total),total:total,label:label} : null; }
+  // Read only facts produced by the three updated native trainers. Legacy
+  // correct-answer counters cannot establish whether a hint was used.
+  function learningEvidence(value, now, invalid) {
+    if(value===undefined || value===null)return null;
+    if(!object(value)||value.v!==1||!Array.isArray(value.attempts)){invalid();return null;}
+    if(value.attempts.length>100){invalid();return null;}
+    var byId=Object.create(null),conflicts=new Set();
+    value.attempts.forEach(function(raw){
+      if(!object(raw)||typeof raw.id!=='string'||!raw.id||raw.id.length>160||
+        typeof raw.skill!=='string'||!raw.skill||raw.skill.length>120||
+        typeof raw.taskKey!=='string'||!raw.taskKey||raw.taskKey.length>4000||
+        !stamp(raw.at,now)||['independent','corrected','helped','familiar'].indexOf(raw.outcome)<0||
+        typeof raw.fresh!=='boolean'||typeof raw.helpUsed!=='boolean') {invalid();return;}
+      if((raw.outcome==='independent'||raw.outcome==='corrected')&&(!raw.fresh||raw.helpUsed) ||
+        raw.outcome==='helped'&&!raw.helpUsed || raw.outcome==='familiar'&&raw.fresh) {invalid();return;}
+      var row={id:raw.id,skill:raw.skill,taskKey:raw.taskKey,at:raw.at,outcome:raw.outcome,fresh:raw.fresh,helpUsed:raw.helpUsed};
+      if(conflicts.has(row.id))return;
+      if(byId[row.id]) {
+        if(JSON.stringify(byId[row.id])!==JSON.stringify(row)){delete byId[row.id];conflicts.add(row.id);invalid();}
+      } else byId[row.id]=row;
+    });
+    var rows=Object.keys(byId).map(function(id){return byId[id];}).sort(function(a,b){return a.at-b.at || a.id.localeCompare(b.id);});
+    var result={total:rows.length,independent:0,corrected:0,helped:0,familiar:0,afterPause:0,lastAt:0,resumeAt:0,needsPractice:null,due:null};
+    if(object(value.resume)&&value.resume.hasWork===true&&value.resume.unfinished===true) {
+      result.resumeAt=stamp(value.resume.at,now);
+      if(!result.resumeAt)invalid();
+    }
+    var seen=new Set(),skills=Object.create(null);
+    rows.forEach(function(row){
+      // Changing only an attempt id never turns a known condition into a new one.
+      var identity=row.skill+'\u0000'+row.taskKey;
+      if(seen.has(identity) && row.outcome!=='familiar'){row.outcome='familiar';row.fresh=false;}
+      seen.add(identity);
+      result[row.outcome]++;
+      result.lastAt=Math.max(result.lastAt,row.at);
+      var skill=skills[row.skill] || (skills[row.skill]={last:null,lastOwn:null,lastHelp:0});
+      if(row.helpUsed)skill.lastHelp=Math.max(skill.lastHelp,row.at);
+      if(row.fresh && !row.helpUsed && (row.outcome==='independent'||row.outcome==='corrected')) {
+        if(skill.lastOwn && row.at-Math.max(skill.lastOwn.at,skill.lastHelp)>=REVIEW_DELAY)result.afterPause++;
+        skill.lastOwn=row;
+      }
+      skill.last=row;
+    });
+    Object.keys(skills).forEach(function(id){
+      var s=skills[id],last=s.last;
+      if(s.lastHelp && (!s.lastOwn||s.lastOwn.at<=s.lastHelp) && (!result.needsPractice||s.lastHelp>result.needsPractice.at)) {
+        result.needsPractice={skill:id,at:s.lastHelp,reason:'helped'};
+      } else if(s.lastOwn && s.lastHelp<s.lastOwn.at && now-s.lastOwn.at>=REVIEW_DELAY) {
+        var due=s.lastOwn.at+REVIEW_DELAY;
+        if(!result.due||due<result.due.at)result.due={skill:id,at:due};
+      }
+    });
+    // A requested hint can matter before the learner has completed anything.
+    // Recommend returning to that draft without creating a successful attempt.
+    if(result.resumeAt&&value.resume.helpUsed===true) {
+      if(typeof value.resume.skill==='string'&&value.resume.skill&&value.resume.skill.length<=120) {
+        if(!result.needsPractice||result.resumeAt>result.needsPractice.at)result.needsPractice={skill:value.resume.skill,at:result.resumeAt,reason:'helped'};
+      } else invalid();
+    }
+    return result;
+  }
   function stateFor(entry, read, now, invalid) {
     var all = record(read(KEY)), rawData = entry.key === KEY ? all[entry.tid] : read(entry.key), data = record(rawData);
     var out = Object.assign({},entry,{activity:0,label:'Нет сохранённых результатов',started:false,status:'new',coverage:null,updatedAt:0,passed:false});
@@ -303,6 +366,17 @@
       out.activity=solved;out.started=answers>0;
       out.label='Верных ответов: '+solved+' из '+answers;
     }
+    // Error practice remains distinct from evidence of independent learning.
+    out.openMistakes=0;out.lastMistakeAt=0;
+    var errors=record(all.mistakes);
+    ids.forEach(function(id){var r=record(errors[entry.tid+'|'+id]);if(count(r.w)>0&&count(r.r)<3){out.openMistakes++;out.lastMistakeAt=Math.max(out.lastMistakeAt,stamp(r.lastWrong,now));}});
+    out.evidence=EVIDENCE_TASKS.indexOf(entry.id)>=0 ? learningEvidence(record(record(all[entry.tid]).ext).auditLearning,now,invalid) : null;
+    out.hasDraft=!!(out.evidence&&out.evidence.resumeAt);
+    if(out.evidence&&(out.evidence.total||out.hasDraft)) {
+      out.started=true;out.updatedAt=Math.max(out.updatedAt,out.evidence.lastAt,out.evidence.resumeAt);
+      if(!out.activity&&!out.passed)out.label='Есть сохранённая учебная работа';
+      if(out.hasDraft)out.label+=' · можно продолжить задачу';
+    }
     out.status=out.passed?'check':out.started?'practice':'new';
     if(!out.started)out.label='Нет сохранённых результатов';
     return out;
@@ -338,5 +412,18 @@
     if(latest)return {step:latest,reason:'latest'};
     return {step:valid[0],reason:'start'};
   }
-  return {KEY:KEY,tracks:tracks,snapshot:snapshot,recommend:recommend};
+  function recommendPractice(view) {
+    var allowed=Object.create(null),candidates=[];
+    tracks.forEach(function(t){t.steps.forEach(function(s){allowed[s.id]=s.href;});});
+    (view&&Array.isArray(view.steps)?view.steps:[]).forEach(function(step){
+      if(!step||allowed[step.id]!==step.href)return;
+      var evidence=step.evidence;
+      if(evidence&&evidence.needsPractice)candidates.push({step:step,reason:'helped',priority:0,at:evidence.needsPractice.at});
+      else if(step.openMistakes)candidates.push({step:step,reason:'mistakes',priority:1,at:step.lastMistakeAt});
+      else if(evidence&&evidence.due)candidates.push({step:step,reason:'after-pause',priority:2,at:evidence.due.at});
+    });
+    candidates.sort(function(a,b){return a.priority-b.priority || (a.reason==='after-pause'?a.at-b.at:b.at-a.at) || a.step.id.localeCompare(b.step.id);});
+    return candidates[0]||null;
+  }
+  return {KEY:KEY,tracks:tracks,snapshot:snapshot,recommend:recommend,recommendPractice:recommendPractice,REVIEW_DELAY:REVIEW_DELAY};
 });

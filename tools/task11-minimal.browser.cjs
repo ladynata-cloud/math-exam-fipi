@@ -1,5 +1,6 @@
 'use strict';
 const assert=require('node:assert/strict');
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const fs=require('node:fs');
 const http=require('node:http');
 const path=require('node:path');
@@ -41,7 +42,7 @@ async function main(){
    await page.locator('[data-family='+family+']').click();const graphBefore=await page.locator('#lab-graph').innerHTML();
    const slider=page.locator('#lab-controls input[type=range]').first();if(await slider.count()){await slider.focus();await page.keyboard.press('ArrowRight');}else{await page.locator('#lab-k').selectOption('4');await page.locator('#lab-k').dispatchEvent('input');}
    assert.notEqual(await page.locator('#lab-graph').innerHTML(),graphBefore,family+' changes graph');await fits('mobile '+family);
-   assert.equal(await page.locator('#m4-good').isVisible(),false);assert.equal(await page.evaluate(k=>localStorage.getItem(k),KEY),null);
+   assert.equal(await page.locator('#m4-good').isVisible(),false);const saved=await page.evaluate(k=>localStorage.getItem(k),KEY);assert.deepEqual(legacy(saved),{});helpFacts(saved);
   }
   await page.locator('[data-family=hyp]').click();await page.locator('#lab-x').focus();await page.keyboard.press('ArrowLeft');assert.match(await page.locator('#lab-readout').innerText(),/не определено/);assert.equal(await page.locator('#lab-graph circle').count(),0);
   await page.locator('[data-family=lin]').click();await page.screenshot({path:path.join(artifacts,'02-mobile-lab.png'),fullPage:true});
@@ -51,7 +52,7 @@ async function main(){
   assert.equal(await page.evaluate(([k,t])=>JSON.parse(localStorage.getItem(k))['oge-t11-grafiki'].solvedByType[t],[KEY,type]),1);await fits('mobile feedback');
   await page.locator('#m4-next').click();assert.equal(await page.locator('#m4-hintbox').isVisible(),false);assert.equal(await page.locator('#m4-answer').inputValue(),'');
   // All former modes remain reachable and the ten-question exam still writes course progress.
-  await page.locator('#task11-more summary').click();await page.locator('#tabs button[data-m=m6]').click();
+  await page.locator('#task11-more > summary').click();await page.locator('#tabs button[data-m=m6]').click();
   await page.evaluate(()=>{const original=buildQuiz11;buildQuiz11=()=>{const list=original();window.__task11Quiz=list;return list;};});
   await page.locator('#m6-start').click();
   for(let n=0;n<10;n++){

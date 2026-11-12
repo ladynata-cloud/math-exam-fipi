@@ -1,4 +1,5 @@
 'use strict';
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -19,7 +20,7 @@ function boot(html=source){
  return{w,el,errors,downloads,run:s=>w.eval(s),state:()=>plain(w.Task11Discovery.getState()),
   open(i){w.document.querySelector('#m4-desc .function-help[data-i="'+i+'"]').click();},
   input(id,value){const e=el(id);e.value=String(value);e.dispatchEvent(new w.Event('input',{bubbles:true}));},
-  snapshot(){return{answers:[...w.document.querySelectorAll('#m4-desc > .row > select')].map(e=>e.value),answer:el('m4-answer').value,attempts:w.eval('M4.attempts'),done:w.eval('M4.done'),progress:w.localStorage.getItem(KEY)};}};
+  snapshot(){return{answers:[...w.document.querySelectorAll('#m4-desc > .row > select')].map(e=>e.value),answer:el('m4-answer').value,attempts:w.eval('M4.attempts'),done:w.eval('M4.done'),progress:legacy(w.localStorage.getItem(KEY))};}};
 }
 function plotPoints(graph,color){
  const svg=graph.querySelector('svg');assert(svg,'a graph is rendered');
@@ -211,7 +212,7 @@ test('construction marks a revealed vertex as assisted without entering or gradi
   assert.equal(t.el('m3-x0').value,'123','revealing x does not fill or alter the answer');
   assert.deepEqual(plain(t.run('M3')),{...construction,shown:true},'only the assisted flag changes when the exact result is revealed');
   assert.equal(t.el('m3-step2').innerHTML,'','help does not advance the construction exercise');
-  assert.equal(t.w.localStorage.getItem(KEY),progress,'reading the answer records no completion');
+  assert.deepEqual(legacy(t.w.localStorage.getItem(KEY)),legacy(progress),'reading the answer keeps legacy progress');helpFacts(t.w.localStorage.getItem(KEY),'m3');
   finishConstruction();assert.deepEqual(plain(t.run('stats11().skills')),{},'a revealed exact result cannot earn independent credit');
   t.el('m3-next').click();assert.equal(t.run('M3.shown'),false);
   t.el('m3-vertex-details').open=true;t.el('m3-vertex-check-side').click();

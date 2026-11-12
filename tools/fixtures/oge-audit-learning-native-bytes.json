@@ -1,0 +1,21 @@
+{
+  "task": "docs/tasks/OGE_AUDIT_LEARNING_20261111.md",
+  "baseCommit": "19811cc15a33d63fc0fcc0b6a11c34863ec64d03",
+  "pages": {
+    "trainers/oge-task11-graphs-trainer.html": {
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "990ccbffa3d384c0c3f1d939b8a4dd6e611526f6f7facb1b0da6e670d32759e3",
+      "sha256": "95e693dffc6ed1240090595ecd5144c212522244c3debacde056dac6e51ac609"
+    },
+    "trainers/oge-task22-functions-graphs.html": {
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "e4c8ced20a2ec859651901f83ea3e0e88854a922ae23adddb3f12c4720367b31",
+      "sha256": "40374c7fa45f32cec11eb1e38385e7de629161506ee365f70c236327d448ce48"
+    },
+    "trainers/oge-task24-proofs.html": {
+      "sourceCommit": "2b33a2315a22c98a70497e7395e4e67c4bd415e4",
+      "rawSha256": "05b92d7d109f02809c8669ffd406d211f6c9e4c88f6964c09cf37e31806e06bf",
+      "sha256": "43608faa4a35e1a90333dd362256c66bce144a07a2b04c8f0e82c518e2be6cee"
+    }
+  }
+}

@@ -4,6 +4,7 @@
 // Run in cloud CI after copying this file to tools/ and the candidate trainer
 // to trainers/. TASK11_DISCOVERY_ROOT/FILE also permit an isolated candidate.
 const assert=require('node:assert/strict');
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const fs=require('node:fs');
 const http=require('node:http');
 const path=require('node:path');
@@ -49,10 +50,11 @@ async function fits(page,label){
 const helpButton=(page,index)=>page.locator('#m4-desc button.function-help[data-i="'+index+'"]');
 const readState=page=>page.evaluate(()=>window.Task11Discovery.getState());
 const drafts=page=>page.evaluate(()=>({matches:[...document.querySelectorAll('#m4-desc > .row > select')].map(s=>s.value),answer:document.getElementById('m4-answer').value}));
-const grading=page=>page.evaluate(key=>({progress:localStorage.getItem(key),attempts:M4.attempts,done:M4.done,shown:M4.shown,lastTry:M4.lastTry}),KEY);
+const grading=async page=>{const value=await page.evaluate(key=>({progress:localStorage.getItem(key),attempts:M4.attempts,done:M4.done,shown:M4.shown,lastTry:M4.lastTry}),KEY);return{...value,progress:legacy(value.progress)};};
 async function assertUntouched(page,draft,grade,label){
  assert.deepEqual(await drafts(page),draft,label+' retains all three matching drafts');
  assert.deepEqual(await grading(page),grade,label+' does not grade or write progress');
+ helpFacts(await page.evaluate(key=>localStorage.getItem(key),KEY));
  assert.equal(await page.locator('#m4-good').isVisible(),false,label+' no success reveal');
  assert.equal(await page.locator('#m4-razbor').isVisible(),false,label+' no matching solution reveal');
 }

@@ -278,6 +278,16 @@ section.module{padding-top:0}
 .btn-primary,nav.tabs button.active{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent-dark)}
 .btn:disabled{opacity:.55}
+.task11-learning{margin-top:16px;padding-top:8px;border-top:1px solid var(--line)}
+.task11-learning .btn{max-width:100%;white-space:normal;text-align:left}
+.task11-learning .note{margin:8px 0;overflow-wrap:anywhere}
+@media(max-width:540px){
+  #m3 table.pts{table-layout:fixed}
+  #m3 table.pts th,#m3 table.pts td{min-width:0;padding:6px 1px;font-size:16px;overflow-wrap:anywhere}
+  #m3 table.pts th{width:26px}
+  #m3 table.pts input{width:100%;min-width:0;padding:8px 1px;font-size:16px}
+  #m3-formula,#m3 .fb .math,#m2g-calc{white-space:normal;overflow-wrap:anywhere}
+}
 .graphwrap{background:#fff}
 #m4-graphs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 #m4-graphs .gitem{max-width:none}
@@ -659,7 +669,7 @@ nav.tabs button .n{display:none}
         <button class="btn" data-t="t41">Знаки a и c</button>
       </div>
       <p id="m4-progress" class="note"></p>
-      <p class="note">Результаты сохраняются в этом браузере. Подсказка не снижает результат.</p>
+      <p class="note">Прежняя практика сохранена. В новых попытках отдельно видно, что получилось самостоятельно, после исправления или с помощью.</p>
     </div>
   </details>
 </section>
@@ -917,6 +927,10 @@ const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 /* контракт прогресса курса ОГЭ (docs/OGE_PROGRESS_CONTRACT.md): ядро, журнал, повтор;
    миграция своего старого ключа (§6), сброс только своей ветки, поле ext для панели тренажёра */
+function learning11(method, ...args){
+  const api=window.Task11Learning;
+  return api && api.enabled && typeof api[method] === "function" ? api[method](...args) : undefined;
+}
 const CP=(function(){
   var KEY="mathExamCourseProgress.v1";
   var RO=/[?&]selftest=1/.test(location.search||"");
@@ -929,7 +943,7 @@ const CP=(function(){
   }
   /* меняет только свою ветку: читает ключ заново прямо перед записью */
   function saveRec(fn){
-    if (RO || window.OgeCourseSharedMode) return;
+    if (RO || window.OgeCourseSharedMode || window.Task11Learning?.restoring) return;
     try {
       var all = readAll();
       var rec = isObj(all[TID]) ? all[TID] : {};
@@ -953,7 +967,7 @@ const CP=(function(){
   /* журнал: промах открывает тип, три верных подряд закрывают;
      верный ответ по типу без промахов записи не заводит */
   function mlog(type, ok){
-    if (RO || window.OgeCourseSharedMode) return;
+    if (RO || window.OgeCourseSharedMode || window.Task11Learning?.restoring) return;
     try {
       var all = readAll();
       var key = TID + "|" + type;
@@ -979,7 +993,7 @@ const CP=(function(){
   /* §6: старый ключ читается один раз; переносится сопоставимое с ядром; ставится
      migratedFrom; старый ключ не удаляется и не переписывается */
   function migrate(fn){
-    if (RO || window.OgeCourseSharedMode) return;
+    if (RO || window.OgeCourseSharedMode || window.Task11Learning?.restoring) return;
     try {
       var raw = localStorage.getItem(OLD_KEY);
       if (raw === null) return;
@@ -996,7 +1010,7 @@ const CP=(function(){
   /* «Сбросить прогресс»: своя ветка и свои записи журнала (по префиксу TID|);
      отметка миграции остаётся — иначе старый ключ перенёсся бы снова */
   function resetOwn(){
-    if (RO || window.OgeCourseSharedMode) return;
+    if (RO || window.OgeCourseSharedMode || window.Task11Learning?.restoring) return;
     try {
       var all = readAll(), rec = all[TID];
       if (isObj(rec) && typeof rec.migratedFrom === "string") all[TID] = { v:1, solvedByType:{}, migratedFrom:rec.migratedFrom, updatedAt:Date.now() };
@@ -1165,10 +1179,14 @@ const M1 = {
   q: null, hintStep: 0, wrongs: 0,
   types: ["linK", "linB", "parA", "parC", "family"]
 };
-function m1New(){
+function m1New(options){
+  if(window.Task11Learning?.enabled)return Task11Learning.generate("m1",options);
+  return m1Build();
+}
+function m1Build(options){
   fbHide($("m1-hintbox"), $("m1-soft"), $("m1-good"));
   M1.hintStep = 0; M1.wrongs = 0;
-  const t = pick(M1.types);
+  const t = options?.type || pick(M1.types);
   let q = { type: t };
   if (t === "linK"){
     const L = genLine({ bNonZero: true });
@@ -1279,13 +1297,15 @@ function m1Answer(btn, op){
     let extra = "";
     if (!q.done){
       q.done = true;
+      learning11("finish", "m1");
       /* решено — верный выбор не позже второй попытки; подсказка ничего не отнимает (D19, D35) */
       if (M1.wrongs <= 1) recordSkill(q.skill, M1.wrongs === 0);
       else extra = "<p>Две ошибки — это задание в счёт не идёт. Разберись по подсказке и бери следующее.</p>";
     }
     fb($("m1-good"), '<div class="notice-title">Верно!</div><span class="math">' + q.explain + "</span>" + extra);
   } else {
-    if (!q.done){ if (!M1.wrongs) recordError(q.err); M1.wrongs++; }
+    if (!q.done){ learning11("wrong", "m1"); if (!M1.wrongs) recordError(q.err); M1.wrongs++; }
+    if(q.hints[0])learning11("help", "m1", "automatic-feedback");
     btn.classList.add("picked"); btn.disabled = true;
     fb($("m1-soft"), "Пока не совпало. " + (q.hints[0] ? '<span class="math">' + q.hints[0] + "</span>" : "Посмотри на график ещё раз."));
   }
@@ -1293,6 +1313,7 @@ function m1Answer(btn, op){
 $("m1-hint").addEventListener("click", () => {
   const q = M1.q; if (!q) return;
   const h = q.hints[Math.min(M1.hintStep, q.hints.length - 1)];
+  learning11("help", "m1", "hint");
   M1.hintStep++;
   fb($("m1-hintbox"), '<span class="math">' + h + "</span>");
 });
@@ -1348,13 +1369,17 @@ function m2Render(){
 
 /* ---- игра «угадай до построения» ---- */
 const M2G = { p: null, picked: null, done: false };
-function m2gNew(){
+function m2gNew(options){
+  if(window.Task11Learning?.enabled)return Task11Learning.generate("m2",options);
+  return m2gBuild();
+}
+function m2gBuild(){
   fbHide($("m2g-hintbox"), $("m2g-soft"), $("m2g-good"));
   $("m2g-graphwrap").style.display = "none";
   $("m2g-graph").innerHTML = ""; $("m2g-calc").innerHTML = "";
   // иногда даём b = 0, чтобы вариант «на оси» был честным
   const p = Math.random() < 0.22 ? genParabola({ needX0: 0 }) : genParabola({ x0min: -3, x0max: 3, cNonZero: false });
-  Object.assign(M2G, { p, picked: null, done: false });
+  Object.assign(M2G, { p, picked: null, done: false, lastBuilt: null });
   $("m2g-formula").innerHTML = fmtQuad(p.a, p.b, p.c);
   $("m2g-build").disabled = true;
   document.querySelectorAll("#m2g-opts .btn").forEach(bb => bb.classList.remove("picked", "good"));
@@ -1369,11 +1394,14 @@ document.querySelectorAll("#m2g-opts .btn").forEach(bb => {
 });
 $("m2g-hint").addEventListener("click", () => {   // подсказка ничего не отнимает
   const p = M2G.p;
+  learning11("help", "m2", "hint");
   fb($("m2g-hintbox"), '<span class="math">Не гадай — посчитай: <i>x</i><sub>0</sub> = ' +
     fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + ". Здесь <i>b</i> = " + fnum(p.b) + ", <i>a</i> = " + fnum(p.a) + ".</span>");
 });
 $("m2g-build").addEventListener("click", () => {
   const p = M2G.p;
+  if (!M2G.picked) return;
+  M2G.lastBuilt = M2G.picked;
   const truth = p.x0 === 0 ? "zero" : (p.x0 < 0 ? "left" : "right");
   const x0 = p.x0, y0 = quadFn(p)(x0);
   $("m2g-graphwrap").style.display = "inline-block";
@@ -1387,10 +1415,11 @@ $("m2g-build").addEventListener("click", () => {
   if (M2G.picked === truth){
     fbHide($("m2g-soft"));
     fb($("m2g-good"), '<div class="notice-title">Точно!</div><span class="math">' + calc + ", значит " + verdictTxt + ".</span>");
+    learning11("finish", "m2");
     if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", true); }
   } else {
     /* неверный выбор: график сам показал истину — это не «решено» (решение D35) */
-    if (!M2G.done){ M2G.done = true; recordError("side"); }
+    if (!M2G.done){ M2G.done = true; learning11("wrong", "m2"); learning11("help", "m2", "graph-reveal"); recordError("side"); }
     fb($("m2g-soft"), '<div class="notice-title">Пока не совпало — но график уже подсказывает</div>' +
       '<span class="math">' + calc + ", значит " + verdictTxt +
       ". Сравни знаки <i>a</i> и <i>b</i>: одинаковые — влево, разные — вправо.</span>");
@@ -1435,7 +1464,7 @@ function tableHtml(xs){
   let h = '<table class="pts"><tr><th class="math"><i>x</i></th>';
   xs.forEach(x => { h += "<td>" + fnum(x) + "</td>"; });
   h += '</tr><tr><th class="math"><i>y</i></th>';
-  xs.forEach((x, i) => { h += '<td><input data-i="' + i + '" inputmode="numeric" aria-label="y при x = ' + fnum(x) + '"></td>'; });
+  xs.forEach((x, i) => { h += '<td><input data-i="' + i + '" maxlength="80" inputmode="numeric" aria-label="y при x = ' + fnum(x) + '"></td>'; });
   return h + "</tr></table>";
 }
 function checkTable(container, ys){
@@ -1458,7 +1487,11 @@ function fillTable(container, ys){
   });
 }
 
-function m3New(){
+function m3New(options){
+  if(window.Task11Learning?.enabled)return Task11Learning.generate("m3",options);
+  return m3Build();
+}
+function m3Build(){
   m3Reset();
   const stage = $("m3-stage");
   if (M3.kind === "par"){
@@ -1473,11 +1506,11 @@ function m3New(){
     stage.innerHTML =
       '<p><b>Шаг 1.</b> Найди абсциссу вершины <span class="math"><i>x</i><sub>0</sub> = ' +
       fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + '</span>.</p>' +
-      '<div class="btnrow"><span class="math"><i>x</i><sub>0</sub> =</span> <input class="ans" id="m3-x0" aria-label="x вершины параболы" inputmode="numeric">' +
+      '<div class="btnrow"><span class="math"><i>x</i><sub>0</sub> =</span> <input class="ans" id="m3-x0" maxlength="80" aria-label="x вершины параболы" inputmode="numeric">' +
       '<button class="btn btn-primary" id="m3-check1">Проверить</button>' +
       '<button class="btn btn-ghost" id="m3-show1">Показать шаг</button></div>' +
       '<div id="m3-vertex"></div><div id="m3-step2"></div>';
-    Task11VertexHelp.mount($('m3-vertex'),'m3',()=>{M3.shown=true;}).update('par',p);
+    Task11VertexHelp.mount($('m3-vertex'),'m3',()=>{M3.shown=true;learning11("help","m3","vertex");}).update('par',p);
     $("m3-check1").addEventListener("click", () => {
       const v = parseNum($("m3-x0").value);
       if (isNaN(v)){ fb($("m3-soft"), "Введи число, например 2 или \u22123."); return; }
@@ -1491,6 +1524,8 @@ function m3New(){
       } else {
         if (!M3.wrongs) recordError("x0");
         M3.wrongs++;
+        learning11("wrong", "m3");
+        learning11("help", "m3", "automatic-feedback");
         $("m3-x0").classList.add("soft");
         fb($("m3-soft"), '<span class="math">Пока не совпало. Подставь числа: <i>b</i> = ' + fnum(p.b) +
           ", <i>a</i> = " + fnum(p.a) + ", и не потеряй минус перед <i>b</i>.</span>");
@@ -1498,6 +1533,7 @@ function m3New(){
     });
     $("m3-show1").addEventListener("click", () => {
       M3.shown = true;
+      learning11("help", "m3", "vertex-answer");
       $("m3-x0").value = fnum(p.x0);
       $("m3-x0").classList.add("good");
       fb($("m3-hintbox"), '<span class="math"><i>x</i><sub>0</sub> = ' +
@@ -1519,8 +1555,8 @@ function m3New(){
       '<div class="opts" id="m3-linstart"></div><div id="m3-step2"></div>';
     const opts = shuffle([
       { html: "(0; " + fnum(b) + ")", ok: true },
-      { html: "(" + fnum(b) + "; 0)", ok: false },
-      { html: "(0; 0)", ok: false }
+      { html: "(" + fnum(b || 1) + "; 0)", ok: false },
+      { html: "(0; " + fnum(b === 0 ? 1 : 0) + ")", ok: false }
     ]);
     const box = $("m3-linstart");
     opts.forEach(op => {
@@ -1528,6 +1564,7 @@ function m3New(){
       bb.className = "btn math"; bb.innerHTML = op.html;
       bb.addEventListener("click", () => {
         if (op.ok){
+          if ($("m3-step2").firstElementChild) return;
           bb.classList.add("good");
           fbHide($("m3-soft"));
           fb($("m3-good"), '<span class="math">Верно: при <i>x</i> = 0 член <i>k</i>·<i>x</i> обнуляется, остаётся <i>y</i> = <i>b</i>, то есть точка (0; ' + fnum(b) + "). Наклон <i>k</i> = " + fnum(k) +
@@ -1539,6 +1576,8 @@ function m3New(){
         } else {
           if (!M3.wrongs) recordError("b");
           M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
+          learning11("wrong", "m3");
+          learning11("help", "m3", "automatic-feedback");
           fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: <i>k</i>·0 = 0, значит <i>y</i> = <i>b</i>. Точка стоит на оси <i>y</i> — это (0; <i>b</i>).</span>');
         }
       });
@@ -1563,6 +1602,7 @@ function m3New(){
     document.querySelectorAll("#m3-quad .btn").forEach(bb => {
       bb.addEventListener("click", () => {
         if (bb.dataset.q === truth){
+          if ($("m3-step2").firstElementChild) return;
           bb.classList.add("good");
           fbHide($("m3-soft"));
           fb($("m3-good"), '<span class="math">Да: коэффициент ' + fnum(m) + (m > 0 ?
@@ -1575,6 +1615,8 @@ function m3New(){
         } else {
           if (!M3.wrongs) recordError("hypq");
           M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
+          learning11("wrong", "m3");
+          learning11("help", "m3", "automatic-feedback");
           fb($("m3-soft"), '<span class="math">Проверь на пробной точке: возьми <i>x</i> = 1 и посчитай <i>y</i>. В какой четверти окажется точка?</span>');
         }
       });
@@ -1601,6 +1643,7 @@ function m3New(){
       bb.className = "btn math"; bb.innerHTML = op.html;
       bb.addEventListener("click", () => {
         if (op.ok){
+          if ($("m3-step2").firstElementChild) return;
           bb.classList.add("good");
           fbHide($("m3-soft"));
           fb($("m3-good"), '<span class="math">Верно: при <i>x</i> = 0 получаем <i>y</i> = \u221A0 ' +
@@ -1612,6 +1655,8 @@ function m3New(){
         } else {
           if (!M3.wrongs) recordError("start");
           M3.wrongs++; M3.choiceWrongs++; bb.disabled = true;
+          learning11("wrong", "m3");
+          learning11("help", "m3", "automatic-feedback");
           fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: что получится для <i>y</i>?</span>');
         }
       });
@@ -1638,6 +1683,7 @@ function m3BindTable(goodMsg, softMsg){
   $("m3-checkT").addEventListener("click", () => {
     const r = checkTable($("m3-stage"), t.ys);
     if (r.ok){
+      learning11("finish", "m3");
       fbHide($("m3-soft"));
       fb($("m3-good"), goodMsg);
       m3Draw();
@@ -1645,13 +1691,15 @@ function m3BindTable(goodMsg, softMsg){
       if (!t.recorded){ t.recorded = true;
         if (!M3.shown && M3.choiceWrongs <= 1) recordSkill("build", M3.wrongs === 0); }
     } else {
-      if (!r.empty){ if (!M3.wrongs) recordError("calc"); M3.wrongs++; }
+      if(r.empty&&$("m3-stage").querySelector('table.pts input.soft'))learning11("wrong", "m3");
+      if (!r.empty){ learning11("wrong", "m3"); learning11("help", "m3", "automatic-feedback"); if (!M3.wrongs) recordError("calc"); M3.wrongs++; }
       fb($("m3-soft"), r.empty ? "Заполни все клетки таблицы — потом проверим." :
         '<span class="math">Подсвеченные клетки пока не совпали. ' + softMsg + "</span>");
     }
   });
   $("m3-showT").addEventListener("click", () => {
     M3.shown = true;
+    learning11("help", "m3", "table-answer");
     fillTable($("m3-stage"), t.ys);
     fb($("m3-hintbox"), "Значения показаны. Показанное в счёт не идёт — сверь и иди дальше.");
     m3Draw();
@@ -1932,7 +1980,11 @@ function m4Msg(T, d, attempts){
   return msg;
 }
 function m4Banner(html){ const b = $("m4-review"); if (!b) return; b.classList.toggle("show", !!html); b.innerHTML = html; }
-function m4New(){
+function m4New(options){
+  if(window.Task11Learning?.enabled)return Task11Learning.generate("m4",options);
+  return m4Build();
+}
+function m4Build(options){
   if(window.Task11Discovery) Task11Discovery.resetForTask();
   fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
   let type = M4.type === "rand" ? pick(["t42", "t43", "t44", "t45"]) : M4.type;
@@ -1941,7 +1993,8 @@ function m4New(){
     if (open.length) type = pick(open);
     else { M4.review = false; m4Banner("<b>Работа над ошибками.</b> Все ошибки исправлены — открытых типов не осталось. Выбери любой тип выше."); }
   }
-  const T = m4UseStarter() ? m4Starter() : m4Make(type);
+  const starter = typeof options?.starter === "boolean" ? options.starter : m4UseStarter();
+  const T = starter ? m4Starter() : m4Make(type);
   Object.assign(M4, { task: T, attempts: 0, lastTry: null, missed: false, shown: false, done: false, razborStep: 0 });
   const topicNames = {t41:"Знаки a и c",t42:"Параболы",t43:"Прямые",t44:"Гиперболы",t45:"Разные виды графиков"};
   $("m4-title").textContent = topicNames[T.type];
@@ -1969,6 +2022,7 @@ $("m4-check").addEventListener("click", () => {
   const d = m4Diag(T, ans);
   if (!d.wrong.length){
     M4.done = true;
+    learning11("finish", "m4");
     M4.form.lock();
     $("m4-show").hidden = true;
     fbHide($("m4-soft"));
@@ -1980,6 +2034,8 @@ $("m4-check").addEventListener("click", () => {
     fb($("m4-good"), ex);
     return;
   }
+  learning11("wrong", "m4");
+  learning11("help", "m4", "automatic-feedback");
   /* промах: один раз на задачу — в журнал и фактические признаки в статистику ошибок */
   if (!M4.missed && !M4.shown){ M4.missed = true; CP.mlog(T.type, false); d.cats.forEach(c => recordError(c)); }
   fb($("m4-soft"), m4Msg(T, d, M4.attempts));
@@ -1987,6 +2043,7 @@ $("m4-check").addEventListener("click", () => {
 $("m4-hint").addEventListener("click", () => {   // exploration never writes progress or reveals the matching key
   if (!M4.task) return;
   const panel = $("m4-hintbox"), opening = panel.hidden;
+  if (opening) learning11("help", "m4", "laboratory");
   if (opening && !panel.firstElementChild) Task11Lab.mount(panel, M4.task.type);
   panel.hidden = !opening;
   $("m4-hint").setAttribute("aria-expanded", String(opening));
@@ -1995,7 +2052,7 @@ $("m4-hint").addEventListener("click", () => {   // exploration never writes pro
 /* разбор — по пунктам: А, потом Б, потом В; строка «Ответ» — после третьего (решение D21) */
 $("m4-show").addEventListener("click", () => {
   const T = M4.task; if (!T || M4.razborStep >= 3) return;
-  if (!M4.done) M4.shown = true;
+  if (!M4.done) { M4.shown = true; learning11("help", "m4", "worked-answer"); }
   M4.razborStep++;
   let h = '<div class="notice-title">Разбор по пунктам</div>';
   for (let i = 0; i < M4.razborStep; i++) h += '<p class="math"><b>' + LETTERS[i] + " → " + T.key[i] + ":</b> " + T.items[i].explain + ".</p>";
@@ -2336,6 +2393,7 @@ const Task11Discovery = (() => {
     if(!nextTrigger)return;
     if(!panel.hidden&&index===i){close();return;}
     expanded(trigger,false);
+    learning11("help", "m4", "function-model");
     index=i;trigger=nextTrigger;
     if(!states[i]){
       const d=descriptor(M4.task.items[i]);
@@ -2378,8 +2436,8 @@ function renderDiagnostics(){
     totalAll += s.total; firstAll += s.first;
     const rate = s.total ? s.first / s.total : 0;
     let stClass = "todo", stText = "мало данных — реши хотя бы 3 задания";
-    if (s.total >= 3 && rate >= 0.8){ stClass = "done"; stText = "освоено — решается уверенно"; }
-    else if (s.total >= 3 && rate >= 0.5){ stClass = "mid"; stText = "почти получается — закрепи ещё немного"; }
+    if (s.total >= 3 && rate >= 0.8){ stClass = "done"; stText = "часто верно с первого выбора · помощь в старых записях не различается"; }
+    else if (s.total >= 3 && rate >= 0.5){ stClass = "mid"; stText = "есть верные ответы · проверь себя без помощи"; }
     else if (s.total >= 3){ stClass = "mid"; stText = "нужно повторить — загляни в модули 1–3"; }
     const div = document.createElement("div");
     div.className = "skill";
@@ -2392,6 +2450,7 @@ function renderDiagnostics(){
   $("m5-summary").innerHTML = totalAll ?
     "<p>Всего решено: <b>" + totalAll + "</b>, из них с первого выбора: <b>" + firstAll + "</b>.</p>" :
     "<p>Пока пусто. Начни с разминки — это займёт пару минут.</p>";
+  learning11("diagnostics", $("m5-summary"));
   const errs = Object.entries(st.errors).sort((x, y) => y[1] - x[1]);
   $("m5-errors").innerHTML = errs.length ?
     '<ul class="errlist">' + errs.map(e => "<li>" + ERR_NAMES[e[0]] + " — " + e[1] + " раз(а)</li>").join("") + "</ul>" :
@@ -2401,7 +2460,7 @@ function renderDiagnostics(){
 $("m5-reset").addEventListener("click", () => {
   $("m5-confirm").innerHTML = '<div class="fb soft show">Сбросить прогресс по заданию 11? Записи других тренажёров курса не тронутся.' +
     '<div class="btnrow"><button class="btn btn-primary" type="button" id="m5-yes">Да, сбросить</button><button class="btn" type="button" id="m5-no">Отмена</button></div></div>';
-  $("m5-yes").addEventListener("click", () => { CP.resetOwn(); $("m5-confirm").innerHTML = ""; renderDiagnostics(); renderProgressNotes(); });
+  $("m5-yes").addEventListener("click", () => { CP.resetOwn(); learning11("reset"); $("m5-confirm").innerHTML = ""; renderDiagnostics(); renderProgressNotes(); });
   $("m5-no").addEventListener("click", () => { $("m5-confirm").innerHTML = ""; });
 });
 
@@ -2744,6 +2803,294 @@ function selftest11(){
   return errs;
 }
 
+/* New evidence supplements the accepted legacy counters. Public practice only:
+ * no wire changes, markup snapshots, pupil data or writes while restoring. */
+window.Task11Learning = (() => {
+  const enabled = !CP.RO && !CP.REVIEW && !window.OgeCourseSharedMode && !window.MathExamLearning?.managed && window.self === window.top;
+  const MODULES = ['m1','m2','m3','m4'], OUTCOMES = ['independent','corrected','helped','familiar'];
+  const SKILL_IDS = Object.keys(SKILLS), MAX_ATTEMPTS = 100, MAX_SEEN = 600;
+  const sessions = {}, panels = {}, expected = {};
+  let ready = false, restoring = false, serial = 0, available = true, lastMessage = '', blockedGesture = false;
+  const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
+  const obj = x => !!x && typeof x === 'object' && !Array.isArray(x);
+  const int = (x,max=1000000) => Number.isSafeInteger(x) && x>=0 && x<=max;
+  const str = (x,max) => typeof x === 'string' && x.length<=max && !/[<>\u0000-\u001f]/.test(x);
+  const copy = x => JSON.parse(JSON.stringify(x));
+  const normalizeAudit = raw => {
+    if(raw && raw.v!==1)return null;
+    const a=obj(raw)?raw:{};
+    return {v:1,attempts:Array.isArray(a.attempts)?a.attempts.filter(validAttempt).slice(-MAX_ATTEMPTS):[],
+      seenKeys:Array.isArray(a.seenKeys)?a.seenKeys.filter(x=>obj(x)&&str(x.taskKey,96)&&str(x.id,96)).slice(0,MAX_SEEN):[],
+      seenFull:a.seenFull===true,draft:obj(a.draft)?copy(a.draft):{},activeModule:MODULES.includes(a.activeModule)?a.activeModule:'m4',resume:obj(a.resume)?copy(a.resume):undefined};
+  };
+  const getAudit = () => normalizeAudit(CP.ext().auditLearning);
+  function validAttempt(x){return obj(x)&&str(x.id,96)&&MODULES.includes(x.module)&&SKILL_IDS.includes(x.skill)&&str(x.taskKey,96)&&int(x.at,Number.MAX_SAFE_INTEGER)&&x.at>0&&x.at<=Date.now()+60000&&OUTCOMES.includes(x.outcome)&&typeof x.fresh==='boolean'&&typeof x.helpUsed==='boolean'&&int(x.wrong,1000);}
+  function hash(value){let a=2166136261,b=5381;for(let i=0;i<value.length;i++){a=Math.imul(a^value.charCodeAt(i),16777619);b=Math.imul(b,33)^value.charCodeAt(i);}return (a>>>0).toString(16)+'-'+(b>>>0).toString(16);}
+  function seed(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0];}catch(_){return (Date.now()+Math.imul(++serial,2654435761))>>>0;}}
+  function rng(n,fn){const original=Math.random;Math.random=()=>{n=(n+0x6D2B79F5)>>>0;let t=n;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};try{return fn();}finally{Math.random=original;}}
+  function config(module,options={}){
+    if(module==='m1')return {type:M1.types.includes(options.type)?options.type:null};
+    if(module==='m2')return {};
+    if(module==='m3')return {kind:M3.kind};
+    return {type:TYPE_IDS.includes(options.type)?options.type:M4.type,starter:typeof options.starter==='boolean'?options.starter:undefined};
+  }
+  function build(module,desc){rng(desc.seed,()=>{
+    if(module==='m1')m1Build(desc.config);
+    else if(module==='m2')m2gBuild();
+    else if(module==='m3'){M3.kind=desc.config.kind;m3Build();document.querySelectorAll('#m3-chips button').forEach(b=>b.classList.toggle('picked',b.dataset.k===M3.kind));}
+    else{M4.type=desc.config.type;M4.review=false;m4Build(desc.config);desc.config.starter=M4.task.starter===true;document.querySelectorAll('#m4-chips button').forEach(b=>b.classList.toggle('picked',b.dataset.t===M4.type));}
+  });}
+  function identity(module){
+    if(module==='m1')return {skill:M1.q.skill,taskKey:'m1:'+hash(M1.q.title+'|'+M1.q.svg)};
+    if(module==='m2')return {skill:'par_vertex',taskKey:'m2:'+hash([M2G.p.a,M2G.p.b,M2G.p.c].join('|'))};
+    if(module==='m3')return {skill:'build',taskKey:'m3:'+M3.kind+':'+hash($('m3-formula').textContent+'|'+M3.task.xs.join(','))};
+    return {skill:'oge',taskKey:'m4:'+M4.task.type+':'+hash(M4.task.items.map(x=>JSON.stringify([x.desc,x.p?[x.p.a,x.p.b,x.p.c]:null,x.L?[x.L.k,x.L.b]:null,x.m??null,x.params||null])).sort().join('|'))};
+  }
+  function generate(module,options){
+    options=obj(options)&&!('target' in options)?options:{};
+    if(!MODULES.includes(module))return;
+    const previous=sessions[module],a=getAudit();
+    if(ready&&previous&&!options.discard)save(module);
+    const remote=a?.draft[module];
+    if(!expected[module])expected[module]={id:remote?.id||null,rev:int(remote?.rev)?remote.rev:0};
+    const desc={seed:seed(),config:config(module,options)},avoid=options.fresh===true?previous?.taskKey:null;
+    const known=new Set((a?.seenKeys||[]).map(x=>x.taskKey));
+    let identityValue,alternate=null;
+    for(let tries=0;tries<32;tries++){
+      build(module,desc);identityValue=identity(module);
+      if(avoid&&identityValue.taskKey!==avoid&&!alternate)alternate={seed:desc.seed,config:copy(desc.config)};
+      if(!options.fresh||(identityValue.taskKey!==avoid&&!known.has(identityValue.taskKey)))break;
+      if(tries<31)desc.seed=(desc.seed+2654435761)>>>0;
+    }
+    // A finite bank may be exhausted. Keep the actual built seed and, when
+    // possible, repeat a different known condition instead of the current one.
+    if(options.fresh&&identityValue.taskKey===avoid&&alternate){desc.seed=alternate.seed;desc.config=alternate.config;build(module,desc);identityValue=identity(module);}
+    const seen=a?.seenKeys.find(x=>x.taskKey===identityValue.taskKey);
+    sessions[module]={id:Date.now().toString(36)+'-'+(++serial).toString(36)+'-'+seed().toString(36),module,...identityValue,
+      seed:desc.seed,config:desc.config,helpUsed:false,helpKinds:[],wrong:0,completed:false,
+      fresh:!seen&&!a?.seenFull,rev:expected[module].rev,workAt:null,state:null};
+    if(ready){save(module);render(module);}
+  }
+  function snapshot(module){
+    if(module==='m1')return {done:M1.q.done===true,wrongs:M1.wrongs,hintStep:M1.hintStep,bad:[...$('m1-opts').children].flatMap((b,i)=>b.disabled?[i]:[])};
+    if(module==='m2')return {picked:M2G.picked,lastBuilt:M2G.lastBuilt||null,done:M2G.done,built:$('m2g-graphwrap').style.display!=='none'};
+    if(module==='m3')return {stage2:!!$('m3-step2')?.firstElementChild,firstDraft:$('m3-x0')?.value||'',table:[...$('m3-stage').querySelectorAll('table.pts input')].map(n=>n.value),
+      bad:[...$('m3-stage').querySelectorAll('.opts .btn')].flatMap((b,i)=>b.disabled?[i]:[]),wrongs:M3.wrongs,choiceWrongs:M3.choiceWrongs,shown:M3.shown,recorded:M3.task.recorded===true,drawn:$('m3-graphwrap').style.display!=='none'};
+    return {answer:$('m4-answer').value,selects:[...$('m4-desc').querySelectorAll('select[data-i]')].map(n=>n.value),attempts:M4.attempts,lastTry:M4.lastTry,shown:M4.shown,done:M4.done,missed:M4.missed,razborStep:M4.razborStep};
+  }
+  function validDraft(x,module){
+    if(!MODULES.includes(module)||!obj(x)||x.module!==module||!str(x.id,96)||!SKILL_IDS.includes(x.skill)||!str(x.taskKey,96)||!int(x.seed,4294967295)||!int(x.rev)||typeof x.fresh!=='boolean'||typeof x.helpUsed!=='boolean'||typeof x.completed!=='boolean'||!int(x.wrong,1000)||!Array.isArray(x.helpKinds)||x.helpKinds.length>20||!x.helpKinds.every(v=>str(v,40))||!obj(x.config)||!obj(x.state))return false;
+    if(x.workAt!=null&&(!int(x.workAt,Number.MAX_SAFE_INTEGER)||x.workAt>Date.now()+60000))return false;
+    const c=x.config,s=x.state;
+    if(module==='m1')return (c.type===null||M1.types.includes(c.type))&&typeof s.done==='boolean'&&int(s.wrongs,1000)&&int(s.hintStep,1000)&&Array.isArray(s.bad)&&s.bad.length<=4&&s.bad.every(i=>int(i,3));
+    if(module==='m2')return [null,'left','zero','right'].includes(s.picked)&&[null,'left','zero','right'].includes(s.lastBuilt)&&typeof s.done==='boolean'&&typeof s.built==='boolean';
+    if(module==='m3')return ['par','lin','hyp','root'].includes(c.kind)&&str(s.firstDraft,80)&&Array.isArray(s.table)&&s.table.length<=5&&s.table.every(v=>str(v,80))&&Array.isArray(s.bad)&&s.bad.length<=3&&s.bad.every(i=>int(i,2))&&int(s.wrongs,1000)&&int(s.choiceWrongs,1000)&&['stage2','shown','recorded','drawn'].every(k=>typeof s[k]==='boolean');
+    return ['rand',...TYPE_IDS].includes(c.type)&&typeof c.starter==='boolean'&&str(s.answer,3)&&Array.isArray(s.selects)&&s.selects.length===3&&s.selects.every(v=>['','1','2','3'].includes(v))&&int(s.attempts,1000)&&(s.lastTry===null||/^[1-3]{3}$/.test(s.lastTry))&&int(s.razborStep,3)&&['shown','done','missed'].every(k=>typeof s[k]==='boolean');
+  }
+  function note(text){lastMessage=text;Object.values(panels).forEach(p=>{p.notice.textContent=text;p.box.hidden=false;});}
+  function readRevision(module,a){const d=a?.draft[module];return {id:d?.id||null,rev:int(d?.rev)?d.rev:0};}
+  function current(module){const a=getAudit(),r=readRevision(module,a),ex=expected[module];return !a||!ex||(ex.rev===r.rev&&ex.id===r.id);}
+  function touch(module){const s=sessions[module];if(s&&!restoring&&!s.completed)s.workAt=Date.now();}
+  function resume(a){
+    const worked=MODULES.map(m=>a.draft[m]).filter(d=>d&&validDraft(d,d.module)&&d.workAt>0);
+    const unfinished=worked.filter(d=>!d.completed),last=(unfinished.length?unfinished:worked).sort((a,b)=>b.workAt-a.workAt)[0];
+    return last?{at:last.workAt,hasWork:true,unfinished:!last.completed,taskKey:last.taskKey,skill:last.skill,helpUsed:last.helpUsed,module:last.module}:undefined;
+  }
+  function save(module,record){
+    if(!enabled||restoring||!sessions[module])return false;
+    const s=sessions[module];
+    let stored=false;
+    // This write adds only the audit field: legacy timestamps, score and skill
+    // counters must remain byte-for-byte untouched merely by reading help.
+    try{
+      const raw=localStorage.getItem(CP.KEY),all=raw===null?{}:JSON.parse(raw);
+      if(!obj(all)||(own(all,TID)&&!obj(all[TID])))throw Error('Unreadable legacy progress');
+      const rec=all[TID]||{};if(own(rec,'ext')&&!obj(rec.ext))throw Error('Unreadable legacy extension');
+      const ext=rec.ext||{},a=normalizeAudit(ext.auditLearning);
+      if(!a){note('В этом браузере сохранён более новый формат работы. Продолжай на странице; прежние записи сохранены.');available=false;return false;}
+      const latest=readRevision(module,a),ex=expected[module];
+      if(ex&&(latest.rev!==ex.rev||latest.id!==ex.id)){note('В другой вкладке появилась более свежая работа.');loadFresh(module);return false;}
+      // Resuming is a display hint, not a new learning action. Ignore old
+      // persisted copies of that transient flag when checking for changes.
+      if(obj(a.draft[module]))delete a.draft[module].resumed;
+      const before=JSON.stringify(a);
+      const seen=a.seenKeys.find(x=>x.taskKey===s.taskKey);
+      if(seen&&seen.id!==s.id)s.fresh=false;
+      if(!seen){if(a.seenKeys.length<MAX_SEEN)a.seenKeys.push({taskKey:s.taskKey,id:s.id});else{a.seenFull=true;s.fresh=false;}}
+      if(obj(record)&&!a.attempts.some(x=>x.id===record.id)){
+        record.fresh=s.fresh;record.outcome=!s.fresh?'familiar':s.helpUsed?'helped':s.wrong?'corrected':'independent';
+        a.attempts.push(record);a.attempts=a.attempts.slice(-MAX_ATTEMPTS);s.outcome=record.outcome;
+      }
+      s.state=snapshot(module);s.rev=ex?.rev||0;
+      const draft=copy(s);delete draft.resumed;a.draft[module]=draft;a.resume=resume(a);
+      const active=document.querySelector('section.module.active')?.id;if(MODULES.includes(active))a.activeModule=active;
+      // pagehide still flushes an unsaved input, but an unchanged snapshot
+      // must not advance its revision or echo a write after reload.
+      if(JSON.stringify(a)===before){available=true;return true;}
+      s.rev++;draft.rev=s.rev;
+      ext.auditLearning=a;rec.ext=ext;all[TID]=rec;localStorage.setItem(CP.KEY,JSON.stringify(all));
+      const actual=CP.ext().auditLearning?.draft?.[module];stored=actual?.id===s.id&&actual.rev===s.rev;
+    }catch(_){stored=false;}
+    if(stored){expected[module]={id:s.id,rev:s.rev};available=true;}
+    else{available=false;note('Не удалось сохранить работу в браузере. Она останется здесь до закрытия страницы.');}
+    return stored;
+  }
+  function help(module,kind){const s=sessions[module];if(!s||restoring||s.completed)return;touch(module);s.helpUsed=true;if(!s.helpKinds.includes(kind))s.helpKinds.push(kind);save(module);render(module);}
+  function wrong(module){const s=sessions[module];if(!s||restoring||s.completed)return;touch(module);s.wrong=Math.min(1000,s.wrong+1);save(module);render(module);}
+  function finish(module){
+    const s=sessions[module];if(!s||restoring||s.completed)return;
+    touch(module);s.completed=true;s.outcome=!s.fresh?'familiar':s.helpUsed?'helped':s.wrong?'corrected':'independent';
+    const a=getAudit(),seen=a?.attempts.find(x=>x.id===s.id);
+    if(seen){s.outcome=seen.outcome;render(module);return;}
+    const record={id:s.id,module,skill:s.skill,taskKey:s.taskKey,at:Date.now(),outcome:'independent',fresh:s.fresh,helpUsed:s.helpUsed,wrong:s.wrong};
+    save(module,record);render(module);
+  }
+  function applyDraft(module,saved){
+      build(module,saved);
+      const id=identity(module);if(id.taskKey!==saved.taskKey||id.skill!==saved.skill)return false;
+      const s=saved.state;
+      if(module==='m1'){
+        M1.wrongs=s.wrongs;M1.hintStep=s.hintStep;
+        s.bad.forEach(i=>{const b=$('m1-opts').children[i];if(b){b.disabled=true;b.classList.add('picked');}});
+        if(s.hintStep)fb($('m1-hintbox'),'<span class="math">'+M1.q.hints[Math.min(s.hintStep-1,M1.q.hints.length-1)]+'</span>');
+        if(s.done){const i=M1.q.opts.findIndex(x=>x.ok);m1Answer($('m1-opts').children[i],M1.q.opts[i]);}
+      } else if(module==='m2'){
+        if(s.built&&s.lastBuilt){M2G.picked=s.lastBuilt;M2G.done=false;$('m2g-build').disabled=false;$('m2g-build').click();}
+        M2G.done=s.done;M2G.picked=s.picked;M2G.lastBuilt=s.lastBuilt;$('m2g-build').disabled=!s.picked;
+        document.querySelectorAll('#m2g-opts button').forEach(b=>b.classList.toggle('picked',b.dataset.v===s.picked));
+      } else if(module==='m3'){
+        if(s.stage2){
+          if(M3.kind==='par')m3ParStep2();
+          else{const options=[...$('m3-stage').querySelectorAll('.opts .btn')],truth=M3.kind==='hyp'?(M3.task.m>0?'13':'24'):'(0; '+fnum(M3.task.ys[0])+')';
+            const button=options.find(b=>M3.kind==='hyp'?b.dataset.q===truth:b.textContent===truth);if(!button)return false;button.click();}
+        }
+        if($('m3-x0'))$('m3-x0').value=s.firstDraft;
+        const fields=[...$('m3-stage').querySelectorAll('table.pts input')];if(fields.length!==s.table.length)return false;fields.forEach((n,i)=>n.value=s.table[i]);
+        s.bad.forEach(i=>{const b=$('m3-stage').querySelectorAll('.opts .btn')[i];if(b)b.disabled=true;});
+        M3.wrongs=s.wrongs;M3.choiceWrongs=s.choiceWrongs;M3.shown=s.shown;M3.task.recorded=s.recorded;
+        if(s.drawn&&M3.task.plot)m3Draw();
+        if(saved.completed&&fields.length)checkTable($('m3-stage'),M3.task.ys);
+      } else {
+        $('m4-answer').value=s.answer;[...$('m4-desc').querySelectorAll('select[data-i]')].forEach((n,i)=>n.value=s.selects[i]);
+        M4.attempts=s.attempts;M4.lastTry=s.lastTry;M4.shown=s.shown;M4.missed=s.missed;
+        for(let i=0;i<s.razborStep;i++)$('m4-show').click();
+        if(s.done){const answer=M4.form.read();if(!answer||m4Diag(M4.task,answer).wrong.length)return false;M4.attempts=Math.max(0,s.attempts-1);M4.lastTry=null;$('m4-check').click();}
+        else if(s.attempts)$('m4-show').hidden=false;
+        M4.attempts=s.attempts;M4.lastTry=s.lastTry;M4.shown=s.shown;M4.missed=s.missed;
+      }
+      return true;
+  }
+  function restore(module,value){
+    if(!validDraft(value,module))return false;
+    const saved=copy(value),previous=sessions[module]?{...copy(sessions[module]),state:snapshot(module)}:null,old=restoring;
+    let ok=false;restoring=true;
+    try{
+      if(!applyDraft(module,saved))return false;
+      saved.resumed=true;sessions[module]=saved;expected[module]={id:saved.id,rev:saved.rev};ok=true;return true;
+    }catch(_){return false;}
+    finally{
+      try{if(!ok&&previous){try{applyDraft(module,previous);}catch(_){build(module,previous);}}}
+      finally{restoring=old;}
+    }
+  }
+  function loadFresh(module){
+    const a=getAudit(),d=a?.draft[module];if(d&&restore(module,d)){render(module);return true;}
+    if(a){
+      expected[module]=readRevision(module,a);
+      note(d?'Сохранённую задачу из другой вкладки не удалось восстановить. Открыто новое условие; результаты сохранены.':'История в другой вкладке изменилась. Открыто новое условие.');
+      generate(module,{fresh:true,discard:true});
+    }
+    return false;
+  }
+  function outcomeLabel(s){return s.outcome==='familiar'?'Знакомое условие · повторение':s.outcome==='helped'?'Решено с помощью':s.outcome==='corrected'?'Решено после собственного исправления':'Решено с первого раза без помощи';}
+  function render(module){
+    const s=sessions[module],p=panels[module];if(!s||!p)return;
+    const remembered=s.fresh?'':'Знакомое условие. ';
+    p.status.textContent=s.completed?outcomeLabel(s)+'.':remembered+(s.helpUsed?'Помощь использовалась. После разбора проверь себя на другом условии.':s.wrong?'Можно исправить ответ. Введённое сохранено.':s.resumed?'Продолжи сохранённое задание.':'Попробуй решить. Помощь можно открыть в любой момент.');
+    p.box.dataset.outcome=s.completed?s.outcome||'helped':s.helpUsed?'helped':'in-progress';
+    p.next.hidden=!(s.helpUsed||s.completed||s.wrong);p.next.textContent=s.helpUsed?'Проверить себя на другой задаче':'Ещё задача на этот навык';
+    if(lastMessage)p.notice.textContent=lastMessage;
+    p.box.hidden=!(s.completed||s.helpUsed||s.wrong||s.resumed||p.notice.textContent);
+  }
+  function makePanel(module){
+    document.getElementById('task11-learning-'+module)?.remove();
+    const box=document.createElement('div');box.className='task11-learning';box.id='task11-learning-'+module;
+    const status=document.createElement('p');status.className='note';status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+    const next=document.createElement('button');next.type='button';next.className='btn';next.dataset.task11Next=module;next.hidden=true;
+    next.addEventListener('click',()=>{
+      const options={fresh:true};if(module==='m1')options.type=M1.q.type;if(module==='m4'){options.type=M4.task.type;options.starter=false;}
+      generate(module,options);render(module);
+      const focus=module==='m1'?'#m1-opts button':module==='m2'?'#m2g-opts button':module==='m3'?'#m3-stage input,#m3-stage button':'#m4-answer';document.querySelector(focus)?.focus({preventScroll:true});
+    });
+    const notice=document.createElement('p');notice.className='note';notice.setAttribute('role','status');box.append(status,next,notice);
+    const anchor=$(module==='m1'?'m1-good':module==='m2'?'m2g-calc':module==='m3'?'m3-good':'m4-razbor');anchor.after(box);panels[module]={box,status,next,notice};
+  }
+  function moduleFor(target){return target?.closest?.('section.module')?.id;}
+  function protectedAction(event){
+    if(restoring||!ready)return;
+    if(event.type==='pointerdown')blockedGesture=false;
+    // A dirty input may emit change before the button's click. Restoring on
+    // that change must not let the remaining click submit the peer's answer.
+    if(blockedGesture&&(event.type==='change'||event.type==='click')){
+      event.preventDefault();event.stopImmediatePropagation();
+      if(event.type==='click')blockedGesture=false;
+      return;
+    }
+    const module=moduleFor(event.target);if(!MODULES.includes(module))return;
+    if(!current(module)){
+      event.preventDefault();event.stopImmediatePropagation();
+      if(event.type==='pointerdown'||event.type==='change')blockedGesture=true;
+      note('В другой вкладке есть более свежая работа. Здесь загружено её состояние; повтори действие.');loadFresh(module);return;
+    }
+    if(event.type==='pointerdown')return;
+    const target=event.target.closest?.('button,summary,input,select');if(!target)return;
+    if(module==='m3'&&target.closest('#m3-vertex')&&(target.matches('summary')||target.matches('button')))help(module,'vertex-guide');
+    if(module==='m4'&&target.closest('#t11-help-panel'))help(module,'function-model');
+  }
+  function persistEvent(event){
+    if(restoring||!ready)return;
+    const module=moduleFor(event.target);if(!MODULES.includes(module))return;
+    if(event.target.closest?.('.task11-learning'))return;
+    if(!event.target.closest?.('button,input,select,summary')&&event.type!=='toggle')return;
+    if(event.target.closest?.('#m1-opts button,#m2g-opts button,#m3-stage input,#m3-stage .opts button,#m4-answer,#m4-desc select'))touch(module);
+    save(module);render(module);
+  }
+  function start(){
+    if(!enabled)return;
+    const a=getAudit();
+    MODULES.forEach(module=>{makePanel(module);const value=a?.draft[module];if(value&&!restore(module,value))note('Сохранённую задачу не удалось восстановить. Прежние результаты сохранены; открыто новое условие.');render(module);});
+    const explicitResume=new URLSearchParams(location.search).get('resume')==='1',unfinished=a?resume(a):null;
+    const startModule=explicitResume&&unfinished?.unfinished?unfinished.module:a?.activeModule;
+    if(a&&MODULES.includes(startModule)&&Object.keys(a.draft).length){
+      document.querySelectorAll('section.module').forEach(s=>s.classList.toggle('active',s.id===startModule));
+      document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('active',b.dataset.m===startModule));
+      if(startModule==='m2')conShow('par');
+    }
+    if(explicitResume){try{const url=new URL(location.href);url.searchParams.delete('resume');history.replaceState(history.state,'',url.href);}catch(_){}}
+    ready=true;
+    document.addEventListener('pointerdown',protectedAction,true);
+    document.addEventListener('keydown',()=>{if(!restoring)blockedGesture=false;},true);
+    ['click','input','change'].forEach(type=>{document.addEventListener(type,protectedAction,true);document.addEventListener(type,persistEvent);});
+    document.addEventListener('toggle',persistEvent,true);
+    const active=document.querySelector('section.module.active')?.id;
+    if(MODULES.includes(active)&&!a?.draft[active])save(active);
+    window.addEventListener('pagehide',()=>{MODULES.filter(module=>expected[module]?.id===sessions[module]?.id).forEach(module=>save(module));});
+    window.addEventListener('storage',event=>{if(event.key===CP.KEY&&MODULES.some(m=>!current(m)))note('Работа обновилась в другой вкладке. При следующем действии загрузится свежая версия.');});
+    document.querySelectorAll('#tabs button').forEach(button=>button.addEventListener('click',()=>{if(MODULES.includes(button.dataset.m))save(button.dataset.m);}));
+  }
+  function diagnostics(host){
+    if(!enabled||!host)return;
+    const a=getAudit(),attempts=a?.attempts||[];
+    const p=document.createElement('p');p.dataset.task11Evidence='';
+    p.textContent='Новые попытки: самостоятельно — '+attempts.filter(x=>x.outcome==='independent'&&x.fresh).length+', после исправления — '+attempts.filter(x=>x.outcome==='corrected'&&x.fresh).length+', с помощью — '+attempts.filter(x=>x.outcome==='helped').length+', знакомый повтор — '+attempts.filter(x=>x.outcome==='familiar').length+'. Это результаты отдельных задач, а не отметка об освоении всего навыка.';
+    host.append(p);
+  }
+  function reset(){if(!enabled)return;MODULES.forEach(module=>{expected[module]={id:null,rev:0};if(sessions[module]){sessions[module].fresh=false;sessions[module].completed=true;render(module);}});note('История очищена. Открой другую задачу, чтобы начать новую попытку.');}
+  return {enabled,get restoring(){return restoring;},generate,help,wrong,finish,start,diagnostics,reset,
+    getState:module=>sessions[module]?copy(sessions[module]):null,projection:()=>getAudit(),save,loadFresh};
+})();
+
+
 /* =================== ЗАПУСК =================== */
 migrate11();
 if (CP.REVIEW){ // ?mode=review — сразу ОГЭ-режим с задачами открытых типов (решение D22)
@@ -2763,6 +3110,7 @@ m2Render();
 m2gNew();
 m3New();
 m4New();
+learning11("start");
 renderProgressNotes();
 if (CP.RO) selftest11();   // ?selftest=1 — маркер OGE11_SELFTEST_OK в консоли
 </script>
