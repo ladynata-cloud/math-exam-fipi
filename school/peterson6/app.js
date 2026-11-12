@@ -221,7 +221,23 @@
 }
   function captureModel(){if(!active?.lesson||!cleanup?.getBoardState)return;const value=cleanup.getBoardState();if(window.PetersonModels.validateBoardState(active.lesson,value,active.task))state.models[active.task.id]=JSON.parse(JSON.stringify(value));}
   function rememberModel(){if(applyingBoardState)return;if(active?.task)markAssisted(ts(active.task.id));captureModel();save();}
-  function captureLessonHelp(){if(!active?.lesson)return;const panels=[...main.querySelectorAll('[data-lesson-help]')];if(!panels.length)return;for(const panel of panels)if(panel.open)markAssisted(ts(active.task.id));if(!boardSession){const value=Object.fromEntries(panels.map(panel=>[panel.dataset.lessonHelp,panel.open]));if(JSON.stringify(helpOpen[active.task.id])!==JSON.stringify(value)){helpOpen[active.task.id]=value;try{localStorage.setItem(HELP_KEY,JSON.stringify(helpOpen));}catch(_){}}}}
+  function exposesLessonHelp(panel) {
+    if (panel.dataset.lessonHelp !== 'model') return true;
+    const model = panel.querySelector('#model');
+    return Boolean(model?.childElementCount && !model.querySelector('.pm-experiment[hidden]'));
+  }
+  function captureLessonHelp() {
+    if (!active?.lesson) return;
+    const panels = [...main.querySelectorAll('[data-lesson-help]')];
+    if (!panels.length) return;
+    const taskId = active.task.id;
+    if (panels.some(panel => panel.open && exposesLessonHelp(panel))) markAssisted(ts(taskId));
+    if (boardSession) return;
+    const value = Object.fromEntries(panels.map(panel => [panel.dataset.lessonHelp, panel.open]));
+    if (JSON.stringify(helpOpen[taskId]) === JSON.stringify(value)) return;
+    helpOpen[taskId] = value;
+    try { localStorage.setItem(HELP_KEY, JSON.stringify(helpOpen)); } catch (_) {}
+  }
   function partOf(lesson){return Number(lesson?.part)||1;}
   function sourceLimit(part){return ({1:497,2:589,3:778})[part]||497;}
   function isGenerated(id){return /^(?:practice|check):/.test(id);}
@@ -691,8 +707,16 @@ ${[1, 2, 3]
 }
 
   document.addEventListener('toggle',ev=>{if(applyingBoardState||!ev.target.matches?.('[data-lesson-help]')||!main.contains(ev.target))return;captureLessonHelp();save();},true);
-  document.addEventListener('click',ev=>{const summary=ev.target.closest?.('[data-lesson-help] > summary');if(summary&&active?.lesson&&!summary.parentElement.open){markAssisted(ts(active.task.id));save();}},true);
-  for(const event of ['input','change','click'])document.addEventListener(event,ev=>{if(ev.target.closest?.('#model'))rememberModel();});
+  document.addEventListener('click', ev => {
+    const panel = ev.target.closest?.('[data-lesson-help] > summary')?.parentElement;
+    if (panel && active?.lesson && !panel.open && exposesLessonHelp(panel)) {
+      markAssisted(ts(active.task.id));
+      save();
+    }
+  }, true);
+  for (const event of ['input', 'change', 'click']) document.addEventListener(event, ev => {
+    if (ev.target.closest?.('#model') && !ev.target.closest('.model-inquiry, .pm-experiment[hidden]')) rememberModel();
+  });
   window.addEventListener('hashchange',()=>{if(renderedRoute!==location.hash)route();});
   route();
   if(boardSession)connectBoard();

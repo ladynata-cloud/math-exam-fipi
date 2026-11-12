@@ -59,11 +59,33 @@ test('legacy v1 state loads without models and safe math formatting leaves ordin
  try{f.nav('#lesson/p01/0');assert(f.state().models['p01-t01']);const div=f.d.createElement('div');div.innerHTML=f.w.PetersonApp.format('a/b; (3 + 2)/6; (3 · 22)/(11 · 45); 1/t; 2 1/3; {{frac:a:12}}; {{frac:a+b:b}}; {{frac:(a + 2):(b − 3)}}; {{mix:+2:1:3}}; Decimal/Fraction; https://example.org/a/b; <img src=x onerror=alert(1)>; {{frac:<img src=x onerror=alert(1)>:b}}');assert.equal(div.querySelectorAll('.fra').length,10);assert.equal(div.querySelectorAll('img').length,0);assert.doesNotMatch(div.textContent,/\{\{(?:frac|mix):/);assert.equal(div.querySelectorAll('[onerror],[onclick]').length,0);assert.match(div.textContent,/Decimal\/Fraction/);assert.match(div.textContent,/https:\/\/example.org\/a\/b/);}finally{f.close();}
 });
 
-test('opening model or theory is sticky help; reviewing either after success keeps earned independence',()=>{
+test('revealing a model or opening theory records help and preserves previously earned independence',()=>{
  for(const kind of ['model','theory']){
-  const f=fixture();try{f.nav('#lesson/p08/0');const task=f.w.PetersonCourse.lessons.find(l=>l.id==='p08').tasks[0];assert.equal(f.q('[data-lesson-help="'+kind+'"]').open,false);f.event('#final-answer','0,86');f.event('#notebook','Не потерять запись');f.click('[data-lesson-help="'+kind+'"] > summary');assert.equal(f.q('[data-lesson-help="'+kind+'"]').open,true);assert.equal(f.q('#final-answer').value,'0,86');assert.equal(f.q('#notebook').value,'Не потерять запись');f.click('[data-lesson-help="'+kind+'"] > summary');assert.equal(f.state().tasks[task.id].assisted,true,'closing cannot undo assistance');f.event('#final-answer',task.answer);f.submit('#answer-form');assert.equal(f.state().tasks[task.id].correct,true);assert.equal(f.state().tasks[task.id].independent,false);}finally{f.close();}
+  const f = fixture();
+  try {
+   f.nav('#lesson/p08/0');
+   const task = f.w.PetersonCourse.lessons.find(l => l.id === 'p08').tasks[0];
+   const panel = '[data-lesson-help="' + kind + '"]';
+   assert.equal(f.q(panel).open, false);
+   f.event('#final-answer', '0,86');
+   f.event('#notebook', 'Не потерять запись');
+   f.click(panel + ' > summary');
+   assert.equal(f.q(panel).open, true);
+   assert.equal(f.q('#final-answer').value, '0,86');
+   assert.equal(f.q('#notebook').value, 'Не потерять запись');
+   if (kind === 'model') {
+    assert.equal(f.state().tasks[task.id].assisted, false, 'the experiment is still hidden');
+    f.click('[data-inquiry-open]');
+   }
+   f.click(panel + ' > summary');
+   assert.equal(f.state().tasks[task.id].assisted, true, 'closing cannot undo assistance');
+   f.event('#final-answer', task.answer);
+   f.submit('#answer-form');
+   assert.equal(f.state().tasks[task.id].correct, true);
+   assert.equal(f.state().tasks[task.id].independent, false);
+  } finally { f.close(); }
  }
- const f=fixture();try{f.nav('#lesson/p08/0');const task=f.w.PetersonCourse.lessons.find(l=>l.id==='p08').tasks[0];f.event('#final-answer',task.answer);f.submit('#answer-form');const earned=f.state().tasks[task.id].completion;assert.equal(earned.independent,true);for(const kind of ['model','theory'])f.click('[data-lesson-help="'+kind+'"] > summary');f.event('#model input','7');assert.deepEqual(f.state().tasks[task.id].completion,earned);assert.equal(f.state().tasks[task.id].independent,true);}finally{f.close();}
+ const f=fixture();try{f.nav('#lesson/p08/0');const task=f.w.PetersonCourse.lessons.find(l=>l.id==='p08').tasks[0];f.event('#final-answer',task.answer);f.submit('#answer-form');const earned=f.state().tasks[task.id].completion;assert.equal(earned.independent,true);for(const kind of ['model','theory'])f.click('[data-lesson-help="'+kind+'"] > summary');f.click('[data-inquiry-open]');f.event('#model .pm-experiment input','7');assert.deepEqual(f.state().tasks[task.id].completion,earned);assert.equal(f.state().tasks[task.id].independent,true);}finally{f.close();}
 });
 
 test('part three switches from automatic answer to the actual manual card before the queued hash event',()=>{
