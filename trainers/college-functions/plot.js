@@ -39,13 +39,16 @@
   function pointFromEvent(svg, event, task) {
     const clientX = Number(event.clientX), clientY = Number(event.clientY);
     if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return null;
-    let screen;
+    let screen, edgeX, edgeY;
     // An inverse SVG matrix includes CSS transforms and preserveAspectRatio.
     try {
       const matrix = svg.getScreenCTM && svg.getScreenCTM();
       if (matrix && svg.createSVGPoint) {
+        const inverse = matrix.inverse();
         const p = svg.createSVGPoint(); p.x = clientX; p.y = clientY;
-        screen = p.matrixTransform(matrix.inverse());
+        screen = p.matrixTransform(inverse);
+        edgeX = Math.hypot(inverse.a, inverse.c);
+        edgeY = Math.hypot(inverse.b, inverse.d);
       }
     } catch (_) { /* Detached SVGs use the measured fallback below. */ }
     if (!screen) {
@@ -55,10 +58,13 @@
       const offsetX = (rect.width - FRAME.width * scale) / 2;
       const offsetY = (rect.height - FRAME.height * scale) / 2;
       screen = { x: (clientX - rect.left - offsetX) / scale, y: (clientY - rect.top - offsetY) / scale };
+      edgeX = edgeY = 1 / scale;
     }
     const box = plotBox(task);
-    if (screen.x < box.left || screen.x > box.right || screen.y < box.top || screen.y > box.bottom) return null;
-    return unproject(box, screen.x, screen.y);
+    // Keep the border clickable when native click coordinates are rounded.
+    if (screen.x <= box.left - edgeX || screen.x >= box.right + edgeX || screen.y <= box.top - edgeY || screen.y >= box.bottom + edgeY) return null;
+    const x = Math.min(box.right, Math.max(box.left, screen.x)), y = Math.min(box.bottom, Math.max(box.top, screen.y));
+    return unproject(box, x, y);
   }
 
   function el(document, name, attrs, content) {

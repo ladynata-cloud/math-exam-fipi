@@ -77,6 +77,24 @@ test('absolute-distance plateau distinguishes no solution, interval and two poin
   }
 });
 
+test('the parabola and distance graph have square grid cells and preserve their marked coordinates', () => {
+  for (const [exam, parameter, expected] of [[17, 6, [[4, 16]]], [19, 3, [[-1.5, 3], [1.5, 3]]]]) {
+    const dom = new JSDOM(Labs.scene(exam, parameter).svg);
+    const doc = dom.window.document;
+    const n = (element, name) => Number(element.getAttribute(name));
+    const grid = [...doc.querySelectorAll('line[stroke="#e1ebe8"]')];
+    const vertical = grid.filter(l => n(l, 'x1') === n(l, 'x2'));
+    const horizontal = grid.filter(l => n(l, 'y1') === n(l, 'y2'));
+    const unit = n(vertical[1], 'x1') - n(vertical[0], 'x1');
+    assert.equal(n(horizontal[0], 'y1') - n(horizontal[1], 'y1'), unit);
+    const [xAxis, yAxis] = doc.querySelectorAll('line[stroke="#52746f"]');
+    const originX = n(yAxis, 'x1'), originY = n(xAxis, 'y1');
+    assert.deepEqual([...doc.querySelectorAll('circle')].map(dot =>
+      [(n(dot, 'cx') - originX) / unit, (originY - n(dot, 'cy')) / unit]), expected);
+    dom.window.close();
+  }
+});
+
 test('integer invariant is verified by quotient/remainder division on every allowed state',()=>{
   for(let k=-3;k<=6;k++){const v=Labs.evaluate(20,k);assert.equal(v.n,17+5*k);assert.equal(v.quotient,Math.floor(v.n/5));assert.equal(v.remainder,v.n%5);assert.equal(v.n,5*v.quotient+v.remainder);assert.ok(v.remainder>=0&&v.remainder<5);}
   assert.equal((23+7*100)%7,2);

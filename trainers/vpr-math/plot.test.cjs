@@ -46,6 +46,14 @@ test('pointer coordinates respect the plotted rectangle and translated bounds', 
   assert.deepEqual(click(...dots[0]), [-5, 10]);
   assert.deepEqual(click(...dots[1]), [-4, 9]);
   assert.equal(click(dots[0][0] - 1, dots[0][1]), null);
+
+  for (const width of [258, 570]) {
+    const scale = width / 360, left = 20.35, top = 100.35;
+    const resized = {getBoundingClientRect: () => ({left, top, width, height: 280 * scale})};
+    const clientX = Math.floor(left + dots[0][0] * scale), clientY = Math.floor(top + dots[0][1] * scale);
+    assert.deepEqual(Plot.point({clientX, clientY}, resized, parabola), [-5, 10]);
+    assert.equal(Plot.point({clientX: clientX - 2, clientY}, resized, parabola), null);
+  }
 });
 
 test('a repeated abscissa is explained and does not render a singular curve', () => {

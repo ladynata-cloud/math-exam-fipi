@@ -7,6 +7,27 @@ const lessons=['algebra','geometry','models'].flatMap(n=>require('../ege-profil/
 const root=path.resolve(__dirname,'..'),shots='/tmp/profile-part2-shots',errors=[],bad=[];
 const mime={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.json':'application/json'};
 const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://fixture').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',mime[path.extname(file)]||'text/html');res.end(fs.readFileSync(file));}catch(_){res.writeHead(404).end();}});
+
+async function verifySquareGrid(page, selector, color) {
+  const svg = page.locator(selector);
+  await svg.waitFor();
+  const metrics = await svg.evaluate((el, stroke) => {
+    const lines = [...el.querySelectorAll('line')].filter(line => line.getAttribute('stroke') === stroke);
+    const values = (a, b) => [...new Set(lines.filter(line => line.getAttribute(a) === line.getAttribute(b))
+      .map(line => Number(line.getAttribute(a))))].sort((x, y) => x - y);
+    const xs = values('x1', 'x2'), ys = values('y1', 'y2'), matrix = el.getScreenCTM();
+    const bounds = el.getBoundingClientRect();
+    return {
+      width: innerWidth, left: bounds.left, right: bounds.right,
+      dx: (xs[1] - xs[0]) * Math.hypot(matrix.a, matrix.b),
+      dy: (ys[1] - ys[0]) * Math.hypot(matrix.c, matrix.d)
+    };
+  }, color);
+  assert(metrics.left >= -1 && metrics.right <= metrics.width + 1, selector + ' fits the viewport');
+  assert(metrics.dx > 0 && metrics.dy > 0 && Math.abs(metrics.dx - metrics.dy) < 0.001,
+    selector + ' has square cells at ' + metrics.width + 'px: ' + JSON.stringify(metrics));
+}
+
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/ege-profil/part-two/index.html';
  const browser=await chromium.launch({headless:true,args:['--no-sandbox']});fs.mkdirSync(shots,{recursive:true});let screens=0,completed=0;
@@ -55,6 +76,30 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
    // One completed guided step is retained when moving to another task and back.
    const guided=lessons.find(l=>l.exam===15).tasks[0];await go('#task/'+guided.id+'/guided');await page.locator('#step-answer').fill(String(guided.steps[0].answers[0]));await page.locator('#step-form button[type=submit]').click();await page.waitForFunction(id=>window.ProfilePartTwoApp.store.read(id).solvedSteps.length===1,guided.id);await go('#exam/15');await go('#task/'+guided.id+'/guided');assert.equal((await record(guided.id)).solvedSteps.length,1);
    await go('#progress');assert.match(await page.locator('#main').innerText(),/автоматически не оцениваются/);
+   if(width===320||width===1280){
+    for(const [exam,answer] of [[17,'16'],[19,'Бесконечно много']]){
+     await go('#lesson/'+lessons.find(l=>l.exam===exam).id);
+     await page.locator('#model-lab summary').click();
+     await page.locator('#part2-prediction-'+exam).selectOption(answer);
+     await page.locator('[data-lab-prediction] button').click();
+     await verifySquareGrid(page,'[data-lab-model] svg','#e1ebe8');
+     await page.locator('[data-lab-model] svg').screenshot({path:path.join(shots,'graph-model-'+exam+'-'+width+'.png')});
+    }
+    await page.goto(origin+'/school/alimov10-11/#lesson/p53/0');
+    await page.locator('.model-panel summary').click();
+    await verifySquareGrid(page,'#model .model-picture svg','#c6d8d2');
+    await page.goto(origin+'/ege-profil/trainers/parameters-18/quadratic.html');
+    await page.getByRole('tab',{name:'Живые графики'}).click();
+    await verifySquareGrid(page,'#kasFig svg','rgba(88,140,190,.14)');
+    await verifySquareGrid(page,'#rocFig svg','rgba(88,140,190,.14)');
+    await page.locator('#ka').fill('-1.3');
+    assert.match(await page.locator('#kasInfo').innerText(),/корней нет/);
+    assert.equal(await page.locator('#kasFig circle[fill="#C22F2A"]').count(),0);
+    await page.goto(origin+'/ege-profil/trainers/interval-method.html');
+    for(const id of ['p_quadC','p_w4','p_w6','p_w7']){
+     await verifySquareGrid(page,'#'+id+' svg','#dfe8e9');
+    }
+   }
    await context.close();
   }
   assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);console.log('PROFILE_PART2_COURSE_BROWSER_OK '+JSON.stringify({screens,completed,widths:[320,390,1280],sections:7}));

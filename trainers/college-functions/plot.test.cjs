@@ -61,6 +61,20 @@ test('inverse coordinates and letterboxed click positions preserve graph values'
   assert.equal(P.pointFromEvent({getBoundingClientRect:()=>({width:0,height:0})},{clientX:0,clientY:0},t),null);
 });
 
+test('a rounded click on the border still uses the coordinates of that border', () => {
+  const t = task('F5'), [xmin, , , ymax] = t.viewport;
+  const corner = P.toScreen(t, xmin, ymax);
+  for (const width of [258, 570]) {
+    const scale = width / P.frame.width, left = 20.35, top = 100.35;
+    const svg = {getBoundingClientRect: () => ({left, top, width, height: P.frame.height * scale})};
+    const clientX = Math.floor(left + corner.x * scale), clientY = Math.floor(top + corner.y * scale);
+    const point = P.pointFromEvent(svg, {clientX, clientY}, t);
+    close(point.x, xmin);
+    close(point.y, ymax);
+    assert.equal(P.pointFromEvent(svg, {clientX: clientX - 2, clientY}, t), null);
+  }
+});
+
 test('a unit has the same on-screen length on X and Y for every authored viewport', () => {
   for (const t of D.tasks) {
     const [xmin, , ymin] = t.viewport;

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+  "baseSha": "7f83cf1c08c2d9c6d9d7d7eb2bac0ec02c82752e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -358,8 +358,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/interval-method.html": {
-      "beforeSha256": "f9b65cbdac05fe9531abe112ab36bf942a5612afe7d266c86851725f902cbdf4",
-      "afterSha256": "699bbbab1f9c96a0a61dc6a964e86423551154113ba6e2093d17ebaadd60a4b1",
+      "beforeSha256": "941bc0d4d07d39ef4e5c42e1bab9290a458f2f532deec3b8deddd5db37958ea3",
+      "afterSha256": "c5b56cdcd657f4aa49ef83dea995690e33e48cf86381e64085c43f62a5d15bb2",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
@@ -398,8 +398,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/quadratic.html": {
-      "beforeSha256": "4d6cebccb96f023f24e9be7c9c1f476a67c4e5ceac0d605fbb5fa0131afd7c4d",
-      "afterSha256": "86f51bed044de87d85e0e8529d6e29a0cda92724dbde32e3fb32ccf477728dc2",
+      "beforeSha256": "14c8dc8527b4ccf22c846a6dff04eaad8250c94ad6e0f647e3ba92f886beb8af",
+      "afterSha256": "b75adba9cbdb35a17a8a6f0e4cbb654d7ad7587c69ea19974111c6c8e41dc2b8",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-t18.html": {
@@ -4833,6 +4833,16 @@
       "sourceBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
       "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+      "sourceBaseSha": "7f83cf1c08c2d9c6d9d7d7eb2bac0ec02c82752e",
+      "task": "docs/tasks/CARTESIAN_GRAPH_SCALE_FOLLOWUP_20261112.md",
+      "changedPaths": [
+        "ege-profil/trainers/interval-method.html",
+        "ege-profil/trainers/parameters-18/quadratic.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

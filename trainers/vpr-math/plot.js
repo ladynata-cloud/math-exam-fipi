@@ -44,8 +44,11 @@ function point(event,svg,p){
  if(!displayScale)return null;
  const sx=(event.clientX-rect.left-(rect.width-width*displayScale)/2)/displayScale;
  const sy=(event.clientY-rect.top-(rect.height-height*displayScale)/2)/displayScale;
- if(sx<left||sx>right||sy<top||sy>bottom)return null;
- return [Math.round(b.minX+(sx-left)/scale),Math.round(b.maxY-(sy-top)/scale)];
+ // Native click coordinates can lose a fraction of a CSS pixel at the border.
+ const edgePixel=1/displayScale;
+ if(sx<=left-edgePixel||sx>=right+edgePixel||sy<=top-edgePixel||sy>=bottom+edgePixel)return null;
+ const x=Math.min(right,Math.max(left,sx)),y=Math.min(bottom,Math.max(top,sy));
+ return [Math.round(b.minX+(x-left)/scale),Math.round(b.maxY-(y-top)/scale)];
 }
 root.VPRPlot={render,point,bounds,validPoints,count,yValue,correct,interpolate};
 })(typeof window!=='undefined'?window:globalThis);
