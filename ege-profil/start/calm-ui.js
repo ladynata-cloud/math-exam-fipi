@@ -41,8 +41,31 @@ function create(A){
   const partial=summary.topics.filter(t=>t.independent>0&&!t.mastered).length;
   return '<section class="journey-next" aria-label="Следующий шаг"><div><p class="eyebrow">Ваш следующий шаг</p><h2>'+esc(byId.get(next.lessonId)?.title||next.label)+'</h2><p>'+esc(next.reason)+'</p></div>'+choiceLink(next)+'</section><div class="journey-progress-summary" aria-label="Результаты основной программы"><a class="journey-progress-metric" href="#progress"><strong>'+summary.mastered+' / '+summary.total+'</strong><span>тем: две новые задачи самостоятельно</span></a><a class="journey-progress-metric" href="#progress"><strong>'+partial+'</strong><span>тем: первый самостоятельный успех</span></a><a class="journey-progress-metric" href="#progress"><strong>'+summary.practiced+'</strong><span>тем с завершённой практикой</span></a></div><p class="small journey-metric-note">Сводка основной программы. Отдельные курсы второй части показывают свои результаты ниже. <a href="#progress">Открыть подробности →</a></p>';
  }
+ function vectorRoute(e,starters,next){
+  const completed=starters.filter(l=>root.ProfileJourney.starterProgress(l,state)===3).length;
+  const examWork=e.lessonIds.some(id=>state.data.records[id]?.attempts||['guided','plan','independent'].some(mode=>{
+   const attempt=state.data.sessions[id+':'+mode];return attempt&&(attempt.draft||attempt.answers.length||attempt.done);
+  }));
+  const ready=completed===starters.length;
+  const first=starters.find(l=>root.ProfileJourney.starterProgress(l,state)<3);
+  const stages=starters.map(l=>{
+   const count=root.ProfileJourney.starterProgress(l,state);
+   return '<li><a href="#lesson/'+l.id+'">'+esc(l.title)+'</a><span class="small"> · '+(count===3?'пройдено':count+' из 3 задач')+'</span></li>';
+  }).join('');
+  const savedExam=next.kind==='resume'&&e.lessonIds.includes(next.lessonId);
+  shell('<p class="breadcrumb"><a href="#calm">← Весь маршрут профиля</a></p><section class="lesson-head" data-vector-basics-entry><p class="eyebrow">ЕГЭ профиль · №2</p><h1>Векторы с нуля</h1><p class="lead">'+esc(e.goal)+'</p>'+
+   (savedExam&&first?choiceLink({href:'#lesson/'+first.id,label:'Продолжить азбуку'},e)+'<p><a href="'+esc(next.href)+'">Вернуться к сохранённой задаче ЕГЭ</a></p>':choiceLink(next,e)+'<p class="small">'+esc(next.reason)+'</p>')+'</section>'+
+   '<section class="panel" aria-labelledby="vector-basics-title"><h2 id="vector-basics-title">Азбука векторов</h2><p><strong>'+completed+' из '+starters.length+' тем пройдено</strong>. В каждой теме три задачи по шагам с чертежом.</p><ol class="plain-steps">'+stages+'</ol></section>'+
+   '<details class="panel calm-start-help"><summary>Если решение не получается</summary><p>Открой подсказку в задаче. Посмотри, где начинается стрелка и куда указывает её наконечник. Каждый проверенный шаг остаётся на экране.</p></details>'+
+   '<details class="panel calm-number-foundations"><summary>Вспомнить координаты, знаки и корни</summary>'+e.prerequisites.map(id=>item(id)).join('')+'</details>'+
+   (ready||examWork?'<section class="panel" data-vector-exam-practice><h2>Задачи ЕГЭ №2</h2>'+e.lessonIds.map(id=>item(id,true)).join('')+'</section>'+root.ProfileCourse.resources(e.number)
+     :'<p class="small">После азбуки здесь откроются задачи ЕГЭ №2.</p>'));
+  bindStarts();
+ }
  function route(number){setEnabled(true);const e=D.exams.find(e=>e.number===Number(number));if(e){
   const next=nextChoice(e);
+  const starters=(e.starterIds||[]).map(id=>byId.get(id)).filter(Boolean);
+  if(starters.length&&root.ProfileJourney)return vectorRoute(e,starters,next);
   shell('<p class="breadcrumb"><a href="#calm">← Весь маршрут профиля</a></p><section class="lesson-head"><p class="eyebrow">ЕГЭ профиль · №'+e.number+'</p><h1>'+esc(e.title)+'</h1><p class="lead">'+esc(e.goal)+'</p>'+choiceLink(next,e)+'<p class="small">'+esc(next.reason||'Сначала попробуйте решить задачу. Если станет трудно, рядом будет помощь.')+'</p></section><details class="panel calm-start-help"><summary>Если решение не получается</summary><ol class="plain-steps"><li>Вспомните только нужное правило школьной математики или тригонометрии.</li><li>Вернитесь к той же задаче: условие и введённый ответ сохранятся.</li><li>После разбора попробуйте другое условие самостоятельно.</li></ol><p>Проходить весь школьный курс перед заданиями ЕГЭ не нужно.</p><a href="#example/'+e.entry+'">Посмотреть разобранный образец</a></details><details class="panel calm-number-foundations"><summary>Вспомнить основу, если трудно</summary>'+e.prerequisites.map(id=>item(id)).join('')+'</details>'+(e.number===8?'<details class="panel calm-trig-foundations"><summary>Если трудно с тригонометрией</summary>'+D.trigFoundations.lessonIds.map(id=>item(id)).join('')+'</details>':'')+'<section class="panel"><h2>Все темы этого номера</h2><p>Попробуйте разные типы задач этого номера.</p>'+e.lessonIds.map(id=>item(id,true)).join('')+'</section>'+root.ProfileCourse.resources(e.number)+'<a href="#checkpoint">Смешанная проверка №1–13</a>');bindStarts();return;}
   const snap=checkpoint.snapshot(),onlySecond=number==='second';
   const firstPart='<section class="journey-section" aria-labelledby="first-part-title"><div class="journey-section-title"><p class="eyebrow">Краткий ответ</p><h2 id="first-part-title">Первая часть · №1–13</h2><p>Каждая линия разбита на темы. Можно продолжить текущую работу или выбрать другую.</p></div><div class="exam-grid full-course-grid">'+D.exams.map(e=>{const done=e.lessonIds.filter(id=>state.record(id).independent.length>=2).length,recovered=e.lessonIds.filter(id=>state.record(id).independent.length<2&&state.canAdvance?.(id)).length;return '<article class="exam-card" data-calm-exam="'+e.number+'"><span class="exam-number">'+e.number+'</span><h2>'+esc(e.title)+'</h2><p>'+esc(e.goal)+'</p><progress value="'+done+'" max="'+e.lessonIds.length+'" aria-label="'+esc(e.title)+': темы с самостоятельным результатом"></progress><span class="small course-card-status">'+done+' из '+e.lessonIds.length+' тем: два новых самостоятельных условия'+(recovered?'<br>Закреплено на знакомых задачах: '+recovered:'')+'</span><div class="exam-card-actions">'+startLink(e)+'<a href="#calm/'+e.number+'">Все темы номера →</a></div></article>';}).join('')+'</div></section>';
@@ -64,7 +87,7 @@ function create(A){
   document.getElementById('example-practice').onclick=()=>{state.start(id,'guided',true);location.hash='practice/'+id+'/guided';};
  }
 
- function plan(l){const e=D.exams.find(e=>e.number===l.position),rows=e?.plan||['Назовите, что нужно найти.','Выберите действие и выполните вычисление.','Проверьте результат по исходному условию.'];return '<section class="plan-support"><h2>Короткий план</h2><ol>'+rows.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol><p class="small">Это тренировка с опорой. Подставленные числа и результаты шагов здесь не показаны.</p></section>';}
+ function plan(l){const e=D.exams.find(e=>e.number===l.position),rows=e?.plan||['Назовите, что нужно найти.',l.vectorBasics?'Посмотрите, откуда и куда направлены стрелки.':'Выберите действие и выполните вычисление.','Проверьте результат по исходному условию.'];return '<section class="plan-support"><h2>Короткий план</h2><ol>'+rows.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol><p class="small">Это тренировка с опорой. Подставленные числа и результаты шагов здесь не показаны.</p></section>';}
  function micro(l,t,s,mode){
   if(!prefs.enabled||mode!=='guided')return;const qs=root.ProfileCalmMicro?.steps(t,s.step)||[];if(!qs.length||s.answers.length>s.step)return;
   const panel=document.createElement('section');panel.className='micro-support';panel.innerHTML='<button type="button" class="button quiet" id="micro-start">Разбить это действие на маленькие шаги</button>';document.querySelector('.current-question').prepend(panel);

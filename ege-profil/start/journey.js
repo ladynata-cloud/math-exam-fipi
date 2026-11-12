@@ -32,7 +32,11 @@
       unstarted:topics.filter(topic=>!topic.started).length,recovered:topics.filter(topic=>topic.canAdvance&&!topic.mastered).length,topics};
   }
   function orderedExam(exam,byId){
-    return [...new Set([exam.entry,...(exam.lessonIds||[])])].filter(id=>safeId(id)&&byId.has(id)).map(id=>byId.get(id));
+    return [...new Set([...(exam.starterIds||[]),exam.entry,...(exam.lessonIds||[])])].filter(id=>safeId(id)&&byId.has(id)).map(id=>byId.get(id));
+  }
+  function starterProgress(lesson,state){
+    const guided=state?.data?.records?.[lesson.id]?.guided||[];
+    return lesson.tasks.slice(0,3).filter(task=>guided.includes(task.id)).length;
   }
   function choose({lessons=[],state,exam,exams=[]}={}){
     const byId=new Map(lessons.filter(lesson=>safeId(lesson.id)).map(lesson=>[lesson.id,lesson]));
@@ -42,7 +46,9 @@
     const scope=selected?ordered:[...byId.values()];
     const summaries=new Map(scope.map(lesson=>[lesson.id,lessonSummary(lesson,state)]));
     const sessions=scope.flatMap(lesson=>sessionsFor(lesson,state));
-    const ongoing=sessions.filter(item=>!item.session.done&&(item.worked||!summaries.get(item.lesson.id).canAdvance))
+    const starterPending=selected?.starterIds?.some(id=>byId.has(id)&&starterProgress(byId.get(id),state)<3);
+    const ongoing=sessions.filter(item=>!item.session.done&&(item.worked||(
+      item.lesson.vectorBasics?starterProgress(item.lesson,state)<3:!starterPending&&!summaries.get(item.lesson.id).canAdvance)))
       .sort((a,b)=>Number(b.worked)-Number(a.worked)||b.time-a.time||a.lesson.id.localeCompare(b.lesson.id));
     if(ongoing.length){
       const {lesson,mode}=ongoing[0];
@@ -54,12 +60,17 @@
     let candidates=ordered;
     const recent=sessions.filter(item=>item.session.done||item.worked).sort((a,b)=>b.time-a.time)[0];
     if(!selected&&recent){
-      const index=exams.findIndex(item=>(item.lessonIds||[]).includes(recent.lesson.id));
+      const index=exams.findIndex(item=>[...(item.starterIds||[]),...(item.lessonIds||[])].includes(recent.lesson.id));
       if(index>=0)candidates=[...exams.slice(index),...exams.slice(0,index)].flatMap(item=>orderedExam(item,byId));
       else if(!summaries.get(recent.lesson.id).canAdvance)candidates=[recent.lesson,...ordered];
     }
-    const next=candidates.find(lesson=>!lessonSummary(lesson,state).canAdvance);
+    const next=candidates.find(lesson=>lesson.vectorBasics?starterProgress(lesson,state)<3:!lessonSummary(lesson,state).canAdvance);
     if(next){
+      if(next.vectorBasics){
+        const count=starterProgress(next,state);
+        return {lessonId:next.id,mode:'guided',href:'#practice/'+next.id+'/guided',label:count?'Следующая задача по азбуке':next.id==='vec-basics-reading'?'Начать азбуку':'Начать следующую тему',
+          reason:next.summary,kind:'next',fresh:!!state?.data?.sessions?.[next.id+':guided']?.done};
+      }
       const record=lessonSummary(next,state),old=state?.data?.sessions?.[next.id+':independent'];
       return {lessonId:next.id,mode:'independent',href:'#practice/'+next.id+'/independent',
         label:record.started?'Следующая задача':'Начать тему',
@@ -70,6 +81,6 @@
       reason:selected?'Темы этого номера пройдены. Попробуйте выбирать способ в смешанной проверке.':'Темы первой части пройдены. Проверьте выбор способа на новых условиях разных номеров.',kind:'checkpoint',fresh:false};
     return {lessonId:null,mode:null,href:'#calm',label:'Выбрать тему',reason:'Откройте карту курса и выберите раздел.',kind:'empty',fresh:false};
   }
-  const api={choose,lessonSummary,summarize};root.ProfileJourney=api;
+  const api={choose,lessonSummary,summarize,starterProgress};root.ProfileJourney=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:window);
