@@ -4,27 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Базовая математика — понятный маршрут | MathExam</title>
-  <meta name="description" content="Базовая математика от счёта и деления уголком до дробей, уравнений и геометрии. Понятный маршрут, задания в кабинете и свободные тренажёры.">
+  <meta name="description" content="Базовая математика по шагам: карты каждого навыка, разные тренажёры, короткая практика и самостоятельная проверка. От счёта до дробей, уравнений и геометрии.">
 <link rel="canonical" href="https://mathexam.space/foundations/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Базовая математика — понятный маршрут | MathExam">
-<meta property="og:description" content="Базовая математика от счёта и деления уголком до дробей, уравнений и геометрии. Понятный маршрут, задания в кабинете и свободные тренажёры.">
+<meta property="og:description" content="Базовая математика по шагам: карты каждого навыка, разные тренажёры, короткая практика и самостоятельная проверка. От счёта до дробей, уравнений и геометрии.">
 <meta property="og:url" content="https://mathexam.space/foundations/">
 <meta property="og:site_name" content="MathExam">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Базовая математика — понятный маршрут | MathExam">
-<meta name="twitter:description" content="Базовая математика от счёта и деления уголком до дробей, уравнений и геометрии. Понятный маршрут, задания в кабинете и свободные тренажёры.">
+<meta name="twitter:description" content="Базовая математика по шагам: карты каждого навыка, разные тренажёры, короткая практика и самостоятельная проверка. От счёта до дробей, уравнений и геометрии.">
   <link rel="stylesheet" href="style.css?v=20261009-foundations-1">
   <script defer src="../learning/division-course-map.js?v=multiplication-complete-20261019"></script>
   <script defer src="../learning/preparation-map.js?v=multiplication-complete-20261019"></script>
   <script defer src="course.js?v=20261009-foundations-1"></script>
+  <link rel="stylesheet" href="routes.css?v=20261111-1">
+  <script defer src="route-core.js?v=20261111-1"></script>
+  <script defer src="route-store.js?v=20261111-1"></script>
+  <script defer src="routes-arithmetic.js?v=20261111-1"></script>
+  <script defer src="routes-number-sense.js?v=20261111-1"></script>
+  <script defer src="routes-algebra-geometry.js?v=20261111-1"></script>
+  <script defer src="route-catalog.js?v=20261111-1"></script>
+  <script defer src="home-routes.js?v=20261111-1"></script>
 <link rel="stylesheet" href="/assets/lesson-contacts.css?v=20261025">
 <script defer src="/assets/lesson-funnel.js?v=20261026"></script>
 </head>
 <body>
   <a class="skip" href="#course">К курсу</a>
-  <header class="site-head"><a class="brand" href="/">MathExam<span>Математика с Натальей Михайловной</span></a><nav aria-label="Навигация сайта"><a href="/trainers/oge-course/">Подготовка к ОГЭ</a><a class="button compact" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">Мой кабинет →</a><a href="/lessons/">Занятия с преподавателем</a></nav></header>
+  <header class="site-head"><a class="brand" href="/">MathExam<span>Математика с Натальей Михайловной</span></a><nav aria-label="Навигация сайта"><a href="/trainers/oge-course/">Подготовка к ОГЭ</a><a href="/ege-baza/">ЕГЭ база</a><a class="button compact" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/">Мой кабинет →</a><a href="/lessons/">Занятия с преподавателем</a></nav></header>
   <main>
     <section class="hero" aria-labelledby="page-title">
       <div><p class="eyebrow">ОТ ЧИСЛА К САМОСТОЯТЕЛЬНОМУ РЕШЕНИЮ</p><h1 id="page-title">Базовая <br>математика</h1><p class="lead">Спокойно разобраться в том, что мешает двигаться дальше. Один навык за раз: посмотреть, попробовать и решить самому.</p><div class="actions"><a class="button primary" id="start-link" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#practice=path%3Apre7-place-value" data-visit="path:pre7-place-value" data-mode="tasks">Начать с чисел →</a><a class="button" href="#course">Выбрать нужную тему</a><a class="button" href="/trainers/oge-basics/">Тренироваться без кабинета →</a></div></div>
@@ -34,9 +42,9 @@
     <section id="resume" class="resume" hidden aria-label="Последняя открытая тема"></section>
     <section id="course" class="course" aria-labelledby="course-title">
       <h2 id="course-title">Как будем заниматься?</h2>
-      <div class="tabs" role="tablist" aria-label="Режим курса"><button id="tab-tasks" role="tab" type="button" aria-controls="panel-tasks" aria-selected="true" tabindex="0" data-view="tasks">Задания</button><button id="tab-laboratory" role="tab" type="button" aria-controls="panel-laboratory" aria-selected="false" tabindex="-1" data-view="laboratory">Лаборатория</button></div>
+      <div class="tabs" role="tablist" aria-label="Режим курса"><button id="tab-tasks" role="tab" type="button" aria-controls="panel-tasks" aria-selected="true" tabindex="0" data-view="tasks">Маршруты</button><button id="tab-laboratory" role="tab" type="button" aria-controls="panel-laboratory" aria-selected="false" tabindex="-1" data-view="laboratory">Лаборатория</button></div>
       <div id="panel-tasks" role="tabpanel" aria-labelledby="tab-tasks">
-        <p class="mode-lead">Понятная последовательность от простого к сложному. <strong>«Работа в кабинете»</strong> открывает задание с сохранением ответов и результата для учителя. Свободные тренажёры помечены отдельно.</p>
+        <p class="mode-lead">В каждой теме — несколько способов разобраться и конечная проверка. Ссылки <strong>«Работа в кабинете»</strong> сохранены отдельно: там ответы доступны учителю, здесь прогресс остаётся в браузере.</p>
         <nav id="topic-nav" class="topic-nav" aria-label="Разделы базового курса"></nav>
         <div id="route"></div>
       </div>

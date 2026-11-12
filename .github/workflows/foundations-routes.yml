@@ -1,0 +1,82 @@
+name: Foundations complete routes
+on:
+  pull_request:
+    paths:
+      - 'foundations/**'
+      - 'ege-baza/app.js'
+      - 'trainers/oge-basics/index.html'
+      - 'trainers/archive-5-weeks/**'
+      - 'tools/foundations-routes*'
+      - 'docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md'
+      - 'docs/reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md'
+      - '.github/workflows/foundations-routes.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'foundations/**'
+      - 'ege-baza/app.js'
+      - 'trainers/oge-basics/index.html'
+      - 'trainers/archive-5-weeks/**'
+      - 'tools/foundations-routes*'
+      - 'docs/reports/FOUNDATIONS_COMPLETE_ROUTES_20261111.md'
+      - '.github/workflows/foundations-routes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foundations-routes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mathematics-and-learner-journeys:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact mathematics, coverage, state and retained source contracts
+        run: |
+          node --test tools/foundations-routes.test.cjs
+          node tools/learning-preparation.test.cjs
+          node --test tools/arithmetic-url-contract.test.cjs
+      - name: Install pinned isolated browser tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/foundations-routes" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/foundations-routes/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/foundations-routes/node_modules" >> "$GITHUB_ENV"
+      - name: Existing foundation and EGE navigation journeys
+        run: |
+          node --test tools/division-path.test.cjs tools/foundations-routes.dom.cjs
+          node tools/ege-baza-navigator.test.mjs
+          node tools/learning-foundations.browser.cjs
+          node tools/ege-baza-navigator.browser.mjs
+      - name: All 135 routes, fresh checks, mobile, keyboard, restore and exact visuals
+        env:
+          FOUNDATIONS_INLINE_VISUALS: '1'
+        run: node tools/foundations-routes.browser.cjs
+      - name: Actual patch whitespace and scope evidence
+        env:
+          CHECK_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          # The six retained archive sources use CRLF, verified by original blob identity.
+          # Keep all trailing-space/blank-line/tab checks while recognising CR as line ending.
+          git -c core.whitespace=trailing-space,space-before-tab,cr-at-eol diff --check "$CHECK_BASE" HEAD
+          git diff --stat "$CHECK_BASE" HEAD
+          git rev-parse HEAD
+          echo FOUNDATIONS_COMPLETE_ROUTES_OK
+      - name: Learner journey and visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: foundations-complete-routes
+          path: artifacts/foundations-routes/
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "0a4ffbd6d63173ede77bc18d9c90080e5f67a1e5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2593,8 +2593,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
-      "beforeSha256": "1bcb4c6478280cb4cb7c2fd733b418d0ec65ff88da253afc53d0efd0888e4c63",
-      "afterSha256": "8cf3c5965f60b0e9ba2f4ec96a19767eb28c6b49c282018ddc8e2320df4be8e4",
+      "beforeSha256": "2a107acef57e95584566007eac8c2d05e220f62c7906a2cdc03fecef79006a64",
+      "afterSha256": "df70c535e2716b5af0a2e37c7c52ea7fc9080cac3e64eec29018ecb29aab9e2d",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/multiplication-division.html": {
@@ -4769,16 +4769,26 @@
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
-      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
-      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
-      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "previousBaseSha": "88d8eb2cd8fdefa95b0aae7d6954a60c914e118d",
+      "sourceBaseSha": "a40d2b3db2da81c56a3feaff547a30ec68c32936",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
       "changedPaths": [
-        "topics/delenie-ugolkom/index.html",
-        "topics/lineynye-uravneniya/index.html",
-        "topics/obyknovennye-drobi/index.html",
-        "topics/oge-geometriya/index.html",
-        "topics/procenty/index.html"
+        "trainers/oge-basics/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "95036b45a924631c43b010efb224c13fb87ccaaa",
+      "sourceBaseSha": "74f5a688de2a6f2f931835f73b7805b998ea0b2e",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "cc24efb847e622c68db9197d83912c7132b81334",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     },
     {
@@ -4793,8 +4803,35 @@
     },
     {
       "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "2c5f679f703e469b1cc7d3f354b97b14656afd49",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90fe7c7c2dbbd776266097e3d9215cbc5f87af85",
+      "sourceBaseSha": "442501d11a5a541fc498e1f3ac477023fb47a724",
+      "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [
+        "topics/delenie-ugolkom/index.html",
+        "topics/lineynye-uravneniya/index.html",
+        "topics/obyknovennye-drobi/index.html",
+        "topics/oge-geometriya/index.html",
+        "topics/procenty/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
       "sourceBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "0a4ffbd6d63173ede77bc18d9c90080e5f67a1e5",
+      "task": "docs/tasks/FOUNDATIONS_COMPLETE_ROUTES_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
