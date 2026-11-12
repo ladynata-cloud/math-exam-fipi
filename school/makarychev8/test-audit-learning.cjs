@@ -9,7 +9,18 @@ test('all 51 topics have prediction, experiment and reason; none claims completi
 
 test('shifted rational formula, table, domain and asymptotes share exact parameters',()=>{
  for(const k of [-3,0,3])for(const a of [-2,0,2])for(const b of [-3,0,3]){assert.equal(math.functionValue('hyperbola',-a,k,b,a),null);assert.equal(math.functionValue('hyperbola',1-a,k,b,a),k+b);assert.equal(math.functionValue('hyperbola',-2-a,k,b,a),-k/2+b);}
- const rt=boot('#lesson/p08/0');assert(rt.d.querySelector('.m8-reflection').hidden);begin(rt,1);numeric(rt,'Коэффициент k',3);numeric(rt,'Свободный член b',2);numeric(rt,'Сдвиг в знаменателе a',2);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,2);assert.match(rt.d.querySelector('.m8-equation').textContent,/x \+ 2/);assert.match(rt.d.querySelector('.m8-result').textContent,/x ≠ −?[-]?2/);const rows=Array.from(rt.d.querySelectorAll('.m8-value-table tr')).map(r=>r.textContent);assert.deepEqual(rows,['xy','-40,5','-3-1','-2не определено','-15','03,5']);numeric(rt,'Коэффициент k',0);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,0);assert.match(rt.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);assert.equal(rt.d.querySelector('.m8-chart circle[fill="#f7faf5"]').getAttribute('cx'),'210');assert.equal(rt.d.querySelector('.m8-chart circle[fill="#f7faf5"]').getAttribute('cy'),'158');
+ const rt=boot('#lesson/p08/0');assert(rt.d.querySelector('.m8-reflection').hidden);begin(rt,1);numeric(rt,'Коэффициент k',3);numeric(rt,'Свободный член b',2);numeric(rt,'Сдвиг в знаменателе a',2);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,2);assert.match(rt.d.querySelector('.m8-equation').textContent,/x \+ 2/);assert.match(rt.d.querySelector('.m8-result').textContent,/x ≠ −?[-]?2/);const rows=Array.from(rt.d.querySelectorAll('.m8-value-table tr')).map(r=>r.textContent);assert.deepEqual(rows,['xy','-40,5','-3-1','-2не определено','-15','03,5']);numeric(rt,'Коэффициент k',0);assert.equal(rt.d.querySelectorAll('[data-asymptote]').length,0);assert.match(rt.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);
+ const graph=rt.d.querySelector('.m8-chart'),hole=graph.querySelector('circle[fill="#f7faf5"]');
+ const grid=Array.from(graph.querySelectorAll('line[stroke="#e1e8df"]'));
+ const coordinate=(line,attribute)=>Number(line.getAttribute(attribute));
+ const vertical=grid.filter(line=>coordinate(line,'x1')===coordinate(line,'x2'));
+ const horizontal=grid.filter(line=>coordinate(line,'y1')===coordinate(line,'y2'));
+ const unitX=(coordinate(vertical[1],'x1')-coordinate(vertical[0],'x1'))/2;
+ const unitY=(coordinate(horizontal[0],'y1')-coordinate(horizontal[1],'y1'))/2;
+ assert(unitX>0);assert.equal(unitX,unitY,'a unit is the same length on both axes');
+ const [xAxis,yAxis]=graph.querySelectorAll('line[stroke="#7f9486"]');
+ assert.equal(Number(hole.getAttribute('cx')),coordinate(yAxis,'x1')-2*unitX);
+ assert.equal(Number(hole.getAttribute('cy')),coordinate(xAxis,'y1')-2*unitY);
  rt.input(rt.d.querySelector('.m8-reflection select'),0);rt.button('Проверить объяснение');assert.match(rt.d.querySelector('.m8-reflection').textContent,/Объяснение верно/);const s=rt.api.getState(),record=s.tasks[rt.w.MakarychevCourse.lessons[7].tasks[0].id];assert(record.assisted);assert(!record.correct);assert(record.investigation.explained);const re=boot('#lesson/p08/0',s);assert.match(re.d.querySelector('.m8-result').textContent,/вертикальной асимптоты нет/);assert.equal(re.d.querySelectorAll('[data-asymptote]').length,0);assert(re.api.getState().tasks[rt.w.MakarychevCourse.lessons[7].tasks[0].id].investigation.explained);rt.close();re.close();
 });
 

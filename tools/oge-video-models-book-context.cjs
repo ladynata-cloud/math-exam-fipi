@@ -2,7 +2,7 @@
 // Narrow evidence receipt for one closed optional summary, never an oracle or
 // a general visible-text filter. Original math fixtures and SVGs stay intact.
 const assert=require('node:assert/strict'),crypto=require('node:crypto');
-const {restoreVideoModels,assets}=require('./oge-video-models-preservation.cjs');
+const {restoreVideoModels,restoreGraphScale,assets}=require('./oge-video-models-preservation.cjs');
 const pins=require('./fixtures/oge-video-models-native-bytes.json');
 // Explicit later teaching revisions; original historical pins remain immutable.
 const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
@@ -12,7 +12,7 @@ const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 function receipt({file,raw,id,prefix,visible,dom,assetHashes}){
  const pin=sourcePin(file);assert(pin&&pin.bookId&&pin.bookId===id,'exact reviewed book/source route');assert.equal(prefix,'');
  const native=restoreVideoModels(file,raw);assert.notEqual(native,String(raw),'the exact optional include block is required');
- assert.equal(hash(native),pin.sha256,'every native HTML byte must retain its reviewed identity');
+ assert.equal(hash(restoreGraphScale(file,native)),pin.sha256,'native HTML matches the historical pin after the exact reviewed graph projection change');
  assert.deepEqual(dom,{count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label},'one exact closed summary is the complete visible addon');
  assert.deepEqual(Object.keys(assetHashes).sort(),assets.map(file=>'/'+file).sort(),'exact four local addon assets');
  for(const value of Object.values(assetHashes))assert.match(value,/^[a-f0-9]{64}$/);

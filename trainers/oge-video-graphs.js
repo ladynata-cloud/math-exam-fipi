@@ -16,8 +16,9 @@
   function unique(xs) { xs = xs.map(x => x === 0 ? 0 : x); return xs.filter((x, i) => Number.isFinite(x) && !xs.slice(0, i).includes(x)).sort((a,b) => a-b); }
   function frame(title, bounds) {
     const [xmin,xmax,ymin,ymax] = bounds;
-    const X = x => 44 + (x - xmin) * 396 / (xmax - xmin);
-    const Y = y => 258 - (y - ymin) * 216 / (ymax - ymin);
+    const scale = Math.min(396 / (xmax - xmin), 216 / (ymax - ymin));
+    const X = x => 242 + (x - (xmin + xmax) / 2) * scale;
+    const Y = y => 150 - (y - (ymin + ymax) / 2) * scale;
     const chunks = [];
     const line = (x1,y1,x2,y2,color=GREEN,dash=false) => chunks.push(`<path d="M${X(x1).toFixed(2)},${Y(y1).toFixed(2)}L${X(x2).toFixed(2)},${Y(y2).toFixed(2)}" fill="none" stroke="${color}" stroke-width="2.5"${dash?' stroke-dasharray="6 5"':''}/>`);
     const label = (x,y,s,color=GRAY) => chunks.push(`<text x="${X(x).toFixed(2)}" y="${Y(y).toFixed(2)}" fill="${color}" font-size="16" text-anchor="middle">${esc(s)}</text>`);
@@ -33,16 +34,26 @@
     };
     const caption = text => chunks.push(`<text x="240" y="287" fill="${ORANGE}" font-size="16" text-anchor="middle">${esc(text)}</text>`);
     const outside = () => {
-      chunks.push(`<path d="M39,142L27,150L39,158M445,142L457,150L445,158" fill="none" stroke="${ORANGE}" stroke-width="3"/>`);
+      const left = X(xmin) - 5, right = X(xmax) + 5;
+      chunks.push(`<path d="M${left},142l-12,8 12,8M${right},142l12,8 -12,8" fill="none" stroke="${ORANGE}" stroke-width="3"/>`);
     };
+    const unit = 10 ** Math.floor(Math.log10(24 / scale)), ratio = 24 / scale / unit;
+    const tick = (ratio <= 1 ? 1 : ratio <= 2 ? 2 : ratio <= 5 ? 5 : 10) * unit;
+    for(let i=Math.ceil(xmin/tick);i<=Math.floor(xmax/tick);i++){
+      if(i)line(i*tick,ymin,i*tick,ymax,'#edf2f6');
+    }
+    for(let i=Math.ceil(ymin/tick);i<=Math.floor(ymax/tick);i++){
+      if(i)line(xmin,i*tick,xmax,i*tick,'#edf2f6');
+    }
     if(xmin<=0&&xmax>=0)line(0,ymin,0,ymax,'#cbd5e1');
     if(ymin<=0&&ymax>=0)line(xmin,0,xmax,0,'#cbd5e1');
-    label(xmax-(xmax-xmin)*.025,-.35,'x'); label((xmax-xmin)*.025,ymax-.25,'y');
-    const extent=Math.max(Math.abs(xmin),Math.abs(xmax));
-    const unit=Math.pow(10,Math.floor(Math.log10(extent/2))),ratio=extent/2/unit;
-    const tick=extent>8?unit*(ratio>=5?5:ratio>=2?2:1):2;
-    for(const x of [-2*tick,-tick,tick,2*tick]) if(x>xmin&&x<xmax)label(x,Math.min(ymax-.4,Math.max(ymin+.5,-.45)),fmt(x));
-    for(const y of [-4,-2,2,4]) if(y>ymin&&y<ymax)label(Math.max(xmin+.4,-.35),y,fmt(y));
+    label(xmax+12/scale,0,'x'); label(0,ymax+6/scale,'y');
+    for(let i=Math.ceil(xmin/tick);i<=Math.floor(xmax/tick);i++){
+      label(i*tick,ymin-18/scale,fmt(i*tick));
+    }
+    for(let i=Math.ceil(ymin/tick);i<=Math.floor(ymax/tick);i++){
+      label(xmin-20/scale,i*tick-4/scale,fmt(i*tick));
+    }
     return {line,label,dot,curve,caption,outside,finish:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><rect width="480" height="300" rx="12" fill="#fff"/><text x="240" y="24" font-size="17" font-weight="600" text-anchor="middle" fill="${GREEN}">${esc(title)}</text>${chunks.join('')}</svg>`};
   }
   function hyperValue(k,a,b,x) { return x === -a ? null : k/(x+a)+b; }
