@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "3b0a41ff53fcc0f458892b4ecaf5285e9d110c99",
+  "baseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -158,8 +158,8 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
-      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
+      "beforeSha256": "0e7eefbd29b9e1d81874560e3205e1e823938083a8a96f0005c5cbef3398b63e",
+      "afterSha256": "b0e1df4d619a0d6a14ea61c63fe0655163f96859e28cc1e6094a27cf202edb8c",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "aceda589a511a96b7526f456f8d360017f20cd5b52f359fad198252c4e8bcbc3",
-      "afterSha256": "327ce21226d870a117016d97e2ecdd9a507bbde611b7b3510d65b788ae71f08c",
+      "beforeSha256": "6e28c3feb1da7db5750d188a913240a7d17a8df9f8c03410721ed582b927f909",
+      "afterSha256": "784104b548dc007adc2febcf19e0f67822bc452d0d56e568d00bc8763e416e29",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -4877,10 +4877,10 @@
     },
     {
       "previousBaseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
-      "sourceBaseSha": "3b0a41ff53fcc0f458892b4ecaf5285e9d110c99",
-      "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
+      "sourceBaseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
+      "task": "docs/tasks/PROFILE_GEAR_TRAIN_20261112.md",
       "changedPaths": [
-        "articles/stroynost-kursa-geometrii/index.html"
+        "ege-profil/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

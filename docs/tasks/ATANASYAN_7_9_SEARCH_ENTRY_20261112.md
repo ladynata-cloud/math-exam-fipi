@@ -3,7 +3,7 @@
 [PR #573](https://github.com/ladynata-cloud/math-exam-fipi/pull/573) · `SMALL` · 12 ноября 2026 года
 
 Ветка `codex/atanasyan-7-9-search-entry` синхронизируется с `main` на
-`46a88be63a1bc838afd2aa85334b1208cfccfd8c`.
+`17bf8df3c99777eea2fee4ad327ed9a84be88dd3`.
 
 ## Объём
 

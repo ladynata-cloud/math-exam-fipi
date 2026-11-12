@@ -231,8 +231,8 @@
   @media(max-width:600px){.sheet{padding:22px 14px}.current-course,.legacy-course{padding:16px}.current-course .btn{display:flex;margin:10px 0}.first-three-links{grid-template-columns:1fr}.legacy-course .line{grid-template-columns:38px minmax(0,1fr)}.legacy-course .line-links{grid-column:2;justify-content:flex-start}.facts{font-size:14px}}
 </style>
 <link rel="stylesheet" href="skill-map.css?v=20261111-skills">
-<link rel="stylesheet" href="clockwork.css">
-<script defer src="clockwork.js"></script>
+<link rel="stylesheet" href="clockwork.css?v=20261112-gear-train">
+<script defer src="clockwork.js?v=20261112-gear-train"></script>
 <script defer src="skill-map-data.js?v=20261112-vectors"></script>
 <script defer src="skill-map.js?v=20261111-skills" data-profile-skill-map="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20" data-profile-skill-target="#profile-skill-entry"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -255,13 +255,22 @@
     <div class="profile-clock-header">
       <div>
         <h2 id="profile-clock-title">Часовая мастерская</h2>
-        <p>Выберите номер, чтобы открыть задание.</p>
+        <p>Нажмите на номер задания или название курса.</p>
       </div>
       <button type="button" class="profile-clock-toggle">Пауза</button>
     </div>
     <div class="profile-clock-case">
       <canvas aria-hidden="true"></canvas>
       <nav class="profile-clock-dials" aria-label="Задания на циферблатах"></nav>
+      <nav class="profile-clock-courses" aria-label="Дополнительные курсы и тренажёры">
+        <a class="profile-clock-course" href="/ege-profil/trigonometry/" aria-label="Тригонометрия"><span>Тригонометрия</span></a>
+        <a class="profile-clock-course" href="/ege-profil/atanasyan-10-11/" aria-label="Стереометрия по Атанасяну 10–11"><span>Стереометрия<small>Атанасян 10–11</small></span></a>
+        <a class="profile-clock-course" href="/stereo-course/sections/" aria-label="Сечения с нуля"><span>Сечения<small>с нуля</small></span></a>
+        <a class="profile-clock-course" href="/geometry-merzlyak/" aria-label="Мерзляк · углублённая планиметрия"><span>Мерзляк<small>углубление</small></span></a>
+        <a class="profile-clock-course" href="/geometry-course/textbook/" aria-label="Атанасян · планиметрия 7–9"><span>Атанасян<small>планиметрия</small></span></a>
+        <a class="profile-clock-course" href="/ege-profil/trainers/derivative-t8.html" aria-label="Производная по графику"><span>Производная<small>по графику</small></span></a>
+        <a class="profile-clock-course" href="/trainers/ege-profile/log-inequalities/" aria-label="Логарифмические неравенства"><span>Логарифмы<small>неравенства</small></span></a>
+      </nav>
     </div>
     <div class="profile-clock-footer">
       <span class="profile-clock-topic" aria-hidden="true"></span>

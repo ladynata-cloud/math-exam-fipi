@@ -79,29 +79,39 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  aspect-ratio: 1000 / 620;
+  aspect-ratio: 1000 / 900;
   border-block: 1px solid #9a6a42;
   background: #14262e url("clockwork-case.webp") center / 100% 100% no-repeat;
 }
 
 .profile-clock-case canvas,
-.profile-clock-dials {
+.profile-clock-dials,
+.profile-clock-courses {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.profile-clock-dials {
+.profile-clock-dials,
+.profile-clock-courses {
   pointer-events: none;
 }
 
+.profile-clock-dial,
 .profile-clock-number,
-.profile-clock-part {
+.profile-clock-part,
+.profile-clock-course {
   position: absolute;
   left: var(--clock-x);
   top: var(--clock-y);
   translate: -50% -50%;
+}
+
+.profile-clock-dial,
+.profile-clock-course {
+  width: var(--clock-diameter);
+  aspect-ratio: 1;
 }
 
 .profile-clock-number {
@@ -135,6 +145,48 @@
   background: #fff0bf;
   color: #281b15;
   box-shadow: inset 0 0 0 2px #c49254, 0 0 16px #ffca7a96;
+}
+
+.profile-clock-course {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+  pointer-events: auto;
+  color: #ffe7b8;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.profile-clock-course span {
+  display: grid;
+  justify-items: center;
+  max-width: 100%;
+  padding: 5px 6px;
+  border: 1px solid #ac8556;
+  border-radius: 6px;
+  background: #152a2c;
+  box-shadow: 0 2px 6px #0009;
+  font: 700 clamp(10px, 1.2vw, 13px)/1.14 system-ui, sans-serif;
+}
+
+.profile-clock-course small {
+  margin-top: 2px;
+  color: #ebd4ac;
+  font-size: .91em;
+}
+
+.profile-clock-course:hover span,
+.profile-clock-course:focus-visible span {
+  border-color: #ffe1a2;
+  background: #fff0bf;
+  color: #281b15;
+}
+
+.profile-clock-course:is(:hover, :focus-visible) small {
+  color: #4b3523;
 }
 
 .profile-clock :is(a, button):focus-visible {
@@ -183,14 +235,14 @@
   text-underline-offset: 4px;
 }
 
-@media (max-width: 680px) {
+@media (max-width: 880px) {
   .profile-clock {
     max-width: 450px;
     margin-inline: auto;
   }
 
   .profile-clock-case {
-    aspect-ratio: 360 / 616;
+    aspect-ratio: 360 / 1540;
     background-size: auto 100%;
     box-shadow: inset 3px 0 #8a5b38, inset -3px 0 #8a5b38;
   }
@@ -203,6 +255,10 @@
     gap: 5px;
     padding-inline: 8px;
     font-size: 13px;
+  }
+
+  .profile-clock-course span {
+    font-size: 10px;
   }
 }
 
