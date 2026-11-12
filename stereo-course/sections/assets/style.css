@@ -152,6 +152,11 @@ body[data-sections-board="true"] .app-header .brand{font-size:.75rem}
  html[data-sections-view="lessons"] .model-caption{min-height:2.1rem;padding:.4rem .6rem;font-size:.78rem}
  .sections-board-note{padding:0 .7rem;font-size:.69rem}
 }
+@media(max-width:360px){
+ html[data-sections-view="lessons"] .lesson-header{padding-inline:.65rem}
+ html[data-sections-view="lessons"] .lesson-condition{font-size:1rem;line-height:1.45}
+ html[data-sections-view="lessons"] .course-main .model-svg{height:clamp(180px,64vw,235px)}
+}
 
 /* Isolated, controllable previews: the course remains untouched underneath. */
 .sections-tour{box-sizing:border-box;width:min(760px,calc(100% - 1rem));max-width:calc(100% - 1rem);max-height:90vh;max-height:90dvh;margin:auto;padding:1rem;border:1px solid #bdd3c3;border-radius:1rem;background:#fffefa;color:#183b2b;overflow:auto;overscroll-behavior:contain;box-shadow:0 1rem 4rem #10271b40}
