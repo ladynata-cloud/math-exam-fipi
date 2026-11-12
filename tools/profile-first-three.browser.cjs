@@ -118,7 +118,7 @@ const server = http.createServer((req, res) => {
       if (number === 2) {
         const entry = page.locator('[data-vector-basics-entry]');
         await entry.waitFor();
-        assert.equal(new URL(page.url()).hash, '#calm/2');
+        assert.equal(new URL(page.url()).hash, '#exam/2');
         assert.equal(await page.locator('[data-vector-exam-practice]').count(), 0);
         await entry.locator('[data-exam-start="2"]').click();
       } else {
