@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
+  "baseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "91332dfdf902025cf86df32ff89d774f38c82ff36f9c29727022e7e660bf7b56",
-      "afterSha256": "9f91a1d677a485b7124602988b04feac14eb36c622ae5274f670a81b8becc795",
+      "beforeSha256": "a1b9e7561c06037fc0e5458a81f539b7f713a05dd6224f4cca4dd3939fd34851",
+      "afterSha256": "d00fc7b2af05a475adf3a6ac50ed394f091ba06439ee2cb575b825138a7be34e",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -318,13 +318,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
-      "beforeSha256": "67afda19e03cb7e9afb9986c9dcdf7c3300ebcace9d984b199683eca83d53589",
-      "afterSha256": "35ac4c1e2c25c84dd21d77163a7c086f676c837bdabaaec5f19015e012cdc5f2",
+      "beforeSha256": "c4d660bb546fc299e2432d9a0a4c0d2c129bd01a4fc1d379fdfb087b1d769f50",
+      "afterSha256": "8cc94d362b9ac0632dacbd9512ea8b91e33f6790b31388b6a6ac88f0c2533be2",
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "5cb0ee7ac3a6014c5d1732c9cfeaf66e67f36fce8cd52f53868d3b5df4d816f7",
-      "afterSha256": "b265c033084db27ed993c15a2f17a27a25dd3fa0102055b9a45a8fad8ab9c4d1",
+      "beforeSha256": "a93d3eeb5cdf90b0bb19d3a26c47d0dc6a88bb8e818cb93a632277a18943b97c",
+      "afterSha256": "987ce5124d36042cbc4f774c7dc38fdd3b086956fc722543e56b2f50063bd562",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -458,13 +458,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "f211192e7ae8b87c1320c22901d2a803bf8cfbd335e9500957525a641bd07c06",
-      "afterSha256": "d3a4866680ac1dd70a168ad37cc6b40ef483a67cb5e07cc600bb9161a46c1fda",
+      "beforeSha256": "ff09dcd4264d177e140d8dcaf002659860472534679d26894db715f549ac845f",
+      "afterSha256": "a15be0b8d2e643b9f1afba58f6d506d2aec57717351bf02cc9fb44ca933937e5",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "63338c8e953f019ea3524b721f21427a9952ef4fcaae77f48f2f112badcf650d",
-      "afterSha256": "e5e9ecd55675847a62b2cedf96645c32546e8416e9b44b9782fee08e1d2b69bd",
+      "beforeSha256": "a2fe1de390d3d281cf32f54631f90f5a07a36e6fcfa8f71a4bc81de3a975971a",
+      "afterSha256": "4b11dd731c1e5ca088686cd80289b51c3d19e59994d5233f6e656f973b9f185a",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -4841,6 +4841,19 @@
       "task": "docs/tasks/EGE_BASE_OCEAN_21_20261112.md",
       "changedPaths": [
         "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
+      "sourceBaseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
+      "task": "docs/tasks/PROFILE_VECTOR_BASICS_20261112.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/review.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

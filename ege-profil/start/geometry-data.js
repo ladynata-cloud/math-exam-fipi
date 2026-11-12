@@ -369,6 +369,9 @@
       ]
     }
   ];
-  root.ProfileLessons = (root.ProfileLessons || []).concat(lessons);
+  const firstVector = lessons.findIndex(lesson => lesson.group === 'vectors');
+  root.ProfileLessons = (root.ProfileLessons || []).concat(
+    lessons.slice(0, firstVector), root.ProfileVectorBasics || [], lessons.slice(firstVector)
+  );
   if (typeof module !== 'undefined' && module.exports) module.exports = lessons;
 })(globalThis);
