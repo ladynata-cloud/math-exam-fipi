@@ -3,21 +3,120 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('n
 const {chromium}=require('playwright'),root=path.resolve(__dirname,'..');
 const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});
 
+const clockCourses = [
+ '/ege-profil/trigonometry/', '/ege-profil/atanasyan-10-11/', '/stereo-course/sections/',
+ '/geometry-merzlyak/', '/geometry-course/textbook/', '/ege-profil/trainers/derivative-t8.html',
+ '/trainers/ege-profile/log-inequalities/'
+];
+
+async function checkClockMechanism(stage) {
+ const frames = await stage.locator('canvas').evaluate(canvas => new Promise(resolve => {
+  const context = canvas.getContext('2d');
+  const drawImage = context.drawImage;
+  const clearRect = context.clearRect;
+  const canvasBox = canvas.getBoundingClientRect();
+  const scaleX = canvasBox.width / canvas.width;
+  const scaleY = canvasBox.height / canvas.height;
+  const boxes = [...canvas.closest('.profile-clock-case').querySelectorAll('[data-clock-dial="second"]')]
+   .map(group => group.getBoundingClientRect());
+  const samples = [];
+  let frame = {pinions:boxes.map(() => []), gnomes:0};
+  const finish = () => {
+   delete context.drawImage;
+   delete context.clearRect;
+   resolve(samples);
+  };
+  const timeout = setTimeout(finish, 1600);
+
+  // Observe the actual painted wheels. The catalogue links stay still while
+  // the smaller wheels turn independently inside the large gear assemblies.
+  context.drawImage = function(image, ...args) {
+   if (image instanceof HTMLCanvasElement && args.length === 4 && args[0] < 0 && args[1] < 0) {
+    const transform = this.getTransform();
+    const x = canvasBox.left + transform.e * scaleX;
+    const y = canvasBox.top + transform.f * scaleY;
+    const angle = Math.atan2(transform.b * scaleY, transform.a * scaleX);
+    const size = Math.hypot(transform.a * scaleX, transform.b * scaleY) * args[2];
+    const group = boxes.findIndex(box => size < box.width * .6 &&
+     Math.hypot(x - box.left - box.width / 2, y - box.top - box.height / 2) < box.width / 2);
+    if (group >= 0) frame.pinions[group].push(angle);
+   }
+   if (image instanceof HTMLImageElement && args.length === 8 && image.src.endsWith('/clockwork-gnomes.webp')) {
+    frame.gnomes++;
+   }
+   return drawImage.call(this, image, ...args);
+  };
+  context.clearRect = function(...args) {
+   if (frame.gnomes && (!samples.length || performance.now() - samples[0].time >= 100)) {
+    samples.push({...frame, time:performance.now()});
+    if (samples.length === 2) {
+     clearTimeout(timeout);
+     finish();
+    }
+   }
+   frame = {pinions:boxes.map(() => []), gnomes:0};
+   return clearRect.apply(this, args);
+  };
+ }));
+ assert.equal(frames.length, 2, 'two animated workshop frames painted');
+ for (const frame of frames) {
+  assert.equal(frame.gnomes, 7, 'seven gnomes are drawn');
+  assert.deepEqual(frame.pinions.map(cluster => cluster.length), [3, 3, 3], 'three pinions inside each large gear');
+ }
+ const rotations = frames[1].pinions.flatMap((cluster, index) => cluster.map((angle, pinion) => {
+  const delta = angle - frames[0].pinions[index][pinion];
+  return Math.atan2(Math.sin(delta), Math.cos(delta));
+ }));
+ assert(rotations.every(delta => Math.abs(delta) > .001), 'all nine pinions rotate');
+ assert(new Set(rotations.map(delta => delta.toFixed(3))).size > 1, 'pinions rotate at different rates or directions');
+}
+
 async function checkProfileClock(page, width) {
  const workshop = page.getByRole('region', {name:'Часовая мастерская'});
  const stage = workshop.locator('.profile-clock-case');
- const links = stage.getByRole('link');
+ const links = stage.locator('.profile-clock-number');
+ const courses = stage.locator('.profile-clock-course');
  await stage.scrollIntoViewIfNeeded();
  assert.deepEqual(await links.evaluateAll(all => all.map(link => link.getAttribute('href'))),
   await page.locator('#profile-2027 .first-three-link[data-exam-number]').evaluateAll(all => all.map(link => link.getAttribute('href'))));
  assert.equal(await links.count(), 20);
- assert(await links.evaluateAll(all => all.every(link => {
-  const box = link.getBoundingClientRect(), stage = link.closest('.profile-clock-case').getBoundingClientRect();
-  return box.width >= 44 && box.height >= 44 &&
-   box.left >= stage.left && box.right <= stage.right && box.top >= stage.top && box.bottom <= stage.bottom;
- })), 'all clockwork task targets fit at ' + width);
+ const dials = await stage.locator('.profile-clock-dial').evaluateAll(groups => groups.map(group => ({
+  part:group.dataset.clockDial,
+  width:group.getBoundingClientRect().width,
+  numbers:[...group.querySelectorAll('.profile-clock-number')].map(link => Number(link.textContent))
+ })));
+ assert.deepEqual(dials.map(dial => dial.part), ['first', 'second', 'second', 'second']);
+ assert.deepEqual(dials.map(dial => dial.numbers), [Array.from({length:13}, (_, i) => i + 1), [14,15,16], [17,18], [19,20]]);
+ assert(dials[0].width > 0 && dials.slice(1).every(dial => dial.width > dials[0].width), 'all second-part gears are larger at ' + width);
+ assert.deepEqual(await courses.evaluateAll(all => all.map(link => link.getAttribute('href'))), clockCourses);
+ assert(await stage.locator('.profile-clock-number, .profile-clock-course').evaluateAll(all => {
+  const bounds = all[0].closest('.profile-clock-case').getBoundingClientRect();
+  const boxes = all.map(link => link.getBoundingClientRect());
+  return boxes.every((box, index) => {
+   const x = box.left + box.width / 2, y = box.top + box.height / 2;
+   return box.width >= 44 && box.height >= 44 &&
+    box.left >= bounds.left && box.right <= bounds.right && box.top >= bounds.top && box.bottom <= bounds.bottom &&
+    !boxes.some((other, otherIndex) => {
+     if (otherIndex === index) return false;
+     if (all[index].classList.contains('profile-clock-number') && all[otherIndex].classList.contains('profile-clock-number')) {
+      return Math.hypot(x - other.left - other.width / 2, y - other.top - other.height / 2) < 43.9;
+     }
+     return x > other.left && x < other.right && y > other.top && y < other.bottom;
+    });
+  });
+ }), 'all clockwork task and course targets fit at ' + width);
+ if (width === 1280) {
+  const responses = await Promise.all(clockCourses.map(route => page.request.get(new URL(route, page.url()).href)));
+  for (const [index, response] of responses.entries()) assert(response.ok(), clockCourses[index] + ' opens');
+ }
  await workshop.getByRole('link', {name:'№2 · Векторы с нуля'}).focus();
  assert.equal(await workshop.locator('.profile-clock-topic').textContent(), '№2 · Векторы с нуля');
+ await links.nth(12).focus();
+ await page.keyboard.press('Tab');
+ assert.equal(await page.evaluate(() => document.activeElement.textContent), '14', 'keyboard continues from the first part to the second');
+ await links.last().focus();
+ await page.keyboard.press('Tab');
+ assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), clockCourses[0], 'extra courses follow exam tasks by keyboard');
 
  const pause = workshop.getByRole('button', {name:'Пауза анимации'});
  const play = workshop.getByRole('button', {name:'Запустить анимацию'});
@@ -34,12 +133,15 @@ async function checkProfileClock(page, width) {
  await freezes();
  await page.emulateMedia({reducedMotion:'no-preference'});
  await pause.waitFor();
+ await stage.scrollIntoViewIfNeeded();
  await changes(await snapshot());
  await pause.click();
  await play.waitFor();
  await freezes();
  await play.click();
+ await stage.scrollIntoViewIfNeeded();
  await changes(await snapshot());
+ await checkClockMechanism(stage);
 }
 
 (async()=>{let browser;try{

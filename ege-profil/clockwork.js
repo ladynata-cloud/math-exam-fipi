@@ -15,7 +15,7 @@
   const tau = Math.PI * 2;
   const toothPitch = 5.4;
   const angularSpeed = tau / 68;
-  const compact = matchMedia("(max-width: 680px)");
+  const compact = matchMedia("(max-width: 880px)");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const metals = {
     brass: ["#ffe6b0", "#be8348", "#775039", "#e4b373", "#855032"],
@@ -42,40 +42,60 @@
     return wheel;
   }
 
-  function makeScene(isCompact) {
-    if (isCompact) {
-      const main = gear(180, 177, 30, "brass");
-      const second = meshedGear(main, 90, 20, "steel");
-      return {
-        width: 360, height: 616,
-        dials: [{ wheel: main, ring: 145 }, { wheel: second, ring: 83 }],
-        wheels: [meshedGear(main, 157, 10, "copper"), meshedGear(second, 24, 9, "brass"),
-          meshedGear(second, 148, 8, "copper"), main, second],
-        pivot: [180, 526], rod: 66,
-        walks: [
-          [[18, 83], [68, 83], [90, 61], [117, 61]],
-          [[16, 366], [70, 366], [96, 345], [129, 345]],
-          [[100, 575], [163, 575], [187, 560], [260, 560], [284, 576], [341, 576]]
-        ],
-        figures: [43, 44, 46]
-      };
-    }
+  function pinions(wheel) {
+    const hub = gear(wheel.x - 40, wheel.y, 9, "brass");
+    hub.speed = wheel.speed * 2.6;
+    hub.phase = wheel.phase * .5;
+    return [hub, meshedGear(hub, -18, 7, "copper"), meshedGear(hub, 64, 6, "steel")];
+  }
 
-    const main = gear(326, 307, 40, "brass");
-    const second = meshedGear(main, -8.4, 30, "steel");
+  function makeScene(isCompact) {
+    const first = gear(isCompact ? 180 : 170, isCompact ? 158 : 161, 24, "copper");
+    const teeth = isCompact ? 28 : 32;
+    const algebra = meshedGear(first, isCompact ? 90 : 18, teeth, "brass");
+    const stereo = meshedGear(algebra, isCompact ? 90 : -47, isCompact ? 10 : 12, "steel");
+    const geometry = meshedGear(isCompact ? stereo : algebra, isCompact ? 90 : 32, teeth, "steel");
+    const atanasyan = meshedGear(geometry, isCompact ? 90 : 45, isCompact ? 10 : 12, "brass");
+    const reasoning = meshedGear(isCompact ? atanasyan : geometry, isCompact ? 90 : 142, teeth, "copper");
+    const courseTeeth = isCompact ? 10 : 12;
+    const courses = [
+      meshedGear(algebra, isCompact ? 125 : 150, courseTeeth, "copper"), stereo,
+      meshedGear(algebra, isCompact ? 55 : -13, courseTeeth, "brass"),
+      meshedGear(geometry, isCompact ? 125 : -47, courseTeeth, "copper"), atanasyan,
+      meshedGear(geometry, isCompact ? 55 : 90, courseTeeth, "steel"),
+      meshedGear(reasoning, isCompact ? 90 : 139, courseTeeth, "brass")
+    ];
+    const written = [algebra, geometry, reasoning];
+    for (const wheel of written) wheel.open = true;
+    const walks = isCompact ? [
+      [[22, 88], [52, 88], [74, 68], [106, 68]],
+      [[17, 305], [47, 305], [68, 327], [102, 327]],
+      [[219, 544], [248, 544], [267, 562], [306, 562]],
+      [[20, 718], [54, 718], [72, 739], [105, 739]],
+      [[221, 957], [249, 957], [269, 976], [312, 976]],
+      [[17, 1131], [46, 1131], [64, 1151], [98, 1151]],
+      [[220, 1499], [252, 1499], [274, 1478], [318, 1478]]
+    ] : [
+      [[20, 83], [57, 83], [83, 61], [122, 61]],
+      [[49, 462], [116, 462], [143, 440], [233, 440], [258, 421], [309, 421]],
+      [[671, 131], [720, 131], [741, 153], [800, 153], [826, 132], [884, 132]],
+      [[840, 390], [881, 390], [906, 369], [968, 369]],
+      [[273, 507], [331, 507], [354, 486], [422, 486]],
+      [[738, 797], [798, 797], [826, 772], [900, 772], [923, 747], [965, 747]],
+      [[90, 866], [148, 866], [172, 843], [237, 843], [259, 861], [324, 861]]
+    ];
     return {
-      width: 1000, height: 620,
-      dials: [{ wheel: main, ring: 156 }, { wheel: second, ring: 118 }],
-      wheels: [meshedGear(main, -149, 11, "copper"), meshedGear(main, 111, 10, "steel"),
-        meshedGear(second, 51, 11, "copper"), meshedGear(second, 99, 15, "brass"),
-        main, second],
-      pivot: [326, 482], rod: 100,
-      walks: [
-        [[97, 521], [156, 521], [183, 546], [347, 546], [373, 526], [433, 526]],
-        [[580, 108], [637, 108], [665, 79], [773, 79], [797, 100], [856, 100]],
-        [[508, 537], [566, 537], [595, 510], [655, 510], [680, 485], [783, 485], [808, 511], [897, 511]]
-      ],
-      figures: [64, 61, 67]
+      width: isCompact ? 360 : 1000,
+      height: isCompact ? 1540 : 900,
+      dials: [{ wheel: first, ring: isCompact ? 122 : 117 },
+        ...written.map(wheel => ({ wheel, ring: wheel.radius - (isCompact ? 44 : 22) }))],
+      wheels: [first, ...written, ...courses],
+      pinions: written.flatMap(pinions),
+      courses,
+      pivot: isCompact ? [26, 379] : [117, 539],
+      rod: isCompact ? 122 : 224,
+      walks,
+      figures: isCompact ? [43, 44, 42, 47, 42, 45, 46] : [54, 59, 56, 52, 60, 55, 58]
     };
   }
 
@@ -123,7 +143,6 @@
     const edge = Math.ceil(r + toothPitch * 2 + 7);
     const { layer, paint } = surface(edge * 2, edge * 2, scale);
     const colors = metals[wheel.metal];
-    const finish = alloy(paint, r, colors);
     const rim = new Path2D();
     const tooth = [[-.50, -1.2], [-.29, -1.2], [-.22, .1], [-.15, 1],
       [.15, 1], [.22, .1], [.29, -1.2], [.50, -1.2]];
@@ -140,6 +159,7 @@
     rim.moveTo(inner, 0);
     rim.arc(0, 0, inner, 0, tau);
     paint.translate(edge, edge);
+    const finish = alloy(paint, r, colors);
     paint.save();
     paint.translate(2, 5);
     paint.strokeStyle = "#1c1411";
@@ -155,26 +175,28 @@
     paint.stroke(rim);
 
     const spokes = wheel.teeth > 20 ? 8 : 5;
-    for (let i = 0; i < spokes; i += 1) {
-      paint.save();
-      paint.rotate(i * tau / spokes);
-      paint.beginPath();
-      paint.moveTo(r * .12, -r * .11);
-      paint.quadraticCurveTo(r * .42, -r * .055, inner + 3, -r * .12);
-      paint.lineTo(inner + 3, r * .12);
-      paint.quadraticCurveTo(r * .46, r * .036, r * .12, r * .11);
-      paint.closePath();
-      paint.fillStyle = finish;
-      paint.fill();
-      paint.strokeStyle = colors[0] + "a0";
-      paint.stroke();
-      paint.restore();
+    if (!wheel.open) {
+      for (let i = 0; i < spokes; i += 1) {
+        paint.save();
+        paint.rotate(i * tau / spokes);
+        paint.beginPath();
+        paint.moveTo(r * .12, -r * .11);
+        paint.quadraticCurveTo(r * .42, -r * .055, inner + 3, -r * .12);
+        paint.lineTo(inner + 3, r * .12);
+        paint.quadraticCurveTo(r * .46, r * .036, r * .12, r * .11);
+        paint.closePath();
+        paint.fillStyle = finish;
+        paint.fill();
+        paint.strokeStyle = colors[0] + "a0";
+        paint.stroke();
+        paint.restore();
+      }
+      disc(paint, r * .22, finish, colors[0], 1.4);
+      disc(paint, r * .14, colors[2], colors[3], 1.2);
+      pin(paint, 0, 0, r * .068);
     }
     disc(paint, r - toothPitch * 1.72, null, "#251b18a8", 2.8);
     disc(paint, r - toothPitch * 2.25, null, colors[0] + "a0");
-    disc(paint, r * .22, finish, colors[0], 1.4);
-    disc(paint, r * .14, colors[2], colors[3], 1.2);
-    pin(paint, 0, 0, r * .068);
     for (let i = 0; i < spokes * 2; i += 1) {
       const angle = i * tau / (spokes * 2);
       const boltRadius = (inner + r - toothPitch * 2.6) / 2;
@@ -198,7 +220,7 @@
     disc(paint, ring - 17, null, "#cdac7266");
     disc(paint, ring - 29, null, "#c3a36e50");
     disc(paint, ring * .49, null, "#d5b67b33");
-    const marks = wheel.speed === 1 ? 60 : 30;
+    const marks = 60;
     for (let i = 0; i < marks; i += 1) {
       const major = i % 5 === 0;
       paint.save();
@@ -210,6 +232,24 @@
     for (let i = 0; i < 4; i += 1) {
       const angle = (i + .5) * Math.PI / 2;
       pin(paint, (radius - 5) * Math.cos(angle), (radius - 5) * Math.sin(angle), 2.5);
+    }
+    paint.restore();
+  }
+
+  function drawChamber(paint, wheel) {
+    const radius = wheel.radius - 31;
+    paint.save();
+    paint.translate(wheel.x, wheel.y);
+    const recess = paint.createRadialGradient(-27, -28, 9, 0, 0, radius);
+    recess.addColorStop(0, "#315456");
+    recess.addColorStop(.62, "#18343a");
+    recess.addColorStop(1, "#0d2028");
+    disc(paint, radius, recess, "#160e0d", 4);
+    disc(paint, radius - 3, null, "#bf926574", 2);
+    disc(paint, radius - 10, null, "#8c785354");
+    for (let i = 0; i < 8; i += 1) {
+      const angle = (i + .5) * tau / 8;
+      pin(paint, (radius - 14) * Math.cos(angle), (radius - 14) * Math.sin(angle), 2);
     }
     paint.restore();
   }
@@ -257,17 +297,15 @@
     paint.restore();
   }
 
-  function clockHands(dial, date, secondsOnly) {
+  function clockHands(dial, date) {
     const seconds = date.getSeconds() + date.getMilliseconds() / 1000;
     const minutes = date.getMinutes() + seconds / 60;
     const hours = date.getHours() + minutes / 60;
     ctx.save();
     ctx.translate(dial.wheel.x, dial.wheel.y);
-    if (!secondsOnly) {
-      hand(ctx, hours / 12 * tau, dial.ring * .49, 9, "#c98b56");
-      hand(ctx, minutes / 60 * tau, dial.ring * .69, 6, "#f0c98b");
-    }
-    hand(ctx, seconds / 60 * tau, dial.ring * .73, 2.4, secondsOnly ? "#e1bd80" : "#d9784a");
+    hand(ctx, hours / 12 * tau, dial.ring * .49, 9, "#c98b56");
+    hand(ctx, minutes / 60 * tau, dial.ring * .69, 6, "#f0c98b");
+    hand(ctx, seconds / 60 * tau, dial.ring * .73, 2.4, "#d9784a");
     disc(ctx, 8, "#cf9f68", "#53382a", 2);
     pin(ctx, 0, 0, 3.5);
     ctx.restore();
@@ -300,17 +338,51 @@
     return { legs, length };
   }
 
+  function repairPost(paint, [x, y], height) {
+    const grip = height * .43;
+    paint.save();
+    paint.translate(x + 11, y - grip);
+    paint.fillStyle = "#32241b";
+    paint.fillRect(-4, 0, 8, grip);
+    paint.fillStyle = "#b2814c";
+    paint.fillRect(-3, 0, 2, grip);
+    disc(paint, 6, "#4a3223", "#d7a36d", 1.5);
+    pin(paint, 0, 0, 3);
+    paint.restore();
+  }
+
+  function tighten(x, y, height, turn) {
+    ctx.save();
+    ctx.translate(x + 11, y - height * .43);
+    ctx.rotate(-.95 + .49 * Math.sin(turn * tau * 1.25));
+    ctx.strokeStyle = "#2d2119";
+    ctx.lineWidth = 5.5;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-height * .29, 0);
+    ctx.stroke();
+    ctx.strokeStyle = "#ffe0a7";
+    ctx.lineWidth = 2.6;
+    ctx.stroke();
+    disc(ctx, 3.4, null, "#ffdea2", 1.7);
+    ctx.restore();
+  }
+
   const sheet = new Image();
   function gnome(walk, index, height, elapsed) {
-    const pace = [23, 20, 26][index];
-    const phase = (elapsed * pace + walk.length * [.27, 1.3, .54][index]) % (walk.length * 2);
-    const reverse = phase > walk.length;
-    const distance = reverse ? walk.length * 2 - phase : phase;
+    const pace = 19 + (index * 5 % 9);
+    const repairTime = 1.9 + (index % 3) * .25;
+    const repairDistance = repairTime * pace;
+    const phase = (elapsed * pace + walk.length * (.26 + index * .34)) % (walk.length * 2 + repairDistance);
+    const fixing = phase >= walk.length && phase < walk.length + repairDistance;
+    const reverse = phase >= walk.length + repairDistance;
+    const distance = fixing ? walk.length : reverse ? walk.length * 2 + repairDistance - phase : phase;
     const leg = walk.legs.find((section) => distance <= section.end);
     const progress = (distance - leg.start) / (leg.end - leg.start);
     const x = leg.fromX + (leg.x - leg.fromX) * progress;
     const y = leg.fromY + (leg.y - leg.fromY) * progress;
-    const step = Math.sin(elapsed * 12 + index * 2);
+    const step = Math.sin(elapsed * (fixing ? 8 : 12) + index * 2);
     const width = height * 88 / 136;
 
     ctx.save();
@@ -319,32 +391,46 @@
     ctx.beginPath();
     ctx.ellipse(0, 1.5, width * .36, 3, 0, 0, tau);
     ctx.fill();
-    ctx.translate(0, -Math.abs(step) * 2);
-    ctx.rotate(step * .035);
+    ctx.translate(fixing ? 2 : 0, fixing ? 0 : -Math.abs(step) * 2);
+    ctx.rotate(fixing ? .075 + step * .025 : step * .035);
     ctx.scale(reverse ? -1 : 1, 1);
-    ctx.drawImage(sheet, index * 88, 0, 88, 136, -width / 2, -height, width, height);
+    ctx.drawImage(sheet, index % 3 * 88, 0, 88, 136, -width / 2, -height, width, height);
     ctx.restore();
+    if (fixing) tighten(x, y, height, (phase - walk.length) / pace);
   }
 
   const nav = stage.querySelector(".profile-clock-dials");
+  const courseLinks = [...stage.querySelectorAll(".profile-clock-course")];
   const toggle = workshop.querySelector(".profile-clock-toggle");
   const topic = workshop.querySelector(".profile-clock-topic");
-  const parts = ["Первая часть", "Вторая часть"].map((name, index) => {
+  const parts = [
+    ["Первая часть", "Часть I", 13],
+    ["Вторая часть · №14–16", "Часть II · №14–16", 16],
+    ["Вторая часть · №17–18", "Часть II · №17–18", 18],
+    ["Вторая часть · №19–20", "Часть II · №19–20", 20]
+  ].map(([name, caption, last], index) => {
     const group = document.createElement("div");
+    group.className = "profile-clock-dial";
+    group.dataset.clockDial = index === 0 ? "first" : "second";
     group.setAttribute("role", "group");
     group.setAttribute("aria-label", name);
     const label = document.createElement("span");
     label.className = "profile-clock-part";
-    label.textContent = index === 0 ? "Часть I" : "Часть II";
+    label.textContent = caption;
     label.setAttribute("aria-hidden", "true");
     group.append(label);
     nav.append(group);
-    return { group, label, links: [] };
+    return { group, label, last, links: [] };
   });
+
+  function describeLink(link, label) {
+    link.addEventListener("pointerenter", () => { topic.textContent = label; });
+    link.addEventListener("focus", () => { topic.textContent = label; });
+  }
 
   for (const link of route) {
     const number = Number(link.dataset.examNumber);
-    const part = parts[number <= 13 ? 0 : 1];
+    const part = parts.find(({ last }) => number <= last);
     const label = "№" + number + " · " + link.querySelector("strong").textContent.trim().replace(/^\d+\.\s*/, "");
     const entry = document.createElement("a");
     entry.className = "profile-clock-number";
@@ -352,11 +438,11 @@
     entry.href = link.getAttribute("href");
     entry.textContent = number;
     entry.setAttribute("aria-label", label);
-    entry.addEventListener("pointerenter", () => { topic.textContent = label; });
-    entry.addEventListener("focus", () => { topic.textContent = label; });
+    describeLink(entry, label);
     part.group.append(entry);
     part.links.push(entry);
   }
+  for (const link of courseLinks) describeLink(link, link.getAttribute("aria-label"));
 
   let scene = makeScene(compact.matches);
   let artwork;
@@ -367,30 +453,40 @@
   let userPaused;
   let visible = !("IntersectionObserver" in window);
 
-  function render() {
-    if (!artwork) return;
-    ctx.setTransform(canvas.width / scene.width, 0, 0, canvas.height / scene.height, 0, 0);
-    ctx.clearRect(0, 0, scene.width, scene.height);
-    pendulum(scene.pivot, scene.rod, elapsed);
-    for (const [index, wheel] of scene.wheels.entries()) {
-      const { layer, size } = artwork.wheels[index];
+  function spinWheels(wheels, layers) {
+    for (const [index, wheel] of wheels.entries()) {
+      const { layer, size } = layers[index];
       ctx.save();
       ctx.translate(wheel.x, wheel.y);
       ctx.rotate(wheel.phase + elapsed * angularSpeed * wheel.speed);
       ctx.drawImage(layer, -size / 2, -size / 2, size, size);
       ctx.restore();
     }
+  }
+
+  function render() {
+    if (!artwork) return;
+    ctx.setTransform(canvas.width / scene.width, 0, 0, canvas.height / scene.height, 0, 0);
+    ctx.clearRect(0, 0, scene.width, scene.height);
+    pendulum(scene.pivot, scene.rod, elapsed);
+    spinWheels(scene.wheels, artwork.wheels);
     ctx.drawImage(artwork.faces, 0, 0, scene.width, scene.height);
-    scene.dials.forEach((dial, index) => clockHands(dial, clockTime, index === 1));
+    spinWheels(scene.pinions, artwork.pinions);
+    clockHands(scene.dials[0], clockTime);
     ctx.drawImage(artwork.bridges, 0, 0, scene.width, scene.height);
     if (sheet.naturalWidth) {
       artwork.routes.forEach((walk, index) => gnome(walk, index, scene.figures[index], elapsed));
     }
   }
 
-  function locate(element, x, y) {
-    element.style.setProperty("--clock-x", x / scene.width * 100 + "%");
-    element.style.setProperty("--clock-y", y / scene.height * 100 + "%");
+  function locate(element, x, y, width = scene.width, height = scene.height) {
+    element.style.setProperty("--clock-x", x / width * 100 + "%");
+    element.style.setProperty("--clock-y", y / height * 100 + "%");
+  }
+
+  function locateWheel(element, wheel) {
+    locate(element, wheel.x, wheel.y);
+    element.style.setProperty("--clock-diameter", wheel.radius * 200 / scene.width + "%");
   }
 
   function arrange() {
@@ -405,19 +501,29 @@
     const faces = surface(scene.width, scene.height, scale);
     const bridges = surface(scene.width, scene.height, scale);
     scene.dials.forEach((dial, index) => {
-      drawDial(faces.paint, dial);
-      const { x, y } = dial.wheel;
+      const { wheel, ring } = dial;
+      if (index === 0) drawDial(faces.paint, dial);
+      else drawChamber(faces.paint, wheel);
+      const { radius } = wheel;
+      const diameter = 2 * radius;
       const part = parts[index];
-      locate(part.label, x, y + dial.ring * .39);
+      locateWheel(part.group, wheel);
+      locate(part.label, radius, radius * (index === 0 ? 1.33 : 1.78), diameter, diameter);
       part.links.forEach((entry, slot) => {
-        const angle = -Math.PI / 2 + slot * tau / part.links.length;
-        locate(entry, x + dial.ring * Math.cos(angle), y + dial.ring * Math.sin(angle));
+        const offset = index === 0 ? slot * tau / part.links.length : (slot - (part.links.length - 1) / 2) * .68;
+        const angle = offset - Math.PI / 2;
+        locate(entry, radius + ring * Math.cos(angle), radius + ring * Math.sin(angle), diameter, diameter);
       });
     });
-    scene.walks.forEach((walk) => walkway(bridges.paint, walk));
+    courseLinks.forEach((link, index) => locateWheel(link, scene.courses[index]));
+    scene.walks.forEach((walk, index) => {
+      walkway(bridges.paint, walk);
+      repairPost(bridges.paint, walk.at(-1), scene.figures[index]);
+    });
     artwork = {
       scene, faces: faces.layer, bridges: bridges.layer,
       wheels: scene.wheels.map((wheel) => castWheel(wheel, scale)),
+      pinions: scene.pinions.map((wheel) => castWheel(wheel, scale)),
       routes: scene.walks.map(walkingRoute)
     };
     render();
