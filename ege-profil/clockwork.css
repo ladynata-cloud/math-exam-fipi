@@ -81,7 +81,7 @@
   overflow: hidden;
   aspect-ratio: 1000 / 900;
   border-block: 1px solid #9a6a42;
-  background: #14262e url("clockwork-case.webp") center / 100% 100% no-repeat;
+  background: #14262e url("clockwork-treasure-cave.webp") center / 100% 100% no-repeat;
 }
 
 .profile-clock-case canvas,
@@ -244,7 +244,7 @@
   .profile-clock-case {
     aspect-ratio: 360 / 1540;
     background-size: auto 100%;
-    box-shadow: inset 3px 0 #8a5b38, inset -3px 0 #8a5b38;
+    box-shadow: inset 4px 0 9px #080f15, inset -4px 0 9px #080f15;
   }
 
   .profile-clock-header {

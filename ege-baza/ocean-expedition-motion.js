@@ -4,6 +4,11 @@
   const turn = Math.PI * 2;
   const cycle = value => value - Math.floor(value);
 
+  function ease(from, to, value) {
+    const part = Math.max(0, Math.min(1, (value - from) / (to - from)));
+    return part * part * (3 - 2 * part);
+  }
+
   function buffer(width, height) {
     const canvas = document.createElement('canvas');
     canvas.width = width;
@@ -268,6 +273,199 @@
     }
   }
 
+  const serpentCrown = new Path2D('M 33 11 Q 21 22 4 14 L -16 9 Q -34 10 -51 8 L -65 8 Q -74 5 -69 -1 L -49 -10 L -29 -16 Q -16 -25 1 -20 L 23 -31 L 18 -19 L 47 -26 L 31 -11 L 48 -13 Q 40 -6 30 0 Z');
+  const serpentJaw = new Path2D('M 6 5 Q -12 14 -34 11 L -64 7 L -62 13 Q -45 23 -18 22 Q 0 26 13 14 Z');
+  const serpentTeeth = new Path2D('M -64 6 l 3 6 4 -6 M -55 7 l 4 10 5 -10 M -43 7 l 4 8 5 -8 M -31 8 l 4 6 4 -6 M -20 8 l 4 5 4 -5');
+  const serpentLowerTeeth = new Path2D('M -57 10 l 4 -6 4 8 M -44 13 l 4 -7 4 8 M -31 14 l 4 -5 4 6');
+
+  function serpentHead(ctx, x, y, mouth, time) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(.075 * Math.sin(time * 2.6) + mouth * .13);
+    const skin = ctx.createLinearGradient(0, -29, -5, 25);
+    skin.addColorStop(0, '#759bc0');
+    skin.addColorStop(.32, '#36788e');
+    skin.addColorStop(.66, '#193b54');
+    skin.addColorStop(1, '#0b2237');
+
+    // The lower jaw swings about its hinge, revealing the throat between the lips.
+    const angle = -.64 * mouth;
+    const throat = ctx.createLinearGradient(0, 4, -30, 41);
+    throat.addColorStop(0, '#101528');
+    throat.addColorStop(1, '#673848');
+    ctx.fillStyle = throat;
+    ctx.beginPath();
+    ctx.moveTo(5, 7);
+    ctx.quadraticCurveTo(-32, 2, -65, 7);
+    ctx.lineTo(-64 * Math.cos(angle), 7 - 64 * Math.sin(angle));
+    ctx.quadraticCurveTo(-21, 28 * mouth + 13, 5, 14);
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(0, 6);
+    ctx.rotate(angle);
+    ctx.translate(0, -6);
+    ctx.fillStyle = '#d5ddd0';
+    ctx.fill(serpentLowerTeeth);
+    ctx.fillStyle = skin;
+    ctx.fill(serpentJaw);
+    ctx.strokeStyle = '#6895a980';
+    ctx.lineWidth = 1.05;
+    ctx.stroke(serpentJaw);
+    ctx.restore();
+
+    ctx.fillStyle = '#e1e7d2';
+    ctx.fill(serpentTeeth);
+    ctx.fillStyle = skin;
+    ctx.fill(serpentCrown);
+    ctx.save();
+    ctx.clip(serpentCrown);
+    glow(ctx, -33, -19, 39, '119,193,198', .46);
+    glow(ctx, 5, -21, 28, '107,122,186', .42);
+    for (let row = 0; row < 4; row++) {
+      for (let column = 0; column < 12; column++) {
+        const scaleX = -63 + column * 7.7 + row % 2 * 4;
+        const scaleY = -17 + row * 7 + 1.5 * Math.sin(column * 1.4 + row);
+        ctx.beginPath();
+        ctx.moveTo(scaleX - 3, scaleY + 2);
+        ctx.quadraticCurveTo(scaleX + 2, scaleY - 2.4, scaleX + 4, scaleY + 2.1);
+        ctx.strokeStyle = row % 2 ? '#98ccd459' : '#061a3785';
+        ctx.lineWidth = .72;
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+    ctx.strokeStyle = '#83aabe97';
+    ctx.lineWidth = 1.15;
+    ctx.stroke(serpentCrown);
+    ctx.strokeStyle = '#7ca9c28c';
+    ctx.beginPath();
+    ctx.moveTo(-61, 0);
+    ctx.quadraticCurveTo(-47, -3, -33, -12);
+    ctx.quadraticCurveTo(-20, -24, -3, -16);
+    ctx.moveTo(-7, -4);
+    ctx.quadraticCurveTo(14, -9, 23, -22);
+    ctx.moveTo(4, 3);
+    ctx.quadraticCurveTo(28, 1, 38, -20);
+    ctx.stroke();
+    for (let index = 0; index < 11; index++) {
+      const dx = -8 + index % 4 * 8;
+      const dy = -12 + Math.floor(index / 4) * 6 - index % 2;
+      dot(ctx, dx, dy, 1.1, '#7fb8bc88');
+    }
+    dot(ctx, -57, -1, 1.7, '#0c2132');
+    glow(ctx, -26, -9, 13, '236,191,93', .38);
+    ctx.save();
+    ctx.translate(-26, -8.5);
+    ctx.rotate(-.21);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 5, 2.9, 0, 0, turn);
+    ctx.fillStyle = '#ebc775';
+    ctx.fill();
+    ctx.fillStyle = '#121820';
+    ctx.fillRect(-1, -2.7, 1.4, 5.3);
+    ctx.restore();
+    ctx.strokeStyle = '#254e67';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.moveTo(-32, -9);
+    ctx.quadraticCurveTo(-26, -9.6, -18, -13);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function serpentBody(ctx, x, y, reach, time) {
+    const spine = [];
+    for (let index = 0; index <= 28; index++) {
+      const part = index / 28;
+      const wave = Math.sin(part * 8.8 - time * 2.7) * Math.sin(part * Math.PI);
+      const bx = x + 19 + (978 - x - 19) * part;
+      const by = y + (183 - y) * part + wave * (19 + 30 * reach);
+      const girth = (14 + 8 * Math.sin(part * Math.PI)) * (1 - .9 * part ** 2);
+      spine.push([bx, by, girth]);
+    }
+
+    ctx.beginPath();
+    for (const [bx, by, girth] of spine) ctx.lineTo(bx, by - girth);
+    for (let index = spine.length - 1; index >= 0; index--) {
+      const [bx, by, girth] = spine[index];
+      ctx.lineTo(bx, by + girth);
+    }
+    ctx.closePath();
+    const shade = ctx.createLinearGradient(x, 0, 978, 0);
+    shade.addColorStop(0, '#24556f');
+    shade.addColorStop(.6, '#15354f');
+    shade.addColorStop(1, '#0a1f39');
+    ctx.fillStyle = shade;
+    ctx.fill();
+    // Longitudinal bands follow the curves of the body and taper into the den.
+    for (const [top, bottom, color] of [
+      [-.98, -.64, '#76adc144'], [-.64, -.29, '#7fc9cd23'],
+      [.27, .67, '#06152d40'], [.67, .98, '#050f2870']
+    ]) {
+      ctx.beginPath();
+      for (const [bx, by, girth] of spine) ctx.lineTo(bx, by + top * girth);
+      for (let index = spine.length - 1; index >= 0; index--) {
+        const [bx, by, girth] = spine[index];
+        ctx.lineTo(bx, by + bottom * girth);
+      }
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    for (let index = 1; index < spine.length - 3; index++) {
+      const [bx, by, girth] = spine[index];
+      const [nextX, nextY, nextGirth] = spine[index + 1];
+      if (index % 2 === 0) {
+        ctx.beginPath();
+        ctx.moveTo(bx, by - girth + 2);
+        ctx.quadraticCurveTo(bx + 4, by - girth - 5, nextX + girth * .65, nextY - girth * 1.85);
+        ctx.quadraticCurveTo(nextX + girth * .3, nextY - girth * 1.14, nextX, nextY - nextGirth + 1);
+        ctx.fillStyle = '#537a9c';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      for (let row = -2; row <= 2; row++) {
+        const seam = by + row * girth * .35;
+        const offset = row % 2 * (nextX - bx) * .35;
+        ctx.moveTo(bx + offset, seam - girth * .19);
+        ctx.quadraticCurveTo(bx + offset - 4, seam, bx + offset, seam + girth * .19);
+      }
+      ctx.strokeStyle = index % 3 ? '#83b9be59' : '#8bc5ca93';
+      ctx.lineWidth = .85;
+      ctx.stroke();
+      dot(ctx, bx - 3, by - girth * .45, 1.15, '#7cc7c09a');
+    }
+  }
+
+  const denShadows = [[877, 111, 35], [902, 91, 40], [924, 94, 40], [949, 107, 40],
+    [967, 133, 39], [965, 157, 38], [945, 171, 37], [918, 180, 37], [895, 195, 34], [878, 211, 27]];
+  function seaSerpent(ctx, time) {
+    const visit = (time + 24.5) % 29;
+    if (visit >= 10.8) return;
+    const opacity = ease(0, 1.2, visit) * (1 - ease(9.6, 10.8, visit));
+    const reach = ease(0, 4.4, visit) * (1 - ease(6.7, 10.8, visit));
+    const mouth = ease(3.5, 4.5, visit) * (1 - ease(6.1, 7.15, visit));
+    const x = 921 - 245 * reach - 22 * mouth;
+    const y = 119 + 40 * reach + 9 * Math.sin(time * 1.8) * reach;
+    ctx.save();
+    ctx.globalAlpha = opacity;
+    // The original painting shows the resting serpent. Its den falls into shadow as it swims out.
+    for (const [dx, dy, radius] of denShadows) glow(ctx, dx, dy, radius, '5,23,51', .95);
+    serpentBody(ctx, x, y, reach, time);
+    serpentHead(ctx, x, y, mouth, time);
+    for (let index = 0; index < 7; index++) {
+      const drift = cycle(visit * .66 + index / 7);
+      ctx.globalAlpha = opacity * mouth * Math.sin(drift * Math.PI) * .55;
+      ctx.strokeStyle = '#a5d9e7';
+      ctx.lineWidth = .9;
+      ctx.beginPath();
+      ctx.arc(x - 64 - drift * (15 + index * 3), y + 13 - drift * (15 + index * 2), 1.1 + drift * 2.5, 0, turn);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   const vents = [[854, 453, 66], [879, 464, 73], [901, 457, 49]];
   function trench(ctx, time) {
     ctx.save();
@@ -302,6 +500,7 @@
       glidingRay(ctx, time);
       wreck(ctx, time);
       atlantis(ctx, time);
+      seaSerpent(ctx, time);
       cave(ctx, time);
       trench(ctx, time);
       for (const particle of particles) {
