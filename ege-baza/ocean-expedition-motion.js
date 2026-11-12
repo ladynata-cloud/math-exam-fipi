@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  if (typeof Path2D !== 'function') return;
+
   const turn = Math.PI * 2;
   const cycle = value => value - Math.floor(value);
 

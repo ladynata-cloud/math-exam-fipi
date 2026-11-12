@@ -9,7 +9,7 @@
 
   const stage = workshop.querySelector(".profile-clock-case");
   const canvas = stage.querySelector("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = typeof Path2D === "function" ? canvas.getContext("2d") : null;
   if (!ctx) return;
 
   const tau = Math.PI * 2;

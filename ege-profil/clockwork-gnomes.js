@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  if (typeof Path2D !== "function") return;
+
   const tau = Math.PI * 2;
   const spriteUrl = new URL("clockwork-gnomes.webp", document.currentScript.src).href;
   const cellWidth = 88;
