@@ -3,6 +3,16 @@
 
   const storagePrefix = 'geometry7-control-written-v1';
   const fields = ['given', 'goal', 'solution'];
+  const fieldLimits = [2000, 2000, 6000];
+  const toolDemos = {
+    'tool-segment': 'Точки, отрезок и отмена',
+    'tool-intersection': 'Точка пересечения',
+    'tool-arc': 'Дуга угла',
+    'tool-tick': 'Засечки на равных отрезках'
+  };
+  const toolDemoIds = Object.keys(toolDemos);
+  const demoPanels = ['draw-demo', 'write-demo', ...toolDemoIds];
+  const panels = ['tools', 'scheme', 'hint', 'example', 'tool-demos', ...demoPanels];
 
   function makeVariants(trainers) {
     const items = new Map(trainers.map(trainer => [trainer.id, trainer.items]));
@@ -147,11 +157,12 @@
     return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   }
 
-  function mount(root, trainers, renderDiagram) {
+  function mount(root, trainers, renderDiagram, { room = false, notify = () => true } = {}) {
     const variants = makeVariants(trainers);
     const drawing = window.GeometryControlDrawing;
+    const demos = window.GeometryControlDemos;
     const drafts = new Map();
-    const navigation = read('navigation');
+    const navigation = room ? {} : read('navigation');
     let variant = navigation.variant === 1 ? 1 : 0;
     const questions = variants.map((tasks, index) => {
       const question = navigation.questions?.[index];
@@ -160,6 +171,64 @@
     let editor = null;
     let activeField = 'given';
 
+    function getRoomState() {
+      const records = [];
+      for (const [key, draft] of drafts) {
+        const text = fields.map(field => draft[field] || '');
+        const value = drawing.drawingValue(draft.drawing);
+        const hasDrawing = value.points.length || value.marks.length || value.objects.length;
+        if (text.some(Boolean) || hasDrawing || draft.open.size || draft.playing.size) {
+          records.push([key, text, hasDrawing ? value : null, [...draft.open].sort(), [...draft.playing].sort()]);
+        }
+      }
+      records.sort(([a], [b]) => a.localeCompare(b));
+      return { variant, questions, records };
+    }
+
+    function applyRoomState(value) {
+      if (JSON.stringify(value) === JSON.stringify(getRoomState())) return;
+      const invalid = () => { throw new TypeError('Invalid written work state'); };
+      const panelSet = (values, allowed) => Array.isArray(values) && values.length <= allowed.length &&
+        values.every(name => allowed.includes(name)) && new Set(values).size === values.length;
+      if (!value || ![0, 1].includes(value.variant) || !Array.isArray(value.questions) || value.questions.length !== 2 ||
+          !value.questions.every((index, v) => Number.isInteger(index) && index >= 0 && index < variants[v].length) ||
+          !Array.isArray(value.records) || value.records.length > 10) invalid();
+      const next = new Map();
+      for (const row of value.records) {
+        if (!Array.isArray(row) || row.length !== 5) invalid();
+        const [key, text, geometry, open, playing] = row;
+        if (typeof key !== 'string' || !/^[12]-[1-5]$/.test(key) || next.has(key) ||
+            !Array.isArray(text) || text.length !== fields.length ||
+            !text.every((note, index) => typeof note === 'string' && note.length <= fieldLimits[index]) ||
+            !panelSet(open, panels) || !panelSet(playing, demoPanels) ||
+            !playing.every(panel => open.includes(panel)) ||
+            (!open.includes('tool-demos') && toolDemoIds.some(id => open.includes(id)))) invalid();
+        let record = drawing.readRoomDrawing(geometry);
+        const previous = drafts.get(key)?.drawing;
+        if (previous) {
+          const before = JSON.stringify(drawing.drawingValue(previous));
+          const after = JSON.stringify(drawing.drawingValue(record));
+          if (before === after) record = previous;
+          else {
+            record.history = previous.history.slice(-79);
+            if (record.history.at(-1) === after) record.history.pop();
+            else record.history.push(before);
+          }
+        }
+        next.set(key, {
+          ...Object.fromEntries(fields.map((field, index) => [field, text[index]])),
+          drawing: record, open: new Set(open), playing: new Set(playing)
+        });
+      }
+      editor?.destroy();
+      editor = null;
+      drafts.clear();
+      for (const [key, draft] of next) drafts.set(key, draft);
+      variant = value.variant;
+      questions.splice(0, questions.length, ...value.questions);
+      if (!root.hidden) render();
+    }
+
     function render() {
       editor?.destroy();
       const question = questions[variant];
@@ -167,12 +236,13 @@
       const task = tasks[question];
       const key = `${variant + 1}-${question + 1}`;
       if (!drafts.has(key)) {
-        const saved = read(key);
-        drafts.set(key, { ...saved, drawing: drawing.createRecord(saved.drawing) });
+        const saved = room ? {} : read(key);
+        drafts.set(key, { ...saved, drawing: drawing.createRecord(saved.drawing), open: new Set(), playing: new Set() });
       }
       const draft = drafts.get(key);
       const goalLabel = task.proof ? 'Доказать' : 'Найти';
       const solutionLabel = task.proof ? 'Доказательство' : 'Решение';
+      const panel = name => `data-written-panel="${name}" ${draft.open.has(name) ? 'open' : ''}`;
       root.innerHTML = `
         <article class="card written-card">
           <div class="written-navigation">
@@ -191,7 +261,14 @@
             <section class="written-drawing" aria-labelledby="drawing-title">
               <h3 id="drawing-title">Чертёж</h3>
               <div id="written-drawing"></div>
-              <details class="written-details">
+              ${demos?.markup(key, 'Как построить чертёж', panel('draw-demo')) ?? ''}
+              ${demos ? `<details class="written-details" ${panel('tool-demos')}>
+                <summary>Как пользоваться инструментами</summary>
+                <div class="tool-demo-list">
+                  ${toolDemoIds.map(id => demos.markup(id, toolDemos[id], panel(id))).join('')}
+                </div>
+              </details>` : ''}
+              <details class="written-details" ${panel('scheme')}>
                 <summary>Посмотреть схему</summary>
                 <figure class="figure">${renderDiagram(task.diagram)}</figure>
               </details>
@@ -209,12 +286,13 @@
               <div class="written-symbols" role="group" aria-label="Вставить математический символ">
                 ${['∠', '°', '△', '⊥', '∥', '=', '−', '·'].map(symbol => `<button class="btn" type="button" data-symbol="${symbol}" aria-label="Вставить ${symbol}">${symbol}</button>`).join('')}
               </div>
-              <p class="draft-status" role="status">Черновик сохраняется в этом браузере.</p>
-              <details class="written-details">
+              <p class="draft-status" role="status">${room ? 'Чертёж и записи общие для участников комнаты.' : 'Черновик сохраняется в этом браузере.'}</p>
+              ${demos?.markup(task.proof ? 'proof-format' : 'format', 'Как оформить запись', panel('write-demo')) ?? ''}
+              <details class="written-details" ${panel('hint')}>
                 <summary>Подсказка к ${task.proof ? 'доказательству' : 'решению'}</summary>
                 <p>${escape(task.hint)}</p>
               </details>
-              <details class="written-details">
+              <details class="written-details" ${panel('example')}>
                 <summary>Сверить с образцом</summary>
                 <dl class="written-example">
                   <dt>Дано</dt><dd>${escape(task.given)}</dd>
@@ -240,6 +318,18 @@
           : 'Черновик доступен до закрытия этой страницы.';
       };
       if (draft.persisted !== undefined) statusText(draft.persisted, true);
+      function commit(patch) {
+        if (room) {
+          const ok = notify();
+          status.textContent = ok
+            ? 'Чертёж и записи общие для участников комнаты.'
+            : 'В комнате заполнено место для чертежей и записей.';
+          return ok;
+        }
+        draft.persisted = save(key, patch);
+        statusText(draft.persisted, true);
+        return true;
+      }
 
       const textareas = Object.fromEntries(fields.map(field => [field, root.querySelector(`#written-${field}`)]));
       activeField = 'given';
@@ -247,9 +337,9 @@
         input.value = typeof draft[field] === 'string' ? draft[field] : '';
         input.addEventListener('focus', () => { activeField = field; });
         input.addEventListener('input', () => {
+          const previous = draft[field] || '';
           draft[field] = input.value;
-          draft.persisted = save(key, { [field]: input.value });
-          statusText(draft.persisted, true);
+          if (!commit({ [field]: input.value })) draft[field] = input.value = previous;
         });
       }
       root.querySelector('.written-symbols').addEventListener('click', event => {
@@ -262,10 +352,47 @@
         field.dispatchEvent(new Event('input', { bubbles: true }));
         field.focus();
       });
-      editor = drawing.mount(root.querySelector('#written-drawing'), draft.drawing, task.names, value => {
-        draft.persisted = save(key, { drawing: value });
-        statusText(draft.persisted, true);
-      });
+      editor = drawing.mount(root.querySelector('#written-drawing'), draft.drawing, task.names, value => commit({ drawing: value }));
+      root.querySelector('[data-written-panel="tools"]').open = draft.open.has('tools');
+      for (const details of root.querySelectorAll('[data-written-panel]')) {
+        const name = details.dataset.writtenPanel;
+        const play = details.dataset.demo && details.querySelector('[data-demo-toggle]');
+        const playing = () => demos?.setPlaying(details, draft.playing.has(name));
+        playing();
+        play?.addEventListener('click', () => {
+          const wasPlaying = draft.playing.delete(name);
+          if (!wasPlaying) draft.playing.add(name);
+          if (room && !commit()) {
+            if (wasPlaying) draft.playing.add(name);
+            else draft.playing.delete(name);
+          }
+          playing();
+        });
+        details.addEventListener('toggle', () => {
+          if (!details.isConnected || draft.open.has(name) === details.open) return;
+          const beforeOpen = new Set(draft.open);
+          const beforePlaying = new Set(draft.playing);
+          if (details.open) draft.open.add(name);
+          else {
+            const closing = name === 'tool-demos' ? [name, ...toolDemoIds] : [name];
+            for (const id of closing) {
+              draft.open.delete(id);
+              draft.playing.delete(id);
+            }
+          }
+          if (room && !commit()) {
+            draft.open = beforeOpen;
+            draft.playing = beforePlaying;
+            details.open = beforeOpen.has(name);
+          } else if (name === 'tool-demos' && !details.open) {
+            for (const child of details.querySelectorAll('[data-demo]')) {
+              child.open = false;
+              demos.setPlaying(child, false);
+            }
+          }
+          playing();
+        });
+      }
     }
 
     root.addEventListener('click', event => {
@@ -276,7 +403,8 @@
       if (nextVariant === variant && nextQuestion === questions[variant]) return;
       variant = nextVariant;
       questions[variant] = nextQuestion;
-      save('navigation', { variant, questions });
+      if (room) notify();
+      else save('navigation', { variant, questions });
       render();
       const title = root.querySelector('#written-title');
       title.focus({ preventScroll: true });
@@ -284,7 +412,7 @@
       if (top < 0 || top > innerHeight - 70) title.scrollIntoView({ block: 'start' });
     });
 
-    return { show() { if (!editor) render(); } };
+    return { show() { if (!editor) render(); }, getRoomState, applyRoomState };
   }
 
   window.GeometryControlWork = { mount };
