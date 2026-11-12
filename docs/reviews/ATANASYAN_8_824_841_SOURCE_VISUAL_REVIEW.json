@@ -1,0 +1,994 @@
+{
+  "schemaVersion": 1,
+  "source": "passed",
+  "models": "passed",
+  "browser": "passed",
+  "reviewer": "ChatGPT coordinating reviewer (root); independent of authored content",
+  "at": "2026-11-06T00:03:16.744216+00:00",
+  "independentReviewer": true,
+  "authoredFileSha256": "8af283ae92b28ee457fbb6817f42a69f8fd5740daec9977cf2633f0769fdfbbe",
+  "runtimeFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "b7f5ef3408a2cd8c0fe82ba33f5a3bddc076b6b7bd6dd5f5424f6f9406dedee5",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "2e9889681ce87a13b4cec641c7087c065de1d19298e94c10397240d4206157a2",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "sourcePages": [
+    214,
+    215
+  ],
+  "sourceFigure": 274,
+  "widths": [
+    320,
+    1280
+  ],
+  "views": 94,
+  "viewWidthPairs": 188,
+  "inspectedViewPairs": [
+    "atanasyan-7-9-main-824-part-1/neutral/1280",
+    "atanasyan-7-9-main-824-part-1/neutral/320",
+    "atanasyan-7-9-main-824-part-1/step-1/1280",
+    "atanasyan-7-9-main-824-part-1/step-1/320",
+    "atanasyan-7-9-main-824-part-1/step-2/1280",
+    "atanasyan-7-9-main-824-part-1/step-2/320",
+    "atanasyan-7-9-main-824-part-1/step-3/1280",
+    "atanasyan-7-9-main-824-part-1/step-3/320",
+    "atanasyan-7-9-main-824-part-1/step-4/1280",
+    "atanasyan-7-9-main-824-part-1/step-4/320",
+    "atanasyan-7-9-main-825-part-1/neutral/1280",
+    "atanasyan-7-9-main-825-part-1/neutral/320",
+    "atanasyan-7-9-main-825-part-1/step-1/1280",
+    "atanasyan-7-9-main-825-part-1/step-1/320",
+    "atanasyan-7-9-main-825-part-1/step-2/1280",
+    "atanasyan-7-9-main-825-part-1/step-2/320",
+    "atanasyan-7-9-main-825-part-1/step-3/1280",
+    "atanasyan-7-9-main-825-part-1/step-3/320",
+    "atanasyan-7-9-main-825-part-1/step-4/1280",
+    "atanasyan-7-9-main-825-part-1/step-4/320",
+    "atanasyan-7-9-main-826-part-1/neutral/1280",
+    "atanasyan-7-9-main-826-part-1/neutral/320",
+    "atanasyan-7-9-main-826-part-1/step-1/1280",
+    "atanasyan-7-9-main-826-part-1/step-1/320",
+    "atanasyan-7-9-main-826-part-1/step-2/1280",
+    "atanasyan-7-9-main-826-part-1/step-2/320",
+    "atanasyan-7-9-main-826-part-1/step-3/1280",
+    "atanasyan-7-9-main-826-part-1/step-3/320",
+    "atanasyan-7-9-main-826-part-1/step-4/1280",
+    "atanasyan-7-9-main-826-part-1/step-4/320",
+    "atanasyan-7-9-main-827-part-1/neutral/1280",
+    "atanasyan-7-9-main-827-part-1/neutral/320",
+    "atanasyan-7-9-main-827-part-1/step-1/1280",
+    "atanasyan-7-9-main-827-part-1/step-1/320",
+    "atanasyan-7-9-main-827-part-1/step-2/1280",
+    "atanasyan-7-9-main-827-part-1/step-2/320",
+    "atanasyan-7-9-main-827-part-1/step-3/1280",
+    "atanasyan-7-9-main-827-part-1/step-3/320",
+    "atanasyan-7-9-main-828-part-1/neutral/1280",
+    "atanasyan-7-9-main-828-part-1/neutral/320",
+    "atanasyan-7-9-main-828-part-1/step-1/1280",
+    "atanasyan-7-9-main-828-part-1/step-1/320",
+    "atanasyan-7-9-main-828-part-1/step-2/1280",
+    "atanasyan-7-9-main-828-part-1/step-2/320",
+    "atanasyan-7-9-main-828-part-1/step-3/1280",
+    "atanasyan-7-9-main-828-part-1/step-3/320",
+    "atanasyan-7-9-main-829-part-1/case-1/1280",
+    "atanasyan-7-9-main-829-part-1/case-1/320",
+    "atanasyan-7-9-main-829-part-1/neutral/1280",
+    "atanasyan-7-9-main-829-part-1/neutral/320",
+    "atanasyan-7-9-main-829-part-1/step-1/1280",
+    "atanasyan-7-9-main-829-part-1/step-1/320",
+    "atanasyan-7-9-main-829-part-1/step-2/1280",
+    "atanasyan-7-9-main-829-part-1/step-2/320",
+    "atanasyan-7-9-main-829-part-1/step-3/1280",
+    "atanasyan-7-9-main-829-part-1/step-3/320",
+    "atanasyan-7-9-main-829-part-1/step-4/1280",
+    "atanasyan-7-9-main-829-part-1/step-4/320",
+    "atanasyan-7-9-main-830-part-1/neutral/1280",
+    "atanasyan-7-9-main-830-part-1/neutral/320",
+    "atanasyan-7-9-main-830-part-1/step-1/1280",
+    "atanasyan-7-9-main-830-part-1/step-1/320",
+    "atanasyan-7-9-main-830-part-1/step-2/1280",
+    "atanasyan-7-9-main-830-part-1/step-2/320",
+    "atanasyan-7-9-main-830-part-1/step-3/1280",
+    "atanasyan-7-9-main-830-part-1/step-3/320",
+    "atanasyan-7-9-main-830-part-1/step-4/1280",
+    "atanasyan-7-9-main-830-part-1/step-4/320",
+    "atanasyan-7-9-main-831-part-1/neutral/1280",
+    "atanasyan-7-9-main-831-part-1/neutral/320",
+    "atanasyan-7-9-main-831-part-1/step-1/1280",
+    "atanasyan-7-9-main-831-part-1/step-1/320",
+    "atanasyan-7-9-main-831-part-1/step-2/1280",
+    "atanasyan-7-9-main-831-part-1/step-2/320",
+    "atanasyan-7-9-main-831-part-1/step-3/1280",
+    "atanasyan-7-9-main-831-part-1/step-3/320",
+    "atanasyan-7-9-main-831-part-1/step-4/1280",
+    "atanasyan-7-9-main-831-part-1/step-4/320",
+    "atanasyan-7-9-main-832-part-1/neutral/1280",
+    "atanasyan-7-9-main-832-part-1/neutral/320",
+    "atanasyan-7-9-main-832-part-1/step-1/1280",
+    "atanasyan-7-9-main-832-part-1/step-1/320",
+    "atanasyan-7-9-main-832-part-1/step-2/1280",
+    "atanasyan-7-9-main-832-part-1/step-2/320",
+    "atanasyan-7-9-main-832-part-1/step-3/1280",
+    "atanasyan-7-9-main-832-part-1/step-3/320",
+    "atanasyan-7-9-main-832-part-1/step-4/1280",
+    "atanasyan-7-9-main-832-part-1/step-4/320",
+    "atanasyan-7-9-main-833-part-1/neutral/1280",
+    "atanasyan-7-9-main-833-part-1/neutral/320",
+    "atanasyan-7-9-main-833-part-1/step-1/1280",
+    "atanasyan-7-9-main-833-part-1/step-1/320",
+    "atanasyan-7-9-main-833-part-1/step-2/1280",
+    "atanasyan-7-9-main-833-part-1/step-2/320",
+    "atanasyan-7-9-main-833-part-1/step-3/1280",
+    "atanasyan-7-9-main-833-part-1/step-3/320",
+    "atanasyan-7-9-main-833-part-1/step-4/1280",
+    "atanasyan-7-9-main-833-part-1/step-4/320",
+    "atanasyan-7-9-main-834-part-1/case-1/1280",
+    "atanasyan-7-9-main-834-part-1/case-1/320",
+    "atanasyan-7-9-main-834-part-1/neutral/1280",
+    "atanasyan-7-9-main-834-part-1/neutral/320",
+    "atanasyan-7-9-main-834-part-1/step-1/1280",
+    "atanasyan-7-9-main-834-part-1/step-1/320",
+    "atanasyan-7-9-main-834-part-1/step-2/1280",
+    "atanasyan-7-9-main-834-part-1/step-2/320",
+    "atanasyan-7-9-main-834-part-1/step-3/1280",
+    "atanasyan-7-9-main-834-part-1/step-3/320",
+    "atanasyan-7-9-main-834-part-1/step-4/1280",
+    "atanasyan-7-9-main-834-part-1/step-4/320",
+    "atanasyan-7-9-main-835-part-1/neutral/1280",
+    "atanasyan-7-9-main-835-part-1/neutral/320",
+    "atanasyan-7-9-main-835-part-1/step-1/1280",
+    "atanasyan-7-9-main-835-part-1/step-1/320",
+    "atanasyan-7-9-main-835-part-1/step-2/1280",
+    "atanasyan-7-9-main-835-part-1/step-2/320",
+    "atanasyan-7-9-main-835-part-1/step-3/1280",
+    "atanasyan-7-9-main-835-part-1/step-3/320",
+    "atanasyan-7-9-main-835-part-1/step-4/1280",
+    "atanasyan-7-9-main-835-part-1/step-4/320",
+    "atanasyan-7-9-main-836-part-1/neutral/1280",
+    "atanasyan-7-9-main-836-part-1/neutral/320",
+    "atanasyan-7-9-main-836-part-1/step-1/1280",
+    "atanasyan-7-9-main-836-part-1/step-1/320",
+    "atanasyan-7-9-main-836-part-1/step-2/1280",
+    "atanasyan-7-9-main-836-part-1/step-2/320",
+    "atanasyan-7-9-main-836-part-1/step-3/1280",
+    "atanasyan-7-9-main-836-part-1/step-3/320",
+    "atanasyan-7-9-main-836-part-1/step-4/1280",
+    "atanasyan-7-9-main-836-part-1/step-4/320",
+    "atanasyan-7-9-main-837-part-1/neutral/1280",
+    "atanasyan-7-9-main-837-part-1/neutral/320",
+    "atanasyan-7-9-main-837-part-1/step-1/1280",
+    "atanasyan-7-9-main-837-part-1/step-1/320",
+    "atanasyan-7-9-main-837-part-1/step-2/1280",
+    "atanasyan-7-9-main-837-part-1/step-2/320",
+    "atanasyan-7-9-main-837-part-1/step-3/1280",
+    "atanasyan-7-9-main-837-part-1/step-3/320",
+    "atanasyan-7-9-main-837-part-1/step-4/1280",
+    "atanasyan-7-9-main-837-part-1/step-4/320",
+    "atanasyan-7-9-main-838-part-1/neutral/1280",
+    "atanasyan-7-9-main-838-part-1/neutral/320",
+    "atanasyan-7-9-main-838-part-1/step-1/1280",
+    "atanasyan-7-9-main-838-part-1/step-1/320",
+    "atanasyan-7-9-main-838-part-1/step-2/1280",
+    "atanasyan-7-9-main-838-part-1/step-2/320",
+    "atanasyan-7-9-main-838-part-1/step-3/1280",
+    "atanasyan-7-9-main-838-part-1/step-3/320",
+    "atanasyan-7-9-main-838-part-1/step-4/1280",
+    "atanasyan-7-9-main-838-part-1/step-4/320",
+    "atanasyan-7-9-main-839-part-1/case-1/1280",
+    "atanasyan-7-9-main-839-part-1/case-1/320",
+    "atanasyan-7-9-main-839-part-1/case-2/1280",
+    "atanasyan-7-9-main-839-part-1/case-2/320",
+    "atanasyan-7-9-main-839-part-1/neutral/1280",
+    "atanasyan-7-9-main-839-part-1/neutral/320",
+    "atanasyan-7-9-main-839-part-1/step-1/1280",
+    "atanasyan-7-9-main-839-part-1/step-1/320",
+    "atanasyan-7-9-main-839-part-1/step-2/1280",
+    "atanasyan-7-9-main-839-part-1/step-2/320",
+    "atanasyan-7-9-main-839-part-1/step-3/1280",
+    "atanasyan-7-9-main-839-part-1/step-3/320",
+    "atanasyan-7-9-main-839-part-1/step-4/1280",
+    "atanasyan-7-9-main-839-part-1/step-4/320",
+    "atanasyan-7-9-main-839-part-1/step-5/1280",
+    "atanasyan-7-9-main-839-part-1/step-5/320",
+    "atanasyan-7-9-main-840-part-1/neutral/1280",
+    "atanasyan-7-9-main-840-part-1/neutral/320",
+    "atanasyan-7-9-main-840-part-1/step-1/1280",
+    "atanasyan-7-9-main-840-part-1/step-1/320",
+    "atanasyan-7-9-main-840-part-1/step-2/1280",
+    "atanasyan-7-9-main-840-part-1/step-2/320",
+    "atanasyan-7-9-main-840-part-1/step-3/1280",
+    "atanasyan-7-9-main-840-part-1/step-3/320",
+    "atanasyan-7-9-main-840-part-1/step-4/1280",
+    "atanasyan-7-9-main-840-part-1/step-4/320",
+    "atanasyan-7-9-main-840-part-1/step-5/1280",
+    "atanasyan-7-9-main-840-part-1/step-5/320",
+    "atanasyan-7-9-main-841-part-1/neutral/1280",
+    "atanasyan-7-9-main-841-part-1/neutral/320",
+    "atanasyan-7-9-main-841-part-1/step-1/1280",
+    "atanasyan-7-9-main-841-part-1/step-1/320",
+    "atanasyan-7-9-main-841-part-1/step-2/1280",
+    "atanasyan-7-9-main-841-part-1/step-2/320",
+    "atanasyan-7-9-main-841-part-1/step-3/1280",
+    "atanasyan-7-9-main-841-part-1/step-3/320",
+    "atanasyan-7-9-main-841-part-1/step-4/1280",
+    "atanasyan-7-9-main-841-part-1/step-4/320"
+  ],
+  "sourceEdition": "Atanasyan et al., Geometry 7–9, 2023, 14th revised edition, ISBN 978-5-09-102538-5",
+  "sourceUrls": [
+    "https://djvu.online/file/d8fj2RT2dnEaH",
+    "https://djvu.online/jpg1/d/8/f/d8fj2RT2dnEaH/215.webp",
+    "https://djvu.online/jpg1/d/8/f/d8fj2RT2dnEaH/216.webp"
+  ],
+  "artifact": {
+    "kind": "fresh local focused browser render",
+    "head": "ab11e61ce9632be46c64bac38c3eba02f544f7df",
+    "browser": "Playwright 1.62.1 with installed Chromium 134 headless shell, cache revision 1161",
+    "browserEvidenceSha256": "32613c68183a8ed6566af239cdf8489a3af8b40e85ff4a60e5d31ed2fd3ed3da",
+    "gateScriptSha256": "d5d1e5af7e377d5921c86e84c36e81489c150b78db6442a2b71f1c0aba817be7",
+    "bundleSha256": "38c8a152cd590b18b3df5bf466abf199be9fd84fca9f9cecec7994c8a3b66fb7",
+    "screenshots": [
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-neutral-320.png",
+        "sha256": "8e52a62fc432461fd7f6cc51583e201f043d118ea055a6eb25b9a8a2cf7719ea"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-1-320.png",
+        "sha256": "80b7bc0dc6d62f51ddb77c7f635ec4e30f35ba50b6ce659d3f20f52d2d5b43dd"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-2-320.png",
+        "sha256": "61f26eb5a18654da2f1f2e7ac33e64e745ec103c200db6da28d83b3352de5c5a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-3-320.png",
+        "sha256": "61f26eb5a18654da2f1f2e7ac33e64e745ec103c200db6da28d83b3352de5c5a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-4-320.png",
+        "sha256": "80b7bc0dc6d62f51ddb77c7f635ec4e30f35ba50b6ce659d3f20f52d2d5b43dd"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-neutral-320.png",
+        "sha256": "cbad1b31e7d18019892b40a5338b5d9f3f1e71560a1d9dcf99e23f467333c4b7"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-1-320.png",
+        "sha256": "3fc8a2d8ec8c19667efb64b2016726307bd790d8ea78f04369b942d6a6936e78"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-2-320.png",
+        "sha256": "4ceb5fe7d2b4dbb95c06265b9118ef1761dacb908a8630aa3379ba2f74a3e9e8"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-3-320.png",
+        "sha256": "4ceb5fe7d2b4dbb95c06265b9118ef1761dacb908a8630aa3379ba2f74a3e9e8"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-4-320.png",
+        "sha256": "f12d5484f4b656a9eb8c1d0132feca54c8b8428c99d3269359cecf2d4ab6147f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-neutral-320.png",
+        "sha256": "c9b0e8763d1b90eb14948f78186a3cd1301025f74ba54915bfe02e5475552082"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-1-320.png",
+        "sha256": "642e95269e6a23006af55901be9e4866fce57065dfc40086cede99d71dabd9ed"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-2-320.png",
+        "sha256": "ce6a52a6f5a892dbaea3149f3b348c3b39ee9b9fd4121c1b88e73d322c2c755b"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-3-320.png",
+        "sha256": "a7da5dd0aabebb6a261415a1dad5c9af38d3b33f5479669cddbf3c9b1e9381e8"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-4-320.png",
+        "sha256": "a7da5dd0aabebb6a261415a1dad5c9af38d3b33f5479669cddbf3c9b1e9381e8"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-neutral-320.png",
+        "sha256": "a5d949b3e4648c85dec9654af2e13f7e0d6a449c80ebb2108b4a065d5152a6f4"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-1-320.png",
+        "sha256": "c5f25b49ce6b37f6202e5277b576fae14f7f7be11971ed91b75ac0517955d9fc"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-2-320.png",
+        "sha256": "2e3753f130ad8862cb8887e4c28c1180fb54b5202319e8ee4d3c7672583f6139"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-3-320.png",
+        "sha256": "d9805764eb1b03325893bc9d77a2033534828d3dc9a1f9e31aa08452cbb35143"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-neutral-320.png",
+        "sha256": "c47a324f906fe9291208efb7244f7d0efddc2011e0d2015972529f375898747a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-1-320.png",
+        "sha256": "351fdca26385042c62da49ce6ddca99b3f005a997bf110e22f0c23cd3be9b9b3"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-2-320.png",
+        "sha256": "57f9ddc93951d5e0c0939185d9667123c8e2f0aa69b3f84ab465d509e84166ce"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-3-320.png",
+        "sha256": "57f9ddc93951d5e0c0939185d9667123c8e2f0aa69b3f84ab465d509e84166ce"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-neutral-320.png",
+        "sha256": "143ab3cda9d4c2b69e8c369024334efc19f69b13126ed38f6b1d4896a6f432a1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-1-320.png",
+        "sha256": "24ecbd965bc3e8f8786da3426e9d0b1ac2c9ed8107fed4835fe6aadcf92a3235"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-2-320.png",
+        "sha256": "24ecbd965bc3e8f8786da3426e9d0b1ac2c9ed8107fed4835fe6aadcf92a3235"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-3-320.png",
+        "sha256": "24ecbd965bc3e8f8786da3426e9d0b1ac2c9ed8107fed4835fe6aadcf92a3235"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-4-320.png",
+        "sha256": "339e7b825e17e1bc0ba77e2f75d59b4120f17d6e2f300999c93bfb0b95e775bd"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-case-1-320.png",
+        "sha256": "ff2687d2997f068f593b5871448d7d855b11824e92e4d4b310a9754a9e6c76ea"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-neutral-320.png",
+        "sha256": "12958bac8a91b35869738aa082dc8b78807c2c5b0b3710f70aee2ad81dfea1ab"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-1-320.png",
+        "sha256": "c0d605acd49601b6d33b75c3418763207a694d15ed12d57870d5a72e8eb9508c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-2-320.png",
+        "sha256": "48750abc3a834114be38608144f17dc23fa33a5e8ee4b061aeedbfea8c1bec9f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-3-320.png",
+        "sha256": "dec172b0c6c33d8396a1e993008937ba02c3612d7455b7dd7b698a111dde01d0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-4-320.png",
+        "sha256": "dec172b0c6c33d8396a1e993008937ba02c3612d7455b7dd7b698a111dde01d0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-neutral-320.png",
+        "sha256": "8c688b790d5a288eaaa9063a732944f161b887d9cdd5aadeff43ff9a6166c238"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-1-320.png",
+        "sha256": "5c4a13fcba497c0f0a85b9667561305c2f46d31d383ae462e8e1e7f10e7e5985"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-2-320.png",
+        "sha256": "5c4a13fcba497c0f0a85b9667561305c2f46d31d383ae462e8e1e7f10e7e5985"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-3-320.png",
+        "sha256": "5c4a13fcba497c0f0a85b9667561305c2f46d31d383ae462e8e1e7f10e7e5985"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-4-320.png",
+        "sha256": "5c4a13fcba497c0f0a85b9667561305c2f46d31d383ae462e8e1e7f10e7e5985"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-neutral-320.png",
+        "sha256": "fa545e6ae68f106d275d7db8fc2041237c0ad11039d6c49db666a3d30fb469df"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-1-320.png",
+        "sha256": "2f6a7697cf01af10da8280169dfeccf346e6a892428f5fd1be6e325458220bc0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-2-320.png",
+        "sha256": "2f6a7697cf01af10da8280169dfeccf346e6a892428f5fd1be6e325458220bc0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-3-320.png",
+        "sha256": "2f6a7697cf01af10da8280169dfeccf346e6a892428f5fd1be6e325458220bc0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-4-320.png",
+        "sha256": "2f6a7697cf01af10da8280169dfeccf346e6a892428f5fd1be6e325458220bc0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-neutral-320.png",
+        "sha256": "8c3b40989fe2424c9210d2d2eb01eb6ef50fc5e923151fa1fcc92d65750d7397"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-1-320.png",
+        "sha256": "25d95e1e451746faff5351855bd1549bb835d810ead6ee922758e06b62eb3625"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-2-320.png",
+        "sha256": "25d95e1e451746faff5351855bd1549bb835d810ead6ee922758e06b62eb3625"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-3-320.png",
+        "sha256": "25d95e1e451746faff5351855bd1549bb835d810ead6ee922758e06b62eb3625"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-4-320.png",
+        "sha256": "25d95e1e451746faff5351855bd1549bb835d810ead6ee922758e06b62eb3625"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-neutral-320.png",
+        "sha256": "24ee924fa5ba388c5036a66b53dc1cc9d2056fd5eed02541be5aa6079d94d6de"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-1-320.png",
+        "sha256": "24ee924fa5ba388c5036a66b53dc1cc9d2056fd5eed02541be5aa6079d94d6de"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-2-320.png",
+        "sha256": "e0a4e7beb6afc57306b3c11bfe44db58e203adf25792c15d1d1667baa2d37f8b"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-3-320.png",
+        "sha256": "e0a4e7beb6afc57306b3c11bfe44db58e203adf25792c15d1d1667baa2d37f8b"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-4-320.png",
+        "sha256": "7e64839f35bd61c26e6ab5e76d2eff63f42194f1e4db38cf91661691d0beeb25"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-case-1-320.png",
+        "sha256": "389f339d65fb6c3952cfdb42af8c57467254825dbeb1f178044f629865f645ec"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-neutral-320.png",
+        "sha256": "16025999038fc74447de30cfa1f0f3dfc70fd93da70cfce77e68489d8de13e34"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-1-320.png",
+        "sha256": "16025999038fc74447de30cfa1f0f3dfc70fd93da70cfce77e68489d8de13e34"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-2-320.png",
+        "sha256": "d1bee9e1d41bd33103fde82fc9026dda04a1171dd11a7b8cc431a4922a0dc4f1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-3-320.png",
+        "sha256": "d1bee9e1d41bd33103fde82fc9026dda04a1171dd11a7b8cc431a4922a0dc4f1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-4-320.png",
+        "sha256": "e42fa3154ff18188470df4007eb616d6b39b932f36b103ecb31fca5117eaf2df"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-neutral-320.png",
+        "sha256": "9ef124d66440e24f7ca50086e822034c35ae939d9b2cbe33acda91a705e8e7e1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-1-320.png",
+        "sha256": "734744a6fae2ceaf34dc9a0a67acba0e4141f18e65ad7c89689bc1b066342028"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-2-320.png",
+        "sha256": "734744a6fae2ceaf34dc9a0a67acba0e4141f18e65ad7c89689bc1b066342028"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-3-320.png",
+        "sha256": "734744a6fae2ceaf34dc9a0a67acba0e4141f18e65ad7c89689bc1b066342028"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-4-320.png",
+        "sha256": "734744a6fae2ceaf34dc9a0a67acba0e4141f18e65ad7c89689bc1b066342028"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-neutral-320.png",
+        "sha256": "4b1e3018a1ffebe7e332a90e4b1295cec91e8c2ebed8cb00b4a73e5ba2e92571"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-1-320.png",
+        "sha256": "6edd3640e72ea5bdb1da9c6e6a0e4ae7a29cd61287979e0d2cf90050df9a84f0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-2-320.png",
+        "sha256": "6813d95b9a08855a0e5b4f0ef331f0ef5886e9f33c1ead74cbddf3a8470ca3a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-3-320.png",
+        "sha256": "6813d95b9a08855a0e5b4f0ef331f0ef5886e9f33c1ead74cbddf3a8470ca3a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-4-320.png",
+        "sha256": "6813d95b9a08855a0e5b4f0ef331f0ef5886e9f33c1ead74cbddf3a8470ca3a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-neutral-320.png",
+        "sha256": "9261fe315694ffe3ef9aedf146c36578f1621875f6c71724af31d3faf01200f4"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-1-320.png",
+        "sha256": "91010f0621e41770221e4e236e0e55d1c63c6d3a90ebfdd109d2ad8f3c7fb8e7"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-2-320.png",
+        "sha256": "91010f0621e41770221e4e236e0e55d1c63c6d3a90ebfdd109d2ad8f3c7fb8e7"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-3-320.png",
+        "sha256": "91010f0621e41770221e4e236e0e55d1c63c6d3a90ebfdd109d2ad8f3c7fb8e7"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-4-320.png",
+        "sha256": "4be7bb234d13569c19ab2ce46d33ce37b331f889615c0c37168bb4a7e04993d5"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-neutral-320.png",
+        "sha256": "05a250fbe5657cbef0e74a00ae6b9d5f7c62ac33a6c173f5e7fa2638895710ab"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-1-320.png",
+        "sha256": "897ada62982dee46c8b2a2ef7da134bc38934050a266ecb199ba9aea83224b63"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-2-320.png",
+        "sha256": "36e846657a5e54c9a64411d573245f7ca88e191c192e35422617ae865a3ebb81"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-3-320.png",
+        "sha256": "be848576b77b0350ca0ed0bcb8eb0c09dfd602f5c2fcf0eb486db1d8ec926e67"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-4-320.png",
+        "sha256": "837bb1ad417dd3013dac4cb3b35d09684262bbb0e2cf40e411723540218fca2f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-5-320.png",
+        "sha256": "7d9a2bc9521236d3c4e82bcbfa1ecf5e1feda2ab5eacfb5db9435f7efe912692"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-case-1-320.png",
+        "sha256": "a404bd023b466477f4ce3aad4909eaca8ee5e2177f6e9c25321d0ff7bc8a12b5"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-case-2-320.png",
+        "sha256": "e24c4e64a9bfb14d10d64bdc41bfcf311a3d7d949d1d9b74330a8f171d280a53"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-neutral-320.png",
+        "sha256": "605bc9dea29ababcecb25618c47cba387569a0a05300d0f8115af587af434845"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-1-320.png",
+        "sha256": "c1d4987aa17c124428e51749de1f173d2d28ed6bde3e040cdfe1d218f69d8339"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-2-320.png",
+        "sha256": "3540536a1e935b1069fb4d7ed4b78e584cd08c9dcd3d8f477dae97338cace8a6"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-3-320.png",
+        "sha256": "6b414e8f7bb35ee19d9e9d1079abab9c007fdeba897dc7eb6e3c8f80f3b1f33f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-4-320.png",
+        "sha256": "63277cf209d3f5bb02b3824dc4652a7d2ff10b2008dcf824cd1796ac42b9a57a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-5-320.png",
+        "sha256": "63277cf209d3f5bb02b3824dc4652a7d2ff10b2008dcf824cd1796ac42b9a57a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-neutral-320.png",
+        "sha256": "183e16dd7d468b26a12bd75a70c2bc9bde3ec695c0b65968db068cc3674fa093"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-1-320.png",
+        "sha256": "183e16dd7d468b26a12bd75a70c2bc9bde3ec695c0b65968db068cc3674fa093"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-2-320.png",
+        "sha256": "e4512e554b52358f6e6057b00c628242f2f8925b55737702e231628e0e88767c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-3-320.png",
+        "sha256": "e4512e554b52358f6e6057b00c628242f2f8925b55737702e231628e0e88767c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-4-320.png",
+        "sha256": "e4512e554b52358f6e6057b00c628242f2f8925b55737702e231628e0e88767c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-neutral-1280.png",
+        "sha256": "141cc72a002882f0afc54aaca2f549a47435181e3fd3ba42a1451e09b9036dcc"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-1-1280.png",
+        "sha256": "141cc72a002882f0afc54aaca2f549a47435181e3fd3ba42a1451e09b9036dcc"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-2-1280.png",
+        "sha256": "4ed032cb75c6cac4fc4ffccd124efc0fbbe414c917fe85b0d580376fc677fe94"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-3-1280.png",
+        "sha256": "4ed032cb75c6cac4fc4ffccd124efc0fbbe414c917fe85b0d580376fc677fe94"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-824-part-1-step-4-1280.png",
+        "sha256": "141cc72a002882f0afc54aaca2f549a47435181e3fd3ba42a1451e09b9036dcc"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-neutral-1280.png",
+        "sha256": "4f6d9594911e61904ec69c72f4012466cd1b986c056a45dcae3125792b20b09c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-1-1280.png",
+        "sha256": "806dde1259bda504816f6f76e6695f9899d0f3c62cd55c286eaceae408fff26f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-2-1280.png",
+        "sha256": "70e73880ec922e5fcafb7a6f04434d73e8c394e72e8f4b60ef6069238f7ec992"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-3-1280.png",
+        "sha256": "70e73880ec922e5fcafb7a6f04434d73e8c394e72e8f4b60ef6069238f7ec992"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-825-part-1-step-4-1280.png",
+        "sha256": "d8788cae8ea48cbb4d02d8a29cec705580ffbe9bbcf171165b7a1a579ce728f9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-neutral-1280.png",
+        "sha256": "4e9acd4883b4b33f89bb4c2b1cf57e0ff2c4332ac7868ddebc4f2a96073b0178"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-1-1280.png",
+        "sha256": "ccc66513669c6c17070660855647eb1a7cd48fb051809a860397922d8839a0d5"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-2-1280.png",
+        "sha256": "20e2a4f5a1e917d486470ba4e22fded00677f9d1769744bd092a0827b46ba02f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-3-1280.png",
+        "sha256": "43bed531a43f7a8a1aa2a1c7fd2375e869a5bc2eb418fe8531a75efd192aebe6"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-826-part-1-step-4-1280.png",
+        "sha256": "43bed531a43f7a8a1aa2a1c7fd2375e869a5bc2eb418fe8531a75efd192aebe6"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-neutral-1280.png",
+        "sha256": "ee9da8ce7a63e8dc620c61486c85002f418b5a0e69e2aac709c1138439d6f175"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-1-1280.png",
+        "sha256": "7ac59df96066b7ec896f30ee166c7f69f9f98e32438e9422fedb002ab7586648"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-2-1280.png",
+        "sha256": "f2cb3d7809894a3b6f5cbb51c954f942c88d62f7442f16f9db3b9ad25fbee654"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-827-part-1-step-3-1280.png",
+        "sha256": "f2cb3d7809894a3b6f5cbb51c954f942c88d62f7442f16f9db3b9ad25fbee654"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-neutral-1280.png",
+        "sha256": "757b85c62c35079a6516fae8d82090d9e24a35c62dca1cd6468b6f18617fa967"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-1-1280.png",
+        "sha256": "06fa1ba807a856cb09d947edcf5560f1e47a31d76fbb38acd5aa957ea761e02a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-2-1280.png",
+        "sha256": "d9f073999d57f890fb80f4ff1484841cafa59a77cd3776f5dde48238a82712b2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-828-part-1-step-3-1280.png",
+        "sha256": "d9f073999d57f890fb80f4ff1484841cafa59a77cd3776f5dde48238a82712b2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-neutral-1280.png",
+        "sha256": "3c1222c1f7a71578d8040f50948e5f5ee899c3c4f4b2ac4f39bae8d33b510903"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-1-1280.png",
+        "sha256": "3c1222c1f7a71578d8040f50948e5f5ee899c3c4f4b2ac4f39bae8d33b510903"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-2-1280.png",
+        "sha256": "3c1222c1f7a71578d8040f50948e5f5ee899c3c4f4b2ac4f39bae8d33b510903"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-3-1280.png",
+        "sha256": "3c1222c1f7a71578d8040f50948e5f5ee899c3c4f4b2ac4f39bae8d33b510903"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-step-4-1280.png",
+        "sha256": "50282a4a9131535f77b24ddb6f07ee5f23bc4ffc67a516ba5e4f51ffe0813b87"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-829-part-1-case-1-1280.png",
+        "sha256": "6ffabed564c3eacbad35703cb563ce2aac6c4c4f04cbcc6a762764c19db45a01"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-neutral-1280.png",
+        "sha256": "7a79639b44d96bcd2931725ff7e270c01da8514f2c993527b5b8a7c8089dee44"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-1-1280.png",
+        "sha256": "452ee86231a5d12acfd7829552dd1d1fb6cfc20702401b1915c5b7ac6cef4bab"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-2-1280.png",
+        "sha256": "7a79639b44d96bcd2931725ff7e270c01da8514f2c993527b5b8a7c8089dee44"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-3-1280.png",
+        "sha256": "7a79639b44d96bcd2931725ff7e270c01da8514f2c993527b5b8a7c8089dee44"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-830-part-1-step-4-1280.png",
+        "sha256": "7a79639b44d96bcd2931725ff7e270c01da8514f2c993527b5b8a7c8089dee44"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-neutral-1280.png",
+        "sha256": "a13e963787867f665b3a960744c342001b0058c0c822526437675bef6f227562"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-1-1280.png",
+        "sha256": "a13e963787867f665b3a960744c342001b0058c0c822526437675bef6f227562"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-2-1280.png",
+        "sha256": "dc448335e3d54e557a780913e0b56f4410975e0b675bd36d45836c87e88950c1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-3-1280.png",
+        "sha256": "dc448335e3d54e557a780913e0b56f4410975e0b675bd36d45836c87e88950c1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-831-part-1-step-4-1280.png",
+        "sha256": "dc448335e3d54e557a780913e0b56f4410975e0b675bd36d45836c87e88950c1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-neutral-1280.png",
+        "sha256": "f6b9a6efc9b4d2f4c871d7ed1692cabe63984bee82a1d281c8733130d6ae579f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-1-1280.png",
+        "sha256": "fbb6cd52ac9c744ffbf90239c0935f5dce50e1b23f596418991f424827ae62f2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-2-1280.png",
+        "sha256": "fbb6cd52ac9c744ffbf90239c0935f5dce50e1b23f596418991f424827ae62f2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-3-1280.png",
+        "sha256": "fbb6cd52ac9c744ffbf90239c0935f5dce50e1b23f596418991f424827ae62f2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-832-part-1-step-4-1280.png",
+        "sha256": "fbb6cd52ac9c744ffbf90239c0935f5dce50e1b23f596418991f424827ae62f2"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-neutral-1280.png",
+        "sha256": "fe5c0af93c514f99f11cac69d828ddb975212fd685eda5f4b689667ed820ecca"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-1-1280.png",
+        "sha256": "22e496029e7317b3bd926db92f9d78dc0a9446dd8591b0626123d74454ed34a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-2-1280.png",
+        "sha256": "22e496029e7317b3bd926db92f9d78dc0a9446dd8591b0626123d74454ed34a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-3-1280.png",
+        "sha256": "22e496029e7317b3bd926db92f9d78dc0a9446dd8591b0626123d74454ed34a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-833-part-1-step-4-1280.png",
+        "sha256": "22e496029e7317b3bd926db92f9d78dc0a9446dd8591b0626123d74454ed34a9"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-neutral-1280.png",
+        "sha256": "85c69da10deb20fe81f5bac20a485f58c3a658c84af71c4cfed708c369535a1e"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-1-1280.png",
+        "sha256": "85c69da10deb20fe81f5bac20a485f58c3a658c84af71c4cfed708c369535a1e"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-2-1280.png",
+        "sha256": "4f9d794944bb59533b409475d7df14cf8286535d90fc3f31e982011c0ad2ea93"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-3-1280.png",
+        "sha256": "4f9d794944bb59533b409475d7df14cf8286535d90fc3f31e982011c0ad2ea93"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-step-4-1280.png",
+        "sha256": "f1e3f088b6987cf19a71cc1c81893738bd328e535497a7ed076b9ddfc35cdb5a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-834-part-1-case-1-1280.png",
+        "sha256": "1ebabc968202a5e187e4374321cd0265d4485c27723b2f763af5827f043bf47f"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-neutral-1280.png",
+        "sha256": "cad7c709dc7c96e3f80e8d82fb33691fbab38ddb0edd23db14f77429ae64852d"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-1-1280.png",
+        "sha256": "cad7c709dc7c96e3f80e8d82fb33691fbab38ddb0edd23db14f77429ae64852d"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-2-1280.png",
+        "sha256": "8590fbfc6f1de7de6ced3d0ff0c03d53ea09ddc21f7733e184e1f1a5e93d5906"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-3-1280.png",
+        "sha256": "8590fbfc6f1de7de6ced3d0ff0c03d53ea09ddc21f7733e184e1f1a5e93d5906"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-835-part-1-step-4-1280.png",
+        "sha256": "ba8240a703b04a82999d03e27734c1f8ffca7c5a36a26cbbe10ad8038080b0b3"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-neutral-1280.png",
+        "sha256": "abe648547be78f96c779f66aa66f503939cd958be8a1fd90355d326962db455e"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-1-1280.png",
+        "sha256": "82153b1d0318eb0c0e8d31e5599941c29fc770c56e035415de7becc23675c026"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-2-1280.png",
+        "sha256": "82153b1d0318eb0c0e8d31e5599941c29fc770c56e035415de7becc23675c026"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-3-1280.png",
+        "sha256": "82153b1d0318eb0c0e8d31e5599941c29fc770c56e035415de7becc23675c026"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-836-part-1-step-4-1280.png",
+        "sha256": "82153b1d0318eb0c0e8d31e5599941c29fc770c56e035415de7becc23675c026"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-neutral-1280.png",
+        "sha256": "c0bf8c510ed749ec0dc41a1d96d0b48290e47abdaa03fdee0ee2d17c07a7bf1c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-1-1280.png",
+        "sha256": "c0bf8c510ed749ec0dc41a1d96d0b48290e47abdaa03fdee0ee2d17c07a7bf1c"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-2-1280.png",
+        "sha256": "72f59ef162ec7d63c29546033ee6991e752f539f4ae051710dc6301ac52b2406"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-3-1280.png",
+        "sha256": "72f59ef162ec7d63c29546033ee6991e752f539f4ae051710dc6301ac52b2406"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-837-part-1-step-4-1280.png",
+        "sha256": "72f59ef162ec7d63c29546033ee6991e752f539f4ae051710dc6301ac52b2406"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-neutral-1280.png",
+        "sha256": "5d7db94240fc6743049c332a1e3e90820be2e8590455daebd265a3af01a34609"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-1-1280.png",
+        "sha256": "2e34886dae09108e9d60b631a9ec8557300f80e2d085db570000deb90e9ee668"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-2-1280.png",
+        "sha256": "2e34886dae09108e9d60b631a9ec8557300f80e2d085db570000deb90e9ee668"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-3-1280.png",
+        "sha256": "2e34886dae09108e9d60b631a9ec8557300f80e2d085db570000deb90e9ee668"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-838-part-1-step-4-1280.png",
+        "sha256": "5d7db94240fc6743049c332a1e3e90820be2e8590455daebd265a3af01a34609"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-neutral-1280.png",
+        "sha256": "1a74985641f50d7e19b5b300196a1877f95411daccae444e11251eb6316d1c97"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-1-1280.png",
+        "sha256": "20a1d1e4e334fbb132105ff1bbd4a6493ef028b7ec2c9c104341005b212efc96"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-2-1280.png",
+        "sha256": "e59a81131d925d8b6350bae53a1ac6eb43cf0da321ff55833a84e4f913f73984"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-3-1280.png",
+        "sha256": "92b4f3d30428acdfe14d2b0efc935c7169f3eb9666902c2e1c4a7f7364b85c1a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-4-1280.png",
+        "sha256": "8abab26ac3270f0429a2c3008e2f3b37b05138cf520722c9fc1712af3637c29a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-step-5-1280.png",
+        "sha256": "d3898f9734ee9b26cfafb7e55da2021a9597c091da95c4cce6959107f9c2ed48"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-case-1-1280.png",
+        "sha256": "69c0bb57c14b34c3e3b97116add4b9572adf5fcd805b58baf1aa82151d574704"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-839-part-1-case-2-1280.png",
+        "sha256": "1b104bcf7f2cc615685b5d10644886b421aa7a5efa16657201d6fc1f89a00457"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-neutral-1280.png",
+        "sha256": "5a5e80aff7c0e60be91d1a3d01575922e5def963f9ae5c9a87cdfa035a63d3d1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-1-1280.png",
+        "sha256": "5a5e80aff7c0e60be91d1a3d01575922e5def963f9ae5c9a87cdfa035a63d3d1"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-2-1280.png",
+        "sha256": "b553c8ad36338579c2be02cc33f06a7e517ce44aff54ee857d38a0716a2ea57b"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-3-1280.png",
+        "sha256": "f9df9ebf65a623221c37f4dff1e33ba1498fa1cefaea135b4c75575a4988074a"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-4-1280.png",
+        "sha256": "7cab61ca7806031c043ba20f97dfc5a7e9d024fd2c309fd5f478f28218ab34c0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-840-part-1-step-5-1280.png",
+        "sha256": "7cab61ca7806031c043ba20f97dfc5a7e9d024fd2c309fd5f478f28218ab34c0"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-neutral-1280.png",
+        "sha256": "ec46e7a0f3fa28897da18ad39a6654296598df80d8151cf4b0510a50bfeb4495"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-1-1280.png",
+        "sha256": "ec46e7a0f3fa28897da18ad39a6654296598df80d8151cf4b0510a50bfeb4495"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-2-1280.png",
+        "sha256": "ec46e7a0f3fa28897da18ad39a6654296598df80d8151cf4b0510a50bfeb4495"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-3-1280.png",
+        "sha256": "ec46e7a0f3fa28897da18ad39a6654296598df80d8151cf4b0510a50bfeb4495"
+      },
+      {
+        "file": "review-atanasyan-7-9-main-841-part-1-step-4-1280.png",
+        "sha256": "ec46e7a0f3fa28897da18ad39a6654296598df80d8151cf4b0510a50bfeb4495"
+      }
+    ]
+  },
+  "inspection": "All 188 actual PNGs were visually inspected as 36 per-exercise/width contact sheets. Checked mathematical construction shape, visible labels, marks, step additions, alternate cases, unclipped figures and usable narrow-screen controls. No blocking visual finding. Source printed pages and figure274 were directly read; independent content and numerical review are separate evidence.",
+  "limitations": [
+    "Viewport emulation, not a physical mobile-device test.",
+    "Local screenshots use Chromium134; this evidence does not replace exact-head CI with its pinned browser.",
+    "External model review was not performed under owner authorization."
+  ]
+}

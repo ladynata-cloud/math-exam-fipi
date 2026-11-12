@@ -91,6 +91,10 @@ def restore_manifest(name,raw,root=ROOT,course=None):
  return oldraw
 
 def assert_893_preserved(bundle,root=ROOT,course=None,scope=None):
+ from advanced8_release import has_supplement,historical_ix_projection
+ if has_supplement(bundle=bundle):
+  scope=scope or json.loads((root/'tools/geometry-textbook/release-scope.json').read_bytes())
+  bundle,scope=historical_ix_projection(bundle,scope,root,course)
  course=course or root/PREFIX;base=frozen(root)
  rows=[x for x in bundle['lessons'] if x['source']['chapter'] not in ('VII','VIII','IX')]
  entries=[x for x in bundle['catalog']['entries'] if x['source']['chapter'] not in ('VII','VIII','IX')]
