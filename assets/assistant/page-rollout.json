@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+  "baseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "49be2bc8db5e44f784b1021bfac846f51585380d23b818bcd90c3314ddac1121",
-      "afterSha256": "a82869d210e4013843828ada3f3f0d05e7c7dbbffa2a536f8e808821a21e6035",
+      "beforeSha256": "f4e21bec2ce24e6b6819e5ac0e1ce0833f404d54f70fdc13d6bcb31eae5ef17f",
+      "afterSha256": "add070b3f05f313d9d8c1711e75a5bec85b44d5846da7fe221a15ba5bf4a3a2a",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -4833,6 +4833,15 @@
       "sourceBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
       "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
       "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+      "sourceBaseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
+      "task": "docs/tasks/EGE_BASE_OCEAN_21_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html"
+      ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
