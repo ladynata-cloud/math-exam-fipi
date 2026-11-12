@@ -2,6 +2,46 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),http=require('node:http'),path=require('node:path');
 const {chromium}=require('playwright'),root=path.resolve(__dirname,'..');
 const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://local').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',({'.js':'text/javascript','.css':'text/css','.html':'text/html'})[path.extname(file)]||'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});
+
+async function checkProfileClock(page, width) {
+ const workshop = page.getByRole('region', {name:'Часовая мастерская'});
+ const stage = workshop.locator('.profile-clock-case');
+ const links = stage.getByRole('link');
+ await stage.scrollIntoViewIfNeeded();
+ assert.deepEqual(await links.evaluateAll(all => all.map(link => link.getAttribute('href'))),
+  await page.locator('#profile-2027 .first-three-link[data-exam-number]').evaluateAll(all => all.map(link => link.getAttribute('href'))));
+ assert.equal(await links.count(), 20);
+ assert(await links.evaluateAll(all => all.every(link => {
+  const box = link.getBoundingClientRect(), stage = link.closest('.profile-clock-case').getBoundingClientRect();
+  return box.width >= 44 && box.height >= 44 &&
+   box.left >= stage.left && box.right <= stage.right && box.top >= stage.top && box.bottom <= stage.bottom;
+ })), 'all clockwork task targets fit at ' + width);
+ await workshop.getByRole('link', {name:'№2 · Векторы с нуля'}).focus();
+ assert.equal(await workshop.locator('.profile-clock-topic').textContent(), '№2 · Векторы с нуля');
+
+ const pause = workshop.getByRole('button', {name:'Пауза анимации'});
+ const play = workshop.getByRole('button', {name:'Запустить анимацию'});
+ const snapshot = () => stage.locator('canvas').evaluate(canvas => canvas.toDataURL());
+ const changes = previous => page.waitForFunction(frame => document.querySelector('#profile-clock canvas').toDataURL() !== frame, previous);
+ const freezes = async () => {
+  const frame = await snapshot();
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  assert.equal(await snapshot(), frame);
+ };
+ await page.waitForFunction(() => performance.getEntriesByType('resource').some(resource => resource.name.endsWith('/clockwork-gnomes.webp')));
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await play.waitFor();
+ await freezes();
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await pause.waitFor();
+ await changes(await snapshot());
+ await pause.click();
+ await play.waitFor();
+ await freezes();
+ await play.click();
+ await changes(await snapshot());
+}
+
 (async()=>{let browser;try{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});
@@ -14,6 +54,7 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
    const start=course==='ege-profil'?'#profile-2027 a[href="start/index.html#calm"]':'[data-exam-position="1"] .exam-start';
    assert(await page.locator(start).isVisible(),course+' direct task route');
    if(course==='ege-profil'){
+    await checkProfileClock(page, width);
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.
     for(let number=1;number<=20;number++){
