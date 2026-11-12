@@ -36,13 +36,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
-<link rel="stylesheet" href="/assets/oge-home.css?v=20261104b-25-orbits">
+<link rel="stylesheet" href="/assets/oge-home.css?v=20261112-models">
 <link rel="stylesheet" href="/assets/oge-all-topics.css?v=20261110">
 <link rel="stylesheet" href="/oge/skill-course-entry.css?v=20261111">
 <link rel="stylesheet" href="/assets/oge-entry-sections.css?v=20261110">
 <script defer src="/trainers/ege-profile-stereometry-3d/js/three.min.js"></script>
 <script defer src="/assets/oge-home-topics.js?v=20261104-25-orbits"></script>
-<script defer src="/assets/oge-home.js?v=20261104b-25-orbits"></script>
+<script defer src="/assets/oge-home.js?v=20261112-models"></script>
 <style>
   .oge-more details { border-top:1px solid var(--line); padding:16px 0; }
   .oge-more summary { cursor:pointer; min-height:44px; font-weight:700; }
@@ -108,12 +108,68 @@
     <div class="model-exhibit" id="oge-models" aria-label="Объёмные модели из тем ОГЭ">
       <div class="exhibit-top"><span><i aria-hidden="true"></i> Наглядный курс ОГЭ</span><button type="button" id="model-pause" hidden aria-pressed="false">Пауза</button></div>
       <div class="model-stage" id="model-stage">
-        <svg class="model-fallback" viewBox="0 0 600 440" role="img" aria-label="Шина, объёмный план квартиры и две параболы: ветвями вверх и вниз">
-          <defs><linearGradient id="tire-shade" x2="1" y2="1"><stop stop-color="#52665f"/><stop offset="1" stop-color="#173b31"/></linearGradient></defs>
-          <g transform="translate(182 226) rotate(-24)"><ellipse rx="97" ry="121" fill="url(#tire-shade)"/><ellipse rx="66" ry="91" fill="#aabeb0"/><ellipse rx="49" ry="71" fill="#f3f5e9"/><g stroke="#648374" stroke-width="10"><path d="M0 -71V71M-49 0H49M-34 -50L34 50M-34 50L34 -50"/></g><circle r="16" fill="#e9eddd"/></g>
-          <g transform="translate(365 245)"><path d="M-35 30L75 -20L165 30L55 85Z" fill="#d2dfc5" stroke="#759279"/><path d="M-35 30V-20L75 -70V-20Z" fill="#e0cbb0"/><path d="M75 -70L165 -20V30L75 -20Z" fill="#f4e5ce"/><path d="M25 2V-40L75 -18V27M75 -18L120 -40" fill="none" stroke="#91ab91" stroke-width="7"/></g>
-          <g fill="none" stroke-linecap="round" stroke-width="7"><path d="M320 65Q368 180 416 65" stroke="#4e8c6d"/><path d="M440 151Q488 36 536 151" stroke="#c68c59"/></g>
-          <g fill="#315747"><circle cx="354" cy="82" r="4"/><circle cx="382" cy="82" r="4"/><circle cx="475" cy="83" r="4"/><circle cx="500" cy="83" r="4"/></g>
+        <svg class="model-fallback" viewBox="0 0 600 440" role="img" aria-label="На орбитах вокруг ОГЭ: шина, план квартиры, параболы, окружность с треугольником и игральный кубик">
+          <defs>
+            <radialGradient id="oge-static-brass" cx="31%" cy="25%" r="78%">
+              <stop stop-color="#fff2cb"/><stop offset=".52" stop-color="#e6b975"/><stop offset="1" stop-color="#946b3e"/>
+            </radialGradient>
+            <linearGradient id="oge-static-rubber" x2="70%" y2="100%">
+              <stop stop-color="#718c80"/><stop offset=".46" stop-color="#394b45"/><stop offset="1" stop-color="#1d2c27"/>
+            </linearGradient>
+            <linearGradient id="oge-static-ivory" x2="70%" y2="100%">
+              <stop stop-color="#fff4df"/><stop offset="1" stop-color="#ccb99a"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#9bd2b9">
+            <ellipse cx="300" cy="219" rx="165" ry="146" opacity=".42" transform="rotate(-13 300 219)"/>
+            <ellipse cx="300" cy="219" rx="169" ry="138" opacity=".20" transform="rotate(18 300 219)"/>
+            <ellipse cx="300" cy="219" rx="161" ry="153" opacity=".14" transform="rotate(23 300 219)"/>
+          </g>
+          <g transform="translate(300 219)">
+            <circle r="38" fill="url(#oge-static-brass)"/>
+            <ellipse rx="53" ry="19" fill="none" stroke="#f2dba7" transform="rotate(-21)"/>
+            <ellipse rx="56" ry="22" fill="none" stroke="#9adebe" opacity=".65" transform="rotate(24)"/>
+            <text y="5" text-anchor="middle" font-size="14" font-weight="700" fill="#203528">ОГЭ</text>
+          </g>
+          <g transform="translate(444 274) rotate(-23)">
+            <ellipse cx="-10" rx="46" ry="56" fill="#344940" stroke="#557569"/>
+            <ellipse rx="45" ry="56" fill="url(#oge-static-rubber)" stroke="#8fa99d"/>
+            <ellipse rx="41" ry="52" fill="none" stroke="#a0b6aa" stroke-opacity=".6" stroke-width="3" stroke-dasharray="3 4"/>
+            <ellipse rx="28" ry="35" fill="none" stroke="#738b80"/>
+            <ellipse rx="24" ry="31" fill="#394c44" stroke="#e1e9df" stroke-width="4"/>
+            <path d="M0 0L3 -30M0 0L23 -8M0 0L13 25M0 0L-17 21M0 0L-22 -13" stroke="#d7e3d9" stroke-width="5"/>
+            <circle r="9" fill="#e3ebdf"/><circle r="4" fill="#496458"/>
+          </g>
+          <g transform="translate(404 109)" stroke-linejoin="round">
+            <path d="M-61 -3L-5 -34L65 -7L12 29Z" fill="#d5b489" stroke="#f6dcc1"/>
+            <path d="M-61 -3L12 29L65 -7V2L12 38L-61 6Z" fill="#735744"/>
+            <path d="M-58 -5L-31 -20L5 -6L-22 11Z" fill="#9cb9ab"/>
+            <path d="M-29 -21L-5 -34L31 -19L8 -7Z" fill="#c48965"/>
+            <path d="M-59 -4V-19L-5 -49L64 -21V-7L-5 -34Z" fill="#dce0c8"/>
+            <path d="M-40 -27L-23 -36M13 -40L35 -32" stroke="#76a9b0" stroke-width="5"/>
+            <path d="M-31 -20L29 6M-21 11L35 -23" fill="none" stroke="#f5e8ce" stroke-width="4"/>
+            <path d="M19 -1L35 -10L49 -5L33 5Z" fill="#5a937d" stroke="#b2c8ab"/>
+            <path d="M-15 -23L-3 -30L14 -24L2 -17Z" fill="#eedbc1"/>
+          </g>
+          <g transform="translate(172 68)">
+            <g fill="#203e37" stroke="#527d6f"><rect width="49" height="60" rx="3"/><rect x="57" width="49" height="60" rx="3"/></g>
+            <path d="M4 16H45M4 44H45M12 5V55M36 5V55M61 16H102M61 44H102M69 5V55M93 5V55" fill="none" stroke="#4a7366" stroke-width=".65"/>
+            <path d="M4 30H45M24.5 5V55M61 30H102M81.5 5V55" fill="none" stroke="#a2c5b5" stroke-width=".9"/>
+            <path d="M6 10Q24.5 87 43 10" fill="none" stroke="#8ce3bc" stroke-width="3" stroke-linecap="round"/>
+            <path d="M63 50Q81.5 -27 100 50" fill="none" stroke="#f6b77c" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(145 257)" stroke-linejoin="round">
+            <circle r="45" fill="none" stroke="#85dcb7" stroke-width="3"/>
+            <path d="M0 -45L-36 27H36Z" fill="#406a5c" fill-opacity=".7" stroke="#f4e1c2" stroke-width="3"/>
+            <path d="M-36 27H36" stroke="#f1b675" stroke-width="3"/>
+            <g fill="#ffcb87"><circle cy="-45" r="3.5"/><circle cx="-36" cy="27" r="3.5"/><circle cx="36" cy="27" r="3.5"/></g>
+          </g>
+          <g transform="translate(295 365)" stroke-linejoin="round">
+            <path d="M-36 -18L6 -8L6 35L-36 22Z" fill="#dfcfb1" stroke="#f0e2c8" stroke-width="2"/>
+            <path d="M6 -8L36 -29V13L6 35Z" fill="#b4a181" stroke="#dac6a5" stroke-width="2"/>
+            <path d="M-36 -18L-7 -39L36 -29L6 -8Z" fill="url(#oge-static-ivory)" stroke="#fff1d9" stroke-width="2"/>
+            <g fill="#31584d"><ellipse cx="-12" cy="-28" rx="4" ry="2.6"/><ellipse cx="13" cy="-19" rx="4" ry="2.6"/><circle cx="-15" cy="9" r="4.5"/><ellipse cx="15" cy="-4" rx="3" ry="4"/><ellipse cx="22" cy="4" rx="3" ry="4"/><ellipse cx="29" cy="13" rx="3" ry="4"/></g>
+          </g>
         </svg>
         <canvas id="oge-model-canvas" hidden role="img" aria-label="ОГЭ: 25 наклонённых орбит с моделями типов задач"></canvas>
         <span class="orbit-label" aria-hidden="true">ОГЭ</span>

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "4162841384149d17196115f09a63fc811016968f",
+  "baseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "a1b9e7561c06037fc0e5458a81f539b7f713a05dd6224f4cca4dd3939fd34851",
-      "afterSha256": "d00fc7b2af05a475adf3a6ac50ed394f091ba06439ee2cb575b825138a7be34e",
+      "beforeSha256": "aceda589a511a96b7526f456f8d360017f20cd5b52f359fad198252c4e8bcbc3",
+      "afterSha256": "327ce21226d870a117016d97e2ecdd9a507bbde611b7b3510d65b788ae71f08c",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -4863,6 +4863,15 @@
       "task": "docs/tasks/EGE_BASE_OCEAN_MOTION_20261112.md",
       "changedPaths": [
         "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "4162841384149d17196115f09a63fc811016968f",
+      "sourceBaseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
+      "task": "docs/tasks/PROFILE_CLOCKWORK_20261112.md",
+      "changedPaths": [
+        "ege-profil/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
