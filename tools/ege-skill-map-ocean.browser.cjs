@@ -191,19 +191,58 @@ async function checkOcean(page, origin) {
       assert.equal(await lastPin.getAttribute('aria-pressed'), 'true');
     }
 
-    const canvas = ocean.locator('canvas');
-    await canvas.scrollIntoViewIfNeeded();
+    const chart = ocean.locator('.ocean-expedition-chart canvas');
+    const scene = ocean.locator('.ocean-expedition-scene canvas');
+    const frames = () => ocean.locator('.ocean-expedition-chart canvas, .ocean-expedition-scene canvas')
+      .evaluateAll(canvases => canvases.map(canvas => canvas.toDataURL()));
+    const waitForFrames = () => page.evaluate(() => new Promise(resolve =>
+      requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve)))));
+    await scene.scrollIntoViewIfNeeded();
     const resume = ocean.getByRole('button', { name: 'Включить анимацию' });
     assert(await resume.isVisible(), 'system preference pauses the ocean animation');
-    const firstFrame = await canvas.evaluate(node => node.toDataURL());
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    assert.equal(await canvas.evaluate(node => node.toDataURL()), firstFrame, 'ocean stays still when reduced motion is requested');
+    const firstFrames = await frames();
+    await waitForFrames();
+    assert.deepEqual(await frames(), firstFrames, 'the chart and close-up stay still with reduced motion');
     await resume.click();
     const pause = ocean.getByRole('button', { name: 'Пауза анимации' });
     await pause.waitFor();
-    await page.waitForFunction(frame => document.querySelector('.ocean-expedition canvas').toDataURL() !== frame, firstFrame);
+    await scene.scrollIntoViewIfNeeded();
+    await page.waitForFunction(([mapFrame, detailFrame]) => (
+      document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== mapFrame &&
+      document.querySelector('.ocean-expedition-scene canvas').toDataURL() !== detailFrame
+    ), firstFrames, { polling: 100 });
+
+    if (width === 1280) {
+      for (const index of [0, 4, 7, 10, 14, 16, 20]) {
+        await selector.selectOption(String(index));
+        await waitForFrames();
+        const frame = await scene.evaluate(canvas => canvas.toDataURL());
+        await page.waitForFunction(previous => document.querySelector('.ocean-expedition-scene canvas').toDataURL() !== previous,
+          frame, { polling: 100 });
+      }
+      await page.locator('[data-exam-position="21"]').scrollIntoViewIfNeeded();
+      await waitForFrames();
+      const offscreen = await frames();
+      await waitForFrames();
+      assert.deepEqual(await frames(), offscreen, 'offscreen animation does not repaint either canvas');
+      await chart.scrollIntoViewIfNeeded();
+      await page.waitForFunction(frame => document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== frame,
+        offscreen[0], { polling: 100 });
+    }
     await pause.click();
     await resume.waitFor();
+    const pausedFrames = await frames();
+    await waitForFrames();
+    assert.deepEqual(await frames(), pausedFrames, 'manual pause stops both animated surfaces');
+
+    if (width === 1280) {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await pause.waitFor();
+      await page.waitForFunction(frame => document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== frame,
+        pausedFrames[0], { polling: 100 });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await resume.waitFor();
+    }
 
     await task.click();
     await page.locator('[data-exam-task="21"]').waitFor();

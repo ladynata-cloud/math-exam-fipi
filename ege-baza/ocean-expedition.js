@@ -4,6 +4,7 @@
   // The chart coordinates match the panoramic illustration (1440 × 687).
   const width = 1040;
   const height = 496;
+  const detailZoom = 3.35;
   const atlas = 'ocean-atlas.webp?v=20261112-dive';
   const regions = [
     {
@@ -217,6 +218,8 @@
   ));
   const coordinates = (x, y) => '--x:' + x / width * 100 + '%;--y:' + y / height * 100 + '%';
   const markerStyle = place => coordinates(place.x, place.y) + ';--ocean-accent:' + place.region.color;
+  const detailCenter = place => place.view || [place.x, place.y];
+  const detailStyle = place => coordinates(...detailCenter(place)) + ';--ocean-accent:' + place.region.color;
 
   let selected = 0;
   let motionChoice;
@@ -224,7 +227,7 @@
   function markup(tasks) {
     if (tasks.length !== waypoints.length || tasks.some((task, index) => task.pos !== index + 1)) return '';
     const place = waypoints[selected];
-    return `<section class="ocean-expedition" aria-labelledby="ocean-expedition-title">
+    return `<section class="ocean-expedition" aria-labelledby="ocean-expedition-title" style="--ocean-detail-size:${detailZoom * 100}%">
       <div class="ocean-expedition-header">
         <div><h2 id="ocean-expedition-title">Подводная экспедиция</h2><p>Выбери точку погружения и открой один из 21 номеров ЕГЭ.</p></div>
         <button class="ocean-expedition-motion" type="button" hidden>
@@ -262,7 +265,10 @@
           <button type="button" data-ocean-step="1" aria-label="Следующая точка">→</button>
         </div>
       </div>
-      <div class="ocean-expedition-info">${waypointMarkup(tasks, selected)}</div>
+      <div class="ocean-expedition-info">
+        <div class="ocean-expedition-scene" aria-hidden="true" style="${detailStyle(place)}"><canvas></canvas></div>
+        <div class="ocean-expedition-info-copy">${waypointMarkup(tasks, selected)}</div>
+      </div>
       <span class="ocean-expedition-announcement" role="status"></span>
     </section>`;
   }
@@ -290,9 +296,7 @@
     const progress = Number.isInteger(task.independent)
       ? `<p class="ocean-expedition-progress">Самостоятельно решено тем: ${task.independent} из ${task.total}</p>`
       : '';
-    const view = coordinates(...(place.view || [place.x, place.y]));
-    return `<div class="ocean-expedition-scene" aria-hidden="true" style="${view};--ocean-accent:${place.region.color}"></div>
-    <div class="ocean-expedition-station" style="--ocean-accent:${place.region.color}">
+    return `<div class="ocean-expedition-station" style="--ocean-accent:${place.region.color}">
       <p class="ocean-expedition-region">${place.region.name} <span aria-hidden="true">·</span> <span class="ocean-expedition-craft">${place.deep ? 'Батискаф' : 'Подводная лодка'}</span></p>
       <h3>${place.name}</h3><p class="ocean-expedition-description">${place.scene}</p>
       <a class="ocean-expedition-task" href="${escape(task.href)}" aria-label="Открыть задание №${task.pos} · ${escape(task.title)}">
@@ -315,13 +319,19 @@
   function mount(main, tasks) {
     const section = main.querySelector('.ocean-expedition');
     if (!section) return () => {};
-    const canvas = section.querySelector('canvas');
-    const context = craft && typeof CanvasRenderingContext2D === 'function' ? canvas.getContext('2d') : null;
     const chart = section.querySelector('.ocean-expedition-chart');
+    const canvas = chart.querySelector('canvas');
+    const image = chart.querySelector('img');
+    const context = craft && typeof CanvasRenderingContext2D === 'function' ? canvas.getContext('2d') : null;
     const pins = [...section.querySelectorAll('[data-ocean-point]')];
     const regionLabels = [...section.querySelectorAll('.ocean-expedition-regions span')];
     const mobilePin = section.querySelector('.ocean-expedition-mobile-pin');
     const info = section.querySelector('.ocean-expedition-info');
+    const detail = info.querySelector('.ocean-expedition-scene');
+    const detailCanvas = detail.querySelector('canvas');
+    const copy = info.querySelector('.ocean-expedition-info-copy');
+    const drawEnvironment = context && globalThis.EgeBazaOceanMotion?.create(image, width, height);
+    const detailContext = drawEnvironment && detailCanvas.getContext('2d');
     const announcement = section.querySelector('.ocean-expedition-announcement');
     const motion = section.querySelector('.ocean-expedition-motion');
     const motionLabel = motion.querySelector('.ocean-expedition-motion-label');
@@ -336,40 +346,59 @@
     let animation = 0;
     let lastTime = 0;
     let time = 0;
-    let visible = true;
+    let chartVisible = true;
+    let detailVisible = Boolean(detailContext);
 
-    function paint(now) {
+    function updateMotionControl(isPaused) {
+      const state = String(isPaused);
+      if (motion.dataset.paused === state) return;
+      motion.dataset.paused = state;
+      motionLabel.textContent = isPaused ? 'Включить анимацию' : 'Пауза анимации';
+      motion.title = motionLabel.textContent;
+    }
+
+    function paint(now, refresh = false) {
       animation = 0;
-      if (!context || !canvas.width || !canvas.height) return;
+      const showChart = context && canvas.width && canvas.height && (chartVisible || refresh);
+      const showDetail = detailContext && detailCanvas.width && detailCanvas.height && (detailVisible || refresh);
+      if (!showChart && !showDetail) return;
       const dt = lastTime ? Math.min(40, now - lastTime) : 0;
       lastTime = now;
-      if (!paused()) time += dt / 1000;
+      const playing = !paused();
+      updateMotionControl(!playing);
+      if (playing) time += dt / 1000;
       const point = waypoints[selected];
       const target = craftPosition(point);
-      const speed = paused() ? 1 : 1 - Math.exp(-dt / 190);
+      const speed = playing ? 1 - Math.exp(-dt / 190) : 1;
       position = position.map((value, index) => value + (target[index] - value) * speed);
-      context.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
-      drawOcean(context, time, position, point);
-      if (!paused() && visible && !document.hidden) animation = requestAnimationFrame(paint);
+      const environment = drawEnvironment?.(time);
+      if (showChart) {
+        context.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+        context.clearRect(0, 0, width, height);
+        if (environment) context.drawImage(environment, 0, 0);
+        drawRoute(context, time, position, point);
+      }
+      if (showDetail) paintDetail(detailContext, detailCanvas, environment, point);
+      if (playing && (chartVisible || detailVisible) && !document.hidden) animation = requestAnimationFrame(paint);
     }
 
     function refreshMotion() {
       if (!context) return;
       cancelAnimationFrame(animation);
       lastTime = 0;
-      const isPaused = paused();
-      motion.dataset.paused = String(isPaused);
-      motionLabel.textContent = isPaused ? 'Включить анимацию' : 'Пауза анимации';
-      motion.title = motionLabel.textContent;
-      paint(performance.now());
+      paint(performance.now(), true);
     }
 
     function resize() {
-      const { width: chartWidth, height: chartHeight } = chart.getBoundingClientRect();
-      if (!chartWidth || !chartHeight) return;
       const scale = Math.min(devicePixelRatio || 1, 2);
-      canvas.width = Math.round(chartWidth * scale);
-      canvas.height = Math.round(chartHeight * scale);
+      for (const surface of detailContext ? [canvas, detailCanvas] : [canvas]) {
+        const w = Math.round(surface.clientWidth * scale);
+        const h = Math.round(surface.clientHeight * scale);
+        if (w !== surface.width || h !== surface.height) {
+          surface.width = w;
+          surface.height = h;
+        }
+      }
       refreshMotion();
     }
 
@@ -391,7 +420,8 @@
       if (index === selected || !waypoints[index]) return;
       selected = index;
       updateControls();
-      info.innerHTML = waypointMarkup(tasks, selected);
+      detail.style.cssText = detailStyle(waypoints[selected]);
+      copy.innerHTML = waypointMarkup(tasks, selected);
       announcement.textContent = '№' + tasks[index].pos + ' · ' + waypoints[index].name + ' · ' + tasks[index].title;
       if (paused() || !animation) refreshMotion();
     }
@@ -429,13 +459,22 @@
 
     const sizeObserver = context && typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
     const viewObserver = context && typeof IntersectionObserver === 'function'
-      ? new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; refreshMotion(); })
+      ? new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.target === chart) chartVisible = entry.isIntersecting;
+          else detailVisible = entry.isIntersecting;
+        }
+        refreshMotion();
+      })
       : null;
     if (context) {
       motion.hidden = false;
-      if (sizeObserver) sizeObserver.observe(chart);
-      else window.addEventListener('resize', resize, options);
-      viewObserver?.observe(chart);
+      for (const surface of detailContext ? [chart, detail] : [chart]) {
+        sizeObserver?.observe(surface);
+        viewObserver?.observe(surface);
+      }
+      if (!sizeObserver) window.addEventListener('resize', resize, options);
+      image.addEventListener('load', refreshMotion, { ...options, once: true });
       resize();
     }
     return () => {
@@ -444,6 +483,16 @@
       viewObserver?.disconnect();
       if (animation) cancelAnimationFrame(animation);
     };
+  }
+
+  function paintDetail(ctx, surface, environment, point) {
+    const [x, y] = detailCenter(point);
+    const sourceWidth = width / detailZoom;
+    const sourceHeight = sourceWidth * surface.height / surface.width;
+    const left = (width - sourceWidth) * x / width;
+    const top = (height - sourceHeight) * y / height;
+    ctx.clearRect(0, 0, surface.width, surface.height);
+    ctx.drawImage(environment, left, top, sourceWidth, sourceHeight, 0, 0, surface.width, surface.height);
   }
 
   function craftPosition(point) {
@@ -542,19 +591,7 @@
   }
 
   const route = waypoints.map(point => [point.x, point.y]);
-  const particles = Array.from({ length: 46 }, (_, index) => ({
-    x: (index * 229 + 17) % width,
-    y: 52 + (index * 97) % (height - 52),
-    radius: 0.7 + index % 5 * 0.35
-  }));
-
-  function drawOcean(ctx, time, position, point) {
-    ctx.clearRect(0, 0, width, height);
-    for (const particle of particles) {
-      const x = particle.x + 10 * Math.sin(time * 0.45 + particle.y);
-      const y = particle.y - 7 * Math.sin(time * 0.35 + particle.x);
-      ellipse(ctx, x, y, particle.radius, particle.radius, '#d1fff071');
-    }
+  function drawRoute(ctx, time, position, point) {
     ctx.save();
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
