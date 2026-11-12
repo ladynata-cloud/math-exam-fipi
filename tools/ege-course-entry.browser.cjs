@@ -60,7 +60,7 @@ async function checkClockMechanism(stage) {
  }));
  assert.equal(frames.length, 2, 'two animated workshop frames painted');
  for (const frame of frames) {
-  assert.equal(frame.gnomes, 7, 'seven gnomes are drawn');
+  assert.equal(frame.gnomes, 8, 'six workers and two meeting gnomes are drawn');
   assert.deepEqual(frame.pinions.map(cluster => cluster.length), [3, 3, 3], 'three pinions inside each large gear');
  }
  const rotations = frames[1].pinions.flatMap((cluster, index) => cluster.map((angle, pinion) => {
@@ -72,7 +72,7 @@ async function checkClockMechanism(stage) {
 }
 
 async function checkProfileClock(page, width) {
- const workshop = page.getByRole('region', {name:'Часовая мастерская'});
+ const workshop = page.getByRole('region', {name:'Пещера сокровищ ЕГЭ'});
  const stage = workshop.locator('.profile-clock-case');
  const links = stage.locator('.profile-clock-number');
  const courses = stage.locator('.profile-clock-course');

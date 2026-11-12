@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
+  "baseSha": "c2c74298737c847bdc83dd220ecfa1c15d007cd9",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "fff956e1ce378657a850ee966b96e79499bf1afb77478f109e3972567981ce50",
-      "afterSha256": "daed19c45fc66826d432f957e09864ea202c3a21dc998a82874d592fea583fc0",
+      "beforeSha256": "9acdad5e9b23e182d064d9bd4d2253974115bec4fbbed0ff7610d74e02d534d8",
+      "afterSha256": "f9da0eb45e283cda580b168b6bef60077e971f7daf34b3b64b215bb983c8ac80",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "6e28c3feb1da7db5750d188a913240a7d17a8df9f8c03410721ed582b927f909",
-      "afterSha256": "784104b548dc007adc2febcf19e0f67822bc452d0d56e568d00bc8763e416e29",
+      "beforeSha256": "55ffb0f7c91ae1366023d9c5aba7d0f1436ece1f832cc34fb179178bbbf9a324",
+      "afterSha256": "b46ac277744d57e81ad640d8c14bff78b2810fb147338e78b8ceb9fe7d1c0153",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -4880,6 +4880,16 @@
       "sourceBaseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
       "task": "docs/tasks/PROFILE_GEAR_TRAIN_20261112.md",
       "changedPaths": [
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
+      "sourceBaseSha": "c2c74298737c847bdc83dd220ecfa1c15d007cd9",
+      "task": "docs/tasks/EGE_TREASURE_CAVE_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html",
         "ege-profil/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
