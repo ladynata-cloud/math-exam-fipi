@@ -87,13 +87,18 @@ test('zero numerator preserves the excluded argument and replaces the asymptote 
     assert.equal(p.host.querySelectorAll('[data-graph-role="vertical-asymptote"]').length, 1);
     const branches = [...p.host.querySelectorAll('[data-graph-role="function"]')];
     assert.equal(branches.length, 2);
+    const ticks = [...p.host.querySelectorAll('svg text')];
+    const xTick = n => Number(ticks.find(t => t.getAttribute('text-anchor') === 'middle' && t.textContent === n).getAttribute('x'));
+    const yTick = n => Number(ticks.find(t => t.getAttribute('text-anchor') === 'end' && t.textContent === n).getAttribute('y')) - 4;
+    const origin = [xTick('0'), yTick('0')], unitX = (xTick('2') - origin[0]) / 2, unitY = (origin[1] - yTick('2')) / 2;
+    assert.equal(unitX, unitY);
     // Compare every drawn point to the original equation, recovering graph
     // coordinates from the labelled axis scale. Neither branch crosses x = 1.
     branches.forEach((branch, index) => {
       const points = [...branch.getAttribute('d').matchAll(/[ML]([\d.e+-]+) ([\d.e+-]+)/g)];
       assert(points.length > 2);
       for (const [, px, py] of points) {
-        const x = (+px - 40) / 38 - 2, y = (160 - +py) / 12 - 4;
+        const x = (+px - origin[0]) / unitX, y = (origin[1] - +py) / unitY;
         assert(index === 0 ? x < 1 : x > 1);
         assert(Math.abs(y - (2 / (x - 1) + 2)) < 1e-10);
         assert(y >= -4 - 1e-10 && y <= 8 + 1e-10);
@@ -105,7 +110,7 @@ test('zero numerator preserves the excluded argument and replaces the asymptote 
     assert.equal(p.host.querySelectorAll('[data-graph-role="vertical-asymptote"]').length, 0);
     assert.equal(p.host.querySelectorAll('[data-graph-role="horizontal-asymptote"]').length, 0);
     const hole = p.host.querySelector('[data-graph-role="excluded-point"]');
-    assert(hole); assert.equal(+hole.getAttribute('cx'), 154); assert.equal(+hole.getAttribute('cy'), 88);
+    assert(hole); assert.equal(+hole.getAttribute('cx'), origin[0] + unitX); assert.equal(+hole.getAttribute('cy'), origin[1] - 2 * unitY);
     assert.equal(hole.getAttribute('fill'), '#fff');
     assert.match(p.host.querySelector('svg').getAttribute('aria-label'), /Вертикальной асимптоты нет/);
     assert.match(p.host.querySelector('.coach-formula').textContent, /x ≠ 1/);

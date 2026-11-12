@@ -1,207 +1,451 @@
 (function () {
   'use strict';
 
+  // The chart coordinates match the panoramic illustration (1440 × 687).
   const width = 1040;
-  const height = 550;
-  const tasksPerStation = 3;
-  const stations = [
-    { name: 'Поверхность океана', x: 132, y: 77, color: '#9ce9ef', description: 'Рассчитай запасы перед погружением, переведи единицы и прочитай данные приборов.' },
-    { name: 'Коралловый риф', x: 283, y: 179, color: '#ffc4ae', description: 'Вычисли значения по формулам, оцени вероятность и сравни варианты маршрута.' },
-    { name: 'Водоворот', x: 478, y: 103, color: '#9ce9ef', description: 'Разберись, как меняется график, проверь логический вывод и найди площадь на сетке.' },
-    { name: 'Затонувшие корабли', x: 627, y: 233, color: '#f8d596', description: 'Читай план в масштабе, рассчитывай объём и решай задачи на свойства фигур.' },
-    { name: 'Атлантида', x: 362, y: 337, color: '#9be8cc', description: 'Исследуй объёмные фигуры, потренируйся считать с дробями, долями и процентами.' },
-    { name: 'Логово чудовищ', x: 747, y: 348, color: '#d8c9ff', description: 'Упрости выражения, реши уравнения и отметь допустимые числа на оси.' },
-    { name: 'Марианская впадина', x: 882, y: 467, color: '#f8d596', description: 'Спустись в батискафе к заданиям на делимость, движение и поиск закономерностей.', labelLeft: true }
-  ];
-  const missions = [
+  const height = 496;
+  const detailZoom = 3.35;
+  const atlas = 'ocean-atlas.webp?v=20261112-dive';
+  const regions = [
     {
-      pos: 1, answer: 9,
-      prompt: 'На лодку нужно погрузить 65 порций. В одной герметичной упаковке 8 порций. Сколько целых упаковок нужно взять?',
-      hint: 'Сравни 8 × 8 с числом нужных порций.',
-      explanation: 'В восьми упаковках 64 порции. Чтобы порций хватило, нужна девятая упаковка.'
+      name: 'Поверхность океана', color: '#ffe6a9', label: [209, 32], places: [
+        {
+          name: 'Плавучая база', x: 126, y: 85, view: [90, 18],
+          scene: 'Утреннее солнце освещает причал. Загрузи припасы, пока лодка у поверхности.',
+          answer: 9,
+          prompt: 'На лодку нужно погрузить 65 порций. В одной герметичной упаковке 8 порций. Сколько целых упаковок нужно взять?',
+          hint: 'Сравни 8 × 8 с числом нужных порций.',
+          explanation: 'В восьми упаковках 64 порции. Чтобы порций хватило, нужна девятая упаковка.'
+        },
+        {
+          name: 'Мерный буй', x: 219, y: 78,
+          scene: 'От базы тянется цепочка буёв. На первом проверяют единицы измерения перед спуском.',
+          answer: 2400,
+          prompt: 'От базы до последнего буя 2,4 км. Сколько это метров?',
+          hint: 'В одном километре 1000 метров.',
+          explanation: '2,4 × 1000 = 2400 м.'
+        },
+        {
+          name: 'Журнал погружений', x: 320, y: 57,
+          scene: 'На борту открыт журнал пробного спуска. В нём отмечена глубина в разные минуты.',
+          answer: 19,
+          prompt: 'На сколько метров глубина в 10:20 была больше, чем в 10:10?',
+          table: [['Время', 'Глубина, м'], ['10:00', 12], ['10:10', 24], ['10:20', 43]],
+          hint: 'Найди глубины в нужных строках и вычти меньшую из большей.',
+          explanation: 'По журналу в 10:20 глубина была 43 м, а в 10:10 — 24 м. Разность 43 − 24 = 19 м.'
+        }
+      ]
     },
     {
-      pos: 5, answer: 3,
-      prompt: 'Для съёмки наугад выбирают одну из 20 точек. Все точки равновероятны. Сейчас 7 точек подходят для наблюдения. Сколько из оставшихся точек нужно сделать подходящими, чтобы вероятность выбрать подходящую точку стала равна 1/2?',
-      hint: 'Чтобы вероятность была равна 1/2, подходить должна половина всех точек.',
-      explanation: 'Половина от 20 — это 10. Из них 7 уже подходят, остаётся 10 − 7 = 3 точки.'
+      name: 'Коралловый риф', color: '#ffc5aa', label: [112, 133], places: [
+        {
+          name: 'Черепаший грот', x: 257, y: 163,
+          scene: 'Черепаха проплывает над розовым рифом. Камера спускается вслед за ней к входу в грот.',
+          answer: 10,
+          prompt: 'Глубину камеры в метрах вычисляют по формуле d = 0,4t + 2, где t — время в секундах. На какой глубине камера через 20 секунд?',
+          hint: 'Подставь 20 вместо t. Сначала выполни умножение.',
+          explanation: '0,4 × 20 + 2 = 8 + 2 = 10 м.'
+        },
+        {
+          name: 'Коралловый сад', x: 167, y: 199,
+          scene: 'Между кораллами расчищают места для камеры. Рыбы уже собираются у нескольких из них.',
+          answer: 3,
+          prompt: 'Для съёмки наугад выбирают одну из 20 точек. Все точки равновероятны. Сейчас 7 точек подходят для наблюдения. Сколько из оставшихся точек нужно сделать подходящими, чтобы вероятность выбрать подходящую точку стала равна 1/2?',
+          hint: 'Чтобы вероятность была равна 1/2, подходить должна половина всех точек.',
+          explanation: 'Половина от 20 — это 10. Из них 7 уже подходят, остаётся 10 − 7 = 3 точки.'
+        },
+        {
+          name: 'Развилка рифа', x: 76, y: 217,
+          scene: 'У края рифа расходятся три тропы. Для каждой известны время и цена экскурсии.',
+          answer: 22,
+          prompt: 'Экскурсия должна длиться не меньше 30 минут. Сколько жетонов стоит самый дешёвый подходящий маршрут?',
+          table: [['Маршрут', 'Время, мин', 'Цена, жетоны'], ['Короткий', 25, 18], ['Дальний', 35, 24], ['По гребню', 30, 22]],
+          hint: 'Сначала исключи маршруты короче 30 минут. Затем сравни цены оставшихся.',
+          explanation: 'Подходят дальний маршрут за 24 жетона и маршрут по гребню за 22. Дешевле маршрут за 22 жетона.'
+        }
+      ]
     },
     {
-      pos: 7, answer: 8,
-      prompt: 'На прямолинейном участке графика глубина за 4 минуты увеличилась с 36 до 68 м. На сколько метров в минуту увеличивалась глубина?',
-      hint: 'Раздели изменение глубины на время.',
-      explanation: 'Глубина увеличилась на 68 − 36 = 32 м за 4 минуты. За минуту она увеличивалась на 32 : 4 = 8 м.'
+      name: 'Водоворот', color: '#97edff', label: [493, 69], places: [
+        {
+          name: 'Граница течений', x: 402, y: 124,
+          scene: 'Вода закручивается над лодкой. Глубиномер записывает, с какой скоростью идёт спуск.',
+          answer: 8,
+          prompt: 'На прямолинейном участке графика глубина за 4 минуты увеличилась с 36 до 68 м. На сколько метров в минуту увеличивалась глубина?',
+          hint: 'Раздели изменение глубины на время.',
+          explanation: 'Глубина увеличилась на 68 − 36 = 32 м за 4 минуты. За минуту она увеличивалась на 32 : 4 = 8 м.'
+        },
+        {
+          name: 'Светящийся косяк', x: 495, y: 133,
+          scene: 'У кромки водоворота мелькают прозрачные рыбы. В журнале есть одна надёжная примета.',
+          answer: 2,
+          prompt: 'Все прозрачные рыбы в этом косяке светятся. Какой вывод обязательно верен? Введи номер.',
+          choices: ['Все светящиеся рыбы прозрачные.', 'Если рыба не светится, она непрозрачная.', 'Ни одна светящаяся рыба не бывает прозрачной.'],
+          hint: 'Представь прозрачную рыбу. Может ли она не светиться?',
+          explanation: 'Любая прозрачная рыба светится. Поэтому рыба, которая не светится, не может быть прозрачной. Верен вывод №2.'
+        },
+        {
+          name: 'Песчаная терраса', x: 540, y: 200,
+          scene: 'Под быстрым течением лежит ровная терраса. На плане её очертания нанесены на сетку.',
+          answer: 20,
+          prompt: 'Сторона клетки равна 1 м. Найди площадь закрашенного участка в квадратных метрах.',
+          grid: ['111100', '111100', '111111', '111111'],
+          gridLabel: 'Сетка 6 на 4 клетки. Закрашены все клетки, кроме квадрата 2 на 2 в правом верхнем углу.',
+          hint: 'Посчитай площадь всего прямоугольника и вычти площадь вырезанного угла.',
+          explanation: 'В прямоугольнике 6 × 4 = 24 клетки. В вырезе 2 × 2 = 4 клетки. Площадь участка 24 − 4 = 20 м².'
+        }
+      ]
     },
     {
-      pos: 10, answer: 36,
-      prompt: 'На плане масштаба 1:200 длина корпуса корабля 18 см. Какова длина корабля в метрах?',
-      hint: 'Один сантиметр на плане соответствует 200 см в действительности.',
-      explanation: 'Длина корабля 18 × 200 = 3600 см, то есть 36 м.'
+      name: 'Затонувшие корабли', color: '#ffd696', label: [217, 275], places: [
+        {
+          name: 'Карта фрегата', x: 228, y: 238,
+          scene: 'Из песка выступает накренившийся фрегат. В архиве экспедиции сохранился его план.',
+          answer: 36,
+          prompt: 'На плане масштаба 1:200 длина корпуса корабля 18 см. Какова длина корабля в метрах?',
+          hint: 'Один сантиметр на плане соответствует 200 см в действительности.',
+          explanation: 'Длина корабля 18 × 200 = 3600 см, то есть 36 м.'
+        },
+        {
+          name: 'Грузовой трюм', x: 126, y: 322,
+          scene: 'За иллюминатором виден старый прямоугольный ящик. Водолазы измерили его изнутри.',
+          answer: 120,
+          prompt: 'Внутренние размеры прямоугольного ящика 60 см, 40 см и 50 см. Какова его вместимость в литрах?',
+          hint: 'Умножь три размера. В одном литре 1000 см³.',
+          explanation: '60 × 40 × 50 = 120 000 см³, или 120 л.'
+        },
+        {
+          name: 'Мачта фрегата', x: 282, y: 371,
+          scene: 'Сохранившуюся вертикальную мачту хотят закрепить тросом от палубы.',
+          answer: 13,
+          prompt: 'Трос соединяет точку на горизонтальной палубе с точкой на вертикальной мачте в 12 м над палубой. На палубе от основания мачты до крепления троса 5 м. Какова длина троса в метрах?',
+          hint: 'Трос — гипотенуза прямоугольного треугольника с катетами 5 м и 12 м.',
+          explanation: 'По теореме Пифагора длина троса равна √(5² + 12²) = √169 = 13 м.'
+        }
+      ]
     },
     {
-      pos: 15, answer: 70,
-      prompt: 'После чистки видно 60% мозаики Атлантиды. Это 42 плитки. Сколько плиток во всей мозаике?',
-      hint: 'Запиши 60% десятичной дробью. Раздели число видимых плиток на эту дробь.',
-      explanation: 'Если 0,6 от числа плиток равно 42, то всего плиток 42 : 0,6 = 70.'
+      name: 'Атлантида', color: '#a3f3cd', label: [683, 159], places: [
+        {
+          name: 'Купол Атлантиды', x: 594, y: 170,
+          scene: 'Над колоннами поднимаются два купола. Их радиусы подсказывают, как сравнить объёмы.',
+          answer: 8,
+          prompt: 'Два купола имеют форму полушарий. Радиус большего в два раза больше радиуса меньшего. Во сколько раз больше объём большего купола?',
+          hint: 'Объём подобных тел меняется в куб коэффициента подобия.',
+          explanation: 'Радиус увеличили в 2 раза. Объём увеличился в 2³ = 8 раз.'
+        },
+        {
+          name: 'Зал мерных чаш', x: 663, y: 247,
+          scene: 'За каменной аркой стоят мерные чаши. В одной из них осталось немного воды.',
+          answer: 0.55,
+          prompt: 'В чаше было 3/4 л воды. Из неё вылили 1/5 л. Сколько литров осталось? Запиши ответ десятичной дробью.',
+          hint: 'Приведи дроби 3/4 и 1/5 к знаменателю 20.',
+          explanation: '3/4 − 1/5 = 15/20 − 4/20 = 11/20 = 0,55 л.'
+        },
+        {
+          name: 'Мозаика Атлантиды', x: 749, y: 232,
+          scene: 'Перед светящимися воротами из-под ила проступает узор. Видна только часть плиток.',
+          answer: 70,
+          prompt: 'После чистки видно 60% мозаики Атлантиды. Это 42 плитки. Сколько плиток во всей мозаике?',
+          hint: 'Запиши 60% десятичной дробью. Раздели число видимых плиток на эту дробь.',
+          explanation: 'Если 0,6 от числа плиток равно 42, то всего плиток 42 : 0,6 = 70.'
+        }
+      ]
     },
     {
-      pos: 17, answer: 7,
-      prompt: 'У логова чудовищ лодка поймала эхо. Компьютер записал уравнение 3x + 8 = 29, где x — время прихода эха в секундах. Через сколько секунд пришло эхо?',
-      hint: 'Вычти 8 из обеих частей уравнения, затем раздели обе части на 3.',
-      explanation: 'Из 3x + 8 = 29 получаем 3x = 21 и x = 7.'
+      name: 'Логово чудовищ', color: '#e6cbff', label: [897, 83], places: [
+        {
+          name: 'След морского змея', x: 860, y: 137, view: [959, 96],
+          scene: 'В дальней пещере мелькнул морской змей. На камне осталась светящаяся надпись.',
+          answer: 16,
+          prompt: 'На камне выбито выражение √64 + 2³. Найди его значение.',
+          hint: 'Сначала найди квадратный корень из 64 и куб двойки.',
+          explanation: '√64 = 8 и 2³ = 8. Значит, сумма равна 16.'
+        },
+        {
+          name: 'Камера эха', x: 978, y: 166,
+          scene: 'Среди фиолетовых медуз звук отражается от стен грота. По эху можно узнать время.',
+          answer: 7,
+          prompt: 'У логова чудовищ лодка поймала эхо. Компьютер записал уравнение 3x + 8 = 29, где x — время прихода эха в секундах. Через сколько секунд пришло эхо?',
+          hint: 'Вычти 8 из обеих частей уравнения, затем раздели обе части на 3.',
+          explanation: 'Из 3x + 8 = 29 получаем 3x = 21 и x = 7.'
+        },
+        {
+          name: 'Подводный разлом', x: 940, y: 251,
+          scene: 'Лодка подходит к выходу из пещеры. Метки на скале отсчитывают от уровня лодки.',
+          answer: -2,
+          prompt: 'Для прохода подходит метка x, удовлетворяющая условию −5 < x ≤ 1. Какая из четырёх меток подходит: −5, −2, 2 или 5?',
+          hint: 'Подходящее число должно быть строго больше −5 и не больше 1.',
+          explanation: '−5 исключаем из-за строгого неравенства. 2 и 5 больше 1. Подходит −2.'
+        }
+      ]
     },
     {
-      pos: 20, answer: 12,
-      prompt: 'Батискаф с глубины 6000 м спускается на 30 м/мин, а зонд с глубины 6600 м поднимается на 20 м/мин. Через сколько минут они окажутся на одной глубине?',
-      hint: 'На сколько метров уменьшается разность глубин за одну минуту?',
-      explanation: 'Между батискафом и зондом 600 м по вертикали. Разность глубин уменьшается на 30 + 20 = 50 м в минуту, поэтому они окажутся на одной глубине через 600 : 50 = 12 минут.'
+      name: 'Марианская впадина', color: '#baf4b4', label: [895, 291], places: [
+        {
+          name: 'Зонд у кромки', x: 800, y: 325,
+          scene: 'На краю впадины экспедиция переходит в батискаф. Для запуска зонда нужен код.',
+          answer: 3,
+          prompt: 'Код зонда — трёхзначное число 4□2, которое делится на 9. Какую цифру нужно вписать вместо квадрата?',
+          hint: 'Чтобы число делилось на 9, сумма его цифр должна делиться на 9.',
+          explanation: 'У известных цифр сумма 4 + 2 = 6. Не хватает цифры 3, чтобы получить сумму 9.'
+        },
+        {
+          name: 'Спуск батискафа', x: 690, y: 386, view: [942, 375],
+          scene: 'В темноте мерцает сигнал зонда. Он поднимается навстречу спускающемуся батискафу.',
+          answer: 12,
+          prompt: 'Батискаф с глубины 6000 м спускается на 30 м/мин, а зонд с глубины 6600 м поднимается на 20 м/мин. Через сколько минут они окажутся на одной глубине?',
+          hint: 'На сколько метров уменьшается разность глубин за одну минуту?',
+          explanation: 'Между батискафом и зондом 600 м по вертикали. Разность глубин уменьшается на 30 + 20 = 50 м в минуту, поэтому они окажутся на одной глубине через 600 : 50 = 12 минут.'
+        },
+        {
+          name: 'Сад чёрных курильщиков', x: 875, y: 445,
+          scene: 'У дна поднимаются струи горячей воды. На каменной гряде прокладывают ряд фонарей.',
+          answer: 15,
+          prompt: 'В первом ряду 8 фонарей, между соседними фонарями 6 м. Во втором ряду такой же длины фонари будут через 3 м. Сколько фонарей во втором ряду, если они стоят на обоих концах?',
+          hint: 'Между восемью фонарями семь промежутков. Найди длину ряда, затем посчитай новые промежутки.',
+          explanation: 'Длина ряда 7 × 6 = 42 м. Во втором ряду 42 : 3 = 14 промежутков и на один фонарь больше — 15.'
+        }
+      ]
     }
   ];
 
-  const number = index => String(index + 1).padStart(2, '0');
-  const taskRange = index => '№' + (index * tasksPerStation + 1) + '–' + ((index + 1) * tasksPerStation);
+  const waypoints = regions.flatMap((region, index) => region.places.map(place => ({
+    ...place, region, deep: index === regions.length - 1
+  }))).map((point, index) => ({ ...point, index }));
   const escape = value => String(value).replace(/[&<>"']/g, char => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]
   ));
+  const coordinates = (x, y) => '--x:' + x / width * 100 + '%;--y:' + y / height * 100 + '%';
+  const markerStyle = place => coordinates(place.x, place.y) + ';--ocean-accent:' + place.region.color;
+  const detailCenter = place => place.view || [place.x, place.y];
+  const detailStyle = place => coordinates(...detailCenter(place)) + ';--ocean-accent:' + place.region.color;
+
+  let selected = 0;
+  let motionChoice;
 
   function markup(tasks) {
-    if (tasks.length !== stations.length * tasksPerStation) return '';
-    return `<section class="ocean-expedition" aria-labelledby="ocean-expedition-title">
+    if (tasks.length !== waypoints.length || tasks.some((task, index) => task.pos !== index + 1)) return '';
+    const place = waypoints[selected];
+    return `<section class="ocean-expedition" aria-labelledby="ocean-expedition-title" style="--ocean-detail-size:${detailZoom * 100}%">
       <div class="ocean-expedition-header">
-        <div><h2 id="ocean-expedition-title">Подводная экспедиция</h2><p>Выбери место на карте, чтобы направить лодку к заданиям ЕГЭ.</p></div>
-        <button class="ocean-expedition-motion" type="button" hidden>Пауза анимации</button>
+        <div><h2 id="ocean-expedition-title">Подводная экспедиция</h2><p>Выбери точку погружения и открой один из 21 номеров ЕГЭ.</p></div>
+        <button class="ocean-expedition-motion" type="button" hidden>
+          <span class="ocean-expedition-motion-label">Пауза анимации</span>
+          <span class="ocean-expedition-motion-icon" aria-hidden="true"></span>
+        </button>
       </div>
       <div class="ocean-expedition-chart">
+        <img class="ocean-expedition-atlas" src="${atlas}" width="1440" height="687" alt="" decoding="async">
         <canvas aria-hidden="true"></canvas>
-        <div class="ocean-expedition-pins" role="group" aria-label="Станции экспедиции">
-          ${stations.map((station, index) => `<button type="button" class="ocean-expedition-pin${station.labelLeft ? ' ocean-expedition-pin-left' : ''}"
-            style="--x:${station.x / width * 100}%;--y:${station.y / height * 100}%;--station-color:${station.color}"
-            data-ocean-station="${index}" aria-pressed="${index === selected}" aria-label="${station.name}, задания ${taskRange(index)}">
-            <span class="ocean-expedition-pin-dot" aria-hidden="true">${number(index)}</span>
-            <span class="ocean-expedition-pin-name" aria-hidden="true">${station.name}</span>
+        <div class="ocean-expedition-regions" aria-hidden="true">
+          ${regions.map(region => `<span style="${coordinates(...region.label)};--ocean-accent:${region.color}"
+            data-current="${region === place.region}">${region.name}</span>`).join('')}
+        </div>
+        <div class="ocean-expedition-pins" role="group" aria-label="Точки погружения №1–21">
+          ${waypoints.map((point, index) => `<button type="button" class="ocean-expedition-pin"
+            style="${markerStyle(point)}" data-ocean-point="${index}" aria-pressed="${index === selected}"
+            tabindex="${index === selected ? 0 : -1}" aria-label="№${index + 1} · ${point.name} · ${escape(tasks[index].title)}">
+            <span aria-hidden="true">${index + 1}</span>
           </button>`).join('')}
         </div>
+        <span class="ocean-expedition-mobile-pin" aria-hidden="true" style="${markerStyle(place)}">${selected + 1}</span>
       </div>
       <div class="ocean-expedition-controls">
-        <label class="ocean-expedition-mobile-select">Станция
-          <select>${stations.map((station, index) => `<option value="${index}" ${index === selected ? 'selected' : ''}>${station.name}</option>`).join('')}</select>
+        <label class="ocean-expedition-select">Точка погружения
+          <select>
+            ${regions.map(region => `<optgroup label="${region.name}">
+              ${waypoints.filter(point => point.region === region).map(({ index, name }) => `<option value="${index}"
+                ${index === selected ? 'selected' : ''}>№${index + 1} · ${name}</option>`).join('')}
+            </optgroup>`).join('')}
+          </select>
         </label>
         <div class="ocean-expedition-step" role="group" aria-label="По порядку">
-          <button type="button" data-ocean-step="-1" aria-label="Предыдущая станция">←</button>
-          <button type="button" data-ocean-step="1" aria-label="Следующая станция">→</button>
+          <button type="button" data-ocean-step="-1" aria-label="Предыдущая точка">←</button>
+          <button type="button" data-ocean-step="1" aria-label="Следующая точка">→</button>
         </div>
       </div>
-      <div class="ocean-expedition-info">${stationMarkup(tasks, selected)}</div>
+      <div class="ocean-expedition-info">
+        <div class="ocean-expedition-scene" aria-hidden="true" style="${detailStyle(place)}"><canvas></canvas></div>
+        <div class="ocean-expedition-info-copy">${waypointMarkup(tasks, selected)}</div>
+      </div>
       <span class="ocean-expedition-announcement" role="status"></span>
     </section>`;
   }
 
-  function stationMarkup(tasks, index) {
-    const station = stations[index];
-    const mission = missions[index];
-    const group = tasks.slice(index * tasksPerStation, (index + 1) * tasksPerStation);
-    const progress = group.every(task => Number.isInteger(task.independent))
-      ? `<p class="ocean-expedition-progress">Темы с самостоятельным решением: ${group.reduce((sum, task) => sum + task.independent, 0)} из ${group.reduce((sum, task) => sum + task.total, 0)}</p>`
+  function missionVisual(place) {
+    if (place.table) {
+      const [head, ...rows] = place.table;
+      return `<table class="ocean-expedition-table"><thead><tr>${head.map(cell => `<th scope="col">${cell}</th>`).join('')}</tr></thead>
+        <tbody>${rows.map(([label, ...cells]) => `<tr><th scope="row">${label}</th>${cells.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    }
+    if (place.choices) {
+      return `<ol class="ocean-expedition-choices">${place.choices.map(choice => `<li>${choice}</li>`).join('')}</ol>`;
+    }
+    if (place.grid) {
+      return `<div class="ocean-expedition-grid" role="img" aria-label="${place.gridLabel}">
+        ${[...place.grid.join('')].map(cell => `<span data-filled="${cell}" aria-hidden="true"></span>`).join('')}
+      </div>`;
+    }
+    return '';
+  }
+
+  function waypointMarkup(tasks, index) {
+    const place = waypoints[index];
+    const task = tasks[index];
+    const progress = Number.isInteger(task.independent)
+      ? `<p class="ocean-expedition-progress">Самостоятельно решено тем: ${task.independent} из ${task.total}</p>`
       : '';
-    return `<div class="ocean-expedition-station">
-      <p class="ocean-expedition-craft">${index === stations.length - 1 ? 'Батискаф' : 'Подводная лодка'}</p>
-      <h3>${station.name}</h3><p class="ocean-expedition-description">${station.description}</p>${progress}
+    return `<div class="ocean-expedition-station" style="--ocean-accent:${place.region.color}">
+      <p class="ocean-expedition-region">${place.region.name} <span aria-hidden="true">·</span> <span class="ocean-expedition-craft">${place.deep ? 'Батискаф' : 'Подводная лодка'}</span></p>
+      <h3>${place.name}</h3><p class="ocean-expedition-description">${place.scene}</p>
+      <a class="ocean-expedition-task" href="${escape(task.href)}" aria-label="Открыть задание №${task.pos} · ${escape(task.title)}">
+        <span class="ocean-expedition-task-number">№${task.pos}</span><span>${escape(task.title)}</span><span aria-hidden="true">↗</span>
+      </a>
+      ${progress}
     </div>
-    <ul class="ocean-expedition-tasks" aria-label="Задания этой станции">
-      ${group.map(task => `<li><a href="${escape(task.href)}"><span class="ocean-expedition-task-number">№${task.pos}</span><span class="ocean-expedition-task-title">${escape(task.title)}</span><span aria-hidden="true">↗</span></a></li>`).join('')}
-    </ul>
     <details class="ocean-expedition-mission">
-      <summary>Задача экспедиции <span>№${mission.pos}</span></summary>
-      <p id="ocean-expedition-mission-prompt">${mission.prompt}</p>
+      <summary>Задача экспедиции <span>№${task.pos}</span></summary>
+      <p id="ocean-expedition-mission-prompt">${place.prompt}</p>
+      ${missionVisual(place)}
       <form data-ocean-mission>
-        <label>Ответ <input name="answer" inputmode="numeric" autocomplete="off" aria-describedby="ocean-expedition-mission-prompt"></label>
+        <label>Ответ <input name="answer" inputmode="${place.answer < 0 ? 'text' : 'decimal'}" autocomplete="off" aria-describedby="ocean-expedition-mission-prompt"></label>
         <button type="submit">Проверить</button>
       </form>
       <p role="status" data-ocean-mission-feedback></p>
     </details>`;
   }
 
-  let selected = 0;
-  let motionChoice;
-
   function mount(main, tasks) {
     const section = main.querySelector('.ocean-expedition');
     if (!section) return () => {};
-    const canvas = section.querySelector('canvas');
-    const context = land && typeof CanvasRenderingContext2D === 'function' ? canvas.getContext('2d') : null;
     const chart = section.querySelector('.ocean-expedition-chart');
+    const canvas = chart.querySelector('canvas');
+    const image = chart.querySelector('img');
+    const context = craft && typeof CanvasRenderingContext2D === 'function' ? canvas.getContext('2d') : null;
+    const pins = [...section.querySelectorAll('[data-ocean-point]')];
+    const regionLabels = [...section.querySelectorAll('.ocean-expedition-regions span')];
+    const mobilePin = section.querySelector('.ocean-expedition-mobile-pin');
     const info = section.querySelector('.ocean-expedition-info');
+    const detail = info.querySelector('.ocean-expedition-scene');
+    const detailCanvas = detail.querySelector('canvas');
+    const copy = info.querySelector('.ocean-expedition-info-copy');
+    const drawEnvironment = context && globalThis.EgeBazaOceanMotion?.create(image, width, height);
+    const detailContext = drawEnvironment && detailCanvas.getContext('2d');
     const announcement = section.querySelector('.ocean-expedition-announcement');
     const motion = section.querySelector('.ocean-expedition-motion');
+    const motionLabel = motion.querySelector('.ocean-expedition-motion-label');
     const selector = section.querySelector('select');
-    const pins = [...section.querySelectorAll('[data-ocean-station]')];
     const previous = section.querySelector('[data-ocean-step="-1"]');
     const next = section.querySelector('[data-ocean-step="1"]');
     const preference = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
     const paused = () => motionChoice ?? preference?.matches ?? false;
     const listeners = new AbortController();
     const options = { signal: listeners.signal };
-    let position = craftPosition(stations[selected]);
+    let position = craftPosition(waypoints[selected]);
     let animation = 0;
     let lastTime = 0;
     let time = 0;
-    let visible = true;
+    let chartVisible = true;
+    let detailVisible = Boolean(detailContext);
 
-    function paint(now) {
+    function updateMotionControl(isPaused) {
+      const state = String(isPaused);
+      if (motion.dataset.paused === state) return;
+      motion.dataset.paused = state;
+      motionLabel.textContent = isPaused ? 'Включить анимацию' : 'Пауза анимации';
+      motion.title = motionLabel.textContent;
+    }
+
+    function paint(now, refresh = false) {
       animation = 0;
-      if (!context || !canvas.width || !canvas.height) return;
+      const showChart = context && canvas.width && canvas.height && (chartVisible || refresh);
+      const showDetail = detailContext && detailCanvas.width && detailCanvas.height && (detailVisible || refresh);
+      if (!showChart && !showDetail) return;
       const dt = lastTime ? Math.min(40, now - lastTime) : 0;
       lastTime = now;
-      if (!paused()) time += dt / 1000;
-      const target = craftPosition(stations[selected]);
-      const speed = paused() ? 1 : 1 - Math.exp(-dt / 190);
+      const playing = !paused();
+      updateMotionControl(!playing);
+      if (playing) time += dt / 1000;
+      const point = waypoints[selected];
+      const target = craftPosition(point);
+      const speed = playing ? 1 - Math.exp(-dt / 190) : 1;
       position = position.map((value, index) => value + (target[index] - value) * speed);
-      context.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
-      drawOcean(context, time, position);
-      if (!paused() && visible && !document.hidden) animation = requestAnimationFrame(paint);
+      const environment = drawEnvironment?.(time);
+      if (showChart) {
+        context.setTransform(canvas.width / width, 0, 0, canvas.height / height, 0, 0);
+        context.clearRect(0, 0, width, height);
+        if (environment) context.drawImage(environment, 0, 0);
+        drawRoute(context, time, position, point);
+      }
+      if (showDetail) paintDetail(detailContext, detailCanvas, environment, point);
+      if (playing && (chartVisible || detailVisible) && !document.hidden) animation = requestAnimationFrame(paint);
     }
 
     function refreshMotion() {
       if (!context) return;
       cancelAnimationFrame(animation);
       lastTime = 0;
-      motion.textContent = paused() ? 'Включить анимацию' : 'Пауза анимации';
-      paint(performance.now());
+      paint(performance.now(), true);
     }
 
     function resize() {
-      const { width: chartWidth, height: chartHeight } = chart.getBoundingClientRect();
-      if (!chartWidth || !chartHeight) return;
       const scale = Math.min(devicePixelRatio || 1, 2);
-      canvas.width = Math.round(chartWidth * scale);
-      canvas.height = Math.round(chartHeight * scale);
+      for (const surface of detailContext ? [canvas, detailCanvas] : [canvas]) {
+        const w = Math.round(surface.clientWidth * scale);
+        const h = Math.round(surface.clientHeight * scale);
+        if (w !== surface.width || h !== surface.height) {
+          surface.width = w;
+          surface.height = h;
+        }
+      }
       refreshMotion();
     }
 
     function updateControls() {
-      for (const [index, pin] of pins.entries()) pin.setAttribute('aria-pressed', String(index === selected));
+      const place = waypoints[selected];
+      for (const [index, pin] of pins.entries()) {
+        pin.setAttribute('aria-pressed', String(index === selected));
+        pin.tabIndex = index === selected ? 0 : -1;
+      }
+      for (const [index, label] of regionLabels.entries()) label.dataset.current = String(regions[index] === place.region);
+      mobilePin.style.cssText = markerStyle(place);
+      mobilePin.textContent = selected + 1;
       selector.value = selected;
       previous.setAttribute('aria-disabled', String(selected === 0));
-      next.setAttribute('aria-disabled', String(selected === stations.length - 1));
+      next.setAttribute('aria-disabled', String(selected === waypoints.length - 1));
     }
 
     function choose(index) {
-      if (index === selected || !stations[index]) return;
+      if (index === selected || !waypoints[index]) return;
       selected = index;
       updateControls();
-      info.innerHTML = stationMarkup(tasks, selected);
-      announcement.textContent = stations[selected].name + '. Задания ' + taskRange(index) + '.';
+      detail.style.cssText = detailStyle(waypoints[selected]);
+      copy.innerHTML = waypointMarkup(tasks, selected);
+      announcement.textContent = '№' + tasks[index].pos + ' · ' + waypoints[index].name + ' · ' + tasks[index].title;
       if (paused() || !animation) refreshMotion();
     }
 
-    for (const pin of pins) pin.addEventListener('click', () => choose(Number(pin.dataset.oceanStation)), options);
+    for (const pin of pins) pin.addEventListener('click', () => choose(Number(pin.dataset.oceanPoint)), options);
+    const keys = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 };
+    section.querySelector('.ocean-expedition-pins').addEventListener('keydown', event => {
+      let index;
+      if (event.key === 'Home') index = 0;
+      else if (event.key === 'End') index = waypoints.length - 1;
+      else if (Object.hasOwn(keys, event.key)) index = selected + keys[event.key];
+      else return;
+      event.preventDefault();
+      if (!waypoints[index]) return;
+      choose(index);
+      pins[index].focus();
+    }, options);
     for (const step of [previous, next]) step.addEventListener('click', () => choose(selected + Number(step.dataset.oceanStep)), options);
     selector.addEventListener('change', () => choose(Number(selector.value)), options);
     info.addEventListener('submit', event => {
       if (!event.target.matches('[data-ocean-mission]')) return;
       event.preventDefault();
-      const { answer, hint, explanation } = missions[selected];
-      const raw = event.target.elements.answer.value.trim().replace(',', '.');
+      const { answer, hint, explanation } = waypoints[selected];
+      const raw = event.target.elements.answer.value.trim().replace(/^−/, '-').replace(',', '.');
       const feedback = info.querySelector('[data-ocean-mission-feedback]');
       const valid = /^[+-]?\d+(?:\.\d+)?$/.test(raw);
       const correct = valid && Number(raw) === answer;
@@ -215,13 +459,22 @@
 
     const sizeObserver = context && typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
     const viewObserver = context && typeof IntersectionObserver === 'function'
-      ? new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; refreshMotion(); })
+      ? new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          if (entry.target === chart) chartVisible = entry.isIntersecting;
+          else detailVisible = entry.isIntersecting;
+        }
+        refreshMotion();
+      })
       : null;
     if (context) {
       motion.hidden = false;
-      if (sizeObserver) sizeObserver.observe(chart);
-      else window.addEventListener('resize', resize, options);
-      viewObserver?.observe(chart);
+      for (const surface of detailContext ? [chart, detail] : [chart]) {
+        sizeObserver?.observe(surface);
+        viewObserver?.observe(surface);
+      }
+      if (!sizeObserver) window.addEventListener('resize', resize, options);
+      image.addEventListener('load', refreshMotion, { ...options, once: true });
       resize();
     }
     return () => {
@@ -232,26 +485,24 @@
     };
   }
 
-  function craftPosition(station) {
-    return [station.x - 48, station.y + 34, station === stations[stations.length - 1] ? 1 : 0];
+  function paintDetail(ctx, surface, environment, point) {
+    const [x, y] = detailCenter(point);
+    const sourceWidth = width / detailZoom;
+    const sourceHeight = sourceWidth * surface.height / surface.width;
+    const left = (width - sourceWidth) * x / width;
+    const top = (height - sourceHeight) * y / height;
+    ctx.clearRect(0, 0, surface.width, surface.height);
+    ctx.drawImage(environment, left, top, sourceWidth, sourceHeight, 0, 0, surface.width, surface.height);
   }
 
-  // Keep the illustrated geometry in scene coordinates, shared with the DOM pins.
+  function craftPosition(point) {
+    return [Math.max(60, point.x - 52), point.y + (point.y > 395 ? -35 : 39), Number(point.deep)];
+  }
+
   const path = shape => new Path2D(shape);
-  const land = typeof Path2D === 'function' ? {
-    distant: path('M0 172 Q68 166 139 204 T283 256 Q369 227 447 274 T576 299 Q644 251 708 312 T825 343 Q865 351 880 428 L939 415 Q999 388 1040 399 V550 H0 Z'),
-    floor: path('M0 239 Q77 225 144 273 T312 331 Q361 322 423 356 T548 413 Q618 402 677 433 Q741 405 790 445 L829 503 L859 523 L899 536 L930 510 L975 436 Q1004 416 1040 424 V550 H0 Z'),
-    ledge: path('M0 352 Q103 336 180 380 Q219 404 282 398 Q370 409 457 467 T642 514 L794 550 H0 Z'),
-    trench: path('M785 458 L815 469 L842 505 L866 517 L878 542 L905 548 L923 522 L956 505 L984 465 L1040 446 V550 H785 Z'),
+  const craft = typeof Path2D === 'function' ? {
     submarine: path('M-40 3 Q-32-13-8-16 L18-15 Q34-15 41-5 Q49 3 41 11 Q33 19 11 19 H-13 Q-35 17-40 7 Z'),
     face: path('M-4 4 Q0 1 4 4 L6 9 H-6 Z'),
-    coral: path('M0 0 Q2-11 0-22 Q-2-35 2-43 M0-21 Q-8-22-13-32 M1-17 Q12-23 14-37 M11-26 L21-30 M-10-29 L-10-38 M0-9 Q-11-12-17-20'),
-    wreckHull: path('M-77-5 L-54 3 L-24 0 L-13 8 L2 1 L16 5 L24 0 L67-9 L54 12 L36 23 L-34 24 L-55 15 Z'),
-    brokenSail: path('M-13-63 L-14-20 L-3-25 L-7-33 L14-30 L7-49 L14-55 Z'),
-    templeTowers: path('M-110 7 H-63 V-23 H-104 V-36 H-79 V-53 H-72 V-30 H-62 V-4 H62 V-26 H71 V-48 H78 V-28 H105 V-15 H73 V11 H108 V21 H-110 Z'),
-    templeRoof: path('M-69-29 L0-65 L65-30 L57-22 L-62-22 Z'),
-    templeFrieze: path('M-48-31 L0-55 L45-31 Z'),
-    angler: path('M-36 0 Q-33-17-7-13 Q20-17 28 0 L44-10 L42 14 L26 7 Q1 23-22 13 L-36 10 L-25 5 Z'),
     hair: path('M-4-2 Q-6-7 0-7 Q6-7 4-1 Q3-5 1-4 Q-2-2-4-2 Z'),
     subBeam: path('M39-5 L138-23 L145 43 L39 11 Z'),
     subTail: path('M-40-4 L-54-11 L-54 14 L-39 9 Z'),
@@ -281,179 +532,15 @@
     ctx.stroke();
   }
 
-  const grains = Array.from({ length: 95 }, (_, i) => ({
-    x: (i * 229 + 17) % width,
-    y: 46 + (i * 97) % 495,
-    radius: 0.8 + (i % 7) * 0.27,
-    color: i % 4 ? 'rgba(178,239,235,.25)' : 'rgba(159,247,223,.55)'
-  }));
-
-  function water(ctx, time) {
-    const sea = ctx.createLinearGradient(0, 0, 0, height);
-    sea.addColorStop(0, '#2395a5');
-    sea.addColorStop(0.19, '#14617a');
-    sea.addColorStop(0.52, '#112f50');
-    sea.addColorStop(1, '#060c25');
-    ctx.fillStyle = sea;
-    ctx.fillRect(0, 0, width, height);
-
-    const light = ctx.createRadialGradient(144, 0, 6, 145, 0, 580);
-    light.addColorStop(0, 'rgba(151,247,225,.51)');
-    light.addColorStop(1, 'rgba(119,236,226,0)');
-    ctx.fillStyle = light;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.beginPath();
-    for (let x = 18; x < width; x += 118) {
-      const drift = Math.sin(time * 0.35 + x) * 13;
-      ctx.moveTo(x, 15);
-      ctx.lineTo(x + 21, 12);
-      ctx.lineTo(x + 247 + drift, 399);
-      ctx.lineTo(x + 165 + drift, 342);
-      ctx.closePath();
-    }
-    const rays = ctx.createLinearGradient(0, 0, 0, 410);
-    rays.addColorStop(0, 'rgba(199,255,239,.18)');
-    rays.addColorStop(1, 'rgba(155,250,228,0)');
-    ctx.fillStyle = rays;
-    ctx.fill();
-
-    for (let row = 0; row < 5; row++) {
-      ctx.beginPath();
-      for (let x = -10; x <= width + 10; x += 9) {
-        const y = 8 + 7 * row + 4 * Math.sin(x / 49 + time * (1 + row * 0.08) + row);
-        if (x === -10) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = 'rgba(193,249,238,.37)';
-      ctx.lineWidth = row === 0 ? 2.4 : 1.15;
-      ctx.stroke();
-    }
-
-    for (const grain of grains) ellipse(ctx, grain.x + 9 * Math.sin(grain.y + time * .45), grain.y - 7 * Math.sin(time * .24 + grain.x), grain.radius, grain.radius, grain.color);
-  }
-
-  function reef(ctx) {
-    ctx.save();
-    ctx.translate(262, 221);
-    ellipse(ctx, 0, 9, 102, 16, '#235268');
-    for (const [x, y, scale, angle, color] of [
-      [-80, 11, .7, -.35, '#6fb4ad'], [-57, 12, 1.06, -.37, '#ee967f'],
-      [-33, 11, .72, .18, '#f6b495'], [-11, 10, 1.14, .15, '#e895b3'],
-      [14, 13, .76, .3, '#f3b092'], [32, 10, .91, -.09, '#ee967f'],
-      [61, 10, 1.19, .27, '#75b6b2'], [80, 13, .6, .36, '#d891bc']
-    ]) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(angle);
-      ctx.scale(scale, scale);
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = color;
-      ctx.lineCap = 'round';
-      ctx.stroke(land.coral);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  function whirlpool(ctx, time) {
-    ctx.save();
-    ctx.translate(488, 60);
-    ctx.scale(1, .36);
-    ctx.lineCap = 'round';
-    for (let band = 0; band < 3; band++) {
-      ctx.beginPath();
-      for (let step = 0; step <= 89; step++) {
-        const radius = 8 + step * .74;
-        const angle = step * .07 + time * .7 + band * Math.PI * 2 / 3;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        if (step === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = ['#b3f6e7', '#73d8da', '#48a7bd'][band];
-      ctx.lineWidth = 3.8 - band * .8;
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  function wreck(ctx, x, y, scale, angle, color) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(angle);
-    ctx.scale(scale, scale);
-    fill(ctx, color, land.wreckHull);
-    line(ctx, '#758d98', 2, [[-61, 4], [-39, 11], [29, 11], [55, 2]]);
-    line(ctx, color, 5, [[-15, 4], [-13, -65]]);
-    line(ctx, color, 4, [[25, 3], [24, -43]]);
-    line(ctx, '#758d98', 2, [[-38, -50], [5, -51]]);
-    fill(ctx, '#466878', land.brokenSail);
-    for (const x of [-33, -13, 7, 26, 44]) ellipse(ctx, x, 15, 3, 2, '#182d43');
-    ctx.restore();
-  }
-
-  function temple(ctx) {
-    ctx.save();
-    ctx.translate(369, 370);
-    ellipse(ctx, 2, 15, 110, 22, '#244b61');
-    fill(ctx, '#4a8490', land.templeTowers);
-    fill(ctx, '#8fc3bf', land.templeRoof);
-    fill(ctx, '#55909c', land.templeFrieze);
-    for (const x of [-50, -25, 0, 25, 50]) {
-      ctx.fillStyle = '#85b5b2';
-      ctx.fillRect(x - 3, -21, 6, 27);
-      ctx.fillStyle = '#b9d5c4';
-      ctx.fillRect(x - 6, -21, 12, 3);
-      ctx.fillRect(x - 6, 3, 12, 3);
-    }
-    line(ctx, '#7aadae', 4, [[-65, 9], [66, 9]]);
-    line(ctx, '#61979f', 3, [[-73, 14], [74, 14]]);
-    ctx.restore();
-  }
-
-  function creatures(ctx, time) {
-    ctx.save();
-    ctx.translate(757, 388 + Math.sin(time * 1.2) * 3);
-    ctx.lineCap = 'round';
-    for (let i = -3; i <= 3; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * 7, 1);
-      ctx.bezierCurveTo(i * 13, 18, i * 29 + Math.sin(time * 1.8 + i) * 9, 21, i * 24, 43 + Math.sin(time + i) * 6);
-      ctx.strokeStyle = i % 2 ? '#776ca0' : '#a08bb3';
-      ctx.lineWidth = 7 - Math.abs(i);
-      ctx.stroke();
-    }
-    ellipse(ctx, 0, -11, 28, 26, '#8274a7');
-    ellipse(ctx, -10, -9, 5, 6, '#e2dcf7');
-    ellipse(ctx, 10, -9, 5, 6, '#e2dcf7');
-    ellipse(ctx, -9, -8, 2.5, 3, '#1a2340');
-    ellipse(ctx, 9, -8, 2.5, 3, '#1a2340');
-    ctx.restore();
-
-    ctx.save();
-    ctx.translate(954, 351 + Math.sin(time + .7) * 5);
-    fill(ctx, '#33485f', land.angler);
-    ctx.beginPath();
-    ctx.moveTo(-12, -10);
-    ctx.quadraticCurveTo(-15, -34, -36, -23);
-    ctx.strokeStyle = '#6b9eaf';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ellipse(ctx, -36, -23, 4, 4, '#b5f9df');
-    ellipse(ctx, -20, -5, 3, 2.5, '#e2efad');
-    ctx.restore();
-  }
-
   function pilot(ctx, x, y, radius) {
     ellipse(ctx, x, y, radius + 2.7, radius + 2.7, '#85583c');
     ellipse(ctx, x, y, radius, radius, '#233d55');
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(radius / 10, radius / 10);
-    fill(ctx, '#65b4c2', land.face);
+    fill(ctx, '#65b4c2', craft.face);
     ellipse(ctx, 0, -2, 4, 5, '#f1b888');
-    fill(ctx, '#694d58', land.hair);
+    fill(ctx, '#694d58', craft.hair);
     ellipse(ctx, -4.5, -6, 1.25, 1.25, '#9fdee5');
     ctx.restore();
   }
@@ -477,11 +564,11 @@
     const beam = ctx.createLinearGradient(41, 0, 131, 11);
     beam.addColorStop(0, 'rgba(255,235,162,.46)');
     beam.addColorStop(1, 'rgba(255,235,162,0)');
-    fill(ctx, beam, land.subBeam);
-    fill(ctx, '#ac7049', land.subTail);
-    fill(ctx, '#ffdc92', land.submarine);
-    fill(ctx, '#d09058', land.subShade);
-    fill(ctx, '#ffdc92', land.subBridge);
+    fill(ctx, beam, craft.subBeam);
+    fill(ctx, '#ac7049', craft.subTail);
+    fill(ctx, '#ffdc92', craft.submarine);
+    fill(ctx, '#d09058', craft.subShade);
+    fill(ctx, '#ffdc92', craft.subBridge);
     line(ctx, '#f4bb71', 3, [[-4, -26], [-4, -37], [4, -37]]);
     ellipse(ctx, -18, 0, 5, 5, '#3e5869');
     if (deployment < .55) pilot(ctx, 12, 0, 10);
@@ -494,7 +581,7 @@
     const bathBeam = ctx.createLinearGradient(10, 1, 85, 25);
     bathBeam.addColorStop(0, 'rgba(171,242,239,.43)');
     bathBeam.addColorStop(1, 'rgba(171,242,239,0)');
-    fill(ctx, bathBeam, land.bathBeam);
+    fill(ctx, bathBeam, craft.bathBeam);
     ellipse(ctx, 0, 0, 15, 12, '#d7a66f');
     if (deployment >= .55) pilot(ctx, 2, 0, 8);
     else ellipse(ctx, 2, 0, 7, 6, '#476377');
@@ -503,25 +590,32 @@
     ctx.restore();
   }
 
-  function drawOcean(ctx, time, position) {
-    water(ctx, time);
-    fill(ctx, 'rgba(28,65,86,.72)', land.distant);
-    fill(ctx, '#1b3a53', land.floor);
-    fill(ctx, '#172e48', land.ledge);
-    fill(ctx, '#101c38', land.trench);
-    line(ctx, '#3a5870', 2, [[787, 458], [816, 471], [842, 505], [866, 517], [878, 542]]);
-    line(ctx, '#365773', 2, [[911, 545], [928, 518], [956, 505], [984, 465], [1040, 446]]);
-    reef(ctx);
-    whirlpool(ctx, time);
-    wreck(ctx, 645, 272, 1, -.13, '#577a89');
-    wreck(ctx, 706, 282, .58, .24, '#416172');
-    temple(ctx);
-    creatures(ctx, time);
+  const route = waypoints.map(point => [point.x, point.y]);
+  function drawRoute(ctx, time, position, point) {
     ctx.save();
-    ctx.setLineDash([2.5, 8]);
+    ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
-    line(ctx, 'rgba(199,237,224,.52)', 2, stations.map(station => [station.x, station.y]));
+    line(ctx, '#061e36a8', 5, route);
+    ctx.setLineDash([3, 9]);
+    line(ctx, '#f1fafaab', 2.3, route);
     ctx.restore();
+    for (const waypoint of waypoints) {
+      ellipse(ctx, waypoint.x, waypoint.y, 4.5, 4.5, waypoint.region.color);
+    }
+
+    const glow = ctx.createRadialGradient(point.x, point.y, 14, point.x, point.y, 53);
+    glow.addColorStop(0, point.region.color + '65');
+    glow.addColorStop(1, point.region.color + '00');
+    ellipse(ctx, point.x, point.y, 53, 53, glow);
+
+    const [x, y, dive] = position;
+    for (let index = 0; index < 7; index++) {
+      const rise = (time * (20 + index % 3 * 5) + index * 11) % 70;
+      const bubbleX = x - 21 + dive * 36 + 7 * Math.sin(index + rise / 13);
+      const bubbleY = y - 13 + dive * 20 - rise;
+      const size = 1.4 + index % 3;
+      ellipse(ctx, bubbleX, bubbleY, size, size, '#c7fbf87a');
+    }
     vessel(ctx, position, time);
   }
 

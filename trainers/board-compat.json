@@ -562,6 +562,34 @@
       "notes": "Совместная работа по курсу: карточка, ввод, шаги, подсказки, теория и ракурс модели. Личный прогресс курса не изменяется."
     },
     {
+      "trainerId": "sections-from-zero",
+      "file": "trainers/sections-from-zero.html",
+      "title": "Сечения с нуля",
+      "group": "Стереометрия / сечения",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместная работа по 186 карточкам: построение, объяснение шагов, расчёты, черновик и ракурс модели. Личный маршрут и результаты курса не изменяются."
+    },
+    {
+      "trainerId": "stereo-literacy-atanasyan",
+      "file": "trainers/stereo-literacy-atanasyan.html",
+      "title": "Стереометрическая грамота · Атанасян · до линейного угла",
+      "group": "Стереометрия / сечения",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Совместный разбор первых тем Атанасяна: карточка, ответы, подсказки, шаги и ракурс модели. Личная работа хранится отдельно."
+    },
+    {
       "trainerId": "grade6-nok",
       "file": "trainers/grade6-nok.html",
       "title": "НОК: наименьшее общее кратное · 6 класс",

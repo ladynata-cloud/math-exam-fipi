@@ -9,7 +9,7 @@ const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
 const mediaTypes = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
-  '.json': 'application/json', '.svg': 'image/svg+xml'
+  '.json': 'application/json', '.svg': 'image/svg+xml', '.webp': 'image/webp'
 };
 const server = http.createServer(async (request, response) => {
   try {
@@ -99,62 +99,158 @@ async function checkCreativePractice(page, origin) {
 }
 
 async function checkOcean(page, origin) {
+  const pointNames = [
+    'Плавучая база', 'Мерный буй', 'Журнал погружений',
+    'Черепаший грот', 'Коралловый сад', 'Развилка рифа',
+    'Граница течений', 'Светящийся косяк', 'Песчаная терраса',
+    'Карта фрегата', 'Грузовой трюм', 'Мачта фрегата',
+    'Купол Атлантиды', 'Зал мерных чаш', 'Мозаика Атлантиды',
+    'След морского змея', 'Камера эха', 'Подводный разлом',
+    'Зонд у кромки', 'Спуск батискафа', 'Сад чёрных курильщиков'
+  ];
+  const answers = ['9', '2400', '19', '10', '3', '22', '8', '2', '20', '36', '120', '13', '8', '0,55', '70', '16', '7', '−2', '3', '12', '15'];
+
   for (const width of [320, 1280]) {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto(`${origin}/ege-baza/#map`);
+    await page.goto(`${origin}/ege-baza/${width === 320 ? '' : 'index.html#map'}`);
     const ocean = page.getByRole('region', { name: 'Подводная экспедиция' });
     await ocean.waitFor();
     assert.equal(await page.locator('[data-exam-position]').count(), 21, 'the numbered basic EGE catalogue remains intact');
+    const atlas = ocean.locator('img.ocean-expedition-atlas');
+    await atlas.evaluate(img => img.decode());
+    assert.equal(await atlas.evaluate(img => img.naturalWidth), 1440);
     await fits(page, `base ocean and exam catalogue fit ${width}px`);
-    const craft = ocean.locator('.ocean-expedition-craft');
-    const stationSelect = ocean.getByRole('combobox', { name: 'Станция' });
-    const next = ocean.getByRole('button', { name: 'Следующая станция' });
-    const stationNames = ['Поверхность океана', 'Коралловый риф', 'Водоворот', 'Затонувшие корабли', 'Атлантида', 'Логово чудовищ', 'Марианская впадина'];
-    const links = [];
-    for (const [index, name] of stationNames.entries()) {
-      const pin = ocean.locator(`[data-ocean-station="${index}"]`);
-      if (width === 320) await stationSelect.selectOption(String(index));
-      else await pin.press('Enter');
+    const selector = ocean.getByRole('combobox', { name: 'Точка погружения' });
+    const previous = ocean.getByRole('button', { name: 'Предыдущая точка' });
+    const next = ocean.getByRole('button', { name: 'Следующая точка' });
+    const task = ocean.locator('.ocean-expedition-task');
+    const stage = ocean.locator('.ocean-expedition-scene');
+    const scenes = new Set();
+    const progressBefore = await page.evaluate(() => Object.entries(localStorage));
+    assert.equal(await selector.locator('optgroup').count(), 7);
+    assert.equal(await selector.locator('option').count(), 21);
+    assert.equal(await previous.getAttribute('aria-disabled'), 'true');
+    for (const [index, name] of pointNames.entries()) {
+      const pos = index + 1;
+      const pin = ocean.locator(`[data-ocean-point="${index}"]`);
+      if (width === 320) {
+        assert(!(await pin.isVisible()), 'dense desktop pins are replaced by the touch selector');
+        await selector.selectOption(String(index));
+        assert.equal(await ocean.locator('.ocean-expedition-mobile-pin').innerText(), String(pos));
+      } else {
+        await pin.click();
+      }
       assert.equal(await pin.getAttribute('aria-pressed'), 'true', name);
-      assert(await ocean.getByRole('heading', { name }).isVisible(), name);
-      assert.equal(await craft.innerText(), index === 6 ? 'Батискаф' : 'Подводная лодка');
-      links.push(...await ocean.locator('.ocean-expedition-tasks a').evaluateAll(nodes => nodes.map(node => node.hash)));
-      if (width === 320 && index === 0) {
-        const progress = await page.evaluate(() => localStorage.getItem('mathexam.ege-baza.path.v1'));
+      assert.equal(await selector.inputValue(), String(index), name);
+      assert(await ocean.getByRole('heading', { name, exact: true }).isVisible(), name);
+      assert.equal(await ocean.locator('.ocean-expedition-craft').innerText(), pos >= 19 ? 'Батискаф' : 'Подводная лодка');
+      assert.equal(await task.getAttribute('href'), `#task?pos=${pos}`, name);
+      scenes.add(await stage.evaluate(node => getComputedStyle(node).backgroundPosition));
+      if (width === 320) {
         await ocean.locator('.ocean-expedition-mission summary').click();
         const mission = ocean.locator('form[data-ocean-mission]');
-        await mission.locator('input[name="answer"]').fill('9');
-        await mission.getByRole('button', { name: 'Проверить', exact: true }).click();
-        assert.match(await ocean.locator('[data-ocean-mission-feedback]').innerText(), /^Верно/);
-        assert.equal(await page.evaluate(() => localStorage.getItem('mathexam.ege-baza.path.v1')), progress, 'expedition practice does not write exam progress');
+        const answer = mission.getByLabel('Ответ');
+        const check = mission.getByRole('button', { name: 'Проверить', exact: true });
+        const feedback = ocean.locator('[data-ocean-mission-feedback]');
+        if (pos === 1) {
+          await answer.fill('девять');
+          await check.click();
+          assert.equal(await feedback.innerText(), 'Введи число в поле «Ответ».');
+          await answer.fill('8');
+          await check.click();
+          assert.match(await feedback.innerText(), /Сравни 8 × 8/);
+        }
+        if (pos === 3 || pos === 6) assert(await ocean.getByRole('table').isVisible(), name);
+        if (pos === 8) assert.equal(await ocean.locator('.ocean-expedition-choices li').count(), 3);
+        if (pos === 9) assert.equal(await ocean.locator('.ocean-expedition-grid [data-filled="1"]').count(), 20);
+        await answer.fill(answers[index]);
+        await check.click();
+        assert.match(await feedback.innerText(), /^Верно\./, name);
+        await fits(page, name + ' and its task fit the phone');
+      } else {
+        await task.click();
+        await page.locator(`[data-exam-task="${pos}"]`).waitFor();
+        await page.locator('#content a[href="#map"]').first().click();
+        await ocean.getByRole('heading', { name, exact: true }).waitFor();
       }
     }
-    assert.deepEqual(links, Array.from({ length: 21 }, (_, index) => `#task?pos=${index + 1}`), 'all ocean links point to the corresponding exam number');
+    assert.equal(scenes.size, 21, 'each point has its own close-up of the atlas');
     assert.equal(await next.getAttribute('aria-disabled'), 'true');
-    await ocean.getByRole('button', { name: 'Предыдущая станция' }).press('Enter');
-    assert(await ocean.getByRole('heading', { name: 'Логово чудовищ' }).isVisible(), 'keyboard piloting selects the previous station');
+    assert.deepEqual(await page.evaluate(() => Object.entries(localStorage)), progressBefore, 'the expedition does not write course progress');
+    await previous.press('Enter');
+    assert(await ocean.getByRole('heading', { name: 'Спуск батискафа' }).isVisible(), 'keyboard selects the previous point');
     await next.press('Enter');
+    if (width === 1280) {
+      const lastPin = ocean.locator('[data-ocean-point="20"]');
+      await lastPin.press('Home');
+      const firstPin = ocean.locator('[data-ocean-point="0"]');
+      assert(await firstPin.evaluate(node => node === document.activeElement), 'Home moves focus and selection to the first point');
+      await firstPin.press('ArrowRight');
+      assert(await ocean.getByRole('heading', { name: 'Мерный буй' }).isVisible());
+      await ocean.locator('[data-ocean-point="1"]').press('End');
+      assert.equal(await lastPin.getAttribute('aria-pressed'), 'true');
+    }
 
-    const canvas = ocean.locator('canvas');
-    await canvas.scrollIntoViewIfNeeded();
+    const chart = ocean.locator('.ocean-expedition-chart canvas');
+    const scene = ocean.locator('.ocean-expedition-scene canvas');
+    const frames = () => ocean.locator('.ocean-expedition-chart canvas, .ocean-expedition-scene canvas')
+      .evaluateAll(canvases => canvases.map(canvas => canvas.toDataURL()));
+    const waitForFrames = () => page.evaluate(() => new Promise(resolve =>
+      requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve)))));
+    await scene.scrollIntoViewIfNeeded();
     const resume = ocean.getByRole('button', { name: 'Включить анимацию' });
     assert(await resume.isVisible(), 'system preference pauses the ocean animation');
-    const firstFrame = await canvas.evaluate(node => node.toDataURL());
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    assert.equal(await canvas.evaluate(node => node.toDataURL()), firstFrame, 'ocean stays still when reduced motion is requested');
+    const firstFrames = await frames();
+    await waitForFrames();
+    assert.deepEqual(await frames(), firstFrames, 'the chart and close-up stay still with reduced motion');
     await resume.click();
     const pause = ocean.getByRole('button', { name: 'Пауза анимации' });
     await pause.waitFor();
-    await page.waitForFunction(frame => document.querySelector('.ocean-expedition canvas').toDataURL() !== frame, firstFrame);
+    await scene.scrollIntoViewIfNeeded();
+    await page.waitForFunction(([mapFrame, detailFrame]) => (
+      document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== mapFrame &&
+      document.querySelector('.ocean-expedition-scene canvas').toDataURL() !== detailFrame
+    ), firstFrames, { polling: 100 });
+
+    if (width === 1280) {
+      for (const index of [0, 4, 7, 10, 14, 16, 20]) {
+        await selector.selectOption(String(index));
+        await waitForFrames();
+        const frame = await scene.evaluate(canvas => canvas.toDataURL());
+        await page.waitForFunction(previous => document.querySelector('.ocean-expedition-scene canvas').toDataURL() !== previous,
+          frame, { polling: 100 });
+      }
+      await page.locator('[data-exam-position="21"]').scrollIntoViewIfNeeded();
+      await waitForFrames();
+      const offscreen = await frames();
+      await waitForFrames();
+      assert.deepEqual(await frames(), offscreen, 'offscreen animation does not repaint either canvas');
+      await chart.scrollIntoViewIfNeeded();
+      await page.waitForFunction(frame => document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== frame,
+        offscreen[0], { polling: 100 });
+    }
     await pause.click();
     await resume.waitFor();
+    const pausedFrames = await frames();
+    await waitForFrames();
+    assert.deepEqual(await frames(), pausedFrames, 'manual pause stops both animated surfaces');
 
-    await ocean.locator('a[href="#task?pos=21"]').click();
+    if (width === 1280) {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await pause.waitFor();
+      await page.waitForFunction(frame => document.querySelector('.ocean-expedition-chart canvas').toDataURL() !== frame,
+        pausedFrames[0], { polling: 100 });
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await resume.waitFor();
+    }
+
+    await task.click();
     await page.locator('[data-exam-task="21"]').waitFor();
     await page.locator('#content a[href="#map"]').first().click();
-    await ocean.waitFor();
-    assert(await ocean.getByRole('heading', { name: 'Марианская впадина' }).isVisible(), 'returning from a task restores the current station');
+    await ocean.getByRole('heading', { name: 'Сад чёрных курильщиков' }).waitFor();
   }
+  await page.setViewportSize({ width: 768, height: 900 });
+  await fits(page, 'the expedition scene fits the tablet sidebar layout');
 }
 
 (async () => {

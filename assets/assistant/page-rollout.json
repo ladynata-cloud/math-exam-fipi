@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+  "baseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 580,
-    "covered": 579,
+    "total": 581,
+    "covered": 580,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "49be2bc8db5e44f784b1021bfac846f51585380d23b818bcd90c3314ddac1121",
-      "afterSha256": "a82869d210e4013843828ada3f3f0d05e7c7dbbffa2a536f8e808821a21e6035",
+      "beforeSha256": "fff956e1ce378657a850ee966b96e79499bf1afb77478f109e3972567981ce50",
+      "afterSha256": "daed19c45fc66826d432f957e09864ea202c3a21dc998a82874d592fea583fc0",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "91332dfdf902025cf86df32ff89d774f38c82ff36f9c29727022e7e660bf7b56",
-      "afterSha256": "9f91a1d677a485b7124602988b04feac14eb36c622ae5274f670a81b8becc795",
+      "beforeSha256": "aceda589a511a96b7526f456f8d360017f20cd5b52f359fad198252c4e8bcbc3",
+      "afterSha256": "327ce21226d870a117016d97e2ecdd9a507bbde611b7b3510d65b788ae71f08c",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -318,13 +318,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
-      "beforeSha256": "67afda19e03cb7e9afb9986c9dcdf7c3300ebcace9d984b199683eca83d53589",
-      "afterSha256": "35ac4c1e2c25c84dd21d77163a7c086f676c837bdabaaec5f19015e012cdc5f2",
+      "beforeSha256": "c4d660bb546fc299e2432d9a0a4c0d2c129bd01a4fc1d379fdfb087b1d769f50",
+      "afterSha256": "8cc94d362b9ac0632dacbd9512ea8b91e33f6790b31388b6a6ac88f0c2533be2",
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "5cb0ee7ac3a6014c5d1732c9cfeaf66e67f36fce8cd52f53868d3b5df4d816f7",
-      "afterSha256": "b265c033084db27ed993c15a2f17a27a25dd3fa0102055b9a45a8fad8ab9c4d1",
+      "beforeSha256": "a93d3eeb5cdf90b0bb19d3a26c47d0dc6a88bb8e818cb93a632277a18943b97c",
+      "afterSha256": "987ce5124d36042cbc4f774c7dc38fdd3b086956fc722543e56b2f50063bd562",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -353,8 +353,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/inequalities.html": {
-      "beforeSha256": "3cf2f9eb38362659622b3d9ebd68167ba7059d10791aafddd4cf257de21a2425",
-      "afterSha256": "8b4687d4e9a5525a260f460034128b821e64743740b00ac7337e0b5eac120886",
+      "beforeSha256": "111f664ec530128fa06a618e3e5ce82d34e5cdb4267b9facebc11d82abdb5eff",
+      "afterSha256": "ccd58741a6db95d426e8678c5195a6c12e6045a580d07c44eee737997ab5ea17",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/interval-method.html": {
@@ -458,13 +458,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "f211192e7ae8b87c1320c22901d2a803bf8cfbd335e9500957525a641bd07c06",
-      "afterSha256": "d3a4866680ac1dd70a168ad37cc6b40ef483a67cb5e07cc600bb9161a46c1fda",
+      "beforeSha256": "ff09dcd4264d177e140d8dcaf002659860472534679d26894db715f549ac845f",
+      "afterSha256": "a15be0b8d2e643b9f1afba58f6d506d2aec57717351bf02cc9fb44ca933937e5",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "63338c8e953f019ea3524b721f21427a9952ef4fcaae77f48f2f112badcf650d",
-      "afterSha256": "e5e9ecd55675847a62b2cedf96645c32546e8416e9b44b9782fee08e1d2b69bd",
+      "beforeSha256": "a2fe1de390d3d281cf32f54631f90f5a07a36e6fcfa8f71a4bc81de3a975971a",
+      "afterSha256": "4b11dd731c1e5ca088686cd80289b51c3d19e59994d5233f6e656f973b9f185a",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -2202,6 +2202,11 @@
       "afterSha256": "6711ae14d8a2e51546e69c681cde31910c1ab291de0e080de09b895ac624b988",
       "placement": "before-head-close"
     },
+    "stereo-course/sections/index.html": {
+      "beforeSha256": "081659422dfaf59c9fb4d9cb819abfe499f8493109f667abfd8375c32456d8a4",
+      "afterSha256": "68c6450a48fbe1297f09912fdd25e9383d4a8f36011cafdc35bfb990ae99e84a",
+      "placement": "before-head-close"
+    },
     "stereo-course/textbook/index.html": {
       "beforeSha256": "9539a3f97374f41fd9caa49b6d25c4922096afd7d52d5010184f66536839fb3c",
       "afterSha256": "c0bb328d34008c12b721d0cd1e4efb8fa95aa56c75747335cbf5246c56c46e11",
@@ -2988,8 +2993,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "6a1442abbfc85df4df49faf5b17a4dcf9df6d069638d8ac6395aab62f102a6bc",
-      "afterSha256": "5f9cee5dfecaa7afbe9f17e18c3438ff82c5dd95aa21a8bb03f6f907dcfecdab",
+      "beforeSha256": "c78af4ef43dbf2cb2df9ef5da618b3df3327791fbd3f9fdfe96a3423434d2ffe",
+      "afterSha256": "001c2eab214f35de65332c5fb4470ae5facd6a7a29f0482ec304c54960361ac9",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -3602,6 +3607,7 @@
     "soviet-math/index.html": "sitemap",
     "stereo-course/index.html": "sitemap",
     "stereo-course/merzlyak-10-base/index.html": "sitemap",
+    "stereo-course/sections/index.html": "sitemap",
     "stereo-course/textbook/index.html": "sitemap",
     "topics/delenie-ugolkom/index.html": "sitemap",
     "topics/index.html": "sitemap",
@@ -4797,6 +4803,77 @@
       "task": "docs/tasks/TRAINER_LESSON_CONTACTS_20261111.md",
       "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
+      "task": "docs/tasks/CARTESIAN_GRAPH_SCALE_20261112.md",
+      "changedPaths": [
+        "ege-profil/trainers/inequalities.html",
+        "trainers/oge-task22-functions-graphs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "396efdd8670d060beec3fbe087bfb35ab7f0232a",
+      "sourceBaseSha": "e4e8af9ccf99275ce4bc60bc2ba6d3e6b56508a5",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "815ec7c6322521417061e3029b0831f5adcd9b83",
+      "sourceBaseSha": "2cc07d59a4b6b437e9bc6e92ca10caa794e47021",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "0cf6d97e5be7b0d9dd08b297048db8bafaa00e01",
+      "sourceBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "46bb9067a1da51932a2de29ecee7f48e1832bac3",
+      "sourceBaseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
+      "task": "docs/tasks/EGE_BASE_OCEAN_21_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fadee9fd525f22a6fbacdec6f749da6ee1827c32",
+      "sourceBaseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
+      "task": "docs/tasks/PROFILE_VECTOR_BASICS_20261112.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/review.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "90f370068265b7433f4c345d63662ac8b0024b07",
+      "sourceBaseSha": "4162841384149d17196115f09a63fc811016968f",
+      "task": "docs/tasks/EGE_BASE_OCEAN_MOTION_20261112.md",
+      "changedPaths": [
+        "ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "4162841384149d17196115f09a63fc811016968f",
+      "sourceBaseSha": "c7adfc25758550fdf68ee20e6afca93ae310ac91",
+      "task": "docs/tasks/PROFILE_CLOCKWORK_20261112.md",
+      "changedPaths": [
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -4848,6 +4925,14 @@
         "ege-profil/part-two/index.html"
       ],
       "reason": "Original second-part course linked from the full profile entrance and sitemap; existing navigator pair bound to reviewed committed teaching source."
+    },
+    {
+      "sourceBaseSha": "5a2b3ac39a4c63bfbba40e6137567162e8207412",
+      "task": "docs/tasks/SECTIONS_FROM_ZERO_INTEGRATION_20261106.md",
+      "addedPages": [
+        "stereo-course/sections/index.html"
+      ],
+      "reason": "New public sections course linked from the sitemap and course catalogue; include the existing navigator while preserving its reviewed teaching source."
     }
   ]
 }

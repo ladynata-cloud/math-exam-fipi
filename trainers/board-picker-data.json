@@ -7790,6 +7790,26 @@
       "title": "ВПР · 10 класс",
       "href": "/trainers/vpr-math/index.html?route=g10",
       "group": "ВПР / математика"
+    },
+    {
+      "title": "Сечения с нуля · 186 карточек · построение сечений многогранников",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/sections-from-zero.html"
+    },
+    {
+      "title": "Стереометрическая грамота · Атанасян · до линейного угла",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html"
+    },
+    {
+      "title": "Сечения по Атанасяну · треугольное сечение",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html#theory-014-example-3a"
+    },
+    {
+      "title": "Линейный угол двугранного угла · Атанасян",
+      "group": "Стереометрия / сечения",
+      "href": "/trainers/stereo-literacy-atanasyan.html#theory-022"
     }
   ]
 }

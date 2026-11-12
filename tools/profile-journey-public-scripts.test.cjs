@@ -1,10 +1,11 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
 const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
-const map=['../skill-map-data.js?v=20261111-skills','../skill-map.js?v=20261111-skills','journey.js?v=20261109',
- 'second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity'];
-const runtime=['geometry-data.js','state.js?v=20261109-integrity','calm-ui.js?v=20261109-journey','app.js?v=20261111-skills'];
-const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
+const map=['../skill-map-data.js?v=20261112-vectors','../skill-map.js?v=20261111-skills','journey.js?v=20261112-vectors',
+ 'second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
+ 'vector-basics-data.js?v=20261112-vectors','vector-basics-models.js?v=20261112-vectors'];
+const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261112-vectors','calm-ui.js?v=20261112-vectors','app.js?v=20261112-vectors'];
+const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-data.js?v=20261101-finance','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
 const canonical=html([...map,...runtime]),wrapper=html(boardRuntime);
 function parity(page=canonical,board=wrapper){
@@ -12,7 +13,7 @@ function parity(page=canonical,board=wrapper){
  assert.deepEqual(actual,canonicalProfileLearningScripts(page,board).map(src=>'/ege-profil/start/'+src));
 }
 
-test('board contract excludes all six public-only modules and permits only the reviewed runtime stamps',()=>{
+test('board contract excludes public-only modules and permits only the reviewed runtime stamps',()=>{
  parity();
  assert.deepEqual(canonicalProfileLearningScripts(canonical,wrapper),boardRuntime.map(src=>src.slice('/ege-profil/start/'.length)));
 });

@@ -6,6 +6,7 @@
 <meta name="description" content="Тренажёры по двум вариантам контрольной работы. Смежные и вертикальные углы, биссектриса и равенство треугольников.">
 <title>Углы и треугольники · контрольная по геометрии 7 класса | MathExam</title>
 <link rel="canonical" href="https://mathexam.space/trainers/geometry-7/control-work.html">
+<link rel="stylesheet" href="control-work-written.css?v=1">
 <style>
 :root {
   color-scheme: light;
@@ -177,6 +178,7 @@ h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.12; letter-
     <div class="mode" role="group" aria-label="Режим работы">
       <button type="button" id="train-mode" aria-pressed="true">Тренировка</button>
       <button type="button" id="check-mode" aria-pressed="false">Самопроверка</button>
+      <button type="button" id="written-mode" aria-pressed="false" hidden>Полное решение</button>
     </div>
     <div class="total" id="total"><span id="total-text"></span><progress id="total-progress" aria-label="Выполнено упражнений"></progress></div>
   </div>
@@ -191,6 +193,7 @@ h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.12; letter-
   <section class="check-area" id="self-check" aria-labelledby="check-title" hidden>
     <article class="card" id="check-card"></article>
   </section>
+  <section class="written-area" id="written-work" aria-labelledby="written-title" hidden></section>
   <noscript><p>Чтобы проверять ответы, включите JavaScript в браузере.</p></noscript>
 </main>
 <script>
@@ -984,7 +987,8 @@ const renderDiagram = (() => {
 
 const $ = (selector) => document.querySelector(selector);
 const controls = {
-  train: $('#train-mode'), check: $('#check-mode'), training: $('#training'),
+  train: $('#train-mode'), check: $('#check-mode'), written: $('#written-mode'), training: $('#training'),
+  writtenWork: $('#written-work'),
   selfCheck: $('#self-check'), skills: $('#skills'), skillSelect: $('#skill-select'),
   lesson: $('#lesson'), checkCard: $('#check-card'), total: $('#total'),
   totalText: $('#total-text'), progress: $('#total-progress')
@@ -999,6 +1003,7 @@ const progressKey = 'geometry-angles-triangles-practice-2026-11-v1';
 const solved = readProgress();
 const practice = new Map();
 const state = { skill: 0, item: 0, mode: 'training', variant: 0, check: null };
+let writtenWork;
 
 function readProgress() {
   try {
@@ -1175,14 +1180,20 @@ function changeSkill(index, item) {
 function setMode(mode, focus = true) {
   state.mode = mode;
   const training = mode === 'training';
+  const checking = mode === 'check';
+  const writing = mode === 'written';
+  document.body.classList.toggle('written-mode-active', writing);
   controls.train.setAttribute('aria-pressed', String(training));
-  controls.check.setAttribute('aria-pressed', String(!training));
+  controls.check.setAttribute('aria-pressed', String(checking));
+  controls.written.setAttribute('aria-pressed', String(writing));
   controls.training.hidden = !training;
-  controls.selfCheck.hidden = training;
+  controls.selfCheck.hidden = !checking;
+  controls.writtenWork.hidden = !writing;
   controls.total.hidden = !training;
   if (training) renderTraining();
-  else renderCheck();
-  if (focus) focusHeading(training ? '#lesson-title' : '#check-title');
+  if (checking) renderCheck();
+  if (writing) writtenWork.show();
+  if (focus) focusHeading(training ? '#lesson-title' : checking ? '#check-title' : '#written-title');
 }
 
 function variantQuestions() {
@@ -1298,7 +1309,18 @@ controls.checkCard.addEventListener('click', (event) => {
 });
 
 setMode('training', false);
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.GeometryControlWork || !window.GeometryControlDrawing || !window.GeoMath) return;
+  writtenWork = window.GeometryControlWork.mount(controls.writtenWork, TRAINERS, renderDiagram);
+  controls.written.hidden = false;
+  controls.written.addEventListener('click', () => setMode('written'));
+  if (new URLSearchParams(location.search).get('mode') === 'written') setMode('written', false);
+});
 </script>
+<script defer src="../../geometry-course/assets/geometry.js"></script>
+<script defer src="control-work-drawing.js?v=1"></script>
+<script defer src="control-work-written.js?v=1"></script>
 <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

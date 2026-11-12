@@ -3,7 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
-const {restoreVideoModels}=require('./oge-video-models-preservation.cjs');
+const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
@@ -26,7 +26,7 @@ function currentPage(file){
   assert.equal(html.split(replacement).length,2,'Exact removed legacy return position');
   html=html.replace(replacement,'<main class="wrap">\n<nav class="course-return"><a href="../oge/">← К курсу ОГЭ</a></nav>\n<header>');
  }
- return html;
+ return restoreGraphScale(file,html);
 }
 function beforeMirror(file,source){
  const rule=boardInverse[file];if(!rule)return source;

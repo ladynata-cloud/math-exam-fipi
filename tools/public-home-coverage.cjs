@@ -19,6 +19,7 @@ const EXCLUDED = new Map([
   ['index-old.html', 'Archived former homepage, not a course or trainer.'],
   ['courses/vilenkin-5-part-1/offline.html', 'Download/offline edition; preserve its standalone packaging.'],
   ['courses/vilenkin-6-part-1/offline.html', 'Download/offline edition; preserve its standalone packaging.'],
+  ['stereo-course/sections/download/Sections_From_Zero.html', 'Download/offline edition with a protocol-aware home link in its bundled runtime.'],
   ['ege-baza/sources/index.html', 'Source and coverage report, not a learner activity.'],
   ['oge/skills/app-fragment.html', 'Source fragment assembled into the covered skill course, not a standalone page.'],
   ['trainers/fipi-ege-informatics-task1-report.html', 'Source-import report, not an interactive trainer.'],

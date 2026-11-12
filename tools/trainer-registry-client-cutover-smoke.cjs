@@ -877,24 +877,68 @@ async function waitRoadsState(frame, expected, timeout = 20000) {
   await frame.waitForFunction(value => JSON.stringify(window.getBoardTrainerState()) === value, serialized, { polling: 100, timeout });
 }
 
+function roadsQuestion(frame, number) {
+  return frame.locator('.pv-question[data-question="' + number + '"]');
+}
+
+async function waitRoadsSheet(frame) {
+  await frame.waitForFunction(() => document.documentElement.dataset.practicalVariant === 'ready');
+  assert.equal(await frame.locator('.pv-task-stream > .pv-question').count(), 5, 'the current visible roads sheet retains all five questions');
+}
+
+async function showRoadsSolution(frame, number) {
+  const question = roadsQuestion(frame, number);
+  await question.locator('.pv-help-button').click();
+  assert.equal(await question.locator('.pv-help-panel').isVisible(), true, 'current roads help opens beside its question');
+  await question.locator('.pv-native-help > summary').click();
+  await question.locator('.pv-native-help details > summary').click();
+  assert.equal(await question.locator('.pv-native-help details[open]').isVisible(), true, 'current roads help exposes the full native solution on request');
+}
+
+async function startRoadsLegacyCount(frame, mode, countMode) {
+  // The continuous .pv-shell deliberately hides/inerts the old modes,
+  // counting buttons and task switcher. Exercise present UI through that
+  // shell, and seed these retained wire fields only as an explicit saved-
+  // state compatibility fixture. A visible shell help click does not claim
+  // to set or synchronize the legacy hintOpen/solutionOpen fields.
+  const previousShell = await frame.locator('.pv-shell').elementHandle();
+  await frame.evaluate(({ mode, countMode }) => {
+    const candidate = window.getBoardTrainerState();
+    candidate.view = { taskIndex: 1, mode, countMode, countFrame: null };
+    candidate.tasks[1].hintOpen = true;
+    candidate.tasks[1].solutionOpen = true;
+    window.applyBoardTrainerState(candidate);
+  }, { mode, countMode });
+  await frame.waitForFunction(shell => !shell.isConnected, previousShell);
+  await previousShell.dispose();
+  // Run the existing legacy engine entry point after its visible sheet has
+  // remounted. This checks a real timer, not a hidden-button UI interaction
+  // or an already-idle probe; subsequent assertions require it to settle.
+  const started = await frame.evaluate(() => {
+    window.playCount();
+    return window.getRoadsGridTestProbe().timerActive;
+  });
+  assert.equal(started, true, 'legacy saved-count compatibility fixture starts a real timer');
+}
+
 async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
   const evidence = instrument(page, 'roads-standalone');
   await page.goto(`${siteOrigin}${ROADS_TRAINER_PATH}`, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => typeof window.getBoardTrainerState === 'function');
+  await waitRoadsSheet(page);
 
   for (let scenarioIndex = 0; scenarioIndex < 6; scenarioIndex++) {
-    await page.locator('#scenario-chips .chip').nth(scenarioIndex).click();
     for (let setIndex = 0; setIndex < 2; setIndex++) {
-      await page.locator('#setpick button').nth(setIndex).click();
+      await page.getByRole('combobox', { name: 'Выбрать вариант', exact: true }).selectOption(scenarioIndex + ':' + setIndex);
       const local = await page.evaluate(() => ({ state: window.getBoardTrainerState(), validation: window.validateBoardTrainerState(window.getBoardTrainerState()) }));
       assert.equal(local.validation.ok, true, `catalog ${scenarioIndex}:${setIndex} local constructor validates`);
       assert.deepEqual(local.state.selection, { source: 'catalog', scenarioIndex, setIndex, variantKey: `catalog:${scenarioIndex}:${setIndex}` });
     }
   }
   for (let index = 0; index < 6; index++) {
-    await page.click('#gen-chip');
+    await page.getByRole('button', { name: 'Новый случайный вариант', exact: true }).click();
     const generated = await page.evaluate(() => ({ state: window.getBoardTrainerState(), validation: window.validateBoardTrainerState(window.getBoardTrainerState()) }));
     assert.equal(generated.validation.ok, true, `generated local constructor ${index} validates`);
     assert.equal(generated.state.selection.source, 'generated');
@@ -964,15 +1008,17 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
     localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({ unrelated: { keep: 'reload' }, practiceRoadsGridTrainer: { solved: 0, streak: 0, total: 60 } }));
     sessionStorage.removeItem('mathExamRoadsGridSession.v1');
   });
-  await page.click('#gen-chip');
-  await page.click('#task-stepper .step-btn[data-task="1"]');
-  await page.fill('#answer-input', '+');
-  await page.click('#check-btn');
-  await page.click('#show-btn');
-  await page.click('#check-btn');
-  await page.click('#mode-switch button[data-mode="practice"]');
-  await page.click('#count-switch button[data-count="pairs"]');
-  await page.click('#count-play');
+  await page.getByRole('button', { name: 'Новый случайный вариант', exact: true }).click();
+  const standaloneAnswer = roadsQuestion(page, 2).locator('[data-pv-field="answer"]');
+  await standaloneAnswer.fill('+');
+  await roadsQuestion(page, 2).locator('.pv-check').click();
+  await page.waitForFunction(() => window.getBoardTrainerState().tasks[1].feedback === 'invalid-number');
+  await showRoadsSolution(page, 2);
+  const standaloneExpected = await page.evaluate(() => computeAnswers(currentScenario(), currentVariant()).t2);
+  await standaloneAnswer.fill(String(standaloneExpected));
+  await roadsQuestion(page, 2).locator('.pv-check').click();
+  await page.waitForFunction(() => document.querySelector('.pv-question[data-question="2"]').dataset.result === 'correct');
+  await startRoadsLegacyCount(page, 'practice', 'pairs');
   await page.waitForFunction(() => {
     const probe = window.getRoadsGridTestProbe();
     return probe.state.view.countFrame !== null && probe.timerActive === false;
@@ -995,20 +1041,21 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
     const mobile = await mobileContext.newPage();
     const mobileEvidence = instrument(mobile, `roads-mobile-${viewport.width}`);
     await mobile.goto(`${siteOrigin}${ROADS_TRAINER_PATH}`, { waitUntil: 'domcontentloaded' });
-    await mobile.click('#task-stepper .step-btn[data-task="4"]');
+    await waitRoadsSheet(mobile);
+    assert.equal(await roadsQuestion(mobile, 5).isVisible(), true, 'question five is present in the continuous roads sheet');
     const layout = await mobile.evaluate(() => ({
       clientWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
       bodyWidth: document.body.scrollWidth,
-      topnavBottom: document.querySelector('.topnav').getBoundingClientRect().bottom,
-      modeBottom: document.querySelector('#mode-switch').getBoundingClientRect().bottom,
-      stepperWidth: document.querySelector('#task-stepper').getBoundingClientRect().width,
-      shopClient: document.querySelector('.shop-wrap').clientWidth,
-      shopScroll: document.querySelector('.shop-wrap').scrollWidth
+      topnavBottom: document.querySelector('.pv-nav').getBoundingClientRect().bottom,
+      controlsBottom: document.querySelector('.pv-controls').getBoundingClientRect().bottom,
+      taskStreamWidth: document.querySelector('.pv-task-stream').getBoundingClientRect().width,
+      shopClient: document.querySelector('[data-pv-road-prices]').clientWidth,
+      shopScroll: document.querySelector('[data-pv-road-prices]').scrollWidth
     }));
     assert.ok(layout.scrollWidth <= layout.clientWidth + 1 && layout.bodyWidth <= layout.clientWidth + 1, `${viewport.width}px has no outer horizontal overflow: ${JSON.stringify(layout)}`);
-    assert.ok(layout.topnavBottom > 0 && layout.modeBottom <= viewport.height, `${viewport.width}px top navigation and mode controls are reachable`);
-    assert.ok(layout.stepperWidth <= layout.clientWidth, `${viewport.width}px stepper fits viewport`);
+    assert.ok(layout.topnavBottom > 0 && layout.controlsBottom <= viewport.height, `${viewport.width}px current navigation and variant controls are reachable`);
+    assert.ok(layout.taskStreamWidth > 0 && layout.taskStreamWidth <= layout.clientWidth, `${viewport.width}px continuous questions fit viewport`);
     assert.ok(layout.shopScroll >= layout.shopClient, `${viewport.width}px shop table owns its horizontal scroller`);
     assertCleanBrowser(mobileEvidence);
     await mobileContext.close();
@@ -1016,8 +1063,8 @@ async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
 }
 
 async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
-  assert.equal(registry.trainers.length, 51, 'runtime registry exposes exactly fifty-one mirror entries');
-  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'ege-baza-11', 'ege-baza-13', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('./fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort());
+  assert.equal(registry.trainers.length, 61, 'runtime registry exposes exactly 61 mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['atanasyan-grade7', 'geometry7-practice', 'geometry7-rebuild', 'atanasyan-7-9', 'college-functions', 'college-logarithms', 'vilenkin6-percent', 'vpr-math', 'ege-baza-11', 'ege-baza-13', 'ege-profile-circle', 'ege-profile-equations', 'ege-profile-expressions', 'ege-profile-log-trig', 'ege-profile-planimetry', 'ege-profile-probability', 'ege-profile-random-variables', 'ege-profile-stereometry', 'ege-profile-vectors', 'grade6-nod', 'grade6-nok', 'linear-inequalities-stepwise', 'merzlyak-10-base', 'sections-from-zero', 'stereo-literacy-atanasyan', 'negative-numbers-line', 'oge-task15-triangles', 'oge-task16-circle', 'oge-task17-quadrilaterals', 'oge-task18-grid', 'oge-task19', 'peterson6', 'practice-1-5-roads-grid', 'profile-log-inequalities', 'profile-log-nested-example', 'profile-log-one-example'].concat(require('./fixtures/oge-course-board-entries.json').map(entry => entry.trainerId)).sort());
   const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
   const expectedCatalog = JSON.parse(readFileSync(resolve(REPO_ROOT, 'trainers', 'board-compat.json'), 'utf8'));
   assert.deepEqual(catalog, expectedCatalog, 'served catalog exactly matches the committed manifest');
@@ -1030,8 +1077,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     catalogIds.add(entry.trainerId);
     catalogFiles.add(entry.file.toLowerCase());
   }
-  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 51, 'catalog exposes exactly fifty-one mirrors');
-  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same fifty-one mirror ids');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 61, 'catalog exposes exactly 61 mirrors');
+  assert.deepEqual(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').map(entry => entry.trainerId).sort(), registry.trainers.map(entry => entry.trainerId).sort(), 'catalog and runtime authorize the same sixty mirror ids');
 
   const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const teacher = await teacherContext.newPage();
@@ -1051,6 +1098,8 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
   await chooseTrainer(teacher, ROADS_TRAINER_PATH);
   const teacherRoads = await trainerFrame(teacher, 'practice-1-5-roads-grid.html');
   const studentRoads = await trainerFrame(student, 'practice-1-5-roads-grid.html');
+  await waitRoadsSheet(teacherRoads);
+  await waitRoadsSheet(studentRoads);
   await waitMirror(teacher, 'connected');
   await waitMirror(student, 'connected');
   await teacher.waitForFunction(expected => document.querySelectorAll('#trainerQuick option').length === expected, expectedCatalog.trainers.length + 1, { polling: 100 });
@@ -1065,21 +1114,22 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     addEventListener('message', event => { if (event.data?.type === 'mathexam:trainer-state') window.__roadsMirrorMessages++; });
   });
 
-  await teacherRoads.click('#gen-chip');
+  await teacherRoads.getByRole('button', { name: 'Новый случайный вариант', exact: true }).click();
   for (let index = 0; index < 3; index++) {
     const expected = await teacherRoads.evaluate(i => {
       const state = window.getBoardTrainerState();
       return state.scenario.towns[state.scenario.variant.ident[i]].num;
     }, index);
-    await teacherRoads.locator('.id-sel').nth(index).selectOption(String(expected));
+    await roadsQuestion(teacherRoads, 1).locator('[data-pv-field="v' + index + '"]').selectOption(String(expected));
   }
-  await teacherRoads.click('#check-btn');
-  await teacherRoads.click('#task-stepper .step-btn[data-task="1"]');
-  await teacherRoads.click('#show-btn');
-  await teacherRoads.click('#check-btn');
-  await teacherRoads.click('#mode-switch button[data-mode="teacher"]');
-  await teacherRoads.click('#count-switch button[data-count="triples"]');
-  await teacherRoads.click('#count-play');
+  await roadsQuestion(teacherRoads, 1).locator('.pv-check').click();
+  await teacherRoads.waitForFunction(() => document.querySelector('.pv-question[data-question="1"]').dataset.result === 'correct');
+  await showRoadsSolution(teacherRoads, 2);
+  const teacherExpected = await teacherRoads.evaluate(() => computeAnswers(currentScenario(), currentVariant()).t2);
+  await roadsQuestion(teacherRoads, 2).locator('[data-pv-field="answer"]').fill(String(teacherExpected));
+  await roadsQuestion(teacherRoads, 2).locator('.pv-check').click();
+  await teacherRoads.waitForFunction(() => document.querySelector('.pv-question[data-question="2"]').dataset.result === 'correct');
+  await startRoadsLegacyCount(teacherRoads, 'teacher', 'triples');
   await teacherRoads.waitForFunction(() => {
     const probe = window.getRoadsGridTestProbe();
     return probe.state.view.countFrame !== null && probe.timerActive === false;
@@ -1096,8 +1146,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
 
   await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
-  await studentRoads.click('#task-stepper .step-btn[data-task="2"]');
-  await studentRoads.fill('#answer-input', '7');
+  await roadsQuestion(studentRoads, 3).locator('[data-pv-field="answer"]').fill('7');
   await teacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '7', null, { polling: 100 });
 
   const revokeTarget = Date.now() + 500;
@@ -1105,7 +1154,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
     teacher.evaluate(target => { setTimeout(() => shared.socket.emit('control:revoke', roomPayload()), Math.max(0, target + 10 - Date.now())); }, revokeTarget),
     studentRoads.evaluate(target => new Promise(resolvePromise => {
       setTimeout(() => {
-        const input = document.querySelector('#answer-input');
+        const input = document.querySelector('.pv-question[data-question="3"] [data-pv-field="answer"]');
         input.value = '88';
         input.dispatchEvent(new Event('input', { bubbles: true }));
         resolvePromise();
@@ -1118,7 +1167,7 @@ async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registr
 
   await clickShareControl(teacher, '#controlToggle');
   await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
-  await studentRoads.fill('#answer-input', '9');
+  await roadsQuestion(studentRoads, 3).locator('[data-pv-field="answer"]').fill('9');
   await teacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '9', null, { polling: 100 });
   await teacher.reload({ waitUntil: 'domcontentloaded' });
   await teacher.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено', null, { polling: 100 });

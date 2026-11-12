@@ -12,6 +12,7 @@ const lessons = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'f
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
 const byId = new Map(lessons.map(lesson => [lesson.id, lesson]));
 const { exams } = require('../ege-profil/start/calm-data.js');
+const vectorStarters = require('../ege-profil/start/vector-basics-data.js');
 const entries = ['geo-right', 'vec-coordinates', 'stereo-box', 'prob-count', 'prob-independent',
   'prob-distribution', 'eq-linear', 'expr-powers', 'calc-tangent', 'applied-formula', 'applied-work', 'fn-line', 'applied-percent'];
 const expectedHelp = [
@@ -67,7 +68,9 @@ async function accept(page, value) {
     async function catalog(page, hash = '#calm') {
       await page.goto(base + hash); await page.locator('[data-calm-exam="13"]').waitFor();
       assert.equal(await page.locator('[data-calm-exam]').count(), 13);
-      assert.deepEqual(await page.locator('[data-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), entries.map(id => '#practice/' + id + '/independent'));
+      const expected = entries.map(id => '#practice/' + id + '/independent');
+      if (!(await saved(page))?.sessions['vec-coordinates:independent']?.wrong) expected[1] = '#practice/vec-basics-reading/guided';
+      assert.deepEqual(await page.locator('[data-exam-start]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), expected);
       assert.deepEqual(await page.locator('.second-part-grid [data-course-extra]').evaluateAll(nodes => nodes.map(node => Number(node.dataset.courseExtra))), [14, 15, 16, 17, 18, 19, 20], 'All seven second-part lines are represented');
       assert.equal(await page.locator('.journey-tabs a[href="#calm/first"]').count(), 1);
       assert.equal(await page.locator('.journey-tabs a[href="#calm/second"]').count(), 1);
@@ -96,7 +99,15 @@ async function accept(page, value) {
       await page.screenshot({ path: path.join(process.env.PROFILE_EXAM_FIRST_SHOTS, 'catalog-desktop.png'), fullPage: true });
     }
     for (const [index, id] of entries.entries()) {
-      await catalog(page); await page.locator('[data-exam-start="' + (index + 1) + '"]').click(); await practice(page);
+      await catalog(page);
+      if (index === 1) {
+        await page.goto(base + '#exam/2');
+        await page.locator('[data-vector-basics-entry]').waitFor();
+        await noOverflow(page, 'desktop vector entrance');
+        assert.equal(await page.locator('[data-vector-exam-practice]').count(), 0);
+        await page.goto(base + '#practice/vec-coordinates/independent');
+      } else await page.locator('[data-exam-start="' + (index + 1) + '"]').click();
+      await practice(page);
       assert.equal(new URL(page.url()).hash, '#practice/' + id + '/independent');
       const before = await session(page, id), lesson = byId.get(id), task = lesson.tasks.find(task => task.id === before.taskId);
       assert.equal(lesson.position, index + 1); assert(lesson.tasks.slice(3).includes(task));
@@ -120,6 +131,62 @@ async function accept(page, value) {
       await noOverflow(page, id + ' with help');
     }
     await desktop.context.close();
+
+    const vectors = await learner(320), vectorPage = vectors.page;
+    await vectorPage.goto(origin + '/ege-profil/');
+    await vectorPage.getByRole('link', { name: /^2\. Векторы с нуля/ }).click();
+    const vectorEntry = vectorPage.locator('[data-vector-basics-entry]');
+    await vectorEntry.waitFor();
+    assert.equal(await vectorEntry.getByRole('link', { name: 'Начать азбуку' }).count(), 1);
+    for (const lesson of vectorStarters) {
+      for (const [index, task] of lesson.tasks.slice(0, 3).entries()) {
+        await vectorEntry.waitFor();
+        assert.equal(await vectorPage.locator('[data-vector-exam-practice]').count(), 0);
+        await vectorEntry.locator('[data-exam-start="2"]').click();
+        await practice(vectorPage);
+        const drawing = vectorPage.locator('#task-model [data-vector-basics-drawing]');
+        assert.equal(await drawing.getAttribute('data-vector-basics-drawing'), task.id);
+        assert.equal((await session(vectorPage, lesson.id, 'guided')).taskId, task.id);
+        assert.equal(await drawing.locator('[data-vector-role="result"]').count(), 0);
+        assert((await drawing.boundingBox()).y + (await drawing.boundingBox()).height <= 900, task.id + ' drawing fits on the first screen');
+        await noOverflow(vectorPage, task.id);
+        if (lesson === vectorStarters[0] && index === 0) {
+          const radio = vectorPage.getByRole('radio', { name: 'B', exact: true });
+          await radio.check();
+          await vectorPage.reload();
+          await practice(vectorPage);
+          assert(await radio.isChecked(), 'a selected but unchecked answer survives reload');
+          await answer(vectorPage, 'B');
+          assert.equal(await vectorPage.locator('#feedback.bad').count(), 1);
+          await vectorPage.locator('#hint').click();
+          assert.match(await vectorPage.locator('#hint-box').innerText(), /хвост стрелки/);
+        }
+        for (const [stepIndex, step] of task.steps.entries()) {
+          await answer(vectorPage, step.answer);
+          assert.equal(await vectorPage.locator('#feedback.good').count(), 1, task.id + ' step ' + stepIndex);
+          assert.equal(await drawing.locator('[data-vector-role="result"]').count(),
+            task.vectorDiagram.reveal.filter(stage => stage.after <= stepIndex + 1).flatMap(stage => stage.arrows).filter(arrow => arrow.color === 'result').length);
+          if (task.id === 'vec-basics-parallelogram-rectangle' && stepIndex === 1) {
+            assert.equal(await drawing.locator('[data-vector-role="guide"]').count(), 2);
+            if (process.env.PROFILE_EXAM_FIRST_SHOTS) await drawing.screenshot({ path: path.join(process.env.PROFILE_EXAM_FIRST_SHOTS, 'vector-parallelogram-320.png') });
+          }
+          await vectorPage.locator('#next').click();
+        }
+        await vectorPage.locator('.result-panel').waitFor();
+        assert.equal((await record(vectorPage, lesson.id)).guided.length, index + 1);
+        assert.equal((await record(vectorPage, lesson.id)).independent.length, 0);
+        const continueLink = vectorPage.locator('[data-vector-continue]');
+        assert.equal(await continueLink.innerText(), lesson === vectorStarters.at(-1) && index === 2 ? 'К задачам ЕГЭ →' : 'Продолжить азбуку →');
+        await continueLink.click();
+      }
+    }
+    await vectorPage.locator('[data-vector-exam-practice]').waitFor();
+    assert.match(await vectorPage.locator('#vector-basics-title + p').innerText(), /^9 из 9/);
+    assert.equal(await vectorEntry.locator('[data-exam-start="2"]').getAttribute('href'), '#practice/vec-coordinates/independent');
+    await vectorEntry.locator('[data-exam-start="2"]').click();
+    await practice(vectorPage);
+    assert.equal(new URL(vectorPage.url()).hash, '#practice/vec-coordinates/independent');
+    await vectors.context.close();
 
     // A mobile pupil detours into one school topic, completes it, then resumes
     // exactly the original condition and draft. Help is not independent mastery.
@@ -184,6 +251,6 @@ async function accept(page, value) {
     await noOverflow(pupil, 'guided return');
     await mobile.context.close();
     assert.deepEqual(errors, []); assert.deepEqual(requests, []);
-    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 13 independent entries, seven second-part lines, both map tabs and targeted repairs; invalid input; optional school/trig detours; nested return and reload; same draft/task/accepted step; helped work excluded from mastery; fresh next task; desktop/mobile');
+    console.log('PROFILE_EXAM_FIRST_BROWSER_OK: 13 entries, all 27 guided vector basics before exam practice, seven second-part lines, targeted repairs and preserved drafts; desktop/mobile');
   } finally { await browser?.close(); await new Promise(resolve => server.close(resolve)); }
 })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });

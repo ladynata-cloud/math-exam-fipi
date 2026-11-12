@@ -45,7 +45,7 @@ function sourceForProfileBoard(root, wrapper) {
   return canonical;
 }
 
-// The public page has six scoped map and coaching modules. Board wrappers
+// The public page has scoped map, coaching and introductory vector modules. Board wrappers
 // deliberately omit them, but must retain every shared learning script in order.
 // Only the explicitly reviewed public cache-stamp changes differ from wrapper URLs;
 // this is not a general query-string normalizer or script ignore list.
@@ -53,9 +53,10 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicModules = ['../skill-map-data.js?v=20261111-skills', '../skill-map.js?v=20261111-skills',
-    'journey.js?v=20261109', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
-    'practice-coach.js?v=20261109-integrity'];
+  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../skill-map.js?v=20261111-skills',
+    'journey.js?v=20261112-vectors', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
+    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261112-vectors',
+    'vector-basics-models.js?v=20261112-vectors'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const publicPaths = new Set(publicModules.map(pathname));
   assert.deepEqual(page.filter(script => publicPaths.has(pathname(script.src))).map(script => script.src), publicModules,
@@ -66,8 +67,10 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     assert.equal(page[index].tag, '<script defer src="' + publicModules[index] + '"></script>', 'Exact deferred public-module include');
   assert.ok(board.every(script => !publicPaths.has(pathname(script.src))), 'Board wrappers must not load public-only modules');
   const cacheStamps = new Map([
-    ['calm-ui.js?v=20261109-journey', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261111-skills', 'app.js?v=20261101-trainer-repair'],
+    ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
+    ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
+    ['calm-ui.js?v=20261112-vectors', 'calm-ui.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261112-vectors', 'app.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())
