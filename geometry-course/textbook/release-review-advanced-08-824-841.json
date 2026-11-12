@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "key": "8-advanced-824-841",
+    "grade": 8,
+    "exerciseNumbers": [
+      824,
+      841
+    ],
+    "cards": 18,
+    "solutionSteps": 72,
+    "views": 94,
+    "geometricClaims": 220,
+    "fullTextbookComplete": false
+  },
+  "authoredContentSha256": "fdd5657d4dd4c45148e8e11050c520927c42722ab07a96c205d22f903939c147",
+  "implementationSha256": "ca0345494ebd9b0f150f07effd91baa777d6cf3c70bb55e9412ccf17f3ab588b",
+  "sourceFile": {
+    "path": "geometry-course/textbook/preparation/grade-08-advanced-824-841.json",
+    "sha256": "8af283ae92b28ee457fbb6817f42a69f8fd5740daec9977cf2633f0769fdfbbe"
+  },
+  "sourceEdition": {
+    "pdfSha256": "3b2e890ce425ef9b4893f367e8680e18c0ed380c9bd86fe4eb65b44a2479ca72",
+    "printedPages": [
+      214,
+      215
+    ],
+    "pdfPages": [
+      215,
+      216
+    ],
+    "figure": 274
+  },
+  "runtimeFiles": {
+    "index.html": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
+    "assets/engine.js": "15511e2d45d3ab847ca31a9a65e2549245c17801021b35fce8ab08a5ef1c5817",
+    "assets/planar-viewer.js": "0210efab0d01b6302a8183d84caeaba77ff036a1e88b8c9a081265ba27f40061",
+    "assets/style.css": "b7f5ef3408a2cd8c0fe82ba33f5a3bddc076b6b7bd6dd5f5424f6f9406dedee5",
+    "assets/math-text.js": "8be99c2d6158875410e43b0a113e9092b453f6ea2572cfe96016c1afcc1bb52b",
+    "source-inventory.json": "2e9889681ce87a13b4cec641c7087c065de1d19298e94c10397240d4206157a2",
+    "assets/board-adapter.js": "e1c366fd77f2cc822894be7e21139ce99b9e7b3c568392b122f2a3b386b7545b"
+  },
+  "implementationFiles": {
+    "tools/geometry-textbook/build_course.py": "a2b3ef3acfc6fadc967a7549715ec1180d1dda4e9f2420c5b38633c6fb67436b",
+    "tools/geometry-textbook/advanced8_release.py": "af4a7b4d6d207721cb88ac8091eb68a3899111738673d761f302c5e4e22c8f18"
+  },
+  "evidence": [
+    {
+      "path": "docs/reviews/ATANASYAN_8_824_841_INDEPENDENT_REVIEW.md",
+      "sha256": "6ae02a3f2e3bc130644b8d4e60cac02c04f96010323066eab9ff9f3de0257f4a"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_8_824_841_INDEPENDENT_NUMERIC.json",
+      "sha256": "96ce3932bc9edeef43bbbbfb3144e5d11e2da6f23b84ff1e59256d82bcbf978b"
+    },
+    {
+      "path": "docs/reviews/ATANASYAN_8_824_841_SOURCE_VISUAL_REVIEW.json",
+      "sha256": "623087bba45d228d3b6a5be5fe0c1875e390b1f1c9be4fb4a48018e163e1b677"
+    }
+  ],
+  "status": "passed",
+  "source": "passed",
+  "mathematics": "passed",
+  "models": "passed",
+  "pedagogy": "passed",
+  "browser": "passed",
+  "reviewer": "geometry_completion: independent mathematics and pedagogy; ChatGPT coordinating reviewer (root): independent source, models and browser",
+  "at": "2026-11-06T00:05:32.792077+00:00",
+  "reviewProvenance": [
+    {
+      "dimensions": [
+        "mathematics",
+        "pedagogy"
+      ],
+      "record": "docs/reviews/ATANASYAN_8_824_841_INDEPENDENT_NUMERIC.json",
+      "reviewer": "geometry_completion: independent internal reviewer of the previously authored PR438 content"
+    },
+    {
+      "dimensions": [
+        "source",
+        "models",
+        "browser"
+      ],
+      "record": "docs/reviews/ATANASYAN_8_824_841_SOURCE_VISUAL_REVIEW.json",
+      "reviewer": "ChatGPT coordinating reviewer (root); independent of authored content"
+    }
+  ],
+  "externalProviderReview": "not-run; owner waiver; no external-provider verdict claimed",
+  "navigatorBindingAmendment": {
+    "historicalGateSha256": "91f2fa3828cd862689c99d3a95351e5457217dc6f85329b0aa5c833d03ca73b7",
+    "sourceCommit": "f3097192ed1343e4a5ca44e2f675f5c7ba3f9494",
+    "scope": "Use the existing exact navigator-source restoration for index.html only. Keep the original independent mathematics and visual evidence and raw bindings for the remaining runtime files."
+  }
+}
