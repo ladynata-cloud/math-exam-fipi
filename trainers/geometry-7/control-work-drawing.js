@@ -35,6 +35,63 @@
     return { board, marks, history: [] };
   }
 
+  const drawingValue = record => ({ points: record.board.points, objects: record.board.objects, marks: record.marks });
+  const namePattern = /^[\p{L}\p{N}′'₀-₉]{1,6}$/u;
+  const pointLinks = {
+    free: [], affine: ['a', 'b'], midpoint: ['a', 'b'],
+    bisector: ['a', 'b', 'c'], foot: ['a', 'b', 'c'], normal: ['a', 'b', 'c'], intersection: []
+  };
+
+  function readRoomDrawing(value) {
+    const empty = { points: [], objects: [], marks: [] };
+    if (value === null) return createRecord(empty);
+    const invalid = () => { throw new TypeError('Invalid geometry drawing'); };
+    const only = (record, keys) => record && typeof record === 'object' && !Array.isArray(record) &&
+      Object.keys(record).every(key => keys.includes(key));
+    if (!only(value, ['points', 'objects', 'marks']) ||
+        !Array.isArray(value.points) || value.points.length > 150 ||
+        !Array.isArray(value.objects) || value.objects.length > 175 ||
+        !Array.isArray(value.marks) || value.marks.length > 150) invalid();
+
+    const ids = new Map();
+    for (const [index, point] of value.points.entries()) {
+      if (!only(point, ['id', 'kind', 'x', 'y', 'added', 'label', 'valid', 'a', 'b', 'c', 'k', 'host', 'o1', 'o2', 'branch']) ||
+          typeof point.id !== 'string' || !/^[A-Z][0-9]{0,3}$/.test(point.id) || ids.has(point.id) ||
+          typeof point.label !== 'string' || !namePattern.test(point.label) ||
+          !Object.hasOwn(pointLinks, point.kind) || !finite(point) ||
+          !pointLinks[point.kind].every(key => ids.has(point[key])) ||
+          (point.kind === 'affine' && !Number.isFinite(point.k))) invalid();
+      ids.set(point.id, index);
+    }
+    const lines = new Map();
+    for (const line of value.objects) {
+      if (!only(line, ['id', 'type', 'extent', 'a', 'b', 'added', 'construction']) ||
+          typeof line.id !== 'string' || !/^o[1-9][0-9]{0,2}$/.test(line.id) || lines.has(line.id) ||
+          line.type !== 'line' || !['line', 'ray', 'segment'].includes(line.extent) ||
+          !ids.has(line.a) || !ids.has(line.b) || line.a === line.b ||
+          (line.construction !== undefined && !['bisector', 'perpendicular'].includes(line.construction))) invalid();
+      lines.set(line.id, line);
+    }
+    const priorLine = (id, index) => {
+      const line = lines.get(id);
+      return line && ids.get(line.a) < index && ids.get(line.b) < index;
+    };
+    for (const [index, point] of value.points.entries()) {
+      if (point.kind === 'affine' && !priorLine(point.host, index)) invalid();
+      if (point.kind === 'intersection' &&
+          (!priorLine(point.o1, index) || !priorLine(point.o2, index) || point.o1 === point.o2 || point.branch !== 0)) invalid();
+    }
+    for (const mark of value.marks) {
+      if (!only(mark, ['kind', 'ids', 'other', 'x', 'y', 'text'])) invalid();
+      if (mark.kind === 'label') {
+        if (!finite(mark) || typeof mark.text !== 'string' || mark.text.length > 24) invalid();
+      } else if (!['tick', 'arc', 'right'].includes(mark.kind) || !Array.isArray(mark.ids) ||
+          mark.ids.length !== (mark.kind === 'tick' ? 2 : 3) || !mark.ids.every(id => ids.has(id)) ||
+          (mark.kind === 'right' && !ids.has(mark.other))) invalid();
+    }
+    return createRecord(value);
+  }
+
   function svgNode(tag, attributes, text) {
     const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
     for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value);
@@ -82,7 +139,7 @@
     ).join('');
     el.innerHTML = `
       <div class="drawing-tools" role="group" aria-label="Основные инструменты">${buttons(primary)}</div>
-      <details class="written-details drawing-extra">
+      <details class="written-details drawing-extra" data-written-panel="tools">
         <summary>Другие инструменты</summary>
         <div class="drawing-tools" role="group" aria-label="Другие инструменты">${buttons(Object.keys(tools).filter(id => !primary.includes(id)))}</div>
       </details>
@@ -110,7 +167,7 @@
     const renameButton = el.querySelector('[data-drawing="rename"]');
     const preferredNames = [...new Set([...names, ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'])];
 
-    const capture = () => ({ points: board.points, objects: board.objects, marks: record.marks });
+    const capture = () => drawingValue(record);
     const snapshot = () => JSON.stringify(capture());
     function restore(value) {
       const saved = JSON.parse(value);
@@ -125,7 +182,7 @@
     }
 
     function setName(p, value) {
-      if (!/^[\p{L}\p{N}′'₀-₉]{1,6}$/u.test(value)) throw new Error('Имя точки должно содержать от 1 до 6 букв или цифр.');
+      if (!namePattern.test(value)) throw new Error('Имя точки должно содержать от 1 до 6 букв или цифр.');
       if (board.points.some(other => other !== p && nameOf(other) === value)) throw new Error(`Точка ${value} уже есть на чертеже.`);
       p.label = value;
     }
@@ -149,10 +206,15 @@
     }
 
     function remember(before) {
+      board.history.length = 0;
+      if (onChange(capture()) === false) {
+        restore(before);
+        feedback.textContent = 'В комнате заполнено место для чертежей и записей.';
+        return false;
+      }
       history.push(before);
       if (history.length > 80) history.shift();
-      board.history.length = 0;
-      onChange(capture());
+      return true;
     }
 
     function mutate(apply, message) {
@@ -165,7 +227,7 @@
         feedback.textContent = error.message;
         return false;
       }
-      remember(before);
+      if (!remember(before)) return false;
       feedback.textContent = message;
       return true;
     }
@@ -306,6 +368,7 @@
         const point = board.point(id);
         point.label = name;
         if (tool === 'perpendicular' && point.kind === 'foot') {
+          if (record.marks.length >= 150) throw new Error('На чертеже уже 150 отметок.');
           object.extent = 'segment';
           delete object.construction;
           record.marks.push({ kind: 'right', ids: [selected[1], id, selected[0]], other: selected[2] });
@@ -364,10 +427,16 @@
     function undo() {
       if (selected.length) selected.pop();
       else if (history.length) {
-        restore(history.pop());
+        const before = snapshot();
+        restore(history.at(-1));
+        if (onChange(capture()) === false) {
+          restore(before);
+          feedback.textContent = 'В комнате заполнено место для чертежей и записей.';
+          return;
+        }
+        history.pop();
         editing = null;
         input.value = '';
-        onChange(capture());
       }
       feedback.textContent = 'Последнее действие отменено.';
     }
@@ -487,5 +556,5 @@
     return { destroy() { endDrag(); observer.disconnect(); } };
   }
 
-  window.GeometryControlDrawing = { createRecord, mount };
+  window.GeometryControlDrawing = { createRecord, drawingValue, readRoomDrawing, mount };
 })();

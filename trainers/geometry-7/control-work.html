@@ -6,7 +6,8 @@
 <meta name="description" content="Тренажёры по двум вариантам контрольной работы. Смежные и вертикальные углы, биссектриса и равенство треугольников.">
 <title>Углы и треугольники · контрольная по геометрии 7 класса | MathExam</title>
 <link rel="canonical" href="https://mathexam.space/trainers/geometry-7/control-work.html">
-<link rel="stylesheet" href="control-work-written.css?v=1">
+<link rel="stylesheet" href="control-work-written.css?v=3">
+<script src="control-work-room.js?v=1"></script>
 <style>
 :root {
   color-scheme: light;
@@ -167,7 +168,10 @@ h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.12; letter-
       </g>
       <g fill="#e4f6aa"><circle cx="29" cy="202" r="4"/><circle cx="245" cy="17" r="4"/><circle cx="351" cy="187" r="4"/></g>
     </svg>
-    <a class="back-link" href="../../grade7/#geometry-control-work">← Геометрия 7 класса</a>
+    <div class="trainer-links">
+      <a class="back-link" href="../../grade7/#geometry-control-work">← Геометрия 7 класса</a>
+      <a class="back-link" id="open-control-board" href="../trainer-board.html?trainer=%2Ftrainers%2Fgeometry-7%2Fcontrol-work.html">На общую доску ↗</a>
+    </div>
     <p class="brand">MathExam · геометрия · 7 класс</p>
     <h1>Углы и треугольники</h1>
     <p>Тренажёры по двум вариантам контрольной</p>
@@ -181,6 +185,7 @@ h2 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); line-height: 1.12; letter-
       <button type="button" id="written-mode" aria-pressed="false" hidden>Полное решение</button>
     </div>
     <div class="total" id="total"><span id="total-text"></span><progress id="total-progress" aria-label="Выполнено упражнений"></progress></div>
+    <p class="room-caption" id="control-room-caption" hidden>Общая работа в комнате</p>
   </div>
   <div class="workspace" id="training">
     <nav aria-label="Карта навыков">
@@ -1000,10 +1005,17 @@ const controlVariants = [
 const trainerIndex = new Map(TRAINERS.map((trainer, index) => [trainer.id, index]));
 const totalItems = TRAINERS.reduce((sum, trainer) => sum + trainer.items.length, 0);
 const progressKey = 'geometry-angles-triangles-practice-2026-11-v1';
-const solved = readProgress();
+const inRoom = window.GeometryControlRoom?.embedded() ?? false;
+const solved = inRoom ? new Set() : readProgress();
 const practice = new Map();
 const state = { skill: 0, item: 0, mode: 'training', variant: 0, check: null };
 let writtenWork;
+let room;
+let applyingRoom = false;
+
+function roomChanged() {
+  if (!applyingRoom) room?.changed();
+}
 
 function readProgress() {
   try {
@@ -1015,6 +1027,7 @@ function readProgress() {
 }
 
 function saveProgress() {
+  if (inRoom) return;
   try { localStorage.setItem(progressKey, JSON.stringify([...solved])); } catch { /* Browser storage can be disabled. */ }
 }
 
@@ -1117,6 +1130,7 @@ function renderTraining() {
     if (index >= 0) record.results[index] = undefined;
     event.target.removeAttribute('aria-invalid');
     event.target.classList.remove('is-correct');
+    roomChanged();
   });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -1140,6 +1154,7 @@ function renderTraining() {
       }
     }
     renderTraining();
+    roomChanged();
     focusHeading('#practice-message', false);
     if (empty >= 0) $(`#practice-${empty}`)?.focus();
   });
@@ -1147,6 +1162,7 @@ function renderTraining() {
     $(`#${buttonId}`).addEventListener('click', () => {
       record[property] = !record[property];
       renderTraining();
+      roomChanged();
       $(`#${buttonId}`).focus({ preventScroll: true });
     });
   }
@@ -1194,10 +1210,11 @@ function setMode(mode, focus = true) {
   if (checking) renderCheck();
   if (writing) writtenWork.show();
   if (focus) focusHeading(training ? '#lesson-title' : checking ? '#check-title' : '#written-title');
+  roomChanged();
 }
 
-function variantQuestions() {
-  return controlVariants[state.variant].map((skills) => skills.map((id) => {
+function variantQuestions(variant = state.variant) {
+  return controlVariants[variant].map((skills) => skills.map((id) => {
     const numbered = id === 'sum-numbered';
     const index = trainerIndex.get(numbered ? 'sum' : id);
     const trainer = TRAINERS[index];
@@ -1222,7 +1239,7 @@ function renderCheck() {
     controls.checkCard.innerHTML = `${renderTitle('Результат', `Вариант ${state.variant + 1}`)}
       <p class="summary">Полностью решено ${points} из ${questions.length}.</p>
       <ol class="review-list">${questions.map((parts, questionIndex) => `
-        <li><details><summary>№${questionIndex + 1}. <span class="status ${scores[questionIndex].every(Boolean) ? '' : 'error'}">${scores[questionIndex].every(Boolean) ? 'Верно' : 'Нужен разбор'}</span></summary>
+        <li><details data-check-review="${questionIndex}" ${session.review?.[questionIndex] ? 'open' : ''}><summary>№${questionIndex + 1}. <span class="status ${scores[questionIndex].every(Boolean) ? '' : 'error'}">${scores[questionIndex].every(Boolean) ? 'Верно' : 'Нужен разбор'}</span></summary>
         ${parts.map(({ trainer, index, item }, partIndex) => `
           <p><strong>${esc(trainer.title)}</strong></p><p>${esc(item.prompt)}</p>
           ${item.fields.map((field, fieldIndex) => {
@@ -1253,7 +1270,10 @@ function renderCheck() {
   const remember = () => {
     session.values[questionIndex] = parts.map(({ item }, part) => readValues(form, `check-${part}`, item.fields.length));
   };
-  form.addEventListener('input', remember);
+  form.addEventListener('input', () => {
+    remember();
+    roomChanged();
+  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     remember();
@@ -1265,6 +1285,7 @@ function renderCheck() {
       session.question += 1;
     }
     renderCheck();
+    roomChanged();
     if (session.confirm && !session.finished && last) $('#check-message')?.scrollIntoView({ block: 'nearest' });
     else focusHeading('#check-title');
   });
@@ -1273,6 +1294,7 @@ function renderCheck() {
     session.question -= 1;
     session.confirm = false;
     renderCheck();
+    roomChanged();
     focusHeading('#check-title');
   });
 }
@@ -1306,21 +1328,112 @@ controls.checkCard.addEventListener('click', (event) => {
   } else if (button.dataset.review !== undefined) {
     changeSkill(Number(button.dataset.review));
   }
+  roomChanged();
 });
 
-setMode('training', false);
+controls.checkCard.addEventListener('toggle', event => {
+  const panel = event.target;
+  if (!state.check?.finished || panel.dataset.checkReview === undefined) return;
+  const review = state.check.review ||= Array(5).fill(false);
+  const index = Number(panel.dataset.checkReview);
+  if (review[index] === panel.open) return;
+  review[index] = panel.open;
+  roomChanged();
+}, true);
+
+const roomItems = new Map(TRAINERS.flatMap(trainer => trainer.items.map((item, index) => [keyFor(trainer, index), item])));
+const roomMessages = item => ['', 'Заполни все поля, затем проверь ответ.', 'Теперь верно.', 'Верно!',
+  ...item.fields.map(field => field.feedback || 'Проверь выделенный ответ и попробуй ещё раз.')];
+
+function getRoomModes() {
+  const records = [];
+  for (const [key, record] of practice) {
+    if (!record.values.length && !record.hint && !record.solution && !record.message) continue;
+    records.push([key, record.values, record.attempts, record.results, roomMessages(roomItems.get(key)).indexOf(record.message),
+      record.hint, record.solution, record.correct]);
+  }
+  return { ...state, records };
+}
+
+function readRoomModes(value) {
+  const integer = (n, length) => Number.isInteger(n) && n >= 0 && n < length;
+  const flags = (...values) => values.every(flag => typeof flag === 'boolean');
+  const answers = (values, fields) => Array.isArray(values) && values.length <= fields.length &&
+    values.every((answer, index) => typeof answer === 'string' &&
+      (fields[index].options ? !answer || fields[index].options.includes(answer) : answer.length <= 30));
+  const invalid = () => { throw new TypeError('Invalid geometry control mode state'); };
+  if (!value || !['training', 'check', 'written'].includes(value.mode) ||
+      !integer(value.skill, TRAINERS.length) || !integer(value.item, TRAINERS[value.skill].items.length) ||
+      !integer(value.variant, controlVariants.length) || !Array.isArray(value.records) || value.records.length > totalItems) invalid();
+  const records = new Map();
+  for (const row of value.records) {
+    if (!Array.isArray(row) || row.length !== 8) invalid();
+    const [key, values, attempts, results, message, hint, solution, correct] = row;
+    const item = roomItems.get(key);
+    if (!item || records.has(key) || !answers(values, item.fields) ||
+        !Number.isSafeInteger(attempts) || attempts < 0 || !Array.isArray(results) || results.length > item.fields.length ||
+        !results.every(result => result === null || typeof result === 'boolean') ||
+        !integer(message, roomMessages(item).length) || !flags(hint, solution, correct)) invalid();
+    records.set(key, { values, attempts, results, message: roomMessages(item)[message], hint, solution, correct });
+  }
+  const check = value.check;
+  if (check !== null) {
+    const questions = variantQuestions(value.variant);
+    if (!check || !integer(check.question, questions.length) || !flags(check.confirm, check.finished) ||
+        !Array.isArray(check.values) || check.values.length > questions.length ||
+        !check.values.every((parts, index) => parts === null || (
+          Array.isArray(parts) && parts.length === questions[index].length &&
+          parts.every((part, partIndex) => answers(part, questions[index][partIndex].item.fields))
+        )) || (check.review !== undefined && (!Array.isArray(check.review) || check.review.length !== 5 || !flags(...check.review)))) invalid();
+  }
+  return { state: { skill: value.skill, item: value.item, mode: value.mode, variant: value.variant, check }, records };
+}
+
+function applyRoomState(modes, written) {
+  const next = readRoomModes(modes);
+  applyingRoom = true;
+  try {
+    writtenWork.applyRoomState(written);
+    Object.assign(state, next.state);
+    practice.clear();
+    solved.clear();
+    for (const [key, record] of next.records) {
+      practice.set(key, record);
+      if (record.correct) solved.add(key);
+    }
+    setMode(state.mode, false);
+  } finally {
+    applyingRoom = false;
+  }
+}
+
+if (!inRoom) setMode('training', false);
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.GeometryControlWork || !window.GeometryControlDrawing || !window.GeoMath) return;
-  writtenWork = window.GeometryControlWork.mount(controls.writtenWork, TRAINERS, renderDiagram);
+  writtenWork = window.GeometryControlWork.mount(controls.writtenWork, TRAINERS, renderDiagram, {
+    room: inRoom,
+    notify: () => applyingRoom || !room || room.writtenChanged()
+  });
   controls.written.hidden = false;
   controls.written.addEventListener('click', () => setMode('written'));
-  if (new URLSearchParams(location.search).get('mode') === 'written') setMode('written', false);
+  if (inRoom) {
+    document.body.dataset.controlRoom = 'true';
+    $('#control-room-caption').hidden = false;
+    $('#open-control-board').hidden = true;
+    setMode('written', false);
+    room = window.GeometryControlRoom.mount({
+      getModes: getRoomModes, getWritten: writtenWork.getRoomState, apply: applyRoomState
+    });
+  } else if (new URLSearchParams(location.search).get('mode') === 'written') setMode('written', false);
 });
 </script>
+<script defer src="../board-bridge.js"></script>
 <script defer src="../../geometry-course/assets/geometry.js"></script>
-<script defer src="control-work-drawing.js?v=1"></script>
-<script defer src="control-work-written.js?v=1"></script>
+<script defer src="control-work-drawing.js?v=2"></script>
+<script defer src="control-work-demo-data.js?v=2"></script>
+<script defer src="control-work-demos.js?v=2"></script>
+<script defer src="control-work-written.js?v=3"></script>
 <script defer src="/assets/assistant/home-link.js?v=20261110"></script>
 </body>
 </html>

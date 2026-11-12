@@ -7,6 +7,10 @@ const OUT=process.env.GEOMETRY7_PUBLISHED_OUTPUT||'/tmp/geometry7-published';fs.
 const report={gate:'GEOMETRY7_PUBLISHED_ACCEPTANCE',startedAt:new Date().toISOString(),head:process.env.GITHUB_SHA||null,status:'RUNNING',assets:[],checks:[],realPupilAccountsUsed:0};
 const hash=b=>createHash('sha256').update(b).digest('hex'),pause=ms=>new Promise(r=>setTimeout(r,ms));
 const files=['geometry-course/grade7/index.html','geometry-course/board/catalog.json','geometry-course/board/practice.js','geometry-course/board/native-session.js','geometry-course/board/native.css','geometry-course/board/learning-support.js','geometry-course/textbook/assets/grade7-board-engine.js','geometry-course/textbook/assets/grade7-board-session.js','trainers/atanasyan-grade7.html','trainers/geometry7-practice.html','trainers/geometry7-rebuild.html','trainers/board-compat.json','trainers/board-picker.js','trainers/board-picker-data.json','ege-baza/path/board-session.js','learning/app.js',...require('../geometry-course/board/catalog.json').map(x=>'geometry-course/trainers/'+x.id+'.html')];
+const controlRoot='trainers/geometry-7/';
+files.push(...['control-work.html','control-work-room.js','control-work-written.js','control-work-written.css',
+ 'control-work-drawing.js','control-work-demos.js','control-work-demo-data.js'].map(file=>controlRoot+file));
+files.push(...fs.readdirSync(path.join(ROOT,controlRoot,'control-work-gifs')).sort().map(file=>controlRoot+'control-work-gifs/'+file));
 async function bytes(url){const r=await fetch(url,{headers:{'Cache-Control':'no-cache'},signal:AbortSignal.timeout(30000)});assert.equal(r.status,200,new URL(url).pathname);return Buffer.from(await r.arrayBuffer());}
 async function deployed(){
  const stamp=process.env.GITHUB_SHA||'manual';
