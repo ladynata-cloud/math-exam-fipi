@@ -9,7 +9,7 @@
 
   const stage = workshop.querySelector(".profile-clock-case");
   const canvas = stage.querySelector("canvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = typeof Path2D === "function" ? canvas.getContext("2d") : null;
   if (!ctx) return;
 
   const tau = Math.PI * 2;
@@ -68,20 +68,20 @@
     const written = [algebra, geometry, reasoning];
     for (const wheel of written) wheel.open = true;
     const walks = isCompact ? [
-      [[22, 88], [52, 88], [74, 68], [106, 68]],
+      [[219, 544], [248, 544], [267, 562], [301, 562]],
       [[17, 305], [47, 305], [68, 327], [102, 327]],
-      [[219, 544], [248, 544], [267, 562], [306, 562]],
+      [[21, 70], [122, 70]],
       [[20, 718], [54, 718], [72, 739], [105, 739]],
       [[221, 957], [249, 957], [269, 976], [312, 976]],
       [[17, 1131], [46, 1131], [64, 1151], [98, 1151]],
-      [[220, 1499], [252, 1499], [274, 1478], [318, 1478]]
+      [[220, 1499], [252, 1499], [274, 1478], [306, 1478]]
     ] : [
-      [[20, 83], [57, 83], [83, 61], [122, 61]],
+      [[20, 125], [51, 125], [62, 104], [76, 104]],
       [[49, 462], [116, 462], [143, 440], [233, 440], [258, 421], [309, 421]],
-      [[671, 131], [720, 131], [741, 153], [800, 153], [826, 132], [884, 132]],
-      [[840, 390], [881, 390], [906, 369], [968, 369]],
+      [[657, 128], [922, 128]],
+      [[840, 390], [881, 390], [906, 369], [945, 369]],
       [[273, 507], [331, 507], [354, 486], [422, 486]],
-      [[738, 797], [798, 797], [826, 772], [900, 772], [923, 747], [965, 747]],
+      [[738, 797], [798, 797], [826, 772], [900, 772], [923, 747], [947, 747]],
       [[90, 866], [148, 866], [172, 843], [237, 843], [259, 861], [324, 861]]
     ];
     return {
@@ -95,7 +95,7 @@
       pivot: isCompact ? [26, 379] : [117, 539],
       rod: isCompact ? 122 : 224,
       walks,
-      figures: isCompact ? [43, 44, 42, 47, 42, 45, 46] : [54, 59, 56, 52, 60, 55, 58]
+      figures: isCompact ? [47, 47, 49, 48, 46, 47, 49] : [62, 64, 68, 59, 64, 62, 64]
     };
   }
 
@@ -327,78 +327,6 @@
     ctx.restore();
   }
 
-  function walkingRoute(points) {
-    let length = 0;
-    const legs = points.slice(1).map(([x, y], index) => {
-      const [fromX, fromY] = points[index];
-      const start = length;
-      length += Math.hypot(x - fromX, y - fromY);
-      return { fromX, fromY, x, y, start, end: length };
-    });
-    return { legs, length };
-  }
-
-  function repairPost(paint, [x, y], height) {
-    const grip = height * .43;
-    paint.save();
-    paint.translate(x + 11, y - grip);
-    paint.fillStyle = "#32241b";
-    paint.fillRect(-4, 0, 8, grip);
-    paint.fillStyle = "#b2814c";
-    paint.fillRect(-3, 0, 2, grip);
-    disc(paint, 6, "#4a3223", "#d7a36d", 1.5);
-    pin(paint, 0, 0, 3);
-    paint.restore();
-  }
-
-  function tighten(x, y, height, turn) {
-    ctx.save();
-    ctx.translate(x + 11, y - height * .43);
-    ctx.rotate(-.95 + .49 * Math.sin(turn * tau * 1.25));
-    ctx.strokeStyle = "#2d2119";
-    ctx.lineWidth = 5.5;
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(-height * .29, 0);
-    ctx.stroke();
-    ctx.strokeStyle = "#ffe0a7";
-    ctx.lineWidth = 2.6;
-    ctx.stroke();
-    disc(ctx, 3.4, null, "#ffdea2", 1.7);
-    ctx.restore();
-  }
-
-  const sheet = new Image();
-  function gnome(walk, index, height, elapsed) {
-    const pace = 19 + (index * 5 % 9);
-    const repairTime = 1.9 + (index % 3) * .25;
-    const repairDistance = repairTime * pace;
-    const phase = (elapsed * pace + walk.length * (.26 + index * .34)) % (walk.length * 2 + repairDistance);
-    const fixing = phase >= walk.length && phase < walk.length + repairDistance;
-    const reverse = phase >= walk.length + repairDistance;
-    const distance = fixing ? walk.length : reverse ? walk.length * 2 + repairDistance - phase : phase;
-    const leg = walk.legs.find((section) => distance <= section.end);
-    const progress = (distance - leg.start) / (leg.end - leg.start);
-    const x = leg.fromX + (leg.x - leg.fromX) * progress;
-    const y = leg.fromY + (leg.y - leg.fromY) * progress;
-    const step = Math.sin(elapsed * (fixing ? 8 : 12) + index * 2);
-    const width = height * 88 / 136;
-
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.fillStyle = "#0007";
-    ctx.beginPath();
-    ctx.ellipse(0, 1.5, width * .36, 3, 0, 0, tau);
-    ctx.fill();
-    ctx.translate(fixing ? 2 : 0, fixing ? 0 : -Math.abs(step) * 2);
-    ctx.rotate(fixing ? .075 + step * .025 : step * .035);
-    ctx.scale(reverse ? -1 : 1, 1);
-    ctx.drawImage(sheet, index % 3 * 88, 0, 88, 136, -width / 2, -height, width, height);
-    ctx.restore();
-    if (fixing) tighten(x, y, height, (phase - walk.length) / pace);
-  }
-
   const nav = stage.querySelector(".profile-clock-dials");
   const courseLinks = [...stage.querySelectorAll(".profile-clock-course")];
   const toggle = workshop.querySelector(".profile-clock-toggle");
@@ -446,6 +374,7 @@
 
   let scene = makeScene(compact.matches);
   let artwork;
+  const arrangeGnomes = globalThis.EgeProfileGnomes?.create(render);
   let elapsed = 0;
   let clockTime = new Date();
   let frame = 0;
@@ -474,9 +403,7 @@
     spinWheels(scene.pinions, artwork.pinions);
     clockHands(scene.dials[0], clockTime);
     ctx.drawImage(artwork.bridges, 0, 0, scene.width, scene.height);
-    if (sheet.naturalWidth) {
-      artwork.routes.forEach((walk, index) => gnome(walk, index, scene.figures[index], elapsed));
-    }
+    artwork.gnomes?.(ctx, elapsed);
   }
 
   function locate(element, x, y, width = scene.width, height = scene.height) {
@@ -516,15 +443,12 @@
       });
     });
     courseLinks.forEach((link, index) => locateWheel(link, scene.courses[index]));
-    scene.walks.forEach((walk, index) => {
-      walkway(bridges.paint, walk);
-      repairPost(bridges.paint, walk.at(-1), scene.figures[index]);
-    });
+    scene.walks.forEach(walk => walkway(bridges.paint, walk));
     artwork = {
       scene, faces: faces.layer, bridges: bridges.layer,
       wheels: scene.wheels.map((wheel) => castWheel(wheel, scale)),
       pinions: scene.pinions.map((wheel) => castWheel(wheel, scale)),
-      routes: scene.walks.map(walkingRoute)
+      gnomes: arrangeGnomes?.(scene, bridges.paint)
     };
     render();
   }
@@ -567,8 +491,6 @@
   });
   reducedMotion.addEventListener("change", updateToggle);
   document.addEventListener("visibilitychange", syncMotion);
-  sheet.addEventListener("load", render);
-  sheet.src = new URL("clockwork-gnomes.webp", document.currentScript.src).href;
   workshop.hidden = false;
   arrange();
   new ResizeObserver(arrange).observe(stage);

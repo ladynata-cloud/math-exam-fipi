@@ -181,6 +181,21 @@ async function checkOcean(page, origin) {
     assert(await ocean.getByRole('heading', { name: 'Спуск батискафа' }).isVisible(), 'keyboard selects the previous point');
     await next.press('Enter');
     if (width === 1280) {
+      const teeth = await ocean.locator('.ocean-expedition-atlas').evaluate(async (atlas) => {
+        await atlas.decode();
+        const draw = globalThis.EgeBazaOceanMotion.create(atlas, 1040, 496);
+        return [1, 9.5, 17, 38.5].map(time => {
+          const pixels = draw(time).getContext('2d').getImageData(585, 140, 72, 67).data;
+          let ivory = 0;
+          for (let pixel = 0; pixel < pixels.length; pixel += 4) {
+            if (pixels[pixel + 3] > 200 && pixels[pixel] > 206 &&
+              pixels[pixel + 1] > 212 && pixels[pixel + 2] < pixels[pixel + 1] - 9) ivory++;
+          }
+          return ivory;
+        });
+      });
+      assert(teeth[1] > 24 && teeth[3] > 24, 'the serpent opens its jaws on both excursions');
+      assert.equal(teeth[0] + teeth[2], 0, 'the serpent retreats into the den between excursions');
       const lastPin = ocean.locator('[data-ocean-point="20"]');
       await lastPin.press('Home');
       const firstPin = ocean.locator('[data-ocean-point="0"]');
