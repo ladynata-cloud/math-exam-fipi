@@ -74,6 +74,12 @@ async function standalone(browser, origin) {
   });
   assert.equal(await page.locator('.lesson-card').count(), lessons.length);
   assert.equal(await page.locator('.hero a[href*="trainer-board"]').count(), 1);
+  for (const width of [320, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    const home = await page.getByRole('link', { name: 'Главная MathExam' }).boundingBox();
+    assert(home && home.height >= 44 && home.x + home.width <= width);
+  }
+  await page.setViewportSize({ width: 320, height: 900 });
   await page.getByRole('link', { name: 'Начать с оценок' }).click();
 
   for (const [index, lesson] of lessons.entries()) {
