@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "3642739d15656a10f66833862199d7deef3d1ef4",
+  "baseSha": "29de6212a466631ab32a71b8d410f861e6bf42cd",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "b96684dabc4bd749d764648c9caa708f4770347c6655c609f780b22eb4ad8d35",
-      "afterSha256": "82e84770b9a98de319971652747dc4d0f457c235f1ade8fd38688d4a0feb7207",
+      "beforeSha256": "188c7d628e4a0de3f9f59ac4525cb7785c56432a0e1ef01aaf7bf34c1d552600",
+      "afterSha256": "4c6ca0b43b9ade0538c840c657066e9297b3cba2c937a6ba77ad2d95e74e488a",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -4950,12 +4950,21 @@
     },
     {
       "previousBaseSha": "3ee5a38417a742bbe9419bd371c000642ecc098d",
-      "sourceBaseSha": "3642739d15656a10f66833862199d7deef3d1ef4",
+      "sourceBaseSha": "f17c0d248377bf22dba9b60bd4eee893973d0361",
       "task": "docs/tasks/PROFILE_COORDINATES_FUNCTIONS_PARAMETERS_20261113.md",
       "changedPaths": [
         "ege-profil/index.html",
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "f17c0d248377bf22dba9b60bd4eee893973d0361",
+      "sourceBaseSha": "29de6212a466631ab32a71b8d410f861e6bf42cd",
+      "task": "docs/tasks/PROFILE_COORDINATES_FUNCTIONS_PARAMETERS_20261113.md",
+      "changedPaths": [
+        "ege-profil/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
