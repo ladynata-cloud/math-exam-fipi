@@ -89,7 +89,10 @@
         'exhaust-cases': { title: 'Разбираю исключительные случаи', numbers: [14, 16, 17, 19] },
         'bound-and-example': { title: 'Доказываю границу и даю пример', numbers: [20] }
       },
-      refs: [['Тренажёр «Проверь как эксперт»', '/ege-profil/trainers/expert.html']]
+      refs: [
+        ['Оценка плюс пример · 8 уроков', '/trainers/ege-methods.html'],
+        ['Тренажёр «Проверь как эксперт»', '/ege-profil/trainers/expert.html']
+      ]
     }
   ];
 
