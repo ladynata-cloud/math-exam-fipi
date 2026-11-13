@@ -55,13 +55,13 @@
   }
 
   function mount(container) {
-    container.innerHTML = '<div class="az-parameter-plane"><p>Сдвинь горизонталь. Заливка — общая область.</p>' +
+    container.innerHTML = '<div class="az-parameter-plane"><p>Заливка — общая область.</p>' +
       `<svg viewBox="0 0 290 280" role="img">${drawing()}</svg>` +
       '<p class="plane-legend"><span class="plane-lower">1. a ≥ x²</span><span class="plane-upper">2. a ≤ 1 − (x + 1)²</span></p>' +
-      '<label for="az-plane-level">Уровень a = <output for="az-plane-level"></output></label>' +
-      '<input id="az-plane-level" type="range" min="-0.5" max="1.5" step="0.05" value="0.5">' +
+      '<div class="az-plane-controls"><label for="az-plane-level">Уровень a = <output for="az-plane-level"></output></label>' +
       '<div class="az-plane-buttons"><button type="button" class="az-button secondary" data-plane-exact="0">a = 0</button>' +
-      '<button type="button" class="az-button secondary" data-plane-exact="1">a = 1</button></div>' +
+      '<button type="button" class="az-button secondary" data-plane-exact="1">a = 1</button></div></div>' +
+      '<input id="az-plane-level" type="range" min="-0.5" max="1.5" step="0.05" value="0.5">' +
       '<fieldset><legend>На этом уровне есть решение?</legend><div class="az-plane-buttons">' +
       '<button type="button" class="az-button secondary" aria-pressed="false" data-plane-predict="yes">Есть</button>' +
       '<button type="button" class="az-button secondary" aria-pressed="false" data-plane-predict="no">Нет</button></div></fieldset>' +

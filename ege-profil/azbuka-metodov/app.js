@@ -160,7 +160,8 @@
     const lesson = lessons[alphabet.id][id];
     const key = keyFor(alphabet.id, id);
     const record = store.read(key);
-    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1>' +
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1' +
+      (lesson.reasoning ? ' class="az-skill-heading"' : '') + '>' +
       alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
       exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' || lesson.reasoning ?
         '<section class="az-panel az-notes"><h2>' + (lesson.reasoning ? 'Черновик обоснований' : 'Запиши обоснование') + '</h2><label for="az-note">' +

@@ -99,7 +99,8 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 
 .az-parameter-plane { display: grid; gap: 6px; max-width: 370px; margin-bottom: 12px; }
 .az-parameter-plane p { font-size: .875rem; }
-.az-parameter-plane svg { display: block; width: 100%; max-width: 280px; height: auto; background: #f7f6fc; border-radius: 8px; }
+.az-parameter-plane svg { display: block; width: 100%; max-width: 256px; height: auto; background: #f7f6fc; border-radius: 8px; }
+.az-skill-heading { font-size: clamp(1.55rem, 3.6vw, 2.45rem); }
 .az-parameter-plane svg text { fill: #484459; font: 12px system-ui, sans-serif; }
 .az-parameter-plane .plane-area { fill: #d1e9de; }
 .az-parameter-plane path:not(.plane-area) { fill: none; stroke-width: 2; }
@@ -112,6 +113,7 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 .az-parameter-plane input { min-height: 36px; padding: 0; accent-color: var(--accent); }
 .az-parameter-plane fieldset { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
 .az-parameter-plane legend { margin-bottom: 4px; padding: 0; font-size: .875rem; font-weight: 700; }
+.az-plane-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
 .az-plane-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
 .az-plane-buttons .az-button { min-width: 60px; }
 .az-plane-buttons [aria-pressed="true"] { background: var(--accent); color: white; }

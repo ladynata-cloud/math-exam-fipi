@@ -109,8 +109,8 @@ async function checkParameterPlane(page, origin) {
     const feedback = lab.locator('[data-plane-feedback]');
     const graph = await lab.getByRole('img').boundingBox();
     const prediction = await lab.getByRole('button', { name: 'Есть', exact: true }).boundingBox();
-    assert(graph && prediction && graph.y + graph.height <= 900 && prediction.y + prediction.height <= 900,
-      `the graph and prediction are above the fold at ${width}px`);
+    assert(graph && prediction && graph.y >= 0 && graph.y + graph.height <= 900 && prediction.y + prediction.height <= 900,
+      `the graph and prediction are above the fold at ${width}px (graph ${graph?.y}, prediction ${prediction?.y})`);
     const slider = lab.getByRole('slider');
     await slider.press('Home');
     await lab.getByRole('button', { name: 'Нет', exact: true }).click();
