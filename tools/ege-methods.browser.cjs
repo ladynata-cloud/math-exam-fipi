@@ -269,13 +269,14 @@ async function sharedBoard(browser, origin, serverOrigin) {
   await s.locator('#proof-draft').fill(proof);
   await t.waitForFunction(expected => document.getElementById('proof-draft')?.value === expected, proof);
 
-  await student.reload();
-  const restored = await boardFrame(student);
-  assert.equal(await restored.locator('#proof-draft').inputValue(), proof);
   await teacher.locator('#openShare').click();
   await teacher.locator('#controlToggle').click();
   await teacher.waitForFunction(() => document.body.classList.contains('control-owner'));
+  await student.waitForFunction(() => !document.body.classList.contains('control-owner'));
   await teacher.locator('#sharePanel [data-close-panel]').click();
+  await student.reload();
+  const restored = await boardFrame(student);
+  assert.equal(await restored.locator('#proof-draft').inputValue(), proof);
   const late = await browser.newPage();
   monitor(late, origin);
   await late.goto(pupilLink);
