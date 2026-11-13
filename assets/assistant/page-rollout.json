@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fba761d10082165bd32a296731e066574f7d3432",
+  "baseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "59757deda69e7010d45ec894293ebbcfaaa71a8f6eae87723239ed2ab37671b5",
-      "afterSha256": "105713028cf94eeb602f05f7160ebc67d8a7a7e6762016e023c3b5d0d9200a55",
+      "beforeSha256": "8f5c36eb7ad0fe3a39ac60aaaa0fe46fc39dfdf3bdf2e43d40dbb56b0608faa8",
+      "afterSha256": "d22763a9885d74ae0fbcdd6a9db667068c784052cf21a2159bf509ed4f4bb6e2",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5015,6 +5015,15 @@
     {
       "previousBaseSha": "425527bdf0c38f7e1eb0bd1e472413c9d9aa0e7e",
       "sourceBaseSha": "fba761d10082165bd32a296731e066574f7d3432",
+      "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fba761d10082165bd32a296731e066574f7d3432",
+      "sourceBaseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
       "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
       "changedPaths": [
         "ege-profil/part-two/index.html"
