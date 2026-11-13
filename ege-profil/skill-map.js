@@ -88,6 +88,38 @@
     return /^\d+$/.test(key) ? `№${key}${map.title ? ' · ' + map.title : ''}` : map.title;
   }
 
+  function alphabetLinks(key, beforeLeave) {
+    const catalog = root.ProfileAlphabetCatalog;
+    const alphabets = catalog?.forNumber(key);
+    if (!alphabets?.length) return null;
+    const block = element('section', 'profile-skill-alphabets');
+    block.append(element('h3', '', 'Азбуки к этому номеру'));
+    const back = root.location.pathname + root.location.search + root.location.hash;
+    for (const alphabet of alphabets) {
+      const group = element('div', 'profile-skill-alphabet-group');
+      group.append(element('strong', '', alphabet.short));
+      const list = element('ul');
+      for (const [id, skill] of Object.entries(alphabet.skills)) {
+        if (!skill.numbers.includes(Number(key))) continue;
+        const link = element('a', '', skill.title);
+        link.href = catalog.href(alphabet.id, id, key, back);
+        link.setAttribute('data-profile-alphabet-link', '');
+        if (beforeLeave) link.addEventListener('click', async event => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          await beforeLeave();
+          root.location.assign(link.href);
+        });
+        const row = element('li');
+        row.append(link);
+        list.append(row);
+      }
+      group.append(list);
+      block.append(group);
+    }
+    return block;
+  }
+
   function challengeForm(key, challenge, index, group, refresh) {
     const stateKey = keyFor(key, challenge, index);
     const state = read(stateKey);
@@ -194,7 +226,7 @@
     return card;
   }
 
-  function render(container, key, map, id, lesson) {
+  function render(container, key, map, id, { lesson, beforeLeave }) {
     const layout = element('div', 'profile-skill-layout');
     const route = element('section', 'profile-skill-route');
     if (lesson?.skill) {
@@ -204,6 +236,8 @@
     const list = element('ol', 'profile-skill-steps');
     map.skills.forEach(skill => list.append(element('li', '', skill)));
     route.append(list);
+    const alphabets = alphabetLinks(key, beforeLeave);
+    if (alphabets) route.append(alphabets);
 
     const practice = element('section', 'profile-skill-practice');
     practice.append(element('h3', '', 'Творческие задания'));
@@ -260,7 +294,7 @@
       dialog.append(label);
       select.addEventListener('change', () => {
         selected = maps.find(([key]) => key === select.value) || selected;
-        render(body, ...selected, id, options.lesson);
+        render(body, ...selected, id, options);
       });
     } else {
       dialog.append(element('p', 'profile-skill-subtitle', mapTitle(...selected)));
@@ -274,7 +308,7 @@
       if (current && current !== lastPreferred) selected = maps.find(([key]) => key === String(current)) || selected;
       lastPreferred = current;
       select.value = selected[0];
-      render(body, ...selected, id, options.lesson);
+      render(body, ...selected, id, options);
       if (typeof dialog.showModal === 'function') {
         if (!dialog.open) dialog.showModal();
       } else {

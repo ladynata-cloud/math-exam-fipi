@@ -351,9 +351,22 @@
     return { group, label, last, links: [] };
   });
 
-  function describeLink(link, label) {
-    link.addEventListener("pointerenter", () => { topic.textContent = label; });
-    link.addEventListener("focus", () => { topic.textContent = label; });
+  const alphabets = globalThis.ProfileAlphabetCatalog;
+  const alphabetShortcut = workshop.querySelector(".profile-clock-topic-alphabets");
+
+  function describeLink(link, label, number) {
+    function describe() {
+      topic.textContent = label;
+      if (number && !alphabets?.forNumber(number).length) {
+        alphabetShortcut.hidden = true;
+      } else if (number) {
+        alphabetShortcut.hidden = false;
+        alphabetShortcut.href = alphabets.href("", "", number);
+        alphabetShortcut.textContent = "Азбуки к №" + number;
+      }
+    }
+    link.addEventListener("pointerenter", describe);
+    link.addEventListener("focus", describe);
   }
 
   for (const link of route) {
@@ -366,11 +379,29 @@
     entry.href = link.getAttribute("href");
     entry.textContent = number;
     entry.setAttribute("aria-label", label);
-    describeLink(entry, label);
+    describeLink(entry, label, number);
     part.group.append(entry);
     part.links.push(entry);
   }
   for (const link of courseLinks) describeLink(link, link.getAttribute("aria-label"));
+  const alphabetNav = workshop.querySelector(".profile-clock-alphabets");
+  for (const alphabet of alphabets?.list ?? []) {
+    const link = document.createElement("a");
+    link.className = "profile-clock-alphabet";
+    link.href = alphabets.href(alphabet.id);
+    link.setAttribute("aria-label", "Азбука · " + alphabet.title);
+    const wheel = document.createElement("span");
+    wheel.className = "profile-clock-alphabet-wheel";
+    wheel.setAttribute("aria-hidden", "true");
+    const label = document.createElement("span");
+    label.textContent = alphabet.short;
+    const numbers = document.createElement("small");
+    numbers.textContent = "№" + alphabet.numbers.join(", ");
+    label.append(numbers);
+    link.append(wheel, label);
+    describeLink(link, alphabet.title);
+    alphabetNav.append(link);
+  }
 
   let scene = makeScene(compact.matches);
   let artwork;
@@ -478,6 +509,7 @@
     toggle.toggleAttribute("data-paused", paused);
     toggle.textContent = paused ? "Запустить" : "Пауза";
     toggle.setAttribute("aria-label", paused ? "Запустить анимацию" : "Пауза анимации");
+    workshop.classList.toggle("is-paused", paused);
     syncMotion();
   }
 
