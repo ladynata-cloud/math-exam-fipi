@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
+  "baseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -158,8 +158,8 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "0e7eefbd29b9e1d81874560e3205e1e823938083a8a96f0005c5cbef3398b63e",
-      "afterSha256": "b0e1df4d619a0d6a14ea61c63fe0655163f96859e28cc1e6094a27cf202edb8c",
+      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
+      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -5027,6 +5027,15 @@
       "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
       "changedPaths": [
         "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
+      "sourceBaseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
+      "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
+      "changedPaths": [
+        "articles/stroynost-kursa-geometrii/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
