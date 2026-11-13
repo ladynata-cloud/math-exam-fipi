@@ -64,6 +64,26 @@
       '</ul></section>';
   }
 
+  function routeStart(alphabet, ids) {
+    const available = ids.map(id => {
+      const record = store.read(keyFor(alphabet.id, id));
+      return { id, record };
+    }).filter(({ id, record }) => engine.question(record, lessons[alphabet.id][id]));
+    return available.find(({ record }) => record.phase || record.attempts.length || record.draft || record.helped)?.id ??
+      available.find(({ record }) => !record.independent)?.id ?? ids[0];
+  }
+
+  function routeContinuation(alphabet, current) {
+    if (!alphabet.route) return '';
+    const ids = Object.keys(alphabet.skills);
+    const nextId = ids[ids.indexOf(current) + 1];
+    const target = nextId ? linkTo(alphabet.id, nextId) : alphabet.next ?
+      linkTo(alphabet.next) : examLink(alphabet.numbers[0]);
+    const label = nextId ? 'Следующий шаг' : alphabet.next ? 'К методам решения задач с параметром' :
+      'К экзаменационным задачам №' + alphabet.numbers[0];
+    return '<a class="az-button primary" href="' + escape(target) + '">' + label + '</a>';
+  }
+
   function renderCatalog() {
     const selected = catalog.forNumber(number);
     const title = selected.length ? 'Основы для №' + number : 'Основы и методы';
@@ -88,7 +108,7 @@
       items.map(([id, skill]) => {
         const state = statusOf(alphabet.id, id);
         return '<li><a href="' + escape(linkTo(alphabet.id, id)) + '"' + (id === current ? ' aria-current="page"' : '') +
-          '><strong>' + skill.title + '</strong><span class="az-status az-' + state + '">' + status[state] + '</span></a></li>';
+        '><strong>' + skill.title + '</strong><span class="az-status az-' + state + '">' + status[state] + '</span></a></li>';
       }).join('') + '</ul></section>';
   }
 
@@ -103,14 +123,15 @@
       }).join('') + '</ol></details>';
   }
 
-  function exerciseMarkup(record, lesson) {
+  function exerciseMarkup(record, lesson, alphabet, id) {
     const current = engine.question(record, lesson);
     if (!current) {
       return '<section class="az-panel az-exercise"><h2>' +
         (record.independent ? 'Самостоятельная проверка пройдена' : 'Тренировка завершена') + '</h2><p>' +
         (record.independent ? 'Ключевой шаг получился на отдельном условии с первой попытки без подсказки.' :
           'В проверке были ошибки или подсказки. К навыку можно вернуться и потренироваться ещё.') +
-        '</p><div class="az-actions"><button class="az-button secondary" type="button" data-restart>Повторить навык</button></div></section>';
+        '</p><div class="az-actions">' + routeContinuation(alphabet, id) +
+        '<button class="az-button secondary" type="button" data-restart>Повторить навык</button></div></section>';
     }
     const solved = record.attempts.at(-1) === true;
     const stage = record.phase ? (teacher ? 'Проверка после разбора' : 'Самопроверка') : (teacher ? 'Шаг для урока' : 'Учебный шаг');
@@ -139,7 +160,7 @@
     const record = store.read(key);
     main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1>' +
       alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
-      exerciseMarkup(record, lesson) + (teacher || alphabet.id === 'written-solution' ?
+      exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' ?
         '<section class="az-panel az-notes"><h2>Запиши обоснование</h2><label for="az-note">Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.</label>' +
         '<textarea id="az-note" maxlength="4000">' + escape(record.note) + '</textarea><p>Запись сохраняется в браузере. Полное доказательство можно проверить с преподавателем.</p></section>' : '') +
       journal(record) + '</div><aside class="az-aside">' +
@@ -201,14 +222,31 @@
     document.querySelector('#az-storage').hidden = store.available();
   }
 
+  function renderRoute(alphabet) {
+    const nav = alphabet.route ? (() => {
+      const ids = Object.keys(alphabet.skills);
+      const done = ids.filter(id => statusOf(alphabet.id, id) === 'verified').length;
+      const id = routeStart(alphabet, ids);
+      const records = ids.map(skill => store.read(keyFor(alphabet.id, skill)));
+      const inProgress = records.some(record => record.draft || record.attempts.length || record.helped);
+      const label = done === ids.length && !inProgress ? 'Повторить маршрут' :
+        ids.some(skill => statusOf(alphabet.id, skill) !== 'new') ? 'Продолжить маршрут' : 'Начать маршрут';
+      return '<div class="az-actions"><a class="az-button primary" href="' + escape(linkTo(alphabet.id, id)) + '">' +
+        label + '</a><span class="az-count">Самостоятельно: ' + done + ' из ' + ids.length + '</span></div>';
+    })() : '';
+    const atlas = alphabet.atlas ? '<div data-az-atlas></div>' : '';
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' +
+      alphabet.title + '</h1><p class="az-lead">' + alphabet.description + '</p>' + nav + atlas + '<div class="az-grid">' +
+      skillList(alphabet) + resources(alphabet) + '</div>';
+    if (alphabet.atlas) globalThis.ProfileFunctionAtlas?.mount(main.querySelector('[data-az-atlas]'));
+  }
+
   function render() {
     const [id, skill] = location.hash.replace(/^#\/?/, '').split('/');
     const alphabet = Object.hasOwn(catalog.index, id) ? catalog.index[id] : null;
     if (!alphabet) renderCatalog();
     else if (Object.hasOwn(alphabet.skills, skill)) renderSkill(alphabet, skill);
-    else main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' +
-      alphabet.title + '</h1><p class="az-lead">' + alphabet.description + '</p><div class="az-grid">' +
-      skillList(alphabet) + resources(alphabet) + '</div>';
+    else renderRoute(alphabet);
     updateStorageMessage();
     document.title = main.querySelector('h1').textContent + ' · MathExam';
   }

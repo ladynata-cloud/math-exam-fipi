@@ -411,6 +411,7 @@
   let frame = 0;
   let previous;
   let userPaused;
+  let preferenceTimer = 0;
   let visible = !("IntersectionObserver" in window);
 
   function spinWheels(wheels, layers) {
@@ -513,16 +514,30 @@
     syncMotion();
   }
 
+  function watchPreference() {
+    clearInterval(preferenceTimer);
+    preferenceTimer = 0;
+    if (document.hidden || userPaused !== undefined) return;
+    // Some Chromium sessions update matches without delivering the change event.
+    preferenceTimer = setInterval(() => {
+      if (toggle.hasAttribute("data-paused") !== reducedMotion.matches) updateToggle();
+    }, 250);
+  }
+
   toggle.addEventListener("click", () => {
     userPaused = !(userPaused ?? reducedMotion.matches);
     updateToggle();
+    watchPreference();
   });
   compact.addEventListener("change", () => {
     scene = makeScene(compact.matches);
     arrange();
   });
   reducedMotion.addEventListener("change", updateToggle);
-  document.addEventListener("visibilitychange", syncMotion);
+  document.addEventListener("visibilitychange", () => {
+    updateToggle();
+    watchPreference();
+  });
   workshop.hidden = false;
   arrange();
   new ResizeObserver(arrange).observe(stage);
@@ -534,4 +549,5 @@
     visibility.observe(stage);
   }
   updateToggle();
+  watchPreference();
 })();

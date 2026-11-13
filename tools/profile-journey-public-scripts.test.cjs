@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
 const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
-const map=['../skill-map-data.js?v=20261112-vectors','../azbuka-metodov/catalog.js?v=20261113','../skill-map.js?v=20261113-foundations','journey.js?v=20261113-foundations',
+const map=['../skill-map-data.js?v=20261112-vectors','../azbuka-metodov/catalog.js?v=20261113-routes','../skill-map.js?v=20261113-foundations','journey.js?v=20261113-foundations',
  'second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
  'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors'];
 const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261112-vectors','calm-ui.js?v=20261113-foundations','app.js?v=20261113-foundations'];

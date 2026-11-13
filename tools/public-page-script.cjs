@@ -53,7 +53,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../azbuka-metodov/catalog.js?v=20261113',
+  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../azbuka-metodov/catalog.js?v=20261113-routes',
     '../skill-map.js?v=20261113-foundations',
     'journey.js?v=20261113-foundations', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
     'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261113-foundations',
