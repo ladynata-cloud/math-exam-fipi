@@ -326,7 +326,7 @@ async function checkParameterGraphs(page, origin) {
   return {top:condition.getBoundingClientRect().top,bottom:figure.bottom,viewport:innerHeight,scroll:scrollY};
  });
  assert.equal(firstScreen.scroll,0,'a hash link opens the beginning of the condition');
- assert(firstScreen.top>=0&&firstScreen.bottom<=firstScreen.viewport,'condition and diagram fit the first screen');
+ assert(firstScreen.top>=0&&firstScreen.bottom<=firstScreen.viewport,'condition and diagram fit the first screen '+JSON.stringify(firstScreen));
  assert.equal(await proof.inputValue(),draft);
  await first.fill('5');
  await check.click();
