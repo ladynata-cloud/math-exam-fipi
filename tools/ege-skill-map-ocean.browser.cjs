@@ -98,6 +98,53 @@ async function checkCreativePractice(page, origin) {
   await page.keyboard.press('Escape');
 }
 
+async function checkParameterPlane(page, origin) {
+  for (const width of [320, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(`${origin}/ege-profil/trainers/parameters-18/index.html`);
+    await page.getByRole('link', { name: /Параметр как координата/ }).click();
+    await page.getByRole('heading', { name: 'Нахожу параметры по общей области' }).waitFor();
+    await fits(page, 'the parameter-plane lesson fits the viewport');
+    const lab = page.locator('.az-parameter-plane');
+    const feedback = lab.locator('[data-plane-feedback]');
+    const graph = await lab.getByRole('img').boundingBox();
+    const prediction = await lab.getByRole('button', { name: 'Есть', exact: true }).boundingBox();
+    assert(graph && prediction && graph.y + graph.height <= 900 && prediction.y + prediction.height <= 900,
+      `the graph and prediction are above the fold at ${width}px`);
+    const slider = lab.getByRole('slider');
+    await slider.press('Home');
+    await lab.getByRole('button', { name: 'Нет', exact: true }).click();
+    assert.match(await feedback.innerText(), /^Верно/);
+    await lab.getByRole('button', { name: 'a = 0', exact: true }).click();
+    await lab.getByRole('button', { name: 'Есть', exact: true }).press('Enter');
+    assert.match(await feedback.innerText(), /x = 0/);
+    await lab.getByRole('button', { name: 'a = 1', exact: true }).click();
+    await lab.getByRole('button', { name: 'Есть', exact: true }).click();
+    assert.match(await feedback.innerText(), /x = −1/);
+    await page.getByRole('link', { name: 'Вернуться к исходному заданию' }).click();
+    assert.match(page.url(), /parameters-18\/index\.html#gMethods$/);
+  }
+
+  await page.goto(`${origin}/ege-profil/part-two/index.html#exam/19`);
+  const map = await openSkillMap(page);
+  await map.getByRole('link', { name: 'Нахожу параметры по общей области' }).click();
+  const answer = page.locator('#az-answer');
+  const proof = page.locator('#az-note');
+  await answer.fill('[0;1]');
+  await proof.fill('Проверяю x = −a.');
+  await page.reload();
+  assert.equal(await answer.inputValue(), '[0;1]');
+  assert.equal(await proof.inputValue(), 'Проверяю x = −a.');
+  await page.getByRole('button', { name: 'Проверить', exact: true }).click();
+  await page.getByRole('button', { name: 'Проверить себя на новом условии' }).click();
+  await answer.fill('(0;2]');
+  await page.getByRole('button', { name: 'Проверить', exact: true }).click();
+  await page.getByRole('button', { name: 'Завершить', exact: true }).click();
+  await page.getByRole('heading', { name: 'Самостоятельная проверка пройдена' }).waitFor();
+  await page.getByRole('link', { name: 'К экзаменационным задачам №19' }).click();
+  assert.match(page.url(), /#exam\/19$/);
+}
+
 async function checkOcean(page, origin) {
   const pointNames = [
     'Плавучая база', 'Мерный буй', 'Журнал погружений',
@@ -283,6 +330,7 @@ async function checkOcean(page, origin) {
     await checkProfileRoutes(page, origin);
     await page.setViewportSize({ width: 320, height: 900 });
     await checkCreativePractice(page, origin);
+    await checkParameterPlane(page, origin);
     await checkOcean(page, origin);
     assert.deepEqual(errors, [], 'no unexpected browser errors');
     console.log('EGE_SKILL_MAP_OCEAN_BROWSER_OK');

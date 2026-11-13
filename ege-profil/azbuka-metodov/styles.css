@@ -96,3 +96,24 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 .atlas-level { stroke: #a85510; stroke-width: 2; stroke-dasharray: 5 4; }
 .az-atlas summary { color: var(--accent); cursor: pointer; font-weight: 700; }
 .az-atlas-properties p, .az-atlas-count { font-size: .9rem; }
+
+.az-parameter-plane { display: grid; gap: 6px; max-width: 370px; margin-bottom: 12px; }
+.az-parameter-plane p { font-size: .875rem; }
+.az-parameter-plane svg { display: block; width: 100%; max-width: 280px; height: auto; background: #f7f6fc; border-radius: 8px; }
+.az-parameter-plane svg text { fill: #484459; font: 12px system-ui, sans-serif; }
+.az-parameter-plane .plane-area { fill: #d1e9de; }
+.az-parameter-plane path:not(.plane-area) { fill: none; stroke-width: 2; }
+.az-parameter-plane .plane-lower { color: #4838a2; stroke: #4838a2; }
+.az-parameter-plane .plane-upper { color: #075e52; stroke: #075e52; }
+.az-parameter-plane .plane-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.plane-legend span::before { content: ''; display: inline-block; width: 14px; margin-right: 5px; vertical-align: middle; border-top: 2px solid; }
+.az-parameter-plane [data-plane-slice] { stroke: #9c440a; stroke-width: 4; fill: #9c440a; stroke-linecap: round; }
+.az-parameter-plane label { margin-block: 2px 0; }
+.az-parameter-plane input { min-height: 36px; padding: 0; accent-color: var(--accent); }
+.az-parameter-plane fieldset { margin: 0; padding: 0; border: 0; min-inline-size: 0; }
+.az-parameter-plane legend { margin-bottom: 4px; padding: 0; font-size: .875rem; font-weight: 700; }
+.az-plane-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.az-plane-buttons .az-button { min-width: 60px; }
+.az-plane-buttons [aria-pressed="true"] { background: var(--accent); color: white; }
+.az-plane-buttons [aria-pressed="true"]:hover { background: #38299e; }
+.az-parameter-plane :is(.az-button, input):focus-visible { outline-offset: 2px; }
