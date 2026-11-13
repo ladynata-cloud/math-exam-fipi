@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "46f757d28ee4ad10c76badf73c86749ae631e7bd",
+  "baseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 581,
-    "covered": 580,
+    "total": 582,
+    "covered": 581,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "188c7d628e4a0de3f9f59ac4525cb7785c56432a0e1ef01aaf7bf34c1d552600",
-      "afterSha256": "4c6ca0b43b9ade0538c840c657066e9297b3cba2c937a6ba77ad2d95e74e488a",
+      "beforeSha256": "2631aa06f6ad905e6d19a4e6daa0eeed9cd7ded606af650ed6e391aaf0f7cacc",
+      "afterSha256": "58efcced7b2855f2ae9588ce427eeafaddc56872e5eb7c3d657a0241b0ff91de",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -2058,8 +2058,8 @@
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
-      "beforeSha256": "9ef82fe240875f9a1c80e67e6a3bd88a71e6026dab44b658c3efb6528a6a02dd",
-      "afterSha256": "3c0800036541ff9c651da72e4d088a5117b1c8edb749e1ac831cb30de401a15a",
+      "beforeSha256": "d618a3473fab1e857625880e330fc8624e05be7c77fb2394391c189e8dee4825",
+      "afterSha256": "6fc6ae645fb991b0a07df846073377c3651f3d76d9eefd9774c42e8d3dda9e66",
       "placement": "before-head-close"
     },
     "oge/geometry/task-15-external-angle.html": {
@@ -2330,6 +2330,11 @@
     "trainers/ege-informatics-task15-logic-operations.html": {
       "beforeSha256": "4f31bf21dd3433798eaec0e821710cfffe4b58f12aba911c2f24372e27e3aca9",
       "afterSha256": "f9339bdef10f06b84cf8f930c12ca8253c1817ce25af17eee814f7e27bbb1740",
+      "placement": "before-head-close"
+    },
+    "trainers/ege-methods.html": {
+      "beforeSha256": "2d0448f54a472933032c577efe004d060920dd343d3986ffccc9ec9cf4eb63b9",
+      "afterSha256": "3616d32302ea44da4f456f5cf154327420fce647aee22d550a30121f505c8df9",
       "placement": "before-head-close"
     },
     "trainers/ege-profile-task3-stereometry-catalog.html": {
@@ -3633,6 +3638,7 @@
     "trainers/ege-baza/index.html": "trainers/index.html",
     "trainers/ege-informatics-task1-graphs-trainer.html": "sitemap",
     "trainers/ege-informatics-task15-logic-operations.html": "sitemap",
+    "trainers/ege-methods.html": "sitemap",
     "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/ege-profile-vectors-trainer.html": "sitemap",
     "trainers/ege-profile/inequalities/index.html": "sitemap",
@@ -4976,6 +4982,16 @@
         "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "46f757d28ee4ad10c76badf73c86749ae631e7bd",
+      "sourceBaseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
+      "task": "docs/tasks/STRATEGY_FIRST_PRACTICE_20261114.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "laboratory/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -5035,6 +5051,14 @@
         "stereo-course/sections/index.html"
       ],
       "reason": "New public sections course linked from the sitemap and course catalogue; include the existing navigator while preserving its reviewed teaching source."
+    },
+    {
+      "sourceBaseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
+      "task": "docs/tasks/STRATEGY_FIRST_PRACTICE_20261114.md",
+      "addedPages": [
+        "trainers/ege-methods.html"
+      ],
+      "reason": "Existing course added to the public sitemap with the shared navigator and a static worked example."
     }
   ]
 }
