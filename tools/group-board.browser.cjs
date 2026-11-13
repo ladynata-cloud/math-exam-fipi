@@ -118,11 +118,46 @@ async function watchFrame(page, assignmentId) {
 async function drawStroke(page, dx = 100) {
   const canvas = page.locator('#boardCanvas');
   await canvas.scrollIntoViewIfNeeded();
-  const box = await canvas.boundingBox();
-  assert.ok(box && box.width > 100 && box.height > 100, 'usable drawing surface');
-  await page.mouse.move(box.x + 30, box.y + 40);
+  // The pupil's split view scrolls inside workspace-panels. A canvas can be
+  // taller than that viewport, so its bounding-box top is not necessarily a
+  // visible pointer target after scrollIntoViewIfNeeded(). Draw on the actual
+  // unclipped surface, without changing the material or bypassing pointer input.
+  const visible = await canvas.evaluate((element, dx) => {
+    const box = element.getBoundingClientRect();
+    const area = { left: Math.max(0, box.left), top: Math.max(0, box.top),
+      right: Math.min(innerWidth, box.right), bottom: Math.min(innerHeight, box.bottom) };
+    for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+      const style = getComputedStyle(parent), rect = parent.getBoundingClientRect();
+      if (/(auto|scroll|hidden|clip)/.test(style.overflowX)) {
+        area.left = Math.max(area.left, rect.left + parent.clientLeft);
+        area.right = Math.min(area.right, rect.left + parent.clientLeft + parent.clientWidth);
+      }
+      if (/(auto|scroll|hidden|clip)/.test(style.overflowY)) {
+        area.top = Math.max(area.top, rect.top + parent.clientTop);
+        area.bottom = Math.min(area.bottom, rect.top + parent.clientTop + parent.clientHeight);
+      }
+    }
+    const oldStart = document.elementFromPoint(box.left + 30, box.top + 40);
+    const oldEnd = document.elementFromPoint(box.left + Math.min(dx, box.width - 20), box.top + 90);
+    return { ...area, legacyPointsHitCanvas: oldStart === element && oldEnd === element };
+  }, dx);
+  const width = visible.right - visible.left, height = visible.bottom - visible.top;
+  if (!visible.legacyPointsHitCanvas) console.log('DRAW_STROKE_CLIPPED_TARGET: using visible canvas coordinates', { width, height });
+  if (!(width > 100 && height > 100)) {
+    await page.screenshot({ path: path.join(ARTIFACTS, 'drawing-surface-failure.png'), fullPage: true });
+  }
+  assert.ok(width > 100 && height > 100, 'usable visible drawing surface');
+  const start = { x: visible.left + 30, y: visible.top + 30 };
+  const end = { x: visible.left + Math.min(dx, width - 20), y: visible.top + 80 };
+  for (const point of [start, end]) {
+    const hitsCanvas = await canvas.evaluate((element, point) => document.elementFromPoint(point.x, point.y) === element, point);
+    if (!hitsCanvas) await page.screenshot({ path: path.join(ARTIFACTS, 'drawing-pointer-failure.png'), fullPage: true });
+    assert.ok(hitsCanvas,
+      'handwriting pointer hits the canvas rather than clipped content or an overlay');
+  }
+  await page.mouse.move(start.x, start.y);
   await page.mouse.down();
-  await page.mouse.move(box.x + Math.min(dx, box.width - 20), box.y + 90, { steps: 8 });
+  await page.mouse.move(end.x, end.y, { steps: 8 });
   await page.mouse.up();
 }
 
