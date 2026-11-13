@@ -93,6 +93,65 @@
         ['Оценка плюс пример · 8 уроков', '/trainers/ege-methods.html'],
         ['Тренажёр «Проверь как эксперт»', '/ege-profil/trainers/expert.html']
       ]
+    },
+    {
+      id: 'coordinate-method', title: 'Метод координат в стереометрии', short: 'Метод координат', numbers: [15],
+      description: 'Выбери оси, запиши координаты, найди углы и расстояние до плоскости.',
+      route: true,
+      skills: {
+        axes: { title: 'Выбираю оси и читаю координаты', numbers: [15] },
+        vector: { title: 'Нахожу координаты и длину вектора', numbers: [15] },
+        normal: { title: 'Нахожу нормаль к плоскости', numbers: [15] },
+        plane: { title: 'Составляю уравнение плоскости', numbers: [15] },
+        'line-angle': { title: 'Нахожу угол прямой с плоскостью', numbers: [15] },
+        'plane-angle': { title: 'Нахожу острый или прямой угол между плоскостями', numbers: [15] },
+        distance: { title: 'Вычисляю расстояние до плоскости', numbers: [15] }
+      },
+      refs: [
+        ['Векторы с нуля', '/ege-profil/start/index.html#calm/2'],
+        ['Атанасян 10–11', '/ege-profil/atanasyan-10-11/'],
+        ['№15 · угол прямой с плоскостью', '/ege-profil/part-two/index.html#lesson/p2-15-line-plane'],
+        ['№15 · расстояние до плоскости', '/ege-profil/part-two/index.html#lesson/p2-15-distance']
+      ]
+    },
+    {
+      id: 'function-atlas', title: 'Функции и графики для задач с параметром', short: 'Функции и графики', numbers: [19],
+      description: 'Найди допустимые x и возможные y. Проследи, как меняется график и число пересечений с горизонталью.',
+      route: true,
+      atlas: true,
+      next: 'parameter-methods',
+      skills: {
+        reading: { title: 'Читаю точки графика', numbers: [19] },
+        domain: { title: 'Нахожу общую область определения', numbers: [19] },
+        shifts: { title: 'Учитываю сдвиг и отражение графика', numbers: [19] },
+        range: { title: 'Проверяю возможные значения функции', numbers: [19] }
+      },
+      refs: [
+        ['Функции и графики · №12', '/ege-profil/start/index.html#calm/12'],
+        ['Функции в формулах и на графиках', '/ege-profil/trainers/functions-t1112.html']
+      ]
+    },
+    {
+      id: 'parameter-methods', title: 'Методы решения задач с параметром', short: 'Методы параметров', numbers: [19],
+      description: 'Определи, где меняется число решений. Проверь особые значения и вернись к исходному условию.',
+      route: true,
+      atlas: true,
+      skills: {
+        level: { title: 'Считаю пересечения графика с уровнем', numbers: [19] },
+        divide: { title: 'Проверяю нулевой коэффициент до деления', numbers: [19] },
+        degree: { title: 'Различаю потерю степени и двойной корень', numbers: [19] },
+        'root-position': { title: 'Проверяю, где лежат корни', numbers: [19] },
+        plateau: { title: 'Распознаю горизонтальный участок графика', numbers: [19] },
+        hole: { title: 'Исключаю выколотую точку', numbers: [19] },
+        tangent: { title: 'Проверяю касание прямой и окружности', numbers: [19] },
+        restore: { title: 'Возвращаюсь от замены к исходным решениям', numbers: [19] }
+      },
+      refs: [
+        ['Прежний практикум по задачам с параметром', '/ege-profil/trainers/parameters-18/'],
+        ['№19 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
+        ['№19 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
+        ['№19 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent']
+      ]
     }
   ];
 

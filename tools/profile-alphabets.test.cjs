@@ -8,14 +8,17 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const directory = 'ege-profil/azbuka-metodov';
 const source = name => fs.readFileSync(path.join(root, name), 'utf8');
-for (const file of ['catalog', 'data', 'engine']) require('../' + directory + '/' + file + '.js');
+for (const file of ['catalog', 'data', 'routes', 'engine', 'function-atlas']) require('../' + directory + '/' + file + '.js');
 const catalog = globalThis.ProfileAlphabetCatalog;
 const lessons = globalThis.ProfileAlphabetLessons;
 const engine = globalThis.ProfileAlphabetEngine;
 
-test('eight alphabets share 24 stable skills and reference valid current course routes', () => {
-  assert.equal(catalog.list.length, 8);
-  assert.equal(Object.values(lessons).flatMap(Object.keys).length, 24);
+test('foundations and exam routes reference valid current routes, with separate conditions for independent checks', () => {
+  assert.equal(catalog.list.length, 11);
+  assert.equal(Object.values(lessons).flatMap(Object.keys).length, 43);
+  assert.equal(catalog.forNumber(15).find(item => item.id === 'coordinate-method').route, true);
+  assert.equal(catalog.forNumber(19).find(item => item.id === 'function-atlas').next, 'parameter-methods');
+  assert.equal(catalog.forNumber(19).find(item => item.id === 'parameter-methods').route, true);
   for (const alphabet of catalog.list) {
     assert.deepEqual(Object.keys(alphabet.skills), Object.keys(lessons[alphabet.id]));
     assert.deepEqual([...new Set(Object.values(alphabet.skills).flatMap(skill => skill.numbers))].sort((a, b) => a - b), alphabet.numbers);
@@ -41,6 +44,63 @@ test('eight alphabets share 24 stable skills and reference valid current course 
   assert.ok(catalog.forNumber(16).some(alphabet => alphabet.id === 'domain'));
   assert.deepEqual(catalog.forNumber(6).map(item => item.id), ['random-variables']);
   assert.deepEqual(catalog.forNumber(2), []);
+});
+
+test('function atlas counts horizontal intersections over the full domain and at boundary levels', () => {
+  const atlas = globalThis.ProfileFunctionAtlas;
+  const boundaries = {
+    constant: [0, 0, Infinity], line: [1, 1, 1], mod: [0, 1, 2],
+    quadratic: [1, 2, 2], cubic: [1, 1, 1], quartic: [0, 1, 2],
+    root: [0, 1, 1], cubeRoot: [1, 1, 1], inverse: [1, 0, 1], rational: [1, 1, 1],
+    hole: [1, 1, 0], exp: [0, 0, 1], expDown: [0, 0, 1], log: [1, 1, 1], logDown: [1, 1, 1],
+    sin: [0, Infinity, 0], cos: [0, Infinity, 0], tan: [Infinity, Infinity, Infinity],
+    cot: [Infinity, Infinity, Infinity], piece: [1, 0, 0], absOut: [0, 2, 3], absIn: [0, 2, 2],
+    plateau: [0, 0, Infinity], radical: [0, 2, 2], semicircle: [0, 2, 2]
+  };
+  assert.equal(atlas.entries.length, 25);
+  for (const [id] of atlas.entries) {
+    assert.deepEqual([-2, 0, 2].map(level => atlas.count(id, level)), boundaries[id], id);
+  }
+  for (const [id, level, count] of [
+    ['rational', 1, 0], ['constant', 2, Infinity], ['piece', 1, Infinity],
+    ['absOut', 1, 4], ['absOut', 3, 2], ['absIn', 0.5, 4], ['absIn', 1, 3],
+    ['plateau', 3, 2], ['semicircle', 3, 1], ['semicircle', 3.5, 0], ['sin', 1, Infinity]
+  ]) assert.equal(atlas.count(id, level), count, id + ' at ' + level);
+});
+
+test('the new routes resume an unfinished step and the atlas hides the previous check when its graph changes', () => {
+  const dom = new JSDOM(source(directory + '/index.html'), {
+    url: 'https://mathexam.space/ege-profil/azbuka-metodov/?exam=19#/function-atlas',
+    runScripts: 'outside-only'
+  });
+  const w = dom.window;
+  const engine = globalThis.ProfileAlphabetEngine;
+  const draft = {
+    phase: 1, attempts: [], helped: false, draft: 'первый черновик', events: [], independent: false
+  };
+  w.localStorage.setItem(engine.storageKey + 'function-atlas/shifts', JSON.stringify(draft));
+  for (const file of ['catalog', 'data', 'routes', 'engine', 'diagrams', 'function-atlas', 'app'])
+    w.eval(source(directory + '/' + file + '.js'));
+  const d = w.document;
+  const resume = d.querySelector('a.az-button.primary');
+  assert.equal(resume.textContent, 'Продолжить маршрут');
+  assert.match(resume.href, /#\/function-atlas\/shifts$/);
+  const select = d.querySelector('.az-atlas select');
+  select.value = 'hole';
+  select.dispatchEvent(new w.Event('change'));
+  assert.equal(d.querySelectorAll('.atlas-open').length, 1);
+  assert.match(d.querySelector('.az-atlas-count').textContent, /равно 0/);
+  const details = d.querySelector('.az-atlas details');
+  details.open = true;
+  select.value = 'plateau';
+  select.dispatchEvent(new w.Event('change'));
+  assert.equal(details.open, false);
+  assert.match(d.querySelector('.az-atlas-count').textContent, /бесконечно/);
+  const slider = d.querySelector('#az-atlas-level');
+  slider.value = '3';
+  slider.dispatchEvent(new w.Event('input'));
+  assert.match(d.querySelector('.az-atlas-count').textContent, /равно 2/);
+  w.close();
 });
 
 test('explicit number forms, restriction notation, and alternate keyboard layouts', () => {

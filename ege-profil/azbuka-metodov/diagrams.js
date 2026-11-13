@@ -2,6 +2,8 @@
   'use strict';
 
   const views = {
+    'coordinate-box': ['Из вершины O ребро OA идёт вдоль оси x, OB вдоль оси y, OC вдоль оси z. P прямо над A. Q — верхняя вершина, противоположная O.',
+      '<path d="M48 102H148L190 72H90ZM48 102V40H148L190 10H90L48 40M148 40V102M190 72V10M90 10V72"/><path class="accent-edge" d="M148 102H162M90 72l16-11M48 40V27"/><text x="32" y="115">O</text><text x="144" y="121">A</text><text x="90" y="92">B</text><text x="30" y="42">C</text><text x="151" y="37">P</text><text x="194" y="17">Q</text><text x="164" y="107">x</text><text x="109" y="67">y</text><text x="44" y="22">z</text>'],
     box: ['Прямоугольный параллелепипед. Нижняя грань ABCD, верхняя A₁B₁C₁D₁.',
       '<path class="hidden-edge" d="M44 105 79 76H203M79 76V26"/><path d="M44 105H169L203 76V26H79L44 55ZM44 55H169L203 26M169 55V105"/><text x="26" y="118">A</text><text x="174" y="120">B</text><text x="207" y="84">C</text><text x="67" y="73">D</text><text x="23" y="56">A₁</text><text x="152" y="52">B₁</text><text x="205" y="23">C₁</text><text x="61" y="21">D₁</text>'],
     triangle: ['Треугольник ABC с высотой AH к основанию BC.',

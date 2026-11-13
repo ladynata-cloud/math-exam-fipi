@@ -81,3 +81,18 @@ h1 { font-size: clamp(1.75rem, 4.4vw, 2.9rem); line-height: 1.12; letter-spacing
 
 .az-notes label, .az-notes p { display: block; margin-top: 7px; color: var(--muted); font-size: .875rem; }
 .az-notes textarea { display: block; width: 100%; min-height: 90px; margin-top: 8px; padding: 9px; border: 1px solid #bfb8de; border-radius: 8px; color: inherit; background: #fbfaff; font: inherit; resize: vertical; }
+
+.az-atlas { margin-top: 16px; display: grid; gap: 8px; max-width: 560px; }
+.az-atlas label { font-size: .9rem; font-weight: 700; }
+.az-atlas select { width: 100%; min-height: 44px; padding-inline: 8px; border: 1px solid #bfb8de; border-radius: 8px; background: white; color: inherit; font: inherit; }
+.az-atlas input { width: 100%; min-height: 32px; accent-color: var(--accent); }
+.az-atlas svg { display: block; width: 100%; height: auto; border-radius: 8px; background: #f7f6fc; }
+.az-atlas svg text { fill: #514d69; font: 11px system-ui, sans-serif; }
+.atlas-grid { stroke: #dedbec; }
+.atlas-axis { stroke: #77708d; stroke-width: 1.5; }
+.atlas-curve { fill: none; stroke: #493aba; stroke-width: 2; }
+.atlas-point { fill: #493aba; stroke: #493aba; stroke-width: 1.5; }
+.atlas-open { fill: white; }
+.atlas-level { stroke: #a85510; stroke-width: 2; stroke-dasharray: 5 4; }
+.az-atlas summary { color: var(--accent); cursor: pointer; font-weight: 700; }
+.az-atlas-properties p, .az-atlas-count { font-size: .9rem; }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "50600251319381a14070d589aced1f1320a7dda2",
+  "baseSha": "46f757d28ee4ad10c76badf73c86749ae631e7bd",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "70fb2c9c037e7585701e573dbe91b24869887665320ec30dd76b569467c5c312",
-      "afterSha256": "5ac94e8e45dad92c1bea85495a762ce8872a7e68a9bf8a7e593262861eb39452",
+      "beforeSha256": "188c7d628e4a0de3f9f59ac4525cb7785c56432a0e1ef01aaf7bf34c1d552600",
+      "afterSha256": "4c6ca0b43b9ade0538c840c657066e9297b3cba2c937a6ba77ad2d95e74e488a",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "41b68ef8c5b03b484e82fe391bdc368dfb694cb6410571e1a222b955815fd8d3",
-      "afterSha256": "3837ad11e1c3ff52792d7681f006d8d43ab69653a36e13db7e4e3e4049e35b8a",
+      "beforeSha256": "9c53a01901a28b5fdce699436b614b9daed71f8d73799e4a4a43b8f609e24d92",
+      "afterSha256": "bc22d0a7a2d033ce68ad0b912815f27c03937c71d0e6318dbc715f44099819b7",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "3d676bcfb507ea563899065abbc2af4fb80801e24d64981892856dfa03e6c853",
-      "afterSha256": "f2ef3521cdfe7e5ae028e8532ba071cd96411164ce696afbc661800fb0fe67c6",
+      "beforeSha256": "a8c0407c81b8138805acfeee2a0b45e652eafb0c392194d27917c27a1449fd47",
+      "afterSha256": "e58040d661651e70092549e2700745c868ff73f1b5733fa4022d04a1d1a0ff67",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -4963,6 +4963,17 @@
         "geometry-pogorelov/atlas/pogorelov-base-8-59.html",
         "geometry-pogorelov/atlas/pogorelov-base-8-60.html",
         "geometry-pogorelov/atlas/pogorelov-base-8-61.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "50600251319381a14070d589aced1f1320a7dda2",
+      "sourceBaseSha": "46f757d28ee4ad10c76badf73c86749ae631e7bd",
+      "task": "docs/tasks/PROFILE_COORDINATES_FUNCTIONS_PARAMETERS_20261113.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
