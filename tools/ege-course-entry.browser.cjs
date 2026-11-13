@@ -137,11 +137,15 @@ async function checkProfileClock(page, width) {
   assert.equal(await snapshot(), frame);
  };
  await page.waitForFunction(() => performance.getEntriesByType('resource').some(resource => resource.name.endsWith('/clockwork-gnomes.webp')));
+ // Verify the browser has applied the preference before checking the animation.
+ // Reading the media query also gives Chromium a rendering opportunity after focus scrolls.
  await page.emulateMedia({reducedMotion:'reduce'});
+ await page.waitForFunction(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
  await play.waitFor();
  assert.equal(await alphabetLinks.first().locator('.profile-clock-alphabet-wheel').evaluate(wheel => getComputedStyle(wheel).animationPlayState), 'paused');
  await freezes();
  await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.waitForFunction(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
  await pause.waitFor();
  await stage.scrollIntoViewIfNeeded();
  await changes(await snapshot());
