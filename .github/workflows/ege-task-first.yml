@@ -1,17 +1,31 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml']
+    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml', 'tools/ege-baza-skill-map*', 'trainers/ege-baza/**']
+  push:
+    branches: [main]
+    paths: ['ege-baza/skill-map*', 'ege-baza/star-sky*', 'ege-baza/ocean-expedition*', 'ege-baza/percent/style.css', 'ege-baza/index.html', 'ege-baza/app.js', 'ege-baza/path/index.html', 'ege-baza/path/task-first.js', 'tools/ege-baza-skill-map*', '.github/workflows/ege-task-first.yml']
 permissions:
   contents: read
 jobs:
   task-first:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           persist-credentials: false
+          fetch-depth: 0
+      - name: Record reviewed candidate and whitespace gate
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --check "$PR_BASE" "$PR_HEAD"
+          printf 'BASE=%s\nHEAD=%s\n' "$PR_BASE" "$PR_HEAD"
+          git show -s --format='MERGE=%H%nTREE=%T%nPARENTS=%P' HEAD
+          git diff "$PR_BASE" "$PR_HEAD" | git patch-id --stable
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
@@ -56,6 +70,12 @@ jobs:
         run: node tools/ege-course-entry.browser.cjs
       - name: Profile skill maps and base ocean expedition
         run: node tools/ege-skill-map-ocean.browser.cjs
+      - name: Basic EGE skill routes, assistance and animation lifecycle
+        run: node --test tools/ege-baza-skill-map.test.cjs
+      - name: Basic EGE stars and skill maps in a real browser
+        env:
+          EGE_SKILL_MAP_SHOTS: artifacts/base-skill-map
+        run: node tools/ege-baza-skill-map.browser.cjs
       - name: Keep actual browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -64,3 +84,28 @@ jobs:
           path: artifacts/
           retention-days: 7
           if-no-files-found: warn
+
+  skill-map-production:
+    name: Basic EGE published stars and skill maps
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Verify deployed resources and public learning journeys
+        run: node tools/ege-baza-skill-map.production.cjs
+      - name: Keep public release evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ege-skill-map-production-${{ github.run_id }}
+          path: artifacts/skill-release/
+          retention-days: 14
+          if-no-files-found: error

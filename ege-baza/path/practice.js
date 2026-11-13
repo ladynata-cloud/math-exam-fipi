@@ -127,12 +127,129 @@ add('ring-meeting',20,'Движение по кольцу: встреча и о�
  return make(`Два бегуна одновременно стартуют из одной точки круговой дорожки длиной ${L} м ${same?'в одном направлении':'в противоположных направлениях'}. Их скорости ${fast} и ${slow} м/с. Через сколько секунд они впервые снова встретятся?`,time,steps([same?'Скорость, с которой первый обгоняет второго, м/с?':'Скорость сближения, м/с?',relative,same?'Вычти меньшую скорость из большей.':'Сложи скорости: бегуны движутся навстречу.'],['Относительный путь до первой новой встречи, м?',L,'В момент старта встреча уже была. Следующая наступит, когда относительный путь составит полный круг.'],['Время до первой новой встречи, с?',time,'Длину круга делим на относительную скорость.']),'ring-meeting',{L,fast,slow,same},{model:{kind:'ring-motion',L,fast,slow,same}});
 });
 
+function reasoningChoice(question, answer, explanation, labels, feedback) {
+  return {
+    q: question, a: answer, why: explanation, feedback,
+    choices: labels.map((label, index) => ({ value: String(index + 1), label }))
+  };
+}
+
+add('mushroom-count', 21, 'Грибы — что значит «среди любых»', 'Ищи самую большую группу, которую можно собрать без одного из видов. Два таких ограничения вместе с общим количеством определяют ответ.', 'logic', 21, seed => {
+  const variant = seed % 240;
+  const maxSaffron = 9 + Math.floor(variant / 2) % 12;
+  const maxMilk = 24 + Math.floor(variant / 24);
+  const anyWithSaffron = maxMilk + 1;
+  const anyWithMilk = maxSaffron + 1;
+  const total = maxMilk + maxSaffron;
+  const askSaffron = variant % 2 === 0;
+  const target = askSaffron ? 'рыжиков' : 'груздей';
+  const answer = askSaffron ? maxSaffron : maxMilk;
+  const group = count => count % 10 === 1 && count % 100 !== 11 ? 'гриба' : 'грибов';
+  const saffronClue = `Среди любых ${anyWithSaffron} ${group(anyWithSaffron)} найдётся хотя бы один рыжик.`;
+  const milkClue = `Среди любых ${anyWithMilk} ${group(anyWithMilk)} найдётся хотя бы один груздь.`;
+  const condition = askSaffron ? `${saffronClue} ${milkClue}` : `${milkClue} ${saffronClue}`;
+  return make(`В корзине только рыжики и грузди. Всего грибов — ${total}. ${condition} Сколько в корзине ${target}?`, answer, [
+    reasoningChoice('Из каких грибов могла бы состоять группа без единого рыжика?', 2,
+      'В корзине всего два вида. Если рыжиков в группе нет, остаются грузди.',
+      ['Только из рыжиков', 'Только из груздей', 'Из рыжиков и груздей'],
+      { 1: 'Перечитай «без единого рыжика». Какой вид остаётся?', 3: 'В такой группе рыжиков быть не может.' }),
+    { q: 'Какое наибольшее число груздей допускает условие про рыжик?', a: maxMilk,
+      why: `Если груздей ${anyWithSaffron}, из них можно набрать группу без рыжика. Поэтому груздей не больше ${anyWithSaffron} − 1.`,
+      feedback: { [anyWithSaffron]: 'Столько груздей уже хватило бы на группу без рыжика. Уменьши границу на один.', [maxSaffron]: 'Группу без рыжика составляют грузди. Используй число из условия про рыжик.' } },
+    { q: 'Какое наибольшее число рыжиков допускает условие про груздь?', a: maxSaffron,
+      why: `Если рыжиков ${anyWithMilk}, из них можно набрать группу без груздя. Поэтому рыжиков не больше ${anyWithMilk} − 1.`,
+      feedback: { [anyWithMilk]: 'Столько рыжиков уже хватило бы на группу без груздя. Уменьши границу на один.', [maxMilk]: 'Группу без груздя составляют рыжики. Используй число из условия про груздь.' } },
+    reasoningChoice('Сложи найденные верхние границы и сравни с общим числом грибов. Какой вывод получается?', 1,
+      `${maxMilk} + ${maxSaffron} = ${total}. Если грибов одного вида меньше своей границы, грибов другого вида пришлось бы взять больше его границы.`,
+      ['Оба количества равны своим верхним границам', 'Одно из количеств может быть меньше своей границы'],
+      { 2: 'Проверь, можно ли при этом набрать все грибы и не превысить вторую границу.' }),
+    ...steps([`Сколько в корзине ${target}?`, answer, `Проверка. Груздей ${maxMilk}. Их не хватит, чтобы собрать группу нужного размера без рыжика. Так же проверяем рыжики. Их ${maxSaffron}, а для группы без груздя нужно ${anyWithMilk}.`])
+  ], 'mushroom-count', { total, anyWithSaffron, anyWithMilk, askSaffron }, {
+    feedback: {
+      [askSaffron ? maxMilk : maxSaffron]: `Это число грибов другого вида. Проверь, из каких грибов состоит группа без ${askSaffron ? 'груздя' : 'рыжика'}.`,
+      [answer + 1]: 'Проверь границу. При таком количестве можно собрать запрещённую группу из грибов одного вида.',
+      [total]: `Это общее число грибов. В вопросе нужны только ${askSaffron ? 'рыжики' : 'грузди'}.`
+    }
+  });
+});
+catalog.at(-1).trainingOnly = true;
+
+add('vase-order', 21, 'Вазы — порядок и общая часть', 'Сначала сравни сумму двух групп с общим количеством роз. Если сумма больше, найди вазу, розы из которой вошли в обе группы.', 'logic', 21, seed => {
+  const variant = seed % 240;
+  const outerLeft = 14 + variant % 8;
+  const center = 3 + Math.floor(variant / 8) % 6;
+  const outerRight = 23 + Math.floor(variant / 48);
+  const left = outerLeft + center;
+  const right = center + outerRight;
+  const total = outerLeft + center + outerRight;
+  const colors = [
+    { name: 'Белая', of: 'белой' },
+    { name: 'Жёлтая', of: 'жёлтой' },
+    { name: 'Синяя', of: 'синей' }
+  ];
+  const [rightOf, middle, leftOf] = rotate(colors, Math.floor(variant / 8));
+  const correctLabel = `${rightOf.name} → ${middle.name} → ${leftOf.name}`;
+  const orders = rotate([
+    `${rightOf.name} → ${leftOf.name} → ${middle.name}`,
+    correctLabel,
+    `${middle.name} → ${rightOf.name} → ${leftOf.name}`
+  ], variant);
+  const correctOrder = orders.indexOf(correctLabel) + 1;
+  const wrongOrders = Object.fromEntries(orders.flatMap((order, index) => index + 1 === correctOrder ? [] : [[index + 1,
+    'В этом порядке группы роз не пересекаются. Тогда сумма двух групп была бы равна общему числу роз.']]));
+  return make(`В ряд поставили белую, жёлтую и синюю вазы. В каждой есть розы. Число роз слева от ${leftOf.of} вазы — ${left}, справа от ${rightOf.of} — ${right}. Всего роз — ${total}. Сколько роз в ${middle.of} вазе?`, center, [
+    reasoningChoice(`Где не может стоять ${leftOf.name.toLowerCase()} ваза, если слева от неё есть розы?`, 1,
+      `Слева от первой вазы ничего нет. Так же рассуждаем о ${rightOf.of} вазе. Она не может стоять последней, ведь справа от неё есть розы.`,
+      ['Первой слева', 'Посередине', 'Последней справа'],
+      { 2: 'Если ваза в середине, слева есть одна ваза.', 3: 'Если ваза последняя, слева есть две вазы.' }),
+    ...steps(['Какова сумма количества роз в двух группах из условия?', left + right,
+      `Сложи ${left} и ${right}. Получится больше ${total}, поэтому какие-то розы посчитаны в обеих группах.`]),
+    reasoningChoice('В каком из оставшихся порядков одна ваза входит в обе группы?', correctOrder,
+      `Общая ваза стоит одновременно справа от ${rightOf.of} и слева от ${leftOf.of}. Между ними остаётся ${middle.name.toLowerCase()} ваза.`,
+      orders, wrongOrders),
+    ...steps(
+      ['Сколько роз посчитали дважды, когда сложили числа из двух групп?', center,
+        `Лишний подсчёт равен (${left} + ${right}) − ${total}. Это розы в общей вазе.`],
+      [`Сколько роз в ${rightOf.of} вазе?`, outerLeft,
+        `Вычти розы из средней вазы из ${left}. В другой крайней вазе ${right} − ${center} = ${outerRight} роз. Для проверки сложи ${outerLeft} + ${center} = ${left} и ${center} + ${outerRight} = ${right}. Всего роз — ${total}.`]
+    )
+  ], 'vase-order', { left, right, total, leftOf: leftOf.of, rightOf: rightOf.of }, {
+    feedback: {
+      [outerLeft]: `Это число роз в ${rightOf.of} вазе. Найди, сколько роз посчитали дважды.`,
+      [outerRight]: `Это число роз в ${leftOf.of} вазе. Найди, сколько роз посчитали дважды.`,
+      [left + right]: 'При сложении этих двух групп часть роз посчитана дважды. Сравни результат с общим количеством.',
+      [Math.abs(left - right)]: 'Разность двух групп сравнивает крайние вазы. Для средней вазы посмотри, на сколько сумма групп больше общего числа роз.'
+    }
+  });
+});
+catalog.at(-1).trainingOnly = true;
+
 D.meta.push(...catalog);
 D.F=F;
 D.task=function(id,seed=1){if(!factories[id])return oldTask(id,seed);let t=factories[id](Math.abs(Math.trunc(seed)));Object.assign(t,{id,seed,pos:catalog.find(m=>m.id===id).pos,strict:true});for(const step of t.steps)step.strict=true;
  if(t.answerKind==='solutions'){const last=t.steps[t.steps.length-1];last.answerKind='solutions';last.solutions=t.solutions;}
  return t;};
 D.correct=function(t,value){let s=String(value??'').trim();if(t.answerKind==='solutions')return /^\d+$/.test(s)&&t.solutions.includes(s);if(t.answerKind==='match')return /^\d{4}$/.test(s)&&s===String(t.a??t.answer);if(t.answerKind==='multi')return /^\d+$/.test(s)&&new Set(s).size===s.length&&[...s].sort().join('')===[...String(t.a??t.answer)].sort().join('');if(typeof t.a==='string'){let x=D.parse(value),a=D.parse(t.a);return x!==null&&a!==null&&Math.abs(x-a)<1e-8*Math.max(1,Math.abs(a));}if(t.strict){const x=D.parse(value),a=t.a??t.answer;return x!==null&&Number.isFinite(a)&&Math.abs(x-a)<1e-8;}return oldCorrect(t,value);};
-D.practice={catalog,factories,fraction,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
+const task21PracticeIds = catalog.filter(item => item.pos === 21 && item.trainingOnly).map(item => item.id);
+// The prior version validates every lesson ID. Keep the new practice rows in
+// the same save, outside its lesson list, so rollback can read the old work.
+function expandTask21Progress(value) {
+  const extension = value?.task21Practice;
+  if (!extension || typeof extension !== 'object' || Array.isArray(extension) ||
+      !value.lessons || typeof value.lessons !== 'object' || Array.isArray(value.lessons)) return value;
+  const entries = task21PracticeIds.filter(id => Object.hasOwn(extension, id)).map(id => [id, extension[id]]);
+  return entries.length ? {...value, lessons: {...Object.fromEntries(entries), ...value.lessons}} : value;
+}
+function packTask21Progress(value) {
+  const ids = task21PracticeIds.filter(id => Object.hasOwn(value.lessons, id));
+  if (!ids.length) return value;
+  const lessons = {...value.lessons}, task21Practice = {...value.task21Practice};
+  for (const id of ids) {
+    task21Practice[id] = lessons[id];
+    delete lessons[id];
+  }
+  return {...value, lessons, task21Practice};
+}
+D.practice={catalog,factories,fraction,expandTask21Progress,packTask21Progress,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
 if(typeof module!=='undefined')module.exports=D;
 })(typeof window==='undefined'?globalThis:window);
