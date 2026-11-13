@@ -13,7 +13,7 @@
   const href = (page, id) => '#' + page + (id ? '/' + id : '');
   const courseLink = (page, id, label, style = '') =>
     `<a class="${style}" href="${href(page, id)}" data-course-nav>${label}</a>`;
-  const title = 'Азбука математических методов: оценка плюс пример';
+  const title = 'Оценка плюс пример';
   let view = S.route(location.hash);
   let generation = 0;
   let records = {};

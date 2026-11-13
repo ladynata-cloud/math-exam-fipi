@@ -1068,7 +1068,7 @@
     {
       "trainerId": "ege-methods",
       "file": "trainers/ege-methods.html",
-      "title": "Азбука математических методов: оценка плюс пример",
+      "title": "Оценка плюс пример",
       "group": "ЕГЭ база",
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,

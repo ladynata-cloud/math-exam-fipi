@@ -137,7 +137,7 @@ async function accept(page, value) {
     await vectorPage.getByRole('link', { name: /^2\. Векторы с нуля/ }).click();
     const vectorEntry = vectorPage.locator('[data-vector-basics-entry]');
     await vectorEntry.waitFor();
-    assert.equal(await vectorEntry.getByRole('link', { name: 'Начать азбуку' }).count(), 1);
+    assert.equal(await vectorEntry.getByRole('link', { name: 'Начать с основ' }).count(), 1);
     for (const lesson of vectorStarters) {
       for (const [index, task] of lesson.tasks.slice(0, 3).entries()) {
         await vectorEntry.waitFor();
@@ -176,7 +176,7 @@ async function accept(page, value) {
         assert.equal((await record(vectorPage, lesson.id)).guided.length, index + 1);
         assert.equal((await record(vectorPage, lesson.id)).independent.length, 0);
         const continueLink = vectorPage.locator('[data-vector-continue]');
-        assert.equal(await continueLink.innerText(), lesson === vectorStarters.at(-1) && index === 2 ? 'К задачам ЕГЭ →' : 'Продолжить азбуку →');
+        assert.equal(await continueLink.innerText(), lesson === vectorStarters.at(-1) && index === 2 ? 'К задачам ЕГЭ →' : 'К основам векторов →');
         await continueLink.click();
       }
     }

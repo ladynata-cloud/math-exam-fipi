@@ -13,6 +13,8 @@ on:
       - 'ege-baza/algebra/math.js'
       - 'ege-baza/app.js'
       - 'ege-baza/path/practice.js'
+      - 'ege-profil/index.html'
+      - 'ege-profil/azbuka-metodov/**'
       - 'ege-profil/part-two/**'
       - 'tools/ege-methods.*'
       - '.github/workflows/ege-methods.yml'

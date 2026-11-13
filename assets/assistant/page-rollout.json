@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7c86e7ff93393f3400217951e6a94d9325514506",
+  "baseSha": "fe3762b0a8df64411ef63a1221eebb3f130bece2",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
-      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
+      "beforeSha256": "f62d0dd24b2c324fb2309209d064ec14a21ff498c48e9a77b89d74553ec85731",
+      "afterSha256": "5f491ded006347be9b84e85782a573508d7d25b38bd70a455c4c8ec41fc6000c",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "55ffb0f7c91ae1366023d9c5aba7d0f1436ece1f832cc34fb179178bbbf9a324",
-      "afterSha256": "b46ac277744d57e81ad640d8c14bff78b2810fb147338e78b8ceb9fe7d1c0153",
+      "beforeSha256": "a872a58d6e2fd448f111101b97457594485167f1c4647ac16697469f73fee3a5",
+      "afterSha256": "f0c12baa75bf54793036e788191a8a4a0cceec4a2f13845c10541b34d45e8401",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "94791eb1f42cb271da4f739accf6d30b31292ee635703b09bc65084bd19a50c0",
-      "afterSha256": "7a52a8d532bbe2ee93c73e411a1bc7ac57c6afe58d60d2e51512728a76b7a9bb",
+      "beforeSha256": "a6b1ee5f8f344b1a42c9d8ec71418cf3666410aa1400a630eaeb34b5c9dc3669",
+      "afterSha256": "cce7b2c1810c4391c7c5b301fd5f9000ddbc92b4e360bd21ba16f715c5ab93e3",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "a93d3eeb5cdf90b0bb19d3a26c47d0dc6a88bb8e818cb93a632277a18943b97c",
-      "afterSha256": "987ce5124d36042cbc4f774c7dc38fdd3b086956fc722543e56b2f50063bd562",
+      "beforeSha256": "3d676bcfb507ea563899065abbc2af4fb80801e24d64981892856dfa03e6c853",
+      "afterSha256": "f2ef3521cdfe7e5ae028e8532ba071cd96411164ce696afbc661800fb0fe67c6",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -428,8 +428,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html": {
-      "beforeSha256": "a80ff723142162a28b02d8a2e3857ede6c1cd27e1bdf1bf6b0a74a302fb4ad0d",
-      "afterSha256": "80a31d3a8d1cd9147cb7e0e31737fa4c5053036fdbe2978dace03e52ccee78ba",
+      "beforeSha256": "4209c3070572d66c79889abcbf38a5fc7f447b2a96ac7059c170973ddafa8f70",
+      "afterSha256": "9662edd1321c26d25b3e868e61d53f2197d2fb2a7f46dfecae7315f1fbe8b9a5",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo-t14.html": {
@@ -458,13 +458,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "ff09dcd4264d177e140d8dcaf002659860472534679d26894db715f549ac845f",
-      "afterSha256": "a15be0b8d2e643b9f1afba58f6d506d2aec57717351bf02cc9fb44ca933937e5",
+      "beforeSha256": "71f43dd86b8de63318e88b03c9ce379887e62894a3ba39471ba06f1d0bc77411",
+      "afterSha256": "cfb9ea59a742782708a6539949bcb1c35dd0dc970e126ce15c5a7b897cba41e7",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "a2fe1de390d3d281cf32f54631f90f5a07a36e6fcfa8f71a4bc81de3a975971a",
-      "afterSha256": "4b11dd731c1e5ca088686cd80289b51c3d19e59994d5233f6e656f973b9f185a",
+      "beforeSha256": "04502a2a84d37f1f8a1fe7aa3fd09bada51af3017f858e5e148ae0a848dcf96f",
+      "afterSha256": "1843d78a41342116f3024254ccbdf7769e4ed9a3ad08b7e1be7b9f7ae3810338",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -4914,11 +4914,26 @@
     },
     {
       "previousBaseSha": "2c061cd0ba9249adafd1a1547c2e6d31d5233fe8",
-      "sourceBaseSha": "7c86e7ff93393f3400217951e6a94d9325514506",
-      "task": "docs/tasks/EGE_ESTIMATE_AND_EXAMPLE_20261113.md",
+      "sourceBaseSha": "aef959aa692a92f6a5b68213f91e65fb48d99129",
+      "task": "docs/tasks/PROFILE_ALPHABETS_CLOCKWORK_20261113.md",
       "changedPaths": [
-        "ege-baza/index.html",
-        "ege-profil/part-two/index.html"
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "aef959aa692a92f6a5b68213f91e65fb48d99129",
+      "sourceBaseSha": "fe3762b0a8df64411ef63a1221eebb3f130bece2",
+      "task": "docs/tasks/PROFILE_FOUNDATIONS_LABELS_20261113.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

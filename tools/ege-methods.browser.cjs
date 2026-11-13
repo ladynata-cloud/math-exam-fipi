@@ -184,14 +184,56 @@ async function standalone(browser, origin) {
   await page.getByRole('link', { name: 'Все уроки', exact: true }).click();
   await screenshot(page, '1280-map');
 
+  for (const width of [320, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(origin + '/ege-profil/#profile-clock');
+    const clock = page.locator('#profile-clock');
+    const shortcut = clock.getByRole('link', { name: 'Оценка плюс пример · №20', exact: true });
+    await shortcut.waitFor();
+    const area = await shortcut.boundingBox();
+    assert(area && area.x >= 0 && area.x + area.width <= width && area.height >= 44,
+      'Clock shortcut fits at ' + width + ' px');
+    await shortcut.click();
+    await page.getByRole('heading', { level: 1, name: 'Оценка плюс пример', exact: true }).waitFor();
+    assert.equal(await page.locator('#guided-progress').getAttribute('value'), '8');
+  }
+
+  await page.goto(origin + '/ege-profil/#profile-clock');
+  await page.getByRole('navigation', { name: 'Основы и методы в часовом механизме' })
+    .getByRole('link', { name: 'Запись развёрнутого решения', exact: true }).click();
+  await page.getByRole('link', { name: 'Оценка плюс пример · 8 уроков', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'Оценка плюс пример', exact: true }).waitFor();
+
+  await page.goto(origin + '/ege-profil/part-two/index.html#lesson/numbers-extremum');
+  await page.getByRole('link', { name: 'Первое условие по шагам' }).click();
+  const taskUrl = page.url();
+  const stepAnswer = page.locator('#step-answer');
+  await stepAnswer.fill('1');
+  await page.getByRole('button', { name: 'Карта навыков', exact: true }).click();
+  await page.getByRole('link', { name: 'Доказываю границу и даю пример', exact: true }).click();
+  assert.equal(new URL(page.url()).hash, '#/written-solution/bound-and-example');
+  await page.locator('#az-answer').fill('10');
+  await page.getByRole('button', { name: 'Проверить', exact: true }).click();
+  await page.getByRole('button', { name: 'Проверить себя на новом условии' }).waitFor();
+  assert.match(await page.locator('#az-feedback').textContent(), /^Верно\./);
+  await page.getByRole('link', { name: 'Оценка плюс пример · 8 уроков', exact: true }).click();
+  await page.getByRole('heading', { level: 1, name: 'Оценка плюс пример', exact: true }).waitFor();
+  await page.goBack();
+  await page.getByRole('button', { name: 'Проверить себя на новом условии' }).waitFor();
+  assert.equal(await page.locator('#az-answer').inputValue(), '10');
+  await page.getByRole('link', { name: 'Вернуться к исходному заданию' }).click();
+  await page.waitForURL(taskUrl);
+  await stepAnswer.waitFor();
+  assert.equal(await stepAnswer.inputValue(), '1');
+
   for (const [url, heading, linkText] of [
     ['/ege-profil/part-two/#exam/20', 'Числа и их свойства', /Профиль №20 · Оценка/],
     ['/ege-baza/#task?pos=21', 'Задачи на рассуждение', /База №21 · Оценка/]
   ]) {
     await page.goto(origin + url);
     await page.getByRole('heading', { level: 1, name: heading }).waitFor();
-    await page.getByRole('link', { name: 'Азбука: оценка плюс пример' }).click();
-    await page.getByRole('heading', { level: 1, name: /Азбука математических методов/ }).waitFor();
+    await page.getByRole('link', { name: 'Оценка плюс пример', exact: true }).click();
+    await page.getByRole('heading', { level: 1, name: 'Оценка плюс пример', exact: true }).waitFor();
     await page.getByRole('link', { name: linkText }).click();
     if (url.includes('ege-profil')) await page.getByRole('heading', { level: 1, name: 'Оценка и достигающий её пример' }).waitFor();
     else {
@@ -311,7 +353,7 @@ async function sharedBoard(browser, origin, serverOrigin) {
     await standalone(browser, origin);
     await sharedBoard(browser, origin, serverOrigin);
     assert.deepEqual(errors, [], 'no browser errors or missing local assets');
-    console.log('EGE_METHODS_BROWSER_OK: all 8 guided lessons and 8 independent tasks; 320 and 1280 px; both exam routes; saved answers; two-participant board with control transfer, reload and late join');
+    console.log('EGE_METHODS_BROWSER_OK: 8 guided lessons and 8 self-checks; 320 and 1280 px; clock, skill map and both exam routes; saved answers; two-participant board with control transfer, reload and late join');
   } finally {
     await browser?.close();
     if (child && child.exitCode === null) child.kill('SIGTERM');

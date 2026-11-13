@@ -117,6 +117,11 @@ async function checkProfileClock(page, width) {
  await links.last().focus();
  await page.keyboard.press('Tab');
  assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), clockCourses[0], 'extra courses follow exam tasks by keyboard');
+ const alphabetLinks = workshop.getByRole('navigation', {name:'Основы и методы в часовом механизме'}).getByRole('link');
+ assert.equal(await alphabetLinks.count(), 8);
+ assert(await alphabetLinks.evaluateAll(links => links.every(link => link.getBoundingClientRect().height >= 44)));
+ await workshop.getByRole('link', {name:/^№16 ·/}).focus();
+ assert.equal(await workshop.getByRole('link', {name:'Основы для №16'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?exam=16');
 
  const pause = workshop.getByRole('button', {name:'Пауза анимации'});
  const play = workshop.getByRole('button', {name:'Запустить анимацию'});
@@ -130,6 +135,7 @@ async function checkProfileClock(page, width) {
  await page.waitForFunction(() => performance.getEntriesByType('resource').some(resource => resource.name.endsWith('/clockwork-gnomes.webp')));
  await page.emulateMedia({reducedMotion:'reduce'});
  await play.waitFor();
+ assert.equal(await alphabetLinks.first().locator('.profile-clock-alphabet-wheel').evaluate(wheel => getComputedStyle(wheel).animationPlayState), 'paused');
  await freezes();
  await page.emulateMedia({reducedMotion:'no-preference'});
  await pause.waitFor();
@@ -142,6 +148,35 @@ async function checkProfileClock(page, width) {
  await stage.scrollIntoViewIfNeeded();
  await changes(await snapshot());
  await checkClockMechanism(stage);
+}
+
+async function checkAlphabetReturn(page, origin) {
+ await page.evaluate(() => localStorage.removeItem('mathexam.profile-alphabets.v1.domain/denominator'));
+ await page.goto(origin + '/ege-profil/part-two/index.html#lesson/p16-cancelled-hole');
+ await page.getByRole('link', {name:'Первое условие по шагам'}).click();
+ await page.locator('#step-answer').fill('999');
+ await page.getByRole('button', {name:'Проверить шаг'}).click();
+ const source = new URL(page.url()).hash;
+ await page.getByRole('link', {name:'Как исключить нули знаменателя'}).click();
+ await page.getByRole('heading', {name:'Исключаю нули знаменателя',exact:true}).waitFor();
+ assert.equal(new URL(page.url()).hash, '#/domain/denominator');
+ await page.locator('#az-answer').fill('3');
+ await page.getByRole('button', {name:'Проверить',exact:true}).click();
+ await page.getByRole('button', {name:'Проверить себя на новом условии'}).click();
+ await page.locator('#az-answer').fill('x ≠ −5');
+ await page.getByRole('button', {name:'Проверить',exact:true}).click();
+ await page.getByRole('button', {name:'Завершить',exact:true}).click();
+ await page.getByRole('heading', {name:'Самостоятельная проверка пройдена'}).waitFor();
+ assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+ await page.getByRole('link', {name:'Вернуться к исходному заданию'}).click();
+ assert.equal(new URL(page.url()).hash, source);
+ assert.equal(await page.locator('#step-answer').inputValue(), '999');
+ await page.getByRole('button', {name:'Карта навыков'}).click();
+ const linkedSkill = page.getByRole('link', {name:'Исключаю нули знаменателя'});
+ await linkedSkill.waitFor();
+ assert.match(await linkedSkill.getAttribute('href'), /#\/domain\/denominator$/);
+ await linkedSkill.click();
+ await page.getByRole('heading', {name:'Самостоятельная проверка пройдена'}).waitFor();
 }
 
 (async()=>{let browser;try{
@@ -157,6 +192,8 @@ async function checkProfileClock(page, width) {
    assert(await page.locator(start).isVisible(),course+' direct task route');
    if(course==='ege-profil'){
     await checkProfileClock(page, width);
+    await checkAlphabetReturn(page, origin);
+    await page.goto(origin+'/ege-profil/');
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.
     for(let number=1;number<=20;number++){

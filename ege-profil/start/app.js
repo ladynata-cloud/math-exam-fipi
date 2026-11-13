@@ -28,7 +28,7 @@ function board(hash,label='Открыть на доске'){if(boardSession||win
 function formatDisplay(container=main){globalThis.ProfileSolutions?.formatFractions(container);}
 function mountSkills(){
  if(boardSession||!globalThis.ProfileSkillMap)return;
- const [page,id]=location.hash.slice(1).split('/');
+ const [page,id,mode]=location.hash.slice(1).split('/');
  if(page==='exam'||page==='calm'){
   if(/^\d+$/.test(id||''))ProfileSkillMap.mount(main.querySelector('.lesson-head,.exam-head,.inequalities-entry'),[id]);
   return;
@@ -39,7 +39,13 @@ function mountSkills(){
  const relevant=globalThis.ProfileCalmData?.exams.filter(exam=>exam.lessonIds.includes(id)||exam.prerequisites.includes(id)).map(exam=>exam.number)||[];
  const keys=directlyMapped?[directlyMapped]:relevant;
  const target=main.querySelector('.focused-practice .task-panel,.lesson-head,.repair-panel,.complete,.result-panel')||main;
- ProfileSkillMap.mount(target,keys,{lesson:{title:lesson.title,skill:lesson.summary}});
+ ProfileSkillMap.mount(target,keys,{
+  lesson:{title:lesson.title,skill:lesson.summary},
+  beforeLeave:page==='practice'?()=>{
+   const session=state.data.sessions[id+':'+mode];
+   if(session&&!session.done)markHelp(session,mode);
+  }:undefined
+ });
 }
 function shell(html){cleanup();cleanup=()=>{};boardViews=new Map();boardFeedback='none';boardHelp=null;boardRenderFeedback=()=>{};boardRenderHint=()=>{};boardRenderHelp=()=>{};if(returnToTask&&location.hash===returnToTask)setReturn(null);main.innerHTML=(returnToTask?'<p class="return-to-task"><a href="'+esc(returnToTask)+'">← Вернуться на сохранённый шаг исходной задачи</a></p>':'')+html;formatDisplay();boardSession?.scopeLinks(main);globalThis.ProfileRouteNav?.render();mountSkills();warn();const h=main.querySelector('h1');if(h){h.tabIndex=-1;h.focus({preventScroll:true});}window.scrollTo(0,0);}
 function status(l){const r=state.record(l.id);if(r.independent.length>=2)return 'Две новые задачи самостоятельно';if(state.canAdvance(l.id))return 'Закреплено на знакомых задачах';const repeat=state.data.sessions[l.id+':independent'];if(repeat?.done&&repeat.familiar&&!repeat.wrong&&!repeat.assisted)return 'Повтор решён без подсказок';return r.independent.length?'Одна новая задача самостоятельно':r.guided.length?'Есть пошаговая практика':'Можно начать по шагам';}
@@ -261,7 +267,7 @@ function result(l,mode,s,t){
  const idx=lessons.indexOf(l),next=byId.get(globalThis.ProfileReadiness?.next[l.id])||lessons.slice(idx+1).find(x=>x.group===l.group);
  const handoff=!boardSession?state.independentHandoff(l.id,s):null;
  const basicsDone=l.vectorBasics&&ProfileVectorBasics.every(topic=>ProfileJourney.starterProgress(topic,state)===3);
- const starterResult=l.vectorBasics?'<a class="button" data-vector-continue href="#calm/2">'+(basicsDone?'К задачам ЕГЭ':'Продолжить азбуку')+' →</a>':'';
+ const starterResult=l.vectorBasics?'<a class="button" data-vector-continue href="#calm/2">'+(basicsDone?'К задачам ЕГЭ':'К основам векторов')+' →</a>':'';
  const handoffLabel=handoff?.kind==='resume'?'Продолжить начатую задачу':handoff?.kind==='familiar'?'Повторить другое знакомое условие':'Проверить себя на другом условии';
  const handoffNote=handoff?.kind==='resume'?'Сначала продолжите уже начатую попытку: ответ и шаг сохранены.'+(handoff.assisted?' Она уже с помощью или после ошибки и останется тренировкой.':handoff.familiar?' Это повтор знакомого условия.':''):handoff?.kind==='familiar'?'Подходящие условия уже знакомы. Повтор поможет закрепить тему; он не увеличит число новых самостоятельных решений.':'Другое условие ещё не открывалось. Попробуйте решить его без подсказок.';
  const lead=success?'Новое условие, первая попытка, без подсказок.':mode!=='independent'?(boardSession?(mode==='plan'?'Решение с коротким планом завершено. Теперь попробуйте новое условие без помощи.':'Пошаговая практика завершена. Следующее новое условие поможет проверить понимание.'):(mode==='plan'?'Решение с коротким планом завершено.':'Пошаговая практика завершена.')):s.familiar?(!s.wrong&&!s.assisted?'Повтор решён без подсказок. Этот повтор знакомой задачи сохранён как закрепление; он не увеличивает число новых самостоятельных успехов.':'Это повтор знакомой задачи. Он сохранён как тренировка.'):'Решение с подсказкой или после ошибки сохранено как тренировка.';
