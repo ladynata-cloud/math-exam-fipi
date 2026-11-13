@@ -254,6 +254,121 @@ async function checkExamFoundations(page, origin) {
  assert.match(await link.getAttribute('href'),/#\/parameter-methods\/hole$/);
 }
 
+async function checkParameterGraphs(page, origin) {
+ const partTwo=origin+'/ege-profil/part-two/';
+ const prefix='mathExam.profile.partTwo.v1.';
+ const record=id=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),prefix+id);
+ await page.goto(partTwo+'#exam/19');
+ await page.evaluate(prefix=>{
+  for(const family of ['param-modules','param-hole'])for(const number of [4,5,6])localStorage.removeItem(prefix+family+'-'+number);
+ },prefix);
+ await page.reload();
+ const routes=page.getByRole('region',{name:'От графика к задаче №19'});
+ const plateau=routes.getByRole('article').filter({hasText:'Горизонтальный участок'});
+ const hole=routes.getByRole('article').filter({hasText:'Выколотая точка'});
+ const answerCount=page.locator('.az-atlas-count');
+ const level=page.getByRole('slider');
+ const atlas=page.getByRole('combobox',{name:'Функция'});
+ const fit=()=>page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1);
+ const proof=page.locator('#proof-draft');
+ const first=page.locator('#final-0'), second=page.locator('#final-1');
+ const check=page.getByRole('button',{name:'Проверить ответы'});
+ const help=page.getByRole('button',{name:'Посмотреть подсказку на графике'});
+ const checkCount=async expected=>{
+  assert.equal(await answerCount.isVisible(),false);
+  await page.getByText('Проверить число решений',{exact:true}).click();
+  assert.match(await answerCount.textContent(),expected);
+ };
+
+ assert.match(await plateau.getByRole('link',{name:'Решить новое условие'}).getAttribute('href'),/#task\/param-modules-4\/independent$/);
+ assert(await fit());
+ await plateau.getByRole('link',{name:'Исследовать график'}).click();
+ assert.equal(await atlas.inputValue(),'plateau');
+ await checkCount(/бесконечно/);
+ await level.press('ArrowLeft');
+ await checkCount(/равно 0\./);
+ await level.press('ArrowRight');
+ await level.press('ArrowRight');
+ await checkCount(/равно 2\./);
+ assert(await fit());
+ await page.getByRole('link',{name:'К самостоятельному условию'}).click();
+ assert.match(page.url(),/#task\/param-modules-4\/independent$/);
+ await first.fill('a>10');
+ await second.fill('∞');
+ await proof.fill('Сравниваю уровни ниже, на участке и выше.');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ assert.equal((await record('param-modules-4')).independent,true);
+ await page.getByRole('link',{name:'Все темы №19',exact:true}).click();
+ assert.match(await plateau.getByRole('link',{name:'Решить новое условие'}).getAttribute('href'),/#task\/param-modules-5\/independent$/);
+
+ await hole.getByRole('link',{name:'Исследовать график'}).click();
+ assert.equal(await atlas.inputValue(),'hole');
+ assert.equal(await page.locator('svg > :last-child.atlas-open').count(),1);
+ await checkCount(/равно 0\./);
+ await level.press('ArrowRight');
+ await checkCount(/равно 1\./);
+ await page.getByRole('link',{name:'К самостоятельному условию'}).click();
+ assert.match(page.url(),/#task\/param-hole-4\/independent$/);
+ await first.fill('4');
+ await second.fill('9');
+ const draft='Записываю ОДЗ до сокращения.';
+ await proof.fill(draft);
+ await check.click();
+ await page.locator('#feedback.error').waitFor();
+ assert.equal(await help.count(),0);
+ await page.getByRole('link',{name:'Вернуться к темам №19'}).click();
+ assert.match(await hole.getByRole('link',{name:'Продолжить условие'}).getAttribute('href'),/#task\/param-hole-4\/independent$/);
+ await hole.getByRole('link',{name:'Продолжить условие'}).click();
+ await page.getByText('№19 · условие 4 из 6',{exact:true}).waitFor();
+ const firstScreen=await page.locator('.condition').evaluate(condition=>{
+  const figure=condition.querySelector('svg').getBoundingClientRect();
+  return {top:condition.getBoundingClientRect().top,bottom:figure.bottom,viewport:innerHeight,scroll:scrollY};
+ });
+ assert.equal(firstScreen.scroll,0,'a hash link opens the beginning of the condition');
+ assert(firstScreen.top>=0&&firstScreen.bottom<=firstScreen.viewport,'condition and diagram fit the first screen '+JSON.stringify(firstScreen));
+ assert.equal(await proof.inputValue(),draft);
+ await first.fill('5');
+ await check.click();
+ await help.waitFor();
+ assert.equal((await record('param-hole-4')).helped,false);
+ await page.reload();
+ await help.click();
+ assert.equal(await atlas.inputValue(),'hole');
+ assert.match(await page.locator('#alphabet-main .az-hint').textContent(),/запрещённый x/);
+ assert.doesNotMatch(await page.locator('#alphabet-main .az-hint').textContent(),/кандидат равен нулю/);
+ assert(await fit());
+ await page.getByRole('link',{name:'Вернуться к своему условию'}).click();
+ assert.equal(await first.inputValue(),'5');
+ assert.equal(await second.inputValue(),'9');
+ assert.equal(await proof.inputValue(),draft);
+ assert.equal((await record('param-hole-4')).helped,true);
+ await second.fill('10');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ assert.equal((await record('param-hole-4')).independent,false);
+ await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
+ assert.match(page.url(),/#task\/param-hole-5\/independent$/);
+ await page.getByText('№19 · условие 5 из 6',{exact:true}).waitFor();
+ assert.equal(await proof.inputValue(),'');
+ await first.fill('6');
+ await second.fill('12');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ assert.equal((await record('param-hole-5')).independent,true);
+ await page.getByRole('link',{name:/Следующее условие/}).click();
+ await page.getByText('№19 · условие 6 из 6',{exact:true}).waitFor();
+ await first.fill('7');
+ await second.fill('14');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ await page.getByRole('link',{name:'Все темы №19',exact:true}).click();
+ assert.match(await hole.getByRole('link',{name:'Открыть условия для повторения'}).getAttribute('href'),/#lesson\/param-hole$/);
+ await hole.getByRole('link',{name:'Исследовать график'}).click();
+ await page.getByRole('link',{name:'К условиям темы'}).click();
+ assert.match(page.url(),/#lesson\/param-hole$/);
+}
+
 (async()=>{let browser;try{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});
@@ -269,6 +384,7 @@ async function checkExamFoundations(page, origin) {
     await checkProfileClock(page, width);
     await checkAlphabetReturn(page, origin);
     await checkExamFoundations(page, origin);
+    await checkParameterGraphs(page, origin);
     await page.goto(origin+'/ege-profil/');
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.

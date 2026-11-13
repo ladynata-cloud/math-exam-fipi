@@ -88,11 +88,10 @@
       path += (join ? 'L' : 'M') + xPixel(x).toFixed(2) + ' ' + yPixel(y).toFixed(2);
       previousX = x;
     }
-    return '<path class="atlas-curve" d="' + path + '"/>' + (type.ends ?? []).map(([x, y, open]) =>
-      '<circle class="atlas-point' + (open ? ' atlas-open' : '') + '" cx="' + xPixel(x) + '" cy="' + yPixel(y) + '" r="4"/>').join('');
+    return '<path class="atlas-curve" d="' + path + '"/>';
   }
 
-  function mount(container) {
+  function mount(container, initial = 'mod') {
     container.innerHTML = '<section class="az-panel az-atlas"><h2>Атлас функций</h2>' +
       '<label for="az-atlas-function">Функция</label><select id="az-atlas-function">' +
       entries.map(([id, title]) => '<option value="' + id + '">' + title + '</option>').join('') +
@@ -107,16 +106,18 @@
     const count = container.querySelector('.az-atlas-count');
     const properties = container.querySelector('.az-atlas-properties');
     const disclosure = container.querySelector('details');
-    select.value = 'mod';
-    let drawing;
+    select.value = Object.hasOwn(types, initial) ? initial : 'mod';
+    let drawing, markers;
 
     function refreshLevel() {
       const level = Number(input.value);
       const [, , formula] = entries[select.selectedIndex];
       output.value = format(level);
       svg.setAttribute('aria-label', formula + ' и горизонталь y = ' + format(level) + ' на отрезке от −5 до 5');
-      svg.innerHTML = grid + drawing + line(xPixel(-limit), yPixel(level), xPixel(limit), yPixel(level), 'atlas-level');
-      const solutions = types[select.value].count(level);
+      const type = types[select.value];
+      // Keep the marked exclusion legible when the horizontal line hits it.
+      svg.innerHTML = grid + drawing + line(xPixel(-limit), yPixel(level), xPixel(limit), yPixel(level), 'atlas-level') + markers;
+      const solutions = type.count(level);
       count.textContent = 'На всей области определения число решений ' +
         (solutions === Infinity ? 'бесконечно.' : 'равно ' + solutions + '.');
     }
@@ -125,7 +126,10 @@
       const [key, , formula, domain, range] = entries[select.selectedIndex];
       properties.innerHTML = '<p><strong>' + formula + '</strong></p><p>Допустимые x — ' + domain +
         '.</p><p>Значения y — ' + range + '.</p>';
-      drawing = curve(types[key]);
+      const type = types[key];
+      drawing = curve(type);
+      markers = (type.ends ?? []).map(([x, y, open]) => '<circle class="atlas-point' + (open ? ' atlas-open' : '') +
+        '" cx="' + xPixel(x) + '" cy="' + yPixel(y) + '" r="4"/>').join('');
       disclosure.open = false;
       refreshLevel();
     }
