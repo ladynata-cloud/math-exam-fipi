@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "2c061cd0ba9249adafd1a1547c2e6d31d5233fe8",
+  "baseSha": "7c86e7ff93393f3400217951e6a94d9325514506",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "f62d0dd24b2c324fb2309209d064ec14a21ff498c48e9a77b89d74553ec85731",
-      "afterSha256": "5f491ded006347be9b84e85782a573508d7d25b38bd70a455c4c8ec41fc6000c",
+      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
+      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "6a278d658cd97806ebc158c6277ecee7c60b36a909f2e99d2259388fe3139125",
-      "afterSha256": "51c2316f703813cb68a4c811b60c82c398405902746745f0b71db711c6e2f583",
+      "beforeSha256": "94791eb1f42cb271da4f739accf6d30b31292ee635703b09bc65084bd19a50c0",
+      "afterSha256": "7a52a8d532bbe2ee93c73e411a1bc7ac57c6afe58d60d2e51512728a76b7a9bb",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -4909,6 +4909,16 @@
         "trainers/ege-baza/course/index.html",
         "trainers/ege-baza/data-course/index.html",
         "trainers/ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2c061cd0ba9249adafd1a1547c2e6d31d5233fe8",
+      "sourceBaseSha": "7c86e7ff93393f3400217951e6a94d9325514506",
+      "task": "docs/tasks/EGE_ESTIMATE_AND_EXAMPLE_20261113.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
