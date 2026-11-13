@@ -101,7 +101,11 @@ function safeError(error) {
       const c = await context({viewport: {width, height: 900}}), page = await c.newPage();
       try {
         const plot = page.locator('.figure svg');
-        await ready(page, '?topic=n11');
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).click();
+        await page.locator('#mathexam-skill-lab .task').waitFor();
+        assert.equal(await page.locator('#skill-topic').inputValue(), 'n11');
+        assert.match(await page.locator('.stage-count').first().innerText(), /Задание 1 из 4/);
         assert.equal(await page.locator('.task-title').innerText(), 'Формула по графику');
         await checkScale(plot, [-6, 6, -4, 6]);
         const graph = await plot.evaluate(svg => {

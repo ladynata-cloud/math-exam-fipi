@@ -118,6 +118,8 @@
     .pill{ transition:background .15s ease, color .15s ease; }
   }
   .pill:hover{ background:var(--ink); color:#fff; }
+  .method-entry{ background:var(--ink); color:#fff; }
+  .method-entry:hover{ background:var(--ink-strong); }
   .ghostlink:hover{ color:var(--ink); border-bottom-color:var(--ink); }
   /* касание: пилюли маршрута и «вариант» — зона нажатия не ниже 44 px;
      мышью на десктопе вид прежний */
@@ -250,7 +252,13 @@
     <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
     <p class="lede">Открой задачу и попробуй решить. Если трудно — нажми «Хочешь подсказку?». Объяснение появится рядом, а твоя работа останется на месте.</p>
     <p class="facts">Все 20 заданий: первая часть №1–13, вторая часть №14–20. Нумерация по проекту ФИПИ 2027; в сборниках 2026 она отличается.</p>
-    <nav aria-label="Быстрые входы"><a class="pill" href="#profile-2027">Все 20 номеров</a> <a class="pill" href="#legacy-course">Прежний большой курс и тренажёры</a> <a class="pill" href="trigonometry/index.html">Курс тригонометрии</a> <a class="pill" href="atanasyan-10-11/index.html">Атанасян 10–11</a></nav>
+    <nav aria-label="Быстрые входы">
+      <a class="pill method-entry" href="/trainers/ege-methods.html">Оценка плюс пример · №20</a>
+      <a class="pill" href="#profile-2027">Все 20 номеров</a>
+      <a class="pill" href="#legacy-course">Курс и тренажёры 2026</a>
+      <a class="pill" href="trigonometry/index.html">Курс тригонометрии</a>
+      <a class="pill" href="atanasyan-10-11/index.html">Атанасян 10–11</a>
+    </nav>
   </header>
 
   <section class="profile-clock" id="profile-clock" aria-labelledby="profile-clock-title" hidden>
