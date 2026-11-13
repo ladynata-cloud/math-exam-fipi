@@ -93,7 +93,7 @@
     const alphabets = catalog?.forNumber(key);
     if (!alphabets?.length) return null;
     const block = element('section', 'profile-skill-alphabets');
-    block.append(element('h3', '', 'Азбуки к этому номеру'));
+    block.append(element('h3', '', 'Вспомнить основы'));
     const back = root.location.pathname + root.location.search + root.location.hash;
     for (const alphabet of alphabets) {
       const group = element('div', 'profile-skill-alphabet-group');

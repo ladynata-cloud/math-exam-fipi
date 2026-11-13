@@ -85,7 +85,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
     const link=document.createElement('a');
     link.className='button quiet';
     link.href=catalog.href('domain','denominator',16,root.location.pathname+root.location.search+root.location.hash);
-    link.textContent='Азбука: исключаю нули знаменателя';
+    link.textContent='Как исключить нули знаменателя';
     link.addEventListener('click',async e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();await store.flush();root.location.assign(link.href);});
     document.getElementById('feedback').append(document.createElement('br'),link);
    }

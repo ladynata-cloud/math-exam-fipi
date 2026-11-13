@@ -362,7 +362,7 @@
       } else if (number) {
         alphabetShortcut.hidden = false;
         alphabetShortcut.href = alphabets.href("", "", number);
-        alphabetShortcut.textContent = "Азбуки к №" + number;
+        alphabetShortcut.textContent = "Основы для №" + number;
       }
     }
     link.addEventListener("pointerenter", describe);
@@ -389,7 +389,7 @@
     const link = document.createElement("a");
     link.className = "profile-clock-alphabet";
     link.href = alphabets.href(alphabet.id);
-    link.setAttribute("aria-label", "Азбука · " + alphabet.title);
+    link.setAttribute("aria-label", alphabet.title);
     const wheel = document.createElement("span");
     wheel.className = "profile-clock-alphabet-wheel";
     wheel.setAttribute("aria-hidden", "true");

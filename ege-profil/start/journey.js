@@ -68,7 +68,7 @@
     if(next){
       if(next.vectorBasics){
         const count=starterProgress(next,state);
-        return {lessonId:next.id,mode:'guided',href:'#practice/'+next.id+'/guided',label:count?'Следующая задача по азбуке':next.id==='vec-basics-reading'?'Начать азбуку':'Начать следующую тему',
+        return {lessonId:next.id,mode:'guided',href:'#practice/'+next.id+'/guided',label:count?'Следующая задача':next.id==='vec-basics-reading'?'Начать с основ':'Начать следующую тему',
           reason:next.summary,kind:'next',fresh:!!state?.data?.sessions?.[next.id+':guided']?.done};
       }
       const record=lessonSummary(next,state),old=state?.data?.sessions?.[next.id+':independent'];
