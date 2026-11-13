@@ -137,8 +137,6 @@ async function checkProfileClock(page, width) {
   assert.equal(await snapshot(), frame);
  };
  await page.waitForFunction(() => performance.getEntriesByType('resource').some(resource => resource.name.endsWith('/clockwork-gnomes.webp')));
- // Verify the browser has applied the preference before checking the animation.
- // Reading the media query also gives Chromium a rendering opportunity after focus scrolls.
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.waitForFunction(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
  await play.waitFor();
@@ -156,6 +154,31 @@ async function checkProfileClock(page, width) {
  await stage.scrollIntoViewIfNeeded();
  await changes(await snapshot());
  await checkClockMechanism(stage);
+}
+
+async function checkClockWithoutMediaEvent(page, origin) {
+ await page.addInitScript(() => {
+  const nativeMatchMedia = window.matchMedia;
+  window.matchMedia = function(query) {
+   const media = nativeMatchMedia.call(this, query);
+   if (query === '(prefers-reduced-motion: reduce)') {
+    const nativeAdd = media.addEventListener.bind(media);
+    media.addEventListener = (type, ...args) => {
+     if (type !== 'change') nativeAdd(type, ...args);
+    };
+   }
+   return media;
+  };
+ });
+ await page.goto(origin+'/ege-profil/');
+ const toggle = page.locator('.profile-clock-toggle');
+ await toggle.waitFor();
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.waitForFunction(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
+ await page.locator('.profile-clock-toggle[data-paused]').waitFor();
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.waitForFunction(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
+ await page.locator('.profile-clock-toggle:not([data-paused])').waitFor();
 }
 
 async function checkAlphabetReturn(page, origin) {
@@ -294,5 +317,6 @@ async function checkExamFoundations(page, origin) {
  assert(await page.locator('#route-h').isVisible());assert.match(await page.locator('#route-h').textContent(),/2026/);
  await page.goto(origin+'/ege-profil/#%');assert(await page.locator('#myCode').textContent(),'malformed anchor does not prevent progress UI');
  await page.goto(origin+'/ege-baza/#today');await page.locator('.course-recommendation summary').click();assert(await page.locator('[data-recommendation] a.btn').first().isVisible(),'old module recommendations remain accessible');
+ await checkClockWithoutMediaEvent(page, origin);
  assert.deepEqual(errors,[]);console.log('EGE_COURSE_ENTRIES_OK: 2027, all 20 profile routes and expanded legacy links, restored first-part draft, all 21 base numbers and optional checks, preserved deep links, 320/1280px');
 }finally{await browser?.close();if(server.listening)await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});
