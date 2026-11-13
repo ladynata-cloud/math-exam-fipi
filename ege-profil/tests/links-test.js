@@ -173,16 +173,21 @@ function jsTable(src, name){
 {
   /* Карточки оглавления trainers/parameters-18/index.html собираются
      скриптом из таблицы { …, href:"intro.html", ready:true } (el.href=t.href) —
-     в разметке этих ссылок нет, разбор 4б их не видит. Готовых записей 7:
-     шесть глав и вариант по линии 18; у неготовых href:null. */
+     в разметке этих ссылок может не быть. Готовых записей восемь:
+     шесть глав, урок о плоскости (x, a) и вариант по прежней линии 18. */
   const file = 'trainers/parameters-18/index.html';
   const src = fs.readFileSync(path.join(ROOT, file), 'utf8');
   const hrefs = Array.from(src.matchAll(/\bhref\s*:\s*(["'])([^"']+)\1/g)).map(m => m[2]);
   const nulls = (src.match(/\bhref\s*:\s*null\b/g) || []).length;
-  ok(hrefs.length === 7, file + ': записей с адресом в оглавлении 7 (6 глав + вариант), найдено ' + hrefs.length + ': ' + hrefs.join(', '));
+  ok(hrefs.length === 8, file + ': восемь записей с адресом в оглавлении, найдено ' + hrefs.length + ': ' + hrefs.join(', '));
   const chapters = hrefs.filter(h => /^[a-z0-9-]+\.html$/.test(h));
   ok(chapters.length === 6, file + ': шесть глав рядом с оглавлением: ' + chapters.join(', '));
   ok(hrefs.includes('../../exam/variant.html?m=18'), file + ': оглавление ведёт в вариант по линии 18');
+  const plane = hrefs.map(href => new URL(href, 'https://mathexam.space/ege-profil/' + file)).find(url =>
+    url.pathname === '/ege-profil/azbuka-metodov/' && url.searchParams.get('exam') === '19' &&
+    url.hash === '#/parameter-methods/plane');
+  ok(plane?.searchParams.get('back') === '/ege-profil/' + file + '#gMethods',
+    file + ': урок о плоскости (x, a) возвращает к оглавлению');
   ok(nulls >= 1, file + ': неготовые главы без адреса (href:null) — ' + nulls);
   hrefs.forEach(h => note(h, file + ' [оглавление]', 'trainers/parameters-18'));
   chapters.forEach(h => ok(seen.has('trainers/parameters-18/' + h), 'глава мини-курса учтена в проверке ссылок: ' + h));

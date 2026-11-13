@@ -321,6 +321,12 @@ async function checkParameterGraphs(page, origin) {
  assert.match(await hole.getByRole('link',{name:'Продолжить условие'}).getAttribute('href'),/#task\/param-hole-4\/independent$/);
  await hole.getByRole('link',{name:'Продолжить условие'}).click();
  await page.getByText('№19 · условие 4 из 6',{exact:true}).waitFor();
+ const firstScreen=await page.locator('.condition').evaluate(condition=>{
+  const figure=condition.querySelector('svg').getBoundingClientRect();
+  return {top:condition.getBoundingClientRect().top,bottom:figure.bottom,viewport:innerHeight,scroll:scrollY};
+ });
+ assert.equal(firstScreen.scroll,0,'a hash link opens the beginning of the condition');
+ assert(firstScreen.top>=0&&firstScreen.bottom<=firstScreen.viewport,'condition and diagram fit the first screen');
  assert.equal(await proof.inputValue(),draft);
  await first.fill('5');
  await check.click();
