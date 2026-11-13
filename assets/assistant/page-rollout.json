@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+  "baseSha": "ff475b20031a6ec40ac0afcaf3e532cc3017c90d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "9c53a01901a28b5fdce699436b614b9daed71f8d73799e4a4a43b8f609e24d92",
-      "afterSha256": "bc22d0a7a2d033ce68ad0b912815f27c03937c71d0e6318dbc715f44099819b7",
+      "beforeSha256": "108adbc401f94832564d92df5f3878462e4e6ba5abdaf5570ddf3286661dc59b",
+      "afterSha256": "45b035bc0f8daa9cbc7f37e924b67ba9149bc5f79fd5fae4fe5fd1184c2806cf",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -4999,6 +4999,15 @@
       "task": "docs/tasks/EGE_ESTIMATE_TRANSFER_REVIEW_20261114.md",
       "changedPaths": [
         "trainers/ege-methods.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+      "sourceBaseSha": "ff475b20031a6ec40ac0afcaf3e532cc3017c90d",
+      "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
