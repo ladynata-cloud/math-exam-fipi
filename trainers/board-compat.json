@@ -1066,6 +1066,20 @@
       "notes": "Общий разбор, ответы, подсказки, шаги и модели. Личные результаты не изменяются."
     },
     {
+      "trainerId": "ege-methods",
+      "file": "trainers/ege-methods.html",
+      "title": "Азбука математических методов: оценка плюс пример",
+      "group": "ЕГЭ база",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Восемь уроков, модели, ответы, черновики и подсказки в общей комнате."
+    },
+    {
       "trainerId": "geometry7-control-work",
       "file": "trainers/geometry-7/control-work.html",
       "title": "Углы и треугольники · контрольная по геометрии 7 класса",
