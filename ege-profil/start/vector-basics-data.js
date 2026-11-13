@@ -194,7 +194,7 @@
 
   function lesson(id, title, summary, rule, repair, tasks) {
     return {
-      id: 'vec-basics-' + id, title, summary, group: 'vectors', position: 'Азбука векторов',
+      id: 'vec-basics-' + id, title, summary, group: 'vectors', position: 'Основы векторов',
       vectorBasics: true, intro: '<p>' + rule + '</p>', prereq: { title: 'Опора по чертежу', text: '<p>' + repair + '</p>' }, tasks
     };
   }

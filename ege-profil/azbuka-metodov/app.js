@@ -41,7 +41,7 @@
     const returnLink = back ? '<a class="az-button secondary" href="' + escape(site + back) + '">Вернуться к исходному заданию</a>' :
       selected ? '<a class="az-button secondary" href="' + examLink(selected) + '">Вернуться к №' + selected + '</a>' : '';
     return '<nav class="az-navigation" aria-label="Навигация по теме">' +
-      '<a href="' + escape(linkTo('')) + '">← Все азбуки</a>' +
+      '<a href="' + escape(linkTo('')) + '">← К списку тем</a>' +
       (alphabet && location.hash.split('/').length === 3 ? '<a href="' + escape(linkTo(alphabet.id)) + '">К навыкам темы</a>' : '') +
       returnLink + '</nav>';
   }
@@ -66,9 +66,9 @@
 
   function renderCatalog() {
     const selected = catalog.forNumber(number);
-    const title = selected.length ? 'Азбуки к №' + number : 'Азбуки методов';
+    const title = selected.length ? 'Основы для №' + number : 'Основы и методы';
     main.innerHTML = (selected.length ? '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' +
-      escape(base) + '">← Все азбуки</a><a class="az-button secondary" href="' + examLink(number) + '">К заданию №' +
+      escape(base) + '">← Все темы</a><a class="az-button secondary" href="' + examLink(number) + '">К заданию №' +
       number + '</a></nav>' : '') + '<p class="az-kicker">ЕГЭ профиль · 2027</p><h1>' + title + '</h1>' +
       '<p class="az-lead">Разбери один приём, проверь себя на другом примере и переходи к задачам ЕГЭ.</p>' +
       '<div class="az-catalog">' + (selected.length ? selected : catalog.list).map(alphabet => {
@@ -137,7 +137,7 @@
     const lesson = lessons[alphabet.id][id];
     const key = keyFor(alphabet.id, id);
     const record = store.read(key);
-    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">Азбука · ' + alphabet.short + '</p><h1>' +
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1>' +
       alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
       exerciseMarkup(record, lesson) + (teacher || alphabet.id === 'written-solution' ?
         '<section class="az-panel az-notes"><h2>Запиши обоснование</h2><label for="az-note">Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.</label>' +

@@ -117,11 +117,11 @@ async function checkProfileClock(page, width) {
  await links.last().focus();
  await page.keyboard.press('Tab');
  assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), clockCourses[0], 'extra courses follow exam tasks by keyboard');
- const alphabetLinks = workshop.getByRole('navigation', {name:'Азбуки в часовом механизме'}).getByRole('link');
+ const alphabetLinks = workshop.getByRole('navigation', {name:'Основы и методы в часовом механизме'}).getByRole('link');
  assert.equal(await alphabetLinks.count(), 8);
  assert(await alphabetLinks.evaluateAll(links => links.every(link => link.getBoundingClientRect().height >= 44)));
  await workshop.getByRole('link', {name:/^№16 ·/}).focus();
- assert.equal(await workshop.getByRole('link', {name:'Азбуки к №16'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?exam=16');
+ assert.equal(await workshop.getByRole('link', {name:'Основы для №16'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?exam=16');
 
  const pause = workshop.getByRole('button', {name:'Пауза анимации'});
  const play = workshop.getByRole('button', {name:'Запустить анимацию'});
@@ -157,7 +157,7 @@ async function checkAlphabetReturn(page, origin) {
  await page.locator('#step-answer').fill('999');
  await page.getByRole('button', {name:'Проверить шаг'}).click();
  const source = new URL(page.url()).hash;
- await page.getByRole('link', {name:'Азбука: исключаю нули знаменателя'}).click();
+ await page.getByRole('link', {name:'Как исключить нули знаменателя'}).click();
  await page.getByRole('heading', {name:'Исключаю нули знаменателя',exact:true}).waitFor();
  assert.equal(new URL(page.url()).hash, '#/domain/denominator');
  await page.locator('#az-answer').fill('3');
