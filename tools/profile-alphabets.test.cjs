@@ -28,6 +28,9 @@ test('eight alphabets share 24 stable skills and reference valid current course 
       assert.equal(lesson.checks.length, 2);
       const exercises = [lesson.practice, ...lesson.checks];
       assert.equal(new Set(exercises.map(task => task.prompt)).size, 3);
+      for (const [index, task] of exercises.entries())
+        assert.ok(exercises.slice(index + 1).every(other => task.answers.every(answer => !engine.matches(answer, other.answers))),
+          'An answer from a previous example must not solve a later condition');
       for (const task of exercises) {
         for (const answer of task.answers) assert.ok(engine.matches(answer, task.answers), answer);
         assert.equal(engine.matches('', task.answers), false);
