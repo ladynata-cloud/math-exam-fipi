@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
+  "baseSha": "7a2ef028eeea04f44004d044ded9ecdaef684486",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "8f5c36eb7ad0fe3a39ac60aaaa0fe46fc39dfdf3bdf2e43d40dbb56b0608faa8",
-      "afterSha256": "d22763a9885d74ae0fbcdd6a9db667068c784052cf21a2159bf509ed4f4bb6e2",
+      "beforeSha256": "1bd547fcf1ae73b38daf9971f1db906ce40ddec6d0cd3c6189089f758718732e",
+      "afterSha256": "4b6147cfb32f15c8aa31f286f69f3a57ee39840c2a73177d09f51de79cbc9508",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5036,6 +5036,15 @@
       "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
       "changedPaths": [
         "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
+      "sourceBaseSha": "7a2ef028eeea04f44004d044ded9ecdaef684486",
+      "task": "docs/tasks/PROFILE19_PROOF_SELF_REVIEW_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
