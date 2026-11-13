@@ -55,12 +55,12 @@ function create(A){
   const savedExam=next.kind==='resume'&&e.lessonIds.includes(next.lessonId);
   const classroom=A.board?.('#exam/2','Задачи ЕГЭ на доске с преподавателем');
   shell('<p class="breadcrumb"><a href="#calm">← Весь маршрут профиля</a></p><section class="lesson-head" data-vector-basics-entry><p class="eyebrow">ЕГЭ профиль · №2</p><h1>Векторы с нуля</h1><p class="lead">'+esc(e.goal)+'</p>'+
-   (savedExam&&first?choiceLink({href:'#lesson/'+first.id,label:'Продолжить азбуку'},e)+'<p><a id="exam-start" href="'+esc(next.href)+'">Вернуться к сохранённой задаче ЕГЭ</a></p>':choiceLink(next,e)+'<p class="small">'+esc(next.reason)+'</p>')+'</section>'+
-   '<section class="panel" aria-labelledby="vector-basics-title"><h2 id="vector-basics-title">Азбука векторов</h2><p><strong>'+completed+' из '+starters.length+' тем пройдено</strong>. В каждой теме три задачи по шагам с чертежом.</p><ol class="plain-steps">'+stages+'</ol></section>'+
+   (savedExam&&first?choiceLink({href:'#lesson/'+first.id,label:'Продолжить изучение основ'},e)+'<p><a id="exam-start" href="'+esc(next.href)+'">Вернуться к сохранённой задаче ЕГЭ</a></p>':choiceLink(next,e)+'<p class="small">'+esc(next.reason)+'</p>')+'</section>'+
+   '<section class="panel" aria-labelledby="vector-basics-title"><h2 id="vector-basics-title">Основы векторов</h2><p><strong>'+completed+' из '+starters.length+' тем пройдено</strong>. В каждой теме три задачи по шагам с чертежом.</p><ol class="plain-steps">'+stages+'</ol></section>'+
    '<details class="panel calm-start-help"><summary>Если решение не получается</summary><p>Открой подсказку в задаче. Посмотри, где начинается стрелка и куда указывает её наконечник. Каждый проверенный шаг остаётся на экране.</p></details>'+
    '<details class="panel calm-number-foundations"><summary>Вспомнить координаты, знаки и корни</summary>'+e.prerequisites.map(id=>item(id)).join('')+'</details>'+
    (ready||examWork?'<section class="panel" data-vector-exam-practice><h2>Задачи ЕГЭ №2</h2>'+e.lessonIds.map(id=>item(id,true)).join('')+'</section>'+root.ProfileCourse.resources(e.number)
-     :'<p class="small">После азбуки здесь откроются задачи ЕГЭ №2.</p>')+(classroom?'<p>'+classroom+'</p>':''));
+     :'<p class="small">Задачи ЕГЭ №2 откроются после тренировки по основам.</p>')+(classroom?'<p>'+classroom+'</p>':''));
   bindStarts();
  }
  function route(number,{preserveView=false}={}){if(!preserveView)setEnabled(true);const e=D.exams.find(e=>e.number===Number(number));if(e){
