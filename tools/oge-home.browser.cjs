@@ -109,7 +109,7 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    assert.match(await p.locator('#model-description').innerText(),/a > 0.*вверх.*a < 0.*вниз/);
    await p.locator('#model-link').click();await p.waitForURL(base+topics[10].href);assert(await p.locator('h1').isVisible(),'real graph trainer opens');
    await p.goto(base+'/oge/');await startGraphs(p);
-   await p.goto(base+'/oge/');await p.getByRole('link',{name:'Выбрать задание',exact:true}).click();
+   await p.goto(base+'/oge/');await p.locator('.start-routes a[href="/trainers/oge-course/"]').click();
    await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);assert(await p.locator('#geometry').count());await fits(p);await p.screenshot(out?{path:path.join(out,`catalog-${width}.png`),fullPage:false}:{});
    for(const section of ['part1','geometry','part2'])assert(await p.locator('#'+section).count());
    assert(await p.getByRole('link',{name:'Рассмотреть модели ↗',exact:true}).isVisible());
