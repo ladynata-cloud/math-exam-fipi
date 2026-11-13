@@ -77,15 +77,21 @@
 
   function map() {
     const summary = totals();
-    const next = summary.entries.find(({ lesson, record }) =>
+    const openPractice = summary.entries.find(({ record: { practice } }) =>
+      !practice.done && (practice.attempts || practice.proof || practice.drafts.some(Boolean)));
+    const openLesson = summary.entries.find(({ lesson, record: { guide } }) =>
+      guide.solved.length < lesson.steps.length && (guide.solved.length || guide.draft || guide.misses));
+    const next = openPractice || openLesson || summary.entries.find(({ lesson, record }) =>
       !record.practice.done || record.guide.solved.length < lesson.steps.length);
-    const go = next && (next.record.guide.solved.length < next.lesson.steps.length ? 'lesson' : 'practice');
-    const started = summary.guided > 0 || summary.entries.some(({ record }) =>
-      record.guide.solved.length || record.guide.draft || record.practice.drafts.some(Boolean));
+    const go = next && (openPractice === next || next.record.guide.solved.length === next.lesson.steps.length ? 'practice' : 'lesson');
+    const started = summary.guided > 0 || summary.checked > 0 || Boolean(openPractice || openLesson);
+    const practiceEntry = href('practice', 'maximum');
+    const showPracticeEntry = !embedded && (!next || href(go, next.lesson.id) !== practiceEntry);
     main.innerHTML = `<section class="hero" aria-labelledby="course-title">
       <div><p class="eyebrow">ЕГЭ · профиль №20 и база №21</p><h1 id="course-title">${title}</h1>
         <p class="lead">Находи границы, отбирай целые значения и строй примеры. Затем проверь себя на новом условии.</p>
         <div class="actions">${next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') : courseLink('progress', null, 'Посмотреть прогресс', 'button primary')}
+        ${showPracticeEntry ? courseLink('practice', 'maximum', 'Самопроверка по максимуму', 'button secondary') : ''}
         ${embedded ? '' : '<a class="button secondary" href="/trainers/trainer-board.html?trainer=ege-methods.html">Открыть на общей доске</a>'}</div>
       </div><aside class="progress-panel"><h2>${embedded ? 'Ход работы на доске' : 'Мой прогресс'}</h2>${progressBar(summary)}</aside>
     </section>
@@ -93,8 +99,9 @@
       ${summary.entries.map(({ lesson, record }, index) => `<li class="lesson-card">
         <span class="lesson-number" aria-hidden="true">${index + 1}</span>
         <div><h3>${courseLink('lesson', lesson.id, esc(lesson.title))}</h3><p>${esc(lesson.goal)}</p>
-        ${record.practice.done ? '<span class="completion">Самопроверка пройдена</span>' :
-          record.guide.solved.length ? `<span class="completion">${record.guide.solved.length} из ${lesson.steps.length} шагов</span>` : ''}</div>
+        ${record.guide.solved.length === lesson.steps.length ? '<span class="completion">Урок пройден</span>' :
+          record.guide.solved.length ? `<span class="completion">${record.guide.solved.length} из ${lesson.steps.length} шагов</span>` : ''}
+        ${record.practice.done ? '<span class="completion">Самопроверка пройдена</span>' : ''}</div>
       </li>`).join('')}
     </ol></section>${examinerLinks([links.extremum, links.whole])}`;
   }

@@ -65,6 +65,29 @@ async function screenshot(page, name) {
 }
 
 async function standalone(browser, origin) {
+  const continuing = await browser.newPage({ viewport: { width: 320, height: 900 } });
+  monitor(continuing, origin);
+  await continuing.goto(origin + '/ege-profil/');
+  const quickEntry = continuing.getByRole('navigation', { name: 'Быстрые входы' })
+    .getByRole('link', { name: 'Оценка плюс пример · №20', exact: true });
+  const entryBox = await quickEntry.boundingBox();
+  assert(entryBox && entryBox.x >= 0 && entryBox.x + entryBox.width <= 320 && entryBox.y + entryBox.height < 900);
+  await quickEntry.click();
+  await continuing.getByRole('link', { name: 'Самопроверка по максимуму', exact: true }).click();
+  await continuing.waitForURL('**/ege-methods.html#practice/maximum');
+  assert.equal(await continuing.locator('#hint-text, #sample').count(), 0);
+  await continuing.locator('#answer-0').fill('11');
+  await continuing.locator('#proof-draft').fill('Два других количества различны.');
+  await continuing.getByRole('link', { name: 'Все уроки', exact: true }).click();
+  const resume = continuing.getByRole('link', { name: 'Продолжить', exact: true });
+  assert.equal(await resume.getAttribute('href'), '#practice/maximum');
+  await resume.click();
+  await continuing.reload();
+  assert.equal(await continuing.locator('#answer-0').inputValue(), '11');
+  assert.equal(await continuing.locator('#proof-draft').inputValue(), 'Два других количества различны.');
+  assert.equal(await continuing.evaluate(key => localStorage.getItem(key), S.prefix + 'bounds'), null);
+  await continuing.close();
+
   const page = await browser.newPage({ viewport: { width: 320, height: 900 } });
   monitor(page, origin);
   await page.goto(origin + trainer);
@@ -124,10 +147,11 @@ async function standalone(browser, origin) {
       await page.getByText('Введи целое число.').waitFor();
       await page.locator('#answer-0').fill('9');
       await check.click();
-      await page.getByText('Проверь вычисление', { exact: false }).waitFor();
+      await page.getByText('Проверь минимум для всех четырёх коробок вместе.', { exact: true }).waitFor();
       assert.equal(await page.locator('#hint-text').isVisible(), false);
       await check.click();
       await page.locator('#hint-text').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#hint-text').textContent(), 'Возьми по две тетради в каждой из четырёх коробок.');
     }
 
     for (const [number, step] of lesson.steps.entries()) {

@@ -73,8 +73,13 @@ test('both hubs retain all previous navigation destinations and resolve local li
   for(const a of d.querySelectorAll('a[href]')){const u=new URL(a.href);if(u.origin!=='https://mathexam.space')continue;let target=decodeURIComponent(u.pathname).slice(1);if(!target||target.endsWith('/'))target+='index.html';assert(fs.existsSync(path.join(root,target))||fs.existsSync(path.join(base,target)),f+' broken '+a.href);if(u.pathname==='/'+f&&u.hash)assert(d.getElementById(u.hash.slice(1)));}
  }
 });
-test('secondary OGE hub keeps informatics reachable and leads to mathematics course',()=>{
- const d=load(files[1]).window.document;assert.equal(new URL(d.querySelector('.hero .btn').href).pathname,'/trainers/oge-course/');
+test('OGE hub opens a first graph exercise and keeps course, topic and informatics routes reachable',()=>{
+ const d=load(files[1]).window.document;
+ const first=new URL(d.querySelector('.hero .btn').href);
+ assert.equal(first.pathname,'/oge/skills/');
+ assert.equal(first.searchParams.get('topic'),'n11');
+ assert(d.querySelector('.hero a[href="#all-topics"]'));
+ assert(d.querySelector('main a[href="/trainers/oge-course/"]'));
  const informatics=d.querySelector('a[href="../trainers/oge-informatics-1-10-tutor.html"]');assert(informatics);assert(informatics.closest('details'));
  assert.doesNotMatch(d.querySelector('main').textContent,/зубрёжка/);
  for(const a of d.querySelectorAll('.topic-links a'))assert(!/^(Открыть|Открыть модуль|Пройти)$/.test(a.textContent.trim()),'Topic link has a meaningful label');
