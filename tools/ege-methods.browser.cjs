@@ -64,7 +64,90 @@ async function screenshot(page, name) {
   await page.screenshot({ path: join(shots, name + '.png'), fullPage: true });
 }
 
+async function independentReview(browser, origin) {
+  const page = await browser.newPage({ viewport: { width: 320, height: 900 } });
+  monitor(page, origin);
+  const start = Date.UTC(2026, 10, 14, 0);
+  await page.clock.install({ time: new Date(start) });
+  await page.goto(origin + trainer + '#repeat');
+  await page.getByText('Сначала пройди первую проверку.', { exact: false }).waitFor();
+  assert.equal(await page.locator('#practice-form').count(), 0);
+  await page.getByRole('link', { name: 'К первой проверке' }).click();
+  await page.getByRole('heading', { level: 1, name: 'Проверка на новой задаче' }).waitFor();
+  assert.equal(await page.locator('#hint-text, #sample').count(), 0);
+  await screenshot(page, '320-independent-checkpoint');
+  const input = page.locator('#answer-1');
+  const submit = page.getByRole('button', { name: 'Проверить ответы' });
+  await page.locator('#answer-0').fill('4');
+  await input.fill('5; 5; 5; 5; 2; 2; 2; 2; 2; 2');
+  await submit.click();
+  await page.getByText('Сумма чисел в распределении должна быть равна 34.', { exact: true }).waitFor();
+  assert.equal(await input.getAttribute('aria-invalid'), 'true');
+  const proof = 'Если стендов с пятью рисунками больше четырёх, сумма не меньше 35.';
+  await page.locator('#proof-draft').fill(proof);
+  await page.getByRole('link', { name: '← К маршруту', exact: true }).click();
+  assert.equal(await page.getByRole('link', { name: 'Продолжить', exact: true }).getAttribute('href'), '#checkpoint');
+  await page.getByRole('link', { name: 'Продолжить проверку', exact: true }).click();
+  await page.reload();
+  assert.equal(await page.locator('#proof-draft').inputValue(), proof);
+  assert.equal(await page.locator('#answer-0').inputValue(), '4');
+  await input.fill('5; 5; 5; 5; 3; 3; 2; 2; 2; 2');
+  await submit.click();
+  await page.getByRole('heading', { name: 'Ответы верны' }).waitFor();
+  await page.getByText('Попыток: 2.', { exact: false }).waitFor();
+  assert.equal(await page.locator('#sample').isVisible(), false);
+  await page.getByRole('button', { name: 'Показать разбор' }).click();
+  await page.getByRole('heading', { name: 'Сверь обоснование' }).waitFor();
+  await page.getByRole('link', { name: /Профиль №20 · Оценка/ }).waitFor();
+  await page.getByRole('link', { name: /База №21 · Оценка/ }).waitFor();
+  const at = new Date(await page.locator('time').getAttribute('datetime')).getTime();
+  await page.goto(origin + trainer + '#repeat');
+  await page.clock.pauseAt(new Date(at - 1000));
+  await page.clock.runFor(999);
+  assert.equal(await page.locator('#practice-form').count(), 0);
+  await page.clock.runFor(1);
+  await page.locator('#practice-form').waitFor();
+  await page.locator('#answer-0').fill('4');
+  await page.getByRole('link', { name: '← К маршруту', exact: true }).click();
+  assert.equal(await page.getByRole('link', { name: 'Продолжить', exact: true }).getAttribute('href'), '#repeat');
+  await page.getByRole('link', { name: 'Продолжить повторение', exact: true }).click();
+  await page.reload();
+  assert.equal(await page.locator('#answer-0').inputValue(), '4');
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await screenshot(page, '1280-independent-repeat');
+  await input.fill('3; 5; 3; 5; 5; 3; 5; 3');
+  await submit.click();
+  await page.getByRole('heading', { name: 'Ответы верны' }).waitFor();
+  await page.getByRole('link', { name: 'Мой прогресс', exact: true }).click();
+  await page.getByText('Ответы в обеих задачах верны.', { exact: true }).waitFor();
+  assert.equal(await page.locator('#practice-progress').getAttribute('value'), '0');
+  await page.close();
+}
+
 async function standalone(browser, origin) {
+  const continuing = await browser.newPage({ viewport: { width: 320, height: 900 } });
+  monitor(continuing, origin);
+  await continuing.goto(origin + '/ege-profil/');
+  const quickEntry = continuing.getByRole('navigation', { name: 'Быстрые входы' })
+    .getByRole('link', { name: 'Оценка плюс пример · №20', exact: true });
+  const entryBox = await quickEntry.boundingBox();
+  assert(entryBox && entryBox.x >= 0 && entryBox.x + entryBox.width <= 320 && entryBox.y + entryBox.height < 900);
+  await quickEntry.click();
+  await continuing.getByRole('link', { name: 'Самопроверка по максимуму', exact: true }).click();
+  await continuing.waitForURL('**/ege-methods.html#practice/maximum');
+  assert.equal(await continuing.locator('#hint-text, #sample').count(), 0);
+  await continuing.locator('#answer-0').fill('11');
+  await continuing.locator('#proof-draft').fill('Два других количества различны.');
+  await continuing.getByRole('link', { name: 'Все уроки', exact: true }).click();
+  const resume = continuing.getByRole('link', { name: 'Продолжить', exact: true });
+  assert.equal(await resume.getAttribute('href'), '#practice/maximum');
+  await resume.click();
+  await continuing.reload();
+  assert.equal(await continuing.locator('#answer-0').inputValue(), '11');
+  assert.equal(await continuing.locator('#proof-draft').inputValue(), 'Два других количества различны.');
+  assert.equal(await continuing.evaluate(key => localStorage.getItem(key), S.prefix + 'bounds'), null);
+  await continuing.close();
+
   const page = await browser.newPage({ viewport: { width: 320, height: 900 } });
   monitor(page, origin);
   await page.goto(origin + trainer);
@@ -124,10 +207,11 @@ async function standalone(browser, origin) {
       await page.getByText('Введи целое число.').waitFor();
       await page.locator('#answer-0').fill('9');
       await check.click();
-      await page.getByText('Проверь вычисление', { exact: false }).waitFor();
+      await page.getByText('Проверь минимум для всех четырёх коробок вместе.', { exact: true }).waitFor();
       assert.equal(await page.locator('#hint-text').isVisible(), false);
       await check.click();
       await page.locator('#hint-text').waitFor({ state: 'visible' });
+      assert.equal(await page.locator('#hint-text').textContent(), 'Возьми по две тетради в каждой из четырёх коробок.');
     }
 
     for (const [number, step] of lesson.steps.entries()) {
@@ -283,6 +367,7 @@ async function sharedBoard(browser, origin, serverOrigin) {
   await teacher.locator('#pickerSearch').fill('ege-methods');
   await teacher.locator('#pickerResults .picker-item').click();
   const [t, s] = await Promise.all([boardFrame(teacher), boardFrame(student)]);
+  assert.equal(await t.getByRole('heading', { name: 'Проверка и повторение' }).count(), 0);
   await t.getByRole('link', { name: 'Пример, который можно проверить' }).click();
   await s.getByRole('heading', { name: 'Пример, который можно проверить' }).waitFor();
   await t.locator('[data-model="2"]').click();
@@ -351,9 +436,10 @@ async function sharedBoard(browser, origin, serverOrigin) {
     assert(healthy, 'Local board failed to start: ' + logs);
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH, headless: true, args: ['--no-sandbox'] });
     await standalone(browser, origin);
+    await independentReview(browser, origin);
     await sharedBoard(browser, origin, serverOrigin);
     assert.deepEqual(errors, [], 'no browser errors or missing local assets');
-    console.log('EGE_METHODS_BROWSER_OK: 8 guided lessons and 8 self-checks; 320 and 1280 px; clock, skill map and both exam routes; saved answers; two-participant board with control transfer, reload and late join');
+    console.log('EGE_METHODS_BROWSER_OK: eight lessons and eight self-checks, two independent tasks and a 24-hour repeat, 320 and 1280 px, saved answers, both exams, and a two-participant board');
   } finally {
     await browser?.close();
     if (child && child.exitCode === null) child.kill('SIGTERM');

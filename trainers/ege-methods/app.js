@@ -1,7 +1,7 @@
 (function (root) {
   'use strict';
 
-  const { lessons, links } = root.EgeMethodCourse;
+  const { lessons, links, checkpoint, repeat } = root.EgeMethodCourse;
   const S = root.EgeMethodState;
   const main = document.getElementById('main');
   const warning = document.getElementById('save-warning');
@@ -14,8 +14,11 @@
   const courseLink = (page, id, label, style = '') =>
     `<a class="${style}" href="${href(page, id)}" data-course-nav>${label}</a>`;
   const title = 'Оценка плюс пример';
-  let view = S.route(location.hash);
+  const personalChecks = !embedded && checkpoint && repeat && typeof S.createAssessmentProgress === 'function';
+  const pageRoute = personalChecks ? S.personalRoute : S.route;
+  let view = pageRoute(location.hash);
   let generation = 0;
+  let repeatTimer;
   let records = {};
   let bridge;
   let storage;
@@ -28,10 +31,12 @@
     document.querySelector('.header-inner a[href="#progress"]').textContent = 'Ход работы';
   }
 
-  const progress = S.createProgress(storage, root.navigator.locks, () => {
+  function warnSave() {
     warning.textContent = 'Часть работы не удалось сохранить в браузере. Введённые данные доступны в этой вкладке.';
     warning.hidden = false;
-  });
+  }
+  const progress = S.createProgress(storage, root.navigator.locks, warnSave);
+  const assessments = personalChecks ? S.createAssessmentProgress(storage, root.navigator.locks, warnSave) : null;
 
   function recordFor(lesson) {
     return embedded ? (records[lesson.id] || S.empty(lesson)) : progress.read(lesson);
@@ -46,9 +51,14 @@
       records[lesson.id] = record;
       bridge?.notifyStateChanged();
     } else {
-      record = await progress.update(lesson, edit);
+      const store = assessments && S.assessments.has(lesson.id) ? assessments : progress;
+      record = await store.update(lesson, edit);
     }
     if (generation === revision) updateView?.(record);
+  }
+
+  function currentTask() {
+    return S.byId.get(view.id) || (assessments && S.assessments.get(view.page));
   }
 
   function totals() {
@@ -69,32 +79,91 @@
     </div>`;
   }
 
-  function examinerLinks(items) {
+  function examinerLinks(items, note) {
     if (embedded || !items.length) return '';
     return `<section class="transfer" aria-labelledby="transfer-title"><h2 id="transfer-title">Применить на ЕГЭ</h2>
+      ${note ? `<p>${esc(note)}</p>` : ''}
       <ul>${items.map(item => `<li><a href="${item.href}">${esc(item.title)}</a></li>`).join('')}</ul></section>`;
+  }
+
+  function repeatReadyAt() {
+    return S.repeatAt(assessments.read(checkpoint));
+  }
+
+  function waitForRepeat(at) {
+    const label = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(at);
+    return `Повторение откроется <time datetime="${new Date(at).toISOString()}">${esc(label)}</time> по времени устройства.`;
+  }
+
+  const startedPractice = practice => Boolean(practice.attempts || practice.proof || practice.drafts.some(Boolean));
+
+  function assessmentStatus() {
+    if (!assessments) return null;
+    const first = assessments.read(checkpoint);
+    const at = S.repeatAt(first);
+    const ready = at !== null && Date.now() >= at;
+    const second = ready ? assessments.read(repeat).practice : null;
+    const firstStarted = startedPractice(first.practice);
+    const secondStarted = second && startedPractice(second);
+    return {
+      at, ready, firstDone: first.practice.done, repeatDone: Boolean(second?.done),
+      firstLabel: first.practice.done ? 'Результат проверки' : firstStarted ? 'Продолжить проверку' : 'Начать проверку',
+      repeatLabel: second?.done ? 'Результат повторения' : secondStarted ? 'Продолжить повторение' : 'Открыть повторение',
+      resume: secondStarted && !second.done ? repeat.id : firstStarted && !first.practice.done ? checkpoint.id : null
+    };
+  }
+
+  function checkpointNext(status) {
+    if (!status.firstDone) return '';
+    if (!status.ready) return `<p class="assessment-date">${waitForRepeat(status.at)}</p>`;
+    return `<div class="actions">${courseLink(repeat.id, null, status.repeatLabel, 'button secondary')}</div>`;
+  }
+
+  function assessmentSummary(status) {
+    if (!status) return '';
+    const description = status.repeatDone ? 'Ответы в обеих задачах верны.' :
+      status.firstDone ? 'Ответы в первой задаче верны. Повторение — в другом условии.' :
+        'Реши новую задачу самостоятельно. Образец обоснования откроется после проверки ответов.';
+    return `<section class="panel assessment-summary" aria-labelledby="assessment-title">
+      <h2 id="assessment-title">Проверка и повторение</h2>
+      <p>${description}</p>
+      <div class="actions">${courseLink(checkpoint.id, null, status.firstLabel, 'button secondary')}</div>
+      ${checkpointNext(status)}
+    </section>`;
   }
 
   function map() {
     const summary = totals();
-    const next = summary.entries.find(({ lesson, record }) =>
+    const openPractice = summary.entries.find(({ record: { practice } }) =>
+      !practice.done && (practice.attempts || practice.proof || practice.drafts.some(Boolean)));
+    const openLesson = summary.entries.find(({ lesson, record: { guide } }) =>
+      guide.solved.length < lesson.steps.length && (guide.solved.length || guide.draft || guide.misses));
+    const next = openPractice || openLesson || summary.entries.find(({ lesson, record }) =>
       !record.practice.done || record.guide.solved.length < lesson.steps.length);
-    const go = next && (next.record.guide.solved.length < next.lesson.steps.length ? 'lesson' : 'practice');
-    const started = summary.guided > 0 || summary.entries.some(({ record }) =>
-      record.guide.solved.length || record.guide.draft || record.practice.drafts.some(Boolean));
+    const go = next && (openPractice === next || next.record.guide.solved.length === next.lesson.steps.length ? 'practice' : 'lesson');
+    const started = summary.guided > 0 || summary.checked > 0 || Boolean(openPractice || openLesson);
+    const practiceEntry = href('practice', 'maximum');
+    const status = assessmentStatus();
+    const showPracticeEntry = !embedded && (status?.resume || !next || href(go, next.lesson.id) !== practiceEntry);
+    const primary = status?.resume ? courseLink(status.resume, null, 'Продолжить', 'button primary') :
+      next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') :
+        courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
     main.innerHTML = `<section class="hero" aria-labelledby="course-title">
       <div><p class="eyebrow">ЕГЭ · профиль №20 и база №21</p><h1 id="course-title">${title}</h1>
         <p class="lead">Находи границы, отбирай целые значения и строй примеры. Затем проверь себя на новом условии.</p>
-        <div class="actions">${next ? courseLink(go, next.lesson.id, started ? 'Продолжить' : 'Начать с оценок', 'button primary') : courseLink('progress', null, 'Посмотреть прогресс', 'button primary')}
+        <div class="actions">${primary}
+        ${showPracticeEntry ? courseLink('practice', 'maximum', 'Самопроверка по максимуму', 'button secondary') : ''}
         ${embedded ? '' : '<a class="button secondary" href="/trainers/trainer-board.html?trainer=ege-methods.html">Открыть на общей доске</a>'}</div>
       </div><aside class="progress-panel"><h2>${embedded ? 'Ход работы на доске' : 'Мой прогресс'}</h2>${progressBar(summary)}</aside>
     </section>
+    ${assessmentSummary(status)}
     <section aria-labelledby="route-title"><h2 id="route-title">Учебный маршрут</h2><ol class="lesson-list">
       ${summary.entries.map(({ lesson, record }, index) => `<li class="lesson-card">
         <span class="lesson-number" aria-hidden="true">${index + 1}</span>
         <div><h3>${courseLink('lesson', lesson.id, esc(lesson.title))}</h3><p>${esc(lesson.goal)}</p>
-        ${record.practice.done ? '<span class="completion">Самопроверка пройдена</span>' :
-          record.guide.solved.length ? `<span class="completion">${record.guide.solved.length} из ${lesson.steps.length} шагов</span>` : ''}</div>
+        ${record.guide.solved.length === lesson.steps.length ? '<span class="completion">Урок пройден</span>' :
+          record.guide.solved.length ? `<span class="completion">${record.guide.solved.length} из ${lesson.steps.length} шагов</span>` : ''}
+        ${record.practice.done ? '<span class="completion">Самопроверка пройдена</span>' : ''}</div>
       </li>`).join('')}
     </ol></section>${examinerLinks([links.extremum, links.whole])}`;
   }
@@ -104,7 +173,7 @@
     main.innerHTML = `${courseLink('map', null, '← Все уроки', 'back')}
       <h1>${embedded ? 'Ход работы на доске' : 'Мой прогресс'}</h1>
       <p class="lead">${embedded ? 'На доске отображается ход работы в текущей комнате.' : 'Работа сохраняется в этом браузере. Самопроверка засчитывается после верных ответов на отдельную задачу.'}</p>
-      <section class="panel">${progressBar(summary)}</section>
+      <section class="panel">${progressBar(summary)}</section>${assessmentSummary(assessmentStatus())}
       <ol class="progress-list">${summary.entries.map(({ lesson, record }) => `<li>
         <div><h2>${courseLink('lesson', lesson.id, esc(lesson.title))}</h2>
         <p>${record.guide.solved.length} из ${lesson.steps.length} шагов · ${record.practice.done ? 'самопроверка пройдена' : 'самопроверка впереди'}
@@ -127,7 +196,7 @@
         autocomplete="off" spellcheck="false" value="${esc(value)}"></label>`;
   }
 
-  const formatMessage = field => field.kind === 'list' ?
+  const formatMessage = field => field.kind === 'list' || field.kind === 'distribution' ?
     'Введи целые числа через точку с запятой.' : 'Введи целое число.';
   function message(step, record) {
     switch (record.feedback) {
@@ -225,30 +294,74 @@
     if (missing >= 0) return { index: missing, text: 'Заполни все поля ответа.' };
     const format = checks.indexOf('format');
     if (format >= 0) return { index: format, text: formatMessage(lesson.practice.fields[format]) };
-    return { index: checks.indexOf('wrong'), text: 'Проверь ответы в отмеченных полях и попробуй ещё раз.' };
+    const index = checks.findIndex(result => result !== 'correct');
+    const field = lesson.practice.fields[index];
+    if (field?.kind === 'distribution') {
+      const message = {
+        size: `Введи ${field.size} чисел через точку с запятой, по одному для каждого места.`,
+        range: `Каждое число должно быть от ${field.min} до ${field.max}.`,
+        total: `Сумма чисел в распределении должна быть равна ${field.total}.`
+      }[checks[index]];
+      if (message) return { index, text: message };
+    }
+    return { index, text: 'Проверь ответы в отмеченных полях и попробуй ещё раз.' };
   }
 
-  function practiceView(lesson, { practice }) {
-    const next = lessons[lessons.indexOf(lesson) + 1];
-    const { fields, story, proof, review } = lesson.practice;
-    main.innerHTML = `${courseLink('lesson', lesson.id, '← К уроку', 'back')}
-      <p class="eyebrow">Самопроверка</p><h1>${esc(lesson.title)}</h1>
+  function practiceView(lesson, { practice }, assessment = false) {
+    const { fields, story, proof, review, criteria, success } = lesson.practice;
+    const next = assessment ? null : lessons[lessons.indexOf(lesson) + 1];
+    const back = assessment ? courseLink('map', null, '← К маршруту', 'back') :
+      courseLink('lesson', lesson.id, '← К уроку', 'back');
+    const nextLesson = next ? courseLink('lesson', next.id, 'Следующий урок', 'button primary') :
+      courseLink('progress', null, 'Посмотреть прогресс', 'button primary');
+    const nextStep = assessment ? (lesson === checkpoint ?
+      `<div id="assessment-follow-up">${practice.done ? checkpointNext(assessmentStatus()) : ''}</div>` : '') :
+      `<div class="actions">${nextLesson}
+        ${assessments && (lesson.id === 'maximum' || !next) ?
+          courseLink('checkpoint', null, 'К проверке на новой задаче', 'button secondary') : ''}</div>`;
+    const proofPrompt = assessment ? `${esc(proof)} Черновик сохраняется в этом браузере. Сверь обоснование с критериями после проверки.` :
+      `${esc(proof)} Полное решение можно сверить с образцом или обсудить с учителем.`;
+    main.innerHTML = `${back}
+      <p class="eyebrow">${assessment ? 'Оценка плюс пример' : 'Самопроверка'}</p><h1>${esc(lesson.title)}</h1>
       <section class="panel practice" aria-labelledby="practice-title"><h2 id="practice-title">Новая задача</h2>
         <p>${esc(story)}</p><form id="practice-form">
           <fieldset class="answer-group"${practice.done ? ' disabled' : ''}><legend class="sr-only">Ответы</legend>
           ${fields.map((field, index) => fieldMarkup(field, practice.drafts[index], index)).join('')}</fieldset>
-          ${proof ? `<label class="field" for="proof-draft"><span>Черновик обоснования</span><small>${esc(proof)} Полное решение можно сверить с образцом или обсудить с учителем.</small>
+          ${proof ? `<label class="field" for="proof-draft"><span>Черновик обоснования</span><small>${proofPrompt}</small>
             <textarea id="proof-draft" maxlength="${S.proofLimit}" rows="3">${esc(practice.proof)}</textarea></label>` : ''}
           ${practice.done ? '' : '<div class="actions"><button class="button primary" type="submit">Проверить ответы</button></div>'}
           <p id="practice-feedback" class="feedback" role="status"></p>
         </form>
         ${practice.done ? `<div class="result"><h2 id="practice-complete" tabindex="-1">Ответы верны</h2>
+          ${assessment ? `<p>Попыток: ${practice.attempts}. Обоснование можно сверить с образцом.</p>` : ''}
           <button class="text-button" type="button" data-action="review" aria-expanded="${practice.review}" aria-controls="sample">${practice.review ? 'Скрыть разбор' : 'Показать разбор'}</button>
-          <p class="note" id="sample"${practice.review ? '' : ' hidden'}>${esc(review)}</p></div>
-          <div class="actions">${next ? courseLink('lesson', next.id, 'Следующий урок', 'button primary') :
-            courseLink('progress', null, 'Посмотреть прогресс', 'button primary')}</div>` : ''}
-      </section>${practice.done ? examinerLinks(lesson.links) : ''}`;
+          <div class="note" id="sample"${practice.review ? '' : ' hidden'}><p>${esc(review)}</p>
+            ${criteria ? `<h3>Сверь обоснование</h3><ul>${criteria.map(item => `<li>${esc(item)}</li>`).join('')}</ul>` : ''}</div></div>
+          ${nextStep}` : ''}
+      </section>${practice.done ? examinerLinks(lesson.links, success) : ''}`;
     if (practice.checked && !practice.done) updatePracticeFeedback(lesson, practice);
+  }
+
+  function assessmentView(task) {
+    const at = task === repeat ? repeatReadyAt() : null;
+    if (task === repeat && (at === null || Date.now() < at)) {
+      main.innerHTML = `${courseLink('map', null, '← К маршруту', 'back')}
+        <h1>Повторение на новой задаче</h1><p class="lead">${at === null ?
+          'Сначала пройди первую проверку. Повторение откроется через сутки.' : waitForRepeat(at)}</p>
+        ${courseLink('checkpoint', null, 'К первой проверке', 'button primary')}`;
+      return;
+    }
+    practiceView(task, assessments.read(task), true);
+  }
+
+  function refreshRepeat() {
+    if (view.page === 'checkpoint') {
+      const followUp = document.getElementById('assessment-follow-up');
+      if (followUp) followUp.innerHTML = checkpointNext(assessmentStatus());
+    } else {
+      const focus = view.page === 'repeat' && main.contains(document.activeElement) ? 'main' : undefined;
+      render(focus);
+    }
   }
 
   function updatePracticeFeedback(lesson, practice, focus = false) {
@@ -266,11 +379,19 @@
 
   function render(focus) {
     generation++;
+    root.clearTimeout(repeatTimer);
     const lesson = S.byId.get(view.id);
     if (view.page === 'lesson') guideView(lesson, recordFor(lesson));
     else if (view.page === 'practice') practiceView(lesson, recordFor(lesson));
     else if (view.page === 'progress') progressView();
+    else if (assessments && S.assessments.has(view.page)) assessmentView(S.assessments.get(view.page));
     else map();
+    if (assessments && ['map', 'progress', 'checkpoint', 'repeat'].includes(view.page) &&
+        (view.page !== 'repeat' || !document.getElementById('practice-form'))) {
+      const at = repeatReadyAt();
+      const remaining = at === null ? 0 : at - Date.now();
+      if (remaining > 0) repeatTimer = root.setTimeout(refreshRepeat, Math.min(remaining, 2_147_483_647));
+    }
     if (focus) document.getElementById(focus)?.focus();
   }
 
@@ -294,8 +415,8 @@
       event.preventDefault();
       move(S.route(navigation.hash));
     }
-    const lesson = S.byId.get(view.id);
     const button = event.target.closest('[data-action], [data-model]');
+    const lesson = currentTask();
     if (!lesson || !button) return;
     if (button.dataset.model !== undefined) {
       const value = Number(button.dataset.model);
@@ -311,7 +432,7 @@
         if (action === 'theory' || guide.solved.length === index) guide[action] = !guide[action];
       }, ({ guide }) => { if (button.isConnected) reveal(button, guide[action]); });
     } else if (action === 'review') {
-      change(lesson, ({ practice }) => { practice.review = !practice.review; },
+      change(lesson, ({ practice }) => { if (practice.done) practice.review = !practice.review; },
         ({ practice }) => { if (button.isConnected) reveal(button, practice.review); });
     }
   });
@@ -319,7 +440,7 @@
   function saveDraft(event) {
     const input = event.target;
     if ((event.type === 'change') !== isChoice(input)) return;
-    const lesson = S.byId.get(view.id);
+    const lesson = currentTask();
     if (!lesson) return;
     if (input.id === 'proof-draft') {
       const value = S.cleanProof(input.value);
@@ -354,9 +475,16 @@
 
   main.addEventListener('submit', event => {
     event.preventDefault();
-    const lesson = S.byId.get(view.id);
+    const lesson = currentTask();
     const form = event.target;
     if (!lesson) return;
+    if (lesson === repeat) {
+      const at = repeatReadyAt();
+      if (at === null || Date.now() < at) {
+        render('main');
+        return;
+      }
+    }
     if (form.id === 'guide-form') {
       const index = Number(form.dataset.step);
       const input = form.elements['answer-0'];
@@ -374,7 +502,8 @@
       });
     } else if (form.id === 'practice-form') {
       const drafts = lesson.practice.fields.map((_, i) => form.elements['answer-' + i].value);
-      change(lesson, record => S.answerPractice(record, lesson, drafts), ({ practice }) => {
+      const answer = assessments && S.assessments.has(lesson.id) ? S.answerAssessment : S.answerPractice;
+      change(lesson, record => answer(record, lesson, drafts), ({ practice }) => {
         if (practice.done) render('practice-complete');
         else updatePracticeFeedback(lesson, practice, true);
       });
@@ -382,9 +511,12 @@
   });
 
   if (!embedded) {
-    root.addEventListener('hashchange', () => move(S.route(location.hash)));
+    root.addEventListener('hashchange', () => move(pageRoute(location.hash)));
     root.addEventListener('storage', event => {
       if (event.key?.startsWith(S.prefix) && (view.page === 'map' || view.page === 'progress')) render();
+      if (assessments && event.key?.startsWith(S.assessmentPrefix) &&
+          (view.page === 'map' || view.page === 'progress' ||
+            (view.page === 'repeat' && !document.getElementById('practice-form')))) render();
     });
   } else {
     let onBoard = false;

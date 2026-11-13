@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b46ada710eaa99adfd2d3db0ba106def4c9a1b4d",
+  "baseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 581,
-    "covered": 580,
+    "total": 582,
+    "covered": 581,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -158,8 +158,8 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
-      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
+      "beforeSha256": "0e7eefbd29b9e1d81874560e3205e1e823938083a8a96f0005c5cbef3398b63e",
+      "afterSha256": "b0e1df4d619a0d6a14ea61c63fe0655163f96859e28cc1e6094a27cf202edb8c",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "188c7d628e4a0de3f9f59ac4525cb7785c56432a0e1ef01aaf7bf34c1d552600",
-      "afterSha256": "4c6ca0b43b9ade0538c840c657066e9297b3cba2c937a6ba77ad2d95e74e488a",
+      "beforeSha256": "2631aa06f6ad905e6d19a4e6daa0eeed9cd7ded606af650ed6e391aaf0f7cacc",
+      "afterSha256": "58efcced7b2855f2ae9588ce427eeafaddc56872e5eb7c3d657a0241b0ff91de",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "9c53a01901a28b5fdce699436b614b9daed71f8d73799e4a4a43b8f609e24d92",
-      "afterSha256": "bc22d0a7a2d033ce68ad0b912815f27c03937c71d0e6318dbc715f44099819b7",
+      "beforeSha256": "8f5c36eb7ad0fe3a39ac60aaaa0fe46fc39dfdf3bdf2e43d40dbb56b0608faa8",
+      "afterSha256": "d22763a9885d74ae0fbcdd6a9db667068c784052cf21a2159bf509ed4f4bb6e2",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -378,8 +378,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/index.html": {
-      "beforeSha256": "52622bc68faab740e720d0357d4c1bc3875e8a8b31c88417a4eb42202bb068fe",
-      "afterSha256": "e20706ac73cba7608fc5e0fa779da56b0537c605309457aada57bc354bcdb1c3",
+      "beforeSha256": "a74b9d6d19cba2d7cbbcb09105405aeccb8e73bd8bcc3c0840dfd4d04f1b0539",
+      "afterSha256": "464bbe1b085fac694dddcb1e5c1303e40d635b645398a72c3fc35ddbb24435b9",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/intro.html": {
@@ -2058,8 +2058,8 @@
       "placement": "before-head-close"
     },
     "laboratory/index.html": {
-      "beforeSha256": "9ef82fe240875f9a1c80e67e6a3bd88a71e6026dab44b658c3efb6528a6a02dd",
-      "afterSha256": "3c0800036541ff9c651da72e4d088a5117b1c8edb749e1ac831cb30de401a15a",
+      "beforeSha256": "d618a3473fab1e857625880e330fc8624e05be7c77fb2394391c189e8dee4825",
+      "afterSha256": "6fc6ae645fb991b0a07df846073377c3651f3d76d9eefd9774c42e8d3dda9e66",
       "placement": "before-head-close"
     },
     "oge/geometry/task-15-external-angle.html": {
@@ -2330,6 +2330,11 @@
     "trainers/ege-informatics-task15-logic-operations.html": {
       "beforeSha256": "4f31bf21dd3433798eaec0e821710cfffe4b58f12aba911c2f24372e27e3aca9",
       "afterSha256": "f9339bdef10f06b84cf8f930c12ca8253c1817ce25af17eee814f7e27bbb1740",
+      "placement": "before-head-close"
+    },
+    "trainers/ege-methods.html": {
+      "beforeSha256": "b595c3c16735748dda3f9b06f96b74c61bd5cafca9a3318f0ebe6b426c2362ab",
+      "afterSha256": "b022e850940939df5c05670167392f068ef87e71bbf9a1eb70ecebb17846a292",
       "placement": "before-head-close"
     },
     "trainers/ege-profile-task3-stereometry-catalog.html": {
@@ -3633,6 +3638,7 @@
     "trainers/ege-baza/index.html": "trainers/index.html",
     "trainers/ege-informatics-task1-graphs-trainer.html": "sitemap",
     "trainers/ege-informatics-task15-logic-operations.html": "sitemap",
+    "trainers/ege-methods.html": "sitemap",
     "trainers/ege-profile-task3-stereometry-catalog.html": "ege-profil/start/stereo-data.js",
     "trainers/ege-profile-vectors-trainer.html": "sitemap",
     "trainers/ege-profile/inequalities/index.html": "sitemap",
@@ -4979,10 +4985,48 @@
     },
     {
       "previousBaseSha": "46f757d28ee4ad10c76badf73c86749ae631e7bd",
-      "sourceBaseSha": "b46ada710eaa99adfd2d3db0ba106def4c9a1b4d",
-      "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
+      "sourceBaseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
+      "task": "docs/tasks/STRATEGY_FIRST_PRACTICE_20261114.md",
       "changedPaths": [
-        "articles/stroynost-kursa-geometrii/index.html"
+        "ege-profil/index.html",
+        "laboratory/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
+      "sourceBaseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+      "task": "docs/tasks/EGE_ESTIMATE_TRANSFER_REVIEW_20261114.md",
+      "changedPaths": [
+        "trainers/ege-methods.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+      "sourceBaseSha": "425527bdf0c38f7e1eb0bd1e472413c9d9aa0e7e",
+      "task": "docs/tasks/PROFILE_PARAMETER_PLANE_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/trainers/parameters-18/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "425527bdf0c38f7e1eb0bd1e472413c9d9aa0e7e",
+      "sourceBaseSha": "fba761d10082165bd32a296731e066574f7d3432",
+      "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fba761d10082165bd32a296731e066574f7d3432",
+      "sourceBaseSha": "ae7171a5e6d5681281c1b196dec2511b6208d4b0",
+      "task": "docs/tasks/PROFILE19_GRAPH_HANDOFF_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
@@ -5044,6 +5088,14 @@
         "stereo-course/sections/index.html"
       ],
       "reason": "New public sections course linked from the sitemap and course catalogue; include the existing navigator while preserving its reviewed teaching source."
+    },
+    {
+      "sourceBaseSha": "76a9181c104d0079ccaea5579ca3d262721aef06",
+      "task": "docs/tasks/STRATEGY_FIRST_PRACTICE_20261114.md",
+      "addedPages": [
+        "trainers/ege-methods.html"
+      ],
+      "reason": "Existing course added to the public sitemap with the shared navigator and a static worked example."
     }
   ]
 }

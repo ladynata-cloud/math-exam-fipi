@@ -30,6 +30,20 @@
   const examLink = n => site + catalog.examHref(n);
   const labels = { wrong: 'Ошибка', hint: 'Подсказка', correct: 'Верно', repeat: 'Начато повторение' };
   const date = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  const parameterGraphs = {
+    plateau: {
+      lesson: 'param-modules', title: 'Горизонтальный участок',
+      prompt: 'Поставьте горизонталь ниже участка, на его уровне и выше. Каждый раз сначала назовите число решений, затем откройте проверку.',
+      hints: ['Сравните уровень горизонтали с высотой участка. Включать ли саму границу?',
+        'При совпадении горизонтали с участком проверьте, какие его точки удовлетворяют уравнению.']
+    },
+    hole: {
+      lesson: 'param-hole', title: 'Выколотая точка',
+      prompt: 'Переместите горизонталь через выколотую точку и чуть выше. Предскажите, сколько пересечений в каждом случае, затем откройте проверку.',
+      hints: ['В своём условии выразите x через a и найдите, при каком уровне кандидат равен нулю.',
+        'Возьмите запрещённый x из исходного знаменателя и найдите соответствующий уровень горизонтали.']
+    }
+  };
 
   function statusOf(alphabetId, skillId) {
     const lesson = lessons[alphabetId][skillId];
@@ -135,7 +149,9 @@
     }
     const solved = record.attempts.at(-1) === true;
     const stage = record.phase ? (teacher ? 'Проверка после разбора' : 'Самопроверка') : (teacher ? 'Шаг для урока' : 'Учебный шаг');
-    const diagram = globalThis.ProfileAlphabetDiagram(current.diagram);
+    const diagram = current.diagram === 'parameter-plane' ?
+      '<div data-parameter-plane><p>Общая область лежит между a ≥ x² и a ≤ 1 − (x + 1)².</p></div>' :
+      globalThis.ProfileAlphabetDiagram(current.diagram);
     const support = !record.phase ? '<details class="az-support"><summary>Правило и пример</summary><p>' +
       lesson.rule + '</p><p>' + lesson.example + '</p></details>' : '';
     const message = solved ? 'Верно. ' + current.explanation : record.attempts.includes(false) ?
@@ -154,19 +170,26 @@
       '</div></form>' + support + '</section>';
   }
 
-  function renderSkill(alphabet, id) {
+  function renderSkill(alphabet, id, previousPlane) {
     const lesson = lessons[alphabet.id][id];
     const key = keyFor(alphabet.id, id);
     const record = store.read(key);
-    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1>' +
+    main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1' +
+      (lesson.reasoning ? ' class="az-skill-heading"' : '') + '>' +
       alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
-      exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' ?
-        '<section class="az-panel az-notes"><h2>Запиши обоснование</h2><label for="az-note">Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.</label>' +
+      exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' || lesson.reasoning ?
+        '<section class="az-panel az-notes"><h2>' + (lesson.reasoning ? 'Черновик обоснований' : 'Запиши обоснование') + '</h2><label for="az-note">' +
+        (lesson.reasoning?.[Math.min(record.phase, lesson.checks.length)] ||
+          'Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.') + '</label>' +
         '<textarea id="az-note" maxlength="4000">' + escape(record.note) + '</textarea><p>Запись сохраняется в браузере. Полное доказательство можно проверить с преподавателем.</p></section>' : '') +
       journal(record) + '</div><aside class="az-aside">' +
       modeLink(alphabet, id) + skillList(alphabet, id) + resources(alphabet) + '</aside></div>';
     const form = main.querySelector('#az-form');
     const input = main.querySelector('#az-answer');
+    const planePlaceholder = main.querySelector('[data-parameter-plane]');
+    const plane = planePlaceholder && (previousPlane || planePlaceholder);
+    if (planePlaceholder && previousPlane) planePlaceholder.replaceWith(previousPlane);
+    else if (plane) globalThis.ProfileParameterPlane?.mount(plane);
 
     function update(change, focus) {
       const latest = store.read(key);
@@ -174,7 +197,7 @@
         store.save(key, change(latest) ?? latest);
       }
       const open = main.querySelector('.az-support')?.open;
-      renderSkill(alphabet, id);
+      renderSkill(alphabet, id, plane);
       const detail = main.querySelector('.az-support');
       if (detail && open) detail.open = true;
       main.querySelector(focus)?.focus({ preventScroll: true });
@@ -222,7 +245,28 @@
     document.querySelector('#az-storage').hidden = store.available();
   }
 
+  function renderParameterGraph() {
+    const key = params.get('graph');
+    if (inCabinet || number !== 19 || !back || !Object.hasOwn(parameterGraphs, key) || !globalThis.ProfileFunctionAtlas) return false;
+    const graph = parameterGraphs[key];
+    const target = new URL(back, location.origin);
+    if (!['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(target.pathname)) return false;
+    const task = new RegExp('^#task/' + graph.lesson + '-[456]/independent$').test(target.hash);
+    if (!task && target.hash !== '#lesson/' + graph.lesson) return false;
+    const help = params.get('help');
+    const assisted = task && ['1', '2', '12'].includes(help);
+    const tips = assisted ? '<p class="az-hint">' + [...help].map(field => graph.hints[Number(field) - 1]).join(' ') + '</p>' : '';
+    const label = assisted ? 'Вернуться к своему условию' : task ? 'К самостоятельному условию' : 'К условиям темы';
+    main.innerHTML = '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' + examLink(19) +
+      '">← Задачи №19</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
+      tips + '<div data-az-atlas></div><div class="az-actions"><a class="az-button primary" href="' + escape(back) +
+      '">' + label + '</a><a href="' + escape(catalog.href('function-atlas', '', 19)) + '">Полный атлас функций</a></div>';
+    globalThis.ProfileFunctionAtlas.mount(main.querySelector('[data-az-atlas]'), key);
+    return true;
+  }
+
   function renderRoute(alphabet) {
+    if (alphabet.atlas && renderParameterGraph()) return;
     const nav = alphabet.route ? (() => {
       const ids = Object.keys(alphabet.skills);
       const done = ids.filter(id => statusOf(alphabet.id, id) === 'verified').length;

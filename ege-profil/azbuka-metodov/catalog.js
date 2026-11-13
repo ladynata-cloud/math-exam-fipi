@@ -144,13 +144,15 @@
         plateau: { title: 'Распознаю горизонтальный участок графика', numbers: [19] },
         hole: { title: 'Исключаю выколотую точку', numbers: [19] },
         tangent: { title: 'Проверяю касание прямой и окружности', numbers: [19] },
-        restore: { title: 'Возвращаюсь от замены к исходным решениям', numbers: [19] }
+        restore: { title: 'Возвращаюсь от замены к исходным решениям', numbers: [19] },
+        plane: { title: 'Нахожу параметры по общей области', numbers: [19] }
       },
       refs: [
         ['Прежний практикум по задачам с параметром', '/ege-profil/trainers/parameters-18/'],
         ['№19 · дискриминант и положительные корни', '/ege-profil/part-two/index.html#lesson/param-positive-roots'],
         ['№19 · модули и число решений', '/ege-profil/part-two/index.html#lesson/param-modules'],
-        ['№19 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent']
+        ['№19 · касание', '/ege-profil/part-two/index.html#lesson/param-tangent'],
+        ['№19 · системы', '/ege-profil/part-two/index.html#lesson/param-system']
       ]
     }
   ];
