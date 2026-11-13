@@ -7,11 +7,15 @@ on:
       - 'geometry-course/trainers/**'
       - 'geometry-course/textbook/assets/grade7-board*'
       - 'trainers/geometry7*'
+      - 'trainers/geometry-7/control-work*'
+      - 'trainers/geometry-7/control-work-gifs/**'
       - 'trainers/atanasyan-grade7.html'
       - 'trainers/board-*'
       - 'ege-baza/path/board-session.js'
       - 'learning/app.js'
       - 'tools/geometry7-shared-board*'
+      - 'tools/geometry7-control-*'
+      - 'tools/build-geometry7-control-gifs.py'
       - '.github/workflows/geometry7-shared-board.yml'
   push:
     branches: [main]
@@ -21,8 +25,12 @@ on:
       - 'geometry-course/trainers/**'
       - 'geometry-course/textbook/assets/grade7-board*'
       - 'trainers/geometry7*'
+      - 'trainers/geometry-7/control-work*'
+      - 'trainers/geometry-7/control-work-gifs/**'
       - 'trainers/atanasyan-grade7.html'
       - 'tools/geometry7-shared-board*'
+      - 'tools/geometry7-control-*'
+      - 'tools/build-geometry7-control-gifs.py'
       - '.github/workflows/geometry7-shared-board.yml'
 permissions:
   contents: read
@@ -61,6 +69,8 @@ jobs:
         env:
           GEOMETRY7_OUTPUT: ${{ runner.temp }}/g7-evidence/proofs
         run: node tools/geometry7-shared-board-deep.browser.cjs
+      - name: Control work, written solutions and 16 GIF demonstrations
+        run: node tools/geometry7-control-written.browser.cjs
       - name: Real rooms, roles, late join, reload and transport reconnect
         env:
           EGE_BAZA_BOARD_SHOTS: ${{ runner.temp }}/g7-evidence/rooms

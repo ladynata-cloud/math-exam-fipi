@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "47d0d9a001aa1dc307abb66a7ce026a24c54309d",
+  "baseSha": "3ee5a38417a742bbe9419bd371c000642ecc098d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -158,8 +158,8 @@
       "placement": "before-head-close"
     },
     "articles/stroynost-kursa-geometrii/index.html": {
-      "beforeSha256": "3278b827b0dfe59143e3276e7343829bc21b3b73be0cee92bed098492fd00afe",
-      "afterSha256": "fe9ecd871cfc4e87ef17426284ed2c5882583f1afcd2f7edf1b4772f2a5c7d3e",
+      "beforeSha256": "0e7eefbd29b9e1d81874560e3205e1e823938083a8a96f0005c5cbef3398b63e",
+      "afterSha256": "b0e1df4d619a0d6a14ea61c63fe0655163f96859e28cc1e6094a27cf202edb8c",
       "placement": "before-head-close"
     },
     "azbuka-postroeniy-reviewed/index.html": {
@@ -213,33 +213,33 @@
       "placement": "before-head-close"
     },
     "ege-baza/algebra/index.html": {
-      "beforeSha256": "175a53a85843dea5b73b8fecdbfb4de7e50cda9cc0173392ae356f6add1957f7",
-      "afterSha256": "284405d56cb59ee04e6806a93bccb51816095fb5542778bdc3ab77d70e331332",
+      "beforeSha256": "da427d8a6509ee836ec92088ae57eaa5fa81ee897f45ae23606dff36b945553d",
+      "afterSha256": "c698139941b26bbe662ae91ebd53762e62ef6a8eaf9c64205868852e4e472ffd",
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "fff956e1ce378657a850ee966b96e79499bf1afb77478f109e3972567981ce50",
-      "afterSha256": "daed19c45fc66826d432f957e09864ea202c3a21dc998a82874d592fea583fc0",
+      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
+      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
-      "beforeSha256": "4ff40659195f1a14d7758c7734ed26642cfc917e05537bf2324ca0184319448d",
-      "afterSha256": "31f09bff616124552d0a8891d259c0c2e7c29095d5b891d2bb3715b8ad71d92e",
+      "beforeSha256": "736645083dddfef4acae86a6de986faefea95f39b505f8615516ad3b2c5ea2c2",
+      "afterSha256": "6fdf49f74348b353d12f000cc4ab9f0f36c91544c95cf3257377288e5a57346f",
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "b012371e5c188df68f63d3748499ca739e594e0413de694f9ebcd884baf34125",
-      "afterSha256": "0ea6757c092c4bd3e55f6ff55363ee9329d12396b5f020919853c166d41749de",
+      "beforeSha256": "313ce9ed1c3b62e9083a7a09afb94188f3a11286910894f268d1d470e2ddba71",
+      "afterSha256": "f449fccc24d95724eee89f4b9ec54fd8418201fbdb2bb90f889e6a6b3833ba15",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
-      "beforeSha256": "f82728688cd8f6446796a8b601719d4b20cff807f58fc31a9d760c68947036fd",
-      "afterSha256": "ada7d19ab80e64f1c60409d40d44b7adfff98f1de64f899e692e9bad6a66ef47",
+      "beforeSha256": "399c57c29db9632ae86dad4effa38a943235fd0c574cf1aa0e1b39ab454c9954",
+      "afterSha256": "049af422ba5ee240392ebe15fa9ed36543220b08e19ad887d5b2601aebeaf93a",
       "placement": "before-head-close"
     },
     "ege-baza/reasoning/index.html": {
-      "beforeSha256": "9119272fceed5612b78d8dc32659da423d5d405fbc39f91e8b9e73c252af46f4",
-      "afterSha256": "9a2914f31df1c8651d670a1f1cc3d1ea6a18e3c25b18a8a0f8dfae1dcc199d50",
+      "beforeSha256": "deb9ff1291a57b82b976851885926622898eaea90060bd4e2ecaaf54f4ac9f8f",
+      "afterSha256": "e1e212cfc4a69355f51cca963c9ee6c84eb38e4d24cc8b442c2c0f853f282129",
       "placement": "before-head-close"
     },
     "ege-baza/reference/exam.html": {
@@ -268,8 +268,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/work-rate/index.html": {
-      "beforeSha256": "926e3519efaed399b63178d9c26ecc31197d46e9343bf1a2a3cb46d6a9325221",
-      "afterSha256": "ddca2da545ef534d13bffa32fba6fe593b98e38deb886d5c659696295745805e",
+      "beforeSha256": "53d27235ef38257a170be96e5af9274610459762632435d250263f95a6583694",
+      "afterSha256": "2405fc327fccf4df639459e8f899f4ea437acf06ca56fcce0dd6bce5ec0f59ab",
       "placement": "before-head-close"
     },
     "ege-profil/atanasyan-10-11/index.html": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "6e28c3feb1da7db5750d188a913240a7d17a8df9f8c03410721ed582b927f909",
-      "afterSha256": "784104b548dc007adc2febcf19e0f67822bc452d0d56e568d00bc8763e416e29",
+      "beforeSha256": "70fb2c9c037e7585701e573dbe91b24869887665320ec30dd76b569467c5c312",
+      "afterSha256": "5ac94e8e45dad92c1bea85495a762ce8872a7e68a9bf8a7e593262861eb39452",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "6a278d658cd97806ebc158c6277ecee7c60b36a909f2e99d2259388fe3139125",
-      "afterSha256": "51c2316f703813cb68a4c811b60c82c398405902746745f0b71db711c6e2f583",
+      "beforeSha256": "41b68ef8c5b03b484e82fe391bdc368dfb694cb6410571e1a222b955815fd8d3",
+      "afterSha256": "3837ad11e1c3ff52792d7681f006d8d43ab69653a36e13db7e4e3e4049e35b8a",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "a93d3eeb5cdf90b0bb19d3a26c47d0dc6a88bb8e818cb93a632277a18943b97c",
-      "afterSha256": "987ce5124d36042cbc4f774c7dc38fdd3b086956fc722543e56b2f50063bd562",
+      "beforeSha256": "3d676bcfb507ea563899065abbc2af4fb80801e24d64981892856dfa03e6c853",
+      "afterSha256": "f2ef3521cdfe7e5ae028e8532ba071cd96411164ce696afbc661800fb0fe67c6",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -428,8 +428,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html": {
-      "beforeSha256": "a80ff723142162a28b02d8a2e3857ede6c1cd27e1bdf1bf6b0a74a302fb4ad0d",
-      "afterSha256": "80a31d3a8d1cd9147cb7e0e31737fa4c5053036fdbe2978dace03e52ccee78ba",
+      "beforeSha256": "4209c3070572d66c79889abcbf38a5fc7f447b2a96ac7059c170973ddafa8f70",
+      "afterSha256": "9662edd1321c26d25b3e868e61d53f2197d2fb2a7f46dfecae7315f1fbe8b9a5",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/stereo-t14.html": {
@@ -458,13 +458,13 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "ff09dcd4264d177e140d8dcaf002659860472534679d26894db715f549ac845f",
-      "afterSha256": "a15be0b8d2e643b9f1afba58f6d506d2aec57717351bf02cc9fb44ca933937e5",
+      "beforeSha256": "71f43dd86b8de63318e88b03c9ce379887e62894a3ba39471ba06f1d0bc77411",
+      "afterSha256": "cfb9ea59a742782708a6539949bcb1c35dd0dc970e126ce15c5a7b897cba41e7",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "a2fe1de390d3d281cf32f54631f90f5a07a36e6fcfa8f71a4bc81de3a975971a",
-      "afterSha256": "4b11dd731c1e5ca088686cd80289b51c3d19e59994d5233f6e656f973b9f185a",
+      "beforeSha256": "04502a2a84d37f1f8a1fe7aa3fd09bada51af3017f858e5e148ae0a848dcf96f",
+      "afterSha256": "1843d78a41342116f3024254ccbdf7769e4ed9a3ad08b7e1be7b9f7ae3810338",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -2308,18 +2308,18 @@
       "placement": "before-head-close"
     },
     "trainers/ege-baza/course/index.html": {
-      "beforeSha256": "532b0b392b13df8a861d3fdee9cdb7ae703a4ad80339e2a7f90a029045209e57",
-      "afterSha256": "19f85d9e6180b4bd83750ffab54e216ea809b4695a1aab29e814184d74c263e5",
+      "beforeSha256": "05e2b1d5de7dc2044456f47dcd958e59b27bcf12a8dfccd3a496b0d0734bd4d5",
+      "afterSha256": "95226cb8e9908fdab9d35c2cab5e77610e384f5195b09dad1d3c55b63b54baea",
       "placement": "before-head-close"
     },
     "trainers/ege-baza/data-course/index.html": {
-      "beforeSha256": "37cee0d1cdee1457bf7debcde7fe356ea2c34a97fd4b65319bc36777dafdd3f8",
-      "afterSha256": "3c3053a7ec4d79dd6656073560f6fd2ad7f389203888ac1e8459969d0e655e65",
+      "beforeSha256": "b248b56aea2b1cecc96635848e4c96f59466aea4bcafbb51874ccaaae7b0f223",
+      "afterSha256": "ba2774600f98e928bd3c47cc6e1b8afeee980cfe70dc6d313d77895ea10ebc49",
       "placement": "before-head-close"
     },
     "trainers/ege-baza/index.html": {
-      "beforeSha256": "9e4f5acaf4742bd0593bd38a7043da4d409aa0b1b18b5acdc009b99a45087a05",
-      "afterSha256": "71666e6766807bbfaa76fa9cd74311afe080e4ffa82bf3034a7dabba29e870ca",
+      "beforeSha256": "8a35d0833a34b258a77b3c7fd16064b42ae28503b26950e29cd1be40b3c8671e",
+      "afterSha256": "5e6a241e6930c5cad1a4ef28cc23850f26519a9587e3c129a293aadec83ef82d",
       "placement": "before-head-close"
     },
     "trainers/ege-informatics-task1-graphs-trainer.html": {
@@ -4886,10 +4886,65 @@
     },
     {
       "previousBaseSha": "71eaf2335aabf8b56ede1c529c581684e1f52755",
-      "sourceBaseSha": "47d0d9a001aa1dc307abb66a7ce026a24c54309d",
-      "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
+      "sourceBaseSha": "c2c74298737c847bdc83dd220ecfa1c15d007cd9",
+      "task": "docs/tasks/EGE_TREASURE_CAVE_20261112.md",
       "changedPaths": [
-        "articles/stroynost-kursa-geometrii/index.html"
+        "ege-baza/index.html",
+        "ege-profil/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "c2c74298737c847bdc83dd220ecfa1c15d007cd9",
+      "sourceBaseSha": "2c061cd0ba9249adafd1a1547c2e6d31d5233fe8",
+      "task": "docs/tasks/EGE_BASE_SELF_CHECKS_CURRENT_20261113.md",
+      "changedPaths": [
+        "ege-baza/algebra/index.html",
+        "ege-baza/index.html",
+        "ege-baza/labs/index.html",
+        "ege-baza/path/index.html",
+        "ege-baza/percent/index.html",
+        "ege-baza/reasoning/index.html",
+        "ege-baza/work-rate/index.html",
+        "trainers/ege-baza/course/index.html",
+        "trainers/ege-baza/data-course/index.html",
+        "trainers/ege-baza/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "2c061cd0ba9249adafd1a1547c2e6d31d5233fe8",
+      "sourceBaseSha": "aef959aa692a92f6a5b68213f91e65fb48d99129",
+      "task": "docs/tasks/PROFILE_ALPHABETS_CLOCKWORK_20261113.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "aef959aa692a92f6a5b68213f91e65fb48d99129",
+      "sourceBaseSha": "fe3762b0a8df64411ef63a1221eebb3f130bece2",
+      "task": "docs/tasks/PROFILE_FOUNDATIONS_LABELS_20261113.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fe3762b0a8df64411ef63a1221eebb3f130bece2",
+      "sourceBaseSha": "3ee5a38417a742bbe9419bd371c000642ecc098d",
+      "task": "docs/tasks/EGE_ESTIMATE_AND_EXAMPLE_20261113.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-profil/index.html",
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

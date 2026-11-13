@@ -12,7 +12,7 @@ for(const file of ['data','practice','equation-practice','task-hints']){
 }
 const D=context.PathData,H=context.PathTaskHints;
 const ids=Array.from(D.meta,m=>m.id);
-assert.equal(ids.length,111,'the existing EGE catalogue remains 111 families');
+assert.equal(ids.length,113,'the EGE catalogue contains 113 families');
 assert.deepEqual(Array.from(H.familyIds).sort(),ids.slice().sort(),'every existing family has authored hints');
 
 function freeze(value){
@@ -154,3 +154,30 @@ assert.match(signedEquation.steps[1].q,/Вычти \([-−]3\)/);
 assert.match(signedEquation.steps[1].why,/− \([-−]3\)/);
 
 console.log(`Concrete EGE hints: ${ids.length} families, ${checked} step variants, max ${longest} characters; no answer dependencies or task mutations; ${concreteScaffolds} concrete algebra scaffolds.`);
+
+const mapContext={};
+mapContext.globalThis=mapContext;
+vm.createContext(mapContext);
+for(const file of ['path/data','path/practice','path/equation-practice','skill-map-data']){
+ const name=path.join(__dirname,'../ege-baza',file+'.js');
+ vm.runInContext(fs.readFileSync(name,'utf8'),mapContext,{filename:name});
+}
+const mapData=mapContext.EgeBazaSkillMaps;
+const mapBank=mapContext.PathData;
+const familyMaps=mapData.all();
+assert.equal(familyMaps.length,113);
+assert.deepEqual(Array.from(familyMaps,m=>m.id).sort(),Array.from(mapBank.meta,m=>m.id).sort());
+const questions=new Set();
+for(const map of familyMaps){
+ assert(map.skills.length>=3&&map.skills.length<=8,map.id+' focused route');
+ assert(map.selfCheck?.question&&map.selfCheck.explanation,map.id+' authored self-check');
+ assert(Number.isFinite(mapBank.parse(map.selfCheck.answer)),map.id+' numeric key');
+ questions.add(map.selfCheck.question);
+ for(const node of map.skills)assert(node&&node.practiceIds.every(id=>mapData.forLesson(id)),map.id+' verified practice');
+ for(const next of map.next)assert(mapData.forLesson(next.id),map.id+' verified next lesson');
+}
+assert.equal(questions.size,113,'distinct self-checks');
+assert.deepEqual(Array.from(mapData.forLesson('practice-work').skills,x=>x.id),['unit-work','fraction-sum','joint-rate','work-time']);
+assert(!mapData.forLesson('functions').skills.some(skill=>skill.practiceIds.includes('functions')),'mixed-family answer does not stand in for both branches');
+assert(mapData.forLesson('motion').skills.some(skill=>skill.id==='total-distance'));
+assert.deepEqual(Array.from(mapData.forLesson('practice-inequality-match').skills,x=>x.id),['inequality-sign','fraction-domain','interval-signs','interval-ends']);

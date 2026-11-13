@@ -8,7 +8,7 @@ const { chromium } = require('playwright');
 
 const root = path.resolve(__dirname, '..');
 const pagePath = '/trainers/geometry-7/control-work.html';
-const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
+const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.gif': 'image/gif', '.webp': 'image/webp' };
 const storageKey = 'geometry7-control-written-v1';
 
 function serve(req, res) {
@@ -57,6 +57,33 @@ async function addPoint(page, name, x, y, touch = false) {
 
 async function assertFit(page) {
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
+}
+
+async function verifyDemo(page, id) {
+  const demo = page.locator(`[data-demo="${id}"]`);
+  const summary = demo.locator('summary');
+  const image = demo.locator('img');
+  const button = demo.locator('[data-demo-toggle]');
+  const loaded = extension => page.waitForFunction(({ id, extension }) => {
+    const img = document.querySelector(`[data-demo="${id}"] img`);
+    return img?.getAttribute('src')?.endsWith(`/${id}.${extension}`) &&
+      img.complete && img.naturalWidth === 640 && img.naturalHeight === 428;
+  }, { id, extension });
+
+  assert.equal(await image.getAttribute('src'), null);
+  await summary.click();
+  await image.scrollIntoViewIfNeeded();
+  await loaded('webp');
+  assert(await demo.locator('.demo-steps li').count() >= 3);
+  assert.equal(await button.getAttribute('aria-pressed'), 'false');
+  await button.click();
+  await loaded('gif');
+  assert.equal(await button.getAttribute('aria-pressed'), 'true');
+  await assertFit(page);
+  await button.click();
+  await loaded('webp');
+  await summary.click();
+  await page.waitForFunction(id => !document.querySelector(`[data-demo="${id}"] img`).hasAttribute('src'), id);
 }
 
 async function oldModes(page, url) {
@@ -116,9 +143,17 @@ async function reviewTasks(page) {
       assert(await page.locator('#written-given').isVisible());
       assert(await page.getByLabel(variant === 2 && number === 5 ? 'Доказать' : 'Найти', { exact: true }).isVisible());
       assert(await page.getByLabel(variant === 2 && number === 5 ? 'Доказательство' : 'Решение', { exact: true }).isVisible());
+      await verifyDemo(page, `${variant}-${number}`);
       await assertFit(page);
     }
   }
+  await verifyDemo(page, 'proof-format');
+  await selectVariant(page, 1);
+  await verifyDemo(page, 'format');
+  const tools = page.locator('[data-written-panel="tool-demos"]');
+  await tools.locator(':scope > summary').click();
+  for (const id of ['tool-segment', 'tool-intersection', 'tool-arc', 'tool-tick']) await verifyDemo(page, id);
+  await tools.locator(':scope > summary').click();
 }
 
 async function adjacentDrawing(page, url) {
@@ -248,6 +283,9 @@ async function mobile(browser, url) {
     assert.equal(await surface(page).locator('.drawing-point').count(), 2);
     await page.locator('#written-work').getByRole('button', { name: 'Следующая задача →', exact: true }).click();
     assert.match(await page.locator('#written-title').textContent(), /^№2/);
+    const tools = page.locator('[data-written-panel="tool-demos"]');
+    await tools.locator(':scope > summary').tap();
+    await verifyDemo(page, 'tool-arc');
     await assertFit(page);
   } finally {
     await page.close();
@@ -297,7 +335,7 @@ async function storageUnavailable(browser, url) {
     await mobile(browser, url);
     await storageUnavailable(browser, url);
     assert.deepEqual(errors, []);
-    console.log('GEOMETRY7_WRITTEN_SOLUTION_PASS · 10 задач · Chromium 1280×900 и 320×900');
+    console.log('GEOMETRY7_WRITTEN_SOLUTION_PASS · 10 задач, 16 GIF · Chromium 1280×900 и 320×900');
   } finally {
     await browser?.close();
     server.close();

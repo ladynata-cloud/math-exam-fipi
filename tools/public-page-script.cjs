@@ -53,9 +53,10 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../skill-map.js?v=20261111-skills',
-    'journey.js?v=20261112-vectors', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
-    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261112-vectors',
+  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../azbuka-metodov/catalog.js?v=20261113',
+    '../skill-map.js?v=20261113-foundations',
+    'journey.js?v=20261113-foundations', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
+    'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261113-foundations',
     'vector-basics-models.js?v=20261112-vectors'];
   const pathname = src => new URL(src, 'https://mathexam.space/ege-profil/start/index.html').pathname;
   const publicPaths = new Set(publicModules.map(pathname));
@@ -69,8 +70,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const cacheStamps = new Map([
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
-    ['calm-ui.js?v=20261112-vectors', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261112-vectors', 'app.js?v=20261101-trainer-repair'],
+    ['calm-ui.js?v=20261113-foundations', 'calm-ui.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261113-foundations', 'app.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())

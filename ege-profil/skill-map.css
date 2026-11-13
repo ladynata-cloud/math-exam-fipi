@@ -213,3 +213,14 @@
   .profile-skill-dialog .profile-skill-button { padding-inline: 9px; }
   .profile-skill-route, .profile-skill-challenge { padding: 12px; }
 }
+
+.profile-skill-alphabets {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #dce4f3;
+}
+
+.profile-skill-alphabet-group + .profile-skill-alphabet-group { margin-top: 9px; }
+.profile-skill-alphabet-group ul { margin: 3px 0 0; padding-left: 18px; }
+.profile-skill-alphabet-group li { margin-top: 5px; }
+.profile-skill-alphabet-group a { color: #294e9c; text-underline-offset: 3px; }
