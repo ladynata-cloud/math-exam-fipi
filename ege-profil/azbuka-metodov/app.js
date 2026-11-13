@@ -30,6 +30,20 @@
   const examLink = n => site + catalog.examHref(n);
   const labels = { wrong: 'Ошибка', hint: 'Подсказка', correct: 'Верно', repeat: 'Начато повторение' };
   const date = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+  const parameterGraphs = {
+    plateau: {
+      lesson: 'param-modules', title: 'Горизонтальный участок',
+      prompt: 'Поставьте горизонталь ниже участка, на его уровне и выше. Каждый раз сначала назовите число решений, затем откройте проверку.',
+      hints: ['Сравните уровень горизонтали с высотой участка. Включать ли саму границу?',
+        'При совпадении горизонтали с участком проверьте, какие его точки удовлетворяют уравнению.']
+    },
+    hole: {
+      lesson: 'param-hole', title: 'Выколотая точка',
+      prompt: 'Переместите горизонталь через выколотую точку и чуть выше. Предскажите, сколько пересечений в каждом случае, затем откройте проверку.',
+      hints: ['В своём условии выразите x через a и найдите, при каком уровне кандидат равен нулю.',
+        'Возьмите запрещённый x из исходного знаменателя и найдите соответствующий уровень горизонтали.']
+    }
+  };
 
   function statusOf(alphabetId, skillId) {
     const lesson = lessons[alphabetId][skillId];
@@ -222,7 +236,28 @@
     document.querySelector('#az-storage').hidden = store.available();
   }
 
+  function renderParameterGraph() {
+    const key = params.get('graph');
+    if (inCabinet || number !== 19 || !back || !Object.hasOwn(parameterGraphs, key) || !globalThis.ProfileFunctionAtlas) return false;
+    const graph = parameterGraphs[key];
+    const target = new URL(back, location.origin);
+    if (!['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(target.pathname)) return false;
+    const task = new RegExp('^#task/' + graph.lesson + '-[456]/independent$').test(target.hash);
+    if (!task && target.hash !== '#lesson/' + graph.lesson) return false;
+    const help = params.get('help');
+    const assisted = task && ['1', '2', '12'].includes(help);
+    const tips = assisted ? '<p class="az-hint">' + [...help].map(field => graph.hints[Number(field) - 1]).join(' ') + '</p>' : '';
+    const label = assisted ? 'Вернуться к своему условию' : task ? 'К самостоятельному условию' : 'К условиям темы';
+    main.innerHTML = '<nav class="az-navigation" aria-label="Навигация по теме"><a href="' + examLink(19) +
+      '">← Задачи №19</a></nav><h1>' + graph.title + '</h1><p class="az-lead">' + graph.prompt + '</p>' +
+      tips + '<div data-az-atlas></div><div class="az-actions"><a class="az-button primary" href="' + escape(back) +
+      '">' + label + '</a><a href="' + escape(catalog.href('function-atlas', '', 19)) + '">Полный атлас функций</a></div>';
+    globalThis.ProfileFunctionAtlas.mount(main.querySelector('[data-az-atlas]'), key);
+    return true;
+  }
+
   function renderRoute(alphabet) {
+    if (alphabet.atlas && renderParameterGraph()) return;
     const nav = alphabet.route ? (() => {
       const ids = Object.keys(alphabet.skills);
       const done = ids.filter(id => statusOf(alphabet.id, id) === 'verified').length;
