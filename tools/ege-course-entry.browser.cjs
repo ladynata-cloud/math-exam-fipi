@@ -117,9 +117,13 @@ async function checkProfileClock(page, width) {
  await links.last().focus();
  await page.keyboard.press('Tab');
  assert.equal(await page.evaluate(() => document.activeElement.getAttribute('href')), clockCourses[0], 'extra courses follow exam tasks by keyboard');
- const alphabetLinks = workshop.getByRole('navigation', {name:'Основы и методы в часовом механизме'}).getByRole('link');
- assert.equal(await alphabetLinks.count(), 8);
+ const alphabetNav = workshop.getByRole('navigation', {name:'Основы и методы в часовом механизме'});
+ const alphabetLinks = alphabetNav.getByRole('link');
+ assert.equal(await alphabetLinks.count(), 11);
  assert(await alphabetLinks.evaluateAll(links => links.every(link => link.getBoundingClientRect().height >= 44)));
+ for(const name of ['Метод координат в стереометрии','Функции и графики для задач с параметром','Методы решения задач с параметром']){
+  assert.equal(await alphabetNav.getByRole('link',{name,exact:true}).count(),1);
+ }
  await workshop.getByRole('link', {name:/^№16 ·/}).focus();
  assert.equal(await workshop.getByRole('link', {name:'Основы для №16'}).getAttribute('href'), '/ege-profil/azbuka-metodov/?exam=16');
 
@@ -179,6 +183,50 @@ async function checkAlphabetReturn(page, origin) {
  await page.getByRole('heading', {name:'Самостоятельная проверка пройдена'}).waitFor();
 }
 
+async function checkExamFoundations(page, origin) {
+ const partTwo = origin + '/ege-profil/part-two/index.html';
+ const methods = origin + '/ege-profil/azbuka-metodov/';
+ const answer = async value => {
+  await page.locator('#az-answer').fill(value);
+  await page.getByRole('button', {name:'Проверить',exact:true}).click();
+ };
+ await page.evaluate(() => localStorage.removeItem('mathexam.profile-alphabets.v1.coordinate-method/axes'));
+ await page.goto(partTwo + '#task/p2-15-line-plane-1/guided');
+ await page.locator('#step-answer').fill('24601');
+ await page.getByRole('button',{name:'Карта навыков'}).click();
+ await page.getByRole('link',{name:'Выбираю оси и читаю координаты'}).click();
+ await page.getByRole('heading',{name:'Выбираю оси и читаю координаты'}).waitFor();
+ assert.equal(await page.getByRole('img',{name:/Из вершины O/}).count(),1);
+ await answer('3; 2; 4');
+ await page.getByRole('button',{name:'Проверить себя на новом условии'}).click();
+ await page.locator('#az-answer').fill('5; 0');
+ await page.reload();
+ assert.equal(await page.locator('#az-answer').inputValue(),'5; 0');
+ await answer('(5; 0; 2)');
+ await page.getByRole('button',{name:'Завершить',exact:true}).click();
+ await page.getByRole('heading',{name:'Самостоятельная проверка пройдена'}).waitFor();
+ assert.match(await page.getByRole('link',{name:'Следующий шаг'}).getAttribute('href'),/#\/coordinate-method\/vector$/);
+ await page.getByRole('link',{name:'Вернуться к исходному заданию'}).click();
+ assert.equal(await page.locator('#step-answer').inputValue(),'24601');
+ await page.goto(methods + '#/function-atlas');
+ await page.getByRole('combobox',{name:'Функция'}).selectOption('hole');
+ assert.equal(await page.locator('.az-atlas select option').count(),25);
+ assert.equal(await page.locator('.atlas-open').count(),1);
+ await page.getByText('Проверить число решений',{exact:true}).click();
+ assert.match(await page.locator('.az-atlas-count').textContent(),/равно 0/);
+ await page.getByRole('combobox',{name:'Функция'}).selectOption('plateau');
+ assert.equal(await page.locator('.az-atlas details').evaluate(node=>node.open),false);
+ await page.getByText('Проверить число решений',{exact:true}).click();
+ assert.match(await page.locator('.az-atlas-count').textContent(),/бесконечно/);
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+ await page.goto(partTwo + '#exam/19');
+ const route = page.getByRole('link',{name:'Функции и графики для задач с параметром',exact:true});
+ assert.match(await route.getAttribute('href'),/#\/function-atlas$/);
+ await page.getByRole('button',{name:'Карта навыков'}).click();
+ const link = page.getByRole('link',{name:'Исключаю выколотую точку'});
+ assert.match(await link.getAttribute('href'),/#\/parameter-methods\/hole$/);
+}
+
 (async()=>{let browser;try{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});
@@ -193,6 +241,7 @@ async function checkAlphabetReturn(page, origin) {
    if(course==='ege-profil'){
     await checkProfileClock(page, width);
     await checkAlphabetReturn(page, origin);
+    await checkExamFoundations(page, origin);
     await page.goto(origin+'/ege-profil/');
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.
