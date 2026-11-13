@@ -168,10 +168,12 @@ test('parameter-plane prediction, written reasoning and an independent check wor
   check('[0;1]');
   click('[data-advance]');
   assert.equal(d.querySelector('[data-parameter-plane]'), null);
+  assert.match(d.querySelector('label[for=az-note]').textContent, /какая граница входит/);
   check('[0;2]');
   assert.match(d.querySelector('#az-feedback').textContent, /Пока не сходится/);
   check('(0;2]');
   click('[data-advance]');
+  assert.match(d.querySelector('label[for=az-note]').textContent, /только одна пара/);
   check('a = 1');
   click('[data-advance]');
   const saved = JSON.parse(w.localStorage.getItem(engine.storageKey + 'parameter-methods/plane'));

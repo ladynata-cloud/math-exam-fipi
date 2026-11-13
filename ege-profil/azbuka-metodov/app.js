@@ -163,8 +163,9 @@
     main.innerHTML = returnLinks(alphabet) + '<p class="az-kicker">' + alphabet.short + '</p><h1>' +
       alphabet.skills[id].title + '</h1><div class="az-grid"><div class="az-work">' +
       exerciseMarkup(record, lesson, alphabet, id) + (teacher || alphabet.id === 'written-solution' || lesson.reasoning ?
-        '<section class="az-panel az-notes"><h2>Запиши обоснование</h2><label for="az-note">' +
-        (lesson.reasoning || 'Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.') + '</label>' +
+        '<section class="az-panel az-notes"><h2>' + (lesson.reasoning ? 'Черновик обоснований' : 'Запиши обоснование') + '</h2><label for="az-note">' +
+        (lesson.reasoning?.[Math.min(record.phase, lesson.checks.length)] ||
+          'Запиши свой ход рассуждений. Затем сверь существенный шаг с разбором.') + '</label>' +
         '<textarea id="az-note" maxlength="4000">' + escape(record.note) + '</textarea><p>Запись сохраняется в браузере. Полное доказательство можно проверить с преподавателем.</p></section>' : '') +
       journal(record) + '</div><aside class="az-aside">' +
       modeLink(alphabet, id) + skillList(alphabet, id) + resources(alphabet) + '</aside></div>';

@@ -50,12 +50,12 @@
       `<path class="plane-upper" d="M${point(-1.5, upper(-1.5))} ${arc(upper, -1.5, 0.5)}"/>` +
       `<line x1="${left}" x2="${right}" class="atlas-level" data-plane-level/>` +
       '<g data-plane-slice></g></g>' +
-      `<text x="${xPixel(-0.78)}" y="${yPixel(lower(-0.78)) + 14}">1</text>` +
+      `<text x="${xPixel(-1.12)}" y="${yPixel(lower(-1.12)) - 7}">1</text>` +
       `<text x="${xPixel(-1.25)}" y="${yPixel(upper(-1.25)) - 8}">2</text>`;
   }
 
   function mount(container) {
-    container.innerHTML = '<div class="az-parameter-plane"><p>Заливка — общая область двух неравенств.</p>' +
+    container.innerHTML = '<div class="az-parameter-plane"><p>Сдвинь горизонталь. Заливка — общая область.</p>' +
       `<svg viewBox="0 0 290 280" role="img">${drawing()}</svg>` +
       '<p class="plane-legend"><span class="plane-lower">1. a ≥ x²</span><span class="plane-upper">2. a ≤ 1 − (x + 1)²</span></p>' +
       '<label for="az-plane-level">Уровень a = <output for="az-plane-level"></output></label>' +
