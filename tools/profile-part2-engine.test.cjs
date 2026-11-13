@@ -102,3 +102,49 @@ test('correct guided step is saved even when learner immediately leaves the task
  input(w,'step-answer',task.steps[0].answers[0]);w.document.getElementById('step-form').dispatchEvent(new w.Event('submit',{cancelable:true}));w.location.hash='map';await w.ProfilePartTwoApp.render();await settle(w);
  assert.equal(w.ProfilePartTwoApp.store.read(task.id).solvedSteps.length,1);assert.match(w.document.querySelector('h1').textContent,/Вторая часть/);w.close();
 });
+
+test('all six parameter methods reveal proof criteria only after an answer submission and a written argument',async()=>{
+ const dom=await boot(),w=dom.window,d=w.document;
+ w.scrollTo=()=>{};
+ for(const lesson of bank.filter(l=>l.exam===19)){
+  const task=lesson.tasks[3];
+  await go(w,'task/'+task.id+'/independent');
+  const review=d.getElementById('proof-review');
+  assert(review.hidden,lesson.id);
+  input(w,'proof-draft','Мой первый довод.');
+  await submit(w,'final-form');
+  assert(review.hidden,'a blank submission is not an attempt');
+  task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+  await submit(w,'final-form');
+  assert(!review.hidden,lesson.id+' unlocks after a wrong answer');
+  assert.equal(review.querySelectorAll('[data-proof-check]').length,task.proof.criteria.length);
+  assert.equal(review.querySelectorAll('details[data-proof-help]').length,task.proof.criteria.length+1);
+  assert.match(review.querySelector('#proof-skill').getAttribute('href'),/#\/parameter-methods\//);
+  review.open=true;
+  review.querySelector('[data-proof-check]').click();
+  await settle(w);
+  const r=w.ProfilePartTwoApp.store.read(task.id);
+  assert.deepEqual(Array.from(r.proofChecks),[0]);
+  assert.equal(r.completed,false);
+  assert.equal(r.helped,false);
+ }
+ w.close();
+});
+
+test('earlier №19 draft, proof marks and independently accepted answers are retained',async()=>{
+ const task=bank.find(l=>l.id==='param-hole').tasks[3],storage=memory(),state=api.create(storage);
+ const answers=task.final.map(field=>String(field.answers[0]));
+ await state.patch(task.id,r=>{r.drafts.final=answers;r.drafts.proof='Старый довод о знаменателе.';r.proofChecks=[0,3];});
+ await state.attempt(task.id,{kind:'final',answers,correct:true,mode:'independent',independentEligible:true});
+ const key=state.key(task.id),saved=storage.getItem(key),dom=await boot('task/'+task.id+'/independent',[[key,saved]]),w=dom.window,d=w.document;
+ assert.equal(w.localStorage.getItem(key),saved,'viewing an existing record does not rewrite it');
+ assert.equal(d.getElementById('proof-draft').value,'Старый довод о знаменателе.');
+ assert.match(d.getElementById('proof-review-count').textContent,/2 из 4/);
+ assert.match(d.getElementById('completion').textContent,/Вычислительная часть решена самостоятельно/);
+ input(w,'proof-draft','   ');
+ await settle(w);
+ assert(d.getElementById('proof-review').hidden);
+ assert.deepEqual(Array.from(w.ProfilePartTwoApp.store.read(task.id).proofChecks),[]);
+ assert(w.ProfilePartTwoApp.store.read(task.id).independent);
+ w.close();
+});
