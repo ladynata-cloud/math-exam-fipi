@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+  "baseSha": "425527bdf0c38f7e1eb0bd1e472413c9d9aa0e7e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "9c53a01901a28b5fdce699436b614b9daed71f8d73799e4a4a43b8f609e24d92",
-      "afterSha256": "bc22d0a7a2d033ce68ad0b912815f27c03937c71d0e6318dbc715f44099819b7",
+      "beforeSha256": "f0f663057adfe0e6782738073e5004b6f76a9756caae7548917b5be4b476f260",
+      "afterSha256": "22ff1421a85be8105c171847bf2bc100574c62e4eccff5624cc74a25f6e341e0",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -378,8 +378,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/index.html": {
-      "beforeSha256": "52622bc68faab740e720d0357d4c1bc3875e8a8b31c88417a4eb42202bb068fe",
-      "afterSha256": "e20706ac73cba7608fc5e0fa779da56b0537c605309457aada57bc354bcdb1c3",
+      "beforeSha256": "a74b9d6d19cba2d7cbbcb09105405aeccb8e73bd8bcc3c0840dfd4d04f1b0539",
+      "afterSha256": "464bbe1b085fac694dddcb1e5c1303e40d635b645398a72c3fc35ddbb24435b9",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/intro.html": {
@@ -4999,6 +4999,16 @@
       "task": "docs/tasks/EGE_ESTIMATE_TRANSFER_REVIEW_20261114.md",
       "changedPaths": [
         "trainers/ege-methods.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "89891c70519e79dd7d73d5c29f3854952515bd95",
+      "sourceBaseSha": "425527bdf0c38f7e1eb0bd1e472413c9d9aa0e7e",
+      "task": "docs/tasks/PROFILE_PARAMETER_PLANE_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html",
+        "ege-profil/trainers/parameters-18/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

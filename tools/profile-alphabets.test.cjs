@@ -8,14 +8,14 @@ const { JSDOM } = require('jsdom');
 const root = path.resolve(__dirname, '..');
 const directory = 'ege-profil/azbuka-metodov';
 const source = name => fs.readFileSync(path.join(root, name), 'utf8');
-for (const file of ['catalog', 'data', 'routes', 'engine', 'function-atlas']) require('../' + directory + '/' + file + '.js');
+for (const file of ['catalog', 'data', 'routes', 'engine', 'function-atlas', 'parameter-plane']) require('../' + directory + '/' + file + '.js');
 const catalog = globalThis.ProfileAlphabetCatalog;
 const lessons = globalThis.ProfileAlphabetLessons;
 const engine = globalThis.ProfileAlphabetEngine;
 
 test('foundations and exam routes reference valid current routes, with separate conditions for independent checks', () => {
   assert.equal(catalog.list.length, 11);
-  assert.equal(Object.values(lessons).flatMap(Object.keys).length, 43);
+  assert.equal(Object.values(lessons).flatMap(Object.keys).length, 44);
   assert.equal(catalog.forNumber(15).find(item => item.id === 'coordinate-method').route, true);
   assert.equal(catalog.forNumber(19).find(item => item.id === 'function-atlas').next, 'parameter-methods');
   assert.equal(catalog.forNumber(19).find(item => item.id === 'parameter-methods').route, true);
@@ -103,6 +103,88 @@ test('the new routes resume an unfinished step and the atlas hides the previous 
   w.close();
 });
 
+test('parameter-plane slices satisfy both original inequalities and keep the exact boundary points', () => {
+  const { sliceAt } = globalThis.ProfileParameterPlane;
+  for (const a of [-1, -Number.EPSILON, 1 + Number.EPSILON, 2, Infinity, NaN]) assert.equal(sliceAt(a), null);
+  assert.deepEqual(sliceAt(0), { left: 0, right: 0 });
+  assert.deepEqual(sliceAt(1), { left: -1, right: -1 });
+  for (let step = 1; step < 100; step++) {
+    const a = step / 100;
+    const { left, right } = sliceAt(a);
+    const satisfies = x => x ** 2 <= a + 1e-12 && (x + 1) ** 2 <= 1 - a + 1e-12;
+    assert.ok(left < -a && -a < right);
+    assert.ok([left, -a, right].every(satisfies));
+    assert.ok(!satisfies(left - 0.001) && !satisfies(right + 0.001));
+  }
+  assert.ok(engine.matches('[0; 1]', lessons['parameter-methods'].plane.practice.answers));
+  assert.equal(engine.matches('[0; 2]', lessons['parameter-methods'].plane.checks[0].answers), false);
+  assert.ok(engine.matches('(0; 2]', lessons['parameter-methods'].plane.checks[0].answers));
+  assert.ok(engine.matches('a = 1', lessons['parameter-methods'].plane.checks[1].answers));
+});
+
+test('parameter-plane prediction, written reasoning and an independent check work from the course link', () => {
+  const index = new JSDOM(source('ege-profil/trainers/parameters-18/index.html'), {
+    url: 'https://mathexam.space/ege-profil/trainers/parameters-18/index.html', runScripts: 'dangerously'
+  });
+  const entry = index.window.document.querySelector('#gMethods a.tcard');
+  assert.ok(entry);
+  const dom = new JSDOM(source(directory + '/index.html'), { url: entry.href, runScripts: 'outside-only' });
+  index.window.close();
+  const w = dom.window;
+  for (const file of ['catalog', 'data', 'routes', 'engine', 'diagrams', 'function-atlas', 'parameter-plane', 'app'])
+    w.eval(source(directory + '/' + file + '.js'));
+  const d = w.document;
+  const click = selector => d.querySelector(selector).click();
+  const edit = (selector, value) => {
+    const input = d.querySelector(selector);
+    input.value = value;
+    input.dispatchEvent(new w.Event('input', { bubbles: true }));
+  };
+  const check = value => {
+    edit('#az-answer', value);
+    click('#az-form [type=submit]');
+  };
+
+  assert.match(w.location.hash, /\/parameter-methods\/plane$/);
+  assert.match(d.querySelector('.az-navigation .az-button').href, /parameters-18\/index\.html#gMethods$/);
+  assert.equal(d.querySelector('[data-plane-slice]').children.length, 0);
+  click('[data-plane-predict=yes]');
+  assert.ok(d.querySelector('[data-plane-slice] line'));
+  click('[data-plane-exact="0"]');
+  assert.equal(d.querySelector('[data-plane-slice]').children.length, 0);
+  click('[data-plane-predict=yes]');
+  assert.match(d.querySelector('[data-plane-feedback]').textContent, /x = 0/);
+  click('[data-hint]');
+  assert.equal(d.querySelector('#az-plane-level').value, '0');
+  assert.ok(d.querySelector('[data-plane-slice] circle'));
+  edit('#az-plane-level', '-0.25');
+  click('[data-plane-predict=yes]');
+  assert.match(d.querySelector('[data-plane-feedback]').textContent, /мимо общей области/);
+  click('[data-plane-exact="1"]');
+  click('[data-plane-predict=yes]');
+  assert.match(d.querySelector('[data-plane-feedback]').textContent, /x = −1/);
+
+  edit('#az-note', 'Квадраты неотрицательны, беру x = −a.');
+  check('[0;1]');
+  click('[data-advance]');
+  assert.equal(d.querySelector('[data-parameter-plane]'), null);
+  assert.match(d.querySelector('label[for=az-note]').textContent, /какая граница входит/);
+  check('[0;2]');
+  assert.match(d.querySelector('#az-feedback').textContent, /Пока не сходится/);
+  check('(0;2]');
+  click('[data-advance]');
+  assert.match(d.querySelector('label[for=az-note]').textContent, /только одна пара/);
+  check('a = 1');
+  click('[data-advance]');
+  const saved = JSON.parse(w.localStorage.getItem(engine.storageKey + 'parameter-methods/plane'));
+  assert.equal(saved.independent, true);
+  assert.match(saved.note, /беру x = −a/);
+  assert.ok(saved.events.some(event => event.type === 'hint'));
+  assert.ok(saved.events.some(event => event.type === 'wrong'));
+  assert.match(d.querySelector('.az-exercise a').href, /#exam\/19$/);
+  w.close();
+});
+
 test('explicit number forms, restriction notation, and alternate keyboard layouts', () => {
   assert.ok(engine.matches('0,5', ['1/2']));
   assert.ok(engine.matches('2 / 4', ['1/2']));
@@ -184,6 +266,13 @@ test('skill map opens the specific lesson with a return path, and existing chall
   assert.equal(url.hash, '#/domain/denominator');
   assert.match(url.searchParams.get('back'), /#task\/p16-cancelled-hole-3\/guided$/);
   assert.ok(container.querySelector('[data-profile-skill-challenge]'));
+  container.replaceChildren();
+  w.history.replaceState({}, '', '#exam/19');
+  w.ProfileSkillMap.mount(container, [19]);
+  container.querySelector('[data-profile-skill-trigger]').click();
+  const plane = [...container.querySelectorAll('[data-profile-alphabet-link]')].find(link => link.hash.endsWith('/plane'));
+  assert.ok(plane);
+  assert.equal(new URL(plane.href).searchParams.get('back'), '/ege-profil/part-two/index.html#exam/19');
   w.close();
 });
 
