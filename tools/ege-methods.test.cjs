@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
-const { lessons } = require('../trainers/ege-methods/content.js');
+const { lessons, checkpoint, repeat } = require('../trainers/ege-methods/content.js');
 const S = require('../trainers/ege-methods/state.js');
 
 const by = id => S.byId.get(id);
@@ -83,6 +83,68 @@ test('exact checking handles Unicode signs, sets, alternate number forms and inv
   assert.equal(S.check(set, '-2; -1; 0; 1; 2'), 'wrong');
   assert.equal(S.check(set, '-1; 0; 1'), 'wrong');
   assert.equal(S.check(set, '-1; 0; 1; 2;'), 'format');
+});
+
+test('the independent tasks have the right extrema and accept every valid distribution', () => {
+  for (const [task, extremum] of [[checkpoint, Math.max], [repeat, Math.min]]) {
+    const [goal, field] = task.practice.fields;
+    const outcomes = new Set();
+    let accepted = 0;
+    function enumerate(values, sum) {
+      if (values.length === field.size) {
+        if (sum !== field.total) return;
+        const count = values.filter(value => task === repeat ? value <= 4 : value === 5).length;
+        outcomes.add(count);
+        const result = S.check(field, values.join('; '));
+        assert.equal(result, count === goal.answer ? 'correct' : 'target');
+        if (result === 'correct') accepted++;
+        return;
+      }
+      for (const next of range(field.min, field.max)) enumerate([...values, next], sum + next);
+    }
+    enumerate([], 0);
+    assert.equal(goal.answer, extremum(...outcomes));
+    assert.equal(field.targetCount, goal.answer);
+    assert(accepted > 1, 'More than one order of a valid distribution is accepted');
+  }
+  const field = checkpoint.practice.fields[1];
+  assert.equal(S.check(field, '5; 5; 5; 5; 4; 2; 2; 2; 2; 2'), 'correct');
+  assert.equal(S.check(field, '5; 5; 5; 5; 3; 3; 2; 2; 2; 2'), 'correct');
+  assert.equal(S.check(field, '5; 5; 5; 5; 4; 2; 2; 2; 2'), 'size');
+  assert.equal(S.check(field, '5; 5; 5; 5; 5; 1; 2; 2; 2; 2'), 'range');
+  assert.equal(S.check(field, '5; 5; 5; 5; 2; 2; 2; 2; 2; 2'), 'total');
+  assert.equal(S.check(field, '5; 5; 5; 5; 4; 2; 2; 2; 2; 2,1'), 'format');
+});
+
+test('the personal checks preserve old lessons and timestamp only a successful first completion', async () => {
+  const legacy = JSON.stringify(S.empty(by('bounds')));
+  const data = new Map([[S.prefix + 'bounds', legacy]]);
+  const storage = { getItem: key => data.get(key), setItem: (key, value) => data.set(key, value) };
+  let warnings = 0;
+  const store = S.createAssessmentProgress(storage, undefined, () => warnings++);
+  const at = Date.UTC(2026, 10, 14, 0);
+  const drafts = ['4', '5; 5; 5; 5; 3; 3; 2; 2; 2; 2'];
+  await store.update(checkpoint, record => S.answerAssessment(record, checkpoint, ['4', ' '], at));
+  assert.equal(store.read(checkpoint).practice.attempts, 0);
+  await store.update(checkpoint, record => S.answerAssessment(record, checkpoint, ['4', '2; 2'], at));
+  assert.equal(store.read(checkpoint).practice.attempts, 1);
+  assert.equal(S.repeatAt(store.read(checkpoint)), null);
+  await store.update(checkpoint, record => S.answerAssessment(record, checkpoint, drafts, at));
+  await store.update(checkpoint, record => S.answerAssessment(record, checkpoint, drafts, at + 1000));
+  assert.equal(store.read(checkpoint).practice.attempts, 2);
+  assert.equal(S.repeatAt(store.read(checkpoint)), at + 86_400_000);
+  assert.equal(data.get(S.prefix + 'bounds'), legacy);
+  assert.equal(data.has(S.assessmentPrefix + 'repeat'), false);
+  assert.equal(S.personalRoute('#repeat').page, 'repeat');
+  assert.equal(S.route('#repeat').page, 'map');
+  assert.equal(S.validRoom({ view: S.personalRoute('#checkpoint'), records: {} }), false);
+  const corrupt = JSON.stringify({ ...store.read(checkpoint), completedAt: null });
+  data.set(S.assessmentPrefix + 'checkpoint', corrupt);
+  const recovered = S.createAssessmentProgress(storage, undefined, () => warnings++);
+  assert.equal(S.repeatAt(recovered.read(checkpoint)), null);
+  await recovered.update(checkpoint, record => { record.practice.drafts[0] = '4'; });
+  assert.equal(data.get(S.assessmentPrefix + 'checkpoint'), corrupt);
+  assert.equal(warnings, 1);
 });
 
 test('empty and malformed entries preserve attempts; guided errors reveal a hint; independent practice stays separate', () => {
