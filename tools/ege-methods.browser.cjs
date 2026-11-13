@@ -211,7 +211,7 @@ async function standalone(browser, origin) {
   await stepAnswer.fill('1');
   await page.getByRole('button', { name: 'Карта навыков', exact: true }).click();
   await page.getByRole('link', { name: 'Доказываю границу и даю пример', exact: true }).click();
-  assert.equal(new URL(page.url()).hash, '#/written-solution/bound-and-example');
+  await page.waitForURL(url => url.hash === '#/written-solution/bound-and-example');
   await page.locator('#az-answer').fill('10');
   await page.getByRole('button', { name: 'Проверить', exact: true }).click();
   await page.getByRole('button', { name: 'Проверить себя на новом условии' }).waitFor();
