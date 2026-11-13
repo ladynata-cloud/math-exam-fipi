@@ -19,7 +19,10 @@ function mountSkills(number,lesson){
  if(!target){
   target=document.createElement('div');main.querySelector('h1').after(target);
  }
- root.ProfileSkillMap.mount(target,[number],{lesson:lesson&&{title:lesson.title,skill:lesson.goal}});
+ root.ProfileSkillMap.mount(target,[number],{
+  lesson:lesson&&{title:lesson.title,skill:lesson.goal},
+  beforeLeave:async()=>{if(active)await store.patch(active.item.task.id,r=>{if(!r.completed)r.helped=true;});await store.flush();}
+ });
 }
 function status(task,record){if(record.independent)return '<span class="tag ok">Ответы самостоятельно</span>';if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.final.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
@@ -75,7 +78,18 @@ async function taskView(item,mode,viewVersion=routeVersion){
   const current=store.read(task.id),i=current.solvedSteps.length;if(i!==displayedStep){feedback('Этот шаг уже изменён в другой вкладке. Ваш ввод сохранён к прежнему шагу. Откройте заново «С опорой по шагам», чтобы увидеть текущий шаг.','error');return;}const step=task.steps[i];if(!step)return;
   const correct=check(step.answers,value);await store.attempt(task.id,{kind:'step-'+i,answers:[value],correct,mode});
   if(correct){await store.patch(task.id,s=>{if(s.solvedSteps.length===i)s.solvedSteps.push(i);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Шаг верный. Предыдущие шаги остались выше.','ok');document.getElementById('step-answer')?.focus();}
-  else if(isCurrent())feedback('Пока не совпало. Проверьте именно этот шаг; условие и предыдущая работа сохранены.','error');
+  else if(isCurrent()){
+   feedback('Пока не совпало. Проверьте именно этот шаг; условие и предыдущая работа сохранены.','error');
+   const catalog=root.ProfileAlphabetCatalog;
+   if(catalog&&root.self===root.top&&lesson.exam===16&&i===0&&/^p16-(repeated-root|cancelled-hole)$/.test(lesson.id)){
+    const link=document.createElement('a');
+    link.className='button quiet';
+    link.href=catalog.href('domain','denominator',16,root.location.pathname+root.location.search+root.location.hash);
+    link.textContent='Азбука: исключаю нули знаменателя';
+    link.addEventListener('click',async e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;e.preventDefault();await store.flush();root.location.assign(link.href);});
+    document.getElementById('feedback').append(document.createElement('br'),link);
+   }
+  }
  });
  bind('step-hint','click',async()=>{await store.patch(task.id,s=>{s.helped=true;const i=s.solvedSteps.length;if(!s.hints.includes(i))s.hints.push(i);});await taskView(item,mode,viewVersion);if(!isCurrent())return;});
  bind('request-help','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(99))s.hints.push(99);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.');});

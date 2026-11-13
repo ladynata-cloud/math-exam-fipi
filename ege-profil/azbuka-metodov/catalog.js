@@ -1,0 +1,135 @@
+(() => {
+  'use strict';
+
+  const list = [
+    {
+      id: 'random-variables', title: 'Случайные величины', short: 'Случайные величины', numbers: [6],
+      description: 'От исходов и таблицы вероятностей к ожиданию и разбросу.',
+      skills: {
+        distribution: { title: 'Собираю распределение', numbers: [6] },
+        expectation: { title: 'Нахожу математическое ожидание', numbers: [6] },
+        variance: { title: 'Считаю дисперсию и стандартное отклонение', numbers: [6] }
+      },
+      refs: [['Вероятность, №4–5', '/ege-profil/trainers/probability-t45.html']]
+    },
+    {
+      id: 'modeling', title: 'Математическое моделирование', short: 'Моделирование', numbers: [10, 11, 13, 17],
+      description: 'Переведи условие в математическую запись и проверь результат.',
+      skills: {
+        'choose-variable': { title: 'Выражаю величину через переменную', numbers: [10, 11, 13, 17] },
+        constraints: { title: 'Учитываю ограничения из условия', numbers: [10, 11, 13, 17] },
+        optimum: { title: 'Выбираю лучший допустимый вариант', numbers: [17] }
+      },
+      refs: [['Производная и интеграл, №9', '/ege-profil/start/index.html#calm/9']]
+    },
+    {
+      id: 'domain', title: 'ОДЗ и отбор решений', short: 'ОДЗ и отбор', numbers: [7, 14, 16, 19],
+      description: 'Запиши ограничения и проверь кандидатов в исходной задаче.',
+      skills: {
+        denominator: { title: 'Исключаю нули знаменателя', numbers: [7, 14, 16, 19] },
+        squaring: { title: 'Проверяю корни после возведения в квадрат', numbers: [7, 14] },
+        'root-selection': { title: 'Отбираю корни на заданном отрезке', numbers: [14] }
+      },
+      refs: [['Тригонометрия и отбор корней', '/ege-profil/trigonometry/']]
+    },
+    {
+      id: 'interval-signs', title: 'Знаки и метод интервалов', short: 'Метод интервалов', numbers: [16, 19],
+      description: 'Отметь границы, проверь знаки и собери ответ с учётом ОДЗ.',
+      skills: {
+        'mark-points': { title: 'Различаю нули и исключённые точки', numbers: [16, 19] },
+        'test-sign': { title: 'Определяю знак между границами', numbers: [16, 19] },
+        'intersect-domain': { title: 'Пересекаю ответ с ограничениями', numbers: [16, 19] }
+      },
+      refs: [
+        ['Тренажёр метода интервалов', '/ege-profil/trainers/interval-method.html'],
+        ['Логарифмические неравенства', '/trainers/ege-profile/log-inequalities/']
+      ]
+    },
+    {
+      id: 'transformations', title: 'Алгебраические преобразования', short: 'Преобразования', numbers: [8, 14, 16],
+      description: 'Разложи выражение, сократи дробь или введи замену.',
+      skills: {
+        'common-factor': { title: 'Выношу общий множитель', numbers: [8, 14, 16] },
+        'difference-squares': { title: 'Сокращаю через разность квадратов', numbers: [8, 14, 16] },
+        substitution: { title: 'Делаю замену переменной', numbers: [14, 16] }
+      },
+      refs: [['Практикум по выражениям, №8', '/ege-profil/start/index.html#calm/8']]
+    },
+    {
+      id: 'space-drawing', title: 'Чтение пространственного чертежа', short: 'Чертёж в 3D', numbers: [3, 15],
+      description: 'Найди грань, проекцию и угол с плоскостью на чертеже.',
+      skills: {
+        'find-face': { title: 'Нахожу диагональ грани', numbers: [3, 15] },
+        projection: { title: 'Строю ортогональную проекцию', numbers: [3, 15] },
+        'line-plane-angle': { title: 'Нахожу угол прямой с плоскостью', numbers: [3, 15] }
+      },
+      refs: [
+        ['Атанасян 10–11', '/ege-profil/atanasyan-10-11/'],
+        ['Сечения с нуля', '/stereo-course/sections/']
+      ]
+    },
+    {
+      id: 'plane-constructions', title: 'Дополнительные построения в планиметрии', short: 'Построения', numbers: [1, 18],
+      description: 'Проведи линию, которая даёт нужное свойство или новый треугольник.',
+      skills: {
+        height: { title: 'Провожу высоту к нужной стороне', numbers: [1, 18] },
+        parallel: { title: 'Использую параллельную прямую для подобия', numbers: [1, 18] },
+        radius: { title: 'Провожу радиус к точке касания', numbers: [1, 18] }
+      },
+      refs: [
+        ['Планиметрия с доказательством', '/ege-profil/trainers/planimetry-t17.html'],
+        ['Атанасян 7–9', '/geometry-course/textbook/']
+      ]
+    },
+    {
+      id: 'written-solution', title: 'Запись развёрнутого решения', short: 'Запись решения', numbers: [14, 15, 16, 17, 18, 19, 20],
+      description: 'Обоснуй переход, проверь полноту разбора и запиши доказательство границы.',
+      skills: {
+        'justify-step': { title: 'Обосновываю переход в доказательстве', numbers: [15, 18] },
+        'exhaust-cases': { title: 'Разбираю исключительные случаи', numbers: [14, 16, 17, 19] },
+        'bound-and-example': { title: 'Доказываю границу и даю пример', numbers: [20] }
+      },
+      refs: [['Тренажёр «Проверь как эксперт»', '/ege-profil/trainers/expert.html']]
+    }
+  ];
+
+  const path = '/ege-profil/azbuka-metodov/';
+  const index = Object.fromEntries(list.map(alphabet => [alphabet.id, alphabet]));
+  const numbers = number => Number.isInteger(number) && number >= 1 && number <= 20;
+  const exactTask = /^#task\/[a-z0-9-]+\/(?:guided|plan|independent)$/;
+  const sourceTask = /^#(?:calm|example|exam)\/[a-z0-9-]+$|^#(?:lesson\/[a-z0-9-]+|(?:practice|repair)\/[a-z0-9-]+\/(?:guided|plan|independent))$/;
+  const trainerPath = /^\/ege-profil\/trainers\/(?:[a-z0-9-]+\.html|[a-z0-9-]+\/index\.html)$|^\/trainers\/ege-profile\/[a-z0-9-]+(?:\.html|\/(?:index\.html)?)$/;
+
+  function examHref(number) {
+    return number <= 13 ? '/ege-profil/start/index.html#calm/' + number :
+      '/ege-profil/part-two/index.html#exam/' + number;
+  }
+
+  function safeBack(input) {
+    if (typeof input !== 'string' || !input.startsWith('/') || input.length > 320) return '';
+    const origin = 'https://mathexam.space';
+    let url;
+    try { url = new URL(input, origin); } catch { return ''; }
+    if (url.origin !== origin) return '';
+    if (url.searchParams.has('skills')) url.searchParams.delete('skills');
+    const partTwo = ['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(url.pathname);
+    const start = ['/ege-profil/start/', '/ege-profil/start/index.html'].includes(url.pathname);
+    const safePartTwo = partTwo && (exactTask.test(url.hash) || /^#(?:exam\/\d{1,2}|lesson\/[a-z0-9-]+|map|progress)$/.test(url.hash));
+    if (!safePartTwo && !(start && sourceTask.test(url.hash)) && !trainerPath.test(url.pathname)) return '';
+    return url.pathname + url.search + url.hash;
+  }
+
+  function href(id = '', skill = '', number, back = '', base = path) {
+    const query = new URLSearchParams();
+    if (numbers(Number(number))) query.set('exam', String(number));
+    const returnPath = safeBack(back);
+    if (returnPath) query.set('back', returnPath);
+    return base + (query.size ? '?' + query : '') + (id ? '#/' + id + (skill ? '/' + skill : '') : '');
+  }
+
+  function forNumber(number) {
+    return list.filter(alphabet => alphabet.numbers.includes(Number(number)));
+  }
+
+  globalThis.ProfileAlphabetCatalog = { path, list, index, examHref, href, forNumber, safeBack };
+})();

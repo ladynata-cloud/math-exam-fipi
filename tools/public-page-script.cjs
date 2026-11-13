@@ -53,7 +53,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)]
     .map(match => ({tag: match[0], src: match[1]}));
   const page = scripts(canonical), board = scripts(wrapper);
-  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../skill-map.js?v=20261111-skills',
+  const publicModules = ['../skill-map-data.js?v=20261112-vectors', '../azbuka-metodov/catalog.js?v=20261113',
+    '../skill-map.js?v=20261113-alphabets',
     'journey.js?v=20261112-vectors', 'second-part.js?v=20261109', 'practice-feedback.js?v=20261109-active',
     'practice-coach.js?v=20261109-integrity', 'vector-basics-data.js?v=20261112-vectors',
     'vector-basics-models.js?v=20261112-vectors'];
@@ -70,7 +71,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
     ['calm-ui.js?v=20261112-vectors', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261112-vectors', 'app.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261113-alphabets', 'app.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())
