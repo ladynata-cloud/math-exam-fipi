@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "1d58cf79f74c5c4d95b15aba9adc417744f1c8ef",
+  "baseSha": "76dda89ddd4b65c5b9b6c14c75fa4225fe12415a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -538,8 +538,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/chords-tangent.html": {
-      "beforeSha256": "8700c2da6de46e6168c2704ef3fd9acda64a149ad2caed7da2475c9230206c32",
-      "afterSha256": "5966632e75716ad7a221a69ca398978f683294f945e4e6ad0f16ba575f1bfc8e",
+      "beforeSha256": "65f083f5b46cac6ac491446fc07b456b2384385cf9ef39ed3ec10ef2007726ea",
+      "afterSha256": "0b93858acd073402392da08b8425b5f09083247df7c85a9193a48b59111325cf",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-metric.html": {
@@ -548,8 +548,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/circle-position.html": {
-      "beforeSha256": "7dd2b33dc066be18489160853353ff73158f567681ad6bb1a2d0c8975f0d643c",
-      "afterSha256": "d29a5c5a4ab4d2689c771f0be8129723f9123d2d79922404011d520f3cbd6d28",
+      "beforeSha256": "1cc95651e4fb5600b42c4da4696bb670cfa16e5ef8a52794fa6cd11021e19be6",
+      "afterSha256": "b9bb3c3d039a62e1d74db369592c5448daea94fdee71c0c3bf6967c99160a6e8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/compass.html": {
@@ -583,8 +583,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/equality.html": {
-      "beforeSha256": "08d8c465e6b8afc8f44367eae8ee742d61673c2eed5aab6895b7675714426472",
-      "afterSha256": "9c0aea334c659e4d9bc2c00072203ce1ac38ada1d4fce29de640b739e1515d73",
+      "beforeSha256": "00a4f7f254d7b3fd82e92060437a44c099168fb8d9277aea31cec78f49069f42",
+      "afterSha256": "6d5286b50aa9d1c8cd3b8d0f03b3d8ebd7339e13ccdd1519ae40674eeeb56af8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/heron.html": {
@@ -603,8 +603,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/length.html": {
-      "beforeSha256": "394973a0cc15cba33b9748708eaa48a8ecc660ea8a47a6f94ed563499611846a",
-      "afterSha256": "eb3b85bde7d4aa1bd39ae91a33acad012bbc03d337699f70bbd5726176282803",
+      "beforeSha256": "b5b3515ab325e93ef7013509d25e61aa25dfd6a93667879c9d79cf5c711a48dd",
+      "afterSha256": "8ab6eaf74afb645266d2b8f6fea190a87ad6f759d5ca3cec363e83fd91a7cf62",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/line-circle-equations.html": {
@@ -663,13 +663,13 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/projections.html": {
-      "beforeSha256": "2447c568f34d1894ebbc7e40e0bf0aefe68294864ad58b4b9e1cfc13dd4400bf",
-      "afterSha256": "4175e448832e203809f38d82daccfe6c12067f6459e00658c7de8b6e22bc733f",
+      "beforeSha256": "9e8daa4a50564206fc693b790837c028007aa83dc4571f8d061373fa95174ede",
+      "afterSha256": "58a14d1714f6810515bd47c45fd4f069efaa6821b54a089d550f411d11d9e608",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/pythagoras.html": {
-      "beforeSha256": "0bd5e5d73db972a1459612514644ff0267ed0bd75ed80763d7237c623be2667c",
-      "afterSha256": "05157a5e0da698bbdc499273266b6b16201b94d71051b1fc8b45e84a035311a8",
+      "beforeSha256": "421363a309beecd7229b2d0cc4b3376fffd1a7e1a75920457482950cebe4bc6d",
+      "afterSha256": "a6cbdaabe4c0ac385fafc5eff6ae33c6f08fa56841f1d18ed6604842fa8c21d8",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/rectangle.html": {
@@ -693,8 +693,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/segments.html": {
-      "beforeSha256": "2e28a75dd3e99a30e441fb0b19f0051dad53876f3ca0bcb3599bc2c285dd2d67",
-      "afterSha256": "fd5db612aa163d30d48c0b33703f94551dda6a96f125d552490605ba97659d58",
+      "beforeSha256": "b4c5530bba9dbc79563684663cfed8655ec46f0f8900b7fcd306fb4b11e1bcd6",
+      "afterSha256": "5b9d50866f2984ee64e4865deca4c2aa388c4fc6cfc94d910eac74a69ef11a92",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/similarity-measure.html": {
@@ -5194,6 +5194,21 @@
         "geometry-course/atlas/vector-basis.html",
         "geometry-course/atlas/vector-scale.html",
         "geometry-course/atlas/vectors.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "1d58cf79f74c5c4d95b15aba9adc417744f1c8ef",
+      "sourceBaseSha": "76dda89ddd4b65c5b9b6c14c75fa4225fe12415a",
+      "task": "docs/tasks/GEOMETRY_PROOF_FIGURES_20261114.md",
+      "changedPaths": [
+        "geometry-course/atlas/chords-tangent.html",
+        "geometry-course/atlas/circle-position.html",
+        "geometry-course/atlas/equality.html",
+        "geometry-course/atlas/length.html",
+        "geometry-course/atlas/projections.html",
+        "geometry-course/atlas/pythagoras.html",
+        "geometry-course/atlas/segments.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

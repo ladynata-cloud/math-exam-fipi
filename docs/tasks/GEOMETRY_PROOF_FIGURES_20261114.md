@@ -176,15 +176,18 @@ progress format, construction tools, or the published middle-line lesson.
   The failure screenshot showed the scoring explanation above the condition.
 - The condition and figure precede the answer and scoring explanation. The
   repeated-task notice remains above the answer. The seven lessons use less
-  vertical space in the header and above the condition.
+  vertical space in the header and above the condition. Mobile captions have
+  space beside the floating navigator.
 - Local Chromium returned 84 first-screen measurements across seven lessons,
   four stages and three widths. The comparison block measured 258 × 173.55 px
   at 320 px width and ended at y = 686.67 px. All SVG widths and heights matched
   the baseline. The browser confirmed proof emphasis, numerical drafts and
-  written work after reload.
-- The exact source commit for the 63 refreshed atlas pages is
-  `1d58cf79f74c5c4d95b15aba9adc417744f1c8ef`. The generated screenshots and measurements
-  from the cloud runner are attached to its GitHub Actions run.
+  written work after reload, and checked that the navigator leaves the
+  drawings and caption text visible.
+- The refresh of all 63 atlas pages is in
+  `1d58cf79f74c5c4d95b15aba9adc417744f1c8ef`. The seven mobile caption
+  adjustments are in `76dda89ddd4b65c5b9b6c14c75fa4225fe12415a`. Cloud screenshots
+  and measurements are attached to the geometry GitHub Actions run.
 
 ## Required handoff
 
