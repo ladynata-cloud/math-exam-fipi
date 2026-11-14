@@ -68,7 +68,7 @@ async function layout(page, label) {
   const tops = await page.locator('#digits .digit').evaluateAll(nodes => nodes.map(node => node.getBoundingClientRect().top));
   assert(tops.length >= 2 && Math.max(...tops) - Math.min(...tops) <= 1, label + ': digits stay in one number row');
 }
-async function solve(page, place, injectMistakes) {
+async function solve(page, place, injectMistakes, askHint = false) {
   const problem = await visibleProblem(page, place), before = await total(page);
   const target = page.locator('.digit[data-i="' + problem.target + '"]');
   const look = page.locator('.digit[data-i="' + problem.look + '"]');
@@ -80,6 +80,7 @@ async function solve(page, place, injectMistakes) {
     assert.equal(await page.locator('#ans').inputValue(), '', 'A hint cannot fill the answer');
     assert.doesNotMatch(await page.locator('#fb').innerText(), /Ответ:|≈/);
   }
+  if (askHint) await page.locator('#hint').click();
   await target.click();
   assert.match(await instruction(page), /^2\)/);
   if (injectMistakes) {
@@ -106,8 +107,10 @@ async function solve(page, place, injectMistakes) {
   await page.locator('#ans').press('Enter');
   assert.equal(await total(page), before + 1, 'A corrected answer completes this same example: ' + problem.prompt + '; entered ' + problem.answer + '; feedback ' + await page.locator('#fb').innerText());
   assert.match(await page.locator('#fb').innerText(), /Верно|Решено/);
+  if (askHint) assert.match(await page.locator('#fb').innerText(), /подсказк/, 'The first completion explicitly identifies hint-assisted work');
   await page.locator('#check').click();
   assert.equal(await total(page), before + 1, 'Repeated checking cannot count a second completion');
+  assert.match(await page.locator('#fb').innerText(), /уже учтён/, 'Repeated submission receives the existing duplicate-completion message');
   return problem.prompt;
 }
 (async () => {
@@ -145,6 +148,15 @@ async function solve(page, place, injectMistakes) {
         assert.equal(new URL(page.url()).pathname,route,'The starting route remains open');
         await solve(practice,1,true);
         assert.equal(await progressValue(practice,'#right'),0,'A corrected example is not marked immediately correct');
+        await practice.locator('#next').click();
+        await solve(practice,1,false,true);
+        assert.equal(await progressValue(practice,'#right'),0,'A hint without mistakes is still assisted work');
+        assert.equal(await progressValue(practice,'#streak'),0,'Assisted work cannot build an independent streak');
+        assert.match(await practice.locator('#history .hist').first().textContent(),/подсказк/, 'Repeated checking preserves the assisted classification in saved history');
+        await practice.reload();
+        assert.equal(await total(practice),2,'Completed work survives reload');
+        assert.equal(await progressValue(practice,'#right'),0,'Assistance classification survives reload');
+
         await layout(practice,'tens at ' + width);
         for (const place of [2,3,4,5,6,0,-1,-2]) {
           await choosePlace(practice,place);
@@ -171,6 +183,6 @@ async function solve(page, place, injectMistakes) {
       } finally { await context.close(); }
     }
     assert.deepEqual(errors,[],'No browser JavaScript exceptions');
-    console.log('ROUNDING_STEPWISE_BROWSER_OK: public route popup, original tab retained, 30 solved examples from visible prompts, wrong retries and continued practice at 320/390/1060px.');
+    console.log('ROUNDING_STEPWISE_BROWSER_OK: public route popup, original tab retained, 33 solved examples from visible prompts, wrong retries and continued practice at 320/390/1060px.');
   } finally { await browser.close(); server.close(); }
 })().catch(error => { console.error(error); if(errors.length)console.error(errors);server.close();process.exitCode=1; });

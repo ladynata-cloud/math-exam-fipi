@@ -354,6 +354,7 @@
   .choices button:hover{border-color:var(--accent);background:#f6f9ff}
   .choices button.wrongOpt{opacity:.4;text-decoration:line-through;pointer-events:none}
   .choices button.rightOpt{border-color:#35a15a;background:#effaf1;color:#1d7f3c}
+  .stepInputFeedback{font-size:14px;line-height:1.5;color:var(--muted);margin-top:8px}
   .hintBox{margin-top:10px;font:500 13.5px/1.5 var(--ui);color:#7a5b16;background:#fff8e6;border:1px solid #f0e2b6;border-radius:10px;padding:9px 12px;display:none}
   .hintBox.show{display:block}
   .hintBtn{border:0;background:none;color:#b07a12;font:600 13px/1 var(--ui);cursor:pointer;padding:9px 6px}
@@ -420,7 +421,7 @@
 
     <!-- ПРАВАЯ КОЛОНКА -->
     <aside class="side">
-      <div class="stat-grid" aria-label="Статистика сессии">
+      <div class="stat-grid" aria-label="Сохранённая статистика">
         <div class="stat"><div class="v" id="stSolved">0</div><div class="l">Решено</div></div>
         <div class="stat"><div class="v" id="stRight">0</div><div class="l">Верно</div></div>
         <div class="stat"><div class="v acc" id="stAcc">—</div><div class="l">Точность</div></div>
@@ -537,7 +538,7 @@
   </section>
 
   <footer class="foot">
-    Enter — проверить, ещё раз Enter — следующая. Статистика считается за текущую сессию.
+    Enter — проверить, ещё раз Enter — следующая. Статистика сохраняется в этом браузере; незавершённая задача после перезагрузки меняется.
   </footer>
 </div>
 
@@ -1407,11 +1408,17 @@ function newProblem(){
   const stepMode=uiMode==="step"&&cur.steps&&cur.steps.length;
   el("fastRow").style.display=stepMode?"none":"";
   el("steps").innerHTML="";
-  if(stepMode){ sp={idx:0,errs:0,help:false,log:[]}; renderStep(); }
+  if(stepMode){ sp={idx:0,errs:0,help:false,stepHelp:false,log:[]}; renderStep(); }
   else inp.focus();
 }
 
 /* ---------- пошаговый UI ---------- */
+function revealStepHint(){
+  if(!sp||answered)return;
+  sp.help=true;
+  sp.stepHelp=true;
+  el("hintBox").classList.add("show");
+}
 function stepProgress(){
   const n=cur.steps.length;
   let dots="";
@@ -1438,11 +1445,12 @@ function renderStep(){
       h+=`<div class="choices">${opts.map(o=>`<button type="button" data-ok="${o.ok?1:0}">${o.h}</button>`).join("")}</div>
           <div class="stepRow" style="margin-top:8px"><button class="hintBtn" id="stepHint" type="button">💡 Подсказка</button></div>`;
     }
+    h+=`<div class="stepInputFeedback" id="stepInputFeedback" role="status" aria-live="polite"></div>`;
     h+=`<div class="hintBox" id="hintBox">${st.hint||"Загляните в шпаргалку справа — там нужная формула."}</div></div>`;
   }
   box.innerHTML=h;
   if(!st)return;
-  el("stepHint").addEventListener("click",()=>el("hintBox").classList.add("show"));
+  el("stepHint").addEventListener("click",revealStepHint);
   if(st.t==="n"){
     const inp=el("stepIn");
     el("stepCheck").addEventListener("click",()=>checkStep(st,inp));
@@ -1451,13 +1459,14 @@ function renderStep(){
   } else {
     box.querySelectorAll(".choices button").forEach(b=>{
       b.addEventListener("click",()=>{
+        if(answered||!sp||cur.steps[sp.idx]!==st)return;
         if(b.dataset.ok==="1"){
           b.classList.add("rightOpt");
           completeStep(st, b.textContent, false);
         } else {
           b.classList.add("wrongOpt","anim-shake");
           sp.errs++;
-          if(sp.errs>=1) el("hintBox").classList.add("show");
+          if(sp.errs>=1) revealStepHint();
           const left=[...box.querySelectorAll(".choices button")].filter(x=>!x.classList.contains("wrongOpt"));
           if(left.length===1&&left[0].dataset.ok==="1"){
             left[0].classList.add("rightOpt");
@@ -1469,8 +1478,13 @@ function renderStep(){
   }
 }
 function checkStep(st,inp){
+  if(answered||!sp||cur.steps[sp.idx]!==st)return;
   const val=parseAns(inp.value);
-  if(Number.isNaN(val)){inp.classList.add("anim-shake");setTimeout(()=>inp.classList.remove("anim-shake"),420);inp.focus();return;}
+  if(!Number.isFinite(val)){
+    el("stepInputFeedback").textContent=inp.value.trim()===""?"Введите ответ.":"Введите число целиком: целое или десятичную дробь.";
+    inp.classList.add("anim-shake");setTimeout(()=>inp.classList.remove("anim-shake"),420);inp.focus();return;
+  }
+  el("stepInputFeedback").textContent="";
   if(Math.abs(val-st.a)<1e-6){
     completeStep(st, fmt(st.a), false);
   } else {
@@ -1478,16 +1492,18 @@ function checkStep(st,inp){
     inp.classList.add("no","anim-shake");
     setTimeout(()=>inp.classList.remove("anim-shake"),420);
     setTimeout(()=>inp.classList.remove("no"),900);
-    if(sp.errs===2) el("hintBox").classList.add("show");
+    if(sp.errs===2) revealStepHint();
     if(sp.errs>=3) completeStep(st, fmt(st.a), true);
     else {inp.select();inp.focus();}
   }
 }
 function completeStep(st,valTxt,helped){
+  if(answered||!sp||cur.steps[sp.idx]!==st)return;
+  helped=helped||sp.stepHelp;
   if(helped) sp.help=true;
   sp.log.push({q:st.q.replace(/ = \?.*$/,"").replace(/\?\s*$/,"").trim(), val:valTxt, helped});
   if(st.fig) el("figure").innerHTML=`<div class="figwrap">${renderFigure(st.fig)}</div>`;
-  sp.idx++; sp.errs=0;
+  sp.idx++; sp.errs=0; sp.stepHelp=false;
   if(sp.idx>=cur.steps.length) finishStepTask();
   else renderStep();
 }
@@ -1508,15 +1524,16 @@ function finishStepTask(){
   } else {
     stats.streak=0;
     noteVectorAttempt(false);
-    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Разобрано с открытыми шагами — ответ ${fmt(cur.answer)}. Такая задача в «верно» не идёт. Enter — следующая.</span></div>`;
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Разобрано с подсказкой или открытым шагом — ответ ${fmt(cur.answer)}. Такая задача в «верно» не идёт. Enter — следующая.</span></div>`;
   }
   renderStats();
 }
 function parseAns(raw){
   if(raw==null)return NaN;
   let t=raw.toString().trim().replace(/\u2212/g,"-").replace(",",".").replace(/\s+/g,"");
-  if(t==="")return NaN;
-  return Number(t);
+  if(!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(t))return NaN;
+  const value=Number(t);
+  return Number.isFinite(value)?value:NaN;
 }
 function check(){
   if(answered||!cur)return;

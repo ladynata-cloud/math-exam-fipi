@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+  "baseSha": "beb9a2d96fd0c29a6ddab6eaa588485c6de44a56",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2343,8 +2343,8 @@
       "placement": "before-head-close"
     },
     "trainers/ege-profile-vectors-trainer.html": {
-      "beforeSha256": "98032a229cdd39a364b32df75ae182fe166e5e22428d29abaf2b5f9d437cc35a",
-      "afterSha256": "b308d1a71703ef17b56185f1ebe57f5993d1fbf660e6ee0ea85e7fc7955ef2b6",
+      "beforeSha256": "0c9a9512ed57688d8c17c45e5c92fa538fb9ddd6274d9c7dc3c466e5f3b2cdfb",
+      "afterSha256": "c57ed4da356089f42e878c55717f86aceb86c39920f6a9823efb967b806dbc5a",
       "placement": "before-head-close"
     },
     "trainers/ege-profile/inequalities/index.html": {
@@ -3073,8 +3073,8 @@
       "placement": "before-head-close"
     },
     "trainers/rounding-stepwise.html": {
-      "beforeSha256": "f2fa3bc7d1a1b3e1d73660f6f8015fd88560e619fe05730f1bcfecd4818f5beb",
-      "afterSha256": "16ec14a6cca24fe0a75d7a88261d534ca7b5a205b9bddde9440fa63903d12c7f",
+      "beforeSha256": "f4d0df1fd2031d849f291c4087be4557f045279ee6faea473835428f3cf15a70",
+      "afterSha256": "78203e3b7ea282917b0db97153558d72b916dcb5f78a16cc8667dbba7e7f24c3",
       "placement": "before-head-close"
     },
     "trainers/simple-equations-stepwise.html": {
@@ -3093,8 +3093,8 @@
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
-      "beforeSha256": "9cb8a17c2c7916ed4048364120844fd51d86f89acee0a907f0092c609aa52028",
-      "afterSha256": "e9a4f7e9c9e4efb33ef2f593e3072c7a69de265727ceb51b446f10d621bb7eb8",
+      "beforeSha256": "87ba5fbff3b8f094e730cd6ae700c30ed3b61d4431bfc09a8e3d53a84e21b7e3",
+      "afterSha256": "c95611b867e9b7e9c84e371ae3173ccbc145f82c1c7db672cc8f8a2ce202864f",
       "placement": "before-head-close"
     },
     "trainers/trainers/long-division.html": {
@@ -5052,6 +5052,17 @@
         "geometry-pogorelov/atlas/pogorelov-base-8-58.html",
         "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
         "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+      "sourceBaseSha": "beb9a2d96fd0c29a6ddab6eaa588485c6de44a56",
+      "task": "docs/tasks/TRAINER_ANSWER_INTEGRITY_20261114.md",
+      "changedPaths": [
+        "trainers/ege-profile-vectors-trainer.html",
+        "trainers/rounding-stepwise.html",
+        "trainers/teatr-formul-daily.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
