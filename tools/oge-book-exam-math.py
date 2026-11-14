@@ -116,6 +116,39 @@ def graph_mapping(record):
 def graph_atoms(expected):
     return sorted([('point',number(x['v'])) if x['type']=='point' else ('interval',number(x['lo']),number(x['hi']),x['loCl'],x['hiCl']) for x in expected])
 
+
+def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
+    """Replay only the changed drawing controls on the verified source route."""
+    route = '/trainers/oge-task24-proofs.html'
+    if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
+            record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
+            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+        return False
+    old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
+    captions = {
+        320: 'Увеличить подписи Чертёж целиком.',
+        390: 'Увеличить подписи Чертёж целиком.',
+        1280: 'Показать целиком Крупный чертёж: прокручивай его стрелками после выбора рисунка.',
+    }
+    caption = captions.get(record.get('width'))
+    if not caption:
+        return False
+    assets = {
+        '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
+        '/trainers/oge-course-proof.js': 'b8e947b02a5a651bc8ba7c4927de8ff136e4d4844235bccf89cdab70b43b7c15',
+    }
+    for path, expected in assets.items():
+        loaded = record.get('resources', {}).get(path, {})
+        if loaded.get('status') != 200 or loaded.get('sha256') != expected:
+            return False
+        if digest((ROOT / path[1:]).read_bytes()) != expected:
+            return False
+    return (any(original.count(old) == 1 and text == original.replace(old, caption, 1)
+                for original in fixture_texts) and
+            any(item == dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
+                for oracle in fixture_oracles))
+
+
 def exact_reviewed_context(record, oracle, fixtures):
     """Replay is limited to the manually reviewed condition and visible geometry.
 
@@ -170,9 +203,10 @@ def exact_reviewed_context(record, oracle, fixtures):
             actual=record.get('resources',{}).get(route,{})
             actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
             if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
-    return ((text in fixture_texts or matches_worked_steps_ui(record, text, fixture_texts)) and
-            geom(native_geometry) == fixture['geometrySha256'] and
-            item in fixture['oracles'])
+    return (geom(native_geometry) == fixture['geometrySha256'] and
+            ((item in fixture['oracles'] and
+              (text in fixture_texts or matches_worked_steps_ui(record, text, fixture_texts))) or
+             matches_proof_figure_ui(record, text, fixture_texts, item, fixture['oracles'])))
 
 def wayfinding_context_selftest(fixtures):
     """The one removed link cannot excuse changes to questions or payloads."""
