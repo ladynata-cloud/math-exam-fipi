@@ -121,6 +121,10 @@ changing existing saved task identities or credit rules.
   preservation, 15 Python consultation-harness tests; canonical bank extraction,
   mathematical quality (2000 division tasks / 5142 actions), checkpoint and
   pre-OGE arithmetic gates; `git diff --check`.
+- Navigator source binding: refreshed only `fraction-meaning.html` with the
+  canonical binding tool against published source commit
+  `7a876fa9b80f22df458348d5460fdd940dc8cac3`; five binding-tool regressions pass.
+  This receipt records source identity, not release approval.
 - Canonical compatibility evidence: 128 pre-change fraction task/state envelopes
   and their question identities retain their recorded SHA-256 fingerprints.
 - Browser gate: 320/360/1280 click, hit-target, keyboard, empty-answer, lesson
