@@ -122,14 +122,33 @@ changing existing saved task identities or credit rules.
   mathematical quality (2000 division tasks / 5142 actions), checkpoint and
   pre-OGE arithmetic gates; `git diff --check`.
 - Navigator source binding: refreshed only `fraction-meaning.html` with the
-  canonical binding tool against published source commit
-  `7a876fa9b80f22df458348d5460fdd940dc8cac3`; five binding-tool regressions pass.
+  canonical binding tool against published corrected source commit
+  `330c1caa396f75e3af822b3727a5670ecdf3c6dc`; the earlier receipt for
+  `7a876fa9b80f22df458348d5460fdd940dc8cac3` is retained in the provenance history.
+  Five binding-tool regressions pass.
   This receipt records source identity, not release approval.
 - Canonical compatibility evidence: 128 pre-change fraction task/state envelopes
   and their question identities retain their recorded SHA-256 fingerprints.
 - Browser gate: 320/360/1280 click, hit-target, keyboard, empty-answer, lesson
-  progression and reload scenarios added; CI must run them and supply screenshots.
-- Tests failed: none yet; local browser launch unavailable as described above.
+  progression and reload scenarios passed in PR #597 workflow run `43555281825`
+  on `a5d7f8920166e60439dbce5c5710a4e689748c50`; artifact `14097961742`.
+  The corrected source needs a new browser run; local Chromium is unavailable.
+- Initial CI findings: the renderer's synthetic robot report hash was stale;
+  learner-entry and skill-course preservation still referenced the old fraction
+  inline engine; the separate display-adapter script expanded five fixed-book
+  dependency closures. These were genuine failing gates, not product test passes.
+- Corrections: move the unchanged adapter into the existing synchronous loader,
+  remove the added dependency, retain all fixed-book closure assertions, bind the
+  full reviewed inline engine to published source `7a876fa9b80f22df458348d5460fdd940dc8cac3`
+  with explicit CI fetches, and regenerate both synthetic arithmetic reports and
+  their comparison using the canonical tools.
+- Corrected local gates: 22 fraction/managed/standalone tests; all 15 fixed-book
+  generator tests, including the five unchanged closure counts; learner-entry
+  preservation for 147 documents; 17 skill-course DOM tests; both 22-scenario
+  arithmetic robot runs and their comparison, regenerated from the exact remote
+  source `330c1caa396f75e3af822b3727a5670ecdf3c6dc`. The runs have zero issues,
+  475/470 verified arithmetic steps and unchanged outcomes; the reports are
+  synthetic evidence only.
 - Scope deviations: none.
 
 ## Required handoff

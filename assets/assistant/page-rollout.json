@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "7a876fa9b80f22df458348d5460fdd940dc8cac3",
+  "baseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2598,8 +2598,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "afc9e3fb28a629d1a584bc26102d4517c9bd5bebe645cf7cc56f9aaa5b4ccd43",
-      "afterSha256": "2f9faeadf7c27d9371a78ed61f653620f5651065c7465d8b4baac7cb89db4daf",
+      "beforeSha256": "893892c48333c6e297837450d12e33aae416c281f3290ee57ad15f1f3a6cedfd",
+      "afterSha256": "ad9e1f4a0e4785593c88082235dd77b2c428dadfe562b75b266e9e38341aa53f",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
@@ -5058,6 +5058,15 @@
     {
       "previousBaseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
       "sourceBaseSha": "7a876fa9b80f22df458348d5460fdd940dc8cac3",
+      "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7a876fa9b80f22df458348d5460fdd940dc8cac3",
+      "sourceBaseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
       "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
       "changedPaths": [
         "trainers/oge-basics/fraction-meaning.html"
