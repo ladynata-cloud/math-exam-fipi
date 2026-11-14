@@ -12,6 +12,7 @@ const partTwoLessons = ['algebra', 'geometry', 'models'].flatMap(name => require
 const manifest = require('../downloads/trainers-manifest.json');
 const ogeNext = require('./trainer-download-oge-next.cjs');
 const ogeFinal = require('./trainer-download-oge-final.cjs');
+const profileFirst = require('./trainer-download-profile-first.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -56,6 +57,7 @@ async function textbook(page, appName, courseName, lesson) {
 const scenarios = {
   ...ogeNext,
   ...ogeFinal,
+  ...profileFirst.scenarios,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -201,6 +203,7 @@ const scenarios = {
 };
 
 const routes = {
+  ...profileFirst.routes,
   'ege-baza-practice': '#lesson=round',
   'ege-profil-part-two': '#exam/19',
   'makarychev8-algebra': '#lesson/p16/0',
@@ -281,13 +284,13 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '4');
+  assert.equal(manifest.stage, '5');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
   const filter = process.argv[2];
-  assert(filter === undefined || filter === '--oge-next' || filter === '--oge-final' || scenarios[filter], 'unknown test filter');
-  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]) || (filter === '--oge-final' && ogeFinal[entry.slug]));
+  assert(filter === undefined || filter === '--oge-next' || filter === '--oge-final' || filter === '--profile-first' || scenarios[filter], 'unknown test filter');
+  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]) || (filter === '--oge-final' && ogeFinal[entry.slug]) || (filter === '--profile-first' && profileFirst.scenarios[entry.slug]));
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-downloads-'));
   const server = await listen();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -313,7 +316,7 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320 || ogeNext[entry.slug] || ogeFinal[entry.slug]) await scenarios[entry.slug](page, loadImage);
+        if (width === 320 || ogeNext[entry.slug] || ogeFinal[entry.slug] || profileFirst.scenarios[entry.slug]) await scenarios[entry.slug](page, loadImage);
         assert.deepEqual(issues, [], entry.slug);
         await context.close();
       }
@@ -388,6 +391,16 @@ async function run() {
       assert.match(await graph.locator('img').getAttribute('src'), /adapt-graph\.gif$/);
       await graph.getByRole('button', { name: 'Остановить GIF' }).click();
       assert.match(await graph.locator('img').getAttribute('src'), /adapt-graph\.png$/);
+      const derivative = page.locator('#adapt-derivative');
+      await derivative.locator(':scope > summary').click();
+      await loadImage(derivative.locator('img'));
+      for (let i = 0; i < 4; i++) await derivative.getByRole('button', { name: 'Следующий кадр' }).click();
+      assert.match(await derivative.locator('.trainer-skill-gif-caption').innerText(), /Кадр 5 из 5.*пустой ответ и 2 не подходят.*1,5 — верно/);
+      await derivative.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(derivative.locator('img'));
+      assert.match(await derivative.locator('img').getAttribute('src'), /adapt-derivative\.gif$/);
+      await derivative.getByRole('button', { name: 'Остановить GIF' }).click();
+      assert.match(await derivative.locator('img').getAttribute('src'), /adapt-derivative\.png$/);
       await context.close();
     }
 
@@ -409,6 +422,9 @@ async function run() {
     console.log(`TRAINER_DOWNLOAD_ADAPT_OK: ${selected.length} packages, ${selected.length * 2} file:// opens and ${selected.length * 2} panel views`);
     if (Object.keys(ogeFinal).every(slug => selected.some(entry => entry.slug === slug))) {
       console.log('TRAINER_DOWNLOAD_STAGE4_OK: six OGE packages, graph intersections and saved written work');
+    }
+    if (Object.keys(profileFirst.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
+      console.log('TRAINER_DOWNLOAD_STAGE5_OK: six profile packages, original START bank, vector foundations and derivative adaptation');
     }
   } finally {
     await browser?.close();

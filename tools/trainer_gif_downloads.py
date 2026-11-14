@@ -52,6 +52,7 @@ def build_all(build):
     build('adapt-trainer', 'Как изменить скачанный тренажёр', steps, draw)
     build_geometry(build)
     build_graph(build)
+    build_derivative(build)
 
 
 def build_geometry(build):
@@ -188,3 +189,81 @@ def build_graph(build):
                 card.text(220, y, feedback, 22, ink)
 
     build('adapt-graph', 'Как изменить график и ограничения', steps, draw)
+
+
+def build_derivative(build):
+    steps = (
+        'Скачай HTML тренажёра производной. Пример: A(1; −2), B(3; 2).',
+        'Попроси добавить пример A(1; −2), B(3; 1), x₀ = 2. Приложи HTML.',
+        'Сохрани ege-profil-derivative-my.html. Свой рисунок сверь с условием.',
+        'Δy = 3, Δx = 2. Производная равна их отношению: f′(2) = 1,5.',
+        'Открой копию без сети: пустой ответ и 2 не подходят; 1,5 — верно.',
+    )
+
+    def tangent(card):
+        # GEN.tangent draws a tangent from its two grid points, with x0 marked.
+        # These coordinates fit the native generator: dx=2, dy=3, |k|<=2.5.
+        # Keep the same 22-pixel coordinate unit on both axes.
+        origin_x, origin_y, scale = 100, 203, 22
+
+        def point(x, y):
+            return (origin_x + scale * x, origin_y - scale * y)
+
+        for x in range(-1, 6):
+            card.line([point(x, -2), point(x, 3)], 'grid', 1)
+        for y in range(-2, 4):
+            card.line([point(-1, y), point(5, y)], 'grid', 1)
+        card.line([point(-1, 0), point(5, 0)], 'muted', 2)
+        card.line([point(0, -2), point(0, 3)], 'muted', 2)
+        card.text(*point(5, 0), 'x', 14, 'muted', anchor='lt')
+        card.text(origin_x - 7, origin_y - scale * 3 - 1, 'y', 14, 'muted', anchor='rt')
+        card.text(origin_x - 5, origin_y + 3, '0', 13, 'muted', anchor='rt')
+        for x in (1, 3):
+            card.text(origin_x + scale * x, origin_y + 3, str(x), 13, 'muted', anchor='mt')
+        for y in (-2, 1):
+            card.text(origin_x - 5, origin_y - scale * y, str(y), 13, 'muted', anchor='rm')
+
+        card.line([point(1, -2), point(3, -2), point(3, 1)], 'amber', 2, dashed=True)
+        card.line([point((-2.4 + 3.5) / 1.5, -2.4),
+                   point((2.8 + 3.5) / 1.5, 2.8)], 'blue', 3)
+        for x, y, label, offset in ((1, -2, 'A', (-10, -16)), (3, 1, 'B', (7, -15))):
+            card.circle(*point(x, y), 4, 'blue')
+            px, py = point(x, y)
+            card.text(px + offset[0], py + offset[1], label, 16, 'blue', True)
+        card.circle(*point(2, -.5), 4, 'red')
+        px, py = point(2, -.5)
+        card.text(px + 7, py + 3, 'x₀', 15, 'red', True)
+
+    def draw(card, index):
+        card.rect((32, 88, 608, 265), outline='edge', radius=12)
+        if index == 0:
+            card.text(50, 106, 'ЕГЭ · Касательная по клеткам', 24, bold=True)
+            card.text(51, 151, 'A(1; −2), B(3; 2)', 27)
+            card.text(51, 195, 'Прежний ответ: 4 : 2 = 2', 23)
+            card.text(51, 230, 'Скачать HTML', 21, 'accent', True)
+        elif index == 1:
+            card.text(50, 106, 'Добавь свой пример', 24, bold=True)
+            card.text(51, 150, 'A(1; −2), B(3; 1), x₀ = 2', 25)
+            card.text(51, 191, 'Сохрани прежние задачи и разбор.', 21)
+            card.text(51, 229, 'ege-profil-derivative.html', 20, 'blue')
+        elif index == 2:
+            card.text(50, 105, 'Сохрани копию и сверь касательную', 23, bold=True)
+            tangent(card)
+            card.text(263, 146, 'ege-profil-derivative-my.html', 18, 'blue')
+            card.text(263, 186, 'A(1; −2), B(3; 1)', 23)
+            card.text(263, 224, 'x₀ = 2', 25, 'red', True)
+        elif index == 3:
+            card.text(50, 106, 'Пересчитай производную', 24, bold=True)
+            card.text(51, 151, 'Δx = 3 − 1 = 2', 25)
+            card.text(51, 187, 'Δy = 1 − (−2) = 3', 25)
+            card.text(51, 226, 'f′(2) = 3 : 2 = 1,5', 29, 'accent', True)
+        else:
+            card.text(50, 106, 'Проверь новую копию', 24, bold=True)
+            rows = [('Пусто', 'Не засчитывать', 'ink'),
+                    ('2', 'Отклонить', 'red'), ('1,5', 'Принять', 'accent')]
+            for row, (answer, feedback, ink) in enumerate(rows):
+                y = 151 + row * 36
+                card.text(52, y, answer, 22, ink, True)
+                card.text(220, y, feedback, 22, ink)
+
+    build('adapt-derivative', 'Как изменить задачу о производной', steps, draw)
