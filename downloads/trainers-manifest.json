@@ -1,7 +1,7 @@
 {
-  "stage": "1",
-  "updated": "2026-11-11",
-  "notes": "Первый этап: скачивание, промпты и архивы для ключевых публичных тренажёров. Служебные, тестовые и персональные страницы не включены.",
+  "stage": "2",
+  "updated": "2026-11-14",
+  "notes": "Этап 2 добавляет автономные копии, подробные инструкции и GIF для выбранных тем ОГЭ, обоих ЕГЭ и школьных курсов. Первые 17 комплектов сохраняются.",
   "trainers": [
     {
       "slug": "mcko-linejka",
@@ -360,12 +360,524 @@
       "downloadHtml": "/downloads/trainers/azbuka-postroeniy-reviewed/azbuka-postroeniy-reviewed.html",
       "prompt": "/downloads/trainers/azbuka-postroeniy-reviewed/azbuka-postroeniy-reviewed-deepseek-prompt.md",
       "package": "/downloads/trainers/azbuka-postroeniy-reviewed/azbuka-postroeniy-reviewed-package.zip"
+    },
+    {
+      "slug": "oge-task6-fractions",
+      "title": "ОГЭ №6 — дроби и вычисления",
+      "sourceHtml": "/trainers/oge-task6-fractions.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "обыкновенные и десятичные дроби",
+      "description": "Вычисления в формате ОГЭ, проверка ответа, подсказки и мастерские по шагам.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-foundation-board.js"
+      ],
+      "ogeTask": 6,
+      "adaptation": {
+        "example": "Добавь два примера на приведение дробей к общему знаменателю.",
+        "edits": {
+          "Задачи": "Найди банк `TASKS` и соседние условия такого же типа.",
+          "Числа": "Используй дроби с ненулевыми знаменателями. Свяжи числитель, знаменатель, выражение и ответ через точные дроби.",
+          "Подсказки": "Проверь подсказки в `Task6Hints` и работу `Task6Labs` для выбранного вида вычисления.",
+          "Оформление": "Найди CSS внутри `<style>`. Меняй размер текста, оставляя дробную черту и порядок действий видимыми."
+        },
+        "checks": [
+          "Для 1/4 + 1/6 правильный ответ 5/12. Число 2/10 должно отклоняться.",
+          "Для 1/4 + 1/4 записи 1/2, 0,5 и 0.5 выражают один ответ. Запись 1/0 должна отклоняться."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task6-fractions/oge-task6-fractions.html",
+      "prompt": "/downloads/trainers/oge-task6-fractions/oge-task6-fractions-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task6-fractions/oge-task6-fractions-package.zip"
+    },
+    {
+      "slug": "oge-task9-equations",
+      "title": "ОГЭ №9 — уравнения",
+      "sourceHtml": "/trainers/oge-task9-equations.html",
+      "subject": "алгебра",
+      "level": "9 класс, ОГЭ",
+      "topic": "линейные и квадратные уравнения, отбор корней",
+      "description": "Семейства уравнений, лаборатория переноса, подсказки и самостоятельная проверка.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra-reference.js",
+        "/trainers/oge-course-reference-entry.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-foundation-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/oge-course-reference/quadratic-roots.png",
+        "/trainers/oge-course-reference/parabola-vertex.png",
+        "/trainers/oge-course-reference/identities.png"
+      ],
+      "ogeTask": 9,
+      "adaptation": {
+        "example": "Сделай текст задачи крупнее.",
+        "edits": {
+          "Задачи": "Найди `genTask`, `BANK` и карточку соответствующего семейства в HTML.",
+          "Числа": "Подбирай коэффициенты от известных корней. Пересчитай оба корня и отдельно ответ на просьбу выбрать больший или меньший.",
+          "Подсказки": "Проверь связанные с семейством шаги и подсказки. В лаборатории переноса сохрани равносильность преобразований.",
+          "Оформление": "Меняй размер условия и поля ответа в CSS. Оставь рабочую область уравнения и кнопки доступными."
+        },
+        "checks": [
+          "Для 2x + 3 = 11 ответ 4. Пустое поле и ответ 3 не засчитываются.",
+          "Для x² − 5x + 6 = 0 корни 2 и 3. Если спрашивают больший, принимается 3, а 2 отклоняется."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task9-equations/oge-task9-equations.html",
+      "prompt": "/downloads/trainers/oge-task9-equations/oge-task9-equations-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task9-equations/oge-task9-equations-package.zip"
+    },
+    {
+      "slug": "oge-task11-graphs-trainer",
+      "title": "ОГЭ №11 — графики функций",
+      "sourceHtml": "/trainers/oge-task11-graphs-trainer.html",
+      "subject": "алгебра",
+      "level": "9 класс, ОГЭ",
+      "topic": "графики и их соответствие формулам",
+      "description": "Сопоставление формул и графиков, вершина параболы и интерактивное исследование.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra-reference.js",
+        "/trainers/oge-course-reference-entry.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/learning-bridge.js",
+        "/trainers/oge-learning.js",
+        "/trainers/board-bridge.js",
+        "/trainers/oge-native-10-14-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/oge-course-reference/quadratic-roots.png",
+        "/trainers/oge-course-reference/parabola-vertex.png",
+        "/trainers/oge-course-reference/identities.png"
+      ],
+      "ogeTask": 11,
+      "adaptation": {
+        "example": "Добавь примеры на чтение свободного члена линейной функции.",
+        "edits": {
+          "Задачи": "Найди `SKILLS`, генераторы семейств и `renderMatch`. Для исследования смотри встроенный блок `oge-video-graphs.js`.",
+          "Числа": "При замене коэффициентов пересчитай точки и ответ из одной формулы. Для гиперболы x ≠ 0, для параболы a ≠ 0.",
+          "Подсказки": "Привяжи подсказку к текущему вопросу. Для y = kx + b предложи посмотреть на значение y при x = 0.",
+          "Оформление": "Меняй CSS карточек или подписи графиков. Оставь одинаковый масштаб единицы на обеих осях."
+        },
+        "checks": [
+          "У y = 2x − 3 ордината пересечения с осью y равна −3, наклон положительный.",
+          "У y = (x − 2)² − 1 вершина (2; −1), нули 1 и 3. Проверь рисунок и подписи."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer.html",
+      "prompt": "/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task11-graphs-trainer/oge-task11-graphs-trainer-package.zip"
+    },
+    {
+      "slug": "oge-task14-progressions",
+      "title": "ОГЭ №14 — прогрессии",
+      "sourceHtml": "/trainers/oge-task14-progressions.html",
+      "subject": "алгебра",
+      "level": "9 класс, ОГЭ",
+      "topic": "арифметическая и геометрическая прогрессии",
+      "description": "Действующий тренажёр курса ОГЭ с таблицами шагов, формулами и зачётом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-native-10-14-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png"
+      ],
+      "ogeTask": 14,
+      "adaptation": {
+        "example": "Добавь две задачи на сумму первых членов арифметической прогрессии.",
+        "edits": {
+          "Задачи": "Найди авторские условия и режимы рядом с `page-learn` и `page-steps`.",
+          "Числа": "Раздели первый член и изменение за один переход. Для номера n используй n − 1 переходов. Согласуй условие, таблицу и ответ.",
+          "Подсказки": "Найди конструктор шага `st(q, a, hint, …)`. Подсказка помогает выбрать формулу и не сообщает итог.",
+          "Оформление": "Меняй CSS для таблицы и карточек, сохраняя видимость первого и последнего членов."
+        },
+        "checks": [
+          "При a₁ = 3, d = 2 пятый член равен 11, сумма первых пяти равна 35.",
+          "При b₁ = 2, q = 3 третий член равен 18, сумма первых трёх равна 26."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task14-progressions/oge-task14-progressions.html",
+      "prompt": "/downloads/trainers/oge-task14-progressions/oge-task14-progressions-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task14-progressions/oge-task14-progressions-package.zip"
+    },
+    {
+      "slug": "oge-task24-proofs",
+      "title": "ОГЭ №24 — геометрические доказательства",
+      "sourceHtml": "/trainers/oge-task24-proofs.html",
+      "subject": "геометрия",
+      "level": "9 класс, ОГЭ",
+      "topic": "чертёж, утверждение и последовательность доказательства",
+      "description": "Доказательства с чертежом, выбором оснований и письменной формулировкой.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-proof.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-proof.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-part2-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/areas.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-04.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/trig-values.png"
+      ],
+      "ogeTask": 24,
+      "adaptation": {
+        "example": "Сделай подписи точек на чертеже крупнее.",
+        "edits": {
+          "Задачи": "В `DATA` найди `tasks`, `figs` и `justbank`. Согласуй условие, фигуру, допустимые шаги и основания.",
+          "Числа": "Сохраняй заданные отношения и расположение точек. Если меняешь координаты рисунка, проверь, что они поддерживают все данные условия.",
+          "Подсказки": "Смотри карточки тем и шагов во встроенном `oge-course-proof.js`. Подсказка по шагу опирается на условие и уже доказанное.",
+          "Оформление": "Меняй CSS и `renderFig`, сохраняя чертёж рядом с доказательством и читаемые обозначения."
+        },
+        "checks": [
+          "Если доказано равенство двух углов треугольника, против них лежат равные стороны. Вид рисунка сам по себе основанием не служит.",
+          "Проверь чертёж в условии и решении с опорой, отказ для неверного основания и принятие корректного шага."
+        ],
+        "limit": "Автоматическая проверка относится к выбранным шагам. Полный письменный текст проверяет преподаватель."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task24-proofs/oge-task24-proofs.html",
+      "prompt": "/downloads/trainers/oge-task24-proofs/oge-task24-proofs-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task24-proofs/oge-task24-proofs-package.zip"
+    },
+    {
+      "slug": "ege-baza-practice",
+      "title": "Базовый ЕГЭ — тренажёры №1–21",
+      "sourceHtml": "/ege-baza/path/index.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ база",
+      "topic": "авторские семейства задач по всем 21 позициям",
+      "description": "Самостоятельная практика, разбор, диагностика и модели из действующего маршрута.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-baza/skill-map.css",
+        "/ege-baza/path/style.css",
+        "/ege-baza/path/geometry-journey.css",
+        "/ege-baza/reference/style.css",
+        "/assets/course-examples.css",
+        "/ege-baza/path/data.js",
+        "/ege-baza/path/practice.js",
+        "/ege-baza/path/equation-practice.js",
+        "/ege-baza/path/grade7-algebra.js",
+        "/ege-baza/path/grade7-geometry.js",
+        "/ege-baza/path/grade7-geometry-core.js",
+        "/ege-baza/path/grade7-geometry-practice.js",
+        "/ege-baza/path/grade7-geometry-rebuild-base.js",
+        "/ege-baza/path/grade7-geometry-rebuild-foundations.js",
+        "/ege-baza/path/grade7-geometry-rebuild-triangles.js",
+        "/ege-baza/path/grade7-geometry-rebuild-relations.js",
+        "/ege-baza/path/grade7-geometry-rebuild-workbook.js",
+        "/ege-baza/path/grade7-foundations.js",
+        "/ege-baza/path/pre7-arithmetic.js",
+        "/ege-baza/path/pre7-applications.js",
+        "/ege-baza/path/models.js",
+        "/ege-baza/path/practice-view.js",
+        "/learning/geometry-object-labels.js",
+        "/ege-baza/path/grade7-geometry-models.js",
+        "/ege-baza/path/grade7-geometry-core-models.js",
+        "/ege-baza/path/pre7-models.js",
+        "/ege-baza/remediation.js",
+        "/ege-baza/path/exam-pool.js",
+        "/ege-baza/path/managed-state.js",
+        "/ege-baza/path/stereo-figures.js",
+        "/ege-baza/reference/data.js",
+        "/ege-baza/reference/ui.js",
+        "/ege-baza/course-journey.js",
+        "/assets/course-examples-data.js",
+        "/assets/course-examples.js",
+        "/ege-baza/exam-map.js",
+        "/ege-baza/path/task-hints.js",
+        "/ege-baza/skill-map-data.js",
+        "/ege-baza/skill-map.js",
+        "/ege-baza/path/task-first.js",
+        "/ege-baza/path/app.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/learning-bridge.js",
+        "/ege-baza/path/managed.js",
+        "/learning/practice-entry.js"
+      ],
+      "offlineCourseExamples": [
+        "baza-round",
+        "baza-probability",
+        "baza-percent"
+      ],
+      "adaptation": {
+        "example": "Добавь к №21 пример, где после оценки нужно показать подходящее целое число.",
+        "edits": {
+          "Задачи": "Найди встроенные блоки `data.js` и `practice.js`. Для №21 смотри `whole-count`, `mushroom-count` и `vase-order`.",
+          "Числа": "При замене чисел заново вычисли границы, проверь существование целого решения и пример, на котором граница достигается.",
+          "Подсказки": "Согласуй шаги задачи и нужный вариант во встроенном `task-hints.js`. Оставь первое действие посильным без раскрытия ответа.",
+          "Оформление": "Меняй CSS маршрута и приложения. Сохрани формулы, таблицы, модели и поля для ответов."
+        },
+        "checks": [
+          "Покупка 25 предметов упаковками по 6 требует 5 упаковок. При делении без остатка 24 на 6 достаточно 4.",
+          "Из 5 равновероятных исходов при 2 подходящих вероятность 2/5 = 0,4."
+        ],
+        "limit": "Карта 1–21, семейства задач, модели и пробная работа входят в копию. Отдельные справочники по ссылкам открываются на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-baza-practice/ege-baza-practice.html",
+      "prompt": "/downloads/trainers/ege-baza-practice/ege-baza-practice-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-baza-practice/ege-baza-practice-package.zip"
+    },
+    {
+      "slug": "ege-profil-vectors-t2",
+      "title": "Профильный ЕГЭ №2 — векторы",
+      "sourceHtml": "/ege-profil/trainers/vectors-t2.html",
+      "subject": "геометрия",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "координаты, длина и скалярное произведение векторов",
+      "description": "Действующий тренажёр с рисунками, подсказками, проверкой шагов и личным черновиком.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "example": "Добавь простые примеры на вектор AB с отрицательной абсциссой.",
+        "edits": {
+          "Задачи": "Найди `POOLS` и связанный генератор, выбираемый через пул. Рисунок формируется в `renderFigure`.",
+          "Числа": "Для AB вычитай координаты A из координат B. Для длины бери неотрицательный корень. Для угла исключи нулевые векторы.",
+          "Подсказки": "Проверь подсказки шагов `N_` и `C_` в том же генераторе. Рисунок и отмеченные координаты должны совпадать с условием.",
+          "Оформление": "В CSS меняй размер задания или толщину стрелки. Сохраняй масштаб, направление стрелки и обозначения."
+        },
+        "checks": [
+          "Для A(3; −1), B(1; 2) координаты AB равны (−2; 3), а BA равны (2; −3).",
+          "Векторы (3; 4) и (−4; 3) имеют длину 5 и скалярное произведение 0."
+        ],
+        "limit": "Личный черновик доступен. Приглашения и соединение с другими участниками работают на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2.html",
+      "prompt": "/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2-package.zip"
+    },
+    {
+      "slug": "ege-profil-part-two",
+      "title": "Профильный ЕГЭ — вторая часть №14–20",
+      "sourceHtml": "/ege-profil/part-two/index.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "42 темы и 252 авторские задачи второй части",
+      "description": "Действующий курс с пошаговыми заданиями, самостоятельными ответами, моделями и разбором обоснования.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/part-two/style.css",
+        "/ege-profil/start/checks.js",
+        "/ege-profil/part-two/content-algebra.js",
+        "/ege-profil/part-two/content-geometry.js",
+        "/ege-profil/part-two/content-models.js",
+        "/ege-profil/part-two/state.js",
+        "/ege-profil/part-two/models.js",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/azbuka-metodov/catalog.js",
+        "/ege-profil/skill-map.js",
+        "/ege-profil/part-two/app.js"
+      ],
+      "offlineOmitAssets": [],
+      "adaptation": {
+        "example": "Добавь одно условие на отбор корней тригонометрического уравнения.",
+        "edits": {
+          "Задачи": "Найди блоки `content-algebra.js`, `content-geometry.js` и `content-models.js`. Меняй одну серию, сохраняя уникальные ID.",
+          "Числа": "Свяжи новые параметры с областью допустимых значений, заключительными полями `final`, рисунком и разбором.",
+          "Подсказки": "В выбранной серии найди функцию шага и поля `hint` и `explanation`. Сохрани разницу между учебной подсказкой и самостоятельным решением.",
+          "Оформление": "В блоке `part-two/style.css` меняй оформление карточек, не скрывая поля ответа, рисунок и письменное обоснование."
+        },
+        "checks": [
+          "Для sin x = 1/2 на [0; π/2] подходит π/6. Корень 5π/6 лежит вне отрезка.",
+          "В задачах на экстремум проверь отдельно существование примера и невозможность лучшего результата. Проверка чисел не подтверждает письменное доказательство."
+        ],
+        "limit": "Встроенные модели работают локально. Отдельный атлас графиков, другие курсы и связанный переход обратно к заданию доступны на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-part-two/ege-profil-part-two.html",
+      "prompt": "/downloads/trainers/ege-profil-part-two/ege-profil-part-two-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-part-two/ege-profil-part-two-package.zip"
+    },
+    {
+      "slug": "makarychev8-algebra",
+      "title": "Алгебра 8 класса — Макарычев",
+      "sourceHtml": "/school/makarychev8/index.html",
+      "subject": "алгебра",
+      "level": "8 класс",
+      "topic": "рациональные дроби, корни, уравнения и другие главы курса",
+      "description": "Действующий школьный курс с задачами, рисунками, поиском номера и шагами решения.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/school/makarychev8/style.css",
+        "/assets/course-examples.css",
+        "/assets/course-examples-data.js",
+        "/assets/course-examples.js",
+        "/school/peterson6/math.js",
+        "/school/makarychev8/task-graphs.js",
+        "/school/makarychev8/check.js",
+        "/school/makarychev8/models.js",
+        "/school/makarychev8/data.js",
+        "/school/makarychev8/app.js"
+      ],
+      "offlineOmitAssets": [],
+      "offlineCourseExamples": [
+        "m8-cancel",
+        "m8-root",
+        "m8-quadratic"
+      ],
+      "adaptation": {
+        "example": "Добавь два задания на квадратный корень из квадрата отрицательного числа.",
+        "edits": {
+          "Задачи": "Найди встроенный блок `data.js` с `window.MakarychevCourse`. Используй авторскую карточку нужной главы, сохрани уникальные ID.",
+          "Числа": "Согласуй поля `prompt`, `answer` и формат ответа. При сокращении дроби перенеси в разбор ограничения исходного знаменателя.",
+          "Подсказки": "Редактируй поля `steps` и `hint` выбранной карточки. Ответ к шагу и финальный ответ обновляй вместе.",
+          "Оформление": "Меняй CSS курса или подписей графика. Оставь формулы и подсказки читаемыми на телефоне."
+        },
+        "checks": [
+          "√((-5)²) = 5. Ответ −5 неверен.",
+          "Дробь (x² − 1)/(x − 1) равна x + 1 при x ≠ 1. Проверь, что исключение x = 1 сохраняется."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/makarychev8-algebra/makarychev8-algebra.html",
+      "prompt": "/downloads/trainers/makarychev8-algebra/makarychev8-algebra-deepseek-prompt.md",
+      "package": "/downloads/trainers/makarychev8-algebra/makarychev8-algebra-package.zip"
+    },
+    {
+      "slug": "peterson6-math",
+      "title": "Математика 6 класса — Петерсон",
+      "sourceHtml": "/school/peterson6/index.html",
+      "subject": "математика",
+      "level": "6 класс",
+      "topic": "дроби, проценты, движение и задачи первой части учебника",
+      "description": "Действующий курс с авторскими карточками, моделями и локальными подсказками.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/school/peterson6/style.css",
+        "/trainers/peterson-assistant.css",
+        "/assets/course-examples.css",
+        "/assets/course-examples-data.js",
+        "/assets/course-examples.js",
+        "/trainers/peterson-assistant.js",
+        "/school/peterson6/math.js",
+        "/school/peterson6/models.js",
+        "/school/peterson6/data.js",
+        "/school/peterson6/app.js"
+      ],
+      "offlineOmitAssets": [
+        "/assets/assistant/home-link.js"
+      ],
+      "offlineCourseExamples": [
+        "p6-fractions",
+        "p6-river",
+        "p6-percent"
+      ],
+      "adaptation": {
+        "example": "Сделай новые примеры на нахождение процента от числа.",
+        "edits": {
+          "Задачи": "Найди встроенный `data.js` с `window.PetersonCourse`. Фиксированные карточки находятся в уроках, варианты навыка — в `models.js`.",
+          "Числа": "В карточке согласованно меняй `prompt`, `answer`, единицы и числа в шагах. В генераторе проверь все допустимые варианты.",
+          "Подсказки": "Проверь поля `hint` и `steps` карточки. Локальная помощь берёт текст из того же задания.",
+          "Оформление": "В CSS меняй размер текста и поля. На телефоне должны оставаться читаемыми дробные записи и модель."
+        },
+        "checks": [
+          "15% от 200 равны 30. При увеличении 200 на 15% получается 230.",
+          "При собственной скорости 9 км/ч и течении 2 км/ч против течения скорость 7 км/ч, по течению 11 км/ч."
+        ],
+        "limit": "Доступны карточки и локальные подсказки. Ссылки на отдельные страницы учебника и кабинет открываются на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/peterson6-math/peterson6-math.html",
+      "prompt": "/downloads/trainers/peterson6-math/peterson6-math-deepseek-prompt.md",
+      "package": "/downloads/trainers/peterson6-math/peterson6-math-package.zip"
     }
   ],
   "todo": [
-    "Расширить слой скачивания на остальные публичные тренажёры каталога /trainers/.",
-    "Добавить индивидуальные промпты для информатики и Python, если эти материалы будут открыто позиционироваться как часть библиотеки.",
-    "Проверить и упаковать более тяжёлые 3D- и стереометрические тренажёры отдельным этапом.",
+    "ОГЭ: сначала №7, №8, №10, №12 и основные линии геометрии №15–18; затем №13 и оставшиеся задания второй части.",
+    "Профильный ЕГЭ: продолжить первой частью START, векторами с нуля, производной и прикладными задачами. Проверить отдельные модели сечений и атлас параметров.",
+    "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
+    "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",
     "Не включать testing-hub, личные страницы учеников, черновики и страницы с noindex."
   ]
 }

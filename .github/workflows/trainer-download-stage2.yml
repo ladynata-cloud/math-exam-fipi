@@ -1,0 +1,44 @@
+name: Trainer downloads — standalone and GIF workflow
+
+on:
+  pull_request:
+    paths:
+      - 'downloads/**'
+      - 'scripts/*trainer-download*'
+      - 'assets/download-*.css'
+      - 'assets/download-*.js'
+      - 'assets/trainer-skill-gif*'
+      - 'assets/course-examples*'
+      - 'pedagogam/kak-skachat-i-adaptirovat-trenazher/**'
+      - 'trainers/oge-course/**'
+      - 'trainers/oge-task*.html'
+      - 'trainers/oge-course-*.js'
+      - 'ege-baza/path/**'
+      - 'ege-profil/part-two/**'
+      - 'ege-profil/trainers/vectors-t2.html'
+      - 'school/makarychev8/**'
+      - 'school/peterson6/**'
+      - 'tools/trainer-download-stage2.browser.cjs'
+      - '.github/workflows/trainer-download-stage2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Open and solve from the real ZIP and standalone HTML
+        run: node tools/trainer-download-stage2.browser.cjs

@@ -161,7 +161,11 @@ class GeneratorTests(unittest.TestCase):
                      f'<script defer src="oge-video-models.js" data-oge-video-task="{number}"></script>\n')
             raw = (ROOT / entry).read_bytes()
             self.assertEqual(raw.count(block.encode()), 1)
-            self.assertIn(block.encode() + b"</head>", raw)
+            adaptation = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'
+                          b'<link rel="stylesheet" href="/assets/download-adaptation.css">\n'
+                          b'<script defer src="/assets/download-adaptation.js"></script>\n')
+            self.assertTrue(block.encode() + b"</head>" in raw or
+                            block.encode() + adaptation + b"</head>" in raw)
             old_html[ROOT / entry] = raw.replace(block.encode(), b"", 1)
             if number == 15:
                 # The established 71-entry book maps no source to this newer
@@ -190,6 +194,16 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(set(sources) - old_sources, reviewed)
         self.assertEqual(old_sources - set(sources), set())
         self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-10-31-v2:")
+
+    def test_live_download_adaptation_is_outside_the_fixed_edition(self):
+        edition = builder.Edition("v2", builder.PUBLISHED_V1)
+        output, manifest = builder.build(edition)
+        paths = {record["path"] for record in manifest["sourceFiles"]}
+        for asset in ("assets/download-adaptation.css", "assets/download-adaptation.js"):
+            self.assertNotIn(asset, paths)
+            self.assertNotIn(edition.prefix + asset, output)
+        for source in ("trainers/oge-task6-fractions.html", "trainers/oge-task11-graphs-trainer.html", "trainers/oge-task24-proofs.html"):
+            self.assertNotIn(b"data-trainer-download", output[edition.prefix + source])
 
     def test_course_entry_stylesheets_add_only_reviewed_dependencies(self):
         edition = builder.Edition("v2", builder.PUBLISHED_V1)

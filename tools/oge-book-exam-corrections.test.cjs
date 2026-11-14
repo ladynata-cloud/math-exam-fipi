@@ -3,6 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const root=path.resolve(__dirname,'..');
@@ -19,7 +20,8 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- let html=restoreVideoModels(file,withoutReturnShell(restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8')));
+ const publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,publicHtml)));
  if(file==='trainers/oge-task6-fractions.html'){
   html=restoreFractionMultiplicationStep(html);
   const replacement='<main class="wrap">\n\n<header>';

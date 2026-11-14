@@ -2,6 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import navigatorPreservation from "../tools/public-navigator-preservation.cjs";
+import { exportStandalone } from "./trainer-download-offline.mjs";
+import { adaptationPanel, adaptationPrompt, downloadPaths, guideUrl, writeAdaptationFiles } from "./trainer-download-adaptation.mjs";
 
 const root = process.cwd();
 const manifestPath = path.join(root, "downloads", "trainers-manifest.json");
@@ -13,14 +15,14 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const warnings = [];
 const built = [];
 const args = process.argv.slice(2);
-const onlyArg = args.find(arg => arg.startsWith("--only="));
-const onlySlug = onlyArg ? onlyArg.slice("--only=".length) : null;
+const onlyArgs = args.filter(arg => arg.startsWith("--only="));
+const onlySlugs = new Set(onlyArgs.map(arg => arg.slice("--only=".length)));
 const downloadsOnly = args.includes("--downloads-only");
-if (args.some(arg => arg !== "--downloads-only" && arg !== onlyArg)) {
-  throw new Error("Usage: node scripts/build-trainer-downloads.mjs [--only=slug] [--downloads-only]");
+if (args.some(arg => arg !== "--downloads-only" && !onlyArgs.includes(arg))) {
+  throw new Error("Usage: node scripts/build-trainer-downloads.mjs [--only=slug ...] [--downloads-only]");
 }
-if (onlyArg && !(manifest.trainers || []).some(entry => entry.slug === onlySlug && entry.public)) {
-  throw new Error(`Unknown public trainer: ${onlySlug}`);
+for (const slug of onlySlugs) {
+  if (!manifest.trainers.some(entry => entry.slug === slug && entry.public)) throw new Error(`Unknown public trainer: ${slug}`);
 }
 
 function repoPath(sitePath) {
@@ -95,7 +97,8 @@ function includeFolderParentScripts(sourceDir, pkgDir) {
 function stripDownloadPanel(html) {
   return html
     .replace(/\n?<!-- download-panel:start:[\s\S]*?<!-- download-panel:end:[\s\S]*?-->\n?/g, "\n")
-    .replace(/\n?<link rel="stylesheet" href="\/assets\/download-panel\.css">\n?/g, "\n");
+    .replace(/\n?<link rel="stylesheet" href="\/assets\/(?:download-panel|download-adaptation)\.css">\n?/g, "\n")
+    .replace(/\n?<script defer src="\/assets\/download-adaptation\.js"><\/script>\n?/g, "\n");
 }
 
 function fixLocalAssetLinks(html) {
@@ -163,7 +166,7 @@ function inlineTrainerAssets(html, entry) {
 function ensurePanelCss(html) {
   if (html.includes(panelCssHref)) return html;
   const link = `<link rel="stylesheet" href="${panelCssHref}">\n`;
-  if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, `${link}</head>`);
+  if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, (tag, offset) => `${html[offset - 1] === '\n' ? '' : '\n'}${link}${tag}`);
   return link + html;
 }
 
@@ -185,11 +188,28 @@ function panelFor(entry) {
 
 function injectPanel(sourceFile, entry) {
   let html = fs.readFileSync(sourceFile, "utf8");
-  html = stripDownloadPanel(html);
-  html = ensurePanelCss(html);
-  const panel = panelFor(entry);
-  if (/<\/body>/i.test(html)) html = html.replace(/<\/body>/i, `${panel}\n</body>`);
-  else html += `\n${panel}\n`;
+  const panel = entry.adaptation ? adaptationPanel(entry, downloadPaths(entry.slug)) : panelFor(entry);
+  if (entry.adaptation) {
+    const markers = new RegExp(`<!-- download-panel:start:${entry.slug} -->[\\s\\S]*?<!-- download-panel:end:${entry.slug} -->`, 'g');
+    const existing = [...html.matchAll(markers)];
+    if (existing.length > 1) throw new Error(`Multiple download panels: ${entry.sourceHtml}`);
+    if (existing.length === 1) {
+      const block = `<!-- download-panel:start:${entry.slug} -->\n${panel}\n<!-- download-panel:end:${entry.slug} -->`;
+      fs.writeFileSync(sourceFile, html.replace(markers, () => block), 'utf8');
+      return;
+    }
+  }
+  html = ensurePanelCss(stripDownloadPanel(html));
+  if (entry.adaptation) {
+    html = html.replace(/<\/head>/i, '<link rel="stylesheet" href="/assets/download-adaptation.css">\n<script defer src="/assets/download-adaptation.js"></script>\n</head>');
+  }
+  const markedPanel = entry.adaptation
+    ? `<!-- download-panel:start:${entry.slug} -->\n${panel}\n<!-- download-panel:end:${entry.slug} -->` : panel;
+  if (/<\/body>/i.test(html)) html = html.replace(/<\/body>/i, (tag, offset) => {
+    const newline = entry.adaptation && html[offset - 1] !== '\n' ? '\n' : '';
+    return `${newline}${markedPanel}\n${tag}`;
+  });
+  else html += `\n${markedPanel}\n`;
   fs.writeFileSync(sourceFile, html, "utf8");
 }
 
@@ -336,7 +356,10 @@ function prepareTrainer(entry) {
     warnings.push(`Не найден HTML: ${entry.sourceHtml}`);
     return;
   }
-  const cleanHtml = inlineTrainerAssets(fixLocalAssetLinks(stripDownloadPanel(offlineHtml(sourceFile).toString("utf8"))), entry);
+  const html = stripDownloadPanel(offlineHtml(sourceFile).toString("utf8"));
+  const cleanHtml = entry.adaptation
+    ? exportStandalone(root, html.trimEnd() + "\n", entry)
+    : inlineTrainerAssets(fixLocalAssetLinks(html), entry);
 
   const destDir = path.join(downloadsRoot, entry.slug);
   const pkgDir = path.join(tmpRoot, entry.slug);
@@ -370,9 +393,10 @@ function prepareTrainer(entry) {
   }
 
   const promptName = `${entry.slug}-deepseek-prompt.md`;
-  const promptText = promptFor(entry);
+  const promptText = entry.adaptation ? adaptationPrompt(entry) : promptFor(entry);
   fs.writeFileSync(path.join(destDir, promptName), promptText, "utf8");
   fs.writeFileSync(path.join(pkgDir, promptName), promptText, "utf8");
+  if (entry.adaptation) writeAdaptationFiles(root, pkgDir, entry);
 
   const zipName = `${entry.slug}-package.zip`;
   createZip(pkgDir, path.join(destDir, zipName));
@@ -406,6 +430,30 @@ function upsertBlock(filePath, id, block, beforeNeedle) {
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function updateOgeDownloads() {
+  const section = path.join(root, 'trainers/oge-course/index.html');
+  const html = fs.readFileSync(section, 'utf8');
+  const first = manifest.trainers.find(entry => entry.slug === 'oge-1-5-trainers');
+  const statements = manifest.trainers.find(entry => entry.slug === 'task19-trainer');
+  const links = [`<a href="${first.package}" download>№1–5 · ZIP</a>`];
+  const entries = manifest.trainers.filter(entry => entry.public && entry.ogeTask);
+  const byTask = new Map([...entries, { ...statements, ogeTask: 19 }].map(entry => [entry.ogeTask, entry]));
+  for (const [no, entry] of [...byTask.entries()].sort(([a], [b]) => a - b)) {
+    links.push(`<a href="${entry.package}" download>№${no} · ${entry.topic} · ZIP</a>`);
+  }
+  const block = `<details id="downloads">
+  <summary>Скачать тренажёры</summary>
+  <p>Распакуй архив и открой HTML. В комплекте №1–5 есть также диагностика, чтение плана и проверочная по маршрутам.</p>
+  <div class="downloads">
+    ${links.join('\n    ')}
+  </div>
+  <p><a href="${guideUrl}#adaptation-example">Как изменить тренажёр · GIF и шаги</a>. Остальные задания можно <a href="#all-topics">решать на сайте</a>.</p>
+</details>`;
+  const downloadBlock = /<details id="downloads">[\s\S]*?<\/details>/g;
+  if ([...html.matchAll(downloadBlock)].length !== 1) throw new Error('Expected one OGE download list');
+  fs.writeFileSync(section, html.replace(downloadBlock, () => block), 'utf8');
 }
 
 function updateSitePages() {
@@ -470,20 +518,22 @@ function updateSitePages() {
   );
 }
 
-removeDir(tmpRoot);
 ensureDir(downloadsRoot);
-
-for (const entry of manifest.trainers || []) {
-  if (onlySlug && entry.slug !== onlySlug) continue;
-  prepareTrainer(entry);
-}
-
-if (!onlySlug && !downloadsOnly) updateSitePages();
-
-manifest.updated = new Date().toISOString().slice(0, 10);
-fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-
 removeDir(tmpRoot);
+try {
+  for (const entry of manifest.trainers || []) {
+    if (onlySlugs.size && !onlySlugs.has(entry.slug)) continue;
+    prepareTrainer(entry);
+  }
+
+  if (!downloadsOnly && manifest.trainers.some(entry => built.includes(entry.slug) && entry.ogeTask)) updateOgeDownloads();
+  if (!onlySlugs.size && !downloadsOnly) updateSitePages();
+
+  manifest.updated = new Date().toISOString().slice(0, 10);
+  fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+} finally {
+  removeDir(tmpRoot);
+}
 
 console.log(`Создано/обновлено тренажёров: ${built.length}`);
 for (const slug of built) console.log(`- ${slug}`);

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+  "baseSha": "ccd54e003ea32fd429c9eaba3a2fc3ae286f2ebc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "136bedf3bd17f6f59b94c37c663fd0cdec03d51f8c3c5887d1e671c172d5af24",
-      "afterSha256": "31eb162236728f03e621469a68fa5f1718acffe6588b47d453d05d61d8715c71",
+      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
+      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "65f663b2cf528014e7b2f6193c49dbb2de04b009f46641ee9be62ea972ba8f45",
-      "afterSha256": "475070fe102dc4b95e31198b454d848ce9306d449f9afef68cb907c4d97bc6a7",
+      "beforeSha256": "285b53878c62c659d8b61b374ba0594922086eec09336e8d5dac81d1ee383d64",
+      "afterSha256": "466d1f9f086bf15195f79169b4babb0f856ac7f42d589dcf92c11e866996acca",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -458,8 +458,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
-      "beforeSha256": "71f43dd86b8de63318e88b03c9ce379887e62894a3ba39471ba06f1d0bc77411",
-      "afterSha256": "cfb9ea59a742782708a6539949bcb1c35dd0dc970e126ce15c5a7b897cba41e7",
+      "beforeSha256": "ecbd4e21de48233cb895d972864ab87a88aae20ffc7139889e821a3fff4dd73f",
+      "afterSha256": "e1367a359d60bd5d94f6c23f85325113f1c22daa2b94c43f8940cd040ed10d3e",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
@@ -2078,8 +2078,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "637bd37f5e937639d2a8c8e1d392680fffeff1c9db843d369597b232b6b41eb6",
-      "afterSha256": "80c23cbbe3a1039d55edce79856ae635855a39121aa8e1a727ae84f3a034bda2",
+      "beforeSha256": "43bcc45cbe61b829df03350c732becd8c3afea237c829891b334a2e6102f029f",
+      "afterSha256": "b5f31c0bf625fcc21c44a517d94b6704a2f387c0ccbf8d845889f8afa3acf40f",
       "placement": "before-head-close"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
@@ -2138,8 +2138,8 @@
       "placement": "before-head-close"
     },
     "school/makarychev8/index.html": {
-      "beforeSha256": "b2a2079b20137d0b24fab0cbecf2c33dd02c48f18ebb838bf6a822d7a598a504",
-      "afterSha256": "30fa8f34bfbd1b4a83d0bb0b02b7eefab9dd5673f7fd1fdcbc0c74997e630dec",
+      "beforeSha256": "64f1e9d53eb1f07aef0d9e04b0861db2357f8e43d9f17ab69918f94194dddbe6",
+      "afterSha256": "877d952d78805979f56f323b947caf9884e799076b35ee68721c3b97eb975397",
       "placement": "before-head-close"
     },
     "school/makarychev8/topics/diskriminant-korni/index.html": {
@@ -2933,8 +2933,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "3d97b68192bfd43b801e70476e20d0c534a03937fb9bb28c11e4625a9805e26d",
-      "afterSha256": "d28daa98bc9c055e9344eb2b2ec856da2d47fd2134ebca87357f7080ac222c22",
+      "beforeSha256": "97dc9c6e33e288dfeb8d8f526857e7af7602c510e48bd0bc22658f2da6522172",
+      "afterSha256": "10845e59dcff2fcda6f58a2278af3e1da17a24c8515d4b0a16409f6d78a69f6e",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2948,8 +2948,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "816b34c2a8f0f93bedca13d963518dc6d782727dc079b0210048f80f414c4b29",
-      "afterSha256": "3ed2c6f27e6620af6d63293135e66bfbbf3cdc7c865f9031ed6958de0ec3503a",
+      "beforeSha256": "d1137ab756d01e55df7a4b79c4a27657cbf31988c9917007aaca4e5c831ee935",
+      "afterSha256": "2c1ebad6ccb72b90dde6a3738fa7c5e103f82036971448f879c220e88c3c313d",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-main-open"
     },
     "trainers/oge-task14-progressions.html": {
-      "beforeSha256": "26d9c62270243ba3726e6216f359855f69f142dae5ab950a9acf407e04167522",
-      "afterSha256": "932c1027818e6e4cd6a51928609b83e685b73fbe242a162949f2825971fdb5b8",
+      "beforeSha256": "06f879e5ac6f0bcbc36974ddea8f16b4563416df5a201f5f6c038d82f1377756",
+      "afterSha256": "7447e516294d94e7dc1193cbfdff5744990c20d7463ace699c4cf02b9078a54a",
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
@@ -3008,8 +3008,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "b978f5324dff5b2da1d6321950caab644128ea99e7349f54b39bf9cc3ee85d21",
-      "afterSha256": "f1f166c0dd4f7a24320621a6cac85684735a6bf62f18a62e209d678dacda7c8f",
+      "beforeSha256": "4ae3a4d7044f504f68576854d99966a162eba3159161d24d04f25dbe2b4811b1",
+      "afterSha256": "b058bdfd540926485e13e24d8a82b5734b00ba865f22dbaa267c1d36a8100252",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
@@ -3018,8 +3018,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
-      "beforeSha256": "5ef7205fd95de15dcef3cf377d2e60e91ffdf7f681ee8575b39201295585f4b3",
-      "afterSha256": "74c88bda2c54cb264cb0b2c19b34faaaaabbe3af4ec1b7efd9d6fbe28d329607",
+      "beforeSha256": "e45ab54309153422af9f09ed8245f33edf8398c348614a6153d6151e143b088f",
+      "afterSha256": "3260bfffb7a467c101d7dd1fe3a94711c2f9cbf02daa7ef010033f7391bb9541",
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
@@ -3033,8 +3033,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "6331c97a0bfbdbb6f51e84f0f2e1e39abb4fda9dc67dbb9bd2dae960da4acf14",
-      "afterSha256": "f222e742d904fa377339d4c47a03cc5e0e8ea6ed9471ba379dac6cc886d1dcf1",
+      "beforeSha256": "f4be1e2e94faa1ab8c3658c579f10196dcb348371ebdb45250e0c0300cec2482",
+      "afterSha256": "b6a7f36ab057617180acf9ed3f60ed251a2e1afc8ac6d5763cc2bf40fbff7351",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -5070,6 +5070,25 @@
       "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
       "changedPaths": [
         "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+      "sourceBaseSha": "ccd54e003ea32fd429c9eaba3a2fc3ae286f2ebc",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE2_20261114.md",
+      "changedPaths": [
+        "ege-baza/path/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/trainers/vectors-t2.html",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
+        "school/makarychev8/index.html",
+        "trainers/oge-course/index.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task14-progressions.html",
+        "trainers/oge-task24-proofs.html",
+        "trainers/oge-task6-fractions.html",
+        "trainers/oge-task9-equations.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
