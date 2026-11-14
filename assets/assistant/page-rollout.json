@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "b13df1330cb317ab7bcb7b33cf67a66644824590",
+  "baseSha": "d38fbbbc35c5368549440d8b8aaff8f3471cb30a",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -323,18 +323,18 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "a8c0407c81b8138805acfeee2a0b45e652eafb0c392194d27917c27a1449fd47",
-      "afterSha256": "e58040d661651e70092549e2700745c868ff73f1b5733fa4022d04a1d1a0ff67",
+      "beforeSha256": "7ab34fa2b6a0b32e7e8d94fb72b46d1fdbfd77af06f056b5639a0a79e341d0d6",
+      "afterSha256": "b09319b02ebd83d434ff8e736abc868573e855334d97f195e89f90ee18f85338",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
-      "beforeSha256": "bfe4b8792626cf287b70eb1440d24a75d8141b0a56079be4824677004ba1cca2",
-      "afterSha256": "590fd0bdb21e56e8f5d0f092e3c774a76ac05511640c1f9efc6dd29639dc203d",
+      "beforeSha256": "197774485bbc868895e91778aefe30fe1d14a1e2d20d2d678d9dc01dc588b3c8",
+      "afterSha256": "f4f1dc946107e50c8ab37321fa9ce8a82de2ccc9bff264819146066c62e58ca9",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/derivative-t8.html": {
-      "beforeSha256": "94584f61c88516b3abf2dcbb2011c6b577e442341e69cc2861ab7704987173e8",
-      "afterSha256": "ced9f3e1098d1effa62a735f5cba9d63716a550d8c6ecaa06a5d87c825d579a3",
+      "beforeSha256": "3813a97670b2eb5cf5084b57902117b520b0847ac2578851b47dba347e89c70a",
+      "afterSha256": "de91b4d93182b9af4e8d6364a7bd663444e32a6fb7c708e6cf73377a21fa5e8c",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/expert.html": {
@@ -348,8 +348,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/functions-t1112.html": {
-      "beforeSha256": "52a6ffd8d11d2f0f6f9bf7c9a07676712719ba89cb0422302e1376a00d30933a",
-      "afterSha256": "05e26c120f503692b5217ea9f948a53d6cfca56bfe3e227b9e0ae41aa00ed8cc",
+      "beforeSha256": "ae2d2ab79b4f94c5ac1d817f81c6635f2239f2debdbed387583931f8101cc5c8",
+      "afterSha256": "ab5011aea0ff450f45f2b59563f2148c9f221a7f1a9f1871b488497505616152",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/inequalities.html": {
@@ -423,8 +423,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/probability-t45.html": {
-      "beforeSha256": "cb8c8a383c0827433b67463f0a855daf2645194f33291a8e6bb9af01739e5d07",
-      "afterSha256": "d2903366ebb8caf593560674cdabc71ed12e70cd1af60a4d9dad718f579ed788",
+      "beforeSha256": "b63db4d64f786db643913a41ce18167fcd78afe5e973bec58ffefe2651b79b3c",
+      "afterSha256": "399b981bbdebe261f78d36ee89fc9f23c118546b50f74f26945b363c96c50973",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/pryamougolny-treugolnik-trenazher.html": {
@@ -463,8 +463,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-yashchenko-t2.html": {
-      "beforeSha256": "04502a2a84d37f1f8a1fe7aa3fd09bada51af3017f858e5e148ae0a848dcf96f",
-      "afterSha256": "1843d78a41342116f3024254ccbdf7769e4ed9a3ad08b7e1be7b9f7ae3810338",
+      "beforeSha256": "3b2306d522d184f54cee9cfa9872fbf0ead084c1d029a6f19cde0cabe3ac1b77",
+      "afterSha256": "502a3f8f2cc45ca3f812eb27ccf9c2c1b6a2625b407f2390e2e6c6999ac105d5",
       "placement": "before-head-close"
     },
     "ege-profil/trigonometry/index.html": {
@@ -2078,8 +2078,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "f171113ed7425964ae401529ffa9fe4070d7bc9866b5eda5dc9c9d366e4803c3",
-      "afterSha256": "d870534fe4805567a2b1f8a091b065762552ae9d2b6b62ba0c43224c314841ac",
+      "beforeSha256": "1d9888aa54aa0c4b34c7e4bd023818af069f5fb9a3b7ce4ccfc4c252d12c700a",
+      "afterSha256": "a6514edc02aefd04e67d57bfe2f199fc33db8807afa0dc2540704b698bef21e9",
       "placement": "before-head-close"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
@@ -5123,6 +5123,21 @@
         "trainers/oge-task23-geometry-calculations.html",
         "trainers/oge-task25-geometry.html",
         "trainers/oge13-inequalities-series.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "b13df1330cb317ab7bcb7b33cf67a66644824590",
+      "sourceBaseSha": "d38fbbbc35c5368549440d8b8aaff8f3471cb30a",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE5_20261115.md",
+      "changedPaths": [
+        "ege-profil/start/index.html",
+        "ege-profil/trainers/applied-t910.html",
+        "ege-profil/trainers/derivative-t8.html",
+        "ege-profil/trainers/functions-t1112.html",
+        "ege-profil/trainers/probability-t45.html",
+        "ege-profil/trainers/vectors-yashchenko-t2.html",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
