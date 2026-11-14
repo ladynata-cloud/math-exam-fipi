@@ -10,7 +10,19 @@ await go('course/vilenkin5');assert.equal(await page.locator('.v5-unit-card').co
 const ids=await page.evaluate(()=>WorkshopCurriculum.pathById.vilenkin5.ids);
 for(const [index,id]of ids.entries()){
  await go('lesson/'+id);await page.locator('#model svg, #model table, #model .v5-place, #model .v5-equivalence').first().waitFor();assert.equal(await page.locator('.v6-worked li').count(),3,id+' theory');
- const answers=await page.evaluate(id=>{const t=WorkshopMath.generate(id,0),fmt=a=>Array.isArray(a)?a.map(fmt).join(';'):typeof a==='object'?WorkshopMath.fmt(a):String(a);return [...t.steps,t].map(s=>s.answerFormat==='prime-factors'?s.answer.join('*'):s.answerFormat==='decimal'?(Number.isInteger(typeof s.answer==='object'?s.answer.n/s.answer.d:s.answer)?(typeof s.answer==='object'?s.answer.n/s.answer.d:s.answer)+'.0':fmt(s.answer)):fmt(s.answer));},id);
+ const answers=await page.evaluate(id=>{
+  const task=WorkshopMath.generate(id,0);
+  const fmt=a=>Array.isArray(a)?a.map(fmt).join(';'):typeof a==='object'?WorkshopMath.fmt(a):String(a);
+  const parts=id==='v5f-place-value'&&task.data.pos===3?[task]:[...task.steps,task];
+  return parts.map(part=>{
+   if(part.answerFormat==='prime-factors')return part.answer.join('*');
+   if(part.answerFormat==='decimal'){
+    const value=typeof part.answer==='object'?part.answer.n/part.answer.d:part.answer;
+    return Number.isInteger(value)?value+'.0':String(value);
+   }
+   return fmt(part.answer);
+  });
+ },id);
  for(const [i,a]of answers.entries()){await page.locator('#answer').fill(a);await page.locator('#answer-form button').click();assert.equal(await page.locator('.feedback.error').count(),0,id+' step '+i);if(i<answers.length-1)await page.locator('[data-cmd=next]').click();}
  if((index+1)%30===0)console.log('V5 guided flows',index+1);
 }
