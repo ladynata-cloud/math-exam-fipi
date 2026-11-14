@@ -1,11 +1,31 @@
 """Reproducible offline HTML builder. No external script, font or image requests."""
-import json,html,csv,io
+import json,html,csv,io,re,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]; D=ROOT/'geometry-course'; A=D/'assets'
 c=json.loads((D/'data/course.json').read_text());proofs=json.loads((D/'data/proofs.json').read_text());units=c['units'];E=html.escape
 css=(A/'course.css').read_text()
 def js(name):return '<script>'+((A/name).read_text()).replace('</script','<\\/script')+'</script>'
 def data(name,obj):return '<script>window.'+name+'='+json.dumps(obj,ensure_ascii=False).replace('<','\\u003c')+';</script>'
+def lesson_sources(u):
+ return ['geometry.js','lab.js','experiments.js','tasks.js','store.js'] + (['midline-diagram.js'] if u['id']=='midline' else []) + (['proof-diagrams.js'] if u['proof'] in ['segment','tangent','projection','pythagoras'] else []) + ['lesson.js']
+
+# Refresh a shared runtime without overwriting separately reviewed page shells,
+# canonical URLs, navigator bindings, editorial text, or inline COURSE_CONFIG.
+# The normal full build remains available for deliberate shell/content changes.
+if '--refresh-lesson-scripts' in sys.argv:
+ for u in units:
+  path=D/'atlas'/f"{u['id']}.html"; old=path.read_text()
+  config=re.search(r'<script>window\.COURSE_CONFIG=.*?</script>',old,re.S)
+  lesson=re.search(r"<script>\(function\(\)\{'use strict';const C=window\.COURSE_CONFIG.*?</script>",old,re.S)
+  if not config or not lesson or config.end()>lesson.start():raise ValueError('Unrecognized lesson script boundaries: '+str(path.relative_to(ROOT)))
+  middle=old[config.end():lesson.end()]
+  blocks=re.findall(r'<script>(.*?)</script>',middle,re.S)
+  if ''.join('<script>'+b+'</script>' for b in blocks)!=middle:raise ValueError('Unexpected content between lesson scripts: '+str(path.relative_to(ROOT)))
+  signatures=['const EPS=1e-8','const G=root.GeoMath','root.GeoExperiments={mount}','const T=(q,a,steps,meta)',"const KEY='mathExamGeometry.v1'",'MathExamMidlineDiagram','root.GeoProofDiagrams','const C=window.COURSE_CONFIG']
+  if any(not any(signature in block for signature in signatures) for block in blocks):raise ValueError('Unknown embedded script: '+str(path.relative_to(ROOT)))
+  path.write_text(old[:config.end()]+''.join(js(f) for f in lesson_sources(u))+old[lesson.end():])
+ print('Refreshed scripts in',len(units),'lessons; preserved all page shells and COURSE_CONFIG')
+ sys.exit(0)
 def shell(title,body,scripts='',lesson=False):
  up='../' if lesson else ''
  return '<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+E(title)+' · MathExam</title><style>'+css+('h1,h2,h3{overflow-wrap:anywhere;min-width:0}input[type=file]{max-width:100%;min-width:0}.chapter-head>*{min-width:0}' if not lesson else '')+'</style></head><body><header class="topbar"><a class="brand" href="'+up+'index.html">MathExam <span class="muted">/ Геометрия</span></a><nav class="toplinks"><a href="'+up+'index.html">Карта курса</a><a href="'+up+'teacher-atlas.html">Учителю</a><button id="export-progress">Скачать прогресс</button></nav></header><div class="container"><p id="storage-notice" class="warning" hidden role="alert"></p>'+body+'<footer>Авторские объяснения и задачи по темам учебника Атанасяна и др., 7–9 классы, 2023. Измерение на чертеже помогает исследовать; доказательство объясняет общий случай. Прогресс хранится в этом браузере — скачивай файл для переноса.</footer></div>'+scripts+'</body></html>'
@@ -64,7 +84,7 @@ for u in units:
  elif u['goal']=='altitude' and u['figure']=='iso':
   investigation='Проведи высоту из вершины C к основанию AB равнобедренного треугольника. Двигай вершины: какие ещё роли выполняет эта высота? Объясни, почему основание высоты делит AB пополам.'
  cfg=dict(unit=u,proof=proofs[u['proof']],catalog=catalog,investigation=investigation,experiment=experiments.get(u['id']))
- scripts=data('COURSE_CONFIG',cfg)+''.join(js(f) for f in ['geometry.js','lab.js','experiments.js','tasks.js','store.js'] + (['midline-diagram.js'] if u['id']=='midline' else []) + ['lesson.js'])
+ scripts=data('COURSE_CONFIG',cfg)+''.join(js(f) for f in lesson_sources(u))
  (D/'atlas'/f"{u['id']}.html").write_text(shell(u['title'],body,scripts,True))
 art='''<svg viewBox="0 0 500 340" aria-hidden="true"><defs><pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#ffffff25"/></pattern></defs><rect width="500" height="340" fill="url(#dots)"/><path d="M85 270 L420 270 L240 55 Z" fill="#77bd9f25" stroke="#e8f1db" stroke-width="2.5"/><path d="M240 55L252 270M169 162L330 162" stroke="#f4bc70" stroke-width="2.5" stroke-dasharray="7 7"/><circle cx="240" cy="55" r="11" fill="#f3ba70"/><circle cx="85" cy="270" r="8" fill="#91cdbb"/><circle cx="420" cy="270" r="8" fill="#91cdbb"/><circle cx="169" cy="162" r="7" fill="#91cdbb"/><circle cx="330" cy="162" r="7" fill="#91cdbb"/><g fill="#fff9ea" font-family="system-ui" font-size="20"><text x="62" y="298">A</text><text x="426" y="298">B</text><text x="250" y="42">C</text><text x="139" y="158">M</text><text x="341" y="158">N</text></g><text x="245" y="322" text-anchor="middle" fill="#b8d5d1" font-size="14" font-family="system-ui">Не просто увидеть. Понять почему.</text></svg>'''
 body='<section class="hero"><div><p class="eyebrow">Атанасян · геометрия 7–9</p><h1>Геометрия,<br>которую можно<br>исследовать.</h1><p class="lead">Двигай точки, создавай построения, проверяй догадки. Учись объяснять каждый шаг — и постепенно обходиться без подсказок.</p><div class="row"><a class="button primary" href="atlas/segments.html">Начать с основ →</a><a class="button" href="#course">Выбрать тему</a><a class="button" href="textbook/">Задачи по номерам учебника →</a><a class="button" href="first-steps/">7 класс: от начала до построений →</a><a class="button" href="ichenskaya-7-works/">7 класс: самостоятельные и контрольные →</a></div><div class="stats"><div class="stat"><strong>63</strong><span>учебных узла</span></div><div class="stat"><strong>137</strong><span>пунктов в карте</span></div><div class="stat"><strong id="independent-count">0</strong><span>тем с самостоятельной задачей</span></div></div></div><div class="hero-art">'+art+'</div></section><section class="panel"><div class="row"><span class="pill">01 Исследование</span><span class="pill">02 Построение</span><span class="pill">03 Обоснование</span><span class="pill">04 Своя задача</span></div><p>Карта охватывает все главы издания 2023 года. В каждом узле — объяснение, поле построений, разбор рассуждения и числовая практика. Ещё 70 ранее созданных тренажёров доступны отдельно. Полнота карты не означает, что здесь разобрано каждое упражнение учебника.</p></section><div class="filters" id="course"><button class="on" data-grade="all">Все классы</button><button data-grade="7">7 класс</button><button data-grade="8">8 класс</button><button data-grade="9">9 класс</button><input id="search" type="search" aria-label="Найти тему" placeholder="Тема, теорема или номер пункта…"></div>'
