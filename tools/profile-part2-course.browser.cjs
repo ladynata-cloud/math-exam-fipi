@@ -37,6 +37,20 @@ const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+de
     assert(metrics.scroll<=metrics.width+1,lesson.id+' horizontal overflow at '+width);assert(metrics.condition<900,lesson.id+' condition below first screen');screens++;
     if(lesson===lessons.find(l=>l.exam===lesson.exam))await page.screenshot({path:path.join(shots,'exam-'+lesson.exam+'-'+width+'.png'),fullPage:true});
     if(width===1280){await fill(task);await page.locator('#final-form button[type=submit]').click();await page.locator('#completion').waitFor();const r=await record(task.id);assert(r.completed&&r.independent,task.id+' independently checked numeric result');assert(await page.locator('#proof-draft').isVisible());assert.match(await page.locator('#main').innerText(),/обосновани.*провер|Обоснование требует проверки/i);completed++;}
+    if(lesson.id==='p2-15-dihedral'){
+     const figures=page.locator('.solution-figure');
+     assert.equal(await figures.count(),0);
+     await page.locator('#show-solution').click();
+     await figures.first().waitFor();
+     assert.deepEqual(await figures.first().locator('[data-proof-segment]').evaluateAll(lines=>lines.map(l=>l.dataset.proofSegment)),['AB','SM','OM']);
+     await page.locator('#solution-next').click();
+     await figures.nth(1).waitFor();
+     assert.equal(await figures.nth(1).locator('[data-proof-segment="SO"]').getAttribute('stroke-dasharray'),'6 5');
+     assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+     await page.reload();
+     await figures.nth(1).waitFor();
+     await figures.first().screenshot({path:path.join(shots,'dihedral-proof-'+width+'.png')});
+    }
     if(lesson.id==='p2-15-coordinate-angle'){
      // The same long exact expressions must also fit after every step of the
      // vector proof is revealed, not only while its answer fields are empty.
