@@ -228,13 +228,21 @@ test('stale parameter checkboxes cannot certify a newer draft from another tab',
  input(w,'proof-draft','Первый довод о горизонтальном участке.');
  task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
  await submit(w,'final-form');
- await w.ProfilePartTwoApp.store.patch(task.id,r=>{r.drafts.proof='Свежий довод из другого окна.';r.proofChecks=[];});
+ await w.ProfilePartTwoApp.store.patch(task.id,r=>{r.drafts.proof='Свежий довод из другого окна.';r.proofChecks=[1,3];});
  d.querySelector('[data-proof-check="0"]').click();
  await settle(w);
  const r=w.ProfilePartTwoApp.store.read(task.id);
  assert.equal(r.drafts.proof,'Свежий довод из другого окна.');
- assert.deepEqual(Array.from(r.proofChecks),[]);
+ assert.deepEqual(Array.from(r.proofChecks),[1,3]);
  assert(!d.querySelector('[data-proof-check="0"]').checked);
+ assert.equal(d.querySelectorAll('[data-proof-check]:checked').length,0);
+ assert(d.getElementById('proof-review').hidden);
+ assert.match(d.getElementById('proof-review-instruction').textContent,/другой вкладке/);
+ assert.equal(d.getElementById('proof-draft').value,'Первый довод о горизонтальном участке.');
+ d.getElementById('proof-jump').click();await settle(w);
+ assert.equal(d.getElementById('proof-draft').value,'Свежий довод из другого окна.');
+ assert.deepEqual(Array.from(d.querySelectorAll('[data-proof-check]:checked'),input=>Number(input.dataset.proofCheck)),[1,3]);
+ assert(!d.getElementById('proof-review').hidden);
  w.close();
 });
 

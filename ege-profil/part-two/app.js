@@ -134,15 +134,17 @@ function proofView(task,r,review,nextLink){
 }
 function updateProofReview(review,r){
  const reviewPanel=document.getElementById('proof-review'),instruction=document.getElementById('proof-review-instruction');
- const attempted=hasFinalAttempt(r),ready=attempted&&!!document.getElementById('proof-draft').value.trim();
+ const draft=document.getElementById('proof-draft');
+ const staleDraft=r.drafts.proof!==draft.value;
+ const attempted=hasFinalAttempt(r),ready=attempted&&!!draft.value.trim()&&!staleDraft;
  reviewPanel.hidden=!ready;
  if(!ready)reviewPanel.open=false;
  instruction.hidden=ready;
- instruction.textContent=attempted?'Запишите хотя бы один довод, чтобы открыть критерии.':'Отправьте ответы и запишите свой довод, чтобы открыть критерии.';
+ instruction.textContent=staleDraft?'Обоснование изменилось в другой вкладке. Откройте сохранённый довод, чтобы сверять его текст и отметки вместе.':attempted?'Запишите хотя бы один довод, чтобы открыть критерии.':'Отправьте ответы и запишите свой довод, чтобы открыть критерии.';
  const jump=document.getElementById('proof-jump');
  jump.hidden=!attempted;
- jump.textContent=ready?'К критериям обоснования':'Записать обоснование';
- document.getElementById('proof-review-count').textContent=`Вы отметили ${reviewCount(review,r)} из ${review.criteria.length} пунктов.`;
+ jump.textContent=staleDraft?'Открыть сохранённое обоснование':ready?'К критериям обоснования':'Записать обоснование';
+ document.getElementById('proof-review-count').textContent=staleDraft?'Сверка приостановлена до открытия сохранённого довода.':`Вы отметили ${reviewCount(review,r)} из ${review.criteria.length} пунктов.`;
  const history=document.getElementById('proof-help-history');
  if(history){
   const opened=review.criteria.flatMap(([title],i)=>r.hints.includes(proofHintStart+i)?[title]:[]);
@@ -157,7 +159,8 @@ function bindProof(task,review,r,isCurrent){
  const inputs=main.querySelectorAll('[data-proof-check]');
  function refresh(record){
   if(!review||!isCurrent()||!draft.isConnected)return;
-  inputs.forEach(input=>{input.checked=record.proofChecks.includes(Number(input.dataset.proofCheck));});
+  const staleDraft=record.drafts.proof!==draft.value;
+  inputs.forEach(input=>{input.disabled=staleDraft;input.checked=!staleDraft&&record.proofChecks.includes(Number(input.dataset.proofCheck));});
   updateProofReview(review,record);
  }
  bind('proof-draft','input',event=>{
@@ -184,6 +187,7 @@ function bindProof(task,review,r,isCurrent){
   }).then(refresh);
  }
  bind('proof-jump','click',()=>{
+  if(store.read(task.id).drafts.proof!==draft.value){render();return;}
   const panel=document.getElementById('proof-review');
   if(panel.hidden)draft.focus();
   else{panel.open=true;panel.querySelector('summary').focus();}
