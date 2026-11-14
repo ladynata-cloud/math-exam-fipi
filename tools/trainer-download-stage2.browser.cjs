@@ -116,6 +116,9 @@ const scenarios = {
   },
   async 'oge-task24-proofs'(page) {
     assert(await page.locator('.ocp-figure-main svg, .ocp-figure-shell svg, #view svg').first().isVisible());
+    await page.locator('#courseSettings > summary').click();
+    await page.locator('#tabs').getByRole('button', { name: 'Разбор', exact: true }).click();
+    await page.locator('#view .mcard').filter({ hasText: 'Подобие треугольников в трапеции' }).click();
     const wrong = page.locator(`button[onclick^="pickCard({type:'x'"]`).first();
     await wrong.click();
     assert.equal(await page.evaluate(() => ST.placed), 0);
