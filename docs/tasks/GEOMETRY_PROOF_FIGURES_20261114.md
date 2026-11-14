@@ -52,7 +52,7 @@ progress format, construction tools, or the published middle-line lesson.
 - An empty optional sketch field for these seven routes, with explicit drawing
   instructions and a notice that this temporary sketch is not saved.
 - A script-only refresh option in the canonical builder, regression checks and
-  browser scenarios on 320 × 900 and 1280 × 900.
+  browser scenarios on 320 × 900, 390 × 900 and 1280 × 900.
 
 ### Out of scope
 
@@ -78,7 +78,7 @@ progress format, construction tools, or the published middle-line lesson.
 - [ ] A reload preserves the existing proof progress, numerical draft and
       written text; figures reconstruct from the saved task/step.
 - [ ] Existing middle-line and unrelated lessons retain their current behavior.
-- [ ] At both required viewport sizes, condition and figure fit within the
+- [ ] At all three required viewport sizes, condition and figure fit within the
       first screen after opening the relevant stage.
 - [ ] All generated runtimes match source; page shells and current conditions
       are preserved exactly.
@@ -93,9 +93,8 @@ progress format, construction tools, or the published middle-line lesson.
 - Manual checks: inspect rendered figure artifacts and browser screenshots.
 - Final gate marker: `GEOMETRY_PROOF_FIGURES_20261114_GATE_OK` after all required
   local and CI checks complete.
-- Local Chromium cannot start in this executor: `socket() failed: Operation
-  not permitted`. The failed launch is recorded; no browser pass is claimed
-  until the real CI browser job succeeds.
+- Local browser checks use Chromium Headless Shell. GitHub Actions runs the
+  same scenarios with its installed Chromium.
 
 ## Review plan
 
@@ -165,10 +164,27 @@ progress format, construction tools, or the published middle-line lesson.
   labels, builder preservation and SVG montage, then independently reran all
   17 geometry tests. This is an internal review, not an external-provider or
   real-pupil review.
-- Tests failed: no assertion failures; local Chromium launch is blocked by
-  executor socket permission. Native browser verdict and screenshots await CI.
+- The original cloud browser run failed on the 320 px independent comparison
+  lesson. Its result and the local verification of the correction follow.
 - Tests not run: production publication and real-pupil pilot.
 - Scope deviations: none.
+
+### First-screen correction in PR #599
+
+- Run [43555999031](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43555999031)
+  placed the comparison figure at y = 753.39 px with a height of 173.55 px.
+  The failure screenshot showed the scoring explanation above the condition.
+- The condition and figure precede the answer and scoring explanation. The
+  repeated-task notice remains above the answer. The seven lessons use less
+  vertical space in the header and above the condition.
+- Local Chromium returned 84 first-screen measurements across seven lessons,
+  four stages and three widths. The comparison block measured 258 × 173.55 px
+  at 320 px width and ended at y = 686.67 px. All SVG widths and heights matched
+  the baseline. The browser confirmed proof emphasis, numerical drafts and
+  written work after reload.
+- The exact source commit for the 63 refreshed atlas pages is
+  `1d58cf79f74c5c4d95b15aba9adc417744f1c8ef`. The generated screenshots and measurements
+  from the cloud runner are attached to its GitHub Actions run.
 
 ## Required handoff
 
