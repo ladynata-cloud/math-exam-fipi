@@ -49,7 +49,7 @@ jobs:
           # workflow_run's github.sha can point at a newer, unpublished main.
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Fetch preservation baseline and exact reviewed task sources
-        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.21.0'

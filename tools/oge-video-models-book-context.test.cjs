@@ -25,10 +25,11 @@ test('receipt accepts the exact middle-position closed summary on each covered s
  const x=fixture(entries[11]);x.visible='🧭 '+x.visible;const result=receipt(x);
  assert.equal(result.offsetCodePoints,[...result.beforeText].length);assert.notEqual(result.offsetCodePoints,result.beforeText.length);
 });
-test('later teaching receipts remain limited to three committed pages and reject native mutations',()=>{
+test('later teaching receipts remain limited to four committed pages and reject native mutations',()=>{
  const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
  assert.equal(updates.task,'docs/tasks/OGE18_STEPS_PAN_20261110.md');
- assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19]].sort());
+ assert.deepEqual(Object.keys(updates.pages).sort(),[entries[16],entries[17],entries[19],entries[24]].sort());
+ assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
  for(const file of Object.keys(updates.pages)){
   const x=fixture(file), result=receipt(x);
   assert.equal(result.sourceBase,updates.pages[file].sourceCommit);

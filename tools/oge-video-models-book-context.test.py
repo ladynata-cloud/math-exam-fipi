@@ -5,7 +5,7 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_video_models_book_context import ROOT, PINS, LABEL, SUMMARY_HTML, ASSETS, sha, without_closed_video_summary, without_closed_video_geometry
+from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, sha, without_closed_video_summary, without_closed_video_geometry
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -95,8 +95,8 @@ class ContextTests(unittest.TestCase):
         preview=PINS['closedPreview']
         svg=subprocess.check_output(['node','-e',"const {JSDOM}=require('jsdom');const l=require('./trainers/oge-video-geometry.js').find(x=>x.id==='midpoints-common-circle');const d=new JSDOM(l.preview({x:2}).svg);process.stdout.write(d.window.document.querySelector('svg').outerHTML);d.window.close();"],cwd=ROOT,text=True)
         self.assertEqual(sha(svg.encode()),preview['svgSha256'])
-        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=PINS['pages'][route[1:]];raw=(ROOT/route[1:]).read_bytes()
-        record.update(id='65',route=route,finalPath=route);c.update(route=route,bookId='65',task=24,sourceSha256=sha(raw),nativeSha256=pin['sha256'])
+        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=PINS['pages'][route[1:]] | UPDATES['pages'][route[1:]];raw=(ROOT/route[1:]).read_bytes()
+        record.update(id='65',route=route,finalPath=route);c.update(route=route,bookId='65',task=24,sourceBase=pin['sourceCommit'],sourceSha256=sha(raw),nativeSha256=pin['sha256'])
         record['resources'][route]=dict(sha256=sha(raw),status=200);record['publicWayfinding']['servedHtmlSha256']=sha(raw)
         native={'svg':'<svg><text>native sentinel</text></svg>'};record['visibleSvgLabels']=[native,{'svg':svg}]
         item=dict(index=1,selector=preview['selector'],lesson=preview['lesson'],stage=preview['stage'],closed=True,hidden=True,svgSha256=preview['svgSha256']);c['closedSvg']=[item]
