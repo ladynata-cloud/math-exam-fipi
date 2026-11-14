@@ -143,6 +143,9 @@ for u in units:
         'geometry.js', 'lab.js', 'experiments.js', 'extra-models.js', 'tasks.js',
         'extra-tasks.js', 'space.js', 'viewer.js', 'store.js', 'lesson.js',
     ], '../')
+    if lesson_id == MIDLINE:
+        code = code.replace('<script src="../assets/lesson.js"></script>',
+            '<script src="/geometry-course/assets/midline-diagram.js?v=20261114"></script><script src="../assets/lesson.js?v=20261114-midline"></script>')
     title = f'{u["title"]} · {c["name"]} · MathExam'
     page = shell(title, body, code, up='../', metadata=lesson_metadata(lesson_id), course_fragment=course_fragment)
     (D/'atlas'/(lesson_id+'.html')).write_text(page, encoding='utf-8')

@@ -79,8 +79,17 @@ const justification={aa:'triangle_similarity',sas_sim:'triangle_similarity',sas_
 const rules=[[/теорем.*синус|2R.*sin|хорда.*синус/i,'sine_law'],[/косинус.*сумм|косинус.*разност|cos\(.*[+−-]/i,'trig_sum_identity'],[/расстоян.*биссектрис|биссектрис.*расстоян|равноудал[её]н.*сторон/i,'angle_bisector_locus'],[/высот.*перпендик|перпендик.*высот/i,'triangle_parts'],[/сторон[а-я]* и двум прилежащим|второму признаку равенства/i,'triangle_congruence_asa'],[/Пифагор|гипотенуз|катет/i,'pythagoras'],[/подоби|пропорциональн/i,'triangle_similarity'],[/равенств.*треугольник|треугольник.*равн.*по|признак.*равенств/i,'triangle_congruence'],[/биссектрис/i,'angle_bisector'],[/накрест|односторонн|соответственн.*угл/i,'parallel_angles'],[/вертикальн.*угл|смежн/i,'adjacent_vertical'],[/равнобедрен/i,'isosceles'],[/касательн|точк.*касани/i,'tangent'],[/вписанн.*угол|угол.*диаметр|дуг/i,'inscribed_angles'],[/вписанн.*четыр[её]хугольник/i,'circumcircle'],[/серединн.*перпендикуляр/i,'perpendicular_bisector'],[/средн.*лини.*треугольник/i,'triangle_midline'],[/средн.*лини.*трапец/i,'trapezoid_midline'],[/площад/i,'triangle_area'],[/sin|cos|tg|синус|косинус/i,'trigonometry'],[/правильн.*шестиугольник|центральн.*60/i,'regular_polygon'],[/ромб/i,'rhombus'],[/параллелограмм/i,'parallelogram'],[/прямоугольник/i,'rectangle']];
 function topicsForStep(step,fallback=[]){if(step.theoryTopics)return step.theoryTopics;const s=text([step.t,step.h,step.q,step.why,step.ok].filter(Boolean).join(' ')),ids=[];if(justification[step.jc])ids.push(justification[step.jc]);for(const[pattern,id]of rules)if(pattern.test(s))ids.push(id);return [...new Set(ids.length?ids:fallback)].slice(0,4);}
 function cropsFor(topics){const m={pythagoras:'pythagoras',trigonometry:'trig-values',sine_law:'sine-cosine',cosine_law:'sine-cosine',trig_reduction:'trig-values',triangle_angles:'polygon-angles',triangle_area:'triangle-area',parallelogram_area:'parallelogram-area',rhombus_area:'rhombus-area',trapezoid_area:'trapezoid-area',triangle_midline:'midlines',trapezoid_midline:'midlines',circle_length_area:'circle',regular_polygon:'polygon-angles'};return[...new Set(topics.map(t=>m[t]).filter(Boolean))];}
-function explain(host,step,fallback,pending=false){const state=pending?'pending':'accepted';if(host.dataset.ocpStep===state)return;const wasOpen=q(':scope > .ocp-step-reason',host)?.open||false;q(':scope > .ocp-step-reason',host)?.remove();host.dataset.ocpStep=state;const box=e('details',null,'ocp-step-reason'),summary=e('summary','Почему этот шаг верен?');box.append(summary);box.open=wasOpen;
+function explain(host,step,fallback,pending=false,proofFigure=null){const state=pending?'pending':'accepted';if(host.dataset.ocpStep===state)return;const wasOpen=q(':scope > .ocp-step-reason',host)?.open||false;q(':scope > .ocp-step-reason',host)?.remove();host.dataset.ocpStep=state;const box=e('details',null,'ocp-step-reason'),summary=e('summary','Почему этот шаг верен?');box.append(summary);box.open=wasOpen;
  const reasoning=pending?'Назови, что уже известно. Проверь условия теоремы, затем примени её к указанным на чертеже объектам. Число этого шага найди самостоятельно.':step.why||step.ok||(/по условию|дано|общая/i.test(text(step.t||step.h))?'Это дано в условии или относится к одному и тому же объекту. В записи решения укажи это явно.':'Этот шаг использует уже установленные соотношения. Назови исходное равенство и покажи преобразование, не пропуская промежуточную запись.');
+ if(proofFigure){
+  const figure=e('figure',null,'ocp-step-figure');
+  figure.innerHTML=renderFig(proofFigure.name,step.lit,proofFigure.revealed);
+  const svg=q('svg',figure);
+  svg.setAttribute('role','img');
+  svg.setAttribute('aria-label','Чертёж текущего шага доказательства');
+  figure.append(e('figcaption',step.lit?'Выделены элементы, которые используются в этом шаге.':'Сверь обозначения в рассуждении с чертежом задачи.'));
+  box.append(figure);
+ }
  box.append(e('p',text(reasoning)));const topics=topicsForStep(step,fallback);R.topicCards(box,topics);R.sheetCards(box,cropsFor(topics));host.append(box);
 }
 const shared=root.OgeCourseSharedMode===true;
@@ -100,6 +109,7 @@ function draft(anchor,key,proof=false){
  // pushes the nearby help button or answer controls out of the way.
  anchor.parentElement.append(section);
 }
+let proofFigureLarge;
 function primaryFigures(){
  const selector=taskNo===23?'.train-host > .card > .fig-wrap':taskNo===24?'#view .figbox':'#panel-train .fig';
  qa(selector).forEach(figure=>{
@@ -108,13 +118,26 @@ function primaryFigures(){
   const view=(svg.getAttribute('viewBox')||'').trim().split(/[ ,]+/).map(Number),viewWidth=view[2]||Number(svg.getAttribute('width'))||520;
   const fonts=qa('text',svg).map(node=>parseFloat(node.getAttribute('font-size')||root.getComputedStyle(node).fontSize)).filter(n=>n>0);
   const smallest=fonts.length?Math.min(...fonts):15,readableWidth=Math.ceil(Math.max(440,viewWidth*Math.max(1,18/smallest)));
-  const controls=e('div',null,'ocp-figure-controls'),button=e('button','Показать целиком','ocp-figure-zoom');button.type='button';button.setAttribute('aria-pressed','true');
-  const note=e('p','Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.','ocp-figure-note');
-  const pan=e('div',null,'ocp-figure-pan ocp-figure-large');pan.tabIndex=0;pan.setAttribute('role','region');pan.setAttribute('aria-label','Чертёж задачи. Для просмотра используй прокрутку или кнопку масштаба.');
+  const controls=e('div',null,'ocp-figure-controls'),button=e('button',null,'ocp-figure-zoom');
+  button.type='button';
+  const note=e('p',null,'ocp-figure-note');
+  const pan=e('div',null,'ocp-figure-pan');pan.tabIndex=0;pan.setAttribute('role','region');pan.setAttribute('aria-label','Чертёж задачи. Для просмотра используй прокрутку или кнопку масштаба.');
   // Reparent the original SVG: preserve every point, label and native event handler.
-  svg.before(pan);pan.append(svg);svg.style.width=readableWidth+'px';svg.style.maxWidth='none';
+  svg.before(pan);pan.append(svg);
   controls.append(button);figure.prepend(controls,note);
-  button.addEventListener('click',()=>{const large=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(large));button.textContent=large?'Показать целиком':'Увеличить подписи';pan.classList.toggle('ocp-figure-large',large);svg.style.width=large?readableWidth+'px':'100%';svg.style.maxWidth=large?'none':'100%';note.textContent=large?'Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.':'Чертёж целиком. Чтобы прочитать мелкие подписи, нажми «Увеличить подписи».';pan.scrollLeft=0;pan.scrollTop=0;});
+  const personalProof=taskNo===24&&!shared;
+  function size(large){
+   button.setAttribute('aria-pressed',String(large));button.textContent=large?'Показать целиком':'Увеличить подписи';
+   pan.classList.toggle('ocp-figure-large',large);svg.style.width=large?readableWidth+'px':'100%';svg.style.maxWidth=large?'none':'100%';
+   note.textContent=large?'Крупный чертёж: прокручивай его стрелками после выбора рисунка.':'Чертёж целиком.';
+   pan.scrollLeft=0;pan.scrollTop=0;
+  }
+  size(!personalProof||(proofFigureLarge??!root.matchMedia?.('(max-width: 600px)').matches));
+  button.addEventListener('click',()=>{
+   const large=button.getAttribute('aria-pressed')!=='true';
+   if(personalProof)proofFigureLarge=large;
+   size(large);
+  });
  });
 }
 function referencePanel(anchor,topics){if(!anchor||anchor.parentElement?.querySelector(':scope > .ocp-references'))return;const host=e('div',null,'ocp-references');R.topicCards(host,topics,{label:'На какую теорию можно опереться?'});R.sheetCards(host,cropsFor(topics));anchor.after(host);return host;}
@@ -122,7 +145,13 @@ let current23=null;
 function decorate23(){const main=q('.train-host');if(!main)return;const card=q('.card',main),condition=card&&q('.q-text',card);if(!condition)return;let task=current23;const name=q('.q-theme',card)?.textContent||'';if(!task){const sub=Object.keys(topic23).find(k=>typeof SUBS!=='undefined'&&name.includes(SUBS[k].name));if(sub)task={sub};}if(!task)return;const topics=topic23[task.sub]||[];referencePanel(q('#courseHintPanel',card)||condition,topics);draft(condition,'23|'+condition.textContent);
  const steps=task.p&&typeof GUIDE!=='undefined'?GUIDE[task.sub](task.p):[];qa('.ladder .step',card).forEach(node=>{const n=q('.step-num',node)?.textContent.match(/^Шаг (\d+)/);if(n&&steps[+n[1]-1])explain(node,steps[+n[1]-1],topics,!node.classList.contains('done'));});qa('.sol li,.solution li',card).forEach(node=>explain(node,{h:node.textContent},topics));
 }
-function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);qa('.chain .citem',main).forEach((node,i)=>{if(t.steps[i])explain(q('.ctext',node)||node,{...t.steps[i],theoryTopics:proofStepTopics[t.id]?.[i]},topics);});
+function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);let revealed=false;
+ qa('.chain .citem',main).forEach((node,i)=>{
+  const step=t.steps[i];if(!step)return;
+  revealed=revealed||!!step.lit?.showcirc;
+  explain(q('.ctext',node)||node,{...step,theoryTopics:proofStepTopics[t.id]?.[i]},topics,false,
+   shared?null:{name:t.fig,revealed});
+ });
  const plate=q('.sheetplate',main);if(plate&&!plate.dataset.ocpSafe){plate.dataset.ocpSafe='1';plate.replaceChildren(e('span','Для доказательства нужны теоремы. Ниже можно открыть их формулировки; формулы из справочного листа добавлены там, где они применяются.'));}
 }
 function decorate25(){if(typeof trS==='undefined'||!trS)return;const main=q('#panel-train'),condition=q('.cond',main);if(!condition)return;const topics=topic25[trS.id]||[];referencePanel(q('#courseHintPanel',main)||condition,topics);draft(condition,'25|'+trS.id+'|'+JSON.stringify(trS.p));qa('.gsteps>li,.hintbox .steps>li',main).forEach((node,i)=>{const st=trS.b.steps[i];if(st)explain(node,{...st,why:extraReasons25[trS.id+':'+i]||st.why,theoryTopics:calculationStepTopics[trS.id]?.[i]},topics,!!q('.gq',node));});}
