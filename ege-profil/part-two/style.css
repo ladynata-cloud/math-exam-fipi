@@ -9,3 +9,5 @@
 /* Long exact expressions and answer-format labels may wrap at narrow widths;
    neither the grid track nor its children may impose their min-content width. */
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
+.solution-figure{margin:8px 0 14px;max-width:360px;color:var(--muted)}
+.solution-figure figcaption{margin-top:4px;font-size:.9rem;line-height:1.45}

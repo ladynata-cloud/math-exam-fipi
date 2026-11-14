@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+  "baseSha": "ef4aaa50deeae5b18d905b921dd6ff6258d67c86",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "65f663b2cf528014e7b2f6193c49dbb2de04b009f46641ee9be62ea972ba8f45",
-      "afterSha256": "475070fe102dc4b95e31198b454d848ce9306d449f9afef68cb907c4d97bc6a7",
+      "beforeSha256": "b821bdf883cdc23dd3ab1bb48e8c9d6556742b53498526d08e3505933a3d2193",
+      "afterSha256": "aea8a25ad773edf32c0eb5e0ce1c8d74c39d41f15f94f7ecd404d9d87944e4cc",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5052,6 +5052,15 @@
         "geometry-pogorelov/atlas/pogorelov-base-8-58.html",
         "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
         "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+      "sourceBaseSha": "ef4aaa50deeae5b18d905b921dd6ff6258d67c86",
+      "task": "docs/tasks/PROFILE_DIHEDRAL_PROOF_FIGURES_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

@@ -144,6 +144,33 @@ test('solution is disclosed one step at a time and always contaminates independe
  assert(!w.document.getElementById('solution-next'));assert(w.ProfilePartTwoApp.store.read(task.id).helped);w.close();
 });
 
+test('dihedral solutions disclose the exact edge and two perpendiculars only after help',async()=>{
+ const lesson=bank.find(l=>l.id==='p2-15-dihedral');
+ for(const task of lesson.tasks){
+  assert.equal(task.solutionFigures.length,3);
+  assert.match(task.solutionFigures[0].diagram,/data-proof-segment="AB"/);
+  assert.match(task.solutionFigures[0].diagram,/data-proof-segment="SM"/);
+  assert.match(task.solutionFigures[0].diagram,/data-proof-segment="OM"/);
+  assert.match(task.solutionFigures[1].diagram,/data-proof-segment="SO"[^>]*stroke-dasharray/);
+  assert.match(task.solutionFigures[1].diagram,new RegExp(`AB=${task.meta.a}; SO=${task.meta.h}`));
+ }
+ const task=lesson.tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
+ try{
+  input(w,'proof-draft','Проверяю, к какому ребру провести перпендикуляры.');
+  assert.equal(w.document.querySelectorAll('.solution-figure').length,0);
+  w.document.getElementById('show-solution').click();await settle(w);
+  const segments=()=>[...w.document.querySelectorAll('.solution-list li:last-child [data-proof-segment]')].map(el=>el.dataset.proofSegment);
+  assert.deepEqual(segments(),['AB','SM','OM']);
+  assert.equal(w.document.querySelectorAll('.solution-figure').length,1);
+  w.document.getElementById('solution-next').click();await settle(w);
+  assert.equal(w.document.querySelectorAll('.solution-figure').length,2);
+  assert.match(w.document.querySelector('.solution-list li:last-child figcaption').textContent,/Катеты SO и OM/);
+  assert.match(w.document.getElementById('proof-draft').value,/перпендикуляры/);
+  const r=w.ProfilePartTwoApp.store.read(task.id);
+  assert(r.helped);assert(!r.completed);assert.equal(r.attemptCount,0);
+ }finally{w.close();}
+});
+
 test('correct guided step is saved even when learner immediately leaves the task',async()=>{
  const task=bank[0].tasks[0],dom=await boot('task/'+task.id+'/guided'),w=dom.window;
  input(w,'step-answer',task.steps[0].answers[0]);w.document.getElementById('step-form').dispatchEvent(new w.Event('submit',{cancelable:true}));w.location.hash='map';await w.ProfilePartTwoApp.render();await settle(w);
