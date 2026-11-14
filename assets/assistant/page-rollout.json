@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "d38fbbbc35c5368549440d8b8aaff8f3471cb30a",
+  "baseSha": "6ead382b826ad4d6f30f062ad2149a2e971517a9",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "2631aa06f6ad905e6d19a4e6daa0eeed9cd7ded606af650ed6e391aaf0f7cacc",
-      "afterSha256": "58efcced7b2855f2ae9588ce427eeafaddc56872e5eb7c3d657a0241b0ff91de",
+      "beforeSha256": "eede99093821f8d5dcf58c15548b08b06076c922ac04431cd41ed3543d023ff9",
+      "afterSha256": "44755272d831dc92f85be03b1dcb6cceed4e056202ef9acd704d707eb6ff29f9",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -343,8 +343,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/finance.html": {
-      "beforeSha256": "ec40645f5e0eb5b8b86110132b67648f5f4b6fea7e55f46ee8714ab58c9cfbf3",
-      "afterSha256": "82ba0ecbf7fa642d786f9f6df4167dd86107041ae74cdfbfb8a9d2ec19e32288",
+      "beforeSha256": "915614b35a602990eac442d511fd6a591d4aac8295f64c1b76378eb6c57de868",
+      "afterSha256": "179dd4150df330472f8866cda67b6ceaa8908264e526bce3865a89c1db288d0c",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/functions-t1112.html": {
@@ -418,8 +418,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-yashchenko-t1.html": {
-      "beforeSha256": "d2f600a0105ecc4ba0b90d4032e3e2fc306faf3cf89cbab39d4b65b54b386521",
-      "afterSha256": "e81b8a6746f0e17dae40ef8f058a2c351490fbe69ac5bc9c3c73724d5ac01e0c",
+      "beforeSha256": "45ecc6d9c10009b71fb79504c909dd8d9b540b6232da02fb1c712dd920e56545",
+      "afterSha256": "3f42757bc95898e7e2c16933376280a07164d906eb502c053dd9de2302fe9449",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/probability-t45.html": {
@@ -453,8 +453,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/trigonometry.html": {
-      "beforeSha256": "7619455c1d96cce5d69c731e041d55070f483a6a23067208d1e97ea270079d05",
-      "afterSha256": "ae59ca4c784c852b5dd8ecaf747c99937ad795919e9cc51b5ba52738f6e77922",
+      "beforeSha256": "c92120a7be736c988bae6039a920b7f341ebec8bd19f3145cd1613ef61bfd3e9",
+      "afterSha256": "55cfae4327a8d203ec7c7990a8559528490a549ade8f250ddc27f424f084b1b5",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/vectors-t2.html": {
@@ -2078,8 +2078,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "1d9888aa54aa0c4b34c7e4bd023818af069f5fb9a3b7ce4ccfc4c252d12c700a",
-      "afterSha256": "a6514edc02aefd04e67d57bfe2f199fc33db8807afa0dc2540704b698bef21e9",
+      "beforeSha256": "1b6a665f6b73c05cb273f3bdcd972b28cf86c0bd569019bbb2ff1f7f1328cf0f",
+      "afterSha256": "ea278faa37662d62b0c8149158a5cc91b226fd500d9f42351368de3c9c8c6bef",
       "placement": "before-head-close"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
@@ -5137,6 +5137,19 @@
         "ege-profil/trainers/functions-t1112.html",
         "ege-profil/trainers/probability-t45.html",
         "ege-profil/trainers/vectors-yashchenko-t2.html",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "d38fbbbc35c5368549440d8b8aaff8f3471cb30a",
+      "sourceBaseSha": "6ead382b826ad4d6f30f062ad2149a2e971517a9",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE6_20261115.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/trainers/finance.html",
+        "ege-profil/trainers/planimetry-yashchenko-t1.html",
+        "ege-profil/trainers/trigonometry.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."

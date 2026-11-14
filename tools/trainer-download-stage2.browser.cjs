@@ -13,6 +13,7 @@ const manifest = require('../downloads/trainers-manifest.json');
 const ogeNext = require('./trainer-download-oge-next.cjs');
 const ogeFinal = require('./trainer-download-oge-final.cjs');
 const profileFirst = require('./trainer-download-profile-first.cjs');
+const profileNext = require('./trainer-download-profile-next.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -58,6 +59,7 @@ const scenarios = {
   ...ogeNext,
   ...ogeFinal,
   ...profileFirst.scenarios,
+  ...profileNext.scenarios,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -284,13 +286,19 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '5');
+  assert.equal(manifest.stage, '6');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
   const filter = process.argv[2];
-  assert(filter === undefined || filter === '--oge-next' || filter === '--oge-final' || filter === '--profile-first' || scenarios[filter], 'unknown test filter');
-  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]) || (filter === '--oge-final' && ogeFinal[entry.slug]) || (filter === '--profile-first' && profileFirst.scenarios[entry.slug]));
+  const groups = {
+    '--oge-next': ogeNext,
+    '--oge-final': ogeFinal,
+    '--profile-first': profileFirst.scenarios,
+    '--profile-next': profileNext.scenarios
+  };
+  assert(!filter || groups[filter] || scenarios[filter], 'unknown test filter');
+  const selected = entries.filter(entry => !filter || filter === entry.slug || groups[filter]?.[entry.slug]);
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-downloads-'));
   const server = await listen();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -316,10 +324,11 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320 || ogeNext[entry.slug] || ogeFinal[entry.slug] || profileFirst.scenarios[entry.slug]) await scenarios[entry.slug](page, loadImage);
+        if (width === 320 || Object.values(groups).some(group => group[entry.slug])) await scenarios[entry.slug](page, loadImage);
         assert.deepEqual(issues, [], entry.slug);
         await context.close();
       }
+      if (entry.slug === 'ege-profil-finance') await profileNext.checkEditedFinance(browser, entry, target);
       console.log(`PASS file:// ${index + 1}/${selected.length} ${entry.slug}`);
     }
 
@@ -401,6 +410,16 @@ async function run() {
       assert.match(await derivative.locator('img').getAttribute('src'), /adapt-derivative\.gif$/);
       await derivative.getByRole('button', { name: 'Остановить GIF' }).click();
       assert.match(await derivative.locator('img').getAttribute('src'), /adapt-derivative\.png$/);
+      const finance = page.locator('#adapt-finance');
+      await finance.locator(':scope > summary').press('Enter');
+      await loadImage(finance.locator('img'));
+      for (let i = 0; i < 4; i++) await finance.getByRole('button', { name: 'Следующий кадр' }).click();
+      assert.match(await finance.locator('.trainer-skill-gif-caption').innerText(), /Кадр 5 из 5.*375,1 отклоняется.*363,1 принимается/);
+      await finance.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(finance.locator('img'));
+      assert.match(await finance.locator('img').getAttribute('src'), /adapt-finance\.gif$/);
+      await finance.getByRole('button', { name: 'Остановить GIF' }).click();
+      assert.match(await finance.locator('img').getAttribute('src'), /adapt-finance\.png$/);
       await context.close();
     }
 
@@ -418,6 +437,16 @@ async function run() {
       assert.match(href, /^\/downloads\/trainers\/.*\.zip$/);
       assert((await context.request.head(origin + href)).ok());
     }
+    await page.goto(origin + '/ege-profil/#downloads');
+    const profileDownloads = page.locator('#downloads');
+    assert.equal(await profileDownloads.getAttribute('open'), null);
+    await profileDownloads.locator('summary').press('Enter');
+    const profileLinks = await profileDownloads.locator('a[download]').evaluateAll(links => links.map(link => link.getAttribute('href')));
+    const expected = [...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios)].map(slug =>
+      entries.find(entry => entry.slug === slug).package);
+    assert.equal(profileLinks.length, expected.length);
+    assert.deepEqual(new Set(profileLinks), new Set(expected));
+    for (const href of profileLinks) assert((await context.request.head(origin + href)).ok());
     await context.close();
     console.log(`TRAINER_DOWNLOAD_ADAPT_OK: ${selected.length} packages, ${selected.length * 2} file:// opens and ${selected.length * 2} panel views`);
     if (Object.keys(ogeFinal).every(slug => selected.some(entry => entry.slug === slug))) {
@@ -425,6 +454,9 @@ async function run() {
     }
     if (Object.keys(profileFirst.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
       console.log('TRAINER_DOWNLOAD_STAGE5_OK: six profile packages, original START bank, vector foundations and derivative adaptation');
+    }
+    if (Object.keys(profileNext.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
+      console.log('TRAINER_DOWNLOAD_STAGE6_OK: four profile packages, local function atlas and finance adaptation');
     }
   } finally {
     await browser?.close();
