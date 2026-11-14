@@ -135,7 +135,7 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
         return False
     assets = {
         '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
-        '/trainers/oge-course-proof.js': 'b8e947b02a5a651bc8ba7c4927de8ff136e4d4844235bccf89cdab70b43b7c15',
+        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
     }
     for path, expected in assets.items():
         loaded = record.get('resources', {}).get(path, {})

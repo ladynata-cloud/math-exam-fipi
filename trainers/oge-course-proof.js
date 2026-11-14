@@ -126,10 +126,13 @@ function primaryFigures(){
   svg.before(pan);pan.append(svg);
   controls.append(button);figure.prepend(controls,note);
   const personalProof=taskNo===24&&!shared;
+  const [largeNote,fitNote]=personalProof
+   ? ['Крупный чертёж: прокручивай его стрелками после выбора рисунка.','Чертёж целиком.']
+   : ['Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.','Чертёж целиком. Чтобы прочитать мелкие подписи, нажми «Увеличить подписи».'];
   function size(large){
    button.setAttribute('aria-pressed',String(large));button.textContent=large?'Показать целиком':'Увеличить подписи';
    pan.classList.toggle('ocp-figure-large',large);svg.style.width=large?readableWidth+'px':'100%';svg.style.maxWidth=large?'none':'100%';
-   note.textContent=large?'Крупный чертёж: прокручивай его стрелками после выбора рисунка.':'Чертёж целиком.';
+   note.textContent=large?largeNote:fitNote;
    pan.scrollLeft=0;pan.scrollTop=0;
   }
   size(!personalProof||(proofFigureLarge??!root.matchMedia?.('(max-width: 600px)').matches));
