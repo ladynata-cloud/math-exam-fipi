@@ -4,7 +4,24 @@ const server=http.createServer((req,res)=>{let f=path.join(root,new URL(req.url,
 const openSteps=async p=>{if(!await p.locator('#taskHelp').evaluate(e=>e.open))await p.locator('#taskHelp>summary').click();if(!await p.locator('#taskSteps').evaluate(e=>e.open))await p.locator('#taskSteps>summary').click();await p.locator('#taskStepsBody').waitFor({state:'visible'});};
 (async()=>{await new Promise(r=>server.listen(0,'127.0.0.1',r));const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH});try{const p=await browser.newPage({viewport:{width:360,height:900},reducedMotion:'reduce'}),errors=[];p.on('pageerror',e=>errors.push(e.message));const base='http://127.0.0.1:'+server.address().port;
 // Weak fractions: mistake -> precisely chosen old trainer -> the same saved task.
-await p.goto(base+'/ege-baza/path/index.html#lesson=fractions');await openSteps(p);let before=await p.evaluate(()=>PathCourse.state().lessons.fractions);await p.fill('#stepAnswer','1/0');await p.click('#stepAnswerForm button[type=submit]');assert.match(await p.locator('#ege-remediation').innerText(),/Смысл дроби/);await p.locator('#ege-remediation a').click();assert(p.url().includes('fraction-meaning.html'));assert(await p.locator('#ege-return').isVisible());await p.locator('#ege-return a').click();await p.waitForURL('**/ege-baza/path/index.html#lesson=fractions');await p.waitForFunction(()=>typeof PathCourse!=='undefined'&&document.querySelector('#stepAnswer'));let after=await p.evaluate(()=>PathCourse.state().lessons.fractions);assert.equal(after.seed,before.seed);assert.equal(after.step,before.step);assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');assert.equal(after.independent,0);
+await p.goto(base+'/ege-baza/path/index.html#lesson=fractions');
+await openSteps(p);
+let before=await p.evaluate(()=>PathCourse.state().lessons.fractions);
+await p.fill('#stepAnswer','1/0');
+await p.click('#stepAnswerForm button[type=submit]');
+assert.match(await p.locator('#ege-remediation').innerText(),/Смысл дроби/);
+await p.locator('#ege-remediation a').click();
+await p.waitForURL(url => url.pathname === '/trainers/oge-basics/fraction-meaning.html');
+const returnLink = p.locator('#ege-return a');
+await returnLink.waitFor({state:'visible'});
+await returnLink.click();
+await p.waitForURL('**/ege-baza/path/index.html#lesson=fractions');
+await p.waitForFunction(()=>typeof PathCourse!=='undefined'&&document.querySelector('#stepAnswer'));
+const after=await p.evaluate(()=>PathCourse.state().lessons.fractions);
+assert.equal(after.seed,before.seed);
+assert.equal(after.step,before.step);
+assert.equal(await p.locator('#stepAnswer').inputValue(),'1/0');
+assert.equal(after.independent,0);
 // Sign mistake: same magnitude, opposite sign gets sign practice, not harder equations.
 await p.goto(base+'/ege-baza/path/index.html#lesson=equations');await openSteps(p);before=await p.evaluate(()=>PathCourse.state().lessons.equations);let t=D.task('equations',before.seed);await p.fill('#stepAnswer',String(-t.steps[0].a));await p.click('#stepAnswerForm button[type=submit]');assert.match(await p.locator('#ege-remediation a').innerText(),/разными знаками/);
 // Wrong percentage base: targeted percentage change practice.

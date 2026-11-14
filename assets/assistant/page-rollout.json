@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+  "baseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2598,8 +2598,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "36e928b50ed11c29214b762997b35be8ff41da2af575a680e6ec87959ee3fc66",
-      "afterSha256": "a13206c8fe4b3fec39ad6eebd7b41735769489e67b9b19a940e461d7b91b29b6",
+      "beforeSha256": "893892c48333c6e297837450d12e33aae416c281f3290ee57ad15f1f3a6cedfd",
+      "afterSha256": "ad9e1f4a0e4785593c88082235dd77b2c428dadfe562b75b266e9e38341aa53f",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
@@ -5052,6 +5052,24 @@
         "geometry-pogorelov/atlas/pogorelov-base-8-58.html",
         "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
         "trainers/oge-task24-proofs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+      "sourceBaseSha": "7a876fa9b80f22df458348d5460fdd940dc8cac3",
+      "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "7a876fa9b80f22df458348d5460fdd940dc8cac3",
+      "sourceBaseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+      "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
+      "changedPaths": [
+        "trainers/oge-basics/fraction-meaning.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
