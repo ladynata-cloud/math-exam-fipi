@@ -356,7 +356,7 @@ async function checkParameterGraphs(page, origin) {
  await check.click();
  await page.locator('#feedback.ok').waitFor();
  assert.equal((await record('param-hole-5')).independent,true);
- await page.getByRole('link',{name:/Следующее условие/}).click();
+ await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
  await page.getByText('№19 · условие 6 из 6',{exact:true}).waitFor();
  await first.fill('7');
  await second.fill('14');
@@ -367,6 +367,89 @@ async function checkParameterGraphs(page, origin) {
  await hole.getByRole('link',{name:'Исследовать график'}).click();
  await page.getByRole('link',{name:'К условиям темы'}).click();
  assert.match(page.url(),/#lesson\/param-hole$/);
+}
+
+async function checkParameterProofReview(page,origin,width){
+ const partTwo=origin+'/ege-profil/part-two/';
+ const record=id=>page.evaluate(id=>window.ProfilePartTwoApp.store.read(id),id);
+ const module='param-modules-4',hole='param-hole-4';
+ await page.goto(partTwo+'#exam/19');
+ await page.evaluate(()=>{
+  for(const family of ['param-modules','param-hole'])for(const number of [4,5,6]){
+   localStorage.removeItem('mathExam.profile.partTwo.v1.'+family+'-'+number);
+  }
+ });
+ await page.goto(partTwo+'#task/'+module+'/independent');
+ await page.reload();
+ const jump=page.locator('#proof-jump'),criteria=page.locator('#proof-review'),proof=page.locator('#proof-draft');
+ const first=page.locator('#final-0'),second=page.locator('#final-1');
+ const check=page.getByRole('button',{name:'Проверить ответы',exact:true});
+ await proof.waitFor();
+ await proof.fill('На среднем отрезке левая часть постоянна.');
+ assert.equal(await criteria.isVisible(),false);
+ await check.click();
+ assert.equal(await jump.isVisible(),false,'blank submission does not open the review');
+ await first.fill('a>10');
+ await second.fill('∞');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ await jump.click();
+ assert.match(await criteria.innerText(),/Граничный уровень/);
+ await criteria.getByRole('checkbox',{name:/Граничный уровень/}).check();
+ await page.locator('#proof-review-count').getByText('Вы отметили 1 из 4 пунктов.').waitFor();
+ assert((await record(module)).independent);
+ assert.equal((await record(module)).helped,false,'marking a criterion is self-review');
+ await page.reload();
+ await jump.click();
+ assert(await criteria.getByRole('checkbox',{name:/Граничный уровень/}).isChecked());
+ assert.equal(await proof.inputValue(),'На среднем отрезке левая часть постоянна.');
+ const example=criteria.getByText('Сравнить рассуждения на других данных',{exact:true});
+ await example.click();
+ assert.match(await criteria.locator('.proof-example').innerText(),/\[−1; 1\]/);
+ await page.waitForFunction(id=>window.ProfilePartTwoApp.store.read(id).helped,module);
+ assert((await record(module)).independent,'an already recorded numerical result is retained after help');
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'review fits '+width);
+ const shots=process.env.EGE_ENTRY_SHOTS;
+ if(shots){fs.mkdirSync(shots,{recursive:true});await criteria.screenshot({path:path.join(shots,'profile19-proof-review-'+width+'.png')});}
+ await proof.fill('На уровне a = 10 подходит каждый x из [−5; 5].');
+ await page.getByText('Вы отметили 0 из 4 пунктов.',{exact:true}).waitFor();
+ await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
+ await page.getByRole('heading',{name:'Самопроверка обоснований №19'}).waitFor();
+ await page.getByRole('link',{name:'Вернуться к обоснованию',exact:true}).click();
+ assert.match(await proof.inputValue(),/\[−5; 5\]/);
+ await page.getByRole('link',{name:/Другое условие самостоятельно/}).click();
+ await page.waitForURL('**/#task/param-modules-5/independent');
+ await page.getByText('№19 · условие 5 из 6',{exact:true}).waitFor();
+ assert.equal(await proof.inputValue(),'');
+ assert.equal(await criteria.isVisible(),false);
+
+ await page.goto(partTwo+'#task/'+hole+'/independent');
+ await first.fill('5');
+ await second.fill('9');
+ await check.click();
+ await page.locator('#feedback.error').waitFor();
+ assert.equal(await criteria.isVisible(),false,'an answer alone does not open the criteria');
+ await jump.click();
+ assert(await proof.evaluate(node=>document.activeElement===node));
+ await proof.fill('Я сократил дробь и получил x = a − 5.');
+ await jump.click();
+ await criteria.getByLabel('Подсказка к пункту «ОДЗ»',{exact:true}).click();
+ await criteria.getByText('Приравняйте исходный знаменатель к нулю',{exact:false}).waitFor();
+ await page.locator('.history summary').click();
+ await page.getByText('Помощь к обоснованию — ОДЗ.',{exact:true}).waitFor();
+ assert.equal((await record(hole)).completed,false);
+ assert.equal((await record(hole)).attemptCount,1);
+ await criteria.getByRole('link',{name:/Исключаю выколотую точку/}).click();
+ await page.getByRole('heading',{name:'Исключаю выколотую точку',exact:true}).waitFor();
+ await page.getByRole('link',{name:'Вернуться к исходному заданию'}).click();
+ assert.equal(await proof.inputValue(),'Я сократил дробь и получил x = a − 5.');
+ await second.fill('10');
+ await check.click();
+ await page.locator('#feedback.ok').waitFor();
+ const saved=await record(hole);
+ assert(saved.completed&&saved.helped&&!saved.independent);
+ assert.equal(saved.attemptCount,2);
+ assert.equal(saved.attempts[0].answers[1],'9');
 }
 
 (async()=>{let browser;try{
@@ -385,6 +468,7 @@ async function checkParameterGraphs(page, origin) {
     await checkAlphabetReturn(page, origin);
     await checkExamFoundations(page, origin);
     await checkParameterGraphs(page, origin);
+    await checkParameterProofReview(page, origin, width);
     await page.goto(origin+'/ege-profil/');
     // The complete-course entrance deliberately exposes every exam number
     // and the existing course. No summary click is allowed before these checks.
