@@ -49,7 +49,7 @@ details.foundation-options,details.foundation-results,details.foundation-referen
 <p id="save-warning" class="save-warning" role="status" hidden></p>
 </div>
 <details class="foundation-results" id="rounding-results"><summary>Мои результаты и памятка</summary><aside class="card">
-<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>сразу верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>без ошибок и помощи</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
 <div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
 <div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
 <div class="box rules"><h2>Алгоритм</h2><p>1. Найди нужный разряд.</p><p>2. Посмотри на цифру справа.</p><p>3. 0–4 — оставляем, 5–9 — увеличиваем.</p><p>4. В целой части справа ставим нули, в дробной части лишние цифры справа убираем.</p><p class="mini">Примеры: 374 до десятков → 370; 12,46 до десятых → 12,5; 8,736 до сотых → 8,74.</p></div>
@@ -59,7 +59,7 @@ details.foundation-options,details.foundation-results,details.foundation-referen
 </main>
 <script>
 var KEY='mathExamCourseProgress.v1',TOPIC='roundingStepwise';
-var level='easy',task=null,step='target',solved=false,hadMistake=false,usedSolution=false,storageBlocked=false;
+var level='easy',task=null,step='target',solved=false,hadMistake=false,usedSolution=false,usedHint=false,storageBlocked=false;
 var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
 var names={6:'миллионов',5:'сотен тысяч',4:'десятков тысяч',3:'тысяч',2:'сотен',1:'десятков',0:'единиц','-1':'десятых','-2':'сотых'};
 var labels={6:'миллионы',5:'сотни тысяч',4:'десятки тысяч',3:'тысячи',2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые'};
@@ -120,14 +120,15 @@ function check(){
  if(step!=='answer'){msg('Сначала выполни шаг над числом. Подсказка покажет, куда нажать.','tip');return}
  if(norm(el('ans').value)!==task.ans){hadMistake=true;msg('Пока не получилось. '+explain()+' Попробуй ещё раз.','err');return}
  solved=true;stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
- var first=!hadMistake&&!usedSolution;
+ var first=!hadMistake&&!usedSolution&&!usedHint;
  if(first){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak)}else stats.streak=0;
- var result=usedSolution?'Решено с помощью разбора.':hadMistake?'Верно! Ты исправил ошибку.':'Верно!';
+ var result=usedSolution?'Решено с помощью разбора.':usedHint?'Решено с подсказкой.':hadMistake?'Верно! Ты исправил ошибку.':'Верно!';
  stats.history=stats.history||[];stats.history.unshift({text:task.display+' до '+names[task.p]+' → '+task.ansText+'. '+result});stats.history=stats.history.slice(0,12);
  var saved=save();renderStats();msg(result+(saved?' Результат сохранён.':' Можно решать следующий пример.'),'ok');
 }
 function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';var st=stats.total<10?'тема начата':'10 и больше примеров решено';el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров. Потом можно продолжать сколько угодно.':'Выбирай нужное округление и продолжай тренировку.';el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
 function hint(){
+ if(!solved)usedHint=true;
  mark();
  if(step==='target')msg('Нажми на синюю цифру. Под ней написано «'+placeLabel(task.p)+'».','tip');
  else if(step==='look')msg('Нажми на цифру сразу справа от синей.','tip');
@@ -143,7 +144,7 @@ function next(){
   var comma=candidate.display.indexOf(','),decimalPlaces=comma<0?0:candidate.display.length-comma-1,raw=Number(candidate.display.replace(',','')),last=raw%10;
   raw+=last===9?-1:1;var text=String(raw).padStart(decimalPlaces+1,'0');if(decimalPlaces)text=text.slice(0,-decimalPlaces)+','+text.slice(-decimalPlaces);candidate=taskFrom(text,candidate.p);
  }
- task=candidate;step='target';solved=false;hadMistake=false;usedSolution=false;render();renderStats();
+ task=candidate;step='target';solved=false;hadMistake=false;usedSolution=false;usedHint=false;render();renderStats();
 }
 function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика этой тренировки сброшена.','tip')}
 function setLevel(l){level=l;el('easy').classList.toggle('active',l==='easy');el('med').classList.toggle('active',l==='med');el('easy').setAttribute('aria-pressed',String(l==='easy'));el('med').setAttribute('aria-pressed',String(l==='med'));next()}

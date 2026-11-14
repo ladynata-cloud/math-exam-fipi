@@ -63,6 +63,37 @@ test('hints highlight one action without full answer; explicit solution is not i
  f.d.querySelector('#solution').click();assert.equal(f.d.querySelector('#ans').value,q.answer);assert(f.d.querySelector('#fb').textContent.includes(q.answer));f.d.querySelector('#check').click();assert.equal(f.w.stats.total,1);assert.equal(f.w.stats.right,0);assert.match(f.d.querySelector('#fb').textContent,/помощью/);
 });
 
+test('a hint at each step excludes independent credit and survives reload',t=>{
+ for(const hintStep of ['target','look','decision','answer']){
+  const f=mount(t),q=f.w.task;
+  if(hintStep==='target')f.d.querySelector('#hint').click();
+  f.d.querySelector('.digit[data-i="'+q.ti+'"]').click();
+  if(hintStep==='look')f.d.querySelector('#hint').click();
+  f.d.querySelector('.digit[data-i="'+q.li+'"]').click();
+  if(hintStep==='decision')f.d.querySelector('#hint').click();
+  f.d.querySelector('#'+q.decision).click();
+  if(hintStep==='answer')f.d.querySelector('#hint').click();
+  submit(f,exact(q.display,q.p));
+  assert.equal(f.w.stats.total,1);
+  assert.equal(f.w.stats.right,0,hintStep+': hint-assisted work is not independent');
+  assert.equal(f.w.stats.streak,0);
+  assert.match(f.d.querySelector('#fb').textContent,/подсказк/);
+  const saved=f.w.localStorage.getItem(KEY),reloaded=mount(t,{storage:saved});
+  assert.equal(reloaded.d.querySelector('#total').textContent,'1');
+  assert.equal(reloaded.d.querySelector('#right').textContent,'0');
+  assert.match(reloaded.d.querySelector('#history').textContent,/подсказк/);
+  f.d.querySelector('#next').click();const next=toAnswer(f);submit(f,next.answer);
+  assert.equal(f.w.stats.total,2);assert.equal(f.w.stats.right,1);assert.equal(f.w.stats.streak,1,'Help does not carry to a new example');
+ }
+});
+
+test('asking for help after completion cannot change the awarded result',t=>{
+ const f=mount(t),q=toAnswer(f);submit(f,q.answer);
+ const saved=f.w.localStorage.getItem(KEY);
+ f.d.querySelector('#hint').click();f.d.querySelector('#solution').click();submit(f,q.answer);
+ assert.equal(f.w.localStorage.getItem(KEY),saved);assert.equal(f.w.stats.right,1);
+});
+
 test('a corrected digit or rounding decision does not count as correct first try',t=>{
  for(const mistake of ['target','look','decision']){
   const f=mount(t),q=f.w.task;

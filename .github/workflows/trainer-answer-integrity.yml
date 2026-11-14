@@ -1,0 +1,60 @@
+name: Trainer answer integrity
+on:
+  pull_request:
+    paths:
+      - 'trainers/rounding-stepwise.html'
+      - 'trainers/ege-profile-vectors-trainer.html'
+      - 'trainers/teatr-formul-daily.html'
+      - 'downloads/trainers/rounding-stepwise/**'
+      - 'downloads/trainers/ege-profile-vectors-trainer/**'
+      - 'downloads/trainers/teatr-formul-daily/**'
+      - 'tools/bonus-*'
+      - 'tools/vector-assistance.test.cjs'
+      - 'tools/rounding-stepwise.*.cjs'
+      - '.github/workflows/trainer-answer-integrity.yml'
+  # Exact branch acceptance remains available if main advances independently.
+  # It validates the task head and is not publication or a merge authorization.
+  push:
+    branches: ['fix/trainer-answer-integrity-20261114']
+permissions:
+  contents: read
+jobs:
+  answer-integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated browser and DOM tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/answer-integrity" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/answer-integrity/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/answer-integrity/node_modules" >> "$GITHUB_ENV"
+      - name: Input, assistance, retained work and download parity
+        run: |
+          node --test tools/bonus-theatre-input.test.cjs tools/vector-assistance.test.cjs tools/rounding-stepwise.dom.cjs tools/learning-rounding-preparation.dom.cjs tools/bonus-download-parity.test.cjs
+          node --check tools/bonus-answer-integrity.browser.cjs
+          git diff --check
+      - name: Reproduce the three download packages
+        run: |
+          node scripts/build-trainer-downloads.mjs --only=rounding-stepwise --downloads-only
+          node scripts/build-trainer-downloads.mjs --only=teatr-formul-daily --downloads-only
+          node scripts/build-trainer-downloads.mjs --only=ege-profile-vectors-trainer --downloads-only
+          git diff --exit-code -- downloads/trainers/rounding-stepwise downloads/trainers/teatr-formul-daily downloads/trainers/ege-profile-vectors-trainer
+      - name: Visible learner journeys in Chromium
+        env:
+          BONUS_ARTIFACTS: artifacts/bonus-answer-integrity
+        run: |
+          node tools/bonus-answer-integrity.browser.cjs
+          node tools/rounding-stepwise.browser.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: bonus-answer-integrity
+          path: artifacts/bonus-answer-integrity
+          retention-days: 14
+          if-no-files-found: warn
