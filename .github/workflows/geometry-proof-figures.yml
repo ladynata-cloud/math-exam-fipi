@@ -41,11 +41,21 @@ jobs:
           node <<'NODE'
           const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
           const out=process.env.GEOMETRY_FIGURES_EVIDENCE_DIR,ids=['segments','equality','length','chords-tangent','circle-position','projections','pythagoras'];
-          const shots=[320,1280].flatMap(width=>ids.flatMap(id=>['proof','practice'].map(kind=>`${id}-${width}-${kind}.png`)));
+          const widths=[320,390,1280];
+          const shots=widths.flatMap(width=>ids.flatMap(id=>['proof','practice','independent','written'].map(kind=>`${id}-${width}-${kind}.png`)));
           assert.deepEqual(fs.readdirSync(out).sort(),[...shots,'proof-figures-results.json'].sort());
           for(const shot of shots){const data=fs.readFileSync(path.join(out,shot));assert(data.length>1000);assert.equal(data.subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
           const report=JSON.parse(fs.readFileSync(path.join(out,'proof-figures-results.json')));
-          assert.deepEqual(report,{results:[320,1280].flatMap(width=>ids.map(id=>({id,width,proof:true,practice:true,written:true,reload:true,firstScreen:true}))),errors:[]});
+          assert.deepEqual(report.errors,[]);
+          assert.deepEqual(report.results,widths.flatMap(width=>ids.map(id=>({id,width,proof:true,practice:true,written:true,reload:true,firstScreen:true}))));
+          assert.deepEqual(report.measurements.map(({id,width,stage})=>({id,width,stage})),
+            widths.flatMap(width=>ids.flatMap(id=>[2,3,4,5].map(stage=>({id,width,stage})))));
+          for(const {width,condition,figure,svg} of report.measurements){
+            for(const {x,y,width:boxWidth,height} of [condition,figure,svg]){
+              assert(x>=0&&y>=0&&boxWidth>0&&height>0&&x+boxWidth<=width&&y+height<=900);
+            }
+            assert(condition.y+condition.height<=figure.y);
+          }
           console.log('GEOMETRY_PROOF_FIGURES_20261114_GATE_OK');
           NODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -55,6 +65,8 @@ jobs:
           path: |
             artifacts/geometry-figures/*-proof.png
             artifacts/geometry-figures/*-practice.png
+            artifacts/geometry-figures/*-independent.png
+            artifacts/geometry-figures/*-written.png
             artifacts/geometry-figures/proof-figures-results.json
             artifacts/geometry-figures/proof-figures-failure.png
           include-hidden-files: false

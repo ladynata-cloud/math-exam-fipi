@@ -96,7 +96,32 @@
     if (typeof document==='undefined'||document.getElementById('proof-figure-styles')) return;
     document.body.classList.add('proof-figure-lesson');
     const style=document.createElement('style');style.id='proof-figure-styles';
-    style.textContent=`@media(max-width:600px){.proof-figure-lesson .lesson-head{margin:0;padding:6px 0}.proof-figure-lesson .lesson-head h1{font-size:24px;line-height:1.2;margin:4px 0}.proof-figure-lesson .lesson-head .pill{display:none}.proof-figure-lesson .stage-nav{margin:6px 0 12px}.proof-figure-lesson #lesson{padding:14px}.proof-figure-lesson #lesson h2{margin:0 0 8px;font-size:22px;line-height:1.2}.proof-figure-lesson #lesson .callout{padding:8px 12px;margin:8px 0}.proof-figure-lesson #lesson .callout p{margin:3px 0}.proof-figure-lesson .lesson-figure{max-width:300px}}`;
+    style.textContent=`
+      .proof-figure-lesson .topbar { padding-block: 10px; gap: 8px; }
+      .proof-figure-lesson .container { padding-top: 12px; }
+      .proof-figure-lesson .lesson-head { margin: 0; padding: 6px 0; }
+      .proof-figure-lesson .lesson-head h1 { font-size: clamp(24px, 4vw, 36px); line-height: 1.2; margin: 4px 0; }
+      .proof-figure-lesson .stage-nav { margin: 6px 0 8px; padding-block: 4px 8px; }
+      .proof-figure-lesson #lesson { padding-block: 16px; }
+      .proof-figure-lesson #lesson > .step-label { margin: 0 0 6px; }
+      .proof-figure-lesson #lesson > h2 { margin: 0 0 8px; }
+      .proof-figure-lesson #lesson > .callout { padding: 8px 12px; margin: 8px 0; }
+      .proof-figure-lesson #lesson > .callout p { margin: 3px 0; line-height: 1.45; }
+      @media (max-width: 600px) {
+        .proof-figure-lesson .topbar { padding-block: 8px; gap: 4px; }
+        .proof-figure-lesson .toplinks { gap: 4px 6px; }
+        .proof-figure-lesson .toplinks button { padding-inline: 5px; }
+        .proof-figure-lesson .container { padding-top: 8px; }
+        .proof-figure-lesson .lesson-head { padding-block: 2px; }
+        .proof-figure-lesson .lesson-head .eyebrow { margin-bottom: 4px; }
+        .proof-figure-lesson .lesson-head .pill { display: none; }
+        .proof-figure-lesson .stage-nav { margin-block: 4px 6px; }
+        .proof-figure-lesson #lesson { padding: 10px 14px; }
+        .proof-figure-lesson #lesson > h2 { font-size: 22px; line-height: 1.2; }
+        .proof-figure-lesson #lesson > .callout { padding: 6px 8px; }
+        .proof-figure-lesson #lesson > .callout p,
+        .proof-figure-lesson #lesson > p:has(+ .lesson-figure) { line-height: 1.4; }
+      }`;
     document.head.appendChild(style);
   }
   const api={proof,practice,preparePage,proofIds};

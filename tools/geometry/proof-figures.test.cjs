@@ -79,7 +79,15 @@ test('seven complete lesson DOM flows show the matching figure and preserve prog
     for(const s of t.steps){doc.querySelector('#answer').value=w.GeoTasks.format(s.answer);doc.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));}
     assert.match(doc.querySelector('#lesson').textContent,/Разбор завершён/);
     app.click('[data-action="independent-start"]');state=JSON.parse(app.save()).units[id];t=w.GeoTasks.task(unit.calc,state.seed);assert.equal(doc.querySelector('.lesson-figure').dataset.figureKind,'practice');
+    const figure=doc.querySelector('#lesson > .lesson-figure'),scoring=doc.querySelector('#lesson > details');
+    assert.equal(figure.previousElementSibling.className,'task-question');
+    assert(doc.querySelector('#answer-form').compareDocumentPosition(scoring)&w.Node.DOCUMENT_POSITION_FOLLOWING);
+    assert.match(scoring.querySelector('summary').textContent,/Как учитывается результат/);
     doc.querySelector('#answer').value=w.GeoTasks.format(t.answer);doc.querySelector('#answer-form').dispatchEvent(new w.Event('submit',{bubbles:true,cancelable:true}));assert.equal(JSON.parse(app.save()).units[id].independent,1);
+    const repeated=JSON.parse(app.save());repeated.units[id].repeatedTask=true;app.close();app=load(id,JSON.stringify(repeated));w=app.w;doc=app.doc;
+    const notice=doc.querySelector('#lesson > .lesson-figure').nextElementSibling;
+    assert.match(notice.textContent,/Знакомое условие/);
+    assert.equal(notice.nextElementSibling.id,'answer-form');
     app.click('[data-stage="5"]');assert.equal(doc.querySelector('.lesson-figure').dataset.figureKind,'proof');assert.equal(doc.querySelector('.lesson-figure').dataset.figureStep,'0');
     const writing='Дано, построение, основание каждого перехода.';doc.querySelector('#written').value=writing;doc.querySelector('#written').dispatchEvent(new w.Event('input',{bubbles:true}));saved=app.save();assert.deepEqual(app.errors,[]);app.close();
     app=load(id,saved);assert.equal(app.doc.querySelector('#written').value,writing);assert.equal(app.doc.querySelector('.lesson-figure').dataset.figureStep,'0');assert.deepEqual(app.errors,[]);app.close();
