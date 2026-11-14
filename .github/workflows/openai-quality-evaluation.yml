@@ -1,0 +1,52 @@
+name: MathExam OpenAI quality — synthetic preflight
+on:
+  pull_request:
+    paths:
+      - 'tools/openai-quality-20261103/**'
+      - '.github/workflows/openai-quality-evaluation.yml'
+      - 'docs/tasks/OPENAI_QUALITY_20261103.md'
+      - 'docs/reports/OPENAI_QUALITY_20261103.md'
+permissions:
+  contents: read
+jobs:
+  synthetic-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      MATHEXAM_EVAL_CURRENT_ROOT: ${{ github.workspace }}/sources/current
+      MATHEXAM_EVAL_ADAPTER_ROOT: ${{ github.workspace }}/sources/pr399
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 48474ad9c7e996767c5994add0b3aeaeb06923d6
+          path: sources/current
+          sparse-checkout: assistant-service
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 7f4c054b9b8fb5b519dcab60e6fa4e461ed7c21f
+          path: sources/pr399
+          sparse-checkout: assistant-service
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact references and transport checks without an API key
+        run: |
+          mkdir -p tools/openai-quality-20261103/results
+          python3 tools/openai-quality-20261103/oracles.py > tools/openai-quality-20261103/results/oracles.json
+          node --test tools/openai-quality-20261103/evaluation.test.mjs
+          node tools/openai-quality-20261103/evaluate.mjs audit
+          node tools/openai-quality-20261103/evaluate.mjs dry-run
+          git diff --check
+      - name: Retain synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: openai-quality-preflight
+          path: tools/openai-quality-20261103/results
+          retention-days: 14
+          if-no-files-found: error
