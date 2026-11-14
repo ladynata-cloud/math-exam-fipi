@@ -19,8 +19,9 @@ on:
       - 'trainers/oge-course/index.html'
       - '.github/workflows/oge-learner-entry.yml'
   workflow_dispatch:
+  # Managed Pages also uses the internal workflow identifier for subscriptions.
   workflow_run:
-    workflows: ['pages build and deployment']
+    workflows: ['pages-build-deployment', 'pages build and deployment']
     types: [completed]
     branches: [main]
 permissions:
