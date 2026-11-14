@@ -1,7 +1,7 @@
 {
-  "stage": "5",
+  "stage": "6",
   "updated": "2026-11-14",
-  "notes": "Этапы 2–5 добавляют 30 автономных комплектов с GIF; предыдущие 17 комплектов сохранены. Этап 5 включает шесть маршрутов профильного ЕГЭ, в том числе START с основами векторов. Факт публикации проверяется отдельно.",
+  "notes": "Этапы 2–6 добавляют 34 автономных комплекта с GIF. На этапе 6 добавлены атлас функций, финансовые задачи, тригонометрия и планиметрия по Ященко. Факт публикации проверяется отдельно.",
   "trainers": [
     {
       "slug": "mcko-linejka",
@@ -1908,11 +1908,176 @@
       "downloadHtml": "/downloads/trainers/ege-profil-functions/ege-profil-functions.html",
       "prompt": "/downloads/trainers/ege-profil-functions/ege-profil-functions-deepseek-prompt.md",
       "package": "/downloads/trainers/ege-profil-functions/ege-profil-functions-package.zip"
+    },
+    {
+      "slug": "ege-profil-methods-atlas",
+      "title": "Основы и методы · атлас функций",
+      "sourceHtml": "/ege-profil/azbuka-metodov/index.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "число решений, область определения и задачи с параметром",
+      "description": "11 тем и 44 навыка, атлас из 25 графиков и сечения на координатно-параметрической плоскости.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/azbuka-metodov/styles.css",
+        "/ege-profil/azbuka-metodov/catalog.js",
+        "/ege-profil/azbuka-metodov/data.js",
+        "/ege-profil/azbuka-metodov/routes.js",
+        "/ege-profil/azbuka-metodov/engine.js",
+        "/ege-profil/azbuka-metodov/diagrams.js",
+        "/ege-profil/azbuka-metodov/function-atlas.js",
+        "/ege-profil/azbuka-metodov/parameter-plane.js",
+        "/ege-profil/azbuka-metodov/app.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь в атлас параболу с вершиной (0; 1) и проверь число пересечений с горизонталью при трёх значениях уровня.",
+        "edits": {
+          "Задачи": "Встроенные блоки catalog.js, data.js и routes.js содержат темы, навыки и задания. Модели лежат в блоках function-atlas.js и parameter-plane.js.",
+          "Числа": "Согласуй значение, формулу, область определения, число пересечений и метки выколотых точек. Для параболы y = x² + 1 минимум равен 1.",
+          "Подсказки": "Подсказка предлагает сравнить уровень с высотой вершины. Разбор отдельно объясняет два пересечения, касание и отсутствие решений.",
+          "Оформление": "Сохрани одинаковую единицу на осях, текстовое описание SVG, управление ползунком с клавиатуры и ссылки внутри этого HTML."
+        },
+        "checks": [
+          "Для y = x² + 1 уровни y = 0, y = 1 и y = 2 дают 0, 1 и 2 решения соответственно.",
+          "После сдвига ползунка проверка числа решений раскрывается по запросу. Выколотая точка не должна засчитываться."
+        ],
+        "limit": "Темы, подсказки, журнал и атлас работают в копии. Ссылки к отдельным курсам и материалам ведут на сайт.",
+        "localEditing": true,
+        "gif": "adapt-graph"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas.html",
+      "prompt": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-package.zip"
+    },
+    {
+      "slug": "ege-profil-finance",
+      "title": "Финансовая математика · нестандартные схемы",
+      "sourceHtml": "/ege-profil/trainers/finance.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "кредиты, вклады, остаток долга, пени и выбор схемы",
+      "description": "Задачи с таблицами платежей, поэтапным разбором и самостоятельным ответом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "В задаче «Пени за задержку» укажи, что февральский платёж внесли 14-го числа, и пересчитай переплату.",
+        "edits": {
+          "Задачи": "Найди запись addTask с id I1. При добавлении варианта используй новый уникальный id. Согласуй условие, data, table, steps, finalAnswer и summary.",
+          "Числа": "Просрочка 4 дня при сроке 10-го числа. Пени равны обязательному платежу, умноженному на 0,03 и на число дней. Укажи, что единица ответа — тыс. ₽.",
+          "Подсказки": "Сохрани отдельные шаги для расчёта пеней февраля и мая. Покажи переход от суммы выплат к переплате через вычитание первоначального кредита.",
+          "Оформление": "Сохрани названия месяцев и столбцов, раскрытие нужных ячеек по шагам и читаемость таблицы на узком экране."
+        },
+        "checks": [
+          "Февраль: 400 × 0,03 × 4 = 48. Май: 130 × 0,03 × 9 = 35,1. Переплата: 1280 + 48 + 35,1 − 1000 = 363,1 тыс. ₽.",
+          "В проверке итогового ответа 375,1 отклоняется, а 363,1 принимается. В таблице долг после июля равен 0."
+        ],
+        "limit": "Таблица, подсказки, решение и проверка работают в копии. Дополнительные темы курса и кабинет доступны на сайте.",
+        "localEditing": true,
+        "gif": "adapt-finance"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-finance/ege-profil-finance.html",
+      "prompt": "/downloads/trainers/ege-profil-finance/ege-profil-finance-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-finance/ege-profil-finance-package.zip"
+    },
+    {
+      "slug": "ege-profil-trigonometry",
+      "title": "Тригонометрия · от треугольника к окружности",
+      "sourceHtml": "/ege-profil/trainers/trigonometry.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "синус, косинус, радианы, единичная окружность и уравнения",
+      "description": "Модели треугольника и окружности, тренировка, разбор и зачёт.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь вариант задачи про длину наклонной опоры 14 м при угле 30° к земле и найди высоту её верхнего конца.",
+        "edits": {
+          "Задачи": "В EPCore и EP_ARCHIVE найди линию sup. Для нового задания согласуй условие, точный и числовой ответы, шаги и разбор.",
+          "Числа": "Гипотенуза — длина опоры, высота — противолежащий катет. Угол задаётся в градусах. Для 30° используй sin 30° = 1/2.",
+          "Подсказки": "В первом шаге предложи определить, какая сторона соответствует искомой высоте. Затем предложи выбрать отношение или формулу.",
+          "Оформление": "Сохрани обозначение угла, отметку прямого угла и подписи единиц измерения. Проверь ползунки и подсказки на узком экране."
+        },
+        "checks": [
+          "При длине 14 м и угле 30° высота равна 7 м. Ответ 14 м относится к длине опоры.",
+          "При угле 60° такой же длине соответствует 7√3 м. Если меняется угол, пересчитай чертёж и ответ."
+        ],
+        "limit": "Окружность, режимы тренировки, разбор и зачёт работают в копии. Другие занятия MathExam открываются на сайте.",
+        "localEditing": true
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry.html",
+      "prompt": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-package.zip"
+    },
+    {
+      "slug": "ege-profil-planimetry-yashchenko",
+      "title": "Планиметрия · аналоги по Ященко",
+      "sourceHtml": "/ege-profil/trainers/planimetry-yashchenko-t1.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "углы, треугольники, окружности и площади",
+      "description": "Чертежи к задачам 19 типов, самостоятельная тренировка, разбор и зачёт.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь задачу на вписанный угол, опирающийся на дугу 108°. На чертеже вершина угла лежит вне этой дуги.",
+        "edits": {
+          "Задачи": "Банк YB1 содержит генераторы и чертежи. Сохрани типы действующих задач. В новом примере сверь запись ans и формулировку вопроса.",
+          "Числа": "При изменении дуги уточни, какой из двух дуг соответствует угол. Для дуги 108° вписанный угол равен 54°.",
+          "Подсказки": "Предложи ученику отметить дугу между сторонами угла, а затем разделить её градусную меру на два.",
+          "Оформление": "Сохрани середину и масштаб окружности, положение вершин, подписи и видимость нужной дуги на узком экране."
+        },
+        "checks": [
+          "Для дуги 108° вписанный угол равен 54°. Ответ 108° относится к самой дуге.",
+          "Для угла, опирающегося на диаметр, мера дуги 180°, вписанный угол 90°."
+        ],
+        "limit": "Чертёж, тренировка, разбор и зачёт работают в копии. Сохранённые результаты видны в браузере, который разрешает это для локальных файлов.",
+        "localEditing": true,
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko.html",
+      "prompt": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip"
     }
   ],
   "todo": [
     "ОГЭ: основные номера №1–25 имеют ссылки на ZIP. Дополнительные маршруты и модели за пределами этих тренажёров упаковывать после самостоятельной проверки.",
-    "Профильный ЕГЭ: START, векторы, производная, прикладные задачи, вероятность и функции упакованы в этапе 5. Продолжить тригонометрией, отдельными маршрутами второй части и геометрией; 3D-сечения и атлас параметров проверять самостоятельно перед экспортом.",
+    "Профильный ЕГЭ: подготовить отдельные комплекты по логарифмическим неравенствам, методам делимости, оценке и примеру. Автономность моделей сечений проверить отдельно.",
     "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
     "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",
     "Не включать testing-hub, личные страницы учеников, черновики и страницы с noindex."

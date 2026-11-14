@@ -53,6 +53,7 @@ def build_all(build):
     build_geometry(build)
     build_graph(build)
     build_derivative(build)
+    build_finance(build)
 
 
 def build_geometry(build):
@@ -267,3 +268,48 @@ def build_derivative(build):
                 card.text(220, y, feedback, 22, ink)
 
     build('adapt-derivative', 'Как изменить задачу о производной', steps, draw)
+
+
+def build_finance(build):
+    steps = (
+        'Скачай HTML по финансовым задачам. Открой пример «Пени за задержку».',
+        'Попроси заменить срок февральской просрочки с 5 на 4 дня. Приложи HTML.',
+        'Сохрани свою копию. Сверь дату, строку таблицы и разбор за февраль.',
+        'Сложи обязательные платежи и обе пени. Затем вычти сумму кредита.',
+        'Без сети проверь: 375,1 отклоняется, 363,1 принимается. Ответ в тыс. ₽.',
+    )
+
+    def draw(card, index):
+        card.rect((32, 88, 608, 265), outline='edge', radius=12)
+        if index == 0:
+            card.text(50, 105, 'Пени за задержку платежа', 24, bold=True)
+            card.text(51, 151, 'Февраль: 5 дней, платёж 400 тыс. ₽', 23)
+            card.text(51, 190, 'Май: 9 дней, платёж 130 тыс. ₽', 23)
+            card.text(51, 228, 'Скачать HTML', 21, 'accent', True)
+        elif index == 1:
+            card.text(50, 104, 'Что хотите изменить?', 24, bold=True)
+            card.text(51, 150, 'В феврале платёж внесли 14-го числа.', 22)
+            card.text(51, 185, 'Срок — 10-е, значит просрочка 4 дня.', 22)
+            card.text(51, 226, 'Пересчитай таблицу и проверку.', 20, 'blue')
+        elif index == 2:
+            card.text(50, 105, 'Пересчитай пени в таблице', 24, bold=True)
+            card.text(51, 149, 'Февраль: 400 × 0,03 × 4 = 48', 23, 'blue', True)
+            card.text(51, 188, 'Май: 130 × 0,03 × 9 = 35,1', 23)
+            card.text(51, 227, 'ege-profil-finance-my.html', 19, 'accent')
+        elif index == 3:
+            card.text(50, 104, 'От всех выплат к переплате', 24, bold=True)
+            card.text(51, 149, '1 280 + 48 + 35,1 = 1 363,1', 25)
+            card.text(51, 187, '1 363,1 − 1 000 = 363,1', 25, 'accent', True)
+            card.text(51, 229, 'Все суммы в тысячах рублей', 19, 'muted')
+        else:
+            card.text(50, 105, 'Проверь свою копию', 24, bold=True)
+            for row, (answer, feedback, ink) in enumerate((
+                ('Пусто', 'Не засчитывать', 'ink'),
+                ('375,1', 'Отклонить', 'red'),
+                ('363,1', 'Принять', 'accent'),
+            )):
+                y = 150 + row * 36
+                card.text(51, y, answer, 22, ink, True)
+                card.text(222, y, feedback, 22, ink)
+
+    build('adapt-finance', 'Как изменить финансовую задачу', steps, draw)
