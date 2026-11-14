@@ -1,5 +1,5 @@
 {
-  "stage": "2",
+  "stage": "3",
   "updated": "2026-11-14",
   "notes": "Этап 2 добавляет автономные копии, подробные инструкции и GIF для выбранных тем ОГЭ, обоих ЕГЭ и школьных курсов. Первые 17 комплектов сохраняются.",
   "trainers": [
@@ -871,10 +871,410 @@
       "downloadHtml": "/downloads/trainers/peterson6-math/peterson6-math.html",
       "prompt": "/downloads/trainers/peterson6-math/peterson6-math-deepseek-prompt.md",
       "package": "/downloads/trainers/peterson6-math/peterson6-math-package.zip"
+    },
+    {
+      "slug": "oge-task7-number-line",
+      "title": "ОГЭ №7 — числовая прямая",
+      "sourceHtml": "/trainers/oge-task7-number-line.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "числовая прямая, сравнение и модуль",
+      "description": "Выбор утверждений, оценка чисел и тренировка чтения прямой.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-foundation-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-04.png"
+      ],
+      "ogeTask": 7,
+      "adaptation": {
+        "example": "Добавь две задачи на сравнение отрицательных чисел по рисунку.",
+        "edits": {
+          "Задачи": "Найди `BANK`, `genType` и `taskConditionHtml`. Для выбора утверждения сохрани ровно один правильный вариант.",
+          "Числа": "Согласуй координаты, подписи на прямой, варианты и номер верного варианта. Дроби со знаменателем 0 исключи.",
+          "Подсказки": "В `stepsFor` сохрани связь между шагами, условием и рисунком. Модуль объясняй как расстояние от нуля.",
+          "Оформление": "Меняй размеры основного текста и подписей. Оставь отдельную прокрутку длинной прямой на телефоне."
+        },
+        "checks": [
+          "На числовой прямой −2 правее −5, поэтому −2 > −5. Расстояния от нуля равны 2 и 5.",
+          "√10 лежит строго между 3 и 4, поскольку 9 < 10 < 16."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task7-number-line/oge-task7-number-line.html",
+      "prompt": "/downloads/trainers/oge-task7-number-line/oge-task7-number-line-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task7-number-line/oge-task7-number-line-package.zip"
+    },
+    {
+      "slug": "oge-task8-powers-roots",
+      "title": "ОГЭ №8 — степени и корни",
+      "sourceHtml": "/trainers/oge-task8-powers-roots.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "степени, квадратные корни и область допустимых значений",
+      "description": "Выражения, пошаговые разборы и лаборатория корней.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/ege-baza/return-to-course.js",
+        "/trainers/oge-foundation-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-04.png"
+      ],
+      "ogeTask": 8,
+      "adaptation": {
+        "example": "Добавь задачи на извлечение полного квадрата из-под корня.",
+        "edits": {
+          "Задачи": "Найди `BANK`, `renderTask` и `buildSteps`. В каждой новой задаче укажи её тип и точный ответ.",
+          "Числа": "Сохрани проверку области допустимых значений. Для умножения двух действительных квадратных корней оба подкоренных числа должны быть неотрицательными.",
+          "Подсказки": "Меняй текст шагов в `buildSteps` вместе с условием. Укажи, какой множитель является полным квадратом.",
+          "Оформление": "Увеличивай надстрочные знаки и радикалы пропорционально тексту. Сохрани формулы различимыми на узком экране."
+        },
+        "checks": [
+          "√72 = 6√2, а √32 · √2 = 8.",
+          "√0 · √4 = 0. Для √(−1) · √(−1) в действительных числах множители не определены."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task8-powers-roots/oge-task8-powers-roots.html",
+      "prompt": "/downloads/trainers/oge-task8-powers-roots/oge-task8-powers-roots-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task8-powers-roots/oge-task8-powers-roots-package.zip"
+    },
+    {
+      "slug": "oge-task10-probability",
+      "title": "ОГЭ №10 — вероятность",
+      "sourceHtml": "/trainers/oge-task10-probability.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "вероятность, подсчёт исходов и дерево событий",
+      "description": "Равновозможные исходы, выбор без возвращения, кости и диаграммы.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-native-10-14-board.js"
+      ],
+      "ogeTask": 10,
+      "adaptation": {
+        "example": "Добавь примеры на сравнение выбора с возвращением и без возвращения.",
+        "edits": {
+          "Задачи": "Найди `GENS`, `genTask` и `TYPE_LIST`. Выбери нужное семейство, сохрани его признак и выходные поля.",
+          "Числа": "Согласуй числа в условии, числитель и знаменатель вероятности. После выбора без возвращения пересчитай состав оставшихся предметов.",
+          "Подсказки": "В шагах отдели выбор всех исходов от подсчёта подходящих. При округлении укажи разряд и выполняй его в конце.",
+          "Оформление": "Сохрани десятичный и дробный ввод, подписи дерева вероятностей и кнопки доступными с клавиатуры."
+        },
+        "checks": [
+          "Вероятность выпадения чётного числа на честной кости равна 3/6 = 1/2. Проверь также запись 0,5.",
+          "Из двух красных и трёх синих шаров вероятность вынуть два красных без возвращения равна (2/5)·(1/4) = 1/10."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task10-probability/oge-task10-probability.html",
+      "prompt": "/downloads/trainers/oge-task10-probability/oge-task10-probability-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task10-probability/oge-task10-probability-package.zip"
+    },
+    {
+      "slug": "oge-task12-formulas-trainer",
+      "title": "ОГЭ №12 — расчёты по формулам",
+      "sourceHtml": "/trainers/oge-task12-formulas-trainer.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "подстановка, выражение неизвестной и единицы измерения",
+      "description": "Выбор нужной величины, подстановка и проверка вычисления по формуле.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-native-10-14-board.js"
+      ],
+      "ogeTask": 12,
+      "adaptation": {
+        "example": "Добавь задания, где из S = v · t нужно сначала выразить время.",
+        "edits": {
+          "Задачи": "Найди `GENS` и `buildSteps`. Для новой карточки согласуй `story`, `formula`, `target`, `answer` и `subst`.",
+          "Числа": "Подбери совместимые единицы. Если величина стоит в знаменателе после преобразования, исключи нулевые значения.",
+          "Подсказки": "Проверь `hints`, `solution` и `distract`. Сначала запиши формулу для требуемой буквы, затем подставь данные.",
+          "Оформление": "Сохрани формулу рядом с условием, видимое название величины и возможность ввести десятичное число с запятой."
+        },
+        "checks": [
+          "При S = 60 км и v = 15 км/ч время t = S : v = 4 ч. В поле ответа введи 4.",
+          "При v = 12 км/ч и t = 1,5 ч путь равен 18 км."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge-task12-formulas-trainer/oge-task12-formulas-trainer.html",
+      "prompt": "/downloads/trainers/oge-task12-formulas-trainer/oge-task12-formulas-trainer-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task12-formulas-trainer/oge-task12-formulas-trainer-package.zip"
+    },
+    {
+      "slug": "oge-task15-triangles",
+      "title": "ОГЭ №15 — треугольники",
+      "sourceHtml": "/trainers/oge-task15-triangles.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "углы, биссектрисы, медианы и стороны треугольника",
+      "description": "Генераторы, разборы по шагам и интерактивные геометрические модели.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/learning-bridge.js",
+        "/trainers/oge-learning.js",
+        "/trainers/oge-task15-board.js"
+      ],
+      "ogeTask": 15,
+      "adaptation": {
+        "example": "Добавь пример на внешний угол с другими градусными мерами.",
+        "edits": {
+          "Задачи": "Найди `SUBS`, `TASK_VARIANTS` и `buildVariant`. Проверь, что новые параметры соответствуют выбранной теме.",
+          "Числа": "Сохрани сумму внутренних углов 180° и неравенства треугольника. В `fig` и `text` используй те же вершины и данные, что в расчёте.",
+          "Подсказки": "Согласуй `steps` со свойством, которое применимо к данным. Отдельно проверь решение по шагам и его отметку в прогрессе.",
+          "Оформление": "Проверь размер и расположение подписей на чертеже в условии и в открытом разборе."
+        },
+        "checks": [
+          "Если два внутренних угла равны 53° и 38°, третий равен 89°, а смежный с ним внешний угол равен 91°.",
+          "В прямоугольном треугольнике с катетами 6 и 8 гипотенуза равна 10. Контрольный неверный ответ — 14."
+        ],
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/oge-task15-triangles/oge-task15-triangles.html",
+      "prompt": "/downloads/trainers/oge-task15-triangles/oge-task15-triangles-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task15-triangles/oge-task15-triangles-package.zip"
+    },
+    {
+      "slug": "oge-task16-circle",
+      "title": "ОГЭ №16 — окружность",
+      "sourceHtml": "/trainers/oge-task16-circle.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "вписанные углы, хорды, касательные и радиус",
+      "description": "Тренировка с чертежами, разбором и моделями окружности.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-geometry-board-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-geometry.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-geometry.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/learning-bridge.js",
+        "/trainers/oge-learning.js",
+        "/trainers/oge-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png"
+      ],
+      "ogeTask": 16,
+      "adaptation": {
+        "example": "Добавь пару задач на центральный и вписанный углы, опирающиеся на одну дугу.",
+        "edits": {
+          "Задачи": "Найди `SUBS` и `ARCHIVE`. Для собственного примера используй отдельный идентификатор и подпись «Авторский пример».",
+          "Числа": "При изменении дуги пересчитай центральный и вписанный углы. Укажи на чертеже нужную дугу и положение вершины вписанного угла.",
+          "Подсказки": "Проверь объяснения в `sol` и их порядок. Шаг с делением на два применим к углам, опирающимся на одну дугу.",
+          "Оформление": "Оставь подписи центра, вершины и концов дуги читаемыми. Сохрани отдельную прокрутку чертежа на узком экране."
+        },
+        "checks": [
+          "При центральном угле 48° вписанный угол, опирающийся на ту же дугу, равен 24°.",
+          "Радиус к точке касания перпендикулярен касательной, поэтому угол равен 90°."
+        ],
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/oge-task16-circle/oge-task16-circle.html",
+      "prompt": "/downloads/trainers/oge-task16-circle/oge-task16-circle-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task16-circle/oge-task16-circle-package.zip"
+    },
+    {
+      "slug": "oge-task17-quadrilaterals",
+      "title": "ОГЭ №17 — четырёхугольники",
+      "sourceHtml": "/trainers/oge-task17-quadrilaterals.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "ромб, параллелограмм, прямоугольник и трапеция",
+      "description": "Чертежи, вычисления, справочные формулы и работа по шагам.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-geometry-board-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-geometry.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-geometry.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/learning-bridge.js",
+        "/trainers/oge-learning.js",
+        "/trainers/oge-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/trig-values.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png"
+      ],
+      "ogeTask": 17,
+      "adaptation": {
+        "example": "Добавь авторский пример на площадь ромба с диагоналями 12 и 8. Обнови чертёж и разбор.",
+        "edits": {
+          "Задачи": "Найди `S17`, `ARCHIVE` и тип `rhombAreaDiag`. Авторскую задачу подпиши «Авторский пример» и дай ей отдельный номер.",
+          "Числа": "Для ромба укажи `d1:12`, `d2:8` и ожидаемый ответ 48. Проверь, что `build` использует эти же параметры для условия, схемы и расчёта.",
+          "Подсказки": "Проверь шаг из `sol`: S = d₁ · d₂ : 2. Сохрани деление на два и объяснение, почему формула применима к ромбу.",
+          "Оформление": "Размести подписи диагоналей на чертеже так, чтобы их нельзя было принять за длины сторон. Сохрани чертёж рядом с условием."
+        },
+        "checks": [
+          "В исходной задаче с диагоналями 14 и 6 площадь ромба равна 42. В новом примере с диагоналями 12 и 8 она равна 48, а 42 следует отклонить.",
+          "У трапеции с основаниями 6 и 10 и высотой 4 площадь (6 + 10)·4/2 = 32."
+        ],
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals.html",
+      "prompt": "/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task17-quadrilaterals/oge-task17-quadrilaterals-package.zip"
+    },
+    {
+      "slug": "oge-task18-grid",
+      "title": "ОГЭ №18 — клетчатая бумага",
+      "sourceHtml": "/trainers/oge-task18-grid.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "длины, площади и углы на клетчатой бумаге",
+      "description": "Чертежи на сетке, пояснения по шагам и интерактивные модели.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-geometry-board-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-geometry.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-geometry.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/learning-bridge.js",
+        "/trainers/oge-learning.js",
+        "/trainers/oge-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/trig-values.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png"
+      ],
+      "ogeTask": 18,
+      "adaptation": {
+        "example": "Добавь пример на длину наклонного отрезка с горизонтальным шагом 6 и вертикальным шагом 8.",
+        "edits": {
+          "Задачи": "Найди `SUBS`, `ARCHIVE` и `build`. Меняй координаты и тип задачи вместе с данными о её рисунке.",
+          "Числа": "Учитывай длину стороны клетки. Для наклонного отрезка горизонтальное и вертикальное смещения — катеты, а их сумма не даёт длину отрезка.",
+          "Подсказки": "Проверь открытие шагов в `drawTrain` и прохождение от рисунка к вычислению. Подсказка должна сохранять уже введённый ответ.",
+          "Оформление": "Сохрани одинаковый масштаб клеток по обеим осям, видимые вершины и кнопки прокрутки рисунка на телефоне."
+        },
+        "checks": [
+          "При смещениях 6 и 8 клеток и стороне клетки 1 длина отрезка равна 10, а 14 — длина ломаной.",
+          "Треугольник на сетке с основанием 6 и высотой 4 занимает 12 квадратных клеток."
+        ],
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/oge-task18-grid/oge-task18-grid.html",
+      "prompt": "/downloads/trainers/oge-task18-grid/oge-task18-grid-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task18-grid/oge-task18-grid-package.zip"
     }
   ],
   "todo": [
-    "ОГЭ: сначала №7, №8, №10, №12 и основные линии геометрии №15–18; затем №13 и оставшиеся задания второй части.",
+    "ОГЭ: следующий набор — №13, №20–23 и №25, с отдельной проверкой графиков и письменных решений.",
     "Профильный ЕГЭ: продолжить первой частью START, векторами с нуля, производной и прикладными задачами. Проверить отдельные модели сечений и атлас параметров.",
     "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
     "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",

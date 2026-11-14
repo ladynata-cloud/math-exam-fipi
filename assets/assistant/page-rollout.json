@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ccd54e003ea32fd429c9eaba3a2fc3ae286f2ebc",
+  "baseSha": "08f5eb0d8ebe6b382df80764772580ec8e93f405",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2078,8 +2078,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "43bcc45cbe61b829df03350c732becd8c3afea237c829891b334a2e6102f029f",
-      "afterSha256": "b5f31c0bf625fcc21c44a517d94b6704a2f387c0ccbf8d845889f8afa3acf40f",
+      "beforeSha256": "46ac826156aec4a6aaeb09eb2fd36c9e6060ae56b02262266fef2297167b6d78",
+      "afterSha256": "64ee7fd1e36cae089d3613eb41f45f8dc9e88eab0e2a84473ea57369f4139c59",
       "placement": "before-head-close"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
@@ -2933,8 +2933,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "97dc9c6e33e288dfeb8d8f526857e7af7602c510e48bd0bc22658f2da6522172",
-      "afterSha256": "10845e59dcff2fcda6f58a2278af3e1da17a24c8515d4b0a16409f6d78a69f6e",
+      "beforeSha256": "938013a8c7a84f4c2c361555a3a44d29f40982c99843165be3fa609fb1df282c",
+      "afterSha256": "dedf20c42b6fd3e65799e9417f86df3b6e48029df22f9908ea7e242595b52a39",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -2943,8 +2943,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task10-probability.html": {
-      "beforeSha256": "bbd1d0f8541aa7955f6b81d10c6f183b6608f34c2c4bb029c15c018ed3263a0b",
-      "afterSha256": "6af36a504fd0d75c9166642876691709d932d51484d0d7a9e421b67204ef91a5",
+      "beforeSha256": "27ce83177197af8fb87bbc9c09ca27425d1c738a5797f3b342b379e290f70c4f",
+      "afterSha256": "aa291d84cd73ab55e31d13398d0cce22580c006e4cebe49c90f8a96c3e998388",
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
@@ -2953,8 +2953,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
-      "beforeSha256": "3cbb8c038eee7db5d827854ba233ec7bc6daca6260838bea8b82af2f97bd08a5",
-      "afterSha256": "aa017e456d48c7bb11ee388a4fa5e0ce73fb7b80a06e86654c4dcd3134a08dc5",
+      "beforeSha256": "18c3afc02af9ac2c637655b8cb444c5341b0e6f43138e4c30fc437afed7ad7fb",
+      "afterSha256": "07f4ae156c07639477fe0051f4bd53258942a28b193853b103763cf6e2c89478",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-sources.html": {
@@ -2968,23 +2968,23 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
-      "beforeSha256": "c744e4a010e533d2019535c723487957df7930faecb93f4bba7475d322ea8db8",
-      "afterSha256": "700ae207633026c7aadd78b763a9741c83ff01a8eba7ad0430ce507b53e6a9b5",
+      "beforeSha256": "ee9e122d03c3335f3105f73683987dbaee58e8c7b24acb745fa90a5e709ab035",
+      "afterSha256": "1cae3382357173dc670624d24cfa3429136479693c80ace776ea669c59cedbe5",
       "placement": "before-head-close"
     },
     "trainers/oge-task16-circle.html": {
-      "beforeSha256": "4a3d337607336d1f61b2434bfb0576458c6d7a2e7f70426b1473c3f39abca12f",
-      "afterSha256": "efee15de247fd407d90d151895820fe8ab829886df4995da3da49d6483e13443",
+      "beforeSha256": "9e713f4d19fad4e0032b503ad766706dd5b919bb6644d31d6f9bdd38fe86e269",
+      "afterSha256": "520d630309c31d4469b273256505c0100c730db47c90c5aa2f3348ad62542578",
       "placement": "before-head-close"
     },
     "trainers/oge-task17-quadrilaterals.html": {
-      "beforeSha256": "a3cf4025bce11c5cf3f6b3c9d6c8e2bbcff21e5317b2a21e693b1fb7d675cc28",
-      "afterSha256": "7b4b8f66caf247f0f061a90d8d041b55b8d28b9f378af4052043b00c78d20139",
+      "beforeSha256": "7342d41d728bd959b47a3993d8420411d627b4921a082b321637dd1649d77cec",
+      "afterSha256": "aa59782168a0d3eb8cfb90361b60796e85ee924e9d82825670b8dc3f73eca112",
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
-      "beforeSha256": "6ee6ca8c16d50b6ad31f78a64cf316a5e43a16ee73956e807a7248c422a6ba1d",
-      "afterSha256": "7e2fc813ed61b48803012e47b421cb27ca5f746deb1a1ca17c407ef8c71935e1",
+      "beforeSha256": "4b7f21f87d585aea1ddd0954fb360877ee2bb099dbf71a5c69fcb1ecad12bb4d",
+      "afterSha256": "21917c2b3d7b44274d941e0d2c05188dbe897605660260c5512830cb4a7c6a2b",
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
@@ -3023,13 +3023,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
-      "beforeSha256": "bc58c95ce3e0ce34cb70e7fc44a735edccf74a9b8367c27ac8797942cd4d4553",
-      "afterSha256": "d28cdf376c408decbe6a743c00116b4d8230d7f89cdadfa72abbbe9c470c0c13",
+      "beforeSha256": "5f915d3c116a9906ea02724568046f3f91eebc849310a50daca6aa623bde030f",
+      "afterSha256": "8e01a4a24c19c210a729e819b6f91c9227205d15a82a48e26bec87f755b05983",
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "0e02c94e942d760f6877a895853d905988f1285023f23ac2928bfa7a382cef24",
-      "afterSha256": "def5a8e5d2d979bef43bd54f09354c3cb6b372be7d98d64e37017378ceb486b1",
+      "beforeSha256": "4496577b1c822eedb409bc1d2c6bdd453aa20c884b0f634e6a4c17517cf5cda0",
+      "afterSha256": "b453f4135d42423949321b7fd97c6242e92a902338a96e88bddcbb90bed8a45b",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -5089,6 +5089,24 @@
         "trainers/oge-task24-proofs.html",
         "trainers/oge-task6-fractions.html",
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ccd54e003ea32fd429c9eaba3a2fc3ae286f2ebc",
+      "sourceBaseSha": "08f5eb0d8ebe6b382df80764772580ec8e93f405",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE3_20261114.md",
+      "changedPaths": [
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
+        "trainers/oge-course/index.html",
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task12-formulas-trainer.html",
+        "trainers/oge-task15-triangles.html",
+        "trainers/oge-task16-circle.html",
+        "trainers/oge-task17-quadrilaterals.html",
+        "trainers/oge-task18-grid.html",
+        "trainers/oge-task7-number-line.html",
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

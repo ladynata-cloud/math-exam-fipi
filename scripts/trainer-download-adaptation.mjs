@@ -32,7 +32,7 @@ export function adaptationPanel(entry, paths) {
       <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
       <p class="download-copy-status" role="status"></p>
     </div>
-    <p class="download-note"><a href="${guideUrl}#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+    <p class="download-note"><a href="${guideUrl}#${entry.adaptation.gif || 'adaptation-example'}">Как изменить и проверить · GIF и шаги</a></p>
   </details>
 </section>`;
 }
@@ -61,6 +61,9 @@ ${checks.map(text => `- ${text}`).join('\n')}
 
 export function adaptationReadme(entry, example) {
   const { edits, checks } = entry.adaptation;
+  const gifDescription = entry.adaptation.gif === 'adapt-geometry'
+    ? 'На примере ромба видно, как заменить числа, сверить чертёж и проверить новый ответ.'
+    : 'В примере меняется размер текста, затем проверяется работа тренажёра.';
   return `# ${entry.title}
 
 1. Распакуйте ZIP и дважды щёлкните по файлу \`${entry.slug}.html\`. Если скачали один HTML, его можно открыть сразу.
@@ -81,7 +84,7 @@ ${checks.map(text => `- ${text}`).join('\n')}
 
 ## Как выглядит весь процесс
 
-Откройте \`adapt-trainer.gif\` в браузере или просмотрите шаги выше. В примере меняется размер текста, затем проверяется работа тренажёра. \`adapt-trainer.png\` содержит все ${example.steps.length} кадров.
+Откройте \`adapt-trainer.gif\` в браузере или просмотрите шаги выше. ${gifDescription} \`adapt-trainer.png\` содержит все ${example.steps.length} кадров.
 
 ## Возможности копии
 
@@ -95,10 +98,11 @@ ${entry.adaptation.limit || ''}
 
 export function writeAdaptationFiles(root, pkgDir, entry) {
   const assets = path.join(root, 'assets', 'trainer-skill-gifs');
-  const example = JSON.parse(fs.readFileSync(path.join(assets, 'index.json'), 'utf8'))['adapt-trainer'];
+  const slug = entry.adaptation.gif || 'adapt-trainer';
+  const example = JSON.parse(fs.readFileSync(path.join(assets, 'index.json'), 'utf8'))[slug];
+  if (!example) throw new Error(`Unknown adaptation GIF: ${slug}`);
   fs.writeFileSync(path.join(pkgDir, 'README.md'), adaptationReadme(entry, example), 'utf8');
   for (const extension of ['gif', 'png']) {
-    const name = `adapt-trainer.${extension}`;
-    fs.copyFileSync(path.join(assets, name), path.join(pkgDir, name));
+    fs.copyFileSync(path.join(assets, `${slug}.${extension}`), path.join(pkgDir, `adapt-trainer.${extension}`));
   }
 }
