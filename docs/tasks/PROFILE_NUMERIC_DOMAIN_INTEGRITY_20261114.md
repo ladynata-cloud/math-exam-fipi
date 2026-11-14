@@ -77,6 +77,12 @@ historical status entries. Those belong to the separately scoped H02.
    shared-parser cache-stamp mapping in `tools/public-page-script.cjs`.
    Authorization in the current conversation: "Разрешаю включить
    `tools/public-page-script.cjs` в H01 для этой единственной строки".
+10. Owner-approved fixture amendment, 2026-11-15 (Asia/Novosibirsk): append
+    only the reviewed parser entry to each of the two existing runtime arrays
+    in `tools/profile-journey-public-scripts.test.cjs`.
+    Authorization in the current conversation: "Разрешаю включить
+    `tools/profile-journey-public-scripts.test.cjs` в H01 только для этих двух
+    записей в тестовых массива".
 
 ### Exact allowed paths
 
@@ -93,6 +99,10 @@ historical status entries. Those belong to the separately scoped H02.
 - `tools/public-page-script.cjs` — only
   `['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],`
   in the existing exact `cacheStamps` map; no other helper change.
+- `tools/profile-journey-public-scripts.test.cjs` — append only
+  `checks.js?v=20261114-numeric-domain` to `runtime` and
+  `checks.js?v=20261101-trainer-repair` to `boardRuntime`; all assertions,
+  helper functions and the positions of previous array entries remain unchanged.
 
 ### Exclusions and preservation
 
@@ -108,7 +118,7 @@ remain separate tasks. This change does not update PRs #547/#598/#596/#600/#559/
 #550/#601 or create new download build logic.
 
 Nine existing board-wrapper HTML pages also load the shared file. Their
-historical query tokens are outside the approved ten-file scope and remain
+historical query tokens are outside the approved eleven-file scope and remain
 unchanged. Board-contract regressions are required. Cache-busting is claimed
 only for the three public entries; fresh delivery/revalidation through the
 other entry points must be checked at a separately authorized release.
@@ -210,7 +220,10 @@ standing release policy in the repository for this task.
 
 - START / implementation / branch / commits / push / Draft PR: **YES**.
 - Exact one-line helper amendment: **YES**, explicitly authorized by the owner
-  on 2026-11-15 (Asia/Novosibirsk); the task now has ten allowed paths.
+  on 2026-11-15 (Asia/Novosibirsk).
+- Exact two-entry synthetic-fixture amendment: **YES**, separately authorized
+  by the owner on 2026-11-15 (Asia/Novosibirsk); the task now has eleven allowed
+  paths. This permission does not cover any other change in that test file.
 - Merge / auto-merge / deployment: **NO**, pending separate explicit owner
   authorization.
 - A future exact-base merge authorization is invalidated by remote main drift.
@@ -316,11 +329,58 @@ standing release policy in the repository for this task.
   regressions pass all six invalid-domain/reload/correction scenarios. The
   command array is unchanged from the original failing run and all tested
   input hashes remained stable. Local runtime: Node 24.22.1, jsdom 24.1.3.
-- Final-head CI is pending publication of the amendment commit. The final
-  verdict, immutable head and completion marker belong to the containing PR's
-  exact-head handoff after the actual checks; no completion marker is asserted
-  here.
+- The amendment was committed as
+  `d3c87239dce4b5b77c988065c1055a08122499e9`. Its exact-head CI completed:
+  **10 workflows SUCCESS / 1 FAILURE**, 20 successful jobs, one failed job,
+  and one expected production-only skip. All four formerly failing board jobs
+  passed, including their native synchronization stages. Native H01 passed
+  27/27 with 522 assertions and 18 screenshots; Part Two passed 183/183 and
+  the existing browser course passed 126 screens / 42 completed conditions.
+  The profile npm regression passed 3,278 checks and 7,600 planimetry cases.
+  Evidence: [amendment CI](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43651459590).
+- Its remaining failure was the synthetic runtime fixture in
+  `tools/profile-journey-public-scripts.test.cjs`, whose two arrays omitted
+  `checks.js`. The journey stage passed 36/37 and six downstream audit steps
+  were skipped. At that checkpoint the file was outside the ten allowed paths,
+  so no repository edit was made without the separate authorization above.
+- Before that authorization, the exact two-entry proposal was independently
+  reviewed: its in-memory diagnostic passed the same 37 tests and preserved
+  all original assertions. Those prospective results were not claimed as a
+  passing repository gate. The final verdict and completion marker belong to
+  the containing PR's exact-head handoff after actual amended checks.
 - Merge and deployment still require separate explicit owner authorization.
+
+### Owner-authorized fixture amendment — 2026-11-15
+
+- Continuing the same branch and Draft PR #603. At 2026-11-14 23:18 UTC
+  (2026-11-15 06:18 Asia/Novosibirsk), authoritative main remained
+  `0a375390859437359427aaf1befac3d12754e837` and the remote/local task head
+  remained `d3c87239dce4b5b77c988065c1055a08122499e9`; worktree was clean.
+- Applied exactly the two authorized entries at the ends of `runtime` and
+  `boardRuntime`. The resulting fixture blob is the reviewed proposal:
+  `1a7b1db361dad03d27f5b49e6f40a784ed072283`. All assertions, helper functions
+  and previous array positions remain byte-identical.
+- This amendment changes only that fixture and this already approved task
+  record. The parser, helper mapping, three HTML pages, other regressions and
+  canonical manifest remain identical to the previous head. No canonical
+  binding refresh is needed because the bound HTML remains unchanged.
+- Actual repository gates ran 2026-11-14 23:19:14–23:19:44 UTC, with no fixture
+  overlay: the same six-file journey command passed **37/37**, the same full
+  board-contract command passed **114/114**, both with zero failures or skips.
+  Number-input passed 38 valid and 34 invalid cases; actual-input DOM passed
+  all six invalid-domain/reload/correction cases. Tested input hashes remained
+  stable; runtime was Node 24.22.1 and jsdom 24.1.3.
+- Independent working-tree HIGH review passed: exact approved fixture blob,
+  unchanged assertions and index-based reorder samples, only the two intended
+  amendment paths. Its separate actual-repository fixture run passed **5/5**,
+  with no overlay, failure or skip. The final immutable-head review and CI
+  verdict are recorded against the containing PR's exact head after publish.
+- Full CI is pending publication of this commit. Prior 37/37 prospective
+  diagnostics and prior-head CI do not substitute for current-head acceptance;
+  no final completion marker is asserted here.
+- Scope deviations: none. Merge, auto-merge, deployment and production
+  acceptance have not been performed and still require separate explicit
+  owner release authorization.
 
 ## Required handoff
 
