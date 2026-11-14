@@ -73,6 +73,10 @@ historical status entries. Those belong to the separately scoped H02.
 7. Refresh the three canonical navigator bindings through the existing tool,
    against a real reviewed source commit, in a separate receipt commit.
 8. Record scoped evidence, independent HIGH review and a Draft PR.
+9. Owner-approved amendment, 2026-11-15 (Asia/Novosibirsk): add only the exact
+   shared-parser cache-stamp mapping in `tools/public-page-script.cjs`.
+   Authorization in the current conversation: "Разрешаю включить
+   `tools/public-page-script.cjs` в H01 для этой единственной строки".
 
 ### Exact allowed paths
 
@@ -86,6 +90,9 @@ historical status entries. Those belong to the separately scoped H02.
 - `assets/assistant/page-rollout.json` — the three affected bindings and their
   canonical source-checkpoint receipt only.
 - `docs/tasks/PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114.md`
+- `tools/public-page-script.cjs` — only
+  `['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],`
+  in the existing exact `cacheStamps` map; no other helper change.
 
 ### Exclusions and preservation
 
@@ -101,7 +108,7 @@ remain separate tasks. This change does not update PRs #547/#598/#596/#600/#559/
 #550/#601 or create new download build logic.
 
 Nine existing board-wrapper HTML pages also load the shared file. Their
-historical query tokens are outside the approved nine-file scope and remain
+historical query tokens are outside the approved ten-file scope and remain
 unchanged. Board-contract regressions are required. Cache-busting is claimed
 only for the three public entries; fresh delivery/revalidation through the
 other entry points must be checked at a separately authorized release.
@@ -118,9 +125,9 @@ other entry points must be checked at a separately authorized release.
   domain policy have regression coverage.
 - [x] Invalid input cannot award correctness or independent credit through
   START, Circle or Part Two handlers. Literal drafts survive the tested reload.
-- [ ] The 252 authored Part Two conditions and relevant START/Circle math,
+- [x] The 252 authored Part Two conditions and relevant START/Circle math,
   state and board-contract gates pass without changed generators or keys.
-- [ ] Native acceptance of the three entry forms at 320/390/1280 px checks
+- [x] Native acceptance of the three entry forms at 320/390/1280 px checks
   invalid/valid input and reload, with screenshots and the new parser version.
 - [x] The diff contains exactly the declared paths and only the permitted
   HTML token and canonical binding updates.
@@ -202,6 +209,8 @@ The direct user-supplied `AGENTS.md` in this conversation overrides the broader
 standing release policy in the repository for this task.
 
 - START / implementation / branch / commits / push / Draft PR: **YES**.
+- Exact one-line helper amendment: **YES**, explicitly authorized by the owner
+  on 2026-11-15 (Asia/Novosibirsk); the task now has ten allowed paths.
 - Merge / auto-merge / deployment: **NO**, pending separate explicit owner
   authorization.
 - A future exact-base merge authorization is invalidated by remote main drift.
@@ -236,33 +245,44 @@ standing release policy in the repository for this task.
   earlier receipts and unrelated manifest fields are preserved. Post-refresh
   gates pass: binding tool 5/5, strict preservation 4/4, navigator regression
   43/43.
-- Board-contract group after the binding refresh: **106/114 pass, 8 fail**.
+- Initial board-contract group at `7625193a1556d26afc838773d71d4b30e2cdd800`
+  after the binding refresh: **106/114 pass, 8 fail**.
   All eight actual strict array comparisons differ on exactly one parser URL
   token, with no other script difference. This supersedes the preliminary
   navigator-binding failure recorded in the source checkpoint.
-- Required gate: **BLOCKED**; no completion marker asserted. The exact mapping
+- Initial required gate: **BLOCKED**. The exact mapping
   `checks.js?v=20261114-numeric-domain` to the wrappers' existing
   `checks.js?v=20261101-trainer-repair` must be reviewed in
-  `tools/public-page-script.cjs`. That helper is outside the nine approved paths;
-  the proposed one-line addition is not applied without owner scope expansion.
+  `tools/public-page-script.cjs`. At that checkpoint the helper was outside the
+  original nine approved paths, so the proposal was left unapplied until the
+  owner's explicit amendment below.
 - Independent HIGH source review on 2026-11-14: PASS for the exact checkpoint
   above, by the separate `h01_review` agent. It examined grouping, power domain,
   valid syntax, consumer behavior, scope and rollback. Its additional probes
   passed 24 boundary cases and 6,000 generated fully parenthesized expressions.
   This is internal technical review, not an external-provider approval.
-- Prospective helper-map review: technically approved, conditional on owner
+- Initial prospective helper-map review: technically approved, conditional on owner
   scope expansion. An isolated diagnostic made the eight unchanged original
   tests pass and rejected 136 deliberate script-contract mutations. The real
-  repository helper is unchanged; this is not an actual gate pass.
+  repository helper was unchanged at that checkpoint; the diagnostic was not
+  an actual gate pass.
 - Native local browser: **NOT RUN**. The interactive extension/cloud browsers
   could not reach the local server, and local Chromium stopped before opening
   pages because `process_singleton_posix.cc` reported `socket() failed:
   Operation not permitted`. No native screenshots or application-console
   observations were produced by those attempts.
-- Native CI plan: 27 independent cases across START, Circle and Part Two at
+- Native CI at `7625193a1556d26afc838773d71d4b30e2cdd800`: **27/27 PASS**,
+  522 assertions and 18 screenshots, Chromium 151.0.7922.34, with zero
+  page/console/HTTP errors. The cases cover START, Circle and Part Two at
   320/390/1280 px, each checking invalid input, reload, valid root/power
-  correction, credit and the actual versioned parser resource. Results and
-  final head are recorded in the containing Draft PR; CI is pending here.
+  correction, credit and the actual versioned parser resource. The full Part
+  Two Node stage passed 183/183 without skips; the existing browser course
+  passed 126 lesson/viewport combinations and 42 completed conditions.
+  Evidence: [profile CI run](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43618601061),
+  artifact `profile-part-two-viewports` ID `14123076270`; downloaded ZIP SHA-256
+  `233d9240e79c0f0f98fea14419919ce270f6a50ed15fc23a11231f2e96671e3b`
+  matches GitHub. All 11 initial workflows finished: eight success and three
+  failure, attributable only to the eight cache-stamp assertions in four jobs.
 - Independent review of the native test code: PASS for the exact blob above.
   A separate probe confirmed `CI=1` and `H01_NATIVE_BROWSER=0` still fail on a
   missing browser dependency, with zero skips. This proves mandatory CI
@@ -271,6 +291,36 @@ standing release policy in the repository for this task.
   containing Draft PR's head; they do not grant merge or deployment permission.
 - Scope deviations: none.
 - Merge / publication: not performed.
+
+### Owner-authorized helper amendment — 2026-11-15
+
+- Continuing the same branch and [Draft PR #603](https://github.com/ladynata-cloud/math-exam-fipi/pull/603),
+  not a separate task or PR. Authoritative main and remote/local task head
+  were rechecked at 2026-11-14 23:02 UTC (2026-11-15 06:02 Asia/Novosibirsk):
+  main remained `0a375390859437359427aaf1befac3d12754e837`, task head remained
+  `7625193a1556d26afc838773d71d4b30e2cdd800`, with a clean worktree.
+- Applied exactly the authorized cache-stamp pair before the existing
+  `state.js` entry. Helper blob:
+  `089f96ee5b316382552a39165a7a3a73d00d2317`.
+- Parser, three HTML entries, three H01 regression files and canonical
+  manifest remain byte-identical to the previously reviewed head. No binding
+  refresh is needed because none of the bound HTML source changed.
+- Independent amendment review: the actual eight formerly failing strict
+  tests pass against the amended repository helper without an overlay;
+  zero failures or skips. Exact URL, count, order and public-module assertions
+  are preserved. The previous 136 negative diagnostic controls remain
+  applicable to this identical reviewed mapping.
+- Full local amendment gates: the identical board-contract command now passes
+  **114/114**, with zero failures or skips. Navigator gates pass 5/5, 4/4 and
+  43/43; number-input passes 38 valid and 34 invalid cases, and actual-input DOM
+  regressions pass all six invalid-domain/reload/correction scenarios. The
+  command array is unchanged from the original failing run and all tested
+  input hashes remained stable. Local runtime: Node 24.22.1, jsdom 24.1.3.
+- Final-head CI is pending publication of the amendment commit. The final
+  verdict, immutable head and completion marker belong to the containing PR's
+  exact-head handoff after the actual checks; no completion marker is asserted
+  here.
+- Merge and deployment still require separate explicit owner authorization.
 
 ## Required handoff
 
