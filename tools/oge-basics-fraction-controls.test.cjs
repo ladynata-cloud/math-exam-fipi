@@ -9,6 +9,9 @@ const contracts = require('../board-server/learning-contracts');
 const remediation = require('../trainers/oge-basics/learning-contracts');
 const base = path.join(__dirname, '../trainers/oge-basics');
 const source = name => fs.readFileSync(path.join(base, name), 'utf8');
+// Execute the exact synchronous adapter from the existing loader. Browser gates
+// separately cover its complete loading sequence and optional enhancements.
+const displayAdapter = () => source('learning-loader.js').split('/* Remediation loader:')[0];
 const clone = value => JSON.parse(JSON.stringify(value));
 const own = 'mathExamBasics.fraction-meaning.v1';
 const tick = () => new Promise(resolve => setImmediate(resolve));
@@ -26,7 +29,7 @@ function mount(t, storage = {}, enhanced = true) {
   let seed = 17;
   w.Math.random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   for (const [key, value] of Object.entries(storage)) w.localStorage.setItem(key, value);
-  w.eval(source('fraction-meaning-view.js'));
+  w.eval(displayAdapter());
   for (const script of d.scripts) if (!script.src && script.textContent.trim()) w.eval(script.textContent);
   if (enhanced) {
     w.eval(source('basics-help.js'));
@@ -188,7 +191,7 @@ test('cabinet renders new wording while restoring exact old state and observer c
     DivisionLab:require('../trainers/oge-basics/multiplication-division/division-lab-core')});
   let bridge;
   w.MathExamLearning = {register(value) { bridge = value; }};
-  w.eval(source('fraction-meaning-view.js')); w.eval(source('basics-help.js')); w.eval(source('learning-managed.js'));
+  w.eval(displayAdapter()); w.eval(source('basics-help.js')); w.eval(source('learning-managed.js'));
   bridge.subscribe(event => events.push(clone(event)));
   bridge.applyState({...clone(envelope), readOnly:false});
   assert.equal(d.querySelector('#lm-note').value, envelope.state.note, 'Authored copy changes must never rewrite a learner note');
