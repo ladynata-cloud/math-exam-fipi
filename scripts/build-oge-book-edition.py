@@ -49,6 +49,7 @@ class Edition:
 TEXT = {".html", ".js", ".css", ".json", ".svg"}
 REMOVED = {
     "assets/lesson-funnel.js", "assets/download-panel.css",
+    "assets/download-adaptation.css", "assets/download-adaptation.js",
     # The live-site navigator is optional public navigation, not a fixed-book dependency.
     "assets/assistant/navigator-data.js",
     "assets/assistant/navigator-widget.js",
