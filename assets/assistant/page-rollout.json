@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
+  "baseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "313ce9ed1c3b62e9083a7a09afb94188f3a11286910894f268d1d470e2ddba71",
-      "afterSha256": "f449fccc24d95724eee89f4b9ec54fd8418201fbdb2bb90f889e6a6b3833ba15",
+      "beforeSha256": "136bedf3bd17f6f59b94c37c663fd0cdec03d51f8c3c5887d1e671c172d5af24",
+      "afterSha256": "31eb162236728f03e621469a68fa5f1718acffe6588b47d453d05d61d8715c71",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "8f5c36eb7ad0fe3a39ac60aaaa0fe46fc39dfdf3bdf2e43d40dbb56b0608faa8",
-      "afterSha256": "d22763a9885d74ae0fbcdd6a9db667068c784052cf21a2159bf509ed4f4bb6e2",
+      "beforeSha256": "65f663b2cf528014e7b2f6193c49dbb2de04b009f46641ee9be62ea972ba8f45",
+      "afterSha256": "475070fe102dc4b95e31198b454d848ce9306d449f9afef68cb907c4d97bc6a7",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -413,8 +413,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-t17.html": {
-      "beforeSha256": "fbc2fa6584d3e8fb0d7d78fa31826cf5e17656e169fc4f654b0699cde67072c8",
-      "afterSha256": "7e27516e7d67655e562d90fc2b63a7fb4b11622bd64edc1e13129ad617d3f9cf",
+      "beforeSha256": "6e2bfc8b9d6d3f6df42ca31571afa29058715526289487e52489bb163d5a5340",
+      "afterSha256": "a20c54817296cd7f4da7e49489cc21761fac94483dc2ff7fdae65dec7e3dc2a2",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/planimetry-yashchenko-t1.html": {
@@ -618,8 +618,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/atlas/midline.html": {
-      "beforeSha256": "eeea6d8eb009ff3a2ba3d56b3163cc18a1be1a716e424ef13e5d769c03ec2d55",
-      "afterSha256": "f3d5bc149c4503907b5b28c327e10a4cdeb0b87b672bebe1b288293e380f2a56",
+      "beforeSha256": "1cd9c98ab69bef7912bb70757e5aece1bb140f4890e70b31a8b96b8cab847a28",
+      "afterSha256": "aa047203ce890f7a28d3ad1baa048c302176018ef519e61aaf361d1f68fbc943",
       "placement": "before-head-close"
     },
     "geometry-course/atlas/movement.html": {
@@ -1468,8 +1468,8 @@
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-7.html": {
-      "beforeSha256": "735f7fcbe99bf966687dfd42d0bd63539d6fcb63927415678d339dbe46cc76ff",
-      "afterSha256": "e3fa967620c384bd22ca8c535810da804877594564105ac89234a4f626d021ca",
+      "beforeSha256": "258874645d39bf51711e30be2d0277bf573ab9f4a20abcdfd13916b515d31c07",
+      "afterSha256": "0968b02a6a39c5a9ba96c1c7b5135f9896891ca3c1bf2f2049ca8f69ff86c9f8",
       "placement": "before-head-close"
     },
     "geometry-merzlyak/atlas/merzlyak-base-8-8.html": {
@@ -1778,8 +1778,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-58.html": {
-      "beforeSha256": "4d6758bccc3c22c81774ff7a2627324b613f0e28b022742498ddfa30a1ed27a2",
-      "afterSha256": "875efe0ec5bf7d9f9254c57e154e61c265e4f010b0f745a65e1aef5c436511f8",
+      "beforeSha256": "5258dbffbc70fb46280ac48417b29d79b6820ef9f26701f8ab7f65e5e4d8fea5",
+      "afterSha256": "228d1c086593e4018e72ed05530f54d11ae8d108b770946cb624997e831ce97f",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-59.html": {
@@ -2518,8 +2518,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-apartments.html": {
-      "beforeSha256": "cad2c52b6486b6a1fe4a4f4b1ce7f9dc4dc17ac0e863178c97bab3f4e16fe7c7",
-      "afterSha256": "90efd66999f5b8c4d9a17822f0b51f27e0cc517755bf45cbf78482b98836e5bc",
+      "beforeSha256": "c643cc5d2dc010443ad15c4067a224ed84f11bb6bdf68706a66281ba360fe5ff",
+      "afterSha256": "0b5511d5f3a3568685e7450f9be603ee6bbc45df2ef70af03907002c073c12d2",
       "placement": "before-head-close"
     },
     "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html": {
@@ -3008,8 +3008,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task24-proofs.html": {
-      "beforeSha256": "0220dcbb6abb000d699547aaae752881ed0acb89424ba24454eeecb6ea39dd10",
-      "afterSha256": "24fe4cc1dcaf7481597c67bd76aacb2f09980f847e43b1d23e8fbd14ad7beb93",
+      "beforeSha256": "b978f5324dff5b2da1d6321950caab644128ea99e7349f54b39bf9cc3ee85d21",
+      "afterSha256": "f1f166c0dd4f7a24320621a6cac85684735a6bf62f18a62e209d678dacda7c8f",
       "placement": "before-head-close"
     },
     "trainers/oge-task25-geometry.html": {
@@ -5036,6 +5036,22 @@
       "task": "docs/tasks/ATANASYAN_7_9_SEARCH_ENTRY_20261112.md",
       "changedPaths": [
         "articles/stroynost-kursa-geometrii/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "9699b8d2240cc9b591a10aa1adfe6089569dae0f",
+      "sourceBaseSha": "18b44244753ac806d449a2040ad4b8c8af9acaf3",
+      "task": "docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md",
+      "changedPaths": [
+        "ege-baza/path/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/trainers/planimetry-t17.html",
+        "geometry-course/atlas/midline.html",
+        "geometry-merzlyak/atlas/merzlyak-base-8-7.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-58.html",
+        "trainers/oge-1-5-trainers/practice-1-5-apartments.html",
+        "trainers/oge-task24-proofs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

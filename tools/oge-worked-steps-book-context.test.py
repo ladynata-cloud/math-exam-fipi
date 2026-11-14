@@ -74,6 +74,42 @@ class WorkedStepContext(unittest.TestCase):
         with patch.object(math, 'verified_context', return_value=(text, [])), patch.object(math, 'geom', return_value='0' * 64):
             self.assertFalse(math.exact_reviewed_context(r, oracle, FIXTURES))
 
+    def test_proof_figure_captions_keep_reviewed_condition_and_steps_exact(self):
+        route = '/trainers/oge-task24-proofs.html'
+        fixture = FIXTURES['65']
+        old = fixture['oracles'][0]['prompt'].split(' A B C D E ', 1)[0]
+        phone = 'Увеличить подписи Чертёж целиком.'
+        desktop = 'Показать целиком Крупный чертёж: прокручивай его стрелками после выбора рисунка.'
+        assets = ['/trainers/oge-course-proof.css', '/trainers/oge-course-proof.js']
+        resources = {asset: dict(status=200, sha256=hashlib.sha256((ROOT / asset[1:]).read_bytes()).hexdigest())
+                     for asset in assets}
+        for width, caption in [(320, phone), (390, phone), (1280, desktop)]:
+            record = dict(id='65', prefix='', route=route, finalPath=route, width=width, resources=resources,
+                          videoModelContext=dict(sourceBase='18b44244753ac806d449a2040ad4b8c8af9acaf3'))
+            text = fixture['visibleText'].replace(old, caption, 1)
+            oracle = fixture['oracles'][0]
+            updated = dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
+            with (patch.object(math, 'verified_context', return_value=(text, [])),
+                  patch.object(math, 'geom', return_value=fixture['geometrySha256'])):
+                self.assertTrue(math.exact_reviewed_context(record, updated, FIXTURES))
+                self.assertTrue(math.exact_reviewed_context(record, fixture['oracles'][1], FIXTURES))
+                self.assertFalse(math.exact_reviewed_context(record, oracle, FIXTURES))
+                self.assertFalse(math.exact_reviewed_context(record, dict(updated, prompt=updated['prompt']+' changed'), FIXTURES))
+                self.assertFalse(math.exact_reviewed_context(record, dict(updated, expected=[]), FIXTURES))
+                for field, value in [('width', 360), ('route', '/other'), ('finalPath', '/other'),
+                                     ('prefix', '/book/oge/2026-10-31/v1'), ('videoModelContext', {})]:
+                    self.assertFalse(math.exact_reviewed_context(dict(record, **{field: value}), updated, FIXTURES))
+                for asset in assets:
+                    changed = copy.deepcopy(record)
+                    changed['resources'][asset]['sha256'] = '0' * 64
+                    self.assertFalse(math.exact_reviewed_context(changed, updated, FIXTURES))
+            with (patch.object(math, 'verified_context', return_value=(text+' changed', [])),
+                  patch.object(math, 'geom', return_value=fixture['geometrySha256'])):
+                self.assertFalse(math.exact_reviewed_context(record, updated, FIXTURES))
+            with (patch.object(math, 'verified_context', return_value=(text, [])),
+                  patch.object(math, 'geom', return_value='0' * 64)):
+                self.assertFalse(math.exact_reviewed_context(record, updated, FIXTURES))
+
 
 if __name__ == '__main__':
     unittest.main()

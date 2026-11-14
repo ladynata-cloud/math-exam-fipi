@@ -36,3 +36,22 @@ test('all 56 prototypes keep help before a collapsed notebook and make original 
   }assert.deepEqual(t.errors,[]);
  }finally{t.close();}}
 });
+
+test('task24 explains an accepted deduction with its own highlighted figure',async()=>{
+ const t=await boot(24);
+ try{
+  t.w.startStudy('t1');
+  const figure=t.w.eval('curTask().fig');
+  const n=t.w.eval('curTask().steps.length');
+  for(let i=0;i<n;i++)t.w.eval(`pickCard({type:'s',i:${i}})`);
+  t.w.OgeCourseProof.decorate();
+  const reasons=t.d.querySelectorAll('.chain .ocp-step-reason');
+  assert.equal(reasons.length,n);
+  for(const [i,reason]of [...reasons].entries()){
+   const expected=t.d.createElement('div');
+   const revealed=t.w.eval(`curTask().steps.slice(0,${i+1}).some(s=>s.lit?.showcirc)`);
+   expected.innerHTML=t.w.renderFig(figure,t.w.eval(`curTask().steps[${i}].lit`),revealed);
+   assert.equal(reason.querySelector('svg').innerHTML,expected.querySelector('svg').innerHTML);
+  }
+ }finally{t.close();}
+});

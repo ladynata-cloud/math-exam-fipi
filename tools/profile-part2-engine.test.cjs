@@ -23,6 +23,53 @@ test('safe answer parser accepts fractions, roots, pi, unordered roots and exact
  for(const [answers,value]of [[['[1;2]'],'(1;2)'],[['1'],''],[['1'],'globalThis.x=1'],[['1'],'1.001'],[['(1;+∞)'],'[1;+∞)']])assert(!api.matches(answers,value,checker),value);
 });
 
+test('open answers preserve exact roots and accept equivalent unions without filling a hole',()=>{
+ const roots={answers:['-2; 4'],excluded:7};
+ assert(api.openAnswer(roots,'{8/2; -2,0; 4}').correct);
+ assert(!api.openAnswer(roots,'-2;4,00000000000000001').correct);
+ assert.match(api.openAnswer(roots,'-2; 4; 7').hint,/знаменатель/);
+ assert(!api.openAnswer(roots,'-2;4;1/0').recognized);
+ const intervals={answers:['(−∞; −2) ∪ (−2; +∞)']};
+ assert(api.openAnswer(intervals,'(-4/2; +∞) или (−∞; −2)').correct);
+ assert(api.openAnswer(intervals,'(-∞; -4] ∪ (-4; -2) ∪ (-2; ∞)').correct);
+ assert(!api.openAnswer(intervals,'(-∞; -2] ∪ (-2; ∞)').correct);
+ assert(!api.openAnswer(intervals,'[-∞; -2) ∪ (-2; ∞)').recognized);
+ assert(!api.openAnswer(intervals,'(-∞; -2] ∪').recognized);
+});
+
+test('independent open answer keeps prior fields, distinguishes format from attempts and restores correction',async()=>{
+ const task=bank.find(l=>l.id==='p14-rational-hole').tasks[5],hash='task/'+task.id+'/independent';
+ const storage=memory(),seed=api.create(storage);
+ await seed.patch(task.id,r=>{r.drafts.final=['2','-6'];r.drafts.proof='Мой черновик';});
+ const dom=await boot(hash,[[seed.key(task.id),storage.getItem(seed.key(task.id))]]),w=dom.window,d=w.document;
+ const read=()=>w.ProfilePartTwoApp.store.read(task.id);
+ try {
+  assert.equal(d.querySelectorAll('[data-final]').length,1);
+  assert.doesNotMatch(d.querySelector('.condition').textContent,/количество корней/);
+  assert.equal(d.querySelector('#final-0').value,'');
+  assert.match(d.querySelector('.earlier-final').textContent,/-6/);
+  input(w,'final-0','-6;');await submit(w,'final-form');
+  assert.equal(read().attemptCount,0);
+  assert.match(d.querySelector('#feedback').textContent,/формат/);
+  input(w,'final-0','-6; 2; 7');await submit(w,'final-form');
+  assert.match(d.querySelector('#feedback').textContent,/знаменатель/);
+  input(w,'final-0','2; -6');await submit(w,'final-form');
+  await submit(w,'final-form');
+  assert(read().completed);assert(read().independent);
+  assert.match(d.querySelector('#completion').textContent,/исправлен самостоятельно/);
+  assert.equal(read().attemptCount,2);
+  assert.deepEqual(Array.from(read().drafts.final),['2','-6']);
+  const next=await boot(hash,[[seed.key(task.id),w.localStorage.getItem(seed.key(task.id))]]);
+  assert.equal(next.window.document.querySelector('#final-0').value,'2; -6');
+  assert.equal(next.window.document.querySelector('#proof-draft').value,'Мой черновик');
+  input(next.window,'final-0','-6; 2; 7');await submit(next.window,'final-form');
+  assert.match(next.window.document.querySelector('#feedback').textContent,/знаменатель/);
+  const repeated=next.window.ProfilePartTwoApp.store.read(task.id);
+  assert(repeated.completed);assert(repeated.independent);assert.equal(repeated.attemptCount,3);
+  next.window.close();
+ }finally{w.close();}
+});
+
 test('state retains first wrong attempt, separate help, unique completion, bounded history and fresh cross-tab writes',async()=>{
  const storage=memory(),a=api.create(storage),b=api.create(storage);
  await a.attempt('task-a',{kind:'final',answers:['7'],correct:false,mode:'independent',independentEligible:true});
@@ -47,7 +94,7 @@ test('all seven sections and every lesson/task render with the authored answer f
  const dom=await boot(),w=dom.window,d=w.document;
  assert.equal(d.querySelectorAll('.grid .card').length,7);
  for(const lesson of bank){await go(w,'lesson/'+lesson.id);assert.equal(d.querySelectorAll('.task-link').length,6);assert(d.querySelector('a[href="#exam/'+lesson.exam+'"]'));}
- for(const lesson of bank)for(const task of lesson.tasks){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,task.final.length,task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
+ for(const lesson of bank)for(const [index,task] of lesson.tasks.entries()){await go(w,'task/'+task.id+'/independent');assert.equal(d.querySelectorAll('[data-final]').length,index>=3&&task.independentFinal?1:task.final.length,task.id);assert(d.querySelector('#proof-draft'),task.id+' proof');assert.match(d.querySelector('.proof-status').textContent,/требует проверки/);}
  w.close();
 });
 

@@ -137,6 +137,11 @@ for(const m of D.practice.catalog){
    assert(expected.length>0);assert.deepEqual(t.solutions,expected);for(const answer of expected)assert(D.correct(t,answer));assert(!D.correct(t,'0'+expected[0]));assert(!D.correct(t,'123'));
   }else{let value=semantic(t);if(value===null)value=numeric(t.reference,t.params);assert(Number.isFinite(value)||typeof value==='string',m.id);assert(D.correct(t,String(value)),m.id+' seed '+seed+': '+value+' vs '+t.answer);if(typeof value==='number')assert(!D.correct(t,String(value+.01)),m.id+' loose answer');}
   for(const step of t.steps){assert(step.q&&step.why);assert(D.correct(step,String(step.a)),m.id+' invalid step');}
+  if(t.reference==='whole-count'){
+   const {a,b,total}=t.params,n=numeric(t.reference,t.params),atMax=t.steps.at(-1).a;
+   assert(atMax>=0&&atMax<=n);
+   assert.equal((n-atMax)*a+atMax*b,total,'The example must attain the total');
+  }
   for(const bad of ['', 'Infinity', 'NaN','1/0','<script>','1e10'])assert(!D.correct(t,bad),m.id+' accepted '+bad);
   conditions.add(t.q);
   tested++;

@@ -15,3 +15,7 @@
 
 /* The explanatory proof lines inherit this size, including fraction numerators. */
 .minimal-course #panel-train .gsteps>li{font-size:18px;line-height:1.8}
+
+.ocp-step-figure{margin:12px 0;max-width:460px}
+.ocp-step-figure svg{display:block;width:100%;height:auto}
+.ocp-step-figure figcaption{padding:4px 0;font-size:14px;color:#4b5a50}
