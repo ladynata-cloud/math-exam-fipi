@@ -447,8 +447,8 @@ const api={open,clean,validate,drawing,download,KEY};root.GeoStore=api;if(typeof
       .proof-figure-lesson #lesson > .callout p { margin: 3px 0; line-height: 1.45; }
       @media (max-width: 600px) {
         .proof-figure-lesson .topbar { padding-block: 8px; gap: 4px; }
-        .proof-figure-lesson .toplinks { gap: 4px 6px; }
-        .proof-figure-lesson .toplinks button { padding-inline: 5px; }
+        .proof-figure-lesson .toplinks { gap: 4px 5px; }
+        .proof-figure-lesson .toplinks button { padding-inline: 4px; }
         .proof-figure-lesson .container { padding-top: 8px; }
         .proof-figure-lesson .lesson-head { padding-block: 2px; }
         .proof-figure-lesson .lesson-head .eyebrow { margin-bottom: 4px; }
@@ -459,6 +459,7 @@ const api={open,clean,validate,drawing,download,KEY};root.GeoStore=api;if(typeof
         .proof-figure-lesson #lesson > .callout { padding: 6px 8px; }
         .proof-figure-lesson #lesson > .callout p,
         .proof-figure-lesson #lesson > p:has(+ .lesson-figure) { line-height: 1.4; }
+        .proof-figure-lesson #lesson > .lesson-figure figcaption { padding-inline-end: 32px; }
       }`;
     document.head.appendChild(style);
   }

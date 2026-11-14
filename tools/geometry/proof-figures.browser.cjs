@@ -21,6 +21,15 @@ async function measureFirstScreen(page,id,stage,width){
   assert(boxes.condition.y+boxes.condition.height<=boxes.figure.y,`${id}/${stage}/${width}: figure overlaps condition`);
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`${id}/${stage}/${width}: horizontal overflow`);
   assert.equal(await figure.getAttribute('data-figure-kind'),stage===2||stage===5?'proof':'practice');
+  assert(await figure.evaluate(element=>{
+    const launcher=document.getElementById('maxexam-public-assistant')?.shadowRoot?.querySelector('.launcher');
+    if(!launcher)return false;
+    const button=launcher.getBoundingClientRect();
+    const caption=document.createRange();
+    caption.selectNodeContents(element.querySelector('figcaption'));
+    return [element.querySelector('svg').getBoundingClientRect(),...caption.getClientRects()].every(box=>
+      box.right<=button.left||box.left>=button.right||box.bottom<=button.top||box.top>=button.bottom);
+  }),`${id}/${stage}/${width}: navigator covers the figure or its caption`);
   return boxes;
 }
 
