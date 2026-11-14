@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 
 const source = fs.readFileSync(path.join(__dirname, '../trainers/oge-task7-number-line.html'), 'utf8');
 function between(start, end) {
@@ -272,8 +273,9 @@ test('the exact input receipt preserves the full pinned source and rejects every
   const {createHash} = require('node:crypto');
   const {restoreOge7Input, BEFORE, AFTER} = require('./oge7-number-input-preservation.cjs');
   const sha = value => createHash('sha256').update(value).digest('hex');
+  const restoreSource = html => restoreOge7Input(restoreTrainerDownload('trainers/oge-task7-number-line.html', html));
   const originalHash = '327b041bf929619f3ced888e576ce12c560def6fd918aa637fc967ee355504ca';
-  assert.equal(sha(restoreOge7Input(source)), originalHash, 'all original main198 HTML bytes recovered');
+  assert.equal(sha(restoreSource(source)), originalHash, 'all original main198 HTML bytes recovered');
   const scripts = [...source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
     .filter(x => !(/\bsrc\s*=/.test(x[1]))).map(x => x[2]).join('\n');
   assert.equal(sha(restoreOge7Input(scripts)),
@@ -286,7 +288,7 @@ test('the exact input receipt preserves the full pinned source and rejects every
     source + BEFORE
   ]) {
     assert.notEqual(altered, source, 'effective missing/duplicate/modified fragment probe');
-    assert.throws(() => restoreOge7Input(altered), /OGE7 input:/);
+    assert.throws(() => restoreSource(altered), /OGE7 input:/);
   }
   for (const altered of [
     source + '\n<!-- unreviewed source -->',
@@ -294,7 +296,7 @@ test('the exact input receipt preserves the full pinned source and rejects every
     source.replace('if(d===0n) throw new Error("den=0");', 'if(d===0n) return null;')
   ]) {
     assert.notEqual(altered, source, 'effective extra/source/arithmetic change probe');
-    assert.notEqual(sha(restoreOge7Input(altered)), originalHash,
+    assert.notEqual(sha(restoreSource(altered)), originalHash,
       'known guard inversion must not absorb an unrelated byte or arithmetic change');
   }
 });

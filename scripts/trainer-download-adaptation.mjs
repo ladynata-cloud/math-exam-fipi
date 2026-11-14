@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 export const guideUrl = '/pedagogam/kak-skachat-i-adaptirovat-trenazher/';
+export const adaptationIncludes = '<link rel="stylesheet" href="/assets/download-adaptation.css">\n'
+  + '<script defer src="/assets/download-adaptation.js"></script>\n';
 export const offlineLimit = 'Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.';
 
 const escape = value => String(value).replace(/[&<>"']/g, char => ({

@@ -3,13 +3,14 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import navigatorPreservation from "../tools/public-navigator-preservation.cjs";
 import { exportStandalone } from "./trainer-download-offline.mjs";
-import { adaptationPanel, adaptationPrompt, downloadPaths, guideUrl, writeAdaptationFiles } from "./trainer-download-adaptation.mjs";
+import { adaptationIncludes, adaptationPanel, adaptationPrompt, downloadPaths, guideUrl, writeAdaptationFiles } from "./trainer-download-adaptation.mjs";
 
 const root = process.cwd();
 const manifestPath = path.join(root, "downloads", "trainers-manifest.json");
 const downloadsRoot = path.join(root, "downloads", "trainers");
 const tmpRoot = path.join(root, ".tmp-trainer-packages");
 const panelCssHref = "/assets/download-panel.css";
+const panelCssHrefTag = `<link rel="stylesheet" href="${panelCssHref}">\n`;
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 const warnings = [];
@@ -101,6 +102,12 @@ function stripDownloadPanel(html) {
     .replace(/\n?<script defer src="\/assets\/download-adaptation\.js"><\/script>\n?/g, "\n");
 }
 
+// Remove only the injected lines when the entry preserves source spacing.
+function stripInjectedAdaptation(html, entry) {
+  const panel = new RegExp(`<!-- download-panel:start:${entry.slug} -->\\n[\\s\\S]*?<!-- download-panel:end:${entry.slug} -->\\n`, 'g');
+  return html.replace(panelCssHrefTag + adaptationIncludes, '').replace(panel, '');
+}
+
 function fixLocalAssetLinks(html) {
   return html
     .replace(/href="\/assets\/site\.css"/g, 'href="assets/site.css"')
@@ -165,7 +172,7 @@ function inlineTrainerAssets(html, entry) {
 
 function ensurePanelCss(html) {
   if (html.includes(panelCssHref)) return html;
-  const link = `<link rel="stylesheet" href="${panelCssHref}">\n`;
+  const link = panelCssHrefTag;
   if (/<\/head>/i.test(html)) return html.replace(/<\/head>/i, (tag, offset) => `${html[offset - 1] === '\n' ? '' : '\n'}${link}${tag}`);
   return link + html;
 }
@@ -201,7 +208,7 @@ function injectPanel(sourceFile, entry) {
   }
   html = ensurePanelCss(stripDownloadPanel(html));
   if (entry.adaptation) {
-    html = html.replace(/<\/head>/i, '<link rel="stylesheet" href="/assets/download-adaptation.css">\n<script defer src="/assets/download-adaptation.js"></script>\n</head>');
+    html = html.replace(/<\/head>/i, adaptationIncludes + '</head>');
   }
   const markedPanel = entry.adaptation
     ? `<!-- download-panel:start:${entry.slug} -->\n${panel}\n<!-- download-panel:end:${entry.slug} -->` : panel;
@@ -356,7 +363,10 @@ function prepareTrainer(entry) {
     warnings.push(`Не найден HTML: ${entry.sourceHtml}`);
     return;
   }
-  const html = stripDownloadPanel(offlineHtml(sourceFile).toString("utf8"));
+  const source = offlineHtml(sourceFile).toString("utf8");
+  const html = entry.adaptation?.preserveSourceSpacing
+    ? stripInjectedAdaptation(source, entry)
+    : stripDownloadPanel(source);
   const cleanHtml = entry.adaptation
     ? exportStandalone(root, html.trimEnd() + "\n", entry)
     : inlineTrainerAssets(fixLocalAssetLinks(html), entry);
