@@ -108,23 +108,23 @@ other entry points must be checked at a separately authorized release.
 
 ## Acceptance criteria
 
-- [ ] The three confirmed invalid expressions and compositions such as
+- [x] The three confirmed invalid expressions and compositions such as
   `(0/0)^0`, `(0^-1)^0`, `((-1)^0.5)^0`, overflow followed by exponent zero,
   and division by an overflowing expression are rejected.
-- [ ] `sqrt((-4)^2)`, `sqrt(4)^2`, `sqrt(9)+1`, nested roots, fractions,
+- [x] `sqrt((-4)^2)`, `sqrt(4)^2`, `sqrt(9)+1`, nested roots, fractions,
   decimal commas, Unicode minus, `π/6`, `3/4π`, `3/(4π)` and implicit
   multiplication preserve their intended values.
-- [ ] `2^3^2 = 512`, `-2^2 = -4`, `2^-3 = 0.125` and the explicit zero-base
+- [x] `2^3^2 = 512`, `-2^2 = -4`, `2^-3 = 0.125` and the explicit zero-base
   domain policy have regression coverage.
-- [ ] Invalid input cannot award correctness or independent credit through
+- [x] Invalid input cannot award correctness or independent credit through
   START, Circle or Part Two handlers. Literal drafts survive the tested reload.
 - [ ] The 252 authored Part Two conditions and relevant START/Circle math,
   state and board-contract gates pass without changed generators or keys.
 - [ ] Native acceptance of the three entry forms at 320/390/1280 px checks
   invalid/valid input and reload, with screenshots and the new parser version.
-- [ ] The diff contains exactly the declared paths and only the permitted
+- [x] The diff contains exactly the declared paths and only the permitted
   HTML token and canonical binding updates.
-- [ ] Independent HIGH review records the examined base/head or source tree,
+- [x] Independent HIGH review records the examined base/head or source tree,
   risk cases, verdict and remaining limitations.
 
 ## Checks and gates
@@ -144,6 +144,14 @@ Run the applicable existing profile math, state, Circle and board-contract
 gates defined by the affected workflows. Record native tests separately from
 DOM tests, and report CI for the actual final PR head separately from local
 results. Do not claim unrelated workflows passed because focused tests passed.
+
+The native H01 cases live in the approved Part Two engine test file. The
+existing profile workflow installs pinned Playwright and Chromium before
+running it. Native cases are mandatory in CI, with no fallback or skip after a
+browser failure. Outside CI, `H01_NATIVE_BROWSER=1` requests them explicitly;
+an ordinary DOM-only invocation reports the native group as skipped.
+Screenshots use the existing `/tmp/profile-part2-shots` artifact directory.
+No workflow or dependency change is required.
 
 Canonical source-binding order:
 
@@ -204,30 +212,63 @@ standing release policy in the repository for this task.
 
 - Base verified: `0a375390859437359427aaf1befac3d12754e837`.
 - Branch created: `fix/profile-numeric-domain-integrity-20261114`.
+- Reviewed parser/source checkpoint:
+  `276851ea937eb5de1bb2437dae2f362341853e9f`, tree
+  `852f208f0342f569a1666de7a6e4b503987a0fa8`, single parent the approved base.
+- Separate native-test commit: `c09ab1bb8a63be56345a63001e3c6b0493fad33c`;
+  independently reviewed engine-test blob
+  `87fd542a1749a16804c552a8fc4d01b67a55b4f4`. No production byte changed in
+  this second commit; the receipt remains bound to the reviewed HTML source.
 - Source implementation: complete; explicit root arguments are bounded and
   invalid intermediate arithmetic is rejected before any later operation.
 - Focused regression evidence: 38 valid and 34 invalid parser inputs pass;
   START/Circle cover six false-success compositions, reload and valid correction;
   the Part Two engine covers three actual final-form cases and numeric root lists.
   The new tests fail against the exact original parser at the approved base.
+  Final local engine invocation: 15 pass, 0 fail, one explicitly skipped native
+  group; the two separate number/input files also pass. Native is not counted
+  as a successful local check.
 - Existing local gates: 140 Part Two, 88 profile and 21 Circle Node tests pass;
   the finance oracle verifies 442 exact steps. The profile npm suite reports
   3,278 checks and 7,600 generated planimetry cases with no failures.
-- Board-contract group: 106/114 pass before the canonical binding refresh.
-  Eight tests currently stop at the changed START navigator binding. A separate
-  diagnostic establishes that, after the required refresh, those same eight
-  wrappers will differ on exactly the new `checks.js` cache token.
+- Canonical binding refresh: preview and write succeeded against that reviewed
+  source. Exactly three HTML hash pairs changed; all other 621 added-page rows,
+  earlier receipts and unrelated manifest fields are preserved. Post-refresh
+  gates pass: binding tool 5/5, strict preservation 4/4, navigator regression
+  43/43.
+- Board-contract group after the binding refresh: **106/114 pass, 8 fail**.
+  All eight actual strict array comparisons differ on exactly one parser URL
+  token, with no other script difference. This supersedes the preliminary
+  navigator-binding failure recorded in the source checkpoint.
 - Required gate: **BLOCKED**; no completion marker asserted. The exact mapping
   `checks.js?v=20261114-numeric-domain` to the wrappers' existing
   `checks.js?v=20261101-trainer-repair` must be reviewed in
   `tools/public-page-script.cjs`. That helper is outside the nine approved paths;
   the proposed one-line addition is not applied without owner scope expansion.
-- Independent technical review: preliminary source/test review found no parser
-  defects; final immutable source and receipt review remain pending.
-- Native browser: repository Chromium acceptance in progress. Interactive
-  extension and cloud browsers could not reach the local test server; neither
-  attempt is reported as a manual acceptance pass.
-- Source commit / final head / PR / CI: pending.
+- Independent HIGH source review on 2026-11-14: PASS for the exact checkpoint
+  above, by the separate `h01_review` agent. It examined grouping, power domain,
+  valid syntax, consumer behavior, scope and rollback. Its additional probes
+  passed 24 boundary cases and 6,000 generated fully parenthesized expressions.
+  This is internal technical review, not an external-provider approval.
+- Prospective helper-map review: technically approved, conditional on owner
+  scope expansion. An isolated diagnostic made the eight unchanged original
+  tests pass and rejected 136 deliberate script-contract mutations. The real
+  repository helper is unchanged; this is not an actual gate pass.
+- Native local browser: **NOT RUN**. The interactive extension/cloud browsers
+  could not reach the local server, and local Chromium stopped before opening
+  pages because `process_singleton_posix.cc` reported `socket() failed:
+  Operation not permitted`. No native screenshots or application-console
+  observations were produced by those attempts.
+- Native CI plan: 27 independent cases across START, Circle and Part Two at
+  320/390/1280 px, each checking invalid input, reload, valid root/power
+  correction, credit and the actual versioned parser resource. Results and
+  final head are recorded in the containing Draft PR; CI is pending here.
+- Independent review of the native test code: PASS for the exact blob above.
+  A separate probe confirmed `CI=1` and `H01_NATIVE_BROWSER=0` still fail on a
+  missing browser dependency, with zero skips. This proves mandatory CI
+  execution, not successful browser acceptance.
+- Final immutable receipt/head review and CI verdicts are recorded against the
+  containing Draft PR's head; they do not grant merge or deployment permission.
 - Scope deviations: none.
 - Merge / publication: not performed.
 

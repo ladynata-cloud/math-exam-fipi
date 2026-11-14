@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+  "baseSha": "276851ea937eb5de1bb2437dae2f362341853e9f",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -283,8 +283,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
-      "beforeSha256": "bc8b419abfc51f4857db41b1a35177b962050ef27937c9158ae6540bbc6df964",
-      "afterSha256": "943fc548c74b74ac63ac5cc2c8020e885810a5991eb066ceaa95db65e28b14c5",
+      "beforeSha256": "c45266a8cdb19f9742ad8cfa4afc527a6e688bf21a1050188485560ea80f0c63",
+      "afterSha256": "52e7841dea7220da5ef15b0b4fe02f51922ed70904a9c132281addf028d24088",
       "placement": "before-head-close"
     },
     "ege-profil/exam/full-exam.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "65f663b2cf528014e7b2f6193c49dbb2de04b009f46641ee9be62ea972ba8f45",
-      "afterSha256": "475070fe102dc4b95e31198b454d848ce9306d449f9afef68cb907c4d97bc6a7",
+      "beforeSha256": "fb518864ec22144b591b18048198214daaaa1fc0f2ad2296359aa7befa4ff732",
+      "afterSha256": "7c3efffabb33fd7dff5ab3542ce98c72f768c4c8b5fc259213f585e854c176eb",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "a8c0407c81b8138805acfeee2a0b45e652eafb0c392194d27917c27a1449fd47",
-      "afterSha256": "e58040d661651e70092549e2700745c868ff73f1b5733fa4022d04a1d1a0ff67",
+      "beforeSha256": "5a542f5e42f53f0a9bb04bf0896a4ba5924975026d7353d727a18257d060664d",
+      "afterSha256": "2f3f74b14433928c657e63ce17cd64be88a4f4ca35bd86aa356f9d254307fd9f",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5070,6 +5070,17 @@
       "task": "docs/tasks/OGE_BASICS_FRACTION_CONTROLS_20261114.md",
       "changedPaths": [
         "trainers/oge-basics/fraction-meaning.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "330c1caa396f75e3af822b3727a5670ecdf3c6dc",
+      "sourceBaseSha": "276851ea937eb5de1bb2437dae2f362341853e9f",
+      "task": "docs/tasks/PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114.md",
+      "changedPaths": [
+        "ege-profil/circle/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
