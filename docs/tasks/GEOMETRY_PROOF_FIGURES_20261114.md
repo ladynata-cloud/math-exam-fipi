@@ -149,9 +149,24 @@ progress format, construction tools, or the published middle-line lesson.
   checked by independent dot products, distances and ratios. The four proof
   figures and seven numerical figures were visually inspected as rendered SVG.
 - Generation: the canonical script-only refresh preserves the page shells and
-  `COURSE_CONFIG`; `git diff --check` passed. Navigation receipts await the
-  published source checkpoint so they can bind to an available Git object.
-- Tests failed: local Chromium launch blocked by executor socket permission.
+  `COURSE_CONFIG`; `git diff --check` passed.
+- Published source checkpoint: `509e24b3e2c0449c87b2bab802866cf34c24adb3`,
+  exact tree `a5bbb26a7e9ae036d6687c28e9b79158f9d4d6ca`. The canonical binding
+  tool refreshed only the exact 63 changed atlas HTML paths against this
+  available source object. It wrote no HTML and grants no release approval.
+- Additional static gates: four navigator preservation cases and five binding
+  tool cases passed; 12 sitemap cases and exact sitemap generation passed;
+  SEO checks verified all 582 public URL canonicals, 31 distinct entrance
+  titles/descriptions/canonicals, 226 local links, 911 canonical declarations
+  and 151 refresh destinations. Catalog parity passed for 74 destinations.
+- Independent peer review: PASS on source checkpoint tree above, with the base
+  `add234c3ecb3204d4d7c9b3ef99f7b98a33bf37a`. A separate agent inspected
+  the figure geometry, label/condition agreement, unknown-only practice
+  labels, builder preservation and SVG montage, then independently reran all
+  17 geometry tests. This is an internal review, not an external-provider or
+  real-pupil review.
+- Tests failed: no assertion failures; local Chromium launch is blocked by
+  executor socket permission. Native browser verdict and screenshots await CI.
 - Tests not run: production publication and real-pupil pilot.
 - Scope deviations: none.
 
