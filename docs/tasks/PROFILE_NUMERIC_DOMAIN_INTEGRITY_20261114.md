@@ -1,0 +1,250 @@
+# H01 — Profile numeric domain integrity
+
+## Identity
+
+- Task: `PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114` (H01).
+- Owner: MathExam owner.
+- Date: 2026-11-14.
+- Base branch: `main`.
+- Base SHA: `0a375390859437359427aaf1befac3d12754e837`.
+- Branch: `fix/profile-numeric-domain-integrity-20261114`.
+- Review level: **HIGH**.
+- Owner authorization: explicit `START H01 — PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114`
+  in the current task conversation.
+- Related ADR: no architectural change; ADR 0001 remains Proposed and advisory.
+
+## Goal
+
+Ученик не получает правильный числовой ответ за выражение с недопустимым
+корнем, делением на нуль или недопустимым промежуточным вычислением.
+Допустимые привычные дроби, π, корни, степени и неявное умножение сохраняются
+в старте профиля, курсе окружности и второй части.
+
+## Context and evidence
+
+The authoritative GitHub main API and `git ls-remote` both confirmed the base
+above before branch creation. The local main was clean and identical to it.
+There are no nested `AGENTS.md` files affecting this task.
+
+At that base the shared parser accepted:
+
+| Input | Incorrect accepted value |
+| --- | ---: |
+| `sqrt(-4)^2` | 4 |
+| `(sqrt(-4))^0` | 1 |
+| `(1/0)^0` | 1 |
+
+`ege-profil/start/checks.js` let the radicand consume an outside power and
+checked finiteness only at the end of the expression. JavaScript can turn
+`NaN ** 0` or `Infinity ** 0` into 1, hiding an invalid intermediate result.
+
+The same parser serves START, Circle and Part Two; their existing checkers
+and handlers are retained. The exact changed-file lists of PRs #547 and #598
+do not contain this parser: those PRs concern three standalone bonus trainers.
+Pending #601 contains a profile download package that must take this correction
+from the reviewed source before its separate publication.
+
+### Project-status reconciliation
+
+`docs/PROJECT_STATUS.md` contains historical preparation and publication
+records, including the project exam map with 20 positions. Current code and
+the preceding harmonization inventory establish 42 Part Two lessons and 252
+fixed conditions. The public shared parser and entry resources were compared
+with this base during that inventory; selected matches do not constitute a
+full production acceptance test. H01 does not correct the exam map or update
+historical status entries. Those belong to the separately scoped H02.
+
+## Approved scope
+
+1. End an explicitly parenthesized `sqrt` argument at its matching parenthesis.
+   Keep the existing shorthand grammar for unparenthesized roots.
+2. Reject negative radicands, division by zero and non-finite intermediate
+   arithmetic immediately, before a later operation can hide them.
+3. Preserve right-associated powers, unary precedence, finite valid notation,
+   and existing source-length, nesting-depth and exponent safeguards.
+4. Use school real arithmetic for zero powers: reject `0^0` and zero to a
+   negative power; retain zero to a positive power. Negative bases with
+   non-integer exponents retain the existing unsupported/rejected behavior.
+   No new notation, symbolic arithmetic, `eval`, `Function` or dependencies.
+5. Add meaningful parser/wrapper and actual-form regressions for all three
+   consumers. Invalid input cannot complete a task or increase independent
+   credit. Keep the existing distinct format feedback in START/Circle.
+6. Change only the shared-parser version token in the three public entry pages.
+7. Refresh the three canonical navigator bindings through the existing tool,
+   against a real reviewed source commit, in a separate receipt commit.
+8. Record scoped evidence, independent HIGH review and a Draft PR.
+
+### Exact allowed paths
+
+- `ege-profil/start/checks.js`
+- `tools/profile-number-input.test.cjs`
+- `tools/profile-input-ui.test.cjs`
+- `tools/profile-part2-engine.test.cjs`
+- `ege-profil/start/index.html` — shared-parser version token only.
+- `ege-profil/circle/index.html` — shared-parser version token only.
+- `ege-profil/part-two/index.html` — shared-parser version token only.
+- `assets/assistant/page-rollout.json` — the three affected bindings and their
+  canonical source-checkpoint receipt only.
+- `docs/tasks/PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114.md`
+
+### Exclusions and preservation
+
+No changes to generators, answer keys, lesson/task IDs, saved-work keys or
+schemas, historical progress, other pages, navigator code, board/server
+contracts, authentication, dependencies/lockfiles or workflow files.
+Do not regrade or erase past successes, including successes incorrectly awarded
+before this correction.
+
+Part Two's separate classification of malformed answers as mathematical errors
+remains H04. Proof self-checking, two-tab persistence and the FIPI migration
+remain separate tasks. This change does not update PRs #547/#598/#596/#600/#559/
+#550/#601 or create new download build logic.
+
+Nine existing board-wrapper HTML pages also load the shared file. Their
+historical query tokens are outside the approved nine-file scope and remain
+unchanged. Board-contract regressions are required. Cache-busting is claimed
+only for the three public entries; fresh delivery/revalidation through the
+other entry points must be checked at a separately authorized release.
+
+## Acceptance criteria
+
+- [ ] The three confirmed invalid expressions and compositions such as
+  `(0/0)^0`, `(0^-1)^0`, `((-1)^0.5)^0`, overflow followed by exponent zero,
+  and division by an overflowing expression are rejected.
+- [ ] `sqrt((-4)^2)`, `sqrt(4)^2`, `sqrt(9)+1`, nested roots, fractions,
+  decimal commas, Unicode minus, `π/6`, `3/4π`, `3/(4π)` and implicit
+  multiplication preserve their intended values.
+- [ ] `2^3^2 = 512`, `-2^2 = -4`, `2^-3 = 0.125` and the explicit zero-base
+  domain policy have regression coverage.
+- [ ] Invalid input cannot award correctness or independent credit through
+  START, Circle or Part Two handlers. Literal drafts survive the tested reload.
+- [ ] The 252 authored Part Two conditions and relevant START/Circle math,
+  state and board-contract gates pass without changed generators or keys.
+- [ ] Native acceptance of the three entry forms at 320/390/1280 px checks
+  invalid/valid input and reload, with screenshots and the new parser version.
+- [ ] The diff contains exactly the declared paths and only the permitted
+  HTML token and canonical binding updates.
+- [ ] Independent HIGH review records the examined base/head or source tree,
+  risk cases, verdict and remaining limitations.
+
+## Checks and gates
+
+Required focused regressions:
+
+```sh
+node tools/profile-number-input.test.cjs
+node tools/profile-input-ui.test.cjs
+node --test tools/profile-part2-engine.test.cjs tools/profile-part2-course.test.cjs
+node --test tools/profile-part2-algebra.test.cjs tools/profile-part2-geometry.test.cjs tools/profile-part2-models.test.cjs
+node --check ege-profil/start/checks.js
+git diff --check
+```
+
+Run the applicable existing profile math, state, Circle and board-contract
+gates defined by the affected workflows. Record native tests separately from
+DOM tests, and report CI for the actual final PR head separately from local
+results. Do not claim unrelated workflows passed because focused tests passed.
+
+Canonical source-binding order:
+
+1. Review and commit the parser, regressions, entry tokens and this task record.
+2. Preview and run `tools/public_navigator_bindings.py` with that full source
+   SHA, this task path and exactly the three HTML paths, then `--write`.
+3. Run `tools/public_navigator_bindings.test.py`,
+   `node --test tools/public-navigator-preservation.test.cjs`, and
+   `node tools/public-navigator-regression.cjs` with the existing navigator and
+   a scratch output path. Inspect the exact receipt diff and commit it.
+
+`tools/public_navigator_preservation.py` is an imported helper, not an executable
+strict assertion gate. The `.test.cjs` command above is the actual preservation
+test. This corrects the draft's command description without changing scope or
+weakening any assertion.
+
+Final gate marker: `PROFILE_NUMERIC_DOMAIN_INTEGRITY_20261114_OK` only after
+all required checks and independent review have actually passed.
+
+## Review plan
+
+HIGH applies because one evaluator affects answers and independent-credit
+outcomes across multiple learning engines. Independent technical review must
+examine root grouping, power precedence/domain, nesting, overflow, valid syntax,
+actual consumer behavior, scope and rollback.
+
+No new trainer archetype or learning sequence is introduced. External provider
+consultation/review is optional under the current review policy and has not
+been requested. Internal independent technical review is still required.
+Remote handoffs contain only minimal approved code/diff/context, with no
+credentials, private learner data or machine-specific paths. If an external
+review is used, record provider, PR, exact base/head, verdict and date/source.
+
+## Risk and rollback
+
+Risks: over-rejecting legitimate notation, wrong root/power precedence, hidden
+overflow and stale cached copies. Keep finite valid controls alongside each
+invalid regression. Floating-point representation and the existing answer
+tolerances are unchanged; this is not a symbolic-equivalence engine.
+
+Rollback uses an ordinary revert of this task's commits after the appropriate
+owner decision. Saved data requires no migration or deletion. Do not reset,
+rebase, force-push, bypass protection or weaken tests.
+
+## Permissions
+
+The direct user-supplied `AGENTS.md` in this conversation overrides the broader
+standing release policy in the repository for this task.
+
+- START / implementation / branch / commits / push / Draft PR: **YES**.
+- Merge / auto-merge / deployment: **NO**, pending separate explicit owner
+  authorization.
+- A future exact-base merge authorization is invalidated by remote main drift.
+  Stop, inspect a read-only virtual composition, rerun applicable gates and
+  obtain new owner authorization; do not repair the branch automatically.
+
+## Execution record
+
+- Base verified: `0a375390859437359427aaf1befac3d12754e837`.
+- Branch created: `fix/profile-numeric-domain-integrity-20261114`.
+- Source implementation: complete; explicit root arguments are bounded and
+  invalid intermediate arithmetic is rejected before any later operation.
+- Focused regression evidence: 38 valid and 34 invalid parser inputs pass;
+  START/Circle cover six false-success compositions, reload and valid correction;
+  the Part Two engine covers three actual final-form cases and numeric root lists.
+  The new tests fail against the exact original parser at the approved base.
+- Existing local gates: 140 Part Two, 88 profile and 21 Circle Node tests pass;
+  the finance oracle verifies 442 exact steps. The profile npm suite reports
+  3,278 checks and 7,600 generated planimetry cases with no failures.
+- Board-contract group: 106/114 pass before the canonical binding refresh.
+  Eight tests currently stop at the changed START navigator binding. A separate
+  diagnostic establishes that, after the required refresh, those same eight
+  wrappers will differ on exactly the new `checks.js` cache token.
+- Required gate: **BLOCKED**; no completion marker asserted. The exact mapping
+  `checks.js?v=20261114-numeric-domain` to the wrappers' existing
+  `checks.js?v=20261101-trainer-repair` must be reviewed in
+  `tools/public-page-script.cjs`. That helper is outside the nine approved paths;
+  the proposed one-line addition is not applied without owner scope expansion.
+- Independent technical review: preliminary source/test review found no parser
+  defects; final immutable source and receipt review remain pending.
+- Native browser: repository Chromium acceptance in progress. Interactive
+  extension and cloud browsers could not reach the local test server; neither
+  attempt is reported as a manual acceptance pass.
+- Source commit / final head / PR / CI: pending.
+- Scope deviations: none.
+- Merge / publication: not performed.
+
+## Required handoff
+
+```text
+EXECUTIVE STATUS
+
+Task:
+PR:
+Base:
+Head:
+Gate:
+Tests:
+Failures:
+Not run:
+Scope deviations:
+Recommendation:
+Next user decision:
+```

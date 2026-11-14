@@ -9,6 +9,7 @@ async function settle(w){await w.ProfilePartTwoApp.store.flush();await pause();a
 async function boot(hash='map',entries=[]){
  const dom=new JSDOM(fs.readFileSync(path.join(folder,'index.html'),'utf8'),{url:'https://mathexam.space/ege-profil/part-two/#'+hash,runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
  w.HTMLElement.prototype.scrollIntoView=()=>{};
+ w.scrollTo=()=>{};
  entries.forEach(([k,v])=>w.localStorage.setItem(k,v));
  for(const script of w.document.querySelectorAll('script[src]')){const src=script.getAttribute('src').split('?')[0];if(src.startsWith('/assets/'))continue;w.eval(fs.readFileSync(path.resolve(folder,src),'utf8'));}
  await settle(w);return dom;
@@ -21,6 +22,44 @@ const memory=()=>{const values=new Map();return{getItem:k=>values.has(k)?values.
 test('safe answer parser accepts fractions, roots, pi, unordered roots and exact unions without erasing boundaries',()=>{
  for(const [answers,value] of [[['3/4'],'0,75'],[['3sqrt(2)'],'sqrt(18)'],[['π/6'],'pi/6'],[['1;2'],'2;1'],[['(-∞;1)∪(3;+∞)'],'(3;∞) или (-∞;1)']])assert(api.matches(answers,value,checker),value);
  for(const [answers,value]of [[['[1;2]'],'(1;2)'],[['1'],''],[['1'],'globalThis.x=1'],[['1'],'1.001'],[['(1;+∞)'],'[1;+∞)']])assert(!api.matches(answers,value,checker),value);
+});
+
+test('numeric matching rejects invalid intermediate domains, including inside unordered root lists',()=>{
+ for(const [answer,input] of [
+  ['4','sqrt(-4)^2'],['1','(sqrt(-4))^0'],['1','(1/0)^0'],
+  ['1','(0/0)^0'],['1','(0^-1)^0'],['1','0^0'],
+  ['0','1/((10^50)^50)'],['1;4','1;sqrt(-4)^2'],['0;1','0;(1/0)^0']
+ ])assert(!api.matches([answer],input,checker),input);
+ for(const [answer,input] of [['4','sqrt((-4)^2)'],['4','sqrt(4)^2'],['0','0^2'],['1','1^0']])assert(api.matches([answer],input,checker),input);
+});
+
+test('actual final form never completes a task for an invalid expression that formerly matched its numeric answer',async()=>{
+ const lesson=bank.find(l=>l.id==='p14-circle-selection'),task=lesson.tasks[3],hash='task/'+task.id+'/independent';
+ for(const [expression,oldValue] of [['sqrt(-4)^2',4],['(sqrt(-4))^0',1],['(1/0)^0',1]]){
+  let dom=await boot(hash),w=dom.window;
+  try {
+   const invalid=`(${task.final[0].answers[0]})+(${expression})-${oldValue}`;
+   task.final.forEach((field,i)=>input(w,'final-'+i,i===0?invalid:field.answers[0]));
+   input(w,'proof-draft','Моё обоснование остаётся на месте');
+   await submit(w,'final-form');
+   const r=w.ProfilePartTwoApp.store.read(task.id);
+   assert(!r.completed&&!r.independent,expression+' cannot earn success');
+   assert(r.attempts.every(a=>!a.correct));
+   assert(!w.document.getElementById('completion'));
+   assert.equal(r.drafts.final[0],invalid);
+   assert.equal(r.drafts.proof,'Моё обоснование остаётся на месте');
+   // The existing ordinary-final-format attempt policy is intentionally not
+   // changed here; H04 separately classifies unreadable input without penalty.
+   const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
+   w.close();dom=await boot(hash,entries);w=dom.window;
+   assert.equal(w.document.getElementById('final-0').value,invalid);
+   assert(!w.ProfilePartTwoApp.store.read(task.id).completed);
+   task.final.forEach((field,i)=>input(w,'final-'+i,field.answers[0]));
+   await submit(w,'final-form');
+   assert(w.ProfilePartTwoApp.store.read(task.id).completed,'valid answer still completes the task');
+   assert.equal(w.document.getElementById('proof-draft').value,'Моё обоснование остаётся на месте');
+  }finally{w.close();}
+ }
 });
 
 test('open answers preserve exact roots and accept equivalent unions without filling a hole',()=>{
