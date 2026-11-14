@@ -35,3 +35,23 @@ rt=runtime(null,route);rt.click('guided');rt.click('guided');rt.answer(numeric.a
 rt=runtime(null,route);rt.els['final-answer'].value='123,45';rt.els['final-answer'].oninput();rt.click('detour',{skill:'fraction-multiply'});assert.equal(rt.api.getState().origin.hash,route);assert.equal(rt.api.getState().tasks[numeric.id].value,'123,45');assert.equal(rt.api.getState().tasks[numeric.id].assisted,true);
 rt=runtime(null,'#practice/fraction-to-decimal/1');const practiceSeen=new Set();for(let i=0;i<45;i++){const st=rt.api.getState(),seed=st.practice['fraction-to-decimal:1'].seed,rec=st.tasks['practice:fraction-to-decimal:1:'+seed];assert(!practiceSeen.has(rec.signature),'New example must have unseen content');practiceSeen.add(rec.signature);rt.click('new');}assert.equal(practiceSeen.size,45);
 console.log(JSON.stringify({ok:true,workflowChecks:'first success, post-success hints, reload, sticky assistance, detour draft retention, 45 distinct practice examples'}));
+// These whitespace-tolerant aliases were accepted by the previous release.
+// Loading the expanded chapter must not revoke earned results or accepted steps.
+const legacyRoot=lessons.flatMap(l=>l.tasks).find(t=>t.id==='p17-t01');assert(legacyRoot);
+const legacyRootState=blank();legacyRootState.tasks[legacyRoot.id]={value:'2 s q r t (3)',correct:true,independent:true,attempts:1,assisted:false,note:'Сохранённое объяснение корня',completion:{attempts:1,assisted:false,independent:true}};
+rt=runtime(legacyRootState,'#lesson/p17/0');const restoredRoot=serialize(rt.api.getState().tasks[legacyRoot.id]);
+assert.equal(restoredRoot.correct,true,'Legacy sqrt answer remains correct after loading');
+assert.equal(restoredRoot.independent,true,'Legacy independent result is retained');
+assert.equal(restoredRoot.value,legacyRootState.tasks[legacyRoot.id].value,'Keep the learner\'s original answer spelling');
+assert.equal(restoredRoot.note,legacyRootState.tasks[legacyRoot.id].note,'Keep the learner\'s notebook');
+assert.deepEqual(serialize(runtime(rt.api.getState(),'#lesson/p17/0').api.getState().tasks[legacyRoot.id]),restoredRoot,'Completed legacy root result survives another reload');
+const legacySteps=lessons.flatMap(l=>l.tasks).find(t=>t.id==='p19-t05');assert(legacySteps);
+const legacyStepState=blank();legacyStepState.tasks[legacySteps.id]={value:'',values:['7','2+s q r t (3)','2-s q r t (3)','Черновик следующего шага'],step:3,assisted:true,guided:true,stepHints:{1:true},reveals:{1:true},note:'Сохранённые шаги с подсказкой'};
+rt=runtime(legacyStepState,'#lesson/p19/4');const restoredSteps=serialize(rt.api.getState().tasks[legacySteps.id]);
+assert.equal(restoredSteps.step,3,'All previously accepted radical steps remain accepted');
+assert.deepEqual(restoredSteps.values,legacyStepState.tasks[legacySteps.id].values,'Keep accepted steps and unfinished draft');
+assert.equal(restoredSteps.assisted,true,'Do not erase assistance history');
+assert.equal(restoredSteps.independent,false,'Do not give independent credit to assisted work');
+assert.equal(restoredSteps.note,legacyStepState.tasks[legacySteps.id].note,'Keep the step notebook');
+assert.deepEqual(serialize(runtime(rt.api.getState(),'#lesson/p19/4').api.getState().tasks[legacySteps.id]),restoredSteps,'Legacy assisted steps survive another reload');
+console.log(JSON.stringify({ok:true,legacyRadicalReloadCases:2,coverage:'accepted whitespace sqrt aliases, independent result, accepted assisted steps, unfinished draft and notebooks survive reload'}));

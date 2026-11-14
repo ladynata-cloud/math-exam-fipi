@@ -6,19 +6,24 @@ on:
       - 'school/peterson6/math.js'
       - '.github/workflows/makarychev8-quality.yml'
   push:
-    branches: [main]
+    # Verify the exact continuation head before its separate merge decision.
+    branches: [main, feat/makarychev8-roots-completion-20261114]
     paths:
       - 'school/makarychev8/**'
       - 'school/peterson6/math.js'
+      - '.github/workflows/makarychev8-quality.yml'
 permissions:
   contents: read
 jobs:
   course:
     runs-on: ubuntu-latest
-    # Four full source-block browser suites plus all 722 DOM journeys.
-    timeout-minutes: 20
+    # Four full source-block browser suites plus every course DOM journey.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -51,7 +56,7 @@ jobs:
           node "$RUNNER_TEMP/makarychev-qa/node_modules/playwright/cli.js" install --with-deps chromium
       - name: Every worked solution and saved-work journey
         run: |
-          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-ui.cjs
+          NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node --max-old-space-size=768 school/makarychev8/test-ui.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-import.cjs
           NODE_PATH="$RUNNER_TEMP/makarychev-qa/node_modules" node school/makarychev8/test-audit-learning.cjs
       - name: Chromium source exercises and responsive layout
@@ -67,4 +72,39 @@ jobs:
         with:
           name: makarychev8-browser
           path: artifacts/makarychev8/
-          if-no-files-found: ignore
+          if-no-files-found: error
+
+  square-roots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Complete chapter source, mathematics and append-only contract
+        run: |
+          python -m pip install sympy==1.14.0
+          python school/makarychev8/test-roots-source.py
+          node school/makarychev8/build.cjs
+          git diff --exit-code -- school/makarychev8/data.js
+      - name: Isolated root browser dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/makarychev-roots-qa" --no-audit --no-fund --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          node "$RUNNER_TEMP/makarychev-roots-qa/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Root input, exact branches and diagram geometry
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-roots-qa/node_modules" node school/makarychev8/test-roots-engine.cjs
+      - name: Every root condition, worked solution and saved-work journey
+        run: NODE_PATH="$RUNNER_TEMP/makarychev-roots-qa/node_modules" node school/makarychev8/test-browser-roots.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: makarychev8-square-roots-browser
+          path: artifacts/makarychev8/
+          if-no-files-found: error
