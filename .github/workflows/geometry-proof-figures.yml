@@ -1,0 +1,61 @@
+name: Geometry proof and practice figures
+on:
+  push:
+    branches: ['fix/geometry-proof-figures-20261114']
+  pull_request:
+    paths:
+      - 'geometry-course/assets/**'
+      - 'geometry-course/atlas/**'
+      - 'geometry-course/data/**'
+      - 'tools/geometry/**'
+      - '.github/workflows/geometry-proof-figures.yml'
+permissions:
+  contents: read
+jobs:
+  figures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GEOMETRY_FIGURES_EVIDENCE_DIR: ${{ github.workspace }}/artifacts/geometry-figures
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+      - run: npx playwright install --with-deps chromium
+      - name: Check mathematics, exact preservation and DOM behavior
+        run: |
+          node tools/geometry/check.js
+          node --test tools/geometry/proof-figures.test.cjs tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs
+          python tools/geometry/build_site.py --refresh-lesson-scripts
+          git diff --exit-code -- geometry-course/atlas
+          git diff --check
+      - name: Verify actual browser figures and saved work
+        run: node tools/geometry/proof-figures.browser.cjs
+      - name: Validate evidence completeness
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+          const out=process.env.GEOMETRY_FIGURES_EVIDENCE_DIR,ids=['segments','equality','length','chords-tangent','circle-position','projections','pythagoras'];
+          const shots=[320,1280].flatMap(width=>ids.flatMap(id=>['proof','practice'].map(kind=>`${id}-${width}-${kind}.png`)));
+          assert.deepEqual(fs.readdirSync(out).sort(),[...shots,'proof-figures-results.json'].sort());
+          for(const shot of shots){const data=fs.readFileSync(path.join(out,shot));assert(data.length>1000);assert.equal(data.subarray(0,8).toString('hex'),'89504e470d0a1a0a');}
+          const report=JSON.parse(fs.readFileSync(path.join(out,'proof-figures-results.json')));
+          assert.deepEqual(report,{results:[320,1280].flatMap(width=>ids.map(id=>({id,width,proof:true,practice:true,written:true,reload:true,firstScreen:true}))),errors:[]});
+          console.log('GEOMETRY_PROOF_FIGURES_20261114_GATE_OK');
+          NODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: geometry-proof-figures-evidence
+          path: |
+            artifacts/geometry-figures/*-proof.png
+            artifacts/geometry-figures/*-practice.png
+            artifacts/geometry-figures/proof-figures-results.json
+            artifacts/geometry-figures/proof-figures-failure.png
+          include-hidden-files: false
+          if-no-files-found: error
