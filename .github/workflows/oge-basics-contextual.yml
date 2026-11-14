@@ -41,6 +41,7 @@ jobs:
         run: |
           python3 tools/oge-basics-claude.test.py
           node --test tools/oge-basics-inventory.test.cjs tools/oge-basics-help.test.cjs tools/oge-basics-standalone.test.cjs tools/oge-basics-managed-help.test.cjs tools/oge-basics-special-help.dom.cjs
+          node --test tools/oge-basics-fraction-controls.test.cjs
           git diff --check
       - name: All course routes, deep help and mobile interactions
         run: node tools/oge-basics-contextual.browser.cjs

@@ -155,6 +155,74 @@ async function shot(page, name) {
 function activeFrame(page) { return page.locator('.bh-frame:visible'); }
 function helper(page) { return page.locator('.bh-toggle:visible').first(); }
 
+async function fractionControls(page) {
+  await open(page, 'fraction-meaning.html');
+  await helper(page).waitFor({state:'visible'});
+  await page.locator('.bs-navigation > summary').click();
+  await page.locator('.bs-navigation [data-route="learn"]').click();
+  assert.match(await page.locator('#lessonQuestion').innerText(), /на сколько равных частей разделили целое/);
+  assert.doesNotMatch(await page.locator('#view-learn').innerText(), /количество всех равных частей/);
+  const choices = page.locator('#lessonQuestion .choice');
+  const colors = button => button.evaluate(node => {
+    const css = getComputedStyle(node);
+    return {background:css.backgroundColor,border:css.borderTopColor,color:css.color};
+  });
+  const plain = await colors(choices.first());
+  await hitTarget(choices.first(), 'Fraction wrong choice');
+  await choices.first().click();
+  assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /bad/);
+  const wrong = await colors(choices.first());
+  assert.notDeepEqual(wrong, plain, 'A wrong fraction answer has visible feedback on its button');
+  await hitTarget(choices.nth(1), 'Fraction correct choice');
+  await choices.nth(1).click();
+  assert.equal(await choices.nth(1).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  assert.notDeepEqual(await colors(choices.nth(1)), wrong, 'Correct and wrong button colors are distinct');
+  await noOverflow(page, 'Fraction lesson');
+  await shot(page, 'fraction-denominator-' + page.viewportSize().width);
+  const lessonAnswers = ['4', '4', '2/5', '5/7'];
+  for (const answer of lessonAnswers) {
+    await page.locator('#lessonNext').click();
+    const input = page.locator('#lessonQuestion input');
+    if (await input.count()) {
+      await input.press('Enter');
+      assert.match(await page.locator('#lessonQuestion .feedback').innerText(), /Пустое поле/);
+      await input.fill(answer); await input.press('Enter');
+    } else {
+      const option = page.locator('#lessonQuestion .choice').filter({hasText:new RegExp('^' + answer.replace('/', '\\/') + '$')});
+      await hitTarget(option, 'Fraction lesson option ' + answer); await option.click();
+    }
+    assert.match(await page.locator('#lessonFeedback').getAttribute('class'), /good/);
+    assert.equal(await page.locator('#lessonNext').isDisabled(), false);
+  }
+  await page.locator('#lessonNext').click();
+  await page.locator('#view-practice').waitFor({state:'visible'});
+  // Reach a native choice using normal solves and the visible Next button.
+  for (let guard = 0; !await page.locator('#practiceAnswer .choice').count(); guard++) {
+    assert(guard < 20, 'A choice exercise must be reachable');
+    const value = await page.evaluate(() => window.__trainerDebug.fmtAnswer(window.__trainerDebug.state().current.answer));
+    await page.locator('#practiceAnswer input').fill(value);
+    await page.locator('#practiceAnswer input').press('Enter');
+    await page.locator('#nextTask').click();
+  }
+  const option = page.locator('#practiceAnswer .choice').first();
+  const initial = await colors(option);
+  const attempts = await page.evaluate(() => window.__trainerDebug.state().attempts);
+  await page.locator('#checkTask').click();
+  assert.match(await page.locator('#practiceFeedback').innerText(), /Сначала выберите/);
+  assert.equal(await page.evaluate(() => window.__trainerDebug.state().attempts), attempts);
+  await hitTarget(option, 'Fraction practice choice');
+  await option.focus(); await option.press('Space');
+  assert.equal(await option.getAttribute('aria-pressed'), 'true');
+  assert.notDeepEqual(await colors(option), initial, 'Keyboard selection must visibly change the practice button');
+  await shot(page, 'fraction-choice-selected-' + page.viewportSize().width);
+  await page.reload({waitUntil:'load'});
+  await helper(page).waitFor({state:'visible'});
+  assert.deepEqual(await page.evaluate(() => window.__trainerDebug.state().learnDone), [true,true,true,true,true]);
+  reports.push({scenario:'fraction-controls',width:page.viewportSize().width,
+    fiveLessons:true,visibleSelection:true,wrongCorrectColors:true,pointerAndKeyboard:true,emptyAnswerNoAttempt:true,retainedLessonProgress:true});
+}
+
 async function retainDraftInHelp(page, {name, route, answer, prompt, practice, prepare}) {
   await open(page, route);
   if (practice) await page.locator(practice).waitFor({state:'visible'});
@@ -373,6 +441,7 @@ async function supplementalDivisionContracts(page) {
       const page = await context.newPage();
       page.on('pageerror', error => errors.push({width,route:page.url(),message:error.message}));
       try {
+        await fractionControls(page);
         await retainDraftInHelp(page, {name:'order', route:'order-of-operations.html',
           answer:'#practiceAnswer input', prompt:'#practicePrompt', practice:'#view-practice'});
         await deepHelp(page);

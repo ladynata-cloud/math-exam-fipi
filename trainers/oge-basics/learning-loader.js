@@ -16,7 +16,7 @@ if(!managed){
  // leave the original working page available, including its native help.
  (async()=>{await ready;try{
   await contextualHelp();
-  style('basics-standalone.css?v=basics-context-20261020');
+  style('basics-standalone.css?v=fraction-controls-20261114');
   await script('basics-standalone.js?v=basics-context-20261020');
  }catch(_){} })();
  return;
@@ -34,7 +34,7 @@ const hide=document.createElement('style');hide.textContent='html.learning-remed
   try{await script('learning-scaffolds.js?v=arithmetic-robots-20261019');}catch(_){}
   try{await script('../../learning/multiplication-support.js?v=multiplication-complete-20261019');}catch(_){}
   try{await contextualHelp();}catch(_){}
-  await script('learning-managed.js?v=basics-context-20261020');
+  await script('learning-managed.js?v=fraction-controls-20261114');
  }
  catch(error){main.textContent='Тренажёр не загрузился. Обновите страницу: сохранённая работа останется в кабинете.';}
 })();
