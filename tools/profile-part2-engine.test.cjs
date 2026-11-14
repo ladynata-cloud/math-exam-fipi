@@ -62,6 +62,10 @@ test('independent open answer keeps prior fields, distinguishes format from atte
   const next=await boot(hash,[[seed.key(task.id),w.localStorage.getItem(seed.key(task.id))]]);
   assert.equal(next.window.document.querySelector('#final-0').value,'2; -6');
   assert.equal(next.window.document.querySelector('#proof-draft').value,'Мой черновик');
+  input(next.window,'final-0','-6; 2; 7');await submit(next.window,'final-form');
+  assert.match(next.window.document.querySelector('#feedback').textContent,/знаменатель/);
+  const repeated=next.window.ProfilePartTwoApp.store.read(task.id);
+  assert(repeated.completed);assert(repeated.independent);assert.equal(repeated.attemptCount,3);
   next.window.close();
  }finally{w.close();}
 });

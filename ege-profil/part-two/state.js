@@ -21,11 +21,13 @@ function create(storage,options={}){
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }
- function attempt(id,{kind,answers,correct,mode,independentEligible=false,openFinal=false,onceCompleted=false}){return patch(id,v=>{
-  if(onceCompleted&&v.completed)return;
-  if(kind==='final'){
-   if(openFinal)v.drafts.openFinal=answers[0];
-   else if(onceCompleted)v.drafts.final=answers;
+ function attempt(id,{kind,answers,correct,mode,independentEligible=false,openFinal=false,saveFinalDraft=false}){return patch(id,v=>{
+  if(kind==='final'&&saveFinalDraft){
+   if(openFinal){
+    const previous=v.attempts.at(-1);
+    if(correct&&previous?.kind==='final'&&previous.correct&&previous.answers.length===1&&previous.answers[0]===answers[0])return;
+    v.drafts.openFinal=answers[0];
+   }else v.drafts.final=answers;
   }
   const record={id:String(Date.now())+'-'+(++serial),kind,answers:answers.map(x=>String(x).slice(0,500)),correct:!!correct,helped:v.helped||mode!=='independent',at:Date.now()};
   v.attemptCount++;if(!correct)v.wrong++;v.attempts.push(record);

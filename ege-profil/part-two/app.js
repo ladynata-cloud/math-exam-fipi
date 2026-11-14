@@ -167,7 +167,6 @@ async function taskView(item,mode,viewVersion=routeVersion){
  document.querySelectorAll('[data-proof-check]').forEach(input=>input.addEventListener('change',()=>{const index=Number(input.dataset.proofCheck),checked=input.checked;store.patch(task.id,s=>{s.proofChecks=s.proofChecks.filter(i=>i!==index);if(checked)s.proofChecks.push(index);});}));
  bind('final-form','submit',async event=>{
   event.preventDefault();const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),values=fields.map(f=>f.value.trim());
-  if(store.read(task.id).completed){feedback('Этот ответ уже проверен. Можно перейти к другому условию.','ok');return;}
   if(values.some(v=>!v)){feedback('Заполните каждое поле. Пустое поле не считается ошибкой.','error');fields[values.findIndex(v=>!v)].focus();return;}
   const openResult=openFinal&&API.openAnswer(openFinal,values[0]);
   if(openResult&&!openResult.recognized){
@@ -180,10 +179,10 @@ async function taskView(item,mode,viewVersion=routeVersion){
   button.disabled=true;
   let updated;
   try {
-   updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,onceCompleted:true});
+   updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,saveFinalDraft:true});
   } finally {button.disabled=false;}
   if(!isCurrent())return;
-  if(updated.completed){await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback(task.proof?'Ответы верны. Сохраните обоснование и проверьте его с преподавателем.':'Ответы верны. Можно перейти к другому условию.','ok');document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});}
+  if(correct){await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback(task.proof?'Ответы верны. Сохраните обоснование и проверьте его с преподавателем.':'Ответы верны. Можно перейти к другому условию.','ok');document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});}
   else{
    fields.forEach((f,i)=>f.setAttribute('aria-invalid',String(!results[i])));
    const wrongFields=results.flatMap((ok,i)=>ok?[]:[i]);
