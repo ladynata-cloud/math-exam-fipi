@@ -148,6 +148,7 @@ const scenarios = {
     assert(!(await page.locator('#connectBtn').isVisible()));
     assert(await page.getByRole('region', { name: 'Личный черновик' }).isVisible());
     assert(await page.locator('.profile-skill-slot').count());
+    await page.locator('#modeFast').click();
     await page.locator('#checkBtn').click();
     assert.match(await page.locator('#feedback').innerText(), /Введите число/);
     const expected = await page.evaluate(() => String(cur.answer));
@@ -253,6 +254,17 @@ async function checkPanel(page, entry, width) {
   }
   const after = await page.evaluate(() => [document.querySelector('main, .wrap, .app').getBoundingClientRect().width, document.documentElement.scrollWidth]);
   assert.deepEqual(after, before, entry.slug + ' download panel changes trainer width or overflow');
+  const without = await page.evaluate(() => {
+    const panel = document.querySelector('[data-trainer-download]');
+    const sheet = document.querySelector('link[href="/assets/download-panel.css"]').sheet;
+    panel.hidden = true;
+    sheet.disabled = true;
+    const dimensions = [document.querySelector('main, .wrap, .app').getBoundingClientRect().width, document.documentElement.scrollWidth];
+    sheet.disabled = false;
+    panel.hidden = false;
+    return dimensions;
+  });
+  assert.deepEqual(after, without, entry.slug + ' same trainer geometry with and without the panel');
 }
 
 async function run() {
