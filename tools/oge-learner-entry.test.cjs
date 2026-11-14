@@ -12,7 +12,9 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // Explicit reviewed task sources bind the free-equation and percent-resume
 // changes. The apartment exercise has a reviewed new feedback engine. Other pages
 // and link metrics retain the published baseline.
-const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b44244753ac806d449a2040ad4b8c8af9acaf3","trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+// Exact current-main completion of PR547: input/hint checks in
+// docs/tasks/TRAINER_ANSWER_INTEGRITY_20261114.md; all controls stay pinned.
+const taskSources={'trainers/rounding-stepwise.html':'beb9a2d96fd0c29a6ddab6eaa588485c6de44a56',"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b44244753ac806d449a2040ad4b8c8af9acaf3","trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
 // PR #539 subject-review baseline plus PR #548's checked bracket-caption change.
 // Exact source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d.
 // Evidence: docs/tasks/TASK9_BRACKET_LABELS_20261111.md;

@@ -38,14 +38,14 @@ The owner's current request is to finish remaining trainer issues and resolve ro
 
 ## Acceptance criteria
 
-- [ ] Integer suffixes/decimal input cannot be accepted as the expected integer; empty/malformed fields do not increment mathematical mistakes.
-- [ ] Valid signed integers, zero and supported spacing remain accepted.
-- [ ] A hint at any rounding step and manual/automatic vector hints prevent independent credit; a fresh unassisted problem can earn it.
-- [ ] Duplicate/stale completions cannot advance or count another step; saved totals and unrelated progress remain intact.
-- [ ] Vector numeric steps explain empty/invalid input without changing the active step or assistance counters.
-- [ ] Browser scenarios cover visible input, help, retries and reload at 320/390/1280 px; the existing rounding route test remains valid.
-- [ ] Download HTML/ZIP files contain corrected source; rebuilding only these packages is reproducible.
-- [ ] Source/navigation checks remain strict; no historical fixture is weakened.
+- [x] Integer suffixes/decimal input cannot be accepted as the expected integer; empty/malformed fields do not increment mathematical mistakes.
+- [x] Valid signed integers, zero and supported spacing remain accepted.
+- [x] A hint at any rounding step and manual/automatic vector hints prevent independent credit; a fresh unassisted problem can earn it.
+- [x] Duplicate/stale completions cannot advance or count another step; saved totals and unrelated progress remain intact.
+- [x] Vector numeric steps explain empty/invalid input without changing the active step or assistance counters.
+- [ ] Native browser scenarios pass for visible input, help, retries and reload at 320/390/1280 px, plus existing rounding journeys at 320/390/1060 px. Tests are prepared; CI execution is required.
+- [x] Download HTML/ZIP files contain corrected source; rebuilding only these packages is reproducible.
+- [x] Source/navigation checks remain strict; no historical fixture is weakened.
 
 ## Checks and gates
 
@@ -75,7 +75,14 @@ Risks: rejecting an intended numeric format, carrying assistance to a new proble
 - Actual branch: fix/trainer-answer-integrity-20261114
 - Actual base: add234c3ecb3204d4d7c9b3ef99f7b98a33bf37a
 - Initial failures: 7/12 Theatre/vector regressions fail on the unchanged source. After porting, 12/12 pass; the first rounding DOM launch could not load jsdom until isolated dependencies became available.
-- Final checks and review are recorded below after completion.
+- Source checkpoint: local 1fff03635a60e126d03b1efbdf7f37624edd19ad; published equivalent beb9a2d96fd0c29a6ddab6eaa588485c6de44a56. Both trees equal abec87e8787b7280c9446ed820f497bb25495a3e. Publication uses the repository integration because local push authentication is unavailable.
+- Canonical navigator bindings and the affected rounding learner-entry pin use the published source checkpoint. The canonical binding tool changed exactly three rollout rows and zero HTML files; it did not grant approval.
+- Focused tests: 38 passed, 0 failed (Theatre, vector assistance, rounding DOM, preparation DOM, downloadable HTML/ZIP parity).
+- Strict navigator preservation: 4 passed, 0 failed. OGE learner-entry/source preservation: 147 documents, 1,607 links. Focus navigation: 524 links. Historical source objects were fetched read-only; existing fixtures were not weakened.
+- Three download packages rebuilt twice with identical SHA-256 hashes for all nine package files. Inline-script syntax, new browser-test syntax, and git diff --check passed.
+- Additional real-DOM diagnostics confirmed the vector registered handlers and Theatre inline onclick handlers. An initial Theatre diagnostic used jsdom outside-only mode, which does not compile inline onclick attributes; it passed when rerun with script execution enabled. This diagnostic issue was not a product failure.
+- Internal peer review: geometry_audit reviewed the source checkpoint on 2026-11-14; PASS with no blocking findings for parser formats, hint/reset behavior, stale-completion guards and focused tests. This is an internal code/DOM review, not external-provider approval or release authorization.
+- Not run locally: native Chromium scenarios/screenshots (process/socket restriction), real-pupil lesson, external-provider review. The dedicated CI workflow runs the prepared browser journeys and uploads evidence. Full task gate remains pending that execution.
 
 ## Required handoff
 
