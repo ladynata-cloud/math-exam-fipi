@@ -4,8 +4,9 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {entries, snippet, restoreVideoModels, restoreGraphScale} = require('./oge-video-models-preservation.cjs');
+const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections} = require('./oge-video-models-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
+const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
 const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
@@ -46,4 +47,39 @@ test('task22 preserves the original engine around a single, equal-scale graph pr
     assert(graph.Y(ymax) >= 29.999 && graph.Y(ymin) <= graph.H - 29.999);
   }
   assert.equal(restoreGraphScale(file, source.replace(graphScale.after, graphScale.after.repeat(2))), source.replace(graphScale.after, graphScale.after.repeat(2)));
+});
+
+test('task22 intersection display inverse requires the complete exact renderer and two call sites', () => {
+  const {file, fragments} = graphIntersections;
+  assert.equal(file, 'trainers/oge-task22-functions-graphs.html');
+  assert.equal(graphIntersections.task, 'docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md');
+  assert.equal(graphIntersections.sourceBase, '1dea53a92200942bd40712cfed2ce06085d0c892');
+  assert.equal(fragments.length, 3);
+  const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const restored = restoreGraphIntersections(file, source);
+  assert.notEqual(restored, source);
+  for (const fragment of fragments) {
+    assert.equal(source.split(fragment.after).length, 2);
+    assert.equal(restored.split(fragment.before).length, 2);
+    assert(!restored.includes(fragment.after));
+  }
+  assert.equal(restoreGraphIntersections(file, restored), restored, 'historical renderer is not altered');
+  assert.equal(restoreGraphIntersections('unrelated.html', source), source, 'wrong route has no inverse');
+
+  const historicalPin = require('./fixtures/oge-video-models-native-bytes.json').pages[file].sha256;
+  const nativeHash = value => require('node:crypto').createHash('sha256')
+    .update(restoreGraphScale(file, restoreVideoModels(file, value))).digest('hex');
+  assert.equal(nativeHash(source), historicalPin, 'full original native engine remains sealed');
+  for (const fragment of fragments) {
+    for (const replacement of [fragment.before, fragment.after.repeat(2), fragment.after.replace('addMeasureH', 'unreviewedMeasureH')]) {
+      const changed = source.replace(fragment.after, replacement);
+      assert.notEqual(changed, source, 'negative probe actually changes the source');
+      assert.equal(restoreGraphIntersections(file, changed), changed, 'partial or altered display delta is not normalized');
+      assert.notEqual(nativeHash(changed), historicalPin, 'old full-engine pin rejects the change');
+    }
+  }
+  const changedMath = source.replace('const x=1/(C-m);', 'const x=2/(C-m);');
+  assert.notEqual(changedMath, source);
+  assert(restoreGraphIntersections(file, changedMath).includes('const x=2/(C-m);'), 'inverse cannot erase an unrelated mathematical edit');
+  assert.notEqual(nativeHash(changedMath), historicalPin);
 });

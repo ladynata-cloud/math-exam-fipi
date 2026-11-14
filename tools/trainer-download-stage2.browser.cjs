@@ -407,6 +407,9 @@ async function run() {
     }
     await context.close();
     console.log(`TRAINER_DOWNLOAD_ADAPT_OK: ${selected.length} packages, ${selected.length * 2} file:// opens and ${selected.length * 2} panel views`);
+    if (Object.keys(ogeFinal).every(slug => selected.some(entry => entry.slug === slug))) {
+      console.log('TRAINER_DOWNLOAD_STAGE4_OK: six OGE packages, graph intersections and saved written work');
+    }
   } finally {
     await browser?.close();
     await new Promise(resolve => server.close(resolve));
