@@ -58,12 +58,12 @@ request relevant help, revise their draft and continue to a different condition.
 
 ## Acceptance criteria
 
-- [ ] All six families expose the appropriate four criteria after an attempt and argument.
-- [ ] Empty submissions do not unlock criteria or count as attempts.
-- [ ] Assistance before a correct numerical answer prevents independent credit.
-- [ ] Marking criteria alone is self-review, never an automatic proof verdict.
-- [ ] Prior answers, drafts and earned results survive viewing, editing and reload.
-- [ ] Task 14/16 whole-answer behavior and next-condition behavior remain correct.
+- [x] All six families expose the appropriate four criteria after an attempt and argument.
+- [x] Empty submissions do not unlock criteria or count as attempts.
+- [x] Assistance before a correct numerical answer prevents independent credit.
+- [x] Marking criteria alone is self-review, never an automatic proof verdict.
+- [x] Prior answers, drafts and earned results survive viewing, editing and reload.
+- [x] Task 14/16 whole-answer behavior and next-condition behavior remain correct.
 - [ ] No narrow-screen overflow in the real-browser gate.
 
 ## Checks and gates
@@ -105,6 +105,26 @@ request relevant help, revise their draft and continue to a different condition.
 - Actual base: `add234c3ecb3204d4d7c9b3ef99f7b98a33bf37a`
 - Head, PR, review and final test results: recorded in the PR handoff.
 - Scope deviations: none planned.
+
+### Verified source checkpoint and review
+
+- Remote source checkpoint: `7e55dd63d8bc6fd7c9567a6f4d355a717884000c`;
+  tree `b887caca8f850fef5a9fa35b048e57deef9632c4`, identical to local
+  `c91064691b0bf677ce156f10458f1b6c3c3891cb`. No branch history was rewritten.
+- Combined local gate: 192 tests from 13 second-part, alphabet and board/integrity
+  suites passed. Focused final engine/math rerun: 23 tests passed.
+- Independent internal review found two issues before handoff: middle-button
+  skill navigation did not mark help; another tab's checkmarks could appear next
+  to an older visible draft. Both were fixed and independently rechecked. New
+  regressions exercise help credit, a protected stale checklist and explicit
+  return to the saved argument. No remaining source-level blocking findings.
+- Six explanatory examples were checked against independent root/point counts,
+  including singular parameters, exact boundaries and an attainable maximum.
+- Canonical navigator binding refresh uses the remote checkpoint and changes
+  only the binding for `ege-profil/part-two/index.html`.
+- Initial added-test fixtures used an unrecognized interval and an incorrect
+  catalog export assumption; those test-harness errors were corrected. No product
+  assertion or gate was relaxed. Native-browser results remain pending CI.
 
 ## Required handoff
 
