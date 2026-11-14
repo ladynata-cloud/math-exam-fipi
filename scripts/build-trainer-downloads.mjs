@@ -459,7 +459,7 @@ function updateOgeDownloads() {
   <div class="downloads">
     ${links.join('\n    ')}
   </div>
-  <p><a href="${guideUrl}#adaptation-example">Как изменить тренажёр · GIF и шаги</a>. Остальные задания можно <a href="#all-topics">решать на сайте</a>.</p>
+  <p><a href="${guideUrl}#adaptation-example">Как изменить тренажёр · GIF и шаги</a>. Все темы можно <a href="#all-topics">решать на сайте</a>.</p>
 </details>`;
   const downloadBlock = /<details id="downloads">[\s\S]*?<\/details>/g;
   if ([...html.matchAll(downloadBlock)].length !== 1) throw new Error('Expected one OGE download list');

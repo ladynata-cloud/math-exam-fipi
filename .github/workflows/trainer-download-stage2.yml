@@ -12,6 +12,7 @@ on:
       - 'pedagogam/kak-skachat-i-adaptirovat-trenazher/**'
       - 'trainers/oge-course/**'
       - 'trainers/oge-task*.html'
+      - 'trainers/oge13-inequalities-series.html'
       - 'trainers/oge-course-*.js'
       - 'ege-baza/path/**'
       - 'ege-profil/part-two/**'
@@ -20,6 +21,7 @@ on:
       - 'school/peterson6/**'
       - 'tools/trainer-download-stage2.browser.cjs'
       - 'tools/trainer-download-oge-next.cjs'
+      - 'tools/trainer-download-oge-final.cjs'
       - '.github/workflows/trainer-download-stage2.yml'
   workflow_dispatch:
 

@@ -11,6 +11,7 @@ const { chromium } = require('playwright');
 const partTwoLessons = ['algebra', 'geometry', 'models'].flatMap(name => require(`../ege-profil/part-two/content-${name}.js`));
 const manifest = require('../downloads/trainers-manifest.json');
 const ogeNext = require('./trainer-download-oge-next.cjs');
+const ogeFinal = require('./trainer-download-oge-final.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -54,6 +55,7 @@ async function textbook(page, appName, courseName, lesson) {
 
 const scenarios = {
   ...ogeNext,
+  ...ogeFinal,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -279,13 +281,13 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '3');
+  assert.equal(manifest.stage, '4');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
   const filter = process.argv[2];
-  assert(filter === undefined || filter === '--oge-next' || scenarios[filter], 'unknown test filter');
-  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]));
+  assert(filter === undefined || filter === '--oge-next' || filter === '--oge-final' || scenarios[filter], 'unknown test filter');
+  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]) || (filter === '--oge-final' && ogeFinal[entry.slug]));
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-downloads-'));
   const server = await listen();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -311,7 +313,7 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320 || ogeNext[entry.slug]) await scenarios[entry.slug](page, loadImage);
+        if (width === 320 || ogeNext[entry.slug] || ogeFinal[entry.slug]) await scenarios[entry.slug](page, loadImage);
         assert.deepEqual(issues, [], entry.slug);
         await context.close();
       }
@@ -376,6 +378,16 @@ async function run() {
       await geometry.getByRole('button', { name: 'Воспроизвести GIF' }).click();
       await loadImage(geometry.locator('img'));
       assert.match(await geometry.locator('img').getAttribute('src'), /adapt-geometry\.gif$/);
+      const graph = page.locator('#adapt-graph');
+      await graph.locator(':scope > summary').click();
+      await loadImage(graph.locator('img'));
+      for (let i = 0; i < 4; i++) await graph.getByRole('button', { name: 'Следующий кадр' }).click();
+      assert.match(await graph.locator('.trainer-skill-gif-caption').innerText(), /Кадр 5 из 5/);
+      await graph.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(graph.locator('img'));
+      assert.match(await graph.locator('img').getAttribute('src'), /adapt-graph\.gif$/);
+      await graph.getByRole('button', { name: 'Остановить GIF' }).click();
+      assert.match(await graph.locator('img').getAttribute('src'), /adapt-graph\.png$/);
       await context.close();
     }
 
@@ -388,7 +400,7 @@ async function run() {
     }
     await page.goto(origin + '/trainers/oge-course/#downloads');
     const list = page.locator('#downloads a[download]');
-    assert.equal(await list.count(), 15);
+    assert.equal(await list.count(), 21);
     for (const href of await list.evaluateAll(links => links.map(link => link.getAttribute('href')))) {
       assert.match(href, /^\/downloads\/trainers\/.*\.zip$/);
       assert((await context.request.head(origin + href)).ok());

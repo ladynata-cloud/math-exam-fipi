@@ -1,7 +1,7 @@
 {
-  "stage": "3",
+  "stage": "4",
   "updated": "2026-11-14",
-  "notes": "Этап 2 добавляет автономные копии, подробные инструкции и GIF для выбранных тем ОГЭ, обоих ЕГЭ и школьных курсов. Первые 17 комплектов сохраняются.",
+  "notes": "Этапы 2–4 добавляют 24 автономных комплекта с GIF; предыдущие 17 комплектов сохранены. В списке ОГЭ есть ZIP для всех №1–25: общий №1–5 и отдельные №6–25. Факт публикации проверяется отдельно.",
   "trainers": [
     {
       "slug": "mcko-linejka",
@@ -1279,10 +1279,348 @@
       "downloadHtml": "/downloads/trainers/oge-task18-grid/oge-task18-grid.html",
       "prompt": "/downloads/trainers/oge-task18-grid/oge-task18-grid-deepseek-prompt.md",
       "package": "/downloads/trainers/oge-task18-grid/oge-task18-grid-package.zip"
+    },
+    {
+      "slug": "oge13-inequalities-series",
+      "title": "ОГЭ №13 — неравенства",
+      "sourceHtml": "/trainers/oge13-inequalities-series.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "неравенства, системы и промежутки",
+      "description": "Пять семейств неравенств, интерактивные модели и последовательные шаги.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra-reference.js",
+        "/trainers/oge-course-reference-entry.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-native-10-14-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/oge-course-reference/quadratic-roots.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png"
+      ],
+      "ogeTask": 13,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример −2x > 6 с объяснением изменения знака неравенства при делении на отрицательное число.",
+        "edits": {
+          "Задачи": "Найди `DATA` и разделы `linear`, `quad`, `graph`, `special`, `systems`. Согласуй выражение `e`, варианты, правильный ответ `ans` и пояснения.",
+          "Границы": "При делении на отрицательное число меняй направление неравенства. Для строгих границ используй круглые скобки и выколотые точки; для нестрогих — квадратные и закрашенные.",
+          "Подсказки": "Сохрани `renderWorkedSteps` и встроенные лаборатории `makeTask13Lab`: помощь не должна стирать выбранный ответ или засчитываться самостоятельным решением.",
+          "Оформление": "Подписи границ на числовой прямой и варианты ответа должны оставаться читаемыми при ширине 320 px."
+        },
+        "checks": [
+          "Для −2x > 6 решение x < −3: точка −4 подходит, −3 и 0 не подходят. Ответ x > −3 должен отклоняться.",
+          "Для x² ≤ 9 решение [−3; 3], включая обе границы. Для x² < 9 границы не входят."
+        ]
+      },
+      "downloadHtml": "/downloads/trainers/oge13-inequalities-series/oge13-inequalities-series.html",
+      "prompt": "/downloads/trainers/oge13-inequalities-series/oge13-inequalities-series-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge13-inequalities-series/oge13-inequalities-series-package.zip"
+    },
+    {
+      "slug": "oge-task20-equations",
+      "title": "ОГЭ №20 — уравнения и преобразования",
+      "sourceHtml": "/trainers/oge-task20-equations.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "уравнения, преобразования и допустимые корни",
+      "description": "Уравнения второй части с ограничениями, подсказками и записью решения.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-20-22-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png"
+      ],
+      "ogeTask": 20,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример дробно-рационального уравнения с одним исключённым корнем. Согласуй ОДЗ и проверку корней.",
+        "edits": {
+          "Задачи": "Найди генераторы `genA`, `genB1`–`genB5`, `genC1`, `genC2` и соответствующий разбор. Новый пример пометь авторским; не меняй номера исходных задач.",
+          "Ответы": "Проверь `checkRootset`, точную работу с дробями, все корни и область допустимых значений. Нельзя засчитывать корень, при котором исходный знаменатель равен нулю.",
+          "Подсказки": "Согласуй условие, промежуточные уравнения и финальный отбор корней. Сохрани личную запись решения во встроенном `oge-course-algebra.js`.",
+          "Оформление": "Условие, ответ и кнопка проверки должны оставаться вместе; пошаговая помощь открывается по запросу."
+        },
+        "checks": [
+          "Для (x−1)(x−2)/(x−1) = 0 допустим только x = 2; x = 1 исключён из ОДЗ. Пара корней 1 и 2 неверна.",
+          "Для (x−2)(x+3) = 0 требуются оба корня −3 и 2, независимо от порядка записи."
+        ],
+        "limit": "Автоматическая проверка относится к ответу и отдельным учебным шагам. Полный ход решения и обоснования проверьте самостоятельно или с преподавателем."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task20-equations/oge-task20-equations.html",
+      "prompt": "/downloads/trainers/oge-task20-equations/oge-task20-equations-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task20-equations/oge-task20-equations-package.zip"
+    },
+    {
+      "slug": "oge-task21-word-problems",
+      "title": "ОГЭ №21 — текстовые задачи",
+      "sourceHtml": "/trainers/oge-task21-word-problems.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "движение, работа, смеси и проценты",
+      "description": "Текстовые модели с выбором неизвестного, уравнением и проверкой смысла ответа.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-20-22-board.js"
+      ],
+      "offlineImages": [],
+      "ogeTask": 21,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь задачу: первая труба наполняет бассейн за 6 часов, вторая за 3 часа. Объясни, почему складываются производительности, а не времена.",
+        "edits": {
+          "Задачи": "Найди `MODULES` и нужный сюжет: движение, работа, смеси или проценты. Меняй числовые данные вместе с уравнением, единицами и вопросом.",
+          "Ответы": "При совместной работе складывай доли работы за единицу времени. При движении учитывай направление и единицы скорости; в смесях — массу вещества, а не среднее процентов.",
+          "Подсказки": "Проверь `renderStepsMode`, `renderDrill` и объяснение каждого коэффициента уравнения. Сохрани возможность записать свой ход решения.",
+          "Оформление": "В таблице величин сохраняй подписи «скорость», «время», «расстояние» или соответствующие величины текущего сюжета."
+        },
+        "checks": [
+          "Две трубы выполняют работу за 6 и 3 часа отдельно. Вместе: 1/(1/6 + 1/3) = 2 часа; 9 часов неверно.",
+          "При расстоянии 120 км и скорости 40 км/ч время равно 3 часам. Не путай часы и километры в ответе."
+        ],
+        "limit": "Автоматическая проверка относится к ответу и отдельным учебным шагам. Полный ход решения и обоснования проверьте самостоятельно или с преподавателем."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task21-word-problems/oge-task21-word-problems.html",
+      "prompt": "/downloads/trainers/oge-task21-word-problems/oge-task21-word-problems-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task21-word-problems/oge-task21-word-problems-package.zip"
+    },
+    {
+      "slug": "oge-task22-functions-graphs",
+      "title": "ОГЭ №22 — функции и графики",
+      "sourceHtml": "/trainers/oge-task22-functions-graphs.html",
+      "subject": "математика",
+      "level": "9 класс, ОГЭ",
+      "topic": "графики, параметры, ограничения и выколотые точки",
+      "description": "Графики функций и параметры с пошаговой проверкой и интерактивными моделями.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-algebra.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-algebra.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-20-22-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png"
+      ],
+      "ogeTask": 22,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример y = 3 − (x−2)/(x²−2x). Покажи x ≠ 0, 2, выколотую точку (2; 2,5) и найди все m, при которых y = m не пересекает график.",
+        "edits": {
+          "Задачи": "Найди `genHyperbola` и ветвь `shift_m`. У примера `C:3`, `p:-2`: y = 3 − (x−2)/(x²−2x). После сокращения это y = 3 − 1/x, но ограничения x ≠ 0 и x ≠ 2 сохраняются.",
+          "График": "Согласуй `xh`, выколотую точку (2; 2,5), вертикальную асимптоту x = 0 и горизонтальную y = 3. Масштабы единицы по осям должны оставаться одинаковыми.",
+          "Ответы": "В этом примере горизонтальная прямая y = m не пересекает график при m = 2,5 или m = 3. Проверь оба значения, лишние ответы и дробную запись 5/2.",
+          "Подсказки": "В `renderStep` и `renderMarathon` сохрани объяснение ОДЗ и отдельную проверку пропущенной точки. Численный счёт пересечений не заменяет письменного обоснования."
+        },
+        "checks": [
+          "До изменения: C = 3, p = −1; выколота (1; 2), значения m без пересечений — 2 и 3. После p = −2: выколота (2; 2,5), ответ — 2,5 и 3. Старую пару 2 и 3 нужно отклонить.",
+          "При m = 2 новый график пересекает прямую в (1; 2), поэтому m = 2 не подходит. При m = 2,5 единственная возможная точка исключена; при m = 3 пересечений нет из-за асимптоты.",
+          "Проверь, что x = 0 и x = 2 не попадают в область определения, а x = 1 допустим."
+        ],
+        "gif": "adapt-graph",
+        "limit": "Автоматическая проверка относится к ответу и отдельным учебным шагам. Полный ход решения и обоснования проверьте самостоятельно или с преподавателем."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs.html",
+      "prompt": "/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-package.zip"
+    },
+    {
+      "slug": "oge-task23-geometry-calculations",
+      "title": "ОГЭ №23 — геометрические вычисления",
+      "sourceHtml": "/trainers/oge-task23-geometry-calculations.html",
+      "subject": "геометрия",
+      "level": "9 класс, ОГЭ",
+      "topic": "чертёж, геометрические соотношения и вычисления",
+      "description": "Задачи второй части с чертежом, основаниями каждого вывода и записью решения.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-proof.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-proof.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-part2-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/areas.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-04.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/trig-values.png"
+      ],
+      "ogeTask": 23,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Сделай подписи длин на чертеже крупнее и добавь пояснение, какую теорему использует каждый шаг.",
+        "edits": {
+          "Задачи": "Найди `buildTask`, `buildGuided` и описание выбранного типа. Меняй условие, числовые параметры, чертёж и вычисление согласованно.",
+          "Числа": "Прежде чем применять формулу, проверь её условия: прямой угол, параллельность, середины или касание должны следовать из текста либо доказанного шага.",
+          "Подсказки": "Во встроенном `oge-course-proof.js` сохрани основания шагов, справочные карточки и поле «Записать ход решения». Свободный текст не получает автоматическую оценку доказательства.",
+          "Оформление": "Сохрани рисунок у условия и в решении с опорой. Не используй изменение формы рисунка как доказательство нового свойства."
+        },
+        "checks": [
+          "У прямоугольного треугольника с катетами 5 и 12 гипотенуза равна 13; сумма 17 неверна. Прямой угол должен быть явно дан или обоснован.",
+          "У ромба с диагоналями 12 и 8 площадь равна 48, а 96 неверно. Для изменения диагоналей проверь условие, рисунок и разбор одновременно.",
+          "Напиши своё объяснение, обнови страницу и проверь сохранение. Принятый числовой ответ не означает, что свободный текст доказательства оценён."
+        ],
+        "gif": "adapt-geometry",
+        "limit": "Автоматическая проверка относится к ответу и отдельным учебным шагам. Полный ход решения и обоснования проверьте самостоятельно или с преподавателем."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task23-geometry-calculations/oge-task23-geometry-calculations.html",
+      "prompt": "/downloads/trainers/oge-task23-geometry-calculations/oge-task23-geometry-calculations-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task23-geometry-calculations/oge-task23-geometry-calculations-package.zip"
+    },
+    {
+      "slug": "oge-task25-geometry",
+      "title": "ОГЭ №25 — геометрия повышенной сложности",
+      "sourceHtml": "/trainers/oge-task25-geometry.html",
+      "subject": "геометрия",
+      "level": "9 класс, ОГЭ",
+      "topic": "сложная геометрия, промежуточные выводы и обоснования",
+      "description": "Шестнадцать типов задач с чертежами, разбором и самостоятельной записью решения.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/oge-course-reference.css",
+        "/trainers/oge-course-proof.css",
+        "/assets/oge-wayfinding.css",
+        "/assets/oge-wayfinding.js",
+        "/trainers/oge-video-models.css",
+        "/trainers/oge-video-graphs.js",
+        "/trainers/oge-video-geometry.js",
+        "/trainers/oge-video-models.js",
+        "/trainers/oge-course-shared-mode.js",
+        "/trainers/task19-textbook-data.js",
+        "/trainers/task19-reference.js",
+        "/trainers/oge-course-reference.js",
+        "/trainers/oge-course-proof.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/trainers/oge-part2-geometry-board.js"
+      ],
+      "offlineImages": [
+        "/trainers/task19-reference/areas.png",
+        "/trainers/task19-reference/circle.png",
+        "/trainers/task19-reference/equilateral-triangle.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-03.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-04.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-05.png",
+        "/trainers/task19-reference/fipi-oge-2027-page-06.png",
+        "/trainers/task19-reference/midlines.png",
+        "/trainers/task19-reference/parallelogram-area.png",
+        "/trainers/task19-reference/polygon-angles.png",
+        "/trainers/task19-reference/pythagoras.png",
+        "/trainers/task19-reference/rhombus-area.png",
+        "/trainers/task19-reference/sine-cosine.png",
+        "/trainers/task19-reference/trapezoid-area.png",
+        "/trainers/task19-reference/triangle-area.png",
+        "/trainers/task19-reference/trig-values.png"
+      ],
+      "ogeTask": 25,
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Сделай обозначения на чертеже крупнее. В подсказках отдельно напомни условия применимости теоремы, не раскрывая следующий ответ.",
+        "edits": {
+          "Задачи": "Найди массив `TYPES` с 16 типами. У выбранного типа согласуй данные, рисунок, промежуточные шаги и окончательный ответ; сохраняй названия и номера исходных задач.",
+          "Числа": "Сохраняй существование фигуры, положительность длин и условия касания, параллельности и вписанной окружности. Проверяй промежуточные значения независимо.",
+          "Подсказки": "Сохрани `renderLearnDetail`, `renderTrain` и пояснения во встроенном `oge-course-proof.js`. Нужен вывод с основанием, а не только совпавшее число.",
+          "Оформление": "Сохрани общий рисунок, обозначения точек и поле для собственной записи. При сохранении копии оставь начало имени `oge-task25-`."
+        },
+        "checks": [
+          "Если в равнобедренном треугольнике боковые стороны равны 10, а основание 12, высота к основанию равна 8 и площадь равна 48. В решении нужно обосновать деление основания пополам.",
+          "При перестановке обозначений сверь все шаги с рисунком. Равные отрезки должны иметь основание, а не только похожую длину на экране.",
+          "Проверь неверный и верный числовой шаг, сохранение личной записи после обновления и доступ к объяснению основания. Свободный текст автоматически не оценивается."
+        ],
+        "gif": "adapt-geometry",
+        "limit": "Автоматическая проверка относится к ответу и отдельным учебным шагам. Полный ход решения и обоснования проверьте самостоятельно или с преподавателем."
+      },
+      "downloadHtml": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry.html",
+      "prompt": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry-deepseek-prompt.md",
+      "package": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry-package.zip"
     }
   ],
   "todo": [
-    "ОГЭ: следующий набор — №13, №20–23 и №25, с отдельной проверкой графиков и письменных решений.",
+    "ОГЭ: основные номера №1–25 имеют ссылки на ZIP. Дополнительные маршруты и модели за пределами этих тренажёров упаковывать после самостоятельной проверки.",
     "Профильный ЕГЭ: продолжить первой частью START, векторами с нуля, производной и прикладными задачами. Проверить отдельные модели сечений и атлас параметров.",
     "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
     "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",
