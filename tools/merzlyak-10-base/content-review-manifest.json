@@ -1129,7 +1129,7 @@
     },
     {
       "path": "tools/merzlyak-10-base/independent-review-sections-harmonization-20261116.json",
-      "sha256": "ed07fb9898c19a1212fd45202fd5240c6b8544502913c323c3d5af2cf0f91f05",
+      "sha256": "fe0f9ee95dc5caff1adc678b4adaeec5bcc5066347b40464a3b47c5a0c630b69",
       "reviewerAgent": "/root/sections_technical_audit",
       "identityCheck": {
         "selector": "reviewer",

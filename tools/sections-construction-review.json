@@ -100,5 +100,66 @@
   "productFilesEditedByReviewer": false,
   "browserAcceptance": false,
   "externalProviderReview": false,
-  "releaseApproval": false
+  "releaseApproval": false,
+  "followUpReviews": [
+    {
+      "recordedAt": "2026-11-15T21:57:44Z",
+      "reviewer": "sections_pr_inventory — independent internal technical reviewer",
+      "verdict": "PASS",
+      "baseCommit": "09934f48cbc0483da4738c8f28854150b7132cff",
+      "priorReviewRecordSha256": "b44900db76179aef4043815e370153f738892e34794ec696b616c99f0682007c",
+      "scope": "Read-only independent review of the detached-disclosure runtime fix and the bounded label-placement fallback; the earlier review record is preserved unchanged.",
+      "reviewedFiles": {
+        "stereo-course/sections/assets/app.js": {
+          "sha256": "b11a1187fbdd34bc3c3383819f9b763257c9a3c230876956c7b47e5f64566e6b",
+          "firstIife": {
+            "sha256": "3ff94ca68046469350b46768dc44aeb3e8e14ddd79dd460b79ba85346cde97be",
+            "byteLength": 133758,
+            "definition": "The same UTF-8 prefix and boundary marker defined in the initial review"
+          }
+        },
+        "tools/sections-course.test.cjs": {
+          "sha256": "ac097d3aef182100c5af34f4c9b46a934d21bc5add14f4c1fce9845d5a6ac231"
+        },
+        "tools/sections-label-layout.test.cjs": {
+          "sha256": "25b541e79e91202a7d37d034c375904c792cb65584e361f4b1a903e7a9c26784"
+        }
+      },
+      "sourceEvidence": {
+        "workflowRun": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43765237685",
+        "artifact": "https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43765237685/artifacts/14182505738",
+        "headCommit": "09934f48cbc0483da4738c8f28854150b7132cff",
+        "inspectedArtifactFindings": [
+          "The report contains 2600 inspected scenes and one layout failure: final ii-example-7 at viewport 320, where label Z masks points A1 and B1.",
+          "The report records three undefined-points runtime errors during rotated/flat auth-metric-09 at widths 320, 390 and 768."
+        ]
+      },
+      "reviewedDeltas": [
+        {
+          "change": "The existing capture-phase guard against toggle events from detached details elements now applies in personal mode as well as board mode.",
+          "assessment": "PASS: board behavior is retained. Both stale opening and closing callbacks are stopped before they can mutate an old lesson, save stale work or redraw the next lesson using the previous lesson's step count.",
+          "regression": "Navigation from the completed eight-step auth-method-04 to five-step auth-metric-09 preserves state, storage and SVG under delayed detached toggles; live construction, rotation and flat view on the new lesson still work."
+        },
+        {
+          "change": "After the existing two placement passes, an overlapping label may move to an unoccupied location on a bounded six-pixel grid inside the SVG frame.",
+          "assessment": "PASS: fallback runs only for a colliding padded box, rejects every candidate overlapping another label or point, preserves the label and font, and retains the existing leader connection. It does not change model coordinates, edges, action state or displayed label membership.",
+          "regression": "The actual CI glyph-width fixture for the dense 267-by-205 prism SVG retains all 26 labels and points, with no clipped painted labels, label-to-label overlaps or glyph-to-point overlaps."
+        }
+      ],
+      "tests": {
+        "command": "NODE_PATH=<test-dependencies> node --test tools/sections-course.test.cjs tools/sections-label-layout.test.cjs",
+        "passed": 17,
+        "failed": 0,
+        "skipped": 0,
+        "durationMs": 27518.630121,
+        "counting": "One combined execution against the final joint app bytes. Earlier separate 16-test and 1-test executions are not counted again."
+      },
+      "unresolvedFindings": [],
+      "requiredNextGate": "Rerun the full real-Chromium acceptance matrix on the published corrected head; local measured-glyph and DOM regressions do not substitute for that gate.",
+      "productFilesEditedByReviewer": false,
+      "browserAcceptance": false,
+      "externalProviderReview": false,
+      "releaseApproval": false
+    }
+  ]
 }

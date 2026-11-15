@@ -102,7 +102,7 @@
   function details(label, children, onOpen, open) {
     const d = el('details'); if (open) d.open = true;
     // A queued toggle from a replaced card must not update the new scene.
-    if (board) d.addEventListener('toggle', event => { if (!d.isConnected) event.stopImmediatePropagation(); }, true);
+    d.addEventListener('toggle', event => { if (!d.isConnected) event.stopImmediatePropagation(); }, true);
     d.append(el('summary', {}, label));
     for (const child of children) d.append(child);
     if (onOpen) d.addEventListener('toggle', () => { if (d.open && !boardApplying) onOpen(); });
@@ -811,6 +811,23 @@
         let best=item,bestCost=item.cost(item,others);
         for(const candidate of item.candidates){const cst=item.cost(candidate,others);if(cst<bestCost-.01){best=candidate;bestCost=cst;}}
         if(best!==item)Object.assign(item,best);
+      }
+      // A dense final drawing can exhaust the candidates around one point.
+      // Keep its label and font size, then use free space elsewhere in the
+      // frame. The existing leader connects a displaced label to its point.
+      for(const item of placements) {
+        const others=placements.filter(other=>other!==item);
+        const blocked=box=>others.some(other=>overlap(box,other.box)>.01)||pointBoxes.some(point=>overlap(box,point)>.01);
+        if(!blocked(item.box))continue;
+        const w=item.box[2]-item.box[0],h=item.box[3]-item.box[1];
+        let best=null,bestCost=Infinity;
+        for(let top=7;top<=this.height-7-h;top+=6)for(let left=7;left<=this.width-7-w;left+=6) {
+          const box=[left,top,left+w,top+h];if(blocked(box))continue;
+          const candidate={box,x:left+3.5-item.metric.x,y:top+3.5-item.metric.y,
+            distance:Math.hypot(left+w/2-item.p[0],top+h/2-item.p[1]),anglePenalty:1};
+          const value=item.cost(candidate,others);if(value<bestCost){best=candidate;bestCost=value;}
+        }
+        if(best)Object.assign(item,best);
       }
       for(const {name,p,focused,label,x,y,box,distance} of placements) {
         const endX=clamp(p[0],box[0],box[2]),endY=clamp(p[1],box[1],box[3]);
