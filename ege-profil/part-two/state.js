@@ -73,9 +73,7 @@ function compare(a,b){
  const difference=a.numerator*b.denominator-b.numerator*a.denominator;
  return difference<0n?-1:difference>0n?1:0;
 }
-function openAnswer(field,input){
- const rootList=field.excluded!==undefined;
- function normalize(value){
+function normalizeAnswerSet(value,rootList){
   const source=String(value).trim().toLowerCase().replace(/[−–]/g,'-').replace(/^x\s*∈\s*/,'');
   if(/^(?:∅|нет(?: корней| решений)?|\{\s*\})$/.test(source))return [];
   if(!source)return null;
@@ -109,7 +107,10 @@ function openAnswer(field,input){
    if(end===0)last.right ||= span.right;
   }
   return joined;
- }
+}
+function openAnswer(field,input){
+ const rootList=field.excluded!==undefined;
+ const normalize=value=>normalizeAnswerSet(value,rootList);
  const actual=normalize(input);
  if(!actual)return {recognized:false,correct:false};
  const correct=field.answers.some(answer=>{
@@ -125,6 +126,60 @@ function openAnswer(field,input){
   :field.feedback;
  return {recognized:true,correct,hint};
 }
+const answerFormats={
+ number:'Введите число или выражение с конечным действительным значением: 3/4, π/6, sqrt(2). Деление на ноль и корень из отрицательного числа недопустимы.',
+ 'yes-no':'Введите «да» или «нет».',
+ constraint:'Запишите ограничение на t: знак сравнения и число, например t < 1.',
+ monotonicity:'Введите «возрастает», «убывает» или другой вид монотонности: «не возрастает», «не убывает», «постоянна».',
+ relation:'Введите знак сравнения: >, <, ≥, ≤, = или ≠. Можно использовать >=, <=, !=.',
+ position:'Введите «внутри», «на границе» или «вне».',
+ 'number-or-none':'Введите конечное действительное число или «нет».',
+ 'number-or-infinity':'Введите конечное число либо «бесконечно много» или ∞.',
+ 'parameter-set':'Запишите множество значений a: неравенство, промежуток, отдельные точки или ∅. В промежутках разделяйте границы знаком ; и используйте целые числа, десятичные числа или дроби.',
+ 'solution-set':'Запишите множество решений: неравенство, промежуток, отдельные точки или «нет решений». В промежутках разделяйте границы знаком ; и используйте целые числа, десятичные числа или дроби.',
+ 'root-set':'Перечислите корни через ; или введите ∅. Используйте целые числа, десятичные числа или дроби.',
+ 'interval-set':'Запишите промежутки с границами через ; и объединением ∪. Используйте целые числа, десятичные числа, дроби и ∞; отдельную точку заключите в {}.'
+};
+function recognize(field,input,checker){
+ // Format is authored for the field, never inferred from its correct answers.
+ // A syntactically valid but mathematically wrong choice remains an attempt.
+ const type=field.answerFormat||'number';
+ const source=String(input??'').trim().toLowerCase().replace(/[−–]/g,'-');
+ const compact=source.replace(/\s+/g,'').replace(/≥/g,'>=').replace(/≤/g,'<=').replace(/≠/g,'!=');
+ const finite=value=>!!value&&Number.isFinite(checker?.number(value));
+ const relation=/^(?:[<>]=?|!?=)$/;
+ const empty=/^(?:∅|нет(?:корней|решений)?|пустоемножество|\{\})$/;
+ const infinity=/^(?:\+?∞|бесконечномного|бесконечность|infinity|\\infty)$/;
+ function inequality(variable,implicit=false){
+  const text=variable==='a'?compact.replace(/а/g,'a'):compact;
+  const value=implicit&&/^[<>=!]/.test(text)?variable+text:text;
+  const parts=value.split(/(<=|>=|!=|[<>=])/);
+  if(parts.length!==3&&parts.length!==5)return false;
+  if(parts.filter((part,i)=>i%2===0&&part===variable).length!==1)return false;
+  return parts.every((part,i)=>i%2?relation.test(part):part===variable||finite(part));
+ }
+ function set(variable){
+  const value=source.replace(new RegExp('^['+(variable==='a'?'aа':'x')+']\\s*∈\\s*'),'');
+  return empty.test(compact)||/^(?:r|ℝ)$/.test(compact)||inequality(variable)||
+   normalizeAnswerSet(value,false)!==null||normalizeAnswerSet(value,true)!==null;
+ }
+ let recognized=false;
+ if(source)switch(type){
+  case 'number':recognized=finite(source);break;
+  case 'yes-no':recognized=/^(?:да|нет)$/.test(compact);break;
+  case 'constraint':recognized=inequality('t',true);break;
+  case 'monotonicity':recognized=/^(?:возрастает|убывает|невозрастает|неубывает|постоянна)$/.test(compact);break;
+  case 'relation':recognized=relation.test(compact);break;
+  case 'position':recognized=/^(?:внутри|награнице|вне)$/.test(compact);break;
+  case 'number-or-none':recognized=compact==='нет'||finite(source);break;
+  case 'number-or-infinity':recognized=infinity.test(compact)||finite(source);break;
+  case 'parameter-set':recognized=set('a');break;
+  case 'solution-set':recognized=set('x');break;
+  case 'root-set':recognized=normalizeAnswerSet(source,true)!==null;break;
+  case 'interval-set':recognized=normalizeAnswerSet(source,false)!==null;break;
+ }
+ return {recognized,format:field.format||answerFormats[type]||'Проверьте формат, указанный у поля.'};
+}
 function summary(storage,lessons){
  const result={total:0,completed:0,independent:0,assisted:0,proofPending:0,started:0,unavailable:0,sections:{}};
  for(const lesson of lessons||[]){const section=result.sections[lesson.exam]||(result.sections[lesson.exam]={total:0,completed:0,independent:0,assisted:0,proofPending:0,started:0});
@@ -132,5 +187,5 @@ function summary(storage,lessons){
  }
  return result;
 }
-const api={create,valid,matches,openAnswer,canonical,summary,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
+const api={create,valid,matches,openAnswer,recognize,canonical,summary,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
