@@ -50,6 +50,12 @@ const oldTopics = {
   25: '/trainers/oge-task25-geometry.html'
 };
 const practical = ['roads-grid', 'roads-schema', 'tires', 'stoves', 'land-plots', 'apartments', 'tariffs', 'paper-sheets'];
+const research = [
+  {topic: 'n10', task: 'n10-c1', type: 'probability', title: 'Настроить вероятность на барабане'},
+  {topic: 'n11', task: 'n11-c1', type: 'graph', title: 'Построить прямую через две точки'},
+  {topic: 'n15', task: 'n15-c-triangle-gate', type: 'triangleGate', title: 'Проверить, из каких сторон получается треугольник'},
+  {topic: 'n17', task: 'n17-c-tilt-area', type: 'tiltArea', title: 'Наклонить параллелограмм и сравнить площадь'}
+];
 const legacy = new Map([
   ['mathExamCourseProgress.v1', '{"synthetic-old-trainer":{"solvedByType":{"first":3},"updatedAt":99}}'],
   ['mathExam.oge6.practice.v1', '{"synthetic":"fractions"}'],
@@ -132,6 +138,82 @@ test('existing course entries remain; all optional topic links also work without
     assert(fallback.window.document.querySelector('noscript'), 'The non-script page explains how to reach existing practice');
   } finally { fallback.window.close(); }
   Object.values(sources).forEach(hrefExists);
+});
+
+test('both entry pages offer four concrete optional models before practice, without JavaScript', () => {
+  for (const file of ['oge/index.html', 'trainers/oge-course/index.html']) {
+    const dom = new JSDOM(read(file), {url: origin + '/' + file});
+    try {
+      const doc = dom.window.document, section = doc.querySelector('#skill-course');
+      const nativeNumbers = Array.from(doc.querySelectorAll('[data-oge-topic]'), a => a.dataset.ogeTopic);
+      assert.equal(nativeNumbers.length, 25, 'The full number map has no duplicate links');
+      assert.equal(new Set(nativeNumbers).size, 25, 'Every exam number appears exactly once');
+      const models = section.querySelector('details#skill-course-research');
+      assert(models && !models.open, 'The optional model list starts closed');
+      assert.match(models.querySelector('summary').textContent, /Исследовать модель.*по желанию/);
+      const links = Array.from(models.querySelectorAll('a[data-oge-research]'));
+      assert.equal(doc.querySelectorAll('[data-oge-research]').length, 4, 'Only verified model destinations are advertised');
+      assert.deepEqual(links.map(a => a.dataset.ogeResearch), research.map(item => item.topic));
+      for (const [i, link] of links.entries()) {
+        const expected = research[i], url = new URL(link.href);
+        assert.equal(url.origin, origin);
+        assert.equal(url.pathname, lessonPath);
+        assert.deepEqual(Array.from(url.searchParams), [['topic', expected.topic], ['route', 'task:' + expected.task]]);
+        assert.equal(link.textContent, '№' + expected.topic.slice(1) + ' · ' + expected.title);
+        assert.equal(link.hasAttribute('data-oge-skill-topic'), false, 'Research does not replace a short practice entry');
+        assert(!link.target || link.target === '_self');
+        hrefExists(link.getAttribute('href'));
+      }
+      const practice = section.querySelector('.oge-skill-course-actions');
+      assert(models.compareDocumentPosition(practice) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING, 'Research choice precedes practice');
+      assert.match(section.querySelector('#skill-course-topics > summary').textContent, /Короткая тренировка/);
+      assert.match(section.querySelector('[data-oge-written-note]').textContent, /№20–25.*отдельные шаги.*Полное решение.*не оценивает всё обоснование/);
+      if (file === 'oge/index.html') {
+        assert.match(doc.querySelector('#oge-heading').textContent, /Сначала — исследовать/);
+        const hero = doc.querySelector('.oge-hero .actions a.btn'), url = new URL(hero.href);
+        assert.match(hero.textContent, /Исследовать прямую/);
+        assert.equal(url.searchParams.get('topic'), 'n11');
+        assert.equal(url.searchParams.get('route'), 'task:n11-c1');
+      } else {
+        assert.match(doc.querySelector('#part2 > p').textContent, /отдельные шаги.*полное решение.*всего обоснования/);
+      }
+    } finally { dom.window.close(); }
+  }
+});
+
+test('each advertised model resolves its exact task and preserves existing results across restored sessions', () => {
+  for (const file of ['oge/index.html', 'trainers/oge-course/index.html']) {
+    const dom = new JSDOM(read(file), {url: origin + '/' + file});
+    const storage = new Map(legacy);
+    let h = open('?topic=n9', {storage});
+    try {
+      h.input('#skill-answer', '5');
+      h.click('[data-action="check"]');
+      assert(h.query('.feedback.good'));
+      h.click('[data-action="map"]');
+    } finally { h.close(); }
+    const progressBefore = storage.get(STORAGE_PROGRESS);
+    assert(progressBefore, 'A real saved result exists before entering a model');
+    try {
+      for (const [i, link] of Array.from(dom.window.document.querySelectorAll('[data-oge-research]')).entries()) {
+        const expected = research[i];
+        for (const phase of ['first visit', 'restored visit']) {
+          h = createHarness({url: link.href, storage});
+          try {
+            assert.equal(h.api.state.topic, expected.topic, file + ' ' + phase);
+            assert.equal(h.query('#skill-topic').value, expected.topic);
+            assert.equal(h.api.task().id, expected.task);
+            assert.equal(h.api.task().type, expected.type);
+            assert.equal(h.api.state.activeRun, 'task:' + expected.task);
+            assert.equal(h.api.state.map, false, 'A stale map cannot hide the requested model');
+            assertNavigation(h, expected.topic);
+            assert.equal(storage.get(STORAGE_PROGRESS), progressBefore, 'Opening a model does not claim a completed or independent result');
+            untouched(storage);
+          } finally { h.close(); }
+        }
+      }
+    } finally { dom.window.close(); }
+  }
 });
 
 test('each explicit topic overrides stale selection and opens a finite ordinary practice', () => {
