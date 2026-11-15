@@ -4,4 +4,14 @@
 @media(max-width:740px){:root{font-size:16px}.h35-shell{padding:12px 12px 30px}.workspace{grid-template-columns:1fr;gap:10px}.h35-header{display:block}.h35-controls{margin:10px 0;gap:7px}.h35-controls select{font-size:14px;padding:7px}.card{padding:13px;border-radius:10px}.condition{font-size:21px;margin-bottom:8px;padding:6px}svg.graph{max-height:245px}.h35-nav{margin-bottom:12px;font-size:13px}.h35-status{margin:6px 0 9px;font-size:13px}h2{font-size:19px}.choices{gap:6px}.choices button{padding:8px 10px;font-size:15px}.progress-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-buttons{gap:4px}.mode-buttons button{font-size:12px;padding:6px 8px}.actions button{flex:1 1 auto}.h35-header h1{font-size:25px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
-@media(max-width:400px){.h35-controls label{display:flex;align-items:center;gap:4px;font-size:12px}.h35-controls select{width:115px;font-size:12px;padding:6px}.h35-controls>.subtle-button{font-size:12px;padding:8px}.h35-nav{margin-bottom:6px}}
+@media(max-width:400px){
+  .h35-shell{padding-top:8px}.h35-nav{margin-bottom:6px}
+  .h35-header .eyebrow{margin-bottom:4px}.h35-header h1{margin-bottom:2px}
+  .h35-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin:8px 0;gap:6px}
+  .mode-buttons{grid-column:1 / -1;display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:4px}
+  .mode-buttons button{min-width:0;padding:6px 5px}
+  .h35-controls label{display:flex;align-items:center;gap:4px;font-size:12px;min-width:0}
+  .h35-controls select{width:0;flex:1 1 0;min-width:0;font-size:12px;padding:6px 3px}
+  .h35-controls>.subtle-button{font-size:12px;padding:8px 5px}
+  .h35-status{margin:4px 0 6px}.card{padding:11px}.task-progress{margin-bottom:8px}
+}

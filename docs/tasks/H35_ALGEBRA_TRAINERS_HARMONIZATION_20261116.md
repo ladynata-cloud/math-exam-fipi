@@ -84,7 +84,7 @@
 
 Вторая выявленная привязка: `tools/oge-learner-entry.test.cjs`, только запись `taskSources['trainers/linear-systems-trainer.html']` на проверенный source commit. Полное сравнение учебных элементов, проверка возвратов, исходная `oge-wayfinding` и скрытие навигации в режиме доски сохраняются.
 
-Для этой привязки `.github/workflows/oge-learner-entry.yml` адресно получает тот же source commit: штатный checkout имеет глубину 1, поэтому новое сравнение `git show` требует явного fetch. Остальные источники, шаги и проверки workflow неизменны.
+Для этой привязки `.github/workflows/oge-learner-entry.yml` и вызывающий тот же gate `.github/workflows/oge-skill-course.yml` адресно получают тот же source commit: штатный checkout имеет глубину 1, поэтому новое сравнение `git show` требует явного fetch. Второй вызов выявлен конкретным CI failure первого head; путь зафиксирован до исправления. Остальные источники, шаги и проверки workflow неизменны.
 
 Штатная автономная сборка использует `--only=linear-systems-trainer --downloads-only`: второй флаг сохраняет уже проверенную исходную страницу и положение download-panel.css. Допустима только штатная ISO-дата `downloads/trainers-manifest.json.updated` не раньше базовой; остальные корневые метаданные и все чужие записи/комплекты проверяются на точное равенство.
 

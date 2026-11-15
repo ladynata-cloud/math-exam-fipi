@@ -90,8 +90,8 @@
       if (s.done || s.revealed) { const [x, y] = pairAnswer(t); out += `<circle cx="${X(x)}" cy="${Y(y)}" r="5" fill="#12685d"/><text data-answer-label x="${X(x) + 8}" y="${Y(y) - 10}" font-size="13">${esc(answerText(t))}</text>`; }
     }
     out += '</svg>';
-    if (quadratic) out += `<p class="graph-caption">${show ? `Для рисунка g(x) = f(x) / ${f(divisor)}. Делитель положительный: нули и знаки сохраняются. По осям x и g один масштаб.` : 'После прогноза откроется модель знаков выражения и числовая прямая.'}</p>`;
-    else out += `<p class="graph-caption">${t.method === 'add' ? (show && (s.mode === 'learn' || s.help || s.done) ? 'Сумма — следствие двух строк. Для решения системы нужна и одна исходная строка.' : 'Две исходные строки системы. Найди пару, которая подходит к обеим.') : 'Две прямые — две строки. По осям один масштаб.'}</p>`;
+    if (show && quadratic) out += `<p class="graph-caption">Для рисунка g(x) = f(x) / ${f(divisor)}. Делитель положительный: нули и знаки сохраняются. По осям x и g один масштаб.</p>`;
+    else if (show) out += `<p class="graph-caption">${t.method === 'add' ? (s.mode === 'learn' || s.help || s.done ? 'Сумма — следствие двух строк. Для решения системы нужна и одна исходная строка.' : 'Две исходные строки системы. Найди пару, которая подходит к обеим.') : 'Две прямые — две строки. По осям один масштаб.'}</p>`;
     return out;
   }
   const button = (action, label, cls = '', extra = '') => `<button type="button" data-action="${action}" class="${cls}" ${extra}>${label}</button>`;

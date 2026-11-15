@@ -10,12 +10,14 @@ const act = (p, name, value) => p.locator(`[data-action="${name}"]${value === un
 const snapshot = p => p.evaluate(() => H35App.snapshot());
 async function checkLayout(page, width, name) {
   const layout = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: innerWidth, boxes: ['#condition', '#model', '#learning-step h2', '#learning-step button'].map(s => { const e = document.querySelector(s), r = e.getBoundingClientRect(); return { selector: s, x: r.x, y: r.y, width: r.width, height: r.height }; }) }));
-  assert(layout.scroll <= width + 1, name + ' no horizontal overflow');
-  for (const b of layout.boxes) { assert(b.width > 0 && b.height > 0 && b.x >= -1 && b.x + b.width <= width + 1, name + ' readable ' + b.selector); }
-  assert(layout.boxes[0].y < 900 && layout.boxes[1].y + layout.boxes[1].height < 900, name + ' condition and full model in first viewport');
-  assert(layout.boxes[2].y < 900 && layout.boxes[3].y < 900, name + ' first forecast visible');
+  // Keep the measured failure and screenshot, not only the assertion message.
   await page.screenshot({ path: path.join(out, name + '-' + width + '.png'), fullPage: true });
   report.pages.push({ name, width, layout });
+  const evidence = ' ' + JSON.stringify(layout);
+  assert(layout.scroll <= width + 1, name + ' no horizontal overflow' + evidence);
+  for (const b of layout.boxes) { assert(b.width > 0 && b.height > 0 && b.x >= -1 && b.x + b.width <= width + 1, name + ' readable ' + b.selector + evidence); }
+  assert(layout.boxes[0].y < 900 && layout.boxes[1].y + layout.boxes[1].height < 900, name + ' condition and full model in first viewport' + evidence);
+  assert(layout.boxes[2].y < 900 && layout.boxes[3].y < 900, name + ' first forecast visible' + evidence);
 }
 async function research(page, method) {
   assert.equal((await snapshot(page)).active.state.phase, 0);
