@@ -4,8 +4,8 @@ const {canonicalProfileLearningScripts}=require('./public-page-script.cjs');
 const map=['../skill-map-data.js?v=20261112-vectors','../azbuka-metodov/catalog.js?v=20261113-routes','../skill-map.js?v=20261113-foundations','journey.js?v=20261113-foundations',
  'second-part.js?v=20261109','practice-feedback.js?v=20261109-active','practice-coach.js?v=20261109-integrity',
  'vector-basics-data.js?v=20261113-foundations','vector-basics-models.js?v=20261112-vectors'];
-const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261112-vectors','calm-ui.js?v=20261113-foundations','app.js?v=20261113-foundations','checks.js?v=20261114-numeric-domain'];
-const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-data.js?v=20261101-finance','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261101-trainer-repair','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
+const runtime=['geometry-data.js?v=20261112-vectors','state.js?v=20261109-integrity','calm-data.js?v=20261112-vectors','calm-ui.js?v=20261113-foundations','app.js?v=20261115-hint-context','checks.js?v=20261114-numeric-domain'];
+const boardRuntime=['geometry-data.js','state.js?v=20261101-trainer-repair','calm-data.js?v=20261101-finance','calm-ui.js?v=20261101-trainer-repair','app.js?v=20261115-hint-context','checks.js?v=20261101-trainer-repair'].map(src=>'/ege-profil/start/'+src);
 const html=sources=>sources.map(src=>'<script defer src="'+src+'"></script>').join('\n');
 const canonical=html([...map,...runtime]),wrapper=html(boardRuntime);
 function parity(page=canonical,board=wrapper){
@@ -30,6 +30,9 @@ test('adding, removing or reordering any learning script breaks parity in either
 test('unknown cache queries are rejected for reviewed and ordinary learning scripts',()=>{
  for(const src of runtime)assert.throws(()=>parity(canonical.replace(src,src.split('?')[0]+'?v=unreviewed'),wrapper));
  for(const src of boardRuntime)assert.throws(()=>parity(canonical,wrapper.replace(src,src.split('?')[0]+'?v=unreviewed')));
+ for(const stamp of ['20261113-foundations','unreviewed'])assert.throws(()=>parity(
+  canonical.replace('app.js?v=20261115-hint-context','app.js?v='+stamp),
+  wrapper.replace('app.js?v=20261115-hint-context','app.js?v='+stamp)),/Only the reviewed public runtime cache stamp/);
 });
 test('public-only modules must appear once, first, in order and as exact deferred includes',()=>{
  for(const changed of [

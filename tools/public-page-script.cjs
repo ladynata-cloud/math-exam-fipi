@@ -71,7 +71,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
     ['calm-ui.js?v=20261113-foundations', 'calm-ui.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261113-foundations', 'app.js?v=20261101-trainer-repair'],
+    ['app.js?v=20261115-hint-context', 'app.js?v=20261115-hint-context'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);

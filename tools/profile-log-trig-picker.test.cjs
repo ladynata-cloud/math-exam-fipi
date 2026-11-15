@@ -72,11 +72,10 @@ test('combined START wrapper loads existing canonical lesson assets, bridge and 
   const html = fs.readFileSync(path.join(ROOT, start.path), 'utf8');
   const scripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(match => match[1]);
   const source = require('./public-page-script.cjs').sourceForProfileBoard(ROOT, html);
-  // This wrapper already has the reviewed 2026-11-06 board-runtime stamps.
-  // Keep those exact exceptions instead of discarding every query string.
+  // This wrapper retains the reviewed 2026-11-06 functions-task stamp.
+  // Keep that exact exception instead of discarding every query string.
   const boardStamps = new Map([
-    ['functions-tasks.js?v=20261009-calm', 'functions-tasks.js?v=20261106-log-trig'],
-    ['app.js?v=20261101-trainer-repair', 'app.js?v=20261106-log-trig']
+    ['functions-tasks.js?v=20261009-calm', 'functions-tasks.js?v=20261106-log-trig']
   ]);
   const canonical = require('./public-page-script.cjs').canonicalProfileLearningScripts(source, html).filter(src => !src.startsWith('../learning/')).map(src => '/ege-profil/start/' + (boardStamps.get(src) || src));
   const home = '/assets/assistant/home-link.js?v=20261110';

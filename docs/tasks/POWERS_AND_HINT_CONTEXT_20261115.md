@@ -69,6 +69,9 @@ therefore remains open even if all candidate technical checks pass.
 - Update the affected public START script versions so returning pupils fetch
   the corrected content, including the eight existing START board wrappers
   (only their three changed-script URL versions).
+- Maintain the existing exact script-version fixtures and the navigator's
+  source bindings for the two changed HTML files using its supported committed
+  source refresh; preserve all byte, provenance and negative checks.
 - Extend the existing task-first DOM/browser checks and focused content checks;
   keep them in existing CI execution paths.
 - Add this specification and reconcile PROJECT_STATUS against scoped live
@@ -99,7 +102,7 @@ therefore remains open even if all candidate technical checks pass.
 - [ ] The five zero-exponent statements explicitly require a nonzero base.
 - [x] Thirteen targeted regressions detect the old content/context failures and
   pass on the candidate. Existing gates stay enabled; CI remains required.
-- [ ] The changed help fits at 320 and 1280 CSS pixels without horizontal
+- [x] The changed help fits at 320 and 1280 CSS pixels without horizontal
   overflow and remains readable with normal page scrolling.
 
 ## Checks and gates
@@ -168,9 +171,41 @@ therefore remains open even if all candidate technical checks pass.
   all 24 changed-script references across the eight wrappers. This is not an
   external provider verdict or a merge authorization.
 - Browser: local Chromium could not start because the environment denied its
-  socket operation. The existing CI browser suite is extended to exercise the
-  five affected lesson families in both modes at 320/1280 pixels; its result
-  must be reported separately after the Draft PR runs.
+  socket operation. On first remote head
+  `f2d22858272b4b2bbe583db2e1e647973b607596`, CI
+  [task-first 43658514431](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43658514431)
+  passed all 81 lesson families and 20 targeted hint cases (five families, two
+  modes, 320/1280 pixels). The screenshot task rejects 65536 and accepts 16;
+  drafts, assisted credit and horizontal fit remain checked. The exported
+  screenshots show the corrected powers rule and the restored step context.
+- Visual review covered all ten exported hint screenshots. Text and controls
+  remain readable at both widths. At 320px the existing floating navigator
+  touches the upper-right border of the solution button in the fractions and
+  extrema screenshots without hiding its label; this shell behavior is not
+  changed here. The browser derivative screenshot is variant 4; the exact
+  reported `calc-extreme-5` remains covered in both modes by the DOM tests.
+- First-head CI also exposed two stale verification bindings: navigator HTML
+  hashes and the exact START app-version pin used by board picker checks.
+  These were reproduced locally and corrected without changing teaching HTML
+  again, removing checks or accepting arbitrary query strings.
+- Navigator maintenance uses `tools/public_navigator_bindings.py` with source
+  commit `f2d22858272b4b2bbe583db2e1e647973b607596`, this task, and exactly
+  `ege-profil/start/index.html` and `trainers/attestaciya-1-kurs.html`.
+  It updates their source hashes and provenance only; the snippet, rollout
+  coverage and frozen book bytes are unchanged. This is the supported later
+  source-edit procedure in `PUBLIC_NAVIGATOR_ALL_PAGES.md`, not an approval.
+- The script parity helper pins the identical reviewed
+  `app.js?v=20261115-hint-context` on page and wrappers. Matching stale or
+  unreviewed versions on both sides are still rejected. The obsolete app-only
+  log/trigonometry exception is removed; its function-task exception remains.
+- Follow-up local checks: 45/45 script-parity and all affected board-picker
+  checks, 4/4 navigator preservation checks, 5/5 source-binding tool checks,
+  and 43/43 navigator dialogue regressions. Five parity tests also occur in
+  the earlier 107-test total. Final-head CI is required separately.
+- Independent internal review found no blocking issue in the two-file source
+  refresh or the exact script pin; the official read-only refresh preview
+  returned `BINDINGS_CURRENT`. This is not external provider approval.
+- Draft PR: [#607](https://github.com/ladynata-cloud/math-exam-fipi/pull/607).
 - Scope exception/blocker: two frozen book texts remain unchanged under ADR
   0012 and base-anchored integrity gates, pending an owner decision.
 
