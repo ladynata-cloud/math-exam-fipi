@@ -102,6 +102,8 @@ jobs:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
       - run: npx playwright install --with-deps chromium
+      - name: Measure native file storage across immediate reloads
+        run: node tools/geometry/offline-storage-probe.browser.cjs
       - name: Real viewport, actions, retained work and offline behavior
         env:
           GEOMETRY_HARMONIZATION_ARTIFACTS: artifacts/atanasyan-harmonization/geometry

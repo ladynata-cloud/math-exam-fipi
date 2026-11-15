@@ -18,7 +18,7 @@ async function captureEntry(context){await context.addInitScript(key=>{
  const id=document.querySelector('.topic-investigation')?.dataset.topic||window.COURSE_CONFIG?.unit.id,field=document.querySelector('#observation'),notice=document.querySelector('#storage-notice');
  const parse=raw=>{try{return raw?JSON.parse(raw).units?.[id]||null:null;}catch(e){return {error:String(e)};}};
  let raw=null,error=null,storageKeys=[];try{raw=localStorage.getItem(key);storageKeys=Object.keys(localStorage).sort().map(k=>({key:k,utf16Bytes:(localStorage.getItem(k)?.length||0)*2}));}catch(e){error=String(e);}
- return {id,url:location.href,observation:field?.value??null,connected:!!field?.isConnected,record:parse(raw),storageLength:raw?.length||0,storageKeys,error,inputs:window.__geometryObservationInputs||[],notice:notice&&!notice.hidden?notice.textContent:null,entry:{url:window.__geometryStorageAtEntry?.url,error:window.__geometryStorageAtEntry?.error,record:parse(window.__geometryStorageAtEntry?.raw)}};
+ return {id,url:location.href,observation:field?.value??null,connected:!!field?.isConnected,record:parse(raw),rawStorage:raw,storageLength:raw?.length||0,storageKeys,error,inputs:window.__geometryObservationInputs||[],notice:notice&&!notice.hidden?notice.textContent:null,entry:{url:window.__geometryStorageAtEntry?.url,error:window.__geometryStorageAtEntry?.error,raw:window.__geometryStorageAtEntry?.raw??null,record:parse(window.__geometryStorageAtEntry?.raw)}};
  };
 },KEY);}
 async function snapshot(p){return p.evaluate(()=>window.__geometrySnapshot());}
