@@ -339,12 +339,24 @@
   function ensureExamMap() {
     if (root.ProfileExamMap) return Promise.resolve(root.ProfileExamMap);
     if (!root.ProfileExamMapReady) root.ProfileExamMapReady = new Promise(resolve => {
-      const script = document.createElement('script');
-      script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
-      script.async = true;
-      script.onload = () => resolve(root.ProfileExamMap || null);
-      script.onerror = () => resolve(null);
-      document.head.append(script);
+      // Course navigation and legacy HTML may already have requested this map.
+      // Adopt that pending script instead of loading a second copy.
+      let script = [...document.querySelectorAll('script[src]')].find(script =>
+        new URL(script.src, location.href).pathname === '/ege-profil/exam-map.js');
+      const existing = Boolean(script);
+      if (!script) {
+        script = document.createElement('script');
+        script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
+        script.async = true;
+      }
+      const settled = () => resolve(root.ProfileExamMap || null);
+      script.addEventListener('load', settled, {once: true});
+      script.addEventListener('error', () => resolve(null), {once: true});
+      if (!existing) document.head.append(script);
+      // A supplied script's error can precede this consumer. Window load is the
+      // terminal fallback, while a pending async script still has time to load.
+      else if (document.readyState === 'complete') settled();
+      else root.addEventListener('load', settled, {once: true});
     });
     return root.ProfileExamMapReady;
   }

@@ -111,10 +111,23 @@
     if(root.ProfileExamMap)return mount();
     // Older trainer pages keep their stable script bindings. Fetch the same
     // shared map before rendering topic links, including the nested stereo pages.
-    let script=[...document.querySelectorAll('script[src]')].find(script=>new URL(script.src,location.href).pathname==='/ege-profil/exam-map.js');
-    if(!script){script=document.createElement('script');script.src='/ege-profil/exam-map.js?v=20261115-fipi-map';script.dataset.profileExamMap='';document.head.append(script);}
-    script.addEventListener('load',mount,{once:true});
-    script.addEventListener('error',mount,{once:true});
+    // Skill-map can start during the same DOMContentLoaded event: both consumers
+    // share the pending request and adopt a script already supplied by the page.
+    if(!root.ProfileExamMapReady)root.ProfileExamMapReady=new Promise(resolve=>{
+      let script=[...document.querySelectorAll('script[src]')].find(script=>new URL(script.src,location.href).pathname==='/ege-profil/exam-map.js');
+      const existing=!!script;
+      if(!script){script=document.createElement('script');script.src='/ege-profil/exam-map.js?v=20261115-fipi-map';script.async=true;}
+      const settled=()=>resolve(root.ProfileExamMap||null);
+      script.addEventListener('load',settled,{once:true});
+      script.addEventListener('error',()=>resolve(null),{once:true});
+      if(!existing)document.head.append(script);
+      else if(document.readyState==='complete')settled();
+      // A supplied deferred script may have failed before these listeners.
+      // Window load also waits for a still-pending async script; DOMContentLoaded
+      // alone would incorrectly settle that successful request as unavailable.
+      else root.addEventListener('load',settled,{once:true});
+    });
+    root.ProfileExamMapReady.then(mount);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })(typeof globalThis!=='undefined'?globalThis:this);

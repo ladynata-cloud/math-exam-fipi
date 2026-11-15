@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const {JSDOM} = require('jsdom');
+const {JSDOM, ResourceLoader, VirtualConsole} = require('jsdom');
 const {resolvePublicScript} = require('./public-page-script.cjs');
 const map = require('../ege-profil/exam-map.js');
 const root = path.resolve(__dirname, '..');
@@ -40,6 +40,99 @@ function lessonLinks(w, ids) {
   const hrefs = [...w.document.querySelectorAll('main a[href]')].map(link => link.getAttribute('href'));
   for (const id of ids) assert(hrefs.some(href => href.includes('/' + id)), 'Actual lesson remains reachable: ' + id);
 }
+
+async function delayedMapConsumers(file, {supplied = false, reversed = false, fail = false, preFailed = false, late = false} = {}) {
+  const url = 'https://mathexam.space/' + file;
+  const page = new JSDOM(fs.readFileSync(path.join(root, file), 'utf8'), {url});
+  // Use the real consumers, order, URLs and data attributes from each unchanged
+  // page. This isolates their dependency contract from unrelated trainer code.
+  let tags = [...page.window.document.querySelectorAll('script[src]')].filter(script =>
+    /\/ege-profil\/(?:start\/course-links|skill-map(?:-data)?)\.js$/.test(new URL(script.src).pathname));
+  assert.equal(tags.length, 3, file);
+  if (reversed) tags = [tags[1], tags[2], tags[0]];
+  const attributes = tags.map(script => [...script.attributes].map(attribute => [attribute.name, attribute.value]));
+  const html = '<html><head>' + (supplied ? '<script ' + (preFailed ? 'defer' : 'async') + ' src="/ege-profil/exam-map.js?v=20261115-fipi-map"></script>' : '') +
+    (late ? '' : tags.map(script => script.outerHTML).join('')) + '</head><body><h1>Учебная тема</h1></body></html>';
+  page.window.close();
+  const pending = [], errors = [];
+  class Loader extends ResourceLoader {
+    fetch(request) {
+      const pathname = new URL(request).pathname;
+      if (pathname === '/ege-profil/exam-map.js') {
+        const waiting = new Promise((resolve, reject) => pending.push({resolve, reject}));
+        waiting.abort = () => {}; // JSDOM may close after a dependency assertion fails.
+        if (preFailed) pending[pending.length - 1].reject(new Error('Intentional earlier registry transport failure'));
+        return waiting;
+      }
+      assert.match(pathname, /\/ege-profil\/(?:start\/course-links|skill-map(?:-data)?)\.js$/);
+      return Promise.resolve(fs.readFileSync(path.join(root, pathname)));
+    }
+  }
+  const console = new VirtualConsole();
+  console.on('jsdomError', error => errors.push(error));
+  const dom = new JSDOM(html, {url, runScripts: 'dangerously', resources: new Loader(), virtualConsole: console});
+  const w = dom.window;
+  try {
+    await new Promise(resolve => w.document.addEventListener('DOMContentLoaded', resolve, {once: true}));
+    if (late) {
+      if (w.document.readyState !== 'complete') await new Promise(resolve => w.addEventListener('load', resolve, {once: true}));
+      assert.equal(w.document.readyState, 'complete');
+      for (const list of attributes) {
+        const script = w.document.createElement('script');
+        for (const [name, value] of list) script.setAttribute(name, value);
+        await new Promise((resolve, reject) => {
+          script.addEventListener('load', resolve, {once: true});
+          script.addEventListener('error', () => reject(new Error('Consumer failed to load')), {once: true});
+          w.document.head.append(script);
+        });
+      }
+    }
+    assert.equal(pending.length, 1, file + ': one pending map request');
+    assert.equal([...w.document.querySelectorAll('script[src]')].filter(script =>
+      new URL(script.src).pathname === '/ege-profil/exam-map.js').length, 1, file + ': one map script');
+    assert.equal(w.ProfileExamMap, undefined, 'The registry is still unavailable');
+    assert(w.ProfileExamMapReady && typeof w.ProfileExamMapReady.then === 'function', 'Consumers share readiness');
+    if (preFailed) assert.equal(errors.length, 1, 'The supplied script failed before the consumers subscribed');
+    else if (fail) pending[0].reject(new Error('Intentional registry transport failure'));
+    else pending[0].resolve(fs.readFileSync(path.join(root, 'ege-profil/exam-map.js')));
+    const registry = await w.ProfileExamMapReady;
+    await pause();
+    if (fail || preFailed) {
+      assert.equal(registry, null, 'A failed request cannot report a loaded registry');
+      assert.equal(w.ProfileExamMap, undefined);
+      assert.equal(errors.length, 1, 'The transport error remains observable');
+      assert.match(errors[0].message, /Could not load script/);
+    } else {
+      assert.equal(registry, w.ProfileExamMap);
+      assert.equal(registry.entries.length, 19);
+      assert.deepEqual(errors, []);
+    }
+    assert.equal(pending.length, 1, 'No second request after settlement');
+    assert.equal(w.document.querySelectorAll('#profile-course-nav').length, 1);
+    assert.equal(w.document.querySelectorAll('[data-profile-skill-trigger]').length, 1);
+  } finally {
+    // Settle every pending request even when an assertion exposes a duplicate.
+    for (const request of pending) request.resolve(fs.readFileSync(path.join(root, 'ege-profil/exam-map.js')));
+    w.close();
+  }
+}
+
+test('H02 unchanged nested pages share one delayed map request across navigation and skill maps', {timeout: 5000}, async () => {
+  for (const file of ['ege-profil/trainers/stereo/index.html', 'ege-profil/trainers/stereo/trainer.html', 'ege-profil/trigonometry/index.html']) {
+    await delayedMapConsumers(file);
+  }
+  await delayedMapConsumers('ege-profil/trainers/stereo/trainer.html', {reversed: true});
+  await delayedMapConsumers('ege-profil/trainers/stereo/trainer.html', {supplied: true});
+});
+
+test('H02 failed map loading stays observable without duplicate requests or false readiness', {timeout: 5000}, async () => {
+  await delayedMapConsumers('ege-profil/trainers/stereo/trainer.html', {fail: true});
+});
+
+test('H02 an earlier failed deferred map settles for consumers before and after window load', {timeout: 5000}, async () => {
+  await delayedMapConsumers('ege-profil/trainers/stereo/trainer.html', {supplied: true, preFailed: true});
+  await delayedMapConsumers('ege-profil/trainers/stereo/trainer.html', {supplied: true, preFailed: true, late: true});
+});
 
 test('H02 official registry has exactly 19 positions, correct parts and 32 primary points', () => {
   assert.deepEqual(map.entries.map(entry => entry.number), Array.from({length: 19}, (_, i) => i + 1));

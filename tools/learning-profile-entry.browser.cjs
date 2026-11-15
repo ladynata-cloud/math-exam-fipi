@@ -27,8 +27,8 @@ const EXAMS = MAP.entries.filter(entry => entry.part === 1);
 assert.deepEqual(require('../learning/profile-exam-catalog.js').exams, EXAMS.map(exam => ({ number: exam.number, title: exam.title, entry: exam.entry, href: MAP.href(exam) })), 'The served cabinet catalogue matches the canonical course');
 const LESSONS = ['geometry', 'algebra', 'stereo', 'probability', 'equations', 'functions', 'applied', 'readiness']
   .flatMap(name => require('../ege-profil/start/' + name + '-data.js'));
-const EXPECTED_ENTRIES = ['geo-angles', 'vec-coordinates', 'stereo-box', 'prob-count', 'prob-independent',
-  'algebra-exponential', 'algebra-cosine', 'calc-tangent', 'applied-formula', 'applied-motion', 'fn-line', 'calc-extreme'];
+const EXPECTED_ENTRIES = ['geo-right', 'vec-coordinates', 'stereo-box', 'prob-count', 'prob-independent',
+  'eq-linear', 'expr-powers', 'calc-tangent', 'applied-formula', 'applied-motion', 'fn-line', 'calc-extreme'];
 const listen = app => new Promise(resolve => { const server = app.listen(0, '127.0.0.1', () => resolve(server)); });
 const close = server => new Promise(resolve => { server.closeAllConnections(); server.close(resolve); });
 const api = (page, route, body) => page.evaluate(({ route, body }) => LearningApp.api(route,
