@@ -1,5 +1,7 @@
 name: Merzlyak learning path
 on:
+  push:
+    branches: ['feat/h27-merzlyak-7-9-harmonization-20261116']
   pull_request:
     paths:
       - 'geometry-merzlyak/**'
@@ -17,6 +19,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
@@ -50,3 +54,220 @@ jobs:
       - run: git diff --check
       - name: Confirm completed H27 learning-path gate
         run: echo H27_MERZLYAK_HARMONIZATION_GATE_OK
+
+  # Exact H27 branch evidence copied from merzlyak-board.yml; no composed-main claim.
+  h27-exact-cabinet-and-board:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h27-merzlyak-7-9-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Fetch immutable legacy-host fixture for registry regression
+        run: git fetch --no-tags --depth=1 origin e9097137b6cd66d80962cadcef336255db28e9b1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+          cache: npm
+          cache-dependency-path: board-server/package-lock.json
+      - name: Install locked server and pinned test tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/merzlyak-board-tools" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1
+          "$RUNNER_TEMP/merzlyak-board-tools/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/merzlyak-board-tools/node_modules" >> "$GITHUB_ENV"
+      - name: Cabinet, board and registry contracts
+        run: |
+          node --test tools/merzlyak-cabinet.test.cjs tools/learning-focus-links.dom.cjs tools/merzlyak-board-picker.test.cjs tools/merzlyak-board.test.cjs tools/merzlyak-room-selection.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          node tools/merzlyak-10-base/schema-runtime.test.cjs
+          node tools/merzlyak-10-base/reviewer-runtime-wrapper-checks.cjs
+      - name: Shared teacher and pupil journey
+        env:
+          MERZLYAK_BOARD_SHOTS: artifacts/merzlyak-board
+        run: node tools/merzlyak-board.browser.cjs
+      - name: Assigned cabinet program opens a shared teacher and pupil room
+        run: node tools/merzlyak-program-room.browser.cjs
+      - name: Preserve existing registry arrival and role boundaries
+        run: |
+          B2_SMOKE_SECTION=fail-closed node tools/trainer-registry-client-cutover-smoke.cjs
+          B2_SMOKE_SECTION=live node tools/trainer-registry-client-cutover-smoke.cjs
+      - name: Grade 10 cabinet views
+        env:
+          MERZLYAK_BOARD_ARTIFACTS: artifacts/merzlyak-board
+        run: node tools/merzlyak-cabinet.browser.cjs
+      - name: Preserve synthetic visual evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: h27-exact-merzlyak-cabinet-board
+          path: artifacts/merzlyak-board
+          if-no-files-found: warn
+          retention-days: 7
+      - run: git diff --check
+
+  # Exact H27 branch evidence copied from public-navigator.yml; no composed-main claim.
+  h27-exact-public-navigator:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h27-merzlyak-7-9-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Navigation regression and syntax
+        run: |
+          node --check assets/assistant/navigator-data.js
+          node --check assets/assistant/navigator-widget.js
+          node --check assets/assistant/home-link.js
+          node tools/public-home-coverage.cjs
+          node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
+          node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
+          git diff --check
+      - name: Actual pages on desktop, mobile and landscape
+        run: |
+          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/rounding-focus.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" NAV_LOCAL_SERVER=1 NAV_SHARD_COUNT=4 NAV_SHARD_INDEX=${{ matrix.shard }} node tools/public-navigator.browser.cjs
+      - name: Home return on active courses and standalone trainers
+        if: matrix.shard == 0
+        run: |
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/public-home.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home" node tools/public-home.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home-regressions" node tools/public-home-regressions.browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h27-exact-public-navigator-qa-${{ matrix.shard }}
+          path: ${{ runner.temp }}/public-navigator-qa
+          if-no-files-found: error
+
+  # Exact H27 branch evidence copied from seo-quality.yml; no composed-main claim.
+  h27-exact-public-seo:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h27-merzlyak-7-9-harmonization-20261116'
+    runs-on: ubuntu-latest
+    # Include browser/dependency installation as well as the actual route checks.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Sitemap exclusions, canonical routes and public entrances
+        run: |
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          git diff --check
+      - name: Static catalog and JavaScript destination parity
+        run: |
+          npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
+      - name: Public compatibility routes and actual catalog clicks
+        run: |
+          npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+
+      - name: Course entrances, mathematical GIFs and retained work
+        run: |
+          python3 -m pip install Pillow==12.0.0
+          python3 tools/course-entrances.test.py
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/course-entrances.browser.cjs
+
+  # Exact H27 branch evidence copied from oge-skill-course.yml; no composed-main claim.
+  h27-exact-lessons-and-navigation:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h27-merzlyak-7-9-harmonization-20261116'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Fetch pinned preservation sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3
+      - name: Fetch reviewed fraction controls source
+        run: git fetch --no-tags --depth=1 origin 7a876fa9b80f22df458348d5460fdd940dc8cac3
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-skills" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-skills/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-skills/node_modules" >> "$GITHUB_ENV"
+      - name: Verify reproducible page and mathematical sources
+        run: |
+          python oge/skills/build.py
+          git diff --exit-code -- oge/skills/index.html oge/skills/course-data.json oge/skills/series-catalog.json
+          node oge/skills/validate.js
+          node oge/skills/validate-series.js
+          node oge/skills/validate-expansion-arithmetic.js
+          node oge/skills/validate-expansion-functions.js
+          node oge/skills/validate-expansion-geometry.js
+          node oge/skills/validate-foundation-bridges.js
+          node oge/skills/validate-review-expansion-functions.js
+          node oge/skills/validate-practical.js
+          node oge/skills/validate-second-part.js
+          node oge/skills/validate-division-extension.js
+      - name: Verify lessons, help and saved work
+        run: |
+          node oge/skills/validate-ui.js
+          node oge/skills/validate-expansion-ui.js
+          node oge/skills/validate-answer-format.js
+          node --test tools/oge-skill-course.test.cjs
+          node --test tools/division-skill-map.test.cjs
+          node tools/division-path.test.cjs
+          node tools/quotient-estimate.test.cjs
+          node tools/rounding-stepwise.dom.cjs
+      - name: Preserve the existing course
+        run: |
+          node --test tools/oge-learning-map.test.cjs
+          node --test tools/oge-course-guide.test.cjs
+          node tools/oge-learner-entry.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Browser navigation, narrow screens and lesson continuation
+        run: node tools/oge-skill-course.browser.cjs
+      - name: Confirm integration gate
+        run: |
+          echo OGE_SKILL_COURSE_INTEGRATION_OK
+          echo OGE_COMPLETE_SKILL_MAPS_OK
+      - name: Collect focused reports
+        if: always()
+        run: |
+          mkdir -p artifacts/oge-skill-course/reports
+          find oge/skills -maxdepth 1 -name 'QA_*.json' -exec cp {} artifacts/oge-skill-course/reports/ \;
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: h27-exact-oge-skill-course
+          path: artifacts/oge-skill-course
+          retention-days: 14
+          if-no-files-found: error
+
+  h27-exact-completed:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h27-merzlyak-7-9-harmonization-20261116'
+    needs:
+      - learner-path
+      - h27-exact-cabinet-and-board
+      - h27-exact-public-navigator
+      - h27-exact-public-seo
+      - h27-exact-lessons-and-navigation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Confirm completed exact-head regressions
+        run: echo H27_EXACT_HEAD_REGRESSIONS_OK
