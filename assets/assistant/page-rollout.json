@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+  "baseSha": "e08a39026a4f258d7d137d2d30de74e98a7165b1",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2983,8 +2983,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task18-grid.html": {
-      "beforeSha256": "4b7f21f87d585aea1ddd0954fb360877ee2bb099dbf71a5c69fcb1ecad12bb4d",
-      "afterSha256": "21917c2b3d7b44274d941e0d2c05188dbe897605660260c5512830cb4a7c6a2b",
+      "beforeSha256": "313d42a46a5705939016c144906c4d6bbdfcebbbfab22a8551240294f46890a9",
+      "afterSha256": "463a9337c1171ee72b1996b59134e9e7b7f373b2955ca696c4313f5ec85b498b",
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
@@ -5261,6 +5261,15 @@
       "task": "docs/tasks/PROFILE_PART_TWO_ANSWER_FORMAT_20261116.md",
       "changedPaths": [
         "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+      "sourceBaseSha": "e08a39026a4f258d7d137d2d30de74e98a7165b1",
+      "task": "docs/tasks/OGE18_ANSWER_MODEL_CLARITY_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task18-grid.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
