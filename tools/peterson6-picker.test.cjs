@@ -101,17 +101,20 @@ test('the wrapper is a thin copy of the canonical shell and uses the exact commo
   const canonical = fs.readFileSync(path.join(root, sourcePath), 'utf8');
   const scripts = html => [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"[^>]*><\/script>/g)].map(m => m[1]);
   const home = '/assets/assistant/home-link.js?v=20261110';
+  const adaptation = '/assets/download-adaptation.js';
   const homeTag = '<script defer src="' + home + '"></script>';
-  // The one new public shell is shared by both documents and suppressed in an
-  // iframe. Require its exact URL, deferred tag, count and trailing position;
-  // it must not relax the original common learning-runtime parity below.
-  for (const html of [canonical, wrapper]) {
+  const adaptationTag = '<script defer src="' + adaptation + '"></script>';
+  assert.equal(canonical.split(adaptationTag).length, 2);
+  assert(!wrapper.includes(adaptation) && !wrapper.includes('data-trainer-download'));
+  const personalCourse = canonical.replace(adaptationTag, '');
+  // Compare the complete common course runtime without the standalone download UI.
+  for (const html of [personalCourse, wrapper]) {
     assert.deepEqual(scripts(html).filter(src => src.includes('home-link.js')), [home]);
     assert.equal(html.split(homeTag).length, 2);
     assert.equal(scripts(html).at(-1), home);
   }
-  assert.deepEqual(scripts(canonical).filter(src => src.startsWith('/')), [home]);
-  const canonicalScripts = scripts(canonical).map(src => src === home ? src : '/school/peterson6/' + src);
+  assert.deepEqual(scripts(personalCourse).filter(src => src.startsWith('/')), [home]);
+  const canonicalScripts = scripts(personalCourse).map(src => src === home ? src : '/school/peterson6/' + src);
   const wrapperScripts = scripts(wrapper);
   const pathname = src => new URL(src, 'https://mathexam.space').pathname;
   const bridge = '/trainers/board-bridge.js', adapter = '/school/peterson6/board-session.js';

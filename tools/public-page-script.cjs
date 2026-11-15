@@ -39,7 +39,10 @@ function sourceForProfileBoard(root, wrapper) {
   const name = 'ege-profil/start/index.html';
   const current = fs.readFileSync(path.join(root, name));
   const {restorePublicNavigator, snippet} = require('./public-navigator-preservation.cjs');
-  const canonical = restorePublicNavigator(name, current).toString('utf8');
+  const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
+  // Validate the complete current page before inverting its exact public-only
+  // download controls; neither shell belongs in the shared learning runtime.
+  const canonical = restoreTrainerDownload(name, restorePublicNavigator(name, current).toString('utf8'));
   assert.ok(current.includes(snippet) && !canonical.includes(snippet), 'Only the verified public pair is restored');
   assert.doesNotMatch(wrapper, /\/assets\/assistant\/navigator-/, 'The board wrapper must not install the public navigator');
   return canonical;
@@ -72,6 +75,7 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['calm-data.js?v=20261112-vectors', 'calm-data.js?v=20261101-finance'],
     ['calm-ui.js?v=20261113-foundations', 'calm-ui.js?v=20261101-trainer-repair'],
     ['app.js?v=20261113-foundations', 'app.js?v=20261101-trainer-repair'],
+    ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair']
   ]);
   for (const current of cacheStamps.keys())

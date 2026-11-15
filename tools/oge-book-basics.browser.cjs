@@ -110,7 +110,10 @@ async function solveBasic(prompt,answers) {
   const choose = predicate => {const index=options.findIndex(x=>predicate(clean(x)));if(index<0)throw new OracleUnsupported('No matching visible choice: '+p);return {choice:index,prompt:p,options,expected:clean(options[index])};};
   let answer;
   if(options.length){
-    if(/всех равных частей/.test(p))return choose(x=>number(x)===values[1]);
+    // The source and the frozen editions phrase the same denominator question differently.
+    if (/^В дроби \d+\/\d+ (?:какое число показывает количество всех равных частей|на сколько равных частей разделили целое)\?$/.test(p)) {
+      return choose(x => number(x) === values[1]);
+    }
     if(/Какая дробь больше/.test(p)) {const ratios=options.map(x=>arithmetic(x));const max=Math.max(...ratios);return choose(x=>arithmetic(x)===max);}
     if(/Какое число больше/.test(p)){
       if(values[0]===values[1])throw Error('The displayed comparison asks for a larger number but both numbers are equal: '+p);

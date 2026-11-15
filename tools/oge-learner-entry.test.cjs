@@ -13,6 +13,9 @@ const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.jso
 // changes. The apartment exercise has a reviewed new feedback engine. Other pages
 // and link metrics retain the published baseline.
 const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b44244753ac806d449a2040ad4b8c8af9acaf3","trainers/oge-task16-circle.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task17-quadrilaterals.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/task19-trainer.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge13-inequalities-series.html":"7a7169c35c54351ace4f7844b7730899b4a61831","trainers/oge-task18-grid.html":"7a7169c35c54351ace4f7844b7730899b4a61831",'trainers/simple-equations-stepwise.html':'7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a','trainers/oge-1-5-trainers/percent-table-trainer.html':'e258e438cd30e396c7741741384911f0a424581d'};
+// The fraction controls were reviewed on this immutable published source. Keep
+// the complete inline engine and static controls comparison, including fixes.
+taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
 // PR #539 subject-review baseline plus PR #548's checked bracket-caption change.
 // Exact source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d.
 // Evidence: docs/tasks/TASK9_BRACKET_LABELS_20261111.md;
@@ -21,6 +24,8 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 const task9ReviewedScript='b226c3f4216892b8d8021ebf0029a49ebb1ba6859d1797c91b5a4a293084728f';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
+const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
+ .filter(entry=>entry.public&&entry.adaptation).map(entry=>[entry.sourceHtml.slice(1),entry]));
 // This shared engine's default course is EGE; retain full return coverage while
 // validating its reviewed parent instead of adding an unrelated OGE bar.
 const courseParents={'ege-baza/path/index.html':{href:'/ege-baza/index.html',label:'← Курс ЕГЭ база'}};
@@ -81,8 +86,18 @@ for(const p of routes.pages){
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
-  const controls=doc=>[...doc.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d),controls(baseline),p+' controls preserved');
+  const entry=exportsByPage.get(p);
+  const panel=entry?d.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  if(entry){
+    assert(panel,p+' one external download panel');
+    assert.deepEqual([...panel.querySelectorAll('a[download]')].map(a=>a.getAttribute('href')),
+      [entry.downloadHtml,entry.prompt,entry.package]);
+    assert.deepEqual([...panel.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.className]),
+      [['TEXTAREA','download-wish'],['BUTTON','download-copy'],['TEXTAREA','download-prompt-text']]);
+  }
+  const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
+    .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
+  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();

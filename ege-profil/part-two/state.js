@@ -17,7 +17,7 @@ function create(storage,options={}){
  }
  function structured(v){return JSON.parse(JSON.stringify(v));}
  function patch(id,change){
-  const run=async()=>{const action=()=>{const v=read(id);change(v);v.updatedAt=Date.now();if(!valid(v,id))throw Error('Invalid work update');memory.set(id,v);if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}return structured(v);};
+  const run=async()=>{const action=()=>{const v=read(id);if(change(v)===false)return read(id);v.updatedAt=Date.now();if(!valid(v,id))throw Error('Invalid work update');memory.set(id,v);if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}return structured(v);};
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }

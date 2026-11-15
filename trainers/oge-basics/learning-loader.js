@@ -1,3 +1,31 @@
+/* Display copy only. Saved cabinet tasks retain their original canonical text. */
+(function (root) {
+  'use strict';
+  function text(value) {
+    return String(value ?? '')
+      .replaceAll('Знаменатель — сколько равных частей всего. Числитель — сколько частей взяли.',
+        'Знаменатель показывает, на сколько равных частей разделили целое. Числитель — сколько таких частей взяли.')
+      .replaceAll('Знаменатель показывает, на сколько частей разделили',
+        'Знаменатель показывает, на сколько равных частей разделили')
+      .replaceAll('Нижнее число отвечает за количество равных частей.',
+        'Знаменатель — число под чертой дроби. Оно показывает, на сколько равных частей разделили целое.')
+      .replaceAll('какое число показывает количество всех равных частей?',
+        'на сколько равных частей разделили целое?')
+      .replaceAll('Все части показывает нижнее число.',
+        'На сколько равных частей разделили целое, показывает знаменатель — число под чертой дроби.')
+      .replaceAll('на сколько частей разделили целое.',
+        'на сколько равных частей разделили целое.')
+      .replaceAll('Числитель показывает, сколько частей взяли',
+        'Числитель показывает, сколько таких частей взяли')
+      .replaceAll('Верхнее число отвечает за выбранные части.',
+        'Числитель — число над чертой дроби. Оно показывает, сколько таких частей взяли.')
+      .replaceAll('сколько частей взяли?', 'сколько таких частей взяли?')
+      .replaceAll('показывает выбранные части.', 'показывает, сколько таких частей взяли.');
+  }
+  root.MathExamFractionMeaningText = text;
+})(typeof window === 'undefined' ? globalThis : window);
+
+/* Remediation loader: the display adapter above is synchronous in both modes. */
 (function(){
 'use strict';
 const managed=new URLSearchParams(location.search).get('learning')==='1';
@@ -16,7 +44,7 @@ if(!managed){
  // leave the original working page available, including its native help.
  (async()=>{await ready;try{
   await contextualHelp();
-  style('basics-standalone.css?v=basics-context-20261020');
+  style('basics-standalone.css?v=fraction-controls-20261114');
   await script('basics-standalone.js?v=basics-context-20261020');
  }catch(_){} })();
  return;
@@ -34,7 +62,7 @@ const hide=document.createElement('style');hide.textContent='html.learning-remed
   try{await script('learning-scaffolds.js?v=arithmetic-robots-20261019');}catch(_){}
   try{await script('../../learning/multiplication-support.js?v=multiplication-complete-20261019');}catch(_){}
   try{await contextualHelp();}catch(_){}
-  await script('learning-managed.js?v=basics-context-20261020');
+  await script('learning-managed.js?v=fraction-controls-20261114');
  }
  catch(error){main.textContent='Тренажёр не загрузился. Обновите страницу: сохранённая работа останется в кабинете.';}
 })();
