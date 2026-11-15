@@ -1,7 +1,7 @@
 {
-  "stage": "4",
-  "updated": "2026-11-14",
-  "notes": "Этапы 2–4 добавляют 24 автономных комплекта с GIF; предыдущие 17 комплектов сохранены. В списке ОГЭ есть ZIP для всех №1–25: общий №1–5 и отдельные №6–25. Факт публикации проверяется отдельно.",
+  "stage": "6",
+  "updated": "2026-11-15",
+  "notes": "Этапы 2–6 добавляют 34 автономных комплекта с GIF. На этапе 6 добавлены атлас функций, финансовые задачи, тригонометрия и планиметрия по Ященко. Факт публикации проверяется отдельно.",
   "trainers": [
     {
       "slug": "mcko-linejka",
@@ -1617,11 +1617,467 @@
       "downloadHtml": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry.html",
       "prompt": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry-deepseek-prompt.md",
       "package": "/downloads/trainers/oge-task25-geometry/oge-task25-geometry-package.zip"
+    },
+    {
+      "slug": "ege-profil-start",
+      "title": "Профильный ЕГЭ — маршрут START и основы векторов",
+      "sourceHtml": "/ege-profil/start/index.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "учебный маршрут, пошаговая практика и основы векторов",
+      "description": "Действующий большой маршрут с самостоятельной практикой, разбором, моделями, записью ответов и локальным прогрессом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/start/style.css",
+        "/ege-profil/start/finance.css",
+        "/ege-profil/start/journey-ui.css",
+        "/ege-profil/start/practice-layout.css",
+        "/ege-profil/start/practice-coach.css",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/azbuka-metodov/catalog.js",
+        "/ege-profil/skill-map.js",
+        "/ege-profil/start/journey.js",
+        "/ege-profil/start/second-part.js",
+        "/ege-profil/start/practice-feedback.js",
+        "/ege-profil/start/practice-coach.js",
+        "/ege-profil/start/vector-basics-data.js",
+        "/ege-profil/start/vector-basics-models.js",
+        "/ege-profil/start/geometry-data.js",
+        "/ege-profil/start/stereo-data.js",
+        "/ege-profil/start/algebra-data.js",
+        "/ege-profil/start/geometry-models.js",
+        "/ege-profil/start/algebra-models.js",
+        "/ege-profil/start/planimetry-tasks.js",
+        "/ege-profil/start/vector-tasks.js",
+        "/ege-profil/start/stereo-tasks.js",
+        "/ege-profil/start/probability-data.js",
+        "/ege-profil/start/equations-data.js",
+        "/ege-profil/start/functions-data.js",
+        "/ege-profil/start/applied-data.js",
+        "/ege-profil/start/finance-data.js",
+        "/ege-profil/start/probability-tasks.js",
+        "/ege-profil/start/equations-tasks.js",
+        "/ege-profil/start/functions-tasks.js",
+        "/ege-profil/start/applied-tasks.js",
+        "/ege-profil/start/finance-tasks.js",
+        "/ege-profil/start/readiness-data.js",
+        "/ege-profil/start/readiness.js",
+        "/ege-profil/start/course-links.js",
+        "/ege-profil/start/calm-data.js",
+        "/ege-profil/start/calm-micro.js",
+        "/ege-profil/start/checkpoint.js",
+        "/ege-profil/start/calm-ui.js",
+        "/ege-profil/start/solution-details.js",
+        "/ege-profil/start/solutions.js",
+        "/ege-profil/start/task-first.js",
+        "/ege-profil/start/checks.js",
+        "/ege-profil/start/state.js",
+        "/ege-profil/progress-code.js",
+        "/ege-profil/start/app.js",
+        "/ege-profil/learning/style.css",
+        "/ege-profil/learning/data.js",
+        "/ege-profil/learning/route.js"
+      ],
+      "offlineOmitAssets": [],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь в основы векторов один авторский пример для A(3; −1), B(1; 2): найти координаты AB и сравнить их с BA.",
+        "edits": {
+          "Задачи": "Во встроенных блоках данных START найди нужную тему. Основы векторов находятся в `vector-basics-data.js`: функции `task`, `reading`, `zero`, `triangle` и другие создают карточки. Сохраняй уникальные ID.",
+          "Числа и рисунки": "В векторной карточке согласуй координаты `points`, стрелки `arrows`, итоговый `answer` и отдельные `steps`. Направление AB идёт от A к B; равные масштабы осей сохраняются.",
+          "Подсказки": "Меняй поля `prompt`, `answer`, `hint`, `why` и `choices` одной карточки вместе. Сохрани различение самостоятельной работы, разбора и знакомого повтора.",
+          "Оформление": "В блоках `style.css` и `practice-layout.css` меняй размеры текста или отступы. Сохрани видимость условия, рисунка и ответа, внутренние переходы по # и кнопку возврата."
+        },
+        "checks": [
+          "A(3; −1), B(1; 2): AB = (−2; 3), BA = (2; −3). Не переставляй начало и конец стрелки.",
+          "У нулевого вектора длина 0; пустое поле не должно засчитываться как число 0.",
+          "Введи ответ, открой помощь, вернись и перезагрузи ту же копию: черновик и история попыток должны сохраниться. Переход к следующей теме должен оставаться внутри HTML."
+        ],
+        "limit": "В копии работают включённые уроки и модели START. Ссылки на отдельные тренажёры, вторую часть, азбуки и другие материалы ведут на сайт; они не превращаются в дополнительные вложенные курсы. Доступность локального сохранения зависит от браузера."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-start/ege-profil-start.html",
+      "prompt": "/downloads/trainers/ege-profil-start/ege-profil-start-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-start/ege-profil-start-package.zip"
+    },
+    {
+      "slug": "ege-profil-vectors-yashchenko",
+      "title": "Профильный ЕГЭ — векторы по банку Ященко",
+      "sourceHtml": "/ege-profil/trainers/vectors-yashchenko-t2.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "длина, координаты, скалярное произведение и угол между векторами",
+      "description": "Действующий тренажёр семи типов векторов с рисунками, разбором, тренировкой и зачётом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь простой авторский пример: a = (3; 4), b = (−4; 3). Найти скалярное произведение и косинус угла.",
+        "edits": {
+          "Задачи": "Найди встроенный банк `ITEMS = [V1, V2, V3, V4, V5, V6, V7]`. Выбери один подходящий тип и добавь отдельный авторский пример, сохранив прежние записи.",
+          "Числа": "Для скалярного произведения сложи произведения соответствующих координат. Для косинуса дели на произведение длин; нулевые векторы для угла исключи.",
+          "Рисунок и шаги": "Согласуй данные выбранной записи, рисунок `figHtml`, шаги `stepsHtml` и проверку `checkTrain`. Стрелки должны передавать направление и длину.",
+          "Обратная связь": "Сохрани разбор ошибки в `diagnose`, различение режимов и отсутствие повторного зачёта после уже принятого ответа."
+        },
+        "checks": [
+          "Для a = (3; 4), b = (−4; 3) обе длины равны 5, a·b = 0 и cos φ = 0.",
+          "Для a = (1; 2), b = (3; −4) произведение равно −5; ответ 11 неверен.",
+          "Проверь пустое поле, неверный и верный ответы, открытие разбора и переход к другому примеру."
+        ],
+        "limit": "Собственные рисунки, помощь и зачёт доступны локально. Дополнительные материалы маршрута и совместная работа доступны на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko.html",
+      "prompt": "/downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko-package.zip"
+    },
+    {
+      "slug": "ege-profil-derivative",
+      "title": "Профильный ЕГЭ — производная по графику",
+      "sourceHtml": "/ege-profil/trainers/derivative-t8.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "производная, касательная, монотонность и экстремумы",
+      "description": "Действующий тренажёр графического смысла производной с рисунками, лестницей шагов и проверкой ответа.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь отдельный авторский пример GEN.tangent: A(1; −2), B(3; 1), точка касания x₀ = 2. Найти f′(2); сохранить остальные задачи.",
+        "edits": {
+          "Задачи": "Найди `GEN.tangent`. Новый пример задаёт `params: {x1:1, y1:-2, x2:3, y2:1}`; прежний пример с y2 = 2 имеет другой ответ. Добавь пример отдельно, не заменяя весь генератор.",
+          "Числа": "Производная равна угловому коэффициенту касательной: (y2−y1)/(x2−x1) = 3/2. Требуется x1 ≠ x2. Согласуй итоговый `answer`, условие и шаги.",
+          "Рисунок": "Проверь `drawTangent`: касательная y = 1,5x − 3,5 проходит через A и B, а точка касания при x₀ = 2 имеет координаты (2; −0,5). Сохрани одинаковый масштаб единицы по осям.",
+          "Подсказки": "Согласуй `mountLadder` и шаги выбранной задачи с Δx = 2, Δy = 3. Сохрани отметку о просмотренной помощи и правила зачёта."
+        },
+        "checks": [
+          "До изменения B(3; 2): наклон равен 2. После B(3; 1): наклон равен 1,5; прежний ответ 2 должен отклоняться.",
+          "Пустое поле не засчитывается. Записи 1,5 и 1.5 должны приниматься для нового примера.",
+          "Проверь A(1; −2), B(3; 1), точку касания (2; −0,5), Δx = 2 и Δy = 3 на рисунке и в разборе."
+        ],
+        "limit": "Копия содержит собственные графики, подсказки и проверку. Дополнительные уроки общего курса и совместная работа доступны на сайте.",
+        "gif": "adapt-derivative"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-derivative/ege-profil-derivative.html",
+      "prompt": "/downloads/trainers/ege-profil-derivative/ege-profil-derivative-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-derivative/ege-profil-derivative-package.zip"
+    },
+    {
+      "slug": "ege-profil-applied",
+      "title": "Профильный ЕГЭ — формулы и текстовые задачи",
+      "sourceHtml": "/ege-profil/trainers/applied-t910.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "расчёты по формулам, движение, совместная работа, смеси",
+      "description": "Действующий тренажёр прикладных формул и текстовых задач с разбором, тренировкой и зачётом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример на совместную работу: первый выполняет работу за 6 часов, второй за 12 часов; найти время совместной работы.",
+        "edits": {
+          "Задачи": "Для формул найди `f9ball`, `f9power`, `f9current` и другие функции группы f9; для текстовых задач — `f10meet`, `f10river`, `f10work`, `f10alloy`. Меняй одну функцию или отдельную авторскую карточку.",
+          "Числа и единицы": "В примере совместной работы складываются производительности 1/6 и 1/12, затем берётся обратное число. Согласуй условие, единицы, `answer` и промежуточные вычисления.",
+          "Подсказки": "Сохрани последовательность объяснения, обратную связь `check`, пометку помощи `noteHelp` и журнал самостоятельных ответов.",
+          "Оформление": "Меняй текст и таблицы в пределах карточки. Не скрывай единицы измерения, условия допустимости и поле ответа."
+        },
+        "checks": [
+          "При временах 6 и 12 часов общая производительность 1/4 работы в час; вместе требуется 4 часа. Ответ 18 неверен.",
+          "При скорости лодки 10 км/ч и течения 2 км/ч скорости по течению и против течения равны 12 и 8 км/ч; единицы времени должны совпадать.",
+          "Проверь пустой/неверный/верный ответ, разбор и следующий пример без увеличения зачёта повторным нажатием."
+        ],
+        "limit": "Собственные условия, разборы и зачёт доступны локально. Материалы общего курса и совместная доска доступны на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-applied/ege-profil-applied.html",
+      "prompt": "/downloads/trainers/ege-profil-applied/ege-profil-applied-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-applied/ege-profil-applied-package.zip"
+    },
+    {
+      "slug": "ege-profil-probability",
+      "title": "Профильный ЕГЭ — вероятность",
+      "sourceHtml": "/ege-profil/trainers/probability-t45.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "классическая вероятность, независимые события и дерево вероятностей",
+      "description": "Действующий тренажёр вероятностей с рисунками, пошаговыми подсказками, тренировкой и зачётом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример: в мешке 4 белых и 6 чёрных шаров, найти вероятность вынуть белый шар. Согласуй рисунок и разбор.",
+        "edits": {
+          "Задачи": "Найди `g4balls` и остальные генераторы вероятностей. Для шаров параметры `w` и `b` задают белые и чёрные шары; сохрани прочие типы банка.",
+          "Числа": "Вероятность белого шара равна w/(w+b). Изменяй `params`, `answer`, условие, рисунок и ошибочные варианты вместе. Сохрани указанное в условии округление.",
+          "Подсказки": "Проверь `mountLadder`, `diagnose` и дерево `drawTree`. Для последовательных событий подписывай условные вероятности на соответствующих ветвях.",
+          "Проверка": "Сохрани ограничения вероятностей от 0 до 1, правила округления и различение просмотра решения и самостоятельного ответа."
+        },
+        "checks": [
+          "При 3 белых и 7 чёрных шарах вероятность 0,3; при 4 белых и 6 чёрных — 0,4. Прежнее значение 0,3 после изменения неверно.",
+          "При двух независимых попытках с вероятностью успеха 0,5 вероятность хотя бы одного успеха равна 0,75, а не 0,25.",
+          "Проверь пустой ответ, допустимую десятичную запись, ошибку, правильный ответ и сохранение условия после открытия подсказки."
+        ],
+        "limit": "Собственные модели и разборы работают без сети. Внешние ссылки, дополнительные уроки и совместная работа доступны на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-probability/ege-profil-probability.html",
+      "prompt": "/downloads/trainers/ege-profil-probability/ege-profil-probability-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-probability/ege-profil-probability-package.zip"
+    },
+    {
+      "slug": "ege-profil-functions",
+      "title": "Профильный ЕГЭ — функции и экстремумы",
+      "sourceHtml": "/ege-profil/trainers/functions-t1112.html",
+      "subject": "математика",
+      "level": "10–11 класс, ЕГЭ профиль",
+      "topic": "графики функций, коэффициенты и экстремумы",
+      "description": "Действующий тренажёр чтения графиков, восстановления формул и исследования функций с наглядным рисунком.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь авторский пример прямой через A(1; 2) и B(3; 5): определить коэффициенты и найти f(5). Согласуй рисунок, ответ и разбор.",
+        "edits": {
+          "Задачи": "Найди `g11line`, `g11hyp`, `g11parab` и остальные семейства графиков; задачи на экстремумы создаются функциями `g12cubic`, `g12frac`, `g12exp`, `g12log`, `g12sqrt`. Меняй одну выбранную семью.",
+          "Числа": "У прямой через (1; 2) и (3; 5) коэффициенты k = 1,5 и b = 0,5, поэтому f(5) = 8. Согласуй параметры, условие, `answer` и вычисления.",
+          "Рисунок": "Проверь отрисовку `plot`: отмеченные точки должны лежать на показанном графике. Сохрани обозначения осей, равный масштаб единицы и допустимую область функции.",
+          "Подсказки": "Сохрани объяснение `show`, отметку помощи `noteHelp` и различение абсциссы точки экстремума и значения функции. Для дробей, корней и логарифмов проверь исходные ограничения."
+        },
+        "checks": [
+          "Через точки (1; 2) и (3; 5) проходит y = 1,5x + 0,5. Значение f(5) = 8; ответы 7,5 и 5 неверны.",
+          "У y = (x−2)² + 1 абсцисса вершины 2, значение функции в ней 1: эти ответы относятся к разным вопросам.",
+          "Открой рисунок и разбор, вернись к ответу, проверь пустое поле, ошибку, верный ответ и другое условие."
+        ],
+        "limit": "Графики и собственная практика доступны в копии. Дополнительные уроки маршрута, отдельные атласы и совместная работа доступны на сайте."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-functions/ege-profil-functions.html",
+      "prompt": "/downloads/trainers/ege-profil-functions/ege-profil-functions-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-functions/ege-profil-functions-package.zip"
+    },
+    {
+      "slug": "ege-profil-methods-atlas",
+      "title": "Основы и методы · атлас функций",
+      "sourceHtml": "/ege-profil/azbuka-metodov/index.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "число решений, область определения и задачи с параметром",
+      "description": "11 тем и 44 навыка, атлас из 25 графиков и сечения на координатно-параметрической плоскости.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/azbuka-metodov/styles.css",
+        "/ege-profil/azbuka-metodov/catalog.js",
+        "/ege-profil/azbuka-metodov/data.js",
+        "/ege-profil/azbuka-metodov/routes.js",
+        "/ege-profil/azbuka-metodov/engine.js",
+        "/ege-profil/azbuka-metodov/diagrams.js",
+        "/ege-profil/azbuka-metodov/function-atlas.js",
+        "/ege-profil/azbuka-metodov/parameter-plane.js",
+        "/ege-profil/azbuka-metodov/app.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь в атлас параболу с вершиной (0; 1) и проверь число пересечений с горизонталью при трёх значениях уровня.",
+        "edits": {
+          "Задачи": "Встроенные блоки catalog.js, data.js и routes.js содержат темы, навыки и задания. Модели лежат в блоках function-atlas.js и parameter-plane.js.",
+          "Числа": "Согласуй значение, формулу, область определения, число пересечений и метки выколотых точек. Для параболы y = x² + 1 минимум равен 1.",
+          "Подсказки": "Подсказка предлагает сравнить уровень с высотой вершины. Разбор отдельно объясняет два пересечения, касание и отсутствие решений.",
+          "Оформление": "Сохрани одинаковую единицу на осях, текстовое описание SVG, управление ползунком с клавиатуры и ссылки внутри этого HTML."
+        },
+        "checks": [
+          "Для y = x² + 1 уровни y = 0, y = 1 и y = 2 дают 0, 1 и 2 решения соответственно.",
+          "После сдвига ползунка проверка числа решений раскрывается по запросу. Выколотая точка не должна засчитываться."
+        ],
+        "limit": "Темы, подсказки, журнал и атлас работают в копии. Ссылки к отдельным курсам и материалам ведут на сайт.",
+        "localEditing": true,
+        "gif": "adapt-graph"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas.html",
+      "prompt": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-package.zip"
+    },
+    {
+      "slug": "ege-profil-finance",
+      "title": "Финансовая математика · нестандартные схемы",
+      "sourceHtml": "/ege-profil/trainers/finance.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "кредиты, вклады, остаток долга, пени и выбор схемы",
+      "description": "Задачи с таблицами платежей, поэтапным разбором и самостоятельным ответом.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "В задаче «Пени за задержку» укажи, что февральский платёж внесли 14-го числа, и пересчитай переплату.",
+        "edits": {
+          "Задачи": "Найди запись addTask с id I1. При добавлении варианта используй новый уникальный id. Согласуй условие, data, table, steps, finalAnswer и summary.",
+          "Числа": "Просрочка 4 дня при сроке 10-го числа. Пени равны обязательному платежу, умноженному на 0,03 и на число дней. Укажи, что единица ответа — тыс. ₽.",
+          "Подсказки": "Сохрани отдельные шаги для расчёта пеней февраля и мая. Покажи переход от суммы выплат к переплате через вычитание первоначального кредита.",
+          "Оформление": "Сохрани названия месяцев и столбцов, раскрытие нужных ячеек по шагам и читаемость таблицы на узком экране."
+        },
+        "checks": [
+          "Февраль: 400 × 0,03 × 4 = 48. Май: 130 × 0,03 × 9 = 35,1. Переплата: 1280 + 48 + 35,1 − 1000 = 363,1 тыс. ₽.",
+          "В проверке итогового ответа 375,1 отклоняется, а 363,1 принимается. В таблице долг после июля равен 0."
+        ],
+        "limit": "Таблица, подсказки, решение и проверка работают в копии. Дополнительные темы курса и кабинет доступны на сайте.",
+        "localEditing": true,
+        "gif": "adapt-finance"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-finance/ege-profil-finance.html",
+      "prompt": "/downloads/trainers/ege-profil-finance/ege-profil-finance-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-finance/ege-profil-finance-package.zip"
+    },
+    {
+      "slug": "ege-profil-trigonometry",
+      "title": "Тригонометрия · от треугольника к окружности",
+      "sourceHtml": "/ege-profil/trainers/trigonometry.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "синус, косинус, радианы, единичная окружность и уравнения",
+      "description": "Модели треугольника и окружности, тренировка, разбор и зачёт.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь вариант задачи про длину наклонной опоры 14 м при угле 30° к земле и найди высоту её верхнего конца.",
+        "edits": {
+          "Задачи": "В EPCore и EP_ARCHIVE найди линию sup. Для нового задания согласуй условие, точный и числовой ответы, шаги и разбор.",
+          "Числа": "Гипотенуза — длина опоры, высота — противолежащий катет. Угол задаётся в градусах. Для 30° используй sin 30° = 1/2.",
+          "Подсказки": "В первом шаге предложи определить, какая сторона соответствует искомой высоте. Затем предложи выбрать отношение или формулу.",
+          "Оформление": "Сохрани обозначение угла, отметку прямого угла и подписи единиц измерения. Проверь ползунки и подсказки на узком экране."
+        },
+        "checks": [
+          "При длине 14 м и угле 30° высота равна 7 м. Ответ 14 м относится к длине опоры.",
+          "При угле 60° такой же длине соответствует 7√3 м. Если меняется угол, пересчитай чертёж и ответ."
+        ],
+        "limit": "Окружность, режимы тренировки, разбор и зачёт работают в копии. Другие занятия MathExam открываются на сайте.",
+        "localEditing": true
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry.html",
+      "prompt": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-package.zip"
+    },
+    {
+      "slug": "ege-profil-planimetry-yashchenko",
+      "title": "Планиметрия · аналоги по Ященко",
+      "sourceHtml": "/ege-profil/trainers/planimetry-yashchenko-t1.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "углы, треугольники, окружности и площади",
+      "description": "Чертежи к задачам 19 типов, самостоятельная тренировка, разбор и зачёт.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь задачу на вписанный угол, опирающийся на дугу 108°. На чертеже вершина угла лежит вне этой дуги.",
+        "edits": {
+          "Задачи": "Банк YB1 содержит генераторы и чертежи. Сохрани типы действующих задач. В новом примере сверь запись ans и формулировку вопроса.",
+          "Числа": "При изменении дуги уточни, какой из двух дуг соответствует угол. Для дуги 108° вписанный угол равен 54°.",
+          "Подсказки": "Предложи ученику отметить дугу между сторонами угла, а затем разделить её градусную меру на два.",
+          "Оформление": "Сохрани середину и масштаб окружности, положение вершин, подписи и видимость нужной дуги на узком экране."
+        },
+        "checks": [
+          "Для дуги 108° вписанный угол равен 54°. Ответ 108° относится к самой дуге.",
+          "Для угла, опирающегося на диаметр, мера дуги 180°, вписанный угол 90°."
+        ],
+        "limit": "Чертёж, тренировка, разбор и зачёт работают в копии. Сохранённые результаты видны в браузере, который разрешает это для локальных файлов.",
+        "localEditing": true,
+        "gif": "adapt-geometry"
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko.html",
+      "prompt": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip"
     }
   ],
   "todo": [
     "ОГЭ: основные номера №1–25 имеют ссылки на ZIP. Дополнительные маршруты и модели за пределами этих тренажёров упаковывать после самостоятельной проверки.",
-    "Профильный ЕГЭ: продолжить первой частью START, векторами с нуля, производной и прикладными задачами. Проверить отдельные модели сечений и атлас параметров.",
+    "Профильный ЕГЭ: подготовить отдельные комплекты по логарифмическим неравенствам, методам делимости, оценке и примеру. Автономность моделей сечений проверить отдельно.",
     "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
     "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",
     "Не включать testing-hub, личные страницы учеников, черновики и страницы с noindex."
