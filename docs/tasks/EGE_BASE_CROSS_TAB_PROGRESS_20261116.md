@@ -71,6 +71,7 @@ Validation and packaging:
 - tools/ege-baza-task-first.test.cjs
 - tools/ege-baza-learning-cycle.test.cjs
 - tools/ege-baza-journey.test.cjs
+- tools/ege-baza-journey.dom.cjs (owner-authorized four-line fixture correction; existing assertions preserved)
 - .github/workflows/ege-task-first.yml (add the targeted tests, do not remove or weaken gates)
 - scripts/build-trainer-downloads.mjs (only if helper inclusion needs explicit support)
 - downloads/trainers/ege-baza-practice/ege-baza-practice.html
@@ -235,6 +236,23 @@ artifact. Runtime sources, standalone HTML/ZIP and their hashes remain unchanged
 Syntax and local targeted checks are recorded in the new PR handoff. The full
 real-browser suite and downstream CI remain **pending on the new exact head**;
 neither the previous 21 cases nor this harness correction claims their result.
+
+### Owner-authorized journey fixture correction
+
+On 2026-11-16 the owner explicitly added `tools/ege-baza-journey.dom.cjs` to this task's scope and authorized the exact four-line patch prepared in [Draft PR #621](https://github.com/ladynata-cloud/math-exam-fipi/pull/621). Merge and publication remain separately restricted.
+
+The prior head `5cd70c86913fd426087a79bf54b02425ca02fda9` completed the real-browser cross-tab gate with 37 cases and 10 observed native-write overlaps, but its workflow then failed in the old journey fixture. The mock stored values in a Map while leaving native `Storage.length` and `Storage.key`; its deliberately damaged legacy fixture also retained new protected metadata after modifying the data.
+
+The authorized correction adds those two enumeration members and explicitly removes protected metadata from that legacy-only fixture. The patch is exactly +4/-0; all 61 original assertion-containing lines remain byte-for-byte and in order. Runtime sources and offline packages are unchanged.
+
+| Fresh local check after the authorized patch | Result |
+| --- | --- |
+| `node tools/ege-baza-journey.dom.cjs` | PASS: 563 checks. |
+| `node tools/ege-baza-cross-tab-progress.test.cjs` | PASS: 96 targeted assertions. |
+| `node --test tools/ege-baza-journey.test.cjs tools/ege-baza-exam-map.test.cjs` | PASS: 23 tests. |
+| Test syntax, exact approved patch hash, assertion preservation and `git diff --check` | PASS. |
+
+The new immutable candidate still requires complete exact-head CI, including the stages skipped after the old fixture failure. Its result belongs in the PR handoff; this local correction does not claim the final gate.
 
 ## Required handoff
 

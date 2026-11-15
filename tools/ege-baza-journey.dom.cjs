@@ -16,6 +16,8 @@ function boot(page='ege-baza/index.html',hash='',saved={},options={}){
  w.Storage.prototype.setItem=function(key,value){writes++;values.set(key,String(value));};
  w.Storage.prototype.removeItem=function(key){writes++;values.delete(key);};
  w.Storage.prototype.clear=function(){writes++;values.clear();};
+ Object.defineProperty(w.Storage.prototype,'length',{configurable:true,get(){if(options.blocked)throw new Error('storage denied');return values.size;}});
+ w.Storage.prototype.key=function(index){if(options.blocked)throw new Error('storage denied');return Array.from(values.keys())[index]??null;};
  for(const script of d.querySelectorAll('script[src]')){
   const file=path.join(root,new URL(script.src).pathname);
   ok(fs.existsSync(file),'actual script exists: '+new URL(script.src).pathname);
@@ -124,6 +126,8 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
 
   // A healthy row cannot promise exact resume when the real loader rejects a sibling.
   const partialState=stateOf(independent);
+  // This deliberately damaged legacy v1 fixture has no protected recovery metadata.
+  delete partialState.progressStore;
   Object.assign(partialState.lessons.box,{seed:123,draft:'12/',done:false});delete partialState.lessons.box.taskFirst;
   ok(independent.w.PathCourse.valid(partialState),'saved box seed and draft fixture is accepted by the real loader');
   partialState.lessons.fractions={broken:true};
