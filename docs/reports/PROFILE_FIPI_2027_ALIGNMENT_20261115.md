@@ -83,7 +83,7 @@ Authoritative main при проверке: `5b66ed76438a08f15e5e13ebe1128140189
 
 Строгий exporter также требует объявить `/ege-profil/exam-map.js` в manifest assets всех12 копий. Изменять exporter ради обхода этой проверки не требуется.
 
-### Предложенное расширение H02 — ещё не реализовано
+### Историческое предложение для main5b66ed7 — заменено списком 37 путей
 
 | Slug | HTML | ZIP |
 |---|---|---|
@@ -111,11 +111,11 @@ Authoritative main при проверке: `5b66ed76438a08f15e5e13ebe1128140189
 
 Это **29 дополнительных путей**:27 для поставки и зависимого expectation плюс2 existing acceptance drivers. Generator implementation, workflows, остальные39 комплектов и GIF не требуют изменения. Существующий scoped режим `--only=<slug> --downloads-only` не переустанавливает панели на страницах.
 
-Сначала необходимы подтверждение этого ограниченного расширения исходного scope и доступная исполняющая среда. Затем — композиция с актуальной main с сохранением обоих изменений, scoped rebuild, новый source checkpoint/bindings, фактический CI/native и независимое HIGH review окончательного head.
+На этапе недоступности среды следующими условиями были подтверждение ограниченного расширения scope и восстановление исполнения. Среда впоследствии восстановлена, результаты приведены ниже. По последним прямым инструкциям владельца расширение scope и non-fast-forward согласование ветки с актуальной main требуют отдельных явных разрешений. После них — scoped rebuild, новый source checkpoint/bindings, фактические CI/native и независимое HIGH review окончательного head.
 
 ## Актуальность инструкций
 
-Во время продолжения владелец прямо сообщил: «The previously provided AGENTS.md instructions no longer apply». Прежние task-conversation ограничения, опиравшиеся только на тот AGENTS.md, больше не используются как основание для повторного запроса разрешения на обычную синхронизацию. Исторические записи выше описывают момент подготовки. Утверждённый предмет H02 и явно исключённые области сохраняются до изменения scope; отмена AGENTS.md сама по себе не является выполненной проверкой или публикацией. Текущая остановка обусловлена недоступностью исполняющей среды, отсутствием финального CI и выявленной зависимостью за прежними файловыми границами.
+Во время продолжения владелец временно отменил ранее предоставленный AGENTS.md, затем новым прямым сообщением повторно ввёл полный строгий файл. Действуют последние инструкции: START разрешает согласованную реализацию, commits/push и Draft PR; non-fast-forward согласование ветки, merge и публикация требуют отдельных явных разрешений. Историческая отмена не является текущим разрешением на исправление базы. Утверждённый предмет H02 и явно исключённые области сохраняются до согласования расширения. Командная среда восстановлена, но native Chromium, итоговый CI и композиция с текущей main пока не прошли приёмку.
 
 ## Дополнение: опубликован этап7, новая проверенная база
 
@@ -136,4 +136,97 @@ Remote-only пересмотр manifest/source dependencies на точном584
 
 Актуальное предлагаемое расширение — **37 дополнительных путей** вместо29:32 generated HTML/ZIP,1 manifest,1 существующий Part Two prompt,1 dependent expectation/acceptance file и2 existing acceptance drivers. Остальные39 комплектов, все GIF, новые четыре prompts, reasoning driver, генератор и workflows не входят в правку. Старые count12/29 выше описывают только ранее проверенную базу; текущий список — объединение двух таблиц.
 
-Восстановленная ветка H02 не синхронизирована с5842bd8, её архивы не пересобраны.16 конфликтов относятся к фактически проверенному старому virtual merge119/5b66ed7; точное число конфликтов нового remote head с5842bd8 ещё не измерено и не переносится из прежнего результата.
+Восстановленная ветка H02 не синхронизирована с5842bd8, её архивы не пересобраны.16 конфликтов относятся к историческому virtual merge119/5b66ed7. Последующая проверка точной пары b7a69c/5842bd8 дала19 конфликтов; её результаты приведены ниже.
+
+## Повторная проверка после восстановления среды
+
+Проверена чистая рабочая копия [Draft PR #610](https://github.com/ladynata-cloud/math-exam-fipi/pull/610), head `b7a69c48209e190ab7d1f8061e45ce67844f9c5b`, tree `6724386287a80b4ad83ac27a1d836a88f27ec1b2`. Дата проверки —15 ноября2026; независимая проверка bindings и scope зафиксирована в03:36:13 UTC. Использованы Node24.22.1, jsdom26.1.0 и Playwright1.62.1. Повторный запуск относится к уже исправленному terminal loader.
+
+| Проверка | Фактический результат на b7a69c |
+|---|---|
+| Полный `tools/profile-*.test.cjs` |689 tests,687 PASS,0 FAIL,2 явных native SKIP |
+| H02 contract внутри полного набора |10 top-level tests; ранняя ошибка supplied defer до/после window load выполнена и пройдена |
+| `npm --prefix ege-profil test` |3280 проверок,0 отказов;7600 задач планиметрии,0 расхождений; JUNK_GATE_OK и CABINET_SAFETY_OK |
+| Точная финансовая арифметика |13 уроков,78 задач,39 моделей,442 шага,0 отказов |
+| Methods и navigator preservation |8+4 tests, все PASS |
+| Navigator regressions |46/46 PASS |
+| Canonical bindings |5/5 PASS;624 HTML/source identities,29 обновлённых rows,110 прежних receipts сохранены |
+| Generated cabinet/board catalogue |PROFILE_EXAM_CATALOG_CURRENT |
+| Public home coverage |740 eligible:733 покрыты,7 redirects; uncovered0, failures0 |
+| Scope и защищённые данные |111 путей в утверждённых областях; H01 parser/state, математические данные, IDs и порядок сохранены |
+| Native H02 |Запуск предпринят; Chromium SIGABRT на `socket() failed: Operation not permitted`;0 cases |
+| H01/board/cabinet и остальные native |Не повторялись после общего отказа запуска Chromium |
+| CI и composed-candidate gates |Не выполнены; GitHub workflow runs для b7 отсутствуют, PR mergeable:false |
+
+Независимая проверка loader и contract выполнена по immutable GitHub blobs: `6b62083c565bbfda1dcea28e082831729481b8a5`, `fc918a8e7fb2a102496f812ca1edb3ad5ad3d298`, `0ec2a6843893f9d2ee9519b37b0ba0c9dad800ce`. Все7 прежних contract tests и helpers сохранены побайтово, добавлены3 tests; ослабления assertions нет. Этот внутренний review не выдаётся за внешнее provider approval или приёмку конфликтной композиции.
+
+### Точная виртуальная композиция
+
+Команда `git merge-tree --write-tree b7a69c48209e190ab7d1f8061e45ce67844f9c5b 5842bd8dce477793eecd67ed961b8e19072eb1dc` завершилась exit1. Виртуальный tree: `94d5f80d8c5f127498e29ed63cf55908eb4057c3`. Git refs, индекс и рабочая ветка этим действием не изменены. **19 конфликтующих путей**:
+
+- `assets/assistant/page-rollout.json`
+- `docs/PROJECT_STATUS.md`
+- `ege-profil/azbuka-metodov/app.js`
+- `ege-profil/azbuka-metodov/index.html`
+- `ege-profil/part-two/index.html`
+- `ege-profil/start/index.html`
+- `ege-profil/trainers/applied-t910.html`
+- `ege-profil/trainers/derivative-t8.html`
+- `ege-profil/trainers/finance.html`
+- `ege-profil/trainers/functions-t1112.html`
+- `ege-profil/trainers/planimetry-yashchenko-t1.html`
+- `ege-profil/trainers/probability-t45.html`
+- `ege-profil/trainers/trigonometry.html`
+- `ege-profil/trainers/vectors-t2.html`
+- `ege-profil/trainers/vectors-yashchenko-t2.html`
+- `tools/profile-journey-public-scripts.test.cjs`
+- `trainers/ege-profile/log-inequalities/index.html`
+- `trainers/ege-profile/log-inequalities/lesson.html`
+- `trainers/ege-profile/log-inequalities/nested.html`
+
+Все27 новых commit-объектов от исходной H02 base до5842bd8 сопоставлены с опубликованными PR#601, #602, #604, #608 и#609; неизвестное происхождение —0. Это подтверждение происхождения current main, а не разрешение переносить её изменения в рабочую ветку.
+
+Для START повторно вычислен source bank90/540: `320e034f013cdf438155d0374b4874bf13412517b68160978a25c0cce5eb1c20`. Current main сохранила прежние HTML blob `89793c042a4bb3a71e78ecd9e066503c3344b85c` и ZIP blob `ef3dd34aac44cbf354a867a2eaa60a7eeedd89f2`; ранее извлечённый из этих же bytes bank имеет hash `52998645df529854ac9b98c060042522f36e72dce060cc3d73040b5a5cf1224c`. Mismatch подтверждён через точную blob identity и новый source probe. Это не объявляется новым полным ZIP/browser прогоном.
+
+### Актуальный список: 37 дополнительных путей
+
+Этот список для main `5842bd8` заменяет прежнее предложение12/29; это **предложение**, не полученное разрешение и не применённый diff.
+
+| Комплект | HTML | ZIP |
+|---|---|---|
+| `ege-profil-start` | `downloads/trainers/ege-profil-start/ege-profil-start.html` | `downloads/trainers/ege-profil-start/ege-profil-start-package.zip` |
+| `ege-profil-part-two` | `downloads/trainers/ege-profil-part-two/ege-profil-part-two.html` | `downloads/trainers/ege-profil-part-two/ege-profil-part-two-package.zip` |
+| `ege-profil-methods-atlas` | `downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas.html` | `downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-package.zip` |
+| `ege-profil-vectors-t2` | `downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2.html` | `downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2-package.zip` |
+| `ege-profil-vectors-yashchenko` | `downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko.html` | `downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko-package.zip` |
+| `ege-profil-derivative` | `downloads/trainers/ege-profil-derivative/ege-profil-derivative.html` | `downloads/trainers/ege-profil-derivative/ege-profil-derivative-package.zip` |
+| `ege-profil-applied` | `downloads/trainers/ege-profil-applied/ege-profil-applied.html` | `downloads/trainers/ege-profil-applied/ege-profil-applied-package.zip` |
+| `ege-profil-probability` | `downloads/trainers/ege-profil-probability/ege-profil-probability.html` | `downloads/trainers/ege-profil-probability/ege-profil-probability-package.zip` |
+| `ege-profil-functions` | `downloads/trainers/ege-profil-functions/ege-profil-functions.html` | `downloads/trainers/ege-profil-functions/ege-profil-functions-package.zip` |
+| `ege-profil-finance` | `downloads/trainers/ege-profil-finance/ege-profil-finance.html` | `downloads/trainers/ege-profil-finance/ege-profil-finance-package.zip` |
+| `ege-profil-trigonometry` | `downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry.html` | `downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-package.zip` |
+| `ege-profil-planimetry-yashchenko` | `downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko.html` | `downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip` |
+| `ege-profil-estimate-example` | `downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example.html` | `downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example-package.zip` |
+| `ege-profil-log-inequalities` | `downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities.html` | `downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-package.zip` |
+| `ege-profil-log-nested` | `downloads/trainers/ege-profil-log-nested/ege-profil-log-nested.html` | `downloads/trainers/ege-profil-log-nested/ege-profil-log-nested-package.zip` |
+| `ege-profil-log-variable-base` | `downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base.html` | `downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base-package.zip` |
+
+Ещё5 путей:
+
+1. `downloads/trainers-manifest.json` —15 объявлений общей карты; существующее описание Part Two и дата пересборки.
+2. `downloads/trainers/ege-profil-part-two/ege-profil-part-two-deepseek-prompt.md` — согласованные номера и разделение экзаменационных/дополнительных тем.
+3. `tools/trainer-download-profile-next.cjs` — зависимое ожидание функции №11 и направленная проверка текущих/старых входов.
+4. `tools/trainer-download-profile-first.cjs` — связанные map/route/state/H01 проверки при сохранении полного bank equality.
+5. `tools/trainer-download-stage2.browser.cjs` — связанные проверки16 комплектов с сохранением всех прежних assertions и логики этапа7.
+
+Всего32 generated HTML/ZIP +5 путей =37. Остальные39 комплектов, все GIF, четыре новых prompt-файла этапа7, reasoning driver, generator implementation и workflows сохраняются.
+
+### Оставшиеся решения и gate
+
+**BLOCKED_SCOPE_BASE_NATIVE_CI.** Уже разрешённая реализация и поправки сохранены в единственном Draft PR. Дополнительные16 комплектов/37 путей ещё не менялись. Для следующего кандидата требуются:
+
+1. Разрешение ограниченного расширения H02 на37 перечисленных путей.
+2. Отдельное разрешение согласовать ветку с точной current main обычным merge и разрешить19 конфликтов, сохранив H02 и опубликованные комплекты. Новое движение main требует новой оценки пары.
+3. После разрешённых правок — scoped rebuild, актуальные receipts, полные применимые CI/native и независимая HIGH проверка окончательного кандидата.
+
+Merge PR в main и публикация требуют отдельного решения после готовой проверяемой передачи. Последующие поправки task/report только документируют эти результаты; они не изменяют runtime или tests. Окончательные remote head и повторы проверок фиксируются в PR.
