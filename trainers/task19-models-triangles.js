@@ -267,5 +267,157 @@
     triangleAreaPair:{title:'Одинаковая площадь — одинаковая форма?',values:{base:6,height:3,x:1,rotation:0,congruent:false},controls:[range('base','Оба основания',3,8,.1),range('height','Обе высоты',2,5,.1),range('x','Сдвинуть вершину второго треугольника',-2,8,.1),range('rotation','Повернуть второй треугольник',0,360,5,'°')],controlsFor:p=>[range('base','Оба основания',3,8,.1),range('height','Обе высоты',2,5,.1),...(p.congruent?[range('rotation','Повернуть второй треугольник',0,360,5,'°')]:[])],normalize:p=>({...p,base:clamp(finite(p.base,6),3,8),height:clamp(finite(p.height,3),2,5),x:clamp(finite(p.x,1),-2,8),rotation:clamp(finite(p.rotation,0),0,360)}),sample(p){const first=[[0,0],[p.base,0],[1,p.height]],second=p.congruent?first.map(q=>rotate(q,p.rotation)):[[0,0],[p.base,0],[p.x,p.height]];return{points:{first,second},metrics:pairMetrics(first,second)};},render:renderAreaPair},
     triangleSimilarity:{title:'Сравни форму и размер',values:{a:55,b:65,scale:2,base:3,fixedScale:false,mode:'free',otherAngle:35},controls:[range('scale','Во сколько раз стороны второго треугольника больше сторон первого треугольника?',1,3,.1),range('base','Основание первого треугольника',2,4,.1),range('a','Угол A',20,80,1,'°'),range('b','Угол B',20,80,1,'°'),range('otherAngle','Угол при основании второго',20,80,1,'°')],controlsFor(p){let c=[];if(!p.fixedScale)c.push(range('scale','Во сколько раз стороны второго треугольника больше сторон первого треугольника?',1,3,.1));if(p.mode!=='equilateral')c.push(range('a',p.mode==='isoPair'?'Угол при основании первого':'Угол A',20,80,1,'°'));if(p.mode==='isoPair')c.push(range('otherAngle','Угол при основании второго',20,80,1,'°'));else if(p.mode!=='equilateral')c.push(range('b','Угол B',20,80,1,'°'));return c;},normalize(p){p={...p,a:clamp(finite(p.a,55),20,80),b:clamp(finite(p.b,65),20,80),base:clamp(finite(p.base,3),2,4),scale:clamp(finite(p.scale,2),1,3),otherAngle:clamp(finite(p.otherAngle,35),20,80)};if(p.fixedScale)p.scale=2;if(p.mode==='equilateral'){p.a=60;p.b=60;}if(p.mode==='isoPair')p.b=p.a;return p;},sample(p){const s=triangleSample(normalizeTriangle({a:p.a,b:p.b,scale:p.base})),first=['A','B','C'].map(n=>s.points[n]),second=p.mode==='isoPair'?[[0,0],[p.base*p.scale,0],[p.base*p.scale/2,p.base*p.scale/2*Math.tan(p.otherAngle*RAD)]]:first.map(q=>q.map(n=>n*p.scale));return{points:{first,second},metrics:pairMetrics(first,second)};},render(s){const r=renderPairReadout(s),M=s.metrics;r.readout.push('Отношение периметров: '+fmt(M.sides2.reduce((a,b)=>a+b,0)/M.sides1.reduce((a,b)=>a+b,0)),'Отношение площадей: '+fmt(M.area2/M.area1));return r;}}
   };
+  // Source expansion: additive models. Legacy definitions above stay byte-identical.
+  const sourceNumber=(v,lo,hi,fallback)=>clamp(finite(v,fallback),lo,hi);
+  const sourceArea=(A,B,C)=>Math.abs((B[0]-A[0])*(C[1]-A[1])-(B[1]-A[1])*(C[0]-A[0]))/2;
+  const sourceModes=['free','iso','equilateral','right','obtuse','angles407070','sides51213','sides202129'];
+  function sourceNormalize(input){
+    const p={...input};p.shape=sourceModes.includes(p.shape)?p.shape:'free';p.size=sourceNumber(p.size,3,6,5);p.rotation=sourceNumber(p.rotation,0,360,0);
+    p.from=Math.round(sourceNumber(p.from,0,2,1));
+    if(p.shape==='iso'){p.a=sourceNumber(p.a,25,75,50);p.b=p.a;}
+    else if(p.shape==='equilateral'){p.a=60;p.b=60;}
+    else if(p.shape==='right'){p.a=90;p.b=sourceNumber(p.b,20,70,40);}
+    else if(p.shape==='obtuse'){p.a=sourceNumber(p.a,100,135,110);p.b=sourceNumber(p.b,15,165-p.a,30);}
+    else if(p.shape==='angles407070'){p.a=40;p.b=70;}
+    else{p.a=sourceNumber(p.a,25,115,50);p.b=sourceNumber(p.b,20,155-p.a,70);}
+    return p;
+  }
+  function sourceControls(p){
+    if(p.shape.startsWith('sides'))return[range('rotation','Повернуть треугольник',0,360,5,'°')];
+    const c=[range('size','Длина AB',3,6,.1)];
+    if(p.shape==='iso')c.push(range('a','Угол при основании',25,75,1,'°'));
+    else if(p.shape==='right')c.push(range('b','Острый угол B',20,70,1,'°'));
+    else if(p.shape==='obtuse')c.push(range('a','Тупой угол A',100,135,1,'°'),range('b','Угол B',15,165-p.a,1,'°'));
+    else if(!['equilateral','angles407070'].includes(p.shape))c.push(range('a','Угол A',25,115,1,'°'),range('b','Угол B',20,155-p.a,1,'°'));
+    c.push(range('rotation','Повернуть треугольник',0,360,5,'°'));return c;
+  }
+  function sourceGeometry(p){
+    let A=[0,0],B=[p.size,0],C;
+    if(p.shape==='sides51213'){B=[12,0];C=[0,5];}
+    else if(p.shape==='sides202129'){B=[21,0];C=[0,20];}
+    else{const side=p.size*Math.sin(p.b*RAD)/Math.sin((180-p.a-p.b)*RAD);C=[side*Math.cos(p.a*RAD),side*Math.sin(p.a*RAD)];}
+    if(p.rotation){A=rotate(A,p.rotation);B=rotate(B,p.rotation);C=rotate(C,p.rotation);}
+    return{points:{A,B,C},metrics:{AB:hypot(A,B),AC:hypot(A,C),BC:hypot(B,C),area:sourceArea(A,B,C),a:angleAt(B,A,C),b:angleAt(A,B,C),c:angleAt(A,C,B)}};
+  }
+  function sourceView(s,extra=[]){
+    const P=s.points,G=[(P.A[0]+P.B[0]+P.C[0])/3,(P.A[1]+P.B[1]+P.C[1])/3],sizeFactor=s.values.shape.startsWith('sides')?1:6/s.values.size;
+    const radius=Math.max(1,...[P.A,P.B,P.C,...extra].map(q=>hypot(q,G)))*sizeFactor;
+    return fit([[G[0]-radius,G[1]-radius],[G[0]+radius,G[1]+radius]],{x:65,y:40,w:430,h:235});
+  }
+  function sourceTriangleDrawing(s,T){
+    const P=s.points,names=['A','B','C'];let body=poly(names.map(n=>T(P[n])))+labelPoints(P,names,T);
+    const lengths=[s.metrics.BC,s.metrics.AC,s.metrics.AB],styles=equalClasses(lengths);
+    for(let i=0;i<3;i++){const u=names[(i+1)%3],v=names[(i+2)%3],q=styles[i];body+=linked('source-side-'+u+v,line(T(P[u]),T(P[v]),q.color)+(lengths.some((x,j)=>j!==i&&Math.abs(x-lengths[i])<1e-7)?tick(T(P[u]),T(P[v]),q.count,q.color):''),u+v);}
+    return body;
+  }
+  const sourceSideRows=s=>[['AB',s.metrics.AB],['AC',s.metrics.AC],['BC',s.metrics.BC]].map(([n,v])=>n+' = '+fmt(v));
+  function sourcePointLabels(P,names,T){
+    const groups=[];for(const name of names){let g=groups.find(x=>hypot(x.point,P[name])<1e-7);if(!g){g={point:P[name],names:[]};groups.push(g);}g.names.push(name);}
+    return groups.map((g,i)=>{const q=T(g.point);return dot(q,colors[i%colors.length])+text(q[0]+(i%2?20:-20),q[1]+(i%2?-17:23),g.names.join(' = '),colors[i%colors.length]);}).join('');
+  }
+  function sourceLineSample(p){
+    const s=sourceGeometry(p),P=s.points,M=s.metrics,[v,u,w]=[['C','A','B'],['A','B','C'],['B','A','C']][p.from];
+    const V=P[v],U=P[u],W=P[w];P.H=foot(V,U,W);P.M=mid(U,W);P.D=weighted(U,W,hypot(V,W),hypot(V,U));
+    Object.assign(M,{vertex:v,left:u,right:w,UM:hypot(U,P.M),MW:hypot(P.M,W),UH:hypot(U,P.H),HW:hypot(P.H,W),UD:hypot(U,P.D),DW:hypot(P.D,W),heightLeft:angleAt(U,V,P.H),heightRight:angleAt(P.H,V,W),medianLeft:angleAt(U,V,P.M),medianRight:angleAt(P.M,V,W),heightMedianGap:hypot(P.H,P.M),bisectorAreaLeft:sourceArea(V,U,P.D),bisectorAreaRight:sourceArea(V,P.D,W)});
+    for(const [n,a,b]of[['A','B','C'],['B','A','C'],['C','A','B']]){P['M'+n]=mid(P[a],P[b]);M['m'+n]=hypot(P[n],P['M'+n]);}return s;
+  }
+  function sourceLineRender(s){
+    const P=s.points,M=s.metrics,p=s.values,T=sourceView(s,[P.H,P.M,P.D]);let body=sourceTriangleDrawing(s,T),readout=[];
+    if(p.view==='allMedians'){
+      for(const [i,n]of ['A','B','C'].entries()){const q=P['M'+n],color=colors[i];body+=line(T(P[n]),T(q),color)+dot(T(q),color)+text(T(q)[0]+(i===0?16:-16),T(q)[1]+20,'M'+n,color);readout.push('Медиана из '+n+' = '+fmt(M['m'+n]));}
+      return{body,readout:[...sourceSideRows(s),...readout]};
+    }
+    const V=P[M.vertex],U=P[M.left],W=P[M.right];
+    if(p.view==='bisectorAreas'){
+      body+=`<polygon points="${[V,U,P.D].map(q=>T(q).join(',')).join(' ')}" fill="${BLUE}" fill-opacity=".12"/>`+`<polygon points="${[V,P.D,W].map(q=>T(q).join(',')).join(' ')}" fill="${GREEN}" fill-opacity=".12"/>`;
+      body+=line(T(V),T(P.D),GREEN)+arc(T(U),T(V),T(P.D),GREEN,25)+arc(T(P.D),T(V),T(W),GREEN,25)+sourcePointLabels(P,['D'],T);
+      readout=[...sourceSideRows(s),M.left+'D = '+fmt(M.UD),'D'+M.right+' = '+fmt(M.DW),'Площадь '+M.vertex+M.left+'D = '+fmt(M.bisectorAreaLeft),'Площадь '+M.vertex+'D'+M.right+' = '+fmt(M.bisectorAreaRight)];
+    }else{
+      body+=drawHeight(V,P.H,U,W,T,'H',AMBER);
+      if(p.view==='altitudeMedian'){body+=line(T(V),T(P.M),BLUE)+tick(T(U),T(P.M),1,BLUE)+tick(T(P.M),T(W),1,BLUE)+sourcePointLabels(P,['M'],T);readout=[M.left+'H = '+fmt(M.UH),'H'+M.right+' = '+fmt(M.HW),M.left+'M = '+fmt(M.UM),'M'+M.right+' = '+fmt(M.MW),'HM = '+fmt(M.heightMedianGap)];}
+      else{body+=line(T(V),T(P.D),GREEN)+arc(T(U),T(V),T(P.D),GREEN,27)+arc(T(P.D),T(V),T(W),GREEN,27)+sourcePointLabels(P,['D'],T);readout=['Угол между '+M.vertex+M.left+' и высотой = '+fmt(M.heightLeft)+'°','Угол между высотой и '+M.vertex+M.right+' = '+fmt(M.heightRight)+'°',M.left+'D = '+fmt(M.UD),'D'+M.right+' = '+fmt(M.DW)];}
+      readout.unshift(...sourceSideRows(s));
+    }
+    return{body,readout};
+  }
+  defs.triangleSourceLines={title:'Сравни линии треугольника',values:{shape:'iso',a:50,b:70,size:5,rotation:0,from:1,chooseVertex:true,view:'altitudeBisector'},controls:[],normalize:sourceNormalize,controlsFor(p){return[...sourceControls(p),...(p.chooseVertex&&p.view!=='allMedians'?[['from','Из какой вершины провести линии?',0,2,1,'',['C','A','B']]]:[])];},sample:sourceLineSample,render:sourceLineRender};
+
+  function sourcePairNormalize(input){
+    const p={...input};p.kind=['sss','sasSimilarity','hypotenuseAngle','sideOpposite'].includes(p.kind)?p.kind:'sss';p.ab=sourceNumber(p.ab,3,7,6);p.ac=sourceNumber(p.ac,2,6,4);p.bc=sourceNumber(p.bc,Math.abs(p.ab-p.ac)+.6,p.ab+p.ac-.6,5);p.angle=sourceNumber(p.angle,35,80,50);p.factor=sourceNumber(p.factor,.75,1.75,1.4);p.hypotenuse=sourceNumber(p.hypotenuse,4,8,6);p.opposite=sourceNumber(p.opposite,3,6,5);p.b1=sourceNumber(p.b1,25,150-p.angle,40);p.b2=sourceNumber(p.b2,25,150-p.angle,70);p.rotation=sourceNumber(p.rotation,0,360,35);return p;
+  }
+  function sourcePairControls(p){
+    const rot=range('rotation','Повернуть второй треугольник',0,360,5,'°');
+    if(p.kind==='hypotenuseAngle')return[range('hypotenuse','Гипотенуза обоих треугольников',4,8,.1),range('angle','Острый угол обоих треугольников',35,80,1,'°'),rot];
+    if(p.kind==='sideOpposite')return[range('opposite','Общая длина BC и EF',3,6,.1),range('angle','Общий угол A и D',35,80,1,'°'),range('b1','Угол B первого треугольника',25,150-p.angle,1,'°'),range('b2','Угол E второго треугольника',25,150-p.angle,1,'°'),rot];
+    const c=[range('ab','Сторона AB',3,7,.1),range('ac','Сторона AC',2,6,.1)];
+    if(p.kind==='sss')c.push(range('bc','Сторона BC',Math.abs(p.ab-p.ac)+.6,p.ab+p.ac-.6,.1));
+    else c.push(range('angle','Угол между AB и AC',35,80,1,'°'),range('factor','Отношение соответствующих сторон',.75,1.75,.05));return[...c,rot];
+  }
+  function sourcePairSample(p){
+    let first,second;
+    if(p.kind==='sss'){const x=(p.ab*p.ab+p.ac*p.ac-p.bc*p.bc)/(2*p.ab);first=[[0,0],[p.ab,0],[x,Math.sqrt(Math.max(0,p.ac*p.ac-x*x))]];second=first.map(q=>q.slice());}
+    else if(p.kind==='sasSimilarity'){const construct=(a,b)=>[[0,0],[a,0],[b*Math.cos(p.angle*RAD),b*Math.sin(p.angle*RAD)]];first=construct(p.ab,p.ac);second=construct(p.factor*p.ab,p.factor*p.ac);}
+    else if(p.kind==='hypotenuseAngle'){first=[[0,0],[p.hypotenuse*Math.cos(p.angle*RAD),0],[0,p.hypotenuse*Math.sin(p.angle*RAD)]];second=first.map(q=>q.slice());}
+    else{const construct=b=>{const c=180-p.angle-b,ab=p.opposite*Math.sin(c*RAD)/Math.sin(p.angle*RAD),ac=p.opposite*Math.sin(b*RAD)/Math.sin(p.angle*RAD);return[[0,0],[ab,0],[ac*Math.cos(p.angle*RAD),ac*Math.sin(p.angle*RAD)]];};first=construct(p.b1);second=construct(p.b2);}
+    second=second.map(q=>rotate(q,p.rotation));const metrics=pairMetrics(first,second);metrics.sideRatios=metrics.sides2.map((v,i)=>v/metrics.sides1[i]);return{points:{first,second},metrics};
+  }
+  defs.triangleSourcePair={title:'Сопоставь данные двух треугольников',values:{kind:'sss',ab:6,ac:4,bc:5,angle:50,factor:1.4,hypotenuse:6,opposite:5,b1:40,b2:70,rotation:35},controls:[],normalize:sourcePairNormalize,controlsFor:sourcePairControls,sample:sourcePairSample,render(s){const r=renderPairReadout(s);if(s.values.kind==='hypotenuseAngle'){r.body+=rightMark(r.T(s.points.first[1]),r.T(s.points.first[0]),r.T(s.points.first[2]))+rightMark(r.U(s.points.second[1]),r.U(s.points.second[0]),r.U(s.points.second[2]));}if(s.values.kind==='sasSimilarity')r.readout.push(...['DE / AB','DF / AC','EF / BC'].map((label,i)=>label+' = '+fmt(s.metrics.sideRatios[i])));return r;}};
+
+  function sourceMetricSample(p){const s=sourceGeometry(p),P=s.points,M=s.metrics;P.H=foot(P.A,P.B,P.C);M.hypotenuseHeight=hypot(P.A,P.H);M.hypotenuseHeightProduct=M.BC*M.hypotenuseHeight;M.sideProduct=M.AB*M.AC;M.sinB=Math.sin(M.b*RAD);M.oppositeRatio=M.AC/M.BC;M.reciprocalRatio=M.BC/M.AC;return s;}
+  defs.triangleSourceMetrics={title:'Измерь стороны, углы и площадь',values:{shape:'free',a:50,b:70,size:5,rotation:0,view:'areaProduct'},controls:[],normalize:sourceNormalize,controlsFor:sourceControls,sample:sourceMetricSample,render(s){const P=s.points,M=s.metrics,p=s.values,T=sourceView(s,[P.H]);let body=sourceTriangleDrawing(s,T)+triangleAngleMarks(P,T),readout=sourceSideRows(s);
+    if(p.view==='fixedAngles'||p.view==='angles')readout.push('∠A = '+fmt(M.a)+'°','∠B = '+fmt(M.b)+'°','∠C = '+fmt(M.c)+'°');
+    else if(p.view==='hypotenuseArea'){body+=drawHeight(P.A,P.H,P.B,P.C,T);readout.push('AH = '+fmt(M.hypotenuseHeight),'Площадь ABC = '+fmt(M.area),'BC · AH = '+fmt(M.hypotenuseHeightProduct));}
+    else if(p.view==='sin'){body+=rightMark(T(P.B),T(P.A),T(P.C));readout.push('∠B = '+fmt(M.b)+'°','sin B = '+fmt(M.sinB),'AC / BC = '+fmt(M.oppositeRatio),'BC / AC = '+fmt(M.reciprocalRatio));}
+    else readout.push('Площадь ABC = '+fmt(M.area),'AB · AC = '+fmt(M.sideProduct));return{body,readout};}};
+
+  function sourceCenterSample(p){
+    const s=sourceGeometry(p),P=s.points,M=s.metrics,{A,B,C}=P,den=2*(A[0]*(B[1]-C[1])+B[0]*(C[1]-A[1])+C[0]*(A[1]-B[1])),sq=q=>q[0]*q[0]+q[1]*q[1],perimeter=M.AB+M.AC+M.BC;
+    P.O=[(sq(A)*(B[1]-C[1])+sq(B)*(C[1]-A[1])+sq(C)*(A[1]-B[1]))/den,(sq(A)*(C[0]-B[0])+sq(B)*(A[0]-C[0])+sq(C)*(B[0]-A[0]))/den];
+    P.I=[(M.BC*A[0]+M.AC*B[0]+M.AB*C[0])/perimeter,(M.BC*A[1]+M.AC*B[1]+M.AB*C[1])/perimeter];
+    M.radius=hypot(P.O,A);M.inradius=2*M.area/perimeter;M.OI=hypot(P.O,P.I);
+    for(const n of ['A','B','C']){M['O'+n]=hypot(P.O,P[n]);M['I'+n]=hypot(P.I,P[n]);}
+    for(const [h,u,v]of [['X','A','B'],['Y','B','C'],['Z','C','A']]){P['O'+h]=foot(P.O,P[u],P[v]);P['I'+h]=foot(P.I,P[u],P[v]);M['O'+h]=hypot(P.O,P['O'+h]);M['I'+h]=hypot(P.I,P['I'+h]);}
+    P.H=foot(C,A,B);P.N=mid(C,P.H);M.ON=hypot(P.O,P.N);M.CH=hypot(C,P.H);M.CN=hypot(C,P.N);M.NH=hypot(P.N,P.H);return s;
+  }
+  defs.triangleSourceCenters={title:'Сравни центр и расстояния',values:{shape:'free',a:50,b:70,size:5,rotation:0,view:'incenterVertices'},controls:[],normalize:sourceNormalize,controlsFor:sourceControls,sample:sourceCenterSample,render(s){
+    const P=s.points,M=s.metrics,p=s.values,incenter=p.view==='incenterVertices',both=p.view==='both',O=incenter?P.I:P.O,radius=incenter?M.inradius:M.radius,extras=[[O[0]-radius,O[1]-radius],[O[0]+radius,O[1]+radius]];
+    if(p.view==='midAltitude')extras.push(P.H,P.N);if(p.view==='circumcenterSides')extras.push(P.OX,P.OY,P.OZ);
+    const T=sourceView(s,extras),unit=hypot(T([0,0]),T([1,0]));let body=sourceTriangleDrawing(s,T)+circle(T(O),radius*unit,BLUE),readout=sourceSideRows(s);
+    if(incenter){body+=dot(T(P.I),GREEN)+text(T(P.I)[0]+17,T(P.I)[1]-16,'I',GREEN);for(const n of ['A','B','C'])body+=line(T(P.I),T(P[n]),GREEN,'5 5');body+=drawHeight(P.I,P.IX,P.A,P.B,T,'X',BLUE);readout.push('Радиус вписанной окружности = '+fmt(M.inradius),...['A','B','C'].map(n=>'I'+n+' = '+fmt(M['I'+n])));}
+    else if(p.view==='circumcenterSides'){
+      body+=dot(T(P.O),BLUE)+text(T(P.O)[0]+18,T(P.O)[1]-15,'O',BLUE);for(const [h,u,v]of[['X','A','B'],['Y','B','C'],['Z','C','A']])body+=drawHeight(P.O,P['O'+h],P[u],P[v],T,h,GREEN);body+=line(T(P.O),T(P.A),BLUE,'5 5');readout.push('Радиус описанной окружности = '+fmt(M.radius),'Расстояние до прямой AB = '+fmt(M.OX),'Расстояние до прямой BC = '+fmt(M.OY),'Расстояние до прямой CA = '+fmt(M.OZ));
+    }else if(p.view==='midAltitude'){
+      body+=drawHeight(P.C,P.H,P.A,P.B,T)+line(T(P.O),T(P.N),BLUE)+sourcePointLabels(P,['O','N'],T)+tick(T(P.C),T(P.N),1,GREEN)+tick(T(P.N),T(P.H),1,GREEN);readout.push('CH = '+fmt(M.CH),'CN = '+fmt(M.CN),'NH = '+fmt(M.NH),'ON = '+fmt(M.ON));
+    }else{
+      for(const n of ['A','B','C'])body+=line(T(P.O),T(P[n]),BLUE,'5 5');
+      if(both){for(const n of ['A','B','C'])body+=line(T(P[n]),T(P.I),GREEN);body+=circle(T(P.I),M.inradius*unit,GREEN);body+=sourcePointLabels(P,['O','I'],T);readout.push('OI = '+fmt(M.OI));}
+      else if(p.shape==='obtuse'){
+        const q=T(P.O),g=T([(P.A[0]+P.B[0]+P.C[0])/3,(P.A[1]+P.B[1]+P.C[1])/3]),d=hypot(q,g);
+        body+=dot(q,BLUE)+text(q[0]+23*(q[0]-g[0])/d,q[1]+23*(q[1]-g[1])/d,'O',BLUE);
+      }else body+=sourcePointLabels(P,['O'],T);
+      readout.push(...['A','B','C'].map(n=>'O'+n+' = '+fmt(M['O'+n])),'Расстояние от O до прямой BC = '+fmt(M.OY));
+    }
+    return{body,readout};
+  }};
+
+  function sourceCandidateCenterRange(p){
+    const target=p.cy===0?0:(p.cx*p.cx+p.cy*p.cy-9)/(2*p.cy);
+    return[Math.min(-5,Math.floor(target)-1),Math.max(5,Math.ceil(target)+1)];
+  }
+  function sourceCandidateNormalize(input){
+    const p={...input};p.threePoints=p.threePoints===true;p.cx=sourceNumber(p.cx,-2,2,1);
+    // Match the advertised quarter-unit steps. Zero is an explicit collinear
+    // state; every other allowed height has magnitude at least one quarter.
+    p.cy=Math.round(4*sourceNumber(p.cy,p.threePoints?-4:1,4,3))/4;
+    const [lo,hi]=sourceCandidateCenterRange(p);p.centerY=sourceNumber(p.centerY,lo,hi,0);return p;
+  }
+  defs.triangleCircleCandidate={title:'Окружность через заданные точки',values:{cx:1,cy:3,centerY:0,threePoints:false},controls:[],normalize:sourceCandidateNormalize,update(p,key,value){
+    if(key!=='centerY'||p.cy===0)return{...p,[key]:value};
+    const target=(p.cx*p.cx+p.cy*p.cy-9)/(2*p.cy),before=p.centerY-target,after=value-target;
+    const approaching=Math.abs(after)<Math.abs(before)||before*after<0;
+    return{...p,centerY:approaching&&Math.abs(after)<=.12?target:value};
+  },controlsFor:p=>{const [lo,hi]=sourceCandidateCenterRange(p);return[range('cx','Положение C вдоль AB',-2,2,.1),range('cy',p.threePoints?'Высота C: 0 — на прямой AB':'Высота C над прямой AB',p.threePoints?-4:1,4,.25),range('centerY','Передвинуть центр P',lo,hi,.1)];},sample(p){const P={A:[-3,0],B:[3,0],C:[p.cx,p.cy],M:[0,0],P:[0,p.centerY]},PA=hypot(P.P,P.A),PC=hypot(P.P,P.C);return{points:P,metrics:{PA,PB:hypot(P.P,P.B),PC,radius:PA,thirdDifference:PC-PA,collinear:Math.abs(p.cy)<1e-10,area:3*Math.abs(p.cy)}};},render(s){const P=s.points,M=s.metrics,lo=Math.min(-3,P.P[1]-M.radius,P.C[1]),hi=Math.max(4,P.P[1]+M.radius,P.C[1]),extent=Math.max(4,M.radius)+.5,T=fit([[-extent,lo-.5],[extent,hi+.5]],{x:75,y:30,w:410,h:270}),u=hypot(T([0,0]),T([1,0]));let body=line(T(P.A),T(P.B))+line(T([0,lo-.3]),T([0,hi+.3]),GREEN,'5 5')+circle(T(P.P),M.radius*u,BLUE)+labelPoints(P,['A','B','C'],T)+sourcePointLabels(P,['P'],T);for(const n of ['A','B','C'])body+=line(T(P.P),T(P[n]),n==='C'?AMBER:BLUE,'5 5');body+=rightMark(T([0,1]),T(P.M),T(P.B),GREEN);return{body,readout:['PA = '+fmt(M.PA),'PB = '+fmt(M.PB),'PC = '+fmt(M.PC),'PC − PA = '+fmt(M.thirdDifference),'Высота C над AB = '+fmt(s.values.cy)]};}};
+
+  defs.triangleVertexEquidistance={title:'Равные расстояния и высота',values:{cx:1.5,cy:3,pointY:2},controls:[range('cx','Сдвинуть вершину C вдоль основания',-2,2,.1),range('cy','Высота CH',2,4,.1),range('pointY','Передвинуть равноудалённую точку P',-2,4,.1)],normalize(input){const p={...input};p.cx=sourceNumber(p.cx,-2,2,1.5);p.cy=sourceNumber(p.cy,2,4,3);p.pointY=sourceNumber(p.pointY,-2,4,2);return p;},sample(p){const P={A:[-3,0],B:[3,0],C:[p.cx,p.cy],H:[p.cx,0],P:[0,p.pointY],Q:[p.cx,p.pointY]};return{points:P,metrics:{PA:hypot(P.P,P.A),PB:hypot(P.P,P.B),distanceToAltitude:hypot(P.P,P.Q),height:p.cy,footAngle:90}};},render(s){const P=s.points,M=s.metrics,T=fit([[-4,-3],[4,5]],{x:65,y:35,w:430,h:250});let body=poly([P.A,P.B,P.C].map(T))+labelPoints(P,['A','B','C'],T)+line(T([0,-2.5]),T([0,4.5]),GREEN,'5 5')+line(T([s.values.cx,-2.5]),T([s.values.cx,4.5]),AMBER,'5 5')+drawHeight(P.C,P.H,P.A,P.B,T)+line(T(P.P),T(P.A),BLUE)+line(T(P.P),T(P.B),BLUE)+tick(T(P.P),T(P.A),1,BLUE)+tick(T(P.P),T(P.B),1,BLUE)+line(T(P.P),T(P.Q),INK,'5 5')+sourcePointLabels(P,['P'],T);return{body,readout:['PA = '+fmt(M.PA),'PB = '+fmt(M.PB),'Расстояние от P до прямой CH = '+fmt(M.distanceToAltitude),'CH = '+fmt(M.height)]};}};
   return defs;
 });

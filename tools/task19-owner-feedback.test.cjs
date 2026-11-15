@@ -38,8 +38,11 @@ test('owner feedback preserves all 233 prior cards while the verified demo adds 
  const added=byId.get('tri_aaa_similarity');
  assert(added);assert.equal(added.truth,true);
  assert.equal(added.text,'Если три угла одного треугольника равны трём углам другого треугольника, то такие треугольники подобны.');
- const laterAdditions=new Set(require(path.join(root,'trainers/task19-exam-source-coverage.json')).additions);
- assert.equal(laterAdditions.size,10,'only the separately audited source additions are outside this historical snapshot');
+ const examAdditions=require(path.join(root,'trainers/task19-exam-source-coverage.json')).additions;
+ const majorAdditions=require(path.join(root,'trainers/task19-major-source-coverage.json')).additions;
+ assert.equal(examAdditions.length,10);assert.equal(majorAdditions.length,135);
+ const laterAdditions=new Set([...examAdditions,...majorAdditions]);
+ assert.equal(laterAdditions.size,145,'both separately audited source extensions are outside this historical snapshot');
  const bank=cards.filter(c=>c.id!=='tri_aaa_similarity'&&!laterAdditions.has(c.id)).map(c=>({id:c.id,text:c.id==='prev-011'?'Сумма внутренних углов любого треугольника равна 180°.':c.text,truth:c.truth,aliases:c.aliases}));
  assert.equal(bank.length,233);
  assert.equal(crypto.createHash('sha256').update(JSON.stringify(bank)).digest('hex'),'2e53abd6b48a711a9b407654e33601d72f0eb03e24ad1035934405ee6e23b4df');

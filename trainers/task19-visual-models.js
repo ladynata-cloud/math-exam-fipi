@@ -368,6 +368,134 @@
     return {svg:svg(caption,body),readout,sample:s};
   }
 
+  // Source-specific quadrilaterals. The original models above keep their public
+  // geometry and controls; immutable case flags encode the premise of a card.
+  function examQuadControls(p) {
+    const rotation=['rotation','Поворот фигуры',-30,30,1,'°'];
+    if(p.kind==='orthodiagonal')return [['left','Отрезок AJ',1.5,4,.1,''],['right','Отрезок JC',1.5,5,.1,''],['down','Отрезок BJ',1.5,4,.1,''],['up','Отрезок JD',1.5,5,.1,''],rotation];
+    if(p.kind==='cyclic'||p.kind==='tangential')return [['radius','Радиус окружности',3,5,.1,''],['bearingB',p.kind==='cyclic'?'Положение B':'Направление второго радиуса',p.kind==='cyclic'?45:60,p.kind==='cyclic'?100:110,1,'°'],['bearingC',p.kind==='cyclic'?'Положение C':'Направление третьего радиуса',p.kind==='cyclic'?150:160,210,1,'°'],['bearingD',p.kind==='cyclic'?'Положение D':'Направление четвёртого радиуса',260,310,1,'°']];
+    if(p.kind==='trapezoid')return [['width','Основание AB',5,9,.5,''],['top','Основание CD',2,4,.5,''],...(p.constraint==='perpendicular-diagonals'?[]:[['height','Высота',2,5,.1,'']]),...(['equal-diagonals','equal-base-angles','perpendicular-diagonals'].includes(p.constraint)?[]:[['offset','Сдвиг верхнего основания',-1.5,1.5,.1,'']]),rotation];
+    if(p.kind==='rectangle')return [['width',p.constraint==='square'?'Длина стороны':'Сторона AB',3,8,.5,''],...(p.constraint==='square'?[]:[['height','Сторона AD',2,6,.5,'']]),rotation];
+    return [...(p.kind==='rhombus'?[]:[['width','Сторона AB',3,8,.5,'']]),['side',p.kind==='rhombus'?'Длина стороны':'Сторона AD',3,6,.5,''],...(['angle80','three-angles-220'].includes(p.constraint)?[]:[['angle','Угол A',35,145,1,'°']]),rotation];
+  }
+  function examQuadNormalize(p) {
+    p={...p};
+    if(!['parallelogram','rectangle','rhombus','trapezoid','orthodiagonal','cyclic','tangential'].includes(p.kind))p.kind='parallelogram';
+    examQuadControls(p).forEach(([key,,lo,hi])=>{p[key]=clamp(finite(p[key],defs.examQuadrilateral.values[key]),lo,hi);});
+    if(p.constraint==='angle80')p.angle=80;
+    if(p.constraint==='three-angles-220')p.angle=40;
+    if(p.kind==='rectangle'){p.angle=90;if(p.constraint==='square')p.height=p.width;}
+    if(p.kind==='rhombus')p.width=p.side;
+    if(p.kind==='trapezoid'){
+      if(['equal-diagonals','equal-base-angles','perpendicular-diagonals'].includes(p.constraint))p.offset=0;
+      if(p.constraint==='perpendicular-diagonals')p.height=(p.width+p.top)/2;
+    }
+    return p;
+  }
+  const quadCross=(a,b)=>a[0]*b[1]-a[1]*b[0];
+  const quadSub=(a,b)=>[a[0]-b[0],a[1]-b[1]];
+  function quadArea(points){return Math.abs(points.reduce((sum,a,i)=>sum+quadCross(a,points[(i+1)%points.length]),0))/2;}
+  function quadCircumcenter(a,b,c){
+    const u=quadSub(b,a),v=quadSub(c,a),den=2*quadCross(u,v),uu=u[0]*u[0]+u[1]*u[1],vv=v[0]*v[0]+v[1]*v[1];
+    return [a[0]+(uu*v[1]-vv*u[1])/den,a[1]+(u[0]*vv-v[0]*uu)/den];
+  }
+  function examQuadSample(p) {
+    const P={},M={},names=['A','B','C','D'];
+    if(p.kind==='orthodiagonal'){
+      P.A=[-p.left,0];P.B=[0,-p.down];P.C=[p.right,0];P.D=[0,p.up];
+    }else if(p.kind==='cyclic'){
+      [0,p.bearingB,p.bearingC,p.bearingD].forEach((a,i)=>{P[names[i]]=[p.radius*Math.cos(a*RAD),p.radius*Math.sin(a*RAD)];});P.O=[0,0];M.radius=p.radius;
+    }else if(p.kind==='tangential'){
+      const normals=[0,p.bearingB,p.bearingC,p.bearingD].map(a=>[Math.cos(a*RAD),Math.sin(a*RAD)]);
+      normals.forEach((n,i)=>{const prev=normals[(i+3)%4],den=quadCross(prev,n);P[names[i]]=[p.radius*(n[1]-prev[1])/den,p.radius*(prev[0]-n[0])/den];});P.O=[0,0];M.radius=p.radius;
+    }else if(p.kind==='trapezoid'){
+      // Equality of the two diagonal squares gives 2x(b+t)=b²−t².
+      const x=p.constraint==='equal-diagonals'?(p.width*p.width-p.top*p.top)/(2*(p.width+p.top)):(p.width-p.top)/2+p.offset;
+      P.A=[0,0];P.B=[p.width,0];P.D=[x,p.height];P.C=[x+p.top,p.height];P.E=mid(P.A,P.D);P.F=mid(P.B,P.C);P.H=[x,0];
+      M.height=p.height;M.midline=hypot(P.E,P.F);M.lowerArea=quadArea([P.A,P.B,P.F,P.E]);M.upperArea=quadArea([P.E,P.F,P.C,P.D]);
+    }else{
+      const side=p.kind==='rectangle'?p.height:p.side,angle=p.kind==='rectangle'?90:p.angle;
+      P.A=[0,0];P.B=[p.width,0];P.D=[side*Math.cos(angle*RAD),side*Math.sin(angle*RAD)];P.C=[P.B[0]+P.D[0],P.D[1]];
+    }
+    if(p.rotation){const c=Math.cos(p.rotation*RAD),s=Math.sin(p.rotation*RAD);Object.keys(P).forEach(n=>{const [x,y]=P[n];P[n]=[c*x-s*y,s*x+c*y];});}
+    const ac=quadSub(P.C,P.A),bd=quadSub(P.D,P.B),t=quadCross(quadSub(P.B,P.A),bd)/quadCross(ac,bd);
+    P.J=[P.A[0]+t*ac[0],P.A[1]+t*ac[1]];
+    if(p.focus==='circumcircle'){P.O=quadCircumcenter(P.A,P.B,P.D);M.radius=hypot(P.O,P.A);}
+    names.forEach((n,i)=>{M[n+names[(i+1)%4]]=hypot(P[n],P[names[(i+1)%4]]);M[n+'J']=hypot(P[n],P.J);});
+    M.AD=M.DA;M.AC=hypot(P.A,P.C);M.BD=hypot(P.B,P.D);
+    M.angles=names.map((n,i)=>angleAt(P[names[(i+3)%4]],P[n],P[names[(i+1)%4]]));
+    M.angleSum=M.angles.reduce((a,b)=>a+b,0);M.threeAngleSum=M.angles.slice(0,3).reduce((a,b)=>a+b,0);
+    M.area=quadArea(names.map(n=>P[n]));M.sideSquareSum=M.AB**2+M.BC**2+M.CD**2+M.DA**2;M.diagonalSquareSum=M.AC**2+M.BD**2;
+    M.adjacentSquareSum=M.AB**2+M.BC**2;M.oppositeSum1=M.AB+M.CD;M.oppositeSum2=M.BC+M.DA;
+    M.diagonalAngle=Math.min(angleAt(P.A,P.J,P.B),180-angleAt(P.A,P.J,P.B));
+    const ab=quadSub(P.B,P.A),dc=quadSub(P.C,P.D),ad=quadSub(P.D,P.A),bc=quadSub(P.C,P.B);
+    M.parallelABCD=quadCross(ab,dc)/(M.AB*M.CD);M.parallelADBC=quadCross(ad,bc)/(M.AD*M.BC);
+    M.oppositeLineAngles=[[ab,dc],[ad,bc]].map(([u,v])=>Math.atan2(Math.abs(quadCross(u,v)),Math.abs(u[0]*v[0]+u[1]*v[1]))/RAD);
+    if(P.O){M.centerDistances=names.map(n=>hypot(P.O,P[n]));M.sideDistances=names.map((n,i)=>Math.abs(quadCross(quadSub(P[names[(i+1)%4]],P[n]),quadSub(P.O,P[n])))/M[n+names[(i+1)%4]]);}
+    return {points:P,metrics:M};
+  }
+  function examQuadRender(s) {
+    const {points:P,metrics:M,values:p}=s,names=['A','B','C','D'],focus=p.focus;
+    const bounds=names.map(n=>P[n]);
+    if(P.O)bounds.push([P.O[0]-M.radius,P.O[1]-M.radius],[P.O[0]+M.radius,P.O[1]+M.radius]);
+    if(P.H&&['area-midline','area-split'].includes(focus))bounds.push(P.H);
+    // Keep a stable physical scale when a slider changes only the overall size.
+    const size=p.kind==='rhombus'?p.side:p.constraint==='square'?p.width:['cyclic','tangential'].includes(p.kind)?p.radius:0;
+    const max=p.kind==='rhombus'?6:p.constraint==='square'?8:5;
+    const center=[bounds.reduce((a,q)=>a+q[0],0)/bounds.length,bounds.reduce((a,q)=>a+q[1],0)/bounds.length];
+    const T=fit(size?bounds.map(q=>[center[0]+(q[0]-center[0])*max/size,center[1]+(q[1]-center[1])*max/size]):bounds);
+    const Q=Object.fromEntries(Object.entries(P).map(([n,q])=>[n,T(q)]));
+    let body=poly(names.map(n=>Q[n])),readout=[];
+    if(P.O){const o=Q.O,r=hypot(T([P.O[0]+M.radius,P.O[1]]),o);body+=`<circle cx="${o[0]}" cy="${o[1]}" r="${r}" fill="none" stroke="${GREEN}" stroke-width="2.5"/>`+dot(o,GREEN)+text(o[0]+16,o[1]-21,'O',GREEN);}
+    const lengths=[];
+    if(['sides','sides-parallel','parallel-sides','opposite-sums','diagonal-squares','diagonals','diagonal-halves','equal-diagonals','pythagoras'].includes(focus))names.forEach((n,i)=>{
+      const next=names[(i+1)%4],length=M[n+next];let index=lengths.findIndex(v=>Math.abs(v-length)<1e-7);if(index<0){index=lengths.length;lengths.push(length);}
+      body+=tick(Q[n],Q[next],index+1,[BLUE,GREEN,'#a65017','#7849a5'][index]);
+    });
+    if(['angles','angle-sum','three-angles','parallel-sides'].includes(focus)||p.kind==='rectangle'){
+      const angles=[];
+      names.forEach((n,i)=>{let index=angles.findIndex(a=>Math.abs(a-M.angles[i])<1e-7);if(index<0){index=angles.length;angles.push(M.angles[i]);}body+=angleMark(Q[names[(i+3)%4]],Q[n],Q[names[(i+1)%4]],[BLUE,GREEN,'#a65017','#7849a5'][index],index+1);});
+    }
+    if(['diagonals','diagonal-halves','equal-diagonals','diagonal-squares','pythagoras'].includes(focus)){
+      body+=line(Q.A,Q.C,BLUE);
+      if(focus!=='pythagoras')body+=line(Q.B,Q.D,GREEN);
+      if(focus==='diagonal-halves'){
+        names.forEach(n=>{let i=lengths.findIndex(v=>Math.abs(v-M[n+'J'])<1e-7);if(i<0){i=lengths.length;lengths.push(M[n+'J']);}body+=tick(Q[n],Q.J,i+1,[BLUE,GREEN,'#a65017','#7849a5'][i]);});body+=dot(Q.J)+text(Q.J[0]+30,Q.J[1],'J');
+      }
+      if(focus!=='pythagoras'&&Math.abs(M.diagonalAngle-90)<1e-7)body+=rightMark(Q.A,Q.J,Q.B);
+    }
+    if(['area-midline','area-split'].includes(focus)){
+      if(focus==='area-split')body+=`<polygon points="${['E','F','C','D'].map(n=>Q[n].join(',')).join(' ')}" fill="#d9ece1" stroke="none"/>`;
+      body+=line(Q.E,Q.F,BLUE)+line(Q.D,Q.H,GREEN,'7 5');
+      if(P.H[0]<Math.min(P.A[0],P.B[0])-1e-8||P.H[0]>Math.max(P.A[0],P.B[0])+1e-8)body+=line(Q.A,Q.H,INK,'5 5');
+      const baseVector=quadSub(Q.B,Q.A),length=Math.hypot(...baseVector);body+=rightMark(Q.D,Q.H,[Q.H[0]+30*baseVector[0]/length,Q.H[1]+30*baseVector[1]/length],GREEN);
+      body+=labelPoints(P,['E','F'],T);const match=names.find(n=>hypot(P[n],P.H)<1e-7);if(!match)body+=dot(Q.H,GREEN)+text(Q.H[0],Q.H[1]+27,'H',GREEN);
+    }
+    body+=labelPoints(P,names,T);
+    if(['area-midline','area-split'].includes(focus)){
+      const match=names.find(n=>hypot(P[n],P.H)<1e-7);if(match)body+=text(Q.H[0],Q.H[1]+44,`${match} = H`,GREEN);
+    }
+    const sides=names.map((n,i)=>`${n+names[(i+1)%4]} = ${fmt(M[n+names[(i+1)%4]])}`);
+    if(focus==='pythagoras')readout=[`AB² = ${fmt(M.AB**2)}`,`BC² = ${fmt(M.BC**2)}`,`AC² = ${fmt(M.AC**2)}`,`AB² + BC² = ${fmt(M.adjacentSquareSum)}`];
+    else if(focus==='diagonal-squares')readout=[`AC² = ${fmt(M.AC**2)}`,`BD² = ${fmt(M.BD**2)}`,`AC² + BD² = ${fmt(M.diagonalSquareSum)}`,`AB² + BC² + CD² + DA² = ${fmt(M.sideSquareSum)}`];
+    else if(focus==='area-midline')readout=[`EF = ${fmt(M.midline)}`,`DH = ${fmt(M.height)}`,`EF · DH = ${fmt(M.midline*M.height)}`,`S(ABCD) = ${fmt(M.area)}`];
+    else if(focus==='area-split')readout=[`AB = ${fmt(M.AB)}`,`EF = ${fmt(M.midline)}`,`CD = ${fmt(M.CD)}`,`S(ABFE) = ${fmt(M.lowerArea)}`,`S(EFCD) = ${fmt(M.upperArea)}`];
+    else if(focus==='opposite-sums')readout=sides.concat([`AB + CD = ${fmt(M.oppositeSum1)}`,`BC + DA = ${fmt(M.oppositeSum2)}`]);
+    else if(focus==='sides-parallel')readout=sides.concat([`Угол между AB и CD = ${fmt(M.oppositeLineAngles[0])}°`,`Угол между AD и BC = ${fmt(M.oppositeLineAngles[1])}°`]);
+    else if(focus==='circumcircle'){body+=line(Q.O,Q.A,GREEN,'5 5')+line(Q.O,Q.C,BLUE,'5 5');readout=names.map((n,i)=>`O${n} = ${fmt(M.centerDistances[i])}`).concat([`Радиус = ${fmt(M.radius)}`]);}
+    else if(focus==='diagonal-halves')readout=names.map(n=>`${n}J = ${fmt(M[n+'J'])}`);
+    else if(['diagonals','equal-diagonals'].includes(focus))readout=[`AC = ${fmt(M.AC)}`,`BD = ${fmt(M.BD)}`,`Угол между диагоналями = ${fmt(M.diagonalAngle)}°`].concat(sides);
+    else if(['angles','angle-sum','three-angles','parallel-sides'].includes(focus)){
+      readout=names.map((n,i)=>`∠${n} = ${fmt(M.angles[i])}°`);
+      if(focus==='angle-sum')readout.push(`∠A + ∠B + ∠C + ∠D = ${fmt(M.angleSum)}°`);
+      if(focus==='three-angles')readout.push(`∠A + ∠B + ∠C = ${fmt(M.threeAngleSum)}°`);
+      if(focus==='angles')readout.push(`∠A + ∠B = ${fmt(M.angles[0]+M.angles[1])}°`);
+      if(focus==='parallel-sides')readout.push(`Угол между AB и AD = ${fmt(Math.min(M.angles[0],180-M.angles[0]))}°`,`Угол между AB и CD = ${fmt(M.oppositeLineAngles[0])}°`,`Угол между AD и BC = ${fmt(M.oppositeLineAngles[1])}°`);
+    }else readout=sides;
+    return {body,readout};
+  }
+  defs.examQuadrilateral={title:'Четырёхугольник ABCD',values:{kind:'parallelogram',focus:'sides',constraint:'',width:6,height:3,side:4,top:3,offset:1,angle:65,radius:4,bearingB:70,bearingC:175,bearingD:270,rotation:0,left:2,right:4,down:2,up:3},controls:[],controlsFor:examQuadControls,normalize:examQuadNormalize,sample:examQuadSample,render:examQuadRender};
+
   // Extensions are pure geometry: the host owns controls, measurement and state.
   const kit={RAD,BLUE,GREEN,INK,LIGHT,clamp,finite,hypot,mid,esc,fmt,angleAt,line,text,dot,poly,fit,labelPoints,svg,tick,angleMark,rightMark,linked};
   (extensions||[]).forEach(create=>{

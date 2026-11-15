@@ -1326,6 +1326,86 @@ const data = {
           "url": "https://pdf3.my-uchebnik.com/pdf/geometry/00000035.pdf#page=132"
         }
       ]
+    },
+    "symmetry_axis": {
+      "title": "Осевая симметрия",
+      "explanation": "Ось симметрии отражает всю фигуру в неё саму. Для проверки нужно сопоставить каждой точке её отражение; совпадение только нескольких отдельных точек ещё не доказывает симметрию всей фигуры.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение оси симметрии и примеры фигур",
+          "printedPage": "111",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 18, определение симметричной фигуры и примеры её осей",
+          "printedPage": "161–162",
+          "pdfPage": 162,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=162"
+        }
+      ]
+    },
+    "symmetry_center": {
+      "title": "Центральная симметрия",
+      "explanation": "При центральной симметрии точка O является серединой отрезка между точкой и её образом. Центр симметрии фигуры должен переводить всю фигуру в неё саму. Центр окружности и пересечение диагоналей параллелограмма обладают этим свойством; у треугольника его нет.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 47, определение центра симметрии и примеры",
+          "printedPage": "111–112",
+          "pdfPage": 113,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+        },
+        {
+          "bookId": "merzlyak9_2022",
+          "section": "§ 19, определения центральной симметрии и центра фигуры, примеры",
+          "printedPage": "166–168",
+          "pdfPage": 167,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=167"
+        }
+      ]
+    },
+    "intersecting_chords": {
+      "title": "Произведения отрезков пересекающихся хорд",
+      "explanation": "Если хорды AB и CD одной окружности пересекаются внутри неё в P, то PA · PB = PC · PD. Равенство относится к произведениям двух частей каждой хорды. Его получают из подобия треугольников и равенства вписанных углов.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, теорема о произведениях отрезков пересекающихся хорд",
+          "printedPage": "173",
+          "pdfPage": 175,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=175"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 2: свойство пересекающихся хорд",
+          "printedPage": "90–91",
+          "pdfPage": 91,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=91"
+        }
+      ]
+    },
+    "tangent_secant": {
+      "title": "Касательная и секущая из одной точки",
+      "explanation": "Из внешней точки P касательная касается окружности в T, а секущая встречает её сначала в A, затем в B. В равенстве PT² = PA · PB отрезок PA является внешней частью, а PB — всей секущей от P до дальней точки пересечения. Хорда AB не заменяет PB.",
+      "passages": [
+        {
+          "bookId": "atanasyan2010",
+          "section": "п. 71, задача 670 о касательной и секущей",
+          "printedPage": "175",
+          "pdfPage": 177,
+          "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=177"
+        },
+        {
+          "bookId": "merzlyak8_2013",
+          "section": "§ 13, ключевая задача 3: свойство касательной и секущей",
+          "printedPage": "91",
+          "pdfPage": 92,
+          "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=92"
+        }
+      ]
     }
   },
   "cards": {
@@ -2137,6 +2217,519 @@ const data = {
     "parallelogram_equal_diagonals_square": [
       "rectangle",
       "square"
+    ],
+    "parallel_lines_alternate_interior_equal": [
+      "parallel_angles"
+    ],
+    "isosceles_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "isosceles_has_axis_symmetry": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equilateral_has_central_symmetry": [
+      "symmetry_center",
+      "isosceles"
+    ],
+    "unique_point_equidistant_segment_endpoints": [
+      "perpendicular_bisector"
+    ],
+    "equilateral_has_three_symmetry_axes": [
+      "symmetry_axis",
+      "isosceles"
+    ],
+    "equidistant_endpoints_point_on_perp_bisector": [
+      "perpendicular_bisector"
+    ],
+    "any_two_lines_exactly_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "alternate_interior_right_angles_imply_parallel": [
+      "parallel_alternate",
+      "perpendicular"
+    ],
+    "vertical_angle_of_108_is_108": [
+      "adjacent_vertical"
+    ],
+    "adjacent_angles_sum_90": [
+      "adjacent_vertical"
+    ],
+    "adjacent_53_123": [
+      "adjacent_vertical"
+    ],
+    "equal_corresponding_angles_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "oblique_lt_perpendicular_3": [
+      "perpendicular_point",
+      "pythagoras"
+    ],
+    "adjacent_81_99": [
+      "adjacent_vertical"
+    ],
+    "same_side_sum90_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "corresponding_angles90_parallel": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "two_lines_at_most_one_common_point": [
+      "points_lines"
+    ],
+    "two_distinct_points_multiple_lines": [
+      "points_lines"
+    ],
+    "three_lines_at_least_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "corresponding_angles67_parallel": [
+      "parallel_alternate",
+      "parallel_angles"
+    ],
+    "any_two_lines_more_than_one_common_point": [
+      "points_lines",
+      "adjacent_vertical"
+    ],
+    "two_distinct_points_at_most_one_line": [
+      "points_lines"
+    ],
+    "three_lines_one_common_point": [
+      "points_lines",
+      "parallel_point"
+    ],
+    "parallel_line_perpendicular_transfer": [
+      "perpendicular",
+      "parallel_angles"
+    ],
+    "vertical_40_140": [
+      "adjacent_vertical"
+    ],
+    "same_side50_110_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "adjacent_50_120": [
+      "adjacent_vertical"
+    ],
+    "same_side30_120_parallel": [
+      "parallel_same_side",
+      "parallel_angles"
+    ],
+    "point_at_most_two_lines": [
+      "points_lines"
+    ],
+    "circle_exactly_two_symmetry_axes": [
+      "symmetry_axis",
+      "circle_definition"
+    ],
+    "line_no_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "regular_hexagon_six_symmetry_axes": [
+      "symmetry_axis",
+      "regular_polygon"
+    ],
+    "rectangle_no_symmetry_center": [
+      "symmetry_center",
+      "rectangle"
+    ],
+    "circle_no_symmetry_center": [
+      "symmetry_center",
+      "circle_definition"
+    ],
+    "line_at_least_two_symmetry_axes": [
+      "symmetry_axis",
+      "points_lines"
+    ],
+    "square_four_symmetry_axes": [
+      "symmetry_axis",
+      "square"
+    ],
+    "rhombus_symmetry_center_diagonals": [
+      "symmetry_center",
+      "rhombus"
+    ],
+    "three_concurrent_lines_not_exist": [
+      "points_lines"
+    ],
+    "rectangle_diagonal_pythagoras": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "nonrectangle_parallelogram_exists": [
+      "parallelogram",
+      "rectangle"
+    ],
+    "rectangle_diagonals_squares_sum_equals_sides": [
+      "rectangle",
+      "pythagoras"
+    ],
+    "trapezoid_area_midline_times_height": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "orthodiagonal_quadrilateral_is_rhombus": [
+      "rhombus",
+      "polygon_angles"
+    ],
+    "no_rectangle_perpendicular_diagonals": [
+      "rectangle",
+      "square"
+    ],
+    "nonparallelogram_rectangle_exists": [
+      "rectangle",
+      "parallelogram"
+    ],
+    "nonsquare_rhombus_exists": [
+      "rhombus",
+      "square"
+    ],
+    "square_diagonals_bisect": [
+      "square",
+      "parallelogram"
+    ],
+    "nonrhombus_square_exists": [
+      "square",
+      "rhombus"
+    ],
+    "rectangle_all_angles_equal": [
+      "rectangle"
+    ],
+    "trapezoid_perpendicular_diagonals_exists": [
+      "trapezoid",
+      "perpendicular",
+      "coordinates"
+    ],
+    "parallelogram_opposite_angles_equal": [
+      "parallelogram"
+    ],
+    "rectangle_not_square_exists": [
+      "rectangle",
+      "square"
+    ],
+    "convex_quadrilateral_angle_sum_180": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "parallelogram_adjacent_angles_sum_180": [
+      "parallelogram",
+      "parallel_angles"
+    ],
+    "rhombus_all_sides_parallel": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "rhombus_opposite80_100": [
+      "rhombus",
+      "parallelogram"
+    ],
+    "trapezoid_equal_diagonals_isosceles": [
+      "trapezoid",
+      "isosceles_trapezoid"
+    ],
+    "quadrilateral_opposite_pair_equal_parallel": [
+      "parallelogram_tests"
+    ],
+    "quadrilateral_two_equal_angles_parallelogram": [
+      "parallelogram_tests",
+      "isosceles_trapezoid"
+    ],
+    "convex_quad_three_sum220_fourth130": [
+      "polygon_angles",
+      "triangle_angles"
+    ],
+    "all_rhombi_cyclic": [
+      "rhombus",
+      "circumcircle"
+    ],
+    "any_trapezoid_two_equal_angles": [
+      "trapezoid",
+      "parallel_angles"
+    ],
+    "trapezoid_midline_equal_areas": [
+      "trapezoid_area",
+      "trapezoid_midline"
+    ],
+    "cyclic_quadrilateral_opposite_side_sums_equal": [
+      "circumcircle",
+      "incircle"
+    ],
+    "tangential_quadrilateral_opposite_side_sums_equal": [
+      "incircle",
+      "tangent"
+    ],
+    "parallelogram_diagonals_square_sum": [
+      "parallelogram",
+      "pythagoras",
+      "coordinates"
+    ],
+    "isosceles_all_altitudes_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_incenter_circumcenter_coincide": [
+      "isosceles",
+      "incircle",
+      "circumcircle"
+    ],
+    "triangle_larger_side_smaller_opposite_angle": [
+      "triangle_sides_angles"
+    ],
+    "triangle_always_has_incircle": [
+      "incircle"
+    ],
+    "right_triangles_hypotenuse_acute_angle_congruent": [
+      "right_triangle",
+      "triangle_congruence"
+    ],
+    "triangle_sas_similarity": [
+      "triangle_similarity"
+    ],
+    "isosceles_all_medians_are_bisectors": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "obtuse_triangle_angles_sum_180": [
+      "triangle_angles",
+      "triangle_types"
+    ],
+    "triangle_area_not_exceed_product_two_sides": [
+      "triangle_sine_area",
+      "triangle_area"
+    ],
+    "isosceles_base_median_is_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_median_is_bisector": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_40_70_70_is_isosceles": [
+      "isosceles",
+      "triangle_sides_angles"
+    ],
+    "isosceles_apex_bisector_bisects_base": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_all_altitudes_medians": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_lateral_median_altitude": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "triangle_side_opposite_angle_congruence": [
+      "triangle_congruence"
+    ],
+    "triangle_angle_strictly_gt60_exists": [
+      "triangle_angles",
+      "isosceles"
+    ],
+    "triangle_bisector_equal_areas": [
+      "triangle_area",
+      "angle_bisector",
+      "triangle_parts"
+    ],
+    "circumcenter_is_bisectors_intersection": [
+      "circumcircle",
+      "incircle",
+      "perpendicular_bisector"
+    ],
+    "incenter_vertex_distance_radius": [
+      "incircle",
+      "angle_bisector_locus"
+    ],
+    "circumcenter_side_distance_radius": [
+      "circumcircle",
+      "circle_definition"
+    ],
+    "isosceles_all_medians_equal": [
+      "isosceles",
+      "triangle_parts"
+    ],
+    "isosceles_base_altitude_gt_lateral": [
+      "isosceles",
+      "triangle_area"
+    ],
+    "triangle_congruence_sss": [
+      "triangle_congruence"
+    ],
+    "triangle_circumcircle_at_most_one": [
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "equidistant_two_vertices_on_third_altitude": [
+      "perpendicular_bisector",
+      "triangle_parts"
+    ],
+    "incenter_equidistant_vertices": [
+      "incircle",
+      "circumcircle"
+    ],
+    "three_distinct_points_at_most_one_circle": [
+      "circumcircle",
+      "perpendicular_bisector",
+      "circle_line"
+    ],
+    "isosceles_circumcenter_midpoint_altitude": [
+      "isosceles",
+      "circumcircle",
+      "perpendicular_bisector"
+    ],
+    "circumcenter_equidistant_sides": [
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_5_12_13_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "equilateral_circumcenter_bisectors": [
+      "isosceles",
+      "circumcircle",
+      "incircle"
+    ],
+    "triangle_20_21_29_circumcenter_on_side": [
+      "pythagoras",
+      "median_hypotenuse",
+      "circumcircle"
+    ],
+    "obtuse_circumcenter_on_side": [
+      "circumcircle",
+      "inscribed_angles",
+      "triangle_types"
+    ],
+    "triangle_4_5_9_exists": [
+      "triangle_inequality"
+    ],
+    "right_triangle_area_hypotenuse_times_altitude": [
+      "triangle_area",
+      "right_triangle"
+    ],
+    "triangle_6_8_2_not_exist": [
+      "triangle_inequality"
+    ],
+    "sin_hypotenuse_over_opposite": [
+      "trigonometry"
+    ],
+    "circle_area_less_than_diameter_squared": [
+      "circle_length_area",
+      "rectangle_area"
+    ],
+    "point_inside_disk_distance_less_radius": [
+      "circle_definition"
+    ],
+    "equidistant_points_lie_on_circle": [
+      "circle_definition"
+    ],
+    "point_outside_disk_distance_greater_radius": [
+      "circle_definition"
+    ],
+    "tangent_circles_contact_equidistant_centers": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "square_always_cyclic": [
+      "square",
+      "circumcircle"
+    ],
+    "chord_always_gt_radius": [
+      "circle_definition",
+      "pythagoras"
+    ],
+    "circle_point_distance_less_radius": [
+      "circle_definition"
+    ],
+    "any_two_chords_intersect": [
+      "circle_definition",
+      "parallel_point"
+    ],
+    "any_two_diameters_perpendicular": [
+      "circle_definition",
+      "perpendicular"
+    ],
+    "point_distance5_radius4_inside": [
+      "circle_definition"
+    ],
+    "circles_r1_r6_d4_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance3_radius5_tangent": [
+      "circle_line",
+      "tangent"
+    ],
+    "inscribed40_arc80": [
+      "inscribed_angles"
+    ],
+    "inscribed_equals_central_same_chord": [
+      "inscribed_angles"
+    ],
+    "circles_r3_r2_d4_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "line_distance10_radius7_disjoint": [
+      "circle_line"
+    ],
+    "inscribed40_arc40": [
+      "inscribed_angles"
+    ],
+    "two_points_multiple_circles": [
+      "perpendicular_bisector",
+      "circle_definition"
+    ],
+    "circles_distance_gt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d1_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc100_inscribed50": [
+      "inscribed_angles"
+    ],
+    "circles_distance_lt_sum_diameters_disjoint": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "circles_r2_r5_d6_intersect": [
+      "circle_definition",
+      "triangle_inequality"
+    ],
+    "arc60_inscribed30": [
+      "inscribed_angles"
+    ],
+    "regular_heptagon_no_circumcircle": [
+      "regular_polygon",
+      "circumcircle"
+    ],
+    "regular_nonagon_no_incircle": [
+      "regular_polygon",
+      "incircle"
+    ],
+    "tangent_secant_power": [
+      "tangent_secant"
+    ],
+    "external_point_at_most_one_tangent": [
+      "tangent",
+      "circle_line"
+    ],
+    "intersecting_chords_products_equal": [
+      "intersecting_chords"
     ]
   }
 };

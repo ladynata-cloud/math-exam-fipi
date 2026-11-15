@@ -8,6 +8,7 @@ const {JSDOM,VirtualConsole}=require('jsdom');
 const root=path.resolve(__dirname,'..'),read=file=>fs.readFileSync(path.join(root,file),'utf8');
 const data=require('../trainers/task19-visual-data.js');
 const audit=require('../trainers/task19-exam-source-coverage.json');
+const major=require('../trainers/task19-major-source-coverage.json');
 const registry=require('../trainers/task19-source-coverage.json');
 const V=require('../trainers/task19-visual-models.js');
 const byId=new Map(data.cards.map(card=>[card.id,card]));
@@ -25,14 +26,14 @@ const expected={
   'E3F78B-1':['parallelogram_equal_diagonals_square',false]
 };
 
-test('only ten reviewed formulations are appended; old cards and aliases are unchanged',()=>{
-  assert.equal(data.cards.length,244);
-  assert.equal(new Set(data.cards.map(c=>c.id)).size,244);
+test('the historical ten-formulation extension remains unchanged before the separate 135-card expansion',()=>{
+  assert.equal(data.cards.length,379);
+  assert.equal(new Set(data.cards.map(c=>c.id)).size,379);
   assert.equal(hash(data.cards.slice(0,234)),audit.baseline.cardsSha256,'all fields of all old cards remain identical');
   assert.equal(audit.baseline.cardsSha256,'32406aa0519b294b07736c66df2842dc3f6731564faee4cc2ca7ca6e78cb01eb');
-  assert.deepEqual(data.cards.slice(234).map(c=>c.id),Object.values(expected).map(([id])=>id));
-  assert.deepEqual(audit.additions,data.cards.slice(234).map(c=>c.id));
-  const oldAliases=Object.fromEntries(Object.entries(data.aliases).filter(([key])=>!audit.additions.includes(key)));
+  assert.deepEqual(data.cards.slice(234,244).map(c=>c.id),Object.values(expected).map(([id])=>id));
+  assert.deepEqual(audit.additions,data.cards.slice(234,244).map(c=>c.id));
+  const oldAliases=Object.fromEntries(Object.entries(data.aliases).filter(([key])=>!audit.additions.includes(key)&&!major.additions.includes(key)));
   assert.equal(hash(oldAliases),'880649d016e7f905c255e94d13d8b111909867ba37b5c97f6177084924788d27');
   for(const id of audit.additions)assert.deepEqual(byId.get(id).aliases,[id]);
   for(const [source,[id,truth]] of Object.entries(expected)){
@@ -191,7 +192,7 @@ test('public entries and rebuilt standalone render every addition without losing
   const records=Object.fromEntries(data.cards.slice(0,234).map((c,i)=>[c.id,{attempts:i%3+1,correct:i%3,needsReview:i%2===0}]));
   for(const file of ['trainers/task19-trainer.html','trainers/geometry_statements_trainer_improved.html','downloads/trainers/task19-trainer/task19-trainer.html'])for(const id of audit.additions){
     const e=boot(file,id,records);try{
-      const card=byId.get(id);assert.equal(e.w.Task19Data.cards.length,244);assert.equal(e.$('#statement').textContent,card.text);
+      const card=byId.get(id);assert.equal(e.w.Task19Data.cards.length,379);assert.equal(e.$('#statement').textContent,card.text);
       assert.deepEqual(e.saved().records,records,'all old progress survives bank extension');assert(e.$('#hintPanel').hidden);assert(e.$('#answerPanel').hidden);
       e.$('#hintToggle').click();const input=e.$('#visualHost input[type="range"]');assert(input,id+': meaningful control');
       input.value=input.max;input.dispatchEvent(new e.w.Event('input',{bubbles:true}));e.$('.t19-measure').click();

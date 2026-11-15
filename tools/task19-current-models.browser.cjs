@@ -144,12 +144,12 @@ async function main(){
           try{
             for(const id of sourceAdditions){
               const card=cards.find(c=>c.id===id);await sourcePage.goto(entry.url+'?card='+encodeURIComponent(id));
-              await sourcePage.waitForFunction(()=>window.Task19Data?.cards.length===244);
+              await sourcePage.waitForFunction(()=>window.Task19Data?.cards.length===379);
               assert.equal(await sourcePage.locator('#statement').textContent(),card.text);assert.equal(await sourcePage.locator('#answerPanel').isVisible(),false);
               await sourcePage.locator('#hintToggle').click();await sourcePage.locator('#visualHost svg').waitFor();
               await sourcePage.locator('.t19-measure').click();assert.equal(await sourcePage.locator('#answerPanel').isVisible(),false);await fit(sourcePage,name+' '+entry.name+' '+id);
               await sourcePage.locator(card.truth?'#btnTrue':'#btnFalse').click();assert.equal(await sourcePage.locator('#answerPanel').isVisible(),true);
-              coverage.push({viewport:name,entry:entry.name,card:id,checks:['244-card bank','embedded model','correct verdict']});
+              coverage.push({viewport:name,entry:entry.name,card:id,checks:['379-card bank','embedded model','correct verdict']});
             }
             assert.deepEqual(network,[],entry.name+': no network dependency for the offline lesson');
           }finally{await sourcePage.close();}
