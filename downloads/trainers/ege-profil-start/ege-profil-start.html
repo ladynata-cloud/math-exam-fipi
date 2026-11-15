@@ -56658,14 +56658,41 @@ function number(input){
  const tokens=source.match(/sqrt|pi|\d+(?:\.\d*)?|\.\d+|[()+*/^\-]/g)||[];
  if(tokens.join('')!==source.replace(/\s/g,''))return NaN;
  let i=0,depth=0;
- function atom(){if(++depth>30)throw Error();let v,t=tokens[i++];if(t==='('){v=sum();if(tokens[i++]!==')')throw Error();}else if(t==='pi')v=Math.PI;else if(t==='sqrt')v=Math.sqrt(unary());else if(t&&/^(\d|\.)/.test(t))v=Number(t);else throw Error();depth--;return v;}
- function power(){let v=atom();if(tokens[i]==='^'){i++;const p=unary();if(Math.abs(p)>50)throw Error();v=Math.pow(v,p);}return v;}
+ // Reject invalid intermediate values before a later operation can hide them
+ // (JavaScript, for example, evaluates NaN ** 0 and Infinity ** 0 as 1).
+ function finite(v){if(!Number.isFinite(v))throw Error();return v;}
+ function atom(){
+  if(++depth>30)throw Error();
+  let v,t=tokens[i++];
+  if(t==='('){v=sum();if(tokens[i++]!==')')throw Error();}
+  else if(t==='pi')v=Math.PI;
+  else if(t==='sqrt'){
+   // Explicit parentheses end the radicand. An outside power belongs to
+   // the root itself: sqrt((-4)^2) is valid, but sqrt(-4)^2 is not.
+   // Keep the existing shorthand grammar for an unparenthesized root.
+   const radicand=tokens[i]==='('?atom():unary();
+   if(radicand<0)throw Error();
+   v=Math.sqrt(radicand);
+  }else if(t&&/^(\d|\.)/.test(t))v=Number(t);
+  else throw Error();
+  depth--;return finite(v);
+ }
+ function power(){
+  let v=atom();
+  if(tokens[i]==='^'){
+   i++;const p=unary();
+   // School real arithmetic: 0^0 and zero to a negative power are undefined.
+   if(Math.abs(p)>50||(v===0&&p<=0))throw Error();
+   v=finite(Math.pow(v,p));
+  }
+  return v;
+ }
  function unary(){if(tokens[i]==='+'){i++;return unary();}if(tokens[i]==='-'){i++;return -unary();}return power();}
  // Juxtaposition has the same precedence as multiplication: 3/4π = (3/4)*π.
  // A product in a denominator must be bracketed, e.g. 3/(4π).
  function implicit(){return tokens[i]==='pi'||tokens[i]==='sqrt'||tokens[i]==='('||((tokens[i-1]===')'||tokens[i-1]==='pi')&&/^(\d|\.)/.test(tokens[i]||''));}
- function product(){let v=unary();while(tokens[i]==='*'||tokens[i]==='/'||implicit()){const op=implicit()?'*':tokens[i++],b=unary();v=op==='*'?v*b:v/b;}return v;}
- function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],b=product();v=op==='+'?v+b:v-b;}return v;}
+ function product(){let v=unary();while(tokens[i]==='*'||tokens[i]==='/'||implicit()){const op=implicit()?'*':tokens[i++],b=unary();if(op==='/'&&b===0)throw Error();v=finite(op==='*'?v*b:v/b);}return v;}
+ function sum(){let v=product();while(tokens[i]==='+'||tokens[i]==='-'){const op=tokens[i++],b=product();v=finite(op==='+'?v+b:v-b);}return v;}
  try{const v=sum();return i===tokens.length&&Number.isFinite(v)?v:NaN;}catch(_){return NaN;}
 }
 function check(expected,input,choices,options){

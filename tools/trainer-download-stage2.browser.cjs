@@ -31,6 +31,39 @@ async function loadImage(locator) {
   assert(await locator.evaluate(async img => { await img.decode(); return img.naturalWidth > 0; }));
 }
 
+async function checkPartTwoNumericDomain(page) {
+  const task = partTwoLessons.find(lesson => lesson.id === 'p14-circle-selection').tasks[3];
+  await page.evaluate(id => { location.hash = '#task/' + id + '/independent'; }, task.id);
+  const answer = page.locator('#final-0');
+  const proof = page.locator('#proof-draft');
+  const read = () => page.evaluate(async id => {
+    await ProfilePartTwoApp.store.flush();
+    return ProfilePartTwoApp.store.read(id);
+  }, task.id);
+  await answer.waitFor();
+  for (let i = 1; i < task.final.length; i++) await page.locator('#final-' + i).fill(String(task.final[i].answers[0]));
+  const note = 'Проверяю корни и отбор на отрезке.';
+  await proof.fill(note);
+  const expected = task.final[0].answers[0];
+  for (const [expression, oldValue] of profileFirst.invalidNumericExamples) {
+    await answer.fill(`(${expected})+(${expression})-${oldValue}`);
+    await submit(page, '#final-form');
+    const state = await read();
+    assert(!state.completed && !state.independent, expression);
+    assert(state.attempts.every(attempt => !attempt.correct));
+    assert.equal(await page.locator('#completion').count(), 0);
+  }
+  const draft = await answer.inputValue();
+  await page.reload();
+  assert.equal(await answer.inputValue(), draft);
+  assert.equal(await proof.inputValue(), note);
+  await answer.fill(`(${expected})+(sqrt((-4)^2)-4)`);
+  await submit(page, '#final-form');
+  await page.locator('#completion').waitFor();
+  const state = await read();
+  assert(state.completed && state.independent);
+}
+
 async function textbook(page, appName, courseName, lesson) {
   const task = await page.evaluate(({ courseName, lesson }) => window[courseName].lessons.find(item => item.id === lesson).tasks[0], { courseName, lesson });
   const example = page.locator('details.ce-help');
@@ -199,6 +232,7 @@ const scenarios = {
     await page.locator('#completion').waitFor();
     await page.reload();
     assert.equal(await page.locator('#proof-draft').inputValue(), 'Проверяю перпендикулярность по условию.');
+    await checkPartTwoNumericDomain(page);
   },
   'makarychev8-algebra': page => textbook(page, 'MakarychevApp', 'MakarychevCourse', 'p16'),
   'peterson6-math': page => textbook(page, 'PetersonApp', 'PetersonCourse', 'p12')
@@ -324,7 +358,9 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320 || Object.values(groups).some(group => group[entry.slug])) await scenarios[entry.slug](page, loadImage);
+        if (width === 320 || entry.slug === 'ege-profil-part-two' || Object.values(groups).some(group => group[entry.slug])) {
+          await scenarios[entry.slug](page, loadImage);
+        }
         assert.deepEqual(issues, [], entry.slug);
         await context.close();
       }

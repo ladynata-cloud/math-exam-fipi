@@ -17,6 +17,9 @@ for (const name of ['vector-basics', 'geometry', 'stereo', 'algebra', 'probabili
 const originalBankHash = hash(reference.ProfileLessons);
 
 const routes = { 'ege-profil-start': '#calm/2' };
+const invalidNumericExamples = [
+  ['sqrt(-4)^2', 4], ['(1/0)^0', 1], ['0^0', 1]
+];
 
 async function seedOtherProgress(page) {
   await page.evaluate(({ key, sentinel }) => {
@@ -84,6 +87,41 @@ async function finishLadder(page, selector) {
   for (let index = 0; index < 20 && !(await step.isDisabled()); index++) await step.click();
   assert(await step.isDisabled(), 'the requested worked solution reaches its final step');
   assert(await page.locator(selector + ' .lfinal').isVisible());
+}
+
+async function checkStartNumericDomain(page) {
+  const lesson = 'vec-coordinates';
+  await page.evaluate(id => { location.hash = '#practice/' + id + '/independent'; }, lesson);
+  const field = page.locator('#answer-form input[type=text]');
+  const read = () => page.evaluate(({ key, lesson }) => {
+    const state = JSON.parse(localStorage.getItem(key));
+    const session = state.sessions[lesson + ':independent'];
+    const task = ProfileLessons.find(item => item.id === lesson).tasks.find(item => item.id === session.taskId);
+    return { session, answer: task.answer, earned: state.records[lesson]?.independent?.includes(task.id) ?? false };
+  }, { key: startKey, lesson });
+  await field.waitFor();
+  const { answer } = await read();
+  const submit = page.locator('#submit-answer');
+  const next = page.locator('#next');
+  for (const [expression, oldValue] of invalidNumericExamples) {
+    // The previous checker can reduce this invalid expression to the correct answer.
+    await field.fill(`(${answer})+(${expression})-${oldValue}`);
+    await submit.click();
+    assert.match(await page.locator('#feedback').innerText(), /Не удалось прочитать/, expression);
+    const { session, earned } = await read();
+    assert(!session.wrong && !session.solved && !session.answers?.length && !earned);
+    assert(await next.isDisabled());
+  }
+  const draft = await field.inputValue();
+  await page.reload();
+  assert.equal(await field.inputValue(), draft);
+  assert(await next.isDisabled());
+  await field.fill(`(${answer})+(sqrt((-4)^2)-4)`);
+  await submit.click();
+  assert.match(await page.locator('#feedback').innerText(), /^Верно/);
+  await next.click();
+  await page.locator('.result-panel').waitFor();
+  assert((await read()).earned);
 }
 
 const scenarios = {
@@ -174,6 +212,7 @@ const scenarios = {
     state = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), startKey);
     assert.deepEqual(state.records['vec-basics-reading'].independent, ['vec-basics-read-km']);
     assert.match(await page.locator('.result-panel h1').innerText(), /самостоятельно/);
+    await checkStartNumericDomain(page);
     await otherProgressIntact(page);
   },
 
@@ -405,4 +444,4 @@ const scenarios = {
   }
 };
 
-module.exports = { scenarios, routes };
+module.exports = { scenarios, routes, invalidNumericExamples };

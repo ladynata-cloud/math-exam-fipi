@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "6ead382b826ad4d6f30f062ad2149a2e971517a9",
+  "baseSha": "811d7d35421bc93ca7e6145b98b7caf505d6db43",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -283,8 +283,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/circle/index.html": {
-      "beforeSha256": "bc8b419abfc51f4857db41b1a35177b962050ef27937c9158ae6540bbc6df964",
-      "afterSha256": "943fc548c74b74ac63ac5cc2c8020e885810a5991eb066ceaa95db65e28b14c5",
+      "beforeSha256": "c45266a8cdb19f9742ad8cfa4afc527a6e688bf21a1050188485560ea80f0c63",
+      "afterSha256": "52e7841dea7220da5ef15b0b4fe02f51922ed70904a9c132281addf028d24088",
       "placement": "before-head-close"
     },
     "ege-profil/exam/full-exam.html": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "285b53878c62c659d8b61b374ba0594922086eec09336e8d5dac81d1ee383d64",
-      "afterSha256": "466d1f9f086bf15195f79169b4babb0f856ac7f42d589dcf92c11e866996acca",
+      "beforeSha256": "8036ba1b11c271b8111a4a543b2050b89a8c3fc86bcf6fa4d0e4700efed16930",
+      "afterSha256": "7f79eb101e7a31efd60296737c215b400c0114627d2898911c1fd99c13150385",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "7ab34fa2b6a0b32e7e8d94fb72b46d1fdbfd77af06f056b5639a0a79e341d0d6",
-      "afterSha256": "b09319b02ebd83d434ff8e736abc868573e855334d97f195e89f90ee18f85338",
+      "beforeSha256": "9481b703fc23b11f830239cedf6ee4dcf3fe6a1757badc05be8528c5561d961e",
+      "afterSha256": "504e2a744b6500159f33e33620a07d6843e9391d78bde6992c1796f23125ae9b",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5162,6 +5162,17 @@
         "ege-profil/trainers/planimetry-yashchenko-t1.html",
         "ege-profil/trainers/trigonometry.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "6ead382b826ad4d6f30f062ad2149a2e971517a9",
+      "sourceBaseSha": "811d7d35421bc93ca7e6145b98b7caf505d6db43",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_RELEASE_REVIEW_20261115.md",
+      "changedPaths": [
+        "ege-profil/circle/index.html",
+        "ege-profil/part-two/index.html",
+        "ege-profil/start/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
