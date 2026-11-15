@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
+  "baseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "8036ba1b11c271b8111a4a543b2050b89a8c3fc86bcf6fa4d0e4700efed16930",
-      "afterSha256": "7f79eb101e7a31efd60296737c215b400c0114627d2898911c1fd99c13150385",
+      "beforeSha256": "0ee5c09d46b6fd32bc896aed574b64dd453c449bf5237c4261982551ecde662d",
+      "afterSha256": "1019ea336cbe76ffa34aa2b5db5bad333d0005d6c5c2d237b1ccd77c9ee16028",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5252,6 +5252,15 @@
         "ege-profil/trainers/numbers-t19.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
         "stereo-course/sections/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "sourceBaseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+      "task": "docs/tasks/PROFILE_PART_TWO_ANSWER_FORMAT_20261116.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
