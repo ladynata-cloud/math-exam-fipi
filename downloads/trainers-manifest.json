@@ -1,7 +1,7 @@
 {
-  "stage": "6",
+  "stage": "7",
   "updated": "2026-11-15",
-  "notes": "Этапы 2–6 добавляют 34 автономных комплекта с GIF. На этапе 6 добавлены атлас функций, финансовые задачи, тригонометрия и планиметрия по Ященко. Факт публикации проверяется отдельно.",
+  "notes": "Этап 7 добавляет три комплекта логарифмических неравенств и курс делимости и метода «Оценка плюс пример». Прежние 51 комплект сохранены.",
   "trainers": [
     {
       "slug": "mcko-linejka",
@@ -2073,11 +2073,185 @@
       "downloadHtml": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko.html",
       "prompt": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-deepseek-prompt.md",
       "package": "/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip"
+    },
+    {
+      "slug": "ege-profil-log-inequalities",
+      "title": "Логарифмические неравенства — практикум",
+      "sourceHtml": "/trainers/ege-profile/log-inequalities/index.html",
+      "subject": "математика",
+      "level": "10–11 классы, ЕГЭ профиль",
+      "topic": "ОДЗ, преобразования и метод интервалов",
+      "description": "12 семейств логарифмических неравенств, режимы по шагам и самостоятельного решения, черновик и отчёт.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/ege-profile/log-inequalities/style.css",
+        "/trainers/ege-profile/log-inequalities/engine.js",
+        "/trainers/ege-profile/log-inequalities/app.js",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "gif": "adapt-log-inequality",
+        "example": "В первом варианте семейства sign замени знаменатель 6 на 8 и проверь новые границы на числовой оси.",
+        "edits": {
+          "Условие": "Во встроенном engine.js найди первый блок finish('sign', ...). В массиве b=[6,8,10,12] измени только первое значение с 6 на 8.",
+          "ОДЗ и ответ": "Сохрани условия x > 0 и x ≠ 1, положительность аргумента, знак ≤ и построение границы h+b−a.",
+          "Подсказки": "Сверь в разборе сравнение основания и аргумента с 1. Для основания меньше 1 направление сравнения меняется.",
+          "Оформление": "Сохрани числовую ось, управление точками и промежутками с клавиатуры и MathML в условии."
+        },
+        "checks": [
+          "Для log по основанию x от (x+2)/6 ≤ 0 ответ (1; 4], для знаменателя 8 ответ (1; 6].",
+          "В новой копии x = 1 исключён, x = 6 входит в ответ. В шаге с граничными точками прежнее число 4 отклоняется."
+        ],
+        "limit": "Задания, подсказки, разбор и сохранение открытого тренажёра работают в текущем HTML. Другие занятия курса скачиваются отдельно."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities.html",
+      "prompt": "/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-package.zip"
+    },
+    {
+      "slug": "ege-profil-log-variable-base",
+      "title": "Один логарифм с переменным основанием",
+      "sourceHtml": "/trainers/ege-profile/log-inequalities/lesson.html",
+      "subject": "математика",
+      "level": "10–11 классы, ЕГЭ профиль",
+      "topic": "ОДЗ и пошаговое решение одного неравенства",
+      "description": "От чтения основания и аргумента до отбора промежутков, с тетрадью решения и подсказками.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/ege-profile/log-inequalities/lesson.css",
+        "/trainers/ege-profile/log-inequalities/lesson.js",
+        "/trainers/ege-profile/log-inequalities/guided-lesson.js",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Перепиши подсказку о трёх условиях ОДЗ простыми словами и добавь короткую проверку, почему основание не равно 1.",
+        "edits": {
+          "Шаги": "Найди массив steps и блоки domainRows, solvedDomain, answer во встроенном lesson.js. Меняй текст нужного шага и его подсказку вместе.",
+          "Числа": "При замене выражений пересчитай корни каждого неравенства, исключения и пересечение. Сверь поля correct, record и итоговый answer.",
+          "Числовая ось": "Проверь наборы points и correct в заданиях на промежутки. Граница строгого неравенства остаётся пустой точкой.",
+          "Сохранение": "Оставь конфигурацию тренажёра и проверку шагов в guided-lesson.js."
+        },
+        "checks": [
+          "Для исходного примера выбери (−4; −3) и (−1; 3). Числа −4, −3, −1 и 3 не входят в ответ.",
+          "При основании 1 выражение не определено. Для аргумента число 1 допустимо."
+        ],
+        "limit": "Задания, подсказки, разбор и сохранение открытого тренажёра работают в текущем HTML. Другие занятия курса скачиваются отдельно."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base.html",
+      "prompt": "/downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base-package.zip"
+    },
+    {
+      "slug": "ege-profil-log-nested",
+      "title": "Вложенные логарифмы — пошаговый разбор",
+      "sourceHtml": "/trainers/ege-profile/log-inequalities/nested.html",
+      "subject": "математика",
+      "level": "10–11 классы, ЕГЭ профиль",
+      "topic": "внутренний и внешний логарифмы, шесть условий ОДЗ",
+      "description": "Пошаговый разбор вложенного логарифма с числовой осью, проверкой и сохранением работы.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/ege-profile/log-inequalities/lesson.css",
+        "/trainers/ege-profile/log-inequalities/nested.js",
+        "/trainers/ege-profile/log-inequalities/guided-lesson.js",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js",
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Подпиши в первом шаге, где внутренний логарифм и где аргумент внешнего, сохранив сам пример.",
+        "edits": {
+          "Задача": "Во встроенном nested.js найди outer, inner, innerLog, original и массив steps.",
+          "ОДЗ": "Сохрани шесть исходных условий в domainRows. Внутренний логарифм должен существовать и быть положительным как аргумент внешнего.",
+          "Границы": "При замене коэффициентов пересчитай lo, hi, ilo, ihi, метки и диапазоны числовых осей. Сверь итоговый answer.",
+          "Подсказки": "Сохрани переход от знака логарифма к произведению только после проверки области определения."
+        },
+        "checks": [
+          "В исходной задаче x=1 исключён, потому что основание внешнего логарифма равно 0.",
+          "Ответ исходного разбора: (1; (1+√5)/2). Обе границы исключены."
+        ],
+        "limit": "Задания, подсказки, разбор и сохранение открытого тренажёра работают в текущем HTML. Другие занятия курса скачиваются отдельно."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-log-nested/ege-profil-log-nested.html",
+      "prompt": "/downloads/trainers/ege-profil-log-nested/ege-profil-log-nested-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-log-nested/ege-profil-log-nested-package.zip"
+    },
+    {
+      "slug": "ege-profil-estimate-example",
+      "title": "Делимость и «Оценка плюс пример»",
+      "sourceHtml": "/trainers/ege-methods.html",
+      "subject": "математика",
+      "level": "10–11 классы, базовый и профильный ЕГЭ",
+      "topic": "целые числа, делимость, оценка и построение примера",
+      "description": "Пошаговые уроки, делимость, модели, самостоятельная проверка и сохранение письменного обоснования.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/trainers/ege-methods/style.css",
+        "/ege-baza/algebra/math.js",
+        "/trainers/ege-methods/content.js",
+        "/trainers/ege-methods/state.js",
+        "/trainers/ege-methods/app.js"
+      ],
+      "offlineOmitAssets": [
+        "/trainers/board-bridge.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "localEditing": true,
+        "example": "Добавь короткий авторский пример для целых n с неравенством 3n≤26. Попроси отдельно обосновать максимальное значение.",
+        "edits": {
+          "Задачи": "Во встроенном content.js ищи уроки divisibility и maximum. При добавлении задания выбери новый ID и согласуй условие, поле ответа и разбор.",
+          "Проверка": "В примере на максимум проверь верхнюю границу и предъяви допустимое значение, на котором она достигается.",
+          "Делимость": "Задавай положительный делитель. Согласуй делимое, частное и остаток по равенству делимое = делитель × частное + остаток.",
+          "Письменная работа": "Сохрани поле для обоснования и критерии самопроверки. Числовой зачёт не заменяет проверку доказательства."
+        },
+        "checks": [
+          "В примере 3n≤26 при целом n наибольшее n равно 8. Оно подходит, так как 24≤26, а 9 уже даёт 27.",
+          "При делении 23 на 5 частное равно 4, остаток равен 3. Остаток должен быть меньше делителя."
+        ],
+        "limit": "Локально доступны задания, модели, черновики и самопроверка. Внешние ссылки ведут к другим материалам MathExam."
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example.html",
+      "prompt": "/downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example-package.zip"
     }
   ],
   "todo": [
     "ОГЭ: основные номера №1–25 имеют ссылки на ZIP. Дополнительные маршруты и модели за пределами этих тренажёров упаковывать после самостоятельной проверки.",
-    "Профильный ЕГЭ: подготовить отдельные комплекты по логарифмическим неравенствам, методам делимости, оценке и примеру. Автономность моделей сечений проверить отдельно.",
+    "Профильный ЕГЭ: логарифмические неравенства, делимость и «Оценка плюс пример» упакованы. Автономность моделей сечений проверить отдельно.",
     "Базовый ЕГЭ: упаковать отдельные доски и маршруты, которых нет во входе path, только когда их автономная практика и зависимости проверены.",
     "Учебники: продолжить Макарычевым 7, Виленкиным 5–6 и Атанасяном; 3D-сечения и большие курсы геометрии проверять отдельно.",
     "Не включать testing-hub, личные страницы учеников, черновики и страницы с noindex."

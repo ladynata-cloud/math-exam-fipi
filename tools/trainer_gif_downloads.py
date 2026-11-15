@@ -54,6 +54,7 @@ def build_all(build):
     build_graph(build)
     build_derivative(build)
     build_finance(build)
+    build_log_inequality(build)
 
 
 def build_geometry(build):
@@ -313,3 +314,50 @@ def build_finance(build):
                 card.text(222, y, feedback, 22, ink)
 
     build('adapt-finance', 'Как изменить финансовую задачу', steps, draw)
+
+
+def build_log_inequality(build):
+    steps = (
+        'Скачай HTML практикума. Открой первый вариант «Знак логарифма».',
+        'В HTML найди блок engine.js. Замени первое число в массиве с 6 на 8.',
+        'Сохрани копию. Проверь условие x > 0, x ≠ 1 и новый аргумент.',
+        'При x > 1 из (x+2)/8 ≤ 1 получаем x ≤ 6. Отметь (1; 6].',
+        'Без сети проверь границу 6 и итог (1; 6]. Прежняя граница 4 отклоняется.',
+    )
+
+    def draw(card, index):
+        card.rect((32, 88, 608, 265), outline='edge', radius=12)
+        if index == 0:
+            card.text(50, 105, 'Знак логарифма · вариант 1', 24, bold=True)
+            card.text(51, 151, 'logₓ((x + 2)/6) ≤ 0', 28, 'blue', True)
+            card.text(51, 193, 'Исходный ответ: (1; 4]', 22)
+            card.text(51, 229, 'Скачать HTML', 20, 'accent', True)
+        elif index == 1:
+            card.text(50, 105, 'Первый знаменатель в engine.js', 23, bold=True)
+            card.text(51, 152, 'Было:  b = [6, 8, 10, 12][v]', 22)
+            card.text(51, 191, 'Стало: b = [8, 8, 10, 12][v]', 22, 'blue', True)
+            card.text(51, 231, 'Измени только первое число.', 19)
+        elif index == 2:
+            card.text(50, 105, 'Сверь условие в своей копии', 24, bold=True)
+            card.text(51, 151, 'logₓ((x + 2)/8) ≤ 0', 28, 'blue', True)
+            card.text(51, 193, 'ОДЗ: x > 0,  x ≠ 1', 22)
+            card.text(51, 230, 'При x > 0 аргумент положителен.', 19)
+        elif index == 3:
+            card.text(50, 105, 'Построй ответ на числовой оси', 24, bold=True)
+            card.text(51, 150, 'x > 1 и (x + 2)/8 ≤ 1 дают x ≤ 6.', 22)
+            card.text(51, 194, '(1; 6]', 22, 'accent', True)
+            card.arrow((160, 206), (573, 206), 'muted', 2)
+            card.line([(239, 206), (465, 206)], 'accent', 6)
+            card.circle(239, 206, 8, 'white', 'accent', 3)
+            card.circle(465, 206, 8, 'accent')
+            card.text(239, 226, '1', 19, anchor='mt')
+            card.text(465, 226, '6', 19, anchor='mt')
+        else:
+            card.text(50, 105, 'Проверь интервалы без сети', 24, bold=True)
+            card.text(51, 153, 'Границы 0, 1, 4', 21, 'red')
+            card.text(289, 153, 'Неверно', 21, 'red', True)
+            card.text(51, 188, 'Границы 0, 1, 6', 21, 'accent')
+            card.text(289, 188, 'Верно', 21, 'accent', True)
+            card.text(51, 224, 'На оси выбран ответ (1; 6].', 21, 'accent')
+
+    build('adapt-log-inequality', 'Как изменить логарифмическое неравенство', steps, draw)
