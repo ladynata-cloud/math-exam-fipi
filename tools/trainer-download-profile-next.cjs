@@ -28,7 +28,7 @@ async function methodsAtlas(page) {
   assert.equal(await count.isVisible(), false);
   await reveal.click();
   assert.match(await count.innerText(), /равно 2/);
-  const courseLink = page.locator('.az-resources a').filter({ hasText: 'Функции и графики · №12' });
+  const courseLink = page.locator('.az-resources a').filter({ hasText: 'Функции и графики · №11' });
   assert.match(await courseLink.getAttribute('href'), /^https:\/\/mathexam\.space\//);
 
   await page.locator('.az-navigation a').first().click();
@@ -59,6 +59,26 @@ async function methodsAtlas(page) {
   assert.equal(await answer.inputValue(), '(0; 2]');
   await submit.click();
   assert(await page.locator('[data-advance]').isVisible());
+
+  for (const [key, value] of [['exam', '19'], ['fipi', '2027/18']]) {
+    const url = new URL(page.url());
+    url.search = '';
+    url.searchParams.set(key, value);
+    url.hash = '';
+    await page.goto(url.href);
+    await page.locator('#alphabet-main h1').waitFor();
+    assert.match(await page.locator('#alphabet-main h1').innerText(), /Основы для №\s*18/);
+    const methods = page.locator('.az-catalog a').filter({ hasText: 'Методы решения задач с параметром' });
+    const href = new URL(await methods.getAttribute('href'));
+    assert.equal(href.protocol, 'file:');
+    assert.equal(href.searchParams.get(key), value, 'the local link preserves the original route namespace');
+    await methods.click();
+    const back = page.locator('.az-navigation a').filter({ hasText: 'Вернуться: № 18' });
+    assert.equal(await back.getAttribute('href'), 'https://mathexam.space/ege-profil/part-two/#fipi/2027/18');
+    await page.locator('.az-skill-list a[href$="/plane"]').click();
+    assert.equal(await page.locator('#az-note').inputValue(), note);
+    assert.equal(await answer.inputValue(), '(0; 2]', 'the saved answer survives legacy and official context links');
+  }
 }
 
 function penaltyLedger(februaryDays) {

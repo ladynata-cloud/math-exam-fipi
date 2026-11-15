@@ -240,3 +240,48 @@ Merge PR в main и публикация требуют отдельного р�
 В этой фазе прежние результаты687 PASS и3280/7600 относятся к предыдущему head. Результат новой композиции будет записан отдельно после фактических прогонов. История обоих наборов source bindings сохраняется; новая receipt создаётся штатным инструментом только после source checkpoint. Генератор, workflows, математические данные, IDs и схемы сохранения не меняются.
 
 Merge PR #610 в main и публикация остаются отдельным решением после готового проверенного кандидата.
+
+## Выполненное согласование и пересборка
+
+Разрешённое ordinary merge сохранено source checkpoint `5171beae936cfe2df874e2d08d123dba35abe982` с родителями `22ef50f778c641950da2c92278e572115037ba4e` и `5842bd8dce477793eecd67ed961b8e19072eb1dc`. Его tree — `0cea487721a307e2fbadc3f0d0aa5406ac395d0d`. Все19 конфликтов разрешены, публичные панели и offline-поведение main сохранены вместе с H02. Четыре автоматических слияния дополнительно проверены независимо.
+
+Штатный canonical refresh на этом source checkpoint обновил29 rows из624. Сохранены110 общих исторических receipts,1 отдельная H02 и10 main; добавлена composition receipt №122. Остальные metadata, coverage и provenance сохранены. Повторный запуск даёт `BINDINGS_CURRENT`;5 тестов canonical bindings проходят. Отдельный reviewer независимо проверил blob manifest `3e5bec098c4f1fc0985396a584f11e55dd62283b` и все624 source identities.
+
+Существующий `scripts/build-trainer-downloads.mjs` запущен с `--downloads-only` и ровно16 `--only=<slug>` из утверждённой таблицы. Созданы16 HTML и16 ZIP без предупреждений; штатно обновлён Part Two prompt. Генератор не изменён. Фактическое расширение — ровно37 путей; полный delta относительно разрешённой main содержит148 путей в согласованных областях.
+
+| Проверка объединённого кандидата | Результат |
+|---|---|
+| Полный профильный набор |692 tests,690 PASS,0 FAIL,2 явных native SKIP |
+| Математическая регрессия |3280 проверок,0 отказов;7600 задач планиметрии,0 расхождений |
+| Независимые точные финансовые шаги |13 уроков,78 задач,39 моделей,442 шага — PASS |
+| Methods / navigator preservation / regressions |8/8,4/4,46/46 PASS |
+| Script fixture после объединения |9/9 PASS, включая все3 проверки download controls |
+| Generated cabinet/board catalogue |PROFILE_EXAM_CATALOG_CURRENT |
+| ZIP integrity |16/16; сохранён точный набор из5 участников каждого архива |
+| ZIP member identity |HTML/prompt/GIF/PNG побайтово соответствуют standalone/source;32 встроенных image members сохранены |
+| Общая карта |15/15: одна встроенная копия перед потребителями; estimate/example не получил лишний map |
+| Inline dependencies |136 копий соответствуют94 source файлам после штатного escaping и trim экспортёра |
+| Сохранность |39 других комплектов и244 защищённых файла без изменений;94 source/dependency SHA256 сохранены |
+| Независимый review новых acceptance |Прежние263 assertion lines сохранены; только зависимый №12→№11; новые DOM cases16/16 PASS |
+| Diff / scope |148 разрешённых путей; лишних0; diff-check PASS |
+
+START source/export теперь имеют один SHA256 банка90/540: `320e034f013cdf438155d0374b4874bf13412517b68160978a25c0cce5eb1c20`. Прежнее расхождение устранено без изменения математических условий, ответов или ослабления bank-equality assertion.
+
+В15 ZIP изменился только HTML; в Part Two дополнительно штатные README и prompt. Четыре prompt-файла этапа7, reasoning driver, workflows, generator implementation и все GIF сохранены. Part Two prompt отражает №13–19 и36/216 основных плюс6/36 дополнительных тем; ограничение финансового покрытия проверено в manifest.description и фактическом UI, поскольку штатный prompt generator не включает description.
+
+SHA256 упорядоченного набора32 артефактов: `2763451c0d26db535956371bd83c35fad0a83758cf43b50fb2f5a7d3e9f76275`.
+
+| Артефакт | SHA256 |
+|---|---|
+| START HTML |`18542c68329e3a7c3f74cae0ab0b379e49128d9d810d0492a7c03eec9151f58a`|
+| START ZIP |`1f4fe23a8eeaa2494d48b2793dfe15c91c4f488cdedaaafd5075462621231478`|
+| Part Two HTML |`dae7ed7ca74e1c897d12cc9446cd07c81a5bf04975fc31a08cb0533fdca4aebc`|
+| Part Two ZIP |`8c32099a5844766bc5895bc4138463454371ab60a8c9b64f45dfb4c49baf752e`|
+| Estimate/example HTML |`c78c22b2bbb03f4574b0184007ec00248018d58d515b9fd66439702fac0e6609`|
+| Estimate/example ZIP |`4a9c44f5330d365ce3cf8a8efa0f539d81113e540cd1c469b6fe57f455f2c425`|
+
+### Граница приёмки этого результата
+
+Scope, согласование базы и download closure завершены. Локальные DOM probes использовали mock storage; они не заменяют настоящее поведение file-origin в Chromium. Прежний локальный native launch был заблокирован на socket() до первого сценария; повторов с обходом ограничения не выполнялось.
+
+Новые проверки включены в существующий `trainer-download-stage2.yml`: CI запускает общий runner для всех38 adaptation entries без фильтра, включая16 H02, extracted ZIP на320 и standalone HTML на1280. H01/H02 native и четыре профильных board jobs также остаются обязательными в действующих workflows. Реальные CI/native результаты окончательного head фиксируются в PR после исполнения; этот раздел описывает локальный кандидат и не объявляет итоговый gate или выпуск.

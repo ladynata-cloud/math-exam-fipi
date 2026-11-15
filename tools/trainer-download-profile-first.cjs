@@ -124,6 +124,39 @@ async function checkStartNumericDomain(page) {
   assert((await read()).earned);
 }
 
+async function checkStartExamRoutes(page) {
+  const readSavedWork = () => page.evaluate(key => {
+    const state = JSON.parse(localStorage.getItem(key));
+    const ids = ['vec-basics-reading', 'vec-coordinates'];
+    return {
+      records: ids.map(id => state.records[id]),
+      sessions: Object.fromEntries(Object.entries(state.sessions).filter(([id]) => ids.some(lesson => id.startsWith(lesson + ':'))))
+    };
+  }, startKey);
+  const saved = await readSavedWork();
+  for (const [hash, title, number, lessons] of [
+    ['#calm/13', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
+    ['#fipi/2027/16', 'Экономическая задача', 16, ['finance-lesson-07-equal-payments']],
+    ['#calm/9', 'Производная, экстремумы и первообразная', null, ['calc-tangent', 'calc-extreme', 'calc-integral']],
+    ['#fipi/2027/8', 'Производная и графики', 8, ['calc-tangent']],
+    ['#fipi/2027/12', 'Наибольшее и наименьшее значение', 12, ['calc-extreme']],
+    ['#exam/16', 'Неравенства.', 15, []],
+    ['#fipi/2027/15', 'Неравенства.', 15, []]
+  ]) {
+    const url = new URL(page.url());
+    url.hash = hash;
+    await page.goto(url.href);
+    await page.reload();
+    await page.locator('main h1').waitFor();
+    assert.equal(new URL(page.url()).protocol, 'file:');
+    assert.equal(await page.locator('main h1').innerText(), title, hash);
+    if (number) assert.match(await page.locator('main p.eyebrow').first().innerText(), new RegExp('№\\s*' + number + '(?:\\D|$)'), hash);
+    const links = await page.locator('main a[href]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
+    for (const lesson of lessons) assert(links.some(href => href.includes('/' + lesson)), hash + ': ' + lesson);
+  }
+  assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve existing START answers, drafts, attempts and earned work');
+}
+
 const scenarios = {
   async 'ege-profil-start'(page) {
     await seedOtherProgress(page);
@@ -213,6 +246,7 @@ const scenarios = {
     assert.deepEqual(state.records['vec-basics-reading'].independent, ['vec-basics-read-km']);
     assert.match(await page.locator('.result-panel h1').innerText(), /самостоятельно/);
     await checkStartNumericDomain(page);
+    await checkStartExamRoutes(page);
     await otherProgressIntact(page);
   },
 
