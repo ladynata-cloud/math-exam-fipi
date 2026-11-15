@@ -92,7 +92,9 @@
     return {
       width: isCompact ? 360 : 1000,
       height: isCompact ? 1540 : 900,
-      dials: [{ wheel: first, ring: isCompact ? 122 : 117 },
+      // Twelve first-part links put one target directly above the written dial.
+      // Keep their 44px touch targets separate on a 320px viewport.
+      dials: [{ wheel: first, ring: 117 },
         ...written.map(wheel => ({ wheel, ring: wheel.radius - (isCompact ? 44 : 22) }))],
       wheels: [first, ...written, ...courses],
       pinions: written.flatMap(pinions),

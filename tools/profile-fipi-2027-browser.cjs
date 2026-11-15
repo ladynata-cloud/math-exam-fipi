@@ -55,8 +55,18 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
       try {
         await page.goto(origin + '/ege-profil/');
         await page.locator('#profile-2027').waitFor();
-        const actual = await page.locator('#profile-2027 a.first-three-link').evaluateAll(links => links.map(link => Number(new URL(link.href).hash.split('/').at(-1))));
-        check('main has 19 ordered official entries', actual, map.entries.map(entry => entry.number));
+        const actual = await page.locator('#profile-2027 a.first-three-link[data-exam-number]').evaluateAll(links => links.map(link => {
+          const url = new URL(link.href);
+          return {number: Number(link.getAttribute('data-exam-number')), href: url.pathname.replace(/\/index\.html$/, '/') + url.hash};
+        }));
+        check('main has 19 ordered official entries', actual.map(link => link.number), map.entries.map(entry => entry.number));
+        check('main official entries target their exact routes', actual.map(link => link.href), map.entries.map(entry => map.href(entry)));
+        const extras = await page.locator('#profile-2027 nav[aria-labelledby="extra-topic-map"] a.first-three-link').evaluateAll(links => links.map(link => {
+          const url = new URL(link.href);
+          return {number: link.getAttribute('data-exam-number'), href: url.pathname.replace(/\/index\.html$/, '/') + url.hash};
+        }));
+        check('main has three ordered extra topics without exam numbers', extras, map.extras.map(entry => ({number: null, href: map.href(entry)})));
+        check('main map contains only its official and extra cards', await page.locator('#profile-2027 a.first-three-link').count(), map.entries.length + map.extras.length);
         await noOverflow('main'); await capture('main');
         for (const entry of map.entries) {
           await go(map.href(entry));
@@ -68,7 +78,7 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         }
         for (const entry of map.extras) {
           await go(map.href(entry)); await lessonsVisible(entry.lessonIds);
-          check('extra is labelled ' + entry.id, /[Дд]ополнительн/.test(await page.locator('main').innerText()));
+          check('extra is labelled ' + entry.id, /дополнительная\s+тема/iu.test(await page.locator('main .eyebrow').first().innerText()));
           await noOverflow(entry.id); row.extras.push(entry.id);
         }
         for (const [area, hash, entry] of [

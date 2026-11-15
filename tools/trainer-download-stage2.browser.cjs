@@ -70,7 +70,7 @@ async function checkPartTwoExamRoutes(page, taskId) {
     await page.locator('#main h1').waitFor();
     assert.equal(new URL(page.url()).protocol, 'file:');
     assert.equal(await page.locator('#main h1').innerText(), title, hash);
-    assert.match(await page.locator('#main > .eyebrow').innerText(), number ? new RegExp('№\\s*' + number + '(?:\\D|$)') : /Дополнительная тема/, hash);
+    assert.match(await page.locator('#main > .eyebrow').innerText(), number ? new RegExp('№\\s*' + number + '(?:\\D|$)') : /ДОПОЛНИТЕЛЬНАЯ ТЕМА/, hash);
     assert.equal(await page.locator('#main a[href$="#lesson/' + lesson + '"]').count(), 1, hash);
   }
   const finance = new URL(page.url());
