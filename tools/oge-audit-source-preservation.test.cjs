@@ -9,7 +9,7 @@ test('the new receipt is confined to the three reviewed sources and preserves th
  assert.equal(receipt.baseCommit,'19811cc15a33d63fc0fcc0b6a11c34863ec64d03');
  assert.deepEqual(Object.keys(receipt.pages).sort(),files.sort());
  for(const fixture of ['tools/fixtures/oge-video-models-native-bytes.json','tools/fixtures/oge-worked-steps-native-bytes.json','tools/fixtures/oge-book-reviewed-board-inverse.json'])
-  assert.equal(fs.readFileSync(path.join(ROOT,fixture),'utf8'),committed(receipt.baseCommit,fixture),fixture+' stays immutable');
+  assert.equal(fs.readFileSync(path.join(ROOT,fixture),'utf8'),committed('beffcbe1895e45f8d243e12d250181ac2ce62e1a',fixture),fixture+' matches the preceding published baseline');
 });
 for(const file of files)test(file+': exact content checkpoint, scoped model receipt and rejecting extra native bytes',()=>{
  const raw=fs.readFileSync(path.join(ROOT,file),'utf8'),pin=verifyAuditedSource(file,raw);

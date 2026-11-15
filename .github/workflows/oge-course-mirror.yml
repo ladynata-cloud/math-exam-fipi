@@ -42,6 +42,8 @@ jobs:
           npm ci --prefix board-server --include=optional
           npm install --prefix "$RUNNER_TEMP/oge-course" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           echo "NODE_PATH=$RUNNER_TEMP/oge-course/node_modules:$GITHUB_WORKSPACE/board-server/node_modules" >> "$GITHUB_ENV"
+      - name: Fetch the exact audited graph source and historical checkpoint
+        run: git fetch --no-tags --depth=1 origin 2332c0b01fae94555438256762a0dba0d3d08101 2b33a2315a22c98a70497e7395e4e67c4bd415e4
       - name: Native mathematics and independent work
         run: |
           node tools/oge-algebra-contract.test.mjs

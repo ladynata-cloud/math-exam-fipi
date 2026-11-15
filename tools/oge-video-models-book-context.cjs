@@ -13,7 +13,7 @@ const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 function receipt({file,raw,id,prefix,visible,dom,assetHashes}){
  const pin=sourcePin(file);assert(pin&&pin.bookId&&pin.bookId===id,'exact reviewed book/source route');assert.equal(prefix,'');
  const native=restoreVideoModels(file,raw);assert.notEqual(native,String(raw),'the exact optional include block is required');
- assert.equal(hash(restoreGraphScale(file,native)),pin.sha256,'native HTML matches the historical pin after the exact reviewed graph projection change');
+ assert.equal(hash(auditUpdates.pages[file]?native:restoreGraphScale(file,native)),pin.sha256,'native HTML matches the historical pin after the exact reviewed graph projection change');
  assert.deepEqual(dom,{count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label},'one exact closed summary is the complete visible addon');
  assert.deepEqual(Object.keys(assetHashes).sort(),assets.map(file=>'/'+file).sort(),'exact four local addon assets');
  for(const value of Object.values(assetHashes))assert.match(value,/^[a-f0-9]{64}$/);

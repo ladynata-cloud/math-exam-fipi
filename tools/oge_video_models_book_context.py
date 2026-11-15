@@ -92,7 +92,7 @@ def verified_context(record):
         if teaching.count(block) != 1 or block + b'</head>' not in teaching: return None
         native = teaching.replace(block, b'', 1)
         graph_scale = PINS['graphScale']
-        if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
+        if file not in AUDIT_UPDATES['pages'] and file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
             native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)
             native = restore_graph_intersections(file, native)
         if sha(native) != pin['sha256'] or context['nativeSha256'] != pin['sha256']: return None

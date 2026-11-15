@@ -122,7 +122,8 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(GRAPH_INTERSECTIONS['task'], 'docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md')
         self.assertEqual(len(GRAPH_INTERSECTIONS['fragments']), 3)
         target = ROOT / file
-        raw = target.read_bytes()
+        # The old display inverse is tested against the exact published renderer.
+        raw = subprocess.check_output(['git', 'show', 'beffcbe1895e45f8d243e12d250181ac2ce62e1a:'+file], cwd=ROOT)
         self.assertNotEqual(restore_graph_intersections(file, raw), raw)
         self.assertEqual(restore_graph_intersections('unrelated.html', raw), raw)
         mutations = []
@@ -138,6 +139,10 @@ class ContextTests(unittest.TestCase):
         self.assertNotEqual(changed_math, raw)
         self.assertIn(b'const x=2/(C-m);', restore_graph_intersections(file, changed_math))
         mutations.append(changed_math)
+        current = target.read_bytes()
+        changed_current = current.replace(b'const exact=cf(value)', b'const exact=cf(0)', 1)
+        self.assertNotEqual(changed_current, current)
+        mutations.append(changed_current)
         original_read = type(target).read_bytes
         for changed in mutations:
             record = copy.deepcopy(self.record)

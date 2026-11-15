@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
 const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
-const {entries,assets,snippet}=require('./oge-video-models-preservation.cjs');
+const {entries,assets,snippet,restoreVideoModels}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..');
 const dom={count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label};
 const assetHashes=Object.fromEntries(assets.map(file=>['/'+file,hash(fs.readFileSync(path.join(ROOT,file)))]));
@@ -32,7 +32,9 @@ test('later teaching receipts remain limited to four committed pages and reject 
  assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
  for(const file of Object.keys(updates.pages)){
   const x=fixture(file), result=receipt(x);
-  assert.equal(result.sourceBase,updates.pages[file].sourceCommit);
+  const old=updates.pages[file],historical=execFileSync('git',['show',old.sourceCommit+':'+file],{cwd:ROOT,encoding:'utf8'});
+  assert.equal(hash(restoreVideoModels(file,historical)),old.sha256,'The historical teaching checkpoint stays verifiable');
+  assert.equal(result.sourceBase,sourcePin(file).sourceCommit);
   for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
    assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
   }

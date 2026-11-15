@@ -19,7 +19,8 @@ for (const [number, file] of Object.entries(entries)) {
     const baseline = restoreVideoModels(file, source);
     if (pin) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), pin.sha256, 'exact committed teaching revision');
     assert.equal(current.split(snippet(number)).length, 2);
-    assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
+    const native=restoreVideoModels(file,current);
+    assert.equal(auditUpdates.pages[file]?native:restoreGraphScale(file,native),baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);
     for (const changed of [snippet(number) + snippet(number), snippet(number).replace('defer', 'async'), snippet(number).replace('data-oge-video-task="' + number + '"', 'data-oge-video-task="0"')]) {
       assert.throws(() => restoreVideoModels(file, current.replace(snippet(number), changed)));
@@ -57,7 +58,8 @@ test('task22 intersection display inverse requires the complete exact renderer a
   assert.equal(graphIntersections.task, 'docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md');
   assert.equal(graphIntersections.sourceBase, '1dea53a92200942bd40712cfed2ce06085d0c892');
   assert.equal(fragments.length, 3);
-  const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  // The later audited engine uses exact arithmetic. This inverse protects the preceding published renderer.
+  const source = execFileSync('git',['show','beffcbe1895e45f8d243e12d250181ac2ce62e1a:'+file],{cwd:ROOT,encoding:'utf8'});
   const restored = restoreGraphIntersections(file, source);
   assert.notEqual(restored, source);
   for (const fragment of fragments) {

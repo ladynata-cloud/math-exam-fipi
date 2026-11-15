@@ -69,7 +69,7 @@ for(const p of routes.pages){
   const reviewedSource=auditSources.pages[p]?.sourceCommit||taskSources[p];
   const taskSource=reviewedSource?parse(execFileSync('git',['show',reviewedSource+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
-  const actualScripts=scripts(d).map(script=>restoreGraphScale(p,script));
+  const actualScripts=auditSources.pages[p]?scripts(d):scripts(d).map(script=>restoreGraphScale(p,script));
   if(p==='trainers/oge-task6-fractions.html'||p==='trainers/drobi-oge-trainer.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     actualScripts[0]=restoreFractionMultiplicationStep(actualScripts[0]);
@@ -104,7 +104,8 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
+  const baselinePanel=entry?baseline.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  assert.deepEqual(controls(d,panel),controls(baseline,baselinePanel),p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();
