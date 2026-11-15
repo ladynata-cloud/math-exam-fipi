@@ -546,7 +546,8 @@ async function run() {
     const page = await context.newPage();
     await page.goto(origin + guide);
     for (const example of await page.locator('[data-trainer-gif]').all()) {
-      await example.locator(':scope > summary').click();
+      await example.locator(':scope > summary').press('Enter');
+      assert(await example.evaluate(node => node.open));
       assert.equal(await example.locator('[data-trainer-gif-fallback] li:visible').count(), 5);
     }
     await page.goto(origin + '/trainers/oge-course/#downloads');
