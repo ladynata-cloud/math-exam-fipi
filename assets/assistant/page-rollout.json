@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
+  "baseSha": "8933ef59fc0bd3a31132074115022189ad4cb605",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -363,8 +363,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "7f964e53141916f36d7b96d129ff53711ca6819cae68f731f56a0c8d9291217d",
-      "afterSha256": "d079259ce9ec8998165fdea0e9cbb1a1636bbcdca00d1ec225f7f60262758b35",
+      "beforeSha256": "b51f78bf5bf2c27157886d4a76d02117571eaa9990a795c6097bb35430dff09c",
+      "afterSha256": "3812c385f2ac709b72f0c53cc5277f7b3202760b8bf449cfbeb54c3cc8d58779",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
@@ -5252,6 +5252,24 @@
         "ege-profil/trainers/numbers-t19.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
         "stereo-course/sections/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "sourceBaseSha": "a364c2e1975465bed57085da6e2466942816e40d",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_DIVISIBILITY_PROOFS_20261115.md",
+      "changedPaths": [
+        "ege-profil/trainers/numbers-t19.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "a364c2e1975465bed57085da6e2466942816e40d",
+      "sourceBaseSha": "8933ef59fc0bd3a31132074115022189ad4cb605",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_DIVISIBILITY_PROOFS_20261115.md",
+      "changedPaths": [
+        "ege-profil/trainers/numbers-t19.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

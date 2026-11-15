@@ -5,14 +5,106 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 
-async function openDigitTask(page) {
+async function openNumberTask(page, title) {
   await page.getByRole('tab', { name: 'Задачи' }).click();
-  await page.locator('#taskList button').filter({ hasText: 'Число минус сумма его цифр' }).click();
+  await page.locator('#taskList button').filter({ hasText: title }).click();
   return page.locator('#tPoints .point');
 }
 
+async function equalGroupExamples(page) {
+  await page.getByRole('tab', { name: 'Дриллы и зачёт' }).click();
+  const examples = await page.evaluate(() => {
+    const originalRandom = Math.random;
+    try {
+      const result = [];
+      for (let n = 6; n <= 14; n++) {
+        const total = n * (n + 1) / 2;
+        const groupCounts = Array.from({ length: n - 1 }, (_, i) => i + 2);
+        for (const possible of [true, false]) {
+          const counts = groupCounts.filter(k => (total % k === 0 && total / k >= n) === possible);
+          counts.forEach((k, i) => {
+            const values = [(n - 6 + 0.5) / 9, possible ? 0 : 0.75, (i + 0.5) / counts.length];
+            Math.random = () => values.shift();
+            const drill = N19.GENS.groups();
+            result.push({ n, k, possible, chosen: drill.p, answer: drill.answer, solution: drill.sol });
+          });
+        }
+      }
+      const sample = [0.7, 0.1, 0.45];
+      Math.random = () => sample.shift();
+      const chip = [...document.querySelectorAll('#drillChips button')]
+        .find(button => button.textContent === 'Группы равной суммы');
+      chip.click();
+      return result;
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
+  assert.equal(examples.length, 81);
+  assert.equal(examples.filter(example => example.possible).length, 19);
+  for (const { n, k, possible, chosen, answer, solution } of examples) {
+    assert.deepEqual(chosen, { n, k });
+    assert.equal(answer, possible);
+    const total = n * (n + 1) / 2;
+    if (!possible) {
+      const obstruction = total % k ? `${total} не делится на ${k}` : `${total / k} — меньше числа ${n}`;
+      assert(solution.includes(obstruction), `${n} into ${k}: ${solution}`);
+      continue;
+    }
+    const groups = [...solution.matchAll(/\(([0-9 +]+)\)/g)].map(match => match[1].split(' + ').map(Number));
+    assert.equal(groups.length, k);
+    for (const group of groups) {
+      assert.equal(group.reduce((sum, member) => sum + member, 0), total / k);
+    }
+    assert.deepEqual(groups.flat().sort((a, b) => a - b), Array.from({ length: n }, (_, i) => i + 1));
+  }
+  assert.match(await page.locator('#dText').innerText(), /12 разбить на 3/);
+  await page.locator('#dNo').click();
+  assert(await page.locator('#dFb.bad').isVisible());
+  await page.locator('#dSol').click();
+  assert.match(await page.locator('#dFb').innerText(), /26.*Подходящее разбиение/);
+  await page.locator('#dYes').click();
+  assert(await page.locator('#dFb.ok').isVisible());
+}
+
+async function checkNumberProofs(page) {
+  await page.locator('#backToList').click();
+  const partition = (await openNumberTask(page, 'Разбиение чисел от 1 до 12')).first();
+  await partition.getByRole('button', { name: 'Да', exact: true }).click();
+  await partition.getByRole('button', { name: /Количество чисел 12 делится на 3/ }).click();
+  assert(await partition.locator('.feedback.bad').isVisible());
+  await partition.getByRole('button', { name: /\{12, 11, 3\}.*\{10, 9, 7\}.*\{8, 6, 5, 4, 2, 1\}/ }).click();
+  assert(await partition.locator('.feedback.ok').isVisible());
+
+  await page.locator('#backToList').click();
+  const squares = (await openNumberTask(page, 'Красивые числа')).first();
+  const base = squares.getByRole('textbox', { name: 'Ответ' });
+  await base.fill('1000000000000');
+  await base.press('Enter');
+  assert(await squares.locator('.feedback.bad').isVisible());
+  await base.fill('205');
+  await base.press('Enter');
+  assert(await squares.locator('.feedback.ok').isVisible());
+
+  const [possible, impossible] = await page.evaluate(() => {
+    const originalRandom = Math.random;
+    try {
+      const values = [0, 1.5 / 361, 0, 0.75, 0.5 / 361, 0];
+      Math.random = () => values.shift();
+      return [N19.GENS.consec(), N19.GENS.consec()];
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
+  assert.equal(possible.answer, true);
+  assert.match(possible.sol, /Пример: 20 \+ 21 = 41\./);
+  assert.equal(impossible.answer, false);
+  assert.match(impossible.sol, /2a = 40 − 1 = 39\. 39 на 2 не делится/);
+}
+
 async function divisibility(page, { limit = 2025, example = 2030, maximum = 2039 } = {}) {
-  const points = await openDigitTask(page);
+  assert(await page.getByRole('heading', { name: 'Как обосновать ответ' }).isVisible());
+  const points = await openNumberTask(page, 'Число минус сумма его цифр');
   const [first, reason, last] = [points.nth(0), points.nth(1), points.nth(2)];
   const exampleInput = first.getByRole('textbox', { name: 'Ответ' });
   const firstCheck = first.getByRole('button', { name: 'Проверить' });
@@ -47,8 +139,10 @@ async function divisibility(page, { limit = 2025, example = 2030, maximum = 2039
   assert.match(await last.locator('.steps').innerText(), /число четырёхзначное/);
   assert.equal(await last.locator('.answerline').innerText(), 'Ответ: ' + maximum + '.');
   await page.reload();
-  await openDigitTask(page);
+  await openNumberTask(page, 'Число минус сумма его цифр');
   assert.equal(await page.locator('#tPoints .point.solved').count(), 3);
+  await checkNumberProofs(page);
+  await equalGroupExamples(page);
 }
 
 async function sections(page) {
