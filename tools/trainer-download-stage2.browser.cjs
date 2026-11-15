@@ -29,8 +29,8 @@ const profileMapSlugs = new Set([
 
 async function checkOfflineProfileMap(page, entry) {
   if (entry.slug === 'ege-profil-estimate-example') {
-    const link = page.getByRole('link', { name: 'Задание №19 профильного ЕГЭ', exact: true });
-    assert.equal(await link.getAttribute('href'), 'https://mathexam.space/ege-profil/part-two/#fipi/2027/19');
+    const link = page.getByRole('link', { name: 'Профиль №19 · Оценка и достигающий её пример', exact: true });
+    assert.equal(await link.getAttribute('href'), 'https://mathexam.space/ege-profil/part-two/#lesson/numbers-extremum');
   }
   if (!profileMapSlugs.has(entry.slug)) return;
   assert.equal(await page.locator('script[data-inline-source="/ege-profil/exam-map.js"]').count(), 1, entry.slug);
@@ -392,7 +392,10 @@ async function run() {
   for (const entry of entries.filter(entry => profileMapSlugs.has(entry.slug))) {
     assert.equal(entry.inlineAssets.filter(asset => asset === '/ege-profil/exam-map.js').length, 1, entry.slug);
   }
-  assert(!entries.find(entry => entry.slug === 'ege-profil-estimate-example').inlineAssets.includes('/ege-profil/exam-map.js'));
+  const estimateExample = entries.find(entry => entry.slug === 'ege-profil-estimate-example');
+  assert(!estimateExample.inlineAssets.includes('/ege-profil/exam-map.js'));
+  assert.match(read(estimateExample.downloadHtml).toString('utf8'),
+    /<a href="\/ege-profil\/part-two\/#fipi\/2027\/19">Задание №19 профильного ЕГЭ<\/a>/);
   const filter = process.argv[2];
   const groups = {
     '--oge-next': ogeNext,
