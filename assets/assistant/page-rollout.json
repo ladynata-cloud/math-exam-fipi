@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "276851ea937eb5de1bb2437dae2f362341853e9f",
+  "baseSha": "f2d22858272b4b2bbe583db2e1e647973b607596",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "5a542f5e42f53f0a9bb04bf0896a4ba5924975026d7353d727a18257d060664d",
-      "afterSha256": "2f3f74b14433928c657e63ce17cd64be88a4f4ca35bd86aa356f9d254307fd9f",
+      "beforeSha256": "141d6b764f0679a79e2c323304def18bc39843e2d301d2143539bcf8d22a87d3",
+      "afterSha256": "b7b3aa18649b2b35d0dd2346239ad75099cbbc4d0e96b369cc5fb95797bc4351",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -2253,8 +2253,8 @@
       "placement": "before-head-close"
     },
     "trainers/attestaciya-1-kurs.html": {
-      "beforeSha256": "e412f468cdf7ab983e0f3743307d6a827794b61db055e24558e191d74ccd631d",
-      "afterSha256": "52e9e19b7c92664d3aa683cd543648e88c4fe8519e25ddd99173b9786d7c11e1",
+      "beforeSha256": "cc0a422a4281ef62a853d0ebbedab0f4a4ed9c3dc2aa75e071f910821ab40dfb",
+      "afterSha256": "0ed98b38cb68174f625ebf198e8f84c94e5c8a0d63f2cbc520074e5b22797959",
       "placement": "before-head-close"
     },
     "trainers/bisector-trainer-v2.html": {
@@ -5081,6 +5081,16 @@
         "ege-profil/circle/index.html",
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "276851ea937eb5de1bb2437dae2f362341853e9f",
+      "sourceBaseSha": "f2d22858272b4b2bbe583db2e1e647973b607596",
+      "task": "docs/tasks/POWERS_AND_HINT_CONTEXT_20261115.md",
+      "changedPaths": [
+        "ege-profil/start/index.html",
+        "trainers/attestaciya-1-kurs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
