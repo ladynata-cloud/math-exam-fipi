@@ -30,7 +30,7 @@ h3 { font-size: clamp(1.1rem, 2.25vw, 1.4rem); }
 .topbar-inner, .topbar nav, .footer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
 .topbar-inner { min-height: 62px; justify-content: space-between; }
 .topbar a { font-size: .9rem; }
-.topbar .brand { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 1.06rem; font-weight: 750; text-decoration: none; }
+.topbar .brand { display: inline-flex; align-items: center; min-height: 44px; gap: 8px; color: var(--ink); font-size: 1.06rem; font-weight: 750; text-decoration: none; }
 .brand-mark { background: var(--accent); color: #fff; font-size: .82rem; border-radius: 8px; display: grid; place-items: center; width: 27px; height: 27px; }
 .intro { display: grid; gap: 7px; padding-block: clamp(16px, 4vw, 42px) 16px; }
 .eyebrow { font-size: .87rem; font-weight: 700; color: var(--accent); }
