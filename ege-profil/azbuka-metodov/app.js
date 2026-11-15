@@ -6,7 +6,7 @@
   const engine = globalThis.ProfileAlphabetEngine;
   const main = document.querySelector('#alphabet-main');
   const site = main.dataset.mathSite || '';
-  const base = location.pathname;
+  const base = location.protocol === 'file:' ? new URL(location.pathname, location.href).href : location.pathname;
   let storage;
   try { storage = localStorage; } catch { /* The page can still be used for the current session. */ }
   const store = engine.create(storage);
@@ -23,9 +23,9 @@
   const escape = value => String(value ?? '').replace(/[&<>"']/g, letter =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[letter]);
   const linkTo = (id, skill) => {
-    const url = new URL(catalog.href(id, skill, number, back, base), location.origin);
+    const url = new URL(catalog.href(id, skill, number, back, base), location.href);
     if (teacher) url.searchParams.set('mode', 'teacher');
-    return url.pathname + url.search + url.hash;
+    return url.protocol === 'file:' ? url.href : url.pathname + url.search + url.hash;
   };
   const examLink = n => site + catalog.examHref(n);
   const labels = { wrong: 'Ошибка', hint: 'Подсказка', correct: 'Верно', repeat: 'Начато повторение' };
@@ -249,7 +249,7 @@
     const key = params.get('graph');
     if (inCabinet || number !== 19 || !back || !Object.hasOwn(parameterGraphs, key) || !globalThis.ProfileFunctionAtlas) return false;
     const graph = parameterGraphs[key];
-    const target = new URL(back, location.origin);
+    const target = new URL(back, location.href);
     if (!['/ege-profil/part-two/', '/ege-profil/part-two/index.html'].includes(target.pathname)) return false;
     const task = new RegExp('^#task/' + graph.lesson + '-[456]/independent$').test(target.hash);
     if (!task && target.hash !== '#lesson/' + graph.lesson) return false;
