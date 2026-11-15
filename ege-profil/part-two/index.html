@@ -19,6 +19,9 @@
 <script defer src="app.js?v=20261114-open-answer"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">К заданию</a>
@@ -27,4 +30,27 @@
 <main id="main" tabindex="-1"><h1>Вторая часть профильного ЕГЭ</h1><p>Загружаем темы и сохранённую работу…</p></main>
 <noscript><p>Для проверки ответов включите JavaScript. <a href="/ege-profil/">Все материалы профильного курса</a>.</p></noscript>
 <footer><p>Нумерация по проекту ФИПИ 2027 · авторские учебные задачи.</p><p>Ответы проверяются автоматически; полное письменное обоснование — с преподавателем. Сохранение в этом браузере.</p></footer>
+<!-- download-panel:start:ege-profil-part-two -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-part-two">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-part-two/ege-profil-part-two-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь одно условие на отбор корней тригонометрического уравнения."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-part-two -->
 </body></html>
