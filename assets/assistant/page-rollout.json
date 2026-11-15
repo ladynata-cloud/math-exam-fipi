@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "f634c6eced17e9ee29367f59fecd9e022cbef131",
+  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -303,8 +303,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/index.html": {
-      "beforeSha256": "687833f56f5c25963e14b958666917f32b359347c1c0bf993ad828538d2f67f1",
-      "afterSha256": "250dd964101e19a61abf4f7a22d0dbe501e7f1dd3d27574015081196b152151e",
+      "beforeSha256": "20c64cb211f3054f4c148991d4b9e68e28b10f7c79c909873a8943b780d7f823",
+      "afterSha256": "7f71c71c8481bf51a700670012b6f87a0574f7217e42e64fcf832ac4ddfa9fc3",
       "placement": "before-head-close"
     },
     "ege-profil/lesson/index.html": {
@@ -363,8 +363,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/trainers/numbers-t19.html": {
-      "beforeSha256": "f5d6b18c8bff54d37ff44e41e9d215efaec0306904da9cf238543964610640a2",
-      "afterSha256": "79e3d99008f67b8cef8ba3bb78988bf804b2b738e7efa98332f96a70247c5b29",
+      "beforeSha256": "7f964e53141916f36d7b96d129ff53711ca6819cae68f731f56a0c8d9291217d",
+      "afterSha256": "d079259ce9ec8998165fdea0e9cbb1a1636bbcdca00d1ec225f7f60262758b35",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/parameters-18/fractional.html": {
@@ -2078,8 +2078,8 @@
       "placement": "before-head-close"
     },
     "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html": {
-      "beforeSha256": "8dfd44bf31f0d1d38aa67d59f1025a8155873f212c2954129f6b10172b2dd452",
-      "afterSha256": "afe3cfb77845b4cb8ad82bec14498756e75c5a58112d73f329adfa39a8a0094e",
+      "beforeSha256": "06466c5a7f2055606c8877d782166c663914e4965a080d3d11ea3562b1814246",
+      "afterSha256": "e922eecfa78425e634c029fd2b88a39a4bd57a2fef5ffee1c2bf23df83540492",
       "placement": "before-head-close"
     },
     "pedagogam/materialy/diagnostika-vychisleniy/index.html": {
@@ -2203,8 +2203,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/sections/index.html": {
-      "beforeSha256": "081659422dfaf59c9fb4d9cb819abfe499f8493109f667abfd8375c32456d8a4",
-      "afterSha256": "68c6450a48fbe1297f09912fdd25e9383d4a8f36011cafdc35bfb990ae99e84a",
+      "beforeSha256": "a62713ea1157812038dcffd97c262545afa1bed41205112b1ee3cb9a3ce4676a",
+      "afterSha256": "7bbfc99b92644ac69ffbc7c03491f5a7d1dc496ea1f194d01e1947be919378e9",
       "placement": "before-head-close"
     },
     "stereo-course/textbook/index.html": {
@@ -5240,6 +5240,18 @@
         "trainers/ege-profile/log-inequalities/index.html",
         "trainers/ege-profile/log-inequalities/lesson.html",
         "trainers/ege-profile/log-inequalities/nested.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "f634c6eced17e9ee29367f59fecd9e022cbef131",
+      "sourceBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "task": "docs/tasks/TRAINER_DOWNLOADS_STAGE8_20261115.md",
+      "changedPaths": [
+        "ege-profil/index.html",
+        "ege-profil/trainers/numbers-t19.html",
+        "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
+        "stereo-course/sections/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
