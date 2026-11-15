@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+  "baseSha": "554a95a3c92610a4a52722509d993be5d19bc480",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3088,8 +3088,8 @@
       "placement": "before-head-close"
     },
     "trainers/task19-trainer.html": {
-      "beforeSha256": "531ec23c046938b0ffb3f0d60ba3b06b52c4eb36ad316a9c3c1d18a6868770d8",
-      "afterSha256": "a4f52b96194d7ecb28635b15e0f1780181a0abd654d9f41cca86e0690c2cc5f4",
+      "beforeSha256": "9e56151af7320311f08bc5ccb7100dbadadfe89884b87add38b8780bc5d018bb",
+      "afterSha256": "6ad106a63c13ca7d05653f22f1a3d8ac14cef14d0ce7aad878a7ae623eae0f35",
       "placement": "before-head-close"
     },
     "trainers/teatr-formul-daily.html": {
@@ -5261,6 +5261,15 @@
       "task": "docs/tasks/PROFILE_PART_TWO_ANSWER_FORMAT_20261116.md",
       "changedPaths": [
         "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+      "sourceBaseSha": "554a95a3c92610a4a52722509d993be5d19bc480",
+      "task": "docs/tasks/OGE19_REMOVE_UNRELATED_MODELS_20261116.md",
+      "changedPaths": [
+        "trainers/task19-trainer.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

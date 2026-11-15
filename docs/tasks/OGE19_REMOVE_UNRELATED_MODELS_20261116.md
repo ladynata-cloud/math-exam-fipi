@@ -67,6 +67,11 @@ HTTPS с HTTP 200 и побайтно совпали с указанной ба�
   работа подсказки, ответа, объяснения и следующей карточки на основном,
   альтернативном и автономном входах.
 - Оформить эту спецификацию и результаты проверок.
+- После проверки исходного commit `554a95a3c92610a4a52722509d993be5d19bc480`
+  штатно обновить в `assets/assistant/page-rollout.json` только текущую
+  привязку `trainers/task19-trainer.html` и соответствующую запись
+  происхождения. Сохранить прежнюю историю, остальные привязки, helper,
+  тесты и исторические/frozen pins.
 
 ### Out of scope
 
@@ -86,17 +91,19 @@ HTTPS с HTTP 200 и побайтно совпали с указанной ба�
 
 - [x] Основная страница №19 больше не содержит подключений `oge-video-*`;
   её native bytes совпадают с ранее принятой страницей без блока.
-- [ ] Браузерный gate подтверждает отсутствие дополнительного DOM,
+- [x] Браузерный gate подтверждает отсутствие дополнительного DOM,
   сетевых запросов и записей его прогресса.
-- [ ] Собственная интерактивная подсказка карточки, проверка ответа,
+- [x] Собственная интерактивная подсказка карточки, проверка ответа,
   объяснение, следующая карточка и сохранённый результат работают на трёх
   входах: основном, альтернативном и автономном.
 - [x] Остальные восемь страниц сохраняют подключения дополнительных
   исследований; их native-byte и DOM-контракты пройдены.
 - [x] Полные native-byte проверки №19 и остальных страниц, исторические
   отрицательные пробы и фиксированные книжные версии сохраняются.
-- [x] Банк, общие assets, автономные файлы и механика сохранений не изменены.
-- [ ] Все применимые локальные gates пройдены либо фактический блокер
+- [x] Банк, runtime общих assets, автономные файлы и механика сохранений не
+  изменены. Текущая привязка №19 в navigator manifest обновлена отдельно
+  штатным механизмом, как указано в согласованном follow-up scope.
+- [x] Все применимые локальные gates пройдены либо фактический блокер
   явно отмечен до передачи координатору.
 
 ## Checks and gates
@@ -107,6 +114,10 @@ HTTPS с HTTP 200 и побайтно совпали с указанной ба�
   `oge-video-models.yml` и `book-edition.yml`.
 - Required static checks: синтаксис затронутых JS/Python, `git diff --check`,
   точный список изменений и сохранность запрещённых областей.
+- Navigator follow-up: штатный preview/write для одной указанной страницы,
+  `public-navigator-preservation.test.cjs`, `public_navigator_bindings.test.py`,
+  `public-navigator-regression.cjs`, проверки home coverage и прежних
+  исторических/native контрактов после смены текущей привязки.
 - Manual checks: изучить браузерные результаты и изображения основного
   сценария на узком и широком экранах.
 - Final gate marker: `OGE19_REMOVE_UNRELATED_MODELS_OK` после успешной
@@ -160,7 +171,7 @@ HTTPS с HTTP 200 и побайтно совпали с указанной ба�
 - This executing subagent stops after implementation and verification; it does
   not commit, push, open a PR, merge or deploy.
 
-## Execution record
+## Initial local execution record
 
 - Actual branch: `codex/oge19-remove-model-block-20261116`.
 - Actual base SHA: `35e718ca74852857a86dfe9dcc68d091ce165308`.
@@ -221,20 +232,90 @@ The coordinator independently reviewed the scoped code diff: no findings.
 This is technical review of the working diff, not an external provider verdict,
 browser acceptance or release authorization.
 
+### CI follow-up: current navigator source binding
+
+Draft PR #624 открыт координатором. На проверенном source commit
+`554a95a3c92610a4a52722509d993be5d19bc480` успешно завершены GitHub Actions
+`Task 19 visual hints` (run `43765081467`) и `OGE video model investigations`
+(run `43765081548`). Первый проверяет полный путь карточки на трёх входах
+при ширине 360/1280, второй — отсутствие дополнительного блока №19 и
+сохранность остальных страниц. Координатор просмотрел шесть репрезентативных
+изображений трёх входов на узком/широком экране: замечаний нет. Это результаты
+GitHub CI и технического просмотра указанного source commit, не локальный
+browser PASS и не разрешение выпуска.
+
+`Public navigator visibility` (run `43765081502`) выявил ещё одну текущую
+привязку: `public-navigator-preservation.test.cjs` ожидал полный HTML №19
+до согласованного удаления дополнительных подключений. Фактический SHA-256
+`6ad106a63c13ca7d05653f22f1a3d8ac14cef14d0ce7aad878a7ae623eae0f35`
+вместо прежнего
+`a4f52b96194d7ecb28635b15e0f1780181a0abd654d9f41cca86e0690c2cc5f4`
+объясняется ровно этой проверенной правкой. Навигационные includes не
+менялись. Ошибка загрузки navigator artifact вторична: браузерный шаг ещё
+не запускался из-за раннего выхода regression gate.
+
+Координатор разрешил узкое обновление текущего source binding штатным
+`tools/public_navigator_bindings.py`. Preview с `--source-base
+554a95a3c92610a4a52722509d993be5d19bc480`, `--task
+docs/tasks/OGE19_REMOVE_UNRELATED_MODELS_20261116.md` и `--paths
+trainers/task19-trainer.html` вернул `BINDINGS_PREVIEW`: изменяется ровно
+указанная привязка, HTML-файлов записано 0, approval не создаётся. Перед
+preview восстановлены необходимые tracked public-page fixtures в отдельном
+sparse worktree; другие worktrees и содержимое файлов не изменялись.
+
+Эта запись и расширение списка допустимых файлов сделаны до `--write`.
+После записи независимо подтверждено: изменена одна привязка из 624,
+сохранены все 122 прежние provenance rows и остальные поля manifest;
+добавлена одна запись с точным source commit и этой задачей. Helper, tests,
+исторические pins, HTML и автономные файлы не изменены. Повторный preview
+вернул `BINDINGS_CURRENT`. Новые значения текущей привязки:
+
+| Значение | SHA-256 |
+| --- | --- |
+| HTML до навигационных includes | `9e56151af7320311f08bc5ccb7100dbadadfe89884b87add38b8780bc5d018bb` |
+| Полный текущий HTML | `6ad106a63c13ca7d05653f22f1a3d8ac14cef14d0ce7aad878a7ae623eae0f35` |
+
+Повторные локальные проверки после записи:
+
+| Команда | Результат |
+| --- | --- |
+| `node --test tools/public-navigator-preservation.test.cjs` | PASS, 4 теста; полный inventory и отрицательные пробы |
+| `python3 tools/public_navigator_bindings.test.py` | PASS, 5 тестов |
+| `node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js` с отдельным временным JSON-отчётом | PASS, 43 сценария |
+| `node tools/public-home-coverage.cjs` | PASS, 743 eligible: 736 прямых входов и 7 перенаправлений; failures 0 |
+| `node --test tools/public-home.test.cjs tools/rounding-focus.test.cjs` | PASS, 14 тестов |
+| `node --test tools/task19-*.test.cjs` | PASS, 92 теста |
+| `node --test --test-concurrency=1 tools/oge-video-*.test.cjs` | PASS, 59 тестов |
+| `node --test --test-concurrency=1 tools/oge-course-algebra.test.cjs tools/oge-course-geometry.test.cjs tools/oge-course-proof.test.cjs tools/oge-geometry-minimal.test.cjs tools/oge-part2-minimal.test.cjs` | PASS, 95 тестов |
+| `node --test tools/oge-book-corrections.test.cjs tools/oge-book-exam-corrections.test.cjs tools/oge-video-models-book-context.test.cjs` | PASS, 45 тестов |
+| `python3 tools/book-edition/test_generator.py` | PASS, 16 тестов |
+| `python3 tools/book-edition/test_package.py` | PASS, 16 тестов |
+| `python3 tools/oge-worked-steps-book-context.test.py` | PASS, 6 тестов |
+| `python3 tools/book-edition/verify.py --base 35e718ca74852857a86dfe9dcc68d091ce165308` | PASS, обе защищённые версии: 71 entry / 225 files |
+| `node --check` для трёх navigator/home scripts и `git diff --check` | PASS |
+
+Первые попытки inventory/home tests обнаружили отсутствующие sparse fixtures,
+включая исключённые автономные HTML и `utils/lib.js`. Восстановлены только
+нужные tracked bytes текущего commit с проверкой Git blob SHA, после чего
+тесты прошли. Настройки, ожидания и pins ради окружения не менялись.
+Локальный браузер повторно не запускался после установленного ограничения
+`socket EPERM`; окончательный CI требуется на новом commit. Merge/deploy
+не разрешены.
+
 ## Required handoff
 
 ```text
 EXECUTIVE STATUS
 
 Task: OGE19_REMOVE_UNRELATED_MODELS_20261116
-PR: coordinator opens after review
+PR: https://github.com/ladynata-cloud/math-exam-fipi/pull/624 (Draft)
 Base: 35e718ca74852857a86dfe9dcc68d091ce165308
-Head: pending scoped commit
-Gate: LOCAL_NODE_PYTHON_PASS / BROWSER_BLOCKED_ENV; final gate pending CI
-Tests: recorded local Node/Python/static commands pass
-Failures: local Chromium socket EPERM before page launch
-Not run: browser journeys/visual inspection, external review, release/live verification
-Scope deviations: none
-Recommendation: publish Draft PR; run required browser CI and inspect artifacts
+Head: 554a95a3c92610a4a52722509d993be5d19bc480 plus local navigator-binding follow-up
+Gate: FOLLOWUP_LOCAL_PASS; final exact-head CI pending
+Tests: Task19/OGE-video CI and root visual review pass on source head; post-binding local gates pass
+Failures: source-head current navigator binding mismatch corrected locally; local Chromium EPERM remains documented
+Not run: CI on the pending follow-up commit, external provider review, release/live verification
+Scope deviations: one necessary current binding refresh explicitly approved by coordinator; historical pins unchanged
+Recommendation: review two-file follow-up, publish through coordinator, then inspect exact-head CI
 Next user decision: separate explicit merge authorization after review
 ```
