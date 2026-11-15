@@ -182,7 +182,11 @@ async function main() {
           await p.screenshot({path:path.join(artifacts,'card-flow-'+entry.name+'-'+width+'-hint.png'),fullPage:true});
           await p.locator('#btnFalse').press('Enter');
           assert.equal(await p.locator('#answerPanel').isVisible(),true);
-          assert.equal(await p.locator('#answerExplanation').textContent(),card.explanation);
+          assert.deepEqual(await p.locator('#answerExplanation .task19-reason-step').allTextContents(),[
+            'Шаг 1. Условия'+card.hint.preserve,
+            'Шаг 2. Обоснование'+card.explanation,
+            'Шаг 3. ВыводУтверждение неверное.'
+          ],'the explanation keeps all three exact steps for the displayed card');
           const answered=await savedState(p);
           assert.deepEqual(answered.records[card.id],{attempts:1,correct:1,needsReview:false});
           assert.equal(answered.current.answer,false);
