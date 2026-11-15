@@ -5,6 +5,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 if(!process.env.CI)throw new Error('Run task19-current-models.browser.cjs in the Task 19 CI workflow.');
 const {chromium}=require('playwright');
 const root=path.resolve(__dirname,'..'),{cards}=require('../trainers/task19-visual-data.js'),KEY='mathExam.task19.visualHints.v1';
+const sourceAdditions=require('../trainers/task19-exam-source-coverage.json').additions;
 const artifacts=path.resolve(process.env.TASK19_CURRENT_BROWSER_ARTIFACTS||path.join(root,'artifacts/task19-current-models'));
 const types={'.html':'text/html; charset=utf-8','.js':'application/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.svg':'image/svg+xml','.pdf':'application/pdf'};
 const lineCards=cards.filter(c=>c.hint.model==='lineThroughPoint');
@@ -104,12 +105,61 @@ async function main(){
         await fresh(page,base,'prev-103');before=await saved(page);await keyboardValue(page,'bx',5);await keyboardValue(page,'by',4);await page.locator('.t19-measure').click();geometry=await sample(page);
         near(geometry.points.M[0],(geometry.points.A[0]+geometry.points.B[0])/2,'midpoint x');near(geometry.points.M[1],(geometry.points.A[1]+geometry.points.B[1])/2,'midpoint y');near(geometry.metrics.AM,geometry.metrics.MB,'midpoint halves');
         await fit(page,name+' midpoint');await noGrade(page,before);await page.screenshot({path:path.join(artifacts,name+'-midpoint.png'),fullPage:true});coverage.push({viewport:name,card:'prev-103',checks:['independent coordinates','equal halves','no grading']});
+
+        // New source formulations retain their narrower premises while learners
+        // move controls, measure, reload, and answer. Existing models are reused.
+        for(const id of sourceAdditions){
+          const card=cards.find(c=>c.id===id);await fresh(page,base,id);before=await saved(page);
+          assert.equal(await page.locator('#statement').textContent(),card.text);
+          const sliders=page.locator('#visualHost input[type=range]');assert(await sliders.count()>0,id+': useful movement');
+          const initial=JSON.stringify((await sample(page)).points);let moved=false;
+          for(let i=0;i<await sliders.count();i++)for(const key of ['Home','End']){
+            await sliders.nth(i).focus();await page.keyboard.press(key);moved=moved||JSON.stringify((await sample(page)).points)!==initial;
+            await noGrade(page,before);await fit(page,name+' '+id+' '+key);
+          }
+          assert(moved,id+': actual points change');
+          if(id==='right_triangles_always_similar'){
+            await keyboardValue(page,'b',45);const first=await sample(page);await keyboardValue(page,'b',30);const second=await sample(page);
+            near(first.metrics.a,90,'first right angle');near(second.metrics.a,90,'second right angle');near(first.metrics.b,45,'first acute angle');near(second.metrics.b,30,'second acute angle');
+          }
+          if(id==='parallelogram_equal_perpendicular_diagonals_square')assert.doesNotMatch(await page.locator('#visualHost').textContent(),/квадрат/iu,'model does not state the conclusion');
+          await page.locator('.t19-measure').click();assert.match(await page.locator('.t19-model-readout').textContent(),/\d/);await noGrade(page,before);
+          const draft=await saved(page);await page.reload();await page.locator('#visualHost svg').waitFor();assert.deepEqual((await saved(page)).current.modelState,draft.current.modelState);
+          assert.equal(await page.locator('.t19-model-readout').isVisible(),true);await fit(page,name+' '+id+' measured');
+          await page.screenshot({path:path.join(artifacts,name+'-source-'+id+'.png'),fullPage:true});
+          await page.locator(card.truth?'#btnTrue':'#btnFalse').click();assert.equal((await saved(page)).records[id].correct,1);assert.equal(await page.locator('#answerPanel').isVisible(),true);
+          coverage.push({viewport:name,card:id,checks:['source wording','keyboard boundaries','no early answer','measured draft reload','correct verdict']});
+        }
+
+        // The alternate entry and the generated single file must contain the
+        // same bank. The file journey denies every network request.
+        for(const entry of [
+          {name:'alternate',url:base+'/trainers/geometry_statements_trainer_improved.html'},
+          {name:'offline',url:require('node:url').pathToFileURL(path.join(root,'downloads/trainers/task19-trainer/task19-trainer.html')).href}
+        ]){
+          const sourcePage=await context.newPage();
+          sourcePage.on('pageerror',e=>errors.push(name+' '+entry.name+': '+e.message));
+          const network=[];
+          if(entry.name==='offline')await sourcePage.route(/^https?:\/\//,route=>{network.push(route.request().url());return route.abort();});
+          try{
+            for(const id of sourceAdditions){
+              const card=cards.find(c=>c.id===id);await sourcePage.goto(entry.url+'?card='+encodeURIComponent(id));
+              await sourcePage.waitForFunction(()=>window.Task19Data?.cards.length===244);
+              assert.equal(await sourcePage.locator('#statement').textContent(),card.text);assert.equal(await sourcePage.locator('#answerPanel').isVisible(),false);
+              await sourcePage.locator('#hintToggle').click();await sourcePage.locator('#visualHost svg').waitFor();
+              await sourcePage.locator('.t19-measure').click();assert.equal(await sourcePage.locator('#answerPanel').isVisible(),false);await fit(sourcePage,name+' '+entry.name+' '+id);
+              await sourcePage.locator(card.truth?'#btnTrue':'#btnFalse').click();assert.equal(await sourcePage.locator('#answerPanel').isVisible(),true);
+              coverage.push({viewport:name,entry:entry.name,card:id,checks:['244-card bank','embedded model','correct verdict']});
+            }
+            assert.deepEqual(network,[],entry.name+': no network dependency for the offline lesson');
+          }finally{await sourcePage.close();}
+        }
       }catch(e){failures.push(name+': '+e.stack);await page.screenshot({path:path.join(artifacts,'FAIL-'+name+'.png'),fullPage:true}).catch(()=>{});}
       await context.close();
     }
     assert.deepEqual(errors,[],'browser console/page errors');
   }catch(e){failures.push(e.stack||String(e));}
   finally{if(browser)await browser.close();await new Promise(resolve=>s.close(resolve));fs.writeFileSync(path.join(artifacts,'coverage.json'),JSON.stringify({coverage,errors,failures},null,2));}
-  if(failures.length)throw new Error(failures.join('\n\n'));console.log('PASS new task19 geometry: desktop/mobile snap, point visibility, restart, absolute distance and midpoint regression');
+  if(failures.length)throw new Error(failures.join('\n\n'));console.log('PASS task19 geometry and source additions: desktop/mobile controls, preserved premises, drafts, grading, alternate entry and offline bank');
 }
 main().catch(e=>{console.error(e.stack);process.exitCode=1;});
