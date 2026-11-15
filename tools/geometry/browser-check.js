@@ -18,13 +18,14 @@ await page.setViewportSize({width:1280,height:900});await page.goto(base+'atlas/
 for(const p of fs.readdirSync(root+'/geometry-course/trainers').filter(p=>p.endsWith('.html'))){await page.goto(base+'trainers/'+p);assert.ok((await page.locator('body').innerText()).length>30);}
 await page.goto(base+'teacher-atlas.html');await page.locator('#local-report').click();assert.equal(await page.locator('tbody tr').count(),63);
 // A seed cycle must not award the same condition again, even after reload.
+// The unchanged length generator uses x mod 7 and y mod 5: its complete condition repeats after 35 seeds.
 await page.goto(base+'atlas/length.html');await page.locator('[data-stage="4"]').click();
 const firstQuestion=await page.locator('.task-question').innerText(),beforeRepeat=await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KEY)).units.length.independent);
-for(let i=0;i<7;i++)await page.locator('[data-action="new-task"]').click();
+for(let i=0;i<35;i++){await page.locator('[data-action="new-task"]').click();if(i<34)assert.notEqual(await page.locator('.task-question').innerText(),firstQuestion);}
 assert.equal(await page.locator('.task-question').innerText(),firstQuestion);assert.match(await page.locator('#lesson').innerText(),/Знакомое условие/);
 await page.reload();assert.match(await page.locator('#lesson').innerText(),/Знакомое условие/);
 let saved=await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KEY)).units.length);
-await page.locator('#answer').fill(T.format(T.task('segment',saved.seed).answer));await page.locator('#answer-form button').click();
+await page.locator('#answer').fill(T.format(T.task('length',saved.seed).answer));await page.locator('#answer-form button').click();
 assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem(GeoStore.KEY)).units.length.independent),beforeRepeat);
 assert.match(await page.locator('#answer-feedback').innerText(),/знакомое условие/);
 // Reload resumes a genuinely new attempt rather than marking it repeated.

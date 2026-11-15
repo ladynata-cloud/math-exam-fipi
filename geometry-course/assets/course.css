@@ -10,3 +10,29 @@
 /* A consistent compact header leaves the condition and the next action together. */
 .thematic-lesson .lesson-head h1{font-size:1.5rem}.thematic-lesson .lesson-head .pill{display:none}.thematic-lesson .lesson-head{padding:4px 0 8px}.thematic-lesson .lesson-head .eyebrow{margin:0}.thematic-lesson .topbar{padding-top:9px;padding-bottom:9px}.thematic-lesson #lesson{padding:18px}.thematic-lesson #lesson>.step-label{font-size:.72rem;margin:0 0 6px}.thematic-lesson .stage-nav{padding-bottom:8px}.thematic-lesson .midline-diagram.midline-computing{max-width:245px}.thematic-lesson .midline-diagram figcaption{font-size:14px;line-height:1.35}
 @media(max-width:480px){.thematic-lesson .topbar{padding:7px 10px;gap:5px}.thematic-lesson .brand{font-size:.93rem}.thematic-lesson .toplinks{gap:8px}.thematic-lesson .toplinks button{min-height:34px;padding:4px 7px}.thematic-lesson .container{padding:8px 10px 40px}.thematic-lesson .lesson-head h1{font-size:1.15rem;line-height:1.2;margin:3px 0 5px}.thematic-lesson .lesson-head .eyebrow{font-size:.62rem}.thematic-lesson #lesson,.thematic-lesson.midline-lesson #lesson{padding:12px}.thematic-lesson .stage-nav{padding-bottom:6px}.thematic-lesson .stage-nav button{font-size:.72rem;min-height:36px;padding:7px 9px}.thematic-lesson #lesson h2{font-size:1.05rem;line-height:1.25}.thematic-lesson .midline-diagram.midline-computing{max-width:245px}}
+
+/* Keep a complete condition, a readable diagram and the first answer together.
+   Empty progress lists and repeated instructions must not occupy the first screen. */
+.progress-compact{display:none}
+.thematic-lesson #lesson>h2{margin:0 0 8px}
+.thematic-lesson .proof-list:empty{display:none}
+.thematic-lesson .proof-condition{margin:8px 0;padding:8px 12px}
+.thematic-lesson .proof-condition p{margin:3px 0;line-height:1.4}
+.thematic-lesson .proof-prompt{font-size:.9rem;line-height:1.4;margin:6px 0}
+.thematic-lesson .proof-options{margin:8px 0}
+.thematic-lesson .guided-step{margin:8px 0;padding:8px 12px}
+.thematic-lesson .guided-step p{margin:0;line-height:1.4}
+.thematic-lesson .midline-diagram:not(.midline-computing){max-width:320px}
+.thematic-lesson .answer-row{margin:6px 0 10px}
+@media(max-width:480px){
+ .thematic-lesson .topbar{display:block;position:relative;padding:7px 10px}
+ .thematic-lesson .brand{display:flex;align-items:center;gap:3px;width:max-content;max-width:calc(100% - 96px);min-height:34px;font-size:.85rem;line-height:1.6;white-space:nowrap}
+ .thematic-lesson .toplinks{margin-top:5px}
+ .thematic-lesson #export-progress{position:absolute;top:7px;right:10px;min-height:34px;font-size:.72rem;padding:4px 7px}
+ .thematic-lesson .progress-full{display:none}
+ .thematic-lesson .progress-compact{display:inline}
+ .thematic-lesson .proof-options button{font-size:.9rem;line-height:1.35;padding:8px 10px}
+ .thematic-lesson .answer-row{flex-wrap:nowrap;gap:8px}
+ .thematic-lesson .answer-row input{min-width:0;width:0;font-size:16px}
+ .thematic-lesson .answer-row button{width:auto;flex:0 0 auto;min-height:44px;font-size:.88rem;padding:8px 10px}
+}

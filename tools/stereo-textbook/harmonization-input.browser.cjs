@@ -40,7 +40,11 @@ let browser, server;
     const watch = p => p.on('pageerror', error => evidence.errors.push(error.message));
     watch(page);
     const open = async (card, target = page) => {
+      // The published textbook consumes the deep link on document startup.
+      // A fragment-only goto keeps the previously mounted card alive.
+      await target.goto('about:blank');
       await target.goto(base + '#' + card.id);
+      await target.locator('.textbook-lesson-header [data-companion-source="' + card.id + '"]').waitFor();
       await target.locator('[data-main-model] svg').waitFor();
       await target.locator('#final-answer').waitFor();
     };

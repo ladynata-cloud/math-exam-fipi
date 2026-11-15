@@ -4,12 +4,30 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'../..'),C=require(ROOT+'/geometry-course/data/course.json');
 const OUT=path.resolve(process.env.GEOMETRY_HARMONIZATION_ARTIFACTS||path.join(ROOT,'artifacts/geometry-harmonization'));
-const KEY='mathExamGeometry.v1',report={widths:[320,1280],height:900,topics:C.units.length,views:[],failures:[],consoleErrors:[],offline:[],state:[]};
+const KEY='mathExamGeometry.v1',OBSERVATION='Я изменил параметры модели, сравнил результат и проверил границу применимости.',traces=new WeakMap(),report={widths:[320,1280],height:900,topics:C.units.length,views:[],failures:[],consoleErrors:[],offline:[],state:[]};
 fs.mkdirSync(OUT,{recursive:true});
 let browser,server,page;
-function issue(test,error){report.failures.push({test,error:String(error?.stack||error)});}
+function issue(test,error,diagnostic){report.failures.push({test,error:String(error?.stack||error),...(diagnostic?{diagnostic}:{})});}
 async function flush(p){await p.evaluate(()=>dispatchEvent(new Event('pagehide')));}
 async function saved(p,id){return p.evaluate(([key,id])=>JSON.parse(localStorage.getItem(key)).units[id],[KEY,id]);}
+async function captureEntry(context){await context.addInitScript(key=>{
+ // Observe the browser's record before the application can save its start event.
+ try{window.__geometryStorageAtEntry={url:location.href,raw:localStorage.getItem(key)};}catch(e){window.__geometryStorageAtEntry={url:location.href,error:String(e)};}
+ window.__geometryObservationInputs=[];addEventListener('input',e=>{if(e.target?.id==='observation'){window.__geometryObservationInputs.push({value:e.target.value,trusted:e.isTrusted,connected:e.target.isConnected,current:document.querySelector('#observation')===e.target,time:performance.now()});window.__geometryObservationInputs=window.__geometryObservationInputs.slice(-10);}},true);
+ window.__geometrySnapshot=()=>{
+ const id=document.querySelector('.topic-investigation')?.dataset.topic||window.COURSE_CONFIG?.unit.id,field=document.querySelector('#observation'),notice=document.querySelector('#storage-notice');
+ const parse=raw=>{try{return raw?JSON.parse(raw).units?.[id]||null:null;}catch(e){return {error:String(e)};}};
+ let raw=null,error=null,storageKeys=[];try{raw=localStorage.getItem(key);storageKeys=Object.keys(localStorage).sort().map(k=>({key:k,utf16Bytes:(localStorage.getItem(k)?.length||0)*2}));}catch(e){error=String(e);}
+ return {id,url:location.href,observation:field?.value??null,connected:!!field?.isConnected,record:parse(raw),storageLength:raw?.length||0,storageKeys,error,inputs:window.__geometryObservationInputs||[],notice:notice&&!notice.hidden?notice.textContent:null,entry:{url:window.__geometryStorageAtEntry?.url,error:window.__geometryStorageAtEntry?.error,record:parse(window.__geometryStorageAtEntry?.raw)}};
+ };
+},KEY);}
+async function snapshot(p){return p.evaluate(()=>window.__geometrySnapshot());}
+async function reloadObservation(p){await p.reload();const trace=traces.get(p)||{};trace.afterReload=await snapshot(p);traces.set(p,trace);assert.equal(trace.afterReload.observation,OBSERVATION,'Reloaded observation must equal the text that was typed');assert.equal(trace.afterReload.record?.research?.observation,OBSERVATION,'Reload must retain the typed observation in storage');}
+function assertResearch(trace){assert.equal(trace.afterFill.observation,OBSERVATION,'The observation field must receive the typed text');assert.equal(trace.afterFlush.observation,OBSERVATION,'Saving must retain the text in the visible field');assert.equal(trace.afterFlush.record?.research?.observation,OBSERVATION,'Saved observation must equal the text that was typed');}
+async function verifyResearchReload(p){let failure;try{assertResearch(traces.get(p));}catch(e){failure=e;}
+ // Even a failed save gets a real reload, so its next document's pre-bootstrap bytes are observable.
+ try{await reloadObservation(p);}catch(e){failure=failure||e;}if(failure)throw failure;
+}
 async function metrics(p,selector,action){return p.evaluate(({selector,action})=>{
  const svg=document.querySelector(selector);if(!svg)return {missing:selector};const r=svg.getBoundingClientRect(),rect=x=>({x:x.x,y:x.y,width:x.width,height:x.height,right:x.right,bottom:x.bottom});
  const texts=[...svg.querySelectorAll('text')].map(e=>{const b=e.getBoundingClientRect(),m=e.getScreenCTM();return {text:e.textContent,rect:rect(b),font:parseFloat(getComputedStyle(e).fontSize)*Math.hypot(m.c,m.d)};}).filter(t=>t.rect.width&&t.rect.height);
@@ -22,31 +40,34 @@ function assess(name,m,{firstScreen=false,labels=true}={}){
  if(m.clipped.length)issue(name,'Clipped labels: '+m.clipped.join(', '));if(m.overlaps.length)issue(name,'Overlapping labels: '+JSON.stringify(m.overlaps));
  if(firstScreen&&(m.figure.y<0||m.figure.bottom>900||!m.action||m.action.y<0||m.action.bottom>900))issue(name,'Condition / next action outside first screen: '+JSON.stringify({figure:m.figure,action:m.action}));
 }
-async function research(p){await p.locator('.research-predict select').selectOption('unsure');await p.locator('.research-predict button').click();await p.locator('.research-controls [data-value]').first().evaluate(e=>{e.value=e.tagName==='SELECT'?[...e.options].find(o=>o.value!==e.value).value:(Number(e.value)===Number(e.max)?e.min:e.max);e.dispatchEvent(new Event(e.tagName==='SELECT'?'change':'input',{bubbles:true}));});await p.locator('#observation').fill('Я изменил параметры модели, сравнил результат и проверил границу применимости.');await flush(p);}
+async function research(p,strict=true){await p.locator('.research-predict select').selectOption('unsure');await p.locator('.research-predict button').click();await p.locator('.research-controls [data-value]').first().evaluate(e=>{e.value=e.tagName==='SELECT'?[...e.options].find(o=>o.value!==e.value).value:(Number(e.value)===Number(e.max)?e.min:e.max);e.dispatchEvent(new Event(e.tagName==='SELECT'?'change':'input',{bubbles:true}));});const trace={beforeFill:await snapshot(p)};traces.set(p,trace);const field=await p.locator('#observation').elementHandle();try{await p.locator('#observation').fill(OBSERVATION);
+ // Capture both sides of the original immediate flush in one browser turn: no wait or retry can hide a late input.
+ Object.assign(trace,await field.evaluate(e=>{const afterFill=window.__geometrySnapshot(),fieldAfterFill={value:e.value,connected:e.isConnected,current:e.ownerDocument.querySelector('#observation')===e};dispatchEvent(new Event('pagehide'));return {afterFill,fieldAfterFill,afterFlush:window.__geometrySnapshot()};}));if(strict)assertResearch(trace);
+ }finally{await field.dispose();}}
 async function submit(p,text){await p.locator('#answer').fill(text);await p.locator('#answer-form button').click();}
 (async()=>{
  try{
  server=http.createServer((req,res)=>{let file=path.resolve(ROOT,'.'+decodeURIComponent(req.url.split('?')[0]));if(!file.startsWith(ROOT+path.sep)){res.writeHead(403).end();return;}try{if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');const ext=path.extname(file);res.setHeader('Content-Type',ext==='.html'?'text/html; charset=utf-8':ext==='.js'?'application/javascript':ext==='.css'?'text/css':'application/octet-stream');res.end(fs.readFileSync(file));}catch{res.writeHead(404).end();}});await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
  const base='http://127.0.0.1:'+server.address().port+'/geometry-course/atlas/';
  browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH||process.env.GEOMETRY_CHROMIUM||undefined});
- for(const width of report.widths){const context=await browser.newContext({viewport:{width,height:900}});page=await context.newPage();page.on('pageerror',e=>report.consoleErrors.push(e.message));
-  for(const u of C.units){const name=u.id+'@'+width;try{
+ for(const width of report.widths){const context=await browser.newContext({viewport:{width,height:900}});await captureEntry(context);page=await context.newPage();page.on('pageerror',e=>report.consoleErrors.push(e.message));
+  for(const u of C.units){const name=u.id+'@'+width;traces.delete(page);try{
    await page.goto(base+u.id+'.html');assert.equal(await page.locator('[aria-current=step]').getAttribute('data-stage'),'1');assert.equal(await page.locator('.topic-investigation').getAttribute('data-topic'),u.id);assert.equal(await page.locator('.research-controls').isVisible(),false);await page.evaluate(()=>scrollTo(0,0));
    const before=await metrics(page,'.research-figure svg','.research-predict button');assess(name+' research',before,{firstScreen:true});await page.screenshot({path:path.join(OUT,name+'-research.png')});
-   await research(page);await page.evaluate(()=>scrollTo(0,0));const after=await metrics(page,'.research-figure svg','.research-controls [data-value]');assess(name+' action',after);const record=await saved(page,u.id);assert(record.research.opened&&record.research.changed);assert.equal(record.assisted,false);await page.reload();assert.equal(await page.locator('#observation').inputValue(),record.research.observation);
-   await page.locator('[data-stage="2"]').click();await page.evaluate(()=>scrollTo(0,0));const proof=await metrics(page,'#lesson figure svg','[data-proof]');assess(name+' proof',proof,{firstScreen:true});
-   await page.locator('[data-stage="3"]').click();await page.evaluate(()=>scrollTo(0,0));const task=await metrics(page,'#lesson figure svg','#answer-form button');assess(name+' guided condition',task,{firstScreen:true});
+   await research(page,false);await page.evaluate(()=>scrollTo(0,0));const after=await metrics(page,'.research-figure svg','.research-controls [data-value]');assess(name+' action',after);const record=await saved(page,u.id);assert(record.research.opened&&record.research.changed);assert.equal(record.assisted,false);await verifyResearchReload(page);
+   await page.locator('[data-stage="2"]').click();await page.evaluate(()=>scrollTo(0,0));const proof=await metrics(page,'#lesson figure svg','[data-proof]'),beforeProof=report.failures.length;assess(name+' proof',proof,{firstScreen:true});if(report.failures.length>beforeProof)await page.screenshot({path:path.join(OUT,name+'-proof-failure.png'),fullPage:true});
+   await page.locator('[data-stage="3"]').click();await page.evaluate(()=>scrollTo(0,0));const task=await metrics(page,'#lesson figure svg','#answer-form button'),beforeTask=report.failures.length;assess(name+' guided condition',task,{firstScreen:true});if(report.failures.length>beforeTask)await page.screenshot({path:path.join(OUT,name+'-task-failure.png'),fullPage:true});
    report.views.push({id:u.id,width,research:before,action:after,proof,task});
-  }catch(e){issue(name,e);await page.screenshot({path:path.join(OUT,name+'-failure.png'),fullPage:true}).catch(()=>{});}}
+  }catch(e){issue(name,e,traces.get(page));await page.screenshot({path:path.join(OUT,name+'-failure.png'),fullPage:true}).catch(()=>{});}}
   await context.close();console.log('Geometry visual routes completed at',width);
  }
  // Offline pages execute their actual embedded source with all HTTP(S) resources blocked.
- const offline=await browser.newContext({viewport:{width:320,height:900}});await offline.route(/^https?:\/\//,r=>r.abort());const p=await offline.newPage();p.on('pageerror',e=>report.consoleErrors.push(e.message));
- for(const u of C.units){try{await p.goto('file://'+ROOT+'/geometry-course/atlas/'+u.id+'.html');assert.equal(await p.locator('.topic-investigation').getAttribute('data-topic'),u.id);assert.equal(await p.locator('.research-figure svg').count(),1);await research(p);const observation=await p.locator('#observation').inputValue();await p.reload();assert.equal(await p.locator('#observation').inputValue(),observation);report.offline.push(u.id);}catch(e){issue('offline '+u.id,e);}}
+ const offline=await browser.newContext({viewport:{width:320,height:900}});await captureEntry(offline);await offline.route(/^https?:\/\//,r=>r.abort());const p=await offline.newPage();p.on('pageerror',e=>report.consoleErrors.push(e.message));
+ for(const u of C.units){traces.delete(p);try{await p.goto('file://'+ROOT+'/geometry-course/atlas/'+u.id+'.html');assert.equal(await p.locator('.topic-investigation').getAttribute('data-topic'),u.id);assert.equal(await p.locator('.research-figure svg').count(),1);await research(p,false);await verifyResearchReload(p);report.offline.push(u.id);}catch(e){issue('offline '+u.id,e,traces.get(p));await p.screenshot({path:path.join(OUT,u.id+'-offline-failure.png'),fullPage:true}).catch(()=>{});}}
  await offline.close();
  // Legacy stages are seeded before the first application script, never by changing their numeric meaning.
  for(let stage=0;stage<6;stage++){const ctx=await browser.newContext({viewport:{width:320,height:900}});await ctx.addInitScript(({KEY,stage})=>{if(!sessionStorage.getItem('legacy-fixture')){localStorage.setItem(KEY,JSON.stringify({version:1,units:{pythagoras:{stage,seed:8,draft:'14/4',written:'Старое письменное решение',observation:'Прежнее наблюдение',attempts:7,independent:3,complete:true}}}));sessionStorage.setItem('legacy-fixture','1');}},{KEY,stage});const p=await ctx.newPage();try{await p.goto(base+'pythagoras.html');const s=await saved(p,'pythagoras');assert.equal(s.stage,stage);assert.equal(s.seed,8);assert.equal(s.practiceVersion,0);assert.equal(s.draft,'14/4');assert.equal(s.written,'Старое письменное решение');assert.equal(s.independent,3);assert.equal(await p.locator('[aria-current=step]').getAttribute('data-stage'),String(stage));report.state.push('legacy-stage-'+stage);}catch(e){issue('legacy stage '+stage,e);}await ctx.close();}
- const ctx=await browser.newContext({viewport:{width:320,height:900},acceptDownloads:true}),a=await ctx.newPage(),b=await ctx.newPage();
+ const ctx=await browser.newContext({viewport:{width:320,height:900},acceptDownloads:true});await captureEntry(ctx);const a=await ctx.newPage(),b=await ctx.newPage();
  try{
   await a.goto(base+'pythagoras.html');await a.locator('[data-stage="4"]').click();await a.locator('[data-action="new-task"]').click();let initial=await saved(a,'pythagoras');assert.equal(initial.seed,3);
   for(const value of ['', 'sqrt(', '(1/0)^0','sqrt(-4)^0','1/(1/0)']){await submit(a,value);const s=await saved(a,'pythagoras');assert.equal(s.attempts,0);assert.equal(s.checked,false);assert.equal(s.assisted,false);assert.equal(await a.locator('#hint-box').innerText(),'');}

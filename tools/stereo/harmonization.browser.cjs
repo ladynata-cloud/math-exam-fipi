@@ -12,13 +12,20 @@ async function ready(page){await page.evaluate(()=>new Promise(resolve=>requestA
 async function measure(page,id,width,phase){
  await ready(page);assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),id+' no horizontal overflow '+width+' '+phase);
  const measured=await page.locator('[data-investigation-model] svg').evaluate(svg=>{const vb=svg.viewBox.baseVal,ctm=svg.getScreenCTM(),scale=Math.hypot(ctm.a,ctm.b),b=svg.getBoundingClientRect();return{width:vb.width,height:vb.height,bounds:{top:b.top,bottom:b.bottom,left:b.left,right:b.right},labels:[...svg.querySelectorAll('.am-label')].map(el=>{const r=el.getBBox();return{key:el.dataset.label,text:el.textContent,x:r.x,y:r.y,width:r.width,height:r.height,pixels:parseFloat(getComputedStyle(el).fontSize)*scale};})};});
+ if(phase==='prediction'){
+  measured.action=await page.locator('[data-investigation-action=explore]').boundingBox();
+  measured.heading=await page.locator('.workspace>h1').boundingBox();
+  measured.stageLabels=await page.locator('.learning-stages .stage-label').evaluateAll(elements=>elements.map(el=>{const r=el.getBoundingClientRect(),b=el.closest('button').getBoundingClientRect();return{text:el.textContent,lines:el.getClientRects().length,left:r.left,right:r.right,top:r.top,bottom:r.bottom,button:{left:b.left,right:b.right,top:b.top,bottom:b.bottom}};}));
+ }
  const overlaps=[];for(let i=0;i<measured.labels.length;i++)for(let j=i+1;j<measured.labels.length;j++){const a=measured.labels[i],b=measured.labels[j];if(Math.min(a.x+a.width,b.x+b.width)-Math.max(a.x,b.x)>1&&Math.min(a.y+a.height,b.y+b.height)-Math.max(a.y,b.y)>1)overlaps.push([a.text,b.text]);}
  evidence.views.push({id,viewport:width,phase,...measured,overlaps});fs.writeFileSync(path.join(out,'measurements.json'),JSON.stringify(evidence,null,2));
  for(const label of measured.labels){assert(label.pixels>=14,id+' actual readable label '+label.text+' at '+width+': '+label.pixels);assert(label.x>=-1&&label.y>=-1&&label.x+label.width<=measured.width+1&&label.y+label.height<=measured.height+1,id+' label in viewBox '+label.text);}
  assert.deepEqual(overlaps,[],id+' label overlaps '+width+' '+phase);
  if(phase==='prediction'){
   assert(measured.bounds.top>=0&&measured.bounds.bottom<=900,id+' initial diagram fits first screen '+width+': '+JSON.stringify(measured.bounds));
-  const button=await page.locator('[data-investigation-action=explore]').boundingBox();assert(button&&button.y>=0&&button.y+button.height<=900,id+' nearest action in first screen '+width+': '+JSON.stringify(button));
+  const button=measured.action;assert(button&&button.y>=0&&button.y+button.height<=900,id+' nearest action in first screen '+width+': '+JSON.stringify(button));
+  assert.equal(measured.stageLabels.length,4,id+' four readable stages');
+  for(const label of measured.stageLabels){assert.equal(label.lines,1,id+' whole stage word '+label.text+' at '+width);assert(label.left>=label.button.left&&label.right<=label.button.right&&label.top>=label.button.top&&label.bottom<=label.button.bottom,id+' stage word stays inside its button '+label.text+' at '+width);}
  }
 }
 async function experiment(page,u,width){

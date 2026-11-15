@@ -72,8 +72,11 @@ function reference(){
  return '<p>'+E(C.edition)+'.</p><ul class="source-points">'+unit.source.map(s=>'<li>Пункт '+s.point+(s.advanced?' ★':'')+' «'+E(s.title)+'», страница '+s.page+'.</li>').join('')+'</ul><p class="muted">Выше — авторское объяснение по темам учебника. Это ссылка на нужный пункт, а не дословная цитата.</p>';
 }
 function nav(){
- const journey=window.StereoInvestigations?'<div class="learning-stages"><button data-stage="6"'+(stage===6?' aria-current="step"':'')+'>1. Исследуй</button><button data-stage="0"'+(stage===0?' aria-current="step"':'')+'>2. Пойми</button><button data-stage="2"'+(stage===2?' aria-current="step"':'')+'>3. Обоснуй</button><button data-stage="4"'+(stage===4?' aria-current="step"':'')+'>4. Реши</button></div>':'';
- return journey+ '<nav class="lesson-actions" aria-label="Разделы темы"><button data-stage="4"'+([0,3,4].includes(stage)?' aria-current="page"':'')+'>К задаче</button><details class="more-sections"><summary>Ещё по теме</summary><div class="section-links"><button data-stage="0">Вспомнить теорию</button><button data-stage="1">Свободная 3D-лаборатория</button><button data-stage="2">Отдельная задача на доказательство</button><button data-stage="3">Разобрать текущую задачу</button><button data-stage="5">'+(proof()?'Записать доказательство':'Обосновать исследование')+'</button></div></details></nav>';
+ const journey=window.StereoInvestigations?'<div class="learning-stages">'+[[6,'Исследуй'],[0,'Пойми'],[2,'Обоснуй'],[4,'Реши']].map(([n,label],i)=>'<button data-stage="'+n+'"'+(stage===n?' aria-current="step"':'')+'><span class="stage-number">'+(i+1)+'.</span> <span class="stage-label">'+label+'</span></button>').join('')+'</div>':'';
+ return journey+(stage===6&&window.StereoInvestigations?'':topicNav());
+}
+function topicNav(){
+ return '<nav class="lesson-actions" aria-label="Разделы темы"><button data-stage="4"'+([0,3,4].includes(stage)?' aria-current="page"':'')+'>К задаче</button><details class="more-sections"><summary>Ещё по теме</summary><div class="section-links"><button data-stage="0">Вспомнить теорию</button><button data-stage="1">Свободная 3D-лаборатория</button><button data-stage="2">Отдельная задача на доказательство</button><button data-stage="3">Разобрать текущую задачу</button><button data-stage="5">'+(proof()?'Записать доказательство':'Обосновать исследование')+'</button></div></details></nav>';
 }
 function answerFormat(){
  return '<details id="answer-format"'+(record.taskFirst.formatOpen?' open':'')+'><summary>Как записать ответ?</summary><p>Дробь вводи через <code>/</code>, например <code>1/3</code>; корень — <code>sqrt(2)</code>; π — <code>pi</code>. Координаты разделяй <code>;</code>, умножение обозначай <code>*</code>. В вопросе «да или нет» введи одно из этих слов.</p></details>';
@@ -118,7 +121,7 @@ function render(){
  let h='<div class="workspace"><div class="back-row"><button data-action="home">← Карта курса</button><span class="pill">Пункты '+unit.points.join(', ')+'</span></div><p class="eyebrow">'+E(C.chapters[unit.chapter])+'</p><h1>'+E(unit.title)+'</h1>'+nav();
  if([3,4].includes(stage)||stage===0&&(!window.StereoInvestigations||record.taskFirst.stageZeroTask))h+=taskPanel();
  if(stage===0&&window.StereoInvestigations&&!record.taskFirst.stageZeroTask)h+='<section class="panel topic-explanation"><h2>Понять наблюдение</h2><p class="law">'+E(unit.idea)+'</p><p>'+E(StereoInvestigations.specs[unit.id].reason)+'</p><details><summary>Когда нельзя применять вывод?</summary><p>'+E(unit.pitfall)+'</p><p>'+E(StereoInvestigations.specs[unit.id].boundary)+'</p></details><details><summary>Где это в учебнике?</summary>'+reference()+'</details><button data-stage="2" class="primary">Построить обоснование →</button><button data-stage="4">К задаче</button></section>';
- if(stage===6&&window.StereoInvestigations)h+='<div id="topic-investigation"></div>';
+ if(stage===6&&window.StereoInvestigations)h+='<div id="topic-investigation"></div>'+topicNav();
  if(stage===1)h+='<section class="panel"><h2>Свободная 3D-лаборатория</h2><p>'+E(unit.investigate)+'</p><p class="callout">Это отдельное исследование. Параметры здесь можно менять; условие твоей задачи сохранено. Вернись к нему кнопкой «К задаче».</p><div id="viewer"></div><label for="observation">Что ты изменил(а), какое свойство заметил(а) и как его объяснишь?</label><textarea id="observation">'+E(record.observation)+'</textarea></section>';
  if(stage===2)h+=proofPanel();
  if(stage===5)h+=writtenPanel();
