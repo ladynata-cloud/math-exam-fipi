@@ -4,23 +4,29 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),
 const {chromium}=require('playwright');
 const ROOT=path.resolve(__dirname,'../..'),C=require(ROOT+'/geometry-course/data/course.json');
 const OUT=path.resolve(process.env.GEOMETRY_HARMONIZATION_ARTIFACTS||path.join(ROOT,'artifacts/geometry-harmonization'));
-const KEY='mathExamGeometry.v1',OBSERVATION='Я изменил параметры модели, сравнил результат и проверил границу применимости.',traces=new WeakMap(),report={widths:[320,1280],height:900,topics:C.units.length,views:[],failures:[],consoleErrors:[],offline:[],state:[]};
+const KEY='mathExamGeometry.v1',HISTORY_KEY='mathExamGeometryCheckpoint.v1',OBSERVATION='Я изменил параметры модели, сравнил результат и проверил границу применимости.',traces=new WeakMap(),report={widths:[320,1280],height:900,topics:C.units.length,views:[],failures:[],consoleErrors:[],offline:[],naturalOffline:[],checkpointRecovery:null,state:[]};
 fs.mkdirSync(OUT,{recursive:true});
 let browser,server,page;
 function issue(test,error,diagnostic){report.failures.push({test,error:String(error?.stack||error),...(diagnostic?{diagnostic}:{})});}
 async function flush(p){await p.evaluate(()=>dispatchEvent(new Event('pagehide')));}
 async function saved(p,id){return p.evaluate(([key,id])=>JSON.parse(localStorage.getItem(key)).units[id],[KEY,id]);}
-async function captureEntry(context){await context.addInitScript(key=>{
+async function captureEntry(context,{missingKeyOnObservation=null}={}){await context.addInitScript(({key,historyKey,missingKeyOnObservation})=>{
  // Observe the browser's record before the application can save its start event.
- try{window.__geometryStorageAtEntry={url:location.href,raw:localStorage.getItem(key)};}catch(e){window.__geometryStorageAtEntry={url:location.href,error:String(e)};}
+ // The optional fault belongs to one separate scenario. Its removal and the
+ // following capture share one initializer, whose ordering is deterministic.
+ const entry={url:location.href,checkpoint:null,fault:null};
+ try{if(location.protocol==='file:')entry.checkpoint=history.state?.[historyKey]||null;
+  if(missingKeyOnObservation&&entry.checkpoint?.local?.research?.observation===missingKeyOnObservation){const before=localStorage.getItem(key);localStorage.removeItem(key);entry.fault={kind:'isolated-missing-key',previousLength:before?.length||0};}
+  entry.raw=localStorage.getItem(key);
+ }catch(e){entry.error=String(e);}window.__geometryStorageAtEntry=entry;
  window.__geometryObservationInputs=[];addEventListener('input',e=>{if(e.target?.id==='observation'){window.__geometryObservationInputs.push({value:e.target.value,trusted:e.isTrusted,connected:e.target.isConnected,current:document.querySelector('#observation')===e.target,time:performance.now()});window.__geometryObservationInputs=window.__geometryObservationInputs.slice(-10);}},true);
  window.__geometrySnapshot=()=>{
  const id=document.querySelector('.topic-investigation')?.dataset.topic||window.COURSE_CONFIG?.unit.id,field=document.querySelector('#observation'),notice=document.querySelector('#storage-notice');
  const parse=raw=>{try{return raw?JSON.parse(raw).units?.[id]||null:null;}catch(e){return {error:String(e)};}};
  let raw=null,error=null,storageKeys=[];try{raw=localStorage.getItem(key);storageKeys=Object.keys(localStorage).sort().map(k=>({key:k,utf16Bytes:(localStorage.getItem(k)?.length||0)*2}));}catch(e){error=String(e);}
- return {id,url:location.href,observation:field?.value??null,connected:!!field?.isConnected,record:parse(raw),rawStorage:raw,storageLength:raw?.length||0,storageKeys,error,inputs:window.__geometryObservationInputs||[],notice:notice&&!notice.hidden?notice.textContent:null,entry:{url:window.__geometryStorageAtEntry?.url,error:window.__geometryStorageAtEntry?.error,raw:window.__geometryStorageAtEntry?.raw??null,record:parse(window.__geometryStorageAtEntry?.raw)}};
+ return {id,url:location.href,observation:field?.value??null,connected:!!field?.isConnected,record:parse(raw),rawStorage:raw,storageLength:raw?.length||0,storageKeys,error,inputs:window.__geometryObservationInputs||[],notice:notice&&!notice.hidden?notice.textContent:null,entry:{url:window.__geometryStorageAtEntry?.url,error:window.__geometryStorageAtEntry?.error,raw:window.__geometryStorageAtEntry?.raw??null,record:parse(window.__geometryStorageAtEntry?.raw),checkpoint:window.__geometryStorageAtEntry?.checkpoint??null,fault:window.__geometryStorageAtEntry?.fault??null}};
  };
-},KEY);}
+},{key:KEY,historyKey:HISTORY_KEY,missingKeyOnObservation});}
 async function snapshot(p){return p.evaluate(()=>window.__geometrySnapshot());}
 async function reloadObservation(p){await p.reload();const trace=traces.get(p)||{};trace.afterReload=await snapshot(p);traces.set(p,trace);assert.equal(trace.afterReload.observation,OBSERVATION,'Reloaded observation must equal the text that was typed');assert.equal(trace.afterReload.record?.research?.observation,OBSERVATION,'Reload must retain the typed observation in storage');}
 function assertResearch(trace){assert.equal(trace.afterFill.observation,OBSERVATION,'The observation field must receive the typed text');assert.equal(trace.afterFlush.observation,OBSERVATION,'Saving must retain the text in the visible field');assert.equal(trace.afterFlush.record?.research?.observation,OBSERVATION,'Saved observation must equal the text that was typed');}
@@ -65,6 +71,41 @@ async function submit(p,text){await p.locator('#answer').fill(text);await p.loca
  const offline=await browser.newContext({viewport:{width:320,height:900}});await captureEntry(offline);await offline.route(/^https?:\/\//,r=>r.abort());const p=await offline.newPage();p.on('pageerror',e=>report.consoleErrors.push(e.message));
  for(const u of C.units){traces.delete(p);try{await p.goto('file://'+ROOT+'/geometry-course/atlas/'+u.id+'.html');assert.equal(await p.locator('.topic-investigation').getAttribute('data-topic'),u.id);assert.equal(await p.locator('.research-figure svg').count(),1);await research(p,false);await verifyResearchReload(p);report.offline.push(u.id);}catch(e){issue('offline '+u.id,e,traces.get(p));await p.screenshot({path:path.join(OUT,u.id+'-offline-failure.png'),fullPage:true}).catch(()=>{});}}
  await offline.close();
+ // A fresh context is shared by all 63 topics. In this separate sequence the
+ // next browser operation after trusted fill is a real reload: no synthetic
+ // pagehide, diagnostic call, delay, retry, or storage clearing intervenes.
+ const natural=await browser.newContext({viewport:{width:320,height:900}});await captureEntry(natural);await natural.route(/^https?:\/\//,r=>r.abort());const np=await natural.newPage();np.on('pageerror',e=>report.consoleErrors.push(e.message));
+ for(const u of C.units){const trace={id:u.id,reloads:[]};try{
+  await np.goto('file://'+ROOT+'/geometry-course/atlas/'+u.id+'.html');await np.locator('.research-predict select').selectOption('unsure');await np.locator('.research-predict button').click();await np.locator('.research-controls [data-value]').first().evaluate(e=>{e.value=e.tagName==='SELECT'?[...e.options].find(o=>o.value!==e.value).value:(Number(e.value)===Number(e.max)?e.min:e.max);e.dispatchEvent(new Event(e.tagName==='SELECT'?'change':'input',{bubbles:true}));});
+  for(let round=1;round<=2;round++){const literal='Немедленный ввод '+round+' для темы '+u.id+'.';
+   await np.locator('#observation').fill(literal);
+   await np.reload();
+   const after=await snapshot(np);trace.reloads.push({literal,after});assert.equal(after.observation,literal,'Natural reload must restore the visible last input');assert.equal(after.record?.research?.observation,literal,'Natural reload must restore the last input in localStorage');assert.equal(after.entry.checkpoint?.local?.research?.observation,literal,'The synchronous checkpoint must reach the next document before bootstrap');assert.equal(after.entry.checkpoint?.unit,u.id);assert.equal(after.record.stage,1);assert.equal(after.record.assisted,false);assert.equal(after.record.independent,0);
+  }
+  report.naturalOffline.push(trace);
+ }catch(e){issue('natural offline '+u.id,e,trace);await np.screenshot({path:path.join(OUT,u.id+'-natural-offline-failure.png'),fullPage:true}).catch(()=>{});}}
+ await natural.close();
+ // Explicit fault injection is isolated from both ordinary 63-topic routes.
+ // It removes the localStorage key at the next document's entry, after the old
+ // page's native pagehide, while leaving the real history checkpoint intact.
+ const faultLiteral='Проверка восстановления при отсутствующем ключе.',fault=await browser.newContext({viewport:{width:320,height:900}});await captureEntry(fault,{missingKeyOnObservation:faultLiteral});await fault.route(/^https?:\/\//,r=>r.abort());const fp=await fault.newPage();fp.on('pageerror',e=>report.consoleErrors.push(e.message));let faultTrace;
+ try{
+  await fp.goto('file://'+ROOT+'/geometry-course/atlas/segments.html#checkpoint');await fp.evaluate(()=>history.replaceState({...history.state,foreignFixture:{route:'kept',values:[1,2,3]}},''));
+  const start=await fp.evaluate(()=>({url:location.href,length:history.length}));await fp.locator('[data-stage="4"]').click();
+  await fp.locator('#answer').fill('Мой самостоятельный черновик');
+  await fp.reload();
+  assert.equal(await fp.locator('#answer').inputValue(),'Мой самостоятельный черновик');assert.equal((await saved(fp,'segments')).draft,'Мой самостоятельный черновик');assert.equal((await saved(fp,'segments')).assisted,false);assert.equal((await saved(fp,'segments')).independent,0);
+  await fp.locator('[data-stage="5"]').click();
+  await fp.locator('#written').fill('Моё незавершённое доказательство.');
+  await fp.reload();
+  assert.equal(await fp.locator('#written').inputValue(),'Моё незавершённое доказательство.');assert.equal((await saved(fp,'segments')).written,'Моё незавершённое доказательство.');
+  await fp.locator('[data-stage="1"]').click();await fp.locator('.research-predict select').selectOption('unsure');await fp.locator('.research-predict button').click();await fp.locator('.manual-research>summary').click();await fp.locator('#geo-board [data-tool="midpoint"]').click();await fp.locator('#geo-board .extra-tools>summary').click();for(const id of ['A','B']){await fp.locator('#geo-board .point-select').selectOption(id);await fp.locator('#geo-board [data-act="select"]').click();}
+  await fp.locator('#legacy-observation').fill('Прежняя запись к чертежу.');const drawing=await fp.evaluate(key=>history.state[key].local.drawing,HISTORY_KEY);assert.equal(drawing.points.length,3);
+  await fp.locator('#observation').fill(faultLiteral);
+  await fp.reload();
+  faultTrace=await snapshot(fp);const result=faultTrace.record;assert.equal(faultTrace.entry.fault?.kind,'isolated-missing-key');assert.equal(faultTrace.entry.raw,null);assert.equal(faultTrace.entry.record,null);assert.equal(faultTrace.entry.checkpoint?.local?.research?.observation,faultLiteral);assert.equal(faultTrace.observation,faultLiteral);assert.equal(result.research.observation,faultLiteral);assert.equal(result.draft,'Мой самостоятельный черновик');assert.equal(result.written,'Моё незавершённое доказательство.');assert.equal(result.observation,'Прежняя запись к чертежу.');assert.deepEqual(result.drawing,drawing);assert.equal(result.stage,1);assert.equal(result.assisted,false);assert.equal(result.independent,0);
+  const foreign=await fp.evaluate(()=>({url:location.href,length:history.length,value:history.state.foreignFixture}));assert.equal(foreign.url,start.url);assert.equal(foreign.length,start.length);assert.deepEqual(foreign.value,{route:'kept',values:[1,2,3]});report.checkpointRecovery={status:'PASS',id:'segments',kind:'isolated-missing-key',naturalFields:['draft','written'],after:faultTrace};
+ }catch(e){issue('isolated offline checkpoint recovery',e,faultTrace||await snapshot(fp).catch(()=>null));await fp.screenshot({path:path.join(OUT,'checkpoint-recovery-failure.png'),fullPage:true}).catch(()=>{});}finally{await fault.close();}
  // Legacy stages are seeded before the first application script, never by changing their numeric meaning.
  for(let stage=0;stage<6;stage++){const ctx=await browser.newContext({viewport:{width:320,height:900}});await ctx.addInitScript(({KEY,stage})=>{if(!sessionStorage.getItem('legacy-fixture')){localStorage.setItem(KEY,JSON.stringify({version:1,units:{pythagoras:{stage,seed:8,draft:'14/4',written:'Старое письменное решение',observation:'Прежнее наблюдение',attempts:7,independent:3,complete:true}}}));sessionStorage.setItem('legacy-fixture','1');}},{KEY,stage});const p=await ctx.newPage();try{await p.goto(base+'pythagoras.html');const s=await saved(p,'pythagoras');assert.equal(s.stage,stage);assert.equal(s.seed,8);assert.equal(s.practiceVersion,0);assert.equal(s.draft,'14/4');assert.equal(s.written,'Старое письменное решение');assert.equal(s.independent,3);assert.equal(await p.locator('[aria-current=step]').getAttribute('data-stage'),String(stage));report.state.push('legacy-stage-'+stage);}catch(e){issue('legacy stage '+stage,e);}await ctx.close();}
  const ctx=await browser.newContext({viewport:{width:320,height:900},acceptDownloads:true});await captureEntry(ctx);const a=await ctx.newPage(),b=await ctx.newPage();
@@ -79,5 +120,5 @@ async function submit(p,text){await p.locator('#answer').fill(text);await p.loca
  }catch(e){issue('state scenarios',e);await a.screenshot({path:path.join(OUT,'state-failure.png'),fullPage:true}).catch(()=>{});}finally{await ctx.close();}
  assert.equal(report.consoleErrors.length,0,report.consoleErrors.join('\n'));
  }catch(e){issue('browser runtime',e);}
- finally{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));report.status=report.failures.length?'FAIL':'PASS';fs.writeFileSync(path.join(OUT,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,viewports:report.widths,views:report.views.length,offline:report.offline.length,state:report.state,failures:report.failures.length,artifacts:OUT},null,2));if(report.failures.length){console.error(JSON.stringify(report.failures,null,2));process.exitCode=1;}}
+ finally{if(browser)await browser.close();if(server)await new Promise(resolve=>server.close(resolve));report.status=report.failures.length?'FAIL':'PASS';fs.writeFileSync(path.join(OUT,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,viewports:report.widths,views:report.views.length,offline:report.offline.length,naturalOffline:report.naturalOffline.length,checkpointRecovery:report.checkpointRecovery?.status||'NOT_PASSED',state:report.state,failures:report.failures.length,artifacts:OUT},null,2));if(report.failures.length){console.error(JSON.stringify(report.failures,null,2));process.exitCode=1;}}
 })();

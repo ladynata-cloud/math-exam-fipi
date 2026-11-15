@@ -1172,7 +1172,7 @@ const api={ids:Object.keys(descriptions),descriptions,controls,forecasts,model,d
   root.GeoTaskDiagrams=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 </script><script>(function(root){'use strict';
-const KEY='mathExamGeometry.v1',LEGACY='mathExamCourseProgress.v1';
+const KEY='mathExamGeometry.v1',LEGACY='mathExamCourseProgress.v1',HISTORY_KEY='mathExamGeometryCheckpoint.v1',HISTORY_LIMIT=512000;
 const plain=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=x=>typeof x==='number'&&Number.isFinite(x),str=(x,n)=>typeof x==='string'?x.slice(0,n):'',num=(x,max)=>finite(x)?Math.max(0,Math.min(max,Math.floor(x))):0;
 function drawing(x){if(!plain(x)||!Array.isArray(x.points)||!Array.isArray(x.objects)||x.points.length>150||x.objects.length>180)return null;const kinds=['free','midpoint','sum','perp','iso','equalarm','onCircle','rightArc','foot','parallel','normal','bisector','affine','reflection','intersection'];const ids=new Set();for(const p of x.points){if(!plain(p)||!/^([A-Z][A-Z0-9]*|P\d+)$/.test(p.id)||ids.has(p.id)||!kinds.includes(p.kind)||!finite(p.x)||!finite(p.y)||Math.abs(p.x)+Math.abs(p.y)>1e7)return null;ids.add(p.id);for(const k of ['k','t'])if(p[k]!==undefined&&!finite(p[k]))return null;}const os=new Set();for(const o of x.objects){if(!plain(o)||typeof o.id!=='string'||o.id.length>40||os.has(o.id)||!['line','circle'].includes(o.type)||!ids.has(o.a)||!ids.has(o.b))return null;os.add(o.id);}for(const p of x.points){for(const k of ['a','b','c'])if(p[k]!==undefined&&!ids.has(p[k]))return null;for(const k of ['o1','o2'])if(p[k]!==undefined&&!os.has(p[k]))return null;}
  const pc=['id','kind','x','y','a','b','c','k','t','o1','o2','branch','draggable','added'],oc=['id','type','extent','a','b','added','construction'];return {points:x.points.map(p=>Object.fromEntries(pc.filter(k=>p[k]!==undefined).map(k=>[k,p[k]]))),objects:x.objects.map(o=>Object.fromEntries(oc.filter(k=>o[k]!==undefined).map(k=>[k,o[k]])))};}
@@ -1199,8 +1199,41 @@ function mergeConcurrent(base,local,remote){
  if(conflict)out.recoveries=[...remote.recoveries,recovery({...local,at:Date.now(),reason:'Параллельная запись: более свежая работа сохранена; здесь ваш предыдущий вариант.'})].slice(-5);
  return {value:clean(out),conflict};
 }
-function open(allowed,onError){
+// A navigation-entry checkpoint covers an immediate file:// reload. It is not
+// a replacement for the downloaded progress file or durable browser storage.
+function meaningful(record){const value=clean(record);delete value.updated;delete value.events;return stable(value);}
+function mergeHistory(base,local,remote,accepted){
+ if(!remote)return {value:copy(local),conflict:false};
+ // One exact record actually adopted or successfully written by this document
+ // can precede a still-debounced input. This is not ancestry inferred from time.
+ const known=accepted&&stable(remote)===stable(accepted),result=mergeConcurrent(known?accepted:base,local,remote),unknown=!known&&meaningful(remote)!==meaningful(base)&&meaningful(remote)!==meaningful(local);
+ const variants=[...remote.recoveries,...local.recoveries,...result.value.recoveries];
+ // An unknown snapshot may be another tab, even with an older or equal clock.
+ // If the three-way merge has no local delta (base==local), it must still keep
+ // the last visible text and drawing as a recoverable variant.
+ if(unknown&&['draft','written','observation','drawing','research'].some(k=>stable(local[k])!==stable(result.value[k]))){
+  variants.push(recovery({...local,at:Date.now(),reason:'При открытии найдена другая запись. Она сохранена; здесь работа из предыдущего документа.'}));result.conflict=true;
+ }
+ const seen=new Set();result.value.recoveries=variants.filter(x=>{const value={...x};delete value.at;delete value.reason;const key=stable(value);if(seen.has(key))return false;seen.add(key);return true;}).slice(-5);
+ const events=new Set();result.value.events=[...remote.events,...local.events].filter(x=>{const key=x.time+':'+x.type;if(events.has(key))return false;events.add(key);return true;}).slice(-300);
+ return result;
+}
+function open(allowed,onError,currentUnit){
  let memory={version:1,units:{}},disk={version:1,units:{}},baselines={},pendingBases={},readWarning=false,writeWarning=false;const warn=m=>{if(onError)onError(m);};
+ const offline=!!currentUnit&&allowed.includes(currentUnit)&&root.location?.protocol==='file:',url=offline?String(root.location.href).split('#')[0]:null;
+ let entryBase=null,lastCheckpoint=null,historyWarning=false,hydrating=false,accepted=null,restoreAccepted=null;
+ function historyFailure(){if(!historyWarning)warn('Не удалось сохранить резервную запись автономной страницы для перезагрузки. Текст остаётся в этой вкладке; скачайте файл прогресса.');historyWarning=true;}
+ // HTTP must never access history. In a file document, hydrate only this unit
+ // and URL, once, before lesson.js can write its initial start event.
+ if(offline)try{
+  const envelope=root.history.state?.[HISTORY_KEY];
+  if(plain(envelope)&&envelope.version===1&&envelope.url===url&&envelope.unit===currentUnit&&plain(envelope.base)&&plain(envelope.local)&&(envelope.accepted==null||plain(envelope.accepted))&&stable(envelope).length<=HISTORY_LIMIT){
+   const base=clean(envelope.base),local=clean(envelope.local),predecessor=clean(envelope.accepted);
+   if([base,local,predecessor].every(v=>!v?.research||v.research.topic===currentUnit)){
+    memory.units[currentUnit]=local;pendingBases[currentUnit]=base;restoreAccepted=predecessor;hydrating=true;lastCheckpoint=meaningful(local);
+   }
+  }
+ }catch(e){historyFailure();}
  // A quota failure must keep local work, but must not hide newer work written by another tab.
  // Pending records use the last disk snapshot as their three-way merge ancestor.
  function read(){
@@ -1209,34 +1242,59 @@ function open(allowed,onError){
   disk=copy(next);
   for(const [id,base] of Object.entries(pendingBases)){
    const local=memory.units[id],remote=next.units[id];if(!local)continue;
-   const result=remote?mergeConcurrent(base,local,remote):{value:local,conflict:false};
+   const restoring=hydrating&&id===currentUnit,result=restoring?mergeHistory(base,local,remote,restoreAccepted):remote?mergeConcurrent(base,local,remote):{value:local,conflict:false};
    result.value.updated=Math.max(local.updated,remote?.updated||0);next.units[id]=result.value;pendingBases[id]=copy(remote||fresh());
-   if(result.conflict)warn('Во время ошибки сохранения другая вкладка обновила работу. Новая работа и ваш сохранённый вариант включены в файл прогресса.');
+   if(result.conflict)warn(restoring?'При открытии найдена другая запись темы. Она сохранена; ваш текст и чертёж доступны в сохранённых вариантах и файле прогресса.':'Во время ошибки сохранения другая вкладка обновила работу. Новая работа и ваш сохранённый вариант включены в файл прогресса.');
   }
+  hydrating=false;
   return memory=next;
  }
  function pending(id){if(!Object.hasOwn(pendingBases,id))pendingBases[id]=copy(disk.units[id]||fresh());}
- function persist(){try{localStorage.setItem(KEY,JSON.stringify(memory));disk=copy(memory);pendingBases={};writeWarning=false;}catch(e){if(!writeWarning)warn('В браузере не удалось сохранить изменения. Скачайте файл прогресса.');writeWarning=true;}}
- memory=read();baselines=copy(memory.units);
+ function persist(){try{localStorage.setItem(KEY,JSON.stringify(memory));disk=copy(memory);pendingBases={};writeWarning=false;return true;}catch(e){if(!writeWarning)warn('В браузере не удалось сохранить изменения. Скачайте файл прогресса.');writeWarning=true;return false;}}
+ memory=read();baselines=copy(memory.units);if(offline)entryBase=clean(memory.units[currentUnit])||fresh();
+ function checkpoint(id,value){
+  if(!offline||id!==currentUnit)return;
+  const local=clean(value);if(!local)return;const signature=meaningful(local);
+  // Keep the preceding document's ancestor across unchanged start/autosave/
+  // pagehide calls. Only a meaningful edit writes this document's fixed base.
+  if(signature===lastCheckpoint)return;
+  try{
+   const foreign=root.history.state;
+   if(foreign!==null&&(!plain(foreign)||Object.prototype.toString.call(foreign)!=='[object Object]'))throw Error('Unsupported history state');
+   const envelope={version:1,url,unit:currentUnit,base:entryBase,accepted,local};
+   if(stable(envelope).length>HISTORY_LIMIT)throw Error('Checkpoint too large');
+   // Clone before adding our namespace: foreign graphs (including references
+   // back to their root) must survive without mutating the live history state.
+   const next=foreign===null?{}:root.structuredClone(foreign);next[HISTORY_KEY]=envelope;
+   root.history.replaceState(next,'');
+   if(stable(root.history.state?.[HISTORY_KEY])!==stable(envelope))throw Error('Checkpoint was not retained');
+   lastCheckpoint=signature;historyWarning=false;
+  }catch(e){historyFailure();}
+ }
  return {
-  get(id){const v=clean(read().units[id])||fresh();baselines[id]=copy(v);return v;},
+  checkpoint,
+  get(id){const v=clean(read().units[id])||fresh();baselines[id]=copy(v);if(offline&&id===currentUnit)accepted=copy(v);return v;},
   all(){return read();},
   put(id,v,event){if(!allowed.includes(id))return v;const d=read(),local=clean(v),remote=d.units[id],base=baselines[id],result=remote?mergeConcurrent(base,local,remote):{value:local,conflict:false};const c=result.value;
-   c.updated=Math.max(Date.now(),(remote?.updated||0)+1);const seen=new Set();c.events=[...(remote?.events||[]),...c.events].filter(e=>{const k=e.time+':'+e.type;if(seen.has(k))return false;seen.add(k);return true;});if(event)c.events.push({type:event,time:c.updated});c.events=c.events.slice(-300);pending(id);d.units[id]=c;memory=d;persist();baselines[id]=copy(c);v.updated=c.updated;
+   c.updated=Math.max(Date.now(),(remote?.updated||0)+1);const seen=new Set();c.events=[...(remote?.events||[]),...c.events].filter(e=>{const k=e.time+':'+e.type;if(seen.has(k))return false;seen.add(k);return true;});if(event)c.events.push({type:event,time:c.updated});c.events=c.events.slice(-300);pending(id);d.units[id]=c;memory=d;const persisted=persist();baselines[id]=copy(c);v.updated=c.updated;
    if(result.conflict)warn('В другой вкладке уже есть более свежая работа. Она сохранена; ваш вариант доступен в сохранённых вариантах и скачиваемом файле.');
+   checkpoint(id,c);
+   // The checkpoint of a new explicit action still needs its prior witness.
+   // Only a later input may use this newly persisted, returned record as base.
+   if(offline&&id===currentUnit&&persisted)accepted=copy(c);
    try{const raw=localStorage.getItem(LEGACY),old=raw?JSON.parse(raw):{};if(plain(old)){const k='atlas-'+id,p=plain(old[k])?old[k]:{};old[k]={...p,runs:Math.max(num(p.runs,1e6),c.attempts),best:Math.max(num(p.best,100),c.independent?100:0),passed:!!c.independent,events:c.events};localStorage.setItem(LEGACY,JSON.stringify(old));}}catch(e){warn('Новая запись доступна в курсе; общий старый журнал обновить не удалось.');}
    const response=copy(c);Object.defineProperty(response,'_conflict',{value:result.conflict});return response;
   },
-  import(data){const d=validate(data,allowed),all=read();for(const [id,v] of Object.entries(d.units))if(!all.units[id]||v.updated>all.units[id].updated){pending(id);all.units[id]=v;}memory=all;persist();return Object.keys(d.units).length;},
+  import(data){const d=validate(data,allowed),all=read();for(const [id,v] of Object.entries(d.units))if(!all.units[id]||v.updated>all.units[id].updated){pending(id);all.units[id]=v;}memory=all;persist();if(offline&&memory.units[currentUnit])checkpoint(currentUnit,memory.units[currentUnit]);return Object.keys(d.units).length;},
   export(){return memory=read();}
  };
 }
 function download(data,name){const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
-const api={open,clean,validate,drawing,download,KEY,fresh,mergeConcurrent};root.GeoStore=api;if(typeof module!=='undefined')module.exports=api;
+const api={open,clean,validate,drawing,download,KEY,HISTORY_KEY,fresh,mergeConcurrent};root.GeoStore=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
 </script><script>(function(){'use strict';const C=window.COURSE_CONFIG,U=C.unit,P=C.topicProof||C.proof,T=GeoTasks,E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;}),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'],sequence=[1,0,2,3,4,5];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
-function save(event){state=store.put(U.id,state,event)||state;if(state._conflict)setTimeout(render,0);}function defer(){clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});
+const notice=document.getElementById('storage-notice'),store=GeoStore.open(C.catalog.map(x=>x.id),m=>{notice.hidden=false;notice.textContent=m;},U.id),root=document.getElementById('lesson'),labels=['Понять','Исследовать','Доказать','Решить с опорой','Самостоятельно','Своими словами'],sequence=[1,0,2,3,4,5];let state=store.get(U.id),lab=null,timer=null,pending=null,showHint=false;
+function save(event){state=store.put(U.id,state,event)||state;if(state._conflict)setTimeout(render,0);}function defer(){store.checkpoint(U.id,state);clearTimeout(timer);timer=setTimeout(()=>save(),200);}window.addEventListener('pagehide',()=>{clearTimeout(timer);save();});
 function task(){return state.practiceVersion===1&&window.GeoPractice?.supports(U.id)?GeoPractice.task(U.id,state.seed):T.task(U.calc,state.seed);}function shuffle(a,s=state.seed){return a.map((v,i)=>({v,key:Math.sin((i+1)*19.17+s*2.39)})).sort((a,b)=>a.key-b.key).map(x=>x.v);}
 function nav(){document.querySelector('.stage-nav').innerHTML=sequence.map((i,pos)=>'<button data-stage="'+i+'" class="'+(i===state.stage?'on':'')+'"'+(i===state.stage?' aria-current="step"':'')+'>'+String(pos+1).padStart(2,'0')+' '+labels[i]+'</button>').join('');}
 function footer(){const pos=sequence.indexOf(state.stage);return '<div class="stage-footer">'+(pos>0?'<button data-action="prev">← '+labels[sequence[pos-1]]+'</button>':'<a href="../index.html">Все темы</a>')+(pos<5?'<button class="primary" data-action="next">'+labels[sequence[pos+1]]+' →</button>':'<button class="primary" data-action="finish">Завершить занятие</button>')+'</div>';}

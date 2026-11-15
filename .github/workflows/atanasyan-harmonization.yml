@@ -44,6 +44,7 @@ jobs:
           node --test tools/geometry/harmonization-models.test.cjs
           node --test tools/geometry/atlas-diagrams.test.cjs
           node --test tools/geometry/harmonization-state-dom.test.cjs
+          node --test tools/geometry/offline-checkpoint.test.cjs
           node --test tools/geometry/manual-construction.test.cjs tools/geometry/object-labels.test.cjs
       - name: Topic mathematics and retained stereometry work
         run: |

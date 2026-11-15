@@ -47,6 +47,11 @@ for (const course of courses) {
   for (const unit of course.units) rows.push({course: course.name, id: unit.id, title: unit.title, path: course.prefix + unit.id + (course.name === '7–9' ? '.html' : ''), audited: true, implemented: true, mathematicsChecked: true, interfaceChecked: true, browserViewports: ['320×900', '1280×900'], published: false});
 }
 assert.deepEqual([...geometry.offline].sort(), courses[0].units.map(unit => unit.id).sort(), 'all 63 standalone geometry lessons actually opened offline');
+assert.deepEqual(geometry.naturalOffline.map(row => row.id).sort(), courses[0].units.map(unit => unit.id).sort(), 'all 63 standalone lessons retain immediate natural reloads');
+for (const row of geometry.naturalOffline) assert.equal(row.reloads.length, 2, row.id + ': both immediate natural reloads completed');
+assert.equal(geometry.checkpointRecovery.status, 'PASS', 'isolated missing-key recovery completed in the native browser');
+assert.equal(geometry.checkpointRecovery.id, 'segments');
+assert.equal(geometry.checkpointRecovery.kind, 'isolated-missing-key');
 assert(stereo.checks.includes('copied standalone HTML, offline research/task/reload'));
 const head = execFileSync('git', ['rev-parse', 'HEAD'], {cwd: root, encoding: 'utf8'}).trim();
 assert.equal(head, process.env.HARMONIZATION_EXPECTED_HEAD, 'evidence belongs to the requested PR head');
