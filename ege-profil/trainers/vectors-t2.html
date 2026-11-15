@@ -400,6 +400,9 @@
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
 <script defer src="../skill-map-data.js?v=20261112-vectors"></script>
 <script defer src="../skill-map.js?v=20261111-skills" data-profile-skill-map="vectors"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -511,7 +514,7 @@
   <!-- ОБЩИЙ ХОЛСТ -->
   <section class="card pad scratch" aria-label="Общий холст">
     <div class="qhead">
-      <span class="chip warn"><span class="dot"></span>Общий холст</span>
+      <span class="chip warn" id="scratchTitle"><span class="dot"></span><span>Общий холст</span></span>
       <span class="qno" id="netStatus"><span class="sd off"></span>не подключено</span>
     </div>
 
@@ -1908,6 +1911,7 @@ newProblem();
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
   const me = { id: uid(), name: "", role: "teacher", color: "#cf3a3a" };
   let net = null, connected = false, heartbeat = 0, lastCursorSent = 0;
+  const standalone = Boolean(window.MathExamTrainerOffline);
   const peers = new Map();     // id -> {id,name,role,color,last}
   const cursorEls = new Map(); // id -> element
   const roleColor = r => r === "teacher" ? "#cf3a3a" : "#2447b8";
@@ -2267,7 +2271,13 @@ newProblem();
   }
 
   /* ---------- параметры из ссылки ---------- */
-  (function initFromURL(){
+  if (standalone) {
+    document.querySelector('.scratch').setAttribute('aria-label', 'Личный черновик');
+    $("scratchTitle").lastElementChild.textContent = 'Личный черновик';
+    statusEl.style.display = 'none';
+    connectBtn.closest('.collab').hidden = true;
+    cv.setAttribute('aria-label', 'Личный черновик — пишите пером, мышью или пальцем');
+  } else (function initFromURL(){
     const q = new URLSearchParams(location.search);
     if(q.get("room")) roomInput.value = q.get("room");
     if(q.get("srv")) serverInput.value = q.get("srv");
@@ -2286,5 +2296,28 @@ newProblem();
   requestAnimationFrame(fit);
 })();
 </script>
+<!-- download-panel:start:ege-profil-vectors-t2 -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-vectors-t2">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-vectors-t2/ege-profil-vectors-t2-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь простые примеры на вектор AB с отрицательной абсциссой."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-vectors-t2 -->
 </body>
 </html>

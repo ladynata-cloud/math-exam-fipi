@@ -2,6 +2,7 @@
 import hashlib
 import json
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
@@ -10,10 +11,30 @@ LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
           '/trainers/oge-video-geometry.js', '/trainers/oge-video-models.js']
+DOWNLOAD_HEAD = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'
+                 b'<link rel="stylesheet" href="/assets/download-adaptation.css">\n'
+                 b'<script defer src="/assets/download-adaptation.js"></script>\n')
+DOWNLOAD_PAGES = {row['sourceHtml'][1:]: row['slug'] for row in
+                  json.loads((ROOT / 'downloads/trainers-manifest.json').read_text())['trainers']
+                  if row.get('adaptation')}
 
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
+
+
+def without_download_controls(file, raw):
+    slug = DOWNLOAD_PAGES.get(file)
+    if not slug or b'data-trainer-download' not in raw:
+        return raw
+    marker = slug.encode()
+    start = b'<!-- download-panel:start:' + marker + b' -->\n'
+    end = b'<!-- download-panel:end:' + marker + b' -->\n'
+    panels = re.findall(re.escape(start) + rb'[\s\S]*?' + re.escape(end), raw)
+    if (len(panels) != 1 or raw.count(DOWNLOAD_HEAD) != 1 or
+            DOWNLOAD_HEAD + b'</head>' not in raw or panels[0] + b'</body>' not in raw):
+        raise ValueError('Unexpected download controls')
+    return raw.replace(DOWNLOAD_HEAD, b'', 1).replace(panels[0], b'', 1)
 
 
 def verified_context(record):
@@ -42,13 +63,14 @@ def verified_context(record):
         if context['kind'] != 'oge-video-models-closed-v1' or context['closed'] is not True: return None
         if context['label'] != LABEL or context['summaryHtml'] != SUMMARY_HTML: return None
         raw = (ROOT / file).read_bytes()
+        teaching = without_download_controls(file, raw)
         block = ('<!-- OGE video-model investigations: standalone practice -->\n'
                  '<link rel="stylesheet" href="oge-video-models.css">\n'
                  '<script defer src="oge-video-graphs.js"></script>\n'
                  '<script defer src="oge-video-geometry.js"></script>\n'
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
-        if raw.count(block) != 1 or block + b'</head>' not in raw: return None
-        native = raw.replace(block, b'', 1)
+        if teaching.count(block) != 1 or block + b'</head>' not in teaching: return None
+        native = teaching.replace(block, b'', 1)
         graph_scale = PINS['graphScale']
         if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
             native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)

@@ -2,6 +2,7 @@
 // Invert only the nine reviewed, additive lesson includes. The historical
 // candidate/engine hashes remain the authority for every other byte.
 const assert = require('node:assert/strict');
+const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
@@ -29,10 +30,11 @@ function restoreVideoModels(file, source) {
   if (!row) return original;
   const marker = /OGE video-model investigations|oge-video-(?:models|graphs|geometry)/;
   if (!marker.test(original)) return original;
+  const teaching = restoreTrainerDownload(file, original);
   const include = snippet(row[0]);
-  assert.equal(original.split(include).length, 2, file + ': one exact reviewed video-model include block');
-  assert(original.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
-  const restored = original.replace(include, '');
+  assert.equal(teaching.split(include).length, 2, file + ': one exact reviewed video-model include block');
+  assert(teaching.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
+  const restored = teaching.replace(include, '');
   assert(!marker.test(restored), file + ': no altered, duplicate or hidden lesson dependency');
   return restored;
 }

@@ -24,10 +24,11 @@ const parameterGraphs={
 };
 let routeVersion=0,active=null,labCleanup=null;
 function graphURL(graph,target,help=''){
- const url=new URL(root.ProfileAlphabetCatalog.href('function-atlas','',19,target),root.location.origin);
+ const offline=root.MathExamTrainerOffline;
+ const url=new URL(root.ProfileAlphabetCatalog.href('function-atlas','',19,target),offline?.origin||root.location.origin);
  url.searchParams.set('graph',graph.preset);
  if(help)url.searchParams.set('help',help);
- return url.pathname+url.search+url.hash;
+ return offline?url.href:url.pathname+url.search+url.hash;
 }
 function parameterGraphRoutes(){
  const cards=Object.entries(parameterGraphs).map(([lessonId,graph])=>{

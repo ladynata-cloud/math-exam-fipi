@@ -5,6 +5,7 @@
 const fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
+const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const videoContext=require('./oge-video-models-book-context.cjs');
 const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
@@ -54,7 +55,7 @@ function originalWayfindingHtml(html,route=''){
  assert(originalWayfindingHtml(fractions,'/other.html').includes(REMOVED_RETURN_POSITION),'legacy inverse is route-specific');
 }
 async function captureInitialVisibleText(page,report){
- const full=await text(page.locator('body'));
+ let full=await text(page.locator('body'));
  const bars=page.locator('body > nav.oge-wayfinding');
  if(await bars.count()===0){report.initialVisibleText=full;return;}
  assert.equal(report.prefix,'','Fixed editions cannot acquire live return navigation');
@@ -66,14 +67,26 @@ async function captureInitialVisibleText(page,report){
  const file=path.resolve(ROOT,'.'+report.finalPath+(report.finalPath.endsWith('/')?'index.html':''));
  assert(file.startsWith(ROOT+path.sep));
  const raw=fs.readFileSync(file,'utf8');
+ const relative=path.relative(ROOT,file).split(path.sep).join('/');
  const beforeNavigator=restorePublicNavigator(file,raw).toString('utf8');
- const original=originalWayfindingHtml(beforeNavigator,report.finalPath);
+ const beforeDownload=restoreTrainerDownload(relative,beforeNavigator);
+ if(beforeDownload!==beforeNavigator){
+  const panel=page.locator('body > .download-panel[data-trainer-download]');
+  assert.equal(await panel.count(),1);
+  assert.equal(await panel.locator('details[open]').count(),0);
+  const summary=await text(panel);
+  assert.equal(summary,'Скачать и изменить');
+  report.fullVisibleTextWithDownload=full;
+  const offset=full.indexOf(' '+summary);
+  assert(offset>0&&full.indexOf(summary,offset+summary.length+1)===-1);
+  full=full.slice(0,offset)+full.slice(offset+summary.length+1);
+ }
+ const original=originalWayfindingHtml(beforeDownload,report.finalPath);
  const historical=report.finalPath===FRACTIONS_ROUTE?restoreFractionMultiplicationStep(original):original;
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(historical).digest('hex')};
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
- const relative=path.relative(ROOT,file);
  if(videoContext.pins.pages[relative]){
   const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
    const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
