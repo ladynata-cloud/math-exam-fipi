@@ -1,6 +1,8 @@
 name: H35 algebra harmonization
 
 on:
+  push:
+    branches: [feat/h35-algebra-trainers-harmonization-20261116]
   pull_request:
     paths:
       - 'trainers/linear-systems-trainer.html'
@@ -23,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
@@ -51,3 +54,440 @@ jobs:
           name: h35-algebra-browser
           path: artifacts/h35-algebra/
           if-no-files-found: warn
+
+  h35-exact-trainer-download-stage2-offline:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install browser test tools
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Open and solve from the real ZIP and standalone HTML
+        run: node tools/trainer-download-stage2.browser.cjs
+
+  h35-exact-oge-skill-course-lessons-and-navigation:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Fetch pinned preservation sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3
+      - name: Fetch reviewed fraction controls source
+        run: git fetch --no-tags --depth=1 origin 7a876fa9b80f22df458348d5460fdd940dc8cac3
+      - name: Fetch reviewed H35 systems source
+        run: git fetch --no-tags --depth=1 origin e2f22719727da85f572cbcc387db264f322bd74d
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated verification tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-skills" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-skills/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-skills/node_modules" >> "$GITHUB_ENV"
+      - name: Verify reproducible page and mathematical sources
+        run: |
+          python oge/skills/build.py
+          git diff --exit-code -- oge/skills/index.html oge/skills/course-data.json oge/skills/series-catalog.json
+          node oge/skills/validate.js
+          node oge/skills/validate-series.js
+          node oge/skills/validate-expansion-arithmetic.js
+          node oge/skills/validate-expansion-functions.js
+          node oge/skills/validate-expansion-geometry.js
+          node oge/skills/validate-foundation-bridges.js
+          node oge/skills/validate-review-expansion-functions.js
+          node oge/skills/validate-practical.js
+          node oge/skills/validate-second-part.js
+          node oge/skills/validate-division-extension.js
+      - name: Verify lessons, help and saved work
+        run: |
+          node oge/skills/validate-ui.js
+          node oge/skills/validate-expansion-ui.js
+          node oge/skills/validate-answer-format.js
+          node --test tools/oge-skill-course.test.cjs
+          node --test tools/division-skill-map.test.cjs
+          node tools/division-path.test.cjs
+          node tools/quotient-estimate.test.cjs
+          node tools/rounding-stepwise.dom.cjs
+      - name: Preserve the existing course
+        run: |
+          node --test tools/oge-learning-map.test.cjs
+          node --test tools/oge-course-guide.test.cjs
+          node tools/oge-learner-entry.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Browser navigation, narrow screens and lesson continuation
+        run: node tools/oge-skill-course.browser.cjs
+      - name: Confirm integration gate
+        run: |
+          echo OGE_SKILL_COURSE_INTEGRATION_OK
+          echo OGE_COMPLETE_SKILL_MAPS_OK
+      - name: Collect focused reports
+        if: always()
+        run: |
+          mkdir -p artifacts/oge-skill-course/reports
+          find oge/skills -maxdepth 1 -name 'QA_*.json' -exec cp {} artifacts/oge-skill-course/reports/ \;
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: h35-exact-oge-skill-course
+          path: artifacts/oge-skill-course
+          retention-days: 14
+          if-no-files-found: error
+
+  h35-exact-oge-course-mirror-native-mathematics-state-and-transport:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install locked server and pinned DOM tools
+        run: |
+          npm ci --prefix board-server --include=optional
+          npm install --prefix "$RUNNER_TEMP/oge-course" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          echo "NODE_PATH=$RUNNER_TEMP/oge-course/node_modules:$GITHUB_WORKSPACE/board-server/node_modules" >> "$GITHUB_ENV"
+      - name: Native mathematics and independent work
+        run: |
+          node tools/oge-algebra-contract.test.mjs
+          node tools/oge-geometry-contract.test.mjs
+          node --test tools/oge-course-algebra.test.cjs tools/oge-course-proof.test.cjs tools/oge8-root-domains.test.cjs tools/oge8-root-interactions.test.cjs
+      - name: Native two-window restoration and visible capability
+        run: |
+          node --test tools/oge-foundation-board.test.cjs tools/oge-native-10-14-board.test.cjs tools/oge-20-22-board.test.cjs tools/oge-part2-geometry-board.test.cjs tools/oge-practical-diagnostic-board.test.cjs tools/oge-percent-table-board.test.cjs tools/oge-practical-variant-board.test.cjs tools/oge-course-board-ui.test.cjs
+      - name: Native event dispatch ordering
+        run: node --test tools/oge-*-event-order.test.cjs
+      - name: Practical exact answers and downloadable bundle
+        run: |
+          node tools/oge-tire-exact-grading.test.cjs
+          node --test tools/oge-practical-minimal.test.cjs tools/oge-practical-variant-buildings.test.cjs tools/oge-practical-variant-everyday.test.cjs tools/oge-practical-variant-roads.test.cjs tools/oge-practical-discovery.test.cjs tools/oge-practical-variant-offline.test.cjs tools/oge-practical-tires-3d.test.cjs
+      - name: Actual room transport, authorization and retained mirrors
+        run: |
+          node --test tools/oge-course-transport.test.cjs tools/oge-geometry-transport.test.cjs
+          node --test board-server/test/trainer-registry.test.js board-server/test/server-registry.integration.test.js
+          git diff --check
+          echo OGE_COURSE_MIRROR_AUDIT_OK
+
+  h35-exact-oge-course-mirror-native-browser-events:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-native-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          echo "NODE_PATH=$RUNNER_TEMP/oge-native-browser/node_modules" >> "$GITHUB_ENV"
+          node "$RUNNER_TEMP/oge-native-browser/node_modules/playwright/cli.js" install --with-deps chromium
+      - name: Native teacher actions publish their completed state to the peer
+        run: node tools/oge-course-native-events.browser.cjs
+      - name: Existing picker viewport and room controls
+        if: always()
+        run: node tools/board-picker-smoke.cjs
+
+  h35-exact-oge-learner-entry-public-routes:
+    # Only a successful Pages run in this repository may test production.
+    if: >-
+      github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116' &&
+      (
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+      )
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OGE_ENTRY_RELEASE_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      OGE_ENTRY_ARTIFACTS: artifacts/oge-learner-entry
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          # workflow_run's github.sha can point at a newer, unpublished main.
+          ref: ${{ github.sha }}
+      - name: Fetch preservation baseline and exact reviewed task sources
+        run: git fetch --no-tags --depth=1 origin 955c83154eed49554b648c03b66e1eba16932222 7d4c3d03f833c1ceae43d18f3b62d15a7ec9e74a e258e438cd30e396c7741741384911f0a424581d 7a7169c35c54351ace4f7844b7730899b4a61831 18b44244753ac806d449a2040ad4b8c8af9acaf3
+      - name: Fetch reviewed fraction controls source
+        run: git fetch --no-tags --depth=1 origin 7a876fa9b80f22df458348d5460fdd940dc8cac3
+      - name: Fetch reviewed H35 systems source
+        run: git fetch --no-tags --depth=1 origin e2f22719727da85f572cbcc387db264f322bd74d
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Publication gate regression tests
+        run: node --test tools/oge-learner-release.test.cjs
+      - name: Install isolated test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-entry" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/oge-entry/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-entry/node_modules" >> "$GITHUB_ENV"
+      - name: Static returns and preserved engines
+        run: |
+          node tools/oge-learner-entry.test.cjs
+          node tools/oge-focus-navigation.test.cjs
+          git diff --check
+      - name: Wait for the exact public release assets
+        if: github.event_name == 'workflow_run'
+        run: node tools/oge-learner-release.cjs
+      - name: Every recorded page, mobile and desktop, no JavaScript, actual returns
+        env:
+          OGE_ENTRY_BASE_URL: ${{ github.event_name == 'workflow_run' && 'https://mathexam.space' || '' }}
+        run: node tools/oge-learner-entry.browser.cjs
+      - name: Confirm the release stayed consistent during browser acceptance
+        if: github.event_name == 'workflow_run'
+        env:
+          OGE_ENTRY_VERIFY_ONCE: '1'
+        run: node tools/oge-learner-release.cjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: h35-exact-oge-learner-entry
+          path: artifacts/oge-learner-entry
+          retention-days: 14
+          if-no-files-found: error
+
+  h35-exact-task19-visual-hints-visual-hints:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    name: visual-hints (${{ matrix.suite }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [existing, owner]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Install isolated test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/task19-browser" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
+          "$RUNNER_TEMP/task19-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/task19-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Bank, geometry and learner-state contracts
+        run: |
+          node --check trainers/task19-visual-data.js
+          node --check trainers/task19-visual-models.js
+          node --check trainers/task19-visual-app.js
+          node --test tools/task19-*.test.cjs
+          git diff --check
+      - name: Desktop, narrow screen and keyboard journeys
+        if: matrix.suite == 'existing'
+        env:
+          TASK19_BROWSER_ARTIFACTS: artifacts/task19-visual-hints
+        run: node tools/task19-visual-hints.browser.cjs
+      - name: Owner feedback examples, linked pairs and authentic reference sheets
+        if: matrix.suite == 'owner'
+        env:
+          TASK19_OWNER_BROWSER_ARTIFACTS: artifacts/task19-owner-feedback
+        run: node tools/task19-owner-feedback.browser.cjs
+      - name: Current annotations and textbook reading journeys
+        if: matrix.suite == 'owner'
+        run: |
+          node tools/task19-current-models.browser.cjs
+          node tools/task19-textbook-reference.browser.cjs
+      - name: Keep visual evidence
+        if: always() && matrix.suite == 'existing'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: h35-exact-task19-visual-hints
+          path: artifacts/task19-visual-hints
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Keep current source and model evidence
+        if: always() && matrix.suite == 'owner'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: h35-exact-task19-current-sources
+          path: |
+            artifacts/task19-current-models
+            artifacts/task19-textbook-reference
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Keep owner feedback evidence
+        if: always() && matrix.suite == 'owner'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: h35-exact-task19-owner-feedback
+          path: artifacts/task19-owner-feedback
+          if-no-files-found: ignore
+          retention-days: 7
+
+  h35-exact-public-navigator-public-navigator:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Navigation regression and syntax
+        run: |
+          node --check assets/assistant/navigator-data.js
+          node --check assets/assistant/navigator-widget.js
+          node --check assets/assistant/home-link.js
+          node tools/public-home-coverage.cjs
+          node --test tools/public-navigator-preservation.test.cjs
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/public_navigator_bindings.test.py
+          node tools/public-navigator-regression.cjs assets/assistant/navigator-data.js "$RUNNER_TEMP/navigator-regressions.json"
+          git diff --check
+      - name: Actual pages on desktop, mobile and landscape
+        run: |
+          npm install --prefix "$RUNNER_TEMP/navigator-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/navigator-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/rounding-focus.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa" NAV_LOCAL_SERVER=1 NAV_SHARD_COUNT=4 NAV_SHARD_INDEX=${{ matrix.shard }} node tools/public-navigator.browser.cjs
+      - name: Home return on active courses and standalone trainers
+        if: matrix.shard == 0
+        run: |
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" node --test tools/public-home.test.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home" node tools/public-home.browser.cjs
+          NODE_PATH="$RUNNER_TEMP/navigator-qa/node_modules" ARTIFACT_DIR="$RUNNER_TEMP/public-navigator-qa/home-regressions" node tools/public-home-regressions.browser.cjs
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: h35-exact-public-navigator-qa-${{ matrix.shard }}
+          path: ${{ runner.temp }}/public-navigator-qa
+          if-no-files-found: error
+
+  h35-exact-division-guided-quality-guided-division:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Exact arithmetic and unchanged classroom bank
+        run: |
+          node --check trainers/long-division-entry.js
+          node tools/division-guided.test.cjs
+          node tools/division-progression.test.cjs
+          node tools/arithmetic-url-contract.test.cjs
+          node tools/learning-remediation-bank.cjs --check
+          git diff --check
+      - name: Install browser test tools
+        run: |
+          npm install --prefix "$RUNNER_TEMP/division-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          "$RUNNER_TEMP/division-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/division-browser/node_modules" >> "$GITHUB_ENV"
+      - name: Real pupil interactions and mobile notebook
+        env:
+          DIVISION_SCREENSHOTS: division-browser-results
+        run: |
+          node tools/division-progression.dom.cjs
+          node tools/skill-support.test.cjs
+          node tools/division-path.test.cjs
+          node tools/division-claude.test.cjs
+          node tools/division-offline-export.test.cjs
+          node tools/division-progression.browser.cjs
+          node tools/division-path.browser.cjs
+          CHECKPOINT_BROWSER=1 node --test tools/division-checkpoint.test.cjs
+          node tools/division-claude.browser.cjs
+          node tools/division-guided.browser.cjs
+          node tools/division-notebook.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html DIVISION_SCREENSHOTS=division-browser-results/search node tools/division-guided.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html DIVISION_SCREENSHOTS=division-browser-results/search node tools/division-notebook.browser.cjs
+          node tools/division-search-entry.browser.cjs
+          node tools/decimal-divisor-entry.browser.cjs
+      - name: Notebook screenshots
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: h35-exact-division-notebook-${{ github.run_id }}
+          path: division-browser-results/
+          retention-days: 7
+          if-no-files-found: ignore
+
+  h35-exact-seo-quality-public-seo:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    runs-on: ubuntu-latest
+    # Include browser/dependency installation as well as the actual route checks.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Sitemap exclusions, canonical routes and public entrances
+        run: |
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+          python3 tools/seo-check.py
+          git diff --check
+      - name: Static catalog and JavaScript destination parity
+        run: |
+          npm install --prefix "$RUNNER_TEMP/seo-catalog-qa" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
+          NODE_PATH="$RUNNER_TEMP/seo-catalog-qa/node_modules" node tools/seo-catalog.test.cjs
+      - name: Public compatibility routes and actual catalog clicks
+        run: |
+          npm install --prefix "$RUNNER_TEMP/seo-browser-qa" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/seo-browser-qa/node_modules/.bin/playwright" install --with-deps chromium
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/seo-entrypoints.browser.cjs
+
+      - name: Course entrances, mathematical GIFs and retained work
+        run: |
+          python3 -m pip install Pillow==12.0.0
+          python3 tools/course-entrances.test.py
+          NODE_PATH="$RUNNER_TEMP/seo-browser-qa/node_modules" node tools/course-entrances.browser.cjs
+
+  h35-exact-regressions:
+    name: H35 exact branch head regressions
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/h35-algebra-trainers-harmonization-20261116'
+    needs:
+      - algebra
+      - h35-exact-trainer-download-stage2-offline
+      - h35-exact-oge-skill-course-lessons-and-navigation
+      - h35-exact-oge-course-mirror-native-mathematics-state-and-transport
+      - h35-exact-oge-course-mirror-native-browser-events
+      - h35-exact-oge-learner-entry-public-routes
+      - h35-exact-task19-visual-hints-visual-hints
+      - h35-exact-public-navigator-public-navigator
+      - h35-exact-division-guided-quality-guided-division
+      - h35-exact-seo-quality-public-seo
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Confirm all exact-head checks passed
+        run: |
+          echo "H35_EXACT_HEAD=$GITHUB_SHA"
+          echo H35_EXACT_HEAD_REGRESSIONS_OK
