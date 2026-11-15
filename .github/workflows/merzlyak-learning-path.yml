@@ -27,6 +27,7 @@ jobs:
       - run: npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 ajv@8.17.1 ajv-formats@3.0.1 playwright@1.62.1
       - run: npx playwright install --with-deps chromium
       - name: Learning records and mathematical transfer
+        id: learning-records
         run: |
           node tools/merzlyak-learning-path.test.cjs
           node tools/merzlyak-10-base/learning-path.test.cjs
@@ -36,10 +37,13 @@ jobs:
           node tools/merzlyak/investigations.test.cjs
           node tools/merzlyak/harmonization.test.cjs
       - name: Existing lesson journeys and narrow mobile layout
+        if: ${{ !cancelled() && steps.learning-records.outcome == 'success' }}
         run: node tools/merzlyak/browser.cjs
       - name: Real task interactions and learning path on phone and desktop
+        if: ${{ !cancelled() && steps.learning-records.outcome == 'success' }}
         run: node tools/merzlyak-learning-path.browser.cjs
       - name: All 84 topical inquiries, offline folder, legacy drawings and concurrent windows
+        if: ${{ !cancelled() && steps.learning-records.outcome == 'success' }}
         run: node tools/merzlyak/harmonization.browser.cjs
       - name: Preserve learning-path screenshots
         if: always()

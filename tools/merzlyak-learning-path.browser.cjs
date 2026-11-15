@@ -165,7 +165,12 @@ async function checkSimilarity(page, base, viewport) {
     // Restore an actual historical stage-1 record explicitly. The old geometry
     // remains usable without making that old model the new lesson's entry.
     await page.evaluate(id=>{const key='mathExamGeometry.merzlyak.v1',d=JSON.parse(localStorage.getItem(key)),v=d.units[id];v.stage=1;v.screen='';v.routeVersion=0;v.observation='Сохранённое исследование подобия';v.updated+=1;localStorage.setItem(key,JSON.stringify(d));},id);
-    await page.reload({waitUntil:'load'});
+    // This fixture models a new visit, without inheriting the written-work
+    // reload's scroll position. Do not scroll before the viewport assertion.
+    const restoredUrl=page.url();
+    await page.goto('about:blank');
+    await openPage(page,restoredUrl);
+    await assertAtTop(page,id+' freshly restored historical drawing starts at the top');
     const canvas=page.locator('#geo-board canvas');
     const bounds=await assertVisibleInViewport(canvas,viewport,id+' restored historical drawing');
     evidence.firstViewportModels.push({id,viewport,bounds,restoredHistoricalStage:1});
