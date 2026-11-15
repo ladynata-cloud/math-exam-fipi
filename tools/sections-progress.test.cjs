@@ -58,6 +58,8 @@ test('all 26 stages are visible in their teaching order and a new learner starts
     assert.equal(f.doc.querySelector('[data-action="path-start"]').textContent, 'Начать с первой грани');
     click(f, '[data-action="path-start"]');
     assert.equal(f.state().current, 'starter-01');
+    assert.equal(f.w.SECTIONS_MASTER.getState().view, 'research');
+    assert.equal(f.doc.querySelector('[data-research-stage]').dataset.researchStage, 'begin-01');
   } finally { await f.close(); }
 });
 

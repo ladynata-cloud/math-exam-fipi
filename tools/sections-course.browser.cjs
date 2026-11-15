@@ -269,6 +269,15 @@ async function standalone(browser, publicOrigin, errors) {
     await page.locator('[data-tour-action="close"]').click();
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.getByRole('button', { name: 'Начать с первой грани', exact: true }).click();
+    assert.equal(await page.locator('[data-research-stage]').getAttribute('data-research-stage'), 'begin-01');
+    assert(await page.locator('[data-action="research-observe"]').first().isDisabled());
+    await page.locator('#research-prediction').selectOption('unknown');
+    for (const id of await page.locator('[data-action="research-observe"]').evaluateAll(nodes => nodes.map(n => n.dataset.experiment))) {
+      await page.locator('[data-action="research-observe"][data-experiment="' + id + '"]').click();
+    }
+    await page.locator('#research-note').fill('Поворот меняет вид, но не принадлежность точки грани.');
+    await page.locator('[data-action="research-finish"]').click();
+    await page.locator('[data-action="research-to-lesson"]').click();
     assert.equal(await page.locator('#lesson-title').textContent(), 'Находим одну грань');
     assert.equal(await page.evaluate(() => typeof window.__sectionsBoard), 'undefined');
     for (const width of [320, 1280]) await layout(page, page, width, 'sections-first-face');

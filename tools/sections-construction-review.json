@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "task": "SECTIONS_COURSES_HARMONIZATION_20261116",
+  "recordedAt": "2026-11-15T21:36:04Z",
+  "reviewLevel": "HIGH",
+  "reviewer": "sections_pr_inventory — independent internal technical reviewer",
+  "reviewType": "Independent review of another agent's implementation, followed by verification of the fixes",
+  "baseCommit": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "reviewedRevision": "Uncommitted task working tree; exact file hashes below identify the reviewed content",
+  "verdict": "PASS",
+  "scope": [
+    "The first IIFE in stereo-course/sections/assets/app.js: bounded construction actions for the approved 24 cards",
+    "Mathematical validation, premature answer disclosure, accepted-action rendering, personal state, help, undo and board isolation",
+    "tools/sections-construction.test.cjs and static inspection of browser fixture restoration and manual undo/help selectors"
+  ],
+  "reviewedFiles": {
+    "stereo-course/sections/assets/app.js": {
+      "sha256": "9560728e01591672bcb6672ea19f9af89964b2a5c1222193dd0d3069cd5c4af6",
+      "firstIife": {
+        "sha256": "4a9871c307525074b0e6d45e44a8a336bd4a2c4b024d75b61bc4ff6ba067331a",
+        "byteLength": 132674,
+        "definition": "UTF-8 bytes from the start of the file up to, but excluding, the following boundary marker; includes the whitespace preceding the marker",
+        "boundaryMarker": "/* Pure data and exact-coordinate activities. No network, eval or dependencies. */"
+      }
+    },
+    "tools/sections-construction.test.cjs": {
+      "sha256": "c34ee90f7480a6a946b46a65761560df44685416880a572c72ba8e1a4842572d"
+    }
+  },
+  "tests": {
+    "command": "NODE_PATH=<test-dependencies> node --test tools/sections-construction.test.cjs",
+    "passed": 37,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 51187.954773,
+    "counting": "The 37 tests include all 24 card journeys. A duplicate direct-node execution also passed and is not counted as additional coverage.",
+    "coverage": [
+      "All 24 cards start without selected answers and complete through real element choices",
+      "Reversed endpoints and line order, alternative valid plane triples, coordinate aliases and reversed half-length parallel direction",
+      "Invalid spatial actions, finite edges versus extensions, cyclic boundary order and rejection of crossing boundaries",
+      "Neutral headings, role prompts and edge-location labels before selection",
+      "Accepted-only text and geometry, deferred finite-section classification and actual undo",
+      "Sticky help and historical earned evidence, unfinished selections and draft restoration",
+      "Preservation of guided records and exclusion of personal construction from the existing board state"
+    ]
+  },
+  "independentProbes": [
+    {
+      "kind": "Exhaustive parallel-action candidate enumeration after the fix",
+      "cards": ["bridge-03", "bridge-19"],
+      "candidateSelections": 14520,
+      "result": "PASS: only transfer through P in the direction MN is accepted for the current known points; reversed direction and edge endpoints also pass"
+    },
+    {
+      "kind": "Exhaustive pairs of lines through currently known points",
+      "intersectionSteps": 14,
+      "result": "PASS: only the intended geometric intersections are accepted; no analogous accidental-coordinate acceptance found in the bounded bank"
+    }
+  ],
+  "findings": [
+    {
+      "id": "CONSTRUCTION-01",
+      "status": "closed",
+      "finding": "Authored step titles disclosed expected endpoints, roles or planes before a choice.",
+      "resolution": "Neutral titles and task-specific route goals replace the revealing titles; prompts do not provide the correct role. Route goals identify a meaningful order without requiring guesses about the author's order."
+    },
+    {
+      "id": "CONSTRUCTION-02",
+      "status": "closed",
+      "finding": "The location-field label disclosed the authored target edge before line selection.",
+      "resolution": "The label asks about a finite edge or its extension without printing the expected edge."
+    },
+    {
+      "id": "CONSTRUCTION-03",
+      "status": "closed",
+      "finding": "bridge-19 accepted a line through A parallel to GM, or through E parallel to CM, because it happened to hit Q; rendering then substituted the authored PQ action.",
+      "resolution": "Validation now requires an anchor on the actual section trace and a direction parallel to the established trace. Both false examples are rejected; geometric alias and scaled/reversed equivalents remain accepted. Rendering records the accepted anchor."
+    },
+    {
+      "id": "CONSTRUCTION-04",
+      "status": "closed",
+      "finding": "In bridge-06/20, accepted intersection text and geometry revealed YP and its section role before the subsequent endpoint/role choice.",
+      "resolution": "Confirmation and history describe only accepted selections. Intersections render chosen helper lines and the found point; YP becomes a section side only after its own accepted choice and disappears on undo."
+    },
+    {
+      "id": "CONSTRUCTION-05",
+      "status": "closed",
+      "finding": "Deferring section classification also required preserving the final QP boundary in bridge-18/24.",
+      "resolution": "QP is drawn as a section side after explicit confirmation of the complete boundary; editing the boundary removes that confirmation and classification."
+    }
+  ],
+  "unresolvedFindings": [],
+  "stateAndBoardAssessment": "PASS within the reviewed scope: saved action prefixes are revalidated; help and earned history remain sticky; undo removes an actual action; old guided records are retained; construction is disabled on the board and does not enter its existing strict state schema.",
+  "limitations": [
+    "Mathematical probes cover the approved fixed bank, not an arbitrary construction editor.",
+    "The application checks geometric selections; it does not automatically grade a complete proof.",
+    "Browser-harness inspection was static. Real browser rendering, visual acceptance and production acceptance are separate gates.",
+    "This is internal independent review evidence, not a review from an external model provider and not release authorization."
+  ],
+  "productFilesEditedByReviewer": false,
+  "browserAcceptance": false,
+  "externalProviderReview": false,
+  "releaseApproval": false
+}
