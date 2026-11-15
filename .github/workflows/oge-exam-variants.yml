@@ -39,6 +39,9 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/oge-exam" --no-save --no-package-lock --ignore-scripts jsdom@26.1.0 playwright@1.62.1
           "$RUNNER_TEMP/oge-exam/node_modules/.bin/playwright" install --with-deps chromium
           echo "NODE_PATH=$RUNNER_TEMP/oge-exam/node_modules" >> "$GITHUB_ENV"
+      - name: Fetch exact audited graph checkpoints
+        if: matrix.family == 'course-algebra'
+        run: git fetch --no-tags --depth=1 origin 2332c0b01fae94555438256762a0dba0d3d08101 2b33a2315a22c98a70497e7395e4e67c4bd415e4
       - name: Native validation, source and draft contracts
         env:
           FAMILY: ${{ matrix.family }}

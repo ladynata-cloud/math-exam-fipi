@@ -7,6 +7,8 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
+AUDIT_UPDATES = json.loads((ROOT / 'tools/fixtures/oge-audit-learning-native-bytes.json').read_text())
+
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
@@ -23,6 +25,12 @@ DOWNLOAD_PAGES = {row['sourceHtml'][1:]: row['slug'] for row in
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
+
+def source_pin(file):
+    original = PINS['pages'].get(file)
+    if original is None:
+        return None
+    return dict(original, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {}) | AUDIT_UPDATES['pages'].get(file, {})
 
 def restore_graph_intersections(file, raw):
     """Invert all three exact display fragments; original engine pins stay sealed."""
@@ -67,9 +75,8 @@ def verified_context(record):
         route = context['route']
         if not isinstance(route, str) or not route.startswith('/'): return None
         file = route[1:]
-        pin = PINS['pages'].get(file)
+        pin = source_pin(file)
         if not pin or not pin['bookId']: return None
-        pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
         if context['task'] != pin['task'] or context['sourceBase'] != pin['sourceCommit']: return None
@@ -85,7 +92,7 @@ def verified_context(record):
         if teaching.count(block) != 1 or block + b'</head>' not in teaching: return None
         native = teaching.replace(block, b'', 1)
         graph_scale = PINS['graphScale']
-        if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
+        if file not in AUDIT_UPDATES['pages'] and file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
             native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)
             native = restore_graph_intersections(file, native)
         if sha(native) != pin['sha256'] or context['nativeSha256'] != pin['sha256']: return None

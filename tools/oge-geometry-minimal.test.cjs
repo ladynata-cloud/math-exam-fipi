@@ -31,7 +31,30 @@ for(const [n,name,input,check,answer,next] of cases){
    assert.ok(d.querySelector('svg'),'condition drawing retained');
    assert.equal(w.getComputedStyle(d.querySelector('h1')).color,'rgb(32, 40, 32)','heading remains readable on the pale page');
    const hint=d.querySelector('#courseHintToggle'),panel=d.querySelector('#courseHintPanel');assert.ok(hint);assert.equal(hint.textContent,n<=18?'Разобрать по шагам':'Хочешь подсказку?');assert.equal(panel.hidden,true);assert.equal(hint.getAttribute('aria-expanded'),'false');
-   const before=storage(w);hint.click();assert.equal(panel.hidden,false);assert.equal(hint.getAttribute('aria-expanded'),'true');hint.click();assert.equal(panel.hidden,true);assert.deepEqual(storage(w),before,'opening/closing help is not an answer or mistake');
+   if(n===24){
+    const key='mathExamCourseProgress.v1',all=JSON.parse(w.localStorage.getItem(key)),rec=all['oge24-dokazatelstva'];
+    all.unknownRoot={keep:['root',9]};all['other-trainer']={solved:7,ext:{unrelated:true}};
+    rec.unknownRecord={keep:'record'};rec.ext.unrelated={keep:'extension'};
+    w.localStorage.setItem(key,JSON.stringify(all));
+   }
+   const proofCounts=n===24?w.eval('JSON.stringify({err:ST.err,hints:ST.hints,glows:ST.glows,placedByHint:ST.placedByHint,placed:ST.placed,solvedNow:ST.solvedNow,auditErrors:ST.auditErrors,results:ST.results})'):null;
+   const before=storage(w);hint.click();assert.equal(panel.hidden,false);assert.equal(hint.getAttribute('aria-expanded'),'true');
+   if(n===24)assert.equal(w.eval('ST.helpUsed'),true,'opening proof help records its use');
+   hint.click();assert.equal(panel.hidden,true);
+   if(n===24){
+    const key='mathExamCourseProgress.v1',earlier=Object.fromEntries(before),later=Object.fromEntries(storage(w));
+    earlier[key]=JSON.parse(earlier[key]);later[key]=JSON.parse(later[key]);
+    const a=earlier[key]['oge24-dokazatelstva'].ext.auditLearning,b=later[key]['oge24-dokazatelstva'].ext.auditLearning;
+    assert.deepEqual(b.attempts,a.attempts,'opening help adds no completed attempt or result');
+    assert.equal(a.draft.helpUsed,false);assert.equal(b.draft.helpUsed,true);assert.equal(b.draft.helpOpen,false);
+    assert.equal(b.resume.helpUsed,true);assert.equal(b.resume.hasWork,true);assert.equal(b.resume.unfinished,true);
+    assert.equal(w.eval('ST.helpUsed'),true,'closing help cannot clear help provenance');
+    assert.equal(w.eval('JSON.stringify({err:ST.err,hints:ST.hints,glows:ST.glows,placedByHint:ST.placedByHint,placed:ST.placed,solvedNow:ST.solvedNow,auditErrors:ST.auditErrors,results:ST.results})'),proofCounts,'opening/closing help is not an answer or mistake');
+    // Only the additive learning journal may change: historical counters,
+    // timestamps, unknown fields, sibling trainers and other keys stay intact.
+    delete earlier[key]['oge24-dokazatelstva'].ext.auditLearning;delete later[key]['oge24-dokazatelstva'].ext.auditLearning;
+    assert.deepEqual(later,earlier,'help leaves every field outside auditLearning unchanged');
+   }else assert.deepEqual(storage(w),before,'opening/closing help is not an answer or mistake');
    assert.equal(d.querySelectorAll('#courseHintToggle').length,1);assert.equal(d.querySelectorAll('#courseHintPanel').length,1);
    if(input&&answer){
     const ans=d.querySelector(input);const v=w.eval(answer);ans.value=String(v);d.querySelector(check).click();

@@ -7,6 +7,7 @@ const path = require('node:path');
 const http = require('node:http');
 const crypto = require('node:crypto');
 const { chromium } = require('playwright');
+const {legacy:legacy11,helpFacts:helpFacts11}=require('./task11-test-evidence.cjs');
 
 const ROOT = path.resolve(__dirname, '..');
 const PREFIX = (process.env.BOOK_PREFIX || '').replace(/\/$/, '');
@@ -187,12 +188,18 @@ async function runCase(browser, origin, width, negative) {
       await page.locator('#t11-help-dali > summary').click();
       assert(await page.locator('#t11-help-dali [data-dali-portrait]').isVisible(), 'Function help visibly opens the portrait');
       await inspectImages(2);
-      assert.deepEqual(await progress(), before, 'Reading either portrait changes no answer, attempt, result or saved progress');
+      const afterHelp=await progress();
+      if(!PREFIX){
+        assert.deepEqual({...afterHelp,progress:legacy11(afterHelp.progress)}, {...before,progress:legacy11(before.progress)}, 'Reading either portrait preserves answers and every legacy or foreign progress field');
+        const audit=helpFacts11(afterHelp.progress,'m4');
+        assert.equal(audit.draft.m4.completed,false);
+        report.helpEvidence={before,after:afterHelp,completedAttempts:audit.attempts.length,helpUsed:audit.draft.m4.helpUsed};
+      }else assert.deepEqual(afterHelp,before,'Fixed editions retain their exact original progress contract');
       await page.locator('#t11-help-dali').screenshot({ path: path.join(OUT, width + '-help-function.png') });
       report.currentStage = 'reload';
       await navigate(true);
       await inspectImages(1);
-      assert.deepEqual(await progress(), before, 'Reload after reading help retains the original unsolved state');
+      assert.deepEqual(await progress(), afterHelp, 'Reload retains the exact unsolved state and any recorded assistance without another write');
     }
   } catch (error) { report.error = error.message; }
   report.status = !report.error && report.stages.length === (negative ? 1 : 3) && !report.networkErrors.length && !report.serverErrors.length && !report.literalRequests.length && !report.pageErrors.length && !report.requestFailures.length && !report.dependencyEscapes.length ? 'PASS' : 'FAIL';

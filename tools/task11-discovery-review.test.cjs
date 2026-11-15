@@ -1,4 +1,5 @@
 'use strict';
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 
 // Independent regression for a real exploratory failure: reducing |x| moves
 // a clipped hyperbola point farther out, rather than bringing it into view.
@@ -52,7 +53,7 @@ test('clipped experimental hyperbola points receive a useful direction and hones
   assert.deepEqual(f.points().map(p => p.color), ['#8a948d', '#176c52'], 'moving away from zero restores both points');
   const changed = f.points().find(p => p.color === '#176c52');
   assert(Math.abs(changed.y - (6.8 - 4) * 360 / 13.6) < 1e-8, 'new point represents y=8/2 independently');
-  assert.equal(el('m4-answer').value, '23'); assert.equal(w.localStorage.getItem(KEY), progress);
+  assert.equal(el('m4-answer').value, '23'); assert.deepEqual(legacy(w.localStorage.getItem(KEY)), legacy(progress));helpFacts(w.localStorage.getItem(KEY));
   assert.equal(w.eval('M4.attempts'), 0); assert.equal(w.eval('M4.done'), false);
   assert.deepEqual(f.errors, []);
 });

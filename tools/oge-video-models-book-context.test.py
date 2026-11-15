@@ -5,7 +5,7 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, sha, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
+from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, sha, source_pin, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -19,14 +19,14 @@ class ContextTests(unittest.TestCase):
         self.oracle = fixture['oracles'][0]
         file = 'trainers/oge-task22-functions-graphs.html'
         route = '/' + file
-        pin = PINS['pages'][file]
+        pin = source_pin(file)
         raw = (ROOT / file).read_bytes()
         before, after = fixture['visibleText'].split(' ', 1)
         before += ' '
         after = ' ' + after
         assets = {asset: sha((ROOT / asset[1:]).read_bytes()) for asset in ASSETS}
         context = dict(kind='oge-video-models-closed-v1', route=route, bookId='63', task=22,
-                       sourceBase=PINS['baseCommit'], sourceSha256=sha(raw), nativeSha256=pin['sha256'],
+                       sourceBase=pin['sourceCommit'], sourceSha256=sha(raw), nativeSha256=pin['sha256'],
                        closed=True, summaryHtml=SUMMARY_HTML, label=LABEL, offsetCodePoints=len(before),
                        beforeText=before, afterText=after, assets=assets, closedSvg=[])
         text = before + LABEL + after
@@ -95,7 +95,7 @@ class ContextTests(unittest.TestCase):
         preview=PINS['closedPreview']
         svg=subprocess.check_output(['node','-e',"const {JSDOM}=require('jsdom');const l=require('./trainers/oge-video-geometry.js').find(x=>x.id==='midpoints-common-circle');const d=new JSDOM(l.preview({x:2}).svg);process.stdout.write(d.window.document.querySelector('svg').outerHTML);d.window.close();"],cwd=ROOT,text=True)
         self.assertEqual(sha(svg.encode()),preview['svgSha256'])
-        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=PINS['pages'][route[1:]] | UPDATES['pages'][route[1:]];raw=(ROOT/route[1:]).read_bytes()
+        record=copy.deepcopy(self.record);c=record['videoModelContext'];route='/trainers/oge-task24-proofs.html';pin=source_pin(route[1:]);raw=(ROOT/route[1:]).read_bytes()
         record.update(id='65',route=route,finalPath=route);c.update(route=route,bookId='65',task=24,sourceBase=pin['sourceCommit'],sourceSha256=sha(raw),nativeSha256=pin['sha256'])
         record['resources'][route]=dict(sha256=sha(raw),status=200);record['publicWayfinding']['servedHtmlSha256']=sha(raw)
         native={'svg':'<svg><text>native sentinel</text></svg>'};record['visibleSvgLabels']=[native,{'svg':svg}]
@@ -122,7 +122,8 @@ class ContextTests(unittest.TestCase):
         self.assertEqual(GRAPH_INTERSECTIONS['task'], 'docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md')
         self.assertEqual(len(GRAPH_INTERSECTIONS['fragments']), 3)
         target = ROOT / file
-        raw = target.read_bytes()
+        # The old display inverse is tested against the exact published renderer.
+        raw = subprocess.check_output(['git', 'show', 'beffcbe1895e45f8d243e12d250181ac2ce62e1a:'+file], cwd=ROOT)
         self.assertNotEqual(restore_graph_intersections(file, raw), raw)
         self.assertEqual(restore_graph_intersections('unrelated.html', raw), raw)
         mutations = []
@@ -138,6 +139,10 @@ class ContextTests(unittest.TestCase):
         self.assertNotEqual(changed_math, raw)
         self.assertIn(b'const x=2/(C-m);', restore_graph_intersections(file, changed_math))
         mutations.append(changed_math)
+        current = target.read_bytes()
+        changed_current = current.replace(b'const exact=cf(value)', b'const exact=cf(0)', 1)
+        self.assertNotEqual(changed_current, current)
+        mutations.append(changed_current)
         original_read = type(target).read_bytes
         for changed in mutations:
             record = copy.deepcopy(self.record)

@@ -149,7 +149,8 @@ function decorate23(){const main=q('.train-host');if(!main)return;const card=q('
  const steps=task.p&&typeof GUIDE!=='undefined'?GUIDE[task.sub](task.p):[];qa('.ladder .step',card).forEach(node=>{const n=q('.step-num',node)?.textContent.match(/^Шаг (\d+)/);if(n&&steps[+n[1]-1])explain(node,steps[+n[1]-1],topics,!node.classList.contains('done'));});qa('.sol li,.solution li',card).forEach(node=>explain(node,{h:node.textContent},topics));
 }
 function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);let revealed=false;
- qa('.chain .citem',main).forEach((node,i)=>{
+ qa('.chain .citem',main).forEach((node,position)=>{
+  const i=node.hasAttribute('data-proof-step')?Number(node.dataset.proofStep):position;
   const step=t.steps[i];if(!step)return;
   revealed=revealed||!!step.lit?.showcirc;
   explain(q('.ctext',node)||node,{...step,theoryTopics:proofStepTopics[t.id]?.[i]},topics,false,

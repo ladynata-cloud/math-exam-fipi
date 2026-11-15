@@ -1,4 +1,5 @@
 'use strict';
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -25,7 +26,9 @@ test('first ordinary visit offers three shapes; previous use, review and selftes
   assert.deepEqual(plain(fresh.run('M4.task.items.map(i=>({kind:i.family,params:i.params}))')),[{kind:'lin',params:{k:1,b:0}},{kind:'par',params:{a:1,b:0,c:0}},{kind:'hyp',params:{k:1}}]);
   assert.equal(fresh.w.document.querySelectorAll('#m4-desc .function-help').length,3);
   assert.equal(new Set([...fresh.el('m4-graphs').querySelectorAll('svg')].map(svg=>svg.innerHTML)).size,3);
-  assert(fresh.el('t11-help-panel').hidden);assert.equal(fresh.w.localStorage.getItem(KEY),null);
+  assert(fresh.el('t11-help-panel').hidden);assert.deepEqual(legacy(fresh.w.localStorage.getItem(KEY)),{});
+  const audit=JSON.parse(fresh.w.localStorage.getItem(KEY))['oge-t11-grafiki'].ext.auditLearning;
+  assert.equal(audit.attempts.length,0);assert.equal(audit.draft.m4.helpUsed,false);assert.equal(audit.resume,undefined,'viewing a saved first condition creates no work or success');
   fresh.el('m4-next').click();assert(!fresh.run('M4.task.starter'));
  }finally{fresh.w.close();}
  for(const options of [{seen:true},{storage:{'oge-t11-grafiki':{v:1,solvedByType:{t43:2}}}},{query:'?selftest=1'},{query:'?mode=review',storage:{mistakes:{'oge-t11-grafiki|t44':{w:1,r:0}}}}]){
@@ -44,7 +47,7 @@ test('per-function help keeps matching DOM, partial drafts, attempts and common 
    t.el('t11-help-panel').dispatchEvent(new t.w.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
    assert(t.el('t11-help-panel').hidden);assert.equal(t.w.document.activeElement,button);assert.equal(button.getAttribute('aria-expanded'),'false');
    assert.equal(t.el('m4-match'),host);assert.equal(selects[0],t.el('m4-desc').querySelector(':scope > .row > select'));assert.equal(selects[0].value,'2');assert.equal(selects[1].value,'');
-   assert.deepEqual(plain(t.run('M4.task.key')),key);assert.equal(t.run('M4.attempts'),0);assert.equal(t.run('M4.done'),false);assert.equal(t.w.localStorage.getItem(KEY),before);
+   assert.deepEqual(plain(t.run('M4.task.key')),key);assert.equal(t.run('M4.attempts'),0);assert.equal(t.run('M4.done'),false);assert.deepEqual(legacy(t.w.localStorage.getItem(KEY)),legacy(before));helpFacts(t.w.localStorage.getItem(KEY));
   }
   assert.equal(t.el('t11-help-panel').querySelectorAll('input:not([type=range])').length,0,'No calculation answer fields');
   assert(!t.el('m4-good').classList.contains('show'));assert(t.el('m4-show').hidden);

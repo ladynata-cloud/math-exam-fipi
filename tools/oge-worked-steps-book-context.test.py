@@ -98,7 +98,7 @@ class WorkedStepContext(unittest.TestCase):
 
     def test_proof_figure_captions_keep_reviewed_condition_and_steps_exact(self):
         route = '/trainers/oge-task24-proofs.html'
-        fixture = FIXTURES['65']
+        fixture = FIXTURES['65'].get('sourceVariant', FIXTURES['65'])
         old = fixture['oracles'][0]['prompt'].split(' A B C D E ', 1)[0]
         phone = 'Увеличить подписи Чертёж целиком.'
         desktop = 'Показать целиком Крупный чертёж: прокручивай его стрелками после выбора рисунка.'
@@ -107,7 +107,7 @@ class WorkedStepContext(unittest.TestCase):
                      for asset in assets}
         for width, caption in [(320, phone), (390, phone), (1280, desktop)]:
             record = dict(id='65', prefix='', route=route, finalPath=route, width=width, resources=resources,
-                          videoModelContext=dict(sourceBase='18b44244753ac806d449a2040ad4b8c8af9acaf3'))
+                          videoModelContext=dict(sourceBase='2332c0b01fae94555438256762a0dba0d3d08101'))
             text = fixture['visibleText'].replace(old, caption, 1)
             oracle = fixture['oracles'][0]
             updated = dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
@@ -119,7 +119,8 @@ class WorkedStepContext(unittest.TestCase):
                 self.assertFalse(math.exact_reviewed_context(record, dict(updated, prompt=updated['prompt']+' changed'), FIXTURES))
                 self.assertFalse(math.exact_reviewed_context(record, dict(updated, expected=[]), FIXTURES))
                 for field, value in [('width', 360), ('route', '/other'), ('finalPath', '/other'),
-                                     ('prefix', '/book/oge/2026-10-31/v1'), ('videoModelContext', {})]:
+                                     ('prefix', '/book/oge/2026-10-31/v1'), ('videoModelContext', {}),
+                                     ('videoModelContext', {'sourceBase': '18b44244753ac806d449a2040ad4b8c8af9acaf3'})]:
                     self.assertFalse(math.exact_reviewed_context(dict(record, **{field: value}), updated, FIXTURES))
                 for asset in assets:
                     changed = copy.deepcopy(record)

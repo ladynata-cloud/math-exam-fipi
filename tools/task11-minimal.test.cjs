@@ -1,4 +1,5 @@
 'use strict';
+const {legacy,helpFacts}=require('./task11-test-evidence.cjs');
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
@@ -39,7 +40,7 @@ test('help explores independently and preserves entered answer, task and stored 
    const input=t.el('m4-hintbox').querySelector('input[type=range]');const old=t.el('lab-graph').innerHTML;
    input.value=input.max;input.dispatchEvent(new t.w.Event('input'));
    assert.notEqual(t.el('lab-graph').innerHTML,old,family+' responds');assert(t.el('lab-readout').textContent.length>30);
-   assert.equal(t.el('m4-answer').value,'123');assert.deepEqual(plain(t.run('M4.task.key')),key);assert.deepEqual(t.saved(),before);
+   assert.equal(t.el('m4-answer').value,'123');assert.deepEqual(plain(t.run('M4.task.key')),key);assert.deepEqual(legacy(t.saved()),legacy(before));helpFacts(t.saved());
    assert(!t.el('m4-good').classList.contains('show'));assert(t.el('m4-show').hidden);
   }
   t.el('m4-hint').click();assert(t.el('m4-hintbox').hidden);
