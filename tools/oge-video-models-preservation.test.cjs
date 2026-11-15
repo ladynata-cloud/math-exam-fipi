@@ -4,32 +4,47 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections} = require('./oge-video-models-preservation.cjs');
+const {entries, activeEntries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections} = require('./oge-video-models-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
 const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
+test('only task19 retires the optional addon; all nine historical routes remain protected', () => {
+  assert.deepEqual(Object.keys(entries), ['11','15','16','17','19','22','23','24','25']);
+  assert.deepEqual(Object.keys(activeEntries), ['11','15','16','17','22','23','24','25']);
+});
 for (const [number, file] of Object.entries(entries)) {
   test(file + ': only the exact optional model includes change', () => {
     const current = fs.readFileSync(path.join(ROOT, file), 'utf8');
     const source = execFileSync('git', ['show', (updates.pages[file]?.sourceCommit || BASE) + ':' + file], {cwd: ROOT, encoding: 'utf8'});
     const baseline = restoreVideoModels(file, source);
     if (updates.pages[file]) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), updates.pages[file].sha256, 'exact committed teaching revision');
-    assert.equal(current.split(snippet(number)).length, 2);
+    const active = Object.hasOwn(activeEntries, number);
+    if (active) assert.equal(current.split(snippet(number)).length, 2);
+    else {
+      assert.equal(number, '19', 'only the explicitly retired route can omit the addon');
+      assert.doesNotMatch(current, /OGE video-model investigations|oge-video-(?:models|graphs|geometry)/);
+      assert.equal(current, baseline, 'task19 retains every byte of its approved native teaching page');
+    }
     assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);
+    // The inverse still protects historical task19 receipts. Exercise every
+    // malformed-include probe with that exact historical block reinstated.
+    const included = active ? current : current.replace('</head>', snippet(number) + '</head>');
+    assert.equal(included.split(snippet(number)).length, 2);
+    assert.equal(restoreGraphScale(file, restoreVideoModels(file, included)), baseline);
     for (const changed of [snippet(number) + snippet(number), snippet(number).replace('defer', 'async'), snippet(number).replace('data-oge-video-task="' + number + '"', 'data-oge-video-task="0"')]) {
-      assert.throws(() => restoreVideoModels(file, current.replace(snippet(number), changed)));
+      assert.throws(() => restoreVideoModels(file, included.replace(snippet(number), changed)));
     }
-    const outside = current.replace('</head>', '</head><script>void "unreviewed";</script>');
+    const outside = included.replace('</head>', '</head><script>void "unreviewed";</script>');
     assert.notEqual(restoreVideoModels(file, outside), baseline, 'extra engine bytes are never normalized');
-    if (current.includes('data-trainer-download')) {
-      const editedPanel = current.replace('Скачать и изменить', 'Изменённая панель');
+    if (included.includes('data-trainer-download')) {
+      const editedPanel = included.replace('Скачать и изменить', 'Изменённая панель');
       assert.throws(() => restoreVideoModels(file, editedPanel), /exact download panel/);
     }
     assert.equal(restoreVideoModels('unrelated.html', current), current, 'wrong route has no inverse');
-    assert.throws(() => restoreVideoModels(file, current.replace(snippet(number), '').replace('<body', snippet(number) + '<body')), /head boundary/);
+    assert.throws(() => restoreVideoModels(file, included.replace(snippet(number), '').replace('<body', snippet(number) + '<body')), /head boundary/);
   });
 }
 

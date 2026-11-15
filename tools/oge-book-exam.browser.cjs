@@ -8,7 +8,7 @@ const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const videoContext=require('./oge-video-models-book-context.cjs');
-const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
+const {entries:videoEntries,activeEntries:activeVideoEntries,assets:videoAssets}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
 const OUT=path.resolve(process.env.BOOK_EXAM_OUTPUT||path.join(ROOT,'artifacts/book-audit-exam',PREFIX?'frozen':'source'));
 const MATCH=process.env.BOOK_EXAM_MATCH||'';
@@ -87,7 +87,13 @@ async function captureInitialVisibleText(page,report){
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(historical).digest('hex')};
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
- if(videoContext.pins.pages[relative]){
+ if(relative===videoEntries[19]){
+  assert(!Object.hasOwn(activeVideoEntries,19),'task19 is explicitly retired from live addon routes');
+  assert.doesNotMatch(raw,/OGE video-model investigations|oge-video-(?:models|graphs|geometry)/);
+  assert.equal(videoContext.hash(raw),videoContext.sourcePin(relative).sha256,'task19 keeps all approved native teaching bytes');
+  assert.equal(await page.locator('#oge-video-models').count(),0,'no addon DOM may hide behind a historical task19 pin');
+  assert(!report.initialVisibleText.includes(videoContext.label),'task19 keeps only its card-specific teaching flow');
+ }else if(videoContext.pins.pages[relative]){
   const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
    const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
    return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};

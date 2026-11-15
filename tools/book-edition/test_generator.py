@@ -143,7 +143,6 @@ class GeneratorTests(unittest.TestCase):
             15: "trainers/oge-task15-triangles.html",
             16: "trainers/oge-task16-circle.html",
             17: "trainers/oge-task17-quadrilaterals.html",
-            19: "trainers/task19-trainer.html",
             22: "trainers/oge-task22-functions-graphs.html",
             23: "trainers/oge-task23-geometry-calculations.html",
             24: "trainers/oge-task24-proofs.html",
@@ -152,6 +151,11 @@ class GeneratorTests(unittest.TestCase):
         reviewed = {"trainers/oge-video-models.css", "trainers/oge-video-graphs.js",
                     "trainers/oge-video-geometry.js", "trainers/oge-video-models.js"}
         sources = {record["path"]: record for record in manifest["sourceFiles"]}
+        task19 = "trainers/task19-trainer.html"
+        self.assertNotIn(b"oge-video-", (ROOT / task19).read_bytes())
+        self.assertFalse(reviewed.intersection(sources[task19]["dependencies"]),
+                         "task19 generated source closure uses only its own hints")
+        self.assertNotIn(b"oge-video-", output[edition.prefix + task19])
         old_html = {}
         for number, entry in entries.items():
             block = ('<!-- OGE video-model investigations: standalone practice -->\n'
