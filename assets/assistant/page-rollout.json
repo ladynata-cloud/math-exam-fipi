@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fd7046e62778a85e26c0dcfb7a52d998476cb37c",
+  "baseSha": "736b4ad9cbf36557dda32e8e4691f6178f366735",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2193,8 +2193,8 @@
       "placement": "before-head-close"
     },
     "stereo-course/index.html": {
-      "beforeSha256": "fc77d12fdaa5b1bcce10259556ec8573b93f2b55102439ba702156a16e8f6038",
-      "afterSha256": "567e1894296484a875f6dc812bca772a44b52effd3baada555dac01253487e42",
+      "beforeSha256": "ae0098d2a052c7386cdf4005f20591f660c49e9191e0f7b757bbbcd63f026090",
+      "afterSha256": "0482df348c0372380a0d70acb1fe71d8a7f203b9950b59b7f717da8db201681b",
       "placement": "before-head-close"
     },
     "stereo-course/merzlyak-10-base/index.html": {
@@ -5406,6 +5406,15 @@
         "geometry-course/atlas/vector-scale.html",
         "geometry-course/atlas/vectors.html",
         "geometry-course/index.html",
+        "stereo-course/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fd7046e62778a85e26c0dcfb7a52d998476cb37c",
+      "sourceBaseSha": "736b4ad9cbf36557dda32e8e4691f6178f366735",
+      "task": "docs/tasks/ATANASYAN_7_11_HARMONIZATION_20261116.md",
+      "changedPaths": [
         "stereo-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
