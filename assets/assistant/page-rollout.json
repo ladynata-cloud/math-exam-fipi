@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
+  "baseSha": "e2f22719727da85f572cbcc387db264f322bd74d",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2468,8 +2468,8 @@
       "placement": "before-head-close"
     },
     "trainers/linear-systems-trainer.html": {
-      "beforeSha256": "c73a83c1d1a6da587f3154c68b21240f6a6427ec052a408b16486ecf39a678dc",
-      "afterSha256": "118b8f78b9155f8fc5d0a4244cc5fdc0e0e039e90eb4741c1ff9e62f5080e738",
+      "beforeSha256": "2c36f3f4daff016617c559f8c4017f63385b47218738473660071cf9833a4c3a",
+      "afterSha256": "4dca5a8ce108802cdb9601444bf6ab908a3be32b0644ea6f66263d088745e83d",
       "placement": "before-head-close"
     },
     "trainers/logic-trainer/index.html": {
@@ -3058,8 +3058,8 @@
       "placement": "before-head-close"
     },
     "trainers/quadratic-inequalities-lab.html": {
-      "beforeSha256": "9eafbf360be7c60395a187c8283b7ad266b5e980aa090c347f535380a37be3a7",
-      "afterSha256": "d04868daa1caaa0024819361f53e1f1ea69f59211d3f1ff65e5653c9397dd512",
+      "beforeSha256": "8681018a7d77d1ca5a1d7c32965cdb4a806ce3181091d2b98f05f652e230f6f3",
+      "afterSha256": "5fdc1e3ddd4e4a94e553e2df95aa916a3590e65d50994715c9f5c09958542edd",
       "placement": "before-head-close"
     },
     "trainers/quadratic-inequalities-visual.html": {
@@ -5252,6 +5252,16 @@
         "ege-profil/trainers/numbers-t19.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
         "stereo-course/sections/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "sourceBaseSha": "e2f22719727da85f572cbcc387db264f322bd74d",
+      "task": "docs/tasks/H35_ALGEBRA_TRAINERS_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "trainers/linear-systems-trainer.html",
+        "trainers/quadratic-inequalities-lab.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
