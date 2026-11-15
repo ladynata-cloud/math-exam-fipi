@@ -19,6 +19,7 @@ on:
       - 'school/makarychev8/**'
       - 'school/peterson6/**'
       - 'tools/trainer-download-stage2.browser.cjs'
+      - 'tools/trainer-download-oge-next.cjs'
       - '.github/workflows/trainer-download-stage2.yml'
   workflow_dispatch:
 

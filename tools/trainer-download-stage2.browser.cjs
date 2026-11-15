@@ -10,6 +10,7 @@ const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
 const partTwoLessons = ['algebra', 'geometry', 'models'].flatMap(name => require(`../ege-profil/part-two/content-${name}.js`));
 const manifest = require('../downloads/trainers-manifest.json');
+const ogeNext = require('./trainer-download-oge-next.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -52,6 +53,7 @@ async function textbook(page, appName, courseName, lesson) {
 }
 
 const scenarios = {
+  ...ogeNext,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -217,8 +219,12 @@ with ZipFile(archive) as package:
         slug+'.html', slug+'-deepseek-prompt.md', 'README.md', 'adapt-trainer.gif', 'adapt-trainer.png'])
     package.extractall(Path(target))
 `, zip, target, entry.slug]);
-  for (const file of [entry.downloadHtml, entry.prompt, `${assetDir}/adapt-trainer.gif`, `${assetDir}/adapt-trainer.png`]) {
+  for (const file of [entry.downloadHtml, entry.prompt]) {
     assert.deepEqual(fs.readFileSync(path.join(target, path.basename(file))), read(file), file);
+  }
+  for (const extension of ['gif', 'png']) {
+    const source = `${assetDir}/${entry.adaptation.gif || 'adapt-trainer'}.${extension}`;
+    assert.deepEqual(fs.readFileSync(path.join(target, `adapt-trainer.${extension}`)), read(source), source);
   }
   assert.match(fs.readFileSync(path.join(target, 'README.md'), 'utf8'), /синхронная доска.*на сайте/);
 }
@@ -251,6 +257,8 @@ async function checkPanel(page, entry, width) {
   assert.deepEqual(await panel.locator('a[download]').evaluateAll(links => links.map(link => link.getAttribute('href'))),
     [entry.downloadHtml, entry.prompt, entry.package]);
   assert(await panel.locator('.download-note').first().isVisible());
+  assert.equal(await panel.locator('a[href^="/pedagogam/"]').getAttribute('href'),
+    guide + '#' + (entry.adaptation.gif || 'adaptation-example'));
   for (const button of await panel.locator('a[download], .download-copy').all()) {
     const box = await button.boundingBox();
     assert(box && box.height >= 44 && box.x >= 0 && box.x + box.width <= width + 1, entry.slug);
@@ -271,10 +279,13 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '2');
+  assert.equal(manifest.stage, '3');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
+  const filter = process.argv[2];
+  assert(filter === undefined || filter === '--oge-next' || scenarios[filter], 'unknown test filter');
+  const selected = entries.filter(entry => !filter || filter === entry.slug || (filter === '--oge-next' && ogeNext[entry.slug]));
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'mathexam-downloads-'));
   const server = await listen();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -282,7 +293,7 @@ async function run() {
   let browser;
   try {
     browser = await chromium.launch({ headless: true, executablePath });
-    for (const [index, entry] of entries.entries()) {
+    for (const [index, entry] of selected.entries()) {
       const target = path.join(output, entry.slug);
       extractPackage(entry, target);
       const extracted = pathToFileURL(path.join(target, `${entry.slug}.html`));
@@ -300,18 +311,18 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320) await scenarios[entry.slug](page);
+        if (width === 320 || ogeNext[entry.slug]) await scenarios[entry.slug](page, loadImage);
         assert.deepEqual(issues, [], entry.slug);
         await context.close();
       }
-      console.log(`PASS file:// ${index + 1}/${entries.length} ${entry.slug}`);
+      console.log(`PASS file:// ${index + 1}/${selected.length} ${entry.slug}`);
     }
 
     for (const width of [320, 1280]) {
       const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
       await context.route('**/*', route => route.request().url().startsWith(origin + '/') ? route.continue() : route.abort());
       const page = await context.newPage();
-      for (const entry of entries) {
+      for (const entry of selected) {
         await page.goto(origin + entry.sourceHtml);
         await checkPanel(page, entry, width);
       }
@@ -357,23 +368,33 @@ async function run() {
       await play.click();
       await gif.locator(':scope > summary').click();
       await page.waitForFunction(() => document.querySelector('[data-trainer-gif] img').getAttribute('src').endsWith('.png'));
+      const geometry = page.locator('#adapt-geometry');
+      await geometry.locator(':scope > summary').click();
+      await loadImage(geometry.locator('img'));
+      for (let i = 0; i < 4; i++) await geometry.getByRole('button', { name: 'Следующий кадр' }).click();
+      assert.match(await geometry.locator('.trainer-skill-gif-caption').innerText(), /Кадр 5 из 5.*42.*48/);
+      await geometry.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(geometry.locator('img'));
+      assert.match(await geometry.locator('img').getAttribute('src'), /adapt-geometry\.gif$/);
       await context.close();
     }
 
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto(origin + guide);
-    await page.locator('[data-trainer-gif] > summary').click();
-    assert.equal(await page.locator('[data-trainer-gif-fallback] li:visible').count(), 5);
+    for (const example of await page.locator('[data-trainer-gif]').all()) {
+      await example.locator(':scope > summary').click();
+      assert.equal(await example.locator('[data-trainer-gif-fallback] li:visible').count(), 5);
+    }
     await page.goto(origin + '/trainers/oge-course/#downloads');
     const list = page.locator('#downloads a[download]');
-    assert.equal(await list.count(), 7);
+    assert.equal(await list.count(), 15);
     for (const href of await list.evaluateAll(links => links.map(link => link.getAttribute('href')))) {
       assert.match(href, /^\/downloads\/trainers\/.*\.zip$/);
       assert((await context.request.head(origin + href)).ok());
     }
     await context.close();
-    console.log('TRAINER_DOWNLOAD_ADAPT_OK: 10 packages, 20 file:// opens and 20 panel views');
+    console.log(`TRAINER_DOWNLOAD_ADAPT_OK: ${selected.length} packages, ${selected.length * 2} file:// opens and ${selected.length * 2} panel views`);
   } finally {
     await browser?.close();
     await new Promise(resolve => server.close(resolve));

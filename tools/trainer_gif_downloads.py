@@ -50,3 +50,55 @@ def build_all(build):
             card.text(171, 216, 'Принять', 20, 'accent')
 
     build('adapt-trainer', 'Как изменить скачанный тренажёр', steps, draw)
+    build_geometry(build)
+
+
+def build_geometry(build):
+    steps = (
+        'Скачай HTML тренажёра №17. Выбери задачу на площадь ромба.',
+        'Попроси добавить пример с диагоналями 12 и 8. Приложи HTML к запросу.',
+        'Сохрани новую копию и сверь длины диагоналей в условии и на рисунке.',
+        'Пересчитай ответ: половина произведения диагоналей равна 48.',
+        'Открой копию без сети. Проверь, что 42 отклоняется, а 48 принимается.',
+    )
+
+    def rhombus(card, x, y, half_width, half_height, d1, d2):
+        corners = [(x - half_width, y), (x, y - half_height),
+                   (x + half_width, y), (x, y + half_height)]
+        card.polygon(corners, 'soft', 'ink', 2)
+        card.line([corners[0], corners[2]], 'blue', 3)
+        card.line([corners[1], corners[3]], 'amber', 3)
+        card.text(x + half_width - 4, y + 10, str(d1), 20, 'blue', True, 'rt')
+        card.text(x + 8, y - half_height + 7, str(d2), 20, 'amber', True)
+
+    def draw(card, index):
+        card.rect((32, 88, 608, 258), outline='edge', radius=12)
+        if index == 0:
+            card.text(51, 111, 'ОГЭ №17 · Площадь ромба', 24, bold=True)
+            card.text(51, 158, 'Диагонали 14 и 6', 21)
+            card.text(51, 207, 'Скачать тренажёр HTML', 20, 'accent', True)
+            rhombus(card, 477, 173, 84, 36, 14, 6)
+        elif index == 1:
+            card.text(51, 109, 'Что хотите изменить?', 24, bold=True)
+            card.rect((51, 147, 590, 199), outline='edge', radius=7)
+            card.text(65, 165, 'Добавь ромб с диагоналями 12 и 8.', 22)
+            card.text(51, 224, 'Приложи скачанный HTML.', 20, 'accent', True)
+        elif index == 2:
+            card.text(51, 110, 'Диагонали в условии и на рисунке', 23, bold=True)
+            rhombus(card, 184, 191, 75, 50, 12, 8)
+            card.text(323, 158, 'd₁ = 12', 25, 'blue', True)
+            card.text(323, 204, 'd₂ = 8', 25, 'amber', True)
+        elif index == 3:
+            card.text(51, 110, 'Проверь формулу площади', 24, bold=True)
+            card.text(51, 162, 'S = d₁ · d₂ : 2', 29, 'ink', True)
+            card.text(51, 208, 'S = 12 · 8 : 2 = 48', 27, 'accent', True)
+        else:
+            card.text(51, 110, 'Проверка в локальной копии', 24, bold=True)
+            rows = [('Пусто', 'Предложить ввести ответ', 'ink'),
+                    ('42', 'Отклонить', 'red'), ('48', 'Принять', 'accent')]
+            for i, (answer, feedback, ink) in enumerate(rows):
+                y = 153 + i * 34
+                card.text(52, y, answer, 21, ink, True)
+                card.text(173, y, feedback, 21, ink)
+
+    build('adapt-geometry', 'Как изменить геометрический тренажёр', steps, draw)
