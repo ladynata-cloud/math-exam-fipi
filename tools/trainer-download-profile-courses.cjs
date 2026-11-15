@@ -11,7 +11,55 @@ async function openDigitTask(page) {
   return page.locator('#tPoints .point');
 }
 
+async function equalGroupExamples(page) {
+  await page.getByRole('tab', { name: 'Дриллы и зачёт' }).click();
+  const examples = await page.evaluate(() => {
+    const originalRandom = Math.random;
+    try {
+      const result = [];
+      for (let n = 6; n <= 14; n++) {
+        const total = n * (n + 1) / 2;
+        const possibilities = Array.from({ length: n - 1 }, (_, i) => i + 2)
+          .filter(k => total % k === 0 && total / k >= n);
+        possibilities.forEach((k, i) => {
+          const values = [(n - 6 + 0.5) / 9, 0, (i + 0.5) / possibilities.length];
+          Math.random = () => values.shift();
+          const drill = N19.GENS.groups();
+          result.push({ n, k, chosen: drill.p, answer: drill.answer, solution: drill.sol });
+        });
+      }
+      const sample = [0.7, 0.1, 0.45];
+      Math.random = () => sample.shift();
+      const chip = [...document.querySelectorAll('#drillChips button')]
+        .find(button => button.textContent === 'Группы равной суммы');
+      chip.click();
+      return result;
+    } finally {
+      Math.random = originalRandom;
+    }
+  });
+  assert(examples.length > 10);
+  for (const { n, k, chosen, answer, solution } of examples) {
+    assert.deepEqual(chosen, { n, k });
+    assert.equal(answer, true);
+    const groups = [...solution.matchAll(/\(([0-9 +]+)\)/g)].map(match => match[1].split(' + ').map(Number));
+    assert.equal(groups.length, k);
+    for (const group of groups) {
+      assert.equal(group.reduce((sum, member) => sum + member, 0), n * (n + 1) / (2 * k));
+    }
+    assert.deepEqual(groups.flat().sort((a, b) => a - b), Array.from({ length: n }, (_, i) => i + 1));
+  }
+  assert.match(await page.locator('#dText').innerText(), /12 разбить на 3/);
+  await page.locator('#dNo').click();
+  assert(await page.locator('#dFb.bad').isVisible());
+  await page.locator('#dSol').click();
+  assert.match(await page.locator('#dFb').innerText(), /26.*Подходящее разбиение/);
+  await page.locator('#dYes').click();
+  assert(await page.locator('#dFb.ok').isVisible());
+}
+
 async function divisibility(page, { limit = 2025, example = 2030, maximum = 2039 } = {}) {
+  assert(await page.getByRole('heading', { name: 'Как обосновать ответ' }).isVisible());
   const points = await openDigitTask(page);
   const [first, reason, last] = [points.nth(0), points.nth(1), points.nth(2)];
   const exampleInput = first.getByRole('textbox', { name: 'Ответ' });
@@ -49,6 +97,7 @@ async function divisibility(page, { limit = 2025, example = 2030, maximum = 2039
   await page.reload();
   await openDigitTask(page);
   assert.equal(await page.locator('#tPoints .point.solved').count(), 3);
+  await equalGroupExamples(page);
 }
 
 async function sections(page) {
