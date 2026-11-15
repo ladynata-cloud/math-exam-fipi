@@ -174,6 +174,16 @@ test('both entry pages offer four concrete optional models before practice, with
         assert.match(hero.textContent, /Исследовать прямую/);
         assert.equal(url.searchParams.get('topic'), 'n11');
         assert.equal(url.searchParams.get('route'), 'task:n11-c1');
+        const actions = Array.from(doc.querySelectorAll('.oge-hero .actions a'));
+        const direct = actions[1];
+        assert.equal(actions[0], hero, 'Research stays the first primary action');
+        assert(direct.classList.contains('secondary'), 'Ordinary practice remains a secondary choice');
+        assert.match(direct.textContent, /Начать с графиков №11/);
+        assert.equal(direct.getAttribute('href'), '/oge/skills/?topic=n11', 'The original direct practice keeps its ordinary route');
+        const note = doc.getElementById(direct.getAttribute('aria-describedby'));
+        assert(note && !note.hidden && !note.closest('details'), 'The short-practice description is visible without opening a list');
+        assert.match(note.textContent, /Короткая тренировка по графикам: четыре задания с подсказками/);
+        assert.equal(direct.hasAttribute('data-oge-skill-topic'), false, 'The shortcut does not duplicate the 26-entry topic map');
       } else {
         assert.match(doc.querySelector('#part2 > p').textContent, /отдельные шаги.*полное решение.*всего обоснования/);
       }

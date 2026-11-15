@@ -165,12 +165,32 @@ function safeError(error) {
           }
         }
         await page.goto(base + '/oge/', {waitUntil: 'load'});
+        const primaryResearch = page.getByRole('link', {name: 'Исследовать прямую', exact: true});
+        const directPractice = page.getByRole('link', {name: 'Начать с графиков №11', exact: true});
+        assert(await directPractice.isVisible(), 'Short practice is available without opening a topic list');
+        assert.equal(await directPractice.getAttribute('href'), '/oge/skills/?topic=n11');
+        assert.equal(await directPractice.getAttribute('aria-describedby'), 'oge-graph-practice-note');
+        assert(await page.locator('#oge-graph-practice-note').isVisible());
+        assert.match(await page.locator('#oge-graph-practice-note').innerText(), /Короткая тренировка по графикам: четыре задания/);
+        await primaryResearch.focus();
+        await page.keyboard.press('Tab');
+        assert(await directPractice.evaluate(a => a === document.activeElement), 'Keyboard order offers research before ordinary practice');
+        const directBox = await directPractice.boundingBox();
+        assert(directBox && directBox.height >= 44, 'The direct practice shortcut retains a usable touch target');
+        await noOverflow(page, 'H17 hero research and practice choices at ' + width);
+        await page.locator('.oge-hero .hero-inner').screenshot({path: path.join(out, 'h17-hero-' + width + '.png')});
         await page.getByRole('link', {name: 'Исследовать прямую', exact: true}).click();
         await page.locator('#mathexam-skill-lab .task').waitFor();
         assert.equal(await page.evaluate(() => OGESkillLab.task().id), 'n11-c1', 'The primary hero opens the promised line model');
         await unchanged(page);
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).press('Enter');
+        await page.waitForURL(base + lesson + '?topic=n11');
+        await page.getByText('Формула по графику', {exact: true}).waitFor();
+        assert.deepEqual(await page.evaluate(() => ({id: OGESkillLab.task().id, type: OGESkillLab.task().type})), {id: 'n11-q1', type: 'choice'}, 'The secondary action still opens ordinary graph practice');
+        await unchanged(page);
         assert.deepEqual(errors, []);
-        report.scenarios.push('H17: four exact models from both entries, keyboard focus, untouched results, course returns and the line hero at ' + width + 'px');
+        report.scenarios.push('H17: four exact models from both entries, keyboard focus, untouched results, course returns and separate research/practice hero actions at ' + width + 'px');
       } finally { await c.close(); }
     }
 
@@ -190,6 +210,11 @@ function safeError(error) {
           await page.waitForURL(url => url.pathname === course);
           assert.equal(await page.locator('[data-oge-topic]').count(), 25);
         }
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        assert(await page.locator('#oge-graph-practice-note').isVisible());
+        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).press('Enter');
+        await page.waitForURL(base + lesson + '?topic=n11');
+        assert(await page.locator('[data-skill-link="course"]').isVisible());
         report.scenarios.push('H17: both optional research entries and their fallback return remain usable without JavaScript');
       } finally { await c.close(); }
     }
