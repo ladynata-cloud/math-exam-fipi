@@ -268,7 +268,8 @@
       const borderX = (parseFloat(style?.borderLeftWidth) || 0) + (parseFloat(style?.borderRightWidth) || 0);
       const borderY = (parseFloat(style?.borderTopWidth) || 0) + (parseFloat(style?.borderBottomWidth) || 0);
       viewportWidth = svg.clientWidth || (bounds.width > borderX ? bounds.width - borderX : 420);
-      viewportHeight = Math.max(360, Math.min(680, viewportWidth * .76));
+      const minimum = options.compactPreview ? 300 : 360;
+      viewportHeight = Math.max(minimum, Math.min(680, viewportWidth * .76));
       svg.style.height = (viewportHeight + borderY) + 'px';
       svg.setAttribute('viewBox', '0 0 ' + viewportWidth + ' ' + viewportHeight);
       render();
