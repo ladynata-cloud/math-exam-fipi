@@ -15,6 +15,7 @@ const ogeFinal = require('./trainer-download-oge-final.cjs');
 const profileFirst = require('./trainer-download-profile-first.cjs');
 const profileNext = require('./trainer-download-profile-next.cjs');
 const profileReasoning = require('./trainer-download-profile-reasoning.cjs');
+const profileCourses = require('./trainer-download-profile-courses.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -23,7 +24,7 @@ const assetDir = 'assets/trainer-skill-gifs';
 const guide = '/pedagogam/kak-skachat-i-adaptirovat-trenazher/';
 const profileMapSlugs = new Set([
   ...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios),
-  'ege-profil-vectors-t2', 'ege-profil-part-two',
+  'ege-profil-vectors-t2', 'ege-profil-part-two', 'ege-profil-divisibility',
   'ege-profil-log-inequalities', 'ege-profil-log-variable-base', 'ege-profil-log-nested'
 ]);
 
@@ -156,6 +157,7 @@ const scenarios = {
   ...profileFirst.scenarios,
   ...profileNext.scenarios,
   ...profileReasoning.scenarios,
+  ...profileCourses.scenarios,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -384,11 +386,11 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '7');
+  assert.equal(manifest.stage, '8');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
-  assert.equal(profileMapSlugs.size, 15);
+  assert.equal(profileMapSlugs.size, 16);
   for (const entry of entries.filter(entry => profileMapSlugs.has(entry.slug))) {
     assert.equal(entry.inlineAssets.filter(asset => asset === '/ege-profil/exam-map.js').length, 1, entry.slug);
   }
@@ -402,7 +404,8 @@ async function run() {
     '--oge-final': ogeFinal,
     '--profile-first': profileFirst.scenarios,
     '--profile-next': profileNext.scenarios,
-    '--profile-reasoning': profileReasoning.scenarios
+    '--profile-reasoning': profileReasoning.scenarios,
+    '--profile-courses': profileCourses.scenarios
   };
   assert(!filter || groups[filter] || scenarios[filter], 'unknown test filter');
   const selected = entries.filter(entry => !filter || filter === entry.slug || groups[filter]?.[entry.slug]);
@@ -440,6 +443,7 @@ async function run() {
       }
       if (entry.slug === 'ege-profil-finance') await profileNext.checkEditedFinance(browser, entry, target);
       if (entry.slug === 'ege-profil-log-inequalities') await profileReasoning.checkEditedLog(browser, entry, target);
+      if (entry.slug === 'ege-profil-divisibility') await profileCourses.checkEditedDivisibility(browser, entry, target);
       console.log(`PASS file:// ${index + 1}/${selected.length} ${entry.slug}`);
     }
 
@@ -539,6 +543,14 @@ async function run() {
       assert.match(await log.locator('img').getAttribute('src'), /adapt-log-inequality\.gif$/);
       await log.getByRole('button', { name: 'Остановить GIF' }).click();
       assert.match(await log.locator('img').getAttribute('src'), /adapt-log-inequality\.png$/);
+      const divisibility = page.locator('#adapt-divisibility');
+      await divisibility.locator('summary').press('Enter');
+      await loadImage(divisibility.locator('img'));
+      for (let frame = 0; frame < 4; frame++) await divisibility.getByRole('button', { name: 'Следующий кадр' }).click();
+      assert.match(await divisibility.locator('.trainer-skill-gif-caption').innerText(), /Кадр 5 из 5.*2050.*2059/);
+      await divisibility.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(divisibility.locator('img'));
+      assert.match(await divisibility.locator('img').getAttribute('src'), /adapt-divisibility\.gif$/);
       await context.close();
     }
 
@@ -562,7 +574,7 @@ async function run() {
     assert.equal(await profileDownloads.getAttribute('open'), null);
     await profileDownloads.locator('summary').press('Enter');
     const profileLinks = await profileDownloads.locator('a[download]').evaluateAll(links => links.map(link => link.getAttribute('href')));
-    const profileSlugs = [...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios), ...Object.keys(profileReasoning.scenarios)];
+    const profileSlugs = [profileFirst, profileNext, profileReasoning, profileCourses].flatMap(group => Object.keys(group.scenarios));
     const expected = profileSlugs.map(slug => entries.find(entry => entry.slug === slug).package);
     assert.equal(profileLinks.length, expected.length);
     assert.deepEqual(new Set(profileLinks), new Set(expected));
@@ -580,6 +592,9 @@ async function run() {
     }
     if (Object.keys(profileReasoning.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
       console.log('TRAINER_DOWNLOAD_STAGE7_OK: four reasoning packages, logarithm bounds and saved proof');
+    }
+    if (Object.keys(profileCourses.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
+      console.log('TRAINER_DOWNLOAD_STAGE8_OK: edited divisibility and 186 offline sections cards');
     }
   } finally {
     await browser?.close();

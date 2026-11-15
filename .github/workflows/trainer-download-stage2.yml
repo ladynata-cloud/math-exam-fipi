@@ -34,6 +34,8 @@ on:
       - 'ege-profil/trainers/finance.html'
       - 'ege-profil/trainers/planimetry-yashchenko-t1.html'
       - 'ege-profil/trainers/trigonometry.html'
+      - 'ege-profil/trainers/numbers-t19.html'
+      - 'stereo-course/sections/**'
       - 'school/makarychev8/**'
       - 'school/peterson6/**'
       - 'tools/trainer-download-stage2.browser.cjs'
@@ -42,6 +44,7 @@ on:
       - 'tools/trainer-download-profile-first.cjs'
       - 'tools/trainer-download-profile-next.cjs'
       - 'tools/trainer-download-profile-reasoning.cjs'
+      - 'tools/trainer-download-profile-courses.cjs'
       - '.github/workflows/trainer-download-stage2.yml'
   workflow_dispatch:
 

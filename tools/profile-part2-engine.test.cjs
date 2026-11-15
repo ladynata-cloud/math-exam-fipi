@@ -48,8 +48,8 @@ test('actual final form never completes a task for an invalid expression that fo
    assert(!w.document.getElementById('completion'));
    assert.equal(r.drafts.final[0],invalid);
    assert.equal(r.drafts.proof,'Моё обоснование остаётся на месте');
-   // The existing ordinary-final-format attempt policy is intentionally not
-   // changed here; H04 separately classifies unreadable input without penalty.
+   // H04 retains an invalid real expression before any mathematical attempt.
+   assert.equal(r.attemptCount,0);assert.equal(r.wrong,0);
    const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
    w.close();dom=await boot(hash,entries);w=dom.window;
    assert.equal(w.document.getElementById('final-0').value,invalid);
@@ -266,7 +266,8 @@ test('native Chromium H01 numeric-domain forms at 320, 390 and 1280 pixels',{
       check('literal invalid draft stored',record.drafts.final[0],row.invalidInput);
       check('proof draft retained',record.drafts.proof,proof);
       row.invalidFeedback=await page.locator('#feedback').innerText();
-      // H04 owns malformed-answer attempt classification; it is not altered here.
+      check('invalid expression creates no mathematical attempt',record.attemptCount,0);
+      check('invalid expression creates no mathematical error',record.wrong,0);
       row.invalidAttemptCount=record.attemptCount;
       await capture('invalid');await page.reload();await page.locator('#final-form').waitFor();
       check('literal invalid draft survives native reload',await page.locator('#final-0').inputValue(),row.invalidInput);
