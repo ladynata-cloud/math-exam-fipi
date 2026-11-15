@@ -122,7 +122,7 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
     route = '/trainers/oge-task24-proofs.html'
     if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
             record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
-            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+            '2332c0b01fae94555438256762a0dba0d3d08101'):
         return False
     old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
     captions = {
@@ -135,7 +135,7 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
         return False
     assets = {
         '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
-        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        '/trainers/oge-course-proof.js': 'bd57b2cf95711e442bd43a0e667d49d1e89a7a74383284b55694ca9c4818ec59',
     }
     for path, expected in assets.items():
         loaded = record.get('resources', {}).get(path, {})
