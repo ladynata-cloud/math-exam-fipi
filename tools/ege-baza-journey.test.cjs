@@ -15,7 +15,7 @@ function runtime(minimal = false) {
 const plain = value => JSON.parse(JSON.stringify(value));
 function storage(values = {}, blocked = []) {
   const text = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, typeof value === 'string' ? value : JSON.stringify(value)]));
-  return { text, reads: [], writes: 0, getItem(key) { this.reads.push(key); if (blocked.includes(key)) throw Error('storage denied'); return text[key] ?? null; },
+  return { text, reads: [], writes: 0, get length(){return Object.keys(text).length;},key(index){return Object.keys(text)[index]??null;},getItem(key) { this.reads.push(key); if (blocked.includes(key)) throw Error('storage denied'); return text[key] ?? null; },
     setItem() { this.writes++; throw Error('must not write'); }, removeItem() { this.writes++; throw Error('must not remove'); } };
 }
 function pathSave(lessons = {}) { return { version: 1, serial: 30, lessons, seen: {}, runs: [], active: null }; }
@@ -33,9 +33,10 @@ function activeRun(ctx, kind = 'exam', count = 1) {
 function find(snapshot, id) { return snapshot.lines.flatMap(line => line.items).find(item => item.id === id); }
 function actualPathValidator(ctx) {
   const source = fs.readFileSync(path.join(root, 'ege-baza/path/app.js'), 'utf8');
-  const start = source.indexOf('const integer='), end = source.indexOf('try{let raw=localStorage');
+  const start = source.indexOf('const integer='), end = source.indexOf('function readProgress(');
   assert(start >= 0 && end > start, 'locate the existing loader validation without rewriting it');
   vm.runInContext('window = globalThis;', ctx);
+  vm.runInContext(source.slice(0,source.indexOf("\n(function(){'use strict';if")),ctx);
   vm.runInContext(fs.readFileSync(path.join(root, 'ege-baza/path/task-hints.js'), 'utf8'), ctx);
   vm.runInContext(fs.readFileSync(path.join(root, 'ege-baza/path/task-first.js'), 'utf8'), ctx);
   return vm.runInContext('(function(){const D=PathData;\n' + source.slice(start, end) + '\nreturn valid;})()', ctx);
@@ -213,5 +214,33 @@ test('optional personal learning-cycle fields resume safely and malformed siblin
     assert.equal(result.sources.path.resumeCompatible, false);
     assert.equal(result.recommendation.kind, 'recovery');
     assert.equal(JSON.stringify(store.text), before);
+  }
+});
+
+test('recovery metadata keeps a current projection readable and makes stale or unavailable evidence unknown without writes', () => {
+  const ctx=runtime(),key=ctx.EgeBazaJourney.keys.path,writer='a'.repeat(32),prefix=key+'.h03.';
+  const source=fs.readFileSync(path.join(root,'ege-baza/path/app.js'),'utf8'),boundary=source.indexOf("\n(function(){'use strict';if");
+  assert(boundary>0,'locate inert personal persistence definition');
+  vm.runInContext(source.slice(0,boundary),ctx);
+  const base=pathSave({round:lesson({independent:1,done:true})});
+  const record={version:1,writer,generation:'initial',parent:null,seq:2,base,rows:{},events:[],root:null};
+  const projected=plain(base);projected.progressStore={version:1,generation:'initial',vector:{[writer]:2},digest:ctx.PathProgressStore.digest(projected)};
+  const current=storage({[key]:projected,[prefix+writer]:record}),before=JSON.stringify(current.text);
+  let result=ctx.EgeBazaJourney.snapshot(current);
+  assert.equal(result.sources.path.status,'saved');assert.equal(find(result,'round').independent,true);assert.equal(current.writes,0);assert.equal(JSON.stringify(current.text),before);
+  const packed=ctx.PathData.practice.packTask21Progress(pathSave({'practice-mushroom-count':lesson({draft:'21 draft'})}));
+  packed.progressStore={version:1,generation:'initial',vector:{},digest:ctx.PathProgressStore.digest(packed)};
+  result=ctx.EgeBazaJourney.snapshot(storage({[key]:packed}));assert.equal(result.sources.path.status,'saved');assert.equal(find(result,'practice-mushroom-count').status,'started');
+  for(const kind of ['old-page','interrupted-projection','future','corrupt','denied-enumeration','bad-recovery','bad-exam']){
+    const value=plain(projected),copy=plain(record);let store;
+    if(kind==='old-page'){delete value.progressStore;value.lessons.round.independent=99;}
+    if(kind==='interrupted-projection')copy.seq=3;
+    if(kind==='future')value.progressStore.version=999;
+    if(['bad-recovery','bad-exam'].includes(kind)){value[kind==='bad-recovery'?'recoveryDrafts':'examDrafts']=[null];value.progressStore.digest=ctx.PathProgressStore.digest(value);}
+    store=storage({[key]:value,[prefix+writer]:kind==='corrupt'?'{broken':copy});
+    if(kind==='denied-enumeration')Object.defineProperty(store,'length',{get(){throw Error('denied');}});
+    const original=JSON.stringify(store.text);result=ctx.EgeBazaJourney.snapshot(store);
+    assert(['unreadable','blocked'].includes(result.sources.path.status),kind);assert.equal(find(result,'round').independent,null,kind);
+    assert.equal(result.recommendation.kind,'recovery',kind);assert.equal(store.writes,0,kind);assert.equal(JSON.stringify(store.text),original,kind);
   }
 });

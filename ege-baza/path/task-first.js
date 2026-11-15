@@ -76,7 +76,8 @@
   // guided answer to a final answer when converting the presentation.
   l.stage=3;l.draft=u.finalDraft;
   if(u.helpOpen||u.modelOpen||u.stepsOpen){l.help=true;expose(t);}
-  const markHelp=()=>{if(!root.document||!host.isConnected)return;l.help=true;expose(t);save();};
+  const reconcile=()=>!context.reconcile||context.reconcile();
+  const markHelp=()=>{if(!root.document||!host.isConnected)return;reconcile();l.help=true;expose(t);save();};
   const currentIndex=D.meta.filter(m=>!m.grade7&&!m.pre7&&m.pos===meta.pos);
   const journey=context.journey?.line?context.journey:null;
   const lineNav=journey?`<nav class="journey-lesson-nav" aria-label="${journey.line.pos?'Задание ЕГЭ':'Учебная линия'}"><a class="back" href="${E(journey.line.href)}">← ${E(journey.line.title)}</a><a class="back" href="#map">Все задания</a></nav>`:'<a class="back" href="#map">← Все задания</a>';
@@ -98,7 +99,7 @@
    $('#new').classList.toggle('primary',assisted);
    $('#variantStatus').textContent=assisted?'Ответ найден после помощи, повторного показа или исправления. Следующий шаг — похожее условие без открытых подсказок. Повтор будет отмечен.':u.repeatedVariant?'Сейчас доступен знакомый вариант. Повтор полезен, но не добавит новое самостоятельное решение.':'';
   }
-  const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';$('#feedback').innerHTML=M(text);$('#feedback').className='feedback '+u.feedbackKind;refreshLearning();save();skillMap?.refresh();};
+  const feedback=(text,bad=false)=>{u.feedback=text;u.feedbackKind=bad?'bad':'good';save();$('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;refreshLearning();skillMap?.refresh();};
   $('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;
   function bindChoices(prefix,change) {
    const input=$('#'+prefix),buttons=host.querySelectorAll('[data-'+prefix+'-choice]');
@@ -110,6 +111,7 @@
   $('#answerForm').onsubmit=event=>{
    event.preventDefault();const value=answer.value;
    if(!value.trim())return feedback('Сначала запиши ответ на вопрос задачи.',true);
+   if(!reconcile())return feedback('Скачай текущую работу и обнови страницу перед проверкой ответа.',true);
    if(l.done)return feedback('Этот вариант уже проверен. Нажми «Ещё задача этого типа».');
    const ok=D.correct(t,value),independent=!l.attempted&&!l.help&&!seen(t);
    l.attempted=true;expose(t);
@@ -152,15 +154,15 @@
    return choice?.label??stored??(step.a===undefined?'Условия выполнены':root.PathPracticeView.answerText(step));
   }
   function renderSteps(){
-   const step=t.steps[l.step],body=$('#taskStepsBody');
+   const shownStep=l.step,step=t.steps[shownStep],body=$('#taskStepsBody');
    $('#taskHint').innerHTML=M(hintText());
    body.innerHTML=`<ol class="steps">${t.steps.slice(0,l.step).map((s,index)=>`<li>${M(s.q)} <strong>${M(completedStepAnswer(s,index))}</strong><p>${M(s.why)}</p></li>`).join('')}</ol>${step?`<h2>Шаг ${l.step+1} из ${t.steps.length}</h2>${inputMarkup(step,'stepAnswer',step.q,meta.id==='round'?'Введи целое число.':undefined)}<details id="stepWhy"><summary>Почему именно так?</summary><p>${M(step.why)}</p></details><p id="stepFeedback" class="feedback" role="status">${M(u.stepFeedback)}</p>`:'<h2>Разбор завершён</h2><p>Запиши ответ в поле задачи выше. Чтобы проверить себя самостоятельно, нажми «Ещё задача этого типа».</p>'}`;
    refreshReasoningMap();
    skillMap?.refresh();
    if(!step)return;
    const field=$('#stepAnswer');field.value=u.stepDraft;
-   const writeStep=value=>{u.stepDraft=value.slice(0,10000);save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
-   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
+   const writeStep=value=>{value=value.slice(0,10000);if(!reconcile())return;if(l.step!==shownStep){context.retainStepDraft?.(meta.id,t.seed,shownStep,value);$('#stepFeedback').textContent='Этот шаг уже пройден в другой вкладке. Черновик сохранён в копиях работы.';return;}u.stepDraft=value;save();};field.oninput=()=>writeStep(field.value);bindChoices('stepAnswer',writeStep);
+   $('#stepAnswerForm').onsubmit=event=>{event.preventDefault();const value=field.value;if(!reconcile())return;if(l.step!==shownStep){renderSteps();return;}if(!value.trim()){$('#stepFeedback').textContent='Сначала ответь на вопрос этого шага.';return;}markHelp();if(D.correct(step,value)){u.stepAnswers[l.step]=value;l.step++;u.stepDraft='';u.stepFeedback='';u.whyOpen=false;if(l.step===t.steps.length)l.guided++;save();renderSteps();($('#taskStepsBody [data-stepAnswer-choice]')||$('#stepAnswer'))?.focus({preventScroll:true});}else{u.stepFeedback=root.PathPracticeView.wrongFeedback(step,value,'Проверь этот шаг. '+(route ? hintText() : step.why));$('#stepFeedback').innerHTML=M(u.stepFeedback);$('#stepFeedback').className='feedback bad';root.EgeRemediation.show({id:remediationId(meta),value,expected:step.a});save();}};
    const why=$('#stepWhy');why.open=u.whyOpen;why.querySelector('summary').addEventListener('click',()=>{if(!why.open)markHelp();});why.ontoggle=()=>{if(!root.document||!why.isConnected)return;u.whyOpen=why.open;if(why.open)markHelp();else save();};
   }
   renderSteps();
@@ -220,6 +222,11 @@
    }
   }
   save();
+  return {refreshProgress(){
+   if(!host.isConnected)return;
+   $('#feedback').innerHTML=M(u.feedback);$('#feedback').className='feedback '+u.feedbackKind;
+   refreshLearning();skillMap?.refresh();
+  }};
  }
  root.PathTaskFirst={mount,valid,question,learningFeedback};
 })(window);

@@ -52,6 +52,35 @@
       return { status: error instanceof SyntaxError || error instanceof TypeError && error.message === 'save' ? 'unreadable' : 'blocked', text: null, raw: null };
     }
   }
+  function recoveryStatus(storage, raw) {
+    // The home page stays read-only. A projection written by an older page, or
+    // interrupted before its final write, cannot promise current mastery.
+    const meta=raw?.progressStore, prefix=PATH_KEY+'.h03.';
+    try {
+      if(meta){
+        if(!plain(meta)||meta.version!==1||typeof meta.generation!=='string'||!plain(meta.vector)||!Object.values(meta.vector).every(value=>integer(value)))return 'unreadable';
+        const copy={...raw};delete copy.progressStore;const text=JSON.stringify(copy);let hash=2166136261;
+        for(let i=0;i<text.length;i++)hash=Math.imul(hash^text.charCodeAt(i),16777619);
+        if(meta.digest!==text.length+':'+(hash>>>0).toString(16))return 'unreadable';
+      }
+      if(typeof storage?.key!=='function')return meta?'blocked':null;
+      const records=[];
+      for(let i=0;i<storage.length;i++){
+        const key=storage.key(i);if(!key?.startsWith(prefix))continue;
+        const text=storage.getItem(key);if(typeof text!=='string'||text.length>4*1024*1024)return 'unreadable';
+        const record=JSON.parse(text);
+        if(!plain(record)||record.version!==1||typeof record.generation!=='string'||typeof record.writer!=='string'||!integer(record.seq))return 'unreadable';
+        records.push(record);if(records.length>256)return 'unreadable';
+      }
+      if(!records.length)return null;
+      if(!meta)return 'unreadable';
+      const bases=records.filter(record=>record.base),parents=new Set(bases.map(record=>record.parent).filter(Boolean));
+      const leaves=[...new Set(bases.map(record=>record.generation))].filter(id=>!parents.has(id));
+      if(leaves.length!==1||leaves[0]!==meta.generation)return 'unreadable';
+      if(records.some(record=>record.generation===meta.generation&&(meta.vector[record.writer]||0)<record.seq))return 'unreadable';
+      return null;
+    }catch(error){return error instanceof SyntaxError?'unreadable':'blocked';}
+  }
   function unknown(item, source) {
     return { ...item, source, status: 'unknown', started: null, independent: null, confirmed: null, resume: false };
   }
@@ -90,7 +119,13 @@
   }
   function pathRootValid(value) {
     return plain(value) && value.version === 1 && integer(value.serial) && plain(value.lessons) && plain(value.seen) &&
-      Object.keys(value.seen).length < 20000 && Object.values(value.seen).every(item => item === true) && Array.isArray(value.runs) && value.runs.length <= 200;
+      Object.keys(value.seen).length < 20000 && Object.values(value.seen).every(item => item === true) && Array.isArray(value.runs) && value.runs.length <= 200 &&
+      ['recoveryDrafts','examDrafts'].every(key=>value[key]===undefined||Array.isArray(value[key])&&value[key].length<=10000&&value[key].every(draft=>
+        plain(draft)&&string(draft.lesson,200)&&string(draft.attempt,400)&&
+        ['draft','note','taskFirst.finalDraft','taskFirst.stepDraft','taskFirst.model','pastStepDraft','examDraft'].includes(draft.field)&&
+        (draft.field==='taskFirst.model'?draft.value===null||plain(draft.value)&&JSON.stringify(draft.value).length<=16000:string(draft.value))&&
+        (draft.step===undefined||integer(draft.step,20))&&(draft.seed===undefined||integer(draft.seed))&&
+        (draft.condition===undefined||string(draft.condition,100000))&&(draft.source===undefined||string(draft.source,200))));
   }
   function loaderCompatibility(value, knownIds) {
     if (!pathRootValid(value)) return 'rejected';
@@ -168,6 +203,7 @@
     if (storage === undefined) { try { storage = root.localStorage; } catch (error) { storage = null; } }
     const sources = { path: read(storage, PATH_KEY), m01: read(storage, legacyKeys.m01), m02: read(storage, legacyKeys.m02) };
     const lines = catalog(), path = sources.path;
+    if(['saved','empty'].includes(path.status))path.status=recoveryStatus(storage,path.raw)||path.status;
     if (path.status === 'saved') path.raw = root.PathData?.practice?.expandTask21Progress?.(path.raw) ?? path.raw;
     if (path.status === 'saved' && !pathRootValid(path.raw)) path.status = 'unreadable';
     const allKnownIds = new Set(metadata().map(item => item.id));

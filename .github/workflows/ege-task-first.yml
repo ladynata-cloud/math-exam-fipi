@@ -1,7 +1,7 @@
 name: EGE 2027 — task-first courses
 on:
   pull_request:
-    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml', 'tools/ege-baza-skill-map*', 'trainers/ege-baza/**']
+    paths: ['ege-profil/start/**', 'ege-profil/part-two/**', 'ege-profil/trainers/**', 'ege-profil/trigonometry/**', 'ege-profil/skill-map*', 'ege-profil/index.html', 'trainers/ege-profile/**', 'ege-baza/**', 'tools/profile-task-first*', 'tools/ege-baza-task-first*', 'tools/ege-baza-cross-tab-progress*', 'tools/ege-baza-concrete-hints*', 'tools/ege-baza-journey*', 'tools/ege-baza-exam-map*', 'tools/ege-baza-learning-cycle*', 'tools/ege-baza-model-discovery*', 'tools/ege-course-entry*', 'tools/ege-skill-map-ocean*', '.github/workflows/ege-task-first.yml', 'tools/ege-baza-skill-map*', 'trainers/ege-baza/**']
   push:
     branches: [main]
     paths: ['ege-baza/skill-map*', 'ege-baza/star-sky*', 'ege-baza/ocean-expedition*', 'ege-baza/percent/style.css', 'ege-baza/index.html', 'ege-baza/app.js', 'ege-baza/path/index.html', 'ege-baza/path/task-first.js', 'tools/ege-baza-skill-map*', '.github/workflows/ege-task-first.yml']
@@ -41,6 +41,12 @@ jobs:
         run: |
           node tools/ege-baza-learning-cycle.test.cjs
           node tools/ege-baza-model-discovery.test.cjs
+      - name: Basic EGE concurrent pages and recoverable progress
+        run: node tools/ege-baza-cross-tab-progress.test.cjs
+      - name: Basic EGE actual cross-tab writes and offline recovery
+        env:
+          EGE_CROSS_TAB_SHOTS: artifacts/base-cross-tab
+        run: node tools/ege-baza-cross-tab-progress.browser.cjs
       - name: Basic EGE complete learning cycles in a real browser
         env:
           EGE_CYCLE_SHOTS: artifacts/base-cycle

@@ -69,7 +69,10 @@ const open=async(d,id)=>{d.querySelector('#'+id).open=true;await tick();};
  // Bounded searching cannot invalidate the store when the serial reaches its supported maximum.
  state.serial=1e9-2;d.querySelector('#new').click();assert(state.serial<=1e9);assert(w.PathCourse.valid(state));
  // Seed reuse preserves old evidence, while the latest helped check controls the next action.
- l.checks.push({seed:l.seed,correct:true,independent:true});l.independent=1;submit(w,d,'answer',D.task('logic',l.seed).answer);assert.equal(l.independent,1);assert(d.querySelector('#new').classList.contains('primary'));assert.equal(d.querySelector('#new').textContent,'Повторить задачу этого типа');
+ const legacyCopy=JSON.parse(w.localStorage.getItem(w.PathCourse.KEY));delete legacyCopy.progressStore;
+ legacyCopy.lessons.logic.checks.push({seed:l.seed,correct:true,independent:true});legacyCopy.lessons.logic.independent=1;
+ const legacy=create(JSON.stringify(legacyCopy),'lesson=logic'),legacyLesson=legacy.w.PathCourse.state().lessons.logic;
+ submit(legacy.w,legacy.d,'answer',legacy.w.PathData.task('logic',legacyLesson.seed).answer);assert.equal(legacyLesson.independent,1);assert(legacy.d.querySelector('#new').classList.contains('primary'));assert.equal(legacy.d.querySelector('#new').textContent,'Повторить задачу этого типа');legacy.w.close();
  // Optional fields remain compatible with old saves, and corrupt extras are rejected conservatively.
  const ui=JSON.parse(JSON.stringify(l.taskFirst));delete ui.mistakes;delete ui.ideaOpen;delete ui.repeatedVariant;assert(w.PathTaskFirst.valid(ui));
  for(const bad of [{mistakes:-1},{mistakes:1001},{mistakes:.5},{ideaOpen:'yes'},{repeatedVariant:1}])assert(!w.PathTaskFirst.valid({...ui,...bad}));
