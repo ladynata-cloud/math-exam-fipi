@@ -11,7 +11,7 @@
 - Review level: **MEDIUM**.
 - Related issue/PR: read-only reconciliation of #550 and merged #557; existing harmonization stage H17, followed by H18–H23.
 - Related ADR: `docs/adr/0003-oge-course.md`, **Accepted**.
-- Status: **START granted; scoped source implemented and locally verified; source receipt and exact-head browser/CI pending**.
+- Status: **START granted; scoped source and receipt locally verified; exact-head browser/CI pending**.
 - Actual START base: `5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae`, queried from authoritative remote main. The preparation SHA above is historical evidence. The intervening offline stereometry lesson does not overlap H17.
 
 ## Goal
@@ -179,12 +179,12 @@ Live post-release byte checks are deferred until separate merge/deployment autho
 
 - Actual branch: `fix/h17-oge-course-route-alignment-20261116`.
 - Actual base SHA: `5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae`; clean worktree verified at START.
-- Actual head SHA: exact source and final reviewed head are recorded in the PR handoff; this scope record does not claim a self-referential commit SHA.
+- Actual source SHA: `9c6689d731813e9b89d246668fbaff5f2b95a0a6`; tree `c0dced67ade310490dee4d9862d70aa87f5bd3a1`, parent `5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae`. The final reviewed head is recorded in the PR handoff; this scope record does not claim a self-referential final SHA.
 - PR: recorded in the implementation handoff after the authorized Draft PR is opened.
-- Commits: the logical source commit and the subsequent binding/evidence commit are recorded in the PR handoff.
+- Commits: source `9c6689d731813e9b89d246668fbaff5f2b95a0a6`; subsequent binding/evidence commit is recorded in the PR handoff.
 - Preparation evidence: 4 existing gates passed; four exact model deep links resolved in JSDOM.
-- Implementation tests passed: skill-course DOM 19/19; learning-map/course-guide 22/22; registry 2 467; skill data 4 023; focus 530 links; learner entry 147 documents / 133 bars / 1 695 links on the unchanged pinned preservation sources; binding-helper unit 5/5; book generator 16/16; book package 16/16; frozen-book integrity for both editions; syntax, diff whitespace, unchanged scripts/styles and 25/26/8 links. Independent local review repeated DOM 19/19 and found no blocking source issue.
-- Setup limitations resolved: unchanged download destinations and immutable baseline blobs were materialized from their exact Git sources; repeated learner/focus/generator checks passed. Initial missing-file runs were not counted as PASS. Navigator preservation awaits the real source-binding receipt. Full details and final outcomes are in the companion report.
+- Implementation tests passed: skill-course DOM 19/19; learning-map/course-guide 22/22; registry 2 467; skill data 4 023; focus 530 links; learner entry 147 documents / 133 bars / 1 695 links on the unchanged pinned preservation sources; binding-helper unit 5/5; public-navigator preservation 4/4; source helper BINDINGS_UPDATED then BINDINGS_CURRENT on the real source commit with HTML files written 0; book generator 16/16; book package 16/16; frozen-book integrity for both editions; syntax, diff whitespace, unchanged scripts/styles and 25/26/8 links. Independent local review repeated DOM 19/19 and found no blocking source issue.
+- Setup limitations resolved: unchanged download destinations and immutable baseline blobs were materialized from their exact Git sources; repeated learner/focus/generator checks passed. Initial missing-file runs were not counted as PASS. Navigator preservation passed after the real source-binding receipt. The only modified receipt page is `trainers/oge-course/index.html`; existing inventory and old receipts are preserved. Full details and final outcomes are in the companion report.
 - Tests not run locally: Chromium and rendered screenshot review. The existing CI browser gate is required on the actual PR head. Exact-head CI and post-release live checks are not claimed by local DOM results; merge/deployment remain unauthorized.
 - Current read-only PR #550 snapshot: `d77ba80bf2c5379b3658a211abd55b428c7657cb`, base `5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae`; the earlier head in preparation evidence is historical.
 - Production at START: `oge/index.html` and `trainers/oge-course/index.html` both returned HTTP 200 on 2026-11-15T20:14:25Z and matched the base bytes; hashes are in the companion report.

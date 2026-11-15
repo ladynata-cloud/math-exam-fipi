@@ -9,7 +9,7 @@
 - Review level: **MEDIUM**.
 - Историческая read-only подготовка: `beffcbe1895e45f8d243e12d250181ac2ce62e1a`; последующий коммит №616 добавил отдельный офлайн-урок стереометрии и не менял область H17.
 - Источники карты: [курс](../../trainers/oge-course/index.html), [вход ОГЭ](../../oge/index.html), [данные навыков](../../oge/skills/course-data.json), [каталог серий](../../oge/skills/series-catalog.json), [native registry](../../oge/registry.js).
-- Текущие локальные изменения ещё не опубликованы. Точные source/head/PR, receipt и окончательная CI-приёмка указываются при передаче; маркер `OGE_COURSE_ROUTE_ALIGNMENT_OK` пока не выставлен.
+- Текущие локальные изменения ещё не опубликованы. Проверенный source commit и receipt указаны ниже; окончательные head/PR и CI-приёмка фиксируются в передаче; маркер `OGE_COURSE_ROUTE_ALIGNMENT_OK` пока не выставлен.
 
 ## Сверка публикации на START
 
@@ -113,6 +113,14 @@
 
 Остаётся отдельная спецификация H20 и явный START. В ней нужно сопоставить нынешний №550 с этим результатом и выбрать принимаемую дельту; уже сделанную в №550 работу не следует повторять только потому, что она не объединена. Нужны точный approved scope, предметная проверка модели, сохранение текущих и чужих записей, реальные native/skill переходы, браузерная проверка и решение владельца о судьбе №550. H17 снимает неопределённость выбора пилота и даёт карту, но не объявляет H20 выполненным. H18 остаётся отдельной задачей с зависимостью H05; прочие пробелы относятся к H19/H21/H22/H23 из существующей очереди.
 
+## Проверенный source receipt
+
+Реальный исходный коммит: [`9c6689d731813e9b89d246668fbaff5f2b95a0a6`](https://github.com/ladynata-cloud/math-exam-fipi/commit/9c6689d731813e9b89d246668fbaff5f2b95a0a6), родитель `5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae`, дерево `c0dced67ade310490dee4d9862d70aa87f5bd3a1`. Перед helper рабочая ветка совпала с этим коммитом и была чистой.
+
+Штатный `public_navigator_bindings.py` выполнен с этим source, данной спецификацией и единственным `--paths trainers/oge-course/index.html`. Он обновил `baseSha`, хеши только этой страницы и добавил одну запись `sourceBindingUpdates`. Повторная read-only проверка дала `BINDINGS_CURRENT`; helper не записал ни одного HTML. `oge/index.html` остался в `existingPages` и не добавлялся в `addedPages`. Старые receipt-записи сохранены.
+
+SHA-256 страницы курса после изменения — `dc1528fa46ef7b568020dfd40a5a0a89853690285c453fa22cd69c626b4710f9`; без двух прежних navigator includes — `00be588b9d685086da796739033e6ab84a60d9bbff47ac010f3c4e294cf1d058`. Все runtime/test source bytes после исходного коммита остались прежними. Receipt фиксирует происхождение исходника и не является предметным review, разрешением merge или свидетельством публикации.
+
 ## Проверки текущего кандидата
 
 | Проверка | Результат |
@@ -126,12 +134,13 @@
 | `python3 tools/book-edition/test_generator.py` | PASS, 16/16 |
 | `python3 tools/book-edition/test_package.py` | PASS, 16/16 |
 | `python3 tools/book-edition/verify.py --base 5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae` | PASS, `BOOK_EDITION_INTEGRITY_OK`; две прежние редакции по 71 входу / 225 файлов |
-| `git diff --check` и точный allowlist | PASS; 7 source/doc paths до штатного receipt, восьмой путь зарезервирован только для него |
+| `git diff --check` и точный allowlist | PASS; полная дельта к базе содержит ровно 8 разрешённых путей, включая штатный receipt |
 | Scripts / inline CSS / stylesheet links / старые 25/26/8 ссылки | Побайтовое DOM-сравнение с базой PASS для обеих входных страниц |
 | `node tools/oge-learner-entry.test.cjs` | PASS, `OGE_LEARNER_ENTRY_STATIC_OK`: 147 документов, 133 return bars, 1 course parent, 1 695 ссылок; исходные preservation SHA сохранены |
 | `node tools/oge-skill-course.browser.cjs` | NOT RUN locally: Chromium не запускается в текущей среде. Новые сценарии готовы для существующего CI; это не PASS |
 | Просмотр новых Chromium screenshots | NOT RUN; после получения артефактов точного head CI |
-| Source-binding helper / navigator preservation | PENDING: только после реального проверенного source commit; вымышленные SHA не используются |
+| Source-binding helper | PASS: `BINDINGS_UPDATED`, затем `BINDINGS_CURRENT` на source `9c6689d731813e9b89d246668fbaff5f2b95a0a6`; один объявленный путь, HTML files written 0 |
+| `node --test tools/public-navigator-preservation.test.cjs` | PASS, 4/4 после source receipt |
 | Независимый локальный review исходника | Выполнен: 19/19 DOM повторены отдельно; блокирующих замечаний к навигации, сохранности или scope нет. Это не browser approval |
 | Exact-head CI и просмотр отрисованного результата | PENDING |
 | Merge / deployment / live post-release | NOT AUTHORIZED / NOT RUN |

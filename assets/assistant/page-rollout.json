@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
+  "baseSha": "9c6689d731813e9b89d246668fbaff5f2b95a0a6",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2933,8 +2933,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "91d10e796282966d2b2f12377fecda1c25a62fbb0c988af913ea6416da7107af",
-      "afterSha256": "a9c41b338c2d1805860941eb824a62a409702deb60b86d2971d9f4b538acf03c",
+      "beforeSha256": "00be588b9d685086da796739033e6ab84a60d9bbff47ac010f3c4e294cf1d058",
+      "afterSha256": "dc1528fa46ef7b568020dfd40a5a0a89853690285c453fa22cd69c626b4710f9",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -5252,6 +5252,15 @@
         "ege-profil/trainers/numbers-t19.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
         "stereo-course/sections/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "sourceBaseSha": "9c6689d731813e9b89d246668fbaff5f2b95a0a6",
+      "task": "docs/tasks/OGE_COURSE_ROUTE_ALIGNMENT_20261116.md",
+      "changedPaths": [
+        "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
