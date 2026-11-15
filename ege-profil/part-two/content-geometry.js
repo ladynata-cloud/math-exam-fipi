@@ -6,8 +6,8 @@
   const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
   function f(a,b=1){const g=gcd(a,b);return b/g===1?String(a/g):(a/g)+'/'+(b/g);}
   function radical(n,d=1){let a=1;for(let k=2;k*k<=n;k++)while(n%(k*k)===0){a*=k;n/=k*k;}const g=gcd(a,d);a/=g;d/=g;return n===1?f(a,d):(a===1?'':a+'*')+'sqrt('+n+')'+(d===1?'':'/'+d);}
-  const step=(prompt,answer,hint,explanation)=>({prompt,answers:[answer],hint,explanation});
-  const field=(label,answer)=>({label,answers:[answer]});
+  const step=(prompt,answer,hint,explanation,answerFormat='number')=>({prompt,answers:[answer],hint,explanation,answerFormat});
+  const field=(label,answer,answerFormat='number')=>({label,answers:[answer],answerFormat});
   const oldStereo=[{title:'Атанасян 10–11: теория и вращаемые модели',href:'/ege-profil/atanasyan-10-11/index.html'},{title:'Стереометрия первой части',href:'/ege-profil/start/#calm/3'},{title:'Прежняя подборка стереометрии (№14, 2026)',href:'/ege-profil/trainers/stereo-t14.html'}];
   const oldPlane=[{title:'Геометрия: восстановить основу',href:'/ege-profil/start/#calm/1'},{title:'Прежняя подборка с доказательствами (№17, 2026)',href:'/ege-profil/trainers/planimetry-t17.html'}];
   function add(id,exam,title,goal,theory,tasks){lessons.push({id,exam,title,goal,theory,prerequisites:exam===15?oldStereo:oldPlane,tasks});}

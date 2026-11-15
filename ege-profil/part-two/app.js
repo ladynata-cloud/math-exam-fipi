@@ -58,7 +58,7 @@ function mountSkills(number,lesson){
  });
 }
 function correctedWithoutHelp(record){return record.independent&&record.attempts.find(a=>a.kind==='final')?.correct===false;}
-function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
+function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.drafts.steps.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
 function badges(s){return `<div class="stats"><span class="tag">${s.total} условий</span><span class="tag ok">Самостоятельные ответы: ${s.independent}</span><span class="tag help">С опорой: ${s.helped}</span></div>`;}
 function resume(items=lessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
@@ -97,6 +97,15 @@ function lessonView(lesson){
 function taskCard(task,i,mode){return `<a class="task-link" href="${taskURL(task.id,mode)}"><strong>Условие ${i+1}</strong><small>${i<3?'Учимся решать':'Проверяем себя'}</small>${status(task,store.read(task.id))}</a>`;}
 function feedback(text,kind=''){const box=document.getElementById('feedback');if(box){box.className='feedback '+kind;box.hidden=false;box.textContent=text;}}
 function bind(id,event,fn){document.getElementById(id)?.addEventListener(event,fn);}
+function bindSubmit(id,fn){
+ const form=document.getElementById(id);let pending=false;
+ form?.addEventListener('submit',async event=>{
+  event.preventDefault();
+  if(pending||!form.isConnected)return;
+  pending=true;const button=form.querySelector('button[type="submit"]');button.disabled=true;
+  try{await fn(event);}finally{pending=false;button.disabled=false;}
+ });
+}
 function recentTrace(r){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p></details>`;}
 function proofView(task,r){if(!task.proof)return '';return `<section class="panel"><h2>Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?">${esc(r.drafts.proof)}</textarea></label><details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details><p class="proof-status"><strong>Обоснование требует проверки.</strong> Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.</p></section>`;}
 function completion(item,r,mode){
@@ -121,6 +130,8 @@ async function taskView(item,mode,viewVersion=routeVersion){
  const openFinal=mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
  const finalFields=openFinal?[openFinal]:task.final;
  const finalDraft=openFinal?[r.drafts.openFinal]:r.drafts.final;
+ const observedFinal=finalFields.map((_,i)=>finalDraft[i]||'');
+ let observedStep=r.drafts.steps[displayedStep]||'';
  const earlierDraft=openFinal&&r.drafts.final.some(value=>value.trim())?
   `<details class="earlier-final"><summary>Ответы из пошаговой формы</summary>${task.final.map((field,i)=>r.drafts.final[i]?`<p>${esc(field.label)}: ${esc(r.drafts.final[i])}</p>`:'').join('')}</details>`:'';
  const parameterCondition=Object.hasOwn(parameterGraphs,lesson.id);
@@ -157,31 +168,38 @@ async function taskView(item,mode,viewVersion=routeVersion){
  main.querySelectorAll('.modes a').forEach(link=>link.addEventListener('click',event=>{if(link.getAttribute('href')===root.location.hash){event.preventDefault();render();}}));
  document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
   const i=Number(input.dataset.final),value=input.value;
+  observedFinal[i]=value;
   store.patch(task.id,s=>{
    if(openFinal){s.drafts.openFinal=value;return;}
    while(s.drafts.final.length<=i)s.drafts.final.push('');
    s.drafts.final[i]=value;
   });
  }));
- bind('step-answer','input',e=>{const value=e.target.value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
+ bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
  bind('proof-draft','input',e=>{const value=e.target.value;store.patch(task.id,s=>{s.drafts.proof=value;});});
  document.querySelectorAll('[data-proof-check]').forEach(input=>input.addEventListener('change',()=>{const index=Number(input.dataset.proofCheck),checked=input.checked;store.patch(task.id,s=>{s.proofChecks=s.proofChecks.filter(i=>i!==index);if(checked)s.proofChecks.push(index);});}));
- bind('final-form','submit',async event=>{
-  event.preventDefault();const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),values=fields.map(f=>f.value.trim());
-  if(values.some(v=>!v)){feedback('Заполните каждое поле. Пустое поле не считается ошибкой.','error');fields[values.findIndex(v=>!v)].focus();return;}
-  const openResult=openFinal&&API.openAnswer(openFinal,values[0]);
-  if(openResult&&!openResult.recognized){
-   feedback('Проверьте запись. '+openFinal.format+' Это уточнение формата.','error');
-   fields[0].focus();return;
+ bindSubmit('final-form',async()=>{
+  const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
+  const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
+  const invalid=formats.findIndex(result=>!result.recognized);
+  if(invalid!==-1){
+   // Input events already save individual fields. Only persist changes which
+   // arrived without an input event (for example autofill), never a stale form.
+   const changed=rawValues.flatMap((value,i)=>value===observedFinal[i]?[]:[i]);
+   for(const i of changed)observedFinal[i]=rawValues[i];
+   if(changed.length)await store.patch(task.id,s=>{for(const i of changed){
+    if(openFinal)s.drafts.openFinal=rawValues[i];
+    else{while(s.drafts.final.length<=i)s.drafts.final.push('');s.drafts.final[i]=rawValues[i];}
+   }});
+   else await store.flush();
+   if(!isCurrent())return;
+   fields.forEach((f,i)=>f.setAttribute('aria-invalid',String(!formats[i].recognized)));
+   feedback(values[invalid]?`Проверьте запись в поле «${finalFields[invalid].label}». ${formats[invalid].format} Это уточнение формата; попытка не засчитывается.`:'Заполните каждое поле. Пустое поле не считается ошибкой.','error');
+   fields[invalid].focus();return;
   }
+  const openResult=openFinal&&API.openAnswer(openFinal,values[0]);
   const results=openResult?[openResult.correct]:finalFields.map((field,i)=>check(field.answers,values[i])),correct=results.every(Boolean);
-  const button=event.target.querySelector('button[type="submit"]');
-  if(button.disabled)return;
-  button.disabled=true;
-  let updated;
-  try {
-   updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,saveFinalDraft:true});
-  } finally {button.disabled=false;}
+  const updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,saveFinalDraft:true});
   if(!isCurrent())return;
   if(correct){await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback(task.proof?'Ответы верны. Сохраните обоснование и проверьте его с преподавателем.':'Ответы верны. Можно перейти к другому условию.','ok');document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});}
   else{
@@ -192,9 +210,14 @@ async function taskView(item,mode,viewVersion=routeVersion){
    offerGraph(updated);
   }
  });
- bind('step-form','submit',async event=>{
-  event.preventDefault();const value=document.getElementById('step-answer').value.trim();if(!value){feedback('Введите ответ на текущий шаг. Пустое поле не считается ошибкой.','error');return;}
-  const current=store.read(task.id),i=current.solvedSteps.length;if(i!==displayedStep){feedback('Этот шаг уже изменён в другой вкладке. Ваш ввод сохранён к прежнему шагу. Откройте заново «С опорой по шагам», чтобы увидеть текущий шаг.','error');return;}const step=task.steps[i];if(!step)return;
+ bindSubmit('step-form',async()=>{
+  const input=document.getElementById('step-answer'),raw=input.value,value=raw.trim();
+  if(raw!==observedStep){observedStep=raw;await store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=raw;});}
+  else await store.flush();
+  const current=store.read(task.id),i=current.solvedSteps.length;if(i!==displayedStep){if(isCurrent())feedback('Этот шаг уже изменён в другой вкладке. Ваш ввод сохранён к прежнему шагу. Откройте заново «С опорой по шагам», чтобы увидеть текущий шаг.','error');return;}const step=task.steps[i];if(!step)return;
+  const format=API.recognize(step,value,root.ProfileCheck);
+  input.setAttribute('aria-invalid',String(!format.recognized));
+  if(!format.recognized){if(isCurrent()){feedback(value?`Проверьте запись ответа. ${format.format} Это уточнение формата; попытка не засчитывается.`:'Введите ответ на текущий шаг. Пустое поле не считается ошибкой.','error');input.focus();}return;}
   const correct=check(step.answers,value);await store.attempt(task.id,{kind:'step-'+i,answers:[value],correct,mode});
   if(correct){await store.patch(task.id,s=>{if(s.solvedSteps.length===i)s.solvedSteps.push(i);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Шаг верный. Предыдущие шаги остались выше.','ok');document.getElementById('step-answer')?.focus();}
   else if(isCurrent()){
