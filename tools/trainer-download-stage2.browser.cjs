@@ -14,6 +14,7 @@ const ogeNext = require('./trainer-download-oge-next.cjs');
 const ogeFinal = require('./trainer-download-oge-final.cjs');
 const profileFirst = require('./trainer-download-profile-first.cjs');
 const profileNext = require('./trainer-download-profile-next.cjs');
+const profileReasoning = require('./trainer-download-profile-reasoning.cjs');
 
 const root = path.resolve(__dirname, '..');
 const entries = manifest.trainers.filter(entry => entry.adaptation);
@@ -93,6 +94,7 @@ const scenarios = {
   ...ogeFinal,
   ...profileFirst.scenarios,
   ...profileNext.scenarios,
+  ...profileReasoning.scenarios,
   async 'oge-task6-fractions'(page) {
     const expected = await page.evaluate(() => {
       const task = TASKS[order[pos]];
@@ -320,7 +322,7 @@ async function checkPanel(page, entry, width) {
 }
 
 async function run() {
-  assert.equal(manifest.stage, '6');
+  assert.equal(manifest.stage, '7');
   assert.equal(manifest.trainers.filter(entry => !entry.adaptation).length, 17);
   assert.equal(new Set(manifest.trainers.map(entry => entry.slug)).size, manifest.trainers.length);
   assert.deepEqual(new Set(entries.map(entry => entry.slug)), new Set(Object.keys(scenarios)));
@@ -329,7 +331,8 @@ async function run() {
     '--oge-next': ogeNext,
     '--oge-final': ogeFinal,
     '--profile-first': profileFirst.scenarios,
-    '--profile-next': profileNext.scenarios
+    '--profile-next': profileNext.scenarios,
+    '--profile-reasoning': profileReasoning.scenarios
   };
   assert(!filter || groups[filter] || scenarios[filter], 'unknown test filter');
   const selected = entries.filter(entry => !filter || filter === entry.slug || groups[filter]?.[entry.slug]);
@@ -365,6 +368,7 @@ async function run() {
         await context.close();
       }
       if (entry.slug === 'ege-profil-finance') await profileNext.checkEditedFinance(browser, entry, target);
+      if (entry.slug === 'ege-profil-log-inequalities') await profileReasoning.checkEditedLog(browser, entry, target);
       console.log(`PASS file:// ${index + 1}/${selected.length} ${entry.slug}`);
     }
 
@@ -456,6 +460,14 @@ async function run() {
       assert.match(await finance.locator('img').getAttribute('src'), /adapt-finance\.gif$/);
       await finance.getByRole('button', { name: 'Остановить GIF' }).click();
       assert.match(await finance.locator('img').getAttribute('src'), /adapt-finance\.png$/);
+      const log = page.locator('#adapt-log-inequality');
+      await log.locator('summary').press('Enter');
+      await loadImage(log.locator('img'));
+      await log.getByRole('button', { name: 'Воспроизвести GIF' }).click();
+      await loadImage(log.locator('img'));
+      assert.match(await log.locator('img').getAttribute('src'), /adapt-log-inequality\.gif$/);
+      await log.getByRole('button', { name: 'Остановить GIF' }).click();
+      assert.match(await log.locator('img').getAttribute('src'), /adapt-log-inequality\.png$/);
       await context.close();
     }
 
@@ -478,8 +490,8 @@ async function run() {
     assert.equal(await profileDownloads.getAttribute('open'), null);
     await profileDownloads.locator('summary').press('Enter');
     const profileLinks = await profileDownloads.locator('a[download]').evaluateAll(links => links.map(link => link.getAttribute('href')));
-    const expected = [...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios)].map(slug =>
-      entries.find(entry => entry.slug === slug).package);
+    const profileSlugs = [...Object.keys(profileFirst.scenarios), ...Object.keys(profileNext.scenarios), ...Object.keys(profileReasoning.scenarios)];
+    const expected = profileSlugs.map(slug => entries.find(entry => entry.slug === slug).package);
     assert.equal(profileLinks.length, expected.length);
     assert.deepEqual(new Set(profileLinks), new Set(expected));
     for (const href of profileLinks) assert((await context.request.head(origin + href)).ok());
@@ -493,6 +505,9 @@ async function run() {
     }
     if (Object.keys(profileNext.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
       console.log('TRAINER_DOWNLOAD_STAGE6_OK: four profile packages, local function atlas and finance adaptation');
+    }
+    if (Object.keys(profileReasoning.scenarios).every(slug => selected.some(entry => entry.slug === slug))) {
+      console.log('TRAINER_DOWNLOAD_STAGE7_OK: four reasoning packages, logarithm bounds and saved proof');
     }
   } finally {
     await browser?.close();
