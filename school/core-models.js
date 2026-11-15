@@ -5,7 +5,35 @@ const text=(x,y,s)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="#193d3a"
 const line=(x1,y1,x2,y2,color='#387b70',width=3)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${width}"/>`;
 const dot=(x,y,open=false,color='#c66b34')=>`<circle cx="${x}" cy="${y}" r="6" fill="${open?'white':color}" stroke="${color}" stroke-width="3"/>`;
 function numberline(lo,hi,marks,segment){const X=x=>45+(x-lo)*470/(hi-lo);let s=line(30,130,530,130,'#829691',1);for(let x=lo;x<=hi;x++)s+=line(X(x),124,X(x),136,'#829691',1)+text(X(x),158,x);if(segment)s+=line(X(segment[0]),130,X(segment[1]),130,'#387b70',7);for(const m of marks)s+=dot(X(m.x),130,m.open)+text(X(m.x),98,m.label);return s;}
-function graph(fn,p={}){const xmin=p.xmin??-5,xmax=p.xmax??5,ymin=p.ymin??-5,ymax=p.ymax??10,X=x=>50+(x-xmin)*460/(xmax-xmin),Y=y=>235-(y-ymin)*205/(ymax-ymin);let s='';for(let x=Math.ceil(xmin);x<=xmax;x++)s+=line(X(x),30,X(x),235,'#e3ece8',1)+text(X(x),254,x);for(let y=Math.ceil(ymin);y<=ymax;y+=p.ystep||5)s+=line(50,Y(y),510,Y(y),'#e3ece8',1)+text(30,Y(y)+4,y);if(xmin<=0&&xmax>=0)s+=line(X(0),30,X(0),235,'#829691',1);if(ymin<=0&&ymax>=0)s+=line(50,Y(0),510,Y(0),'#829691',1);let path='',drawing=false;for(let i=0;i<=300;i++){const x=xmin+(xmax-xmin)*i/300,y=fn(x);if(!Number.isFinite(y)||y<ymin||y>ymax){drawing=false;continue;}path+=(drawing?'L':'M')+X(x).toFixed(2)+','+Y(y).toFixed(2);drawing=true;}s+=`<path d="${path}" fill="none" stroke="#387b70" stroke-width="3"/>`;if(p.point){const [x,y]=p.point;if(y>=ymin&&y<=ymax)s+=dot(X(x),Y(y),p.open);}if(p.extra)s+=p.extra(X,Y);return s+text(524,Y(Math.max(ymin,Math.min(ymax,0)))-8,'x')+text(X(Math.max(xmin,Math.min(xmax,0)))+14,18,'y');}
+function graph(fn,p={}){
+ const xmin=p.xmin??-5,xmax=p.xmax??5,ymin=p.ymin??-5,ymax=p.ymax??10;
+ const scale=Math.min(460/(xmax-xmin),205/(ymax-ymin));
+ const X=x=>280+(x-(xmin+xmax)/2)*scale,Y=y=>132.5-(y-(ymin+ymax)/2)*scale;
+ const left=X(xmin),right=X(xmax),top=Y(ymax),bottom=Y(ymin);
+ const step=p.ystep||1,labelEvery=Math.ceil(27/(step*scale));
+ let s='';
+ for(let i=Math.ceil(xmin/step);i<=Math.floor(xmax/step);i++){
+  const x=i*step;s+=line(X(x),top,X(x),bottom,'#e3ece8',1);
+  if(i%labelEvery===0)s+=text(X(x),bottom+19,x);
+ }
+ for(let i=Math.ceil(ymin/step);i<=Math.floor(ymax/step);i++){
+  const y=i*step;s+=line(left,Y(y),right,Y(y),'#e3ece8',1);
+  if(i%labelEvery===0)s+=text(left-20,Y(y)+4,y);
+ }
+ if(xmin<=0&&xmax>=0)s+=line(X(0),top,X(0),bottom,'#829691',1);
+ if(ymin<=0&&ymax>=0)s+=line(left,Y(0),right,Y(0),'#829691',1);
+ let path='',drawing=false;
+ for(let i=0;i<=300;i++){
+  const x=xmin+(xmax-xmin)*i/300,y=fn(x);
+  if(!Number.isFinite(y)||y<ymin||y>ymax){drawing=false;continue;}
+  path+=(drawing?'L':'M')+X(x).toFixed(2)+','+Y(y).toFixed(2);drawing=true;
+ }
+ s+=`<path d="${path}" fill="none" stroke="#387b70" stroke-width="3"/>`;
+ if(p.point){const [x,y]=p.point;if(y>=ymin&&y<=ymax)s+=dot(X(x),Y(y),p.open);}
+ if(p.extra)s+=p.extra(X,Y);
+ return s+text(right+14,Y(Math.max(ymin,Math.min(ymax,0)))-8,'x')+
+  text(X(Math.max(xmin,Math.min(xmax,0)))+14,top-11,'y');
+}
 function config(family){
  if(['parabola','derivative','absolute','interval','sign','hole','inverse'].includes(family))return {min:-4,max:4,step:1,initial:1,label:family==='parabola'?'Горизонтальный сдвиг h':family==='derivative'?'Точка касания x':family==='absolute'?'Координата точки':family==='interval'||family==='sign'?'Проверяемое число x':'Значение x'};
  if(family==='circle')return {min:0,max:360,step:30,initial:60,label:'Угол, градусы'};

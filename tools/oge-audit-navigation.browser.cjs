@@ -72,6 +72,68 @@ const server=http.createServer((req,res)=>{
    await p.screenshot({path:path.join(OUT,'learning-recommendation-'+width+'.png')});
    report.checks.push({width,kind:'separate continuation and recommendation',status:'PASS'});await c.close();
   }
+  for(const width of [320,390,1280]) {
+   const c=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+   await c.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
+   const p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
+   await p.goto(origin+'/trainers/'+routes[0],{waitUntil:'load'});
+   const model=p.locator('#task11-research #oge-video-models[open]');
+   assert(await model.isVisible());
+   assert(await model.evaluate(n=>!!(n.compareDocumentPosition(document.querySelector('#m4-heading'))&Node.DOCUMENT_POSITION_FOLLOWING)));
+   await model.locator('input[type="radio"]').first().check();
+   assert.equal(await model.locator('[data-ovm-action="check-prediction"]').count(),0);
+   await model.locator('[data-ovm-action="experiment"]').click();
+   const readout=model.locator('.ovm-readout');
+   await readout.waitFor();
+   assert.match(await readout.innerText(),/При x = 0.*При x = 1/);
+   await model.locator('input[type="range"][data-ovm-control="b"]').press('ArrowRight');
+   await model.locator('[data-ovm-action="reason"]').click();
+   await model.locator('[data-ovm-stage="reason"]').waitFor();
+   assert.match(await model.innerText(),/Коэффициент при x не менялся/);
+   await p.locator('#m4-answer').fill('2');
+   await p.goto(origin+'/trainers/'+routes[0]+'?resume=1',{waitUntil:'load'});
+   assert.equal(await p.locator('#m4-answer').inputValue(),'2');
+   assert.equal(await p.locator('#task11-research').isVisible(),false);
+
+   await p.goto(origin+'/trainers/'+routes[1],{waitUntil:'load'});
+   const active=p.locator('.panel:not(.hidden) .mode-host[data-mode="marathon"]');
+   const research=active.locator('[data-intersection-research][open]');
+   const statement=await active.locator('.statement').innerText();
+   assert(await research.isVisible());
+   assert.equal(await research.locator('svg').count(),0);
+   await research.getByLabel('Мой прогноз').fill('2');
+   await research.getByRole('button',{name:'Проверить на графике',exact:true}).click();
+   assert(await research.locator('.gview svg').isVisible());
+   assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+   assert(!await active.locator('.minimal-help').isVisible());
+   await research.getByRole('button',{name:'Сверить вывод',exact:true}).click();
+   await p.reload({waitUntil:'load'});
+   assert.equal(await active.locator('.statement').innerText(),statement);
+   assert.equal(await research.getByLabel('Мой прогноз').inputValue(),'2');
+   assert(await research.locator('.gview svg').isVisible());
+
+   await p.goto(origin+'/trainers/'+routes[2],{waitUntil:'load'});
+   await p.evaluate(()=>{ST={mode:'train',queue:['t2'],qi:0,results:[]};loadTask();});
+   const observation=p.locator('.proof-research');
+   assert.match(await observation.innerText(),/пересекающиеся в O/);
+   assert(await observation.evaluate(n=>!!(n.compareDocumentPosition(document.querySelector('#proof-card-pool'))&Node.DOCUMENT_POSITION_FOLLOWING)));
+   await p.locator('button[onclick="pickCard({type:\'s\',i:2})"]').click();
+   const reason=p.locator('.citem[data-proof-step="2"] .ocp-step-reason');
+   await reason.locator(':scope > summary').click();
+   assert.match(await reason.innerText(),/вертикальные углы/);
+   const diagram=reason.getByRole('img',{name:'Чертёж текущего шага доказательства'});
+   assert(await diagram.isVisible());
+   const stepDiagram=await p.evaluate(()=>{
+     const task=curTask(),figure=document.createElement('div');
+     figure.innerHTML=renderFig(task.fig,task.steps[2].lit,false);
+     return figure.querySelector('svg').innerHTML;
+   });
+   assert.equal(await diagram.innerHTML(),stepDiagram,'The diagram marks the chosen argument instead of the first array position');
+   assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+   assert.deepEqual(errors,[]);
+   report.checks.push({width,kind:'topic-specific first investigations, exact return and ordered proof diagram',status:'PASS'});
+   await c.close();
+  }
   // The integration also consumes facts made by the actual native controls.
   // No synthetic result or answer key is injected into this learner journey.
   for(const width of [320,390,1280]) {

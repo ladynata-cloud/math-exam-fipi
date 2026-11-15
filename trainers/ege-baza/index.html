@@ -256,6 +256,10 @@ svg .cellgrid{stroke:#dbe2ee;stroke-width:1}
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
+
+<link rel="stylesheet" href="../../ege-baza/skill-map.css?v=20261111">
+<script src="../../ege-baza/skill-map-data.js?v=20261111"></script>
+<script src="../../ege-baza/skill-map.js?v=20261111"></script>
 </head>
 <body>
 <a class="skip" href="#main">Перейти к заданию</a>
@@ -1778,6 +1782,88 @@ function openReferenceTask(){
  state.mode='pos';state.pos=t.pos;state.cur['p'+t.pos]=byPos(t.pos).indexOf(t);
  return true;
 }
+// Fixed examples share a focused skill route with the corresponding course family.
+const courseSkillFamilies={
+ "p1a": "round",
+ "p1b": "practice-change",
+ "p1c": "practice-transport",
+ "p2a": "practice-units-match",
+ "p2b": "practice-time",
+ "p2c": "units",
+ "p3a": "practice-chart",
+ "p3b": "practice-chart",
+ "p3c": "practice-ranking",
+ "p4a": "practice-electric",
+ "p4b": "formulas",
+ "p4c": "practice-temperature",
+ "p5a": "practice-probability-opposite",
+ "p5b": "practice-probability-draw",
+ "p5c": "probability",
+ "p6a": "practice-delivery",
+ "p6b": "practice-luggage",
+ "p6c": "practice-rental",
+ "p7a": "practice-graph-match",
+ "p7b": "practice-graph-match",
+ "p8a": "practice-logic-order",
+ "p8b": "practice-logic-order",
+ "p8c": "practice-logic-order",
+ "p9a": "grid",
+ "p9b": "grid",
+ "p9c": "practice-grid-cut",
+ "p10a": "practice-free-area",
+ "p10b": "practice-spokes",
+ "p10c": "practice-fence",
+ "p11a": "practice-displacement",
+ "p11b": "practice-joined-surface",
+ "p11c": "practice-pour",
+ "p12a": "triangle",
+ "p12b": "practice-diameter-chord",
+ "p12c": "practice-right-ratio",
+ "p12d": "triangle",
+ "p13a": "practice-cone-area",
+ "p13b": "practice-pyramid-lateral",
+ "p13c": "scale",
+ "p14a": "practice-decimals",
+ "p14b": "practice-decimal-division",
+ "p14c": "practice-fraction-expression",
+ "p14d": "fractions",
+ "p15a": "practice-percent-change",
+ "p15b": "practice-percent-change",
+ "p15c": "practice-ratio-parts",
+ "p15d": "practice-percent-change",
+ "p16a": "practice-root-product",
+ "p16b": "practice-trig-angle",
+ "p16c": "practice-identity-product",
+ "p16d": "practice-log-value",
+ "p17a": "practice-exponential-equation",
+ "p17b": "practice-log-equation",
+ "p17c": "practice-quadratic",
+ "p17d": "practice-radical-equation",
+ "p18a": "practice-number-match",
+ "p18b": "numberline",
+ "p19a": "practice-digits-multiple",
+ "p19b": "practice-digits-delete",
+ "p19c": "practice-digits-product",
+ "p20a": null,
+ "p20b": "practice-mixture-water",
+ "p20c": "practice-average-speed",
+ "p20d": "practice-meeting",
+ "p21a": "practice-integer-budget",
+ "p21b": null,
+ "p21c": "practice-ring-route",
+ "p21d": null
+};
+let courseSkillMap=null;
+function clearSkillMap(){courseSkillMap?.dispose();courseSkillMap=null;}
+function attachTaskSkillMap(t,r){
+ clearSkillMap();
+ if(state.mode!=='pos')return;
+ const lessonId=courseSkillFamilies[t.id];
+ courseSkillMap=window.EgeBazaSkillMap?.attach($('host'),{...(lessonId?{lessonId}:{pos:t.pos}),onReveal:()=>{
+  if(r.done||state.mode!=='pos'||current().task?.id!==t.id)return;
+  r.hints=Math.max(1,r.hints||0);save();
+ }});
+}
 function attachTaskReference(t,r){
  if(state.mode!=='pos'||!window.EgeReferenceUI)return;
  const sheetIds=window.EgeReferenceLegacy?.taskSheets[t.id];if(!sheetIds?.length)return;
@@ -1790,6 +1876,7 @@ function attachTaskReference(t,r){
  }});
 }
 function render(){
+ clearSkillMap();
  renderBlank();
  if(referenceTaskBlocked){
   $('host').innerHTML='<section class="card"><div class="head"><h3>Сначала заверши текущий вариант</h3><p>Задание из справочника откроется после проверки. Все записанные ответы и состав варианта сохранены.</p><button class="primary" id="reference-resume">Вернуться к варианту</button></div></section>';
@@ -1872,6 +1959,7 @@ function render(){
  </article>`;
  const ai=$('ans'); if(ai&&r.msgType==='no') ai.setAttribute('aria-invalid','true');
  attachTaskReference(t,r);
+ attachTaskSkillMap(t,r);
 }
 
 function shownAnswer(t,r){

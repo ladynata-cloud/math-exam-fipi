@@ -78,5 +78,5 @@ const open=async(d,id)=>{d.querySelector('#'+id).open=true;await tick();};
  w.PathTaskFirst.mount(host,{meta:D.meta.find(m=>m.id==='round'),task,lesson,save(){},seen:()=>false,expose(){},fresh(){},remediationId:()=>'',equationPracticeLinks:()=>'',fractionPracticeLink:()=>'',setHash(){}});
  assert(!host.querySelector('#repairStep'));assert(!host.querySelector('#taskIdea'));assert.equal(lesson.taskFirst.mistakes,undefined);assert.equal(lesson.taskFirst.ideaOpen,undefined);assert.equal(lesson.taskFirst.repeatedVariant,undefined);
  assert(w.PathCourse.valid(state));assert.deepEqual(errors,[]);w.close();
- console.log('EGE_BAZA_LEARNING_CYCLE_OK: 111 contextual repairs, optional persisted help ladder, two-error offer, retained drafts, fresh independent check, bounded honest repeats, no shared-board contract change');
+ console.log('EGE_BAZA_LEARNING_CYCLE_OK: 113 contextual repairs, optional persisted help ladder, two-error offer, retained drafts, fresh independent check, bounded honest repeats, no shared-board contract change');
 })().catch(error=>{console.error(error);process.exitCode=1;});

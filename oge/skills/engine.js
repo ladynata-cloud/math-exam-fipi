@@ -578,26 +578,33 @@
   function text(x,y,content,anchor){return '<text x="'+x+'" y="'+y+'" text-anchor="'+(anchor||"middle")+'" fill="var(--ink)" font-family="system-ui,sans-serif" font-size="12">'+esc(content)+'</text>';}
   function width(el){return Math.max(220,Math.floor(el.getBoundingClientRect().width));}
   function plotFrame(el,options){
-    var w=width(el),h=options.compact?235:270,L=42,R=w-18,T=20,B=h-30;
+    var w=width(el),h=options.compact||w<360?235:270,L=42,R=w-18,T=20,B=h-30;
     var xmin=options.xMin,xmax=options.xMax,ymin=options.yMin,ymax=options.yMax;
-    function X(x){return L+(x-xmin)/(xmax-xmin)*(R-L);}
-    function Y(y){return B-(y-ymin)/(ymax-ymin)*(B-T);}
-    function tickStep(span,count){
-      var raw=span/count,scale=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/scale;
+    var xSpan=xmax-xmin,ySpan=ymax-ymin,xUnits=options.differentAxisScales?2:1;
+    var yScale=Math.min((R-L)/(xSpan*xUnits),(B-T)/ySpan),xScale=xUnits*yScale;
+    L+=(R-L-xSpan*xScale)/2;
+    B-=(B-T-ySpan*yScale)/2;
+    R=L+xSpan*xScale;T=B-ySpan*yScale;
+    function X(x){return L+(x-xmin)*xScale;}
+    function Y(y){return B-(y-ymin)*yScale;}
+    function tickStep(raw){
+      var scale=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/scale;
       return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*scale;
     }
-    function ticks(min,max,count){
-      var step=tickStep(max-min,count),values=[],start=Math.ceil(min/step)*step;
-      for(var n=start;n<=max+step*1e-8;n+=step)values.push(Math.abs(n)<step*1e-8?0:n);
-      if(values.length>count){step*=2;values=[];for(var k=Math.ceil(min/step)*step;k<=max+step*1e-8;k+=step)values.push(Math.abs(k)<step*1e-8?0:k);}
-      return values;
+    function forTicks(min,max,step,draw){
+      var labelEvery=Math.ceil(29/(step*yScale));
+      var first=Math.ceil(min/step-1e-8),last=Math.floor(max/step+1e-8);
+      for(var i=first;i<=last;i++)draw(i*step,options.differentAxisScales||i%labelEvery===0);
     }
-    var body="",xticks=ticks(xmin,xmax,w<380?4:6),yticks=ticks(ymin,ymax,6);
-    xticks.forEach(function(x){body+=line(X(x),T,X(x),B)+text(X(x),B+19,fmt(x));});
-    yticks.forEach(function(y){body+=line(L,Y(y),R,Y(y))+text(L-8,Y(y)+4,fmt(y),"end");});
+    var body="",gridStep=tickStep(14/yScale);
+    var xStep=options.differentAxisScales?tickStep(xSpan/(w<380?4:6)):gridStep;
+    var yStep=options.differentAxisScales?tickStep(ySpan/6):gridStep;
+    forTicks(xmin,xmax,xStep,function(x,label){body+=line(X(x),T,X(x),B);if(label)body+=text(X(x),B+19,fmt(x));});
+    forTicks(ymin,ymax,yStep,function(y,label){body+=line(L,Y(y),R,Y(y));if(label)body+=text(L-8,Y(y)+4,fmt(y),"end");});
     if(ymin<=0&&ymax>=0)body+=line(L,Y(0),R,Y(0),"var(--soft)",1.5);
     if(xmin<=0&&xmax>=0)body+=line(X(0),T,X(0),B,"var(--soft)",1.5);
-    body+=text(R-1,B-7,"x","end")+text(L+8,T+6,"y","start");
+    body+=text(R+7,ymin<=0&&ymax>=0?Y(0)+4:B,"x","start");
+    body+=text(xmin<=0&&xmax>=0?X(0):L,T-6,"y");
     var clipId="plot-"+String(options.id||"figure").replace(/[^a-zA-Z0-9]/g,"");
     body+='<defs><clipPath id="'+clipId+'"><rect x="'+L+'" y="'+T+'" width="'+(R-L)+'" height="'+(B-T)+'"/></clipPath></defs>';
     return {w:w,h:h,L:L,R:R,T:T,B:B,xmin:xmin,xmax:xmax,ymin:ymin,ymax:ymax,X:X,Y:Y,body:body,clipId:clipId};
@@ -626,9 +633,9 @@
   function drawGraph(el,t,s){
     var pts=t.points||[[0,t.b],[2,2*t.k+t.b]],xs=pts.map(function(p){return p[0];}),ys=pts.map(function(p){return p[1];});
     var options={
-      id:t.id||"line",compact:t.compact,
-      xMin:Number.isFinite(t.xMin)?t.xMin:Math.min(-3,Math.min.apply(null,xs)-1),
-      xMax:Number.isFinite(t.xMax)?t.xMax:Math.max(3,Math.max.apply(null,xs)+1),
+      id:t.id||"line",compact:t.compact,differentAxisScales:t.differentAxisScales,
+      xMin:Number.isFinite(t.xMin)?t.xMin:Math.min(-6,Math.min.apply(null,xs)-1),
+      xMax:Number.isFinite(t.xMax)?t.xMax:Math.max(6,Math.max.apply(null,xs)+1),
       yMin:Number.isFinite(t.yMin)?t.yMin:Math.min(-4,Math.min.apply(null,ys)-1),
       yMax:Number.isFinite(t.yMax)?t.yMax:Math.max(6,Math.max.apply(null,ys)+1)
     };
@@ -636,6 +643,7 @@
     var label=t.ariaLabel||t.label;
     if(!label)label=t.type==="graph"?"Текущая прямая: "+lineFormula(s.k,s.b)+". Заданные точки отмечены.":"Прямая проходит через точки (0; "+fmt(t.b)+") и (1; "+fmt(t.k+t.b)+"). Масштаб осей подписан.";
     el.innerHTML=svgWrap(f.w,f.h,body,label);
+    if(t.differentAxisScales)el.innerHTML+='<p class="status-note">На осях X и Y разный масштаб.</p>';
   }
   function drawFunction(el,v){
     var f=plotFrame(el,{
@@ -846,7 +854,12 @@
       if(kind==="graph")drawGraph(el,t,s);if(kind==="numberline")drawNumberline(el,t,s);
       if(kind==="area")drawArea(el,t,s);if(kind==="triangle")drawTriangle(el,t,s);
       if(kind==="custom"){
-        try{drawCustom(el,resolveVisual(t,s));}
+        try{
+          var visual=resolveVisual(t,s);
+          // This exercise asks learners to read a deliberately unequal scale.
+          if(t.familyId==="func-axis-scale")visual=Object.assign({},visual,{differentAxisScales:true});
+          drawCustom(el,visual);
+        }
         catch(error){
           if(t.visual.dynamic&&t.visual.dynamic.kind==="circumcircle"){
             var initial=Object.assign({},t.visual,{circles:t.visual.circles||[]});delete initial.dynamic;drawCustom(el,initial);

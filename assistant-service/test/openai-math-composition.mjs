@@ -1,4 +1,4 @@
-// Run only in the temporary PR399 composition, never against a live endpoint.
+// Exercise the integrated adapter with a mock transport.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { prepareRequest, callProvider } from '../src/provider.js';

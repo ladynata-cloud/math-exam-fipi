@@ -53,5 +53,11 @@
       "bookId": "66",
       "sha256": "8029dbb18448c3ee3253349fb4c21dbadfbd3e6edf0420ae73ae19a6e4cc406a"
     }
+  },
+  "graphScale": {
+    "task": "docs/tasks/CARTESIAN_GRAPH_SCALE_20261112.md",
+    "file": "trainers/oge-task22-functions-graphs.html",
+    "before": "  setRange(xmin,xmax,ymin,ymax){this.xmin=xmin;this.xmax=xmax;this.ymin=ymin;this.ymax=ymax;\n    this.sx=(this.W-2*this.margin())/(xmax-xmin);this.sy=(this.H-2*this.margin())/(ymax-ymin);\n    // keep square-ish unit if possible\n  }\n  margin(){return 30;}\n  X(x){return this.margin()+(x-this.xmin)*(this.W-2*this.margin())/(this.xmax-this.xmin);}\n  Y(y){return this.H-this.margin()-(y-this.ymin)*(this.H-2*this.margin())/(this.ymax-this.ymin);}\n",
+    "after": "  setRange(xmin,xmax,ymin,ymax){this.xmin=xmin;this.xmax=xmax;this.ymin=ymin;this.ymax=ymax;\n    this.scale=Math.min((this.W-60)/(xmax-xmin),(this.H-60)/(ymax-ymin));\n    this.left=(this.W-(xmax-xmin)*this.scale)/2;\n    this.bottom=(this.H+(ymax-ymin)*this.scale)/2;\n  }\n  X(x){return this.left+(x-this.xmin)*this.scale;}\n  Y(y){return this.bottom-(y-this.ymin)*this.scale;}\n"
   }
 }

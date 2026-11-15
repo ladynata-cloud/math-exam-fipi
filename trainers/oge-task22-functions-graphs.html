@@ -210,6 +210,10 @@ button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.bt
 .tick{fill:#626b63;font-size:12px}.badge-t1{font-size:12px}
 @media print{.minimal-model-scroll svg.grapher{min-width:0}}
 
+.graph-research{margin:16px 0;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#eef5ed;min-width:0}
+.graph-research>summary{color:var(--blue);cursor:pointer;min-height:44px;align-content:center}
+.graph-research > .graph-exact-label{display:block;max-width:100%;margin-bottom:8px}
+.graph-research > .graph-exact-label input{margin-left:8px}
 .graph-exact{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:12px 0}
 .graph-exact-label{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px;min-width:0}
 .graph-exact-input,.graph-point-input{width:120px;min-height:44px;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit}
@@ -232,6 +236,9 @@ button,.btn,.chip,.mode,.mod-btn,.tab,.addbtn,.rmini,.rm-btn{min-height:44px}.bt
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="22"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -674,12 +681,12 @@ class Grapher{
   constructor(svg){this.svg=svg;this.W=560;this.H=420;this.pad=8;
     svg.setAttribute('viewBox',`0 0 ${this.W} ${this.H}`);svg.setAttribute('class','grapher');}
   setRange(xmin,xmax,ymin,ymax){this.xmin=xmin;this.xmax=xmax;this.ymin=ymin;this.ymax=ymax;
-    this.sx=(this.W-2*this.margin())/(xmax-xmin);this.sy=(this.H-2*this.margin())/(ymax-ymin);
-    // keep square-ish unit if possible
+    this.scale=Math.min((this.W-60)/(xmax-xmin),(this.H-60)/(ymax-ymin));
+    this.left=(this.W-(xmax-xmin)*this.scale)/2;
+    this.bottom=(this.H+(ymax-ymin)*this.scale)/2;
   }
-  margin(){return 30;}
-  X(x){return this.margin()+(x-this.xmin)*(this.W-2*this.margin())/(this.xmax-this.xmin);}
-  Y(y){return this.H-this.margin()-(y-this.ymin)*(this.H-2*this.margin())/(this.ymax-this.ymin);}
+  X(x){return this.left+(x-this.xmin)*this.scale;}
+  Y(y){return this.bottom-(y-this.ymin)*this.scale;}
   clear(){while(this.svg.firstChild)this.svg.removeChild(this.svg.firstChild);}
   drawAxes(){
     const g=svgEl('g');this.svg.appendChild(g);
@@ -1730,6 +1737,62 @@ function renderStep(mod,host,preset,onNew,onReveal,options={}){
 /* ============================================================
    MARATHON MODE
    ============================================================ */
+function makeIntersectionResearch(onExplore,onChange){
+  const box=el('details','graph-research');box.dataset.intersectionResearch='';
+  box.append(el('summary',null,'Исследование: посчитай точки пересечения'));
+  const question=el('p'),guessLabel=el('label','graph-exact-label','Мой прогноз');
+  const guess=el('input','graph-exact-input');guess.type='text';guess.inputMode='numeric';guess.maxLength=2;guessLabel.append(guess);
+  const notice=el('p','graph-message');notice.setAttribute('role','status');
+  const modelHost=el('div'),observations=el('p');modelHost.hidden=true;
+  let model,problem,level,started=false;
+  const explore=btn('btn-new','Проверить на графике',()=>{
+    if(!/^\d+$/.test(guess.value.trim())){
+      notice.textContent='Сначала запиши, сколько точек ожидаешь увидеть.';guess.focus();return;
+    }
+    if(!onExplore())return;
+    show();onChange();
+  });
+  const compare=btn('btn-new','Сверить вывод',()=>{
+    describeComparison();onChange();
+  });
+  guess.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();explore.click();}});
+  box.append(question,guessLabel,explore,notice,modelHost);
+  function describeComparison(){
+    observations.textContent=graphSpec(problem).measure==='K'
+      ?'Посмотри, не попало ли пересечение в выколотую точку. Такая точка не входит в график.'
+      :'Сравни число точек на границе и рядом с ней. Касание даёт одну точку, а выколотая точка не входит в график.';
+  }
+  function show(state){
+    started=true;modelHost.hidden=false;model=makeGraphView(true);model.show(problem);
+    model.setState(state?.graph||{parameter:level.toString()});
+    const direction=graphSpec(problem).measure==='K'
+      ?'Затем выбери особый наклон и сравни с наклонами чуть меньше и чуть больше.'
+      :'Затем выбери особое положение и сравни с уровнями чуть ниже и чуть выше.';
+    modelHost.replaceChildren(el('p',null,'Сравни с прогнозом. '+direction),model.el,compare,observations);
+    explore.hidden=true;notice.textContent='';
+    if(state?.compared)describeComparison();
+  }
+  return {el:box,
+    show(prob,state,open){
+      problem=prob;const spec=graphSpec(problem);
+      const boundaries=criticalParameters(problem);
+      level=Fr(spec.measure==='K'?1:0);
+      // The forecast should not disclose a boundary value from the solution.
+      while(boundaries.some(boundary=>boundary.eq(level)))level=level.add(Fr(1));
+      const line=spec.measure==='K'?'y = ('+level.toString()+')·x':'y = '+level.toString();
+      question.textContent='Сколько общих точек у графика из условия и прямой '+line+'? Сделай прогноз.';
+      box.open=typeof state?.open==='boolean'?state.open:open;
+      guess.value=typeof state?.guess==='string'?state.guess.slice(0,2):'';
+      started=false;model=null;modelHost.replaceChildren();modelHost.hidden=true;explore.hidden=false;
+      notice.textContent='';observations.textContent='';
+      if(state?.started)show(state);
+    },
+    getState(){
+      if(!started&&!guess.value)return null;
+      return {open:box.open,guess:guess.value,started,graph:model?.getState()??null,compared:!!observations.textContent};
+    }
+  };
+}
 function renderMarathon(mod,host){
   host.innerHTML='';
   const progressKey='mathExam.oge22.practice.v1',score={solved:0,tries:0},results=el('details','minimal-results');results.append(el('summary',null,'Мои результаты · подтипы'));
@@ -1739,7 +1802,13 @@ function renderMarathon(mod,host){
     const c=btn('chip'+(sub.k===subFilter?' chip-on':''),sub.l,()=>{subFilter=sub.k;newProblem();});c.dataset.sub=sub.k||'';chips.append(c);chipButtons.push(c);
   });results.append(chips);}
   results.append(history);
-  const stmt=el('div'),stateLine=el('p','audit22-state');host.append(stmt,stateLine);
+  const stmt=el('div'),stateLine=el('p','audit22-state');host.append(stmt);
+  const research=Audit22.personal()&&!new URLSearchParams(location.search).has('practice')?makeIntersectionResearch(()=>{
+    if(synchronize())return false;
+    recordHelp(attempt,'research-model');return true;
+  },()=>save()):null;
+  if(research)host.append(research.el);
+  host.append(stateLine);
   const hintRow=el('div','minimal-hint'),hint=btn('btn-new','Хочешь подсказку?');hintRow.append(hint);host.append(hintRow);
   const helpPanel=el('section','minimal-help');helpPanel.id='help-'+mod.id;helpPanel.hidden=true;helpPanel.setAttribute('aria-label','Лаборатория и шаги решения');hint.setAttribute('aria-controls',helpPanel.id);hint.setAttribute('aria-expanded','false');hintRow.append(helpPanel);
   const gv=makeGraphView(true);helpPanel.append(gv.el,el('div','mhelp','Двигай прямую, а особые положения проверяй точным числом или дробью. Модель относится к твоему условию.'));
@@ -1776,7 +1845,10 @@ function renderMarathon(mod,host){
       all[mod.id]=Object.assign({},old,{solved:num(old.solved)+(correct?1:0),tries:num(old.tries)+1});localStorage.setItem(progressKey,JSON.stringify(all));
     }catch(_){score.tries++;if(correct)score.solved++;}
   }
-  function snapshot(){return {input:input.getState(),peeked,solved:solvedThis,helpOpen:!helpPanel.hidden,helpBuilt,stepsBuilt,steps:stepApi?stepApi.getState():null,graph:helpBuilt?gv.getState():null,feedbackKind,subFilter,lastSubmitted};}
+  function snapshot(){
+    const researchState=research?.getState();
+    return {input:input.getState(),peeked,solved:solvedThis,helpOpen:!helpPanel.hidden,helpBuilt,stepsBuilt,steps:stepApi?stepApi.getState():null,graph:helpBuilt?gv.getState():null,feedbackKind,subFilter,lastSubmitted,...(researchState?{research:researchState}:{})};
+  }
   function synchronize(){
     if(restoring||!attempt)return false;const newer=Audit22.latest(mod,'marathon',attempt);if(!newer)return false;
     install(newer,true);staleNotice=true;stateLine.textContent='В другой вкладке сохранён более свежий черновик. Он восстановлен вместе с ответом и помощью. Повтори нужное действие.';return true;
@@ -1808,6 +1880,7 @@ function renderMarathon(mod,host){
   function install(data,restore=false){
     restoring=true;if(!restore)staleNotice=false;problem=data.problem;attempt=data.attempt;host.__problem=problem;host.__attempt=attempt;
     const ui=restore?data.ui||{}:{};
+    research?.show(problem,ui.research,!attempt.hasWork&&!attempt.finished);
     if(restore&&Object.prototype.hasOwnProperty.call(ui,'subFilter'))subFilter=ui.subFilter===null?null:(mod.subs||[]).some(x=>x.k===ui.subFilter)?ui.subFilter:null;
     peeked=ui.peeked===true||attempt.helpKinds.includes('solution')||attempt.helpKinds.includes('step-reveal');solvedThis=false;helpBuilt=false;stepsBuilt=false;stepApi=null;lastSubmitted=typeof ui.lastSubmitted==='string'?ui.lastSubmitted:'';feedbackKind=typeof ui.feedbackKind==='string'?ui.feedbackKind:'';
     checkButton.disabled=false;stmt.innerHTML=statementHtml(problem);makeInput();if(restore)input.setState(ui.input);
@@ -1959,5 +2032,28 @@ if(window.OgeCourseSharedMode){
 <script src="oge-course-algebra.js?v=20261025-oge-course-mirror" data-oge-task="22"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-20-22-board.js?v=20261025"></script>
+<!-- download-panel:start:oge-task22-functions-graphs -->
+<section class="download-panel" id="download" data-trainer-download="oge-task22-functions-graphs">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task22-functions-graphs/oge-task22-functions-graphs-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь авторский пример y = 3 − (x−2)/(x²−2x). Покажи x ≠ 0, 2, выколотую точку (2; 2,5) и найди все m, при которых y = m не пересекает график."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adapt-graph">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task22-functions-graphs -->
 </body>
 </html>

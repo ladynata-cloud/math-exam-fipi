@@ -101,7 +101,7 @@
     host.append(controls, visual, result); return { controls, visual, result };
   }
   function grid(label, range = 8) {
-    const s = chart(label, 520, 400), x = v => 260 + v * 25, y = v => 200 - v * 21;
+    const s = chart(label, 520, 440), x = v => 260 + v * 25, y = v => 220 - v * 25;
     for (let i = -range; i <= range; i += 2) {
       line(s, x(i), y(-range), x(i), y(range), { stroke: '#e1e8df', 'stroke-width': 1 });
       line(s, x(-range), y(i), x(range), y(i), { stroke: '#e1e8df', 'stroke-width': 1 });

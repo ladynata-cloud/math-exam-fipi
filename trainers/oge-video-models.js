@@ -73,7 +73,8 @@
   if (!lessons.length || document.getElementById('oge-video-models')) return;
   const e = (tag, text, cls) => { const n = document.createElement(tag); if (text != null) n.textContent = text; if (cls) n.className=cls; return n; };
   const shell = e('details', null, 'ovm'); shell.id='oge-video-models';
-  const summary=e('summary','Разобраться на модели');summary.setAttribute('data-ovm-open','');shell.append(summary);
+  const entrance=task===11?document.querySelector('#task11-research:not([hidden])'):null;
+  const summary=e('summary',entrance?'Исследование':'Разобраться на модели');summary.setAttribute('data-ovm-open','');shell.append(summary);
   const intro=e('p','Предскажи → измени модель → объясни → реши новый пример.','ovm-intro');shell.append(intro);
   const label=e('label','Выбери исследование','ovm-picker-label'), picker=e('select'); picker.setAttribute('data-ovm-picker','');
   for(const l of lessons){const o=e('option',l.title);o.value=l.id;picker.append(o);}label.append(picker);shell.append(label);
@@ -81,7 +82,11 @@
   const host=e('section');shell.append(host);
   // Place after the existing task container: native rerenders cannot remove it.
   const anchor=document.querySelector('main') || document.querySelector('body > .wrap') || document.querySelector('#app');
-  if(anchor) anchor.insertAdjacentElement('afterend',shell); else document.body.append(shell);
+  if(entrance){
+    shell.open=true;
+    const practiceLink=e('a','Перейти к заданиям ОГЭ');practiceLink.href='#m4-heading';shell.append(practiceLink);
+    entrance.append(shell);
+  }else if(anchor) anchor.insertAdjacentElement('afterend',shell); else document.body.append(shell);
   let lesson=lessons[0],state,storageAvailable=true;
   const versions=new Map(),epochs=new Map(),sessions=new Map(),exposures=new Map();
   function read(l){try{return root.localStorage.getItem(PREFIX+l.id);}catch(_){storageAvailable=false;return undefined;}}
@@ -140,7 +145,14 @@
   function choices(q,field,action){
     const fieldset=e('fieldset'),legend=e('legend',q.question);fieldset.append(legend);
     q.choices.forEach((text,index)=>{const l=e('label',null,'ovm-choice'),r=e('input');r.type='radio';r.name='ovm-'+field;r.value=String(index);r.checked=state[field]===index;r.addEventListener('change',()=>{state[field]=index;go.disabled=field==='reason'&&index!==q.answer;save();});l.append(r,e('span',text));fieldset.append(l);});host.append(fieldset);
-    host.append(button('Проверить',action,()=>{if(state[field]===null){feedback.textContent='Сначала выбери предположение.';return;}const ok=state[field]===q.answer;feedback.textContent=(ok?'Верно. ':'Пока не так. ')+q.explain;if(field==='prediction'){go.disabled=false;}else if(ok){go.disabled=false;}save();}));
+    if(field==='reason'){
+      host.append(button('Проверить',action,()=>{
+        if(state.reason===null){feedback.textContent='Сначала выбери объяснение.';return;}
+        const ok=state.reason===q.answer;
+        feedback.textContent=(ok?'Верно. ':'Пока не так. ')+q.explain;
+        go.disabled=!ok;save();
+      }));
+    }
     const feedback=e('p','','ovm-feedback');feedback.setAttribute('data-ovm-feedback','');feedback.setAttribute('role','status');host.append(feedback);
     const nextStage=field==='prediction'?'experiment':'practice';
     const go=button(field==='prediction'?'Проверить на модели':'Решить новый пример',nextStage,()=>{if(field==='reason'&&state.reason!==q.answer)return;change(()=>{state.stage=nextStage;if(nextStage==='practice')state.visits[state.variant]=(state.visits[state.variant]||0)+1;});});
@@ -157,7 +169,8 @@
       const update=(input,other)=>{const value=Number(input.value);if(!input.value||!Number.isFinite(value)||value<c.min||value>c.max){input.setAttribute('aria-invalid','true');return;}input.removeAttribute('aria-invalid');state.params[c.key]=value;if(!save())return;other.value=String(value);renderScene(scene,readout);};
       range.addEventListener('input',()=>update(range,number));number.addEventListener('input',()=>update(number,range));
     }
-    host.append(button('Почему это работает?','reason',()=>change(()=>{state.stage='reason';})));
+    const finish=button('Сравнить с прогнозом','reason',()=>change(()=>{state.stage='reason';}));
+    host.append(finish);
   }
   function practice(){
     const p=lesson.practices[state.variant],familiar=state.seen.includes(state.variant)||state.helped||state.wrong||(state.visits[state.variant]||0)>1;
@@ -192,7 +205,10 @@
     if(!storageAvailable)notice.textContent='Сохранение в этом браузере недоступно. Можно работать до закрытия страницы.';
     if(state.stage==='prediction'){if(lesson.preview){const scene=e('div',null,'ovm-scene');scene.dataset.ovmPreview='';const view=lesson.preview(state.params);scene.innerHTML=typeof view==='string'?view:view.svg;host.append(scene);}choices(lesson.predict,'prediction','check-prediction');}
     if(state.stage==='experiment')experiment();
-    if(state.stage==='reason')choices(lesson.reason,'reason','check-reason');
+    if(state.stage==='reason'){
+      if(state.prediction!==null)host.append(e('p',(state.prediction===lesson.predict.answer?'Прогноз подтвердился. ':'Сравни с прогнозом. ')+lesson.predict.explain));
+      choices(lesson.reason,'reason','check-reason');
+    }
     if(state.stage==='practice')practice();
     const stats=e('p','', 'ovm-note');stats.dataset.ovmStats='';host.append(stats);updateStats();
     if(focusInside)heading.focus();

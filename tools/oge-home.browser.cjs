@@ -60,6 +60,16 @@ async function allTopics(p){
  await fits(p);
 }
 async function fits(p){assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'no horizontal overflow');}
+async function startGraphs(p, javaScript = true) {
+ await p.getByRole('link',{name:'Начать с графиков №11',exact:true}).click();
+ await p.waitForURL(base+'/oge/skills/?topic=n11');
+ if(javaScript) {
+  await p.getByText('Формула по графику',{exact:true}).waitFor();
+  assert(await p.locator('.figure svg').isVisible(),'the first task has a graph');
+ } else {
+  assert(await p.getByRole('link',{name:'К курсу ОГЭ по математике',exact:true}).isVisible(),'the course remains reachable without scripts');
+ }
+}
 async function destination(p,href){assert.equal(await p.locator('#model-link').getAttribute('href'),href);if(!checkedLinks.has(href)){assert.equal((await p.request.get(base+href)).status(),200,'topic destination exists: '+href);checkedLinks.add(href);}}
 (async()=>{
  if(!base){server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+new URL(req.url,'http://local').pathname);if(!file.startsWith(root+path.sep)&&file!==root)throw Error('path');if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',types[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}catch{res.writeHead(404).end();}});await new Promise(r=>server.listen(0,'127.0.0.1',r));base='http://127.0.0.1:'+server.address().port;}
@@ -98,14 +108,16 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    await p.locator('[data-orbit="11"]').press('Enter');await p.locator('[data-type="1"]').press('Enter');
    assert.match(await p.locator('#model-description').innerText(),/a > 0.*вверх.*a < 0.*вниз/);
    await p.locator('#model-link').click();await p.waitForURL(base+topics[10].href);assert(await p.locator('h1').isVisible(),'real graph trainer opens');
-   await p.goto(base+'/oge/');assert.match(await p.locator('.hero .btn').first().innerText(),/Начни уже с чего-нибудь!/);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);assert(await p.locator('#geometry').count());await fits(p);await p.screenshot(out?{path:path.join(out,`catalog-${width}.png`),fullPage:false}:{});
+   await p.goto(base+'/oge/');await startGraphs(p);
+   await p.goto(base+'/oge/');await p.locator('.start-routes a[href="/trainers/oge-course/"]').click();
+   await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);assert(await p.locator('#geometry').count());await fits(p);await p.screenshot(out?{path:path.join(out,`catalog-${width}.png`),fullPage:false}:{});
    for(const section of ['part1','geometry','part2'])assert(await p.locator('#'+section).count());
    assert(await p.getByRole('link',{name:'Рассмотреть модели ↗',exact:true}).isVisible());
    await p.getByRole('link',{name:'Рассмотреть модели ↗',exact:true}).click();await p.waitForURL(base+'/oge/#oge-models');
    assert.equal(await p.locator('.start-routes article').count(),3);
    for(const link of await p.locator('.start-routes a,.course-chapters a').all()){const href=await link.getAttribute('href');assert.equal((await p.request.get(base+href)).status(),200,'strategic entry path '+href);}
    await p.locator('[data-orbit=all]').click();assert(await p.locator('.orbit-numbers').isVisible());await p.locator('[data-orbit=intro]').click();assert(!await p.locator('.orbit-numbers').isVisible());
-   report.cases.push({width,status:'PASS',orbits:25,subtypes:53,checks:['layout','every selection and destination','paused pixels','keyboard','course navigation','owner invitation preserved','intro and all-map modes','topic illustrations','catalog visual continuity','three starting paths']});await c.close();
+   report.cases.push({width,status:'PASS',orbits:25,subtypes:53,checks:['layout','every selection and destination','paused pixels','keyboard','course navigation','first graph exercise','intro and all-map modes','topic illustrations','catalog visual continuity','three starting paths']});await c.close();
   }
   const c=await context(browser,{reducedMotion:'no-preference'}),p=await c.newPage();await p.goto(base+'/oge/');await allTopics(p);await p.locator('.model-exhibit[data-renderer]').waitFor();
   await p.locator('[data-orbit=all]').click();const start=await p.locator('#oge-model-canvas').screenshot();await p.waitForTimeout(700);assert.notDeepEqual(await p.locator('#oge-model-canvas').screenshot(),start,'whole universe moves');await picture(p,'orbit-moving');
@@ -124,7 +136,8 @@ async function destination(p,href){assert.equal(await p.locator('#model-link').g
    const p=await c.newPage();await p.goto(base+'/oge/');await allTopics(p);await fits(p);
    if(mode==='no-webgl'){await p.locator('[data-renderer="canvas"]').waitFor();assert(await p.locator('#oge-model-canvas').isVisible());await picture(p,'software-system');await p.locator('[data-orbit=all]').click();await p.locator('[data-orbit="24"]').click();await destination(p,topics[23].href);}
    else{assert(await p.locator('.model-fallback').isVisible());assert(!await p.locator('.orbit-picker').isVisible());}
-   await picture(p,mode);await p.locator('.hero .btn').first().click();await p.waitForURL(base+'/trainers/oge-course/');await allTopics(p);report.cases.push({mode,status:'PASS',visibleTopicsPerEntry:25});await c.close();
+   await picture(p,mode);await startGraphs(p,mode!=='no-js');
+   await p.goto(base+'/oge/');await allTopics(p);report.cases.push({mode,status:'PASS',visibleTopicsPerEntry:25});await c.close();
   }
   assert.deepEqual(report.errors,[]);console.log('OGE_HOME_3D_OK',JSON.stringify(report));
  }finally{if(out)fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));}

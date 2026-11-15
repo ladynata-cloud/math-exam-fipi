@@ -47,7 +47,8 @@ const ENGINE_HASHES={
   // e258e438cd30e396c7741741384911f0a424581d; same normalization, new
   // navigation/help accounting only. All other engines stay pinned.
   "percent-table-trainer.html": "bb894316d96a9f0467214dbec873b4b666e37cdc52203a36aa1302d65be57e40",
-  "practice-1-5-apartments.html": "e9957b28005a6a0a3fb029b570ab673307509349122f44e6738c51a20d5eefc4",
+  // Packing feedback and the two minimality checks, source 18b44244753ac806d449a2040ad4b8c8af9acaf3.
+  "practice-1-5-apartments.html": "b3af7d3e165b2d812208a8fe02a2202b43cbbc6a4b4f842dcf7f9f445f2dbc00",
   "practice-1-5-stoves.html": "1efc4f134ee3e9df6fc8e705dd7a54e3ce8d56d7c155c212293c6021a1cb22aa",
   "practice-1-5-routes-checkpoint-2026.html": "cebdcffd0dd1ff43f8547ae5bf4bff4386d9da596ec20a651cc13183b6014584"
 };

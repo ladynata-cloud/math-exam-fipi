@@ -73,7 +73,8 @@
   <h2>Методы</h2>
   <p class="gsub">Три взгляда на одну задачу: аналитика, графики в плоскости XOY, плоскость XOA.</p>
   <div class="grid" id="gMethods"><!-- seo-catalog-fallback:gMethods:start -->
-<div class="tcard soon"><p class="tfor">метод · аналитика</p><p class="th">Аналитический метод</p><p class="td">Равносильные переходы, замена, симметрия корней. Уроки 8–10 исходного курса: 6 + 3 + 6 задач.</p><div class="kit"><span class="chip">равносильность</span><span class="chip">замена</span><span class="chip">симметрия</span></div><p class="prog"><span class="soonmark">скоро — глава в сборке</span></p></div><div class="tcard soon"><p class="tfor">метод · графики</p><p class="th">Графики и плоскость XOA</p><p class="td">Семейства кривых в XOY и метод плоскости XOA: параметр становится второй координатой.</p><div class="kit"><span class="chip">семейства</span><span class="chip">XOA</span><span class="chip">полигоны</span></div><p class="prog"><span class="soonmark">скоро — глава в сборке</span></p></div>
+<div class="tcard soon"><p class="tfor">метод · аналитика</p><p class="th">Аналитический метод</p><p class="td">Равносильные переходы, замена, симметрия корней. Уроки 8–10 исходного курса: 6 + 3 + 6 задач.</p><div class="kit"><span class="chip">равносильность</span><span class="chip">замена</span><span class="chip">симметрия</span></div><p class="prog"><span class="soonmark">скоро — глава в сборке</span></p></div>
+<a class="tcard" href="/ege-profil/azbuka-metodov/?exam=19&amp;back=%2Fege-profil%2Ftrainers%2Fparameters-18%2Findex.html%23gMethods#/parameter-methods/plane"><p class="tfor">метод · графики</p><p class="th">Параметр как координата</p><p class="td">Проведи горизонталь в плоскости (x, a) и найди уровни, на которых система имеет решение.</p></a>
 <!-- seo-catalog-fallback:gMethods:end --></div>
 
   <h2>Практикум и зачёт</h2>
@@ -156,9 +157,9 @@
     { for:"метод · аналитика", h:"Аналитический метод", href:null, ready:false,
       d:"Равносильные переходы, замена, симметрия корней. Уроки 8–10 исходного курса: 6 + 3 + 6 задач.",
       kit:["равносильность","замена","симметрия"] },
-    { for:"метод · графики", h:"Графики и плоскость XOA", href:null, ready:false,
-      d:"Семейства кривых в XOY и метод плоскости XOA: параметр становится второй координатой.",
-      kit:["семейства","XOA","полигоны"] }
+    { for:"метод · графики", h:"Параметр как координата", ready:true,
+      href:"/ege-profil/azbuka-metodov/?exam=19&back=%2Fege-profil%2Ftrainers%2Fparameters-18%2Findex.html%23gMethods#/parameter-methods/plane",
+      d:"Проведи горизонталь в плоскости (x, a) и найди уровни, на которых система имеет решение." }
   ];
 
   var finals=[
@@ -180,13 +181,12 @@
     el.className="tcard"+(t.ready?"":" soon");
     if(t.ready) el.href=t.href;
     var kit=(t.kit||[]).map(function(k){return '<span class="chip">'+k+'</span>';}).join("");
-    var prog=t.ready
-      ? '<p class="prog">прогресс: <b>'+t.prog()+'</b></p>'
-      : '<p class="prog"><span class="soonmark">скоро — глава в сборке</span></p>';
+    var prog=t.prog ? '<p class="prog">прогресс: <b>'+t.prog()+'</b></p>' : '';
+    if(!t.ready) prog='<p class="prog"><span class="soonmark">скоро — глава в сборке</span></p>';
     el.innerHTML='<p class="tfor">'+t.for+'</p>'
       +'<p class="th">'+t.h+'</p>'
       +'<p class="td">'+t.d+'</p>'
-      +'<div class="kit">'+kit+'</div>'
+      +(kit?'<div class="kit">'+kit+'</div>':'')
       +prog;
     return el;
   }

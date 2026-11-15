@@ -9,6 +9,7 @@ const { createServer } = require('node:http');
 const { createServer: createNetServer } = require('node:net');
 const { extname, join, resolve, sep } = require('node:path');
 const { chromium } = require('playwright');
+const { verifyControlWork } = require('./geometry7-control-room.cjs');
 
 const ROOT = resolve(__dirname, '..');
 const SHOTS = process.env.EGE_BAZA_BOARD_SHOTS;
@@ -24,7 +25,7 @@ async function freePort() {
 }
 
 function staticServer() {
-  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2' };
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2', '.gif': 'image/gif', '.webp': 'image/webp' };
   return createServer((request, response) => {
     try {
       const path = decodeURIComponent(new URL(request.url, 'http://local').pathname);
@@ -85,7 +86,7 @@ async function session(browser, origin, name, errors) {
 
 
 async function connected(page){await page.waitForFunction(()=>document.querySelector('#mirrorStatus')?.dataset.mirrorStatus==='connected',null,{timeout:20000});}
-async function frameFor(page,file){await page.waitForFunction(file=>document.querySelector('#trainerFrame')?.src.includes(file),file);let frame;for(let i=0;i<200;i++){frame=page.frames().find(f=>new URL(f.url()||'about:blank').pathname==='/trainers/'+file);if(frame){try{await frame.waitForFunction(()=>!!(window.Geometry7Practice?.getState()||window.__atanasyanGrade7Board||window.__bazaBoard),null,{timeout:1000});return frame;}catch(_){}}await wait(50);}throw Error('Trainer not ready '+file);}
+async function frameFor(page,file){await page.waitForFunction(file=>document.querySelector('#trainerFrame')?.src.includes(file),file);let frame;for(let i=0;i<200;i++){frame=page.frames().find(f=>new URL(f.url()||'about:blank').pathname==='/trainers/'+file);if(frame){try{await frame.waitForFunction(()=>!!(window.Geometry7Practice?.getState()||window.__atanasyanGrade7Board||window.__bazaBoard||document.body?.dataset.controlRoom),null,{timeout:1000});return frame;}catch(_){}}await wait(50);}throw Error('Trainer not ready '+file);}
 const snapshot=frame=>frame.evaluate(()=>(window.Geometry7Practice||window.__atanasyanGrade7Board||window.__bazaBoard).getState());
 async function settledSnapshot(frame){let previous='',stable=0;for(let i=0;i<100;i++){const value=await snapshot(frame),serialized=JSON.stringify(value);stable=serialized===previous?stable+1:0;if(stable>=2)return value;previous=serialized;await wait(50);}throw Error('Controller state did not settle');}
 async function sync(a,b,label){const expected=await settledSnapshot(a);try{await b.waitForFunction(s=>JSON.stringify((window.Geometry7Practice||window.__atanasyanGrade7Board||window.__bazaBoard).getState())===JSON.stringify(s),expected);}catch(e){console.error(label,JSON.stringify({expected,actual:await snapshot(b)}));throw e;}assert.deepEqual(await snapshot(a),expected,label+' controller stable after asynchronous dispatch');console.log('PASS',label);return expected;}
@@ -96,7 +97,8 @@ async function run(browser,origin,serverOrigin,errors){
  await teacher.goto(origin+'/trainers/trainer-board.html?server='+encodeURIComponent(serverOrigin));await teacher.locator('#openShare').click();await teacher.locator('#createRoom').click();
  await teacher.waitForFunction(()=>document.querySelector('#shareStatus')?.textContent==='подключено'&&document.querySelector('#studentLink')?.value.includes('role=student'));
  const link=await teacher.locator('#studentLink').inputValue();await teacher.locator('#sharePanel [data-close-panel]').click();await student.goto(link);
- for(const file of ['atanasyan-grade7.html','geometry7-rebuild.html','geometry7-practice.html']){
+ const nativeFiles=process.argv.includes('--control-work-only')?[]:['atanasyan-grade7.html','geometry7-rebuild.html','geometry7-practice.html'];
+ for(const file of nativeFiles){
   phase=file;
   await teacher.locator('#chooseTrainer').click();if(!await teacher.locator('#manualTrainerEntry').evaluate(e=>e.open))await teacher.locator('#manualTrainerEntry summary').click();await teacher.locator('#trainerUrl').fill('/trainers/'+file);await teacher.locator('#openTrainer').click();if(await teacher.locator('#pickerClose').isVisible())await teacher.locator('#pickerClose').click();
   await Promise.all([connected(teacher),connected(student)]);let t=await frameFor(teacher,file),s=await frameFor(student,file);await sync(t,s,file+' initial');
@@ -124,6 +126,8 @@ async function run(browser,origin,serverOrigin,errors){
   else await t.evaluate(()=>window.scrollTo(0,0));
   if(SHOTS){mkdirSync(SHOTS,{recursive:true});await teacher.screenshot({path:join(SHOTS,file.replace('.html','.png')),fullPage:true});}
  }
+ phase='geometry-7/control-work.html';
+ await verifyControlWork({teacher,student,studentContext:ss.context,connected,frameFor,handoff});
  assert.deepEqual(errors,[]);await ts.context.close();await ss.context.close();console.log('GEOMETRY7_ROOM_GATE_PASS');
 }
 (async()=>{const server=staticServer();let browser,child,watchdog,logs='';try{

@@ -60,13 +60,14 @@
 @media (max-width: 600px) {
   .profile-journey-page:has(.focused-practice) .topbar {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: max-content minmax(0, 1fr);
     gap: 8px;
     padding: 10px 12px;
   }
   .profile-journey-page:has(.focused-practice) .topbar .brand {
     font-size: 16px;
     gap: 8px;
+    white-space: nowrap;
   }
   .profile-journey-page:has(.focused-practice) .brand small {
     display: none;
@@ -80,8 +81,11 @@
   .profile-journey-page:has(.focused-practice) #calm-toggle {
     grid-column: 2;
     grid-row: 1;
+    justify-self: end;
+    max-width: 100%;
     font-size: 16px;
     padding: 8px;
+    white-space: normal;
   }
   .profile-journey-page:has(.focused-practice) .topbar nav {
     grid-column: 1 / -1;

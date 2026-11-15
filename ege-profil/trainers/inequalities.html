@@ -1553,22 +1553,24 @@ function buildNumberLine(o){
 function buildPlot(o){
   const W=o.width||720, H=o.height||360, ML=44,MR=22,TM=18,BM=30;
   const {xMin,xMax,yMin,yMax}=o;
-  const sx=x=>ML+(x-xMin)/(xMax-xMin)*(W-ML-MR);
-  const sy=y=>TM+(yMax-y)/(yMax-yMin)*(H-TM-BM);
+  const xSpan=xMax-xMin,ySpan=yMax-yMin,scale=Math.min((W-ML-MR)/xSpan,(H-TM-BM)/ySpan);
+  const left=(W+ML-MR-xSpan*scale)/2,top=(H+TM-BM-ySpan*scale)/2;
+  const right=left+xSpan*scale,bottom=top+ySpan*scale;
+  const sx=x=>left+(x-xMin)*scale,sy=y=>top+(yMax-y)*scale;
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':o.aria||'График функции'});
   const clipId='c'+Math.random().toString(36).slice(2,8);
   const defs=svgEl('defs',{});const cp=svgEl('clipPath',{id:clipId});
-  cp.appendChild(svgEl('rect',{x:ML,y:TM,width:W-ML-MR,height:H-TM-BM}));defs.appendChild(cp);svg.appendChild(defs);
+  cp.appendChild(svgEl('rect',{x:left,y:top,width:right-left,height:bottom-top}));defs.appendChild(cp);svg.appendChild(defs);
   // сетка
   if(o.grid!==false){
-    const gx=niceStep(xMax-xMin),gy=niceStep(yMax-yMin);
-    for(let v=Math.ceil(xMin/gx)*gx;v<=xMax+1e-9;v+=gx)svg.appendChild(svgEl('line',{x1:sx(v),y1:TM,x2:sx(v),y2:H-BM,stroke:C.line2,'stroke-width':1,opacity:.7}));
-    for(let v=Math.ceil(yMin/gy)*gy;v<=yMax+1e-9;v+=gy)svg.appendChild(svgEl('line',{x1:ML,y1:sy(v),x2:W-MR,y2:sy(v),stroke:C.line2,'stroke-width':1,opacity:.7}));
+    const step=niceStep(Math.max(xSpan,ySpan));
+    for(let v=Math.ceil(xMin/step)*step;v<=xMax+1e-9;v+=step)svg.appendChild(svgEl('line',{x1:sx(v),y1:top,x2:sx(v),y2:bottom,stroke:C.line2,'stroke-width':1,opacity:.7}));
+    for(let v=Math.ceil(yMin/step)*step;v<=yMax+1e-9;v+=step)svg.appendChild(svgEl('line',{x1:left,y1:sy(v),x2:right,y2:sy(v),stroke:C.line2,'stroke-width':1,opacity:.7}));
   }
-  const inY=(0>=yMin&&0<=yMax), inX=(0>=xMin&&0<=xMax), yZero=inY?sy(0):(H-BM);
+  const inY=(0>=yMin&&0<=yMax), inX=(0>=xMin&&0<=xMax), yZero=inY?sy(0):(bottom);
   // оси
-  if(inY){svg.appendChild(svgEl('line',{x1:ML,y1:sy(0),x2:W-MR,y2:sy(0),stroke:C.ink,'stroke-width':1.8}));svg.appendChild(tri(W-MR,sy(0),'r',C.ink));}
-  if(inX){svg.appendChild(svgEl('line',{x1:sx(0),y1:H-BM,x2:sx(0),y2:TM,stroke:C.ink,'stroke-width':1.8}));svg.appendChild(tri(sx(0),TM,'u',C.ink));}
+  if(inY){svg.appendChild(svgEl('line',{x1:left,y1:sy(0),x2:right,y2:sy(0),stroke:C.ink,'stroke-width':1.8}));svg.appendChild(tri(right,sy(0),'r',C.ink));}
+  if(inX){svg.appendChild(svgEl('line',{x1:sx(0),y1:bottom,x2:sx(0),y2:top,stroke:C.ink,'stroke-width':1.8}));svg.appendChild(tri(sx(0),top,'u',C.ink));}
   // штриховка решения на оси x
   let segs=[];
   if(o.solution) o.solution.forEach(s=>segs.push({from:(s.from===-Infinity?xMin:s.from),to:(s.to===Infinity?xMax:s.to)}));
@@ -1579,9 +1581,9 @@ function buildPlot(o){
   }
   segs.forEach(s=>svg.appendChild(svgEl('line',{x1:sx(s.from),y1:yZero,x2:sx(s.to),y2:yZero,stroke:C.brand,'stroke-width':8,opacity:.28,'stroke-linecap':'round'})));
   // пороговые линии
-  (o.hlines||[]).forEach(h=>{svg.appendChild(svgEl('line',{x1:ML,y1:sy(h.y),x2:W-MR,y2:sy(h.y),stroke:h.color||C.amber,'stroke-width':1.8,'stroke-dasharray':'6 5'}));
-    if(h.label){const t=svgEl('text',{x:W-MR-4,y:sy(h.y)-6,'text-anchor':'end','font-family':'JetBrains Mono,monospace','font-size':13,fill:h.color||C.amber});t.textContent=h.label;svg.appendChild(t);}});
-  (o.vlines||[]).forEach(v=>svg.appendChild(svgEl('line',{x1:sx(v.x),y1:TM,x2:sx(v.x),y2:H-BM,stroke:v.color||C.ink3,'stroke-width':1.4,'stroke-dasharray':v.dash||'4 4'})));
+  (o.hlines||[]).forEach(h=>{svg.appendChild(svgEl('line',{x1:left,y1:sy(h.y),x2:right,y2:sy(h.y),stroke:h.color||C.amber,'stroke-width':1.8,'stroke-dasharray':'6 5'}));
+    if(h.label){const t=svgEl('text',{x:right-4,y:sy(h.y)-6,'text-anchor':'end','font-family':'JetBrains Mono,monospace','font-size':13,fill:h.color||C.amber});t.textContent=h.label;svg.appendChild(t);}});
+  (o.vlines||[]).forEach(v=>svg.appendChild(svgEl('line',{x1:sx(v.x),y1:top,x2:sx(v.x),y2:bottom,stroke:v.color||C.ink3,'stroke-width':1.4,'stroke-dasharray':v.dash||'4 4'})));
   // кривые
   const g=svgEl('g',{'clip-path':`url(#${clipId})`});
   (o.curves||[]).forEach(c=>{

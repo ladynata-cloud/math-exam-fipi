@@ -6,6 +6,11 @@
 <title>ОГЭ · Задание 24 — задачи на доказательство</title>
 <link rel="canonical" href="https://mathexam.space/trainers/oge-task24-proofs.html">
 <style>
+.proof-research{margin:16px 0;padding:12px 16px;border:1px solid #dbe7da;border-radius:12px;background:#eef5ed}
+.proof-research h2{margin:0;font-size:1.1em}.proof-research p{margin:8px 0}
+.proof-research a{display:inline-flex;align-items:center;min-height:44px;color:#216342}
+</style>
+<style>
 :root{--bg:#e8e4db;--paper:#fffdf7;--ink:#1a1a2e;--blue:#2d70b3;--ok:#16a34a;--err:#dc2626;
 --warn:#c2410c;--amber:#d97706;--pull:#7c3aed;--pink:#db2777;--teal:#0d9488;--line:#e7e1d2;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -196,7 +201,7 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
-<link rel="stylesheet" href="oge-course-proof.css">
+<link rel="stylesheet" href="oge-course-proof.css?v=20261114-figures">
 <link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">
 <script defer src="/assets/oge-wayfinding.js"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
@@ -207,6 +212,9 @@ body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-ap
 <script defer src="oge-video-graphs.js"></script>
 <script defer src="oge-video-geometry.js"></script>
 <script defer src="oge-video-models.js" data-oge-video-task="24"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
 <nav class="oge-wayfinding" aria-label="Навигация ОГЭ"><a href="/trainers/oge-course/">← Все темы ОГЭ</a><a href="/">Главная</a></nav>
@@ -1010,6 +1018,28 @@ function finishExam(){
   view().innerHTML=h;
 }
 
+const PROOF_OBSERVATION={
+  t1:'Покажи основания трапеции и диагональ BD. Какие углы при этой диагонали стоит сравнить?',
+  t2:'Найди на чертеже две прямые, пересекающиеся в O. Какие углы при O можно сразу сравнить?',
+  t3:'Найди на рисунке биссектрисы. Какие пары углов они делят пополам?',
+  t4:'Покажи середину стороны AB. Какие отрезки на этой стороне можно сравнить с BC?',
+  t5:'Опусти мысленно перпендикуляры из K на стороны угла A. Что можно сказать об их длинах?',
+  t6:'Покажи оба основания и среднюю линию. Как сравнить расстояния от E до оснований?',
+  t7:'Выбери треугольники с вершиной E и основаниями AD и BC. Где проходят их высоты?',
+  t8:'Проведи взглядом EC и ED. На какие треугольники они делят трапецию?',
+  t9:'Найди два больших треугольника с основанием AD. Как сравнить их высоты?',
+  t10:'Посмотри на лучи из K. У каких двух треугольников один и тот же угол при K?',
+  t11:'Покажи стороны углов CAB и CDB. Какой отрезок виден из A и D под этими углами?',
+  t12:'Отметь на рисунке прямые углы, которые дают высоты. Найди отрезок, видимый под обоими углами.',
+  t13:'Продолжи стороны до оснований высот. Найди прямые углы и отрезок, видимый под обоими углами.',
+  t14:'Соедини центр каждой окружности с A и B. Какие пары отрезков можно сравнить?',
+  t15:'Мысленно проведи радиусы PM и QN к точкам касания. Какие углы с касательной получатся?',
+  t16:'Найди стороны шестиугольника, прилегающие к углам B, D и F. Что можно сравнить в этих трёх углах?',
+  t17:'Проследи диагональ AD. Через какую точку она проходит и какие отрезки можно сравнить?',
+  t18:'Найди пересечение BE и CF. Как проверить, делятся ли обе диагонали в этой точке пополам?',
+  t19:'Покажи диагональ AD и центр O. Какое свойство окружности здесь поможет?',
+  t20:'Посмотри на треугольник ABC. Какие его стороны равны по условию?'
+};
 /* --- экран задачи --- */
 function renderTask(opts){
   opts=opts||{};
@@ -1017,6 +1047,7 @@ function renderTask(opts){
   const lit=activeLit();
   const phs=phasesOf(t);
   const showWhy=(ST.mode!=='exam'||ST.solvedNow);
+  const investigate=proofPersonal()&&!CP.REVIEW&&!ST.resumed&&!ST.workStarted&&!ST.solvedNow&&!new URLSearchParams(location.search).has('practice');
   const h=[];
   // заголовок
   if(ST.review)h.push('<div class="arsnote" role="status"><b>Работа над ошибками:</b> задачи только из открытых в журнале. Задача закрывается тремя сборками подряд без промаха.</div>');
@@ -1026,11 +1057,12 @@ function renderTask(opts){
   h.push('<div class="grid">');
   // левая колонка — чертёж
   h.push('<div><div class="figbox">'+renderFig(t.fig,lit,ST.revealed)+'</div>');
-  const capText = ST.solvedNow?'▮ Что и требовалось доказать':(ST.placed>0?stripTags(t.steps[proofOrder().at(-1)].t):'Выбери факт, который уже известен →');
+  const capText = ST.solvedNow?'▮ Что и требовалось доказать':(ST.placed>0?stripTags(t.steps[proofOrder().at(-1)].t):investigate?'Рассмотри чертёж и найди первый факт.':'Выбери факт, который уже известен →');
   h.push(`<div class="cap${ST.solvedNow?' done':''}">${capText}</div></div>`);
   // правая колонка
   h.push('<div>');
   h.push(`<div class="givens"><div class="g1"><b>Дано.</b> ${proofGiven(t)}</div><div><b>Доказать.</b> ${t.prove}</div></div>`);
+  if(investigate)h.push('<section class="proof-research" aria-labelledby="proof-research-title"><h2 id="proof-research-title">Исследование чертежа</h2><p>'+PROOF_OBSERVATION[t.id]+'</p><p>Назови первый факт и скажи, чем его можно обосновать. Затем сверь догадку с карточками.</p><a href="#proof-card-pool">К карточкам ↓</a></section>');
   if(ST.resumed)h.push('<p class="proof-resume-note">Продолжаем сохранённое доказательство. Порядок шагов и использованная помощь сохранены.</p>');
   if(ST.mode!=='exam'){
     const tz=SHEET.zones.filter(z=>z.tasks.indexOf(t.id)>=0);
@@ -1075,7 +1107,7 @@ function renderTask(opts){
     const cur=phs[ST.phase];
     if(opts.phaseDone)h.push('<div class="phasedone">✓ Фаза пройдена — продолжаем</div>');
     if(phs.length>1)h.push(`<div class="phasehdr">Фаза ${ST.phase+1} из ${phs.length}${cur.name?' · '+cur.name:''}</div>`);
-    h.push('<div class="pooltitle">Какой факт уже можно обосновать? <span class="poolhint">независимые факты можно выбирать в любом порядке; есть лишние карточки</span></div><div class="pool">');
+    h.push('<div class="pooltitle">Какой факт уже можно обосновать? <span class="poolhint">независимые факты можно выбирать в любом порядке; есть лишние карточки</span></div><div class="pool" id="proof-card-pool" tabindex="-1">');
     ST.pool.forEach(item=>{
       const inPhase=(item.type==='s')?cur.s.indexOf(item.i)>=0:cur.x.indexOf(item.i)>=0;
       if(!inPhase)return;
@@ -1413,8 +1445,31 @@ if(!CP.RO && document.documentElement.nodeType===1){
 <script src="task19-textbook-data.js"></script>
 <script src="task19-reference.js"></script>
 <script src="oge-course-reference.js"></script>
-<script src="oge-course-proof.js?v=20261025-oge-course-mirror"></script>
+<script src="oge-course-proof.js?v=20261114-figures"></script>
 <script src="board-bridge.js"></script>
 <script src="oge-part2-geometry-board.js"></script>
+<!-- download-panel:start:oge-task24-proofs -->
+<section class="download-panel" id="download" data-trainer-download="oge-task24-proofs">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/oge-task24-proofs/oge-task24-proofs.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/oge-task24-proofs/oge-task24-proofs-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/oge-task24-proofs/oge-task24-proofs-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Сделай подписи точек на чертеже крупнее."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:oge-task24-proofs -->
 </body>
 </html>

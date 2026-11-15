@@ -177,6 +177,7 @@ function discovery(el,session,{answer,explain,apply}){
  const check=()=>{work.answer=input.value.slice(0,80);work.checkedAnswer=work.answer;const n=PathData.parse(work.answer);if(n!==null)apply();draw();session.changed();};
  el.querySelector('#checkPrediction').onclick=check;input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();check();}};draw();
 }
+let derivativePlotSerial=0;
 function mount(el,t,options={}){const m=t.model,kind=m.kind;const session=PathModels.session(el,kind,options),v=session.value,changed=session.changed;let svg,step=v.revealed||0;const shell=(h)=>{el.innerHTML=h;},axis='<path d="M35 175H565M300 20V320" stroke="#829288"/>';
 const slider=(id,label,min,max,val,st=1)=>`<label>${label} <output id="${id}out">${F(val)}</output><input id="${id}" type="range" min="${min}" max="${max}" step="${st}" value="${val}"></label>`;
 const bind=(id,fn)=>{el.querySelector('#'+id).oninput=e=>{el.querySelector('#'+id+'out').textContent=F(+e.target.value);fn(+e.target.value);changed();};};
@@ -221,7 +222,35 @@ if(kind==='equation'){
  }
  draw();return session;
 }
-if(kind==='derivative'){let x=v.x??m.x,h=v.h??1;Object.assign(v,{x,h});shell(frame+slider('px','Точка x',-2,2,x,.25)+slider('dh','Шаг h',.05,2,h,.05));svg=el.querySelector('svg');const draw=()=>{let X=v=>300+v*80,Y=v=>300-v*55,path='';for(let v=-2.2;v<=2.2;v+=.04)path+=(path?'L':'M')+X(v)+','+Y(v*v);const slope=2*x+h;svg.innerHTML=`<path d="M30 300H570M300 15V330" stroke="#87958c"/><path d="${path}" fill="none" stroke="#16715b" stroke-width="4"/><path d="M${X(-3)} ${Y(x*x+slope*(-3-x))}L${X(3)} ${Y(x*x+slope*(3-x))}" stroke="#c36b34" stroke-width="3"/><path d="M${X(-3)} ${Y(x*x+2*x*(-3-x))}L${X(3)} ${Y(x*x+2*x*(3-x))}" stroke="#536cc5" stroke-width="3" stroke-dasharray="6"/><circle cx="${X(x)}" cy="${Y(x*x)}" r="7" fill="#16715b"/><circle cx="${X(x+h)}" cy="${Y((x+h)**2)}" r="7" fill="#c36b34"/>`;el.querySelector('#modelread').textContent=`Высота f(x)=${F(x*x)}. Наклон секущей Δy/Δx=${F(slope)}. При h→0 наклон стремится к 2x=${F(2*x)}: ${x<0?'убывание':x>0?'рост':'горизонтальная касательная'}. Оранжевая — секущая, пунктирная — касательная.`;};bind('px',v=>{x=v;session.value.x=x;draw();});bind('dh',v=>{h=v;session.value.h=h;draw();});draw();return session;}
+if(kind==='derivative'){
+ let x=v.x??m.x,h=v.h??1;Object.assign(v,{x,h});
+ shell(frame+slider('px','Точка x',-2,2,x,.25)+slider('dh','Шаг h',.05,2,h,.05));svg=el.querySelector('svg');
+ const scale=16,X=v=>300+v*scale,Y=v=>300-v*scale;
+ const clip='derivative-window-'+(++derivativePlotSerial);
+ const draw=()=>{
+  const slope=2*x+h,left=X(-5),right=X(5),top=Y(17),bottom=Y(-2);
+  let path='',grid='';
+  for(let i=-5;i<=5;i++)grid+=`<path d="M${X(i)} ${top}V${bottom}" stroke="#e2e9ed"/>`;
+  for(let i=-2;i<=17;i++)grid+=`<path d="M${left} ${Y(i)}H${right}" stroke="#e2e9ed"/>`;
+  for(let i=-4;i<=4;i+=2)grid+=`<text x="${X(i)}" y="${bottom+13}" text-anchor="middle" font-size="12">${i}</text>`;
+  for(let i=0;i<=16;i+=2)grid+=`<text x="${left-8}" y="${Y(i)+4}" text-anchor="end" font-size="12">${i}</text>`;
+  for(let i=0;i<=200;i++){
+   const v=-5+i/20;path+=(i?'L':'M')+X(v)+','+Y(v*v);
+  }
+  const lineFor=(k,stroke,dash='')=>{
+   const at=v=>x*x+k*(v-x);
+   return `<path d="M${X(-5)} ${Y(at(-5))}L${X(5)} ${Y(at(5))}" stroke="${stroke}" stroke-width="3"${dash}/>`;
+  };
+  svg.innerHTML=`<defs><clipPath id="${clip}"><rect x="${left}" y="${top}" width="${right-left}" height="${bottom-top}"/></clipPath></defs>${grid}
+   <path d="M${left-8} ${Y(0)}H${right+8}M${X(0)} ${top-6}V${bottom+4}" stroke="#87958c"/>
+   <text x="${right+12}" y="${Y(0)+4}">x</text><text x="${X(0)+8}" y="${top-3}">y</text>
+   <g clip-path="url(#${clip})"><path d="${path}" fill="none" stroke="#16715b" stroke-width="4"/>
+   ${lineFor(slope,'#c36b34')}${lineFor(2*x,'#536cc5',' stroke-dasharray="6"')}
+   <circle cx="${X(x)}" cy="${Y(x*x)}" r="7" fill="#16715b"/><circle cx="${X(x+h)}" cy="${Y((x+h)**2)}" r="7" fill="#c36b34"/></g>`;
+  el.querySelector('#modelread').textContent=`Высота f(x)=${F(x*x)}. Наклон секущей Δy/Δx=${F(slope)}. При h→0 наклон стремится к 2x=${F(2*x)}: ${x<0?'убывание':x>0?'рост':'горизонтальная касательная'}. Оранжевая — секущая, пунктирная — касательная.`;
+ };
+ bind('px',v=>{x=v;session.value.x=x;draw();});bind('dh',v=>{h=v;session.value.h=h;draw();});draw();return session;
+}
 if(kind==='solid'){
  const learningDiscovery=options.learningDiscovery===true;
  let angle=v.angle??.65,tilt=v.tilt??.4,cut=v.cut??1/3;Object.assign(v,{angle,tilt,cut});

@@ -8,6 +8,13 @@ state.lab.mode=state.lab.mode||'one';state.lab.horizon=state.lab.horizon||24;
 let frame=0,last=0,playing=false;const root=$('#main');
 const seen=q=>state.seen.includes(q);function expose(q){if(!seen(q))state.seen.push(q);state.seen=state.seen.slice(-10000);}
 function fresh(mode){state.activities[mode]={kind:state.kind,seed:state.serial++,step:0,help:false,attempted:false,done:false,draft:'',note:''};store.save();}
+let courseSkillMap=null;
+function clearSkillMap(){courseSkillMap?.dispose();courseSkillMap=null;}
+function attachSkillMap(mode){
+ clearSkillMap();
+ const a=state.activities[mode];
+ courseSkillMap=window.EgeBazaSkillMap?.attach(root,{module:'work-rate',skill:state.kind,onReveal:()=>{if(a&&!a.done){a.help=true;expose(D.make(a.kind,a.seed).q);}store.save();}});
+}
 function stop(){cancelAnimationFrame(frame);playing=false;last=0;}
 function message(text,bad=false){$('#feedback').textContent=text;$('#feedback').className='feedback '+(bad?'bad':'good');}
 function lab(){
@@ -52,6 +59,6 @@ function activity(mode){if(!state.activities[mode]||state.activities[mode].kind!
  }store.save();
 }
 function report(){const records=state.records,clean=records.filter(r=>r.mode==='practice'&&r.independent),guided=records.filter(r=>r.mode==='learn'),help=records.filter(r=>r.mode==='practice'&&!r.independent);root.innerHTML=`<p class="eyebrow">Твой путь в задачах на работу</p><h1>Что уже получается</h1><div class="metrics"><div class="panel"><span class="score">${clean.length}</span><p>Новых решений с первой попытки без помощи</p></div><div class="panel"><span class="score">${help.length}</span><p>Решений после помощи, исправления или повтора</p></div><div class="panel"><span class="score">${guided.length}</span><p>Пройденных разборов</p></div></div><p>Количество решений не означает полного освоения темы. Попробуй другой тип задачи, объясни способ и вернись к нему через несколько дней.</p><div class="cards">${D.kinds.map(k=>`<article class="card"><h2>${E(k.title)}</h2><p>Самостоятельных новых: ${clean.filter(r=>r.kind===k.id).length}</p><button data-kind="${k.id}">Попробовать</button></article>`).join('')}</div><div class="actions"><a class="btn" href="../path/index.html#lesson=motion">К задачам на движение</a><a class="btn" href="../index.html">Весь курс ЕГЭ базы</a></div>`;root.querySelectorAll('[data-kind]').forEach(b=>b.onclick=()=>{state.kind=b.dataset.kind;fresh('practice');location.hash='practice';});}
-function render(){stop();const route=location.hash.slice(1);if(route==='learn'||route==='practice')activity(route);else if(route==='report')report();else lab();store.save();}
+function render(){clearSkillMap();stop();const route=location.hash.slice(1);if(route==='learn'||route==='practice')activity(route);else if(route==='report')report();else lab();if(route!=='report')attachSkillMap(route==='practice'?'practice':'learn');store.save();}
 window.addEventListener('hashchange',()=>{render();root.focus({preventScroll:true});});window.addEventListener('pagehide',()=>{stop();store.save();});document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();store.save();}});window.WorkRateCourse={state:()=>state,valid:store.valid,key:store.key};render();
 })();

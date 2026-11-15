@@ -191,17 +191,18 @@ fs.mkdirSync(OUT,{recursive:true});
    finally{await c.close();}
   }
   for(const width of [320,360,1280]){
-   // Every real entry boots with the investigation folded away. Merely opening
+   // Task 11 starts with the investigation; other entries keep the extra model folded. Opening
    // the page must not create a model attempt or change native data.
    for(const [number,file] of Object.entries(entries)){
     const c=await context(width),p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));
     try{
      await p.goto(base+'/'+file,{waitUntil:'load'});
      await p.locator('#oge-video-models').waitFor();
-     assert.equal(await p.locator('#oge-video-models').getAttribute('open'),null);
+     const leadsWithResearch=Number(number)===11;
+     assert.equal(await p.locator('#oge-video-models').getAttribute('open')!==null,leadsWithResearch);
      assert.equal(await p.evaluate(prefix=>Object.keys(localStorage).filter(key=>key.startsWith(prefix)).length,PREFIX),0);
      const available=lessons.filter(lesson=>lesson.tasks.includes(Number(number))).map(x=>x.id).sort();
-     await p.locator('[data-ovm-open]').click();
+     if(!leadsWithResearch)await p.locator('[data-ovm-open]').click();
      assert.deepEqual((await p.locator('[data-ovm-picker] option').evaluateAll(nodes=>nodes.map(e=>e.value))).sort(),available);
      await withinViewport(p);assert.deepEqual(errors,[]);
      report.layouts.push({number:Number(number),width,status:'PASS'});

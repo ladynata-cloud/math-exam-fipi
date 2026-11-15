@@ -118,6 +118,8 @@
     .pill{ transition:background .15s ease, color .15s ease; }
   }
   .pill:hover{ background:var(--ink); color:#fff; }
+  .method-entry{ background:var(--ink); color:#fff; }
+  .method-entry:hover{ background:var(--ink-strong); }
   .ghostlink:hover{ color:var(--ink); border-bottom-color:var(--ink); }
   /* касание: пилюли маршрута и «вариант» — зона нажатия не ниже 44 px;
      мышью на десктопе вид прежний */
@@ -230,9 +232,13 @@
   .legacy-course>section{margin-top:28px}.legacy-course .card p,.line-proto{font-size:16px}.legacy-course .line-links{max-width:380px}
   @media(max-width:600px){.sheet{padding:22px 14px}.current-course,.legacy-course{padding:16px}.current-course .btn{display:flex;margin:10px 0}.first-three-links{grid-template-columns:1fr}.legacy-course .line{grid-template-columns:38px minmax(0,1fr)}.legacy-course .line-links{grid-column:2;justify-content:flex-start}.facts{font-size:14px}}
 </style>
-<link rel="stylesheet" href="skill-map.css?v=20261111-skills">
-<script defer src="skill-map-data.js?v=20261111-skills"></script>
-<script defer src="skill-map.js?v=20261111-skills" data-profile-skill-map="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20" data-profile-skill-target="#profile-skill-entry"></script>
+<link rel="stylesheet" href="skill-map.css?v=20261113-alphabets">
+<link rel="stylesheet" href="clockwork.css?v=20261113-alphabets">
+<script defer src="clockwork-gnomes.js?v=20261112-treasure-cave"></script>
+<script defer src="azbuka-metodov/catalog.js?v=20261113-routes"></script>
+<script defer src="clockwork.js?v=20261113-routes"></script>
+<script defer src="skill-map-data.js?v=20261112-vectors"></script>
+<script defer src="skill-map.js?v=20261113-foundations" data-profile-skill-map="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20" data-profile-skill-target="#profile-skill-entry"></script>
 <script defer src="/assets/assistant/navigator-data.js?v=20261105-site1"></script>
 <script defer src="/assets/assistant/navigator-widget.js?v=20261105-site1"></script>
 
@@ -246,20 +252,60 @@
     <h1>Профильный <span class="mark">ЕГЭ<svg viewBox="0 0 120 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 Q 12 2, 24 8 T 46 8 T 68 8 T 90 8 T 114 7" fill="none" stroke="#C22F2A" stroke-width="3.4" stroke-linecap="round"/></svg></span> · математика</h1>
     <p class="lede">Открой задачу и попробуй решить. Если трудно — нажми «Хочешь подсказку?». Объяснение появится рядом, а твоя работа останется на месте.</p>
     <p class="facts">Все 20 заданий: первая часть №1–13, вторая часть №14–20. Нумерация по проекту ФИПИ 2027; в сборниках 2026 она отличается.</p>
-    <nav aria-label="Быстрые входы"><a class="pill" href="#profile-2027">Все 20 номеров</a> <a class="pill" href="#legacy-course">Прежний большой курс и тренажёры</a> <a class="pill" href="trigonometry/index.html">Курс тригонометрии</a> <a class="pill" href="atanasyan-10-11/index.html">Атанасян 10–11</a></nav>
+    <nav aria-label="Быстрые входы">
+      <a class="pill method-entry" href="/trainers/ege-methods.html">Оценка плюс пример · №20</a>
+      <a class="pill" href="#profile-2027">Все 20 номеров</a>
+      <a class="pill" href="#legacy-course">Курс и тренажёры 2026</a>
+      <a class="pill" href="trigonometry/index.html">Курс тригонометрии</a>
+      <a class="pill" href="atanasyan-10-11/index.html">Атанасян 10–11</a>
+    </nav>
   </header>
+
+  <section class="profile-clock" id="profile-clock" aria-labelledby="profile-clock-title" hidden>
+    <div class="profile-clock-header">
+      <div>
+        <h2 id="profile-clock-title">Пещера сокровищ ЕГЭ</h2>
+        <p>Выберите задание, курс или тему для повторения.</p>
+      </div>
+      <button type="button" class="profile-clock-toggle">Пауза</button>
+    </div>
+    <div class="profile-clock-case">
+      <canvas aria-hidden="true"></canvas>
+      <nav class="profile-clock-dials" aria-label="Задания на циферблатах"></nav>
+      <nav class="profile-clock-courses" aria-label="Дополнительные курсы и тренажёры">
+        <a class="profile-clock-course" href="/ege-profil/trigonometry/" aria-label="Тригонометрия"><span>Тригонометрия</span></a>
+        <a class="profile-clock-course" href="/ege-profil/atanasyan-10-11/" aria-label="Стереометрия по Атанасяну 10–11"><span>Стереометрия<small>Атанасян 10–11</small></span></a>
+        <a class="profile-clock-course" href="/stereo-course/sections/" aria-label="Сечения с нуля"><span>Сечения<small>с нуля</small></span></a>
+        <a class="profile-clock-course" href="/geometry-merzlyak/" aria-label="Мерзляк · углублённая планиметрия"><span>Мерзляк<small>углубление</small></span></a>
+        <a class="profile-clock-course" href="/geometry-course/textbook/" aria-label="Атанасян · планиметрия 7–9"><span>Атанасян<small>планиметрия</small></span></a>
+        <a class="profile-clock-course" href="/ege-profil/trainers/derivative-t8.html" aria-label="Производная по графику"><span>Производная<small>по графику</small></span></a>
+        <a class="profile-clock-course" href="/trainers/ege-profile/log-inequalities/" aria-label="Логарифмические неравенства"><span>Логарифмы<small>неравенства</small></span></a>
+      </nav>
+    </div>
+    <div class="profile-clock-footer">
+      <span class="profile-clock-topic" aria-hidden="true"></span>
+      <a class="profile-clock-topic-alphabets" href="/ege-profil/azbuka-metodov/" hidden></a>
+      <a href="/trainers/ege-methods.html">Оценка плюс пример · №20</a>
+      <a href="#profile-2027">Все темы списком ↓</a>
+    </div>
+    <div class="profile-clock-alphabet-panel">
+      <a class="profile-clock-alphabet-title" href="/ege-profil/azbuka-metodov/">Основы и методы</a>
+      <nav class="profile-clock-alphabets" aria-label="Основы и методы в часовом механизме"></nav>
+    </div>
+  </section>
 
   <section id="profile-2027" aria-labelledby="profile-2027-h" class="current-course">
     <p class="eyebrow">Понятный старт · ЕГЭ 2027</p>
     <h2 id="profile-2027-h">Весь профиль: карта тем и ваш следующий шаг</h2>
     <p>Первая и вторая части на одной карте. Продолжайте сохранённую работу, выбирайте следующую тему и следите за самостоятельными результатами.</p>
     <div id="profile-skill-entry"></div>
+    <p><a class="btn" href="/ege-profil/azbuka-metodov/">Повторить основы и проверить себя →</a></p>
     <p><a class="btn" href="start/index.html#calm">Продолжить первую часть →</a> <a class="btn" href="part-two/index.html">Вторая часть: все задания №14–20 →</a></p>
     <p><a class="btn" href="atanasyan-10-11/index.html">Атанасян 10–11: отдельный курс к стереометрии №15 →</a></p>
     <nav class="first-three-links" aria-label="Первые три задания профильного ЕГЭ">
-      <a class="first-three-link" href="start/index.html#calm/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
-      <a class="first-three-link" href="start/index.html#calm/2"><strong>2. Векторы</strong><span>Откуда и куда направлена стрелка. Координаты, длина, скалярное произведение.</span></a>
-      <a class="first-three-link" href="start/index.html#calm/3"><strong>3. Стереометрия</strong><span>Поверните тело. Найдите нужную грань, высоту или радиус.</span></a>
+      <a class="first-three-link" data-exam-number="1" href="start/index.html#calm/1"><strong>1. Планиметрия</strong><span>Углы, стороны и площади. Нужные линии видны на чертеже.</span></a>
+      <a class="first-three-link" data-exam-number="2" href="start/index.html#calm/2"><strong>2. Векторы с нуля</strong><span>Стрелки, сложение и другие действия на чертеже. Затем задачи ЕГЭ.</span></a>
+      <a class="first-three-link" data-exam-number="3" href="start/index.html#calm/3"><strong>3. Стереометрия</strong><span>Поверните тело. Найдите нужную грань, высоту или радиус.</span></a>
     </nav>
     <h3 id="part-one-map">Первая часть · продолжение №4–13</h3>
     <nav class="first-three-links" aria-labelledby="part-one-map">
@@ -286,6 +332,28 @@
       <a class="first-three-link" data-exam-number="20" href="part-two/index.html#exam/20"><strong>20. Числа и их свойства</strong><span>Пример, оценка, делимость и доказательство.</span></a>
     </nav>
     <p class="facts">Можно остановиться и продолжить с того же шага в этом браузере.</p>
+    <details class="first-three-other" id="downloads">
+      <summary>Скачать тренажёры для работы без интернета</summary>
+      <p>В каждом ZIP есть HTML-тренажёр, промпт для DeepSeek, инструкция и GIF.</p>
+      <ul>
+        <li><a href="/downloads/trainers/ege-profil-start/ege-profil-start-package.zip" download>START с основами векторов</a></li>
+        <li><a href="/downloads/trainers/ege-profil-planimetry-yashchenko/ege-profil-planimetry-yashchenko-package.zip" download>Планиметрия · Ященко</a></li>
+        <li><a href="/downloads/trainers/ege-profil-vectors-yashchenko/ege-profil-vectors-yashchenko-package.zip" download>Векторы · Ященко</a></li>
+        <li><a href="/downloads/trainers/ege-profil-probability/ege-profil-probability-package.zip" download>Вероятность</a></li>
+        <li><a href="/downloads/trainers/ege-profil-trigonometry/ege-profil-trigonometry-package.zip" download>Тригонометрия от треугольника к окружности</a></li>
+        <li><a href="/downloads/trainers/ege-profil-derivative/ege-profil-derivative-package.zip" download>Производная по графику</a></li>
+        <li><a href="/downloads/trainers/ege-profil-applied/ege-profil-applied-package.zip" download>Формулы и текстовые задачи</a></li>
+        <li><a href="/downloads/trainers/ege-profil-functions/ege-profil-functions-package.zip" download>Графики и экстремумы</a></li>
+        <li><a href="/downloads/trainers/ege-profil-finance/ege-profil-finance-package.zip" download>Финансовые задачи</a></li>
+        <li><a href="/downloads/trainers/ege-profil-methods-atlas/ege-profil-methods-atlas-package.zip" download>Основы и методы · атлас функций</a></li>
+        <li><a href="/downloads/trainers/ege-profil-log-inequalities/ege-profil-log-inequalities-package.zip" download>Логарифмические неравенства · практикум</a></li>
+        <li><a href="/downloads/trainers/ege-profil-log-variable-base/ege-profil-log-variable-base-package.zip" download>Один логарифм с переменным основанием · разбор</a></li>
+        <li><a href="/downloads/trainers/ege-profil-log-nested/ege-profil-log-nested-package.zip" download>Вложенные логарифмы · разбор</a></li>
+        <li><a href="/downloads/trainers/ege-profil-estimate-example/ege-profil-estimate-example-package.zip" download>Делимость и «Оценка плюс пример»</a></li>
+        <li><a href="/downloads/trainers/ege-profil-divisibility/ege-profil-divisibility-package.zip" download>Делимость, остатки и инварианты</a></li>
+        <li><a href="/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-package.zip" download>Сечения с нуля · 186 карточек</a></li>
+      </ul>
+    </details>
     <details class="first-three-other" open><summary>Учебники, дополнительные тренажёры и уроки</summary>
     <p><a class="btn" href="start/index.html">Весь учебный маршрут →</a></p>
     <p><a class="btn" href="lesson/index.html">Урок с репетитором: №1, №2 и тригонометрия →</a> <a class="btn" href="homework/index.html">Домашняя работа →</a></p>
@@ -322,7 +390,7 @@
       </li>
       <li class="line"><span class="num">2</span>
         <div><div class="line-name">Векторы и координаты</div><div class="line-proto">координаты, длина, сумма, скалярное произведение</div></div>
-        <div class="line-links"><a class="pill" href="start/index.html#calm/2">По шагам с чертежом</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Векторы</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Задание 2 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=2">вариант</a></div>
+        <div class="line-links"><a class="pill" href="start/index.html#calm/2">Векторы с нуля</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-t2.html">Экзаменационный тренажёр</a><a class="pill" target="_blank" rel="noopener" href="trainers/vectors-yashchenko-t2.html">Задание 2 по Ященко</a><a class="ghostlink" target="_blank" rel="noopener" href="exam/variant.html?m=2">вариант</a></div>
       </li>
       <li class="line"><span class="num">3</span>
         <div><div class="line-name">Стереометрия</div><div class="line-proto">куб, призма, пирамида, цилиндр, конус, шар, комбинации тел</div></div>

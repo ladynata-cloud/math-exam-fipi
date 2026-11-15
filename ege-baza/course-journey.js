@@ -168,6 +168,7 @@
     if (storage === undefined) { try { storage = root.localStorage; } catch (error) { storage = null; } }
     const sources = { path: read(storage, PATH_KEY), m01: read(storage, legacyKeys.m01), m02: read(storage, legacyKeys.m02) };
     const lines = catalog(), path = sources.path;
+    if (path.status === 'saved') path.raw = root.PathData?.practice?.expandTask21Progress?.(path.raw) ?? path.raw;
     if (path.status === 'saved' && !pathRootValid(path.raw)) path.status = 'unreadable';
     const allKnownIds = new Set(metadata().map(item => item.id));
     const compatibility = path.status === 'empty' ? 'compatible' : path.status === 'saved' ? loaderCompatibility(path.raw, allKnownIds) : 'rejected';

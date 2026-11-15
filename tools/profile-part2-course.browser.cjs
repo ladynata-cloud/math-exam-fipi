@@ -9,14 +9,17 @@ const mime={'.js':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.j
 const server=http.createServer((req,res)=>{try{let file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://fixture').pathname));if(!file.startsWith(root+path.sep))return res.writeHead(403).end();if(fs.statSync(file).isDirectory())file=path.join(file,'index.html');res.setHeader('Content-Type',mime[path.extname(file)]||'text/html');res.end(fs.readFileSync(file));}catch(_){res.writeHead(404).end();}});
 (async()=>{
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const origin='http://127.0.0.1:'+server.address().port,base=origin+'/ege-profil/part-two/index.html';
- const browser=await chromium.launch({headless:true,args:['--no-sandbox']});fs.mkdirSync(shots,{recursive:true});let screens=0,completed=0;
+ const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_EXECUTABLE_PATH,args:['--no-sandbox']});fs.mkdirSync(shots,{recursive:true});let screens=0,completed=0;
  try{
   for(const width of [320,390,1280]){
    const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.setDefaultTimeout(12000);
    page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.url().startsWith(origin)&&r.status()>=400)bad.push(r.status()+' '+r.url());});
    async function go(hash){await page.goto(base+hash);await page.locator('#main h1').waitFor();}
    async function record(id){return page.evaluate(id=>window.ProfilePartTwoApp.store.read(id),id);}
-   async function fill(task){for(let i=0;i<task.final.length;i++)await page.locator('#final-'+i).fill(String(task.final[i].answers[0]));}
+   async function fill(task){
+    const fields=task.independentFinal?[task.independentFinal]:task.final;
+    for(let i=0;i<fields.length;i++)await page.locator('#final-'+i).fill(String(fields[i].answers[0]));
+   }
    await page.goto(origin+'/ege-profil/');
    for(let n=1;n<=20;n++){const href=n<=13?'start/index.html#calm/'+n:'part-two/index.html#exam/'+n;assert(await page.locator('#profile-2027 a[href="'+href+'"]').isVisible(),'visible entrance '+n);}
    assert(await page.locator('#legacy-course[open]').isVisible());

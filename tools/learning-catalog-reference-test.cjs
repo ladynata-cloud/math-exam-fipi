@@ -28,7 +28,7 @@ const remediation = require('../board-server/learning-remediation-contracts.js')
 function contentGate() {
   const pathItems = C.items.filter(item => item.trainerId === 'ege-path');
   assert.equal(pathItems.length, D.meta.length);
-  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 173);
+  assert.equal(pathItems.filter(item => !item.geometryRebuild).length, 175);
   assert.equal(pathItems.filter(item => item.geometryRebuild).length, D.geometryRebuild.families.length);
   assert.equal(pathItems.filter(item => item.grade7 && !item.geometryRebuild).length, 62);
   assert.equal(pathItems.filter(item => item.pre7).length, 18);
@@ -116,7 +116,7 @@ function contentGate() {
   assert.equal(cone.substitution, 'S₂/S₁ = (28 · 42) / (7 · 21)');
 
   const nav = fs.readFileSync(path.join(root, 'ege-baza/index.html'), 'utf8');
-  assert.ok(nav.includes('111 тренажёров'));
+  assert.ok(nav.includes('Тренажёры по заданиям №1–21'));
   assert.ok(nav.includes('https://mathexam-board-ladynata.msk1.amvera.tech/learning/'));
   console.log(`LEARNING_CATALOG_REFERENCE_CONTENT_OK (${C.items.length} identities, ${D.geometryRebuild.families.length} new geometry families, 217 preserved identities, 21 exam positions, ${D.meta.length * 7} help variants, 4 original reference pages)`);
 }

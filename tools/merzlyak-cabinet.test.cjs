@@ -154,6 +154,44 @@ test('a different assigned program receives no Merzlyak board entry from a stale
   }finally{f.dom.window.close();}
 });
 
+test('the assigned sections course coexists with prior courses in every cabinet role and keeps its return route',async()=>{
+  const ids=['merzlyak-10-base','sections-from-zero'];
+  for(const [role,route]of [['student','home'],['student','course'],['student','route'],['teacher','preview=fixture-pupil'],['teacher','student=fixture-pupil']]){
+    const f=await fixture({role,route,programCourses:ids});
+    try{
+      const entry=f.window.LearningCourseProgram.get('sections-from-zero');
+      assert.equal(entry.title,'Сечения с нуля');
+      assert.equal(entry.publicPath,'/stereo-course/sections/');
+      assert.equal(entry.storage,'browser');
+      assert.deepEqual(Array.from(entry.grades),[10,11]);
+      const card=f.main.querySelector('[data-program-course="sections-from-zero"]');
+      assert(card,role+' '+route);
+      assert(f.main.querySelector('[data-program-course="merzlyak-10-base"]'),'Prior assigned course remains available');
+      const link=card.querySelector('[data-program-board]');assert(link);
+      const params=new URLSearchParams(link.hash.slice(1));
+      const destination=new URL(params.get('public-practice'),'https://mathexam.space');
+      assert.equal(destination.pathname,'/trainers/trainer-board.html');
+      assert.deepEqual([...destination.searchParams],[['trainer','/trainers/sections-from-zero.html']]);
+      assert.equal(params.get('return'),route);assert.equal(link.target,'');
+      assert(!destination.href.includes('fixture-pupil'),'Pupil identity never enters public trainer URL');
+      const open=card.querySelector('[data-program-open]');assert(open);
+      assert.match(open.hash,/^#public-practice=/);
+      const courseParams=new URLSearchParams(open.hash.slice(1));
+      assert.equal(courseParams.get('public-practice'),'/stereo-course/sections/');
+      assert.equal(courseParams.get('return'),route);
+      if(role==='teacher'){
+        assert.match(open.textContent,/Посмотреть курс/);
+        assert.match(card.querySelector('[data-program-public-preview]').textContent,/работы из кабинета ученика не загружаются/);
+      }else{
+        assert(f.main.querySelector('a[href="#attempt=fixture-work"]'));
+      }
+      assert(f.calls.every(call=>call.method==='GET'));
+      assert.deepEqual(f.profile.program.courseIds,ids);assert.equal(f.profile.version,1);
+      assert.equal(f.rows.length,2);
+    }finally{f.dom.window.close();}
+  }
+});
+
 test('other pupils and a cached older helper keep their existing routes and work',async()=>{
   for(const options of [{selected:false,route:'home'},{selected:false,route:'course'},{selected:false,route:'route'},{helper:false,route:'home'}]){
     const f=await fixture(options);

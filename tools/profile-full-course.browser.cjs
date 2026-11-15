@@ -10,7 +10,8 @@ const {chromium} = require('playwright');
 const oldLessons = ['geometry', 'algebra', 'stereo'].flatMap(name => require('../ege-profil/start/' + name + '-data'));
 const addedLessons = ['probability', 'equations', 'functions', 'applied', 'finance'].flatMap(name => require('../ege-profil/start/' + name + '-data'));
 const prerequisiteLessons = require('../ege-profil/start/readiness-data');
-const lessons = [...oldLessons, ...addedLessons, ...prerequisiteLessons];
+const vectorBasics = require('../ege-profil/start/vector-basics-data');
+const lessons = [...oldLessons, ...addedLessons, ...prerequisiteLessons, ...vectorBasics];
 const KEY = 'mathexam.profileStart2027.v1';
 const root = path.resolve(__dirname, '..');
 const shots = process.env.PROFILE_FULL_COURSE_SHOTS || '/tmp/profile-full-course-shots';
@@ -111,7 +112,7 @@ const server = http.createServer((req, res) => {
       }
     }
 
-    // All thirteen cards lead to their own real topics and a fresh independent task.
+    // All thirteen cards lead to their own real topics and first learning activity.
     await go('#part-one');
     assert.equal(await page.locator('.exam-card[href^="#exam/"]').count(), 13);
     const actualIds = await page.evaluate(() => globalThis.ProfileLessons.map(l => l.id).sort());
@@ -123,6 +124,16 @@ const server = http.createServer((req, res) => {
     for (let number=1; number<=13; number++) {
       await go('#part-one', catalogue);
       await catalogue.locator('.exam-card[href="#exam/'+number+'"]').click();
+      if (number === 2) {
+        const vectorEntry = catalogue.locator('[data-vector-basics-entry]');
+        await vectorEntry.waitFor();
+        assert.equal(await catalogue.locator('[data-vector-exam-practice]').count(), 0);
+        await vectorEntry.locator('[data-exam-start="2"]').click();
+        await catalogue.locator('#answer-form').waitFor();
+        assert.equal(new URL(catalogue.url()).hash, '#practice/vec-basics-reading/guided');
+        await noOverflow(catalogue, 'position 2 introduction');
+        continue;
+      }
       await catalogue.locator('.exam-topic').first().waitFor();
       assert.equal(await catalogue.locator('.exam-topic').count(), lessons.filter(l => l.position===number).length, 'All topics discoverable for position '+number);
       await catalogue.locator('#exam-start').click();

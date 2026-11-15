@@ -28,6 +28,12 @@ test('line slope is independent of intercept and zero slope remains a horizontal
  assert.deepEqual(l.practices.map(x=>x.answer),[(7-3)/2,1+2*3,(1.5*2-4)-(1.5*0-4)]);
 });
 
+test('the line investigation uses the same scale on both axes', () => {
+ const {svg} = by('line-parameters').render({k: 1, b: -2});
+ const [a, b] = Array.from(svg.matchAll(/<circle cx="([^"]+)" cy="([^"]+)"/g), match => match.slice(1).map(Number));
+ close(b[0] - a[0], a[1] - b[1]);
+});
+
 test('translated hyperbola keeps the source domain at k=0 and removes vertical asymptote',()=>{
  const l=by('hyperbola-domain');
  for(const a of [-3,-.5,0,2.5,3])for(const b of [-3,0,3])for(const k of [-4,0,4]){

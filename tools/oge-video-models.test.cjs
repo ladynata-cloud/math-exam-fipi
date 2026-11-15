@@ -14,7 +14,7 @@ const click=(f,a)=>{const b=f.d.querySelector(`[data-ovm-action="${a}"]`);assert
 function choose(f,field,index){const r=f.d.querySelector(`input[name="ovm-${field}"][value="${index}"]`);r.checked=true;r.dispatchEvent(new f.w.Event('change',{bubbles:true}));}
 function stage(f){return f.d.querySelector('[data-ovm-stage]').dataset.ovmStage;}
 function pick(f,id){const p=f.d.querySelector('[data-ovm-picker]');p.value=id;p.dispatchEvent(new f.w.Event('change'));}
-function begin(f,l){pick(f,l.id);choose(f,'prediction',l.predict.answer);click(f,'check-prediction');click(f,'experiment');assert.equal(stage(f),'experiment');click(f,'reason');choose(f,'reason',l.reason.answer);click(f,'check-reason');click(f,'practice');assert.equal(stage(f),'practice');}
+function begin(f,l){pick(f,l.id);choose(f,'prediction',l.predict.answer);click(f,'experiment');assert.equal(stage(f),'experiment');click(f,'reason');choose(f,'reason',l.reason.answer);click(f,'check-reason');click(f,'practice');assert.equal(stage(f),'practice');}
 function answer(f,text){const n=f.d.querySelector('[data-ovm-answer]');n.value=text;n.dispatchEvent(new f.w.Event('input',{bubbles:true}));click(f,'check-practice');}
 function state(f,id){return JSON.parse(f.w.localStorage.getItem(api.PREFIX+id));}
 function snapshot(w){return Object.fromEntries(Array.from({length:w.localStorage.length},(_,i)=>{const k=w.localStorage.key(i);return[k,w.localStorage.getItem(k)];}));}
@@ -71,7 +71,7 @@ test('first visits are new conditions and a previously seen skipped condition is
  const l=graphs[0],f=fixture(11);try{begin(f,l);assert.match(f.d.querySelector('.ovm-kicker').textContent,/Новое условие 1/);click(f,'next');assert.match(f.d.querySelector('.ovm-kicker').textContent,/Новое условие 2/);click(f,'next');assert.match(f.d.querySelector('.ovm-kicker').textContent,/Новое условие 3/);click(f,'next');assert.match(f.d.querySelector('.ovm-kicker').textContent,/Знакомый пример/);}finally{f.close();}
 });
 test('changing a verified reason to an incorrect choice closes the practice gate',()=>{
- const l=graphs[0],f=fixture(11);try{choose(f,'prediction',l.predict.answer);click(f,'check-prediction');click(f,'experiment');click(f,'reason');choose(f,'reason',l.reason.answer);click(f,'check-reason');assert.equal(f.d.querySelector('[data-ovm-action=practice]').disabled,false);choose(f,'reason',(l.reason.answer+1)%l.reason.choices.length);assert.equal(f.d.querySelector('[data-ovm-action=practice]').disabled,true);click(f,'practice');assert.equal(stage(f),'reason');}finally{f.close();}
+ const l=graphs[0],f=fixture(11);try{choose(f,'prediction',l.predict.answer);click(f,'experiment');click(f,'reason');choose(f,'reason',l.reason.answer);click(f,'check-reason');assert.equal(f.d.querySelector('[data-ovm-action=practice]').disabled,false);choose(f,'reason',(l.reason.answer+1)%l.reason.choices.length);assert.equal(f.d.querySelector('[data-ovm-action=practice]').disabled,true);click(f,'practice');assert.equal(stage(f),'reason');}finally{f.close();}
 });
 
 test('queued writes acquire one exclusive lock and reject an intervening foreign commit',async()=>{
