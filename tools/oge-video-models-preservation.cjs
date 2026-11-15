@@ -16,6 +16,9 @@ const entries = Object.freeze({
   24: 'trainers/oge-task24-proofs.html',
   25: 'trainers/oge-task25-geometry.html'
 });
+// Keep all historical routes above for exact inverses and immutable book pins.
+// Task 19 now uses only its card-specific help; other live entries retain lessons.
+const activeEntries = Object.freeze(Object.fromEntries(Object.entries(entries).filter(([number]) => number !== '19')));
 const assets = Object.freeze(['trainers/oge-video-models.css', 'trainers/oge-video-graphs.js', 'trainers/oge-video-geometry.js', 'trainers/oge-video-models.js']);
 function snippet(number) {
   assert(Object.hasOwn(entries, number), 'Unknown video-model task');
@@ -53,4 +56,4 @@ function restoreGraphIntersections(file, source) {
   if (!fragments.every(fragment => source.split(fragment.after).length === 2)) return source;
   return fragments.reduce((restored, fragment) => restored.replace(fragment.after, fragment.before), source);
 }
-module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections };
+module.exports = { entries, activeEntries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections };
