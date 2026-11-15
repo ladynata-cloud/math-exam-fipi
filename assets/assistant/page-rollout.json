@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "811d7d35421bc93ca7e6145b98b7caf505d6db43",
+  "baseSha": "9036dd3e2f388e3be50da0bd51dfb1776a0fe160",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "8036ba1b11c271b8111a4a543b2050b89a8c3fc86bcf6fa4d0e4700efed16930",
-      "afterSha256": "7f79eb101e7a31efd60296737c215b400c0114627d2898911c1fd99c13150385",
+      "beforeSha256": "dc2e639245961f0bae8d4e76f578163b9c1458f2eb8a395d13379197248873e9",
+      "afterSha256": "51b9ee661182154420bd838fd4b76e3b27aaa898579a0afbcdb1a8355ab1fed5",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5226,6 +5226,15 @@
         "ege-profil/circle/index.html",
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "811d7d35421bc93ca7e6145b98b7caf505d6db43",
+      "sourceBaseSha": "9036dd3e2f388e3be50da0bd51dfb1776a0fe160",
+      "task": "docs/tasks/PROFILE19_PROOF_COMPLETION_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
