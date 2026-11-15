@@ -144,7 +144,12 @@ async function openLesson(page,lesson){
 }
 async function action(page,name,expected={}){const before=await lessonState(page);await page.locator('[data-ovm-action="'+name+'"]').click();await saved(page,before,expected);}
 async function transition(page,name){await action(page,name,{stage:name});await page.locator('[data-ovm-stage="'+name+'"]').waitFor({state:'visible'});}
-async function choose(page,name,index){const before=await lessonState(page);await page.locator('input[name="ovm-'+name+'"]').nth(index).check();await saved(page,before,{[name]:index});await action(page,'check-'+name,{[name]:index});}
+async function choose(page,name,index){
+ const before=await lessonState(page);
+ await page.locator('input[name="ovm-'+name+'"]').nth(index).check();
+ await saved(page,before,{[name]:index});
+ if(name==='reason')await action(page,'check-reason',{reason:index});
+}
 async function answer(page,value,invalid=false){
  await edit(page,page.locator('[data-ovm-answer]'),value,{answer:String(value)});
  if(invalid){
