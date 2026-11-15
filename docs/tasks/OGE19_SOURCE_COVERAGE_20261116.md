@@ -54,6 +54,9 @@
 - Актуализация реестра источников, десять привязок к существующим учебным
   темам, адресные проверки математики, данных и браузерного поведения.
 - Штатная адресная сборка автономного HTML и ZIP №19.
+- Согласованное после CI минимальное интеграционное дополнение: добавить
+  ровно десять новых canonical ID в существующий `STATEMENTS19` общей карты
+  прогресса, чтобы результаты новых карточек учитывались вместе с прежними.
 
 ### Planned files, declared before content edits
 
@@ -72,6 +75,8 @@
   исторического hash прежних 233 карточек, сохранив сам hash и число 233
 - `tools/task19-visual-hints.browser.cjs` — ожидаемый размер банка
 - `trainers/task19-textbook/source.json` — число карточек с учебными привязками
+- `oge/learning-map.js` — только десять ID в `STATEMENTS19`; путь и обоснование
+  добавлены до этой правки после обнаружения зависимости в CI PR №626
 - `tools/task19-current-models.browser.cjs`
 - `downloads/trainers/task19-trainer/task19-trainer.html`
 - `downloads/trainers/task19-trainer/task19-trainer-package.zip`
@@ -83,9 +88,11 @@
 ### Out of scope / files or areas that must not change
 
 - Canonical `trainers/task19-trainer.html`, альтернативный HTML-вход,
-  удаляемый другой задачей addon, общий runtime и геометрия движков.
+  удаляемый другой задачей addon, runtime тренажёра и геометрия движков.
 - Любые другие формулировки, архивы и frozen editions.
-- `docs/PROJECT_STATUS.md`, другие тренажёры, общие навигаторы и дизайн.
+- `docs/PROJECT_STATUS.md`, другие тренажёры, дизайн и общие навигаторы,
+  кроме перечисления десяти ID в `STATEMENTS19`. Алгоритмы общей карты,
+  прежние ID/aliases, фильтр неизвестных ID и last-record-wins не меняются.
 - Оригинальные коммерческие банки, пользовательские PDF и снимки.
 - Commit, push, PR выполняет родительский исполнитель после независимой
   проверки; этому агенту разрешена только локальная реализация и проверка.
@@ -97,6 +104,8 @@
 
 - [x] 244 уникальных ID карточек; исходные 234 объекта и их aliases неизменны.
   Разных буквальных текстов 243: прежнее повторение сохранено по условию задачи.
+- [x] Общая карта прогресса учитывает все 244 карточки; прежний реестр полностью
+  сохранён, новые ключи — ровно десять согласованных canonical ID.
 - [x] Каждая из десяти карточек точно сохраняет проверенную формулировку,
   истину, существенные условия и направление импликации.
 - [x] Условия подсказок сохраняются при проверенных граничных действиях; измерения
@@ -118,13 +127,16 @@
 - Required tests: все `tools/task19-*.test.cjs`, адресные проверки десяти
   утверждений и смысловой карты, существующие браузерные проверки моделей,
   подсказок, owner feedback и учебных ссылок.
+- Integration tests after CI finding: существующие `tools/oge-learning-map.test.cjs`
+  и `tools/oge-course-guide.test.cjs`, точное сравнение прежнего реестра,
+  синтаксис learning-map/view/course-guide/browser и проверка scope/diff.
 - Required static checks: JS syntax, JSON/schema и counts, `git diff --check`,
   сравнение прежних объектов с базой и проверка changed-file scope.
 - Manual checks: независимое математическое и педагогическое рассмотрение
   десяти карточек, desktop/mobile/keyboard и автономное открытие в браузере.
 - Downloads: `node scripts/build-trainer-downloads.mjs --only=task19-trainer
   --downloads-only`; затем относящиеся к №19 проверки автономного комплекта.
-- Final gate marker: `LOCAL_PASS_BROWSER_CI_PENDING`.
+- Final gate marker: `LOCAL_101_PLUS_INTEGRATION_22_PASS_BROWSER_CI_PENDING`.
 - Checks intentionally not run and why: реальный Chromium не открыл страницу:
   системный executable завершается на `socket() EPERM`, стандартный bundled
   headless shell Playwright отсутствует. Обход ограничений не предпринимался.
@@ -182,13 +194,22 @@
 
 - Actual branch: `codex/oge19-source-coverage-20261116`
 - Actual base SHA: `35e718ca74852857a86dfe9dcc68d091ce165308`
-- Actual head SHA: база; коммитов ещё нет
-- PR: не создан
-- Commits: нет
+- Actual head SHA before integration correction:
+  `18d4d6560351b43402a8cb20fe6f290c0f28c014`
+- PR: [Draft №626](https://github.com/ladynata-cloud/math-exam-fipi/pull/626)
+- Commits: первоначальный content commit опубликован родительским исполнителем;
+  интеграционная правка готовится локально, без commit/push этим агентом
 - Tests passed: `node --test tools/task19-*.test.cjs` — 101/101; синтаксис
   изменённых JS; `git diff --check`; штатный адресный generator; ZIP HTML и
   prompt побайтно равны отдельным файлам, embedded JS совпадает с исходниками;
   исходные canonical/alternative/runtime/board-session неизменны.
+- Integration tests passed: существующие learning-map/course-guide unit gates —
+  22/22; соответствующие syntax checks и diff/scope — PASS. Все 309 прежних
+  записей identity/alias сохранены; добавлены ровно десять canonical ID.
+  Реестр теперь имеет 319 записей и 244 canonical ID. Весь файл вне десяти
+  записей побайтно совпадает с предыдущим опубликованным head; failing тест
+  не менялся. После этой правки автономный пакет не требует пересборки:
+  он не использует `oge/learning-map.js`.
 - Independent ready-result review: `PASS_CONTENT_REVIEW`, блокеров нет.
   Сравнено 1148 состояний прежних карточек, 3444 совпадения controls/sample/render;
   независимо проверено 78 состояний новых карточек, 669 source rows и 117 types.
@@ -200,10 +221,19 @@
 - Tests not run: реальное выполнение visual-hints/current-models блокировано
   окружением до страницы; owner-feedback/textbook browser локально не запускались
   по той же причине. Требуются штатные браузерные CI jobs.
-- Scope deviations: нет. Однострочный optional label в модели согласован до
+- Scope deviations: несогласованных отклонений нет. Однострочный optional label в модели согласован до
   правки. Числовые corpus gates и исторический hash scope согласованы с размером
   банка; проверки геометрического действия не ослаблены. Генератор не изменил
   manifest/prompt; дополнительные digest fixtures не понадобились.
+- CI integration finding: workflow `OGE learning map`, run `43765023838`,
+  job `132968073321`, head `18d4d6560351b43402a8cb20fe6f290c0f28c014`,
+  обнаружил фактический учёт только 234 из 244 карточек. Причина — компактный
+  статический `STATEMENTS19` не знал десять новых ID. Тест корректен и не
+  изменяется. Родительский исполнитель до правки разрешил минимальное
+  расширение scope на один интеграционный файл: только десять записей,
+  без изменения логики или дизайна и без импорта полного банка в общую карту.
+  Остальные CI данного head продолжаются как диагностика; окончательный gate
+  потребует проверки следующего опубликованного head.
 
 ## Required handoff
 

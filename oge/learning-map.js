@@ -176,7 +176,17 @@
     "reference-097",
     "reference-105",
     "reference-106",
-    "tri_aaa_similarity"
+    "tri_aaa_similarity",
+    "isosceles_trapezoid_diagonal_equal_triangles",
+    "triangle_exterior_gt_nonadjacent",
+    "triangle_exterior_sum_all_angles",
+    "equilateral_triangle_is_isosceles",
+    "rectangle_always_has_incircle",
+    "right_triangles_always_similar",
+    "equilateral_triangle_is_acute",
+    "right_trapezoid_diagonals_equal",
+    "parallelogram_equal_perpendicular_diagonals_square",
+    "parallelogram_equal_diagonals_square"
   ].forEach(function(group){var names=group.split('|');names.forEach(function(id){STATEMENTS19[id]=names[0];});});
   function step(id, title, href, source, tid, key) {
     return { id:id, title:title, href:href, source:source, tid:tid || '', key:key || KEY };
