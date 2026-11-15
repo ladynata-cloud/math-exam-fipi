@@ -367,9 +367,12 @@ function prepareTrainer(entry) {
   const html = entry.adaptation?.preserveSourceSpacing
     ? stripInjectedAdaptation(source, entry)
     : stripDownloadPanel(source);
-  const cleanHtml = entry.adaptation
-    ? exportStandalone(root, html.trimEnd() + "\n", entry)
-    : inlineTrainerAssets(fixLocalAssetLinks(html), entry);
+  // The sections course already builds and validates its own standalone edition.
+  const cleanHtml = entry.standaloneSource
+    ? fs.readFileSync(repoPath(entry.standaloneSource), "utf8")
+    : entry.adaptation
+      ? exportStandalone(root, html.trimEnd() + "\n", entry)
+      : inlineTrainerAssets(fixLocalAssetLinks(html), entry);
 
   const destDir = path.join(downloadsRoot, entry.slug);
   const pkgDir = path.join(tmpRoot, entry.slug);
