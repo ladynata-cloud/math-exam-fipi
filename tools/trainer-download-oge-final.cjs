@@ -143,7 +143,9 @@ module.exports = {
     const draft = await algebraDraft(card, text);
     await card.getByRole('button', { name: 'Хочешь подсказку?', exact: true }).click();
     await graphic(card.locator('.minimal-help svg').first());
-    assert(await card.locator('.oca-assisted-notice').isVisible(), 'shown movement model must identify assistance');
+    const notice = card.locator('.minimal-help .oca-assisted-notice');
+    await notice.waitFor({ state: 'visible' });
+    assert.match(await notice.innerText(), /не считается самостоятельным/, 'shown movement model must identify assistance');
     await card.getByRole('button', { name: 'Вернуться к заданию', exact: true }).click();
     assert.equal(await draft.inputValue(), text);
     const answer = card.locator(':scope > div:not(.minimal-hint) .af').first();
