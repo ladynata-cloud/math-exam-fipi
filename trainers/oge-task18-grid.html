@@ -106,6 +106,22 @@ a.crumbs{display:inline-flex;align-items:center;min-height:44px}
 body.minimal-course{background:#f6f7f5;color:#202820;font:18px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}.minimal-course .app,.minimal-course>.wrap{max-width:1000px;margin:auto;padding:24px 18px 56px;background:transparent;box-shadow:none;border:0}.minimal-course>.wrap>.app{padding:0}.minimal-course .head{margin-bottom:24px;padding:0;border:0;background:transparent;box-shadow:none}.minimal-course .head,.minimal-course .head h1{color:#202820}.minimal-course h1{font-family:inherit;font-size:24px;line-height:1.4;margin:10px 0}.minimal-course .crumbs{font-size:15px;color:#216342}.minimal-course #main,.minimal-course #view{padding:0;background:transparent}.minimal-course .grid,.minimal-course .row{gap:24px}.minimal-course .task,.minimal-course .card,.minimal-course .givens,.minimal-course .q-text,.minimal-course .cond,.minimal-course .qtext{font-size:18px;line-height:1.8}.minimal-course .task,.minimal-course .card,.minimal-course .givens{background:#fff;border-color:#dbe1da;border-radius:12px;box-shadow:none}.minimal-course .grid{padding:24px;background:#fff;border:1px solid #dbe1da;border-radius:14px}.minimal-course .grid .task{padding:0;border:0}.minimal-course .fig,.minimal-course .figbox,.minimal-course .figwrap,.minimal-course .fig-wrap{max-width:100%;background:#fff;box-shadow:none}.minimal-course svg{max-width:100%;height:auto}.minimal-course button,.minimal-course input,.minimal-course select,.minimal-course summary{min-height:44px;font-family:inherit}.minimal-course button{font-size:16px;border-radius:8px}.minimal-course button.primary,.minimal-course .btn.primary,.minimal-course .btn.blue,.minimal-course .btn.dark,.minimal-course button.act,.minimal-course button.blue,.minimal-course #check{background:#216342;color:white;border-color:#216342}.minimal-course input{font-size:20px;max-width:100%}.minimal-course .ansrow,.minimal-course .ans-row,.minimal-course .controls{gap:12px;margin-top:24px;flex-wrap:wrap}.minimal-course .minimal-settings{margin-top:28px;border-top:1px solid #dbe1da;padding-top:18px;font-size:16px}.minimal-course summary{cursor:pointer;color:#216342}.minimal-course .minimal-settings .tabs{margin:18px 0;padding:0;flex-wrap:wrap;display:flex;background:transparent;border:0}.minimal-course .minimal-settings .sub{font-size:15px;margin:16px 0}.minimal-course .minimal-settings .stats{justify-content:flex-start}.minimal-course .minimal-settings .stat{font-size:14px}.minimal-course .minimal-task-settings{margin:20px 0}.minimal-course .minimal-hint{margin:20px 0;padding:20px;background:#eef5ed;border:1px solid #dbe7da;border-radius:12px}.minimal-course .minimal-hint-toggle{display:block;background:white;color:#216342;border:1px solid #b8cbbb;margin:22px 0 16px;min-height:46px;padding:10px 16px}.minimal-course .minimal-hint p{margin:0 0 18px}.minimal-course .minimal-hint .hintbox,.minimal-course .minimal-hint .guidebox{margin:0}.minimal-course .minimal-hint .row,.minimal-course .minimal-hint .bar{gap:12px}.minimal-course [hidden]{display:none!important}.minimal-course button:focus-visible,.minimal-course input:focus-visible,.minimal-course select:focus-visible,.minimal-course summary:focus-visible,.minimal-course a:focus-visible{outline:3px solid #77a488;outline-offset:3px}.minimal-course .minimal-part2-note{font-size:15px;color:#626b63;line-height:1.7;margin:18px 0}.minimal-course .pool{gap:12px}.minimal-course .pool .card{padding:16px;font-size:17px}.minimal-course .chain .citem{margin-bottom:18px}.minimal-course .step,.minimal-course .gsteps>li{line-height:1.8;margin-bottom:18px}.minimal-course .guidehead{font-size:16px}.minimal-course .minimal-hint-toggle[aria-expanded=true]{background:#edf4ea}.minimal-course .minimal-help-actions{margin-top:20px}.minimal-course .minimal-help-actions>button{margin:12px 8px 0 0}
 @media(max-width:600px){.minimal-course .app,.minimal-course>.wrap{padding:18px 12px 40px}.minimal-course .grid{padding:18px 14px;grid-template-columns:1fr}.minimal-course .row{flex-wrap:wrap}.minimal-course .col{min-width:0;width:100%}.minimal-course h1{font-size:21px}.minimal-course .minimal-hint{padding:16px 12px}.minimal-course .task,.minimal-course .card,.minimal-course .givens{font-size:17px}.minimal-course .tabs{gap:8px}}
 @media(prefers-reduced-motion:reduce){.minimal-course *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* OGE18: readable task-bound explanations, without changing other trainers. */
+body[data-oge-geometry="18"].minimal-course .task,body[data-oge-geometry="18"].minimal-course .card,body[data-oge-geometry="18"].minimal-course .givens{font-size:18px}
+body[data-oge-geometry="18"].minimal-course .step{font-size:20px;line-height:1.65;padding:14px 16px}
+body[data-oge-geometry="18"].minimal-course .step h4{font-size:20px;line-height:1.4;margin:0 0 10px}
+body[data-oge-geometry="18"].minimal-course .minimal-hint h3{font-size:22px;line-height:1.4}
+body[data-oge-geometry="18"].minimal-course .step p{margin:8px 0}
+body[data-oge-geometry="18"].minimal-course .step .frac{font-size:1em}
+body[data-oge-geometry="18"].minimal-course #ansIn{font-size:22px;width:190px;font-weight:600;text-align:left}
+body[data-oge-geometry="18"].minimal-course #ansIn::placeholder{font-size:18px;font-weight:400}
+body[data-oge-geometry="18"] .oge18-source-note{font-size:18px;line-height:1.5;color:#526357;margin:0 0 12px}
+body[data-oge-geometry="18"] #answerState{font-size:18px;line-height:1.55;margin:12px 0 0;color:#344c3e}
+body[data-oge-geometry="18"] #answerState:empty{display:none}
+body[data-oge-geometry="18"] .figwrap[data-oge18-task-diagram]{width:100%;max-width:100%;overflow:visible;padding:0;background:#fff}
+body[data-oge-geometry="18"] .figwrap[data-oge18-task-diagram] svg{display:block;width:100%;min-width:0;max-width:720px;height:auto;margin:0 auto}
+body[data-oge-geometry="18"] .oge18-step-action{min-height:48px;font-size:19px}
+@media(max-width:600px){body[data-oge-geometry="18"].minimal-course .card{padding:14px 10px}body[data-oge-geometry="18"].minimal-course .minimal-hint{padding:14px 10px}body[data-oge-geometry="18"].minimal-course .step{padding:12px 10px}}
 </style>
 <link rel="stylesheet" href="oge-course-reference.css">
 <link rel="stylesheet" href="oge-course-geometry.css?v=worked-steps-20261110">
@@ -1100,7 +1116,7 @@ function poolArch(){
     return true;});
 }
 function nextTrainTask(){
-  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false;
+  TR.hintUsed=false; TR.done=false; TR.missed=false; TR.shown=false; TR.closeReason=null;
   if(REVIEW.on){   // работа над ошибками: только открытые типы журнала, задачи генератора
     const open=CP.openTypes().filter(k=>SUBS[k]);
     if(open.length){TR.task=genTask(pick(open));TR.exhausted=false;logE({e:'task_start',kind:'review',sub:TR.task.sub});return;}
@@ -1143,11 +1159,12 @@ function drawTrain(state){
     '<h3>'+SUBS[t.sub].name+(t.id?'':' · генератор')+'</h3>'+
     '<div class="task">'+t.text+'</div>'+
     '<div class="figwrap">'+t.fig+'</div>'+
-    '<div class="row"><input class="ans" id="ansIn" inputmode="decimal" placeholder="ответ" autocomplete="off">'+
+    '<div class="row"><input class="ans" id="ansIn" inputmode="decimal" placeholder="Введите число" autocomplete="off" aria-describedby="answerState">'+
     '<button class="act" id="chkBtn">Проверить</button>'+
     '<button class="sec" id="hintBtn">Подсказка</button>'+
     '<button class="sec" id="giveBtn">Сдаюсь — решение</button>'+
     '<button class="sec" id="nextBtn">Другая задача →</button></div>'+
+    '<div id="answerState" role="status" aria-live="polite"></div>'+
     '<div class="msg" id="fb" role="status" aria-live="polite"></div>'+
     '<div id="solBox"></div>'+
     '<div class="note">Ответ — число; десятичная дробь через запятую (1,5), можно обыкновенной (3/2). '+refJump(t)+'</div>'+
@@ -1161,7 +1178,13 @@ function drawTrain(state){
   });
   const fb=$('fb'),inp=$('ansIn');
   /* после верного ответа или «Сдаюсь» задача закрыта: «Проверить» не работает до следующей */
-  const close=()=>{TR.done=true;$('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;};
+  const close=(reason)=>{
+    TR.done=true;TR.closeReason=reason||TR.closeReason||'correct';
+    $('chkBtn').disabled=true;inp.disabled=true;$('giveBtn').disabled=true;
+    $('answerState').textContent=TR.closeReason==='solution'
+      ?'Решение открыто. Ввод закрыт для этого примера. Чтобы решать дальше, нажми «Другая задача».'
+      :'Ответ принят. Этот пример завершён. Чтобы ввести новый ответ, нажми «Другая задача».';
+  };
   if(TR.done)close();
   $('chkBtn').onclick=()=>{
     if(TR.done)return;
@@ -1174,7 +1197,7 @@ function drawTrain(state){
       /* решено без показа результата — в счёт; журнал: один вердикт на задачу */
       if(window.OgeGeometryHelpUsed)fb.textContent += " Решено с подсказкой.";
       if(!TR.shown&&!window.OgeGeometryHelpUsed){CP.solvedOne(t.sub); if(!TR.missed)CP.mlog(t.sub,true);}
-      close();
+      close('correct');
     }else{
       if(!TR.missed){TR.missed=true;CP.mlog(t.sub,false);}
       const d=t.diag.find(d=>near(v,d.v,d.e));
@@ -1195,7 +1218,7 @@ function drawTrain(state){
     TR.shown=true;
     $('solBox').innerHTML=solHtml(t)+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
     logE({e:'give_up',sub:t.sub,id:t.id});
-    close();
+    close('solution');
   };
   $('nextBtn').onclick=()=>{nextTrainTask();drawTrain();};
   const rj=main.querySelector('[data-act="ref"]');
@@ -1514,6 +1537,166 @@ if(typeof location!=='undefined'&&/[?&]selftest=1/.test(location.search)){
   try{window.__selftestFails=runSelftest();}catch(e){const d=document.createElement('div');d.className='selftest';d.textContent='СЕЛФТЕСТ УПАЛ: '+e.message;main.parentNode.insertBefore(d,main);window.__selftestFails=1;}
 }
 
+/* The three diagrams below use only the current native task parameters.
+ * Rendering never selects a task, changes its answer, or writes progress.
+ * Step counts stay identical to the native solution for board action replay. */
+const Oge18TaskDiagram = (() => {
+  'use strict';
+  const supported = new Set(['segCmp', 'areaPar', 'circRatio']);
+  const ink = '#25382c', grid = '#d6ddcf', blue = '#216b9c', orange = '#a7500a';
+  const green = '#216342', pale = '#e8f0e9', warm = '#f5dfbf';
+  const fmt = n => String(Number(n.toFixed(8))).replace('.', ',');
+  const cells = n => n === 1 ? 'клетка' : n >= 2 && n <= 4 ? 'клетки' : 'клеток';
+  function decompose(n) {
+    for (let a = Math.floor(Math.sqrt(n)); a >= 0; a--) {
+      const b = Math.round(Math.sqrt(n - a*a));
+      if (a*a + b*b === n) return [a, b];
+    }
+    return null;
+  }
+  function supports(task) {
+    if (!task || !supported.has(task.sub) || !Array.isArray(task.p)) return false;
+    const p = task.p;
+    if (!p.every(Number.isFinite)) return false;
+    if (task.sub === 'segCmp') return p.length === 2 && p[0] > 0 && p[1] > p[0] && p.every(Number.isInteger);
+    if (task.sub === 'areaPar') return p.length === 3 && p[0] > 0 && p[1] > 0 && p[2] >= 0 && p[2] <= p[0] && p.every(Number.isInteger);
+    return p.length === 2 && p[0] > 0 && p[1] > p[0] && p.every(Number.isInteger) && p.every(n => decompose(n));
+  }
+  function actions(task) {
+    if (!supports(task)) return [];
+    return task.sub === 'segCmp'
+      ? ['Выделить отрезки и посчитать клетки', 'Сравнить длины']
+      : task.sub === 'areaPar'
+        ? ['Показать основание и высоту', 'Составить прямоугольник']
+        : ['Найти радиусы по клеткам', 'Сравнить квадраты радиусов', 'Вычислить отношение площадей'];
+  }
+  function radiusWords(n, name) {
+    const radius = Math.sqrt(n), [up, right] = decompose(n);
+    if (Number.isInteger(radius)) return `${name}: от центра до края — <strong>${radius} ${cells(radius)}</strong>.`;
+    return `${name}: по клеткам <strong>${right} вправо и ${up} вверх</strong>; сам радиус идёт наискось.`;
+  }
+  function squareWords(n, symbol) {
+    const radius = Math.sqrt(n), [up, right] = decompose(n);
+    return Number.isInteger(radius)
+      ? `${symbol}² = ${radius} × ${radius} = <strong>${n}</strong>`
+      : `${symbol}² = ${up}² + ${right}² = <strong>${n}</strong>`;
+  }
+  function steps(task) {
+    if (!supports(task)) return [];
+    const p = task.p;
+    if (task.sub === 'segCmp') return [
+      `Считаем клетки вдоль AC: <strong>AM = ${p[0]}</strong>, <strong>MC = ${p[1]}</strong>. Каждый короткий штрих отделяет одну клетку.`,
+      `Чтобы узнать, во сколько раз MC длиннее AM, делим длины: <strong>${p[1]} : ${p[0]} = ${fmt(p[1]/p[0])}</strong>.`
+    ];
+    if (task.sub === 'areaPar') return [
+      `Основание — <strong>${p[0]} ${cells(p[0])}</strong>. Высота — <strong>${p[1]} ${cells(p[1])}</strong> по вертикали между основаниями. Прямой угол отмечен квадратиком.`,
+      `Перенесли выделенный треугольник вправо — получили прямоугольник. Площадь сохранилась: <strong>${p[0]} × ${p[1]} = ${p[0]*p[1]}</strong>.`
+    ];
+    const diagonal = !Number.isInteger(Math.sqrt(p[0])) || !Number.isInteger(Math.sqrt(p[1]));
+    return [
+      radiusWords(p[0], 'Малый круг') + '<br>' + radiusWords(p[1], 'Большой круг'),
+      `${diagonal ? 'Для наклонного радиуса используем теорему Пифагора. ' : ''}Квадраты на тех же радиусах:<br>${squareWords(p[0], 'r')}; ${squareWords(p[1], 'R')}.`,
+      `Площадь круга равна π · радиус². При делении двух площадей π сокращается: <strong>${p[1]} : ${p[0]} = ${fmt(p[1]/p[0])}</strong>. Ответ: <strong>${fmt(p[1]/p[0])}</strong>.`
+    ];
+  }
+  function render(task, step, requestedWidth) {
+    if (!supports(task)) return task && typeof task.fig === 'string' ? task.fig : '';
+    const width = Math.max(240, Math.min(1000, Number.isFinite(requestedWidth) && requestedWidth > 0 ? requestedWidth : 640));
+    const stage = Math.max(0, Math.min(actions(task).length, Math.floor(Number(step)) || 0));
+    const p = task.p;
+    let W, H, foot = 96, top = 30;
+    if (task.sub === 'segCmp') { W = p[0]+p[1]+2; H = Math.min(5, Math.max(3, Math.round((p[0]+p[1])/2)))+2; }
+    else if (task.sub === 'areaPar') { W = p[0]+p[2]+2; H = p[1]+2; foot = 60; }
+    else { W = Math.ceil(Math.sqrt(p[0]))*2 + Math.ceil(Math.sqrt(p[1]))*2 + 3; H = Math.ceil(Math.sqrt(p[1]))*2+2; top = 48; foot = stage >= 3 ? 100 : 64; }
+    const unit = Math.min(46, (width-48)/W);
+    const offset = (width-W*unit)/2;
+    const height = top+H*unit+foot;
+    const x = v => offset+v*unit, y = v => top+(H-v)*unit;
+    const xy = point => `${x(point[0])},${y(point[1])}`;
+    const attr = role => role ? ` data-oge18-role="${role}"` : '';
+    const label = (X,Y,value,anchor='middle') => `<text x="${X}" y="${Y}" text-anchor="${anchor}" fill="${ink}" font-family="system-ui,sans-serif" font-size="20" font-weight="600">${value}</text>`;
+    const line = (a,b,color=ink,weight=2,role='',dash='') => `<line${attr(role)} x1="${x(a[0])}" y1="${y(a[1])}" x2="${x(b[0])}" y2="${y(b[1])}" stroke="${color}" stroke-width="${weight}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+    const polygon = (points,fill=pale,stroke=ink,role='',opacity=1,dash='') => `<polygon${attr(role)} points="${points.map(xy).join(' ')}" fill="${fill}" fill-opacity="${opacity}" stroke="${stroke}" stroke-width="2"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+    const dot = (point,role='') => `<circle${attr(role)} cx="${x(point[0])}" cy="${y(point[1])}" r="4" fill="${ink}"/>`;
+    const ticks = (a,b,color,role) => {
+      const horizontal = a[1] === b[1];
+      const length = Math.abs(horizontal ? b[0]-a[0] : b[1]-a[1]);
+      let result = line(a,b,color,5,role);
+      for (let n=0;n<=length;n++) {
+        const X = x(horizontal ? Math.min(a[0],b[0])+n : a[0]);
+        const Y = y(horizontal ? a[1] : Math.min(a[1],b[1])+n);
+        result += `<line x1="${X-(horizontal?0:4)}" y1="${Y-(horizontal?4:0)}" x2="${X+(horizontal?0:4)}" y2="${Y+(horizontal?4:0)}" stroke="${color}" stroke-width="2"/>`;
+      }
+      return result;
+    };
+    let body = '';
+    for(let gx=0;gx<=W;gx++) body += line([gx,0],[gx,H],grid,1);
+    for(let gy=0;gy<=H;gy++) body += line([0,gy],[W,gy],grid,1);
+    let description;
+    if (task.sub === 'segCmp') {
+      const [am,mc] = p, ac=am+mc, h=H-2;
+      const A=[1,1], M=[1+am,1], C=[1+ac,1], B=[1+Math.round(ac*.4),1+h];
+      body += polygon([A,B,C],pale,ink,'shape');
+      if(stage>0) body += ticks(A,M,blue,'seg-am')+ticks(M,C,orange,'seg-mc');
+      body += dot(A)+dot(M)+dot(C);
+      body += label(x(A[0])-12,y(A[1])+29,'A')+label(x(M[0]),y(M[1])+55,'M')+label(x(C[0])+12,y(C[1])+29,'C')+label(x(B[0]),y(B[1])-13,'B');
+      if(stage>0) body += label(24,y(1)+84,`AM = ${am}`,'start')+label(width-24,y(1)+84,`MC = ${mc}`,'end');
+      description = `Треугольник ABC с M на AC. AM занимает ${am} клеток, MC — ${mc}; все точки и длины соответствуют текущей задаче.`;
+    } else if (task.sub === 'areaPar') {
+      const [a,h,s]=p, A=[1,1], B=[1+a,1], C=[1+a+s,1+h], D=[1+s,1+h], E=[1+s,1], F=[1+a+s,1];
+      if(stage<2) body += polygon([A,B,C,D],pale,ink,'shape');
+      else {
+        body += polygon([A,B,C,D],'none','#7d877f','shape',1,'5 4');
+        body += `<rect data-oge18-role="area-rectangle" x="${x(E[0])}" y="${y(D[1])}" width="${a*unit}" height="${h*unit}" fill="${pale}" stroke="${green}" stroke-width="2"/>`;
+        body += polygon([A,E,D],warm,orange,'cut-triangle',.15,'5 4');
+        body += polygon([B,F,C],warm,orange,'moved-triangle',.9);
+        const from=[1+2*s/3,1+h/3], to=[1+a+2*s/3,1+h/3];
+        body += line(from,to,orange,2,'translation','4 4');
+        body += `<path d="M${x(to[0])-8},${y(to[1])-5} L${x(to[0])},${y(to[1])} L${x(to[0])-8},${y(to[1])+5}" fill="none" stroke="${orange}" stroke-width="2"/>`;
+      }
+      if(stage>0) {
+        const baseStart=stage<2?A:E, baseEnd=stage<2?B:F;
+        body += ticks(baseStart,baseEnd,blue,'base')+ticks(E,D,orange,'height');
+        const size=Math.min(10,unit*.4), X=x(E[0]), Y=y(E[1]);
+        body += `<path data-oge18-role="right-angle" d="M${X+size},${Y} v${-size} h${-size}" fill="none" stroke="${orange}" stroke-width="2"/>`;
+        body += label((x(baseStart[0])+x(baseEnd[0]))/2,y(1)+34,`Основание ${a}`);
+        body += label(x(E[0])-11,(y(1)+y(1+h))/2+7,String(h),'end');
+      }
+      description = `Параллелограмм: основание ${a}, перпендикулярная высота ${h}, горизонтальный сдвиг ${s}.` + (stage>=2 ? ` Перенос треугольника на ${a} клеток вправо составляет прямоугольник с теми же основанием и высотой.` : '');
+    } else {
+      const [smallSquared,largeSquared]=p;
+      const r=Math.sqrt(smallSquared), R=Math.sqrt(largeSquared), cw=Math.ceil(r), CW=Math.ceil(R);
+      const centers=[[1+cw,1+CW],[cw*2+2+CW,1+CW]];
+      const titleNudge=Math.max(0,(100-(x(centers[1][0])-x(centers[0][0])))/2);
+      for(let i=0;i<2;i++) {
+        const n=i?largeSquared:smallSquared, radius=Math.sqrt(n), [up,right]=decompose(n), c=centers[i];
+        const key=i?'large':'small', color=i?orange:blue, symbol=i?'R':'r';
+        const end=[c[0]+right,c[1]+up], corner=[c[0]+right,c[1]];
+        body += `<circle data-oge18-role="${key}-circle" cx="${x(c[0])}" cy="${y(c[1])}" r="${radius*unit}" fill="${i?warm:pale}" fill-opacity=".4" stroke="${ink}" stroke-width="2"/>`;
+        if(stage>=2) {
+          const square=[c,end,[end[0]-up,end[1]+right],[c[0]-up,c[1]+right]];
+          body += polygon(square,i?warm:pale,color,`${key}-radius-square`,.7);
+        }
+        body += line(c,end,color,stage>0?4:2,`${key}-radius`)+dot(c,`${key}-center`);
+        if(stage>0) {
+          if(right) {
+            body += ticks(c,corner,color,`${key}-leg-x`)+ticks(corner,end,color,`${key}-leg-y`);
+            body += label((x(c[0])+x(corner[0]))/2,y(c[1])+26,String(right));
+            body += label(x(corner[0])+13,(y(corner[1])+y(end[1]))/2+7,String(up),'start');
+          } else body += ticks(c,end,color,`${key}-leg-y`);
+        }
+        body += label(x(c[0])+(i?titleNudge:-titleNudge),28,i?'Большой':'Малый');
+        const value=stage>=2?`${symbol}² = ${n}`:stage>0&&Number.isInteger(radius)?`${symbol} = ${radius}`:symbol;
+        body += label(x(c[0]),y(c[1]-radius)+33,value);
+      }
+      if(stage>=3) body += label(width/2,height-20,`Ответ: ${fmt(largeSquared/smallSquared)}`);
+      description = `Два круга текущей задачи. Квадрат малого радиуса ${smallSquared}, большого ${largeSquared}.` + (stage>0 ? ' Радиусы проведены от отмеченного центра до края; у наклонных радиусов показаны горизонтальный и вертикальный катеты.' : '') + (stage>=2?' На тех же радиусах построены квадраты: их площади относятся так же, как площади кругов.':'');
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${description}" data-task-kind="${task.sub}" data-step="${stage}" data-unit="${unit}" style="display:block;width:100%;max-width:100%;height:auto"><title>${description}</title>${body}</svg>`;
+  }
+  return { supports, render, steps, actions };
+})();
+
 /* Minimal course shell. Moves live controls, retaining their original handlers. */
 const MinimalGeometry=(()=>{
   const q=s=>document.querySelector(s);
@@ -1557,26 +1740,55 @@ const MinimalGeometry=(()=>{
 if((!CP.RO || window.OgeGeometryBoardMode === true) && document.documentElement.nodeType===1){
   MinimalGeometry.shell('#main','ОГЭ №18 · Фигуры на клетках');
   const originalDrawTrain=drawTrain;
+  let task18FigureObserver=null;
   drawTrain=function(state){originalDrawTrain(state);const main=document.getElementById('main');
+    if(task18FigureObserver){task18FigureObserver.disconnect();task18FigureObserver=null;}
     MinimalGeometry.secondary(main,[':scope > .chips',':scope > .pnote',':scope > .card > h3',':scope > .card > .note']);
     const card=main.querySelector('.card'),oldHint=document.getElementById('hintBtn');if(!card||!oldHint)return;
-    const t=TR.task,help=MinimalGeometry.hint(card.querySelector('.figwrap'),'<h3>Разбор этой задачи по шагам</h3><p>Смотрим на рисунок выше. Открывай по одному шагу — предыдущие останутся видны.</p>');
+    const t=TR.task,taskBound=Oge18TaskDiagram.supports(t),figure=card.querySelector('.figwrap');
+    const explanations=taskBound?Oge18TaskDiagram.steps(t):t.sol;
+    const actions=taskBound?Oge18TaskDiagram.actions(t):null;
+    if(taskBound){
+      figure.setAttribute('data-oge18-task-diagram',t.sub);
+      const provenance=document.createElement('p');provenance.className='oge18-source-note';
+      provenance.textContent=t.sub==='segCmp'?'Тренировочный аналог · отношение отрезков по клеткам':'Тренировочный аналог';
+      card.querySelector('.task').before(provenance);
+    }
+    const help=MinimalGeometry.hint(figure,'<h3>Разбор этой задачи по шагам</h3><p>'+(taskBound?'Нажми кнопку — нужные линии появятся на этом рисунке.':'Смотрим на рисунок выше. Открывай по одному шагу — предыдущие останутся видны.')+'</p>');
     help.button.textContent='Разобрать по шагам';help.panel.setAttribute('aria-label','Пошаговое объяснение текущей задачи');
-    let step=0;
+    let step=0,diagramStep=0,lastFigureWidth=0,lastFigureStep=-1;
+    const redraw=()=>{
+      if(!taskBound)return;
+      const width=Math.max(240,Math.min(720,figure.getBoundingClientRect().width||600));
+      if(width===lastFigureWidth&&diagramStep===lastFigureStep)return;
+      lastFigureWidth=width;lastFigureStep=diagramStep;
+      figure.innerHTML=Oge18TaskDiagram.render(t,diagramStep,width);
+    };
+    if(taskBound){redraw();if(typeof ResizeObserver!=='undefined'){task18FigureObserver=new ResizeObserver(redraw);task18FigureObserver.observe(figure);}}
     const shown=document.createElement('div');shown.id='task18Steps';shown.className='minimal-first-step';help.panel.appendChild(shown);
     const status=document.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');help.panel.appendChild(status);
-    oldHint.textContent='Начать разбор';help.panel.appendChild(oldHint);oldHint.setAttribute('aria-controls',shown.id);
+    oldHint.textContent=actions?actions[0]:'Начать разбор';help.panel.appendChild(oldHint);oldHint.setAttribute('aria-controls',shown.id);oldHint.classList.add('oge18-step-action');
     oldHint.onclick=()=>{
       if(step>=t.sol.length)return;
       if(!TR.hintUsed){TR.hintUsed=true;logE({e:'hint',sub:t.sub});}TR.shown=true;
-      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+t.sol.length+'</h4>'+t.sol[step];shown.appendChild(block);step++;
-      const figure=card.querySelector('.figwrap'),oldSvg=figure.querySelector('svg'),style=oldSvg?.style.cssText||'';
-      figure.innerHTML=t.sub==='segAB'?SUBS.segAB.fig(t.p,step).svg():t.figAux;
-      figure.querySelector('svg').style.cssText=style;
+      const block=document.createElement('section');block.className='step';block.innerHTML='<h4>Шаг '+(step+1)+' из '+t.sol.length+'</h4>'+explanations[step];shown.appendChild(block);step++;
+      if(taskBound){diagramStep=step;redraw();}
+      else{const oldSvg=figure.querySelector('svg'),style=oldSvg?.style.cssText||'';
+        figure.innerHTML=t.sub==='segAB'?SUBS.segAB.fig(t.p,step).svg():t.figAux;
+        figure.querySelector('svg').style.cssText=style;}
       status.textContent=step===t.sol.length?'Все шаги открыты. Ответ: '+fmt(t.ans)+'. Можно проверить свой ответ или перейти к другой задаче.':'Открыт шаг '+step+' из '+t.sol.length+'.';
-      oldHint.textContent=step===t.sol.length?'Все шаги открыты':'Следующий шаг ('+(step+1)+' из '+t.sol.length+')';oldHint.disabled=step===t.sol.length;
+      oldHint.textContent=step===t.sol.length?'Все шаги открыты':actions?actions[step]:'Следующий шаг ('+(step+1)+' из '+t.sol.length+')';oldHint.disabled=step===t.sol.length;
     };
     const give=document.getElementById('giveBtn');give.textContent='Показать решение целиком';
+    if(taskBound){
+      const nativeGive=give.onclick;
+      give.onclick=()=>{
+        if(TR.done)return;
+        nativeGive();
+        document.getElementById('solBox').innerHTML=explanations.map((html,i)=>'<section class="step"><h4>Шаг '+(i+1)+' из '+explanations.length+'</h4>'+html+'</section>').join('')+'<div class="msg ok on">Ответ: <b>'+fmt(t.ans)+'</b></div>';
+        diagramStep=t.sol.length;redraw();
+      };
+    }
     const complete=MinimalGeometry.disclosure(help.panel,[give]);complete.querySelector('summary').textContent='Посмотреть все шаги сразу';complete.appendChild(document.getElementById('solBox'));
     document.getElementById('courseSettings').querySelectorAll('.chip').forEach(node=>{node.tabIndex=0;node.setAttribute('role','button');node.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();node.click();}};});
   };

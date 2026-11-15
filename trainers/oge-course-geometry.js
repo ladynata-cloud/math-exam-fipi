@@ -154,9 +154,9 @@ function config(info){if(page===16&&info.key==='sqCircum')return ['squareIncircl
 function answerInstruction(info){
  const d=doc.createElement('div');d.innerHTML=info.text;const text=d.textContent;
  if(info.task.ansFmt==='concat')return 'Найди длины и запиши их подряд в порядке, который указан в условии.';
- const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)).pop()||'Найди величину, которую спрашивают в условии.';
+ const sentences=text.split(/(?<=[.!?])\s+/);let ask=sentences.filter(s=>/найд|определ|вычисл|чему рав/i.test(s)||(page===18&&/во сколько раз/i.test(s))).pop()||'Найди величину, которую спрашивают в условии.';
  ask=ask.replace(/^.*?(?=Найдите|Найди|Определите|Вычислите)/,'').trim();
- const unit=/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
+ const unit=page===18&&/во сколько раз/i.test(ask)?' Введи число: во сколько раз.':/градус/i.test(text)?' Запиши число градусов без значка °.':/площад/i.test(ask)?' Запиши числовое значение площади в единицах условия.':/отношени|тангенс|косинус|синус/i.test(ask)?' Запиши число.':' Запиши число в единицах условия.';
  return ask+unit;
 }
 function preserveDraft(input,identity){
@@ -171,17 +171,35 @@ function enhance(){
  const panel=q('#courseHintPanel'),toggle=q('#courseHintToggle'),input=q(page===18?'#ansIn':'#ans'),info=current();
  if(!panel||!toggle||!input||!info||panel.dataset.geometryReady)return;
  panel.dataset.geometryReady='1';doc.body.classList.add('ocg-page');
- const identity=page+'|'+info.key+'|'+info.text;
+ const identity=page+'|'+info.key+'|'+info.text+(page===18?'|'+JSON.stringify(info.task.p):'');
  input.setAttribute('aria-label',answerInstruction(info));preserveDraft(input,identity);
  const prompt=el('label',answerInstruction(info),'ocg-answer-label');prompt.htmlFor=input.id;input.parentElement.before(prompt);
+ const taskBound=page===18&&typeof Oge18TaskDiagram!=='undefined'&&Oge18TaskDiagram.supports(info.task);
  const [kind,topics,crops]=config(info),explore=details('Дополнительно: попробовать на других числах');explore.dataset.geometryDiscovery='1';model(explore,kind,info.shape);panel.append(explore);
+ // Older room packets carry this model's controls. Keep that state round-trip
+ // compatible, while teaching only with the actual task's diagram and numbers.
+ // It is intentionally absent from both the visible UI and accessibility tree.
+ if(taskBound){explore.hidden=true;explore.setAttribute('aria-hidden','true');explore.dataset.oge18LegacyModel='1';}
  const applied=details('Как применить это к моему заданию?');applied.append(el('p','1. Найди на своём рисунке отрезки или углы, о которых говорит правило.'),el('p','2. Сверь все условия правила: прямой угол, параллельность, касание или положение точек.'),el('p','3. Подставь данные своей задачи. Запиши ответ в поле под условием.'));const law=el('div',null,'ocg-law');law.innerHTML=info.law;applied.append(law);panel.append(applied);
  const referenceBox=el('section',null,'ocg-reference-box');references(referenceBox,topics,crops);panel.append(referenceBox);
- const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();input.focus();});panel.append(returnButton);
+ if(taskBound){
+  applied.replaceChildren(el('summary','Правило для этой задачи'),el('p',SUBS[info.key].law));
+  // The old segCmp metadata points to Pythagoras. This horizontal-segment
+  // exercise only needs division; retain packet slots without showing that link.
+  if(info.key==='segCmp'){
+   referenceBox.hidden=true;referenceBox.setAttribute('aria-hidden','true');
+   for(const link of all('#courseSettings [data-act="ref"]')){
+    link.textContent='Правило для этой задачи';
+    link.onclick=()=>{if(panel.hidden)toggle.click();applied.open=true;q('summary',applied)?.focus();};
+   }
+  }
+ }
+ const returnButton=button('Вернуться к моему ответу',()=>{if(!panel.hidden)toggle.click();if(page===18&&input.disabled)q('#nextBtn')?.focus();else input.focus();});panel.append(returnButton);
  const update=()=>toggle.textContent=panel.hidden?'Разобрать по шагам':'Скрыть объяснение';toggle.addEventListener('click',update);update();
  // Same-page references must not replace the task or discard its typed answer.
  const main=q('#main');if(main&&!main.dataset.geometryReferences){main.dataset.geometryReferences='1';main.addEventListener('click',event=>{const link=event.target.closest('.refcall,[data-act="ref"],#toRef2,#toSheet2');if(!link||!q('#courseHintPanel'))return;event.preventDefault();event.stopImmediatePropagation();const live=q('#courseHintPanel');if(live.hidden)q('#courseHintToggle').click();const box=q('.ocg-reference-box',live);if(box){all('details',box).forEach(d=>d.open=true);box.scrollIntoView?.({block:'nearest'});q('summary',box)?.focus();}},true);}
  for(const figure of all('#main .diagram,#main .fig,#main .figwrap')){if(figure.closest('#courseHintPanel'))continue;figure.classList.add('ocg-primary-figure');
+  if(page===18&&figure.hasAttribute('data-oge18-task-diagram')){figure.setAttribute('role','region');figure.setAttribute('aria-label','Чертёж к условию');continue;}
   const svg=q('svg',figure);if(svg){const vb=(svg.getAttribute('viewBox')||'0 0 440 290').split(/\s+/).map(Number),fonts=all('text',svg).map(t=>+t.getAttribute('font-size')).filter(n=>n>0),smallest=fonts.length?Math.min(...fonts):18;svg.style.width=Math.max(440,vb[2]*Math.max(1,18/smallest))+'px';svg.style.maxWidth='none';}
   figureNavigation(figure,'Чертёж к условию');
  }
