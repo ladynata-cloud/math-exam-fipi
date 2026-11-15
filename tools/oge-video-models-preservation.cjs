@@ -2,7 +2,9 @@
 // Invert only the nine reviewed, additive lesson includes. The historical
 // candidate/engine hashes remain the authority for every other byte.
 const assert = require('node:assert/strict');
+const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
+const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
   15: 'trainers/oge-task15-triangles.html',
@@ -29,16 +31,26 @@ function restoreVideoModels(file, source) {
   if (!row) return original;
   const marker = /OGE video-model investigations|oge-video-(?:models|graphs|geometry)/;
   if (!marker.test(original)) return original;
+  const teaching = restoreTrainerDownload(file, original);
   const include = snippet(row[0]);
-  assert.equal(original.split(include).length, 2, file + ': one exact reviewed video-model include block');
-  assert(original.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
-  const restored = original.replace(include, '');
+  assert.equal(teaching.split(include).length, 2, file + ': one exact reviewed video-model include block');
+  assert(teaching.includes(include + '</head>'), file + ': video models stay at the reviewed head boundary');
+  const restored = teaching.replace(include, '');
   assert(!marker.test(restored), file + ': no altered, duplicate or hidden lesson dependency');
   return restored;
 }
 function restoreGraphScale(file, source) {
   if (file !== graphScale.file) return source;
   const parts = source.split(graphScale.after);
-  return parts.length === 2 ? parts.join(graphScale.before) : source;
+  // An ambiguous projection must remain untouched, including any later delta.
+  return parts.length === 2 ? restoreGraphIntersections(file, parts.join(graphScale.before)) : source;
 }
-module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale };
+function restoreGraphIntersections(file, source) {
+  if (file !== graphIntersections.file) return source;
+  const fragments = graphIntersections.fragments;
+  // Match the whole renderer and both call sites as one exact reviewed delta.
+  // Partial edits, duplicates and other engine bytes still fail the old pins.
+  if (!fragments.every(fragment => source.split(fragment.after).length === 2)) return source;
+  return fragments.reduce((restored, fragment) => restored.replace(fragment.after, fragment.before), source);
+}
+module.exports = { entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections };

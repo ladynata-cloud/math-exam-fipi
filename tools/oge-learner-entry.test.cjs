@@ -24,6 +24,8 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 const task9ReviewedScript='b226c3f4216892b8d8021ebf0029a49ebb1ba6859d1797c91b5a4a293084728f';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
+const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
+ .filter(entry=>entry.public&&entry.adaptation).map(entry=>[entry.sourceHtml.slice(1),entry]));
 // This shared engine's default course is EGE; retain full return coverage while
 // validating its reviewed parent instead of adding an unrelated OGE bar.
 const courseParents={'ege-baza/path/index.html':{href:'/ege-baza/index.html',label:'← Курс ЕГЭ база'}};
@@ -84,8 +86,18 @@ for(const p of routes.pages){
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
-  const controls=doc=>[...doc.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d),controls(baseline),p+' controls preserved');
+  const entry=exportsByPage.get(p);
+  const panel=entry?d.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  if(entry){
+    assert(panel,p+' one external download panel');
+    assert.deepEqual([...panel.querySelectorAll('a[download]')].map(a=>a.getAttribute('href')),
+      [entry.downloadHtml,entry.prompt,entry.package]);
+    assert.deepEqual([...panel.querySelectorAll('input,select,textarea,button')].map(e=>[e.tagName,e.className]),
+      [['TEXTAREA','download-wish'],['BUTTON','download-copy'],['TEXTAREA','download-prompt-text']]);
+  }
+  const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
+    .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
+  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();
