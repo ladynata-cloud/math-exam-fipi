@@ -7,6 +7,8 @@
 - Date: 2026-11-14 (Asia/Novosibirsk)
 - Base branch: `main`
 - Base SHA: `add234c3ecb3204d4d7c9b3ef99f7b98a33bf37a`
+- Authorized synchronization base (2026-11-16): `1469ad50a8659f66c8613164009e7387a3a68f2b`.
+- Existing PR: #600; incoming head before synchronization: `9f151187e732a69639034161abe90e3e12fb2701`.
 - Planned branch: `fix/profile19-proof-completion-20261114`
 - Review level: `HIGH` (existing saved learner work and assistance accounting)
 - Related work: PR #594, source head `b282bb5de7aefb6e01673340e6e41d8b7bc2aed9`; published PR #595.
@@ -48,6 +50,9 @@ request relevant help, revise their draft and continue to a different condition.
 - Reconcile current project status against selected production resources.
 - Focused regression, mathematics and browser checks; update only the changed
   page's navigator-preservation fingerprint using the canonical tool.
+- Preserve accepted H04 answer-format recognition, guarded submissions and
+  drafts while synchronizing this existing PR with the exact authorized main.
+  Keep accepted #620 diagram fixes and every unrelated main change intact.
 
 ### Out of scope / files that must not change
 
@@ -55,6 +60,8 @@ request relevant help, revise their draft and continue to a different condition.
   classroom data changes, no new progress schema and no automated proof grading.
 - No branch repair, merge or publication of #594 or any unrelated old PR.
 - No modification of published #595 content, parsers or their required gates.
+- Broad proof-freshness changes for all `task.proof`, changed legacy-checkmark
+  semantics and line-ending normalization belong to the later H05 task.
 
 ## Acceptance criteria
 
@@ -65,6 +72,9 @@ request relevant help, revise their draft and continue to a different condition.
 - [x] Prior answers, drafts and earned results survive viewing, editing and reload.
 - [x] Task 14/16 whole-answer behavior and next-condition behavior remain correct.
 - [ ] No narrow-screen overflow in the real-browser gate.
+- [ ] In all six parameter methods, a written argument plus an unrecognized
+  final answer creates no attempt and opens no criteria; a subsequent meaningful
+  wrong answer records one attempt and enables self-review.
 
 ## Checks and gates
 
@@ -75,6 +85,11 @@ request relevant help, revise their draft and continue to a different condition.
   local Chromium cannot start because this executor denies AF_UNIX sockets.
 - Final marker: `PROFILE19_PROOF_COMPLETION_GATE_OK` only after required checks.
 - Real pupil pilot and external-provider review are not performed by this task.
+- Synchronization gates: all `tools/profile-part2-*.test.cjs`, including H04
+  recognition/duplicate-event/two-tab cases and the combined proof regression;
+  current course-entry, second-part course/inequality and scoped standalone
+  browser scenarios; unchanged bank/keys, offline-source identity and preservation
+  of all unrelated main files and download entries.
 
 ## Review plan
 
@@ -98,6 +113,16 @@ request relevant help, revise their draft and continue to a different condition.
 - Merge, auto-merge and deployment: **no** in this session without separate owner
   authorization. The AGENTS.md rules supplied directly in the current conversation
   take precedence over the repository's broader standing-release document.
+- On 2026-11-16 the owner explicitly authorized an ordinary update of the
+  existing #600 branch on `1469ad50a8659f66c8613164009e7387a3a68f2b`, resolving
+  the five reviewed conflicts and retaining H04 and #620. The result remains a
+  checked Draft PR; this permits merging the named main into the task branch,
+  not merging the PR into main, auto-merge or deployment.
+- The earlier exact-base update permission for `35e718ca74852857a86dfe9dcc68d091ce165308`
+  was stopped before merge when authoritative main advanced through #620.
+  Read-only revalidation found the same five #600 conflicts and unchanged
+  runtime inputs. The later owner permission replaced that base explicitly;
+  no force, reset or rebase is authorized.
 
 ## Execution record
 
@@ -105,6 +130,22 @@ request relevant help, revise their draft and continue to a different condition.
 - Actual base: `add234c3ecb3204d4d7c9b3ef99f7b98a33bf37a`
 - Head, PR, review and final test results: recorded in the PR handoff.
 - Scope deviations: none planned.
+
+### 2026-11-16 synchronization checkpoint
+
+- Accepted main contains H04 #618 and diagram fix #620. The combined runtime
+  retains H04 `bindSubmit`, whole-form recognition and observed draft values,
+  with one `bindProof` registration and the #600 state-patch veto.
+- The meaningful-answer requirement applies before proof review can open.
+  Existing numerical results, assistance, proof text and storage version remain.
+- Only the second-part offline package is rebuilt. A temporary source checkpoint
+  may retain the accepted main package until the actual source commit exists;
+  it is not an updated standalone deliverable or a checked PR candidate.
+- Final source binding must name the actual published source commit and be
+  generated by the canonical tool. The scoped bundle is rebuilt afterwards;
+  final native/offline gates and exact-head CI are recorded in the PR handoff.
+- H05 remains conditional on acceptance of this foundation; this update does
+  not implement H05 or H06.
 
 ### Verified source checkpoint and review
 

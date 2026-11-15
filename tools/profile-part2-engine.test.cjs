@@ -48,8 +48,8 @@ test('actual final form never completes a task for an invalid expression that fo
    assert(!w.document.getElementById('completion'));
    assert.equal(r.drafts.final[0],invalid);
    assert.equal(r.drafts.proof,'Моё обоснование остаётся на месте');
-   // The existing ordinary-final-format attempt policy is intentionally not
-   // changed here; H04 separately classifies unreadable input without penalty.
+   // H04 retains an invalid real expression before any mathematical attempt.
+   assert.equal(r.attemptCount,0);assert.equal(r.wrong,0);
    const entries=Object.keys(w.localStorage).map(k=>[k,w.localStorage.getItem(k)]);
    w.close();dom=await boot(hash,entries);w=dom.window;
    assert.equal(w.document.getElementById('final-0').value,invalid);
@@ -266,7 +266,8 @@ test('native Chromium H01 numeric-domain forms at 320, 390 and 1280 pixels',{
       check('literal invalid draft stored',record.drafts.final[0],row.invalidInput);
       check('proof draft retained',record.drafts.proof,proof);
       row.invalidFeedback=await page.locator('#feedback').innerText();
-      // H04 owns malformed-answer attempt classification; it is not altered here.
+      check('invalid expression creates no mathematical attempt',record.attemptCount,0);
+      check('invalid expression creates no mathematical error',record.wrong,0);
       row.invalidAttemptCount=record.attemptCount;
       await capture('invalid');await page.reload();await page.locator('#final-form').waitFor();
       check('literal invalid draft survives native reload',await page.locator('#final-0').inputValue(),row.invalidInput);
@@ -357,6 +358,40 @@ test('all six parameter methods reveal proof criteria only after an answer submi
   assert.equal(r.helped,false);
  }
  w.close();
+});
+
+test('parameter proof criteria stay closed for an unrecognized final form and open after a meaningful wrong answer',async()=>{
+ const dom=await boot(),w=dom.window,d=w.document;
+ try{
+  for(const lesson of bank.filter(l=>l.exam===19)){
+   const task=lesson.tasks[3],proof='Проверяю отдельные значения параметра и ограничения.';
+   await go(w,'task/'+task.id+'/independent');
+   input(w,'proof-draft',proof);
+   task.final.forEach((field,i)=>input(w,'final-'+i,i===0?'1/0':field.answers[0]));
+   await submit(w,'final-form');
+   let saved=w.ProfilePartTwoApp.store.read(task.id);
+   assert.equal(saved.attemptCount,0,lesson.id+' format correction is not an attempt');
+   assert.equal(saved.wrong,0);
+   assert.equal(saved.completed,false);
+   assert.equal(saved.helped,false);
+   assert.equal(saved.drafts.final[0],'1/0');
+   assert.equal(saved.drafts.proof,proof);
+   assert.deepEqual(Array.from(saved.proofChecks),[]);
+   assert(d.getElementById('proof-review').hidden,lesson.id+' requires a meaningful attempt');
+   assert(d.getElementById('proof-jump').hidden);
+   assert.match(d.getElementById('feedback').textContent,/формат/);
+   task.final.forEach((_,i)=>input(w,'final-'+i,'99999'));
+   await submit(w,'final-form');
+   saved=w.ProfilePartTwoApp.store.read(task.id);
+   assert.equal(saved.attemptCount,1,lesson.id+' first meaningful answer is recorded once');
+   assert.equal(saved.wrong,1);
+   assert.equal(saved.attempts[0].correct,false);
+   assert.equal(saved.helped,false);
+   assert.equal(saved.drafts.proof,proof);
+   assert(!d.getElementById('proof-review').hidden,lesson.id+' allows review after a wrong answer');
+   assert(!d.getElementById('proof-jump').hidden);
+  }
+ }finally{w.close();}
 });
 
 test('earlier №19 draft, proof marks and independently accepted answers are retained',async()=>{

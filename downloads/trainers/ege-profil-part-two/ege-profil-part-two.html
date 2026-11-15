@@ -72,19 +72,6 @@
    neither the grid track nor its children may impose their min-content width. */
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
 
-#proof-jump{margin:0 0 10px}
-#proof-jump[hidden]{display:none}
-.proof-review-list{list-style:none;padding:0;margin:12px 0}
-.proof-review-list li{border-top:1px solid var(--line);padding:6px 0}
-.proof-review-list label{display:flex;align-items:flex-start;gap:10px;padding:6px 0;min-height:44px;cursor:pointer}
-.proof-review-list input{flex:0 0 20px;width:20px;height:20px;margin:4px 0 0;accent-color:var(--accent)}
-.proof-review-list strong{display:block}
-.proof-review-list details{margin:0 0 0 30px}
-.proof-review-list summary{font-size:.85rem;color:var(--accent)}
-.proof-review-list .hint{margin:0 0 6px}
-.proof-example{border-top:1px solid var(--line);padding-top:6px}
-#proof-review{overflow-wrap:anywhere}
-
 </style>
 
 
@@ -326,7 +313,6 @@
 
 
 
-
 </head>
 <body>
 <a class="skip" href="#main">К заданию</a>
@@ -413,8 +399,8 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
   const minus=v=>'x'+(v<0?' + '+f(-v):v>0?' − '+f(v):'');
   const plus=v=>'x'+(v<0?' − '+f(-v):v>0?' + '+f(v):'');
   const wrap=v=>'('+minus(v)+')';
-  const S=(prompt,answers,hint,explanation)=>({prompt,answers:Array.isArray(answers)?answers:[answers],hint,explanation});
-  const F=(label,answers)=>({label,answers:Array.isArray(answers)?answers:[answers]});
+  const S=(prompt,answers,hint,explanation,answerFormat='number')=>({prompt,answers:Array.isArray(answers)?answers:[answers],hint,explanation,answerFormat});
+  const F=(label,answers,answerFormat='number')=>({label,answers:Array.isArray(answers)?answers:[answers],answerFormat});
   const proof=(prompt,criteria)=>({prompt,criteria});
   const eqLink={title:'Уравнения и допустимые преобразования',href:'/ege-profil/start/#lesson/eq-rational'};
   const trigLink={title:'Окружность, радианы и точные углы',href:'/ege-profil/circle/index.html'};
@@ -456,7 +442,7 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
     ].map(([k,text,alpha],i)=>{
       const roots=[0,alpha,1,2-alpha,2];
       return {id:'p14-trig-factors-'+(i+1),prompt:`а) Решите уравнение <b>sin 2x = ${text} · sin x</b>. б) Выберите корни из <b>[0; 2π]</b>. Запишите все пять коэффициентов при π в возрастающем порядке.`,
-        steps:[S('Можно ли сразу разделить обе части на sin x? Ответ: да или нет.','нет','Подумайте, какие решения исчезнут при делении на ноль.','Нет: sin x может быть равен нулю.'),S(`Из второго множителя получается cos x = (${text})/2. Чему равен коэффициент α/π для α ∈ [0; π]?`, [f(alpha),alpha],`Найдите на верхней полуокружности угол с косинусом (${text})/2.`,`α = ${f(alpha)}π.`),S('Сколько корней на отрезке даёт sin x = 0?',3,'Проверьте оба конца отрезка и середину.','Это 0, π и 2π.'),S('Сколько всего различных корней на [0; 2π]?',5,`Два корня cos x = (${text})/2 не совпадают с 0, π, 2π.`,'Всего пять корней.')],
+        steps:[S('Можно ли сразу разделить обе части на sin x? Ответ: да или нет.','нет','Подумайте, какие решения исчезнут при делении на ноль.','Нет: sin x может быть равен нулю.','yes-no'),S(`Из второго множителя получается cos x = (${text})/2. Чему равен коэффициент α/π для α ∈ [0; π]?`, [f(alpha),alpha],`Найдите на верхней полуокружности угол с косинусом (${text})/2.`,`α = ${f(alpha)}π.`),S('Сколько корней на отрезке даёт sin x = 0?',3,'Проверьте оба конца отрезка и середину.','Это 0, π и 2π.'),S('Сколько всего различных корней на [0; 2π]?',5,`Два корня cos x = (${text})/2 не совпадают с 0, π, 2π.`,'Всего пять корней.')],
         final:roots.map((x,j)=>F(`Корень ${j+1}: коэффициент при π`,[f(x),x])),
         solution:[`sin x · (2 cos x − (${text})) = 0.`,`Первый множитель: x = πn, n ∈ ℤ. Второй: x = ±${f(alpha)}π + 2πn, n ∈ ℤ.`,`На [0; 2π]: ${roots.map(x=>x===0?'0':f(x)+'π').join('; ')}.`],
         proof:proof('Обоснуйте разложение, два семейства решений и отбор на отрезке.', ['Применена формула двойного угла.','Рассмотрен нулевой sin x; деления с потерей корней нет.','Оба семейства записаны с целым n; на отрезке перечислены пять корней.']),
@@ -472,7 +458,7 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
     ],[eqLink],expCases.map(([base,p,q],i)=>{
       const A=base**p,B=base**q,sum=A+B,prod=A*B,low=Math.min(A,B),high=Math.max(A,B);
       return {id:'p14-exponential-substitution-'+(i+1),prompt:`Решите уравнение <b>(${f(base)})<sup>2x</sup> − (${f(sum)}) · (${f(base)})<sup>x</sup> + ${f(prod)} = 0</b>. Обоснуйте допустимость замены.`,
-        steps:[S(`В замене t = (${f(base)})ˣ какое ограничение на t? Введите >0.`,['>0','t>0','t > 0'],'Степень положительного основания всегда положительна.','t > 0.'),S('Меньший корень квадратного уравнения относительно t.',[f(low),low],`По теореме Виета ищите два числа с суммой ${f(sum)} и произведением ${f(prod)}. Сумма противоположна коэффициенту при t.`,`t₁ = ${f(low)}.`),S('Больший корень квадратного уравнения относительно t.',[f(high),high],'Проверьте произведение найденных чисел.',`t₂ = ${f(high)}.`),S('Меньшее значение x после обратной замены.',p,`Представьте каждый положительный корень t как степень основания ${f(base)}.`,`Меньший корень исходного уравнения: ${p}.`)],
+        steps:[S(`В замене t = (${f(base)})ˣ какое ограничение на t? Введите >0.`,['>0','t>0','t > 0'],'Степень положительного основания всегда положительна.','t > 0.','constraint'),S('Меньший корень квадратного уравнения относительно t.',[f(low),low],`По теореме Виета ищите два числа с суммой ${f(sum)} и произведением ${f(prod)}. Сумма противоположна коэффициенту при t.`,`t₁ = ${f(low)}.`),S('Больший корень квадратного уравнения относительно t.',[f(high),high],'Проверьте произведение найденных чисел.',`t₂ = ${f(high)}.`),S('Меньшее значение x после обратной замены.',p,`Представьте каждый положительный корень t как степень основания ${f(base)}.`,`Меньший корень исходного уравнения: ${p}.`)],
         final:[F('Меньший корень x',p),F('Больший корень x',q)],
         solution:[`t = (${f(base)})ˣ > 0. Получаем t² − (${f(sum)})t + ${f(prod)} = (t − ${f(A)})(t − ${f(B)}) = 0.`,`Оба значения t положительны. (${f(base)})ˣ = (${f(base)})^${p} или (${f(base)})ˣ = (${f(base)})^${q}.`,`Ответ: x = ${p} или x = ${q}.`],
         proof:proof('Запишите замену, её ограничение, решение и обратную подстановку.', ['Указано t > 0.','Найдены оба положительных корня t.','Оба значения x проверены в исходном уравнении.']),
@@ -523,6 +509,7 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
         independentFinal:{
           prompt:`Решите <b>[${wrap(a)}${wrap(b)} / ${wrap(a)}]² = ${k*k}</b>.`,
           label:'Все корни уравнения',
+          answerFormat:'root-set',
           format:'Запишите корни через точку с запятой в любом порядке. Если решений нет, введите ∅.',
           answers:[roots.join('; ')],
           feedback:'Проверьте оба знака при извлечении квадратного корня и подставьте кандидатов в исходное уравнение.',
@@ -555,7 +542,7 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
     ],[intLink,eqLink],expCases.map(([base,p,q],i)=>{
       const A=base**p,B=base**q,sum=A+B,prod=A*B,low=Math.min(A,B),high=Math.max(A,B);
       return {id:'p16-exponential-interval-'+(i+1),prompt:`Решите <b>(${f(base)})<sup>2x</sup> − (${f(sum)}) · (${f(base)})<sup>x</sup> + ${f(prod)} ≤ 0</b>. Ответ запишите как [L; R].`,
-        steps:[S(`Меньший корень многочлена от t = (${f(base)})ˣ.`,[f(low),low],'Разложите квадратный трёхчлен на множители.',`Меньший корень: ${f(low)}.`),S('Больший корень многочлена от t.',[f(high),high],'Произведение двух корней равно свободному члену.',`Больший корень: ${f(high)}.`),S(`Функция (${f(base)})ˣ возрастает или убывает?`,[base>1?'возрастает':'убывает'],'Сравните основание с единицей.',base>1?'Основание больше 1: порядок сохраняется.':'Основание между 0 и 1: порядок меняется.'),S('Левая граница итогового промежутка x.',p,'Перейдите от каждой степени к её показателю и упорядочьте границы.',`L = ${p}.`)],
+        steps:[S(`Меньший корень многочлена от t = (${f(base)})ˣ.`,[f(low),low],'Разложите квадратный трёхчлен на множители.',`Меньший корень: ${f(low)}.`),S('Больший корень многочлена от t.',[f(high),high],'Произведение двух корней равно свободному члену.',`Больший корень: ${f(high)}.`),S(`Функция (${f(base)})ˣ возрастает или убывает?`,[base>1?'возрастает':'убывает'],'Сравните основание с единицей.',base>1?'Основание больше 1: порядок сохраняется.':'Основание между 0 и 1: порядок меняется.','monotonicity'),S('Левая граница итогового промежутка x.',p,'Перейдите от каждой степени к её показателю и упорядочьте границы.',`L = ${p}.`)],
         final:[F('L — левая граница (включена)',p),F('R — правая граница (включена)',q)],
         solution:[`t = (${f(base)})ˣ > 0. (t − ${f(A)})(t − ${f(B)}) ≤ 0, поэтому ${f(low)} ≤ t ≤ ${f(high)}.`,base>1?'Степень возрастает: порядок при переходе к показателям сохраняется.':'Степень убывает: порядок при переходе к показателям меняется.',`Ответ: [${p}; ${q}].`],
         proof:proof('Обоснуйте промежуток для t, обратный переход и включение границ.', ['Указано t > 0.','Правильно выбран промежуток между корнями.','Учтено основание; обе границы включены.']),
@@ -570,8 +557,8 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
     ],[logLink,intLink],[[2,0,2],[0.5,1,4],[3,-2,1],[0.25,-1,3],[5,2,7],[0.5,-4,-1]].map(([base,a,c],i)=>{
       const inc=base>1,boundary=inc?c:a,relation=inc?'>':'<';
       return {id:'p16-fixed-log-'+(i+1),prompt:`Решите <b>log<sub>${f(base)}</sub>[${wrap(a)} / ${wrap(c)}] ≥ 0</b>. Итог — один открытый луч. Введите знак в записи x … B и границу B.`,
-        steps:[S('Нуль числителя, исключённый из ОДЗ логарифма.',a,'Аргумент логарифма не может равняться нулю.',`x = ${a} исключён.`),S('Нуль знаменателя.',c,'Дробь должна быть определена.',`x = ${c} исключён; ОДЗ: x < ${a} или x > ${c}.`),S(`Обозначим аргумент u = (${minus(a)})/(${minus(c)}). Его нужно сравнить с 1 знаком ≥ или ≤?`,[inc?'≥':'≤',inc?'>=':'<='],inc?`Основание ${f(base)} больше 1: логарифм возрастает. Сравните его с нулём — логарифмом единицы.`:`Основание ${f(base)} между 0 и 1: логарифм убывает. Сравните его с нулём — логарифмом единицы.`,inc?'Нужно u ≥ 1.':'Нужно 0 < u ≤ 1.'),S('Граница итогового луча B.',boundary,`Вычтите 1 из аргумента: (${minus(a)})/(${minus(c)}) − 1 = ${c-a}/(${minus(c)}). Исследуйте знак этой дроби и пересеките результат с ОДЗ.`,`Граница B = ${boundary}.`)],
-        final:[F('Знак в ответе x … B',relation),F('Граница B (не включена)',boundary)],
+        steps:[S('Нуль числителя, исключённый из ОДЗ логарифма.',a,'Аргумент логарифма не может равняться нулю.',`x = ${a} исключён.`),S('Нуль знаменателя.',c,'Дробь должна быть определена.',`x = ${c} исключён; ОДЗ: x < ${a} или x > ${c}.`),S(`Обозначим аргумент u = (${minus(a)})/(${minus(c)}). Его нужно сравнить с 1 знаком ≥ или ≤?`,[inc?'≥':'≤',inc?'>=':'<='],inc?`Основание ${f(base)} больше 1: логарифм возрастает. Сравните его с нулём — логарифмом единицы.`:`Основание ${f(base)} между 0 и 1: логарифм убывает. Сравните его с нулём — логарифмом единицы.`,inc?'Нужно u ≥ 1.':'Нужно 0 < u ≤ 1.','relation'),S('Граница итогового луча B.',boundary,`Вычтите 1 из аргумента: (${minus(a)})/(${minus(c)}) − 1 = ${c-a}/(${minus(c)}). Исследуйте знак этой дроби и пересеките результат с ОДЗ.`,`Граница B = ${boundary}.`)],
+        final:[F('Знак в ответе x … B',relation,'relation'),F('Граница B (не включена)',boundary)],
         solution:[`ОДЗ: (${minus(a)})/(${minus(c)}) > 0, то есть x < ${a} или x > ${c}.`,`Пусть u = (${minus(a)})/(${minus(c)}). Тогда u − 1 = ${c-a}/(${minus(c)}). ${inc?'Для u ≥ 1 нужно x > '+c:'Для u ≤ 1 нужно x < '+c+'; после пересечения с ОДЗ остаётся x < '+a}.`,`Ответ: x ${relation} ${boundary}. Равенство u = 1 невозможно, так как ${c-a} ≠ 0.`],
         proof:proof('Запишите ОДЗ, сравнение аргумента с единицей и пересечение множеств.', ['Аргумент положителен; оба запрещённых значения исключены.','Направление сравнения соответствует основанию.','Умножения на знаменатель без учёта его знака нет.']),
         meta:{kind:'fixed-log-inequality',base,a,c,relation,boundary}};
@@ -584,10 +571,10 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
       'В каждом случае пересекаем числовое сравнение с ОДЗ и своим диапазоном основания. Затем объединяем оставшиеся интервалы.'
     ],[logLink],[[0,0.5],[1,1.5],[-2,-5/3],[2,1],[-1,-2],[0,2]].map(([a,b],i)=>{
       const kind=b>a?(b<a+1?'bounded':'empty'):'ray';
-      const answers=kind==='bounded'?[F('Левая граница открытого интервала',[f(b),b]),F('Правая граница открытого интервала',a+1)]:kind==='ray'?[F('Знак в ответе x … B','>'),F('Граница B',a+1)]:[F('Ответ',['нет решений','∅','пустое множество'])];
+      const answers=kind==='bounded'?[F('Левая граница открытого интервала',[f(b),b]),F('Правая граница открытого интервала',a+1)]:kind==='ray'?[F('Знак в ответе x … B','>','relation'),F('Граница B',a+1)]:[F('Ответ',['нет решений','∅','пустое множество'],'solution-set')];
       const answer=kind==='bounded'?`(${f(b)}; ${a+1})`:kind==='ray'?`(${a+1}; +∞)`:'∅';
       return {id:'p16-variable-base-'+(i+1),prompt:`Решите <b>log<sub>${minus(a)}</sub>(${minus(b)}) ≥ 1</b>. Рассмотрите отдельно основание между 0 и 1 и основание больше 1.${kind==='bounded'?' Итог — открытый интервал: введите обе границы.':kind==='ray'?' Итог — луч: введите знак и границу.':' Если решений нет, введите «нет решений».'}`,
-        steps:[S('Основание равно 1 при каком x?',a+1,`Приравняйте основание к единице: ${minus(a)} = 1.`,`x = ${a+1} запрещено.`),S('Нуль аргумента логарифма.',[f(b),b],'Аргумент должен быть строго положительным.',`Нужно x > ${f(b)}.`),S(`В случае 0 < ${minus(a)} < 1 какой знак нужен между аргументом (${minus(b)}) и основанием (${minus(a)})?`,['≤','<='],`Логарифм с основанием между 0 и 1 убывает. Представьте 1 как log с основанием (${minus(a)}) от самого основания.`,`Нужно ${minus(b)} ≤ ${minus(a)}. Вычитаем x из обеих частей: ${f(-b)} ≤ ${-a}; это ${b>=a?'верно':'неверно, поэтому в этом случае решений нет'}.`),S('Сколько непустых интервалов останется в ответе?',kind==='empty'?0:1,'Проверьте, не противоречат ли друг другу ограничения основания и аргумента.',`Ответ: ${answer}.`)],
+        steps:[S('Основание равно 1 при каком x?',a+1,`Приравняйте основание к единице: ${minus(a)} = 1.`,`x = ${a+1} запрещено.`),S('Нуль аргумента логарифма.',[f(b),b],'Аргумент должен быть строго положительным.',`Нужно x > ${f(b)}.`),S(`В случае 0 < ${minus(a)} < 1 какой знак нужен между аргументом (${minus(b)}) и основанием (${minus(a)})?`,['≤','<='],`Логарифм с основанием между 0 и 1 убывает. Представьте 1 как log с основанием (${minus(a)}) от самого основания.`,`Нужно ${minus(b)} ≤ ${minus(a)}. Вычитаем x из обеих частей: ${f(-b)} ≤ ${-a}; это ${b>=a?'верно':'неверно, поэтому в этом случае решений нет'}.`,'relation'),S('Сколько непустых интервалов останется в ответе?',kind==='empty'?0:1,'Проверьте, не противоречат ли друг другу ограничения основания и аргумента.',`Ответ: ${answer}.`)],
         final:answers,
         solution:[`ОДЗ: x > ${a}, x ≠ ${a+1}, x > ${f(b)}.`,`При ${a} < x < ${a+1}: требуется ${minus(b)} ≤ ${minus(a)}, то есть ${f(-b)} ≤ ${-a} — ${b>=a?'верно':'неверно'}. При x > ${a+1}: требуется ${minus(b)} ≥ ${minus(a)}, то есть ${f(-b)} ≥ ${-a} — ${b<=a?'верно':'неверно'}.`,`Пересекаем подходящий случай основания с условием положительности аргумента x > ${f(b)}. Ответ: ${answer}.`],
         proof:proof('Запишите оба случая основания, включая тот, где решений нет.', ['Все три условия существования логарифма сохранены.','В двух случаях использованы разные направления сравнения.','Пустые пересечения отброшены; точка основания 1 не включена.']),
@@ -602,8 +589,8 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
     ],[intLink,eqLink],rootCases.map(([b,d],i)=>{
       const a=d*d-b-d,r=b+d,bad=b+1-d,strict=i%2===1,sign=strict?'<':'≤';
       return {id:'p16-radical-inequality-'+(i+1),prompt:`Решите <b>√(${plus(a)}) ${sign} ${minus(b)}</b>. Запишите итоговый луч в виде x … B.`,
-        steps:[S('Граница ограничения на правую часть x … k. Найдите k.',b,'Правая часть должна быть неотрицательной, а в строгом случае положительной.',`Нужно x ${strict?'>':'≥'} ${b}.`),S('Меньший корень граничного квадратного уравнения.',bad,'Приравняйте квадрат правой части выражению под корнем.',`Меньший корень: ${bad}.`),S('Больший корень граничного уравнения.',r,'Найдите второй корень.',`Больший корень: ${r}.`),S('Входит ли больший корень в ответ? Да или нет.',strict?'нет':'да','Подставьте его в исходное неравенство: там получается равенство.',strict?'Нет, неравенство строгое.':'Да, равенство допускается.')],
-        final:[F('Знак в ответе x … B',strict?'>':['≥','>=']),F('Граница B',r)],
+        steps:[S('Граница ограничения на правую часть x … k. Найдите k.',b,'Правая часть должна быть неотрицательной, а в строгом случае положительной.',`Нужно x ${strict?'>':'≥'} ${b}.`),S('Меньший корень граничного квадратного уравнения.',bad,'Приравняйте квадрат правой части выражению под корнем.',`Меньший корень: ${bad}.`),S('Больший корень граничного уравнения.',r,'Найдите второй корень.',`Больший корень: ${r}.`),S('Входит ли больший корень в ответ? Да или нет.',strict?'нет':'да','Подставьте его в исходное неравенство: там получается равенство.',strict?'Нет, неравенство строгое.':'Да, равенство допускается.','yes-no')],
+        final:[F('Знак в ответе x … B',strict?'>':['≥','>='],'relation'),F('Граница B',r)],
         solution:[`Нужно ${plus(a)} ≥ 0 и x ${strict?'>':'≥'} ${b}. На этом множестве после возведения в квадрат: (${minus(b)})² ${strict?'>':'≥'} ${plus(a)}.`,`Квадратный трёхчлен имеет корни ${bad} и ${r}; неравенство выполняется на внешних лучах. Ограничение x ${strict?'>':'≥'} ${b} исключает левый луч.`,`Ответ: x ${strict?'>':'≥'} ${r}. Для этого луча выражение под корнем неотрицательно.`],
         proof:proof('Покажите, почему после квадратного неравенства остался один луч.', ['Условия на обе части записаны до возведения в квадрат.','Выбраны внешние промежутки квадратного трёхчлена.','Включение границы соответствует строгому или нестрогому знаку.']),
         meta:{kind:'radical-inequality',a,b,d,r,bad,strict}};
@@ -621,11 +608,12 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
       else if(a===b)answer=right?`(${b}; +∞)`:`(−∞; ${b})`;
       else answer=right?`[${b}; ${a}) ∪ (${a}; +∞)`:`(−∞; ${a}) ∪ (${a}; ${b}]`;
       return {id:'p16-cancelled-hole-'+(i+1),prompt:`Решите <b>${wrap(a)}${wrap(b)} / ${wrap(a)} ${sign} 0</b>. Введите знак и границу луча <em>после сокращения</em>, затем точку, которую надо удалить из этого луча (или «нет»). Полный ответ промежутками запишите в обосновании.`,
-        steps:[S('Точка, запрещённая исходным знаменателем.',a,'Запишите ОДЗ до сокращения.',`x ≠ ${a}.`),S('Граница луча после сокращения.',b,`На ОДЗ выражение равно ${minus(b)}.`,`После сокращения: x ${sign} ${b}.`),S('Запрещённая точка находится внутри, на границе или вне луча?',position,`Сравните запрещённую точку ${a} с границей луча ${b}, учитывая направление x ${sign} ${b}.`,`Точка ${a} находится ${position} луча.`),S('Сколько промежутков в окончательном ответе?',inside&&a!==b?2:1,'Внутренняя дырка разделяет луч; граничная меняет скобку.',`Ответ: ${answer}.`)],
-        final:[F('Знак луча после сокращения', [sign,right?'>=':'<=']),F('Граница луча после сокращения',b),F('Удаляемая из луча точка, либо «нет»',inside?a:'нет')],
+        steps:[S('Точка, запрещённая исходным знаменателем.',a,'Запишите ОДЗ до сокращения.',`x ≠ ${a}.`),S('Граница луча после сокращения.',b,`На ОДЗ выражение равно ${minus(b)}.`,`После сокращения: x ${sign} ${b}.`),S('Запрещённая точка находится внутри, на границе или вне луча?',position,`Сравните запрещённую точку ${a} с границей луча ${b}, учитывая направление x ${sign} ${b}.`,`Точка ${a} находится ${position} луча.`,'position'),S('Сколько промежутков в окончательном ответе?',inside&&a!==b?2:1,'Внутренняя дырка разделяет луч; граничная меняет скобку.',`Ответ: ${answer}.`)],
+        final:[F('Знак луча после сокращения', [sign,right?'>=':'<='],'relation'),F('Граница луча после сокращения',b),F('Удаляемая из луча точка, либо «нет»',inside?a:'нет','number-or-none')],
         independentFinal:{
           prompt:`Решите <b>${wrap(a)}${wrap(b)} / ${wrap(a)} ${sign} 0</b>.`,
           label:'Множество решений',
+          answerFormat:'interval-set',
           format:'Запишите ответ промежутками. Для объединения используйте ∪ или «или», для бесконечности — ∞. Пример записи: (−∞; −3] ∪ (4; +∞).',
           answers:[answer],
           feedback:'Проверьте, какие точки исходное неравенство исключает и в каких граничных точках оно выполняется.'
@@ -649,8 +637,8 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
   const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
   function f(a,b=1){const g=gcd(a,b);return b/g===1?String(a/g):(a/g)+'/'+(b/g);}
   function radical(n,d=1){let a=1;for(let k=2;k*k<=n;k++)while(n%(k*k)===0){a*=k;n/=k*k;}const g=gcd(a,d);a/=g;d/=g;return n===1?f(a,d):(a===1?'':a+'*')+'sqrt('+n+')'+(d===1?'':'/'+d);}
-  const step=(prompt,answer,hint,explanation)=>({prompt,answers:[answer],hint,explanation});
-  const field=(label,answer)=>({label,answers:[answer]});
+  const step=(prompt,answer,hint,explanation,answerFormat='number')=>({prompt,answers:[answer],hint,explanation,answerFormat});
+  const field=(label,answer,answerFormat='number')=>({label,answers:[answer],answerFormat});
   const oldStereo=[{title:'Атанасян 10–11: теория и вращаемые модели',href:'/ege-profil/atanasyan-10-11/index.html'},{title:'Стереометрия первой части',href:'/ege-profil/start/#calm/3'},{title:'Прежняя подборка стереометрии (№14, 2026)',href:'/ege-profil/trainers/stereo-t14.html'}];
   const oldPlane=[{title:'Геометрия: восстановить основу',href:'/ege-profil/start/#calm/1'},{title:'Прежняя подборка с доказательствами (№17, 2026)',href:'/ege-profil/trainers/planimetry-t17.html'}];
   function add(id,exam,title,goal,theory,tasks){lessons.push({id,exam,title,goal,theory,prerequisites:exam===15?oldStereo:oldPlane,tasks});}
@@ -840,8 +828,9 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
 // historical filenames. Numeric checks do not certify a written proof.
 const lessons=[];
 const N=n=>String(n).replace(/-/g,'−');
-const step=(prompt,answer,hint,explanation)=>({prompt,answers:Array.isArray(answer)?answer:[answer],hint,explanation});
-const field=(label,...answers)=>({label,answers});
+const step=(prompt,answer,hint,explanation,answerFormat='number')=>({prompt,answers:Array.isArray(answer)?answer:[answer],hint,explanation,answerFormat});
+const typedField=(answerFormat,label,...answers)=>({label,answers,answerFormat});
+const field=(label,...answers)=>typedField('number',label,...answers);
 const proof=(prompt,criteria)=>({prompt,criteria});
 const prereq=(title,href)=>({title,href});
 const links={analysis:prereq('Производная и экстремум: вспомнить основу','/ege-profil/start/#lesson/calc-extreme'),functions:prereq('Исследовать функции и графики','/ege-profil/trainers/functions-t1112.html'),parameters:prereq('Параметры: прежние модели и дополнительные задачи','/ege-profil/trainers/parameters-t18.html'),numbers:prereq('Числа: прежний практикум и разборы','/ege-profil/trainers/numbers-t19.html'),equations:prereq('Простые уравнения','/ege-profil/start/#exam/7')};
@@ -912,13 +901,13 @@ add('param-positive-roots',19,'Дискриминант и положитель�
 'Два различных действительных корня требуют D &gt; 0. Условие D ≥ 0 допускает совпавшие корни.',
 'Два действительных корня положительны тогда и только тогда, когда их сумма и произведение положительны.',
 'Все найденные ограничения на параметр пересекаются, а не объединяются.'
-],[links.parameters],i=>{const m=[2,3,4,5,6,7][i],b=m*(m-1);return {prompt:`При каких a уравнение x² − 2ax + a + ${b} = 0 имеет два различных положительных корня? Запишите все ограничения и их пересечение.`,meta:{family:'positive-roots',m,b},steps:[step('Чему равна нижняя граница a из положительности суммы корней 2a?',0,'Сумма двух положительных чисел положительна.',`Требуется a > 0.`),step(`Дискриминант D = 4(a² − a − ${b}). Найдите больший корень выражения a² − a − ${b}.`,m,`Подберите числа с произведением −${b} и суммой 1.`,`a² − a − ${b} = (a − ${m})(a + ${m-1}).`),step('Какова окончательная строгая нижняя граница a?',m,'Пересеките D > 0, a > 0 и a + b > 0.',`Все три условия выполняются при a > ${m}.`)],final:[field('Строгая нижняя граница a',m),field('Полное множество a',`a>${m}`,`а>${m}`,`${m}<a`,`${m}<а`,`(${m};+∞)`,`(${m};∞)`,`a > ${m}`)],solution:[`D = 4(a − ${m})(a + ${m-1}); D > 0 при a < ${1-m} или a > ${m}.`,`По Виету x₁ + x₂ = 2a > 0 и x₁x₂ = a + ${b} > 0. При a > 0 второе условие выполнено.`,`Пересечение даёт a > ${m}. При a = ${m} корни совпадают, поэтому граница исключена.`],proof:proof('Докажите, что найдены именно два различных положительных корня, а не только действительные.',['Потребовано D > 0.','Записаны сумма и произведение корней.','Ограничения пересечены.','Равенство на границе исключено с объяснением.'])};});
+],[links.parameters],i=>{const m=[2,3,4,5,6,7][i],b=m*(m-1);return {prompt:`При каких a уравнение x² − 2ax + a + ${b} = 0 имеет два различных положительных корня? Запишите все ограничения и их пересечение.`,meta:{family:'positive-roots',m,b},steps:[step('Чему равна нижняя граница a из положительности суммы корней 2a?',0,'Сумма двух положительных чисел положительна.',`Требуется a > 0.`),step(`Дискриминант D = 4(a² − a − ${b}). Найдите больший корень выражения a² − a − ${b}.`,m,`Подберите числа с произведением −${b} и суммой 1.`,`a² − a − ${b} = (a − ${m})(a + ${m-1}).`),step('Какова окончательная строгая нижняя граница a?',m,'Пересеките D > 0, a > 0 и a + b > 0.',`Все три условия выполняются при a > ${m}.`)],final:[field('Строгая нижняя граница a',m),typedField('parameter-set','Полное множество a',`a>${m}`,`а>${m}`,`${m}<a`,`${m}<а`,`(${m};+∞)`,`(${m};∞)`,`a > ${m}`)],solution:[`D = 4(a − ${m})(a + ${m-1}); D > 0 при a < ${1-m} или a > ${m}.`,`По Виету x₁ + x₂ = 2a > 0 и x₁x₂ = a + ${b} > 0. При a > 0 второе условие выполнено.`,`Пересечение даёт a > ${m}. При a = ${m} корни совпадают, поэтому граница исключена.`],proof:proof('Докажите, что найдены именно два различных положительных корня, а не только действительные.',['Потребовано D > 0.','Записаны сумма и произведение корней.','Ограничения пересечены.','Равенство на границе исключено с объяснением.'])};});
 
 add('param-modules',19,'Модули: полочка и число решений','Не потерять бесконечное множество корней на горизонтальном участке.',[
 'Выражение |x − h| + |x + h| — сумма расстояний от x до двух точек.',
 'На отрезке [−h; h] эта сумма постоянна и равна 2h. Вне отрезка она строго растёт при удалении от него.',
 'Горизонтальный участок графика может дать бесконечно много решений при одном значении параметра.'
-],[links.parameters,links.functions],i=>{const h=[2,3,4,5,6,7][i],c=2*h;return {prompt:`Найдите все a, при которых |x − ${h}| + |x + ${h}| = a имеет ровно два действительных решения. Отдельно укажите число решений при граничном значении параметра.`,diagram:modulePicture(h),meta:{family:'modules',h},steps:[step(`Чему равна сумма модулей при −${h} ≤ x ≤ ${h}?`,c,'Между двумя точками сумма расстояний равна расстоянию между ними.',`На всём отрезке значение равно ${c}.`),step(`Сколько решений при a = ${c}?`,['бесконечно много','бесконечность','∞'],'Подходит каждый x из целого отрезка.',`Все x ∈ [−${h}; ${h}] являются корнями.`),step(`Сколько решений при a = ${c+2}?`,2,'Горизонтальная прямая выше полочки пересекает две внешние ветви.',`Получается по одному корню с каждой стороны.`)],final:[field('Множество a для ровно двух решений',`a>${c}`,`а>${c}`,`${c}<a`,`${c}<а`,`(${c};+∞)`,`(${c};∞)`),field('Число решений на границе', 'бесконечно много','бесконечность','∞')],solution:[`При x < −${h} левая часть равна −2x; при −${h} ≤ x ≤ ${h} равна ${c}; при x > ${h} равна 2x.`,`Если a < ${c}, корней нет. Если a = ${c}, корнями является весь отрезок [−${h}; ${h}].`,`При a > ${c} корни x = −a/2 и x = a/2 лежат на разных внешних ветвях. Ответ: a > ${c}.`],proof:proof('Обоснуйте все три случая по a и запишите найденные корни в случае двух решений.',['Модули раскрыты на трёх промежутках.','Полочка рассмотрена отдельно.','Для двух корней проверена принадлежность ветвям.','Граница не включена в ответ.'])};});
+],[links.parameters,links.functions],i=>{const h=[2,3,4,5,6,7][i],c=2*h;return {prompt:`Найдите все a, при которых |x − ${h}| + |x + ${h}| = a имеет ровно два действительных решения. Отдельно укажите число решений при граничном значении параметра.`,diagram:modulePicture(h),meta:{family:'modules',h},steps:[step(`Чему равна сумма модулей при −${h} ≤ x ≤ ${h}?`,c,'Между двумя точками сумма расстояний равна расстоянию между ними.',`На всём отрезке значение равно ${c}.`),step(`Сколько решений при a = ${c}?`,['бесконечно много','бесконечность','∞'],'Подходит каждый x из целого отрезка.',`Все x ∈ [−${h}; ${h}] являются корнями.`,'number-or-infinity'),step(`Сколько решений при a = ${c+2}?`,2,'Горизонтальная прямая выше полочки пересекает две внешние ветви.',`Получается по одному корню с каждой стороны.`,'number-or-infinity')],final:[typedField('parameter-set','Множество a для ровно двух решений',`a>${c}`,`а>${c}`,`${c}<a`,`${c}<а`,`(${c};+∞)`,`(${c};∞)`),typedField('number-or-infinity','Число решений на границе', 'бесконечно много','бесконечность','∞')],solution:[`При x < −${h} левая часть равна −2x; при −${h} ≤ x ≤ ${h} равна ${c}; при x > ${h} равна 2x.`,`Если a < ${c}, корней нет. Если a = ${c}, корнями является весь отрезок [−${h}; ${h}].`,`При a > ${c} корни x = −a/2 и x = a/2 лежат на разных внешних ветвях. Ответ: a > ${c}.`],proof:proof('Обоснуйте все три случая по a и запишите найденные корни в случае двух решений.',['Модули раскрыты на трёх промежутках.','Полочка рассмотрена отдельно.','Для двух корней проверена принадлежность ветвям.','Граница не включена в ответ.'])};});
 
 add('param-hole',19,'Сокращение дроби и потерянное пересечение','Сохранить исключённую точку после алгебраического сокращения.',[
 'Сокращать общий множитель можно только с сохранением исходного запрета знаменателя.',
@@ -999,7 +988,7 @@ function create(storage,options={}){
  }
  function structured(v){return JSON.parse(JSON.stringify(v));}
  function patch(id,change){
-  const run=async()=>{const action=()=>{const v=read(id);if(change(v)===false)return read(id);v.updatedAt=Date.now();if(!valid(v,id))throw Error('Invalid work update');memory.set(id,v);if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}return structured(v);};
+  const run=async()=>{const action=()=>{const v=read(id);change(v);v.updatedAt=Date.now();if(!valid(v,id))throw Error('Invalid work update');memory.set(id,v);if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}return structured(v);};
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }
@@ -1055,9 +1044,7 @@ function compare(a,b){
  const difference=a.numerator*b.denominator-b.numerator*a.denominator;
  return difference<0n?-1:difference>0n?1:0;
 }
-function openAnswer(field,input){
- const rootList=field.excluded!==undefined;
- function normalize(value){
+function normalizeAnswerSet(value,rootList){
   const source=String(value).trim().toLowerCase().replace(/[−–]/g,'-').replace(/^x\s*∈\s*/,'');
   if(/^(?:∅|нет(?: корней| решений)?|\{\s*\})$/.test(source))return [];
   if(!source)return null;
@@ -1091,7 +1078,10 @@ function openAnswer(field,input){
    if(end===0)last.right ||= span.right;
   }
   return joined;
- }
+}
+function openAnswer(field,input){
+ const rootList=field.excluded!==undefined;
+ const normalize=value=>normalizeAnswerSet(value,rootList);
  const actual=normalize(input);
  if(!actual)return {recognized:false,correct:false};
  const correct=field.answers.some(answer=>{
@@ -1107,6 +1097,60 @@ function openAnswer(field,input){
   :field.feedback;
  return {recognized:true,correct,hint};
 }
+const answerFormats={
+ number:'Введите число или выражение с конечным действительным значением: 3/4, π/6, sqrt(2). Деление на ноль и корень из отрицательного числа недопустимы.',
+ 'yes-no':'Введите «да» или «нет».',
+ constraint:'Запишите ограничение на t: знак сравнения и число, например t < 1.',
+ monotonicity:'Введите «возрастает», «убывает» или другой вид монотонности: «не возрастает», «не убывает», «постоянна».',
+ relation:'Введите знак сравнения: >, <, ≥, ≤, = или ≠. Можно использовать >=, <=, !=.',
+ position:'Введите «внутри», «на границе» или «вне».',
+ 'number-or-none':'Введите конечное действительное число или «нет».',
+ 'number-or-infinity':'Введите конечное число либо «бесконечно много» или ∞.',
+ 'parameter-set':'Запишите множество значений a: неравенство, промежуток, отдельные точки или ∅. В промежутках разделяйте границы знаком ; и используйте целые числа, десятичные числа или дроби.',
+ 'solution-set':'Запишите множество решений: неравенство, промежуток, отдельные точки или «нет решений». В промежутках разделяйте границы знаком ; и используйте целые числа, десятичные числа или дроби.',
+ 'root-set':'Перечислите корни через ; или введите ∅. Используйте целые числа, десятичные числа или дроби.',
+ 'interval-set':'Запишите промежутки с границами через ; и объединением ∪. Используйте целые числа, десятичные числа, дроби и ∞; отдельную точку заключите в {}.'
+};
+function recognize(field,input,checker){
+ // Format is authored for the field, never inferred from its correct answers.
+ // A syntactically valid but mathematically wrong choice remains an attempt.
+ const type=field.answerFormat||'number';
+ const source=String(input??'').trim().toLowerCase().replace(/[−–]/g,'-');
+ const compact=source.replace(/\s+/g,'').replace(/≥/g,'>=').replace(/≤/g,'<=').replace(/≠/g,'!=');
+ const finite=value=>!!value&&Number.isFinite(checker?.number(value));
+ const relation=/^(?:[<>]=?|!?=)$/;
+ const empty=/^(?:∅|нет(?:корней|решений)?|пустоемножество|\{\})$/;
+ const infinity=/^(?:\+?∞|бесконечномного|бесконечность|infinity|\\infty)$/;
+ function inequality(variable,implicit=false){
+  const text=variable==='a'?compact.replace(/а/g,'a'):compact;
+  const value=implicit&&/^[<>=!]/.test(text)?variable+text:text;
+  const parts=value.split(/(<=|>=|!=|[<>=])/);
+  if(parts.length!==3&&parts.length!==5)return false;
+  if(parts.filter((part,i)=>i%2===0&&part===variable).length!==1)return false;
+  return parts.every((part,i)=>i%2?relation.test(part):part===variable||finite(part));
+ }
+ function set(variable){
+  const value=source.replace(new RegExp('^['+(variable==='a'?'aа':'x')+']\\s*∈\\s*'),'');
+  return empty.test(compact)||/^(?:r|ℝ)$/.test(compact)||inequality(variable)||
+   normalizeAnswerSet(value,false)!==null||normalizeAnswerSet(value,true)!==null;
+ }
+ let recognized=false;
+ if(source)switch(type){
+  case 'number':recognized=finite(source);break;
+  case 'yes-no':recognized=/^(?:да|нет)$/.test(compact);break;
+  case 'constraint':recognized=inequality('t',true);break;
+  case 'monotonicity':recognized=/^(?:возрастает|убывает|невозрастает|неубывает|постоянна)$/.test(compact);break;
+  case 'relation':recognized=relation.test(compact);break;
+  case 'position':recognized=/^(?:внутри|награнице|вне)$/.test(compact);break;
+  case 'number-or-none':recognized=compact==='нет'||finite(source);break;
+  case 'number-or-infinity':recognized=infinity.test(compact)||finite(source);break;
+  case 'parameter-set':recognized=set('a');break;
+  case 'solution-set':recognized=set('x');break;
+  case 'root-set':recognized=normalizeAnswerSet(source,true)!==null;break;
+  case 'interval-set':recognized=normalizeAnswerSet(source,false)!==null;break;
+ }
+ return {recognized,format:field.format||answerFormats[type]||'Проверьте формат, указанный у поля.'};
+}
 function summary(storage,lessons){
  const result={total:0,completed:0,independent:0,assisted:0,proofPending:0,started:0,unavailable:0,sections:{}};
  for(const lesson of lessons||[]){const section=result.sections[lesson.exam]||(result.sections[lesson.exam]={total:0,completed:0,independent:0,assisted:0,proofPending:0,started:0});
@@ -1114,7 +1158,7 @@ function summary(storage,lessons){
  }
  return result;
 }
-const api={create,valid,matches,openAnswer,canonical,summary,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
+const api={create,valid,matches,openAnswer,recognize,canonical,summary,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
 
 </script>
@@ -2600,104 +2644,6 @@ const api={create,valid,matches,openAnswer,canonical,summary,PREFIX};root.Profil
 })(globalThis);
 
 </script>
-<script data-inline-source="/ege-profil/part-two/parameter-proof.js">
-(function (root) {
- 'use strict';
-
- // Keep the order of the existing proofChecks for each family. The examples
- // use parameters outside the authored practice set.
- const reviews = {
-  linear: {
-   skill: 'divide',
-   criteria: [
-    ['Особый случай', 'Я отдельно проверил, сколько положительных корней при нулевом коэффициенте перед x.', 'Подставьте особое значение a в исходное уравнение. Сравните случаи 0·x = 0 и 0·x = b при b ≠ 0.'],
-    ['Обычный случай', 'Я выразил единственный корень через a при ненулевом коэффициенте.', 'Разложите правую часть на множители и укажите, при каком условии можно разделить обе части.'],
-    ['Граница', 'Я нашёл, когда корень положителен, и проверил случай x = 0.', 'Подставьте граничное значение a в формулу для x. Сравните результат со строгим условием x > 0.'],
-    ['Полный ответ', 'Я исключил особое значение и объяснил, почему каждое оставшееся a даёт ровно один положительный корень.', 'Проверьте, что на итоговых интервалах коэффициент отличен от нуля, а найденный корень положителен.']
-   ],
-   example: {
-    task: '(a − 1)x = a² − 1. Когда есть ровно один положительный корень?',
-    incomplete: 'После деления получаю x = a + 1. Значит, a > −1.',
-    revised: 'При a = 1 уравнение 0·x = 0 даёт бесконечно много положительных корней. При a ≠ 1 корень единственный, x = a + 1. Он положителен ровно при a > −1, а на границе равен нулю. Ответ (−1; 1) ∪ (1; +∞).'
-   }
-  },
-  'positive-roots': {
-   skill: 'root-position',
-   criteria: [
-    ['Различность', 'Я обосновал условие D > 0 и нашёл все a, при которых оно выполняется.', 'Решите строгое неравенство для дискриминанта. Учтите обе области знака квадратного трёхчлена.'],
-    ['Знаки корней', 'Я проверил положительность суммы и произведения корней.', 'Выпишите оба выражения по Виету. Положительное произведение даёт одинаковые знаки, а знак суммы позволяет выбрать положительные корни.'],
-    ['Полный ответ', 'Я пересёк ограничения и объяснил, почему их достаточно для двух различных положительных корней.', 'Проверьте, что при каждом a из ответа дискриминант, сумма и произведение корней положительны.'],
-    ['Граница', 'Я объяснил, что происходит с корнями на границе итогового множества.', 'Подставьте граничное значение a в дискриминант. Сколько различных корней получается?']
-   ],
-   example: {
-    task: 'x² − 2ax + a = 0. Когда есть два различных положительных корня?',
-    incomplete: 'D = 4a(a − 1) > 0 при a < 0 или a > 1. Это и есть ответ.',
-    revised: 'При D > 0 корни действительны и различны. По Виету их сумма 2a и произведение a должны быть положительны. Вместе с D > 0 это даёт a > 1. При каждом таком a корни одного знака и их сумма положительна. При a = 1 корни совпадают.'
-   }
-  },
-  modules: {
-   skill: 'plateau',
-   criteria: [
-    ['Вся область', 'Я объяснил поведение суммы модулей на среднем отрезке и на обеих внешних ветвях.', 'Разбейте числовую прямую в точках, где выражения под модулями равны нулю. На каждой части раскройте модули.'],
-    ['Граничный уровень', 'Я указал все x, которые подходят на уровне горизонтального участка.', 'Если горизонталь совпадает с участком графика, какие точки всего участка удовлетворяют уравнению?'],
-    ['Достаточность', 'Я нашёл два корня выше горизонтального участка и проверил, что каждый лежит на своей ветви.', 'Подставьте найденные x в ограничения для левой и правой ветвей. На каждой ветви должно быть ровно одно пересечение.'],
-    ['Необходимость', 'Я посчитал корни на границе и ниже неё и объяснил, какие уровни надо исключить из ответа.', 'Сравните высоту горизонтали с наименьшим значением суммы модулей. Посчитайте пересечения ниже этой высоты и на ней.']
-   ],
-   example: {
-    task: '|x − 1| + |x + 1| = a. Когда есть ровно два решения?',
-    incomplete: 'При a ≥ 2 подходят x = −a/2 и x = a/2. Значит, решений два.',
-    revised: 'При |x| ≤ 1 сумма равна 2, а при |x| > 1 она равна 2|x|. Ниже уровня 2 решений нет. При a = 2 подходит весь отрезок [−1; 1]. При a > 2 корни −a/2 и a/2 лежат на разных внешних ветвях, по одному на каждой. Ответ a > 2.'
-   }
-  },
-  hole: {
-   skill: 'hole',
-   criteria: [
-    ['ОДЗ', 'Я записал запрет исходного знаменателя до сокращения дроби.', 'Приравняйте исходный знаменатель к нулю и сохраните запрет при всех дальнейших преобразованиях.'],
-    ['Единственный кандидат', 'Я выразил x через a и объяснил, почему других кандидатов нет.', 'Решите линейное уравнение после сокращения. Проверьте, может ли оно дать больше одного x при фиксированном a.'],
-    ['Отбор', 'Я проверил одновременно положительность кандидата и ОДЗ и объяснил, почему этого достаточно.', 'Проверьте, что найденный x положителен и допустим в исходной дроби. На ОДЗ сокращение равносильно.'],
-    ['Особые значения', 'Я отдельно объяснил, при каком a кандидат равен нулю, а при каком попадает в выколотую точку.', 'Сначала приравняйте формулу для x к нулю, затем к запрещённому x. Проверьте, отражены ли оба исключения в множестве a.']
-   ],
-   example: {
-    task: '(x² − 1)/(x − 1) = a. Когда есть ровно один положительный корень?',
-    incomplete: 'После сокращения x = a − 1. Для положительного корня достаточно a > 1.',
-    revised: 'Исходная дробь определена при x ≠ 1. После сокращения единственный кандидат x = a − 1. При a = 1 он нулевой, а при a = 2 запрещён знаменателем. При любом a > 1, a ≠ 2 кандидат положителен и удовлетворяет исходному уравнению. Ответ (1; 2) ∪ (2; +∞).'
-   }
-  },
-  tangent: {
-   skill: 'tangent',
-   criteria: [
-    ['Окружность', 'Я указал центр и радиус окружности из уравнения системы.', 'Приведите уравнение окружности к виду (x − x₀)² + (y − y₀)² = R².'],
-    ['Расстояние', 'Я точно выразил расстояние от центра до прямой через a.', 'Перенесите a в левую часть уравнения прямой. В формуле расстояния проверьте модуль числителя.'],
-    ['Число точек', 'Я объяснил, почему ровно одна точка получается при равенстве расстояния и радиуса.', 'Сколько точек пересечения, если расстояние меньше радиуса, равно ему или больше него?'],
-    ['Оба знака', 'Я нашёл оба значения a и проверил касание для каждого из них.', 'Вернитесь от равенства для модуля или квадрата к исходному параметру. Проверьте оба знака в условии касания.']
-   ],
-   example: {
-    task: 'x² + y² = 2, x + y = a. Когда система имеет ровно одно решение?',
-    incomplete: 'Из условия касания a² = 4 получаю a = 2.',
-    revised: 'Расстояние от центра до прямой равно |a|/√2. При расстоянии меньше √2 получаются две точки, при большем точек нет. Ровно одна точка получается при |a|/√2 = √2, то есть при a = 2 и a = −2. Обе прямые находятся от центра на расстоянии радиуса.'
-   }
-  },
-  system: {
-   skill: 'restore',
-   criteria: [
-    ['Ограничение замены', 'Я указал, какие t допустимы после замены t = |x|.', 'Выпишите область значений |x| и отбросьте корни нового уравнения вне этой области.'],
-    ['Возврат к системе', 'Я объяснил, сколько точек даёт t = 0 и сколько даёт каждое t > 0.', 'Для каждого случая решите |x| = t. Затем восстановите y и посчитайте различные пары (x; y).'],
-    ['Все кандидаты', 'Я объяснил, почему при трёх точках обязательно есть t = 0, и проверил оба значения a, которые он даёт.', 'Положительные t дают точки парами. Подставьте t = 0, найдите оба возможных a, затем посчитайте точки для каждого.'],
-    ['Достижимость максимума', 'Я доказал верхнюю границу для числа точек и привёл a, на котором она достигается.', 'Оцените число положительных корней квадратного уравнения по t. Подберите a, при котором дискриминант, сумма и произведение этих корней положительны.']
-   ],
-   example: {
-    task: 'x² + y² = 4, y = |x| + a. Когда есть три решения и каков максимум?',
-    incomplete: 'При a = −2 получаю три точки. Уравнение квадратное, значит максимум четыре.',
-    revised: 'При t = |x| имеем 2t² + 2at + a² − 4 = 0, t ≥ 0. Положительный t даёт две точки, нуль даёт одну. Для трёх точек нужен t = 0, значит a = ±2. При a = 2 остаётся лишь t = 0, при a = −2 подходят 0 и 2. Больше двух положительных t быть не может. При a = −12/5 выполнены a² < 8, −a > 0 и a² > 4. Поэтому дискриминант, сумма и произведение корней положительны, а система имеет четыре решения.'
-   }
-  }
- };
-
- root.ProfileParameterProofReviews = reviews;
- if (typeof module !== 'undefined') module.exports = reviews;
-})(globalThis);
-
-</script>
 <script data-inline-source="/ege-profil/part-two/app.js">
 (function(root){
 'use strict';
@@ -2713,10 +2659,6 @@ const taskURL=(id,mode)=>'#task/'+encodeURIComponent(id)+'/'+mode;
 const modeFor=index=>index>=3?'independent':'guided';
 const modeLabels={guided:'С опорой по шагам',plan:'С коротким планом',independent:'Самостоятельно'};
 const check=(answers,value)=>API.matches(answers,value,root.ProfileCheck);
-const proofReviewFor=(lesson,task)=>lesson.exam===19?root.ProfileParameterProofReviews?.[task.meta?.family]:null;
-const hasFinalAttempt=r=>r.completed||r.attempts.some(attempt=>attempt.kind==='final');
-// Guided steps and the general answer hint already use other values in hints.
-const proofHintStart=80,proofExampleHint=84,proofSkillHint=85;
 const parameterGraphs={
  'param-modules':{
   preset:'plateau',title:'Горизонтальный участок',
@@ -2763,7 +2705,7 @@ function mountSkills(number,lesson){
  });
 }
 function correctedWithoutHelp(record){return record.independent&&record.attempts.find(a=>a.kind==='final')?.correct===false;}
-function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
+function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.drafts.steps.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
 function badges(s){return `<div class="stats"><span class="tag">${s.total} условий</span><span class="tag ok">Самостоятельные ответы: ${s.independent}</span><span class="tag help">С опорой: ${s.helped}</span></div>`;}
 function resume(items=lessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
@@ -2802,142 +2744,24 @@ function lessonView(lesson){
 function taskCard(task,i,mode){return `<a class="task-link" href="${taskURL(task.id,mode)}"><strong>Условие ${i+1}</strong><small>${i<3?'Учимся решать':'Проверяем себя'}</small>${status(task,store.read(task.id))}</a>`;}
 function feedback(text,kind=''){const box=document.getElementById('feedback');if(box){box.className='feedback '+kind;box.hidden=false;box.textContent=text;}}
 function bind(id,event,fn){document.getElementById(id)?.addEventListener(event,fn);}
-function recentTrace(r,review){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p>${review?'<p id="proof-help-history" hidden></p>':''}</details>`;}
-function reviewCount(review,r){return review.criteria.reduce((count,_,i)=>count+Number(r.proofChecks.includes(i)),0);}
-function parameterProofView(review,r,nextLink){
- const catalog=root.ProfileAlphabetCatalog,skill=catalog?.index['parameter-methods']?.skills[review.skill];
- const back=(root.MathExamTrainerOffline?'/ege-profil/part-two/':root.location.pathname)+root.location.search+root.location.hash;
- const skillLink=skill&&root.self===root.top?`<p><a id="proof-skill" href="${esc(catalog.href('parameter-methods',review.skill,19,back))}">${esc(skill.title)} →</a></p>`:'';
- const {example}=review;
- return `<p id="proof-review-instruction" class="caption"></p>
-  <details id="proof-review" hidden>
-   <summary>Критерии самопроверки</summary>
-   <p>Отметьте пункты, для которых нашли довод в своём тексте. Остальные можно дописать после подсказки.</p>
-   <ol class="proof-review-list">${review.criteria.map(([title,criterion,hint],i)=>`
-    <li>
-     <label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
-     <details data-proof-help="${proofHintStart+i}"><summary aria-label="Подсказка к пункту «${esc(title)}»">Подсказка</summary><p class="hint">${esc(hint)}</p></details>
-    </li>`).join('')}
-   </ol>
-   <p id="proof-review-count" class="caption" role="status"></p>
-   <details class="proof-example" data-proof-help="${proofExampleHint}">
-    <summary>Сравнить рассуждения на других данных</summary>
-    <p>${esc(example.task)}</p>
-    <p><strong>Неполный довод.</strong> ${esc(example.incomplete)}</p>
-    <p><strong>Исправленный довод.</strong> ${esc(example.revised)}</p>
-   </details>
-   ${skillLink}${!r.completed&&nextLink?`<p>${nextLink}</p>`:''}
-  </details>`;
-}
-function proofView(task,r,review,nextLink){
- if(!task.proof)return '';
- const criteria=review?parameterProofView(review,r,nextLink):`<details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details>`;
- return `<section class="panel" aria-labelledby="proof-heading"><h2 id="proof-heading">Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?"></textarea></label>${criteria}<p class="proof-status"><strong>Обоснование требует проверки.</strong> ${review?'Ответы сверяет тренажёр. Полноту доводов оцениваете вы по своему тексту.':'Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.'}</p></section>`;
-}
-function updateProofReview(review,r,staleDraft){
- const reviewPanel=document.getElementById('proof-review'),instruction=document.getElementById('proof-review-instruction');
- const draft=document.getElementById('proof-draft');
- const attempted=hasFinalAttempt(r),ready=attempted&&!!draft.value.trim()&&!staleDraft;
- reviewPanel.hidden=!ready;
- if(!ready)reviewPanel.open=false;
- instruction.hidden=ready;
- instruction.textContent=staleDraft?'Обоснование изменилось в другой вкладке. Можно скопировать текст на экране или открыть сохранённый вариант.':attempted?'Запишите хотя бы один довод, чтобы открыть критерии.':'Отправьте ответы и запишите свой довод, чтобы открыть критерии.';
- const jump=document.getElementById('proof-jump');
- jump.hidden=!attempted&&!staleDraft;
- jump.textContent=staleDraft?'Открыть сохранённое обоснование':ready?'К критериям обоснования':'Записать обоснование';
- document.getElementById('proof-review-count').textContent=staleDraft?'Сверка приостановлена до открытия сохранённого довода.':`Вы отметили ${reviewCount(review,r)} из ${review.criteria.length} пунктов.`;
- const history=document.getElementById('proof-help-history');
- if(history){
-  const opened=review.criteria.flatMap(([title],i)=>r.hints.includes(proofHintStart+i)?[title]:[]);
-  if(r.hints.includes(proofExampleHint))opened.push('пример на других данных');
-  if(r.hints.includes(proofSkillHint))opened.push('упражнение из карты навыков');
-  history.hidden=!opened.length;
-  history.textContent=opened.length?`Помощь к обоснованию — ${opened.join(', ')}.`:'';
- }
-}
-function bindProof(task,review,r,isCurrent){
- const draft=document.getElementById('proof-draft');
- const inputs=main.querySelectorAll('[data-proof-check]');
- let savedProof=r.drafts.proof;
- if(draft)draft.value=savedProof;
- function refresh(record){
-  if(!review||!isCurrent()||!draft.isConnected)return;
-  const staleDraft=record.drafts.proof!==savedProof;
-  if(!staleDraft&&draft.value!==savedProof)return;
-  draft.readOnly=staleDraft;
-  inputs.forEach(input=>{input.disabled=staleDraft;input.checked=!staleDraft&&record.proofChecks.includes(Number(input.dataset.proofCheck));});
-  updateProofReview(review,record,staleDraft);
- }
- bind('proof-draft','input',event=>{
-  const value=event.target.value;
-  store.patch(task.id,record=>{
-   if(review&&record.drafts.proof!==savedProof)return false;
-   if(review&&record.drafts.proof.trim()!==value.trim())record.proofChecks=[];
-   record.drafts.proof=value;
-   savedProof=value;
-  }).then(refresh);
- });
- inputs.forEach(input=>input.addEventListener('change',()=>{
-  const index=Number(input.dataset.proofCheck),checked=input.checked;
-  const proof=draft.value;
-  store.patch(task.id,record=>{
-   if(review&&(!hasFinalAttempt(record)||!proof.trim()||record.drafts.proof!==proof))return false;
-   record.proofChecks=record.proofChecks.filter(i=>i!==index);
-   if(checked)record.proofChecks.push(index);
-  }).then(refresh);
- }));
- if(!review)return refresh;
- function recordHelp(index){
-  return store.patch(task.id,record=>{
-   record.helped=true;
-   if(!record.hints.includes(index))record.hints.push(index);
-  }).then(refresh);
- }
- bind('proof-jump','click',async()=>{
-  await store.flush();
-  if(!isCurrent()||!draft.isConnected)return;
-  const saved=store.read(task.id);
-  if(saved.drafts.proof!==savedProof){
-   draft.value=savedProof=saved.drafts.proof;
-   refresh(saved);
-   draft.focus();
-   return;
-  }
-  const panel=document.getElementById('proof-review');
-  if(panel.hidden)draft.focus();
-  else{panel.open=true;panel.querySelector('summary').focus();}
- });
- main.querySelectorAll('[data-proof-help]').forEach(details=>{
-  details.querySelector('summary').addEventListener('click',()=>{
-   if(!details.open)recordHelp(Number(details.dataset.proofHelp));
-  });
- });
- bind('proof-skill','click',async event=>{
-  const href=event.currentTarget.href,save=recordHelp(proofSkillHint);
-  if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+function bindSubmit(id,fn){
+ const form=document.getElementById(id);let pending=false;
+ form?.addEventListener('submit',async event=>{
   event.preventDefault();
-  await save;
-  await store.flush();
-  if(isCurrent())root.location.assign(href);
+  if(pending||!form.isConnected)return;
+  pending=true;const button=form.querySelector('button[type="submit"]');button.disabled=true;
+  try{await fn(event);}finally{pending=false;button.disabled=false;}
  });
- bind('proof-skill','auxclick',event=>{
-  if(event.button===1)recordHelp(proofSkillHint);
- });
- refresh(r);
- return refresh;
 }
-function nextPractice(lesson,task){
- return lesson.tasks.slice(3).find(t=>{const r=store.read(t.id);return t.id!==task.id&&!r.completed&&!r.helped;});
-}
-function practiceLink(task){return task?`<a class="button" href="${taskURL(task.id,'independent')}">Другое условие самостоятельно →</a>`:'';}
-function parameterPracticeLink(lesson,task){return practiceLink(task)||`<a class="button quiet" href="#lesson/${lesson.id}">Выбрать условие для повторения →</a>`;}
-function completion(item,r,mode,nextIndependent,review){
+function recentTrace(r){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p></details>`;}
+function proofView(task,r){if(!task.proof)return '';return `<section class="panel"><h2>Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?">${esc(r.drafts.proof)}</textarea></label><details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details><p class="proof-status"><strong>Обоснование требует проверки.</strong> Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.</p></section>`;}
+function completion(item,r,mode){
  if(!r.completed)return '';
  const {lesson,task,index}=item;
+ const nextIndependent=lesson.tasks.slice(3).find(t=>{const a=store.read(t.id);return t.id!==task.id&&!a.completed&&!a.helped;});
  const nextTask=lesson.tasks[index+1],nextLesson=lessons[lessons.indexOf(lesson)+1];
  const offerFresh=mode!=='independent'||r.helped;
- const nextLink=review?parameterPracticeLink(lesson,nextIndependent):
-  nextIndependent&&offerFresh?practiceLink(nextIndependent):
+ const nextLink=nextIndependent&&offerFresh?`<a class="button" href="${taskURL(nextIndependent.id,'independent')}">Другое условие самостоятельно →</a>`:
   nextTask?`<a class="button" href="${taskURL(nextTask.id,modeFor(index+1))}">Следующее условие →</a>`:
   nextLesson?`<a class="button" href="#lesson/${nextLesson.id}">Следующая тема →</a>`:'';
  return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="#exam/${lesson.exam}">Все темы №${lesson.exam}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
@@ -2953,9 +2777,10 @@ async function taskView(item,mode,viewVersion=routeVersion){
  const openFinal=mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
  const finalFields=openFinal?[openFinal]:task.final;
  const finalDraft=openFinal?[r.drafts.openFinal]:r.drafts.final;
+ const observedFinal=finalFields.map((_,i)=>finalDraft[i]||'');
+ let observedStep=r.drafts.steps[displayedStep]||'';
  const earlierDraft=openFinal&&r.drafts.final.some(value=>value.trim())?
   `<details class="earlier-final"><summary>Ответы из пошаговой формы</summary>${task.final.map((field,i)=>r.drafts.final[i]?`<p>${esc(field.label)}: ${esc(r.drafts.final[i])}</p>`:'').join('')}</details>`:'';
- const review=proofReviewFor(lesson,task),nextIndependent=review||r.completed?nextPractice(lesson,task):null;
  const parameterCondition=Object.hasOwn(parameterGraphs,lesson.id);
  const graph=mode==='independent'&&independentEligible&&root.ProfileAlphabetCatalog&&root.self===root.top?parameterGraphs[lesson.id]:null;
  const wrongFinal=attempt=>attempt.kind==='final'&&!attempt.correct;
@@ -2980,7 +2805,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
   actions.append(button);
   document.getElementById('feedback').after(actions);
  }
- main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">№${lesson.exam} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="#exam/${lesson.exam}">Вернуться к темам №${lesson.exam}</a> · <a href="#map">Все задания второй части</a></p>`;
+ main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">№${lesson.exam} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div><div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r)}${completion(item,r,mode)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="#exam/${lesson.exam}">Вернуться к темам №${lesson.exam}</a> · <a href="#map">Все задания второй части</a></p>`;
  if(parameterCondition){
   const layout=main.querySelector('.task-layout'),modes=main.querySelector('.modes');
   layout.querySelector('.work').prepend(modes);
@@ -2990,56 +2815,56 @@ async function taskView(item,mode,viewVersion=routeVersion){
  main.querySelectorAll('.modes a').forEach(link=>link.addEventListener('click',event=>{if(link.getAttribute('href')===root.location.hash){event.preventDefault();render();}}));
  document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
   const i=Number(input.dataset.final),value=input.value;
+  observedFinal[i]=value;
   store.patch(task.id,s=>{
    if(openFinal){s.drafts.openFinal=value;return;}
    while(s.drafts.final.length<=i)s.drafts.final.push('');
    s.drafts.final[i]=value;
   });
  }));
- bind('step-answer','input',e=>{const value=e.target.value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
- const refreshProof=bindProof(task,review,r,isCurrent);
- if(review)active.refreshProof=refreshProof;
- bind('final-form','submit',async event=>{
-  event.preventDefault();const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),values=fields.map(f=>f.value.trim());
-  if(values.some(v=>!v)){feedback('Заполните каждое поле. Пустое поле не считается ошибкой.','error');fields[values.findIndex(v=>!v)].focus();return;}
+ bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
+ bind('proof-draft','input',e=>{const value=e.target.value;store.patch(task.id,s=>{s.drafts.proof=value;});});
+ document.querySelectorAll('[data-proof-check]').forEach(input=>input.addEventListener('change',()=>{const index=Number(input.dataset.proofCheck),checked=input.checked;store.patch(task.id,s=>{s.proofChecks=s.proofChecks.filter(i=>i!==index);if(checked)s.proofChecks.push(index);});}));
+ bindSubmit('final-form',async()=>{
+  const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
+  const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
+  const invalid=formats.findIndex(result=>!result.recognized);
+  if(invalid!==-1){
+   // Input events already save individual fields. Only persist changes which
+   // arrived without an input event (for example autofill), never a stale form.
+   const changed=rawValues.flatMap((value,i)=>value===observedFinal[i]?[]:[i]);
+   for(const i of changed)observedFinal[i]=rawValues[i];
+   if(changed.length)await store.patch(task.id,s=>{for(const i of changed){
+    if(openFinal)s.drafts.openFinal=rawValues[i];
+    else{while(s.drafts.final.length<=i)s.drafts.final.push('');s.drafts.final[i]=rawValues[i];}
+   }});
+   else await store.flush();
+   if(!isCurrent())return;
+   fields.forEach((f,i)=>f.setAttribute('aria-invalid',String(!formats[i].recognized)));
+   feedback(values[invalid]?`Проверьте запись в поле «${finalFields[invalid].label}». ${formats[invalid].format} Это уточнение формата; попытка не засчитывается.`:'Заполните каждое поле. Пустое поле не считается ошибкой.','error');
+   fields[invalid].focus();return;
+  }
   const openResult=openFinal&&API.openAnswer(openFinal,values[0]);
-  if(openResult&&!openResult.recognized){
-   feedback('Проверьте запись. '+openFinal.format+' Это уточнение формата.','error');
-   fields[0].focus();return;
-  }
   const results=openResult?[openResult.correct]:finalFields.map((field,i)=>check(field.answers,values[i])),correct=results.every(Boolean);
-  const button=event.target.querySelector('button[type="submit"]');
-  if(button.disabled)return;
-  button.disabled=true;
-  let updated;
-  try {
-   updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,saveFinalDraft:true});
-  } finally {button.disabled=false;}
+  const updated=await store.attempt(task.id,{kind:'final',answers:values,correct,mode,independentEligible,openFinal:!!openFinal,saveFinalDraft:true});
   if(!isCurrent())return;
-  if(correct){
-   await taskView(item,mode,viewVersion);if(!isCurrent())return;
-   const message=review?'Ответы верны.':task.proof?'Ответы верны. Сохраните обоснование и проверьте его с преподавателем.':'Ответы верны. Можно перейти к другому условию.';
-   feedback(message,'ok');
-   if(review)document.getElementById('final-form').querySelector('button[type="submit"]').focus();
-   else document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});
-  }
+  if(correct){await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback(task.proof?'Ответы верны. Сохраните обоснование и проверьте его с преподавателем.':'Ответы верны. Можно перейти к другому условию.','ok');document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});}
   else{
    fields.forEach((f,i)=>f.setAttribute('aria-invalid',String(!results[i])));
    const wrongFields=results.flatMap((ok,i)=>ok?[]:[i]);
    const guidance='Сверьте ограничения и вычисления.'+(updated.wrong>=2?' Можно открыть подсказку.':'');
    feedback(openResult?openResult.hint:`Проверьте поля ${wrongFields.map(i=>i+1).join(', ')}. ${guidance}`,'error');
    offerGraph(updated);
-   if(review){
-    const trace=document.getElementById('task-trace'),wasOpen=trace.querySelector('details')?.open;
-    trace.innerHTML=recentTrace(updated,review);
-    if(wasOpen)trace.querySelector('details').open=true;
-   }
-   refreshProof(updated);
   }
  });
- bind('step-form','submit',async event=>{
-  event.preventDefault();const value=document.getElementById('step-answer').value.trim();if(!value){feedback('Введите ответ на текущий шаг. Пустое поле не считается ошибкой.','error');return;}
-  const current=store.read(task.id),i=current.solvedSteps.length;if(i!==displayedStep){feedback('Этот шаг уже изменён в другой вкладке. Ваш ввод сохранён к прежнему шагу. Откройте заново «С опорой по шагам», чтобы увидеть текущий шаг.','error');return;}const step=task.steps[i];if(!step)return;
+ bindSubmit('step-form',async()=>{
+  const input=document.getElementById('step-answer'),raw=input.value,value=raw.trim();
+  if(raw!==observedStep){observedStep=raw;await store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=raw;});}
+  else await store.flush();
+  const current=store.read(task.id),i=current.solvedSteps.length;if(i!==displayedStep){if(isCurrent())feedback('Этот шаг уже изменён в другой вкладке. Ваш ввод сохранён к прежнему шагу. Откройте заново «С опорой по шагам», чтобы увидеть текущий шаг.','error');return;}const step=task.steps[i];if(!step)return;
+  const format=API.recognize(step,value,root.ProfileCheck);
+  input.setAttribute('aria-invalid',String(!format.recognized));
+  if(!format.recognized){if(isCurrent()){feedback(value?`Проверьте запись ответа. ${format.format} Это уточнение формата; попытка не засчитывается.`:'Введите ответ на текущий шаг. Пустое поле не считается ошибкой.','error');input.focus();}return;}
   const correct=check(step.answers,value);await store.attempt(task.id,{kind:'step-'+i,answers:[value],correct,mode});
   if(correct){await store.patch(task.id,s=>{if(s.solvedSteps.length===i)s.solvedSteps.push(i);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Шаг верный. Предыдущие шаги остались выше.','ok');document.getElementById('step-answer')?.focus();}
   else if(isCurrent()){
@@ -3061,20 +2886,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
  bind('solution-next','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solutionSteps=Math.min(task.solution.length,s.solutionSteps+1);});await taskView(item,mode,viewVersion);});
  main.querySelectorAll('.task-theory,.prerequisites,.proof-criteria,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
 }
-function parameterProofProgress(){
- let drafts=0,reviewed=0,resume=null;
- for(const lesson of lessons.filter(lesson=>lesson.exam===19))for(const task of lesson.tasks){
-  const review=proofReviewFor(lesson,task),r=store.read(task.id);
-  if(!review||!hasFinalAttempt(r)||!r.drafts.proof.trim())continue;
-  drafts++;
-  if(reviewCount(review,r)===review.criteria.length)reviewed++;
-  else if(!resume||r.updatedAt>resume.r.updatedAt)resume={task,r};
- }
- if(!drafts)return '';
- const continuation=resume?` <a href="${taskURL(resume.task.id,'independent')}">Вернуться к обоснованию</a>`:'';
- return `<section class="panel"><h2>Самопроверка обоснований №19</h2><p>Вы отметили все пункты в ${reviewed} из ${drafts} обоснований.${continuation}</p></section>`;
-}
-function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">№${l.exam} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
+function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p><div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">№${l.exam} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
 function missing(){main.innerHTML='<section class="panel"><h1>Такое условие не найдено</h1><p>Выберите тему из карты курса. Сохранённая работа остаётся в браузере.</p><a class="button" href="#map">Открыть карту</a></section>';}
 async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
 root.addEventListener('hashchange',async()=>{
@@ -3083,14 +2895,7 @@ root.addEventListener('hashchange',async()=>{
  await render();
  if(root.location.hash===hash&&((page==='exam'&&id==='19')||Object.hasOwn(parameterGraphs,lessonId)))root.scrollTo(0,0);
 });
-root.addEventListener('storage',event=>{
- if(!event.key?.startsWith(API.PREFIX))return;
- if(!active){render();return;}
- const taskId=active.item.task.id;
- if(event.key===store.key(taskId))active.refreshProof?.(store.read(taskId));
- banner.hidden=false;
- banner.textContent='Работа обновлена в другой вкладке. Перед следующей проверкой будет прочитано свежее сохранение; текущий ввод остаётся на экране.';
-});
+root.addEventListener('storage',event=>{if(event.key?.startsWith(API.PREFIX)){if(active){banner.hidden=false;banner.textContent='Работа обновлена в другой вкладке. Перед следующей проверкой будет прочитано свежее сохранение; текущий ввод остаётся на экране.';}else render();}});
 root.ProfilePartTwoApp={render,store,lessons,byTask};render();
 })(globalThis);
 
