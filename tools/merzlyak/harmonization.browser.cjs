@@ -76,10 +76,10 @@ async function drawingRestoration(browser,base){
  try{
   await context.addInitScript(({key,id})=>{if(!localStorage.getItem(key))localStorage.setItem(key,JSON.stringify({version:1,units:{[id]:{stage:1,seed:1,contentVersion:1,observation:'Мой прежний рисунок',updated:1}}}));},{key:KEY,id});
   await page.goto(base+'/geometry-merzlyak/atlas/'+id+'.html');await page.locator('#geo-board .point-select').selectOption('A');await page.locator('#geo-board .point-x').fill('130');await page.locator('#geo-board [data-act="move"]').click();await page.locator('.stage-nav [data-stage="2"]').click();const drawing=(await value(page,id)).drawing;assert.ok(drawing.points.some(p=>p.id==='A'&&p.x===130));
-  await page.locator('details:has(#proof-board) summary').click();await page.locator('#proof-board .point-select').selectOption('A');await page.locator('#proof-board .point-x').fill('155');await page.locator('#proof-board [data-act="move"]').click();await page.locator('[data-view="research"]').click();const proofDrawing=(await value(page,id)).proofDrawing;assert.ok(proofDrawing.points.some(p=>p.id==='A'&&p.x===155));
+  await page.locator('details:has(#proof-board) > summary').click();await page.locator('#proof-board .point-select').selectOption('A');await page.locator('#proof-board .point-x').fill('155');await page.locator('#proof-board [data-act="move"]').click();await page.locator('[data-view="research"]').click();const proofDrawing=(await value(page,id)).proofDrawing;assert.ok(proofDrawing.points.some(p=>p.id==='A'&&p.x===155));
   await page.reload();assert.deepEqual((await value(page,id)).drawing,drawing);assert.deepEqual((await value(page,id)).proofDrawing,proofDrawing);assert.equal(await page.locator('#geo-board').count(),0);
   await page.locator('.legacy-research summary').click();await page.locator('.legacy-research [data-stage="1"]').click();assert.equal(await page.locator('#geo-board .point-x').inputValue(),'130');assert.equal(await page.locator('#observation').inputValue(),'Мой прежний рисунок');
-  await page.locator('.stage-nav [data-stage="2"]').click();await page.locator('details:has(#proof-board) summary').click();assert.equal(await page.locator('#proof-board .point-x').inputValue(),'155');evidence.drawingRestoration=true;
+  await page.locator('.stage-nav [data-stage="2"]').click();await page.locator('details:has(#proof-board) > summary').click();assert.equal(await page.locator('#proof-board .point-x').inputValue(),'155');evidence.drawingRestoration=true;
  }finally{await context.close();}
 }
 async function offline(browser){
