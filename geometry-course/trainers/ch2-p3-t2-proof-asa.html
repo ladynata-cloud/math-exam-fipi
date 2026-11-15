@@ -5,8 +5,10 @@
 <link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Почему точка C не может быть другой · второй признак</title>
+<title>Второй признак равенства треугольников: исследование и доказательство | MathExam</title>
+<meta name="description" content="Исследуйте, как сторона и два прилежащих угла определяют треугольник. Докажите второй признак равенства и проверьте себя на новой фигуре — MathExam.">
 <link rel="canonical" href="https://mathexam.space/geometry-course/trainers/ch2-p3-t2-proof-asa.html">
+<link rel="stylesheet" href="../assets/search-entry-proof.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -74,7 +76,7 @@ canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radi
 <div class="app">
   <div class="head">
     <div>
-      <div class="title">🔺 Почему точка C не может быть другой</div>
+      <h1 class="title">🔺 Почему точка C не может быть другой</h1>
       <div class="sub">Глава II · §3 · тренажёр 2 из 5 — доказательство второго признака</div>
     </div>
     <div style="display:flex;gap:12px;align-items:center">
@@ -454,6 +456,9 @@ function toQuiz(){
 function showFin(){
   log('finish',{mistakes});
   const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(mistakes<(s.best??99))s.best=mistakes;sS(s);
+  displayFinal();
+}
+function displayFinal(){
   document.getElementById('mainArea').style.display='none';
   document.getElementById('bar').style.display='none';
   document.getElementById('successBar').style.display='none';
@@ -482,5 +487,23 @@ function restart(){
 restart();
 </script>
 <script src="/geometry-course/board/learning-support.js"></script>
+<script>
+/* Preserve the legacy card order and progress key; add a separate typed draft. */
+window.MathExamSearchProof={
+ id:TID,kind:'asa',
+ snapshot:()=>({order:order.slice(),done:done.slice(),dead:dead.slice(),mistakes,hint:hintId,quiz:document.getElementById('fin').style.display!=='block'&&document.getElementById('poolTtl').textContent.startsWith('Контрольный вопрос'),quizDone,experiment:expOn,position:expT,finished:document.getElementById('fin').style.display==='block'}),
+ restore(v){
+  if(!v||!Array.isArray(v.order)||v.order.length!==CARDS.length||new Set(v.order).size!==CARDS.length||v.order.some(id=>!CARDS.some(c=>c.id===id))||!Array.isArray(v.done)||!Array.isArray(v.dead)||v.dead.length>300||!Number.isInteger(v.mistakes)||v.mistakes<0||typeof v.quiz!=='boolean'||typeof v.quizDone!=='boolean'||typeof v.experiment!=='boolean'||typeof v.finished!=='boolean'||!Number.isFinite(v.position)||v.position<0||v.position>1)return false;
+  const seen=new Set();for(const id of v.done){const c=CARDS.find(c=>c.id===id&&!c.distract);if(!c||seen.has(id)||!c.need.every(n=>seen.has(n)))return false;seen.add(id);}
+  if(v.dead.some(id=>!CARDS.some(c=>c.id===id&&c.distract))||v.hint!==null&&!CARDS.some(c=>c.id===v.hint&&!c.distract)||v.finished&&(!v.quizDone||!seen.has('fin'))||v.quiz&&!seen.has('fin')||v.experiment&&(!seen.has('rayA')||!seen.has('rayB')||seen.has('cross')))return false;
+  order=v.order.slice();done=v.done.slice();dead=v.dead.slice();mistakes=v.mistakes;hintId=v.hint;quizDone=v.quizDone;ovP=seen.has('overlay')?1:0;ovAnim=null;lastStep=done.at(-1)||null;expOn=v.experiment;expT=v.position;fxRayA=fxRayB=fxCross=fxFin=0;
+  renderPool();renderChain();showExpSlider(expOn);const slider=document.getElementById('expSlider');if(slider)slider.value=Math.round(expT*100);
+  if(seen.has('fin')){document.getElementById('nextBtn').style.display='inline-block';document.getElementById('successBar').textContent='✓ Доказательство собрано!';document.getElementById('successBar').style.display='block';}
+  if(v.finished)displayFinal();else if(v.quiz)toQuiz();return true;
+ },
+ finished:()=>document.getElementById('fin').style.display==='block'
+};
+</script>
+<script defer src="../assets/search-entry-proof.js"></script>
 </body>
 </html>

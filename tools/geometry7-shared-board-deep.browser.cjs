@@ -25,6 +25,7 @@ async function restore(page,state){await page.evaluate(s=>Geometry7Practice.appl
   async function sameBody(f,peer,label){await wait(500);const a=await f.locator('body').innerText(),b=await peer.locator('body').innerText();assert.equal(b,a,label);passes.push(label);console.log('PASS',label);}
   for(const [id,order]of [['ch2-p1-t3-proof-sas',['overlay','B','C','BC','fin']],['ch2-p3-t2-proof-asa',['overlay','rayA','rayB','cross','fin']]]){
    const f=await open(id);
+   if(id==='ch2-p3-t2-proof-asa')await f.locator('#entry-to-proof').click();
    const trap=await f.evaluate(()=>CARDS.find(c=>c.distract).txt);await f.getByRole('button',{name:trap,exact:true}).click();await wait(500);
    for(const key of order){const label=await f.evaluate(key=>CARDS.find(c=>c.id===key).txt,key);await f.getByRole('button',{name:label,exact:true}).click();await wait(key==='overlay'?1400:70);const {peer}=await mirror();await sameBody(f,peer,id+':'+key);}
   }

@@ -5,8 +5,10 @@
 <link rel="stylesheet" href="/geometry-course/board/native.css">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Почему сумма углов равна 180°</title>
+<title>Сумма углов треугольника: исследование и доказательство | MathExam</title>
+<meta name="description" content="Исследуйте углы треугольника, соберите доказательство суммы 180° и решите новую задачу самостоятельно. Чертёж, подсказки и сохранение работы — MathExam.">
 <link rel="canonical" href="https://mathexam.space/geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html">
+<link rel="stylesheet" href="../assets/search-entry-proof.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -79,7 +81,7 @@ button.tool:hover{background:#f3f4f6}
 <div class="app">
   <div class="head">
     <div>
-      <div class="title">△ Почему сумма углов равна 180°</div>
+      <h1 class="title">△ Почему сумма углов равна 180°</h1>
       <div class="sub">Глава IV · §1 · тренажёр 2 из 6 — доказательство</div>
     </div>
     <div style="display:flex;gap:12px;align-items:center">
@@ -117,8 +119,8 @@ button.tool:hover{background:#f3f4f6}
     <div class="dots" id="finDots"></div>
     <div class="law">
       <b>Сумма углов треугольника равна 180°</b> — теперь доказано.
-      <div class="nb">В t1 мы это <b>увидели</b>, оторвав три угла. Здесь — <b>доказали</b>: прямая через вершину, параллельная основанию, и накрест лежащие углы кладут все три угла треугольника в один развёрнутый угол.</div>
-      <div class="nb"><b>Пуант:</b> обе пары равных углов (∠1 = ∠A и ∠3 = ∠B) — один и тот же приём: параллельная прямая плюс накрест лежащие. Доказательство стоит на свойстве параллельных из главы III.</div>
+      <div class="nb">В исследовании мы <b>выдвинули догадку</b>, изменяя треугольник. Здесь — <b>доказали</b>: прямая через вершину, параллельная основанию, и накрест лежащие углы кладут все три угла треугольника в один развёрнутый угол.</div>
+      <div class="nb"><b>Ключевой шаг:</b> обе пары равных углов (∠1 = ∠A и ∠3 = ∠B) — один и тот же приём: параллельная прямая плюс накрест лежащие. Доказательство стоит на свойстве параллельных из главы III.</div>
       <div class="bridge">Из этой теоремы вырастает следующее понятие — <b>внешний угол</b> треугольника. <a href="ch4-p1-t3-exterior-angle.html">Внешний угол →</a></div>
     </div>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
@@ -365,6 +367,9 @@ function finish(){
   results.push(mistakes===0?'g':(mistakes<=2?'y':'r'));
   log('finish',{mistakes});
   const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(results[0]==='g')st.best=Math.max(st.best||0,1);sS(st);
+   displayFinal();
+}
+function displayFinal(){
   document.getElementById('mainArea').style.display='none';
   document.getElementById('bar').style.display='none';
   document.getElementById('successBar').style.display='none';
@@ -384,5 +389,26 @@ showStep();
 (function loop(){ stepAnim(); draw(); requestAnimationFrame(loop); })();
 </script>
 <script src="/geometry-course/board/learning-support.js"></script>
+<script>
+/* Typed, local draft restoration. Board work is still restored by native replay. */
+window.MathExamSearchProof={
+ id:TID,kind:'angle-sum',
+ snapshot:()=>({phase:si,done:asmDone.slice(),dead:asmDead.slice(),mistakes,hints:hintsUsed,results:results.slice(),finished:document.getElementById('fin').style.display==='block'}),
+ restore(v){
+  if(!v||!Number.isInteger(v.phase)||v.phase<0||v.phase>=STEPS.length||!Array.isArray(v.done)||!Array.isArray(v.dead)||!Array.isArray(v.results)||!Number.isInteger(v.mistakes)||v.mistakes<0||!Number.isInteger(v.hints)||v.hints<0||typeof v.finished!=='boolean')return false;
+  const cards=STEPS[v.phase].cards||[],seen=new Set();
+  for(const id of v.done){const c=cards.find(c=>c.id===id&&!c.trap);if(!c||seen.has(id)||!(c.need||[]).every(n=>seen.has(n)))return false;seen.add(id);}
+  const deadCards=STEPS[v.phase].kind==='done'?STEPS[v.phase-1].cards:cards;
+  if(v.dead.length>300||v.dead.some(id=>!deadCards.some(c=>c.id===id&&c.trap))||v.results.some(r=>!['g','y','r'].includes(r))||v.results.length>1||v.finished&&v.phase!==STEPS.length-1)return false;
+  si=v.phase;mistakes=v.mistakes;hintsUsed=v.hints;results=v.results.slice();proved={};anim={on:false,t:0,kind:null};
+  for(let n=0;n<si;n++)for(const c of STEPS[n].cards||[])if(!c.trap)proved[c.id]=true;
+  showStep();asmDone=v.done.slice();asmDead=v.dead.slice();for(const id of asmDone)proved[id]=true;
+  renderPool();renderChain();if(S().kind==='done'||cards.filter(c=>!c.trap).every(c=>seen.has(c.id)))advanceReady();
+  if(v.finished)displayFinal();return true;
+ },
+ finished:()=>document.getElementById('fin').style.display==='block'
+};
+</script>
+<script defer src="../assets/search-entry-proof.js"></script>
 </body>
 </html>

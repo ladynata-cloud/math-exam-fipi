@@ -1,10 +1,11 @@
 """Exact reversible UI amendment for historical publication checks.
 
 Historical content receipts and course.json retain their original build identity.
-These checks reconstruct ONLY the two reviewed presentation deltas, byte for byte;
-all teaching, model, storage and other runtime bytes are still checked normally.
-The current presentation has its own SHA256 map and real-browser gate. An unknown
-byte change is never normalized and must invalidate the historical checks.
+These checks reconstruct ONLY the two first-viewport presentation deltas and
+the separately recorded catalogue-entry delta, byte for byte; all teaching,
+model, storage and other runtime bytes are still checked normally. Each UI
+amendment has its own SHA256 map and real-browser gate. An unknown byte change
+is never normalized and must invalidate the historical checks.
 """
 import hashlib
 import json
@@ -12,6 +13,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from public_navigator_preservation import restore_public_navigator
+from search_entry_amendment import restore_search_entry
 
 PATCH = Path(__file__).with_name('first-viewport-amendment.json')
 BASE = {
@@ -25,6 +27,11 @@ def historical_bytes(path, raw=None):
     path = Path(path)
     raw = path.read_bytes() if raw is None else raw
     if path.name == 'index.html':
+        # Both pre-task and legitimately refreshed navigator bindings retain
+        # the same historical result. The entry amendment accepts only its
+        # two hash-bound forms, with and without that exact pair of includes.
+        raw = restore_public_navigator('geometry-course/textbook/index.html', raw)
+        raw = restore_search_entry('geometry-course/textbook/index.html', raw)
         raw = restore_public_navigator('geometry-course/textbook/index.html', raw)
     name = 'assets/' + path.name if path.parent.name == 'assets' else ''
     if name not in BASE or sha(raw) == BASE[name]:
