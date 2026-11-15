@@ -72,6 +72,8 @@ async function sections(page) {
   assert.equal(await page.locator('[data-history-step]').count(), 2);
 
   await page.locator('.starter-draft > summary').click();
+  // The native details toggle is dispatched after the click has completed.
+  await page.waitForFunction(() => window.SECTIONS_APP.getState().tasks['starter-18'].draftOpen);
   const explanation = 'Точки M и N лежат в грани AEFB, поэтому MN — сторона сечения.';
   await page.locator('#proof-draft').fill(explanation);
   const model = page.locator('.course-main .model-svg');
