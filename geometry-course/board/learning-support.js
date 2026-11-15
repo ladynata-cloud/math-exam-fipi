@@ -2,9 +2,9 @@
  * evidence to investigate; a completed proof still needs stated reasons. */
 (function(doc){
 'use strict';
-const name=location.pathname.split('/').pop(),construction=/constr|construct/.test(name),parallel=name.startsWith('ch3-')||name.includes('distance-parallels');
+const name=location.pathname.split('/').pop(),construction=/constr|construct/.test(name),angleSum=name==='ch4-p1-t2-proof-angle-sum.html',parallel=name.startsWith('ch3-')||name.includes('distance-parallels');
 const section=doc.createElement('section');section.className='geometry7-reasoning';section.setAttribute('aria-label','Объясни решение своими словами');
-const heading=doc.createElement('h2');heading.textContent=construction?'Построение и его обоснование':parallel?'От условия к выводу о параллельности':'Как записать доказательство';section.append(heading);
+const heading=doc.createElement('h2');heading.textContent=construction?'Построение и его обоснование':angleSum?'Почему сумма углов равна 180°':parallel?'От условия к выводу о параллельности':'Как записать доказательство';section.append(heading);
 const intro=doc.createElement('p');intro.textContent=construction?'После каждого действия объясни, что оно гарантирует. Линейка проводит прямую через две точки; циркуль переносит длину. Измерение по экрану не заменяет обоснование.':'Сначала назови, что дано и что требуется доказать. Каждое равенство нужно обосновать; похожий вид рисунка сам по себе ничего не доказывает.';section.append(intro);
 const details=doc.createElement('details'),summary=doc.createElement('summary');summary.textContent='Опора для рассуждения';details.append(summary);
 const items=construction?[
@@ -12,6 +12,12 @@ const items=construction?[
  'Чтобы построить серединный перпендикуляр, возьми одинаковые радиусы больше половины отрезка. Соедини обе точки пересечения окружностей.',
  'Чтобы построить биссектрису, отметь на сторонах угла равноудалённые от вершины точки. От них одинаковым раствором проведи дуги. Обоснуй равенство полученных треугольников по трём сторонам.',
  'Запиши: построение → доказательство → проверка условий существования. Если возможны два решения, укажи оба.'
+]:angleSum?[
+ 'Дано: треугольник ABC. Требуется доказать, что сумма его внутренних углов равна 180°. Измерения помогают выдвинуть догадку, но не доказывают общий случай.',
+ 'Через вершину C проведи прямую a, параллельную AB. Стороны AC и BC становятся секущими этих параллельных прямых.',
+ 'Обоснуй отдельно две пары равных накрест лежащих углов: ∠1 = ∠A и ∠3 = ∠B. Средний угол ∠2 — это сам ∠C.',
+ 'Углы ∠1, ∠2 и ∠3 вместе составляют развёрнутый угол на прямой a: их сумма 180°. Подставь уже доказанные равенства.',
+ 'Не используй сумму углов треугольника как основание в её же доказательстве. Здесь основание — свойство параллельных прямых и развёрнутый угол.'
 ]:parallel?[
  'Укажи две прямые и секущую. Назови пару углов: накрест лежащие, соответственные или односторонние.',
  'Признаки: равенство накрест лежащих углов; равенство соответственных углов; сумма односторонних углов 180°. Из этого заключаем, что прямые параллельны.',

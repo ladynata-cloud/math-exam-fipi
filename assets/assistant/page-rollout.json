@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "318b7016ec674fe02e55a03358da70a245351509",
+  "baseSha": "b8d16ebf1fa5f968450d6347f01c12304ed9f943",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -818,8 +818,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/textbook/index.html": {
-      "beforeSha256": "098ee5017758a8fb892af5da256cbc945ba4002cbfd82b1a0bcbd4c339f01804",
-      "afterSha256": "f6fe2c259cd4e65c169071760301818df1f4188ef56c880c7400c3af0fffce44",
+      "beforeSha256": "1fe33d3ff73e02491a8f193d9ca5c978e274d0a06e4d32c156cf2bf3c5c7ab06",
+      "afterSha256": "f48f2faefa5d415eac371121f328e6d9e7ba5e8e9b30d95307219adcc4e07436",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch1-p3-t2-fold-imprint.html": {
@@ -933,8 +933,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t2-proof-asa.html": {
-      "beforeSha256": "06fb4663e0226d549e7cf2f31c7ed275b4f37053568431fcf2e42cf1e2d0386a",
-      "afterSha256": "793f0d15118a70f9fc7166f69d9a216f3d617565cc909a98aa540f6b695d4aaf",
+      "beforeSha256": "b7a8d691727fd3ed5e0cd75aa494c850bf2d737d7b45b2883d61b9be0638457f",
+      "afterSha256": "1fb3f2818ee517fb2c0a3bb94574e526c229c8919aedd5b2459e544fb83b4b51",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch2-p3-t3-which-sign.html": {
@@ -1043,8 +1043,8 @@
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html": {
-      "beforeSha256": "d05353045d97c5e0ed906b210731906f667a9de35091f6860445a58eac281ca2",
-      "afterSha256": "881dd6af00b16fb1b3f17113887a37d14de3c00fe04686d410e2abce841bb4e4",
+      "beforeSha256": "a2b312e572ffcb0c54f57375ff5cd534b3453748ddac45bcf73b4a6f7228bba5",
+      "afterSha256": "b95a10efee7439b3f8947bdd922ad871dc46163b395ea005a5f8794b7ce7be2f",
       "placement": "before-head-close"
     },
     "geometry-course/trainers/ch4-p1-t3-exterior-angle.html": {
@@ -1778,8 +1778,8 @@
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-58.html": {
-      "beforeSha256": "5258dbffbc70fb46280ac48417b29d79b6820ef9f26701f8ab7f65e5e4d8fea5",
-      "afterSha256": "228d1c086593e4018e72ed05530f54d11ae8d108b770946cb624997e831ce97f",
+      "beforeSha256": "f8c2e3b3c42f3b622fc34904a9f112b8ba3ed1c01875c5d20e68b992f5429e52",
+      "afterSha256": "1d4e70683de478f3a24a09e64b5f68ec8d83d8689244d6cd332f6634436c6567",
       "placement": "before-head-close"
     },
     "geometry-pogorelov/atlas/pogorelov-base-8-59.html": {
@@ -5252,6 +5252,18 @@
         "ege-profil/trainers/numbers-t19.html",
         "pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html",
         "stereo-course/sections/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "318b7016ec674fe02e55a03358da70a245351509",
+      "sourceBaseSha": "b8d16ebf1fa5f968450d6347f01c12304ed9f943",
+      "task": "docs/tasks/SEARCH_ENTRY_GEOMETRY_HARMONIZATION_20261116.md",
+      "changedPaths": [
+        "geometry-course/textbook/index.html",
+        "geometry-course/trainers/ch2-p3-t2-proof-asa.html",
+        "geometry-course/trainers/ch4-p1-t2-proof-angle-sum.html",
+        "geometry-pogorelov/atlas/pogorelov-base-8-58.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

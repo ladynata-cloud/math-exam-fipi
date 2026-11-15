@@ -1,0 +1,4700 @@
+{
+  "base": "5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae",
+  "capturedAt": "2026-11-15T20:39:27.227Z",
+  "source": "Immutable git-show HTTP server; actual trusted browser interactions; synthetic input only",
+  "sourceSha256": "10469f947322960e09dccc7e95506f6768d7423b1be5e2042d37b6549975cf1a",
+  "fixtures": [
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "initial",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [],
+        "time": 0
+      },
+      "legacyControls": 17,
+      "controlsSha256": "460753ee58f3c6df8b8a870e435c37a42c10f8c71d0cf7c60a4cb6a1b0e3ce14",
+      "variables": {
+        "done": [],
+        "dead": [],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 0
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "support-written",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ]
+        ],
+        "time": 199
+      },
+      "legacyControls": 17,
+      "controlsSha256": "5821857fe2142f553703fa4bc43fc9f8097705bb8c8e4b20f7ed8f5ad49d345a",
+      "variables": {
+        "done": [],
+        "dead": [],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 0
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "distractor",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ]
+        ],
+        "time": 316
+      },
+      "legacyControls": 17,
+      "controlsSha256": "5821857fe2142f553703fa4bc43fc9f8097705bb8c8e4b20f7ed8f5ad49d345a",
+      "variables": {
+        "done": [],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "overlay",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 949
+      },
+      "legacyControls": 16,
+      "controlsSha256": "fd2ddd54e9f5e3701b60556ecf4b2b189f3c2c5836f97a54e9c4721dbbc88b44",
+      "variables": {
+        "done": [
+          "overlay"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "rayA",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ]
+        ],
+        "time": 2166
+      },
+      "legacyControls": 15,
+      "controlsSha256": "5189b65b4b36c4fa5ea6df74b9363de673efa38d9503c57a20aae48a2b9d353b",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "rayB",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ]
+        ],
+        "time": 2299
+      },
+      "legacyControls": 14,
+      "controlsSha256": "0a3d53c5019fb9873a72471d09f0e07087273d09228680ed0ae6e587459e84b9",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.5,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "experiment-open",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ]
+        ],
+        "time": 2433
+      },
+      "legacyControls": 15,
+      "controlsSha256": "7b5b485e7c1b3f6dbdf9692d80ea8b79a5fde4b2306dd5966319e84b7e48852a",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": true,
+        "expT": 0.78,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "experiment-slider",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ]
+        ],
+        "time": 2533
+      },
+      "legacyControls": 15,
+      "controlsSha256": "64df972d8e888cc32f3b48fa6edcca074ae8d3e91f76f901ef711fcdc695fd30",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": true,
+        "expT": 0.77,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "experiment-drag",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ]
+        ],
+        "time": 2799
+      },
+      "legacyControls": 15,
+      "controlsSha256": "61a607a2933905f59416e9e9e63fd5ba386a28e174a8bda981c752589e915999",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": true,
+        "expT": 0.13507074742521488,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "cross",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2900,
+            "click",
+            3,
+            "button",
+            null
+          ]
+        ],
+        "time": 2916
+      },
+      "legacyControls": 14,
+      "controlsSha256": "ea75d3792cf7c00024a64ca7f5646c294ca7c0ea5f02db9943ae725c3cd292dd",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB",
+          "cross"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.13507074742521488,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            },
+            {
+              "e": "step",
+              "id": "cross"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "fin",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2900,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            3033,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 3049
+      },
+      "legacyControls": 13,
+      "controlsSha256": "9be247e35941c92d4553b1f7aea60fdc17ec9e58014ac37b3a67ba57880e2af0",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB",
+          "cross",
+          "fin"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.13507074742521488,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            },
+            {
+              "e": "step",
+              "id": "cross"
+            },
+            {
+              "e": "step",
+              "id": "fin"
+            },
+            {
+              "e": "proof_done",
+              "mistakes": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "quiz",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2900,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            3033,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            3185,
+            "click",
+            8,
+            "button",
+            null
+          ]
+        ],
+        "time": 3273
+      },
+      "legacyControls": 14,
+      "controlsSha256": "1dafa428803eb9d6e9bfd7448ff945d92bdf92dceeda7e68ac563a6d6d86e2ab",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB",
+          "cross",
+          "fin"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.13507074742521488,
+        "mistakes": 1
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            },
+            {
+              "e": "step",
+              "id": "cross"
+            },
+            {
+              "e": "step",
+              "id": "fin"
+            },
+            {
+              "e": "proof_done",
+              "mistakes": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "quiz-wrong",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2900,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            3033,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            3185,
+            "click",
+            8,
+            "button",
+            null
+          ],
+          [
+            3466,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 3483
+      },
+      "legacyControls": 14,
+      "controlsSha256": "1dafa428803eb9d6e9bfd7448ff945d92bdf92dceeda7e68ac563a6d6d86e2ab",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB",
+          "cross",
+          "fin"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": false,
+        "expOn": false,
+        "expT": 0.13507074742521488,
+        "mistakes": 2
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 0,
+          "best": 99,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            },
+            {
+              "e": "step",
+              "id": "cross"
+            },
+            {
+              "e": "step",
+              "id": "fin"
+            },
+            {
+              "e": "proof_done",
+              "mistakes": 1
+            },
+            {
+              "e": "quiz_wrong"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch2-p3-t2-proof-asa",
+      "label": "complete",
+      "state": {
+        "version": 1,
+        "activity": "ch2-p3-t2-proof-asa",
+        "seed": 4064923254,
+        "actions": [
+          [
+            106,
+            "input",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "change",
+            14,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            116,
+            "input",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "change",
+            15,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            116,
+            "input",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "change",
+            16,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            183,
+            "click",
+            13,
+            "summary",
+            null
+          ],
+          [
+            299,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            933,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            2149,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            2283,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2416,
+            "click",
+            5,
+            "button",
+            null
+          ],
+          [
+            2516,
+            "keydown",
+            6,
+            "input:range",
+            "ArrowLeft"
+          ],
+          [
+            2516,
+            "input",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2516,
+            "change",
+            6,
+            "input:range",
+            "77"
+          ],
+          [
+            2683,
+            "pointerdown",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.7262438727814017,
+                0.25204810953486273
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2766,
+            "pointermove",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 1,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "pointerup",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6273852894607099,
+                0.46121250619732274
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2783,
+            "click",
+            0,
+            "canvas",
+            {
+              "p": [
+                0.6271844660194175,
+                0.4586469554243476
+              ],
+              "buttons": 0,
+              "pointerType": "mouse",
+              "delta": 0
+            }
+          ],
+          [
+            2900,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            3033,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            3185,
+            "click",
+            8,
+            "button",
+            null
+          ],
+          [
+            3466,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            3599,
+            "click",
+            3,
+            "button",
+            null
+          ]
+        ],
+        "time": 3616
+      },
+      "legacyControls": 14,
+      "controlsSha256": "1dafa428803eb9d6e9bfd7448ff945d92bdf92dceeda7e68ac563a6d6d86e2ab",
+      "variables": {
+        "done": [
+          "overlay",
+          "rayA",
+          "rayB",
+          "cross",
+          "fin"
+        ],
+        "dead": [
+          "dMeasure"
+        ],
+        "order": [
+          "overlay",
+          "fin",
+          "dMeasure",
+          "cross",
+          "rayA",
+          "dSide",
+          "rayB"
+        ],
+        "quizDone": true,
+        "expOn": false,
+        "expT": 0.13507074742521488,
+        "mistakes": 2
+      },
+      "progress": {
+        "ch2-p3-t2-proof-asa": {
+          "runs": 1,
+          "best": 2,
+          "events": [
+            {
+              "e": "start"
+            },
+            {
+              "e": "distractor",
+              "id": "dMeasure"
+            },
+            {
+              "e": "step",
+              "id": "overlay"
+            },
+            {
+              "e": "step",
+              "id": "rayA"
+            },
+            {
+              "e": "step",
+              "id": "rayB"
+            },
+            {
+              "e": "exp_open"
+            },
+            {
+              "e": "step",
+              "id": "cross"
+            },
+            {
+              "e": "step",
+              "id": "fin"
+            },
+            {
+              "e": "proof_done",
+              "mistakes": 1
+            },
+            {
+              "e": "quiz_wrong"
+            },
+            {
+              "e": "quiz_ok"
+            },
+            {
+              "e": "finish",
+              "mistakes": 2
+            }
+          ],
+          "passed": true
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "initial",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [],
+        "time": 0
+      },
+      "legacyControls": 14,
+      "controlsSha256": "cf4b648d6c57a8352cca642c39744fddc34663da11913f331603408bd2caa742",
+      "variables": {
+        "si": 0,
+        "asmDone": [],
+        "asmDead": [],
+        "proved": {},
+        "stepResolved": false,
+        "mistakes": 0,
+        "hintsUsed": 0
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "support-written",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ]
+        ],
+        "time": 184
+      },
+      "legacyControls": 14,
+      "controlsSha256": "45bdb5b65d151cc4d412c4392c10c0b4e8efd4e72e14b404972b629a91fe06c3",
+      "variables": {
+        "si": 0,
+        "asmDone": [],
+        "asmDead": [],
+        "proved": {},
+        "stepResolved": false,
+        "mistakes": 0,
+        "hintsUsed": 0
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "hint",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ]
+        ],
+        "time": 301
+      },
+      "legacyControls": 14,
+      "controlsSha256": "45bdb5b65d151cc4d412c4392c10c0b4e8efd4e72e14b404972b629a91fe06c3",
+      "variables": {
+        "si": 0,
+        "asmDone": [],
+        "asmDead": [],
+        "proved": {},
+        "stepResolved": false,
+        "mistakes": 0,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "trapCorr",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ]
+        ],
+        "time": 436
+      },
+      "legacyControls": 14,
+      "controlsSha256": "45bdb5b65d151cc4d412c4392c10c0b4e8efd4e72e14b404972b629a91fe06c3",
+      "variables": {
+        "si": 0,
+        "asmDone": [],
+        "asmDead": [
+          "trapCorr"
+        ],
+        "proved": {},
+        "stepResolved": false,
+        "mistakes": 1,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "construct",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 567
+      },
+      "legacyControls": 13,
+      "controlsSha256": "b9eecbba00d5cacab44c8f09184ca6041d2cbc27f99ecd4864f055519f2a762a",
+      "variables": {
+        "si": 0,
+        "asmDone": [
+          "construct"
+        ],
+        "asmDead": [
+          "trapCorr"
+        ],
+        "proved": {
+          "construct": true
+        },
+        "stepResolved": false,
+        "mistakes": 1,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "eq3",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ]
+        ],
+        "time": 684
+      },
+      "legacyControls": 12,
+      "controlsSha256": "7180151e7e16ad51e4459fdf70588b411d2e9d3194ac1c3b8d160a8dda37d0c0",
+      "variables": {
+        "si": 0,
+        "asmDone": [
+          "construct",
+          "eq3"
+        ],
+        "asmDead": [
+          "trapCorr"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true
+        },
+        "stepResolved": false,
+        "mistakes": 1,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "eq1",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 818
+      },
+      "legacyControls": 11,
+      "controlsSha256": "b52b9465953e8a656cadde1af3cfb2eb7ada6aa721b79ed114d957a111be2b2d",
+      "variables": {
+        "si": 0,
+        "asmDone": [
+          "construct",
+          "eq3",
+          "eq1"
+        ],
+        "asmDead": [
+          "trapCorr"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true
+        },
+        "stepResolved": true,
+        "mistakes": 1,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "phase2",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ]
+        ],
+        "time": 934
+      },
+      "legacyControls": 13,
+      "controlsSha256": "e1a4b83c3d2d1dc08c831d78a9ed16ec639f0f210147a6920790b514f150d9e7",
+      "variables": {
+        "si": 1,
+        "asmDone": [],
+        "asmDead": [],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true
+        },
+        "stepResolved": false,
+        "mistakes": 1,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "trapCirc",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1051,
+            "click",
+            3,
+            "button",
+            null
+          ]
+        ],
+        "time": 1067
+      },
+      "legacyControls": 13,
+      "controlsSha256": "e1a4b83c3d2d1dc08c831d78a9ed16ec639f0f210147a6920790b514f150d9e7",
+      "variables": {
+        "si": 1,
+        "asmDone": [],
+        "asmDead": [
+          "trapCirc"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true
+        },
+        "stepResolved": false,
+        "mistakes": 2,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "distractor",
+              "id": "trapCirc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "straight",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1051,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            1167,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 1184
+      },
+      "legacyControls": 12,
+      "controlsSha256": "251dfcce7c32a3e87369874888d350d4ef048ccc5102b93ee79590be23f9810f",
+      "variables": {
+        "si": 1,
+        "asmDone": [
+          "straight"
+        ],
+        "asmDead": [
+          "trapCirc"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true,
+          "straight": true
+        },
+        "stepResolved": false,
+        "mistakes": 2,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "distractor",
+              "id": "trapCirc"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "straight"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "concl",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1051,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            1167,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            1300,
+            "click",
+            1,
+            "button",
+            null
+          ]
+        ],
+        "time": 1317
+      },
+      "legacyControls": 11,
+      "controlsSha256": "6fb477c476267b93855aa1888e45b10bac61c7dcb3aebda5f4c95918e459b956",
+      "variables": {
+        "si": 1,
+        "asmDone": [
+          "straight",
+          "concl"
+        ],
+        "asmDead": [
+          "trapCirc"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true,
+          "straight": true,
+          "concl": true
+        },
+        "stepResolved": true,
+        "mistakes": 2,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "distractor",
+              "id": "trapCirc"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "freeze"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "concl"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "done-stage",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1051,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            1167,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            1300,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            1417,
+            "click",
+            6,
+            "button",
+            null
+          ]
+        ],
+        "time": 1434
+      },
+      "legacyControls": 9,
+      "controlsSha256": "526d0ab5e449033df213e6c0da0bcadfd96238bad17fa63c3b50bb6957133679",
+      "variables": {
+        "si": 2,
+        "asmDone": [],
+        "asmDead": [
+          "trapCirc"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true,
+          "straight": true,
+          "concl": true
+        },
+        "stepResolved": true,
+        "mistakes": 2,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 0,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "distractor",
+              "id": "trapCirc"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "freeze"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "concl"
+            },
+            {
+              "step": 3,
+              "phase": "done",
+              "e": "step_start",
+              "kind": "done"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "ch4-p1-t2-proof-angle-sum",
+      "label": "complete",
+      "state": {
+        "version": 1,
+        "activity": "ch4-p1-t2-proof-angle-sum",
+        "seed": 544280038,
+        "actions": [
+          [
+            103,
+            "input",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "change",
+            11,
+            "textarea",
+            "Синтетическая запись исходных данных"
+          ],
+          [
+            103,
+            "input",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "change",
+            12,
+            "textarea",
+            "Сначала основание, потом вывод."
+          ],
+          [
+            118,
+            "input",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "change",
+            13,
+            "textarea",
+            "Вывод ещё требует проверки преподавателем."
+          ],
+          [
+            168,
+            "click",
+            10,
+            "summary",
+            null
+          ],
+          [
+            284,
+            "click",
+            7,
+            "button",
+            null
+          ],
+          [
+            417,
+            "click",
+            4,
+            "button",
+            null
+          ],
+          [
+            551,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            667,
+            "click",
+            2,
+            "button",
+            null
+          ],
+          [
+            800,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            917,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1051,
+            "click",
+            3,
+            "button",
+            null
+          ],
+          [
+            1167,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            1300,
+            "click",
+            1,
+            "button",
+            null
+          ],
+          [
+            1417,
+            "click",
+            6,
+            "button",
+            null
+          ],
+          [
+            1601,
+            "click",
+            4,
+            "button",
+            null
+          ]
+        ],
+        "time": 1617
+      },
+      "legacyControls": 9,
+      "controlsSha256": "526d0ab5e449033df213e6c0da0bcadfd96238bad17fa63c3b50bb6957133679",
+      "variables": {
+        "si": 2,
+        "asmDone": [],
+        "asmDead": [
+          "trapCirc"
+        ],
+        "proved": {
+          "construct": true,
+          "eq3": true,
+          "eq1": true,
+          "straight": true,
+          "concl": true
+        },
+        "stepResolved": true,
+        "mistakes": 2,
+        "hintsUsed": 1
+      },
+      "progress": {
+        "ch4-p1-t2-proof-angle-sum": {
+          "runs": 1,
+          "best": 0,
+          "events": [
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "hint"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "distractor",
+              "id": "trapCorr"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "line"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "construct"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyB"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq3"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "built",
+              "what": "copyA"
+            },
+            {
+              "step": 1,
+              "phase": "p1",
+              "e": "step",
+              "id": "eq1"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step_start",
+              "kind": "assemble"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "distractor",
+              "id": "trapCirc"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "straight"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "built",
+              "what": "freeze"
+            },
+            {
+              "step": 2,
+              "phase": "p2",
+              "e": "step",
+              "id": "concl"
+            },
+            {
+              "step": 3,
+              "phase": "done",
+              "e": "step_start",
+              "kind": "done"
+            },
+            {
+              "step": 3,
+              "phase": "done",
+              "e": "finish",
+              "mistakes": 2
+            }
+          ],
+          "passed": true
+        }
+      }
+    }
+  ]
+}

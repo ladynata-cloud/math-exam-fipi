@@ -19,6 +19,7 @@ async function restore(page,state){await page.evaluate(s=>Geometry7Practice.appl
  try{
   for(const item of catalog){
    await pages[0].goto(SITE+'/trainers/geometry7-practice.html?activity='+item.id);let f=await ready(pages[0]);
+   if(['ch4-p1-t2-proof-angle-sum','ch2-p3-t2-proof-asa'].includes(item.id))await f.locator('#entry-to-proof').click();
    await f.locator('#geometry7-givens').fill('Синтетическая работа. Дано: равные элементы.');
    await f.locator('#geometry7-reasons').fill('Каждый переход обосновываем определением или теоремой.');
    const hint=f.getByRole('button',{name:/Подсказка|Намёк|подсказку/}).first();if(await hint.count()&&await hint.isVisible()&&await hint.isEnabled())await hint.click();
