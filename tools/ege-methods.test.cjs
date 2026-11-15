@@ -226,7 +226,7 @@ test('transfer destinations target the existing profile and base banks', () => {
   for (const lesson of lessons) {
     for (const link of lesson.links) {
       const url = new URL(link.href, 'https://mathexam.space');
-      if (link.title.startsWith('Профиль №20')) assert(profile.includes("add('" + url.hash.split('/').at(-1) + "',20,"));
+      if (link.title.startsWith('Профиль №19')) assert(profile.includes("add('" + url.hash.split('/').at(-1) + "',20,"));
       else assert(base.replace(/,\s+/g, ',').includes("add('" + url.hash.split('practice-').at(-1) + "',21,"));
     }
   }

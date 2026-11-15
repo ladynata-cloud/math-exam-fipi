@@ -85,7 +85,13 @@
   }
 
   function mapTitle(key, map) {
-    return /^\d+$/.test(key) ? `№${key}${map.title ? ' · ' + map.title : ''}` : map.title;
+    if (!/^\d+$/.test(key)) return map.title;
+    const registry = root.ProfileExamMap;
+    const number = Number(key);
+    const entry = number <= 13 ? registry?.fromLegacyStart(number) : registry?.fromLegacyPartTwo(number);
+    if (!entry) return map.title;
+    if (number === 9) return 'Производная: №8 и №12; первообразная — дополнительная тема';
+    return registry.label(entry) + (map.title ? ' · ' + map.title : '');
   }
 
   function alphabetLinks(key, beforeLeave) {
@@ -254,7 +260,7 @@
     container.replaceChildren(layout);
   }
 
-  function mount(container, keys, options = {}) {
+  function mountReady(container, keys, options = {}) {
     const data = root.ProfileSkillMapData;
     if (!data || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
     const maps = [...new Set(keys.map(String))].map(key => [key, data.maps[key] || data.trainers[key]]).filter(([, map]) => map);
@@ -328,6 +334,31 @@
       root.setTimeout(() => { if (entry.isConnected) show(); }, 0);
     }
     return entry;
+  }
+
+  function ensureExamMap() {
+    if (root.ProfileExamMap) return Promise.resolve(root.ProfileExamMap);
+    if (!root.ProfileExamMapReady) root.ProfileExamMapReady = new Promise(resolve => {
+      const script = document.createElement('script');
+      script.src = '/ege-profil/exam-map.js?v=20261115-fipi-map';
+      script.async = true;
+      script.onload = () => resolve(root.ProfileExamMap || null);
+      script.onerror = () => resolve(null);
+      document.head.append(script);
+    });
+    return root.ProfileExamMapReady;
+  }
+
+  function mount(container, keys, options = {}) {
+    if (!root.ProfileSkillMapData || !container || root.self !== root.top || document.body.dataset.profileBoard) return null;
+    if (root.ProfileExamMap) return mountReady(container, keys, options);
+    const slot = element('div', 'profile-skill-slot');
+    container.append(slot);
+    ensureExamMap().then(() => {
+      // A route change can remove the waiting slot. Never mount in a stale screen.
+      if (slot.isConnected) mountReady(slot, keys, options);
+    });
+    return slot;
   }
 
   function optionByValue(spec, value) {
