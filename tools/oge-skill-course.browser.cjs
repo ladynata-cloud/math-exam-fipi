@@ -15,6 +15,12 @@ const course = '/trainers/oge-course/';
 const cabinet = 'https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route';
 const oldKeys = ['mathExamCourseProgress.v1', 'mathExam.oge6.practice.v1', 'mathExam.oge20.practice.v1', 'mathExam.oge22.practice.v1', 'mathExam.task19.visualHints.v1', 'oge21_prog', 'mathexam.oge.course-navigation.v1', 'mathExamFoundations.visits.v1'];
 const seeded = Object.fromEntries(oldKeys.map((key, i) => [key, JSON.stringify({synthetic: true, value: i + 1})]));
+const researchModels = [
+  {topic: 'n10', task: 'n10-c1', type: 'probability', trainer: '/trainers/oge-task10-probability.html'},
+  {topic: 'n11', task: 'n11-c1', type: 'graph', trainer: '/trainers/oge-task11-graphs-trainer.html'},
+  {topic: 'n15', task: 'n15-c-triangle-gate', type: 'triangleGate', trainer: '/trainers/oge-task15-triangles.html'},
+  {topic: 'n17', task: 'n17-c-tilt-area', type: 'tiltArea', trainer: '/trainers/oge-task17-quadrilaterals.html'}
+];
 const report = {status: 'RUNNING', layouts: [], scenarios: []};
 let server, browser, base = process.env.OGE_SKILL_BASE_URL;
 
@@ -97,12 +103,131 @@ function safeError(error) {
       assert(Math.abs(unitX / unitY - expectedRatio) < 0.001, `X and Y pixel ratio ${unitX / unitY}; expected ${expectedRatio}`);
     }
 
+    for (const width of [320, 390, 1280]) {
+      const c = await context({viewport: {width, height: 900}}), page = await c.newPage();
+      const errors = [];
+      page.on('pageerror', error => errors.push(error.message));
+      await c.addInitScript(values => {
+        for (const [key, value] of Object.entries(values)) if (localStorage.getItem(key) === null) localStorage.setItem(key, value);
+      }, seeded);
+      try {
+        for (const entryPath of ['/oge/', course]) {
+          const entryName = entryPath === course ? 'course' : 'oge';
+          for (const [index, model] of researchModels.entries()) {
+            await page.goto(base + entryPath, {waitUntil: 'load'});
+            const entry = page.locator('#skill-course'), summary = page.locator('#skill-course-research > summary');
+            await entry.scrollIntoViewIfNeeded();
+            assert.equal(await page.locator('[data-oge-topic]').count(), 25);
+            assert.equal(await page.locator('[data-oge-skill-topic]').count(), 26);
+            assert.equal(await page.locator('[data-oge-practical]').count(), 8);
+            assert.equal(await page.locator('#skill-course-research').getAttribute('open'), null);
+            assert.equal(await page.locator('#skill-course-topics').getAttribute('open'), null);
+            const order = await page.evaluate(() => {
+              const research = document.querySelector('#skill-course-research');
+              const practice = document.querySelector('#skill-course .oge-skill-course-actions');
+              return Boolean(research.compareDocumentPosition(practice) & Node.DOCUMENT_POSITION_FOLLOWING);
+            });
+            assert(order, 'Optional research appears before practice');
+            await noOverflow(page, entryName + ' research entry closed at ' + width);
+            if (index === 0) await page.screenshot({path: path.join(out, 'h17-' + entryName + '-closed-' + width + '.png')});
+            await summary.focus();
+            await page.keyboard.press('Enter');
+            assert.notEqual(await page.locator('#skill-course-research').getAttribute('open'), null);
+            assert.equal(await page.locator('[data-oge-research]').count(), 4);
+            for (let step = 0; step <= index; step++) await page.keyboard.press('Tab');
+            const link = page.locator('[data-oge-research="' + model.topic + '"]');
+            assert(await link.evaluate(a => a === document.activeElement), 'Each model is reached through the natural keyboard order');
+            const focus = await link.evaluate(a => {
+              const s = getComputedStyle(a);
+              return {style: s.outlineStyle, width: parseFloat(s.outlineWidth)};
+            });
+            assert(focus.style !== 'none' && focus.width >= 2, 'Focused model link has a visible outline');
+            const box = await link.boundingBox();
+            assert(box && box.height >= 44, 'Model link retains a usable touch target');
+            await noOverflow(page, entryName + ' research entry open at ' + width);
+            if (index === 0) await page.screenshot({path: path.join(out, 'h17-' + entryName + '-open-' + width + '.png')});
+            const progressBefore = await page.evaluate(() => localStorage.getItem('mathexam.skillLab.v1'));
+            await page.keyboard.press('Enter');
+            await page.waitForURL(url => url.pathname === lesson && url.searchParams.get('route') === 'task:' + model.task);
+            await page.locator('#mathexam-skill-lab .task').waitFor();
+            const actual = await page.evaluate(() => ({topic: OGESkillLab.state.topic, task: OGESkillLab.task().id, type: OGESkillLab.task().type}));
+            assert.deepEqual(actual, {topic: model.topic, task: model.task, type: model.type});
+            await page.locator(model.type === 'probability' ? '.ball-field' : '.figure svg').waitFor();
+            await navigation(page, model.trainer);
+            await unchanged(page);
+            assert.equal(await page.evaluate(() => localStorage.getItem('mathexam.skillLab.v1')), progressBefore, 'Following a model link awards no learning result');
+            await noOverflow(page, model.task + ' via ' + entryName + ' at ' + width);
+            if (entryPath === '/oge/') await page.screenshot({path: path.join(out, 'h17-model-' + model.topic + '-' + width + '.png'), fullPage: true});
+            await page.locator('[data-skill-link="course"]').click();
+            await page.waitForURL(url => url.pathname === course);
+            assert.equal(await page.locator('[data-oge-topic]').count(), 25);
+            await unchanged(page);
+          }
+        }
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        const primaryResearch = page.getByRole('link', {name: 'Исследовать прямую', exact: true});
+        const directPractice = page.getByRole('link', {name: 'Начать с графиков №11', exact: true});
+        assert(await directPractice.isVisible(), 'Short practice is available without opening a topic list');
+        assert.equal(await directPractice.getAttribute('href'), '/oge/skills/?topic=n11');
+        assert.equal(await directPractice.getAttribute('aria-describedby'), 'oge-graph-practice-note');
+        assert(await page.locator('#oge-graph-practice-note').isVisible());
+        assert.match(await page.locator('#oge-graph-practice-note').innerText(), /Короткая тренировка по графикам: четыре задания/);
+        await primaryResearch.focus();
+        await page.keyboard.press('Tab');
+        assert(await directPractice.evaluate(a => a === document.activeElement), 'Keyboard order offers research before ordinary practice');
+        const directBox = await directPractice.boundingBox();
+        assert(directBox && directBox.height >= 44, 'The direct practice shortcut retains a usable touch target');
+        await noOverflow(page, 'H17 hero research and practice choices at ' + width);
+        await page.locator('.oge-hero .hero-inner').screenshot({path: path.join(out, 'h17-hero-' + width + '.png')});
+        await page.getByRole('link', {name: 'Исследовать прямую', exact: true}).click();
+        await page.locator('#mathexam-skill-lab .task').waitFor();
+        assert.equal(await page.evaluate(() => OGESkillLab.task().id), 'n11-c1', 'The primary hero opens the promised line model');
+        await unchanged(page);
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).press('Enter');
+        await page.waitForURL(base + lesson + '?topic=n11');
+        await page.getByText('Формула по графику', {exact: true}).waitFor();
+        assert.deepEqual(await page.evaluate(() => ({id: OGESkillLab.task().id, type: OGESkillLab.task().type})), {id: 'n11-q1', type: 'choice'}, 'The secondary action still opens ordinary graph practice');
+        await unchanged(page);
+        assert.deepEqual(errors, []);
+        report.scenarios.push('H17: four exact models from both entries, keyboard focus, untouched results, course returns and separate research/practice hero actions at ' + width + 'px');
+      } finally { await c.close(); }
+    }
+
+    {
+      const c = await context({javaScriptEnabled: false, viewport: {width: 320, height: 900}}), page = await c.newPage();
+      try {
+        for (const entryPath of ['/oge/', course]) {
+          await page.goto(base + entryPath, {waitUntil: 'load'});
+          await page.locator('#skill-course-research > summary').press('Enter');
+          assert.equal(await page.locator('[data-oge-research]').count(), 4);
+          await noOverflow(page, 'H17 model choices without JavaScript from ' + entryPath);
+          await page.locator('[data-oge-research="n17"]').press('Enter');
+          await page.waitForURL(url => url.pathname === lesson && url.searchParams.get('route') === 'task:n17-c-tilt-area');
+          assert(await page.locator('nav[data-skill-navigation]').isVisible());
+          assert.match(await page.locator('noscript').innerText(), /JavaScript/);
+          await page.locator('[data-skill-link="course"]').click();
+          await page.waitForURL(url => url.pathname === course);
+          assert.equal(await page.locator('[data-oge-topic]').count(), 25);
+        }
+        await page.goto(base + '/oge/', {waitUntil: 'load'});
+        assert(await page.locator('#oge-graph-practice-note').isVisible());
+        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).press('Enter');
+        await page.waitForURL(base + lesson + '?topic=n11');
+        assert(await page.locator('[data-skill-link="course"]').isVisible());
+        report.scenarios.push('H17: both optional research entries and their fallback return remain usable without JavaScript');
+      } finally { await c.close(); }
+    }
+
     for (const width of [320, 1280]) {
       const c = await context({viewport: {width, height: 900}}), page = await c.newPage();
       try {
         const plot = page.locator('.figure svg');
         await page.goto(base + '/oge/', {waitUntil: 'load'});
-        await page.getByRole('link', {name: 'Начать с графиков №11', exact: true}).click();
+        // The former hero practice remains available through its unchanged topic link.
+        // Keep every existing formula, scale, answer and reload assertion below.
+        await page.locator('#skill-course-topics > summary').click();
+        await page.locator('[data-oge-skill-topic="n11"]').click();
         await page.locator('#mathexam-skill-lab .task').waitFor();
         assert.equal(await page.locator('#skill-topic').inputValue(), 'n11');
         assert.match(await page.locator('.stage-count').first().innerText(), /Задание 1 из 4/);

@@ -95,13 +95,15 @@
   <div class="container hero-grid">
     <div class="hero-inner">
       <p class="kicker">Бесплатный курс · 9 класс</p>
-      <h1 id="oge-heading">ОГЭ по математике.<br><em>Сначала — понять.</em></h1>
+      <h1 id="oge-heading">ОГЭ по математике.<br><em>Сначала — исследовать.</em></h1>
       <p class="lead">Покрутить колесо. Рассмотреть квартиру. Увидеть, как улыбается парабола.<br>А потом — решить задачу самому.</p>
       <div class="actions">
-        <a class="btn" href="/oge/skills/?topic=n11">Начать с графиков №11 <span aria-hidden="true">↗</span></a>
+        <a class="btn" href="/oge/skills/?topic=n11&amp;route=task:n11-c1">Исследовать прямую <span aria-hidden="true">↗</span></a>
+        <a class="btn secondary" href="/oge/skills/?topic=n11" aria-describedby="oge-graph-practice-note">Начать с графиков №11 <span aria-hidden="true">↗</span></a>
         <a class="btn secondary" href="#all-topics">Все 25 тем ↓</a>
         <a class="btn secondary" href="#oge-models">Рассмотреть модели</a>
       </div>
+      <p class="hero-note" id="oge-graph-practice-note">Короткая тренировка по графикам: четыре задания с подсказками.</p>
       <p class="hero-note"><span aria-hidden="true">✓</span> Без регистрации · В своём темпе · С подсказками</p>
       <p class="hero-author">Курс Натальи Михайловны<br><span>Из живых занятий — в понятные тренажёры.</span></p>
     </div>
@@ -215,10 +217,19 @@
 <section class="oge-skill-course-entry" id="skill-course" aria-labelledby="skill-course-title">
   <div class="oge-skill-course-entry-inner">
     <h2 id="skill-course-title">Выбери, как заниматься</h2>
-    <p>Можно сразу решать задания ОГЭ. Для подробного разбора начни с четырёх коротких заданий по теме. Мастерские и карта навыков — по желанию.</p>
-    <div class="oge-skill-course-actions"><a href="#all-topics">Решать задания ОГЭ</a><a href="/oge/skills/">Разобраться глубже →</a></div>
+    <details id="skill-course-research">
+      <summary>Исследовать модель — по желанию</summary>
+      <ul class="oge-skill-course-topics">
+        <li><a data-oge-research="n10" href="/oge/skills/?topic=n10&amp;route=task:n10-c1">№10 · Настроить вероятность на барабане</a></li>
+        <li><a data-oge-research="n11" href="/oge/skills/?topic=n11&amp;route=task:n11-c1">№11 · Построить прямую через две точки</a></li>
+        <li><a data-oge-research="n15" href="/oge/skills/?topic=n15&amp;route=task:n15-c-triangle-gate">№15 · Проверить, из каких сторон получается треугольник</a></li>
+        <li><a data-oge-research="n17" href="/oge/skills/?topic=n17&amp;route=task:n17-c-tilt-area">№17 · Наклонить параллелограмм и сравнить площадь</a></li>
+      </ul>
+    </details>
+    <p>В коротком занятии — четыре задания на отдельные шаги темы. Чтобы решать больше задач, выбери основной тренажёр.</p>
+    <div class="oge-skill-course-actions"><a href="#all-topics">Решать задания ОГЭ</a><a href="/oge/skills/">Начать короткую тренировку →</a></div>
     <details id="skill-course-topics">
-      <summary>Выбрать тему для короткого занятия</summary>
+      <summary>Короткая тренировка: основы и №1–25</summary>
       <ul class="oge-skill-course-topics">
         <li><a data-oge-skill-topic="base" href="/oge/skills/?topic=base">Основы вычислений</a></li>
         <li><a data-oge-skill-topic="n1" href="/oge/skills/?topic=n1">№1 · Практические задачи</a></li>
@@ -248,6 +259,7 @@
         <li><a data-oge-skill-topic="n25" href="/oge/skills/?topic=n25">№25 · Сложные задачи по геометрии</a></li>
       </ul>
     </details>
+    <p data-oge-written-note>В №20–25 можно потренировать отдельные шаги. Полное решение запиши самостоятельно: проверка шагов не оценивает всё обоснование.</p>
   </div>
 </section>
 <section class="oge-topics oge-all-topics section" id="all-topics" aria-labelledby="oge-topics-title">
