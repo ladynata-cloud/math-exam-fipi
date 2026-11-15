@@ -6,13 +6,10 @@ const root=path.resolve(__dirname,'..'),shots=path.resolve(process.env.EGE_CROSS
 const KEY='mathexam.ege-baza.path.v1',PREFIX=KEY+'.h03.',BASE='5f25f75b6e7178ad1d492c7bcb28ed9e63c97bae';
 const offline='downloads/trainers/ege-baza-practice/ege-baza-practice.html';
 const previous=new Map(['ege-baza/path/index.html','ege-baza/path/app.js','ege-baza/path/task-first.js','ege-baza/course-journey.js'].map(file=>[file,execFileSync('git',['show',BASE+':'+file],{cwd:root})]));
-const errors=[],evidence=[];let barrier=null,browser;
+const errors=[],evidence=[],overlaps=[];let browser;
+const pauseMessage='H03 pause before native localStorage write: ';
 const server=http.createServer((req,res)=>{
  const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
- if(pathname==='/__h03_barrier'){
-  const current=barrier;if(!current){res.writeHead(409);res.end();return;}
-  current.response=res;current.entered();return;
- }
  try{
   const old=pathname.startsWith('/__h03_old/'),relative=(old?pathname.slice('/__h03_old/'.length):pathname.slice(1));
   let file=path.resolve(root,relative);if(!file.startsWith(root+path.sep))throw Error('outside root');
@@ -22,11 +19,44 @@ const server=http.createServer((req,res)=>{
   res.setHeader('Cache-Control','no-store');res.end(old&&previous.has(name)?previous.get(name):fs.readFileSync(file));
  }catch{res.writeHead(404);res.end();}
 });
-function pauseNextWrite(){
- let resolve,reject;const entered=new Promise((yes,no)=>{resolve=yes;reject=no;});
- const timer=setTimeout(()=>{barrier?.response?.end();reject(Error('cross-tab overlap barrier timed out'));},10000);
- barrier={entered:resolve,response:null};
- return {entered,release(){clearTimeout(timer);barrier?.response?.end('continue');barrier=null;}};
+function pauseNextWrite(page,label){
+ let resolve,dialog=null;const entered=new Promise(yes=>{resolve=yes;});
+ const finish=value=>{clearTimeout(timer);resolve(value);};
+ const onDialog=value=>{
+  dialog=value;
+  if(value.type()!=='alert'||!value.message().startsWith(pauseMessage+PREFIX))
+   return finish({error:Error(label+': unexpected browser dialog at write barrier')});
+  finish({key:value.message().slice(pauseMessage.length)});
+ };
+ const onClose=()=>finish({error:Error(label+': paused page closed before the native write')});
+ const timer=setTimeout(()=>finish({error:Error(label+': no native storage write reached the browser dialog barrier')}),10000);
+ page.on('dialog',onDialog);page.on('close',onClose);
+ return {entered,async release(){
+  clearTimeout(timer);page.off('dialog',onDialog);page.off('close',onClose);
+  if(dialog&&!page.isClosed())await dialog.accept();
+ }};
+}
+async function overlapWrites(a,b,action,concurrentAction,label){
+ const held=pauseNextWrite(a,label);let pending,failure;
+ try{
+  await a.evaluate(()=>window.__h03PauseNext=true);
+  // Observe failures immediately even while the first action waits for its dialog.
+  pending=Promise.resolve().then(action).then(()=>({}),error=>({error}));
+  const paused=await held.entered;if(paused.error)throw paused.error;
+  const snapshot=()=>b.evaluate(({prefix,key})=>({
+   paused:localStorage.getItem(key),
+   peers:Object.fromEntries(Object.keys(localStorage).filter(name=>name.startsWith(prefix)&&name!==key).sort().map(name=>[name,localStorage.getItem(name)]))
+  }),{prefix:PREFIX,key:paused.key});
+  const before=await snapshot();await concurrentAction();const after=await snapshot();
+  assert.equal(after.paused,before.paused,label+': A has not committed its paused native write');
+  assert.notDeepEqual(after.peers,before.peers,label+': B committed a real recovery record while A was paused');
+  overlaps.push({case:label,mechanism:'held browser dialog before native setItem',pausedRecordUnchanged:true,peerNativeWrite:true});
+ }catch(error){failure=error;}
+ finally{
+  try{await held.release();}catch(error){failure=failure||error;}
+  if(pending){const result=await pending;failure=failure||result.error;}
+ }
+ if(failure)throw failure;
 }
 async function page(context,url){const result=await context.newPage();result.on('pageerror',error=>errors.push(error.message));await result.goto(url);await result.waitForFunction(()=>!!window.PathCourse);return result;}
 const read=page=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)),KEY);
@@ -34,19 +64,19 @@ const answer=page=>page.evaluate(()=>{const row=PathCourse.state().lessons.round
 const submit=async(page,value)=>{await page.locator('#answer').fill(String(value));await page.locator('#answer').press('Enter');};
 async function context(width){
  const result=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
- // Pause one real synchronous localStorage commit after the application's read.
- // A second page commits while this page waits; the underlying setItem itself
- // remains atomic and is never simulated, deferred or replaced with a fake store.
- await result.addInitScript(({prefix})=>{
+ // Hold a synchronous browser dialog after the application's read and before
+ // one native setItem. This requires no network request and respects the
+ // standalone HTML's default-src 'none' CSP. B writes to real localStorage
+ // while A waits; no storage operation is simulated or deferred after return.
+ await result.addInitScript(({prefix,message})=>{
   const write=Storage.prototype.setItem;
   Storage.prototype.setItem=function(key,value){
    if(this===localStorage&&window.__h03PauseNext===true&&String(key).startsWith(prefix)){
-    window.__h03PauseNext=false;const request=new XMLHttpRequest();request.open('GET','/__h03_barrier',false);request.send();
-    if(request.status!==200)throw Error('overlap barrier unavailable');
+    window.__h03PauseNext=false;window.alert(message+String(key));
    }
    return write.call(this,key,value);
   };
- },{prefix:PREFIX});
+ },{prefix:PREFIX,message:pauseMessage});
  return result;
 }
 async function settled(page,predicate){await page.waitForFunction(predicate,KEY,{timeout:10000});}
@@ -71,9 +101,7 @@ async function screenshot(page,name){assert(await page.evaluate(()=>document.doc
    {
     const ctx=await context(width),url=origin+route+'#lesson=round',a=await page(ctx,url),b=await page(ctx,url);
     await a.locator('#answer').fill(String(await answer(a)));await b.locator('#answer').fill(String(await answer(b)));
-    const held=pauseNextWrite();await a.evaluate(()=>window.__h03PauseNext=true);
-    const pending=a.locator('#answer').press('Enter');
-    try{await held.entered;await b.locator('#answer').press('Enter');}finally{held.release();await pending;}
+    await overlapWrites(a,b,()=>a.locator('#answer').press('Enter'),()=>b.locator('#answer').press('Enter'),`${label}-${width}-correct-correct`);
     await settled(b,key=>JSON.parse(localStorage.getItem(key)).lessons.round.independent===1);
     const row=(await read(a)).lessons.round;assert.equal(row.independent,1);assert.equal(row.checks.length,1);
     await a.close();await b.close();const reopened=await page(ctx,url);assert.equal((await read(reopened)).lessons.round.checks.length,1);
@@ -81,9 +109,8 @@ async function screenshot(page,name){assert(await page.evaluate(()=>document.doc
    }
    {
     const ctx=await context(width),url=origin+route+'#lesson=round',a=await page(ctx,url),b=await page(ctx,url);
-    await a.locator('#answer').fill(String(await answer(a)));const held=pauseNextWrite();await a.evaluate(()=>window.__h03PauseNext=true);
-    const pending=a.locator('#answer').press('Enter');
-    try{await held.entered;await submit(b,-99);}finally{held.release();await pending;}
+    await a.locator('#answer').fill(String(await answer(a)));
+    await overlapWrites(a,b,()=>a.locator('#answer').press('Enter'),()=>submit(b,-99),`${label}-${width}-correct-error`);
     await settled(a,key=>{const row=JSON.parse(localStorage.getItem(key)).lessons.round;return row.done&&row.help&&row.independent===0;});
     assert.equal((await read(a)).lessons.round.checks.length,1);assert(!/с первой/.test(await a.locator('#feedback').innerText()));
     await screenshot(a,`${label}-${width}-overlapping-help`);evidence.push({route:label,width,case:'overlapping-answer-and-error',independent:0});await ctx.close();
@@ -116,8 +143,8 @@ async function screenshot(page,name){assert(await page.evaluate(()=>document.doc
   }
   {
    const ctx=await context(1280),url=origin+route,a=await page(ctx,url+'#exam');await a.locator('#start').click();const b=await page(ctx,url+'#exam');
-   await a.locator('#answer').fill('3');const held=pauseNextWrite();await a.evaluate(()=>window.__h03PauseNext=true);const pending=a.locator('#answer').press('Enter');
-   try{await held.entered;await b.goto(url+'#lesson=round');await b.waitForFunction(()=>!!window.PathCourse);}finally{held.release();await pending;}
+   await a.locator('#answer').fill('3');
+   await overlapWrites(a,b,()=>a.locator('#answer').press('Enter'),async()=>{await b.goto(url+'#lesson=round');await b.waitForFunction(()=>!!window.PathCourse);},`${label}-exam-answer-and-help`);
    assert.equal((await read(a)).active.i,1);assert.equal((await read(a)).active.assisted,true);
    const stale=await page(ctx,url+'#exam');await submit(a,'4');await stale.locator('#answer').fill('99');await stale.locator('#answer').press('Enter');
    assert.equal((await read(a)).active.i,2);assert.equal((await read(a)).active.answers.length,2);assert((await read(a)).examDrafts.some(row=>row.value==='99'));
@@ -154,12 +181,14 @@ async function screenshot(page,name){assert(await page.evaluate(()=>document.doc
   await a.reload();assert.equal((await read(a)).lessons.round.done,true);await screenshot(a,'standalone-file-320');
   evidence.push({route:'standalone-file',width:320,case:'offline-help-answer-reload',crossFilePromise:false});await ctx.close();
  }
+ assert.equal(evidence.length,37,'all 18 source, 18 offline-HTTP and one standalone-file case completed');
+ assert.equal(overlaps.length,10,'all ten pauses verified a peer native write before releasing the first writer');
  assert.deepEqual(errors,[],'real browser page errors');
  const hashes=Object.fromEntries(['ege-baza/path/app.js','ege-baza/path/task-first.js','ege-baza/course-journey.js',offline].map(file=>[file,createHash('sha256').update(fs.readFileSync(path.join(root,file))).digest('hex')]));
- fs.writeFileSync(path.join(shots,'evidence.json'),JSON.stringify({oldSource:BASE,hashes,evidence,pageErrors:errors},null,2)+'\n');
+ fs.writeFileSync(path.join(shots,'evidence.json'),JSON.stringify({oldSource:BASE,hashes,evidence,overlaps,pageErrors:errors},null,2)+'\n');
  console.log('EGE_BASE_CROSS_TAB_PROGRESS_BROWSER_OK: '+evidence.length+' cases; source and generated HTML, real overlap, actual old client, opener identity, drafts, step interruption, 320/1280px, standalone file offline.');
 })().catch(async error=>{
  console.error(error);process.exitCode=1;
  if(browser)for(const [index,page] of browser.contexts().flatMap(context=>context.pages()).entries())try{await page.screenshot({path:path.join(shots,'failure-'+index+'.png'),fullPage:true,timeout:5000});}catch{}
- fs.mkdirSync(shots,{recursive:true});fs.writeFileSync(path.join(shots,'failure.json'),JSON.stringify({error:error.stack,evidence,pageErrors:errors},null,2)+'\n');
-}).finally(async()=>{barrier?.response?.end();if(browser)await browser.close();server.close();});
+ fs.mkdirSync(shots,{recursive:true});fs.writeFileSync(path.join(shots,'failure.json'),JSON.stringify({error:error.stack,evidence,overlaps,pageErrors:errors},null,2)+'\n');
+}).finally(async()=>{if(browser)await browser.close();server.close();});

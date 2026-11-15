@@ -207,6 +207,35 @@ Rollback means restoring earlier source and its corresponding package without cl
 
 The acceptance checklist above describes the final gate, whose exact CI results and reviewed head are recorded in the PR handoff. Merge and deployment are separate owner decisions.
 
+### First candidate browser result and scoped harness correction
+
+The exact candidate `beaa01a8ec8ee1ac1733d22d2a747a4ce83241f6` ran in
+[EGE task-first CI 43761778659](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/43761778659).
+The existing 113-family checks and the new 96-assertion DOM regression passed.
+The real-browser artifact records **21 completed cases**: all 18 source cases,
+including overlapping native writes, actual old clients, exam preservation,
+opener identity and guided steps, plus the first three sequential offline-HTTP
+cases at 320 px. The first offline-HTTP overlapping-write case then failed with
+`cross-tab overlap barrier timed out`; later cases and downstream browser steps
+did not run. This partial result is not a passing browser gate.
+
+The generated standalone HTML deliberately has `default-src 'none'`. Its CSP
+blocked the test harness's synchronous XHR to the pause endpoint before the
+endpoint could observe the held write. The injected storage wrapper threw, and
+the application displayed its save-failure recovery notice. The failure evidence
+contains no page errors; it does not establish a runtime loss of accepted work.
+
+The correction changes only the allowed browser harness: a held per-page browser
+dialog now pauses immediately before the native `localStorage.setItem`, without
+a network request or CSP bypass. While A is held, the test verifies through B
+that A's writer record is unchanged and a peer record has actually changed,
+then releases A and runs every existing outcome assertion. Dialog/listener/timer
+cleanup runs on failure as well. Per-case overlap evidence is included in the
+artifact. Runtime sources, standalone HTML/ZIP and their hashes remain unchanged.
+Syntax and local targeted checks are recorded in the new PR handoff. The full
+real-browser suite and downstream CI remain **pending on the new exact head**;
+neither the previous 21 cases nor this harness correction claims their result.
+
 ## Required handoff
 
 ```text
