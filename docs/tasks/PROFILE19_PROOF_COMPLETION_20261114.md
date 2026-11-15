@@ -71,8 +71,8 @@ request relevant help, revise their draft and continue to a different condition.
 - [x] Marking criteria alone is self-review, never an automatic proof verdict.
 - [x] Prior answers, drafts and earned results survive viewing, editing and reload.
 - [x] Task 14/16 whole-answer behavior and next-condition behavior remain correct.
-- [ ] No narrow-screen overflow in the real-browser gate.
-- [ ] In all six parameter methods, a written argument plus an unrecognized
+- [x] No narrow-screen overflow in the real-browser gate.
+- [x] In all six parameter methods, a written argument plus an unrecognized
   final answer creates no attempt and opens no criteria; a subsequent meaningful
   wrong answer records one attempt and enables self-review.
 
@@ -81,8 +81,9 @@ request relevant help, revise their draft and continue to a different condition.
 - Required tests: second-part mathematics/state/DOM, parameter routes, current
   open-answer regressions, all six proof examples and relevant board contracts.
 - Required static checks: syntax, navigator bindings/preservation, `git diff --check`.
-- Browser: current course-entry and full second-part scenarios in GitHub Actions;
-  local Chromium cannot start because this executor denies AF_UNIX sockets.
+- Browser: current course-entry and full second-part scenarios locally and in
+  GitHub Actions. Chromium Headless Shell 139 is available for this
+  synchronization; the earlier system-Chromium socket restriction is historical.
 - Final marker: `PROFILE19_PROOF_COMPLETION_GATE_OK` only after required checks.
 - Real pupil pilot and external-provider review are not performed by this task.
 - Synchronization gates: all `tools/profile-part2-*.test.cjs`, including H04
@@ -147,7 +148,7 @@ request relevant help, revise their draft and continue to a different condition.
 - H05 remains conditional on acceptance of this foundation; this update does
   not implement H05 or H06.
 
-### Verified source checkpoint and review
+### Historical source checkpoint and review before H04/#620 synchronization
 
 - Remote source checkpoint: `7e55dd63d8bc6fd7c9567a6f4d355a717884000c`;
   tree `b887caca8f850fef5a9fa35b048e57deef9632c4`, identical to local
@@ -165,7 +166,45 @@ request relevant help, revise their draft and continue to a different condition.
   only the binding for `ege-profil/part-two/index.html`.
 - Initial added-test fixtures used an unrecognized interval and an incorrect
   catalog export assumption; those test-harness errors were corrected. No product
-  assertion or gate was relaxed. Native-browser results remain pending CI.
+  assertion or gate was relaxed. At that earlier checkpoint, native-browser
+  results were pending CI.
+
+### Synchronized source and local verification, 2026-11-16
+
+- Actual remote source checkpoint: `ba917c13d1222d1fad93fc6e1e3504a468b0c6a5`,
+  tree `6f0a60ac5ca26a2cf72ed39e269411476aa9a521`, with parents
+  `9f151187e732a69639034161abe90e3e12fb2701` and the authorized
+  `1469ad50a8659f66c8613164009e7387a3a68f2b`. This retains ordinary merge
+  history and the independently reviewed combined source.
+- The canonical binding tool records this actual source for
+  `ege-profil/part-two/index.html`. All 122 accepted-main source-binding records
+  and all seven coverage records remain intact. Only the Part Two standalone
+  HTML/ZIP was rebuilt; the other 56 of 57 download-manifest entries remain
+  unchanged. Its ZIP contains the exact standalone HTML and unchanged prompt;
+  only the HTML member changed from accepted main.
+- All 210 second-part tests passed with no failure or skip. This includes the
+  six-method proof/format regression, 27 native H01 cases and six H04 native
+  online/offline cases at widths 320, 390 and 1280, with two-tab checks at 1280.
+- Serial native course checks passed: 126 screens and 42 completed conditions
+  at three widths; inequality checks passed 18 journeys and 126 steps,
+  including keyboard axes, reload and stale-tab behavior.
+- The standard `npm --prefix ege-profil test` passed all 11 scripts, including
+  7600 generated planimetry cases without a discrepancy. Navigator preservation
+  passed four tests and canonical binding tests passed five.
+- The scoped standalone browser gate passed both file opens and both panel
+  views, including the unchanged shared guide and download-link assertions.
+- The full course-entry browser gate passed at 320 and 1280 pixels: all 20
+  profile routes, all 21 base-course numbers, legacy/deep links, restored
+  first-part drafts and parameter-proof journeys. The proof-review screenshots
+  at both widths were also visually checked for readable criteria and examples.
+- Initial parallel native runs hit shared-runtime target crashes. The complete
+  affected gates then passed serially with the existing assertions and launch
+  settings. Missing sparse-checkout support files were materialized verbatim
+  from the actual source checkpoint, with Git blob identity checked; they do
+  not add changed files to this PR.
+- Final published-head CI is pending; the final gate marker is not issued by
+  this local execution record. The PR remains Draft, with no main merge or
+  deployment authorized.
 
 ## Required handoff
 
