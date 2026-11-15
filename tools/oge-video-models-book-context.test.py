@@ -5,7 +5,7 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, sha, without_closed_video_summary, without_closed_video_geometry
+from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, sha, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -114,6 +114,39 @@ class ContextTests(unittest.TestCase):
                        lambda raw:raw.replace(b'<script defer src="oge-video-models.js"',b'<script defer src="missing-models.js"')]:
             with patch.object(type(ROOT),'read_bytes',lambda p:change(original_read(p)) if p==target else original_read(p)):
                 self.assertIsNone(without_closed_video_summary(self.record))
+
+    def test_intersection_delta_rejects_partial_duplicate_and_unrelated_math_even_with_matching_served_hash(self):
+        file = GRAPH_INTERSECTIONS['file']
+        self.assertEqual(file, self.record['route'][1:])
+        self.assertEqual(GRAPH_INTERSECTIONS['sourceBase'], '1dea53a92200942bd40712cfed2ce06085d0c892')
+        self.assertEqual(GRAPH_INTERSECTIONS['task'], 'docs/tasks/TRAINER_DOWNLOADS_STAGE4_20261114.md')
+        self.assertEqual(len(GRAPH_INTERSECTIONS['fragments']), 3)
+        target = ROOT / file
+        raw = target.read_bytes()
+        self.assertNotEqual(restore_graph_intersections(file, raw), raw)
+        self.assertEqual(restore_graph_intersections('unrelated.html', raw), raw)
+        mutations = []
+        for fragment in GRAPH_INTERSECTIONS['fragments']:
+            after = fragment['after'].encode()
+            self.assertEqual(raw.count(after), 1)
+            for replacement in (fragment['before'].encode(), after * 2, after.replace(b'addMeasureH', b'unreviewedMeasureH')):
+                changed = raw.replace(after, replacement, 1)
+                self.assertNotEqual(changed, raw)
+                self.assertEqual(restore_graph_intersections(file, changed), changed)
+                mutations.append(changed)
+        changed_math = raw.replace(b'const x=1/(C-m);', b'const x=2/(C-m);', 1)
+        self.assertNotEqual(changed_math, raw)
+        self.assertIn(b'const x=2/(C-m);', restore_graph_intersections(file, changed_math))
+        mutations.append(changed_math)
+        original_read = type(target).read_bytes
+        for changed in mutations:
+            record = copy.deepcopy(self.record)
+            digest = sha(changed)
+            record['videoModelContext']['sourceSha256'] = digest
+            record['resources'][record['route']]['sha256'] = digest
+            record['publicWayfinding']['servedHtmlSha256'] = digest
+            with patch.object(type(target), 'read_bytes', lambda p: changed if p == target else original_read(p)):
+                self.assertIsNone(without_closed_video_summary(record), 'a current served hash cannot excuse changed native mathematics')
 
 
 if __name__=='__main__':

@@ -51,6 +51,7 @@ def build_all(build):
 
     build('adapt-trainer', 'Как изменить скачанный тренажёр', steps, draw)
     build_geometry(build)
+    build_graph(build)
 
 
 def build_geometry(build):
@@ -102,3 +103,88 @@ def build_geometry(build):
                 card.text(173, y, feedback, 21, ink)
 
     build('adapt-geometry', 'Как изменить геометрический тренажёр', steps, draw)
+
+
+def build_graph(build):
+    steps = (
+        'Скачай HTML №22. Пример для сравнения: C = 3 и p = −1.',
+        'Попроси добавить пример с C = 3 и p = −2, сохранив прежний банк.',
+        'Сохрани копию с окончанием -my.html. После сокращения x ≠ 0 и x ≠ 2.',
+        'Точка (2; 2,5) выколота. Прямые y = 3 и y = 2,5 не пересекают график.',
+        'Открой без сети: пусто и «2 и 3» не подходят; «2,5 и 3» верно.',
+    )
+
+    def fraction(card, x, y, numerator, denominator):
+        font = card.font(25)
+        width = max(card.draw.textlength(text, font=font)
+                    for text in (numerator, denominator)) + 16
+        card.text(x + width / 2, y, numerator, 25, anchor='mt')
+        card.line([(x, y + 29), (x + width, y + 29)], width=2)
+        card.text(x + width / 2, y + 35, denominator, 25, anchor='mt')
+
+    def graph(card):
+        # One coordinate unit is exactly 22 pixels on both axes. Draw the
+        # canceled expression's graph only at valid x, with the hole marked.
+        origin_x, origin_y, scale = 115, 247, 22
+
+        def point(x, y):
+            return (origin_x + scale * x, origin_y - scale * y)
+
+        for x in range(-2, 6):
+            card.line([point(x, 0), point(x, 5)], 'grid', 1)
+        for y in range(6):
+            card.line([point(-2, y), point(5, y)], 'grid', 1)
+        card.line([point(-2, 0), point(5, 0)], 'muted', 2)
+        card.line([point(0, 0), point(0, 5)], 'muted', 2)
+        card.text(*point(5, 0), 'x', 14, 'muted', anchor='lt')
+        card.text(origin_x - 12, origin_y - scale * 5 - 4, 'y', 14, 'muted', anchor='rt')
+        card.text(origin_x - 4, origin_y + 3, '0', 13, 'muted', anchor='rt')
+        for x in (2, 4):
+            card.text(origin_x + scale * x, origin_y + 3, str(x), 13, 'muted', anchor='mt')
+        card.text(origin_x - 5, origin_y - scale * 3, '3', 13, 'muted', anchor='rm')
+
+        for y in (3, 2.5):
+            card.line([point(-2, y), point(5, y)], 'amber', 2, dashed=True)
+        for start, end in ((-2, -.5), (1 / 3, 5)):
+            xs = [start + (end - start) * index / 180 for index in range(181)]
+            curve = [point(x, 3 - 1 / x) for x in xs]
+            card.line(curve, 'blue', 3)
+        card.circle(*point(2, 2.5), 5, 'white', 'blue', 2)
+
+    def draw(card, index):
+        card.rect((32, 88, 608, 265), outline='edge', radius=12)
+        if index == 0:
+            card.text(50, 105, 'ОГЭ №22 · Выколотая точка', 24, bold=True)
+            card.text(51, 170, 'y = 3 −', 28, bold=True)
+            fraction(card, 174, 142, 'x − 1', 'x² − x')
+            card.text(348, 153, 'C = 3, p = −1', 22)
+            card.text(348, 203, 'Скачать HTML', 22, 'accent', True)
+        elif index == 1:
+            card.text(50, 106, 'Запрос + исходный HTML', 24, bold=True)
+            card.text(51, 149, 'Добавь пример: C = 3, p = −2.', 23)
+            card.text(51, 183, 'Сохрани прежний банк и проверку.', 21)
+            card.text(51, 226, 'oge-task22-functions-graphs.html', 20, 'blue')
+        elif index == 2:
+            card.text(50, 105, 'Сохрани новую копию', 24, bold=True)
+            card.text(51, 143, 'oge-task22-functions-graphs-my.html', 19, 'blue')
+            card.text(51, 204, 'y = 3 −', 27, bold=True)
+            fraction(card, 171, 176, 'x − 2', 'x² − 2x')
+            card.text(359, 186, 'x ≠ 0', 27, 'accent', True)
+            card.text(359, 224, 'x ≠ 2', 27, 'accent', True)
+        elif index == 3:
+            card.text(50, 104, 'Сверь график и ограничения', 23, bold=True)
+            graph(card)
+            card.text(317, 147, 'y = 3 − 1/x', 25, 'blue', True)
+            card.text(317, 184, 'Нет общих точек:', 20)
+            card.text(317, 217, 'm = 3 или 2,5', 25, 'accent', True)
+        else:
+            card.text(50, 106, 'При каких m нет пересечений?', 23, bold=True)
+            rows = [('Пусто', 'Не засчитывать', 'ink'),
+                    ('2 и 3', 'Отклонить', 'red'),
+                    ('2,5 и 3', 'Принять', 'accent')]
+            for row, (answer, feedback, ink) in enumerate(rows):
+                y = 151 + row * 36
+                card.text(52, y, answer, 22, ink, True)
+                card.text(220, y, feedback, 22, ink)
+
+    build('adapt-graph', 'Как изменить график и ограничения', steps, draw)

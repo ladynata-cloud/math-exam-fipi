@@ -68,5 +68,5 @@ export function exportStandalone(root, html, entry) {
 <script data-offline-runtime>
 (${scriptText(runtime)})(${json(config)});
 </script>`);
-  return html.replace(/<\/body>/i, () => `${deferred.join('\n')}\n</body>`).replace(/^[\t ]+$/gm, '');
+  return html.replace(/<\/body>/i, () => `${deferred.join('\n')}\n</body>`).replace(/[\t ]+$/gm, '');
 }
