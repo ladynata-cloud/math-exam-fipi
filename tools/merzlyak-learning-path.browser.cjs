@@ -16,7 +16,7 @@ const lessons = [
   ['merzlyak-base-8-13', 'Первый признак подобия треугольников'],
   ['merzlyak-base-8-14', 'Второй и третий признаки подобия треугольников'],
 ];
-const stages = ['Понять', 'Исследовать', 'Доказать', 'Решить с опорой', 'Самостоятельно', 'Своими словами'];
+const stages = ['Исследовать', 'Объяснить', 'Доказать', 'Решить с опорой', 'Самостоятельно', 'Своими словами'];
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8',
@@ -144,17 +144,13 @@ async function checkSimilarity(page, base, viewport) {
     for (const [index, stage] of stages.entries()) {
       await page.getByRole('button', { name: `${String(index + 1).padStart(2, '0')} ${stage}`, exact: true }).click();
       await visible(page.locator('#lesson').getByRole('heading', { level: 2 }), id + ' stage ' + stage);
-      if (index === 1) {
-        const canvas = page.locator('#geo-board canvas');
-        await visible(canvas, 'Investigation has a working drawing surface');
-        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-        const bounds = await canvas.evaluate(node => {
-          const box = node.getBoundingClientRect();
-          return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, width: box.width, height: box.height };
-        });
-        evidence.firstViewportModels.push({ id, viewport, bounds });
-        assert(bounds.width > 0 && bounds.height > 0 && bounds.top >= 0 && bounds.bottom <= viewport.height + 1 && bounds.left >= 0 && bounds.right <= viewport.width + 1,
-          `${id} investigation canvas must fit in the first ${viewport.width}×${viewport.height} viewport: ${JSON.stringify(bounds)}`);
+      if (index === 0) {
+        const prediction=page.locator('[data-research-prediction]');
+        await visible(prediction, 'The first prediction is available before the explanation');
+        assert.equal(await page.locator('[data-research-result]').isVisible(), false, 'No authored conclusion before investigation');
+        await prediction.selectOption({label:'Пока не знаю'});
+        await page.locator('[data-research-start]').click();
+        await visible(page.locator('[data-research-scene] svg'), 'Topical investigation has a working diagram');
       }
       if (index === 3) await page.getByRole('button', { name: 'Показать смысл шага', exact: true }).click();
       if (index === 4) await page.getByRole('button', { name: 'Полный разбор с ответом', exact: true }).click();
@@ -166,6 +162,16 @@ async function checkSimilarity(page, base, viewport) {
     await page.getByRole('button', { name: 'Завершить занятие', exact: true }).click();
     await page.reload({ waitUntil: 'load' });
     assert.equal(await page.getByRole('textbox', { name: 'Моё доказательство', exact: true }).inputValue(), draft, id + ' preserves written work');
+    // Restore an actual historical stage-1 record explicitly. The old geometry
+    // remains usable without making that old model the new lesson's entry.
+    await page.evaluate(id=>{const key='mathExamGeometry.merzlyak.v1',d=JSON.parse(localStorage.getItem(key)),v=d.units[id];v.stage=1;v.screen='';v.routeVersion=0;v.observation='Сохранённое исследование подобия';v.updated+=1;localStorage.setItem(key,JSON.stringify(d));},id);
+    await page.reload({waitUntil:'load'});
+    const canvas=page.locator('#geo-board canvas');
+    const bounds=await assertVisibleInViewport(canvas,viewport,id+' restored historical drawing');
+    evidence.firstViewportModels.push({id,viewport,bounds,restoredHistoricalStage:1});
+    assert.equal(await page.locator('#observation').inputValue(),'Сохранённое исследование подобия');
+    await recordLayout(page,id+'-restored-legacy-model',viewport);
+
   }
 }
 

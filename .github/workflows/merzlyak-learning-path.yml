@@ -29,16 +29,24 @@ jobs:
           node tools/merzlyak/trainer-feedback.test.cjs
           node tools/merzlyak/similarity.test.cjs
           node tools/merzlyak/check.cjs
+          node tools/merzlyak/investigations.test.cjs
+          node tools/merzlyak/harmonization.test.cjs
       - name: Existing lesson journeys and narrow mobile layout
         run: node tools/merzlyak/browser.cjs
       - name: Real task interactions and learning path on phone and desktop
         run: node tools/merzlyak-learning-path.browser.cjs
+      - name: All 84 topical inquiries, offline folder, legacy drawings and concurrent windows
+        run: node tools/merzlyak/harmonization.browser.cjs
       - name: Preserve learning-path screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: merzlyak-learning-path
-          path: artifacts/merzlyak-learning-path/
+          path: |
+            artifacts/merzlyak-learning-path/
+            artifacts/merzlyak-h27/
           if-no-files-found: warn
           retention-days: 7
       - run: git diff --check
+      - name: Confirm completed H27 learning-path gate
+        run: echo H27_MERZLYAK_HARMONIZATION_GATE_OK
