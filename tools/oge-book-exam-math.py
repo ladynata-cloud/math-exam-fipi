@@ -159,6 +159,9 @@ def exact_reviewed_context(record, oracle, fixtures):
     if fixture is None:return False
     if not record['prefix']:
         fixture = fixture.get('sourceVariant', fixture)
+        source_route = fixture.get('sourceOnlyRoute')
+        if source_route and (record.get('route') != source_route or record.get('finalPath') != source_route):
+            return False
     navigation = record.get('publicWayfinding')
     fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
     if navigation:
@@ -486,6 +489,8 @@ def reviewed(record, oracle, index):
         return False,'Контрпример: вершины(2,0),(0,1),(−2,0),(0,−1) образуют ромб со сторонами√5, но диагонали4 и2 не равны.','PASS',None
     if ident=='71' and p=='Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.':
         return True,'Это обратный признак параллельности по накрест лежащим углам. Проведённая через точку второй прямой параллель первой образует тот же накрест лежащий угол; единственность луча с данным углом даёт совпадение со второй прямой.','PASS',None
+    if ident=='71' and p=='При пересечении параллельных прямых секущей соответственные углы равны.':
+        return True,'Пусть P и Q — точки пересечения секущей с параллельными прямыми. Перенос на вектор PQ переводит первую прямую во вторую, а секущую в себя. Он сохраняет направления лучей и величины углов, поэтому переводит каждый угол при P в соответственный угол при Q. Следовательно, соответственные углы равны. Ответ получен из свойства переноса, без чтения ключа тренажёра.','PASS',None
     return None,'Новый точный вопрос ещё не прошёл независимое математическое рассмотрение.','PENDING','Unreviewed exact prompt.'
 
 def main():

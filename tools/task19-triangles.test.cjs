@@ -10,7 +10,7 @@ const dot=(a,b)=>a[0]*b[0]+a[1]*b[1],sub=(a,b)=>[a[0]-b[0],a[1]-b[1]];
 function finiteGeometry(s){const check=x=>{if(typeof x==='number')assert(Number.isFinite(x));else if(x&&typeof x==='object')Object.values(x).forEach(check);};check(s.points);check(s.metrics);}
 
 test('all family controls at their endpoints return finite geometry',()=>{
-  assert.equal(Object.keys(defs).length,8);
+  assert.equal(Object.keys(defs).length,14);
   for(const [name,d]of Object.entries(defs)){
     const initial=sample(name);finiteGeometry(initial);
     for(const [key,,min,max]of(d.controlsFor?.(initial.values)||d.controls))for(const value of[min,max])finiteGeometry(sample(name,{[key]:value}));

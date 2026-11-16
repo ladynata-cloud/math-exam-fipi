@@ -76,11 +76,112 @@
     }
   ],
   "coverage": {
-    "topics": 54,
-    "cards": 244,
+    "topics": 58,
+    "cards": 379,
     "authorsPerCard": [
       "Atanasyan",
       "Merzlyak"
     ]
+  },
+  "majorSourceExpansion": {
+    "task": "OGE19_MAJOR_SOURCE_EXPANSION_20261116",
+    "checkedAt": "2026-11-16",
+    "baselineCards": 244,
+    "addedCards": 135,
+    "finalCards": 379,
+    "existingTopicsPreserved": 54,
+    "newTopics": [
+      "symmetry_axis",
+      "symmetry_center",
+      "intersecting_chords",
+      "tangent_secant"
+    ],
+    "books": [
+      {
+        "bookId": "atanasyan2010",
+        "fileSha256": "16291c4d869762b277447f856c05dcc097bf85efb53931db0e7d1d15b8774cb9",
+        "fileBytes": 9156033,
+        "observedPublicPdfUrl": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf"
+      },
+      {
+        "bookId": "merzlyak8_2013",
+        "fileSha256": "c794fdb51f1e67c28a64f1687437260bbbdd062a6a1409ef927a022e909caa58",
+        "fileBytes": 24040918,
+        "observedPublicPdfUrl": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf"
+      },
+      {
+        "bookId": "merzlyak9_2022",
+        "fileSha256": "fb18a90457f65c75d79ee277e6530f6d7eafc0020ad57eedad843334a710c8da",
+        "fileBytes": 3825827,
+        "observedPublicPdfUrl": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf"
+      }
+    ],
+    "passages": [
+      {
+        "topicId": "symmetry_axis",
+        "bookId": "atanasyan2010",
+        "section": "п. 47, определение оси симметрии и примеры фигур",
+        "printedPage": "111",
+        "pdfPage": 113,
+        "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+      },
+      {
+        "topicId": "symmetry_axis",
+        "bookId": "merzlyak9_2022",
+        "section": "§ 18, определение симметричной фигуры и примеры её осей",
+        "printedPage": "161–162",
+        "pdfPage": 162,
+        "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=162"
+      },
+      {
+        "topicId": "symmetry_center",
+        "bookId": "atanasyan2010",
+        "section": "п. 47, определение центра симметрии и примеры",
+        "printedPage": "111–112",
+        "pdfPage": 113,
+        "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=113"
+      },
+      {
+        "topicId": "symmetry_center",
+        "bookId": "merzlyak9_2022",
+        "section": "§ 19, определения центральной симметрии и центра фигуры, примеры",
+        "printedPage": "166–168",
+        "pdfPage": 167,
+        "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000051.pdf#page=167"
+      },
+      {
+        "topicId": "intersecting_chords",
+        "bookId": "atanasyan2010",
+        "section": "п. 71, теорема о произведениях отрезков пересекающихся хорд",
+        "printedPage": "173",
+        "pdfPage": 175,
+        "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=175"
+      },
+      {
+        "topicId": "intersecting_chords",
+        "bookId": "merzlyak8_2013",
+        "section": "§ 13, ключевая задача 2: свойство пересекающихся хорд",
+        "printedPage": "90–91",
+        "pdfPage": 91,
+        "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=91"
+      },
+      {
+        "topicId": "tangent_secant",
+        "bookId": "atanasyan2010",
+        "section": "п. 71, задача 670 о касательной и секущей",
+        "printedPage": "175",
+        "pdfPage": 177,
+        "url": "https://ege-ok.ru/wp-content/uploads/2014/01/59_2-Geometriya.-7-9-kl.-Uchebnik_Atanasyan-L.S.-i-dr_2010-384s.pdf#page=177"
+      },
+      {
+        "topicId": "tangent_secant",
+        "bookId": "merzlyak8_2013",
+        "section": "§ 13, ключевая задача 3: свойство касательной и секущей",
+        "printedPage": "91",
+        "pdfPage": 92,
+        "url": "https://pdf5.my-uchebnik.com/pdf/geometry/00000030.pdf#page=92"
+      }
+    ],
+    "verificationMethod": "The current public catalogue viewer supplied the Merzlyak PDFs from pdf5.my-uchebnik.com. Their SHA256 values match the already recorded editions exactly. New passages were read on the actual rendered pages; existing 54 topics and all 244 historical card mappings are unchanged. No book pages or additional excerpt assets are republished."
   }
 }

@@ -5,7 +5,10 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_video_models_book_context import ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS, GRAPH_INTERSECTIONS, sha, restore_graph_intersections, without_closed_video_summary, without_closed_video_geometry
+from oge_video_models_book_context import (ROOT, PINS, UPDATES, LABEL, SUMMARY_HTML, ASSETS,
+    GRAPH_INTERSECTIONS, TASK19_CACHE_VERSIONS, sha, restore_graph_intersections,
+    restore_task19_cache_versions, without_download_controls,
+    without_closed_video_summary, without_closed_video_geometry)
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
 math = importlib.util.module_from_spec(spec)
@@ -147,6 +150,170 @@ class ContextTests(unittest.TestCase):
             record['publicWayfinding']['servedHtmlSha256'] = digest
             with patch.object(type(target), 'read_bytes', lambda p: changed if p == target else original_read(p)):
                 self.assertIsNone(without_closed_video_summary(record), 'a current served hash cannot excuse changed native mathematics')
+
+    def task19_context(self):
+        file = 'trainers/task19-trainer.html'
+        route = '/' + file
+        raw = (ROOT / file).read_bytes()
+        pin = dict(PINS['pages'][file], sourceCommit=PINS['baseCommit']) | UPDATES['pages'][file]
+        fixture = self.fixtures['71'].get('sourceVariant', self.fixtures['71'])
+        before, after = fixture['visibleText'].split(' ', 1)
+        before += ' '
+        after = ' ' + after
+        record = copy.deepcopy(self.record)
+        record.update(id='71', route=route, finalPath=route,
+                      initialVisibleText=before + LABEL + after)
+        record['unfilteredInitialVisibleText'] = record['publicWayfinding']['visibleText'] + ' ' + record['initialVisibleText']
+        record['publicWayfinding']['servedHtmlSha256'] = sha(raw)
+        record['videoModelContext'].update(route=route, bookId='71', task=19,
+            sourceBase=pin['sourceCommit'], sourceSha256=sha(raw), nativeSha256=pin['sha256'],
+            offsetCodePoints=len(before), beforeText=before, afterText=after)
+        record['resources'] = {route: dict(sha256=sha(raw), status=200),
+                              **{asset: copy.deepcopy(self.record['resources'][asset]) for asset in ASSETS}}
+        return record, fixture
+
+    def test_task19_cache_fixture_binds_only_six_exact_tags_to_the_approved_source(self):
+        delta = TASK19_CACHE_VERSIONS
+        self.assertEqual(delta['file'], 'trainers/task19-trainer.html')
+        self.assertEqual(delta['task'], 'docs/tasks/OGE19_MAJOR_SOURCE_EXPANSION_20261116.md')
+        self.assertEqual(delta['sourceCommit'], 'd75801c4aa85b3960dcc4414f0ae57ae7e54b9f9')
+        self.assertTrue((ROOT / delta['task']).is_file())
+        scripts = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js',
+                   'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-textbook-data.js']
+        expected = [dict(script=script,
+                        before=f'  <script defer src="{script}?v=sources-20261021"></script>\n',
+                        after=f'  <script defer src="{script}?v=major-sources-20261116"></script>\n')
+                    for script in scripts]
+        self.assertEqual(delta['fragments'], expected)
+
+    def test_task19_complete_cache_delta_preserves_old_full_body_pin_and_receipt(self):
+        file = TASK19_CACHE_VERSIONS['file']
+        raw = (ROOT / file).read_bytes()
+        restored = restore_task19_cache_versions(file, raw)
+        self.assertNotEqual(restored, raw)
+        for fragment in TASK19_CACHE_VERSIONS['fragments']:
+            self.assertEqual(raw.count(fragment['after'].encode()), 1)
+            self.assertEqual(restored.count(fragment['before'].encode()), 1)
+            self.assertNotIn(fragment['after'].encode(), restored)
+        self.assertEqual(restore_task19_cache_versions(file, restored), restored)
+        for other in ['unrelated.html', 'trainers/geometry_statements_trainer_improved.html',
+                      '/trainers/task19-trainer.html', 'book/oge/2026-10-31/v1/trainers/task19-trainer.html']:
+            self.assertEqual(restore_task19_cache_versions(other, raw), raw)
+        block = (b'<!-- OGE video-model investigations: standalone practice -->\n'
+                 b'<link rel="stylesheet" href="oge-video-models.css">\n'
+                 b'<script defer src="oge-video-graphs.js"></script>\n'
+                 b'<script defer src="oge-video-geometry.js"></script>\n'
+                 b'<script defer src="oge-video-models.js" data-oge-video-task="19"></script>\n')
+        historical = subprocess.check_output(['git', 'show', UPDATES['pages'][file]['sourceCommit'] + ':' + file], cwd=ROOT)
+        self.assertEqual(restore_task19_cache_versions(file, historical), historical)
+        native = without_download_controls(file, restored).replace(block, b'', 1)
+        self.assertEqual(native, historical.replace(block, b'', 1), 'entire historical native HTML remains exact')
+        self.assertEqual(sha(native), UPDATES['pages'][file]['sha256'])
+        record, fixture = self.task19_context()
+        original_record = copy.deepcopy(record)
+        self.assertEqual(without_closed_video_summary(record), fixture['visibleText'])
+        self.assertTrue(math.exact_reviewed_context(record, fixture['oracles'][0], self.fixtures))
+        self.assertEqual(record, original_record, 'raw receipts are not rewritten by the inverse')
+
+    def test_task19_partial_duplicate_altered_tags_and_native_edits_reject_even_with_matching_receipts(self):
+        file = TASK19_CACHE_VERSIONS['file']
+        target = ROOT / file
+        raw = target.read_bytes()
+        mutations = []
+        for fragment in TASK19_CACHE_VERSIONS['fragments']:
+            before, after = fragment['before'].encode(), fragment['after'].encode()
+            replacements = [before, b'', after * 2, after + before,
+                            after.replace(b'defer', b'async'),
+                            after.replace(fragment['script'].encode(), b'unreviewed-' + fragment['script'].encode()),
+                            after.replace(b'major-sources-20261116', b'unreviewed-version')]
+            for replacement in replacements:
+                changed = raw.replace(after, replacement, 1)
+                self.assertNotEqual(changed, raw)
+                self.assertEqual(restore_task19_cache_versions(file, changed), changed,
+                                 'partial or ambiguous six-tag delta must stay untouched')
+                mutations.append(changed)
+        first = TASK19_CACHE_VERSIONS['fragments'][0]['after'].encode()
+        mutations += [raw + b'\n', raw.replace(b'<title>', b'<title>Changed ', 1),
+                      raw.replace(b'</body>', b'<p>Changed condition</p></body>', 1),
+                      raw.replace(first, first + first.replace(b'defer', b'async'), 1),
+                      raw.replace(b'task19-reference.js?v=sources-20261021', b'task19-reference.js?v=major-sources-20261116', 1)]
+        # A cache inverse must not stand in for the exact optional addon block.
+        mutations.append(raw.replace(b'<script defer src="oge-video-models.js" data-oge-video-task="19"></script>\n', b'', 1))
+        original_read = type(target).read_bytes
+        original_record, fixture = self.task19_context()
+        for changed in mutations:
+            self.assertNotEqual(changed, raw)
+            record = copy.deepcopy(original_record)
+            digest = sha(changed)
+            record['videoModelContext']['sourceSha256'] = digest
+            record['resources'][record['route']]['sha256'] = digest
+            record['publicWayfinding']['servedHtmlSha256'] = digest
+            with patch.object(type(target), 'read_bytes', lambda p: changed if p == target else original_read(p)):
+                self.assertIsNone(without_closed_video_summary(record), 'matching served hashes cannot excuse altered native HTML')
+                self.assertFalse(math.exact_reviewed_context(record, fixture['oracles'][0], self.fixtures))
+        for route in ['/other.html', '/trainers/geometry_statements_trainer_improved.html',
+                      '/book/oge/2026-10-31/v1/trainers/task19-trainer.html']:
+            record = copy.deepcopy(original_record)
+            record.update(route=route, finalPath=route)
+            record['videoModelContext']['route'] = route
+            record['resources'][route] = record['resources'][original_record['route']]
+            self.assertIsNone(without_closed_video_summary(record), 'wrong route cannot use the task19 cache inverse')
+
+    def test_task19_seeded_source_case_is_independent_and_keeps_every_frozen_fixture_exact(self):
+        before = copy.deepcopy(self.fixtures)
+        source = before['71'].pop('sourceVariant')
+        # Entire canonical fixture map at 403eba9d. A shallow CI checkout does
+        # not need that historical Git object to enforce the immutable pin.
+        self.assertEqual(sha(math.stable(before).encode()),
+            'f09dd4fac5dfc47ac39cfe0a39cce88bd89526d2f1c035ba3bb812ff85fba258',
+            'all original cases, including frozen71, remain exact')
+        old = before
+        oracle = dict(prompt='При пересечении параллельных прямых секущей соответственные углы равны.', expected=True)
+        self.assertEqual(source['oracles'], old['71']['oracles'] + [oracle])
+        self.assertEqual(source['visibleText'], old['71']['visibleText'])
+        self.assertEqual(source['geometrySha256'], old['71']['geometrySha256'])
+        self.assertEqual(source['sourceOnlyRoute'], '/trainers/task19-trainer.html')
+        record, _ = self.task19_context()
+        for item in source['oracles']:
+            self.assertTrue(math.exact_reviewed_context(record, item, self.fixtures))
+        result, proof, verdict, reason = math.reviewed(record, oracle, 1)
+        self.assertIs(result, True)
+        self.assertEqual(verdict, 'PASS')
+        self.assertIsNone(reason)
+        self.assertIn('Перенос на вектор PQ', proof)
+        # The proof never reads the submitted truth value; the caller compares it.
+        changed = dict(oracle, expected=False)
+        self.assertIs(math.reviewed(record, changed, 1)[0], True)
+        self.assertFalse(math.exact_reviewed_context(record, changed, self.fixtures))
+        for prefix, banner in math.BOOK_BANNERS.items():
+            frozen = dict(id='71', prefix=prefix, route=record['route'],
+                finalPath=prefix + record['route'],
+                initialVisibleText=banner+' '+old['71']['visibleText'], visibleSvgLabels=[])
+            for item in old['71']['oracles']:
+                self.assertTrue(math.exact_reviewed_context(frozen, item, self.fixtures))
+            self.assertFalse(math.exact_reviewed_context(frozen, oracle, self.fixtures), prefix)
+
+    def test_task19_new_exact_case_rejects_changed_premises_route_context_and_geometry(self):
+        record, fixture = self.task19_context()
+        oracle = fixture['oracles'][-1]
+        for prompt in [oracle['prompt'].replace('параллельных ', ''),
+                       oracle['prompt'].replace('равны.', 'в сумме дают 180°.'),
+                       oracle['prompt'].replace('соответственные', 'любые')]:
+            changed = dict(oracle, prompt=prompt)
+            self.assertFalse(math.exact_reviewed_context(record, changed, self.fixtures))
+            self.assertEqual(math.reviewed(record, changed, 1)[2], 'PENDING')
+        for key, value in [('id','70'), ('route','/other.html'), ('finalPath','/other.html'),
+                           ('prefix','/book/oge/2026-10-31/v1')]:
+            changed = copy.deepcopy(record); changed[key] = value
+            self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures), key)
+        changed = copy.deepcopy(record)
+        changed['visibleSvgLabels'] = [{'svg':'<svg><text>unreviewed geometry</text></svg>'}]
+        self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures))
+        changed = copy.deepcopy(record); context = changed['videoModelContext']
+        context['afterText'] += ' changed premise'
+        changed['initialVisibleText'] = context['beforeText'] + LABEL + context['afterText']
+        changed['unfilteredInitialVisibleText'] = changed['publicWayfinding']['visibleText'] + ' ' + changed['initialVisibleText']
+        self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures))
 
 
 if __name__=='__main__':

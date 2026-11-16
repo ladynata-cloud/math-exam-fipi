@@ -2,7 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const core=require('../trainers/task19-visual-models.js');
 const source=require('../trainers/task19-visual-data.js');
-const cards=source.cards.filter(c=>c.theme==='Окружность'||c.id==='summer-024');
+// The approved historical bank keeps its first 244 objects and order.
+// The 30 additional source cards have their own independent major-circle gate.
+const cards=source.cards.slice(0,244).filter(c=>c.theme==='Окружность'||c.id==='summer-024');
 const hints=Object.fromEntries(cards.map(c=>[c.id,c.hint]));
 const circleModels=['circleRadii','circleLine','circleTangents','circlePair','circleCenter','radiusChord','equalCircleChords','circleRectangle','circleRhombus','circleMeasure'];
 const distance=(a,b)=>Math.hypot(a[0]-b[0],a[1]-b[1]);

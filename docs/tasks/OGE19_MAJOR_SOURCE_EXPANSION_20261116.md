@@ -1,0 +1,303 @@
+# ОГЭ №19: расширение по проверенным основным источникам
+
+## Identity
+
+- Task: `OGE19_MAJOR_SOURCE_EXPANSION_20261116`
+- Owner: владелец MathExam, текущий разговор
+- Date: 2026-11-16
+- Base branch: `codex/oge19-source-coverage-20261116` (зависимость PR #626)
+- Base SHA: `510ed4db531eaeb88bbd22507fa8492fdd4542a0`
+- Remote main at start: `1469ad50a8659f66c8613164009e7387a3a68f2b`
+- Planned branch: `codex/oge19-major-source-expansion-20261116`
+- Review level: `NEW_ARCHETYPE`
+- Related ADR: `docs/adr/0015-oge19-source-constrained-models.md`
+- ADR status: Proposed for final archetype acceptance; implementation scope is separately approved by START.
+
+## Goal
+
+Добавить ровно 135 проверенных самостоятельных утверждений к подготовленным
+244 карточкам, итог 379. Каждой новой карточке дать понятное доказательство или
+контрпример, нейтральную интерактивную подсказку с сохранением условий и
+проверяемое происхождение. Два конфликтующих с печатным ключом пункта исключить.
+
+## Context and evidence
+
+- Владелец ответил **START** на предложение «добавить 135 проверенных карточек
+  №19 по карте аудита, доработать необходимые модели, два спорных пункта
+  исключить». Это разрешает реализацию, commits, push и Draft PR.
+- Аудит: 681 новое вхождение: Ященко 2027 — 108, открытый комплект, обозначенный
+  Лысенко 2026, — 140, СтатГрад 15.04.2026 — 12, оригинальный Решу ОГЭ — 246,
+  Repet.ai — 175. 40 веб-кандидатов + 102 книжных − 7 общих = 135 карточек.
+- Карта и математика независимо рассмотрены. Существующие 244 карточки остаются
+  основанием; исторические десять добавлений и 669 наблюдений PR #626 не меняются.
+- При старте обе зависимости открыты и Draft: #626 head `510ed4db` (7 успешных
+  workflow), #624 head `4f9fcec0` (11 успешных workflow). Новая ветка основана на
+  #626; Draft PR будет направлен в его ветку, чтобы показать только новую задачу.
+  Это не объединяет и не публикует зависимости. Удаление addon в #624 не повторяется.
+- Сверка PROJECT_STATUS: последняя запись о №19 указывает 234 опубликованных
+  утверждения. Публичные данные возвращают HTTP 200 и SHA256
+  `fd71a70c1b3ce75922b6bd19043c7e735d5809af2cd5a1d2fa05db10b6f4d691`, что
+  подтверждает эту запись. Новые 244/379 не объявляются опубликованными.
+- Живой официальный банк ФИПИ не прочитан; итог не означает его полноту.
+  Издание Ященко сверено по ISBN/выходным данным. Редакция Лысенко подтверждена
+  индексом публичного комплекта, но ISBN внутри отдельных PDF не проверен.
+
+## Approved scope
+
+### In scope
+
+- Ровно 135 новых ID из принятой карты, 379 карточек всего. Кванторы, отрицания,
+  числовые условия и направление импликации сохраняются. Простые геометрические
+  утверждения сопровождаются собственными объяснениями; коммерческие PDF/OCR
+  и полный исходный книжный банк не помещаются в репозиторий.
+- Дополнительные построения/режимы в действующем контракте моделей: симметрия,
+  прямые и углы, треугольники, центры и расстояния, четырёхугольники, окружности,
+  хорды и касательные. Старые режимы и их результаты сохраняются.
+- Для фиксированных числовых данных интерактивное действие не меняет условие.
+  Визуальная гипотеза не объявляется доказательством. Измерения скрыты до запроса.
+- Отдельная конечная карта новых источников/соответствий и двух исключений,
+  учебные ссылки, добавление новых canonical ID в общую карту прогресса.
+- Адресные математические проверки, все относящиеся к №19 gates, реальные
+  desktop/mobile/keyboard/offline сценарии, независимое рассмотрение результата.
+- Только адресная сборка автономного HTML/ZIP №19.
+
+### Planned files, declared before implementation
+
+- `docs/tasks/OGE19_MAJOR_SOURCE_EXPANSION_20261116.md`
+- `docs/adr/0015-oge19-source-constrained-models.md`
+- `trainers/task19-visual-data.js`
+- `trainers/task19-source-coverage.json`
+- `trainers/task19-major-source-coverage.json` (новая карта этого расширения)
+- `trainers/task19-visual-models.js`
+- `trainers/task19-models-triangles.js`
+- `trainers/task19-models-circles.js`
+- `trainers/task19-models-lines-polygons.js`
+- `trainers/task19-textbook-data.js`
+- `trainers/task19-textbook/source.json`
+- `oge/learning-map.js` — только 135 canonical ID, без изменения алгоритма
+- `trainers/task19-trainer.html`, `trainers/geometry_statements_trainer_improved.html`
+  — только версии изменённых ресурсов, если требуется для обновления кэша
+- `tools/task19-major-source-expansion.test.cjs`
+- `tools/task19-major-triangles.test.cjs`
+- `tools/task19-major-circles.test.cjs`
+- `tools/task19-major-lines.test.cjs`
+- `tools/task19-major-polygons.test.cjs`
+- `tools/task19-major-source-models.browser.cjs`
+- Существующие `tools/task19-triangles.test.cjs`, `task19-circles.test.cjs`,
+  `task19-lines-polygons.test.cjs`, `task19-math-audit.test.cjs`,
+  `task19-source-coverage.test.cjs`, `task19-current-models.browser.cjs`,
+  `task19-visual-hints.browser.cjs`, `task19-owner-feedback.test.cjs`,
+  `task19-interactive-discoveries.test.cjs`, `task19-textbook-reference.test.cjs`,
+  `task19-board.test.cjs` — точные новые ожидания и адресные проверки, сохраняя
+  старые математические гарантии и исторические hashes
+- `.github/workflows/task19-visual-hints.yml` — запуск нового адресного browser gate
+- `downloads/trainers/task19-trainer/task19-trainer.html`
+- `downloads/trainers/task19-trainer/task19-trainer-package.zip`
+- `downloads/trainers-manifest.json` — только запись №19, результат генератора
+
+Дополнительный fixture или учебный asset допустим только при выявленной прямой
+зависимости. Конкретный путь и причина записываются здесь до изменения.
+
+### Discovered direct dependency, declared before editing
+
+- `assets/assistant/page-rollout.json` — только hash-привязка
+  `trainers/task19-trainer.html` и штатная запись `sourceBindingUpdates`.
+  Изменение версий шести ресурсов этой страницы закономерно делает прежний
+  полный hash страницы неактуальным; без точной новой привязки штатная сборка
+  останавливается с `Unbound public navigator dependency`. После отдельного
+  коммита проверенных source-изменений применяется существующий
+  `tools/public_navigator_bindings.py --source-base <that commit>` для одного
+  пути. Код навигатора, его два include и проверки сохранности не меняются.
+  Затем повторяются binding/preservation gates и адресная offline-сборка.
+  Это обязательный provenance fixture для уже разрешённого обновления кэша.
+
+- `tools/fixtures/task19-major-source-cache-versions.json`,
+  `tools/oge-video-models-preservation.cjs`,
+  `tools/oge-video-models-preservation.test.cjs`,
+  `tools/oge_video_models_book_context.py`,
+  `tools/oge-video-models-book-context.test.py` — обнаруженная реальным CI
+  зависимость старого byte-preservation gate от прежних шести URL ресурсов
+  `trainers/task19-trainer.html`. Run `43777128580` на head `3d84c55e`:
+  54/57 PASS, три отказа из-за этих версий; browser не запускался.
+  До изменения файлов объявлен точный обратимый fixture только для шести
+  согласованных script-тегов, привязанный к этой задаче и source-коммиту.
+  JS/Python verifier принимают только полный точный набор замен одной страницы;
+  исторические hashes, старые source pins, математические данные и runtime
+  неизменны. Негативные проверки обязаны отклонять частичный набор, дубликаты,
+  изменённые атрибуты/URL, чужую страницу и постороннюю правку native HTML.
+  Это адресная интеграция уже разрешённого cache update, не ослабление gate.
+
+- `tools/fixtures/oge-book-exam-math.json`, `tools/oge-book-exam-math.py` и
+  уже перечисленный `tools/oge-video-models-book-context.test.py` — второй
+  фактически обнаруженный эффект расширения банка на общий book gate.
+  Run `43779286434` на head `403eba9d` получил **1182 PASS / 3 PENDING / 0 FAIL**:
+  в source entry 71 при 320/390/1280 px второй вопрос фиксированного random seed
+  стал «При пересечении параллельных прямых секущей соответственные углы равны.».
+  Первый вопрос о ромбе и все frozen cases неизменны. Старый точный fixture
+  закономерно не допускает другой prompt. До изменения этих файлов объявлено
+  добавление только sourceVariant для трёх source-сценариев, явного независимого
+  доказательства свойства и отрицательных проверок premise/answer/route/frozen.
+  Исходный frozen fixture и все прежние oracle-пары сохраняются, ответы из
+  production bank не используются для математического вывода. Полный записанный
+  набор перепроверяется прежней строгой командой, без `--allow-pending`.
+  Runtime, карточки, рисунки, frozen editions и browser recorder не меняются.
+
+### Out of scope / areas that must not change
+
+- Прежние 244 объекта карточек, их aliases, порядок, ключи и формат прогресса.
+- `trainers/task19-exam-source-coverage.json` и его исторические 669 наблюдений.
+- Два спорных пункта Лысенко В26(2)/В34(2), дополнительные источники вне аудита.
+- Frozen book editions, архивы, другие тренажёры, общие platform algorithms,
+  аккаунты, backend и соседние работы гармонизации.
+- Повторное удаление addon #624, merge/deployment либо изменение чужих веток.
+
+## Acceptance criteria
+
+- [x] Ровно 135 новых карточек; все прежние 244 объекта/aliases сохранены.
+- [x] Все 681 новые позиции описаны; допустимые формулировки сопоставлены,
+      два конфликтующих пункта явно исключены, ФИПИ completeness=false.
+- [x] У каждой новой карточки корректные условия, ответ, объяснение и полезная
+      интерактивная подсказка; все разрешённые движения сохраняют предпосылки.
+- [x] Независимые координатные проверки подтверждают измерения, конструкцию,
+      числовые данные, границы, восстановление и настоящие контрпримеры.
+- [ ] Полный относящийся к №19 Node/browser набор и learning-map gates прошёл.
+- [x] Учебные ссылки проверены; автономные HTML/ZIP совпадают с онлайн-исходниками.
+- [x] ADR, прототипы и независимое рассмотрение представлены владельцу в Draft PR.
+
+## Checks and gates
+
+- `node --test tools/task19-*.test.cjs`
+- `node --test tools/oge-learning-map.test.cjs tools/oge-course-guide.test.cjs`
+- Синтаксис изменённых JS, JSON/schema, точный file allowlist, `git diff --check`.
+- Существующие четыре browser suites №19 и новый адресный gate для 135 карточек.
+- Сохранность старых sample/render/controls и проверка всех новых controls на
+  минимум/середину/максимум, восстановление состояний, неверные сохранённые flags.
+- `node scripts/build-trainer-downloads.mjs --only=task19-trainer --downloads-only`.
+- Для указанного выше provenance fixture: стандартный preview/write
+  `tools/public_navigator_bindings.py`, тесты binding/preservation и проверка,
+  что изменена только одна hash-привязка, без расширения inventory.
+- Final gate marker: pending. Невыполненный браузерный/реальный learner check не
+  заменяется DOM-проверкой или выдуманным PASS.
+
+## Review plan
+
+- NEW_ARCHETYPE из-за новых геометрических построений, особенно симметрии.
+- Перед реализацией: независимый обзор 41 веб-формулировки/40 карточек, 140
+  книжных утверждений, семи межисточниковых совпадений и текущих API моделей.
+- Во время разработки: чистые функции геометрии, отдельные проверки предпосылок,
+  контрпримеров и сохранения исторических результатов.
+- Готовый результат: независимое математическое/техническое и визуальное ревью.
+- Реальные занятия с учениками не проведены и не будут объявляться проведёнными.
+- Внешний provider review не запрошен; не выполнен, не имитируется.
+- Новый ADR остаётся Proposed до принятия готового архетипа владельцем перед
+  rollout. START разрешает описанную реализацию и прототипы, а не production.
+- Handoff содержит только scoped diff, источники, результаты и точные SHA.
+
+## Risk and rollback
+
+- Риски: ложная эквивалентность, потеря числового условия, неподходящая модель,
+  подсказка с готовым ответом, затронутый старый режим, неправильная учебная ссылка.
+- Rollback: не выпускать Draft при проблемах; после отдельного выпуска отменять
+  его delta обычным revert. Старые ID/формат localStorage не мигрируют.
+
+## Permissions
+
+- START: yes, прямое сообщение владельца после предложения 135 карточек.
+- Branch, local commits, push, Draft PR: yes.
+- Release authorization: более узкий AGENTS.md, присланный владельцем в разговоре.
+- Merge: **no**. Auto-merge: **no**. Deployment: **no**.
+- Force/reset/rebase/non-fast-forward merge: **no** без отдельного разрешения.
+
+## Execution record
+
+- Branch: `codex/oge19-major-source-expansion-20261116`
+- Base: `510ed4db531eaeb88bbd22507fa8492fdd4542a0`
+- Implementation: 379 карточек, ровно 135 additions; 681 наблюдение источников,
+  679 сопоставлений и 2 исключения. Прежние 244 карточки/aliases и 2 151
+  sample/render/control результата совпадают с исходной версией.
+- Textbooks: 379 привязок, 58 тем; прежние 244 привязки, 54 темы и четыре
+  записи книг сохранены по отдельным hashes. Добавлены восемь проверенных
+  passages для четырёх тем в прежних изданиях.
+- Source preflight: 156 проверок прошли; две проверки ещё старого скачиваемого
+  HTML ожидают следующий обязательный шаг binding/build. Проверки не отключены.
+  Первый source-коммит нужен штатному binding-инструменту; после него будут
+  пересобраны HTML/ZIP и повторён полный gate без исключений.
+- Source commit: `d75801c4aa85b3960dcc4414f0ae57ae7e54b9f9`.
+  После него штатно обновлена только привязка `trainers/task19-trainer.html`,
+  выполнена адресная сборка автономного HTML/ZIP. Финальный локальный прогон:
+  **162/162 PASS**, без пропусков; он включает весь `task19-*.test.cjs`,
+  learning-map, course-guide и public-navigator-preservation. Отдельно
+  **5/5 PASS** для `public_navigator_bindings.test.py`, ZIP integrity PASS,
+  `git diff --check` PASS. Исторические две offline-проверки теперь проходят.
+- CI integration follow-up: старый video-model preservation gate выявил три
+  несовпадения только из-за шести согласованных cache versions. После точного
+  обратимого fixture проходят **60/60** `oge-video-*.test.cjs` (57 прежних и
+  три новые проверки), отдельно **10/10** независимых Python receipt checks.
+  Исторические native/worked-steps/book-math pins и все отрицательные проверки
+  сохранены. Удалена устаревшая operational строка «no repository changes»
+  из новой карты аудита; четыре содержательных ограничения аудита не меняются.
+- Independent internal review: triangles38, lines/symmetry39, quadrilaterals28,
+  circles30. Проверки выполнялись другим автором/основным агентом; external
+  provider verdict не заявлен. Закрыты замечания к доступности регуляторов,
+  диапазону центра окружности и обозначениям равенства на рисунках.
+- Initial real browser CI: run `43777128600`, published head
+  `3d84c55e97eff9f80e37a2067c7482a667ba122e`, runner merge
+  `dbb8e29b8ab1ea61cceaa5ed511d0e0fc64ebe6d`. Runner parents are the named base
+  and head; its tree `2ad9f7aa942716d32170f1ce0b747be5ed74eacd` equals the head
+  tree. All four existing browser suites and **675/675** new journeys passed:
+  135 × main1280/main390/main320, alternate390 and offline390. Evidence:
+  1 660 controls, 3 320 Home/End actions, 6 785 layout states, 26 268 SVG label
+  bounds, 90 touch journeys and 1 166 PNGs; zero browser errors and zero offline
+  network attempts. Exact bank/drafts/measurements/single scoring preserved.
+- Visual review: independently inspected initial and measured mobile images
+  for all 135 new cards. Closed three small renderer findings: increased the
+  new triangle-centers diagram using uniform actual bounds; separated the
+  symmetry legend and kept its infinite-line axis visibly movable; labelled
+  intersection J used by the four orthodiagonal length controls. New targeted
+  regressions preserve the existing 2 151 model outputs. Old coincident-point
+  label crowding and the shared floating navigator remain outside this scope.
+- Final local follow-up: target HTML/ZIP rebuilt with the refined renderers;
+  **166/166 PASS** (all task19, learning-map, course-guide and public navigator
+  preservation), no skipped tests. The exact-cache dependency separately
+  passes **60/60** Node and **10/10** Python tests. Binding tests passed **5/5**.
+  The initial browser artifact predates these refinements; the final published
+  head must rerun actual CI and the affected visual checks.
+- Refined runtime CI: head `403eba9da8d88b1d673ad75469ec401bdf07acb6`, run
+  `43779286448`, runner `10ae74c23eb241da06632e930fc7924c266ec403`; verified
+  parents are the named base/head and both trees equal
+  `0ce89d98a201d7dd52d0b7e16b791c079fd5ff76`. Existing/owner/major jobs all PASS;
+  **675/675** journeys, 6 785 layouts, 25 818 SVG bounds, 90 touch journeys,
+  1 166 PNGs, zero browser errors/offline network requests. Independently
+  checked continuous progress and exactly-once scoring. Actual final images
+  for 22 affected cards were reviewed (44 mobile plus two narrow PNGs), closing
+  the center-scale, symmetry-legend and missing-J findings.
+- Book-gate follow-up: run `43779286434` identified the three source-only
+  seeded-prompt PENDING cases declared above. The independently proved exact
+  corresponding-angle case passes the full original recorded report set:
+  **1185 PASS / 0 PENDING / 0 FAIL**, no missing reports or unreviewed oracles,
+  without an allow-pending flag. Negative/context checks: **12/12 PASS**;
+  video Node suite remains **60/60 PASS**. The canonical original 19-fixture
+  map stays pinned to `f09dd4fac5dfc47ac39cfe0a39cce88bd89526d2f1c035ba3bb812ff85fba258`;
+  frozen prompts/keys and runtime/download files remain unchanged. The final
+  tooling-only commit reruns actual CI; its exact head and outcomes belong in PR.
+- PR: **#630**, Draft, base remains #626. Final head, runner provenance and
+  actual CI result are recorded in the PR so the evidence update does not
+  require another untested repository commit. No merge or deployment performed.
+- Scope deviations: none.
+
+## Required handoff
+
+```text
+EXECUTIVE STATUS
+Task:
+PR:
+Base:
+Head:
+Gate:
+Tests:
+Failures:
+Not run:
+Scope deviations:
+Recommendation:
+Next user decision:
+```

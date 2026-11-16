@@ -147,5 +147,86 @@
       return{body,readout};
     }
   };
+  // The source-constrained families below are additive. Historical modes above
+  // retain their controls, normalization and geometry byte for byte.
+  const boundedNumber=(value,lo,hi,fallback)=>clamp(finite(value,fallback),lo,hi);
+  const rotatedPoints=(points,degrees)=>Object.fromEntries(Object.entries(points).map(([name,p])=>[name,rotate(p,degrees)]));
+  const neutralCenter=(T,p,name,color,above=false)=>dot(T(p),color)+text(T(p)[0]+(above?16:-16),T(p)[1]+(above?-22:22),name,color);
+  const numberRow=(name,value,color=INK,group='')=>measurement(`${name} = ${fmt(value)}`,color,group);
+
+  defs.circleDiameterArea={
+    title:'Круг и квадрат',values:{radius:3},controls:[range('radius','Измени радиус',1,4,.1)],
+    sample(p){const r=p.radius;return{points:{O:[0,0],A:[-r,-r],B:[r,-r],C:[r,r],D:[-r,r],E:[-r,0],F:[r,0]},metrics:{radius:r,diameter:2*r,circleArea:Math.PI*r*r,squareArea:4*r*r}};},
+    render(s){const P=s.points,M=s.metrics,T=fit([[-4.8,-4.8],[4.8,4.8]]);return{body:poly(['A','B','C','D'].map(n=>T(P[n])))+circleAt(T,P.O,M.radius,BLUE)+linked('diameter',line(T(P.E),T(P.F),GREEN),'Диаметр EF')+labelPoints(P,['A','B','C','D','E','F'],T)+origin(T,P.O),readout:[numberRow('Диаметр EF',M.diameter,GREEN,'diameter'),numberRow('Площадь круга',M.circleArea,BLUE),numberRow('Площадь квадрата',M.squareArea),numberRow('EF²',M.diameter*M.diameter,GREEN,'diameter')]};}
+  };
+
+  defs.circlePointPosition={
+    title:'Точка и окружность',values:{mode:'inside',radius:4,ratio:.6,angle:45,givenDistance:5},
+    controls:[range('angle','Поверни точку вокруг O',15,165,1,'°')],
+    controlsFor(p){const c=[...defs.circlePointPosition.controls];if(p.mode==='inside')c.push(range('ratio','Передвинь точку внутри круга',.1,.9,.05));if(p.mode==='outside')c.push(range('ratio','Передвинь точку вне круга',1.1,2,.05));return c;},
+    normalize(p){p={...p};p.mode=['inside','outside','on','fixed'].includes(p.mode)?p.mode:'inside';p.radius=boundedNumber(p.radius,1,10,4);p.givenDistance=boundedNumber(p.givenDistance,.1,15,5);if(p.mode==='inside')p.ratio=boundedNumber(p.ratio,.1,.9,.6);if(p.mode==='outside')p.ratio=boundedNumber(p.ratio,1.1,2,1.4);return p;},
+    sample(p){const d=p.mode==='fixed'?p.givenDistance:p.mode==='on'?p.radius:p.radius*p.ratio;return{points:{O:[0,0],P:polar(d,p.angle),R:polar(p.radius,-35)},metrics:{radius:p.radius,distance:d}};},
+    render(s){const P=s.points,M=s.metrics,p=s.values,frame=p.mode==='outside'?p.radius*2.1:p.mode==='fixed'?Math.max(p.radius*1.25,p.givenDistance*1.1):p.radius*1.25,T=fit(bounds(P.O,frame),{x:70,y:40,w:420,h:245});return{body:circleAt(T,P.O,M.radius,INK,LIGHT)+segments(P,T,[['O','P',BLUE],['O','R',GREEN,'5 5']])+labelPoints(P,['P','R'],T)+origin(T,P.O),readout:[lengthRow(P,'O','P',BLUE),lengthRow(P,'O','R',GREEN),numberRow('Радиус',M.radius,GREEN,'OR')]};}
+  };
+
+  defs.circlePairConstrained={
+    title:'Две окружности и расстояние между центрами',values:{mode:'fixed',r1:3,r2:2,distance:4,rotation:0,other:2,clearance:1,ratio:.8},
+    controls:[range('rotation','Поверни расположение окружностей',-60,60,1,'°')],
+    controlsFor(p){return[...defs.circlePairConstrained.controls,...(p.mode==='tangent'?[range('other','Измени второй радиус, сохраняя касание',1.5,4,.1)]:p.mode==='greaterDiameters'?[range('clearance','Раздвинь центры',.5,4,.1)]:p.mode==='lessDiameters'?[range('ratio','Передвинь центры',.1,1.8,.05)]:[])];},
+    normalize(p){p={...p};p.mode=['fixed','tangent','greaterDiameters','lessDiameters'].includes(p.mode)?p.mode:'fixed';for(const k of['r1','r2'])p[k]=boundedNumber(p[k],.5,10,k==='r1'?3:2);p.distance=boundedNumber(p.distance,.1,30,4);p.other=boundedNumber(p.other,1.5,4,2);p.clearance=boundedNumber(p.clearance,.5,4,1);p.ratio=boundedNumber(p.ratio,.1,1.8,.8);return p;},
+    sample(p){const r=p.r1,q=p.mode==='tangent'?p.other:p.r2,d=p.mode==='tangent'?r+q:p.mode==='greaterDiameters'?2*(r+q)+p.clearance:p.mode==='lessDiameters'?(r+q)*p.ratio:p.distance;
+      const P={O1:[-d/2,0],O2:[d/2,0]},M={r1:r,r2:q,distance:d,sumRadii:r+q,differenceRadii:Math.abs(r-q),sumDiameters:2*(r+q),intersections:0};
+      if(d>=Math.abs(r-q)-1e-8&&d<=r+q+1e-8){const x=(r*r-q*q+d*d)/(2*d),y=Math.sqrt(Math.max(0,r*r-x*x));P.P=[-d/2+x,y];M.intersections=near(d,r+q)||near(d,Math.abs(r-q))?1:2;if(M.intersections===2)P.Q=[-d/2+x,-y];}
+      const points=rotatedPoints(P,p.rotation);if(points.P){M.O1P=hypot(points.O1,points.P);M.O2P=hypot(points.O2,points.P);}return{points,metrics:M};},
+    render(s){const P=s.points,M=s.metrics,T=fit([...bounds(P.O1,M.r1),...bounds(P.O2,M.r2)],{x:55,y:45,w:450,h:240});let body=linked('first-circle',circleAt(T,P.O1,M.r1,BLUE),'Первая окружность')+linked('second-circle',circleAt(T,P.O2,M.r2,GREEN),'Вторая окружность')+linked('centers',line(T(P.O1),T(P.O2),INK,'5 5'),'Отрезок между центрами')+neutralCenter(T,P.O1,'O₁',BLUE)+neutralCenter(T,P.O2,'O₂',GREEN,true);const readout=[numberRow('Первый радиус',M.r1,BLUE,'first-circle'),numberRow('Второй радиус',M.r2,GREEN,'second-circle'),numberRow('O₁O₂',M.distance,INK,'centers'),numberRow('Сумма радиусов',M.sumRadii),numberRow('Разность радиусов по модулю',M.differenceRadii),numberRow('Сумма диаметров',M.sumDiameters),`Общих точек: ${M.intersections}`];if(P.P){body+=segments(P,T,[['O1','P',BLUE],['O2','P',GREEN]])+dot(T(P.P))+text(T(P.P)[0],T(P.P)[1]-25,'P');readout.push(numberRow('O₁P',M.O1P,BLUE,'O1P'),numberRow('O₂P',M.O2P,GREEN,'O2P'));}if(P.Q)body+=dot(T(P.Q))+text(T(P.Q)[0],T(P.Q)[1]+25,'Q');return{body,readout};}
+  };
+
+  defs.circleLineConstrained={
+    title:'Прямая и расстояние до центра',values:{radius:5,distance:3,angle:40},controls:[range('angle','Поверни прямую вокруг центра',20,160,1,'°')],
+    normalize(p){return{...p,radius:boundedNumber(p.radius,1,12,5),distance:boundedNumber(p.distance,.1,18,3)};},
+    sample(p){const n=polar(1,p.angle),v=polar(1,p.angle+90),P={O:[0,0],M:mul(n,p.distance),R:mul(v,p.radius)},M={radius:p.radius,distance:p.distance,intersections:0};P.U=add(P.M,mul(v,-1.5*p.radius));P.V=add(P.M,mul(v,1.5*p.radius));if(p.distance<=p.radius+1e-8){const h=Math.sqrt(Math.max(0,p.radius*p.radius-p.distance*p.distance));P.A=add(P.M,mul(v,-h));M.intersections=near(p.distance,p.radius)?1:2;if(M.intersections===2)P.B=add(P.M,mul(v,h));}return{points:P,metrics:M};},
+    render(s){const P=s.points,M=s.metrics,T=fit([...bounds(P.O,M.radius),P.U,P.V]);let body=circleAt(T,P.O,M.radius,INK,LIGHT)+linked('given-line',line(T(P.U),T(P.V),BLUE),'Прямая')+segments(P,T,[['O','M',GREEN,'5 5'],['O','R',AMBER]])+rightMark(T(P.O),T(P.M),T(P.V),GREEN)+origin(T,P.O)+dot(T(P.M),GREEN)+text(T(P.M)[0]+16,T(P.M)[1]-20,'M',GREEN)+labelPoints(P,['R',...(P.A?['A']:[]),...(P.B?['B']:[])],T);return{body,readout:[lengthRow(P,'O','M',GREEN),lengthRow(P,'O','R',AMBER),`Общих точек: ${M.intersections}`]};}
+  };
+
+  defs.circleArcConstrained={
+    title:'Хорда и углы',values:{arc:80,position:.5},controls:[range('position','Передвинь вершину C вдоль окружности',.15,.85,.05)],
+    normalize(p){return{...p,arc:boundedNumber(p.arc,30,170,80)};},
+    sample(p){const r=4,P={O:[0,0],A:polar(r,0),B:polar(r,p.arc),C:polar(r,p.arc+(360-p.arc)*p.position)};return{points:P,metrics:{radius:r,arc:p.arc,central:angleAt(P.A,P.O,P.B),inscribed:angleAt(P.A,P.C,P.B)}};},
+    render(s){const P=s.points,M=s.metrics,T=fit(bounds(P.O,5)),a=T(P.A),b=T(P.B),r=4*unit(T);return{body:circleAt(T,P.O,4,INK)+segments(P,T,[['A','B',AMBER],['O','A',BLUE],['O','B',BLUE],['C','A',GREEN],['C','B',GREEN]])+linked('arc',`<path d="M ${a.join(' ')} A ${r} ${r} 0 0 0 ${b.join(' ')}" fill="none" stroke="${BLUE}" stroke-width="5"/>`,'Дуга AB без точки C')+kit.angleMark(T(P.A),T(P.O),T(P.B),BLUE)+kit.angleMark(T(P.A),T(P.C),T(P.B),GREEN)+labelPoints(P,['A','B','C'],T)+origin(T,P.O),readout:[numberRow('Дуга AB без точки C, градусов',M.arc,BLUE,'arc'),numberRow('∠AOB',M.central,BLUE),numberRow('∠ACB',M.inscribed,GREEN)]};}
+  };
+
+  defs.circleThroughTwoPoints={
+    title:'Окружности через A и B',values:{height:1},controls:[range('height','Передвинь центр O₁ по пунктиру',-1,2.5,.1)],
+    sample(p){const P={A:[-2,0],B:[2,0],O1:[0,p.height],O2:[0,-2.5]};return{points:P,metrics:{r1:hypot(P.O1,P.A),r2:hypot(P.O2,P.A),O1A:hypot(P.O1,P.A),O1B:hypot(P.O1,P.B),O2A:hypot(P.O2,P.A),O2B:hypot(P.O2,P.B)}};},
+    render(s){const P=s.points,M=s.metrics,T=fit([[-4,-6],[4,6.2]],{x:50,y:35,w:460,h:260});return{body:circleAt(T,P.O2,M.r2,GREEN)+circleAt(T,P.O1,M.r1,BLUE)+line(T([0,-5.5]),T([0,5.5]),INK,'4 5')+line(T(P.A),T(P.B),AMBER)+segments(P,T,[['O1','A',BLUE,'5 5'],['O1','B',BLUE,'5 5'],['O2','A',GREEN,'5 5'],['O2','B',GREEN,'5 5']])+labelPoints(P,['A','B'],T)+neutralCenter(T,P.O1,'O₁',BLUE,true)+neutralCenter(T,P.O2,'O₂',GREEN),readout:[numberRow('O₁A',M.O1A,BLUE,'O1A'),numberRow('O₁B',M.O1B,BLUE,'O1B'),numberRow('O₂A',M.O2A,GREEN,'O2A'),numberRow('O₂B',M.O2B,GREEN,'O2B')]};}
+  };
+
+  defs.regularPolygonCircles={
+    title:'Многоугольник и окружность',values:{n:7,mode:'circumcircle',radius:3,rotation:15},controls:[range('radius','Измени размер многоугольника',2,4,.1),range('rotation','Поверни многоугольник',0,80,1,'°')],
+    normalize(p){return{...p,n:[4,7,9].includes(Number(p.n))?Number(p.n):7,mode:p.mode==='incircle'?'incircle':'circumcircle'};},
+    sample(p){const P={O:[0,0]},names=[];for(let i=0;i<p.n;i++){const name=String.fromCharCode(65+i);names.push(name);P[name]=polar(p.radius,p.rotation+360*i/p.n);}const M={n:p.n,circumradius:p.radius,inradius:p.radius*Math.cos(Math.PI/p.n),sides:[],vertexDistances:[],sideDistances:[]};for(let i=0;i<p.n;i++){const a=P[names[i]],b=P[names[(i+1)%p.n]];P['H'+i]=mid(a,b);M.sides.push(hypot(a,b));M.vertexDistances.push(hypot(P.O,a));M.sideDistances.push(hypot(P.O,P['H'+i]));}return{points:P,metrics:M};},
+    render(s){const P=s.points,M=s.metrics,p=s.values,T=fit([[-5,-5],[5,5]],{x:45,y:40,w:470,h:245}),names=Array.from({length:p.n},(_,i)=>String.fromCharCode(65+i)),r=p.mode==='incircle'?M.inradius:M.circumradius;let body=poly(names.map(n=>T(P[n])))+circleAt(T,P.O,r,BLUE)+labelPoints(P,names,T)+origin(T,P.O),readout=[numberRow('Радиус окружности',r,BLUE)];for(let i=0;i<p.n;i++){const name=names[i],next=names[(i+1)%p.n],end=p.mode==='incircle'?'H'+i:name,key='radius-'+i;body+=linked(key,line(T(P.O),T(P[end]),BLUE,'4 5'),p.mode==='incircle'?'Расстояние до '+name+next:'Радиус O'+name);if(p.mode==='incircle')body+=rightMark(T(P.O),T(P[end]),T(P[name]),GREEN,7);readout.push(numberRow(p.mode==='incircle'?'Расстояние до '+name+next:'O'+name,hypot(P.O,P[end]),BLUE,key));}return{body,readout};}
+  };
+
+  function rayCircleRoots(P,u,r){const b=P[0]*u[0]+P[1]*u[1],c=P[0]*P[0]+P[1]*P[1]-r*r,d=Math.sqrt(Math.max(0,b*b-c));return[-b-d,-b+d];}
+  defs.circlePowerProducts={
+    title:'Отрезки и их произведения',values:{mode:'secant',radius:3,ratio:2,deflection:.2,position:.3,angle:65},controls:[],
+    controlsFor(p){return p.mode==='chords'?[range('position','Передвинь точку P внутри круга',-.65,.65,.05),range('angle','Поверни вторую хорду вокруг P',25,150,1,'°')]:[range('ratio','Передвинь внешнюю точку P',1.5,2.5,.05),range('deflection','Поверни секущую вокруг P',-.65,.65,.05)];},
+    normalize(p){p={...p,mode:p.mode==='chords'?'chords':'secant',radius:boundedNumber(p.radius,2,4,3)};p.ratio=boundedNumber(p.ratio,1.5,2.5,2);p.deflection=boundedNumber(p.deflection,-.65,.65,.2);p.position=boundedNumber(p.position,-.65,.65,.3);p.angle=boundedNumber(p.angle,25,150,65);return p;},
+    sample(p){const r=p.radius,P={O:[0,0]},M={radius:r};if(p.mode==='secant'){const d=r*p.ratio;P.P=[d,0];const phi=Math.asin(r/d)*p.deflection,u=[-Math.cos(phi),Math.sin(phi)],[nearT,farT]=rayCircleRoots(P.P,u,r);P.A=add(P.P,mul(u,nearT));P.B=add(P.P,mul(u,farT));P.T=[r*r/d,r*Math.sqrt(1-r*r/(d*d))];M.PT=hypot(P.P,P.T);M.PA=hypot(P.P,P.A);M.PB=hypot(P.P,P.B);M.tangentSquare=M.PT*M.PT;M.secantProduct=M.PA*M.PB;}else{P.P=[r*p.position,0];for(const [u,a,b]of[[[1,0],'A','B'],[polar(1,p.angle),'C','D']]){const [t1,t2]=rayCircleRoots(P.P,u,r);P[a]=add(P.P,mul(u,t1));P[b]=add(P.P,mul(u,t2));}for(const n of['A','B','C','D'])M['P'+n]=hypot(P.P,P[n]);M.firstProduct=M.PA*M.PB;M.secondProduct=M.PC*M.PD;}M.OP=hypot(P.O,P.P);return{points:P,metrics:M};},
+    render(s){const P=s.points,M=s.metrics,p=s.values,T=fit([...bounds(P.O,M.radius),P.P],{x:55,y:40,w:450,h:245});let body=circleAt(T,P.O,M.radius,INK,LIGHT),readout=[];if(p.mode==='secant'){body+=linked('PB',segments(P,T,[['P','A',BLUE],['A','B',GREEN]]),'Вся секущая PB')+segments(P,T,[['P','T',AMBER],['O','T',INK,'5 5']])+rightMark(T(P.O),T(P.T),T(P.P),AMBER)+labelPoints(P,['P','A','B','T'],T);readout=[lengthRow(P,'P','T',AMBER),lengthRow(P,'P','A',BLUE),numberRow('PB — вся секущая',M.PB,GREEN,'PB'),numberRow('PT²',M.tangentSquare,AMBER,'PT'),numberRow('PA · PB',M.secantProduct,BLUE,'PB')];}else{body+=segments(P,T,[['P','A',BLUE],['P','B',BLUE],['P','C',GREEN],['P','D',GREEN]])+labelPoints(P,['A','B','C','D'],T)+dot(T(P.P))+text(T(P.P)[0]+16,T(P.P)[1]+25,'P');readout=[...['A','B'].map(n=>lengthRow(P,'P',n,BLUE)),...['C','D'].map(n=>lengthRow(P,'P',n,GREEN)),numberRow('PA · PB',M.firstProduct,BLUE),numberRow('PC · PD',M.secondProduct,GREEN)];}if(hypot(P.O,P.P)>1e-7)body+=neutralCenter(T,P.O,'O',INK,true);else body+=text(T(P.O)[0]-32,T(P.O)[1]-22,'O = P');return{body,readout};}
+  };
+
+  defs.circleDisjointChords={
+    title:'Две хорды окружности',values:{offset:2},controls:[range('offset','Раздвинь две хорды',1,4,.1)],
+    sample(p){const r=5,h=Math.sqrt(r*r-p.offset*p.offset),P={O:[0,0],A:[-h,p.offset],B:[h,p.offset],C:[-h,-p.offset],D:[h,-p.offset]};return{points:P,metrics:{radius:r,separation:2*p.offset,AB:hypot(P.A,P.B),CD:hypot(P.C,P.D),intersections:0}};},
+    render(s){const P=s.points,M=s.metrics,T=fit(bounds(P.O,5.5));return{body:circleAt(T,P.O,5,INK,LIGHT)+segments(P,T,[['A','B',BLUE],['C','D',GREEN]])+labelPoints(P,['A','B','C','D'],T)+origin(T,P.O),readout:[lengthRow(P,'A','B',BLUE),lengthRow(P,'C','D',GREEN),numberRow('Расстояние между прямыми хорд',M.separation),'Общих точек у хорд: 0']};}
+  };
+  defs.circleDiameterAngle={
+    title:'Два диаметра',values:{angle:55},controls:[range('angle','Поверни диаметр AB',20,160,1,'°')],
+    sample(p){const P={O:[0,0],A:polar(4,p.angle),B:polar(4,p.angle+180),C:[-4,0],D:[4,0]};return{points:P,metrics:{radius:4,angle:angleAt(P.A,P.O,P.D),AB:hypot(P.A,P.B),CD:hypot(P.C,P.D)}};},
+    render(s){const P=s.points,M=s.metrics,T=fit(bounds(P.O,5));return{body:circleAt(T,P.O,4,INK)+segments(P,T,[['A','B',BLUE],['C','D',GREEN]])+kit.angleMark(T(P.A),T(P.O),T(P.D),AMBER)+labelPoints(P,['A','B','C','D'],T)+origin(T,P.O),readout:[lengthRow(P,'A','B',BLUE),lengthRow(P,'C','D',GREEN),numberRow('∠AOD',M.angle,AMBER)]};}
+  };
+
   return defs;
 });
