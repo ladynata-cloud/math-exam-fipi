@@ -57,6 +57,11 @@ jobs:
         env:
           PRACTICAL_EMPTY_INPUT_ARTIFACTS: artifacts/oge-practical-discovery/empty-input
         run: node tools/oge-practical-empty-input.browser.cjs
+      - name: Authored plot with a measured plan and five answers
+        env:
+          PRACTICAL_VARIANT_PLOT_ONLY: '1'
+          PRACTICAL_VARIANT_ARTIFACTS: artifacts/oge-practical-discovery/authored-plot
+        run: node tools/oge-practical-variant.browser.cjs
       - name: Save coverage and screenshots
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
