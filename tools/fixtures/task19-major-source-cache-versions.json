@@ -1,0 +1,38 @@
+{
+  "task": "docs/tasks/OGE19_MAJOR_SOURCE_EXPANSION_20261116.md",
+  "sourceCommit": "d75801c4aa85b3960dcc4414f0ae57ae7e54b9f9",
+  "file": "trainers/task19-trainer.html",
+  "reason": "The approved 135-card expansion updates these six script cache versions. Invert the complete exact set only for native HTML comparison; historical source pins and every other byte remain unchanged.",
+  "fragments": [
+    {
+      "script": "task19-visual-data.js",
+      "before": "  <script defer src=\"task19-visual-data.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-visual-data.js?v=major-sources-20261116\"></script>\n"
+    },
+    {
+      "script": "task19-models-triangles.js",
+      "before": "  <script defer src=\"task19-models-triangles.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-models-triangles.js?v=major-sources-20261116\"></script>\n"
+    },
+    {
+      "script": "task19-models-circles.js",
+      "before": "  <script defer src=\"task19-models-circles.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-models-circles.js?v=major-sources-20261116\"></script>\n"
+    },
+    {
+      "script": "task19-models-lines-polygons.js",
+      "before": "  <script defer src=\"task19-models-lines-polygons.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-models-lines-polygons.js?v=major-sources-20261116\"></script>\n"
+    },
+    {
+      "script": "task19-visual-models.js",
+      "before": "  <script defer src=\"task19-visual-models.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-visual-models.js?v=major-sources-20261116\"></script>\n"
+    },
+    {
+      "script": "task19-textbook-data.js",
+      "before": "  <script defer src=\"task19-textbook-data.js?v=sources-20261021\"></script>\n",
+      "after": "  <script defer src=\"task19-textbook-data.js?v=major-sources-20261116\"></script>\n"
+    }
+  ]
+}

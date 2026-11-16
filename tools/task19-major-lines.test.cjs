@@ -170,6 +170,79 @@ test('reflection-axis counts are obtained by actual overlays; circles and lines 
   for(const shape of ['isosceles','equilateral'])for(const x of [-1.5,-.75,0,.75,1.5])for(const y of [-1.5,-.75,0,.75,1.5])assert(api.sample('symmetryTransform',{shape,transformation:'halfTurn',centerX:x,centerY:y}).metrics.difference>.1);
 });
 
+test('every attainable line-symmetry angle and offset visibly move the axis within a stationary world frame',()=>{
+  const cards=fixtures.filter(f=>f.model==='symmetryTransform'&&f.params.shape==='line');assert.equal(cards.length,2);
+  const coords=tag=>['x1','y1','x2','y2'].map(name=>Number(tag.match(new RegExp('\\b'+name+'="([^"]+)"'))[1]));
+  let stationaryLine,scale,checked=0;
+  for(let degrees=0;degrees<=180;degrees++){
+    let previous;
+    for(let step=0;step<=30;step++){
+      const params={...cards[0].params,axisAngle:degrees,axisOffset:-1.5+step/10},output=api.render('symmetryTransform',params);
+      verify(output.sample);
+      const lines=[...output.svg.matchAll(/<line\b[^>]*\/>/g)].map(m=>coords(m[0]));assert.equal(lines.length,3,'both complete lines and the test axis');
+      const source=lines[0];
+      if(!stationaryLine)stationaryLine=source;
+      source.forEach((value,i)=>near(value,stationaryLine[i],'source line stays fixed on screen'));
+      const axisGroup=output.svg.match(/<g\b[^>]*data-geometry-group="transformation-axis"[^>]*>([\s\S]*?)<\/g>/);assert(axisGroup);
+      const axis=coords(axisGroup[1]),a=axis.slice(0,2),b=axis.slice(2),center=[(a[0]+b[0])/2,(a[1]+b[1])/2],axisLength=length(a,b);
+      if(!scale)scale=axisLength/8.6;
+      near(axisLength/8.6,scale,'scale does not follow axis or image movement');
+      assert(scale>10,'a control step causes visible screen movement');
+      for(const point of[a,b])assert(point[0]>=60&&point[0]<=500&&point[1]>=64&&point[1]<=240,'whole axis remains in the reserved drawing window');
+      near(Math.abs(cross(sub(b,a),[Math.cos(degrees*RAD),-Math.sin(degrees*RAD)])),0,'displayed axis has the actual direction');
+      if(previous){
+        near(length(center,previous),scale*.1,'each offset step visibly translates the axis');
+        near(dot(sub(center,previous),sub(b,a)),0,'translation is perpendicular to the test axis');
+      }
+      previous=center;checked++;
+    }
+  }
+  assert.equal(checked,181*31);
+  for(const card of cards){
+    const end=api.render(card.model,{...card.params,axisOffset:1.5}),start=api.render(card.model,{...card.params,axisOffset:-1.5});
+    assert.notEqual(end.svg,start.svg,card.id+': perpendicular-axis movement remains visible');
+    near(end.sample.metrics.difference,0,'translated perpendicular still preserves the infinite line');
+    near(start.sample.metrics.difference,0,'opposite translated perpendicular also preserves the infinite line');
+  }
+});
+
+test('symmetry legends stay readable and clear of the full figure and labels at every control boundary',()=>{
+  const {JSDOM}=require('jsdom'),dom=new JSDOM('<!doctype html><div id="host"></div>'),host=dom.window.document.getElementById('host');
+  const symmetry=fixtures.filter(f=>f.model==='symmetryTransform');assert.equal(symmetry.length,12);let checked=0;
+  try{for(const f of symmetry)for(const params of[f.params,...statesFor(f)]){
+    host.innerHTML=api.render(f.model,params).svg;
+    const figure=host.querySelector('[data-symmetry-figure]'),legend=host.querySelector('[data-symmetry-legend]');
+    assert(figure&&figure.children.length>0&&legend,`${f.id}: complete figure and separate legend`);
+    const size=Number(legend.getAttribute('font-size')),legendY=Number(legend.getAttribute('y'));
+    assert(size>=24,`${f.id}: legible legend type`);
+    assert.match(legend.textContent,/Сплошная.*фигура.*пунктир.*образ/);
+    const legendTop=legendY-.75*size;
+    assert(legendY+.75*size<=340,`${f.id}: legend stays inside the SVG`);
+    for(const label of figure.querySelectorAll('text')){
+      // A conservative full glyph envelope, including the white outline of O,
+      // detects the original collision without relying on JSDOM text metrics.
+      const y=Number(label.getAttribute('y')),font=Number(label.getAttribute('font-size')),stroke=Number(label.getAttribute('stroke-width')||0);
+      assert(Number.isFinite(y)&&font>0,`${f.id}: finite label`);
+      assert(y+.75*font+stroke/2<=legendTop-4,`${f.id}: ${label.textContent} overlaps the legend strip`);
+    }
+    for(const shape of figure.querySelectorAll('polygon,line,circle')){
+      let bottom;
+      if(shape.tagName==='polygon')bottom=Math.max(...shape.getAttribute('points').trim().split(/\s+/).map(p=>Number(p.split(',')[1])));
+      else if(shape.tagName==='line')bottom=Math.max(Number(shape.getAttribute('y1')),Number(shape.getAttribute('y2')));
+      else bottom=Number(shape.getAttribute('cy'))+Number(shape.getAttribute('r'));
+      bottom+=Number(shape.getAttribute('stroke-width')||0)/2;
+      const clipped=shape.closest('[clip-path]');
+      if(clipped){
+        const id=clipped.getAttribute('clip-path').match(/^url\(#([^)]+)\)$/)?.[1],clip=host.querySelector('clipPath[id="'+id+'"] rect');
+        assert(clip,`${f.id}: real line clipping region`);bottom=Math.min(bottom,Number(clip.getAttribute('y'))+Number(clip.getAttribute('height')));
+      }
+      assert(Number.isFinite(bottom)&&bottom<=250,`${f.id}: drawing intrudes into reserved label/legend area`);
+    }
+    checked++;
+  }}finally{dom.window.close();}
+  assert(checked>150,'all twelve initial states and Cartesian control boundaries are covered');
+});
+
 test('all historical line/polygon samples, controls and renders are byte-for-byte unchanged',()=>{
   const historical=['lineRelations','lineThroughPoint','bisectorDistance','detachedAngles','acuteAdjacent','squareMeasure','quadrilateralExplore','diagonalOverlay','polygonFan','coordinateMeasure','rhombusArea','equalPerimeters'];
   const hash=crypto.createHash('sha256');let count=0;

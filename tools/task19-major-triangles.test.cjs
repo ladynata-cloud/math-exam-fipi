@@ -196,3 +196,24 @@ test('fixed numerical geometry changes orientation/size visibly without changing
  const c=cards.find(c=>c.id==='triangle_40_70_70_is_isosceles'),h=c.hint,small=V.render(h.model,{...h.params,size:3}),large=V.render(h.model,{...h.params,size:6});
  const width=svg=>{const m=svg.match(/<polygon\b[^>]*points="([^"]+)"/),xs=m[1].split(/\s+/).map(p=>Number(p.split(',')[0]));return Math.max(...xs)-Math.min(...xs);};near(width(large.svg)/width(small.svg),2,'size control visibly doubles the triangle');
 });
+
+test('source center view uses readable bounds with an equal scale on both axes',()=>{
+ const polygon=svg=>svg.match(/<polygon\b[^>]*points="([^"]+)"/)[1].split(/\s+/).map(p=>p.split(',').map(Number));
+ const circle=svg=>{const m=svg.match(/<circle cx="([^"]+)" cy="([^"]+)" r="([^"]+)" fill="none"/);assert(m);return m.slice(1).map(Number);};
+ const centerCards=cards.filter(c=>c.hint.model==='triangleSourceCenters');
+ for(const c of centerCards){
+  const h=c.hint,initial=V.sample(h.model,h.params).values,states=[initial];let p=initial;
+  for(const key of V.controlsFor(h.model,p).map(x=>x.key))for(const edge of ['min','max']){const ctl=V.controlsFor(h.model,p).find(x=>x.key===key);p=V.updateModel(h.model,p,key,ctl[edge]);states.push(p);}
+  for(const params of states){
+   const out=V.render(h.model,params),s=out.sample,Q=polygon(out.svg),P=['A','B','C'].map(n=>s.points[n]),scales=Q.map((q,i)=>dist(q,Q[(i+1)%3])/dist(P[i],P[(i+1)%3]));
+   near(scales[0],scales[1],'no horizontal/vertical distortion');near(scales[1],scales[2],'uniform geometry scale');
+   const [x,y,r]=circle(out.svg),actualRadius=params.view==='incenterVertices'?s.metrics.inradius:s.metrics.radius;near(r/actualRadius,scales[0],'circle and triangle share one scale');
+   assert(x-r>=0&&x+r<=560&&y-r>=0&&y+r<=340,'complete circle remains within the SVG');validateGeometry(c,s);
+  }
+  if(!initial.shape.startsWith('sides')){
+   const small=V.render(h.model,{...initial,size:3}),large=V.render(h.model,{...initial,size:6});near(circle(large.svg)[2]/circle(small.svg)[2],2,'size control visibly doubles the circle');
+  }
+ }
+ const h=cards.find(c=>c.id==='obtuse_circumcenter_on_side').hint,out=V.render(h.model,h.params),diameterAt300px=2*circle(out.svg)[2]*300/560;
+ assert(diameterAt300px>=90&&diameterAt300px<=120,'initial mobile circumcircle stays legible, without clipping');
+});

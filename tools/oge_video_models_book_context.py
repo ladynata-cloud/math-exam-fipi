@@ -8,6 +8,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
+TASK19_CACHE_VERSIONS = json.loads((ROOT / 'tools/fixtures/task19-major-source-cache-versions.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
@@ -30,6 +31,19 @@ def restore_graph_intersections(file, raw):
         return raw
     fragments = GRAPH_INTERSECTIONS['fragments']
     if not all(raw.count(fragment['after'].encode()) == 1 for fragment in fragments):
+        return raw
+    for fragment in fragments:
+        raw = raw.replace(fragment['after'].encode(), fragment['before'].encode(), 1)
+    return raw
+
+
+def restore_task19_cache_versions(file, raw):
+    """Invert one exact six-tag cache delta; preserve every other native byte."""
+    if file != TASK19_CACHE_VERSIONS['file']:
+        return raw
+    fragments = TASK19_CACHE_VERSIONS['fragments']
+    if not all(raw.count(fragment['after'].encode()) == 1 and
+               fragment['before'].encode() not in raw for fragment in fragments):
         return raw
     for fragment in fragments:
         raw = raw.replace(fragment['after'].encode(), fragment['before'].encode(), 1)
@@ -84,6 +98,7 @@ def verified_context(record):
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if teaching.count(block) != 1 or block + b'</head>' not in teaching: return None
         native = teaching.replace(block, b'', 1)
+        native = restore_task19_cache_versions(file, native)
         graph_scale = PINS['graphScale']
         if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
             native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)

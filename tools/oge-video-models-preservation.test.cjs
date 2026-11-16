@@ -4,9 +4,10 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const {execFileSync} = require('node:child_process');
-const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections} = require('./oge-video-models-preservation.cjs');
+const {entries, assets, snippet, restoreVideoModels, restoreGraphScale, restoreGraphIntersections, restoreTask19CacheVersions} = require('./oge-video-models-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
+const task19CacheVersions = require('./fixtures/task19-major-source-cache-versions.json');
 const ROOT = path.resolve(__dirname, '..');
 const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
@@ -82,4 +83,76 @@ test('task22 intersection display inverse requires the complete exact renderer a
   assert.notEqual(changedMath, source);
   assert(restoreGraphIntersections(file, changedMath).includes('const x=2/(C-m);'), 'inverse cannot erase an unrelated mathematical edit');
   assert.notEqual(nativeHash(changedMath), historicalPin);
+});
+
+test('task19 cache fixture binds exactly six script tags to the approved task and source commit', () => {
+  assert.equal(task19CacheVersions.file, 'trainers/task19-trainer.html');
+  assert.equal(task19CacheVersions.task, 'docs/tasks/OGE19_MAJOR_SOURCE_EXPANSION_20261116.md');
+  assert.equal(task19CacheVersions.sourceCommit, 'd75801c4aa85b3960dcc4414f0ae57ae7e54b9f9');
+  assert(fs.existsSync(path.join(ROOT, task19CacheVersions.task)));
+  const scripts = ['task19-visual-data.js', 'task19-models-triangles.js', 'task19-models-circles.js',
+    'task19-models-lines-polygons.js', 'task19-visual-models.js', 'task19-textbook-data.js'];
+  assert.deepEqual(task19CacheVersions.fragments, scripts.map(script => ({
+    script,
+    before: '  <script defer src="' + script + '?v=sources-20261021"></script>\n',
+    after: '  <script defer src="' + script + '?v=major-sources-20261116"></script>\n'
+  })), 'the fixture cannot widen the approved files, attributes or versions');
+});
+
+test('task19 six-tag inverse preserves the entire historical native body and is idempotent', () => {
+  const {file, fragments} = task19CacheVersions;
+  const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const restored = restoreTask19CacheVersions(file, source);
+  assert.notEqual(restored, source);
+  for (const {before, after} of fragments) {
+    assert.equal(source.split(after).length, 2);
+    assert.equal(restored.split(before).length, 2);
+    assert(!restored.includes(after));
+  }
+  assert.equal(restoreTask19CacheVersions(file, restored), restored);
+  const historical = execFileSync('git', ['show', updates.pages[file].sourceCommit + ':' + file], {cwd: ROOT, encoding: 'utf8'});
+  assert.equal(restoreTask19CacheVersions(file, historical), historical, 'old source is unchanged');
+  const native = restoreVideoModels(file, source), baseline = restoreVideoModels(file, historical);
+  assert.equal(native, baseline, 'every native HTML byte is still checked');
+  assert.equal(require('node:crypto').createHash('sha256').update(native).digest('hex'), updates.pages[file].sha256);
+  assert.equal(restoreVideoModels(file, native), native);
+  for (const other of ['unrelated.html', 'trainers/geometry_statements_trainer_improved.html',
+    '/trainers/task19-trainer.html', 'book/oge/2026-10-31/v1/trainers/task19-trainer.html']) {
+    assert.equal(restoreTask19CacheVersions(other, source), source, 'no inverse on ' + other);
+    assert.equal(restoreVideoModels(other, source), source, 'no addon or cache inverse on ' + other);
+  }
+});
+
+test('task19 rejects partial, duplicate, altered and unrelated native changes even with a forged addon receipt', () => {
+  const {file, fragments} = task19CacheVersions;
+  const source = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  const {receipt, label, summaryHtml, hash} = require('./oge-video-models-book-context.cjs');
+  const input = {file, raw: source, id: '71', prefix: '', visible: 'Native condition. ' + label + ' Native footer.',
+    dom: {count: 1, tag: 'DETAILS', id: 'oge-video-models', closed: true, summaryCount: 1, summaryHtml, visibleText: label},
+    assetHashes: Object.fromEntries(assets.map(asset => ['/' + asset, hash(fs.readFileSync(path.join(ROOT, asset)))]))};
+  assert.doesNotThrow(() => receipt(input));
+  const rejects = (changed, message) => {
+    assert.notEqual(changed, source, 'negative probe actually changes the source: ' + message);
+    assert.notEqual(hash(restoreVideoModels(file, changed)), updates.pages[file].sha256, message);
+    assert.throws(() => receipt({...input, raw: changed}), message);
+  };
+  for (const {script, before, after} of fragments) {
+    for (const replacement of [before, '', after.repeat(2), after + before,
+      after.replace('defer', 'async'), after.replace(script, 'unreviewed-' + script),
+      after.replace('major-sources-20261116', 'unreviewed-version')]) {
+      const changed = source.replace(after, replacement);
+      assert.equal(restoreTask19CacheVersions(file, changed), changed, script + ': incomplete or ambiguous set has no inverse');
+      rejects(changed, script + ': malformed tag set');
+    }
+  }
+  for (const changed of [source + '\n', source.replace('<title>', '<title>Changed '),
+    source.replace('</body>', '<p>Changed condition</p></body>'),
+    source.replace(fragments[0].after, fragments[0].after + fragments[0].after.replace('defer', 'async')),
+    source.replace('task19-reference.js?v=sources-20261021', 'task19-reference.js?v=major-sources-20261116')]) {
+    rejects(changed, 'the inverse must retain unrelated native bytes');
+  }
+  const withoutAddon = source.replace(snippet(19), '');
+  assert.equal(restoreVideoModels(file, withoutAddon), withoutAddon, 'cache changes alone do not attest the required addon');
+  assert.throws(() => receipt({...input, raw: withoutAddon}), /optional include block/);
+  assert.throws(() => receipt({...input, file: 'trainers/geometry_statements_trainer_improved.html'}), /book\/source route/);
 });

@@ -63,6 +63,15 @@ test('independent coordinates preserve all premises through endpoints, corners, 
 test('every editable quadrilateral control changes the actual drawing',()=>{
  for(const card of cards){const h=card.hint,before=api.render(h.model,h.params).svg,controls=api.controlsFor(h.model,h.params);assert(controls.length>0,card.id);for(const c of controls){const v=c.value===c.max?c.min:c.max;assert.notEqual(api.render(h.model,api.updateModel(h.model,h.params,c.key,v)).svg,before,`${card.id}: ${c.key}`);}}
 });
+test('every named endpoint of the orthodiagonal length controls is labelled on the drawing',()=>{
+ const card=cards.find(c=>c.id==='orthodiagonal_quadrilateral_is_rhombus');
+ for(const p of states(card)){
+  const rendered=api.render(card.hint.model,p),labels=[...rendered.svg.matchAll(/<text\b[^>]*>([^<]+)<\/text>/g)].map(m=>m[1]);
+  const parts=api.controlsFor(card.hint.model,p).map(c=>c.label.match(/^Отрезок ([ABCDJ]{2})$/)?.[1]).filter(Boolean);
+  assert.deepEqual(parts,['AJ','JC','BJ','JD']);
+  for(const name of new Set(parts.join('')))assert.equal(labels.filter(label=>label===name).length,1,`${name}: one visible endpoint label`);
+ }
+});
 test('false claims start with counterexamples and existential true claims start with witnesses',()=>{
  const sample=id=>{const c=cards.find(c=>c.id===id);return api.sample(c.hint.model,c.hint.params);};
  const m=id=>sample(id).metrics,notEqualSides=M=>new Set(['AB','BC','CD','DA'].map(k=>M[k].toFixed(6))).size>1;

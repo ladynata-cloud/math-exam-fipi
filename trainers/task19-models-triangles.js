@@ -382,7 +382,12 @@
   defs.triangleSourceCenters={title:'Сравни центр и расстояния',values:{shape:'free',a:50,b:70,size:5,rotation:0,view:'incenterVertices'},controls:[],normalize:sourceNormalize,controlsFor:sourceControls,sample:sourceCenterSample,render(s){
     const P=s.points,M=s.metrics,p=s.values,incenter=p.view==='incenterVertices',both=p.view==='both',O=incenter?P.I:P.O,radius=incenter?M.inradius:M.radius,extras=[[O[0]-radius,O[1]-radius],[O[0]+radius,O[1]+radius]];
     if(p.view==='midAltitude')extras.push(P.H,P.N);if(p.view==='circumcenterSides')extras.push(P.OX,P.OY,P.OZ);
-    const T=sourceView(s,extras),unit=hypot(T([0,0]),T([1,0]));let body=sourceTriangleDrawing(s,T)+circle(T(O),radius*unit,BLUE),readout=sourceSideRows(s);
+    // Fit the actual rectangular bounds. Wrapping the circle's diagonal
+    // corners in another radial square needlessly shrinks a mobile diagram.
+    // A reference at the maximum size keeps the size control visibly linear.
+    const G=[(P.A[0]+P.B[0]+P.C[0])/3,(P.A[1]+P.B[1]+P.C[1])/3],sizeFactor=p.shape.startsWith('sides')?1:6/p.size;
+    const bounds=[P.A,P.B,P.C,...extras].map(q=>[G[0]+(q[0]-G[0])*sizeFactor,G[1]+(q[1]-G[1])*sizeFactor]);
+    const T=fit(bounds,{x:65,y:40,w:430,h:235}),unit=hypot(T([0,0]),T([1,0]));let body=sourceTriangleDrawing(s,T)+circle(T(O),radius*unit,BLUE),readout=sourceSideRows(s);
     if(incenter){body+=dot(T(P.I),GREEN)+text(T(P.I)[0]+17,T(P.I)[1]-16,'I',GREEN);for(const n of ['A','B','C'])body+=line(T(P.I),T(P[n]),GREEN,'5 5');body+=drawHeight(P.I,P.IX,P.A,P.B,T,'X',BLUE);readout.push('Радиус вписанной окружности = '+fmt(M.inradius),...['A','B','C'].map(n=>'I'+n+' = '+fmt(M['I'+n])));}
     else if(p.view==='circumcenterSides'){
       body+=dot(T(P.O),BLUE)+text(T(P.O)[0]+18,T(P.O)[1]-15,'O',BLUE);for(const [h,u,v]of[['X','A','B'],['Y','B','C'],['Z','C','A']])body+=drawHeight(P.O,P['O'+h],P[u],P[v],T,h,GREEN);body+=line(T(P.O),T(P.A),BLUE,'5 5');readout.push('Радиус описанной окружности = '+fmt(M.radius),'Расстояние до прямой AB = '+fmt(M.OX),'Расстояние до прямой BC = '+fmt(M.OY),'Расстояние до прямой CA = '+fmt(M.OZ));

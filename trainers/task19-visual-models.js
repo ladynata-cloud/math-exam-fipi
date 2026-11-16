@@ -461,6 +461,11 @@
       if(focus!=='pythagoras')body+=line(Q.B,Q.D,GREEN);
       if(focus==='diagonal-halves'){
         names.forEach(n=>{let i=lengths.findIndex(v=>Math.abs(v-M[n+'J'])<1e-7);if(i<0){i=lengths.length;lengths.push(M[n+'J']);}body+=tick(Q[n],Q.J,i+1,[BLUE,GREEN,'#a65017','#7849a5'][i]);});body+=dot(Q.J)+text(Q.J[0]+30,Q.J[1],'J');
+      }else if(p.kind==='orthodiagonal'){
+        // The four controls name AJ, JC, BJ and JD. Label their common point
+        // between the perpendicular diagonals so it remains visible on rotation.
+        const u=quadSub(Q.C,Q.J),v=quadSub(Q.B,Q.J),a=Math.hypot(...u),b=Math.hypot(...v);
+        body+=dot(Q.J)+text(Q.J[0]+26*(u[0]/a+v[0]/b),Q.J[1]+26*(u[1]/a+v[1]/b),'J');
       }
       if(focus!=='pythagoras'&&Math.abs(M.diagonalAngle-90)<1e-7)body+=rightMark(Q.A,Q.J,Q.B);
     }

@@ -404,14 +404,19 @@
     },
     render:s=>{
       const p=s.values,P=s.points,M=s.metrics,names=M.names,original=names.map(n=>P[n]),image=names.map(n=>P[n+'1']);
-      const relevant=[...original,...image,...(p.transformation==='reflection'?[P.U,P.V]:[P.O]),...(P.RefAxisA0?[P.RefAxisA0,P.RefAxisB0]:[]),...(P.RefAxisA1?[P.RefAxisA1,P.RefAxisB1]:[])],T=fit(relevant,{x:60,y:45,w:440,h:235});
+      // Keep the lower strip free for the legend, including the full 36-unit
+      // vertex labels and the offset label of the rotation center.
+      const relevant=[...original,...image,...(p.transformation==='reflection'?[P.U,P.V]:[P.O]),...(P.RefAxisA0?[P.RefAxisA0,P.RefAxisB0]:[]),...(P.RefAxisA1?[P.RefAxisA1,P.RefAxisB1]:[])];
+      // An infinite line has no movable bounds. Keep its world frame fixed so
+      // moving a perpendicular test axis cannot be cancelled by auto-centering.
+      const T=fit(p.shape==='line'?[[-6,-6],[6,6]]:relevant,{x:60,y:64,w:440,h:176});
       const polygon=(points,color,fill,dashed)=>`<polygon points="${points.map(q=>T(q).join(',')).join(' ')}" fill="${fill}" fill-opacity="0.23" stroke="${color}" stroke-width="3"${dashed?' stroke-dasharray="8 5"':''}/>`;
       let body='';
       if(p.shape==='circle'){
         body=ring(T(P.Z),hypot(T(P.Z),T(P.A)),INK)+ring(T(P.Z1),hypot(T(P.Z1),T(P.A1)),BLUE).replace('stroke-width="2"','stroke-width="3" stroke-dasharray="8 5"');
         for(let i=0;i<2;i++)if(P['Cref'+i])body+=ring(T(P['Cref'+i]),hypot(T(P['Cref'+i]),T(P['Aref'+i])),GREEN).replace('stroke-width="2"','stroke-width="1" stroke-dasharray="3 7"');
         body+=dot(T(P.Z),INK)+dot(T(P.Z1),BLUE);
-      }else if(p.shape==='line')body=clippedInfiniteLine(T(P.A),T(P.B),INK)+clippedInfiniteLine(T(P.A1),T(P.B1),BLUE,'8 5');
+      }else if(p.shape==='line')body='<defs><clipPath id="task19-symmetry-line-window"><rect x="60" y="64" width="440" height="176"/></clipPath></defs><g clip-path="url(#task19-symmetry-line-window)">'+clippedInfiniteLine(T(P.A),T(P.B),INK)+clippedInfiniteLine(T(P.A1),T(P.B1),BLUE,'8 5')+'</g>';
       else{
         body=polygon(original,INK,LIGHT,false)+polygon(image,BLUE,'#b4d4f1',true);
         names.forEach(n=>{body+=dot(T(P[n]),INK)+dot(T(P[n+'1']),BLUE);});
@@ -422,7 +427,7 @@
         for(let i=0;i<2;i++)if(P['RefAxisA'+i])body+=thinLine(T(P['RefAxisA'+i]),T(P['RefAxisB'+i]),GREEN,'3 6');
         body+=linked('transformation-axis',thinLine(T(P.U),T(P.V),GREEN,'7 5'),'Проверяемая прямая');
       }else body+=linked('transformation-center',clearPoint(T(P.O),GREEN)+clearLabel(T(P.O)[0]+22,T(P.O)[1]+25,'O',GREEN),'Точка поворота O');
-      body+=`<text x="70" y="316" font-size="16" fill="${INK}">Сплошная: исходная фигура</text><text x="300" y="316" font-size="16" fill="${BLUE}">Пунктир: её образ</text>`;
+      body=`<g data-symmetry-figure="true">${body}</g><text data-symmetry-legend="true" x="280" y="318" font-size="24" text-anchor="middle" dominant-baseline="middle" fill="${INK}">Сплошная — фигура · <tspan fill="${BLUE}">пунктир — образ</tspan></text>`;
       const differenceLabel=p.shape==='circle'?'Расстояние между центрами окружностей':p.shape==='line'?'Наибольшее расстояние отмеченных точек образа до исходной прямой':'Наибольшее несовпадение вершин';
       return{body,readout:[...(p.transformation==='reflection'?[`Направление проверяемой прямой: ${fmt(M.axisAngle)}°`,`Смещение проверяемой прямой: ${fmt(M.axisOffset)}`]:['Поворот всей фигуры: 180°',`Точка O: (${fmt(M.centerX)}; ${fmt(M.centerY)})`]),`${differenceLabel}: ${fmt(M.difference)}`,...(p.referenceAxes?[`Различных проверяемых прямых на рисунке: ${M.displayedAxes}`,`Проверок с совпадением окружностей: ${M.matchingDisplayedAxes}`]:[])]};
     }

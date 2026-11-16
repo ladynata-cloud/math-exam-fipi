@@ -111,6 +111,22 @@
   Затем повторяются binding/preservation gates и адресная offline-сборка.
   Это обязательный provenance fixture для уже разрешённого обновления кэша.
 
+- `tools/fixtures/task19-major-source-cache-versions.json`,
+  `tools/oge-video-models-preservation.cjs`,
+  `tools/oge-video-models-preservation.test.cjs`,
+  `tools/oge_video_models_book_context.py`,
+  `tools/oge-video-models-book-context.test.py` — обнаруженная реальным CI
+  зависимость старого byte-preservation gate от прежних шести URL ресурсов
+  `trainers/task19-trainer.html`. Run `43777128580` на head `3d84c55e`:
+  54/57 PASS, три отказа из-за этих версий; browser не запускался.
+  До изменения файлов объявлен точный обратимый fixture только для шести
+  согласованных script-тегов, привязанный к этой задаче и source-коммиту.
+  JS/Python verifier принимают только полный точный набор замен одной страницы;
+  исторические hashes, старые source pins, математические данные и runtime
+  неизменны. Негативные проверки обязаны отклонять частичный набор, дубликаты,
+  изменённые атрибуты/URL, чужую страницу и постороннюю правку native HTML.
+  Это адресная интеграция уже разрешённого cache update, не ослабление gate.
+
 ### Out of scope / areas that must not change
 
 - Прежние 244 объекта карточек, их aliases, порядок, ключи и формат прогресса.
@@ -131,7 +147,7 @@
       числовые данные, границы, восстановление и настоящие контрпримеры.
 - [ ] Полный относящийся к №19 Node/browser набор и learning-map gates прошёл.
 - [x] Учебные ссылки проверены; автономные HTML/ZIP совпадают с онлайн-исходниками.
-- [ ] ADR, прототипы и независимое рассмотрение представлены владельцу в Draft PR.
+- [x] ADR, прототипы и независимое рассмотрение представлены владельцу в Draft PR.
 
 ## Checks and gates
 
@@ -198,17 +214,42 @@
   learning-map, course-guide и public-navigator-preservation. Отдельно
   **5/5 PASS** для `public_navigator_bindings.test.py`, ZIP integrity PASS,
   `git diff --check` PASS. Исторические две offline-проверки теперь проходят.
+- CI integration follow-up: старый video-model preservation gate выявил три
+  несовпадения только из-за шести согласованных cache versions. После точного
+  обратимого fixture проходят **60/60** `oge-video-*.test.cjs` (57 прежних и
+  три новые проверки), отдельно **10/10** независимых Python receipt checks.
+  Исторические native/worked-steps/book-math pins и все отрицательные проверки
+  сохранены. Удалена устаревшая operational строка «no repository changes»
+  из новой карты аудита; четыре содержательных ограничения аудита не меняются.
 - Independent internal review: triangles38, lines/symmetry39, quadrilaterals28,
   circles30. Проверки выполнялись другим автором/основным агентом; external
   provider verdict не заявлен. Закрыты замечания к доступности регуляторов,
   диапазону центра окружности и обозначениям равенства на рисунках.
-- Prototype browser gate: 675 journeys (135 × main1280/main390/main320,
-  alternate390 и offline390), точный банк/черновики/измерения/оценка один раз,
-  keyboard/touch, SVG bounds и отсутствие сетевых зависимостей offline.
-  Реальное выполнение ожидает Draft PR/CI; syntax/wiring уже проверены.
-- PR/head/final browser gate: pending Draft PR and actual GitHub Actions CI.
-  Точный опубликованный head и результаты CI фиксируются в PR, чтобы запись
-  результата не требовала дополнительного коммита с новым непроверенным head.
+- Initial real browser CI: run `43777128600`, published head
+  `3d84c55e97eff9f80e37a2067c7482a667ba122e`, runner merge
+  `dbb8e29b8ab1ea61cceaa5ed511d0e0fc64ebe6d`. Runner parents are the named base
+  and head; its tree `2ad9f7aa942716d32170f1ce0b747be5ed74eacd` equals the head
+  tree. All four existing browser suites and **675/675** new journeys passed:
+  135 × main1280/main390/main320, alternate390 and offline390. Evidence:
+  1 660 controls, 3 320 Home/End actions, 6 785 layout states, 26 268 SVG label
+  bounds, 90 touch journeys and 1 166 PNGs; zero browser errors and zero offline
+  network attempts. Exact bank/drafts/measurements/single scoring preserved.
+- Visual review: independently inspected initial and measured mobile images
+  for all 135 new cards. Closed three small renderer findings: increased the
+  new triangle-centers diagram using uniform actual bounds; separated the
+  symmetry legend and kept its infinite-line axis visibly movable; labelled
+  intersection J used by the four orthodiagonal length controls. New targeted
+  regressions preserve the existing 2 151 model outputs. Old coincident-point
+  label crowding and the shared floating navigator remain outside this scope.
+- Final local follow-up: target HTML/ZIP rebuilt with the refined renderers;
+  **166/166 PASS** (all task19, learning-map, course-guide and public navigator
+  preservation), no skipped tests. The exact-cache dependency separately
+  passes **60/60** Node and **10/10** Python tests. Binding tests passed **5/5**.
+  The initial browser artifact predates these refinements; the final published
+  head must rerun actual CI and the affected visual checks.
+- PR: **#630**, Draft, base remains #626. Final head, runner provenance and
+  actual CI result are recorded in the PR so the evidence update does not
+  require another untested repository commit. No merge or deployment performed.
 - Scope deviations: none.
 
 ## Required handoff
