@@ -220,6 +220,7 @@ var RV = (function(){
     "oge-t20-algebra|DR": { n:"№20.11: Дробное неравенство", line:20 },
     "oge-t20-algebra|QIDS": { n:"№20.12: Квадратные неравенства", line:20 },
     "oge-t20-algebra|SYM": { n:"№20.13: Симметричные системы", line:20 },
+    "oge-t20-algebra|DR3": { n:"№20.14: Дробное неравенство, три точки", line:20 },
     /* 21 · trainers/oge-task21-word-problems.html · 11 типов (ключи тренажёра) */
     "oge-t21-tekst|t1": { n:"Движение: Навстречу", line:21 },
     "oge-t21-tekst|t2": { n:"Движение: Туда и обратно", line:21 },
@@ -232,6 +233,7 @@ var RV = (function(){
     "oge-t21-tekst|t9": { n:"Работа", line:21 },
     "oge-t21-tekst|t10": { n:"Проценты: Сушка фруктов", line:21 },
     "oge-t21-tekst|t11": { n:"Проценты: Сплавы и смеси", line:21 },
+    "oge-t21-tekst|t12": { n:"Проценты: Разбавление раствора", line:21 },
     /* 22 · trainers/oge-task22-functions-graphs.html · 9 типов (ключи тренажёра) */
     "oge-t22-grafiki|parline": { n:"Кусочные функции: Парабола и прямая", line:22 },
     "oge-t22-grafiki|parhyp": { n:"Кусочные функции: Парабола и гипербола", line:22 },
@@ -242,6 +244,7 @@ var RV = (function(){
     "oge-t22-grafiki|inv_kx": { n:"Выколотая точка: Гипербола с выколотой точкой", line:22 },
     "oge-t22-grafiki|shift_m": { n:"Выколотая точка: Сдвиг и выколотая точка", line:22 },
     "oge-t22-grafiki|parab_kx": { n:"Выколотая точка: Парабола с выколотой точкой", line:22 },
+    "oge-t22-grafiki|even_kx_none": { n:"Выколотые точки: прямая y=kx без пересечений", line:22 },
     /* 12 · trainers/oge-task12-formulas-trainer.html · 10 типов (ключи тренажёра) */
     "oge-t12-formuly|1": { n:"Расчёты по формулам: Прямая подстановка", line:12 },
     "oge-t12-formuly|2": { n:"Расчёты по формулам: Выразить неизвестную", line:12 },
@@ -426,9 +429,9 @@ var RV = (function(){
     "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"],
     "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
     "oge24-dokazatelstva": ["t1","t10","t13","t15","t2","t3","t4","t5","t7","t6","t8","t9","t12","t11","t14","t16","t17","t18","t19","t20"],
-    "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM"],
-    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11"],
-    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx"],
+    "oge-t20-algebra": ["A","B1","B2","RAZL","B5","BIQ","SQ","POW","SYS","INEQ","DR","QIDS","SYM","DR3"],
+    "oge-t21-tekst": ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12"],
+    "oge-t22-grafiki": ["parline","parhyp","absquad","xabsx","sqminuslin","alinplusquad","inv_kx","shift_m","parab_kx","even_kx_none"],
     "oge-t12-formuly": ["1","2","3","4","5","6","7","8","9","10"],
     "oge-t14-progressii": ["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY","GP-VAL","GP-COMPL","THRESH","PIC","TAXI"],
     "oge-t10-veroyatnost": ["10_1","10_2","10_3","10_4","10_5","10_6","10_7"],
