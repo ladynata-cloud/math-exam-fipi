@@ -17,7 +17,7 @@ const linear = (k, m, root, prefix = []) => [...prefix, n(k, m), n(root)];
 const square = (c, lo, hi, answer) => [n(c), n(lo, hi), n(answer)];
 const full = (a, b, c, d, sqrt, lo, hi, answer) => [n(a, b, c), n(d), n(sqrt), n(lo, hi), n(answer)];
 const fixtures = [
-  ['demo-2027', ['-32'], null, linear(1, -32, -32, [n(3, 24), n(-2, 16), n(1, 40)])],
+  ['author-demo-type-2027', ['-13'], null, linear(1, -13, -13, [n(6, 24), n(-5, 10), n(1, 34)])],
   ['demo-2026', ['0.5', '1'], 'min', full(2, -3, 1, 1, 1, 0.5, 1, 0.5)],
   ['483ABF', ['7.25'], null, linear(4, 29, 7.25, [n(4, -24)])],
   ['36E26B', ['-12', '12'], 'max', square(144, -12, 12, 12)],

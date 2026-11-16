@@ -17,7 +17,7 @@ const step=(kind,a,b,prompt='')=>({kind,prompt,audit:{args:[a,b].filter(Boolean)
 const q=(n,d=1)=>[BigInt(n),BigInt(d)];
 const same=(actual,n,d=1)=>assert.equal(actual[0]*BigInt(d),BigInt(n)*actual[1]);
 
-test('every operation of all174 plans has a contextual interactive model and an independent small question',t=>{
+test('every operation of all 175 plans has a contextual interactive model and an independent small question',t=>{
   const ui=boot(t),plans=ui.evaluate('TASKS.map(t=>Task6Hints.plan(t))'),families=new Set();let count=0;
   for(const plan of plans)for(const current of plan.steps){
     const model=ui.model(current,{});count++;families.add(model.family);
@@ -29,7 +29,7 @@ test('every operation of all174 plans has a contextual interactive model and an 
       const changed=ui.model(current,{[control.key]:value});assert.doesNotMatch(changed.body+changed.readout,/NaN|Infinity|undefined/);
     }
   }
-  assert.equal(count,1054);assert.deepEqual([...families].sort(),['add','decimal','div','gcd','lcm','mixed','mul','numerator','pow','reciprocal','sub']);
+  assert.equal(count,1061);assert.deepEqual([...families].sort(),['add','decimal','div','gcd','lcm','mixed','mul','numerator','pow','reciprocal','sub']);
 });
 
 test('common denominator and common divisor experiments distinguish exact divisibility',t=>{
@@ -87,8 +87,8 @@ test('wrong intermediate feedback and accepted work survive return without repea
   ui.input('stepAnswer','50');ui.$('stepCheck').click();const accepted=ui.$('hintSteps').textContent;ui.$('taskJump').value='1';ui.$('taskJump').dispatchEvent(new ui.w.Event('change'));ui.$('previous').click();assert.equal(ui.$('hintSteps').textContent,accepted);assert.equal(ui.evaluate('hintSession().index'),1);assert.equal(ui.evaluate('streak'),0);assert.equal(ui.evaluate('currentRecord().wrongAttempts'),0);
 });
 
-test('all174 tasks can open, manipulate and return from their first interactive help without errors',t=>{
-  const ui=boot(t);ui.evaluate("cat='all';startSet()");for(let i=0;i<174;i++){
+test('all 175 tasks can open, manipulate and return from their first interactive help without errors',t=>{
+  const ui=boot(t);ui.evaluate("cat='all';startSet()");for(let i=0;i<ui.evaluate('TASKS.length');i++){
     ui.evaluate(`pos=${i};renderTask()`);ui.$('hintToggle').click();if(ui.$('hintPanel').hidden)ui.$('hintToggle').click();ui.$('stepHelpToggle').click();if(ui.$('stepLab').hidden)ui.$('stepHelpToggle').click();
     assert.ok(ui.$('labOutput').textContent.trim()||ui.$('labOutput').querySelector('svg'));assert.ok(ui.$('labSimple'));assert.ok(ui.$('labExercise'));
     ui.$('stepHelpToggle').click();assert.equal(ui.$('stepLab').hidden,true);ui.$('stepHelpToggle').click();assert.equal(ui.$('stepLab').hidden,false);
