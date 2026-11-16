@@ -16,6 +16,16 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
+// Preserve the full engines and teaching controls against the exact reviewed
+// source commit that contains the three author-developed geometry exercises.
+const geometryBinding=require('../trainers/oge-sources/coverage-23-25.json').sourceBinding;
+const geometryPaths=['trainers/oge-task23-geometry-calculations.html','trainers/oge-task24-proofs.html','trainers/oge-task25-geometry.html'];
+assert.deepEqual(Object.keys(geometryBinding.pages).sort(),geometryPaths);
+assert.match(geometryBinding.sourceCommit,/^[a-f0-9]{40}$/);
+for(const p of geometryPaths){
+ assert(routes.wayfinding.includes(p),p+' remains in learner-entry coverage');
+ taskSources[p]=geometryBinding.sourceCommit;
+}
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
 // Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
 // Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
@@ -98,7 +108,10 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
+  // The reviewed geometry commit already includes the exact download panel,
+  // whose three controls are checked above independently from teaching controls.
+  const baselinePanel=entry&&geometryPaths.includes(p)?baseline.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  assert.deepEqual(controls(d,panel),controls(baseline,baselinePanel),p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();

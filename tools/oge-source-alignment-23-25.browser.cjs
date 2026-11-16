@@ -69,7 +69,10 @@ async function verify(page, number, width) {
     assert.equal(await page.locator('.ocp-writing').getAttribute('data-task-key'), '24|t10-v2');
   } else {
     assert.match(await page.locator('#panel-train .cond').innerText(), /AB = 26.+CD = 30/);
-    assert.ok(await figure.locator('svg text').filter({hasText:/^H₁$/}).isVisible());
+    const zoom = page.locator('.ocp-figure-zoom').first();
+    if (await zoom.getAttribute('aria-pressed') === 'true') await zoom.click();
+    assert.ok(await figure.evaluate(node => node.scrollWidth <= node.clientWidth + 1));
+    assert.ok(await figure.locator('svg text:not([fill="none"])').filter({hasText:/^H₁$/}).isVisible());
     const answer = page.locator('#panel-train input[data-ai="0"]');
     await answer.fill('360');
     await page.locator('#panel-train [data-act="tr-check"]').click();
