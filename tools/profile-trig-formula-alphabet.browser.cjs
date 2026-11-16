@@ -199,7 +199,14 @@ async function exerciseStaleHelp(page, selector, errors) {
   assert.equal(await peer.locator('.fa-task').getAttribute('data-task-id'), task.id);
   await peer.locator('#fa-answer').fill('sin(');
   const saved = await peer.evaluate(() => localStorage.getItem(window.MathExamFormulaState.KEY));
-  await page.locator(selector).click();
+  // A native storage event may already have replaced the old controls with the
+  // conflict screen. Check and click in one turn; both paths must satisfy every
+  // assertion below, including the visible reload control and unchanged peer.
+  const guard = await page.evaluate(selector => {
+    const control = document.querySelector(selector);
+    if (control) { control.click(); return 'click-guard'; }
+    return 'storage-event';
+  }, selector);
   assert.equal(await page.locator('.fa-help, .fa-task, #fa-task-reference').count(), 0, 'stale page must not expose unsaved help');
   assert.equal(await page.locator('#fa-content [data-action="reload"]').isVisible(), true);
   assert.equal(await page.evaluate(() => localStorage.getItem(window.MathExamFormulaState.KEY)), saved, 'stale help must not overwrite the peer draft');
@@ -208,6 +215,7 @@ async function exerciseStaleHelp(page, selector, errors) {
   await peer.reload(); await ready(peer);
   assert.equal((await stateOf(peer, task.id)).attempt.status, 'independent');
   await peer.close();
+  return { selector, guard };
 }
 async function exerciseAssemblyResume(page) {
   await openTask(page, 'm07-s1-01');
@@ -385,8 +393,9 @@ async function main() {
     {
       const { context, page } = await fresh(320); await exerciseDiagnosticExit(page); report.diagnosticExit = true; await context.close();
     }
+    report.staleHelpPaths = [];
     for (const selector of ['[data-action="solution"]', '#fa-task-reference summary']) {
-      const { context, page } = await fresh(390); await exerciseStaleHelp(page, selector, report.errors); await context.close();
+      const { context, page } = await fresh(390); report.staleHelpPaths.push(await exerciseStaleHelp(page, selector, report.errors)); await context.close();
     }
     report.staleHelp = ['solution', 'inline-reference'];
     report.focusActions = ['hint','solution','demo-next','demo-play','predict','conclude','undo','clear'];
