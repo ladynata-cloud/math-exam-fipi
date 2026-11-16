@@ -27,6 +27,10 @@
     return;
   }
   document.body.classList.add('formula-alphabet-mode');
+  // The retained trainer's three-skill supplement belongs to legacy=1. Its
+  // shared script mounts after DOMContentLoaded; the alphabet has its own map.
+  document.querySelector('script[data-profile-skill-map="trig-sum-to-product"]')?.removeAttribute('data-profile-skill-map');
+  document.querySelectorAll('#profile-course-nav .profile-skill-entry').forEach(node => node.remove());
   const D = window.MathExamFormulaData, F = window.MathExamFormulaState;
   if (!D || !F) { host.innerHTML = '<p>Не удалось загрузить курс. Обнови страницу или открой скачанную автономную версию.</p>'; return; }
   const mods = new Map(D.modules.map(m => [m.id, m])), skills = new Map(), tasks = new Map();
@@ -473,8 +477,24 @@
       return render(false);
     }
   }
-  document.addEventListener('profile-course-help-requested', () => { activeHelp(); if (store.conflicted) render(false); });
-  window.addEventListener('storage', event => { if (event.key === F.KEY || event.key === null) render(false); });
+  function closeCourseSupport() {
+    const dialog = document.getElementById('profile-course-support');
+    if (dialog?.open) dialog.close();
+  }
+  // Preserve the shared course help and its return-to-task contract. A retained
+  // iframe can reveal an earlier topic as soon as the dialog reopens, so that
+  // opening also counts as help for any currently unfinished alphabet attempt.
+  document.addEventListener('click', event => {
+    const control = event.target?.closest?.('#profile-course-help, #profile-course-support [data-course-help]');
+    if (!control) return;
+    const frame = document.querySelector('#profile-course-support iframe');
+    if (control.hasAttribute('data-course-help') || (frame && !frame.hidden && frame.getAttribute('src'))) activeHelp();
+    if (!store.ensureCurrent()) {
+      event.preventDefault(); event.stopImmediatePropagation(); closeCourseSupport(); render(false);
+    }
+  }, true);
+  document.addEventListener('profile-course-help-requested', () => { activeHelp(); if (!store.ensureCurrent()) { closeCourseSupport(); render(false); } });
+  window.addEventListener('storage', event => { if (event.key === F.KEY || event.key === null) { if (!store.ensureCurrent()) closeCourseSupport(); render(false); } });
   if (params.has('module') && mods.has(params.get('module'))) store.state.view = { screen:'module', moduleId:params.get('module') };
   else if (params.has('skill') && skills.has(params.get('skill'))) { activeHelp(params.get('skill')); store.state.view = { screen:'study', skillId:params.get('skill') }; }
   else if (params.get('view') === 'teacher') store.state.view = { screen:'teacher' };

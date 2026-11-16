@@ -93,6 +93,21 @@ async function submit(page, task, expected) {
 }
 async function layout(page, label) {
   const result = await page.evaluate(() => ({ width: innerWidth, document: document.documentElement.scrollWidth, body: document.body.scrollWidth }));
+  if (result.document > result.width + 1 || result.body > result.width + 1) {
+    // Preserve the actual failed page and geometry before the context closes.
+    // The assertion below is unchanged; diagnostics never turn failure into pass.
+    try {
+      const offending = await page.evaluate(() => [...document.querySelectorAll('body *')].map(node => {
+        const rect = node.getBoundingClientRect(), style = getComputedStyle(node);
+        return { tag: node.tagName, id: node.id, className: node.getAttribute('class'), action: node.getAttribute('data-action'), text: (node.textContent || '').trim().slice(0,160), left: rect.left, right: rect.right, width: rect.width, clientWidth: node.clientWidth, scrollWidth: node.scrollWidth, display: style.display, overflowX: style.overflowX, overflowWrap: style.overflowWrap, whiteSpace: style.whiteSpace, minWidth: style.minWidth, maxWidth: style.maxWidth, fontFamily: style.fontFamily, fontSize: style.fontSize, fontWeight: style.fontWeight, letterSpacing: style.letterSpacing };
+      }).filter(node => node.width > 0 && (node.right > innerWidth + 1 || node.left < -1 || node.scrollWidth > node.clientWidth + 1)).sort((a,b) => Math.max(b.right,b.left+b.scrollWidth) - Math.max(a.right,a.left+a.scrollWidth)).slice(0,40));
+      fs.mkdirSync(artifacts, { recursive: true });
+      const stem = 'overflow-' + label.replace(/[^a-z0-9_-]+/gi, '-').slice(0,70) + '-' + result.width;
+      const diagnostic = { label, ...result, offending };
+      fs.writeFileSync(path.join(artifacts, stem + '.json'), JSON.stringify(diagnostic, null, 2) + '\n');
+      await page.screenshot({ path: path.join(artifacts, stem + '.png'), fullPage: true });
+    } catch (error) { console.error('Overflow diagnostic could not be saved: ' + error.message); }
+  }
   assert(result.document <= result.width + 1 && result.body <= result.width + 1, label + ': document overflow ' + JSON.stringify(result));
 }
 async function screenshot(page, name) {
@@ -221,6 +236,7 @@ async function exerciseLab(page, lab) {
   await page.evaluate(moduleId => window.MathExamFormulaApp.go('module', { moduleId }), lab.modules[0]);
   await page.locator(`[data-action="lab"][data-lab="${lab.id}"]`).click();
   assert.equal(await page.locator('#fa-angle-slider-a').count(), 0, lab.id + ': prediction precedes controls');
+  await layout(page, lab.id + '-prediction');
   await focusedClick(page, '[data-action="predict"][data-prediction="0"]');
   assert.equal(await page.locator('#fa-angle-slider-a').isVisible(), true);
   const before = await page.locator('.fa-readings').textContent();
@@ -239,7 +255,7 @@ async function exerciseLab(page, lab) {
   await focusedClick(page, `[data-action="conclude"][data-conclusion="${lab.correct}"]`);
   assert.equal(await page.evaluate(id => window.MathExamFormulaApp.store.state.investigations[id], lab.id), true);
   assert.match(await page.locator('.fa-conclusion').textContent(), /общая формула требует вывода/);
-  await layout(page, lab.id);
+  await layout(page, lab.id + '-conclusion');
 }
 async function exerciseGuide(page) {
   await page.locator('.fa-toolbar [data-action="home"]').click();
