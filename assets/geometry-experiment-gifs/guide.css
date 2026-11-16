@@ -1,0 +1,44 @@
+.geometry-experiment-guide{box-sizing:border-box;margin:1rem 0 1.25rem;padding:1rem;border:1px solid #bbd7d3;border-radius:16px;background:#f1f8f6;color:#173d4f;overflow-wrap:anywhere;min-width:0}
+.geometry-experiment-guide *{box-sizing:border-box}
+.geometry-experiment-guide .geg-heading{display:flex;align-items:center;justify-content:space-between;gap:.7rem;flex-wrap:wrap;margin-bottom:.7rem}
+.geometry-experiment-guide h3{font-size:1.15rem;line-height:1.35;margin:0}
+.geometry-experiment-guide .geg-badge{font-size:.78rem;letter-spacing:.04em;color:#27675d;font-weight:700;white-space:nowrap}
+.geometry-experiment-guide .geg-choose{display:block;font-size:.9rem;font-weight:600;margin:0 0 .8rem}
+.geometry-experiment-guide .geg-choose select{display:block;width:100%;max-width:100%;min-height:44px;margin-top:.35rem;padding:.55rem;border:1px solid #9fbfba;border-radius:9px;background:#fff;color:#173d4f;font:inherit}
+.geometry-experiment-guide .geg-layout{display:grid;grid-template-columns:minmax(145px,225px) minmax(0,1fr);gap:1rem;align-items:start}
+.geometry-experiment-guide .geg-preview{display:block;width:100%;min-width:0;padding:0;overflow:hidden;border:1px solid #bad0c9;border-radius:10px;background:#fffdf7;cursor:zoom-in;line-height:0}
+.geometry-experiment-guide .geg-preview img{display:block;width:100%;height:auto;max-width:100%;margin:0}
+.geometry-experiment-guide .geg-preview img[hidden]{display:none}
+.geometry-experiment-guide .geg-body{min-width:0}
+.geometry-experiment-guide .geg-title{margin:0 0 .4rem;font-size:1rem;font-weight:700;line-height:1.4}
+.geometry-experiment-guide .geg-caption{margin:.35rem 0 .8rem;font-size:1rem;line-height:1.55;font-weight:600}
+.geometry-experiment-guide .geg-controls{display:flex;flex-wrap:wrap;gap:.45rem;margin:.65rem 0}
+.geometry-experiment-guide .geg-controls button{min-width:0;min-height:44px;padding:.55rem .75rem;border:1px solid #9fbfba;border-radius:9px;background:#fff;color:#173d4f;font:600 .9rem/1.3 system-ui,sans-serif;cursor:pointer;white-space:normal}
+.geometry-experiment-guide .geg-controls .geg-play{background:#173d4f;border-color:#173d4f;color:#fff}
+.geometry-experiment-guide button:disabled{opacity:.5;cursor:default}
+.geometry-experiment-guide button:focus-visible,.geometry-experiment-guide select:focus-visible,.geometry-experiment-guide summary:focus-visible{outline:3px solid #bc5b23;outline-offset:3px}
+.geometry-experiment-guide .geg-note,.geometry-experiment-guide .geg-status{margin:.55rem 0 0;font-size:.85rem;line-height:1.5;color:#3b5c63}
+.geometry-experiment-guide .geg-status:empty{display:none}
+.geometry-experiment-guide .geg-transcript{margin:.8rem 0 0;border-top:1px solid #cadfda;padding-top:.6rem}
+.geometry-experiment-guide .geg-transcript summary{cursor:pointer;min-height:36px;font-weight:600;line-height:1.5}
+.geometry-experiment-guide .geg-transcript ol{padding-left:1.5rem;margin:.5rem 0;line-height:1.65}
+.geometry-experiment-guide .geg-transcript li{margin:.4rem 0}
+.geometry-experiment-guide[data-expanded=true] .geg-layout{grid-template-columns:minmax(0,1fr)}
+.geometry-experiment-guide[data-expanded=true] .geg-preview{max-width:800px;margin:auto;cursor:zoom-in}
+@media(max-width:650px){.geometry-experiment-guide{padding:.8rem}.geometry-experiment-guide .geg-layout{grid-template-columns:minmax(0,1fr);gap:.7rem}.geometry-experiment-guide .geg-preview{max-width:300px;margin:auto}.geometry-experiment-guide .geg-caption{font-size:1rem}.geometry-experiment-guide .geg-controls{gap:.4rem}.geometry-experiment-guide[data-expanded=true] .geg-preview{max-width:none}}
+
+.geometry-experiment-guide .geg-dialog{width:min(1100px,96vw);max-width:100vw;max-height:94dvh;padding:1rem;border:1px solid #99bbb5;border-radius:14px;background:#fffdf7;color:#173d4f;overflow:hidden;box-sizing:border-box;font:16px/1.5 system-ui,sans-serif}
+.geometry-experiment-guide .geg-dialog[open]{display:flex;flex-direction:column;gap:.65rem}
+.geometry-experiment-guide .geg-dialog::backdrop{background:#102d40c9}
+.geometry-experiment-guide .geg-dialog-header{display:flex;align-items:flex-start;gap:.8rem;justify-content:space-between;flex:none}
+.geometry-experiment-guide .geg-dialog-header h3{font-size:1.1rem;line-height:1.4;margin:0;min-width:0}
+.geometry-experiment-guide .geg-dialog-close{flex:none;min-height:44px;padding:.5rem .75rem;border:1px solid #9fbfba;border-radius:9px;color:#173d4f;background:white;font:600 .95rem/1.3 system-ui,sans-serif;cursor:pointer}
+.geometry-experiment-guide .geg-dialog-caption{font-size:1rem;font-weight:600;line-height:1.5;margin:0;flex:none}
+.geometry-experiment-guide .geg-dialog-controls{align-items:center;margin:0;flex:none;gap:.4rem}
+.geometry-experiment-guide .geg-dialog-play{background:#173d4f!important;color:#fff!important}
+.geometry-experiment-guide .geg-zoom-value{min-width:3.2rem;text-align:center;font-size:.9rem;font-variant-numeric:tabular-nums}
+.geometry-experiment-guide .geg-dialog-scroll{overflow:auto;min-width:0;min-height:80px;max-height:65dvh;flex:1 1 auto;border:1px solid #bbd2cd;border-radius:8px;background:#f0f4f2;overscroll-behavior:contain;touch-action:pan-x pan-y;contain:inline-size}
+.geometry-experiment-guide .geg-dialog-scroll img{display:block;height:auto;max-width:none;margin:0 auto}
+.geometry-experiment-guide .geg-dialog-scroll img[hidden]{display:none}
+.geometry-experiment-guide .geg-dialog-scroll:focus-visible{outline:3px solid #bc5b23;outline-offset:2px}
+@media(max-width:650px){.geometry-experiment-guide .geg-dialog{width:100vw;height:100dvh;max-height:100dvh;margin:0;padding:.75rem;border:0;border-radius:0}.geometry-experiment-guide .geg-dialog-scroll{max-height:none}.geometry-experiment-guide .geg-dialog-header h3{font-size:1rem}}

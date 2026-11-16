@@ -1,7 +1,12 @@
 """Build a source-specific geometry course from checked-in content and assets."""
 from pathlib import Path
-import json,html
+import json,html,sys
 ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0,str(ROOT/'tools'))
+from geometry_experiment_guides import with_guides, refresh_course
+if '--guides-only' in sys.argv:
+    refresh_course('geometry-pogorelov')
+    raise SystemExit(0)
 author=Path(__file__).parent.name
 D=ROOT/('geometry-'+author); A=D/'assets'
 c=json.loads((D/'data/course.json').read_text()); P=json.loads((D/'data/proofs.json').read_text()); units=c['units']; E=html.escape
@@ -148,7 +153,8 @@ for u in units:
             '<script src="/geometry-course/assets/midline-diagram.js?v=20261114"></script><script src="../assets/lesson.js?v=20261114-midline"></script>')
     title = f'{u["title"]} · {c["name"]} · MathExam'
     page = shell(title, body, code, up='../', metadata=lesson_metadata(lesson_id), course_fragment=course_fragment)
-    (D/'atlas'/(lesson_id+'.html')).write_text(page, encoding='utf-8')
+    page_path='geometry-pogorelov/atlas/'+lesson_id+'.html'
+    (ROOT/page_path).write_text(with_guides(page_path,page), encoding='utf-8')
 body='<section class="hero"><div><p class="eyebrow">'+E(c['name'])+' · 7–9 классы</p><h1>Геометрию можно<br>построить самому.</h1><p class="lead">Двигай точки, выбирай дополнительные линии, собирай доказательство и проверяй новый вариант без подсказки.</p><div class="row"><a class="button primary" href="atlas/'+units[0]['id']+'.html">Начать с основ →</a><a class="button" href="#course">Найти тему</a><a class="button" href="textbook/">К задачам учебника 2022 →</a></div></div><div class="panel"><h2>'+str(len(units))+' учебных узла</h2><p>'+str(len(c['sources']))+' пунктов в карте источников. Объяснение, построение, рассуждение и числовая практика в каждом узле.</p><p><strong id="independent-count">0</strong> тем с самостоятельным решением в этом браузере.</p><p>Начальная версия курса: отдельные типы задач, а не весь задачник. Углублённые темы явно выделены.</p></div></section><div class="filters" id="course"><button class="on" data-grade="all">Все классы</button><button data-grade="7">7 класс</button><button data-grade="8">8 класс</button><button data-grade="9">9 класс</button><input id="search" type="search" aria-label="Найти тему" placeholder="Тема, теорема или пункт…"></div>'
 for grade in [7,8,9]:
  for track in ['base','advanced']:
