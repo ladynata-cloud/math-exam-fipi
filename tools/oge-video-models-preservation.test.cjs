@@ -8,14 +8,15 @@ const {entries, snippet, restoreVideoModels, restoreGraphScale, restoreGraphInte
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
-const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
+const {sourcePin} = require('./oge-video-models-book-context.cjs');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
 for (const [number, file] of Object.entries(entries)) {
   test(file + ': only the exact optional model includes change', () => {
     const current = fs.readFileSync(path.join(ROOT, file), 'utf8');
-    const source = execFileSync('git', ['show', (updates.pages[file]?.sourceCommit || BASE) + ':' + file], {cwd: ROOT, encoding: 'utf8'});
+    const pin = sourcePin(file);
+    const source = execFileSync('git', ['show', pin.sourceCommit + ':' + file], {cwd: ROOT, encoding: 'utf8'});
     const baseline = restoreVideoModels(file, source);
-    if (updates.pages[file]) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), updates.pages[file].sha256, 'exact committed teaching revision');
+    if (pin.sourceCommit !== BASE) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), pin.sha256, 'exact committed teaching revision');
     assert.equal(current.split(snippet(number)).length, 2);
     assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);

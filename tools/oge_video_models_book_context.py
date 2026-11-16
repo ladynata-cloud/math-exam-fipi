@@ -7,6 +7,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
+ALIGNMENT_23_25 = json.loads((ROOT / 'trainers/oge-sources/coverage-23-25.json').read_text())['sourceBinding']
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
@@ -18,6 +19,16 @@ DOWNLOAD_HEAD = (b'<link rel="stylesheet" href="/assets/download-panel.css">\n'
 DOWNLOAD_PAGES = {row['sourceHtml'][1:]: row['slug'] for row in
                   json.loads((ROOT / 'downloads/trainers-manifest.json').read_text())['trainers']
                   if row.get('adaptation')}
+
+
+def source_pin(file):
+    pin = PINS['pages'].get(file)
+    if not pin:
+        return None
+    result = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
+    if file in ALIGNMENT_23_25['pages']:
+        result |= dict(ALIGNMENT_23_25['pages'][file], sourceCommit=ALIGNMENT_23_25['sourceCommit'])
+    return result
 
 
 def sha(raw):
@@ -67,9 +78,8 @@ def verified_context(record):
         route = context['route']
         if not isinstance(route, str) or not route.startswith('/'): return None
         file = route[1:]
-        pin = PINS['pages'].get(file)
+        pin = source_pin(file)
         if not pin or not pin['bookId']: return None
-        pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
         if context['task'] != pin['task'] or context['sourceBase'] != pin['sourceCommit']: return None

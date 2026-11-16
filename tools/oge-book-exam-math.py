@@ -7,7 +7,7 @@ Only explicitly reviewed prompt+geometry fixtures may receive a PASS.
 import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
-from oge_video_models_book_context import verified_context
+from oge_video_models_book_context import ALIGNMENT_23_25, verified_context
 from oge_worked_steps_book_context import matches_worked_steps_ui
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -120,9 +120,13 @@ def graph_atoms(expected):
 def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
     """Replay only the changed drawing controls on the verified source route."""
     route = '/trainers/oge-task24-proofs.html'
+    wrapper_by_source = {
+        '18b44244753ac806d449a2040ad4b8c8af9acaf3': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        ALIGNMENT_23_25['sourceCommit']: ALIGNMENT_23_25['proofWrapperSha256'],
+    }
+    wrapper = wrapper_by_source.get((record.get('videoModelContext') or {}).get('sourceBase'))
     if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
-            record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
-            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+            record.get('finalPath') != route or not wrapper):
         return False
     old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
     captions = {
@@ -135,7 +139,7 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
         return False
     assets = {
         '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
-        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        '/trainers/oge-course-proof.js': wrapper,
     }
     for path, expected in assets.items():
         loaded = record.get('resources', {}).get(path, {})
