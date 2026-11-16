@@ -148,7 +148,7 @@ let current23=null;
 function decorate23(){const main=q('.train-host');if(!main)return;const card=q('.card',main),condition=card&&q('.q-text',card);if(!condition)return;let task=current23;const name=q('.q-theme',card)?.textContent||'';if(!task){const sub=Object.keys(topic23).find(k=>typeof SUBS!=='undefined'&&name.includes(SUBS[k].name));if(sub)task={sub};}if(!task)return;const topics=topic23[task.sub]||[];referencePanel(q('#courseHintPanel',card)||condition,topics);draft(condition,'23|'+condition.textContent);
  const steps=task.p&&typeof GUIDE!=='undefined'?GUIDE[task.sub](task.p):[];qa('.ladder .step',card).forEach(node=>{const n=q('.step-num',node)?.textContent.match(/^Шаг (\d+)/);if(n&&steps[+n[1]-1])explain(node,steps[+n[1]-1],topics,!node.classList.contains('done'));});qa('.sol li,.solution li',card).forEach(node=>explain(node,{h:node.textContent},topics));
 }
-function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+t.id,true);let revealed=false;
+function decorate24(){const main=q('#view');if(!main||typeof ST==='undefined'||!ST.queue||ST.mode==='exam')return;const t=curTask(),given=q('.givens',main);if(!given||!t)return;const topics=topic24[t.id]||[];referencePanel(q('#courseHintPanel',main)||given,topics);draft(given,'24|'+(t.revision?`${t.id}-${t.revision}`:t.id),true);let revealed=false;
  qa('.chain .citem',main).forEach((node,i)=>{
   const step=t.steps[i];if(!step)return;
   revealed=revealed||!!step.lit?.showcirc;
