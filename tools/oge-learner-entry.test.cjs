@@ -16,12 +16,13 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // The fraction controls were reviewed on this immutable published source. Keep
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
-// PR #539 subject-review baseline plus PR #548's checked bracket-caption change.
-// Exact source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d.
-// Evidence: docs/tasks/TASK9_BRACKET_LABELS_20261111.md;
+// PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
+// Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
+// Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
+// Prior bracket source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d;
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
-const task9ReviewedScript='b226c3f4216892b8d8021ebf0029a49ebb1ba6859d1797c91b5a4a293084728f';
+const task9ReviewedScript='a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02';
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers

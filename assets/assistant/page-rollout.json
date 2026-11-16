@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+  "baseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3033,8 +3033,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
-      "beforeSha256": "f4be1e2e94faa1ab8c3658c579f10196dcb348371ebdb45250e0c0300cec2482",
-      "afterSha256": "b6a7f36ab057617180acf9ed3f60ed251a2e1afc8ac6d5763cc2bf40fbff7351",
+      "beforeSha256": "c9282acf51910af3abfc070fa2002ce4291aa33aa75170e66ca8c3f97319a100",
+      "afterSha256": "b941c4587339740271867642f456874d6cf555ab11d78f8899bbf7205f6bd68b",
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
@@ -5261,6 +5261,15 @@
       "task": "docs/tasks/PROFILE_PART_TWO_ANSWER_FORMAT_20261116.md",
       "changedPaths": [
         "ege-profil/part-two/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "fd430e974e4674a5b76c04b04939ff1f48365afe",
+      "sourceBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task9-equations.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
