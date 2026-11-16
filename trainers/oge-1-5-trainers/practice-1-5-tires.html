@@ -378,9 +378,9 @@
 
 <div class="wrap">
   <div class="title-block">
-    <div class="eyebrow">задачи 1–5 ОГЭ · весь банк ФИПИ</div>
+    <div class="eyebrow">задачи 1–5 ОГЭ · тренировочные варианты</div>
     <h1>Шины · <em>одна таблица на весь вариант</em></h1>
-    <p class="subtitle">Все 20 вариантов банка устроены одинаково. Секрет — не считать диаметр заново в каждой задаче, а один раз собрать таблицу для всех шин варианта и потом просто читать из неё ответы.</p>
+    <p class="subtitle">У каждого варианта одна таблица допустимых размеров. Вычисли диаметр для каждого размера один раз, затем используй таблицу в следующих заданиях.</p>
   </div>
 
   <div class="variant-bar">
@@ -1333,11 +1333,11 @@ function refreshVariantBar(){
   document.body.dataset.sourceKind=v.sourceKind || 'legacy';
   const source=document.getElementById('author-source');
   if(source){ source.hidden=!author; source.querySelector('strong').textContent=author?v.label:''; }
-  document.title=author ? 'Шины · '+v.label : 'Шины · тренажёр 1–5 (весь банк ФИПИ)';
-  document.querySelector('.eyebrow').textContent=author ? 'задачи 1–5 ОГЭ · авторский комплект MathExam' : 'задачи 1–5 ОГЭ · весь банк ФИПИ';
+  document.title=author ? 'Шины · '+v.label : 'Шины · тренажёр 1–5 ОГЭ';
+  document.querySelector('.eyebrow').textContent=author ? 'задачи 1–5 ОГЭ · авторский комплект MathExam' : 'задачи 1–5 ОГЭ · тренировочные варианты';
   document.querySelector('.subtitle').textContent=author
     ? 'Один авторский комплект: общая заводская шина и таблица допустимых размеров для всех пяти задач. Сначала собери таблицу, затем используй её для решения.'
-    : 'Все 20 вариантов банка устроены одинаково. Секрет — не считать диаметр заново в каждой задаче, а один раз собрать таблицу для всех шин варианта и потом просто читать из неё ответы.';
+    : 'У каждого варианта одна таблица допустимых размеров. Вычисли диаметр для каждого размера один раз, затем используй таблицу в следующих заданиях.';
   const sel=document.getElementById('variant-select'); if(sel) sel.value=String(state.variantIdx);
   const vf=document.getElementById('vb-factory'); if(vf) vf.textContent=VARIANTS[state.variantIdx].factory;
 }
