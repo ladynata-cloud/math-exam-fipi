@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+  "baseSha": "ad5b71ba8dba653e118940e03459480284b0a802",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2943,13 +2943,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task10-probability.html": {
-      "beforeSha256": "27ce83177197af8fb87bbc9c09ca27425d1c738a5797f3b342b379e290f70c4f",
-      "afterSha256": "aa291d84cd73ab55e31d13398d0cce22580c006e4cebe49c90f8a96c3e998388",
+      "beforeSha256": "502ae0702fdf43fd9ed3c2d21ea625728c00f038945673ed210eb705e045830e",
+      "afterSha256": "6b71406a13b2af1d991c27e5fdb15f276ed75670c79af6f72acf1ffe96f83113",
       "placement": "before-head-close"
     },
     "trainers/oge-task11-graphs-trainer.html": {
-      "beforeSha256": "d1137ab756d01e55df7a4b79c4a27657cbf31988c9917007aaca4e5c831ee935",
-      "afterSha256": "2c1ebad6ccb72b90dde6a3738fa7c5e103f82036971448f879c220e88c3c313d",
+      "beforeSha256": "79cc46f037507546fb5510b344f277f299343fe702bb84a8946bd46a3f6b4d1b",
+      "afterSha256": "bdbfc4a397d920d57a6fb280923d5e94022e2033cfdafc3c0b69db77cff34221",
       "placement": "before-head-close"
     },
     "trainers/oge-task12-formulas-trainer.html": {
@@ -2963,8 +2963,8 @@
       "placement": "before-main-open"
     },
     "trainers/oge-task14-progressions.html": {
-      "beforeSha256": "06f879e5ac6f0bcbc36974ddea8f16b4563416df5a201f5f6c038d82f1377756",
-      "afterSha256": "7447e516294d94e7dc1193cbfdff5744990c20d7463ace699c4cf02b9078a54a",
+      "beforeSha256": "8c84b80e56e0b1a0fc0c18be11a3af79f8f2c351358335239b6430840b827c3f",
+      "afterSha256": "d092ec36d7004c618c666f40b7486efbb4911d7caaea01f145575ce420ce26e9",
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
@@ -3038,8 +3038,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge13-inequalities-series.html": {
-      "beforeSha256": "fc3dc9bdc70ceff201fdd546b4cb867285c2dba56ce933f92a57ca004244c85e",
-      "afterSha256": "b3e7d997e9e5b4827440ef468d325f6fca5f28131bcef2602e7d950d9e06d0fa",
+      "beforeSha256": "0a9d57811307f70d5c3cf7e219ddce9a3a3f89bd094868abd3eadf74ad4eac61",
+      "afterSha256": "6cb80c1de30fcfbbeddf0af1c3527fc66b0540e3fa7b8114a9400cfb166af27f",
       "placement": "before-head-close"
     },
     "trainers/part-whole-share-assignment.html": {
@@ -5270,6 +5270,18 @@
       "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "ad5b71ba8dba653e118940e03459480284b0a802",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_10_14_20261117.md",
+      "changedPaths": [
+        "trainers/oge-task10-probability.html",
+        "trainers/oge-task11-graphs-trainer.html",
+        "trainers/oge-task14-progressions.html",
+        "trainers/oge13-inequalities-series.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '..');
 const artifacts = path.resolve(root, process.env.TASK13_BROWSER_ARTIFACTS || 'artifacts/task13-interactive');
 const KEY = 'mathExamCourseProgress.v1';
-const FAMILY = { linear: 6, quad: 8, graph: 4, special: 4, systems: 4 };
+const FAMILY = { linear: 6, quad: 8, graph: 4, special: 4, systems: 5 };
 const LABEL = { linear: 'Линейные', quad: 'Квадратные', graph: 'По рисунку', special: 'Нет/любое', systems: 'Системы' };
 const CASES = Object.entries(FAMILY).flatMap(([kind, count]) => Array.from({ length: count }, (_, index) => ({ kind, index, key: `${kind}:${index}` })));
 const QUADRATICS = [
@@ -29,7 +29,8 @@ const SYSTEMS = [
   [{ value: -3.6, sign: '≤' }, { value: -3, sign: '≤' }],
   [{ value: -0.6, sign: '≤' }, { value: -3, sign: '≥' }],
   [{ value: 6.6, sign: '≥' }, { value: 4, sign: '≥' }],
-  [{ value: -1, sign: '>' }, { value: 3, sign: '<' }]
+  [{ value: -1, sign: '>' }, { value: 3, sign: '<' }],
+  [{ value: -3.5, sign: '≥' }, { value: 4.5, sign: '<' }]
 ];
 const GRAPH = [
   { roots: [-7, 7], zones: [false, true, false], closed: false },
@@ -405,6 +406,12 @@ async function oneTask(page, task, width) {
   assert.equal(await page.locator('#hintPanel').isVisible(), false, `${task.key}: help is initially optional`);
   assert.deepEqual(await selectedAnswer(page), [], `${task.key}: no supplied answer`);
   assert.match(await page.locator('#taskPosition').innerText(), new RegExp(`${task.index + 1}\\s+из\\s+${FAMILY[task.kind]}`));
+  if (task.key === 'systems:4') {
+    const choices = page.locator('#choices button');
+    assert.equal(await choices.count(), 4);
+    for (const choice of await choices.all()) assert.ok(await choice.locator('svg').isVisible());
+    assert.deepEqual(await choices.nth(2).locator('circle').evaluateAll(nodes => nodes.map(node => node.getAttribute('fill') !== '#fff')), [true, false]);
+  }
   const given = task.kind === 'graph' ? await page.locator('#givenBoard').innerHTML() : null;
   const beforeProgress = await progress(page);
   await modelFits(page, `${width}/${task.key}/question`);
@@ -483,10 +490,10 @@ async function run() {
       try {
         await page.goto(origin + '/trainers/oge13-inequalities-series.html');
         await settings(page, true);
-        assert.equal(await page.locator('#taskPicker option').count(), 26, 'All existing 26 prototypes are selectable');
+        assert.equal(await page.locator('#taskPicker option').count(), 27, 'All 27 prototypes are selectable');
         await settings(page, false);
         assert.equal(await page.locator('nav.oge-wayfinding a').first().getAttribute('href'), '/trainers/oge-course/', 'Course return remains available');
-        const tasks = width === 320 ? CASES.filter(t => t.index === 0 || t.key === 'quad:4' || t.key === 'quad:6') : CASES;
+        const tasks = width === 320 ? CASES.filter(t => t.index === 0 || ['quad:4', 'quad:6', 'systems:4'].includes(t.key)) : CASES;
         for (const task of tasks) await oneTask(page, task, width);
         if (width !== 320) await gradingAndNewRound(page);
         console.log(`PASS №13: ${tasks.length} prototypes at ${width}px`);

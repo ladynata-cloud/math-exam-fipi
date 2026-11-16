@@ -9,6 +9,7 @@ const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
 const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
+const alignment10To14 = require('./fixtures/oge-source-alignment-10-14.json');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
 for (const [number, file] of Object.entries(entries)) {
   test(file + ': only the exact optional model includes change', () => {
@@ -17,7 +18,13 @@ for (const [number, file] of Object.entries(entries)) {
     const baseline = restoreVideoModels(file, source);
     if (updates.pages[file]) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), updates.pages[file].sha256, 'exact committed teaching revision');
     assert.equal(current.split(snippet(number)).length, 2);
-    assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
+    const restored = restoreGraphScale(file, restoreVideoModels(file, current));
+    if (file === entries[11]) {
+      assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'),
+        require('./fixtures/oge-video-models-native-bytes.json').pages[file].sha256, 'original graph pin is intact');
+      assert.equal(require('node:crypto').createHash('sha256').update(restored).digest('hex'),
+        alignment10To14.task11NativeSha256, 'only the reviewed matching revision is accepted');
+    } else assert.equal(restored, baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);
     for (const changed of [snippet(number) + snippet(number), snippet(number).replace('defer', 'async'), snippet(number).replace('data-oge-video-task="' + number + '"', 'data-oge-video-task="0"')]) {
       assert.throws(() => restoreVideoModels(file, current.replace(snippet(number), changed)));

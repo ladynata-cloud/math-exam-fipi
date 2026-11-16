@@ -87,6 +87,7 @@ export function features(type, it) {
   if (type === 't42') { const a = (f(1) + f(-1) - 2 * f(0)) / 2, b = (f(1) - f(-1)) / 2; return { a: Math.sign(a), side: Math.sign(-b / (2 * a)) }; }
   if (type === 't43') return { k: Math.sign(f(1) - f(0)), b: Math.sign(f(0)) };
   if (type === 't44') { const m = f(1); return { q: Math.sign(m), m: Math.abs(m) }; }
+  if (type === 't45' && it.fam === 'lin') return { fam: 'lin', k: Math.sign(f(1) - f(0)), b: Math.sign(f(0)) };
   return { fam: it.fam };
 }
 
@@ -99,7 +100,10 @@ export function check(task) {
   const items = task.items.map((it, i) => { try { return parseItem(it.desc); } catch (e) { errs.push('пункт ' + i + ': ' + e.message); return null; } });
   if (errs.length) return errs;
   // ключ: буква i → график с номером key[i], на нём нарисован пункт i
-  task.items.forEach((_, i) => { if (task.order[task.key[i] - 1] !== i) errs.push('ключ: буква ' + i + ' → ' + task.key[i] + ', а там пункт ' + task.order[task.key[i] - 1]); });
+  task.items.forEach((_, i) => {
+    const correct = task.inverse ? task.order[i] === task.key[i] - 1 : task.order[task.key[i] - 1] === i;
+    if (!correct) errs.push('ключ не соответствует графику и формуле для буквы ' + i);
+  });
   // пункты различимы по признакам
   const fs = items.map((it) => JSON.stringify(features(task.type, it)));
   if (new Set(fs).size !== 3) errs.push('два пункта с одинаковыми признаками: ' + fs.join(' | '));

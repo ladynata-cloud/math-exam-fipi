@@ -61,6 +61,25 @@ async function main(){
   const record=await page.evaluate(k=>JSON.parse(localStorage.getItem(k))['oge-t11-grafiki'],KEY);assert.equal(record.runs,1);assert.equal(record.best,10);assert.equal(record.passed,true);
   await page.locator('#tabs button[data-m=m4]').click();await page.setViewportSize({width:1280,height:900});await fits('desktop');await page.screenshot({path:path.join(artifacts,'03-desktop-question.png'),fullPage:true});
   await page.locator('#m4-hint').click();await fits('desktop lab');await page.screenshot({path:path.join(artifacts,'04-desktop-lab.png'),fullPage:true});
+  // Exercise both matching directions with two linear functions and a hyperbola.
+  for(const [width,inverse] of [[320,true],[390,false],[1280,true]]){
+   await page.setViewportSize({width,height:900});
+   const answer=await page.evaluate(inverse=>{
+    const original=GEN11.t45;
+    const variants=Array.from({length:200},()=>original());
+    const candidate=variants.find(v=>v.inverse===inverse);
+    if(!candidate)throw new Error('Missing mixed task for direction '+inverse);
+    M4.type='t45';GEN11.t45=()=>candidate;
+    try{m4New();}finally{GEN11.t45=original;}
+    return M4.task.key.join('');
+   },inverse);
+   assert.equal(await page.locator('#m4-desc ol li').count(),inverse?3:0);
+   assert.equal(await page.locator('#m4-graphs .gnum').first().textContent(),inverse?'А)':'1)');
+   await fits('mixed match '+width);
+   await page.locator('#m4-answer').fill(answer);await page.locator('#m4-check').click();
+   assert.match(await page.locator('#m4-good').innerText(),/Верно/);
+   await page.screenshot({path:path.join(artifacts,`mixed-${width}.png`),fullPage:true});
+  }
   // The existing self-contained download still opens offline with the new laboratory.
   const downloading=page.waitForEvent('download');await page.locator('#dl-html').click();const download=await downloading;const downloaded=path.join(artifacts,'downloaded-task11.html');await download.saveAs(downloaded);
   await page.goto(pathToFileURL(downloaded).href);await page.locator('#m4-hint').click();assert.equal(await page.locator('#lab-graph svg').count(),1);await fits('downloaded HTML');

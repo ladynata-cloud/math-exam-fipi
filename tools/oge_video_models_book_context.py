@@ -7,6 +7,7 @@ import re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
+ALIGNMENT_10_14 = json.loads((ROOT / 'tools/fixtures/oge-source-alignment-10-14.json').read_text())
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
@@ -70,6 +71,8 @@ def verified_context(record):
         pin = PINS['pages'].get(file)
         if not pin or not pin['bookId']: return None
         pin = dict(pin, sourceCommit=PINS['baseCommit']) | UPDATES['pages'].get(file, {})
+        if pin['task'] == 11:
+            pin = pin | dict(sourceCommit=ALIGNMENT_10_14['sourceCommit'], sha256=ALIGNMENT_10_14['task11NativeSha256'])
         if record['route'] != route or record['finalPath'] != route: return None
         if record['id'] != pin['bookId'] or context['bookId'] != pin['bookId']: return None
         if context['task'] != pin['task'] or context['sourceBase'] != pin['sourceCommit']: return None

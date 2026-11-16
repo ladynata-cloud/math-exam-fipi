@@ -1,0 +1,21 @@
+{
+  "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_10_14_20261117.md",
+  "sourceCommit": "ad5b71ba8dba653e118940e03459480284b0a802",
+  "inlineScripts": {
+    "trainers/oge-task10-probability.html": [
+      "babb40ba93195f57bb41cea150b533884c69f5364a3b231f2bf0e04a728991c0"
+    ],
+    "trainers/oge-task11-graphs-trainer.html": [
+      "2e90bc35ebb393c35b862be7b440e3b8e98fb6d4b9b6afe1d2985ad8f61110d2",
+      "579e6c6ca36365030b875dfad7a5bcef0d176abdf6f7dde67205653d11c0a527",
+      "0d2acec6693cc13951aa40ba20ebffb626a7949e73b21b6b76b17d38acb13ed4"
+    ],
+    "trainers/oge13-inequalities-series.html": [
+      "44b06035c37baf3b9004e30d27dd823cd334b362185415e8395919d723e60313"
+    ],
+    "trainers/oge-task14-progressions.html": [
+      "9d8dbeaa5d995df29fa783d44adae153194004a12f2107845ddcce512dd7dce6"
+    ]
+  },
+  "task11NativeSha256": "264bdd17c71ffebbd23ee33b0f6b978385021fcaf8df00ab57dd43bf7b1915e1"
+}

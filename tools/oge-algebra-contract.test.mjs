@@ -433,15 +433,20 @@ section('B4. независимый пересчёт 10, 11, 12, 14: по 500 з
       let b = 0, e = '';
       for (const t of tasks) { const s = R10.solve(t); if (s.bad || !eq(s.key, Fq(t.answer)) || (s.rounded ? !(t.rounded && eq(s.rounded, Fq(t.rounded))) : !!t.rounded)) { b++; e = e || (s.bad || str(s.key)) + ' ' + t.text.replace(/<[^>]*>/g, '').slice(0, 60); } }
       ok(!b, 'B4', `10 ${code}: расхождений ${b} ${e}`);
+      if (code === '10.2') ok(tasks.some(t => /ленты шёлковые и вискозные, их поровну/.test(t.text)), 'B4', '10.2: получена задача на равное деление остатка');
     }
   }
   { // 11: формула пункта против ломаной на чертеже и ключ ответа
     const T = loadTrainer(byN(11).file, { seed: SEED });
     for (const type of GJ(T, 'TYPE_IDS')) {
-      const tasks = JSON.parse(T.run(`JSON.stringify(Array.from({length:${N}},()=>{const X=m4Make(${JSON.stringify(type)});return {type:X.type,items:X.items.map(it=>({desc:it.desc})),key:X.key,order:X.order,svgs:X.order.map(ix=>svgGraph([X.items[ix].plot],[],{size:300}))};}))`));
+      const tasks = JSON.parse(T.run(`JSON.stringify(Array.from({length:${N}},()=>{const X=m4Make(${JSON.stringify(type)});return {type:X.type,inverse:X.inverse,items:X.items.map(it=>({desc:it.desc})),key:X.key,order:X.order,svgs:X.order.map(ix=>svgGraph([X.items[ix].plot],[],{size:300}))};}))`));
       let b = 0, e = '';
       for (const t of tasks) { const er = R11.check(t); if (er.length) { b++; e = e || er[0]; } }
       ok(!b, 'B4', `11 ${type}: нарушений ${b} ${e}`);
+      if (type === 't45') {
+        const mixed = tasks.filter(t => t.items.map(it => R11.parseItem(it.desc).fam).sort().join(',') === 'hyp,lin,lin');
+        ok(mixed.some(t => t.inverse) && mixed.some(t => t.inverse === false), 'B4', '11 t45: две прямые и гипербола в обоих направлениях');
+      }
     }
   }
   { // 12: формула из строки ученика, подстановка чисел подписей и ответа — точно
@@ -460,6 +465,10 @@ section('B4. независимый пересчёт 10, 11, 12, 14: по 500 з
       let b = 0, e = '';
       for (const t of tasks) { const s = R14.value(t); if (s.bad || !eq(s.v, Fq(t.ans))) { b++; e = e || (s.bad || str(s.v)); } }
       ok(!b, 'B4', `14 ${code}: расхождений ${b} ${e}`);
+      if (code === 'GP-VAL') {
+        const decay = tasks.filter(t => /начале сушки/.test(t.text));
+        ok(decay.length && decay.every(t => t.ans.d > 1n && R10.terminates(t.ans)), 'B4', '14 GP-VAL: конечный дробный ответ каждой задачи о сушке');
+      }
     }
   }
 });
@@ -489,7 +498,7 @@ section('B5. ловушки 10, 11, 12, 14: пересчёт, без совпа�
     let bad = 0, ex = '';
     for (const type of GJ(T, 'TYPE_IDS')) {
       const tasks = JSON.parse(T.run(`JSON.stringify(Array.from({length:200},()=>{const X=m4Make(${JSON.stringify(type)});
-        return {type:X.type,items:X.items.map(it=>({desc:it.desc})),key:X.key,order:X.order,
+        return {type:X.type,inverse:X.inverse,items:X.items.map(it=>({desc:it.desc})),key:X.key,order:X.order,
           perms:[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]].map(a=>{const d=m4Diag(X,a);return {a,right:d.right,cats:d.cats,m1:m4Msg(X,d,1),m2:m4Msg(X,d,2),feat:d.cats.map(c=>FEAT_NAME[c])};})};}))`));
       for (const t of tasks) {
         const items = t.items.map(it => R11.parseItem(it.desc));
@@ -499,9 +508,13 @@ section('B5. ловушки 10, 11, 12, 14: пересчёт, без совпа�
           let right = 0;
           p.a.forEach((g, i) => {
             if (g === t.key[i]) { right++; return; }
-            const j = t.order[g - 1], fi = R11.features(type, items[i]), fj = R11.features(type, items[j]);
+            const j = t.inverse ? g - 1 : t.order[g - 1];
+            const fi = R11.features(type, items[t.inverse ? t.order[i] : i]), fj = R11.features(type, items[j]);
             if (type === 't44') want.add(fi.q !== fj.q ? 'hypq' : 'hypm');
-            else if (type === 't45') want.add('family');
+            else if (type === 't45') {
+              if (fi.fam !== fj.fam) want.add('family');
+              else for (const key of ['k','b']) if (fi[key] !== fj[key]) want.add(key);
+            }
             else Object.keys(fi).forEach(k => { if (fi[k] !== fj[k]) want.add(CAT[type][k]); });
           });
           const err = (m) => { bad++; ex = ex || type + ' ' + p.a.join('') + ': ' + m; };

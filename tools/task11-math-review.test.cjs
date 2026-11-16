@@ -36,7 +36,7 @@ test('500 generated matching tasks: displayed formulas, keys and SVG agree indep
   for (const type of ['t41', 't42', 't43', 't44', 't45']) {
     const tasks = JSON.parse(js(`JSON.stringify(Array.from({length:100},()=>{
       const T=m4Make('${type}');
-      return {type:T.type,items:T.items.map(it=>({desc:it.desc})),key:T.key,order:T.order,
+      return {type:T.type,inverse:T.inverse,items:T.items.map(it=>({desc:it.desc})),key:T.key,order:T.order,
         svgs:T.order.map(ix=>svgGraph([T.items[ix].plot],[],{size:300}))};
     }))`));
     tasks.forEach((task, i) => {

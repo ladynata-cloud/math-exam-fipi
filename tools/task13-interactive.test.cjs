@@ -106,11 +106,27 @@ function assertProbe(lab, original, x = lab.dataset.probeX) {
   if (lab.dataset.pointPosition !== undefined) assert.equal(lab.dataset.pointPosition, sign(expected.residual) < 0 ? 'below' : sign(expected.residual) > 0 ? 'above' : 'on');
 }
 
-test('the complete bank remains identical: 26 existing prototypes in five families', t => {
+test('all 26 original prototypes keep their bytes and indices; one system is appended', t => {
   const ui = boot(t), bank = bankOf(ui), source = html.slice(html.indexOf('const DATA='), html.indexOf('let mod='));
   assert.equal(crypto.createHash('sha256').update(source).digest('hex'), '4378385faf4e6be08ae040da90ad9ae54e0e70aca970b2d354592108283e6527');
-  assert.deepEqual(Object.fromEntries(families.map(f => [f, bank[f].length])), { linear: 6, quad: 8, graph: 4, special: 4, systems: 4 });
-  assert.equal(ui.get('taskPicker').options.length, 26);
+  assert.deepEqual(Object.fromEntries(families.map(f => [f, bank[f].length])), { linear: 6, quad: 8, graph: 4, special: 4, systems: 5 });
+  assert.equal(ui.get('taskPicker').options.length, 27);
+});
+
+test('number-line choices distinguish both open and closed boundaries and grade the chosen number', t => {
+  const ui = boot(t), item = bankOf(ui).systems[4];
+  pick(ui, 'systems', 4);
+  const probes = ['-4', '-3.5', '0', '4.5', '5'];
+  const truth = probes.map(x => item.e.every(e => inequality(e, x).truth));
+  assert.deepEqual(truth, [false, true, true, false, false]);
+  assert.deepEqual(item.options.filter(option => probes.every((x, i) => intervalContains(option, x) === truth[i])), [item.ans]);
+  const choices = () => [...ui.get('choices').children];
+  assert.deepEqual(choices().map(choice => [...choice.querySelectorAll('circle')].map(endpoint => endpoint.getAttribute('fill') !== '#fff')),
+    [[false, true], [true, true], [true, false], [false, false]]);
+  choices()[1].click(); ui.get('check').click();
+  assert.match(ui.get('msg').textContent, /Пока не сходится/);
+  choices()[2].click(); ui.get('check').click();
+  assert.match(ui.get('msg').textContent, /Верно/);
 });
 
 test('independent exact arithmetic verifies each stored answer and every graph candidate', t => {
