@@ -926,15 +926,19 @@ GENS["GP-VAL"] = {
     let facts, text, unit;
     if(sub==="decay"){
       const P=pick(r,[5,7,8,10,12,15]), k=ri(r,3,6), v=ri(r,5,40);
-      const m0=v*Math.pow(2,k), Tm=P*k;
+      // Shared-board records replay the historical seed and parameters.
+      const fractional=!window.OgeCourseSharedMode && r()<0.5;
+      const scale=2**k, m0=v*scale+(fractional?pick(r,[1,3,5,7]):0), Tm=P*k;
       facts={sub, q:F(2), k, P, T:Tm, m0:F(m0)};
-      text="В ходе распада радиоактивного изотопа его масса уменьшается вдвое каждые "+N(P)+" "+W.minWord(P)+
-        ". В начальный момент масса изотопа была "+N(m0)+" мг. Найдите массу изотопа через "+N(Tm)+" "+W.minWord(Tm)+". Ответ дайте в миллиграммах.";
+      text=fractional
+        ? "В начале сушки образец содержал "+N(m0)+" мг воды. За каждые "+N(P)+" "+W.minWord(P)+" масса оставшейся в образце воды уменьшается вдвое. Сколько миллиграммов воды останется в образце через "+N(Tm)+" "+W.minWord(Tm)+" после начала сушки?"
+        : "В ходе распада радиоактивного изотопа его масса уменьшается вдвое каждые "+N(P)+" "+W.minWord(P)+
+          ". В начальный момент масса изотопа была "+N(m0)+" мг. Найдите массу изотопа через "+N(Tm)+" "+W.minWord(Tm)+". Ответ дайте в миллиграммах.";
       unit="мг";
-      const ans=F(v);
+      const ans=F(m0,scale);
       const distract=mkDistract([
-        { v:iF(m0/Math.pow(2,k-1)), hint:"Сначала посчитай, сколько полных периодов прошло: "+Tm+" минут раздели на "+P+"." },
-        { v:F(m0,Math.pow(2,k+1)), hint:"Периодов здесь "+k+": раздели "+Tm+" минут на длину периода "+P+"." },
+        { v:F(m0,scale/2), hint:"Сначала посчитай, сколько полных периодов прошло: "+Tm+" минут раздели на "+P+"." },
+        { v:F(m0,scale*2), hint:"Периодов здесь "+k+": раздели "+Tm+" минут на длину периода "+P+"." },
         { v:F(m0-2*k), hint:"Масса не убавляется на число, а каждый раз делится на 2." }
       ], ans);
       return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
