@@ -67,7 +67,14 @@ jobs:
       - name: Advertising route, responsive layout and accessible navigation
         env:
           NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules
+          SHOWCASE_LANDING_ARTIFACTS: ${{ runner.temp }}/lesson-showcase-artifacts
         run: node tools/avito-showcase.browser.cjs
+      - name: Save lesson showcase screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lesson-showcase
+          path: ${{ runner.temp }}/lesson-showcase-artifacts
       - name: Four complete public example journeys on three screen widths
         env:
           NODE_PATH: ${{ runner.temp }}/showcase-qa/node_modules

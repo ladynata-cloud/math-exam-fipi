@@ -38,6 +38,12 @@
 - Просмотрены списки файлов всех 70 открытых PR. Только #385 затрагивает
   `lessons/index.html`; его patch добавляет старые скрипты помощника и не
   исправляет возрастное предложение. Отдельного готового исправления не найдено.
+- Первый прогон Draft PR #629 на head
+  `6fe3f257994f274e623ca518bb863f3cecd3b3c0` завершился успешно: все семь
+  check-runs четырёх workflow. Однако workflow не задавал предусмотренный
+  тестом `SHOWCASE_LANDING_ARTIFACTS`, поэтому screenshots `/lessons/` не
+  сохранялись. Для завершения визуальной приёмки согласовано минимальное
+  дополнение workflow: включить и выгрузить уже предусмотренные артефакты.
 
 ## Approved scope
 
@@ -48,6 +54,10 @@
   на «5–6 классы · школьная программа».
 - `docs/tasks/LESSONS_OFFER_CONSISTENCY_20261116.md`.
 - `docs/reports/LESSONS_OFFER_CONSISTENCY_20261116.md`.
+- `.github/workflows/avito-showcase.yml`: задать `SHOWCASE_LANDING_ARTIFACTS`
+  существующему browser-тесту и сохранить отдельный артефакт `lesson-showcase`.
+  Существующие команды, assertions, права, условия gates и артефакт
+  `oge-home-3d` сохраняются.
 
 ### Out of scope
 
@@ -58,7 +68,7 @@
 
 ### Files or areas that must not change
 
-- `index.html`, CSS, JavaScript, тесты и workflow, все учебные материалы.
+- `index.html`, CSS, JavaScript, тесты, остальные workflow и все учебные материалы.
 - `docs/PROJECT_STATUS.md` и остальные задачи/отчёты.
 
 ## Acceptance criteria
@@ -68,9 +78,11 @@
 - [x] Карточка 5–6 классов не ограничивает предложение самостоятельной практикой.
 - [x] Продуктовый diff содержит только шесть согласованных замен; цены,
   мини-группы до четырёх, ссылки, metadata URL и ресурсы сохранены.
-- [ ] Существующие применимые проверки пройдены; страница проверена на мобильных
-  и настольных размерах, с клавиатурой и без JavaScript.
-- [ ] Изменение подготовлено к Draft PR; публикация не заявлена.
+- [x] Первый кандидат прошёл существующие применимые проверки, включая
+  мобильные и настольные размеры, клавиатуру и режим без JavaScript.
+- [ ] Финальный кандидат с сохранением артефактов прошёл CI на точном head;
+  screenshots `/lessons/` на 320 и 1280 px просмотрены.
+- [x] Создан Draft PR #629; публикация не заявлена.
 
 ## Checks and gates
 
@@ -123,12 +135,16 @@
 ## Execution record
 
 - Actual branch: `task/lessons-offer-consistency-20261116`.
-- Actual base/head before commit: `1469ad50a8659f66c8613164009e7387a3a68f2b`.
-- PR: intended result is a Draft; exact URL/head and cloud acceptance are
-  recorded in its body and the handoff.
-- Commits: none during delegated implementation.
+- Actual base: `1469ad50a8659f66c8613164009e7387a3a68f2b`.
+- PR: [Draft #629](https://github.com/ladynata-cloud/math-exam-fipi/pull/629).
+- First CI head: `6fe3f257994f274e623ca518bb863f3cecd3b3c0`; all seven
+  check-runs PASS. This result does not certify the subsequent artifact update.
+- Commits: parent committed and published the first candidate; the artifact
+  follow-up remains uncommitted for parent review. Its exact head and final
+  acceptance belong in the PR body and handoff.
 - Checks and final status: [verification report](../reports/LESSONS_OFFER_CONSISTENCY_20261116.md).
-- Scope deviations: none.
+- Scope deviations: none; the fourth path is the approved evidence-only
+  workflow addition. The product diff remains six lines.
 
 ## Required handoff
 
