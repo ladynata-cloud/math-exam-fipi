@@ -216,6 +216,66 @@ const scenarios = {
     await page.mouse.up();
     assert.notEqual(await canvas.evaluate(node => node.toDataURL()), before);
   },
+  async 'ege-profil-formula-alphabet'(page) {
+    const ready = () => page.waitForFunction(() => window.MathExamFormulaApp && window.MathExamFormulaData && document.querySelector('#formula-alphabet h1'));
+    await ready();
+    assert.equal(await page.locator('.fa-module').count(), 18);
+    assert.deepEqual(await page.evaluate(() => {
+      const modules = window.MathExamFormulaData.modules;
+      const skills = modules.flatMap(module => module.skills);
+      return [modules.length, skills.length, skills.flatMap(skill => skill.tasks).length];
+    }), [18, 54, 324]);
+    await page.locator('.fa-module[data-action="module"][data-module="m01"]').click();
+    assert.equal(await page.locator('.fa-skill').count(), 3);
+    await page.locator('[data-action="practice"][data-skill="m01-s1"]').click();
+    const taskId = 'm01-s1-01';
+    const readState = () => page.evaluate(id => {
+      const alphabet = JSON.parse(localStorage.getItem('trig-stp-trainer-v2')).alphabet;
+      const attempt = alphabet.attempts[alphabet.activeByTask[id]];
+      return { attempt, skill: alphabet.skills[attempt.skillId] };
+    }, taskId);
+    assert.equal(await page.locator('.fa-task').getAttribute('data-task-id'), taskId);
+    const draft = 'sin(x)*';
+    await page.locator('#fa-answer').fill(draft);
+    await page.locator('[data-action="hint"]').click();
+    assert(await page.locator('.fa-help').isVisible());
+    const hinted = await readState();
+    assert.equal(hinted.attempt.assisted, true);
+    assert.equal(hinted.attempt.closed, false);
+    assert.equal(hinted.attempt.draft, draft);
+    await page.reload();
+    await ready();
+    assert.equal(await page.locator('.fa-task').getAttribute('data-task-id'), taskId);
+    assert.equal(await page.locator('#fa-answer').inputValue(), draft);
+    assert.match(await page.locator('.fa-task-heading').innerText(), /текущая попытка с помощью/);
+    const restored = await readState();
+    assert.equal(restored.attempt.id, hinted.attempt.id);
+    assert.equal(restored.attempt.assisted, true);
+    assert.equal(restored.attempt.closed, false);
+    const answer = 'sin(x)*sin(x)';
+    await page.locator('#fa-answer').fill(answer);
+    await submit(page, '#fa-task-form');
+    assert.equal(await page.locator('.fa-feedback').innerText(), 'Верно, с помощью.');
+    assert(await page.locator('#fa-check').isDisabled());
+    const completed = await readState();
+    assert.equal(completed.attempt.id, hinted.attempt.id);
+    assert.equal(completed.attempt.status, 'assisted');
+    assert.equal(completed.attempt.closed, true);
+    assert(completed.skill.assisted.includes(taskId));
+    assert(!completed.skill.independent.includes(taskId));
+    await page.reload();
+    await ready();
+    assert.equal(await page.locator('.fa-task').getAttribute('data-task-id'), taskId);
+    assert.equal(await page.locator('#fa-answer').inputValue(), answer);
+    assert.equal(await page.locator('.fa-feedback').innerText(), 'Верно, с помощью.');
+    assert(await page.locator('#fa-check').isDisabled());
+    const persisted = await readState();
+    assert.equal(persisted.attempt.id, hinted.attempt.id);
+    assert.equal(persisted.attempt.status, 'assisted');
+    assert.equal(persisted.attempt.closed, true);
+    assert(persisted.skill.assisted.includes(taskId));
+    assert(!persisted.skill.independent.includes(taskId));
+  },
   async 'ege-profil-part-two'(page) {
     const graph = page.locator('a[href*="graph=plateau"]').first();
     await graph.waitFor();
@@ -364,7 +424,7 @@ async function run() {
         await page.goto(url.href);
         assert(await page.locator('h1').first().isVisible(), entry.slug);
         assert.equal(await page.locator('[data-trainer-download]').count(), 0);
-        if (width === 320 || entry.slug === 'ege-profil-part-two' || Object.values(groups).some(group => group[entry.slug])) {
+        if (width === 320 || entry.slug === 'ege-profil-part-two' || entry.slug === 'ege-profil-formula-alphabet' || Object.values(groups).some(group => group[entry.slug])) {
           await scenarios[entry.slug](page, loadImage);
         }
         assert.deepEqual(issues, [], entry.slug);
