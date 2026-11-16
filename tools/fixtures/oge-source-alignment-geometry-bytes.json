@@ -1,0 +1,24 @@
+{
+  "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_15_18_20261116.md",
+  "sourceCommit": "ba26b45ae81512452a45baffa4ef3705ecbc7f0b",
+  "pages": {
+    "trainers/oge-task15-triangles.html": {
+      "inlineSha256": "5fb2906cf9cae47fb44257f3d544107721c79948dc0e4286ba6a905a90d87bc7",
+      "videoNativeSha256": "75eb759af42e1cee4c89f9155cc07ad8fb4cd96924d1085a2603a3f46e1b55bf",
+      "withoutDownloadSha256": "2ce4a97988475b4de5eaaae4a01c670d15691e2a7cbc977cf833da7bf43de13a"
+    },
+    "trainers/oge-task16-circle.html": {
+      "inlineSha256": "fe7282514101af5c6d4b225d6350749c1c05cca93896933dca2500a4fc84a895",
+      "videoNativeSha256": "be2e493271dba310c7f8761fa4a933cec55ccb820d963085196e19710a5b1bf8",
+      "withoutDownloadSha256": "82380f42a57d9c7d34cc4e7dea7f63770c838a12402193e41acb585f0955dacf"
+    },
+    "trainers/oge-task17-quadrilaterals.html": {
+      "inlineSha256": "16cf4fb042dfeaee22b30d3d617ec5303e0514f6bf9b8f3f235d4d1493edd61d",
+      "videoNativeSha256": "ab263d9209f03410d3eeee085fa42be1b66701e66ce80fa31575170526e51e30",
+      "withoutDownloadSha256": "4350eee77dcd3f9f13c9931630a417ccccd1a0f503021bbe29a9201aa73483eb"
+    }
+  },
+  "workedStepsAssets": {
+    "/trainers/oge-course-geometry.js": "5c24aa939e8418036fcbea4738cd7d9b48e4631a227049c638cbe97a43c511fa"
+  }
+}

@@ -58,7 +58,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ОГЭ · Задание 15 — треугольники</title>
-<meta name="description" content="Задание 15 ОГЭ: треугольники, 26 типов задач, 66 учебных вариантов, точные чертежи и решение по шагам.">
+<meta name="description" content="Задание 15 ОГЭ: треугольники, 27 типов задач, 67 учебных вариантов, точные чертежи и решение по шагам.">
 <link rel="canonical" href="https://mathexam.space/trainers/oge-task15-triangles.html">
 <style>
 :root{
@@ -1476,7 +1476,27 @@ isoLeg:{topic:'pyth',name:'Равнобедренный: сторона по в�
       {v:(2*p.s+p.a)/3,m:'Так было бы у равностороннего треугольника. Здесь основание отличается от боковых сторон.'}]
     :[{v:Math.sqrt(4*p.m*p.m+p.h*p.h),m:'Здесь взято всё основание AC. В прямоугольный треугольник ABH входит только половина основания — отрезок AH.'},
       {v:p.m+p.h,m:'Длины катетов не складываются: сторону AB находят через квадраты (теорема Пифагора).'},
-      {v:p.m*p.m+p.h*p.h,m:'Это квадрат боковой стороны. Сама сторона — квадратный корень из этого числа.'}]}
+      {v:p.m*p.m+p.h*p.h,m:'Это квадрат боковой стороны. Сама сторона — квадратный корень из этого числа.'}]},
+
+bisHalf:{topic:'iso',name:'Угол после проведения биссектрисы',ref:'bis',
+  refWhy:'Искомый угол — одна из двух равных частей угла BAC.',
+  law:'Биссектриса делит угол пополам.',
+  gen:()=>({a:2*ri(21,49),side:pick(['B','C'])}),
+  proto:{a:78,side:'C'},
+  calc:p=>p.a/2,
+  text:p=>`Угол BAC треугольника ABC равен ${p.a}°. Биссектриса этого угла пересекает сторону BC в точке K. Найдите угол ${p.side}AK.${DEG}`,
+  fig:p=>{const P=triAC(p.a,42,10);
+    P.K=bisFoot(P.A,P.B,P.C);
+    return drawFig({pts:P,title:'Треугольник ABC, AK — биссектриса угла BAC',segs:[['A','K']],
+      arcs:[{v:'A',p:'B',q:'C',col:COL.amber,r:60,label:dg(p.a)},
+        {v:'A',p:'B',q:'K',col:p.side==='B'?COL.pink:COL.teal,r:24,tk:1,label:p.side==='B'?'?':null},
+        {v:'A',p:'K',q:'C',col:p.side==='C'?COL.pink:COL.teal,r:24,tk:1,label:p.side==='C'?'?':null}],
+      chk:[{t:'ang',v:'A',p:'B',q:'C',want:p.a},{t:'ang',v:'A',p:'B',q:'K',want:p.a/2},
+        {t:'ang',v:'A',p:'C',q:'K',want:p.a/2},{t:'onseg',p:'K',a:'B',b:'C'}]});},
+  steps:p=>[{q:`Чему равен угол ${p.side}AK?`,a:p.a/2,hint:'AK делит угол BAC на две равные части.',
+    chk:'деление угла BAC на два',show:`∠${p.side}AK = ∠BAC : 2 = ${dg(p.a)} : 2 = ${dg(p.a/2)}.`}],
+  diag:p=>[{v:p.a,m:'Это весь угол BAC. Найдите одну из двух равных частей.'},
+    {v:p.a/4,m:'Так получилось после двух делений пополам. Биссектриса делит угол BAC на две части за один шаг.'}]}
 };
 
 /* ---------- данные и построители для типов выше ---------- */
@@ -1540,7 +1560,7 @@ function eqFig(s,o){
     rights:(o.height||o.irad||o.rLab)?[['H','B','C']]:[],chk,cap:EQCAP,texts,
     note:o.height&&o.hLab?'BH = '+o.hLab:'',noteCol:o.hLab==='?'?COL.pink:COL.blue});
 }
-const TYPE_IDS=["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg"];
+const TYPE_IDS=["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg","bisHalf"];
 
 /* ================= Справочник ================= */
 const REFS=[
@@ -1698,7 +1718,7 @@ function mergeTraps(list){
   return out;
 }
 /* Содержательные варианты: название, метод и разбор относятся к конкретной
-   задаче, а 26 ключей типов остаются совместимыми с курсом и его журналом.
+   задаче, а ключи типов остаются совместимыми с курсом и его журналом.
    f меняет только формулировку; отдельного учебного варианта ему не нужно. */
 const TASK_VARIANTS=[];
 function addVariant(k,key,branch,display,example){
@@ -1775,6 +1795,7 @@ addVariant('isoLeg','h',{d:'h'},{name:'Боковая сторона по осн
 addVariant('isoLeg','P',{d:'P'},{topic:'iso',name:'Боковая сторона по периметру и основанию',pins:[],
   law:'Боковые стороны равнобедренного треугольника равны. Из периметра вычитают основание и делят остаток пополам: AB = (P − AC) : 2.',
   refWhy:'В периметре P = AB + BC + AC две боковые стороны равны: AB = BC.'},{a:10});
+addVariant('bisHalf','main',{});
 function variantFor(k,p){
   const matches=TASK_VARIANTS.filter(v=>v.k===k&&v.match(p));
   if(matches.length!==1)throw new Error('Неоднозначный учебный вариант '+k);
@@ -1888,7 +1909,7 @@ const CP=(function(){
     solvedOne:solvedOne, finishQuiz:finishQuiz, mlog:mlog, openTypes:openTypes };
 })();
 /* Детализация журнала живёт только в своей ветке. Общий журнал курса по-прежнему
-   содержит 26 ключей TID|тип; он закрывается, когда закрыты все ошибочные методы.
+   содержит ключи TID|тип; он закрывается, когда закрыты все ошибочные методы.
    Старую открытую запись без детализации повторяем по всем вариантам типа:
    прежняя запись не позволяет достоверно восстановить, какой способ вызвал ошибку. */
 function variantMistakes(all){

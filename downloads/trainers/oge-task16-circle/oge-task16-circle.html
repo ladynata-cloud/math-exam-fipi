@@ -480,6 +480,15 @@ function figTwoDiam(x,given='A'){
   return {svg:CF(340,300,'Окружность с диаметрами AD и BC',b),
     chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(A,O,B,x),chkAng(C,O,D,x)]};
 }
+function figSectorArea(angle){
+  const O=CTR,R=RR,A=pol(O,R,90-angle/2),B=pol(O,R,90+angle/2);
+  const point=p=>`${n2(p.x)} ${n2(p.y)}`;
+  const sector=`<path d="M ${point(O)} L ${point(A)} A ${R} ${R} 0 0 0 ${point(B)} Z" fill="${COL.teal}" fill-opacity=".18"/>`;
+  const body=sector+circleEl(O,R)+seg(O,A)+seg(O,B)+angArc(O,A,B,COL.amber,32,angle+'°')
+    +dotP(O)+lab(O.x,O.y+20,'O')+dotP(A)+dotP(B)+vLab(A,O,'A')+vLab(B,O,'B');
+  return {svg:CF(340,300,'Круг с центром O. Выделен меньший сектор AOB, угол '+angle+'°.',body),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkAng(O,A,B,angle)]};
+}
 /* 3. NP — диаметр, ∠MNP=x, ищем центральный ∠MON=180−2x */
 function figDiamMON(x){
   const O=CTR,R=RR;
@@ -1411,7 +1420,20 @@ tanChord:{topic:'kas',name:'Угол между касательной и хор
     `∠ABC = ${p.arc}° : 2 = ${p.arc/2}°.`],
   diag:p=>[{v:p.arc,m:'Это сама дуга. Угол между касательной и хордой — её ПОЛОВИНА.'},
     {v:90-p.arc/2,m:'Это угол между хордой AB и радиусом OB. Между касательной и хордой: половина дуги.'},
-    {v:180-p.arc,m:'Похоже на смежный к дуге. Правило прямое: ∠ = дуга/2.'}]}
+    {v:180-p.arc,m:'Похоже на смежный к дуге. Правило прямое: ∠ = дуга/2.'}]},
+
+sectorArea:{topic:'ug',name:'Площадь сектора по центральному углу',ref:'sector',
+  refWhy:'Доля площади круга равна доле полного угла, которую занимает центральный угол сектора.',
+  law:'Чтобы найти площадь сектора, умножьте площадь круга на отношение центрального угла к 360°.',
+  gen:()=>({angle:pick([36,45,54,72,90,108,126,135,144]),area:20*ri(4,15)}),
+  proto:{angle:72,area:180},
+  calc:p=>p.area*p.angle/360,
+  text:p=>`Два радиуса OA и OB ограничивают меньший сектор круга. Угол AOB равен ${p.angle}°, площадь всего круга составляет ${p.area} см². Найдите площадь выделенного сектора в квадратных сантиметрах.`,
+  fig:p=>figSectorArea(p.angle),
+  sol:p=>[`Полный угол вокруг центра O равен 360°. Сектор занимает ${frac(p.angle,'360')} площади круга.`,
+    `Умножаем площадь круга на эту долю: ${p.area} · ${frac(p.angle,'360')} = <b>${fmtNum(p.area*p.angle/360)} см²</b>.`],
+  diag:p=>[{v:p.area,m:'Это площадь всего круга. Сектор составляет долю круга, равную отношению его угла к 360°.'},
+    {v:p.area*(360-p.angle)/360,m:'Это площадь большей части круга. Для выделенного сектора возьмите угол, данный в условии.'}]}
 };
 
 /* ================= Архив: сборники РешуОГЭ, тип 16 (эталоны exp пересчитаны независимо) ================= */
@@ -1461,6 +1483,9 @@ const ARCHIVE=[
 
 /* ================= Справочник ================= */
 const REFS=[
+{id:'sector',name:'Площадь сектора круга',
+ fx:'S<sub>сектора</sub> = S<sub>круга</sub> · '+frac('α','360°'),
+ notes:['α — центральный угол сектора. Например, угол 90° даёт четверть площади круга.']},
 {id:'insc',name:'Вписанный и центральный угол',
  fx:'∠<sub>вписанный</sub> = '+frac('∠<sub>центральный</sub>','2')+' (на одну дугу)',
  notes:['Угол, опирающийся на диаметр, — прямой (90°).','Вписанные углы, опирающиеся на одну дугу, равны.']},
@@ -1639,7 +1664,7 @@ const TID='oge-task16-circle';   // из реестра курса oge/registry.
    столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
    свои записи журнала, после свежего чтения ключа — две вкладки не
    затирают друг друга. В ?selftest=1 ничего не пишется. */
-const TYPE_IDS=["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord"];
+const TYPE_IDS=["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord","sectorArea"];
 const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){
@@ -4681,7 +4706,7 @@ doc.addEventListener('toggle',()=>global.requestAnimationFrame(()=>figureFrames.
 function frame(host,title){const wrap=el('div',null,'ocg-figure-scroll');const figure=el('div',null,'ocg-figure');wrap.append(figure);host.append(wrap);figureNavigation(wrap,title);return svg=>{figure.innerHTML=`<svg viewBox="0 0 440 290" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title>${svg}</svg>`;};}
 function controls(host){const box=el('div',null,'ocg-controls');host.append(box);return box;}
 function watch(inputs,run){inputs.forEach(i=>i.addEventListener('input',run));run();}
-const captions={adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
+const captions={sector:'Меняй угол и площадь круга. Следи, какую часть круга занимает сектор.',adjacent:'Меняй внутренний угол. Что происходит с соседним внешним углом?',tangentChord:'Меняй дугу AB. Сравни её с углом между касательной в A и хордой AB.',cyclic:'Двигай вершину D по окружности. Сравни противоположные углы A и C.',sine:'Меняй радиус и угол. Сравни длину хорды BC с синусом вписанного угла A.',isosceles:'Меняй угол при основании. Сравни два угла при основании и угол при вершине.',trapezoidAngles:'Меняй нижний угол равнобедренной трапеции. Сравни углы при каждом основании.',circleAngle:'Двигай точку C по большой дуге AB. Затем меняй центральный угол: сравни два угла над одной и той же малой дугой AB.',tangent:'Отодвигай точку P от окружности. Посмотри, какой угол между радиусом OT и касательной PT сохраняется.',chord:'Отодвигай хорду от центра. Сравни расстояние OM и длину хорды AB.',incircle:'Меняй радиус. Сравни его с расстоянием между двумя параллельными касательными.',squareIncircle:'Меняй радиус вписанной окружности. Сравни диаметр со стороной квадрата, затем найди площадь.',trapezoidMidSegments:'Меняй основания трапеции. Проведи диагональ и сравни два отрезка средней линии с основаниями.',regular:'Выбери число сторон. Сравни радиус описанной окружности с расстоянием от центра до стороны.',power:'Передвигай точку P внутри окружности. Сравни произведения отрезков двух хорд.',area:'Меняй наклон, сохраняя основание и высоту. Изменится ли площадь?',square:'Меняй сторону квадрата. Сравни сторону, периметр и площадь: как пройти от периметра к площади?',rhombArea:'Меняй диагонали ромба. Дострой прямоугольник и сравни площади: какую его часть занимает ромб?',rhombHeight:'Меняй сторону и угол ромба. Сравни сторону с высотой; затем найди площадь по основанию и высоте.',diagonal:'Меняй фигуру. Следи за длинами диагоналей и точкой их пересечения.',angles:'Меняй угол. Сравни соседние и противоположные углы.',gridLength:'Меняй горизонтальный и вертикальный шаги. Как найти прямое расстояние между концами?',gridArea:'Сначала выбери основание и высоту. Нажми «Достроить прямоугольник» и сравни площади.',midline:'Меняй размеры. Нажми «Показать среднюю линию»: какие стороны она соединяет?',ratio:'Меняй коэффициент подобия. Сравни, во сколько раз меняются длины и площади.'};
 function model(host,kind,shape){
  host.dataset.geometryModel=kind;host.append(el('p',captions[kind],'ocg-instruction'),el('p','Это отдельная учебная модель. Её числа не являются ответом к твоей задаче.','ocg-note'));
  const ctl=controls(host),draw=frame(host,captions[kind]),out=el('output',null,'ocg-reading');out.setAttribute('aria-live','polite');host.append(out);
@@ -4691,6 +4716,16 @@ function model(host,kind,shape){
  }else if(kind==='circleAngle'){
   const angle=range(ctl,'central','Центральный угол AOB, °',40,180,80,2),position=range(ctl,'vertex','Положение точки C на большой дуге, °',220,340,255,5);
   watch([angle,position],()=>{const a=+angle.value,A=circ(220,145,105,20),B=circ(220,145,105,20+a),C=circ(220,145,105,+position.value);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(...A,...B,'ocg-dashed')+line(220,145,...A)+line(220,145,...B)+line(...C,...A,'ocg-blue')+line(...C,...B,'ocg-blue')+point(...A,'A')+point(...B,'B')+point(...C,'C',8,22)+point(220,145,'O',-24,6));out.textContent=`Центральный угол: ${a}°. Вписанный угол ACB: ${a/2}°. При движении C по этой дуге вписанный угол не меняется.`;});
+ }else if(kind==='sector'){
+  const angle=range(ctl,'central','Центральный угол, °',30,150,90,15);
+  const area=range(ctl,'area','Площадь круга, см²',60,300,120,30);
+  watch([angle,area],()=>{
+   const a=+angle.value,s=+area.value,r=105;
+   const A=circ(220,145,r,90-a/2),B=circ(220,145,r,90+a/2);
+   const sector=`<path d="M 220 145 L ${A.join(' ')} A ${r} ${r} 0 0 0 ${B.join(' ')} Z" class="ocg-shape"/>`;
+   draw(`<circle cx="220" cy="145" r="${r}" class="ocg-circle"/>`+sector+point(220,145,'O',0,22)+point(...A,'A')+point(...B,'B',-22,-8)+label(220,124,a+'°'));
+   out.textContent=`Сектор занимает ${a} из 360 градусов. Его площадь равна ${s} · ${a} : 360 = ${fmt(s*a/360)} см².`;
+  });
  }else if(kind==='tangentChord'){
   const angle=range(ctl,'arc','Дуга AB, °',40,160,100,5);
   watch([angle],()=>{const a=+angle.value,A=[325,145],B=circ(220,145,105,a);draw(`<circle cx="220" cy="145" r="105" class="ocg-circle"/>`+line(325,25,325,260,'ocg-dashed')+line(...A,...B,'ocg-blue')+line(220,145,...A)+point(...A,'A',10,20)+point(...B,'B',-20,-8)+point(220,145,'O',-20,20)+label(365,30,'касательная'));out.textContent=`Угол между хордой AB и верхним лучом касательной равен ${a/2}° — половине дуги AB (${a}°). Радиус OA перпендикулярен касательной.`;});
@@ -4785,7 +4820,7 @@ function model(host,kind,shape){
  }
  return host;
 }
-const refs16={insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
+const refs16={sector:['sector',['circle_length_area'],['circle']],insc:['circleAngle',['inscribed_angles'],[]],radiso:['circleAngle',['isosceles','circle_definition'],[]],cyclq:['cyclic',['inscribed_angles','circumcircle'],[]],reg:['regular',['regular_polygon'],['equilateral-triangle']],sinr:['sine',['circumcircle','trigonometry'],['sine-cosine']],chord:['chord',['equal_chords','pythagoras'],['pythagoras']],spr:['incircle',['incircle','triangle_area'],['triangle-area']],tangq:['tangent',['tangent','incircle'],[]],tang:['tangent',['tangent'],[]],power:['power',['triangle_similarity','inscribed_angles'],[]]};
 const refs17={sqf:['square',['square','pythagoras'],['pythagoras']],rectd:['diagonal',['rectangle','pythagoras'],['pythagoras']],rhombprop:['diagonal',['rhombus'],[]],parprop:['angles',['parallelogram'],[]],parallel:['angles',['parallel_angles'],[]],anglesum:['angles',['polygon_angles'],['polygon-angles']],isotri:['isosceles',['isosceles'],[]],isotrap:['trapezoidAngles',['isosceles_trapezoid'],[]],simtri:['ratio',['triangle_similarity'],[]],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']]};
 const refs18={pyth:['gridLength',['pythagoras'],['pythagoras']],midtri:['midline',['triangle_midline'],['midlines']],midtrap:['midline',['trapezoid_midline'],['midlines']],stri:['gridArea',['triangle_area'],['triangle-area']],spar:['area',['parallelogram_area'],['parallelogram-area']],srhomb:['diagonal',['rhombus_area'],['rhombus-area']],strap:['area',['trapezoid_area'],['trapezoid-area']],tan:['gridLength',['trigonometry'],['pythagoras','trig-values']],sim:['ratio',['triangle_similarity'],[]],circ:['ratio',['circle_length_area','similarity_area'],['circle']],cells:['gridArea',['equal_area','triangle_area'],['triangle-area']]};
 function current(){

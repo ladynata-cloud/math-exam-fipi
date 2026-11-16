@@ -2,6 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
 const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
 const {entries,assets,snippet}=require('./oge-video-models-preservation.cjs');
+const alignment=require('./fixtures/oge-source-alignment-geometry-bytes.json');
 const ROOT=path.resolve(__dirname,'..');
 const dom={count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label};
 const assetHashes=Object.fromEntries(assets.map(file=>['/'+file,hash(fs.readFileSync(path.join(ROOT,file)))]));
@@ -32,7 +33,7 @@ test('later teaching receipts remain limited to four committed pages and reject 
  assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
  for(const file of Object.keys(updates.pages)){
   const x=fixture(file), result=receipt(x);
-  assert.equal(result.sourceBase,updates.pages[file].sourceCommit);
+  assert.equal(result.sourceBase,alignment.pages[file]?alignment.sourceCommit:updates.pages[file].sourceCommit);
   for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
    assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
   }

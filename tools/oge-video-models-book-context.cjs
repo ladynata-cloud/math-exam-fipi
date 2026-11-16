@@ -6,7 +6,12 @@ const {restoreVideoModels,restoreGraphScale,assets}=require('./oge-video-models-
 const pins=require('./fixtures/oge-video-models-native-bytes.json');
 // Explicit later teaching revisions; original historical pins remain immutable.
 const updates=require('./fixtures/oge-worked-steps-native-bytes.json');
-const sourcePin=file=>({...pins.pages[file],sourceCommit:pins.baseCommit,...updates.pages[file]});
+const alignment=require('./fixtures/oge-source-alignment-geometry-bytes.json');
+const sourcePin=file=>{
+ const pin={...pins.pages[file],sourceCommit:pins.baseCommit,...updates.pages[file]};
+ const aligned=alignment.pages[file];
+ return aligned?{...pin,sourceCommit:alignment.sourceCommit,sha256:aligned.videoNativeSha256}:pin;
+};
 const label='Разобраться на модели',summaryHtml='<summary data-ovm-open="">'+label+'</summary>';
 const hash=raw=>crypto.createHash('sha256').update(raw).digest('hex');
 function receipt({file,raw,id,prefix,visible,dom,assetHashes}){

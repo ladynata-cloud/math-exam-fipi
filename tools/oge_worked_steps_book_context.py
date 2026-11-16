@@ -3,7 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from oge_video_models_book_context import without_download_controls
+from oge_video_models_book_context import GEOMETRY_ALIGNMENT, without_download_controls
 
 ROOT = Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-book-ui.json').read_text())
@@ -20,7 +20,10 @@ def matches_worked_steps_ui(record, text, fixture_texts):
             return False
         if record['route'] != pin['route'] or record['finalPath'] != pin['route']:
             return False
-        for route, expected in {pin['route']: pin['sha256'], **PINS['assets']}.items():
+        aligned = GEOMETRY_ALIGNMENT['pages'].get(pin['route'][1:], {})
+        page_hash = aligned.get('withoutDownloadSha256', pin['sha256'])
+        assets = PINS['assets'] | GEOMETRY_ALIGNMENT['workedStepsAssets']
+        for route, expected in {pin['route']: page_hash, **assets}.items():
             loaded = record['resources'][route]
             file = route[1:]
             raw = (ROOT / file).read_bytes()

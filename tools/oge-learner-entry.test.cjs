@@ -23,6 +23,7 @@ taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
 const task9ReviewedScript='a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02';
+const geometryAlignment=require('./fixtures/oge-source-alignment-geometry-bytes.json');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
@@ -84,6 +85,9 @@ for(const p of routes.pages){
   if(p==='trainers/oge-task9-equations.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+  }else if(geometryAlignment.pages[p]){
+    assert.equal(createHash('sha256').update(JSON.stringify(actualScripts)).digest('hex'),
+      geometryAlignment.pages[p].inlineSha256,p+' exact reviewed source-alignment engines');
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
