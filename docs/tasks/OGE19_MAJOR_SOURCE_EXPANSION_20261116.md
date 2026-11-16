@@ -127,6 +127,21 @@
   изменённые атрибуты/URL, чужую страницу и постороннюю правку native HTML.
   Это адресная интеграция уже разрешённого cache update, не ослабление gate.
 
+- `tools/fixtures/oge-book-exam-math.json`, `tools/oge-book-exam-math.py` и
+  уже перечисленный `tools/oge-video-models-book-context.test.py` — второй
+  фактически обнаруженный эффект расширения банка на общий book gate.
+  Run `43779286434` на head `403eba9d` получил **1182 PASS / 3 PENDING / 0 FAIL**:
+  в source entry 71 при 320/390/1280 px второй вопрос фиксированного random seed
+  стал «При пересечении параллельных прямых секущей соответственные углы равны.».
+  Первый вопрос о ромбе и все frozen cases неизменны. Старый точный fixture
+  закономерно не допускает другой prompt. До изменения этих файлов объявлено
+  добавление только sourceVariant для трёх source-сценариев, явного независимого
+  доказательства свойства и отрицательных проверок premise/answer/route/frozen.
+  Исходный frozen fixture и все прежние oracle-пары сохраняются, ответы из
+  production bank не используются для математического вывода. Полный записанный
+  набор перепроверяется прежней строгой командой, без `--allow-pending`.
+  Runtime, карточки, рисунки, frozen editions и browser recorder не меняются.
+
 ### Out of scope / areas that must not change
 
 - Прежние 244 объекта карточек, их aliases, порядок, ключи и формат прогресса.
@@ -247,6 +262,24 @@
   passes **60/60** Node and **10/10** Python tests. Binding tests passed **5/5**.
   The initial browser artifact predates these refinements; the final published
   head must rerun actual CI and the affected visual checks.
+- Refined runtime CI: head `403eba9da8d88b1d673ad75469ec401bdf07acb6`, run
+  `43779286448`, runner `10ae74c23eb241da06632e930fc7924c266ec403`; verified
+  parents are the named base/head and both trees equal
+  `0ce89d98a201d7dd52d0b7e16b791c079fd5ff76`. Existing/owner/major jobs all PASS;
+  **675/675** journeys, 6 785 layouts, 25 818 SVG bounds, 90 touch journeys,
+  1 166 PNGs, zero browser errors/offline network requests. Independently
+  checked continuous progress and exactly-once scoring. Actual final images
+  for 22 affected cards were reviewed (44 mobile plus two narrow PNGs), closing
+  the center-scale, symmetry-legend and missing-J findings.
+- Book-gate follow-up: run `43779286434` identified the three source-only
+  seeded-prompt PENDING cases declared above. The independently proved exact
+  corresponding-angle case passes the full original recorded report set:
+  **1185 PASS / 0 PENDING / 0 FAIL**, no missing reports or unreviewed oracles,
+  without an allow-pending flag. Negative/context checks: **12/12 PASS**;
+  video Node suite remains **60/60 PASS**. The canonical original 19-fixture
+  map stays pinned to `f09dd4fac5dfc47ac39cfe0a39cce88bd89526d2f1c035ba3bb812ff85fba258`;
+  frozen prompts/keys and runtime/download files remain unchanged. The final
+  tooling-only commit reruns actual CI; its exact head and outcomes belong in PR.
 - PR: **#630**, Draft, base remains #626. Final head, runner provenance and
   actual CI result are recorded in the PR so the evidence update does not
   require another untested repository commit. No merge or deployment performed.

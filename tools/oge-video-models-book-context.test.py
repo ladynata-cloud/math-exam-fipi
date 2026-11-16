@@ -259,6 +259,62 @@ class ContextTests(unittest.TestCase):
             record['resources'][route] = record['resources'][original_record['route']]
             self.assertIsNone(without_closed_video_summary(record), 'wrong route cannot use the task19 cache inverse')
 
+    def test_task19_seeded_source_case_is_independent_and_keeps_every_frozen_fixture_exact(self):
+        before = copy.deepcopy(self.fixtures)
+        source = before['71'].pop('sourceVariant')
+        # Entire canonical fixture map at 403eba9d. A shallow CI checkout does
+        # not need that historical Git object to enforce the immutable pin.
+        self.assertEqual(sha(math.stable(before).encode()),
+            'f09dd4fac5dfc47ac39cfe0a39cce88bd89526d2f1c035ba3bb812ff85fba258',
+            'all original cases, including frozen71, remain exact')
+        old = before
+        oracle = dict(prompt='При пересечении параллельных прямых секущей соответственные углы равны.', expected=True)
+        self.assertEqual(source['oracles'], old['71']['oracles'] + [oracle])
+        self.assertEqual(source['visibleText'], old['71']['visibleText'])
+        self.assertEqual(source['geometrySha256'], old['71']['geometrySha256'])
+        self.assertEqual(source['sourceOnlyRoute'], '/trainers/task19-trainer.html')
+        record, _ = self.task19_context()
+        for item in source['oracles']:
+            self.assertTrue(math.exact_reviewed_context(record, item, self.fixtures))
+        result, proof, verdict, reason = math.reviewed(record, oracle, 1)
+        self.assertIs(result, True)
+        self.assertEqual(verdict, 'PASS')
+        self.assertIsNone(reason)
+        self.assertIn('Перенос на вектор PQ', proof)
+        # The proof never reads the submitted truth value; the caller compares it.
+        changed = dict(oracle, expected=False)
+        self.assertIs(math.reviewed(record, changed, 1)[0], True)
+        self.assertFalse(math.exact_reviewed_context(record, changed, self.fixtures))
+        for prefix, banner in math.BOOK_BANNERS.items():
+            frozen = dict(id='71', prefix=prefix, route=record['route'],
+                finalPath=prefix + record['route'],
+                initialVisibleText=banner+' '+old['71']['visibleText'], visibleSvgLabels=[])
+            for item in old['71']['oracles']:
+                self.assertTrue(math.exact_reviewed_context(frozen, item, self.fixtures))
+            self.assertFalse(math.exact_reviewed_context(frozen, oracle, self.fixtures), prefix)
+
+    def test_task19_new_exact_case_rejects_changed_premises_route_context_and_geometry(self):
+        record, fixture = self.task19_context()
+        oracle = fixture['oracles'][-1]
+        for prompt in [oracle['prompt'].replace('параллельных ', ''),
+                       oracle['prompt'].replace('равны.', 'в сумме дают 180°.'),
+                       oracle['prompt'].replace('соответственные', 'любые')]:
+            changed = dict(oracle, prompt=prompt)
+            self.assertFalse(math.exact_reviewed_context(record, changed, self.fixtures))
+            self.assertEqual(math.reviewed(record, changed, 1)[2], 'PENDING')
+        for key, value in [('id','70'), ('route','/other.html'), ('finalPath','/other.html'),
+                           ('prefix','/book/oge/2026-10-31/v1')]:
+            changed = copy.deepcopy(record); changed[key] = value
+            self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures), key)
+        changed = copy.deepcopy(record)
+        changed['visibleSvgLabels'] = [{'svg':'<svg><text>unreviewed geometry</text></svg>'}]
+        self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures))
+        changed = copy.deepcopy(record); context = changed['videoModelContext']
+        context['afterText'] += ' changed premise'
+        changed['initialVisibleText'] = context['beforeText'] + LABEL + context['afterText']
+        changed['unfilteredInitialVisibleText'] = changed['publicWayfinding']['visibleText'] + ' ' + changed['initialVisibleText']
+        self.assertFalse(math.exact_reviewed_context(changed, oracle, self.fixtures))
+
 
 if __name__=='__main__':
     unittest.main()
