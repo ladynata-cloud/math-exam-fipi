@@ -1,6 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {JSDOM,VirtualConsole}=require('jsdom');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
 const files={20:'oge-task20-equations.html',21:'oge-task21-word-problems.html',22:'oge-task22-functions-graphs.html'};
 const html=n=>fs.readFileSync(path.join(__dirname,'../trainers',files[n]),'utf8');
 function seeded(seed){let s=seed>>>0;return()=>{s=(1664525*s+1013904223)>>>0;return s/4294967296;};}
@@ -30,9 +31,9 @@ for(const n of [20,21,22])test('task '+n+': starts with a problem; help and navi
  }finally{t.close();}
 });
 
-test('task20: every one of 13 types opens the current problem stepper and keeps it on hide/reopen',async()=>{
+test('task20: every one of 14 types opens the current problem stepper and keeps it on hide/reopen',async()=>{
  const t=await boot(20);try{
-  const api=t.w.__T20;assert.equal(api.ORDER.length,13);
+  const api=t.w.__T20;assert.equal(api.ORDER.length,14);
   for(const key of api.ORDER){
    const seed=100+api.ORDER.indexOf(key);t.w.Math.random=seeded(seed);const engine=api.MODULES[key].engine(),data=engine.gen(),expected=engine.render(data).stepper(data).problemHTML;t.w.Math.random=seeded(seed);api.STATE.module=key;api.STATE.mode='drill';api.render();
    const main=t.d.querySelector('#body .prompt'),before=snapshot(main),btn=byText(t.d,'Хочешь подсказку?');
@@ -55,10 +56,10 @@ test('task20: main answer survives help and correct checking advances only once'
  }finally{t.close();}
 });
 
-test('task21: all 11 types keep exact current data in optional help and leave saved counts intact',async()=>{
+test('task21: all 12 types keep exact current data in optional help and leave saved counts intact',async()=>{
  const t=await boot(21,{saved:{t1:4,unrelated:3}});try{
-  const before=t.w.localStorage.getItem('oge21_prog');assert.equal(t.w.__T.MODULES.length,11);
-  for(let i=0;i<11;i++){
+  const before=t.w.localStorage.getItem('oge21_prog');assert.equal(t.w.__T.MODULES.length,12);
+  for(let i=0;i<12;i++){
    t.d.querySelector('.chip[data-idx="'+i+'"]').click();const main=t.d.querySelector('#content .problem'),beforeHTML=snapshot(main),hint=byText(t.d,'Хочешь подсказку?');
    const input=t.d.querySelector('#content .card > div:not(.minimal-hint) .af input');input.value='123';hint.click();
    assert.equal(snapshot(main),beforeHTML);assert.equal(input.value,'123');assert(t.d.querySelector('#task21Help .stepcard'),String(i));assert(t.d.querySelector('#task21Help svg'),i+' visualization');
@@ -69,9 +70,9 @@ test('task21: all 11 types keep exact current data in optional help and leave sa
  }finally{t.close();}
 });
 
-test('task21: 11 synthetic learners solve every type, and answers revealed never earn independent credit',async()=>{
+test('task21: 12 synthetic learners solve every type, and answers revealed never earn independent credit',async()=>{
  const t=await boot(21);try{
-  for(let i=0;i<11;i++){
+  for(let i=0;i<12;i++){
    const module=t.w.__T.MODULES[i],seed=108+i;t.w.Math.random=seeded(seed);const p=module.gen();t.w.Math.random=seeded(seed);t.d.querySelector('.chip[data-idx="'+i+'"]').click();
    const fields=[...t.d.querySelectorAll('#content .card > div:not(.minimal-hint) .af')],parts=module.finalParts(p);assert.equal(fields.length,parts.length);
    for(let j=0;j<fields.length;j++){const part=parts[j],answer=part.ans instanceof t.w.__T.Rn?part.ans:t.w.__T.Rn.from(part.ans);fields[j].querySelector('input').value=String(answer.toNumber());byText(fields[j],'Проверить').click();assert(fields[j].classList.contains('ok'),module.key+' part '+j);}
@@ -127,7 +128,7 @@ const protectedRegions=[
  [22,'// ---------- set equality (for grading) ----------','function piecewiseHtml(pieces)','ba67ae39d38f1c05d37bc2071e74da76e5793ea0163e72bcd18e6608324f7651']
 ];
 test('exact math engines and complete generator bank are byte-identical to the published base',()=>{
- for(const [n,start,end,expected] of protectedRegions){const source=html(n),a=source.indexOf(start),b=source.indexOf(end,a+start.length);assert(a>=0&&b>a);const actual=crypto.createHash('sha256').update(source.slice(a,b)).digest('hex');assert.equal(actual,expected,'task '+n+' '+start);if(n===21){const original=source.slice(a,b).replace('if(window.OgeCourseSharedMode||reduceMotion())','if(reduceMotion())');assert.equal(crypto.createHash('sha256').update(original).digest('hex'),'5043b1bad2e441999f829b3cb2d57e39e830a966a7a7228a1cef2da5d82d8143','21: original bank and exact math stay unchanged');}}
+ for(const [n,start,end,expected] of protectedRegions){const source=restoreSourceAlignment("trainers/"+files[n],html(n)),a=source.indexOf(start),b=source.indexOf(end,a+start.length);assert(a>=0&&b>a);const actual=crypto.createHash('sha256').update(source.slice(a,b)).digest('hex');assert.equal(actual,expected,'task '+n+' '+start);if(n===21){const original=source.slice(a,b).replace('if(window.OgeCourseSharedMode||reduceMotion())','if(reduceMotion())');assert.equal(crypto.createHash('sha256').update(original).digest('hex'),'5043b1bad2e441999f829b3cb2d57e39e830a966a7a7228a1cef2da5d82d8143','21: original bank and exact math stay unchanged');}}
 });
 
 
@@ -168,4 +169,138 @@ test('task22: full answer reveal is explicitly labelled when the learner later c
   }
   assert.deepEqual(t.errors,[]);
  }finally{t.close();}
+});
+
+test('task20 DR3 independently checks all three critical points, both allowed regions and mixed brackets',async()=>{
+ const t=await boot(20);try{
+  const {STATE,render,M,R}=t.w.__T20;
+  for(let numerator=2;numerator<=7;numerator++)for(let gap=2;gap<=8;gap++){
+   t.w.Math.random=(()=>{const values=[(numerator-2+.1)/6,(gap-2+.1)/7];return()=>values.shift()??.2;})();
+   const row=M.gen.DR3();
+   assert.equal(row.z,numerator);assert.equal(row.b,numerator+gap);
+   const {z,b}=row;
+   const f=x=>(x-z)/(x*(x-b));
+   assert.deepEqual([-1,1,z+.5,b+1].map(x=>Math.sign(f(x))),[-1,1,-1,1]);
+   assert(f(z)===0);
+   assert([0,b].every(x=>x*(x-b)===0 && x-z!==0));
+   const correct={first:'0',last:String(z),ray:String(b),left:'(',right:']',rayLeft:'('};
+   const grade=R.DR3(row).check;
+   assert.equal(grade(()=>correct).ok,true);
+   for(const [key,value] of [['first',''],['last',String(b)],['ray','0'],['left','['],['right',')'],['rayLeft','[']]){
+    assert.equal(grade(()=>({...correct,[key]:value})).ok,false,key);
+   }
+   t.w.Math.random=(()=>{const values=[(numerator-2+.1)/6,(gap-2+.1)/7,.75];return()=>values.shift()??.2;})();
+   const second=M.gen.DR3();
+   const comparator=x=>(x+z)*(x-b)/x;
+   assert.deepEqual([-z-1,-1,1,b+1].map(x=>Math.sign(comparator(x))),[-1,1,-1,1]);
+   assert(comparator(-z)===0&&comparator(b)===0);
+   const gradeSecond=R.DR3(second).check;
+   const exact={first:String(-z),last:'0',ray:String(b),left:'[',right:')',rayLeft:'['};
+   assert.equal(gradeSecond(()=>exact).ok,true);
+   assert.equal(gradeSecond(()=>({...exact,right:']'})).ok,false);
+   assert.equal(gradeSecond(()=>correct).ok,false);
+  }
+  t.w.Math.random=()=>0;
+  STATE.module='DR3';STATE.mode='drill';render();
+  const card=t.d.querySelector('#body .qbox');
+  const input=[...card.querySelectorAll(':scope > div:not(.minimal-hint) .numin')];
+  const selects=[...card.querySelectorAll(':scope > div:not(.minimal-hint) select')];
+  const check=card.querySelector(':scope > .btns .primary');
+  byText(card,'Хочешь подсказку?').click();
+  assert.match(card.querySelector('#task20Help .sstep').textContent,/ОДЗ/);
+  input.forEach((node,i)=>node.value=['0','2','4'][i]);
+  check.click();assert(!check.disabled);
+  selects[1].value=']';check.click();assert(check.disabled);
+ }finally{t.close();}
+});
+
+test('task21 resolves all transport profiles and dilution data by independently conserving time or mass',async()=>{
+ const t=await boot(21);try{
+  const modules=t.w.__T.MODULES;
+  const ride=modules.find(row=>row.key==='t3');
+  for(let vehicle=0;vehicle<2;vehicle++)for(let index=0;index<6;index++)for(const choice of [.1,.9]){
+   const samples=[(vehicle+.1)/2,(index+.1)/6,choice];
+   t.w.Math.random=()=>samples.shift()??.2;
+   const p=ride.gen();
+   const slow=p.x-p.d;
+   assert(Number.isInteger(p.D)&&p.D>0);
+   assert(p.x>slow&&slow>0);
+   assert(Math.abs(p.D/slow-p.D/p.x-p.dt)<1e-10);
+   assert(Math.abs(p.quad.a*p.x*p.x+p.quad.b*p.x+p.quad.c)<1e-10);
+   assert.equal(p.finalParts[0].ans.toNumber(),choice<.5?p.x:slow);
+   assert.match(p.stmt,vehicle===0?/велосипедиста/:/автомобиля/);
+   assert(vehicle===0?p.x<=30&&slow>=14:p.x<=110&&slow>=50);
+  }
+  const dilution=modules.find(row=>row.key==='t12');
+  for(let ratio=0;ratio<5;ratio++)for(let batch=0;batch<5;batch++)for(let scale=0;scale<4;scale++){
+   const samples=[(ratio+.1)/5,(batch+.1)/5,(scale+.1)/4];
+   t.w.Math.random=()=>samples.shift()??.2;
+   const p=dilution.gen();
+   assert(p.water>0&&p.oldPercent>p.newPercent&&p.oldPercent<=25);
+   assert.equal((p.before+p.water)*p.newPercent,p.before*p.oldPercent);
+   assert.equal(p.salt.toNumber(),p.before*p.oldPercent/100);
+   assert.equal(dilution.steps(p).at(-1).ans.toNumber(), p.water);
+   assert.match(p.stmt,/килограммов воды/);
+  }
+  const p=dilution.gen(),model=t.d.createElement('div');
+  dilution.viz(model,p);
+  const bars=model.querySelectorAll('rect');
+  assert(+bars[0].getAttribute('width')<+bars[2].getAttribute('width'));
+  assert.equal(bars[1].getAttribute('width'),bars[3].getAttribute('width'));
+ }finally{t.close();}
+});
+
+test('task22 twice excluded nodes and exact no-intersection slopes belong to the displayed graph',async()=>{
+ const t=await boot(22);try{
+  const {genEvenHyperbola,graphSpec,statementHtml,stepPlan}=t.w.__api;
+  for(let index=0;index<2;index++)for(let quarter=1;quarter<=4;quarter++){
+   const samples=[(index+.1)/2,(quarter-1+.1)/4];
+   t.w.Math.random=()=>samples.shift()??.2;
+   const p=genEvenHyperbola(),g=graphSpec(p),k=p.c/p.hole**2;
+   assert.deepEqual(Array.from(g.holes),[-p.hole,p.hole]);
+   assert.deepEqual(Array.from(p.vals,k=>k.toNum()),[-k,0,k]);
+   for(const slope of [-k,0,k])assert.equal(g.intersectK(slope).length,0);
+   for(const slope of [-2*k,-k/2,k/2,2*k]){
+    const xs=g.intersectK(slope);
+    assert.equal(xs.length,1);
+    assert(Math.sign(xs[0])===-Math.sign(slope));
+    assert(Math.abs(slope*xs[0]-g.fn(xs[0]))<1e-10);
+   }
+   assert.match(statementHtml(p),/не имеет с графиком общих точек/);
+   assert.equal(stepPlan(p).at(-1).answer,p.vals);
+  }
+  t.d.querySelector('.mod-btn[data-mod="m3"]').click();
+  const host=t.d.querySelector('.panel[data-mod="m3"] .mode-host[data-mode="marathon"]');
+  byText(host,'Две выколотые точки · y = kx').click();
+  const p=host.__problem;
+  assert.equal(p.sub,'even_kx_none');
+  byText(host,'Хочешь подсказку?').click();
+  assert.equal(host.querySelectorAll('svg .dot-open').length,2);
+  const slider=host.querySelector('input[type="range"]');
+  for(const [slope,expected] of [[p.vals[0].toNum(),0],[0,0],[p.vals[2].toNum(),0],[2,1]]){
+   slider.value=String(slope);slider.dispatchEvent(new t.w.Event('input'));
+   assert.equal(host.querySelector('.badge-t2').textContent,String(expected));
+  }
+  const ans=host.querySelector('.ans-host'),check=host.querySelector(':scope > .btn-row > .btn-check');
+  fill22(ans,{vals:p.vals.slice(1)});check.click();assert(!check.disabled);
+  byText(ans,'+ значение').click();
+  ans.querySelectorAll('.v-dec')[2].value=p.vals[0].toString();check.click();
+  assert(check.disabled);
+ }finally{t.close();}
+});
+
+test('source alignment inverse preserves historical pins and rejects partial or foreign edits',()=>{
+ for(const file of Object.values(files).map(name=>'trainers/'+name)){
+  const {pages}=require('./fixtures/oge-source-alignment-20-22.json');
+  const raw=fs.readFileSync(path.join(__dirname,'..',file),'utf8');
+  const base=restoreSourceAlignment(file,raw);
+  assert.notEqual(base,raw);
+  for(const {after} of pages[file]){
+   const edited=raw.replace(after,after.replace(/\n/,'\n<!-- changed -->'));
+   assert.notEqual(edited,raw);
+   assert.equal(restoreSourceAlignment(file,edited),edited);
+  }
+  const extra=raw.replace('</body>','<!-- an unrelated change --></body>');
+  assert.notEqual(restoreSourceAlignment(file,extra),base);
+ }
 });

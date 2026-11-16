@@ -480,6 +480,13 @@ nav.oge-wayfinding[hidden]{display:none!important}
     return { type: 'DR', r1: r1, r2: r2, b: b, c: c, N: N };
   }
 
+  // Два участка решения с тремя критическими точками.
+  function genDR3() {
+    var z = ri(2, 7), b = z + ri(2, 8);
+    var form = Math.random() < 0.5 ? 'two-poles' : 'one-pole';
+    return { type: 'DR3', z: z, b: b, form: form };
+  }
+
   // Тип QI: квадратное неравенство (x-a)(b·x+c) [<|>] d → раскрыть → квадратное → метод интервалов
   function genQI() {
     for (;;) {
@@ -671,7 +678,7 @@ nav.oge-wayfinding[hidden]{display:none!important}
 
   var API = {
     Fr: Fr, isqrtExact: isqrtExact, parseFrac: parseFrac,
-    gen: { A: genA, B1: genB1, B2: genB2, B3: genB3, B4: genB4, B5: genB5, BIQ: genBIQ, SQ: genSQ, POW: genPOW, DR: genDR, QI: genQI, DS: genDS, PROP: genPROP, SYM: genSYM, C1: genC1, C2: genC2, D1: genD1, D2: genD2 },
+    gen: { A: genA, B1: genB1, B2: genB2, B3: genB3, B4: genB4, B5: genB5, BIQ: genBIQ, SQ: genSQ, POW: genPOW, DR: genDR, DR3: genDR3, QI: genQI, DS: genDS, PROP: genPROP, SYM: genSYM, C1: genC1, C2: genC2, D1: genD1, D2: genD2 },
     checkInt: checkInt, checkRootset: checkRootset, checkPointset: checkPointset,
     checkIntervalD1: checkIntervalD1, checkIntervalD2: checkIntervalD2
   };
@@ -1963,6 +1970,69 @@ function stDR(d){
     ])
   };
 }
+// ---- DR3: дробное неравенство с двумя запрещёнными точками и нулём числителя ----
+function dr3Problem(d){
+  if(d.form==='one-pole'){
+    var shift=d.z+1;
+    return frac(fmtPoly([[1,'x'+S2],[d.z-d.b+shift,'x'],[-d.z*d.b,'']]),'x')+' ≥ '+shift;
+  }
+  return frac(fmtPoly([[1,'x'],[-d.z,'']]),fmtPoly([[1,'x'+S2],[-d.b,'x']]))+' ≥ 0';
+}
+function dr3Solution(d){
+  if(d.form==='one-pole')return {
+    points:[-d.z,0,d.b],brackets:['[',')','['],
+    domain:'ОДЗ: x ≠ 0. Перенесём '+(d.z+1)+' влево и приведём к знаменателю x.',
+    factors:'После вычитания и разложения получаем '+frac('(x + '+d.z+')(x − '+d.b+')','x')+' ≥ 0. Нули числителя: −'+d.z+' и '+d.b+'.'
+  };
+  return {
+    points:[0,d.z,d.b],brackets:['(',']','('],
+    domain:'Знаменатель: x(x − '+d.b+'). Поэтому x ≠ 0 и x ≠ '+d.b+'.',
+    factors:'Нуль числителя: x = '+d.z+'.'
+  };
+}
+function dr3Widget(host){
+  var line=el('<div class="ivfields" style="flex-wrap:wrap;gap:8px"></div>');
+  var first=el('<input class="numin num2" inputmode="numeric" autocomplete="off" aria-label="Левая граница промежутка">');
+  var last=el('<input class="numin num2" inputmode="numeric" autocomplete="off" aria-label="Правая граница промежутка">');
+  var ray=el('<input class="numin num2" inputmode="numeric" autocomplete="off" aria-label="Граница луча">');
+  var left=el('<select aria-label="Скобка левой границы промежутка"><option>(</option><option>[</option></select>');
+  var right=el('<select aria-label="Скобка правой границы промежутка"><option>)</option><option>]</option></select>');
+  var rayLeft=el('<select aria-label="Скобка границы луча"><option>(</option><option>[</option></select>');
+  line.append(left,first,el('<span>;</span>'),last,right,el('<span>∪</span>'),rayLeft,ray,el('<span>; +∞)</span>'));
+  host.appendChild(line);
+  return {read:function(){return {first:first.value,last:last.value,ray:ray.value,left:left.value,right:right.value,rayLeft:rayLeft.value};}};
+}
+function checkDR3(read,d){
+  var v=read();
+  var solution=dr3Solution(d);
+  var points=[v.first,v.last,v.ray], brackets=[v.left,v.right,v.rayLeft];
+  if(!points.every(function(value,i){return M.checkInt(value,Fr.fromInt(solution.points[i]));}))return {ok:false,reason:'points'};
+  return {ok:brackets.every(function(value,i){return value===solution.brackets[i];}),reason:'ends'};
+}
+function dr3Reason(r){
+  return r.reason==='points'?'Впиши по порядку три точки. Проверь нули числителя и знаменателя.':'Дробь может равняться нулю только там, где знаменатель не равен нулю.';
+}
+function stDR3(d){
+  var solution=dr3Solution(d), p=solution.points, b=solution.brackets;
+  var answer=b[0]+p[0]+'; '+p[1]+b[1]+' ∪ '+b[2]+p[2]+'; +∞)';
+  return {
+    problemHTML:dr3Problem(d),finalHTML:answer,
+    onNew:function(h){mountStepper(h,stDR3(M.gen.DR3()));},
+    steps:[
+      {info:true,q:'Запиши ОДЗ и приведи неравенство к виду «дробь ≥ 0».',reveal:solution.domain},
+      {info:true,q:'Найди нули числителя и проверь знаки по обе стороны от каждой точки.',reveal:solution.factors+' На четырёх участках слева направо знаки: −, +, −, +.'},
+      {q:'Собери ответ из промежутка и луча. Какие концы войдут в ответ?',mount:dr3Widget,
+       check:function(read){return checkDR3(read,d);},reasonText:dr3Reason,reveal:answer}
+    ]
+  };
+}
+R.DR3=function(d){
+  var stepper=stDR3(d);
+  return {head:'Решите неравенство',problemHTML:stepper.problemHTML,mount:dr3Widget,
+    check:function(read){return checkDR3(read,d);},reasonText:dr3Reason,stepper:function(){return stepper;},
+    solutionHTML:stepper.steps.slice(0,2).map(function(step){return '<div class="step">'+step.reveal+'</div>';}).join('')+
+      '<div class="step">Нули знаменателя исключаем. Допустимые нули числителя включаем, так как неравенство нестрогое. Ответ: '+stepper.finalHTML+'.</div>'};
+};
 // ---- QI/DS: квадратные неравенства (раскрыть/разность квадратов → метод интервалов) ----
 function ineqAnsHTML(d, closed){
   var lo=closed?'[':'(', hi=closed?']':')';
@@ -2317,7 +2387,23 @@ var MODULES={
       callout:'Не потеряй решения: знаки у (x+y) и (x−y) независимы, поэтому пар именно четыре. Формулы (x±y)² встречались в '+xrefHTML('B4','сумме квадратов')+', но там квадрат раскрывали, а здесь — собираем.',
       mini:miniSYM, engine:function(){return {gen:M.gen.SYM, render:R.SYM};}, stepFactory:function(){return stSYM(M.gen.SYM());} }
 };
-var ORDER=['A','B1','B2','RAZL','B5','BIQ','SQ','POW','SYS','INEQ','DR','QIDS','SYM'];
+MODULES.DR3={
+  num:'20.14',color:'#9333ea',title:'Дробное неравенство: три точки',
+  sub:'ОДЗ, нуль числителя и два участка решения',form:dr3Problem({z:3,b:8}),
+  tagline:'Отметь нули знаменателя и числителя, затем выбери нужные скобки.',
+  theory:[
+    {t:'Три точки на прямой',h:'Сначала найди нули знаменателя и исключи их. Затем найди нуль числителя — он тоже может менять знак.'},
+    {t:'Проверяем знаки',h:'В каждом из четырёх промежутков подставь удобное число. Для знака ≥ подходят положительные промежутки и допустимый нуль числителя.'},
+    {t:'Выбираем скобки',h:'У точки, где числитель равен нулю, можно поставить квадратную скобку. На нуле знаменателя всегда круглая скобка.'}
+  ],
+  mini:function(){
+    var d=M.gen.DR3(),step=stDR3(d).steps[2];
+    return {promptHTML:'Решите неравенство '+dr3Problem(d)+'.',mount:step.mount,check:step.check,
+      reasonText:step.reasonText,reveal:step.reveal,regen:MODULES.DR3.mini};
+  },
+  engine:function(){return {gen:M.gen.DR3,render:R.DR3};},stepFactory:function(){return stDR3(M.gen.DR3());}
+};
+var ORDER=['A','B1','B2','RAZL','B5','BIQ','SQ','POW','SYS','INEQ','DR','QIDS','SYM','DR3'];
 
 /* ============================ РЕНДЕР ОБОЛОЧКИ ============================ */
 var STATE={module:'A', mode:'drill'};
