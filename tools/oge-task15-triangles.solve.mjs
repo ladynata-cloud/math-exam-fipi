@@ -179,6 +179,11 @@ S.bisExt = (t) => {
   const [A, C, B] = byTwoAngles(a, c), D = bisectorFoot(A, B, C);
   return { ans: /Найдите угол ADB/.test(t) ? angle(D, A, B) : angle(D, A, C), pts: { A, B, C, D } };
 };
+S.bisHalf = (t) => {
+  const a = grab(t, 'Угол BAC треугольника ABC равен NUM°');
+  const [A, C, B] = byTwoAngles(a, 38), K = bisectorFoot(A, B, C);
+  return { ans: angle(A, K, /Найдите угол BAK/.test(t) ? B : C), pts: { A, B, C, K } };
+};
 S.twoExt = (t) => {
   let e1, e2, m = /Внешние углы треугольника ABC при вершинах A и B равны NUM° и NUM°/.source.replace(/NUM/g, NUM);
   const mm = new RegExp(m).exec(t);
@@ -358,6 +363,7 @@ export function shapeFixed(k, html) {
   const t = plainText(html);
   if (k === 'altAlt' && !/угол A равен/.test(t)) return false;
   if (k === 'areaBH' && !/Найдите площадь/.test(t)) return false;
+  if (k === 'bisHalf') return false;
   return true;
 }
 export const TYPES = Object.keys(S);

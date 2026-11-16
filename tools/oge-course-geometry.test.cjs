@@ -30,6 +30,27 @@ test('task16: every circle family exposes its actual solution before submitting 
   }
  }finally{dom.window.close();}
 });
+test('task16: the sector model changes its wedge independently of the current answer',async()=>{
+ const {dom,w,d}=await load(16);try{
+  w.eval("trTask=build('sectorArea',{angle:72,area:180},{kind:'gen'});trDone=false;trAtt=2;renderTrain();");
+  const input=d.querySelector('#ans');input.value='36';
+  d.querySelector('#courseHintToggle').click();
+  const model=d.querySelector('[data-geometry-model="sector"]');
+  assert.ok(model);
+  const wedge=()=>model.querySelector('path.ocg-shape').getAttribute('d');
+  const initial=wedge();
+  const change=(name,value)=>{
+   const control=model.querySelector('[data-geometry-control="'+name+'"]');
+   control.value=String(value);control.dispatchEvent(new w.Event('input',{bubbles:true}));
+  };
+  change('central',150);change('area',300);
+  assert.notEqual(wedge(),initial);
+  assert.match(model.querySelector('.ocg-reading').textContent,/125 см²/);
+  assert.equal(w.eval('trTask.ans'),36);
+  assert.equal(input.value,'36');
+  assert.match(d.querySelector('.diagram svg').textContent,/72°/);
+ }finally{dom.window.close();}
+});
 test('task18: every prototype can reveal all steps without closing the answer',async()=>{
  const{dom,w,d}=await load(18);try{
   for(const key of w.eval('SUBKEYS')){w.__key=key;w.eval('TR.task=genTask(window.__key);TR.done=false;TR.shown=false;drawTrain();');
@@ -40,7 +61,7 @@ test('task18: every prototype can reveal all steps without closing the answer',a
 });
 for(const n of [16,17,18])test(`task${n}: all native prototypes get discoveries and justified references without progress or answer writes`,async()=>{
  const{dom,w,d,errors}=await load(n);try{
- const keys=w.eval(n===17?'SUBKEYS':'Object.keys(SUBS)');assert.equal(keys.length,{16:33,17:38,18:15}[n]);
+ const keys=w.eval(n===17?'SUBKEYS':'Object.keys(SUBS)');assert.equal(keys.length,{16:34,17:39,18:15}[n]);
  for(const key of keys){
   w.__key=key;w.eval(n===16?'trTask=buildGen(window.__key);trDone=false;trAtt=2;renderTrain();':n===17?'CUR=build(window.__key,S17[window.__key].gen(),{gen:true});renderTrain(false);':'TR.task=genTask(window.__key);TR.done=false;TR.missed=false;TR.shown=false;drawTrain();');
   const input=d.querySelector(n===18?'#ansIn':'#ans');input.value='123,45';input.dispatchEvent(new w.Event('input',{bubbles:true}));const before=store(w),panel=d.querySelector('#courseHintPanel'),toggle=d.querySelector('#courseHintToggle');

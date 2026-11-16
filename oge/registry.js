@@ -58,7 +58,7 @@ var RV = (function(){
   };
 
   var NAMES = {
-    /* 16 · trainers/oge-task16-circle.html · 33 типов (ключи тренажёра) */
+    /* 16 · trainers/oge-task16-circle.html · 34 типа (ключи тренажёра) */
     "oge-task16-circle|insCen": { n:"Центральные и вписанные углы: Вписанный угол по центральному", line:16 },
     "oge-task16-circle|twoDiam": { n:"Центральные и вписанные углы: Два диаметра: ∠OAB и ∠OCD", line:16 },
     "oge-task16-circle|diamMON": { n:"Центральные и вписанные углы: Центральный угол в равнобедренном △MON", line:16 },
@@ -92,7 +92,8 @@ var RV = (function(){
     "oge-task16-circle|secTan": { n:"Касательные, хорды, секущие: Касательная и секущая", line:16 },
     "oge-task16-circle|chordsX": { n:"Касательные, хорды, секущие: Пересекающиеся хорды", line:16 },
     "oge-task16-circle|tanChord": { n:"Касательные, хорды, секущие: Угол между касательной и хордой", line:16 },
-    /* 17 · trainers/oge-task17-quadrilaterals.html · 38 типов (ключи тренажёра) */
+    "oge-task16-circle|sectorArea": { n:"Площадь сектора по центральному углу", line:16 },
+    /* 17 · trainers/oge-task17-quadrilaterals.html · 39 типов (ключи тренажёра) */
     "oge17-chetyrehugolniki|sqDiag": { n:"Квадрат: Диагональ квадрата по стороне a√2", line:17 },
     "oge17-chetyrehugolniki|sqAreaSide": { n:"Квадрат: Площадь квадрата по стороне a√2", line:17 },
     "oge17-chetyrehugolniki|sqAreaPerim": { n:"Квадрат: Площадь квадрата по периметру", line:17 },
@@ -131,6 +132,7 @@ var RV = (function(){
     "oge17-chetyrehugolniki|trapBisector": { n:"Трапеция: Диагональ-биссектриса", line:17 },
     "oge17-chetyrehugolniki|trapDiagSmallBase": { n:"Трапеция: Угол диагонали с меньшим основанием", line:17 },
     "oge17-chetyrehugolniki|trapBDA": { n:"Трапеция: Диагональ BD и два угла при D", line:17 },
+    "oge17-chetyrehugolniki|trapBDAWide": { n:"Трапеция: Диагональ BD, угол BDA больше BDC", line:17 },
     /* 18 · trainers/oge-task18-grid.html · 15 типов (ключи тренажёра) */
     "oge18-kletki|dist": { n:"Длины: Расстояние между точками", line:18 },
     "oge18-kletki|midBC": { n:"Длины: Расстояние до середины отрезка", line:18 },
@@ -370,6 +372,7 @@ var RV = (function(){
     "oge-t15-treugolniki|regArea": { n:"Правильный: площадь", line:15 },
     "oge-t15-treugolniki|regH": { n:"Правильный: высота", line:15 },
     "oge-t15-treugolniki|isoLeg": { n:"Равнобедренный: боковая сторона", line:15 },
+    "oge-t15-treugolniki|bisHalf": { n:"Угол после проведения биссектрисы", line:15 },
     /* 19 · planned: типы из спецификации задачи, уточняются при реализации */
     "oge-t19-utverzhdeniya|tri": { n:"Треугольники", line:19 },
     "oge-t19-utverzhdeniya|quad": { n:"Четырёхугольники", line:19 },
@@ -420,8 +423,8 @@ var RV = (function(){
   };
 
   var TYPES = {
-    "oge-task16-circle": ["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord"],
-    "oge17-chetyrehugolniki": ["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA"],
+    "oge-task16-circle": ["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord","sectorArea"],
+    "oge17-chetyrehugolniki": ["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA","trapBDAWide"],
     "oge18-kletki": ["dist","midBC","leg","rhombDiag","midTri","midTrap","areaTri","areaPar","areaRhomb","areaTrap","areaFig","tanA","segAB","segCmp","circRatio"],
     "oge23-vychisleniya": ["rhombH","pgramBis","trapBis","trapLeg","rhombAng","trapEF","circR","hAB","hAC","projAB","paraBN","paraMC","chordDist","chordLen","secKP1","secKP2","rectPK","rectBH","tanSecAC","tanSecD"],
     "oge25-geometriya": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"],
@@ -438,7 +441,7 @@ var RV = (function(){
     "oge-t11-grafiki": ["t41","t42","t43","t44","t45"],
     "oge-t6-vychisleniya": ["dec_add","dec_mul","dec_div","frac_add","frac_mul","frac_div","mixed","dec_frac","pow10","order","stack"],
     "oge-t13-neravenstva": ["lin","lin_br","lin_neg","lin_frac","quad2","quad_vieta","quad_inc","none_any","sys","sys_none","by_pic","prod"],
-    "oge-t15-treugolniki": ["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg"],
+    "oge-t15-treugolniki": ["angSum","extAng","isoBase","isoApex","bisIso","bisExt","twoExt","bisAlt","altAlt","rtAcute","rtLegSin","rtLegCos","rtLegTan","rtTrig","pythLeg","pythHyp","rtAltitude","areaBH","areaSin","midline","medianRt","regR","regr","regArea","regH","isoLeg","bisHalf"],
     "oge-t19-utverzhdeniya": ["tri","quad","circle","area","general"],
     "practiceRoadsGridTrainer": ["q1","q2","q3","q4","q5"],
     "practiceRoadsSchemaTrainer": ["q1","q2","q3","q4","q5"],

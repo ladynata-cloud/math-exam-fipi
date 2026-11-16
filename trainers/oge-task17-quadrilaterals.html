@@ -1012,6 +1012,16 @@ def('trapBDA',{topic:'trap',name:'Диагональ BD и два угла пр�
   'В △ABD: ∠ABD = 180° − '+A+'° − '+p.bda+'° = <b>'+(180-A-p.bda)+'°</b>.'];},
  diag:p=>[{v:p.bdc-p.bda,m:'Разность данных углов ничего не считает: соберите ∠ADC = ∠BDA + ∠BDC и идите в △ABD.'},
   {v:180-(p.bda+p.bdc),m:'Вы забыли вычесть ∠BDA — в △ABD три угла, а не два.'}]});
+
+// Отдельный ключ сохраняет прежние пары «подтип + seed» на общей доске.
+def('trapBDAWide',{...S17.trapBDA,name:'Диагональ BD: угол BDA больше BDC',
+ proto:{bda:50,bdc:32},
+ gen:()=>{
+  for(;;){
+   const bda=ri(44,52),bdc=ri(25,43);
+   if(bda+bdc!==90)return {bda,bdc};
+  }
+ }});
 /* ================= АРХИВ (тонкие записи; exp — эталон, пересчитан в node до кода) ================= */
 const AR=(nums,sub,p,exp,src)=>({nums:Array.isArray(nums)?nums:[nums],sub,p,exp,src:src||'РешуОГЭ'});
 const FP='открытый банк (прототип)';
@@ -1131,7 +1141,7 @@ const TID='oge17-chetyrehugolniki', SKEY='mathExamCourseProgress.v1';
    столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
    свои записи журнала, после свежего чтения ключа — две вкладки не
    затирают друг друга. В ?selftest=1 ничего не пишется. */
-const TYPE_IDS=["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA"];
+const TYPE_IDS=["sqDiag","sqAreaSide","sqAreaPerim","rectDiagAngle","rectDiagBO","rhombAngle","rhombACD","rhombHeight","rhombAreaDiag","rhombAreaPerim","rhombAreaDist","rhombPerpDiag","rhombHeightBigDiag","rhombSideSmallDiag","rhombHeightSegments","parTrapDAEC","parTriCBE","parDiagHalf","parHeights","parAngle","parDiagAngles","parBisector","trapMid","trapArea","trapIso","trapSum","trapRect","trapDiagAO","trapMidSeg","trapDiagFindC","trapDiagBS","trapCutBase","trapDiag45h","trap45Base","trap45Area","trapBisector","trapDiagSmallBase","trapBDA","trapBDAWide"];
 const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){
