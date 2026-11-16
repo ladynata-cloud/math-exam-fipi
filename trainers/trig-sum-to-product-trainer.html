@@ -1987,7 +1987,7 @@ const PRODUCTS = [
       { html: F('1','2') + ' · (cos(α + β) − cos(α − β))', err: 'cancel_wrong' },
       { html: F('1','2') + ' · (sin(α + β) − sin(α − β))', err: 'cancel_wrong' }
     ],
-    hint: 'sin α cos β = ½ (sin(α+β) + sin(α−β)). Это «обратная» формула к разности синусов.',
+    hint: 'sin α cos β = ½ (sin(α+β) + sin(α−β)). Это «обратная» формула к сумме синусов.',
     explain: 'Складываем sin(α+β) и sin(α−β): получится 2 sin α cos β. Делим на 2 → sin α cos β.'
   },
   {
@@ -2364,17 +2364,23 @@ function loadProgress() {
     }
   } catch (e) { console.warn('progress load failed', e); }
 }
-function saveProgress() {
+function saveProgress(clearTestResult = false) {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     const all = raw ? JSON.parse(raw) : {};
-    all[TOPIC_ID] = {
+    const previous = all[TOPIC_ID];
+    // Ordinary practice saves must retain the test result and older record fields.
+    all[TOPIC_ID] = Object.assign({}, previous && typeof previous === 'object' && !Array.isArray(previous) ? previous : {}, {
       progress: STATE.progress,
       stats: STATE.stats,
       onboardingDismissed: STATE.onboardingDismissed,
       pqIntroSeen: STATE.pqIntroSeen,
       updatedAt: Date.now()
-    };
+    });
+    if (clearTestResult) {
+      delete all[TOPIC_ID].lastTestScore;
+      delete all[TOPIC_ID].lastTestAt;
+    }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   } catch (e) { console.warn('progress save failed', e); }
 }
@@ -2856,7 +2862,7 @@ function renderAssembleRight() {
 
   right.innerHTML = `
     <div class="panel-title">Соберите правую часть</div>
-    <div class="question"><span class="q-tag">Задание</span>Кликайте по блокам в нужном порядке, чтобы получить правую часть формулы. Когда соберёте — нажмите «Проверить».</div>
+    <div class="question"><span class="q-tag">Задание</span>Выберите число и два множителя. Целые множители можно переставлять: функцию и её аргумент держим вместе. Затем нажмите «Проверить».</div>
     <div class="feedback" id="feedback"></div>
     <div class="panel-title" style="margin-top:0">Доступные блоки</div>
     <div class="assembly-pool" id="asm-pool"></div>
@@ -2947,7 +2953,7 @@ function renderProductRight() {
     `;
     $('#restart-btn').addEventListener('click', () => {
       STATE.selectedOpt = null; STATE.stepRevealed = false; STATE.attemptedWrong.clear();
-      delete STATE.progress.product[p.id];
+      // Retrying this same fixed formula does not erase already used help.
       saveProgress();
       render();
     });
@@ -2981,7 +2987,12 @@ function renderProductRight() {
   });
 
   $('#check-btn').addEventListener('click', checkProduct);
-  $('#hint-btn').addEventListener('click', () => showFeedback($('#feedback'), 'hint', p.hint));
+  $('#hint-btn').addEventListener('click', () => {
+    STATE.hintShown = true;
+    markCurrentWithHint('product', p.id);
+    recountStats(); saveProgress(); renderProgress();
+    showFeedback($('#feedback'), 'hint', p.hint);
+  });
   $('#reveal-btn').addEventListener('click', () => {
     STATE.stepRevealed = true;
     STATE.progress.product[p.id] = { done: true, withHint: true };
@@ -3133,13 +3144,21 @@ function prevFormula() {
 }
 
 // ---------- ACTIONS: ASSEMBLE ----------
+function sameProductFactors(built, target) {
+  // These blocks are complete factors. Never use this for signed sums/builders:
+  // changing a function's argument or moving a minus between terms is different.
+  if (!Array.isArray(built) || !Array.isArray(target) || built.length !== target.length ||
+      built.some(block => typeof block !== 'string') || target.some(block => typeof block !== 'string')) return false;
+  const key = block => block.replace(/\s+/g, ' ').trim();
+  const actual = built.map(key).sort();
+  const expected = target.map(key).sort();
+  return actual.every((factor, index) => factor === expected[index]);
+}
+
 function checkAssembly() {
   const a = ASSEMBLIES[STATE.formulaIdx];
   const built = STATE.asmBuild.map(i => a.pool[i]);
-  // Compare with target — order matters
-  const same = built.length === a.target.length && built.every((b, i) => b === a.target[i]);
-  // Allow commutative re-ordering: if blocks contain "2" or "-2" first, then two function blocks
-  // We'll be strict: target order is canonical
+  const same = sameProductFactors(built, a.target);
   if (same) {
     STATE.asmFeedback = 'ok';
     const cur = STATE.progress.assemble[a.id] || {};
@@ -3154,22 +3173,14 @@ function checkAssembly() {
     if (built.length !== a.target.length) {
       msg = `<strong>Нужно собрать ${a.target.length} блока(блоков).</strong> Сейчас собрано: ${built.length}.`;
     } else {
-      // Check if the same set, just wrong order
-      const sortedBuilt = [...built].sort();
-      const sortedTarget = [...a.target].sort();
-      if (sortedBuilt.join('|') === sortedTarget.join('|')) {
-        msg = '<strong>Блоки правильные, но порядок другой.</strong> Стандартный порядок: число · sin(полусуммы/полуразности) · cos(полусуммы/полуразности).';
+      if (a.id === 'asm_cos_diff' && !built.includes('−2')) {
+        msg = '<strong>Проверь знак:</strong> при полуразности (α−β)/2 у разности косинусов коэффициент равен −2.';
+      } else if (a.id === 'asm_sin_diff') {
+        msg = '<strong>В разности синусов аргументы разные:</strong> внутри sin — полуразность, внутри cos — полусумма.';
+      } else if (a.id === 'asm_cos_sum') {
+        msg = '<strong>В сумме косинусов</strong> обе функции — косинусы, но аргументы разные: полусумма и полуразность.';
       } else {
-        // Wrong block(s)
-        if (a.id === 'asm_cos_diff' && !built.includes('−2')) {
-          msg = '<strong>Не забудь минус!</strong> У разности косинусов перед двойкой стоит минус.';
-        } else if (a.id === 'asm_sin_diff') {
-          msg = '<strong>В разности синусов аргументы разные:</strong> внутри sin — полуразность, внутри cos — полусумма.';
-        } else if (a.id === 'asm_cos_sum') {
-          msg = '<strong>В сумме косинусов</strong> обе функции — косинусы, но аргументы разные: полусумма и полуразность.';
-        } else {
-          msg = 'Не совсем так. Проверь, какие функции и какие аргументы у нас в формуле.';
-        }
+        msg = 'Не совсем так. Проверь, какие функции и какие аргументы у нас в формуле.';
       }
     }
     showFeedback($('#feedback'), 'error', msg);
@@ -3533,7 +3544,7 @@ function renderTestRight() {
     let correct = false;
     if (isAsm) {
       const built = STATE.testAsmBuild.map(i => task.pool[i]);
-      correct = built.length === task.target.length && built.every((b, i) => b === task.target[i]);
+      correct = sameProductFactors(built, task.target);
     } else {
       correct = task.options[STATE.testSelectedOpt] && task.options[STATE.testSelectedOpt].correct === true;
     }
@@ -3685,7 +3696,7 @@ function init() {
     STATE.onboardingDismissed = false;
     STATE.pqIntroSeen = false;
     resetStepState();
-    saveProgress();
+    saveProgress(true);
     render();
     openOnboarding();
   });

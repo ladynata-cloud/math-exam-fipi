@@ -25,7 +25,7 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
    assert.equal(await page.locator('.course-back').isVisible(),false,'shared navigation replaces the overlapping floating return link');
    if(width<=600)assert.equal(await page.locator('nav.tabs').evaluate(n=>getComputedStyle(n).position),'static','mobile menu scrolls away instead of covering the task');
    await page.locator('.ep-view.on').scrollIntoViewIfNeeded();await shot('trigonometry-scrolled',false);
-   await go('trig-sum-to-product.html');
+   await go('trig-sum-to-product.html?legacy=1');
    await page.locator('[data-mode=practice]').click();await page.locator('[data-mode=learn]').click();await page.locator('[data-mode=practice]').click();
    // The eyebrow is displayed in uppercase by CSS. Read this card's DOM text,
    // not case-sensitive body.innerText (which applies text-transform).
@@ -53,4 +53,10 @@ const server=http.createServer((req,res)=>{try{let p=path.resolve(root,'.'+decod
   assert.deepEqual(errors,[],'all repaired pages run without browser errors');
   console.log('PROFILE_LEGACY_LEARNING_REPAIR_BROWSER_OK',JSON.stringify({widths:[320,390,1280],screens,math:['L1','I1'],repeatTrapEntry:true,topicLinks:true,zeroModel:true}));
  }finally{if(browser)await browser.close();server.close();}
-})().catch(e=>{console.error(e);process.exitCode=1;server.close();});
+})().then(async()=>{
+ // Keep the existing CI entry point and all legacy journeys. The expanded
+ // canonical course and its actual downloads must pass real Chromium too.
+ process.env.FORMULA_ALPHABET_ARTIFACTS ||= path.join(shots,'formula-alphabet');
+ await require('./profile-trig-formula-alphabet.browser.cjs').main();
+ await require('./profile-trig-formula-alphabet-offline.cjs').main();
+}).catch(e=>{console.error(e);process.exitCode=1;server.close();});
