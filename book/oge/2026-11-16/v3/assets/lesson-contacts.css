@@ -1,0 +1,32 @@
+/* Static invitations on reviewed public entrances. No overlays or trainer JS. */
+.me-contacts { margin:36px 0; color:#22304a; font:17px/1.55 "PT Sans", "Segoe UI", Arial, sans-serif; }
+.me-contacts *, .me-contact-actions * { box-sizing:border-box; }
+.me-contacts .me-contact-grid { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:20px; }
+.me-contacts .me-contact-card { min-width:0; padding:26px; background:#fff; border:1px solid #d9dfe9; border-top:4px solid #2b57c4; border-radius:12px; }
+.me-contacts .me-contact-channel { background:#f1f5fc; border-top-color:#829ac3; }
+.me-contacts h2 { color:#22304a; font:700 clamp(1.35rem,2.5vw,1.65rem)/1.3 "PT Serif", Georgia, serif; margin:0 0 14px; }
+.me-contacts p { margin:0 0 16px; }
+.me-contacts .me-contact-label { color:#5a6b87; font-size:.85rem; font-weight:700; margin-bottom:12px; }
+.me-contact-actions { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+.me-contact-actions .me-contact-button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; max-width:100%; padding:11px 16px; background:#2b57c4; color:#fff; border:1px solid #244ba9; border-radius:8px; font:700 16px/1.4 "PT Sans", "Segoe UI", Arial, sans-serif; text-align:center; text-decoration:none; white-space:normal; }
+.me-contact-actions .me-contact-secondary { background:#fff; color:#244ba9; }
+.me-contact-actions .me-contact-button:hover { background:#1e419c; color:#fff; }
+.me-contact-actions .me-contact-button:focus-visible { outline:3px solid #b54536; outline-offset:3px; }
+.me-contacts .me-contact-note { font-size:15px; color:#5a6b87; margin-bottom:0; }
+.me-contacts a:not(.me-contact-button) { color:#244ba9; text-decoration:underline; text-underline-offset:3px; }
+.me-lessons-main { max-width:1060px; padding:32px 20px; margin:auto; }
+.me-lessons-main section { scroll-margin-top:130px; }
+.me-lessons-main .me-lesson-intro { max-width:800px; }
+.me-lessons-main .me-lesson-steps { padding-left:24px; }
+.me-lessons-main .me-lesson-steps li { margin-bottom:14px; }
+.me-lessons-main .me-message-example { padding:16px 20px; border-left:3px solid #2b57c4; background:#f1f5fc; margin:20px 0; }
+.me-lessons-main .me-contact-card:only-child { max-width:800px; }
+@media(max-width:760px) { .me-contacts .me-contact-grid { grid-template-columns:1fr; } }
+@media(max-width:520px) {
+ .me-contacts .me-contact-card { padding:20px 16px; }
+ .me-contact-actions { flex-direction:column; }
+ .me-contact-actions .me-contact-button { width:100%; }
+ .me-lessons-page .site-header { position:static; }
+ .me-lessons-main section { scroll-margin-top:20px; }
+}
+@media print { .me-contacts, .me-contact-actions { display:none; } }

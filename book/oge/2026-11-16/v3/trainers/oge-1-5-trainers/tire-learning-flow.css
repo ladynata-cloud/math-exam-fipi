@@ -1,0 +1,83 @@
+/* Readable tire-only layout. Other practical storylines keep their own layout. */
+body.pm-minimal.pm-tires{font-size:19px;line-height:1.75}
+.pm-tires #step-stepper{display:flex;flex-direction:column;gap:8px;padding:8px;grid-template-columns:none}
+.pm-tires #step-stepper .step-btn{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:16px;width:100%;padding:14px 16px;min-height:58px;text-align:left}
+.pm-tires #step-stepper .step-num{font-family:inherit;font-size:21px;min-width:30px;line-height:1.5}
+.pm-tires #step-stepper .step-name{font-size:19px;text-align:left;line-height:1.5;opacity:1}
+.pm-tires #step-stepper .step-btn.done:not(.active) .step-num::after{font-size:18px}
+.pm-tires :is(.card-intro,.subtitle,.substep-q,.quiz-q,.substep-feedback,.quiz-feedback,.substep-hint,.wt-sub,.calc-table-caption,.formula-hint,.table-progress,.sample-done,.calc-row-feedback,.schema-ref .sr-text,.side-table-empty,.gate-note,.teacher-block,.teacher-block .note,.pd-note,.pd-instruction,.pd-reading,.pd-first-step,.pm-model-step,.anim-desc,.anim-result,.anim-controls,.rm-card p,.dim-legend,.fig-caption){font-size:19px!important;line-height:1.8}
+.pm-tires :is(.card-tag,.substep-label,.substep-unit,.sample-badge,.marking .role,.formula-mini,.wt-head,.ref-mini .lbl,.side-card h3,.rm-num,.vb-label,.vb-factory,.nav-btn,.quiz-opt,.substep-check-btn,.substep-hint-btn,.pm-hint-button,.pm-details>summary,.pd-control,.pd-control output,.pd-control select,.pd-action,.triple-row label,.anim-speed,.anim-formula,.dim-legend .dl-key,.dl-key){font-size:18px!important;line-height:1.6}
+.pm-tires :is(.card-intro,.substep-q,.quiz-q,.wt-sub,.pd-instruction){margin-bottom:18px}
+.pm-tires :is(.card-header h2){font-size:clamp(26px,3vw,34px);line-height:1.4}
+.pm-tires .card-header{align-items:flex-start;flex-wrap:wrap;gap:12px}
+.pm-tires :is(.calc-table,.compat-table,.side-table,.ref-mini table,.pd-table){font-size:19px!important}
+.pm-tires :is(.calc-table,.compat-table,.side-table,.ref-mini table,.pd-table) :is(th,td){padding:12px 14px;line-height:1.6}
+.pm-tires .calc-cell{font-size:21px;width:100px;min-height:48px;padding:8px}
+.pm-tires .substep-input{font-size:22px;min-height:50px;max-width:100%;box-sizing:border-box}
+.pm-tires .substep-input-row,.pm-tires .triple-row{gap:12px;flex-wrap:wrap}
+.pm-tires .substep-unit{overflow-wrap:anywhere}
+.pm-tires .variant-select{font-size:19px;min-height:50px;max-width:100%;padding:10px}
+.pm-tires .vb-arrow{font-size:28px;min-height:48px;min-width:48px}
+.pm-tires .nav-row{gap:14px;flex-wrap:wrap}
+.pm-tires .nav-btn{min-height:50px;white-space:normal}
+.pm-tires .pm-table-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+.pm-tires .tlf-compatibility-given{margin:24px 0;padding:18px;border:1px solid #cadbce;border-radius:12px;background:#fcfdfb}
+.pm-tires .tlf-compatibility-given h3,.pm-tires .tlf-calculation-heading h3{font-size:22px;margin:0 0 12px;line-height:1.5}
+.pm-tires .tlf-compatibility-given p{font-size:18px;line-height:1.75;margin:0 0 18px}
+.pm-tires .tlf-compatibility-given .calc-table-wrap{margin-bottom:0}
+.pm-tires .tlf-shared-calculations{margin:22px 0;padding:18px;border:1px solid #cbd9ce;border-radius:12px;background:#f5f9f5}
+.pm-tires .tlf-calculation-heading{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.pm-tires .tlf-open-calculations{padding:10px 14px;border:1px solid #176747;border-radius:8px;background:white;color:#176747;font:inherit;font-size:18px;cursor:pointer;min-height:46px}
+.pm-tires .tlf-calculation-note{font-size:18px;line-height:1.75;margin:12px 0 18px}
+.pm-tires .tlf-calculation-table{width:100%;border-collapse:collapse;font-size:19px}
+.pm-tires .tlf-calculation-table th,.pm-tires .tlf-calculation-table td{padding:12px 14px;border:1px solid #d2dfd4;text-align:center;white-space:nowrap;line-height:1.6}
+.pm-tires .tlf-calculation-table th{background:#e8f1e9;font-weight:600}
+.pm-tires .tlf-calculation-table tbody th{text-align:left}
+.pm-tires .tlf-value-status{display:block;font-size:17px;line-height:1.5}
+.pm-tires .tlf-correct{color:#176747;background:#edf8ef}
+.pm-tires .tlf-wrong{color:#963027;background:#fff4ef}
+.pm-tires .tlf-draft{color:#5a5d60}
+.pm-tires .anim-svg-wrap,.pm-tires .wheel-svg-wrap{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+/* Keep actual diagram pixels large instead of shrinking text with the viewBox. */
+.pm-tires svg.anim-svg{width:960px;min-width:960px;max-width:none;height:auto}
+.pm-tires svg.anim-svg .anim-lab,.pm-tires svg.anim-svg .anim-lab.small{font-size:20px}
+.pm-tires svg.wheel{width:600px;min-width:600px;max-width:none;height:auto}
+.pm-tires svg.wheel text{font-size:20px}
+.pm-tires .anim-block :is(h3,h4,.anim-title){font-size:22px;line-height:1.5}
+.pm-tires .anim-block :is(button,label,.anim-result,.strip){font-size:19px!important;line-height:1.8}
+.pm-tires #anim-result .strip.big{font-size:24px!important}
+.pm-tires .tlf-scroll-note{font-size:18px;line-height:1.7;margin:12px 0}
+.pm-tires .substep-hint[hidden]{display:none!important}
+.pm-tires .roadmap{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:600px){
+ body.pm-minimal.pm-tires{font-size:18px}
+ .pm-tires .wrap{padding-left:10px;padding-right:10px}
+ .pm-tires .card{padding:16px 10px}
+ .pm-tires .pd-panel{padding:12px 6px}
+ .pm-tires .pm-details>.pm-content,.pm-tires .pd-more>.pm-content{padding:0 4px 12px}
+ .pm-tires .pm-details>summary{padding:12px 6px}
+ .pm-tires .pd-native-help{margin-left:0;margin-right:0}
+ .pm-tires .substep{padding:14px 8px}
+ .pm-tires .tlf-compatibility-given,.pm-tires .tlf-shared-calculations{padding:14px 8px}
+ .pm-tires .tlf-open-calculations{width:100%}
+ .pm-tires #step-stepper .step-btn{padding:12px 8px;gap:8px}
+ .pm-tires #step-stepper .step-name{font-size:18px}
+ .pm-tires .roadmap{grid-template-columns:1fr}
+ .pm-tires .anim-block{padding:12px 6px}
+ .pm-tires .pm-model .pd-controls{gap:16px}
+}
+
+/* Captions stay outside the paths travelled by the animated wheels. */
+.pm-tires #anim-svg [data-tlf-rolling-caption]{display:none}
+.pm-tires .tlf-rolling-captions{display:grid;gap:14px;margin:18px 0}
+.pm-tires .tlf-rolling-caption{padding:12px 14px;border-left:4px solid #b8924b;background:#fff;border-radius:6px;line-height:1.75;font-size:19px}
+.pm-tires .tlf-rolling-caption[data-wheel="lower"]{border-left-color:#1e3a5f}
+.pm-tires .tlf-rolling-caption>span,.pm-tires .tlf-rolling-caption>strong{display:block;font-size:19px;overflow-wrap:anywhere}
+
+/* Override native cell and caption fonts, not just inherited table text. */
+.pm-tires :is(.calc-table,.compat-table,.side-table,.ref-mini table,.pd-table) :is(th,td,.yes){font-size:19px!important}
+.pm-tires .compat-table,body.pm-tires[data-source-kind="author-analogue"] .compat-table{min-width:620px}
+.pm-tires .compat-table :is(th,td){white-space:nowrap;overflow-wrap:normal;word-break:normal}
+.pm-tires .mode-switch{flex-wrap:wrap;max-width:100%}
+.pm-tires :is(.back-link,.topic-id,.mode-switch button,.eyebrow,.vb-factory b,.rm-card h4,.marking-label,.fig figcaption,.dim-legend .dl-title,.dl-item,.d-box,.d-box small,.anim-note,.teacher-block .label,.teacher-block .answer-display,.formula,.formula small,.stat .lbl,.reset-btn,.mode-help,.author-source p){font-size:18px!important;line-height:1.6}
+.pm-tires :is([style*="font-size:11px"],[style*="font-size:13px"],[style*="font-size:14px"]){font-size:18px!important;line-height:1.7}

@@ -7,7 +7,7 @@ Only explicitly reviewed prompt+geometry fixtures may receive a PASS.
 import argparse, datetime, hashlib, json, math, pathlib, re, sys
 import xml.etree.ElementTree as ET
 from fractions import Fraction
-from oge_video_models_book_context import verified_context
+from oge_video_models_book_context import verified_context, V3, verified_v3_files, verified_v3_wayfinding
 from oge_worked_steps_book_context import matches_worked_steps_ui
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -17,10 +17,12 @@ VARIANT_PREFIXES = {
     'source': '',
     'frozen': '/book/oge/2026-10-31/v1',
     'frozen-v2': '/book/oge/2026-10-31/v2',
+    'frozen-v3': '/book/oge/2026-11-16/v3',
 }
 BOOK_BANNERS = {
     VARIANT_PREFIXES['frozen']: BOOK_BANNER,
     VARIANT_PREFIXES['frozen-v2']: BOOK_BANNER.replace(' · v1.', ' · v2.'),
+    VARIANT_PREFIXES['frozen-v3']: BOOK_BANNER.replace('31.10.2026 · v1', '16.11.2026 · v3'),
 }
 
 # The six source routes gained a reviewed row of links and closed GIF examples
@@ -120,9 +122,10 @@ def graph_atoms(expected):
 def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
     """Replay only the changed drawing controls on the verified source route."""
     route = '/trainers/oge-task24-proofs.html'
-    if (record['id'] != '65' or record['prefix'] or record.get('route') != route or
-            record.get('finalPath') != route or (record.get('videoModelContext') or {}).get('sourceBase') !=
-            '18b44244753ac806d449a2040ad4b8c8af9acaf3'):
+    prefix = record['prefix']
+    if (record['id'] != '65' or prefix not in ('', V3['prefix']) or record.get('route') != route or
+            record.get('finalPath') != prefix + route or (record.get('videoModelContext') or {}).get('sourceBase') !=
+            '11449d27f9e6e1ffa208195b0d534e72f6a7f40b'):
         return False
     old = 'Показать целиком Крупный чертёж: двигай его в стороны и вверх-вниз. С клавиатуры — стрелками после выбора рисунка.'
     captions = {
@@ -135,14 +138,18 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
         return False
     assets = {
         '/trainers/oge-course-proof.css': 'b98618bba320cdad70fb9f2e31cdf64bc4e7763e745abef33343717058708f66',
-        '/trainers/oge-course-proof.js': '6f11e5d93a0124005729387e1ca8f93c3d5a0100224017c9ded2d22be4ba3b2d',
+        '/trainers/oge-course-proof.js': 'e93b0b1018f6c692be100cb883aa8931ada8524d2f4af7c6da1bf06649974c8f',
     }
-    for path, expected in assets.items():
-        loaded = record.get('resources', {}).get(path, {})
-        if loaded.get('status') != 200 or loaded.get('sha256') != expected:
+    if prefix:
+        if not verified_v3_files(record, list(assets)):
             return False
-        if digest((ROOT / path[1:]).read_bytes()) != expected:
-            return False
+    else:
+        for path, expected in assets.items():
+            loaded = record.get('resources', {}).get(path, {})
+            if loaded.get('status') != 200 or loaded.get('sha256') != expected:
+                return False
+            if digest((ROOT / path[1:]).read_bytes()) != expected:
+                return False
     return (any(original.count(old) == 1 and text == original.replace(old, caption, 1)
                 for original in fixture_texts) and
             any(item == dict(oracle, prompt=oracle['prompt'].replace(old, caption, 1))
@@ -157,10 +164,23 @@ def exact_reviewed_context(record, oracle, fixtures):
     """
     fixture = fixtures.get(record['id'])
     if fixture is None:return False
-    if not record['prefix']:
+    if record['prefix'] == V3['prefix'] and not verified_v3_wayfinding(record):
+        return False
+    if record['prefix'] in ('', V3['prefix']):
         fixture = fixture.get('sourceVariant', fixture)
     navigation = record.get('publicWayfinding')
     fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
+    if record['prefix'] == V3['prefix'] and record['id'] == '67':
+        # The frozen copy has the same reviewed removal of the redundant
+        # fraction return link as today's source. Its complete served payload
+        # and return bar were verified against the fixed manifest above.
+        route = '/trainers/oge-task6-fractions.html'
+        if record.get('route') != route or record.get('finalPath') != V3['prefix'] + route:
+            return False
+        old = 'Перейти к заданию ← К курсу ОГЭ '
+        if not all(value.startswith(old) and value.count(old) == 1 for value in fixture_texts):
+            return False
+        fixture_texts = ['Перейти к заданию ' + value[len(old):] for value in fixture_texts]
     if navigation:
         # The recorder retains raw visible text and exact payload hashes; only
         # the separately checked two-link return bar is outside the exercise.
@@ -202,7 +222,9 @@ def exact_reviewed_context(record, oracle, fixtures):
             approved=fixture.get('firstVisualReviewPayloads',{}).get(route,{})
             actual=record.get('resources',{}).get(route,{})
             actual_hash = navigation['originalHtmlSha256'] if navigation else actual.get('sha256')
-            if not approved.get('sha256') or actual_hash!=approved['sha256']:return False
+            if record['prefix'] == V3['prefix']:
+                if not verified_v3_files(record):return False
+            elif not approved.get('sha256') or actual_hash!=approved['sha256']:return False
     return (geom(native_geometry) == fixture['geometrySha256'] and
             ((item in fixture['oracles'] and
               (text in fixture_texts or matches_worked_steps_ui(record, text, fixture_texts))) or
@@ -395,9 +417,9 @@ PRACTICAL = {
 
 def reviewed(record, oracle, index):
     ident=record['id'];p=plain(oracle['prompt']);q=oracle.get('question',index+1)
-    if ident=='08' and not record['prefix']:
-        # Exact source-only context is checked above. Frozen editions retain
-        # their original independently reviewed questions and answers below.
+    if ident=='08' and record['prefix'] in ('', V3['prefix']):
+        # Exact current-source/v3 context is checked above. Historical v1/v2
+        # retain their original independently reviewed questions below.
         cases=[
           ('2143','По видимой таблице А0=1189×841 — №2, А2=594×420 — №1, А5=210×148 — №4, А6=148×105 — №3. Порядок А0,А2,А5,А6 даёт2143.'),
           (2**(3-1),'Два последовательных деления пополам: изА1 получается2²=4 листаА3.'),
@@ -427,7 +449,7 @@ def reviewed(record, oracle, index):
         return result,'Независимое распознавание фактически отрисованных кривых: '+stable(details)+'. y=x — прямая через начало с положительным наклоном; y=x² — одна парабола с вершиной вначале; y=1/x — две отдельные ветви вI иIII четвертях.','PASS',None
     if ident=='55' and '15 коробок' in p and 'по 12 кг' in p:
         return 15*12,'Искомая масса M=m·n=12кг×15=180кг; цена90руб/кг не входит вформулу массы.','PASS',None
-    if ident=='55' and not record['prefix'] and 'F = 1,8 · C + 32' in p and 'C = -90 °C' in p:
+    if ident=='55' and record['prefix'] in ('', V3['prefix']) and 'F = 1,8 · C + 32' in p and 'C = -90 °C' in p:
         # OGE12_SOURCE_AUDIT changed the public seeded example; the exact source
         # fixture is separate from the unchanged v1/v2 apple-box condition.
         return float(Fraction(9,5)*(-90)+32),'По видимому условию C=−90 °C. F=(9/5)×(−90)+32=−162+32=−130 °F. Знак минус сохраняется; это температура по другой шкале, не модуль температуры.','PASS',None

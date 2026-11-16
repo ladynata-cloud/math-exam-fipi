@@ -1,6 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
-const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash}=require('./oge-video-models-book-context.cjs');
+const {receipt,geometryReceipt,pins,sourcePin,label,summaryHtml,hash,v3,verifiedV3Files,frozenWayfindingReceipt,frozenWayfindingHtml,wayfindingLabel}=require('./oge-video-models-book-context.cjs');
 const {entries,assets,snippet}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..');
 const dom={count:1,tag:'DETAILS',id:'oge-video-models',closed:true,summaryCount:1,summaryHtml,visibleText:label};
@@ -32,11 +32,71 @@ test('later teaching receipts remain limited to four committed pages and reject 
  assert.equal(updates.pages[entries[24]].taskDoc,'docs/tasks/EXAM_AND_TEXTBOOK_LEARNING_20261114.md');
  for(const file of Object.keys(updates.pages)){
   const x=fixture(file), result=receipt(x);
-  assert.equal(result.sourceBase,updates.pages[file].sourceCommit);
+  assert.equal(result.sourceBase,sourcePin(file).sourceCommit);
   for(const mutate of [s=>s+'\n',s=>s.replace('<title>','<title>Changed '),s=>s.replace(snippet(pins.pages[file].task),'')]){
    assert.throws(()=>receipt({...x,raw:mutate(x.raw)}),file+' preserves exact native bytes');
   }
  }
+});
+test('v3 corrections bind exactly four public revisions to the independently reviewed source commit',()=>{
+ assert.equal(v3.sourceCommit,'11449d27f9e6e1ffa208195b0d534e72f6a7f40b');
+ assert.deepEqual(v3.publicSourceOverrides,[entries[11],entries[16],entries[24],entries[25]]);
+ assert.equal(v3.manifestSha256,hash(fs.readFileSync(path.join(ROOT,v3.prefix.slice(1),'manifest.json'))));
+ for(const [file,expected] of Object.entries(v3.sourceFiles)){
+  const committed=execFileSync('git',['show',v3.sourceCommit+':'+file],{cwd:ROOT});
+  assert.equal(hash(committed),expected,file+' immutable source provenance');
+ }
+ for(const file of v3.publicSourceOverrides){
+  const x=fixture(file);assert.equal(receipt(x).sourceBase,v3.sourceCommit);
+  assert.throws(()=>receipt({...x,raw:x.raw+'\n'}));
+ }
+});
+const frozenFixture=file=>{
+ const x=fixture(file);x.prefix=v3.prefix;
+ x.raw=fs.readFileSync(path.join(ROOT,v3.prefix.slice(1),file),'utf8');
+ x.assetHashes=Object.fromEntries(assets.map(asset=>[v3.prefix+'/'+asset,hash(fs.readFileSync(path.join(ROOT,v3.prefix.slice(1),asset)))]));
+ return x;
+};
+test('exact frozen-v3 receipts bind all eight video pages and exclude source or other editions',()=>{
+ for(const file of Object.keys(v3.videoPages)){
+  const x=frozenFixture(file),result=receipt(x);
+  assert.equal(result.kind,'oge-video-models-closed-v3');
+  assert.equal(result.manifestSha256,v3.manifestSha256);assert.equal(result.sourceBase,v3.sourceCommit);
+  assert.equal(result.nativeSha256,v3.videoPages[file].nativeSha256);
+  for(const prefix of ['', '/book/oge/2026-10-31/v1','/book/oge/2026-10-31/v2','/book/oge/2026-10-31/v3','/book/oge/2026-11-17/v3'])assert.throws(()=>receipt({...x,prefix}));
+  for(const mutate of [y=>{y.raw+='\n';},y=>{y.dom.closed=false;},y=>{y.dom.count=2;},y=>{y.visible+=' '+label;},y=>{y.assetHashes[Object.keys(y.assetHashes)[0]]='0'.repeat(64);},y=>{y.id='03';}]){
+   const changed=structuredClone(x);mutate(changed);assert.throws(()=>receipt(changed));
+  }
+ }
+});
+test('frozen wayfinding is a byte-bound two-link receipt; forged manifests and payloads fail',()=>{
+ const x=frozenFixture(entries[16]),route='/'+x.file,finalPath=v3.prefix+route;
+ const input={id:x.id,route,finalPath,raw:x.raw,dom:{count:1,html:frozenWayfindingHtml,visibleText:wayfindingLabel}};
+ const bound=frozenWayfindingReceipt(input);
+ assert.equal(bound.kind,'oge-frozen-return-v3');assert.equal(bound.servedHtmlSha256,hash(x.raw));
+ for(const mutate of [y=>{y.dom.count=2;},y=>{y.dom.html=y.dom.html.replace(v3.prefix,'');},y=>{y.dom.visibleText+=' extra';},y=>{y.raw+=' changed';},y=>{y.finalPath=y.route;}]){
+  const changed=structuredClone(input);mutate(changed);assert.throws(()=>frozenWayfindingReceipt(changed));
+ }
+ const read=fs.readFileSync,manifestPath=path.join(ROOT,v3.prefix.slice(1),'manifest.json');
+ const targets=[manifestPath,path.join(ROOT,finalPath.slice(1)),path.join(ROOT,v3.prefix.slice(1),'trainers/oge-video-models.js'),path.join(ROOT,v3.prefix.slice(1),'edition-assets/bootstrap.js')];
+ for(const target of targets){
+  try{
+   fs.readFileSync=(file,...args)=>{
+    const raw=read(file,...args);if(String(file)!==target)return raw;
+    return Buffer.isBuffer(raw)?Buffer.concat([raw,Buffer.from('\n')]):raw+'\n';
+   };
+   assert.throws(()=>receipt(x),'actual modified frozen payload or manifest is rejected');
+  }finally{fs.readFileSync=read;}
+ }
+ const boundFiles=verifiedV3Files({id:x.id,route,finalPath});
+ assert.equal(boundFiles.resourceHashes[finalPath],hash(x.raw));
+});
+test('only the existing task-13 redirect may use its exact frozen series target',()=>{
+ const route='/trainers/oge-task13-inequalities.html',finalPath=v3.prefix+'/trainers/oge13-inequalities-series.html';
+ const bound=verifiedV3Files({id:'56',route,finalPath});
+ assert(bound.resourceHashes[v3.prefix+route]);assert(bound.resourceHashes[finalPath]);
+ for(const change of [{id:'55'},{route:'/trainers/oge13-inequalities-series.html'},{finalPath:v3.prefix+route},{finalPath:finalPath+'changed'}])
+  assert.throws(()=>verifiedV3Files({id:'56',route,finalPath,...change}));
 });
 test('one exact serialized L8 preview may be attested only inside the closed prediction container',()=>{
  const {JSDOM}=require('jsdom'),preview=pins.closedPreview;

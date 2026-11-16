@@ -6,10 +6,17 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import navigatorPreservation from './public-navigator-preservation.cjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const relativeTrainer = 'trainers/oge-2027-analogue-1.html';
-const html = fs.readFileSync(path.join(root, relativeTrainer), 'utf8');
+// Recover only the exact hash-bound public navigator pair. Unknown external
+// scripts still reach the original rejection below; the model checks stay intact.
+const publicHtml = navigatorPreservation.restorePublicNavigator(relativeTrainer,
+  fs.readFileSync(path.join(root, relativeTrainer))).toString('utf8');
+const wayfinding = '<link rel="stylesheet" href="/assets/oge-wayfinding.css?v=20261104">\n<script defer src="/assets/oge-wayfinding.js"></script>\n';
+assert.equal(publicHtml.split(wayfinding).length, 2, 'One exact published course-return asset pair');
+const html = publicHtml.replace(wayfinding, '');
 const scripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)];
 assert.ok(scripts.length > 0, 'Inline trainer scripts exist');
 for (const [, attributes, body] of scripts) {
@@ -594,7 +601,13 @@ gate('one course card and one sitemap entry point to the author page', () => {
   const target = new URL(links[0][1], 'https://mathexam.space/trainers/oge-course/');
     assert.equal(target.href, 'https://mathexam.space/trainers/oge-2027-analogue-1.html');
   for (const [, href] of links) assert.equal(new URL(href, target).href, target.href);
-  assert.equal((course.match(/<h3>[\s\S]*?oge-2027-analogue-1\.html[\s\S]*?<\/h3>/g) || []).length, 1);
+  const cardCount = source => [...source.matchAll(/<h3\b[^>]*>([\s\S]*?)<\/h3>/g)]
+    .filter(([, heading]) => heading.includes('oge-2027-analogue-1.html')).length;
+  assert.equal(cardCount(course), 1);
+  const fixtureCard = '<h3><a href="oge-2027-analogue-1.html">Variant</a></h3>';
+  assert.equal(cardCount('<h3>Other</h3><a href="oge-2027-analogue-1.html">Start</a>' + fixtureCard), 1,
+    'A start link outside a completed heading is not a second course card');
+  assert.equal(cardCount(fixtureCard + fixtureCard), 2, 'A real duplicate card remains detectable');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => url);
   assert.equal(urls.filter(url => url === target.href).length, 1);
 });

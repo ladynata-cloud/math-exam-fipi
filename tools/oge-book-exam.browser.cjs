@@ -54,10 +54,40 @@ function originalWayfindingHtml(html,route=''){
  for(const mutated of [fractions.replace(REMOVED_RETURN_POSITION,'<main class="wrap">\n<header>'),fractions.replace(REMOVED_RETURN_POSITION,REMOVED_RETURN_POSITION+REMOVED_RETURN_POSITION),fractions.replace(REMOVED_RETURN_POSITION,ORIGINAL_RETURN_POSITION),fractions.replace('</main>','<nav class="course-return">relocated</nav></main>')])assert.throws(()=>originalWayfindingHtml(mutated,FRACTIONS_ROUTE));
  assert(originalWayfindingHtml(fractions,'/other.html').includes(REMOVED_RETURN_POSITION),'legacy inverse is route-specific');
 }
+async function captureVideoModelContext(page,report,raw,file){
+ if(!videoContext.pins.pages[file])return;
+ const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
+  const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
+  return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};
+ });
+ // Retain the raw text. Only the exact independently bound closed summary may
+ // be removed later by the mathematics verifier, for source or fixed v3.
+ report.videoModelContext=videoContext.receipt({file,raw,id:report.id,prefix:report.prefix,visible:report.initialVisibleText,dom,
+  assetHashes:Object.fromEntries(videoAssets.map(asset=>[report.prefix+'/'+asset,videoContext.hash(fs.readFileSync(path.join(ROOT,report.prefix.slice(1),asset)))]))});
+}
 async function captureInitialVisibleText(page,report){
  let full=await text(page.locator('body'));
  const bars=page.locator('body > nav.oge-wayfinding');
- if(await bars.count()===0){report.initialVisibleText=full;return;}
+ if(await bars.count()===0){
+  report.initialVisibleText=full;
+  if(report.prefix===videoContext.v3.prefix){
+   videoContext.verifiedV3Files({id:report.id,route:report.route,finalPath:report.finalPath});
+   const raw=fs.readFileSync(path.join(ROOT,report.finalPath.slice(1)),'utf8');
+   await captureVideoModelContext(page,report,raw,report.route.slice(1));
+  }
+  return;
+ }
+ if(report.prefix===videoContext.v3.prefix){
+  const raw=fs.readFileSync(path.join(ROOT,report.finalPath.slice(1)),'utf8');
+  const dom={count:await bars.count(),html:await bars.evaluate(node=>node.outerHTML),visibleText:await text(bars)};
+  report.frozenWayfinding=videoContext.frozenWayfindingReceipt({id:report.id,route:report.route,finalPath:report.finalPath,raw,dom});
+  const label=report.frozenWayfinding.visibleText;
+  assert(full.startsWith(label+' '),'frozen return bar is a separate leading navigation block');
+  report.unfilteredInitialVisibleText=full;
+  report.initialVisibleText=full.slice(label.length+1);
+  await captureVideoModelContext(page,report,raw,report.route.slice(1));
+  return;
+ }
  assert.equal(report.prefix,'','Fixed editions cannot acquire live return navigation');
  assert.equal(await bars.count(),1);
  assert.equal(await bars.evaluate(node=>node.outerHTML),WAYFINDING_BAR.trim(),'exact displayed return bar');
@@ -87,16 +117,7 @@ async function captureInitialVisibleText(page,report){
  report.initialVisibleText=full.slice(label.length+1);
  report.publicWayfinding={kind:'oge-return-v1',visibleText:label,servedHtmlSha256:crypto.createHash('sha256').update(raw).digest('hex'),originalHtmlSha256:crypto.createHash('sha256').update(historical).digest('hex')};
  if(report.finalPath===FRACTIONS_ROUTE)report.publicWayfinding.removedLegacyReturn='← К курсу ОГЭ';
- if(videoContext.pins.pages[relative]){
-  const dom=await page.locator('#oge-video-models').evaluateAll(nodes=>{
-   const node=nodes[0],summaries=node?Array.from(node.children).filter(x=>x.tagName==='SUMMARY'):[];
-   return {count:nodes.length,tag:node?.tagName,id:node?.id,closed:node?!node.hasAttribute('open'):false,summaryCount:summaries.length,summaryHtml:summaries[0]?.outerHTML,visibleText:node?.innerText.replace(/\s+/g,' ').trim()};
-  });
-  // Preserve both complete visible snapshots above. The independent verifier
-  // may invert only this separately recorded, source-bound closed summary.
-  report.videoModelContext=videoContext.receipt({file:relative,raw,id:report.id,prefix:report.prefix,visible:report.initialVisibleText,dom,
-   assetHashes:Object.fromEntries(videoAssets.map(asset=>['/'+asset,videoContext.hash(fs.readFileSync(path.join(ROOT,asset)))]))});
- }
+ await captureVideoModelContext(page,report,raw,relative);
 }
 
 async function tick(p){await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));}
@@ -139,7 +160,7 @@ async function scenario(p,r){
  if(route.includes('oge-task8-'))return numeric(p,r,{host:'#marGrid > .mtask:not([hidden])',input:'input.ans',check:'.ck',feedback:':scope > .mrow .fb',hint:'.bs',answers:64,prompt:'.expr',next:'.minimal-next',nextGlobal:true,mode:'first root/power exercise; sqrt(4^6)=64'});
  if(route.includes('oge-task9-')){
    const host='.task-card:not([hidden])',prompt='.task-q';
-   const first=PREFIX?{equation:'4x-4=16+2x',answer:10}:{equation:'3(x+8)-2(x-8)=8',answer:-32};
+   const first=PREFIX&&PREFIX!==videoContext.v3.prefix?{equation:'4x-4=16+2x',answer:10}:{equation:'3(x+8)-2(x-8)=8',answer:-32};
    assert.equal((await text(p.locator(host).locator(prompt))).replace(/^Решите уравнение\s+|\.$/g,'').replace(/\s+/g,''),first.equation);
    return numeric(p,r,{host,input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:first.answer,prompt,next:'.minimal-next',nextGlobal:true,mode:'first linear equation '+first.equation});
  }

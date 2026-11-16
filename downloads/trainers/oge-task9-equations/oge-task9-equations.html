@@ -448,8 +448,9 @@ nav.oge-wayfinding[hidden]{display:none!important}
     <div class="big-eq"><i>D</i> = <i>b</i>² − 4<i>a</i><i>c</i>,&nbsp;&nbsp; <i>x</i> = <span class="frac"><span class="tt">−<i>b</i> ± <span class="rad"><svg viewBox="0 0 13 24" preserveAspectRatio="none"><path d="M1 13 L4.6 22.6 L12 0" fill="none" stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="rad-body"><i>D</i></span></span></span><span class="bb">2<i>a</i></span></span></div>
     <p class="pen-note">Если <span class="math"><i>D</i> &gt; 0</span> — два корня; <span class="math"><i>D</i> = 0</span> — один; <span class="math"><i>D</i> &lt; 0</span> — корней нет (в задании 9 такого не будет).</p>
     <h3>Теорема Виета — «для быстрых»</h3>
-    <p>Если <span class="math"><i>a</i> = 1</span>: &nbsp;<span class="math"><i>x</i>₁ + <i>x</i>₂ = −<i>p</i></span>, &nbsp;<span class="math"><i>x</i>₁ · <i>x</i>₂ = <i>q</i></span>. Подбираешь два числа с нужной суммой и произведением.</p>
-    <div class="warn"><b>Честная цена Виета.</b> Работает быстро, только когда <span class="math"><i>a</i> = 1</span> и корни целые. Не подобрал за полминуты — не мучайся, иди через дискриминант, он не подведёт никогда.</div>
+    <p>Сначала приведи уравнение к виду <span class="math"><i>x</i>² + <i>p</i><i>x</i> + <i>q</i> = 0</span>: раздели все члены на ненулевой коэффициент <span class="math"><i>a</i></span>. Тогда <span class="math"><i>p</i> = <i>b</i>/<i>a</i></span> — коэффициент при <span class="math"><i>x</i></span>, а <span class="math"><i>q</i> = <i>c</i>/<i>a</i></span> — свободный член.</p>
+    <p>Если у уравнения есть действительные корни, то <span class="math"><i>x</i>₁ + <i>x</i>₂ = −<i>p</i></span> и <span class="math"><i>x</i>₁ · <i>x</i>₂ = <i>q</i></span>. При <span class="math"><i>D</i> = 0</span> корень один: в этих формулах <span class="math"><i>x</i>₁ = <i>x</i>₂</span>.</p>
+    <div class="warn"><b>Честная цена подбора.</b> Подбирать обычно удобнее небольшие целые корни. Сама теорема верна и для дробных или иррациональных действительных корней. Не подобрал за полминуты — спокойно переходи к дискриминанту.</div>
     <div class="warn">«Меньший / больший корень»: расставь корни на прямой. У отрицательных <b>−5 меньше, чем −2</b>. Больший — тот, что правее.</div>
     <div class="ref-jumps">
       <span class="rj-label">Порешать в марафоне:</span>
@@ -3381,9 +3382,10 @@ function buildLearnTab(root){
   ]));
   c2.appendChild(tie('Для «удобных» уравнений есть скоростной способ — Виета. Но у него честная цена.'));
   c2.appendChild(point(13,'Теорема Виета — для быстрых',[
-    'При <span class="math"><i>a</i> = 1</span>: сумма корней = <span class="math">−<i>p</i></span>, произведение = <span class="math"><i>q</i></span>. Подбираем два таких числа.',
+    'Сначала приведи уравнение к виду <span class="math"><i>x</i>² + <i>p</i><i>x</i> + <i>q</i> = 0</span>: раздели все члены на ненулевой коэффициент <span class="math"><i>a</i></span>. Тогда <span class="math"><i>p</i> = <i>b</i>/<i>a</i></span> — коэффициент при <span class="math"><i>x</i></span>, а <span class="math"><i>q</i> = <i>c</i>/<i>a</i></span> — свободный член.',
+    'Если у уравнения есть действительные корни, то <span class="math"><i>x</i>₁ + <i>x</i>₂ = −<i>p</i></span> и <span class="math"><i>x</i>₁ · <i>x</i>₂ = <i>q</i></span>. При <span class="math"><i>D</i> = 0</span> корень один: в этих формулах <span class="math"><i>x</i>₁ = <i>x</i>₂</span>.',
     vietaPicker(),
-    elt('div','warn','<b>Честная цена.</b> Виета быстра только при <span class="math"><i>a</i> = 1</span> и целых корнях. Не подобрал за полминуты — спокойно иди через дискриминант.')
+    elt('div','warn','<b>Честная цена подбора.</b> Подбирать обычно удобнее небольшие целые корни. Сама теорема верна и для дробных или иррациональных действительных корней. Не подобрал за полминуты — спокойно переходи к дискриминанту.')
   ]));
   c2.appendChild(point(14,'«Меньший / больший» — ловушка знаков',[
     'Когда корня два, в ответ идёт один — по условию. У отрицательных чисел <b>больший тот, что правее</b> на прямой: <span class="math">−2 &gt; −7</span>.',

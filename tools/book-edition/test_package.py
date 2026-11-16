@@ -54,7 +54,17 @@ class GateTests(unittest.TestCase):
         result = verify.verify(self.root, self.base)
         self.assertEqual(result["protectedBaseEditions"], 1)
         self.assertEqual([(e["edition"], e["entries"]) for e in result["editions"]],
-                         [("oge-2026-10-31-v1", 71), ("oge-2026-10-31-v2", 71)])
+                         [("oge-2026-10-31-v1", 71), ("oge-2026-10-31-v2", 71),
+                          ("oge-2026-11-16-v3", 71)])
+
+    def test_v3_rehashed_wrong_visible_date_is_rejected(self):
+        prefix = "book/oge/2026-11-16/v3/"
+        file = prefix + "edition-assets/bootstrap.js"
+        target = self.root / file
+        target.write_text(target.read_text().replace('"dateLabel":"16.11.2026"', '"dateLabel":"31.10.2026"'))
+        self.update_record(file, prefix + "manifest.json")
+        with self.assertRaisesRegex(verify.InvalidEdition, "visible date differs"):
+            verify.inspect(self.root, prefix + "manifest.json")
 
     def test_new_edition_cannot_reuse_old_storage_identity(self):
         path = self.root / NEW_MANIFEST

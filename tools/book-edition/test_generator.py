@@ -20,6 +20,26 @@ spec.loader.exec_module(builder)
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_date_rejects_escape_invalid_calendar_and_wrong_alias_year(self):
+        for value in ["2026-2-03", "2026-02-30", "2026-13-01", "2027-01-01", "2026-11-16/../v2", "20261116"]:
+            with self.subTest(date=value), self.assertRaises(ValueError):
+                builder.Edition("v3", builder.PUBLISHED_V1, value)
+
+    def test_new_date_has_consistent_identity_label_and_71_aliases(self):
+        edition = builder.Edition("v3", builder.PUBLISHED_V1, "2026-11-16")
+        output, manifest = builder.build(edition)
+        self.assertEqual(edition.prefix, "book/oge/2026-11-16/v3/")
+        self.assertEqual(manifest["storageNamespace"], "mathExamBook:oge-2026-11-16-v3:")
+        self.assertEqual(len(manifest["entries"]), 71)
+        for row in manifest["entries"]:
+            self.assertEqual(row["bookUrl"], builder.PUBLIC + "/b/oge26-3/" + row["id"] + "/")
+            self.assertTrue(row["frozenUrl"].startswith(builder.PUBLIC + "/" + edition.prefix))
+            self.assertIn("Редакция 16.11.2026 · v3.".encode(), output[edition.alias + row["id"] + "/index.html"])
+        bootstrap = output[edition.prefix + "edition-assets/bootstrap.js"]
+        self.assertIn(b'"dateLabel":"16.11.2026"', bootstrap)
+        self.assertNotIn(b"31.10.2026", bootstrap)
+        self.assertTrue(all(name.startswith((edition.prefix, edition.alias)) for name in output))
+
     def test_version_cannot_escape_or_alias_an_existing_namespace(self):
         for version in ["v0", "v01", "V2", "2", "v2/", "v2/../v1", "v2 "]:
             with self.subTest(version=version), self.assertRaises(ValueError):
@@ -385,6 +405,9 @@ class GeneratorTests(unittest.TestCase):
             with patch.object(builder, "PUBLISHED_V1", published):
                 with self.assertRaisesRegex(ValueError, "Edition exists on " + published):
                     builder.ensure_writable(builder.Edition("v1", published), published, root)
+                # Changing the date cannot evade the published short-link guard.
+                with self.assertRaisesRegex(ValueError, "Edition exists on " + published):
+                    builder.ensure_writable(builder.Edition("v1", published, "2026-11-16"), published, root)
                 with self.assertRaisesRegex(ValueError, "published-v1 anchor"):
                     builder.ensure_writable(builder.Edition("v2", stale), stale, root)
                 builder.ensure_writable(builder.Edition("v2", published), published, root)

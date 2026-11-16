@@ -1,0 +1,13 @@
+/* Always-visible number navigation on both OGE entry pages. No JS required. */
+.oge-all-topics { margin-block: 28px; scroll-margin-top: 100px; }
+.oge-all-topics h2 { margin-bottom: 12px; }
+.oge-all-topics .oge-all-topics-note { margin: 0 0 18px; color: #56665c; font-size: 16px; line-height: 1.6; max-width: 70ch; }
+.oge-all-topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 10px; list-style: none; padding: 0; margin: 0; }
+.oge-all-topics-grid li { min-width: 0; margin: 0; padding: 0; }
+.oge-all-topics-grid a { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; height: 100%; min-height: 78px; padding: 12px; box-sizing: border-box; border: 1px solid #c8d7c8; border-radius: 10px; background: #fffefa; color: #243c32; text-decoration: none; font: 600 16px/1.4 system-ui, sans-serif; overflow-wrap: anywhere; }
+.oge-all-topics-grid a:hover { background: #eaf2e6; border-color: #235d48; }
+.oge-all-topics-grid a:focus-visible { outline: 3px solid #235d48; outline-offset: 3px; }
+.oge-all-topics-number { flex: 0 0 auto; color: #235d48; font-weight: 750; font-variant-numeric: tabular-nums; }
+@media (max-width: 1000px) { .oge-all-topics-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .oge-all-topics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .oge-all-topics-grid a { align-items: flex-start; flex-direction: column; gap: 4px; padding: 12px; } }
+@media (max-width: 480px) { .oge-all-topics-grid { grid-template-columns: 1fr; } .oge-all-topics-grid a { align-items: center; flex-direction: row; gap: 12px; min-height: 64px; } }

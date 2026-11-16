@@ -17,12 +17,16 @@ const taskSources={"trainers/oge-1-5-trainers/practice-1-5-apartments.html":"18b
 // the complete inline engine and static controls comparison, including fixes.
 taskSources['trainers/oge-basics/fraction-meaning.html']='7a876fa9b80f22df458348d5460fdd940dc8cac3';
 // PR #539/#548 behavior plus the reviewed explanation-only accuracy correction.
-// Exact source: 679421ce3057ffbcdab89b80fcd591337f67f9e8.
-// Evidence: docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md and its report.
+// Exact source: 11449d27f9e6e1ffa208195b0d534e72f6a7f40b (v3 Vieta wording).
+// Evidence: docs/tasks/OGE_BOOK_V3_READINESS_20261116.md and its report.
 // Prior bracket source: 88d8eb2cd8fdefa95b0aae7d6954a60c914e118d;
 // earlier mathematics review: docs/reports/OGE9_EXPANDED_REVIEW_20261110.md.
 // Controls retain the baseline; the complete inline engine remains pinned.
-const task9ReviewedScript='a8cae46b2d9730ee6de05e14abf3bbd07a842b06c598264b86cfd9351c1d6c02';
+const task9ReviewedScript='545a2cfec5f8de1cbb3528650d16f9df885fe3f160522184a17216ff18020432';
+// Reviewed height diagnostic and exact tangent-area method; full engines stay pinned.
+for(const page of ['trainers/oge-task16-circle.html','trainers/oge-task24-proofs.html','trainers/oge-task25-geometry.html']){
+ taskSources[page]='11449d27f9e6e1ffa208195b0d534e72f6a7f40b';
+}
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const parse=(source,p)=>new JSDOM(source,{url:'https://mathexam.space/'+p});
 const exportsByPage=new Map(JSON.parse(read('downloads/trainers-manifest.json')).trainers
