@@ -38,6 +38,7 @@ for(const id of ids){
   for(let index=0;index<task.steps.length;index++){
    const value=H.hint(task,index),label=`${id}, seed ${seed}, step ${index}`;
    assert.equal(typeof value,'string',label);
+   assert.doesNotMatch(task.steps[index].q.trim(),/^(?:Нужное отношение|Отношение (?:площадей|объёмов|длин))\s*\?$/iu,label+' names the quantities being compared');
    assert.ok(value.trim().length>0,label+' has actionable text');
    assert.ok(value.length<=220,label+' stays short');
    assert.doesNotMatch(value,/undefined|NaN|\bk\b/,label+' has no missing value or generator symbol');
@@ -104,6 +105,24 @@ for(let seed=0;seed<18;seed++){
   assert.ok(copy.includes(oldH+' см')&&copy.includes('на '+areaFactor+'.'),'both guided entry points divide the given depth by the area factor');
   assert.doesNotMatch(copy,/равн[ао] \d+ см|= \d+ см/,'the learner still works out the new depth');
  }
+ const cone=D.task('practice-cone-area',seed);
+ const {r,l,ratio:radiusFactor}=cone.params, firstProduct=r*l, secondProduct=(r*radiusFactor)*(2*l);
+ assert.ok(cone.steps[2].q.includes(firstProduct+'π')&&cone.steps[2].q.includes(secondProduct+'π'));
+ for(const hint of [cone.steps[2].why,H.hint(withoutAnswers(cone),2)]){
+  assert.ok(hint.includes('Раздели '+secondProduct+' на '+firstProduct+'.'),'the second lateral area is compared with the first');
+ }
+ const similar=D.task('practice-similar-volume',seed),{small,factor}=similar.params;
+ assert.ok(H.hint(withoutAnswers(similar),1).includes([factor,factor,factor].join(' · ')),'a linear scale affects three dimensions');
+ for(const hint of [similar.steps[2].why,H.hint(withoutAnswers(similar),2)]){
+  assert.ok(hint.includes('Умножь '+small+' на '+factor**3+'.'),'the small volume is scaled by the cube of the length factor');
+ }
+ const immersed=D.task('practice-displacement',seed),{litres,factor:levelFactor}=immersed.params;
+ const total=D.F(litres*levelFactor),part=D.F(litres*(levelFactor-1));
+ assert.ok(immersed.steps[1].q.includes(total+' л')&&immersed.steps[1].q.includes(litres+' л'));
+ for(const hint of [immersed.steps[1].why,H.hint(withoutAnswers(immersed),1)]){
+  assert.ok(hint.includes('Вычти '+litres+' из '+total+'.'),'subtract the original amount of water from the occupied total');
+ }
+ assert.ok(H.hint(withoutAnswers(immersed),2).includes('Умножь '+part+' на 1000.'));
  const trig=D.task('practice-right-ratio',seed),{a,b,c,ask}=trig.params;
  assert.match(trig.steps[1].q,/длина катета/,'a numeric input asks for a length');
  assert.ok(trig.steps[2].q.includes(ask?'sin A':'cos A'));

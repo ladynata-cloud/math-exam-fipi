@@ -34,7 +34,13 @@
   }
   function guidedCopy(spec) {
     const saved = spec.task;
-    const formerQuestion = { 'practice-pour': 'Новая высота воды, см?', 'practice-right-ratio': 'Нужное отношение?' }[saved.id];
+    const formerQuestion = {
+      'practice-pour': 'Новая высота воды, см?',
+      'practice-right-ratio': 'Нужное отношение?',
+      'practice-displacement': 'Объём детали, см³?',
+      'practice-cone-area': 'Отношение площадей?',
+      'practice-similar-volume': 'Объём большого конуса?'
+    }[saved.id];
     if (!formerQuestion || saved.steps.at(-1)?.q !== formerQuestion) return saved;
     const current = D.task(saved.id, spec.seed);
     if (!Object.keys(current.params).every(key => saved.params?.[key] === current.params[key]) ||

@@ -73,7 +73,13 @@ const seam=D.task('practice-joined-surface',0);assert.match(seam.steps[1].q,/к�
 w.close();
 // A cabinet assignment keeps the issued task and help text as a snapshot.
 // Resume at the original step with an open hint and an unfinished answer.
-for(const [id,oldQuestion] of [['practice-pour','Новая высота воды, см?'],['practice-right-ratio','Нужное отношение?']]){
+for(const [id,oldQuestion] of [
+ ['practice-pour','Новая высота воды, см?'],
+ ['practice-right-ratio','Нужное отношение?'],
+ ['practice-displacement','Объём детали, см³?'],
+ ['practice-cone-area','Отношение площадей?'],
+ ['practice-similar-volume','Объём большого конуса?']
+]){
  const frame=new JSDOM('<main id="main"></main>',{url:'https://course.test/ege-baza/path/index.html?learning=1',runScripts:'outside-only'});
  const win=frame.window;let bridge;win.MathExamLearning={register(api){bridge=api;}};
  for(const name of ['data','practice','practice-view','stereo-figures','managed-state','managed'])win.eval(fs.readFileSync(path.join(root,'ege-baza/path',name+'.js'),'utf8'));
