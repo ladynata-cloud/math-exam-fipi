@@ -4,7 +4,8 @@
 <script defer src="../exam-map.js?v=20261115-fipi-map"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
-<title>Сумма синусов и косинусов → произведение</title>
+<title>Азбука тригонометрических формул — ЕГЭ профиль | MathExam</title>
+<meta name="description" content="18 тем, 54 умения и 324 задания: формулы сложения, двойного угла, суммы и произведения. Короткие исследования, подсказки и самостоятельная практика.">
 <link rel="canonical" href="https://mathexam.space/ege-profil/trainers/trig-sum-to-product.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -429,13 +430,23 @@ details.support summary{cursor:pointer;min-height:44px;padding:10px 0;font-weigh
 <link rel="stylesheet" href="../skill-map.css?v=20261111-skills">
 <script defer src="../skill-map-data.js?v=20261115-fipi-map"></script>
 <script defer src="../skill-map.js?v=20261115-fipi-map" data-profile-skill-map="trig-sum-to-product"></script>
+
+<link rel="stylesheet" href="trig-formula-alphabet/styles.css?v=20261116">
+<script defer src="trig-formula-alphabet/data.js?v=20261116"></script>
+<script defer src="trig-formula-alphabet/state.js?v=20261116"></script>
+<script defer src="trig-formula-alphabet/app.js?v=20261116"></script>
+<link rel="stylesheet" href="/assets/download-panel.css">
+<link rel="stylesheet" href="/assets/download-adaptation.css">
+<script defer src="/assets/download-adaptation.js"></script>
 </head>
 <body>
-<div class="app" id="app">
+<main id="formula-alphabet"><h1>Азбука тригонометрических формул</h1><p>Загружаем темы и самостоятельную практику…</p><noscript><p>Для проверки ответов нужен JavaScript. <a href="../trigonometry/">Открыть курс тригонометрии</a>.</p></noscript></main>
+<p class="formula-legacy-return"><a href="?view=home">← Азбука формул: 18 тем и самостоятельная практика</a></p>
+<div class="app" id="app" hidden>
   <!-- everything is rendered by JS -->
 </div>
 
-<script>
+<script type="text/plain" id="formula-legacy-source">
 /* ═══════════════════════════════════════════════════════════════════
    1. MATH RENDERING HELPERS
    Tiny inline-math renderer — no LaTeX, just styled HTML.
@@ -928,11 +939,20 @@ function loadState(){
   }
 }
 function saveState(){
-  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+  try{
+    const latest = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+    const next = Object.assign({}, latest, state);
+    // An older open derivation must not overwrite work saved by the alphabet.
+    if(latest && Object.prototype.hasOwnProperty.call(latest, 'alphabet')) next.alphabet = latest.alphabet;
+    localStorage.setItem(LS_KEY, JSON.stringify(next));
+    if(next.alphabet) state.alphabet = next.alphabet;
+  }catch(e){}
 }
 function resetProgress(){
-  if(!confirm('Сбросить весь прогресс?')) return;
+  if(!confirm('Сбросить прогресс только прежних четырёх выводов? Азбука формул сохранится.')) return;
+  const alphabet = state.alphabet;
   state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  if(alphabet) state.alphabet = alphabet;
   saveState();
   render();
 }
@@ -2075,5 +2095,28 @@ render();
 
 <!-- курс: возврат в навигатор -->
 <a href="../index.html" class="course-back" style="position:fixed;left:14px;bottom:14px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:9px 14px;min-height:44px;border-radius:999px;background:#FFFFFF;border:1px solid rgba(30,58,159,.28);color:#1E3A9F;font:600 13px/1 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.14)">← Курс</a>
+<!-- download-panel:start:ege-profil-formula-alphabet -->
+<section class="download-panel" id="download" data-trainer-download="ege-profil-formula-alphabet">
+  <details>
+    <summary>Скачать и изменить</summary>
+    <p>HTML открывается в браузере без интернета. В ZIP тот же тренажёр, промпт, инструкция и GIF.</p>
+    <p class="download-note">Личный кабинет, синхронная доска и переходы к другим материалам MathExam доступны на сайте. Загруженная копия хранит работу в браузере, если браузер разрешает это для локальных файлов.</p>
+    <div class="download-actions">
+      <a href="/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet.html" download>Скачать тренажёр HTML</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+      <a class="secondary" href="/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet-package.zip" download>Скачать комплект ZIP</a>
+    </div>
+    <div class="download-prompt" hidden>
+      <label>Что хотите изменить?
+        <textarea class="download-wish" rows="2" maxlength="1000" placeholder="Добавь самостоятельный вариант к сумме синусов: sin(7x)+sin(3x)=2sin(5x)cos(2x)."></textarea>
+      </label>
+      <button type="button" class="download-copy">Скопировать промпт для DeepSeek</button>
+      <textarea class="download-prompt-text" rows="5" readonly hidden aria-label="Промпт для ручного копирования"></textarea>
+      <p class="download-copy-status" role="status"></p>
+    </div>
+    <p class="download-note"><a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/#adaptation-example">Как изменить и проверить · GIF и шаги</a></p>
+  </details>
+</section>
+<!-- download-panel:end:ege-profil-formula-alphabet -->
 </body>
 </html>

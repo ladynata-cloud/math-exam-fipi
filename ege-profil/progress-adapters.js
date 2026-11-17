@@ -206,6 +206,42 @@ var PROGRESS = (function(){
     },
     stp: function(host){
       var s = read("trig-stp-trainer-v2");
+      var alphabet = isObj(s) && isObj(s.alphabet) ? s.alphabet : null;
+      if (alphabet){
+        if (alphabet.version !== 1 || !isObj(alphabet.skills)){
+          bar(host, null, "Результаты «Азбуки формул» этой версии пока не подтверждены");
+          return;
+        }
+        // Read-only summary of the same evidence kept by the formula course.
+        // Do not open its store here: the index/report must never migrate data.
+        var summary = { studied:0, independent:0, assisted:0, corrected:0, recalled:0, due:0 };
+        var kindsAllowed = ['recall','reverse','error','apply','method','domain'];
+        for (var module = 1; module <= 18; module++) for (var skill = 1; skill <= 3; skill++){
+          var id = 'm' + String(module).padStart(2,'0') + '-s' + skill;
+          var record = alphabet.skills[id];
+          if (!isObj(record)) continue;
+          var taskPattern = new RegExp('^' + id + '-0[1-6]$');
+          var taskIds = function(value){
+            return Array.isArray(value) ? Array.from(new Set(value.filter(function(task){
+              return typeof task === 'string' && taskPattern.test(task);
+            }))) : [];
+          };
+          var independent = taskIds(record.independent);
+          var kinds = Array.isArray(record.kinds) ? Array.from(new Set(record.kinds.filter(function(kind){ return kindsAllowed.includes(kind); }))) : [];
+          if (record.studied === true) summary.studied++;
+          if (independent.length >= 2 && kinds.length >= 2) summary.independent++;
+          if (taskIds(record.assisted).length) summary.assisted++;
+          if (taskIds(record.corrected).length) summary.corrected++;
+          if (taskIds(record.recalled).length) summary.recalled++;
+          if (typeof record.dueAt === 'number' && isFinite(record.dueAt) && record.dueAt <= Date.now()) summary.due++;
+        }
+        var text = 'самостоятельно: ' + summary.independent + ' из 54' +
+          ' · изучено: ' + summary.studied + ' · с помощью: ' + summary.assisted +
+          ' · после исправления: ' + summary.corrected + ' · вспомнено: ' + summary.recalled +
+          ' · к повторению: ' + summary.due;
+        bar(host, summary.independent/54, text, summary.independent === 54);
+        return;
+      }
       var p = isObj(s) && isObj(s.progress) ? s.progress : null;
       if (!p){ bar(host, null, "не начат"); return; }
       var flags = [p.pqIntroDone];
@@ -216,7 +252,7 @@ var PROGRESS = (function(){
       var doneCount = flags.filter(Boolean).length;
       var label = "шагов: " + doneCount + " из 13";
       if (num(p.testBest)) label += " · тест: " + num(p.testBest);
-      bar(host, doneCount/13, label, doneCount >= 13);
+      bar(host, null, "Прежний тренажёр: " + label + " · новые умения ещё не проверены");
     },
     derivative: function(host){
       /* Зачёт — passed/best/runs; решённые во вкладке «Тренажёр» —

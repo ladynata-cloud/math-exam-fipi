@@ -4,11 +4,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { JSDOM, VirtualConsole } = require('jsdom');
 
-function page(name, query = '', stored = {}) {
+function page(name, query = '', stored = {}, standalone = false) {
   const errors = [], timers = new Map(); let serial = 0;
   const vc = new VirtualConsole(); vc.on('jsdomError', e => errors.push(e.message));
-  const dom = new JSDOM(fs.readFileSync(path.join(__dirname, '../ege-profil/trainers/', name), 'utf8'), {
-    url: 'https://mathexam.space/ege-profil/trainers/' + name + query,
+  const directory = standalone ? '../trainers/' : '../ege-profil/trainers/';
+  const publicPath = standalone ? '/trainers/' : '/ege-profil/trainers/';
+  const dom = new JSDOM(fs.readFileSync(path.join(__dirname, directory, name), 'utf8'), {
+    url: 'https://mathexam.space' + publicPath + name + query,
     runScripts: 'dangerously', virtualConsole: vc,
     beforeParse(w) {
       w.setTimeout = fn => { const id = ++serial; timers.set(id, fn); return id; };
@@ -17,6 +19,19 @@ function page(name, query = '', stored = {}) {
     }
   });
   const w = dom.window, $ = selector => w.document.querySelector(selector);
+  // The expanded course retains the old lesson source as inert text. Execute
+  // exactly that source for these legacy regression journeys; external newapp.js
+  // is intentionally not loaded by this jsdom fixture.
+  const legacySource = name === 'trig-sum-to-product.html' && $('#formula-legacy-source');
+  if (legacySource) {
+    const script = w.document.createElement('script');
+    script.textContent = legacySource.textContent;
+    w.document.body.appendChild(script);
+  }
+  if (standalone) {
+    w.document.removeEventListener('DOMContentLoaded', w.init);
+    w.init();
+  }
   return { w, $, errors, timers, close: () => w.close(), tick() {
     const next = timers.entries().next().value;
     assert.ok(next, 'a screen transition is pending'); timers.delete(next[0]); next[1]();
@@ -257,3 +272,121 @@ test('sum-to-product: both introductory cards and all four formula derivations c
     assert.deepEqual(p.errors, []);
   } finally { p.close(); }
 });
+
+function standalone(stored = {}) {
+  return page('trig-sum-to-product-trainer.html', '', stored, true);
+}
+
+function clickStandaloneFactors(p, values, poolSelector, pool) {
+  for (const value of values) {
+    const index = pool.indexOf(value);
+    assert.ok(index >= 0, 'whole factor exists in the pool');
+    const button = p.w.document.querySelectorAll(poolSelector + ' button')[index];
+    assert.ok(button && !button.classList.contains('used'), 'factor is available');
+    button.click();
+  }
+}
+
+test('standalone formulas: product help is saved before answering and survives reload and retry', () => {
+  const original = {
+    anotherCourse: { solved: 19, draft: 'keep this input' },
+    trigSumToProductTrainer: {
+      lastTestScore: 4, lastTestAt: 1730000000000, teacherNote: 'preserve',
+      progress: { derive: { sin_sum: { done: true, withHint: false } } }
+    }
+  };
+  let saved;
+  const first = standalone({ [KEY]: original });
+  try {
+    first.$('[data-section=product]').click();
+    first.$('#options .option-card').click();
+    first.$('#hint-btn').click();
+    assert.equal(first.w.eval('STATE.selectedOpt'), 0, 'help preserves the selected input');
+    assert.match(first.$('#feedback').textContent, /к сумме синусов/);
+    saved = JSON.parse(first.w.localStorage.getItem(KEY));
+    assert.equal(saved.trigSumToProductTrainer.progress.product.prod_sc.withHint, true);
+    assert.notEqual(saved.trigSumToProductTrainer.progress.product.prod_sc.done, true, 'showing help is not completion');
+    assert.equal(saved.trigSumToProductTrainer.lastTestScore, 4);
+    assert.equal(saved.trigSumToProductTrainer.lastTestAt, original.trigSumToProductTrainer.lastTestAt);
+    assert.equal(saved.trigSumToProductTrainer.teacherNote, 'preserve');
+    assert.deepEqual(saved.anotherCourse, original.anotherCourse);
+    assert.deepEqual(first.errors, []);
+  } finally { first.close(); }
+  const resumed = standalone({ [KEY]: saved });
+  try {
+    resumed.$('[data-section=product]').click();
+    resumed.$('#options .option-card').click(); resumed.$('#check-btn').click();
+    let record = JSON.parse(resumed.w.localStorage.getItem(KEY)).trigSumToProductTrainer;
+    assert.deepEqual(record.progress.product.prod_sc, { done: true, withHint: true });
+    resumed.$('#restart-btn').click();
+    resumed.$('#options .option-card').click(); resumed.$('#check-btn').click();
+    record = JSON.parse(resumed.w.localStorage.getItem(KEY)).trigSumToProductTrainer;
+    assert.deepEqual(record.progress.product.prod_sc, { done: true, withHint: true }, 'retrying the same formula cannot erase assistance');
+    assert.equal(record.stats.hint, 1);
+    assert.equal(record.lastTestScore, 4);
+    assert.deepEqual(JSON.parse(resumed.w.localStorage.getItem(KEY)).anotherCourse, original.anotherCourse);
+    assert.deepEqual(resumed.errors, []);
+  } finally { resumed.close(); }
+});
+
+test('standalone formulas: all four assemblies accept reordered factors but reject changed functions, arguments and signs', () => {
+  const p = standalone();
+  try {
+    p.$('[data-section=assemble]').click();
+    for (let index = 0; index < 4; index++) {
+      p.w.document.querySelectorAll('#formula-tabs button')[index].click();
+      const task = p.w.eval('ASSEMBLIES[' + index + ']');
+      clickStandaloneFactors(p, [task.target[2], task.target[0], task.target[1]], '#asm-pool', Array.from(task.pool));
+      p.$('#check-asm-btn').click();
+      assert.equal(p.w.eval('STATE.asmFeedback'), 'ok');
+      assert.equal(JSON.parse(p.w.localStorage.getItem(KEY)).trigSumToProductTrainer.progress.assemble[task.id].done, true);
+    }
+    assert.equal(p.w.eval('STATE.stats.err'), 0, 'factor order is not an error');
+    for (const [formula, indices] of [[0, [0, 3, 4]], [0, [0, 2, 3]], [3, [0, 2, 3]]]) {
+      p.w.document.querySelectorAll('#formula-tabs button')[formula].click();
+      for (const index of indices) p.w.document.querySelectorAll('#asm-pool button')[index].click();
+      p.$('#check-asm-btn').click();
+      assert.notEqual(p.w.eval('STATE.asmFeedback'), 'ok');
+      assert.ok(p.$('#feedback').classList.contains('error'));
+    }
+    assert.equal(p.w.eval('STATE.stats.err'), 3);
+    assert.deepEqual(p.errors, []);
+  } finally { p.close(); }
+});
+
+test('standalone formulas: reordered test answers count and later practice retains the exact test result', () => {
+  const other = { solved: 8, answer: 'sin(x)' };
+  const p = standalone({ [KEY]: { anotherCourse: other, trigSumToProductTrainer: { teacherNote: 'keep' } } });
+  try {
+    p.w.startFinalTest();
+    for (let index = 0; index < 5; index++) {
+      const task = p.w.eval('TEST_TASKS[STATE.testIdx]');
+      if (task.kind === 'assemble') {
+        clickStandaloneFactors(p, Array.from(task.target).reverse(), '#test-pool', Array.from(task.pool));
+      } else {
+        const correct = task.options.findIndex(option => option.correct);
+        p.w.document.querySelectorAll('#test-options button')[correct].click();
+      }
+      p.$('#test-check').click();
+    }
+    const completed = JSON.parse(p.w.localStorage.getItem(KEY)).trigSumToProductTrainer;
+    assert.equal(completed.lastTestScore, 5);
+    assert.ok(Number.isFinite(completed.lastTestAt));
+    p.$('[data-section=product]').click(); p.$('#hint-btn').click();
+    const later = JSON.parse(p.w.localStorage.getItem(KEY));
+    assert.equal(later.trigSumToProductTrainer.lastTestScore, 5);
+    assert.equal(later.trigSumToProductTrainer.lastTestAt, completed.lastTestAt);
+    assert.equal(later.trigSumToProductTrainer.teacherNote, 'keep');
+    assert.deepEqual(later.anotherCourse, other);
+    p.w.confirm = () => true;
+    p.$('#reset-btn').click();
+    const reset = JSON.parse(p.w.localStorage.getItem(KEY));
+    assert.equal(reset.trigSumToProductTrainer.lastTestScore, undefined, 'only an explicit full reset clears the stored test');
+    assert.equal(reset.trigSumToProductTrainer.lastTestAt, undefined);
+    assert.deepEqual(reset.anotherCourse, other);
+    assert.deepEqual(p.errors, []);
+  } finally { p.close(); }
+});
+
+// Preserve this CI entry point and include the expanded course's behavioral gate.
+require('./profile-trig-formula-alphabet.test.cjs');

@@ -2337,6 +2337,52 @@
       "downloadHtml": "/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero.html",
       "prompt": "/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-deepseek-prompt.md",
       "package": "/downloads/trainers/ege-profil-sections-from-zero/ege-profil-sections-from-zero-package.zip"
+    },
+    {
+      "slug": "ege-profil-formula-alphabet",
+      "title": "Азбука тригонометрических формул",
+      "sourceHtml": "/ege-profil/trainers/trig-sum-to-product.html",
+      "subject": "математика",
+      "level": "10–11 классы, профильный ЕГЭ",
+      "topic": "формулы сложения, преобразования, область определения и осмысленное повторение",
+      "description": "18 тем, 54 умения, 324 задания и 12 исследований: понять формулу, восстановить её и применить самостоятельно.",
+      "mode": "single",
+      "assets": [],
+      "public": true,
+      "inlineAssets": [
+        "/ege-profil/exam-map.js",
+        "/ege-profil/trainers/trig-formula-alphabet/styles.css",
+        "/ege-profil/trainers/trig-formula-alphabet/data.js",
+        "/ege-profil/trainers/trig-formula-alphabet/state.js",
+        "/ege-profil/trainers/trig-formula-alphabet/app.js"
+      ],
+      "offlineOmitAssets": [
+        "/ege-profil/start/course-links.css",
+        "/ege-profil/start/course-links.js",
+        "/ege-profil/skill-map.css",
+        "/ege-profil/skill-map-data.js",
+        "/ege-profil/skill-map.js"
+      ],
+      "adaptation": {
+        "preserveSourceSpacing": true,
+        "example": "Добавь самостоятельный вариант к сумме синусов: sin(7x)+sin(3x)=2sin(5x)cos(2x).",
+        "edits": {
+          "Задачи": "В MathExamFormulaData выбери соответствующее умение, сохрани существующие id, добавь новый id, условие, вид задания и точные допустимые ответы. Не меняй ответ без изменения условия.",
+          "Подсказки": "Первая подсказка напоминает полусумму и полуразность. Полное решение открывается отдельно и учитывается как помощь.",
+          "Проверка": "Проверь оба порядка множителей, ошибку в знаке, пропуск коэффициента 2, сохранение попытки после перезагрузки и ограничения исходного выражения.",
+          "Оформление": "Сохрани крупную формулу, подписи действий и управление кнопками с клавиатуры. Основные темы и углубление должны различаться."
+        },
+        "checks": [
+          "Полусумма аргументов 7x и 3x равна 5x; полуразность равна 2x.",
+          "2cos(2x)sin(5x) — равносильный ответ; 2sin(2x)cos(5x) в общем случае неверен.",
+          "Открытая подсказка остаётся помощью после перезагрузки; изучение объяснения не засчитывается как самостоятельное умение."
+        ],
+        "limit": "Все 18 тем, исследования, справочник, управляемая демонстрация и прежние четыре вывода работают в автономной копии. Сохранение зависит от настроек браузера для локальных файлов. Другие курсы открываются на сайте.",
+        "localEditing": true
+      },
+      "downloadHtml": "/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet.html",
+      "prompt": "/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet-deepseek-prompt.md",
+      "package": "/downloads/trainers/ege-profil-formula-alphabet/ege-profil-formula-alphabet-package.zip"
     }
   ],
   "todo": [
