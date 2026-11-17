@@ -93,7 +93,7 @@ async function checkPartTwoExamRoutes(page, taskId) {
   await page.getByRole('link',{name:'Мой прогресс',exact:true}).click();
   const financeProgress=page.getByRole('region',{name:'№16 · Письменные финансовые задачи'});
   assert.match(await financeProgress.innerText(), /Самостоятельные ответы: 1/);
-  assert.match(await page.locator('#main > .stats').innerText(), /252 условий/);
+  assert.match(await page.locator('#main > .stats').innerText(), /264 условий/);
   assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve completed work, attempts and proof under the existing task key');
 }
 
@@ -108,7 +108,7 @@ async function loadImage(locator) {
 }
 
 async function checkPartTwoNumericDomain(page) {
-  const task = partTwoLessons.find(lesson => lesson.id === 'p14-circle-selection').tasks[3];
+  const task = partTwoLessons.find(lesson => lesson.id === 'numbers-remainders').tasks[3];
   await page.evaluate(id => { location.hash = '#task/' + id + '/independent'; }, task.id);
   const answer = page.locator('#final-0');
   const proof = page.locator('#proof-draft');
@@ -118,7 +118,7 @@ async function checkPartTwoNumericDomain(page) {
   }, task.id);
   await answer.waitFor();
   for (let i = 1; i < task.final.length; i++) await page.locator('#final-' + i).fill(String(task.final[i].answers[0]));
-  const note = 'Проверяю корни и отбор на отрезке.';
+  const note = 'Проверяю первый остаток и количество чисел.';
   await proof.fill(note);
   const expected = task.final[0].answers[0];
   for (const [expression, oldValue] of profileFirst.invalidNumericExamples) {
@@ -138,6 +138,23 @@ async function checkPartTwoNumericDomain(page) {
   await page.locator('#completion').waitFor();
   const state = await read();
   assert(state.completed && state.independent);
+}
+
+async function checkPartTwoExactEquation(page) {
+  const taskId = 'p14-circle-selection-7';
+  await page.evaluate(id => { location.hash = '#task/' + id + '/independent'; }, taskId);
+  await page.locator('#final-0').fill('x=-π/6+2πn; x=7π/6+2πn');
+  const selected = page.locator('#final-1');
+  await selected.fill('-17π/6; -13π/6');
+  await submit(page, '#final-form');
+  await page.locator('#feedback.error').waitFor();
+  assert.equal(await page.locator('#completion').count(), 0);
+  await selected.fill('-5π/6; -17π/6; -13π/6');
+  await submit(page, '#final-form');
+  await page.locator('#completion').waitFor();
+  await page.reload();
+  assert.equal(await selected.inputValue(), '-5π/6; -17π/6; -13π/6');
+  assert(await page.evaluate(id => ProfilePartTwoApp.store.read(id).independent, taskId));
 }
 
 async function textbook(page, appName, courseName, lesson) {
@@ -311,6 +328,7 @@ const scenarios = {
     await page.reload();
     assert.equal(await page.locator('#proof-draft').inputValue(), 'Проверяю перпендикулярность по условию.');
     await checkPartTwoNumericDomain(page);
+    await checkPartTwoExactEquation(page);
     await checkPartTwoExamRoutes(page, task.id);
 
     const parameter = partTwoLessons.find(lesson => lesson.id === 'param-hole').tasks[3];

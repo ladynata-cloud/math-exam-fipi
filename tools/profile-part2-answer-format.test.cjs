@@ -4,6 +4,7 @@ const {JSDOM}=require('jsdom');
 const api=require('../ege-profil/part-two/state.js'),checker=require('../ege-profil/start/checks.js');
 const root=path.resolve(__dirname,'..'),folder=path.join(root,'ege-profil/part-two');
 const bank=['algebra','geometry','models'].flatMap(name=>require(path.join(folder,'content-'+name+'.js')));
+const numericLesson=bank.find(lesson=>lesson.id==='p2-15-section-volume');
 const pause=()=>new Promise(resolve=>setImmediate(resolve));
 const invalidNumbers=['','   ','abc','1/','1/0','sqrt(-4)^2','(1/0)^0','0^0'];
 function memory(){const values=new Map();return{getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,String(value))};}
@@ -45,7 +46,7 @@ test('every authored answer alias is recognized by its declared type without cha
    }
   }
  }
- assert.equal(bank.flatMap(lesson=>lesson.tasks).length,252,'H04 preserves the complete condition bank');
+ assert.equal(bank.flatMap(lesson=>lesson.tasks).filter(task=>!task.equationAnswer).length,252,'H04 preserves its complete condition bank');
  assert.equal(fields,1364);assert(aliases>fields);
 });
 
@@ -77,7 +78,7 @@ test('recognition accepts meaningful wrong values by field type, independent of 
 });
 
 test('ordinary final format errors preserve drafts and leave the first meaningful attempt available',async()=>{
- const task=bank.find(lesson=>lesson.id==='p14-circle-selection').tasks[3],storage=memory();
+ const task=numericLesson.tasks[3],storage=memory();
  let dom=await boot('task/'+task.id+'/independent',storage),w=dom.window;
  try{
   input(w,'proof-draft','Обоснование и исходные ограничения');fillFinal(w,task);await settle(w);
@@ -105,7 +106,7 @@ test('ordinary final format errors preserve drafts and leave the first meaningfu
 });
 
 test('the whole final form is recognized before a wrong mathematical field can count',async()=>{
- const task=bank.find(lesson=>lesson.id==='p14-circle-selection').tasks[4],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
+ const task=numericLesson.tasks[4],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
  try{
   input(w,'final-0','999');input(w,'final-1','1/');await submit(w,'final-form');
   assert.equal(w.ProfilePartTwoApp.store.read(task.id).attemptCount,0);
@@ -157,9 +158,9 @@ test('typed textual and set finals count readable wrong answers, including mixed
   [findField('parameter-set','final'),'a<2'],
   [findField('solution-set','final'),'[1;2]']
  ];
- for(const [{task,index,field},value] of cases){
+ for(const [{lesson,task,index,field},value] of cases){
   assert(!api.matches(field.answers,value,checker),task.id+' test uses a wrong value');
-  const mode=task.independentFinal?'plan':'independent',dom=await boot('task/'+task.id+'/'+mode),w=dom.window;
+  const mode=task.independentFinal||lesson.exam===14?'plan':'independent',dom=await boot('task/'+task.id+'/'+mode),w=dom.window;
   try{
    fillFinal(w,task);input(w,'final-'+index,'abc');await submit(w,'final-form');assert.equal(w.ProfilePartTwoApp.store.read(task.id).attemptCount,0,field.answerFormat+' format');
    input(w,'final-'+index,value);await submit(w,'final-form');
@@ -185,7 +186,7 @@ test('typed steps distinguish wrong mathematics from an unreadable word or sign'
 });
 
 test('a valid number violating the original domain remains a mathematical attempt',async()=>{
- const task=bank.find(lesson=>lesson.id==='p14-log-domain').tasks[3],dom=await boot('task/'+task.id+'/independent'),w=dom.window;
+ const task=bank.find(lesson=>lesson.id==='p14-log-domain').tasks[3],dom=await boot('task/'+task.id+'/plan'),w=dom.window;
  try{
   input(w,'final-0',task.meta.bad);await submit(w,'final-form');
   const record=w.ProfilePartTwoApp.store.read(task.id);assert.equal(record.attemptCount,1);assert.equal(record.wrong,1);assert(!record.completed);
@@ -195,7 +196,7 @@ test('a valid number violating the original domain remains a mathematical attemp
 test('duplicate pending submissions count once while a later deliberate retry remains in history',async()=>{
  const lesson=bank.find(item=>item.id==='p14-circle-selection');
  for(const mode of ['independent','guided']){
-  const task=lesson.tasks[mode==='independent'?5:0],dom=await boot('task/'+task.id+'/'+mode),w=dom.window,form=mode==='independent'?'final-form':'step-form';
+  const task=mode==='independent'?numericLesson.tasks[5]:lesson.tasks[0],dom=await boot('task/'+task.id+'/'+mode),w=dom.window,form=mode==='independent'?'final-form':'step-form';
   try{
    if(mode==='independent'){fillFinal(w,task);input(w,'final-0','999');}else input(w,'step-answer','999');
    dispatch(w,form);dispatch(w,form);await settle(w);
@@ -210,7 +211,7 @@ test('duplicate pending submissions count once while a later deliberate retry re
 });
 
 test('format edits across two tabs preserve the newest proof, assistance and the first meaningful attempt',async()=>{
- const task=bank.find(lesson=>lesson.id==='p14-circle-selection').tasks[3],hash='task/'+task.id+'/independent',storage=memory();
+ const task=numericLesson.tasks[3],hash='task/'+task.id+'/independent',storage=memory();
  const first=await boot(hash,storage),second=await boot(hash,storage),a=first.window,b=second.window;
  try{
   fillFinal(a,task);input(a,'final-0','1/');await submit(a,'final-form');
@@ -225,7 +226,7 @@ test('format edits across two tabs preserve the newest proof, assistance and the
 });
 
 test('a stale invalid final form does not erase an untouched field saved in another tab',async()=>{
- const task=bank.find(lesson=>lesson.id==='p14-circle-selection').tasks[3],hash='task/'+task.id+'/independent',storage=memory();
+ const task=numericLesson.tasks[3],hash='task/'+task.id+'/independent',storage=memory();
  const first=await boot(hash,storage),second=await boot(hash,storage),a=first.window,b=second.window;
  try{
   input(a,'final-0','abc');await settle(a);
@@ -240,7 +241,7 @@ test('a stale invalid final form does not erase an untouched field saved in anot
 test('submitting a value populated without an input event preserves its literal format draft',async()=>{
  const lesson=bank.find(item=>item.id==='p14-circle-selection');
  for(const mode of ['independent','guided']){
-  const task=lesson.tasks[mode==='independent'?3:1],storage=memory(),hash='task/'+task.id+'/'+mode;
+  const task=mode==='independent'?numericLesson.tasks[3]:lesson.tasks[1],storage=memory(),hash='task/'+task.id+'/'+mode;
   let dom=await boot(hash,storage),w=dom.window;
   try{
    const id=mode==='independent'?'final-0':'step-answer',form=mode==='independent'?'final-form':'step-form';
@@ -287,7 +288,7 @@ test('native H04 format, duplicate submission and saved-work parity online and o
   for(const [delivery,base] of Object.entries(deliveries))for(const width of [320,390,1280]){
    const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage();page.setDefaultTimeout(12000);watch(page);
    try{
-    const task=circle.tasks[3];await open(page,base,task,'independent');await fill(page,task);
+    const task=numericLesson.tasks[3];await open(page,base,task,'independent');await fill(page,task);
     await page.locator('#proof-draft').fill('Мой ход решения сохраняется при уточнении формата.');
     for(const value of ['   ','abc','1/','1/0','sqrt(-4)^2']){
      if(value==='1/')await page.locator('#final-0').evaluate((element,value)=>{element.value=value;},value);else await page.locator('#final-0').fill(value);
@@ -314,7 +315,7 @@ test('native H04 format, duplicate submission and saved-work parity online and o
     await page.locator('#step-answer').fill('да');await page.locator('#step-form button[type=submit]').click();record=await read(page,textual.id);assert.equal(record.attemptCount,1);assert.equal(record.wrong,1);
     await page.locator('#step-answer').fill('abc');await page.locator('#step-form button[type=submit]').click();assert.equal((await read(page,textual.id)).attemptCount,1);
     if(width===1280){
-     const shared=circle.tasks[4];await open(page,base,shared,'independent');await page.locator('#final-0').fill('1/');await page.locator('#final-form button[type=submit]').click();
+     const shared=numericLesson.tasks[4];await open(page,base,shared,'independent');await page.locator('#final-0').fill('1/');await page.locator('#final-form button[type=submit]').click();
      const second=await context.newPage();watch(second);await open(second,base,shared,'independent');
      await second.locator('#final-1').fill(String(shared.final[1].answers[0]));await second.locator('#proof-draft').fill('Свежий черновик другой вкладки.');await second.locator('#request-help').click();await second.waitForFunction(id=>window.ProfilePartTwoApp.store.read(id).helped,shared.id);
      await page.locator('#final-0').fill('abc');await page.locator('#final-form button[type=submit]').click();record=await read(page,shared.id);assert.equal(record.attemptCount,0);assert(record.helped);assert.equal(record.drafts.proof,'Свежий черновик другой вкладки.');assert.equal(record.drafts.final[1],String(shared.final[1].answers[0]),'untouched newer field is preserved');

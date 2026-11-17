@@ -3797,7 +3797,8 @@ const items=examMap?examMap.entries.filter(entry=>entry.part===2).map(entry=>{
   resources:[{title:'Проценты, кредиты и финансовые расчёты',href:'#fipi/2027/16'}]};
  const legacy=legacyItems.find(item=>item.number===entry.legacyPartTwo);
  return {...legacy,...entry,href:examMap.href(entry),
-  coverage:'6 учебных тем · 36 задач: по шагам, с планом и самостоятельно. Письменное обоснование — по критериям и с преподавателем.',
+  coverage:entry.number===13?'6 учебных тем · 48 задач. Исследования и точная проверка общего решения и отбора. Письменное обоснование — по критериям и с преподавателем.':
+   '6 учебных тем · 36 задач: по шагам, с планом и самостоятельно. Письменное обоснование — по критериям и с преподавателем.',
   resources:[{title:'Ранее созданные материалы этой темы',href:legacy.href},...legacy.resources]};
 }):[];
 const optimization=examMap?.topic('optimization');

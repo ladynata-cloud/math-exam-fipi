@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+  "baseSha": "a6cd213e99ae13b5d691a50914a6bf5e4d530051",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "0dba595cec179134a5aa4f484d4cf882f4f7877ab9612beacbdaa217a4da1004",
-      "afterSha256": "e9be0fcebe951cdecf124749abc8f1b366b65da011f66a86cf020527f6e5e178",
+      "beforeSha256": "127634d83653c65cffa10a5c831125e0b3924e8bd222fcf54799f7b608b8ce2e",
+      "afterSha256": "052f7a0e4d8ea586a3122132beb097c0c7dc28d40aac7fef9543c2f944430302",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -323,8 +323,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/start/index.html": {
-      "beforeSha256": "3155e5fc4c717e7935b1a7bf7b8d5ad5333708cc8465a6b779f2f1ce217f1f82",
-      "afterSha256": "ce3843b6397a2a164773a23d1ee4da33ca1554eff66ff2f8bbe58c1282a91bda",
+      "beforeSha256": "1f2c783084346283d6e062cc6c638af24ed226abfa27e96c86df14fd46d7ee47",
+      "afterSha256": "487251709e36b345c67e714b4fff776795d90f42f7486d59f6880e434d413c96",
       "placement": "before-head-close"
     },
     "ege-profil/trainers/applied-t910.html": {
@@ -5376,8 +5376,8 @@
     },
     {
       "previousBaseSha": "66acbc4c14b13193f1672031ec24f4322122865a",
-      "sourceBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
-      "task": "docs/tasks/PROFILE_FINANCE_WRITTEN_20261117.md",
+      "sourceBaseSha": "a6cd213e99ae13b5d691a50914a6bf5e4d530051",
+      "task": "docs/tasks/PROFILE_EQUATIONS_ROOT_SELECTION_20261115.md",
       "changedPaths": [
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
