@@ -126,7 +126,11 @@ function bindSubmit(id,fn){
  });
 }
 function recentTrace(r,review){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p>${review?'<p id="proof-help-history" hidden></p>':''}</details>`;}
-function reviewCount(review,r){return review.criteria.reduce((count,_,i)=>count+Number(r.proofChecks.includes(i)),0);}
+const {normalizedProof,currentProofChecks}=API;
+function reviewCount(review,r){
+ const checks=currentProofChecks(r);
+ return review.criteria.reduce((count,_,i)=>count+Number(checks.includes(i)),0);
+}
 function parameterProofView(review,r,nextLink){
  const catalog=root.ProfileAlphabetCatalog,skill=catalog?.index['parameter-methods']?.skills[review.skill];
  const back=(root.MathExamTrainerOffline?'/ege-profil/part-two/':root.location.pathname)+root.location.search+root.location.hash;
@@ -138,7 +142,7 @@ function parameterProofView(review,r,nextLink){
    <p>Отметьте пункты, для которых нашли довод в своём тексте. Остальные можно дописать после подсказки.</p>
    <ol class="proof-review-list">${review.criteria.map(([title,criterion,hint],i)=>`
     <li>
-     <label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
+     <label><input type="checkbox" data-proof-check="${i}" disabled><span><strong>${esc(title)}</strong>${esc(criterion)}</span></label>
      <details data-proof-help="${proofHintStart+i}"><summary aria-label="Подсказка к пункту «${esc(title)}»">Подсказка</summary><p class="hint">${esc(hint)}</p></details>
     </li>`).join('')}
    </ol>
@@ -154,13 +158,12 @@ function parameterProofView(review,r,nextLink){
 }
 function proofView(task,r,review,nextLink){
  if(!task.proof)return '';
- const criteria=review?parameterProofView(review,r,nextLink):`<details class="proof-criteria"><summary>Критерии самопроверки</summary><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" ${r.proofChecks.includes(i)?'checked':''}><span>${c}</span></label>`).join('')}</div></details>`;
+ const criteria=review?parameterProofView(review,r,nextLink):`<p id="proof-sync-warning" class="caption" role="status" hidden>Обоснование изменилось в другой вкладке. Можно скопировать текст на экране или открыть сохранённый вариант.</p><button type="button" id="proof-open-saved" class="button quiet" hidden>Открыть сохранённое обоснование</button><details class="proof-criteria"><summary>Критерии самопроверки</summary><p id="proof-needs-draft" class="caption">Запишите хотя бы один довод, чтобы отметить пункты.</p><div class="checklist">${task.proof.criteria.map((c,i)=>`<label><input type="checkbox" data-proof-check="${i}" disabled><span>${c}</span></label>`).join('')}</div></details>`;
  return `<section class="panel" aria-labelledby="proof-heading"><h2 id="proof-heading">Ваше обоснование</h2><p>${task.proof.prompt}</p><label class="field"><span>Запишите ход решения</span><textarea id="proof-draft" maxlength="12000" placeholder="Почему выбранный способ работает? Какие ограничения проверены?"></textarea></label>${criteria}<p class="proof-status"><strong>Обоснование требует проверки.</strong> ${review?'Ответы сверяет тренажёр. Полноту доводов оцениваете вы по своему тексту.':'Галочки — ваша самопроверка; они не подтверждают правильность доказательства автоматически.'}</p></section>`;
 }
-function updateProofReview(review,r,staleDraft){
+function updateProofReview(review,r,staleDraft,ready){
  const reviewPanel=document.getElementById('proof-review'),instruction=document.getElementById('proof-review-instruction');
- const draft=document.getElementById('proof-draft');
- const attempted=hasFinalAttempt(r),ready=attempted&&!!draft.value.trim()&&!staleDraft;
+ const attempted=hasFinalAttempt(r);
  reviewPanel.hidden=!ready;
  if(!ready)reviewPanel.open=false;
  instruction.hidden=ready;
@@ -178,38 +181,78 @@ function updateProofReview(review,r,staleDraft){
   history.textContent=opened.length?`Помощь к обоснованию — ${opened.join(', ')}.`:'';
  }
 }
-function bindProof(task,review,r,isCurrent){
+function bindProof(task,review,r,isCurrent,conflictingDraft){
  const draft=document.getElementById('proof-draft');
+ if(!draft)return;
  const inputs=main.querySelectorAll('[data-proof-check]');
+ const syncWarning=document.getElementById('proof-sync-warning');
+ const openSaved=document.getElementById('proof-open-saved');
+ const needsDraft=document.getElementById('proof-needs-draft');
  let savedProof=r.drafts.proof;
- if(draft)draft.value=savedProof;
+ draft.value=conflictingDraft??savedProof;
+ draft.readOnly=conflictingDraft!==null;
+ function captureProofConflict(storedProof){
+  if(!draft.isConnected)return null;
+  const visible=draft.value,stored=normalizedProof(storedProof);
+  const conflict=draft.readOnly||stored!==normalizedProof(savedProof);
+  return conflict&&normalizedProof(visible)!==stored?visible:null;
+ }
  function refresh(record){
-  if(!review||!isCurrent()||!draft.isConnected)return;
-  const staleDraft=record.drafts.proof!==savedProof;
-  if(!staleDraft&&draft.value!==savedProof)return;
+  if(!isCurrent()||!draft.isConnected)return;
+  const stored=normalizedProof(record.drafts.proof),shown=normalizedProof(draft.value);
+  const staleDraft=stored!==normalizedProof(savedProof)||(draft.readOnly&&shown!==stored);
+  if(!staleDraft&&shown!==stored)return;
+  const ready=!staleDraft&&!!shown&&(!review||hasFinalAttempt(record));
+  const checks=ready?currentProofChecks(record):[];
   draft.readOnly=staleDraft;
-  inputs.forEach(input=>{input.disabled=staleDraft;input.checked=!staleDraft&&record.proofChecks.includes(Number(input.dataset.proofCheck));});
-  updateProofReview(review,record,staleDraft);
+  inputs.forEach(input=>{input.disabled=!ready;input.checked=checks.includes(Number(input.dataset.proofCheck));});
+  if(review)updateProofReview(review,record,staleDraft,ready);
+  else{
+   syncWarning.hidden=!staleDraft;
+   openSaved.hidden=!staleDraft;
+   needsDraft.hidden=ready||staleDraft;
+  }
  }
  bind('proof-draft','input',event=>{
+  if(draft.readOnly)return;
   const value=event.target.value;
   store.patch(task.id,record=>{
-   if(review&&record.drafts.proof!==savedProof)return false;
-   if(review&&record.drafts.proof.trim()!==value.trim())record.proofChecks=[];
+   const stored=normalizedProof(record.drafts.proof);
+   if(stored!==normalizedProof(savedProof))return false;
+   if(stored!==normalizedProof(value)){
+    record.proofChecks=[];
+    delete record.proofReviewSnapshot;
+   }
    record.drafts.proof=value;
    savedProof=value;
   }).then(refresh);
  });
  inputs.forEach(input=>input.addEventListener('change',()=>{
   const index=Number(input.dataset.proofCheck),checked=input.checked;
-  const proof=draft.value;
+  const proof=normalizedProof(draft.value);
   store.patch(task.id,record=>{
-   if(review&&(!hasFinalAttempt(record)||!proof.trim()||record.drafts.proof!==proof))return false;
-   record.proofChecks=record.proofChecks.filter(i=>i!==index);
-   if(checked)record.proofChecks.push(index);
+   if(!proof||normalizedProof(savedProof)!==proof||normalizedProof(record.drafts.proof)!==proof||(review&&!hasFinalAttempt(record)))return false;
+   const checks=currentProofChecks(record);
+   if(checked===checks.includes(index))return false;
+   record.proofChecks=checked?[...checks,index]:checks.filter(i=>i!==index);
+   if(record.proofChecks.length)record.proofReviewSnapshot={proof,checks:[...record.proofChecks]};
+   else delete record.proofReviewSnapshot;
   }).then(refresh);
  }));
- if(!review)return refresh;
+ async function restoreDraft(){
+  await store.flush();
+  if(!isCurrent()||!draft.isConnected)return false;
+  const saved=store.read(task.id);
+  if(!draft.readOnly&&normalizedProof(saved.drafts.proof)===normalizedProof(savedProof))return false;
+  draft.value=savedProof=saved.drafts.proof;
+  refresh(saved);
+  draft.focus();
+  return true;
+ }
+ bind('proof-open-saved','click',restoreDraft);
+ refresh(r);
+ const hooks={refreshProof:refresh,captureProofConflict};
+ if(!review)return hooks;
  function recordHelp(index){
   return store.patch(task.id,record=>{
    record.helped=true;
@@ -217,15 +260,7 @@ function bindProof(task,review,r,isCurrent){
   }).then(refresh);
  }
  bind('proof-jump','click',async()=>{
-  await store.flush();
-  if(!isCurrent()||!draft.isConnected)return;
-  const saved=store.read(task.id);
-  if(saved.drafts.proof!==savedProof){
-   draft.value=savedProof=saved.drafts.proof;
-   refresh(saved);
-   draft.focus();
-   return;
-  }
+  if(await restoreDraft()||!isCurrent()||!draft.isConnected)return;
   const panel=document.getElementById('proof-review');
   if(panel.hidden)draft.focus();
   else{panel.open=true;panel.querySelector('summary').focus();}
@@ -246,8 +281,7 @@ function bindProof(task,review,r,isCurrent){
  bind('proof-skill','auxclick',event=>{
   if(event.button===1)recordHelp(proofSkillHint);
  });
- refresh(r);
- return refresh;
+ return hooks;
 }
 function nextPractice(lesson,task){
  return lesson.tasks.slice(3).find(t=>{const r=store.read(t.id);return t.id!==task.id&&!r.completed&&!r.helped;});
@@ -266,13 +300,16 @@ function completion(item,r,mode,nextIndependent,review){
  return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${groupURL(lesson.exam)}">Все темы · ${esc(labelFor(lesson.exam))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
 }
 function guidedView(task,r){const stepIndex=r.solvedSteps.length,step=task.steps[stepIndex];return `<section class="panel"><h2>Решение по шагам</h2>${r.solvedSteps.length?`<ol class="steps">${r.solvedSteps.map(i=>`<li class="step-done">${task.steps[i].prompt}<br><strong>${task.steps[i].explanation}</strong></li>`).join('')}</ol>`:''}${step?`<form id="step-form"><p class="eyebrow">Шаг ${stepIndex+1} из ${task.steps.length}</p><label class="field"><span>${step.prompt}</span><input id="step-answer" type="text" maxlength="500" autocomplete="off" value="${esc(r.drafts.steps[stepIndex]||'')}"></label><div class="actions"><button type="submit">Проверить шаг</button><button type="button" id="step-hint" class="quiet">Нужна подсказка</button></div></form>${r.hints.includes(stepIndex)?`<p class="hint">${step.hint}</p>`:''}`:'<p class="feedback ok">Шаги пройдены. Теперь соберите итоговые ответы ниже.</p>'}</section>`;}
-async function taskView(item,mode,viewVersion=routeVersion){
+async function taskView(item,mode,viewVersion=routeVersion,previous=active){
  if(viewVersion!==routeVersion)return;
- const {lesson,task,index}=item;active={item,mode};
+ const {lesson,task,index}=item;
+ const captureProofConflict=previous?.item.task.id===task.id?previous.captureProofConflict:null;
+ active={item,mode,captureProofConflict};
  if(mode!=='independent')await store.patch(task.id,r=>{r.helped=true;});
  if(viewVersion!==routeVersion)return;
  const isCurrent=()=>viewVersion===routeVersion&&active?.item.task.id===task.id&&active.mode===mode;
  const r=store.read(task.id),displayedStep=r.solvedSteps.length,independentEligible=index>=3;
+ const conflictingDraft=captureProofConflict?.(r.drafts.proof)??null;
  const openFinal=mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
  const finalFields=openFinal?[openFinal]:task.final;
  const finalDraft=openFinal?[r.drafts.openFinal]:r.drafts.final;
@@ -323,8 +360,8 @@ async function taskView(item,mode,viewVersion=routeVersion){
   });
  }));
  bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
- const refreshProof=bindProof(task,review,r,isCurrent);
- if(review)active.refreshProof=refreshProof;
+ const proofBindings=bindProof(task,review,r,isCurrent,conflictingDraft);
+ Object.assign(active,proofBindings);
  bindSubmit('final-form',async()=>{
   const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
   const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
@@ -366,7 +403,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
     trace.innerHTML=recentTrace(updated,review);
     if(wasOpen)trace.querySelector('details').open=true;
    }
-   refreshProof(updated);
+   proofBindings?.refreshProof(updated);
   }
  });
  bindSubmit('step-form',async()=>{
@@ -396,7 +433,7 @@ async function taskView(item,mode,viewVersion=routeVersion){
  bind('request-help','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(99))s.hints.push(99);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.');});
  bind('show-solution','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solution=true;s.solutionSteps=Math.max(1,s.solutionSteps);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Разбор открыт; это условие отмечено как работа с опорой.');});
  bind('solution-next','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solutionSteps=Math.min(task.solution.length,s.solutionSteps+1);});await taskView(item,mode,viewVersion);});
- main.querySelectorAll('.task-theory,.prerequisites,.proof-criteria,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
+ main.querySelectorAll('.task-theory,.prerequisites,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
 }
 function parameterProofProgress(){
  let drafts=0,reviewed=0,resume=null;
@@ -413,7 +450,7 @@ function parameterProofProgress(){
 }
 function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию. Финансовая подготовка №16 сохраняется в своём курсе.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
 function missing(){main.innerHTML='<section class="panel"><h1>Такое условие не найдено</h1><p>Выберите тему из карты курса. Сохранённая работа остаётся в браузере.</p><a class="button" href="#map">Открыть карту</a></section>';}
-async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
+async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;const previous=active;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version,previous);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
 root.addEventListener('hashchange',async()=>{
  const hash=root.location.hash,[page,id]=hash.slice(1).split('/');
  const lessonId=page==='task'?byTask.get(id)?.lesson.id:page==='lesson'?id:'';

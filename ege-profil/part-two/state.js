@@ -3,6 +3,16 @@
 const PREFIX='mathExam.profile.partTwo.v1.';
 const safe=id=>typeof id==='string'&&/^[a-z0-9_-]{1,100}$/.test(id);
 const plain=x=>!!x&&typeof x==='object'&&!Array.isArray(x);
+const normalizedProof=value=>value.replace(/\r\n?/g,'\n').trim();
+function proofFieldsMatch(record){
+ const proof=normalizedProof(record.drafts.proof),snapshot=record.proofReviewSnapshot,checks=record.proofChecks;
+ return !!proof&&snapshot?.proof===proof&&Array.isArray(snapshot.checks)&&snapshot.checks.length===checks.length&&
+  snapshot.checks.every((index,position)=>index===checks[position]);
+}
+function proofReviewCurrent(record){
+ return !Number.isInteger(record.updatedAt)&&record.proofReviewSnapshot?.savedAt===record.updatedAt&&proofFieldsMatch(record);
+}
+function currentProofChecks(record){return proofReviewCurrent(record)?record.proofChecks:[];}
 const fresh=id=>({version:1,taskId:id,drafts:{final:[],steps:[],proof:''},solvedSteps:[],hints:[],proofChecks:[],attempts:[],attemptCount:0,wrong:0,helped:false,solution:false,solutionSteps:0,completed:false,independent:false,updatedAt:0});
 function valid(v,id){return plain(v)&&v.version===1&&v.taskId===id&&plain(v.drafts)&&(v.drafts.openFinal===undefined||typeof v.drafts.openFinal==='string'&&v.drafts.openFinal.length<=500)&&Array.isArray(v.drafts.final)&&v.drafts.final.length<=20&&v.drafts.final.every(x=>typeof x==='string'&&x.length<=500)&&Array.isArray(v.drafts.steps)&&v.drafts.steps.length<=100&&v.drafts.steps.every(x=>typeof x==='string'&&x.length<=500)&&typeof v.drafts.proof==='string'&&v.drafts.proof.length<=12000&&['solvedSteps','hints','proofChecks'].every(k=>Array.isArray(v[k])&&v[k].length<=100&&v[k].every(n=>Number.isInteger(n)&&n>=0&&n<100))&&v.solvedSteps.every((n,i)=>n===i)&&Array.isArray(v.attempts)&&v.attempts.length<=60&&v.attempts.every(a=>plain(a)&&typeof a.id==='string'&&typeof a.kind==='string'&&Array.isArray(a.answers)&&a.answers.length<=20&&a.answers.every(x=>typeof x==='string'&&x.length<=500)&&typeof a.correct==='boolean'&&typeof a.helped==='boolean'&&Number.isFinite(a.at))&&['attemptCount','wrong','updatedAt','solutionSteps'].every(k=>Number.isFinite(v[k])&&v[k]>=0)&&['helped','solution','completed','independent'].every(k=>typeof v[k]==='boolean');}
 function create(storage,options={}){
@@ -17,7 +27,20 @@ function create(storage,options={}){
  }
  function structured(v){return JSON.parse(JSON.stringify(v));}
  function patch(id,change){
-  const run=async()=>{const action=()=>{const v=read(id);if(change(v)===false)return read(id);v.updatedAt=Date.now();if(!valid(v,id))throw Error('Invalid work update');memory.set(id,v);if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}return structured(v);};
+  const run=async()=>{const action=()=>{
+    const v=read(id),previousReview=v.proofReviewSnapshot,hadCurrentReview=proofReviewCurrent(v);
+    if(change(v)===false)return read(id);
+    const keepReview=(v.proofReviewSnapshot!==previousReview||hadCurrentReview)&&proofFieldsMatch(v);
+    // Earlier versions write integer milliseconds. A bound review uses a sub-millisecond
+    // stamp, so a write by an older tab is distinguishable even in the same millisecond.
+    v.updatedAt=Date.now()+(keepReview ? 0.5 : 0);
+    if(keepReview)v.proofReviewSnapshot.savedAt=v.updatedAt;
+    else delete v.proofReviewSnapshot;
+    if(!valid(v,id))throw Error('Invalid work update');
+    memory.set(id,v);
+    if(!blocked.has(id)){try{if(!storage)throw Error('No browser storage');storage.setItem(PREFIX+id,JSON.stringify(v));}catch(_){blocked.add(id);warn();}}
+    return structured(v);
+   };
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }
@@ -187,5 +210,5 @@ function summary(storage,lessons){
  }
  return result;
 }
-const api={create,valid,matches,openAnswer,recognize,canonical,summary,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
+const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalizedProof,currentProofChecks,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
