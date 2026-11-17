@@ -90,7 +90,9 @@ class GeneratorTests(unittest.TestCase):
         bootstrap = '<script src="/' + edition.prefix + 'edition-assets/bootstrap.js"></script>'
         self.assertEqual(page.count(bootstrap), 1)
         for asset in reviewed:
-            frozen = '/' + edition.prefix + asset + '?v=20261109'
+            # PR 642 advanced only the public map view's resource version.
+            version = '20261117' if asset == 'oge/learning-map-view.js' else '20261109'
+            frozen = '/' + edition.prefix + asset + '?v=' + version
             self.assertEqual(page.count(frozen), 1)
             self.assertNotIn('"/' + asset, page)
             self.assertLess(page.index(bootstrap), page.index(frozen))

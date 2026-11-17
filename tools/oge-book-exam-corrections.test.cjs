@@ -4,6 +4,7 @@ const {JSDOM,ResourceLoader,VirtualConsole}=require('jsdom');
 const {corrections,restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
+const {tyrePage,restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
 const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const root=path.resolve(__dirname,'..');
@@ -20,7 +21,8 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- const publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ const current=fs.readFileSync(path.join(root,file),'utf8');
+ const publicHtml=restorePublicNavigator(file,restoreTyreHints(file,current)).toString('utf8');
  let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,publicHtml)));
  if(file==='trainers/oge-task6-fractions.html'){
   html=restoreFractionMultiplicationStep(html);
@@ -42,6 +44,11 @@ function beforeMirror(file,source){
  assert.equal(sha(result),rule.baseSha256,'unreviewed changes outside board fragments');
  return result;
 }
+test('the book inverse rejects edits within either updated tyre renderer',()=>{
+ const html=fs.readFileSync(path.join(root,tyrePage),'utf8');
+ for(const start of ['function renderTask2(){','function renderTask5(){'])
+  assert.throws(()=>restoreTyreHints(tyrePage,html.replace(start,start+'\nvoid 0;')),/reviewed tyre renderer/);
+});
 for(const [file,rule]of Object.entries(corrections)){
  test(file+': exact inverse preserves the reviewed historical bytes',()=>{
   const current=currentPage(file);

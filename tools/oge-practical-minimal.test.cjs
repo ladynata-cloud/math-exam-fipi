@@ -1,4 +1,5 @@
 'use strict';
+const {restoreTyreHints}=require('./oge-tyre-hints-preservation.cjs');
 const retainedEngine=require('./oge-practical-retained-engine.cjs');
 const {restoreHistoricalBytes}=require('./oge-book-exam-corrections.cjs');
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm');
@@ -57,7 +58,8 @@ test('all inline engines match their reviewed snapshots outside explicit UI norm
   const html=fs.readFileSync(path.join(dir,name),'utf8');
   inline(html).forEach((s,i)=>new vm.Script(s,{filename:name+':'+i}));
   // Reverse only exact reviewed book corrections; historical hashes stay pinned.
-  const historical=restoreHistoricalBytes('trainers/oge-1-5-trainers/'+name,html);
+  const file='trainers/oge-1-5-trainers/'+name;
+  const historical=restoreHistoricalBytes(file,restoreTyreHints(file,html));
   const normalized=normalize(name,inline(historical).join('\n'));
   assert.equal(crypto.createHash('sha256').update(normalized).digest('hex'),ENGINE_HASHES[name],name);
  }
