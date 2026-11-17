@@ -1,6 +1,47 @@
 (function(){
  'use strict';
- var C=window.WorkshopCurriculum,M=window.WorkshopMath,S=window.WorkshopState,ids=C.lessons.map(function(l){return l.id;}),main=document.getElementById('main'),notice=document.getElementById('notice');
+ var main=document.getElementById('main'),notice=document.getElementById('notice');
+ // Cached workshop pages can load app.js and state.js from different releases.
+ if(main.dataset.workshopBoot)return;
+ main.dataset.workshopBoot='starting';
+ function readyState(){
+  var api=window.WorkshopState;
+  return api&&typeof api.checkpointVilenkin==='function'&&typeof api.restoreVilenkin==='function'&&typeof api.clearVilenkin==='function';
+ }
+ function loadState(event){
+  if(main.dataset.workshopBoot==='loading'||main.dataset.workshopBoot==='ready')return;
+  main.dataset.workshopBoot='loading';
+  main.setAttribute('aria-busy','true');
+  main.replaceChildren();
+  notice.textContent='Загружаем мастерскую…';
+  var script=document.createElement('script');
+  script.src=new URL('state.js?v=20261118-vilenkin-resume',window.location.href).href;
+  script.onload=script.onerror=function(){
+   script.onload=script.onerror=null;
+   script.remove();
+   main.removeAttribute('aria-busy');
+   if(readyState()){
+    notice.textContent='';
+    startWorkshop(window.WorkshopState);
+    if(event&&document.activeElement===document.body)main.focus({preventScroll:true});
+    return;
+   }
+   main.dataset.workshopBoot='failed';
+   notice.textContent='Не удалось загрузить мастерскую. Сохранённые записи останутся в этом браузере.';
+   var retry=document.createElement('button');
+   retry.type='button';
+   retry.id='retry-workshop-state';
+   retry.textContent='Повторить загрузку';
+   retry.addEventListener('click',loadState);
+   main.replaceChildren(retry);
+   if(document.activeElement===document.body||document.activeElement===main)retry.focus({preventScroll:true});
+  };
+  document.head.appendChild(script);
+ }
+ if(readyState())startWorkshop(window.WorkshopState);else loadState();
+ function startWorkshop(S){
+ main.dataset.workshopBoot='ready';
+ var C=window.WorkshopCurriculum,M=window.WorkshopMath,ids=C.lessons.map(function(l){return l.id;});
  var boardFrame=window.self!==window.top&&(/^(?:#lesson\/(?:m9|v[56]f-)|#(?:m9-check|m9-unit|v[56]-unit)\/|#course\/(?:makarychev9|vilenkin[56])$)/.test(location.hash)||['makarychev9','vilenkin5','vilenkin6'].includes(new URLSearchParams(location.search).get('course')));
  var restored=boardFrame?{state:S.blank(),warning:''}:S.load(localStorage,ids),state=restored.state,blocked=restored.blocked||false,session=null,returns=[],filter='',area='',teacher=S.teacherBlank(),filePurpose='',activeGroup='',assignmentCode='',flash='',teacherBlocked=false,lastDiagnostic=null;
  // A bounded history must not freeze practice at one seed after 3000 answers.
@@ -328,4 +369,5 @@
   var returnLink=document.createElement('a');returnLink.className='button quiet';returnLink.href='m9-exercises/index.html#'+exerciseReturn.replace('.','/');returnLink.textContent='← Вернуться к задаче и сохранённому шагу';main.parentNode.insertBefore(returnLink,main);
  }
  render();
+ }
 })();

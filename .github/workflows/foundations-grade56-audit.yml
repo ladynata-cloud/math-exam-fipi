@@ -2,7 +2,6 @@ name: Foundations and grades 5–6 — audited learning models
 on:
   pull_request:
     paths:
-      - 'school/index.html'
       - 'school/app.js'
       - 'school/state.js'
       - 'tools/workshop-vilenkin-resume.*.cjs'
@@ -23,7 +22,6 @@ on:
   push:
     branches: [main]
     paths:
-      - 'school/index.html'
       - 'school/app.js'
       - 'school/state.js'
       - 'tools/workshop-vilenkin-resume.*.cjs'
@@ -75,7 +73,20 @@ jobs:
         run: |
           node tools/foundations-grade56.browser.cjs
           node tools/grade56-attempts.browser.cjs
-          node tools/workshop-vilenkin-resume.browser.cjs
+      - name: Fetch the two previously published workshop scripts for the cache regression
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 7fe55249048e6cd2b88d1b2e6e8b459b7e480506
+          path: .ci-workshop-legacy
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /school/app.js
+            /school/state.js
+          persist-credentials: false
+      - name: Resume personal work with current and cached workshop scripts
+        env:
+          WORKSHOP_LEGACY_ROOT: ${{ github.workspace }}/.ci-workshop-legacy
+        run: node tools/workshop-vilenkin-resume.browser.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

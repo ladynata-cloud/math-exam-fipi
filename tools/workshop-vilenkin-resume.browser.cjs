@@ -204,6 +204,135 @@ async function exercise(page, origin) {
   assert.deepEqual(replaced.events, state.events);
 }
 
+const legacyRef = '7fe55249048e6cd2b88d1b2e6e8b459b7e480506';
+const legacyApp = '20261109-audit2';
+const legacyState = '20261109-audit1';
+const recoveryState = '20261118-vilenkin-resume';
+
+async function legacyFile(name) {
+  const file = 'school/' + name + '.js';
+  if (process.env.WORKSHOP_LEGACY_ROOT) {
+    return fs.readFile(path.join(process.env.WORKSHOP_LEGACY_ROOT, file));
+  }
+  return require('node:child_process').execFileSync('git', ['-C', root, 'show', legacyRef + ':' + file]);
+}
+
+async function mixedCache(page, origin) {
+  const state = await readState(page);
+  const initialDraft = state.vilenkinDrafts[fifth];
+  assert(initialDraft.savedInput);
+  assert.equal(state.skills[sixth].checks.length, 1);
+  const teacher = await page.evaluate(() => {
+    const cabinet = WorkshopState.teacherBlank();
+    cabinet.groups.push({ id: 'group-one', name: 'Проверочная группа' });
+    const serialized = JSON.stringify(cabinet);
+    localStorage.setItem(WorkshopState.TEACHER, serialized);
+    return serialized;
+  });
+  const [oldApp, oldState] = await Promise.all([legacyFile('app'), legacyFile('state')]);
+  const stableStatePath = '/school/state.js?v=' + legacyState;
+  const stableAppPath = '/school/app.js?v=' + legacyApp;
+  const recoveryPath = '/school/state.js?v=' + recoveryState;
+  let mode = 'current';
+  let failRecovery = true;
+  let releaseRecovery;
+  let requests = [];
+  // Count even reads: the previous state parser would discard newly introduced draft fields.
+  await page.addInitScript(() => {
+    window.workshopStorageCalls = [];
+    for (const method of ['getItem', 'setItem', 'removeItem', 'clear']) {
+      const original = Storage.prototype[method];
+      Storage.prototype[method] = function (...args) {
+        if (this === localStorage && (method === 'clear' ||
+          ['mathexam.workshop.v1', 'mathexam.workshop.teacher.v1'].includes(args[0]))) {
+          window.workshopStorageCalls.push({ method, key: args[0] });
+        }
+        return original.apply(this, args);
+      };
+    }
+  });
+  await page.route(/\/school\/(?:state|app)\.js(?:\?|$)/, async route => {
+    const url = new URL(route.request().url());
+    const file = url.pathname + url.search;
+    requests.push(file);
+    if (mode === 'old-app' && file === stableAppPath) return route.fulfill({contentType: 'application/javascript', body: oldApp});
+    if (mode === 'old-state' && file === stableStatePath) return route.fulfill({contentType: 'application/javascript', body: oldState});
+    if (mode === 'old-state' && file === recoveryPath) {
+      if (failRecovery) return route.abort('failed');
+      if (releaseRecovery) await releaseRecovery;
+    }
+    return route.continue();
+  });
+
+  // Verify the unchanged shell URLs and that an up-to-date pair incurs no recovery request.
+  const url = (grade, route) => origin + '/school/index.html?course=vilenkin' + grade + '#' + route;
+  await page.goto(url(6, 'course/vilenkin6'));
+  await page.locator('main h1').waitFor();
+  assert.deepEqual(requests.sort(), [stableStatePath, stableAppPath].sort());
+
+  // A cached prior UI can still read and save a record validated by the new state library.
+  mode = 'old-app';
+  requests = [];
+  await page.goto(url(5, 'lesson/v5f-place-build'));
+  await page.locator('#answer').waitFor();
+  assert.deepEqual(requests.sort(), [stableStatePath, stableAppPath].sort());
+  const oldUi = await readState(page);
+  assert.equal(oldUi.last.skill, 'v5f-place-build');
+  assert.deepEqual(oldUi.vilenkinDrafts[fifth], initialDraft);
+  assert.deepEqual(oldUi.skills, state.skills);
+  assert.deepEqual(oldUi.events, state.events);
+  const baseline = await page.evaluate(() => localStorage.getItem(WorkshopState.KEY));
+
+  // Force a full document load with the old state. Failure must leave both personal records intact.
+  mode = 'old-state';
+  requests = [];
+  await page.goto(url(6, 'course/vilenkin6'));
+  const retry = page.getByRole('button', {name: 'Повторить загрузку', exact: true});
+  await retry.waitFor();
+  assert.deepEqual(await page.evaluate(() => window.workshopStorageCalls), []);
+  assert.equal(await page.locator('#answer').count(), 0);
+  assert.match(await page.locator('#notice[role="status"]').innerText(), /запис[ьи]/i);
+  assert.equal(requests.filter(file => file === recoveryPath).length, 1);
+  // Read through the Storage named properties to keep the instrumentation focused on the app.
+  assert.deepEqual(await page.evaluate(() => [
+    localStorage['mathexam.workshop.v1'], localStorage['mathexam.workshop.teacher.v1']
+  ]), [baseline, teacher]);
+
+  failRecovery = false;
+  let finishLoading;
+  releaseRecovery = new Promise(resolve => { finishLoading = resolve; });
+  const requestStarted = page.waitForRequest(request => new URL(request.url()).search === '?v=' + recoveryState);
+  await retry.focus();
+  await page.keyboard.press('Enter');
+  await requestStarted;
+  try {
+    assert.equal(await page.locator('main').getAttribute('aria-busy'), 'true');
+    assert.deepEqual(await page.evaluate(() => window.workshopStorageCalls), []);
+  } finally {
+    finishLoading();
+  }
+  await page.locator('main h1').waitFor();
+  assert.equal(requests.filter(file => file === recoveryPath).length, 2);
+  assert.equal(await retry.count(), 0);
+  assert.deepEqual((await readState(page)).events, state.events);
+  assert.equal(await page.evaluate(() => localStorage['mathexam.workshop.teacher.v1']), teacher);
+
+  // Complete one real independent task after retry. A double initialization would award it twice.
+  await page.goto(url(6, 'lesson/' + sixth));
+  await page.locator('[data-cmd="mode"][data-value="check"]').click();
+  await submit(page, await answer(page, null));
+  const result = await readState(page);
+  assert.equal(result.events.length, state.events.length + 1);
+  assert.equal(result.events.at(-1).independent, true);
+  assert.equal(result.skills[sixth].checks.length, 2);
+
+  // The fifth-grade learner can pick up their original input after the successful repair.
+  await page.goto(url(5, 'course/vilenkin5'));
+  await command(page, 'resume-vilenkin').click();
+  assert.equal(await page.locator('#answer').inputValue(), initialDraft.savedInput);
+  assert.equal((await readState(page)).events.length, result.events.length);
+}
+
 (async () => {
   const server = await startServer();
   const origin = 'http://127.0.0.1:' + server.address().port;
@@ -217,8 +346,9 @@ async function exercise(page, origin) {
     page.on('pageerror', error => errors.push(error.message));
     await page.context().route('**/*', route => new URL(route.request().url()).origin === origin ? route.continue() : route.abort());
     await exercise(page, origin);
+    await mixedCache(page, origin);
     assert.deepEqual(errors, []);
-    console.log('PASS Vilenkin 5/6 workshop resume: saved steps, per-skill input, hints, retries, independent credit, board isolation and actual downloads');
+    console.log('PASS Vilenkin 5/6 workshop resume: saved steps, per-skill input, hints, retries, independent credit, board isolation, actual downloads and both mixed-cache combinations');
   } finally {
     try { if (browser) await browser.close(); } finally { server.close(); }
   }
