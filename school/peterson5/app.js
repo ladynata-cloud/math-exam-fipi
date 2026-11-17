@@ -1,7 +1,45 @@
 (function () {
 'use strict';
-const D=window.PetersonCourse,M=window.PetersonMath,main=document.getElementById('main');
-if(!D||!M){main.innerHTML='<h1>Не все файлы курса загрузились</h1><p>Обнови страницу, чтобы открыть курс.</p>';return;}
+const main=document.getElementById('main');
+let loading=false;
+function missingAssets(){
+ const math=window.PetersonMath,lessons=window.PetersonCourse?.lessons,missing=[];
+ const expected=['letter-product','unlike-fraction-subtract','decimal-place-subtract'];
+ if(!Array.isArray(math?.skills)||!expected.every(id=>math.skills.some(skill=>skill.id===id)))
+  missing.push('math.js?v=p5-transfer-20261118');
+ const mapped=new Set();
+ for(const lesson of Array.isArray(lessons)?lessons:[]){
+  for(const task of lesson.tasks||[]){
+   if([1,2,3].includes(task.transfer?.level))mapped.add(task.transfer.skill);
+  }
+ }
+ if(!expected.every(id=>mapped.has(id)))
+  missing.push('data.js?v=p5-transfer-20261118');
+ return missing;
+}
+function loadScript(src){
+ return new Promise(resolve=>{
+  const script=document.createElement('script');
+  script.src=src;
+  script.onload=script.onerror=()=>{script.remove();resolve();};
+  document.head.appendChild(script);
+ });
+}
+function openCourse(){
+ if(loading||window.PetersonApp)return;
+ const missing=missingAssets();
+ if(!missing.length){startCourse();return;}
+ loading=true;
+ main.innerHTML='<h1>Загружаем задания</h1><p role="status">Курс обновляется.</p>';
+ Promise.allSettled(missing.map(loadScript)).then(()=>{
+  loading=false;
+  if(!missingAssets().length){startCourse();return;}
+  main.innerHTML='<h1>Не удалось загрузить обновление курса</h1><p>Проверь подключение к интернету и попробуй ещё раз. Сохранённые ответы останутся в этом браузере.</p><button type="button" id="retry-course-assets">Повторить загрузку</button>';
+  document.getElementById('retry-course-assets').onclick=openCourse;
+ });
+}
+function startCourse(){
+const D=window.PetersonCourse,M=window.PetersonMath;
 const KEY='mathexam.peterson5.v1', blank=()=>({version:1,tasks:{},practice:{},last:null,origin:null});
 let state=blank(),writable=true,active=null,cleanup=null;
 const e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -212,4 +250,6 @@ function route(){
 }
 window.addEventListener('hashchange',route);route();
 window.PetersonApp={getState:()=>JSON.parse(JSON.stringify(state)),format:fmt,route,validateState:sanitizeState,check,findNumber,storageKey:KEY};
+}
+openCourse();
 })();

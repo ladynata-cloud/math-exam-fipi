@@ -351,7 +351,7 @@ const scenarios = {
     const touch = await plottedPoints(page, '#taskFig svg', 'line[stroke="rgba(88,140,190,.28)"]', 'circle[fill="#C22F2A"]');
     assert.deepEqual(touch.points, [[2, -0.5]]);
     await page.locator('#taskCheck').click();
-    assert.match(await page.locator('#taskFb').innerText(), /Впишите ответ числом/);
+    assert.match(await page.locator('#taskFb').innerText(), /Введите число или дробь/);
     await page.locator('#taskAnswer').fill('2');
     await page.locator('#taskCheck').click();
     assert(await page.locator('#taskFb.bad').isVisible(), 'the old slope is rejected');
