@@ -2,6 +2,10 @@ name: Foundations and grades 5–6 — audited learning models
 on:
   pull_request:
     paths:
+      - 'school/index.html'
+      - 'school/app.js'
+      - 'school/state.js'
+      - 'tools/workshop-vilenkin-resume.*.cjs'
       - 'school/models.js'
       - 'school/style.css'
       - 'school/peterson5/**'
@@ -19,6 +23,10 @@ on:
   push:
     branches: [main]
     paths:
+      - 'school/index.html'
+      - 'school/app.js'
+      - 'school/state.js'
+      - 'tools/workshop-vilenkin-resume.*.cjs'
       - 'school/models.js'
       - 'school/style.css'
       - 'school/peterson5/**'
@@ -57,6 +65,7 @@ jobs:
           node --max-old-space-size=384 school/peterson5/test-inquiry.cjs
           node tools/peterson-grade56-attempt-feedback.test.cjs
           node tools/vilenkin6-course/textbook-dom.cjs
+          node tools/workshop-vilenkin-resume.test.cjs
           node tools/workshop-state.test.cjs
           node tools/foundations-workshop-models.test.cjs
           node tools/vilenkin5-course/inquiry.test.cjs
@@ -66,6 +75,7 @@ jobs:
         run: |
           node tools/foundations-grade56.browser.cjs
           node tools/grade56-attempts.browser.cjs
+          node tools/workshop-vilenkin-resume.browser.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
