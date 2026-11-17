@@ -38,7 +38,35 @@
   "trainers/oge-task8-powers-roots.html": [
     {
       "before": "",
-      "after": "\n// Shared actions address bank positions. Keep the original position in room mode.\nconst rootProductAnalogue={\"id\": \"9.4a\", \"type\": \"rootprod3\", \"p\": {\"k1\": 4, \"m1\": 5, \"k2\": 3, \"m2\": 6, \"m3\": 30}, \"ans\": [360, 1]};\nif(window.OgeCourseSharedMode) BANK.push(rootProductAnalogue);\nelse BANK[BANK.findIndex(task=>task.id===\"9.4\")]=rootProductAnalogue;\n"
+      "after": "const productPower=(b,left,right,outer)=>par(pw(b,left)+dot+pw(b,right))+sup(outer);\n"
+    },
+    {
+      "before": "",
+      "after": " pow_products_quotient:p=>fr(productPower(p.b,...p.numerator), productPower(p.b,...p.denominator)),\n"
+    },
+    {
+      "before": "",
+      "after": "  case \"pow_products_quotient\":{\n    const [topLeft,topRight,topOuter]=p.numerator, [bottomLeft,bottomRight,bottomOuter]=p.denominator;\n    const topSum=topLeft+topRight, bottomSum=bottomLeft+bottomRight;\n    const topExponent=topSum*topOuter, bottomExponent=bottomSum*bottomOuter;\n    const exponent=topExponent-bottomExponent, value=fpow(Fr(p.b),exponent);\n    st.push(S('Сначала упрости произведения в обеих скобках. Какой показатель получится в каждой?',\n      [I(topSum,'числитель'),I(bottomSum,'знаменатель')],\n      'При умножении степеней с одинаковым основанием показатели складываются.',\n      `${M(pw(p.b,topSum))} в верхней скобке, ${M(pw(p.b,bottomSum))} в нижней.`,\n      [TP(0,topLeft*topRight,TM.addNotMul),TP(1,bottomLeft*bottomRight,TM.addNotMul)]));\n    st.push(S(`Теперь возведи обе степени в степень: ${M(fr(par(pw(p.b,topSum))+sup(topOuter),par(pw(p.b,bottomSum))+sup(bottomOuter)))}. Найди два показателя.`,\n      [I(topExponent,'числитель'),I(bottomExponent,'знаменатель')],\n      'При возведении степени в степень показатели перемножаются.',\n      `${M(fr(pw(p.b,topExponent),pw(p.b,bottomExponent)))}.`,\n      [TP(0,topSum+topOuter,TM.mulNotAdd),TP(1,bottomSum+bottomOuter,TM.mulNotAdd)]));\n    st.push(S(`Раздели степени с одинаковым основанием: ${M(fr(pw(p.b,topExponent),pw(p.b,bottomExponent))+' = '+pw(p.b,'?'))}.`,\n      [I(exponent,'показатель')],`${topExponent} − ${bottomExponent} = ?`,`${M(pw(p.b,exponent))}.`,\n      [TP(0,topExponent+bottomExponent,TM.sub)]));\n    st.push(S(`Вычисли ${M(pw(p.b,exponent))}.`,[I(value,'ответ')],\n      exponent<0?'Степень с отрицательным показателем — обратное число.':'Вычисли степень с получившимся показателем.',`${V(value)}.`,\n      [exponent!==0&&TP(0,fpow(Fr(p.b),-exponent),TM.recip),TP(0,p.b*exponent,TM.baseTimesExp)]));\n    break;}\n"
+    },
+    {
+      "before": "",
+      "after": "\n// Shared actions address bank positions. Keep the original position in room mode.\nconst rootProductAnalogue={\"id\": \"9.4a\", \"type\": \"rootprod3\", \"p\": {\"k1\": 4, \"m1\": 5, \"k2\": 3, \"m2\": 6, \"m3\": 30}, \"ans\": [360, 1]};\nif(window.OgeCourseSharedMode) BANK.push(rootProductAnalogue);\nelse BANK[BANK.findIndex(task=>task.id===\"9.4\")]=rootProductAnalogue;\n// Appended on both surfaces so existing bank indices keep their conditions.\nBANK.push(\n  {id:\"pow-products-quotient-01\",type:\"pow_products_quotient\",p:{b:3,numerator:[2,3,5],denominator:[3,5,3]},ans:[3,1]},\n  {id:\"pow-products-quotient-02\",type:\"pow_products_quotient\",p:{b:5,numerator:[2,3,3],denominator:[1,3,4]},ans:[1,5]},\n  {id:\"pow-products-quotient-03\",type:\"pow_products_quotient\",p:{b:2,numerator:[1,5,4],denominator:[2,6,3]},ans:[1,1]}\n);\n"
+    },
+    {
+      "before": " {k:\"pow1\", name:\"Степени: одно основание\", types:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\"], nums:\"№15–17, 22–24\", learn:\"p2\", fam:\"A\"},\n",
+      "after": " {k:\"pow1\", name:\"Степени: одно основание\", types:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\",\"pow_products_quotient\"], nums:\"№15–17, 22–24\", learn:\"p2\", fam:\"A\"},\n"
+    },
+    {
+      "before": "",
+      "after": " pow_products_quotient(){\n   const [topSum,topOuter,bottomSum,bottomOuter]=pick([[5,5,8,3],[7,3,5,4],[5,4,7,3],[7,3,6,4],[6,3,5,4],[6,4,8,3],[5,5,6,4],[6,4,5,5]]);\n   const exponent=topSum*topOuter-bottomSum*bottomOuter;\n   const b=pick(exponent<0?[2,5]:[2,3,5,7]);\n   const topLeft=ri(1,topSum-1), bottomLeft=ri(1,bottomSum-1);\n   return{type:\"pow_products_quotient\",p:{b,numerator:[topLeft,topSum-topLeft,topOuter],denominator:[bottomLeft,bottomSum-bottomLeft,bottomOuter]}};\n },\n"
+    },
+    {
+      "before": " {k:\"A\",name:\"Степени: одно основание\",gens:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\"],learn:\"p2\"},\n",
+      "after": " {k:\"A\",name:\"Степени: одно основание\",gens:[\"pow_mul_div\",\"pow_pow_div\",\"pow_mul_pow\",\"pow_over_num\",\"recip_pow\",\"pow_var_div\",\"pow_products_quotient\"],learn:\"p2\"},\n"
+    },
+    {
+      "before": "160 задач для подготовки к ОГЭ 2027</h2>\n    <p>Подборка Math4Skill по заданию 8, все 32 сюжета",
+      "after": "${BANK.length} задачи для подготовки к ОГЭ 2027</h2>\n    <p>Задания по материалам Math4Skill и авторские аналоги MathExam"
     }
   ],
   "trainers/oge-task9-equations.html": [

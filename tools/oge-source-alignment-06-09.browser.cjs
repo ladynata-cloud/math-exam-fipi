@@ -63,6 +63,18 @@ async function roots(page) {
   const card = page.locator('#marGrid > .mtask:not([hidden])');
   assert.equal((await card.locator('.expr').innerText()).replace(/\s+/g,''),'45·36·30');
   await answer(card,'input','Проверить','630','360','.fb');
+  for (const record of tasks[2].statgradAnalogues) {
+    await showControls(pager);
+    await pager.selectOption(String(record.index));
+    const expression = card.locator('.expr .fr');
+    const numerator = expression.locator(':scope > .fn');
+    const denominator = expression.locator(':scope > .fd');
+    for (const [half,exponents] of [[numerator,record.numerator],[denominator,record.denominator]]) {
+      assert.match(await half.innerText(),/·/);
+      assert.deepEqual(await half.locator('sup').allTextContents(),exponents.filter(value=>value!==1).map(String));
+    }
+    await answer(card,'input','Проверить','999',record.answer,'.fb');
+  }
 }
 async function equations(page) {
   const card = page.locator('#mara-list > .task-card:not([hidden])');

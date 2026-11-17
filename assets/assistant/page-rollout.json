@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "85ba51bf6ef9a801a757d837cbca7e847d4818ab",
+  "baseSha": "ef9b66f0b26c9d284a47db134a3af8410c508ee5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -3028,8 +3028,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task8-powers-roots.html": {
-      "beforeSha256": "e4aa0a44e26c2818947f251b195d36ceca28f72be81e90083cce3e2b3ef59e62",
-      "afterSha256": "1a570c69536b76514128d3cca9e5c66a3a8988f047f9650ff3108ccfa38e77a2",
+      "beforeSha256": "290120f9d367637968a3435f1743e852b30d01decb1860d3bdb92978c8af8818",
+      "afterSha256": "0eb546b8abd117d3fe8408429a6fc4ab4eacab71d62c5b43f366d4423b691d57",
       "placement": "before-head-close"
     },
     "trainers/oge-task9-equations.html": {
@@ -5282,6 +5282,15 @@
         "trainers/oge-task7-number-line.html",
         "trainers/oge-task8-powers-roots.html",
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "85ba51bf6ef9a801a757d837cbca7e847d4818ab",
+      "sourceBaseSha": "ef9b66f0b26c9d284a47db134a3af8410c508ee5",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_06_09_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task8-powers-roots.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

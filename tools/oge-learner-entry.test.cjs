@@ -6,7 +6,7 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
-const {restoreAlignment}=require('./oge-source-alignment-06-09-preservation.cjs');
+const {restoreAlignmentScripts}=require('./oge-source-alignment-06-09-preservation.cjs');
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -64,19 +64,16 @@ for(const p of routes.pages){
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
-  const actualScripts=scripts(d).map(script=>restoreGraphScale(p,script));
+  const actualScripts=restoreAlignmentScripts(p,scripts(d).map(script=>restoreGraphScale(p,script)));
   if(p==='trainers/oge-task6-fractions.html'||p==='trainers/drobi-oge-trainer.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
-    actualScripts[0]=restoreFractionMultiplicationStep(restoreAlignment(p,actualScripts[0]));
+    actualScripts[0]=restoreFractionMultiplicationStep(actualScripts[0]);
   }
   if(p==='trainers/oge-task7-number-line.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
-    actualScripts[0]=restoreOge7Input(restoreAlignment(p,actualScripts[0]));
+    actualScripts[0]=restoreOge7Input(actualScripts[0]);
   }
   if(p==='trainers/oge-task8-powers-roots.html'){
-    const bank=actualScripts.findIndex(script=>script.includes('const BANK='));
-    assert.ok(bank>=0,p+' reviewed bank script');
-    actualScripts[bank]=restoreAlignment(p,actualScripts[bank]);
     const reference=actualScripts.filter(script=>script.includes('window.sqSearch=function'));
     assert.equal(reference.length,1,p+' reviewed reference script');
     actualScripts[actualScripts.indexOf(reference[0])]=restoreRootAcceptance(reference[0],'reference');
@@ -87,7 +84,7 @@ for(const p of routes.pages){
   }
   if(p==='trainers/oge-task9-equations.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
-    assert.equal(createHash('sha256').update(restoreAlignment(p,actualScripts[0])).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
+    assert.equal(createHash('sha256').update(actualScripts[0]).digest('hex'),task9ReviewedScript,p+' exact reviewed inline engine');
   }else{
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }

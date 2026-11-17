@@ -29,7 +29,7 @@ test('coverage distinguishes samples, exact matches, partial coverage and author
     for (const sample of row.sampleMappings) assert.ok(sample.operations && sample.match && sample.status);
   }
   assert.equal(tasks[0].sampleMappings.find(row => row.source === 'statgrad-2026-09').match, 'adv#11');
-  assert.match(tasks[2].sampleMappings.find(row => row.source === 'statgrad-2026-09').status, /частично/);
+  assert.equal(tasks[2].sampleMappings.find(row => row.source === 'statgrad-2026-09').match, 'pow_products_quotient');
 });
 
 test('each source delta restores the complete predecessor and rejects missing or repeated fragments', () => {
@@ -88,4 +88,33 @@ test('standalone author conditions and prior shared indices have distinct answer
   assert.equal(equation.run('checkFinal(EXAM_BANK[0], "-13").ok'), true);
   assert.equal(equation.run('checkFinal(EXAM_BANK[0], "-32").ok'), false);
   assert.equal(new Set(equation.run('EXAM_BANK.map(task=>task.examKind)')).size, 7);
+});
+
+
+test('StatGrad double product powers are available in practice, guided generation and shared replay', async () => {
+  const row = tasks[2], trainer = direct(row), shared = legacyRoom(row);
+  const oracle = await import('./oge-algebra-contract.t8.mjs');
+  for (const record of row.statgradAnalogues) {
+    const card = trainer.run(`BANK[${record.index}]`);
+    assert.equal(card.id, record.id);
+    assert.equal(shared.run(`BANK[${record.sharedIndex}].id`), record.id);
+    assert.equal(trainer.run(`typeGroup[BANK[${record.index}].type]`), 'pow1');
+    assert.ok(math.eq(oracle.value(card), math.parseNum(record.answer)));
+    const top = record.topExponent, bottom = record.bottomExponent;
+    const values = trainer.run(`JSON.stringify(buildSteps(BANK[${record.index}]).map(step=>step.ins.map(input=>fmtFr(input.val))))`);
+    assert.deepEqual(JSON.parse(values).slice(1), [[String(top), String(bottom)], [String(top-bottom)], [record.answer]]);
+  }
+  assert.equal(trainer.run('genTypesOf("pow1").includes("pow_products_quotient")'), true);
+  const generated = Array.from(trainer.run('Array.from({length:500},()=>GEN.pow_products_quotient())'));
+  assert.ok(new Set(generated.map(task => JSON.stringify(task.p))).size >= 100);
+  const outcomes = new Set();
+  for (const task of generated) {
+    assert.ok(task.p.b > 1 && task.p.numerator.every(e => e > 0) && task.p.denominator.every(e => e > 0));
+    const value = oracle.value(task);
+    let denominator = value.d;
+    for (const prime of [2n, 5n]) while (denominator % prime === 0n) denominator /= prime;
+    assert.equal(denominator, 1n, 'every randomized answer has a terminating decimal');
+    outcomes.add(math.cmp(value, math.ONE));
+  }
+  assert.deepEqual([...outcomes].sort(), [-1, 0, 1]);
 });

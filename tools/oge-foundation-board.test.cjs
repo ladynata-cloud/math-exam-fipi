@@ -14,7 +14,7 @@ const projection=t=>({text:t.stage().textContent.replace(/\s+/g,' ').trim(),inpu
 function select(t,index){const s=t.d.querySelector('.oge-foundation-toolbar select');s.value=String(index);s.dispatchEvent(new t.w.Event('change',{bubbles:true}));}
 async function help(t,n){button(t.stage(),'Хочешь подсказку?').click();await tick();if(n===7){button(t.stage(),'Разобрать эту задачу по шагам').click();await tick();}}
 for(const n of [6,7,8,9])test(`OGE${n}: native drafts, mistakes, help, retained steps, late join and handoff`,async()=>{const a=await boot(n),b=await boot(n);try{
- const bankSize=n===9?a.w.eval('136+EXAM_BANK.length'):{6:175,7:143,8:161}[n];
+ const bankSize=n===9?a.w.eval('136+EXAM_BANK.length'):{6:175,7:143,8:164}[n];
  assert.equal(a.d.querySelector('.oge-foundation-toolbar select').options.length,bankSize);assert.equal(a.w.registration.id,`oge-task${n}-${names[n]}`);
  if(n===7){a.stage().querySelector('.optbtn').click();}else{fill(a,a.stage().querySelector(n===6?'#ans':'input'),'987654');button(a.stage(),'Проверить').click();}
  await sync(a,b);assert.deepEqual(projection(a),projection(b));await help(a,n);
@@ -33,7 +33,7 @@ for(const n of [6,7,8,9])test(`OGE${n}: closed schema rejects malformed and unre
 test('OGE7/8: optional laboratory ranges, mode, disclosure and references mirror',async()=>{for(const n of [7,8]){const a=await boot(n),b=await boot(n);try{await help(a,n);const lab=a.stage().querySelector('.oca-exploration > details');assert(lab);lab.open=true;await tick();for(const range of lab.querySelectorAll('input[type=range]'))fill(a,range,range.max);const mode=lab.querySelector('select');if(mode){mode.value='square';mode.dispatchEvent(new a.w.Event('change',{bubbles:true}));}const ref=a.stage().querySelector('.oca-reference details');if(ref)ref.open=true;await sync(a,b);assert.deepEqual(projection(a),projection(b));assert.deepEqual(a.storage,[]);}finally{a.close();b.close();}}});
 for(const n of [7,8])test(`OGE${n}: historical condition and appended analogue both restore accepted board actions`,async()=>{
  const a=await boot(n),b=await boot(n);
- const cases=n===7?[[26,'r317102',2],[142,'mathexam-decimal-order-01',3]]:[[43,'9.4','630'],[160,'9.4a','360']];
+ const cases=n===7?[[26,'r317102',2],[142,'mathexam-decimal-order-01',3]]:[[43,'9.4','630'],[160,'9.4a','360'],[161,'pow-products-quotient-01','3']];
  try{for(const [index,id,answer] of cases){
   assert.equal(a.w.eval('BANK['+index+'].id'),id);select(a,index);
   if(n===7)a.stage().querySelectorAll('.optbtn')[answer-1].click();
