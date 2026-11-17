@@ -186,7 +186,19 @@ test('H02 preserves the approved base curriculum, all task IDs, answers and orde
   assert.equal(start.reduce((count, lesson) => count + lesson.tasks.length, 0), 540);
   assert.equal(partTwo.length, 42);
   assert.equal(partTwo.reduce((count, lesson) => count + lesson.tasks.length, 0), 252);
-  assert.equal(digest(start), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
+  // The early opposite-vector lesson revises only its explanatory text.
+  // Check both the full revised bank and the original with those fields restored.
+  assert.equal(digest(start), 'ea3d727d15a7271c1f4d11d79a5c62e37d4678daa7bacea71e54e6a59aa310fa');
+  const earlierStart = plain(start);
+  const opposites = earlierStart.find(lesson => lesson.id === 'vec-basics-equality');
+  opposites.title = 'Направление, равенство и перенос';
+  opposites.summary = 'Сравни стрелки и отложи равный вектор от новой точки.';
+  opposites.intro = '<p>Ненулевые векторы коллинеарны, если лежат на одной прямой или на параллельных прямых. Коллинеарные ненулевые векторы могут быть сонаправлены или противоположно направлены. Равные ненулевые векторы сонаправлены и имеют одинаковую длину. Все нулевые векторы равны.</p>';
+  opposites.prereq.text = '<p>Сравни поворот и длину двух стрелок. При переносе повтори от новой точки тот же ход по клеткам.</p>';
+  const example = opposites.tasks.find(task => task.id === 'vec-basics-parallel-opposite');
+  example.explanation = 'Стрелки лежат на параллельных прямых, но направлены в противоположные стороны.';
+  example.steps.at(-1).why = example.explanation;
+  assert.equal(digest(earlierStart), 'c60b1e343d35b0039601e5e41d8a3862537807adb0d1c64c6cc671a2f5211d9b');
   // Accepted H04 adds explicit answerFormat descriptors without changing the
   // mathematical bank. Preserve its full snapshot from main 1469ad50 as well
   // as the original H02 snapshot with only that metadata removed.
