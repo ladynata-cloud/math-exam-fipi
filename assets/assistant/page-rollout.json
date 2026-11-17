@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "3d1a36a8a4219ad1b214c826dfb905e8bad08d7d",
+  "baseSha": "dca497bd5c4a94772ad6711bb9fd373dd7012c71",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "9ece7992827e6b10ca9abd8b1eafa3f6467e6b6e97858e79cdbe7b3a0f67b1d9",
-      "afterSha256": "441b388f16f9072729c8c043cd31a53ce5d0cc5e120be0e0c3006b32ea2cf9fb",
+      "beforeSha256": "e651f469de1c3bc3f05babce414b99c4e869f3059eca8dceea1f4d5767ad718a",
+      "afterSha256": "441d4ae1d3432458d093e0b52b9b9d1c27b85feb4b66c78165edafd2c2f9ac99",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -2593,13 +2593,13 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-common-denominator.html": {
-      "beforeSha256": "16f96901a105d49aa694af92310bf68f1078dcc1398664d195fa0839e7785822",
-      "afterSha256": "b111e32f11009d946b0dda7c2a8cd5dbbda09a7ee168b762837af5f8161d1fa8",
+      "beforeSha256": "07289a0127e049d37911bd0fdeb3b7e03f1a91d9564d53516e9dde8d8d208eb6",
+      "afterSha256": "da7056688fff7b1a17cd78841134f83012b5f82663ad7404d77f85716b6ad5d8",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/fraction-meaning.html": {
-      "beforeSha256": "dcfb734abe473ec05149fdec343026631294a0e6b5f5e9f1ec4fc5344871e845",
-      "afterSha256": "8c63652a91861d2a8285179218be102f346f188080c4bc82842cc8308ddd58d2",
+      "beforeSha256": "8c9d8c6fe7734e25566c913944829bef08dd62617f70fbfb6f6f9ae4096e8040",
+      "afterSha256": "aecd20992589f388cf11c163d590dff8e6eb7dd06302eab3e0424769c39b6f8e",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/index.html": {
@@ -2918,8 +2918,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-basics/rounding.html": {
-      "beforeSha256": "0484894e93f63928733526768c7846686ef9be49bb9294dc37eaf1a39799da70",
-      "afterSha256": "65fe75af745e3e81fe9fec76f3c865ca3e127a4e111bc1960e5f9c0c4505df0c",
+      "beforeSha256": "c2a7c531487dd974d0fa392b8a189bfb9715ccd78e3816b7006ce971b3908dfb",
+      "afterSha256": "95436a46e937fd233e35569aa556d4c1c6c56372a330745fbd3f6903c55e039c",
       "placement": "before-head-close"
     },
     "trainers/oge-basics/units-area.html": {
@@ -2933,8 +2933,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-course/index.html": {
-      "beforeSha256": "94dcec1c4d4782b4d409819fa17dbc2af4701c727449400ba8e1c2630f864cdf",
-      "afterSha256": "ff38b739eff63482de9b5a7e53fa40f82161e5cf2cf121a9e9718b59ac6ca3a7",
+      "beforeSha256": "f0d3caeaf080c49459430abc844fe3b99cc4c0542446c5ec3b0b5701d62b12af",
+      "afterSha256": "8efecc32aa9314fac00dd30b60a0853fcbb2ba6b4a4111f9b94b560d2f11970a",
       "placement": "before-head-close"
     },
     "trainers/oge-informatics-1-10-tutor.html": {
@@ -3018,8 +3018,8 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task6-fractions.html": {
-      "beforeSha256": "e45ab54309153422af9f09ed8245f33edf8398c348614a6153d6151e143b088f",
-      "afterSha256": "3260bfffb7a467c101d7dd1fe3a94711c2f9cbf02daa7ef010033f7391bb9541",
+      "beforeSha256": "39b0cb433507e6f4a411825516b766a9dde02296edf4ebfeb672b0acbec34ea4",
+      "afterSha256": "92c28b210123e6151fab96b6845ac8605e23ccee677d585a2a60e3acecb7e4cf",
       "placement": "before-head-close"
     },
     "trainers/oge-task7-number-line.html": {
@@ -5511,6 +5511,20 @@
         "trainers/oge-basics/units-length-time.html",
         "trainers/oge-course/index.html",
         "trainers/oge-task7-number-line.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "3d1a36a8a4219ad1b214c826dfb905e8bad08d7d",
+      "sourceBaseSha": "dca497bd5c4a94772ad6711bb9fd373dd7012c71",
+      "task": "docs/tasks/FOUNDATION_PRACTICE_AUDIT_20261118.md",
+      "changedPaths": [
+        "ege-baza/path/index.html",
+        "trainers/oge-basics/fraction-common-denominator.html",
+        "trainers/oge-basics/fraction-meaning.html",
+        "trainers/oge-basics/rounding.html",
+        "trainers/oge-course/index.html",
+        "trainers/oge-task6-fractions.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
