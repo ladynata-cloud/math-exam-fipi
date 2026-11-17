@@ -8,6 +8,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PINS = json.loads((ROOT / 'tools/fixtures/oge-video-models-native-bytes.json').read_text())
 UPDATES = json.loads((ROOT / 'tools/fixtures/oge-worked-steps-native-bytes.json').read_text())
 GRAPH_INTERSECTIONS = json.loads((ROOT / 'tools/fixtures/oge22-intersections-display.json').read_text())
+SOURCE_ALIGNMENT = json.loads((ROOT / 'tools/fixtures/oge-source-alignment-20-22.json').read_text())['pages']
 LABEL = 'Разобраться на модели'
 SUMMARY_HTML = '<summary data-ovm-open="">' + LABEL + '</summary>'
 ASSETS = ['/trainers/oge-video-models.css', '/trainers/oge-video-graphs.js',
@@ -29,6 +30,15 @@ def restore_graph_intersections(file, raw):
     if file != GRAPH_INTERSECTIONS['file']:
         return raw
     fragments = GRAPH_INTERSECTIONS['fragments']
+    if not all(raw.count(fragment['after'].encode()) == 1 for fragment in fragments):
+        return raw
+    for fragment in fragments:
+        raw = raw.replace(fragment['after'].encode(), fragment['before'].encode(), 1)
+    return raw
+
+
+def restore_source_alignment(file, raw):
+    fragments = SOURCE_ALIGNMENT.get(file, [])
     if not all(raw.count(fragment['after'].encode()) == 1 for fragment in fragments):
         return raw
     for fragment in fragments:
@@ -83,7 +93,7 @@ def verified_context(record):
                  '<script defer src="oge-video-geometry.js"></script>\n'
                  f'<script defer src="oge-video-models.js" data-oge-video-task="{pin["task"]}"></script>\n').encode()
         if teaching.count(block) != 1 or block + b'</head>' not in teaching: return None
-        native = teaching.replace(block, b'', 1)
+        native = restore_source_alignment(file, teaching.replace(block, b'', 1))
         graph_scale = PINS['graphScale']
         if file == graph_scale['file'] and native.count(graph_scale['after'].encode()) == 1:
             native = native.replace(graph_scale['after'].encode(), graph_scale['before'].encode(), 1)

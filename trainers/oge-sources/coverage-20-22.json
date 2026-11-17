@@ -1,0 +1,74 @@
+{
+  "examYear": 2027,
+  "sourcesReadOn": "2026-11-17",
+  "scope": [20, 21, 22],
+  "statusVocabulary": {
+    "covered": "Existing trainer exercises cover the observed mathematical structure.",
+    "added": "An original analogous family exercises the observed type or a related, explicitly described extension.",
+    "gap": "Observed skill or structure not fully covered by the inspected native trainer."
+  },
+  "sources": [
+    {
+      "id": "fipi-2027-approved-demo",
+      "title": "ФИПИ, утверждённая демонстрационная версия ОГЭ-2027 по математике",
+      "role": "official exam benchmark",
+      "url": "https://doc.fipi.ru/oge/demoversii-specifikacii-kodifikatory/2027/ma_9_2027.zip",
+      "locator": "МА-9 ОГЭ 2027_ДЕМО.pdf, задания 20–22"
+    },
+    {
+      "id": "yashchenko-2027-v1",
+      "title": "Под ред. И. В. Ященко, ОГЭ-2027, 36 вариантов",
+      "role": "publisher book, public variant transcription",
+      "isbn": "978-5-4454-1990-7",
+      "url": "https://math-training.site/yashhenko-oge-2027-matematika-36-variantov/variant-1",
+      "locator": "Вариант 1, задания 20–22"
+    },
+    {
+      "id": "yashchenko-2027-v11",
+      "title": "Под ред. И. В. Ященко, ОГЭ-2027, 36 вариантов",
+      "role": "publisher book, public variant transcription",
+      "isbn": "978-5-4454-1990-7",
+      "url": "https://ege314.ru/tipovye-ekzamenatsionnye-varianty-oge/reshenie-yaschenko-oge-2027-variant-11-36-variantov-matematika/",
+      "locator": "Вариант 11, задание 20"
+    },
+    {
+      "id": "yashchenko-2027-v17",
+      "title": "Под ред. И. В. Ященко, ОГЭ-2027, 36 вариантов",
+      "role": "publisher book, public variant transcription",
+      "isbn": "978-5-4454-1990-7",
+      "url": "https://ege314.ru/tipovye-ekzamenatsionnye-varianty-oge/reshenie-yaschenko-oge-2027-variant-17-36-variantov-matematika/",
+      "locator": "Вариант 17, задание 21"
+    },
+    {
+      "id": "statgrad-2026-04-15",
+      "title": "СтатГрад, 15.04.2026, МА2590501",
+      "role": "public PDF copy of the training variant",
+      "url": "https://pdf.math100.ru/pdf/29b7cc66-be61-4430-82ca-fe2b545ac416/wm.pdf",
+      "locator": "С. 8, задания 20–22"
+    },
+    {
+      "id": "lysenko-2027-v1",
+      "title": "Ф. Ф. Лысенко и С. Ю. Кулабухова, Математика. Подготовка к ОГЭ-2027, 40 вариантов",
+      "role": "publisher print sample read visually",
+      "isbn": "978-5-9966-2372-3",
+      "url": "https://static10.labirint.ru/books/1031146/demo.pdf",
+      "locator": "Вариант 1, печатная с. 20, физическая с. 11 PDF, задания 20–22"
+    }
+  ],
+  "observations": [
+    {"source":"fipi-2027-approved-demo","number":20,"skill":"Привести к одной дроби, сохранить запрет x=0, учесть два допустимых нуля числителя и два промежутка решения.","family":"DR3","status":"added","analogy":"Один полюс и два нуля. В MathExam корни могут быть несимметричны, а перенос требует приведения к общему знаменателю."},
+    {"source":"fipi-2027-approved-demo","number":21,"skill":"Уравнение равных дистанций с различными скоростями; отклонить корень, не подходящий по смыслу.","family":"t3","status":"covered","note":"Параметры скорости и расстояния теперь выбираются после вида транспорта."},
+    {"source":"fipi-2027-approved-demo","number":22,"skill":"Построить кусочный график и определить уровни заданного числа общих точек; учесть границы.","family":"parline","status":"covered"},
+    {"source":"yashchenko-2027-v1","number":20,"skill":"Факторизация рационального неравенства, ОДЗ, знаки и скобки.","family":"DR3","status":"added","analogy":"В MathExam знаменатель имеет два нуля. Решение объединяет полуоткрытый промежуток и луч."},
+    {"source":"yashchenko-2027-v1","number":21,"skill":"Связать время и скорость на двух половинах пути.","family":"t4","status":"covered"},
+    {"source":"yashchenko-2027-v1","number":22,"skill":"Число пересечений кусочного графика и горизонтальной прямой, включая границы кусков.","family":"parline","status":"covered"},
+    {"source":"yashchenko-2027-v11","number":20,"skill":"При исключении одинакового радикала проверить оба корня по исходной ОДЗ.","family":"B2","status":"covered"},
+    {"source":"yashchenko-2027-v17","number":21,"skill":"Прибавление чистой воды сохраняет массу растворённого вещества.","family":"t12","status":"added","analogy":"Обратный вопрос: дана массовая доля до и после, требуется масса добавленной воды."},
+    {"source":"statgrad-2026-04-15","number":20,"skill":"Квадрат и линейный множитель с иррациональным коэффициентом, отбор интервала.","family":"INEQ","status":"covered"},
+    {"source":"statgrad-2026-04-15","number":21,"skill":"Связать пройденную и оставшуюся длину круга и время прохождения.","family":"t5","status":"covered"},
+    {"source":"statgrad-2026-04-15","number":22,"skill":"Сократить дробь с модулем, сохранить симметричные исключения ОДЗ, найти k без пересечений.","family":"even_kx_none","status":"added","analogy":"В MathExam используются разность квадратов, отрицательные ветви и независимо выбранные данные."},
+    {"source":"lysenko-2027-v1","number":20,"skill":"Упростить дробь с отрицательными степенями переменной при ненулевом основании.","family":"POW","status":"gap","note":"Приём степеней представлен, но генератор POW использует числовое основание."},
+    {"source":"lysenko-2027-v1","number":21,"skill":"Составить линейное уравнение для трёх групп с кратным и аддитивным отношением; найти разность.","family":"t13","status":"added","analogy":"Самостоятельный сюжет со школьной выставкой, новые кратности и добавки, различаются пары сравниваемых групп."},
+    {"source":"lysenko-2027-v1","number":22,"skill":"Построить параболу с двумя исключёнными абсциссами и классифицировать уровни y=m по числу общих точек.","family":"parab_m_twoholes","status":"added","analogy":"Авторский вопрос просит уровни ровно с одним пересечением. Структура дроби и вершина изменены. Ординаты двух выколотых точек могут совпадать или различаться."}
+  ]
+}

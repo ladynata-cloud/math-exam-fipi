@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+  "baseSha": "adbdcae59e79f228654d35202b95a2b6ae324e85",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2988,18 +2988,18 @@
       "placement": "before-head-close"
     },
     "trainers/oge-task20-equations.html": {
-      "beforeSha256": "9413b683f5ff1930a2108400eec0a4614c867a173b21c411fca77d4e3f24c143",
-      "afterSha256": "6c089599629810751b434e1ab7b059ba2ccc56f434f8da88ac2388e4099e99f6",
+      "beforeSha256": "a9c7bed37e0f5a3fc750b920e2f5920ab96af2eb8a13c7dc047e850ec6508375",
+      "afterSha256": "c272435b3bbfe4c24f24852e759aff94e39ce468394e5306dbbdb7fa943a1f82",
       "placement": "before-head-close"
     },
     "trainers/oge-task21-word-problems.html": {
-      "beforeSha256": "3d7b39f8e4ba472cc562c39ea7ce1931a92e326b749c3ee66f1181ef6b0c5c3f",
-      "afterSha256": "b1b043996ea31d377cdd11b3832d71b2f2f6dc62e9708ea489a238a7e6c38344",
+      "beforeSha256": "9c104e96ad0ef4292f0b8da6aecb94dbd661bc5242156745f599a3136b32d563",
+      "afterSha256": "201f6d78995c63cdf42acd964ed7958843c5e34ce8fcb31b87378574ed115009",
       "placement": "before-head-close"
     },
     "trainers/oge-task22-functions-graphs.html": {
-      "beforeSha256": "8844a1cc0c5c2130998bbb14523b28a7292fee7ea24b0312bc4598facd855515",
-      "afterSha256": "18807c7c2c30deb404848fc188dbb316a179dbe8f7d5a0f075a1ff469c179bd1",
+      "beforeSha256": "23a44ebcc75b8e1be6b56c125364b8404b3d2ca1c4a292da31614f7fc28aae9f",
+      "afterSha256": "aca8c9d2d30bbf63922a0fc79ba5536198675ec2d0f6104ae86e7b0ec93af43c",
       "placement": "before-head-close"
     },
     "trainers/oge-task23-geometry-calculations.html": {
@@ -5270,6 +5270,36 @@
       "task": "docs/tasks/OGE9_EXPLANATION_ACCURACY_20261116.md",
       "changedPaths": [
         "trainers/oge-task9-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "679421ce3057ffbcdab89b80fcd591337f67f9e8",
+      "sourceBaseSha": "071e2b5ec50bab98245adeaf1307e32aceb1275c",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_20_22_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task20-equations.html",
+        "trainers/oge-task21-word-problems.html",
+        "trainers/oge-task22-functions-graphs.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "071e2b5ec50bab98245adeaf1307e32aceb1275c",
+      "sourceBaseSha": "99682223674e2875074e39674378175979160ca5",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_20_22_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task20-equations.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "99682223674e2875074e39674378175979160ca5",
+      "sourceBaseSha": "adbdcae59e79f228654d35202b95a2b6ae324e85",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_20_22_20261116.md",
+      "changedPaths": [
+        "trainers/oge-task21-word-problems.html",
+        "trainers/oge-task22-functions-graphs.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

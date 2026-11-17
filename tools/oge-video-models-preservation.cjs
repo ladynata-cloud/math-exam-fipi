@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const {restoreTrainerDownload} = require('./trainer-download-preservation.cjs');
 const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
+const {restoreSourceAlignment} = require('./oge-source-alignment-20-22.cjs');
 const entries = Object.freeze({
   11: 'trainers/oge-task11-graphs-trainer.html',
   15: 'trainers/oge-task15-triangles.html',
@@ -41,7 +42,7 @@ function restoreVideoModels(file, source) {
 }
 function restoreGraphScale(file, source) {
   if (file !== graphScale.file) return source;
-  const parts = source.split(graphScale.after);
+  const parts = restoreSourceAlignment(file, source).split(graphScale.after);
   // An ambiguous projection must remain untouched, including any later delta.
   return parts.length === 2 ? restoreGraphIntersections(file, parts.join(graphScale.before)) : source;
 }

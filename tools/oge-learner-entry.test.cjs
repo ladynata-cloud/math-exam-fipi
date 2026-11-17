@@ -6,6 +6,8 @@ const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs')
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
+const alignmentPages=require('./fixtures/oge-source-alignment-20-22.json').pages;
 // Published homework support from PR459 is part of the preserved source; keep
 // this immutable default aligned with the workflow's fetched baseline.
 const root=path.resolve(__dirname,'..'),routes=require('./oge-learner-routes.json'),base=process.env.OGE_ENTRY_BASE||'955c83154eed49554b648c03b66e1eba16932222';
@@ -37,7 +39,7 @@ for(const p of Object.keys(courseParents)){
 }
 let links=0,beforeDirect=0,beforeHome=0;
 for(const p of routes.pages){
- const dom=parse(read(p),p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
+ const page=read(p),dom=parse(page,p),d=dom.window.document,old=parse(execFileSync('git',['show',base+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p),od=old.window.document;
  const destinations=[...d.querySelectorAll('a[href]')].map(a=>new URL(a.href));
  const parent=courseParents[p],isCourse=u=>parent?u.pathname===parent.href:/\/trainers\/oge-course\/(?:index\.html)?$/.test(u.pathname),isHome=u=>/^\/(?:index\.html)?$/.test(u.pathname);
  const redirect=d.querySelector('meta[http-equiv="refresh"]');
@@ -63,7 +65,13 @@ for(const p of routes.pages){
   const scripts=doc=>[...doc.scripts].filter(s=>!s.src).map(s=>s.textContent.replace(/\r\n/g,'\n'));
   const taskSource=taskSources[p]?parse(execFileSync('git',['show',taskSources[p]+':'+p],{cwd:root,encoding:'utf8',maxBuffer:8e6}),p):null;
   const baseline=taskSource?taskSource.window.document:od;
-  const actualScripts=scripts(d).map(script=>restoreGraphScale(p,script));
+  // The scoped source-alignment fragments straddle markup and script boundaries.
+  // Reverse the complete reviewed delta before extracting the historical engines.
+  const restored=restoreSourceAlignment(p,page);
+  if(Object.hasOwn(alignmentPages,p))assert.notEqual(restored,page,p+' complete exact source alignment delta');
+  const alignmentSource=restored===page?null:parse(restored,p);
+  const actualScripts=scripts(alignmentSource?alignmentSource.window.document:d).map(script=>restoreGraphScale(p,script));
+  if(alignmentSource)alignmentSource.window.close();
   if(p==='trainers/oge-task6-fractions.html'||p==='trainers/drobi-oge-trainer.html'){
     assert.equal(actualScripts.length,1,p+' one reviewed inline engine');
     actualScripts[0]=restoreFractionMultiplicationStep(actualScripts[0]);

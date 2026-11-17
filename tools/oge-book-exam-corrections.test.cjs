@@ -6,6 +6,7 @@ const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreVideoModels,restoreGraphScale}=require('./oge-video-models-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const {restoreSourceAlignment}=require('./oge-source-alignment-20-22.cjs');
 const root=path.resolve(__dirname,'..');
 const sha=s=>crypto.createHash('sha256').update(s).digest('hex');
 // These frozen inverses describe only the already reviewed PR340 board hooks.
@@ -20,7 +21,7 @@ function withoutReturnShell(html) {
   return html.replace(head, '').replace(bar, '');
 }
 function currentPage(file){
- const publicHtml=restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8');
+ const publicHtml=restoreSourceAlignment(file,restorePublicNavigator(file,fs.readFileSync(path.join(root,file))).toString('utf8'));
  let html=restoreVideoModels(file,withoutReturnShell(restoreTrainerDownload(file,publicHtml)));
  if(file==='trainers/oge-task6-fractions.html'){
   html=restoreFractionMultiplicationStep(html);
