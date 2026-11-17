@@ -5306,6 +5306,15 @@
         "trainers/oge-course/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "262eaadc6e076aad4c3d1cb88cd1a38ad0bc5a2f",
+      "sourceBaseSha": "e1dd93ea829ff7f9fb295eac94958316f154d0b7",
+      "task": "docs/tasks/OGE_DIAGNOSTIC_PRACTICE_20261117.md",
+      "changedPaths": [
+        "trainers/oge-2027-analogue-1.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
