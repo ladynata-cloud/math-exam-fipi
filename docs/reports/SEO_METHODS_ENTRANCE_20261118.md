@@ -3,7 +3,7 @@
 Дата: 18 ноября 2026 года, Новосибирск.
 
 - Task: [SEO_METHODS_ENTRANCE_20261118](../tasks/SEO_METHODS_ENTRANCE_20261118.md).
-- Base: `93bb989f7b5cb7aea99de388ce35dfcb6deb336d`.
+- Исходная база `93bb989f7b5cb7aea99de388ce35dfcb6deb336d`. Повторная проверка выполнена с `main` на `eb18fc2a577adb8af133459fc3a2490ff2cd2fc4`.
 - Branch: `fix/seo-methods-entrance-20261118`.
 - Review level: `MEDIUM`.
 - Release: не выполнялся; текущий `AGENTS.md` владельца в разговоре требует
@@ -76,42 +76,37 @@ Runtime JS, математические банки, стили, сохране�
 diff не осталось. Это локальное техническое review, не внешний provider
 verdict и не разрешение на слияние.
 
-## Браузерный gate
+## Переход к заданию ОДЗ
 
-Два локальных запуска Chromium остановились до открытия страниц:
-`socket() failed: Operation not permitted` при старте браузерного процесса.
-Они не считаются успешной браузерной проверкой и не устанавливают дефект сайта.
-Ограничение среды не обходилось, TLS и gates не ослаблялись.
+В первом запуске GitHub Actions сценарий открыл тему «ОДЗ и отбор решений»
+и 30 секунд ждал поле `#az-answer` на карте навыков. Единственный снимок
+`methods-js-320.png` сделан в каталоге перед переходом. Ошибку воспроизводит
+пропуск второго клика. [Журнал первого запуска](https://github.com/ladynata-cloud/math-exam-fipi/actions/runs/44187475085).
 
-Проверки перенесены в штатные PR workflows:
+На странице темы ученик выбирает «Исключаю нули знаменателя». По адресу
+`#/domain/denominator` открывается задача о сокращении дроби и поле
+«Запрещённое x». Браузерный тест проходит обе видимые ссылки, сверяет
+адреса и подпись поля. После перезагрузки и возврата через «К списку тем»
+он проверяет введённое значение и записи в хранилище браузера.
 
-- `Public SEO and sitemap`: 320/390/1280 px, JavaScript включён/отключён,
-  отсутствие переполнения/дублирования, чтение статического материала,
-  переход к навыку, ввод черновика, reload и сохранность после возврата.
-  Снимки сохраняются в artifact `seo-methods-entrance`.
-- `Trainer downloads — standalone and GIF workflow`: существующий
-  `ege-profil-methods-atlas` остаётся доступным через HTML/ZIP и file://.
+| Проверка на 320, 390 и 1280 px | Результат в Chromium |
+| --- | --- |
+| JavaScript включён | Поле открывается на каждом экране. Черновик восстанавливается при повторном входе. |
+| JavaScript выключен | В каталоге 11 тем. Обе ссылки открывают материалы для чтения, работает возврат. |
+| Ранее заполненные ответы | При переходе с HTML из `main` на версию PR в том же браузере сохранились черновик, ошибочная попытка и принятый ответ в другом навыке. Обе записи совпали побайтово. |
 
-Точный head, PR, результаты CI и просмотр полученных снимков записываются
-в PR. До успешного browser CI окончательный маркер
-`SEO_METHODS_ENTRANCE_20261118_OK` не выдаётся.
+Запросы с User-Agent Googlebot и YandexBot к проверяемой версии вернули
+HTTP 200 и все 11 карточек в исходном HTML. Обход разрешён в `robots.txt`.
+У раздела один canonical, он один раз включён в карту сайта.
 
-Первый CI на head `81afbe42563649cbef19b663507fd66721f13e82`
-обнаружил ошибку нового проверочного сценария: он ожидал поле ответа сразу
-после выбора темы, хотя действующее приложение сначала показывает карту
-навыков. Сценарий исправлен: при первом входе и после возврата он выбирает
-видимый навык «Исключаю нули знаменателя» и только затем проверяет черновик.
-Проверки сохранности ответа не ослаблены; runtime приложения не менялся.
-Первый снимок 320 px просмотрен; остальные размеры и режим без JavaScript
-требуют успешного повторного CI на новом head.
-
-Тот же первый CI выявил отсутствующее покрытие нового sitemap-адреса
-в `Public navigator visibility`. Простого изменения счётчика недостаточно:
-раздел ещё не был включён в inventory. Добавлены существующие подключения
-и отдельная запись покрытия, привязанная к проверенному исходнику
-`67d66812305e22559bbd2a0f232c008110f1f9b7`. Прежние хеши страниц сохранены,
-новых исключений нет, assertions и тестовые файлы навигатора не изменены.
-Это обязательное согласование нового публичного входа с действующим gate.
+Конфликт с изменениями геометрии из #659 затрагивал только
+`assets/assistant/page-rollout.json`. В реестре сохранены ранее проверенные
+страницы из `main` и добавлен вход раздела. Общая версия исходников
+`0f6e95f703af7e020a676923e3179ac226e4ba2e` используется для проверки
+контрольных сумм. Состав и результаты запусков GitHub Actions доступны
+во [вкладке проверок PR #662](https://github.com/ladynata-cloud/math-exam-fipi/pull/662/checks).
+Артефакт `seo-methods-entrance` содержит шесть снимков каталога и три
+снимка упражнения при полном прохождении сценария.
 
 ## Не выполнялось
 
@@ -126,12 +121,12 @@ verdict и не разрешение на слияние.
 EXECUTIVE STATUS
 
 Task: SEO_METHODS_ENTRANCE_20261118
-PR: exact URL in the PR handoff
-Base: 93bb989f7b5cb7aea99de388ce35dfcb6deb336d
+PR: #662
+Base: eb18fc2a577adb8af133459fc3a2490ff2cd2fc4
 Head: exact committed SHA in the PR handoff
 Gate: local checks PASS; browser CI required
-Tests: 12 sitemap + 24 profile tests; static/runtime catalog parity; SEO and syntax
-Failures: local browser launch blocked before page load
+Tests: 12 sitemap and 24 profile tests, static/runtime parity, full SEO browser suite, legacy answers and navigator
+Failures: initial CI expected the answer on the topic map; fixed in the browser scenario
 Not run: production release, current search dashboards, unrelated backend suite
 Scope deviations: none
 Recommendation: finish exact-head CI and review screenshots, then seek merge authorization

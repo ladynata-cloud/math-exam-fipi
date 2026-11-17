@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+  "baseSha": "0f6e95f703af7e020a676923e3179ac226e4ba2e",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
-    "total": 582,
-    "covered": 581,
+    "total": 583,
+    "covered": 582,
     "excluded": {
       "/school/peterson6/": "Existing dedicated task-aware helper; no competing launcher."
     }
@@ -3156,6 +3156,11 @@
       "beforeSha256": "f82ba87a274389caec5dd1aa3675a5f7ceb6ce85f55b879fd5804e6dc915f695",
       "afterSha256": "6413e920dcea07042764ffee5dac811f81f5f0093860aef7c21094476113f6aa",
       "placement": "before-body-close"
+    },
+    "ege-profil/azbuka-metodov/index.html": {
+      "beforeSha256": "6c1e8b378e51a34cfb270f8ba103c361a4bf66468115c27c6f510a5f791f4f94",
+      "afterSha256": "f72210c6a63d599e9d299548f291ab3bff4da4c45834a3e379f4ad57381cb577",
+      "placement": "before-head-close"
     }
   },
   "provenance": {
@@ -3806,7 +3811,8 @@
     "vpr/index.html": "sitemap; index.html; trainers/index.html (VPR_INTERACTIVE_COURSES_2027 source commit)",
     "trainers/long-division-claude.html": "sitemap",
     "trainers/oge-basics/multiplication-division/division-path.html": "sitemap",
-    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap"
+    "trainers/oge-basics/multiplication-division/division-checkpoint.html": "sitemap",
+    "ege-profil/azbuka-metodov/index.html": "sitemap; existing public methods entrance (SEO_METHODS_ENTRANCE_20261118 source commit)"
   },
   "excluded": {
     "school/peterson6/index.html": "private/archived/helper/board/offline",
@@ -5475,6 +5481,13 @@
         "geometry-pogorelov/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "0f6e95f703af7e020a676923e3179ac226e4ba2e",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "changedPaths": [],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],
   "coverageUpdates": [
@@ -5542,6 +5555,14 @@
         "trainers/ege-methods.html"
       ],
       "reason": "Existing course added to the public sitemap with the shared navigator and a static worked example."
+    },
+    {
+      "sourceBaseSha": "67d66812305e22559bbd2a0f232c008110f1f9b7",
+      "task": "docs/tasks/SEO_METHODS_ENTRANCE_20261118.md",
+      "addedPages": [
+        "ege-profil/azbuka-metodov/index.html"
+      ],
+      "reason": "Existing methods entrance added to the public sitemap; keep the unchanged shared navigator with exact committed before/after identity."
     }
   ]
 }
