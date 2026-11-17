@@ -154,6 +154,7 @@ async function checkStartExamRoutes(page) {
     if (number) assert.match(await page.locator('main p.eyebrow').first().innerText(), new RegExp('№\\s*' + number + '(?:\\D|$)'), hash);
     const links = await page.locator('main a[href]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
     for (const lesson of lessons) assert(links.some(href => href.includes('/' + lesson)), hash + ': ' + lesson);
+    if(number===16) assert(links.includes('https://mathexam.space/ege-profil/part-two/#fipi/2027/16'), hash + ': written course online bridge');
   }
   const sources = new URL(page.url());
   sources.hash = '#sources';

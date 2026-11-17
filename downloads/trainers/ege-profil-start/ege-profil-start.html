@@ -55578,7 +55578,9 @@ const api={checks,foundation,trig,routes,next,prerequisites,recommend};root.Prof
     if(value.number===8)items=items.filter(b=>b.path.endsWith('derivative-t8.html'));
     if(value.number===12)items=items.filter(b=>b.path.endsWith('functions-t1112.html'));
     if(value.id==='integral')items=[];
-    return renderResources(items,b=>resourceHref(b,legacy));
+    const writtenUrl=(root.MathExamTrainerOffline?.origin||'')+'/ege-profil/part-two/#fipi/2027/16';
+    const writtenLink=value.number===16?'<p><a class="button quiet" href="'+writtenUrl+'">Решить №16 письменно</a></p>':'';
+    return writtenLink+renderResources(items,b=>resourceHref(b,legacy));
   }
   function bankEntries(b){
     const map=root.ProfileExamMap||(typeof module!=='undefined'&&module.exports?require('../exam-map.js'):null);

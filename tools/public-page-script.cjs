@@ -84,7 +84,8 @@ function canonicalProfileLearningScripts(canonical, wrapper) {
     ['geometry-data.js?v=20261112-vectors', 'geometry-data.js'],
     ['checks.js?v=20261114-numeric-domain', 'checks.js?v=20261101-trainer-repair'],
     ['state.js?v=20261109-integrity', 'state.js?v=20261101-trainer-repair'],
-    ['app.js?v=20261117-research', 'app.js?v=20261115-fipi-map']
+    ['app.js?v=20261117-research', 'app.js?v=20261115-fipi-map'],
+    ['course-links.js?v=20261117-h12', 'course-links.js?v=20261115-fipi-map']
   ]);
   for (const current of cacheStamps.keys())
     assert.deepEqual(page.filter(script => pathname(script.src) === pathname(current)).map(script => script.src), [current],
