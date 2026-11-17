@@ -67,13 +67,15 @@
 @media(prefers-reduced-motion:no-preference){button,a.button{transition:background .15s ease}}
 @media print{header,footer,.actions,.modes,button{display:none}.task-layout{display:block}.panel,.card{break-inside:avoid}main{padding:0}}
 .part2-lab label{display:block}.part2-lab select{max-width:100%;min-height:44px;display:block;margin:10px 0}.part2-lab input[type=range]{width:100%;min-height:44px}.part2-lab form button{margin-top:10px}
+.equation-investigation>summary{display:list-item;min-height:44px;color:var(--accent);font-weight:700;cursor:pointer}
+.equation-investigation table th,.equation-investigation table td{overflow-wrap:anywhere}
 
 /* Long exact expressions and answer-format labels may wrap at narrow widths;
    neither the grid track nor its children may impose their min-content width. */
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
 
 #proof-jump{margin:0 0 10px}
-#proof-jump[hidden],#proof-open-saved[hidden]{display:none}
+#proof-jump[hidden],#proof-open-saved[hidden],#equation-open-saved[hidden]{display:none}
 .proof-review-list{list-style:none;padding:0;margin:12px 0}
 .proof-review-list li{border-top:1px solid var(--line);padding:6px 0}
 .proof-review-list label{display:flex;align-items:flex-start;gap:10px;padding:6px 0;min-height:44px;cursor:pointer}
@@ -86,6 +88,7 @@
 #proof-review{overflow-wrap:anywhere}
 
 </style>
+
 
 
 
@@ -322,6 +325,10 @@
 .profile-skill-alphabet-group a { color: #294e9c; text-underline-offset: 3px; }
 
 </style>
+
+
+
+
 
 
 
@@ -749,6 +756,522 @@ const api={number,check};root.ProfileCheck=api;if(typeof module!=='undefined')mo
         meta:{kind:'cancelled-inequality',a,b,right,inside}};
     })));
 
+  // Exact answers for the two new independent conditions in each equation lesson.
+  const rootSelectionPractice = {
+    "p14-circle-selection": [
+      {
+        "id": "p14-circle-selection-7",
+        "prompt": "<b>а)</b> Решите уравнение <b>sin x = −1/2</b>. <b>б)</b> Выпишите из общего решения корни, для которых <b>−17π/6 ≤ x &lt; −π/6</b>.",
+        "hints": [
+          "Отметьте на единичной окружности обе точки с ординатой −1/2.",
+          "Подставьте каждую серию в неравенство из пункта б. Справа стоит строгий знак."
+        ],
+        "solution": [
+          "Угол −π/6 имеет синус −1/2. Вторая точка того же уровня даёт угол 7π/6. Полный оборот имеет длину 2π.",
+          "Общее решение: x = −π/6 + 2πn или x = 7π/6 + 2πn, n ∈ ℤ.",
+          "Для первой серии условие пункта б даёт −4/3 ≤ n &lt; 0, подходит n = −1. Для второй серии −2 ≤ n &lt; −2/3, подходят n = −2 и n = −1.",
+          "Корни в заданном промежутке: −17π/6, −13π/6, −5π/6. Левый конец входит, правый исключён."
+        ],
+        "proof": {
+          "prompt": "Запишите обе серии корней и покажите отбор по каждой серии.",
+          "criteria": [
+            "Учтены обе точки окружности и целый параметр.",
+            "Граничные знаки перенесены без изменения.",
+            "Проверены все подходящие целые значения параметра."
+          ]
+        },
+        "equationAnswer": {
+          "general": [
+            [
+              "-1/6",
+              "2"
+            ],
+            [
+              "7/6",
+              "2"
+            ]
+          ],
+          "finite": [
+            "-17/6",
+            "-13/6",
+            "-5/6"
+          ],
+          "type": "finite-pi",
+          "interval": [
+            "-17/6",
+            "-1/6",
+            true,
+            false
+          ]
+        },
+        "equation": {
+          "kind": "trig-level",
+          "function": "sin",
+          "level": "-1/2"
+        }
+      },
+      {
+        "id": "p14-circle-selection-8",
+        "prompt": "<b>а)</b> Найдите все решения уравнения <b>cos x = −√2/2</b>. <b>б)</b> Определите, какие из них удовлетворяют условию <b>3π/4 &lt; x &lt; 5π/4</b>.",
+        "hints": [
+          "Ищите точки окружности с абсциссой −√2/2.",
+          "Сравните углы одного полного оборота с обоими концами промежутка."
+        ],
+        "solution": [
+          "На полуоткрытом периоде от 0 до 2π косинус равен −√2/2 при x = 3π/4 и x = 5π/4.",
+          "Все решения: x = 3π/4 + 2πn или x = 5π/4 + 2πn, n ∈ ℤ. Вторая серия совпадает с x = −3π/4 + 2πn.",
+          "Данный промежуток расположен внутри одного оборота. Два найденных угла совпадают с исключёнными концами, поэтому внутри корней нет.",
+          "Ответ в пункте б: ∅."
+        ],
+        "proof": {
+          "prompt": "Обоснуйте общее решение и проверьте, принадлежат ли корни указанному промежутку.",
+          "criteria": [
+            "Описаны все обороты для обеих точек.",
+            "Исследован промежуток внутри одного полного оборота.",
+            "Учтено, входят ли концы в промежуток."
+          ]
+        },
+        "equationAnswer": {
+          "general": [
+            [
+              "3/4",
+              "2"
+            ],
+            [
+              "5/4",
+              "2"
+            ]
+          ],
+          "finite": [],
+          "type": "finite-pi",
+          "interval": [
+            "3/4",
+            "5/4",
+            false,
+            false
+          ]
+        },
+        "equation": {
+          "kind": "trig-level",
+          "function": "cos",
+          "level": "-sqrt(2)/2"
+        }
+      }
+    ],
+    "p14-trig-factors": [
+      {
+        "id": "p14-trig-factors-7",
+        "prompt": "<b>а)</b> Решите уравнение <b>sin 2x = 2 sin x</b>. <b>б)</b> Выберите его корни на отрезке <b>[−2π; 3π]</b>.",
+        "hints": [
+          "Замените sin 2x произведением 2 sin x cos x и вынесите общий множитель.",
+          "Сравните корни уравнений sin x = 0 и cos x = 1. Как связаны их серии?"
+        ],
+        "solution": [
+          "По формуле синуса двойного угла получаем 2 sin x (cos x − 1) = 0.",
+          "Из первого множителя следует x = πn, из второго x = 2πm, n, m ∈ ℤ.",
+          "Каждое число 2πm уже входит в первую серию при n = 2m. Все решения исходного уравнения имеют вид x = πn, n ∈ ℤ.",
+          "На отрезке имеем −2 ≤ n ≤ 3. Подходят −2π, −π, 0, π, 2π и 3π."
+        ],
+        "proof": {
+          "prompt": "Объясните разложение, объединение серий и выбор углов.",
+          "criteria": [
+            "Формула двойного угла применена к исходному равенству.",
+            "Рассмотрены нули каждого множителя и сравнены серии.",
+            "Из неравенства для параметра получены все корни на отрезке."
+          ]
+        },
+        "equationAnswer": {
+          "general": [
+            [
+              "0",
+              "1"
+            ]
+          ],
+          "finite": [
+            "-2",
+            "-1",
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "type": "finite-pi",
+          "interval": [
+            "-2",
+            "3",
+            true,
+            true
+          ]
+        },
+        "equation": {
+          "kind": "trig-double-angle",
+          "coefficient": "2"
+        }
+      },
+      {
+        "id": "p14-trig-factors-8",
+        "prompt": "<b>а)</b> Найдите все решения уравнения <b>sin 2x = 3 sin x</b>. <b>б)</b> Укажите, какие из них лежат в промежутке <b>−π/2 &lt; x ≤ π/2</b>.",
+        "hints": [
+          "После применения формулы двойного угла приравняйте к нулю каждый множитель.",
+          "Проверьте, попадает ли значение косинуса из второго множителя в отрезок [−1; 1]."
+        ],
+        "solution": [
+          "Переносим правую часть и раскладываем: sin x (2 cos x − 3) = 0.",
+          "Значение cos x = 3/2 невозможно, поскольку |cos x| ≤ 1. Из sin x = 0 получаем все решения x = πn, n ∈ ℤ.",
+          "При отборе получается −1/2 &lt; n ≤ 1/2. Единственное целое значение n равно 0.",
+          "Ответ в пункте б: 0."
+        ],
+        "proof": {
+          "prompt": "Запишите оба случая и объясните, как вы отобрали корни.",
+          "criteria": [
+            "Исследованы оба множителя.",
+            "Проверено ограничение на значение косинуса.",
+            "Отбор выполнен по точным границам для целого параметра."
+          ]
+        },
+        "equationAnswer": {
+          "general": [
+            [
+              "0",
+              "1"
+            ]
+          ],
+          "finite": [
+            "0"
+          ],
+          "type": "finite-pi",
+          "interval": [
+            "-1/2",
+            "1/2",
+            false,
+            true
+          ]
+        },
+        "equation": {
+          "kind": "trig-double-angle",
+          "coefficient": "3"
+        }
+      }
+    ],
+    "p14-exponential-substitution": [
+      {
+        "id": "p14-exponential-substitution-7",
+        "prompt": "Решите уравнение <b>4<sup>x</sup> + 2<sup>x</sup> = 2</b>. Запишите, как вернулись от новой переменной к x.",
+        "hints": [
+          "Запишите 4<sup>x</sup> через квадрат 2<sup>x</sup>.",
+          "Прежде чем вернуться к x, оставьте только допустимые значения t = 2<sup>x</sup>."
+        ],
+        "solution": [
+          "Положим t = 2<sup>x</sup>. Тогда t &gt; 0 и 4<sup>x</sup> = t².",
+          "Получаем t² + t − 2 = (t − 1)(t + 2) = 0. Корень t = −2 невозможен, остаётся t = 1.",
+          "Из 2<sup>x</sup> = 1 = 2⁰ следует x = 0. Степень с основанием 2 строго возрастает, других x для t = 1 нет.",
+          "Проверка: 4⁰ + 2⁰ = 2. Ответ: 0."
+        ],
+        "proof": {
+          "prompt": "Укажите ограничение на замену, разложите квадратный трёхчлен и выполните обратную подстановку.",
+          "criteria": [
+            "Указаны допустимые значения новой переменной.",
+            "Все корни квадратного уравнения проверены на допустимость.",
+            "Обратная подстановка применена ко всем допустимым значениям."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [
+            "0"
+          ],
+          "type": "finite-rational"
+        },
+        "equation": {
+          "kind": "exponential-quadratic",
+          "base": "2",
+          "powerSign": 1,
+          "linear": "1",
+          "constant": "-2"
+        }
+      },
+      {
+        "id": "p14-exponential-substitution-8",
+        "prompt": "Найдите множество действительных решений уравнения <b>2<sup>−2x</sup> + 3 · 2<sup>−x</sup> + 2 = 0</b>.",
+        "hints": [
+          "Выразите 2<sup>−2x</sup> через степень 2<sup>−x</sup>.",
+          "Сравните знаки алгебраических корней со знаком 2<sup>−x</sup>."
+        ],
+        "solution": [
+          "Обозначим t = 2<sup>−x</sup>. Для любого действительного x это положительное число, а 2<sup>−2x</sup> = t².",
+          "Уравнение принимает вид (t + 1)(t + 2) = 0. Его корни t = −1 и t = −2 не входят в диапазон замены.",
+          "Исходное уравнение не имеет действительных решений. Это также видно из того, что каждое из трёх слагаемых слева положительно.",
+          "Ответ: ∅."
+        ],
+        "proof": {
+          "prompt": "Обоснуйте, возможны ли найденные значения новой переменной в исходном уравнении.",
+          "criteria": [
+            "Ограничение следует из самой показательной функции.",
+            "Квадратное уравнение решено полностью.",
+            "Итог согласован с областью значений замены."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [],
+          "type": "finite-rational"
+        },
+        "equation": {
+          "kind": "exponential-quadratic",
+          "base": "2",
+          "powerSign": -1,
+          "linear": "3",
+          "constant": "2"
+        }
+      }
+    ],
+    "p14-log-domain": [
+      {
+        "id": "p14-log-domain-7",
+        "prompt": "При каких действительных x сумма <b>log<sub>2</sub>(x − 1) + log<sub>2</sub>(5 − x)</b> равна <b>2</b>? Обоснуйте допустимость преобразований.",
+        "hints": [
+          "Потребуйте положительность каждого из двух аргументов отдельно.",
+          "Запишите произведение (x − 1)(5 − x) в виде 4 − (x − 3)²."
+        ],
+        "solution": [
+          "Из x − 1 &gt; 0 и 5 − x &gt; 0 следует ОДЗ 1 &lt; x &lt; 5.",
+          "На ОДЗ можно сложить логарифмы как логарифм произведения. Равенство равносильно (x − 1)(5 − x) = 2² = 4.",
+          "Так как (x − 1)(5 − x) = 4 − (x − 3)², получаем (x − 3)² = 0.",
+          "При x = 3 оба аргумента равны 2. Получаем log₂ 2 + log₂ 2 = 2. Ответ: 3."
+        ],
+        "proof": {
+          "prompt": "Запишите ОДЗ, равносильное уравнение и проверку кандидатов.",
+          "criteria": [
+            "Положительность проверена для каждого аргумента.",
+            "Логарифмы объединены на ОДЗ.",
+            "Итоговое значение проверено в исходном равенстве."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [
+            "3"
+          ],
+          "type": "finite-rational",
+          "domain": {
+            "interval": [
+              "1",
+              "5",
+              false,
+              false
+            ]
+          }
+        },
+        "equation": {
+          "kind": "log-product",
+          "base": "2",
+          "leftZero": "1",
+          "rightZero": "5",
+          "rhs": "2"
+        }
+      },
+      {
+        "id": "p14-log-domain-8",
+        "prompt": "Решите уравнение <b>log<sub>2</sub>(x − 1) + log<sub>2</sub>(5 − x) = 3</b>. Объясните, как ОДЗ ограничивает поиск корней.",
+        "hints": [
+          "Из двух условий на аргументы получите промежуток допустимых x.",
+          "Сравните наибольшее значение произведения (x − 1)(5 − x) с 2³."
+        ],
+        "solution": [
+          "Положительность обоих аргументов задаёт ОДЗ 1 &lt; x &lt; 5.",
+          "На ОДЗ исходное равенство эквивалентно (x − 1)(5 − x) = 2³ = 8.",
+          "Произведение равно 4 − (x − 3)² ≤ 4 для любых действительных x. Значение 8 недостижимо.",
+          "Ответ: ∅."
+        ],
+        "proof": {
+          "prompt": "Покажите, какое произведение требуется получить и почему оно не достигается.",
+          "criteria": [
+            "ОДЗ выведена из обоих аргументов.",
+            "При переходе от логарифма сохранена правая часть.",
+            "Доказана граница для произведения."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [],
+          "type": "finite-rational",
+          "domain": {
+            "interval": [
+              "1",
+              "5",
+              false,
+              false
+            ]
+          }
+        },
+        "equation": {
+          "kind": "log-product",
+          "base": "2",
+          "leftZero": "1",
+          "rightZero": "5",
+          "rhs": "3"
+        }
+      }
+    ],
+    "p14-radical-check": [
+      {
+        "id": "p14-radical-check-7",
+        "prompt": "Найдите действительные корни уравнения <b>√(x − 3/16) = x</b>. Объясните, при каком условии можно возвести обе его части в квадрат.",
+        "hints": [
+          "Запишите ограничение из подкоренного выражения и сравните с требованием x ≥ 0.",
+          "Умножьте квадратное уравнение на 16 и попробуйте разложить его на множители."
+        ],
+        "solution": [
+          "Подкоренное выражение требует x ≥ 3/16. На этом промежутке правая часть x положительна, поэтому возведение обеих частей в квадрат равносильно.",
+          "Получаем x − 3/16 = x², то есть 16x² − 16x + 3 = (4x − 1)(4x − 3) = 0.",
+          "Значения 1/4 и 3/4 принадлежат ОДЗ. При x = 1/4 получаем √(1/16) = 1/4, при x = 3/4 получаем √(9/16) = 3/4.",
+          "Ответ: 1/4 и 3/4."
+        ],
+        "proof": {
+          "prompt": "Запишите ограничения, квадратное уравнение и проверку его корней.",
+          "criteria": [
+            "Проверены подкоренное выражение и знак правой части.",
+            "Квадратное уравнение решено полностью.",
+            "По каждому кандидату установлено исходное равенство."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [
+            "1/4",
+            "3/4"
+          ],
+          "type": "finite-rational",
+          "domain": {
+            "interval": [
+              "3/16",
+              null,
+              true,
+              false
+            ]
+          }
+        },
+        "equation": {
+          "kind": "square-root-linear",
+          "subtract": "3/16"
+        }
+      },
+      {
+        "id": "p14-radical-check-8",
+        "prompt": "Определите множество действительных решений уравнения <b>√(x − 1) = x</b>. Обоснуйте итог.",
+        "hints": [
+          "Из подкоренного выражения получите ограничение, на котором обе части неотрицательны.",
+          "У полученного квадратного уравнения проверьте знак дискриминанта."
+        ],
+        "solution": [
+          "ОДЗ: x ≥ 1. На ней правая часть x также неотрицательна.",
+          "Возведение в квадрат равносильно и даёт x² − x + 1 = 0.",
+          "Дискриминант равен 1 − 4 = −3. У квадратного уравнения нет действительных корней, поэтому исходное уравнение также не имеет решений.",
+          "Ответ: ∅."
+        ],
+        "proof": {
+          "prompt": "Укажите ограничения и обоснуйте вывод по полученному квадратному уравнению.",
+          "criteria": [
+            "Проверен знак обеих частей перед возведением в квадрат.",
+            "Квадратное уравнение получено из исходного.",
+            "Итог обоснован знаком дискриминанта или выделением квадрата."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [],
+          "type": "finite-rational",
+          "domain": {
+            "interval": [
+              "1",
+              null,
+              true,
+              false
+            ]
+          }
+        },
+        "equation": {
+          "kind": "square-root-linear",
+          "subtract": "1"
+        }
+      }
+    ],
+    "p14-rational-hole": [
+      {
+        "id": "p14-rational-hole-7",
+        "prompt": "При каких действительных x дробь <b>(x² − 4)/(x − 2)</b> определена и равна <b>4</b>?",
+        "hints": [
+          "Выпишите значение, при котором исходный знаменатель обращается в ноль.",
+          "Сократите дробь на допустимых x и верните ограничение при проверке кандидата."
+        ],
+        "solution": [
+          "Знаменатель x − 2, поэтому x ≠ 2.",
+          "При x ≠ 2 имеем (x² − 4)/(x − 2) = (x − 2)(x + 2)/(x − 2) = x + 2.",
+          "Равенство x + 2 = 4 даёт только x = 2. В исходной дроби при этом x знаменатель равен нулю.",
+          "Ответ: ∅."
+        ],
+        "proof": {
+          "prompt": "Покажите, где допустимо сокращение и как проверили результат.",
+          "criteria": [
+            "Запрет записан по исходному знаменателю.",
+            "Сокращение выполнено на ОДЗ.",
+            "Кандидат проверен в исходной дроби."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [],
+          "type": "finite-rational",
+          "domain": {
+            "excluded": [
+              "2"
+            ]
+          }
+        },
+        "equation": {
+          "kind": "rational-hole",
+          "excluded": "2",
+          "rhs": "4"
+        }
+      },
+      {
+        "id": "p14-rational-hole-8",
+        "prompt": "Решите уравнение <b>(x² − 4)/(x − 2) = 5</b>. Укажите, на каких x допустимо сокращение.",
+        "hints": [
+          "Разложите числитель как разность квадратов.",
+          "После сокращения решите линейное уравнение и сравните кандидат с запрещённым значением."
+        ],
+        "solution": [
+          "Дробь определена при x ≠ 2.",
+          "Разложение x² − 4 = (x − 2)(x + 2) позволяет на ОДЗ сократить дробь и получить x + 2 = 5.",
+          "Получаем x = 3. Оно допустимо, и (3² − 4)/(3 − 2) = 5.",
+          "Ответ: 3."
+        ],
+        "proof": {
+          "prompt": "Запишите ОДЗ, сокращение и проверку найденного x.",
+          "criteria": [
+            "Ограничение найдено по исходному знаменателю.",
+            "Использовано верное разложение числителя.",
+            "Итог проверен в исходной дроби."
+          ]
+        },
+        "equationAnswer": {
+          "finite": [
+            "3"
+          ],
+          "type": "finite-rational",
+          "domain": {
+            "excluded": [
+              "2"
+            ]
+          }
+        },
+        "equation": {
+          "kind": "rational-hole",
+          "excluded": "2",
+          "rhs": "5"
+        }
+      }
+    ]
+  };
+  for (const [lessonId, tasks] of Object.entries(rootSelectionPractice)) {
+    const lesson = lessons.find(item => item.id === lessonId);
+    lesson.tasks.push(...tasks.map(task => ({ ...task, steps: [], final: [] })));
+  }
+
   root.ProfilePartTwoLessons=(root.ProfilePartTwoLessons||[]).concat(lessons);
   if(typeof module!=='undefined'&&module.exports)module.exports=lessons;
 })(typeof globalThis!=='undefined'?globalThis:this);
@@ -1094,6 +1617,164 @@ if(typeof module!=='undefined'&&module.exports)module.exports=lessons;
 })(typeof globalThis!=='undefined'?globalThis:this);
 
 </script>
+<script data-inline-source="/ege-profil/part-two/content-finance.js">
+(function(root){
+'use strict';
+
+// The written finance bank has its own stable IDs. It uses the existing
+// second-part answer, draft and help contracts.
+const criteria=[
+ 'Я обозначил денежные величины и написал, когда начисляют проценты и когда делают платёж.',
+ 'Я составил формулу платежа или уравнения остатков и объяснил, из каких условий они следуют.',
+ 'Я вычислил нужную величину и указал единицу измерения в ответе.'
+];
+const prerequisites=[{title:'Вспомнить проценты и остаток долга',href:'/ege-profil/start/#fipi/2027/16'}];
+const money='тыс. рублей';
+const format=value=>String(value).replace('.',',');
+// The catalog stores principal and balance in thousands, and calculates
+// interest in hundredths of a thousand before summation.
+const amount=cents=>format(cents/100);
+const sum=values=>values.reduce((total,value)=>total+value,0);
+const step=(prompt,answer,hint,explanation)=>({prompt,answers:[answer],hint,explanation,answerFormat:'number'});
+const lesson=(id,title,goal,theory,tasks)=>({
+ id,exam:16,title,goal,theory,prerequisites,tasks:tasks.map((task,index)=>({...task,id:id+'-'+(index+1)}))
+});
+const result=(label,answer,prompt,steps,solution)=>({
+ prompt,steps,final:[{label,answers:[answer],answerFormat:'number'}],
+ proof:{prompt:'Запишите календарь начислений, модель платежей и расчёт ответа.',criteria},
+ solution
+});
+
+function calendar({principal,phases,first,last,ask}){
+ const balances=[principal],rows=[];
+ for(const {count,end,rate} of phases){
+  const decrease=(balances.at(-1)-end)/count;
+  for(let period=0;period<count;period++){
+   const before=balances.at(-1),after=before-decrease;
+   rows.push({before,after,rate,principalCents:decrease*100,interestCents:before*rate});
+   balances.push(after);
+  }
+ }
+ const n=rows.length, selected=rows.slice(first-1,last);
+ const principalCents=sum(selected.map(row=>row.principalCents));
+ const interestCents=sum(selected.map(row=>row.interestCents));
+ const paymentCents=principalCents+interestCents;
+ const span=first===last?'за платёж №'+first:first===1&&last===n?'за весь срок':'с '+first+'-го по '+last+'-й платёж включительно';
+ const question=ask==='rate'
+  ?'Всего '+span+' внесли '+amount(paymentCents)+' '+money+'. Найдите месячную ставку в процентах.'
+  :ask==='interest'
+   ?'Найдите, сколько '+span+' уплачено именно в виде процентов. Ответ дайте в тысячах рублей.'
+   :'Найдите общую сумму выплат '+span+'. Ответ дайте в тысячах рублей.';
+ const timeline=['Пятого числа каждого месяца, до платежа, долг увеличивают на '+(ask==='rate'?'один и тот же процент r каждый месяц.':phases.length===1?phases[0].rate+'% каждый месяц.':'ставку своего этапа: '+phases.map((p,i)=>'этап '+(i+1)+' — '+p.rate+'%').join(', ')+'.'),
+  'После начисления с 6-го по 20-е число вносят один платёж. Остаток фиксируют в конце 20-го числа.'];
+ const equal=phases.length===1
+  ?'После каждого платежа остаток на одну и ту же сумму меньше, чем после предыдущего. До первого платежа сравнивают с первоначальным долгом.'
+  :'На каждом из двух этапов остаток уменьшают равными долями внутри этапа. После '+phases[0].count+'-го платежа заканчивается первый этап, а остаток равен '+phases[0].end+' '+money+'.';
+ const prompt='<p>Банк выдал '+principal+' '+money+' на '+n+' мес. Первый расчётный месяц следует за месяцем выдачи. '+timeline.join(' ')+'</p><p>'+equal+' После '+n+'-го платежа долг равен нулю.</p><p><strong>'+question+'</strong></p>';
+ const reductions=phases.map((p,i)=>i===0?(principal-p.end)/p.count:(phases[i-1].end-p.end)/p.count);
+ const balanceLine='Остатки после платежей, начиная с первоначального: '+balances.join(' → ')+' '+money+'. Уменьшение остатка за месяц '+(reductions.length===1?'равно '+reductions[0]+' '+money:'на первом этапе '+reductions[0]+', на втором — '+reductions[1]+' '+money)+'.';
+ const model='Пусть B — долг перед начислением, C — долг после платежа, r — ставка в процентах. Платёж равен B · (1 + r/100) − C = (B − C) + B · r/100. Проценты начисляются на B.';
+ const details='Для выбранных месяцев остатки перед начислением: '+selected.map(row=>row.before).join(', ')+' '+money+'. На основной долг за эти месяцы уходит '+amount(principalCents)+' '+money+'.';
+ const wanted=ask==='rate'?phases[0].rate:(ask==='interest'?interestCents:paymentCents)/100;
+ const finalLine=ask==='rate'
+  ?'Из общей выплаты вычтем погашение основного долга: '+amount(paymentCents)+' − '+amount(principalCents)+' = '+amount(interestCents)+'. Поэтому ('+selected.map(row=>row.before).join(' + ')+') · r/100 = '+amount(interestCents)+'. Получаем r = '+wanted+'%.'
+  :'Сумма процентов равна '+selected.map(row=>row.before+' · '+format(row.rate/100)).join(' + ')+' = '+amount(interestCents)+' '+money+'. '+(ask==='interest'?'Это искомая сумма.':'Общая выплата равна '+amount(principalCents)+' + '+amount(interestCents)+' = '+amount(paymentCents)+' '+money+'.');
+ return result(ask==='rate'?'Ставка, в процентах':'Сумма, тыс. рублей',wanted,prompt,[
+  step('На сколько тысяч рублей уменьшается основной долг за первый месяц?',reductions[0],
+   'Разделите снижение остатка первого этапа на число платежей этого этапа.',balanceLine),
+  step('Каков остаток долга перед начислением в первом из нужных месяцев, в тысячах рублей?',selected[0].before,
+   'Возьмите остаток после предыдущего платежа. Для первого месяца это сумма кредита.',model+' '+details),
+  step(ask==='rate'?'Найдите ставку, в процентах.':'Вычислите требуемую сумму, в тысячах рублей.',wanted,
+   'Сначала выделите часть платежей, которая ушла на основной долг.',finalLine)
+ ],[balanceLine,model,details,finalLine]);
+}
+
+// Inverse equal-principal model, approved FIPI 2027 demo, task 16 (second example).
+function principalFromSelectedPayments(){
+ const months=18,rate=2,first=8,last=13;
+ const weights=Array.from({length:last-first+1},(_,i)=>months-first+1-i);
+ const coefficientCents=100*weights.length+rate*sum(weights);
+ const totalCents=126360;
+ const share=totalCents/coefficientCents;
+ const principal=months*share;
+ const prompt='<p>В сентябре 2028 года заёмщик взял кредит на '+months+' месяцев. Первый расчётный месяц — октябрь 2028 года. Третьего числа каждого расчётного месяца банк увеличивает остаток долга на '+rate+'%. С 4-го по 17-е число заёмщик вносит один платёж.</p><p>После каждого платежа остаток долга уменьшается на одну и ту же сумму по сравнению с остатком после предыдущего платежа. В первый месяц сравнивают с суммой кредита. Последний платёж полностью гасит долг.</p><p>С мая по октябрь 2029 года включительно заёмщик внёс в сумме '+amount(totalCents)+' '+money+'. <strong>Какую сумму он взял в кредит? Ответ дайте в тысячах рублей.</strong></p>';
+ const calendarLine='Май 2029 года — расчётный месяц №'+first+', октябрь — №'+last+'. Обозначим через d одинаковое уменьшение основного долга за месяц в тысячах рублей. Сумма кредита равна '+months+'d. Перед начислением процентов в выбранных месяцах долги равны '+weights.map(weight=>weight+'d').join(', ')+' тыс. рублей.';
+ const paymentLine='За месяц погашается d тыс. рублей основного долга и уплачиваются проценты. Если перед начислением остаток равен kd, то платёж равен d + '+format(rate/100)+' · kd.';
+ const sumLine='За '+weights.length+' месяцев погашено '+weights.length+'d основного долга. Сумма остатков, на которые начислены проценты, равна ('+weights.join(' + ')+')d = '+sum(weights)+'d. Поэтому за эти месяцы выплачено '+weights.length+'d + '+format(rate/100)+' · '+sum(weights)+'d = '+amount(coefficientCents)+'d.';
+ const finalLine='По условию '+amount(coefficientCents)+'d = '+amount(totalCents)+'. Отсюда d = '+share+' тыс. рублей. Сумма кредита равна '+months+' · '+share+' = '+principal+' тыс. рублей.';
+ return result('Сумма, тыс. рублей',principal,prompt,[
+  step('Сколько долей основного долга остаётся перед майским начислением?',weights[0],
+   'Отсчитайте расчётные месяцы от октября 2028 года. Из 18 долей уже погашены доли за все предыдущие месяцы.',calendarLine),
+  step('Каким числом надо умножить долю основного долга, чтобы получить сумму шести нужных платежей?',coefficientCents/100,
+   'Сложите шесть единиц основного долга и 2% от числа долей, оставшихся перед каждым начислением.',paymentLine+' '+sumLine),
+  step('Какую сумму взяли в кредит, в тысячах рублей?',principal,
+   'Найдите сначала одну долю, разделив сумму платежей на найденный коэффициент.',finalLine)
+ ],[calendarLine,paymentLine,sumLine,finalLine]);
+}
+
+function equalPayments({rate,base,ask}){
+ const k=format((100+rate)/100),initial=(200+rate)*base,after=(100+rate)*base;
+ const cents=(100+rate)**2*base;
+ const prior=initial*(100+rate),interest=2*cents-initial*100;
+ const asked={
+  payment:{answer:cents/100,sentence:'Вычислите величину одного платежа.'},
+  balance:{answer:after,sentence:'Каков остаток долга сразу после первого платежа?'},
+  interest:{answer:interest/100,sentence:'На сколько суммарные выплаты больше суммы кредита?'},
+  principal:{answer:initial,sentence:'Какую сумму банк первоначально выдал?'}
+ }[ask];
+ const given=ask==='principal'?'Каждый платёж составляет '+amount(cents)+' '+money+'.':'Первоначальная сумма кредита равна '+initial+' '+money+'.';
+ const prompt='<p>Кредит выдан на два года. В конце каждого года остаток сначала увеличивают на '+rate+'%, затем в тот же день вносят платёж. Размер обоих платежей одинаков. После второго платежа остаток равен нулю.</p><p>'+given+' <strong>'+asked.sentence+' Ответ дайте в тысячах рублей.</strong></p>';
+ const description='Обозначим первоначальный долг через S, единый платёж через P. Коэффициент начисления k = '+k+'. Учитываем начисление до платежа.';
+ const expression='После первого платежа остаётся kS − P. После второго остаётся k(kS − P) − P. По условию этот остаток нулевой, поэтому k²S = (k + 1)P.';
+ const calculation=ask==='principal'
+  ?'Отсюда S = (k + 1)P/k². Подставим k = '+k+' и P = '+amount(cents)+'. Получаем S = '+initial+' '+money+'.'
+  :'Отсюда P = k²S/(k + 1). Подставим S = '+initial+' и k = '+k+' и получим P = '+amount(cents)+' '+money+'.';
+ const check='Перед первым платежом долг равен '+amount(prior)+'. После первого платежа остаётся '+amount(prior)+' − '+amount(cents)+' = '+after+'. После следующего начисления он равен '+amount(cents)+', поэтому ровно закрывается вторым платежом. Переплата 2P − S = '+amount(interest)+' '+money+'.';
+ return result('Сумма, тыс. рублей',asked.answer,prompt,[
+  step('Во сколько раз увеличивается долг перед каждым платежом?',Number(k.replace(',','.')),
+    'Увеличение на r% означает умножение на 1 + r/100.',description),
+  step(ask==='principal'?'Сколько тысяч рублей остаётся сразу после первого платежа?':'Сколько тысяч рублей должен заёмщик перед первым платежом?',
+   ask==='principal'?after:prior/100,
+    ask==='principal'?'Перед последним платежом весь долг равен P. Разделите его на k.':'Умножьте первоначальный долг на коэффициент начисления.',
+   expression),
+  step('Найдите сумму, которую спрашивают в условии, в тысячах рублей.',asked.answer,
+   'Используйте уравнение для нулевого остатка после второго платежа.',calculation+' '+check)
+ ],[description,expression,calculation,check]);
+}
+
+const periods=(principal,count,rate,first,last,ask)=>calendar({principal,phases:[{count,end:0,rate}],first,last,ask});
+const split=(principal,middle,a,b,r,s,first,last,ask)=>calendar({
+ principal,phases:[{count:a,end:middle,rate:r},{count:b,end:0,rate:s}],first,last,ask
+});
+const fixed=(rate,base,ask)=>equalPayments({rate,base,ask});
+const lessons=[
+ lesson('h12-monthly-balance','Остаток уменьшается равными долями',
+  'Составьте ряд остатков и выделите платежи, о которых спрашивают.',
+  ['Падение остатка одинаково: делим сумму кредита на число месяцев.',
+   'Платёж состоит из этой доли основного долга и процентов на остаток до начисления.'],[
+  periods(880,4,7,1,4,'total'),periods(1050,5,6,1,5,'interest'),periods(980,7,9,6,7,'total'),
+  periods(930,6,12,5,6,'rate'),principalFromSelectedPayments(),periods(1175,5,4,2,5,'interest')
+ ]),
+ lesson('h12-two-stage-balance','Долг погашают в два этапа',
+  'Найдите шаг уменьшения для каждого этапа и не начисляйте проценты дважды.',
+  ['Из первоначальной суммы вычтите промежуточный остаток и разделите разность на число первых платежей.',
+   'На втором этапе разделите промежуточный остаток на число оставшихся платежей. Начальный долг для следующего начисления — фактический остаток.'],[
+  split(1340,620,3,4,7,7,1,7,'total'),split(1250,550,4,5,8,5,4,6,'total'),split(1080,480,3,4,10,10,1,7,'rate'),
+  split(1590,690,3,3,6,9,3,5,'total'),split(1430,650,3,5,9,9,2,7,'rate'),split(1710,750,4,5,7,11,5,8,'interest')
+ ]),
+ lesson('h12-equal-annual-payments','Одинаковые платежи в конце года',
+  'Запишите два остатка подряд и используйте нулевой долг после второй выплаты.',
+  ['Одинаковая выплата не означает одинаковое уменьшение основного долга.',
+   'При коэффициенте начисления k и платеже P после первого платежа остаётся kS − P. После второго остаток равен нулю.'],[
+  fixed(8,7,'payment'),fixed(6,9,'balance'),fixed(5,11,'interest'),
+  fixed(9,6,'principal'),fixed(7,5,'interest'),fixed(12,8,'balance')
+ ])
+];
+root.ProfileFinanceWrittenLessons=lessons;
+if(typeof module!=='undefined'&&module.exports)module.exports=lessons;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script>
 <script data-inline-source="/ege-profil/part-two/state.js">
 (function(root){
 'use strict';
@@ -1110,8 +1791,60 @@ function proofReviewCurrent(record){
  return !Number.isInteger(record.updatedAt)&&record.proofReviewSnapshot?.savedAt===record.updatedAt&&proofFieldsMatch(record);
 }
 function currentProofChecks(record){return proofReviewCurrent(record)?record.proofChecks:[];}
+const equationKeys = Object.freeze(['general', 'selected', 'roots']);
+const statusPattern = /^(?:correct|missing|(?:missing-)?extra(?:-outside-interval|-outside-domain|-not-root)?)$/;
+const own = (object, key) => Object.hasOwn(object, key);
+const recordObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
+const smallText = value => typeof value === 'string' && value.length <= 500;
+
+function keyed(value, validate) {
+  return value === undefined || (recordObject(value) &&
+    Object.entries(value).every(([key, item]) => equationKeys.includes(key) && validate(item)));
+}
+
+function validEquationState(record) {
+  return keyed(record.drafts.equationFinal, smallText) && keyed(record.equationChecks, check =>
+    recordObject(check) && smallText(check.value) && typeof check.status === 'string' && statusPattern.test(check.status));
+}
+
+function equationDraft(record, key) {
+  return record.drafts.equationFinal?.[key] ?? '';
+}
+
+function equationCheck(record, key) {
+  const check = record.equationChecks?.[key];
+  return check?.value === equationDraft(record, key) ? check.status : '';
+}
+
+function updateEquationDraft(record, expected, changes) {
+  if (!Object.entries(expected).every(([key, value]) => equationDraft(record, key) === value)) return 'conflict';
+  let changed = false;
+  for (const [key, value] of Object.entries(changes)) {
+    if (!equationKeys.includes(key) || !smallText(value) || !own(expected, key)) throw new TypeError('Invalid equation field update');
+    if (equationDraft(record, key) === value) continue;
+    (record.drafts.equationFinal ||= {})[key] = value;
+    if (record.equationChecks) delete record.equationChecks[key];
+    changed = true;
+  }
+  return changed ? 'updated' : 'unchanged';
+}
+
+function setEquationChecks(record, visible, statuses) {
+  const fields = Object.keys(visible);
+  if (!fields.length || fields.length !== Object.keys(statuses).length ||
+      !fields.every(key => equationKeys.includes(key) && typeof statuses[key] === 'string' && statusPattern.test(statuses[key]))) {
+    throw new TypeError('Invalid equation check');
+  }
+  if (!fields.every(key => equationDraft(record, key) === visible[key])) return 'conflict';
+  const correct = fields.every(key => statuses[key] === 'correct');
+  if (correct && fields.every(key => equationCheck(record, key) === 'correct')) return 'duplicate';
+  const checks = record.equationChecks ||= {};
+  for (const key of fields) checks[key] = { value: visible[key], status: statuses[key] };
+  return correct ? 'correct' : 'wrong';
+}
+
 const fresh=id=>({version:1,taskId:id,drafts:{final:[],steps:[],proof:''},solvedSteps:[],hints:[],proofChecks:[],attempts:[],attemptCount:0,wrong:0,helped:false,solution:false,solutionSteps:0,completed:false,independent:false,updatedAt:0});
-function valid(v,id){return plain(v)&&v.version===1&&v.taskId===id&&plain(v.drafts)&&(v.drafts.openFinal===undefined||typeof v.drafts.openFinal==='string'&&v.drafts.openFinal.length<=500)&&Array.isArray(v.drafts.final)&&v.drafts.final.length<=20&&v.drafts.final.every(x=>typeof x==='string'&&x.length<=500)&&Array.isArray(v.drafts.steps)&&v.drafts.steps.length<=100&&v.drafts.steps.every(x=>typeof x==='string'&&x.length<=500)&&typeof v.drafts.proof==='string'&&v.drafts.proof.length<=12000&&['solvedSteps','hints','proofChecks'].every(k=>Array.isArray(v[k])&&v[k].length<=100&&v[k].every(n=>Number.isInteger(n)&&n>=0&&n<100))&&v.solvedSteps.every((n,i)=>n===i)&&Array.isArray(v.attempts)&&v.attempts.length<=60&&v.attempts.every(a=>plain(a)&&typeof a.id==='string'&&typeof a.kind==='string'&&Array.isArray(a.answers)&&a.answers.length<=20&&a.answers.every(x=>typeof x==='string'&&x.length<=500)&&typeof a.correct==='boolean'&&typeof a.helped==='boolean'&&Number.isFinite(a.at))&&['attemptCount','wrong','updatedAt','solutionSteps'].every(k=>Number.isFinite(v[k])&&v[k]>=0)&&['helped','solution','completed','independent'].every(k=>typeof v[k]==='boolean');}
+function valid(v,id){return plain(v)&&v.version===1&&v.taskId===id&&plain(v.drafts)&&(v.drafts.openFinal===undefined||typeof v.drafts.openFinal==='string'&&v.drafts.openFinal.length<=500)&&Array.isArray(v.drafts.final)&&v.drafts.final.length<=20&&v.drafts.final.every(x=>typeof x==='string'&&x.length<=500)&&Array.isArray(v.drafts.steps)&&v.drafts.steps.length<=100&&v.drafts.steps.every(x=>typeof x==='string'&&x.length<=500)&&typeof v.drafts.proof==='string'&&v.drafts.proof.length<=12000&&validEquationState(v)&&['solvedSteps','hints','proofChecks'].every(k=>Array.isArray(v[k])&&v[k].length<=100&&v[k].every(n=>Number.isInteger(n)&&n>=0&&n<100))&&v.solvedSteps.every((n,i)=>n===i)&&Array.isArray(v.attempts)&&v.attempts.length<=60&&v.attempts.every(a=>plain(a)&&typeof a.id==='string'&&typeof a.kind==='string'&&Array.isArray(a.answers)&&a.answers.length<=20&&a.answers.every(x=>typeof x==='string'&&x.length<=500)&&typeof a.correct==='boolean'&&typeof a.helped==='boolean'&&Number.isFinite(a.at))&&['attemptCount','wrong','updatedAt','solutionSteps'].every(k=>Number.isFinite(v[k])&&v[k]>=0)&&['helped','solution','completed','independent'].every(k=>typeof v[k]==='boolean');}
 function create(storage,options={}){
  const memory=new Map(),blocked=new Set();let queue=Promise.resolve(),serial=0;
  const warn=()=>{if(typeof options.onWarning==='function')options.onWarning('Не удалось сохранить часть работы в браузере. Текущая работа остаётся на экране; прежнее сохранение не перезаписано.');};
@@ -1141,6 +1874,19 @@ function create(storage,options={}){
    return options.locks?.request?options.locks.request(PREFIX+id,action):action();};
   const result=queue.then(run);queue=result.catch(()=>{});return result;
  }
+ function recordAttempt(v,{kind,answers,correct,mode,independentEligible}){
+  const record={id:String(Date.now())+'-'+(++serial),kind,answers:answers.map(x=>String(x).slice(0,500)),correct:!!correct,helped:v.helped||mode!=='independent',at:Date.now()};
+  v.attemptCount++;if(!correct)v.wrong++;v.attempts.push(record);
+  // Preserve the first submission and the most recent 59. This is a bounded
+  // attempt trace, not an unbounded learner-history export.
+  if(v.attempts.length>60)v.attempts.splice(1,v.attempts.length-60);
+  if(kind==='final'&&correct){v.completed=true;if(mode==='independent'&&!v.helped&&independentEligible)v.independent=true;}
+ }
+ function finishEquation(v,visible,statuses,{mode,independentEligible}){
+  const outcome=setEquationChecks(v,visible,statuses);
+  if(outcome==='correct'||outcome==='wrong')recordAttempt(v,{kind:'final',answers:Object.values(visible).map(value=>value.trim()),correct:outcome==='correct',mode,independentEligible});
+  return outcome;
+ }
  function attempt(id,{kind,answers,correct,mode,independentEligible=false,openFinal=false,saveFinalDraft=false}){return patch(id,v=>{
   if(kind==='final'&&saveFinalDraft){
    if(openFinal){
@@ -1149,14 +1895,9 @@ function create(storage,options={}){
     v.drafts.openFinal=answers[0];
    }else v.drafts.final=answers;
   }
-  const record={id:String(Date.now())+'-'+(++serial),kind,answers:answers.map(x=>String(x).slice(0,500)),correct:!!correct,helped:v.helped||mode!=='independent',at:Date.now()};
-  v.attemptCount++;if(!correct)v.wrong++;v.attempts.push(record);
-  // Preserve the first submission and the most recent 59. This is a bounded
-  // attempt trace, not an unbounded learner-history export.
-  if(v.attempts.length>60)v.attempts.splice(1,v.attempts.length-60);
-  if(kind==='final'&&correct){v.completed=true;if(mode==='independent'&&!v.helped&&independentEligible)v.independent=true;}
+  recordAttempt(v,{kind,answers,correct,mode,independentEligible});
  });}
- return {read,patch,attempt,flush:()=>queue,key:id=>PREFIX+id};
+ return {read,patch,attempt,finishEquation,flush:()=>queue,key:id=>PREFIX+id};
 }
 function canonical(value){return String(value).trim().toLowerCase().replace(/−|–/g,'-').replace(/\s+/g,'').replace(/\\pi|\bpi\b/g,'π').replace(/\\infty|infinity|бесконечность/g,'∞').replace(/(?:x|а|a)∈/g,'').replace(/или|∪/g,'U').replace(/\+∞/g,'∞').replace(/[{}]/g,'');}
 function matches(answers,input,checker){
@@ -1307,7 +2048,7 @@ function summary(storage,lessons){
  }
  return result;
 }
-const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalizedProof,currentProofChecks,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
+const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalizedProof,currentProofChecks,equationDraft,equationCheck,updateEquationDraft,PREFIX};root.ProfilePartTwoState=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
 
 </script>
@@ -2982,19 +3723,1499 @@ const api={create,valid,matches,openAnswer,recognize,canonical,summary,normalize
 })(globalThis);
 
 </script>
+<script data-inline-source="/ege-profil/part-two/equation-answers.js">
+(function(root, factory) {
+  'use strict';
+  const answers = factory();
+  if (typeof module === 'object' && module.exports) module.exports = answers;
+  else root.ProfileEquationAnswers = answers;
+})(globalThis, function() {
+  'use strict';
+
+  const limits = Object.freeze({ chars: 500, values: 64, families: 12, expandedFamilies: 16,
+    digits: 12, decimalPlaces: 12, residues: 16384 });
+  const types = new Set(['finite-pi', 'finite-rational', 'periodic-pi']);
+  const one = Object.freeze({ n: 1n, d: 1n });
+  const zero = Object.freeze({ n: 0n, d: 1n });
+  const numeral = '(?:[0-9]+(?:[.,][0-9]+)?|[.,][0-9]+)';
+  const exactNumeral = new RegExp('^' + numeral + '$');
+  const beginningNumeral = new RegExp('^(' + numeral + ')(.*)$');
+  const parameter = '[a-wy-zA-WY-Z]';
+  const listOfParameters = parameter + '(?:\\s*[,;]\\s*' + parameter + ')*';
+  const integerDeclaration = listOfParameters + '\\s*∈\\s*[ℤZz]';
+  const declarations = new RegExp('(?:[,;]\\s*|\\s+)(' + integerDeclaration +
+    '(?:\\s*[,;]\\s*' + integerDeclaration + ')*)$');
+  const productTokens = new RegExp(numeral + '|π|~' + parameter + '|' + parameter + '|\\*', 'g');
+  const emptySet = /^(?:∅|\{\s*\}|нет\s+корней|нет\s+решений|пустое\s+множество)$/iu;
+
+  class FormatError extends Error {}
+
+  function requireForm(condition, reason = 'syntax') {
+    if (!condition) throw new FormatError(reason);
+  }
+
+  function abs(integer) { return integer < 0n ? -integer : integer; }
+
+  function gcd(a, b) {
+    a = abs(a);
+    b = abs(b);
+    while (b !== 0n) [a, b] = [b, a % b];
+    return a;
+  }
+
+  function lcm(a, b) { return a / gcd(a, b) * b; }
+
+  function rational(n, d) {
+    requireForm(d !== 0n, 'zero-denominator');
+    if (d < 0n) [n, d] = [-n, -d];
+    const divisor = gcd(n, d);
+    return { n: n / divisor, d: d / divisor };
+  }
+
+  function negate(q) { return { n: -q.n, d: q.d }; }
+  function difference(a, b) { return rational(a.n * b.d - b.n * a.d, a.d * b.d); }
+  function quotient(a, b) { return rational(a.n * b.d, a.d * b.n); }
+  function order(a, b) { return a.n * b.d - b.n * a.d; }
+  function modulo(n, d) { return (n % d + d) % d; }
+
+  function decimal(text) {
+    requireForm(exactNumeral.test(text));
+    const [whole, fraction = ''] = text.split(/[.,]/);
+    requireForm(whole.length <= limits.digits && fraction.length <= limits.decimalPlaces, 'complexity');
+    const digits = whole + fraction;
+    return rational(BigInt(digits), 10n ** BigInt(fraction.length));
+  }
+
+  function asText(q) { return String(q.n) + (q.d === 1n ? '' : '/' + q.d); }
+
+  function normalize(input) {
+    requireForm(typeof input === 'string');
+    requireForm(input.length <= limits.chars, 'complexity');
+    return input.trim().replace(/[−–]/g, '-').replace(/[·×]/g, '*').replace(/\\?pi/gi, 'π');
+  }
+
+  function compact(input) {
+    // Spaces between tokens are informal typography. Spaces within a number
+    // or a decimal separator must never turn a malformed value into a new one.
+    requireForm(!/[0-9][.,]?\s+(?=[0-9.,])|[.,]\s+(?=[0-9])/u.test(input));
+    return input.replace(/\s+/g, '');
+  }
+
+  function readProduct(text) {
+    const tokens = text.match(productTokens);
+    requireForm(tokens && tokens.join('') === text && !/^\*|\*$|\*\*/.test(text));
+    let number = null;
+    const symbols = [];
+    tokens.forEach((token, index) => {
+      if (token === '*') return;
+      if (!exactNumeral.test(token)) {
+        symbols.push(token);
+        return;
+      }
+      requireForm(number === null && (index === 0 || tokens[index - 1] === '*'));
+      number = decimal(token);
+    });
+    return { number, symbols };
+  }
+
+  function monomial(text) {
+    const pieces = text.split('/');
+    requireForm(pieces.length <= 2);
+    const { number, symbols } = readProduct(pieces[0]);
+    let coefficient = number || one;
+    if (pieces.length === 2) {
+      const match = beginningNumeral.exec(pieces[1]);
+      requireForm(match);
+      const [, denominator, rest] = match;
+      coefficient = quotient(coefficient, decimal(denominator));
+      if (rest) {
+        // A factor that follows a fractional coefficient can be implicit.
+        // Where the numerator already contains a symbol, require “*” so the
+        // extent of the denominator is clear (πn/2 or π/2*n).
+        const explicitTimes = rest.startsWith('*');
+        requireForm(explicitTimes || symbols.length === 0);
+        const after = readProduct(explicitTimes ? rest.slice(1) : rest);
+        requireForm(after.number === null);
+        symbols.push(...after.symbols);
+      }
+    }
+    return { coefficient, symbols };
+  }
+
+  function unitValue(coefficient, unit) {
+    return { unit: coefficient.n === 0n ? 'number' : unit, coefficient };
+  }
+
+  function finiteValue(text, type) {
+    const [, sign, body] = /^([+-]?)(.*)$/.exec(compact(text));
+    const { coefficient, symbols } = monomial(body);
+    const numeric = symbols.length === 0;
+    requireForm(numeric || (type === 'finite-pi' && symbols.length === 1 && symbols[0] === 'π'));
+    return unitValue(sign === '-' ? negate(coefficient) : coefficient, numeric ? 'number' : 'pi');
+  }
+
+  function finiteKey(value) { return value.unit + ':' + asText(value.coefficient); }
+
+  function parseFinite(text, type) {
+    if (emptySet.test(text)) return { values: [], duplicates: 0 };
+    const list = text.startsWith('{') && text.endsWith('}') ? text.slice(1, -1) : text;
+    const pieces = list.split(';');
+    requireForm(pieces.length <= limits.values, 'complexity');
+    const distinct = new Map();
+    for (const piece of pieces) {
+      const value = finiteValue(piece, type);
+      distinct.set(finiteKey(value), value);
+    }
+    return { values: [...distinct.values()], duplicates: pieces.length - distinct.size };
+  }
+
+  function periodTerm(sign, input) {
+    const { coefficient, symbols } = monomial(input);
+    const names = symbols.filter(symbol => symbol !== 'π');
+    const degree = symbols.length - names.length;
+    requireForm(degree === 1 || (!symbols.length && coefficient.n === 0n));
+    requireForm(names.length <= 1);
+    const name = names[0] || '';
+    const alternating = name.startsWith('~');
+    const kind = alternating ? 'alternating' : name ? 'step' : 'offset';
+    requireForm(sign !== '±' || kind === 'offset');
+    return { kind, name: alternating ? name.slice(1) : name, plusMinus: sign === '±',
+      coefficient: sign === '-' ? negate(coefficient) : coefficient };
+  }
+
+  function family(source) {
+    let text = compact(source).replace(/^[xXхХ]=/u, '');
+    requireForm(!text.includes('~'));
+    text = text.replace(/\(-1\)\^([a-wy-zA-WY-Z])/g, '~$1');
+    const match = /^([+\-±]?)([^+\-±]+)(?:([+\-±])([^+\-±]+))?$/u.exec(text);
+    requireForm(match);
+    const terms = [periodTerm(match[1], match[2])];
+    if (match[3]) terms.push(periodTerm(match[3], match[4]));
+    const result = Object.fromEntries(terms.map(term => [term.kind, term]));
+    requireForm(Object.keys(result).length === terms.length);
+
+    const { alternating, offset, step } = result;
+    if (alternating) {
+      requireForm(step && alternating.name === step.name);
+      const period = rational(2n * step.coefficient.n, step.coefficient.d);
+      const base = alternating.coefficient;
+      return { name: step.name, families: [[base, period], [difference(step.coefficient, base), period]] };
+    }
+    const a = offset ? offset.coefficient : zero;
+    const b = step ? step.coefficient : zero;
+    return { name: step ? step.name : '', families: offset && offset.plusMinus ? [[a, b], [negate(a), b]] : [[a, b]] };
+  }
+
+  function normalizeFamily([offset, step]) {
+    const positive = step.n < 0n ? negate(step) : step;
+    if (positive.n === 0n) return [offset, positive];
+    const residue = rational(modulo(offset.n * positive.d, positive.n * offset.d), offset.d * positive.d);
+    return [residue, positive];
+  }
+
+  function distinctFamilies(input) {
+    const result = new Map();
+    for (const f of input) {
+      const normalized = normalizeFamily(f);
+      result.set(normalized.map(asText).join(';'), normalized);
+    }
+    return [...result.values()];
+  }
+
+  function parsePeriodic(text) {
+    if (emptySet.test(text)) return { families: [] };
+    const suffix = declarations.exec(text);
+    const formula = suffix ? text.slice(0, suffix.index) : text;
+    const pieces = formula.split(/;|∪|или/iu);
+    requireForm(pieces.length <= limits.families, 'complexity');
+    const parsed = pieces.map(family);
+    if (suffix) {
+      const names = new Set(parsed.map(item => item.name));
+      const mentioned = suffix[1].replace(/∈\s*[ℤZz]/gu, '').match(/[a-wy-zA-WY-Z]/g) || [];
+      requireForm(mentioned.every(name => names.has(name)));
+    }
+    const expanded = parsed.flatMap(item => item.families);
+    requireForm(expanded.length <= limits.expandedFamilies, 'complexity');
+    return { families: distinctFamilies(expanded) };
+  }
+
+  function failed(type, reason) {
+    return { type, recognized: false, correct: false, status: 'format', reason };
+  }
+
+  function parse(input, type) {
+    if (!types.has(type)) throw new TypeError('Unknown equation answer type');
+    try {
+      const text = normalize(input);
+      requireForm(text.length, 'empty');
+      const value = type === 'periodic-pi' ? parsePeriodic(text) : parseFinite(text, type);
+      return { type, recognized: true, ...value };
+    } catch (error) {
+      if (error instanceof FormatError) return failed(type, error.message);
+      throw error;
+    }
+  }
+
+  function coefficient(text) {
+    const parsed = parse(String(text), 'finite-rational');
+    if (!parsed.recognized || parsed.values.length !== 1) throw new TypeError('Invalid authored rational coefficient');
+    return parsed.values[0].coefficient;
+  }
+
+  function authoredFamilies(items) {
+    return distinctFamilies(items.map(pair => pair.map(coefficient)));
+  }
+
+  function belongs(value, families) {
+    return families.some(([offset, step]) => {
+      const distance = difference(value, offset);
+      if (step.n === 0n) return distance.n === 0n;
+      return (distance.n * step.d) % (distance.d * step.n) === 0n;
+    });
+  }
+
+  function verdict(type, missing, extra, suffix = '', more = {}) {
+    const status = [missing.length && 'missing', extra.length && 'extra', suffix].filter(Boolean).join('-') || 'correct';
+    return { type, recognized: true, correct: status === 'correct', status, missing, extra, ...more };
+  }
+
+  function grid(families) {
+    const denominator = families.flat().reduce((acc, value) => lcm(acc, value.d), 1n);
+    const scaled = q => q.n * (denominator / q.d);
+    const period = families.reduce((acc, [, step]) => lcm(acc, scaled(step)), 1n);
+    const cost = families.reduce((acc, [, step]) => acc + period / scaled(step), 0n);
+    requireForm(cost <= BigInt(limits.residues), 'complexity');
+    return { denominator, scaled, period };
+  }
+
+  function residues(families, { period, scaled }) {
+    const result = new Set();
+    for (const [offset, step] of families) {
+      const end = period;
+      const increment = scaled(step);
+      for (let index = scaled(offset); index < end; index += increment) result.add(index);
+    }
+    return result;
+  }
+
+  function comparePeriodic(type, actual, expected) {
+    const positiveActual = actual.filter(([, step]) => step.n !== 0n);
+    const positiveExpected = expected.filter(([, step]) => step.n !== 0n);
+    const common = grid([...positiveActual, ...positiveExpected]);
+    const actualResidues = residues(positiveActual, common);
+    const expectedResidues = residues(positiveExpected, common);
+    const describe = (have, want) => [...want].filter(index => !have.has(index)).map(index => ({
+      offset: asText(rational(index, common.denominator)), step: asText(rational(common.period, common.denominator)) }));
+    const isolated = (have, want) => want.filter(([offset, step]) => step.n === 0n && !belongs(offset, have))
+      .map(([offset]) => ({ offset: asText(offset), step: '0' }));
+    return verdict(type, [...describe(actualResidues, expectedResidues), ...isolated(actual, expected)],
+      [...describe(expectedResidues, actualResidues), ...isolated(expected, actual)]);
+  }
+
+  function outside(q, boundary) {
+    if (!boundary) return false;
+    const [left, right, closedLeft, closedRight] = boundary;
+    const below = left === null ? false : (closedLeft ? order(q, left) < 0n : order(q, left) <= 0n);
+    const above = right === null ? false : (closedRight ? order(q, right) > 0n : order(q, right) >= 0n);
+    return below || above;
+  }
+
+  function exactInterval(interval) {
+    if (!interval) return null;
+    const [left, right, closedLeft, closedRight] = interval;
+    return [left === null ? null : coefficient(left), right === null ? null : coefficient(right), closedLeft, closedRight];
+  }
+
+  function finiteDescription(value) { return { unit: value.unit, value: asText(value.coefficient) }; }
+
+  function compareFinite(parsed, spec) {
+    const { type, values, duplicates } = parsed;
+    const unit = type === 'finite-pi' ? 'pi' : 'number';
+    const expected = spec.finite.map(item => unitValue(coefficient(item), unit));
+    const expectedKeys = new Set(expected.map(finiteKey));
+    const receivedKeys = new Set(values.map(finiteKey));
+    const missing = expected.filter(item => !receivedKeys.has(finiteKey(item))).map(finiteDescription);
+    const families = spec.general && authoredFamilies(spec.general);
+    const interval = exactInterval(spec.interval);
+    const domain = exactInterval(spec.domain?.interval);
+    const excluded = (spec.domain?.excluded || []).map(coefficient);
+    const extra = values.filter(item => !expectedKeys.has(finiteKey(item))).map(item => {
+      const q = item.coefficient;
+      let reason = '';
+      if (families && ((q.n !== 0n && item.unit !== 'pi') || !belongs(q, families))) reason = 'not-root';
+      else if (interval && outside(q, interval)) reason = 'outside-interval';
+      else if (outside(q, domain) || excluded.some(value => order(q, value) === 0n)) reason = 'outside-domain';
+      return { ...finiteDescription(item), reason };
+    });
+    const suffix = ['outside-interval', 'outside-domain', 'not-root'].find(reason => extra.some(item => item.reason === reason));
+    return verdict(type, missing, extra, suffix, { duplicates });
+  }
+
+  function compare(parsed, spec) {
+    if (!parsed.recognized) return parsed;
+    try {
+      if (parsed.type === 'periodic-pi') return comparePeriodic(parsed.type, parsed.families, authoredFamilies(spec.general));
+      return compareFinite(parsed, spec);
+    } catch (error) {
+      if (error instanceof FormatError) return failed(parsed.type, error.message);
+      throw error;
+    }
+  }
+
+  return Object.freeze({ limits, parse, compare });
+});
+
+</script>
+<script data-inline-source="/ege-profil/part-two/equation-fields.js">
+(function(root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfileEquationFields = api;
+})(globalThis, function() {
+  'use strict';
+
+  const angularInterval = Object.freeze(['0', '2', true, true]);
+  const general = Object.freeze({ key: 'general', label: 'а) Общее решение', type: 'periodic-pi',
+    format: 'Запишите серии вида x = aπ + bπn, где n — целое число. Можно написать pi. Несколько серий разделите точкой с запятой или словом «или».' });
+  const selected = Object.freeze({ key: 'selected', label: 'б) Корни в заданном промежутке', type: 'finite-pi',
+    format: 'Запишите углы с π или pi через точку с запятой. Ноль запишите как 0. Если таких корней нет, введите «нет корней» или ∅.' });
+  const roots = Object.freeze({ key: 'roots', label: 'Все корни уравнения', type: 'finite-rational',
+    format: 'Запишите числа через точку с запятой в любом порядке. Если корней нет, введите «нет решений» или ∅.' });
+  const trigFields = Object.freeze([general, selected]);
+  const numberFields = Object.freeze([roots]);
+
+  function legacy(task) {
+    const meta = task.meta;
+    if (meta.kind === 'trig-selection' || meta.kind === 'trig-factor') {
+      // Legacy fields hold exact rational aliases followed by numeric aliases.
+      // Use the first aliases without reconstituting the fractions from floats.
+      const finite = task.final.map(field => String(field.answers[0]));
+      const families = meta.kind === 'trig-selection' ? finite.map(value => [value, '2']) :
+        [['0', '1'], [finite[1], '2'], [finite[3], '2']];
+      const prompt = task.prompt
+        .replace(/ В поля для корней вводите коэффициенты при π в возрастающем порядке\.$/u, '')
+        .replace(/ Запишите все пять коэффициентов при π в возрастающем порядке\.$/u, '');
+      return { prompt, answer: { type: 'finite-pi', general: families, finite, interval: angularInterval } };
+    }
+    const answer = { type: 'finite-rational' };
+    switch (meta.kind) {
+      case 'exponential-equation':
+        answer.finite = [String(meta.p), String(meta.q)];
+        break;
+      case 'log-equation':
+        answer.finite = [String(meta.r)];
+        answer.domain = { interval: [String(Math.max(meta.a, meta.c)), null, false, false] };
+        break;
+      case 'radical-equation':
+        answer.finite = [String(meta.r)];
+        answer.domain = { interval: [String(-meta.a), null, true, false] };
+        break;
+      case 'rational-equation':
+        answer.finite = meta.roots.map(String);
+        answer.domain = { excluded: [String(meta.a)] };
+        break;
+      default:
+        throw new TypeError('Unexpected legacy equation family');
+    }
+    return { prompt: task.independentFinal?.prompt || task.prompt, answer };
+  }
+
+  function forTask(lesson, task, mode, independentEligible) {
+    if (lesson.exam !== 14) return null;
+    const model = task.equationAnswer ? { prompt: task.prompt, answer: task.equationAnswer } :
+      mode === 'independent' && (independentEligible || task.id === 'p14-circle-selection-1') ? legacy(task) : null;
+    if (!model) return null;
+    return { ...model, fields: model.answer.type === 'finite-pi' ? trigFields : numberFields };
+  }
+
+  return Object.freeze({ forTask });
+});
+
+</script>
+<script data-inline-source="/ege-profil/part-two/equation-investigations-data.js">
+(function (root, investigations) {
+  'use strict';
+  if (typeof module === 'object' && module.exports) module.exports = investigations;
+  else root.ProfileEquationInvestigationData = investigations;
+})(globalThis, [
+  {
+    "lessonId": "p14-circle-selection",
+    "title": "Граница меняет отбор",
+    "formula": "sin x = 1/2",
+    "prediction": {
+      "question": "Правая граница промежутка находится в точке 5π/6. Сколько корней останется, если исключить правую границу?",
+      "choices": [
+        {
+          "id": "zero",
+          "label": "Ни одного"
+        },
+        {
+          "id": "one",
+          "label": "Один"
+        },
+        {
+          "id": "two",
+          "label": "Два"
+        }
+      ],
+      "correct": "one"
+    },
+    "view": {
+      "kind": "interval-number-line",
+      "unit": "pi",
+      "bounds": [
+        "0",
+        "3"
+      ],
+      "points": [
+        "1/6",
+        "5/6",
+        "13/6",
+        "17/6"
+      ],
+      "controls": [
+        {
+          "id": "rightPi",
+          "label": "Правая граница",
+          "choices": [
+            {
+              "value": "1/6",
+              "label": "π/6"
+            },
+            {
+              "value": "5/6",
+              "label": "5π/6"
+            },
+            {
+              "value": "13/6",
+              "label": "13π/6"
+            },
+            {
+              "value": "17/6",
+              "label": "17π/6"
+            },
+            {
+              "value": "3",
+              "label": "3π"
+            }
+          ],
+          "initial": "5/6"
+        },
+        {
+          "id": "closed",
+          "label": "Включить правую границу",
+          "initial": true
+        }
+      ],
+      "status": "Покажите текущий промежуток, список вошедших углов и их число. Включённый конец обозначен заполненной точкой, исключённый конец контуром. Отдельно сообщите, совпала ли граница с корнем."
+    },
+    "observe": "Смените скобку у 5π/6. Потом передвиньте правую границу до 3π и повторите опыт.",
+    "rule": "Смена скобки меняет ответ только тогда, когда граница сама является корнем. Остальные корни уже лежат внутри промежутка или вне его.",
+    "transfer": {
+      "prompt": "Найдите корни sin x = 0 на отрезке [−π/2; π/2].",
+      "type": "finite-pi",
+      "answer": [
+        "0"
+      ],
+      "feedback": "Общее решение имеет вид x = πn, n ∈ ℤ. На отрезке подходит только n = 0."
+    }
+  },
+  {
+    "lessonId": "p14-trig-factors",
+    "title": "Что исчезает при делении",
+    "formula": "sin 2x = −sin x",
+    "prediction": {
+      "question": "Какие решения на отрезке [0; 2π] будут потеряны, если сразу разделить обе части на sin x?",
+      "choices": [
+        {
+          "id": "none",
+          "label": "Ни одного"
+        },
+        {
+          "id": "cos-branch",
+          "label": "2π/3 и 4π/3"
+        },
+        {
+          "id": "sin-branch",
+          "label": "0, π и 2π"
+        }
+      ],
+      "correct": "sin-branch"
+    },
+    "view": {
+      "kind": "branch-number-line",
+      "unit": "pi",
+      "bounds": [
+        "0",
+        "2"
+      ],
+      "before": [
+        "0",
+        "2/3",
+        "1",
+        "4/3",
+        "2"
+      ],
+      "after": [
+        "2/3",
+        "4/3"
+      ],
+      "lost": [
+        "0",
+        "1",
+        "2"
+      ],
+      "controls": [
+        {
+          "id": "operation",
+          "label": "Преобразование",
+          "initial": "factor",
+          "choices": [
+            {
+              "value": "factor",
+              "label": "Рассмотреть оба множителя"
+            },
+            {
+              "value": "divide",
+              "label": "Разделить на sin x, если sin x ≠ 0"
+            }
+          ]
+        }
+      ],
+      "status": "Подпишите активные точки и покажите исключённые корни отдельными контурными метками. Дублируйте сведения списками под прямой."
+    },
+    "observe": "Переключитесь на деление. Сравните число решений и проверьте, какие углы исчезли с прямой.",
+    "rule": "Из sin x (2 cos x + 1) = 0 следуют два случая. Деление на sin x применимо только во втором случае и оставляет за рамками все углы с sin x = 0.",
+    "transfer": {
+      "prompt": "Уравнение (x − 2)(x + 3) = 0 разделили на x − 2. Какой корень исходного уравнения оказался исключён?",
+      "type": "finite-rational",
+      "answer": [
+        "2"
+      ],
+      "feedback": "При x = 2 множитель, на который делили, становится нулём. В исходном произведении этот x допустим."
+    }
+  },
+  {
+    "lessonId": "p14-exponential-substitution",
+    "title": "Какие числа принимает степень",
+    "formula": "t = 2ˣ",
+    "prediction": {
+      "question": "Каким может быть t при x \u003c 0?",
+      "choices": [
+        {
+          "id": "negative",
+          "label": "Отрицательным"
+        },
+        {
+          "id": "zero",
+          "label": "Равным нулю"
+        },
+        {
+          "id": "small-positive",
+          "label": "Строго между 0 и 1"
+        }
+      ],
+      "correct": "small-positive"
+    },
+    "view": {
+      "kind": "exponential-point",
+      "controls": [
+        {
+          "id": "x",
+          "label": "Показатель степени x",
+          "choices": [
+            "-2",
+            "-1",
+            "0",
+            "1",
+            "2"
+          ],
+          "initial": "0"
+        }
+      ],
+      "points": [
+        [
+          "-2",
+          "1/4"
+        ],
+        [
+          "-1",
+          "1/2"
+        ],
+        [
+          "0",
+          "1"
+        ],
+        [
+          "1",
+          "2"
+        ],
+        [
+          "2",
+          "4"
+        ]
+      ],
+      "status": "Нанесите текущую точку на график t = 2ˣ, подпишите точные координаты и продублируйте равенство под графиком. Ось t = 0 отмечена отдельно."
+    },
+    "observe": "Проверьте x = −2, 0 и 2. Затем сравните t = 2 и t = −1. Может ли степень принять каждое из этих значений? Найдите x для допустимого t.",
+    "rule": "При основании a > 0 и a ≠ 1 выражение aˣ всегда строго положительно. Для t = 2 подходит x = 1, потому что 2¹ = 2. Значение t = −1 недопустимо.",
+    "transfer": {
+      "prompt": "Для замены t = (1/3)ˣ из чисел 0, 1/3 и −3 выберите допустимое t и затем найдите соответствующее x.",
+      "type": "labeled-rational-inputs",
+      "fields": [
+        {
+          "id": "t",
+          "label": "Допустимое t",
+          "answer": "1/3"
+        },
+        {
+          "id": "x",
+          "label": "Соответствующее x",
+          "answer": "1"
+        }
+      ],
+      "feedback": "Из трёх значений положительно только 1/3. Оно равно (1/3)¹, поэтому x = 1."
+    }
+  },
+  {
+    "lessonId": "p14-log-domain",
+    "title": "У логарифмов две проверки",
+    "formula": "log₂(x − 1) + log₂(x − 3)",
+    "prediction": {
+      "question": "Произведение (x − 1)(x − 3) равно 3 и при x = 0, и при x = 4. При каких из этих значений определена сумма логарифмов?",
+      "choices": [
+        {
+          "id": "zero",
+          "label": "Только при x = 0"
+        },
+        {
+          "id": "four",
+          "label": "Только при x = 4"
+        },
+        {
+          "id": "both",
+          "label": "При обоих значениях"
+        }
+      ],
+      "correct": "four"
+    },
+    "view": {
+      "kind": "argument-table",
+      "controls": [
+        {
+          "id": "x",
+          "label": "Значение x",
+          "choices": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "initial": "1"
+        }
+      ],
+      "columns": [
+        "x",
+        "x − 1",
+        "x − 3",
+        "(x − 1)(x − 3)",
+        "Сумма логарифмов"
+      ],
+      "rows": [
+        [
+          "0",
+          "-1",
+          "-3",
+          "3",
+          null
+        ],
+        [
+          "1",
+          "0",
+          "-2",
+          "0",
+          null
+        ],
+        [
+          "2",
+          "1",
+          "-1",
+          "-1",
+          null
+        ],
+        [
+          "3",
+          "2",
+          "0",
+          "0",
+          null
+        ],
+        [
+          "4",
+          "3",
+          "1",
+          "3",
+          "log₂ 3"
+        ]
+      ],
+      "status": "При выборе x покажите отдельные знаки обоих аргументов и значение произведения. Для null напишите «не определена» и укажите аргумент, который не положителен."
+    },
+    "observe": "Найдите, при каких x положительны оба аргумента. Проверьте x = 0 и x = 4 и сравните знаки множителей при одинаковом произведении.",
+    "rule": "Неравенства x − 1 > 0 и x − 3 > 0 дают x > 3. Только на этом промежутке сумму можно заменить логарифмом произведения. У двух отрицательных множителей произведение тоже положительное.",
+    "transfer": {
+      "prompt": "Укажите ОДЗ выражения log₂(5 − x) + log₂(x + 1).",
+      "type": "interval-choice",
+      "choices": [
+        {
+          "id": "inside",
+          "label": "(−1; 5)"
+        },
+        {
+          "id": "closed",
+          "label": "[−1; 5]"
+        },
+        {
+          "id": "right",
+          "label": "(5; +∞)"
+        }
+      ],
+      "answer": "inside",
+      "interval": [
+        "-1",
+        "5",
+        false,
+        false
+      ],
+      "feedback": "Ограничения 5 − x > 0 и x + 1 > 0 дают −1 \u003c x \u003c 5, поэтому обе границы исключены."
+    }
+  },
+  {
+    "lessonId": "p14-radical-check",
+    "title": "У квадратов знак не виден",
+    "formula": "√(x + 2) = x",
+    "prediction": {
+      "question": "После возведения в квадрат получились кандидаты −1 и 2. Какие из них удовлетворяют исходному равенству?",
+      "choices": [
+        {
+          "id": "minus-one",
+          "label": "Только −1"
+        },
+        {
+          "id": "two",
+          "label": "Только 2"
+        },
+        {
+          "id": "both",
+          "label": "Оба"
+        }
+      ],
+      "correct": "two"
+    },
+    "view": {
+      "kind": "candidate-comparison",
+      "controls": [
+        {
+          "id": "x",
+          "label": "Проверяемый кандидат",
+          "choices": [
+            "-1",
+            "2"
+          ],
+          "initial": "2"
+        },
+        {
+          "id": "equation",
+          "label": "Какое равенство проверить",
+          "initial": "squared",
+          "choices": [
+            {
+              "value": "squared",
+              "label": "После возведения в квадрат"
+            },
+            {
+              "value": "original",
+              "label": "Исходное"
+            }
+          ]
+        }
+      ],
+      "rows": [
+        {
+          "x": "-1",
+          "radicand": "1",
+          "squared": [
+            "1",
+            "1",
+            true
+          ],
+          "original": [
+            "1",
+            "-1",
+            false
+          ]
+        },
+        {
+          "x": "2",
+          "radicand": "4",
+          "squared": [
+            "4",
+            "4",
+            true
+          ],
+          "original": [
+            "2",
+            "2",
+            true
+          ]
+        }
+      ],
+      "status": "Покажите обе стороны равенства после подстановки и подпишите, выполняется ли равенство. Отдельно отмечайте допустимость подкоренного выражения."
+    },
+    "observe": "Определите, при каких x существует квадратный корень и при каких x правая часть неотрицательна. Сравните равенства при x = −1, затем проверьте x = 2 в исходном.",
+    "rule": "Подкоренное выражение допустимо при x ≥ −2. Равенство с квадратным корнем дополнительно требует x ≥ 0. Значение x = −1 проходит первую проверку, но нарушает вторую. При x = 2 обе части равны 2.",
+    "transfer": {
+      "prompt": "Найдите множество действительных решений уравнения √(x + 1) = −1.",
+      "type": "finite-rational",
+      "answer": [],
+      "feedback": "При x ≥ −1 левая часть неотрицательна, а правая равна −1. Поэтому ∅."
+    }
+  },
+  {
+    "lessonId": "p14-rational-hole",
+    "title": "Точка, которую сокращение не вернёт",
+    "formula": "(x² − 9)/(x − 3)",
+    "prediction": {
+      "question": "После сокращения получилось x + 3. Как ведёт себя исходная дробь при x = 3?",
+      "choices": [
+        {
+          "id": "six",
+          "label": "Равна 6"
+        },
+        {
+          "id": "zero",
+          "label": "Равна 0"
+        },
+        {
+          "id": "undefined",
+          "label": "Не определена"
+        }
+      ],
+      "correct": "undefined"
+    },
+    "view": {
+      "kind": "line-with-hole",
+      "controls": [
+        {
+          "id": "x",
+          "label": "Проверяемое значение x",
+          "choices": [
+            "-3",
+            "2",
+            "3",
+            "4"
+          ],
+          "initial": "2"
+        }
+      ],
+      "points": [
+        [
+          "-3",
+          "0"
+        ],
+        [
+          "2",
+          "5"
+        ],
+        [
+          "3",
+          null
+        ],
+        [
+          "4",
+          "7"
+        ]
+      ],
+      "hole": [
+        "3",
+        "6"
+      ],
+      "status": "Покажите прямую y = x + 3 с выколотой точкой (3; 6). При выборе x = 3 подпишите «исходная дробь не определена», при остальных значениях подпишите и продублируйте точное значение."
+    },
+    "observe": "Проверьте x = 2, затем x = 3 и x = 4. Сравните исходный знаменатель с линией на рисунке.",
+    "rule": "Сокращение сохраняет значения дроби лишь на её исходной области определения. Точка, запрещённая исходным знаменателем, остаётся исключённой.",
+    "transfer": {
+      "prompt": "Какое значение x остаётся запрещённым после сокращения дроби (x + 1)²/(x + 1)?",
+      "type": "finite-rational",
+      "answer": [
+        "-1"
+      ],
+      "feedback": "При x = −1 исходный знаменатель равен нулю. Сокращённая формула x + 1 описывает исходную дробь только при x ≠ −1."
+    }
+  }
+]);
+
+</script>
+<script data-inline-source="/ege-profil/part-two/equation-investigations.js">
+(function (root, factory) {
+  'use strict';
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ProfilePartTwoEquationLabs = api;
+})(globalThis, function () {
+  'use strict';
+
+  const prefix = 'mathexam.profilePartTwoLab.v1.';
+  const targets = {
+    'interval-number-line': [['5/6', true], ['5/6', false], ['3', true], ['3', false]],
+    'branch-number-line': [['factor'], ['divide']],
+    'exponential-point': [['-2'], ['0'], ['2']],
+    'argument-table': [['0'], ['4']],
+    'candidate-comparison': [['-1', 'squared'], ['-1', 'original'], ['2', 'original']],
+    'line-with-hole': [['2'], ['3'], ['4']]
+  };
+  const possible = [{ id: 'yes', label: 'Допустимо' }, { id: 'no', label: 'Недопустимо' }];
+  const verifications = {
+    'exponential-point': [
+      { prompt: 'Распределите два значения t по допустимости.', fields: [
+        { id: 'positive-t', label: 'Кандидат t = 2', choices: possible, answer: 'yes' },
+        { id: 'negative-t', label: 'Кандидат t = −1', choices: possible, answer: 'no' }
+      ] },
+      { prompt: 'Сделайте обратную замену для допустимого кандидата t = 2.', fields: [
+        { id: 'inverse-x', label: 'Соответствующее значение x', answer: '1' }
+      ] }
+    ],
+    'argument-table': [{ prompt: 'Пересеките два ограничения перед объединением логарифмов.', fields: [
+      { id: 'log-domain', label: 'Когда оба аргумента положительны?', answer: 'right', choices: [
+        { id: 'right', label: 'x > 3' }, { id: 'left', label: 'x < 1' }, { id: 'both', label: 'x < 1 или x > 3' }
+      ] }
+    ] }]
+  };
+  const esc = value => String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[char]);
+  const minus = value => String(value).replace(/-/g, '−');
+  const copy = value => JSON.parse(JSON.stringify(value));
+  const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+  const object = value => !!value && typeof value === 'object' && !Array.isArray(value);
+  const fieldsFor = transfer => transfer.fields || [{ id: 'answer', label: 'Ответ' }];
+  const stagesFor = lab => verifications[lab.view.kind] || [];
+  const maxDraft = 120;
+
+  function fraction(raw) {
+    const [n, d = '1'] = String(raw).split('/');
+    return [BigInt(n), BigInt(d)];
+  }
+  function order(left, right) {
+    const [n, d] = fraction(left), [m, e] = fraction(right);
+    const difference = n * e - m * d;
+    return difference < 0n ? -1 : difference > 0n ? 1 : 0;
+  }
+  function numeric(raw) {
+    const [n, d] = fraction(raw);
+    return Number(n) / Number(d);
+  }
+  function pi(raw) {
+    const [n, d] = fraction(raw);
+    if (n === 0n) return '0';
+    const coefficient = n === 1n ? '' : n === -1n ? '−' : minus(n);
+    return coefficient + 'π' + (d === 1n ? '' : '/' + d);
+  }
+  function options(control) {
+    return control.choices?.map(choice => typeof choice === 'string' ? { value: choice, label: minus(choice) } : choice);
+  }
+  function validValue(control, value) {
+    return options(control)?.some(choice => choice.value === value) ?? typeof value === 'boolean';
+  }
+  function keyFor(lab, values) {
+    return JSON.stringify(lab.view.controls.map(control => values[control.id]));
+  }
+  function checkpoints(lab) {
+    return targets[lab.view.kind].map(values => JSON.stringify(values));
+  }
+  function initial(lab) {
+    return Object.fromEntries(lab.view.controls.map(control => [control.id, control.initial]));
+  }
+  function controlsFor(lab, values = {}) {
+    return Object.fromEntries(lab.view.controls.map(control => [control.id,
+      validValue(control, values[control.id]) ? values[control.id] : control.initial]));
+  }
+  function explore(lab, values) {
+    const view = lab.view, controls = controlsFor(lab, values);
+    switch (view.kind) {
+      case 'interval-number-line': {
+        const { rightPi, closed } = controls;
+        const included = view.points.filter(point => order(point, rightPi) < 0 || closed && order(point, rightPi) === 0);
+        return { controls, included, boundaryRoot: view.points.some(point => order(point, rightPi) === 0) };
+      }
+      case 'branch-number-line': {
+        const divided = controls.operation === 'divide';
+        return { controls, included: divided ? view.after : view.before, excluded: divided ? view.lost : [] };
+      }
+      case 'exponential-point':
+      case 'line-with-hole':
+        return { controls, point: view.points.find(([x]) => x === controls.x) };
+      case 'argument-table': {
+        const row = view.rows.find(([x]) => x === controls.x);
+        const nonpositive = [1, 2].filter(index => order(row[index], '0') <= 0).map(index => view.columns[index]);
+        return { controls, row, nonpositive };
+      }
+      case 'candidate-comparison': {
+        const row = view.rows.find(item => item.x === controls.x);
+        return { controls, row, equality: row[controls.equation] };
+      }
+    }
+  }
+
+  const line = (x1, y1, x2, y2, color = '#54776f', width = 2) =>
+    `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="${width}"/>`;
+  const label = (x, y, text, color = '#193b33') =>
+    `<text x="${x}" y="${y}" text-anchor="middle" fill="${color}" font-family="system-ui,sans-serif" font-size="13">${esc(text)}</text>`;
+  const dot = (x, y, filled, color = '#176850', radius = 5) =>
+    `<circle cx="${x}" cy="${y}" r="${radius}" fill="${filled ? color : '#fff'}" stroke="${color}" stroke-width="2"/>`;
+  const dash = (x, y1, y2) => `<path d="M${x},${y1}V${y2}" stroke="#9b4918" stroke-width="2" stroke-dasharray="4 3"/>`;
+  const svg = (description, drawing, height) =>
+    `<svg viewBox="0 0 360 ${height}" role="img" aria-label="${esc(description)}" style="display:block;width:100%;max-width:560px;height:auto"><title>${esc(description)}</title>${drawing}</svg>`;
+
+  function intervalScene(lab, result) {
+    const { rightPi, closed } = result.controls, right = numeric(rightPi);
+    const x = value => 28 + value * 99;
+    const included = result.included.map(pi).join('; ') || 'нет';
+    const interval = '[0; ' + pi(rightPi) + (closed ? ']' : ')');
+    const boundary = result.boundaryRoot ? 'Правая граница совпадает с корнем.' : 'Правая граница не совпадает с корнем.';
+    const summary = `Промежуток ${interval}. Вошли углы: ${included}. Число корней: ${result.included.length}. ${boundary} ` +
+      'Углы π/6 и 13π/6 задают один луч. Углы 5π/6 и 17π/6 задают другой.';
+    const circleX = 91, circleY = 84, radius = 48;
+    const ray = angle => [circleX + radius * Math.cos(angle * Math.PI), circleY - radius * Math.sin(angle * Math.PI)];
+    const circle = line(30, circleY, 152, circleY) + line(circleX, 25, circleX, 143) +
+      `<circle cx="${circleX}" cy="${circleY}" r="${radius}" fill="none" stroke="#54776f" stroke-width="2"/>` +
+      line(39, circleY - radius / 2, 144, circleY - radius / 2, '#176850') +
+      [1/6, 5/6].map(angle => {
+        const [endX, endY] = ray(angle);
+        return line(circleX, circleY, endX, endY, '#176850') + dot(endX, endY, true);
+      }).join('') + line(circleX, circleY, ...ray(right % 2), '#9b4918', 3) +
+      label(234, 41, 'Луч правой границы', '#9b4918') + label(234, 63, pi(rightPi), '#9b4918') +
+      label(233, 94, 'Один луч: π/6 и 13π/6') + label(238, 116, 'Другой: 5π/6 и 17π/6');
+    const plots = lab.view.points.map(point =>
+      dot(x(numeric(point)), 225, result.included.includes(point), result.included.includes(point) ? '#176850' : '#6b817b') +
+      label(x(numeric(point)), 253, pi(point))).join('');
+    const drawing = `<g data-unit-circle>${circle}</g>` + label(180, 164, interval) +
+      `<g data-angle-line>${line(x(0), 225, 338, 225) + line(x(0), 225, x(right), 225, '#176850', 4) + plots +
+      dot(x(0), 225, true) + label(x(0), 274, '0') + dash(x(right), 179, 216) +
+      `<g data-boundary="${closed ? 'closed' : 'open'}">${dot(x(right), 225, closed, '#9b4918', 8)}</g>`}</g>`;
+    return { ...result, summary, html: svg(summary, drawing, 285) };
+  }
+  function branchScene(lab, result) {
+    const x = value => 28 + numeric(value) * 149;
+    const active = result.included.map(pi).join('; ');
+    const excluded = result.excluded.map(pi).join('; ') || 'нет';
+    const summary = `Остались: ${active}. Число корней: ${result.included.length}. Исключённые углы: ${excluded}. ` +
+      'Углы 0, π, 2π даёт sin x = 0. Углы 2π/3 и 4π/3 даёт 2 cos x + 1 = 0.';
+    const points = lab.view.before.map(value => {
+      const kept = result.included.includes(value);
+      return dot(x(value), 68, kept, kept ? '#176850' : '#9b4918') + label(x(value), 96, pi(value));
+    }).join('');
+    return { ...result, summary, html: svg(summary, label(180, 23, 'Отрезок [0; 2π]') + line(28, 68, 340, 68) + points, 115) };
+  }
+  function exponentialScene(lab, result) {
+    const [value, exponent] = result.point;
+    const x = value => 180 + 54 * value, y = value => 170 - 31 * value;
+    const coordinates = Array.from({ length: 45 }, (_, i) => -2.2 + i / 10).map(t =>
+      x(t) + ',' + y(2 ** t)).join(' ');
+    const summary = `При x = ${minus(value)} получаем t = ${exponent}. Значение t строго выше нуля.`;
+    const curve = `<polyline points="${coordinates}" fill="none" stroke="#176850" stroke-width="2.5"/>`;
+    const drawing = line(25, y(0), 334, y(0)) + line(x(0), 27, x(0), 180) + curve +
+      dot(x(numeric(value)), y(numeric(exponent)), true, '#9b4918', 6) + label(33, 192, 't = 0') +
+      label(335, 192, 'x') + label(x(0) - 13, 33, 't') + label(180, 18, `(${minus(value)}; ${exponent})`);
+    return { ...result, summary, html: svg(summary, drawing, 204) };
+  }
+  function table(rows, caption) {
+    return `<table style="width:100%"><caption>${esc(caption)}</caption><tbody>${rows.map(([key, value]) =>
+      `<tr><th scope="row">${esc(key)}</th><td>${esc(value)}</td></tr>`).join('')}</tbody></table>`;
+  }
+  function argumentScene(lab, result) {
+    const { row, nonpositive } = result;
+    const sign = value => order(value, '0') > 0 ? 'положительный' : order(value, '0') === 0 ? 'нулевой' : 'отрицательный';
+    const permitted = row[4] !== null ? `log₂ ${row[1]} + log₂ ${row[2]}` : null;
+    const summary = `При x = ${minus(row[0])} произведение равно ${minus(row[3])}. ` +
+      (nonpositive.length ? `Сумма логарифмов не определена. Неположительные аргументы: ${nonpositive.join('; ')}.` : `Оба аргумента положительны. Исходная сумма: ${permitted}.`);
+    const values = [minus(row[0]), `${minus(row[1])} (${sign(row[1])})`, `${minus(row[2])} (${sign(row[2])})`,
+      minus(row[3]), permitted ?? 'не определена'];
+    return { ...result, summary, html: table(lab.view.columns.map((column, index) => [column, values[index]]), 'Аргументы и сумма') };
+  }
+  function candidateScene(lab, result) {
+    const [left, right, equal] = result.equality;
+    const heading = result.controls.equation === 'original' ? 'Исходное равенство' : 'После возведения в квадрат';
+    const relation = `${minus(left)} ${equal ? '=' : '≠'} ${minus(right)}`;
+    const summary = `При x = ${minus(result.row.x)} подкоренное выражение равно ${result.row.radicand} и допустимо. ${heading}: ${relation}. ` +
+      (equal ? 'Равенство выполняется.' : 'Равенство не выполняется.') +
+      ' Подкоренное выражение определено при x ≥ −2. Для исходного равенства правая часть должна быть неотрицательной, то есть x ≥ 0.';
+    return { ...result, summary, html: table([['x', minus(result.row.x)], ['Подкоренное выражение', result.row.radicand],
+      ['Левая часть', minus(left)], ['Правая часть', minus(right)], ['Результат', relation]], heading) };
+  }
+  function holeScene(lab, result) {
+    const [value, answer] = result.point;
+    const [holeX, holeY] = lab.view.hole.map(numeric);
+    const x = value => 151 + 24 * value, y = value => 177 - 18 * value;
+    const summary = answer === null ? `При x = ${value} знаменатель равен нулю. Исходная дробь не определена. На прямой точка (${holeX}; ${holeY}) исключена.` :
+      `При x = ${minus(value)} знаменатель не равен нулю. Значение исходной дроби равно ${answer}.`;
+    const drawing = label(180, 21, 'y = x + 3, x ≠ 3') + line(35, y(0), 316, y(0)) + line(x(0), 35, x(0), 192) +
+      line(x(-4), y(-1), x(5), y(8), '#176850', 2.5) +
+      (answer === null ? '' : dot(x(numeric(value)), y(numeric(answer)), true, '#176850', 6)) +
+      `<g data-excluded-point>${dot(x(holeX), y(holeY), false, '#9b4918', answer === null ? 8 : 6)}</g>` +
+      label(x(holeX) + 34, y(holeY) + 18, '(3; 6)') + label(323, y(0) + 15, 'x') + label(x(0) - 13, 40, 'y');
+    return { ...result, summary, html: svg(summary, drawing, 205) };
+  }
+  const scenes = {
+    'interval-number-line': intervalScene, 'branch-number-line': branchScene, 'exponential-point': exponentialScene,
+    'argument-table': argumentScene, 'candidate-comparison': candidateScene, 'line-with-hole': holeScene
+  };
+  function scene(lab, values) { return scenes[lab.view.kind](lab, explore(lab, values)); }
+
+  function checkValue(parser, value, { choices, answer, type = 'finite-rational', scalar = true }) {
+    if (choices) return { recognized: choices.some(choice => choice.id === value), correct: answer === value };
+    const parsed = parser.parse(value, type);
+    if (scalar && parsed.recognized && (parsed.values.length !== 1 || parsed.duplicates)) return { recognized: false, correct: false };
+    return parser.compare(parsed, { finite: scalar ? [answer] : answer });
+  }
+  function checkFields(fields, input, parser) {
+    const result = fields.map(field => checkValue(parser, input[field.id], field));
+    const invalid = fields.filter((_, index) => !result[index].recognized).map(field => field.id);
+    return { recognized: !invalid.length, correct: !invalid.length && result.every(field => field.correct), invalid };
+  }
+  function transferFields(transfer) {
+    return transfer.fields || fieldsFor(transfer).map(field =>
+      ({ ...field, choices: transfer.choices, answer: transfer.answer, type: transfer.type, scalar: false }));
+  }
+  function evaluateTransfer(lab, input, parser) { return checkFields(transferFields(lab.transfer), input, parser); }
+
+  function canCompare(lab, record) { return checkpoints(lab).every(key => record.visited.includes(key)); }
+  function visit(lab, record) {
+    const key = keyFor(lab, record.values);
+    if (checkpoints(lab).includes(key) && !record.visited.includes(key)) record.visited.push(key);
+  }
+  function createStore(lab, storage, locks) {
+    const key = prefix + lab.lessonId;
+    const stageFields = stagesFor(lab).flatMap(stage => stage.fields), finalFields = fieldsFor(lab.transfer);
+    const fields = finalFields.concat(stageFields);
+    const empty = () => ({ version: 1, values: initial(lab), prediction: null, visited: [], verified: 0, compared: false,
+      drafts: Object.fromEntries(fields.map(field => [field.id, ''])), first: null, last: null });
+    const validDraft = (drafts, fields) => object(drafts) && fields.every(field =>
+      typeof drafts[field.id] === 'string' && drafts[field.id].length <= maxDraft);
+    const validAttempt = attempt => attempt === null || object(attempt) &&
+      typeof attempt.correct === 'boolean' && validDraft(attempt.answers, finalFields);
+    function valid(record) {
+      const goals = checkpoints(lab);
+      return object(record) && record.version === 1 && object(record.values) && lab.view.controls.every(control =>
+        own(record.values, control.id) && validValue(control, record.values[control.id])) &&
+        (record.prediction === null || lab.prediction.choices.some(choice => choice.id === record.prediction)) &&
+        Array.isArray(record.visited) && record.visited.length <= goals.length && new Set(record.visited).size === record.visited.length &&
+        record.visited.every(key => goals.includes(key)) && Number.isInteger(record.verified) && record.verified >= 0 &&
+        record.verified <= stagesFor(lab).length && (!record.verified || canCompare(lab, record)) && typeof record.compared === 'boolean' &&
+        (!record.compared || record.prediction !== null && canCompare(lab, record) && record.verified === stagesFor(lab).length) &&
+        (!record.visited.length || record.prediction !== null) && validDraft(record.drafts, fields) && validAttempt(record.first) && validAttempt(record.last) &&
+        (!!record.first === !!record.last) && (!record.last || record.compared);
+    }
+    let saved = empty(), warning = '', blocked = !storage, pending = Promise.resolve();
+    if (blocked) warning = 'Это исследование сохраняется только до закрытия страницы.';
+    function read() {
+      if (!blocked) {
+        try {
+          const raw = storage.getItem(key);
+          const current = raw === null ? empty() : JSON.parse(raw);
+          if (!valid(current)) throw new Error('Invalid investigation');
+          saved = current;
+        } catch (_) {
+          blocked = true;
+          warning = 'Прежняя запись исследования не читается. Она оставлена без изменений.';
+        }
+      }
+      return copy(saved);
+    }
+    function update(change) {
+      function commit() {
+        const current = read();
+        if (!change(current)) return current;
+        if (!valid(current)) throw new Error('Invalid investigation update');
+        saved = current;
+        if (!blocked) {
+          try { storage.setItem(key, JSON.stringify(saved)); }
+          catch (_) {
+            blocked = true;
+            warning = 'Не удалось сохранить исследование. Работа остаётся до закрытия страницы.';
+          }
+        }
+        return copy(saved);
+      }
+      const next = pending.then(() => !blocked && locks?.request ? locks.request(key, commit) : commit());
+      pending = next.catch(() => {});
+      return next;
+    }
+    return { key, read, update, flush: () => pending, get warning() { return warning; } };
+  }
+
+  let nextId = 0;
+  function responseFor(field, sectionId) {
+    const id = `${sectionId}-${field.id}`;
+    const label = esc(field.label), marker = `id="${id}" data-response="${esc(field.id)}"`;
+    if (field.choices) return `<label for="${id}">${label}</label><select ${marker}><option value="">Выберите ответ</option>${field.choices.map(choice =>
+      `<option value="${esc(choice.id)}">${esc(choice.label)}</option>`).join('')}</select>`;
+    return `<label class="field" for="${id}"><span>${label}</span><input type="text" ${marker} inputmode="text" maxlength="${maxDraft}" autocomplete="off"></label>`;
+  }
+  function markup(lab, id) {
+    const controls = lab.view.controls.map(control => {
+      const key = `${id}-${control.id}`;
+      const choices = options(control);
+      return choices ? `<label for="${key}">${esc(control.label)}</label><select id="${key}" data-control="${esc(control.id)}">${choices.map(choice =>
+        `<option value="${esc(choice.value)}">${esc(choice.label)}</option>`).join('')}</select>` :
+        `<label style="min-height:44px"><input type="checkbox" id="${key}" data-control="${esc(control.id)}"> ${esc(control.label)}</label>`;
+    }).join('');
+    const transfer = lab.transfer;
+    const instruction = transfer.type === 'finite-pi' ? '<p class="caption">Записывайте углы с π. Если корней нет, введите «нет корней».</p>' : '';
+    const response = transferFields(transfer).map(field => responseFor(field, id)).join('');
+    const checks = stagesFor(lab).map((stage, index) => `<form data-lab-verification="${index}" hidden><p>${esc(stage.prompt)}</p>
+      ${stage.fields.map(field => responseFor(field, id)).join('')}
+      <button type="submit">Проверить</button><p data-lab-verification-status role="status"></p></form>`).join('');
+    return `<section class="part2-lab" aria-labelledby="${id}-title">
+      <h3 id="${id}-title">${esc(lab.title)}</h3><p>${esc(lab.formula)}</p>
+      <p class="caption">Результат исследования сохраняется отдельно от решения задач.</p>
+      <form data-lab-prediction><h4>1. Предскажите</h4><label for="${id}-prediction">${esc(lab.prediction.question)}</label>
+        <select id="${id}-prediction"><option value="">Выберите прогноз</option>${lab.prediction.choices.map(choice =>
+        `<option value="${esc(choice.id)}">${esc(choice.label)}</option>`).join('')}</select>
+        <button type="submit">Сохранить прогноз</button><p data-lab-prediction-status role="status"></p>
+      </form>
+      <section data-lab-observation hidden><h4>2. Измените модель</h4><p>${esc(lab.observe)}</p>${controls}
+        <div data-lab-model></div><p data-lab-summary role="status"></p>
+        <p data-lab-visits class="caption" role="status"></p>
+      </section>
+      <section data-lab-comparison hidden><h4>3. Сравните с прогнозом</h4>${checks}<button type="button" data-lab-compare>Сравнить с прогнозом</button>
+        <div data-lab-rule hidden><p data-lab-prediction-result role="status"></p><p>${esc(lab.rule)}</p></div>
+      </section>
+      <form data-lab-transfer hidden><h4>4. Проверьте себя в другой задаче</h4><p>${esc(transfer.prompt)}</p>${instruction}${response}
+        <button type="submit">Проверить ответ</button><p data-lab-transfer-status role="status"></p>
+        <p data-lab-transfer-first class="caption"></p>
+      </form>
+      <p data-lab-warning role="status"></p>
+    </section>`;
+  }
+
+  function mount(container, lab, parser, settings) {
+    const window = container.ownerDocument.defaultView;
+    let storage = settings.storage;
+    if (storage === undefined) try { storage = window.localStorage; } catch (_) { storage = null; }
+    const locks = settings.locks === undefined ? window.navigator.locks : settings.locks;
+    const store = createStore(lab, storage, locks);
+    const id = 'part2-equation-lab-' + ++nextId;
+    container.innerHTML = markup(lab, id);
+    const $ = selector => container.querySelector(selector);
+    const prediction = $('#' + id + '-prediction'), predictForm = $('[data-lab-prediction]');
+    const compareButton = $('[data-lab-compare]'), transfer = $('[data-lab-transfer]');
+    const controls = [...container.querySelectorAll('[data-control]')];
+    const fields = [...transfer.querySelectorAll('[data-response]')];
+    const inputs = [...container.querySelectorAll('[data-response]')];
+    const checkForms = [...container.querySelectorAll('[data-lab-verification]')];
+    let active = true, queued = 0, lastView = '', format = [], checkFeedback = null;
+    function render(record) {
+      if (!active) return;
+      const actual = lab.prediction.choices.find(choice => choice.id === record.prediction);
+      prediction.disabled = !!actual;
+      predictForm.querySelector('button').disabled = !!actual;
+      if (actual) prediction.value = actual.id;
+      $('[data-lab-prediction-status]').textContent = actual ? 'Ваш первый прогноз: ' + actual.label + '.' : '';
+      $('[data-lab-observation]').hidden = !actual;
+      $('[data-lab-comparison]').hidden = !actual;
+      const visited = canCompare(lab, record);
+      compareButton.disabled = !actual || !visited || record.verified !== checkForms.length;
+      compareButton.hidden = record.compared;
+      $('[data-lab-rule]').hidden = !record.compared;
+      if (record.compared) {
+        const answer = lab.prediction.choices.find(choice => choice.id === lab.prediction.correct).label;
+        $('[data-lab-prediction-result]').textContent = record.prediction === lab.prediction.correct ?
+          'Прогноз подтвердился. Результат: ' + answer + '.' : 'Модель дала другой результат: ' + answer + '.';
+      }
+      if (actual) {
+        const viewKey = keyFor(lab, record.values);
+        if (viewKey !== lastView) {
+          const shown = scene(lab, record.values);
+          $('[data-lab-model]').innerHTML = shown.html;
+          $('[data-lab-summary]').textContent = shown.summary;
+          lastView = viewKey;
+        }
+        for (const input of controls) {
+          const value = record.values[input.dataset.control];
+          if (input.type === 'checkbox') input.checked = value;
+          else if (input.value !== value) input.value = value;
+        }
+        $('[data-lab-visits]').textContent = `Проверено положений из инструкции: ${record.visited.length} из ${checkpoints(lab).length}.`;
+      }
+      checkForms.forEach((form, index) => {
+        const complete = index < record.verified;
+        form.hidden = !actual || !visited || index > record.verified;
+        for (const input of form.querySelectorAll('select,input,button')) input.disabled = complete;
+        form.querySelector('[data-lab-verification-status]').textContent = complete ? 'Верно.' :
+          checkFeedback?.stage === index ? checkFeedback.message : '';
+      });
+      transfer.hidden = !record.compared;
+      for (const input of inputs) {
+        const value = record.drafts[input.dataset.response];
+        if (input.value !== value) input.value = value;
+        input.setAttribute('aria-invalid', String(format.includes(input.dataset.response) ||
+          !!checkFeedback?.invalid.includes(input.dataset.response)));
+      }
+      $('[data-lab-transfer-status]').textContent = format.length ? 'Проверьте заполнение и запись ответа.' : record.last ?
+        record.last.correct ? 'Верно. ' + lab.transfer.feedback : 'Пока не совпало. Сравните с правилом и попробуйте ещё раз.' : '';
+      $('[data-lab-transfer-first]').textContent = record.first ? 'Первая попытка: ' +
+        fieldsFor(lab.transfer).map(field => {
+          const raw = record.first.answers[field.id];
+          return lab.transfer.choices?.find(choice => choice.id === raw)?.label || raw;
+        }).join('; ') + (record.first.correct ? ' — верно.' : ' — потребовалось исправление.') : '';
+      $('[data-lab-warning]').textContent = store.warning;
+    }
+    function action(change, after) {
+      queued++;
+      store.update(change).then(() => {
+        queued--;
+        if (!active || queued) return;
+        const record = store.read();
+        render(record);
+        after?.(record);
+      }, () => {
+        queued--;
+        if (active) $('[data-lab-warning]').textContent = 'Не удалось сохранить действие. Попробуйте ещё раз.';
+      });
+    }
+    predictForm.onsubmit = event => {
+      event.preventDefault();
+      const value = prediction.value;
+      if (!lab.prediction.choices.some(choice => choice.id === value)) {
+        $('[data-lab-prediction-status]').textContent = 'Выберите прогноз.';
+        prediction.focus();
+        return;
+      }
+      action(record => {
+        if (record.prediction !== null) return false;
+        record.prediction = value;
+        visit(lab, record);
+        return true;
+      }, () => controls[0].focus());
+    };
+    for (const input of controls) input.onchange = () => {
+      const id = input.dataset.control, control = lab.view.controls.find(item => item.id === id);
+      const value = input.type === 'checkbox' ? input.checked : input.value;
+      action(record => {
+        if (record.prediction === null || record.values[id] === value || !validValue(control, value)) return false;
+        record.values[id] = value;
+        visit(lab, record);
+        return true;
+      });
+    };
+    compareButton.onclick = () => action(record => {
+      if (record.prediction === null || record.compared || !canCompare(lab, record) || record.verified !== checkForms.length) return false;
+      record.compared = true;
+      return true;
+    }, () => { if (!transfer.hidden) fields[0].focus(); });
+    for (const input of inputs) input.oninput = () => {
+      const id = input.dataset.response, value = input.value.slice(0, maxDraft);
+      const stage = input.form.dataset.labVerification;
+      format = format.filter(key => key !== id);
+      if (checkFeedback?.stage === Number(stage)) checkFeedback = null;
+      action(record => {
+        const visible = stage === undefined ? record.compared : Number(stage) === record.verified && canCompare(lab, record);
+        if (!visible || record.drafts[id] === value) return false;
+        record.drafts[id] = value;
+        return true;
+      });
+    };
+    checkForms.forEach((form, stage) => { form.onsubmit = event => {
+      event.preventDefault();
+      const fields = stagesFor(lab)[stage].fields;
+      const answers = Object.fromEntries([...form.querySelectorAll('[data-response]')].map(input =>
+        [input.dataset.response, input.value.trim().slice(0, maxDraft)]));
+      const verdict = checkFields(fields, answers, parser);
+      const invalid = verdict.invalid;
+      checkFeedback = verdict.correct ? null : { stage, invalid, message:
+        verdict.recognized ? 'Пока не совпало. Проверьте по модели.' : 'Заполните каждое поле.' };
+      action(record => {
+        if (!canCompare(lab, record) || stage !== record.verified || !verdict.correct) return false;
+        Object.assign(record.drafts, answers);
+        record.verified++;
+        if (own(answers, 'inverse-x')) record.values.x = '1';
+        return true;
+      }, record => {
+        if (!active) return;
+        if (record.verified > stage) (checkForms[record.verified]?.querySelector('[data-response]') || compareButton).focus();
+        else if (invalid.length) inputs.find(input => input.dataset.response === invalid[0]).focus();
+      });
+    }; });
+    transfer.onsubmit = event => {
+      event.preventDefault();
+      const answers = Object.fromEntries(fields.map(input => [input.dataset.response, input.value.slice(0, maxDraft)]));
+      const verdict = evaluateTransfer(lab, answers, parser);
+      format = verdict.invalid;
+      action(record => {
+        if (!record.compared) return false;
+        const changed = fieldsFor(lab.transfer).some(field => record.drafts[field.id] !== answers[field.id]);
+        if (changed) Object.assign(record.drafts, answers);
+        if (!verdict.recognized) return changed;
+        if (record.last?.correct === verdict.correct && fieldsFor(lab.transfer).every(field =>
+          record.last.answers[field.id] === answers[field.id])) return changed;
+        const attempt = { answers, correct: verdict.correct };
+        record.first ||= attempt;
+        record.last = attempt;
+        return true;
+      }, () => { if (format.length) fields.find(input => input.dataset.response === format[0]).focus(); });
+    };
+    const updated = event => {
+      if (active && !queued && event.key === store.key) render(store.read());
+    };
+    window.addEventListener('storage', updated);
+    render(store.read());
+    return () => { active = false; window.removeEventListener('storage', updated); container.replaceChildren(); };
+  }
+
+  function create(definitions, parser) {
+    if (!parser?.parse || !parser?.compare) throw new TypeError('An exact equation answer parser is required');
+    const catalog = new Map(definitions.map(lab => [lab.lessonId, lab]));
+    if (catalog.size !== 6 || definitions.length !== 6 || definitions.some(lab =>
+      !/^p14-[a-z-]+$/.test(lab.lessonId) || !scenes[lab.view.kind])) throw new TypeError('Six known investigations are required');
+    function get(lessonId) {
+      const lab = catalog.get(lessonId);
+      if (!lab) throw new TypeError('Unknown equation investigation');
+      return lab;
+    }
+    return Object.freeze({
+      has: lessonId => catalog.has(lessonId),
+      scene: (lessonId, values) => scene(get(lessonId), values),
+      evaluateTransfer: (lessonId, values) => evaluateTransfer(get(lessonId), values, parser),
+      createStore: (lessonId, storage, locks) => createStore(get(lessonId), storage, locks),
+      mount: (container, lessonId, settings = {}) => mount(container, get(lessonId), parser, settings)
+    });
+  }
+  return Object.freeze({ create });
+});
+
+</script>
 <script data-inline-source="/ege-profil/part-two/app.js">
 (function(root){
 'use strict';
 const lessons=(root.ProfilePartTwoLessons||[]).slice().sort((a,b)=>a.exam-b.exam);
+const financeLessons=root.ProfileFinanceWrittenLessons||[];
+const financeIds=new Set(financeLessons.map(lesson=>lesson.id));
+const isFinance=lesson=>financeIds.has(lesson.id);
+const allLessons=lessons.concat(financeLessons);
+const lessonSequence=lesson=>isFinance(lesson)?financeLessons:lessons;
 const examMap=root.ProfileExamMap;
 // Legacy exam keys identify the existing lessons, labs and saved work.
 const entryFor=number=>examMap?.fromLegacyPartTwo(number);
 const labelFor=number=>{const entry=entryFor(number);return entry?examMap.label(entry):'Учебная тема';};
 const groupURL=number=>{const entry=entryFor(number);return entry?examMap.hash(entry):'#exam/'+number;};
 const titles={14:'Уравнения и отбор корней',15:'Стереометрия с доказательством',16:'Неравенства',17:'Моделирование и оптимизация',18:'Планиметрия с доказательством',19:'Задачи с параметром',20:'Числа и их свойства'};
+const lessonLabel=lesson=>isFinance(lesson)?examMap.label(16):labelFor(lesson.exam);
+const lessonGroupURL=lesson=>isFinance(lesson)?examMap.hash(16):groupURL(lesson.exam);
 const main=document.getElementById('main'),banner=document.getElementById('save-warning'),API=root.ProfilePartTwoState;
-const byLesson=new Map(lessons.map(l=>[l.id,l])),byTask=new Map();
-lessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
+const byLesson=new Map(allLessons.map(l=>[l.id,l])),byTask=new Map();
+allLessons.forEach(lesson=>lesson.tasks.forEach((task,index)=>byTask.set(task.id,{lesson,task,index})));
 let storage;try{storage=root.localStorage;}catch(_){}
 const store=API.create(storage,{locks:root.navigator?.locks,validate:(v,id)=>{const task=byTask.get(id)?.task;return !!task&&v.solvedSteps.length<=task.steps.length&&v.drafts.steps.length<=task.steps.length&&v.drafts.final.length<=task.final.length&&v.solutionSteps<=task.solution.length;},onWarning:text=>{banner.hidden=false;banner.textContent=text;}});
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -3055,20 +5276,26 @@ function correctedWithoutHelp(record){return record.independent&&record.attempts
 function status(task,record){if(record.independent)return `<span class="tag ok">${correctedWithoutHelp(record)?'Исправлено без подсказки':'Ответы самостоятельно'}</span>`;if(record.completed)return '<span class="tag help">Ответы с опорой</span>';if(record.attemptCount||record.drafts.proof||record.drafts.openFinal?.trim()||record.drafts.final.some(Boolean)||record.drafts.steps.some(Boolean)||record.solvedSteps.length)return '<span class="tag">Продолжить работу</span>';return '<span class="tag">Можно начать</span>';}
 function stats(items){const out={total:0,completed:0,independent:0,helped:0,pending:0};items.forEach(l=>l.tasks.forEach(task=>{const r=store.read(task.id);out.total++;if(r.completed)out.completed++;if(r.independent)out.independent++;else if(r.completed)out.helped++;if(r.completed&&task.proof)out.pending++;}));return out;}
 function badges(s){return `<div class="stats"><span class="tag">${s.total} условий</span><span class="tag ok">Самостоятельные ответы: ${s.independent}</span><span class="tag help">С опорой: ${s.helped}</span></div>`;}
-function resume(items=lessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
+function resume(items=allLessons){let best=null;for(const lesson of items)for(let index=0;index<lesson.tasks.length;index++){const task=lesson.tasks[index],r=store.read(task.id);if(r.updatedAt&&!r.completed&&(!best||r.updatedAt>best.r.updatedAt))best={lesson,task,index,r};}return best;}
 function courseCard(entry){
- if(!entry.legacyPartTwo)return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>Подготовка по процентам и кредитам: 16 тем · 96 числовых упражнений.</p><p class="caption">Эта практика помогает составлять и считать финансовые модели. Полное письменное решение №16 требует отдельного обоснования и проверки преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></section>`;
+ if(!entry.legacyPartTwo){
+  const count=stats(financeLessons).total;
+  return `<section class="card"><h2><span class="number">${entry.number}</span>${esc(entry.title)}</h2><p>${count?count+' условий с письменным решением.':'Подготовка по процентам и кредитам.'}</p><p class="caption">Проверьте расчёт и запишите полное обоснование.</p><div class="actions"><a class="button" href="${examMap.hash(entry)}">Открыть №16</a><a class="button quiet" href="${esc(examMap.href(entry))}">К финансовой подготовке</a></div></section>`;
+ }
  const group=lessons.filter(l=>l.exam===entry.legacyPartTwo),s=stats(group);
  return `<section class="card"><h2><span class="number">${entry.number??'+'}</span>${esc(entry.title)}</h2><p>${group.length} тем · ${s.total} условий</p><p class="caption">Самостоятельные ответы: ${s.independent}; с опорой: ${s.helped}.</p><a class="button" href="${examMap.hash(entry)}">${entry.number?'Открыть №'+entry.number:'Открыть дополнительную тему'}</a></section>`;
 }
 function home(){
  const official=examMap.entries.filter(entry=>entry.part===2),extras=examMap.extras.filter(entry=>entry.legacyPartTwo);
- const s=stats(lessons.filter(lesson=>entryFor(lesson.exam)?.number)),last=resume();
- main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. Выберите тему: три условия с опорой, затем три других условия для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь 36 тем и 216 условий по уравнениям, геометрии, неравенствам, параметрам и числам. Для №16 откройте финансовую подготовку. Ещё 6 тем и 36 условий по оптимизации сохранены в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Верный числовой ответ ещё не означает полное решение второй части. Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
+ const topics=lessons.filter(lesson=>entryFor(lesson.exam)?.number);
+ const s=stats(topics),last=resume();
+ main.innerHTML=`<p class="eyebrow">Профильный ЕГЭ · ФИПИ 2027</p><h1>Вторая часть: от метода до обоснования</h1><p class="lead">Задания экзамена №13–19. В каждой теме можно решить первые три условия с опорой, затем взять новое условие для самостоятельной проверки. Сохраняются ответы, первая попытка и ваше обоснование.</p><p>Здесь ${topics.length} тем и ${s.total} условий по уравнениям, геометрии, неравенствам, параметрам и числам. Отдельный раздел №16 посвящён письменному решению финансовых задач. Ещё 6 тем и 36 условий по оптимизации находятся в дополнительном разделе ниже.</p>${badges(s)}${last?`<a class="button" href="${taskURL(last.task.id,last.r.helped&&!last.r.drafts.openFinal?.trim()?'guided':modeFor(last.index))}">Продолжить: ${esc(last.lesson.title)}</a>`:''}<h2>Подготовка к №13–19</h2><div class="grid">${official.map(courseCard).join('')}</div><h2>Дополнительная подготовка</h2><p>Оптимизация развивает работу с моделью и ограничениями. Это дополнительная тема, а не отдельный официальный номер экзамена.</p><div class="grid">${extras.map(courseCard).join('')}</div><aside class="panel"><h2>Как оценивать результат</h2><p>Запишите ход рассуждений и проверьте его по критериям. Доказательство остаётся на проверку преподавателю.</p><p>После подсказки условие отмечается как работа с опорой. Для новой самостоятельной проверки откройте другое условие.</p><a href="/ege-profil/start/#calm">Первая часть №1–12 и школьные основы →</a></aside>`;
 }
 function finance(){
- const entry=examMap.get(16);
- main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Начните с процентов, платежей и финансовых моделей в подготовительном курсе.</p><p>В существующем курсе 16 тем и 96 числовых упражнений. Они тренируют отдельные вычисления и построение моделей; это не полный письменный курс по №16. Для экзамена нужно обосновать модель и ход решения, а полную запись проверить с преподавателем.</p><a class="button" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a>`;
+ const entry=examMap.get(16),last=resume(financeLessons);
+ const cards=financeLessons.map(lesson=>`<section class="card"><h2>${esc(lesson.title)}</h2><p>${esc(lesson.goal)}</p><p class="caption">Условий с верным числовым ответом: ${stats([lesson]).completed} из ${lesson.tasks.length}.</p><div class="actions"><a class="button" href="#lesson/${lesson.id}">К условиям</a><a class="button quiet" href="${taskURL((lesson.tasks.slice(3).find(task=>{const r=store.read(task.id);return !r.completed&&!r.helped;})||lesson.tasks[3]).id,'independent')}">Решить самостоятельно</a></div></section>`).join('');
+ const continuing=last?`<p><a class="button" href="${taskURL(last.task.id,modeFor(last.index))}">Продолжить сохранённое условие</a></p>`:'';
+ main.innerHTML=`<a class="back" href="#map">← Карта второй части</a><p class="eyebrow">ЕГЭ 2027 · №16</p><h1>${esc(entry.title)}</h1><p class="lead">Разберите календарь выплат и запишите, откуда берётся каждый платёж. Тренажёр сверит числовой ответ. Полное решение можно сверить с образцом и показать преподавателю.</p>${continuing}<div class="grid">${cards}</div><section class="panel"><h2>Вспомнить проценты и платежи</h2><p>16 тем и 96 числовых упражнений для подготовки к письменным задачам.</p><a class="button quiet" href="${esc(examMap.href(entry))}">Открыть финансовую подготовку</a></section>`;
 }
 function exam(number){
  const group=lessons.filter(l=>l.exam===number);if(!group.length)return missing();const s=stats(group),last=resume(group);
@@ -3093,10 +5320,21 @@ function exam(number){
 }
 function prerequisites(lesson){return lesson.prerequisites?.length?`<details class="prerequisites"><summary>Вспомнить основу и прежние материалы</summary><ul>${lesson.prerequisites.map(p=>`<li><a href="${esc(p.href)}">${esc(p.title)}</a></li>`).join('')}</ul><p class="caption">Черновик сохранится. Вернитесь кнопкой браузера, чтобы продолжить это условие.</p></details>`:'';}
 function lessonView(lesson){
- const index=lessons.indexOf(lesson),next=lessons[index+1];
- main.innerHTML=`<a class="back" href="${groupURL(lesson.exam)}">← Все темы · ${esc(labelFor(lesson.exam))}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p><div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<details id="model-lab"><summary>Исследование на модели · не зачёт</summary><div id="model-lab-content" class="panel"></div></details><h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
+ const sequence=lessonSequence(lesson),next=sequence[sequence.indexOf(lesson)+1];
+ const equationLabs=!isFinance(lesson)&&Array.isArray(root.ProfileEquationInvestigationData)&&root.ProfileEquationAnswers?
+  root.ProfilePartTwoEquationLabs?.create(root.ProfileEquationInvestigationData,root.ProfileEquationAnswers):null;
+ const hasEquationLab=equationLabs?.has(lesson.id);
+ const labMarkup=`<details id="model-lab"${hasEquationLab?' class="equation-investigation"':''}><summary>${hasEquationLab?'Сначала исследуйте на модели':'Исследование на модели · не зачёт'}</summary><div id="model-lab-content" class="panel"></div></details>`;
+ main.innerHTML=`<a class="back" href="${lessonGroupURL(lesson)}">← Все темы · ${esc(lessonLabel(lesson))}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · учебная тема</p><h1>${esc(lesson.title)}</h1><p class="lead">${esc(lesson.goal)}</p>${hasEquationLab?labMarkup:''}<div class="panel"><h2>Начать с задачи</h2><p>Попробуйте первый шаг сами; объяснение и помощь можно открыть рядом с условием.</p><div class="actions"><a class="button" href="${taskURL(lesson.tasks[0].id,'guided')}">Первое условие по шагам</a><a class="button quiet" href="${taskURL(lesson.tasks[3].id,'independent')}">Проверить себя</a></div></div><details><summary>Короткая теория и выбор метода</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}${hasEquationLab||isFinance(lesson)?'':labMarkup}<h2>Сначала — разобраться</h2><div class="task-grid">${lesson.tasks.slice(0,3).map((task,i)=>taskCard(task,i,'guided')).join('')}</div><h2>Затем — другое условие самостоятельно</h2><p class="caption">Это отдельные условия. Если открыть подсказку или разбор, результат будет отмечен как работа с опорой.</p><div class="task-grid">${lesson.tasks.slice(3).map((task,i)=>taskCard(task,i+3,'independent')).join('')}</div>${next?`<p class="next"><a href="#lesson/${next.id}">Следующая тема: ${esc(next.title)} →</a></p>`:''}`;
+ if(isFinance(lesson))return;
  mountSkills(lesson.exam,lesson);
- const lab=document.getElementById('model-lab');if(!root.ProfilePartTwoLabs)lab.hidden=true;else lab.addEventListener('toggle',()=>{if(lab.open&&!labCleanup)labCleanup=root.ProfilePartTwoLabs.mount(document.getElementById('model-lab-content'),lesson.exam,{storage});});
+ const lab=document.getElementById('model-lab');
+ if(!hasEquationLab&&!root.ProfilePartTwoLabs){lab.hidden=true;return;}
+ lab.addEventListener('toggle',()=>{
+  if(!lab.open||labCleanup)return;
+  const host=document.getElementById('model-lab-content');
+  labCleanup=hasEquationLab?equationLabs.mount(host,lesson.id,{storage}):root.ProfilePartTwoLabs.mount(host,lesson.exam,{storage});
+ });
 }
 function taskCard(task,i,mode){return `<a class="task-link" href="${taskURL(task.id,mode)}"><strong>Условие ${i+1}</strong><small>${i<3?'Учимся решать':'Проверяем себя'}</small>${status(task,store.read(task.id))}</a>`;}
 function feedback(text,kind=''){const box=document.getElementById('feedback');if(box){box.className='feedback '+kind;box.hidden=false;box.textContent=text;}}
@@ -3107,7 +5345,7 @@ function bindSubmit(id,fn){
   event.preventDefault();
   if(pending||!form.isConnected)return;
   pending=true;const button=form.querySelector('button[type="submit"]');button.disabled=true;
-  try{await fn(event);}finally{pending=false;button.disabled=false;}
+  try{await fn(event);}finally{pending=false;button.disabled=button.dataset.syncBlocked==='true';}
  });
 }
 function recentTrace(r,review){if(!r.attempts.length)return '';const first=r.attempts[0],last=r.attempts[r.attempts.length-1];return `<details class="history"><summary>Первая попытка и последнее исправление</summary><dl><dt>Первая отправка</dt><dd>${esc(first.answers.join('; '))} · ${first.correct?'верно':'нужна проверка'} · ${first.helped?'с опорой':'без подсказки'}</dd><dt>Последняя отправка</dt><dd>${esc(last.answers.join('; '))} · ${last.correct?'верно':'нужна проверка'} · ${last.helped?'с опорой':'без подсказки'}</dd></dl><p>Отправок: ${r.attemptCount}. Сохраняются первая и последние 59 отправок этого условия.</p>${review?'<p id="proof-help-history" hidden></p>':''}</details>`;}
@@ -3273,34 +5511,160 @@ function nextPractice(lesson,task){
 }
 function practiceLink(task){return task?`<a class="button" href="${taskURL(task.id,'independent')}">Другое условие самостоятельно →</a>`:'';}
 function parameterPracticeLink(lesson,task){return practiceLink(task)||`<a class="button quiet" href="#lesson/${lesson.id}">Выбрать условие для повторения →</a>`;}
-function completion(item,r,mode,nextIndependent,review){
+function completion(item,r,mode,nextIndependent,review,equation){
  if(!r.completed)return '';
+ if(equation&&!equation.fields.every(field=>API.equationCheck(r,field.key)==='correct')){
+  return '<section class="panel complete" id="historical-completion"><h2>Ранее решённое условие</h2><p>Прежний результат сохранён. Проверьте текущую запись в новых полях.</p></section>';
+ }
  const {lesson,task,index}=item;
- const nextTask=lesson.tasks[index+1],nextLesson=lessons[lessons.indexOf(lesson)+1];
+ const sequence=lessonSequence(lesson),nextTask=lesson.tasks[index+1],nextLesson=sequence[sequence.indexOf(lesson)+1];
  const offerFresh=mode!=='independent'||r.helped;
  const nextLink=review?parameterPracticeLink(lesson,nextIndependent):
   nextIndependent&&offerFresh?practiceLink(nextIndependent):
   nextTask?`<a class="button" href="${taskURL(nextTask.id,modeFor(index+1))}">Следующее условие →</a>`:
   nextLesson?`<a class="button" href="#lesson/${nextLesson.id}">Следующая тема →</a>`:'';
- return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${groupURL(lesson.exam)}">Все темы · ${esc(labelFor(lesson.exam))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
+ return `<section class="panel complete" id="completion"><h2>Ответы приняты</h2><p>${correctedWithoutHelp(r)?'Ответ исправлен самостоятельно после первой попытки.':r.independent?'Вычислительная часть решена самостоятельно.':'Это работа с опорой или повтор учебного условия.'}${task.proof?' Письменное обоснование требует проверки.':''}</p><div class="actions">${nextLink}<a class="button quiet" href="${lessonGroupURL(lesson)}">Все темы · ${esc(lessonLabel(lesson))}</a></div>${!nextIndependent?'<p class="caption">Новые самостоятельные условия этой темы закончились. Повтор знакомого условия не увеличивает счётчик.</p>':''}</section>`;
+}
+function equationFeedback(status){
+ if(status==='correct')return 'Ответ верен.';
+ const text=[];
+ if(status.startsWith('missing'))text.push('В ответе не хватает решений.');
+ if(status.includes('extra')){
+  if(status.endsWith('outside-interval'))text.push('Есть корень вне промежутка или на исключённой границе.');
+  else if(status.endsWith('outside-domain'))text.push('Один из ответов нарушает область определения.');
+  else if(status.endsWith('not-root'))text.push('Одно из чисел не решает исходное уравнение.');
+  else text.push('В ответе есть лишние решения.');
+ }
+ return text.join(' ');
+}
+function earlierEquationDraft(task,record){
+ const own=record.drafts.final.flatMap((value,index)=>value.trim()&&task.final[index]?
+  [`<p>${esc(task.final[index].label)} · ${esc(value)}</p>`]:[]);
+ if(record.drafts.openFinal?.trim())own.push(`<p>${esc(record.drafts.openFinal)}</p>`);
+ return own.length?`<details class="earlier-equation"><summary>Мои ответы из прежней формы</summary>${own.join('')}</details>`:'';
+}
+function bindEquationForm(equation,context){
+ const {item,mode,viewVersion,isCurrent,record,priorConflict,independentEligible,proofBindings}=context;
+ const id=item.task.id;
+ const fields=equation.fields.map((descriptor,index)=>({descriptor,input:document.getElementById('final-'+index),
+  message:document.getElementById('equation-result-'+index)}));
+ const entries=callback=>Object.fromEntries(fields.map(({descriptor,input})=>[descriptor.key,callback(descriptor,input)]));
+ let observed=entries(descriptor=>API.equationDraft(record,descriptor.key));
+ let blocked=!!priorConflict;
+ const visible=()=>entries((_,input)=>input.value);
+ const conflictButton=document.getElementById('equation-open-saved');
+ const conflictNotice=document.getElementById('equation-sync-warning');
+ function show(record){
+  if(!isCurrent())return;
+  conflictNotice.hidden=conflictButton.hidden=!blocked;
+  for(const {descriptor,input,message} of fields){
+   const matches=input.value===API.equationDraft(record,descriptor.key);
+   const status=matches?API.equationCheck(record,descriptor.key):'';
+   input.readOnly=blocked;
+   input.setAttribute('aria-invalid',String(!!status&&status!=='correct'));
+   message.textContent=equationFeedback(status);
+  }
+  const button=document.querySelector('#final-form button[type="submit"]');
+  if(blocked){button.dataset.syncBlocked='true';button.disabled=true;}
+  else if(button.dataset.syncBlocked){delete button.dataset.syncBlocked;button.disabled=false;}
+ }
+ function refreshEquation(record){
+  if(!isCurrent())return;
+  if(Object.entries(observed).some(([key,value])=>API.equationDraft(record,key)!==value))blocked=true;
+  show(record);
+ }
+ if(priorConflict)for(const {descriptor,input} of fields)input.value=priorConflict[descriptor.key]??input.value;
+ for(const {descriptor,input} of fields)input.addEventListener('input',async()=>{
+  if(blocked)return;
+  const key=descriptor.key,before=observed[key],value=input.value;
+  observed[key]=value;
+  const updated=await store.patch(id,state=>{
+   if(blocked)return false;
+   const change=API.updateEquationDraft(state,{[key]:before},{[key]:value});
+   if(change==='conflict')blocked=true;
+   return change==='updated';
+  });
+  show(updated);
+ });
+ conflictButton.addEventListener('click',async()=>{
+  await store.flush();
+  if(!isCurrent())return;
+  const saved=store.read(id);
+  observed=entries(descriptor=>API.equationDraft(saved,descriptor.key));
+  for(const {descriptor,input} of fields)input.value=observed[descriptor.key];
+  blocked=false;
+  show(saved);
+  fields[0].input.focus();
+ });
+ bindSubmit('final-form',async()=>{
+  const raw=visible(),expected={...observed};
+  const parser=root.ProfileEquationAnswers;
+  const results=fields.map(({descriptor})=>parser.compare(parser.parse(raw[descriptor.key],descriptor.type),equation.answer));
+  const invalid=results.findIndex(result=>!result.recognized);
+  let outcome='format';
+  const updated=await store.patch(id,state=>{
+   if(blocked){outcome='conflict';return false;}
+   const change=API.updateEquationDraft(state,expected,raw);
+   if(change==='conflict'){blocked=true;outcome='conflict';return false;}
+   if(invalid!==-1)return change==='updated';
+   const statuses=Object.fromEntries(fields.map(({descriptor},index)=>[descriptor.key,results[index].status]));
+   outcome=store.finishEquation(state,raw,statuses,{mode,independentEligible});
+   return change==='updated'||outcome==='correct'||outcome==='wrong';
+  });
+  if(!isCurrent())return;
+  if(outcome==='conflict'){show(updated);conflictButton.focus();return;}
+  for(const {descriptor} of fields){
+   const key=descriptor.key;
+   if(observed[key]===expected[key])observed[key]=raw[key];
+  }
+  show(updated);
+  if(fields.some(({descriptor,input})=>input.value!==raw[descriptor.key]))return;
+  if(invalid!==-1){
+   fields.forEach(({input},index)=>{if(!results[index].recognized)input.setAttribute('aria-invalid','true');});
+   const {input,descriptor}=fields[invalid],result=results[invalid];
+   const message=result.reason==='empty'?'Заполните поле. Пустой ввод не заменяет ∅.':
+    result.reason==='complexity'?'Упростите запись и повторите проверку.':'Проверьте формат записи. '+descriptor.format;
+   feedback(message,'error');
+   input.focus();
+   return;
+  }
+  if(outcome==='correct'||outcome==='duplicate'){
+   await taskView(item,mode,viewVersion);
+   if(!isCurrent())return;
+   feedback('Ответы верны. Сохраните обоснование и проверьте его с преподавателем.','ok');
+   document.getElementById('completion')?.scrollIntoView?.({block:'nearest',behavior:'auto'});
+   return;
+  }
+  feedback('Проверьте поля с замечаниями. Результаты каждого ответа сохранены.','error');
+  const trace=document.getElementById('equation-trace'),opened=trace.querySelector('details')?.open;
+  trace.innerHTML=recentTrace(updated);
+  if(opened)trace.querySelector('details').open=true;
+  proofBindings?.refreshProof(updated);
+ });
+ show(record);
+ return {refreshEquation,captureEquationConflict:()=>blocked?visible():null};
 }
 function guidedView(task,r){const stepIndex=r.solvedSteps.length,step=task.steps[stepIndex];return `<section class="panel"><h2>Решение по шагам</h2>${r.solvedSteps.length?`<ol class="steps">${r.solvedSteps.map(i=>`<li class="step-done">${task.steps[i].prompt}<br><strong>${task.steps[i].explanation}</strong></li>`).join('')}</ol>`:''}${step?`<form id="step-form"><p class="eyebrow">Шаг ${stepIndex+1} из ${task.steps.length}</p><label class="field"><span>${step.prompt}</span><input id="step-answer" type="text" maxlength="500" autocomplete="off" value="${esc(r.drafts.steps[stepIndex]||'')}"></label><div class="actions"><button type="submit">Проверить шаг</button><button type="button" id="step-hint" class="quiet">Нужна подсказка</button></div></form>${r.hints.includes(stepIndex)?`<p class="hint">${step.hint}</p>`:''}`:'<p class="feedback ok">Шаги пройдены. Теперь соберите итоговые ответы ниже.</p>'}</section>`;}
 async function taskView(item,mode,viewVersion=routeVersion,previous=active){
  if(viewVersion!==routeVersion)return;
  const {lesson,task,index}=item;
- const captureProofConflict=previous?.item.task.id===task.id?previous.captureProofConflict:null;
- active={item,mode,captureProofConflict};
+ const sameTask=previous?.item.task.id===task.id;
+ const captureProofConflict=sameTask?previous.captureProofConflict:null;
+ const priorEquationConflict=sameTask?previous.captureEquationConflict?.()??null:null;
+ active={item,mode,captureProofConflict,captureEquationConflict:()=>priorEquationConflict};
  if(mode!=='independent')await store.patch(task.id,r=>{r.helped=true;});
  if(viewVersion!==routeVersion)return;
  const isCurrent=()=>viewVersion===routeVersion&&active?.item.task.id===task.id&&active.mode===mode;
  const r=store.read(task.id),displayedStep=r.solvedSteps.length,independentEligible=index>=3;
  const conflictingDraft=captureProofConflict?.(r.drafts.proof)??null;
- const openFinal=mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
- const finalFields=openFinal?[openFinal]:task.final;
- const finalDraft=openFinal?[r.drafts.openFinal]:r.drafts.final;
+ const equation=root.ProfileEquationFields?.forTask(lesson,task,mode,independentEligible);
+ const openFinal=!equation&&mode==='independent'&&independentEligible&&typeof API.openAnswer==='function'?task.independentFinal:null;
+ const finalFields=equation?.fields||(openFinal?[openFinal]:task.final);
+ const finalDraft=equation?finalFields.map(field=>API.equationDraft(r,field.key)):openFinal?[r.drafts.openFinal]:r.drafts.final;
+ const equationHints=equation?(task.hints||task.steps.slice(0,2).map(step=>step.hint)):[];
  const observedFinal=finalFields.map((_,i)=>finalDraft[i]||'');
  let observedStep=r.drafts.steps[displayedStep]||'';
- const earlierDraft=openFinal&&r.drafts.final.some(value=>value.trim())?
+ const earlierDraft=equation?earlierEquationDraft(task,r):openFinal&&r.drafts.final.some(value=>value.trim())?
   `<details class="earlier-final"><summary>Ответы из пошаговой формы</summary>${task.final.map((field,i)=>r.drafts.final[i]?`<p>${esc(field.label)}: ${esc(r.drafts.final[i])}</p>`:'').join('')}</details>`:'';
  const review=proofReviewFor(lesson,task),nextIndependent=review||r.completed?nextPractice(lesson,task):null;
  const parameterCondition=Object.hasOwn(parameterGraphs,lesson.id);
@@ -3327,15 +5691,15 @@ async function taskView(item,mode,viewVersion=routeVersion,previous=active){
   actions.append(button);
   document.getElementById('feedback').after(actions);
  }
- main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(labelFor(lesson.exam))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"></label>`).join('')}<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p><button type="submit">${openFinal?'Проверить ответ':'Проверить ответы'}</button></form>${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${task.steps[0]?.hint||lesson.goal}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${groupURL(lesson.exam)}">Вернуться к темам · ${esc(labelFor(lesson.exam))}</a> · <a href="#map">Все задания второй части</a></p>`;
+ main.innerHTML=`<a class="back" href="#lesson/${lesson.id}">← ${esc(lesson.title)}</a><p class="eyebrow">${esc(lessonLabel(lesson))} · условие ${index+1} из ${lesson.tasks.length}</p><h1>${esc(lesson.title)}</h1><nav class="modes" aria-label="Способ работы">${Object.entries(modeLabels).map(([key,label])=>`<a href="${taskURL(task.id,key)}" ${mode===key?'aria-current="page"':''}>${label}</a>`).join('')}</nav>${mode==='independent'&&(r.helped||!independentEligible)?'<p class="hint">Это знакомое учебное условие или условие с уже открытой помощью. Его повтор не считается новой самостоятельной проверкой.</p>':''}<div class="task-layout"><section class="panel condition"><h2>Условие</h2><div>${equation?.prompt||openFinal?.prompt||task.prompt}</div>${task.diagram?`<div class="diagram">${task.diagram}</div>`:''}${task.diagram?'<p class="caption">Рисунок относится к этому условию. Для доказательства используйте данные и свойства, а не измерения по экрану.</p>':''}</section><div class="work">${!task.steps.length&&mode!=='independent'?'<section class="panel"><h2>Работа с опорой</h2><p>Введите свой ответ или откройте подсказку ниже.</p></section>':mode==='guided'?guidedView(task,r):mode==='plan'?`<section class="panel"><h2>План решения</h2><ol class="steps">${task.steps.map(s=>`<li>${s.prompt}</li>`).join('')}</ol><p class="caption">План — опора. Для самостоятельного зачёта затем откройте другое условие.</p></section>`:''}<section class="panel"><h2>Итоговые ответы</h2><form id="final-form">${finalFields.map((field,i)=>`<label class="field"><span>${field.label}</span><input id="final-${i}" data-final="${i}" type="text" maxlength="500" autocomplete="off" value="${esc(finalDraft[i]||'')}"${equation?` aria-describedby="equation-format-${i} equation-result-${i}"`:''}></label>${equation?`<p class="caption" id="equation-format-${i}">${esc(field.format)}</p><p class="caption" id="equation-result-${i}" role="status"></p>`:''}`).join('')}${equation?'':`<p class="caption">${openFinal?esc(openFinal.format):'Можно вводить дроби, π и корни: 3/4, π/6, sqrt(2). Ограничения и формат ответа указаны у поля.'}</p>`}<button type="submit">${openFinal||(equation&&finalFields.length===1)?'Проверить ответ':'Проверить ответы'}</button></form>${equation?'<p id="equation-sync-warning" class="caption" role="status" hidden>Ответы изменились в другой вкладке. Можно скопировать текущий ввод или открыть сохранённый вариант.</p><button id="equation-open-saved" type="button" class="quiet" hidden>Открыть сохранённые ответы</button>':''}${earlierDraft}<div id="feedback" class="feedback" role="status" hidden></div>${review?'<button id="proof-jump" type="button" class="quiet" hidden>К критериям обоснования</button>':''}<div class="actions"><button type="button" id="request-help" class="quiet">Хочу подсказку</button><button type="button" id="show-solution" class="quiet">Открыть разбор</button></div>${r.hints.includes(99)?`<p class="hint">${equationHints[0]||task.steps[0]?.hint||lesson.goal}</p>${equationHints[1]&&!r.hints.includes(98)?'<button type="button" id="equation-next-hint" class="quiet">Открыть вторую подсказку</button>':''}`:''}${equationHints[1]&&r.hints.includes(98)?`<p class="hint">${equationHints[1]}</p>`:''}${r.solution?`<div class="hint"><h3>Разбор с опорой</h3><ol class="solution-list">${task.solution.slice(0,r.solutionSteps).map(p=>`<li>${p}</li>`).join('')}</ol>${r.solutionSteps<task.solution.length?'<button type="button" id="solution-next" class="quiet">Следующий шаг разбора</button>':''}</div>`:''}${equation?`<div id="equation-trace">${recentTrace(r)}</div>`:review?`<div id="task-trace">${recentTrace(r,review)}</div>`:recentTrace(r)}</section></div></div>${proofView(openFinal?{...task,proof:{...task.proof,prompt:'Объясните, как нашли все решения и почему других нет.'}}:task,r,review,review&&parameterPracticeLink(lesson,nextIndependent))}${completion(item,r,mode,nextIndependent,review,equation)}<details class="task-theory"><summary>Теория для этой темы</summary><div class="panel">${lesson.theory.map(p=>`<p>${p}</p>`).join('')}</div></details>${prerequisites(lesson)}<p><a href="${lessonGroupURL(lesson)}">Вернуться к темам · ${esc(lessonLabel(lesson))}</a> · <a href="#map">Все задания второй части</a></p>`;
  if(parameterCondition){
   const layout=main.querySelector('.task-layout'),modes=main.querySelector('.modes');
   layout.querySelector('.work').prepend(modes);
  }
- mountSkills(lesson.exam,lesson);
+ if(!isFinance(lesson))mountSkills(lesson.exam,lesson);
  offerGraph(r);
  main.querySelectorAll('.modes a').forEach(link=>link.addEventListener('click',event=>{if(link.getAttribute('href')===root.location.hash){event.preventDefault();render();}}));
- document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
+ if(!equation)document.querySelectorAll('[data-final]').forEach(input=>input.addEventListener('input',()=>{
   const i=Number(input.dataset.final),value=input.value;
   observedFinal[i]=value;
   store.patch(task.id,s=>{
@@ -3347,7 +5711,8 @@ async function taskView(item,mode,viewVersion=routeVersion,previous=active){
  bind('step-answer','input',e=>{const value=e.target.value;observedStep=value;store.patch(task.id,s=>{while(s.drafts.steps.length<=displayedStep)s.drafts.steps.push('');s.drafts.steps[displayedStep]=value;});});
  const proofBindings=bindProof(task,review,r,isCurrent,conflictingDraft);
  Object.assign(active,proofBindings);
- bindSubmit('final-form',async()=>{
+ if(equation)Object.assign(active,bindEquationForm(equation,{item,mode,viewVersion,isCurrent,record:r,priorConflict:priorEquationConflict,independentEligible,proofBindings}));
+ else bindSubmit('final-form',async()=>{
   const fields=finalFields.map((_,i)=>document.getElementById('final-'+i)),rawValues=fields.map(f=>f.value),values=rawValues.map(v=>v.trim());
   const formats=finalFields.map((field,i)=>API.recognize(field,values[i],root.ProfileCheck));
   const invalid=formats.findIndex(result=>!result.recognized);
@@ -3416,6 +5781,7 @@ async function taskView(item,mode,viewVersion=routeVersion,previous=active){
  });
  bind('step-hint','click',async()=>{await store.patch(task.id,s=>{s.helped=true;const i=s.solvedSteps.length;if(!s.hints.includes(i))s.hints.push(i);});await taskView(item,mode,viewVersion);if(!isCurrent())return;});
  bind('request-help','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(99))s.hints.push(99);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Подсказка открыта. Для самостоятельной проверки потом выберите другое условие.');});
+ bind('equation-next-hint','click',async()=>{await store.patch(task.id,s=>{s.helped=true;if(!s.hints.includes(98))s.hints.push(98);});await taskView(item,mode,viewVersion);if(isCurrent())feedback('Открыта вторая подсказка.');});
  bind('show-solution','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solution=true;s.solutionSteps=Math.max(1,s.solutionSteps);});await taskView(item,mode,viewVersion);if(!isCurrent())return;feedback('Разбор открыт; это условие отмечено как работа с опорой.');});
  bind('solution-next','click',async()=>{await store.patch(task.id,s=>{s.helped=true;s.solutionSteps=Math.min(task.solution.length,s.solutionSteps+1);});await taskView(item,mode,viewVersion);});
  main.querySelectorAll('.task-theory,.prerequisites,.earlier-final').forEach(details=>details.addEventListener('toggle',()=>{if(details.open)store.patch(task.id,s=>{s.helped=true;});}));
@@ -3433,7 +5799,10 @@ function parameterProofProgress(){
  const continuation=resume?` <a href="${taskURL(resume.task.id,'independent')}">Вернуться к обоснованию</a>`:'';
  return `<section class="panel"><h2>Самопроверка обоснований · ${esc(labelFor(19))}</h2><p>Вы отметили все пункты в ${reviewed} из ${drafts} обоснований.${continuation}</p></section>`;
 }
-function progress(){const s=stats(lessons);main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все 42 темы и 252 условия этого курса, включая дополнительную оптимизацию. Финансовая подготовка №16 сохраняется в своём курсе.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
+function progress(){
+ const s=stats(lessons);
+ const written=stats(financeLessons);
+ main.innerHTML=`<a class="back" href="#map">← Все номера второй части</a><h1>Мой прогресс</h1><p>Все ${lessons.length} темы и ${s.total} условий этого курса, включая дополнительную оптимизацию.</p>${badges(s)}<p>Это результаты проверки ответов. Письменные обоснования автоматически не оцениваются. На проверку обоснования: <strong>${s.pending}</strong>.</p>${parameterProofProgress()}<section class="panel" aria-labelledby="finance-progress-title"><h2 id="finance-progress-title">№16 · Письменные финансовые задачи</h2>${badges(written)}<a href="#fipi/2027/16">К задачам и сохранённым решениям №16 →</a></section><div class="table-wrap"><table><thead><tr><th>Тема</th><th>Самостоятельные ответы</th><th>С опорой</th><th>Всего условий</th></tr></thead><tbody>${lessons.map(l=>{const a=stats([l]);return `<tr><td><a href="#lesson/${l.id}">${esc(labelFor(l.exam))} · ${esc(l.title)}</a></td><td>${a.independent} / ${l.tasks.slice(3).length}</td><td>${a.helped}</td><td>${a.total}</td></tr>`;}).join('')}</tbody></table></div><section class="panel"><h2>Как продолжить</h2><p>После помощи решите другое условие. После завершения темы вернитесь к ней через несколько дней и попробуйте объяснить способ без подсказок. Знакомый повтор не добавляет новое самостоятельное решение.</p><a class="button" href="#map">Выбрать номер</a></section>`;}
 function missing(){main.innerHTML='<section class="panel"><h1>Такое условие не найдено</h1><p>Выберите тему из карты курса. Сохранённая работа остаётся в браузере.</p><a class="button" href="#map">Открыть карту</a></section>';}
 async function render(){const version=++routeVersion;await store.flush();if(version!==routeVersion)return;const previous=active;active=null;if(labCleanup){labCleanup();labCleanup=null;}const route=root.location.hash.slice(1).split('/');if(!lessons.length||!examMap){main.innerHTML='<section class="panel"><h1>Не удалось загрузить темы</h1><p>Обновите страницу. Если ошибка остаётся, <a href="/ege-profil/">откройте прежние материалы курса</a>.</p></section>';return;}if(route[0]==='fipi'&&route[1]==='2027'){const entry=examMap.get(route[2]);if(entry?.legacyPartTwo)exam(entry.legacyPartTwo);else if(entry?.number===16)finance();else missing();}else if(route[0]==='topic'){const entry=examMap.topic(route[1]);if(entry?.legacyPartTwo&&!entry.number)exam(entry.legacyPartTwo);else missing();}else if(route[0]==='exam')exam(Number(route[1]));else if(route[0]==='lesson'&&byLesson.has(route[1]))lessonView(byLesson.get(route[1]));else if(route[0]==='task'&&byTask.has(route[1])){const item=byTask.get(route[1]),mode=modeLabels[route[2]]?route[2]:modeFor(item.index);await taskView(item,mode,version,previous);}else if(route[0]==='progress')progress();else if(!route[0]||route[0]==='map')home();else missing();main.focus({preventScroll:true});}
 root.addEventListener('hashchange',async()=>{
@@ -3446,11 +5815,11 @@ root.addEventListener('storage',event=>{
  if(!event.key?.startsWith(API.PREFIX))return;
  if(!active){render();return;}
  const taskId=active.item.task.id;
- if(event.key===store.key(taskId))active.refreshProof?.(store.read(taskId));
+ if(event.key===store.key(taskId)){const record=store.read(taskId);active.refreshProof?.(record);active.refreshEquation?.(record);}
  banner.hidden=false;
  banner.textContent='Работа обновлена в другой вкладке. Перед следующей проверкой будет прочитано свежее сохранение; текущий ввод остаётся на экране.';
 });
-root.ProfilePartTwoApp={render,store,lessons,byTask};render();
+root.ProfilePartTwoApp={render,store,lessons,financeLessons,byTask};render();
 })(globalThis);
 
 </script>
