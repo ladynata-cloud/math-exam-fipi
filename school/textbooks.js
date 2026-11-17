@@ -852,6 +852,18 @@
  const C=root.WorkshopCurriculum;
  C.sources=sources;
  for(const s of sources)C.books.push({id:"source-"+s.number,title:s.title,edition:s.section+" · "+s.level,status:"Файл получен; маршрут по пунктам не завершён",grade:parseInt(s.section),source:s,common:true,mapping:[],note:"Это имеющееся издание. Ниже доступны общие тренажёры по навыкам; их наличие не означает полного покрытия этого учебника. Авторские задачи не являются копией упражнений книги."});
+ const alimov=C.books.find(b=>b.id==='source-18');
+ Object.assign(alimov,{
+  title:'Алимов, Колягин и др. · Алгебра и начала математического анализа · 10–11 классы',
+  edition:'2016 · базовый и углублённый уровни',publicPath:'/school/alimov10-11/',
+  status:'78 тем',note:'73 параграфа и 5 тем приложения. Из 300 задач в курсе 48 — выбранные упражнения учебника. В остальных можно самостоятельно применить тот же метод.'
+ });
+ C.books.push({
+  id:'nikolsky10-2022',title:'Никольский и др. · Алгебра и начала математического анализа · 10 класс',
+  edition:'2022 · базовый и углублённый уровни',publicPath:'/school/nikolsky10/',
+  status:'90 тем',note:'59 базовых и 31 углублённая тема. В курсе 56 выбранных задач или подпунктов учебника и 214 авторских упражнений.',
+  grade:10,mapping:[]
+ });
  function attach(id,rows,total){const b=C.books.find(x=>x.id===id);b.mapping.push(...rows.map(r=>({section:r[0],page:r[1],skill:'sec-'+r[2],part:1,coverage:'partial'})));b.status='Есть привязка к отдельным пунктам';b.totalPoints=total;b.note='Прочитано оглавление конкретного издания. Связаны отдельные навыки; каждый связанный пункт покрыт частично. Полного разбора упражнений и всей программы книги пока нет.';}
  // Printed pages checked against uploaded 2024 contents, PDF pages 255–257.
  attach('makarychev7-2024',[[7,32,'linear'],[8,34,'linear'],[12,54,'line'],[13,58,'line'],[14,61,'line'],[15,69,'line'],[16,74,'line'],[18,95,'powers'],[19,101,'powers'],[20,105,'powers'],[23,114,'parabola'],[25,129,'polynomial'],[26,132,'polynomial'],[27,137,'polynomial'],[28,142,'difference'],[29,147,'polynomial'],[32,165,'square'],[33,171,'square'],[34,174,'difference'],[35,179,'difference'],[37,185,'polynomial'],[38,188,'difference'],[40,201,'system'],[41,206,'system'],[42,209,'system'],[43,213,'system'],[44,217,'system']],46);
