@@ -92,7 +92,9 @@ for(const p of routes.pages){
     assert.deepEqual(actualScripts,scripts(baseline),p+' inline engines preserved');
   }
   const entry=exportsByPage.get(p);
-  const panel=entry?d.querySelector('body > .download-panel[data-trainer-download="'+entry.slug+'"]'):null;
+  const downloadPanel=entry?'body > .download-panel[data-trainer-download="'+entry.slug+'"]':null;
+  const panel=downloadPanel?d.querySelector(downloadPanel):null;
+  const baselinePanel=downloadPanel?baseline.querySelector(downloadPanel):null;
   if(entry){
     assert(panel,p+' one external download panel');
     assert.deepEqual([...panel.querySelectorAll('a[download]')].map(a=>a.getAttribute('href')),
@@ -102,7 +104,7 @@ for(const p of routes.pages){
   }
   const controls=(doc,externalPanel)=>[...doc.querySelectorAll('input,select,textarea,button')]
     .filter(e=>!externalPanel?.contains(e)).map(e=>[e.tagName,e.id,e.getAttribute('name'),e.getAttribute('type')]);
-  assert.deepEqual(controls(d,panel),controls(baseline),p+' teaching controls preserved');
+  assert.deepEqual(controls(d,panel),controls(baseline,baselinePanel),p+' teaching controls preserved');
   if(taskSource)taskSource.window.close();
  }
  dom.window.close();old.window.close();
