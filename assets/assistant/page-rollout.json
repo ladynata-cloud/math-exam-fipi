@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+  "baseSha": "e541f5e8c629c58fb2db6b399b915af0e0296fa5",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -218,8 +218,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/index.html": {
-      "beforeSha256": "3c50e113978708c28f89e1ed2f2cdde13b503ed8c2379bc395d35191471592ef",
-      "afterSha256": "4ad52df37a4dd33fea13205a7c1755b47407afda7b803c0dcd56583392ff659f",
+      "beforeSha256": "6482df9ff48c34a6b01e145e1511abbf7c307e782ad7ad7c068e131f9a6ac9e9",
+      "afterSha256": "2cedd6aa4d1c12beaac18c730a402c4e8d6380f8772d9bd1a359cedb90feef03",
       "placement": "before-head-close"
     },
     "ege-baza/labs/index.html": {
@@ -228,8 +228,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/path/index.html": {
-      "beforeSha256": "fac79a8baa6c54844e8f21949783f252efc0e020af229608338b8fd3a15f493f",
-      "afterSha256": "3c30c539b0f25a0506516a0f3ebebfa6971365c31a5b56e2f8126bc272aec2e7",
+      "beforeSha256": "47dbc3915f87a0f5da26656f26e8fdc3ae464dd0fb1d8067af892234538b1c28",
+      "afterSha256": "b70a39d8615ad9124aa4218a225615ab3f14543dbfadc8c0b72814b9d8255d80",
       "placement": "before-head-close"
     },
     "ege-baza/percent/index.html": {
@@ -238,8 +238,8 @@
       "placement": "before-head-close"
     },
     "ege-baza/reasoning/index.html": {
-      "beforeSha256": "deb9ff1291a57b82b976851885926622898eaea90060bd4e2ecaaf54f4ac9f8f",
-      "afterSha256": "e1e212cfc4a69355f51cca963c9ee6c84eb38e4d24cc8b442c2c0f853f282129",
+      "beforeSha256": "bf76f6bf3bf39f5b1597d19ee1489c389b31af7046989951eff1be93e69fd146",
+      "afterSha256": "687ecf41ed257dd604fd2bde8a437f61a2cbc9f650a893ac59e8c5f691f7b8fe",
       "placement": "before-head-close"
     },
     "ege-baza/reference/exam.html": {
@@ -5382,6 +5382,24 @@
         "ege-profil/part-two/index.html",
         "ege-profil/start/index.html"
       ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "sourceBaseSha": "24d2c375c8f168cde4f09f49bae4ef3a0f0af353",
+      "task": "docs/tasks/EGE_BAZA_HARMONIZATION_20261117.md",
+      "changedPaths": [
+        "ege-baza/index.html",
+        "ege-baza/path/index.html",
+        "ege-baza/reasoning/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ed2ab91ab8dbb61341881ecbdb2e6e8c134c4055",
+      "sourceBaseSha": "e541f5e8c629c58fb2db6b399b915af0e0296fa5",
+      "task": "docs/tasks/EGE_BAZA_HARMONIZATION_20261117.md",
+      "changedPaths": [],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
   ],

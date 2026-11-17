@@ -25,13 +25,121 @@ function chart(d){
  g+=d.labels.map((s,i)=>`<text x="${X(i)}" y="285" text-anchor="middle">${E(s)}</text>`).join('');
  return `<svg class="task-figure" viewBox="0 0 600 310" role="img" aria-label="${E(d.yLabel)}: график с точными данными в таблице ниже"><text x="50" y="25">${E(d.yLabel)}</text>${g}</svg><details class="equivalent-data"><summary>Точные значения графика в таблице</summary>${table(['Отметка',d.yLabel],d.labels.map((s,i)=>[s,F(d.values[i])]))}</details>`;
 }
+function tangentFigures(d){
+ const units=12;
+ const figures=d.panels.map(({left,right,curvature},i)=>{
+  const mid=(left+right)/2,slope=(right-left)/2;
+  const X=x=>75+units*x,Y=y=>108-units*y;
+  const tan=x=>mid+slope*x;
+  const f=x=>tan(x)+curvature*x*x;
+  const gridX=Array.from({length:7},(_,j)=>`M${X(j-3)} ${Y(7)}V${Y(-7)}`).join(' ');
+  const gridY=Array.from({length:15},(_,j)=>`M${X(-3)} ${Y(j-7)}H${X(3)}`).join(' ');
+  const points=[-1,1].map(x=>`<circle cx="${X(x)}" cy="${Y(tan(x))}" r="3" fill="#8e3b21"/>`).join('');
+  return `<g transform="translate(${(i%2)*150} ${Math.floor(i/2)*202})">
+   <text x="16" y="27" font-weight="700">${E(d.letters[i])}</text>
+   <path d="${gridX} ${gridY}" fill="none" stroke="#c4d2ca" />
+   <path d="M${X(-3)} ${Y(0)}H${X(3)}M${X(0)} ${Y(7)}V${Y(-7)}" stroke="#476457"/>
+   <text x="${X(3)+5}" y="${Y(0)+4}">x</text><text x="${X(0)+5}" y="${Y(7)-4}">y</text>
+   <path d="M${X(-2)} ${Y(f(-2))} Q${X(0)} ${Y(mid-4*curvature)} ${X(2)} ${Y(f(2))}" fill="none" stroke="#155e48" stroke-width="3"/>
+   <path d="M${X(-2)} ${Y(tan(-2))}L${X(2)} ${Y(tan(2))}" stroke="#8e3b21" stroke-width="2" stroke-dasharray="5 3"/>
+   ${points}<circle cx="${X(0)}" cy="${Y(mid)}" r="4" fill="#155e48" stroke="#fff"/>
+  </g>`;
+ }).join('');
+ return `<svg class="task-figure" style="max-width:360px" viewBox="0 0 300 402" role="img" aria-label="Четыре графика на единичных сетках. Касательные показаны пунктиром. Две точки каждой касательной даны в таблице.">${figures}</svg><details class="equivalent-data"><summary>Координаты точек касательных</summary>${table(['Рисунок','y при x = −1','y при x = 1'],d.panels.map(({left,right},i)=>[d.letters[i],F(left),F(right)]),'Две точки на каждой касательной')}</details>`;
+}
 function polygon(d,construction=false){
  const xs=d.points.map(p=>p[0]),ys=d.points.map(p=>p[1]),w=Math.max(...xs),h=Math.max(...ys),scale=Math.min(450/(w||1),230/(h||1)),X=x=>60+x*scale,Y=y=>280-y*scale;let grid='';
  if(d.grid){for(let x=0;x<=w;x++)grid+=`<path d="M${X(x)} ${Y(0)}V${Y(h)}"/>`;for(let y=0;y<=h;y++)grid+=`<path d="M${X(0)} ${Y(y)}H${X(w)}"/>`;}
- return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
+ return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1${d.gridUnit?' '+E(d.gridUnit):''}</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
 }
 function numberline(d){const lo=Math.floor(Math.min(...d.values))-1,hi=Math.ceil(Math.max(...d.values))+1,X=v=>45+(v-lo)/(hi-lo)*510;let s='';for(let n=lo;n<=hi;n++)s+=`<path d="M${X(n)} 110v12" stroke="#617a6b"/><text x="${X(n)}" y="150" text-anchor="middle">${n}</text>`;return `<svg class="task-figure" viewBox="0 0 600 180" role="img" aria-label="Точки расположены слева направо; интервалы приведены ниже"><path d="M30 116H565" stroke="#617a6b"/>${s}${d.values.map((v,i)=>`<circle cx="${X(v)}" cy="116" r="5" fill="#a44629"/><text x="${X(v)}" y="88" text-anchor="middle">${E(d.names[i])}</text>`).join('')}</svg><p class="muted">${d.values.map((v,i)=>`${d.names[i]}: ${Number.isInteger(v)?'ровно '+v:'между '+Math.floor(v)+' и '+Math.ceil(v)}`).join('; ')}.</p>`;}
-function visual(t){if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
+function planarCondition(d){
+ const {a,b,c,g,h,r,n,between,chord,base,side,perimeter}=d.givens;
+ const line=(shape,fill='none')=>`<path d="${shape}" fill="${fill}" stroke="#216e56" stroke-width="3"/>`;
+ const label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
+ const surface='#edf6f0';
+ let picture='', caption='';
+ switch(d.figure){
+  case 'grid': return polygon({kind:'polygon',points:[[0,0],[a,0],[0,b]],grid:true});
+  case 'practical':
+   caption='План прямоугольного участка';
+   picture=line('M100 60H460V240H100Z',surface)+label(280,278,a+' см')+label(63,155,b+' см');
+   break;
+  case 'triangle':
+   caption='Равнобедренный треугольник';
+   picture=line('M130 250H430L280 50Z',surface);
+   if(perimeter===undefined)picture+=label(280,286,base)+label(197,132,side)+label(363,132,side);
+   else {
+    caption='Равнобедренный треугольник ABC с медианой BM';
+    picture+=line('M280 50V250')+label(113,257,'A')+label(280,37,'B')+label(447,257,'C')+label(280,270,'M')
+     +label(280,298,'AC = '+base+' см')+label(436,83,'P = '+perimeter+' см');
+   }
+   break;
+  case 'quadrilateral':
+   caption='Трапеция с отмеченной высотой';
+   picture=line('M55 250H505L405 65H155Z',surface)+label(280,42,a)+label(280,286,b)
+    +'<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>'+label(132,163,'h = '+h);
+   break;
+  case 'circle':
+   caption='Окружность с хордой и расстоянием от центра O';
+   picture='<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>'
+    +label(330,176,'R = '+r)+label(245,194,d.givens.d)+label(280,132,'O');
+   break;
+  case 'practice-free-area':
+   caption='Квадратный участок с прямоугольным домом внутри';
+   picture=line('M178 40H388V250H178Z',surface)+line('M235 105H329V171H235Z','#d7e7ee')
+    +label(283,285,a+' м')+label(282,96,b+' м')+label(357,144,c+' м');
+   break;
+  case 'practice-fence':
+   caption='Прямоугольный забор с проездом';
+   picture=line('M243 227H101V59H455V227H313')+label(278,44,a+' м')+label(62,151,b+' м')
+    +'<path d="M243 248H313m-70-7v14m70-14v14" stroke="#6b8475" stroke-width="2"/>'+label(278,278,g+' м');
+   break;
+  case 'practice-spokes':{
+   const gaps=between===undefined?undefined:between+1;
+   caption=gaps===undefined?'Колесо с '+n+' равномерно расположенными спицами':'Круговая шкала. Выделены лучи к двум выбранным отметкам.';
+   const onCircle=(i,radius)=>[280+radius*Math.sin(i*2*Math.PI/n),155-radius*Math.cos(i*2*Math.PI/n)].map(Math.round).join(' ');
+   picture='<circle cx="280" cy="155" r="115" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>'
+    +Array.from({length:n},(_,i)=>line(`M${gaps===undefined||i===0||i===gaps?'280 155':onCircle(i,103)}L${onCircle(i,115)}`)).join('')
+    +'<circle cx="280" cy="155" r="5" fill="#216e56"/>';
+   break;
+  }
+  case 'practice-triangle-angle':{
+   caption='Треугольник с двумя подписанными углами';
+   // A fixed base and isotropic fit preserve the given angles at every seed.
+   const left=Math.tan(a*Math.PI/180),right=Math.tan(b*Math.PI/180);
+   const peak=right/(left+right),altitude=peak*left,scale=Math.min(370,175/altitude);
+   const lo=280-scale/2,hi=280+scale/2;
+   picture=line(`M${lo} 244H${hi}L${lo+scale*peak} ${244-altitude*scale}Z`,surface)+label(lo+48,230,a+'°')+label(hi-38,230,b+'°');
+   break;
+  }
+  case 'practice-diameter-chord':
+   caption='Окружность, диаметр AB и хорда AC';
+   picture='<circle cx="280" cy="155" r="108" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>'
+    +line('M172 155H388M172 155L250 51L388 155')+'<circle cx="280" cy="155" r="3.5" fill="#216e56"/>'
+    +label(153,161,'A')+label(407,161,'B')+label(250,39,'C')+label(280,178,'O')+label(202,101,chord)+label(332,177,'R = '+r);
+   break;
+ }
+ return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="${E(caption)}">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
+}
+function visual(t){
+ if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);
+ if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);
+ if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);
+ const d=t.display??root.PathStereoFigures?.condition(t);
+ if(!d)return '';
+ if(d.kind==='geometry-figure'&&d.figure===t.id){
+  if(root.PathStereoFigures?.supports(t))return root.PathStereoFigures.visual({id:t.id,display:d});
+  return planarCondition(d);
+ }
+ if(d.kind==='table')return table(d.headers,d.rows);
+ if(['bars','graph'].includes(d.kind))return chart(d);
+ if(d.kind==='tangents')return tangentFigures(d);
+ if(d.kind==='polygon')return polygon(d);
+ if(d.kind==='numberline')return numberline(d);
+ if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;
+ return '';
+}
 function answerChoices(item) {
  return Array.isArray(item?.choices) && item.choices.length && item.choices.every(choice => choice && typeof choice === 'object' && typeof choice.label === 'string' && typeof choice.value === 'string') ? item.choices : null;
 }
@@ -95,7 +203,7 @@ PathModels.mount=function(el,t,options={}){
  if(m.kind==='polygon-build'){
   v.constructed=!!v.constructed;v.choice=v.choice||'';
   el.innerHTML='<p>Выбери вспомогательное построение, которое помогает найти площадь.</p><div class="actions"><button id="auxRect">Достроить до прямоугольника</button><button id="auxDiagonal">Провести произвольную диагональ</button></div><div id="construction"></div><p id="constructionRead" role="status"></p>';
-  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.':v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
+  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?(t.params?.estimate?'Вычти площади двух незакрашенных треугольников. Если граница проходит посередине клетки, учти половину.':'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.'):v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
   el.querySelector('#auxRect').onclick=()=>{v.constructed=true;v.choice='rectangle';draw();changed();};el.querySelector('#auxDiagonal').onclick=()=>{v.choice='diagonal';draw();changed();};draw();return session;
  }
  if(m.kind==='interval-signs'){

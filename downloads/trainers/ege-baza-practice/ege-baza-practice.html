@@ -299,7 +299,7 @@ header nav>a.btn{min-height:44px;display:inline-flex;align-items:center}
 </style>
 
 </head><body>
-<header><strong><a class="path-home" href="/" aria-label="Главная MathExam">MathExam</a> · ЕГЭ 2027 база</strong><nav aria-label="Учебная навигация"><a class="btn" href="../index.html">← Курс ЕГЭ база</a><a class="btn" href="#map">Темы 1–21</a><details class="path-extra-nav"><summary>Ещё</summary><div><a class="btn" href="#foundation">Дроби → проценты → пропорции</a><a class="btn" href="#diagnostic">Определить пробелы</a><a class="btn" href="#exam">Пробная работа</a><a class="btn" href="#report">Мой отчёт</a><a class="btn" href="../../trainers/trainer-board.html?trainer=%2Fege-baza%2Fpath%2Findex.html%23map">Открыть на доске</a></div></details></nav></header><div id="storage" class="notice" hidden role="status"></div><main id="main" tabindex="-1"></main><footer><label><input id="reduceMotion" type="checkbox"> Без анимации</label><p>Авторские учебные задачи. Ориентир — проект демоверсии базового ЕГЭ 2027, проверен 02.10.2026. Это не полная выгрузка банка ФИПИ и не обещание полного покрытия всех подтипов. <a href="../sources/index.html">Источники и границы покрытия</a>.</p><p>Результаты сохраняются в этом браузере. Экспорт позволяет передать их преподавателю; автоматической синхронизации группы здесь нет.</p></footer><script data-inline-source="/ege-baza/path/data.js">
+<header><strong><a class="path-home" href="/" aria-label="Главная MathExam">MathExam</a> · ЕГЭ 2027 база</strong><nav aria-label="Учебная навигация"><a class="btn" href="../index.html">← Курс ЕГЭ база</a><a class="btn" href="#map">Темы 1–21</a><details class="path-extra-nav"><summary>Ещё</summary><div><a class="btn" href="#foundation">Дроби → проценты → пропорции</a><a class="btn" href="#diagnostic">Определить пробелы</a><a class="btn" href="#exam">Пробная работа</a><a class="btn" href="#report">Мой отчёт</a><a class="btn" href="../../trainers/trainer-board.html?trainer=%2Fege-baza%2Fpath%2Findex.html%23map">Открыть на доске</a></div></details></nav></header><div id="storage" class="notice" hidden role="status"></div><main id="main" tabindex="-1"></main><footer><label><input id="reduceMotion" type="checkbox"> Без анимации</label><p>Авторские задачи по формату базового ЕГЭ 2027. <a href="../sources/index.html">Источники и границы покрытия</a>.</p><p>Результаты сохраняются в этом браузере. Экспорт позволяет передать их преподавателю; автоматической синхронизации группы здесь нет.</p></footer><script data-inline-source="/ege-baza/path/data.js">
 (function(root){'use strict';
 const F=n=>Number.isInteger(n)?String(n):String(+n.toFixed(6)).replace('.',','),S=(q,a,why)=>({q,a,why});
 const meta=[
@@ -406,11 +406,36 @@ add('change',1,'Покупка и сдача','Стоимость равна ц�
 add('afford',1,'На сколько покупок хватит денег','Частично купить билет нельзя. При ограниченном бюджете оставляем целое число покупок.','division',4,k=>{let n=4+k%12,price=35+5*(k%7),money=n*price+price-5;return make(`Билет стоит ${price} рублей. Сколько билетов можно купить на ${money} рублей?`,n,steps(['Сколько стоят '+n+' билетов?',n*price,'Проверяем целое количество.'],['Сколько останется рублей?',money-n*price,'Остатка не хватает на следующий билет.'],['Сколько билетов можно купить?',n,'Округление вниз: нельзя потратить больше имеющейся суммы.']),'afford',{money,price});});
 add('transport',1,'Места для всех пассажиров','При подсчёте транспорта учитывай всех людей. Неполный последний автобус всё равно нужен.','division',4,k=>{let seats=18+2*(k%7),adults=3+k%4,children=seats*(2+k%5)-adults+1;return make(`Нужно перевезти ${children} детей и ${adults} взрослых. В автобусе ${seats} пассажирских мест. Какое наименьшее число автобусов потребуется?`,Math.ceil((children+adults)/seats),steps(['Всего пассажиров?',children+adults,'Взрослые тоже занимают места.'],['Наименьшее число автобусов?',Math.ceil((children+adults)/seats),'Если после деления остался хотя бы один пассажир, нужен ещё автобус.']),'transport',{seats,adults,children});});
 
+add('overnight',1,'Время через полночь',
+ 'Найди время от начала до полуночи и от полуночи до конца. Сложи обе части в одинаковых единицах.',
+ 'units',8,k=>{
+ const start=60*(21+k%3)+5*(1+k%10);
+ const end=60*(k%5)+3+4*(k%13);
+ const untilMidnight=24*60-start;
+ const clock=minutes=>`${Math.floor(minutes/60)}:${String(minutes%60).padStart(2,'0')}`;
+ const q=`Станок включили для проверки в ${clock(start)}. В ${clock(end)} следующего дня станок выключили. Сколько минут длилась проверка?`;
+ return make(q,untilMidnight+end,steps(
+  ['Сколько минут прошло от запуска до полуночи?',untilMidnight,'Вычти время запуска в минутах от начала суток из 1440.'],
+  ['Сколько минут прошло от полуночи до остановки?',end,'Умножь часы после полуночи на 60 и прибавь минуты.'],
+  ['Сколько минут длилась проверка?',untilMidnight+end,'Сложи два промежутка.']
+ ),'overnight',{start,end});
+});
+
 add('units-match',2,'Соотнести величину и единицу','Сначала оцени порядок величины, затем сравни единицы. Миллиметры и метры отличаются в тысячу раз.','units',5,k=>{let labels=['Толщина листа бумаги','Высота письменного стола','Длина железнодорожного вагона','Глубина океанской впадины'],values=['0,1 мм','75 см','24 м','11 км'],order=rotate([0,1,2,3],k),choices=order.map(i=>values[i]),answer=values.map(v=>choices.indexOf(v)+1).join('');return make('Установи соответствие. Запиши четыре цифры в порядке А, Б, В, Г.',answer,seq('',labels,choices,answer,['Это малая доля миллиметра.','Высота стола меньше метра.','В вагоне помещается много рядов мест.','Здесь расстояние измеряется километрами.']).steps,'units-match',{order},{answerKind:'match',labels,choices});});
 add('time',2,'Часы, минуты и секунды','В одном часе 60 минут, а не 100. Десятичная часть часа — доля от 60 минут.','units',5,k=>{let h=1+k%4,m=5*(1+k%11);return make(`Фильм длится ${h} ч ${m} мин. Сколько всего минут длится фильм?`,60*h+m,steps(['Переведи часы в минуты.',60*h,'Каждый час содержит 60 минут.'],['Прибавь оставшиеся минуты.',60*h+m,'Складываем величины в одинаковых единицах.']),'time',{h,m});});
 add('area-units',2,'Перевод единиц площади','В 1 м² помещается 100·100 квадратных сантиметров. Для площади коэффициент длины нужно возвести в квадрат.','units',5,k=>{let a=2+k%19;return make(`Площадь листа равна ${F(a/10)} м². Сколько это квадратных сантиметров?`,a*1000,steps(['Сколько сантиметров в метре?',100,'Это перевод длины.'],['Сколько см² в 1 м²?',10000,'100 рядов по 100 квадратов.'],['Площадь листа в см²?',a*1000,'Умножь число квадратных метров на 10 000.']),'area-units',{a});});
 
-add('chart',3,'Максимум и минимум на диаграмме','Прочитай шкалу и подписи. Самая высокая точка показывает наибольшее значение, но номер месяца — другая величина.','add',6,k=>{let values=[2+k%5,7+k%4,15+k%7,5+k%3,10+k%4],shift=k%5,vs=rotate(values,shift),ask=k%2;let target=ask?Math.max(...vs):Math.min(...vs);return make(`На диаграмме показано число посетителей по пяти дням. ${ask?'Сколько посетителей было в самый многолюдный день?':'Укажи номер дня с наименьшим числом посетителей.'}`,ask?target:vs.indexOf(target)+1,steps([ask?'Наибольшее значение шкалы среди показанных столбцов?':'Наименьшее число посетителей?',target,'Сравни высоты всех столбцов.'],['Ответь именно на вопрос задачи.',ask?target:vs.indexOf(target)+1,ask?'Нужно количество посетителей.':'Нужен номер дня, а не количество посетителей.']),'chart',{values:vs,ask},{display:{kind:'bars',labels:['1','2','3','4','5'],values:vs,yLabel:'Посетители'},model:{kind:'data-read'}});});
+function barChart(k, fourthStart) {
+  const values = rotate([2+k%5, 7+k%4, 15+k%7, fourthStart+k%3, 10+k%4], k%5);
+  const ask = k%2;
+  const target = ask ? Math.max(...values) : Math.min(...values);
+  const answer = ask ? target : values.indexOf(target)+1;
+  return make(`На диаграмме показано число посетителей по пяти дням. ${ask?'Сколько посетителей было в самый многолюдный день?':'Укажи номер дня с наименьшим числом посетителей.'}`, answer, steps(
+    [ask?'Наибольшее значение шкалы среди показанных столбцов?':'Наименьшее число посетителей?', target, 'Сравни высоты всех столбцов.'],
+    ['Ответь именно на вопрос задачи.', answer, ask?'Нужно количество посетителей.':'Нужен номер дня, а не количество посетителей.']
+  ), 'chart', { values, ask }, { display: { kind:'bars', labels:['1','2','3','4','5'], values, yLabel:'Посетители' }, model:{kind:'data-read'} });
+}
+add('chart',3,'Максимум и минимум на диаграмме','Прочитай шкалу и подписи. Самая высокая точка показывает наибольшее значение, но номер месяца — другая величина.','add',6,k=>barChart(k,5));
 add('ranking',3,'Место команды в таблице','Сложи баллы каждой команды. Место определяется числом команд с большим результатом.','add',6,k=>{let x=1+k%8,rows=[['Альфа',x,4,2],['Бета',x+2,5,4],['Гамма',x+1,2,1],['Дельта',x,5,3]],target=k%4,sums=rows.map(r=>r.slice(1).reduce((a,b)=>a+b,0)),answer=1+sums.filter(v=>v>sums[target]).length;return make(`Суммируются баллы трёх туров. Какое место заняла команда «${rows[target][0]}»? Побеждает наибольшая сумма.`,answer,steps(['Сумма баллов выбранной команды?',sums[target],'Сложи три числа в её строке.'],['Сколько команд набрало больше?',answer-1,'Сравни с суммами остальных строк.'],['Итоговое место?',answer,'Перед командой находятся все, кто набрал больше.']),'ranking',{rows,target},{display:table(['Команда','Тур 1','Тур 2','Тур 3'],rows),model:{kind:'data-read'}});});
 add('interval-data',3,'Сумма за нужный промежуток','Считай только те столбцы, которые входят в указанный промежуток.','add',6,k=>{const vs=[k%8+4,k%7+8,k%5+3,k%9+12,k%6+5],a=1+k%2,b=a+2;return make(`На диаграмме — продажи по дням. Сколько товаров продали с ${a+1}-го по ${b+1}-й день включительно?`,vs.slice(a,b+1).reduce((x,y)=>x+y,0),steps(['Число дней в промежутке?',3,'Учитываем и начало, и конец.'],['Сумма продаж за эти дни?',vs.slice(a,b+1).reduce((x,y)=>x+y,0),'Сложи только выбранные столбцы.']),'interval-data',{values:vs,a,b},{display:{kind:'bars',labels:['1','2','3','4','5'],values:vs,yLabel:'Товары'},model:{kind:'data-read'}});});
 
@@ -427,6 +452,29 @@ add('rental',6,'Аренда плюс расход топлива','Расход
 
 add('graph-match',7,'Соотнести участки графика и изменение','Отделяй высоту графика от изменения. На одинаковых промежутках больший подъём означает больший рост.','signs',8,k=>{let b=10+2*(k%9),values=[b,b+2,b-2,b-2,b+4],labels=['А: от 0 до 1','Б: от 1 до 2','В: от 2 до 3','Г: от 3 до 4'],concepts=['Небольшой рост','Убывание','Без изменения','Наибольший рост'],order=rotate([0,1,2,3],k),choices=order.map(i=>concepts[i]),answer=concepts.map(v=>choices.indexOf(v)+1).join('');return make('Соотнеси каждый промежуток с характеристикой графика. В ответе — четыре цифры в порядке А, Б, В, Г.',answer,seq('',labels,choices,answer,['Конечное значение больше начального на 2.','Конечное значение меньше начального.','Значения совпадают и отрезок горизонтален.','Подъём 6 — самый большой.']).steps,'graph-match',{values,order},{answerKind:'match',labels,choices,display:{kind:'graph',values,labels:['0','1','2','3','4'],yLabel:'Значение'},model:{kind:'data-read'}});});
 add('graph-slope',7,'Наклон прямой по двум точкам','Изменение y делится на изменение x. Знак показывает направление изменения.','signs',9,k=>{let x1=1,x2=3+k%3,y1=2+k%4,slope=(k%7)-3,y2=y1+slope*(x2-x1);return make(`Прямая проходит через точки (${x1}; ${y1}) и (${x2}; ${y2}). Найди её угловой коэффициент.`,slope,steps(['Изменение y?',y2-y1,'Конечная ордината минус начальная.'],['Изменение x?',x2-x1,'Разность абсцисс в том же порядке.'],['Угловой коэффициент?',slope,'Дели изменение y на изменение x.']),'graph-slope',{x1,x2,y1,y2},{display:{kind:'graph',values:[y1,y2],labels:[String(x1),String(x2)],yLabel:'y'},model:{kind:'data-read'}});});
+add('tangent-match',7,'Касательные и значения производной',
+ 'Для каждой касательной возьми две точки на прямой и раздели изменение ординаты на изменение абсциссы.',
+ 'signs',9,k=>{
+ const sets=[[-3,-1,1,2],[-2,-1,0,3],[-3,0,1,3],[-3,-2,0,2]];
+ const values=sets[k%sets.length];
+ const seed=Math.floor(k/sets.length);
+ const order=rotate([2,0,3,1],seed);
+ const panels=rotate(values,seed+1).map((slope,i)=>({
+  left:(k+i)%3-1-slope,
+  right:(k+i)%3-1+slope,
+  curvature:(k+i)%2===0 ? 0.25 : -0.25
+ }));
+ if(seed%2===0)[panels[1],panels[2]]=[panels[2],panels[1]];
+ const letters=['А','Б','В','Г'];
+ const labels=letters.map(letter=>`Рисунок ${letter}`);
+ const choices=order.map(i=>F(values[i]));
+ const slopes=panels.map(({left,right})=>(right-left)/2);
+ const answer=slopes.map(slope=>choices.indexOf(F(slope))+1).join('');
+ const why=panels.map(({left,right},i)=>`Изменение x равно 2. Изменение y равно (${F(right)}) − (${F(left)}) = ${F(right-left)}. Наклон касательной равен ${F(slopes[i])}.`);
+ return make('На рисунках А–Г гладкие кривые и касательные к ним. Для каждого рисунка выбери значение производной в точке касания. Запиши четыре цифры в порядке А, Б, В, Г.',
+  answer,seq('',labels,choices,answer,why).steps,'tangent-match',{panels,order:order.map(i=>values[i])},
+  {answerKind:'match',labels,choices,display:{kind:'tangents',panels,letters}});
+});
 
 add('logic-order',8,'Что обязательно следует из сравнения','Цепочка A>B>C позволяет сравнить A и C. Если между величинами нет связи, нельзя домысливать её.','logic',10,k=>{let names=rotate(['Аня','Борис','Вера','Глеб'],k),[a,b,c,d]=names,claims=[`${a} выше, чем ${c}.`,`${c} ниже всех остальных.`,`${d} выше, чем ${a}.`,`${b} и ${d} одного роста.`],truth=[true,true,false,false],order=rotate([0,1,2,3],k+1),choices=order.map(i=>claims[i]),answer=order.flatMap((v,i)=>truth[v]?[i+1]:[]).join('');return make(`${a} выше, чем ${b}; ${b} выше, чем ${c}; ${d} выше, чем ${c}. Выбери утверждения, которые обязательно верны. Запиши их номера.`,answer,steps(...order.map((v,i)=>[`Утверждение ${i+1} обязательно верно? 1 — да, 0 — нет.`,truth[v]?1:0,truth[v]?'Это следует из цепочки сравнений.':'Условия не устанавливают такую связь. Возможны разные примеры.'])),'logic-order',{truth,order},{answerKind:'multi',choices,model:{kind:'statements'}});});
 add('logic-all',8,'Все, некоторые и обратное утверждение','Включение одного множества в другое не означает их равенства. Существование нельзя додумывать.','logic',10,k=>{let claims=['Каждый участник кружка умеет решать уравнения.','Каждый, кто умеет решать уравнения, посещает кружок.','Есть хотя бы один участник кружка.','Никто из участников кружка не умеет решать уравнения.'],truth=[true,false,true,false],order=rotate([0,1,2,3],k),answer=order.flatMap((v,i)=>truth[v]?[i+1]:[]).join('');return make(`Все ${8+k%17} участников математического кружка умеют решать уравнения. Какие утверждения обязательно верны?`,answer,steps(...order.map((v,i)=>[`Утверждение ${i+1}: 1 — обязательно верно, 0 — не следует.`,truth[v]?1:0,truth[v]?'Это прямо задано условием.':'Обратное включение не задано; исходное условие не разрешает такой вывод.'])),'logic-all',{truth,order},{answerKind:'multi',choices:order.map(i=>claims[i]),model:{kind:'statements'}});});
@@ -487,6 +535,29 @@ add('inequality-match',18,'Сопоставить неравенства и пр
 add('digits-multiple',19,'Число по признакам делимости','Одновременно проверяй длину записи, разрешённые цифры, их различие и делимость. Подходящий ответ может быть не один.','divisibility',15,k=>{let divisor=k%2?45:15,solutions=[];for(let n=1000;n<10000;n++){let s=String(n);if(n%divisor===0&&new Set(s).size===4&&[...s].every(c=>+c%2===0))solutions.push(s);}return make(`Найди четырёхзначное число, кратное ${divisor}, все цифры которого различны и чётны. Укажи любое такое число.`,solutions[0],steps(['Последняя цифра?',0,'Кратность 5 требует 0 или 5; из них чётный только 0.'],['На какое число должна делиться сумма цифр?',divisor===45?9:3,'Применяем признак делимости на 9 или на 3.'],['Введи подходящее четырёхзначное число.',solutions[0],'Проверь все ограничения.']),'digits-multiple',{divisor},{answerKind:'solutions',solutions,model:{kind:'digit-work'}});});
 add('digits-product',19,'Делимость и произведение цифр','Разложи произведение на цифры. Затем переставь их так, чтобы выполнялись признаки делимости.','divisibility',15,k=>{let target=[10,24,40,64][k%4],solutions=[];for(let n=1000;n<10000;n++){let s=String(n);if(n%12===0&&[...s].reduce((a,c)=>a*+c,1)===target)solutions.push(s);}return make(`Найди четырёхзначное число, кратное 12, произведение цифр которого равно ${target}. Укажи любой подходящий ответ.`,solutions[0],steps(['На какое число, кроме 3, проверяем делимость?',4,'3 и 4 взаимно просты и дают произведение 12.'],['Введи найденное число.',solutions[0],'Сумма цифр кратна 3, последние две цифры образуют число, кратное 4; проверь произведение.']),'digits-product',{target},{answerKind:'solutions',solutions,model:{kind:'digit-work'}});});
 
+add('digit-pair',19,'Два числа по наборам цифр',
+ 'При подборе числа проверь его цифры, умножь и сравни цифры произведения с данными условия.',
+ 'divisibility',30,k=>{
+ const cases=[
+  [4,'0146','2456'],[5,'0156','0258'],[3,'0128','0348'],[4,'0125','0248'],
+  [3,'0126','0378'],[5,'0134','0157'],[4,'0123','1248'],[5,'0138','0159']
+ ];
+ const [factor,first,second]=cases[k%cases.length];
+ const sortedDigits=n=>[...String(n)].sort().join('');
+ const bound=Math.floor(9999/factor);
+ const solutions=[];
+ for(let n=1000;n<=bound;n++){
+  if(sortedDigits(n)===first&&sortedDigits(factor*n)===second)solutions.push(String(n));
+ }
+ const digits=s=>[...s].join(', ');
+ const q=`Для первого четырёхзначного кода взяли по одной из цифр ${digits(first)}. Контрольное число равно первому коду, умноженному на ${factor}. В контрольном числе ровно по одному разу встречаются цифры ${digits(second)}. Запиши любой подходящий первый код.`;
+ return make(q,solutions[0],steps(
+  ['Какое наибольшее число вообще можно умножить так, чтобы произведение осталось четырёхзначным?',bound,'Возьми целую часть от 9999, делённого на множитель.'],
+  [`Какое контрольное число даёт вариант ${solutions[0]}?`,factor*Number(solutions[0]),'Сверь цифры произведения с контрольным набором.'],
+  ['Запиши любой подходящий первый код.',solutions[0],'Подходит каждый код, у которого нужный набор цифр и верное контрольное число.']
+ ),'digit-pair',{factor,first,second},{answerKind:'solutions',solutions});
+});
+
 add('meeting',20,'Движение навстречу','Когда движутся навстречу, расстояние сокращается со скоростью, равной сумме скоростей.','proportion',16,k=>{let a=40+5*(k%9),b=30+5*(k%7),t=2+k%4,dist=(a+b)*t;return make(`Из двух городов одновременно навстречу выехали автомобили со скоростями ${a} и ${b} км/ч. Расстояние ${dist} км. Через сколько часов они встретятся?`,t,steps(['Скорость сближения?',a+b,'За час обе машины вместе сокращают промежуток.'],['Время до встречи?',t,'Расстояние делим на скорость сближения.']),'meeting',{a,b,dist});});
 add('river',20,'Движение по течению и против','По течению скорости складываются, против — вычитаются. Времена участков нужно считать отдельно.','proportion',16,k=>{let v=10+2*(k%6),u=2,t1=2+k%4,t2=1+k%3,d1=(v+u)*t1,d2=(v-u)*t2;return make(`Собственная скорость лодки ${v} км/ч, течение ${u} км/ч. Лодка прошла ${d1} км по течению и ${d2} км против. Сколько часов занял весь путь?`,t1+t2,steps(['Скорость по течению?',v+u,'Течение помогает.'],['Скорость против течения?',v-u,'Течение мешает.'],['Время по течению?',t1,'Первый путь делим на первую скорость.'],['Время против течения?',t2,'Второй путь делим на вторую скорость.'],['Общее время?',t1+t2,'Складываем времена, а не скорости.']),'river',{v,u,d1,d2});});
 add('work',20,'Совместная работа через доли','За час складываются выполненные доли работы, а не времена выполнения всего задания.','fractions',16,k=>{let s=1+k%7,a=3*s,b=6*s;return make(`Первый землекоп может вскопать огород за ${a} ч, второй — за ${b} ч. За сколько часов они вскопают один такой огород вместе, работая независимо?`,2*s,steps(['Доля огорода первого за час?',fraction(1,a),'Один целый огород делим на время.'],['Доля огорода второго за час?',fraction(1,b),'Производительность тоже измеряется огородами в час.'],['Вместе огородов за час?',fraction(1,2*s),'Складываем производительности.'],['Часов на один огород?',2*s,'Целую работу делим на общую производительность.']),'work',{a,b});});
@@ -510,6 +581,22 @@ add('whole-count',21,'Оценка числа участников',
 
 
 // Additional practice uses new IDs: existing seeds, tasks and stored attempts stay intact.
+add('missing-perimeter',21,'Периметр одной из четырёх частей',
+ 'У противоположных частей одинаковая сумма периметров: в каждой паре учтены обе ширины и обе высоты.',
+ 'logic',32,k=>{
+ const a=4+k%7,b=a+2+k%4,c=3+k%5,d=c+1+k%3;
+ const perimeters=[2*(a+c),2*(b+c),2*(b+d),2*(a+d)];
+ const corners=['верхней левой','верхней правой','нижней правой','нижней левой'];
+ const blank=k%4,opposite=(blank+2)%4;
+ const knownPair=perimeters[(blank+1)%4]+perimeters[(blank+3)%4];
+ const value=i=>i===blank?'?':perimeters[i];
+ const q=`Лист картона разделили горизонтальным и вертикальным разрезами на четыре прямоугольные части. В таблице даны периметры трёх частей в сантиметрах. Каков периметр ${corners[blank]} части?`;
+ return make(q,perimeters[blank],steps(
+  ['Чему равна сумма двух известных периметров противоположных частей?',knownPair,'Сложи периметры частей, расположенных по диагонали друг от друга.'],
+  ['Найди недостающий периметр, см.',perimeters[blank],`Пары противоположных частей дают одну и ту же сумму. Вычти из неё известный противоположный периметр ${perimeters[opposite]}.`]
+ ),'missing-perimeter',{a,b,c,d,blank},{display:table(['Ряд','Левая часть','Правая часть'],[['Верхний',value(0),value(1)],['Нижний',value(3),value(2)]])});
+});
+
 add('digits-delete',19,'Вычеркнуть цифры: все подходящие ответы','Оставшиеся цифры сохраняют порядок. Для делимости на 22 проверь чётность и чередующуюся сумму цифр.','divisibility',15,k=>{
  const sources=['74123568','45341527','12034568','86421350'],digits=sources[k%sources.length],solutions=[];
  for(let mask=0;mask<1<<digits.length;mask++){const value=[...digits].filter((_,i)=>mask>>i&1).join('');if(D.digits22(value,digits)&&!solutions.includes(value))solutions.push(value);}
@@ -626,11 +713,505 @@ add('vase-order', 21, 'Вазы — порядок и общая часть', '�
 });
 catalog.at(-1).trainingOnly = true;
 
+// Revised conditions keep their public lesson IDs. The earlier factories are
+// used only when a saved browser attempt has no updated bank version yet.
+const bankVersion = 2;
+const revised = Object.create(null);
+
+revised['practice-decimal-division'] = seed => {
+  const divisorTenths = 11 + seed % 19;
+  const quotientTenths = 17 + Math.floor(seed / 19) % 23;
+  const minuendTenths = 6 + (seed * 7) % 47;
+  const divisor = divisorTenths / 10;
+  const dividend = divisorTenths * quotientTenths / 100;
+  const minuend = minuendTenths / 10;
+  const quotient = quotientTenths / 10;
+  const answer = (minuendTenths - quotientTenths) / 10;
+  return make(`Найдите значение выражения ${F(minuend)} − ${F(dividend)} : ${F(divisor)}.`, answer, steps(
+    ['Какое действие выполняют первым: деление (1) или вычитание (2)?', 1, 'Без скобок деление выполняют раньше вычитания.'],
+    ['Чему равно частное?', quotient, `Умножь делимое и делитель на 10. Частное ${F(dividend * 10)} : ${divisorTenths} равно ${F(quotient)}.`],
+    ['Чему равно всё выражение?', answer, `Вычисли ${F(minuend)} − ${F(quotient)}.`]
+  ), 'decimal-division', { minuend, dividend, divisor });
+};
+
+revised['practice-units-match'] = seed => {
+  const sets = [
+    [['Диаметр горошины', 'Ширина двери', 'Длина посадочной площадки остановки', 'Расстояние между соседними городами'], ['7 мм', '85 см', '24 м', '32 км']],
+    [['Короткая фотовспышка', 'Продолжительность песни', 'Урок в школе', 'Летние каникулы'], ['0,02 с', '4 минуты', '45 минут', '3 месяца']],
+    [['Одна скрепка', 'Пакет крупы', 'Масса взрослой собаки', 'Масса городского автобуса'], ['0,5 г', '900 г', '22 кг', '11 т']],
+    [['Боковая поверхность маленького кубика', 'Столешница письменного стола', 'Участок под частным домом', 'Площадь крупного водохранилища'], ['18 см²', '0,8 м²', '650 м²', '56 км²']],
+  ];
+  const [labels, values] = sets[Math.floor(seed / 4) % sets.length];
+  const order = rotate([0, 1, 2, 3], seed);
+  const choices = order.map(index => values[index]);
+  const answer = values.map(value => choices.indexOf(value) + 1).join('');
+  const q = 'Сопоставь каждую величину с её возможным значением. Запиши четыре цифры в порядке А, Б, В, Г.';
+  return make(q, answer, seq(q, labels, choices, answer, labels.map(() =>
+    'Переведи близкие значения в одинаковые единицы и проверь порядок величины.')).steps,
+  'units-match', { order, varied: true }, { answerKind: 'match', labels, choices });
+};
+
+revised['practice-inverse-formula'] = seed => {
+  if (seed % 2 === 0) return factories['practice-inverse-formula'](seed / 2);
+  const k = Math.floor(seed / 2);
+  const a = 6.5 + k % 9, b = a + 3 + k % 5, h = 4 + k % 7;
+  const area = (a + b)*h/2;
+  return make(`Лицевая сторона щита имеет форму трапеции. Её площадь вычисляют по формуле S=(a+b)h/2. Длины параллельных кромок на чертеже равны ${F(a)} и ${F(b)} дм, расстояние между ними — ${h} дм. Сколько квадратных дециметров занимает эта сторона?`,area,steps(
+    ['Сумма оснований?',a+b,'Сложи две параллельные стороны.'],
+    ['Площадь щита?',area,'Умножь сумму на высоту и раздели на 2.']
+  ),'area-formula',{a,b,h});
+};
+
+revised['practice-fraction-expression'] = seed => {
+  if (seed % 2 === 0) return factories['practice-fraction-expression'](seed / 2);
+  const k = Math.floor(seed / 2);
+  const tenths = 3+k%13, numerator=2+k%7;
+  return make(`Вычисли ${F(tenths/10)} + (${numerator}/8) : (5/4).`,(tenths+numerator)/10,steps(
+    ['Чему равно частное обыкновенных дробей?',numerator/10,'Умножь первую дробь на 4/5 и сократи.'],
+    ['Чему равно всё выражение?',(tenths+numerator)/10,'Запиши частное десятичной дробью и сложи.']
+  ),'mixed-fraction-expression',{tenths,numerator});
+};
+
+revised['practice-graph-match'] = seed => {
+  if (seed % 3 === 0) return factories['practice-graph-match'](seed / 3);
+  const variant = Math.floor(seed / 3);
+  const signs = seed % 3 === 1;
+  const high = 3 + variant % 6;
+  const low = -2 - Math.floor(variant / 3) % 6;
+  const base = 23 + variant % 12;
+  const cycle = rotate([high,high,low,low], variant);
+  const values = signs ? [...cycle,cycle[0]] : [base-8,base+9,base+2,base+5,base+5];
+  const labels = ['А · 0–1','Б · 1–2','В · 2–3','Г · 3–4'];
+  const options = signs
+    ? ['Возрастает','Убывает','Значения положительны','Значения отрицательны']
+    : ['Самый быстрый рост','Уровень снизился',`Уровень вырос и всегда был выше ${base} см`,'Уровень постоянен'];
+  const classify = (from,to) => signs
+    ? (from < to ? 0 : from > to ? 1 : from > 0 ? 2 : 3)
+    : (from === to ? 3 : from > to ? 1 : from > base ? 2 : 0);
+  const order = rotate([2,0,3,1], Math.floor(variant / 4));
+  const choices = order.map(i=>options[i]);
+  const answer = values.slice(1).map((to,i)=>order.indexOf(classify(values[i],to))+1).join('');
+  const why = values.slice(1).map((to,i)=>`Концы участка имеют значения ${F(values[i])} и ${F(to)}. Подходит характеристика «${options[classify(values[i],to)]}».`);
+  const q = (signs ? 'Рассмотри график функции.' : 'На графике показано изменение уровня воды в ёмкости за четыре часа.')
+    + ' Для каждого из четырёх участков выбери его характеристику. Запиши четыре цифры в порядке А, Б, В, Г.';
+  return make(q,answer,seq(q,labels,choices,answer,why).steps,'graph-match-criteria',{values,order,signs,base},
+    {answerKind:'match',labels,choices,display:{kind:'graph',values,labels:['0','1','2','3','4'],yLabel:signs?'y':'Уровень, см'},
+     model:{kind:'data-read'}});
+};
+
+revised['practice-root-product'] = seed => {
+  const a = 11 + seed % 7;
+  const b = 2 + Math.floor(seed / 7) % 6;
+  const first = a*b*b;
+  return make(`Запиши одним числом произведение √${a} и √${first}.`,a*b,steps(
+    ['Чему равно произведение подкоренных чисел?',a*first,'Под одним корнем перемножаем оба неотрицательных подкоренных числа.'],
+    ['Каково значение произведения корней?',a*b,'Возьми квадратный корень из полученного числа.']
+  ),'root-product',{a,b});
+};
+
+revised['practice-log-equation'] = seed => {
+  if (seed % 2 === 0) return factories['practice-log-equation'](seed / 2);
+  const variant = Math.floor(seed / 2);
+  const base = [2, 3, 5, 7][variant % 4];
+  const factor = 2 + variant % 4;
+  const divisor = factor * (1 + variant % 5);
+  const ratio = 6 + variant % 7;
+  const shift = 1 + variant % 5;
+  const x = divisor * ratio / factor - shift;
+  const argument = `${factor}(x+${shift})`;
+  return make(`Найди корень уравнения log_${base}(${argument}) − log_${base}(${divisor}) = log_${base}(${ratio}).`,
+    x, steps(
+      ['Какое число должно стоять в числителе дроби после объединения логарифмов?', divisor * ratio,
+        'Разность логарифмов равна логарифму частного. Приравняй частное к правому аргументу и умножь на знаменатель.'],
+      ['Найди корень, который удовлетворяет исходному уравнению.', x,
+        'Раздели найденный аргумент на коэффициент перед скобками и вычти число в скобках. Аргумент получается положительным.']
+    ), 'log-equation-difference', {base, factor, divisor, ratio, shift});
+};
+
+revised['practice-number-match'] = seed => {
+  if (seed % 2 === 0) return factories['practice-number-match'](seed / 2);
+  const variant = Math.floor(seed / 2);
+  const x = [0.2, 0.25, 0.4, 0.5][variant % 4];
+  const values = [x - 1, x / 2, 3 * x, 1 / x];
+  const names = ['m − 1', 'm : 2', '3m', '1 : m'];
+  const order = rotate([1,3,0,2], Math.floor(variant / 4));
+  const choices = order.map(i=>names[i]);
+  const answer = names.map(name=>choices.indexOf(name)+1).join('');
+  const points = ['А','Б','В','Г'];
+  const q = `Число m равно ${F(x)}. Каждой точке на координатной прямой соответствует одно из выражений. Запиши четыре цифры в порядке А, Б, В, Г.`;
+  const why = values.map((value,i)=>`Выражение ${names[i]} равно ${F(value)}. Сопоставь его с точкой по положению на оси.`);
+  return make(q,answer,seq(q,points,choices,answer,why).steps,'number-match',{values,order,decimal:true},
+    {answerKind:'match',labels:points,choices,display:{kind:'numberline',values,names:points},model:{kind:'data-read'}});
+};
+
+revised['practice-chart'] = seed => {
+  if (seed % 3 !== 0) return barChart(seed, 8);
+  const variant = seed / 3;
+  const base = 5 + variant % 7;
+  const values = rotate([3 * base, 4 * base, base, 2 * base, 2 * base + 1], variant);
+  const day = values.indexOf(base) + 1;
+  const labels = ['1', '2', '3', '4', '5'];
+  return make('На графике показано, сколько велосипедов оставалось на станции проката к закрытию в каждый из пяти дней. Запиши номер дня, когда на станции оставалось меньше всего велосипедов.', day, steps(
+    ['Сколько велосипедов отмечено в самой низкой точке?', base, 'Найди самую низкую отмеченную точку. Прочитай её значение по вертикальной шкале.'],
+    ['Какой номер дня соответствует этой точке?', day, 'Спустись от выбранной точки к горизонтальной оси.']
+  ), 'chart', { values, ask: false, line: true }, {
+    display: { kind: 'graph', labels, values, yLabel: 'Велосипеды' },
+    model: { kind: 'data-read' }
+  });
+};
+
+revised['practice-electric'] = seed => {
+  if (seed % 2 === 1) {
+    const variant = Math.floor(seed / 2);
+    const speed = [8, 10, 12, 14, 15][variant % 5];
+    const radius = [25, 32, 40, 50, 64][Math.floor(variant / 5) % 5];
+    const answer = speed * speed / radius;
+    return make(`На испытательном треке автомобиль проходит поворот по дуге радиусом ${radius} м со скоростью ${speed} м/с. Ускорение на таком повороте вычисляют по формуле a = v²/R, где v — скорость, R — радиус. Найди ускорение в м/с².`, answer, steps(
+      ['Квадрат скорости v²?', speed * speed, 'Умножь скорость саму на себя.'],
+      ['Ускорение, м/с²?', answer, 'Раздели квадрат скорости на радиус поворота.']
+    ), 'electric', { speed, radius });
+  }
+  const r = 3 + seed % 8;
+  const i = 2 + seed % 6;
+  return make(`Мощность нагревательного элемента вычисляется по формуле P = I² · R. Через элемент сопротивлением ${r} Ом идёт ток силой ${i} А. Сколько ватт потребляет элемент?`, i * i * r, steps(
+    ['Значение I²?', i * i, 'Умножь силу тока саму на себя.'],
+    ['Мощность в ваттах?', i * i * r, 'Умножь найденный квадрат силы тока на сопротивление.']
+  ), 'electric', { i, r });
+};
+
+revised['practice-temperature'] = seed => {
+  const c = -32.5 + 3 * (seed % 19);
+  return make(`Датчик передал показание ${F(c)} °C. Панель управления переводит градусы Цельсия C в градусы Фаренгейта F по формуле F = 1,8 · C + 32. Какое число появится на панели?`, 1.8 * c + 32, steps(
+    ['Чему равно 1,8 · C?', 1.8 * c, 'Учитывай знак температуры в градусах Цельсия.'],
+    ['Сколько градусов покажет термометр?', 1.8 * c + 32, 'К результату умножения прибавь 32.']
+  ), 'temperature', { c });
+};
+
+revised.probability = seed => {
+  const total = 40 + 40 * (seed % 3);
+  const bad = total / 20 * (1 + seed % 8);
+  return make(`Проверяют партию настольных ламп: из ${total} ламп у ${bad} не работает выключатель. Какова вероятность наугад выбрать лампу с исправным выключателем?`, (total - bad) / total, steps(
+    ['Сколько ламп с исправным выключателем?', total - bad, 'Из числа всех ламп вычти число ламп с неисправным выключателем.'],
+    ['Вероятность выбрать нужную лампу?', (total - bad) / total, 'Число подходящих ламп раздели на число всех ламп.']
+  ), 'lamp-quality', { total, bad });
+};
+
+revised['practice-probability-opposite'] = seed => {
+  const n = 250;
+  const bad = 5 * (1 + seed % 16);
+  return make(`В архиве отсканировали ${n} карточек. Из-за размытого текста нужно переснять ${bad} из них. Какова вероятность, что у случайно выбранной карточки снимок пригоден?`, (n - bad) / n, steps(
+    ['Вероятность, что карточку нужно переснять?', bad / n, 'Число карточек на пересъёмку раздели на число всех карточек.'],
+    ['Вероятность, что снимок пригоден?', (n - bad) / n, 'Из единицы вычти вероятность пересъёмки.']
+  ), 'probability-opposite', { n, bad });
+};
+
+revised['practice-probability-draw'] = seed => {
+  if (seed % 3 === 2) {
+    const variant = Math.floor(seed/3);
+    const n = [20,25,40,50,80][variant%5], place=5+variant%13;
+    return make(`Организаторы выставки случайно определяют порядок показа ${n} школьных проектов. Какова вероятность, что проект «Метеостанция» окажется под номером ${place}?`,1/n,steps(
+      ['Сколько номеров может получить проект?',n,'Для проекта возможны все позиции в списке.'],
+      ['Какова вероятность получить именно указанный номер?',1/n,'Из всех равновозможных мест подходит ровно одно.']
+    ),'probability-draw',{n,good:1,ordinal:true});
+  }
+  if (seed % 2 === 0) return factories['practice-probability-draw'](seed);
+  const variant = Math.floor(seed / 2);
+  const n = 50 + 50 * (variant % 2);
+  const broken = 4 + variant % 7;
+  const incomplete = 6 + variant % 11;
+  const good = n - broken - incomplete;
+  return make(`В мастерской приготовили ${n} наборов для сборки. Из них ${broken} отложили из-за сломанной детали, ещё ${incomplete} других — из-за недостающего крепежа. Остальные наборы готовы к работе. Из всех наборов наугад выбирают один. Какова вероятность, что он готов к работе?`, good / n, steps(
+    ['Сколько наборов отложили по обеим причинам?', broken + incomplete, 'Сложи числа из двух непересекающихся групп.'],
+    ['Сколько наборов готовы к работе?', good, 'Из общего количества вычти все отложенные наборы.'],
+    ['Какова вероятность?', good / n, 'Раздели число готовых наборов на число всех наборов.']
+  ), 'probability-draw', { n, good, excluded: [broken, incomplete] });
+};
+
+revised['practice-luggage'] = seed => {
+  const limits = [46, 31, 24, 12];
+  const boxes = [[43 + seed % 4, 28 + seed % 4, 21 + seed % 4, 8 + seed % 4],
+    [47, 30, 20, 9], [42, 31, 24, 12], [44, 33, 20, 7], [42, 29, 24, 13]];
+  const rows = rotate(boxes, seed).map((box, index) => [index + 1, ...box]);
+  const valid = rows.filter(([, ...box]) => box.every((value, i) => value <= limits[i])).map(([number]) => number);
+  return make('Для перевозки образцов нужен ящик. Его длина, ширина и высота должны быть не больше 46 см, 31 см и 24 см соответственно, а масса с образцами — не больше 12 кг. Запиши номера всех подходящих ящиков.', valid.join(''), steps(
+    ...rows.map(([number]) => [`Ящик ${number} подходит? Введи 1 — да или 0 — нет.`, valid.includes(number) ? 1 : 0, 'Проверь три размера и массу. Равенство предельному значению допустимо.'])
+  ), 'luggage', { rows, limits }, { answerKind: 'multi', display: table(['№', 'Длина, см', 'Ширина, см', 'Высота, см', 'Масса, кг'], rows), model: { kind: 'data-read' } });
+};
+
+revised['practice-rental'] = seed => {
+  if (seed % 2 === 0) return factories['practice-rental'](seed);
+  const variant = Math.floor(seed / 2);
+  const shift = variant % 4;
+  const rows = rotate([['А', 10 + shift, 6, 2], ['Б', 8, 9 + shift, 1], ['В', 11, 8, 3 + shift]], variant);
+  const scores = rows.map(([, strength, accuracy, issues]) => 3 * strength + 2 * accuracy - 4 * issues);
+  const lowest = Math.min(...scores);
+  return make('Жюри выставило трём макетам баллы за прочность P и аккуратность A и отметило число замечаний Z. Итог вычисляют по формуле R = 3P + 2A − 4Z. Каков наименьший итоговый балл среди трёх макетов?', lowest, steps(
+    ...rows.map(([name], index) => ['Каков итоговый балл макета ' + name + '?', scores[index], 'Возьми все три значения из строки макета и подставь их в формулу.']),
+    ['Каков наименьший итоговый балл?', lowest, 'Сравни три результата и запиши наименьший.']
+  ), 'rental', { rows, rating: true }, {
+    display: table(['Макет', 'Прочность P', 'Аккуратность A', 'Замечания Z'], rows),
+    model: { kind: 'data-read' }
+  });
+};
+
+// Retain an exact area exercise alongside the official estimation format.
+revised['practice-grid-parallelogram'] = seed => {
+  const a = 4 + seed % 6, h = 3 + Math.floor(seed/6) % 5;
+  const offset = 1 + Math.floor(seed/30) % 4;
+  const points = [[0,0],[a,0],[a+offset,h],[offset,h]];
+  return make('На сетке отмечены вершины параллелограмма. Каждая клетка — квадрат со стороной 1. Какова площадь фигуры?',a*h,steps(
+    ['Сколько единиц в длине нижней стороны?',a,'Посчитай клетки вдоль основания.'],
+    ['Чему равна высота, проведённая к этой стороне?',h,'Посчитай клетки по вертикали между параллельными основаниями.'],
+    ['Найди площадь параллелограмма.',a*h,'Перемножь длину основания и перпендикулярную высоту.']
+  ),'grid-parallelogram',{a,h},{display:{kind:'polygon',points,grid:true},model:{kind:'polygon-build'}});
+};
+
+revised['practice-grid-cut']=k=>{
+ if(k%2)return factories['practice-grid-cut'](k);
+ const i=k/2,w=8+i%3,h=5+i%4,leftWidth=1+2*(i%2),leftHeight=1.5+i%2,rightWidth=2+2*(i%2),rightHeight=1+i%3;
+ const points=[[0,0],[w,0],[w,h-rightHeight],[w-rightWidth,h],[leftWidth,h],[0,h-leftHeight]];
+ const leftArea=leftWidth*leftHeight/2,rightArea=rightWidth*rightHeight/2,area=w*h-leftArea-rightArea;
+ return make('Граница водоёма показана на плане ломаной линией. Сторона клетки соответствует 1 км на местности. Оцените площадь водоёма. Ответ округлите до целого числа квадратных километров.',Math.round(area),steps(
+  ['Какова площадь прямоугольника, в который вписана фигура?',w*h,'Сосчитай клетки вдоль двух сторон прямоугольника и перемножь.'],
+  ['Какова площадь левого незакрашенного угла?',leftArea,'Это прямоугольный треугольник. Умножь два перпендикулярных отрезка по сетке, затем раздели на 2.'],
+  ['Какова площадь правого незакрашенного угла?',rightArea,'Так же вычисли площадь второго прямоугольного треугольника.'],
+  ['Какова площадь водоёма с округлением до целого?',Math.round(area),'Из площади прямоугольника вычти площади обеих частей. Округляй только итог.']),
+  'grid-cut',{estimate:true,points},{display:{kind:'polygon',points,grid:true,gridUnit:'км'},model:{kind:'polygon-build'}});
+};
+// A stepped outline tests how joined surfaces are accounted for when the
+// combined solid is not a single parallelepiped.
+revised['practice-joined-surface']=k=>{
+ if(k%2)return factories['practice-joined-surface'](k);
+ const i=k/2,width=9+i%5,baseHeight=3+i%4,upperWidth=width-2-i%3,raise=2+i%4,depth=2+i%5;
+ const lower=2*(width*baseHeight+width*depth+baseHeight*depth);
+ const upper=2*(upperWidth*raise+upperWidth*depth+raise*depth);
+ const joined=upperWidth*depth,answer=lower+upper-2*joined;
+ return make(`Два прямоугольных параллелепипеда сложены ступенькой. Глубина обеих призм ${depth} см. Нижняя призма имеет ширину ${width} см и высоту ${baseHeight} см, верхняя — ширину ${upperWidth} см и высоту ${raise} см. Верхняя призма стоит на нижней всем основанием, левые стенки призм лежат в одной плоскости. Найдите площадь внешней поверхности в квадратных сантиметрах.`,answer,steps(
+  ['Какова площадь поверхности нижней призмы до соединения?',lower,'У каждой из трёх пар противоположных граней совпадают размеры.'],
+  ['Какова площадь поверхности верхней призмы до соединения?',upper,'Учти её ширину и высоту, глубина та же.'],
+  ['Какова площадь соприкосновения призм?',joined,'Возьми ширину и глубину основания верхней призмы.'],
+  ['Какова площадь внешней поверхности ступеньки?',answer,'В сумме поверхностей отдельных призм область соприкосновения учтена дважды. Вычти её дважды.']),
+  'joined-surface',{width,baseHeight,upperWidth,raise,depth});
+};
+
+// Keep the area variant and add a median determined from the perimeter.
+revised.triangle=k=>{
+ if(k%2)return oldTask('triangle',k);
+ const i=k/2,multiplier=1+i%6,[leg,altitude,hypotenuse]=[[5,12,13],[7,24,25],[8,15,17]][Math.floor(i/6)%3];
+ const a=leg*multiplier,h=altitude*multiplier,b=hypotenuse*multiplier,base=2*a,perimeter=base+2*b;
+ return make(`В равнобедренном треугольнике ABC стороны AB и BC равны, основание AC равно ${base} см, периметр равен ${perimeter} см. Точка M — середина AC. Найдите длину медианы BM в сантиметрах.`,h,steps(
+  ['Чему равна боковая сторона?',b,'Вычти из периметра основание и раздели остаток пополам.'],
+  ['Чему равна половина основания?',a,'Медиана делит основание на два равных отрезка.'],
+  ['Чему равен квадрат длины медианы?',h*h,'Медиана к основанию равнобедренного треугольника перпендикулярна основанию. Примени теорему Пифагора к треугольнику ABM.'],
+  ['Чему равна длина медианы?',h,'Извлеки положительный квадратный корень.']),
+  'triangle',{base,perimeter},{model:{kind:'iso',a,b,h}});
+};
+revised['practice-faces'] = seed => {
+  const n = 5 + seed % 4;
+  return make(`К выставке собрали модель из призмы и пирамиды. У каждой основание — одинаковый ${n}-угольник. Детали соединены этими основаниями целиком. Соседние внешние грани лежат в разных плоскостях. Сколько граней образуют внешнюю поверхность модели?`,2*n+1,steps(
+    ['Сколько граней у призмы до соединения?',n+2,'У призмы два основания и по боковой грани на каждую сторону основания.'],
+    ['Сколько граней у пирамиды до соединения?',n+1,'У пирамиды одно основание и по боковой грани на каждую сторону основания.'],
+    ['Сколько граней образуют внешнюю поверхность модели?',2*n+1,'Из суммы граней двух тел вычти оба основания, которые теперь внутри.']
+  ),'faces',{n});
+};
+
+revised['practice-spokes']=k=>{
+ const n=[12,15,18,20,24,30,36,40][k%8], gaps=2+Math.floor(k/8)%3, unit=360/n;
+ return make(`На круговой шкале прибора ${n} равноотстоящих отметок. Число отметок строго между двумя выбранными по меньшей дуге равно ${gaps-1}. Найдите меньший угол между лучами, проведёнными из центра к выбранным отметкам. Ответ дайте в градусах.`,unit*gaps,steps(
+  ['Чему равен полный угол?',360,'Все соседние промежутки вместе составляют полный оборот.'],
+  ['Сколько промежутков на меньшей дуге?',gaps,'Между двумя крайними отметками промежутков на один больше, чем внутренних отметок.'],
+  ['Чему равен нужный угол?',unit*gaps,'Раздели 360° на число промежутков полного круга и умножь на число промежутков меньшей дуги.']),'spokes',{n,gaps});
+};
+revised['practice-displacement']=k=>{
+ const areaPerCm=600+100*(k%10), before=10+5*(k%5), rise=2+k%6, after=before+rise;
+ const litres=areaPerCm*before/1000, answer=areaPerCm*rise;
+ return make(`В баке с вертикальными стенками ${F(litres)} л воды. Сначала глубина воды составляла ${before} см. После полного погружения детали глубина стала ${after} см, вода не перелилась. Найдите объём детали в кубических сантиметрах.`,answer,steps(
+  ['Каков объём воды в кубических сантиметрах?',litres*1000,'В одном литре тысяча кубических сантиметров.'],
+  ['Каков объём слоя толщиной 1 см в кубических сантиметрах?',areaPerCm,'Раздели объём воды на её прежнюю глубину.'],
+  ['На сколько сантиметров поднялся уровень?',rise,'Вычти прежнюю глубину из новой.'],
+  ['Каков объём детали?',answer,'Тело вытеснило столько воды, сколько помещается между прежним и новым уровнями.']),'displacement',{litres,before,after});
+};
+revised['practice-pyramid-lateral']=k=>{
+ const s=1+k%5, n=k%2?4:6, side=16*s, perimeter=n*side, edge=17*s, height=15*s, area=perimeter*height/2;
+ const name=n===4?'четырёхугольной':'шестиугольной';
+ return make(`Периметр основания правильной ${name} пирамиды равен ${perimeter} см, а её боковое ребро равно ${edge} см. Найдите площадь боковой поверхности пирамиды в квадратных сантиметрах.`,area,steps(
+  ['Чему равна сторона основания?',side,'Раздели периметр правильного многоугольника на число его сторон.'],
+  ['Чему равна половина стороны основания?',side/2,'Высота боковой грани делит её основание пополам.'],
+  ['Чему равна высота боковой грани?',height,'В прямоугольном треугольнике гипотенуза — боковое ребро. Примени теорему Пифагора.'],
+  ['Чему равна площадь боковой поверхности?',area,'Сумма площадей боковых треугольников равна половине произведения периметра основания на высоту боковой грани.']),'pyramid-lateral',{n,perimeter,edge});
+};
+revised['practice-similar-volume']=k=>{
+ const factor=[2,4,5][k%3], smallHeight=3+k%7, height=smallHeight*factor;
+ const small=3+k%13, whole=small*factor**3, rest=whole-small;
+ return make(`Объём конуса равен ${whole} см³, его высота ${height} см. Плоскость, параллельная основанию, отсекла у вершины малый конус высотой ${smallHeight} см. Найдите объём оставшейся части в кубических сантиметрах.`,rest,steps(
+  ['Во сколько раз высота большого конуса больше?',factor,'Сравни высоты двух подобных конусов.'],
+  ['Каков объём малого конуса?',small,'Объёмы относятся как кубы высот.'],
+  ['Каков объём части между сечением и основанием?',rest,'Вычти объём малого конуса из объёма исходного конуса.']),'similar-volume',{smallHeight,height,whole});
+};
+
+const deletionNumbers = ['31820654', '52701486', '64823752', '91758236', '85220764', '25318674', '90935628'];
+function codeDeletion(seed, includeParity = false) {
+  const digits = deletionNumbers[seed % deletionNumbers.length];
+  const solutions = [...new Set(Array.from({ length: 1 << digits.length }, (_, mask) =>
+    [...digits].filter((_, index) => mask & 1 << index).join('')).filter(value => D.digits22(value, digits)))].sort();
+  return make(`Исходный код — ${digits}. Нужно вычеркнуть три цифры, сохранив порядок остальных. Каким пятизначным числом, кратным 22, может быть новый код? Запиши один такой код.`, solutions[0], steps(
+    ...(includeParity ? [['Какой должна быть последняя цифра: чётной (2) или нечётной (1)?', 2, 'Кратность 22 требует чётности.']] : []),
+    ['На какое число, кроме 2, должно делиться число?', 11, 'Делители 2 и 11 взаимно просты и дают произведение 22.'],
+    ['Введи один допустимый код.', solutions[0], 'Проверь длину, первую цифру, порядок, чётность и делимость на 11.']
+  ), 'digits-delete', { digits }, { answerKind: 'solutions', solutions, model: { kind: 'digits', digits } });
+}
+
+revised.integers = seed => codeDeletion(seed, true);
+revised['practice-digits-delete'] = codeDeletion;
+
+function matchingFourDigitNumbers(predicate) {
+  const solutions = [];
+  for (let number = 1000; number <= 9999; number++) {
+    const digits = String(number);
+    if (predicate(number, digits)) solutions.push(digits);
+  }
+  return solutions;
+}
+
+revised['practice-digits-multiple'] = seed => {
+  const variants = [[[1, 3, 4, 8], 8], [[0, 3, 4, 8], 6], [[2, 4, 5, 7], 18], [[0, 2, 5, 9], 4]];
+  const [allowed, divisor] = variants[seed % variants.length];
+  const solutions = matchingFourDigitNumbers((number, digits) =>
+    number % divisor === 0 && [...digits].sort().join('') === allowed.join(''));
+  return make(`Для номера шкафчика использовали цифры ${allowed.join(', ')} по одному разу. Номер четырёхзначный и кратен ${divisor}. Запиши один возможный номер.`, solutions[0], steps(
+    ['Сколько цифр должно быть в номере?', 4, 'Возьми каждую из четырёх данных цифр один раз. Ноль не может стоять первым.'],
+    ['На какое число делится номер?', divisor, 'Найди делитель в условии. Для выбранной перестановки раздели число на этот делитель и проверь остаток.'],
+    ['Введи подходящий номер шкафчика.', solutions[0], 'Проверь, что цифры не повторяются, первая цифра ненулевая и остаток от деления равен нулю.']
+  ), 'digits-multiple', { divisor, allowed }, { answerKind: 'solutions', solutions, model: { kind: 'digit-work' } });
+};
+
+revised['practice-digits-product'] = seed => {
+  const divisor = 24;
+  const target = [36, 60, 144, 48, 72, 96, 108][seed % 7];
+  const solutions = matchingFourDigitNumbers((number, digits) =>
+    number % divisor === 0 && [...digits].reduce((product, digit) => product * Number(digit), 1) === target);
+  return make(`Шифр из четырёх цифр — четырёхзначное число, кратное ${divisor}. Если перемножить все цифры шифра, получится ${target}. Приведи один возможный шифр.`, solutions[0], steps(
+    ['На какое число, кроме 3, обязан делиться шифр?', 8, '24 — произведение взаимно простых чисел 3 и 8.'],
+    ['Введи один подходящий шифр.', solutions[0], 'Разложи произведение на четыре цифры. Проверь, что их сумма кратна 3, а число из трёх последних цифр кратно 8.']
+  ), 'digits-product', { target, divisor }, { answerKind: 'solutions', solutions, model: { kind: 'digit-work' } });
+};
+
+revised['practice-meeting'] = seed => {
+  if (seed % 4 === 0) return factories['practice-meeting'](seed);
+  if (seed % 4 === 2) {
+    const variant = Math.floor(seed / 4);
+    const hours = 2 + variant % 4;
+    const speed = 35 + 5 * (variant % 7);
+    const fromSecond = hours * (45 + 5 * (variant % 6));
+    const total = hours * speed + fromSecond;
+    return make(`Две ремонтные машины выехали одновременно навстречу друг другу из двух депо. По дороге между депо ${total} км. Машины встретились через ${hours} ч в ${fromSecond} км от второго депо. С какой скоростью ехала машина из первого депо? Ответ в км/ч.`, speed, steps(
+      ['Сколько километров проехала машина из первого депо?', total - fromSecond, 'Вычти расстояние от второго депо до места встречи из расстояния между депо.'],
+      ['Скорость машины из первого депо, км/ч?', speed, 'Раздели её путь на время до встречи.']
+    ), 'meeting', { total, fromSecond, hours });
+  }
+  const slow = 12 + 2 * (seed % 5);
+  const fast = slow + 6 + 2 * (seed % 3);
+  const time = (2 + seed % 3) / 4;
+  const turn = (slow + fast) * time / 2;
+  const answer = slow * time;
+  return make(`Два велосипедиста одновременно выехали от пункта проката по одной дороге в одном направлении. Первый едет со скоростью ${slow} км/ч, второй — ${fast} км/ч. Через ${F(turn)} км от проката второй развернулся и с прежней скоростью поехал назад. На каком расстоянии от проката велосипедисты снова встретились? Ответ в километрах.`, answer, steps(
+    ['Сумма путей обоих велосипедистов к новой встрече, км?', 2 * turn, 'Первый прошёл путь до встречи, второй — от проката до разворота и часть дороги обратно. Вместе пройдены две длины участка до разворота.'],
+    ['Сколько километров проезжают оба вместе за час?', slow + fast, 'Оба едут одно и то же время; их скорости складываются при подсчёте суммы путей.'],
+    ['Время от старта до встречи, ч?', time, 'Раздели сумму путей на сумму скоростей.'],
+    ['Расстояние от проката до встречи, км?', answer, 'Умножь скорость первого велосипедиста на общее время.']
+  ), 'meeting', { slow, fast, turn });
+};
+
+revised['practice-integer-budget'] = seed => {
+  if (seed % 2 === 0) return factories['practice-integer-budget'](seed);
+  const variant = Math.floor(seed / 2);
+  const reward = [5, 7][variant % 2];
+  const penalty = [3, 4][Math.floor(variant / 2) % 2];
+  const right = 6 + variant % 9;
+  const wrong = 1 + variant % 4;
+  const skipped = 1 + Math.floor(variant / 4) % 5;
+  const n = right + wrong + skipped;
+  const score = reward * right - penalty * wrong;
+  const loss = reward * n - score;
+  return make(`На викторине по истории города было ${n} вопросов. За верный ответ начисляли ${reward} баллов, за ошибку снимали ${penalty}, за пропуск ставили 0. Участник получил ${score} баллов и допустил хотя бы одну ошибку. Сколько верных ответов он дал?`, right, steps(
+    ['На сколько баллов результат ниже максимально возможного?', loss, 'Из результата при всех верных ответах вычти полученные баллы.'],
+    ['На сколько баллов одна ошибка уменьшает максимально возможный результат?', reward + penalty, 'За ошибку не начисляют награду за верный ответ и дополнительно снимают штраф.'],
+    ['Сколько было неверных ответов?', wrong, `За один пропуск теряют ${reward} баллов. Вычитай из разницы ${loss} потери за 1, 2, 3… ошибки: остаток должен быть неотрицательным и делиться на ${reward}.`],
+    ['Сколько было верных ответов?', right, `После вычета потерь за ${wrong} неверных ответов остаются потери за ${skipped} пропусков. Из ${n} вычти число ошибок и пропусков.`]
+  ), 'integer-budget', { n, reward, penalty, score, allowsSkips: true });
+};
+
+revised['practice-sets'] = seed => {
+  const task = factories['practice-sets'](seed);
+  const {A,B,total}=task.params;
+  return {...task,q:`В группе ${total} человек. Каждый ходит хотя бы в один из двух кружков. На математику ходят ${A}, на робототехнику — ${B}. Сколько человек посещают оба кружка?`};
+};
+
+revised['practice-work'] = seed => {
+  const joint = 3 + 2*(seed % 7);
+  const a = joint*1.5, b = 3*joint;
+  return make(`Первой бригаде на разметку всей спортивной площадки потребовалось бы ${F(a)} ч, второй — ${F(b)} ч. Бригады работают одновременно с начала разметки до её завершения. Сколько часов займёт работа, если производительность каждой бригады постоянна?`,joint,steps(
+    ['Какую долю всей разметки первая бригада выполняет за один час?',fraction(1,a),'Одну целую работу делим на время первой бригады.'],
+    ['Какую долю всей разметки вторая бригада выполняет за один час?',fraction(1,b),'Для второй бригады делим ту же целую работу на её время.'],
+    ['Через сколько часов разметка закончится?',joint,'Сложи доли за час. Раздели единицу на общую долю за час.']
+  ),'work',{a,b});
+};
+
+revised.motion = seed => {
+  const speed = [45 + 5 * (seed % 4), 64 + 4 * (seed % 3), 84 + 6 * (seed % 5)];
+  const times = [1, 2, 5];
+  const dist = speed.map((value, index) => value * times[index]);
+  const total = dist.reduce((sum, value) => sum + value, 0);
+  const answer = total / 8;
+  return make(`Служебный фургон проехал ${dist[0]} км со скоростью ${speed[0]} км/ч, затем ${dist[1]} км со скоростью ${speed[1]} км/ч и ещё ${dist[2]} км со скоростью ${speed[2]} км/ч. Фургон не останавливался. Какова его средняя скорость в км/ч?`, answer, steps(
+    ...times.map((time, index) => [`Время на участке ${index + 1}, ч?`, time, 'Раздели расстояние этого участка на его скорость.']),
+    ['Весь путь, км?', total, 'Сложи три расстояния.'],
+    ['Средняя скорость, км/ч?', answer, 'Раздели весь путь на сумму времён.']
+  ), 'van-journey', { dist, speed }, { model: { kind: 'journey', dist, speed } });
+};
+
+revised.mixtures = seed => {
+  const water = 2 + seed % 7;
+  const mass = 3 * water;
+  const concentration = 12 + 4 * (seed % 6);
+  const sugar = mass * concentration / 100;
+  const answer = 3 * concentration / 4;
+  return make(`Для лимонада взяли ${mass} кг сиропа, в котором ${concentration}% сахара по массе, и добавили ${water} кг воды. Сколько процентов сахара по массе в получившейся смеси?`, answer, steps(
+    ['Масса сахара, кг?', sugar, 'Умножь массу сиропа на долю сахара.'],
+    ['Масса смеси, кг?', mass + water, 'Сложи массы сиропа и воды.'],
+    ['Содержание сахара в смеси, %?', answer, 'Массу сахара раздели на массу всей смеси и умножь на 100.']
+  ), 'lemonade', { mass, concentration, water });
+};
+
+revised.reasoning = seed => {
+  const half = 24 + 2 * (seed % 8);
+  const ac = half - 4 - seed % 5;
+  const ad = half - 9;
+  const cd = 2 * half - ac - ad;
+  const bc = half - ac;
+  return make(`Вокруг озера проходит замкнутый веломаршрут с отметками A, B, C и D. Кратчайшие пути между отметками: A–B — ${half} км, A–C — ${ac} км, A–D — ${ad} км, C–D — ${cd} км. Сколько километров в кратчайшем пути от B до C по этому маршруту?`, bc, steps(
+    ['Если C и D находятся с одной стороны от A, какова разность AC−AD?', ac - ad, `Получилось меньше ${cd} км, поэтому отметки C и D лежат по разные стороны от A.`],
+    ['Длина дуги C–A–D, км?', ac + ad, 'Сложи расстояния AC и AD.'],
+    ['Длина всего веломаршрута, км?', 2 * half, `Кратчайший путь C–D составляет ${cd} км и проходит по другой дуге. Сложи длины обеих дуг.`],
+    ['Кратчайший путь от B до C, км?', bc, 'B лежит напротив A. Из половины длины маршрута вычти AC.']
+  ), 'lake-loop', { half, ac, ad, cd }, { model: { kind: 'ring', half, ac, ad, cd } });
+};
+
 D.meta.push(...catalog);
 D.F=F;
-D.task=function(id,seed=1){if(!factories[id])return oldTask(id,seed);let t=factories[id](Math.abs(Math.trunc(seed)));Object.assign(t,{id,seed,pos:catalog.find(m=>m.id===id).pos,strict:true});for(const step of t.steps)step.strict=true;
+function bankTask(id, seed, version) {
+ const factory=(version===bankVersion&&revised[id])||factories[id];
+ if(!factory)return oldTask(id,seed);
+ const t=factory(Math.abs(Math.trunc(seed)));
+ Object.assign(t,{id,seed,pos:D.meta.find(m=>m.id===id).pos,strict:true});
+ for(const step of t.steps)step.strict=true;
  if(t.answerKind==='solutions'){const last=t.steps[t.steps.length-1];last.answerKind='solutions';last.solutions=t.solutions;}
- return t;};
+ return t;
+}
+D.task=(id,seed=1)=>bankTask(id,seed,bankVersion);
+function taskForBankVersion(id, seed, version) {
+ return revised[id]&&version!==bankVersion ? bankTask(id,seed,1) : D.task(id,seed);
+}
 D.correct=function(t,value){let s=String(value??'').trim();if(t.answerKind==='solutions')return /^\d+$/.test(s)&&t.solutions.includes(s);if(t.answerKind==='match')return /^\d{4}$/.test(s)&&s===String(t.a??t.answer);if(t.answerKind==='multi')return /^\d+$/.test(s)&&new Set(s).size===s.length&&[...s].sort().join('')===[...String(t.a??t.answer)].sort().join('');if(typeof t.a==='string'){let x=D.parse(value),a=D.parse(t.a);return x!==null&&a!==null&&Math.abs(x-a)<1e-8*Math.max(1,Math.abs(a));}if(t.strict){const x=D.parse(value),a=t.a??t.answer;return x!==null&&Number.isFinite(a)&&Math.abs(x-a)<1e-8;}return oldCorrect(t,value);};
 const task21PracticeIds = catalog.filter(item => item.pos === 21 && item.trainingOnly).map(item => item.id);
 // The prior version validates every lesson ID. Keep the new practice rows in
@@ -652,7 +1233,7 @@ function packTask21Progress(value) {
   }
   return {...value, lessons, task21Practice};
 }
-D.practice={catalog,factories,fraction,expandTask21Progress,packTask21Progress,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
+D.practice={catalog,factories,fraction,bankVersion,taskForBankVersion,expandTask21Progress,packTask21Progress,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
 if(typeof module!=='undefined')module.exports=D;
 })(typeof window==='undefined'?globalThis:window);
 
@@ -2829,13 +3410,121 @@ function chart(d){
  g+=d.labels.map((s,i)=>`<text x="${X(i)}" y="285" text-anchor="middle">${E(s)}</text>`).join('');
  return `<svg class="task-figure" viewBox="0 0 600 310" role="img" aria-label="${E(d.yLabel)}: график с точными данными в таблице ниже"><text x="50" y="25">${E(d.yLabel)}</text>${g}</svg><details class="equivalent-data"><summary>Точные значения графика в таблице</summary>${table(['Отметка',d.yLabel],d.labels.map((s,i)=>[s,F(d.values[i])]))}</details>`;
 }
+function tangentFigures(d){
+ const units=12;
+ const figures=d.panels.map(({left,right,curvature},i)=>{
+  const mid=(left+right)/2,slope=(right-left)/2;
+  const X=x=>75+units*x,Y=y=>108-units*y;
+  const tan=x=>mid+slope*x;
+  const f=x=>tan(x)+curvature*x*x;
+  const gridX=Array.from({length:7},(_,j)=>`M${X(j-3)} ${Y(7)}V${Y(-7)}`).join(' ');
+  const gridY=Array.from({length:15},(_,j)=>`M${X(-3)} ${Y(j-7)}H${X(3)}`).join(' ');
+  const points=[-1,1].map(x=>`<circle cx="${X(x)}" cy="${Y(tan(x))}" r="3" fill="#8e3b21"/>`).join('');
+  return `<g transform="translate(${(i%2)*150} ${Math.floor(i/2)*202})">
+   <text x="16" y="27" font-weight="700">${E(d.letters[i])}</text>
+   <path d="${gridX} ${gridY}" fill="none" stroke="#c4d2ca" />
+   <path d="M${X(-3)} ${Y(0)}H${X(3)}M${X(0)} ${Y(7)}V${Y(-7)}" stroke="#476457"/>
+   <text x="${X(3)+5}" y="${Y(0)+4}">x</text><text x="${X(0)+5}" y="${Y(7)-4}">y</text>
+   <path d="M${X(-2)} ${Y(f(-2))} Q${X(0)} ${Y(mid-4*curvature)} ${X(2)} ${Y(f(2))}" fill="none" stroke="#155e48" stroke-width="3"/>
+   <path d="M${X(-2)} ${Y(tan(-2))}L${X(2)} ${Y(tan(2))}" stroke="#8e3b21" stroke-width="2" stroke-dasharray="5 3"/>
+   ${points}<circle cx="${X(0)}" cy="${Y(mid)}" r="4" fill="#155e48" stroke="#fff"/>
+  </g>`;
+ }).join('');
+ return `<svg class="task-figure" style="max-width:360px" viewBox="0 0 300 402" role="img" aria-label="Четыре графика на единичных сетках. Касательные показаны пунктиром. Две точки каждой касательной даны в таблице.">${figures}</svg><details class="equivalent-data"><summary>Координаты точек касательных</summary>${table(['Рисунок','y при x = −1','y при x = 1'],d.panels.map(({left,right},i)=>[d.letters[i],F(left),F(right)]),'Две точки на каждой касательной')}</details>`;
+}
 function polygon(d,construction=false){
  const xs=d.points.map(p=>p[0]),ys=d.points.map(p=>p[1]),w=Math.max(...xs),h=Math.max(...ys),scale=Math.min(450/(w||1),230/(h||1)),X=x=>60+x*scale,Y=y=>280-y*scale;let grid='';
  if(d.grid){for(let x=0;x<=w;x++)grid+=`<path d="M${X(x)} ${Y(0)}V${Y(h)}"/>`;for(let y=0;y<=h;y++)grid+=`<path d="M${X(0)} ${Y(y)}H${X(w)}"/>`;}
- return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
+ return `<svg class="task-figure" viewBox="0 0 600 330" role="img" aria-label="Фигура на единичной сетке; координаты вершин приведены под рисунком"><g stroke="#c9d9ce" stroke-width="1">${grid}</g><polygon points="${d.points.map(([x,y])=>X(x)+','+Y(y)).join(' ')}" fill="#6caa8870" stroke="#185940" stroke-width="3"/>${construction?`<path d="M${X(0)} ${Y(0)}H${X(w)}V${Y(h)}H${X(0)}Z" fill="none" stroke="#a44629" stroke-width="3" stroke-dasharray="6"/>`:''}${d.points.map(([x,y],i)=>`<circle cx="${X(x)}" cy="${Y(y)}" r="4" fill="#185940"/><text x="${X(x)+8}" y="${Y(y)-9}">${'ABCDEF'[i]}</text>`).join('')}<text x="60" y="318">Сторона клетки = 1${d.gridUnit?' '+E(d.gridUnit):''}</text></svg><details><summary>Координаты вершин по порядку</summary><p>${d.points.map(([x,y],i)=>`${'ABCDEF'[i]}(${x}; ${y})`).join(', ')}</p></details>`;
 }
 function numberline(d){const lo=Math.floor(Math.min(...d.values))-1,hi=Math.ceil(Math.max(...d.values))+1,X=v=>45+(v-lo)/(hi-lo)*510;let s='';for(let n=lo;n<=hi;n++)s+=`<path d="M${X(n)} 110v12" stroke="#617a6b"/><text x="${X(n)}" y="150" text-anchor="middle">${n}</text>`;return `<svg class="task-figure" viewBox="0 0 600 180" role="img" aria-label="Точки расположены слева направо; интервалы приведены ниже"><path d="M30 116H565" stroke="#617a6b"/>${s}${d.values.map((v,i)=>`<circle cx="${X(v)}" cy="116" r="5" fill="#a44629"/><text x="${X(v)}" y="88" text-anchor="middle">${E(d.names[i])}</text>`).join('')}</svg><p class="muted">${d.values.map((v,i)=>`${d.names[i]}: ${Number.isInteger(v)?'ровно '+v:'между '+Math.floor(v)+' и '+Math.ceil(v)}`).join('; ')}.</p>`;}
-function visual(t){if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);const d=t.display;if(!d)return '';if(d.kind==='table')return table(d.headers,d.rows);if(['bars','graph'].includes(d.kind))return chart(d);if(d.kind==='polygon')return polygon(d);if(d.kind==='numberline')return numberline(d);if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;return '';}
+function planarCondition(d){
+ const {a,b,c,g,h,r,n,between,chord,base,side,perimeter}=d.givens;
+ const line=(shape,fill='none')=>`<path d="${shape}" fill="${fill}" stroke="#216e56" stroke-width="3"/>`;
+ const label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
+ const surface='#edf6f0';
+ let picture='', caption='';
+ switch(d.figure){
+  case 'grid': return polygon({kind:'polygon',points:[[0,0],[a,0],[0,b]],grid:true});
+  case 'practical':
+   caption='План прямоугольного участка';
+   picture=line('M100 60H460V240H100Z',surface)+label(280,278,a+' см')+label(63,155,b+' см');
+   break;
+  case 'triangle':
+   caption='Равнобедренный треугольник';
+   picture=line('M130 250H430L280 50Z',surface);
+   if(perimeter===undefined)picture+=label(280,286,base)+label(197,132,side)+label(363,132,side);
+   else {
+    caption='Равнобедренный треугольник ABC с медианой BM';
+    picture+=line('M280 50V250')+label(113,257,'A')+label(280,37,'B')+label(447,257,'C')+label(280,270,'M')
+     +label(280,298,'AC = '+base+' см')+label(436,83,'P = '+perimeter+' см');
+   }
+   break;
+  case 'quadrilateral':
+   caption='Трапеция с отмеченной высотой';
+   picture=line('M55 250H505L405 65H155Z',surface)+label(280,42,a)+label(280,286,b)
+    +'<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>'+label(132,163,'h = '+h);
+   break;
+  case 'circle':
+   caption='Окружность с хордой и расстоянием от центра O';
+   picture='<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>'
+    +label(330,176,'R = '+r)+label(245,194,d.givens.d)+label(280,132,'O');
+   break;
+  case 'practice-free-area':
+   caption='Квадратный участок с прямоугольным домом внутри';
+   picture=line('M178 40H388V250H178Z',surface)+line('M235 105H329V171H235Z','#d7e7ee')
+    +label(283,285,a+' м')+label(282,96,b+' м')+label(357,144,c+' м');
+   break;
+  case 'practice-fence':
+   caption='Прямоугольный забор с проездом';
+   picture=line('M243 227H101V59H455V227H313')+label(278,44,a+' м')+label(62,151,b+' м')
+    +'<path d="M243 248H313m-70-7v14m70-14v14" stroke="#6b8475" stroke-width="2"/>'+label(278,278,g+' м');
+   break;
+  case 'practice-spokes':{
+   const gaps=between===undefined?undefined:between+1;
+   caption=gaps===undefined?'Колесо с '+n+' равномерно расположенными спицами':'Круговая шкала. Выделены лучи к двум выбранным отметкам.';
+   const onCircle=(i,radius)=>[280+radius*Math.sin(i*2*Math.PI/n),155-radius*Math.cos(i*2*Math.PI/n)].map(Math.round).join(' ');
+   picture='<circle cx="280" cy="155" r="115" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>'
+    +Array.from({length:n},(_,i)=>line(`M${gaps===undefined||i===0||i===gaps?'280 155':onCircle(i,103)}L${onCircle(i,115)}`)).join('')
+    +'<circle cx="280" cy="155" r="5" fill="#216e56"/>';
+   break;
+  }
+  case 'practice-triangle-angle':{
+   caption='Треугольник с двумя подписанными углами';
+   // A fixed base and isotropic fit preserve the given angles at every seed.
+   const left=Math.tan(a*Math.PI/180),right=Math.tan(b*Math.PI/180);
+   const peak=right/(left+right),altitude=peak*left,scale=Math.min(370,175/altitude);
+   const lo=280-scale/2,hi=280+scale/2;
+   picture=line(`M${lo} 244H${hi}L${lo+scale*peak} ${244-altitude*scale}Z`,surface)+label(lo+48,230,a+'°')+label(hi-38,230,b+'°');
+   break;
+  }
+  case 'practice-diameter-chord':
+   caption='Окружность, диаметр AB и хорда AC';
+   picture='<circle cx="280" cy="155" r="108" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>'
+    +line('M172 155H388M172 155L250 51L388 155')+'<circle cx="280" cy="155" r="3.5" fill="#216e56"/>'
+    +label(153,161,'A')+label(407,161,'B')+label(250,39,'C')+label(280,178,'O')+label(202,101,chord)+label(332,177,'R = '+r);
+   break;
+ }
+ return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="${E(caption)}">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
+}
+function visual(t){
+ if(t.model?.kind==='grade7-construction'&&root.PathGrade7Construction)return root.PathGrade7Construction.visual(t);
+ if(t.model?.kind==='pre7-lab'&&root.PathPre7Models)return root.PathPre7Models.visual(t);
+ if(t.model?.kind==='grade7-geometry'&&root.PathGrade7Geometry)return root.PathGrade7Geometry.visual(t);
+ const d=t.display??root.PathStereoFigures?.condition(t);
+ if(!d)return '';
+ if(d.kind==='geometry-figure'&&d.figure===t.id){
+  if(root.PathStereoFigures?.supports(t))return root.PathStereoFigures.visual({id:t.id,display:d});
+  return planarCondition(d);
+ }
+ if(d.kind==='table')return table(d.headers,d.rows);
+ if(['bars','graph'].includes(d.kind))return chart(d);
+ if(d.kind==='tangents')return tangentFigures(d);
+ if(d.kind==='polygon')return polygon(d);
+ if(d.kind==='numberline')return numberline(d);
+ if(d.kind==='triangle-label')return `<svg class="task-figure" viewBox="0 0 600 320" role="img" aria-label="Прямоугольный треугольник ABC, прямой угол при C"><path d="M70 255H510L70 45Z" fill="#d5e9da" stroke="#216e56" stroke-width="3"/><path d="M70 235H90V255" fill="none" stroke="#216e56"/><text x="46" y="270">C</text><text x="517" y="265">A</text><text x="51" y="36">B</text><text x="270" y="285">${d.a}</text><text x="28" y="160">${d.b}</text><text x="300" y="140">${d.c}</text></svg><p class="muted">Чертёж схематический; размеры берём из условия.</p>`;
+ return '';
+}
 function answerChoices(item) {
  return Array.isArray(item?.choices) && item.choices.length && item.choices.every(choice => choice && typeof choice === 'object' && typeof choice.label === 'string' && typeof choice.value === 'string') ? item.choices : null;
 }
@@ -2899,7 +3588,7 @@ PathModels.mount=function(el,t,options={}){
  if(m.kind==='polygon-build'){
   v.constructed=!!v.constructed;v.choice=v.choice||'';
   el.innerHTML='<p>Выбери вспомогательное построение, которое помогает найти площадь.</p><div class="actions"><button id="auxRect">Достроить до прямоугольника</button><button id="auxDiagonal">Провести произвольную диагональ</button></div><div id="construction"></div><p id="constructionRead" role="status"></p>';
-  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.':v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
+  const draw=()=>{el.querySelector('#construction').innerHTML=polygon(t.display,v.constructed);el.querySelector('#constructionRead').textContent=v.choice==='rectangle'?(t.params?.estimate?'Вычти площади двух незакрашенных треугольников. Если граница проходит посередине клетки, учти половину.':'Теперь можно вычесть лишние части. У параллелограмма их можно перенести, сохранив основание и высоту. Найди нужные длины по клеткам.'):v.choice==='diagonal'?'Диагональ разделяет фигуру, но площади получившихся частей ещё нужно найти. Попробуй построение по линиям сетки.':'';};
   el.querySelector('#auxRect').onclick=()=>{v.constructed=true;v.choice='rectangle';draw();changed();};el.querySelector('#auxDiagonal').onclick=()=>{v.choice='diagonal';draw();changed();};draw();return session;
  }
  if(m.kind==='interval-signs'){
@@ -3497,16 +4186,33 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   'use strict';
   const fixed = Object.freeze({
     2: ['practice-units-match'],
-    7: ['practice-graph-match'],
+    7: ['practice-graph-match', 'practice-tangent-match'],
     8: ['practice-logic-order', 'practice-logic-all'],
     14: ['practice-fraction-expression', 'practice-decimals', 'practice-decimal-division'],
+    17: ['practice-quadratic', 'practice-radical-equation', 'practice-log-equation', 'practice-exponential-equation', 'practice-rational-equation', 'equations-signs'],
     18: ['practice-number-match', 'practice-inequality-match'],
-    20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed']
+    20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed', 'motion', 'mixtures']
   });
+  const lessonOnly = new Set([
+    'practice-fraction-percent', 'practice-direct-proportion', 'practice-inverse-proportion',
+    'practice-sets'
+  ]);
   function select(meta, position) {
-    return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : item.expanded && !item.trainingOnly));
+    return meta.filter(item => item.pos === position && !lessonOnly.has(item.id) &&
+      (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
-  root.PathExamPool = { select };
+  function planBrowserRun(meta, serial) {
+    const ids = [], taskSeeds = [];
+    for (let position = 1; position <= 21; position++) {
+      const pool = select(meta, position);
+      const cycle = Math.floor((serial + 1) / pool.length);
+      ids.push(pool[(serial + 1) % pool.length].id);
+      // A family's seed advances each time that family recurs.
+      taskSeeds.push(cycle + position - 1);
+    }
+    return { ids, taskSeeds };
+  }
+  root.PathExamPool = { select, planBrowserRun };
   if (typeof module !== 'undefined') module.exports = root.PathExamPool;
 })(typeof window === 'undefined' ? globalThis : window);
 
@@ -3602,8 +4308,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
 })(typeof window === 'undefined' ? globalThis : window);
 
 </script><script data-inline-source="/ege-baza/path/stereo-figures.js">
-/* Diagrams for the existing basic-EGE stereometry conditions.
-   Only given quantities are labelled; answers and worked steps are never read. */
+/* Static geometry diagrams for the basic-EGE bank. */
 (function(root){'use strict';
  const E=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const F=value=>typeof value==='number'?root.PathData.F(value):String(value);
@@ -3629,6 +4334,22 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   if(labels.h!==undefined)s+=label(43,189,F(labels.h),'height');
   return s;
  }
+ function steppedBox({width,baseHeight,upperWidth,raise,depth}){
+  const unit=Math.min(195/width,176/(baseHeight+raise)),x=83,y=277;
+  const dx=18+6*depth,dy=-.64*dx,full=x+width*unit,upper=x+upperWidth*unit,step=y-baseHeight*unit,top=step-raise*unit;
+  const front=[[x,y],[full,y],[full,step],[upper,step],[upper,top],[x,top]];
+  const back=front.map(([px,py])=>[px+dx,py+dy]);
+  const face=(points,fill)=>path('M'+points.map(p=>p.join(',')).join('L')+'Z',{fill});
+  let picture=face(front,'#f5faf7');
+  for(const [i,j,fill] of [[1,2,'#e3efe7'],[2,3,'#edf6f0'],[3,4,'#e3efe7'],[4,5,'#edf6f0']]){
+   picture+=face([front[i],front[j],back[j],back[i]],fill);
+  }
+  const rear={dash:true,color:'#8da99a',width:2};
+  picture+=path('M'+[front[0],back[0],back[1]].map(p=>p.join(',')).join('L'),rear)+line(back[0],back[5],rear);
+  picture+=label((x+full)/2,y+35,F(width)+' см','width')+label(x-39,(y+step)/2,F(baseHeight)+' см','base-height');
+  picture+=label((x+upper)/2,top-13,F(upperWidth)+' см','upper-width')+label(x-39,(top+step)/2,F(raise)+' см','raise');
+  return picture+label(full+dx+23,y+dy-4,F(depth)+' см','depth');
+ }
  function cylinder({radius='r',height,unknown=false,water=false,radiusSize=100}={}){
   const left=210-radiusSize,right=210+radiusSize,rim=radiusSize*.26;
   let s=water?path(`M${left+1} 135Q210 ${135+rim} ${right-1} 135V265Q210 ${265+rim} ${left+1} 265Z`,{fill:'#d9edf6',color:'#5e9db6',width:0}):'';
@@ -3639,7 +4360,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   if(unknown)s+=label(210,186,'h = ?');
   return s;
  }
- function cone({radius,height,slant,cut,smallVolume,wholeVolume,ratio,unitScale}={}){
+ function cone({radius,height,slant,cut,smallVolume,wholeVolume,ratio,unitScale,levels}={}){
   let radiusPx=108,heightPx=228;
   if(radius!==undefined&&slant!==undefined){const realHeight=Math.sqrt(slant*slant-radius*radius),unit=unitScale??Math.min(108/radius,228/realHeight);radiusPx=radius*unit;heightPx=realHeight*unit;}
   const apexY=268-heightPx;
@@ -3647,7 +4368,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   if(radius!==undefined)s+=`<g data-hidden="true" data-stereo-aux="radius">${line([210,268],[210+radiusPx,268],{color:'#b05d2d',dash:true})}</g>`+label(210+radiusPx/2,326,'r = '+F(radius),'radius');
   if(height!==undefined)s+=line([210,40],[210,268],{color:'#b05d2d',dash:true})+label(168,173,'h = '+F(height),'height')+path('M210 249H229V268',{color:'#b05d2d',width:2,dash:true});
   if(slant!==undefined)s+=label(265+radiusPx/2,apexY+heightPx/2,'l = '+F(slant),'slant');
-  if(cut){const y=40+228*cut;s+=ring(210,y,108*cut,28*cut,{kind:'cone-section',color:'#b05d2d'});s+=line([72,40],[72,y],{color:'#b05d2d',dash:true});s+=label(47,(40+y)/2+8,'h');s+=line([350,40],[350,268],{color:'#6c8277',dash:true})+label(376,165,'H');}
+  if(cut){const y=40+228*cut;s+=ring(210,y,108*cut,28*cut,{kind:'cone-section',color:'#b05d2d'});s+=line([72,40],[72,y],{color:'#b05d2d',dash:true});s+=label(44,(40+y)/2+8,levels?F(levels.small)+' см':'h');s+=line([350,40],[350,268],{color:'#6c8277',dash:true})+label(379,165,levels?F(levels.whole)+' см':'H');}
   if(smallVolume!==undefined)s+=label(210,20,'V малого = '+F(smallVolume),'small-volume');
   if(wholeVolume!==undefined)s+=label(210,20,'V большого = '+F(wholeVolume),'whole-volume');
   if(ratio!==undefined)s+=fraction(150,335,'h','H')+label(196,343,'=')+fraction(244,335,1,ratio,'height-ratio');
@@ -3666,6 +4387,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   return s;
  }
  function composite(n){
+  if(n>4)return polygonComposite(n);
   const lower=n===3?[[95,270],[300,270],[235,220]]:[[85,275],[275,275],[337,221],[147,221]],upper=lower.map(([x,y])=>[x,y-100]),apex=[211,42];
   const front=n===3?2:3;
   let s=path('M'+lower.map(p=>p.join(',')).join('L')+'Z',{fill:'#f5faf7',width:0});
@@ -3677,39 +4399,110 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
   upper.forEach((p,i)=>{s+=line(p,apex,{dash:i===upper.length-1});});
   return s;
  }
- function tank(litres,factor,after){
+ function polygonComposite(n){
+  const apex=[210,46];
+  const lower=Array.from({length:n},(_,i)=>{
+   const angle=.31+2*Math.PI*i/n;
+   return [Math.round(210+123*Math.cos(angle)),Math.round(264+47*Math.sin(angle))];
+  });
+  const upper=lower.map(([x,y])=>[x,y-94]);
+  const next=i=>(i+1)%n, previous=i=>(i+n-1)%n;
+  const visibleSides=lower.map(([x],i)=>lower[next(i)][0]<x);
+  // The winding of the projected triangle identifies the exposed roof faces.
+  const visibleRoof=upper.map(([x,y],i)=>{
+   const [nx,ny]=upper[next(i)];
+   return (nx-x)*(apex[1]-y)-(ny-y)*(apex[0]-x)>0;
+  });
+  const edges={base:[],seam:[],vertical:[],pyramid:[]};
+  lower.forEach((bottom,i)=>{
+   const after=next(i),before=previous(i),top=upper[i];
+   edges.base.push(line(bottom,lower[after],{dash:!visibleSides[i]}));
+   edges.seam.push(line(top,upper[after],{color:'#a66a37',dash:!visibleSides[i]&&!visibleRoof[i]}));
+   edges.vertical.push(line(bottom,top,{dash:!visibleSides[before]&&!visibleSides[i]}));
+   edges.pyramid.push(line(top,apex,{dash:!visibleRoof[before]&&!visibleRoof[i]}));
+  });
+  return '<g aria-hidden="true">'+Object.entries(edges).map(([kind,segments])=>`<g data-stereo-edge="${kind}">${segments.join('')}</g>`).join('')+'</g>';
+ }
+ function tank(litres,factor,after,depth){
   const top=270-100*(after?factor:1);
   let s=path('M95 55V270H305V55',{fill:'#f9fcfa'})+path(`M96 ${top}H304V269H96Z`,{fill:'#d9edf6',color:'#5e9db6',width:2});
   if(after)s+=path('M171 234H235L257 215H193ZM171 234V259H235V234M235 259L257 240V215',{fill:'#b6c6c5',color:'#526c6b',width:2});
-  s+=line([327,270],[327,top],{color:'#b05d2d',dash:true})+label(361,(270+top)/2+8,after?F(factor)+'h':'h',after?'level-factor':undefined);
+  s+=line([327,270],[327,top],{color:'#b05d2d',dash:true})+label(361,(270+top)/2+8,depth!==undefined?F(depth)+' см':after?F(factor)+'h':'h',depth!==undefined?'water-depth':after?'level-factor':undefined);
   s+=label(200,305,after?'Та же вода и деталь':F(litres)+' л воды',after?undefined:'litres');
   return s;
  }
  function supports(t){return !!t&&ids.has(t.id);}
+ // A saved exam has its own pinned condition. Project only its authored givens;
+ // the lesson's model may also hold the answer or intermediate results.
+ function condition(t){
+  const p=t.params, m=t.model;
+  let givens;
+  switch(t.id){
+   case 'grid': case 'practical': if(m)givens={a:m.a,b:m.b};break;
+   case 'triangle': if(m)givens=p?.perimeter===undefined?{base:2*m.a,side:m.b}:{base:p.base,perimeter:p.perimeter};break;
+   case 'quadrilateral': case 'box': if(m)givens={a:m.a,b:m.b,h:m.h};break;
+   case 'pyramid': if(m)givens={a:m.a,h:m.h};break;
+   case 'circle': if(m)givens={r:m.r,d:m.d};break;
+   case 'roundbody': if(m)givens={body:m.body,a:m.a,...(m.body==='sphere'?{}:{h:m.h})};break;
+   case 'scale': if(Number.isSafeInteger(t.seed))givens={volume:27*(2+t.seed%7)};break;
+   case 'practice-free-area': if(p)givens={a:p.a,b:p.b,c:p.c};break;
+   case 'practice-fence': if(p)givens={a:p.a,b:p.b,g:p.g};break;
+   case 'practice-spokes': if(p)givens=p.gaps===undefined?{n:p.n}:{n:p.n,between:p.gaps-1};break;
+   case 'practice-faces': if(p)givens={n:p.n};break;
+   case 'practice-triangle-angle': if(p)givens={a:p.a,b:p.b};break;
+   case 'practice-diameter-chord': if(p)givens={r:p.r,chord:p.chord};break;
+   case 'practice-displacement': if(p)givens=p.before===undefined?{litres:p.litres,factor:p.factor}:{litres:p.litres,before:p.before,after:p.after};break;
+   case 'practice-pour': if(p)givens={ratio:p.ratio,oldH:p.oldH};break;
+   case 'practice-joined-surface': if(p)givens=p.width===undefined?{a:p.a}:{width:p.width,baseHeight:p.baseHeight,upperWidth:p.upperWidth,raise:p.raise,depth:p.depth};break;
+   case 'practice-cone-area': if(p)givens={r:p.r,l:p.l,ratio:p.ratio};break;
+   case 'practice-pyramid-lateral': if(p)givens=p.perimeter===undefined?{n:p.n,side:10*p.s,edge:13*p.s}:{n:p.n,perimeter:p.perimeter,edge:p.edge};break;
+   case 'practice-box-diagonal': if(p)givens={a:p.a,b:p.b,d:p.d};break;
+   case 'practice-similar-volume': if(p)givens=p.height===undefined?{factor:p.factor,small:p.small}:{height:p.height,smallHeight:p.smallHeight,whole:p.whole};break;
+  }
+  return givens&&Object.entries(givens).every(([key,value])=>key==='body'?['cylinder','cone','sphere'].includes(value):Number.isFinite(value))
+   ? {kind:'geometry-figure',figure:t.id,givens} : null;
+ }
  function visual(t){
   if(!supports(t))return '';
-  const p=t.params||{},m=t.model||{},id=t.id;let figures=[],note='Чертёж схематический. На нём подписаны только данные условия.';
+  const d=t.display?.kind==='geometry-figure'?t.display:condition(t);
+  if(d?.figure!==t.id)return '';
+  const p=d.givens,id=t.id;let figures=[],note='Чертёж схематический. На нём подписаны только данные условия.';
   switch(id){
-   case 'box':figures=[figure('Закрытая коробка',box({a:m.a,b:m.b,h:m.h}))];break;
+   case 'box':figures=[figure('Закрытая коробка',box(p))];break;
    case 'roundbody':{
-    if(m.body==='sphere')figures=[figure('Шар',`<circle cx="210" cy="164" r="112" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`+ring(210,164,112,28,{kind:'sphere-equator',width:2})+`<g data-hidden="true" data-stereo-aux="radius">${line([210,164],[322,164],{color:'#b05d2d',dash:true})}</g>`+`<circle cx="210" cy="164" r="3" fill="#173e3c"/>`+label(266,149,'r = '+F(m.a),'radius'))];
-    else figures=[figure(m.body==='cone'?'Конус':'Цилиндр',m.body==='cone'?cone({radius:m.a,height:m.h}):cylinder({radius:'r = '+F(m.a),height:m.h}))];break;
+    if(p.body==='sphere')figures=[figure('Шар',`<circle cx="210" cy="164" r="112" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`+ring(210,164,112,28,{kind:'sphere-equator',width:2})+`<g data-hidden="true" data-stereo-aux="radius">${line([210,164],[322,164],{color:'#b05d2d',dash:true})}</g>`+`<circle cx="210" cy="164" r="3" fill="#173e3c"/>`+label(266,149,'r = '+F(p.a),'radius'))];
+    else figures=[figure(p.body==='cone'?'Конус':'Цилиндр',p.body==='cone'?cone({radius:p.a,height:p.h}):cylinder({radius:'r = '+F(p.a),height:p.h}))];break;
    }
-   case 'pyramid':figures=[figure('Пирамида с квадратным основанием',pyramid(4,m.a,undefined,m.h))];break;
-   case 'scale':figures=[figure('Сечение параллельно основанию',cone({cut:1/3,wholeVolume:27*(2+t.seed%7),ratio:3}))];note+=' h — высота малого конуса, H — высота большого. Измерять длины по экрану не нужно.';break;
-   case 'practice-displacement':figures=[figure('До погружения',tank(p.litres,p.factor,false)),figure('После погружения',tank(p.litres,p.factor,true))];note+=' Схема вертикального сечения бака. Деталь целиком под водой; вода не вылилась.';break;
+   case 'pyramid':figures=[figure('Пирамида с квадратным основанием',pyramid(4,p.a,undefined,p.h))];break;
+   case 'scale':figures=[figure('Сечение параллельно основанию',cone({cut:1/3,wholeVolume:p.volume,ratio:3}))];note+=' h — высота малого конуса, H — высота большого. Измерять длины по экрану не нужно.';break;
+   case 'practice-displacement':{
+    const factor=p.factor??p.after/p.before;
+    figures=[figure('До погружения',tank(p.litres,factor,false,p.before)),figure('После погружения',tank(p.litres,factor,true,p.after))];
+    note+=' Схема вертикального сечения бака. Деталь целиком под водой; вода не вылилась.';break;
+   }
    case 'practice-pour':figures=[figure('Первый цилиндр',cylinder({radius:'r',height:p.oldH,water:true,radiusSize:100/p.ratio})),figure('Второй цилиндр',cylinder({radius:F(p.ratio)+'r',unknown:true}))];note+=' Воду переливают полностью. Радиус второго основания указан относительно первого.';break;
-   case 'practice-joined-surface':figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены внешние линии соединения кубов; общая грань находится внутри.';break;
-   case 'practice-faces':figures=[figure(nName(p.n)+' и пирамида',composite(p.n))];note+=' Рыжим отмечены рёбра соединения. Сама общая грань находится внутри тела. Соседние внешние грани не лежат в одной плоскости.';break;
+   case 'practice-joined-surface':
+    if(p.width===undefined){figures=[figure('Два куба, склеенные целыми гранями',box({a:p.a,b:p.a,h:p.a},true))];note+=' Рыжим отмечены линии соединения кубов.';}
+    else figures=[figure('Ступенчатое тело из двух призм',steppedBox(p))];
+    break;
+   case 'practice-faces':figures=[figure(nName(p.n)+' и пирамида',composite(p.n))];note+=' Рыжим отмечены рёбра соединения. Соседние внешние грани не лежат в одной плоскости.';break;
    case 'practice-cone-area':{const r2=p.r*p.ratio,l2=p.l*2,unitScale=Math.min(108/r2,228/Math.max(Math.sqrt(p.l*p.l-p.r*p.r),Math.sqrt(l2*l2-r2*r2)));figures=[figure('Первый конус',cone({radius:p.r,slant:p.l,unitScale})),figure('Второй конус',cone({radius:r2,slant:l2,unitScale}))];note+=' l — образующая конуса. Оба конуса показаны в одном масштабе.';break;}
-   case 'practice-pyramid-lateral':figures=[figure('Правильная '+(p.n===6?'шестиугольная':'четырёхугольная')+' пирамида',pyramid(p.n,10*p.s,13*p.s))];note+=' Дано боковое ребро, а высоту боковой грани предстоит найти.';break;
+   case 'practice-pyramid-lateral':{
+    let body=pyramid(p.n,p.side,p.edge);
+    if(p.perimeter!==undefined)body+=label(210,333,'P основания = '+F(p.perimeter)+' см','perimeter');
+    figures=[figure('Правильная '+(p.n===6?'шестиугольная':'четырёхугольная')+' пирамида',body)];break;
+   }
    case 'practice-box-diagonal':figures=[figure('Диагональ боковой грани',box({a:p.a,b:p.b,d:p.d},false,true))];note+=' Выделенная диагональ лежит в грани с ребром '+F(p.a)+'. Высота пока неизвестна.';break;
-   case 'practice-similar-volume':figures=[figure('Малый и большой конусы',cone({cut:1/p.factor,smallVolume:p.small,ratio:p.factor}))];note+=' h — высота малого конуса, H — высота большого. Плоскость сечения параллельна основанию.';break;
+   case 'practice-similar-volume':{
+    const cut=p.height===undefined?{cut:1/p.factor,smallVolume:p.small,ratio:p.factor}:{cut:p.smallHeight/p.height,wholeVolume:p.whole,levels:{small:p.smallHeight,whole:p.height}};
+    figures=[figure('Малый и большой конусы',cone(cut))];
+    note+=p.height===undefined?' h — высота малого конуса, H — высота большого. Плоскость сечения параллельна основанию.':' Плоскость сечения параллельна основанию.';break;
+   }
   }
   return `<div class="stereo-figures" data-stereo-task="${E(id)}"><div style="display:flex;flex-wrap:wrap;gap:16px;align-items:start">${figures.join('')}</div><p class="muted">${E(note)}</p></div>`;
  }
- function nName(n){return n===3?'Треугольная призма':'Прямоугольный параллелепипед';}
- root.PathStereoFigures=Object.freeze({supports,visual});
+ function nName(n){return n>4?n+'-угольная призма':n===3?'Треугольная призма':'Прямоугольный параллелепипед';}
+ root.PathStereoFigures=Object.freeze({supports,visual,condition});
  // Six current families use a step-plan model. Add their diagram while leaving
  // the plan controller, semantic state and persistence callback unchanged.
  if(root.PathModels){const previous=root.PathModels.mount;root.PathModels.mount=function(el,t,options){
@@ -3955,6 +4748,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     'practice-change': ['arithmetic'],
     'practice-afford': ['rounding', 'arithmetic'],
     'practice-transport': ['rounding'],
+    'practice-overnight': ['arithmetic'],
     'practice-units-match': ['units'],
     'practice-time': ['units', 'decimals'],
     'practice-area-units': ['units', 'powers-roots'],
@@ -3970,6 +4764,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     'practice-luggage': ['tables-choice', 'logic-sets'],
     'practice-rental': ['tables-choice', 'ratio'],
     'practice-graph-match': ['graphs'],
+    'practice-tangent-match': ['graphs'],
     'practice-graph-slope': ['graphs', 'arithmetic'],
     'practice-logic-order': ['logic-sets', 'inequality-line'],
     'practice-logic-all': ['logic-sets'],
@@ -4019,6 +4814,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     'practice-inequality-match': ['inequality-line', 'identities-domain'],
     'practice-digits-multiple': ['divisibility'],
     'practice-digits-product': ['divisibility', 'arithmetic'],
+    'practice-digit-pair': ['divisibility'],
     'practice-meeting': ['motion'],
     'practice-river': ['motion', 'units'],
     'practice-work': ['work', 'fractions'],
@@ -4033,6 +4829,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     'practice-vase-order': ['logic-sets', 'reasoning'],
     'practice-integer-budget': ['reasoning', 'arithmetic', 'equations'],
     'practice-whole-count': ['reasoning', 'rounding', 'inequality-line'],
+    'practice-missing-perimeter': ['reasoning'],
     'equations-linear': ['equations', 'arithmetic'],
     'equations-signs': ['equations', 'arithmetic'],
     'equations-fractions': ['equations', 'fractions'],
@@ -4215,6 +5012,10 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     return plain(value) && value.version === 1 && integer(value.serial) && plain(value.lessons) && plain(value.seen) &&
       Object.keys(value.seen).length < 20000 && Object.values(value.seen).every(item => item === true) && Array.isArray(value.runs) && value.runs.length <= 200;
   }
+  function runSeedsValid(run) {
+    return run.taskSeeds === undefined || (Array.isArray(run.taskSeeds) && run.taskSeeds.length === 21 &&
+      run.taskSeeds.every(seed => integer(seed)));
+  }
   function loaderCompatibility(value, knownIds) {
     if (!pathRootValid(value)) return 'rejected';
     let unverified = false;
@@ -4224,7 +5025,7 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     const lessonShape = row => plain(row) && integer(row.seed) && integer(row.stage, 4) && integer(row.step, 20) &&
       integer(row.independent) && integer(row.guided) && string(row.note) && string(row.draft) && typeof row.help === 'boolean' &&
       typeof row.attempted === 'boolean' && Array.isArray(row.checks) && taskFirstValid(row.taskFirst);
-    const runShape = run => plain(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
+    const runShape = run => plain(run) && runSeedsValid(run) && ['exam', 'diagnostic'].includes(run.kind) && Array.isArray(run.ids) && run.ids.length === 21 &&
       run.ids.every(known) && Array.isArray(run.answers) && run.answers.length <= 21 && run.answers.every(answer => plain(answer) &&
         known(answer.id) && integer(answer.seed) && typeof answer.value === 'string' && answer.value.length < 10000 && typeof answer.correct === 'boolean') &&
       integer(run.seed) && integer(run.i, 21) && Number.isFinite(run.start) && (run.draft === undefined || string(run.draft));
@@ -4235,15 +5036,20 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     return unverified ? 'unverified' : 'compatible';
   }
   function checkValid(run, ids, active) {
-    if (!plain(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
+    if (!plain(run) || !runSeedsValid(run) || !['diagnostic', 'exam'].includes(run.kind) || !Array.isArray(run.ids) || run.ids.length !== 21 || !run.ids.every(id => ids.has(id)) ||
       !Array.isArray(run.answers) || run.answers.length > 21 || !integer(run.seed) || !integer(run.i, 21) || !Number.isFinite(run.start) || run.start < 0 ||
       run.draft !== undefined && !string(run.draft) || run.assisted !== undefined && typeof run.assisted !== 'boolean' ||
       run.interrupted !== undefined && typeof run.interrupted !== 'boolean') return false;
     if (active ? run.answers.length !== run.i : !Number.isFinite(run.finished) || run.finished <= 0 || run.answers.length !== 21) return false;
     return run.answers.every((answer, index) => {
-      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== run.seed + index || !string(answer.value) || typeof answer.correct !== 'boolean' ||
+      if (!plain(answer) || answer.id !== run.ids[index] || answer.seed !== (run.taskSeeds?.[index] ?? run.seed + index) || !string(answer.value) || typeof answer.correct !== 'boolean' ||
         answer.previouslySeen !== undefined && typeof answer.previouslySeen !== 'boolean' || answer.skipped !== undefined && typeof answer.skipped !== 'boolean') return false;
-      try { return answer.correct === (answer.value.trim() !== '' && root.PathData.correct(root.PathData.task(answer.id, answer.seed), answer.value)); }
+      if (!answer.value.trim()) return !answer.correct;
+      try {
+        const data = root.PathData;
+        const task = data.practice.taskForBankVersion(answer.id, answer.seed, run.bankVersion);
+        return answer.correct === data.correct(task, answer.value);
+      }
       catch (error) { return false; }
     });
   }
@@ -4474,7 +5280,7 @@ window.MathExamCourseExampleData = [{"id":"p6-fractions","course":"peterson6","l
 </script><script data-inline-source="/ege-baza/exam-map.js">
 (function (root) {
   'use strict';
-  // Editorial labels follow the base-level FIPI 2027 draft. The lesson bank
+  // Editorial labels follow the approved base-level FIPI 2027 documents. The lesson bank
   // remains the source of family IDs; this read-only view never writes progress.
   const definitions = [
     ['Практические расчёты и округление', 'Покупки, упаковки, поездки и округление ответа по смыслу.'],
@@ -4572,7 +5378,7 @@ add('units',[
 ]);
 add('data',['Найди в условии значение с подписью «Вт». Нужен именно вторник.','Сложи значения для вторника и среды. Остальные дни в сумму не входят.']);
 add('formulas',['Подставь время в t²: умножь 3 на 3.','Умножь найденный квадрат времени на ускорение из условия.','Раздели полученное произведение на 2, как указано в формуле s=at²/2.']);
-add('probability',['Вычти число бракованных деталей из общего числа деталей.','Раздели число исправных деталей на число всех деталей в коробке.']);
+add('probability',['Вычти число неисправных из общего количества.','Раздели число исправных на число всех равновозможных исходов.']);
 add('choice',['Умножь цену набора в A на нужное количество и прибавь доставку один раз.','Умножь цену набора в B на количество. Бесплатная доставка ничего не добавляет.','Сравни две полные стоимости с учётом доставки и выбери меньшую.']);
 add('graphs',(t,i)=>i===0?`Для ординаты подставь x = ${F(t.model.x)} в y=x². Наклон касательной вычисляется отдельно.`:`Для наклона подставь x = ${F(t.model.x)} в 2x. Здесь требуется значение производной.`);
 add('logic',['Слово «все» относится ко всей группе. Найди в условии численность группы.','Из числа изучающих алгебру вычти тех, кто изучает ещё и геометрию.']);
@@ -4583,7 +5389,7 @@ add('box',(t,i)=>at([
  /поверхности/.test(t.q)?'Найди площади трёх разных граней: ab, ah и bh. Затем сложи их.':'Умножь площадь основания на высоту коробки.',
  'У каждой грани есть равная противоположная. Удвой сумму площадей трёх разных граней.'
 ],i));
-add('triangle',['Проведи высоту к основанию. Она делит основание равнобедренного треугольника пополам.','Примени теорему Пифагора к половине треугольника: из квадрата боковой стороны вычти квадрат половины основания.','Из найденного квадрата высоты извлеки положительный квадратный корень.','Умножь всё основание на высоту и раздели на 2.']);
+add('triangle',(t,i)=>at(t.params?.perimeter===undefined?['Проведи высоту к основанию. Она делит основание равнобедренного треугольника пополам.','Примени теорему Пифагора к половине треугольника: из квадрата боковой стороны вычти квадрат половины основания.','Из найденного квадрата высоты извлеки положительный квадратный корень.','Умножь всё основание на высоту и раздели на 2.']:['Вычти длину основания из периметра. Остаток состоит из двух равных сторон.','Раздели основание пополам, чтобы найти AM.','В треугольнике ABM AB — гипотенуза, а AM и BM — катеты.','Извлеки положительный квадратный корень.'],i));
 add('quadrilateral',(t,i)=>i===0?`Сложи основания ${F(t.model.a)} и ${F(t.model.b)}, затем раздели сумму пополам.`:'Умножь среднюю линию трапеции на её высоту.');
 add('circle',(t,i)=>at([`Радиус — гипотенуза. Для квадрата половины хорды вычисли ${F(t.model.r)}² − ${F(t.model.d)}².`,'Из полученной разности извлеки положительный квадратный корень.','Перпендикуляр из центра делит хорду пополам. Удвой найденную половину хорды.'],i));
 add('roundbody',(t,i)=>{
@@ -4613,9 +5419,16 @@ add('equations',(t,i)=>{
 add('numberline',['Левая граница строгая: само число на ней не подходит. Возьми следующее целое справа.','Правая граница нестрогая: число на ней входит в промежуток.','Из последнего целого вычти первое и прибавь 1, чтобы учесть обе крайние точки.']);
 add('integers',['Делимость на 22 требует делимости на 2. Проверь последнюю цифру оставшегося числа.','Разложи 22 на два взаимно простых множителя, один из которых 2.','Сохрани порядок пяти цифр и чётную последнюю цифру. Разность сумм цифр на нечётных и чётных местах должна делиться на 11.']);
 add('motion',journey);
-add('mixtures',['Найди 18% от исходной массы раствора. Это масса вещества, которое остаётся после добавления воды.','Сложи исходную массу раствора и массу добавленной воды.','Раздели массу вещества на новую массу раствора и умножь на 100%.']);
+add('mixtures',(t,i)=>at([
+ `Найди ${F(t.params?.concentration ?? 18)}% от исходной массы. Добавленная вода не меняет массу растворённого вещества.`,
+ 'Сложи исходную массу и массу добавленной воды.',
+ 'Раздели массу растворённого вещества на массу всей смеси и умножь на 100.'
+],i));
 add('reasoning',ring);
 
+practice('missing-perimeter',(_,i)=>at(["Представь сумму периметров пары противоположных частей. В неё входит каждая ширина и каждая высота дважды.", "Из суммы известной пары вычти периметр второй части в паре с пропуском."],i));
+practice('digit-pair',(_,i)=>at(["Четырёхзначное произведение не превышает 9999. Раздели 9999 на множитель и оставь целую часть.", "Умножь указанный в шаге вариант и сравни наборы цифр.", "Проверь обе записи. Каждую заданную цифру используй ровно один раз."],i));
+practice('overnight',(_,i)=>at(["Проверь, что считаешь минуты до полуночи; в сутках 24 × 60 минут.", "После полуночи часы снова отсчитываются от нуля. Переведи указанное утреннее время в минуты.", "Сложи две части времени."],i));
 practice('change',(t,i)=>i===0?`Умножь ${F(t.params.price)} рублей на ${F(t.params.n)} тетрадей.`:`Из ${F(t.params.paid)} рублей вычти стоимость всех тетрадей.`);
 practice('afford',(t,i)=>{
  return at([
@@ -4625,51 +5438,87 @@ practice('afford',(t,i)=>{
  ],i);
 });
 practice('transport',(t,i)=>i===0?`Сложи ${F(t.params.children)} детей и ${F(t.params.adults)} взрослых: место нужно каждому пассажиру.`:`Раздели число пассажиров на ${F(t.params.seats)} мест. При ненулевом остатке нужен ещё один автобус.`);
-practice('units-match',[
+practice('units-match',(t,i)=>t.params.varied
+ ? `Оцени величину «${t.labels[i]}». Переведи близкие значения из списка в одинаковые единицы и сравни порядок величины.`
+ : at([
  'Сравни толщину одного листа с миллиметровой отметкой на линейке. Выбери подходящую величину из списка.',
  'Представь высоту стола относительно роста человека. Сравни порядок величин в предложенных единицах.',
  'Вдоль вагона помещается много рядов сидений. Сравни предложенные длины, переведя их в метры.',
  'Океанская впадина намного глубже высоты дома. Сравни предложенные расстояния по порядку величины.'
-]);
+],i));
 practice('time',(t,i)=>i===0?`Умножь ${F(t.params.h)} ч на 60 минут в часе.`:`Прибавь к переведённым часам ещё ${F(t.params.m)} минут.`);
 practice('area-units',['Сначала переведи 1 метр в сантиметры по шкале единиц длины.','Коэффициент перевода длины возведи в квадрат: квадратный метр имеет две стороны.','Умножь площадь в м² на найденное число см² в одном м².']);
-practice('chart',(t,i)=>i===0?`Сравни высоты всех столбцов и найди ${t.params.ask?'самый высокий':'самый низкий'}. Считай его значение по шкале.`:t.params.ask?'В ответ запиши число посетителей у выбранного столбца.':'В ответ запиши номер дня под выбранным столбцом, а не число посетителей.');
+practice('chart',(t,i)=>{
+ if(t.params.line)return i===0?'Найди самую низкую отмеченную точку и прочитай её значение по вертикальной шкале.':'Прочитай номер дня под выбранной точкой на горизонтальной оси.';
+ return i===0?`Сравни высоты всех столбцов и найди ${t.params.ask?'самый высокий':'самый низкий'}. Считай его значение по шкале.`:t.params.ask?'В ответ запиши число посетителей у выбранного столбца.':'В ответ запиши номер дня под выбранным столбцом, а не число посетителей.';
+});
 practice('ranking',(t,i)=>at([`Найди строку команды «${t.params.rows[t.params.target][0]}» и сложи её баллы трёх туров.`,'Вычисли суммы остальных команд. Посчитай, сколько из них строго больше суммы выбранной команды.','К числу команд с большим результатом прибавь 1.'],i));
 practice('interval-data',(t,i)=>i===0?`Посчитай дни от ${t.params.a+1}-го до ${t.params.b+1}-го, включая оба конца промежутка.`:'Сложи значения только тех столбцов, которые вошли в указанный промежуток.');
-practice('electric',(t,i)=>i===0?`Сначала вычисли квадрат напряжения: ${F(t.params.u)} · ${F(t.params.u)}.`:`Раздели квадрат напряжения на сопротивление ${F(t.params.r)}.`);
+practice('electric',(t,i)=>{
+ const p=t.params;
+ if(p.speed!==undefined)return at([`Сначала возведи скорость ${F(p.speed)} м/с в квадрат.`,`Раздели квадрат скорости на радиус ${F(p.radius)} м.`],i);
+ if(p.i!==undefined)return at([`Вычисли квадрат силы тока: ${F(p.i)} · ${F(p.i)}.`,`Умножь полученный квадрат на сопротивление ${F(p.r)} Ом.`],i);
+ return at([`Сначала вычисли квадрат напряжения: ${F(p.u)} · ${F(p.u)}.`,`Раздели квадрат напряжения на сопротивление ${F(p.r)}.`],i);
+});
 practice('temperature',(t,i)=>i===0?`Подставь C = ${F(t.params.c)} и сначала вычисли 1,8 · (${F(t.params.c)}). Сохрани знак температуры.`:'К найденному произведению прибавь 32.');
-practice('inverse-formula',(t,i)=>at([`Сложи основания ${F(t.params.a)} и ${F(t.params.b)}.`,`Умножь площадь ${F(t.params.S)} на 2, чтобы убрать деление на 2 в формуле.`,'Раздели удвоенную площадь на сумму оснований.'],i));
-practice('probability-draw',['Благоприятный исход — выбор зелёного жетона. Найди их число в условии.','При выборе учитываются жетоны обоих цветов. Найди их общее число.','Раздели число зелёных жетонов на общее число жетонов.']);
-practice('probability-opposite',(t,i)=>i===0?`Раздели ${F(t.params.bad)} неисправных насосов на ${F(t.params.n)} насосов всего.`:'Из 1 вычти найденную вероятность неисправности.');
+practice('inverse-formula',(t,i)=>t.reference==='area-formula'
+ ? at(['Сложи основания трапеции.','Умножь сумму оснований на высоту и раздели на два.'],i) : at([`Сложи основания ${F(t.params.a)} и ${F(t.params.b)}.`,`Умножь площадь ${F(t.params.S)} на 2, чтобы убрать деление на 2 в формуле.`,'Раздели удвоенную площадь на сумму оснований.'],i));
+practice('probability-draw',(t,i)=>t.params.ordinal
+ ? at(['Посчитай все возможные позиции проекта.','Подходит одно место из всех равновозможных. Раздели 1 на число мест.'],i)
+ : t.params.excluded ? at([
+ 'Сложи количества из двух непересекающихся групп отложенных наборов.',
+ 'Вычти число отложенных из числа всех наборов.',
+ 'Раздели число готовых наборов на число всех наборов.'
+],i) : at(['Благоприятный исход — выбор зелёного жетона. Найди их число в условии.','При выборе учитываются жетоны обоих цветов. Найди их общее число.','Раздели число зелёных жетонов на общее число жетонов.'],i));
+practice('probability-opposite',(t,i)=>i===0?`Число неподходящих исходов ${F(t.params.bad)} раздели на число всех исходов ${F(t.params.n)}.`:'Из 1 вычти вероятность противоположного исхода.');
 practice('delivery',(t,i)=>i<3?`В магазине ${t.params.rows[i][0]} умножь цену на ${F(t.params.n)} пособий. Доставка бесплатна только при превышении ненулевого порога; иначе прибавь её стоимость.`:'Сравни полные стоимости во всех трёх магазинах с учётом доставки. Выбери меньшую.');
-practice('luggage',(t,i)=>`Для сумки ${i+1} проверь все четыре ограничения: длину, высоту, ширину и массу. Равенство границе допустимо; превышение хотя бы одной — нет.`);
-practice('rental',(t,i)=>i<3?`Для машины ${t.params.rows[i][0]} вычисли ${F(t.params.km)} / 100 · расход · цену литра. Прибавь аренду за сутки.`:'Сравни суммы аренды и топлива для всех машин. Выбери наименьшую.');
-practice('graph-match',(t,i)=>`На участке ${['А','Б','В','Г'][i]} сравни значение в конце со значением в начале. Учти знак изменения и величину подъёма относительно остальных участков.`);
+practice('luggage',(t,i)=>`Для варианта ${i+1} проверь три размера и массу. Равенство границе допустимо. Если хотя бы одна граница превышена, вариант не подходит.`);
+practice('rental',(t,i)=>{
+ if(t.params.rating)return i<t.params.rows.length?'Возьми прочность, аккуратность и число замечаний из одной строки. Подставь их в формулу балла.':'Сравни рассчитанные баллы и выбери наименьший.';
+ return i<3?`Для машины ${t.params.rows[i][0]} вычисли ${F(t.params.km)} / 100 · расход · цену литра. Прибавь аренду за сутки.`:'Сравни суммы аренды и топлива для всех машин. Выбери наименьшую.';
+});
+practice('graph-match',(t,i)=>t.reference==='graph-match-criteria'
+ ? 'Сравни концы отрезка. Для роста и убывания важна разность, а для знака или порога — сами значения на всём отрезке.'
+ : `На участке ${['А','Б','В','Г'][i]} сравни значение в конце со значением в начале. Учти знак изменения и величину подъёма относительно остальных участков.`);
+practice('tangent-match',(t,i)=>{
+ const panel=t.params.panels[i];
+ return panel ? `На рисунке ${['А','Б','В','Г'][i]} возьми две отмеченные точки пунктирной прямой. Из ординаты правой вычти ординату левой и раздели результат на 2.` : 'Для каждой прямой сравни приращения координат.';
+});
 practice('graph-slope',(t,i)=>at([`Вычти ординаты в порядке конца и начала: (${F(t.params.y2)}) − (${F(t.params.y1)}).`,`Вычти абсциссы в том же порядке: ${F(t.params.x2)} − ${F(t.params.x1)}.`,'Раздели изменение y на изменение x. Знак результата показывает направление наклона.'],i));
 practice('logic-order',(t,i)=>`Проверь утверждение ${i+1} по цепочке сравнений из условия. Если можно придумать другой порядок, при котором оно неверно, обязательного вывода нет.`);
 practice('logic-all',(t,i)=>`Проверь утверждение ${i+1}: что известно обо всех участниках, а что — о людях вне кружка? Обратное утверждение из слова «все» не следует.`);
-practice('grid-cut',['Дострой фигуру до внешнего прямоугольника. Посчитай его ширину и высоту по клеткам и перемножь.','Найди ширину и высоту отсутствующего прямоугольника. Перемножь их.','Из площади внешнего прямоугольника вычти площадь выреза.']);
+practice('grid-cut',(t,i)=>at(t.params.estimate?['Дострой общий прямоугольник по линиям сетки.','Посмотри на левый незакрашенный угол. Найди длины двух перпендикулярных сторон, учитывая части клетки.','Посмотри на правый незакрашенный угол и найди площадь второго треугольника.','Отними две найденные площади от площади прямоугольника и округли только итог.']:['Дострой фигуру до внешнего прямоугольника. Посчитай его ширину и высоту по клеткам и перемножь.','Найди ширину и высоту отсутствующего прямоугольника. Перемножь их.','Из площади внешнего прямоугольника вычти площадь выреза.'],i));
 practice('grid-parallelogram',['Посчитай единичные отрезки вдоль горизонтального основания.','Посчитай вертикальные промежутки между основаниями. Нужна перпендикулярная высота.','Умножь длину основания на перпендикулярную высоту.']);
 practice('free-area',(t,i)=>at([`Площадь квадратного участка: ${F(t.params.a)} · ${F(t.params.a)}.`,`Площадь дома: ${F(t.params.b)} · ${F(t.params.c)}.`,'Из площади участка вычти площадь дома.'],i));
 practice('fence',(t,i)=>i===0?`Сложи стороны ${F(t.params.a)} и ${F(t.params.b)}, затем удвой сумму.`:`Из периметра вычти ${F(t.params.g)} м незагороженного проезда.`);
-practice('spokes',['Вспомни, сколько градусов содержит полный оборот вокруг центра колеса.','Каждая спица начинает один промежуток до следующей. Учти также промежуток между последней и первой.','Раздели полный угол вокруг точки на число одинаковых промежутков.']);
-practice('displacement',(t,i)=>at([`Умножь ${F(t.params.litres)} л на ${F(t.params.factor)}: площадь дна не менялась.`,'Из объёма под новым уровнем вычти исходный объём воды.','Переведи вытесненный объём из литров в см³, умножив на 1000.'],i));
+practice('spokes',(t,i)=>at(t.params.gaps===undefined?['Вспомни, сколько градусов содержит полный оборот вокруг центра колеса.','Каждая спица начинает один промежуток до следующей. Учти также промежуток между последней и первой.','Раздели полный угол вокруг точки на число одинаковых промежутков.']:['Мысленно обойди круг и вернись к первой отметке. Сколько градусов ты прошёл?','На дуге с одной отметкой внутри два промежутка. Примени этот способ подсчёта к своей дуге.','Сначала вычисли величину одного промежутка. Затем учти все промежутки меньшей дуги.'],i));
+practice('displacement',(t,i)=>at(t.params.before===undefined?[`Умножь ${F(t.params.litres)} л на ${F(t.params.factor)}: площадь дна не менялась.`,'Из объёма под новым уровнем вычти исходный объём воды.','Переведи вытесненный объём из литров в см³, умножив на 1000.']:['Умножь исходный объём воды в литрах на 1000.',`Раздели объём воды в см³ на прежнюю глубину ${F(t.params.before)} см.`,`Высота вытесненного слоя равна ${F(t.params.after)} − ${F(t.params.before)}.`,`Умножь объём слоя толщиной 1 см на высоту вытесненного слоя.`],i));
 practice('pour',(t,i)=>i===0?`Радиус увеличился в ${F(t.params.ratio)} раза. Возведи этот коэффициент в квадрат, чтобы сравнить площади дна.`:`Раздели исходную высоту ${F(t.params.oldH)} см на найденное отношение площадей: объём воды сохранился.`);
-practice('joined-surface',['Грань куба — квадрат. Умножь ребро само на себя.','У двух отдельных кубов по шесть квадратных граней. Вычти две грани, которые соприкоснулись при склеивании.','Умножь площадь одной квадратной грани на число таких квадратов, оставшихся снаружи.']);
+practice('joined-surface',(t,i)=>at(t.params.width===undefined?['Грань куба — квадрат. Умножь ребро само на себя.','У двух отдельных кубов по шесть квадратных граней. Вычти две грани, которые соприкоснулись при склеивании.','Умножь площадь одной квадратной грани на число таких квадратов, оставшихся снаружи.']:['Для нижней призмы найди площади трёх разных граней. У каждой есть равная ей противоположная грань.','Повтори подсчёт для верхней призмы с её шириной и высотой.','Площадь контакта равна площади основания верхней призмы.','В сложенных площадях эта общая часть встречается дважды. Учти обе лишние площади.'],i));
 practice('faces',['У призмы два основания. Добавь по одной боковой грани на каждую сторону основания.','У пирамиды одно основание. Добавь по одной треугольной грани на каждую сторону основания.','Сложи число граней обоих тел и вычти две совпавшие грани: после склеивания они внутри.']);
 practice('right-ratio',(t,i)=>at(['Найди сторону напротив прямого угла C. Именно она является гипотенузой.',t.params.ask?'Найди катет, который не граничит с углом A: он противолежащий.':'Найди катет, который граничит с углом A: он прилежащий.',`Для ${t.params.ask?'sin':'cos'} A раздели ${t.params.ask?'противолежащий':'прилежащий'} катет на гипотенузу.`],i));
 practice('triangle-angle',(t,i)=>i===0?`Сложи известные углы ${F(t.params.a)}° и ${F(t.params.b)}°.`:'Из 180° вычти сумму двух известных углов.');
 practice('parallelogram',['Выбери высоту, проведённую перпендикулярно именно к указанному основанию.','Площадь параллелограмма равна основанию, умноженному на соответствующую высоту.']);
 practice('diameter-chord',(t,i)=>at([`AB — диаметр, поэтому удвой радиус ${F(t.params.r)}.`,'Угол C опирается на диаметр и равен 90°. По Пифагору вычисли BC²=AB²−AC².','Из найденного квадрата длины извлеки положительный квадратный корень.'],i));
 practice('cone-area',['Для первого конуса умножь радиус на образующую. Множитель π пока можно не записывать.','Для второго конуса также умножь его радиус на его образующую.','Раздели второе произведение на первое. Общий множитель π сократится.']);
-practice('pyramid-lateral',['Высота боковой грани делит её основание пополам. Найди половину стороны основания пирамиды.','В боковой грани примени теорему Пифагора: из квадрата ребра вычти квадрат половины основания и извлеки корень.','Площадь треугольной грани — половина произведения её основания на найденную высоту.','Умножь площадь одной боковой грани на число сторон основания пирамиды.']);
+practice('pyramid-lateral',(t,i)=>at(t.params.perimeter===undefined?['Высота боковой грани делит её основание пополам. Найди половину стороны основания пирамиды.','В боковой грани примени теорему Пифагора: из квадрата ребра вычти квадрат половины основания и извлеки корень.','Площадь треугольной грани — половина произведения её основания на найденную высоту.','Умножь площадь одной боковой грани на число сторон основания пирамиды.']:['У основания все стороны равны. Раздели периметр на число сторон.','Высота боковой грани делит сторону основания пополам.','Из квадрата бокового ребра вычти квадрат половины стороны. Из разности извлеки корень.','Сложи площади боковых треугольников. У всех одна высота, а их основания вместе дают периметр.'],i));
 practice('box-diagonal',(t,i)=>at([`Диагональ грани — гипотенуза. Для квадрата высоты вычисли ${F(t.params.d)}² − ${F(t.params.a)}².`,'Из полученной разности извлеки положительный квадратный корень.','Перемножь обе стороны основания и найденную высоту.'],i));
-practice('similar-volume',['Сравни высоты большого и малого конусов. Это также отношение всех соответствующих длин.','Возведи отношение длин в куб, чтобы получить отношение объёмов.','Умножь объём малого конуса на найденное отношение объёмов.']);
+practice('similar-volume',(t,i)=>at(t.params.height===undefined?['Сравни высоты большого и малого конусов. Это также отношение всех соответствующих длин.','Возведи отношение длин в куб, чтобы получить отношение объёмов.','Умножь объём малого конуса на найденное отношение объёмов.']:['Раздели высоту большого конуса на высоту малого.','Возведи отношение высот в куб. Раздели объём исходного конуса на полученное число.','Из объёма исходного конуса вычти объём малой отсечённой части.'],i));
 practice('fraction-add',['Найди наименьшее число, которое делится и на 6, и на 4. Это общий знаменатель.','Во сколько раз увеличился знаменатель первой дроби? На столько же умножь её числитель.','Во сколько раз увеличился знаменатель второй дроби? На столько же умножь её числитель.','Сложи новые числители. Общий знаменатель оставь прежним и сократи результат, если возможно.']);
 practice('fraction-divide',(t,i)=>i===0?`У делителя ${F(t.params.c)}/${F(t.params.d)} поменяй местами числитель и знаменатель.`:'Умножь первую дробь на обратную вторую. Перемножь числители и знаменатели, затем сократи.');
-practice('fraction-expression',['Сначала выполни деление: вместо деления на 2/3 умножь вторую дробь на 3/2.','Приведи полученную дробь и первое слагаемое к общему знаменателю. Сложи числители.']);
+practice('fraction-expression',(t,i)=>t.reference==='mixed-fraction-expression'
+ ? at(['Замени деление на 5/4 умножением на 4/5. Сократи дробь.','Запиши результат деления в виде десятичной дроби и прибавь первое слагаемое.'],i)
+ : at(['Сначала выполни деление: вместо деления на 2/3 умножь вторую дробь на 3/2.','Приведи полученную дробь и первое слагаемое к общему знаменателю. Сложи числители.'],i));
 practice('decimals',['Сначала перемножь первые два числа. В произведении учти суммарное число знаков после запятой.','Прибавь последнее число к произведению, располагая запятые друг под другом.']);
-practice('decimal-division',['Нужно сделать делитель целым. Определи, во сколько раз сдвиг запятой на один разряд увеличивает число.','Увеличь делимое во столько же раз, во сколько увеличил делитель.','Раздели полученные целые числа. Одновременное увеличение обоих чисел частного не меняет.']);
+practice('decimal-division',(t,i)=>at(t.params.minuend===undefined?[
+ 'Нужно сделать делитель целым. Определи, во сколько раз сдвиг запятой на один разряд увеличивает число.',
+ 'Увеличь делимое во столько же раз, во сколько увеличил делитель.',
+ 'Раздели полученные целые числа. Одновременное увеличение обоих чисел частного не меняет.'
+]:[
+ 'Посмотри, какое действие в выражении выполняют раньше вычитания.',
+ 'Домножь оба числа в частном на 10, чтобы делитель стал целым. Затем найди частное.',
+ 'Вычти найденное частное из первого числа в выражении. Запиши ответ с учётом знака.'
+],i));
 practice('fraction-percent',(t,i)=>i===0?`Раздели числитель ${F(t.params.num)} на знаменатель ${F(t.params.den)}.`:'Чтобы выразить долю в процентах, умножь её на 100.');
 practice('percent-part',['За 100% принимаются все книги, а не только научные. Найди их число в условии.','Раздели число всех книг на 100: получишь число книг в одном проценте.','Умножь число книг в одном проценте на заданное число процентов научных книг.']);
 practice('percent-whole',(t,i)=>i===0?`Раздели известную часть ${F(t.params.part)} на ${F(t.params.p)}: получишь число саженцев в 1%.`:'Умножь найденное число саженцев в одном проценте на 100.');
@@ -4687,25 +5536,60 @@ practice('identity-product',['Возведи в квадрат и коэффиц
 practice('trig-angle',['Вычитай из угла полные обороты по 360°, пока не останется угол меньше 360°.','Для оставшегося угла вспомни табличное значение синуса.','Умножь найденное значение синуса на коэффициент перед ним.']);
 practice('quadratic',(t,i)=>i===0?`Подбери два множителя числа ${F(t.params.prod)}, сумма которых ${F(t.params.sum)}. На этом шаге запиши меньший из них.`:'Из двух найденных корней выбери больший, как требует условие.');
 practice('radical-equation',(t,i)=>at([`Возведи правую часть ${F(t.params.b)} в квадрат.`,`К найденному значению подкоренного выражения прибавь ${F(t.params.a)}.`,'Подставь найденное x в подкоренное выражение. Проверь, что его корень равен правой части исходного уравнения.'],i));
-practice('log-equation',(t,i)=>at([`По определению логарифма аргумент равен ${F(t.params.a)} в степени ${F(t.params.p)}.`,`Из найденного аргумента вычти ${F(t.params.b)}, чтобы оставить x.`,'Подставь x в аргумент логарифма. Он должен быть положительным и равняться нужной степени основания.'],i));
+practice('log-equation',(t,i)=>t.reference==='log-equation-difference' ? at([
+ 'Вычитание логарифмов одного основания заменяет два аргумента их частным. Приравняй частное к аргументу справа.',
+ 'Раздели значение аргумента на число перед скобками, затем вычти слагаемое в скобках. Подставь результат в исходное уравнение.'
+],i) : at([`По определению логарифма аргумент равен ${F(t.params.a)} в степени ${F(t.params.p)}.`,`Из найденного аргумента вычти ${F(t.params.b)}, чтобы оставить x.`,'Подставь x в аргумент логарифма. Он должен быть положительным и равняться нужной степени основания.'],i));
 practice('exponential-equation',(t,i)=>i===0?`Представь правую часть как степень ${F(t.params.a)}: последовательно умножай основание на себя.`:`Приравняй показатели степеней и вычти ${F(t.params.b)} из обеих частей.`);
 practice('rational-equation',(t,i)=>at(['Приравняй знаменатель к нулю. Полученное значение x нужно исключить.',`Раздели числитель ${F(t.params.num)} на правую часть ${F(t.params.b)}: получишь знаменатель.`,`Прибавь ${F(t.params.a)} к найденному знаменателю. Проверь, что x не равен запрещённому значению.`],i));
-practice('number-match',[
+practice('number-match',(t,i)=>t.params.decimal
+ ? 'Подставь m в выражения, затем упорядочь результаты слева направо и сравни с положением нужной точки.'
+ : at([
  'Сначала сравни предложенные числа. Для корней используй квадраты целых чисел, для логарифмов — степени основания. Точке А соответствует самое левое число.',
  'Найди числа, между которыми расположен корень: сравни подкоренное число с соседними квадратами. Затем сопоставь вторую точку по положению на оси.',
  'Сопоставь точку В с подходящим числом по её положению на оси. Сохраняй порядок чисел слева направо.',
  'Для логарифма сравни аргумент с ближайшими степенями двойки. Это задаст промежуток для показателя степени.'
-]);
+],i));
 practice('inequality-match',['Перенеси постоянное слагаемое в правую часть и сравни результат с предложенными промежутками.','Раздели обе части на −2. При делении на отрицательное число знак неравенства меняется.','Отметь нули обоих множителей. Проверь знак произведения на каждом из трёх промежутков.','Отметь нуль числителя и запрещённый нуль знаменателя. Проверь знак дроби на каждом промежутке.']);
-practice('digits-multiple',['Число делится на 5, поэтому проверь допустимые окончания. Дополнительно последняя цифра должна быть чётной.','Разложи заданный делитель на 5 и второй множитель. Вспомни признак делимости на этот второй множитель.','Подбери четыре разные чётные цифры. Проверь окончание, сумму цифр и отсутствие нуля в начале.']);
-practice('digits-product',['Разложи 12 на два взаимно простых множителя, один из которых 3.','Разложи заданное произведение на четыре цифры. Проверь сумму цифр на делимость на 3, а число из последних двух цифр — на делимость на 4.']);
-practice('meeting',(t,i)=>i===0?`Сложи скорости ${F(t.params.a)} и ${F(t.params.b)} км/ч: машины движутся навстречу.`:`Раздели расстояние ${F(t.params.dist)} км на найденную скорость сближения.`);
+practice('digits-multiple',(t,i)=>t.params.allowed ? at([
+ 'Посчитай данные в условии цифры. Возьми каждую один раз, а ноль не ставь первым.',
+ 'Найди делитель в условии и проверь его признак делимости.',
+ `Собери число из этих цифр и проверь остаток при делении на ${t.params.divisor}.`
+],i) : at([
+ 'Число делится на 5, поэтому проверь допустимые окончания. Последняя цифра должна быть чётной.',
+ 'Разложи заданный делитель на 5 и второй множитель. Вспомни признак делимости на этот второй множитель.',
+ 'Подбери четыре разные чётные цифры. Проверь окончание, сумму цифр и отсутствие нуля в начале.'
+],i));
+practice('digits-product',(t,i)=>t.params.divisor===24 ? at([
+ 'Разложи 24 на два взаимно простых множителя. Один из них — 3.',
+ 'Проверь произведение цифр, делимость их суммы на 3 и делимость числа из трёх последних цифр на 8.'
+],i) : at([
+ 'Разложи 12 на два взаимно простых множителя, один из которых 3.',
+ 'Разложи заданное произведение на четыре цифры. Проверь сумму цифр на делимость на 3, а число из последних двух цифр — на делимость на 4.'
+],i));
+practice('meeting',(t,i)=>t.params.fromSecond!==undefined ? at([
+ `От всего расстояния ${F(t.params.total)} км отними участок от второго депо до встречи, ${F(t.params.fromSecond)} км.`,
+ `Раздели путь машины из первого депо на ${F(t.params.hours)} ч.`
+],i) : t.params.turn!==undefined ? at([
+ `Мысленно сложи два пути к встрече. Вместе они покрывают отрезок до разворота длиной ${F(t.params.turn)} км дважды.`,
+ 'Сложи скорости обоих велосипедистов, чтобы узнать сумму их путей за час.',
+ 'Раздели сумму пройденных путей на сумму скоростей.',
+ 'Умножь найденное время на скорость первого велосипедиста.'
+],i) : at([
+ `Сложи скорости ${F(t.params.a)} и ${F(t.params.b)} км/ч: машины движутся навстречу.`,
+ `Раздели расстояние ${F(t.params.dist)} км на найденную скорость сближения.`
+],i));
 practice('river',(t,i)=>at([`По течению сложи собственную скорость ${F(t.params.v)} и скорость течения ${F(t.params.u)}.`,`Против течения вычти скорость течения ${F(t.params.u)} из собственной ${F(t.params.v)}.`,`Раздели ${F(t.params.d1)} км на скорость по течению.`,`Раздели ${F(t.params.d2)} км на скорость против течения.`,'Сложи времена обоих участков.'],i));
-practice('work',(t,i)=>at([`Весь огород прими за 1. За час первый выполняет 1 / ${F(t.params.a)} работы.`,`За час второй выполняет 1 / ${F(t.params.b)} работы.`,'Сложи доли работы, которые оба выполняют за час. Приведи дроби к общему знаменателю.','Раздели 1 целую работу на найденную общую производительность.'],i));
+practice('work',(t,i)=>at([`Всю работу прими за 1. За час первый выполняет 1 / ${F(t.params.a)} работы.`,`За час второй выполняет 1 / ${F(t.params.b)} работы.`,'Сложи доли работы, которые оба выполняют за час. Приведи дроби к общему знаменателю.','Раздели 1 целую работу на найденную общую производительность.'],i));
 practice('mixture-water',(t,i)=>at([`Найди ${F(t.params.p)}% от ${F(t.params.m)} кг раствора. Это масса соли.`,`Раздели массу соли на её новую долю ${F(t.params.q)}/100: получишь массу всего нового раствора.`,'Из массы нового раствора вычти исходную массу. Разность — добавленная вода.'],i));
 practice('average-speed',(t,i)=>at([`Для первого участка вычисли ${F(t.params.d)} / ${F(t.params.slow)}.`,`Для второго участка вычисли ${F(t.params.d)} / ${F(t.params.fast)}.`,'Сложи два расстояния и два времени. Раздели весь путь на всё время.'],i));
 practice('sets',(t,i)=>i===0?`Сложи ${F(t.params.A)} участников математики и ${F(t.params.B)} участников робототехники. Общие участники попадут в сумму дважды.`:`Из суммы численностей кружков вычти ${F(t.params.total)} разных учеников. Разность — число повторных подсчётов.`);
-practice('integer-budget',(t,i)=>at([`Умножь ${F(t.params.n)} вопросов на ${F(t.params.reward)} баллов за верный ответ.`,`Одна ошибка лишает награды ${F(t.params.reward)} и дополнительно снимает ${F(t.params.penalty)} балла. Сложи эти потери.`,'Из максимального балла вычти полученный. Раздели недостающие баллы на потери от одной ошибки.','Из общего числа вопросов вычти число ошибок.'],i));
+practice('integer-budget',(t,i)=>t.params.allowsSkips ? at([
+ 'Представь, что все ответы верные. Вычисли максимальный балл и вычти результат участника.',
+ 'Сложи награду за верный ответ и штраф, чтобы узнать потерю за одну ошибку.',
+ 'Начни с одной ошибки. После вычета потерь за ошибки остаток должен делиться на потерю за один пропуск.',
+ 'Из общего числа вопросов вычти число ошибок и пропусков.'
+],i) : at([`Умножь ${F(t.params.n)} вопросов на ${F(t.params.reward)} баллов за верный ответ.`,`Одна ошибка лишает награды ${F(t.params.reward)} и дополнительно снимает ${F(t.params.penalty)} балла. Сложи эти потери.`,'Из максимального балла вычти полученный. Раздели недостающие баллы на потери от одной ошибки.','Из общего числа вопросов вычти число ошибок.'],i));
 practice('whole-count',(t,i)=>at([`Раздели общую сумму ${F(t.params.total)} на максимальный балл ${F(t.params.b)}. Для нижней границы округли вверх.`,`Раздели общую сумму ${F(t.params.total)} на минимальный балл ${F(t.params.a)}. Для верхней границы округли вниз.`,'Найди целое число, которое одновременно не меньше нижней и не больше верхней границы.',`Умножь найденное число участников на ${F(t.params.a)}. Вычти результат из ${F(t.params.total)}. Сколько отдельных прибавок по одному баллу понадобится?`],i));
 practice('digits-delete',['Разложи 22 на два взаимно простых множителя. Один из них — 2; найди второй.','Оставь пять цифр в исходном порядке с чётной последней цифрой. Разность сумм цифр на нечётных и чётных местах должна делиться на 11.']);
 practice('average-three',journey);
@@ -4761,7 +5645,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
  * Read-only editorial data: viewing a route never changes learner results.
  * practiceIds name focused exercises, not proof that every listed action is mastered.
  * Empty practiceIds occur only in supplementary legacy routes where the main
- * 113-family bank has no separate focused exercise for that action.
+ * 117-family bank has no separate focused exercise for that action.
  */
 (function (root) {
   'use strict';
@@ -4781,6 +5665,30 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "description": "Вычесть стоимость покупки из переданной суммы.",
     "practiceIds": [
       "practice-change"
+    ]
+  },
+  "clock-boundary": {
+    "id": "clock-boundary",
+    "title": "Полночь как граница",
+    "description": "Разбить промежуток на время до и после полуночи.",
+    "practiceIds": [
+      "practice-overnight"
+    ]
+  },
+  "digit-check": {
+    "id": "digit-check",
+    "title": "Проверка по произведению",
+    "description": "Умножить кандидат и сверить цифры с заданным набором.",
+    "practiceIds": [
+      "practice-digit-pair"
+    ]
+  },
+  "opposite-perimeters": {
+    "id": "opposite-perimeters",
+    "title": "Равные суммы периметров",
+    "description": "Объяснить равенство сумм периметров у двух пар противоположных частей.",
+    "practiceIds": [
+      "practice-missing-perimeter"
     ]
   },
   "count-total": {
@@ -4899,7 +5807,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "description": "Привести части расчёта к одной единице перед сложением или сравнением.",
     "practiceIds": [
       "practice-time",
-      "practical"
+      "practical",
+      "practice-overnight"
     ]
   },
   "read-data": {
@@ -4989,7 +5898,9 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "description": "Сначала выполнить действия в скобках. Затем степени, умножение и деление, после них сложение и вычитание. Действия одной ступени выполнять слева направо.",
     "practiceIds": [
       "practice-fraction-expression",
-      "practice-decimals"
+      "practice-decimals",
+      "practice-overnight",
+      "practice-missing-perimeter"
     ]
   },
   "signed-product": {
@@ -5165,7 +6076,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "title": "Разности координат",
     "description": "Вычесть координаты в одном порядке: конечное значение минус начальное.",
     "practiceIds": [
-      "practice-graph-slope"
+      "practice-graph-slope",
+      "practice-tangent-match"
     ]
   },
   "slope": {
@@ -5173,7 +6085,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "title": "Угловой коэффициент",
     "description": "Разделить изменение ординаты на ненулевое изменение абсциссы.",
     "practiceIds": [
-      "practice-graph-slope"
+      "practice-graph-slope",
+      "practice-tangent-match"
     ]
   },
   "derivative": {
@@ -5181,7 +6094,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "title": "Производная и касательная",
     "description": "Связать производную в точке с угловым коэффициентом касательной.",
     "practiceIds": [
-      "graphs"
+      "graphs",
+      "practice-tangent-match"
     ]
   },
   "value-vs-slope": {
@@ -5190,7 +6104,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "description": "Различить высоту точки графика и наклон касательной.",
     "practiceIds": [
       "graphs",
-      "practice-graph-slope"
+      "practice-graph-slope",
+      "practice-tangent-match"
     ]
   },
   "set-inclusion": {
@@ -5321,7 +6236,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "title": "Периметр прямоугольника",
     "description": "Сложить длины всех четырёх сторон.",
     "practiceIds": [
-      "practice-fence"
+      "practice-fence",
+      "practice-missing-perimeter"
     ]
   },
   "fence-gap": {
@@ -6261,7 +7177,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practiceIds": [
       "practice-digits-multiple",
       "practice-digits-product",
-      "practice-digits-delete"
+      "practice-digits-delete",
+      "practice-digit-pair"
     ]
   },
   "bounded-search": {
@@ -6270,7 +7187,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "description": "Ограничить возможные варианты условиями и проверить каждый оставшийся.",
     "practiceIds": [
       "practice-digits-product",
-      "practice-digits-multiple"
+      "practice-digits-multiple",
+      "practice-digit-pair"
     ]
   },
   "distance-time": {
@@ -6755,6 +7673,15 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     ]
   }
 };
+  const pathPrerequisites = {
+    signs: 'practice-temperature', line: 'numberline', order: 'practice-fraction-expression',
+    fraction: 'pre7-fraction-part-whole', denominator: 'practice-fraction-add',
+    decimal: 'grade7-b-decimal-place-align', decimalDivision: 'grade7-b-decimal-divisor-scale',
+    percent: 'grade7-b-percent-proportion', percentChange: 'practice-percent-change',
+    proportion: 'practice-direct-proportion', units: 'practice-time', areaUnits: 'practice-area-units',
+    powers: 'practice-power-rules', equations: 'equations-linear', logicCounter: 'practice-logic-all',
+    setsOverlap: 'practice-sets', trigTriangle: 'practice-right-ratio'
+  };
   const prerequisiteDefinitions = {
   "arithmetic": {
     "title": "Умножение и деление",
@@ -6929,7 +7856,16 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "title": "Места для всех пассажиров",
     "nextIds": []
   },
+
   {
+    "id": "practice-overnight",
+    "skills": ["clock-boundary", "operation-order", "same-units"],
+    "prerequisites": ["units", "arithmetic"],
+    "goal": "Найти длительность события, которое началось вечером и закончилось утром.",
+    "pos": 1,
+    "title": "Время через полночь",
+    "nextIds": []
+  },  {
     "id": "units",
     "skills": [
       "length-factor",
@@ -7239,7 +8175,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
       "line",
       "units"
     ],
-    "goal": "Проверить одновременно все ограничения на багаж.",
+    "goal": "Проверить одновременно все ограничения на размеры и массу.",
     "pos": 6,
     "title": "Отбор по нескольким ограничениям",
     "nextIds": [
@@ -7314,6 +8250,20 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "goal": "Найти угловой коэффициент по двум точкам.",
     "pos": 7,
     "title": "Наклон прямой по двум точкам",
+    "nextIds": ["practice-tangent-match"]
+  },
+  {
+    "id": "practice-tangent-match",
+    "skills": [
+      "coordinate-difference",
+      "slope",
+      "derivative",
+      "value-vs-slope"
+    ],
+    "prerequisites": ["signs", "arithmetic"],
+    "goal": "Сопоставить касательные со значениями производной.",
+    "pos": 7,
+    "title": "Касательные и значения производной",
     "nextIds": []
   },
   {
@@ -8581,7 +9531,16 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
       "practice-digits-delete"
     ]
   },
+
   {
+    "id": "practice-digit-pair",
+    "skills": ["digit-constraints", "bounded-search", "digit-check"],
+    "prerequisites": ["remainder", "arithmetic"],
+    "goal": "Подобрать число и проверить, что у произведения нужный набор цифр.",
+    "pos": 19,
+    "title": "Два числа по наборам цифр",
+    "nextIds": []
+  },  {
     "id": "practice-digits-delete",
     "skills": [
       "delete-order",
@@ -8837,7 +9796,16 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
       "practice-ring-route"
     ]
   },
+
   {
+    "id": "practice-missing-perimeter",
+    "skills": ["perimeter", "opposite-perimeters", "operation-order"],
+    "prerequisites": ["order", "arithmetic"],
+    "goal": "Восстановить периметр одной части из равенства сумм противоположных периметров.",
+    "pos": 21,
+    "title": "Периметр одной из четырёх частей",
+    "nextIds": []
+  },  {
     "id": "practice-ring-route",
     "skills": [
       "ring-arcs",
@@ -9388,6 +10356,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practice-change": ["Купили 4 карандаша по 38 рублей. Сколько рублей сдачи с 200?","48","Покупка стоит 4 × 38 = 152 рубля. Сдача равна 200 − 152."],
     "practice-afford": ["Билет стоит 8 рублей. Сколько билетов можно купить на 50 рублей?","6","Шесть билетов стоят 48 рублей, а семь уже 56."],
     "practice-transport": ["Для поездки 29 детей и 3 взрослых нужны автобусы по 15 мест. Сколько автобусов понадобится?","3","После заполнения двух автобусов остаются ещё два человека."],
+    "practice-overnight": ["Камера начала запись в 23:37 и остановила её в 00:19 следующего дня. Сколько минут длилась запись?", "42", "До полуночи 23 минуты, после полуночи 19."],
     "units": ["Сколько кубических сантиметров в 0,3 литра?","300","Литр равен кубическому дециметру, то есть 1000 кубическим сантиметрам."],
     "practice-units-match": ["Стол высотой 0,75 м. Сколько это сантиметров?","75","Метр содержит 100 сантиметров. Умножь 0,75 на 100."],
     "practice-time": ["Сколько минут в 2 часах 35 минутах?","155","Сложи 2 × 60 и 35. Час содержит 60 минут."],
@@ -9405,11 +10374,12 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practice-probability-opposite": ["Вероятность брака равна 0,07. Какова вероятность взять исправную деталь?","0,93","Деталь либо бракованная, либо исправная. Сумма этих вероятностей равна 1."],
     "choice": ["Нужно 6 наборов. В магазине А набор стоит 90 рублей, доставка 120 рублей. В магазине Б набор стоит 105 рублей, доставка бесплатна. Какова наименьшая стоимость в рублях?","630","В А покупка с доставкой стоит 660 рублей, в Б 630."],
     "practice-delivery": ["Товары стоят 900 рублей. Доставка стоит 120 рублей и бесплатна при сумме строго больше 900 рублей. Сколько рублей заплатят?","1020","При сумме ровно 900 рублей доставка платная."],
-    "practice-luggage": ["Допустимы длина до 55 см включительно, ширина до 20 см и масса до 10 кг. Подходит сумка 55 см, 20 см и 11 кг? Введи 1, если подходит, и 0, если нет.","0","Размеры допустимы, но масса превышает ограничение."],
+    "practice-luggage": ["На полку можно поставить контейнер длиной до 48 см, шириной до 35 см, высотой до 26 см и массой до 8 кг. Подходит ли контейнер размерами 48 × 32 × 26 см и массой 9 кг? Введи 1, если подходит, и 0, если нет.","0","Размеры находятся в пределах ограничений. Масса 9 кг превышает предел 8 кг."],
     "practice-rental": ["Аренда машины стоит 4000 рублей. Расход 8 л на 100 км, топливо стоит 60 рублей за литр. Сколько рублей стоит поездка на 250 км с арендой?","5200","На 250 км уйдёт 20 литров за 1200 рублей. Прибавь аренду."],
     "graphs": ["Наклон касательной к y = x² равен 2x. Чему равен наклон при x = −2?","-4","Высота точки равна 4, а наклон касательной равен 2 × (−2)."],
     "practice-graph-match": ["На промежутке А значения выросли с 10 до 12, на равном промежутке Б с 2 до 7. Где рост больше? Введи 1 для А или 2 для Б.","2","Приращения равны 2 и 5. Сравнивать нужно именно их."],
     "practice-graph-slope": ["Найди наклон прямой через точки (2, 7) и (6, −1).","-2","Раздели разность ординат −1 − 7 на разность абсцисс 6 − 2."],
+    "practice-tangent-match": ["Касательная проходит через точки (−2; 8) и (2; 2). Чему равна производная в точке касания?","−1,5","Ордината изменилась на −6, абсцисса на 4. Наклон равен −6 : 4 = −1,5."],
     "logic": ["Все 18 учеников занимаются алгеброй, из них 7 ещё и геометрией. Сколько занимаются только алгеброй?","11","Семеро уже входят в число 18. Вычти их."],
     "practice-logic-order": ["Аня выше Веры, Вера выше Лены, Оля выше Лены. Обязательно ли Оля выше Ани? Введи 1, если да, и 0, если нет.","0","При росте 160, 150, 140 и 155 см соответственно все условия соблюдены, а Оля ниже Ани."],
     "practice-logic-all": ["Каждый участник кружка умеет решать уравнения. Обязательно ли каждый, кто умеет решать уравнения, ходит в кружок? Введи 1, если да, и 0, если нет.","0","Решать уравнения может и ученик вне кружка."],
@@ -9424,7 +10394,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practice-displacement": ["В баке с постоянной площадью горизонтального сечения 8 л воды. При полном погружении детали уровень стал в 1,25 раза выше. Найди объём детали в см³.","2000","Прирост объёма равен 8 × 1,25 − 8 = 2 л, то есть 2000 см³."],
     "practice-pour": ["В цилиндре высота воды 45 см. Воду перелили в цилиндр с радиусом втрое больше. Найди новую высоту в см.","5","Площадь дна выросла в 9 раз. При том же объёме высота стала в 9 раз меньше."],
     "practice-joined-surface": ["Два куба с ребром 5 см склеили целыми гранями. Найди площадь внешней поверхности в см².","250","Из 12 исходных квадратов два скрыты. Площадь каждого из 10 оставшихся квадратов равна 25 см²."],
-    "practice-faces": ["Пятиугольную призму и пирамиду склеили совпадающими пятиугольными основаниями. Соседние внешние грани лежат в разных плоскостях. Сколько внешних граней?","11","У призмы 7 граней, у пирамиды 6. Оба основания в месте склеивания внутри."],
+    "practice-faces": ["У призмы и пирамиды одинаковые девятиугольные основания. По одному основанию каждой фигуры спрятано в стыке. Соседние внешние грани лежат в разных плоскостях. Сколько граней осталось снаружи?","19","У призмы 11 граней, у пирамиды 10. Из суммы 21 вычти два основания в стыке."],
     "triangle": ["У равнобедренного треугольника основание 10, боковая сторона 13. Найди площадь.","60","Половина основания равна 5. По теореме Пифагора высота равна 12. Площадь равна 10 × 12 / 2."],
     "quadrilateral": ["Основания трапеции 5 и 11, высота 4. Найди площадь.","32","Полусумма оснований равна 8. Умножь её на высоту."],
     "circle": ["Радиус окружности 13. Расстояние от центра до хорды 5. Найди длину хорды.","24","Перпендикуляр из центра делит хорду пополам. Половина равна √(13² − 5²) = 12."],
@@ -9436,7 +10406,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "pyramid": ["Сторона квадратного основания пирамиды 5, высота 9. Найди объём.","75","Площадь основания равна 25. Объём равен трети произведения 25 × 9."],
     "scale": ["Объём конуса 192. Плоскость параллельна основанию и отсекает от вершины конус с высотой в четверть исходной. Найди объём малого конуса.","3","Высоты относятся как 1 к 4, объёмы как 1 к 64. Раздели 192 на 64."],
     "practice-cone-area": ["У второго конуса радиус втрое больше, чем у первого, а образующая вчетверо больше. Во сколько раз больше площадь его боковой поверхности?","12","В формуле πrl один множитель вырос втрое, другой вчетверо."],
-    "practice-pyramid-lateral": ["У правильной четырёхугольной пирамиды сторона основания 12, боковое ребро 10. Найди площадь боковой поверхности.","192","Высота бокового треугольника равна √(10² − 6²) = 8. Площадь каждой из четырёх граней равна 48."],
+    "practice-pyramid-lateral": ["Периметр квадратного основания правильной пирамиды равен 56 см. Боковое ребро равно 25 см. Найди сумму площадей четырёх боковых граней. Ответ дай в см².","672","Сторона основания равна 56 : 4 = 14 см. Высота боковой грани равна √(25² − 7²) = 24 см. Площадь четырёх граней равна 4 × 14 × 24 : 2."],
     "practice-box-diagonal": ["Основание прямоугольного параллелепипеда имеет стороны 5 и 7. Диагональ боковой грани с ребром основания 5 равна 13. Найди объём.","420","Высота равна √(13² − 5²) = 12. Объём равен 5 × 7 × 12."],
     "practice-similar-volume": ["Высота большого конуса в четыре раза больше высоты подобного малого. Объём малого равен 5. Найди объём большого.","320","При увеличении длины в 4 раза объём увеличивается в 4³ = 64 раза."],
     "fractions": ["Вычисли 5/6 + (3/4) : (9/8).","3/2","Сначала раздели дроби. Получится 3/4 × 8/9 = 2/3. Затем сложи 5/6 и 4/6."],
@@ -9478,8 +10448,9 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practice-number-match": ["Какое место по возрастанию занимает log₂16 среди √7, √20 и log₂16?","2","log₂16 = 4, а 7 < 4² < 20. Значит, 4 стоит между корнями."],
     "practice-inequality-match": ["Сколько целых чисел от 0 до 4 включительно удовлетворяют (x − 2)/(x − 1) ≤ 0?","1","Решение (1; 2]. При x = 1 знаменатель равен нулю, а при x = 2 дробь равна нулю."],
     "integers": ["Из 274654 вычеркни одну цифру так, чтобы осталось число, кратное 22. Какое число получится?","27654","После вычёркивания первой четвёрки число чётное, а 2 + 6 + 4 = 7 + 5. Выполнены признаки делимости на 2 и 11."],
-    "practice-digits-multiple": ["В числе 46□0 все цифры чётные и различные. Какую цифру поставить вместо квадрата, чтобы число делилось на 45?","8","Ноль на конце даёт делимость на 5. Сумма цифр должна делиться на 9, поэтому к 10 добавляем 8."],
-    "practice-digits-product": ["Какое из чисел 1524, 1542, 2124 делится на 12 и имеет произведение цифр 40?","1524","У 1524 сумма цифр 12, последние две цифры образуют число 24, а произведение цифр равно 40. У 1542 число 42 не кратно 4, у 2124 произведение равно 16."],
+    "practice-digits-multiple": ["Для кода используют цифры 0, 1, 4, 7 по одному разу. Какое из чисел 7410, 4170, 7140 кратно 4?","7140","Заметь последние две цифры. 40 кратно 4, а 10 и 70 дают остаток 2."],
+    "practice-digits-product": ["Какое из чисел 2256, 2526 и 2352 делится на 24 и имеет произведение цифр 120?","2256","У числа 2256 сумма цифр 15, число из последних трёх цифр 256 делится на 8, а произведение 2 · 2 · 5 · 6 равно 120."],
+    "practice-digit-pair": ["Первый код составлен из цифр 0, 1, 5 и 6. У произведения этого кода на 4 должны быть цифры 0, 2, 4 и 6 по одному разу. Какой первый код подходит: 1056, 1560 или 1650?", "1560", "Произведения равны 4224, 6240 и 6600. Подходит только 6240."],
     "practice-digits-delete": ["Из 72469154 вычеркни три цифры так, чтобы осталось пятизначное число, кратное 22. Какое число получится?","74954","После вычёркивания 2, 6 и 1 остаётся чётное число. Разность чередующихся сумм равна (7 + 9 + 4) − (4 + 5) = 11."],
     "motion": ["Автомобиль проехал 45 км со скоростью 30 км/ч, 30 км со скоростью 60 км/ч и 30 км со скоростью 30 км/ч. Какова средняя скорость в км/ч?","35","Путь равен 105 км, время 1,5 + 0,5 + 1 = 3 ч. Раздели 105 на 3."],
     "mixtures": ["К 250 г 20%-го раствора соли добавили 150 г воды. Каков процент соли в полученном растворе?","12,5","Соли осталось 50 г. Новый раствор весит 400 г. Доля соли равна 50/400."],
@@ -9494,6 +10465,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     "practice-sets": ["Из 28 участников каждый посещает хотя бы один кружок. Шахматы посещают 18 человек, робототехнику 15. Сколько человек ходит в оба кружка?","5","В сумме 18 и 15 участники обоих кружков посчитаны дважды. Их 33 − 28."],
     "practice-integer-budget": ["Ученик ответил на 12 вопросов. За верный ответ дают 4 балла, за неверный снимают 2. Всего получено 30 баллов. Сколько ответов были верными?","9","Без ошибок было бы 48 баллов. Одна ошибка уменьшает счёт на 6. Ошибок (48 − 30)/6 = 3."],
     "practice-whole-count": ["Каждый участник получил 18 или 19 баллов. Вместе они набрали 227 баллов. Сколько было участников?","12","11 участников набрали бы не больше 209 баллов, 13 — не меньше 234. При 12 участниках подходит один результат 18 и одиннадцать результатов 19."],
+    "practice-missing-perimeter": ["В схеме 2 × 2 периметры верхних частей 31 и 37 дм, а нижней правой 25 дм. Сколько дм в периметре нижней левой?", "19", "В противоположных парах одинаковый набор горизонтальных и вертикальных сторон. Нижняя левая часть: 31 + 25 − 37."],
     "practice-ring-route": ["На кольце кратчайшие расстояния AC = 47 км, AD = 38 км, CD = 55 км. Найди длину кольца в километрах.","140","Если C и D с одной стороны от A, их расстояние 9 км. Значит, дуга через A имеет длину 85 км, а другая 55 км. Вместе они дают 140 км."],
     "practice-mushroom-count": ["В корзине 42 гриба двух видов. Среди любых 18 найдётся рыжик, а среди любых 26 — груздь. Сколько рыжиков в корзине?","25","Груздей не больше 17, рыжиков не больше 25. Сумма границ равна 42, поэтому оба количества равны своим границам."],
     "practice-vase-order": ["В ряд стоят белая, оранжевая и синяя вазы. Слева от синей число роз равно 17, справа от белой 16. Всего 29 роз. Сколько роз в оранжевой вазе?","4","Сумма двух групп равна 33, что на 4 больше общего числа. Общая ваза стоит между белой и синей. Это оранжевая ваза."],
@@ -9535,7 +10507,9 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
       id: row.id, pos: row.pos, title: row.title, goal: row.goal,
       ...(row.module ? {module: row.module, skill: row.skill, source: 'legacy'} : {source: 'path', href: href(row.id)}),
       ...(Object.hasOwn(selfChecks,row.id) ? {selfCheck: {question:selfChecks[row.id][0], answer:selfChecks[row.id][1], explanation:selfChecks[row.id][2]}} : {}),
-      prerequisites: row.prerequisites.map(id => prerequisiteDefinitions[id]),
+      prerequisites: row.prerequisites.map(id => pathPrerequisites[id]
+        ? {...prerequisiteDefinitions[id], pathLesson: pathPrerequisites[id]}
+        : prerequisiteDefinitions[id]),
       skills: row.skills.map(id => skillDefinitions[id]),
       next: row.nextIds.map(id => ({id, title: definitionsById.get(id).title, href: href(id)}))
     });
@@ -9616,14 +10590,15 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   }
   function skillsMarkup(map, options) {
     const rows = evidenceRows(options);
+    const href = target => esc(safeHref(options.detourHref?.(target.id) || target.href));
     return '<ol class="esm-route">' + map.skills.map((skill, index) => {
       const targets = (skill.practiceIds || []).map(practice).filter(Boolean);
       return '<li class="esm-node" data-skill-node="' + esc(skill.id) + '"><span class="esm-step" aria-hidden="true">' + (index + 1) +
         '</span><div class="esm-node-content"><h3>' + esc(skill.title) + '</h3><p>' + esc(skill.description) + '</p>' +
-        (targets.length ? '<div class="esm-practice-links">' + targets.slice(0, 2).map(target => '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' +
+        (targets.length ? '<div class="esm-practice-links">' + targets.slice(0, 2).map(target => '<a href="' + href(target) + '" data-skill-practice="' + esc(target.id) + '">' +
           (target.id === options.lessonId && options.onSteps ? 'Решать по шагам' : 'Тренировать: ' + esc(target.title)) + '</a>').join('') +
           (targets.length > 2 ? '<details class="esm-more"><summary>Ещё упражнения: ' + (targets.length - 2) + '</summary>' + targets.slice(2).map(target =>
-            '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
+            '<a href="' + href(target) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
         evidenceMarkup(skill, rows) + '</div></li>';
     }).join('') + '</ol>';
   }
@@ -9673,8 +10648,11 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     const title = map.goal || 'Выбери умение, которое хочешь отработать. Рядом — упражнения для практики.';
     return '<div class="esm-body"><p class="esm-goal">' + esc(title) + '</p>' +
       (prerequisite.length ? '<details class="esm-prerequisites"><summary>Что повторить перед началом</summary><ul>' +
-        prerequisite.map(item => '<li><a href="' + esc(safeHref(item.href)) + '" target="_blank" rel="noopener" aria-label="' + esc(item.title + ' — в новой вкладке') + '">' + esc(item.title) + ' <span aria-hidden="true">↗</span></a>' +
-          (item.reason ? '<span>' + esc(item.reason) + '</span>' : '') + '</li>').join('') + '</ul><p class="esm-support-note">Упражнение откроется в новой вкладке. Эта задача останется на месте.</p></details>' : '') +
+        prerequisite.map(item => {
+          const path = options.detourHref?.(item.pathLesson);
+          return '<li><a href="' + esc(safeHref(path || item.href)) + '"' + (path ? '' : ' target="_blank" rel="noopener" aria-label="' + esc(item.title + ' — в новой вкладке') + '"') + '>' + esc(item.title) +
+            (path ? '' : ' <span aria-hidden="true">↗</span>') + '</a>' + (item.reason ? '<span>' + esc(item.reason) + '</span>' : '') + '</li>';
+        }).join('') + '</ul><p class="esm-support-note">' + (options.detourHref ? 'После тренировки вернись к своему черновику. Ссылки со стрелкой открываются в новой вкладке.' : 'Упражнение откроется в новой вкладке. Эта задача останется на месте.') + '</p></details>' : '') +
       skillsMarkup(map, options) +
       (options.onSteps && options.task ? selfCheckMarkup(map.selfCheck, options.lessonId) : '') +
       '<p class="esm-key">Отметка относится к решению в указанном тренажёре. Для уверенного владения умением нужны разные задачи и повторение.</p>' +
@@ -9834,18 +10812,6 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   if(kind==='multi')return 'Проверь каждое утверждение по условию. В ответ запиши только номера подходящих утверждений.';
   return 'Пока не получилось. Начни с вопроса: '+(task.steps[0]?.q||question(task))+' Сохрани свой ответ и проверь этот шаг.';
  }
- function primaryVisual(task) {
-  if(root.PathStereoFigures?.supports(task))return root.PathStereoFigures.visual(task);
-  if(task.display)return '';
-  const m=task.model, line=(d)=>`<path d="${d}" fill="#edf6f0" stroke="#216e56" stroke-width="3"/>`,label=(x,y,text)=>`<text x="${x}" y="${y}" text-anchor="middle">${E(text)}</text>`;
-  let picture='';
-  if(task.id==='grid')picture=line('M70 250H470L70 50Z')+line('M70 230h20v20')+label(270,284,m.a)+label(42,150,m.b);
-  if(task.id==='practical')picture=line('M100 60H460V240H100Z')+label(280,278,m.a+' см')+label(64,155,'3 см');
-  if(task.id==='triangle')picture=line('M70 250H490L280 45Z')+label(280,286,2*m.a)+label(158,132,m.b)+label(402,132,m.b);
-  if(task.id==='quadrilateral')picture=line('M55 250H505L405 65H155Z')+label(280,42,m.a)+label(280,286,m.b)+`<path d="M155 65V250m0-20h20v20" fill="none" stroke="#a64f2e" stroke-width="2" stroke-dasharray="5"/>`+label(132,163,'h = '+m.h);
-  if(task.id==='circle')picture=`<circle cx="280" cy="150" r="120" fill="#edf6f0" stroke="#216e56" stroke-width="3"/><path d="M184 222H376L280 150V222m0-16h16v16" fill="none" stroke="#a64f2e" stroke-width="3"/>`+label(330,176,'R = '+m.r)+label(245,194,m.d)+label(280,132,'O');
-  return picture?`<svg class="task-figure" viewBox="0 0 560 310" role="img" aria-label="Чертёж к условию задачи; заданные длины подписаны">${picture}</svg><p class="muted">Чертёж схематический. Значения берём из условия.</p>`:'';
- }
  function mount(host,context) {
   const {meta,task:t,lesson:l,save,seen,expose,fresh,remediationId}=context,D=root.PathData,M=root.PathPracticeView.math;
   const learningCycle=context.learningCycle===true;
@@ -9868,8 +10834,18 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
   const hintText=()=>l.step>=t.steps.length?'Все шаги пройдены. Запиши ответ на вопрос задачи.':root.PathTaskHints?.hint(t,l.step)||t.steps[l.step].q;
   const idea=`<p id="taskHint" class="task-first-start" aria-live="polite">${M(hintText())}</p>`+(learningCycle?`<details id="taskIdea"><summary>Короткое правило</summary><p class="task-first-idea">${M(meta.idea)}</p></details>`:'');
   const learningActions=learningCycle?'<button id="repairStep" type="button" hidden>Разобрать первый трудный шаг</button><p id="variantStatus" class="task-first-variant muted" role="status"></p>':'';
-  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p><div class="task-support">${root.PathPracticeView.markup(t)}${primaryVisual(t)}</div>${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
+  host.innerHTML=`<div class="task-first-course">${lineNav}<div class="task-first-heading"><span class="eyebrow">ЕГЭ 2027 · Базовый уровень · Задание ${meta.pos}</span><h1>${E(meta.title)}</h1></div><section class="panel task-first-problem" aria-label="Условие и ответ"><p class="task">${M(t.q)}</p>${root.PathPracticeView.markup(t)}${inputMarkup(t,'answer',question(t))}<p id="feedback" class="feedback" role="status"></p>${learningActions}<div class="actions task-first-help-actions"><button id="startSteps" type="button">Решать по шагам</button></div><details id="taskHelp" class="task-first-help"><summary>Подсказка к задаче</summary><div class="task-first-help-body">${u.legacyDraft?`<aside class="callout"><strong>Ранее записано</strong><p>${E(u.legacyDraft)}</p><p class="muted">Эта запись сохранена из прежнего урока. Проверь, к какому шагу она относится; в ответ задачи она не подставляется.</p></aside>`:''}${idea}<details id="taskModel"><summary>Как это увидеть на модели?</summary>${t.model.expansion?`<p>${M(t.model.expansion)}</p>`:''}<div id="model"></div></details><details id="taskSteps"><summary>Помочь решить по шагам?</summary><div id="taskStepsBody"></div>${meta.id==='equations'||D.equationPractice?.has(meta.id)?'<button type="button" id="moreGuided">Ещё похожее уравнение по шагам</button>':''}</details><button type="button" id="returnToAnswer">Вернуться к моему ответу</button></div></details><div class="actions task-first-next">${nextLink}<button id="new" type="button">Ещё задача этого типа</button><a class="btn" href="#map">Выбрать задание</a></div></section><div class="task-first-skill-map"></div><details id="taskNote" class="task-first-note"><summary>Хочешь объяснить своё решение?</summary><label for="note">Как ты получил ответ и как его проверил?</label><textarea id="note" rows="4"></textarea><p class="muted">Запись сохранится для обсуждения с преподавателем. Автоматическая проверка не оценивает рассуждение.</p></details><details class="task-first-options"><summary>Другие типы и результаты</summary><label for="typeSelect">Какой тип задачи разобрать?</label><select id="typeSelect">${currentIndex.map(m=>`<option value="${m.id}" ${m.id===meta.id?'selected':''}>${E(m.title)}</option>`).join('')}</select><p><a href="#report">Мой отчёт</a> · <a href="../sources/index.html#p${meta.pos}">Источники и границы покрытия</a></p><p class="muted">Это авторские учебные задачи. Помощь, исправление и самостоятельное решение нового условия учитываются отдельно.</p>${context.equationPracticeLinks(meta.id)}${context.fractionPracticeLink(meta.id)}</details></div>`;
   const $=selector=>host.querySelector(selector),help=$('#taskHelp'),model=$('#taskModel'),steps=$('#taskSteps'),note=$('#taskNote');
+  const detourHref=root.self===root.top&&root.PathCourse?.detourHref
+   ? id=>root.PathCourse.detourHref(meta.id,id)
+   : undefined;
+  const foundations=detourHref?root.EgeBazaSkillMaps?.forLesson(meta.id)?.prerequisites.filter(item=>/^\/(?!\/)/.test(item.href))||[]:[];
+  if(foundations.length){
+   $('#returnToAnswer').insertAdjacentHTML('beforebegin',`<details id="taskFoundations"><summary>Повторить нужную основу</summary><ul>${foundations.map(item=>{
+    const href=detourHref(item.pathLesson);
+    return `<li><a href="${E(href||item.href)}"${href?'':' target="_blank" rel="noopener"'}>${E(item.title)}${href?'':' (новая вкладка)'}</a></li>`;
+   }).join('')}</ul></details>`);
+  }
   const answer=$('#answer');answer.value=u.finalDraft;
   if(learningCycle && root.self===root.top && new URLSearchParams(root.location.search).get('learning')!=='1') root.MathExamCourseExamples?.mount(host.querySelector('.task-first-problem'),'ege-baza',meta.id,markHelp);
   function refreshLearning() {
@@ -9968,7 +10944,8 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
    }[meta.id];
    const skills = root.EgeBazaSkillMaps?.forLesson(meta.id)?.skills || [];
    const skillsMarkup = skills.map(skill => `<p data-skill-node="${E(skill.id)}"><strong>${E(skill.title)}</strong><br>${E(skill.description)}</p>`).join('');
-   const link = prerequisite ? `<p><a href="#lesson=${prerequisite[0]}" target="_blank" rel="noopener">${prerequisite[1]} (новая вкладка)</a></p>` : '';
+   const detour = prerequisite&&detourHref?.(prerequisite[0]);
+   const link = prerequisite ? `<p><a href="${E(detour||'#lesson='+prerequisite[0])}"${detour?'':' target="_blank" rel="noopener"'}>${E(prerequisite[1])}${detour?'':' (новая вкладка)'}</a></p>` : '';
    host.querySelector('.task-first-problem').insertAdjacentHTML('afterend', `<details id="reasoningSkillMap" class="panel" data-ege-skill-map="${E(meta.id)}">
     <summary>Карта навыков</summary>
     ${skillsMarkup}
@@ -10000,7 +10977,7 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
     root.EgeBazaSkillMap?.attachSelfCheck(reasoningMap,meta.id);
    }else{
     const target=$('.task-first-skill-map');
-    skillMap=root.EgeBazaSkillMap?.attach(target,{lessonId:meta.id,lesson:l,task:t,onReveal:markHelp,onSteps:openSteps})||null;
+    skillMap=root.EgeBazaSkillMap?.attach(target,{lessonId:meta.id,lesson:l,task:t,onReveal:markHelp,onSteps:openSteps,detourHref})||null;
    }
   }
   save();
@@ -10012,17 +10989,32 @@ if(typeof module!=='undefined')module.exports=root.PathTaskHints;
 (function(){'use strict';if(new URLSearchParams(location.search).get('learning')==='1')return;const D=PathData,$=s=>document.querySelector(s),root=$('#main'),KEY='mathexam.ege-baza.path.v1',E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let writable=true,state={version:1,serial:11,lessons:{},seen:{},runs:[],active:null};
 const M=text=>PathPracticeView.math(text);
 const integer=(n,max=1e9)=>Number.isSafeInteger(n)&&n>=0&&n<=max;
+const currentBank=D.practice.bankVersion;
+const taskAt=(id,seed,bank)=>D.practice.taskForBankVersion(id,seed,bank);
+const bankOK=bank=>bank===undefined||bank===currentBank;
+const runTaskSeed=(run,index)=>run.taskSeeds?.[index]??run.seed+index;
+const runSeedsOK=run=>run.taskSeeds===undefined||(Array.isArray(run.taskSeeds)&&run.taskSeeds.length===21&&run.taskSeeds.every(seed=>integer(seed)));
 const answerOK=a=>a&&D.meta.some(m=>m.id===a.id)&&integer(a.seed)&&typeof a.value==='string'&&a.value.length<10000&&typeof a.correct==='boolean';
-const runOK=r=>r&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
-function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&integer(l.seed)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
+const runOK=r=>r&&bankOK(r.bankVersion)&&runSeedsOK(r)&&['exam','diagnostic'].includes(r.kind)&&Array.isArray(r.ids)&&r.ids.length===21&&r.ids.every(id=>D.meta.some(l=>l.id===id))&&Array.isArray(r.answers)&&r.answers.length<=21&&r.answers.every(answerOK)&&integer(r.seed)&&integer(r.i,21)&&Number.isFinite(r.start)&&(r.draft===undefined||typeof r.draft==='string'&&r.draft.length<=10000);
+function valid(x){return x&&x.version===1&&integer(x.serial)&&x.lessons&&typeof x.lessons==='object'&&!Array.isArray(x.lessons)&&x.seen&&typeof x.seen==='object'&&!Array.isArray(x.seen)&&Object.keys(x.seen).length<20000&&Object.values(x.seen).every(v=>v===true)&&Array.isArray(x.runs)&&x.runs.length<=200&&x.runs.every(runOK)&&Object.entries(x.lessons).every(([k,l])=>D.meta.some(m=>m.id===k)&&l&&bankOK(l.bankVersion)&&integer(l.seed)&&integer(l.stage,4)&&integer(l.step,20)&&integer(l.independent)&&integer(l.guided)&&typeof l.note==='string'&&l.note.length<=10000&&typeof l.draft==='string'&&l.draft.length<=10000&&typeof l.help==='boolean'&&typeof l.attempted==='boolean'&&Array.isArray(l.checks)&&(!window.PathTaskFirst||PathTaskFirst.valid(l.taskFirst)))&&(!x.active||runOK(x.active));}
 
 function readProgress(raw){const value=JSON.parse(raw);return D.practice?.expandTask21Progress?.(value)??value;}
 function writeProgress(value){return D.practice?.packTask21Progress?.(value)??value;}
 try{let raw=localStorage.getItem(KEY);if(raw){let x=readProgress(raw);if(!valid(x))throw Error();state=x;}}catch(e){writable=false;notice('Сохранение недоступно или повреждено. Исходные данные оставлены без изменений. Текущую работу можно скачать.');}
 function notice(t){$('#storage').hidden=false;$('#storage').textContent=t;}
 function save(){if(!writable)return;try{localStorage.setItem(KEY,JSON.stringify(writeProgress(state)));}catch(e){writable=false;notice('Не удалось сохранить работу в браузере. Скачайте отчёт и резервную копию.');}}
-function lesson(id){return state.lessons[id]||(state.lessons[id]={seed:id==='equations'?10:state.serial++,stage:0,step:0,help:false,attempted:false,independent:0,guided:0,note:'',draft:'',checks:[]});}
+function lesson(id){return state.lessons[id]||(state.lessons[id]={seed:id==='equations'?10:state.serial++,bankVersion:currentBank,stage:0,step:0,help:false,attempted:false,independent:0,guided:0,note:'',draft:'',checks:[]});}
 function setHash(s){location.hash=s;}
+function lessonRoute(hash=location.hash){
+ const params=new URLSearchParams(hash.slice(1)),id=params.get('lesson'),from=params.get('from');
+ const origin=from!==id&&D.meta.find(item=>item.id===from&&item.pos>0&&!item.grade7&&!item.pre7);
+ return {id,origin};
+}
+function detourHref(current,target){
+ if(!target||target===current||!D.meta.some(item=>item.id===target))return null;
+ const origin=lessonRoute().origin?.id||current;
+ return '#lesson='+encodeURIComponent(target)+(target===origin?'':'&from='+encodeURIComponent(origin));
+}
 function feedback(s,bad=false){let f=$('#feedback');if(f){f.innerHTML=M(s);f.className='feedback '+(bad?'bad':'good');}}
 function taskKey(t){if(t.geometryRebuild===true)return JSON.stringify([t.q,t.model?.diagram||null,(t.choices||[]).map(choice=>choice.label).sort()]);return !t.display&&!t.choices?t.q:JSON.stringify([t.q,t.display||null,(t.labels||[]).slice().sort(),(t.choices||[]).slice().sort()]);}
 function seen(t){return !!state.seen[t.q]||!!state.seen[taskKey(t)];}function expose(t){state.seen[taskKey(t)]=true;}
@@ -10032,9 +11024,10 @@ function courseChrome(meta){const grade7=!!meta?.grade7,header=document.querySel
 function grade7Map(){courseChrome({grade7:true});document.title='7 класс и основы · MathExam';const subjects=[...Object.entries(grade7Subjects),['pre7','Основы до 7 класса']];root.innerHTML='<p class="eyebrow">МОЖНО ИДТИ В СВОЁМ ТЕМПЕ</p><h1>Алгебра, геометрия и основы</h1><p class="lead">Выбирай любую тему. Посмотри модель, пройди шаги и проверь себя на новом примере.</p><p><a class="btn primary" href="https://mathexam-board-ladynata.msk1.amvera.tech/learning/#route">Заниматься с сохранением в кабинете →</a> <a class="btn" href="../../grade7/">Курс, шпаргалки и видео →</a></p><div class="cards">'+subjects.map(([subject,title])=>'<section class="card"><h2>'+title+'</h2><ul class="trainer-list">'+D.meta.filter(m=>m.grade7&&(subject==='pre7'?m.pre7:!m.pre7&&m.subject===subject)).map(m=>'<li><a href="#lesson='+m.id+'">'+E(m.title)+'</a></li>').join('')+'</ul></section>').join('')+'</div>'; }
 const stageLabels=['Понять','Исследовать','Решить по шагам','Самостоятельно','Объяснить'];
 function fresh(id,stage=3){
- const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?D.task(id,l.seed):null;
+ const l=lesson(id),meta=D.meta.find(m=>m.id===id),ege=meta&&!meta.grade7&&!meta.pre7,previous=ege?taskAt(id,l.seed,l.bankVersion):null;
  const takeSeed=()=>{if(!ege)return state.serial++;const seed=state.serial;state.serial=seed>=1e9?11:seed+1;return seed;};
  l.seed=takeSeed();
+ l.bankVersion=currentBank;
  if(ege){
   const limit=D.equationPractice?.has(id)?D.equationPractice.count:256;
   for(let n=1;n<limit&&(seen(D.task(id,l.seed))||taskKey(D.task(id,l.seed))===taskKey(previous));n++)l.seed=takeSeed();
@@ -10056,7 +11049,7 @@ function support(t,omitVisual=false){return window.PathPracticeView?PathPractice
 function remediationId(meta){if(!meta.expanded)return meta.id;return ({fractions:'fractions',fraction:'share',decimals:'fractions',percent:'choice',change:'percent',proportion:'ratio',division:'ratio',equations:'equations',powers:'powers',signs:'numberline'})[meta.gap]||meta.id;}
 function equationPracticeLinks(id){if(id!=='equations'&&!D.equationPractice?.has(id))return '';return `<section class="panel equation-practice-menu"><h2>Потренироваться на похожих уравнениях</h2><p>Четыре набора по 240 разных условий. Выбери один тип: новые варианты останутся линейными уравнениями этого типа.</p><div class="actions">${D.equationPractice.families.map(m=>`<a class="btn ${id===m.id?'primary':''}" href="#lesson=${m.id}" ${id===m.id?'aria-current="page"':''}>${E(m.title)}</a>`).join('')}</div>${D.equationPractice.has(id)?'<p>Кнопки «Ещё по шагам» и «Ещё задача этого типа» дают новое условие выбранного типа. После 240 показанных условий начнутся повторы; они не добавляют новых самостоятельных успехов.</p>':''}</section>`;}
 function fractionPracticeLink(id){return ['fractions','practice-fraction-expression'].includes(id)?'<section class="panel fraction-extra-practice"><h2>Ещё выражения с дробями</h2><p>Скобки и порядок действий: решай новые примеры по одному шагу.</p><a class="btn" href="https://mathexam.space/school/index.html?course=vilenkin6#lesson/v6f-fraction-order" target="_blank" rel="noopener">Открыть тренировку →</a><p>Она откроется в другой вкладке. Эта работа останется здесь.</p></section>':'';}
-function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);let l=lesson(id),t=D.task(id,l.seed);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
+function showLesson(id){const meta=D.meta.find(m=>m.id===id);if(!meta)return map();courseChrome(meta);let l=lesson(id),t=taskAt(id,l.seed,l.bankVersion);if(l.step>t.steps.length)l.step=0;document.title=meta.title+(meta.grade7?' · 7 класс':' · ЕГЭ база');if(!meta.grade7&&!meta.pre7&&window.PathTaskFirst){PathTaskFirst.mount(root,{meta,task:t,lesson:l,save,seen,expose,fresh,setHash,remediationId,equationPracticeLinks,fractionPracticeLink,learningCycle:true,journey:window.EgeBazaExamMap?{line:EgeBazaExamMap.forLesson(id),next:EgeBazaExamMap.nextLesson(id)}:window.EgeBazaJourney?{line:EgeBazaJourney.lineForLesson(id),next:EgeBazaJourney.nextLesson(id)}:null});return;}if(PathPracticeView.photoProof?.supports(t)){showPhotoProof(id,t,l);return;}const source=meta.grade7?'<p class="source">Авторская практика для 7 класса: свои условия, пошаговый разбор и новые варианты. <a href="../../grade7/">Вернуться к курсу</a>.</p>':`<p class="source">Связь: базовый ЕГЭ, позиция ${meta.pos}. Задача авторская. <a href="../sources/index.html#p${meta.pos}">Что сверено с ФИПИ</a>.</p>`;
 root.innerHTML=`<a href="${meta.grade7?'#grade7':'#map'}">← Все темы</a><p class="eyebrow">${meta.pre7?'Основы до 7 класса':meta.grade7?'7 класс · '+grade7Subjects[meta.subject]:'Задание '+meta.pos}</p><h1>${E(meta.title)}</h1><label>${meta.grade7?'Тема для тренировки':'Тип задачи в этой позиции'} <select id="typeSelect">${D.meta.filter(m=>meta.grade7?m.grade7&&!!m.pre7===!!meta.pre7&&m.subject===meta.subject:m.pos===meta.pos).map(m=>`<option value="${m.id}" ${m.id===id?'selected':''}>${E(m.title)}</option>`).join('')}</select></label><nav class="stage-nav" aria-label="Шаги урока">${(meta.geometryRebuild?['Главная идея','Мастерская','По шагам','Мой ответ','Объясняю']:stageLabels).map((s,i)=>`<button data-stage="${i}" ${i===l.stage?'aria-current="step"':''}>${i+1}. ${s}</button>`).join('')}</nav>${meta.geometryRebuild&&[2,3].includes(l.stage)?'<aside class="geometry-entry" aria-label="Как пройти задание"><strong>Одна задача — маленькая миссия</strong><p>Впервые здесь? Найди элементы на рисунке и собери рассуждение. Ошибки можно исправлять, подсказки — брать без штрафа.</p><button type="button" class="primary" data-geometry-explore>Сначала в мастерскую</button></aside>':''}<div id="lesson"></div>${equationPracticeLinks(id)}${fractionPracticeLink(id)}${id==='motion'?'<p class="callout">Ещё один вид текстовых задач: <a href="../work-rate/index.html">землекопы и совместная работа без уравнений</a>.</p>':''}${source}`;
 $('#typeSelect').onchange=e=>setHash('lesson='+e.target.value);root.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{let n=+b.dataset.stage;if(n===3&&l.stage!==3){fresh(id,3);return;}l.stage=n;if(n<3){l.help=true;expose(t);}save();render();});let box=$('#lesson');
 if(meta.geometryRebuild&&$('[data-geometry-explore]'))$('[data-geometry-explore]').onclick=()=>{l.stage=1;l.help=true;save();render();};
@@ -10089,13 +11082,34 @@ function showPhotoProof(id,t,l){
 }
 function nextLesson(id){const list=D.practice.foundation;if(list.includes(id)&&list.indexOf(id)<list.length-1)return list[list.indexOf(id)+1];const rebuild=D.meta.find(m=>m.id===id)?.geometryRebuild===true,photo=id.startsWith('grade7-r-photo-proof-');if(photo){const photos=['grade7-r-photo-proof-1','grade7-r-photo-proof-3','grade7-r-photo-proof-2'];return photos[photos.indexOf(id)+1]||null;}const course=D.meta.filter(m=>(m.geometryRebuild===true)===rebuild&&!m.id.startsWith('grade7-r-photo-proof-'));if(rebuild)course.sort((a,b)=>a.section-b.section);const next=course.findIndex(m=>m.id===id)+1;return rebuild?(course[next]?.id||null):course[next%course.length].id;}
 function answerForm(t){return PathPracticeView.answerForm(t,10000);}
-function examPool(pos){return PathExamPool.select(D.meta,pos);}
-function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{state.active={kind,seed:state.serial++,ids:Array.from({length:21},(_,i)=>examPool(i+1)[state.serial%examPool(i+1).length].id),i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],t=D.task(id,r.seed+r.i);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed:r.seed+r.i,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
-function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:r.seed+i,value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
-function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=D.task(a.id,a.seed),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p><p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
+function startRun(kind){if(state.active&&state.active.kind!==kind){root.innerHTML='<h1>Есть незавершённая проверка</h1><p>Сначала завершите её или сохраните как прерванную.</p><button id="resume">Продолжить</button> <button id="finish">Завершить с текущими ответами</button>';$('#resume').onclick=()=>setHash(state.active.kind);$('#finish').onclick=()=>finishRun(true);return;}if(!state.active){root.innerHTML=`<h1>${kind==='exam'?'Пробная работа':'Найдём точку старта'}</h1><p>21 авторская задача, по одной на позицию. Можно пропускать. Ответы и разбор появятся после завершения. Эта выборка не охватывает все подтипы экзамена.</p><p>${kind==='exam'?'Ориентир — 180 минут. Часы не отправляют работу автоматически.':'Время не ограничено. Диагностика нужна для выбора темы, а не для отметки.'}</p><button id="start" class="primary">Начать</button>`;$('#start').onclick=()=>{const seed=state.serial++,plan=PathExamPool.planBrowserRun(D.meta,seed);state.active={kind,bankVersion:currentBank,seed,...plan,i:0,answers:[],start:Date.now(),assisted:false};save();render();};return;}const r=state.active;if(r.i>=21)return finishRun(false);let id=r.ids[r.i],seed=runTaskSeed(r,r.i),t=taskAt(id,seed,r.bankVersion);root.innerHTML=`<p class="eyebrow">${r.kind==='exam'?'Пробная работа':'Диагностика'} · ${r.i+1}/21</p><div class="meter"><span style="width:${r.i/21*100}%"></span></div><section class="panel"><p class="task">${M(t.q)}</p>${support(t)}${answerForm(t)}<p id="feedback" role="status"></p><div class="actions"><button id="skip">Пока не знаю</button><button id="finish">Завершить сейчас</button></div><p class="muted">Прошло ${Math.floor((Date.now()-r.start)/60000)} мин. Открытие обучения во время проверки будет отмечено как помощь.</p></section>`;$('#answer').value=r.draft||'';$('#answer').oninput=e=>{r.draft=e.target.value.slice(0,10000);save();};const next=skip=>{let v=skip?'':$('#answer').value;if(!skip&&!v.trim())return feedback('Введите ответ или выберите «Пока не знаю».',true);r.answers.push({id,seed,value:v,correct:!skip&&D.correct(t,v),previouslySeen:seen(t)});expose(t);r.draft='';r.i++;save();render();};$('#answerForm').onsubmit=e=>{e.preventDefault();next(false);};$('#skip').onclick=()=>next(true);$('#finish').onclick=()=>finishRun(true);}
+function finishRun(interrupted){let r=state.active;if(!r)return;while(r.answers.length<21){let i=r.answers.length;r.answers.push({id:r.ids[i],seed:runTaskSeed(r,i),value:'',correct:false,skipped:true});}r.finished=Date.now();r.interrupted=interrupted;state.runs.push(r);state.runs=state.runs.slice(-200);state.active=null;save();setHash('report');}
+function report(){let latest=state.runs.at(-1),wrong=latest?.answers.filter(x=>!x.correct)||[];root.innerHTML=`<h1>Что уже получается</h1><p>Подсказки, исправления и ранее показанные условия учитываются отдельно. Отчёт не означает полного освоения позиции экзамена.</p>${latest?`<section class="panel"><h2>Последняя ${latest.kind==='exam'?'пробная работа':'диагностика'}: ${latest.answers.filter(x=>x.correct).length}/21</h2><p>${latest.interrupted?'Завершена досрочно. ':''}${latest.assisted?'С обращением к обучению. ':''}${latest.answers.some(x=>x.previouslySeen)?'Часть условий была показана раньше.':''}</p>${wrong.length?`<div class="callout"><b>Следующий шаг</b><p>Начни с темы «${E(D.meta.find(m=>m.id===wrong[0].id).title)}».</p><a class="btn primary" href="#lesson=${wrong[0].id}">Разобраться в первой трудности</a></div>`:'<p>Эта выборка решена. Попробуй новые варианты и вернись к темам через день.</p>'}<details><summary>Ответы и объяснения</summary><ol>${latest.answers.map(a=>{let t=taskAt(a.id,a.seed,latest.bankVersion),last=t.steps.at(-1);return `<li><b>${a.correct?'Верно':'Повторить'} · ${E(D.meta.find(m=>m.id===a.id).title)}</b><p>${M(t.q)}</p>${support(t)}<p>Ваш ответ: ${M(a.value||'пропуск')}. ${t.rule||t.answerKind==='solutions'?'Возможны разные ответы; проверяются все условия.':'Ответ: '+M(D.answerText(t))+'.'} ${M(last.why)}</p><a href="#lesson=${a.id}">Урок</a></li>`;}).join('')}</ol></details></section>`:''}<div class="scroll"><table><thead><tr><th>Тема</th><th>Разборов</th><th>Новых самостоятельных</th></tr></thead><tbody>${D.meta.map(m=>{let l=state.lessons[m.id]||{};return `<tr><td><a href="#lesson=${m.id}">${m.grade7?'7 класс':m.pos+'.'} ${E(m.title)}</a></td><td>${l.guided||0}</td><td>${l.independent||0}</td></tr>`;}).join('')}</tbody></table></div><div class="actions"><button id="export">Скачать работу и резервную копию</button><label>Восстановить свою копию <input type="file" id="import" accept="application/json"></label></div><p id="feedback" role="status"></p><p class="muted">Восстановление заменяет только данные этого нового маршрута. Старые модули, тренажёры и их ключи не затрагиваются.</p>`;$('#export').onclick=()=>download(state);$('#import').onchange=async e=>{try{let f=e.target.files[0];if(!f||f.size>2000000)throw Error();let x=readProgress(await f.text());if(!valid(x))throw Error();download(state,'before-import.json');state=x;writable=true;save();report();feedback('Копия восстановлена; предыдущая работа выгружена отдельным файлом.');}catch(e){feedback('Файл не подходит. Текущая работа не изменена.',true);}};}
 function download(x,name='EGE_baza_work.json'){let u=URL.createObjectURL(new Blob([JSON.stringify(writeProgress(x),null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function render(){let h=location.hash.slice(1)||'map';if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}if(h.startsWith('lesson='))showLesson(h.slice(7));else if(h==='diagnostic'||h==='exam')startRun(h);else if(h==='report')report();else if(h==='foundation')foundation();else if(h==='grade7')grade7Map();else map();}
-window.addEventListener('hashchange',()=>{render();root.focus({preventScroll:true});});window.addEventListener('pagehide',save);window.PathCourse={state:()=>state,valid,KEY};render();})();
+function render(){
+ const h=location.hash.slice(1)||'map';
+ if(!h.startsWith('lesson=')&&h!=='grade7')courseChrome(null);
+ if(state.active&&!['exam','diagnostic','report'].includes(h)){state.active.assisted=true;save();}
+ if(h.startsWith('lesson=')){
+  const {id,origin}=lessonRoute();
+  showLesson(id);
+  if(origin&&D.meta.some(item=>item.id===id))root.insertAdjacentHTML('afterbegin',`<aside class="callout" aria-label="Возврат после тренировки"><a class="btn" data-foundation-return href="#lesson=${encodeURIComponent(origin.id)}">← Вернуться к своей задаче</a> <span>${E(origin.title)}</span></aside>`);
+ }else if(h==='diagnostic'||h==='exam')startRun(h);
+ else if(h==='report')report();
+ else if(h==='foundation')foundation();
+ else if(h==='grade7')grade7Map();
+ else map();
+}
+window.addEventListener('hashchange',event=>{
+ const previous=event.oldURL&&lessonRoute(new URL(event.oldURL).hash),current=lessonRoute();
+ render();
+ if(previous?.origin?.id===current.id){
+  const step=$('#taskHelp[open] #taskSteps[open] #stepAnswer'),answer=step||$('#answer');
+  if(answer){answer.focus();return;}
+ }
+ root.focus({preventScroll:true});
+});
+window.addEventListener('pagehide',save);window.PathCourse={state:()=>state,valid,KEY,detourHref};render();})();
 
 </script>
 

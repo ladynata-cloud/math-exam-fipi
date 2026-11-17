@@ -75,17 +75,24 @@ assert(!D.correct(claims, String(claims.answer) + String(claims.answer)[0]));
 
 // All admissible answers to the open digit task must work; an exemplar is not
 // the unique solution. Verify the defining conditions independently.
-for (const seed of [0, 1]) {
-  const task = D.task('practice-digits-multiple', seed);
-  let valid = 0;
-  const divisor = seed === 0 ? 15 : 45;
-  for (let n = 1000; n <= 9999; n++) {
-    const digits = [...String(n)];
-    const expected = n % divisor === 0 && new Set(digits).size === 4 && digits.every(d => Number(d) % 2 === 0);
-    assert.equal(D.correct(task, String(n)), expected, `digit solution ${n}, divisor ${divisor}`);
-    if (expected) valid++;
+const digitBanks = [[1, 2], [D.practice.bankVersion, 4]];
+for (const [version, variantCount] of digitBanks) {
+  for (let seed = 0; seed < variantCount; seed++) {
+    const task = D.practice.taskForBankVersion('practice-digits-multiple', seed, version);
+    const { divisor, allowed } = task.params;
+    const givenDigits = allowed && allowed.join('');
+    let valid = 0;
+    for (let n = 1000; n <= 9999; n++) {
+      const digits = [...String(n)];
+      const usesGivenDigits = givenDigits
+        ? digits.sort().join('') === givenDigits
+        : new Set(digits).size === 4 && digits.every(d => Number(d) % 2 === 0);
+      const expected = n % divisor === 0 && usesGivenDigits;
+      assert.equal(D.correct(task, String(n)), expected, `bank ${version}, digit solution ${n}, divisor ${divisor}`);
+      if (expected) valid++;
+    }
+    assert(valid > 1, `Bank ${version} seed ${seed} must admit multiple answers`);
   }
-  assert(valid > 1, 'The task must retain its multiple valid answers');
 }
 
 console.log(JSON.stringify({

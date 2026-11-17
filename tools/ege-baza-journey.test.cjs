@@ -6,7 +6,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const files = ['ege-baza/registry.js', 'ege-baza/foundation-reference.js', 'ege-baza/data-reference.js', 'ege-baza/course-definitions.js',
-  'ege-baza/course-state.js', 'ege-baza/backup.js', 'ege-baza/path/data.js', 'ege-baza/path/practice.js', 'ege-baza/path/equation-practice.js', 'ege-baza/course-journey.js'];
+  'ege-baza/course-state.js', 'ege-baza/backup.js', 'ege-baza/path/data.js', 'ege-baza/path/practice.js', 'ege-baza/path/equation-practice.js', 'ege-baza/path/exam-pool.js', 'ege-baza/course-journey.js'];
 function runtime(minimal = false) {
   const context = vm.createContext({});
   for (const file of minimal ? ['ege-baza/course-journey.js'] : files) vm.runInContext(fs.readFileSync(path.join(root, file), 'utf8'), context, { filename: file });
@@ -46,9 +46,9 @@ test('catalog contains every actual EGE family once, including focused practice,
   ctx.PathData.meta.push({ id: 'grade7-fake', pos: 17, title: 'Other course', grade7: true }, { id: 'pre7-fake', pos: 1, title: 'Other course', pre7: true });
   const result = ctx.EgeBazaJourney.snapshot(storage());
   assert.equal(result.status, 'empty');
-  assert.deepEqual(plain(result.lines.map(line => line.total)), [29, 13, 25, 14, 12, 20, 2]);
+  assert.deepEqual(plain(result.lines.map(line => line.total)), [30, 14, 25, 14, 12, 22, 2]);
   const ids = result.lines.slice(0, 6).flatMap(line => line.groups[0].items.map(item => item.id));
-  assert.equal(ids.length, 113); assert.equal(new Set(ids).size, 113);
+  assert.equal(ids.length, 117); assert.equal(new Set(ids).size, 117);
   assert(ids.includes('equations-brackets')); assert(!ids.includes('grade7-fake')); assert(!ids.includes('pre7-fake'));
   assert.equal(result.lines[0].groups[1].total, 6); assert.equal(result.lines[1].groups[1].total, 4);
   assert.equal(result.lines[6].items.length, 2);
@@ -117,7 +117,7 @@ test('legacy module results remain a separate group and incomplete legacy checks
   const ctx = runtime(), bank = ctx.EgeBazaCourseState.forModule('m01').bank, tasks = bank.tasks.filter(task => task.phase === 'practice' && task.skill === 'decimal');
   const practice = Object.fromEntries(tasks.map(task => [task.id, { tries: 1, hints: false, solution: false, done: true, answer: String(task.answer) }]));
   const result = ctx.EgeBazaJourney.snapshot(storage({ [ctx.EgeBazaJourney.keys.m01]: { v: 1, practice, runs: { diagnostic: { answers: {}, helped: false, finishedAt: null } } } }));
-  assert.equal(result.lines[0].total, 29); assert.equal(result.lines[0].independent, 0);
+  assert.equal(result.lines[0].total, 30); assert.equal(result.lines[0].independent, 0);
   assert.equal(result.lines[0].groups[1].independent, 1); assert.equal(find(result, 'm01-decimal').status, 'independent');
   assert.equal(result.recommendation.href, '/trainers/ege-baza/course/#test-diagnostic');
 });
@@ -213,5 +213,39 @@ test('optional personal learning-cycle fields resume safely and malformed siblin
     assert.equal(result.sources.path.resumeCompatible, false);
     assert.equal(result.recommendation.kind, 'recovery');
     assert.equal(JSON.stringify(store.text), before);
+  }
+});
+
+
+test('the browser exam rotation reaches both variants of a family under the real selection policy', () => {
+  const ctx = runtime(), pool = ctx.PathExamPool, data = ctx.PathData;
+  const cases = [
+    [3, 'practice-chart', task => task.display.kind === 'graph'],
+    [6, 'practice-rental', task => task.params.rating === true],
+    [9, 'practice-grid-cut', task => task.params.estimate === true],
+    [11, 'practice-joined-surface', task => task.params.width !== undefined]
+  ];
+  for (const [position, id, isNewVariant] of cases) {
+    const kinds = new Set();
+    for (let serial = 11; serial <= 603; serial++) {
+      const {ids, taskSeeds} = pool.planBrowserRun(data.meta, serial);
+      assert.equal(ids.length, 21);
+      assert.equal(taskSeeds.length, ids.length);
+      if (ids[position - 1] === id) kinds.add(isNewVariant(data.task(id, taskSeeds[position - 1])));
+    }
+    assert.deepEqual(kinds, new Set([true, false]), id);
+  }
+});
+
+
+test('an invalid per-position seed vector does not promise an exact resume', () => {
+  const ctx = runtime(), save = pathSave(), validator = actualPathValidator(ctx);
+  save.active = activeRun(ctx, 'exam', 0);
+  for (const taskSeeds of [Array(20).fill(1), [...Array(20).fill(1), -1], 'old']) {
+    save.active.taskSeeds = taskSeeds;
+    const state = vm.runInContext('JSON.parse(' + JSON.stringify(JSON.stringify(save)) + ')', ctx);
+    assert.equal(validator(state), false);
+    const snapshot = ctx.EgeBazaJourney.snapshot(storage({ [ctx.EgeBazaJourney.keys.path]: save }));
+    assert.equal(snapshot.checks.active, null);
   }
 });

@@ -8,7 +8,9 @@ const addedFiles=['base','foundations','triangles','relations','workbook'].map(n
 const context=vm.createContext({}),load=name=>vm.runInContext(read('ege-baza/path/'+name+'.js'),context,{filename:name+'.js',timeout:1000});
 legacyFiles.forEach(load);
 const D=context.PathData,legacy=D.meta.map(meta=>({id:meta.id,tasks:[0,1,23,71].map(seed=>JSON.stringify(D.task(meta.id,seed)))}));
-assert.equal(legacy.length,175);
+const examAdditions = ['practice-overnight', 'practice-tangent-match', 'practice-digit-pair', 'practice-missing-perimeter'];
+assert.equal(legacy.filter(item => !examAdditions.includes(item.id)).length, 175);
+assert.deepEqual(plain(legacy.filter(item => examAdditions.includes(item.id)).map(item => item.id)).sort(), [...examAdditions].sort());
 addedFiles.forEach(load);
 const families=D.geometryRebuild.families;
 assert.equal(families.length,106,'103 workbook families and 3 source photo proofs');
@@ -28,10 +30,10 @@ assert.equal(addedMultiplicationIds.size,9);
 assert.equal(catalog.items.filter(item=>addedMultiplicationIds.has(item.id)).length,9,'All column multiplication topics are available');
 const addedVilenkin6Ids=new Set(Array.from({length:27},(_,index)=>'vilenkin6-part1:lesson-'+index));
 assert.deepEqual(catalog.items.filter(item=>item.trainerId==='vilenkin6-part1').map(item=>item.id).sort(),[...addedVilenkin6Ids].sort(),'Every Vilenkin 6 lesson is available exactly once');
-const addedReasoningIds=new Set(['path:practice-mushroom-count','path:practice-vase-order']);
-assert.deepEqual(catalog.items.filter(item=>addedReasoningIds.has(item.id)).map(item=>item.id).sort(),[...addedReasoningIds].sort());
+const addedEgeIds=new Set(['path:practice-mushroom-count','path:practice-vase-order', ...examAdditions.map(id => 'path:' + id)]);
+assert.deepEqual(catalog.items.filter(item=>addedEgeIds.has(item.id)).map(item=>item.id).sort(),[...addedEgeIds].sort());
 const originalTrainers=new Set(['ege-path','oge-basics','motion-grade6']);
-assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)&&!addedReasoningIds.has(item.id)).length,221,'Existing identities remain available');
+assert.equal(catalog.items.filter(item=>originalTrainers.has(item.trainerId)&&!item.geometryRebuild&&!addedDivisionIds.has(item.id)&&!addedMultiplicationIds.has(item.id)&&!addedEgeIds.has(item.id)).length,221,'Existing identities remain available');
 const manualItems=catalog.items.filter(item=>item.trainerId==='atanasyan-7-9');
 assert.deepEqual(manualItems.map(item=>item.id),['atanasyan-7-9:atanasyan-7-9-main-92-part-1'],'The fixed manual exercise is separate from the original trainer identities');
 const textbookIds=new Set(['A','B','C','D'].flatMap(block=>JSON.parse(read('courses/vilenkin-6-part-1/textbook-data/units-'+block+'.json')).flatMap(unit=>unit.tasks.map(task=>'vilenkin6-textbook:'+task.id))));
@@ -53,7 +55,7 @@ for(const item of ogeHomeworkItems){
  assert.equal(item.position,null,'OGE homework cannot claim an EGE exam position');
  assert.equal(item.geometryRebuild,undefined,'OGE homework cannot replace school geometry');
 }
-assert.equal(catalog.items.length,221+addedReasoningIds.size+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size+ogeHomeworkIds.length,'Every catalog entry belongs to an explicitly checked group');
+assert.equal(catalog.items.length,221+addedEgeIds.size+items.length+addedDivisionIds.size+addedMultiplicationIds.size+addedVilenkin6Ids.size+manualItems.length+textbookIds.size+authorTextbookIds.size+ogeHomeworkIds.length,'Every catalog entry belongs to an explicitly checked group');
 for(const meta of families){
  const item=catalog.get('path:'+meta.id);assert(item);assert(item.grade7&&item.trainingOnly&&item.geometryRebuild);
  assert.equal(item.trainerId,'ege-path');assert.equal(item.contentVersion,1);assert.equal(item.position,null);assert.equal(item.topicId,'plane');

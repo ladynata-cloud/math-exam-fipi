@@ -46,7 +46,7 @@ async function go(w,s){w.location.hash=s;await tick();}
  // Exam must contain all 21 positions and display the data required to solve it.
  await go(w,'exam');click(d,'#start');let r=w.PathCourse.state().active;assert.equal(r.ids.length,21);
  const input=d.querySelector('#answer');input.value='draft';input.dispatchEvent(new w.Event('input'));const backup=w.localStorage.getItem(w.PathCourse.KEY);const c=create(backup,'exam');assert.equal(c.d.querySelector('#answer').value,'draft');c.w.close();
- for(let i=0;i<21;i++){r=w.PathCourse.state().active;t=w.PathData.task(r.ids[r.i],r.seed+r.i);assert.equal(t.pos,i+1);if(t.display)assert(d.querySelector('.task-support svg,.task-support table'));enter(w,d,t.answer);await tick();}
+ for(let i=0;i<21;i++){r=w.PathCourse.state().active;t=w.PathData.practice.taskForBankVersion(r.ids[r.i],r.taskSeeds?.[r.i]??r.seed+r.i,r.bankVersion);assert.equal(t.pos,i+1);if(t.display)assert(d.querySelector('.task-support svg,.task-support table'));enter(w,d,t.answer);await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert(d.querySelector('#main').textContent.includes('21/21'));
  assert.equal(w.localStorage.getItem('legacy-course-sentinel'),'keep');assert(w.PathCourse.valid(w.PathCourse.state()));
  const corrupt='{broken';const c2=create(corrupt);c2.w.dispatchEvent(new c2.w.Event('pagehide'));assert.equal(c2.w.localStorage.getItem(c2.w.PathCourse.KEY),corrupt);assert(!c2.d.querySelector('#storage').hidden);c2.w.close();

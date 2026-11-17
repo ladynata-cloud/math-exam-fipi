@@ -3,12 +3,12 @@
 The four PNG files are lossless page crops from the existing repository source
 `ege-baza/sources/demo-2027.pdf`, **printed pages 4–7**. They preserve the original
 formula notation, conditions, diagrams, table of squares, trigonometric table,
-page headers and copyright attribution. This is the **project** of the 2027
-demonstration paper, as labelled by FIPI; it is not represented as a final paper.
+page headers and copyright attribution. The crops use the approved 2027
+demonstration paper that FIPI published on 2026-11-13.
 
 The source archive and SHA-256 digests are recorded in `source.json`. The FIPI
-index was checked on 2026-10-04. No task or answer pages are included in these
-images. The complete original PDF remains linked for provenance.
+archive was verified on 2026-11-17. The crops contain the four official reference
+pages. The cabinet links to the complete source PDF.
 
 Reproduce from the repository root with Poppler:
 

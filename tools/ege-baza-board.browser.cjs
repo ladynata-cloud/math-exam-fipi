@@ -153,7 +153,7 @@ async function run(browser,origin,serverOrigin,errors) {
     phase=n+': inputs, help and accepted step';
     await t.locator('#answer').fill('7/'); await help(t,'steps'); await t.locator('#stepAnswer').fill('3/');
     await sync(t,s,'separate drafts');
-    const step=await t.evaluate(()=>{const st=__bazaBoard.getState();return PathData.task(st.route.slice(8),st.work.seed).steps[st.work.step].a;});
+    const step=await t.evaluate(()=>{const st=__bazaBoard.getState();return PathData.practice.taskForBankVersion(st.route.slice(8),st.work.seed,1).steps[st.work.step].a;});
     await t.locator('#stepAnswer').fill(String(step)); await t.locator('#stepAnswer').press('Enter'); await sync(t,s,'accepted first step');
     await t.locator('#stepAnswer').fill('8'.repeat(401));assert.equal((await t.locator('#stepAnswer').inputValue()).length,200);await sync(t,s,'long pasted recreated step');
     await t.locator('#answer').fill('7'.repeat(401));assert.equal((await t.locator('#answer').inputValue()).length,200);await sync(t,s,'long pasted final');await t.locator('#answer').fill('7/');

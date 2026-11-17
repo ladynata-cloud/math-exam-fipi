@@ -30,12 +30,53 @@ const server=http.createServer((req,res)=>{let file;try{file=path.resolve(ROOT,'
  if(OUT)fs.mkdirSync(OUT,{recursive:true});
  for(const width of [360,768,1280]){await page.setViewportSize({width,height:900});for(const id of ['practice-delivery','practice-grid-cut','practice-graph-match','practice-number-match','practice-percent-part','practice-right-ratio','box']){await page.goto(base+'#lesson='+id);await openModel(page);const sizes=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,view:innerWidth}));assert(sizes.scroll<=sizes.view+1,`${id}: horizontal overflow at ${width}: ${JSON.stringify(sizes)}`);if(OUT&&((width===360&&id==='practice-delivery')||(width===768&&id==='practice-graph-match')||(width===1280&&id==='practice-grid-cut')))await page.screenshot({path:path.join(OUT,`${id}-${width}.png`),fullPage:true});}}
  // Figure construction and a keyboard-operable interactive fraction model.
- await page.goto(base+'#lesson=practice-grid-cut');await openModel(page);await page.locator('#auxRect').click();assert((await page.locator('#constructionRead').innerText()).includes('вычесть'));
+ await page.goto(base+'#lesson=practice-grid-cut');await openModel(page);await page.locator('#auxRect').click();
+ const gridEstimate=await page.evaluate(()=>{
+  const id='practice-grid-cut',lesson=PathCourse.state().lessons[id];
+  return !!PathData.practice.taskForBankVersion(id,lesson.seed,lesson.bankVersion).params.estimate;
+ });
+ const constructionFeedback=await page.locator('#constructionRead').innerText();
+ assert(constructionFeedback.includes(gridEstimate?'незакрашенных треугольников':'вычесть лишние части'));
  await page.goto(base+'#lesson=practice-fraction-percent');await openModel(page);const n=await page.evaluate(()=>{let l=PathCourse.state().lessons['practice-fraction-percent'];return PathData.task('practice-fraction-percent',l.seed).model.fractions[0][0];});for(let i=0;i<n;i++){await page.locator(`[data-share="${i}"]`).focus();await page.keyboard.press('Space');}await page.locator('#checkShares').click();assert((await page.locator('#modelFeedback').innerText()).includes('верно'));
  // The board catalog contains every new family and the opening query is correct.
  const catalog=await (await page.request.get(origin+'/trainers/board-picker-data.json')).json();for(const id of ids)assert(catalog.entries.some(x=>x.href==='/ege-baza/path/index.html#lesson='+id));const board=page.locator('a[href*="trainer-board.html"]');assert((await board.getAttribute('href')).includes('trainer='));
  // Exam representations, completion and export affordance in a real browser.
- await page.goto(base+'#exam');await page.locator('#start').click();for(let i=0;i<21;i++){const t=await page.evaluate(()=>{const r=PathCourse.state().active;return PathData.task(r.ids[r.i],r.seed+r.i);});assert.equal(t.pos,i+1);await page.locator('#answer').fill(String(t.answer));await page.locator('#answer').press('Enter');}await page.waitForSelector('#export');assert((await page.locator('#main').innerText()).includes('21/21'));assert.deepEqual(errors,[]);
- console.log('EGE_BAZA_PRACTICE_BROWSER_OK: Chromium; 79 lesson models; 360/768/1280px; keyboard; exact remediation return; reload; matching; full 21-task exam; board catalog; no page errors.');
+ await page.setViewportSize({width:360,height:900});
+ const figures = await page.evaluate(() => PathData.meta.filter(m => m.pos >= 9 && m.pos <= 13).map(m => {
+   const task = PathData.task(m.id,11);
+   const display = task.display ?? PathStereoFigures.condition(task);
+   const learnerView = PathPracticeView.visual(task);
+   const assessmentView = PathPracticeView.visual({ id: m.id, display });
+   return { id:m.id, learnerView, assessmentView };
+ }));
+ for (const {id,learnerView,assessmentView} of figures) {
+   assert.match(learnerView,/<svg .*role="img"/,id+' missing static figure');
+   assert.equal(learnerView,assessmentView,id+' uses the same condition without a solution model');
+ }
+ for (const kind of ['exam','diagnostic']) {
+   await page.goto(base+'#'+kind);
+   await page.locator('#start').click();
+   const geometryFigures = [];
+   for(let i=0;i<21;i++) {
+     const task=await page.evaluate(()=>{const r=PathCourse.state().active;return PathData.practice.taskForBankVersion(r.ids[r.i],r.taskSeeds?.[r.i]??r.seed+r.i,r.bankVersion);});
+     assert.equal(task.pos,i+1);
+     if (task.pos >= 9 && task.pos <= 13) {
+       const diagram=page.locator('#main .task-support svg').first();
+       assert(await diagram.isVisible(),kind+' geometry '+task.id);
+       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),kind+' fits at 360 px');
+       assert.equal(await page.locator('#taskHelp,#model,#taskSteps').count(),0,'assessment contains only the condition');
+       geometryFigures.push(await diagram.evaluate(svg=>svg.outerHTML));
+     }
+     await page.locator('#answer').fill(String(task.answer));
+     await page.locator('#answer').press('Enter');
+   }
+   await page.waitForSelector('#export');
+   assert((await page.locator('#main').innerText()).includes('21/21'));
+   await page.getByText('Ответы и объяснения',{exact:true}).click();
+   const reportFigures=await page.locator('#main details>ol>li').evaluateAll(rows=>rows.slice(8,13).map(row=>row.querySelector('.task-support svg')?.outerHTML));
+   assert.deepEqual(reportFigures,geometryFigures, kind+' report retains the pinned figures');
+ }
+ assert.deepEqual(errors,[]);
+ console.log('EGE_BAZA_PRACTICE_BROWSER_OK: Chromium; 85 lesson models; 360/768/1280px; keyboard; exact remediation return; reload; matching; full 21-task exam and diagnosis; condition figures in their reports; board catalog; no page errors.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;}).finally(()=>server.close());

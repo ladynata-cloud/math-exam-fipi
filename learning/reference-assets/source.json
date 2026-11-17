@@ -1,10 +1,10 @@
 {
   "source": "ege-baza/sources/demo-2027.pdf",
-  "sourceSha256": "acee4ee13a64b70e0e505004a9a151a1380470a984b016ed275ff3901e776662",
+  "sourceSha256": "a119296470467810624727168c171dd8c657278f8612ab0db86791ae7b35eaee",
   "officialArchive": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
   "officialIndex": "https://fipi.ru/ege/demoversii-specifikacii-kodifikatory",
-  "status": "project",
-  "verified": "2026-10-04",
+  "status": "approved",
+  "verified": "2026-11-17",
   "referencePrintedPages": [
     4,
     5,
@@ -22,25 +22,25 @@
       "file": "fipi-2027-algebra.png",
       "physicalPage": 2,
       "side": "right",
-      "sha256": "c191dfcda2a998c5fcf5119307aaa55538841bc77c60e4b61030aee75ad0cd3c"
+      "sha256": "33553f90b5be87cc94f57bb9046a29c9869690043ae6a42d58ad373da6b8ad2c"
     },
     {
       "file": "fipi-2027-powers-geometry.png",
       "physicalPage": 3,
       "side": "left",
-      "sha256": "342345e4b6b2cf8ba2871782c5fa7005a7ff6af10e51b3dc8bdae49c86dec5c3"
+      "sha256": "124e66107946a45328622a2e1eeeba9537721620a0b535768801f81782e1c8d1"
     },
     {
       "file": "fipi-2027-areas-solids.png",
       "physicalPage": 3,
       "side": "right",
-      "sha256": "bfb5021ea797a744dad1806a5f5390b78c27f6b55b6157e80d1c0f8f9649890e"
+      "sha256": "1e88e8956291b4fc3c1c4a493b0efc6c80c8b7026de7530ece6325d7fcd176bb"
     },
     {
       "file": "fipi-2027-trig-functions.png",
       "physicalPage": 4,
       "side": "left",
-      "sha256": "151d82c24a69dc598fb79686b4fd865569d49ca6fa9eda4b582277d7a3c139c4"
+      "sha256": "c4944713a8b4b1c8e796df4a096efc2460538b7a843ee283a4bd93c967bda695"
     }
   ]
 }

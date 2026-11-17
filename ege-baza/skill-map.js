@@ -49,14 +49,15 @@
   }
   function skillsMarkup(map, options) {
     const rows = evidenceRows(options);
+    const href = target => esc(safeHref(options.detourHref?.(target.id) || target.href));
     return '<ol class="esm-route">' + map.skills.map((skill, index) => {
       const targets = (skill.practiceIds || []).map(practice).filter(Boolean);
       return '<li class="esm-node" data-skill-node="' + esc(skill.id) + '"><span class="esm-step" aria-hidden="true">' + (index + 1) +
         '</span><div class="esm-node-content"><h3>' + esc(skill.title) + '</h3><p>' + esc(skill.description) + '</p>' +
-        (targets.length ? '<div class="esm-practice-links">' + targets.slice(0, 2).map(target => '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' +
+        (targets.length ? '<div class="esm-practice-links">' + targets.slice(0, 2).map(target => '<a href="' + href(target) + '" data-skill-practice="' + esc(target.id) + '">' +
           (target.id === options.lessonId && options.onSteps ? 'Решать по шагам' : 'Тренировать: ' + esc(target.title)) + '</a>').join('') +
           (targets.length > 2 ? '<details class="esm-more"><summary>Ещё упражнения: ' + (targets.length - 2) + '</summary>' + targets.slice(2).map(target =>
-            '<a href="' + esc(target.href) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
+            '<a href="' + href(target) + '" data-skill-practice="' + esc(target.id) + '">' + esc(target.title) + '</a>').join('') + '</details>' : '') + '</div>' : '') +
         evidenceMarkup(skill, rows) + '</div></li>';
     }).join('') + '</ol>';
   }
@@ -106,8 +107,11 @@
     const title = map.goal || 'Выбери умение, которое хочешь отработать. Рядом — упражнения для практики.';
     return '<div class="esm-body"><p class="esm-goal">' + esc(title) + '</p>' +
       (prerequisite.length ? '<details class="esm-prerequisites"><summary>Что повторить перед началом</summary><ul>' +
-        prerequisite.map(item => '<li><a href="' + esc(safeHref(item.href)) + '" target="_blank" rel="noopener" aria-label="' + esc(item.title + ' — в новой вкладке') + '">' + esc(item.title) + ' <span aria-hidden="true">↗</span></a>' +
-          (item.reason ? '<span>' + esc(item.reason) + '</span>' : '') + '</li>').join('') + '</ul><p class="esm-support-note">Упражнение откроется в новой вкладке. Эта задача останется на месте.</p></details>' : '') +
+        prerequisite.map(item => {
+          const path = options.detourHref?.(item.pathLesson);
+          return '<li><a href="' + esc(safeHref(path || item.href)) + '"' + (path ? '' : ' target="_blank" rel="noopener" aria-label="' + esc(item.title + ' — в новой вкладке') + '"') + '>' + esc(item.title) +
+            (path ? '' : ' <span aria-hidden="true">↗</span>') + '</a>' + (item.reason ? '<span>' + esc(item.reason) + '</span>' : '') + '</li>';
+        }).join('') + '</ul><p class="esm-support-note">' + (options.detourHref ? 'После тренировки вернись к своему черновику. Ссылки со стрелкой открываются в новой вкладке.' : 'Упражнение откроется в новой вкладке. Эта задача останется на месте.') + '</p></details>' : '') +
       skillsMarkup(map, options) +
       (options.onSteps && options.task ? selfCheckMarkup(map.selfCheck, options.lessonId) : '') +
       '<p class="esm-key">Отметка относится к решению в указанном тренажёре. Для уверенного владения умением нужны разные задачи и повторение.</p>' +

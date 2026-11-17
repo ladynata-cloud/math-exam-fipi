@@ -51,7 +51,37 @@ async function roundHintRegression(){
 }
 (async()=>{
  await roundHintRegression();
- const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,113);
+ const original='practice-percent-reverse',foundation='grade7-b-percent-proportion';
+ let detour=create(undefined,'lesson='+original);
+ await tick();
+ const row=detour.w.PathCourse.state().lessons[original],originalSeed=row.seed,originalTask=detour.w.PathData.task(original,originalSeed);
+ detour.d.querySelector('#startSteps').click();
+ submit(detour.w,detour.d,'stepAnswer',solution(detour.w.PathData,originalTask.steps[0]));
+ for(const [selector,value] of [['#answer','81/'],['#stepAnswer','4/']]){
+  const field=detour.d.querySelector(selector);field.value=value;field.dispatchEvent(new detour.w.Event('input'));
+ }
+ const foundationLink=detour.d.querySelector(`#taskFoundations a[href^="#lesson=${foundation}&from="]`);
+ assert(foundationLink,'percentage help offers a local foundation exercise');
+ assert.equal(foundationLink.target,'');
+ const arrived=new Promise(resolve=>detour.w.addEventListener('hashchange',resolve,{once:true}));
+ foundationLink.click();await arrived;
+ assert.equal(detour.w.location.hash,`#lesson=${foundation}&from=${original}`);
+ assert(detour.d.querySelector('[data-stage]'),'the foundation uses its normal learning controls');
+ const detourHash=detour.w.location.hash.slice(1),detourStorage=detour.w.localStorage.getItem(detour.w.PathCourse.KEY);
+ detour.w.close();detour=create(detourStorage,detourHash);await tick();
+ const returned=new Promise(resolve=>detour.w.addEventListener('hashchange',resolve,{once:true}));
+ detour.d.querySelector('[data-foundation-return]').click();await returned;
+ assert.equal(detour.w.location.hash,'#lesson='+original);
+ assert.equal(detour.w.PathCourse.state().lessons[original].seed,originalSeed);
+ assert.equal(detour.w.PathCourse.state().lessons[original].step,1);
+ assert.equal(detour.d.querySelector('#answer').value,'81/');
+ assert.equal(detour.d.querySelector('#stepAnswer').value,'4/');
+ assert.equal(detour.d.activeElement,detour.d.querySelector('#stepAnswer'));
+ assert(detour.w.PathCourse.state().lessons[original].help,'the prerequisite does not earn independent credit');
+ await go(detour.w,'practice-sets&from=https%3A%2F%2Fexample.org');
+ assert(!detour.d.querySelector('[data-foundation-return]'),'unrecognized return source is ignored');
+ detour.w.close();
+ const {w,d}=create(),ids=w.PathData.meta.filter(m=>!m.grade7&&!m.pre7).map(m=>m.id);assert.equal(ids.length,117);
  assert.equal(typeof w.PathTaskHints?.hint,'function','real index loads concrete hints before task-first');
  for(const id of ['practice-radical-equation','practice-log-equation','expressions']){const task=w.PathData.task(id,0),label=w.PathTaskFirst.question(task);assert(task.q.includes(label));assert(!label.includes(task.steps.at(-1).q)||task.q.includes(task.steps.at(-1).q));}
  for(const id of ids){
@@ -120,7 +150,7 @@ async function roundHintRegression(){
  // Grade 7 and check controllers retain their original presentation and restrictions.
  const grade7=w.PathData.meta.find(m=>m.grade7&&!m.geometryRebuild);await go(w,grade7.id);assert(!d.querySelector('.task-first-course'));assert(d.querySelector('[data-stage]'));
  w.location.hash='exam';await tick();d.querySelector('#start').click();assert(!d.querySelector('#taskHelp'));assert.equal(w.PathCourse.state().active.ids.length,21);
- for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.task(run.ids[run.i],run.seed+run.i);submit(w,d,'answer',solution(w.PathData,t));await tick();}
+ for(let i=0;i<21;i++){const run=w.PathCourse.state().active,t=w.PathData.practice.taskForBankVersion(run.ids[run.i],run.taskSeeds?.[run.i]??run.seed+run.i,run.bankVersion);submit(w,d,'answer',solution(w.PathData,t));await tick();}
  assert.equal(w.PathCourse.state().runs.at(-1).answers.filter(a=>a.correct).length,21);assert.equal(w.localStorage.getItem('legacy-sentinel'),'unchanged');assert(w.PathCourse.valid(w.PathCourse.state()));assert.deepEqual(errors,[]);w.close();
- console.log('EGE_BAZA_TASK_FIRST_OK: 113 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
+ console.log('EGE_BAZA_TASK_FIRST_OK: 117 concrete hint/model/guided/final paths; 49÷9 one-click steps 5→4→6, continuing hints and reload; retained givens/two drafts, saved model, legacy stages, honest credit, grade7 exclusion and 21-task exam');
 })().catch(e=>{console.error(e);process.exitCode=1;});

@@ -15,11 +15,36 @@ add('change',1,'Покупка и сдача','Стоимость равна ц�
 add('afford',1,'На сколько покупок хватит денег','Частично купить билет нельзя. При ограниченном бюджете оставляем целое число покупок.','division',4,k=>{let n=4+k%12,price=35+5*(k%7),money=n*price+price-5;return make(`Билет стоит ${price} рублей. Сколько билетов можно купить на ${money} рублей?`,n,steps(['Сколько стоят '+n+' билетов?',n*price,'Проверяем целое количество.'],['Сколько останется рублей?',money-n*price,'Остатка не хватает на следующий билет.'],['Сколько билетов можно купить?',n,'Округление вниз: нельзя потратить больше имеющейся суммы.']),'afford',{money,price});});
 add('transport',1,'Места для всех пассажиров','При подсчёте транспорта учитывай всех людей. Неполный последний автобус всё равно нужен.','division',4,k=>{let seats=18+2*(k%7),adults=3+k%4,children=seats*(2+k%5)-adults+1;return make(`Нужно перевезти ${children} детей и ${adults} взрослых. В автобусе ${seats} пассажирских мест. Какое наименьшее число автобусов потребуется?`,Math.ceil((children+adults)/seats),steps(['Всего пассажиров?',children+adults,'Взрослые тоже занимают места.'],['Наименьшее число автобусов?',Math.ceil((children+adults)/seats),'Если после деления остался хотя бы один пассажир, нужен ещё автобус.']),'transport',{seats,adults,children});});
 
+add('overnight',1,'Время через полночь',
+ 'Найди время от начала до полуночи и от полуночи до конца. Сложи обе части в одинаковых единицах.',
+ 'units',8,k=>{
+ const start=60*(21+k%3)+5*(1+k%10);
+ const end=60*(k%5)+3+4*(k%13);
+ const untilMidnight=24*60-start;
+ const clock=minutes=>`${Math.floor(minutes/60)}:${String(minutes%60).padStart(2,'0')}`;
+ const q=`Станок включили для проверки в ${clock(start)}. В ${clock(end)} следующего дня станок выключили. Сколько минут длилась проверка?`;
+ return make(q,untilMidnight+end,steps(
+  ['Сколько минут прошло от запуска до полуночи?',untilMidnight,'Вычти время запуска в минутах от начала суток из 1440.'],
+  ['Сколько минут прошло от полуночи до остановки?',end,'Умножь часы после полуночи на 60 и прибавь минуты.'],
+  ['Сколько минут длилась проверка?',untilMidnight+end,'Сложи два промежутка.']
+ ),'overnight',{start,end});
+});
+
 add('units-match',2,'Соотнести величину и единицу','Сначала оцени порядок величины, затем сравни единицы. Миллиметры и метры отличаются в тысячу раз.','units',5,k=>{let labels=['Толщина листа бумаги','Высота письменного стола','Длина железнодорожного вагона','Глубина океанской впадины'],values=['0,1 мм','75 см','24 м','11 км'],order=rotate([0,1,2,3],k),choices=order.map(i=>values[i]),answer=values.map(v=>choices.indexOf(v)+1).join('');return make('Установи соответствие. Запиши четыре цифры в порядке А, Б, В, Г.',answer,seq('',labels,choices,answer,['Это малая доля миллиметра.','Высота стола меньше метра.','В вагоне помещается много рядов мест.','Здесь расстояние измеряется километрами.']).steps,'units-match',{order},{answerKind:'match',labels,choices});});
 add('time',2,'Часы, минуты и секунды','В одном часе 60 минут, а не 100. Десятичная часть часа — доля от 60 минут.','units',5,k=>{let h=1+k%4,m=5*(1+k%11);return make(`Фильм длится ${h} ч ${m} мин. Сколько всего минут длится фильм?`,60*h+m,steps(['Переведи часы в минуты.',60*h,'Каждый час содержит 60 минут.'],['Прибавь оставшиеся минуты.',60*h+m,'Складываем величины в одинаковых единицах.']),'time',{h,m});});
 add('area-units',2,'Перевод единиц площади','В 1 м² помещается 100·100 квадратных сантиметров. Для площади коэффициент длины нужно возвести в квадрат.','units',5,k=>{let a=2+k%19;return make(`Площадь листа равна ${F(a/10)} м². Сколько это квадратных сантиметров?`,a*1000,steps(['Сколько сантиметров в метре?',100,'Это перевод длины.'],['Сколько см² в 1 м²?',10000,'100 рядов по 100 квадратов.'],['Площадь листа в см²?',a*1000,'Умножь число квадратных метров на 10 000.']),'area-units',{a});});
 
-add('chart',3,'Максимум и минимум на диаграмме','Прочитай шкалу и подписи. Самая высокая точка показывает наибольшее значение, но номер месяца — другая величина.','add',6,k=>{let values=[2+k%5,7+k%4,15+k%7,5+k%3,10+k%4],shift=k%5,vs=rotate(values,shift),ask=k%2;let target=ask?Math.max(...vs):Math.min(...vs);return make(`На диаграмме показано число посетителей по пяти дням. ${ask?'Сколько посетителей было в самый многолюдный день?':'Укажи номер дня с наименьшим числом посетителей.'}`,ask?target:vs.indexOf(target)+1,steps([ask?'Наибольшее значение шкалы среди показанных столбцов?':'Наименьшее число посетителей?',target,'Сравни высоты всех столбцов.'],['Ответь именно на вопрос задачи.',ask?target:vs.indexOf(target)+1,ask?'Нужно количество посетителей.':'Нужен номер дня, а не количество посетителей.']),'chart',{values:vs,ask},{display:{kind:'bars',labels:['1','2','3','4','5'],values:vs,yLabel:'Посетители'},model:{kind:'data-read'}});});
+function barChart(k, fourthStart) {
+  const values = rotate([2+k%5, 7+k%4, 15+k%7, fourthStart+k%3, 10+k%4], k%5);
+  const ask = k%2;
+  const target = ask ? Math.max(...values) : Math.min(...values);
+  const answer = ask ? target : values.indexOf(target)+1;
+  return make(`На диаграмме показано число посетителей по пяти дням. ${ask?'Сколько посетителей было в самый многолюдный день?':'Укажи номер дня с наименьшим числом посетителей.'}`, answer, steps(
+    [ask?'Наибольшее значение шкалы среди показанных столбцов?':'Наименьшее число посетителей?', target, 'Сравни высоты всех столбцов.'],
+    ['Ответь именно на вопрос задачи.', answer, ask?'Нужно количество посетителей.':'Нужен номер дня, а не количество посетителей.']
+  ), 'chart', { values, ask }, { display: { kind:'bars', labels:['1','2','3','4','5'], values, yLabel:'Посетители' }, model:{kind:'data-read'} });
+}
+add('chart',3,'Максимум и минимум на диаграмме','Прочитай шкалу и подписи. Самая высокая точка показывает наибольшее значение, но номер месяца — другая величина.','add',6,k=>barChart(k,5));
 add('ranking',3,'Место команды в таблице','Сложи баллы каждой команды. Место определяется числом команд с большим результатом.','add',6,k=>{let x=1+k%8,rows=[['Альфа',x,4,2],['Бета',x+2,5,4],['Гамма',x+1,2,1],['Дельта',x,5,3]],target=k%4,sums=rows.map(r=>r.slice(1).reduce((a,b)=>a+b,0)),answer=1+sums.filter(v=>v>sums[target]).length;return make(`Суммируются баллы трёх туров. Какое место заняла команда «${rows[target][0]}»? Побеждает наибольшая сумма.`,answer,steps(['Сумма баллов выбранной команды?',sums[target],'Сложи три числа в её строке.'],['Сколько команд набрало больше?',answer-1,'Сравни с суммами остальных строк.'],['Итоговое место?',answer,'Перед командой находятся все, кто набрал больше.']),'ranking',{rows,target},{display:table(['Команда','Тур 1','Тур 2','Тур 3'],rows),model:{kind:'data-read'}});});
 add('interval-data',3,'Сумма за нужный промежуток','Считай только те столбцы, которые входят в указанный промежуток.','add',6,k=>{const vs=[k%8+4,k%7+8,k%5+3,k%9+12,k%6+5],a=1+k%2,b=a+2;return make(`На диаграмме — продажи по дням. Сколько товаров продали с ${a+1}-го по ${b+1}-й день включительно?`,vs.slice(a,b+1).reduce((x,y)=>x+y,0),steps(['Число дней в промежутке?',3,'Учитываем и начало, и конец.'],['Сумма продаж за эти дни?',vs.slice(a,b+1).reduce((x,y)=>x+y,0),'Сложи только выбранные столбцы.']),'interval-data',{values:vs,a,b},{display:{kind:'bars',labels:['1','2','3','4','5'],values:vs,yLabel:'Товары'},model:{kind:'data-read'}});});
 
@@ -36,6 +61,29 @@ add('rental',6,'Аренда плюс расход топлива','Расход
 
 add('graph-match',7,'Соотнести участки графика и изменение','Отделяй высоту графика от изменения. На одинаковых промежутках больший подъём означает больший рост.','signs',8,k=>{let b=10+2*(k%9),values=[b,b+2,b-2,b-2,b+4],labels=['А: от 0 до 1','Б: от 1 до 2','В: от 2 до 3','Г: от 3 до 4'],concepts=['Небольшой рост','Убывание','Без изменения','Наибольший рост'],order=rotate([0,1,2,3],k),choices=order.map(i=>concepts[i]),answer=concepts.map(v=>choices.indexOf(v)+1).join('');return make('Соотнеси каждый промежуток с характеристикой графика. В ответе — четыре цифры в порядке А, Б, В, Г.',answer,seq('',labels,choices,answer,['Конечное значение больше начального на 2.','Конечное значение меньше начального.','Значения совпадают и отрезок горизонтален.','Подъём 6 — самый большой.']).steps,'graph-match',{values,order},{answerKind:'match',labels,choices,display:{kind:'graph',values,labels:['0','1','2','3','4'],yLabel:'Значение'},model:{kind:'data-read'}});});
 add('graph-slope',7,'Наклон прямой по двум точкам','Изменение y делится на изменение x. Знак показывает направление изменения.','signs',9,k=>{let x1=1,x2=3+k%3,y1=2+k%4,slope=(k%7)-3,y2=y1+slope*(x2-x1);return make(`Прямая проходит через точки (${x1}; ${y1}) и (${x2}; ${y2}). Найди её угловой коэффициент.`,slope,steps(['Изменение y?',y2-y1,'Конечная ордината минус начальная.'],['Изменение x?',x2-x1,'Разность абсцисс в том же порядке.'],['Угловой коэффициент?',slope,'Дели изменение y на изменение x.']),'graph-slope',{x1,x2,y1,y2},{display:{kind:'graph',values:[y1,y2],labels:[String(x1),String(x2)],yLabel:'y'},model:{kind:'data-read'}});});
+add('tangent-match',7,'Касательные и значения производной',
+ 'Для каждой касательной возьми две точки на прямой и раздели изменение ординаты на изменение абсциссы.',
+ 'signs',9,k=>{
+ const sets=[[-3,-1,1,2],[-2,-1,0,3],[-3,0,1,3],[-3,-2,0,2]];
+ const values=sets[k%sets.length];
+ const seed=Math.floor(k/sets.length);
+ const order=rotate([2,0,3,1],seed);
+ const panels=rotate(values,seed+1).map((slope,i)=>({
+  left:(k+i)%3-1-slope,
+  right:(k+i)%3-1+slope,
+  curvature:(k+i)%2===0 ? 0.25 : -0.25
+ }));
+ if(seed%2===0)[panels[1],panels[2]]=[panels[2],panels[1]];
+ const letters=['А','Б','В','Г'];
+ const labels=letters.map(letter=>`Рисунок ${letter}`);
+ const choices=order.map(i=>F(values[i]));
+ const slopes=panels.map(({left,right})=>(right-left)/2);
+ const answer=slopes.map(slope=>choices.indexOf(F(slope))+1).join('');
+ const why=panels.map(({left,right},i)=>`Изменение x равно 2. Изменение y равно (${F(right)}) − (${F(left)}) = ${F(right-left)}. Наклон касательной равен ${F(slopes[i])}.`);
+ return make('На рисунках А–Г гладкие кривые и касательные к ним. Для каждого рисунка выбери значение производной в точке касания. Запиши четыре цифры в порядке А, Б, В, Г.',
+  answer,seq('',labels,choices,answer,why).steps,'tangent-match',{panels,order:order.map(i=>values[i])},
+  {answerKind:'match',labels,choices,display:{kind:'tangents',panels,letters}});
+});
 
 add('logic-order',8,'Что обязательно следует из сравнения','Цепочка A>B>C позволяет сравнить A и C. Если между величинами нет связи, нельзя домысливать её.','logic',10,k=>{let names=rotate(['Аня','Борис','Вера','Глеб'],k),[a,b,c,d]=names,claims=[`${a} выше, чем ${c}.`,`${c} ниже всех остальных.`,`${d} выше, чем ${a}.`,`${b} и ${d} одного роста.`],truth=[true,true,false,false],order=rotate([0,1,2,3],k+1),choices=order.map(i=>claims[i]),answer=order.flatMap((v,i)=>truth[v]?[i+1]:[]).join('');return make(`${a} выше, чем ${b}; ${b} выше, чем ${c}; ${d} выше, чем ${c}. Выбери утверждения, которые обязательно верны. Запиши их номера.`,answer,steps(...order.map((v,i)=>[`Утверждение ${i+1} обязательно верно? 1 — да, 0 — нет.`,truth[v]?1:0,truth[v]?'Это следует из цепочки сравнений.':'Условия не устанавливают такую связь. Возможны разные примеры.'])),'logic-order',{truth,order},{answerKind:'multi',choices,model:{kind:'statements'}});});
 add('logic-all',8,'Все, некоторые и обратное утверждение','Включение одного множества в другое не означает их равенства. Существование нельзя додумывать.','logic',10,k=>{let claims=['Каждый участник кружка умеет решать уравнения.','Каждый, кто умеет решать уравнения, посещает кружок.','Есть хотя бы один участник кружка.','Никто из участников кружка не умеет решать уравнения.'],truth=[true,false,true,false],order=rotate([0,1,2,3],k),answer=order.flatMap((v,i)=>truth[v]?[i+1]:[]).join('');return make(`Все ${8+k%17} участников математического кружка умеют решать уравнения. Какие утверждения обязательно верны?`,answer,steps(...order.map((v,i)=>[`Утверждение ${i+1}: 1 — обязательно верно, 0 — не следует.`,truth[v]?1:0,truth[v]?'Это прямо задано условием.':'Обратное включение не задано; исходное условие не разрешает такой вывод.'])),'logic-all',{truth,order},{answerKind:'multi',choices:order.map(i=>claims[i]),model:{kind:'statements'}});});
@@ -96,6 +144,29 @@ add('inequality-match',18,'Сопоставить неравенства и пр
 add('digits-multiple',19,'Число по признакам делимости','Одновременно проверяй длину записи, разрешённые цифры, их различие и делимость. Подходящий ответ может быть не один.','divisibility',15,k=>{let divisor=k%2?45:15,solutions=[];for(let n=1000;n<10000;n++){let s=String(n);if(n%divisor===0&&new Set(s).size===4&&[...s].every(c=>+c%2===0))solutions.push(s);}return make(`Найди четырёхзначное число, кратное ${divisor}, все цифры которого различны и чётны. Укажи любое такое число.`,solutions[0],steps(['Последняя цифра?',0,'Кратность 5 требует 0 или 5; из них чётный только 0.'],['На какое число должна делиться сумма цифр?',divisor===45?9:3,'Применяем признак делимости на 9 или на 3.'],['Введи подходящее четырёхзначное число.',solutions[0],'Проверь все ограничения.']),'digits-multiple',{divisor},{answerKind:'solutions',solutions,model:{kind:'digit-work'}});});
 add('digits-product',19,'Делимость и произведение цифр','Разложи произведение на цифры. Затем переставь их так, чтобы выполнялись признаки делимости.','divisibility',15,k=>{let target=[10,24,40,64][k%4],solutions=[];for(let n=1000;n<10000;n++){let s=String(n);if(n%12===0&&[...s].reduce((a,c)=>a*+c,1)===target)solutions.push(s);}return make(`Найди четырёхзначное число, кратное 12, произведение цифр которого равно ${target}. Укажи любой подходящий ответ.`,solutions[0],steps(['На какое число, кроме 3, проверяем делимость?',4,'3 и 4 взаимно просты и дают произведение 12.'],['Введи найденное число.',solutions[0],'Сумма цифр кратна 3, последние две цифры образуют число, кратное 4; проверь произведение.']),'digits-product',{target},{answerKind:'solutions',solutions,model:{kind:'digit-work'}});});
 
+add('digit-pair',19,'Два числа по наборам цифр',
+ 'При подборе числа проверь его цифры, умножь и сравни цифры произведения с данными условия.',
+ 'divisibility',30,k=>{
+ const cases=[
+  [4,'0146','2456'],[5,'0156','0258'],[3,'0128','0348'],[4,'0125','0248'],
+  [3,'0126','0378'],[5,'0134','0157'],[4,'0123','1248'],[5,'0138','0159']
+ ];
+ const [factor,first,second]=cases[k%cases.length];
+ const sortedDigits=n=>[...String(n)].sort().join('');
+ const bound=Math.floor(9999/factor);
+ const solutions=[];
+ for(let n=1000;n<=bound;n++){
+  if(sortedDigits(n)===first&&sortedDigits(factor*n)===second)solutions.push(String(n));
+ }
+ const digits=s=>[...s].join(', ');
+ const q=`Для первого четырёхзначного кода взяли по одной из цифр ${digits(first)}. Контрольное число равно первому коду, умноженному на ${factor}. В контрольном числе ровно по одному разу встречаются цифры ${digits(second)}. Запиши любой подходящий первый код.`;
+ return make(q,solutions[0],steps(
+  ['Какое наибольшее число вообще можно умножить так, чтобы произведение осталось четырёхзначным?',bound,'Возьми целую часть от 9999, делённого на множитель.'],
+  [`Какое контрольное число даёт вариант ${solutions[0]}?`,factor*Number(solutions[0]),'Сверь цифры произведения с контрольным набором.'],
+  ['Запиши любой подходящий первый код.',solutions[0],'Подходит каждый код, у которого нужный набор цифр и верное контрольное число.']
+ ),'digit-pair',{factor,first,second},{answerKind:'solutions',solutions});
+});
+
 add('meeting',20,'Движение навстречу','Когда движутся навстречу, расстояние сокращается со скоростью, равной сумме скоростей.','proportion',16,k=>{let a=40+5*(k%9),b=30+5*(k%7),t=2+k%4,dist=(a+b)*t;return make(`Из двух городов одновременно навстречу выехали автомобили со скоростями ${a} и ${b} км/ч. Расстояние ${dist} км. Через сколько часов они встретятся?`,t,steps(['Скорость сближения?',a+b,'За час обе машины вместе сокращают промежуток.'],['Время до встречи?',t,'Расстояние делим на скорость сближения.']),'meeting',{a,b,dist});});
 add('river',20,'Движение по течению и против','По течению скорости складываются, против — вычитаются. Времена участков нужно считать отдельно.','proportion',16,k=>{let v=10+2*(k%6),u=2,t1=2+k%4,t2=1+k%3,d1=(v+u)*t1,d2=(v-u)*t2;return make(`Собственная скорость лодки ${v} км/ч, течение ${u} км/ч. Лодка прошла ${d1} км по течению и ${d2} км против. Сколько часов занял весь путь?`,t1+t2,steps(['Скорость по течению?',v+u,'Течение помогает.'],['Скорость против течения?',v-u,'Течение мешает.'],['Время по течению?',t1,'Первый путь делим на первую скорость.'],['Время против течения?',t2,'Второй путь делим на вторую скорость.'],['Общее время?',t1+t2,'Складываем времена, а не скорости.']),'river',{v,u,d1,d2});});
 add('work',20,'Совместная работа через доли','За час складываются выполненные доли работы, а не времена выполнения всего задания.','fractions',16,k=>{let s=1+k%7,a=3*s,b=6*s;return make(`Первый землекоп может вскопать огород за ${a} ч, второй — за ${b} ч. За сколько часов они вскопают один такой огород вместе, работая независимо?`,2*s,steps(['Доля огорода первого за час?',fraction(1,a),'Один целый огород делим на время.'],['Доля огорода второго за час?',fraction(1,b),'Производительность тоже измеряется огородами в час.'],['Вместе огородов за час?',fraction(1,2*s),'Складываем производительности.'],['Часов на один огород?',2*s,'Целую работу делим на общую производительность.']),'work',{a,b});});
@@ -119,6 +190,22 @@ add('whole-count',21,'Оценка числа участников',
 
 
 // Additional practice uses new IDs: existing seeds, tasks and stored attempts stay intact.
+add('missing-perimeter',21,'Периметр одной из четырёх частей',
+ 'У противоположных частей одинаковая сумма периметров: в каждой паре учтены обе ширины и обе высоты.',
+ 'logic',32,k=>{
+ const a=4+k%7,b=a+2+k%4,c=3+k%5,d=c+1+k%3;
+ const perimeters=[2*(a+c),2*(b+c),2*(b+d),2*(a+d)];
+ const corners=['верхней левой','верхней правой','нижней правой','нижней левой'];
+ const blank=k%4,opposite=(blank+2)%4;
+ const knownPair=perimeters[(blank+1)%4]+perimeters[(blank+3)%4];
+ const value=i=>i===blank?'?':perimeters[i];
+ const q=`Лист картона разделили горизонтальным и вертикальным разрезами на четыре прямоугольные части. В таблице даны периметры трёх частей в сантиметрах. Каков периметр ${corners[blank]} части?`;
+ return make(q,perimeters[blank],steps(
+  ['Чему равна сумма двух известных периметров противоположных частей?',knownPair,'Сложи периметры частей, расположенных по диагонали друг от друга.'],
+  ['Найди недостающий периметр, см.',perimeters[blank],`Пары противоположных частей дают одну и ту же сумму. Вычти из неё известный противоположный периметр ${perimeters[opposite]}.`]
+ ),'missing-perimeter',{a,b,c,d,blank},{display:table(['Ряд','Левая часть','Правая часть'],[['Верхний',value(0),value(1)],['Нижний',value(3),value(2)]])});
+});
+
 add('digits-delete',19,'Вычеркнуть цифры: все подходящие ответы','Оставшиеся цифры сохраняют порядок. Для делимости на 22 проверь чётность и чередующуюся сумму цифр.','divisibility',15,k=>{
  const sources=['74123568','45341527','12034568','86421350'],digits=sources[k%sources.length],solutions=[];
  for(let mask=0;mask<1<<digits.length;mask++){const value=[...digits].filter((_,i)=>mask>>i&1).join('');if(D.digits22(value,digits)&&!solutions.includes(value))solutions.push(value);}
@@ -235,11 +322,505 @@ add('vase-order', 21, 'Вазы — порядок и общая часть', '�
 });
 catalog.at(-1).trainingOnly = true;
 
+// Revised conditions keep their public lesson IDs. The earlier factories are
+// used only when a saved browser attempt has no updated bank version yet.
+const bankVersion = 2;
+const revised = Object.create(null);
+
+revised['practice-decimal-division'] = seed => {
+  const divisorTenths = 11 + seed % 19;
+  const quotientTenths = 17 + Math.floor(seed / 19) % 23;
+  const minuendTenths = 6 + (seed * 7) % 47;
+  const divisor = divisorTenths / 10;
+  const dividend = divisorTenths * quotientTenths / 100;
+  const minuend = minuendTenths / 10;
+  const quotient = quotientTenths / 10;
+  const answer = (minuendTenths - quotientTenths) / 10;
+  return make(`Найдите значение выражения ${F(minuend)} − ${F(dividend)} : ${F(divisor)}.`, answer, steps(
+    ['Какое действие выполняют первым: деление (1) или вычитание (2)?', 1, 'Без скобок деление выполняют раньше вычитания.'],
+    ['Чему равно частное?', quotient, `Умножь делимое и делитель на 10. Частное ${F(dividend * 10)} : ${divisorTenths} равно ${F(quotient)}.`],
+    ['Чему равно всё выражение?', answer, `Вычисли ${F(minuend)} − ${F(quotient)}.`]
+  ), 'decimal-division', { minuend, dividend, divisor });
+};
+
+revised['practice-units-match'] = seed => {
+  const sets = [
+    [['Диаметр горошины', 'Ширина двери', 'Длина посадочной площадки остановки', 'Расстояние между соседними городами'], ['7 мм', '85 см', '24 м', '32 км']],
+    [['Короткая фотовспышка', 'Продолжительность песни', 'Урок в школе', 'Летние каникулы'], ['0,02 с', '4 минуты', '45 минут', '3 месяца']],
+    [['Одна скрепка', 'Пакет крупы', 'Масса взрослой собаки', 'Масса городского автобуса'], ['0,5 г', '900 г', '22 кг', '11 т']],
+    [['Боковая поверхность маленького кубика', 'Столешница письменного стола', 'Участок под частным домом', 'Площадь крупного водохранилища'], ['18 см²', '0,8 м²', '650 м²', '56 км²']],
+  ];
+  const [labels, values] = sets[Math.floor(seed / 4) % sets.length];
+  const order = rotate([0, 1, 2, 3], seed);
+  const choices = order.map(index => values[index]);
+  const answer = values.map(value => choices.indexOf(value) + 1).join('');
+  const q = 'Сопоставь каждую величину с её возможным значением. Запиши четыре цифры в порядке А, Б, В, Г.';
+  return make(q, answer, seq(q, labels, choices, answer, labels.map(() =>
+    'Переведи близкие значения в одинаковые единицы и проверь порядок величины.')).steps,
+  'units-match', { order, varied: true }, { answerKind: 'match', labels, choices });
+};
+
+revised['practice-inverse-formula'] = seed => {
+  if (seed % 2 === 0) return factories['practice-inverse-formula'](seed / 2);
+  const k = Math.floor(seed / 2);
+  const a = 6.5 + k % 9, b = a + 3 + k % 5, h = 4 + k % 7;
+  const area = (a + b)*h/2;
+  return make(`Лицевая сторона щита имеет форму трапеции. Её площадь вычисляют по формуле S=(a+b)h/2. Длины параллельных кромок на чертеже равны ${F(a)} и ${F(b)} дм, расстояние между ними — ${h} дм. Сколько квадратных дециметров занимает эта сторона?`,area,steps(
+    ['Сумма оснований?',a+b,'Сложи две параллельные стороны.'],
+    ['Площадь щита?',area,'Умножь сумму на высоту и раздели на 2.']
+  ),'area-formula',{a,b,h});
+};
+
+revised['practice-fraction-expression'] = seed => {
+  if (seed % 2 === 0) return factories['practice-fraction-expression'](seed / 2);
+  const k = Math.floor(seed / 2);
+  const tenths = 3+k%13, numerator=2+k%7;
+  return make(`Вычисли ${F(tenths/10)} + (${numerator}/8) : (5/4).`,(tenths+numerator)/10,steps(
+    ['Чему равно частное обыкновенных дробей?',numerator/10,'Умножь первую дробь на 4/5 и сократи.'],
+    ['Чему равно всё выражение?',(tenths+numerator)/10,'Запиши частное десятичной дробью и сложи.']
+  ),'mixed-fraction-expression',{tenths,numerator});
+};
+
+revised['practice-graph-match'] = seed => {
+  if (seed % 3 === 0) return factories['practice-graph-match'](seed / 3);
+  const variant = Math.floor(seed / 3);
+  const signs = seed % 3 === 1;
+  const high = 3 + variant % 6;
+  const low = -2 - Math.floor(variant / 3) % 6;
+  const base = 23 + variant % 12;
+  const cycle = rotate([high,high,low,low], variant);
+  const values = signs ? [...cycle,cycle[0]] : [base-8,base+9,base+2,base+5,base+5];
+  const labels = ['А · 0–1','Б · 1–2','В · 2–3','Г · 3–4'];
+  const options = signs
+    ? ['Возрастает','Убывает','Значения положительны','Значения отрицательны']
+    : ['Самый быстрый рост','Уровень снизился',`Уровень вырос и всегда был выше ${base} см`,'Уровень постоянен'];
+  const classify = (from,to) => signs
+    ? (from < to ? 0 : from > to ? 1 : from > 0 ? 2 : 3)
+    : (from === to ? 3 : from > to ? 1 : from > base ? 2 : 0);
+  const order = rotate([2,0,3,1], Math.floor(variant / 4));
+  const choices = order.map(i=>options[i]);
+  const answer = values.slice(1).map((to,i)=>order.indexOf(classify(values[i],to))+1).join('');
+  const why = values.slice(1).map((to,i)=>`Концы участка имеют значения ${F(values[i])} и ${F(to)}. Подходит характеристика «${options[classify(values[i],to)]}».`);
+  const q = (signs ? 'Рассмотри график функции.' : 'На графике показано изменение уровня воды в ёмкости за четыре часа.')
+    + ' Для каждого из четырёх участков выбери его характеристику. Запиши четыре цифры в порядке А, Б, В, Г.';
+  return make(q,answer,seq(q,labels,choices,answer,why).steps,'graph-match-criteria',{values,order,signs,base},
+    {answerKind:'match',labels,choices,display:{kind:'graph',values,labels:['0','1','2','3','4'],yLabel:signs?'y':'Уровень, см'},
+     model:{kind:'data-read'}});
+};
+
+revised['practice-root-product'] = seed => {
+  const a = 11 + seed % 7;
+  const b = 2 + Math.floor(seed / 7) % 6;
+  const first = a*b*b;
+  return make(`Запиши одним числом произведение √${a} и √${first}.`,a*b,steps(
+    ['Чему равно произведение подкоренных чисел?',a*first,'Под одним корнем перемножаем оба неотрицательных подкоренных числа.'],
+    ['Каково значение произведения корней?',a*b,'Возьми квадратный корень из полученного числа.']
+  ),'root-product',{a,b});
+};
+
+revised['practice-log-equation'] = seed => {
+  if (seed % 2 === 0) return factories['practice-log-equation'](seed / 2);
+  const variant = Math.floor(seed / 2);
+  const base = [2, 3, 5, 7][variant % 4];
+  const factor = 2 + variant % 4;
+  const divisor = factor * (1 + variant % 5);
+  const ratio = 6 + variant % 7;
+  const shift = 1 + variant % 5;
+  const x = divisor * ratio / factor - shift;
+  const argument = `${factor}(x+${shift})`;
+  return make(`Найди корень уравнения log_${base}(${argument}) − log_${base}(${divisor}) = log_${base}(${ratio}).`,
+    x, steps(
+      ['Какое число должно стоять в числителе дроби после объединения логарифмов?', divisor * ratio,
+        'Разность логарифмов равна логарифму частного. Приравняй частное к правому аргументу и умножь на знаменатель.'],
+      ['Найди корень, который удовлетворяет исходному уравнению.', x,
+        'Раздели найденный аргумент на коэффициент перед скобками и вычти число в скобках. Аргумент получается положительным.']
+    ), 'log-equation-difference', {base, factor, divisor, ratio, shift});
+};
+
+revised['practice-number-match'] = seed => {
+  if (seed % 2 === 0) return factories['practice-number-match'](seed / 2);
+  const variant = Math.floor(seed / 2);
+  const x = [0.2, 0.25, 0.4, 0.5][variant % 4];
+  const values = [x - 1, x / 2, 3 * x, 1 / x];
+  const names = ['m − 1', 'm : 2', '3m', '1 : m'];
+  const order = rotate([1,3,0,2], Math.floor(variant / 4));
+  const choices = order.map(i=>names[i]);
+  const answer = names.map(name=>choices.indexOf(name)+1).join('');
+  const points = ['А','Б','В','Г'];
+  const q = `Число m равно ${F(x)}. Каждой точке на координатной прямой соответствует одно из выражений. Запиши четыре цифры в порядке А, Б, В, Г.`;
+  const why = values.map((value,i)=>`Выражение ${names[i]} равно ${F(value)}. Сопоставь его с точкой по положению на оси.`);
+  return make(q,answer,seq(q,points,choices,answer,why).steps,'number-match',{values,order,decimal:true},
+    {answerKind:'match',labels:points,choices,display:{kind:'numberline',values,names:points},model:{kind:'data-read'}});
+};
+
+revised['practice-chart'] = seed => {
+  if (seed % 3 !== 0) return barChart(seed, 8);
+  const variant = seed / 3;
+  const base = 5 + variant % 7;
+  const values = rotate([3 * base, 4 * base, base, 2 * base, 2 * base + 1], variant);
+  const day = values.indexOf(base) + 1;
+  const labels = ['1', '2', '3', '4', '5'];
+  return make('На графике показано, сколько велосипедов оставалось на станции проката к закрытию в каждый из пяти дней. Запиши номер дня, когда на станции оставалось меньше всего велосипедов.', day, steps(
+    ['Сколько велосипедов отмечено в самой низкой точке?', base, 'Найди самую низкую отмеченную точку. Прочитай её значение по вертикальной шкале.'],
+    ['Какой номер дня соответствует этой точке?', day, 'Спустись от выбранной точки к горизонтальной оси.']
+  ), 'chart', { values, ask: false, line: true }, {
+    display: { kind: 'graph', labels, values, yLabel: 'Велосипеды' },
+    model: { kind: 'data-read' }
+  });
+};
+
+revised['practice-electric'] = seed => {
+  if (seed % 2 === 1) {
+    const variant = Math.floor(seed / 2);
+    const speed = [8, 10, 12, 14, 15][variant % 5];
+    const radius = [25, 32, 40, 50, 64][Math.floor(variant / 5) % 5];
+    const answer = speed * speed / radius;
+    return make(`На испытательном треке автомобиль проходит поворот по дуге радиусом ${radius} м со скоростью ${speed} м/с. Ускорение на таком повороте вычисляют по формуле a = v²/R, где v — скорость, R — радиус. Найди ускорение в м/с².`, answer, steps(
+      ['Квадрат скорости v²?', speed * speed, 'Умножь скорость саму на себя.'],
+      ['Ускорение, м/с²?', answer, 'Раздели квадрат скорости на радиус поворота.']
+    ), 'electric', { speed, radius });
+  }
+  const r = 3 + seed % 8;
+  const i = 2 + seed % 6;
+  return make(`Мощность нагревательного элемента вычисляется по формуле P = I² · R. Через элемент сопротивлением ${r} Ом идёт ток силой ${i} А. Сколько ватт потребляет элемент?`, i * i * r, steps(
+    ['Значение I²?', i * i, 'Умножь силу тока саму на себя.'],
+    ['Мощность в ваттах?', i * i * r, 'Умножь найденный квадрат силы тока на сопротивление.']
+  ), 'electric', { i, r });
+};
+
+revised['practice-temperature'] = seed => {
+  const c = -32.5 + 3 * (seed % 19);
+  return make(`Датчик передал показание ${F(c)} °C. Панель управления переводит градусы Цельсия C в градусы Фаренгейта F по формуле F = 1,8 · C + 32. Какое число появится на панели?`, 1.8 * c + 32, steps(
+    ['Чему равно 1,8 · C?', 1.8 * c, 'Учитывай знак температуры в градусах Цельсия.'],
+    ['Сколько градусов покажет термометр?', 1.8 * c + 32, 'К результату умножения прибавь 32.']
+  ), 'temperature', { c });
+};
+
+revised.probability = seed => {
+  const total = 40 + 40 * (seed % 3);
+  const bad = total / 20 * (1 + seed % 8);
+  return make(`Проверяют партию настольных ламп: из ${total} ламп у ${bad} не работает выключатель. Какова вероятность наугад выбрать лампу с исправным выключателем?`, (total - bad) / total, steps(
+    ['Сколько ламп с исправным выключателем?', total - bad, 'Из числа всех ламп вычти число ламп с неисправным выключателем.'],
+    ['Вероятность выбрать нужную лампу?', (total - bad) / total, 'Число подходящих ламп раздели на число всех ламп.']
+  ), 'lamp-quality', { total, bad });
+};
+
+revised['practice-probability-opposite'] = seed => {
+  const n = 250;
+  const bad = 5 * (1 + seed % 16);
+  return make(`В архиве отсканировали ${n} карточек. Из-за размытого текста нужно переснять ${bad} из них. Какова вероятность, что у случайно выбранной карточки снимок пригоден?`, (n - bad) / n, steps(
+    ['Вероятность, что карточку нужно переснять?', bad / n, 'Число карточек на пересъёмку раздели на число всех карточек.'],
+    ['Вероятность, что снимок пригоден?', (n - bad) / n, 'Из единицы вычти вероятность пересъёмки.']
+  ), 'probability-opposite', { n, bad });
+};
+
+revised['practice-probability-draw'] = seed => {
+  if (seed % 3 === 2) {
+    const variant = Math.floor(seed/3);
+    const n = [20,25,40,50,80][variant%5], place=5+variant%13;
+    return make(`Организаторы выставки случайно определяют порядок показа ${n} школьных проектов. Какова вероятность, что проект «Метеостанция» окажется под номером ${place}?`,1/n,steps(
+      ['Сколько номеров может получить проект?',n,'Для проекта возможны все позиции в списке.'],
+      ['Какова вероятность получить именно указанный номер?',1/n,'Из всех равновозможных мест подходит ровно одно.']
+    ),'probability-draw',{n,good:1,ordinal:true});
+  }
+  if (seed % 2 === 0) return factories['practice-probability-draw'](seed);
+  const variant = Math.floor(seed / 2);
+  const n = 50 + 50 * (variant % 2);
+  const broken = 4 + variant % 7;
+  const incomplete = 6 + variant % 11;
+  const good = n - broken - incomplete;
+  return make(`В мастерской приготовили ${n} наборов для сборки. Из них ${broken} отложили из-за сломанной детали, ещё ${incomplete} других — из-за недостающего крепежа. Остальные наборы готовы к работе. Из всех наборов наугад выбирают один. Какова вероятность, что он готов к работе?`, good / n, steps(
+    ['Сколько наборов отложили по обеим причинам?', broken + incomplete, 'Сложи числа из двух непересекающихся групп.'],
+    ['Сколько наборов готовы к работе?', good, 'Из общего количества вычти все отложенные наборы.'],
+    ['Какова вероятность?', good / n, 'Раздели число готовых наборов на число всех наборов.']
+  ), 'probability-draw', { n, good, excluded: [broken, incomplete] });
+};
+
+revised['practice-luggage'] = seed => {
+  const limits = [46, 31, 24, 12];
+  const boxes = [[43 + seed % 4, 28 + seed % 4, 21 + seed % 4, 8 + seed % 4],
+    [47, 30, 20, 9], [42, 31, 24, 12], [44, 33, 20, 7], [42, 29, 24, 13]];
+  const rows = rotate(boxes, seed).map((box, index) => [index + 1, ...box]);
+  const valid = rows.filter(([, ...box]) => box.every((value, i) => value <= limits[i])).map(([number]) => number);
+  return make('Для перевозки образцов нужен ящик. Его длина, ширина и высота должны быть не больше 46 см, 31 см и 24 см соответственно, а масса с образцами — не больше 12 кг. Запиши номера всех подходящих ящиков.', valid.join(''), steps(
+    ...rows.map(([number]) => [`Ящик ${number} подходит? Введи 1 — да или 0 — нет.`, valid.includes(number) ? 1 : 0, 'Проверь три размера и массу. Равенство предельному значению допустимо.'])
+  ), 'luggage', { rows, limits }, { answerKind: 'multi', display: table(['№', 'Длина, см', 'Ширина, см', 'Высота, см', 'Масса, кг'], rows), model: { kind: 'data-read' } });
+};
+
+revised['practice-rental'] = seed => {
+  if (seed % 2 === 0) return factories['practice-rental'](seed);
+  const variant = Math.floor(seed / 2);
+  const shift = variant % 4;
+  const rows = rotate([['А', 10 + shift, 6, 2], ['Б', 8, 9 + shift, 1], ['В', 11, 8, 3 + shift]], variant);
+  const scores = rows.map(([, strength, accuracy, issues]) => 3 * strength + 2 * accuracy - 4 * issues);
+  const lowest = Math.min(...scores);
+  return make('Жюри выставило трём макетам баллы за прочность P и аккуратность A и отметило число замечаний Z. Итог вычисляют по формуле R = 3P + 2A − 4Z. Каков наименьший итоговый балл среди трёх макетов?', lowest, steps(
+    ...rows.map(([name], index) => ['Каков итоговый балл макета ' + name + '?', scores[index], 'Возьми все три значения из строки макета и подставь их в формулу.']),
+    ['Каков наименьший итоговый балл?', lowest, 'Сравни три результата и запиши наименьший.']
+  ), 'rental', { rows, rating: true }, {
+    display: table(['Макет', 'Прочность P', 'Аккуратность A', 'Замечания Z'], rows),
+    model: { kind: 'data-read' }
+  });
+};
+
+// Retain an exact area exercise alongside the official estimation format.
+revised['practice-grid-parallelogram'] = seed => {
+  const a = 4 + seed % 6, h = 3 + Math.floor(seed/6) % 5;
+  const offset = 1 + Math.floor(seed/30) % 4;
+  const points = [[0,0],[a,0],[a+offset,h],[offset,h]];
+  return make('На сетке отмечены вершины параллелограмма. Каждая клетка — квадрат со стороной 1. Какова площадь фигуры?',a*h,steps(
+    ['Сколько единиц в длине нижней стороны?',a,'Посчитай клетки вдоль основания.'],
+    ['Чему равна высота, проведённая к этой стороне?',h,'Посчитай клетки по вертикали между параллельными основаниями.'],
+    ['Найди площадь параллелограмма.',a*h,'Перемножь длину основания и перпендикулярную высоту.']
+  ),'grid-parallelogram',{a,h},{display:{kind:'polygon',points,grid:true},model:{kind:'polygon-build'}});
+};
+
+revised['practice-grid-cut']=k=>{
+ if(k%2)return factories['practice-grid-cut'](k);
+ const i=k/2,w=8+i%3,h=5+i%4,leftWidth=1+2*(i%2),leftHeight=1.5+i%2,rightWidth=2+2*(i%2),rightHeight=1+i%3;
+ const points=[[0,0],[w,0],[w,h-rightHeight],[w-rightWidth,h],[leftWidth,h],[0,h-leftHeight]];
+ const leftArea=leftWidth*leftHeight/2,rightArea=rightWidth*rightHeight/2,area=w*h-leftArea-rightArea;
+ return make('Граница водоёма показана на плане ломаной линией. Сторона клетки соответствует 1 км на местности. Оцените площадь водоёма. Ответ округлите до целого числа квадратных километров.',Math.round(area),steps(
+  ['Какова площадь прямоугольника, в который вписана фигура?',w*h,'Сосчитай клетки вдоль двух сторон прямоугольника и перемножь.'],
+  ['Какова площадь левого незакрашенного угла?',leftArea,'Это прямоугольный треугольник. Умножь два перпендикулярных отрезка по сетке, затем раздели на 2.'],
+  ['Какова площадь правого незакрашенного угла?',rightArea,'Так же вычисли площадь второго прямоугольного треугольника.'],
+  ['Какова площадь водоёма с округлением до целого?',Math.round(area),'Из площади прямоугольника вычти площади обеих частей. Округляй только итог.']),
+  'grid-cut',{estimate:true,points},{display:{kind:'polygon',points,grid:true,gridUnit:'км'},model:{kind:'polygon-build'}});
+};
+// A stepped outline tests how joined surfaces are accounted for when the
+// combined solid is not a single parallelepiped.
+revised['practice-joined-surface']=k=>{
+ if(k%2)return factories['practice-joined-surface'](k);
+ const i=k/2,width=9+i%5,baseHeight=3+i%4,upperWidth=width-2-i%3,raise=2+i%4,depth=2+i%5;
+ const lower=2*(width*baseHeight+width*depth+baseHeight*depth);
+ const upper=2*(upperWidth*raise+upperWidth*depth+raise*depth);
+ const joined=upperWidth*depth,answer=lower+upper-2*joined;
+ return make(`Два прямоугольных параллелепипеда сложены ступенькой. Глубина обеих призм ${depth} см. Нижняя призма имеет ширину ${width} см и высоту ${baseHeight} см, верхняя — ширину ${upperWidth} см и высоту ${raise} см. Верхняя призма стоит на нижней всем основанием, левые стенки призм лежат в одной плоскости. Найдите площадь внешней поверхности в квадратных сантиметрах.`,answer,steps(
+  ['Какова площадь поверхности нижней призмы до соединения?',lower,'У каждой из трёх пар противоположных граней совпадают размеры.'],
+  ['Какова площадь поверхности верхней призмы до соединения?',upper,'Учти её ширину и высоту, глубина та же.'],
+  ['Какова площадь соприкосновения призм?',joined,'Возьми ширину и глубину основания верхней призмы.'],
+  ['Какова площадь внешней поверхности ступеньки?',answer,'В сумме поверхностей отдельных призм область соприкосновения учтена дважды. Вычти её дважды.']),
+  'joined-surface',{width,baseHeight,upperWidth,raise,depth});
+};
+
+// Keep the area variant and add a median determined from the perimeter.
+revised.triangle=k=>{
+ if(k%2)return oldTask('triangle',k);
+ const i=k/2,multiplier=1+i%6,[leg,altitude,hypotenuse]=[[5,12,13],[7,24,25],[8,15,17]][Math.floor(i/6)%3];
+ const a=leg*multiplier,h=altitude*multiplier,b=hypotenuse*multiplier,base=2*a,perimeter=base+2*b;
+ return make(`В равнобедренном треугольнике ABC стороны AB и BC равны, основание AC равно ${base} см, периметр равен ${perimeter} см. Точка M — середина AC. Найдите длину медианы BM в сантиметрах.`,h,steps(
+  ['Чему равна боковая сторона?',b,'Вычти из периметра основание и раздели остаток пополам.'],
+  ['Чему равна половина основания?',a,'Медиана делит основание на два равных отрезка.'],
+  ['Чему равен квадрат длины медианы?',h*h,'Медиана к основанию равнобедренного треугольника перпендикулярна основанию. Примени теорему Пифагора к треугольнику ABM.'],
+  ['Чему равна длина медианы?',h,'Извлеки положительный квадратный корень.']),
+  'triangle',{base,perimeter},{model:{kind:'iso',a,b,h}});
+};
+revised['practice-faces'] = seed => {
+  const n = 5 + seed % 4;
+  return make(`К выставке собрали модель из призмы и пирамиды. У каждой основание — одинаковый ${n}-угольник. Детали соединены этими основаниями целиком. Соседние внешние грани лежат в разных плоскостях. Сколько граней образуют внешнюю поверхность модели?`,2*n+1,steps(
+    ['Сколько граней у призмы до соединения?',n+2,'У призмы два основания и по боковой грани на каждую сторону основания.'],
+    ['Сколько граней у пирамиды до соединения?',n+1,'У пирамиды одно основание и по боковой грани на каждую сторону основания.'],
+    ['Сколько граней образуют внешнюю поверхность модели?',2*n+1,'Из суммы граней двух тел вычти оба основания, которые теперь внутри.']
+  ),'faces',{n});
+};
+
+revised['practice-spokes']=k=>{
+ const n=[12,15,18,20,24,30,36,40][k%8], gaps=2+Math.floor(k/8)%3, unit=360/n;
+ return make(`На круговой шкале прибора ${n} равноотстоящих отметок. Число отметок строго между двумя выбранными по меньшей дуге равно ${gaps-1}. Найдите меньший угол между лучами, проведёнными из центра к выбранным отметкам. Ответ дайте в градусах.`,unit*gaps,steps(
+  ['Чему равен полный угол?',360,'Все соседние промежутки вместе составляют полный оборот.'],
+  ['Сколько промежутков на меньшей дуге?',gaps,'Между двумя крайними отметками промежутков на один больше, чем внутренних отметок.'],
+  ['Чему равен нужный угол?',unit*gaps,'Раздели 360° на число промежутков полного круга и умножь на число промежутков меньшей дуги.']),'spokes',{n,gaps});
+};
+revised['practice-displacement']=k=>{
+ const areaPerCm=600+100*(k%10), before=10+5*(k%5), rise=2+k%6, after=before+rise;
+ const litres=areaPerCm*before/1000, answer=areaPerCm*rise;
+ return make(`В баке с вертикальными стенками ${F(litres)} л воды. Сначала глубина воды составляла ${before} см. После полного погружения детали глубина стала ${after} см, вода не перелилась. Найдите объём детали в кубических сантиметрах.`,answer,steps(
+  ['Каков объём воды в кубических сантиметрах?',litres*1000,'В одном литре тысяча кубических сантиметров.'],
+  ['Каков объём слоя толщиной 1 см в кубических сантиметрах?',areaPerCm,'Раздели объём воды на её прежнюю глубину.'],
+  ['На сколько сантиметров поднялся уровень?',rise,'Вычти прежнюю глубину из новой.'],
+  ['Каков объём детали?',answer,'Тело вытеснило столько воды, сколько помещается между прежним и новым уровнями.']),'displacement',{litres,before,after});
+};
+revised['practice-pyramid-lateral']=k=>{
+ const s=1+k%5, n=k%2?4:6, side=16*s, perimeter=n*side, edge=17*s, height=15*s, area=perimeter*height/2;
+ const name=n===4?'четырёхугольной':'шестиугольной';
+ return make(`Периметр основания правильной ${name} пирамиды равен ${perimeter} см, а её боковое ребро равно ${edge} см. Найдите площадь боковой поверхности пирамиды в квадратных сантиметрах.`,area,steps(
+  ['Чему равна сторона основания?',side,'Раздели периметр правильного многоугольника на число его сторон.'],
+  ['Чему равна половина стороны основания?',side/2,'Высота боковой грани делит её основание пополам.'],
+  ['Чему равна высота боковой грани?',height,'В прямоугольном треугольнике гипотенуза — боковое ребро. Примени теорему Пифагора.'],
+  ['Чему равна площадь боковой поверхности?',area,'Сумма площадей боковых треугольников равна половине произведения периметра основания на высоту боковой грани.']),'pyramid-lateral',{n,perimeter,edge});
+};
+revised['practice-similar-volume']=k=>{
+ const factor=[2,4,5][k%3], smallHeight=3+k%7, height=smallHeight*factor;
+ const small=3+k%13, whole=small*factor**3, rest=whole-small;
+ return make(`Объём конуса равен ${whole} см³, его высота ${height} см. Плоскость, параллельная основанию, отсекла у вершины малый конус высотой ${smallHeight} см. Найдите объём оставшейся части в кубических сантиметрах.`,rest,steps(
+  ['Во сколько раз высота большого конуса больше?',factor,'Сравни высоты двух подобных конусов.'],
+  ['Каков объём малого конуса?',small,'Объёмы относятся как кубы высот.'],
+  ['Каков объём части между сечением и основанием?',rest,'Вычти объём малого конуса из объёма исходного конуса.']),'similar-volume',{smallHeight,height,whole});
+};
+
+const deletionNumbers = ['31820654', '52701486', '64823752', '91758236', '85220764', '25318674', '90935628'];
+function codeDeletion(seed, includeParity = false) {
+  const digits = deletionNumbers[seed % deletionNumbers.length];
+  const solutions = [...new Set(Array.from({ length: 1 << digits.length }, (_, mask) =>
+    [...digits].filter((_, index) => mask & 1 << index).join('')).filter(value => D.digits22(value, digits)))].sort();
+  return make(`Исходный код — ${digits}. Нужно вычеркнуть три цифры, сохранив порядок остальных. Каким пятизначным числом, кратным 22, может быть новый код? Запиши один такой код.`, solutions[0], steps(
+    ...(includeParity ? [['Какой должна быть последняя цифра: чётной (2) или нечётной (1)?', 2, 'Кратность 22 требует чётности.']] : []),
+    ['На какое число, кроме 2, должно делиться число?', 11, 'Делители 2 и 11 взаимно просты и дают произведение 22.'],
+    ['Введи один допустимый код.', solutions[0], 'Проверь длину, первую цифру, порядок, чётность и делимость на 11.']
+  ), 'digits-delete', { digits }, { answerKind: 'solutions', solutions, model: { kind: 'digits', digits } });
+}
+
+revised.integers = seed => codeDeletion(seed, true);
+revised['practice-digits-delete'] = codeDeletion;
+
+function matchingFourDigitNumbers(predicate) {
+  const solutions = [];
+  for (let number = 1000; number <= 9999; number++) {
+    const digits = String(number);
+    if (predicate(number, digits)) solutions.push(digits);
+  }
+  return solutions;
+}
+
+revised['practice-digits-multiple'] = seed => {
+  const variants = [[[1, 3, 4, 8], 8], [[0, 3, 4, 8], 6], [[2, 4, 5, 7], 18], [[0, 2, 5, 9], 4]];
+  const [allowed, divisor] = variants[seed % variants.length];
+  const solutions = matchingFourDigitNumbers((number, digits) =>
+    number % divisor === 0 && [...digits].sort().join('') === allowed.join(''));
+  return make(`Для номера шкафчика использовали цифры ${allowed.join(', ')} по одному разу. Номер четырёхзначный и кратен ${divisor}. Запиши один возможный номер.`, solutions[0], steps(
+    ['Сколько цифр должно быть в номере?', 4, 'Возьми каждую из четырёх данных цифр один раз. Ноль не может стоять первым.'],
+    ['На какое число делится номер?', divisor, 'Найди делитель в условии. Для выбранной перестановки раздели число на этот делитель и проверь остаток.'],
+    ['Введи подходящий номер шкафчика.', solutions[0], 'Проверь, что цифры не повторяются, первая цифра ненулевая и остаток от деления равен нулю.']
+  ), 'digits-multiple', { divisor, allowed }, { answerKind: 'solutions', solutions, model: { kind: 'digit-work' } });
+};
+
+revised['practice-digits-product'] = seed => {
+  const divisor = 24;
+  const target = [36, 60, 144, 48, 72, 96, 108][seed % 7];
+  const solutions = matchingFourDigitNumbers((number, digits) =>
+    number % divisor === 0 && [...digits].reduce((product, digit) => product * Number(digit), 1) === target);
+  return make(`Шифр из четырёх цифр — четырёхзначное число, кратное ${divisor}. Если перемножить все цифры шифра, получится ${target}. Приведи один возможный шифр.`, solutions[0], steps(
+    ['На какое число, кроме 3, обязан делиться шифр?', 8, '24 — произведение взаимно простых чисел 3 и 8.'],
+    ['Введи один подходящий шифр.', solutions[0], 'Разложи произведение на четыре цифры. Проверь, что их сумма кратна 3, а число из трёх последних цифр кратно 8.']
+  ), 'digits-product', { target, divisor }, { answerKind: 'solutions', solutions, model: { kind: 'digit-work' } });
+};
+
+revised['practice-meeting'] = seed => {
+  if (seed % 4 === 0) return factories['practice-meeting'](seed);
+  if (seed % 4 === 2) {
+    const variant = Math.floor(seed / 4);
+    const hours = 2 + variant % 4;
+    const speed = 35 + 5 * (variant % 7);
+    const fromSecond = hours * (45 + 5 * (variant % 6));
+    const total = hours * speed + fromSecond;
+    return make(`Две ремонтные машины выехали одновременно навстречу друг другу из двух депо. По дороге между депо ${total} км. Машины встретились через ${hours} ч в ${fromSecond} км от второго депо. С какой скоростью ехала машина из первого депо? Ответ в км/ч.`, speed, steps(
+      ['Сколько километров проехала машина из первого депо?', total - fromSecond, 'Вычти расстояние от второго депо до места встречи из расстояния между депо.'],
+      ['Скорость машины из первого депо, км/ч?', speed, 'Раздели её путь на время до встречи.']
+    ), 'meeting', { total, fromSecond, hours });
+  }
+  const slow = 12 + 2 * (seed % 5);
+  const fast = slow + 6 + 2 * (seed % 3);
+  const time = (2 + seed % 3) / 4;
+  const turn = (slow + fast) * time / 2;
+  const answer = slow * time;
+  return make(`Два велосипедиста одновременно выехали от пункта проката по одной дороге в одном направлении. Первый едет со скоростью ${slow} км/ч, второй — ${fast} км/ч. Через ${F(turn)} км от проката второй развернулся и с прежней скоростью поехал назад. На каком расстоянии от проката велосипедисты снова встретились? Ответ в километрах.`, answer, steps(
+    ['Сумма путей обоих велосипедистов к новой встрече, км?', 2 * turn, 'Первый прошёл путь до встречи, второй — от проката до разворота и часть дороги обратно. Вместе пройдены две длины участка до разворота.'],
+    ['Сколько километров проезжают оба вместе за час?', slow + fast, 'Оба едут одно и то же время; их скорости складываются при подсчёте суммы путей.'],
+    ['Время от старта до встречи, ч?', time, 'Раздели сумму путей на сумму скоростей.'],
+    ['Расстояние от проката до встречи, км?', answer, 'Умножь скорость первого велосипедиста на общее время.']
+  ), 'meeting', { slow, fast, turn });
+};
+
+revised['practice-integer-budget'] = seed => {
+  if (seed % 2 === 0) return factories['practice-integer-budget'](seed);
+  const variant = Math.floor(seed / 2);
+  const reward = [5, 7][variant % 2];
+  const penalty = [3, 4][Math.floor(variant / 2) % 2];
+  const right = 6 + variant % 9;
+  const wrong = 1 + variant % 4;
+  const skipped = 1 + Math.floor(variant / 4) % 5;
+  const n = right + wrong + skipped;
+  const score = reward * right - penalty * wrong;
+  const loss = reward * n - score;
+  return make(`На викторине по истории города было ${n} вопросов. За верный ответ начисляли ${reward} баллов, за ошибку снимали ${penalty}, за пропуск ставили 0. Участник получил ${score} баллов и допустил хотя бы одну ошибку. Сколько верных ответов он дал?`, right, steps(
+    ['На сколько баллов результат ниже максимально возможного?', loss, 'Из результата при всех верных ответах вычти полученные баллы.'],
+    ['На сколько баллов одна ошибка уменьшает максимально возможный результат?', reward + penalty, 'За ошибку не начисляют награду за верный ответ и дополнительно снимают штраф.'],
+    ['Сколько было неверных ответов?', wrong, `За один пропуск теряют ${reward} баллов. Вычитай из разницы ${loss} потери за 1, 2, 3… ошибки: остаток должен быть неотрицательным и делиться на ${reward}.`],
+    ['Сколько было верных ответов?', right, `После вычета потерь за ${wrong} неверных ответов остаются потери за ${skipped} пропусков. Из ${n} вычти число ошибок и пропусков.`]
+  ), 'integer-budget', { n, reward, penalty, score, allowsSkips: true });
+};
+
+revised['practice-sets'] = seed => {
+  const task = factories['practice-sets'](seed);
+  const {A,B,total}=task.params;
+  return {...task,q:`В группе ${total} человек. Каждый ходит хотя бы в один из двух кружков. На математику ходят ${A}, на робототехнику — ${B}. Сколько человек посещают оба кружка?`};
+};
+
+revised['practice-work'] = seed => {
+  const joint = 3 + 2*(seed % 7);
+  const a = joint*1.5, b = 3*joint;
+  return make(`Первой бригаде на разметку всей спортивной площадки потребовалось бы ${F(a)} ч, второй — ${F(b)} ч. Бригады работают одновременно с начала разметки до её завершения. Сколько часов займёт работа, если производительность каждой бригады постоянна?`,joint,steps(
+    ['Какую долю всей разметки первая бригада выполняет за один час?',fraction(1,a),'Одну целую работу делим на время первой бригады.'],
+    ['Какую долю всей разметки вторая бригада выполняет за один час?',fraction(1,b),'Для второй бригады делим ту же целую работу на её время.'],
+    ['Через сколько часов разметка закончится?',joint,'Сложи доли за час. Раздели единицу на общую долю за час.']
+  ),'work',{a,b});
+};
+
+revised.motion = seed => {
+  const speed = [45 + 5 * (seed % 4), 64 + 4 * (seed % 3), 84 + 6 * (seed % 5)];
+  const times = [1, 2, 5];
+  const dist = speed.map((value, index) => value * times[index]);
+  const total = dist.reduce((sum, value) => sum + value, 0);
+  const answer = total / 8;
+  return make(`Служебный фургон проехал ${dist[0]} км со скоростью ${speed[0]} км/ч, затем ${dist[1]} км со скоростью ${speed[1]} км/ч и ещё ${dist[2]} км со скоростью ${speed[2]} км/ч. Фургон не останавливался. Какова его средняя скорость в км/ч?`, answer, steps(
+    ...times.map((time, index) => [`Время на участке ${index + 1}, ч?`, time, 'Раздели расстояние этого участка на его скорость.']),
+    ['Весь путь, км?', total, 'Сложи три расстояния.'],
+    ['Средняя скорость, км/ч?', answer, 'Раздели весь путь на сумму времён.']
+  ), 'van-journey', { dist, speed }, { model: { kind: 'journey', dist, speed } });
+};
+
+revised.mixtures = seed => {
+  const water = 2 + seed % 7;
+  const mass = 3 * water;
+  const concentration = 12 + 4 * (seed % 6);
+  const sugar = mass * concentration / 100;
+  const answer = 3 * concentration / 4;
+  return make(`Для лимонада взяли ${mass} кг сиропа, в котором ${concentration}% сахара по массе, и добавили ${water} кг воды. Сколько процентов сахара по массе в получившейся смеси?`, answer, steps(
+    ['Масса сахара, кг?', sugar, 'Умножь массу сиропа на долю сахара.'],
+    ['Масса смеси, кг?', mass + water, 'Сложи массы сиропа и воды.'],
+    ['Содержание сахара в смеси, %?', answer, 'Массу сахара раздели на массу всей смеси и умножь на 100.']
+  ), 'lemonade', { mass, concentration, water });
+};
+
+revised.reasoning = seed => {
+  const half = 24 + 2 * (seed % 8);
+  const ac = half - 4 - seed % 5;
+  const ad = half - 9;
+  const cd = 2 * half - ac - ad;
+  const bc = half - ac;
+  return make(`Вокруг озера проходит замкнутый веломаршрут с отметками A, B, C и D. Кратчайшие пути между отметками: A–B — ${half} км, A–C — ${ac} км, A–D — ${ad} км, C–D — ${cd} км. Сколько километров в кратчайшем пути от B до C по этому маршруту?`, bc, steps(
+    ['Если C и D находятся с одной стороны от A, какова разность AC−AD?', ac - ad, `Получилось меньше ${cd} км, поэтому отметки C и D лежат по разные стороны от A.`],
+    ['Длина дуги C–A–D, км?', ac + ad, 'Сложи расстояния AC и AD.'],
+    ['Длина всего веломаршрута, км?', 2 * half, `Кратчайший путь C–D составляет ${cd} км и проходит по другой дуге. Сложи длины обеих дуг.`],
+    ['Кратчайший путь от B до C, км?', bc, 'B лежит напротив A. Из половины длины маршрута вычти AC.']
+  ), 'lake-loop', { half, ac, ad, cd }, { model: { kind: 'ring', half, ac, ad, cd } });
+};
+
 D.meta.push(...catalog);
 D.F=F;
-D.task=function(id,seed=1){if(!factories[id])return oldTask(id,seed);let t=factories[id](Math.abs(Math.trunc(seed)));Object.assign(t,{id,seed,pos:catalog.find(m=>m.id===id).pos,strict:true});for(const step of t.steps)step.strict=true;
+function bankTask(id, seed, version) {
+ const factory=(version===bankVersion&&revised[id])||factories[id];
+ if(!factory)return oldTask(id,seed);
+ const t=factory(Math.abs(Math.trunc(seed)));
+ Object.assign(t,{id,seed,pos:D.meta.find(m=>m.id===id).pos,strict:true});
+ for(const step of t.steps)step.strict=true;
  if(t.answerKind==='solutions'){const last=t.steps[t.steps.length-1];last.answerKind='solutions';last.solutions=t.solutions;}
- return t;};
+ return t;
+}
+D.task=(id,seed=1)=>bankTask(id,seed,bankVersion);
+function taskForBankVersion(id, seed, version) {
+ return revised[id]&&version!==bankVersion ? bankTask(id,seed,1) : D.task(id,seed);
+}
 D.correct=function(t,value){let s=String(value??'').trim();if(t.answerKind==='solutions')return /^\d+$/.test(s)&&t.solutions.includes(s);if(t.answerKind==='match')return /^\d{4}$/.test(s)&&s===String(t.a??t.answer);if(t.answerKind==='multi')return /^\d+$/.test(s)&&new Set(s).size===s.length&&[...s].sort().join('')===[...String(t.a??t.answer)].sort().join('');if(typeof t.a==='string'){let x=D.parse(value),a=D.parse(t.a);return x!==null&&a!==null&&Math.abs(x-a)<1e-8*Math.max(1,Math.abs(a));}if(t.strict){const x=D.parse(value),a=t.a??t.answer;return x!==null&&Number.isFinite(a)&&Math.abs(x-a)<1e-8;}return oldCorrect(t,value);};
 const task21PracticeIds = catalog.filter(item => item.pos === 21 && item.trainingOnly).map(item => item.id);
 // The prior version validates every lesson ID. Keep the new practice rows in
@@ -261,6 +842,6 @@ function packTask21Progress(value) {
   }
   return {...value, lessons, task21Practice};
 }
-D.practice={catalog,factories,fraction,expandTask21Progress,packTask21Progress,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
+D.practice={catalog,factories,fraction,bankVersion,taskForBankVersion,expandTask21Progress,packTask21Progress,foundation:['practice-fraction-add','practice-fraction-divide','practice-decimal-division','practice-fraction-percent','practice-percent-part','practice-percent-whole','practice-percent-rate','practice-ratio-parts','practice-direct-proportion','practice-inverse-proportion','practice-percent-change','practice-percent-reverse','practice-percent-chain']};
 if(typeof module!=='undefined')module.exports=D;
 })(typeof window==='undefined'?globalThis:window);

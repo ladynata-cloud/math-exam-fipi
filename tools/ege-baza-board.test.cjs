@@ -44,7 +44,7 @@ test('wrappers require their exact path and marker, and use bounded course route
     }
   }
 });
-test('all twelve current-course families preserve inputs, help, correct steps, models and final work without personal storage', async () => {
+test('all twelve shared-board families preserve inputs, help, correct steps, models and final work without personal storage', async () => {
   for (const position of [11, 13]) {
     const f = fixture(position);
     try {
@@ -61,7 +61,7 @@ test('all twelve current-course families preserve inputs, help, correct steps, m
         if (f.$('#cut')) f.input('#cut', '0.5');
         if (f.$('#revealPlan')) f.$('#revealPlan').click();
         await f.roundtrip(id + ' model');
-        const task = f.w.PathData.task(id, f.state().work.seed);
+        const task = f.w.PathData.practice.taskForBankVersion(id, f.state().work.seed, 1);
         while (f.$('#stepAnswer')) {
           const i = f.state().work.step;
           f.input('#stepAnswer', task.steps[i].a); f.submit('#stepAnswerForm');
@@ -80,6 +80,30 @@ test('all twelve current-course families preserve inputs, help, correct steps, m
         await f.roundtrip(id + ' fresh');
       }
       assert.equal(f.reads(), 0);
+    } finally { f.dom.window.close(); }
+  }
+});
+test('an earlier shared-board room accepts and restores its original answer after a family revision', async () => {
+  for (const [position, id] of [[11, 'practice-displacement'], [13, 'practice-similar-volume']]) {
+    const f = fixture(position);
+    try {
+      f.api.navigate('#lesson=' + id);
+      const snapshot = f.state(), data = f.w.PathData, seed = snapshot.work.seed;
+      const original = data.practice.taskForBankVersion(id, seed, 1);
+      const revised = data.task(id, seed);
+      assert.notEqual(original.q, revised.q);
+      assert.notEqual(original.answer, revised.answer);
+      snapshot.work.attempted = snapshot.work.done = true;
+      snapshot.work.ui.finalDraft = String(original.answer);
+      assert(f.valid(snapshot));
+      f.apply(snapshot);
+      assert.equal(f.$('#answer').value, String(original.answer));
+      assert.equal(f.state().work.done, true);
+      await f.roundtrip('original condition and final answer');
+      f.input('#answer', revised.answer); f.submit('#answerForm');
+      assert.equal(f.state().work.done, false);
+      f.input('#answer', original.answer); f.submit('#answerForm');
+      assert.equal(f.state().work.done, true);
     } finally { f.dom.window.close(); }
   }
 });

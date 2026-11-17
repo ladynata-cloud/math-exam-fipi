@@ -31,7 +31,12 @@
       case 'grid':
         set('S = (a · hₐ) / 2', 'Два катета перпендикулярны: один можно принять за основание, второй — за соответствующую высоту.', [pair('a', m.a, 'один катет'), pair('hₐ', m.b, 'другой катет')], `S = (${F(m.a)} · ${F(m.b)}) / 2`); break;
       case 'triangle':
-        set('hₐ² = b² − (a / 2)²; S = (a · hₐ) / 2', 'Высота к основанию равнобедренного треугольника делит основание пополам. Сначала найди высоту по теореме Пифагора.', [pair('a', 2 * m.a, 'всё основание'), pair('b', m.b, 'боковая сторона')], `hₐ² = ${F(m.b)}² − ${F(m.a)}²; S = (${F(2 * m.a)} · hₐ) / 2`); break;
+        if (p.perimeter !== undefined) {
+          set('b = (P − a) / 2; BM² = b² − (a / 2)²', 'Медиана к основанию равнобедренного треугольника также является высотой. Сначала найди боковую сторону из периметра.', [pair('P', p.perimeter, 'периметр'), pair('a', p.base, 'всё основание')], `b = (${F(p.perimeter)} − ${F(p.base)}) / 2; BM² = b² − (${F(p.base)} / 2)²`);
+        } else {
+          set('hₐ² = b² − (a / 2)²; S = (a · hₐ) / 2', 'Высота к основанию равнобедренного треугольника делит основание пополам. Сначала найди высоту по теореме Пифагора.', [pair('a', 2 * m.a, 'всё основание'), pair('b', m.b, 'боковая сторона')], `hₐ² = ${F(m.b)}² − ${F(m.a)}²; S = (${F(2 * m.a)} · hₐ) / 2`);
+        }
+        break;
       case 'quadrilateral':
         set('S = ((a + b) / 2) · h', 'Даны два параллельных основания трапеции и расстояние между ними.', [pair('a', m.a, 'первое основание'), pair('b', m.b, 'второе основание'), pair('h', m.h, 'высота')], `S = ((${F(m.a)} + ${F(m.b)}) / 2) · ${F(m.h)}`); break;
       case 'circle':
@@ -49,17 +54,34 @@
       case 'formulas':
         set('s = at² / 2', 'Эта формула дана в условии. Квадрат относится ко времени t.', [pair('a', m.k, 'ускорение в м/с²'), pair('t', 3, 'время в секундах')], `s = ${F(m.k)} · 3² / 2`); break;
       case 'practice-electric':
-        set('P = U² / R', 'Формула дана в условии. Сначала возведи напряжение в квадрат, потом раздели на сопротивление.', [pair('U', p.u, 'напряжение'), pair('R', p.r, 'сопротивление')], `P = ${F(p.u)}² / ${F(p.r)}`); break;
+        if (p.speed !== undefined) {
+          set('a = v² / R', 'Возведи скорость в квадрат и раздели на радиус поворота.', [pair('v', p.speed, 'скорость'), pair('R', p.radius, 'радиус')], `a = ${F(p.speed)}² / ${F(p.radius)}`);
+        } else if (p.i !== undefined) {
+          set('P = I² · R', 'Возведи силу тока в квадрат и умножь на сопротивление.', [pair('I', p.i, 'сила тока'), pair('R', p.r, 'сопротивление')], `P = ${F(p.i)}² · ${F(p.r)}`);
+        } else {
+          set('P = U² / R', 'Возведи напряжение в квадрат и раздели на сопротивление.', [pair('U', p.u, 'напряжение'), pair('R', p.r, 'сопротивление')], `P = ${F(p.u)}² / ${F(p.r)}`);
+        }
+        break;
       case 'practice-inverse-formula':
-        set('S = ((a + b) / 2) · h; h = 2S / (a + b)', 'Чтобы найти высоту из формулы площади трапеции, раздели площадь на полусумму оснований.', [pair('a', p.a), pair('b', p.b), pair('S', p.S, 'площадь')], `h = 2 · ${F(p.S)} / (${F(p.a)} + ${F(p.b)})`); break;
+        if (p.h !== undefined) {
+          set('S = (a + b) · h / 2', 'Сложи параллельные стороны. Умножь сумму на расстояние между ними и раздели на 2.', [pair('a', p.a), pair('b', p.b), pair('h', p.h, 'высота')], `S = (${F(p.a)} + ${F(p.b)}) · ${F(p.h)} / 2`);
+        } else {
+          set('S = ((a + b) / 2) · h; h = 2S / (a + b)', 'Чтобы найти высоту из формулы площади трапеции, раздели площадь на полусумму оснований.', [pair('a', p.a), pair('b', p.b), pair('S', p.S, 'площадь')], `h = 2 · ${F(p.S)} / (${F(p.a)} + ${F(p.b)})`);
+        }
+        break;
       case 'practice-probability-draw':
         set('P = m / n', 'Все отдельные исходы равновозможны. m — число подходящих, n — число всех исходов.', [pair('m', p.good, 'подходящие исходы'), pair('n', p.n, 'все исходы')], `P = ${F(p.good)} / ${F(p.n)}`); break;
       case 'practice-probability-opposite':
-        set('P(противоположного события) = 1 − P(события)', 'Исправная и бракованная деталь — противоположные исходы выбора.', [pair('n', p.n, 'все детали'), pair('m', p.bad, 'бракованные детали')], `P(исправной) = 1 − ${F(p.bad)} / ${F(p.n)}`); break;
+        set('P(противоположного события) = 1 − P(события)', 'Каждый результат выбора либо подходит по условию, либо нет. Вероятности этих событий в сумме дают единицу.', [pair('n', p.n, 'все исходы'), pair('m', p.bad, 'неподходящие исходы')], `P = 1 − ${F(p.bad)} / ${F(p.n)}`); break;
       case 'practice-grid-parallelogram': case 'practice-parallelogram':
         set('S = a · hₐ', 'Для площади параллелограмма нужна высота, перпендикулярная выбранному основанию. Наклонная боковая сторона её не заменяет.', [pair('a', p.a, 'основание'), pair('hₐ', p.h, 'высота к этому основанию')], `S = ${F(p.a)} · ${F(p.h)}`); break;
       case 'practice-grid-cut':
-        set('Sфигуры = Sпрямоугольника − Sвыреза', 'Вычитаем площадь удалённой прямоугольной части.', [pair('ширина', p.w), pair('высота', p.h), pair('сторона выреза', p.a), pair('другая сторона выреза', p.b)], `S = ${F(p.w)} · ${F(p.h)} − ${F(p.a)} · ${F(p.b)}`); break;
+        if (p.estimate) {
+          set('Sфигуры = Sпрямоугольника − S₁ − S₂', 'Дострой фигуру до прямоугольника и найди площади двух внешних треугольников. Округляй итог.', [], 'S = ширина · высота − S₁ − S₂');
+        } else {
+          set('Sфигуры = Sпрямоугольника − Sвыреза', 'Вычитаем площадь удалённой прямоугольной части.', [pair('ширина', p.w), pair('высота', p.h), pair('сторона выреза', p.a), pair('другая сторона выреза', p.b)], `S = ${F(p.w)} · ${F(p.h)} − ${F(p.a)} · ${F(p.b)}`);
+        }
+        break;
       case 'practice-right-ratio':
         set(p.ask ? 'sin A = BC / AB' : 'cos A = AC / AB', p.ask ? 'Синус — противолежащий катет, делённый на гипотенузу.' : 'Косинус — прилежащий катет, делённый на гипотенузу.', [pair('AC', p.a, 'прилежащий катет'), pair('BC', p.b, 'противолежащий катет'), pair('AB', p.c, 'гипотенуза')], `${p.ask ? 'sin' : 'cos'} A = ${F(p.ask ? p.b : p.a)} / ${F(p.c)}`); break;
       case 'practice-triangle-angle':
@@ -79,7 +101,14 @@
       case 'practice-quadratic':
         set('D = b² − 4ac; x₁,₂ = (−b ∓ √D) / (2a)', 'В стандартной записи ax² + bx + c = 0 коэффициент b включает свой знак. После решения выбери корень, который просит условие.', [pair('a', 1), pair('b', -p.sum), pair('c', p.prod)], `D = (${F(-p.sum)})² − 4 · 1 · ${F(p.prod)}`); break;
       case 'practice-meeting':
-        set('t = s / (v₁ + v₂)', 'При движении навстречу расстояние сокращается со скоростью, равной сумме скоростей.', [pair('s', p.dist), pair('v₁', p.a), pair('v₂', p.b)], `t = ${F(p.dist)} / (${F(p.a)} + ${F(p.b)})`); break;
+        if (p.turn !== undefined) {
+          set('t = 2d / (v₁ + v₂); s = v₁ · t', 'К встрече сумма пройденных путей равна двум расстояниям от старта до разворота.', [pair('d', p.turn, 'расстояние до разворота'), pair('v₁', p.slow), pair('v₂', p.fast)], `t = (2 · ${F(p.turn)}) / (${F(p.slow)} + ${F(p.fast)}); s = ${F(p.slow)} · t`);
+        } else if (p.total !== undefined) {
+          set('v₁ = (S − s₂) / t', 'Из расстояния между депо вычти путь второй машины и раздели оставшийся путь на время.', [pair('S', p.total, 'расстояние между депо'), pair('s₂', p.fromSecond, 'путь второй машины'), pair('t', p.hours, 'время до встречи')], `v₁ = (${F(p.total)} − ${F(p.fromSecond)}) / ${F(p.hours)}`);
+        } else {
+          set('t = s / (v₁ + v₂)', 'При движении навстречу расстояние сокращается со скоростью, равной сумме скоростей.', [pair('s', p.dist), pair('v₁', p.a), pair('v₂', p.b)], `t = ${F(p.dist)} / (${F(p.a)} + ${F(p.b)})`);
+        }
+        break;
       case 'practice-work':
         set('1/T = 1/t₁ + 1/t₂', 'Вся работа принята за единицу. За час складываются выполненные доли, а не времена.', [pair('t₁', p.a), pair('t₂', p.b)], `1/T = 1/${F(p.a)} + 1/${F(p.b)}`); break;
       case 'motion': case 'practice-average-speed':
@@ -121,7 +150,7 @@
     dialog.setAttribute('aria-labelledby', heading.id);
     const close = node('button', 'Закрыть', 'reference-button'); close.type = 'button';
     bar.append(heading, close); dialog.append(bar);
-    dialog.append(node('p', 'ФИПИ · проект демоверсии базового ЕГЭ 2027. Печатные страницы 4–7. Формулы и обозначения сохранены из оригинала.', 'reference-note'));
+    dialog.append(node('p', 'ФИПИ · утверждённая демоверсия базового ЕГЭ 2027. Печатные страницы 4–7. Формулы и обозначения сохранены из оригинала.', 'reference-note'));
     const sources = node('p', undefined, 'reference-note');
     for (const [label, href] of [['Исходный PDF', 'https://mathexam.space/ege-baza/sources/demo-2027.pdf#page=2'], ['Страница ФИПИ', 'https://fipi.ru/ege/demoversii-specifikacii-kodifikatory']]) {
       const link = node('a', label); link.href = href; link.target = '_blank'; link.rel = 'noopener'; sources.append(link, doc.createTextNode(' '));
@@ -129,7 +158,7 @@
     dialog.append(sources);
     for (const page of pages) {
       const figure = node('figure');
-      const image = node('img'); image.src = assetBase + page.file; image.alt = page.description; image.width = 842; image.height = 1191; image.loading = 'lazy';
+      const image = node('img'); image.src = assetBase + page.file + '?v=approved-20261117'; image.alt = page.description; image.width = 842; image.height = 1191; image.loading = 'lazy';
       const open = node('a'); open.href = image.src; open.target = '_blank'; open.rel = 'noopener'; open.setAttribute('aria-label', 'Увеличить: ' + page.title); open.append(image);
       figure.append(node('figcaption', page.title), open); dialog.append(figure);
     }
