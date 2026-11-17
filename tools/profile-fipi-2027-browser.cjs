@@ -134,6 +134,10 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         check('attempts/help/proof record unchanged by navigation', after.raw, savedPart.raw);
         check('legacy lab 19 unchanged', after.lab, savedPart.lab); check('no lab renumbering to 18', after.wrongLab, null);
         await capture('parameters-saved');
+        await go('/ege-profil/start/#sources');
+        const integralGuide = page.locator('main p').filter({hasText: 'Первообразную и площадь изучаем'});
+        check('sources link antiderivative and area to official number 8',
+          await integralGuide.getByRole('link', {name: 'задании №8', exact: true}).getAttribute('href'), '#fipi/2027/8');
         await go('/trainers/ege-methods.html');
         await page.locator('main .eyebrow').first().waitFor();
         check('estimate and example header shows the current profile number',

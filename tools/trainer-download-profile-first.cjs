@@ -155,6 +155,11 @@ async function checkStartExamRoutes(page) {
     const links = await page.locator('main a[href]').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')));
     for (const lesson of lessons) assert(links.some(href => href.includes('/' + lesson)), hash + ': ' + lesson);
   }
+  const sources = new URL(page.url());
+  sources.hash = '#sources';
+  await page.goto(sources.href);
+  const integralGuide = page.locator('main p').filter({hasText: 'Первообразную и площадь изучаем'});
+  assert.equal(await integralGuide.getByRole('link', {name: 'задании №8', exact: true}).getAttribute('href'), '#fipi/2027/8');
   assert.deepEqual(await readSavedWork(), saved, 'legacy and official routes preserve existing START answers, drafts, attempts and earned work');
 }
 
