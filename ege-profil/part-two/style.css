@@ -13,7 +13,7 @@
 .task-layout{overflow-wrap:anywhere}.task-layout>*{min-width:0}
 
 #proof-jump{margin:0 0 10px}
-#proof-jump[hidden],#proof-open-saved[hidden]{display:none}
+#proof-jump[hidden],#proof-open-saved[hidden],#equation-open-saved[hidden]{display:none}
 .proof-review-list{list-style:none;padding:0;margin:12px 0}
 .proof-review-list li{border-top:1px solid var(--line);padding:6px 0}
 .proof-review-list label{display:flex;align-items:flex-start;gap:10px;padding:6px 0;min-height:44px;cursor:pointer}

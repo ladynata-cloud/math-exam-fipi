@@ -174,6 +174,8 @@ test('native Chromium keeps stale visible answers in two tabs with 320 and 1280 
       stale.on('pageerror', error => errors.push(error.message));
       fresh.on('pageerror', error => errors.push(error.message));
       await stale.goto(url);
+      await stale.locator('#final-0').waitFor();
+      assert.equal(await stale.locator('#equation-open-saved').isVisible(), false);
       await stale.locator('#final-0').fill(general);
       await stale.locator('#final-1').fill('−π/6');
       await stale.evaluate(() => window.ProfilePartTwoApp.store.flush());
@@ -190,6 +192,7 @@ test('native Chromium keeps stale visible answers in two tabs with 320 and 1280 
       assert.deepEqual(after, before);
       await stale.locator('#equation-open-saved').click();
       assert.equal(await stale.locator('#final-1').inputValue(), correctSelection);
+      assert.equal(await stale.locator('#equation-open-saved').isVisible(), false);
       await stale.locator('#final-form button[type="submit"]').click();
       await stale.locator('#completion').waitFor();
       assert.equal(await stale.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
