@@ -40,7 +40,7 @@
       "agent": "/root"
     },
     {
-      "fileNameRegex": "research-.+\\.json",
+      "fileNameRegex": "research-(?!sections-00[125]\\.json$).+\\.json",
       "agent": "/root/textbook_inventory"
     },
     {
@@ -54,6 +54,10 @@
     {
       "fileNameRegex": "theory-1[0-9]-detail-\\d{2}\\.json",
       "agent": "/root/textbook_inventory"
+    },
+    {
+      "fileNameRegex": "research-sections-00[125]\\.json",
+      "agent": "/root/audits"
     }
   ],
   "reports": [
@@ -645,8 +649,7 @@
         "selector": "reviewer",
         "equals": "independent agent /root/theory_course (not the supplementary author)"
       },
-      "fileNameRegex": "research-.+\\.json",
-      "expectedCards": 13,
+      "expectedCards": 10,
       "records": "lessons",
       "pathKey": "file",
       "idKey": "lessonId",
@@ -679,6 +682,38 @@
       },
       "unresolvedSelectors": [
         "unresolved"
+      ],
+      "fileNames": [
+        "research-sections-003.json",
+        "research-sections-004.json",
+        "research-sections-006.json",
+        "research-skew-lines-001.json",
+        "research-skew-lines-002.json",
+        "research-skew-lines-003.json",
+        "research-skew-lines-004.json",
+        "research-skew-lines-005.json",
+        "research-skew-lines-006.json",
+        "research-skew-lines-007.json"
+      ],
+      "excludedRecords": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+          "sha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+          "sha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+          "sha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        }
       ]
     },
     {
@@ -1076,6 +1111,54 @@
         "theory-19-detail-10.json"
       ],
       "acceptedScopeNote": "Final independent review after RART001–005; 13 exact-hash cards, 46 inventory units, all three explicit dimensions PASS. Historical source-article gap is now covered."
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+      "sha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+      "reviewerAgent": "/root/audits/independent",
+      "identityCheck": {
+        "selector": "reviewer",
+        "equals": "/root/audits/independent"
+      },
+      "fileNames": [
+        "research-sections-001.json",
+        "research-sections-002.json",
+        "research-sections-005.json"
+      ],
+      "expectedCards": 3,
+      "records": "cards",
+      "pathKey": "path",
+      "idKey": "lessonId",
+      "hashKey": "sha256",
+      "topLevelPassChecks": [
+        {
+          "selector": "verdict",
+          "equals": "PASS"
+        }
+      ],
+      "dimensions": {
+        "source": {
+          "selector": "source",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "mathematics": {
+          "selector": "mathematics",
+          "accept": [
+            "PASS"
+          ]
+        },
+        "pedagogy": {
+          "selector": "pedagogy",
+          "accept": [
+            "PASS"
+          ]
+        }
+      },
+      "unresolvedSelectors": [
+        "unresolved"
+      ]
     }
   ]
 }

@@ -3,7 +3,7 @@
   "status": "PASS",
   "manifest": {
     "path": "tools/merzlyak-10-base/content-review-manifest.json",
-    "sha256": "a0ec0b61c8223f65e031d8334239fb6031e704dc79a7edfba802ab749544c3cc"
+    "sha256": "714f38d0bdc582fee23b6ff99588f9ea1791a394a0628e37855dba1c0ad912ff"
   },
   "contentKeys": [
     "id",
@@ -19,7 +19,7 @@
   "contentHashAlgorithm": "SHA-256 of UTF-8 JSON over present contentKeys, ensure_ascii=false, sorted keys, compact separators, finite numbers only.",
   "ledger": {
     "path": "tools/merzlyak-10-base/content-review-ledger.json",
-    "sha256": "ec5aebbfee827e57c543ee7b9997e2ba4ef25102bfd2fbba9d59d533f75bc5f4"
+    "sha256": "e166cf2a4a073504cc56bbe69643afe55cc48cff2fb136f7634ef018a9b4d628"
   },
   "lessonCount": 989,
   "fullyReviewedCards": 989,
@@ -220,7 +220,7 @@
     {
       "path": "tools/merzlyak-10-base/independent-review-supplementary.json",
       "manifestSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-      "expectedCards": 13,
+      "expectedCards": 10,
       "reviewer": "/root/theory_course",
       "dimensions": [
         "source",
@@ -229,8 +229,27 @@
       ],
       "actualSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
       "status": "PASS",
-      "acceptedCards": 13,
-      "excludedHistoricalRecords": []
+      "acceptedCards": 10,
+      "excludedHistoricalRecords": [
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
+          "sha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
+          "sha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        },
+        {
+          "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
+          "sha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+          "reason": "Новая версия получила независимую проверку по всем трём направлениям.",
+          "supersededByReport": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json"
+        }
+      ]
     },
     {
       "path": "tools/merzlyak-10-base/independent-review-theory-01-09.json",
@@ -342,6 +361,21 @@
       "actualSha256": "68a2265f78576fa99fdfe78f813bec7fdffed003514165fee86193c77ead62d4",
       "status": "PASS",
       "acceptedCards": 13,
+      "excludedHistoricalRecords": []
+    },
+    {
+      "path": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+      "manifestSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+      "expectedCards": 3,
+      "reviewer": "/root/audits/independent",
+      "dimensions": [
+        "source",
+        "mathematics",
+        "pedagogy"
+      ],
+      "actualSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+      "status": "PASS",
+      "acceptedCards": 3,
       "excludedHistoricalRecords": []
     }
   ],
@@ -83969,9 +84003,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-001.json",
       "lessonId": "research-sections-001",
-      "author": "/root/textbook_inventory",
-      "currentSha256": "3b84ce6b8372a1a4583e92f356422dbdad4b02e8fa8b969f03d72af890971c29",
-      "contentSha256": "86a4673fe8cef2b163690cb4c2814effa3b9427680bea289af77a0ab9a9fb796",
+      "author": "/root/audits",
+      "currentSha256": "8e967d14a91231700b1511a9c4ce258a261d2a87acc2c7248adf85b086aac415",
+      "contentSha256": "2500daa96d322e7dca90bcb665d402ae4b92166845fb03c7579c2923dbe3a9fb",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -83980,84 +84014,84 @@
       "evidence": {
         "source": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/0",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/0",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "f9a98dda440d1ee90f3406054dbaa74fb1e206347247eda3672cc46e8de8e69b",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "mathematics": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/0",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/0",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "f9a98dda440d1ee90f3406054dbaa74fb1e206347247eda3672cc46e8de8e69b",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "pedagogy": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/0",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "2db94346c392eba953aa0c0a43403b77000ea00ec288eaf740ef4a96963357e9",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/0",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "f9a98dda440d1ee90f3406054dbaa74fb1e206347247eda3672cc46e8de8e69b",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
@@ -84067,9 +84101,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-002.json",
       "lessonId": "research-sections-002",
-      "author": "/root/textbook_inventory",
-      "currentSha256": "e8394f3f8b849824b4e2e4841f1cc94a7f21c442b7f37c920d7e908217073077",
-      "contentSha256": "8dd7d277ec89560688d5e4d17ac5716de94c410b6e22f059c9bf6a263254f3cc",
+      "author": "/root/audits",
+      "currentSha256": "f69f6ca25ce3811dfaea18c21c999a0fb9a811e0bb5aa23c4ced1b705e81189b",
+      "contentSha256": "c4ea81961546797c6bb9a717b0e3a72fa434fe048d9c694156524acdcd1ad4d5",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -84078,84 +84112,84 @@
       "evidence": {
         "source": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/1",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/1",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "da3a6eabd18ab35daa7e49cc46d5bcc8470645c476161caa626036a05ac74a93",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "mathematics": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/1",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/1",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "da3a6eabd18ab35daa7e49cc46d5bcc8470645c476161caa626036a05ac74a93",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "pedagogy": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/1",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "5110112ac53493fd702aafb827db2f181459f96e2e21cd645cee47f63fabed5c",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/1",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "da3a6eabd18ab35daa7e49cc46d5bcc8470645c476161caa626036a05ac74a93",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
@@ -84361,9 +84395,9 @@
     {
       "path": "stereo-course/merzlyak-10-base/lessons/research-sections-005.json",
       "lessonId": "research-sections-005",
-      "author": "/root/textbook_inventory",
-      "currentSha256": "2db0ece52f2dbc8f6e662db4d319907d53e1d6ce4429e1ea77f202abf3df49b0",
-      "contentSha256": "00c331bfe3013d543fcbc65abd7f1d98e14ba8e2623f9f3a6b634cb074969a60",
+      "author": "/root/audits",
+      "currentSha256": "845627601bd0e61ec3a15497ae07489fa6776f23fe98686bf5d17b142f2e24ba",
+      "contentSha256": "48a6f022b9386ccc99263acc8d558ae27632d06372c73e7886acc6a872b52713",
       "verdicts": {
         "source": "PASS",
         "mathematics": "PASS",
@@ -84372,84 +84406,84 @@
       "evidence": {
         "source": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/4",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/2",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "83f007e059672c1cfe9623190312afed1b42b2634ca3870890811b93d8bf7327",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "mathematics": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/4",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/2",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "83f007e059672c1cfe9623190312afed1b42b2634ca3870890811b93d8bf7327",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }
         ],
         "pedagogy": [
           {
-            "report": "tools/merzlyak-10-base/independent-review-supplementary.json",
-            "reportSha256": "6671c5105d7dfc8be0f599e1079cc9f417f3256677f8fb3b823147c344cf4ecc",
-            "recordPointer": "/lessons/4",
-            "reviewer": "/root/theory_course",
-            "author": "/root/textbook_inventory",
-            "reviewedSha256": "9b34acb63e5fc6af9e77e39ba6c6577db09ebd9d2e3960f9afb04b536ee9d0f8",
+            "report": "tools/merzlyak-10-base/independent-review-sections-2026-11-18.json",
+            "reportSha256": "cbb8f33e04053b36c15ad7d1530e3a901f58a8c8bbea56e888a524ca5788b393",
+            "recordPointer": "/cards/2",
+            "reviewer": "/root/audits/independent",
+            "author": "/root/audits",
+            "reviewedSha256": "83f007e059672c1cfe9623190312afed1b42b2634ca3870890811b93d8bf7327",
             "match": "ledger-restored-exact",
             "verdictSelectors": {
               "source": {
                 "origin": "record",
-                "selector": "sourceStatementAndParts",
-                "value": "pass"
+                "selector": "source",
+                "value": "PASS"
               },
               "mathematics": {
                 "origin": "record",
-                "selector": "solutionMathematics",
-                "value": "pass"
+                "selector": "mathematics",
+                "value": "PASS"
               },
               "pedagogy": {
                 "origin": "record",
-                "selector": "schoolLevelPedagogy",
-                "value": "pass"
+                "selector": "pedagogy",
+                "value": "PASS"
               }
             }
           }

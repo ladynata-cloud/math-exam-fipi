@@ -352,6 +352,16 @@
         face.vertices.forEach((v, i) => { const key = edgeKey(v, face.vertices[(i + 1) % face.vertices.length]); if (!this.adjacency.has(key)) this.adjacency.set(key, []); this.adjacency.get(key).push(index); });
         return { ...face, normal: outward, center };
       });
+      // For convex solids, two endpoints on a finite face determine a side on it.
+      // A point on an extension can satisfy its plane equation outside the solid.
+      this.pointFaces = new Map();
+      const epsilon = this.bodyRadius * 1e-7;
+      for (const [name, point] of Object.entries(this.data.points)) {
+        const distances = this.faceInfo.map(face => dot(face.normal, sub(point, face.center)));
+        const faces = distances.some(d => d > epsilon) ? [] :
+          this.faceInfo.filter((face, i) => Math.abs(distances[i]) <= epsilon);
+        this.pointFaces.set(name, faces);
+      }
       this.svg = svgEl('svg', { class: 'model-svg', viewBox: '0 0 600 420', tabindex: 0, role: 'img', 'aria-label': 'Пространственная модель. Стрелки поворачивают, Home возвращает исходный вид.' });
       container.append(this.svg);
       this.width = 600; this.height = 420; this.current = null; this.drag = null; this.raf = null; this.labelMetrics = new Map();
@@ -468,7 +478,26 @@
       const center = [(xmin + xmax) / 2, (ymin + ymax) / 2];
       const project = p => { const r = raw(p); return [this.width / 2 + (r[0] - center[0]) * scale, this.height / 2 - (r[1] - center[1]) * scale, r[2]]; };
       const path = names => names.map((name, i) => { const p = project(points[name]); return `${i ? 'L' : 'M'}${p[0].toFixed(3)} ${p[1].toFixed(3)}`; }).join(' ');
-      const line = (a, b, cls, attrs) => { const pa = project(points[a]), pb = project(points[b]); return svgEl('line', { x1: pa[0], y1: pa[1], x2: pb[0], y2: pb[1], class: cls, ...(attrs || {}) }); };
+      const line = (a, b, cls, attrs) => {
+        const pa = project(points[a]), pb = project(points[b]);
+        const geometry = {x1:pa[0], y1:pa[1], x2:pb[0], y2:pb[1]};
+        if (attrs['data-hidden']) {
+          // Align the 6-on, 5-off pattern on coincident edges, including partial
+          // segments authored from a different endpoint or in reverse.
+          const dx = pb[0] - pa[0], dy = pb[1] - pa[1], length = Math.hypot(dx, dy);
+          if (length > 1e-8) {
+            const forward = Math.abs(dx) > 1e-8 * length ? dx > 0 : dy > 0;
+            const along = (pa[0] * dx + pa[1] * dy) / length;
+            geometry['stroke-dashoffset'] = (forward ? along : 6 + along) % 11;
+          }
+        }
+        return svgEl('line', {...geometry, class:cls, ...attrs});
+      };
+      const hiddenSide = (a, b) => {
+        if (flat) return false;
+        const faces = this.pointFaces.get(a).filter(face => this.pointFaces.get(b).includes(face));
+        return faces.length > 0 && faces.every(face => rotate(face.normal)[2] < -1e-8);
+      };
       const title = svgEl('title', {}, this.lesson.title);
       const desc = svgEl('desc', {}, (plane ? 'Работаем в плоскости ' + plane.label + '. ' : '') + 'Показано шагов: ' + c.viewCount + ' из ' + this.lesson.steps.length + '. ' + (flat ? 'Плоский вид этой плоскости.' : 'Точная пространственная конфигурация, которую можно вращать.'));
       const g = svgEl('g', { 'aria-hidden': 'true' });
@@ -481,7 +510,16 @@
       if (planePts.length >= 3) g.append(svgEl('path', { d: path(plane.vertices) + ' Z', class: 'model-plane', 'data-active-plane': plane.id }));
       if (c.showResult && this.lesson.result?.polygon?.length >= 3) {
         const poly = this.lesson.result.polygon;
-        if (!flat || poly.every(name => inPlane(points[name]))) g.append(svgEl('path', { d: path(poly) + ' Z', class: 'model-final', 'data-section-polygon': poly.join('-') }));
+        if (!flat || poly.every(name => inPlane(points[name]))) {
+          g.append(svgEl('path', { d: path(poly) + ' Z', class: 'model-final', 'data-section-polygon': poly.join('-') }));
+          const builtSides = new Set(segments.filter(s => s.kind === 'section').map(s => edgeKey(s.a, s.b)));
+          poly.forEach((a, i) => {
+            const b = poly[(i + 1) % poly.length];
+            if (builtSides.has(edgeKey(a, b))) return;
+            const hidden = hiddenSide(a, b);
+            g.append(line(a, b, 'model-final-side' + (hidden ? ' occluded' : ''), {'data-final-side': a + '-' + b, 'data-hidden': hidden}));
+          });
+        }
       }
       for (const [a, b] of this.data.edges || []) {
         if (flat && !(inPlane(points[a]) && inPlane(points[b]))) continue;
@@ -497,7 +535,11 @@
         // into a dashed helper. Preserve its section role and latest focus.
         visibleSegments.set(key, old?.kind === 'section' && s.kind === 'helper' ? { ...s, kind: 'section' } : s);
       });
-      for (const s of visibleSegments.values()) g.append(line(s.a, s.b, 'model-segment' + (s.kind === 'helper' ? ' helper' : '') + (s.step === c.viewCount - 1 ? ' current' : ''), { 'data-segment': s.a + '-' + s.b, 'data-kind': s.kind || 'section', 'data-step': s.step + 1 }));
+      for (const s of visibleSegments.values()) {
+        const helper = s.kind === 'helper', hidden = !helper && hiddenSide(s.a, s.b);
+        const cls = 'model-segment' + (helper ? ' helper' : '') + (hidden ? ' occluded' : '') + (s.step === c.viewCount - 1 ? ' current' : '');
+        g.append(line(s.a, s.b, cls, { 'data-segment': s.a + '-' + s.b, 'data-kind': s.kind || 'section', 'data-step': s.step + 1, 'data-hidden': hidden }));
+      }
       const allProjected = [...known].map(name => ({ name, p: project(points[name]), focused: priority.has(name) }));
       const projected = allProjected.filter(p => labelNames.has(p.name));
       const textGroup = svgEl('g');
@@ -673,9 +715,9 @@
     helperLabel.append(helperCheck, document.createTextNode('Вспомогательные линии')); extras.append(helperLabel); if (!starter) modelPanel.append(extras);
     extras.append(button('Чистый вид',()=>{s.cleanView=!s.cleanView;save();renderLesson();},'clean-view',{ 'aria-pressed':s.cleanView,'data-action':'clean-view',title:'Оставить подписи и линии, нужные для текущего построения'}));
     const legend = el('div', { class: 'legend', 'aria-label': 'Обозначения на модели' });
-    [['plane', 'Плоскость'], ['current', 'Текущий шаг'], ['', 'Построено'], ['aux', 'Помощь']].forEach(([cls, text]) => legend.append(el('span', { class: cls }, text)));
+    [['plane', 'Плоскость'], ['current', 'Текущий шаг'], ['', 'Построено'], ['aux', 'Вспомогательная линия']].forEach(([cls, text]) => legend.append(el('span', { class: cls }, text)));
     modelPanel.append(legend);
-    if (!starter) modelPanel.append(para('Штрихи на рёбрах обозначают невидимую часть фигуры. Чертёж помогает рассуждать; совпадение линий на экране не доказывает их пересечение.', 'model-note'));
+    if (!starter) modelPanel.append(para('Невидимые рёбра и стороны сечения показаны штрихами. Совпадение линий на экране само по себе не доказывает их пересечение.', 'model-note'));
     if ((lesson.theory || []).length) {
       const theory = details('Нужная теория', lesson.theory.map(t => para(t)), () => { s.helpUsed = true; s.theoryOpen = true; save(); refreshStatus(lesson, s); }, s.theoryOpen);
       theory.addEventListener('toggle', () => { s.theoryOpen = theory.open; save(); }); theory.classList.add('theory-details'); modelPanel.append(theory);
@@ -1212,7 +1254,43 @@
     {id:'research',title:'Контроль 3 · Особые случаи и доказательства',description:'Проверяем границы применимости метода и полноту аргумента.',topics:['topology','proof','projection','coordinates','strategy'],proof:'Предскажи изменение числа сторон в одной лаборатории. Отдельно запиши наблюдение и доказательство критических значений.'},
     {id:'final',title:'Итоговая работа',description:'Пять автоматически проверяемых заданий и отдельное построение с доказательством для преподавателя.',topics:['incidence','trace','similarity','area','proof'],proof:'Построй новую задачу из главы «Выбор метода» или «Сложные построения». Назови плоскость каждой линии, обоснуй границу, вычисли указанную величину и проверь результат другим способом.'}
   ];
-  function makeExam(id,run=0){const spec=assessments.find(x=>x.id===id)||assessments[0];return{...spec,run,questions:spec.topics.map((t,i)=>makeDrill(t,41+run*131+i*17))};}
+  function writtenConstruction(id, run) {
+    if (id === 'entry') return null;
+    const model = solid(id === 'basic' || id === 'final' ? 'tetra' : 'cube');
+    const mark = (name, a, b, portion) => {
+      model.points[name] = add(model.points[a], mul(sub(model.points[b], model.points[a]), portion));
+      model.given.push(name);
+    };
+    let prompt, solution;
+    if (id === 'basic') {
+      const denominator = 2 + run % 3;
+      for (const [name, endpoint] of [['M', 'A'], ['N', 'B'], ['K', 'C']]) mark(name, 'S', endpoint, 1 / denominator);
+      prompt = 'В тетраэдре SABC точки M, N и K лежат на рёбрах SA, SB и SC. На каждом ребре расстояние от S до отмеченной точки равно 1/' + denominator + ' длины этого ребра. Построй сечение плоскостью MNK. Назови грань для каждой стороны. На грани SAB покажи сторону сечения и отдельно назови прямую пересечения плоскостей MNK и SAB.';
+      solution = 'В грани SAB получаем отрезок MN, в SBC — NK, в SCA — KM. Их концы лежат на рёбрах, а отрезки целиком лежат на соответствующих гранях. MN ∥ AB и MK ∥ AC по пропорциональности отрезков, поэтому плоскость сечения параллельна основанию ABC. Других сторон нет. След на плоскости SAB — вся прямая MN. Сторона на самой грани — только отрезок MN.';
+    } else if (id === 'metric') {
+      const half = 2 + run % 5;
+      for (const [name, endpoint] of [['M', 'B'], ['N', 'D'], ['K', 'A1']]) mark(name, 'A', endpoint, .5);
+      prompt = 'Ребро куба ABCDA₁B₁C₁D₁ равно ' + (2 * half) + '. Точки M, N и K — середины рёбер AB, AD и AA₁. Построй сечение плоскостью MNK. Докажи форму сечения и найди его площадь.';
+      solution = 'Каждая пара точек лежит на одной из трёх граней при A. Плоскость отсекает угол при A: в осях вдоль AB, AD и AA₁ она имеет уравнение x+y+z=' + half + '. На остальных трёх гранях одна координата уже больше ' + half + '. Все стороны сечения равны ' + half + '√2 по теореме Пифагора. Площадь равностороннего треугольника равна (' + half + '√2)²·√3/4 = ' + (half * half) + '√3/2.';
+    } else if (id === 'research') {
+      const height = 3 + run % 5;
+      prompt = 'Куб с ребром ' + height + ' стоит на грани ABCD. Горизонтальная плоскость расположена на уровне t, отсчитанном от ABCD вверх. Для каждого положения опиши общую часть плоскости и куба и укажи, когда плоскость пересекает внутренность куба. Разбери t < 0, t = 0, 0 < t < ' + height + ', t = ' + height + ' и t > ' + height + '. Нарисуй по одному примеру внутреннего и граничного положения.';
+      solution = 'У всех точек куба высота от 0 до ' + height + '. Вне этого промежутка общих точек нет. На концах плоскость содержит целую нижнюю или верхнюю грань. При 0 < t < ' + height + ' на каждом вертикальном ребре есть ровно одна точка высоты t. Соединяя соседние точки по боковым граням, получаем квадрат со стороной ' + height + '. Только между крайними уровнями плоскость проходит через внутренность куба.';
+    } else if (id === 'final') {
+      const ab = 4 + run % 5, unit = 1 + run % 3, sc = 5 * unit;
+      Object.assign(model.points, {A:[0,0,0], B:[ab,0,0], C:[.75*ab,3*unit,0], S:[.75*ab-3*unit,3*unit,4*unit]});
+      mark('M', 'S', 'A', .5); mark('N', 'S', 'B', .5); mark('K', 'A', 'C', .5);
+      prompt = 'В тетраэдре SABC даны AB = ' + ab + ', SC = ' + sc + '. Точки M, N и K — середины SA, SB и AC. Построй сечение плоскостью MNK. Укажи, на каком ребре лежит четвёртая вершина и как её построить. Обоснуй каждую сторону сечения и найди периметр.';
+      solution = 'MN — средняя линия треугольника SAB, MK — средняя линия SAC. Через N в грани SBC проведи NR ∥ SC до ребра BC. Поскольку MK ∥ SC, прямая NR лежит и в секущей плоскости. По теореме о средней линии R — середина BC. В основании ABC отрезок RK параллелен AB. Граница проходит по четырём граням в порядке M–N–R–K. Две стороны равны AB/2 и две равны SC/2, поэтому периметр равен AB + SC = ' + (ab + sc) + '.';
+    }
+    return {prompt, solution, scene:{title:'Исходный чертёж письменной задачи', model, steps:[]}};
+  }
+  function makeExam(id, run=0, writtenVersion=1) {
+    const spec = assessments.find(x => x.id === id) || assessments[0];
+    const written = writtenVersion === 1 ? writtenConstruction(spec.id, run) : null;
+    return {...spec, run, proof:written?.prompt || spec.proof, written,
+      questions:spec.topics.map((t,i) => makeDrill(t, 41 + run * 131 + i * 17))};
+  }
   const api={topics,makeDrill,labFamilies,labBounds,makeLab,assessments,makeExam,solid,formatNumber:f};
   root.SECTION_ACTIVITIES=api;
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
@@ -1227,7 +1305,7 @@
   const defaults={view:'map',route:'full',path:{stageId:'begin-01',readiness:{},reviews:{}},practice:{topic:'incidence',topics:{},returnTo:null,reviewStage:null},labs:{family:'cube-sum',states:{}},exams:{},examId:'entry'};
   let state;try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')};}catch(_){state={...defaults};}
   state.practice={...defaults.practice,...state.practice};state.labs={...defaults.labs,...state.labs};state.exams=state.exams||{};state.path={...defaults.path,...state.path};state.path.readiness=state.path.readiness||{};
-  let visual=null,nav,portal,storageOK=true;
+  let visual=null,proofVisual=null,nav,portal,storageOK=true;
   const lessonById=new Map(C.lessons.map(x=>[x.id,x])),moduleById=new Map(C.modules.map(x=>[x.id,x]));
   const stageById = new Map((C.learningPath || []).map(stage => [stage.id, stage]));
   const REVIEW_DELAY = 24 * 60 * 60 * 1000;
@@ -1257,6 +1335,7 @@
   function show(view,focus=true){
     if(view==='control')markExamHelp('Во время работы открыт другой набор.',state.examId);else markExamHelp('Во время работы открыты учебные материалы или другой раздел.');
     if(visual){visual.destroy();visual=null;}
+    if(proofVisual){proofVisual.destroy();proofVisual=null;}
     state.view=view;document.documentElement.dataset.sectionsView=view;save();document.querySelector('.skip-link')?.setAttribute('href',view==='lessons'?'#lesson-title':'#master-portal');layout.hidden=view!=='lessons';portal.hidden=view==='lessons';
     nav.querySelectorAll('button').forEach(b=>{const yes=b.dataset.view===view;b.classList.toggle('active',yes);b.setAttribute('aria-selected',String(yes));});
     if(view!=='lessons'){
@@ -1557,18 +1636,31 @@
   function renderControl(){
     portal.append(title('Проверяем на новом наборе','САМОСТОЯТЕЛЬНАЯ РАБОТА','Пять заданий без сообщения о верности по ходу. После завершения — результат, объяснения и подходящие тренировки. Письменное доказательство проверяется отдельно.'));
     const select=el('select',{'aria-label':'Самостоятельная работа'});A.assessments.forEach(x=>select.append(el('option',{value:x.id},x.title)));select.value=state.examId;select.addEventListener('change',()=>{state.examId=select.value;save();show('control',false);});portal.append(select);
-    const id=state.examId,s=state.exams[id]||(state.exams[id]={run:0,started:false,finished:false,answers:{},proof:'',assisted:false,history:[]}),exam=A.makeExam(id,s.run);
-    if(!s.started){const box=el('section',{class:'master-panel'});box.append(el('h3',{},exam.title),p(exam.description),p('Таймера нет. Ответы можно менять до отправки. Если во время работы открыть материалы курса, это сохранится как помощь.'),btn('Начать пять заданий',()=>{s.started=true;s.position=0;save();show('control',false);},'primary',{'data-action':'exam-start'}));portal.append(box);return;}
+    const id=state.examId,s=state.exams[id]||(state.exams[id]={run:0,started:false,finished:false,answers:{},proof:'',assisted:false,history:[]}),exam=A.makeExam(id,s.run,s.started ? s.writtenVersion || 0 : 1);
+    if(!s.started){const box=el('section',{class:'master-panel'});box.append(el('h3',{},exam.title),p(exam.description),p('Таймера нет. Ответы можно менять до отправки. Если во время работы открыть материалы курса, это сохранится как помощь.'),btn('Начать пять заданий',()=>{s.writtenVersion=1;s.started=true;s.position=0;save();show('control',false);},'primary',{'data-action':'exam-start'}));portal.append(box);return;}
     if(s.finished){const score=exam.questions.reduce((n,q,i)=>n+Number(correct(q,s.answers[i])),0),box=el('section',{class:'master-panel'});box.append(el('h3',{},'Автоматическая часть: '+score+' из '+exam.questions.length),p(s.assisted?'Во время этой попытки открывались другие материалы. Результат сохранён как работа с помощью.':'В этой попытке переходы к помощи не зафиксированы. Это результат короткой автоматической части, а не оценка полного доказательства.'),p('Самостоятельная работа завершена. Для следующей проверки будет подготовлен новый набор.','teacher-note'));
       exam.questions.forEach((q,i)=>{const good=correct(q,s.answers[i]),row=el('article',{class:'exam-review '+(good?'correct':'needs-work')});row.append(el('h4',{},(i+1)+'. '+(good?'Ответ совпал':'Нужно разобрать')),p(q.prompt),p('Твой ответ: '+(q.kind==='choice'?q.options[Number(s.answers[i])]:s.answers[i])),p('Верный ответ: '+answerText(q)),p(q.rule));if(!good)row.append(btn('Потренировать это умение',()=>openPractice(q.topic),'ghost'));box.append(row);});
-      box.append(el('h3',{},'Письменная часть для преподавателя'),p(exam.proof),p(s.proof||'Текст доказательства пока не записан.','proof-record'),p('Автоматическая оценка доказательства не выставляется. Обсудите плоскость каждого действия, перенос принадлежности, полноту границы и вычисления.','teacher-note'),btn('Новая попытка с новым набором',()=>{s.history.push({run:s.run,score,assisted:s.assisted,answers:s.answers,proof:s.proof});Object.assign(s,{run:s.run+1,started:false,finished:false,answers:{},proof:'',assisted:false,helpReason:'',position:0});save();show('control',false);},'primary',{'data-action':'exam-new'}));portal.append(box);return;
+      box.append(el('h3',{},'Письменная часть для преподавателя'),p(exam.proof),p(s.proof||'Текст доказательства пока не записан.','proof-record'),...(exam.written ? [disclosure('Сверить построение и обоснование', [p(exam.written.solution)])] : []),p('Автоматическая оценка доказательства не выставляется. Обсудите плоскость каждого действия, перенос принадлежности, полноту границы и вычисления.','teacher-note'),btn('Новая попытка с новым набором',()=>{s.history.push({run:s.run,score,assisted:s.assisted,answers:s.answers,proof:s.proof,writtenVersion:s.writtenVersion || 0});Object.assign(s,{run:s.run+1,started:false,finished:false,answers:{},proof:'',assisted:false,helpReason:'',position:0});save();show('control',false);},'primary',{'data-action':'exam-new'}));portal.append(box);return;
     }
     s.position=Math.max(0,Math.min(s.position||0,exam.questions.length-1));const i=s.position,q=exam.questions[i],card=el('section',{class:'master-panel exam-question'});card.append(p('Задание '+(i+1)+' из '+exam.questions.length+' · сохранено ответов '+Object.keys(s.answers).filter(k=>String(s.answers[k]).trim()!=='').length,'eyebrow'),p(q.prompt,'drill-prompt'));
     if(q.scene){const frame=el('div',{class:'model-frame drill-model'});frame.append(el('div',{class:'model-caption'},'Исходная фигура'));card.append(frame);visual=api.createScene(frame,q.scene,()=>{});visual.update({viewCount:0,planeId:null,planeView:false,camera:{yaw:-.65,pitch:.46},showHelpers:true,showResult:false});}
     if(q.kind==='choice'){const choices=el('div',{class:'check-options'});q.options.forEach((answer,index)=>{const b=btn('',()=>{s.answers[i]=index;save();show('control',false);},s.answers[i]!==undefined&&Number(s.answers[i])===index?'selected':'',{'data-exam-option':index});b.append(math(answer));choices.append(b);});card.append(choices);}else{const input=el('input',{id:'exam-answer',type:'text',inputmode:'decimal',autocomplete:'off',value:s.answers[i]??''});card.append(el('label',{'for':'exam-answer'},'Ответ'+(q.unit?' ('+q.unit+')':'')),input,p('Можно вводить десятичное число или дробь 4/3.','small muted'));input.addEventListener('input',()=>{s.answers[i]=input.value;save();});}
     card.append(p('Ответ сохраняется. Верность будет показана только после отправки всех пяти заданий.','teacher-note'));
     const navigation=el('div',{class:'master-actions'});navigation.append(btn('← Предыдущее',()=>{s.position--;save();show('control',false);},'ghost',{disabled:i===0}),btn('Следующее →',()=>{s.position++;save();show('control',false);},'primary',{disabled:i===exam.questions.length-1}));card.append(navigation);portal.append(card);
-    const proof=el('section',{class:'master-panel'});proof.append(el('h3',{},'Отдельное построение и доказательство'),p(exam.proof));const draft=el('textarea',{id:'exam-proof',placeholder:'Дано и цель…\nРабочие плоскости и основания…\nГраница сечения…\nВычисления и проверка…'});draft.value=s.proof;draft.addEventListener('input',()=>{s.proof=draft.value;save();});proof.append(draft,p('Эта часть не входит в автоматический счёт 0–5 и проверяется преподавателем.','teacher-note'));portal.append(proof);
+    const proof = el('section', {class:'master-panel'});
+    proof.append(el('h3', {}, 'Отдельное построение и доказательство'), p(exam.proof));
+    portal.append(proof);
+    if (exam.written) {
+      const frame = el('div', {class:'model-frame drill-model'});
+      frame.append(el('div', {class:'model-caption'}, 'Исходный чертёж. Выполни построение на бумаге.'));
+      proof.append(frame);
+      proofVisual = api.createScene(frame, exam.written.scene, () => {});
+      proofVisual.update({viewCount:0, planeId:null, planeView:false, camera:{yaw:-.65,pitch:.46}, showHelpers:false, showResult:false});
+    }
+    const draft = el('textarea', {id:'exam-proof', placeholder:'Укажи плоскость каждого построения и объясни вывод.'});
+    draft.value = s.proof;
+    draft.addEventListener('input', () => {s.proof=draft.value; save();});
+    proof.append(el('label', {for:'exam-proof'}, 'Моё обоснование'), draft, p('Письменную работу проверяет преподаватель. Баллы за пять коротких вопросов считаются отдельно.', 'teacher-note'));
     const notice=el('p',{class:'feedback',role:'status'}),finish=btn('Отправить все пять ответов',()=>{const missing=exam.questions.findIndex((x,j)=>s.answers[j]===undefined||String(s.answers[j]).trim()===''||(x.kind==='number'&&!Number.isFinite(parse(s.answers[j]))));if(missing>=0){notice.className='feedback retry';notice.textContent='Заполни ответ к заданию '+(missing+1)+' в допустимом формате. Верность пока не оценивается.';return;}s.finished=true;save();show('control',false);},'primary',{'data-action':'exam-finish'});portal.append(finish,notice);
   }
   function renderTeacher(){

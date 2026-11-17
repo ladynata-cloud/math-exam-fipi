@@ -342,6 +342,30 @@ async function standalone(browser, publicOrigin, errors) {
         assert(modelBottom <= 901, width + ': saved scroll cannot hide the requested lesson ' + id);
       }
     }
+
+    phase = 'independent written construction with a rotatable blank model';
+    await page.goto(publicOrigin + COURSE);
+    await page.locator('[data-view="control"]').click();
+    await page.getByLabel('Самостоятельная работа', {exact:true}).selectOption('final');
+    await page.locator('[data-action="exam-start"]').click();
+    const written = page.locator('.master-panel').filter({has:page.locator('#exam-proof')});
+    const figure = written.locator('.model-svg');
+    await page.getByLabel('Моё обоснование', {exact:true}).fill('Через N провожу прямую в грани SBC.');
+    await page.reload();
+    await written.waitFor();
+    assert.match(await page.locator('#exam-proof').inputValue(), /Через N/);
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({width, height:900});
+      await figure.scrollIntoViewIfNeeded();
+      const bounds = await figure.boundingBox();
+      assert(bounds && bounds.width > 200 && bounds.x >= -1 && bounds.x + bounds.width <= width + 1);
+      assert.equal(await figure.locator('[data-label="M"]').count(), 1);
+      assert.equal(await figure.locator('[data-label="R"],.model-segment').count(), 0);
+      const edge = figure.locator('[data-edge]').first();
+      const before = await edge.getAttribute('x2');
+      await figure.press('ArrowRight');
+      assert.notEqual(await edge.getAttribute('x2'), before, 'the pupil rotates the initial figure');
+    }
   } finally { await context.close(); }
 }
 
