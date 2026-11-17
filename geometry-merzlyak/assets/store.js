@@ -1,9 +1,9 @@
 (function(root){'use strict';
 const KEY='mathExamGeometry.merzlyak.v1',LEGACY='mathExamCourseProgress.merzlyak.v1';
-const CONTENT_VERSIONS={'merzlyak-base-8-12':2,'merzlyak-base-8-13':2,'merzlyak-base-8-14':2};
+const CONTENT_VERSIONS={'merzlyak-base-9-13':2,'merzlyak-base-7-1':2,'merzlyak-base-7-5':2,'merzlyak-base-7-8':2,'merzlyak-base-7-11':2,'merzlyak-base-8-12':2,'merzlyak-base-8-13':2,'merzlyak-base-8-14':2};
 const plain=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=x=>typeof x==='number'&&Number.isFinite(x),str=(x,n)=>typeof x==='string'?x.slice(0,n):'',num=(x,max)=>finite(x)?Math.max(0,Math.min(max,Math.floor(x))):0;
 function drawing(x){if(!plain(x)||!Array.isArray(x.points)||!Array.isArray(x.objects)||x.points.length>150||x.objects.length>180)return null;const kinds=['free','midpoint','sum','perp','iso','equalarm','onCircle','rightArc','foot','parallel','normal','bisector','affine','reflection','intersection'];const ids=new Set();for(const p of x.points){if(!plain(p)||!/^([A-Z][A-Z0-9]*|P\d+)$/.test(p.id)||ids.has(p.id)||!kinds.includes(p.kind)||!finite(p.x)||!finite(p.y)||Math.abs(p.x)+Math.abs(p.y)>1e7)return null;ids.add(p.id);for(const k of ['k','t'])if(p[k]!==undefined&&!finite(p[k]))return null;}const os=new Set();for(const o of x.objects){if(!plain(o)||typeof o.id!=='string'||o.id.length>40||os.has(o.id)||!['line','circle'].includes(o.type)||!ids.has(o.a)||!ids.has(o.b))return null;os.add(o.id);}for(const p of x.points){for(const k of ['a','b','c'])if(p[k]!==undefined&&!ids.has(p[k]))return null;for(const k of ['o1','o2'])if(p[k]!==undefined&&!os.has(p[k]))return null;}
- const pc=['id','kind','x','y','a','b','c','k','t','o1','o2','branch','draggable','added'],oc=['id','type','extent','a','b','added','construction'];return {points:x.points.map(p=>Object.fromEntries(pc.filter(k=>p[k]!==undefined).map(k=>[k,p[k]]))),objects:x.objects.map(o=>Object.fromEntries(oc.filter(k=>o[k]!==undefined).map(k=>[k,o[k]])))};}
+ const pc=['id','kind','x','y','a','b','c','k','t','o1','o2','branch','bounded','draggable','added'],oc=['id','type','extent','a','b','added','construction'];return {points:x.points.map(p=>Object.fromEntries(pc.filter(k=>p[k]!==undefined).map(k=>[k,p[k]]))),objects:x.objects.map(o=>Object.fromEntries(oc.filter(k=>o[k]!==undefined).map(k=>[k,o[k]])))};}
 function model(x){if(!plain(x)||!['box','pyramid','tetrahedron','octahedron','prism','frustum','cylinder','cone','cone-frustum','sphere'].includes(x.kind))return null;const out={kind:x.kind};for(const [k,lo,hi,d] of [['a',1,6,4],['b',.5,6,3],['h',1,6,4],['level',-.2,1.2,.5],['tilt',0,90,0],['turn',0,360,0]])out[k]=finite(x[k])?Math.max(lo,Math.min(hi,x[k])):d;out.points=Array.isArray(x.points)?x.points.slice(0,30).filter(p=>plain(p)&&/^[A-Z][0-9]*$/.test(p.id)&&['edge','foot'].includes(p.kind)).map(p=>p.kind==='edge'?{id:p.id,kind:p.kind,edge:num(p.edge,2000),t:finite(p.t)?Math.max(0,Math.min(1,p.t)):.5}:{id:p.id,kind:p.kind,source:str(p.source,10)}):[];out.lines=Array.isArray(x.lines)?x.lines.slice(0,100).filter(p=>plain(p)).map(p=>({a:str(p.a,10),b:str(p.b,10)})):[];out.planeMode=x.planeMode==='points'?'points':'slider';out.planeIds=Array.isArray(x.planeIds)?x.planeIds.slice(0,3).map(v=>str(v,10)):[];return out;}
 const indices=x=>Array.isArray(x)?[...new Set(x.filter(i=>Number.isInteger(i)&&i>=0&&i<20))]:[];
 const outcome=x=>['first','corrected','helped','repeated','legacy'].includes(x)?x:'';
@@ -18,7 +18,7 @@ function migrateUnit(id,state){
  const next=clean({seed:1,attemptSchema:2,contentVersion:version});
  next.previousContent=state;next.updated=state.updated;
  // Archive the whole previous exercise attempt; do not credit its old, different
- // proof or always-yes task to the revised similarity skill.
+ // proof or practice to the revised skill.
  return next;
 }
 function validate(x,allowed){if(!plain(x)||x.version!==1||!plain(x.units))throw Error('Это не файл прогресса курса геометрии.');const units={};for(const [id,v] of Object.entries(x.units)){if(allowed.includes(id)){const c=clean(v);if(!c)throw Error('Повреждена запись урока '+id);units[id]=migrateUnit(id,c);}}return {version:1,units};}
