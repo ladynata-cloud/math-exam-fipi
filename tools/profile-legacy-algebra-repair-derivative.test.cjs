@@ -39,7 +39,7 @@ test('derivative reference preserves the visible model and states the x³ except
   const { w, d, html } = page(t, 'derivative-t8.html');
   assert.match(d.title, /Задание 8/);
   assert.match(d.querySelector('.eyebrow').textContent, /№8.*производная и первообразная/);
-  assert.match(d.querySelector('#trackChips').textContent, /Первообразная · дополнительно/);
+  assert.equal(d.querySelector('#trackChips').lastElementChild.textContent, 'Первообразная');
   assert.equal(d.querySelector('#derivativeReference').open, false);
   assert.equal(d.querySelector('#heroFig').closest('details'), null);
   assert.equal(d.querySelector('#heroX').closest('details'), null);

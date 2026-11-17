@@ -107,7 +107,7 @@ test('pupil profile home, course and route render shared entry without requiring
       assert.equal(f.main.querySelectorAll('[data-profile-exam-start]').length, 12, 'All official first-part exam entries are present');
       assert(f.main.querySelector('[data-profile-full-course]'));
       assert.equal(f.main.querySelectorAll('[data-profile-second-part] li').length, 7);
-      assert.equal(f.main.querySelectorAll('[data-profile-extra-topics] li').length, 3);
+      assert.equal(f.main.querySelectorAll('[data-profile-extra-topics] li').length, 2);
       if (route === 'home') {
         assert(f.main.querySelector('[data-profile-prior-work] a[href="#attempt=fixture-work"]'));
         assert.equal(f.main.querySelector('a[href="#attempt=peer-work"]'), null);

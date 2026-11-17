@@ -121,7 +121,7 @@ const navigate = (page, route) => page.evaluate(route => LearningApp.navigate(ro
       assert.match(text, /№1–12/);
       assert.match(text, /№13–19/);
       assert.equal(await page.locator('[data-profile-second-part] li').count(), 7);
-      assert.equal(await page.locator('[data-profile-extra-topics] li').count(), 3);
+      assert.equal(await page.locator('[data-profile-extra-topics] li').count(), 2);
       assert.deepEqual(await page.locator('[data-profile-second-part] a').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), MAP.entries.filter(entry => entry.part === 2).map(entry => 'https://mathexam.space' + MAP.href(entry)));
       assert.deepEqual(await page.locator('[data-profile-extra-topics] a').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))), MAP.extras.map(entry => 'https://mathexam.space' + MAP.href(entry)));
       assert.match(text, /Просто бери и решай! Всё получится\)/);

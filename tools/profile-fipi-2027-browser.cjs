@@ -94,10 +94,6 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         check('old START inequality bookmark keeps its theme', /Неравенства/.test(await page.locator('main h1').innerText()));
         check('old START inequality bookmark shows 15', /№\s*15/.test(await page.locator('main').innerText()));
         row.legacy.push('start#exam/16');
-        await go('/trainers/ege-methods.html');
-        await page.locator('main .eyebrow').first().waitFor();
-        check('estimate and example header shows the current profile number',
-          await page.locator('main .eyebrow').first().innerText(), 'ЕГЭ · профиль №19 и база №21');
         check('browsing did not create START progress', await page.evaluate(() => localStorage.getItem('mathexam.profileStart2027.v1')), null);
         check('browsing did not create Part Two credit', await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('mathExam.profile.partTwo.v1.')).length), 0);
 
@@ -138,8 +134,12 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
         check('attempts/help/proof record unchanged by navigation', after.raw, savedPart.raw);
         check('legacy lab 19 unchanged', after.lab, savedPart.lab); check('no lab renumbering to 18', after.wrongLab, null);
         await capture('parameters-saved');
+        await go('/trainers/ege-methods.html');
+        await page.locator('main .eyebrow').first().waitFor();
+        check('estimate and example header shows the current profile number',
+          await page.locator('main .eyebrow').first().innerText(), 'ЕГЭ · профиль №19 и база №21');
         check('no native page errors', row.pageErrors, []); check('no local HTTP failures', row.badResponses, []);
-        check('all 19 official routes visited', row.official.length, 19); check('12 old bookmarks retained', row.legacy.length, 12);
+        check('all 19 official routes visited', row.official.length, 19); check('13 old bookmarks retained', row.legacy.length, 13);
         row.status = 'passed';
       } catch (error) {row.status = 'failed'; row.error = error.stack || String(error); await capture('failure').catch(() => {}); throw error;}
       finally {await context.close();}
@@ -152,5 +152,6 @@ test('native Chromium H02 official routes, legacy bookmarks and saved work at th
   }
   assert.equal(report.summary.passed, 3, 'All three native viewport cases must pass');
   assert.equal(report.summary.officialRoutes, 57);
-  assert.equal(report.summary.legacyRoutes, 36);
+  assert.equal(report.summary.legacyRoutes, 39);
+  assert.equal(report.summary.extras, 6);
 });

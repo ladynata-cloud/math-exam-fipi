@@ -18,7 +18,7 @@ test('compact progress retains every topic exactly once under closed groups, wit
  assert.equal(d.querySelectorAll('.journey-progress-metric').length,3);
  assert.equal(d.querySelectorAll('[data-progress-topic]').length,w.ProfileLessons.length);
  assert.equal(new Set([...d.querySelectorAll('[data-progress-topic]')].map(e=>e.dataset.progressTopic)).size,w.ProfileLessons.length);
- assert.equal(d.querySelectorAll('[data-progress-group]').length,16,'12 first-part lines, finance, two additional themes and foundations');
+ assert.equal(d.querySelectorAll('[data-progress-group]').length,15,'12 first-part lines, finance, random variables and foundations');
  assert.equal(d.querySelectorAll('.progress-group[open],.progress-unstarted[open]').length,0);
  assert.equal(d.getElementById('export').closest('details'),null,'download requires no undisclosed click');
  assert.equal(w.localStorage.getItem('unrelated-progress'),'keep');
