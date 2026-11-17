@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+  "baseSha": "d8623d56b565eb06e5cdf6f6e5f2bf47b923ea66",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2163,8 +2163,8 @@
       "placement": "before-head-close"
     },
     "school/peterson5/index.html": {
-      "beforeSha256": "6df54c6ffc5190c9118eaa947c12dffc9d1f08d7f5216bac2230dd82e14f8c4c",
-      "afterSha256": "3c3ac2beba7d3c1aa7ad369a5b892bf16c9c10a441af0d01f6727bc80f14bc4b",
+      "beforeSha256": "f331f469d48516b5087144a9286507d9c62c6a3e1138a9e8e81022b650faa522",
+      "afterSha256": "432a8c2c015a6dcad87929b302d79df885673d8f7960048c0bdec277b69ef348",
       "placement": "before-head-close"
     },
     "school/peterson6/topics/droby-i-desyatichnye/index.html": {
@@ -5473,6 +5473,15 @@
         "geometry-pogorelov/atlas/pogorelov-base-9-127.html",
         "geometry-pogorelov/atlas/pogorelov-base-9-131.html",
         "geometry-pogorelov/index.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "5ee1e40dcb5fab40b6bd955357c92004d44f0415",
+      "sourceBaseSha": "d8623d56b565eb06e5cdf6f6e5f2bf47b923ea66",
+      "task": "docs/tasks/PETERSON5_MATCHED_PRACTICE_20261118.md",
+      "changedPaths": [
+        "school/peterson5/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
