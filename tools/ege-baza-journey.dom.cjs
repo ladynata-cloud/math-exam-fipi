@@ -4,6 +4,13 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 const {JSDOM,VirtualConsole}=require('jsdom');
 const root=path.resolve(__dirname,'..'),PATH_KEY='mathexam.ege-baza.path.v1',OLD_KEY='mathexam.ege-baza.foundation.v1';
 const tick=()=>new Promise(resolve=>setTimeout(resolve,10));
+async function waitForElement(document,selector){
+ for(let i=0;i<20;i++){
+  const element=document.querySelector(selector);
+  if(element)return element;
+  await tick();
+ }
+}
 let checks=0;const errors=[],open=[];
 const ok=(value,label)=>{assert.ok(value,label);checks++;};
 function boot(page='ege-baza/index.html',hash='',saved={},options={}){
@@ -57,7 +64,29 @@ const savedMap=ctx=>Object.fromEntries(ctx.values);
    ok(clean.d.querySelector('[data-exam-task="'+pos+'"]'),'task number section '+pos);
    ok(rows.length===expected.length&&rows.every(node=>expected.some(item=>item.id===node.dataset.journeyItem)),'all and only own families visible for '+pos);
    ok(clean.d.querySelector('a[href="#map"]'),'return to all numbers '+pos);
+   const foundation=clean.d.querySelector('a[href="#foundation?pos='+pos+'"]');
+   ok(foundation,'foundation link points to the current number '+pos);
+   foundation.click();
+   const targeted=await waitForElement(clean.d,'#content > .cards');
+   ok(targeted?.querySelector('[data-resource]'),'targeted resource shown first '+pos);
+   for(const link of targeted.querySelectorAll('a')){
+    const url=new URL(link.href);
+    const filename=path.join(root,url.pathname,url.pathname.endsWith('/')?'index.html':'');
+    ok(link.target==='_blank'&&url.origin===clean.w.location.origin&&fs.existsSync(filename),'resource opens on the same site from '+pos);
+    if(url.pathname==='/ege-baza/path/index.html')ok(clean.w.PathData.meta.some(item=>'#lesson='+item.id===url.hash),'targeted practice family is registered');
+   }
+   const back=clean.d.querySelector('#content .back');
+   ok(back.hash==='#task?pos='+pos,'foundation returns to the exact number '+pos);
+   back.click();
+   ok(await waitForElement(clean.d,'[data-exam-task="'+pos+'"]'),'number restored after foundation '+pos);
   }
+  await go(clean,'#task?pos=14&skills=1');
+  const supportLinks=[...clean.d.querySelectorAll('[data-nav="foundation"]')];
+  ok(supportLinks.length===2&&supportLinks.every(link=>link.hash==='#foundation?pos=14&skills=1'),'both desktop and mobile navigation retain the exam number');
+  supportLinks[1].click();
+  ok(await waitForElement(clean.d,'#content > .cards [data-resource="p-decimal-divisor"]'),'number 14 points to decimal division');
+  ok(!clean.d.querySelector('#content > .cards [data-resource="p-signs"]'),'generic cards do not precede number 14 resources');
+  ok(clean.d.querySelector('#content .back').hash==='#task?pos=14&skills=1','return retains skill-map context');
   for(const invalid of ['0','22','foo','1.5']){
    await go(clean,'#task?pos='+invalid);ok(!clean.d.querySelector('[data-exam-task]'),'invalid task number is not silently replaced: '+invalid);
   }
