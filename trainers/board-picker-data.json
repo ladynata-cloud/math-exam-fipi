@@ -5837,6 +5837,11 @@
       "group": "ЕГЭ база · тренажёры"
     },
     {
+      "title": "ЕГЭ база 1 · Время через полночь",
+      "href": "/ege-baza/path/index.html#lesson=practice-overnight",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
       "title": "ЕГЭ база 2 · Соотнести величину и единицу",
       "href": "/ege-baza/path/index.html#lesson=practice-units-match",
       "group": "ЕГЭ база · тренажёры"
@@ -5914,6 +5919,11 @@
     {
       "title": "ЕГЭ база 7 · Наклон прямой по двум точкам",
       "href": "/ege-baza/path/index.html#lesson=practice-graph-slope",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 7 · Касательные и значения производной",
+      "href": "/ege-baza/path/index.html#lesson=practice-tangent-match",
       "group": "ЕГЭ база · тренажёры"
     },
     {
@@ -6157,6 +6167,11 @@
       "group": "ЕГЭ база · тренажёры"
     },
     {
+      "title": "ЕГЭ база 19 · Два числа по наборам цифр",
+      "href": "/ege-baza/path/index.html#lesson=practice-digit-pair",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
       "title": "ЕГЭ база 20 · Движение навстречу",
       "href": "/ege-baza/path/index.html#lesson=practice-meeting",
       "group": "ЕГЭ база · тренажёры"
@@ -6224,6 +6239,11 @@
     {
       "title": "ЕГЭ база 21 · Оценка числа участников",
       "href": "/ege-baza/path/index.html#lesson=practice-whole-count",
+      "group": "ЕГЭ база · тренажёры"
+    },
+    {
+      "title": "ЕГЭ база 21 · Периметр одной из четырёх частей",
+      "href": "/ege-baza/path/index.html#lesson=practice-missing-perimeter",
       "group": "ЕГЭ база · тренажёры"
     },
     {

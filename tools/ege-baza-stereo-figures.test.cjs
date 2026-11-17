@@ -10,19 +10,23 @@ const expectedLabels=t=>{
  case 'roundbody':return m.body==='sphere'?{radius:'r = '+m.a}:m.body==='cone'?{radius:'r = '+m.a,height:'h = '+m.h}:{radius:'r = '+m.a,height:m.h};
  case 'pyramid':return {side:'a = '+m.a,height:'h = '+m.h};
  case 'scale':return {'whole-volume':'V большого = '+27*(2+t.seed%7),'height-ratio':'1 / 3'};
- case 'practice-displacement':return {litres:D.F(p.litres)+' л воды','level-factor':D.F(p.factor)+'h'};
+ case 'practice-displacement':return {litres:D.F(p.litres)+' л воды',...(p.before===undefined?{'level-factor':D.F(p.factor)+'h'}:{'water-depth':p.before+' см'})};
  case 'practice-pour':return {height:p.oldH};
  case 'practice-joined-surface':return {a:p.a,b:p.a,height:p.a};
  case 'practice-faces':return {};
  case 'practice-cone-area':return {};
- case 'practice-pyramid-lateral':return {side:'a = '+10*p.s,'lateral-edge':13*p.s};
+ case 'practice-pyramid-lateral':return p.perimeter===undefined?{side:'a = '+10*p.s,'lateral-edge':13*p.s}:{perimeter:'P основания = '+p.perimeter+' см','lateral-edge':p.edge};
  case 'practice-box-diagonal':return {a:p.a,b:p.b,diagonal:'d = '+p.d};
- case 'practice-similar-volume':return {'small-volume':'V малого = '+p.small,'height-ratio':'1 / '+p.factor};
+ case 'practice-similar-volume':return p.height===undefined?{'small-volume':'V малого = '+p.small,'height-ratio':'1 / '+p.factor}:{'whole-volume':'V большого = '+p.whole};
  }
 };
+function variants(id,seed){
+ const current=D.task(id,seed),legacy=D.practice.taskForBankVersion?.(id,seed,1);
+ return legacy&&legacy.q!==current.q?[current,legacy]:[current];
+}
 let cases=0;
-for(const {id} of families)for(let seed=0;seed<84;seed++){
- const t=D.task(id,seed),html=figures.visual(t),view=new JSDOM(html),doc=view.window.document;
+for(const {id} of families)for(let seed=0;seed<84;seed++)for(const t of variants(id,seed)){
+ const html=figures.visual(t),view=new JSDOM(html),doc=view.window.document;
  assert(doc.querySelector(`.stereo-figures[data-stereo-task="${id}"]`),id);
  assert(doc.querySelector('svg[role="img"]'),id+' missing drawing');assert(!html.includes('NaN')&&!html.includes('undefined'),id+' malformed');
  for(const [key,value] of Object.entries(expectedLabels(t))){const el=doc.querySelector(`[data-stereo-given="${key}"]`);assert(el,id+' missing '+key);assert.equal(el.getAttribute('aria-label')||el.textContent,String(value),id+' label '+key);}
@@ -38,7 +42,10 @@ for(const {id} of families)for(let seed=0;seed<84;seed++){
   const sides=[...doc.querySelectorAll('svg')].map(svg=>{const match=svg.querySelector('path').getAttribute('d').match(/^M([\d.]+) 268L210 ([\d.]+)L/);return Math.hypot(210-Number(match[1]),268-Number(match[2]));});assert(Math.abs(sides[1]/sides[0]-2)<1e-10,'paired cone slants share one scale');
  }
  if(id==='practice-pour'){assert.deepEqual([...doc.querySelectorAll('[data-stereo-given="radius"]')].map(e=>e.textContent),['r',t.params.ratio+'r']);const rims=[...doc.querySelectorAll('svg')].map(svg=>svg.querySelector('ellipse'));for(const dim of ['rx','ry'])assert(Math.abs(Number(rims[1].getAttribute(dim))/Number(rims[0].getAttribute(dim))-t.params.ratio)<1e-10,'paired cylinder radii and perspective share one scale');}
- if(id==='practice-similar-volume'||id==='scale')assert(doc.querySelector('g[aria-label] path'),'height ratio must use a horizontal fraction bar');
+ if((id==='practice-similar-volume'&&t.params.height===undefined)||id==='scale')assert(doc.querySelector('g[aria-label] path'),'height ratio must use a horizontal fraction bar');
+ if(id==='practice-similar-volume'&&t.params.height!==undefined)assert(!doc.querySelector('[data-stereo-given="height-ratio"]'),'computed height ratio is not a given');
+ if(id==='practice-displacement'&&t.params.before!==undefined)assert.deepEqual([...doc.querySelectorAll('[data-stereo-given="water-depth"]')].map(el=>el.textContent),[t.params.before+' см',t.params.after+' см']);
+ if(id==='practice-pyramid-lateral'&&t.params.perimeter!==undefined)assert(!doc.querySelector('[data-stereo-given="side"]'),'computed base side is not a given');
  if(id==='practice-pyramid-lateral')assert(!doc.querySelector('[data-stereo-given="height"]'),'computed face height must stay unknown');
  view.window.close();cases++;
 }
@@ -50,6 +57,16 @@ for(const script of w.document.querySelectorAll('script'))w.eval(fs.readFileSync
 assert(w.document.querySelector('.task-first-problem>.task-support .stereo-figures'),'drawing belongs beside condition');
 assert.equal(w.document.querySelector('#taskHelp').open,false,'drawing must not open hints');
 assert.equal(w.PathCourse.state().lessons['practice-displacement'].help,false,'seeing givens is not assistance');
+const geometry=w.PathData.meta.filter(item=>item.pos>=9&&item.pos<=13);
+for(const {id} of geometry)for(let seed=0;seed<42;seed++){
+ const task=w.PathData.task(id,seed);
+ const display=task.display??w.PathStereoFigures.condition(task);
+ const studentView=w.PathPracticeView.visual(task);
+ assert.match(studentView,/<svg .*role="img"/,id+' static condition drawing');
+ assert.doesNotMatch(studentView,/NaN|undefined|data-stage=|#stepAnswer/);
+ assert.equal(w.PathPracticeView.visual({id:task.id,display}),studentView,id+' figure from condition data only');
+}
+
 const host=w.document.createElement('div');w.document.body.append(host);let changes=[];
 const t=w.PathData.task('practice-displacement',0),session=w.PathModels.mount(host,t,{state:{kind:'plan',revealed:1},onChange:value=>changes.push(value)});
 assert(host.querySelector('.stereo-figures'));assert.equal(host.querySelectorAll('#plan p').length,1);assert.equal(host.pathModel,session);

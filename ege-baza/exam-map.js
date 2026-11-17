@@ -1,6 +1,6 @@
 (function (root) {
   'use strict';
-  // Editorial labels follow the base-level FIPI 2027 draft. The lesson bank
+  // Editorial labels follow the approved base-level FIPI 2027 documents. The lesson bank
   // remains the source of family IDs; this read-only view never writes progress.
   const definitions = [
     ['Практические расчёты и округление', 'Покупки, упаковки, поездки и округление ответа по смыслу.'],

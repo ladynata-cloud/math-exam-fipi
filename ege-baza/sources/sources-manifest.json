@@ -1,20 +1,24 @@
 {
-  "retrieved": "2026-10-02 Asia/Novosibirsk",
+  "retrieved": "2026-11-17 Asia/Novosibirsk",
   "archives": [
     {
       "name": "demo2027",
       "url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/ma_11_2027.zip",
-      "retrieved": "2026-10-01T20:41:58.947318+00:00",
-      "sha256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
+      "retrieved": "2026-11-17T03:03:53.894029+00:00",
+      "sha256": "5ca480527a987176d8a0bdb1779260e785e7f53c367537808462e64e4a6ccd77",
       "contentType": "application/zip",
       "files": [
+        "МА-11 ЕГЭ 2027 СПЕЦ_профильный.pdf",
         "МА-11 ЕГЭ 2027_КОДИФ.pdf",
         "МА-11 ЕГЭ 2027 ДЕМО_базовый.pdf",
-        "МА-11 ЕГЭ 2027 ДЕМО_профильный.pdf",
-        "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf",
-        "МА-11 ЕГЭ 2027 СПЕЦ_профильный.pdf"
+        "МА-11 ЕГЭ 2027 ДЕМО_профильный_3 модель.pdf",
+        "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf"
       ],
-      "status": "downloaded"
+      "status": "downloaded",
+      "bytes": 4446503,
+      "httpStatus": 200,
+      "lastModified": "Fri, 13 Nov 2026 15:21:03 GMT",
+      "crcVerified": true
     },
     {
       "name": "open2026",
@@ -35,14 +39,18 @@
       "kind": "demo",
       "level": "basic",
       "pages": 17,
-      "sha256": "acee4ee13a64b70e0e505004a9a151a1380470a984b016ed275ff3901e776662"
+      "sha256": "a119296470467810624727168c171dd8c657278f8612ab0db86791ae7b35eaee",
+      "source_member": "МА-11 ЕГЭ 2027 ДЕМО_базовый.pdf",
+      "bytes": 1484949
     },
     {
       "file": "spec-2027.pdf",
       "kind": "specification",
       "level": "basic",
       "pages": 6,
-      "sha256": "206a39e85983ef607f2494afd71b867a8effa8228a02a3d1406ff751168a0c68"
+      "sha256": "6b783bc10fe1264cc3f1ed1cd8d40ecd9b9cd42cae6fe25f30f81fed168577e5",
+      "source_member": "МА-11 ЕГЭ 2027 СПЕЦ_базовый.pdf",
+      "bytes": 730896
     },
     {
       "file": "open-2026.pdf",
@@ -53,13 +61,17 @@
     }
   ],
   "previous_demo_sha256": "6864e19e4004895b825faff81da3e1a2938b4faf1682ec67cdb9b70b8d4e0832",
-  "demo_matches_previous": true,
-  "document_status": "project as labelled by FIPI on 2026-10-02",
+  "demo_matches_previous": false,
+  "document_status": "approved as published by FIPI on 2026-11-13",
   "open_bank": {
     "url": "https://ege.fipi.ru/bank/",
-    "status": "entry_fetch_timed_out",
+    "status": "entry_http_503",
     "records_collected": 0,
     "completeness": "unverified",
-    "observed": "Search service: 400 Timeout fetching. No hidden endpoints queried."
-  }
+    "observed": "Direct HTTPS GET returned 503. Filters, counts and official task IDs were unavailable.",
+    "retrieved": "2026-11-17T03:03:54.197674+00:00",
+    "httpStatus": 503
+  },
+  "document_status_url": "https://fipi.ru/",
+  "changes_summary_url": "https://doc.fipi.ru/ege/demoversii-specifikacii-kodifikatory/2027/Izmeneniya_KIM_EGE_2027.pdf"
 }

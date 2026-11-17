@@ -1,4 +1,4 @@
-/* A bounded projection of the current task-first course for the classic board.
+/* A bounded projection of the task-first course for the classic board.
    No personal store is read, written, imported or credited. */
 (function (root) {
   'use strict';
@@ -8,6 +8,9 @@
     13: Object.freeze(['roundbody', 'pyramid', 'scale', 'practice-cone-area', 'practice-pyramid-lateral', 'practice-box-diagonal', 'practice-similar-volume'])
   });
   const MAX_SEED = 999999;
+  // Classic v1 packets identify a condition by route and seed alone. Every
+  // client must resolve those fields with the original bank.
+  const boardTask = (data, id, seed) => data.practice.taskForBankVersion(id, seed, 1);
   const copy = value => JSON.parse(JSON.stringify(value));
   const own = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
   const object = value => !!value && typeof value === 'object' && !Array.isArray(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value));
@@ -38,7 +41,7 @@
       taskFirst: { version: 1, seed, finalDraft: '', stepDraft: '', legacyDraft: '', feedback: '', stepFeedback: '', stepAnswers: [], feedbackKind: '', helpOpen: false, modelOpen: false, stepsOpen: false, whyOpen: false, noteOpen: false, model: null } };
   }
   function create(position, data, modelState) {
-    if (!LESSONS[position] || !data?.task || !modelState?.model) throw TypeError('Incomplete base EGE board');
+    if (!LESSONS[position] || !data?.practice?.taskForBankVersion || !modelState?.model) throw TypeError('Incomplete base EGE board');
     function validateState(value) {
       try {
         if (!safe(value) || new TextEncoder().encode(JSON.stringify(value)).length > 56000 ||
@@ -48,7 +51,7 @@
         const work = value.work;
         if (!fields(work, ['seed', 'step', 'help', 'attempted', 'done', 'note', 'ui']) || !integer(work.seed, 11, value.serial) ||
             !text(work.note, 4000) || !['help', 'attempted', 'done'].every(key => typeof work[key] === 'boolean')) return false;
-        const task = data.task(value.route.slice(8), work.seed), ui = work.ui;
+        const task = boardTask(data, value.route.slice(8), work.seed), ui = work.ui;
         if (!integer(work.step, 0, task.steps.length) || !fields(ui, ['finalDraft', 'stepDraft', 'feedback', 'stepFeedback', 'stepAnswers', 'feedbackKind', 'helpOpen', 'modelOpen', 'stepsOpen', 'whyOpen', 'noteOpen', 'model']) ||
             !['finalDraft', 'stepDraft'].every(key => text(ui[key], 200)) || !text(ui.feedback, 2000) || !text(ui.stepFeedback, 2000) ||
             !['', 'good', 'bad'].includes(ui.feedbackKind) || !['helpOpen', 'modelOpen', 'stepsOpen', 'whyOpen', 'noteOpen'].every(key => typeof ui[key] === 'boolean') ||
@@ -91,7 +94,7 @@
       lesson.independent = 0; lesson.guided = 0; lesson.checks = [];
       for (const key of ['finalDraft', 'stepDraft']) lesson.taskFirst[key] = lesson.taskFirst[key].slice(0, 200);
       lesson.note = lesson.note.slice(0, 4000); lesson.draft = lesson.taskFirst.finalDraft;
-      if (lesson.done && !D.correct(D.task(route.slice(8), lesson.seed), lesson.taskFirst.finalDraft)) {
+      if (lesson.done && !D.correct(boardTask(D, route.slice(8), lesson.seed), lesson.taskFirst.finalDraft)) {
         lesson.done = false; lesson.taskFirst.feedback = ''; lesson.taskFirst.feedbackKind = '';
         const feedback = main.querySelector('#feedback'); if (feedback) feedback.textContent = '';
       }
@@ -131,7 +134,7 @@
         }).join('') + '</div>';
         return;
       }
-      const id = route.slice(8), meta = D.meta.find(item => item.id === id), task = D.task(id, lesson.seed);
+      const id = route.slice(8), meta = D.meta.find(item => item.id === id), task = boardTask(D, id, lesson.seed);
       root.PathTaskFirst.mount(main, { meta, task, lesson, save, seen: () => lesson.help || lesson.attempted, expose() {}, fresh: () => navigate(route, true),
         remediationId: () => '', equationPracticeLinks: () => '', fractionPracticeLink: () => '', setHash: value => navigate('#' + value) });
       if(position===7){
@@ -146,7 +149,7 @@
       const report = main.querySelector('a[href="#report"]'); if (report) { report.href = '#map'; report.textContent = 'Типы этого задания'; }
       const source = main.querySelector('a[href^="../sources/"]'); if(position===7&&source)source.remove();
       if (source&&position!==7) { source.href = '/ege-baza/sources/index.html#p' + position; source.target = '_blank'; source.rel = 'noopener'; }
-      const note = main.querySelector('.task-first-options .muted'); if (note) note.textContent = 'Авторские учебные задачи из актуального курса. Совместное решение не начисляет личный прогресс.';
+      const note = main.querySelector('.task-first-options .muted'); if (note) note.textContent = 'Совместное решение на доске не начисляет личный прогресс.';
       if (lesson.taskFirst.stepFeedback) main.querySelector('#stepFeedback')?.classList.add('bad');
     } finally { rendering = false; }
   }

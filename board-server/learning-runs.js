@@ -3,6 +3,7 @@
 const express = require('express');
 const { exactKeys, requireValue, token, tokenHash } = require('./learning-auth');
 const { ID, canonical } = require('./learning-store');
+const { condition: geometryCondition } = require('../ege-baza/path/stereo-figures');
 const parse = JSON.parse;
 const json = JSON.stringify;
 
@@ -20,6 +21,10 @@ function publicTask(taskSpec) {
   const task = taskSpec.task;
   const visible = {};
   for (const key of ['id','pos','q','display','labels','choices','answerKind']) if (task[key] !== undefined) visible[key] = task[key];
+  if (!visible.display && taskSpec.trainerId === 'ege-path') {
+    const figure = geometryCondition(task);
+    if (figure) visible.display = figure;
+  }
   return { trainerId: taskSpec.trainerId, contentId: taskSpec.contentId, id: taskSpec.id, seed: taskSpec.seed, contentVersion: taskSpec.contentVersion, task: visible };
 }
 function createLearningRunsRouter(learning) {

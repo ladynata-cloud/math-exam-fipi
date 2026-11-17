@@ -14,20 +14,26 @@ const numeric=(r,p)=>{
  case 'chart':return p.ask?Math.max(...p.values):p.values.indexOf(Math.min(...p.values))+1;
  case 'ranking':return p.rows.map(r=>sum(r.slice(1))).slice().sort((a,b)=>b-a).indexOf(sum(p.rows[p.target].slice(1)))+1;
  case 'interval-data':{let v=0;for(let i=p.a;i<=p.b;i++)v+=p.values[i];return v;}
- case 'electric':return (p.u/p.r)*p.u;
+ case 'electric':return p.speed!==undefined?(p.speed/p.radius)*p.speed:p.i===undefined?(p.u/p.r)*p.u:p.r*p.i*p.i;
  case 'temperature':return (9*p.c+160)/5;
  case 'inverse-formula':return p.S/((p.a+p.b)/2);
  case 'probability-draw':return p.good/p.n;
  case 'probability-opposite':return 1-p.bad/p.n;
  case 'delivery':return Math.min(...p.rows.map(([,price,ship,threshold])=>{const goods=price*p.n;return goods+((threshold!==0&&goods>threshold)?0:ship);}));
  case 'rental':return Math.min(...p.rows.map(([,consumption,price,rent])=>rent+price*consumption*p.km/100));
+ case 'overnight':return 24*60+p.end-p.start;
+ case 'missing-perimeter':{
+  const sizes=[[p.a,p.c],[p.b,p.c],[p.b,p.d],[p.a,p.d]];
+  const [width,height]=sizes[p.blank];
+  return width+height+width+height;
+ }
  case 'graph-slope':return (p.y1-p.y2)/(p.x1-p.x2);
  case 'grid-cut':return (p.w-p.a)*p.h+p.a*(p.h-p.b);
  case 'grid-parallelogram':case 'parallelogram':return sum(Array(p.h).fill(p.a));
  case 'free-area':return (p.a-p.b)*p.a+p.b*(p.a-p.c);
  case 'fence':return p.a+p.b+p.a+p.b-p.g;
- case 'spokes':return 360/p.n;
- case 'displacement':return p.litres*p.factor*1000-p.litres*1000;
+ case 'spokes':return 360*(p.gaps??1)/p.n;
+ case 'displacement':return p.before===undefined?p.litres*p.factor*1000-p.litres*1000:p.litres*1000*(p.after/p.before-1);
  case 'pour':return p.oldH/(Math.PI*p.ratio*p.ratio)*Math.PI;
  case 'joined-surface':return 2*(2*p.a*p.a+2*p.a*p.a+p.a*p.a);
  case 'faces':return (p.n+2-1)+(p.n+1-1);
@@ -35,9 +41,9 @@ const numeric=(r,p)=>{
  case 'triangle-angle':return 180-(p.a+p.b);
  case 'diameter-chord':return Math.sqrt(4*p.r*p.r-p.chord*p.chord);
  case 'cone-area':assert.ok(p.l>p.r&&2*p.l>p.r*p.ratio,'both cones must exist');return (Math.PI*(p.r*p.ratio)*(2*p.l))/(Math.PI*p.r*p.l);
- case 'pyramid-lateral':{let side=10*p.s,edge=13*p.s;return p.n*.5*side*Math.sqrt(edge*edge-side*side/4);}
+ case 'pyramid-lateral':{const side=p.perimeter===undefined?10*p.s:p.perimeter/p.n,edge=p.edge??13*p.s;return p.n*.5*side*Math.sqrt(edge*edge-side*side/4);}
  case 'box-diagonal':return p.a*p.b*Math.sqrt(p.d*p.d-p.a*p.a);
- case 'similar-volume':return p.small*Math.pow(p.factor,3);
+ case 'similar-volume':return p.whole===undefined?p.small*Math.pow(p.factor,3):p.whole*(1-Math.pow(p.smallHeight/p.height,3));
  case 'fraction-add':return (4*p.a+6*p.b)/24;
  case 'fraction-divide':return (p.a/p.b)/(p.c/p.d);
  case 'fraction-expression':return p.a/4+(p.b/6)/(2/3);
@@ -63,7 +69,12 @@ const numeric=(r,p)=>{
  case 'log-equation':return roots(x=>x+p.b>0?Math.log(x+p.b)/Math.log(p.a)-p.p:NaN, -100, 500)[0];
  case 'exponential-equation':return roots(x=>Math.pow(p.a,x+p.b)-Math.pow(p.a,p.p))[0];
  case 'rational-equation':return roots(x=>x!==p.a?p.num/(x-p.a)-p.b:NaN)[0];
- case 'meeting':return p.dist/(p.a+p.b);
+ case 'meeting':{
+  if(p.turn===undefined)return p.dist/(p.a+p.b);
+  const atTurn=p.turn/p.fast;
+  const currentGap=p.turn-p.slow*atTurn;
+  return p.slow*(atTurn+currentGap/(p.slow+p.fast));
+ }
  case 'river':return p.d1/(p.v+p.u)+p.d2/(p.v-p.u);
  case 'work':return p.a*p.b/(p.a+p.b);
  case 'mixture-water':return (p.m*p.p-p.m*p.q)/p.q;
@@ -113,8 +124,14 @@ function semantic(t){const p=t.params;
   const possible=[x=>x>a,x=>x<b,x=>x>a&&x<b,x=>x<a||x>b];
   return original.map(fn=>p.order.findIndex(i=>ps.every(x=>fn(x)===possible[i](x)))+1).join('');
  }
+ if(t.reference==='tangent-match'){
+  const slopes=t.params.panels.map(({left,right})=>(right-left)/2);
+  assert.equal(new Set(slopes).size,4);
+  assert.equal(t.display.kind,'tangents');
+  return slopes.map(slope=>t.params.order.indexOf(slope)+1).join('');
+ }
  if(t.reference==='graph-match'){const diffs=p.values.slice(1).map((v,i)=>v-p.values[i]),big=Math.max(...diffs);return diffs.map(v=>p.order.indexOf(v<0?1:v===0?2:v===big?3:0)+1).join('');}
- if(t.reference==='luggage')return p.rows.filter(r=>r.slice(1).every((v,i)=>v<=[55,40,20,10][i])).map(r=>r[0]).join('');
+ if(t.reference==='luggage')return p.rows.filter(r=>r.slice(1).every((v,i)=>v<=(p.limits||[55,40,20,10])[i])).map(r=>r[0]).join('');
  if(t.reference==='logic-order'){
   const result=[true,true,true,true];
   for(let a=1;a<7;a++)for(let b=1;b<7;b++)for(let c=1;c<7;c++)for(let d=1;d<7;d++)if(a>b&&b>c&&d>c){[a>c,c<a&&c<b&&c<d,d>a,b===d].forEach((v,i)=>result[i]&&=v);}
@@ -124,7 +141,7 @@ function semantic(t){const p=t.params;
  return null;
 }
 let tested=0;
-for(const {id,tasks} of old)assert.deepEqual([0,1,2,11,45,100].map(s=>JSON.stringify(D.task(id,s))),tasks,'Legacy task changed: '+id);
+for(const {id,tasks} of old)assert.deepEqual([0,1,2,11,45,100].map(s=>JSON.stringify(D.practice.taskForBankVersion(id,s))),tasks,'Legacy task changed: '+id);
 for(let pos=1;pos<=21;pos++)assert(D.practice.catalog.some(m=>m.pos===pos),'Empty position '+pos);
 for(const m of D.practice.catalog){
  const variants = ['practice-mushroom-count', 'practice-vase-order'].includes(m.id) ? 240 : 80;
@@ -133,7 +150,17 @@ for(const m of D.practice.catalog){
   const t=D.task(m.id,seed);assert(t.q&&t.steps.length&&t.steps.length<=20);assert.equal(t.pos,m.pos);
   if(t.answerKind==='solutions'){
    const expected=[];
-   for(let n=t.reference==='digits-delete'?10000:1000;n<(t.reference==='digits-delete'?100000:10000);n++){const digits=[...String(n)].map(Number);if(t.reference==='digits-delete'?n%22===0&&new RegExp([...String(n)].join('.*')).test(t.params.digits) : t.reference==='digits-product'?n%12===0&&digits.reduce((a,b)=>a*b,1)===t.params.target:n%t.params.divisor===0&&new Set(digits).size===4&&digits.every(x=>x%2===0))expected.push(String(n));}
+   for(let n=t.reference==='digits-delete'?10000:1000;n<(t.reference==='digits-delete'?100000:10000);n++){
+    const digits=[...String(n)].map(Number);
+    const fits=t.reference==='digits-delete'
+      ? n%22===0&&new RegExp([...String(n)].join('.*')).test(t.params.digits)
+      : t.reference==='digit-pair'
+        ? [...String(n)].sort().join('')===t.params.first&&[...String(n*t.params.factor)].sort().join('')===t.params.second
+        : t.reference==='digits-product'
+        ? n%t.params.divisor===0&&digits.reduce((a,b)=>a*b,1)===t.params.target
+        : n%t.params.divisor===0&&t.params.allowed.every(x=>digits.includes(x));
+    if(fits)expected.push(String(n));
+   }
    assert(expected.length>0);assert.deepEqual(t.solutions,expected);for(const answer of expected)assert(D.correct(t,answer));assert(!D.correct(t,'0'+expected[0]));assert(!D.correct(t,'123'));
   }else{let value=semantic(t);if(value===null)value=numeric(t.reference,t.params);assert(Number.isFinite(value)||typeof value==='string',m.id);assert(D.correct(t,String(value)),m.id+' seed '+seed+': '+value+' vs '+t.answer);if(typeof value==='number')assert(!D.correct(t,String(value+.01)),m.id+' loose answer');}
   for(const step of t.steps){assert(step.q&&step.why);assert(D.correct(step,String(step.a)),m.id+' invalid step');}
@@ -147,5 +174,26 @@ for(const m of D.practice.catalog){
   tested++;
  }
  if (variants === 240) assert.equal(conditions.size, variants, m.id + ' distinct conditions');
+}
+assert.equal(D.practice.taskForBankVersion('practice-digits-delete',1).params.digits,'45341527');
+assert.notEqual(D.task('practice-digits-delete',1).params.digits,'45341527');
+const alternateSeeds=Array.from({length:120},(_,index)=>index);
+for(const id of ['probability','motion','mixtures']){
+ assert(new Set(alternateSeeds.map(seed=>D.task(id,seed).answer)).size>=6,id+' requires varied answers');
+}
+const unitGroups=new Set(alternateSeeds.map(seed=>D.task('practice-units-match',seed).labels.join('|')));
+assert.equal(unitGroups.size,4);
+assert.equal(D.task('practice-meeting',1).params.turn!==undefined,true);
+assert.equal(Object.hasOwn(D.practice.taskForBankVersion('practice-meeting',1).params,'turn'),false);
+for(const seed of alternateSeeds){
+ const lamp=D.task('probability',seed),{total,bad}=lamp.params;
+ assert.equal(lamp.answer,(total-bad)/total);
+ const van=D.task('motion',seed),{dist,speed}=van.params;
+ assert.equal(van.answer,sum(dist)/sum(dist.map((km,index)=>km/speed[index])));
+ const lemonade=D.task('mixtures',seed),{mass,concentration,water}=lemonade.params;
+ assert.equal(lemonade.answer,mass*concentration/(mass+water));
+ const lake=D.task('reasoning',seed),{half,ac,ad,cd}=lake.params;
+ assert(ac<half&&ad<half&&cd>Math.abs(ac-ad)&&cd<ac+ad);
+ assert.equal(lake.answer,(ac+ad+cd)/2-ac);
 }
 console.log(`EGE_BAZA_PRACTICE_MATH_OK: ${tested} generated conditions, ${D.practice.catalog.length} new families, all 21 positions, 168 unchanged legacy cases, exhaustive digit answers, independently recalculated keys.`);
