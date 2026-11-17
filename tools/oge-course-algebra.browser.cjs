@@ -45,6 +45,21 @@ for(let draw=0;draw<8;draw++){
 }
 assert.notEqual(await condition.innerHTML(),original,'Generator must provide a different condition within eight draws');
 await page.waitForFunction(selector=>document.querySelector(selector)?.value==='',cards[n]+' .oca-work textarea');const archive=card.locator('.oca-work details').filter({has:page.locator('summary', {hasText:'Мои записи к другим задачам'})}).first();await archive.locator(':scope > summary').click();await archive.locator('.oca-saved-entry').first().waitFor();assert((await archive.textContent()).includes('Обозначаю неизвестное'));}
+if(n===14){
+  await page.evaluate(()=>T14.boardMount('AP-SUM',4));
+  const visible=await condition.textContent();
+  const given=/робот проехал ([\d,]+)\s+м\..*короче на ([\d,]+)\s+м\..*за первые (\d+) секунд/.exec(visible);
+  assert(given,'The authored decreasing-distance problem is visible');
+  const [first,decrease]=given.slice(1,3).map(value=>Math.round(Number(value.replace(',','.'))*10));
+  const nSeconds=Number(given[3]), distances=Array.from({length:nSeconds},(_,i)=>first-decrease*i);
+  assert(distances.at(-1)>0);
+  const decimal=tenths=>String(tenths/10).replace('.',',');
+  await finalInput.fill(decimal(distances.at(-1)));await card.locator('#m-ck').click();
+  assert.match(await card.locator('#m-fb').textContent(),/последнюю секунду/);
+  await finalInput.fill(decimal(distances.reduce((sum,value)=>sum+value,0)));await card.locator('#m-ck').click();
+  assert.match(await card.locator('#m-fb').textContent(),/Верно/);assert(await finalInput.isDisabled());
+  await noOverflow(page,'14 decreasing distances '+width);
+}
 await page.close();}
 assert.deepEqual(errors,[]);console.log('OGE_COURSE_ALGEBRA_BROWSER_OK: 8 routes × 320/360/1280; models, preserved answers, reasoning, same-page official sources');
 }finally{if(browser)await browser.close();await new Promise(r=>server.close(r));}})().catch(e=>{console.error(e);process.exitCode=1;});

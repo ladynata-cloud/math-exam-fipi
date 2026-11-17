@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "ad5b71ba8dba653e118940e03459480284b0a802",
+  "baseSha": "3531e12e3b16128698bbcb9fa423f0fc001986fd",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -2963,8 +2963,8 @@
       "placement": "before-main-open"
     },
     "trainers/oge-task14-progressions.html": {
-      "beforeSha256": "8c84b80e56e0b1a0fc0c18be11a3af79f8f2c351358335239b6430840b827c3f",
-      "afterSha256": "d092ec36d7004c618c666f40b7486efbb4911d7caaea01f145575ce420ce26e9",
+      "beforeSha256": "fe194a1d14daf0785481fe5edb6f3ce1c025a232a73ac78828a0d4382007e7e2",
+      "afterSha256": "9e1743585f747984e305fb562a62fc512605a554150966081b388989f0c9396d",
       "placement": "before-head-close"
     },
     "trainers/oge-task15-triangles.html": {
@@ -5282,6 +5282,15 @@
         "trainers/oge-task11-graphs-trainer.html",
         "trainers/oge-task14-progressions.html",
         "trainers/oge13-inequalities-series.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "ad5b71ba8dba653e118940e03459480284b0a802",
+      "sourceBaseSha": "3531e12e3b16128698bbcb9fa423f0fc001986fd",
+      "task": "docs/tasks/OGE_SOURCE_ALIGNMENT_10_14_20261117.md",
+      "changedPaths": [
+        "trainers/oge-task14-progressions.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }

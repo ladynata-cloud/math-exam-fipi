@@ -465,6 +465,11 @@ section('B4. независимый пересчёт 10, 11, 12, 14: по 500 з
       let b = 0, e = '';
       for (const t of tasks) { const s = R14.value(t); if (s.bad || !eq(s.v, Fq(t.ans))) { b++; e = e || (s.bad || str(s.v)); } }
       ok(!b, 'B4', `14 ${code}: расхождений ${b} ${e}`);
+      if (code === 'AP-SUM') {
+        const brake = tasks.find(t => t.facts.sub === 'brake');
+        ok(brake && !R14.value(brake).bad && !!R14.value({...brake,text:brake.text.replace('короче','длиннее')}).bad,
+          'B4', '14 AP-SUM: пересчёт по условию отличает убывающие расстояния от роста');
+      }
       if (code === 'GP-VAL') {
         const decay = tasks.filter(t => /начале сушки/.test(t.text));
         ok(decay.length && decay.every(t => t.ans.d > 1n && R10.terminates(t.ans)), 'B4', '14 GP-VAL: конечный дробный ответ каждой задачи о сушке');

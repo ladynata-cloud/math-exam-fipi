@@ -756,12 +756,30 @@ GENS["AP-VAL"] = {
 /* ================= АП: сумма первых n шагов ================= */
 GENS["AP-SUM"] = {
   code:"AP-SUM", group:"ap", title:"Сумма первых n шагов",
-  desc:"камень, детали, штрафы, ряды",
+  desc:"камень, детали, штрафы, ряды, замедление робота",
   methods:["gauss","table","formula"],
   price:"Метод Гаусса: записать сумму дважды и увидеть одинаковые столбики — понятно, почему делим на 2. Таблица: выписать все шаги и сложить по порядку — надёжно, но при большом n долго. Формула: самая короткая запись того же самого.",
   gen(seed){
     const r=rng(seed);
-    const sub=pick(r,["stone","parts","penalty","rings"]);
+    // Keep the historical type and seed replay for existing shared-board records.
+    const shared=typeof window!=="undefined" && window.OgeCourseSharedMode;
+    const sub=!shared && (seed&3)===0 ? "brake" : pick(r,["stone","parts","penalty","rings"]);
+    if(sub==="brake"){
+      const n=ri(r,4,7), decrease=F(ri(r,2,6),10), last=F(ri(r,7,12),10);
+      const a1=Fr.add(last,Fr.mul(decrease,F(n-1))), d=Fr.neg(decrease);
+      const twiceSum=Fr.mul(Fr.add(a1,last),F(n)), ans=Fr.div(twiceSum,F(2));
+      const text="На испытательной дорожке робот начал снижать скорость. За первую секунду робот проехал "+N(a1)+
+        "&nbsp;м. Дальше его путь за секунду каждый раз становился короче на "+N(decrease)+
+        "&nbsp;м. Сколько метров робот проехал за первые "+N(n)+" "+W.plur(n,["секунду","секунды","секунд"])+"?";
+      const distract=mkDistract([
+        {v:last, hint:"Это путь только за последнюю секунду. Найди сумму путей за все секунды."},
+        {v:Fr.mul(a1,F(n)), hint:"Робот за каждую следующую секунду проезжал меньше, чем за предыдущую. Выпиши пути по секундам."},
+        {v:twiceSum, hint:"Получилась удвоенная сумма. Раздели её на 2."}
+      ],ans);
+      return {code:"AP-SUM",seed,chip:"АП: сумма",gp:false,text,svg:null,unit:"м",ans,distract,
+        hint1:"Выпиши путь за каждую секунду. Первый уже дан. Каждый следующий получишь вычитанием.",
+        facts:{sub,a1,d,n},methods:GENS["AP-SUM"].methods};
+    }
     let a1,d,n,text,unit;
     if(sub==="stone"){
       a1=ri(r,6,14); d=ri(r,6,12); n=ri(r,4,7);
@@ -1427,12 +1445,14 @@ function buildSteps(task, method){
   else if(c==="AP-SUM"){
     const a1=f.a1, d=f.d, n=f.n;
     const aN=Fr.add(a1,Fr.mul(d,F(n-1)));
+    const brake=f.sub==="brake", decrease=brake?fmtN(Fr.neg(d)):null;
     if(method==="table"){
       const vals=[a1]; for(let i=1;i<n;i++) vals.push(Fr.add(vals[i-1],d));
       const labels=vals.map((_,i)=>(i+1)+"-й");
       for(let i=1;i<n;i++){
         steps.push(st("Выпиши слагаемые: значение на "+(i+1)+"-м шаге?"+tapeProgress(vals,labels,plusStr(d),i,gp),
-          vals[i], "К "+fmtN(vals[i-1])+" прибавь "+fmtN(d)+".", "Очередное слагаемое: "+fmtN(vals[i-1])+" + "+fmtN(d)+"."));
+          vals[i], brake?"Из "+fmtN(vals[i-1])+" вычти "+decrease+".":"К "+fmtN(vals[i-1])+" прибавь "+fmtN(d)+".",
+          "Очередное слагаемое: "+fmtN(vals[i-1])+(brake?" − "+decrease:" + "+fmtN(d))+"."));
       }
       steps.push(st("Теперь сложи все "+n+" выписанных чисел по порядку.",
         task.ans, "Складывай слева направо: "+runSumStr(vals)+".",
@@ -1456,12 +1476,15 @@ function buildSteps(task, method){
         task.ans, "Раздели "+fmtN(twoS)+" на 2.",
         "Делим удвоенную сумму пополам."));
     } else {
-      steps.push(st("Какая прибавка за один переход?", d,
+      if(brake) steps.push(st("Найди разность d. Из пути за следующую секунду вычти путь за предыдущую.",d,
+        "Путь каждый раз короче на "+decrease+" м, поэтому разность отрицательная.","Разность прогрессии d = −"+decrease+"."));
+      else steps.push(st("Какая прибавка за один переход?", d,
         "Смотри на «на … больше, чем в предыдущий».", "Прибавка за переход."));
       steps.push(st("Сколько переходов от 1-го до последнего, "+n+"-го шага?", F(n-1),
         "Первый уже дан: переходов на один меньше, чем шагов.", "Переходов n \u2212 1."));
       steps.push(st("Чему равно значение на последнем, "+n+"-м шаге?", aN,
-        "К "+fmtN(a1)+" прибавь "+fmtN(d)+" · "+(n-1)+".", "Последний член: "+fmtN(a1)+" + "+fmtN(d)+" · "+(n-1)+"."));
+        brake?"Из "+fmtN(a1)+" вычти "+decrease+" · "+(n-1)+".":"К "+fmtN(a1)+" прибавь "+fmtN(d)+" · "+(n-1)+".",
+        "Последний член: "+fmtN(a1)+(brake?" − "+decrease:" + "+fmtN(d))+" · "+(n-1)+"."));
       steps.push(st("Сумма пары «первый + последний»?", Fr.add(a1,aN),
         "Просто сложи "+fmtN(a1)+" и "+fmtN(aN)+".", "Пара даёт "+fmtN(a1)+" + "+fmtN(aN)+"."));
       steps.push(st("Умножь эту пару на число шагов "+n+".", Fr.mul(Fr.add(a1,aN),F(n)),
