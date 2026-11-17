@@ -156,6 +156,12 @@ def matches_proof_figure_ui(record, text, fixture_texts, item, fixture_oracles):
                 for oracle in fixture_oracles))
 
 
+def uses_source_fixture(record):
+    prefix = record['prefix']
+    # The frozen v3 paper-sheets route renders the same reviewed set as v1/v2.
+    return prefix == '' or (prefix == V3['prefix'] and record['id'] != '08')
+
+
 def exact_reviewed_context(record, oracle, fixtures):
     """Replay is limited to the manually reviewed condition and visible geometry.
 
@@ -166,7 +172,7 @@ def exact_reviewed_context(record, oracle, fixtures):
     if fixture is None:return False
     if record['prefix'] == V3['prefix'] and not verified_v3_wayfinding(record):
         return False
-    if record['prefix'] in ('', V3['prefix']):
+    if uses_source_fixture(record):
         fixture = fixture.get('sourceVariant', fixture)
     navigation = record.get('publicWayfinding')
     fixture_texts = [fixture['visibleText'], *fixture.get('alternativeVisibleTexts', [])]
@@ -417,9 +423,8 @@ PRACTICAL = {
 
 def reviewed(record, oracle, index):
     ident=record['id'];p=plain(oracle['prompt']);q=oracle.get('question',index+1)
-    if ident=='08' and record['prefix'] in ('', V3['prefix']):
-        # Exact current-source/v3 context is checked above. Historical v1/v2
-        # retain their original independently reviewed questions below.
+    if ident=='08' and uses_source_fixture(record):
+        # The live source renders a different independently reviewed set.
         cases=[
           ('2143','По видимой таблице А0=1189×841 — №2, А2=594×420 — №1, А5=210×148 — №4, А6=148×105 — №3. Порядок А0,А2,А5,А6 даёт2143.'),
           (2**(3-1),'Два последовательных деления пополам: изА1 получается2²=4 листаА3.'),

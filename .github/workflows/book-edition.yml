@@ -122,10 +122,15 @@ jobs:
       - name: Reproduce the approved v3 candidate before freezing
         if: github.event_name == 'pull_request' && github.head_ref == 'fix/oge-book-v3-readiness-20261116'
         env:
-          TASK_BASE: ${{ github.event.pull_request.base.sha }}
+          V3_CANDIDATE: 2c14de966bbb09a2d57261948d376f66fdfd4268
+          V3_SOURCE_BASE: 83e1fc15a1b6b87f0133e0dec6753381e423bd92
         run: |
-          test "$TASK_BASE" = 83e1fc15a1b6b87f0133e0dec6753381e423bd92
-          python3 scripts/build-oge-book-edition.py --version v3 --date 2026-11-16 --base "$TASK_BASE" --check
+          # Replay the reviewed source tree while the append-only check above uses the live PR base.
+          git diff --exit-code "$V3_CANDIDATE" HEAD -- book/oge/2026-11-16/v3/ b/oge26-3/ scripts/build-oge-book-edition.py scripts/oge-book-edition/
+          replay=$(mktemp -d "$RUNNER_TEMP/book-v3.XXXXXX")
+          git worktree add --quiet --detach "$replay" "$V3_CANDIDATE"
+          trap 'git worktree remove "$replay"' EXIT
+          (cd "$replay" && python3 scripts/build-oge-book-edition.py --version v3 --date 2026-11-16 --base "$V3_SOURCE_BASE" --check)
       - name: Install the browser test dependency
         run: |
           npm install --prefix "$RUNNER_TEMP/book-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
