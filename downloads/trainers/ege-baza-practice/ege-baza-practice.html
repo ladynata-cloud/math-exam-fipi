@@ -708,6 +708,22 @@ catalog.at(-1).trainingOnly = true;
 const bankVersion = 2;
 const revised = Object.create(null);
 
+revised['practice-decimal-division'] = seed => {
+  const divisorTenths = 11 + seed % 19;
+  const quotientTenths = 17 + Math.floor(seed / 19) % 23;
+  const minuendTenths = 6 + (seed * 7) % 47;
+  const divisor = divisorTenths / 10;
+  const dividend = divisorTenths * quotientTenths / 100;
+  const minuend = minuendTenths / 10;
+  const quotient = quotientTenths / 10;
+  const answer = (minuendTenths - quotientTenths) / 10;
+  return make(`Найдите значение выражения ${F(minuend)} − ${F(dividend)} : ${F(divisor)}.`, answer, steps(
+    ['Какое действие выполняют первым: деление (1) или вычитание (2)?', 1, 'Без скобок деление выполняют раньше вычитания.'],
+    ['Чему равно частное?', quotient, `Умножь делимое и делитель на 10. Частное ${F(dividend * 10)} : ${divisorTenths} равно ${F(quotient)}.`],
+    ['Чему равно всё выражение?', answer, `Вычисли ${F(minuend)} − ${F(quotient)}.`]
+  ), 'decimal-division', { minuend, dividend, divisor });
+};
+
 revised['practice-units-match'] = seed => {
   const sets = [
     [['Диаметр горошины', 'Ширина двери', 'Длина посадочной площадки остановки', 'Расстояние между соседними городами'], ['7 мм', '85 см', '24 м', '32 км']],
@@ -1104,6 +1120,12 @@ revised['practice-integer-budget'] = seed => {
     ['Сколько было неверных ответов?', wrong, `За один пропуск теряют ${reward} баллов. Вычитай из разницы ${loss} потери за 1, 2, 3… ошибки: остаток должен быть неотрицательным и делиться на ${reward}.`],
     ['Сколько было верных ответов?', right, `После вычета потерь за ${wrong} неверных ответов остаются потери за ${skipped} пропусков. Из ${n} вычти число ошибок и пропусков.`]
   ), 'integer-budget', { n, reward, penalty, score, allowsSkips: true });
+};
+
+revised['practice-sets'] = seed => {
+  const task = factories['practice-sets'](seed);
+  const {A,B,total}=task.params;
+  return {...task,q:`В группе ${total} человек. Каждый ходит хотя бы в один из двух кружков. На математику ходят ${A}, на робототехнику — ${B}. Сколько человек посещают оба кружка?`};
 };
 
 revised['practice-work'] = seed => {
@@ -4148,11 +4170,17 @@ const api={skills,recommend,numeric,show};root.EgeRemediation=api;if(typeof modu
     7: ['practice-graph-match', 'practice-tangent-match'],
     8: ['practice-logic-order', 'practice-logic-all'],
     14: ['practice-fraction-expression', 'practice-decimals', 'practice-decimal-division'],
+    17: ['practice-quadratic', 'practice-radical-equation', 'practice-log-equation', 'practice-exponential-equation', 'practice-rational-equation', 'equations-signs'],
     18: ['practice-number-match', 'practice-inequality-match'],
     20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed', 'motion', 'mixtures']
   });
+  const lessonOnly = new Set([
+    'practice-fraction-percent', 'practice-direct-proportion', 'practice-inverse-proportion',
+    'practice-sets'
+  ]);
   function select(meta, position) {
-    return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
+    return meta.filter(item => item.pos === position && !lessonOnly.has(item.id) &&
+      (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
   function planBrowserRun(meta, serial) {
     const ids = [], taskSeeds = [];
@@ -5438,7 +5466,15 @@ practice('fraction-expression',(t,i)=>t.reference==='mixed-fraction-expression'
  ? at(['Замени деление на 5/4 умножением на 4/5. Сократи дробь.','Запиши результат деления в виде десятичной дроби и прибавь первое слагаемое.'],i)
  : at(['Сначала выполни деление: вместо деления на 2/3 умножь вторую дробь на 3/2.','Приведи полученную дробь и первое слагаемое к общему знаменателю. Сложи числители.'],i));
 practice('decimals',['Сначала перемножь первые два числа. В произведении учти суммарное число знаков после запятой.','Прибавь последнее число к произведению, располагая запятые друг под другом.']);
-practice('decimal-division',['Нужно сделать делитель целым. Определи, во сколько раз сдвиг запятой на один разряд увеличивает число.','Увеличь делимое во столько же раз, во сколько увеличил делитель.','Раздели полученные целые числа. Одновременное увеличение обоих чисел частного не меняет.']);
+practice('decimal-division',(t,i)=>at(t.params.minuend===undefined?[
+ 'Нужно сделать делитель целым. Определи, во сколько раз сдвиг запятой на один разряд увеличивает число.',
+ 'Увеличь делимое во столько же раз, во сколько увеличил делитель.',
+ 'Раздели полученные целые числа. Одновременное увеличение обоих чисел частного не меняет.'
+]:[
+ 'Посмотри, какое действие в выражении выполняют раньше вычитания.',
+ 'Домножь оба числа в частном на 10, чтобы делитель стал целым. Затем найди частное.',
+ 'Вычти найденное частное из первого числа в выражении. Запиши ответ с учётом знака.'
+],i));
 practice('fraction-percent',(t,i)=>i===0?`Раздели числитель ${F(t.params.num)} на знаменатель ${F(t.params.den)}.`:'Чтобы выразить долю в процентах, умножь её на 100.');
 practice('percent-part',['За 100% принимаются все книги, а не только научные. Найди их число в условии.','Раздели число всех книг на 100: получишь число книг в одном проценте.','Умножь число книг в одном проценте на заданное число процентов научных книг.']);
 practice('percent-whole',(t,i)=>i===0?`Раздели известную часть ${F(t.params.part)} на ${F(t.params.p)}: получишь число саженцев в 1%.`:'Умножь найденное число саженцев в одном проценте на 100.');

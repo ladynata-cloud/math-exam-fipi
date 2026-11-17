@@ -131,7 +131,12 @@ test('restart retains open-exam attempt protection before optional routers are m
 test('exam pool preserves canonical eligible families and finite short answers over 240 seeds', () => {
   const fixed = { 2: ['practice-units-match'], 7: ['practice-graph-match', 'practice-tangent-match'], 8: ['practice-logic-order', 'practice-logic-all'],
     14: ['practice-fraction-expression', 'practice-decimals', 'practice-decimal-division'],
+    17: ['practice-quadratic', 'practice-radical-equation', 'practice-log-equation', 'practice-exponential-equation', 'practice-rational-equation', 'equations-signs'],
     18: ['practice-number-match', 'practice-inequality-match'], 20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed', 'motion', 'mixtures'] };
+  for (const [position,id] of [[15,'practice-fraction-percent'],[15,'practice-direct-proportion'],[15,'practice-inverse-proportion'],[21,'practice-sets']]) {
+    assert(!realContracts.examPool(position).some(item=>item.contentId===id),id);
+    assert(realContracts.create('ege-path',id,17).taskSpec.task.q,id+' remains available for study');
+  }
   for (let position = 1; position <= 21; position++) {
     const pool = realContracts.examPool(position);
     assert.ok(pool.length > 0, `position ${position}`);

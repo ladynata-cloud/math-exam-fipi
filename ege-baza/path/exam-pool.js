@@ -6,11 +6,17 @@
     7: ['practice-graph-match', 'practice-tangent-match'],
     8: ['practice-logic-order', 'practice-logic-all'],
     14: ['practice-fraction-expression', 'practice-decimals', 'practice-decimal-division'],
+    17: ['practice-quadratic', 'practice-radical-equation', 'practice-log-equation', 'practice-exponential-equation', 'practice-rational-equation', 'equations-signs'],
     18: ['practice-number-match', 'practice-inequality-match'],
     20: ['practice-meeting', 'practice-river', 'practice-work', 'practice-average-speed', 'motion', 'mixtures']
   });
+  const lessonOnly = new Set([
+    'practice-fraction-percent', 'practice-direct-proportion', 'practice-inverse-proportion',
+    'practice-sets'
+  ]);
   function select(meta, position) {
-    return meta.filter(item => item.pos === position && (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
+    return meta.filter(item => item.pos === position && !lessonOnly.has(item.id) &&
+      (fixed[position] ? fixed[position].includes(item.id) : (item.expanded || item.id === 'triangle') && !item.trainingOnly));
   }
   function planBrowserRun(meta, serial) {
     const ids = [], taskSeeds = [];

@@ -69,7 +69,7 @@ const numeric=(r,p)=>{
  case 'mixed-fraction-expression':return p.tenths/10+(p.numerator/8)*4/5;
  case 'fraction-expression':return p.a/4+(p.b/6)/(2/3);
  case 'decimals':return p.a/10*(p.b/10)+p.c/10;
- case 'decimal-division':return (p.a/10)/(p.b/10);
+ case 'decimal-division':return p.minuend===undefined?p.a/p.b:p.minuend-p.dividend/p.divisor;
  case 'fraction-percent':return p.num*100/p.den;
  case 'percent-part':return p.whole/100*p.p;
  case 'percent-whole':return p.part/(p.p/100);

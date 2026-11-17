@@ -317,6 +317,22 @@ catalog.at(-1).trainingOnly = true;
 const bankVersion = 2;
 const revised = Object.create(null);
 
+revised['practice-decimal-division'] = seed => {
+  const divisorTenths = 11 + seed % 19;
+  const quotientTenths = 17 + Math.floor(seed / 19) % 23;
+  const minuendTenths = 6 + (seed * 7) % 47;
+  const divisor = divisorTenths / 10;
+  const dividend = divisorTenths * quotientTenths / 100;
+  const minuend = minuendTenths / 10;
+  const quotient = quotientTenths / 10;
+  const answer = (minuendTenths - quotientTenths) / 10;
+  return make(`Найдите значение выражения ${F(minuend)} − ${F(dividend)} : ${F(divisor)}.`, answer, steps(
+    ['Какое действие выполняют первым: деление (1) или вычитание (2)?', 1, 'Без скобок деление выполняют раньше вычитания.'],
+    ['Чему равно частное?', quotient, `Умножь делимое и делитель на 10. Частное ${F(dividend * 10)} : ${divisorTenths} равно ${F(quotient)}.`],
+    ['Чему равно всё выражение?', answer, `Вычисли ${F(minuend)} − ${F(quotient)}.`]
+  ), 'decimal-division', { minuend, dividend, divisor });
+};
+
 revised['practice-units-match'] = seed => {
   const sets = [
     [['Диаметр горошины', 'Ширина двери', 'Длина посадочной площадки остановки', 'Расстояние между соседними городами'], ['7 мм', '85 см', '24 м', '32 км']],
@@ -713,6 +729,12 @@ revised['practice-integer-budget'] = seed => {
     ['Сколько было неверных ответов?', wrong, `За один пропуск теряют ${reward} баллов. Вычитай из разницы ${loss} потери за 1, 2, 3… ошибки: остаток должен быть неотрицательным и делиться на ${reward}.`],
     ['Сколько было верных ответов?', right, `После вычета потерь за ${wrong} неверных ответов остаются потери за ${skipped} пропусков. Из ${n} вычти число ошибок и пропусков.`]
   ), 'integer-budget', { n, reward, penalty, score, allowsSkips: true });
+};
+
+revised['practice-sets'] = seed => {
+  const task = factories['practice-sets'](seed);
+  const {A,B,total}=task.params;
+  return {...task,q:`В группе ${total} человек. Каждый ходит хотя бы в один из двух кружков. На математику ходят ${A}, на робототехнику — ${B}. Сколько человек посещают оба кружка?`};
 };
 
 revised['practice-work'] = seed => {
