@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "baseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+  "baseSha": "e5aa2df927981272ef64214761205c2ba7f6b2a7",
   "purpose": "Add only the existing local navigator includes to reachable public documents. Historical teaching bytes and review receipts remain unchanged.",
   "snippet": "\n<script defer src=\"/assets/assistant/navigator-data.js?v=20261105-site1\"></script>\n<script defer src=\"/assets/assistant/navigator-widget.js?v=20261105-site1\"></script>\n",
   "sitemap": {
@@ -313,8 +313,8 @@
       "placement": "before-head-close"
     },
     "ege-profil/part-two/index.html": {
-      "beforeSha256": "9cb4ab84f1498cedff1503a13100688afc1271f880de3d13ff7b3686a8d774e6",
-      "afterSha256": "b1f8f7db472befa17062132b37cb45652f8198f127199fb15f7d7c3f076be330",
+      "beforeSha256": "babe35e351d7472f8b2c52b70e4770bdcab6d5524a1407edd2aa1f17ce8b859a",
+      "afterSha256": "92b8ff3d6b0bb390dcef75ca40c0a7d0d8e82df87a38632599c218dbf96482f6",
       "placement": "before-head-close"
     },
     "ege-profil/review.html": {
@@ -5325,6 +5325,15 @@
         "trainers/ege-profile/log-inequalities/index.html",
         "trainers/ege-profile/log-inequalities/lesson.html",
         "trainers/ege-profile/log-inequalities/nested.html"
+      ],
+      "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
+    },
+    {
+      "previousBaseSha": "08d80f14da385f7a72247640996f1f06032d20c3",
+      "sourceBaseSha": "e5aa2df927981272ef64214761205c2ba7f6b2a7",
+      "task": "docs/tasks/PROFILE19_PROOF_COMPLETION_20261114.md",
+      "changedPaths": [
+        "ege-profil/part-two/index.html"
       ],
       "boundary": "Explicit committed source identity only; not mathematical, source or publication approval."
     }
