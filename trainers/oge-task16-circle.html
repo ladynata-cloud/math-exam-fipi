@@ -326,6 +326,25 @@ function figTwoDiam(x,given='A'){
   return {svg:CF(340,300,'Окружность с диаметрами AD и BC',b),
     chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(A,O,B,x),chkAng(C,O,D,x)]};
 }
+function figSectorArea(angle){
+  const O=CTR,R=RR,A=pol(O,R,90-angle/2),B=pol(O,R,90+angle/2);
+  const point=p=>`${n2(p.x)} ${n2(p.y)}`;
+  const sector=`<path d="M ${point(O)} L ${point(A)} A ${R} ${R} 0 0 0 ${point(B)} Z" fill="${COL.teal}" fill-opacity=".18"/>`;
+  const body=sector+circleEl(O,R)+seg(O,A)+seg(O,B)+angArc(O,A,B,COL.amber,32,angle+'°')
+    +dotP(O)+lab(O.x,O.y+20,'O')+dotP(A)+dotP(B)+vLab(A,O,'A')+vLab(B,O,'B');
+  return {svg:CF(340,300,'Круг с центром O. Выделен меньший сектор AOB, угол '+angle+'°.',body),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkAng(O,A,B,angle)]};
+}
+function figArcLengths(angle,length){
+  const O=CTR,R=RR,start=90-angle/2,end=start+angle;
+  const A=pol(O,R,start),B=pol(O,R,end);
+  const body=arcPolyline(O,R,start,angle,COL.teal,4)+arcPolyline(O,R,end,360-angle,COL.pink,4)
+    +seg(O,A)+seg(O,B)+angArc(O,A,B,COL.amber,32,angle+'°')
+    +dotP(O)+lab(O.x,O.y+20,'O')+dotP(A)+dotP(B)+vLab(A,O,'A')+vLab(B,O,'B')
+    +lab(170,289,'Меньшая дуга: '+fmtNum(length)+' см',16,'middle',COL.teal);
+  return {svg:CF(340,300,'Окружность с центром O, меньшая дуга AB выделена бирюзовым, большая — розовым.',body),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkAng(O,A,B,angle)]};
+}
 /* 3. NP — диаметр, ∠MNP=x, ищем центральный ∠MON=180−2x */
 function figDiamMON(x){
   const O=CTR,R=RR;
@@ -1257,7 +1276,33 @@ tanChord:{topic:'kas',name:'Угол между касательной и хор
     `∠ABC = ${p.arc}° : 2 = ${p.arc/2}°.`],
   diag:p=>[{v:p.arc,m:'Это сама дуга. Угол между касательной и хордой — её ПОЛОВИНА.'},
     {v:90-p.arc/2,m:'Это угол между хордой AB и радиусом OB. Между касательной и хордой: половина дуги.'},
-    {v:180-p.arc,m:'Похоже на смежный к дуге. Правило прямое: ∠ = дуга/2.'}]}
+    {v:180-p.arc,m:'Похоже на смежный к дуге. Правило прямое: ∠ = дуга/2.'}]},
+
+sectorArea:{topic:'ug',name:'Площадь сектора по центральному углу',ref:'sector',
+  refWhy:'Доля площади круга равна доле полного угла, которую занимает центральный угол сектора.',
+  law:'Чтобы найти площадь сектора, умножьте площадь круга на отношение центрального угла к 360°.',
+  gen:()=>({angle:pick([36,45,54,72,90,108,126,135,144]),area:20*ri(4,15)}),
+  proto:{angle:72,area:180},
+  calc:p=>p.area*p.angle/360,
+  text:p=>`Два радиуса OA и OB ограничивают меньший сектор круга. Угол AOB равен ${p.angle}°, площадь всего круга составляет ${p.area} см². Найдите площадь выделенного сектора в квадратных сантиметрах.`,
+  fig:p=>figSectorArea(p.angle),
+  sol:p=>[`Полный угол вокруг центра O равен 360°. Сектор занимает ${frac(p.angle,'360')} площади круга.`,
+    `Умножаем площадь круга на эту долю: ${p.area} · ${frac(p.angle,'360')} = <b>${fmtNum(p.area*p.angle/360)} см²</b>.`],
+  diag:p=>[{v:p.area,m:'Это площадь всего круга. Сектор составляет долю круга, равную отношению его угла к 360°.'},
+    {v:p.area*(360-p.angle)/360,m:'Это площадь большей части круга. Для выделенного сектора возьмите угол, данный в условии.'}]},
+
+arcLength:{topic:'ug',name:'Длины меньшей и большей дуг',ref:'arcLength',
+  refWhy:'На одной окружности длины дуг относятся как соответствующие центральные углы.',
+  law:'Чем больше центральный угол, тем длиннее его дуга. Полной окружности соответствует 360°.',
+  gen:()=>{const angle=pick([36,45,54,72,90,108,126,135,144]);return {angle,length:angle/9*ri(1,6)};},
+  proto:{angle:135,length:27},
+  calc:p=>p.length*(360-p.angle)/p.angle,
+  text:p=>`Меньшая дуга AB имеет длину ${p.length} см. Ей соответствует центральный угол AOB величиной ${p.angle}°. Найдите длину большей дуги AB в сантиметрах.`,
+  fig:p=>figArcLengths(p.angle,p.length),
+  sol:p=>[`От полного поворота остаётся 360° − ${p.angle}° = ${360-p.angle}°. Такому повороту соответствует большая дуга.`,
+    `На одной окружности длины дуг относятся как их углы. Длина большей дуги равна ${p.length} · ${frac(360-p.angle,p.angle)} = <b>${fmtNum(p.length*(360-p.angle)/p.angle)} см</b>.`],
+  diag:p=>[{v:p.length,m:'В условии указана длина меньшей дуги. Найдите часть окружности по другую сторону точек A и B.'},
+    {v:p.length*360/p.angle,m:'Это длина всей окружности. Вычтите из неё длину меньшей дуги.'}]}
 };
 
 /* ================= Архив: сборники РешуОГЭ, тип 16 (эталоны exp пересчитаны независимо) ================= */
@@ -1307,6 +1352,12 @@ const ARCHIVE=[
 
 /* ================= Справочник ================= */
 const REFS=[
+{id:'arcLength',name:'Длина дуги окружности',
+ fx:'l<sub>дуги</sub> = C · '+frac('α','360°'),
+ notes:['C — длина всей окружности, α — угол, соответствующий дуге. Для двух дуг одной окружности отношение длин совпадает с отношением углов.']},
+{id:'sector',name:'Площадь сектора круга',
+ fx:'S<sub>сектора</sub> = S<sub>круга</sub> · '+frac('α','360°'),
+ notes:['α — центральный угол сектора. Например, угол 90° даёт четверть площади круга.']},
 {id:'insc',name:'Вписанный и центральный угол',
  fx:'∠<sub>вписанный</sub> = '+frac('∠<sub>центральный</sub>','2')+' (на одну дугу)',
  notes:['Угол, опирающийся на диаметр, — прямой (90°).','Вписанные углы, опирающиеся на одну дугу, равны.']},
@@ -1485,7 +1536,7 @@ const TID='oge-task16-circle';   // из реестра курса oge/registry.
    столкнуться с именами тренажёра. Пишется только своя ветка all[TID] и
    свои записи журнала, после свежего чтения ключа — две вкладки не
    затирают друг друга. В ?selftest=1 ничего не пишется. */
-const TYPE_IDS=["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord"];
+const TYPE_IDS=["insCen","twoDiam","diamMON","diamsPair","mnDiam","diamTri","diamPif","cyclQuad","cyclTrap","eqR2a","eqDist2a","sqR2a","sinR","sqMidO","rectDiag","rtHyp45","sqCircum","trapH","Spr","sqInD","sqInR","eqA2r","eqR2h","eqR2aIn","tanQuad","tanTrap","rhombR","tanExt","twoTan","chordDist","secTan","chordsX","tanChord","sectorArea","arcLength"];
 const QUIZ_TOTAL=10;   // размер зачёта
 const PASS_AT=8;       // зачёт сдан при 8 из 10
 const CP=(function(){

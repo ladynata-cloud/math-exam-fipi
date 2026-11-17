@@ -36,7 +36,7 @@ for(const n of [16,17,18]){
  test(`OGE${n}: all native types, controls, two-view restore and completed work`,async()=>{
   const a=await load(n),b=await load(n);try{
    const before=a.w.localStorage.getItem('mathExamCourseProgress.v1'),peerBefore=b.w.localStorage.getItem('mathExamCourseProgress.v1');
-   const keys=a.w.eval(n===17?'Object.keys(S17)':'Object.keys(SUBS)');assert.equal(keys.length,{16:33,17:38,18:15}[n]);
+   const keys=a.w.eval(n===17?'Object.keys(S17)':'Object.keys(SUBS)');assert.equal(keys.length,{16:35,17:39,18:15}[n]);
    for(const key of keys){
     const picker=a.d.getElementById('oge-board-subtype');picker.value=key;picker.dispatchEvent(new a.w.Event('change',{bubbles:true}));await tick();
     const input=ids(n).answer;fill(a.w,a.d,input,'999999');a.d.getElementById(ids(n).check).click();await tick();

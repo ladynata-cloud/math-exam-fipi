@@ -9,13 +9,18 @@ const {graphScale} = require('./fixtures/oge-video-models-native-bytes.json');
 const graphIntersections = require('./fixtures/oge22-intersections-display.json');
 const ROOT = path.resolve(__dirname, '..');
 const updates = require('./fixtures/oge-worked-steps-native-bytes.json');
+const alignment = require('./fixtures/oge-source-alignment-geometry-bytes.json');
+const {createHash} = require('node:crypto');
 const BASE = '89ee66bfe5068f16364d61d091fcbf1a1cbd6287';
 for (const [number, file] of Object.entries(entries)) {
   test(file + ': only the exact optional model includes change', () => {
     const current = fs.readFileSync(path.join(ROOT, file), 'utf8');
     const source = execFileSync('git', ['show', (updates.pages[file]?.sourceCommit || BASE) + ':' + file], {cwd: ROOT, encoding: 'utf8'});
-    const baseline = restoreVideoModels(file, source);
-    if (updates.pages[file]) assert.equal(require('node:crypto').createHash('sha256').update(baseline).digest('hex'), updates.pages[file].sha256, 'exact committed teaching revision');
+    const historical = restoreVideoModels(file, source);
+    if (updates.pages[file]) assert.equal(createHash('sha256').update(historical).digest('hex'), updates.pages[file].sha256, 'exact historical teaching revision');
+    const aligned = alignment.pages[file];
+    const baseline = aligned ? restoreVideoModels(file, execFileSync('git', ['show', alignment.sourceCommit + ':' + file], {cwd: ROOT, encoding: 'utf8'})) : historical;
+    if (aligned) assert.equal(createHash('sha256').update(baseline).digest('hex'), aligned.videoNativeSha256, 'exact reviewed source-alignment revision');
     assert.equal(current.split(snippet(number)).length, 2);
     assert.equal(restoreGraphScale(file, restoreVideoModels(file, current)), baseline);
     assert.equal(restoreVideoModels(file, baseline), baseline);

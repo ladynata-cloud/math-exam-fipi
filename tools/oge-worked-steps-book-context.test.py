@@ -6,7 +6,7 @@ import json
 import subprocess
 import unittest
 from unittest.mock import patch
-from oge_worked_steps_book_context import ROOT, PINS, OLD_HELP, NEW_HELP, PAN, matches_worked_steps_ui
+from oge_worked_steps_book_context import ROOT, PINS, GEOMETRY_ALIGNMENT, OLD_HELP, NEW_HELP, PAN, matches_worked_steps_ui
 from oge_video_models_book_context import without_download_controls
 
 spec = importlib.util.spec_from_file_location('book_math', ROOT / 'tools/oge-book-exam-math.py')
@@ -38,7 +38,14 @@ class WorkedStepContext(unittest.TestCase):
             committed = subprocess.check_output(['git', 'show', PINS['sourceCommit'] + ':' + route[1:]], cwd=ROOT)
             self.assertEqual(hashlib.sha256(committed).hexdigest(), expected)
             raw = (ROOT / route[1:]).read_bytes()
-            self.assertEqual(without_download_controls(route[1:], raw), committed)
+            aligned = GEOMETRY_ALIGNMENT['pages'].get(route[1:], {})
+            current_hash = aligned.get('withoutDownloadSha256', GEOMETRY_ALIGNMENT['workedStepsAssets'].get(route))
+            if current_hash:
+                current = subprocess.check_output(['git', 'show', GEOMETRY_ALIGNMENT['sourceCommit'] + ':' + route[1:]], cwd=ROOT)
+                self.assertEqual(hashlib.sha256(without_download_controls(route[1:], current)).hexdigest(), current_hash)
+                self.assertEqual(raw, current)
+            else:
+                self.assertEqual(without_download_controls(route[1:], raw), committed)
 
     def test_receipt_requires_served_bytes_and_original_exercise(self):
         record, text, original, _ = case('59', 320)
