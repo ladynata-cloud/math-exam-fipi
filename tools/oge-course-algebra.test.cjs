@@ -6,6 +6,7 @@ const {restoreRootTeaching}=require('./oge8-root-domains-preservation.cjs');
 const {restoreRootAcceptance}=require('./oge8-root-acceptance-preservation.cjs');
 const {restoreOge7Input}=require('./oge7-number-input-preservation.cjs');
 const {restoreGraphScale}=require('./oge-video-models-preservation.cjs');
+const {restoreAlignment}=require('./oge-source-alignment-06-09-preservation.cjs');
 const root=path.resolve(__dirname,'..');
 const files={7:'number-line',8:'powers-roots',10:'probability',12:'formulas-trainer',14:'progressions',20:'equations',21:'word-problems',22:'functions-graphs'};
 const cards={7:'#marTask',8:'#marGrid>.mtask:not([hidden])',10:'#mar-root>.card',12:'#taskArea>.card',14:'#m-task>.card',20:'#body .qbox',21:'#content>.card',22:'.panel:not(.hidden) .mode-host[data-mode="marathon"]'};
@@ -67,8 +68,8 @@ test('all eight inline engines match the mirror-audit snapshots after exact appr
   let scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter(x=>!(/\bsrc\s*=/.test(x[1]))).map(x=>x[2]).join('\n');
   // The 2027 copy update changes these two displayed sentences only.
   // Keep the reviewed full-engine digest, including all mathematics and grading.
-  if(n==='7')scripts=restoreOge7Input(scripts);
-  if(n==='8')scripts=restoreRootTeaching(restoreRootAcceptance(scripts))
+  if(n==='7')scripts=restoreOge7Input(restoreAlignment(file,scripts));
+  if(n==='8')scripts=restoreRootTeaching(restoreRootAcceptance(restoreAlignment(file,scripts)))
    .replace('160 задач для подготовки к ОГЭ 2027.</p>', 'все 160 задач из реальных подборок к ОГЭ 2026.</p>')
    .replace('Марафон · 160 задач для подготовки к ОГЭ 2027', 'Марафон · 160 задач формата ОГЭ 2026');
   assert.equal(crypto.createHash('sha256').update(scripts).digest('hex'),inlineHashes[n],'task '+n);

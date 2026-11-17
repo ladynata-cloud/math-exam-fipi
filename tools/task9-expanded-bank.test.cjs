@@ -202,12 +202,25 @@ function exerciseSteps(task, method) {
   return expected.length;
 }
 
-test('expanded bank preserves all 162 previous indices and the original 27 exam cards byte for byte as data', () => {
-  // Snapshots from reviewed commit 700a1d99680b4c8065627c8d897d2817317b9339.
-  // Includes 135 historic cards followed by the original 27 EXAM_BANK cards.
-  assert.equal(snapshot(trainer.run('BANK').slice(0, 162)), '43612c11381685478c098cf8ee7344b81a06db492ba57aa15e88b344559a1d6b');
-  assert.equal(snapshot(bank.slice(0, 27)), '8548f27fb54dc42200bcef66ec9b5dea2028afddcc5ad253f17df903265e7708');
+test('expanded bank keeps the original 162 board indices and changes only one standalone exemplar', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'trainers/oge-task9-equations.html'), 'utf8');
+  const shared = m.loadTrainer('trainers/oge-task9-equations.html', {
+    html: '<script>window.OgeCourseSharedMode=true;</script>' + html,
+  }).run('BANK');
+  const legacy = shared[135];
+  assert.equal(legacy.id, 'exam-demo-2027');
+  assert.equal(legacy.exp, '-32');
+  const original = {...legacy, tag: 'Проект демоверсии ФИПИ 2027'};
+  const originalPrefix = shared.slice(0, 162);
+  originalPrefix[135] = original;
+  assert.equal(snapshot(originalPrefix), '43612c11381685478c098cf8ee7344b81a06db492ba57aa15e88b344559a1d6b');
+  const restoredExam = Array.from(bank.slice(0, 27));
+  assert.notEqual(restoredExam[0].id, legacy.id);
+  restoredExam[0] = original;
+  assert.equal(snapshot(restoredExam), '8548f27fb54dc42200bcef66ec9b5dea2028afddcc5ad253f17df903265e7708');
+  assert.equal(shared.at(-1).id, bank[0].id);
   assert.equal(trainer.run('BANK').length, 275);
+  assert.equal(shared.length, 276);
 });
 
 test('140 tasks have distinct IDs, 20 per shape and explicit source provenance', () => {
@@ -216,7 +229,7 @@ test('140 tasks have distinct IDs, 20 per shape and explicit source provenance',
   assert.equal(fixture.schemaVersion, 1);
   assert.deepEqual(fixture.tasks.map(task => task.id), Array.from(bank, task => task.id));
   for (const kind of kinds) assert.equal(bank.filter(task => task.examKind === kind).length, 20, kind);
-  for (const [source, count] of [['fipi', 17], ['fipi-demo', 2], ['catalog', 22], ['analog', 99]]) {
+  for (const [source, count] of [['fipi', 17], ['fipi-demo', 1], ['catalog', 22], ['analog', 100]]) {
     assert.equal(bank.filter(task => task.src === source).length, count, source);
   }
   for (const row of fixture.tasks) {

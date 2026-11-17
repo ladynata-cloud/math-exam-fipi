@@ -1,0 +1,37 @@
+name: OGE 6–9 source alignment
+on:
+  pull_request:
+    paths:
+      - 'trainers/oge-task6-fractions.html'
+      - 'trainers/oge-task7-number-line.html'
+      - 'trainers/oge-task8-powers-roots.html'
+      - 'trainers/oge-task9-equations.html'
+      - 'trainers/oge-sources/coverage-06-09.json'
+      - 'tools/oge-source-alignment-06-09*'
+      - 'tools/fixtures/oge-source-alignment-06-09-inverse.json'
+      - '.github/workflows/oge-source-alignment-06-09.yml'
+permissions:
+  contents: read
+jobs:
+  preserve-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Source roles, mathematical answers and saved progress
+        run: |
+          node --test tools/oge-source-alignment-06-09.test.cjs
+          python3 tools/build-task9-expanded-bank.py --check
+      - name: Install pinned browser
+        run: |
+          npm install --prefix "$RUNNER_TEMP/oge-source-06-09" --no-save --no-package-lock --ignore-scripts playwright@1.62.1
+          "$RUNNER_TEMP/oge-source-06-09/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/oge-source-06-09/node_modules" >> "$GITHUB_ENV"
+      - name: Verify new exercises at 320, 390 and 1280 pixels
+        run: node tools/oge-source-alignment-06-09.browser.cjs

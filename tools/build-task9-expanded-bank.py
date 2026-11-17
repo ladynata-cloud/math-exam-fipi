@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the fixed OGE9 practice extension using exact Fraction arithmetic.
 
-Original 27 exam lines stay byte-for-byte unchanged. Catalogue conditions are
+The 27 seed lines are read directly from the trainer; the extension is deterministic. Catalogue conditions are
 transcribed secondary evidence, stored separately with their verified URLs.
 Answers are computed offline from polynomial coefficients, never from the
 trainer's answer/step functions. --check performs no writes.
@@ -105,6 +105,7 @@ def exam(code,kind,family,L,R,ask,answer,source='fipi',label=None):
     ev=[]
     if source=='fipi':ev=[{'url':NAV,'role':'official identifier only'}, {'url':'https://100ballnik.com/wp-content/uploads/2025/02/9-zadanie-uravnenie-oge-fipi.pdf','role':'secondary condition'}]
     if source=='fipi-demo':ev=[{'url':DEMO.format(year=code[-4:]),'role':'official demonstration condition and key'}]
+    if code=='author-demo-type-2027':ev=[{'url':DEMO.format(year='2027'),'role':'approved demonstration, type only, position 9, printed page 10'}]
     return make(code,kind,family,L,R,ask,answer,source,label,ev)
 
 def split_terms(s):
@@ -142,7 +143,7 @@ def line(t):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');parser.add_argument('--check',action='store_true');args=parser.parse_args()
-    html=HTML.read_text(); start=html.index('const EXAM_BANK=['); stop=html.index('\n];\nBANK.push(...EXAM_BANK);',start)
+    html=HTML.read_text(); start=html.index('const EXAM_BANK=['); stop=html.index('\n];\nif(window.OgeCourseSharedMode){',start)
     bank_text=html[start:stop]
     original_text=bank_text.split(BEGIN)[0].rstrip()
     original_lines=[s for s in original_text.splitlines() if s.strip().startswith('exam(')]
@@ -281,7 +282,7 @@ def main():
     assert max(divisors.values())<=20,divisors
     extension='\n'+BEGIN+'\n'+'\n'.join(map(line,interleaved))+'\n'+END
     new_html=html[:start]+original_text+extension+html[stop:]
-    fixture={'schemaVersion':1,'checkedAt':'2026-11-10','sourceLabelling':'Two official demonstrations; 17 officially listed IDs with indirectly verified conditions; 22 additional secondary-catalogue transcriptions; remaining authored analogues. No direct bank card verification claimed.', 'tasks':ordered}
+    fixture={'schemaVersion':1,'checkedAt':'2026-11-17','sourceLabelling':'One historical official demonstration; 17 officially listed IDs with indirectly verified conditions; 22 additional secondary-catalogue transcriptions; remaining authored analogues. No direct bank card verification claimed.', 'tasks':ordered}
     encoded=json.dumps(fixture,ensure_ascii=False,indent=2)+'\n'
     if args.check:
         assert HTML.read_text()==new_html,'fixed bank is stale; rebuild with --write'

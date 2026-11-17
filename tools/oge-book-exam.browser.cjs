@@ -7,6 +7,7 @@ const {chromium}=require('playwright');
 const {restorePublicNavigator}=require('./public-navigator-preservation.cjs');
 const {restoreTrainerDownload}=require('./trainer-download-preservation.cjs');
 const {restoreFractionMultiplicationStep}=require('./task6-numerator-instruction.cjs');
+const {restoreAlignment}=require('./oge-source-alignment-06-09-preservation.cjs');
 const videoContext=require('./oge-video-models-book-context.cjs');
 const {assets:videoAssets}=require('./oge-video-models-preservation.cjs');
 const ROOT=path.resolve(__dirname,'..'),PREFIX=(process.env.BOOK_PREFIX||'').replace(/\/$/,''),WIDTHS=(process.env.BOOK_EXAM_WIDTHS||'320,390,1280').split(',').map(Number);
@@ -81,7 +82,7 @@ async function captureInitialVisibleText(page,report){
   assert(offset>0&&full.indexOf(summary,offset+summary.length+1)===-1);
   full=full.slice(0,offset)+full.slice(offset+summary.length+1);
  }
- const original=originalWayfindingHtml(beforeDownload,report.finalPath);
+ const original=restoreAlignment(relative, originalWayfindingHtml(beforeDownload,report.finalPath));
  const historical=report.finalPath===FRACTIONS_ROUTE?restoreFractionMultiplicationStep(original):original;
  report.unfilteredInitialVisibleText=full;
  report.initialVisibleText=full.slice(label.length+1);
@@ -139,7 +140,7 @@ async function scenario(p,r){
  if(route.includes('oge-task8-'))return numeric(p,r,{host:'#marGrid > .mtask:not([hidden])',input:'input.ans',check:'.ck',feedback:':scope > .mrow .fb',hint:'.bs',answers:64,prompt:'.expr',next:'.minimal-next',nextGlobal:true,mode:'first root/power exercise; sqrt(4^6)=64'});
  if(route.includes('oge-task9-')){
    const host='.task-card:not([hidden])',prompt='.task-q';
-   const first=PREFIX?{equation:'4x-4=16+2x',answer:10}:{equation:'3(x+8)-2(x-8)=8',answer:-32};
+   const first=PREFIX?{equation:'4x-4=16+2x',answer:10}:{equation:'6(x+4)-5(x-2)=21',answer:-13};
    assert.equal((await text(p.locator(host).locator(prompt))).replace(/^Решите уравнение\s+|\.$/g,'').replace(/\s+/g,''),first.equation);
    return numeric(p,r,{host,input:'input.ans',feedback:':scope > .fb',hint:'.minimal-hint',answers:first.answer,prompt,next:'.minimal-next',nextGlobal:true,mode:'first linear equation '+first.equation});
  }

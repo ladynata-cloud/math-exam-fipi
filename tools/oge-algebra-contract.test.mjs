@@ -43,6 +43,7 @@ import * as R12 from './oge-algebra-contract.t12.mjs';
 import * as R14 from './oge-algebra-contract.t14.mjs';
 
 const require = createRequire(import.meta.url);
+const {restoreAlignment} = require('./oge-source-alignment-06-09-preservation.cjs');
 const SEED = 20260929, N = 500;
 const BASE_FILE = path.join(ROOT, 'tools/oge-algebra-contract.baseline.json');
 const TR = [
@@ -167,7 +168,7 @@ section('4. независимый пересчёт: весь банк и по 5
       let v; try { v = R8.value(t); } catch (e) { bad++; ex = ex || t.id + ' ' + e.message; continue; }
       if (!eq(v, R(t.ans[0], t.ans[1])) || !eq(v, Fq(t.last))) { bad++; ex = ex || t.id + ' ' + str(v); }
     }
-    ok(!bad && bank.length === 160, '4', `8 банк: ${bank.length} задач, расхождений ${bad} ${ex}`);
+    ok(!bad && bank.length === 163, '4', `8 банк: ${bank.length} задач, расхождений ${bad} ${ex}`);
     for (const ty of J(T, 'Object.keys(GEN)')) {
       const tasks = J(T, `Array.from({length:${N}},()=>{const t=GEN[${JSON.stringify(ty)}]();const st=buildSteps(t);return {type:t.type,p:t.p,last:st[st.length-1].ins[0].val};})`);
       let b = 0, e = '';
@@ -221,7 +222,7 @@ section('5. ловушки и адресная диагностика', () => {
         if(has)out.share[ty]=Math.round(1000*nm/has)/10;});
       return out;})()`);
     ok(!res.bad.length, '5', '8: ' + res.bad.length + ' нарушений ' + res.bad.slice(0, 3).join(' | '));
-    const POWER = ['pow_mul_div', 'pow_pow_div', 'pow_mul_pow', 'pow_over_num', 'recip_pow', 'pow_var_div', 'pow_prodbase_div', 'prodbase_over', 'pow_ab', 'fold_square', 'sci'];
+    const POWER = ['pow_mul_div', 'pow_pow_div', 'pow_mul_pow', 'pow_over_num', 'recip_pow', 'pow_var_div', 'pow_prodbase_div', 'prodbase_over', 'pow_ab', 'fold_square', 'sci', 'pow_products_quotient'];
     for (const ty of POWER) ok((res.share[ty] || 0) >= 70, '5', `8 ${ty}: задач без объединённых ловушек ${res.share[ty]} % < 70 %`);
     console.log('      8: без объединённых ловушек, % — ' + POWER.map(ty => ty + ' ' + res.share[ty]).join(', '));
   }
@@ -298,7 +299,21 @@ section('7. разнообразие: разных задач каждого в�
   const base = JSON.parse(fs.readFileSync(BASE_FILE, 'utf8'));
   for (const t of TR) {
     const T = loadTrainer(t.file, { seed: base.seed });
-    const cur = JSON.parse(T.run('JSON.stringify(' + UNIQ[t.n].replace(/__N__/g, String(base.n)) + ')'));
+    let sample = UNIQ[t.n];
+    if (t.n === 8) {
+      // The extra exercise can change how many draws the initial tabs consume.
+      // Preserve the original input stream and ordering when sampling retained
+      // generators; every observed output still comes from the current engine.
+      const oldHtml = restoreAlignment(t.file, readTrainer(t.file));
+      const oldBoot = loadTrainer(t.file, { html: oldHtml, seed: base.seed });
+      T.ctx.Math.random = oldBoot.ctx.Math.random;
+      const oldOrder = Object.keys(base.unique[t.n]);
+      const current = J(T, 'Object.keys(GEN)');
+      const sampleOrder = oldOrder.filter(kind => current.includes(kind))
+        .concat(current.filter(kind => !oldOrder.includes(kind)));
+      sample = sample.replace('Object.keys(GEN)', JSON.stringify(sampleOrder));
+    }
+    const cur = JSON.parse(T.run('JSON.stringify(' + sample.replace(/__N__/g, String(base.n)) + ')'));
     const narrow = NARROW[t.n] || {};
     for (const [k, b] of Object.entries(base.unique[t.n] || {})) {
       ok(k in cur, '7', t.n + ' ' + k + ': вид пропал');
