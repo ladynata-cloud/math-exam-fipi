@@ -1,0 +1,192 @@
+name: Weekly progress — release candidate and learner regressions
+on:
+  pull_request:
+    paths:
+      - 'tools/weekly-progress/**'
+      - 'docs/tasks/WEEKLY_PROGRESS_20261030.md'
+      - '.github/workflows/weekly-progress-checks.yml'
+permissions:
+  contents: read
+concurrency:
+  group: weekly-progress-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  division-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Read-only composition of the exact main and PR377
+        run: |
+          git fetch --no-tags origin 3d6dab62d24df4f5464570a3ee23a383383d9a21
+          python3 tools/weekly-progress/virtual_merge.py --base 3411acd7df5ebfbd4179cce85c2300c59677ddf7 --head 3d6dab62d24df4f5464570a3ee23a383383d9a21 --output "$RUNNER_TEMP/division-candidate" --evidence artifacts/weekly/division
+      - name: Pinned test dependencies
+        run: |
+          npm install --prefix "$RUNNER_TEMP/weekly-browser" --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 jsqr@1.4.0 pngjs@7.0.0
+          "$RUNNER_TEMP/weekly-browser/node_modules/.bin/playwright" install --with-deps chromium
+          echo "NODE_PATH=$RUNNER_TEMP/weekly-browser/node_modules" >> "$GITHUB_ENV"
+          npm --prefix "$RUNNER_TEMP/division-candidate/board-server" ci --include=optional
+      - name: Arithmetic, one-submit continuation, decimals and protected URLs
+        run: |
+          cd "$RUNNER_TEMP/division-candidate"
+          node tools/division-guided.test.cjs
+          node tools/division-guided-continuation.dom.cjs
+          node tools/decimal-divisor-entry.dom.cjs
+          node tools/arithmetic-route-entry.dom.cjs
+          node tools/arithmetic-url-contract.test.cjs
+          node tools/learning-remediation-bank.cjs --check
+          python3 tools/seo-sitemap.test.py
+          python3 tools/build-sitemap.py --check
+      - name: Actual mobile interactions and saved classroom work
+        env:
+          DIVISION_SCREENSHOTS: ${{ github.workspace }}/artifacts/weekly/division/browser
+        run: |
+          cd "$RUNNER_TEMP/division-candidate"
+          node tools/division-guided.browser.cjs
+          node tools/division-notebook.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html node tools/division-guided.browser.cjs
+          DIVISION_ENTRY_PATH=/trainers/long-division-stepwise.html node tools/division-notebook.browser.cjs
+          node tools/division-search-entry.browser.cjs
+          node tools/decimal-divisor-entry.browser.cjs
+          node tools/learning-remediation-smoke.cjs
+      - name: Candidate evidence, including resolved metadata and exact blob identities
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: weekly-division-candidate
+          path: artifacts/weekly/division/
+          retention-days: 14
+          if-no-files-found: error
+  geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Pinned browser dependencies and fonts
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          npx playwright install --with-deps chromium
+      - name: Existing mathematical, model and caption gates
+        run: |
+          python3 tools/geometry-textbook/check_models.py
+          python3 tools/geometry-textbook/model_claims_test.py
+          node tools/geometry-textbook/check_course.cjs
+          node tools/geometry-textbook/captions.test.cjs
+          node tools/geometry-textbook/runtime_check.cjs
+          node tools/stereo-textbook/visibility-math.test.cjs
+          node tools/stereo-textbook/visibility-migration.test.cjs
+          node tools/stereo-three-visibility.test.cjs
+      - name: Ten constructions and ten proofs, mobile, desktop and retained steps
+        env:
+          WEEKLY_EVIDENCE: artifacts/weekly/geometry/sample
+        run: node tools/weekly-progress/geometry.browser.cjs
+      - name: Full interaction subset and rotated hidden-line rendering
+        if: ${{ !cancelled() }}
+        env:
+          GEOMETRY_TEXTBOOK_INTERACTIONS_ONLY: '1'
+          GEOMETRY_TEXTBOOK_ARTIFACTS: artifacts/weekly/geometry/interactions
+        run: |
+          node tools/geometry-textbook/browser_check.js
+          node tools/stereo-three-visibility.browser.cjs
+          node tools/stereo/canvas-visibility.browser.cjs
+      - name: Geometry evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: weekly-geometry
+          path: artifacts/weekly/geometry/
+          retention-days: 14
+          if-no-files-found: error
+  fractions-and-oge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Locked local backend and pinned browser dependencies
+        run: |
+          npm --prefix board-server ci --include=optional
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0 jsqr@1.4.0 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Fractions with errors, hints and actual isolated database restoration
+        env:
+          WEEKLY_EVIDENCE: artifacts/weekly/fractions
+        run: |
+          node tools/weekly-progress/fractions.cjs
+          node tools/learning-remediation-quality.cjs
+          node tools/learning-remediation-checkpoint.cjs
+          node tools/fraction-notation.dom.cjs
+          node tools/fraction-notation.browser.cjs
+      - name: Existing OGE learner robots and cabinet restoration
+        if: ${{ !cancelled() }}
+        run: |
+          node tools/learning-oge-struggling-pupil.browser.cjs
+          node tools/learning-oge-standard-route-robot.browser.cjs
+          node tools/learning-remediation-smoke.cjs
+          node tools/learning-cabinet.browser.cjs
+          node tools/learning-family-progress.browser.cjs
+      - name: Fraction evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: weekly-fractions
+          path: artifacts/weekly/fractions/
+          retention-days: 14
+          if-no-files-found: error
+  public-funnel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.21.0'
+      - name: Pinned browser dependencies
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts playwright@1.62.1 jsdom@26.1.0
+          npx playwright install --with-deps chromium
+      - name: Original additive instrumentation proof on its exact published release
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/funnel-original-release" e50fcfb7ffe4a99447ee18e4d2ca2f937cd1dd68
+          cd "$RUNNER_TEMP/funnel-original-release"
+          python3 tools/lesson-funnel-static.test.py
+      - name: Current eleven pages, exact destinations and six events with a mock counter
+        if: ${{ !cancelled() }}
+        run: |
+          node tools/lesson-funnel.test.cjs
+          node tools/lesson-funnel.browser.cjs
+      - name: Public bytes only, without analytics or messenger requests
+        if: ${{ !cancelled() }}
+        env:
+          WEEKLY_EVIDENCE: artifacts/weekly/funnel
+        run: python3 tools/weekly-progress/public_funnel.py
+      - name: Public instrumentation evidence, never private totals
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: weekly-public-funnel
+          path: artifacts/weekly/funnel/
+          retention-days: 14
+          if-no-files-found: error
