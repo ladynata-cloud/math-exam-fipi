@@ -10,6 +10,9 @@ on:
       - 'courses/vilenkin-6-part-1/**'
       - 'trainers/oge-basics/basics-help*'
       - 'tools/foundations-*'
+      - 'tools/grade56-attempts.browser.cjs'
+      - 'tools/peterson-grade56-attempt-feedback.test.cjs'
+      - 'tools/vilenkin6-course/textbook-dom.cjs'
       - 'tools/oge-basics-transfer.test.cjs'
       - 'tools/vilenkin5-course/inquiry.test.cjs'
       - '.github/workflows/foundations-grade56-audit.yml'
@@ -24,6 +27,9 @@ on:
       - 'courses/vilenkin-6-part-1/**'
       - 'trainers/oge-basics/basics-help*'
       - 'tools/foundations-*'
+      - 'tools/grade56-attempts.browser.cjs'
+      - 'tools/peterson-grade56-attempt-feedback.test.cjs'
+      - 'tools/vilenkin6-course/textbook-dom.cjs'
       - '.github/workflows/foundations-grade56-audit.yml'
 permissions:
   contents: read
@@ -49,17 +55,23 @@ jobs:
       - name: Models, first attempts and unchanged course credit
         run: |
           node --max-old-space-size=384 school/peterson5/test-inquiry.cjs
+          node tools/peterson-grade56-attempt-feedback.test.cjs
+          node tools/vilenkin6-course/textbook-dom.cjs
           node tools/workshop-state.test.cjs
           node tools/foundations-workshop-models.test.cjs
           node tools/vilenkin5-course/inquiry.test.cjs
           node --test tools/oge-basics-transfer.test.cjs
           git diff --check
       - name: Real mobile and desktop learner journeys
-        run: node tools/foundations-grade56.browser.cjs
+        run: |
+          node tools/foundations-grade56.browser.cjs
+          node tools/grade56-attempts.browser.cjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: foundations-grade56-browser
-          path: artifacts/foundations-grade56
+          path: |
+            artifacts/foundations-grade56
+            artifacts/grade56-attempts
           if-no-files-found: error
           retention-days: 14
