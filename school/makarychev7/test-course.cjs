@@ -26,5 +26,11 @@ assert(C.check('5/(6*x)',{answer:'5/(6x)',kind:'text'}));assert(C.check('x^3/(8*
 assert(!C.check('2abc',{answer:'2',kind:'number'}));assert(!C.check('1e309',{answer:'1',kind:'number'}));
 assert(C.check('x^12+x^5',{kind:'text',answer:'x¹²+x⁵'}));assert(!C.check('x^21+x^5',{kind:'text',answer:'x¹²+x⁵'}));
 for(const [id,decimal] of [['p09-t01','214.178'],['p09-t03','6.9']]){const t=D.lessons.flatMap(l=>l.tasks).find(t=>t.id===id);assert(t,id+' exists');assert(!C.check(decimal,t),id+' accepts a decimal as an ordered pair');}
+for(const l of D.lessons)for(const t of l.tasks){
+ if(t.kind==='text'&&t.answer.length>=3)assert(!C.normalize(t.finalLabel).includes(C.normalize(t.answer)),t.id+' shows the solution in the entry instruction');
+}
+const fractions=D.lessons[0].tasks;
+assert(!C.check('2 1/5',fractions[0]),'A mixed number must retain its integer part');
+assert(C.check('– 1 / 8',fractions[3]),'A spaced handwritten minus must remain valid');
 const allNumbers=D.sourceMap.sections.flatMap(s=>Array.from(s.exerciseNumbers||[]));assert.equal(allNumbers.length,1247);assert.equal(new Set(allNumbers).size,1247);
 console.log(JSON.stringify({status:'PASS',topics:46,tasks,steps,textbookTasks:source,exerciseMap:1247,checks:'schema, source refs, accepted answers, steps, input boundaries, root sets'}));

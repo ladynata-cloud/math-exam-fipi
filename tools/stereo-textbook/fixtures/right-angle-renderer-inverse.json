@@ -1,0 +1,46 @@
+[
+  {
+    "start": 19,
+    "remove": 241,
+    "restore": []
+  },
+  {
+    "start": 383,
+    "remove": 1,
+    "restore": [
+      "  function prepare(source) {"
+    ]
+  },
+  {
+    "start": 421,
+    "remove": 34,
+    "restore": []
+  },
+  {
+    "start": 516,
+    "remove": 1,
+    "restore": [
+      "    const data = prepare(source);"
+    ]
+  },
+  {
+    "start": 590,
+    "remove": 2,
+    "restore": [
+      "      function drawLine(names, className, extra, arrow) {",
+      "        const a = data.points[names[0]], b = data.points[names[1]];"
+    ]
+  },
+  {
+    "start": 630,
+    "remove": 24,
+    "restore": []
+  },
+  {
+    "start": 680,
+    "remove": 1,
+    "restore": [
+      "      const occupied = [], padding = 3, margin = 7;"
+    ]
+  }
+]

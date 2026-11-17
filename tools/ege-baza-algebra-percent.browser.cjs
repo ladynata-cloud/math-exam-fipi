@@ -15,7 +15,7 @@ await page.click('[data-route="base"]');
 for(const [skill,key] of Object.entries(answerKeys)){await page.click(`[data-skill="${skill}"]`);if(skill==='fractions')await page.click('#practiceNext');const start=skill==='fractions'?1:0;for(let i=start;i<6;i++){await algebraAnswer(key[i]);assert((await page.locator('#practiceFeedback').innerText()).startsWith('Верно'),skill+' '+i);if(i<5)await page.click('#practiceNext');}}
 // Models: division by zero, fraction reduction, equal operations, place carry.
 await page.click('[data-skill="fractions"]');await page.selectOption('#fractionB','0');await page.selectOption('#fractionOp','/');assert((await page.locator('#fractionFormula').innerText()).includes('не определено'));
-await page.click('[data-skill="divisibility"]');await page.click('#practiceNext');await page.click('#practiceNext');await page.click('#practiceNext');await algebraAnswer('18/24');assert((await page.locator('#practiceFeedback').innerText()).includes('Пока'));await algebraAnswer('3/4');assert((await page.locator('#practiceFeedback').innerText()).startsWith('Верно'));
+await page.click('[data-skill="divisibility"]');await page.click('#practiceNext');await page.click('#practiceNext');await page.click('#practiceNext');for(const value of ['18/24','0,75','-6/-8']){await algebraAnswer(value);assert((await page.locator('#practiceFeedback').innerText()).includes('Значение верное'));}await algebraAnswer('3/4');assert((await page.locator('#practiceFeedback').innerText()).startsWith('Верно'));
 await page.click('[data-skill="equations"]');await page.click('#equationApply');assert((await page.locator('#equationModel').innerText()).includes('(2)x + (0) = 8'));await page.selectOption('#equationOp','/');await page.fill('#equationValue','2');await page.click('#equationApply');assert((await page.locator('#equationModel').innerText()).includes('(1)x + (0) = 4'));await page.fill('#equationValue','0');await page.click('#equationApply');assert((await page.locator('#equationFeedback').innerText()).includes('ноль'));
 await page.click('#diagnostic');await page.click('#quizSubmit');assert((await page.locator('#quizError').innerText()).length);for(const key of Object.values(answerKeys))for(const a of key.slice(6))await algebraAnswer(a,true);assert.equal(await page.locator('#screen h2').innerText(),'28 из 28');await page.click('#quizFinish');
 for(const [route,answers] of Object.entries({exp:['6',1,'3/2',0],log:['13',1,1,'9']})){await page.click(`[data-route="${route}"]`);await page.click('#functionCheck');for(const a of answers)await algebraAnswer(a,true);assert.equal(await page.locator('#screen h2').innerText(),'4 из 4');await page.click('#quizFinish');}
@@ -24,6 +24,17 @@ await page.click('#diagnostic');await page.click('#quizBack');await page.click('
 const down=page.waitForEvent('download');await page.click('#download');assert.equal((await down).suggestedFilename(),'MathExam_Algebra_Report.txt');
 assert.equal(await page.evaluate(()=>localStorage.getItem('mathExamCourseProgress.v1')),'{"sentinel":1}');
 await page.goto(root+'percent/index.html');await page.waitForSelector('[data-model="shop"]');
+for(const [model,answer] of Object.entries({hundred:10,compare:25,ratio:50,shop:360,mix:6,growth:16})){
+ await page.click(`[data-model="${model}"]`);await page.click('#guess');
+ if(model==='shop'){
+  await page.fill('#number','0');await page.click('#submit');assert.match(await page.locator('#feedback').innerText(),/после скидки/);
+  assert.doesNotMatch(await page.locator('#feedback').innerText(),/360/);await page.click('#showReason');assert.match(await page.locator('#feedback').innerText(),/360/);
+ }
+ await page.fill('#number',String(answer));await page.click('#submit');assert.match(await page.locator('#feedback').innerText(),/^Верно/);
+ await page.click('#back');assert.equal(await page.locator('[data-model][aria-pressed="true"]').getAttribute('data-model'),model);
+}
+await page.click('[data-model="compare"]');await move('#A',80);assert.match(await page.locator('#meaning').innerText(),/Величины равны/);
+await move('#A',120);await page.click('[data-model="hundred"]');
 const pctAnswer=async(a)=>{if(typeof a==='number')await page.click(`[data-choice="${a}"]`);else await page.fill('#number',a);await page.click('#submit');};
 // Virtual learner 3: confuses the old and new base, changes model, uses a prerequisite, and resumes.
 await page.click('[data-route="lessons"]');await page.selectOption('#lessonSelect','8');await pctAnswer(0);assert((await page.locator('#feedback').innerText()).includes('Проверьте'));await pctAnswer(1);await page.click('#foundation');await pctAnswer('10');await page.click('#back');assert((await page.locator('#screen').innerText()).includes('Шаг 2 из 3'));
